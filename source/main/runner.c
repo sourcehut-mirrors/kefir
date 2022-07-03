@@ -61,9 +61,9 @@ static kefir_result_t open_output(const char *filepath, FILE **output) {
     return KEFIR_OK;
 }
 
-static kefir_result_t dump_action_impl(struct kefir_mem *mem, struct kefir_compiler_runner_configuration *options,
+static kefir_result_t dump_action_impl(struct kefir_mem *mem, const struct kefir_compiler_runner_configuration *options,
                                        kefir_result_t (*action)(struct kefir_mem *,
-                                                                struct kefir_compiler_runner_configuration *,
+                                                                const struct kefir_compiler_runner_configuration *,
                                                                 struct kefir_compiler_context *, const char *,
                                                                 const char *, kefir_size_t, FILE *)) {
     FILE *output;
@@ -125,7 +125,7 @@ static kefir_result_t dump_action_impl(struct kefir_mem *mem, struct kefir_compi
 }
 
 static kefir_result_t build_predefined_macros(struct kefir_mem *mem,
-                                              struct kefir_compiler_runner_configuration *options,
+                                              const struct kefir_compiler_runner_configuration *options,
                                               struct kefir_compiler_context *compiler) {
     struct kefir_hashtree_node_iterator macro_iter;
     const struct kefir_hashtree_node *macro_node = kefir_hashtree_iter(&options->defines, &macro_iter);
@@ -153,7 +153,8 @@ static kefir_result_t build_predefined_macros(struct kefir_mem *mem,
     return KEFIR_OK;
 }
 
-static kefir_result_t include_predefined(struct kefir_mem *mem, struct kefir_compiler_runner_configuration *options,
+static kefir_result_t include_predefined(struct kefir_mem *mem,
+                                         const struct kefir_compiler_runner_configuration *options,
                                          struct kefir_compiler_context *compiler, const char *source_id,
                                          struct kefir_token_buffer *tokens) {
     for (const struct kefir_list_entry *iter = kefir_list_head(&options->include_files); iter != NULL;
@@ -163,7 +164,7 @@ static kefir_result_t include_predefined(struct kefir_mem *mem, struct kefir_com
     return KEFIR_OK;
 }
 
-static kefir_result_t lex_file(struct kefir_mem *mem, struct kefir_compiler_runner_configuration *options,
+static kefir_result_t lex_file(struct kefir_mem *mem, const struct kefir_compiler_runner_configuration *options,
                                struct kefir_compiler_context *compiler, const char *source_id, const char *source,
                                kefir_size_t length, struct kefir_token_buffer *tokens) {
     if (options->skip_preprocessor) {
@@ -180,7 +181,8 @@ static kefir_result_t lex_file(struct kefir_mem *mem, struct kefir_compiler_runn
     return KEFIR_OK;
 }
 
-static kefir_result_t dump_preprocessed_impl(struct kefir_mem *mem, struct kefir_compiler_runner_configuration *options,
+static kefir_result_t dump_preprocessed_impl(struct kefir_mem *mem,
+                                             const struct kefir_compiler_runner_configuration *options,
                                              struct kefir_compiler_context *compiler, const char *source_id,
                                              const char *source, kefir_size_t length, FILE *output) {
     UNUSED(options);
@@ -196,12 +198,12 @@ static kefir_result_t dump_preprocessed_impl(struct kefir_mem *mem, struct kefir
 }
 
 static kefir_result_t action_dump_preprocessed(struct kefir_mem *mem,
-                                               struct kefir_compiler_runner_configuration *options) {
+                                               const struct kefir_compiler_runner_configuration *options) {
     REQUIRE_OK(dump_action_impl(mem, options, dump_preprocessed_impl));
     return KEFIR_OK;
 }
 
-static kefir_result_t dump_tokens_impl(struct kefir_mem *mem, struct kefir_compiler_runner_configuration *options,
+static kefir_result_t dump_tokens_impl(struct kefir_mem *mem, const struct kefir_compiler_runner_configuration *options,
                                        struct kefir_compiler_context *compiler, const char *source_id,
                                        const char *source, kefir_size_t length, FILE *output) {
     UNUSED(options);
@@ -218,12 +220,13 @@ static kefir_result_t dump_tokens_impl(struct kefir_mem *mem, struct kefir_compi
     return KEFIR_OK;
 }
 
-static kefir_result_t action_dump_tokens(struct kefir_mem *mem, struct kefir_compiler_runner_configuration *options) {
+static kefir_result_t action_dump_tokens(struct kefir_mem *mem,
+                                         const struct kefir_compiler_runner_configuration *options) {
     REQUIRE_OK(dump_action_impl(mem, options, dump_tokens_impl));
     return KEFIR_OK;
 }
 
-static kefir_result_t dump_ast_impl(struct kefir_mem *mem, struct kefir_compiler_runner_configuration *options,
+static kefir_result_t dump_ast_impl(struct kefir_mem *mem, const struct kefir_compiler_runner_configuration *options,
                                     struct kefir_compiler_context *compiler, const char *source_id, const char *source,
                                     kefir_size_t length, FILE *output) {
     UNUSED(options);
@@ -246,12 +249,13 @@ static kefir_result_t dump_ast_impl(struct kefir_mem *mem, struct kefir_compiler
     return KEFIR_OK;
 }
 
-static kefir_result_t action_dump_ast(struct kefir_mem *mem, struct kefir_compiler_runner_configuration *options) {
+static kefir_result_t action_dump_ast(struct kefir_mem *mem,
+                                      const struct kefir_compiler_runner_configuration *options) {
     REQUIRE_OK(dump_action_impl(mem, options, dump_ast_impl));
     return KEFIR_OK;
 }
 
-static kefir_result_t dump_ir_impl(struct kefir_mem *mem, struct kefir_compiler_runner_configuration *options,
+static kefir_result_t dump_ir_impl(struct kefir_mem *mem, const struct kefir_compiler_runner_configuration *options,
                                    struct kefir_compiler_context *compiler, const char *source_id, const char *source,
                                    kefir_size_t length, FILE *output) {
     UNUSED(options);
@@ -274,12 +278,12 @@ static kefir_result_t dump_ir_impl(struct kefir_mem *mem, struct kefir_compiler_
     return KEFIR_OK;
 }
 
-static kefir_result_t action_dump_ir(struct kefir_mem *mem, struct kefir_compiler_runner_configuration *options) {
+static kefir_result_t action_dump_ir(struct kefir_mem *mem, const struct kefir_compiler_runner_configuration *options) {
     REQUIRE_OK(dump_action_impl(mem, options, dump_ir_impl));
     return KEFIR_OK;
 }
 
-static kefir_result_t dump_asm_impl(struct kefir_mem *mem, struct kefir_compiler_runner_configuration *options,
+static kefir_result_t dump_asm_impl(struct kefir_mem *mem, const struct kefir_compiler_runner_configuration *options,
                                     struct kefir_compiler_context *compiler, const char *source_id, const char *source,
                                     kefir_size_t length, FILE *output) {
     UNUSED(options);
@@ -301,13 +305,14 @@ static kefir_result_t dump_asm_impl(struct kefir_mem *mem, struct kefir_compiler
     return KEFIR_OK;
 }
 
-static kefir_result_t action_dump_asm(struct kefir_mem *mem, struct kefir_compiler_runner_configuration *options) {
+static kefir_result_t action_dump_asm(struct kefir_mem *mem,
+                                      const struct kefir_compiler_runner_configuration *options) {
     REQUIRE_OK(dump_action_impl(mem, options, dump_asm_impl));
     return KEFIR_OK;
 }
 
 static kefir_result_t action_dump_runtime_code(struct kefir_mem *mem,
-                                               struct kefir_compiler_runner_configuration *options) {
+                                               const struct kefir_compiler_runner_configuration *options) {
     UNUSED(mem);
     struct kefir_compiler_profile profile;
     REQUIRE_OK(kefir_compiler_profile(&profile, options->target_profile));
@@ -317,7 +322,7 @@ static kefir_result_t action_dump_runtime_code(struct kefir_mem *mem,
     return KEFIR_OK;
 }
 
-static kefir_result_t action_help(struct kefir_mem *mem, struct kefir_compiler_runner_configuration *options) {
+static kefir_result_t action_help(struct kefir_mem *mem, const struct kefir_compiler_runner_configuration *options) {
     UNUSED(mem);
     UNUSED(options);
     extern const char KefirHelpContent[];
@@ -325,14 +330,14 @@ static kefir_result_t action_help(struct kefir_mem *mem, struct kefir_compiler_r
     return KEFIR_OK;
 }
 
-static kefir_result_t action_version(struct kefir_mem *mem, struct kefir_compiler_runner_configuration *options) {
+static kefir_result_t action_version(struct kefir_mem *mem, const struct kefir_compiler_runner_configuration *options) {
     UNUSED(mem);
     UNUSED(options);
     printf("%u.%u.%u\n", KEFIR_VERSION_MAJOR, KEFIR_VERSION_MINOR, KEFIR_VERSION_PATCH);
     return KEFIR_OK;
 }
 
-static kefir_result_t (*Actions[])(struct kefir_mem *, struct kefir_compiler_runner_configuration *) = {
+static kefir_result_t (*Actions[])(struct kefir_mem *, const struct kefir_compiler_runner_configuration *) = {
     [KEFIR_COMPILER_RUNNER_ACTION_PREPROCESS] = action_dump_preprocessed,
     [KEFIR_COMPILER_RUNNER_ACTION_DUMP_TOKENS] = action_dump_tokens,
     [KEFIR_COMPILER_RUNNER_ACTION_DUMP_AST] = action_dump_ast,
@@ -342,7 +347,7 @@ static kefir_result_t (*Actions[])(struct kefir_mem *, struct kefir_compiler_run
     [KEFIR_COMPILER_RUNNER_ACTION_HELP] = action_help,
     [KEFIR_COMPILER_RUNNER_ACTION_VERSION] = action_version};
 
-kefir_result_t kefir_run_compiler(struct kefir_mem *mem, struct kefir_compiler_runner_configuration *options) {
+kefir_result_t kefir_run_compiler(struct kefir_mem *mem, const struct kefir_compiler_runner_configuration *options) {
     REQUIRE_OK(Actions[options->action](mem, options));
     return KEFIR_OK;
 }
@@ -351,6 +356,8 @@ kefir_bool_t kefir_report_error(FILE *output, kefir_result_t res,
                                 const struct kefir_compiler_runner_configuration *options) {
     if (res == KEFIR_OK) {
         return true;
+    } else if (res == KEFIR_INTERRUPT) {
+        return false;
     } else {
         switch (options->error_report_type) {
             case KEFIR_COMPILER_RUNNER_ERROR_REPORT_TABULAR:

@@ -1,5 +1,5 @@
-KEFIR_STANDALONE_DEPENDENCIES := $(BIN_DIR)/main/standalone.d $(BIN_DIR)/main/runner.d
-KEFIR_STANDALONE_OBJECT_FILES := $(BIN_DIR)/main/standalone.o $(BIN_DIR)/main/runner.o $(BIN_DIR)/main/help.s.o
+KEFIR_STANDALONE_DEPENDENCIES := $(BIN_DIR)/main/standalone.d $(BIN_DIR)/main/runner.d $(BIN_DIR)/main/driver.d
+KEFIR_STANDALONE_OBJECT_FILES := $(BIN_DIR)/main/standalone.o $(BIN_DIR)/main/runner.o $(BIN_DIR)/main/driver.o $(BIN_DIR)/main/help.s.o
 
 KEFIR_STANDALONE_LINKED_LIBS=
 ifeq ($(SANITIZE),undefined)

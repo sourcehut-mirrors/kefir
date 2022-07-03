@@ -4,6 +4,7 @@ kefir_result_category_t kefir_result_get_category(kefir_result_t res) {
     switch (res) {
         case KEFIR_OK:
         case KEFIR_YIELD:
+        case KEFIR_INTERRUPT:
             return KEFIR_RESULT_CATEGORY_NORMAL;
 
         case KEFIR_ITERATOR_END:
@@ -26,6 +27,7 @@ kefir_result_category_t kefir_result_get_category(kefir_result_t res) {
         case KEFIR_NOT_SUPPORTED:
         case KEFIR_NOT_IMPLEMENTED:
         case KEFIR_UI_ERROR:
+        case KEFIR_SUBPROCESS_ERROR:
             return KEFIR_RESULT_CATEGORY_GENERIC_ERROR;
 
         case KEFIR_LEXER_ERROR:
