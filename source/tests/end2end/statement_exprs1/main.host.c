@@ -27,7 +27,7 @@ int main() {
     for (int i = -1000; i < 1000; i++) {
         assert(eval1(i) == 2 * i + 1);
         if (i > 0) {
-            assert(eval2(i) == i + sizeof(long) * i);
+            assert((long long) eval2(i) == (long long) (i + sizeof(long) * i));
         }
     }
     return EXIT_SUCCESS;
