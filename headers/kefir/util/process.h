@@ -43,11 +43,20 @@ typedef struct kefir_process {
 
 kefir_result_t kefir_process_init(struct kefir_process *);
 kefir_result_t kefir_process_wait(struct kefir_process *);
-kefir_result_t kefir_process_free(struct kefir_process *);
+kefir_result_t kefir_process_kill(struct kefir_process *);
 
 kefir_result_t kefir_process_run(struct kefir_process *, int (*)(void *), void *);
 kefir_result_t kefir_process_execute(struct kefir_process *, const char *, const char *const *);
 
-kefir_result_t kefir_process_pipe(struct kefir_process *, struct kefir_process *, kefir_bool_t);
+kefir_result_t kefir_process_pipe(struct kefir_process *, struct kefir_process *);
+kefir_result_t kefir_process_redirect_stderr_to_stdout(struct kefir_process *);
+
+kefir_result_t kefir_process_redirect_stdin_from(struct kefir_process *, int);
+kefir_result_t kefir_process_redirect_stdout_to(struct kefir_process *, int);
+kefir_result_t kefir_process_redirect_stderr_to(struct kefir_process *, int);
+
+kefir_result_t kefir_process_redirect_stdin_from_file(struct kefir_process *, const char *);
+kefir_result_t kefir_process_redirect_stdout_to_file(struct kefir_process *, const char *);
+kefir_result_t kefir_process_redirect_stderr_to_file(struct kefir_process *, const char *);
 
 #endif
