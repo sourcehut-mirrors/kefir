@@ -8,7 +8,7 @@
 		<xsl:text>/*
     SPDX-License-Identifier: GPL-3.0
 
-    Copyright (C) 2020-2021  Jevgenijs Protopopovs
+    Copyright (C) 2020-2022  Jevgenijs Protopopovs
 
     This file is part of Kefir project.
 
