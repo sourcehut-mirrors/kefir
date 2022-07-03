@@ -135,7 +135,6 @@ typedef enum kefir_result {
     // Normal
     KEFIR_OK = 0,
     KEFIR_YIELD,
-    KEFIR_INTERRUPT,
     // Warning
     KEFIR_ITERATOR_END,
     KEFIR_NO_MATCH,

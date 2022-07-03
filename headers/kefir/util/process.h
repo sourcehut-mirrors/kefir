@@ -18,13 +18,33 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef KEFIR_MAIN_DRIVER_H_
-#define KEFIR_MAIN_DRIVER_H_
+#ifndef KEFIR_UTIL_PROCESS_H_
+#define KEFIR_UTIL_PROCESS_H_
 
-#include "kefir/cli/options.h"
-#include "kefir/util/process.h"
-#include <stdio.h>
+#include "kefir/core/basic-types.h"
 
-kefir_result_t kefir_driver_run_compiler(const struct kefir_compiler_runner_configuration *, struct kefir_process *);
+typedef struct kefir_process {
+    int pid;
+    struct {
+        int stdin;
+        int stdout;
+        int stderr;
+    } io;
+
+    struct {
+        kefir_bool_t exited;
+        kefir_bool_t terminated;
+        union {
+            int exit_code;
+            int signal;
+        };
+    } status;
+} kefir_process_t;
+
+kefir_result_t kefir_process_init(struct kefir_process *);
+kefir_result_t kefir_process_wait(struct kefir_process *);
+kefir_result_t kefir_process_free(struct kefir_process *);
+
+kefir_result_t kefir_process_run(struct kefir_process *, int (*)(void *), void *);
 
 #endif

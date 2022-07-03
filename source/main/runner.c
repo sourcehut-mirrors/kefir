@@ -356,8 +356,6 @@ kefir_bool_t kefir_report_error(FILE *output, kefir_result_t res,
                                 const struct kefir_compiler_runner_configuration *options) {
     if (res == KEFIR_OK) {
         return true;
-    } else if (res == KEFIR_INTERRUPT) {
-        return false;
     } else {
         switch (options->error_report_type) {
             case KEFIR_COMPILER_RUNNER_ERROR_REPORT_TABULAR:

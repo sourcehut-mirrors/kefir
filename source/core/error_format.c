@@ -62,11 +62,6 @@ void kefir_format_error_tabular(FILE *out, const struct kefir_error *error) {
                 subclass = "Yield";
                 break;
 
-            case KEFIR_INTERRUPT:
-                class = "Unexpected";
-                subclass = "Interrupt";
-                break;
-
             case KEFIR_ITERATOR_END:
                 class = "Internal";
                 subclass = "Iterator end";
@@ -214,10 +209,6 @@ static kefir_result_t format_json(FILE *out, const struct kefir_error *error) {
 
             case KEFIR_YIELD:
                 REQUIRE_OK(kefir_json_output_string(&json, "yield"));
-                break;
-
-            case KEFIR_INTERRUPT:
-                REQUIRE_OK(kefir_json_output_string(&json, "interrupt"));
                 break;
 
             case KEFIR_ITERATOR_END:
