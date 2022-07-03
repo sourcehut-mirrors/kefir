@@ -38,8 +38,23 @@ kefir_result_t kefir_driver_run_compiler(const struct kefir_compiler_runner_conf
                                          struct kefir_process *process) {
     REQUIRE(configuration != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid compiler runner configuration"));
-    REQUIRE(process != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer process"));
+    REQUIRE(process != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to process"));
 
     REQUIRE_OK(kefir_process_run(process, run_compiler, (void *) configuration));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_driver_run_assembler(const char *output_file, struct kefir_process *process) {
+    REQUIRE(output_file != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid output file"));
+    REQUIRE(process != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to process"));
+
+    const char *as_path = getenv("KEFIR_AS");
+    if (as_path == NULL) {
+        as_path = "as";
+    }
+
+    const char *argv[] = {as_path, "-o", output_file, NULL};
+
+    REQUIRE_OK(kefir_process_execute(process, as_path, argv));
     return KEFIR_OK;
 }

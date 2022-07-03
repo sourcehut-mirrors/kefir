@@ -26,5 +26,6 @@
 #include <stdio.h>
 
 kefir_result_t kefir_driver_run_compiler(const struct kefir_compiler_runner_configuration *, struct kefir_process *);
+kefir_result_t kefir_driver_run_assembler(const char *, struct kefir_process *);
 
 #endif

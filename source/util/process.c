@@ -27,6 +27,7 @@
 #include <unistd.h>
 #include <signal.h>
 #include <sys/wait.h>
+#include <fcntl.h>
 
 kefir_result_t kefir_process_init(struct kefir_process *process) {
     REQUIRE(process != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to process"));
@@ -52,6 +53,17 @@ kefir_result_t kefir_process_init(struct kefir_process *process) {
     return KEFIR_OK;
 }
 
+static kefir_result_t close_process(struct kefir_process *process) {
+    process->pid = -1;
+    REQUIRE(close(process->io.stdin) != -1, KEFIR_SET_OS_ERROR("Failed to close process stdin"));
+    process->io.stdin = -1;
+    REQUIRE(close(process->io.stdout) != -1, KEFIR_SET_OS_ERROR("Failed to close process stdout"));
+    process->io.stdout = -1;
+    REQUIRE(close(process->io.stderr) != -1, KEFIR_SET_OS_ERROR("Failed to close process stderr"));
+    process->io.stderr = -1;
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_process_wait(struct kefir_process *process) {
     REQUIRE(process != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to process"));
     REQUIRE(process->pid > 0, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected running process"));
@@ -61,11 +73,11 @@ kefir_result_t kefir_process_wait(struct kefir_process *process) {
     if (WIFEXITED(status)) {
         process->status.exited = true;
         process->status.exit_code = WEXITSTATUS(status);
-        process->pid = -1;
+        REQUIRE_OK(close_process(process));
     } else if (WIFSIGNALED(status)) {
         process->status.terminated = true;
         process->status.signal = WTERMSIG(status);
-        process->pid = -1;
+        REQUIRE_OK(close_process(process));
     }
     return KEFIR_OK;
 }
@@ -74,15 +86,8 @@ kefir_result_t kefir_process_free(struct kefir_process *process) {
     REQUIRE(process != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to process"));
     if (process->pid > 0) {
         REQUIRE(kill(process->pid, SIGKILL) != -1, KEFIR_SET_OS_ERROR("Failed to kill running process"));
-        process->pid = -1;
+        REQUIRE_OK(close_process(process));
     }
-
-    REQUIRE(close(process->io.stdin) != -1, KEFIR_SET_OS_ERROR("Failed to close process stdin"));
-    process->io.stdin = -1;
-    REQUIRE(close(process->io.stdout) != -1, KEFIR_SET_OS_ERROR("Failed to close process stdout"));
-    process->io.stdout = -1;
-    REQUIRE(close(process->io.stderr) != -1, KEFIR_SET_OS_ERROR("Failed to close process stderr"));
-    process->io.stderr = -1;
     return KEFIR_OK;
 }
 
@@ -109,6 +114,82 @@ kefir_result_t kefir_process_run(struct kefir_process *process, int (*callback)(
         }
 
         exit(callback(payload));
+    }
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_process_execute(struct kefir_process *process, const char *file, const char *const *args) {
+    REQUIRE(process != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to process"));
+    REQUIRE(process->pid == -1, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected initialized process"));
+    REQUIRE(file != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid executable file"));
+    REQUIRE(args != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid executable arguments"));
+
+    int pid = fork();
+    REQUIRE(pid != -1, KEFIR_SET_OS_ERROR("Failed to fork the process"));
+    if (pid > 0) {
+        process->pid = pid;
+    } else {
+        if (dup2(process->io.stdin, STDIN_FILENO) == -1) {
+            perror("Failed to set up process stdin");
+            exit(EXIT_FAILURE);
+        }
+        if (dup2(process->io.stdout, STDOUT_FILENO) == -1) {
+            perror("Failed to set up process stdout");
+            exit(EXIT_FAILURE);
+        }
+        if (dup2(process->io.stderr, STDERR_FILENO) == -1) {
+            perror("Failed to set up process stderr");
+            exit(EXIT_FAILURE);
+        }
+
+        if (execvp(file, (char *const *) args) == -1) {
+            perror("Failed to execute file");
+            exit(EXIT_FAILURE);
+        }
+        abort();  // Execution flow shall not reach this statement
+    }
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_process_pipe(struct kefir_process *src_process, struct kefir_process *dst_process,
+                                  kefir_bool_t redirect_stderr) {
+    REQUIRE(src_process != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to source process"));
+    REQUIRE(src_process->pid == -1, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected initialized source process"));
+    REQUIRE(dst_process != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to destination process"));
+    REQUIRE(dst_process->pid == -1, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected initialized destination process"));
+
+    int pipe_fd[2];
+    REQUIRE(pipe(pipe_fd) != -1, KEFIR_SET_OS_ERROR("Failed to create pipe"));
+
+    int fd_flags;
+    if (fcntl(pipe_fd[0], F_GETFD, &fd_flags) == -1 || fcntl(pipe_fd[0], F_SETFD, fd_flags | FD_CLOEXEC) == -1 ||
+        fcntl(pipe_fd[1], F_GETFD, &fd_flags) == -1 || fcntl(pipe_fd[1], F_SETFD, fd_flags | FD_CLOEXEC) == -1) {
+        kefir_result_t res = KEFIR_SET_OS_ERROR("Failed to close process stdin");
+        close(pipe_fd[0]);
+        close(pipe_fd[1]);
+        return res;
+    }
+
+    REQUIRE_ELSE(close(dst_process->io.stdin) == 0, {
+        kefir_result_t res = KEFIR_SET_OS_ERROR("Failed to close process stdin");
+        close(pipe_fd[0]);
+        close(pipe_fd[1]);
+        return res;
+    });
+    dst_process->io.stdin = pipe_fd[0];
+
+    REQUIRE_ELSE(close(src_process->io.stdout) == 0, {
+        kefir_result_t res = KEFIR_SET_OS_ERROR("Failed to close process stdout");
+        close(pipe_fd[1]);
+        return res;
+    });
+    src_process->io.stdout = pipe_fd[1];
+
+    if (redirect_stderr) {
+        REQUIRE(close(src_process->io.stderr) == 0, KEFIR_SET_OS_ERROR("Failed to close process stderr"));
+        src_process->io.stderr = dup(pipe_fd[1]);
+        REQUIRE(src_process->io.stderr != -1, KEFIR_SET_OS_ERROR("Failed to redirect stderr"));
     }
     return KEFIR_OK;
 }
