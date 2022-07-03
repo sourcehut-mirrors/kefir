@@ -33,19 +33,19 @@ kefir_result_t kefir_process_init(struct kefir_process *process) {
     REQUIRE(process != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to process"));
 
     process->pid = -1;
-    process->io.stdin = dup(STDIN_FILENO);
-    REQUIRE(process->io.stdin != -1, KEFIR_SET_OS_ERROR("Failed to duplicate process stdin"));
-    process->io.stdout = dup(STDOUT_FILENO);
-    REQUIRE_ELSE(process->io.stdout != -1, {
+    process->io.input_fd = dup(STDIN_FILENO);
+    REQUIRE(process->io.input_fd != -1, KEFIR_SET_OS_ERROR("Failed to duplicate process stdin"));
+    process->io.output_fd = dup(STDOUT_FILENO);
+    REQUIRE_ELSE(process->io.output_fd != -1, {
         kefir_result_t res = KEFIR_SET_OS_ERROR("Failed to duplicate process stdout");
-        close(process->io.stdin);
+        close(process->io.input_fd);
         return res;
     });
-    process->io.stderr = dup(STDERR_FILENO);
-    REQUIRE_ELSE(process->io.stderr != -1, {
+    process->io.error_fd = dup(STDERR_FILENO);
+    REQUIRE_ELSE(process->io.error_fd != -1, {
         kefir_result_t res = KEFIR_SET_OS_ERROR("Failed to duplicate process stderr");
-        close(process->io.stdin);
-        close(process->io.stdout);
+        close(process->io.input_fd);
+        close(process->io.output_fd);
         return res;
     });
     process->status.exited = false;
@@ -55,12 +55,12 @@ kefir_result_t kefir_process_init(struct kefir_process *process) {
 
 static kefir_result_t close_process(struct kefir_process *process) {
     process->pid = -1;
-    REQUIRE(close(process->io.stdin) != -1, KEFIR_SET_OS_ERROR("Failed to close process stdin"));
-    process->io.stdin = -1;
-    REQUIRE(close(process->io.stdout) != -1, KEFIR_SET_OS_ERROR("Failed to close process stdout"));
-    process->io.stdout = -1;
-    REQUIRE(close(process->io.stderr) != -1, KEFIR_SET_OS_ERROR("Failed to close process stderr"));
-    process->io.stderr = -1;
+    REQUIRE(close(process->io.input_fd) != -1, KEFIR_SET_OS_ERROR("Failed to close process stdin"));
+    process->io.input_fd = -1;
+    REQUIRE(close(process->io.output_fd) != -1, KEFIR_SET_OS_ERROR("Failed to close process stdout"));
+    process->io.output_fd = -1;
+    REQUIRE(close(process->io.error_fd) != -1, KEFIR_SET_OS_ERROR("Failed to close process stderr"));
+    process->io.error_fd = -1;
     return KEFIR_OK;
 }
 
@@ -100,15 +100,15 @@ kefir_result_t kefir_process_run(struct kefir_process *process, int (*callback)(
     if (pid > 0) {
         process->pid = pid;
     } else {
-        if (dup2(process->io.stdin, STDIN_FILENO) == -1) {
+        if (dup2(process->io.input_fd, STDIN_FILENO) == -1) {
             perror("Failed to set up process stdin");
             exit(EXIT_FAILURE);
         }
-        if (dup2(process->io.stdout, STDOUT_FILENO) == -1) {
+        if (dup2(process->io.output_fd, STDOUT_FILENO) == -1) {
             perror("Failed to set up process stdout");
             exit(EXIT_FAILURE);
         }
-        if (dup2(process->io.stderr, STDERR_FILENO) == -1) {
+        if (dup2(process->io.error_fd, STDERR_FILENO) == -1) {
             perror("Failed to set up process stderr");
             exit(EXIT_FAILURE);
         }
@@ -129,15 +129,15 @@ kefir_result_t kefir_process_execute(struct kefir_process *process, const char *
     if (pid > 0) {
         process->pid = pid;
     } else {
-        if (dup2(process->io.stdin, STDIN_FILENO) == -1) {
+        if (dup2(process->io.input_fd, STDIN_FILENO) == -1) {
             perror("Failed to set up process stdin");
             exit(EXIT_FAILURE);
         }
-        if (dup2(process->io.stdout, STDOUT_FILENO) == -1) {
+        if (dup2(process->io.output_fd, STDOUT_FILENO) == -1) {
             perror("Failed to set up process stdout");
             exit(EXIT_FAILURE);
         }
-        if (dup2(process->io.stderr, STDERR_FILENO) == -1) {
+        if (dup2(process->io.error_fd, STDERR_FILENO) == -1) {
             perror("Failed to set up process stderr");
             exit(EXIT_FAILURE);
         }
@@ -171,25 +171,25 @@ kefir_result_t kefir_process_pipe(struct kefir_process *src_process, struct kefi
         return res;
     }
 
-    REQUIRE_ELSE(close(dst_process->io.stdin) == 0, {
+    REQUIRE_ELSE(close(dst_process->io.input_fd) == 0, {
         kefir_result_t res = KEFIR_SET_OS_ERROR("Failed to close process stdin");
         close(pipe_fd[0]);
         close(pipe_fd[1]);
         return res;
     });
-    dst_process->io.stdin = pipe_fd[0];
+    dst_process->io.input_fd = pipe_fd[0];
 
-    REQUIRE_ELSE(close(src_process->io.stdout) == 0, {
+    REQUIRE_ELSE(close(src_process->io.output_fd) == 0, {
         kefir_result_t res = KEFIR_SET_OS_ERROR("Failed to close process stdout");
         close(pipe_fd[1]);
         return res;
     });
-    src_process->io.stdout = pipe_fd[1];
+    src_process->io.output_fd = pipe_fd[1];
 
     if (redirect_stderr) {
-        REQUIRE(close(src_process->io.stderr) == 0, KEFIR_SET_OS_ERROR("Failed to close process stderr"));
-        src_process->io.stderr = dup(pipe_fd[1]);
-        REQUIRE(src_process->io.stderr != -1, KEFIR_SET_OS_ERROR("Failed to redirect stderr"));
+        REQUIRE(close(src_process->io.error_fd) == 0, KEFIR_SET_OS_ERROR("Failed to close process stderr"));
+        src_process->io.error_fd = dup(pipe_fd[1]);
+        REQUIRE(src_process->io.error_fd != -1, KEFIR_SET_OS_ERROR("Failed to redirect stderr"));
     }
     return KEFIR_OK;
 }

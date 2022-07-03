@@ -26,9 +26,9 @@
 typedef struct kefir_process {
     int pid;
     struct {
-        int stdin;
-        int stdout;
-        int stderr;
+        int input_fd;
+        int output_fd;
+        int error_fd;
     } io;
 
     struct {
