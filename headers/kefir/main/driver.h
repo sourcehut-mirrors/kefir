@@ -37,8 +37,24 @@ kefir_result_t kefir_driver_assembler_configuration_add_extra_argument(struct ke
                                                                        struct kefir_driver_assembler_configuration *,
                                                                        const char *);
 
+typedef struct kefir_driver_linker_configuration {
+    struct kefir_list linked_files;
+    struct kefir_list extra_args;
+} kefir_driver_linker_configuration_t;
+
+kefir_result_t kefir_driver_linker_configuration_init(struct kefir_driver_linker_configuration *);
+kefir_result_t kefir_driver_linker_configuration_free(struct kefir_mem *, struct kefir_driver_linker_configuration *);
+kefir_result_t kefir_driver_linker_configuration_add_linked_file(struct kefir_mem *,
+                                                                 struct kefir_driver_linker_configuration *,
+                                                                 const char *);
+kefir_result_t kefir_driver_linker_configuration_add_extra_argument(struct kefir_mem *,
+                                                                    struct kefir_driver_linker_configuration *,
+                                                                    const char *);
+
 kefir_result_t kefir_driver_run_compiler(const struct kefir_compiler_runner_configuration *, struct kefir_process *);
 kefir_result_t kefir_driver_run_assembler(struct kefir_mem *, const char *,
                                           const struct kefir_driver_assembler_configuration *, struct kefir_process *);
+kefir_result_t kefir_driver_run_linker(struct kefir_mem *, const char *,
+                                       const struct kefir_driver_linker_configuration *, struct kefir_process *);
 
 #endif

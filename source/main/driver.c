@@ -23,11 +23,12 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 #include "kefir/core/os_error.h"
+#include "kefir/core/string_array.h"
 #include "kefir/compiler/compiler.h"
 #include "kefir/main/runner.h"
 
-static kefir_result_t extra_args_free(struct kefir_mem *mem, struct kefir_list *list, struct kefir_list_entry *entry,
-                                      void *payload) {
+static kefir_result_t list_string_entry_free(struct kefir_mem *mem, struct kefir_list *list,
+                                             struct kefir_list_entry *entry, void *payload) {
     UNUSED(list);
     UNUSED(payload);
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
@@ -41,7 +42,7 @@ kefir_result_t kefir_driver_assembler_configuration_init(struct kefir_driver_ass
     REQUIRE(config != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver assembler configuration"));
 
     REQUIRE_OK(kefir_list_init(&config->extra_args));
-    REQUIRE_OK(kefir_list_on_remove(&config->extra_args, extra_args_free, NULL));
+    REQUIRE_OK(kefir_list_on_remove(&config->extra_args, list_string_entry_free, NULL));
     return KEFIR_OK;
 }
 
@@ -54,22 +55,66 @@ kefir_result_t kefir_driver_assembler_configuration_free(struct kefir_mem *mem,
     return KEFIR_OK;
 }
 
+static kefir_result_t string_list_append(struct kefir_mem *mem, struct kefir_list *list, const char *string) {
+    char *arg_copy = KEFIR_MALLOC(mem, strlen(string) + 1);
+    REQUIRE(arg_copy != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate driver extra argument"));
+    strcpy(arg_copy, string);
+    kefir_result_t res = kefir_list_insert_after(mem, list, kefir_list_tail(list), arg_copy);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_FREE(mem, arg_copy);
+        return res;
+    });
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_driver_assembler_configuration_add_extra_argument(
     struct kefir_mem *mem, struct kefir_driver_assembler_configuration *config, const char *arg) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(config != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver assembler configuration"));
     REQUIRE(arg != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver assembler extra argument"));
 
-    char *arg_copy = KEFIR_MALLOC(mem, strlen(arg) + 1);
-    REQUIRE(arg_copy != NULL,
-            KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate driver assembler extra argument"));
-    strcpy(arg_copy, arg);
-    kefir_result_t res =
-        kefir_list_insert_after(mem, &config->extra_args, kefir_list_tail(&config->extra_args), arg_copy);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, arg_copy);
-        return res;
-    });
+    REQUIRE_OK(string_list_append(mem, &config->extra_args, arg));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_driver_linker_configuration_init(struct kefir_driver_linker_configuration *config) {
+    REQUIRE(config != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver linker configuration"));
+
+    REQUIRE_OK(kefir_list_init(&config->linked_files));
+    REQUIRE_OK(kefir_list_on_remove(&config->linked_files, list_string_entry_free, NULL));
+    REQUIRE_OK(kefir_list_init(&config->extra_args));
+    REQUIRE_OK(kefir_list_on_remove(&config->extra_args, list_string_entry_free, NULL));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_driver_linker_configuration_free(struct kefir_mem *mem,
+                                                      struct kefir_driver_linker_configuration *config) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(config != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver linker configuration"));
+
+    REQUIRE_OK(kefir_list_free(mem, &config->linked_files));
+    REQUIRE_OK(kefir_list_free(mem, &config->extra_args));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_driver_linker_configuration_add_linked_file(struct kefir_mem *mem,
+                                                                 struct kefir_driver_linker_configuration *config,
+                                                                 const char *linked_file) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(config != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver linker configuration"));
+    REQUIRE(linked_file != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver linker file"));
+
+    REQUIRE_OK(string_list_append(mem, &config->linked_files, linked_file));
+    return KEFIR_OK;
+}
+kefir_result_t kefir_driver_linker_configuration_add_extra_argument(struct kefir_mem *mem,
+                                                                    struct kefir_driver_linker_configuration *config,
+                                                                    const char *arg) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(config != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver linker configuration"));
+    REQUIRE(arg != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver linker extra argument"));
+
+    REQUIRE_OK(string_list_append(mem, &config->extra_args, arg));
     return KEFIR_OK;
 }
 
@@ -89,16 +134,10 @@ kefir_result_t kefir_driver_run_compiler(const struct kefir_compiler_runner_conf
     return KEFIR_OK;
 }
 
-static void free_argv(struct kefir_mem *mem, char **argv, kefir_size_t index) {
-    for (kefir_size_t j = 0; j < index; j++) {
-        KEFIR_FREE(mem, argv[j]);
-    }
-    KEFIR_FREE(mem, argv);
-}
-
 kefir_result_t kefir_driver_run_assembler(struct kefir_mem *mem, const char *output_file,
                                           const struct kefir_driver_assembler_configuration *config,
                                           struct kefir_process *process) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(output_file != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid output file"));
     REQUIRE(config != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver assembler configuration"));
     REQUIRE(process != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to process"));
@@ -111,42 +150,71 @@ kefir_result_t kefir_driver_run_assembler(struct kefir_mem *mem, const char *out
         as_path = "as";
     }
 
-    const char *base_argv[] = {as_path, "-o", output_file};
-    kefir_size_t base_argc = sizeof(base_argv) / sizeof(base_argv[0]);
+    struct kefir_string_array argv;
+    REQUIRE_OK(kefir_string_array_init(mem, &argv));
 
-    kefir_size_t argc = base_argc + kefir_list_length(&config->extra_args);
-    char **argv = KEFIR_MALLOC(mem, sizeof(char *) * (argc + 1));
-    REQUIRE(argv != NULL,
-            KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate assembler command line arguments"));
-    kefir_size_t i = 0;
-    for (; i < base_argc; i++) {
-        kefir_size_t arg_len = strlen(base_argv[i]);
-        argv[i] = KEFIR_MALLOC(mem, arg_len + 1);
-        REQUIRE_ELSE(argv[i] != NULL, {
-            free_argv(mem, argv, i);
-            return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate assembler command line arguments");
-        });
-        strcpy(argv[i], base_argv[i]);
-    }
-    for (const struct kefir_list_entry *iter = kefir_list_head(&config->extra_args); iter != NULL;
-         kefir_list_next(&iter), i++) {
+    kefir_result_t res = KEFIR_OK;
+    REQUIRE_CHAIN(&res, kefir_string_array_append(mem, &argv, as_path));
+    REQUIRE_CHAIN(&res, kefir_string_array_append(mem, &argv, "-o"));
+    REQUIRE_CHAIN(&res, kefir_string_array_append(mem, &argv, output_file));
+
+    for (const struct kefir_list_entry *iter = kefir_list_head(&config->extra_args); res == KEFIR_OK && iter != NULL;
+         kefir_list_next(&iter)) {
         ASSIGN_DECL_CAST(const char *, extra_arg, iter->value);
-        kefir_size_t arg_len = strlen(extra_arg);
-        argv[i] = KEFIR_MALLOC(mem, arg_len + 1);
-        REQUIRE_ELSE(argv[i] != NULL, {
-            free_argv(mem, argv, i);
-            return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate assembler command line arguments");
-        });
-        strcpy(argv[i], extra_arg);
+        REQUIRE_CHAIN(&res, kefir_string_array_append(mem, &argv, extra_arg));
     }
-    argv[i] = NULL;
 
-    kefir_result_t res = kefir_process_execute(process, as_path, argv);
+    REQUIRE_CHAIN(&res, kefir_process_execute(process, as_path, argv.array));
     REQUIRE_ELSE(res == KEFIR_OK, {
-        free_argv(mem, argv, i);
+        kefir_string_array_free(mem, &argv);
         return res;
     });
 
-    free_argv(mem, argv, i);
+    REQUIRE_OK(kefir_string_array_free(mem, &argv));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_driver_run_linker(struct kefir_mem *mem, const char *output,
+                                       const struct kefir_driver_linker_configuration *config,
+                                       struct kefir_process *process) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(output != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid linker output file"));
+    REQUIRE(config != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver linker configuration"));
+    REQUIRE(process != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to process"));
+
+    const char *ld_path = getenv("KEFIR_LD");
+    if (ld_path == NULL) {
+        ld_path = getenv("LD");
+    }
+    if (ld_path == NULL) {
+        ld_path = "ld";
+    }
+
+    struct kefir_string_array argv;
+    REQUIRE_OK(kefir_string_array_init(mem, &argv));
+
+    kefir_result_t res = KEFIR_OK;
+    REQUIRE_CHAIN(&res, kefir_string_array_append(mem, &argv, ld_path));
+
+    for (const struct kefir_list_entry *iter = kefir_list_head(&config->linked_files); res == KEFIR_OK && iter != NULL;
+         kefir_list_next(&iter)) {
+        ASSIGN_DECL_CAST(const char *, linked_file, iter->value);
+        REQUIRE_CHAIN(&res, kefir_string_array_append(mem, &argv, linked_file));
+    }
+    for (const struct kefir_list_entry *iter = kefir_list_head(&config->extra_args); res == KEFIR_OK && iter != NULL;
+         kefir_list_next(&iter)) {
+        ASSIGN_DECL_CAST(const char *, extra_arg, iter->value);
+        REQUIRE_CHAIN(&res, kefir_string_array_append(mem, &argv, extra_arg));
+    }
+    REQUIRE_CHAIN(&res, kefir_string_array_append(mem, &argv, "-o"));
+    REQUIRE_CHAIN(&res, kefir_string_array_append(mem, &argv, output));
+
+    REQUIRE_CHAIN(&res, kefir_process_execute(process, ld_path, argv.array));
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_string_array_free(mem, &argv);
+        return res;
+    });
+
+    REQUIRE_OK(kefir_string_array_free(mem, &argv));
     return KEFIR_OK;
 }
