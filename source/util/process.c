@@ -120,7 +120,7 @@ kefir_result_t kefir_process_run(struct kefir_process *process, int (*callback)(
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_process_execute(struct kefir_process *process, const char *file, const char *const *args) {
+kefir_result_t kefir_process_execute(struct kefir_process *process, const char *file, char *const *args) {
     REQUIRE(process != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to process"));
     REQUIRE(process->pid == -1, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected initialized process"));
     REQUIRE(file != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid executable file"));

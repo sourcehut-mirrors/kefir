@@ -23,9 +23,22 @@
 
 #include "kefir/cli/options.h"
 #include "kefir/util/process.h"
+#include "kefir/core/list.h"
 #include <stdio.h>
 
+typedef struct kefir_driver_assembler_configuration {
+    struct kefir_list extra_args;
+} kefir_driver_assembler_configuration_t;
+
+kefir_result_t kefir_driver_assembler_configuration_init(struct kefir_driver_assembler_configuration *);
+kefir_result_t kefir_driver_assembler_configuration_free(struct kefir_mem *,
+                                                         struct kefir_driver_assembler_configuration *);
+kefir_result_t kefir_driver_assembler_configuration_add_extra_argument(struct kefir_mem *,
+                                                                       struct kefir_driver_assembler_configuration *,
+                                                                       const char *);
+
 kefir_result_t kefir_driver_run_compiler(const struct kefir_compiler_runner_configuration *, struct kefir_process *);
-kefir_result_t kefir_driver_run_assembler(const char *, struct kefir_process *);
+kefir_result_t kefir_driver_run_assembler(struct kefir_mem *, const char *,
+                                          const struct kefir_driver_assembler_configuration *, struct kefir_process *);
 
 #endif
