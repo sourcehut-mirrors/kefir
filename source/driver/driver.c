@@ -18,13 +18,13 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "kefir/main/driver.h"
+#include "kefir/driver/driver.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 #include "kefir/core/os_error.h"
 #include "kefir/core/string_array.h"
 #include "kefir/compiler/compiler.h"
-#include "kefir/main/runner.h"
+#include "kefir/driver/runner.h"
 
 kefir_result_t kefir_driver_external_resources_init_from_env(struct kefir_mem *mem,
                                                              struct kefir_driver_external_resources *externals,

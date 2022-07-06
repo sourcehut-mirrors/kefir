@@ -18,8 +18,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef KEFIR_MAIN_DRIVER_H_
-#define KEFIR_MAIN_DRIVER_H_
+#ifndef KEFIR_DRIVER_DRIVER_H_
+#define KEFIR_DRIVER_DRIVER_H_
 
 #include "kefir/cli/options.h"
 #include "kefir/util/process.h"

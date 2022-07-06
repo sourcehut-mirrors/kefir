@@ -18,8 +18,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef KEFIR_MAIN_RUNNER_H_
-#define KEFIR_MAIN_RUNNER_H_
+#ifndef KEFIR_DRIVER_RUNNER_H_
+#define KEFIR_DRIVER_RUNNER_H_
 
 #include "kefir/core/basic-types.h"
 #include "kefir/core/mem.h"

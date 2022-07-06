@@ -33,7 +33,7 @@
 #include "kefir/ir/format.h"
 #include "kefir/preprocessor/format.h"
 #include "kefir/core/version.h"
-#include "kefir/main/runner.h"
+#include "kefir/driver/runner.h"
 
 // ATTENTION: This is module is not a part of the core library, thus memory management
 //            is different here. While all the modules from core library shall correctly

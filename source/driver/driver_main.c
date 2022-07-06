@@ -23,9 +23,9 @@
 #include <locale.h>
 #include <signal.h>
 #include "kefir/compiler/compiler.h"
-#include "kefir/main/runner.h"
+#include "kefir/driver/runner.h"
 
-#include "kefir/main/driver.h"
+#include "kefir/driver/driver.h"
 #include "kefir/util/tempfile.h"
 
 // Driver main entry

@@ -1,0 +1,20 @@
+KEFIR_DRIVER_SOURCE := $(wildcard $(SOURCE_DIR)/driver/*.c)
+
+KEFIR_DRIVER_DEPENDENCIES := $(KEFIR_DRIVER_SOURCE:$(SOURCE_DIR)/%.c=$(BIN_DIR)/%.d)
+KEFIR_DRIVER_OBJECT_FILES := $(KEFIR_DRIVER_SOURCE:$(SOURCE_DIR)/%.c=$(BIN_DIR)/%.o)
+KEFIR_DRIVER_OBJECT_FILES += $(BIN_DIR)/driver/help.s.o
+
+KEFIR_DRIVER_LINKED_LIBS=
+ifeq ($(SANITIZE),undefined)
+KEFIR_DRIVER_LINKED_LIBS=-fsanitize=undefined
+endif
+
+$(BIN_DIR)/driver/help.s.o: $(SOURCE_DIR)/driver/help.txt
+
+$(BIN_DIR)/kefir_driver: $(KEFIR_DRIVER_OBJECT_FILES) $(LIBKEFIR_SO)
+	@mkdir -p $(shell dirname "$@")
+	$(CC) -o $@ $(KEFIR_DRIVER_OBJECT_FILES) $(KEFIR_DRIVER_LINKED_LIBS) -L $(LIB_DIR) -lkefir
+
+DEPENDENCIES += $(KEFIR_DRIVER_DEPENDENCIES)
+OBJECT_FILES += $(KEFIR_DRIVER_OBJECT_FILES)
+BINARIES += $(BIN_DIR)/kefir_driver

@@ -21,5 +21,5 @@
 .global KefirHelpContent
 
 KefirHelpContent:
-    .incbin "source/main/help.txt"
+    .incbin "source/driver/help.txt"
     .byte 0

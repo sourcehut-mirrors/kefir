@@ -22,7 +22,7 @@
 #include <stdio.h>
 #include <locale.h>
 #include "kefir/compiler/compiler.h"
-#include "kefir/main/runner.h"
+#include "kefir/driver/runner.h"
 
 // Standalone compiler without driver
 
