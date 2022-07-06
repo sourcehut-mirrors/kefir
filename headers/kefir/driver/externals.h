@@ -18,17 +18,25 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef KEFIR_DRIVER_DRIVER_H_
-#define KEFIR_DRIVER_DRIVER_H_
+#ifndef KEFIR_DRIVER_EXTERNALS_H_
+#define KEFIR_DRIVER_EXTERNALS_H_
 
-#include "kefir/cli/options.h"
-#include "kefir/core/list.h"
-#include "kefir/core/symbol_table.h"
-#include "kefir/driver/externals.h"
-#include "kefir/driver/configuration.h"
-#include "kefir/driver/tools.h"
+#include "kefir/core/mem.h"
+#include "kefir/util/tempfile.h"
 
-kefir_result_t kefir_driver_run(struct kefir_mem *, struct kefir_driver_configuration *,
-                                const struct kefir_driver_external_resources *);
+typedef struct kefir_driver_external_resources {
+    const char *assembler_path;
+    const char *linker_path;
+
+    const char *runtime_library;
+
+    const char *work_dir;
+
+    struct kefir_tempfile_manager *tmpfile_manager;
+} kefir_driver_external_resources_t;
+
+kefir_result_t kefir_driver_external_resources_init_from_env(struct kefir_mem *,
+                                                             struct kefir_driver_external_resources *,
+                                                             struct kefir_tempfile_manager *);
 
 #endif

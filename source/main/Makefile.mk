@@ -1,5 +1,9 @@
-KEFIR_STANDALONE_DEPENDENCIES := $(BIN_DIR)/main/standalone.d $(BIN_DIR)/driver/runner.d $(BIN_DIR)/driver/driver.d
-KEFIR_STANDALONE_OBJECT_FILES := $(BIN_DIR)/main/standalone.o $(BIN_DIR)/driver/runner.o $(BIN_DIR)/driver/driver.o $(BIN_DIR)/driver/help.s.o
+KEFIR_STANDALONE_SOURCE := $(SOURCE_DIR)/main/standalone.c \
+	                       $(SOURCE_DIR)/driver/runner.c
+
+KEFIR_STANDALONE_DEPENDENCIES := $(KEFIR_STANDALONE_SOURCE:$(SOURCE_DIR)/%.c=$(BIN_DIR)/%.d)
+KEFIR_STANDALONE_OBJECT_FILES := $(KEFIR_STANDALONE_SOURCE:$(SOURCE_DIR)/%.c=$(BIN_DIR)/%.o)
+KEFIR_STANDALONE_OBJECT_FILES += $(BIN_DIR)/driver/help.s.o
 
 KEFIR_STANDALONE_LINKED_LIBS=
 ifeq ($(SANITIZE),undefined)
@@ -10,7 +14,8 @@ $(BIN_DIR)/driver/help.s.o: $(SOURCE_DIR)/driver/help.txt
 
 $(BIN_DIR)/kefir: $(KEFIR_STANDALONE_OBJECT_FILES) $(LIBKEFIR_SO)
 	@mkdir -p $(shell dirname "$@")
-	$(CC) -o $@ $(KEFIR_STANDALONE_OBJECT_FILES) $(KEFIR_STANDALONE_LINKED_LIBS) -L $(LIB_DIR) -lkefir
+	@echo "Linking $@"
+	@$(CC) -o $@ $(KEFIR_STANDALONE_OBJECT_FILES) $(KEFIR_STANDALONE_LINKED_LIBS) -L $(LIB_DIR) -lkefir
 
 DEPENDENCIES += $(KEFIR_STANDALONE_DEPENDENCIES)
 OBJECT_FILES += $(KEFIR_STANDALONE_OBJECT_FILES)
