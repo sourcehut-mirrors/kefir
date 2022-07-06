@@ -157,6 +157,11 @@ void kefir_format_error_tabular(FILE *out, const struct kefir_error *error) {
                 subclass = "Subprocess error";
                 break;
 
+            case KEFIR_ENVIRONMENT_ERROR:
+                class = "Fatal";
+                subclass = "Environment error";
+                break;
+
             case KEFIR_LEXER_ERROR:
                 class = "Error";
                 subclass = "Lexer";
@@ -285,6 +290,10 @@ static kefir_result_t format_json(FILE *out, const struct kefir_error *error) {
 
             case KEFIR_SUBPROCESS_ERROR:
                 REQUIRE_OK(kefir_json_output_string(&json, "subprocess_error"));
+                break;
+
+            case KEFIR_ENVIRONMENT_ERROR:
+                REQUIRE_OK(kefir_json_output_string(&json, "environment_error"));
                 break;
 
             case KEFIR_LEXER_ERROR:

@@ -27,6 +27,7 @@ kefir_result_category_t kefir_result_get_category(kefir_result_t res) {
         case KEFIR_NOT_IMPLEMENTED:
         case KEFIR_UI_ERROR:
         case KEFIR_SUBPROCESS_ERROR:
+        case KEFIR_ENVIRONMENT_ERROR:
             return KEFIR_RESULT_CATEGORY_GENERIC_ERROR;
 
         case KEFIR_LEXER_ERROR:

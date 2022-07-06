@@ -156,6 +156,7 @@ typedef enum kefir_result {
     KEFIR_NOT_IMPLEMENTED,
     KEFIR_UI_ERROR,
     KEFIR_SUBPROCESS_ERROR,
+    KEFIR_ENVIRONMENT_ERROR,
     // Language-specific error
     KEFIR_LEXER_ERROR,
     KEFIR_SYNTAX_ERROR,
