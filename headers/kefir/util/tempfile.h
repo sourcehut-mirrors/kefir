@@ -32,6 +32,8 @@ typedef struct kefir_tempfile_manager {
 kefir_result_t kefir_tempfile_manager_init(struct kefir_tempfile_manager *);
 kefir_result_t kefir_tempfile_manager_free(struct kefir_mem *, struct kefir_tempfile_manager *);
 
+kefir_result_t kefir_tempfile_manager_create_file(struct kefir_mem *, struct kefir_tempfile_manager *, const char *,
+                                                  const char **);
 kefir_result_t kefir_tempfile_manager_create_directory(struct kefir_mem *, struct kefir_tempfile_manager *,
                                                        const char *, const char **);
 kefir_result_t kefir_tempfile_manager_tmpdir(struct kefir_mem *, struct kefir_tempfile_manager *, const char *,

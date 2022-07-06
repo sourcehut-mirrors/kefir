@@ -85,6 +85,36 @@ kefir_result_t kefir_tempfile_manager_free(struct kefir_mem *mem, struct kefir_t
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_tempfile_manager_create_file(struct kefir_mem *mem, struct kefir_tempfile_manager *mgr,
+                                                  const char *template, const char **result) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(mgr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid tempfile manager"));
+    REQUIRE(template != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid tempfile template"));
+    REQUIRE(result != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to generated tempfile name"));
+
+    char *name = KEFIR_MALLOC(mem, strlen(template) + 1);
+    REQUIRE(name != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate tempfile name"));
+    strcpy(name, template);
+
+    REQUIRE_ELSE(mktemp(name) == name, {
+        kefir_result_t res = KEFIR_SET_OS_ERROR("Failed to generate temporary file name");
+        KEFIR_FREE(mem, name);
+        return res;
+    });
+
+    kefir_result_t res =
+        kefir_hashtree_insert(mem, &mgr->tracked_files, (kefir_hashtree_key_t) name, (kefir_hashtree_value_t) 0);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        remove(name);
+        free(name);
+        return res;
+    });
+
+    *result = name;
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_tempfile_manager_create_directory(struct kefir_mem *mem, struct kefir_tempfile_manager *mgr,
                                                        const char *template, const char **result) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));

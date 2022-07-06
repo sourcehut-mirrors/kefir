@@ -23,6 +23,7 @@
 
 #include "kefir/cli/options.h"
 #include "kefir/util/process.h"
+#include "kefir/util/tempfile.h"
 #include "kefir/core/list.h"
 #include "kefir/core/symbol_table.h"
 #include <stdio.h>
@@ -32,9 +33,15 @@ typedef struct kefir_driver_external_resources {
     const char *linker_path;
 
     const char *runtime_library;
+
+    const char *work_dir;
+
+    struct kefir_tempfile_manager *tmpfile_manager;
 } kefir_driver_external_resources_t;
 
-kefir_result_t kefir_driver_external_resources_init_from_env(struct kefir_driver_external_resources *);
+kefir_result_t kefir_driver_external_resources_init_from_env(struct kefir_mem *,
+                                                             struct kefir_driver_external_resources *,
+                                                             struct kefir_tempfile_manager *);
 
 typedef struct kefir_driver_assembler_configuration {
     struct kefir_list extra_args;

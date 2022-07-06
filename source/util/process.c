@@ -29,6 +29,8 @@
 #include <sys/wait.h>
 #include <fcntl.h>
 
+static kefir_bool_t process_is_fork = false;
+
 kefir_result_t kefir_process_init(struct kefir_process *process) {
     REQUIRE(process != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to process"));
 
@@ -102,6 +104,7 @@ kefir_result_t kefir_process_run(struct kefir_process *process, int (*callback)(
     if (pid > 0) {
         process->pid = pid;
     } else {
+        process_is_fork = true;
         if (dup2(process->io.input_fd, STDIN_FILENO) == -1) {
             perror("Failed to set up process stdin");
             exit(EXIT_FAILURE);
@@ -131,6 +134,7 @@ kefir_result_t kefir_process_execute(struct kefir_process *process, const char *
     if (pid > 0) {
         process->pid = pid;
     } else {
+        process_is_fork = true;
         if (dup2(process->io.input_fd, STDIN_FILENO) == -1) {
             perror("Failed to set up process stdin");
             exit(EXIT_FAILURE);
@@ -272,4 +276,8 @@ kefir_result_t kefir_process_redirect_stderr_to_file(struct kefir_process *proce
         return res;
     });
     return KEFIR_OK;
+}
+
+kefir_bool_t kefir_process_is_fork() {
+    return process_is_fork;
 }

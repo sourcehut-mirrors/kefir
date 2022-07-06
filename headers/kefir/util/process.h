@@ -59,4 +59,6 @@ kefir_result_t kefir_process_redirect_stdin_from_file(struct kefir_process *, co
 kefir_result_t kefir_process_redirect_stdout_to_file(struct kefir_process *, const char *);
 kefir_result_t kefir_process_redirect_stderr_to_file(struct kefir_process *, const char *);
 
+kefir_bool_t kefir_process_is_fork();
+
 #endif

@@ -27,6 +27,6 @@
 #include <stdio.h>
 
 kefir_result_t kefir_run_compiler(struct kefir_mem *, const struct kefir_compiler_runner_configuration *);
-kefir_bool_t kefir_report_error(FILE *, kefir_result_t, const struct kefir_compiler_runner_configuration *);
+kefir_bool_t kefir_report_error(FILE *, kefir_result_t, kefir_bool_t);
 
 #endif
