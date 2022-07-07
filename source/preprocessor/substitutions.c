@@ -104,7 +104,7 @@ static kefir_result_t prepare_function_macro_argument(struct kefir_mem *mem, str
     return KEFIR_OK;
 }
 
-static kefir_result_t scan_function_macro_arguments(struct kefir_mem *mem, struct kefir_preprocessor *preprocessor,
+static kefir_result_t scan_function_macro_arguments(struct kefir_mem *mem,
                                                     struct kefir_preprocessor_token_sequence *seq,
                                                     struct kefir_list *args, kefir_size_t argc, kefir_bool_t vararg) {
     kefir_size_t nested_parens = 0;
@@ -200,7 +200,7 @@ static kefir_result_t substitute_function_macro_impl(struct kefir_mem *mem, stru
     struct kefir_list arguments;
     REQUIRE_OK(kefir_list_init(&arguments));
     REQUIRE_OK(kefir_list_on_remove(&arguments, free_argument, NULL));
-    kefir_result_t res = scan_function_macro_arguments(mem, preprocessor, seq, &arguments, argc, vararg);
+    kefir_result_t res = scan_function_macro_arguments(mem, seq, &arguments, argc, vararg);
     REQUIRE_CHAIN(&res, apply_function_macro(mem, seq, preprocessor, macro, &arguments, source_location));
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_list_free(mem, &arguments);
