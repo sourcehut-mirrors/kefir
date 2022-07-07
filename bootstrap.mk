@@ -32,7 +32,6 @@ KEFIR_SOURCE := $(wildcard \
 	$(SOURCE)/parser/rules/*.c \
 	$(SOURCE)/preprocessor/*.c \
 	$(SOURCE)/util/*.c \
-	$(SOURCE)/driver/driver.c \
 	$(SOURCE)/driver/runner.c \
 	$(SOURCE)/main/*.c)
 
