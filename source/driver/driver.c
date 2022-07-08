@@ -143,7 +143,11 @@ static kefir_result_t driver_compile_and_assemble(struct kefir_mem *mem,
                   kefir_driver_run_assembler(mem, object_filename, assembler_config, externals, &assembler_process));
 
     REQUIRE_CHAIN(&res, kefir_process_wait(&compiler_process));
+    REQUIRE_CHAIN_SET(&res, compiler_process.status.exited && compiler_process.status.exit_code == EXIT_SUCCESS,
+                      KEFIR_INTERRUPT);
     REQUIRE_CHAIN(&res, kefir_process_wait(&assembler_process));
+    REQUIRE_CHAIN_SET(&res, assembler_process.status.exited && assembler_process.status.exit_code == EXIT_SUCCESS,
+                      KEFIR_INTERRUPT);
 
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_process_kill(&compiler_process);
@@ -168,6 +172,8 @@ static kefir_result_t driver_compile(struct kefir_compiler_runner_configuration 
     REQUIRE_CHAIN(&res, kefir_driver_run_compiler(compiler_config, &compiler_process));
 
     REQUIRE_CHAIN(&res, kefir_process_wait(&compiler_process));
+    REQUIRE_CHAIN_SET(&res, compiler_process.status.exited && compiler_process.status.exit_code == EXIT_SUCCESS,
+                      KEFIR_INTERRUPT);
 
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_process_kill(&compiler_process);
@@ -190,6 +196,8 @@ static kefir_result_t driver_assemble(struct kefir_mem *mem, const struct kefir_
                   kefir_driver_run_assembler(mem, object_filename, assembler_config, externals, &assembler_process));
 
     REQUIRE_CHAIN(&res, kefir_process_wait(&assembler_process));
+    REQUIRE_CHAIN_SET(&res, assembler_process.status.exited && assembler_process.status.exit_code == EXIT_SUCCESS,
+                      KEFIR_INTERRUPT);
 
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_process_kill(&assembler_process);

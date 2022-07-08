@@ -75,7 +75,12 @@ int main(int argc, char *const *argv) {
                                                              KEFIR_DRIVER_INPUT_FILE_LIBRARY));
 
     REQUIRE_CHAIN(&res, kefir_driver_run(mem, &driver_config, &exteral_resources));
+    int exit_code = EXIT_SUCCESS;
+    if (res == KEFIR_INTERRUPT) {
+        res = KEFIR_OK;
+        exit_code = EXIT_FAILURE;
+    }
 
     REQUIRE_CHAIN(&res, kefir_driver_configuration_free(mem, &driver_config));
-    return kefir_report_error(stderr, res, false) ? EXIT_SUCCESS : EXIT_FAILURE;
+    return kefir_report_error(stderr, res, false) ? exit_code : EXIT_FAILURE;
 }

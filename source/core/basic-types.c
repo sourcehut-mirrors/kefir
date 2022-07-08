@@ -4,6 +4,7 @@ kefir_result_category_t kefir_result_get_category(kefir_result_t res) {
     switch (res) {
         case KEFIR_OK:
         case KEFIR_YIELD:
+        case KEFIR_INTERRUPT:
             return KEFIR_RESULT_CATEGORY_NORMAL;
 
         case KEFIR_ITERATOR_END:

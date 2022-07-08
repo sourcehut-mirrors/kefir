@@ -168,7 +168,7 @@ kefir_result_t kefir_process_pipe(struct kefir_process *src_process, struct kefi
     int pipe_fd[2];
     REQUIRE(pipe(pipe_fd) != -1, KEFIR_SET_OS_ERROR("Failed to create pipe"));
 
-    int fd_flags;
+    int fd_flags = 0;
     if (fcntl(pipe_fd[0], F_GETFD, &fd_flags) == -1 || fcntl(pipe_fd[0], F_SETFD, fd_flags | FD_CLOEXEC) == -1 ||
         fcntl(pipe_fd[1], F_GETFD, &fd_flags) == -1 || fcntl(pipe_fd[1], F_SETFD, fd_flags | FD_CLOEXEC) == -1) {
         kefir_result_t res = KEFIR_SET_OS_ERROR("Failed to close process stdin");
