@@ -92,8 +92,23 @@ static kefir_result_t driver_generate_compiler_config(struct kefir_mem *mem, str
     for (const struct kefir_list_entry *iter = kefir_list_head(&config->defines); iter != NULL;
          kefir_list_next(&iter)) {
         ASSIGN_DECL_CAST(const struct kefir_driver_definition *, definition, iter->value);
-        REQUIRE_OK(kefir_hashtree_insert(mem, &compiler_config->defines, (kefir_hashtree_key_t) definition->name,
-                                         (kefir_hashtree_value_t) definition->value));
+        char *identifier_copy = KEFIR_MALLOC(mem, strlen(definition->name) + 1);
+        REQUIRE(identifier_copy != NULL,
+                KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate definition name copy"));
+        strcpy(identifier_copy, definition->name);
+        kefir_result_t res =
+            kefir_hashtree_insert(mem, &compiler_config->defines, (kefir_hashtree_key_t) identifier_copy,
+                                  (kefir_hashtree_value_t) definition->value);
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            KEFIR_FREE(mem, identifier_copy);
+            return res;
+        });
+    }
+    for (const struct kefir_list_entry *iter = kefir_list_head(&config->undefines); iter != NULL;
+         kefir_list_next(&iter)) {
+        ASSIGN_DECL_CAST(const char *, identifier, iter->value);
+        REQUIRE_OK(kefir_list_insert_after(mem, &compiler_config->undefines,
+                                           kefir_list_tail(&compiler_config->undefines), (void *) identifier));
     }
     return KEFIR_OK;
 }
