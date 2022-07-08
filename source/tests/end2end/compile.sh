@@ -47,10 +47,10 @@ if [[ -f "$SRC_FILE.profile" ]]; then
 fi
 
 if [[ "x$MEMCHECK" == "xyes" ]]; then
-    valgrind $VALGRIND_OPTIONS "$KEFIRCC" -I "$(dirname $SRC_FILE)" -D KEFIR_END2END_TEST --define "KEFIR_END2END=   101   " --pp-timestamp=1633204489 \
+    valgrind $VALGRIND_OPTIONS "$KEFIRCC" -I "$(dirname $SRC_FILE)" -D KEFIR_END2END_TEST -U __STDC__ --define "KEFIR_END2END=   101   " --pp-timestamp=1633204489 \
         --include "$INCLUDE_FILE" $KEFIRFLAGS "$SRC_FILE" > "$TMPDIR/module.asm"
 else
-    "$KEFIRCC" -I "$(dirname $SRC_FILE)" -D KEFIR_END2END_TEST --define "KEFIR_END2END=   101   " --pp-timestamp=1633204489 \
+    "$KEFIRCC" -I "$(dirname $SRC_FILE)" -D KEFIR_END2END_TEST -U __STDC__ --define "KEFIR_END2END=   101   " --pp-timestamp=1633204489 \
         --include "$INCLUDE_FILE" $KEFIRFLAGS "$SRC_FILE" > "$TMPDIR/module.asm"
 fi
 $AS -o "$DST_FILE" "$TMPDIR/module.asm"

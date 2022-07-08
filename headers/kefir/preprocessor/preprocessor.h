@@ -30,6 +30,7 @@
 #include "kefir/preprocessor/directives.h"
 #include "kefir/ast/context.h"
 #include "kefir/core/data_model.h"
+#include "kefir/core/hashtree.h"
 #include <time.h>
 
 typedef struct kefir_preprocessor_context kefir_preprocessor_context_t;
@@ -74,6 +75,7 @@ typedef struct kefir_preprocessor_environment {
 
 typedef struct kefir_preprocessor_context {
     struct kefir_preprocessor_user_macro_scope user_macros;
+    struct kefir_hashtree undefined_macros;
     const struct kefir_preprocessor_source_locator *source_locator;
     struct kefir_ast_context *ast_context;
     struct kefir_preprocessor_environment environment;

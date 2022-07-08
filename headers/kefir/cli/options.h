@@ -55,6 +55,7 @@ typedef struct kefir_compiler_runner_configuration {
     struct kefir_list include_path;
     struct kefir_list include_files;
     struct kefir_hashtree defines;
+    struct kefir_list undefines;
     time_t pp_timestamp;
     kefir_bool_t default_pp_timestamp;
 

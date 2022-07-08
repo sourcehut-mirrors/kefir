@@ -83,6 +83,16 @@ static kefir_result_t define_hook(struct kefir_mem *mem, const struct kefir_cli_
     return KEFIR_OK;
 }
 
+static kefir_result_t undefine_hook(struct kefir_mem *mem, const struct kefir_cli_option *option, void *raw_options,
+                                    const char *arg) {
+    UNUSED(mem);
+    UNUSED(option);
+    ASSIGN_DECL_CAST(struct kefir_compiler_runner_configuration *, options, raw_options);
+
+    REQUIRE_OK(kefir_list_insert_after(mem, &options->undefines, kefir_list_tail(&options->undefines), (void *) arg));
+    return KEFIR_OK;
+}
+
 static kefir_result_t include_hook(struct kefir_mem *mem, const struct kefir_cli_option *option, void *raw_options,
                                    const char *arg) {
     UNUSED(mem);
@@ -152,6 +162,7 @@ static struct kefir_cli_option Options[] = {
     POSTHOOK(0, "pp-timestamp", true, KEFIR_CLI_OPTION_ACTION_ASSIGN_UINTARG, 0, pp_timestamp, pp_timestamp_hook),
 
     CUSTOM('D', "define", true, define_hook),
+    CUSTOM('U', "undefine", true, undefine_hook),
     CUSTOM('I', "include-dir", true, include_hook),
     CUSTOM(0, "include", true, include_file_hook),
     SIMPLE('h', "help", false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, KEFIR_COMPILER_RUNNER_ACTION_HELP, action),
@@ -210,6 +221,7 @@ kefir_result_t kefir_compiler_runner_configuration_init(struct kefir_compiler_ru
     REQUIRE_OK(kefir_list_init(&options->include_files));
     REQUIRE_OK(kefir_hashtree_init(&options->defines, &kefir_hashtree_str_ops));
     REQUIRE_OK(kefir_hashtree_on_removal(&options->defines, free_define_identifier, NULL));
+    REQUIRE_OK(kefir_list_init(&options->undefines));
     return KEFIR_OK;
 }
 
@@ -239,5 +251,6 @@ kefir_result_t kefir_compiler_runner_configuration_free(struct kefir_mem *mem,
     REQUIRE_OK(kefir_list_free(mem, &options->include_files));
     REQUIRE_OK(kefir_list_free(mem, &options->include_path));
     REQUIRE_OK(kefir_hashtree_free(mem, &options->defines));
+    REQUIRE_OK(kefir_list_free(mem, &options->undefines));
     return KEFIR_OK;
 }

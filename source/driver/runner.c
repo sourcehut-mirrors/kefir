@@ -127,6 +127,17 @@ static kefir_result_t dump_action_impl(struct kefir_mem *mem, const struct kefir
 static kefir_result_t build_predefined_macros(struct kefir_mem *mem,
                                               const struct kefir_compiler_runner_configuration *options,
                                               struct kefir_compiler_context *compiler) {
+    for (const struct kefir_list_entry *iter = kefir_list_head(&options->undefines); iter != NULL;
+         kefir_list_next(&iter)) {
+
+        ASSIGN_DECL_CAST(const char *, identifier, iter->value);
+        identifier = kefir_symbol_table_insert(mem, &compiler->ast_global_context.symbols, identifier, NULL);
+        REQUIRE(identifier != NULL,
+                KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert undefined macro into symbol table"));
+        REQUIRE_OK(kefir_hashtree_insert(mem, &compiler->preprocessor_context.undefined_macros,
+                                         (kefir_hashtree_key_t) identifier, (kefir_hashtree_value_t) 0));
+    }
+
     struct kefir_hashtree_node_iterator macro_iter;
     const struct kefir_hashtree_node *macro_node = kefir_hashtree_iter(&options->defines, &macro_iter);
     for (; macro_node != NULL; macro_node = kefir_hashtree_next(&macro_iter)) {

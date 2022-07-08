@@ -16,6 +16,7 @@ Options:
     -I,--include-path dir               Add directory to include search path
     --include file                      Include file at the beginning
     -D,--define identifier[=macro]      Define macro
+    -U,--undefine identifier            Undefine predefined macro
     --pp-timestamp                      Override preprocessor timestamp
     --json-errors                       Print errors in JSON format to stderr
     --tabular-errors                    Print errors in tabular format to stderr

@@ -344,8 +344,9 @@ static kefir_result_t macro_pdp_endian_apply(struct kefir_mem *mem, struct kefir
 }
 
 static kefir_result_t define_predefined_macro(
-    struct kefir_mem *mem, struct kefir_preprocessor_predefined_macro_scope *scope,
-    struct kefir_preprocessor_macro *macro, const char *identifier,
+    struct kefir_mem *mem, struct kefir_preprocessor *preprocessor,
+    struct kefir_preprocessor_predefined_macro_scope *scope, struct kefir_preprocessor_macro *macro,
+    const char *identifier,
     kefir_result_t (*apply)(struct kefir_mem *, struct kefir_preprocessor *, const struct kefir_preprocessor_macro *,
                             struct kefir_symbol_table *, const struct kefir_list *, struct kefir_token_buffer *,
                             const struct kefir_source_location *)) {
@@ -355,8 +356,10 @@ static kefir_result_t define_predefined_macro(
     macro->apply = apply;
     macro->argc = predefined_macro_argc;
 
-    REQUIRE_OK(kefir_hashtree_insert(mem, &scope->macro_tree, (kefir_hashtree_key_t) identifier,
-                                     (kefir_hashtree_value_t) macro));
+    if (!kefir_hashtree_has(&preprocessor->context->undefined_macros, (kefir_hashtree_key_t) identifier)) {
+        REQUIRE_OK(kefir_hashtree_insert(mem, &scope->macro_tree, (kefir_hashtree_key_t) identifier,
+                                         (kefir_hashtree_value_t) macro));
+    }
     return KEFIR_OK;
 }
 
@@ -391,66 +394,71 @@ kefir_result_t kefir_preprocessor_predefined_macro_scope_init(struct kefir_mem *
     scope->scope.locate = locate_predefined;
     REQUIRE_OK(kefir_hashtree_init(&scope->macro_tree, &kefir_hashtree_str_ops));
 
-    kefir_result_t res = define_predefined_macro(mem, scope, &scope->macros.file, "__FILE__", macro_file_apply);
-    REQUIRE_CHAIN(&res, define_predefined_macro(mem, scope, &scope->macros.line, "__LINE__", macro_line_apply));
-    REQUIRE_CHAIN(&res, define_predefined_macro(mem, scope, &scope->macros.date, "__DATE__", macro_date_apply));
-    REQUIRE_CHAIN(&res, define_predefined_macro(mem, scope, &scope->macros.time, "__TIME__", macro_time_apply));
-    REQUIRE_CHAIN(&res, define_predefined_macro(mem, scope, &scope->macros.stdc, "__STDC__", macro_produce_one_apply));
-    REQUIRE_CHAIN(&res, define_predefined_macro(mem, scope, &scope->macros.stdc_hosted, "__STDC_HOSTED__",
+    kefir_result_t res =
+        define_predefined_macro(mem, preprocessor, scope, &scope->macros.file, "__FILE__", macro_file_apply);
+    REQUIRE_CHAIN(&res,
+                  define_predefined_macro(mem, preprocessor, scope, &scope->macros.line, "__LINE__", macro_line_apply));
+    REQUIRE_CHAIN(&res,
+                  define_predefined_macro(mem, preprocessor, scope, &scope->macros.date, "__DATE__", macro_date_apply));
+    REQUIRE_CHAIN(&res,
+                  define_predefined_macro(mem, preprocessor, scope, &scope->macros.time, "__TIME__", macro_time_apply));
+    REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.stdc, "__STDC__",
+                                                macro_produce_one_apply));
+    REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.stdc_hosted, "__STDC_HOSTED__",
                                                 macro_stdc_hosted_apply));
-    REQUIRE_CHAIN(&res, define_predefined_macro(mem, scope, &scope->macros.stdc_version, "__STDC_VERSION__",
-                                                macro_stdc_version_apply));
+    REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.stdc_version,
+                                                "__STDC_VERSION__", macro_stdc_version_apply));
 
     if (preprocessor->context->environment.stdc_iso10646 > 0) {
-        REQUIRE_CHAIN(&res, define_predefined_macro(mem, scope, &scope->macros.stdc_iso_10646, "__STDC_ISO_10646__",
-                                                    macro_stdc_iso_10646_apply));
+        REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.stdc_iso_10646,
+                                                    "__STDC_ISO_10646__", macro_stdc_iso_10646_apply));
     }
     if (preprocessor->context->environment.stdc_mb_might_neq_wc) {
-        REQUIRE_CHAIN(&res, define_predefined_macro(mem, scope, &scope->macros.stdc_mb_might_neq_wc,
+        REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.stdc_mb_might_neq_wc,
                                                     "__STDC_MB_MIGHT_NEQ_WC__", macro_produce_one_apply));
     }
     if (preprocessor->context->environment.stdc_utf16) {
-        REQUIRE_CHAIN(&res, define_predefined_macro(mem, scope, &scope->macros.stdc_utf16, "__STDC_UTF_16__",
-                                                    macro_produce_one_apply));
+        REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.stdc_utf16,
+                                                    "__STDC_UTF_16__", macro_produce_one_apply));
     }
     if (preprocessor->context->environment.stdc_utf32) {
-        REQUIRE_CHAIN(&res, define_predefined_macro(mem, scope, &scope->macros.stdc_utf32, "__STDC_UTF_32__",
-                                                    macro_produce_one_apply));
+        REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.stdc_utf32,
+                                                    "__STDC_UTF_32__", macro_produce_one_apply));
     }
     if (preprocessor->context->environment.stdc_analyzable) {
-        REQUIRE_CHAIN(&res, define_predefined_macro(mem, scope, &scope->macros.stdc_analyzable, "__STDC_ANALYZABLE__",
-                                                    macro_produce_one_apply));
+        REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.stdc_analyzable,
+                                                    "__STDC_ANALYZABLE__", macro_produce_one_apply));
     }
     if (preprocessor->context->environment.stdc_iec559) {
-        REQUIRE_CHAIN(&res, define_predefined_macro(mem, scope, &scope->macros.stdc_iec559, "__STDC_IEC_559__",
-                                                    macro_produce_one_apply));
+        REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.stdc_iec559,
+                                                    "__STDC_IEC_559__", macro_produce_one_apply));
     }
     if (preprocessor->context->environment.stdc_iec559_complex) {
-        REQUIRE_CHAIN(&res, define_predefined_macro(mem, scope, &scope->macros.stdc_iec559_complex,
+        REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.stdc_iec559_complex,
                                                     "__STDC_IEC_559_COMPLEX__", macro_produce_one_apply));
     }
     if (preprocessor->context->environment.stdc_lib_ext1 > 0) {
-        REQUIRE_CHAIN(&res, define_predefined_macro(mem, scope, &scope->macros.stdc_lib_ext1, "__STDC_LIB_EXT1__",
-                                                    macro_stdc_lib_ext1_apply));
+        REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.stdc_lib_ext1,
+                                                    "__STDC_LIB_EXT1__", macro_stdc_lib_ext1_apply));
     }
     if (preprocessor->context->environment.stdc_no_atomics) {
-        REQUIRE_CHAIN(&res, define_predefined_macro(mem, scope, &scope->macros.stdc_no_atomics, "__STDC_NO_ATOMICS__",
-                                                    macro_produce_one_apply));
+        REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.stdc_no_atomics,
+                                                    "__STDC_NO_ATOMICS__", macro_produce_one_apply));
     }
     if (preprocessor->context->environment.stdc_no_complex) {
-        REQUIRE_CHAIN(&res, define_predefined_macro(mem, scope, &scope->macros.stdc_no_complex, "__STDC_NO_COMPLEX__",
-                                                    macro_produce_one_apply));
+        REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.stdc_no_complex,
+                                                    "__STDC_NO_COMPLEX__", macro_produce_one_apply));
     }
     if (preprocessor->context->environment.stdc_no_threads) {
-        REQUIRE_CHAIN(&res, define_predefined_macro(mem, scope, &scope->macros.stdc_no_threads, "__STDC_NO_THREADS__",
-                                                    macro_produce_one_apply));
+        REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.stdc_no_threads,
+                                                    "__STDC_NO_THREADS__", macro_produce_one_apply));
     }
     if (preprocessor->context->environment.stdc_no_vla) {
-        REQUIRE_CHAIN(&res, define_predefined_macro(mem, scope, &scope->macros.stdc_no_vla, "__STDC_NO_VLA__",
-                                                    macro_produce_one_apply));
+        REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.stdc_no_vla,
+                                                    "__STDC_NO_VLA__", macro_produce_one_apply));
     }
-    REQUIRE_CHAIN(&res,
-                  define_predefined_macro(mem, scope, &scope->macros.kefircc, "__KEFIRCC__", macro_produce_one_apply));
+    REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.kefircc, "__KEFIRCC__",
+                                                macro_produce_one_apply));
 
     if (preprocessor->context->environment.data_model != NULL) {
         switch (preprocessor->context->environment.data_model->model) {
@@ -459,48 +467,48 @@ kefir_result_t kefir_preprocessor_predefined_macro_scope_init(struct kefir_mem *
                 break;
 
             case KEFIR_DATA_MODEL_ILP32:
-                REQUIRE_CHAIN(&res, define_predefined_macro(mem, scope, &scope->macros.data_model, "__ILP32__",
-                                                            macro_produce_one_apply));
+                REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.data_model,
+                                                            "__ILP32__", macro_produce_one_apply));
                 break;
 
             case KEFIR_DATA_MODEL_LLP64:
-                REQUIRE_CHAIN(&res, define_predefined_macro(mem, scope, &scope->macros.data_model, "__LLP64__",
-                                                            macro_produce_one_apply));
+                REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.data_model,
+                                                            "__LLP64__", macro_produce_one_apply));
                 break;
 
             case KEFIR_DATA_MODEL_LP64:
-                REQUIRE_CHAIN(&res, define_predefined_macro(mem, scope, &scope->macros.data_model, "__LP64__",
-                                                            macro_produce_one_apply));
+                REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.data_model,
+                                                            "__LP64__", macro_produce_one_apply));
                 break;
 
             case KEFIR_DATA_MODEL_ILP64:
-                REQUIRE_CHAIN(&res, define_predefined_macro(mem, scope, &scope->macros.data_model, "__ILP64__",
-                                                            macro_produce_one_apply));
+                REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.data_model,
+                                                            "__ILP64__", macro_produce_one_apply));
                 break;
 
             case KEFIR_DATA_MODEL_SILP64:
-                REQUIRE_CHAIN(&res, define_predefined_macro(mem, scope, &scope->macros.data_model, "__SILP64__",
-                                                            macro_produce_one_apply));
+                REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.data_model,
+                                                            "__SILP64__", macro_produce_one_apply));
                 break;
         }
 
-        REQUIRE_CHAIN(&res, define_predefined_macro(mem, scope, &scope->macros.byte_order_big_endian,
+        REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.byte_order_big_endian,
                                                     "__ORDER_BIG_ENDIAN__", macro_big_endian_apply));
 
-        REQUIRE_CHAIN(&res, define_predefined_macro(mem, scope, &scope->macros.byte_order_little_endian,
+        REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.byte_order_little_endian,
                                                     "__ORDER_LITTLE_ENDIAN__", macro_little_endian_apply));
 
-        REQUIRE_CHAIN(&res, define_predefined_macro(mem, scope, &scope->macros.byte_order_pdp_endian,
+        REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.byte_order_pdp_endian,
                                                     "__ORDER_PDP_ENDIAN__", macro_pdp_endian_apply));
         switch (preprocessor->context->environment.data_model->byte_order) {
             case KEFIR_BYTE_ORDER_BIG_ENDIAN:
-                REQUIRE_CHAIN(&res, define_predefined_macro(mem, scope, &scope->macros.byte_order, "__BYTE_ORDER__",
-                                                            macro_big_endian_apply));
+                REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.byte_order,
+                                                            "__BYTE_ORDER__", macro_big_endian_apply));
                 break;
 
             case KEFIR_BYTE_ORDER_LITTLE_ENDIAN:
-                REQUIRE_CHAIN(&res, define_predefined_macro(mem, scope, &scope->macros.byte_order, "__BYTE_ORDER__",
-                                                            macro_little_endian_apply));
+                REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.byte_order,
+                                                            "__BYTE_ORDER__", macro_little_endian_apply));
                 break;
 
             case KEFIR_BYTE_ORDER_UNKNOWN:

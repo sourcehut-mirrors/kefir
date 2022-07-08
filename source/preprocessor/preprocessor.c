@@ -40,6 +40,7 @@ kefir_result_t kefir_preprocessor_context_init(struct kefir_mem *mem, struct kef
     REQUIRE(ast_context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid preprocessor AST context"));
 
     REQUIRE_OK(kefir_preprocessor_user_macro_scope_init(NULL, &context->user_macros));
+    REQUIRE_OK(kefir_hashtree_init(&context->undefined_macros, &kefir_hashtree_str_ops));
     context->source_locator = locator;
     context->ast_context = ast_context;
 
@@ -99,6 +100,7 @@ kefir_result_t kefir_preprocessor_context_free(struct kefir_mem *mem, struct kef
     context->extensions = NULL;
     context->extensions_payload = NULL;
 
+    REQUIRE_OK(kefir_hashtree_free(mem, &context->undefined_macros));
     REQUIRE_OK(kefir_preprocessor_user_macro_scope_free(mem, &context->user_macros));
     context->source_locator = NULL;
     return KEFIR_OK;
