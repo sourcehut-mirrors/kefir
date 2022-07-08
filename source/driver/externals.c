@@ -56,5 +56,9 @@ kefir_result_t kefir_driver_external_resources_init_from_env(struct kefir_mem *m
     if (externals->work_dir == NULL) {
         REQUIRE_OK(kefir_tempfile_manager_tmpdir(mem, tmpmgr, "kefir-workdir-XXXXXX", &externals->work_dir));
     }
+
+    externals->extensions.assembly_file = ".s";
+    externals->extensions.object_file = ".o";
+    externals->extensions.preprocessed_file = ".i";
     return KEFIR_OK;
 }

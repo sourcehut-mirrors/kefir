@@ -32,6 +32,12 @@ typedef struct kefir_driver_external_resources {
 
     const char *work_dir;
 
+    struct {
+        const char *assembly_file;
+        const char *object_file;
+        const char *preprocessed_file;
+    } extensions;
+
     struct kefir_tempfile_manager *tmpfile_manager;
 } kefir_driver_external_resources_t;
 
