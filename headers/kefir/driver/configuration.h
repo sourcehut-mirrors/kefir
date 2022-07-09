@@ -23,6 +23,7 @@
 
 #include "kefir/core/list.h"
 #include "kefir/core/symbol_table.h"
+#include "kefir/driver/target.h"
 
 typedef struct kefir_driver_assembler_configuration {
     struct kefir_list extra_args;
@@ -101,6 +102,7 @@ typedef struct kefir_driver_configuration {
     struct kefir_list undefines;
     struct kefir_list include_directories;
     struct kefir_list include_files;
+    struct kefir_driver_target target;
 } kefir_driver_configuration_t;
 
 kefir_result_t kefir_driver_configuration_init(struct kefir_driver_configuration *);

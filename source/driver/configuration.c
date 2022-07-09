@@ -131,6 +131,7 @@ kefir_result_t kefir_driver_configuration_init(struct kefir_driver_configuration
     REQUIRE_OK(kefir_list_init(&config->undefines));
     REQUIRE_OK(kefir_list_init(&config->include_directories));
     REQUIRE_OK(kefir_list_init(&config->include_files));
+    REQUIRE_OK(kefir_driver_target_default(&config->target));
 
     return KEFIR_OK;
 }

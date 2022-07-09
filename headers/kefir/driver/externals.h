@@ -25,11 +25,18 @@
 #include "kefir/platform/tempfile.h"
 
 typedef struct kefir_driver_external_resources {
+    // Tools
     const char *assembler_path;
     const char *linker_path;
 
+    // Libraries
     const char *runtime_library;
+    struct {
+        const char *include_path;
+        const char *library_path;
+    } musl;
 
+    // Directories
     const char *work_dir;
 
     struct {

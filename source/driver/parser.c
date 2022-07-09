@@ -92,6 +92,16 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_symbo
             config->output_file = kefir_symbol_table_insert(mem, symbols, output_filename, NULL);
             REQUIRE(config->output_file != NULL,
                     KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert output file name into symbols"));
+        } else if (strcmp("--target", arg) == 0) {
+            // Target specification
+            EXPECT_ARG;
+            const char *target = argv[++index];
+
+            kefir_result_t res = kefir_driver_target_match(target, &config->target);
+            if (res == KEFIR_NOT_FOUND) {
+                res = KEFIR_SET_ERRORF(KEFIR_UI_ERROR, "Unknown target '%s'", target);
+            }
+            REQUIRE_OK(res);
         }
 
         // Preprocessor flags

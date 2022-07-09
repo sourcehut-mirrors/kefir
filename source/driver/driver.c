@@ -88,6 +88,7 @@ static kefir_result_t driver_generate_linker_config(struct kefir_mem *mem, struc
 }
 
 static kefir_result_t driver_generate_compiler_config(struct kefir_mem *mem, struct kefir_driver_configuration *config,
+                                                      const struct kefir_driver_external_resources *externals,
                                                       struct kefir_compiler_runner_configuration *compiler_config) {
     REQUIRE_OK(kefir_compiler_runner_configuration_init(compiler_config));
 
@@ -127,6 +128,30 @@ static kefir_result_t driver_generate_compiler_config(struct kefir_mem *mem, str
         ASSIGN_DECL_CAST(const char *, identifier, iter->value);
         REQUIRE_OK(kefir_list_insert_after(mem, &compiler_config->undefines,
                                            kefir_list_tail(&compiler_config->undefines), (void *) identifier));
+    }
+
+    if (config->target.arch == KEFIR_DRIVER_TARGET_ARCH_X86_64) {
+        if (config->target.platform == KEFIR_DRIVER_TARGET_PLATFORM_LINUX ||
+            config->target.platform == KEFIR_DRIVER_TARGET_PLATFORM_FREEBSD) {
+            compiler_config->target_profile = "amd64-sysv-gas";
+            compiler_config->codegen.emulated_tls = false;
+        } else if (config->target.platform == KEFIR_DRIVER_TARGET_PLATFORM_OPENBSD) {
+            compiler_config->target_profile = "amd64-sysv-gas";
+            compiler_config->codegen.emulated_tls = true;
+        }
+    }
+
+    if (config->target.platform == KEFIR_DRIVER_TARGET_PLATFORM_LINUX &&
+        (config->target.variant == KEFIR_DRIVER_TARGET_VARIANT_MUSL ||
+         config->target.variant == KEFIR_DRIVER_TARGET_VARIANT_DEFAULT)) {
+        REQUIRE(
+            externals->musl.include_path != NULL,
+            KEFIR_SET_ERROR(
+                KEFIR_UI_ERROR,
+                "Musl library path shall be passed as KEFIR_MUSL_INCLUDE environment variable for selected target"));
+        REQUIRE_OK(kefir_list_insert_after(mem, &compiler_config->include_path,
+                                           kefir_list_tail(&compiler_config->include_path),
+                                           (void *) externals->musl.include_path));
     }
     return KEFIR_OK;
 }
@@ -369,6 +394,41 @@ static kefir_result_t driver_run_input_file(struct kefir_mem *mem, struct kefir_
     return KEFIR_OK;
 }
 
+static kefir_result_t driver_run_linker(struct kefir_mem *mem, struct kefir_driver_configuration *config,
+                                        const struct kefir_driver_external_resources *externals,
+                                        struct kefir_driver_linker_configuration *linker_config) {
+    if (config->target.platform == KEFIR_DRIVER_TARGET_PLATFORM_LINUX &&
+        (config->target.variant == KEFIR_DRIVER_TARGET_VARIANT_MUSL ||
+         config->target.variant == KEFIR_DRIVER_TARGET_VARIANT_DEFAULT)) {
+        REQUIRE(externals->musl.library_path != NULL,
+                KEFIR_SET_ERROR(
+                    KEFIR_UI_ERROR,
+                    "Musl library path shall be passed as KEFIR_MUSL_LIB environment variable for selected target"));
+        char libpath[PATH_MAX + 1];
+        snprintf(libpath, sizeof(libpath) - 1, "%s/crt1.o", externals->musl.library_path);
+        REQUIRE_OK(kefir_driver_linker_configuration_add_linked_file(mem, linker_config, libpath));
+        snprintf(libpath, sizeof(libpath) - 1, "%s/libc.a", externals->musl.library_path);
+        REQUIRE_OK(kefir_driver_linker_configuration_add_linked_file(mem, linker_config, libpath));
+    }
+
+    if (config->target.variant != KEFIR_DRIVER_TARGET_VARIANT_NONE) {
+        REQUIRE(
+            externals->runtime_library != NULL,
+            KEFIR_SET_ERROR(
+                KEFIR_UI_ERROR,
+                "Kefir runtime library path shall be passed as KEFIR_RTLIB environment variable for selected target"));
+        REQUIRE_OK(kefir_driver_linker_configuration_add_linked_file(mem, linker_config, externals->runtime_library));
+    }
+
+    struct kefir_process linker_process;
+    REQUIRE_OK(kefir_process_init(&linker_process));
+    const char *output_file = config->output_file != NULL ? config->output_file : "a.out";
+    REQUIRE_OK(kefir_driver_run_linker(mem, output_file, linker_config, externals, &linker_process));
+    REQUIRE_OK(kefir_process_wait(&linker_process));
+    REQUIRE(linker_process.status.exited && linker_process.status.exit_code == EXIT_SUCCESS, KEFIR_INTERRUPT);
+    return KEFIR_OK;
+}
+
 static kefir_result_t driver_run_impl(struct kefir_mem *mem, struct kefir_driver_configuration *config,
                                       const struct kefir_driver_external_resources *externals,
                                       struct kefir_driver_assembler_configuration *assembler_config,
@@ -388,7 +448,7 @@ static kefir_result_t driver_run_impl(struct kefir_mem *mem, struct kefir_driver
         case KEFIR_DRIVER_STAGE_PREPROCESS:
         case KEFIR_DRIVER_STAGE_PREPROCESS_SAVE:
         case KEFIR_DRIVER_STAGE_COMPILE:
-            REQUIRE_OK(driver_generate_compiler_config(mem, config, compiler_config));
+            REQUIRE_OK(driver_generate_compiler_config(mem, config, externals, compiler_config));
             // Intentionally left blank
             break;
     }
@@ -402,12 +462,7 @@ static kefir_result_t driver_run_impl(struct kefir_mem *mem, struct kefir_driver
     }
 
     if (config->stage == KEFIR_DRIVER_STAGE_LINK) {
-        struct kefir_process linker_process;
-        REQUIRE_OK(kefir_process_init(&linker_process));
-        const char *output_file = config->output_file != NULL ? config->output_file : "a.out";
-        REQUIRE_OK(kefir_driver_run_linker(mem, output_file, linker_config, externals, &linker_process));
-        REQUIRE_OK(kefir_process_wait(&linker_process));
-        REQUIRE(linker_process.status.exited && linker_process.status.exit_code == EXIT_SUCCESS, KEFIR_INTERRUPT);
+        REQUIRE_OK(driver_run_linker(mem, config, externals, linker_config));
     }
     return KEFIR_OK;
 }
