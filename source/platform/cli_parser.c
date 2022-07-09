@@ -18,7 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "kefir/cli/parser.h"
+#include "kefir/platform/cli_parser.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 #include "kefir/core/string_buffer.h"

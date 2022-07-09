@@ -18,15 +18,23 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef KEFIR_DRIVER_RUNNER_H_
-#define KEFIR_DRIVER_RUNNER_H_
+#ifndef KEFIR_STANDALONE_OPTIONS_H_
+#define KEFIR_STANDALONE_OPTIONS_H_
 
 #include "kefir/core/basic-types.h"
 #include "kefir/core/mem.h"
+#include "kefir/core/list.h"
+#include "kefir/core/hashtree.h"
 #include "kefir/compiler/configuration.h"
-#include <stdio.h>
+#include <time.h>
 
-kefir_result_t kefir_run_compiler(struct kefir_mem *, const struct kefir_compiler_runner_configuration *);
-kefir_bool_t kefir_report_error(FILE *, kefir_result_t, kefir_bool_t);
+typedef enum kefir_cli_command {
+    KEFIR_CLI_COMMAND_RUN,
+    KEFIR_CLI_COMMAND_HELP,
+    KEFIR_CLI_COMMAND_VERSION
+} kefir_cli_command_t;
+
+kefir_result_t kefir_cli_parse_runner_configuration(struct kefir_mem *, struct kefir_compiler_runner_configuration *,
+                                                    char *const *, kefir_size_t, kefir_cli_command_t *);
 
 #endif

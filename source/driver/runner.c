@@ -21,13 +21,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <locale.h>
-#include "kefir/cli/input.h"
-#include "kefir/cli/filesystem_source.h"
+#include "kefir/platform/input.h"
+#include "kefir/platform/filesystem_source.h"
 #include "kefir/core/util.h"
 #include "kefir/compiler/compiler.h"
 #include "kefir/core/os_error.h"
 #include "kefir/core/error_format.h"
-#include "kefir/cli/options.h"
+#include "kefir/compiler/configuration.h"
 #include "kefir/lexer/format.h"
 #include "kefir/ast/format.h"
 #include "kefir/ir/format.h"

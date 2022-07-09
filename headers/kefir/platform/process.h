@@ -18,8 +18,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef KEFIR_UTIL_PROCESS_H_
-#define KEFIR_UTIL_PROCESS_H_
+#ifndef KEFIR_PLATFORM_PROCESS_H_
+#define KEFIR_PLATFORM_PROCESS_H_
 
 #include "kefir/core/basic-types.h"
 

@@ -24,6 +24,7 @@
 #include "kefir/compiler/compiler.h"
 #include "kefir/driver/runner.h"
 #include "kefir/core/version.h"
+#include "kefir/standalone/options.h"
 
 // Standalone compiler without driver
 

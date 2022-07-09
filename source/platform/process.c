@@ -19,7 +19,7 @@
 */
 
 #define _POSIX_SOURCE
-#include "kefir/util/process.h"
+#include "kefir/platform/process.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 #include "kefir/core/os_error.h"

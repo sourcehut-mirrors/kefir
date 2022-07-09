@@ -22,7 +22,7 @@
 #define KEFIR_DRIVER_EXTERNALS_H_
 
 #include "kefir/core/mem.h"
-#include "kefir/util/tempfile.h"
+#include "kefir/platform/tempfile.h"
 
 typedef struct kefir_driver_external_resources {
     const char *assembler_path;

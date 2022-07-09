@@ -18,8 +18,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef KEFIR_CLI_PARSER_H_
-#define KEFIR_CLI_PARSER_H_
+#ifndef KEFIR_PLATFORM_CLI_PARSER_H_
+#define KEFIR_PLATFORM_CLI_PARSER_H_
 
 #include "kefir/core/basic-types.h"
 #include "kefir/core/mem.h"

@@ -18,8 +18,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef KEFIR_CLI_OPTIONS_H_
-#define KEFIR_CLI_OPTIONS_H_
+#ifndef KEFIR_COMPILER_CONFIGURATION_H_
+#define KEFIR_COMPILER_CONFIGURATION_H_
 
 #include "kefir/core/basic-types.h"
 #include "kefir/core/mem.h"
@@ -79,15 +79,7 @@ typedef struct kefir_compiler_runner_configuration {
     } codegen;
 } kefir_compiler_runner_configuration_t;
 
-typedef enum kefir_cli_command {
-    KEFIR_CLI_COMMAND_RUN,
-    KEFIR_CLI_COMMAND_HELP,
-    KEFIR_CLI_COMMAND_VERSION
-} kefir_cli_command_t;
-
 kefir_result_t kefir_compiler_runner_configuration_init(struct kefir_compiler_runner_configuration *);
-kefir_result_t kefir_cli_parse_runner_configuration(struct kefir_mem *, struct kefir_compiler_runner_configuration *,
-                                                    char *const *, kefir_size_t, kefir_cli_command_t *);
 kefir_result_t kefir_compiler_runner_configuration_free(struct kefir_mem *,
                                                         struct kefir_compiler_runner_configuration *);
 

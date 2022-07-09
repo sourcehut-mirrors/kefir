@@ -20,7 +20,7 @@
 
 #define _DEFAULT_SOURCE
 #define _XOPEN_SOURCE 500
-#include "kefir/util/tempfile.h"
+#include "kefir/platform/tempfile.h"
 #include "kefir/core/error.h"
 #include "kefir/core/os_error.h"
 #include "kefir/core/util.h"

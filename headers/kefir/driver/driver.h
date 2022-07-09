@@ -21,7 +21,7 @@
 #ifndef KEFIR_DRIVER_DRIVER_H_
 #define KEFIR_DRIVER_DRIVER_H_
 
-#include "kefir/cli/options.h"
+#include "kefir/compiler/configuration.h"
 #include "kefir/core/list.h"
 #include "kefir/core/symbol_table.h"
 #include "kefir/driver/externals.h"

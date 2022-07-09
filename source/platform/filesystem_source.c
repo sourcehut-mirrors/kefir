@@ -23,8 +23,8 @@
 #define _XOPEN_SOURCE 500
 #endif
 
-#include "kefir/cli/filesystem_source.h"
-#include "kefir/cli/input.h"
+#include "kefir/platform/filesystem_source.h"
+#include "kefir/platform/input.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 #include "kefir/core/os_error.h"

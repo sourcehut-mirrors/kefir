@@ -18,8 +18,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef KEFIR_CLI_FILESYSTEM_SOURCE_H_
-#define KEFIR_CLI_FILESYSTEM_SOURCE_H_
+#ifndef KEFIR_PLATFORM_FILESYSTEM_SOURCE_H_
+#define KEFIR_PLATFORM_FILESYSTEM_SOURCE_H_
 
 #include "kefir/preprocessor/source_file.h"
 #include "kefir/core/list.h"

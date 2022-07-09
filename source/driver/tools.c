@@ -22,7 +22,7 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 #include "kefir/core/string_array.h"
-#include "kefir/util/process.h"
+#include "kefir/platform/process.h"
 #include "kefir/driver/runner.h"
 #include "kefir/compiler/compiler.h"
 #include <stdio.h>

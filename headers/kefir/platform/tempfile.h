@@ -18,8 +18,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef KEFIR_UTIL_TEMPFILE_H_
-#define KEFIR_UTIL_TEMPFILE_H_
+#ifndef KEFIR_PLATFORM_TEMPFILE_H_
+#define KEFIR_PLATFORM_TEMPFILE_H_
 
 #include "kefir/core/basic-types.h"
 #include "kefir/core/hashtree.h"

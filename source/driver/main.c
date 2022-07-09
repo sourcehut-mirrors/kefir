@@ -27,7 +27,7 @@
 
 #include "kefir/driver/driver.h"
 #include "kefir/driver/parser.h"
-#include "kefir/util/tempfile.h"
+#include "kefir/platform/tempfile.h"
 
 // Driver main entry
 

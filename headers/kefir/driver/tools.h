@@ -22,10 +22,10 @@
 #define KEFIR_DRIVER_TOOLS_H_
 
 #include "kefir/core/mem.h"
-#include "kefir/util/process.h"
+#include "kefir/platform/process.h"
 #include "kefir/driver/externals.h"
 #include "kefir/driver/configuration.h"
-#include "kefir/cli/options.h"
+#include "kefir/compiler/configuration.h"
 
 kefir_result_t kefir_driver_run_compiler(const struct kefir_compiler_runner_configuration *, struct kefir_process *);
 kefir_result_t kefir_driver_run_assembler(struct kefir_mem *, const char *,

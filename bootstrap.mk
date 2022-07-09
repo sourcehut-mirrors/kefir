@@ -16,7 +16,6 @@ KEFIR_SOURCE := $(wildcard \
 	$(SOURCE)/ast-translator/nodes/*.c \
 	$(SOURCE)/ast-translator/scope/*.c \
 	$(SOURCE)/ast/type/*.c \
-	$(SOURCE)/cli/*.c \
 	$(SOURCE)/core/*.c \
 	$(SOURCE)/codegen/*.c \
 	$(SOURCE)/codegen/amd64/*.c \
@@ -30,6 +29,7 @@ KEFIR_SOURCE := $(wildcard \
 	$(SOURCE)/lexer/tokens/string_literal/*.c \
 	$(SOURCE)/parser/*.c \
 	$(SOURCE)/parser/rules/*.c \
+	$(SOURCE)/platform/*.c \
 	$(SOURCE)/preprocessor/*.c \
 	$(SOURCE)/util/*.c \
 	$(SOURCE)/driver/runner.c \

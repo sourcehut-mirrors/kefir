@@ -8,7 +8,6 @@ KEFIR_LIB_SOURCE := $(wildcard \
 	$(SOURCE_DIR)/ast-translator/nodes/*.c \
 	$(SOURCE_DIR)/ast-translator/scope/*.c \
 	$(SOURCE_DIR)/ast/type/*.c \
-	$(SOURCE_DIR)/cli/*.c \
 	$(SOURCE_DIR)/core/*.c \
 	$(SOURCE_DIR)/codegen/*.c \
 	$(SOURCE_DIR)/codegen/amd64/*.c \
@@ -22,6 +21,7 @@ KEFIR_LIB_SOURCE := $(wildcard \
 	$(SOURCE_DIR)/lexer/tokens/string_literal/*.c \
 	$(SOURCE_DIR)/parser/*.c \
 	$(SOURCE_DIR)/parser/rules/*.c \
+	$(SOURCE_DIR)/platform/*.c \
 	$(SOURCE_DIR)/preprocessor/*.c \
 	$(SOURCE_DIR)/util/*.c)
 
