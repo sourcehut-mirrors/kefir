@@ -33,9 +33,7 @@ typedef enum kefir_compiler_runner_action {
     KEFIR_COMPILER_RUNNER_ACTION_DUMP_AST,
     KEFIR_COMPILER_RUNNER_ACTION_DUMP_IR,
     KEFIR_COMPILER_RUNNER_ACTION_DUMP_ASSEMBLY,
-    KEFIR_COMPILER_RUNNER_ACTION_DUMP_RUNTIME_CODE,
-    KEFIR_COMPILER_RUNNER_ACTION_HELP,
-    KEFIR_COMPILER_RUNNER_ACTION_VERSION
+    KEFIR_COMPILER_RUNNER_ACTION_DUMP_RUNTIME_CODE
 } kefir_compiler_runner_action_t;
 
 typedef enum kefir_compiler_runner_error_report_type {
@@ -81,9 +79,15 @@ typedef struct kefir_compiler_runner_configuration {
     } codegen;
 } kefir_compiler_runner_configuration_t;
 
+typedef enum kefir_cli_command {
+    KEFIR_CLI_COMMAND_RUN,
+    KEFIR_CLI_COMMAND_HELP,
+    KEFIR_CLI_COMMAND_VERSION
+} kefir_cli_command_t;
+
 kefir_result_t kefir_compiler_runner_configuration_init(struct kefir_compiler_runner_configuration *);
 kefir_result_t kefir_cli_parse_runner_configuration(struct kefir_mem *, struct kefir_compiler_runner_configuration *,
-                                                    char *const *, kefir_size_t);
+                                                    char *const *, kefir_size_t, kefir_cli_command_t *);
 kefir_result_t kefir_compiler_runner_configuration_free(struct kefir_mem *,
                                                         struct kefir_compiler_runner_configuration *);
 

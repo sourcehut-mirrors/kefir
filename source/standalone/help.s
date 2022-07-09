@@ -18,8 +18,8 @@
 
 .section .rodata
 
-.global KefirDriverHelpContent
+.global KefirHelpContent
 
-KefirDriverHelpContent:
-    .incbin "source/driver/help.txt"
+KefirHelpContent:
+    .incbin "source/standalone/help.txt"
     .byte 0

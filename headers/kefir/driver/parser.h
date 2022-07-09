@@ -25,6 +25,7 @@
 #include "kefir/driver/configuration.h"
 
 kefir_result_t kefir_driver_parse_args(struct kefir_mem *, struct kefir_symbol_table *,
-                                       struct kefir_driver_configuration *, const char *const *, kefir_size_t);
+                                       struct kefir_driver_configuration *, const char *const *, kefir_size_t,
+                                       kefir_bool_t *);
 
 #endif

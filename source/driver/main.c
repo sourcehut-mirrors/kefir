@@ -31,6 +31,7 @@
 
 // Driver main entry
 
+extern const char KefirDriverHelpContent[];
 static struct kefir_tempfile_manager tmpmgr;
 
 static void tmpmgr_cleanup(void) {
@@ -65,12 +66,17 @@ int main(int argc, char *const *argv) {
     struct kefir_symbol_table symbols;
     struct kefir_driver_configuration driver_config;
     struct kefir_driver_external_resources exteral_resources;
+    kefir_bool_t help_requested = false;
+    int exit_code = EXIT_SUCCESS;
 
     REQUIRE_CHAIN(&res, kefir_symbol_table_init(&symbols));
     REQUIRE_CHAIN(&res, kefir_driver_configuration_init(&driver_config));
     REQUIRE_CHAIN(&res, kefir_driver_external_resources_init_from_env(mem, &exteral_resources, &tmpmgr));
-    REQUIRE_CHAIN(&res,
-                  kefir_driver_parse_args(mem, &symbols, &driver_config, (const char *const *) argv + 1, argc - 1));
+    REQUIRE_CHAIN(&res, kefir_driver_parse_args(mem, &symbols, &driver_config, (const char *const *) argv + 1, argc - 1,
+                                                &help_requested));
+    if (res == KEFIR_OK && help_requested) {
+        printf("%s", KefirDriverHelpContent);
+    }
     // REQUIRE_CHAIN(&res,
     //               kefir_driver_configuration_add_input(mem, NULL, &driver_config, exteral_resources.runtime_library,
     //                                                    KEFIR_DRIVER_INPUT_FILE_LIBRARY));
@@ -79,11 +85,12 @@ int main(int argc, char *const *argv) {
     // REQUIRE_CHAIN(&res, kefir_driver_configuration_add_input(mem, NULL, &driver_config, "/usr/lib/musl/lib/libc.a",
     //                                                          KEFIR_DRIVER_INPUT_FILE_LIBRARY));
 
-    REQUIRE_CHAIN(&res, kefir_driver_run(mem, &driver_config, &exteral_resources));
-    int exit_code = EXIT_SUCCESS;
-    if (res == KEFIR_INTERRUPT) {
-        res = KEFIR_OK;
-        exit_code = EXIT_FAILURE;
+    else {
+        REQUIRE_CHAIN(&res, kefir_driver_run(mem, &driver_config, &exteral_resources));
+        if (res == KEFIR_INTERRUPT) {
+            res = KEFIR_OK;
+            exit_code = EXIT_FAILURE;
+        }
     }
 
     REQUIRE_CHAIN(&res, kefir_driver_configuration_free(mem, &driver_config));

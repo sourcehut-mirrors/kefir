@@ -23,19 +23,37 @@
 #include <locale.h>
 #include "kefir/compiler/compiler.h"
 #include "kefir/driver/runner.h"
+#include "kefir/core/version.h"
 
 // Standalone compiler without driver
+
+extern const char KefirHelpContent[];
 
 int main(int argc, char *const *argv) {
     struct kefir_mem *mem = kefir_system_memalloc();
     struct kefir_compiler_runner_configuration options;
+    kefir_cli_command_t cli_cmd;
 
     setlocale(LC_ALL, "");
     setlocale(LC_NUMERIC, "C");
     kefir_result_t res = kefir_compiler_runner_configuration_init(&options);
-    REQUIRE_CHAIN(&res, kefir_cli_parse_runner_configuration(mem, &options, argv, argc));
-    REQUIRE_CHAIN(&res, kefir_run_compiler(mem, &options));
-    REQUIRE_CHAIN(&res, kefir_compiler_runner_configuration_free(mem, &options));
+    REQUIRE_CHAIN(&res, kefir_cli_parse_runner_configuration(mem, &options, argv, argc, &cli_cmd));
+    if (res == KEFIR_OK) {
+        switch (cli_cmd) {
+            case KEFIR_CLI_COMMAND_RUN:
+                REQUIRE_CHAIN(&res, kefir_run_compiler(mem, &options));
+                REQUIRE_CHAIN(&res, kefir_compiler_runner_configuration_free(mem, &options));
+                break;
+
+            case KEFIR_CLI_COMMAND_HELP:
+                fprintf(stdout, "%s", KefirHelpContent);
+                break;
+
+            case KEFIR_CLI_COMMAND_VERSION:
+                fprintf(stdout, "%u.%u.%u\n", KEFIR_VERSION_MAJOR, KEFIR_VERSION_MINOR, KEFIR_VERSION_PATCH);
+                break;
+        }
+    }
     return kefir_report_error(stderr, res, options.error_report_type == KEFIR_COMPILER_RUNNER_ERROR_REPORT_JSON)
                ? EXIT_SUCCESS
                : EXIT_FAILURE;

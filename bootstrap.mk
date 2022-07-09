@@ -33,12 +33,12 @@ KEFIR_SOURCE := $(wildcard \
 	$(SOURCE)/preprocessor/*.c \
 	$(SOURCE)/util/*.c \
 	$(SOURCE)/driver/runner.c \
-	$(SOURCE)/main/*.c)
+	$(SOURCE)/standalone/*.c)
 
 KEFIR_ASM_FILES := $(KEFIR_SOURCE:$(SOURCE)/%.c=$(BOOTSTRAP)/%.s)
 KEFIR_OBJECT_FILES := $(KEFIR_SOURCE:$(SOURCE)/%.c=$(BOOTSTRAP)/%.o)
 KEFIR_OBJECT_FILES += $(BOOTSTRAP)/runtime.o
-KEFIR_OBJECT_FILES += $(BOOTSTRAP)/driver/help.s.o
+KEFIR_OBJECT_FILES += $(BOOTSTRAP)/standalone/help.s.o
 KEFIR_OBJECT_FILES += $(BOOTSTRAP)/codegen/amd64/amd64-sysv-runtime-code.s.o
 
 $(BOOTSTRAP)/%.s: $(SOURCE)/%.c
@@ -59,7 +59,7 @@ $(BOOTSTRAP)/runtime.o: $(SOURCE)/runtime/amd64_sysv.s
 	@echo "Assemble $^"
 	@$(AS) -o $@ $<
 
-$(BOOTSTRAP)/driver/help.s.o: $(SOURCE)/driver/help.txt
+$(BOOTSTRAP)/standalone/help.s.o: $(SOURCE)/standalone/help.txt
 
 $(BOOTSTRAP)/codegen/amd64/amd64-sysv-runtime-code.s.o: $(SOURCE)/runtime/amd64_sysv.s
 

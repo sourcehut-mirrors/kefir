@@ -333,30 +333,13 @@ static kefir_result_t action_dump_runtime_code(struct kefir_mem *mem,
     return KEFIR_OK;
 }
 
-static kefir_result_t action_help(struct kefir_mem *mem, const struct kefir_compiler_runner_configuration *options) {
-    UNUSED(mem);
-    UNUSED(options);
-    extern const char KefirHelpContent[];
-    printf("%s", KefirHelpContent);
-    return KEFIR_OK;
-}
-
-static kefir_result_t action_version(struct kefir_mem *mem, const struct kefir_compiler_runner_configuration *options) {
-    UNUSED(mem);
-    UNUSED(options);
-    printf("%u.%u.%u\n", KEFIR_VERSION_MAJOR, KEFIR_VERSION_MINOR, KEFIR_VERSION_PATCH);
-    return KEFIR_OK;
-}
-
 static kefir_result_t (*Actions[])(struct kefir_mem *, const struct kefir_compiler_runner_configuration *) = {
     [KEFIR_COMPILER_RUNNER_ACTION_PREPROCESS] = action_dump_preprocessed,
     [KEFIR_COMPILER_RUNNER_ACTION_DUMP_TOKENS] = action_dump_tokens,
     [KEFIR_COMPILER_RUNNER_ACTION_DUMP_AST] = action_dump_ast,
     [KEFIR_COMPILER_RUNNER_ACTION_DUMP_IR] = action_dump_ir,
     [KEFIR_COMPILER_RUNNER_ACTION_DUMP_ASSEMBLY] = action_dump_asm,
-    [KEFIR_COMPILER_RUNNER_ACTION_DUMP_RUNTIME_CODE] = action_dump_runtime_code,
-    [KEFIR_COMPILER_RUNNER_ACTION_HELP] = action_help,
-    [KEFIR_COMPILER_RUNNER_ACTION_VERSION] = action_version};
+    [KEFIR_COMPILER_RUNNER_ACTION_DUMP_RUNTIME_CODE] = action_dump_runtime_code};
 
 kefir_result_t kefir_run_compiler(struct kefir_mem *mem, const struct kefir_compiler_runner_configuration *options) {
     REQUIRE_OK(Actions[options->action](mem, options));

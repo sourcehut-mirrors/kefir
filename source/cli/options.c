@@ -165,9 +165,6 @@ static struct kefir_cli_option Options[] = {
     CUSTOM('U', "undefine", true, undefine_hook),
     CUSTOM('I', "include-dir", true, include_hook),
     CUSTOM(0, "include", true, include_file_hook),
-    SIMPLE('h', "help", false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, KEFIR_COMPILER_RUNNER_ACTION_HELP, action),
-    SIMPLE('v', "version", false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, KEFIR_COMPILER_RUNNER_ACTION_VERSION,
-           action),
 
     FEATURE("non-strict-qualifiers", features.non_strict_qualifiers),
     FEATURE("signed-enums", features.signed_enum_type),
@@ -227,10 +224,22 @@ kefir_result_t kefir_compiler_runner_configuration_init(struct kefir_compiler_ru
 
 kefir_result_t kefir_cli_parse_runner_configuration(struct kefir_mem *mem,
                                                     struct kefir_compiler_runner_configuration *options,
-                                                    char *const *argv, kefir_size_t argc) {
+                                                    char *const *argv, kefir_size_t argc,
+                                                    kefir_cli_command_t *cmd_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(options != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to cli options"));
     REQUIRE(argv != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid argument list"));
+    REQUIRE(cmd_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to CLI command"));
+
+    if (argc > 1 && (strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "--help") == 0)) {
+        *cmd_ptr = KEFIR_CLI_COMMAND_HELP;
+        return KEFIR_OK;
+    } else if (argc > 1 && (strcmp(argv[1], "-v") == 0 || strcmp(argv[1], "--version") == 0)) {
+        *cmd_ptr = KEFIR_CLI_COMMAND_VERSION;
+        return KEFIR_OK;
+    } else {
+        *cmd_ptr = KEFIR_CLI_COMMAND_RUN;
+    }
 
     kefir_size_t positional_args = argc;
     REQUIRE_OK(kefir_parse_cli_options(mem, options, &positional_args, Options, sizeof(Options) / sizeof(Options[0]),
