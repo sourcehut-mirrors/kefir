@@ -1,11 +1,50 @@
-Kefir C17 compiler driver
-Usage: kefir [OPTIONS] [INPUT FILES]
+OVERVIEW: Kefir C17 compiler
 
-Driver implments cc-compatible compiler interface.
-Options:
+USAGE: kefir [options] files...
+
+OPTIONS:
     -h,--help                           Print this help text
+    -v,--version                        Print compiler version
+    -c                                  Skip the link-edit phase of the compilation, save object files
+    -S                                  Skip assembling phase of the compilation, save assembly files
+    -E                                  Preprocess C-language source files, print results to standard output
+    -P                                  Preprocess C-language source files, save results
+    -o output file                      Save results to the output file
+    --target specification              Generate code for specified target system (see TARGETS section below)
+    -D name[=value]                     Define preprocessor macro
+    -U name                             Undefine predefined preprocessor macro
+    -I directory                        Add directory to preprocessor include path
+    -include file                       Include file during preprocessing phase
+    -s                                  Strip linked executable
+    -r                                  Retain relocations in linked executable
+    -e entry point                      Override entry point of linked executable
+    -u symbol                           Add undefined symbol to linked executable
+    -l library                          Link library
+    -L directory                        Add directory to linker library search path
+    -static                             Produce statically linked executable
+    -Wa,option                          Pass "option" to assembler phase as command line option
+    -Xassembler option                  Pass "option" to assembler phase as command line option
+    -Wl,option                          Pass "option" to linking phase as command line option
+    -Xlinker option                     Pass "option" to linking phase as command line option
 
-License: GNU GPLv3
-Author: Jevgenijs Protopopovs
-Website: https://github.com/protopopov1122/Kefir
-Contacts: jprotopopov1122@gmail.com
+TARGETS:
+    Target platforms are specified in format <arch>-<platform>-<variant> where
+        arch: x86_64
+        platform: linux, freebsd, openbsd
+        variant: none, musl, default
+    Variant "none" avoids any implicit library linkages and include path. On linux, "default" is equivalent
+    to "musl", on other platforms -- to "none".
+
+ENVIRONMENT VARIABLES:
+    KEFIR_AS, AS                        Override the default "as" assembler
+    KEFIR_LD, LD                        Override the default "ld" linker
+    KEFIR_RTLIB                         Specify kefir runtime library location. Mandatory for "linux-musl" platform variant
+    KEFIR_MUSL_INCLUDE                  Specify musl include path. Mandatory for "linux-musl" platform variant
+    KEFIR_MUSL_LIB                      Specify musl library path. Mandatory for "linux-musl" platform variant
+    KEFIR_WORKDIR                       Override kefir temporary work directory
+
+NOTES:
+    License                             GNU GPLv3
+    Author                              Jevgenijs Protopopovs
+    Website                             https://github.com/protopopov1122/Kefir
+    Contacts                            jprotopopov1122@gmail.com
