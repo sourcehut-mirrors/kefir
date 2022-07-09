@@ -52,12 +52,11 @@ static kefir_driver_input_file_type_t detect_file_type(const char *filename) {
 
 kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
                                        struct kefir_driver_configuration *config, const char *const *argv,
-                                       kefir_size_t argc, kefir_bool_t *help_requested) {
+                                       kefir_size_t argc, kefir_driver_command_t *command) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(symbols != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid symbol table"));
     REQUIRE(config != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver configuration"));
-    REQUIRE(help_requested != NULL,
-            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to help requested flag"));
+    REQUIRE(command != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to driver command"));
 
     for (kefir_size_t index = 0; index < argc; index++) {
         const char *arg = argv[index];
@@ -219,7 +218,11 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_symbo
             // Preserve comments after preprocessing: ignored
         } else if (strcmp("-h", arg) == 0 || strcmp("--help", arg) == 0) {
             // Help requested
-            *help_requested = true;
+            *command = KEFIR_DRIVER_COMMAND_HELP;
+            return KEFIR_OK;
+        } else if (strcmp("-v", arg) == 0 || strcmp("--version", arg) == 0) {
+            // Version requested
+            *command = KEFIR_DRIVER_COMMAND_VERSION;
             return KEFIR_OK;
         } else if (strncmp("-", arg, 1) == 0 || strncmp("--", arg, 2) == 0) {
             // All other non-positional arguments: ignored

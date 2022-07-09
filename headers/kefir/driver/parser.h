@@ -24,8 +24,14 @@
 #include "kefir/core/mem.h"
 #include "kefir/driver/configuration.h"
 
+typedef enum kefir_driver_command {
+    KEFIR_DRIVER_COMMAND_RUN,
+    KEFIR_DRIVER_COMMAND_HELP,
+    KEFIR_DRIVER_COMMAND_VERSION
+} kefir_driver_command_t;
+
 kefir_result_t kefir_driver_parse_args(struct kefir_mem *, struct kefir_symbol_table *,
                                        struct kefir_driver_configuration *, const char *const *, kefir_size_t,
-                                       kefir_bool_t *);
+                                       kefir_driver_command_t *);
 
 #endif

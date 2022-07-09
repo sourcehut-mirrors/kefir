@@ -49,8 +49,6 @@ kefir_result_t kefir_driver_external_resources_init_from_env(struct kefir_mem *m
     }
 
     externals->runtime_library = getenv("KEFIR_RTLIB");
-    REQUIRE(externals->runtime_library != NULL,
-            KEFIR_SET_ERROR(KEFIR_ENVIRONMENT_ERROR, "Expected KEFIR_RTLIB to contain path to runtime library"));
 
     externals->work_dir = getenv("KEFIR_WORKDIR");
     if (externals->work_dir == NULL) {

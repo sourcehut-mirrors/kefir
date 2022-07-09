@@ -24,7 +24,7 @@
 #include <signal.h>
 #include "kefir/compiler/compiler.h"
 #include "kefir/driver/runner.h"
-
+#include "kefir/core/version.h"
 #include "kefir/driver/driver.h"
 #include "kefir/driver/parser.h"
 #include "kefir/platform/tempfile.h"
@@ -66,26 +66,19 @@ int main(int argc, char *const *argv) {
     struct kefir_symbol_table symbols;
     struct kefir_driver_configuration driver_config;
     struct kefir_driver_external_resources exteral_resources;
-    kefir_bool_t help_requested = false;
+    kefir_driver_command_t command;
     int exit_code = EXIT_SUCCESS;
 
     REQUIRE_CHAIN(&res, kefir_symbol_table_init(&symbols));
     REQUIRE_CHAIN(&res, kefir_driver_configuration_init(&driver_config));
     REQUIRE_CHAIN(&res, kefir_driver_external_resources_init_from_env(mem, &exteral_resources, &tmpmgr));
     REQUIRE_CHAIN(&res, kefir_driver_parse_args(mem, &symbols, &driver_config, (const char *const *) argv + 1, argc - 1,
-                                                &help_requested));
-    if (res == KEFIR_OK && help_requested) {
-        printf("%s", KefirDriverHelpContent);
-    }
-    // REQUIRE_CHAIN(&res,
-    //               kefir_driver_configuration_add_input(mem, NULL, &driver_config, exteral_resources.runtime_library,
-    //                                                    KEFIR_DRIVER_INPUT_FILE_LIBRARY));
-    // REQUIRE_CHAIN(&res, kefir_driver_configuration_add_input(mem, NULL, &driver_config, "/usr/lib/musl/lib/crt1.o",
-    //                                                          KEFIR_DRIVER_INPUT_FILE_OBJECT));
-    // REQUIRE_CHAIN(&res, kefir_driver_configuration_add_input(mem, NULL, &driver_config, "/usr/lib/musl/lib/libc.a",
-    //                                                          KEFIR_DRIVER_INPUT_FILE_LIBRARY));
-
-    else {
+                                                &command));
+    if (res == KEFIR_OK && command == KEFIR_DRIVER_COMMAND_HELP) {
+        fprintf(stdout, "%s", KefirDriverHelpContent);
+    } else if (res == KEFIR_OK && command == KEFIR_DRIVER_COMMAND_VERSION) {
+        fprintf(stdout, "%u.%u.%u\n", KEFIR_VERSION_MAJOR, KEFIR_VERSION_MINOR, KEFIR_VERSION_PATCH);
+    } else {
         REQUIRE_CHAIN(&res, kefir_driver_run(mem, &driver_config, &exteral_resources));
         if (res == KEFIR_INTERRUPT) {
             res = KEFIR_OK;

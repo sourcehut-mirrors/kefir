@@ -34,8 +34,7 @@ static kefir_result_t driver_generate_asm_config(struct kefir_mem *mem, struct k
          kefir_list_next(&iter)) {
 
         ASSIGN_DECL_CAST(const char *, flag, iter->value);
-        REQUIRE_OK(kefir_list_insert_after(mem, &assembler_config->extra_args,
-                                           kefir_list_tail(&assembler_config->extra_args), (void *) flag));
+        REQUIRE_OK(kefir_driver_assembler_configuration_add_extra_argument(mem, assembler_config, flag));
     }
     return KEFIR_OK;
 }
@@ -404,6 +403,7 @@ static kefir_result_t driver_run_impl(struct kefir_mem *mem, struct kefir_driver
         const char *output_file = config->output_file != NULL ? config->output_file : "a.out";
         REQUIRE_OK(kefir_driver_run_linker(mem, output_file, linker_config, externals, &linker_process));
         REQUIRE_OK(kefir_process_wait(&linker_process));
+        REQUIRE(linker_process.status.exited && linker_process.status.exit_code == EXIT_SUCCESS, KEFIR_INTERRUPT);
     }
     return KEFIR_OK;
 }
