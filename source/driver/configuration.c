@@ -303,7 +303,7 @@ kefir_result_t kefir_driver_configuration_add_include_file(struct kefir_mem *mem
                 KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert include file into symbol table"));
     }
 
-    REQUIRE_OK(kefir_list_insert_after(mem, &config->include_directories, kefir_list_tail(&config->include_files),
-                                       (void *) file));
+    REQUIRE_OK(
+        kefir_list_insert_after(mem, &config->include_files, kefir_list_tail(&config->include_files), (void *) file));
     return KEFIR_OK;
 }

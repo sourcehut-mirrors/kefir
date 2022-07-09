@@ -75,6 +75,10 @@ static kefir_result_t driver_generate_linker_config(struct kefir_mem *mem, struc
                 REQUIRE_OK(kefir_driver_linker_configuration_add_extra_argument(mem, linker_config, "-s"));
                 break;
 
+            case KEFIR_DRIVER_LINKER_FLAG_STATIC:
+                REQUIRE_OK(kefir_driver_linker_configuration_add_extra_argument(mem, linker_config, "-static"));
+                break;
+
             case KEFIR_DRIVER_LINKER_FLAG_EXTRA:
                 REQUIRE_OK(kefir_driver_linker_configuration_add_extra_argument(mem, linker_config, flag->flag));
                 break;
