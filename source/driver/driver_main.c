@@ -26,6 +26,7 @@
 #include "kefir/driver/runner.h"
 
 #include "kefir/driver/driver.h"
+#include "kefir/driver/parser.h"
 #include "kefir/util/tempfile.h"
 
 // Driver main entry
@@ -55,24 +56,28 @@ static kefir_result_t init_tmpmgr() {
 int main(int argc, char *const *argv) {
     UNUSED(argc);
     init_tmpmgr();
+    kefir_result_t res = KEFIR_OK;
     struct kefir_mem *mem = kefir_system_memalloc();
 
     setlocale(LC_ALL, "");
     setlocale(LC_NUMERIC, "C");
 
+    struct kefir_symbol_table symbols;
     struct kefir_driver_configuration driver_config;
     struct kefir_driver_external_resources exteral_resources;
-    kefir_result_t res = kefir_driver_configuration_init(&driver_config);
+
+    REQUIRE_CHAIN(&res, kefir_symbol_table_init(&symbols));
+    REQUIRE_CHAIN(&res, kefir_driver_configuration_init(&driver_config));
     REQUIRE_CHAIN(&res, kefir_driver_external_resources_init_from_env(mem, &exteral_resources, &tmpmgr));
-    REQUIRE_CHAIN(
-        &res, kefir_driver_configuration_add_input(mem, NULL, &driver_config, argv[1], KEFIR_DRIVER_INPUT_FILE_CODE));
     REQUIRE_CHAIN(&res,
-                  kefir_driver_configuration_add_input(mem, NULL, &driver_config, exteral_resources.runtime_library,
-                                                       KEFIR_DRIVER_INPUT_FILE_LIBRARY));
-    REQUIRE_CHAIN(&res, kefir_driver_configuration_add_input(mem, NULL, &driver_config, "/usr/lib/musl/lib/crt1.o",
-                                                             KEFIR_DRIVER_INPUT_FILE_OBJECT));
-    REQUIRE_CHAIN(&res, kefir_driver_configuration_add_input(mem, NULL, &driver_config, "/usr/lib/musl/lib/libc.a",
-                                                             KEFIR_DRIVER_INPUT_FILE_LIBRARY));
+                  kefir_driver_parse_args(mem, &symbols, &driver_config, (const char *const *) argv + 1, argc - 1));
+    // REQUIRE_CHAIN(&res,
+    //               kefir_driver_configuration_add_input(mem, NULL, &driver_config, exteral_resources.runtime_library,
+    //                                                    KEFIR_DRIVER_INPUT_FILE_LIBRARY));
+    // REQUIRE_CHAIN(&res, kefir_driver_configuration_add_input(mem, NULL, &driver_config, "/usr/lib/musl/lib/crt1.o",
+    //                                                          KEFIR_DRIVER_INPUT_FILE_OBJECT));
+    // REQUIRE_CHAIN(&res, kefir_driver_configuration_add_input(mem, NULL, &driver_config, "/usr/lib/musl/lib/libc.a",
+    //                                                          KEFIR_DRIVER_INPUT_FILE_LIBRARY));
 
     REQUIRE_CHAIN(&res, kefir_driver_run(mem, &driver_config, &exteral_resources));
     int exit_code = EXIT_SUCCESS;
@@ -82,5 +87,6 @@ int main(int argc, char *const *argv) {
     }
 
     REQUIRE_CHAIN(&res, kefir_driver_configuration_free(mem, &driver_config));
+    REQUIRE_CHAIN(&res, kefir_symbol_table_free(mem, &symbols));
     return kefir_report_error(stderr, res, false) ? exit_code : EXIT_FAILURE;
 }

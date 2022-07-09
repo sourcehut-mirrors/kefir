@@ -103,6 +103,7 @@ kefir_result_t kefir_driver_linker_configuration_add_linked_file(struct kefir_me
     REQUIRE_OK(string_list_append(mem, &config->linked_files, linked_file));
     return KEFIR_OK;
 }
+
 kefir_result_t kefir_driver_linker_configuration_add_extra_argument(struct kefir_mem *mem,
                                                                     struct kefir_driver_linker_configuration *config,
                                                                     const char *arg) {
@@ -130,8 +131,6 @@ kefir_result_t kefir_driver_configuration_init(struct kefir_driver_configuration
     REQUIRE_OK(kefir_list_init(&config->undefines));
     REQUIRE_OK(kefir_list_init(&config->include_directories));
     REQUIRE_OK(kefir_list_init(&config->include_files));
-
-    config->flags.strip = false;
 
     return KEFIR_OK;
 }

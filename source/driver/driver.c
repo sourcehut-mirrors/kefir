@@ -50,19 +50,34 @@ static kefir_result_t driver_generate_linker_config(struct kefir_mem *mem, struc
         switch (flag->type) {
             case KEFIR_DRIVER_LINKER_FLAG_LINK_LIBRARY:
                 snprintf(flag_fmt, sizeof(flag_fmt) - 1, "-l%s", flag->flag);
-                REQUIRE_OK(kefir_list_insert_after(mem, &linker_config->extra_args,
-                                                   kefir_list_tail(&linker_config->extra_args), (void *) flag_fmt));
+                REQUIRE_OK(kefir_driver_linker_configuration_add_extra_argument(mem, linker_config, flag_fmt));
                 break;
 
             case KEFIR_DRIVER_LINKER_FLAG_LINK_PATH:
                 snprintf(flag_fmt, sizeof(flag_fmt) - 1, "-L%s", flag->flag);
-                REQUIRE_OK(kefir_list_insert_after(mem, &linker_config->extra_args,
-                                                   kefir_list_tail(&linker_config->extra_args), (void *) flag_fmt));
+                REQUIRE_OK(kefir_driver_linker_configuration_add_extra_argument(mem, linker_config, flag_fmt));
+                break;
+
+            case KEFIR_DRIVER_LINKER_FLAG_ENTRY_POINT:
+                REQUIRE_OK(kefir_driver_linker_configuration_add_extra_argument(mem, linker_config, "-e"));
+                REQUIRE_OK(kefir_driver_linker_configuration_add_extra_argument(mem, linker_config, flag->flag));
+                break;
+
+            case KEFIR_DRIVER_LINKER_FLAG_UNDEFINED_SYMBOL:
+                REQUIRE_OK(kefir_driver_linker_configuration_add_extra_argument(mem, linker_config, "-u"));
+                REQUIRE_OK(kefir_driver_linker_configuration_add_extra_argument(mem, linker_config, flag->flag));
+                break;
+
+            case KEFIR_DRIVER_LINKER_FLAG_RETAIN_RELOC:
+                REQUIRE_OK(kefir_driver_linker_configuration_add_extra_argument(mem, linker_config, "-r"));
+                break;
+
+            case KEFIR_DRIVER_LINKER_FLAG_STRIP:
+                REQUIRE_OK(kefir_driver_linker_configuration_add_extra_argument(mem, linker_config, "-s"));
                 break;
 
             case KEFIR_DRIVER_LINKER_FLAG_EXTRA:
-                REQUIRE_OK(kefir_list_insert_after(mem, &linker_config->extra_args,
-                                                   kefir_list_tail(&linker_config->extra_args), (void *) flag->flag));
+                REQUIRE_OK(kefir_driver_linker_configuration_add_extra_argument(mem, linker_config, flag->flag));
                 break;
         }
     }

@@ -68,6 +68,10 @@ typedef enum kefir_driver_input_file_type {
 typedef enum kefir_driver_linker_flag_type {
     KEFIR_DRIVER_LINKER_FLAG_LINK_LIBRARY,
     KEFIR_DRIVER_LINKER_FLAG_LINK_PATH,
+    KEFIR_DRIVER_LINKER_FLAG_ENTRY_POINT,
+    KEFIR_DRIVER_LINKER_FLAG_STRIP,
+    KEFIR_DRIVER_LINKER_FLAG_RETAIN_RELOC,
+    KEFIR_DRIVER_LINKER_FLAG_UNDEFINED_SYMBOL,
     KEFIR_DRIVER_LINKER_FLAG_EXTRA
 } kefir_driver_linker_flag_type_t;
 
@@ -96,9 +100,6 @@ typedef struct kefir_driver_configuration {
     struct kefir_list undefines;
     struct kefir_list include_directories;
     struct kefir_list include_files;
-    struct {
-        kefir_bool_t strip;
-    } flags;
 } kefir_driver_configuration_t;
 
 kefir_result_t kefir_driver_configuration_init(struct kefir_driver_configuration *);
