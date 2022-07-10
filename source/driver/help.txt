@@ -22,10 +22,14 @@ OPTIONS:
     -l library                          Link library
     -L directory                        Add directory to linker library search path
     -static                             Produce statically linked executable
+    -Wp,option                          Pass "option" to preprocessing phase as command line option
+    -Xpreprocessor option               Pass "option" to linking phase as command line option
+    -Wc,option                          Pass "option" to compiling phase as command line option
     -Wa,option                          Pass "option" to assembler phase as command line option
     -Xassembler option                  Pass "option" to assembler phase as command line option
     -Wl,option                          Pass "option" to linking phase as command line option
     -Xlinker option                     Pass "option" to linking phase as command line option
+    -Woption                            Pass "option" to compiling phase as command line option
 
 TARGETS:
     Target platforms are specified in format <arch>-<platform>-<variant> where

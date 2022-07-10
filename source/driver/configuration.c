@@ -125,6 +125,7 @@ kefir_result_t kefir_driver_configuration_init(struct kefir_driver_configuration
     REQUIRE_OK(kefir_list_on_remove(&config->input_files, list_entry_free, NULL));
     REQUIRE_OK(kefir_list_init(&config->assembler_flags));
     REQUIRE_OK(kefir_list_init(&config->linker_flags));
+    REQUIRE_OK(kefir_list_init(&config->compiler_flags));
     REQUIRE_OK(kefir_list_on_remove(&config->linker_flags, list_entry_free, NULL));
     REQUIRE_OK(kefir_list_init(&config->defines));
     REQUIRE_OK(kefir_list_on_remove(&config->defines, list_entry_free, NULL));
@@ -143,6 +144,7 @@ kefir_result_t kefir_driver_configuration_free(struct kefir_mem *mem, struct kef
     REQUIRE_OK(kefir_list_free(mem, &config->input_files));
     REQUIRE_OK(kefir_list_free(mem, &config->assembler_flags));
     REQUIRE_OK(kefir_list_free(mem, &config->linker_flags));
+    REQUIRE_OK(kefir_list_free(mem, &config->compiler_flags));
     REQUIRE_OK(kefir_list_free(mem, &config->defines));
     REQUIRE_OK(kefir_list_free(mem, &config->undefines));
     REQUIRE_OK(kefir_list_free(mem, &config->include_directories));
@@ -221,6 +223,24 @@ kefir_result_t kefir_driver_configuration_add_linker_flag(struct kefir_mem *mem,
         KEFIR_FREE(mem, linker_flag);
         return res;
     });
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_driver_configuration_add_compiler_flag(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
+                                                            struct kefir_driver_configuration *config,
+                                                            const char *flag) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(config != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver configuration"));
+    REQUIRE(flag != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid compiler flag"));
+
+    if (symbols != NULL) {
+        flag = kefir_symbol_table_insert(mem, symbols, flag, NULL);
+        REQUIRE(flag != NULL,
+                KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert compiler flag into symbol table"));
+    }
+
+    REQUIRE_OK(
+        kefir_list_insert_after(mem, &config->compiler_flags, kefir_list_tail(&config->compiler_flags), (void *) flag));
     return KEFIR_OK;
 }
 

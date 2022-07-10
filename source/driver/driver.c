@@ -23,6 +23,8 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 #include "kefir/core/os_error.h"
+#include "kefir/core/string_array.h"
+#include "kefir/driver/compiler_options.h"
 #include <string.h>
 #include <stdio.h>
 #include <limits.h>
@@ -153,6 +155,27 @@ static kefir_result_t driver_generate_compiler_config(struct kefir_mem *mem, str
                                            kefir_list_tail(&compiler_config->include_path),
                                            (void *) externals->musl.include_path));
     }
+
+    struct kefir_string_array extra_flags_buf;
+    REQUIRE_OK(kefir_string_array_init(mem, &extra_flags_buf));
+    kefir_result_t res = KEFIR_OK;
+    REQUIRE_CHAIN(&res, kefir_string_array_append(mem, &extra_flags_buf, ""));
+    for (const struct kefir_list_entry *iter = kefir_list_head(&config->compiler_flags);
+         res == KEFIR_OK && iter != NULL; kefir_list_next(&iter)) {
+        REQUIRE_CHAIN(&res, kefir_string_array_append(mem, &extra_flags_buf, iter->value));
+    }
+    kefir_size_t positional_args = extra_flags_buf.length;
+    REQUIRE_CHAIN(&res, kefir_parse_cli_options(
+                            mem, compiler_config, &positional_args, KefirCompilerConfigurationOptions,
+                            KefirCompilerConfigurationOptionCount, extra_flags_buf.array, extra_flags_buf.length));
+    REQUIRE_CHAIN_SET(
+        &res, positional_args == extra_flags_buf.length,
+        KEFIR_SET_ERROR(KEFIR_UI_ERROR, "Passing positional arguments directly to compiler is not permitted"));
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_string_array_free(mem, &extra_flags_buf);
+        return res;
+    });
+    REQUIRE_OK(kefir_string_array_free(mem, &extra_flags_buf));
     return KEFIR_OK;
 }
 

@@ -58,6 +58,7 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_symbo
     REQUIRE(config != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver configuration"));
     REQUIRE(command != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to driver command"));
 
+    *command = KEFIR_DRIVER_COMMAND_RUN;
     for (kefir_size_t index = 0; index < argc; index++) {
         const char *arg = argv[index];
 #define EXPECT_ARG \
@@ -238,24 +239,34 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_symbo
             const char *flag = argv[++index];
             REQUIRE_OK(
                 kefir_driver_configuration_add_linker_flag(mem, symbols, config, flag, KEFIR_DRIVER_LINKER_FLAG_EXTRA));
-        } else if (strncmp("-Wp", arg, 3) == 0 || strncmp("-Wc", arg, 3) == 0) {
-            // Preprocessor and compiler options: ignored
+        } else if (strncmp("-Wp,", arg, 4) == 0 || strncmp("-Wc,", arg, 4) == 0) {
+            // Preprocessor and compiler options
+            REQUIRE_OK(kefir_driver_configuration_add_compiler_flag(mem, symbols, config, arg + 4));
         } else if (strcmp("-Xpreprocessor", arg) == 0) {
             // Preprocessor: ignored
             EXPECT_ARG;
-            ++index;
-        } else if (strcmp("-W", arg) == 0) {
+            const char *flag = argv[++index];
+            REQUIRE_OK(kefir_driver_configuration_add_compiler_flag(mem, symbols, config, flag));
+        } else if (strncmp("-W", arg, 2) == 0) {
             // Tool options
-            EXPECT_ARG;
-            arg = argv[++index];
+            if (strlen(arg) == 2) {
+                EXPECT_ARG;
+                arg = argv[++index];
+            } else {
+                arg = &arg[2];
+            }
             if (strncmp("a,", arg, 2) == 0) {
                 // Assembler options
                 REQUIRE_OK(kefir_driver_configuration_add_assembler_extra_flag(mem, symbols, config, arg + 2));
             } else if (strncmp("l,", arg, 2) == 0) {
                 // Linker options
                 REQUIRE_OK(kefir_driver_configuration_add_assembler_extra_flag(mem, symbols, config, arg + 2));
+            } else if (strncmp("p,", arg, 2) == 0 || strncmp("c,", arg, 2) == 0) {
+                // Compiler and linker options
+                REQUIRE_OK(kefir_driver_configuration_add_compiler_flag(mem, symbols, config, arg + 2));
             } else {
-                // Other options: ignored
+                // Other options
+                REQUIRE_OK(kefir_driver_configuration_add_compiler_flag(mem, symbols, config, arg));
             }
         }
 

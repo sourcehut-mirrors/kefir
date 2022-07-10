@@ -98,6 +98,7 @@ typedef struct kefir_driver_configuration {
     struct kefir_list input_files;
     struct kefir_list assembler_flags;
     struct kefir_list linker_flags;
+    struct kefir_list compiler_flags;
     struct kefir_list defines;
     struct kefir_list undefines;
     struct kefir_list include_directories;
@@ -116,6 +117,8 @@ kefir_result_t kefir_driver_configuration_add_assembler_extra_flag(struct kefir_
 kefir_result_t kefir_driver_configuration_add_linker_flag(struct kefir_mem *, struct kefir_symbol_table *,
                                                           struct kefir_driver_configuration *, const char *,
                                                           kefir_driver_linker_flag_type_t);
+kefir_result_t kefir_driver_configuration_add_compiler_flag(struct kefir_mem *, struct kefir_symbol_table *,
+                                                            struct kefir_driver_configuration *, const char *);
 kefir_result_t kefir_driver_configuration_add_define(struct kefir_mem *, struct kefir_symbol_table *,
                                                      struct kefir_driver_configuration *, const char *, const char *);
 kefir_result_t kefir_driver_configuration_add_undefine(struct kefir_mem *, struct kefir_symbol_table *,
