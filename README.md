@@ -17,8 +17,7 @@ Kefir targets x86-64 ISA and System-V ABI. The main focus is on modern Linux env
 however Kefir also has support for modern FreeBSD and OpenBSD (base test suite is executed successfully in both environments). It's recommended to use [musl libc](https://musl.libc.org) instead of system `libc` if possible,
 because system standard library headers might contain unsupported
 compiler-specific extensions and
-thus require patching. Furthermore, as Kefir currently does not implement driver, it might be necessary to pass additional target-specific options to
-the compiler (see section `Recommended CLI options`).
+thus require patching. Kefir supports selection of target platform via `--target` command line option.
 
 ## Motivation & goals
 The main motivation of the project is deeper understanding of C programming language, as well as practical experience in
@@ -59,7 +58,7 @@ is implemented, however refactoring and bug-fixes are still on-going. At the mom
 |Lexer                      |Implementation done       |See exceptions section below                                                   |
 |Preprocessor               |Implementation done       |Basic preprocessor with no support for pragmas                                 |
 |Standard library           |Third-party library       |See `Standard library` section below                                           |
-|Command-line interface     |Implementation done       |Minimal useful implementation                                                  |
+|Command-line interface     |Implementation done       |Driver compatible with `cc` interface, as well as standalone executable        |
 
 ### Exceptions
 Following exceptions were made in C17 implementation:
@@ -116,17 +115,8 @@ running `kefir --help`.
 At the moment, Kefir is automatically tested in Ubuntu 20.04 (full range of tests), FreeBSD 13.0 and OpenBSD 7.0 (base test suite) environments.
 Arch Linux is used as primary development environment.
 
-Please note, that assembly modules produced by Kefir shall be linked with `source/runtime/amd64_sysv.s` in order to produce a working
-executable.
-
-## Recommended CLI options
-Kefir compiler does not feature driver with standard `cc` CLI interface yet, and the defaults of the compiler might be too restrictive regarding
-permitted C language constructs, thus following CLI options are recommended to switch compiler into more permissive mode (following list also enables
-support for some non-standard language extensions):
-`--feature-missing-function-return-type --feature-designated-init-colons --feature-labels-as-values --feature-non-strict-qualifiers --feature-implicit-function-decl --feature-empty-structs --feature-ext-pointer-arithmetics --feature-missing-braces-subobj --feature-statement-expressions --feature-omitted-conditional-operand --feature-int-to-pointer --feature-permissive-pointer-conv`.
-
-Furthermore, on OpenBSD environment it's recommended to add `--codegen-emulated-tls` to generate emulated TLS compatible with code generated
-by system clang compiler.
+Please note, that object files produced by Kefir shall be linked with `libkefirrt.a` (or `source/runtime/amd64_sysv.s` which is a source of the library)
+in order to produce a working executable.
 
 ## Bootstrap
 Kefir is capable of bootstraping itself (that is, compiling it's own source code). At the moment, the feature is under testing, however

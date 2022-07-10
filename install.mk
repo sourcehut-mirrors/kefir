@@ -13,11 +13,12 @@ install: $(LIBKEFIR_SO) $(BIN_DIR)/kefir
 	@cp -r --no-dereference -p "$(HEADERS_DIR)"/kefir "$(DESTDIR)"/include/kefir
 	@echo "Installing binaries..."
 	@install "$(BIN_DIR)"/kefir "$(DESTDIR)"/bin/kefircc
+	@install "$(BIN_DIR)"/kefir-standalone "$(DESTDIR)"/bin/kefir-standalone
 	@install "$(SCRIPTS_DIR)"/kefir.sh "$(DESTDIR)"/bin/kefir
 
 uninstall:
 	@echo "Removing binaries..."
-	@rm -rf "$(DESTDIR)"/bin/kefir "$(DESTDIR)"/bin/kefircc
+	@rm -rf "$(DESTDIR)"/bin/kefir "$(DESTDIR)"/bin/kefircc "$(DESTDIR)"/bin/kefir-standalone
 	@echo "Removing headers..."
 	@rm -rf "$(DESTDIR)"/include/kefir
 	@echo "Removing libraries..."

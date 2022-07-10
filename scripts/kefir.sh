@@ -20,4 +20,4 @@
 #
 
 BIN_DIR="$(dirname $0)"
-LD_LIBRARY_PATH="$BIN_DIR"/../lib:"$LD_LIBRARY_PATH" exec "$BIN_DIR"/kefircc $@
+LD_LIBRARY_PATH="$BIN_DIR"/../lib:"$LD_LIBRARY_PATH" KEFIR_RTLIB=""$BIN_DIR"/../lib/libkefirrt.a" exec "$BIN_DIR"/kefircc $@
