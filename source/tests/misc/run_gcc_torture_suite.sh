@@ -27,7 +27,7 @@ if [[ "x$TORTURE" == "x" ]]; then
     exit 1
 fi
 
-KEFIRFLAGS="--restrictive-c -W --feature-missing-function-return-type -W --feature-designated-init-colons -W --feature-labels-as-values -W --feature-implicit-function-decl -W --feature-empty-structs -W --feature-ext-pointer-arithmetics -W --feature-missing-braces-subobj -W --feature-statement-expressions -W --feature-omitted-conditional-operand -W --feature-int-to-pointer -include $(dirname $0)/torture.h"
+KEFIRFLAGS="--restrictive-c -W --feature-missing-function-return-type -W --feature-designated-init-colons -W --feature-labels-as-values -W --feature-implicit-function-decl -W --feature-empty-structs -W --feature-ext-pointer-arithmetics -W --feature-missing-braces-subobj -W --feature-statement-expressions -W --feature-omitted-conditional-operand -W --feature-int-to-pointer -include $(dirname $0)/torture.h  --target x86_64-host-default"
 SKIP_LIST="$(dirname $0)/torture.skip"
 TIMEOUT=10
 SKIPPED_TESTS=0
@@ -46,7 +46,7 @@ function run_test {(
       timeout $TIMEOUT $KEFIRCC $KEFIRFLAGS -o test.bin "$1"
       ./test.bin
     else
-      timeout $TIMEOUT $KEFIRCC $KEFIRFLAGS --target x86_64-host-none -S -o test.s "$1"
+      timeout $TIMEOUT $KEFIRCC $KEFIRFLAGS -S -o test.s "$1"
     fi
     rm -rf test.s test.bin
 )}
