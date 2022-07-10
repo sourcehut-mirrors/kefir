@@ -38,7 +38,7 @@ tasks:
       tar xvf gcc-11.2.0.tar.xz
       export TORTURE=$PWD/gcc-11.2.0/gcc/testsuite/gcc.c-torture
       export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/kefir/bin/libs
-      export KEFIRCC="$HOME/kefir/bin/kefir_dirver"
+      export KEFIRCC="$HOME/kefir/bin/kefir_driver"
       export KEFIR_RTLIB="$HOME/kefir/bin/libs/libkefirrt.a"
       export KEFIR_MUSL_INCLUDE=/usr/include/x86_64-linux-musl
       export KEFIR_MUSL_LIB=/usr/lib/x86_64-linux-musl
