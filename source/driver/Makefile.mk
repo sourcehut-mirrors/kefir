@@ -11,11 +11,11 @@ endif
 
 $(BIN_DIR)/driver/help.s.o: $(SOURCE_DIR)/driver/help.txt
 
-$(BIN_DIR)/kefir_driver: $(KEFIR_DRIVER_OBJECT_FILES) $(LIBKEFIR_SO)
+$(BIN_DIR)/kefir: $(KEFIR_DRIVER_OBJECT_FILES) $(LIBKEFIR_SO)
 	@mkdir -p $(shell dirname "$@")
 	@echo "Linking $@"
 	@$(CC) -o $@ $(KEFIR_DRIVER_OBJECT_FILES) $(KEFIR_DRIVER_LINKED_LIBS) -L $(LIB_DIR) -lkefir
 
 DEPENDENCIES += $(KEFIR_DRIVER_DEPENDENCIES)
 OBJECT_FILES += $(KEFIR_DRIVER_OBJECT_FILES)
-BINARIES += $(BIN_DIR)/kefir_driver
+BINARIES += $(BIN_DIR)/kefir

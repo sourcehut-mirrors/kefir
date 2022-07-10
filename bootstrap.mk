@@ -68,11 +68,11 @@ $(BOOTSTRAP)/driver/help.s.o: $(SOURCE)/driver/help.txt
 
 $(BOOTSTRAP)/codegen/amd64/amd64-sysv-runtime-code.s.o: $(SOURCE)/runtime/amd64_sysv.s
 
-$(BOOTSTRAP)/kefir_driver: $(KEFIR_ASM_FILES)
+$(BOOTSTRAP)/kefir: $(KEFIR_ASM_FILES)
 	@echo "Linking $@"
 	@KEFIR_LD=$(LD) $(KEFIRCC) $(KEFIR_FLAGS) $^ $(LIBC_LIBS)/crt1.o $(LIBC_LIBS)/libc.a -o $@
 
-bootstrap: $(BOOTSTRAP)/kefir_driver
+bootstrap: $(BOOTSTRAP)/kefir
 
 .ASM_FILES: $(KEFIR_ASM_FILES)
 

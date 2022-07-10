@@ -25,7 +25,7 @@ if [[ "x$DST_FILE" == "x" ]]; then
     exit -1
 fi
 
-KEFIRCC="$BIN_DIR/kefir_driver"
+KEFIRCC="$BIN_DIR/kefir"
 KEFIRFLAGS="--target x86_64-host-none"
 TMPDIR="$(mktemp -d)"
 INCLUDE_FILE="$(dirname $0)/include.h"
