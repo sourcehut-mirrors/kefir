@@ -17,5 +17,3 @@ triggers:
   - action: email
     condition: failure
     to: jprotopopov1122@gmail.com
-artifacts:
- - kefir/bootstrap/stage2/kefir
