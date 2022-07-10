@@ -43,7 +43,7 @@ tasks:
       export KEFIR_MUSL_INCLUDE=/usr/include/x86_64-linux-musl
       export KEFIR_MUSL_LIB=/usr/lib/x86_64-linux-musl
       ./kefir/source/tests/misc/run_gcc_torture_suite.sh 2>&1 | tee torture.log
-      grep -i "fatal\|abort\|timeout\|segm" torture.log && exit 1 || true
+      grep -v "Interrupted system call" torture.log | grep -i "fatal\|abort\|timeout\|segm" && exit 1 || true
 triggers:
   - action: email
     condition: failure

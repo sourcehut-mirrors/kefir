@@ -51,10 +51,10 @@ kefir_result_t kefir_set_os_errorf(const char *fmt, const char *file, unsigned i
     }
 
     if (fmt != NULL) {
-        char fmt_message[KEFIR_ERROR_PAYLOAD_LENGTH - 3] = {0};
+        char fmt_message[KEFIR_ERROR_PAYLOAD_LENGTH - 4] = {0};
         va_list args;
         va_start(args, error_ptr);
-        vsnprintf(fmt_message, KEFIR_ERROR_PAYLOAD_LENGTH, fmt, args);
+        vsnprintf(fmt_message, sizeof(fmt_message) - 1, fmt, args);
         va_end(args);
         snprintf(error->payload, KEFIR_ERROR_PAYLOAD_LENGTH, "%s (%s)", fmt_message, error->message);
         error->message = error->payload;
