@@ -22,6 +22,7 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 #include <string.h>
+#include <stdio.h>
 
 static kefir_driver_input_file_type_t detect_file_type(const char *filename) {
     const char *extension = NULL;
@@ -52,7 +53,7 @@ static kefir_driver_input_file_type_t detect_file_type(const char *filename) {
 
 kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
                                        struct kefir_driver_configuration *config, const char *const *argv,
-                                       kefir_size_t argc, kefir_driver_command_t *command) {
+                                       kefir_size_t argc, kefir_driver_command_t *command, FILE *warning_output) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(symbols != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid symbol table"));
     REQUIRE(config != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver configuration"));
@@ -290,18 +291,27 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_symbo
         // Ignored unsupported flags
         else if (strncmp("-O", arg, 2) == 0) {
             // Optimization level: ignored
+            if (warning_output != NULL) {
+                fprintf(warning_output, "Warning: Unsupported command line option '%s'\n", arg);
+            }
             if (strlen(arg) == 2) {
                 EXPECT_ARG;
                 ++index;
             }
         } else if (strncmp("-x", arg, 2) == 0) {
             // Language: ignored
+            if (warning_output != NULL) {
+                fprintf(warning_output, "Warning: Unsupported command line option '%s'\n", arg);
+            }
             if (strlen(arg) == 2) {
                 EXPECT_ARG;
                 ++index;
             }
         } else if (strncmp("-", arg, 1) == 0 || strncmp("--", arg, 2) == 0) {
             // All other non-positional arguments: ignored
+            if (warning_output != NULL) {
+                fprintf(warning_output, "Warning: Unsupported command line option '%s'\n", arg);
+            }
         }
 
         // Positional argument

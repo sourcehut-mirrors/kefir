@@ -73,7 +73,7 @@ int main(int argc, char *const *argv) {
     REQUIRE_CHAIN(&res, kefir_driver_configuration_init(&driver_config));
     REQUIRE_CHAIN(&res, kefir_driver_external_resources_init_from_env(mem, &exteral_resources, &tmpmgr));
     REQUIRE_CHAIN(&res, kefir_driver_parse_args(mem, &symbols, &driver_config, (const char *const *) argv + 1, argc - 1,
-                                                &command));
+                                                &command, stderr));
     if (res == KEFIR_OK && command == KEFIR_DRIVER_COMMAND_HELP) {
         fprintf(stdout, "%s", KefirDriverHelpContent);
     } else if (res == KEFIR_OK && command == KEFIR_DRIVER_COMMAND_VERSION) {
