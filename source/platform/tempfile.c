@@ -19,11 +19,12 @@
 */
 
 #define _DEFAULT_SOURCE
-#define _XOPEN_SOURCE 500
+#define _XOPEN_SOURCE 700
 #include "kefir/platform/tempfile.h"
 #include "kefir/core/error.h"
 #include "kefir/core/os_error.h"
 #include "kefir/core/util.h"
+#include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 #include <unistd.h>
