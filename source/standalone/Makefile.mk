@@ -14,11 +14,11 @@ endif
 
 $(BIN_DIR)/standalone/help.s.o: $(SOURCE_DIR)/standalone/help.txt
 
-$(BIN_DIR)/kefir: $(KEFIR_STANDALONE_OBJECT_FILES) $(LIBKEFIR_SO)
+$(BIN_DIR)/kefir-standalone: $(KEFIR_STANDALONE_OBJECT_FILES) $(LIBKEFIR_SO)
 	@mkdir -p $(shell dirname "$@")
 	@echo "Linking $@"
 	@$(CC) -o $@ $(KEFIR_STANDALONE_OBJECT_FILES) $(KEFIR_STANDALONE_LINKED_LIBS) -L $(LIB_DIR) -lkefir
 
 DEPENDENCIES += $(KEFIR_STANDALONE_DEPENDENCIES)
 OBJECT_FILES += $(KEFIR_STANDALONE_OBJECT_FILES)
-BINARIES += $(BIN_DIR)/kefir
+BINARIES += $(BIN_DIR)/kefir-standalone

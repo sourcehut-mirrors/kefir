@@ -31,7 +31,7 @@ else
 endif
 	@touch $@
 
-$(END2END_BIN_PATH)/%.asmgen.output: $(SOURCE_DIR)/tests/end2end/%.kefir.asmgen.c $(BIN_DIR)/kefir
+$(END2END_BIN_PATH)/%.asmgen.output: $(SOURCE_DIR)/tests/end2end/%.kefir.asmgen.c $(BIN_DIR)/kefir_driver
 	@mkdir -p $(shell dirname "$@")
 	@echo "Kefir-Translate $@"
 	@VALGRIND_OPTIONS="$(VALGRIND_OPTIONS)" MEMCHECK="$(MEMCHECK)" PLATFORM="$(PLATFORM)" AS="$(AS)" $(SOURCE_DIR)/tests/end2end/asmgen.sh $(BIN_DIR) $< $@
@@ -41,7 +41,7 @@ $(END2END_BIN_PATH)/%.test.asmgen.done: $(END2END_BIN_PATH)/%.asmgen.output
 	@diff -u $(SOURCE_DIR)/tests/end2end/$*.asmgen.expected $<
 	@touch $@
 
-$(SOURCE_DIR)/tests/end2end/%.asmgen.expected: $(SOURCE_DIR)/tests/end2end/%.kefir.asmgen.c $(BIN_DIR)/kefir
+$(SOURCE_DIR)/tests/end2end/%.asmgen.expected: $(SOURCE_DIR)/tests/end2end/%.kefir.asmgen.c $(BIN_DIR)/kefir_driver
 	@echo "Rebuilding $@"
 	@VALGRIND_OPTIONS="$(VALGRIND_OPTIONS)" MEMCHECK="$(MEMCHECK)" PLATFORM="$(PLATFORM)" AS="$(AS)" $(SOURCE_DIR)/tests/end2end/asmgen.sh $(BIN_DIR) $< $@
 
