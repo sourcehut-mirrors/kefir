@@ -25,6 +25,7 @@
 #include "kefir/core/os_error.h"
 #include "kefir/core/string_array.h"
 #include "kefir/driver/compiler_options.h"
+#include "kefir/driver/target_configuration.h"
 #include <string.h>
 #include <stdio.h>
 #include <limits.h>
@@ -157,18 +158,7 @@ static kefir_result_t driver_generate_compiler_config(struct kefir_mem *mem, str
         }
     }
 
-    if (config->target.platform == KEFIR_DRIVER_TARGET_PLATFORM_LINUX &&
-        (config->target.variant == KEFIR_DRIVER_TARGET_VARIANT_MUSL ||
-         config->target.variant == KEFIR_DRIVER_TARGET_VARIANT_DEFAULT)) {
-        REQUIRE(
-            externals->musl.include_path != NULL,
-            KEFIR_SET_ERROR(
-                KEFIR_UI_ERROR,
-                "Musl library path shall be passed as KEFIR_MUSL_INCLUDE environment variable for selected target"));
-        REQUIRE_OK(kefir_list_insert_after(mem, &compiler_config->include_path,
-                                           kefir_list_tail(&compiler_config->include_path),
-                                           (void *) externals->musl.include_path));
-    }
+    REQUIRE_OK(kefir_driver_apply_target_configuration(mem, externals, compiler_config, NULL, NULL, &config->target));
 
     struct kefir_string_array extra_flags_buf;
     REQUIRE_OK(kefir_string_array_init(mem, &extra_flags_buf));
@@ -434,28 +424,7 @@ static kefir_result_t driver_run_input_file(struct kefir_mem *mem, struct kefir_
 static kefir_result_t driver_run_linker(struct kefir_mem *mem, struct kefir_driver_configuration *config,
                                         const struct kefir_driver_external_resources *externals,
                                         struct kefir_driver_linker_configuration *linker_config) {
-    if (config->target.platform == KEFIR_DRIVER_TARGET_PLATFORM_LINUX &&
-        (config->target.variant == KEFIR_DRIVER_TARGET_VARIANT_MUSL ||
-         config->target.variant == KEFIR_DRIVER_TARGET_VARIANT_DEFAULT)) {
-        REQUIRE(externals->musl.library_path != NULL,
-                KEFIR_SET_ERROR(
-                    KEFIR_UI_ERROR,
-                    "Musl library path shall be passed as KEFIR_MUSL_LIB environment variable for selected target"));
-        char libpath[PATH_MAX + 1];
-        snprintf(libpath, sizeof(libpath) - 1, "%s/crt1.o", externals->musl.library_path);
-        REQUIRE_OK(kefir_driver_linker_configuration_add_linked_file(mem, linker_config, libpath));
-        snprintf(libpath, sizeof(libpath) - 1, "%s/libc.a", externals->musl.library_path);
-        REQUIRE_OK(kefir_driver_linker_configuration_add_linked_file(mem, linker_config, libpath));
-    }
-
-    if (config->target.variant != KEFIR_DRIVER_TARGET_VARIANT_NONE) {
-        REQUIRE(
-            externals->runtime_library != NULL,
-            KEFIR_SET_ERROR(
-                KEFIR_UI_ERROR,
-                "Kefir runtime library path shall be passed as KEFIR_RTLIB environment variable for selected target"));
-        REQUIRE_OK(kefir_driver_linker_configuration_add_linked_file(mem, linker_config, externals->runtime_library));
-    }
+    REQUIRE_OK(kefir_driver_apply_target_configuration(mem, externals, NULL, NULL, linker_config, &config->target));
 
     struct kefir_process linker_process;
     REQUIRE_OK(kefir_process_init(&linker_process));

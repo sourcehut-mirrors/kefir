@@ -33,7 +33,6 @@ typedef enum kefir_driver_target_platform {
 
 typedef enum kefir_driver_target_variant {
     KEFIR_DRIVER_TARGET_VARIANT_MUSL,
-    KEFIR_DRIVER_TARGET_VARIANT_DEFAULT,
     KEFIR_DRIVER_TARGET_VARIANT_NONE
 } kefir_driver_target_variant_t;
 

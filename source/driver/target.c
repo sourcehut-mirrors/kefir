@@ -52,13 +52,21 @@ static kefir_result_t match_platform(const char *spec, struct kefir_driver_targe
     return KEFIR_OK;
 }
 
+static kefir_result_t select_default_variant(struct kefir_driver_target *target) {
+    target->variant = KEFIR_DRIVER_TARGET_VARIANT_NONE;
+    if (target->arch == KEFIR_DRIVER_TARGET_ARCH_X86_64 && target->platform == KEFIR_DRIVER_TARGET_PLATFORM_LINUX) {
+        target->variant = KEFIR_DRIVER_TARGET_VARIANT_MUSL;
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t match_variant(const char *spec, struct kefir_driver_target *target) {
     if (strcmp("none", spec) == 0) {
         target->variant = KEFIR_DRIVER_TARGET_VARIANT_NONE;
     } else if (strcmp("musl", spec) == 0) {
         target->variant = KEFIR_DRIVER_TARGET_VARIANT_MUSL;
     } else if (strcmp("default", spec) == 0) {
-        target->variant = KEFIR_DRIVER_TARGET_VARIANT_DEFAULT;
+        REQUIRE_OK(select_default_variant(target));
     } else {
         return KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Variant specification is not found");
     }
@@ -86,6 +94,6 @@ kefir_result_t kefir_driver_target_default(struct kefir_driver_target *target) {
 #elif defined(KEFIR_OPENBSD_HOST_PLATFORM)
     target->platform = KEFIR_DRIVER_TARGET_PLATFORM_OPENBSD;
 #endif
-    target->variant = KEFIR_DRIVER_TARGET_VARIANT_DEFAULT;
+    REQUIRE_OK(select_default_variant(target));
     return KEFIR_OK;
 }
