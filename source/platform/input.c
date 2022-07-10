@@ -42,7 +42,7 @@ kefir_result_t kefir_cli_input_open(struct kefir_mem *mem, struct kefir_cli_inpu
     int fd;
     if (filepath != NULL) {
         fd = open(filepath, O_RDONLY);
-        REQUIRE(fd >= 0, KEFIR_SET_OS_ERROR("Failed to open file"));
+        REQUIRE(fd >= 0, KEFIR_SET_OS_ERRORF("Failed to open file %s", filepath));
 
         struct stat statbuf;
         REQUIRE(fstat(fd, &statbuf) >= 0, KEFIR_SET_OS_ERROR("Failed to fstat file"));

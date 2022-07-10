@@ -36,7 +36,7 @@ OPTIONS:
 TARGETS:
     Target platforms are specified in format <arch>-<platform>-<variant> where
         arch: x86_64
-        platform: linux, freebsd, openbsd
+        platform: linux, freebsd, openbsd, host
         variant: none, musl, default
     Variant "none" avoids any implicit library linkages and include path. On linux, "default" is equivalent
     to "musl", on other platforms -- to "none".

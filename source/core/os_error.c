@@ -22,6 +22,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
+#include <stdarg.h>
 
 kefir_result_t kefir_set_os_error(const char *message, const char *file, unsigned int line,
                                   struct kefir_error **error_ptr) {
@@ -33,6 +34,29 @@ kefir_result_t kefir_set_os_error(const char *message, const char *file, unsigne
 
     if (message != NULL) {
         snprintf(error->payload, KEFIR_ERROR_PAYLOAD_LENGTH, "%s (%s)", message, error->message);
+        error->message = error->payload;
+    }
+    if (error_ptr != NULL) {
+        *error_ptr = error;
+    }
+    return res;
+}
+
+kefir_result_t kefir_set_os_errorf(const char *fmt, const char *file, unsigned int line, struct kefir_error **error_ptr,
+                                   ...) {
+    struct kefir_error *error = NULL;
+    kefir_result_t res = kefir_set_error(KEFIR_OS_ERROR, strerror(errno), file, line, &error);
+    if (error == NULL) {
+        return res;
+    }
+
+    if (fmt != NULL) {
+        char fmt_message[KEFIR_ERROR_PAYLOAD_LENGTH - 3] = {0};
+        va_list args;
+        va_start(args, error_ptr);
+        vsnprintf(fmt_message, KEFIR_ERROR_PAYLOAD_LENGTH, fmt, args);
+        va_end(args);
+        snprintf(error->payload, KEFIR_ERROR_PAYLOAD_LENGTH, "%s (%s)", fmt_message, error->message);
         error->message = error->payload;
     }
     if (error_ptr != NULL) {

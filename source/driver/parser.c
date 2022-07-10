@@ -128,7 +128,7 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_symbo
             const char *value = NULL;
             if (delim != NULL) {
                 value = delim + 1;
-                char name_buf[1024];
+                char name_buf[1024] = {0};
                 strncpy(name_buf, name, MIN(sizeof(name_buf) - 1, (kefir_size_t) (delim - name)));
                 name = kefir_symbol_table_insert(mem, symbols, name_buf, NULL);
                 REQUIRE(name != NULL,

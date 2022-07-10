@@ -25,17 +25,16 @@ if [[ "x$DST_FILE" == "x" ]]; then
     exit -1
 fi
 
-KEFIRCC="$BIN_DIR/kefir"
-KEFIRFLAGS="--feature-labels-as-values --feature-statement-expressions --feature-omitted-conditional-operand --feature-permissive-pointer-conv"
+KEFIRCC="$BIN_DIR/kefir_driver"
 INCLUDE_FILE="$(dirname $0)/include.h"
 export LD_LIBRARY_PATH="$BIN_DIR/libs"
 
 set -e
 
 if [[ "x$MEMCHECK" == "xyes" ]]; then
-    valgrind $VALGRIND_OPTIONS "$KEFIRCC" -I "$(dirname $SRC_FILE)" -D KEFIR_END2END_TEST -U __STDC__ --define "KEFIR_END2END=   101   " --pp-timestamp=1633204489 \
-        --include "$INCLUDE_FILE" $KEFIRFLAGS "$SRC_FILE" > "$DST_FILE"
+    valgrind $VALGRIND_OPTIONS "$KEFIRCC" --target x86_64-linux-none -I "$(dirname $SRC_FILE)" -D KEFIR_END2END_TEST -U __STDC__ -D "KEFIR_END2END=   101   " -W --pp-timestamp=1633204489 \
+        -include "$INCLUDE_FILE" "$SRC_FILE" -S -o "$DST_FILE"
 else
-    "$KEFIRCC" -I "$(dirname $SRC_FILE)" -D KEFIR_END2END_TEST -U __STDC__ --define "KEFIR_END2END=   101   " --pp-timestamp=1633204489 \
-        --include "$INCLUDE_FILE" $KEFIRFLAGS "$SRC_FILE" > "$DST_FILE"
+    "$KEFIRCC" -I "$(dirname $SRC_FILE)"  --target x86_64-linux-none -D KEFIR_END2END_TEST -U __STDC__ --define "KEFIR_END2END=   101   " --pp-timestamp=1633204489 \
+        -include "$INCLUDE_FILE" "$SRC_FILE" -S -o "$DST_FILE"
 fi

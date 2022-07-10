@@ -22,25 +22,17 @@ if [[ "x$KEFIRCC" == "x" ]]; then
     exit 1
 fi
 
-if [[ "x$LIBC" == "x" ]]; then
-    echo "Define LIBC environment variable"
-    exit 1
-fi
-
 if [[ "x$TORTURE" == "x" ]]; then
     echo "Define TORTURE environment variable"
     exit 1
 fi
 
-CC="$KEFIRCC --feature-missing-function-return-type --feature-designated-init-colons --feature-labels-as-values --feature-implicit-function-decl --feature-empty-structs --feature-ext-pointer-arithmetics --feature-missing-braces-subobj --feature-statement-expressions --feature-omitted-conditional-operand --feature-int-to-pointer --include $(dirname $0)/torture.h"
+KEFIRFLAGS="--restrictive-c -W --feature-missing-function-return-type -W --feature-designated-init-colons -W --feature-labels-as-values -W --feature-implicit-function-decl -W --feature-empty-structs -W --feature-ext-pointer-arithmetics -W --feature-missing-braces-subobj -W --feature-statement-expressions -W --feature-omitted-conditional-operand -W --feature-int-to-pointer -include $(dirname $0)/torture.h"
 SKIP_LIST="$(dirname $0)/torture.skip"
 TIMEOUT=10
 SKIPPED_TESTS=0
 FAILED_TESTS=0
 TOTAL_TESTS=0
-
-KEFIRRT=runtime.o
-$KEFIRCC --dump-runtime-code | as -o $KEFIRRT
 
 ulimit -s 64000 # Stack size=64M
 
@@ -50,13 +42,13 @@ function is_test_skipped {
 
 function run_test {(
     set -e
-    timeout $TIMEOUT $CC -o test.s "$1"
-    as -o test.o test.s
     if [[ "x$2" == "xexecute" ]]; then
-        ld -o test.bin test.o $KEFIRRT $LIBC
-        ./test.bin
+      timeout $TIMEOUT $KEFIRCC $KEFIRFLAGS -o test.bin "$1"
+      ./test.bin
+    else
+      timeout $TIMEOUT $KEFIRCC $KEFIRFLAGS --target x86_64-host-none -S -o test.s "$1"
     fi
-    rm -rf test.s test.o test.bin
+    rm -rf test.s test.bin
 )}
 
 function run_tests {

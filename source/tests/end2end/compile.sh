@@ -25,14 +25,14 @@ if [[ "x$DST_FILE" == "x" ]]; then
     exit -1
 fi
 
-KEFIRCC="$BIN_DIR/kefir"
-KEFIRFLAGS="--feature-labels-as-values --feature-statement-expressions --feature-omitted-conditional-operand --feature-permissive-pointer-conv"
+KEFIRCC="$BIN_DIR/kefir_driver"
+KEFIRFLAGS="--target x86_64-host-none"
 TMPDIR="$(mktemp -d)"
 INCLUDE_FILE="$(dirname $0)/include.h"
 export LD_LIBRARY_PATH="$BIN_DIR/libs"
 
 if [[ "x$PLATFORM" == "xopenbsd" ]]; then
-    KEFIRFLAGS="$KEFIRFLAGS --codegen-emulated-tls -D__OpenBSD__"
+    KEFIRFLAGS="$KEFIRFLAGS -D__OpenBSD__"
 fi
 
 function cleanup {
@@ -47,10 +47,9 @@ if [[ -f "$SRC_FILE.profile" ]]; then
 fi
 
 if [[ "x$MEMCHECK" == "xyes" ]]; then
-    valgrind $VALGRIND_OPTIONS "$KEFIRCC" -I "$(dirname $SRC_FILE)" -D KEFIR_END2END_TEST -U __STDC__ --define "KEFIR_END2END=   101   " --pp-timestamp=1633204489 \
-        --include "$INCLUDE_FILE" $KEFIRFLAGS "$SRC_FILE" > "$TMPDIR/module.asm"
+    valgrind $VALGRIND_OPTIONS "$KEFIRCC" $KEFIRFLAGS -I "$(dirname $SRC_FILE)" -D KEFIR_END2END_TEST -U __STDC__ -D "KEFIR_END2END=   101   " -W --pp-timestamp=1633204489 \
+        -include "$INCLUDE_FILE" "$SRC_FILE" -c -o "$DST_FILE"
 else
-    "$KEFIRCC" -I "$(dirname $SRC_FILE)" -D KEFIR_END2END_TEST -U __STDC__ --define "KEFIR_END2END=   101   " --pp-timestamp=1633204489 \
-        --include "$INCLUDE_FILE" $KEFIRFLAGS "$SRC_FILE" > "$TMPDIR/module.asm"
+    "$KEFIRCC" -I "$(dirname $SRC_FILE)" $KEFIRFLAGS -D KEFIR_END2END_TEST -U __STDC__ -D "KEFIR_END2END=   101   " -W --pp-timestamp=1633204489 \
+        -include "$INCLUDE_FILE" "$SRC_FILE" -c -o "$DST_FILE"
 fi
-$AS -o "$DST_FILE" "$TMPDIR/module.asm"

@@ -36,6 +36,17 @@ static kefir_result_t match_arch(const char *spec, struct kefir_driver_target *t
     return KEFIR_OK;
 }
 
+static kefir_result_t select_host_platform(struct kefir_driver_target *target) {
+#ifdef KEFIR_LINUX_HOST_PLATFORM
+    target->platform = KEFIR_DRIVER_TARGET_PLATFORM_LINUX;
+#elif defined(KEFIR_FREEBSD_HOST_PLATFORM)
+    target->platform = KEFIR_DRIVER_TARGET_PLATFORM_FREEBSD;
+#elif defined(KEFIR_OPENBSD_HOST_PLATFORM)
+    target->platform = KEFIR_DRIVER_TARGET_PLATFORM_OPENBSD;
+#endif
+    return KEFIR_OK;
+}
+
 static kefir_result_t match_platform(const char *spec, struct kefir_driver_target *target, const char **next) {
     const char *delim = strchr(spec, '-');
     REQUIRE(delim != NULL, KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Platform specification is not found"));
@@ -45,6 +56,8 @@ static kefir_result_t match_platform(const char *spec, struct kefir_driver_targe
         target->platform = KEFIR_DRIVER_TARGET_PLATFORM_FREEBSD;
     } else if (strncmp("openbsd", spec, delim - spec) == 0) {
         target->platform = KEFIR_DRIVER_TARGET_PLATFORM_OPENBSD;
+    } else if (strncmp("host", spec, delim - spec) == 0) {
+        REQUIRE_OK(select_host_platform(target));
     } else {
         return KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Platform specification is not found");
     }
@@ -87,13 +100,7 @@ kefir_result_t kefir_driver_target_default(struct kefir_driver_target *target) {
     REQUIRE(target != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to driver target"));
 
     target->arch = KEFIR_DRIVER_TARGET_ARCH_X86_64;
-#ifdef KEFIR_LINUX_HOST_PLATFORM
-    target->platform = KEFIR_DRIVER_TARGET_PLATFORM_LINUX;
-#elif defined(KEFIR_FREEBSD_HOST_PLATFORM)
-    target->platform = KEFIR_DRIVER_TARGET_PLATFORM_FREEBSD;
-#elif defined(KEFIR_OPENBSD_HOST_PLATFORM)
-    target->platform = KEFIR_DRIVER_TARGET_PLATFORM_OPENBSD;
-#endif
+    REQUIRE_OK(select_host_platform(target));
     REQUIRE_OK(select_default_variant(target));
     return KEFIR_OK;
 }

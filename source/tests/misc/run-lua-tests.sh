@@ -19,11 +19,10 @@
 
 # Compile Lua interpreter with Kefir and run Lua basic test suite
 
-set -e
+set -xe
 
 KEFIRCC="$1"
-KEFIRRT="$2"
-BUILDDIR="$3"
+BUILDDIR="$2"
 LUA_VERSION="5.4.3"
 SCRIPTDIR="$(realpath $(dirname $0))"
 
@@ -46,54 +45,44 @@ echo "Unpacking Lua..."
 tar xvf "$LUA_ARCHIVE"
 tar xvf "$LUA_TESTS_ARCHIVE"
 
-echo "Building Lua..."
 pushd "$LUA_DIR"
-mkdir bin
-for file in $(find src -maxdepth 1 -mindepth 1 -name "*.c"); do
-  echo "        $file..."
-  $KEFIRCC -I "$(pwd)/src" -D _GNU_SOURCE "$file" > "$(pwd)/bin/$(basename $file).asm"
-done
 
-echo "Assembling Lua..."
-find bin -name "*.asm" -exec as -o {}.o {} \;
-as "$KEFIRRT" -o bin/runtime.o
-
-echo "Linking Lua..."
-musl-gcc -static -no-pie -o bin/lua \
-	bin/lapi.c.asm.o \
-	bin/lauxlib.c.asm.o \
-	bin/lbaselib.c.asm.o \
-	bin/lcode.c.asm.o \
-	bin/lcorolib.c.asm.o \
-	bin/lctype.c.asm.o \
-	bin/ldblib.c.asm.o \
-	bin/ldebug.c.asm.o \
-	bin/ldo.c.asm.o \
-	bin/ldump.c.asm.o \
-	bin/lfunc.c.asm.o \
-	bin/lgc.c.asm.o \
-	bin/linit.c.asm.o \
-	bin/liolib.c.asm.o \
-	bin/llex.c.asm.o \
-	bin/lmathlib.c.asm.o \
-	bin/lmem.c.asm.o \
-	bin/loadlib.c.asm.o \
-	bin/lobject.c.asm.o \
-	bin/lopcodes.c.asm.o \
-	bin/loslib.c.asm.o \
-	bin/lparser.c.asm.o \
-	bin/lstate.c.asm.o \
-	bin/lstring.c.asm.o \
-	bin/lstrlib.c.asm.o \
-	bin/ltable.c.asm.o \
-	bin/ltablib.c.asm.o \
-	bin/ltm.c.asm.o \
-	bin/lua.c.asm.o \
-	bin/lundump.c.asm.o \
-	bin/lutf8lib.c.asm.o \
-	bin/lvm.c.asm.o \
-	bin/lzio.c.asm.o \
-	bin/runtime.o
+echo "Building Lua..."
+mkdir -p bin
+"$KEFIRCC" -static -o bin/lua \
+	$PWD/src/lapi.c \
+	$PWD/src/lauxlib.c \
+	$PWD/src/lbaselib.c \
+	$PWD/src/lcode.c \
+	$PWD/src/lcorolib.c \
+	$PWD/src/lctype.c \
+	$PWD/src/ldblib.c \
+	$PWD/src/ldebug.c \
+	$PWD/src/ldo.c \
+	$PWD/src/ldump.c \
+	$PWD/src/lfunc.c \
+	$PWD/src/lgc.c \
+	$PWD/src/linit.c \
+	$PWD/src/liolib.c \
+	$PWD/src/llex.c \
+	$PWD/src/lmathlib.c \
+	$PWD/src/lmem.c \
+	$PWD/src/loadlib.c \
+	$PWD/src/lobject.c \
+	$PWD/src/lopcodes.c \
+	$PWD/src/loslib.c \
+	$PWD/src/lparser.c \
+	$PWD/src/lstate.c \
+	$PWD/src/lstring.c \
+	$PWD/src/lstrlib.c \
+	$PWD/src/ltable.c \
+	$PWD/src/ltablib.c \
+	$PWD/src/ltm.c \
+	$PWD/src/lua.c \
+	$PWD/src/lundump.c \
+	$PWD/src/lutf8lib.c \
+	$PWD/src/lvm.c \
+	$PWD/src/lzio.c
 
 popd
 

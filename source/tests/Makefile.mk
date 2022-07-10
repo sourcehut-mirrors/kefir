@@ -1,4 +1,4 @@
-VALGRIND_OPTIONS=-q --trace-children=yes --track-origins=yes --leak-check=full --error-exitcode=127
+VALGRIND_OPTIONS=-q --trace-children=no --track-origins=yes --leak-check=full --error-exitcode=127
 CC_TEST_FLAGS=-no-pie
 
 ifeq ($(PLATFORM),freebsd)

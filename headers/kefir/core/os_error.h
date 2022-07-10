@@ -25,7 +25,9 @@
 #include "kefir/core/error.h"
 
 kefir_result_t kefir_set_os_error(const char *, const char *, unsigned int, struct kefir_error **);
+kefir_result_t kefir_set_os_errorf(const char *, const char *, unsigned int, struct kefir_error **, ...);
 
 #define KEFIR_SET_OS_ERROR(_msg) kefir_set_os_error((_msg), __FILE__, __LINE__, NULL)
+#define KEFIR_SET_OS_ERRORF(_msg, ...) kefir_set_os_errorf((_msg), __FILE__, __LINE__, NULL, __VA_ARGS__)
 
 #endif

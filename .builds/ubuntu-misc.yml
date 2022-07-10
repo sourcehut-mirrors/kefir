@@ -14,12 +14,15 @@ sources:
 tasks:
   - kefircc: |
       cd kefir
-      make ./bin/kefir OPT=-O2 -j$(nproc)
+      make all OPT=-O2 -j$(nproc)
   - lua_tests: |
       cd kefir
       export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(pwd)/bin/libs
       export LC_ALL=C.UTF-8
-      ./source/tests/misc/run-lua-tests.sh "$(pwd)/bin/kefir -I /usr/include/x86_64-linux-musl" "$(pwd)/source/runtime/amd64_sysv.s" "$(pwd)/bin/lua-test"
+      export KEFIR_MUSL_INCLUDE=/usr/include/x86_64-linux-musl
+      export KEFIR_MUSL_LIB=/usr/lib/x86_64-linux-musl
+      export KEFIR_RTLIB=$PWD/bin/libs/libkefirrt.a
+      ./source/tests/misc/run-lua-tests.sh "$(pwd)/bin/kefir_driver" "$(pwd)/bin/lua-test"
   - c_testsuite: |
       as -o rt.o kefir/source/runtime/amd64_sysv.s
       cd c-testsuite
@@ -35,8 +38,10 @@ tasks:
       tar xvf gcc-11.2.0.tar.xz
       export TORTURE=$PWD/gcc-11.2.0/gcc/testsuite/gcc.c-torture
       export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/kefir/bin/libs
-      export KEFIRCC="$HOME/kefir/bin/kefir -I /usr/include/x86_64-linux-musl"
-      export LIBC="/usr/lib/x86_64-linux-musl/crt1.o /usr/lib/x86_64-linux-musl/libc.a" 
+      export KEFIRCC="$HOME/kefir/bin/kefir_dirver"
+      export KEFIR_RTLIB="$HOME/kefir/bin/libs/libkefirrt.a"
+      export KEFIR_MUSL_INCLUDE=/usr/include/x86_64-linux-musl
+      export KEFIR_MUSL_LIB=/usr/lib/x86_64-linux-musl
       ./kefir/source/tests/misc/run_gcc_torture_suite.sh 2>&1 | tee torture.log
       grep -i "fatal\|abort\|timeout\|segm" torture.log && exit 1 || true
 triggers:
