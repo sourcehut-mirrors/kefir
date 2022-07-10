@@ -24,14 +24,15 @@ tasks:
       export KEFIR_RTLIB=$PWD/bin/libs/libkefirrt.a
       ./source/tests/misc/run-lua-tests.sh "$(pwd)/bin/kefir_driver" "$(pwd)/bin/lua-test"
   - c_testsuite: |
-      as -o rt.o kefir/source/runtime/amd64_sysv.s
       cd c-testsuite
       export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/kefir/bin/libs
-      export KEFIRCC="$HOME/kefir/bin/kefir"
-      export KEFIRRT="$HOME/rt.o /usr/lib/x86_64-linux-musl/crt1.o /usr/lib/x86_64-linux-musl/libc.a"
-      export CFLAGS="-I /usr/include/x86_64-linux-musl --feature-non-strict-qualifiers"
+      export KEFIRCC="$HOME/kefir/bin/kefir_driver"
+      export KEFIR_RTLIB="$HOME/kefir/bin/libs/libkefirrt.a"
+      export KEFIR_MUSL_INCLUDE="/usr/include/x86_64-linux-musl"
+      export KEFIR_MUSL_LIB="/usr/lib/x86_64-linux-musl"
+      export CFLAGS=""
       export LC_ALL=C.UTF-8 
-      ./single-exec kefircc | tee ~/c-tests.log
+      ./single-exec kefir | tee ~/c-tests.log
       [[ "x$(cat ~/c-tests.log | scripts/tapsummary | grep 'fail 0' | wc -l)" == "x1" ]] || exit 1
   - gcc_torture: |
       wget ftp://ftp.gnu.org/gnu/gcc/gcc-11.2.0/gcc-11.2.0.tar.xz
