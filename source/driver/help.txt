@@ -30,6 +30,8 @@ OPTIONS:
     -Wl,option                          Pass "option" to linking phase as command line option
     -Xlinker option                     Pass "option" to linking phase as command line option
     -Woption                            Pass "option" to compiling phase as command line option
+    --restrictive-c                     Enable restrictive compiling mode with C extensions disabled
+    --permissive-c                      Enable permissive compiling mode with C extensions enabled [default]
 
 TARGETS:
     Target platforms are specified in format <arch>-<platform>-<variant> where

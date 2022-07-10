@@ -103,6 +103,12 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_symbo
                 res = KEFIR_SET_ERRORF(KEFIR_UI_ERROR, "Unknown target '%s'", target);
             }
             REQUIRE_OK(res);
+        } else if (strcmp("--restrictive-c", arg) == 0) {
+            // Enable restrictive compiler mode
+            config->flags.restrictive_mode = true;
+        } else if (strcmp("--permissive-c", arg) == 0) {
+            // Enable permissive compiler mode
+            config->flags.restrictive_mode = false;
         }
 
         // Preprocessor flags

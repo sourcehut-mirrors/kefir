@@ -98,6 +98,20 @@ static kefir_result_t driver_generate_compiler_config(struct kefir_mem *mem, str
         config->stage == KEFIR_DRIVER_STAGE_PREPROCESS || config->stage == KEFIR_DRIVER_STAGE_PREPROCESS_SAVE
             ? KEFIR_COMPILER_RUNNER_ACTION_PREPROCESS
             : KEFIR_COMPILER_RUNNER_ACTION_DUMP_ASSEMBLY;
+    if (!config->flags.restrictive_mode) {
+        compiler_config->features.missing_function_return_type = true;
+        compiler_config->features.designated_initializer_colons = true;
+        compiler_config->features.labels_as_values = true;
+        compiler_config->features.non_strict_qualifiers = true;
+        compiler_config->features.implicit_function_declaration = true;
+        compiler_config->features.empty_structs = true;
+        compiler_config->features.ext_pointer_arithmetics = true;
+        compiler_config->features.missing_braces_subobject = true;
+        compiler_config->features.statement_expressions = true;
+        compiler_config->features.omitted_conditional_operand = true;
+        compiler_config->features.int_to_pointer = true;
+        compiler_config->features.permissive_pointer_conv = true;
+    }
     for (const struct kefir_list_entry *iter = kefir_list_head(&config->include_directories); iter != NULL;
          kefir_list_next(&iter)) {
         ASSIGN_DECL_CAST(const char *, include_dir, iter->value);

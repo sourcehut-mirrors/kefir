@@ -104,6 +104,10 @@ typedef struct kefir_driver_configuration {
     struct kefir_list include_directories;
     struct kefir_list include_files;
     struct kefir_driver_target target;
+
+    struct {
+        kefir_bool_t restrictive_mode;
+    } flags;
 } kefir_driver_configuration_t;
 
 kefir_result_t kefir_driver_configuration_init(struct kefir_driver_configuration *);
