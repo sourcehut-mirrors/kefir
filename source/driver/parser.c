@@ -78,6 +78,15 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_symbo
         } else if (strcmp("-P", arg) == 0) {
             // Preprocess and save
             config->stage = KEFIR_DRIVER_STAGE_PREPROCESS_SAVE;
+        } else if (strcmp("--print-tokens", arg) == 0) {
+            // Print tokens
+            config->stage = KEFIR_DRIVER_STAGE_PRINT_TOKENS;
+        } else if (strcmp("--print-ast", arg) == 0) {
+            // Print AST
+            config->stage = KEFIR_DRIVER_STAGE_PRINT_AST;
+        } else if (strcmp("--print-ir", arg) == 0) {
+            // Print IR
+            config->stage = KEFIR_DRIVER_STAGE_PRINT_IR;
         }
 
         // Generic flags

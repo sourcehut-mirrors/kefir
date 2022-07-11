@@ -53,6 +53,9 @@ kefir_result_t kefir_driver_linker_configuration_add_extra_argument(struct kefir
 typedef enum kefir_driver_stage {
     KEFIR_DRIVER_STAGE_PREPROCESS,
     KEFIR_DRIVER_STAGE_PREPROCESS_SAVE,
+    KEFIR_DRIVER_STAGE_PRINT_TOKENS,
+    KEFIR_DRIVER_STAGE_PRINT_AST,
+    KEFIR_DRIVER_STAGE_PRINT_IR,
     KEFIR_DRIVER_STAGE_COMPILE,
     KEFIR_DRIVER_STAGE_ASSEMBLE,
     KEFIR_DRIVER_STAGE_LINK

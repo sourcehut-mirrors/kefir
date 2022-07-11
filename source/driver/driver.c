@@ -95,10 +95,31 @@ static kefir_result_t driver_generate_compiler_config(struct kefir_mem *mem, str
                                                       struct kefir_compiler_runner_configuration *compiler_config) {
     REQUIRE_OK(kefir_compiler_runner_configuration_init(compiler_config));
 
-    compiler_config->action =
-        config->stage == KEFIR_DRIVER_STAGE_PREPROCESS || config->stage == KEFIR_DRIVER_STAGE_PREPROCESS_SAVE
-            ? KEFIR_COMPILER_RUNNER_ACTION_PREPROCESS
-            : KEFIR_COMPILER_RUNNER_ACTION_DUMP_ASSEMBLY;
+    switch (config->stage) {
+        case KEFIR_DRIVER_STAGE_PREPROCESS:
+        case KEFIR_DRIVER_STAGE_PREPROCESS_SAVE:
+            compiler_config->action = KEFIR_COMPILER_RUNNER_ACTION_PREPROCESS;
+            break;
+
+        case KEFIR_DRIVER_STAGE_PRINT_TOKENS:
+            compiler_config->action = KEFIR_COMPILER_RUNNER_ACTION_DUMP_TOKENS;
+            break;
+
+        case KEFIR_DRIVER_STAGE_PRINT_AST:
+            compiler_config->action = KEFIR_COMPILER_RUNNER_ACTION_DUMP_AST;
+            break;
+
+        case KEFIR_DRIVER_STAGE_PRINT_IR:
+            compiler_config->action = KEFIR_COMPILER_RUNNER_ACTION_DUMP_IR;
+            break;
+
+        case KEFIR_DRIVER_STAGE_COMPILE:
+        case KEFIR_DRIVER_STAGE_ASSEMBLE:
+        case KEFIR_DRIVER_STAGE_LINK:
+            compiler_config->action = KEFIR_COMPILER_RUNNER_ACTION_DUMP_ASSEMBLY;
+            break;
+    }
+
     if (!config->flags.restrictive_mode) {
         compiler_config->features.missing_function_return_type = true;
         compiler_config->features.designated_initializer_colons = true;
@@ -391,7 +412,10 @@ static kefir_result_t driver_run_input_file(struct kefir_mem *mem, struct kefir_
         } break;
 
         case KEFIR_DRIVER_STAGE_PREPROCESS:
-        case KEFIR_DRIVER_STAGE_PREPROCESS_SAVE: {
+        case KEFIR_DRIVER_STAGE_PREPROCESS_SAVE:
+        case KEFIR_DRIVER_STAGE_PRINT_TOKENS:
+        case KEFIR_DRIVER_STAGE_PRINT_AST:
+        case KEFIR_DRIVER_STAGE_PRINT_IR: {
             char object_filename[PATH_MAX + 1];
             if (config->output_file != NULL) {
                 output_filename = config->output_file;
@@ -453,6 +477,9 @@ static kefir_result_t driver_run_impl(struct kefir_mem *mem, struct kefir_driver
 
         case KEFIR_DRIVER_STAGE_PREPROCESS:
         case KEFIR_DRIVER_STAGE_PREPROCESS_SAVE:
+        case KEFIR_DRIVER_STAGE_PRINT_TOKENS:
+        case KEFIR_DRIVER_STAGE_PRINT_AST:
+        case KEFIR_DRIVER_STAGE_PRINT_IR:
         case KEFIR_DRIVER_STAGE_COMPILE:
             REQUIRE_OK(driver_generate_compiler_config(mem, config, externals, compiler_config));
             // Intentionally left blank
