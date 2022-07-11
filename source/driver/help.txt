@@ -32,6 +32,10 @@ OPTIONS:
     -Woption                            Pass "option" to compiling phase as command line option
     --restrictive-c                     Enable restrictive compiling mode with C extensions disabled
     --permissive-c                      Enable permissive compiling mode with C extensions enabled [default]
+    --print-tokens                      Print tokenized source in JSON format
+    --print-ast                         Print AST in JSON format
+    --print-ir                          Print intermediate representation in JSON format
+    --print-runtime-code                Print runtime code for selected target
 
 TARGETS:
     Target platforms are specified in format <arch>-<platform>-<variant> where

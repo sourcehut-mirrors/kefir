@@ -118,6 +118,10 @@ static kefir_result_t driver_generate_compiler_config(struct kefir_mem *mem, str
         case KEFIR_DRIVER_STAGE_LINK:
             compiler_config->action = KEFIR_COMPILER_RUNNER_ACTION_DUMP_ASSEMBLY;
             break;
+
+        case KEFIR_DRIVER_STAGE_PRINT_RUNTIME_CODE:
+            compiler_config->action = KEFIR_COMPILER_RUNNER_ACTION_DUMP_RUNTIME_CODE;
+            break;
     }
 
     if (!config->flags.restrictive_mode) {
@@ -168,18 +172,12 @@ static kefir_result_t driver_generate_compiler_config(struct kefir_mem *mem, str
                                            kefir_list_tail(&compiler_config->undefines), (void *) identifier));
     }
 
-    if (config->target.arch == KEFIR_DRIVER_TARGET_ARCH_X86_64) {
-        if (config->target.platform == KEFIR_DRIVER_TARGET_PLATFORM_LINUX ||
-            config->target.platform == KEFIR_DRIVER_TARGET_PLATFORM_FREEBSD) {
-            compiler_config->target_profile = "amd64-sysv-gas";
-            compiler_config->codegen.emulated_tls = false;
-        } else if (config->target.platform == KEFIR_DRIVER_TARGET_PLATFORM_OPENBSD) {
-            compiler_config->target_profile = "amd64-sysv-gas";
-            compiler_config->codegen.emulated_tls = true;
-        }
+    if (config->stage == KEFIR_DRIVER_STAGE_PRINT_RUNTIME_CODE) {
+        REQUIRE_OK(kefir_driver_apply_target_profile_configuration(compiler_config, &config->target));
+    } else {
+        REQUIRE_OK(
+            kefir_driver_apply_target_configuration(mem, externals, compiler_config, NULL, NULL, &config->target));
     }
-
-    REQUIRE_OK(kefir_driver_apply_target_configuration(mem, externals, compiler_config, NULL, NULL, &config->target));
 
     struct kefir_string_array extra_flags_buf;
     REQUIRE_OK(kefir_string_array_init(mem, &extra_flags_buf));
@@ -251,7 +249,9 @@ static kefir_result_t driver_compile_and_assemble(struct kefir_mem *mem,
 static kefir_result_t driver_compile(struct kefir_compiler_runner_configuration *compiler_config,
                                      struct kefir_driver_input_file *input_file, const char *output_filename) {
     struct kefir_process compiler_process;
-    REQUIRE_OK(driver_update_compiler_config(compiler_config, input_file));
+    if (input_file != NULL) {
+        REQUIRE_OK(driver_update_compiler_config(compiler_config, input_file));
+    }
 
     REQUIRE_OK(kefir_process_init(&compiler_process));
     kefir_result_t res = KEFIR_OK;
@@ -441,6 +441,10 @@ static kefir_result_t driver_run_input_file(struct kefir_mem *mem, struct kefir_
                     break;
             }
         } break;
+
+        case KEFIR_DRIVER_STAGE_PRINT_RUNTIME_CODE:
+            // Intentionally left blank
+            break;
     }
     return KEFIR_OK;
 }
@@ -456,6 +460,12 @@ static kefir_result_t driver_run_linker(struct kefir_mem *mem, struct kefir_driv
     REQUIRE_OK(kefir_driver_run_linker(mem, output_file, linker_config, externals, &linker_process));
     REQUIRE_OK(kefir_process_wait(&linker_process));
     REQUIRE(linker_process.status.exited && linker_process.status.exit_code == EXIT_SUCCESS, KEFIR_INTERRUPT);
+    return KEFIR_OK;
+}
+
+static kefir_result_t driver_print_runtime_code(struct kefir_driver_configuration *config,
+                                                struct kefir_compiler_runner_configuration *compiler_config) {
+    REQUIRE_OK(driver_compile(compiler_config, NULL, config->output_file));
     return KEFIR_OK;
 }
 
@@ -481,6 +491,7 @@ static kefir_result_t driver_run_impl(struct kefir_mem *mem, struct kefir_driver
         case KEFIR_DRIVER_STAGE_PRINT_AST:
         case KEFIR_DRIVER_STAGE_PRINT_IR:
         case KEFIR_DRIVER_STAGE_COMPILE:
+        case KEFIR_DRIVER_STAGE_PRINT_RUNTIME_CODE:
             REQUIRE_OK(driver_generate_compiler_config(mem, config, externals, compiler_config));
             // Intentionally left blank
             break;
@@ -496,6 +507,8 @@ static kefir_result_t driver_run_impl(struct kefir_mem *mem, struct kefir_driver
 
     if (config->stage == KEFIR_DRIVER_STAGE_LINK) {
         REQUIRE_OK(driver_run_linker(mem, config, externals, linker_config));
+    } else if (config->stage == KEFIR_DRIVER_STAGE_PRINT_RUNTIME_CODE) {
+        REQUIRE_OK(driver_print_runtime_code(config, compiler_config));
     }
     return KEFIR_OK;
 }

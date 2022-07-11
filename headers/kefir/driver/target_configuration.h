@@ -27,6 +27,9 @@
 #include "kefir/compiler/configuration.h"
 #include "kefir/driver/target.h"
 
+kefir_result_t kefir_driver_apply_target_profile_configuration(struct kefir_compiler_runner_configuration *,
+                                                               const struct kefir_driver_target *);
+
 kefir_result_t kefir_driver_apply_target_configuration(struct kefir_mem *,
                                                        const struct kefir_driver_external_resources *,
                                                        struct kefir_compiler_runner_configuration *,

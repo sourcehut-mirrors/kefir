@@ -58,7 +58,8 @@ typedef enum kefir_driver_stage {
     KEFIR_DRIVER_STAGE_PRINT_IR,
     KEFIR_DRIVER_STAGE_COMPILE,
     KEFIR_DRIVER_STAGE_ASSEMBLE,
-    KEFIR_DRIVER_STAGE_LINK
+    KEFIR_DRIVER_STAGE_LINK,
+    KEFIR_DRIVER_STAGE_PRINT_RUNTIME_CODE
 } kefir_driver_stage_t;
 
 typedef enum kefir_driver_input_file_type {
