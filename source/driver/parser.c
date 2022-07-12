@@ -319,6 +319,9 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_symbo
                 EXPECT_ARG;
                 ++index;
             }
+        } else if (strcmp("-", arg) == 0) {
+            // Positional argument
+            REQUIRE_OK(kefir_driver_configuration_add_input(mem, symbols, config, arg, detect_file_type(arg)));
         } else if (strncmp("-", arg, 1) == 0 || strncmp("--", arg, 2) == 0) {
             // All other non-positional arguments: ignored
             if (warning_output != NULL) {

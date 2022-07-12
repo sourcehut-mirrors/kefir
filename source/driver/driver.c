@@ -198,8 +198,13 @@ static kefir_result_t driver_generate_compiler_config(struct kefir_mem *mem, str
 
 static kefir_result_t driver_update_compiler_config(struct kefir_compiler_runner_configuration *compiler_config,
                                                     struct kefir_driver_input_file *input_file) {
-    compiler_config->input_filepath = input_file->file;
-    compiler_config->source_id = input_file->file;
+    if (strcmp(input_file->file, "-") == 0) {
+        compiler_config->input_filepath = NULL;
+        compiler_config->source_id = "<stdin>";
+    } else {
+        compiler_config->input_filepath = input_file->file;
+        compiler_config->source_id = input_file->file;
+    }
     return KEFIR_OK;
 }
 
@@ -380,9 +385,9 @@ static kefir_result_t driver_run_input_file(struct kefir_mem *mem, struct kefir_
 
         case KEFIR_DRIVER_STAGE_COMPILE: {
             char object_filename[PATH_MAX + 1];
-            if (config->output_file != NULL) {
+            if (config->output_file != NULL && strcmp(config->output_file, "-") != 0) {
                 output_filename = config->output_file;
-            } else {
+            } else if (config->output_file == NULL) {
                 char input_basename_buf[PATH_MAX + 1];
                 char *input_basename = NULL;
                 REQUIRE_OK(get_file_basename(input_basename_buf, sizeof(input_basename_buf), input_file->file,
@@ -411,9 +416,9 @@ static kefir_result_t driver_run_input_file(struct kefir_mem *mem, struct kefir_
         case KEFIR_DRIVER_STAGE_PRINT_AST:
         case KEFIR_DRIVER_STAGE_PRINT_IR: {
             char object_filename[PATH_MAX + 1];
-            if (config->output_file != NULL) {
+            if (config->output_file != NULL && strcmp(config->output_file, "-") != 0) {
                 output_filename = config->output_file;
-            } else if (config->stage == KEFIR_DRIVER_STAGE_PREPROCESS_SAVE) {
+            } else if (config->stage == KEFIR_DRIVER_STAGE_PREPROCESS_SAVE && config->output_file == NULL) {
                 char input_basename_buf[PATH_MAX + 1];
                 char *input_basename = NULL;
                 REQUIRE_OK(get_file_basename(input_basename_buf, sizeof(input_basename_buf), input_file->file,
