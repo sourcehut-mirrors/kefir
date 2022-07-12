@@ -1143,23 +1143,10 @@ kefir_result_t kefir_parser_ast_builder_translation_unit(struct kefir_mem *mem,
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST builder"));
 
-    struct kefir_ast_node_base *node = NULL;
-    REQUIRE_OK(kefir_parser_ast_builder_pop(mem, builder, &node));
-
     struct kefir_ast_translation_unit *unit = kefir_ast_new_translation_unit(mem);
-    REQUIRE_ELSE(unit != NULL, {
-        KEFIR_AST_NODE_FREE(mem, node);
-        return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST translation unit");
-    });
+    REQUIRE(unit != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST translation unit"));
 
-    kefir_result_t res =
-        kefir_list_insert_after(mem, &unit->external_definitions, kefir_list_tail(&unit->external_definitions), node);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(unit));
-        KEFIR_AST_NODE_FREE(mem, node);
-        return res;
-    });
-    res = kefir_parser_ast_builder_push(mem, builder, KEFIR_AST_NODE_BASE(unit));
+    kefir_result_t res = kefir_parser_ast_builder_push(mem, builder, KEFIR_AST_NODE_BASE(unit));
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(unit));
         return res;
