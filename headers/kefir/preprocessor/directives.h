@@ -95,7 +95,8 @@ kefir_result_t kefir_preprocessor_directive_scanner_save(const struct kefir_prep
                                                          struct kefir_preprocessor_directive_scanner_state *);
 kefir_result_t kefir_preprocessor_directive_scanner_restore(struct kefir_preprocessor_directive_scanner *,
                                                             const struct kefir_preprocessor_directive_scanner_state *);
-kefir_result_t kefir_preprocessor_directive_scanner_skip_line(struct kefir_preprocessor_directive_scanner *);
+kefir_result_t kefir_preprocessor_directive_scanner_skip_line(struct kefir_mem *,
+                                                              struct kefir_preprocessor_directive_scanner *);
 kefir_result_t kefir_preprocessor_directive_scanner_match(struct kefir_mem *,
                                                           struct kefir_preprocessor_directive_scanner *,
                                                           kefir_preprocessor_directive_type_t *);

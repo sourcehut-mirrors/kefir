@@ -64,16 +64,17 @@ kefir_result_t kefir_preprocessor_directive_scanner_restore(
 }
 
 kefir_result_t kefir_preprocessor_directive_scanner_skip_line(
-    struct kefir_preprocessor_directive_scanner *directive_scanner) {
-    kefir_bool_t skip = true;
-    while (skip) {
-        kefir_char32_t chr = kefir_lexer_source_cursor_at(directive_scanner->lexer->cursor, 0);
-        if (chr == U'\0') {
-            skip = false;
-        } else {
-            skip = chr != directive_scanner->lexer->context->newline;
-            REQUIRE_OK(kefir_lexer_source_cursor_next(directive_scanner->lexer->cursor, 1));
+    struct kefir_mem *mem, struct kefir_preprocessor_directive_scanner *directive_scanner) {
+    struct kefir_token next_token;
+    kefir_result_t scan_tokens = true;
+    while (scan_tokens) {
+        REQUIRE_OK(kefir_preprocessor_tokenize_next(mem, directive_scanner->lexer, &next_token));
+
+        if (next_token.klass == KEFIR_TOKEN_SENTINEL ||
+            (next_token.klass == KEFIR_TOKEN_PP_WHITESPACE && next_token.pp_whitespace.newline)) {
+            scan_tokens = false;
         }
+        REQUIRE_OK(kefir_token_free(mem, &next_token));
     }
     directive_scanner->newline_flag = true;
     return KEFIR_OK;
@@ -232,24 +233,24 @@ static kefir_result_t next_ifdef(struct kefir_mem *mem, struct kefir_preprocesso
         return KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert identifier into symbol table");
     });
     REQUIRE_OK(kefir_token_free(mem, &token));
-    REQUIRE_OK(kefir_preprocessor_directive_scanner_skip_line(directive_scanner));
+    REQUIRE_OK(kefir_preprocessor_directive_scanner_skip_line(mem, directive_scanner));
 
     directive->type = inverse ? KEFIR_PREPROCESSOR_DIRECTIVE_IFNDEF : KEFIR_PREPROCESSOR_DIRECTIVE_IFDEF;
     directive->ifdef_directive.identifier = identifier;
     return KEFIR_OK;
 }
 
-static kefir_result_t next_else(struct kefir_preprocessor_directive_scanner *directive_scanner,
+static kefir_result_t next_else(struct kefir_mem *mem, struct kefir_preprocessor_directive_scanner *directive_scanner,
                                 struct kefir_preprocessor_directive *directive) {
     directive->type = KEFIR_PREPROCESSOR_DIRECTIVE_ELSE;
-    REQUIRE_OK(kefir_preprocessor_directive_scanner_skip_line(directive_scanner));
+    REQUIRE_OK(kefir_preprocessor_directive_scanner_skip_line(mem, directive_scanner));
     return KEFIR_OK;
 }
 
-static kefir_result_t next_endif(struct kefir_preprocessor_directive_scanner *directive_scanner,
+static kefir_result_t next_endif(struct kefir_mem *mem, struct kefir_preprocessor_directive_scanner *directive_scanner,
                                  struct kefir_preprocessor_directive *directive) {
     directive->type = KEFIR_PREPROCESSOR_DIRECTIVE_ENDIF;
-    REQUIRE_OK(kefir_preprocessor_directive_scanner_skip_line(directive_scanner));
+    REQUIRE_OK(kefir_preprocessor_directive_scanner_skip_line(mem, directive_scanner));
     return KEFIR_OK;
 }
 
@@ -285,7 +286,7 @@ static kefir_result_t next_include(struct kefir_mem *mem,
             kefir_token_buffer_free(mem, &directive->pp_tokens);
             return res;
         });
-        res = kefir_preprocessor_directive_scanner_skip_line(directive_scanner);
+        res = kefir_preprocessor_directive_scanner_skip_line(mem, directive_scanner);
         REQUIRE_ELSE(res == KEFIR_OK, {
             kefir_token_buffer_free(mem, &directive->pp_tokens);
             return res;
@@ -435,7 +436,7 @@ static kefir_result_t next_undef(struct kefir_mem *mem, struct kefir_preprocesso
         return KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert identifier into symbol table");
     });
     REQUIRE_OK(kefir_token_free(mem, &token));
-    REQUIRE_OK(kefir_preprocessor_directive_scanner_skip_line(directive_scanner));
+    REQUIRE_OK(kefir_preprocessor_directive_scanner_skip_line(mem, directive_scanner));
 
     directive->type = KEFIR_PREPROCESSOR_DIRECTIVE_UNDEF;
     directive->undef_directive.identifier = identifier;
@@ -553,11 +554,11 @@ kefir_result_t kefir_preprocessor_directive_scanner_next(struct kefir_mem *mem,
             break;
 
         case KEFIR_PREPROCESSOR_DIRECTIVE_ELSE:
-            REQUIRE_OK(next_else(directive_scanner, directive));
+            REQUIRE_OK(next_else(mem, directive_scanner, directive));
             break;
 
         case KEFIR_PREPROCESSOR_DIRECTIVE_ENDIF:
-            REQUIRE_OK(next_endif(directive_scanner, directive));
+            REQUIRE_OK(next_endif(mem, directive_scanner, directive));
             break;
 
         case KEFIR_PREPROCESSOR_DIRECTIVE_INCLUDE:

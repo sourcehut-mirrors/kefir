@@ -187,7 +187,7 @@ kefir_result_t kefir_preprocessor_skip_group(struct kefir_mem *mem, struct kefir
             case KEFIR_PREPROCESSOR_DIRECTIVE_IFDEF:
             case KEFIR_PREPROCESSOR_DIRECTIVE_IFNDEF:
                 nested_ifs++;
-                REQUIRE_OK(kefir_preprocessor_directive_scanner_skip_line(&preprocessor->directive_scanner));
+                REQUIRE_OK(kefir_preprocessor_directive_scanner_skip_line(mem, &preprocessor->directive_scanner));
                 break;
 
             case KEFIR_PREPROCESSOR_DIRECTIVE_ELIF:
@@ -202,7 +202,7 @@ kefir_result_t kefir_preprocessor_skip_group(struct kefir_mem *mem, struct kefir
             case KEFIR_PREPROCESSOR_DIRECTIVE_ENDIF:
                 if (nested_ifs > 0) {
                     nested_ifs--;
-                    REQUIRE_OK(kefir_preprocessor_directive_scanner_skip_line(&preprocessor->directive_scanner));
+                    REQUIRE_OK(kefir_preprocessor_directive_scanner_skip_line(mem, &preprocessor->directive_scanner));
                 } else {
                     REQUIRE_OK(
                         kefir_preprocessor_directive_scanner_restore(&preprocessor->directive_scanner, &scanner_state));
@@ -223,7 +223,7 @@ kefir_result_t kefir_preprocessor_skip_group(struct kefir_mem *mem, struct kefir
             case KEFIR_PREPROCESSOR_DIRECTIVE_EMPTY:
             case KEFIR_PREPROCESSOR_DIRECTIVE_NON:
             case KEFIR_PREPROCESSOR_DIRECTIVE_PP_TOKEN:
-                REQUIRE_OK(kefir_preprocessor_directive_scanner_skip_line(&preprocessor->directive_scanner));
+                REQUIRE_OK(kefir_preprocessor_directive_scanner_skip_line(mem, &preprocessor->directive_scanner));
                 break;
         }
     }

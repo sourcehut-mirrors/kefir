@@ -1,0 +1,2 @@
+END2END_TEST_ID=preprocessor_directive_comments
+include source/tests/end2end/Makefile.template.mk
