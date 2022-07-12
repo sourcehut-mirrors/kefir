@@ -82,5 +82,7 @@ typedef struct kefir_compiler_runner_configuration {
 kefir_result_t kefir_compiler_runner_configuration_init(struct kefir_compiler_runner_configuration *);
 kefir_result_t kefir_compiler_runner_configuration_free(struct kefir_mem *,
                                                         struct kefir_compiler_runner_configuration *);
-
+kefir_result_t kefir_compiler_runner_configuration_define(struct kefir_mem *,
+                                                          struct kefir_compiler_runner_configuration *, const char *,
+                                                          const char *);
 #endif

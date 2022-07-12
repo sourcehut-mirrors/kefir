@@ -21,6 +21,7 @@
 #include "kefir/compiler/configuration.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
+#include <string.h>
 
 static kefir_result_t free_define_identifier(struct kefir_mem *mem, struct kefir_hashtree *tree,
                                              kefir_hashtree_key_t key, kefir_hashtree_value_t value, void *payload) {
@@ -62,5 +63,27 @@ kefir_result_t kefir_compiler_runner_configuration_free(struct kefir_mem *mem,
     REQUIRE_OK(kefir_list_free(mem, &options->include_path));
     REQUIRE_OK(kefir_hashtree_free(mem, &options->defines));
     REQUIRE_OK(kefir_list_free(mem, &options->undefines));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_compiler_runner_configuration_define(struct kefir_mem *mem,
+                                                          struct kefir_compiler_runner_configuration *options,
+                                                          const char *identifier, const char *value) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(options != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to cli options"));
+    REQUIRE(identifier != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid macro identifier"));
+    REQUIRE(value != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid macro value"));
+
+    kefir_size_t identifier_length = strlen(identifier);
+    char *identifier_copy = KEFIR_MALLOC(mem, identifier_length + 1);
+    REQUIRE(identifier_copy != NULL,
+            KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate definition name copy"));
+    strcpy(identifier_copy, identifier);
+    kefir_result_t res = kefir_hashtree_insert(mem, &options->defines, (kefir_hashtree_key_t) identifier_copy,
+                                               (kefir_hashtree_value_t) value);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_FREE(mem, identifier_copy);
+        return res;
+    });
     return KEFIR_OK;
 }

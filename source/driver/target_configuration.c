@@ -56,27 +56,39 @@ kefir_result_t kefir_driver_apply_target_configuration(struct kefir_mem *mem,
 
     REQUIRE_OK(kefir_driver_apply_target_profile_configuration(compiler_config, target));
 
-    if (target->platform == KEFIR_DRIVER_TARGET_PLATFORM_LINUX && target->variant == KEFIR_DRIVER_TARGET_VARIANT_MUSL) {
+    if (target->platform == KEFIR_DRIVER_TARGET_PLATFORM_LINUX) {
         if (compiler_config != NULL) {
-            REQUIRE(externals->musl.include_path != NULL,
-                    KEFIR_SET_ERROR(KEFIR_UI_ERROR, "Musl library path shall be passed as KEFIR_MUSL_INCLUDE "
-                                                    "environment variable for selected target"));
-            REQUIRE_OK(kefir_list_insert_after(mem, &compiler_config->include_path,
-                                               kefir_list_tail(&compiler_config->include_path),
-                                               (void *) externals->musl.include_path));
+            REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__linux__", ""));
         }
 
-        if (linker_config != NULL) {
-            REQUIRE(
-                externals->musl.library_path != NULL,
-                KEFIR_SET_ERROR(
-                    KEFIR_UI_ERROR,
-                    "Musl library path shall be passed as KEFIR_MUSL_LIB environment variable for selected target"));
-            char libpath[PATH_MAX + 1];
-            snprintf(libpath, sizeof(libpath) - 1, "%s/crt1.o", externals->musl.library_path);
-            REQUIRE_OK(kefir_driver_linker_configuration_add_linked_file(mem, linker_config, libpath));
-            snprintf(libpath, sizeof(libpath) - 1, "%s/libc.a", externals->musl.library_path);
-            REQUIRE_OK(kefir_driver_linker_configuration_add_linked_file(mem, linker_config, libpath));
+        if (target->variant == KEFIR_DRIVER_TARGET_VARIANT_MUSL) {
+            if (compiler_config != NULL) {
+                REQUIRE(externals->musl.include_path != NULL,
+                        KEFIR_SET_ERROR(KEFIR_UI_ERROR, "Musl library path shall be passed as KEFIR_MUSL_INCLUDE "
+                                                        "environment variable for selected target"));
+                REQUIRE_OK(kefir_list_insert_after(mem, &compiler_config->include_path,
+                                                   kefir_list_tail(&compiler_config->include_path),
+                                                   (void *) externals->musl.include_path));
+            }
+
+            if (linker_config != NULL) {
+                REQUIRE(externals->musl.library_path != NULL,
+                        KEFIR_SET_ERROR(KEFIR_UI_ERROR, "Musl library path shall be passed as KEFIR_MUSL_LIB "
+                                                        "environment variable for selected target"));
+                char libpath[PATH_MAX + 1];
+                snprintf(libpath, sizeof(libpath) - 1, "%s/crt1.o", externals->musl.library_path);
+                REQUIRE_OK(kefir_driver_linker_configuration_add_linked_file(mem, linker_config, libpath));
+                snprintf(libpath, sizeof(libpath) - 1, "%s/libc.a", externals->musl.library_path);
+                REQUIRE_OK(kefir_driver_linker_configuration_add_linked_file(mem, linker_config, libpath));
+            }
+        }
+    } else if (target->platform == KEFIR_DRIVER_TARGET_PLATFORM_FREEBSD) {
+        if (compiler_config != NULL) {
+            REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__FreeBSD__", ""));
+        }
+    } else if (target->platform == KEFIR_DRIVER_TARGET_PLATFORM_OPENBSD) {
+        if (compiler_config != NULL) {
+            REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__OpenBSD__", ""));
         }
     }
 
