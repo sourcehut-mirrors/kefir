@@ -103,7 +103,7 @@ typedef struct kefir_driver_configuration {
     struct kefir_list assembler_flags;
     struct kefir_list linker_flags;
     struct kefir_list compiler_flags;
-    struct kefir_list defines;
+    struct kefir_hashtree defines;
     struct kefir_list undefines;
     struct kefir_list include_directories;
     struct kefir_list include_files;

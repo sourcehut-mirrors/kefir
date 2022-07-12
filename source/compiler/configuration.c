@@ -26,13 +26,16 @@
 static kefir_result_t free_define_identifier(struct kefir_mem *mem, struct kefir_hashtree *tree,
                                              kefir_hashtree_key_t key, kefir_hashtree_value_t value, void *payload) {
     UNUSED(tree);
-    UNUSED(value);
     UNUSED(payload);
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     ASSIGN_DECL_CAST(char *, identifier, key);
+    ASSIGN_DECL_CAST(char *, id_value, value);
     REQUIRE(identifier != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid identifier"));
 
     KEFIR_FREE(mem, identifier);
+    if (id_value != NULL) {
+        KEFIR_FREE(mem, id_value);
+    }
     return KEFIR_OK;
 }
 
@@ -72,16 +75,33 @@ kefir_result_t kefir_compiler_runner_configuration_define(struct kefir_mem *mem,
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(options != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to cli options"));
     REQUIRE(identifier != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid macro identifier"));
-    REQUIRE(value != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid macro value"));
+
+    if (kefir_hashtree_has(&options->defines, (kefir_hashtree_key_t) identifier)) {
+        REQUIRE_OK(kefir_hashtree_delete(mem, &options->defines, (kefir_hashtree_key_t) identifier));
+    }
 
     kefir_size_t identifier_length = strlen(identifier);
     char *identifier_copy = KEFIR_MALLOC(mem, identifier_length + 1);
     REQUIRE(identifier_copy != NULL,
             KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate definition name copy"));
     strcpy(identifier_copy, identifier);
+
+    char *value_copy = NULL;
+    if (value != NULL) {
+        value_copy = KEFIR_MALLOC(mem, strlen(value) + 1);
+        REQUIRE_ELSE(value_copy != NULL, {
+            KEFIR_FREE(mem, identifier_copy);
+            return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate definition value copy");
+        });
+        strcpy(value_copy, value);
+    }
+
     kefir_result_t res = kefir_hashtree_insert(mem, &options->defines, (kefir_hashtree_key_t) identifier_copy,
-                                               (kefir_hashtree_value_t) value);
+                                               (kefir_hashtree_value_t) value_copy);
     REQUIRE_ELSE(res == KEFIR_OK, {
+        if (value_copy != NULL) {
+            KEFIR_FREE(mem, value_copy);
+        }
         KEFIR_FREE(mem, identifier_copy);
         return res;
     });

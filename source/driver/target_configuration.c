@@ -58,7 +58,7 @@ kefir_result_t kefir_driver_apply_target_configuration(struct kefir_mem *mem,
 
     if (target->platform == KEFIR_DRIVER_TARGET_PLATFORM_LINUX) {
         if (compiler_config != NULL) {
-            REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__linux__", ""));
+            REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__linux__", "1"));
         }
 
         if (target->variant == KEFIR_DRIVER_TARGET_VARIANT_MUSL) {
@@ -84,11 +84,11 @@ kefir_result_t kefir_driver_apply_target_configuration(struct kefir_mem *mem,
         }
     } else if (target->platform == KEFIR_DRIVER_TARGET_PLATFORM_FREEBSD) {
         if (compiler_config != NULL) {
-            REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__FreeBSD__", ""));
+            REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__FreeBSD__", "1"));
         }
     } else if (target->platform == KEFIR_DRIVER_TARGET_PLATFORM_OPENBSD) {
         if (compiler_config != NULL) {
-            REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__OpenBSD__", ""));
+            REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__OpenBSD__", "1"));
         }
     }
 

@@ -71,14 +71,12 @@ static kefir_result_t define_hook(struct kefir_mem *mem, const struct kefir_cli_
         ++iter;
     }
 
-    kefir_size_t identifier_length = iter - arg;
-    char *identifier = KEFIR_MALLOC(mem, identifier_length + 1);
-    REQUIRE(identifier != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate macro identifier"));
-    strncpy(identifier, arg, identifier_length);
-    identifier[identifier_length] = '\0';
-    const char *value = arg[identifier_length] != '\0' ? arg + identifier_length + 1 : NULL;
-    REQUIRE_OK(kefir_hashtree_insert(mem, &options->defines, (kefir_hashtree_key_t) identifier,
-                                     (kefir_hashtree_value_t) value));
+    char macro_identifier[4097];
+    kefir_size_t identifier_length = MIN((kefir_size_t) (iter - arg), sizeof(macro_identifier) - 1);
+    strncpy(macro_identifier, arg, identifier_length);
+    macro_identifier[identifier_length] = '\0';
+    const char *value = *iter != '\0' ? iter + 1 : NULL;
+    REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, options, macro_identifier, value));
     return KEFIR_OK;
 }
 
@@ -89,6 +87,9 @@ static kefir_result_t undefine_hook(struct kefir_mem *mem, const struct kefir_cl
     ASSIGN_DECL_CAST(struct kefir_compiler_runner_configuration *, options, raw_options);
 
     REQUIRE_OK(kefir_list_insert_after(mem, &options->undefines, kefir_list_tail(&options->undefines), (void *) arg));
+    if (kefir_hashtree_has(&options->defines, (kefir_hashtree_key_t) arg)) {
+        REQUIRE_OK(kefir_hashtree_delete(mem, &options->defines, (kefir_hashtree_key_t) arg));
+    }
     return KEFIR_OK;
 }
 

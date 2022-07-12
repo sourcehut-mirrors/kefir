@@ -95,6 +95,13 @@ static kefir_result_t driver_generate_compiler_config(struct kefir_mem *mem, str
                                                       struct kefir_compiler_runner_configuration *compiler_config) {
     REQUIRE_OK(kefir_compiler_runner_configuration_init(compiler_config));
 
+    if (config->stage == KEFIR_DRIVER_STAGE_PRINT_RUNTIME_CODE) {
+        REQUIRE_OK(kefir_driver_apply_target_profile_configuration(compiler_config, &config->target));
+    } else {
+        REQUIRE_OK(
+            kefir_driver_apply_target_configuration(mem, externals, compiler_config, NULL, NULL, &config->target));
+    }
+
     switch (config->stage) {
         case KEFIR_DRIVER_STAGE_PREPROCESS:
         case KEFIR_DRIVER_STAGE_PREPROCESS_SAVE:
@@ -150,33 +157,20 @@ static kefir_result_t driver_generate_compiler_config(struct kefir_mem *mem, str
         REQUIRE_OK(kefir_list_insert_after(mem, &compiler_config->include_files,
                                            kefir_list_tail(&compiler_config->include_files), (void *) include_file));
     }
-    for (const struct kefir_list_entry *iter = kefir_list_head(&config->defines); iter != NULL;
-         kefir_list_next(&iter)) {
-        ASSIGN_DECL_CAST(const struct kefir_driver_definition *, definition, iter->value);
-        char *identifier_copy = KEFIR_MALLOC(mem, strlen(definition->name) + 1);
-        REQUIRE(identifier_copy != NULL,
-                KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate definition name copy"));
-        strcpy(identifier_copy, definition->name);
-        kefir_result_t res =
-            kefir_hashtree_insert(mem, &compiler_config->defines, (kefir_hashtree_key_t) identifier_copy,
-                                  (kefir_hashtree_value_t) definition->value);
-        REQUIRE_ELSE(res == KEFIR_OK, {
-            KEFIR_FREE(mem, identifier_copy);
-            return res;
-        });
-    }
     for (const struct kefir_list_entry *iter = kefir_list_head(&config->undefines); iter != NULL;
          kefir_list_next(&iter)) {
         ASSIGN_DECL_CAST(const char *, identifier, iter->value);
         REQUIRE_OK(kefir_list_insert_after(mem, &compiler_config->undefines,
                                            kefir_list_tail(&compiler_config->undefines), (void *) identifier));
+        if (kefir_hashtree_has(&compiler_config->defines, (kefir_hashtree_key_t) identifier)) {
+            REQUIRE_OK(kefir_hashtree_delete(mem, &compiler_config->defines, (kefir_hashtree_key_t) identifier));
+        }
     }
-
-    if (config->stage == KEFIR_DRIVER_STAGE_PRINT_RUNTIME_CODE) {
-        REQUIRE_OK(kefir_driver_apply_target_profile_configuration(compiler_config, &config->target));
-    } else {
-        REQUIRE_OK(
-            kefir_driver_apply_target_configuration(mem, externals, compiler_config, NULL, NULL, &config->target));
+    struct kefir_hashtree_node_iterator define_iter;
+    for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&config->defines, &define_iter); node != NULL;
+         node = kefir_hashtree_next(&define_iter)) {
+        REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, (const char *) node->key,
+                                                              (const char *) node->value));
     }
 
     struct kefir_string_array extra_flags_buf;

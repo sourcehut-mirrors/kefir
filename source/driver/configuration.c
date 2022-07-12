@@ -127,8 +127,7 @@ kefir_result_t kefir_driver_configuration_init(struct kefir_driver_configuration
     REQUIRE_OK(kefir_list_init(&config->linker_flags));
     REQUIRE_OK(kefir_list_init(&config->compiler_flags));
     REQUIRE_OK(kefir_list_on_remove(&config->linker_flags, list_entry_free, NULL));
-    REQUIRE_OK(kefir_list_init(&config->defines));
-    REQUIRE_OK(kefir_list_on_remove(&config->defines, list_entry_free, NULL));
+    REQUIRE_OK(kefir_hashtree_init(&config->defines, &kefir_hashtree_str_ops));
     REQUIRE_OK(kefir_list_init(&config->undefines));
     REQUIRE_OK(kefir_list_init(&config->include_directories));
     REQUIRE_OK(kefir_list_init(&config->include_files));
@@ -147,7 +146,7 @@ kefir_result_t kefir_driver_configuration_free(struct kefir_mem *mem, struct kef
     REQUIRE_OK(kefir_list_free(mem, &config->assembler_flags));
     REQUIRE_OK(kefir_list_free(mem, &config->linker_flags));
     REQUIRE_OK(kefir_list_free(mem, &config->compiler_flags));
-    REQUIRE_OK(kefir_list_free(mem, &config->defines));
+    REQUIRE_OK(kefir_hashtree_free(mem, &config->defines));
     REQUIRE_OK(kefir_list_free(mem, &config->undefines));
     REQUIRE_OK(kefir_list_free(mem, &config->include_directories));
     REQUIRE_OK(kefir_list_free(mem, &config->include_files));
@@ -265,16 +264,11 @@ kefir_result_t kefir_driver_configuration_add_define(struct kefir_mem *mem, stru
         }
     }
 
-    struct kefir_driver_definition *definition = KEFIR_MALLOC(mem, sizeof(struct kefir_driver_definition));
-    REQUIRE(definition != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate driver define"));
-    definition->name = name;
-    definition->value = value;
-
-    kefir_result_t res = kefir_list_insert_after(mem, &config->defines, kefir_list_tail(&config->defines), definition);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, definition);
-        return res;
-    });
+    if (kefir_hashtree_has(&config->defines, (kefir_hashtree_key_t) name)) {
+        REQUIRE_OK(kefir_hashtree_delete(mem, &config->defines, (kefir_hashtree_key_t) name));
+    }
+    REQUIRE_OK(
+        kefir_hashtree_insert(mem, &config->defines, (kefir_hashtree_key_t) name, (kefir_hashtree_value_t) value));
     return KEFIR_OK;
 }
 
@@ -291,6 +285,9 @@ kefir_result_t kefir_driver_configuration_add_undefine(struct kefir_mem *mem, st
     }
 
     REQUIRE_OK(kefir_list_insert_after(mem, &config->undefines, kefir_list_tail(&config->undefines), (void *) name));
+    if (kefir_hashtree_has(&config->defines, (kefir_hashtree_key_t) name)) {
+        REQUIRE_OK(kefir_hashtree_delete(mem, &config->defines, (kefir_hashtree_key_t) name));
+    }
     return KEFIR_OK;
 }
 
