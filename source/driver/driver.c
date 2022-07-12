@@ -474,8 +474,8 @@ static kefir_result_t driver_run_impl(struct kefir_mem *mem, struct kefir_driver
                                       struct kefir_driver_assembler_configuration *assembler_config,
                                       struct kefir_driver_linker_configuration *linker_config,
                                       struct kefir_compiler_runner_configuration *compiler_config) {
-    UNUSED(externals);
-
+    REQUIRE(config->stage == KEFIR_DRIVER_STAGE_PRINT_RUNTIME_CODE || kefir_list_length(&config->input_files) > 0,
+            KEFIR_SET_ERROR(KEFIR_UI_ERROR, "Selected operation requires non-empty input file list"));
     switch (config->stage) {
         case KEFIR_DRIVER_STAGE_LINK:
             REQUIRE_OK(driver_generate_linker_config(mem, config, linker_config));
