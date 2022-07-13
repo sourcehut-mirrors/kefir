@@ -22,6 +22,7 @@
 #define KEFIR_DRIVER_TARGET_CONFIGURATION_H_
 
 #include "kefir/core/mem.h"
+#include "kefir/core/symbol_table.h"
 #include "kefir/driver/externals.h"
 #include "kefir/driver/configuration.h"
 #include "kefir/compiler/configuration.h"
@@ -30,7 +31,7 @@
 kefir_result_t kefir_driver_apply_target_profile_configuration(struct kefir_compiler_runner_configuration *,
                                                                const struct kefir_driver_target *);
 
-kefir_result_t kefir_driver_apply_target_configuration(struct kefir_mem *,
+kefir_result_t kefir_driver_apply_target_configuration(struct kefir_mem *, struct kefir_symbol_table *,
                                                        const struct kefir_driver_external_resources *,
                                                        struct kefir_compiler_runner_configuration *,
                                                        struct kefir_driver_assembler_configuration *,

@@ -79,7 +79,7 @@ int main(int argc, char *const *argv) {
     } else if (res == KEFIR_OK && command == KEFIR_DRIVER_COMMAND_VERSION) {
         fprintf(stdout, "%u.%u.%u\n", KEFIR_VERSION_MAJOR, KEFIR_VERSION_MINOR, KEFIR_VERSION_PATCH);
     } else {
-        REQUIRE_CHAIN(&res, kefir_driver_run(mem, &driver_config, &exteral_resources));
+        REQUIRE_CHAIN(&res, kefir_driver_run(mem, &symbols, &driver_config, &exteral_resources));
         if (res == KEFIR_INTERRUPT) {
             res = KEFIR_OK;
             exit_code = EXIT_FAILURE;

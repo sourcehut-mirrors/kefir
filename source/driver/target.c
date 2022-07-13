@@ -78,6 +78,8 @@ static kefir_result_t match_variant(const char *spec, struct kefir_driver_target
         target->variant = KEFIR_DRIVER_TARGET_VARIANT_NONE;
     } else if (strcmp("musl", spec) == 0) {
         target->variant = KEFIR_DRIVER_TARGET_VARIANT_MUSL;
+    } else if (strcmp("gnu", spec) == 0) {
+        target->variant = KEFIR_DRIVER_TARGET_VARIANT_GNU;
     } else if (strcmp("default", spec) == 0) {
         REQUIRE_OK(select_default_variant(target));
     } else {

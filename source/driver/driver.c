@@ -90,7 +90,8 @@ static kefir_result_t driver_generate_linker_config(struct kefir_mem *mem, struc
     return KEFIR_OK;
 }
 
-static kefir_result_t driver_generate_compiler_config(struct kefir_mem *mem, struct kefir_driver_configuration *config,
+static kefir_result_t driver_generate_compiler_config(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
+                                                      struct kefir_driver_configuration *config,
                                                       const struct kefir_driver_external_resources *externals,
                                                       struct kefir_compiler_runner_configuration *compiler_config) {
     REQUIRE_OK(kefir_compiler_runner_configuration_init(compiler_config));
@@ -98,8 +99,8 @@ static kefir_result_t driver_generate_compiler_config(struct kefir_mem *mem, str
     if (config->stage == KEFIR_DRIVER_STAGE_PRINT_RUNTIME_CODE) {
         REQUIRE_OK(kefir_driver_apply_target_profile_configuration(compiler_config, &config->target));
     } else {
-        REQUIRE_OK(
-            kefir_driver_apply_target_configuration(mem, externals, compiler_config, NULL, NULL, &config->target));
+        REQUIRE_OK(kefir_driver_apply_target_configuration(mem, symbols, externals, compiler_config, NULL, NULL,
+                                                           &config->target));
     }
 
     switch (config->stage) {
@@ -449,10 +450,12 @@ static kefir_result_t driver_run_input_file(struct kefir_mem *mem, struct kefir_
     return KEFIR_OK;
 }
 
-static kefir_result_t driver_run_linker(struct kefir_mem *mem, struct kefir_driver_configuration *config,
+static kefir_result_t driver_run_linker(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
+                                        struct kefir_driver_configuration *config,
                                         const struct kefir_driver_external_resources *externals,
                                         struct kefir_driver_linker_configuration *linker_config) {
-    REQUIRE_OK(kefir_driver_apply_target_configuration(mem, externals, NULL, NULL, linker_config, &config->target));
+    REQUIRE_OK(
+        kefir_driver_apply_target_configuration(mem, symbols, externals, NULL, NULL, linker_config, &config->target));
 
     struct kefir_process linker_process;
     REQUIRE_OK(kefir_process_init(&linker_process));
@@ -469,7 +472,8 @@ static kefir_result_t driver_print_runtime_code(struct kefir_driver_configuratio
     return KEFIR_OK;
 }
 
-static kefir_result_t driver_run_impl(struct kefir_mem *mem, struct kefir_driver_configuration *config,
+static kefir_result_t driver_run_impl(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
+                                      struct kefir_driver_configuration *config,
                                       const struct kefir_driver_external_resources *externals,
                                       struct kefir_driver_assembler_configuration *assembler_config,
                                       struct kefir_driver_linker_configuration *linker_config,
@@ -492,7 +496,7 @@ static kefir_result_t driver_run_impl(struct kefir_mem *mem, struct kefir_driver
         case KEFIR_DRIVER_STAGE_PRINT_IR:
         case KEFIR_DRIVER_STAGE_COMPILE:
         case KEFIR_DRIVER_STAGE_PRINT_RUNTIME_CODE:
-            REQUIRE_OK(driver_generate_compiler_config(mem, config, externals, compiler_config));
+            REQUIRE_OK(driver_generate_compiler_config(mem, symbols, config, externals, compiler_config));
             // Intentionally left blank
             break;
     }
@@ -506,16 +510,18 @@ static kefir_result_t driver_run_impl(struct kefir_mem *mem, struct kefir_driver
     }
 
     if (config->stage == KEFIR_DRIVER_STAGE_LINK) {
-        REQUIRE_OK(driver_run_linker(mem, config, externals, linker_config));
+        REQUIRE_OK(driver_run_linker(mem, symbols, config, externals, linker_config));
     } else if (config->stage == KEFIR_DRIVER_STAGE_PRINT_RUNTIME_CODE) {
         REQUIRE_OK(driver_print_runtime_code(config, compiler_config));
     }
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_driver_run(struct kefir_mem *mem, struct kefir_driver_configuration *config,
+kefir_result_t kefir_driver_run(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
+                                struct kefir_driver_configuration *config,
                                 const struct kefir_driver_external_resources *externals) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(symbols != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid symbol table"));
     REQUIRE(config != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver configuration"));
     REQUIRE(externals != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver external resources"));
 
@@ -527,7 +533,8 @@ kefir_result_t kefir_driver_run(struct kefir_mem *mem, struct kefir_driver_confi
     REQUIRE_OK(kefir_driver_linker_configuration_init(&linker_config));
     REQUIRE_OK(kefir_compiler_runner_configuration_init(&compiler_config));
 
-    kefir_result_t res = driver_run_impl(mem, config, externals, &assembler_config, &linker_config, &compiler_config);
+    kefir_result_t res =
+        driver_run_impl(mem, symbols, config, externals, &assembler_config, &linker_config, &compiler_config);
 
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_compiler_runner_configuration_free(mem, &compiler_config);
