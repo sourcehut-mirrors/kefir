@@ -146,6 +146,7 @@ static kefir_result_t driver_generate_compiler_config(struct kefir_mem *mem, str
         compiler_config->features.int_to_pointer = true;
         compiler_config->features.permissive_pointer_conv = true;
         compiler_config->features.named_macro_vararg = true;
+        compiler_config->features.include_next = true;
     }
     for (const struct kefir_list_entry *iter = kefir_list_head(&config->include_directories); iter != NULL;
          kefir_list_next(&iter)) {
@@ -361,7 +362,7 @@ static kefir_result_t driver_run_input_file(struct kefir_mem *mem, struct kefir_
             } else {
                 char input_basename_buf[PATH_MAX + 1];
                 char *input_basename = NULL;
-                REQUIRE_OK(get_file_basename(input_basename_buf, sizeof(input_basename_buf), input_file->file,
+                REQUIRE_OK(get_file_basename(input_basename_buf, sizeof(input_basename_buf) - 1, input_file->file,
                                              &input_basename));
                 snprintf(object_filename, sizeof(object_filename) - 1, "%s%s", input_basename,
                          externals->extensions.object_file);
@@ -392,7 +393,7 @@ static kefir_result_t driver_run_input_file(struct kefir_mem *mem, struct kefir_
             } else if (config->output_file == NULL) {
                 char input_basename_buf[PATH_MAX + 1];
                 char *input_basename = NULL;
-                REQUIRE_OK(get_file_basename(input_basename_buf, sizeof(input_basename_buf), input_file->file,
+                REQUIRE_OK(get_file_basename(input_basename_buf, sizeof(input_basename_buf) - 1, input_file->file,
                                              &input_basename));
                 snprintf(object_filename, sizeof(object_filename) - 1, "%s%s", input_basename,
                          externals->extensions.assembly_file);
@@ -423,7 +424,7 @@ static kefir_result_t driver_run_input_file(struct kefir_mem *mem, struct kefir_
             } else if (config->stage == KEFIR_DRIVER_STAGE_PREPROCESS_SAVE && config->output_file == NULL) {
                 char input_basename_buf[PATH_MAX + 1];
                 char *input_basename = NULL;
-                REQUIRE_OK(get_file_basename(input_basename_buf, sizeof(input_basename_buf), input_file->file,
+                REQUIRE_OK(get_file_basename(input_basename_buf, sizeof(input_basename_buf) - 1, input_file->file,
                                              &input_basename));
                 snprintf(object_filename, sizeof(object_filename) - 1, "%s%s", input_basename,
                          externals->extensions.preprocessed_file);

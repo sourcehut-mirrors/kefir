@@ -145,18 +145,21 @@ static kefir_result_t close_source(struct kefir_mem *mem, struct kefir_preproces
 }
 
 static kefir_result_t open_source(struct kefir_mem *mem, const struct kefir_preprocessor_source_locator *source_locator,
-                                  const char *filepath, kefir_bool_t system, const char *current_filepath,
+                                  const char *filepath, kefir_bool_t system,
+                                  const struct kefir_preprocessor_source_file_info *current_file,
+                                  kefir_preprocessor_source_locator_mode_t mode,
                                   struct kefir_preprocessor_source_file *source_file) {
     static const char CONTENT[] = "void some_function();\n";
     if (strcmp(filepath, "some_include") == 0) {
-        source_file->filepath = filepath;
-        source_file->system = system;
+        source_file->info.filepath = filepath;
+        source_file->info.system = system;
+        source_file->info.base_include_dir = NULL;
         source_file->payload = NULL;
         source_file->close = close_source;
         REQUIRE_OK(kefir_lexer_source_cursor_init(&source_file->cursor, CONTENT, sizeof(CONTENT), filepath));
     } else {
         struct kefir_preprocessor_source_locator *original = source_locator->payload;
-        REQUIRE_OK(original->open(mem, original, filepath, system, current_filepath, source_file));
+        REQUIRE_OK(original->open(mem, original, filepath, system, current_file, mode, source_file));
     }
     return KEFIR_OK;
 }

@@ -82,6 +82,12 @@ kefir_result_t kefir_driver_apply_target_configuration(struct kefir_mem *mem, st
 
     REQUIRE_OK(kefir_driver_apply_target_profile_configuration(compiler_config, target));
 
+    if (target->arch == KEFIR_DRIVER_TARGET_ARCH_X86_64) {
+        if (compiler_config != NULL) {
+            REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__x86_64__", "1"));
+        }
+    }
+
     if (target->platform == KEFIR_DRIVER_TARGET_PLATFORM_LINUX) {
         if (compiler_config != NULL) {
             REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__linux__", "1"));

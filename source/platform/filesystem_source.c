@@ -46,7 +46,7 @@ static kefir_result_t close_source(struct kefir_mem *mem, struct kefir_preproces
     return KEFIR_OK;
 }
 
-static kefir_result_t open_file(struct kefir_mem *mem, const char *filepath, kefir_bool_t system,
+static kefir_result_t open_file(struct kefir_mem *mem, const char *root, const char *filepath, kefir_bool_t system,
                                 struct kefir_preprocessor_source_file *source_file,
                                 struct kefir_symbol_table *symbols) {
     filepath = kefir_symbol_table_insert(mem, symbols, filepath, NULL);
@@ -72,8 +72,9 @@ static kefir_result_t open_file(struct kefir_mem *mem, const char *filepath, kef
         return res;
     });
 
-    source_file->filepath = filepath;
-    source_file->system = system;
+    source_file->info.filepath = filepath;
+    source_file->info.system = system;
+    source_file->info.base_include_dir = root;
     source_file->close = close_source;
     source_file->payload = input;
     return KEFIR_OK;
@@ -100,7 +101,7 @@ static kefir_result_t try_open_file(struct kefir_mem *mem, const char *root, con
     } else if (resolved_path == NULL) {
         return KEFIR_SET_OS_ERROR("Failed to determine real path");
     }
-    kefir_result_t res = open_file(mem, resolved_path, system, source_file, locator->symbols);
+    kefir_result_t res = open_file(mem, root, resolved_path, system, source_file, locator->symbols);
     KEFIR_FREE(mem, resolved_path);
     if (res != KEFIR_NOT_FOUND) {
         REQUIRE_OK(res);
@@ -111,7 +112,9 @@ static kefir_result_t try_open_file(struct kefir_mem *mem, const char *root, con
 }
 
 static kefir_result_t open_source(struct kefir_mem *mem, const struct kefir_preprocessor_source_locator *source_locator,
-                                  const char *filepath, kefir_bool_t system, const char *current_filepath,
+                                  const char *filepath, kefir_bool_t system,
+                                  const struct kefir_preprocessor_source_file_info *current_file,
+                                  kefir_preprocessor_source_locator_mode_t mode,
                                   struct kefir_preprocessor_source_file *source_file) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(source_locator != NULL,
@@ -120,26 +123,48 @@ static kefir_result_t open_source(struct kefir_mem *mem, const struct kefir_prep
     REQUIRE(filepath != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to source file"));
     ASSIGN_DECL_CAST(struct kefir_preprocessor_filesystem_source_locator *, locator, source_locator);
 
-    if (current_filepath != NULL && !system) {
-        char *current_clone = KEFIR_MALLOC(mem, strlen(current_filepath) + 1);
+    if (current_file != NULL && current_file->filepath && !system &&
+        mode == KEFIR_PREPROCESSOR_SOURCE_LOCATOR_MODE_NORMAL) {
+        char *current_clone = KEFIR_MALLOC(mem, strlen(current_file->filepath) + 1);
         REQUIRE(current_clone != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate directory name"));
-        strcpy(current_clone, current_filepath);
+        strcpy(current_clone, current_file->filepath);
         char *directory = dirname(current_clone);
         REQUIRE_ELSE(directory != NULL, {
             KEFIR_FREE(mem, current_clone);
             return KEFIR_SET_OS_ERROR("Failed to obtain dirname");
         });
 
-        kefir_result_t res = try_open_file(mem, directory, filepath, system, source_file, locator);
+        const char *directory_copy = kefir_symbol_table_insert(mem, locator->symbols, directory, NULL);
+        REQUIRE_ELSE(directory_copy != NULL, {
+            KEFIR_FREE(mem, current_clone);
+            return KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert directory path into symbol table");
+        });
         KEFIR_FREE(mem, current_clone);
+
+        kefir_result_t res = try_open_file(mem, directory_copy, filepath, system, source_file, locator);
         if (res != KEFIR_NOT_FOUND) {
             REQUIRE_OK(res);
             return KEFIR_OK;
         }
     }
 
-    for (const struct kefir_list_entry *iter = kefir_list_head(&locator->include_roots); iter != NULL;
-         kefir_list_next(&iter)) {
+    const struct kefir_list_entry *iter = kefir_list_head(&locator->include_roots);
+    if (mode == KEFIR_PREPROCESSOR_SOURCE_LOCATOR_MODE_NEXT && current_file != NULL &&
+        current_file->base_include_dir != NULL) {
+        for (; iter != NULL; kefir_list_next(&iter)) {
+            ASSIGN_DECL_CAST(const char *, root, iter->value);
+            if (strcmp(current_file->base_include_dir, root) == 0) {
+                break;
+            }
+        }
+
+        if (iter == NULL) {
+            iter = kefir_list_head(&locator->include_roots);
+        } else {
+            kefir_list_next(&iter);
+        }
+    }
+    for (; iter != NULL; kefir_list_next(&iter)) {
 
         ASSIGN_DECL_CAST(const char *, root, iter->value);
         kefir_result_t res = try_open_file(mem, root, filepath, system, source_file, locator);

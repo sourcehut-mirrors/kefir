@@ -181,6 +181,7 @@ struct kefir_cli_option KefirCompilerConfigurationOptions[] = {
     FEATURE("int-to-pointer", features.int_to_pointer),
     FEATURE("permissive-pointer-conv", features.permissive_pointer_conv),
     FEATURE("named-macro-vararg", features.named_macro_vararg),
+    FEATURE("include-next", features.include_next),
 
     CODEGEN("emulated-tls", codegen.emulated_tls)
 

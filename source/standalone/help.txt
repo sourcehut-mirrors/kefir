@@ -44,6 +44,7 @@ Supported features:
     int-to-pointer                      Permit any integral type conversion to pointer
     permissive-pointer-conv             Permit conversions between any pointer types
     named-macro-vararg                  Permit named macro variable arguments
+    include-next                        Permit include_next preprocessor directive
 
 Targets:
     amd64-sysv-gas (default)             Produce GNU As-compatible assembly adhering System-V AMD64 ABI

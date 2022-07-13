@@ -186,9 +186,11 @@ kefir_result_t kefir_compiler_preprocess(struct kefir_mem *mem, struct kefir_com
 
     struct kefir_lexer_source_cursor source_cursor;
     struct kefir_preprocessor preprocessor;
+    const struct kefir_preprocessor_source_file_info file_info = {
+        .filepath = filepath, .system = false, .base_include_dir = NULL};
     REQUIRE_OK(kefir_lexer_source_cursor_init(&source_cursor, content, length, source_id));
     REQUIRE_OK(kefir_preprocessor_init(mem, &preprocessor, &context->ast_global_context.symbols, &source_cursor,
-                                       &context->profile->lexer_context, &context->preprocessor_context, filepath,
+                                       &context->profile->lexer_context, &context->preprocessor_context, &file_info,
                                        context->extensions != NULL ? context->extensions->preprocessor : NULL));
 
     kefir_result_t res = kefir_preprocessor_run(mem, &preprocessor, buffer);
@@ -211,9 +213,11 @@ kefir_result_t kefir_compiler_preprocess_lex(struct kefir_mem *mem, struct kefir
     struct kefir_lexer_source_cursor source_cursor;
     struct kefir_preprocessor preprocessor;
     struct kefir_token_buffer pp_tokens;
+    const struct kefir_preprocessor_source_file_info file_info = {
+        .filepath = filepath, .system = false, .base_include_dir = NULL};
     REQUIRE_OK(kefir_lexer_source_cursor_init(&source_cursor, content, length, source_id));
     REQUIRE_OK(kefir_preprocessor_init(mem, &preprocessor, &context->ast_global_context.symbols, &source_cursor,
-                                       &context->profile->lexer_context, &context->preprocessor_context, filepath,
+                                       &context->profile->lexer_context, &context->preprocessor_context, &file_info,
                                        context->extensions != NULL ? context->extensions->preprocessor : NULL));
     kefir_result_t res = kefir_token_buffer_init(&pp_tokens);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -256,8 +260,9 @@ kefir_result_t kefir_compiler_preprocess_include(struct kefir_mem *mem, struct k
     kefir_result_t res;
     struct kefir_preprocessor_source_file source_file;
 
-    REQUIRE_OK(context->preprocessor_context.source_locator->open(mem, context->preprocessor_context.source_locator,
-                                                                  filepath, false, NULL, &source_file));
+    REQUIRE_OK(context->preprocessor_context.source_locator->open(
+        mem, context->preprocessor_context.source_locator, filepath, false, NULL,
+        KEFIR_PREPROCESSOR_SOURCE_LOCATOR_MODE_NORMAL, &source_file));
 
     res = kefir_compiler_preprocess_lex(mem, context, buffer, source_file.cursor.content, source_file.cursor.length,
                                         source_id, filepath);

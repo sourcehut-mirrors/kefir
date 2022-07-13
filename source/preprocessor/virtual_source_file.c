@@ -31,10 +31,13 @@ static kefir_result_t close_source(struct kefir_mem *mem, struct kefir_preproces
 }
 
 static kefir_result_t open_source(struct kefir_mem *mem, const struct kefir_preprocessor_source_locator *source_locator,
-                                  const char *filepath, kefir_bool_t system, const char *current_filepath,
+                                  const char *filepath, kefir_bool_t system,
+                                  const struct kefir_preprocessor_source_file_info *current_file,
+                                  kefir_preprocessor_source_locator_mode_t mode,
                                   struct kefir_preprocessor_source_file *source_file) {
     UNUSED(mem);
-    UNUSED(current_filepath);
+    UNUSED(current_file);
+    UNUSED(mode);
     REQUIRE(source_locator != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid virtual source locator"));
     REQUIRE(filepath != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid file path"));
     REQUIRE(filepath != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to source file"));
@@ -42,8 +45,9 @@ static kefir_result_t open_source(struct kefir_mem *mem, const struct kefir_prep
 
     struct kefir_hashtree_node *node = NULL;
     REQUIRE_OK(kefir_hashtree_at(&locator->sources, (kefir_hashtree_key_t) filepath, &node));
-    source_file->filepath = filepath;
-    source_file->system = system;
+    source_file->info.filepath = filepath;
+    source_file->info.system = system;
+    source_file->info.base_include_dir = NULL;
     source_file->payload = (void *) node->value;
     REQUIRE_OK(kefir_lexer_source_cursor_init(&source_file->cursor, source_file->payload, strlen(source_file->payload),
                                               filepath));

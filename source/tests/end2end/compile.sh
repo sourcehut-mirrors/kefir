@@ -17,6 +17,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+SCRIPT="$0"
 BIN_DIR="$1"
 SRC_FILE="$2"
 DST_FILE="$3"
@@ -47,9 +48,9 @@ if [[ -f "$SRC_FILE.profile" ]]; then
 fi
 
 if [[ "x$MEMCHECK" == "xyes" ]]; then
-    valgrind $VALGRIND_OPTIONS "$KEFIRCC" $KEFIRFLAGS -I "$(dirname $SRC_FILE)" -D KEFIR_END2END_TEST -U __STDC__ -D "KEFIR_END2END=   101   " -W --pp-timestamp=1633204489 \
+    valgrind $VALGRIND_OPTIONS "$KEFIRCC" $KEFIRFLAGS -I "$(dirname $SRC_FILE)" -I "$(dirname $SCRIPT)/headers" -D KEFIR_END2END_TEST -U __STDC__ -D "KEFIR_END2END=   101   " -W --pp-timestamp=1633204489 \
         -include "$INCLUDE_FILE" "$SRC_FILE" -c -o "$DST_FILE"
 else
-    "$KEFIRCC" -I "$(dirname $SRC_FILE)" $KEFIRFLAGS -D KEFIR_END2END_TEST -U __STDC__ -D "KEFIR_END2END=   101   " -W --pp-timestamp=1633204489 \
+    "$KEFIRCC" -I "$(dirname $SRC_FILE)"  -I "$(dirname $SCRIPT)/headers" $KEFIRFLAGS -D KEFIR_END2END_TEST -U __STDC__ -D "KEFIR_END2END=   101   " -W --pp-timestamp=1633204489 \
         -include "$INCLUDE_FILE" "$SRC_FILE" -c -o "$DST_FILE"
 fi

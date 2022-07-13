@@ -94,6 +94,7 @@ static kefir_result_t dump_action_impl(struct kefir_mem *mem, const struct kefir
     REQUIRE_OK(kefir_compiler_context_init(mem, &compiler, &profile, &source_locator.locator, NULL));
 
     compiler.preprocessor_configuration.named_macro_vararg = options->features.named_macro_vararg;
+    compiler.preprocessor_configuration.include_next = options->features.include_next;
 
     compiler.parser_configuration.fail_on_attributes = options->features.fail_on_attributes;
     compiler.parser_configuration.implicit_function_definition_int = options->features.missing_function_return_type;

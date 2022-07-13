@@ -28,7 +28,8 @@
 #include "kefir/ast/constant_expression.h"
 #include "kefir/preprocessor/format.h"
 
-static const struct kefir_preprocessor_configuration DefaultConfiguration = {.named_macro_vararg = false};
+static const struct kefir_preprocessor_configuration DefaultConfiguration = {.named_macro_vararg = false,
+                                                                             .include_next = false};
 
 kefir_result_t kefir_preprocessor_configuration_default(struct kefir_preprocessor_configuration *config) {
     REQUIRE(config != NULL,
@@ -122,7 +123,7 @@ kefir_result_t kefir_preprocessor_init(struct kefir_mem *mem, struct kefir_prepr
                                        struct kefir_symbol_table *symbols, struct kefir_lexer_source_cursor *cursor,
                                        const struct kefir_lexer_context *context,
                                        struct kefir_preprocessor_context *preprocessor_context,
-                                       const char *current_filepath,
+                                       const struct kefir_preprocessor_source_file_info *current_file,
                                        const struct kefir_preprocessor_extensions *extensions) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(preprocessor != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid preprocessor"));
@@ -150,7 +151,7 @@ kefir_result_t kefir_preprocessor_init(struct kefir_mem *mem, struct kefir_prepr
         return res;
     });
     preprocessor->macros = &preprocessor->macro_overlay.scope;
-    preprocessor->current_filepath = current_filepath;
+    preprocessor->current_file = current_file;
     preprocessor->parent = NULL;
 
     preprocessor->extensions = extensions;
@@ -227,6 +228,7 @@ kefir_result_t kefir_preprocessor_skip_group(struct kefir_mem *mem, struct kefir
                 break;
 
             case KEFIR_PREPROCESSOR_DIRECTIVE_INCLUDE:
+            case KEFIR_PREPROCESSOR_DIRECTIVE_INCLUDE_NEXT:
             case KEFIR_PREPROCESSOR_DIRECTIVE_DEFINE:
             case KEFIR_PREPROCESSOR_DIRECTIVE_UNDEF:
             case KEFIR_PREPROCESSOR_DIRECTIVE_LINE:
@@ -265,14 +267,16 @@ static kefir_result_t process_include(struct kefir_mem *mem, struct kefir_prepro
     }
 
     struct kefir_preprocessor_source_file source_file;
-    REQUIRE_OK(preprocessor->context->source_locator->open(mem, preprocessor->context->source_locator, include_path,
-                                                           system_include, preprocessor->current_filepath,
-                                                           &source_file));
+    REQUIRE_OK(preprocessor->context->source_locator->open(
+        mem, preprocessor->context->source_locator, include_path, system_include, preprocessor->current_file,
+        directive->type == KEFIR_PREPROCESSOR_DIRECTIVE_INCLUDE_NEXT ? KEFIR_PREPROCESSOR_SOURCE_LOCATOR_MODE_NEXT
+                                                                     : KEFIR_PREPROCESSOR_SOURCE_LOCATOR_MODE_NORMAL,
+        &source_file));
 
     struct kefir_preprocessor subpreprocessor;
     kefir_result_t res = kefir_preprocessor_init(mem, &subpreprocessor, preprocessor->lexer.symbols,
                                                  &source_file.cursor, preprocessor->lexer.context,
-                                                 preprocessor->context, source_file.filepath, preprocessor->extensions);
+                                                 preprocessor->context, &source_file.info, preprocessor->extensions);
     REQUIRE_ELSE(res == KEFIR_OK, {
         source_file.close(mem, &source_file);
         return res;
@@ -567,6 +571,7 @@ static kefir_result_t run_directive(struct kefir_mem *mem, struct kefir_preproce
             break;
 
         case KEFIR_PREPROCESSOR_DIRECTIVE_INCLUDE:
+        case KEFIR_PREPROCESSOR_DIRECTIVE_INCLUDE_NEXT:
             REQUIRE_OK(flush_group_buffer(mem, preprocessor, buffer, group_buffer));
             REQUIRE_OK(process_include(mem, preprocessor, buffer, directive));
             break;

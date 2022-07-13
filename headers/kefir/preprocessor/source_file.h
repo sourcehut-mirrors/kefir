@@ -25,17 +25,28 @@
 #include "kefir/core/mem.h"
 #include "kefir/lexer/source_cursor.h"
 
-typedef struct kefir_preprocessor_source_file {
+typedef struct kefir_preprocessor_source_file_info {
     const char *filepath;
     kefir_bool_t system;
+    const char *base_include_dir;
+} kefir_preprocessor_source_file_info_t;
+
+typedef struct kefir_preprocessor_source_file {
+    struct kefir_preprocessor_source_file_info info;
     struct kefir_lexer_source_cursor cursor;
     kefir_result_t (*close)(struct kefir_mem *, struct kefir_preprocessor_source_file *);
     void *payload;
 } kefir_preprocessor_source_file_t;
 
+typedef enum kefir_preprocessor_source_locator_mode {
+    KEFIR_PREPROCESSOR_SOURCE_LOCATOR_MODE_NORMAL,
+    KEFIR_PREPROCESSOR_SOURCE_LOCATOR_MODE_NEXT
+} kefir_preprocessor_source_locator_mode_t;
+
 typedef struct kefir_preprocessor_source_locator {
     kefir_result_t (*open)(struct kefir_mem *, const struct kefir_preprocessor_source_locator *, const char *,
-                           kefir_bool_t, const char *, struct kefir_preprocessor_source_file *);
+                           kefir_bool_t, const struct kefir_preprocessor_source_file_info *,
+                           kefir_preprocessor_source_locator_mode_t, struct kefir_preprocessor_source_file *);
     void *payload;
 } kefir_preprocessor_source_locator_t;
 
