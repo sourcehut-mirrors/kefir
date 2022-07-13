@@ -36,7 +36,7 @@ typedef struct kefir_process {
         kefir_bool_t terminated;
         union {
             int exit_code;
-            int signal;
+            int termination_signal;
         };
     } status;
 } kefir_process_t;

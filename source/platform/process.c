@@ -79,7 +79,7 @@ kefir_result_t kefir_process_wait(struct kefir_process *process) {
         REQUIRE_OK(close_process(process));
     } else if (WIFSIGNALED(status)) {
         process->status.terminated = true;
-        process->status.signal = WTERMSIG(status);
+        process->status.termination_signal = WTERMSIG(status);
         REQUIRE_OK(close_process(process));
     }
     return KEFIR_OK;
@@ -91,7 +91,7 @@ kefir_result_t kefir_process_kill(struct kefir_process *process) {
         REQUIRE(kill(process->pid, SIGKILL) != -1, KEFIR_SET_OS_ERROR("Failed to kill running process"));
         REQUIRE_OK(close_process(process));
         process->status.terminated = true;
-        process->status.signal = SIGKILL;
+        process->status.termination_signal = SIGKILL;
     }
     return KEFIR_OK;
 }
