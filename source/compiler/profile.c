@@ -60,7 +60,10 @@ static kefir_result_t kefir_compiler_amd64_sysv_profile(struct kefir_compiler_pr
     REQUIRE(profile != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid compiler profile"));
 
     static const struct kefir_data_model_descriptor DATA_MODEL_DESCRIPTOR = {
-        .model = KEFIR_DATA_MODEL_LP64, .byte_order = KEFIR_BYTE_ORDER_LITTLE_ENDIAN, .signed_integer_width = 32};
+        .model = KEFIR_DATA_MODEL_LP64,
+        .byte_order = KEFIR_BYTE_ORDER_LITTLE_ENDIAN,
+        .signed_integer_width = 32,
+        .char_bit = 8};
 
     static struct kefir_ast_type_traits TYPE_TRAITS;
     static kefir_bool_t TYPE_TRAITS_INIT_DONE = false;

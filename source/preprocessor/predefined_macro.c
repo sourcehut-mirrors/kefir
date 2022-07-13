@@ -343,6 +343,33 @@ static kefir_result_t macro_pdp_endian_apply(struct kefir_mem *mem, struct kefir
     return KEFIR_OK;
 }
 
+static kefir_result_t macro_char_bit_apply(struct kefir_mem *mem, struct kefir_preprocessor *preprocessor,
+                                           const struct kefir_preprocessor_macro *macro,
+                                           struct kefir_symbol_table *symbols, const struct kefir_list *args,
+                                           struct kefir_token_buffer *buffer,
+                                           const struct kefir_source_location *source_location) {
+    UNUSED(symbols);
+    UNUSED(preprocessor);
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(macro != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid preprocessor macro"));
+    REQUIRE(args == NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected empty macro argument list"));
+    REQUIRE(buffer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token buffer"));
+    REQUIRE(source_location != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source location"));
+
+    char buf[16];
+    snprintf(buf, sizeof(buf) - 1, KEFIR_SIZE_FMT, preprocessor->context->environment.data_model->char_bit);
+
+    struct kefir_token token;
+    REQUIRE_OK(kefir_token_new_pp_number(mem, buf, strlen(buf), &token));
+    token.source_location = *source_location;
+    kefir_result_t res = kefir_token_buffer_emplace(mem, buffer, &token);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_token_free(mem, &token);
+        return res;
+    });
+    return KEFIR_OK;
+}
+
 static kefir_result_t define_predefined_macro(
     struct kefir_mem *mem, struct kefir_preprocessor *preprocessor,
     struct kefir_preprocessor_predefined_macro_scope *scope, struct kefir_preprocessor_macro *macro,
@@ -515,6 +542,9 @@ kefir_result_t kefir_preprocessor_predefined_macro_scope_init(struct kefir_mem *
                 // Intentionally left blank
                 break;
         }
+
+        REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.char_bit, "__CHAR_BIT__",
+                                                    macro_char_bit_apply));
     }
 
     REQUIRE_ELSE(res == KEFIR_OK, {
