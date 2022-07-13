@@ -20,6 +20,7 @@
 
 #include "kefir/preprocessor/directives.h"
 #include "kefir/preprocessor/tokenizer.h"
+#include "kefir/preprocessor/preprocessor.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 #include "kefir/core/source_error.h"
@@ -27,13 +28,16 @@
 #include <string.h>
 
 kefir_result_t kefir_preprocessor_directive_scanner_init(struct kefir_preprocessor_directive_scanner *directive_scanner,
-                                                         struct kefir_lexer *lexer) {
+                                                         struct kefir_lexer *lexer,
+                                                         const struct kefir_preprocessor_context *context) {
     REQUIRE(directive_scanner != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to preprocessor directive lexer"));
     REQUIRE(lexer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid lexer"));
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid preprocessor context"));
 
     directive_scanner->lexer = lexer;
     directive_scanner->newline_flag = true;
+    directive_scanner->context = context;
     return KEFIR_OK;
 }
 
@@ -355,19 +359,27 @@ static kefir_result_t scan_define_parameters(struct kefir_mem *mem,
                 kefir_symbol_table_insert(mem, directive_scanner->lexer->symbols, token->identifier, NULL);
             REQUIRE(identifier != NULL,
                     KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate macro argument identifier"));
-            REQUIRE_OK(kefir_list_insert_after(mem, &directive->define_directive.parameters,
-                                               kefir_list_tail(&directive->define_directive.parameters),
-                                               (void *) identifier));
             REQUIRE_OK(skip_whitespaces(mem, directive_scanner, token));
-            if (token->klass == KEFIR_TOKEN_PUNCTUATOR && token->punctuator == KEFIR_PUNCTUATOR_RIGHT_PARENTHESE) {
+            if (token->klass == KEFIR_TOKEN_PUNCTUATOR && token->punctuator == KEFIR_PUNCTUATOR_ELLIPSIS &&
+                directive_scanner->context->preprocessor_config->named_macro_vararg) {
+                directive->define_directive.vararg = true;
+                directive->define_directive.vararg_parameter = identifier;
                 scan_params = false;
             } else {
-                REQUIRE(token->klass == KEFIR_TOKEN_PUNCTUATOR && token->punctuator == KEFIR_PUNCTUATOR_COMMA,
-                        KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &token->source_location,
-                                               "Expected either comma or right parenthese"));
+                if (token->klass == KEFIR_TOKEN_PUNCTUATOR && token->punctuator == KEFIR_PUNCTUATOR_RIGHT_PARENTHESE) {
+                    scan_params = false;
+                } else {
+                    REQUIRE(token->klass == KEFIR_TOKEN_PUNCTUATOR && token->punctuator == KEFIR_PUNCTUATOR_COMMA,
+                            KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &token->source_location,
+                                                   "Expected either comma or right parenthese"));
+                }
+                REQUIRE_OK(kefir_list_insert_after(mem, &directive->define_directive.parameters,
+                                                   kefir_list_tail(&directive->define_directive.parameters),
+                                                   (void *) identifier));
             }
         } else if (token->klass == KEFIR_TOKEN_PUNCTUATOR && token->punctuator == KEFIR_PUNCTUATOR_ELLIPSIS) {
             directive->define_directive.vararg = true;
+            directive->define_directive.vararg_parameter = NULL;
             scan_params = false;
         } else if (token->klass == KEFIR_TOKEN_PUNCTUATOR && token->punctuator == KEFIR_PUNCTUATOR_RIGHT_PARENTHESE) {
             scan_params = false;

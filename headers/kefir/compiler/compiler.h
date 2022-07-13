@@ -52,6 +52,7 @@ typedef struct kefir_compiler_extensions {
 typedef struct kefir_compiler_context {
     struct kefir_compiler_profile *profile;
     const struct kefir_preprocessor_source_locator *source_locator;
+    struct kefir_preprocessor_configuration preprocessor_configuration;
     struct kefir_parser_configuration parser_configuration;
     struct kefir_ast_translator_environment translator_env;
     struct kefir_ast_global_context ast_global_context;

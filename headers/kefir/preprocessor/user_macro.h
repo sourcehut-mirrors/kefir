@@ -27,6 +27,7 @@ typedef struct kefir_preprocessor_user_macro {
     struct kefir_preprocessor_macro macro;
     struct kefir_list parameters;
     kefir_bool_t vararg;
+    const char *vararg_parameter;
     struct kefir_token_buffer replacement;
 } kefir_preprocessor_user_macro_t;
 

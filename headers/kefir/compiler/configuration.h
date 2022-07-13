@@ -72,6 +72,7 @@ typedef struct kefir_compiler_runner_configuration {
         kefir_bool_t omitted_conditional_operand;
         kefir_bool_t int_to_pointer;
         kefir_bool_t permissive_pointer_conv;
+        kefir_bool_t named_macro_vararg;
     } features;
 
     struct {

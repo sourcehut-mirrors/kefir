@@ -28,6 +28,16 @@
 #include "kefir/ast/constant_expression.h"
 #include "kefir/preprocessor/format.h"
 
+static const struct kefir_preprocessor_configuration DefaultConfiguration = {.named_macro_vararg = false};
+
+kefir_result_t kefir_preprocessor_configuration_default(struct kefir_preprocessor_configuration *config) {
+    REQUIRE(config != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to preprocessor configuration"));
+
+    *config = DefaultConfiguration;
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_preprocessor_context_init(struct kefir_mem *mem, struct kefir_preprocessor_context *context,
                                                const struct kefir_preprocessor_source_locator *locator,
                                                struct kefir_ast_context *ast_context,
@@ -78,6 +88,8 @@ kefir_result_t kefir_preprocessor_context_init(struct kefir_mem *mem, struct kef
     context->environment.stdc_no_threads = false;
     context->environment.stdc_no_vla = false;
 
+    context->preprocessor_config = &DefaultConfiguration;
+
     // Extension macros
     context->environment.data_model = NULL;
 
@@ -122,8 +134,8 @@ kefir_result_t kefir_preprocessor_init(struct kefir_mem *mem, struct kefir_prepr
     preprocessor->context = preprocessor_context;
     REQUIRE_OK(kefir_lexer_init(mem, &preprocessor->lexer, symbols, cursor, context,
                                 extensions != NULL ? extensions->lexer_extensions : NULL));
-    kefir_result_t res =
-        kefir_preprocessor_directive_scanner_init(&preprocessor->directive_scanner, &preprocessor->lexer);
+    kefir_result_t res = kefir_preprocessor_directive_scanner_init(&preprocessor->directive_scanner,
+                                                                   &preprocessor->lexer, preprocessor->context);
     REQUIRE_CHAIN(&res,
                   kefir_preprocessor_predefined_macro_scope_init(mem, &preprocessor->predefined_macros, preprocessor));
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -310,6 +322,7 @@ static kefir_result_t process_define(struct kefir_mem *mem, struct kefir_preproc
         REQUIRE_CHAIN(&res, kefir_list_move_all(&macro->parameters, &directive->define_directive.parameters));
         if (res == KEFIR_OK) {
             macro->vararg = directive->define_directive.vararg;
+            macro->vararg_parameter = directive->define_directive.vararg_parameter;
         }
         REQUIRE_CHAIN(&res,
                       kefir_preprocessor_user_macro_scope_insert(mem, &preprocessor->context->user_macros, macro));

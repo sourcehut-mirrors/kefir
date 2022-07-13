@@ -26,6 +26,8 @@
 #include "kefir/core/list.h"
 #include "kefir/lexer/buffer.h"
 
+typedef struct kefir_preprocessor_context kefir_preprocessor_context_t;
+
 typedef enum kefir_preprocessor_directive_type {
     KEFIR_PREPROCESSOR_DIRECTIVE_IF,
     KEFIR_PREPROCESSOR_DIRECTIVE_IFDEF,
@@ -58,6 +60,7 @@ typedef struct kefir_preprocessor_define_directive {
     const char *identifier;
     struct kefir_list parameters;
     kefir_bool_t vararg;
+    const char *vararg_parameter;
     struct kefir_token_buffer replacement;
 } kefir_preprocessor_define_directive_t;
 
@@ -81,6 +84,7 @@ typedef struct kefir_preprocessor_directive {
 typedef struct kefir_preprocessor_directive_scanner {
     struct kefir_lexer *lexer;
     kefir_bool_t newline_flag;
+    const struct kefir_preprocessor_context *context;
 } kefir_preprocessor_directive_scanner_t;
 
 typedef struct kefir_preprocessor_directive_scanner_state {
@@ -89,7 +93,8 @@ typedef struct kefir_preprocessor_directive_scanner_state {
 } kefir_preprocessor_directive_scanner_state_t;
 
 kefir_result_t kefir_preprocessor_directive_scanner_init(struct kefir_preprocessor_directive_scanner *,
-                                                         struct kefir_lexer *lexer);
+                                                         struct kefir_lexer *,
+                                                         const struct kefir_preprocessor_context *);
 
 kefir_result_t kefir_preprocessor_directive_scanner_save(const struct kefir_preprocessor_directive_scanner *,
                                                          struct kefir_preprocessor_directive_scanner_state *);

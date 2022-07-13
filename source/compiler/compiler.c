@@ -66,6 +66,7 @@ kefir_result_t kefir_compiler_context_init(struct kefir_mem *mem, struct kefir_c
     REQUIRE(profile != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid compiler profile"));
     REQUIRE(source_locator != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid compiler source locator"));
 
+    REQUIRE_OK(kefir_preprocessor_configuration_default(&context->preprocessor_configuration));
     REQUIRE_OK(kefir_parser_configuration_default(&context->parser_configuration));
     REQUIRE_OK(kefir_ast_translator_configuration_default(&context->translator_configuration));
     REQUIRE_OK(kefir_ast_translator_environment_init(&context->translator_env, &profile->ir_target_platform));
@@ -88,6 +89,7 @@ kefir_result_t kefir_compiler_context_init(struct kefir_mem *mem, struct kefir_c
         kefir_ast_global_context_free(mem, &context->ast_global_context);
         return res;
     });
+    context->preprocessor_context.preprocessor_config = &context->preprocessor_configuration;
     context->codegen_configuration = KefirCodegenDefaultConfiguration;
     context->preprocessor_context.environment.data_model = profile->data_model;
     context->profile = profile;

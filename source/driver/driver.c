@@ -144,6 +144,7 @@ static kefir_result_t driver_generate_compiler_config(struct kefir_mem *mem, str
         compiler_config->features.omitted_conditional_operand = true;
         compiler_config->features.int_to_pointer = true;
         compiler_config->features.permissive_pointer_conv = true;
+        compiler_config->features.named_macro_vararg = true;
     }
     for (const struct kefir_list_entry *iter = kefir_list_head(&config->include_directories); iter != NULL;
          kefir_list_next(&iter)) {

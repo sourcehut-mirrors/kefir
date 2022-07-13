@@ -180,6 +180,7 @@ struct kefir_cli_option KefirCompilerConfigurationOptions[] = {
     FEATURE("omitted-conditional-operand", features.omitted_conditional_operand),
     FEATURE("int-to-pointer", features.int_to_pointer),
     FEATURE("permissive-pointer-conv", features.permissive_pointer_conv),
+    FEATURE("named-macro-vararg", features.named_macro_vararg),
 
     CODEGEN("emulated-tls", codegen.emulated_tls)
 

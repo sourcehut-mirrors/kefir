@@ -43,6 +43,7 @@ Supported features:
     omitted-conditional-operand         Permit omission of the middle ternary expression operand
     int-to-pointer                      Permit any integral type conversion to pointer
     permissive-pointer-conv             Permit conversions between any pointer types
+    named-macro-vararg                  Permit named macro variable arguments
 
 Targets:
     amd64-sysv-gas (default)             Produce GNU As-compatible assembly adhering System-V AMD64 ABI

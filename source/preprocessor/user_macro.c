@@ -62,7 +62,9 @@ static kefir_result_t build_function_macro_args_tree(struct kefir_mem *mem,
         REQUIRE(arg_iter != NULL,
                 KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Provided macro arguments do no match macro parameters"));
         const struct kefir_token_buffer *arg_value = arg_iter->value;
-        REQUIRE_OK(kefir_hashtree_insert(mem, arg_tree, (kefir_hashtree_key_t) "__VA_ARGS__",
+        const char *vararg_parameter =
+            user_macro->vararg_parameter != NULL ? user_macro->vararg_parameter : "__VA_ARGS__";
+        REQUIRE_OK(kefir_hashtree_insert(mem, arg_tree, (kefir_hashtree_key_t) vararg_parameter,
                                          (kefir_hashtree_value_t) arg_value));
     }
     return KEFIR_OK;
@@ -692,6 +694,7 @@ struct kefir_preprocessor_user_macro *kefir_preprocessor_user_macro_new_function
     macro->macro.identifier = identifier;
     macro->macro.type = KEFIR_PREPROCESSOR_MACRO_FUNCTION;
     macro->vararg = false;
+    macro->vararg_parameter = NULL;
     macro->macro.payload = macro;
     macro->macro.argc = user_macro_argc;
     macro->macro.apply = user_macro_apply;
