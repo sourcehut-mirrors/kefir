@@ -70,7 +70,12 @@ kefir_result_t kefir_ast_analyze_struct_member_node(struct kefir_mem *mem, const
                                    "Expected expression of complete structure/union type"));
 
     const struct kefir_ast_struct_field *field = NULL;
-    REQUIRE_OK(kefir_ast_struct_type_resolve_field(&struct_type->structure_type, node->member, &field));
+    kefir_result_t res = kefir_ast_struct_type_resolve_field(&struct_type->structure_type, node->member, &field);
+    if (res == KEFIR_NOT_FOUND) {
+        res = KEFIR_SET_SOURCE_ERRORF(KEFIR_ANALYSIS_ERROR, &node->base.source_location,
+                                      "Cannot find field %s in structure", node->member);
+    }
+    REQUIRE_OK(res);
     const struct kefir_ast_type *type = NULL;
     REQUIRE_OK(kefir_ast_type_completion(mem, context, &type, field->type));
     if (qualification != NULL) {
