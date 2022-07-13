@@ -22,6 +22,7 @@
 #include "kefir/ast-translator/translator.h"
 #include "kefir/ast-translator/typeconv.h"
 #include "kefir/ast-translator/lvalue.h"
+#include "kefir/ast-translator/layout.h"
 #include "kefir/ast/type_conv.h"
 #include "kefir/ast-translator/util.h"
 #include "kefir/core/util.h"
@@ -122,6 +123,31 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
             ASSIGN_DECL_CAST(struct kefir_ast_node_base *, alignment, iter->value);
             REQUIRE_OK(kefir_ast_translate_expression(mem, alignment, builder, context));
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_ALLOCA, 1));
+        } break;
+
+        case KEFIR_AST_BUILTIN_OFFSETOF: {
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, offset_base, iter->value);
+            kefir_list_next(&iter);
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, field, iter->value);
+
+            struct kefir_ast_designator designator = {.type = KEFIR_AST_DESIGNATOR_MEMBER,
+                                                      .member = field->properties.expression_props.identifier,
+                                                      .next = NULL};
+
+            kefir_ast_target_environment_opaque_type_t opaque_type;
+            REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_GET_TYPE(mem, context->ast_context->target_env,
+                                                             offset_base->properties.type, &opaque_type));
+
+            struct kefir_ast_target_environment_object_info objinfo;
+            kefir_result_t res = KEFIR_AST_TARGET_ENVIRONMENT_OBJECT_INFO(mem, context->ast_context->target_env,
+                                                                          opaque_type, &designator, &objinfo);
+            REQUIRE_ELSE(res == KEFIR_OK, {
+                KEFIR_AST_TARGET_ENVIRONMENT_FREE_TYPE(mem, context->ast_context->target_env, opaque_type);
+                return res;
+            });
+            REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_FREE_TYPE(mem, context->ast_context->target_env, opaque_type));
+
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PUSHU64, objinfo.relative_offset));
         } break;
     }
     return KEFIR_OK;

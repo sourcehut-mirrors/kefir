@@ -75,7 +75,7 @@ these pragmas have no value at the moment.
 ### Built-ins
 At the moment, Kefir supports following builtins for compatibility with GCC:
 `__builtin_va_list`, `__builtin_va_start`, `__builtin_va_end`, `__builtin_va_copy`, `__builtin_va_arg`,
-`__builtin_alloca`, `__builtin_alloca_with_align`, `__builtin_alloca_with_align_and_max`.
+`__builtin_alloca`, `__builtin_alloca_with_align`, `__builtin_alloca_with_align_and_max`, `__builtin_offsetof`.
 
 Kefir supports `__attribute__(...)` syntax on parsing level, however attributes are ignored on further
 compilation stages. Presence of attribute in source code can be made a syntax error by CLI option.

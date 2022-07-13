@@ -318,6 +318,10 @@ static kefir_result_t visit_builtin(const struct kefir_ast_visitor *visitor, con
         case KEFIR_AST_BUILTIN_ALLOCA_WITH_ALIGN_AND_MAX:
             REQUIRE_OK(kefir_json_output_string(json, "alloca_with_align_and_max"));
             break;
+
+        case KEFIR_AST_BUILTIN_OFFSETOF:
+            REQUIRE_OK(kefir_json_output_string(json, "offset"));
+            break;
     }
     REQUIRE_OK(kefir_json_output_object_key(json, "arguments"));
     REQUIRE_OK(kefir_json_output_array_begin(json));

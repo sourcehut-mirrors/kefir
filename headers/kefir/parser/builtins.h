@@ -32,6 +32,7 @@
 #define KEFIR_PARSER_BUILTIN_ALLOCA "__builtin_alloca"
 #define KEFIR_PARSER_BUILTIN_ALLOCA_WITH_ALIGN "__builtin_alloca_with_align"
 #define KEFIR_PARSER_BUILTIN_ALLOCA_WITH_ALIGN_AND_MAX "__builtin_alloca_with_align_and_max"
+#define KEFIR_PARSER_BUILTIN_OFFSETOF "__builtin_offsetof"
 
 kefir_result_t kefir_parser_get_builtin_operation(const char *, kefir_ast_builtin_operator_t *);
 

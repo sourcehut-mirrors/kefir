@@ -36,6 +36,7 @@ EVAL(unary_operation, struct kefir_ast_unary_operation);
 EVAL(binary_operation, struct kefir_ast_binary_operation);
 EVAL(conditional_operator, struct kefir_ast_conditional_operator);
 EVAL(cast_operator, struct kefir_ast_cast_operator);
+EVAL(builtin, struct kefir_ast_builtin);
 #undef EVAL
 
 kefir_result_t kefir_ast_constant_expression_value_evaluate_lvalue_reference(

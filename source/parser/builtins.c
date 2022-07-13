@@ -32,7 +32,8 @@ static const struct {
                 {KEFIR_PARSER_BUILTIN_VA_ARG, KEFIR_AST_BUILTIN_VA_ARG},
                 {KEFIR_PARSER_BUILTIN_ALLOCA, KEFIR_AST_BUILTIN_ALLOCA},
                 {KEFIR_PARSER_BUILTIN_ALLOCA_WITH_ALIGN, KEFIR_AST_BUILTIN_ALLOCA_WITH_ALIGN},
-                {KEFIR_PARSER_BUILTIN_ALLOCA_WITH_ALIGN_AND_MAX, KEFIR_AST_BUILTIN_ALLOCA_WITH_ALIGN_AND_MAX}};
+                {KEFIR_PARSER_BUILTIN_ALLOCA_WITH_ALIGN_AND_MAX, KEFIR_AST_BUILTIN_ALLOCA_WITH_ALIGN_AND_MAX},
+                {KEFIR_PARSER_BUILTIN_OFFSETOF, KEFIR_AST_BUILTIN_OFFSETOF}};
 static const kefir_size_t BUILTIN_COUNT = sizeof(BUILTINS) / sizeof(BUILTINS[0]);
 
 kefir_result_t kefir_parser_get_builtin_operation(const char *identifier, kefir_ast_builtin_operator_t *builtin_op) {
