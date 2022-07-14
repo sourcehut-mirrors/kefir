@@ -42,7 +42,12 @@ typedef enum kefir_data_model_tag {
 typedef struct kefir_data_model_descriptor {
     kefir_data_model_tag_t model;
     kefir_byte_order_t byte_order;
-    kefir_size_t signed_integer_width;
+    struct {
+        kefir_size_t short_int;
+        kefir_size_t integer;
+        kefir_size_t long_int;
+        kefir_size_t long_long_int;
+    } int_width;
     kefir_size_t char_bit;
 } kefir_data_model_descriptor_t;
 

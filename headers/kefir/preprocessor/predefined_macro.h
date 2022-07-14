@@ -59,6 +59,17 @@ typedef struct kefir_preprocessor_predefined_macro_scope {
         struct kefir_preprocessor_macro byte_order_little_endian;
         struct kefir_preprocessor_macro byte_order_pdp_endian;
         struct kefir_preprocessor_macro char_bit;
+        struct {
+            struct kefir_preprocessor_macro schar_max;
+            struct kefir_preprocessor_macro shrt_max;
+            struct kefir_preprocessor_macro shrt_width;
+            struct kefir_preprocessor_macro int_max;
+            struct kefir_preprocessor_macro int_width;
+            struct kefir_preprocessor_macro long_max;
+            struct kefir_preprocessor_macro long_width;
+            struct kefir_preprocessor_macro long_long_max;
+            struct kefir_preprocessor_macro long_long_width;
+        } limits;
     } macros;
     struct kefir_hashtree macro_tree;
 } kefir_preprocessor_predefined_macro_scope_t;

@@ -146,9 +146,9 @@ static const struct kefir_ast_type *default_bitfield_promotion(const struct kefi
     REQUIRE(type != NULL, NULL);
 
     ASSIGN_DECL_CAST(const struct kefir_data_model_descriptor *, data_model, type_traits->payload);
-    if (width == data_model->signed_integer_width && KEFIR_INTERNAL_AST_TYPE_IS_SIGNED_INTEGER(type)) {
+    if (width == data_model->int_width.integer && KEFIR_INTERNAL_AST_TYPE_IS_SIGNED_INTEGER(type)) {
         return kefir_ast_type_signed_int();
-    } else if (width >= data_model->signed_integer_width) {
+    } else if (width >= data_model->int_width.integer) {
         return type;
     } else {
         return kefir_ast_type_signed_int();

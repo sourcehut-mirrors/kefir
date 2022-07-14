@@ -343,6 +343,19 @@ static kefir_result_t macro_pdp_endian_apply(struct kefir_mem *mem, struct kefir
     return KEFIR_OK;
 }
 
+static kefir_result_t make_pp_number(struct kefir_mem *mem, struct kefir_token_buffer *buffer, const char *buf,
+                                     const struct kefir_source_location *source_location) {
+    struct kefir_token token;
+    REQUIRE_OK(kefir_token_new_pp_number(mem, buf, strlen(buf), &token));
+    token.source_location = *source_location;
+    kefir_result_t res = kefir_token_buffer_emplace(mem, buffer, &token);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_token_free(mem, &token);
+        return res;
+    });
+    return KEFIR_OK;
+}
+
 static kefir_result_t macro_char_bit_apply(struct kefir_mem *mem, struct kefir_preprocessor *preprocessor,
                                            const struct kefir_preprocessor_macro *macro,
                                            struct kefir_symbol_table *symbols, const struct kefir_list *args,
@@ -359,14 +372,200 @@ static kefir_result_t macro_char_bit_apply(struct kefir_mem *mem, struct kefir_p
     char buf[16];
     snprintf(buf, sizeof(buf) - 1, KEFIR_SIZE_FMT, preprocessor->context->environment.data_model->char_bit);
 
-    struct kefir_token token;
-    REQUIRE_OK(kefir_token_new_pp_number(mem, buf, strlen(buf), &token));
-    token.source_location = *source_location;
-    kefir_result_t res = kefir_token_buffer_emplace(mem, buffer, &token);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_token_free(mem, &token);
-        return res;
-    });
+    REQUIRE_OK(make_pp_number(mem, buffer, buf, source_location));
+    return KEFIR_OK;
+}
+
+static kefir_result_t macro_schar_max_apply(struct kefir_mem *mem, struct kefir_preprocessor *preprocessor,
+                                            const struct kefir_preprocessor_macro *macro,
+                                            struct kefir_symbol_table *symbols, const struct kefir_list *args,
+                                            struct kefir_token_buffer *buffer,
+                                            const struct kefir_source_location *source_location) {
+    UNUSED(symbols);
+    UNUSED(preprocessor);
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(macro != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid preprocessor macro"));
+    REQUIRE(args == NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected empty macro argument list"));
+    REQUIRE(buffer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token buffer"));
+    REQUIRE(source_location != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source location"));
+
+    kefir_uint64_t max_value = (1 << (preprocessor->context->environment.data_model->char_bit - 1)) - 1;
+
+    char buf[16];
+    snprintf(buf, sizeof(buf) - 1, KEFIR_UINT64_FMT, max_value);
+
+    REQUIRE_OK(make_pp_number(mem, buffer, buf, source_location));
+    return KEFIR_OK;
+}
+
+static kefir_result_t macro_shrt_max_apply(struct kefir_mem *mem, struct kefir_preprocessor *preprocessor,
+                                           const struct kefir_preprocessor_macro *macro,
+                                           struct kefir_symbol_table *symbols, const struct kefir_list *args,
+                                           struct kefir_token_buffer *buffer,
+                                           const struct kefir_source_location *source_location) {
+    UNUSED(symbols);
+    UNUSED(preprocessor);
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(macro != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid preprocessor macro"));
+    REQUIRE(args == NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected empty macro argument list"));
+    REQUIRE(buffer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token buffer"));
+    REQUIRE(source_location != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source location"));
+
+    kefir_uint64_t max_value = (1ull << (preprocessor->context->environment.data_model->int_width.short_int - 1)) - 1;
+
+    char buf[32];
+    snprintf(buf, sizeof(buf) - 1, KEFIR_UINT64_FMT, max_value);
+
+    REQUIRE_OK(make_pp_number(mem, buffer, buf, source_location));
+    return KEFIR_OK;
+}
+
+static kefir_result_t macro_int_max_apply(struct kefir_mem *mem, struct kefir_preprocessor *preprocessor,
+                                          const struct kefir_preprocessor_macro *macro,
+                                          struct kefir_symbol_table *symbols, const struct kefir_list *args,
+                                          struct kefir_token_buffer *buffer,
+                                          const struct kefir_source_location *source_location) {
+    UNUSED(symbols);
+    UNUSED(preprocessor);
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(macro != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid preprocessor macro"));
+    REQUIRE(args == NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected empty macro argument list"));
+    REQUIRE(buffer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token buffer"));
+    REQUIRE(source_location != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source location"));
+
+    kefir_uint64_t max_value = (1ull << (preprocessor->context->environment.data_model->int_width.integer - 1)) - 1;
+
+    char buf[32];
+    snprintf(buf, sizeof(buf) - 1, KEFIR_UINT64_FMT, max_value);
+
+    REQUIRE_OK(make_pp_number(mem, buffer, buf, source_location));
+    return KEFIR_OK;
+}
+
+static kefir_result_t macro_long_max_apply(struct kefir_mem *mem, struct kefir_preprocessor *preprocessor,
+                                           const struct kefir_preprocessor_macro *macro,
+                                           struct kefir_symbol_table *symbols, const struct kefir_list *args,
+                                           struct kefir_token_buffer *buffer,
+                                           const struct kefir_source_location *source_location) {
+    UNUSED(symbols);
+    UNUSED(preprocessor);
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(macro != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid preprocessor macro"));
+    REQUIRE(args == NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected empty macro argument list"));
+    REQUIRE(buffer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token buffer"));
+    REQUIRE(source_location != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source location"));
+
+    kefir_uint64_t max_value = (1ull << (preprocessor->context->environment.data_model->int_width.long_int - 1)) - 1;
+
+    char buf[32];
+    snprintf(buf, sizeof(buf) - 1, KEFIR_UINT64_FMT "L", max_value);
+
+    REQUIRE_OK(make_pp_number(mem, buffer, buf, source_location));
+    return KEFIR_OK;
+}
+
+static kefir_result_t macro_long_long_max_apply(struct kefir_mem *mem, struct kefir_preprocessor *preprocessor,
+                                                const struct kefir_preprocessor_macro *macro,
+                                                struct kefir_symbol_table *symbols, const struct kefir_list *args,
+                                                struct kefir_token_buffer *buffer,
+                                                const struct kefir_source_location *source_location) {
+    UNUSED(symbols);
+    UNUSED(preprocessor);
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(macro != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid preprocessor macro"));
+    REQUIRE(args == NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected empty macro argument list"));
+    REQUIRE(buffer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token buffer"));
+    REQUIRE(source_location != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source location"));
+
+    kefir_uint64_t max_value =
+        (1ull << (preprocessor->context->environment.data_model->int_width.long_long_int - 1)) - 1;
+
+    char buf[32];
+    snprintf(buf, sizeof(buf) - 1, KEFIR_UINT64_FMT "LL", max_value);
+
+    REQUIRE_OK(make_pp_number(mem, buffer, buf, source_location));
+    return KEFIR_OK;
+}
+
+static kefir_result_t macro_shrt_width_apply(struct kefir_mem *mem, struct kefir_preprocessor *preprocessor,
+                                             const struct kefir_preprocessor_macro *macro,
+                                             struct kefir_symbol_table *symbols, const struct kefir_list *args,
+                                             struct kefir_token_buffer *buffer,
+                                             const struct kefir_source_location *source_location) {
+    UNUSED(symbols);
+    UNUSED(preprocessor);
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(macro != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid preprocessor macro"));
+    REQUIRE(args == NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected empty macro argument list"));
+    REQUIRE(buffer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token buffer"));
+    REQUIRE(source_location != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source location"));
+
+    char buf[32];
+    snprintf(buf, sizeof(buf) - 1, KEFIR_UINT64_FMT,
+             preprocessor->context->environment.data_model->int_width.short_int);
+
+    REQUIRE_OK(make_pp_number(mem, buffer, buf, source_location));
+    return KEFIR_OK;
+}
+
+static kefir_result_t macro_int_width_apply(struct kefir_mem *mem, struct kefir_preprocessor *preprocessor,
+                                            const struct kefir_preprocessor_macro *macro,
+                                            struct kefir_symbol_table *symbols, const struct kefir_list *args,
+                                            struct kefir_token_buffer *buffer,
+                                            const struct kefir_source_location *source_location) {
+    UNUSED(symbols);
+    UNUSED(preprocessor);
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(macro != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid preprocessor macro"));
+    REQUIRE(args == NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected empty macro argument list"));
+    REQUIRE(buffer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token buffer"));
+    REQUIRE(source_location != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source location"));
+
+    char buf[32];
+    snprintf(buf, sizeof(buf) - 1, KEFIR_UINT64_FMT, preprocessor->context->environment.data_model->int_width.integer);
+
+    REQUIRE_OK(make_pp_number(mem, buffer, buf, source_location));
+    return KEFIR_OK;
+}
+
+static kefir_result_t macro_long_width_apply(struct kefir_mem *mem, struct kefir_preprocessor *preprocessor,
+                                             const struct kefir_preprocessor_macro *macro,
+                                             struct kefir_symbol_table *symbols, const struct kefir_list *args,
+                                             struct kefir_token_buffer *buffer,
+                                             const struct kefir_source_location *source_location) {
+    UNUSED(symbols);
+    UNUSED(preprocessor);
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(macro != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid preprocessor macro"));
+    REQUIRE(args == NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected empty macro argument list"));
+    REQUIRE(buffer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token buffer"));
+    REQUIRE(source_location != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source location"));
+
+    char buf[32];
+    snprintf(buf, sizeof(buf) - 1, KEFIR_UINT64_FMT, preprocessor->context->environment.data_model->int_width.long_int);
+
+    REQUIRE_OK(make_pp_number(mem, buffer, buf, source_location));
+    return KEFIR_OK;
+}
+
+static kefir_result_t macro_long_long_width_apply(struct kefir_mem *mem, struct kefir_preprocessor *preprocessor,
+                                                  const struct kefir_preprocessor_macro *macro,
+                                                  struct kefir_symbol_table *symbols, const struct kefir_list *args,
+                                                  struct kefir_token_buffer *buffer,
+                                                  const struct kefir_source_location *source_location) {
+    UNUSED(symbols);
+    UNUSED(preprocessor);
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(macro != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid preprocessor macro"));
+    REQUIRE(args == NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected empty macro argument list"));
+    REQUIRE(buffer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token buffer"));
+    REQUIRE(source_location != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source location"));
+
+    char buf[32];
+    snprintf(buf, sizeof(buf) - 1, KEFIR_UINT64_FMT,
+             preprocessor->context->environment.data_model->int_width.long_long_int);
+
+    REQUIRE_OK(make_pp_number(mem, buffer, buf, source_location));
     return KEFIR_OK;
 }
 
@@ -545,6 +744,33 @@ kefir_result_t kefir_preprocessor_predefined_macro_scope_init(struct kefir_mem *
 
         REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.char_bit, "__CHAR_BIT__",
                                                     macro_char_bit_apply));
+
+        REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.limits.schar_max,
+                                                    "__SCHAR_MAX__", macro_schar_max_apply));
+
+        REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.limits.shrt_max,
+                                                    "__SHRT_MAX__", macro_shrt_max_apply));
+
+        REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.limits.shrt_width,
+                                                    "__SHRT_WIDTH__", macro_shrt_width_apply));
+
+        REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.limits.int_max,
+                                                    "__INT_MAX__", macro_int_max_apply));
+
+        REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.limits.int_width,
+                                                    "__INT_WIDTH__", macro_int_width_apply));
+
+        REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.limits.long_max,
+                                                    "__LONG_MAX__", macro_long_max_apply));
+
+        REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.limits.long_width,
+                                                    "__LONG_WIDTH__", macro_long_width_apply));
+
+        REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.limits.long_long_max,
+                                                    "__LONG_LONG_MAX__", macro_long_long_max_apply));
+
+        REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.limits.long_long_width,
+                                                    "__LONG_LONG_WIDTH__", macro_long_long_width_apply));
     }
 
     REQUIRE_ELSE(res == KEFIR_OK, {

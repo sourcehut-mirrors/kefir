@@ -45,7 +45,9 @@ struct kefir_ast_translator_environment *kft_util_get_translator_environment() {
 
 const struct kefir_data_model_descriptor *kefir_util_default_data_model() {
     static const struct kefir_data_model_descriptor DATA_MODEL_DESCRIPTOR = {
-        .model = KEFIR_DATA_MODEL_LP64, .byte_order = KEFIR_BYTE_ORDER_LITTLE_ENDIAN, .signed_integer_width = 32};
+        .model = KEFIR_DATA_MODEL_LP64,
+        .byte_order = KEFIR_BYTE_ORDER_LITTLE_ENDIAN,
+        .int_width = {.short_int = 16, .integer = 32, .long_int = 64, .long_long_int = 64}};
     return &DATA_MODEL_DESCRIPTOR;
 }
 

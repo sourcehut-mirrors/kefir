@@ -62,7 +62,7 @@ static kefir_result_t kefir_compiler_amd64_sysv_profile(struct kefir_compiler_pr
     static const struct kefir_data_model_descriptor DATA_MODEL_DESCRIPTOR = {
         .model = KEFIR_DATA_MODEL_LP64,
         .byte_order = KEFIR_BYTE_ORDER_LITTLE_ENDIAN,
-        .signed_integer_width = 32,
+        .int_width = {.short_int = 16, .integer = 32, .long_int = 64, .long_long_int = 64},
         .char_bit = 8};
 
     static struct kefir_ast_type_traits TYPE_TRAITS;
