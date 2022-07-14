@@ -51,9 +51,10 @@ kefir_result_t kefir_driver_external_resources_init_from_env(struct kefir_mem *m
     externals->runtime_library = getenv("KEFIR_RTLIB");
     externals->musl.include_path = getenv("KEFIR_MUSL_INCLUDES");
     externals->musl.library_path = getenv("KEFIR_MUSL_LIB");
-    externals->gnu.include_paths = getenv("KEFIR_GNU_INCLUDES");
-    externals->gnu.library_path = getenv("KEFIR_GNU_LIB");
+    externals->gnu.toolchain = getenv("KEFIR_GNU_TOOLCHAIN");
     externals->gnu.dynamic_linker = getenv("KEFIR_GNU_DYNAMIC_LINKER");
+    externals->system.include_path = getenv("KEFIR_SYSTEM_INCLUDES");
+    externals->system.library_path = getenv("KEFIR_SYSTEM_LIB");
 
     externals->work_dir = getenv("KEFIR_WORKDIR");
     if (externals->work_dir == NULL) {

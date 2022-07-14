@@ -95,21 +95,42 @@ kefir_result_t kefir_driver_apply_target_configuration(struct kefir_mem *mem, st
 
         if (target->variant == KEFIR_DRIVER_TARGET_VARIANT_GNU) {
             if (compiler_config != NULL) {
-                REQUIRE(
-                    externals->gnu.include_paths != NULL,
-                    KEFIR_SET_ERROR(KEFIR_UI_ERROR, "GNU Toolchain include paths shall be passed as KEFIR_GNU_INCLUDES "
-                                                    "environment variable for selected target"));
-                REQUIRE_OK(add_include_paths(mem, symbols, compiler_config, externals->gnu.include_paths));
+                REQUIRE(externals->gnu.toolchain != NULL,
+                        KEFIR_SET_ERROR(KEFIR_UI_ERROR, "GNU Toolchain location shall be passed as KEFIR_GNU_TOOLCHAIN "
+                                                        "environment variable for selected target"));
+                REQUIRE(externals->system.include_path != NULL,
+                        KEFIR_SET_ERROR(KEFIR_UI_ERROR, "System include path shall be passed as KEFIR_SYSTEM_INCLUDES "
+                                                        "environment variable for selected target"));
+
+                char buf[PATH_MAX + 1];
+                snprintf(buf, sizeof(buf) - 1, "%s/include", externals->gnu.toolchain);
+                REQUIRE_OK(add_include_paths(mem, symbols, compiler_config, buf));
+                snprintf(buf, sizeof(buf) - 1, "%s/include-fixed", externals->gnu.toolchain);
+                REQUIRE_OK(add_include_paths(mem, symbols, compiler_config, buf));
+                REQUIRE_OK(add_include_paths(mem, symbols, compiler_config, externals->system.include_path));
             }
 
             if (linker_config != NULL) {
-                REQUIRE(externals->gnu.library_path != NULL,
-                        KEFIR_SET_ERROR(KEFIR_UI_ERROR, "GNU Toolchain library path shall be passed as KEFIR_GNU_LIB "
+                REQUIRE(externals->gnu.toolchain != NULL,
+                        KEFIR_SET_ERROR(KEFIR_UI_ERROR, "GNU Toolchain location shall be passed as KEFIR_GNU_TOOLCHAIN "
                                                         "environment variable for selected target"));
+                REQUIRE(
+                    externals->system.library_path != NULL,
+                    KEFIR_SET_ERROR(KEFIR_UI_ERROR, "System library path location shall be passed as KEFIR_SYSTEM_LIB "
+                                                    "environment variable for selected target"));
+
                 char libpath[PATH_MAX + 1];
-                snprintf(libpath, sizeof(libpath) - 1, "%s/crt1.o", externals->gnu.library_path);
+                snprintf(libpath, sizeof(libpath) - 1, "%s/crt1.o", externals->system.library_path);
                 REQUIRE_OK(kefir_driver_linker_configuration_add_linked_file(mem, linker_config, libpath));
-                snprintf(libpath, sizeof(libpath) - 1, "-L%s", externals->gnu.library_path);
+                snprintf(libpath, sizeof(libpath) - 1, "%s/crti.o", externals->system.library_path);
+                REQUIRE_OK(kefir_driver_linker_configuration_add_linked_file(mem, linker_config, libpath));
+                snprintf(libpath, sizeof(libpath) - 1, "%s/crtbegin.o", externals->gnu.toolchain);
+                REQUIRE_OK(kefir_driver_linker_configuration_add_linked_file(mem, linker_config, libpath));
+                snprintf(libpath, sizeof(libpath) - 1, "%s/crtn.o", externals->system.library_path);
+                REQUIRE_OK(kefir_driver_linker_configuration_add_linked_file(mem, linker_config, libpath));
+                snprintf(libpath, sizeof(libpath) - 1, "%s/crtend.o", externals->gnu.toolchain);
+                REQUIRE_OK(kefir_driver_linker_configuration_add_linked_file(mem, linker_config, libpath));
+                snprintf(libpath, sizeof(libpath) - 1, "-L%s", externals->system.library_path);
                 REQUIRE_OK(kefir_driver_linker_configuration_add_extra_argument(mem, linker_config, libpath));
                 snprintf(libpath, sizeof(libpath) - 1, "-lc");
                 REQUIRE_OK(kefir_driver_linker_configuration_add_extra_argument(mem, linker_config, libpath));
@@ -127,21 +148,29 @@ kefir_result_t kefir_driver_apply_target_configuration(struct kefir_mem *mem, st
                 REQUIRE(externals->musl.include_path != NULL,
                         KEFIR_SET_ERROR(KEFIR_UI_ERROR, "Musl library path shall be passed as KEFIR_MUSL_INCLUDES "
                                                         "environment variable for selected target"));
-                REQUIRE_OK(kefir_list_insert_after(mem, &compiler_config->include_path,
-                                                   kefir_list_tail(&compiler_config->include_path),
-                                                   (void *) externals->musl.include_path));
+                REQUIRE(externals->system.include_path != NULL,
+                        KEFIR_SET_ERROR(KEFIR_UI_ERROR, "System include path shall be passed as KEFIR_SYSTEM_INCLUDES "
+                                                        "environment variable for selected target"));
+                REQUIRE_OK(add_include_paths(mem, symbols, compiler_config, externals->musl.include_path));
+                REQUIRE_OK(add_include_paths(mem, symbols, compiler_config, externals->system.include_path));
             }
 
             if (linker_config != NULL) {
                 REQUIRE(externals->musl.library_path != NULL,
                         KEFIR_SET_ERROR(KEFIR_UI_ERROR, "Musl library path shall be passed as KEFIR_MUSL_LIB "
                                                         "environment variable for selected target"));
+                REQUIRE(
+                    externals->system.library_path != NULL,
+                    KEFIR_SET_ERROR(KEFIR_UI_ERROR, "System library path location shall be passed as KEFIR_SYSTEM_LIB "
+                                                    "environment variable for selected target"));
                 char libpath[PATH_MAX + 1];
                 snprintf(libpath, sizeof(libpath) - 1, "%s/crt1.o", externals->musl.library_path);
                 REQUIRE_OK(kefir_driver_linker_configuration_add_linked_file(mem, linker_config, libpath));
                 snprintf(libpath, sizeof(libpath) - 1, "%s/libc.a", externals->musl.library_path);
                 REQUIRE_OK(kefir_driver_linker_configuration_add_linked_file(mem, linker_config, libpath));
                 snprintf(libpath, sizeof(libpath) - 1, "-L%s", externals->musl.library_path);
+                REQUIRE_OK(kefir_driver_linker_configuration_add_extra_argument(mem, linker_config, libpath));
+                snprintf(libpath, sizeof(libpath) - 1, "-L%s", externals->system.library_path);
                 REQUIRE_OK(kefir_driver_linker_configuration_add_extra_argument(mem, linker_config, libpath));
             }
         }
@@ -155,13 +184,14 @@ kefir_result_t kefir_driver_apply_target_configuration(struct kefir_mem *mem, st
         }
     }
 
-    if (target->variant != KEFIR_DRIVER_TARGET_VARIANT_NONE && linker_config != NULL) {
-        REQUIRE(
-            externals->runtime_library != NULL,
-            KEFIR_SET_ERROR(
-                KEFIR_UI_ERROR,
-                "Kefir runtime library path shall be passed as KEFIR_RTLIB environment variable for selected target"));
-        REQUIRE_OK(kefir_driver_linker_configuration_add_linked_file(mem, linker_config, externals->runtime_library));
+    if (target->variant != KEFIR_DRIVER_TARGET_VARIANT_NONE) {
+        if (linker_config != NULL) {
+            REQUIRE(externals->runtime_library != NULL,
+                    KEFIR_SET_ERROR(KEFIR_UI_ERROR, "Kefir runtime library path shall be passed as KEFIR_RTLIB "
+                                                    "environment variable for selected target"));
+            REQUIRE_OK(
+                kefir_driver_linker_configuration_add_linked_file(mem, linker_config, externals->runtime_library));
+        }
     }
     return KEFIR_OK;
 }

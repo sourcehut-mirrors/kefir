@@ -48,12 +48,13 @@ TARGETS:
 ENVIRONMENT VARIABLES:
     KEFIR_AS, AS                        Override the default "as" assembler
     KEFIR_LD, LD                        Override the default "ld" linker
-    KEFIR_RTLIB                         Specify kefir runtime library location. Mandatory for "linux-musl" platform variant
+    KEFIR_RTLIB                         Specify kefir runtime library location. Mandatory for all platform variants except "*-none"
     KEFIR_MUSL_INCLUDES                 Specify musl include paths (separated by ';'). Mandatory for "linux-musl" platform variant
     KEFIR_MUSL_LIB                      Specify musl library path. Mandatory for "linux-musl" platform variant
-    KEFIR_GNU_INCLUDES                  Specify GNU Toolchain include paths (separated by ';'). Mandatory for "linux-gnu" platform variant
-    KEFIR_GNU_LIB                       Specify GNU Toolchain library path. Mandatory for "linux-gnu" platform variant
+    KEFIR_GNU_TOOLCHAIN                 Specify GNU Toolchain location. Mandatory for "linux-gnu" platform variant
     KEFIR_GNU_DYNAMIC_LINKER            Specify dynamic linker path. Optional for "linux-musl" platform variant
+    KEFIR_SYSTEM_INCLUDES               Specify system include paths (separated by ';'). Mandatory for "linux-musl" and "linux-gnu" platform variants
+    KEFIR_SYSTEM_LIB                    Specify system library path. Mandatory for "linux-musl" and "linux-gnu" platform variants
     KEFIR_WORKDIR                       Override kefir temporary work directory
 
 NOTES:
