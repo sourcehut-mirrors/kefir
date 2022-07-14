@@ -40,6 +40,10 @@ kefir_result_t kefir_ast_translate_object_type(struct kefir_mem *, const struct 
 kefir_result_t kefir_ast_translate_expression(struct kefir_mem *, const struct kefir_ast_node_base *,
                                               struct kefir_irbuilder_block *, struct kefir_ast_translator_context *);
 
+kefir_result_t kefir_ast_translate_member_designator(struct kefir_mem *, const struct kefir_ast_node_base *,
+                                                     const struct kefir_ast_type *, struct kefir_irbuilder_block *,
+                                                     struct kefir_ast_translator_context *);
+
 kefir_result_t kefir_ast_translate_lvalue(struct kefir_mem *, struct kefir_ast_translator_context *,
                                           struct kefir_irbuilder_block *, const struct kefir_ast_node_base *);
 

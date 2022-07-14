@@ -130,24 +130,9 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
             kefir_list_next(&iter);
             ASSIGN_DECL_CAST(struct kefir_ast_node_base *, field, iter->value);
 
-            struct kefir_ast_designator designator = {.type = KEFIR_AST_DESIGNATOR_MEMBER,
-                                                      .member = field->properties.expression_props.identifier,
-                                                      .next = NULL};
-
-            kefir_ast_target_environment_opaque_type_t opaque_type;
-            REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_GET_TYPE(mem, context->ast_context->target_env,
-                                                             offset_base->properties.type, &opaque_type));
-
-            struct kefir_ast_target_environment_object_info objinfo;
-            kefir_result_t res = KEFIR_AST_TARGET_ENVIRONMENT_OBJECT_INFO(mem, context->ast_context->target_env,
-                                                                          opaque_type, &designator, &objinfo);
-            REQUIRE_ELSE(res == KEFIR_OK, {
-                KEFIR_AST_TARGET_ENVIRONMENT_FREE_TYPE(mem, context->ast_context->target_env, opaque_type);
-                return res;
-            });
-            REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_FREE_TYPE(mem, context->ast_context->target_env, opaque_type));
-
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PUSHU64, objinfo.relative_offset));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PUSHU64, 0));
+            REQUIRE_OK(
+                kefir_ast_translate_member_designator(mem, field, offset_base->properties.type, builder, context));
         } break;
     }
     return KEFIR_OK;

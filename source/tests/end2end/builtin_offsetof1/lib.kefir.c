@@ -22,10 +22,11 @@
 
 #define offsetof(_type, _field) __builtin_offsetof(_type, _field)
 
-extern int offsets[] = {offsetof(struct Struct1, a), offsetof(struct Struct1, b), offsetof(struct Struct1, c),
-                        offsetof(struct Struct1, d), offsetof(struct Struct1, e), offsetof(struct Struct1, f),
-                        offsetof(struct Struct1, g), offsetof(struct Struct1, x), offsetof(union Union1, a),
-                        offsetof(union Union1, b),   offsetof(union Union1, c)};
+extern int offsets[] = {offsetof(struct Struct1, a),     offsetof(struct Struct1, b),   offsetof(struct Struct1, c),
+                        offsetof(struct Struct1, d),     offsetof(struct Struct1, e),   offsetof(struct Struct1, f),
+                        offsetof(struct Struct1, g),     offsetof(struct Struct1, x),   offsetof(union Union1, a),
+                        offsetof(union Union1, b),       offsetof(union Union1, c),     offsetof(struct Struct1, c[2]),
+                        offsetof(struct Struct1, e[10]), offsetof(struct Struct1, g.b), offsetof(struct Struct1, x[5])};
 
 int getoffset(int idx) {
     switch (idx) {
@@ -51,5 +52,13 @@ int getoffset(int idx) {
             return offsetof(union Union1, b);
         case 10:
             return offsetof(union Union1, c);
+        case 11:
+            return offsetof(struct Struct1, c[2]);
+        case 12:
+            return offsetof(struct Struct1, e[10]);
+        case 13:
+            return offsetof(struct Struct1, g.b);
+        case 14:
+            return offsetof(struct Struct1, x[5]);
     }
 }

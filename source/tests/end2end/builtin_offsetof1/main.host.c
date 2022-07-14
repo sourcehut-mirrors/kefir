@@ -58,5 +58,17 @@ int main() {
 
     assert(offsets[10] == offsetof(union Union1, c));
     assert(getoffset(10) == offsetof(union Union1, c));
+
+    assert(offsets[11] == offsetof(struct Struct1, c[2]));
+    assert(getoffset(11) == offsetof(struct Struct1, c[2]));
+
+    assert(offsets[12] == offsetof(struct Struct1, e[10]));
+    assert(getoffset(12) == offsetof(struct Struct1, e[10]));
+
+    assert(offsets[13] == offsetof(struct Struct1, g.b));
+    assert(getoffset(13) == offsetof(struct Struct1, g.b));
+
+    assert(offsets[14] == offsetof(struct Struct1, x[5]));
+    assert(getoffset(14) == offsetof(struct Struct1, x[5]));
     return EXIT_SUCCESS;
 }

@@ -20,6 +20,7 @@
 
 #include "kefir/ast/analyzer/nodes.h"
 #include "kefir/ast/analyzer/analyzer.h"
+#include "kefir/ast/analyzer/member_designator.h"
 #include "kefir/ast/type_conv.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
@@ -180,23 +181,17 @@ kefir_result_t kefir_ast_analyze_builtin_node(struct kefir_mem *mem, const struc
                 offset_base->properties.category == KEFIR_AST_NODE_CATEGORY_TYPE,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &offset_base->source_location, "Expected a type name"));
             kefir_list_next(&iter);
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, field, iter->value);
-            struct kefir_ast_identifier *field_id = NULL;
-            kefir_result_t res;
-            REQUIRE_MATCH_OK(
-                &res, kefir_ast_downcast_identifier(field, &field_id, false),
-                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &field->source_location, "Expected field name"));
-            field->properties.category = KEFIR_AST_NODE_CATEGORY_EXPRESSION;
-            field->properties.type = kefir_ast_type_void();
-            field->properties.expression_props.identifier = field_id->identifier;
 
             const struct kefir_ast_type *base_type = kefir_ast_unqualified_type(offset_base->properties.type);
             REQUIRE(base_type->tag == KEFIR_AST_TYPE_STRUCTURE || base_type->tag == KEFIR_AST_TYPE_UNION,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &offset_base->source_location,
                                            "Expected structure or union type"));
 
-            base->properties.type = kefir_ast_type_signed_int();
-            base->properties.expression_props.constant_expression = true;
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, field, iter->value);
+            REQUIRE_OK(kefir_ast_analyze_member_designator(mem, context, base_type, field));
+
+            base->properties.type = context->type_traits->size_type;
+            base->properties.expression_props.constant_expression = field->properties.member_designator.constant;
         } break;
     }
     return KEFIR_OK;
