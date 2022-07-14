@@ -23,6 +23,7 @@
 #include "kefir/core/error.h"
 #include "kefir/codegen/amd64/system-v/platform.h"
 #include "kefir/codegen/amd64-sysv.h"
+#include <float.h>
 
 static kefir_result_t amd64_sysv_new_codegen(struct kefir_mem *mem, FILE *output,
                                              const struct kefir_codegen_configuration *config,
@@ -63,6 +64,34 @@ static kefir_result_t kefir_compiler_amd64_sysv_profile(struct kefir_compiler_pr
         .model = KEFIR_DATA_MODEL_LP64,
         .byte_order = KEFIR_BYTE_ORDER_LITTLE_ENDIAN,
         .int_width = {.short_int = 16, .integer = 32, .long_int = 64, .long_long_int = 64},
+        .floating_point = {.float_radix = FLT_RADIX,
+                           .float_mantissa_digits = FLT_MANT_DIG,
+                           .double_mantissa_digits = DBL_MANT_DIG,
+                           .long_double_mantissa_digits = LDBL_MANT_DIG,
+                           .float_digits = FLT_DIG,
+                           .double_digits = DBL_DIG,
+                           .long_double_digits = LDBL_DIG,
+                           .float_min_exponent = FLT_MIN_EXP,
+                           .double_min_exponent = DBL_MIN_EXP,
+                           .long_double_min_exponent = LDBL_MIN_EXP,
+                           .float_min10_exponent = FLT_MIN_10_EXP,
+                           .double_min10_exponent = DBL_MIN_10_EXP,
+                           .long_double_min10_exponent = LDBL_MIN_10_EXP,
+                           .float_max_exponent = FLT_MAX_EXP,
+                           .double_max_exponent = DBL_MAX_EXP,
+                           .long_double_max_exponent = LDBL_MAX_EXP,
+                           .float_max10_exponent = FLT_MAX_10_EXP,
+                           .double_max10_exponent = DBL_MAX_10_EXP,
+                           .long_double_max10_exponent = LDBL_MAX_10_EXP,
+                           .float_max = FLT_MAX,
+                           .double_max = DBL_MAX,
+                           .long_double_max = LDBL_MAX,
+                           .float_epsilon = FLT_EPSILON,
+                           .double_epsilon = DBL_EPSILON,
+                           .long_double_epsilon = LDBL_EPSILON,
+                           .float_min = FLT_MIN,
+                           .double_min = DBL_MIN,
+                           .long_double_min = LDBL_MIN},
         .char_bit = 8};
 
     static struct kefir_ast_type_traits TYPE_TRAITS;

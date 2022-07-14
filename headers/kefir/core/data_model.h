@@ -49,6 +49,36 @@ typedef struct kefir_data_model_descriptor {
         kefir_size_t long_long_int;
     } int_width;
     kefir_size_t char_bit;
+    struct {
+        kefir_int64_t float_radix;
+        kefir_int64_t float_mantissa_digits;
+        kefir_int64_t double_mantissa_digits;
+        kefir_int64_t long_double_mantissa_digits;
+        kefir_int64_t float_digits;
+        kefir_int64_t double_digits;
+        kefir_int64_t long_double_digits;
+        kefir_int64_t float_min_exponent;
+        kefir_int64_t double_min_exponent;
+        kefir_int64_t long_double_min_exponent;
+        kefir_int64_t float_min10_exponent;
+        kefir_int64_t double_min10_exponent;
+        kefir_int64_t long_double_min10_exponent;
+        kefir_int64_t float_max_exponent;
+        kefir_int64_t double_max_exponent;
+        kefir_int64_t long_double_max_exponent;
+        kefir_int64_t float_max10_exponent;
+        kefir_int64_t double_max10_exponent;
+        kefir_int64_t long_double_max10_exponent;
+        kefir_float32_t float_max;
+        kefir_float64_t double_max;
+        kefir_long_double_t long_double_max;
+        kefir_float32_t float_epsilon;
+        kefir_float64_t double_epsilon;
+        kefir_long_double_t long_double_epsilon;
+        kefir_float32_t float_min;
+        kefir_float64_t double_min;
+        kefir_long_double_t long_double_min;
+    } floating_point;
 } kefir_data_model_descriptor_t;
 
 #endif
