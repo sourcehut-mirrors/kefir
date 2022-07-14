@@ -64,6 +64,7 @@ static const struct KeywordEntry {
                 {U"while", KEFIR_KEYWORD_WHILE},
                 {U"_Alignas", KEFIR_KEYWORD_ALIGNAS},
                 {U"_Alignof", KEFIR_KEYWORD_ALIGNOF},
+                {U"__alignof__", KEFIR_KEYWORD_ALIGNOF},
                 {U"_Atomic", KEFIR_KEYWORD_ATOMIC},
                 {U"_Bool", KEFIR_KEYWORD_BOOL},
                 {U"_Complex", KEFIR_KEYWORD_COMPLEX},
