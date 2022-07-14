@@ -21,6 +21,8 @@ tasks:
       export LC_ALL=C.UTF-8
       export KEFIR_MUSL_INCLUDES=/usr/include/x86_64-linux-musl
       export KEFIR_MUSL_LIB=/usr/lib/x86_64-linux-musl
+      export KEFIR_SYSTEM_INCLUDES=""
+      export KEFIR_SYSTEM_LIB=""
       export KEFIR_RTLIB=$PWD/bin/libs/libkefirrt.a
       ./source/tests/misc/run-lua-tests.sh "$(pwd)/bin/kefir" "$(pwd)/bin/lua-test"
   - c_testsuite: |
@@ -30,6 +32,8 @@ tasks:
       export KEFIR_RTLIB="$HOME/kefir/bin/libs/libkefirrt.a"
       export KEFIR_MUSL_INCLUDES="/usr/include/x86_64-linux-musl"
       export KEFIR_MUSL_LIB="/usr/lib/x86_64-linux-musl"
+      export KEFIR_SYSTEM_INCLUDES=""
+      export KEFIR_SYSTEM_LIB=""
       export CFLAGS=""
       export LC_ALL=C.UTF-8 
       ./single-exec kefir | tee ~/c-tests.log
@@ -43,6 +47,8 @@ tasks:
       export KEFIR_RTLIB="$HOME/kefir/bin/libs/libkefirrt.a"
       export KEFIR_MUSL_INCLUDES=/usr/include/x86_64-linux-musl
       export KEFIR_MUSL_LIB=/usr/lib/x86_64-linux-musl
+      export KEFIR_SYSTEM_INCLUDES=""
+      export KEFIR_SYSTEM_LIB=""
       ./kefir/source/tests/misc/run_gcc_torture_suite.sh 2>&1 | tee torture.log
       grep -v "Interrupted system call" torture.log | grep -i "fatal\|abort\|timeout\|segm" && exit 1 || true
 triggers:
