@@ -31,11 +31,24 @@
 kefir_result_t kefir_driver_apply_target_profile_configuration(struct kefir_compiler_runner_configuration *,
                                                                const struct kefir_driver_target *);
 
-kefir_result_t kefir_driver_apply_target_configuration(struct kefir_mem *, struct kefir_symbol_table *,
-                                                       const struct kefir_driver_external_resources *,
-                                                       struct kefir_compiler_runner_configuration *,
-                                                       struct kefir_driver_assembler_configuration *,
-                                                       struct kefir_driver_linker_configuration *,
-                                                       const struct kefir_driver_target *);
+kefir_result_t kefir_driver_apply_target_compiler_configuration(struct kefir_mem *, struct kefir_symbol_table *,
+                                                                const struct kefir_driver_external_resources *,
+                                                                struct kefir_compiler_runner_configuration *,
+                                                                const struct kefir_driver_target *);
+
+kefir_result_t kefir_driver_apply_target_assembler_configuration(struct kefir_mem *, struct kefir_symbol_table *,
+                                                                 const struct kefir_driver_external_resources *,
+                                                                 struct kefir_driver_assembler_configuration *,
+                                                                 const struct kefir_driver_target *);
+
+kefir_result_t kefir_driver_apply_target_linker_initial_configuration(struct kefir_mem *, struct kefir_symbol_table *,
+                                                                      const struct kefir_driver_external_resources *,
+                                                                      struct kefir_driver_linker_configuration *,
+                                                                      const struct kefir_driver_target *);
+
+kefir_result_t kefir_driver_apply_target_linker_final_configuration(struct kefir_mem *, struct kefir_symbol_table *,
+                                                                    const struct kefir_driver_external_resources *,
+                                                                    struct kefir_driver_linker_configuration *,
+                                                                    const struct kefir_driver_target *);
 
 #endif

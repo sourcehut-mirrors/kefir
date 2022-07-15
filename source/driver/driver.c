@@ -31,8 +31,12 @@
 #include <limits.h>
 #include <libgen.h>
 
-static kefir_result_t driver_generate_asm_config(struct kefir_mem *mem, struct kefir_driver_configuration *config,
+static kefir_result_t driver_generate_asm_config(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
+                                                 struct kefir_driver_configuration *config,
+                                                 const struct kefir_driver_external_resources *externals,
                                                  struct kefir_driver_assembler_configuration *assembler_config) {
+    REQUIRE_OK(
+        kefir_driver_apply_target_assembler_configuration(mem, symbols, externals, assembler_config, &config->target));
     for (const struct kefir_list_entry *iter = kefir_list_head(&config->assembler_flags); iter != NULL;
          kefir_list_next(&iter)) {
 
@@ -42,8 +46,13 @@ static kefir_result_t driver_generate_asm_config(struct kefir_mem *mem, struct k
     return KEFIR_OK;
 }
 
-static kefir_result_t driver_generate_linker_config(struct kefir_mem *mem, struct kefir_driver_configuration *config,
+static kefir_result_t driver_generate_linker_config(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
+                                                    struct kefir_driver_configuration *config,
+                                                    const struct kefir_driver_external_resources *externals,
                                                     struct kefir_driver_linker_configuration *linker_config) {
+    REQUIRE_OK(kefir_driver_apply_target_linker_initial_configuration(mem, symbols, externals, linker_config,
+                                                                      &config->target));
+
     for (const struct kefir_list_entry *iter = kefir_list_head(&config->linker_flags); iter != NULL;
          kefir_list_next(&iter)) {
 
@@ -99,8 +108,8 @@ static kefir_result_t driver_generate_compiler_config(struct kefir_mem *mem, str
     if (config->stage == KEFIR_DRIVER_STAGE_PRINT_RUNTIME_CODE) {
         REQUIRE_OK(kefir_driver_apply_target_profile_configuration(compiler_config, &config->target));
     } else {
-        REQUIRE_OK(kefir_driver_apply_target_configuration(mem, symbols, externals, compiler_config, NULL, NULL,
-                                                           &config->target));
+        REQUIRE_OK(kefir_driver_apply_target_compiler_configuration(mem, symbols, externals, compiler_config,
+                                                                    &config->target));
     }
 
     switch (config->stage) {
@@ -456,7 +465,7 @@ static kefir_result_t driver_run_linker(struct kefir_mem *mem, struct kefir_symb
                                         const struct kefir_driver_external_resources *externals,
                                         struct kefir_driver_linker_configuration *linker_config) {
     REQUIRE_OK(
-        kefir_driver_apply_target_configuration(mem, symbols, externals, NULL, NULL, linker_config, &config->target));
+        kefir_driver_apply_target_linker_final_configuration(mem, symbols, externals, linker_config, &config->target));
 
     struct kefir_process linker_process;
     REQUIRE_OK(kefir_process_init(&linker_process));
@@ -483,11 +492,11 @@ static kefir_result_t driver_run_impl(struct kefir_mem *mem, struct kefir_symbol
             KEFIR_SET_ERROR(KEFIR_UI_ERROR, "Selected operation requires non-empty input file list"));
     switch (config->stage) {
         case KEFIR_DRIVER_STAGE_LINK:
-            REQUIRE_OK(driver_generate_linker_config(mem, config, linker_config));
+            REQUIRE_OK(driver_generate_linker_config(mem, symbols, config, externals, linker_config));
             // Fallthrough
 
         case KEFIR_DRIVER_STAGE_ASSEMBLE:
-            REQUIRE_OK(driver_generate_asm_config(mem, config, assembler_config));
+            REQUIRE_OK(driver_generate_asm_config(mem, symbols, config, externals, assembler_config));
             // Fallthrough
 
         case KEFIR_DRIVER_STAGE_PREPROCESS:
