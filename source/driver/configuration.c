@@ -81,6 +81,10 @@ kefir_result_t kefir_driver_linker_configuration_init(struct kefir_driver_linker
     REQUIRE_OK(kefir_list_on_remove(&config->arguments, list_entry_free, NULL));
 
     config->flags.static_linking = false;
+    config->flags.link_start_files = true;
+    config->flags.link_default_libs = true;
+    config->flags.link_libc = true;
+    config->flags.link_rtlib = true;
     return KEFIR_OK;
 }
 
@@ -121,6 +125,11 @@ kefir_result_t kefir_driver_configuration_init(struct kefir_driver_configuration
     REQUIRE_OK(kefir_driver_target_default(&config->target));
 
     config->flags.restrictive_mode = false;
+    config->flags.static_linking = false;
+    config->flags.link_start_files = true;
+    config->flags.link_default_libs = true;
+    config->flags.link_libc = true;
+    config->flags.link_rtlib = true;
 
     return KEFIR_OK;
 }

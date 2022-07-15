@@ -41,6 +41,10 @@ typedef struct kefir_driver_linker_configuration {
 
     struct {
         kefir_bool_t static_linking;
+        kefir_bool_t link_start_files;
+        kefir_bool_t link_default_libs;
+        kefir_bool_t link_libc;
+        kefir_bool_t link_rtlib;
     } flags;
 } kefir_driver_linker_configuration_t;
 
@@ -73,7 +77,6 @@ typedef enum kefir_driver_argument_type {
     KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_STRIP,
     KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_RETAIN_RELOC,
     KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_UNDEFINED_SYMBOL,
-    KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_STATIC,
     KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_EXTRA
 } kefir_driver_argument_type_t;
 
@@ -101,6 +104,11 @@ typedef struct kefir_driver_configuration {
 
     struct {
         kefir_bool_t restrictive_mode;
+        kefir_bool_t static_linking;
+        kefir_bool_t link_start_files;
+        kefir_bool_t link_default_libs;
+        kefir_bool_t link_libc;
+        kefir_bool_t link_rtlib;
     } flags;
 } kefir_driver_configuration_t;
 

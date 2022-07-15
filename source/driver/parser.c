@@ -234,9 +234,24 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_symbo
             REQUIRE_OK(kefir_driver_configuration_add_argument(mem, symbols, config, directory,
                                                                KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_LINK_PATH));
         } else if (strcmp("-static", arg) == 0) {
-            // Strip linked executable
-            REQUIRE_OK(kefir_driver_configuration_add_argument(mem, symbols, config, "",
-                                                               KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_STATIC));
+            // Static linking
+            config->flags.static_linking = true;
+        } else if (strcmp("-nostartfiles", arg) == 0) {
+            // Do not link start files
+            config->flags.link_start_files = false;
+        } else if (strcmp("-nodefaultlibs", arg) == 0) {
+            // Do not link default libraries
+            config->flags.link_default_libs = false;
+        } else if (strcmp("-nolibc", arg) == 0) {
+            // Do not link libc
+            config->flags.link_libc = false;
+        } else if (strcmp("-nostdlib", arg) == 0) {
+            // Do not link start files and default libraries
+            config->flags.link_start_files = false;
+            config->flags.link_default_libs = false;
+        } else if (strcmp("-nortlib", arg) == 0) {
+            // Do not link runtime library
+            config->flags.link_rtlib = false;
         }
 
         // Extra tool options

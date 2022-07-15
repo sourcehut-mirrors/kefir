@@ -166,6 +166,10 @@ kefir_result_t kefir_driver_apply_target_linker_initial_configuration(
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver linker configuration"));
     REQUIRE(target != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver target"));
 
+    if (linker_config->flags.static_linking) {
+        REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-static"));
+    }
+
     if (target->platform == KEFIR_DRIVER_TARGET_PLATFORM_LINUX) {
         if (target->variant == KEFIR_DRIVER_TARGET_VARIANT_GNU) {
             REQUIRE(externals->gnu.library_path != NULL,
@@ -174,12 +178,14 @@ kefir_result_t kefir_driver_apply_target_linker_initial_configuration(
 
             REQUIRE_OK(add_library_paths(mem, linker_config, externals->gnu.library_path));
 
-            LINK_FILE(externals->gnu.library_path, "crt1.o");
-            LINK_FILE(externals->gnu.library_path, "crti.o");
-            if (!linker_config->flags.static_linking) {
-                LINK_FILE(externals->gnu.library_path, "crtbegin.o");
-            } else {
-                LINK_FILE(externals->gnu.library_path, "crtbeginS.o");
+            if (linker_config->flags.link_start_files) {
+                LINK_FILE(externals->gnu.library_path, "crt1.o");
+                LINK_FILE(externals->gnu.library_path, "crti.o");
+                if (!linker_config->flags.static_linking) {
+                    LINK_FILE(externals->gnu.library_path, "crtbegin.o");
+                } else {
+                    LINK_FILE(externals->gnu.library_path, "crtbeginS.o");
+                }
             }
 
             if (externals->gnu.dynamic_linker != NULL) {
@@ -194,7 +200,10 @@ kefir_result_t kefir_driver_apply_target_linker_initial_configuration(
 
             REQUIRE_OK(add_library_paths(mem, linker_config, externals->musl.library_path));
 
-            LINK_FILE(externals->musl.library_path, "crt1.o");
+            if (linker_config->flags.link_start_files) {
+                LINK_FILE(externals->musl.library_path, "crt1.o");
+                LINK_FILE(externals->musl.library_path, "crti.o");
+            }
         }
     }
 
@@ -211,39 +220,51 @@ kefir_result_t kefir_driver_apply_target_linker_final_configuration(
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver linker configuration"));
     REQUIRE(target != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver target"));
 
+    if (linker_config->flags.link_rtlib && target->variant != KEFIR_DRIVER_TARGET_VARIANT_NONE) {
+        REQUIRE(externals->runtime_library != NULL,
+                KEFIR_SET_ERROR(KEFIR_UI_ERROR, "Kefir runtime library path shall be passed as KEFIR_RTLIB "
+                                                "environment variable for selected target"));
+        REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, externals->runtime_library));
+    }
+
     if (target->platform == KEFIR_DRIVER_TARGET_PLATFORM_LINUX) {
         if (target->variant == KEFIR_DRIVER_TARGET_VARIANT_GNU) {
             REQUIRE(externals->gnu.library_path != NULL,
                     KEFIR_SET_ERROR(KEFIR_UI_ERROR, "GNU library path shall be passed as KEFIR_GNU_LIB "
                                                     "environment variable for selected target"));
 
-            REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-lc"));
-            REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-lm"));
-            REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-ldl"));
-            REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-lgcc"));
-            REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-lgcc_eh"));
-
-            if (!linker_config->flags.static_linking) {
-                LINK_FILE(externals->gnu.library_path, "crtend.o");
-            } else {
-                LINK_FILE(externals->gnu.library_path, "crtendS.o");
+            if (linker_config->flags.link_default_libs) {
+                if (linker_config->flags.link_libc) {
+                    REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-lc"));
+                    REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-lm"));
+                }
+                REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-ldl"));
+                REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-lgcc"));
+                REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-lgcc_eh"));
             }
-            LINK_FILE(externals->gnu.library_path, "crtn.o");
+
+            if (linker_config->flags.link_start_files) {
+                if (!linker_config->flags.static_linking) {
+                    LINK_FILE(externals->gnu.library_path, "crtend.o");
+                } else {
+                    LINK_FILE(externals->gnu.library_path, "crtendS.o");
+                }
+                LINK_FILE(externals->gnu.library_path, "crtn.o");
+            }
 
         } else if (target->variant == KEFIR_DRIVER_TARGET_VARIANT_MUSL) {
             REQUIRE(externals->musl.library_path != NULL,
                     KEFIR_SET_ERROR(KEFIR_UI_ERROR, "Musl library path shall be passed as KEFIR_MUSL_LIB "
                                                     "environment variable for selected target"));
 
-            LINK_FILE(externals->musl.library_path, "libc.a");
-        }
-    }
+            if (linker_config->flags.link_default_libs && linker_config->flags.link_libc) {
+                LINK_FILE(externals->musl.library_path, "libc.a");
+            }
 
-    if (target->variant != KEFIR_DRIVER_TARGET_VARIANT_NONE) {
-        REQUIRE(externals->runtime_library != NULL,
-                KEFIR_SET_ERROR(KEFIR_UI_ERROR, "Kefir runtime library path shall be passed as KEFIR_RTLIB "
-                                                "environment variable for selected target"));
-        REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, externals->runtime_library));
+            if (linker_config->flags.link_start_files) {
+                LINK_FILE(externals->musl.library_path, "crtn.o");
+            }
+        }
     }
     return KEFIR_OK;
 }

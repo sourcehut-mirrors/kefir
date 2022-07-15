@@ -51,6 +51,11 @@ static kefir_result_t driver_generate_linker_config(struct kefir_mem *mem, struc
                                                     struct kefir_driver_configuration *config,
                                                     const struct kefir_driver_external_resources *externals,
                                                     struct kefir_driver_linker_configuration *linker_config) {
+    linker_config->flags.static_linking = config->flags.static_linking;
+    linker_config->flags.link_start_files = config->flags.link_start_files;
+    linker_config->flags.link_default_libs = config->flags.link_default_libs;
+    linker_config->flags.link_libc = config->flags.link_libc;
+    linker_config->flags.link_rtlib = config->flags.link_rtlib;
     REQUIRE_OK(kefir_driver_apply_target_linker_initial_configuration(mem, symbols, externals, linker_config,
                                                                       &config->target));
     return KEFIR_OK;
@@ -92,11 +97,6 @@ static kefir_result_t driver_handle_linker_argument(struct kefir_mem *mem, const
         case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_UNDEFINED_SYMBOL:
             REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-u"));
             REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, argument->value));
-            break;
-
-        case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_STATIC:
-            REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-static"));
-            linker_config->flags.static_linking = true;
             break;
 
         case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_EXTRA:
@@ -238,7 +238,6 @@ static kefir_result_t driver_update_compiler_config(struct kefir_compiler_runner
         case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_STRIP:
         case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_RETAIN_RELOC:
         case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_UNDEFINED_SYMBOL:
-        case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_STATIC:
         case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_EXTRA:
             // Intentionally left blank
             break;
@@ -395,7 +394,6 @@ static kefir_result_t driver_run_argument(struct kefir_mem *mem, struct kefir_dr
                 case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_STRIP:
                 case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_RETAIN_RELOC:
                 case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_UNDEFINED_SYMBOL:
-                case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_STATIC:
                 case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_EXTRA:
                     REQUIRE_OK(driver_handle_linker_argument(mem, argument, linker_config));
                     break;
@@ -437,7 +435,6 @@ static kefir_result_t driver_run_argument(struct kefir_mem *mem, struct kefir_dr
                 case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_STRIP:
                 case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_RETAIN_RELOC:
                 case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_UNDEFINED_SYMBOL:
-                case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_STATIC:
                 case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_EXTRA:
                     // Intentionally left blank
                     break;
@@ -475,7 +472,6 @@ static kefir_result_t driver_run_argument(struct kefir_mem *mem, struct kefir_dr
                 case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_STRIP:
                 case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_RETAIN_RELOC:
                 case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_UNDEFINED_SYMBOL:
-                case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_STATIC:
                 case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_EXTRA:
                     // Intentionally left blank
                     break;
@@ -517,7 +513,6 @@ static kefir_result_t driver_run_argument(struct kefir_mem *mem, struct kefir_dr
                 case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_STRIP:
                 case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_RETAIN_RELOC:
                 case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_UNDEFINED_SYMBOL:
-                case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_STATIC:
                 case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_EXTRA:
                     // Intentionally left blank
                     break;

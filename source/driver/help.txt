@@ -22,6 +22,11 @@ OPTIONS:
     -l library                          Link library
     -L directory                        Add directory to linker library search path
     -static                             Produce statically linked executable
+    -nostartfiles                       Do not link start files
+    -nodefaultlib                       Do not link default libraries
+    -nolibc                             Do not link libc
+    -nostdlib                           Do not link start files and default libraries
+    -nortlib                            Do not link runtime routine library
     -Wp,option                          Pass "option" to preprocessing phase as command line option
     -Xpreprocessor option               Pass "option" to linking phase as command line option
     -Wc,option                          Pass "option" to compiling phase as command line option
