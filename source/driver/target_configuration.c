@@ -150,9 +150,9 @@ kefir_result_t kefir_driver_apply_target_configuration(struct kefir_mem *mem, st
 
                 REQUIRE_OK(kefir_driver_linker_configuration_add_extra_argument(mem, linker_config, "-lc"));
                 REQUIRE_OK(kefir_driver_linker_configuration_add_extra_argument(mem, linker_config, "-lm"));
+                REQUIRE_OK(kefir_driver_linker_configuration_add_extra_argument(mem, linker_config, "-ldl"));
                 REQUIRE_OK(kefir_driver_linker_configuration_add_extra_argument(mem, linker_config, "-lgcc"));
                 REQUIRE_OK(kefir_driver_linker_configuration_add_extra_argument(mem, linker_config, "-lgcc_eh"));
-                REQUIRE_OK(kefir_driver_linker_configuration_add_extra_argument(mem, linker_config, "-ldl"));
 
                 if (externals->gnu.dynamic_linker != NULL) {
                     REQUIRE_OK(
