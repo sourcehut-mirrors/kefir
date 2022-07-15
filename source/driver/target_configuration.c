@@ -130,10 +130,14 @@ kefir_result_t kefir_driver_apply_target_configuration(struct kefir_mem *mem, st
                 REQUIRE_OK(kefir_driver_linker_configuration_add_linked_file(mem, linker_config, libpath));
                 snprintf(libpath, sizeof(libpath) - 1, "%s/crtend.o", externals->gnu.toolchain);
                 REQUIRE_OK(kefir_driver_linker_configuration_add_linked_file(mem, linker_config, libpath));
+                snprintf(libpath, sizeof(libpath) - 1, "-L%s", externals->gnu.toolchain);
+                REQUIRE_OK(kefir_driver_linker_configuration_add_extra_argument(mem, linker_config, libpath));
                 snprintf(libpath, sizeof(libpath) - 1, "-L%s", externals->system.library_path);
                 REQUIRE_OK(kefir_driver_linker_configuration_add_extra_argument(mem, linker_config, libpath));
-                snprintf(libpath, sizeof(libpath) - 1, "-lc");
-                REQUIRE_OK(kefir_driver_linker_configuration_add_extra_argument(mem, linker_config, libpath));
+                REQUIRE_OK(kefir_driver_linker_configuration_add_extra_argument(mem, linker_config, "-lc"));
+                REQUIRE_OK(kefir_driver_linker_configuration_add_extra_argument(mem, linker_config, "-lm"));
+                REQUIRE_OK(kefir_driver_linker_configuration_add_extra_argument(mem, linker_config, "-lgcc"));
+                REQUIRE_OK(kefir_driver_linker_configuration_add_extra_argument(mem, linker_config, "-lgcc_eh"));
 
                 if (externals->gnu.dynamic_linker != NULL) {
                     REQUIRE_OK(
