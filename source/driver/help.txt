@@ -43,7 +43,7 @@ TARGETS:
         platform: linux, freebsd, openbsd, host
         variant: none, musl, gnu, default
     Variant "none" avoids any implicit library linkages and include path. On linux, "default" is equivalent
-    to "musl", on other platforms -- to "none".
+    to "gnu", on other platforms -- to "none".
 
 ENVIRONMENT VARIABLES:
     KEFIR_AS, AS                        Override the default "as" assembler

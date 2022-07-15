@@ -68,7 +68,7 @@ static kefir_result_t match_platform(const char *spec, struct kefir_driver_targe
 static kefir_result_t select_default_variant(struct kefir_driver_target *target) {
     target->variant = KEFIR_DRIVER_TARGET_VARIANT_NONE;
     if (target->arch == KEFIR_DRIVER_TARGET_ARCH_X86_64 && target->platform == KEFIR_DRIVER_TARGET_PLATFORM_LINUX) {
-        target->variant = KEFIR_DRIVER_TARGET_VARIANT_MUSL;
+        target->variant = KEFIR_DRIVER_TARGET_VARIANT_GNU;
     }
     return KEFIR_OK;
 }
