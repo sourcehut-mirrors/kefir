@@ -2,19 +2,17 @@ SOURCE=
 HEADERS=
 BOOTSTRAP=
 KEFIRCC=
-LIBC_HEADERS=
-LIBC_LIBS=
 PLATFORM=
 AS=as
 LD=ld
 
-KEFIR_FLAGS=-I $(LIBC_HEADERS) -I $(HEADERS)
+KEFIR_FLAGS=-I $(HEADERS)
 ifeq ($(PLATFORM),freebsd)
 KEFIR_FLAGS += --target x86_64-freebsd-none
 else ifeq ($(PLATFORM),openbsd)
 KEFIR_FLAGS += --target x86_64-openbsd-none
 else
-KEFIR_FLAGS += --target x86_64-linux-none
+KEFIR_FLAGS += --target x86_64-linux-gnu
 endif
 
 KEFIR_SOURCE := $(wildcard \
@@ -70,7 +68,7 @@ $(BOOTSTRAP)/codegen/amd64/amd64-sysv-runtime-code.s.o: $(SOURCE)/runtime/amd64_
 
 $(BOOTSTRAP)/kefir: $(KEFIR_ASM_FILES)
 	@echo "Linking $@"
-	@KEFIR_LD=$(LD) $(KEFIRCC) $(KEFIR_FLAGS) $^ $(LIBC_LIBS)/crt1.o $(LIBC_LIBS)/libc.a -o $@
+	@KEFIR_LD=$(LD) $(KEFIRCC) $(KEFIR_FLAGS) $^ -o $@
 
 bootstrap: $(BOOTSTRAP)/kefir
 
