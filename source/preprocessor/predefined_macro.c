@@ -22,6 +22,7 @@
 #include "kefir/preprocessor/preprocessor.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
+#include <float.h>
 
 static kefir_result_t make_pp_number(struct kefir_mem *mem, struct kefir_token_buffer *buffer, const char *buf,
                                      const struct kefir_source_location *source_location) {
@@ -206,17 +207,16 @@ MACRO_PP_NUMBER_FMT(dbl_max10_exp, 64, KEFIR_INT64_FMT,
                     preprocessor->context->environment.data_model->floating_point.double_max10_exponent)
 MACRO_PP_NUMBER_FMT(ldbl_max10_exp, 64, KEFIR_INT64_FMT,
                     preprocessor->context->environment.data_model->floating_point.long_double_max10_exponent)
-MACRO_PP_NUMBER_FMT(flt_min, 64, "%a", preprocessor->context->environment.data_model->floating_point.float_min)
-MACRO_PP_NUMBER_FMT(dbl_min, 64, "%la", preprocessor->context->environment.data_model->floating_point.double_min)
-MACRO_PP_NUMBER_FMT(ldbl_min, 64, "%La", preprocessor->context->environment.data_model->floating_point.long_double_min)
-MACRO_PP_NUMBER_FMT(flt_epsilon, 64, "%a", preprocessor->context->environment.data_model->floating_point.float_epsilon)
-MACRO_PP_NUMBER_FMT(dbl_epsilon, 64, "%la",
-                    preprocessor->context->environment.data_model->floating_point.double_epsilon)
-MACRO_PP_NUMBER_FMT(ldbl_epsilon, 64, "%La",
+MACRO_PP_NUMBER_FMT(flt_min, 64, "%s", preprocessor->context->environment.data_model->floating_point.float_min)
+MACRO_PP_NUMBER_FMT(dbl_min, 64, "%s", preprocessor->context->environment.data_model->floating_point.double_min)
+MACRO_PP_NUMBER_FMT(ldbl_min, 64, "%s", preprocessor->context->environment.data_model->floating_point.long_double_min)
+MACRO_PP_NUMBER_FMT(flt_epsilon, 64, "%s", preprocessor->context->environment.data_model->floating_point.float_epsilon)
+MACRO_PP_NUMBER_FMT(dbl_epsilon, 64, "%s", preprocessor->context->environment.data_model->floating_point.double_epsilon)
+MACRO_PP_NUMBER_FMT(ldbl_epsilon, 64, "%s",
                     preprocessor->context->environment.data_model->floating_point.long_double_epsilon)
-MACRO_PP_NUMBER_FMT(flt_max, 64, "%a", preprocessor->context->environment.data_model->floating_point.float_max)
-MACRO_PP_NUMBER_FMT(dbl_max, 64, "%la", preprocessor->context->environment.data_model->floating_point.double_max)
-MACRO_PP_NUMBER_FMT(ldbl_max, 64, "%La", preprocessor->context->environment.data_model->floating_point.long_double_max)
+MACRO_PP_NUMBER_FMT(flt_max, 64, "%s", preprocessor->context->environment.data_model->floating_point.float_max)
+MACRO_PP_NUMBER_FMT(dbl_max, 64, "%s", preprocessor->context->environment.data_model->floating_point.double_max)
+MACRO_PP_NUMBER_FMT(ldbl_max, 64, "%s", preprocessor->context->environment.data_model->floating_point.long_double_max)
 
 static kefir_result_t define_predefined_macro(
     struct kefir_mem *mem, struct kefir_preprocessor *preprocessor,
