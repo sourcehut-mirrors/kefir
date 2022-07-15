@@ -37,14 +37,10 @@ typedef struct kefir_driver_external_resources {
     } musl;
 
     struct {
-        const char *toolchain;
-        const char *dynamic_linker;
-    } gnu;
-
-    struct {
         const char *include_path;
         const char *library_path;
-    } system;
+        const char *dynamic_linker;
+    } gnu;
 
     // Directories
     const char *work_dir;

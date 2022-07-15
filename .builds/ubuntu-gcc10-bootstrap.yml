@@ -12,11 +12,10 @@ tasks:
       cd kefir
       make clean clean_bootstrap
       export KEFIR_RTLIB="$HOME/kefir/bin/libs/libkefirrt.a"
-      export KEFIR_GNU_TOOLCHAIN="/usr/lib/gcc/x86_64-linux-gnu/10/"
+      export KEFIR_GNU_INCLUDES="/usr/include/x86_64-linux-gnu;/usr/include;/usr/local/include"
+      export KEFIR_GNU_LIB="/usr/lib/gcc/x86_64-linux-gnu/10/;/usr/lib;/usr/local/lib"
       export KEFIR_GNU_DYNAMIC_LINKER="/lib64/ld-linux-x86-64.so.2"
-      export KEFIR_SYSTEM_INCLUDES="/usr/include/x86_64-linux-gnu;/usr/include;/usr/local/include"
-      export KEFIR_SYSTEM_LIB="/usr/lib"
-      LC_ALL=C.UTF-8 make bootstrap LIBC_HEADERS=/usr/include/x86_64-linux-musl LIBC_LIBS=/usr/lib/x86_64-linux-musl -j$(nproc)
+      LC_ALL=C.UTF-8 make bootstrap -j$(nproc)
 triggers:
   - action: email
     condition: failure
