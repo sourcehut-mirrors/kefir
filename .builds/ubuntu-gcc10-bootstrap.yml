@@ -12,8 +12,8 @@ tasks:
       cd kefir
       make clean clean_bootstrap
       export KEFIR_RTLIB="$HOME/kefir/bin/libs/libkefirrt.a"
-      export KEFIR_GNU_INCLUDES="/usr/include/x86_64-linux-gnu;/usr/include;/usr/local/include"
-      export KEFIR_GNU_LIB="/usr/lib/gcc/x86_64-linux-gnu/10/;/usr/lib;/usr/local/lib"
+      export KEFIR_GNU_INCLUDE="/usr/lib/gcc/x86_64-linux-gnu/10/include;/usr/include/x86_64-linux-gnu;/usr/include;/usr/local/include"
+      export KEFIR_GNU_LIB="/usr/lib/x86_64-linux-gnu;/usr/lib/gcc/x86_64-linux-gnu/10/;/usr/lib;/usr/local/lib"
       export KEFIR_GNU_DYNAMIC_LINKER="/lib64/ld-linux-x86-64.so.2"
       LC_ALL=C.UTF-8 make bootstrap -j$(nproc)
 triggers:
