@@ -24,7 +24,7 @@
 #include <string.h>
 #include <stdio.h>
 
-static kefir_driver_input_file_type_t detect_file_type(const char *filename) {
+static kefir_driver_argument_type_t detect_file_type(const char *filename) {
     const char *extension = NULL;
     for (const char *c = filename + strlen(filename); c > filename; c--) {
         if (*c == '.') {
@@ -33,21 +33,21 @@ static kefir_driver_input_file_type_t detect_file_type(const char *filename) {
         }
     }
     if (extension == NULL) {
-        return KEFIR_DRIVER_INPUT_FILE_CODE;
+        return KEFIR_DRIVER_ARGUMENT_INPUT_FILE_CODE;
     }
 
     if (strcmp(extension, ".c") == 0) {
-        return KEFIR_DRIVER_INPUT_FILE_CODE;
+        return KEFIR_DRIVER_ARGUMENT_INPUT_FILE_CODE;
     } else if (strcmp(extension, ".i") == 0) {
-        return KEFIR_DRIVER_INPUT_FILE_PREPROCESSED;
+        return KEFIR_DRIVER_ARGUMENT_INPUT_FILE_PREPROCESSED;
     } else if (strcmp(extension, ".s") == 0) {
-        return KEFIR_DRIVER_INPUT_FILE_ASSEMBLY;
+        return KEFIR_DRIVER_ARGUMENT_INPUT_FILE_ASSEMBLY;
     } else if (strcmp(extension, ".o") == 0) {
-        return KEFIR_DRIVER_INPUT_FILE_OBJECT;
+        return KEFIR_DRIVER_ARGUMENT_INPUT_FILE_OBJECT;
     } else if (strcmp(extension, ".a") == 0) {
-        return KEFIR_DRIVER_INPUT_FILE_LIBRARY;
+        return KEFIR_DRIVER_ARGUMENT_INPUT_FILE_LIBRARY;
     } else {
-        return KEFIR_DRIVER_INPUT_FILE_CODE;
+        return KEFIR_DRIVER_ARGUMENT_INPUT_FILE_CODE;
     }
 }
 
@@ -181,12 +181,12 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_symbo
         // Linker flags
         else if (strcmp("-s", arg) == 0) {
             // Strip linked executable
-            REQUIRE_OK(
-                kefir_driver_configuration_add_linker_flag(mem, symbols, config, "", KEFIR_DRIVER_LINKER_FLAG_STRIP));
+            REQUIRE_OK(kefir_driver_configuration_add_argument(mem, symbols, config, "",
+                                                               KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_STRIP));
         } else if (strcmp("-r", arg) == 0) {
             // Retain relocations
-            REQUIRE_OK(kefir_driver_configuration_add_linker_flag(mem, symbols, config, "",
-                                                                  KEFIR_DRIVER_LINKER_FLAG_RETAIN_RELOC));
+            REQUIRE_OK(kefir_driver_configuration_add_argument(mem, symbols, config, "",
+                                                               KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_RETAIN_RELOC));
         } else if (strncmp("-e", arg, 2) == 0) {
             // Set entry point
             const char *entry_point = NULL;
@@ -196,8 +196,8 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_symbo
                 EXPECT_ARG;
                 entry_point = argv[++index];
             }
-            REQUIRE_OK(kefir_driver_configuration_add_linker_flag(mem, symbols, config, entry_point,
-                                                                  KEFIR_DRIVER_LINKER_FLAG_ENTRY_POINT));
+            REQUIRE_OK(kefir_driver_configuration_add_argument(mem, symbols, config, entry_point,
+                                                               KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_ENTRY_POINT));
         } else if (strncmp("-u", arg, 2) == 0) {
             // Undefined symbol
             const char *symbol = NULL;
@@ -207,8 +207,8 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_symbo
                 EXPECT_ARG;
                 symbol = argv[++index];
             }
-            REQUIRE_OK(kefir_driver_configuration_add_linker_flag(mem, symbols, config, symbol,
-                                                                  KEFIR_DRIVER_LINKER_FLAG_UNDEFINED_SYMBOL));
+            REQUIRE_OK(kefir_driver_configuration_add_argument(mem, symbols, config, symbol,
+                                                               KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_UNDEFINED_SYMBOL));
         } else if (strncmp("-l", arg, 2) == 0) {
             // Link library
             const char *library = NULL;
@@ -219,8 +219,8 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_symbo
                 library = &arg[2];
             }
 
-            REQUIRE_OK(kefir_driver_configuration_add_linker_flag(mem, symbols, config, library,
-                                                                  KEFIR_DRIVER_LINKER_FLAG_LINK_LIBRARY));
+            REQUIRE_OK(kefir_driver_configuration_add_argument(mem, symbols, config, library,
+                                                               KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_LINK_LIBRARY));
         } else if (strncmp("-L", arg, 2) == 0) {
             // Library search path
             const char *directory = NULL;
@@ -231,41 +231,41 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_symbo
                 directory = &arg[2];
             }
 
-            REQUIRE_OK(kefir_driver_configuration_add_linker_flag(mem, symbols, config, directory,
-                                                                  KEFIR_DRIVER_LINKER_FLAG_LINK_PATH));
+            REQUIRE_OK(kefir_driver_configuration_add_argument(mem, symbols, config, directory,
+                                                               KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_LINK_PATH));
         } else if (strcmp("-static", arg) == 0) {
             // Strip linked executable
-            REQUIRE_OK(
-                kefir_driver_configuration_add_linker_flag(mem, symbols, config, "", KEFIR_DRIVER_LINKER_FLAG_STATIC));
+            REQUIRE_OK(kefir_driver_configuration_add_argument(mem, symbols, config, "",
+                                                               KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_STATIC));
         }
 
         // Extra tool options
         else if (strncmp("-Wa,", arg, 4) == 0) {
             // Assembler options
-            REQUIRE_OK(kefir_driver_configuration_add_assembler_extra_flag(mem, symbols, config, arg + 4));
+            REQUIRE_OK(kefir_driver_configuration_add_assembler_argument(mem, symbols, config, arg + 4));
         } else if (strcmp("-Xassembler", arg) == 0) {
             // Assembler options
             EXPECT_ARG;
             const char *flag = argv[++index];
-            REQUIRE_OK(kefir_driver_configuration_add_assembler_extra_flag(mem, symbols, config, flag));
+            REQUIRE_OK(kefir_driver_configuration_add_assembler_argument(mem, symbols, config, flag));
         } else if (strncmp("-Wl,", arg, 4) == 0) {
             // Linker options
-            REQUIRE_OK(kefir_driver_configuration_add_linker_flag(mem, symbols, config, arg + 4,
-                                                                  KEFIR_DRIVER_LINKER_FLAG_EXTRA));
+            REQUIRE_OK(kefir_driver_configuration_add_argument(mem, symbols, config, arg + 4,
+                                                               KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_ENTRY_POINT));
         } else if (strcmp("-Xlinker", arg) == 0) {
             // Linker options
             EXPECT_ARG;
             const char *flag = argv[++index];
-            REQUIRE_OK(
-                kefir_driver_configuration_add_linker_flag(mem, symbols, config, flag, KEFIR_DRIVER_LINKER_FLAG_EXTRA));
+            REQUIRE_OK(kefir_driver_configuration_add_argument(mem, symbols, config, flag,
+                                                               KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_EXTRA));
         } else if (strncmp("-Wp,", arg, 4) == 0 || strncmp("-Wc,", arg, 4) == 0) {
             // Preprocessor and compiler options
-            REQUIRE_OK(kefir_driver_configuration_add_compiler_flag(mem, symbols, config, arg + 4));
+            REQUIRE_OK(kefir_driver_configuration_add_compiler_argument(mem, symbols, config, arg + 4));
         } else if (strcmp("-Xpreprocessor", arg) == 0) {
             // Preprocessor: ignored
             EXPECT_ARG;
             const char *flag = argv[++index];
-            REQUIRE_OK(kefir_driver_configuration_add_compiler_flag(mem, symbols, config, flag));
+            REQUIRE_OK(kefir_driver_configuration_add_compiler_argument(mem, symbols, config, flag));
         } else if (strncmp("-W", arg, 2) == 0) {
             // Tool options
             if (strlen(arg) == 2) {
@@ -276,16 +276,16 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_symbo
             }
             if (strncmp("a,", arg, 2) == 0) {
                 // Assembler options
-                REQUIRE_OK(kefir_driver_configuration_add_assembler_extra_flag(mem, symbols, config, arg + 2));
+                REQUIRE_OK(kefir_driver_configuration_add_assembler_argument(mem, symbols, config, arg + 2));
             } else if (strncmp("l,", arg, 2) == 0) {
                 // Linker options
-                REQUIRE_OK(kefir_driver_configuration_add_assembler_extra_flag(mem, symbols, config, arg + 2));
+                REQUIRE_OK(kefir_driver_configuration_add_assembler_argument(mem, symbols, config, arg + 2));
             } else if (strncmp("p,", arg, 2) == 0 || strncmp("c,", arg, 2) == 0) {
                 // Compiler and linker options
-                REQUIRE_OK(kefir_driver_configuration_add_compiler_flag(mem, symbols, config, arg + 2));
+                REQUIRE_OK(kefir_driver_configuration_add_compiler_argument(mem, symbols, config, arg + 2));
             } else {
                 // Other options
-                REQUIRE_OK(kefir_driver_configuration_add_compiler_flag(mem, symbols, config, arg));
+                REQUIRE_OK(kefir_driver_configuration_add_compiler_argument(mem, symbols, config, arg));
             }
         }
 
@@ -321,7 +321,7 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_symbo
             }
         } else if (strcmp("-", arg) == 0) {
             // Positional argument
-            REQUIRE_OK(kefir_driver_configuration_add_input(mem, symbols, config, arg, detect_file_type(arg)));
+            REQUIRE_OK(kefir_driver_configuration_add_argument(mem, symbols, config, arg, detect_file_type(arg)));
         } else if (strncmp("-", arg, 1) == 0 || strncmp("--", arg, 2) == 0) {
             // All other non-positional arguments: ignored
             if (warning_output != NULL) {
@@ -331,7 +331,7 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_symbo
 
         // Positional argument
         else {
-            REQUIRE_OK(kefir_driver_configuration_add_input(mem, symbols, config, arg, detect_file_type(arg)));
+            REQUIRE_OK(kefir_driver_configuration_add_argument(mem, symbols, config, arg, detect_file_type(arg)));
         }
 
 #undef EXPECT_ARG

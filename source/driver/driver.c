@@ -26,6 +26,7 @@
 #include "kefir/core/string_array.h"
 #include "kefir/driver/compiler_options.h"
 #include "kefir/driver/target_configuration.h"
+#include <assert.h>
 #include <string.h>
 #include <stdio.h>
 #include <limits.h>
@@ -37,11 +38,11 @@ static kefir_result_t driver_generate_asm_config(struct kefir_mem *mem, struct k
                                                  struct kefir_driver_assembler_configuration *assembler_config) {
     REQUIRE_OK(
         kefir_driver_apply_target_assembler_configuration(mem, symbols, externals, assembler_config, &config->target));
-    for (const struct kefir_list_entry *iter = kefir_list_head(&config->assembler_flags); iter != NULL;
+    for (const struct kefir_list_entry *iter = kefir_list_head(&config->assembler_arguments); iter != NULL;
          kefir_list_next(&iter)) {
 
-        ASSIGN_DECL_CAST(const char *, flag, iter->value);
-        REQUIRE_OK(kefir_driver_assembler_configuration_add_extra_argument(mem, assembler_config, flag));
+        ASSIGN_DECL_CAST(const char *, argument, iter->value);
+        REQUIRE_OK(kefir_driver_assembler_configuration_add_argument(mem, assembler_config, argument));
     }
     return KEFIR_OK;
 }
@@ -52,49 +53,55 @@ static kefir_result_t driver_generate_linker_config(struct kefir_mem *mem, struc
                                                     struct kefir_driver_linker_configuration *linker_config) {
     REQUIRE_OK(kefir_driver_apply_target_linker_initial_configuration(mem, symbols, externals, linker_config,
                                                                       &config->target));
+    return KEFIR_OK;
+}
 
-    for (const struct kefir_list_entry *iter = kefir_list_head(&config->linker_flags); iter != NULL;
-         kefir_list_next(&iter)) {
+static kefir_result_t driver_handle_linker_argument(struct kefir_mem *mem, const struct kefir_driver_argument *argument,
+                                                    struct kefir_driver_linker_configuration *linker_config) {
+    switch (argument->type) {
+        case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_CODE:
+        case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_PREPROCESSED:
+        case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_ASSEMBLY:
+        case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_OBJECT:
+        case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_LIBRARY:
+            assert(false);
 
-        ASSIGN_DECL_CAST(const struct kefir_driver_linker_flag *, flag, iter->value);
-        char flag_fmt[1024];
-        switch (flag->type) {
-            case KEFIR_DRIVER_LINKER_FLAG_LINK_LIBRARY:
-                snprintf(flag_fmt, sizeof(flag_fmt) - 1, "-l%s", flag->flag);
-                REQUIRE_OK(kefir_driver_linker_configuration_add_extra_argument(mem, linker_config, flag_fmt));
-                break;
+        case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_LINK_LIBRARY:
+            REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-l"));
+            REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, argument->value));
+            break;
 
-            case KEFIR_DRIVER_LINKER_FLAG_LINK_PATH:
-                snprintf(flag_fmt, sizeof(flag_fmt) - 1, "-L%s", flag->flag);
-                REQUIRE_OK(kefir_driver_linker_configuration_add_extra_argument(mem, linker_config, flag_fmt));
-                break;
+        case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_LINK_PATH:
+            REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-L"));
+            REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, argument->value));
+            break;
 
-            case KEFIR_DRIVER_LINKER_FLAG_ENTRY_POINT:
-                REQUIRE_OK(kefir_driver_linker_configuration_add_extra_argument(mem, linker_config, "-e"));
-                REQUIRE_OK(kefir_driver_linker_configuration_add_extra_argument(mem, linker_config, flag->flag));
-                break;
+        case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_ENTRY_POINT:
+            REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-e"));
+            REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, argument->value));
+            break;
 
-            case KEFIR_DRIVER_LINKER_FLAG_UNDEFINED_SYMBOL:
-                REQUIRE_OK(kefir_driver_linker_configuration_add_extra_argument(mem, linker_config, "-u"));
-                REQUIRE_OK(kefir_driver_linker_configuration_add_extra_argument(mem, linker_config, flag->flag));
-                break;
+        case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_STRIP:
+            REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-s"));
+            break;
 
-            case KEFIR_DRIVER_LINKER_FLAG_RETAIN_RELOC:
-                REQUIRE_OK(kefir_driver_linker_configuration_add_extra_argument(mem, linker_config, "-r"));
-                break;
+        case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_RETAIN_RELOC:
+            REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-r"));
+            break;
 
-            case KEFIR_DRIVER_LINKER_FLAG_STRIP:
-                REQUIRE_OK(kefir_driver_linker_configuration_add_extra_argument(mem, linker_config, "-s"));
-                break;
+        case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_UNDEFINED_SYMBOL:
+            REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-u"));
+            REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, argument->value));
+            break;
 
-            case KEFIR_DRIVER_LINKER_FLAG_STATIC:
-                REQUIRE_OK(kefir_driver_linker_configuration_add_extra_argument(mem, linker_config, "-static"));
-                break;
+        case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_STATIC:
+            REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-static"));
+            linker_config->flags.static_linking = true;
+            break;
 
-            case KEFIR_DRIVER_LINKER_FLAG_EXTRA:
-                REQUIRE_OK(kefir_driver_linker_configuration_add_extra_argument(mem, linker_config, flag->flag));
-                break;
-        }
+        case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_EXTRA:
+            REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, argument->value));
+            break;
     }
     return KEFIR_OK;
 }
@@ -185,37 +192,56 @@ static kefir_result_t driver_generate_compiler_config(struct kefir_mem *mem, str
                                                               (const char *) node->value));
     }
 
-    struct kefir_string_array extra_flags_buf;
-    REQUIRE_OK(kefir_string_array_init(mem, &extra_flags_buf));
+    struct kefir_string_array extra_args_buf;
+    REQUIRE_OK(kefir_string_array_init(mem, &extra_args_buf));
     kefir_result_t res = KEFIR_OK;
-    REQUIRE_CHAIN(&res, kefir_string_array_append(mem, &extra_flags_buf, ""));
-    for (const struct kefir_list_entry *iter = kefir_list_head(&config->compiler_flags);
+    REQUIRE_CHAIN(&res, kefir_string_array_append(mem, &extra_args_buf, ""));
+    for (const struct kefir_list_entry *iter = kefir_list_head(&config->compiler_arguments);
          res == KEFIR_OK && iter != NULL; kefir_list_next(&iter)) {
-        REQUIRE_CHAIN(&res, kefir_string_array_append(mem, &extra_flags_buf, iter->value));
+        REQUIRE_CHAIN(&res, kefir_string_array_append(mem, &extra_args_buf, iter->value));
     }
-    kefir_size_t positional_args = extra_flags_buf.length;
+    kefir_size_t positional_args = extra_args_buf.length;
     REQUIRE_CHAIN(&res, kefir_parse_cli_options(
                             mem, compiler_config, &positional_args, KefirCompilerConfigurationOptions,
-                            KefirCompilerConfigurationOptionCount, extra_flags_buf.array, extra_flags_buf.length));
+                            KefirCompilerConfigurationOptionCount, extra_args_buf.array, extra_args_buf.length));
     REQUIRE_CHAIN_SET(
-        &res, positional_args == extra_flags_buf.length,
+        &res, positional_args == extra_args_buf.length,
         KEFIR_SET_ERROR(KEFIR_UI_ERROR, "Passing positional arguments directly to compiler is not permitted"));
     REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_string_array_free(mem, &extra_flags_buf);
+        kefir_string_array_free(mem, &extra_args_buf);
         return res;
     });
-    REQUIRE_OK(kefir_string_array_free(mem, &extra_flags_buf));
+    REQUIRE_OK(kefir_string_array_free(mem, &extra_args_buf));
     return KEFIR_OK;
 }
 
 static kefir_result_t driver_update_compiler_config(struct kefir_compiler_runner_configuration *compiler_config,
-                                                    struct kefir_driver_input_file *input_file) {
-    if (strcmp(input_file->file, "-") == 0) {
-        compiler_config->input_filepath = NULL;
-        compiler_config->source_id = "<stdin>";
-    } else {
-        compiler_config->input_filepath = input_file->file;
-        compiler_config->source_id = input_file->file;
+                                                    struct kefir_driver_argument *argument) {
+    switch (argument->type) {
+        case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_CODE:
+        case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_PREPROCESSED:
+        case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_ASSEMBLY:
+        case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_OBJECT:
+        case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_LIBRARY:
+            if (strcmp(argument->value, "-") == 0) {
+                compiler_config->input_filepath = NULL;
+                compiler_config->source_id = "<stdin>";
+            } else {
+                compiler_config->input_filepath = argument->value;
+                compiler_config->source_id = argument->value;
+            }
+            break;
+
+        case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_LINK_LIBRARY:
+        case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_LINK_PATH:
+        case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_ENTRY_POINT:
+        case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_STRIP:
+        case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_RETAIN_RELOC:
+        case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_UNDEFINED_SYMBOL:
+        case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_STATIC:
+        case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_EXTRA:
+            // Intentionally left blank
+            break;
     }
     return KEFIR_OK;
 }
@@ -224,10 +250,9 @@ static kefir_result_t driver_compile_and_assemble(struct kefir_mem *mem,
                                                   const struct kefir_driver_external_resources *externals,
                                                   struct kefir_driver_assembler_configuration *assembler_config,
                                                   struct kefir_compiler_runner_configuration *compiler_config,
-                                                  struct kefir_driver_input_file *input_file,
-                                                  const char *object_filename) {
+                                                  struct kefir_driver_argument *argument, const char *object_filename) {
     struct kefir_process compiler_process, assembler_process;
-    REQUIRE_OK(driver_update_compiler_config(compiler_config, input_file));
+    REQUIRE_OK(driver_update_compiler_config(compiler_config, argument));
 
     REQUIRE_OK(kefir_process_init(&compiler_process));
     kefir_result_t res = kefir_process_init(&assembler_process);
@@ -258,10 +283,10 @@ static kefir_result_t driver_compile_and_assemble(struct kefir_mem *mem,
 }
 
 static kefir_result_t driver_compile(struct kefir_compiler_runner_configuration *compiler_config,
-                                     struct kefir_driver_input_file *input_file, const char *output_filename) {
+                                     struct kefir_driver_argument *argument, const char *output_filename) {
     struct kefir_process compiler_process;
-    if (input_file != NULL) {
-        REQUIRE_OK(driver_update_compiler_config(compiler_config, input_file));
+    if (argument != NULL) {
+        REQUIRE_OK(driver_update_compiler_config(compiler_config, argument));
     }
 
     REQUIRE_OK(kefir_process_init(&compiler_process));
@@ -286,13 +311,13 @@ static kefir_result_t driver_compile(struct kefir_compiler_runner_configuration 
 
 static kefir_result_t driver_assemble(struct kefir_mem *mem, const struct kefir_driver_external_resources *externals,
                                       struct kefir_driver_assembler_configuration *assembler_config,
-                                      struct kefir_driver_input_file *input_file, const char *object_filename) {
+                                      struct kefir_driver_argument *argument, const char *object_filename) {
     struct kefir_process assembler_process;
 
     REQUIRE_OK(kefir_process_init(&assembler_process));
     kefir_result_t res = KEFIR_OK;
 
-    REQUIRE_CHAIN(&res, kefir_process_redirect_stdin_from_file(&assembler_process, input_file->file));
+    REQUIRE_CHAIN(&res, kefir_process_redirect_stdin_from_file(&assembler_process, argument->value));
 
     REQUIRE_CHAIN(&res,
                   kefir_driver_run_assembler(mem, object_filename, assembler_config, externals, &assembler_process));
@@ -334,34 +359,47 @@ static kefir_result_t get_file_basename(char *buffer, kefir_size_t buffer_size, 
     return KEFIR_OK;
 }
 
-static kefir_result_t driver_run_input_file(struct kefir_mem *mem, struct kefir_driver_configuration *config,
-                                            const struct kefir_driver_external_resources *externals,
-                                            struct kefir_driver_assembler_configuration *assembler_config,
-                                            struct kefir_driver_linker_configuration *linker_config,
-                                            struct kefir_compiler_runner_configuration *compiler_config,
-                                            struct kefir_driver_input_file *input_file) {
+static kefir_result_t driver_run_argument(struct kefir_mem *mem, struct kefir_driver_configuration *config,
+                                          const struct kefir_driver_external_resources *externals,
+                                          struct kefir_driver_assembler_configuration *assembler_config,
+                                          struct kefir_driver_linker_configuration *linker_config,
+                                          struct kefir_compiler_runner_configuration *compiler_config,
+                                          struct kefir_driver_argument *argument) {
     const char *output_filename = NULL;
     switch (config->stage) {
         case KEFIR_DRIVER_STAGE_LINK:
-            switch (input_file->type) {
-                case KEFIR_DRIVER_INPUT_FILE_CODE:
-                case KEFIR_DRIVER_INPUT_FILE_PREPROCESSED:
+            switch (argument->type) {
+                case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_CODE:
+                case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_PREPROCESSED:
                     REQUIRE_OK(generate_object_name(mem, externals, &output_filename));
-                    REQUIRE_OK(driver_compile_and_assemble(mem, externals, assembler_config, compiler_config,
-                                                           input_file, output_filename));
+                    REQUIRE_OK(driver_compile_and_assemble(mem, externals, assembler_config, compiler_config, argument,
+                                                           output_filename));
+                    REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, output_filename));
                     break;
 
-                case KEFIR_DRIVER_INPUT_FILE_ASSEMBLY:
+                case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_ASSEMBLY:
                     REQUIRE_OK(generate_object_name(mem, externals, &output_filename));
-                    REQUIRE_OK(driver_assemble(mem, externals, assembler_config, input_file, output_filename));
+                    REQUIRE_OK(driver_assemble(mem, externals, assembler_config, argument, output_filename));
+                    REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, output_filename));
                     break;
 
-                case KEFIR_DRIVER_INPUT_FILE_OBJECT:
-                case KEFIR_DRIVER_INPUT_FILE_LIBRARY:
-                    output_filename = input_file->file;
+                case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_OBJECT:
+                case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_LIBRARY:
+                    output_filename = argument->value;
+                    REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, output_filename));
+                    break;
+
+                case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_LINK_LIBRARY:
+                case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_LINK_PATH:
+                case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_ENTRY_POINT:
+                case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_STRIP:
+                case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_RETAIN_RELOC:
+                case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_UNDEFINED_SYMBOL:
+                case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_STATIC:
+                case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_EXTRA:
+                    REQUIRE_OK(driver_handle_linker_argument(mem, argument, linker_config));
                     break;
             }
-            REQUIRE_OK(kefir_driver_linker_configuration_add_linked_file(mem, linker_config, output_filename));
             break;
 
         case KEFIR_DRIVER_STAGE_ASSEMBLE: {
@@ -371,25 +409,36 @@ static kefir_result_t driver_run_input_file(struct kefir_mem *mem, struct kefir_
             } else {
                 char input_basename_buf[PATH_MAX + 1];
                 char *input_basename = NULL;
-                REQUIRE_OK(get_file_basename(input_basename_buf, sizeof(input_basename_buf) - 1, input_file->file,
+                REQUIRE_OK(get_file_basename(input_basename_buf, sizeof(input_basename_buf) - 1, argument->value,
                                              &input_basename));
                 snprintf(object_filename, sizeof(object_filename) - 1, "%s%s", input_basename,
                          externals->extensions.object_file);
                 output_filename = object_filename;
             }
-            switch (input_file->type) {
-                case KEFIR_DRIVER_INPUT_FILE_CODE:
-                case KEFIR_DRIVER_INPUT_FILE_PREPROCESSED:
-                    REQUIRE_OK(driver_compile_and_assemble(mem, externals, assembler_config, compiler_config,
-                                                           input_file, output_filename));
+            switch (argument->type) {
+                case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_CODE:
+                case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_PREPROCESSED:
+                    REQUIRE_OK(driver_compile_and_assemble(mem, externals, assembler_config, compiler_config, argument,
+                                                           output_filename));
                     break;
 
-                case KEFIR_DRIVER_INPUT_FILE_ASSEMBLY:
-                    REQUIRE_OK(driver_assemble(mem, externals, assembler_config, input_file, output_filename));
+                case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_ASSEMBLY:
+                    REQUIRE_OK(driver_assemble(mem, externals, assembler_config, argument, output_filename));
                     break;
 
-                case KEFIR_DRIVER_INPUT_FILE_OBJECT:
-                case KEFIR_DRIVER_INPUT_FILE_LIBRARY:
+                case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_OBJECT:
+                case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_LIBRARY:
+                    // Intentionally left blank
+                    break;
+
+                case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_LINK_LIBRARY:
+                case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_LINK_PATH:
+                case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_ENTRY_POINT:
+                case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_STRIP:
+                case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_RETAIN_RELOC:
+                case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_UNDEFINED_SYMBOL:
+                case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_STATIC:
+                case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_EXTRA:
                     // Intentionally left blank
                     break;
             }
@@ -402,21 +451,32 @@ static kefir_result_t driver_run_input_file(struct kefir_mem *mem, struct kefir_
             } else if (config->output_file == NULL) {
                 char input_basename_buf[PATH_MAX + 1];
                 char *input_basename = NULL;
-                REQUIRE_OK(get_file_basename(input_basename_buf, sizeof(input_basename_buf) - 1, input_file->file,
+                REQUIRE_OK(get_file_basename(input_basename_buf, sizeof(input_basename_buf) - 1, argument->value,
                                              &input_basename));
                 snprintf(object_filename, sizeof(object_filename) - 1, "%s%s", input_basename,
                          externals->extensions.assembly_file);
                 output_filename = object_filename;
             }
-            switch (input_file->type) {
-                case KEFIR_DRIVER_INPUT_FILE_CODE:
-                case KEFIR_DRIVER_INPUT_FILE_PREPROCESSED:
-                    REQUIRE_OK(driver_compile(compiler_config, input_file, output_filename));
+            switch (argument->type) {
+                case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_CODE:
+                case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_PREPROCESSED:
+                    REQUIRE_OK(driver_compile(compiler_config, argument, output_filename));
                     break;
 
-                case KEFIR_DRIVER_INPUT_FILE_ASSEMBLY:
-                case KEFIR_DRIVER_INPUT_FILE_OBJECT:
-                case KEFIR_DRIVER_INPUT_FILE_LIBRARY:
+                case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_ASSEMBLY:
+                case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_OBJECT:
+                case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_LIBRARY:
+                    // Intentionally left blank
+                    break;
+
+                case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_LINK_LIBRARY:
+                case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_LINK_PATH:
+                case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_ENTRY_POINT:
+                case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_STRIP:
+                case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_RETAIN_RELOC:
+                case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_UNDEFINED_SYMBOL:
+                case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_STATIC:
+                case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_EXTRA:
                     // Intentionally left blank
                     break;
             }
@@ -433,21 +493,32 @@ static kefir_result_t driver_run_input_file(struct kefir_mem *mem, struct kefir_
             } else if (config->stage == KEFIR_DRIVER_STAGE_PREPROCESS_SAVE && config->output_file == NULL) {
                 char input_basename_buf[PATH_MAX + 1];
                 char *input_basename = NULL;
-                REQUIRE_OK(get_file_basename(input_basename_buf, sizeof(input_basename_buf) - 1, input_file->file,
+                REQUIRE_OK(get_file_basename(input_basename_buf, sizeof(input_basename_buf) - 1, argument->value,
                                              &input_basename));
                 snprintf(object_filename, sizeof(object_filename) - 1, "%s%s", input_basename,
                          externals->extensions.preprocessed_file);
                 output_filename = object_filename;
             }
-            switch (input_file->type) {
-                case KEFIR_DRIVER_INPUT_FILE_CODE:
-                case KEFIR_DRIVER_INPUT_FILE_PREPROCESSED:
-                    REQUIRE_OK(driver_compile(compiler_config, input_file, output_filename));
+            switch (argument->type) {
+                case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_CODE:
+                case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_PREPROCESSED:
+                    REQUIRE_OK(driver_compile(compiler_config, argument, output_filename));
                     break;
 
-                case KEFIR_DRIVER_INPUT_FILE_ASSEMBLY:
-                case KEFIR_DRIVER_INPUT_FILE_OBJECT:
-                case KEFIR_DRIVER_INPUT_FILE_LIBRARY:
+                case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_ASSEMBLY:
+                case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_OBJECT:
+                case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_LIBRARY:
+                    // Intentionally left blank
+                    break;
+
+                case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_LINK_LIBRARY:
+                case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_LINK_PATH:
+                case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_ENTRY_POINT:
+                case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_STRIP:
+                case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_RETAIN_RELOC:
+                case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_UNDEFINED_SYMBOL:
+                case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_STATIC:
+                case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_EXTRA:
                     // Intentionally left blank
                     break;
             }
@@ -488,8 +559,8 @@ static kefir_result_t driver_run_impl(struct kefir_mem *mem, struct kefir_symbol
                                       struct kefir_driver_assembler_configuration *assembler_config,
                                       struct kefir_driver_linker_configuration *linker_config,
                                       struct kefir_compiler_runner_configuration *compiler_config) {
-    REQUIRE(config->stage == KEFIR_DRIVER_STAGE_PRINT_RUNTIME_CODE || kefir_list_length(&config->input_files) > 0,
-            KEFIR_SET_ERROR(KEFIR_UI_ERROR, "Selected operation requires non-empty input file list"));
+    REQUIRE(config->stage == KEFIR_DRIVER_STAGE_PRINT_RUNTIME_CODE || kefir_list_length(&config->arguments) > 0,
+            KEFIR_SET_ERROR(KEFIR_UI_ERROR, "Selected operation requires non-empty argument list"));
     switch (config->stage) {
         case KEFIR_DRIVER_STAGE_LINK:
             REQUIRE_OK(driver_generate_linker_config(mem, symbols, config, externals, linker_config));
@@ -511,12 +582,12 @@ static kefir_result_t driver_run_impl(struct kefir_mem *mem, struct kefir_symbol
             break;
     }
 
-    for (const struct kefir_list_entry *iter = kefir_list_head(&config->input_files); iter != NULL;
+    for (const struct kefir_list_entry *iter = kefir_list_head(&config->arguments); iter != NULL;
          kefir_list_next(&iter)) {
 
-        ASSIGN_DECL_CAST(struct kefir_driver_input_file *, input_file, iter->value);
-        REQUIRE_OK(driver_run_input_file(mem, config, externals, assembler_config, linker_config, compiler_config,
-                                         input_file));
+        ASSIGN_DECL_CAST(struct kefir_driver_argument *, argument, iter->value);
+        REQUIRE_OK(
+            driver_run_argument(mem, config, externals, assembler_config, linker_config, compiler_config, argument));
     }
 
     if (config->stage == KEFIR_DRIVER_STAGE_LINK) {

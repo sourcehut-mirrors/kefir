@@ -37,8 +37,8 @@ static kefir_result_t list_entry_free(struct kefir_mem *mem, struct kefir_list *
 kefir_result_t kefir_driver_assembler_configuration_init(struct kefir_driver_assembler_configuration *config) {
     REQUIRE(config != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver assembler configuration"));
 
-    REQUIRE_OK(kefir_list_init(&config->extra_args));
-    REQUIRE_OK(kefir_list_on_remove(&config->extra_args, list_entry_free, NULL));
+    REQUIRE_OK(kefir_list_init(&config->arguments));
+    REQUIRE_OK(kefir_list_on_remove(&config->arguments, list_entry_free, NULL));
     return KEFIR_OK;
 }
 
@@ -47,7 +47,7 @@ kefir_result_t kefir_driver_assembler_configuration_free(struct kefir_mem *mem,
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(config != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver assembler configuration"));
 
-    REQUIRE_OK(kefir_list_free(mem, &config->extra_args));
+    REQUIRE_OK(kefir_list_free(mem, &config->arguments));
     return KEFIR_OK;
 }
 
@@ -63,23 +63,24 @@ static kefir_result_t string_list_append(struct kefir_mem *mem, struct kefir_lis
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_driver_assembler_configuration_add_extra_argument(
-    struct kefir_mem *mem, struct kefir_driver_assembler_configuration *config, const char *arg) {
+kefir_result_t kefir_driver_assembler_configuration_add_argument(struct kefir_mem *mem,
+                                                                 struct kefir_driver_assembler_configuration *config,
+                                                                 const char *arg) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(config != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver assembler configuration"));
     REQUIRE(arg != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver assembler extra argument"));
 
-    REQUIRE_OK(string_list_append(mem, &config->extra_args, arg));
+    REQUIRE_OK(string_list_append(mem, &config->arguments, arg));
     return KEFIR_OK;
 }
 
 kefir_result_t kefir_driver_linker_configuration_init(struct kefir_driver_linker_configuration *config) {
     REQUIRE(config != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver linker configuration"));
 
-    REQUIRE_OK(kefir_list_init(&config->linked_files));
-    REQUIRE_OK(kefir_list_on_remove(&config->linked_files, list_entry_free, NULL));
-    REQUIRE_OK(kefir_list_init(&config->extra_args));
-    REQUIRE_OK(kefir_list_on_remove(&config->extra_args, list_entry_free, NULL));
+    REQUIRE_OK(kefir_list_init(&config->arguments));
+    REQUIRE_OK(kefir_list_on_remove(&config->arguments, list_entry_free, NULL));
+
+    config->flags.static_linking = false;
     return KEFIR_OK;
 }
 
@@ -88,30 +89,18 @@ kefir_result_t kefir_driver_linker_configuration_free(struct kefir_mem *mem,
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(config != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver linker configuration"));
 
-    REQUIRE_OK(kefir_list_free(mem, &config->linked_files));
-    REQUIRE_OK(kefir_list_free(mem, &config->extra_args));
+    REQUIRE_OK(kefir_list_free(mem, &config->arguments));
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_driver_linker_configuration_add_linked_file(struct kefir_mem *mem,
-                                                                 struct kefir_driver_linker_configuration *config,
-                                                                 const char *linked_file) {
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(config != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver linker configuration"));
-    REQUIRE(linked_file != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver linker file"));
-
-    REQUIRE_OK(string_list_append(mem, &config->linked_files, linked_file));
-    return KEFIR_OK;
-}
-
-kefir_result_t kefir_driver_linker_configuration_add_extra_argument(struct kefir_mem *mem,
-                                                                    struct kefir_driver_linker_configuration *config,
-                                                                    const char *arg) {
+kefir_result_t kefir_driver_linker_configuration_add_argument(struct kefir_mem *mem,
+                                                              struct kefir_driver_linker_configuration *config,
+                                                              const char *arg) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(config != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver linker configuration"));
     REQUIRE(arg != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver linker extra argument"));
 
-    REQUIRE_OK(string_list_append(mem, &config->extra_args, arg));
+    REQUIRE_OK(string_list_append(mem, &config->arguments, arg));
     return KEFIR_OK;
 }
 
@@ -121,12 +110,10 @@ kefir_result_t kefir_driver_configuration_init(struct kefir_driver_configuration
     config->stage = KEFIR_DRIVER_STAGE_LINK;
     config->output_file = NULL;
 
-    REQUIRE_OK(kefir_list_init(&config->input_files));
-    REQUIRE_OK(kefir_list_on_remove(&config->input_files, list_entry_free, NULL));
-    REQUIRE_OK(kefir_list_init(&config->assembler_flags));
-    REQUIRE_OK(kefir_list_init(&config->linker_flags));
-    REQUIRE_OK(kefir_list_init(&config->compiler_flags));
-    REQUIRE_OK(kefir_list_on_remove(&config->linker_flags, list_entry_free, NULL));
+    REQUIRE_OK(kefir_list_init(&config->arguments));
+    REQUIRE_OK(kefir_list_on_remove(&config->arguments, list_entry_free, NULL));
+    REQUIRE_OK(kefir_list_init(&config->assembler_arguments));
+    REQUIRE_OK(kefir_list_init(&config->compiler_arguments));
     REQUIRE_OK(kefir_hashtree_init(&config->defines, &kefir_hashtree_str_ops));
     REQUIRE_OK(kefir_list_init(&config->undefines));
     REQUIRE_OK(kefir_list_init(&config->include_directories));
@@ -142,10 +129,9 @@ kefir_result_t kefir_driver_configuration_free(struct kefir_mem *mem, struct kef
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(config != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver configuration"));
 
-    REQUIRE_OK(kefir_list_free(mem, &config->input_files));
-    REQUIRE_OK(kefir_list_free(mem, &config->assembler_flags));
-    REQUIRE_OK(kefir_list_free(mem, &config->linker_flags));
-    REQUIRE_OK(kefir_list_free(mem, &config->compiler_flags));
+    REQUIRE_OK(kefir_list_free(mem, &config->arguments));
+    REQUIRE_OK(kefir_list_free(mem, &config->assembler_arguments));
+    REQUIRE_OK(kefir_list_free(mem, &config->compiler_arguments));
     REQUIRE_OK(kefir_hashtree_free(mem, &config->defines));
     REQUIRE_OK(kefir_list_free(mem, &config->undefines));
     REQUIRE_OK(kefir_list_free(mem, &config->include_directories));
@@ -154,94 +140,68 @@ kefir_result_t kefir_driver_configuration_free(struct kefir_mem *mem, struct kef
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_driver_configuration_add_input(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
-                                                    struct kefir_driver_configuration *config, const char *file,
-                                                    kefir_driver_input_file_type_t type) {
+kefir_result_t kefir_driver_configuration_add_argument(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
+                                                       struct kefir_driver_configuration *config, const char *file,
+                                                       kefir_driver_argument_type_t type) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(config != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver configuration"));
-    REQUIRE(file != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid input file"));
+    REQUIRE(file != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid argument"));
 
     if (symbols != NULL) {
         file = kefir_symbol_table_insert(mem, symbols, file, NULL);
         REQUIRE(file != NULL,
-                KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert input file name into symbol table"));
+                KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert driver argument name into symbol table"));
     }
 
-    struct kefir_driver_input_file *input_file = KEFIR_MALLOC(mem, sizeof(struct kefir_driver_input_file));
-    REQUIRE(input_file != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate driver input file"));
-    input_file->file = file;
-    input_file->type = type;
+    struct kefir_driver_argument *argument = KEFIR_MALLOC(mem, sizeof(struct kefir_driver_argument));
+    REQUIRE(argument != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate driver argument"));
+    argument->value = file;
+    argument->type = type;
 
     kefir_result_t res =
-        kefir_list_insert_after(mem, &config->input_files, kefir_list_tail(&config->input_files), input_file);
+        kefir_list_insert_after(mem, &config->arguments, kefir_list_tail(&config->arguments), argument);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, input_file);
+        KEFIR_FREE(mem, argument);
         return res;
     });
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_driver_configuration_add_assembler_extra_flag(struct kefir_mem *mem,
-                                                                   struct kefir_symbol_table *symbols,
-                                                                   struct kefir_driver_configuration *config,
-                                                                   const char *flag) {
+kefir_result_t kefir_driver_configuration_add_assembler_argument(struct kefir_mem *mem,
+                                                                 struct kefir_symbol_table *symbols,
+                                                                 struct kefir_driver_configuration *config,
+                                                                 const char *argument) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(config != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver configuration"));
-    REQUIRE(flag != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid assembler flag"));
+    REQUIRE(argument != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid assembler argument"));
 
     if (symbols != NULL) {
-        flag = kefir_symbol_table_insert(mem, symbols, flag, NULL);
-        REQUIRE(flag != NULL,
-                KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert assembler flag into symbol table"));
+        argument = kefir_symbol_table_insert(mem, symbols, argument, NULL);
+        REQUIRE(argument != NULL,
+                KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert assembler argument into symbol table"));
     }
 
-    REQUIRE_OK(kefir_list_insert_after(mem, &config->assembler_flags, kefir_list_tail(&config->assembler_flags),
-                                       (void *) flag));
+    REQUIRE_OK(kefir_list_insert_after(mem, &config->assembler_arguments, kefir_list_tail(&config->assembler_arguments),
+                                       (void *) argument));
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_driver_configuration_add_linker_flag(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
-                                                          struct kefir_driver_configuration *config, const char *flag,
-                                                          kefir_driver_linker_flag_type_t flag_type) {
+kefir_result_t kefir_driver_configuration_add_compiler_argument(struct kefir_mem *mem,
+                                                                struct kefir_symbol_table *symbols,
+                                                                struct kefir_driver_configuration *config,
+                                                                const char *argument) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(config != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver configuration"));
-    REQUIRE(flag != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid linker flag"));
+    REQUIRE(argument != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid compiler argument"));
 
     if (symbols != NULL) {
-        flag = kefir_symbol_table_insert(mem, symbols, flag, NULL);
-        REQUIRE(flag != NULL,
-                KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert linker flag into symbol table"));
+        argument = kefir_symbol_table_insert(mem, symbols, argument, NULL);
+        REQUIRE(argument != NULL,
+                KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert compiler argument into symbol table"));
     }
 
-    struct kefir_driver_linker_flag *linker_flag = KEFIR_MALLOC(mem, sizeof(struct kefir_driver_linker_flag));
-    REQUIRE(linker_flag != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate driver linker flag"));
-    linker_flag->flag = flag;
-    linker_flag->type = flag_type;
-
-    kefir_result_t res =
-        kefir_list_insert_after(mem, &config->linker_flags, kefir_list_tail(&config->linker_flags), linker_flag);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, linker_flag);
-        return res;
-    });
-    return KEFIR_OK;
-}
-
-kefir_result_t kefir_driver_configuration_add_compiler_flag(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
-                                                            struct kefir_driver_configuration *config,
-                                                            const char *flag) {
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(config != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver configuration"));
-    REQUIRE(flag != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid compiler flag"));
-
-    if (symbols != NULL) {
-        flag = kefir_symbol_table_insert(mem, symbols, flag, NULL);
-        REQUIRE(flag != NULL,
-                KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert compiler flag into symbol table"));
-    }
-
-    REQUIRE_OK(
-        kefir_list_insert_after(mem, &config->compiler_flags, kefir_list_tail(&config->compiler_flags), (void *) flag));
+    REQUIRE_OK(kefir_list_insert_after(mem, &config->compiler_arguments, kefir_list_tail(&config->compiler_arguments),
+                                       (void *) argument));
     return KEFIR_OK;
 }
 

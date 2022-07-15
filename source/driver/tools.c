@@ -72,7 +72,7 @@ kefir_result_t kefir_driver_run_assembler(struct kefir_mem *mem, const char *out
     REQUIRE_CHAIN(&res, kefir_string_array_append(mem, &argv, "-o"));
     REQUIRE_CHAIN(&res, kefir_string_array_append(mem, &argv, output_file));
 
-    REQUIRE_CHAIN(&res, copy_string_list_to_array(mem, &config->extra_args, &argv));
+    REQUIRE_CHAIN(&res, copy_string_list_to_array(mem, &config->arguments, &argv));
 
     REQUIRE_CHAIN(&res, kefir_process_execute(process, resources->assembler_path, argv.array));
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -100,10 +100,9 @@ kefir_result_t kefir_driver_run_linker(struct kefir_mem *mem, const char *output
     kefir_result_t res = KEFIR_OK;
     REQUIRE_CHAIN(&res, kefir_string_array_append(mem, &argv, resources->linker_path));
 
-    REQUIRE_CHAIN(&res, copy_string_list_to_array(mem, &config->linked_files, &argv));
-    REQUIRE_CHAIN(&res, copy_string_list_to_array(mem, &config->extra_args, &argv));
     REQUIRE_CHAIN(&res, kefir_string_array_append(mem, &argv, "-o"));
     REQUIRE_CHAIN(&res, kefir_string_array_append(mem, &argv, output));
+    REQUIRE_CHAIN(&res, copy_string_list_to_array(mem, &config->arguments, &argv));
 
     REQUIRE_CHAIN(&res, kefir_process_execute(process, resources->linker_path, argv.array));
     REQUIRE_ELSE(res == KEFIR_OK, {
