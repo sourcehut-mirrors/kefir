@@ -433,3 +433,73 @@ DEFINE_CASE(ast_nodes_statement_expressions1, "AST nodes - statement expressions
     ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
 }
 END_CASE
+
+DEFINE_CASE(ast_nodes_attribute_list1, "AST nodes - attribute list #1") {
+    struct kefir_symbol_table symbols;
+    struct kefir_ast_type_bundle type_bundle;
+
+    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    ASSERT_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
+
+    struct kefir_ast_attribute_list *list1 = kefir_ast_new_attribute_list(&kft_mem);
+    ASSERT(list1 != NULL);
+    ASSERT(list1->base.klass->type == KEFIR_AST_ATTRIBUTE_LIST);
+    ASSERT(list1->base.self == list1);
+    ASSERT(kefir_list_length(&list1->list) == 0);
+
+    struct kefir_ast_attribute *attr1 = NULL;
+    ASSERT_OK(kefir_ast_attribute_list_append(&kft_mem, &symbols, "attribute1", list1, &attr1));
+    ASSERT(attr1 != NULL);
+    ASSERT(strcmp(attr1->name, "attribute1") == 0);
+    ASSERT(kefir_list_length(&attr1->parameters) == 0);
+    ASSERT(kefir_list_length(&list1->list) == 1);
+    ASSERT(kefir_list_head(&list1->list)->value == attr1);
+
+    ASSERT_OK(kefir_list_insert_after(&kft_mem, &attr1->parameters, kefir_list_tail(&attr1->parameters),
+                                      kefir_ast_new_constant_int(&kft_mem, 100)));
+    ASSERT_OK(kefir_list_insert_after(&kft_mem, &attr1->parameters, kefir_list_tail(&attr1->parameters),
+                                      kefir_ast_new_constant_int(&kft_mem, 200)));
+    ASSERT_OK(kefir_list_insert_after(&kft_mem, &attr1->parameters, kefir_list_tail(&attr1->parameters),
+                                      kefir_ast_new_constant_int(&kft_mem, 300)));
+
+    struct kefir_ast_attribute *attr2 = NULL;
+    ASSERT_OK(kefir_ast_attribute_list_append(&kft_mem, &symbols, "attribute2", list1, &attr2));
+    ASSERT(attr2 != NULL);
+    ASSERT(attr2 != attr1);
+    ASSERT(strcmp(attr2->name, "attribute2") == 0);
+    ASSERT(kefir_list_length(&attr2->parameters) == 0);
+    ASSERT(kefir_list_length(&list1->list) == 2);
+    ASSERT(kefir_list_head(&list1->list)->value == attr1);
+    ASSERT(kefir_list_head(&list1->list)->next->value == attr2);
+
+    ASSERT_OK(kefir_list_insert_after(&kft_mem, &attr2->parameters, kefir_list_tail(&attr2->parameters),
+                                      kefir_ast_new_constant_int(&kft_mem, 100)));
+    ASSERT_OK(kefir_list_insert_after(&kft_mem, &attr2->parameters, kefir_list_tail(&attr2->parameters),
+                                      kefir_ast_new_constant_int(&kft_mem, 200)));
+    ASSERT_OK(kefir_list_insert_after(&kft_mem, &attr2->parameters, kefir_list_tail(&attr2->parameters),
+                                      kefir_ast_new_constant_int(&kft_mem, 300)));
+
+    struct kefir_ast_attribute_list *list2 = kefir_ast_new_attribute_list(&kft_mem);
+    ASSERT(list2 != NULL);
+    ASSERT(list2->base.klass->type == KEFIR_AST_ATTRIBUTE_LIST);
+    ASSERT(list2->base.self == list2);
+    ASSERT(kefir_list_length(&list2->list) == 0);
+
+    struct kefir_ast_attribute *attr3 = NULL;
+    ASSERT_OK(kefir_ast_attribute_list_append(&kft_mem, &symbols, "attribute3", list2, &attr3));
+    ASSERT(attr3 != NULL);
+    ASSERT(attr3 != attr1 && attr3 != attr2);
+    ASSERT(strcmp(attr3->name, "attribute3") == 0);
+    ASSERT(kefir_list_length(&attr3->parameters) == 0);
+    ASSERT(kefir_list_length(&list1->list) == 2);
+    ASSERT(kefir_list_length(&list2->list) == 1);
+    ASSERT(kefir_list_head(&list1->list)->value == attr1);
+    ASSERT(kefir_list_head(&list1->list)->next->value == attr2);
+    ASSERT(kefir_list_head(&list2->list)->value == attr3);
+
+    ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(list1)));
+    ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(list2)));
+    ASSERT_OK(kefir_ast_type_bundle_free(&kft_mem, &type_bundle));
+    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+}
+END_CASE
