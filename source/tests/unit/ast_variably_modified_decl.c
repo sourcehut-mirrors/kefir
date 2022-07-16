@@ -342,7 +342,7 @@ DEFINE_CASE(ast_declaration_variably_modified_structure_field, "AST declarations
                                                          kefir_ast_type_specifier_struct(&kft_mem, struct_specifier1)));
 
     ASSERT_NOK(kefir_ast_analyze_declaration(&kft_mem, &global_context.context, &decl->specifiers,
-                                             init_decl->declarator, NULL, NULL, NULL, NULL, NULL, NULL,
+                                             init_decl->declarator, NULL, NULL, NULL, NULL, NULL,
                                              KEFIR_AST_DECLARATION_ANALYSIS_NORMAL));
 
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(decl)));

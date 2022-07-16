@@ -41,9 +41,8 @@ kefir_result_t kefir_ast_analyze_init_declarator_node(struct kefir_mem *mem, con
     REQUIRE_OK(kefir_ast_node_properties_init(&base->properties));
     base->properties.category = KEFIR_AST_NODE_CATEGORY_INIT_DECLARATOR;
     const char *identifier = NULL;
-    struct kefir_ast_declaration_attributes attributes = {0};
     REQUIRE_OK(kefir_ast_analyze_declaration_declarator(mem, context, node->declarator, &identifier, &type, &aligment,
-                                                        &attributes, KEFIR_AST_DECLARATION_ANALYSIS_NORMAL));
+                                                        KEFIR_AST_DECLARATION_ANALYSIS_NORMAL));
     base->properties.declaration_props.function = function;
     base->properties.declaration_props.alignment = aligment;
 
