@@ -24,7 +24,8 @@
                     "class": "init_declarator",
                     "declarator": {
                         "class": "identifier",
-                        "identifier": "i"
+                        "identifier": "i",
+                        "attributes": []
                     },
                     "initializer": {
                         "type": "expression",
@@ -113,7 +114,8 @@
                             "class": "init_declarator",
                             "declarator": {
                                 "class": "identifier",
-                                "identifier": "res"
+                                "identifier": "res",
+                                "attributes": []
                             },
                             "initializer": {
                                 "type": "expression",
@@ -152,7 +154,8 @@
                     "class": "init_declarator",
                     "declarator": {
                         "class": "identifier",
-                        "identifier": "i"
+                        "identifier": "i",
+                        "attributes": []
                     },
                     "initializer": {
                         "type": "expression",
@@ -204,7 +207,8 @@
                                 "class": "init_declarator",
                                 "declarator": {
                                     "class": "identifier",
-                                    "identifier": "j"
+                                    "identifier": "j",
+                                    "attributes": []
                                 },
                                 "initializer": {
                                     "type": "expression",
@@ -256,7 +260,8 @@
                                             "class": "init_declarator",
                                             "declarator": {
                                                 "class": "identifier",
-                                                "identifier": "k"
+                                                "identifier": "k",
+                                                "attributes": []
                                             },
                                             "initializer": {
                                                 "type": "expression",

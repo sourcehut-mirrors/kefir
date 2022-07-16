@@ -3,16 +3,19 @@
         "class": "function",
         "declarator": {
             "class": "identifier",
-            "identifier": "fn1"
+            "identifier": "fn1",
+            "attributes": []
         },
         "ellipsis": false,
-        "parameters": []
+        "parameters": [],
+        "attributes": []
     },
     {
         "class": "function",
         "declarator": {
             "class": "identifier",
-            "identifier": "fn2"
+            "identifier": "fn2",
+            "attributes": []
         },
         "ellipsis": false,
         "parameters": [
@@ -20,13 +23,15 @@
                 "class": "identifier",
                 "identifier": "HEHE"
             }
-        ]
+        ],
+        "attributes": []
     },
     {
         "class": "function",
         "declarator": {
             "class": "identifier",
-            "identifier": "fn3"
+            "identifier": "fn3",
+            "attributes": []
         },
         "ellipsis": false,
         "parameters": [
@@ -42,6 +47,7 @@
                 "class": "identifier",
                 "identifier": "z"
             }
-        ]
+        ],
+        "attributes": []
     }
 ]

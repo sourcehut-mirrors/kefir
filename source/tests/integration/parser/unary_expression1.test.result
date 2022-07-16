@@ -77,7 +77,8 @@
             "declarator": {
                 "class": "array",
                 "declarator": {
-                    "class": "abstract"
+                    "class": "abstract",
+                    "attributes": []
                 },
                 "type": "bounded",
                 "length": {
@@ -86,7 +87,8 @@
                     "value": 8
                 },
                 "static": false,
-                "type_qualifiers": []
+                "type_qualifiers": [],
+                "attributes": []
             }
         }
     },
@@ -106,9 +108,11 @@
                 "declarator": {
                     "class": "pointer",
                     "declarator": {
-                        "class": "abstract"
+                        "class": "abstract",
+                        "attributes": []
                     },
-                    "type_qualifiers": []
+                    "type_qualifiers": [],
+                    "attributes": []
                 },
                 "ellipsis": false,
                 "parameters": [
@@ -127,17 +131,20 @@
                                     "class": "array",
                                     "declarator": {
                                         "class": "identifier",
-                                        "identifier": "arr"
+                                        "identifier": "arr",
+                                        "attributes": []
                                     },
                                     "type": "unbounded",
                                     "static": false,
-                                    "type_qualifiers": []
+                                    "type_qualifiers": [],
+                                    "attributes": []
                                 },
                                 "initializer": null
                             }
                         ]
                     }
-                ]
+                ],
+                "attributes": []
             }
         }
     },

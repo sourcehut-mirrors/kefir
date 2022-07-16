@@ -22,6 +22,7 @@
                         "declarator": {
                             "class": "identifier",
                             "identifier": "ints",
+                            "attributes": [],
                             "source_location": {
                                 "source": "<stdin>",
                                 "line": 1,
@@ -31,6 +32,7 @@
                         "type": "unbounded",
                         "static": false,
                         "type_qualifiers": [],
+                        "attributes": [],
                         "source_location": {
                             "source": "<stdin>",
                             "line": 1,
@@ -204,6 +206,7 @@
                         "declarator": {
                             "class": "identifier",
                             "identifier": "string",
+                            "attributes": [],
                             "source_location": {
                                 "source": "<stdin>",
                                 "line": 2,
@@ -213,6 +216,7 @@
                         "type": "unbounded",
                         "static": false,
                         "type_qualifiers": [],
+                        "attributes": [],
                         "source_location": {
                             "source": "<stdin>",
                             "line": 2,
@@ -313,6 +317,7 @@
                             "declarator": {
                                 "class": "identifier",
                                 "identifier": "ints",
+                                "attributes": [],
                                 "source_location": {
                                     "source": "<stdin>",
                                     "line": 3,
@@ -332,6 +337,7 @@
                             },
                             "static": false,
                             "type_qualifiers": [],
+                            "attributes": [],
                             "source_location": {
                                 "source": "<stdin>",
                                 "line": 3,
@@ -351,6 +357,7 @@
                         },
                         "static": false,
                         "type_qualifiers": [],
+                        "attributes": [],
                         "source_location": {
                             "source": "<stdin>",
                             "line": 3,

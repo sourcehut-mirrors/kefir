@@ -16,7 +16,8 @@
                         "class": "array",
                         "declarator": {
                             "class": "identifier",
-                            "identifier": "Array"
+                            "identifier": "Array",
+                            "attributes": []
                         },
                         "type": "bounded",
                         "length": {
@@ -25,7 +26,8 @@
                             "value": 100
                         },
                         "static": false,
-                        "type_qualifiers": []
+                        "type_qualifiers": [],
+                        "attributes": []
                     },
                     "initializer": null
                 }
@@ -51,7 +53,8 @@
                                 {
                                     "declarator": {
                                         "class": "identifier",
-                                        "identifier": "c"
+                                        "identifier": "c",
+                                        "attributes": []
                                     },
                                     "bitwidth": null
                                 }
@@ -80,10 +83,12 @@
                 "class": "function",
                 "declarator": {
                     "class": "identifier",
-                    "identifier": "Function"
+                    "identifier": "Function",
+                    "attributes": []
                 },
                 "ellipsis": false,
-                "parameters": []
+                "parameters": [],
+                "attributes": []
             },
             "declarations": [],
             "body": {
@@ -112,11 +117,13 @@
                                     "class": "array",
                                     "declarator": {
                                         "class": "identifier",
-                                        "identifier": "__func__"
+                                        "identifier": "__func__",
+                                        "attributes": []
                                     },
                                     "type": "unbounded",
                                     "static": false,
-                                    "type_qualifiers": []
+                                    "type_qualifiers": [],
+                                    "attributes": []
                                 },
                                 "initializer": {
                                     "type": "expression",
@@ -145,11 +152,13 @@
                                     "class": "array",
                                     "declarator": {
                                         "class": "identifier",
-                                        "identifier": "x"
+                                        "identifier": "x",
+                                        "attributes": []
                                     },
                                     "type": "unbounded",
                                     "static": false,
-                                    "type_qualifiers": []
+                                    "type_qualifiers": [],
+                                    "attributes": []
                                 },
                                 "initializer": {
                                     "type": "list",

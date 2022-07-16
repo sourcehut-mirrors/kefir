@@ -3,30 +3,35 @@
         "class": "array",
         "declarator": {
             "class": "identifier",
-            "identifier": "array"
+            "identifier": "array",
+            "attributes": []
         },
         "type": "unbounded",
         "static": false,
         "type_qualifiers": [
             "volatile",
             "const"
-        ]
+        ],
+        "attributes": []
     },
     {
         "class": "array",
         "declarator": {
             "class": "identifier",
-            "identifier": "array2"
+            "identifier": "array2",
+            "attributes": []
         },
         "type": "unbounded",
         "static": false,
-        "type_qualifiers": []
+        "type_qualifiers": [],
+        "attributes": []
     },
     {
         "class": "array",
         "declarator": {
             "class": "identifier",
-            "identifier": "another_array"
+            "identifier": "another_array",
+            "attributes": []
         },
         "type": "bounded",
         "length": {
@@ -51,13 +56,15 @@
             }
         },
         "static": false,
-        "type_qualifiers": []
+        "type_qualifiers": [],
+        "attributes": []
     },
     {
         "class": "array",
         "declarator": {
             "class": "identifier",
-            "identifier": "another_array2"
+            "identifier": "another_array2",
+            "attributes": []
         },
         "type": "bounded",
         "length": {
@@ -89,35 +96,41 @@
         "type_qualifiers": [
             "volatile",
             "restrict"
-        ]
+        ],
+        "attributes": []
     },
     {
         "class": "array",
         "declarator": {
             "class": "identifier",
-            "identifier": "vla_array"
+            "identifier": "vla_array",
+            "attributes": []
         },
         "type": "vla_unspecified",
         "static": false,
-        "type_qualifiers": []
+        "type_qualifiers": [],
+        "attributes": []
     },
     {
         "class": "array",
         "declarator": {
             "class": "identifier",
-            "identifier": "vla_array2"
+            "identifier": "vla_array2",
+            "attributes": []
         },
         "type": "vla_unspecified",
         "static": false,
         "type_qualifiers": [
             "volatile"
-        ]
+        ],
+        "attributes": []
     },
     {
         "class": "array",
         "declarator": {
             "class": "identifier",
-            "identifier": "static_array"
+            "identifier": "static_array",
+            "attributes": []
         },
         "type": "bounded",
         "length": {
@@ -125,13 +138,15 @@
             "identifier": "LENGTH1"
         },
         "static": true,
-        "type_qualifiers": []
+        "type_qualifiers": [],
+        "attributes": []
     },
     {
         "class": "array",
         "declarator": {
             "class": "identifier",
-            "identifier": "static_array2"
+            "identifier": "static_array2",
+            "attributes": []
         },
         "type": "bounded",
         "length": {
@@ -142,6 +157,7 @@
         "type_qualifiers": [
             "const",
             "restrict"
-        ]
+        ],
+        "attributes": []
     }
 ]

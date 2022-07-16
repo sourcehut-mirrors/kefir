@@ -70,7 +70,8 @@
                         }
                     ],
                     "declarator": {
-                        "class": "abstract"
+                        "class": "abstract",
+                        "attributes": []
                     }
                 }
             }

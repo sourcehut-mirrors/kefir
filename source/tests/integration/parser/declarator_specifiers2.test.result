@@ -17,7 +17,8 @@
                         {
                             "declarator": {
                                 "class": "identifier",
-                                "identifier": "field1"
+                                "identifier": "field1",
+                                "attributes": []
                             },
                             "bitwidth": null
                         }
@@ -37,9 +38,11 @@
                                 "class": "pointer",
                                 "declarator": {
                                     "class": "identifier",
-                                    "identifier": "field2"
+                                    "identifier": "field2",
+                                    "attributes": []
                                 },
-                                "type_qualifiers": []
+                                "type_qualifiers": [],
+                                "attributes": []
                             },
                             "bitwidth": null
                         },
@@ -50,11 +53,14 @@
                                     "class": "pointer",
                                     "declarator": {
                                         "class": "identifier",
-                                        "identifier": "field3"
+                                        "identifier": "field3",
+                                        "attributes": []
                                     },
-                                    "type_qualifiers": []
+                                    "type_qualifiers": [],
+                                    "attributes": []
                                 },
-                                "type_qualifiers": []
+                                "type_qualifiers": [],
+                                "attributes": []
                             },
                             "bitwidth": null
                         }
@@ -88,7 +94,8 @@
                         {
                             "declarator": {
                                 "class": "identifier",
-                                "identifier": "field4"
+                                "identifier": "field4",
+                                "attributes": []
                             },
                             "bitwidth": {
                                 "class": "constant",
@@ -98,7 +105,8 @@
                         },
                         {
                             "declarator": {
-                                "class": "abstract"
+                                "class": "abstract",
+                                "attributes": []
                             },
                             "bitwidth": {
                                 "class": "constant",
@@ -109,7 +117,8 @@
                         {
                             "declarator": {
                                 "class": "identifier",
-                                "identifier": "field5"
+                                "identifier": "field5",
+                                "attributes": []
                             },
                             "bitwidth": {
                                 "class": "identifier",
@@ -132,7 +141,8 @@
                         {
                             "declarator": {
                                 "class": "identifier",
-                                "identifier": "field6"
+                                "identifier": "field6",
+                                "attributes": []
                             },
                             "bitwidth": null
                         }
@@ -158,7 +168,8 @@
                                         {
                                             "declarator": {
                                                 "class": "identifier",
-                                                "identifier": "nested1"
+                                                "identifier": "nested1",
+                                                "attributes": []
                                             },
                                             "bitwidth": null
                                         }
@@ -176,7 +187,8 @@
                                         {
                                             "declarator": {
                                                 "class": "identifier",
-                                                "identifier": "nested2"
+                                                "identifier": "nested2",
+                                                "attributes": []
                                             },
                                             "bitwidth": null
                                         }
@@ -226,7 +238,8 @@
                                                                 "class": "array",
                                                                 "declarator": {
                                                                     "class": "identifier",
-                                                                    "identifier": "something"
+                                                                    "identifier": "something",
+                                                                    "attributes": []
                                                                 },
                                                                 "type": "bounded",
                                                                 "length": {
@@ -235,14 +248,16 @@
                                                                     "value": 24
                                                                 },
                                                                 "static": false,
-                                                                "type_qualifiers": []
+                                                                "type_qualifiers": [],
+                                                                "attributes": []
                                                             },
                                                             "bitwidth": null
                                                         },
                                                         {
                                                             "declarator": {
                                                                 "class": "identifier",
-                                                                "identifier": "test"
+                                                                "identifier": "test",
+                                                                "attributes": []
                                                             },
                                                             "bitwidth": {
                                                                 "class": "constant",

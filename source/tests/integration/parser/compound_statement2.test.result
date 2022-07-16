@@ -37,7 +37,8 @@
                                 "class": "init_declarator",
                                 "declarator": {
                                     "class": "identifier",
-                                    "identifier": "T"
+                                    "identifier": "T",
+                                    "attributes": []
                                 },
                                 "initializer": null
                             }
@@ -63,9 +64,11 @@
                                     "class": "pointer",
                                     "declarator": {
                                         "class": "identifier",
-                                        "identifier": "a"
+                                        "identifier": "a",
+                                        "attributes": []
                                     },
-                                    "type_qualifiers": []
+                                    "type_qualifiers": [],
+                                    "attributes": []
                                 },
                                 "initializer": null
                             }
@@ -90,9 +93,11 @@
                                             "class": "pointer",
                                             "declarator": {
                                                 "class": "identifier",
-                                                "identifier": "a"
+                                                "identifier": "a",
+                                                "attributes": []
                                             },
-                                            "type_qualifiers": []
+                                            "type_qualifiers": [],
+                                            "attributes": []
                                         },
                                         "initializer": null
                                     }
@@ -111,7 +116,8 @@
                                         "class": "init_declarator",
                                         "declarator": {
                                             "class": "identifier",
-                                            "identifier": "T"
+                                            "identifier": "T",
+                                            "attributes": []
                                         },
                                         "initializer": null
                                     }
@@ -153,9 +159,11 @@
                                             "class": "pointer",
                                             "declarator": {
                                                 "class": "identifier",
-                                                "identifier": "a"
+                                                "identifier": "a",
+                                                "attributes": []
                                             },
-                                            "type_qualifiers": []
+                                            "type_qualifiers": [],
+                                            "attributes": []
                                         },
                                         "initializer": null
                                     }

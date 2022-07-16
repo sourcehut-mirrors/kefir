@@ -13,10 +13,12 @@
                 "class": "function",
                 "declarator": {
                     "class": "identifier",
-                    "identifier": "Fn1"
+                    "identifier": "Fn1",
+                    "attributes": []
                 },
                 "ellipsis": false,
-                "parameters": []
+                "parameters": [],
+                "attributes": []
             },
             "declarations": [],
             "body": {
@@ -45,11 +47,13 @@
                                     "class": "array",
                                     "declarator": {
                                         "class": "identifier",
-                                        "identifier": "__func__"
+                                        "identifier": "__func__",
+                                        "attributes": []
                                     },
                                     "type": "unbounded",
                                     "static": false,
-                                    "type_qualifiers": []
+                                    "type_qualifiers": [],
+                                    "attributes": []
                                 },
                                 "initializer": {
                                     "type": "expression",
@@ -90,7 +94,8 @@
                                 {
                                     "declarator": {
                                         "class": "identifier",
-                                        "identifier": "field1"
+                                        "identifier": "field1",
+                                        "attributes": []
                                     },
                                     "bitwidth": null
                                 }
@@ -108,7 +113,8 @@
                                 {
                                     "declarator": {
                                         "class": "identifier",
-                                        "identifier": "field2"
+                                        "identifier": "field2",
+                                        "attributes": []
                                     },
                                     "bitwidth": {
                                         "class": "constant",
@@ -148,7 +154,8 @@
                     "class": "init_declarator",
                     "declarator": {
                         "class": "identifier",
-                        "identifier": "structure1_t"
+                        "identifier": "structure1_t",
+                        "attributes": []
                     },
                     "initializer": null
                 }
@@ -172,7 +179,8 @@
                     "class": "function",
                     "declarator": {
                         "class": "identifier",
-                        "identifier": "Fn2"
+                        "identifier": "Fn2",
+                        "attributes": []
                     },
                     "ellipsis": false,
                     "parameters": [
@@ -189,7 +197,8 @@
                                     "class": "init_declarator",
                                     "declarator": {
                                         "class": "identifier",
-                                        "identifier": "x"
+                                        "identifier": "x",
+                                        "attributes": []
                                     },
                                     "initializer": null
                                 }
@@ -208,7 +217,8 @@
                                     "class": "init_declarator",
                                     "declarator": {
                                         "class": "identifier",
-                                        "identifier": "y"
+                                        "identifier": "y",
+                                        "attributes": []
                                     },
                                     "initializer": null
                                 }
@@ -229,19 +239,23 @@
                                         "class": "array",
                                         "declarator": {
                                             "class": "identifier",
-                                            "identifier": "z"
+                                            "identifier": "z",
+                                            "attributes": []
                                         },
                                         "type": "unbounded",
                                         "static": false,
-                                        "type_qualifiers": []
+                                        "type_qualifiers": [],
+                                        "attributes": []
                                     },
                                     "initializer": null
                                 }
                             ]
                         }
-                    ]
+                    ],
+                    "attributes": []
                 },
-                "type_qualifiers": []
+                "type_qualifiers": [],
+                "attributes": []
             },
             "declarations": [],
             "body": {
@@ -270,11 +284,13 @@
                                     "class": "array",
                                     "declarator": {
                                         "class": "identifier",
-                                        "identifier": "__func__"
+                                        "identifier": "__func__",
+                                        "attributes": []
                                     },
                                     "type": "unbounded",
                                     "static": false,
-                                    "type_qualifiers": []
+                                    "type_qualifiers": [],
+                                    "attributes": []
                                 },
                                 "initializer": {
                                     "type": "expression",
@@ -305,7 +321,8 @@
                                 "class": "init_declarator",
                                 "declarator": {
                                     "class": "identifier",
-                                    "identifier": "base"
+                                    "identifier": "base",
+                                    "attributes": []
                                 },
                                 "initializer": {
                                     "type": "expression",
@@ -320,7 +337,8 @@
                                                 }
                                             ],
                                             "declarator": {
-                                                "class": "abstract"
+                                                "class": "abstract",
+                                                "attributes": []
                                             }
                                         },
                                         "expression": {
@@ -385,9 +403,11 @@
                         "class": "pointer",
                         "declarator": {
                             "class": "identifier",
-                            "identifier": "Ptr1"
+                            "identifier": "Ptr1",
+                            "attributes": []
                         },
-                        "type_qualifiers": []
+                        "type_qualifiers": [],
+                        "attributes": []
                     },
                     "initializer": {
                         "type": "expression",
@@ -419,7 +439,8 @@
                         "class": "function",
                         "declarator": {
                             "class": "identifier",
-                            "identifier": "callback1"
+                            "identifier": "callback1",
+                            "attributes": []
                         },
                         "ellipsis": false,
                         "parameters": [
@@ -437,13 +458,15 @@
                                     {
                                         "class": "init_declarator",
                                         "declarator": {
-                                            "class": "abstract"
+                                            "class": "abstract",
+                                            "attributes": []
                                         },
                                         "initializer": null
                                     }
                                 ]
                             }
-                        ]
+                        ],
+                        "attributes": []
                     },
                     "initializer": null
                 }
@@ -464,7 +487,8 @@
                         "class": "function",
                         "declarator": {
                             "class": "identifier",
-                            "identifier": "SomeFn"
+                            "identifier": "SomeFn",
+                            "attributes": []
                         },
                         "ellipsis": false,
                         "parameters": [
@@ -480,7 +504,8 @@
                                 "class": "identifier",
                                 "identifier": "z"
                             }
-                        ]
+                        ],
+                        "attributes": []
                     },
                     "initializer": null
                 }
@@ -498,7 +523,8 @@
                 "class": "function",
                 "declarator": {
                     "class": "identifier",
-                    "identifier": "SomeFn"
+                    "identifier": "SomeFn",
+                    "attributes": []
                 },
                 "ellipsis": false,
                 "parameters": [
@@ -514,7 +540,8 @@
                         "class": "identifier",
                         "identifier": "z"
                     }
-                ]
+                ],
+                "attributes": []
             },
             "declarations": [
                 {
@@ -534,11 +561,14 @@
                                     "class": "pointer",
                                     "declarator": {
                                         "class": "identifier",
-                                        "identifier": "x"
+                                        "identifier": "x",
+                                        "attributes": []
                                     },
-                                    "type_qualifiers": []
+                                    "type_qualifiers": [],
+                                    "attributes": []
                                 },
-                                "type_qualifiers": []
+                                "type_qualifiers": [],
+                                "attributes": []
                             },
                             "initializer": null
                         }
@@ -557,7 +587,8 @@
                             "class": "init_declarator",
                             "declarator": {
                                 "class": "identifier",
-                                "identifier": "y"
+                                "identifier": "y",
+                                "attributes": []
                             },
                             "initializer": null
                         },
@@ -565,7 +596,8 @@
                             "class": "init_declarator",
                             "declarator": {
                                 "class": "identifier",
-                                "identifier": "z"
+                                "identifier": "z",
+                                "attributes": []
                             },
                             "initializer": null
                         }
@@ -598,11 +630,13 @@
                                     "class": "array",
                                     "declarator": {
                                         "class": "identifier",
-                                        "identifier": "__func__"
+                                        "identifier": "__func__",
+                                        "attributes": []
                                     },
                                     "type": "unbounded",
                                     "static": false,
-                                    "type_qualifiers": []
+                                    "type_qualifiers": [],
+                                    "attributes": []
                                 },
                                 "initializer": {
                                     "type": "expression",

@@ -14,7 +14,8 @@
                 }
             ],
             "declarator": {
-                "class": "abstract"
+                "class": "abstract",
+                "attributes": []
             }
         },
         "expression": {
@@ -40,9 +41,11 @@
             "declarator": {
                 "class": "pointer",
                 "declarator": {
-                    "class": "abstract"
+                    "class": "abstract",
+                    "attributes": []
                 },
-                "type_qualifiers": []
+                "type_qualifiers": [],
+                "attributes": []
             }
         },
         "expression": {

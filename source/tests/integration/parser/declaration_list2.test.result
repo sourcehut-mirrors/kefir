@@ -16,7 +16,8 @@
                         }
                     ],
                     "declarator": {
-                        "class": "abstract"
+                        "class": "abstract",
+                        "attributes": []
                     }
                 }
             },
@@ -52,11 +53,13 @@
                     "class": "array",
                     "declarator": {
                         "class": "identifier",
-                        "identifier": "integers"
+                        "identifier": "integers",
+                        "attributes": []
                     },
                     "type": "unbounded",
                     "static": false,
-                    "type_qualifiers": []
+                    "type_qualifiers": [],
+                    "attributes": []
                 },
                 "initializer": {
                     "type": "list",
@@ -122,7 +125,8 @@
                     "class": "array",
                     "declarator": {
                         "class": "identifier",
-                        "identifier": "buffer"
+                        "identifier": "buffer",
+                        "attributes": []
                     },
                     "type": "bounded",
                     "length": {
@@ -131,7 +135,8 @@
                         "value": 1024
                     },
                     "static": true,
-                    "type_qualifiers": []
+                    "type_qualifiers": [],
+                    "attributes": []
                 },
                 "initializer": {
                     "type": "list",
@@ -188,7 +193,8 @@
                             {
                                 "declarator": {
                                     "class": "identifier",
-                                    "identifier": "field1"
+                                    "identifier": "field1",
+                                    "attributes": []
                                 },
                                 "bitwidth": null
                             }
@@ -206,7 +212,8 @@
                             {
                                 "declarator": {
                                     "class": "identifier",
-                                    "identifier": "field2"
+                                    "identifier": "field2",
+                                    "attributes": []
                                 },
                                 "bitwidth": null
                             }
@@ -226,9 +233,11 @@
                                     "class": "pointer",
                                     "declarator": {
                                         "class": "identifier",
-                                        "identifier": "field3"
+                                        "identifier": "field3",
+                                        "attributes": []
                                     },
-                                    "type_qualifiers": []
+                                    "type_qualifiers": [],
+                                    "attributes": []
                                 },
                                 "bitwidth": null
                             }
@@ -242,7 +251,8 @@
                 "class": "init_declarator",
                 "declarator": {
                     "class": "identifier",
-                    "identifier": "something"
+                    "identifier": "something",
+                    "attributes": []
                 },
                 "initializer": {
                     "type": "list",

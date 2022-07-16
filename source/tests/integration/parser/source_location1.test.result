@@ -29,6 +29,7 @@
                     "declarator": {
                         "class": "identifier",
                         "identifier": "X",
+                        "attributes": [],
                         "source_location": {
                             "source": "<stdin>",
                             "line": 1,
@@ -84,6 +85,7 @@
                 "declarator": {
                     "class": "identifier",
                     "identifier": "fn",
+                    "attributes": [],
                     "source_location": {
                         "source": "<stdin>",
                         "line": 3,
@@ -111,6 +113,7 @@
                                 "declarator": {
                                     "class": "identifier",
                                     "identifier": "x",
+                                    "attributes": [],
                                     "source_location": {
                                         "source": "<stdin>",
                                         "line": 3,
@@ -132,6 +135,7 @@
                         }
                     }
                 ],
+                "attributes": [],
                 "source_location": {
                     "source": "<stdin>",
                     "line": 3,
@@ -169,11 +173,13 @@
                                     "declarator": {
                                         "class": "identifier",
                                         "identifier": "__func__",
+                                        "attributes": [],
                                         "source_location": null
                                     },
                                     "type": "unbounded",
                                     "static": false,
                                     "type_qualifiers": [],
+                                    "attributes": [],
                                     "source_location": null
                                 },
                                 "initializer": {
@@ -226,6 +232,7 @@
                                     ],
                                     "declarator": {
                                         "class": "abstract",
+                                        "attributes": [],
                                         "source_location": {
                                             "source": "<stdin>",
                                             "line": 4,
@@ -304,6 +311,7 @@
                                     "declarator": {
                                         "class": "identifier",
                                         "identifier": "a",
+                                        "attributes": [],
                                         "source_location": {
                                             "source": "<stdin>",
                                             "line": 7,
@@ -332,6 +340,7 @@
                                     "declarator": {
                                         "class": "identifier",
                                         "identifier": "x",
+                                        "attributes": [],
                                         "source_location": {
                                             "source": "<stdin>",
                                             "line": 8,
@@ -365,6 +374,7 @@
                     "declarator": {
                         "class": "identifier",
                         "identifier": "X_t",
+                        "attributes": [],
                         "source_location": {
                             "source": "<stdin>",
                             "line": 9,

@@ -95,7 +95,8 @@
                             "class": "init_declarator",
                             "declarator": {
                                 "class": "identifier",
-                                "identifier": "f"
+                                "identifier": "f",
+                                "attributes": []
                             },
                             "initializer": null
                         }

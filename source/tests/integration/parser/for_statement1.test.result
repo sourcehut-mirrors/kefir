@@ -63,7 +63,8 @@
                     "class": "init_declarator",
                     "declarator": {
                         "class": "identifier",
-                        "identifier": "i"
+                        "identifier": "i",
+                        "attributes": []
                     },
                     "initializer": {
                         "type": "expression",
@@ -120,7 +121,8 @@
                     "class": "init_declarator",
                     "declarator": {
                         "class": "identifier",
-                        "identifier": "i"
+                        "identifier": "i",
+                        "attributes": []
                     },
                     "initializer": {
                         "type": "expression",

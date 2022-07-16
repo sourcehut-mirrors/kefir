@@ -4,19 +4,23 @@
         "declarator": {
             "class": "function",
             "declarator": {
-                "class": "abstract"
+                "class": "abstract",
+                "attributes": []
             },
             "ellipsis": false,
-            "parameters": []
+            "parameters": [],
+            "attributes": []
         },
-        "type_qualifiers": []
+        "type_qualifiers": [],
+        "attributes": []
     },
     {
         "class": "pointer",
         "declarator": {
             "class": "function",
             "declarator": {
-                "class": "abstract"
+                "class": "abstract",
+                "attributes": []
             },
             "ellipsis": false,
             "parameters": [
@@ -32,7 +36,8 @@
                         {
                             "class": "init_declarator",
                             "declarator": {
-                                "class": "abstract"
+                                "class": "abstract",
+                                "attributes": []
                             },
                             "initializer": null
                         }
@@ -52,7 +57,8 @@
                             "declarator": {
                                 "class": "function",
                                 "declarator": {
-                                    "class": "abstract"
+                                    "class": "abstract",
+                                    "attributes": []
                                 },
                                 "ellipsis": true,
                                 "parameters": [
@@ -68,13 +74,15 @@
                                             {
                                                 "class": "init_declarator",
                                                 "declarator": {
-                                                    "class": "abstract"
+                                                    "class": "abstract",
+                                                    "attributes": []
                                                 },
                                                 "initializer": null
                                             }
                                         ]
                                     }
-                                ]
+                                ],
+                                "attributes": []
                             },
                             "initializer": null
                         }
@@ -95,7 +103,8 @@
                                 "class": "function",
                                 "declarator": {
                                     "class": "identifier",
-                                    "identifier": "fn1"
+                                    "identifier": "fn1",
+                                    "attributes": []
                                 },
                                 "ellipsis": false,
                                 "parameters": [
@@ -103,15 +112,18 @@
                                         "class": "identifier",
                                         "identifier": "X"
                                     }
-                                ]
+                                ],
+                                "attributes": []
                             },
                             "initializer": null
                         }
                     ]
                 }
-            ]
+            ],
+            "attributes": []
         },
-        "type_qualifiers": []
+        "type_qualifiers": [],
+        "attributes": []
     },
     {
         "class": "function",
@@ -120,15 +132,19 @@
             "declarator": {
                 "class": "array",
                 "declarator": {
-                    "class": "abstract"
+                    "class": "abstract",
+                    "attributes": []
                 },
                 "type": "unbounded",
                 "static": false,
-                "type_qualifiers": []
+                "type_qualifiers": [],
+                "attributes": []
             },
-            "type_qualifiers": []
+            "type_qualifiers": [],
+            "attributes": []
         },
         "ellipsis": false,
-        "parameters": []
+        "parameters": [],
+        "attributes": []
     }
 ]

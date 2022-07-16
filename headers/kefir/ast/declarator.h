@@ -22,6 +22,7 @@
 #define KEFIR_AST_DECLARATOR_H_
 
 #include "kefir/ast/declarator_specifier.h"
+#include "kefir/ast/attributes.h"
 #include "kefir/core/source_location.h"
 
 typedef struct kefir_ast_declarator kefir_ast_declarator_t;  // Forward declaration
@@ -60,6 +61,7 @@ typedef struct kefir_ast_declarator {
         struct kefir_ast_declarator_function function;
     };
 
+    struct kefir_ast_node_attributes attributes;
     struct kefir_source_location source_location;
 } kefir_ast_declarator_t;
 

@@ -3,7 +3,8 @@
         "class": "function",
         "declarator": {
             "class": "identifier",
-            "identifier": "fn1"
+            "identifier": "fn1",
+            "attributes": []
         },
         "ellipsis": false,
         "parameters": [
@@ -19,19 +20,22 @@
                     {
                         "class": "init_declarator",
                         "declarator": {
-                            "class": "abstract"
+                            "class": "abstract",
+                            "attributes": []
                         },
                         "initializer": null
                     }
                 ]
             }
-        ]
+        ],
+        "attributes": []
     },
     {
         "class": "function",
         "declarator": {
             "class": "identifier",
-            "identifier": "fn2"
+            "identifier": "fn2",
+            "attributes": []
         },
         "ellipsis": false,
         "parameters": [
@@ -51,13 +55,16 @@
                             "declarator": {
                                 "class": "array",
                                 "declarator": {
-                                    "class": "abstract"
+                                    "class": "abstract",
+                                    "attributes": []
                                 },
                                 "type": "unbounded",
                                 "static": false,
-                                "type_qualifiers": []
+                                "type_qualifiers": [],
+                                "attributes": []
                             },
-                            "type_qualifiers": []
+                            "type_qualifiers": [],
+                            "attributes": []
                         },
                         "initializer": null
                     }
@@ -87,11 +94,14 @@
                             "declarator": {
                                 "class": "pointer",
                                 "declarator": {
-                                    "class": "abstract"
+                                    "class": "abstract",
+                                    "attributes": []
                                 },
-                                "type_qualifiers": []
+                                "type_qualifiers": [],
+                                "attributes": []
                             },
-                            "type_qualifiers": []
+                            "type_qualifiers": [],
+                            "attributes": []
                         },
                         "initializer": null
                     }
@@ -116,23 +126,27 @@
                             "class": "array",
                             "declarator": {
                                 "class": "identifier",
-                                "identifier": "param3"
+                                "identifier": "param3",
+                                "attributes": []
                             },
                             "type": "vla_unspecified",
                             "static": false,
-                            "type_qualifiers": []
+                            "type_qualifiers": [],
+                            "attributes": []
                         },
                         "initializer": null
                     }
                 ]
             }
-        ]
+        ],
+        "attributes": []
     },
     {
         "class": "function",
         "declarator": {
             "class": "identifier",
-            "identifier": "fn3"
+            "identifier": "fn3",
+            "attributes": []
         },
         "ellipsis": true,
         "parameters": [
@@ -153,9 +167,11 @@
                                 "class": "pointer",
                                 "declarator": {
                                     "class": "identifier",
-                                    "identifier": "callback"
+                                    "identifier": "callback",
+                                    "attributes": []
                                 },
-                                "type_qualifiers": []
+                                "type_qualifiers": [],
+                                "attributes": []
                             },
                             "ellipsis": false,
                             "parameters": [
@@ -172,7 +188,8 @@
                                             "class": "init_declarator",
                                             "declarator": {
                                                 "class": "identifier",
-                                                "identifier": "param1"
+                                                "identifier": "param1",
+                                                "attributes": []
                                             },
                                             "initializer": null
                                         }
@@ -192,15 +209,18 @@
                                             "declarator": {
                                                 "class": "pointer",
                                                 "declarator": {
-                                                    "class": "abstract"
+                                                    "class": "abstract",
+                                                    "attributes": []
                                                 },
-                                                "type_qualifiers": []
+                                                "type_qualifiers": [],
+                                                "attributes": []
                                             },
                                             "initializer": null
                                         }
                                     ]
                                 }
-                            ]
+                            ],
+                            "attributes": []
                         },
                         "initializer": null
                     }
@@ -227,7 +247,8 @@
                                         "class": "array",
                                         "declarator": {
                                             "class": "identifier",
-                                            "identifier": "callback2"
+                                            "identifier": "callback2",
+                                            "attributes": []
                                         },
                                         "type": "bounded",
                                         "length": {
@@ -235,9 +256,11 @@
                                             "identifier": "X"
                                         },
                                         "static": true,
-                                        "type_qualifiers": []
+                                        "type_qualifiers": [],
+                                        "attributes": []
                                     },
-                                    "type_qualifiers": []
+                                    "type_qualifiers": [],
+                                    "attributes": []
                                 },
                                 "ellipsis": true,
                                 "parameters": [
@@ -255,22 +278,27 @@
                                                 "declarator": {
                                                     "class": "pointer",
                                                     "declarator": {
-                                                        "class": "abstract"
+                                                        "class": "abstract",
+                                                        "attributes": []
                                                     },
-                                                    "type_qualifiers": []
+                                                    "type_qualifiers": [],
+                                                    "attributes": []
                                                 },
                                                 "initializer": null
                                             }
                                         ]
                                     }
-                                ]
+                                ],
+                                "attributes": []
                             },
-                            "type_qualifiers": []
+                            "type_qualifiers": [],
+                            "attributes": []
                         },
                         "initializer": null
                     }
                 ]
             }
-        ]
+        ],
+        "attributes": []
     }
 ]

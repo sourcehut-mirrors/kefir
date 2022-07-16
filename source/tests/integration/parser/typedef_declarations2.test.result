@@ -14,7 +14,8 @@
                     "class": "function",
                     "declarator": {
                         "class": "identifier",
-                        "identifier": "fn1"
+                        "identifier": "fn1",
+                        "attributes": []
                     },
                     "ellipsis": false,
                     "parameters": [
@@ -22,7 +23,8 @@
                             "class": "identifier",
                             "identifier": "a"
                         }
-                    ]
+                    ],
+                    "attributes": []
                 },
                 "initializer": null
             }
@@ -43,7 +45,8 @@
                     "class": "function",
                     "declarator": {
                         "class": "identifier",
-                        "identifier": "fn2"
+                        "identifier": "fn2",
+                        "attributes": []
                     },
                     "ellipsis": false,
                     "parameters": [
@@ -51,7 +54,8 @@
                             "class": "identifier",
                             "identifier": "b"
                         }
-                    ]
+                    ],
+                    "attributes": []
                 },
                 "initializer": null
             }
@@ -74,7 +78,8 @@
                 "class": "init_declarator",
                 "declarator": {
                     "class": "identifier",
-                    "identifier": "a"
+                    "identifier": "a",
+                    "attributes": []
                 },
                 "initializer": null
             }
@@ -95,7 +100,8 @@
                     "class": "function",
                     "declarator": {
                         "class": "identifier",
-                        "identifier": "fn1"
+                        "identifier": "fn1",
+                        "attributes": []
                     },
                     "ellipsis": false,
                     "parameters": [
@@ -112,13 +118,15 @@
                                 {
                                     "class": "init_declarator",
                                     "declarator": {
-                                        "class": "abstract"
+                                        "class": "abstract",
+                                        "attributes": []
                                     },
                                     "initializer": null
                                 }
                             ]
                         }
-                    ]
+                    ],
+                    "attributes": []
                 },
                 "initializer": null
             }
@@ -139,7 +147,8 @@
                     "class": "function",
                     "declarator": {
                         "class": "identifier",
-                        "identifier": "fn2"
+                        "identifier": "fn2",
+                        "attributes": []
                     },
                     "ellipsis": false,
                     "parameters": [
@@ -147,7 +156,8 @@
                             "class": "identifier",
                             "identifier": "b"
                         }
-                    ]
+                    ],
+                    "attributes": []
                 },
                 "initializer": null
             }
@@ -170,7 +180,8 @@
                 "class": "init_declarator",
                 "declarator": {
                     "class": "identifier",
-                    "identifier": "b"
+                    "identifier": "b",
+                    "attributes": []
                 },
                 "initializer": null
             }
@@ -191,7 +202,8 @@
                     "class": "function",
                     "declarator": {
                         "class": "identifier",
-                        "identifier": "fn1"
+                        "identifier": "fn1",
+                        "attributes": []
                     },
                     "ellipsis": false,
                     "parameters": [
@@ -208,13 +220,15 @@
                                 {
                                     "class": "init_declarator",
                                     "declarator": {
-                                        "class": "abstract"
+                                        "class": "abstract",
+                                        "attributes": []
                                     },
                                     "initializer": null
                                 }
                             ]
                         }
-                    ]
+                    ],
+                    "attributes": []
                 },
                 "initializer": null
             }
@@ -235,7 +249,8 @@
                     "class": "function",
                     "declarator": {
                         "class": "identifier",
-                        "identifier": "fn2"
+                        "identifier": "fn2",
+                        "attributes": []
                     },
                     "ellipsis": false,
                     "parameters": [
@@ -252,13 +267,15 @@
                                 {
                                     "class": "init_declarator",
                                     "declarator": {
-                                        "class": "abstract"
+                                        "class": "abstract",
+                                        "attributes": []
                                     },
                                     "initializer": null
                                 }
                             ]
                         }
-                    ]
+                    ],
+                    "attributes": []
                 },
                 "initializer": null
             }

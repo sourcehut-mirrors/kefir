@@ -4,20 +4,24 @@
         "declarator": {
             "class": "array",
             "declarator": {
-                "class": "abstract"
+                "class": "abstract",
+                "attributes": []
             },
             "type": "unbounded",
             "static": false,
-            "type_qualifiers": []
+            "type_qualifiers": [],
+            "attributes": []
         },
-        "type_qualifiers": []
+        "type_qualifiers": [],
+        "attributes": []
     },
     {
         "class": "array",
         "declarator": {
             "class": "array",
             "declarator": {
-                "class": "abstract"
+                "class": "abstract",
+                "attributes": []
             },
             "type": "bounded",
             "length": {
@@ -26,7 +30,8 @@
                 "value": 10
             },
             "static": false,
-            "type_qualifiers": []
+            "type_qualifiers": [],
+            "attributes": []
         },
         "type": "bounded",
         "length": {
@@ -34,7 +39,8 @@
             "identifier": "X"
         },
         "static": false,
-        "type_qualifiers": []
+        "type_qualifiers": [],
+        "attributes": []
     },
     {
         "class": "array",
@@ -45,13 +51,16 @@
                 "declarator": {
                     "class": "pointer",
                     "declarator": {
-                        "class": "abstract"
+                        "class": "abstract",
+                        "attributes": []
                     },
-                    "type_qualifiers": []
+                    "type_qualifiers": [],
+                    "attributes": []
                 },
                 "type_qualifiers": [
                     "const"
-                ]
+                ],
+                "attributes": []
             },
             "type": "bounded",
             "length": {
@@ -62,7 +71,8 @@
             "static": true,
             "type_qualifiers": [
                 "volatile"
-            ]
+            ],
+            "attributes": []
         },
         "type": "bounded",
         "length": {
@@ -70,7 +80,8 @@
             "identifier": "X"
         },
         "static": false,
-        "type_qualifiers": []
+        "type_qualifiers": [],
+        "attributes": []
     },
     {
         "class": "pointer",
@@ -79,17 +90,21 @@
             "declarator": {
                 "class": "pointer",
                 "declarator": {
-                    "class": "abstract"
+                    "class": "abstract",
+                    "attributes": []
                 },
                 "type_qualifiers": [
                     "volatile",
                     "restrict"
-                ]
+                ],
+                "attributes": []
             },
-            "type_qualifiers": []
+            "type_qualifiers": [],
+            "attributes": []
         },
         "type_qualifiers": [
             "const"
-        ]
+        ],
+        "attributes": []
     }
 ]

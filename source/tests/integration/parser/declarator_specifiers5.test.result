@@ -28,7 +28,8 @@
                         {
                             "declarator": {
                                 "class": "identifier",
-                                "identifier": "type"
+                                "identifier": "type",
+                                "attributes": []
                             },
                             "bitwidth": null
                         }
@@ -54,7 +55,8 @@
                                         {
                                             "declarator": {
                                                 "class": "identifier",
-                                                "identifier": "integer"
+                                                "identifier": "integer",
+                                                "attributes": []
                                             },
                                             "bitwidth": null
                                         }
@@ -72,7 +74,8 @@
                                         {
                                             "declarator": {
                                                 "class": "identifier",
-                                                "identifier": "floatingPoint"
+                                                "identifier": "floatingPoint",
+                                                "attributes": []
                                             },
                                             "bitwidth": null
                                         }
@@ -97,9 +100,11 @@
                                 "class": "pointer",
                                 "declarator": {
                                     "class": "identifier",
-                                    "identifier": "payload"
+                                    "identifier": "payload",
+                                    "attributes": []
                                 },
-                                "type_qualifiers": []
+                                "type_qualifiers": [],
+                                "attributes": []
                             },
                             "bitwidth": null
                         }

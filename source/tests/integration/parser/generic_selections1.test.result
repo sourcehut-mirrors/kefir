@@ -16,7 +16,8 @@
                         }
                     ],
                     "declarator": {
-                        "class": "abstract"
+                        "class": "abstract",
+                        "attributes": []
                     }
                 },
                 "expression": {
@@ -41,11 +42,13 @@
                     "declarator": {
                         "class": "array",
                         "declarator": {
-                            "class": "abstract"
+                            "class": "abstract",
+                            "attributes": []
                         },
                         "type": "unbounded",
                         "static": false,
-                        "type_qualifiers": []
+                        "type_qualifiers": [],
+                        "attributes": []
                     }
                 },
                 "expression": {
@@ -66,11 +69,13 @@
                     "declarator": {
                         "class": "pointer",
                         "declarator": {
-                            "class": "abstract"
+                            "class": "abstract",
+                            "attributes": []
                         },
                         "type_qualifiers": [
                             "volatile"
-                        ]
+                        ],
+                        "attributes": []
                     }
                 },
                 "expression": {
@@ -91,7 +96,8 @@
                     "declarator": {
                         "class": "function",
                         "declarator": {
-                            "class": "abstract"
+                            "class": "abstract",
+                            "attributes": []
                         },
                         "ellipsis": false,
                         "parameters": [
@@ -107,7 +113,8 @@
                                     {
                                         "class": "init_declarator",
                                         "declarator": {
-                                            "class": "abstract"
+                                            "class": "abstract",
+                                            "attributes": []
                                         },
                                         "initializer": null
                                     }
@@ -125,13 +132,15 @@
                                     {
                                         "class": "init_declarator",
                                         "declarator": {
-                                            "class": "abstract"
+                                            "class": "abstract",
+                                            "attributes": []
                                         },
                                         "initializer": null
                                     }
                                 ]
                             }
-                        ]
+                        ],
+                        "attributes": []
                     }
                 },
                 "expression": {
@@ -191,7 +200,8 @@
                         }
                     ],
                     "declarator": {
-                        "class": "abstract"
+                        "class": "abstract",
+                        "attributes": []
                     }
                 },
                 "expression": {
@@ -231,7 +241,8 @@
                         }
                     ],
                     "declarator": {
-                        "class": "abstract"
+                        "class": "abstract",
+                        "attributes": []
                     }
                 },
                 "expression": {
@@ -257,7 +268,8 @@
                         }
                     ],
                     "declarator": {
-                        "class": "abstract"
+                        "class": "abstract",
+                        "attributes": []
                     }
                 },
                 "expression": {
@@ -284,7 +296,8 @@
                             }
                         ],
                         "declarator": {
-                            "class": "abstract"
+                            "class": "abstract",
+                            "attributes": []
                         }
                     }
                 }

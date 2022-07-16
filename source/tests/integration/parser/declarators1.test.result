@@ -1,15 +1,18 @@
 [
     {
         "class": "identifier",
-        "identifier": "some_variable_name"
+        "identifier": "some_variable_name",
+        "attributes": []
     },
     {
         "class": "pointer",
         "declarator": {
             "class": "identifier",
-            "identifier": "some_other_variable_name"
+            "identifier": "some_other_variable_name",
+            "attributes": []
         },
-        "type_qualifiers": []
+        "type_qualifiers": [],
+        "attributes": []
     },
     {
         "class": "pointer",
@@ -17,17 +20,21 @@
             "class": "pointer",
             "declarator": {
                 "class": "identifier",
-                "identifier": "yet_another_variable_name"
+                "identifier": "yet_another_variable_name",
+                "attributes": []
             },
-            "type_qualifiers": []
+            "type_qualifiers": [],
+            "attributes": []
         },
         "type_qualifiers": [
             "const"
-        ]
+        ],
+        "attributes": []
     },
     {
         "class": "identifier",
-        "identifier": "brand_new_variable_name"
+        "identifier": "brand_new_variable_name",
+        "attributes": []
     },
     {
         "class": "pointer",
@@ -37,17 +44,21 @@
                 "class": "pointer",
                 "declarator": {
                     "class": "identifier",
-                    "identifier": "not_a_variable_name"
+                    "identifier": "not_a_variable_name",
+                    "attributes": []
                 },
                 "type_qualifiers": [
                     "volatile",
                     "restrict"
-                ]
+                ],
+                "attributes": []
             },
-            "type_qualifiers": []
+            "type_qualifiers": [],
+            "attributes": []
         },
         "type_qualifiers": [
             "const"
-        ]
+        ],
+        "attributes": []
     }
 ]

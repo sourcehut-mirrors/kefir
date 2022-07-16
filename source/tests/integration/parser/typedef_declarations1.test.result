@@ -40,7 +40,8 @@
                 "class": "init_declarator",
                 "declarator": {
                     "class": "identifier",
-                    "identifier": "A"
+                    "identifier": "A",
+                    "attributes": []
                 },
                 "initializer": null
             }
@@ -62,9 +63,11 @@
                     "class": "pointer",
                     "declarator": {
                         "class": "identifier",
-                        "identifier": "a"
+                        "identifier": "a",
+                        "attributes": []
                     },
-                    "type_qualifiers": []
+                    "type_qualifiers": [],
+                    "attributes": []
                 },
                 "initializer": null
             }
@@ -99,7 +102,8 @@
                 "class": "init_declarator",
                 "declarator": {
                     "class": "identifier",
-                    "identifier": "B"
+                    "identifier": "B",
+                    "attributes": []
                 },
                 "initializer": null
             }
@@ -121,9 +125,11 @@
                     "class": "pointer",
                     "declarator": {
                         "class": "identifier",
-                        "identifier": "a"
+                        "identifier": "a",
+                        "attributes": []
                     },
-                    "type_qualifiers": []
+                    "type_qualifiers": [],
+                    "attributes": []
                 },
                 "initializer": null
             }
@@ -145,9 +151,11 @@
                     "class": "pointer",
                     "declarator": {
                         "class": "identifier",
-                        "identifier": "b"
+                        "identifier": "b",
+                        "attributes": []
                     },
-                    "type_qualifiers": []
+                    "type_qualifiers": [],
+                    "attributes": []
                 },
                 "initializer": null
             }

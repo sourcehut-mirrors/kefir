@@ -19,7 +19,8 @@
                         "class": "init_declarator",
                         "declarator": {
                             "class": "identifier",
-                            "identifier": "i"
+                            "identifier": "i",
+                            "attributes": []
                         },
                         "initializer": {
                             "type": "expression",
@@ -130,7 +131,8 @@
                                 "class": "init_declarator",
                                 "declarator": {
                                     "class": "identifier",
-                                    "identifier": "T"
+                                    "identifier": "T",
+                                    "attributes": []
                                 },
                                 "initializer": null
                             }
@@ -152,9 +154,11 @@
                                     "class": "pointer",
                                     "declarator": {
                                         "class": "identifier",
-                                        "identifier": "x"
+                                        "identifier": "x",
+                                        "attributes": []
                                     },
-                                    "type_qualifiers": []
+                                    "type_qualifiers": [],
+                                    "attributes": []
                                 },
                                 "initializer": null
                             }

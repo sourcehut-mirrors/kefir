@@ -1,0 +1,68 @@
+[
+    {
+        "class": "pointer",
+        "declarator": {
+            "class": "function",
+            "declarator": {
+                "class": "abstract",
+                "attributes": []
+            },
+            "ellipsis": false,
+            "parameters": [],
+            "attributes": []
+        },
+        "type_qualifiers": [],
+        "attributes": [
+            {
+                "class": "attribute_list",
+                "attributes": [
+                    {
+                        "name": "fn1_attr1",
+                        "parameters": [
+                            {
+                                "class": "identifier",
+                                "identifier": "param1"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "class": "attribute_list",
+                "attributes": [
+                    {
+                        "name": "fn1_attr2",
+                        "parameters": [
+                            {
+                                "class": "identifier",
+                                "identifier": "param2"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "something_else",
+                        "parameters": []
+                    }
+                ]
+            },
+            {
+                "class": "attribute_list",
+                "attributes": [
+                    {
+                        "name": "fn1_attr3",
+                        "parameters": [
+                            {
+                                "class": "identifier",
+                                "identifier": "param3"
+                            },
+                            {
+                                "class": "identifier",
+                                "identifier": "param4"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+]

@@ -436,12 +436,18 @@ kefir_result_t kefir_parser_scan_declarator(struct kefir_mem *mem, struct kefir_
     REQUIRE(parser != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid parser"));
     REQUIRE(declarator_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to declarator"));
 
+    *declarator_ptr = NULL;
+
     kefir_size_t checkpoint;
     kefir_result_t res = KEFIR_OK;
     REQUIRE_OK(kefir_parser_token_cursor_save(parser->cursor, &checkpoint));
 
-    SKIP_ATTRIBUTES(&res, mem, parser);
+    struct kefir_ast_node_attributes forward_attrs;
+    REQUIRE_OK(kefir_ast_node_attributes_init(&forward_attrs));
+
+    SCAN_ATTRIBUTES(&res, mem, parser, &forward_attrs);
     REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_ast_node_attributes_free(mem, &forward_attrs);
         kefir_parser_token_cursor_restore(parser->cursor, checkpoint);
         return res;
     });
@@ -453,10 +459,19 @@ kefir_result_t kefir_parser_scan_declarator(struct kefir_mem *mem, struct kefir_
     }
 
     if (res == KEFIR_NO_MATCH) {
+        REQUIRE_OK(kefir_ast_node_attributes_free(mem, &forward_attrs));
         REQUIRE_OK(kefir_parser_token_cursor_restore(parser->cursor, checkpoint));
     } else {
-        REQUIRE_OK(res);
-        SKIP_ATTRIBUTES(&res, mem, parser);
+        REQUIRE_CHAIN(&res, kefir_ast_node_attributes_move(&(*declarator_ptr)->attributes, &forward_attrs));
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            if (*declarator_ptr != NULL) {
+                kefir_ast_declarator_free(mem, *declarator_ptr);
+                *declarator_ptr = NULL;
+            }
+            kefir_ast_node_attributes_free(mem, &forward_attrs);
+            return res;
+        });
+        SCAN_ATTRIBUTES(&res, mem, parser, &(*declarator_ptr)->attributes);
         REQUIRE_OK(res);
     }
     return res;
@@ -535,12 +550,18 @@ kefir_result_t kefir_parser_scan_abstract_declarator(struct kefir_mem *mem, stru
     REQUIRE(parser != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid parser"));
     REQUIRE(declarator_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to declarator"));
 
+    *declarator_ptr = NULL;
+
     kefir_size_t checkpoint;
     kefir_result_t res = KEFIR_OK;
     REQUIRE_OK(kefir_parser_token_cursor_save(parser->cursor, &checkpoint));
 
-    SKIP_ATTRIBUTES(&res, mem, parser);
+    struct kefir_ast_node_attributes forward_attrs;
+    REQUIRE_OK(kefir_ast_node_attributes_init(&forward_attrs));
+
+    SCAN_ATTRIBUTES(&res, mem, parser, &forward_attrs);
     REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_ast_node_attributes_free(mem, &forward_attrs);
         kefir_parser_token_cursor_restore(parser->cursor, checkpoint);
         return res;
     });
@@ -554,8 +575,16 @@ kefir_result_t kefir_parser_scan_abstract_declarator(struct kefir_mem *mem, stru
     if (res == KEFIR_NO_MATCH) {
         REQUIRE_OK(kefir_parser_token_cursor_restore(parser->cursor, checkpoint));
     } else {
-        REQUIRE_OK(res);
-        SKIP_ATTRIBUTES(&res, mem, parser);
+        REQUIRE_CHAIN(&res, kefir_ast_node_attributes_move(&(*declarator_ptr)->attributes, &forward_attrs));
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            if (*declarator_ptr != NULL) {
+                kefir_ast_declarator_free(mem, *declarator_ptr);
+                *declarator_ptr = NULL;
+            }
+            kefir_ast_node_attributes_free(mem, &forward_attrs);
+            return res;
+        });
+        SCAN_ATTRIBUTES(&res, mem, parser, &(*declarator_ptr)->attributes);
         REQUIRE_OK(res);
     }
 

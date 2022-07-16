@@ -17,7 +17,8 @@
                         {
                             "declarator": {
                                 "class": "identifier",
-                                "identifier": "field1"
+                                "identifier": "field1",
+                                "attributes": []
                             },
                             "bitwidth": null
                         }
@@ -59,7 +60,8 @@
                         {
                             "declarator": {
                                 "class": "identifier",
-                                "identifier": "field2"
+                                "identifier": "field2",
+                                "attributes": []
                             },
                             "bitwidth": null
                         }
@@ -87,11 +89,13 @@
                                                 "class": "pointer",
                                                 "declarator": {
                                                     "class": "identifier",
-                                                    "identifier": "field3"
+                                                    "identifier": "field3",
+                                                    "attributes": []
                                                 },
                                                 "type_qualifiers": [
                                                     "volatile"
-                                                ]
+                                                ],
+                                                "attributes": []
                                             },
                                             "bitwidth": null
                                         }

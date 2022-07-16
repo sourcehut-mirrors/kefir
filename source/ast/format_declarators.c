@@ -126,6 +126,15 @@ kefir_result_t kefir_ast_format_declarator(struct kefir_json_output *json,
         } break;
     }
 
+    REQUIRE_OK(kefir_json_output_object_key(json, "attributes"));
+    REQUIRE_OK(kefir_json_output_array_begin(json));
+    for (const struct kefir_list_entry *iter = kefir_list_head(&declarator->attributes.attributes); iter != NULL;
+         kefir_list_next(&iter)) {
+        ASSIGN_DECL_CAST(struct kefir_ast_attribute_list *, attr_list, iter->value);
+        REQUIRE_OK(kefir_ast_format(json, KEFIR_AST_NODE_BASE(attr_list), display_source_location));
+    }
+    REQUIRE_OK(kefir_json_output_array_end(json));
+
     if (display_source_location) {
         REQUIRE_OK(kefir_json_output_object_key(json, "source_location"));
         if (kefir_source_location_get(&declarator->source_location, NULL, NULL, NULL)) {

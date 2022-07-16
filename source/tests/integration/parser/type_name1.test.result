@@ -8,7 +8,8 @@
             }
         ],
         "declarator": {
-            "class": "abstract"
+            "class": "abstract",
+            "attributes": []
         }
     },
     {
@@ -34,11 +35,13 @@
         "declarator": {
             "class": "pointer",
             "declarator": {
-                "class": "abstract"
+                "class": "abstract",
+                "attributes": []
             },
             "type_qualifiers": [
                 "volatile"
-            ]
+            ],
+            "attributes": []
         }
     },
     {
@@ -56,7 +59,8 @@
                 "declarator": {
                     "class": "array",
                     "declarator": {
-                        "class": "abstract"
+                        "class": "abstract",
+                        "attributes": []
                     },
                     "type": "bounded",
                     "length": {
@@ -67,11 +71,14 @@
                     "static": true,
                     "type_qualifiers": [
                         "restrict"
-                    ]
+                    ],
+                    "attributes": []
                 },
-                "type_qualifiers": []
+                "type_qualifiers": [],
+                "attributes": []
             },
-            "type_qualifiers": []
+            "type_qualifiers": [],
+            "attributes": []
         }
     },
     {
@@ -94,7 +101,8 @@
                             {
                                 "declarator": {
                                     "class": "identifier",
-                                    "identifier": "X"
+                                    "identifier": "X",
+                                    "attributes": []
                                 },
                                 "bitwidth": null
                             }
@@ -106,11 +114,13 @@
         "declarator": {
             "class": "array",
             "declarator": {
-                "class": "abstract"
+                "class": "abstract",
+                "attributes": []
             },
             "type": "unbounded",
             "static": false,
-            "type_qualifiers": []
+            "type_qualifiers": [],
+            "attributes": []
         }
     },
     {
@@ -130,7 +140,8 @@
                     "declarator": {
                         "class": "array",
                         "declarator": {
-                            "class": "abstract"
+                            "class": "abstract",
+                            "attributes": []
                         },
                         "type": "bounded",
                         "length": {
@@ -139,14 +150,18 @@
                             "value": 10
                         },
                         "static": false,
-                        "type_qualifiers": []
+                        "type_qualifiers": [],
+                        "attributes": []
                     },
-                    "type_qualifiers": []
+                    "type_qualifiers": [],
+                    "attributes": []
                 },
                 "ellipsis": false,
-                "parameters": []
+                "parameters": [],
+                "attributes": []
             },
-            "type_qualifiers": []
+            "type_qualifiers": [],
+            "attributes": []
         }
     }
 ]

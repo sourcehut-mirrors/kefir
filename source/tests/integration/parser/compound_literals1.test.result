@@ -18,7 +18,8 @@
                 }
             ],
             "declarator": {
-                "class": "abstract"
+                "class": "abstract",
+                "attributes": []
             }
         },
         "initializer": {
@@ -51,7 +52,8 @@
                 }
             ],
             "declarator": {
-                "class": "abstract"
+                "class": "abstract",
+                "attributes": []
             }
         },
         "initializer": {
@@ -108,11 +110,13 @@
             "declarator": {
                 "class": "array",
                 "declarator": {
-                    "class": "abstract"
+                    "class": "abstract",
+                    "attributes": []
                 },
                 "type": "unbounded",
                 "static": false,
-                "type_qualifiers": []
+                "type_qualifiers": [],
+                "attributes": []
             }
         },
         "initializer": {
