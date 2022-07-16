@@ -1329,3 +1329,90 @@ kefir_result_t kefir_parser_ast_builder_statement_expression_append(struct kefir
     });
     return KEFIR_OK;
 }
+
+kefir_result_t kefir_parser_ast_builder_attribute_list(struct kefir_mem *mem,
+                                                       struct kefir_parser_ast_builder *builder) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST builder"));
+
+    struct kefir_ast_attribute_list *list = kefir_ast_new_attribute_list(mem);
+    REQUIRE(list != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST attribute list"));
+
+    kefir_result_t res = kefir_parser_ast_builder_push(mem, builder, KEFIR_AST_NODE_BASE(list));
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(list));
+        return KEFIR_OK;
+    });
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_parser_ast_builder_attribute(struct kefir_mem *mem, struct kefir_parser_ast_builder *builder,
+                                                  const char *name) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST builder"));
+    REQUIRE(name != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid attribute name"));
+
+    struct kefir_ast_node_base *list_node = NULL;
+    REQUIRE_OK(kefir_parser_ast_builder_pop(mem, builder, &list_node));
+    REQUIRE_ELSE(list_node->klass->type == KEFIR_AST_ATTRIBUTE_LIST, {
+        KEFIR_AST_NODE_FREE(mem, list_node);
+        return KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Expected AST attribute list");
+    });
+
+    ASSIGN_DECL_CAST(struct kefir_ast_attribute_list *, list, list_node->self);
+
+    struct kefir_ast_attribute *attr = NULL;
+    kefir_result_t res = kefir_ast_attribute_list_append(mem, builder->parser->symbols, name, list, &attr);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_AST_NODE_FREE(mem, list_node);
+        return res;
+    });
+
+    res = kefir_parser_ast_builder_push(mem, builder, list_node);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_AST_NODE_FREE(mem, list_node);
+        return res;
+    });
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_parser_ast_builder_attribute_parameter(struct kefir_mem *mem,
+                                                            struct kefir_parser_ast_builder *builder) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST builder"));
+
+    struct kefir_ast_node_base *list_node = NULL, *param = NULL;
+    REQUIRE_OK(kefir_parser_ast_builder_pop(mem, builder, &param));
+    kefir_result_t res = kefir_parser_ast_builder_pop(mem, builder, &list_node);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_AST_NODE_FREE(mem, param);
+        return res;
+    });
+    REQUIRE_ELSE(list_node->klass->type == KEFIR_AST_ATTRIBUTE_LIST, {
+        KEFIR_AST_NODE_FREE(mem, param);
+        KEFIR_AST_NODE_FREE(mem, list_node);
+        return KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Expected AST attribute list");
+    });
+
+    ASSIGN_DECL_CAST(struct kefir_ast_attribute_list *, list, list_node->self);
+    REQUIRE_ELSE(kefir_list_length(&list->list) > 0, {
+        KEFIR_AST_NODE_FREE(mem, param);
+        KEFIR_AST_NODE_FREE(mem, list_node);
+        return KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Expected non-empty AST attribute list");
+    });
+
+    struct kefir_ast_attribute *attr = kefir_list_tail(&list->list)->value;
+    res = kefir_list_insert_after(mem, &attr->parameters, kefir_list_tail(&attr->parameters), param);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_AST_NODE_FREE(mem, param);
+        KEFIR_AST_NODE_FREE(mem, list_node);
+        return res;
+    });
+
+    res = kefir_parser_ast_builder_push(mem, builder, list_node);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_AST_NODE_FREE(mem, list_node);
+        return res;
+    });
+    return KEFIR_OK;
+}

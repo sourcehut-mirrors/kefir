@@ -1,0 +1,78 @@
+[
+    {
+        "class": "attribute_list",
+        "attributes": []
+    },
+    {
+        "class": "attribute_list",
+        "attributes": [
+            {
+                "name": "attribute_one",
+                "parameters": []
+            }
+        ]
+    },
+    {
+        "class": "attribute_list",
+        "attributes": [
+            {
+                "name": "attribute_one",
+                "parameters": []
+            },
+            {
+                "name": "attribute_two",
+                "parameters": []
+            }
+        ]
+    },
+    {
+        "class": "attribute_list",
+        "attributes": [
+            {
+                "name": "attribute_one",
+                "parameters": [
+                    {
+                        "class": "identifier",
+                        "identifier": "X"
+                    }
+                ]
+            },
+            {
+                "name": "attribute_two",
+                "parameters": [
+                    {
+                        "class": "binary_operation",
+                        "type": "add",
+                        "left": {
+                            "class": "identifier",
+                            "identifier": "X"
+                        },
+                        "right": {
+                            "class": "constant",
+                            "type": "integer",
+                            "value": 10
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "class": "attribute_list",
+        "attributes": [
+            {
+                "name": "attribute_one",
+                "parameters": [
+                    {
+                        "class": "function_call",
+                        "function": {
+                            "class": "identifier",
+                            "identifier": "fn"
+                        },
+                        "arguments": []
+                    }
+                ]
+            }
+        ]
+    }
+]

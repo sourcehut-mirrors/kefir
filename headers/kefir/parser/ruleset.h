@@ -71,7 +71,7 @@ typedef enum kefir_parser_ruleset_identifier {
     DECLARE_RULE(external_declaration),
     DECLARE_RULE(translation_unit),
     // Extensions,
-    DECLARE_RULE(attribute),
+    DECLARE_RULE(attribute_list),
     DECLARE_RULE(assembly),
     DECLARE_RULE(statement_expression),
     KEFIR_PARSER_RULESET_PREDEFINED_COUNT

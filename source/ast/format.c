@@ -1299,6 +1299,43 @@ static kefir_result_t visit_statement_expression(const struct kefir_ast_visitor 
     return KEFIR_OK;
 }
 
+static kefir_result_t visit_attribute_list(const struct kefir_ast_visitor *visitor,
+                                           const struct kefir_ast_attribute_list *node, void *payload) {
+    UNUSED(visitor);
+    REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST attrbite list node"));
+    REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid payload"));
+    ASSIGN_DECL_CAST(struct visitor_param *, param, payload);
+    struct kefir_json_output *json = param->json;
+
+    REQUIRE_OK(kefir_json_output_object_begin(json));
+    REQUIRE_OK(kefir_json_output_object_key(json, "class"));
+    REQUIRE_OK(kefir_json_output_string(json, "attribute_list"));
+    REQUIRE_OK(kefir_json_output_object_key(json, "attributes"));
+    REQUIRE_OK(kefir_json_output_array_begin(json));
+    for (const struct kefir_list_entry *iter = kefir_list_head(&node->list); iter != NULL; kefir_list_next(&iter)) {
+        ASSIGN_DECL_CAST(struct kefir_ast_attribute *, attr, iter->value);
+        REQUIRE_OK(kefir_json_output_object_begin(json));
+        REQUIRE_OK(kefir_json_output_object_key(json, "name"));
+        REQUIRE_OK(kefir_json_output_string(json, attr->name));
+        REQUIRE_OK(kefir_json_output_object_key(json, "parameters"));
+        REQUIRE_OK(kefir_json_output_array_begin(json));
+        for (const struct kefir_list_entry *iter2 = kefir_list_head(&attr->parameters); iter2 != NULL;
+             kefir_list_next(&iter2)) {
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, attr_param, iter2->value);
+            REQUIRE_OK(kefir_ast_format(json, attr_param, param->display_source_location));
+        }
+        REQUIRE_OK(kefir_json_output_array_end(json));
+        REQUIRE_OK(kefir_json_output_object_end(json));
+    }
+    REQUIRE_OK(kefir_json_output_array_end(json));
+
+    if (param->display_source_location) {
+        REQUIRE_OK(format_source_location(json, KEFIR_AST_NODE_BASE(node)));
+    }
+    REQUIRE_OK(kefir_json_output_object_end(json));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_ast_format(struct kefir_json_output *json, const struct kefir_ast_node_base *node,
                                 kefir_bool_t display_source_location) {
     REQUIRE(json != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid JSON output"));
@@ -1346,6 +1383,7 @@ kefir_result_t kefir_ast_format(struct kefir_json_output *json, const struct kef
     visitor.label_address = visit_label_address;
     visitor.goto_address_statement = visit_goto_address_statement;
     visitor.statement_expression = visit_statement_expression;
+    visitor.attribute_list = visit_attribute_list;
     REQUIRE_OK(node->klass->visit(node, &visitor, &param));
     return KEFIR_OK;
 }
