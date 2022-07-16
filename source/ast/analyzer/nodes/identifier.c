@@ -46,6 +46,8 @@ kefir_result_t kefir_ast_try_analyze_identifier(struct kefir_mem *mem, const str
                 scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT && scoped_id->type->tag == KEFIR_AST_TYPE_ARRAY &&
                 (scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN ||
                  scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC);
+            base->properties.expression_props.alignment =
+                scoped_id->object.alignment != NULL ? scoped_id->object.alignment->value : 0;
             break;
 
         case KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION:
@@ -66,7 +68,9 @@ kefir_result_t kefir_ast_try_analyze_identifier(struct kefir_mem *mem, const str
         case KEFIR_AST_SCOPE_IDENTIFIER_TYPE_DEFINITION:
             REQUIRE_OK(kefir_ast_node_properties_init(&base->properties));
             base->properties.category = KEFIR_AST_NODE_CATEGORY_TYPE;
-            base->properties.type = scoped_id->type;
+            base->properties.type = scoped_id->type_definition.type;
+            base->properties.type_props.alignment =
+                scoped_id->type_definition.alignment != NULL ? scoped_id->type_definition.alignment->value : 0;
             break;
 
         default:

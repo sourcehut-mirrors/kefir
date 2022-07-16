@@ -71,6 +71,11 @@ typedef struct kefir_ast_scoped_identifier {
             struct kefir_ast_constant_expression *value;
         } enum_constant;
 
+        struct {
+            const struct kefir_ast_type *type;
+            struct kefir_ast_alignment *alignment;
+        } type_definition;
+
         const struct kefir_ast_type *type;
 
         struct {

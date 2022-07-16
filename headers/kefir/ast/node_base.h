@@ -57,6 +57,7 @@ typedef struct kefir_ast_node_properties {
         struct kefir_ast_temporary_identifier temporary;
         const struct kefir_ast_scoped_identifier *scoped_id;
         struct kefir_ast_flow_control_structure *flow_control_statement;
+        kefir_size_t alignment;
     } expression_props;
 
     struct {
@@ -86,6 +87,10 @@ typedef struct kefir_ast_node_properties {
         const char *identifier;
         const struct kefir_ast_scoped_identifier *scoped_id;
     } function_definition;
+
+    struct {
+        kefir_size_t alignment;
+    } type_props;
 } kefir_ast_node_properties_t;
 
 typedef struct kefir_ast_node_base {

@@ -187,8 +187,8 @@ static kefir_result_t context_define_identifier(
                 REQUIRE(declaration,
                         KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
                                                "Typedef specifier cannot be used for function definition"));
-                REQUIRE_OK(kefir_ast_local_context_define_type(mem, local_ctx, identifier, unqualified_type, location,
-                                                               scoped_id));
+                REQUIRE_OK(kefir_ast_local_context_define_type(mem, local_ctx, identifier, unqualified_type, NULL,
+                                                               location, scoped_id));
                 break;
 
             case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN:
@@ -217,10 +217,8 @@ static kefir_result_t context_define_identifier(
                                        "Initializer must be provided to for identifier definition"));
         switch (storage_class) {
             case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_TYPEDEF:
-                REQUIRE(alignment == NULL,
-                        KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
-                                               "Alignment specifier is not permitted in type definition"));
-                REQUIRE_OK(kefir_ast_local_context_define_type(mem, local_ctx, identifier, type, location, scoped_id));
+                REQUIRE_OK(kefir_ast_local_context_define_type(mem, local_ctx, identifier, type, alignment, location,
+                                                               scoped_id));
                 break;
 
             case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN:
@@ -994,6 +992,7 @@ kefir_result_t kefir_ast_local_context_define_tag(struct kefir_mem *mem, struct 
 
 kefir_result_t kefir_ast_local_context_define_type(struct kefir_mem *mem, struct kefir_ast_local_context *context,
                                                    const char *identifier, const struct kefir_ast_type *type,
+                                                   struct kefir_ast_alignment *alignment,
                                                    const struct kefir_source_location *location,
                                                    const struct kefir_ast_scoped_identifier **scoped_id_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
@@ -1007,15 +1006,16 @@ kefir_result_t kefir_ast_local_context_define_type(struct kefir_mem *mem, struct
                                            (struct kefir_ast_scoped_identifier **) &scoped_id);
     if (res == KEFIR_OK) {
         REQUIRE(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_TYPE_DEFINITION &&
-                    KEFIR_AST_TYPE_COMPATIBLE(context->global->type_traits, scoped_id->type, type),
+                    KEFIR_AST_TYPE_COMPATIBLE(context->global->type_traits, scoped_id->type_definition.type, type),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
                                        "Unable to redefine different type with the same identifier"));
-        if (KEFIR_AST_TYPE_IS_INCOMPLETE(scoped_id->type) && !KEFIR_AST_TYPE_IS_INCOMPLETE(type)) {
+        if (KEFIR_AST_TYPE_IS_INCOMPLETE(scoped_id->type_definition.type) && !KEFIR_AST_TYPE_IS_INCOMPLETE(type)) {
             scoped_id->type = type;
         }
+        REQUIRE_OK(kefir_ast_context_allocate_scoped_type_definition_update_alignment(mem, scoped_id, alignment));
     } else {
         REQUIRE(res == KEFIR_NOT_FOUND, res);
-        scoped_id = kefir_ast_context_allocate_scoped_type_definition(mem, type);
+        scoped_id = kefir_ast_context_allocate_scoped_type_definition(mem, type, alignment);
         REQUIRE(scoped_id != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocted AST scoped identifier"));
         res = kefir_list_insert_after(mem, &context->identifiers, kefir_list_tail(&context->identifiers), scoped_id);
         REQUIRE_ELSE(res == KEFIR_OK, {

@@ -26,36 +26,30 @@
 #include "kefir/ast/context.h"
 #include "kefir/ast/alignment.h"
 
-#define KEFIR_AST_DECLARATION_ATTRIBUTE_ALIGNED_UNDEFINED 0
+#define KEFIR_AST_DECLARATION_ANALYSIS_NORMAL 0
+#define KEFIR_AST_DECLARATION_ANALYSIS_FUNCTION_DEFINITION_CONTEXT (1)
+#define KEFIR_AST_DECLARATION_ANALYSIS_IGNORE_ALIGNMENT_SPECIFIER (1 << 1)
 
 typedef struct kefir_ast_declaration_attributes {
-    kefir_size_t aligned;
+    char dummy;  // Empty dummy field
 } kefir_ast_declaration_attributes_t;
 
 kefir_result_t kefir_ast_analyze_declaration_specifiers(struct kefir_mem *, const struct kefir_ast_context *,
                                                         const struct kefir_ast_declarator_specifier_list *,
                                                         const struct kefir_ast_type **,
                                                         kefir_ast_scoped_identifier_storage_t *,
-                                                        kefir_ast_function_specifier_t *, kefir_size_t *);
+                                                        kefir_ast_function_specifier_t *, kefir_size_t *, uint64_t);
 
 kefir_result_t kefir_ast_analyze_declaration_declarator(struct kefir_mem *, const struct kefir_ast_context *,
                                                         const struct kefir_ast_declarator *, const char **,
                                                         const struct kefir_ast_type **, kefir_size_t *,
-                                                        struct kefir_ast_declaration_attributes *);
+                                                        struct kefir_ast_declaration_attributes *, kefir_uint64_t);
 
 kefir_result_t kefir_ast_analyze_declaration(struct kefir_mem *, const struct kefir_ast_context *,
                                              const struct kefir_ast_declarator_specifier_list *,
                                              const struct kefir_ast_declarator *, const char **,
                                              const struct kefir_ast_type **, kefir_ast_scoped_identifier_storage_t *,
                                              kefir_ast_function_specifier_t *, kefir_size_t *,
-                                             struct kefir_ast_declaration_attributes *);
-
-kefir_result_t kefir_ast_analyze_declaration_with_function_def_ctx(struct kefir_mem *, const struct kefir_ast_context *,
-                                                                   const struct kefir_ast_declarator_specifier_list *,
-                                                                   const struct kefir_ast_declarator *, const char **,
-                                                                   const struct kefir_ast_type **,
-                                                                   kefir_ast_scoped_identifier_storage_t *,
-                                                                   kefir_ast_function_specifier_t *, kefir_size_t *,
-                                                                   struct kefir_ast_declaration_attributes *);
+                                             struct kefir_ast_declaration_attributes *, kefir_uint64_t);
 
 #endif

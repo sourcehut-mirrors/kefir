@@ -87,11 +87,10 @@ static kefir_result_t analyze_function_parameter_identifiers_impl(struct kefir_m
             kefir_ast_scoped_identifier_storage_t storage = KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN;
             kefir_ast_function_specifier_t function_specifier = KEFIR_AST_FUNCTION_SPECIFIER_NONE;
             kefir_size_t alignment = 0;
-            struct kefir_ast_declaration_attributes attr;
-            REQUIRE_OK(kefir_ast_analyze_declaration(mem, &local_context->context, &decl_list->specifiers,
-                                                     decl->declarator, &identifier, &original_type, &storage,
-                                                     &function_specifier, &alignment, &attr));
-            alignment = MAX(alignment, attr.aligned);
+            struct kefir_ast_declaration_attributes attr = {0};
+            REQUIRE_OK(kefir_ast_analyze_declaration(
+                mem, &local_context->context, &decl_list->specifiers, decl->declarator, &identifier, &original_type,
+                &storage, &function_specifier, &alignment, &attr, KEFIR_AST_DECLARATION_ANALYSIS_NORMAL));
 
             if (identifier != NULL) {
                 identifier = kefir_symbol_table_insert(mem, context->symbols, identifier, NULL);
@@ -201,10 +200,11 @@ kefir_result_t kefir_ast_analyze_function_definition_node(struct kefir_mem *mem,
     kefir_size_t alignment = 0;
     struct kefir_ast_declaration_attributes attributes = {0};
     const char *function_identifier = NULL;
-    REQUIRE_CHAIN(&res, kefir_ast_analyze_declaration_with_function_def_ctx(
-                            mem, &local_context->context, &node->specifiers, node->declarator, &function_identifier,
-                            &type, &storage, &base->properties.function_definition.function, &alignment, &attributes));
-    alignment = MAX(alignment, attributes.aligned);
+    REQUIRE_CHAIN(
+        &res, kefir_ast_analyze_declaration(
+                  mem, &local_context->context, &node->specifiers, node->declarator, &function_identifier, &type,
+                  &storage, &base->properties.function_definition.function, &alignment, &attributes,
+                  KEFIR_AST_DECLARATION_ANALYSIS_NORMAL | KEFIR_AST_DECLARATION_ANALYSIS_FUNCTION_DEFINITION_CONTEXT));
     REQUIRE_CHAIN(
         &res, kefir_ast_analyze_type(mem, context, context->type_analysis_context, type, &node->base.source_location));
 

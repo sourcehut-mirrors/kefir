@@ -39,7 +39,12 @@ struct kefir_ast_scoped_identifier *kefir_ast_context_allocate_scoped_type_tag(s
                                                                                const struct kefir_ast_type *);
 
 struct kefir_ast_scoped_identifier *kefir_ast_context_allocate_scoped_type_definition(struct kefir_mem *,
-                                                                                      const struct kefir_ast_type *);
+                                                                                      const struct kefir_ast_type *,
+                                                                                      struct kefir_ast_alignment *);
+
+kefir_result_t kefir_ast_context_allocate_scoped_type_definition_update_alignment(struct kefir_mem *,
+                                                                                  struct kefir_ast_scoped_identifier *,
+                                                                                  struct kefir_ast_alignment *);
 
 kefir_result_t kefir_ast_context_type_retrieve_tag(const struct kefir_ast_type *, const char **);
 

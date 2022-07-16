@@ -312,7 +312,21 @@ kefir_result_t kefir_ast_translate_unary_operation_node(struct kefir_mem *mem,
             break;
 
         case KEFIR_AST_OPERATION_ALIGNOF:
-            REQUIRE_OK(kefir_ast_translate_alignof(mem, context, builder, node->arg->properties.type));
+            if (node->arg->properties.category == KEFIR_AST_NODE_CATEGORY_TYPE) {
+                if (node->arg->properties.type_props.alignment == 0) {
+                    REQUIRE_OK(kefir_ast_translate_alignof(mem, context, builder, node->arg->properties.type));
+                } else {
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PUSHU64,
+                                                               node->arg->properties.type_props.alignment));
+                }
+            } else if (node->arg->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION) {
+                if (node->arg->properties.expression_props.alignment == 0) {
+                    REQUIRE_OK(kefir_ast_translate_alignof(mem, context, builder, node->arg->properties.type));
+                } else {
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PUSHU64,
+                                                               node->arg->properties.expression_props.alignment));
+                }
+            }
             break;
 
         case KEFIR_AST_OPERATION_ADDRESS:

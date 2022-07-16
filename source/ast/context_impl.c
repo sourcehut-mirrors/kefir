@@ -51,6 +51,13 @@ kefir_result_t kefir_ast_context_free_scoped_identifier(struct kefir_mem *mem,
             }
             break;
 
+        case KEFIR_AST_SCOPE_IDENTIFIER_TYPE_DEFINITION:
+            if (scoped_id->type_definition.alignment != NULL) {
+                REQUIRE_OK(kefir_ast_alignment_free(mem, scoped_id->type_definition.alignment));
+            }
+            scoped_id->type_definition.type = NULL;
+            break;
+
         default:
             break;
     }
@@ -114,16 +121,30 @@ struct kefir_ast_scoped_identifier *kefir_ast_context_allocate_scoped_type_tag(s
 }
 
 struct kefir_ast_scoped_identifier *kefir_ast_context_allocate_scoped_type_definition(
-    struct kefir_mem *mem, const struct kefir_ast_type *type) {
+    struct kefir_mem *mem, const struct kefir_ast_type *type, struct kefir_ast_alignment *alignment) {
     struct kefir_ast_scoped_identifier *scoped_id = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_scoped_identifier));
     scoped_id->klass = KEFIR_AST_SCOPE_IDENTIFIER_TYPE_DEFINITION;
     scoped_id->cleanup.callback = NULL;
     scoped_id->cleanup.payload = NULL;
-    scoped_id->type = type;
+    scoped_id->type_definition.type = type;
+    scoped_id->type_definition.alignment = alignment;
     memset(scoped_id->payload.content, 0, KEFIR_AST_SCOPED_IDENTIFIER_PAYLOAD_SIZE);
     scoped_id->payload.ptr = scoped_id->payload.content;
     scoped_id->payload.cleanup = &scoped_id->cleanup;
     return scoped_id;
+}
+
+kefir_result_t kefir_ast_context_allocate_scoped_type_definition_update_alignment(
+    struct kefir_mem *mem, struct kefir_ast_scoped_identifier *scoped_id, struct kefir_ast_alignment *alignment) {
+    if (scoped_id->type_definition.alignment == NULL) {
+        scoped_id->type_definition.alignment = alignment;
+    } else if (alignment != NULL && scoped_id->type_definition.alignment->value < alignment->value) {
+        REQUIRE_OK(kefir_ast_alignment_free(mem, scoped_id->type_definition.alignment));
+        scoped_id->type_definition.alignment = alignment;
+    } else {
+        REQUIRE_OK(kefir_ast_alignment_free(mem, alignment));
+    }
+    return KEFIR_OK;
 }
 
 kefir_result_t kefir_ast_context_type_retrieve_tag(const struct kefir_ast_type *type, const char **identifier) {
