@@ -53,7 +53,7 @@ DEFINE_CASE(ast_declarator_analysis10, "AST declarator analysis - pointer declar
     kefir_size_t alignment = 0;
     const char *identifier = NULL;
     ASSERT_OK(kefir_ast_analyze_declaration(&kft_mem, context, &specifiers, declarator, &identifier, &type, &storage,
-                                            &function_specifier, &alignment));
+                                            &function_specifier, &alignment, NULL));
 
     ASSERT(strcmp(identifier, "pointer_variable1") == 0);
     ASSERT(type != NULL);
@@ -133,7 +133,7 @@ DEFINE_CASE(ast_declarator_analysis11, "AST declarator analysis - pointer declar
     kefir_size_t alignment = 0;
     const char *identifier = NULL;
     ASSERT_OK(kefir_ast_analyze_declaration(&kft_mem, context, &specifiers, declarator, &identifier, &type, &storage,
-                                            &function_specifier, &alignment));
+                                            &function_specifier, &alignment, NULL));
 
     ASSERT(identifier == NULL);
     ASSERT(type != NULL);
@@ -185,7 +185,7 @@ DEFINE_CASE(ast_declarator_analysis12, "AST declarator analysis - array declarat
     kefir_size_t alignment = 0;
     const char *identifier = NULL;
     ASSERT_OK(kefir_ast_analyze_declaration(&kft_mem, context, &specifiers, declarator, &identifier, &type, &storage,
-                                            &function_specifier, &alignment));
+                                            &function_specifier, &alignment, NULL));
 
     const struct kefir_ast_type *type1 = kefir_ast_type_unbounded_array(
         &kft_mem, context->type_bundle,
@@ -246,7 +246,7 @@ DEFINE_CASE(ast_declarator_analysis13, "AST declarator analysis - array declarat
     const char *identifier = NULL;
 
     ASSERT_OK(kefir_ast_analyze_declaration(&kft_mem, context, &specifiers, declarator1, &identifier, &type, &storage,
-                                            &function_specifier, &alignment));
+                                            &function_specifier, &alignment, NULL));
     const struct kefir_ast_type *type1 =
         kefir_ast_type_vlen_array(&kft_mem, context->type_bundle,
                                   kefir_ast_type_qualified(&kft_mem, context->type_bundle, kefir_ast_type_signed_int(),
@@ -261,7 +261,7 @@ DEFINE_CASE(ast_declarator_analysis13, "AST declarator analysis - array declarat
     ASSERT(alignment == 0);
 
     ASSERT_OK(kefir_ast_analyze_declaration(&kft_mem, context, &specifiers, declarator2, &identifier, &type, &storage,
-                                            &function_specifier, &alignment));
+                                            &function_specifier, &alignment, NULL));
     const struct kefir_ast_type *type2 = kefir_ast_type_vlen_array_static(
         &kft_mem, context->type_bundle,
         kefir_ast_type_qualified(&kft_mem, context->type_bundle, kefir_ast_type_signed_int(),
@@ -323,7 +323,7 @@ DEFINE_CASE(ast_declarator_analysis14, "AST declarator analysis - array declarat
     const char *identifier = NULL;
 
     ASSERT_OK(kefir_ast_analyze_declaration(&kft_mem, context, &specifiers, declarator1, &identifier, &type, &storage,
-                                            &function_specifier, &alignment));
+                                            &function_specifier, &alignment, NULL));
     const struct kefir_ast_type *type1 =
         kefir_ast_type_array(&kft_mem, context->type_bundle,
                              kefir_ast_type_qualified(&kft_mem, context->type_bundle, kefir_ast_type_signed_int(),
@@ -390,7 +390,7 @@ DEFINE_CASE(ast_declarator_analysis15, "AST declarator analysis - array declarat
     const char *identifier = NULL;
 
     ASSERT_OK(kefir_ast_analyze_declaration(&kft_mem, context, &specifiers, declarator1, &identifier, &type, &storage,
-                                            &function_specifier, &alignment));
+                                            &function_specifier, &alignment, NULL));
     const struct kefir_ast_type *type1 =
         kefir_ast_type_vlen_array(&kft_mem, context->type_bundle,
                                   kefir_ast_type_qualified(&kft_mem, context->type_bundle, kefir_ast_type_signed_int(),
@@ -406,7 +406,7 @@ DEFINE_CASE(ast_declarator_analysis15, "AST declarator analysis - array declarat
     ASSERT(alignment == 0);
 
     ASSERT_OK(kefir_ast_analyze_declaration(&kft_mem, context, &specifiers, declarator2, &identifier, &type, &storage,
-                                            &function_specifier, &alignment));
+                                            &function_specifier, &alignment, NULL));
     const struct kefir_ast_type *type2 = kefir_ast_type_vlen_array_static(
         &kft_mem, context->type_bundle,
         kefir_ast_type_qualified(&kft_mem, context->type_bundle, kefir_ast_type_signed_int(),
