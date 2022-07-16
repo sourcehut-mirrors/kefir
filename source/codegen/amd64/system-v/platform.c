@@ -20,6 +20,7 @@
 
 #include "kefir/codegen/amd64/system-v/platform.h"
 #include "kefir/codegen/amd64/system-v/abi/data_layout.h"
+#include "kefir/codegen/amd64/system-v/abi/qwords.h"
 #include "kefir/codegen/amd64/system-v/bitfields.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
@@ -74,6 +75,7 @@ static kefir_result_t amd64_sysv_type_info(struct kefir_mem *mem, struct kefir_i
     type_info->size = data_layout->size;
     type_info->alignment = data_layout->alignment;
     type_info->aligned = data_layout->aligned;
+    type_info->max_alignment = 2 * KEFIR_AMD64_SYSV_ABI_QWORD;
     type_info->relative_offset = data_layout->relative_offset;
     return KEFIR_OK;
 }

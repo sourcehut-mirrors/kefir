@@ -67,6 +67,7 @@ typedef struct kefir_ast_type_layout {
         kefir_size_t size;
         kefir_size_t alignment;
         kefir_bool_t aligned;
+        kefir_size_t max_alignment;
         kefir_size_t relative_offset;
     } properties;
 

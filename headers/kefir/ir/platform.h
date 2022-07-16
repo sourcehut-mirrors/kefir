@@ -33,6 +33,7 @@ typedef struct kefir_ir_target_type_info {
     kefir_size_t size;
     kefir_size_t alignment;
     kefir_bool_t aligned;
+    kefir_size_t max_alignment;
     kefir_size_t relative_offset;
 } kefir_ir_target_type_info_t;
 

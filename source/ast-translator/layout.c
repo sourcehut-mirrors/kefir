@@ -105,6 +105,7 @@ static kefir_result_t type_visit(const struct kefir_ir_type *type, kefir_size_t 
             layout->properties.size = type_info.size;
             layout->properties.alignment = type_info.alignment;
             layout->properties.aligned = type_info.aligned;
+            layout->properties.max_alignment = type_info.max_alignment;
             layout->properties.relative_offset = type_info.relative_offset;
         }
     } else {

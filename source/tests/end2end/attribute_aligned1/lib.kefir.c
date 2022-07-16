@@ -18,18 +18,27 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef KEFIR_AST_OBJECT_H_
-#define KEFIR_AST_OBJECT_H_
+#include "./definitions.h"
 
-#include "kefir/ast/base.h"
+struct S1 {
+    char c __attribute__((aligned));
+};
 
-typedef struct kefir_ast_target_environment_object_info {
-    kefir_size_t size;
-    kefir_size_t alignment;
-    kefir_bool_t aligned;
-    kefir_size_t max_alignment;
-    kefir_size_t relative_offset;
-    kefir_size_t max_bitfield_width;
-} kefir_ast_target_environment_object_info_t;
+struct S2 {
+    char c __attribute__((aligned(_Alignof(int))));
+};
 
-#endif
+struct S3 {
+    char c __attribute__((__aligned__));
+};
+
+struct S4 {
+    char c __attribute__((__aligned__(_Alignof(short))));
+};
+
+char Char1 __attribute__((aligned)) = '\0';
+char Char2 __attribute__((aligned)) = '\0';
+char Char3 __attribute__((aligned(4))) = '\0';
+char Char4 __attribute__((aligned(4))) = '\0';
+
+int Alignments[] = {_Alignof(struct S1), _Alignof(struct S2), _Alignof(struct S3), _Alignof(struct S4)};

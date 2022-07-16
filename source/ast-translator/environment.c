@@ -132,6 +132,7 @@ static kefir_result_t target_env_object_info(struct kefir_mem *mem, const struct
     object_info->size = final_layout->properties.size;
     object_info->aligned = final_layout->properties.aligned;
     object_info->alignment = final_layout->properties.alignment;
+    object_info->max_alignment = final_layout->properties.max_alignment;
 
     if (KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(final_layout->type)) {
         object_info->max_bitfield_width = 8 * final_layout->properties.size;

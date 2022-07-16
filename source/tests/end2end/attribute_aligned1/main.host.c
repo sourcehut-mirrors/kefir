@@ -18,18 +18,21 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef KEFIR_AST_OBJECT_H_
-#define KEFIR_AST_OBJECT_H_
+#include <stdlib.h>
+#include <stdio.h>
+#include <assert.h>
+#include <math.h>
+#include <stddef.h>
+#include "./definitions.h"
 
-#include "kefir/ast/base.h"
-
-typedef struct kefir_ast_target_environment_object_info {
-    kefir_size_t size;
-    kefir_size_t alignment;
-    kefir_bool_t aligned;
-    kefir_size_t max_alignment;
-    kefir_size_t relative_offset;
-    kefir_size_t max_bitfield_width;
-} kefir_ast_target_environment_object_info_t;
-
-#endif
+int main() {
+    assert(Alignments[0] == _Alignof(max_align_t));
+    assert(Alignments[1] == _Alignof(int));
+    assert(Alignments[2] == _Alignof(max_align_t));
+    assert(Alignments[3] == _Alignof(short));
+    assert(((unsigned long long) &Char1) % _Alignof(max_align_t) == 0);
+    assert(((unsigned long long) &Char2) % _Alignof(max_align_t) == 0);
+    assert(((unsigned long long) &Char3) % 4 == 0);
+    assert(((unsigned long long) &Char4) % 4 == 0);
+    return EXIT_SUCCESS;
+}
