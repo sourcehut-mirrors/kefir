@@ -25,6 +25,8 @@ kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(external_declaration)(struct kefir_me
     APPLY_PROLOGUE(mem, parser, result, payload);
     kefir_result_t res = KEFIR_PARSER_RULE_APPLY(mem, parser, function_definition, result);
     REQUIRE(res == KEFIR_NO_MATCH, res);
-    REQUIRE_OK(KEFIR_PARSER_RULE_APPLY(mem, parser, declaration, result));
+    res = KEFIR_PARSER_RULE_APPLY(mem, parser, declaration, result);
+    REQUIRE(res == KEFIR_NO_MATCH, res);
+    REQUIRE_OK(KEFIR_PARSER_RULE_APPLY(mem, parser, assembly, result));
     return KEFIR_OK;
 }

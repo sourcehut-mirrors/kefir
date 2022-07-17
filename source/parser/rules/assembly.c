@@ -27,5 +27,6 @@ kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(assembly)(struct kefir_mem *mem, stru
     APPLY_PROLOGUE(mem, parser, result, payload);
     REQUIRE(PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_ASM),
             KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match assembly directive"));
-    return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED, "Assembly directive is not supported");
+    return KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0),
+                                  "Assembly directive is not supported");
 }
