@@ -18,8 +18,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "kefir/core/platform.h"
+#ifdef KEFIR_LINUX_HOST_PLATFORM
 #define _DEFAULT_SOURCE
 #define _XOPEN_SOURCE 700
+#endif
+
 #include "kefir/platform/tempfile.h"
 #include "kefir/core/error.h"
 #include "kefir/core/os_error.h"
