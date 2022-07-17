@@ -8,7 +8,7 @@ LD=ld
 
 KEFIR_FLAGS=-I $(HEADERS)
 ifeq ($(PLATFORM),freebsd)
-KEFIR_FLAGS += --target x86_64-freebsd-none
+KEFIR_FLAGS += --target x86_64-freebsd-system
 else ifeq ($(PLATFORM),openbsd)
 KEFIR_FLAGS += --target x86_64-openbsd-none
 else

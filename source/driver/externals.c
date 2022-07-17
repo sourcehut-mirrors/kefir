@@ -54,6 +54,9 @@ kefir_result_t kefir_driver_external_resources_init_from_env(struct kefir_mem *m
     externals->gnu.include_path = getenv("KEFIR_GNU_INCLUDE");
     externals->gnu.library_path = getenv("KEFIR_GNU_LIB");
     externals->gnu.dynamic_linker = getenv("KEFIR_GNU_DYNAMIC_LINKER");
+    externals->freebsd.include_path = getenv("KEFIR_FREEBSD_INCLUDE");
+    externals->freebsd.library_path = getenv("KEFIR_FREEBSD_LIB");
+    externals->freebsd.dynamic_linker = getenv("KEFIR_FREEBSD_DYNAMIC_LINKER");
 
     externals->work_dir = getenv("KEFIR_WORKDIR");
     if (externals->work_dir == NULL) {

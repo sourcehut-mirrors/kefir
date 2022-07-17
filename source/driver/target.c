@@ -69,6 +69,9 @@ static kefir_result_t select_default_variant(struct kefir_driver_target *target)
     target->variant = KEFIR_DRIVER_TARGET_VARIANT_NONE;
     if (target->arch == KEFIR_DRIVER_TARGET_ARCH_X86_64 && target->platform == KEFIR_DRIVER_TARGET_PLATFORM_LINUX) {
         target->variant = KEFIR_DRIVER_TARGET_VARIANT_GNU;
+    } else if (target->arch == KEFIR_DRIVER_TARGET_ARCH_X86_64 &&
+               target->platform == KEFIR_DRIVER_TARGET_PLATFORM_FREEBSD) {
+        target->variant = KEFIR_DRIVER_TARGET_VARIANT_SYSTEM;
     }
     return KEFIR_OK;
 }
@@ -80,6 +83,8 @@ static kefir_result_t match_variant(const char *spec, struct kefir_driver_target
         target->variant = KEFIR_DRIVER_TARGET_VARIANT_MUSL;
     } else if (strcmp("gnu", spec) == 0) {
         target->variant = KEFIR_DRIVER_TARGET_VARIANT_GNU;
+    } else if (strcmp("system", spec) == 0) {
+        target->variant = KEFIR_DRIVER_TARGET_VARIANT_SYSTEM;
     } else if (strcmp("default", spec) == 0) {
         REQUIRE_OK(select_default_variant(target));
     } else {

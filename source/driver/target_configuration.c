@@ -104,6 +104,7 @@ kefir_result_t kefir_driver_apply_target_compiler_configuration(
 
     if (target->arch == KEFIR_DRIVER_TARGET_ARCH_X86_64) {
         REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__x86_64__", "1"));
+        REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__amd64__", "1"));
     }
 
     if (target->platform == KEFIR_DRIVER_TARGET_PLATFORM_LINUX) {
@@ -126,6 +127,18 @@ kefir_result_t kefir_driver_apply_target_compiler_configuration(
         }
     } else if (target->platform == KEFIR_DRIVER_TARGET_PLATFORM_FREEBSD) {
         REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__FreeBSD__", "1"));
+        if (target->variant == KEFIR_DRIVER_TARGET_VARIANT_SYSTEM) {
+            if (compiler_config != NULL) {
+                REQUIRE(externals->freebsd.include_path != NULL,
+                        KEFIR_SET_ERROR(KEFIR_UI_ERROR, "GNU include path shall be passed as KEFIR_FREEBSD_INCLUDE "
+                                                        "environment variable for selected target"));
+
+                REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__GNUC__", "3"));
+                REQUIRE_OK(
+                    kefir_compiler_runner_configuration_define(mem, compiler_config, "__GNUC_STDC_INLINE__", "1"));
+                REQUIRE_OK(add_include_paths(mem, symbols, compiler_config, externals->gnu.include_path));
+            }
+        }
     } else if (target->platform == KEFIR_DRIVER_TARGET_PLATFORM_OPENBSD) {
         REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__OpenBSD__", "1"));
     }
@@ -205,6 +218,29 @@ kefir_result_t kefir_driver_apply_target_linker_initial_configuration(
                 LINK_FILE(externals->musl.library_path, "crti.o");
             }
         }
+    } else if (target->platform == KEFIR_DRIVER_TARGET_PLATFORM_FREEBSD &&
+               target->variant == KEFIR_DRIVER_TARGET_VARIANT_SYSTEM) {
+        REQUIRE(externals->freebsd.library_path != NULL,
+                KEFIR_SET_ERROR(KEFIR_UI_ERROR, "System library path shall be passed as KEFIR_FREEBSD_LIB "
+                                                "environment variable for selected target"));
+
+        REQUIRE_OK(add_library_paths(mem, linker_config, externals->freebsd.library_path));
+
+        if (linker_config->flags.link_start_files) {
+            LINK_FILE(externals->freebsd.library_path, "crt1.o");
+            LINK_FILE(externals->freebsd.library_path, "crti.o");
+            if (!linker_config->flags.static_linking) {
+                LINK_FILE(externals->freebsd.library_path, "crtbegin.o");
+            } else {
+                LINK_FILE(externals->freebsd.library_path, "crtbeginS.o");
+            }
+        }
+
+        if (externals->freebsd.dynamic_linker != NULL) {
+            REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "--dynamic-linker"));
+            REQUIRE_OK(
+                kefir_driver_linker_configuration_add_argument(mem, linker_config, externals->freebsd.dynamic_linker));
+        }
     }
 
     return KEFIR_OK;
@@ -264,6 +300,27 @@ kefir_result_t kefir_driver_apply_target_linker_final_configuration(
             if (linker_config->flags.link_start_files) {
                 LINK_FILE(externals->musl.library_path, "crtn.o");
             }
+        }
+    } else if (target->platform == KEFIR_DRIVER_TARGET_PLATFORM_FREEBSD &&
+               target->variant == KEFIR_DRIVER_TARGET_VARIANT_SYSTEM) {
+        REQUIRE(externals->freebsd.library_path != NULL,
+                KEFIR_SET_ERROR(KEFIR_UI_ERROR, "System library path shall be passed as KEFIR_FREEBSD_LIB "
+                                                "environment variable for selected target"));
+
+        if (linker_config->flags.link_default_libs) {
+            if (linker_config->flags.link_libc) {
+                REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-lc"));
+                REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-lm"));
+            }
+        }
+
+        if (linker_config->flags.link_start_files) {
+            if (!linker_config->flags.static_linking) {
+                LINK_FILE(externals->freebsd.library_path, "crtend.o");
+            } else {
+                LINK_FILE(externals->freebsd.library_path, "crtendS.o");
+            }
+            LINK_FILE(externals->freebsd.library_path, "crtn.o");
         }
     }
     return KEFIR_OK;
