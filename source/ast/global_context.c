@@ -143,10 +143,12 @@ static kefir_result_t context_define_identifier(
             case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN:
                 if (declaration) {
                     REQUIRE_OK(kefir_ast_global_context_declare_function(
-                        mem, global_ctx, function_specifier, identifier, unqualified_type, location, scoped_id));
+                        mem, global_ctx, function_specifier, storage_class == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN,
+                        identifier, unqualified_type, location, scoped_id));
                 } else {
-                    REQUIRE_OK(kefir_ast_global_context_define_function(mem, global_ctx, function_specifier, identifier,
-                                                                        unqualified_type, location, scoped_id));
+                    REQUIRE_OK(kefir_ast_global_context_define_function(
+                        mem, global_ctx, function_specifier, storage_class == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN,
+                        identifier, unqualified_type, location, scoped_id));
                 }
                 break;
 
@@ -927,12 +929,16 @@ kefir_result_t kefir_ast_global_context_define_type(struct kefir_mem *mem, struc
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_ast_global_context_declare_function(struct kefir_mem *mem,
-                                                         struct kefir_ast_global_context *context,
-                                                         kefir_ast_function_specifier_t specifier,
-                                                         const char *identifier, const struct kefir_ast_type *function,
-                                                         const struct kefir_source_location *location,
-                                                         const struct kefir_ast_scoped_identifier **scoped_id) {
+static inline kefir_bool_t is_inline_specifier(kefir_ast_function_specifier_t specifier) {
+    return specifier == KEFIR_AST_FUNCTION_SPECIFIER_INLINE ||
+           specifier == KEFIR_AST_FUNCTION_SPECIFIER_INLINE_NORETURN;
+}
+
+kefir_result_t kefir_ast_global_context_declare_function(
+    struct kefir_mem *mem, struct kefir_ast_global_context *context, kefir_ast_function_specifier_t specifier,
+    kefir_bool_t external_linkage, const char *identifier, const struct kefir_ast_type *function,
+    const struct kefir_source_location *location, const struct kefir_ast_scoped_identifier **scoped_id) {
+    UNUSED(external_linkage);
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST translatation context"));
     REQUIRE(function != NULL && function->tag == KEFIR_AST_TYPE_FUNCTION,
@@ -958,10 +964,13 @@ kefir_result_t kefir_ast_global_context_declare_function(struct kefir_mem *mem,
                                                               ordinary_id->function.type, function);
         ordinary_id->function.specifier =
             kefir_ast_context_merge_function_specifiers(ordinary_id->function.specifier, specifier);
+        ordinary_id->function.inline_definition =
+            ordinary_id->function.inline_definition && !external_linkage && is_inline_specifier(specifier);
     } else {
         REQUIRE(res == KEFIR_NOT_FOUND, res);
         ordinary_id = kefir_ast_context_allocate_scoped_function_identifier(
-            mem, function, specifier, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN, true, false);
+            mem, function, specifier, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN, true, false,
+            !external_linkage && is_inline_specifier(specifier));
         REQUIRE(ordinary_id != NULL,
                 KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocted AST scoped identifier"));
         const char *id = kefir_symbol_table_insert(mem, &context->symbols, identifier, NULL);
@@ -980,9 +989,11 @@ kefir_result_t kefir_ast_global_context_declare_function(struct kefir_mem *mem,
 
 kefir_result_t kefir_ast_global_context_define_function(struct kefir_mem *mem, struct kefir_ast_global_context *context,
                                                         kefir_ast_function_specifier_t specifier,
-                                                        const char *identifier, const struct kefir_ast_type *function,
+                                                        kefir_bool_t external_linkage, const char *identifier,
+                                                        const struct kefir_ast_type *function,
                                                         const struct kefir_source_location *location,
                                                         const struct kefir_ast_scoped_identifier **scoped_id) {
+    UNUSED(external_linkage);
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST translatation context"));
     REQUIRE(function != NULL && function->tag == KEFIR_AST_TYPE_FUNCTION,
@@ -1013,10 +1024,13 @@ kefir_result_t kefir_ast_global_context_define_function(struct kefir_mem *mem, s
             kefir_ast_context_merge_function_specifiers(ordinary_id->function.specifier, specifier);
         ordinary_id->function.external = false;
         ordinary_id->function.defined = true;
+        ordinary_id->function.inline_definition =
+            ordinary_id->function.inline_definition && !external_linkage && is_inline_specifier(specifier);
     } else {
         REQUIRE(res == KEFIR_NOT_FOUND, res);
         ordinary_id = kefir_ast_context_allocate_scoped_function_identifier(
-            mem, function, specifier, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN, false, true);
+            mem, function, specifier, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN, false, true,
+            !external_linkage && is_inline_specifier(specifier));
         REQUIRE(ordinary_id != NULL,
                 KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocted AST scoped identifier"));
         const char *id = kefir_symbol_table_insert(mem, &context->symbols, identifier, NULL);
@@ -1068,10 +1082,13 @@ kefir_result_t kefir_ast_global_context_define_static_function(
         ordinary_id->function.specifier =
             kefir_ast_context_merge_function_specifiers(ordinary_id->function.specifier, specifier);
         ordinary_id->function.defined = ordinary_id->function.defined || !declaration;
+        ordinary_id->function.inline_definition =
+            ordinary_id->function.inline_definition && is_inline_specifier(specifier);
     } else {
         REQUIRE(res == KEFIR_NOT_FOUND, res);
         ordinary_id = kefir_ast_context_allocate_scoped_function_identifier(
-            mem, function, specifier, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC, false, !declaration);
+            mem, function, specifier, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC, false, !declaration,
+            is_inline_specifier(specifier));
         REQUIRE(ordinary_id != NULL,
                 KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocted AST scoped identifier"));
         const char *id = kefir_symbol_table_insert(mem, &context->symbols, identifier, NULL);

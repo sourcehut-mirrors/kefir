@@ -689,13 +689,31 @@ static kefir_result_t resolve_function_specifier(kefir_ast_function_specifier_ty
                                                  kefir_ast_function_specifier_t *function_specifier) {
     switch (specifier) {
         case KEFIR_AST_FUNCTION_SPECIFIER_TYPE_NORETURN:
-            *function_specifier =
-                kefir_ast_context_merge_function_specifiers(*function_specifier, KEFIR_AST_FUNCTION_SPECIFIER_NORETURN);
+            switch (*function_specifier) {
+                case KEFIR_AST_FUNCTION_SPECIFIER_NONE:
+                case KEFIR_AST_FUNCTION_SPECIFIER_NORETURN:
+                    *function_specifier = KEFIR_AST_FUNCTION_SPECIFIER_NORETURN;
+                    break;
+
+                case KEFIR_AST_FUNCTION_SPECIFIER_INLINE:
+                case KEFIR_AST_FUNCTION_SPECIFIER_INLINE_NORETURN:
+                    *function_specifier = KEFIR_AST_FUNCTION_SPECIFIER_INLINE_NORETURN;
+                    break;
+            }
             break;
 
         case KEFIR_AST_FUNCTION_SPECIFIER_TYPE_INLINE:
-            *function_specifier =
-                kefir_ast_context_merge_function_specifiers(*function_specifier, KEFIR_AST_FUNCTION_SPECIFIER_INLINE);
+            switch (*function_specifier) {
+                case KEFIR_AST_FUNCTION_SPECIFIER_NONE:
+                case KEFIR_AST_FUNCTION_SPECIFIER_INLINE:
+                    *function_specifier = KEFIR_AST_FUNCTION_SPECIFIER_INLINE;
+                    break;
+
+                case KEFIR_AST_FUNCTION_SPECIFIER_NORETURN:
+                case KEFIR_AST_FUNCTION_SPECIFIER_INLINE_NORETURN:
+                    *function_specifier = KEFIR_AST_FUNCTION_SPECIFIER_INLINE_NORETURN;
+                    break;
+            }
             break;
 
         default:

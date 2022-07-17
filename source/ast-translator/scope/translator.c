@@ -89,7 +89,8 @@ static kefir_result_t translate_externals(struct kefir_mem *mem, const struct ke
                 if (scoped_identifier->value->function.external) {
                     REQUIRE_OK(kefir_ir_module_declare_external(mem, module, scoped_identifier->identifier,
                                                                 KEFIR_IR_IDENTIFIER_GLOBAL));
-                } else if (scoped_identifier->value->function.storage != KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC) {
+                } else if (scoped_identifier->value->function.storage != KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC &&
+                           !scoped_identifier->value->function.inline_definition) {
                     REQUIRE_OK(kefir_ir_module_declare_global(mem, module, scoped_identifier->identifier,
                                                               KEFIR_IR_IDENTIFIER_GLOBAL));
                 }

@@ -63,7 +63,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_ast_function_type *function_type = NULL;
     const struct kefir_ast_type *type7 =
         kefir_ast_type_function(mem, context->type_bundle, kefir_ast_type_void(), &function_type);
-    REQUIRE_OK(kefir_ast_global_context_declare_function(mem, &global_context, KEFIR_AST_FUNCTION_SPECIFIER_NONE,
+    REQUIRE_OK(kefir_ast_global_context_declare_function(mem, &global_context, KEFIR_AST_FUNCTION_SPECIFIER_NONE, true,
                                                          "func1", type7, NULL, NULL));
 
     struct {

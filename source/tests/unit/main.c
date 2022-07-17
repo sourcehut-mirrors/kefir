@@ -151,6 +151,9 @@ DECLARE_CASE(ast_ordinary_function_scope2);
 DECLARE_CASE(ast_ordinary_function_scope3);
 DECLARE_CASE(ast_ordinary_function_scope4);
 DECLARE_CASE(ast_ordinary_function_scope5);
+DECLARE_CASE(ast_ordinary_inline_functions1);
+DECLARE_CASE(ast_ordinary_inline_functions2);
+DECLARE_CASE(ast_ordinary_inline_functions3);
 DECLARE_CASE(ast_ordinary_scope_objects_init1);
 DECLARE_CASE(ast_ordinary_scope_objects_init2);
 DECLARE_CASE(ast_ordinary_scope_objects_init3);
@@ -508,7 +511,8 @@ TEST_SUITE(
     &ast_ordinary_scope_composite_objects_local_external,
     &ast_ordinary_scope_composite_objects_local_thread_local_external, &ast_ordinary_function_scope1,
     &ast_ordinary_function_scope2, &ast_ordinary_function_scope3, &ast_ordinary_function_scope4,
-    &ast_ordinary_function_scope5, &ast_ordinary_scope_objects_init1, &ast_ordinary_scope_objects_init2,
+    &ast_ordinary_function_scope5, &ast_ordinary_inline_functions1, &ast_ordinary_inline_functions2,
+    &ast_ordinary_inline_functions3, &ast_ordinary_scope_objects_init1, &ast_ordinary_scope_objects_init2,
     &ast_ordinary_scope_objects_init3, &ast_ordinary_scope_objects_init4, &ast_ordinary_scope_objects_init5,
     &ast_ordinary_scope_objects_init6, &ast_ordinary_scope_objects_init7, &ast_ordinary_scope_objects_init8,
     &ast_ordinary_scope_objects_local_init1, &ast_ordinary_scope_objects_local_init2,

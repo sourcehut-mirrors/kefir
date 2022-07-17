@@ -524,7 +524,7 @@ DEFINE_CASE(ast_node_analysis_builtins1, "AST node analysis - va_start builtin")
         kefir_ast_type_function(&kft_mem, &global_context.type_bundle, kefir_ast_type_void(), &func1_type);
     func1_type->ellipsis = true;
     REQUIRE_OK(kefir_ast_global_context_define_function(&kft_mem, &global_context, KEFIR_AST_FUNCTION_SPECIFIER_NONE,
-                                                        "func1", func1, NULL, &scoped_id));
+                                                        true, "func1", func1, NULL, &scoped_id));
 
     ASSERT_OK(context->define_identifier(&kft_mem, context, true, "vararg", kefir_ast_type_signed_int(),
                                          KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN, KEFIR_AST_FUNCTION_SPECIFIER_NONE,

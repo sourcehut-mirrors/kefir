@@ -195,8 +195,9 @@ static kefir_result_t context_define_identifier(
             case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN:
                 REQUIRE(declaration, KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
                                                             "Function cannot be define in local scope"));
-                REQUIRE_OK(kefir_ast_local_context_declare_function(mem, local_ctx, function_specifier, identifier,
-                                                                    unqualified_type, location, scoped_id));
+                REQUIRE_OK(kefir_ast_local_context_declare_function(
+                    mem, local_ctx, function_specifier, storage_class == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN,
+                    identifier, unqualified_type, location, scoped_id));
                 break;
 
             case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC:
@@ -1046,9 +1047,15 @@ static kefir_result_t require_global_ordinary_function(struct kefir_ast_global_c
     return KEFIR_OK;
 }
 
+static inline kefir_bool_t is_inline_specifier(kefir_ast_function_specifier_t specifier) {
+    return specifier == KEFIR_AST_FUNCTION_SPECIFIER_INLINE ||
+           specifier == KEFIR_AST_FUNCTION_SPECIFIER_INLINE_NORETURN;
+}
+
 kefir_result_t kefir_ast_local_context_declare_function(struct kefir_mem *mem, struct kefir_ast_local_context *context,
                                                         kefir_ast_function_specifier_t specifier,
-                                                        const char *identifier, const struct kefir_ast_type *function,
+                                                        kefir_bool_t external_visibility, const char *identifier,
+                                                        const struct kefir_ast_type *function,
                                                         const struct kefir_source_location *location,
                                                         const struct kefir_ast_scoped_identifier **scoped_id_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
@@ -1076,6 +1083,8 @@ kefir_result_t kefir_ast_local_context_declare_function(struct kefir_mem *mem, s
             mem, &context->global->type_bundle, context->global->type_traits, ordinary_id->function.type, function);
         ordinary_id->function.specifier =
             kefir_ast_context_merge_function_specifiers(ordinary_id->function.specifier, specifier);
+        ordinary_id->function.inline_definition =
+            ordinary_id->function.inline_definition && !external_visibility && is_inline_specifier(specifier);
         ASSIGN_PTR(scoped_id_ptr, ordinary_id);
     } else if (global_ordinary_id != NULL) {
         REQUIRE(res == KEFIR_NOT_FOUND, res);
@@ -1086,11 +1095,14 @@ kefir_result_t kefir_ast_local_context_declare_function(struct kefir_mem *mem, s
                                      global_ordinary_id->function.type, function);
         global_ordinary_id->function.specifier =
             kefir_ast_context_merge_function_specifiers(global_ordinary_id->function.specifier, specifier);
+        global_ordinary_id->function.inline_definition =
+            global_ordinary_id->function.inline_definition && !external_visibility && is_inline_specifier(specifier);
         ASSIGN_PTR(scoped_id_ptr, global_ordinary_id);
     } else {
         REQUIRE(res == KEFIR_NOT_FOUND, res);
         struct kefir_ast_scoped_identifier *ordinary_id = kefir_ast_context_allocate_scoped_function_identifier(
-            mem, function, specifier, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN, true, false);
+            mem, function, specifier, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN, true, false,
+            !external_visibility && is_inline_specifier(specifier));
         REQUIRE(ordinary_id != NULL,
                 KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocte AST scoped identifier"));
         res = kefir_ast_identifier_flat_scope_insert(mem, &context->global->function_identifiers, identifier,
