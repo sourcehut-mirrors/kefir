@@ -38,6 +38,8 @@ int main() {
     assert(Alignments[9] == 1);
     assert(Alignments[10] == _Alignof(int));
     assert(Alignments[11] == _Alignof(long));
+    assert(Alignments[12] == _Alignof(long));
+    assert(Alignments[13] == 1);
     assert(get_alignment(0) == _Alignof(long));
     assert(get_alignment(1) == _Alignof(long));
     assert(get_alignment(2) == _Alignof(long));
@@ -50,5 +52,7 @@ int main() {
     assert(get_alignment(9) == 1);
     assert(get_alignment(10) == _Alignof(int));
     assert(get_alignment(11) == _Alignof(long));
+    assert(get_alignment(12) == _Alignof(long));
+    assert(get_alignment(13) == 1);
     return EXIT_SUCCESS;
 }

@@ -29,6 +29,7 @@
 #define KEFIR_AST_DECLARATION_ANALYSIS_NORMAL (0ull)
 #define KEFIR_AST_DECLARATION_ANALYSIS_FUNCTION_DEFINITION_CONTEXT (1ull)
 #define KEFIR_AST_DECLARATION_ANALYSIS_IGNORE_ALIGNMENT_SPECIFIER (1ull << 1)
+#define KEFIR_AST_DECLARATION_ANALYSIS_FORBID_ALIGNMENT_DECREASE (1ull << 2)
 
 kefir_result_t kefir_ast_analyze_declaration_specifiers(struct kefir_mem *, const struct kefir_ast_context *,
                                                         const struct kefir_ast_declarator_specifier_list *,

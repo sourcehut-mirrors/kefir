@@ -20,6 +20,10 @@
 
 #include "./definitions.h"
 
+struct S {
+    long l __attribute__((aligned(1)));
+};
+
 typedef char char_type_1 __attribute__((aligned(_Alignof(long))));
 typedef char_type_1 char_type_2;
 typedef long long_type_1 __attribute__((aligned(1)));
@@ -30,11 +34,22 @@ static char_type_2 chr2;
 static long_type_1 lng1;
 static long_type_2 lng2;
 static _Alignas(long) int int1;
+static struct S s1 __attribute__((aligned(1)));
 
-int Alignments[] = {_Alignof(char_type_1), _Alignof(char_type_2),        _Alignof(chr1),
-                    _Alignof(chr2),        _Alignof(chr1 + chr2),        _Alignof(lng1),
-                    _Alignof(lng2),        _Alignof(lng1 + lng2),        _Alignof(long_type_1),
-                    _Alignof(long_type_2), _Alignof(int _Alignas(long)), _Alignof(int1)};
+int Alignments[] = {_Alignof(char_type_1),
+                    _Alignof(char_type_2),
+                    _Alignof(chr1),
+                    _Alignof(chr2),
+                    _Alignof(chr1 + chr2),
+                    _Alignof(lng1),
+                    _Alignof(lng2),
+                    _Alignof(lng1 + lng2),
+                    _Alignof(long_type_1),
+                    _Alignof(long_type_2),
+                    _Alignof(int _Alignas(long)),
+                    _Alignof(int1),
+                    _Alignof(struct S),
+                    _Alignof(s1)};
 
 int get_alignment(int idx) {
     switch (idx) {
@@ -73,5 +88,11 @@ int get_alignment(int idx) {
 
         case 11:
             return _Alignof(int1);
+
+        case 12:
+            return _Alignof(struct S);
+
+        case 13:
+            return _Alignof(s1);
     }
 }
