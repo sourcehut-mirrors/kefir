@@ -29,7 +29,8 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
     struct kefir_parser *parser = builder->parser;
 
     REQUIRE(!PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_ASM),
-            KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED, "Assembly directive is not supported"));
+            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, PARSER_TOKEN_LOCATION(parser, 0),
+                                   "Assembly directive is not supported"));
 
     REQUIRE(PARSER_TOKEN_IS_LEFT_BRACE(parser, 0),
             KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match compound statement"));

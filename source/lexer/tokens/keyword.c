@@ -75,6 +75,7 @@ static const struct KeywordEntry {
                 {U"_Thread_local", KEFIR_KEYWORD_THREAD_LOCAL},
                 {U"__attribute__", KEFIR_KEYWORD_ATTRIBUTE},
                 {U"__asm__", KEFIR_KEYWORD_ASM},
+                {U"__asm", KEFIR_KEYWORD_ASM},
                 {U"asm", KEFIR_KEYWORD_ASM}};
 static const kefir_size_t KEYWORDS_LENGTH = sizeof(KEYWORDS) / sizeof(KEYWORDS[0]);
 
