@@ -65,6 +65,11 @@ typedef struct kefir_ast_declarator {
     struct kefir_source_location source_location;
 } kefir_ast_declarator_t;
 
+typedef struct kefir_ast_declarator_attributes {
+    kefir_size_t aligned;
+    kefir_bool_t gnu_inline;
+} kefir_ast_declarator_attributes_t;
+
 struct kefir_ast_declarator *kefir_ast_declarator_identifier(struct kefir_mem *, struct kefir_symbol_table *,
                                                              const char *);
 struct kefir_ast_declarator *kefir_ast_declarator_pointer(struct kefir_mem *, struct kefir_ast_declarator *);

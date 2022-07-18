@@ -121,7 +121,7 @@ DEFINE_CASE(ast_node_analysis_goto_address_statements1, "AST node analysis - got
     ASSERT_OK(context->define_identifier(&kft_mem, context, true, "label1",
                                          kefir_ast_type_pointer(&kft_mem, context->type_bundle, kefir_ast_type_void()),
                                          KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO, KEFIR_AST_FUNCTION_SPECIFIER_NONE,
-                                         NULL, NULL, NULL, &scoped1));
+                                         NULL, NULL, NULL, NULL, &scoped1));
 
     struct kefir_ast_compound_statement *compound1 = kefir_ast_new_compound_statement(&kft_mem);
 
@@ -704,7 +704,7 @@ DEFINE_CASE(ast_node_analysis_return_statements1, "AST node analysis - return st
         kefir_ast_type_function(&kft_mem, context->type_bundle, kefir_ast_type_void(), &function_type);
     REQUIRE_OK(global_context.context.define_identifier(
         &kft_mem, &global_context.context, true, "fn0", type1, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN,
-        KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, &scoped_id));
+        KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, &scoped_id));
     local_context.context.surrounding_function = scoped_id;
 
     struct kefir_ast_return_statement *return1 = kefir_ast_new_return_statement(&kft_mem, NULL);
@@ -720,7 +720,7 @@ DEFINE_CASE(ast_node_analysis_return_statements1, "AST node analysis - return st
         kefir_ast_type_function(&kft_mem, context->type_bundle, kefir_ast_type_unsigned_short(), &function_type);
     REQUIRE_OK(global_context.context.define_identifier(
         &kft_mem, &global_context.context, true, "fn1", type2, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN,
-        KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, &scoped_id));
+        KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, &scoped_id));
     local_context.context.surrounding_function = scoped_id;
 
     struct kefir_ast_return_statement *return2 =

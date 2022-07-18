@@ -76,6 +76,7 @@ typedef struct kefir_ast_context {
                                         const char *, const struct kefir_ast_type *,
                                         kefir_ast_scoped_identifier_storage_t, kefir_ast_function_specifier_t,
                                         struct kefir_ast_alignment *, struct kefir_ast_initializer *,
+                                        const struct kefir_ast_declarator_attributes *,
                                         const struct kefir_source_location *,
                                         const struct kefir_ast_scoped_identifier **);
     kefir_result_t (*reference_label)(struct kefir_mem *, const struct kefir_ast_context *, const char *,

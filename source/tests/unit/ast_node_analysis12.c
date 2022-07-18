@@ -524,14 +524,14 @@ DEFINE_CASE(ast_node_analysis_builtins1, "AST node analysis - va_start builtin")
         kefir_ast_type_function(&kft_mem, &global_context.type_bundle, kefir_ast_type_void(), &func1_type);
     func1_type->ellipsis = true;
     REQUIRE_OK(kefir_ast_global_context_define_function(&kft_mem, &global_context, KEFIR_AST_FUNCTION_SPECIFIER_NONE,
-                                                        true, "func1", func1, NULL, &scoped_id));
+                                                        true, "func1", func1, NULL, NULL, &scoped_id));
 
     ASSERT_OK(context->define_identifier(&kft_mem, context, true, "vararg", kefir_ast_type_signed_int(),
                                          KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN, KEFIR_AST_FUNCTION_SPECIFIER_NONE,
-                                         NULL, NULL, NULL, NULL));
+                                         NULL, NULL, NULL, NULL, NULL));
     ASSERT_OK(context->define_identifier(&kft_mem, context, true, "x", kefir_ast_type_signed_int(),
                                          KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN, KEFIR_AST_FUNCTION_SPECIFIER_NONE,
-                                         NULL, NULL, NULL, NULL));
+                                         NULL, NULL, NULL, NULL, NULL));
 
     do {
         struct kefir_ast_builtin *builtin1 = kefir_ast_new_builtin(&kft_mem, KEFIR_AST_BUILTIN_VA_START);
@@ -567,7 +567,7 @@ DEFINE_CASE(ast_node_analysis_builtins2, "AST node analysis - va_end builtin") {
     struct kefir_ast_context *context = &local_context.context;
     ASSERT_OK(context->define_identifier(&kft_mem, context, true, "vararg", kefir_ast_type_signed_int(),
                                          KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN, KEFIR_AST_FUNCTION_SPECIFIER_NONE,
-                                         NULL, NULL, NULL, NULL));
+                                         NULL, NULL, NULL, NULL, NULL));
 
     do {
         struct kefir_ast_builtin *builtin1 = kefir_ast_new_builtin(&kft_mem, KEFIR_AST_BUILTIN_VA_END);
@@ -598,10 +598,10 @@ DEFINE_CASE(ast_node_analysis_builtins3, "AST node analysis - va_copy builtin") 
     struct kefir_ast_context *context = &local_context.context;
     ASSERT_OK(context->define_identifier(&kft_mem, context, true, "vararg", kefir_ast_type_signed_int(),
                                          KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN, KEFIR_AST_FUNCTION_SPECIFIER_NONE,
-                                         NULL, NULL, NULL, NULL));
+                                         NULL, NULL, NULL, NULL, NULL));
     ASSERT_OK(context->define_identifier(&kft_mem, context, true, "vararg2", kefir_ast_type_signed_int(),
                                          KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN, KEFIR_AST_FUNCTION_SPECIFIER_NONE,
-                                         NULL, NULL, NULL, NULL));
+                                         NULL, NULL, NULL, NULL, NULL));
 
     do {
         struct kefir_ast_builtin *builtin1 = kefir_ast_new_builtin(&kft_mem, KEFIR_AST_BUILTIN_VA_COPY);
@@ -635,7 +635,7 @@ DEFINE_CASE(ast_node_analysis_builtins4, "AST node analysis - va_arg builtin") {
     struct kefir_ast_context *context = &local_context.context;
     ASSERT_OK(context->define_identifier(&kft_mem, context, true, "vararg", kefir_ast_type_signed_int(),
                                          KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN, KEFIR_AST_FUNCTION_SPECIFIER_NONE,
-                                         NULL, NULL, NULL, NULL));
+                                         NULL, NULL, NULL, NULL, NULL));
 
     struct kefir_ast_type_name *type_name1 =
         kefir_ast_new_type_name(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL));

@@ -61,7 +61,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         const struct kefir_ast_scoped_identifier *scoped_id = NULL;
         REQUIRE_OK(global_context.context.define_identifier(
             mem, &global_context.context, true, "fn0", type1, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN,
-            KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, &scoped_id));
+            KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, &scoped_id));
         local_context.context.surrounding_function = scoped_id;
 
         struct kefir_ast_declaration *decl1 = kefir_ast_new_single_declaration(

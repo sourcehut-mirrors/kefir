@@ -79,7 +79,7 @@ static kefir_result_t scoped_context_define_identifier(struct kefir_mem *mem,
 
     if (context->function_definition_context) {
         REQUIRE_OK(context->parent->define_identifier(mem, context->parent, true, identifier, type, storage_class,
-                                                      KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, location,
+                                                      KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, location,
                                                       scoped_id_ptr));
     } else {
         struct kefir_ast_scoped_identifier *scoped_id = NULL;
@@ -246,8 +246,9 @@ static kefir_result_t context_define_identifier(
     struct kefir_mem *mem, const struct kefir_ast_context *context, kefir_bool_t declaration, const char *identifier,
     const struct kefir_ast_type *type, kefir_ast_scoped_identifier_storage_t storage_class,
     kefir_ast_function_specifier_t function_specifier, struct kefir_ast_alignment *alignment,
-    struct kefir_ast_initializer *initializer, const struct kefir_source_location *location,
-    const struct kefir_ast_scoped_identifier **scoped_id) {
+    struct kefir_ast_initializer *initializer, const struct kefir_ast_declarator_attributes *attributes,
+    const struct kefir_source_location *location, const struct kefir_ast_scoped_identifier **scoped_id) {
+    UNUSED(attributes);
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST context"));
     REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type"));

@@ -75,13 +75,13 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
                                                  type_name4->base.properties.type, NULL));
 
     REQUIRE_OK(kefir_ast_global_context_declare_function(mem, &global_context, KEFIR_AST_FUNCTION_SPECIFIER_NONE, true,
-                                                         "sum", type1, NULL, NULL));
+                                                         "sum", type1, NULL, NULL, NULL));
     REQUIRE_OK(kefir_ast_global_context_declare_function(mem, &global_context, KEFIR_AST_FUNCTION_SPECIFIER_NONE, true,
-                                                         "test", type2, NULL, NULL));
+                                                         "test", type2, NULL, NULL, NULL));
     REQUIRE_OK(kefir_ast_global_context_declare_function(mem, &global_context, KEFIR_AST_FUNCTION_SPECIFIER_NONE, true,
-                                                         "test2", type3, NULL, NULL));
+                                                         "test2", type3, NULL, NULL, NULL));
     REQUIRE_OK(kefir_ast_global_context_declare_function(mem, &global_context, KEFIR_AST_FUNCTION_SPECIFIER_NONE, true,
-                                                         "test3", type5, NULL, NULL));
+                                                         "test3", type5, NULL, NULL, NULL));
 
     struct kefir_ast_function_call *call6 =
         kefir_ast_new_function_call(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "test3")));

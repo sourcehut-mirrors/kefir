@@ -65,9 +65,9 @@ static kefir_result_t process_struct_declaration_entry(struct kefir_mem *mem, co
 
         const struct kefir_ast_type *field_type = base_field_type;
         const char *identifier = NULL;
-        REQUIRE_OK(kefir_ast_analyze_declaration_declarator(mem, context, entry_declarator->declarator, &identifier,
-                                                            &field_type, &alignment,
-                                                            KEFIR_AST_DECLARATION_ANALYSIS_FORBID_ALIGNMENT_DECREASE));
+        REQUIRE_OK(kefir_ast_analyze_declaration_declarator(
+            mem, context, entry_declarator->declarator, &identifier, &field_type, &alignment,
+            KEFIR_AST_DECLARATION_ANALYSIS_FORBID_ALIGNMENT_DECREASE, NULL));
         REQUIRE(storage_class == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &entry_declarator->declarator->source_location,
                                        "Structure/union field cannot have storage class specifiers"));
@@ -925,7 +925,8 @@ static kefir_result_t resolve_function_declarator(struct kefir_mem *mem, const s
 
 static kefir_result_t analyze_declaration_declarator_alignment_attribute(
     struct kefir_mem *mem, const struct kefir_ast_context *context, struct kefir_ast_attribute *attribute,
-    const struct kefir_ast_type **base_type, kefir_size_t *alignment, kefir_uint64_t flags) {
+    const struct kefir_ast_type **base_type, kefir_size_t *alignment, kefir_uint64_t flags,
+    struct kefir_ast_declarator_attributes *attributes) {
     REQUIRE(alignment != NULL, KEFIR_OK);
 
     if (kefir_list_length(&attribute->parameters) == 1) {
@@ -943,11 +944,17 @@ static kefir_result_t analyze_declaration_declarator_alignment_attribute(
             if (alignment_value.uinteger >= natural_alignment) {
                 *alignment = MAX(*alignment, alignment_value.uinteger);
             }
+            if (attributes != NULL) {
+                attributes->aligned = alignment_value.uinteger;
+            }
         } else {
             *alignment = alignment_value.uinteger;
         }
     } else if (kefir_list_length(&attribute->parameters) == 0) {
         REQUIRE_OK(type_alignment(mem, context, *base_type, NULL, alignment));
+        if (attributes != NULL) {
+            attributes->aligned = *alignment;
+        }
     }
     return KEFIR_OK;
 }
@@ -956,8 +963,8 @@ static kefir_result_t analyze_declaration_declarator_attributes(struct kefir_mem
                                                                 const struct kefir_ast_context *context,
                                                                 const struct kefir_ast_declarator *declarator,
                                                                 const struct kefir_ast_type **base_type,
-                                                                kefir_size_t *alignment, kefir_uint64_t flags) {
-
+                                                                kefir_size_t *alignment, kefir_uint64_t flags,
+                                                                struct kefir_ast_declarator_attributes *attributes) {
     for (const struct kefir_list_entry *iter = kefir_list_head(&declarator->attributes.attributes); iter != NULL;
          kefir_list_next(&iter)) {
         ASSIGN_DECL_CAST(struct kefir_ast_attribute_list *, attr_list, iter->value);
@@ -968,7 +975,9 @@ static kefir_result_t analyze_declaration_declarator_attributes(struct kefir_mem
 
             if (strcmp(attribute->name, "aligned") == 0 || strcmp(attribute->name, "__aligned__") == 0) {
                 REQUIRE_OK(analyze_declaration_declarator_alignment_attribute(mem, context, attribute, base_type,
-                                                                              alignment, flags));
+                                                                              alignment, flags, attributes));
+            } else if (strcmp(attribute->name, "__gnu_inline__") == 0 && attributes != NULL) {
+                attributes->gnu_inline = true;
             }
         }
     }
@@ -977,7 +986,8 @@ static kefir_result_t analyze_declaration_declarator_attributes(struct kefir_mem
 
 static kefir_result_t analyze_declaration_declarator_impl(
     struct kefir_mem *mem, const struct kefir_ast_context *context, const struct kefir_ast_declarator *declarator,
-    const char **identifier, const struct kefir_ast_type **base_type, kefir_size_t *alignment, kefir_uint64_t flags) {
+    const char **identifier, const struct kefir_ast_type **base_type, kefir_size_t *alignment, kefir_uint64_t flags,
+    struct kefir_ast_declarator_attributes *attributes) {
     ASSIGN_PTR(identifier, NULL);
     REQUIRE(declarator != NULL, KEFIR_OK);
     switch (declarator->klass) {
@@ -988,13 +998,13 @@ static kefir_result_t analyze_declaration_declarator_impl(
         case KEFIR_AST_DECLARATOR_POINTER:
             REQUIRE_OK(resolve_pointer_declarator(mem, context, declarator, base_type));
             REQUIRE_OK(analyze_declaration_declarator_impl(mem, context, declarator->pointer.declarator, identifier,
-                                                           base_type, alignment, flags));
+                                                           base_type, alignment, flags, attributes));
             break;
 
         case KEFIR_AST_DECLARATOR_ARRAY:
             REQUIRE_OK(resolve_array_declarator(mem, context, declarator, base_type));
             REQUIRE_OK(analyze_declaration_declarator_impl(mem, context, declarator->array.declarator, identifier,
-                                                           base_type, alignment, flags));
+                                                           base_type, alignment, flags, attributes));
             break;
 
         case KEFIR_AST_DECLARATOR_FUNCTION: {
@@ -1006,11 +1016,12 @@ static kefir_result_t analyze_declaration_declarator_impl(
                                                 underlying_function == NULL,
                                             base_type));
             REQUIRE_OK(analyze_declaration_declarator_impl(mem, context, declarator->function.declarator, identifier,
-                                                           base_type, alignment, flags));
+                                                           base_type, alignment, flags, attributes));
         } break;
     }
 
-    REQUIRE_OK(analyze_declaration_declarator_attributes(mem, context, declarator, base_type, alignment, flags));
+    REQUIRE_OK(
+        analyze_declaration_declarator_attributes(mem, context, declarator, base_type, alignment, flags, attributes));
     return KEFIR_OK;
 }
 
@@ -1018,12 +1029,18 @@ kefir_result_t kefir_ast_analyze_declaration_declarator(struct kefir_mem *mem, c
                                                         const struct kefir_ast_declarator *declarator,
                                                         const char **identifier,
                                                         const struct kefir_ast_type **base_type,
-                                                        kefir_size_t *alignment, kefir_uint64_t flags) {
+                                                        kefir_size_t *alignment, kefir_uint64_t flags,
+                                                        struct kefir_ast_declarator_attributes *attributes) {
     UNUSED(flags);
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST context"));
 
-    REQUIRE_OK(analyze_declaration_declarator_impl(mem, context, declarator, identifier, base_type, alignment, flags));
+    if (attributes != NULL) {
+        *attributes = (struct kefir_ast_declarator_attributes){0};
+    }
+
+    REQUIRE_OK(analyze_declaration_declarator_impl(mem, context, declarator, identifier, base_type, alignment, flags,
+                                                   attributes));
     return KEFIR_OK;
 }
 
@@ -1129,7 +1146,7 @@ kefir_result_t kefir_ast_analyze_declaration(struct kefir_mem *mem, const struct
                                              const struct kefir_ast_type **type,
                                              kefir_ast_scoped_identifier_storage_t *storage,
                                              kefir_ast_function_specifier_t *function, kefir_size_t *alignment,
-                                             kefir_uint64_t flags) {
+                                             kefir_uint64_t flags, struct kefir_ast_declarator_attributes *attributes) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST context"));
     REQUIRE(specifiers != NULL,
@@ -1140,8 +1157,8 @@ kefir_result_t kefir_ast_analyze_declaration(struct kefir_mem *mem, const struct
     const struct kefir_ast_type *base_type = NULL;
     REQUIRE_OK(kefir_ast_analyze_declaration_specifiers(mem, context, specifiers, &base_type, storage, function,
                                                         alignment, flags));
-    REQUIRE_OK(
-        kefir_ast_analyze_declaration_declarator(mem, context, declarator, identifier, &base_type, alignment, flags));
+    REQUIRE_OK(kefir_ast_analyze_declaration_declarator(mem, context, declarator, identifier, &base_type, alignment,
+                                                        flags, attributes));
     ASSIGN_PTR(type, base_type);
     return KEFIR_OK;
 }

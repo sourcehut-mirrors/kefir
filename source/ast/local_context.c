@@ -160,8 +160,8 @@ static kefir_result_t context_define_identifier(
     struct kefir_mem *mem, const struct kefir_ast_context *context, kefir_bool_t declaration, const char *identifier,
     const struct kefir_ast_type *type, kefir_ast_scoped_identifier_storage_t storage_class,
     kefir_ast_function_specifier_t function_specifier, struct kefir_ast_alignment *alignment,
-    struct kefir_ast_initializer *initializer, const struct kefir_source_location *location,
-    const struct kefir_ast_scoped_identifier **scoped_id) {
+    struct kefir_ast_initializer *initializer, const struct kefir_ast_declarator_attributes *attributes,
+    const struct kefir_source_location *location, const struct kefir_ast_scoped_identifier **scoped_id) {
 
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST context"));
@@ -197,7 +197,7 @@ static kefir_result_t context_define_identifier(
                                                             "Function cannot be define in local scope"));
                 REQUIRE_OK(kefir_ast_local_context_declare_function(
                     mem, local_ctx, function_specifier, storage_class == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN,
-                    identifier, unqualified_type, location, scoped_id));
+                    identifier, unqualified_type, attributes, location, scoped_id));
                 break;
 
             case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC:
@@ -1056,6 +1056,7 @@ kefir_result_t kefir_ast_local_context_declare_function(struct kefir_mem *mem, s
                                                         kefir_ast_function_specifier_t specifier,
                                                         kefir_bool_t external_visibility, const char *identifier,
                                                         const struct kefir_ast_type *function,
+                                                        const struct kefir_ast_declarator_attributes *attributes,
                                                         const struct kefir_source_location *location,
                                                         const struct kefir_ast_scoped_identifier **scoped_id_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
@@ -1085,6 +1086,9 @@ kefir_result_t kefir_ast_local_context_declare_function(struct kefir_mem *mem, s
             kefir_ast_context_merge_function_specifiers(ordinary_id->function.specifier, specifier);
         ordinary_id->function.inline_definition =
             ordinary_id->function.inline_definition && !external_visibility && is_inline_specifier(specifier);
+        if (attributes != NULL) {
+            ordinary_id->function.flags.gnu_inline = ordinary_id->function.flags.gnu_inline || attributes->gnu_inline;
+        }
         ASSIGN_PTR(scoped_id_ptr, ordinary_id);
     } else if (global_ordinary_id != NULL) {
         REQUIRE(res == KEFIR_NOT_FOUND, res);
@@ -1097,6 +1101,10 @@ kefir_result_t kefir_ast_local_context_declare_function(struct kefir_mem *mem, s
             kefir_ast_context_merge_function_specifiers(global_ordinary_id->function.specifier, specifier);
         global_ordinary_id->function.inline_definition =
             global_ordinary_id->function.inline_definition && !external_visibility && is_inline_specifier(specifier);
+        if (attributes != NULL) {
+            global_ordinary_id->function.flags.gnu_inline =
+                global_ordinary_id->function.flags.gnu_inline || attributes->gnu_inline;
+        }
         ASSIGN_PTR(scoped_id_ptr, global_ordinary_id);
     } else {
         REQUIRE(res == KEFIR_NOT_FOUND, res);
@@ -1112,6 +1120,7 @@ kefir_result_t kefir_ast_local_context_declare_function(struct kefir_mem *mem, s
             return res;
         });
         REQUIRE_OK(kefir_ast_identifier_block_scope_insert(mem, &context->ordinary_scope, identifier, ordinary_id));
+        ordinary_id->function.flags.gnu_inline = attributes != NULL && attributes->gnu_inline;
         ASSIGN_PTR(scoped_id_ptr, ordinary_id);
     }
     return KEFIR_OK;

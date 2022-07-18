@@ -41,54 +41,55 @@ DEFINE_CASE(ast_declaration_variably_modified1, "AST declarations - variably mod
 
     const struct kefir_ast_type *type2 = kefir_ast_type_pointer(&kft_mem, &global_context.type_bundle, type1);
 
-    ASSERT_NOK(global_context.context.define_identifier(&kft_mem, &global_context.context, true, "test1", type1,
-                                                        KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN,
-                                                        KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL));
-    ASSERT_NOK(global_context.context.define_identifier(&kft_mem, &global_context.context, true, "test2", type2,
-                                                        KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN,
-                                                        KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL));
+    ASSERT_NOK(global_context.context.define_identifier(
+        &kft_mem, &global_context.context, true, "test1", type1, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN,
+        KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, NULL));
+    ASSERT_NOK(global_context.context.define_identifier(
+        &kft_mem, &global_context.context, true, "test2", type2, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN,
+        KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, NULL));
 
-    ASSERT_NOK(global_context.context.define_identifier(&kft_mem, &global_context.context, true, "test3", type1,
-                                                        KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN,
-                                                        KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL));
-    ASSERT_NOK(global_context.context.define_identifier(&kft_mem, &global_context.context, true, "test4", type2,
-                                                        KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN,
-                                                        KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL));
+    ASSERT_NOK(global_context.context.define_identifier(
+        &kft_mem, &global_context.context, true, "test3", type1, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN,
+        KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, NULL));
+    ASSERT_NOK(global_context.context.define_identifier(
+        &kft_mem, &global_context.context, true, "test4", type2, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN,
+        KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, NULL));
 
-    ASSERT_NOK(global_context.context.define_identifier(&kft_mem, &global_context.context, true, "test5", type1,
-                                                        KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN_THREAD_LOCAL,
-                                                        KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL));
-    ASSERT_NOK(global_context.context.define_identifier(&kft_mem, &global_context.context, true, "test6", type2,
-                                                        KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN_THREAD_LOCAL,
-                                                        KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL));
+    ASSERT_NOK(global_context.context.define_identifier(
+        &kft_mem, &global_context.context, true, "test5", type1, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN_THREAD_LOCAL,
+        KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, NULL));
+    ASSERT_NOK(global_context.context.define_identifier(
+        &kft_mem, &global_context.context, true, "test6", type2, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN_THREAD_LOCAL,
+        KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, NULL));
 
-    ASSERT_NOK(global_context.context.define_identifier(&kft_mem, &global_context.context, true, "test7", type1,
-                                                        KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC,
-                                                        KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL));
-    ASSERT_NOK(global_context.context.define_identifier(&kft_mem, &global_context.context, true, "test8", type2,
-                                                        KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC,
-                                                        KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL));
+    ASSERT_NOK(global_context.context.define_identifier(
+        &kft_mem, &global_context.context, true, "test7", type1, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC,
+        KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, NULL));
+    ASSERT_NOK(global_context.context.define_identifier(
+        &kft_mem, &global_context.context, true, "test8", type2, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC,
+        KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, NULL));
 
-    ASSERT_NOK(global_context.context.define_identifier(&kft_mem, &global_context.context, true, "test9", type1,
-                                                        KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC_THREAD_LOCAL,
-                                                        KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL));
+    ASSERT_NOK(global_context.context.define_identifier(
+        &kft_mem, &global_context.context, true, "test9", type1, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC_THREAD_LOCAL,
+        KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, NULL));
     ASSERT_NOK(global_context.context.define_identifier(&kft_mem, &global_context.context, true, "test10", type2,
                                                         KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC_THREAD_LOCAL,
-                                                        KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL));
+                                                        KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL,
+                                                        NULL));
 
-    ASSERT_NOK(global_context.context.define_identifier(&kft_mem, &global_context.context, true, "test11", type1,
-                                                        KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO,
-                                                        KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL));
-    ASSERT_NOK(global_context.context.define_identifier(&kft_mem, &global_context.context, true, "test12", type2,
-                                                        KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO,
-                                                        KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL));
+    ASSERT_NOK(global_context.context.define_identifier(
+        &kft_mem, &global_context.context, true, "test11", type1, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO,
+        KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, NULL));
+    ASSERT_NOK(global_context.context.define_identifier(
+        &kft_mem, &global_context.context, true, "test12", type2, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO,
+        KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, NULL));
 
-    ASSERT_NOK(global_context.context.define_identifier(&kft_mem, &global_context.context, true, "test13", type1,
-                                                        KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER,
-                                                        KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL));
-    ASSERT_NOK(global_context.context.define_identifier(&kft_mem, &global_context.context, true, "test14", type2,
-                                                        KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER,
-                                                        KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL));
+    ASSERT_NOK(global_context.context.define_identifier(
+        &kft_mem, &global_context.context, true, "test13", type1, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER,
+        KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, NULL));
+    ASSERT_NOK(global_context.context.define_identifier(
+        &kft_mem, &global_context.context, true, "test14", type2, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER,
+        KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, NULL));
 
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &global_context));
 }
@@ -112,52 +113,52 @@ DEFINE_CASE(ast_declaration_variably_modified2, "AST declarations - variably mod
 
     ASSERT_OK(local_context.context.define_identifier(&kft_mem, &local_context.context, true, "test1", type1,
                                                       KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN,
-                                                      KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL));
+                                                      KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, NULL));
     ASSERT_OK(local_context.context.define_identifier(&kft_mem, &local_context.context, true, "test2", type2,
                                                       KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN,
-                                                      KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL));
+                                                      KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, NULL));
 
-    ASSERT_NOK(local_context.context.define_identifier(&kft_mem, &local_context.context, true, "test3", type1,
-                                                       KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN,
-                                                       KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL));
-    ASSERT_NOK(local_context.context.define_identifier(&kft_mem, &local_context.context, true, "test4", type2,
-                                                       KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN,
-                                                       KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL));
+    ASSERT_NOK(local_context.context.define_identifier(
+        &kft_mem, &local_context.context, true, "test3", type1, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN,
+        KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, NULL));
+    ASSERT_NOK(local_context.context.define_identifier(
+        &kft_mem, &local_context.context, true, "test4", type2, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN,
+        KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, NULL));
 
-    ASSERT_NOK(local_context.context.define_identifier(&kft_mem, &local_context.context, true, "test5", type1,
-                                                       KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN_THREAD_LOCAL,
-                                                       KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL));
-    ASSERT_NOK(local_context.context.define_identifier(&kft_mem, &local_context.context, true, "test6", type2,
-                                                       KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN_THREAD_LOCAL,
-                                                       KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL));
+    ASSERT_NOK(local_context.context.define_identifier(
+        &kft_mem, &local_context.context, true, "test5", type1, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN_THREAD_LOCAL,
+        KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, NULL));
+    ASSERT_NOK(local_context.context.define_identifier(
+        &kft_mem, &local_context.context, true, "test6", type2, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN_THREAD_LOCAL,
+        KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, NULL));
 
-    ASSERT_NOK(local_context.context.define_identifier(&kft_mem, &local_context.context, true, "test7", type1,
-                                                       KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC,
-                                                       KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL));
+    ASSERT_NOK(local_context.context.define_identifier(
+        &kft_mem, &local_context.context, true, "test7", type1, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC,
+        KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, NULL));
     ASSERT_OK(local_context.context.define_identifier(&kft_mem, &local_context.context, true, "test8", type2,
                                                       KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC,
-                                                      KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL));
+                                                      KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, NULL));
 
-    ASSERT_NOK(local_context.context.define_identifier(&kft_mem, &local_context.context, true, "test9", type1,
-                                                       KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC_THREAD_LOCAL,
-                                                       KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL));
+    ASSERT_NOK(local_context.context.define_identifier(
+        &kft_mem, &local_context.context, true, "test9", type1, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC_THREAD_LOCAL,
+        KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, NULL));
     ASSERT_OK(local_context.context.define_identifier(&kft_mem, &local_context.context, true, "test10", type2,
                                                       KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC_THREAD_LOCAL,
-                                                      KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL));
+                                                      KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, NULL));
 
     ASSERT_OK(local_context.context.define_identifier(&kft_mem, &local_context.context, true, "test11", type1,
                                                       KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO,
-                                                      KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL));
+                                                      KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, NULL));
     ASSERT_OK(local_context.context.define_identifier(&kft_mem, &local_context.context, true, "test12", type2,
                                                       KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO,
-                                                      KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL));
+                                                      KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, NULL));
 
     ASSERT_OK(local_context.context.define_identifier(&kft_mem, &local_context.context, true, "test13", type1,
                                                       KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER,
-                                                      KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL));
+                                                      KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, NULL));
     ASSERT_OK(local_context.context.define_identifier(&kft_mem, &local_context.context, true, "test14", type2,
                                                       KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER,
-                                                      KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL));
+                                                      KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, NULL));
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &local_context));
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &global_context));
@@ -185,52 +186,52 @@ DEFINE_CASE(ast_declaration_variably_modified3,
 
     ASSERT_OK(func_context.context.define_identifier(&kft_mem, &func_context.context, true, "test1", type1,
                                                      KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN,
-                                                     KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL));
+                                                     KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, NULL));
     ASSERT_OK(func_context.context.define_identifier(&kft_mem, &func_context.context, true, "test2", type2,
                                                      KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN,
-                                                     KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL));
+                                                     KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, NULL));
 
     ASSERT_NOK(func_context.context.define_identifier(&kft_mem, &func_context.context, true, "test3", type1,
                                                       KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN,
-                                                      KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL));
+                                                      KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, NULL));
     ASSERT_NOK(func_context.context.define_identifier(&kft_mem, &func_context.context, true, "test4", type2,
                                                       KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN,
-                                                      KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL));
+                                                      KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, NULL));
 
     ASSERT_NOK(func_context.context.define_identifier(&kft_mem, &func_context.context, true, "test5", type1,
                                                       KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN_THREAD_LOCAL,
-                                                      KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL));
+                                                      KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, NULL));
     ASSERT_NOK(func_context.context.define_identifier(&kft_mem, &func_context.context, true, "test6", type2,
                                                       KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN_THREAD_LOCAL,
-                                                      KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL));
+                                                      KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, NULL));
 
     ASSERT_NOK(func_context.context.define_identifier(&kft_mem, &func_context.context, true, "test7", type1,
                                                       KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC,
-                                                      KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL));
+                                                      KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, NULL));
     ASSERT_NOK(func_context.context.define_identifier(&kft_mem, &func_context.context, true, "test8", type2,
                                                       KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC,
-                                                      KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL));
+                                                      KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, NULL));
 
     ASSERT_NOK(func_context.context.define_identifier(&kft_mem, &func_context.context, true, "test9", type1,
                                                       KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC_THREAD_LOCAL,
-                                                      KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL));
+                                                      KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, NULL));
     ASSERT_NOK(func_context.context.define_identifier(&kft_mem, &func_context.context, true, "test10", type2,
                                                       KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC_THREAD_LOCAL,
-                                                      KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL));
+                                                      KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, NULL));
 
     ASSERT_NOK(func_context.context.define_identifier(&kft_mem, &func_context.context, true, "test11", type1,
                                                       KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO,
-                                                      KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL));
+                                                      KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, NULL));
     ASSERT_NOK(func_context.context.define_identifier(&kft_mem, &func_context.context, true, "test12", type2,
                                                       KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO,
-                                                      KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL));
+                                                      KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, NULL));
 
     ASSERT_OK(func_context.context.define_identifier(&kft_mem, &func_context.context, true, "test13", type1,
                                                      KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER,
-                                                     KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL));
+                                                     KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, NULL));
     ASSERT_OK(func_context.context.define_identifier(&kft_mem, &func_context.context, true, "test14", type2,
                                                      KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER,
-                                                     KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL));
+                                                     KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, NULL));
 
     ASSERT_OK(kefir_ast_function_declaration_context_free(&kft_mem, &func_context));
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &local_context));
@@ -263,44 +264,44 @@ DEFINE_CASE(ast_declaration_variably_modified4, "AST declarations - variably mod
     struct kefir_ast_initializer *init2 =
         kefir_ast_new_expression_initializer(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)));
 
-    ASSERT_NOK(func_context.context.define_identifier(&kft_mem, &func_context.context, true, "test1", type1,
-                                                      KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN,
-                                                      KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, init1, NULL, NULL));
-    ASSERT_NOK(func_context.context.define_identifier(&kft_mem, &func_context.context, true, "test2", type2,
-                                                      KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN,
-                                                      KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, init2, NULL, NULL));
+    ASSERT_NOK(func_context.context.define_identifier(
+        &kft_mem, &func_context.context, true, "test1", type1, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN,
+        KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, init1, NULL, NULL, NULL));
+    ASSERT_NOK(func_context.context.define_identifier(
+        &kft_mem, &func_context.context, true, "test2", type2, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN,
+        KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, init2, NULL, NULL, NULL));
 
-    ASSERT_NOK(func_context.context.define_identifier(&kft_mem, &func_context.context, true, "test3", type1,
-                                                      KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER,
-                                                      KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, init1, NULL, NULL));
-    ASSERT_NOK(func_context.context.define_identifier(&kft_mem, &func_context.context, true, "test4", type2,
-                                                      KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER,
-                                                      KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, init2, NULL, NULL));
+    ASSERT_NOK(func_context.context.define_identifier(
+        &kft_mem, &func_context.context, true, "test3", type1, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER,
+        KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, init1, NULL, NULL, NULL));
+    ASSERT_NOK(func_context.context.define_identifier(
+        &kft_mem, &func_context.context, true, "test4", type2, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER,
+        KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, init2, NULL, NULL, NULL));
 
-    ASSERT_NOK(local_context.context.define_identifier(&kft_mem, &local_context.context, true, "test5", type1,
-                                                       KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN,
-                                                       KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, init1, NULL, NULL));
-    ASSERT_NOK(local_context.context.define_identifier(&kft_mem, &local_context.context, true, "test6", type2,
-                                                       KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN,
-                                                       KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, init2, NULL, NULL));
+    ASSERT_NOK(local_context.context.define_identifier(
+        &kft_mem, &local_context.context, true, "test5", type1, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN,
+        KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, init1, NULL, NULL, NULL));
+    ASSERT_NOK(local_context.context.define_identifier(
+        &kft_mem, &local_context.context, true, "test6", type2, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN,
+        KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, init2, NULL, NULL, NULL));
 
-    ASSERT_NOK(local_context.context.define_identifier(&kft_mem, &local_context.context, true, "test7", type2,
-                                                       KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC_THREAD_LOCAL,
-                                                       KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, init2, NULL, NULL));
+    ASSERT_NOK(local_context.context.define_identifier(
+        &kft_mem, &local_context.context, true, "test7", type2, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC_THREAD_LOCAL,
+        KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, init2, NULL, NULL, NULL));
 
-    ASSERT_NOK(local_context.context.define_identifier(&kft_mem, &local_context.context, true, "test8", type1,
-                                                       KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO,
-                                                       KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, init1, NULL, NULL));
-    ASSERT_NOK(local_context.context.define_identifier(&kft_mem, &local_context.context, true, "test9", type2,
-                                                       KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO,
-                                                       KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, init2, NULL, NULL));
+    ASSERT_NOK(local_context.context.define_identifier(
+        &kft_mem, &local_context.context, true, "test8", type1, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO,
+        KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, init1, NULL, NULL, NULL));
+    ASSERT_NOK(local_context.context.define_identifier(
+        &kft_mem, &local_context.context, true, "test9", type2, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO,
+        KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, init2, NULL, NULL, NULL));
 
-    ASSERT_NOK(local_context.context.define_identifier(&kft_mem, &local_context.context, true, "test10", type1,
-                                                       KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER,
-                                                       KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, init1, NULL, NULL));
-    ASSERT_NOK(local_context.context.define_identifier(&kft_mem, &local_context.context, true, "test11", type2,
-                                                       KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER,
-                                                       KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, init2, NULL, NULL));
+    ASSERT_NOK(local_context.context.define_identifier(
+        &kft_mem, &local_context.context, true, "test10", type1, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER,
+        KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, init1, NULL, NULL, NULL));
+    ASSERT_NOK(local_context.context.define_identifier(
+        &kft_mem, &local_context.context, true, "test11", type2, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER,
+        KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, init2, NULL, NULL, NULL));
 
     ASSERT_OK(kefir_ast_initializer_free(&kft_mem, init1));
     ASSERT_OK(kefir_ast_initializer_free(&kft_mem, init2));
@@ -343,7 +344,7 @@ DEFINE_CASE(ast_declaration_variably_modified_structure_field, "AST declarations
 
     ASSERT_NOK(kefir_ast_analyze_declaration(&kft_mem, &global_context.context, &decl->specifiers,
                                              init_decl->declarator, NULL, NULL, NULL, NULL, NULL,
-                                             KEFIR_AST_DECLARATION_ANALYSIS_NORMAL));
+                                             KEFIR_AST_DECLARATION_ANALYSIS_NORMAL, NULL));
 
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(decl)));
 

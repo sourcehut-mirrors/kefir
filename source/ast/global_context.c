@@ -29,6 +29,7 @@
 #include "kefir/ast/function_declaration_context.h"
 #include "kefir/core/source_error.h"
 #include "kefir/core/extensions.h"
+#include "kefir/ast/declarator.h"
 
 static kefir_result_t context_resolve_ordinary_identifier(const struct kefir_ast_context *context,
                                                           const char *identifier,
@@ -108,8 +109,8 @@ static kefir_result_t context_define_identifier(
     struct kefir_mem *mem, const struct kefir_ast_context *context, kefir_bool_t declaration, const char *identifier,
     const struct kefir_ast_type *type, kefir_ast_scoped_identifier_storage_t storage_class,
     kefir_ast_function_specifier_t function_specifier, struct kefir_ast_alignment *alignment,
-    struct kefir_ast_initializer *initializer, const struct kefir_source_location *location,
-    const struct kefir_ast_scoped_identifier **scoped_id) {
+    struct kefir_ast_initializer *initializer, const struct kefir_ast_declarator_attributes *attributes,
+    const struct kefir_source_location *location, const struct kefir_ast_scoped_identifier **scoped_id) {
 
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST context"));
@@ -144,11 +145,11 @@ static kefir_result_t context_define_identifier(
                 if (declaration) {
                     REQUIRE_OK(kefir_ast_global_context_declare_function(
                         mem, global_ctx, function_specifier, storage_class == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN,
-                        identifier, unqualified_type, location, scoped_id));
+                        identifier, unqualified_type, attributes, location, scoped_id));
                 } else {
                     REQUIRE_OK(kefir_ast_global_context_define_function(
                         mem, global_ctx, function_specifier, storage_class == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN,
-                        identifier, unqualified_type, location, scoped_id));
+                        identifier, unqualified_type, attributes, location, scoped_id));
                 }
                 break;
 
@@ -937,8 +938,8 @@ static inline kefir_bool_t is_inline_specifier(kefir_ast_function_specifier_t sp
 kefir_result_t kefir_ast_global_context_declare_function(
     struct kefir_mem *mem, struct kefir_ast_global_context *context, kefir_ast_function_specifier_t specifier,
     kefir_bool_t external_linkage, const char *identifier, const struct kefir_ast_type *function,
-    const struct kefir_source_location *location, const struct kefir_ast_scoped_identifier **scoped_id) {
-    UNUSED(external_linkage);
+    const struct kefir_ast_declarator_attributes *attributes, const struct kefir_source_location *location,
+    const struct kefir_ast_scoped_identifier **scoped_id) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST translatation context"));
     REQUIRE(function != NULL && function->tag == KEFIR_AST_TYPE_FUNCTION,
@@ -966,6 +967,9 @@ kefir_result_t kefir_ast_global_context_declare_function(
             kefir_ast_context_merge_function_specifiers(ordinary_id->function.specifier, specifier);
         ordinary_id->function.inline_definition =
             ordinary_id->function.inline_definition && !external_linkage && is_inline_specifier(specifier);
+        if (attributes != NULL) {
+            ordinary_id->function.flags.gnu_inline = ordinary_id->function.flags.gnu_inline || attributes->gnu_inline;
+        }
     } else {
         REQUIRE(res == KEFIR_NOT_FOUND, res);
         ordinary_id = kefir_ast_context_allocate_scoped_function_identifier(
@@ -980,6 +984,7 @@ kefir_result_t kefir_ast_global_context_declare_function(
             kefir_ast_context_free_scoped_identifier(mem, ordinary_id, NULL);
             return res;
         });
+        ordinary_id->function.flags.gnu_inline = attributes != NULL && attributes->gnu_inline;
     }
 
     REQUIRE_OK(insert_ordinary_identifier(mem, context, identifier, ordinary_id));
@@ -991,9 +996,9 @@ kefir_result_t kefir_ast_global_context_define_function(struct kefir_mem *mem, s
                                                         kefir_ast_function_specifier_t specifier,
                                                         kefir_bool_t external_linkage, const char *identifier,
                                                         const struct kefir_ast_type *function,
+                                                        const struct kefir_ast_declarator_attributes *attributes,
                                                         const struct kefir_source_location *location,
                                                         const struct kefir_ast_scoped_identifier **scoped_id) {
-    UNUSED(external_linkage);
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST translatation context"));
     REQUIRE(function != NULL && function->tag == KEFIR_AST_TYPE_FUNCTION,
@@ -1026,6 +1031,9 @@ kefir_result_t kefir_ast_global_context_define_function(struct kefir_mem *mem, s
         ordinary_id->function.defined = true;
         ordinary_id->function.inline_definition =
             ordinary_id->function.inline_definition && !external_linkage && is_inline_specifier(specifier);
+        if (attributes != NULL) {
+            ordinary_id->function.flags.gnu_inline = ordinary_id->function.flags.gnu_inline || attributes->gnu_inline;
+        }
     } else {
         REQUIRE(res == KEFIR_NOT_FOUND, res);
         ordinary_id = kefir_ast_context_allocate_scoped_function_identifier(
@@ -1040,6 +1048,7 @@ kefir_result_t kefir_ast_global_context_define_function(struct kefir_mem *mem, s
             kefir_ast_context_free_scoped_identifier(mem, ordinary_id, NULL);
             return res;
         });
+        ordinary_id->function.flags.gnu_inline = attributes != NULL && attributes->gnu_inline;
     }
 
     REQUIRE_OK(insert_ordinary_identifier(mem, context, identifier, ordinary_id));

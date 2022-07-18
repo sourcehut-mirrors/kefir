@@ -63,6 +63,9 @@ typedef struct kefir_ast_scoped_identifier {
             kefir_bool_t external;
             kefir_bool_t defined;
             kefir_bool_t inline_definition;
+            struct {
+                kefir_bool_t gnu_inline;
+            } flags;
             struct kefir_ast_local_context **local_context_ptr;
             struct kefir_ast_local_context *local_context;
         } function;

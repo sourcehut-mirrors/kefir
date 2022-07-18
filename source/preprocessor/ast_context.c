@@ -69,8 +69,8 @@ static kefir_result_t pp_define_identifier(
     struct kefir_mem *mem, const struct kefir_ast_context *context, kefir_bool_t definition, const char *identifier,
     const struct kefir_ast_type *type, kefir_ast_scoped_identifier_storage_t storage,
     kefir_ast_function_specifier_t function, struct kefir_ast_alignment *alignment,
-    struct kefir_ast_initializer *initializer, const struct kefir_source_location *source_location,
-    const struct kefir_ast_scoped_identifier **scope_id) {
+    struct kefir_ast_initializer *initializer, const struct kefir_ast_declarator_attributes *attributes,
+    const struct kefir_source_location *source_location, const struct kefir_ast_scoped_identifier **scope_id) {
     UNUSED(mem);
     UNUSED(context);
     UNUSED(definition);
@@ -80,6 +80,7 @@ static kefir_result_t pp_define_identifier(
     UNUSED(function);
     UNUSED(alignment);
     UNUSED(initializer);
+    UNUSED(attributes);
     UNUSED(source_location);
     UNUSED(scope_id);
     return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Preprocessor AST context does not implement identifier defintion");

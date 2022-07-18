@@ -42,7 +42,7 @@ static kefir_result_t implicit_function_declaration(struct kefir_mem *mem, const
                     KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate AST function type"));
             REQUIRE_OK(context->define_identifier(mem, context, true, identifier->identifier, implicit_function_type,
                                                   KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN,
-                                                  KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL,
+                                                  KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL,
                                                   &function->source_location, &scoped_id));
         } else {
             REQUIRE_OK(res);

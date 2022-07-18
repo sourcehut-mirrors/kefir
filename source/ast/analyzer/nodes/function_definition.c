@@ -89,7 +89,7 @@ static kefir_result_t analyze_function_parameter_identifiers_impl(struct kefir_m
             kefir_size_t alignment = 0;
             REQUIRE_OK(kefir_ast_analyze_declaration(
                 mem, &local_context->context, &decl_list->specifiers, decl->declarator, &identifier, &original_type,
-                &storage, &function_specifier, &alignment, KEFIR_AST_DECLARATION_ANALYSIS_NORMAL));
+                &storage, &function_specifier, &alignment, KEFIR_AST_DECLARATION_ANALYSIS_NORMAL, NULL));
 
             if (identifier != NULL) {
                 identifier = kefir_symbol_table_insert(mem, context->symbols, identifier, NULL);
@@ -114,7 +114,7 @@ static kefir_result_t analyze_function_parameter_identifiers_impl(struct kefir_m
 
             const struct kefir_ast_scoped_identifier *param_scoped_id = NULL;
             REQUIRE_OK(local_context->context.define_identifier(mem, &local_context->context, true, identifier, type,
-                                                                storage, function_specifier, NULL, NULL,
+                                                                storage, function_specifier, NULL, NULL, NULL,
                                                                 &decl_node->source_location, &param_scoped_id));
 
             decl->base.properties.category = KEFIR_AST_NODE_CATEGORY_INIT_DECLARATOR;
@@ -198,10 +198,11 @@ kefir_result_t kefir_ast_analyze_function_definition_node(struct kefir_mem *mem,
     kefir_ast_scoped_identifier_storage_t storage = KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN;
     kefir_size_t alignment = 0;
     const char *function_identifier = NULL;
-    REQUIRE_CHAIN(&res, kefir_ast_analyze_declaration(mem, &local_context->context, &node->specifiers, node->declarator,
-                                                      &function_identifier, &type, &storage,
-                                                      &base->properties.function_definition.function, &alignment,
-                                                      KEFIR_AST_DECLARATION_ANALYSIS_FUNCTION_DEFINITION_CONTEXT));
+    struct kefir_ast_declarator_attributes attributes;
+    REQUIRE_CHAIN(&res, kefir_ast_analyze_declaration(
+                            mem, &local_context->context, &node->specifiers, node->declarator, &function_identifier,
+                            &type, &storage, &base->properties.function_definition.function, &alignment,
+                            KEFIR_AST_DECLARATION_ANALYSIS_FUNCTION_DEFINITION_CONTEXT, &attributes));
     REQUIRE_CHAIN(
         &res, kefir_ast_analyze_type(mem, context, context->type_analysis_context, type, &node->base.source_location));
 
@@ -244,7 +245,7 @@ kefir_result_t kefir_ast_analyze_function_definition_node(struct kefir_mem *mem,
     const struct kefir_ast_scoped_identifier *scoped_id = NULL;
     REQUIRE_CHAIN(&res, context->define_identifier(mem, context, false, base->properties.function_definition.identifier,
                                                    type, storage, base->properties.function_definition.function, NULL,
-                                                   NULL, &node->base.source_location, &scoped_id));
+                                                   NULL, &attributes, &node->base.source_location, &scoped_id));
     REQUIRE_CHAIN_SET(
         &res, scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION,
         KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Scoped identifier does not correspond to function definition type"));
@@ -322,7 +323,7 @@ kefir_result_t kefir_ast_analyze_function_definition_node(struct kefir_mem *mem,
         const struct kefir_ast_scoped_identifier *scoped_id = NULL;
         REQUIRE_OK(local_context->context.define_identifier(
             mem, &local_context->context, true, KEFIR_AST_TRANSLATOR_VLA_ELEMENTS_IDENTIFIER, array_type,
-            KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN, KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL,
+            KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN, KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL,
             &scoped_id));
     }
     return KEFIR_OK;
