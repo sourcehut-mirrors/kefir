@@ -22,9 +22,10 @@
 #include "kefir/ast/downcast.h"
 
 static kefir_result_t scan_specifiers(struct kefir_mem *mem, struct kefir_parser *parser,
-                                      struct kefir_ast_declarator_specifier_list *specifiers) {
+                                      struct kefir_ast_declarator_specifier_list *specifiers,
+                                      struct kefir_ast_node_attributes *attributes) {
     REQUIRE_OK(kefir_ast_declarator_specifier_list_init(specifiers));
-    kefir_result_t res = parser->ruleset.declaration_specifier_list(mem, parser, specifiers);
+    kefir_result_t res = parser->ruleset.declaration_specifier_list(mem, parser, specifiers, attributes);
     if (res == KEFIR_NO_MATCH && parser->configuration->implicit_function_definition_int) {
         res = KEFIR_OK;
         struct kefir_ast_declarator_specifier *specifier = kefir_ast_type_specifier_int(mem);
@@ -89,9 +90,19 @@ static kefir_result_t scan_components(struct kefir_mem *mem, struct kefir_parser
                                       struct kefir_ast_declarator_specifier_list *specifiers,
                                       struct kefir_ast_declarator **declarator, struct kefir_list *declaration_list,
                                       struct kefir_ast_node_base **compound_statement) {
-    REQUIRE_OK(scan_specifiers(mem, parser, specifiers));
+    struct kefir_ast_node_attributes forward_attributes;
+    REQUIRE_OK(kefir_ast_node_attributes_init(&forward_attributes));
+    REQUIRE_OK(scan_specifiers(mem, parser, specifiers, &forward_attributes));
     kefir_result_t res = parser->ruleset.declarator(mem, parser, declarator);
     REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_ast_node_attributes_free(mem, &forward_attributes);
+        kefir_ast_declarator_specifier_list_free(mem, specifiers);
+        return res;
+    });
+    res = kefir_ast_node_attributes_move(&(*declarator)->attributes, &forward_attributes);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_ast_declarator_free(mem, *declarator);
+        kefir_ast_node_attributes_free(mem, &forward_attributes);
         kefir_ast_declarator_specifier_list_free(mem, specifiers);
         return res;
     });

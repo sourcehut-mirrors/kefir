@@ -22,6 +22,7 @@
 #define KEFIR_PARSER_RULES_H_
 
 #include "kefir/parser/parser.h"
+#include "kefir/ast/attributes.h"
 
 #define KEFIR_PARSER_RULE_FN_PREFIX(_id) kefir_parser_apply_rule_##_id
 #define DECLARE_RULE(_id)                                                                      \
@@ -71,9 +72,11 @@ DECLARE_RULE(statement_expression);
 #undef DECLARE_RULE
 
 kefir_result_t kefir_parser_scan_declaration_specifier(struct kefir_mem *, struct kefir_parser *,
-                                                       struct kefir_ast_declarator_specifier_list *);
+                                                       struct kefir_ast_declarator_specifier_list *,
+                                                       struct kefir_ast_node_attributes *);
 kefir_result_t kefir_parser_scan_declaration_specifier_list(struct kefir_mem *, struct kefir_parser *,
-                                                            struct kefir_ast_declarator_specifier_list *);
+                                                            struct kefir_ast_declarator_specifier_list *,
+                                                            struct kefir_ast_node_attributes *);
 kefir_result_t kefir_parser_scan_declarator(struct kefir_mem *, struct kefir_parser *, struct kefir_ast_declarator **);
 kefir_result_t kefir_parser_scan_abstract_declarator(struct kefir_mem *, struct kefir_parser *,
                                                      struct kefir_ast_declarator **);

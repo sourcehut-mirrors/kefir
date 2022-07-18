@@ -1,0 +1,104 @@
+[
+    {
+        "class": "declaration",
+        "specifiers": [
+            {
+                "class": "type_specifier",
+                "specifier": "void"
+            }
+        ],
+        "init_declarators": [
+            {
+                "class": "init_declarator",
+                "declarator": {
+                    "class": "function",
+                    "declarator": {
+                        "class": "identifier",
+                        "identifier": "integers",
+                        "attributes": []
+                    },
+                    "ellipsis": false,
+                    "parameters": [],
+                    "attributes": [
+                        {
+                            "class": "attribute_list",
+                            "attributes": [
+                                {
+                                    "name": "__inline__",
+                                    "parameters": []
+                                }
+                            ]
+                        },
+                        {
+                            "class": "attribute_list",
+                            "attributes": [
+                                {
+                                    "name": "__another_annotation__",
+                                    "parameters": []
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "initializer": null
+            }
+        ]
+    },
+    {
+        "class": "declaration",
+        "specifiers": [
+            {
+                "class": "storage_class",
+                "storage": "extern"
+            },
+            {
+                "class": "type_specifier",
+                "specifier": "long"
+            }
+        ],
+        "init_declarators": [
+            {
+                "class": "init_declarator",
+                "declarator": {
+                    "class": "pointer",
+                    "declarator": {
+                        "class": "identifier",
+                        "identifier": "value_x",
+                        "attributes": []
+                    },
+                    "type_qualifiers": [],
+                    "attributes": [
+                        {
+                            "class": "attribute_list",
+                            "attributes": [
+                                {
+                                    "name": "some_attribute",
+                                    "parameters": []
+                                },
+                                {
+                                    "name": "another_attribute",
+                                    "parameters": [
+                                        {
+                                            "class": "identifier",
+                                            "identifier": "integers"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "class": "attribute_list",
+                            "attributes": [
+                                {
+                                    "name": "__another_annotation__",
+                                    "parameters": []
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "initializer": null
+            }
+        ]
+    }
+]

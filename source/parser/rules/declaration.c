@@ -25,10 +25,11 @@
 #include "kefir/core/source_error.h"
 #include "kefir/ast/downcast.h"
 
-static kefir_result_t scan_specifiers(struct kefir_mem *mem, struct kefir_parser_ast_builder *builder) {
+static kefir_result_t scan_specifiers(struct kefir_mem *mem, struct kefir_parser_ast_builder *builder,
+                                      struct kefir_ast_node_attributes *attributes) {
     struct kefir_ast_declarator_specifier_list list;
     REQUIRE_OK(kefir_ast_declarator_specifier_list_init(&list));
-    kefir_result_t res = builder->parser->ruleset.declaration_specifier_list(mem, builder->parser, &list);
+    kefir_result_t res = builder->parser->ruleset.declaration_specifier_list(mem, builder->parser, &list, attributes);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_ast_declarator_specifier_list_free(mem, &list);
         return res;
@@ -42,7 +43,8 @@ static kefir_result_t scan_specifiers(struct kefir_mem *mem, struct kefir_parser
     return KEFIR_OK;
 }
 
-static kefir_result_t scan_init_declaration(struct kefir_mem *mem, struct kefir_parser_ast_builder *builder) {
+static kefir_result_t scan_init_declaration(struct kefir_mem *mem, struct kefir_parser_ast_builder *builder,
+                                            struct kefir_ast_node_attributes *attributes) {
     struct kefir_ast_declarator *declarator = NULL;
     struct kefir_ast_initializer *initializer = NULL;
     kefir_result_t res = KEFIR_OK;
@@ -68,6 +70,7 @@ static kefir_result_t scan_init_declaration(struct kefir_mem *mem, struct kefir_
         kefir_ast_declarator_free(mem, declarator);
         return res;
     });
+    REQUIRE_OK(kefir_ast_node_attributes_clone(mem, &init_declarator->declarator->attributes, attributes));
     init_declarator->base.source_location = source_location;
     return KEFIR_OK;
 }
@@ -82,25 +85,44 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
         kefir_parser_ast_builder_scan(mem, builder, KEFIR_PARSER_RULE_FN(parser, static_assertion), NULL);
     REQUIRE(res == KEFIR_NO_MATCH, res);
 
-    REQUIRE_OK(scan_specifiers(mem, builder));
+    struct kefir_ast_node_attributes attributes;
+    REQUIRE_OK(kefir_ast_node_attributes_init(&attributes));
+
+    res = scan_specifiers(mem, builder, &attributes);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_ast_node_attributes_free(mem, &attributes);
+        return res;
+    });
     kefir_bool_t scan_init_decl = !PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_SEMICOLON);
     if (!scan_init_decl) {
         struct kefir_ast_init_declarator *init_declarator = NULL;
-        REQUIRE_OK(kefir_parser_ast_builder_init_declarator(mem, builder, NULL, NULL, &init_declarator));
+        res = kefir_parser_ast_builder_init_declarator(mem, builder, NULL, NULL, &init_declarator);
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            kefir_ast_node_attributes_free(mem, &attributes);
+            return res;
+        });
         init_declarator->base.source_location = kefir_parser_token_cursor_at(parser->cursor, 0)->source_location;
     }
 
-    while (scan_init_decl) {
-        REQUIRE_MATCH_OK(&res, scan_init_declaration(mem, builder),
-                         KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0),
-                                                "Expected either init declaration or semicolon"));
-        if (PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_COMMA)) {
-            scan_init_decl = true;
-            REQUIRE_OK(PARSER_SHIFT(parser));
-        } else {
-            scan_init_decl = false;
+    while (res == KEFIR_OK && scan_init_decl) {
+        res = scan_init_declaration(mem, builder, &attributes);
+        if (res == KEFIR_NO_MATCH) {
+            res = KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0),
+                                         "Expected either init declaration or semicolon");
+        } else if (res == KEFIR_OK) {
+            if (PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_COMMA)) {
+                scan_init_decl = true;
+                res = PARSER_SHIFT(parser);
+            } else {
+                scan_init_decl = false;
+            }
         }
     }
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_ast_node_attributes_free(mem, &attributes);
+        return res;
+    });
+    REQUIRE_OK(kefir_ast_node_attributes_free(mem, &attributes));
 
     REQUIRE(PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_SEMICOLON),
             KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0), "Expected semicolon"));

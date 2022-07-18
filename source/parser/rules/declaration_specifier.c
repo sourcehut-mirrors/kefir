@@ -23,6 +23,11 @@
 #include "kefir/core/source_error.h"
 #include "kefir/parser/builtins.h"
 
+struct scan_param {
+    void *ptr;
+    struct kefir_ast_node_attributes *attributes;
+};
+
 static kefir_result_t scan_storage_class(struct kefir_mem *mem, struct kefir_parser *parser, void *payload) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(parser != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid parser"));
@@ -69,12 +74,14 @@ static kefir_result_t scan_struct_field_declaration(struct kefir_mem *mem, struc
     REQUIRE(parser != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid parser"));
     REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid payload"));
 
-    ASSIGN_DECL_CAST(struct kefir_ast_structure_declaration_entry **, entry_ptr, payload);
+    ASSIGN_DECL_CAST(struct scan_param *, param, payload);
+    ASSIGN_DECL_CAST(struct kefir_ast_structure_declaration_entry **, entry_ptr, param->ptr);
 
     struct kefir_ast_structure_declaration_entry *entry = kefir_ast_structure_declaration_entry_alloc(mem);
     REQUIRE(entry != NULL,
             KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST structure declaration entry"));
-    kefir_result_t res = parser->ruleset.declaration_specifier_list(mem, parser, &entry->declaration.specifiers);
+    kefir_result_t res =
+        parser->ruleset.declaration_specifier_list(mem, parser, &entry->declaration.specifiers, param->attributes);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_ast_structure_declaration_entry_free(mem, entry);
         return res;
@@ -176,13 +183,15 @@ static kefir_result_t scan_struct_static_assert(struct kefir_mem *mem, struct ke
 }
 
 static kefir_result_t scan_struct_specifier_body(struct kefir_mem *mem, struct kefir_parser *parser,
-                                                 struct kefir_ast_structure_specifier *specifier) {
+                                                 struct kefir_ast_structure_specifier *specifier,
+                                                 struct kefir_ast_node_attributes *attributes) {
     REQUIRE_OK(PARSER_SHIFT(parser));
 
     kefir_bool_t scan_declarations = true;
     struct kefir_ast_structure_declaration_entry *entry = NULL;
     while (scan_declarations) {
-        kefir_result_t res = kefir_parser_try_invoke(mem, parser, scan_struct_field_declaration, &entry);
+        struct scan_param param = {.ptr = &entry, .attributes = attributes};
+        kefir_result_t res = kefir_parser_try_invoke(mem, parser, scan_struct_field_declaration, &param);
         if (res == KEFIR_NO_MATCH) {
             res = kefir_parser_try_invoke(mem, parser, scan_struct_static_assert, &entry);
         }
@@ -236,7 +245,7 @@ static kefir_result_t scan_struct_specifier(struct kefir_mem *mem, struct kefir_
         kefir_ast_structure_specifier_init(mem, parser->symbols, identifier, complete);
     REQUIRE(specifier != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST structure specifier"));
     if (complete) {
-        res = scan_struct_specifier_body(mem, parser, specifier);
+        res = scan_struct_specifier_body(mem, parser, specifier, NULL);
         REQUIRE_ELSE(res == KEFIR_OK, {
             kefir_ast_structure_specifier_free(mem, specifier);
             return res;
@@ -603,13 +612,18 @@ static kefir_result_t scan_alignment_specifier(struct kefir_mem *mem, struct kef
 }
 
 kefir_result_t kefir_parser_scan_declaration_specifier(struct kefir_mem *mem, struct kefir_parser *parser,
-                                                       struct kefir_ast_declarator_specifier_list *specifiers) {
+                                                       struct kefir_ast_declarator_specifier_list *specifiers,
+                                                       struct kefir_ast_node_attributes *attributes) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(parser != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid parser"));
     REQUIRE(specifiers != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid declarator specifier list"));
 
     kefir_result_t res = KEFIR_OK;
-    SKIP_ATTRIBUTES(&res, mem, parser);
+    if (attributes != NULL) {
+        SCAN_ATTRIBUTES(&res, mem, parser, attributes);
+    } else {
+        SKIP_ATTRIBUTES(&res, mem, parser);
+    }
     REQUIRE_OK(res);
 
     res = kefir_parser_try_invoke(mem, parser, scan_storage_class, specifiers);
@@ -626,14 +640,15 @@ kefir_result_t kefir_parser_scan_declaration_specifier(struct kefir_mem *mem, st
 }
 
 kefir_result_t kefir_parser_scan_declaration_specifier_list(struct kefir_mem *mem, struct kefir_parser *parser,
-                                                            struct kefir_ast_declarator_specifier_list *specifiers) {
+                                                            struct kefir_ast_declarator_specifier_list *specifiers,
+                                                            struct kefir_ast_node_attributes *attributes) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(parser != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid parser"));
     REQUIRE(specifiers != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid declarator specifier list"));
 
     kefir_bool_t scan_specifiers = true;
     while (scan_specifiers) {
-        kefir_result_t res = parser->ruleset.declaration_specifier(mem, parser, specifiers);
+        kefir_result_t res = parser->ruleset.declaration_specifier(mem, parser, specifiers, attributes);
         if (res == KEFIR_NO_MATCH) {
             scan_specifiers = false;
         } else {

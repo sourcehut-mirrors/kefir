@@ -256,7 +256,7 @@ static kefir_result_t scan_function_parameter(struct kefir_mem *mem, struct kefi
                                               struct kefir_ast_declarator *func_declarator) {
     struct kefir_ast_declarator_specifier_list specifiers;
     REQUIRE_OK(kefir_ast_declarator_specifier_list_init(&specifiers));
-    kefir_result_t res = parser->ruleset.declaration_specifier_list(mem, parser, &specifiers);
+    kefir_result_t res = parser->ruleset.declaration_specifier_list(mem, parser, &specifiers, NULL);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_ast_declarator_specifier_list_free(mem, &specifiers);
         return res;
