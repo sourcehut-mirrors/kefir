@@ -48,6 +48,12 @@ typedef struct kefir_driver_external_resources {
         const char *dynamic_linker;
     } freebsd;
 
+    struct {
+        const char *include_path;
+        const char *library_path;
+        const char *dynamic_linker;
+    } openbsd;
+
     // Directories
     const char *work_dir;
 

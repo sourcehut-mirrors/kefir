@@ -72,6 +72,9 @@ static kefir_result_t select_default_variant(struct kefir_driver_target *target)
     } else if (target->arch == KEFIR_DRIVER_TARGET_ARCH_X86_64 &&
                target->platform == KEFIR_DRIVER_TARGET_PLATFORM_FREEBSD) {
         target->variant = KEFIR_DRIVER_TARGET_VARIANT_SYSTEM;
+    } else if (target->arch == KEFIR_DRIVER_TARGET_ARCH_X86_64 &&
+               target->platform == KEFIR_DRIVER_TARGET_PLATFORM_OPENBSD) {
+        target->variant = KEFIR_DRIVER_TARGET_VARIANT_SYSTEM;
     }
     return KEFIR_OK;
 }
