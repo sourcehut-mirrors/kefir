@@ -136,7 +136,7 @@ kefir_result_t kefir_driver_apply_target_compiler_configuration(
                 REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__GNUC__", "3"));
                 REQUIRE_OK(
                     kefir_compiler_runner_configuration_define(mem, compiler_config, "__GNUC_STDC_INLINE__", "1"));
-                REQUIRE_OK(add_include_paths(mem, symbols, compiler_config, externals->gnu.include_path));
+                REQUIRE_OK(add_include_paths(mem, symbols, compiler_config, externals->freebsd.include_path));
             }
         }
     } else if (target->platform == KEFIR_DRIVER_TARGET_PLATFORM_OPENBSD) {
