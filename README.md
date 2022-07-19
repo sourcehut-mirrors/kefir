@@ -77,8 +77,8 @@ At the moment, Kefir supports following builtins for compatibility with GCC:
 `__builtin_va_list`, `__builtin_va_start`, `__builtin_va_end`, `__builtin_va_copy`, `__builtin_va_arg`,
 `__builtin_alloca`, `__builtin_alloca_with_align`, `__builtin_alloca_with_align_and_max`, `__builtin_offsetof`.
 
-Kefir supports `__attribute__(...)` syntax on parser level, however attributes are ignored in most cases except `aligned`/`__aligned__` attribute
-after declarators which is taken into account when calculating alignments. Presence of attribute in source code can be turned into a syntax error by CLI option.
+Kefir supports `__attribute__(...)` syntax on parser level, however attributes are ignored in most cases except `aligned`/`__aligned__` and `__gnu_inline__` attributes.
+Presence of attribute in source code can be turned into a syntax error by CLI option.
 
 ### Language extensions
 Several C language extensions are implemented for better compatibility with GCC. All of them are disabled by default and can

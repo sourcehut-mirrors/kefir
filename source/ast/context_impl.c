@@ -210,6 +210,7 @@ struct kefir_ast_scoped_identifier *kefir_ast_context_allocate_scoped_function_i
     scoped_id->function.external = external;
     scoped_id->function.defined = defined;
     scoped_id->function.inline_definition = inline_definition;
+    scoped_id->function.flags.gnu_inline = false;
     scoped_id->function.local_context = NULL;
     scoped_id->function.local_context_ptr = &scoped_id->function.local_context;
     memset(scoped_id->payload.content, 0, KEFIR_AST_SCOPED_IDENTIFIER_PAYLOAD_SIZE);

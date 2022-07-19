@@ -1047,11 +1047,6 @@ static kefir_result_t require_global_ordinary_function(struct kefir_ast_global_c
     return KEFIR_OK;
 }
 
-static inline kefir_bool_t is_inline_specifier(kefir_ast_function_specifier_t specifier) {
-    return specifier == KEFIR_AST_FUNCTION_SPECIFIER_INLINE ||
-           specifier == KEFIR_AST_FUNCTION_SPECIFIER_INLINE_NORETURN;
-}
-
 kefir_result_t kefir_ast_local_context_declare_function(struct kefir_mem *mem, struct kefir_ast_local_context *context,
                                                         kefir_ast_function_specifier_t specifier,
                                                         kefir_bool_t external_visibility, const char *identifier,
@@ -1084,8 +1079,8 @@ kefir_result_t kefir_ast_local_context_declare_function(struct kefir_mem *mem, s
             mem, &context->global->type_bundle, context->global->type_traits, ordinary_id->function.type, function);
         ordinary_id->function.specifier =
             kefir_ast_context_merge_function_specifiers(ordinary_id->function.specifier, specifier);
-        ordinary_id->function.inline_definition =
-            ordinary_id->function.inline_definition && !external_visibility && is_inline_specifier(specifier);
+        ordinary_id->function.inline_definition = ordinary_id->function.inline_definition && !external_visibility &&
+                                                  kefir_ast_function_specifier_is_inline(specifier);
         if (attributes != NULL) {
             ordinary_id->function.flags.gnu_inline = ordinary_id->function.flags.gnu_inline || attributes->gnu_inline;
         }
@@ -1099,8 +1094,9 @@ kefir_result_t kefir_ast_local_context_declare_function(struct kefir_mem *mem, s
                                      global_ordinary_id->function.type, function);
         global_ordinary_id->function.specifier =
             kefir_ast_context_merge_function_specifiers(global_ordinary_id->function.specifier, specifier);
-        global_ordinary_id->function.inline_definition =
-            global_ordinary_id->function.inline_definition && !external_visibility && is_inline_specifier(specifier);
+        global_ordinary_id->function.inline_definition = global_ordinary_id->function.inline_definition &&
+                                                         !external_visibility &&
+                                                         kefir_ast_function_specifier_is_inline(specifier);
         if (attributes != NULL) {
             global_ordinary_id->function.flags.gnu_inline =
                 global_ordinary_id->function.flags.gnu_inline || attributes->gnu_inline;
@@ -1110,7 +1106,7 @@ kefir_result_t kefir_ast_local_context_declare_function(struct kefir_mem *mem, s
         REQUIRE(res == KEFIR_NOT_FOUND, res);
         struct kefir_ast_scoped_identifier *ordinary_id = kefir_ast_context_allocate_scoped_function_identifier(
             mem, function, specifier, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN, true, false,
-            !external_visibility && is_inline_specifier(specifier));
+            !external_visibility && kefir_ast_function_specifier_is_inline(specifier));
         REQUIRE(ordinary_id != NULL,
                 KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocte AST scoped identifier"));
         res = kefir_ast_identifier_flat_scope_insert(mem, &context->global->function_identifiers, identifier,

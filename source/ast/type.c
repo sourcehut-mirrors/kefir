@@ -315,3 +315,8 @@ kefir_ast_function_specifier_t kefir_ast_context_merge_function_specifiers(kefir
             [KEFIR_AST_FUNCTION_SPECIFIER_INLINE_NORETURN] = KEFIR_AST_FUNCTION_SPECIFIER_INLINE_NORETURN}};
     return MATRIX[s1][s2];
 }
+
+kefir_bool_t kefir_ast_function_specifier_is_inline(kefir_ast_function_specifier_t specifier) {
+    return specifier == KEFIR_AST_FUNCTION_SPECIFIER_INLINE ||
+           specifier == KEFIR_AST_FUNCTION_SPECIFIER_INLINE_NORETURN;
+}

@@ -86,13 +86,25 @@ static kefir_result_t translate_externals(struct kefir_mem *mem, const struct ke
             } break;
 
             case KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION: {
-                if (scoped_identifier->value->function.external) {
-                    REQUIRE_OK(kefir_ir_module_declare_external(mem, module, scoped_identifier->identifier,
-                                                                KEFIR_IR_IDENTIFIER_GLOBAL));
-                } else if (scoped_identifier->value->function.storage != KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC &&
-                           !scoped_identifier->value->function.inline_definition) {
-                    REQUIRE_OK(kefir_ir_module_declare_global(mem, module, scoped_identifier->identifier,
-                                                              KEFIR_IR_IDENTIFIER_GLOBAL));
+                if (!scoped_identifier->value->function.flags.gnu_inline ||
+                    !kefir_ast_function_specifier_is_inline(scoped_identifier->value->function.specifier)) {
+                    if (scoped_identifier->value->function.external) {
+                        REQUIRE_OK(kefir_ir_module_declare_external(mem, module, scoped_identifier->identifier,
+                                                                    KEFIR_IR_IDENTIFIER_GLOBAL));
+                    } else if (scoped_identifier->value->function.storage !=
+                                   KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC &&
+                               !scoped_identifier->value->function.inline_definition) {
+                        REQUIRE_OK(kefir_ir_module_declare_global(mem, module, scoped_identifier->identifier,
+                                                                  KEFIR_IR_IDENTIFIER_GLOBAL));
+                    }
+                } else if (scoped_identifier->value->function.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN) {
+                    if (scoped_identifier->value->function.inline_definition) {
+                        REQUIRE_OK(kefir_ir_module_declare_global(mem, module, scoped_identifier->identifier,
+                                                                  KEFIR_IR_IDENTIFIER_GLOBAL));
+                    } else {
+                        REQUIRE_OK(kefir_ir_module_declare_external(mem, module, scoped_identifier->identifier,
+                                                                    KEFIR_IR_IDENTIFIER_GLOBAL));
+                    }
                 }
             } break;
 

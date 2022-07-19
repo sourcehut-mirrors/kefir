@@ -30,6 +30,8 @@
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 #include "kefir/ast-translator/function_definition.h"
+#include "kefir/ast/runtime.h"
+#include <stdio.h>
 
 static kefir_result_t init_function_declaration(struct kefir_mem *mem, struct kefir_ast_translator_context *context,
                                                 struct kefir_ast_function_definition *function,
@@ -38,6 +40,20 @@ static kefir_result_t init_function_declaration(struct kefir_mem *mem, struct ke
     REQUIRE_OK(kefir_ast_declarator_unpack_identifier(function->declarator, &identifier));
     REQUIRE(identifier != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected function definition to have valid identifier"));
+
+    char identifier_buf[1024];
+    const struct kefir_ast_scoped_identifier *scoped_id = function->base.properties.function_definition.scoped_id;
+    if (scoped_id->function.flags.gnu_inline &&
+        scoped_id->function.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN &&
+        kefir_ast_function_specifier_is_inline(scoped_id->function.specifier) &&
+        !scoped_id->function.inline_definition) {
+        snprintf(identifier_buf, sizeof(identifier_buf) - 1, KEFIR_AST_TRANSLATOR_GNU_INLINE_FUNCTION_IDENTIFIER,
+                 identifier);
+        identifier = kefir_symbol_table_insert(mem, context->ast_context->symbols, identifier_buf, NULL);
+        REQUIRE(identifier != NULL,
+                KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE,
+                                "Failed to insert generated function identifier into symbol table"));
+    }
 
     const struct kefir_ast_declarator_function *decl_func = NULL;
     REQUIRE_OK(kefir_ast_declarator_unpack_function(function->declarator, &decl_func));
