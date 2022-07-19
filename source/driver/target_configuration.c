@@ -107,10 +107,6 @@ kefir_result_t kefir_driver_apply_target_compiler_configuration(
         REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__amd64__", "1"));
     }
 
-    REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__GNUC__", "4"));
-    REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__GNUC_MINOR__", "20"));
-    REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__GNUC_STDC_INLINE__", "1"));
-
     if (target->platform == KEFIR_DRIVER_TARGET_PLATFORM_LINUX) {
         REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__linux__", "1"));
 
@@ -136,6 +132,10 @@ kefir_result_t kefir_driver_apply_target_compiler_configuration(
                     KEFIR_SET_ERROR(KEFIR_UI_ERROR, "GNU include path shall be passed as KEFIR_FREEBSD_INCLUDE "
                                                     "environment variable for selected target"));
 
+            REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__GNUC__", "4"));
+            REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__GNUC_MINOR__", "20"));
+            REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__GNUC_STDC_INLINE__", "1"));
+
             REQUIRE_OK(add_include_paths(mem, symbols, compiler_config, externals->freebsd.include_path));
         }
     } else if (target->platform == KEFIR_DRIVER_TARGET_PLATFORM_OPENBSD) {
@@ -144,6 +144,10 @@ kefir_result_t kefir_driver_apply_target_compiler_configuration(
             REQUIRE(externals->openbsd.include_path != NULL,
                     KEFIR_SET_ERROR(KEFIR_UI_ERROR, "GNU include path shall be passed as KEFIR_OPENBSD_INCLUDE "
                                                     "environment variable for selected target"));
+
+            REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__GNUC__", "4"));
+            REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__GNUC_MINOR__", "20"));
+            REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__GNUC_STDC_INLINE__", "1"));
 
             REQUIRE_OK(add_include_paths(mem, symbols, compiler_config, externals->openbsd.include_path));
         }
