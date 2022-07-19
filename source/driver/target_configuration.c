@@ -143,7 +143,8 @@ kefir_result_t kefir_driver_apply_target_compiler_configuration(
                     KEFIR_SET_ERROR(KEFIR_UI_ERROR, "GNU include path shall be passed as KEFIR_OPENBSD_INCLUDE "
                                                     "environment variable for selected target"));
 
-            REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__GNUC__", "3"));
+            REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__GNUC__", "4"));
+            REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__GNUC_MINOR__", "20"));
             REQUIRE_OK(add_include_paths(mem, symbols, compiler_config, externals->openbsd.include_path));
         }
     }
@@ -358,6 +359,7 @@ kefir_result_t kefir_driver_apply_target_linker_final_configuration(
 
         if (linker_config->flags.link_default_libs) {
             if (linker_config->flags.link_libc) {
+                REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-lcompiler_rt"));
                 REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-lc"));
                 REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-lm"));
             }

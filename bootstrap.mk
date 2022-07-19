@@ -10,7 +10,7 @@ KEFIR_FLAGS=-I $(HEADERS)
 ifeq ($(PLATFORM),freebsd)
 KEFIR_FLAGS += --target x86_64-freebsd-system
 else ifeq ($(PLATFORM),openbsd)
-KEFIR_FLAGS += --target x86_64-openbsd-none
+KEFIR_FLAGS += --target x86_64-openbsd-system -include $(HEADERS)/bootstrap/openbsd.h
 else
 KEFIR_FLAGS += --target x86_64-linux-gnu
 endif
