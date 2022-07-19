@@ -32,7 +32,6 @@ typedef enum kefir_ir_data_storage {
 } kefir_ir_data_storage_t;
 
 typedef struct kefir_ir_data {
-    struct kefir_mem *mem;  // TODO Remove
     kefir_ir_data_storage_t storage;
     kefir_id_t type_id;
     const struct kefir_ir_type *type;
@@ -89,25 +88,29 @@ kefir_result_t kefir_ir_data_alloc(struct kefir_mem *, kefir_ir_data_storage_t, 
 
 kefir_result_t kefir_ir_data_free(struct kefir_mem *, struct kefir_ir_data *);
 
-kefir_result_t kefir_ir_data_set_integer(struct kefir_ir_data *, kefir_size_t, kefir_int64_t);
+kefir_result_t kefir_ir_data_set_integer(struct kefir_mem *, struct kefir_ir_data *, kefir_size_t, kefir_int64_t);
 
-kefir_result_t kefir_ir_data_set_bitfield(struct kefir_ir_data *, kefir_size_t, kefir_uint64_t, kefir_size_t,
-                                          kefir_size_t);
+kefir_result_t kefir_ir_data_set_bitfield(struct kefir_mem *, struct kefir_ir_data *, kefir_size_t, kefir_uint64_t,
+                                          kefir_size_t, kefir_size_t);
 
-kefir_result_t kefir_ir_data_set_float32(struct kefir_ir_data *, kefir_size_t, kefir_float32_t);
+kefir_result_t kefir_ir_data_set_float32(struct kefir_mem *, struct kefir_ir_data *, kefir_size_t, kefir_float32_t);
 
-kefir_result_t kefir_ir_data_set_float64(struct kefir_ir_data *, kefir_size_t, kefir_float64_t);
+kefir_result_t kefir_ir_data_set_float64(struct kefir_mem *, struct kefir_ir_data *, kefir_size_t, kefir_float64_t);
 
-kefir_result_t kefir_ir_data_set_long_double(struct kefir_ir_data *, kefir_size_t, kefir_long_double_t);
+kefir_result_t kefir_ir_data_set_long_double(struct kefir_mem *, struct kefir_ir_data *, kefir_size_t,
+                                             kefir_long_double_t);
 
-kefir_result_t kefir_ir_data_set_string(struct kefir_ir_data *, kefir_size_t, kefir_ir_string_literal_type_t,
-                                        const void *, kefir_size_t);
+kefir_result_t kefir_ir_data_set_string(struct kefir_mem *, struct kefir_ir_data *, kefir_size_t,
+                                        kefir_ir_string_literal_type_t, const void *, kefir_size_t);
 
-kefir_result_t kefir_ir_data_set_pointer(struct kefir_ir_data *, kefir_size_t, const char *, kefir_size_t);
+kefir_result_t kefir_ir_data_set_pointer(struct kefir_mem *, struct kefir_ir_data *, kefir_size_t, const char *,
+                                         kefir_size_t);
 
-kefir_result_t kefir_ir_data_set_string_pointer(struct kefir_ir_data *, kefir_size_t, kefir_id_t, kefir_int64_t);
+kefir_result_t kefir_ir_data_set_string_pointer(struct kefir_mem *, struct kefir_ir_data *, kefir_size_t, kefir_id_t,
+                                                kefir_int64_t);
 
-kefir_result_t kefir_ir_data_set_raw(struct kefir_ir_data *, kefir_size_t, const void *, kefir_size_t);
+kefir_result_t kefir_ir_data_set_raw(struct kefir_mem *, struct kefir_ir_data *, kefir_size_t, const void *,
+                                     kefir_size_t);
 
 kefir_result_t kefir_ir_data_finalize(struct kefir_ir_data *);
 

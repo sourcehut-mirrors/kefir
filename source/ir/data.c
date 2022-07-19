@@ -47,7 +47,6 @@ kefir_result_t kefir_ir_data_alloc(struct kefir_mem *mem, kefir_ir_data_storage_
     REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR type pointer"));
     REQUIRE(data != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR data pointer"));
 
-    data->mem = mem;
     data->storage = storage;
     data->total_length = kefir_ir_type_total_slots(type);
     REQUIRE_OK(kefir_block_tree_init(&data->value_tree, BLOCK_SIZE));
@@ -66,13 +65,13 @@ kefir_result_t kefir_ir_data_free(struct kefir_mem *mem, struct kefir_ir_data *d
     return KEFIR_OK;
 }
 
-static kefir_result_t value_entry_at(struct kefir_ir_data *data, kefir_size_t index,
+static kefir_result_t value_entry_at(struct kefir_mem *mem, struct kefir_ir_data *data, kefir_size_t index,
                                      struct kefir_ir_data_value **entry) {
     kefir_size_t block_id, block_offset;
     REQUIRE_OK(kefir_block_tree_get_block_offset(&data->value_tree, index * sizeof(struct kefir_ir_data_value),
                                                  &block_id, &block_offset));
     void *block;
-    REQUIRE_OK(kefir_block_tree_block(data->mem, &data->value_tree, block_id, &block));
+    REQUIRE_OK(kefir_block_tree_block(mem, &data->value_tree, block_id, &block));
     ASSIGN_DECL_CAST(struct kefir_ir_data_value *, value_block, block);
     *entry = &value_block[block_offset / sizeof(struct kefir_ir_data_value)];
     return KEFIR_OK;
@@ -96,25 +95,28 @@ static kefir_result_t value_get_entry(const struct kefir_ir_data *data, kefir_si
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_ir_data_set_integer(struct kefir_ir_data *data, kefir_size_t index, kefir_int64_t value) {
+kefir_result_t kefir_ir_data_set_integer(struct kefir_mem *mem, struct kefir_ir_data *data, kefir_size_t index,
+                                         kefir_int64_t value) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(data != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR data pointer"));
     REQUIRE(!data->finalized, KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Cannot modify finalized data"));
 
     struct kefir_ir_data_value *entry;
-    REQUIRE_OK(value_entry_at(data, index, &entry));
+    REQUIRE_OK(value_entry_at(mem, data, index, &entry));
 
     entry->type = KEFIR_IR_DATA_VALUE_INTEGER;
     entry->value.integer = value;
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_ir_data_set_bitfield(struct kefir_ir_data *data, kefir_size_t index, kefir_uint64_t value,
-                                          kefir_size_t offset, kefir_size_t width) {
+kefir_result_t kefir_ir_data_set_bitfield(struct kefir_mem *mem, struct kefir_ir_data *data, kefir_size_t index,
+                                          kefir_uint64_t value, kefir_size_t offset, kefir_size_t width) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(data != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR data pointer"));
     REQUIRE(!data->finalized, KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Cannot modify finalized data"));
 
     struct kefir_ir_data_value *entry;
-    REQUIRE_OK(value_entry_at(data, index, &entry));
+    REQUIRE_OK(value_entry_at(mem, data, index, &entry));
 
     kefir_uint64_t currentValue = 0;
     if (entry->type == KEFIR_IR_DATA_VALUE_INTEGER) {
@@ -137,50 +139,56 @@ kefir_result_t kefir_ir_data_set_bitfield(struct kefir_ir_data *data, kefir_size
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_ir_data_set_float32(struct kefir_ir_data *data, kefir_size_t index, kefir_float32_t value) {
+kefir_result_t kefir_ir_data_set_float32(struct kefir_mem *mem, struct kefir_ir_data *data, kefir_size_t index,
+                                         kefir_float32_t value) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(data != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR data pointer"));
     REQUIRE(!data->finalized, KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Cannot modify finalized data"));
 
     struct kefir_ir_data_value *entry;
-    REQUIRE_OK(value_entry_at(data, index, &entry));
+    REQUIRE_OK(value_entry_at(mem, data, index, &entry));
 
     entry->type = KEFIR_IR_DATA_VALUE_FLOAT32;
     entry->value.float32 = value;
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_ir_data_set_float64(struct kefir_ir_data *data, kefir_size_t index, kefir_float64_t value) {
+kefir_result_t kefir_ir_data_set_float64(struct kefir_mem *mem, struct kefir_ir_data *data, kefir_size_t index,
+                                         kefir_float64_t value) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(data != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR data pointer"));
     REQUIRE(!data->finalized, KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Cannot modify finalized data"));
 
     struct kefir_ir_data_value *entry;
-    REQUIRE_OK(value_entry_at(data, index, &entry));
+    REQUIRE_OK(value_entry_at(mem, data, index, &entry));
 
     entry->type = KEFIR_IR_DATA_VALUE_FLOAT64;
     entry->value.float64 = value;
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_ir_data_set_long_double(struct kefir_ir_data *data, kefir_size_t index,
+kefir_result_t kefir_ir_data_set_long_double(struct kefir_mem *mem, struct kefir_ir_data *data, kefir_size_t index,
                                              kefir_long_double_t value) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(data != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR data pointer"));
     REQUIRE(!data->finalized, KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Cannot modify finalized data"));
 
     struct kefir_ir_data_value *entry;
-    REQUIRE_OK(value_entry_at(data, index, &entry));
+    REQUIRE_OK(value_entry_at(mem, data, index, &entry));
 
     entry->type = KEFIR_IR_DATA_VALUE_LONG_DOUBLE;
     entry->value.long_double = value;
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_ir_data_set_string(struct kefir_ir_data *data, kefir_size_t index,
+kefir_result_t kefir_ir_data_set_string(struct kefir_mem *mem, struct kefir_ir_data *data, kefir_size_t index,
                                         kefir_ir_string_literal_type_t type, const void *value, kefir_size_t length) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(data != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR data pointer"));
     REQUIRE(!data->finalized, KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Cannot modify finalized data"));
 
     struct kefir_ir_data_value *entry;
-    REQUIRE_OK(value_entry_at(data, index, &entry));
+    REQUIRE_OK(value_entry_at(mem, data, index, &entry));
 
     entry->type = KEFIR_IR_DATA_VALUE_STRING;
     entry->value.raw.data = value;
@@ -200,13 +208,14 @@ kefir_result_t kefir_ir_data_set_string(struct kefir_ir_data *data, kefir_size_t
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_ir_data_set_pointer(struct kefir_ir_data *data, kefir_size_t index, const char *reference,
-                                         kefir_size_t offset) {
+kefir_result_t kefir_ir_data_set_pointer(struct kefir_mem *mem, struct kefir_ir_data *data, kefir_size_t index,
+                                         const char *reference, kefir_size_t offset) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(data != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR data pointer"));
     REQUIRE(!data->finalized, KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Cannot modify finalized data"));
 
     struct kefir_ir_data_value *entry;
-    REQUIRE_OK(value_entry_at(data, index, &entry));
+    REQUIRE_OK(value_entry_at(mem, data, index, &entry));
 
     entry->type = KEFIR_IR_DATA_VALUE_POINTER;
     entry->value.pointer.reference = reference;
@@ -214,13 +223,14 @@ kefir_result_t kefir_ir_data_set_pointer(struct kefir_ir_data *data, kefir_size_
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_ir_data_set_string_pointer(struct kefir_ir_data *data, kefir_size_t index, kefir_id_t id,
-                                                kefir_int64_t offset) {
+kefir_result_t kefir_ir_data_set_string_pointer(struct kefir_mem *mem, struct kefir_ir_data *data, kefir_size_t index,
+                                                kefir_id_t id, kefir_int64_t offset) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(data != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR data pointer"));
     REQUIRE(!data->finalized, KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Cannot modify finalized data"));
 
     struct kefir_ir_data_value *entry;
-    REQUIRE_OK(value_entry_at(data, index, &entry));
+    REQUIRE_OK(value_entry_at(mem, data, index, &entry));
 
     entry->type = KEFIR_IR_DATA_VALUE_STRING_POINTER;
     entry->value.string_ptr.id = id;
@@ -228,13 +238,14 @@ kefir_result_t kefir_ir_data_set_string_pointer(struct kefir_ir_data *data, kefi
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_ir_data_set_raw(struct kefir_ir_data *data, kefir_size_t index, const void *raw,
-                                     kefir_size_t length) {
+kefir_result_t kefir_ir_data_set_raw(struct kefir_mem *mem, struct kefir_ir_data *data, kefir_size_t index,
+                                     const void *raw, kefir_size_t length) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(data != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR data pointer"));
     REQUIRE(!data->finalized, KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Cannot modify finalized data"));
 
     struct kefir_ir_data_value *entry;
-    REQUIRE_OK(value_entry_at(data, index, &entry));
+    REQUIRE_OK(value_entry_at(mem, data, index, &entry));
 
     entry->type = KEFIR_IR_DATA_VALUE_RAW;
     entry->value.raw.data = raw;

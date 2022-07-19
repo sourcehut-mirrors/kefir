@@ -44,7 +44,7 @@ static kefir_result_t translate_pointer_to_identifier(struct kefir_mem *mem,
             case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN: {
                 const char *literal = kefir_ir_module_symbol(mem, module, value->pointer.base.literal, NULL);
                 REQUIRE(literal != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate IR symbol"));
-                REQUIRE_OK(kefir_ir_data_set_pointer(data, base_slot, literal, value->pointer.offset));
+                REQUIRE_OK(kefir_ir_data_set_pointer(mem, data, base_slot, literal, value->pointer.offset));
             } break;
 
             case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC: {
@@ -52,11 +52,11 @@ static kefir_result_t translate_pointer_to_identifier(struct kefir_mem *mem,
                                  value->pointer.scoped_id->payload.ptr);
                 if (value->pointer.scoped_id->object.initializer != NULL) {
                     REQUIRE_OK(kefir_ir_data_set_pointer(
-                        data, base_slot, KEFIR_AST_TRANSLATOR_STATIC_VARIABLES_IDENTIFIER,
+                        mem, data, base_slot, KEFIR_AST_TRANSLATOR_STATIC_VARIABLES_IDENTIFIER,
                         resolve_identifier_offset(identifier_data->layout) + value->pointer.offset));
                 } else {
                     REQUIRE_OK(kefir_ir_data_set_pointer(
-                        data, base_slot, KEFIR_AST_TRANSLATOR_STATIC_UNINIT_VARIABLES_IDENTIFIER,
+                        mem, data, base_slot, KEFIR_AST_TRANSLATOR_STATIC_UNINIT_VARIABLES_IDENTIFIER,
                         resolve_identifier_offset(identifier_data->layout) + value->pointer.offset));
                 }
             } break;
@@ -79,7 +79,7 @@ static kefir_result_t translate_pointer_to_identifier(struct kefir_mem *mem,
                     "Global variables can be initialized by pointer either to an object or to a function"));
         const char *literal = kefir_ir_module_symbol(mem, module, value->pointer.base.literal, NULL);
         REQUIRE(literal != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate IR symbol"));
-        REQUIRE_OK(kefir_ir_data_set_pointer(data, base_slot, literal, value->pointer.offset));
+        REQUIRE_OK(kefir_ir_data_set_pointer(mem, data, base_slot, literal, value->pointer.offset));
     }
     return KEFIR_OK;
 }
@@ -186,24 +186,27 @@ static kefir_result_t visit_value(const struct kefir_ast_designator *designator,
                 case KEFIR_IR_TYPE_WORD:
                 case KEFIR_IR_TYPE_BITS:
                     if (resolved_layout->bitfield) {
-                        REQUIRE_OK(kefir_ir_data_set_bitfield(param->data, slot, value.integer,
+                        REQUIRE_OK(kefir_ir_data_set_bitfield(param->mem, param->data, slot, value.integer,
                                                               resolved_layout->bitfield_props.offset,
                                                               resolved_layout->bitfield_props.width));
                     } else {
-                        REQUIRE_OK(kefir_ir_data_set_integer(param->data, slot, value.integer));
+                        REQUIRE_OK(kefir_ir_data_set_integer(param->mem, param->data, slot, value.integer));
                     }
                     break;
 
                 case KEFIR_IR_TYPE_FLOAT32:
-                    REQUIRE_OK(kefir_ir_data_set_float32(param->data, slot, (kefir_float32_t) value.integer));
+                    REQUIRE_OK(
+                        kefir_ir_data_set_float32(param->mem, param->data, slot, (kefir_float32_t) value.integer));
                     break;
 
                 case KEFIR_IR_TYPE_FLOAT64:
-                    REQUIRE_OK(kefir_ir_data_set_float64(param->data, slot, (kefir_float64_t) value.integer));
+                    REQUIRE_OK(
+                        kefir_ir_data_set_float64(param->mem, param->data, slot, (kefir_float64_t) value.integer));
                     break;
 
                 case KEFIR_IR_TYPE_LONG_DOUBLE:
-                    REQUIRE_OK(kefir_ir_data_set_long_double(param->data, slot, (kefir_long_double_t) value.integer));
+                    REQUIRE_OK(kefir_ir_data_set_long_double(param->mem, param->data, slot,
+                                                             (kefir_long_double_t) value.integer));
                     break;
 
                 default:
@@ -223,19 +226,20 @@ static kefir_result_t visit_value(const struct kefir_ast_designator *designator,
                 case KEFIR_IR_TYPE_INT:
                 case KEFIR_IR_TYPE_LONG:
                 case KEFIR_IR_TYPE_WORD:
-                    REQUIRE_OK(kefir_ir_data_set_integer(param->data, slot, (kefir_int64_t) value.floating_point));
+                    REQUIRE_OK(
+                        kefir_ir_data_set_integer(param->mem, param->data, slot, (kefir_int64_t) value.floating_point));
                     break;
 
                 case KEFIR_IR_TYPE_FLOAT32:
-                    REQUIRE_OK(kefir_ir_data_set_float32(param->data, slot, value.floating_point));
+                    REQUIRE_OK(kefir_ir_data_set_float32(param->mem, param->data, slot, value.floating_point));
                     break;
 
                 case KEFIR_IR_TYPE_FLOAT64:
-                    REQUIRE_OK(kefir_ir_data_set_float64(param->data, slot, value.floating_point));
+                    REQUIRE_OK(kefir_ir_data_set_float64(param->mem, param->data, slot, value.floating_point));
                     break;
 
                 case KEFIR_IR_TYPE_LONG_DOUBLE:
-                    REQUIRE_OK(kefir_ir_data_set_long_double(param->data, slot, value.floating_point));
+                    REQUIRE_OK(kefir_ir_data_set_long_double(param->mem, param->data, slot, value.floating_point));
                     break;
 
                 default:
@@ -250,7 +254,7 @@ static kefir_result_t visit_value(const struct kefir_ast_designator *designator,
                     break;
 
                 case KEFIR_AST_CONSTANT_EXPRESSION_POINTER_INTEGER:
-                    REQUIRE_OK(kefir_ir_data_set_integer(param->data, slot,
+                    REQUIRE_OK(kefir_ir_data_set_integer(param->mem, param->data, slot,
                                                          value.pointer.base.integral + value.pointer.offset));
                     break;
 
@@ -259,7 +263,8 @@ static kefir_result_t visit_value(const struct kefir_ast_designator *designator,
                     REQUIRE_OK(kefir_ir_module_string_literal(
                         param->mem, param->module, StringLiteralTypes[value.pointer.base.string.type], true,
                         value.pointer.base.string.content, value.pointer.base.string.length, &id));
-                    REQUIRE_OK(kefir_ir_data_set_string_pointer(param->data, slot, id, value.pointer.offset));
+                    REQUIRE_OK(
+                        kefir_ir_data_set_string_pointer(param->mem, param->data, slot, id, value.pointer.offset));
                 } break;
             }
             break;
@@ -299,7 +304,8 @@ static kefir_result_t visit_string_literal(const struct kefir_ast_designator *de
             MIN(string_length, (kefir_size_t) resolved_layout->type->array_type.const_length->value.integer);
     }
 
-    REQUIRE_OK(kefir_ir_data_set_string(param->data, slot, StringLiteralTypes[type], string_content, string_length));
+    REQUIRE_OK(kefir_ir_data_set_string(param->mem, param->data, slot, StringLiteralTypes[type], string_content,
+                                        string_length));
     return KEFIR_OK;
 }
 
