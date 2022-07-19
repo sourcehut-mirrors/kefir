@@ -266,7 +266,7 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_symbo
         } else if (strncmp("-Wl,", arg, 4) == 0) {
             // Linker options
             REQUIRE_OK(kefir_driver_configuration_add_argument(mem, symbols, config, arg + 4,
-                                                               KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_ENTRY_POINT));
+                                                               KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_EXTRA));
         } else if (strcmp("-Xlinker", arg) == 0) {
             // Linker options
             EXPECT_ARG;
