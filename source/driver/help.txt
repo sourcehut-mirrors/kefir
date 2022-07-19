@@ -46,9 +46,9 @@ TARGETS:
     Target platforms are specified in format <arch>-<platform>-<variant> where
         arch: x86_64
         platform: linux, freebsd, openbsd, host
-        variant: none, musl, gnu, default
+        variant: none, musl, gnu, system, default
     Variant "none" avoids any implicit library linkages and include path. On linux, "default" is equivalent
-    to "gnu", on other platforms -- to "none".
+    to "gnu", on other platforms -- to "system".
 
 ENVIRONMENT VARIABLES:
     KEFIR_AS, AS                        Override the default "as" assembler
@@ -59,6 +59,12 @@ ENVIRONMENT VARIABLES:
     KEFIR_GNU_INCLUDE                   Specify GNU include paths (separated by ';'). Mandatory for "linux-gnu" platform variant
     KEFIR_GNU_LIB                       Specify GNU library paths (separated by ';'). Mandatory for "linux-gnu" platform variant
     KEFIR_GNU_DYNAMIC_LINKER            Specify dynamic linker path. Optional for "linux-gnu" platform variant
+    KEFIR_FREEBSD_INCLUDE               Specify FreeBSD include paths (separated by ';'). Mandatory for "freebsd-system" platform variant
+    KEFIR_FREEBSD_LIB                   Specify FreeBSD library paths (separated by ';'). Mandatory for "freebsd-system" platform variant
+    KEFIR_FREEBSD_DYNAMIC_LINKER        Specify dynamic linker path. Optional for "freebsd-system" platform variant
+    KEFIR_OPENBSD_INCLUDE               Specify OpenBSD include paths (separated by ';'). Mandatory for "openbsd-system" platform variant
+    KEFIR_OPENBSD_LIB                   Specify OpenBSD library paths (separated by ';'). Mandatory for "openbsd-system" platform variant
+    KEFIR_OPENBSD_DYNAMIC_LINKER        Specify dynamic linker path. Optional for "openbsd-system" platform variant
     KEFIR_WORKDIR                       Override kefir temporary work directory
 
 NOTES:

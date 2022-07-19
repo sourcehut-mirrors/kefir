@@ -3,7 +3,7 @@ This repository contains implementation of C17 language compiler from scratch. N
 infrastructure is being reused. The main priority is self-sufficiency of the project, compatibility with platform ABI and compliance with
 C17 language standard. Some exceptions to the standard were made (see `Exceptions` section below).
 At the moment, the initial scope of work is effectively finished, and the main concern is stabilization, bugfixes and UX improvements. 
-Kefir supports modern x86-64 Linux and FreeBSD environments.
+Kefir supports modern x86-64 Linux, FreeBSD and OpenBSD environments (see `Supported environments` section below).
 Compiler is also able to produce JSON streams containing program representation on various stages of compilation (tokens, AST, IR),
 as well as outputting source in preprocessed form.
 By default, the compiler outputs GNU As-compatible assembly (Intel syntax with prefixes).
@@ -14,10 +14,15 @@ Kefir compiler is named after [fermented milk drink](https://en.wikipedia.org/wi
 
 ## Supported environments
 Kefir targets x86-64 ISA and System-V ABI. The main focus is on modern Linux environments (where full range of automated tests is executed there),
-however Kefir also has support for modern FreeBSD and OpenBSD (base test suite is executed successfully in both environments). It's recommended to use [musl libc](https://musl.libc.org) instead of system `libc` if possible,
-because system standard library headers might contain unsupported
-compiler-specific extensions and
-thus require patching. Kefir supports selection of target platform via `--target` command line option.
+however Kefir also has support for modern FreeBSD and OpenBSD (base test suite and bootstrap are executed successfully in both environments).
+A platform is considered supported if base test suite and 2-stage compiler bootstrap can be executed there -- no other guarantees and claims are made.
+On Linux, `glibc` and `musl` standard libraries are supported (`musl` is recommended because it's header files are more compilant with standard C language without extensions),
+on BSDs system `libc` can be used with some restrictions (compiler will fail on inline assembly directives in include files, which can be ignored by manually
+defining suppressing macro prior to any includes, e.g. `#define asm(...)` at the beginning of file). Kefir supports selection of target platform via `--target` command line
+option.
+
+For each respective target, a set of environment variables (e.g. `KEFIR_GNU_INCLUDE`, `KEFIR_GNU_LIB`, `KEFIR_GNU_DYNAMIC_LINKER`) needs to be
+defined so that the compiler can find necessary headers and libraries.
 
 ## Motivation & goals
 The main motivation of the project is deeper understanding of C programming language, as well as practical experience in
@@ -29,7 +34,8 @@ shall be described and justified.
 * Compatibility with platform ABI - produced code should adhere ABI of target platform. It should be possible to transparently link it with
 code produced by commonly used compilers of the target platform.
 * Reduced scope of the project - full-fledged implementation of C17 compiler is demanding task. Project scope shall be reduced so that
-implementation as a pet-project is feasible. For instance, standard library implementation is currently out-of-scope.
+implementation as a pet-project is feasible. For instance, standard library implementation is currently out-of-scope. Instead, compiler
+supports some of widespread C extensions in order to re-use existing `libc` implementations.
 * Portability - compiler code itself should be easily portable across different environments. Currently, the development is concentrated on
 a single target platform, however it might be extended in future.
 
@@ -96,6 +102,9 @@ endianess (`__BYTE_ORDER__` and `__ORDER_LITTLE_ENDIAN__`), as well as `__KEFIRC
 ### Standard library
 Kefir can be used along with [musl libc](https://musl.libc.org) standard library, with the exception for
 `<complex.h>` and `<tgmath.h>` headers which are not available due to lacking support of `_Complex` types.
+Kefir also supports `glibc`, as well as `libc` provided with FreeBSD and OpenBSD, however the support is limited
+due to presence of non-standard C language extensions in header files which might cause compilation failures
+(additional macros/patched stdlib headers might need to be defined for successful compilation).
 
 ## Build & Usage
 **Usage is strongly discouraged. This is experimental project which is not meant for production purposes.**
