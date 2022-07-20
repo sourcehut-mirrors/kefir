@@ -22,7 +22,12 @@ OUTPUT_FILE="$(mktemp)"
 DIFF_FILE="$(mktemp)"
 VALGRIND_FILE="$(mktemp)"
 DIFF="diff -u"
-VALGRIND="valgrind $VALGRIND_OPTIONS --log-file=$VALGRIND_FILE"
+
+if [[ "x$MEMCHECK" == "xyes" ]]; then
+    VALGRIND="valgrind $VALGRIND_OPTIONS --log-file=$VALGRIND_FILE"
+else
+    VALGRIND=""
+fi
 
 function cleanup {
     rm -rf "$OUTPUT_FILE"
