@@ -56,6 +56,7 @@ ENVIRONMENT VARIABLES:
     KEFIR_RTLIB                         Specify kefir runtime library location. Mandatory for all platform variants except "*-none"
     KEFIR_MUSL_INCLUDE                  Specify musl include paths (separated by ';'). Mandatory for "linux-musl" platform variant
     KEFIR_MUSL_LIB                      Specify musl library paths (separated by ';'). Mandatory for "linux-musl" platform variant
+    KEFIR_MUSL_DYNAMIC_LINKER           Specify dynamic linker path. Optional for "linux-musl" platform variant
     KEFIR_GNU_INCLUDE                   Specify GNU include paths (separated by ';'). Mandatory for "linux-gnu" platform variant
     KEFIR_GNU_LIB                       Specify GNU library paths (separated by ';'). Mandatory for "linux-gnu" platform variant
     KEFIR_GNU_DYNAMIC_LINKER            Specify dynamic linker path. Optional for "linux-gnu" platform variant

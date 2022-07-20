@@ -227,6 +227,12 @@ kefir_result_t kefir_driver_apply_target_linker_initial_configuration(
                 LINK_FILE(externals->musl.library_path, "crt1.o");
                 LINK_FILE(externals->musl.library_path, "crti.o");
             }
+
+            if (externals->musl.dynamic_linker != NULL) {
+                REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "--dynamic-linker"));
+                REQUIRE_OK(
+                    kefir_driver_linker_configuration_add_argument(mem, linker_config, externals->musl.dynamic_linker));
+            }
         }
     } else if (target->platform == KEFIR_DRIVER_TARGET_PLATFORM_FREEBSD &&
                target->variant == KEFIR_DRIVER_TARGET_VARIANT_SYSTEM) {

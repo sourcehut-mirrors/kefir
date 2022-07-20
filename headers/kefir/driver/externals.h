@@ -24,6 +24,12 @@
 #include "kefir/core/mem.h"
 #include "kefir/platform/tempfile.h"
 
+typedef struct kefir_driver_external_resource_toolchain_config {
+    const char *include_path;
+    const char *library_path;
+    const char *dynamic_linker;
+} kefir_driver_external_resource_toolchain_config_t;
+
 typedef struct kefir_driver_external_resources {
     // Tools
     const char *assembler_path;
@@ -31,28 +37,11 @@ typedef struct kefir_driver_external_resources {
 
     // Libraries
     const char *runtime_library;
-    struct {
-        const char *include_path;
-        const char *library_path;
-    } musl;
 
-    struct {
-        const char *include_path;
-        const char *library_path;
-        const char *dynamic_linker;
-    } gnu;
-
-    struct {
-        const char *include_path;
-        const char *library_path;
-        const char *dynamic_linker;
-    } freebsd;
-
-    struct {
-        const char *include_path;
-        const char *library_path;
-        const char *dynamic_linker;
-    } openbsd;
+    struct kefir_driver_external_resource_toolchain_config musl;
+    struct kefir_driver_external_resource_toolchain_config gnu;
+    struct kefir_driver_external_resource_toolchain_config freebsd;
+    struct kefir_driver_external_resource_toolchain_config openbsd;
 
     // Directories
     const char *work_dir;
