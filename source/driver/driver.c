@@ -282,6 +282,7 @@ static kefir_result_t driver_compile_and_assemble(struct kefir_mem *mem,
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_process_kill(&compiler_process);
         kefir_process_kill(&assembler_process);
+        remove(object_filename);
         return res;
     });
     return KEFIR_OK;
@@ -309,6 +310,7 @@ static kefir_result_t driver_compile(struct kefir_compiler_runner_configuration 
 
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_process_kill(&compiler_process);
+        remove(output_filename);
         return res;
     });
     return KEFIR_OK;
@@ -333,6 +335,7 @@ static kefir_result_t driver_assemble(struct kefir_mem *mem, const struct kefir_
 
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_process_kill(&assembler_process);
+        remove(object_filename);
         return res;
     });
     return KEFIR_OK;
@@ -544,7 +547,10 @@ static kefir_result_t driver_run_linker(struct kefir_mem *mem, struct kefir_symb
     const char *output_file = config->output_file != NULL ? config->output_file : "a.out";
     REQUIRE_OK(kefir_driver_run_linker(mem, output_file, linker_config, externals, &linker_process));
     REQUIRE_OK(kefir_process_wait(&linker_process));
-    REQUIRE(linker_process.status.exited && linker_process.status.exit_code == EXIT_SUCCESS, KEFIR_INTERRUPT);
+    REQUIRE_ELSE(linker_process.status.exited && linker_process.status.exit_code == EXIT_SUCCESS, {
+        remove(output_file);
+        return KEFIR_INTERRUPT;
+    });
     return KEFIR_OK;
 }
 
@@ -619,6 +625,9 @@ kefir_result_t kefir_driver_run(struct kefir_mem *mem, struct kefir_symbol_table
         driver_run_impl(mem, symbols, config, externals, &assembler_config, &linker_config, &compiler_config);
 
     REQUIRE_ELSE(res == KEFIR_OK, {
+        if (config->output_file != NULL) {
+            remove(config->output_file);
+        }
         kefir_compiler_runner_configuration_free(mem, &compiler_config);
         kefir_driver_assembler_configuration_free(mem, &assembler_config);
         kefir_driver_linker_configuration_free(mem, &linker_config);

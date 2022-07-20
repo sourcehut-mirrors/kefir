@@ -41,8 +41,11 @@ static void tmpmgr_cleanup(void) {
 }
 
 static void sighandler(int signum) {
-    fprintf(stderr, "Caught signal: %d\n", signum);
+    if (!kefir_process_is_fork() && (signum == SIGSEGV || signum == SIGFPE)) {
+        fprintf(stderr, "Kefir caught signal: %d, terminating\n", signum);
+    }
     tmpmgr_cleanup();
+    exit(EXIT_FAILURE);
 }
 
 static kefir_result_t init_tmpmgr() {
@@ -50,7 +53,11 @@ static kefir_result_t init_tmpmgr() {
     atexit(tmpmgr_cleanup);
     signal(SIGTERM, sighandler);
     signal(SIGABRT, sighandler);
+    signal(SIGINT, sighandler);
+    signal(SIGHUP, sighandler);
+    signal(SIGQUIT, sighandler);
     signal(SIGSEGV, sighandler);
+    signal(SIGFPE, sighandler);
     return KEFIR_OK;
 }
 
