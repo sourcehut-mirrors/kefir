@@ -8,9 +8,9 @@ LD=ld
 
 KEFIR_FLAGS=-I $(HEADERS)
 ifeq ($(PLATFORM),freebsd)
-KEFIR_FLAGS += --target x86_64-freebsd-system
+KEFIR_FLAGS += --target x86_64-freebsd-system -D__GNUC__=4 -D__GNUC_MINOR__=20 -D__GNUC_STDC_INLINE__=1
 else ifeq ($(PLATFORM),openbsd)
-KEFIR_FLAGS += --target x86_64-openbsd-system -include $(HEADERS)/bootstrap/openbsd.h
+KEFIR_FLAGS += --target x86_64-openbsd-system -D__GNUC__=4 -D__GNUC_MINOR__=20 -D__GNUC_STDC_INLINE__=1 -include $(HEADERS)/bootstrap/openbsd.h
 else
 KEFIR_FLAGS += --target x86_64-linux-gnu
 endif
