@@ -1,5 +1,5 @@
 pop %r12
-mov %r13, [%r12 + 0]
+mov %r13, [%r12]
 pinsrq %xmm0, %r13, 0
 mov %rax, [%r12 + 8]
 mov %rsp, %r14

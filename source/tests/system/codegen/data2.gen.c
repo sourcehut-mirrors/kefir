@@ -29,7 +29,7 @@
 
 kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_codegen_amd64 codegen;
-    kefir_codegen_amd64_sysv_init(&codegen, stdout);
+    kefir_codegen_amd64_sysv_init(mem, &codegen, stdout);
 
     struct kefir_ir_module module;
     REQUIRE_OK(kefir_ir_module_alloc(mem, &module));
@@ -70,7 +70,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     kefir_irbuilder_block_appendu32(mem, &arrptr->body, KEFIR_IROPCODE_ELEMENTPTR, type1_id, 8);
 
     KEFIR_CODEGEN_TRANSLATE(mem, &codegen.iface, &module);
-    KEFIR_CODEGEN_CLOSE(&codegen.iface);
+    KEFIR_CODEGEN_CLOSE(mem, &codegen.iface);
     REQUIRE_OK(kefir_ir_module_free(mem, &module));
     return EXIT_SUCCESS;
 }

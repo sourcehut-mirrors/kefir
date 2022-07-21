@@ -56,16 +56,26 @@ kefir_result_t kefir_amd64_sysv_instruction(struct kefir_mem *mem, struct kefir_
             REQUIRE(instr->arg.u64 <= kefir_irblock_length(&sysv_func->func->body),
                     KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Jump offset is out of IR block bounds"));
             REQUIRE_OK(cg_symbolic_opcode(instr->opcode, &opcode_symbol));
-            ASMGEN_RAW(&codegen->asmgen, KEFIR_AMD64_QUAD);
-            ASMGEN_ARG0(&codegen->asmgen, opcode_symbol);
-            ASMGEN_ARG(&codegen->asmgen, KEFIR_AMD64_SYSV_PROCEDURE_BODY_LABEL " + " KEFIR_INT64_FMT,
-                       sysv_func->func->name, 2 * KEFIR_AMD64_SYSV_ABI_QWORD * instr->arg.u64);
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+                &codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 2,
+                kefir_amd64_xasmgen_operand_label(&codegen->xasmgen_helpers.operands[0], opcode_symbol),
+                kefir_amd64_xasmgen_operand_offset(
+                    &codegen->xasmgen_helpers.operands[1],
+                    kefir_amd64_xasmgen_operand_label(
+                        &codegen->xasmgen_helpers.operands[2],
+                        kefir_amd64_xasmgen_helpers_format(
+                            &codegen->xasmgen_helpers, KEFIR_AMD64_SYSV_PROCEDURE_BODY_LABEL, sysv_func->func->name)),
+                    2 * KEFIR_AMD64_SYSV_ABI_QWORD * instr->arg.u64)));
         } break;
 
         case KEFIR_IROPCODE_RET: {
-            ASMGEN_RAW(&codegen->asmgen, KEFIR_AMD64_QUAD);
-            ASMGEN_ARG(&codegen->asmgen, KEFIR_AMD64_SYSV_PROCEDURE_EPILOGUE_LABEL, sysv_func->func->name);
-            ASMGEN_ARG0(&codegen->asmgen, "0");
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+                &codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 2,
+                kefir_amd64_xasmgen_operand_label(
+                    &codegen->xasmgen_helpers.operands[0],
+                    kefir_amd64_xasmgen_helpers_format(
+                        &codegen->xasmgen_helpers, KEFIR_AMD64_SYSV_PROCEDURE_EPILOGUE_LABEL, sysv_func->func->name)),
+                kefir_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[1], 0)));
         } break;
 
         case KEFIR_IROPCODE_INVOKE: {
@@ -75,13 +85,17 @@ kefir_result_t kefir_amd64_sysv_instruction(struct kefir_mem *mem, struct kefir_
                                     "Failed to allocate AMD64 System-V IR module function decaration"));
 
             const struct kefir_ir_function_decl *decl = kefir_ir_module_get_declaration(sysv_module->module, id);
-            ASMGEN_RAW(&codegen->asmgen, KEFIR_AMD64_QUAD);
-            if (decl->name == NULL || decl->vararg) {
-                ASMGEN_ARG(&codegen->asmgen, KEFIR_AMD64_SYSV_FUNCTION_GATE_ID_LABEL, id);
-            } else {
-                ASMGEN_ARG(&codegen->asmgen, KEFIR_AMD64_SYSV_FUNCTION_GATE_NAMED_LABEL, decl->name, decl->id);
-            }
-            ASMGEN_ARG0(&codegen->asmgen, "0");
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+                &codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 2,
+                kefir_amd64_xasmgen_operand_label(
+                    &codegen->xasmgen_helpers.operands[0],
+                    decl->name == NULL || decl->vararg
+                        ? kefir_amd64_xasmgen_helpers_format(&codegen->xasmgen_helpers,
+                                                             KEFIR_AMD64_SYSV_FUNCTION_GATE_ID_LABEL, id)
+                        : kefir_amd64_xasmgen_helpers_format(&codegen->xasmgen_helpers,
+                                                             KEFIR_AMD64_SYSV_FUNCTION_GATE_NAMED_LABEL, decl->name,
+                                                             decl->id)),
+                kefir_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[1], 0)));
         } break;
 
         case KEFIR_IROPCODE_INVOKEV: {
@@ -91,13 +105,17 @@ kefir_result_t kefir_amd64_sysv_instruction(struct kefir_mem *mem, struct kefir_
                                     "Failed to allocate AMD64 System-V IR module function decaration"));
 
             const struct kefir_ir_function_decl *decl = kefir_ir_module_get_declaration(sysv_module->module, id);
-            ASMGEN_RAW(&codegen->asmgen, KEFIR_AMD64_QUAD);
-            if (decl->name == NULL) {
-                ASMGEN_ARG(&codegen->asmgen, KEFIR_AMD64_SYSV_FUNCTION_VIRTUAL_GATE_ID_LABEL, id);
-            } else {
-                ASMGEN_ARG(&codegen->asmgen, KEFIR_AMD64_SYSV_FUNCTION_VIRTUAL_GATE_NAMED_LABEL, decl->name);
-            }
-            ASMGEN_ARG0(&codegen->asmgen, "0");
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+                &codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 2,
+                kefir_amd64_xasmgen_operand_label(
+                    &codegen->xasmgen_helpers.operands[0],
+                    decl->name == NULL || decl->vararg
+                        ? kefir_amd64_xasmgen_helpers_format(&codegen->xasmgen_helpers,
+                                                             KEFIR_AMD64_SYSV_FUNCTION_VIRTUAL_GATE_ID_LABEL, id)
+                        : kefir_amd64_xasmgen_helpers_format(&codegen->xasmgen_helpers,
+                                                             KEFIR_AMD64_SYSV_FUNCTION_VIRTUAL_GATE_NAMED_LABEL,
+                                                             decl->name)),
+                kefir_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[1], 0)));
         } break;
 
         case KEFIR_IROPCODE_PUSHSTRING: {
@@ -113,9 +131,13 @@ kefir_result_t kefir_amd64_sysv_instruction(struct kefir_mem *mem, struct kefir_
 
             const char *opcode_symbol = NULL;
             REQUIRE_OK(cg_symbolic_opcode(KEFIR_IROPCODE_PUSHI64, &opcode_symbol));
-            ASMGEN_RAW(&codegen->asmgen, KEFIR_AMD64_QUAD);
-            ASMGEN_ARG0(&codegen->asmgen, opcode_symbol);
-            ASMGEN_ARG(&codegen->asmgen, KEFIR_AMD64_SYSTEM_V_RUNTIME_STRING_LITERAL, identifier);
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+                &codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 2,
+                kefir_amd64_xasmgen_operand_label(&codegen->xasmgen_helpers.operands[0], opcode_symbol),
+                kefir_amd64_xasmgen_operand_label(
+                    &codegen->xasmgen_helpers.operands[1],
+                    kefir_amd64_xasmgen_helpers_format(&codegen->xasmgen_helpers,
+                                                       KEFIR_AMD64_SYSTEM_V_RUNTIME_STRING_LITERAL, identifier))));
         } break;
 
         case KEFIR_IROPCODE_BZERO:
@@ -129,9 +151,10 @@ kefir_result_t kefir_amd64_sysv_instruction(struct kefir_mem *mem, struct kefir_
 
             const char *opcode_symbol = NULL;
             REQUIRE_OK(cg_symbolic_opcode(instr->opcode, &opcode_symbol));
-            ASMGEN_RAW(&codegen->asmgen, KEFIR_AMD64_QUAD);
-            ASMGEN_ARG0(&codegen->asmgen, opcode_symbol);
-            ASMGEN_ARG(&codegen->asmgen, KEFIR_INT64_FMT, entry->size);
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+                &codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 2,
+                kefir_amd64_xasmgen_operand_label(&codegen->xasmgen_helpers.operands[0], opcode_symbol),
+                kefir_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[1], entry->size)));
         } break;
 
         case KEFIR_IROPCODE_EXTUBITS:
@@ -139,11 +162,13 @@ kefir_result_t kefir_amd64_sysv_instruction(struct kefir_mem *mem, struct kefir_
         case KEFIR_IROPCODE_INSERTBITS: {
             const char *opcode_symbol = NULL;
             REQUIRE_OK(cg_symbolic_opcode(instr->opcode, &opcode_symbol));
-            ASMGEN_RAW(&codegen->asmgen, KEFIR_AMD64_QUAD);
-            ASMGEN_ARG0(&codegen->asmgen, opcode_symbol);
-            ASMGEN_RAW(&codegen->asmgen, KEFIR_AMD64_DOUBLE);
-            ASMGEN_ARG(&codegen->asmgen, KEFIR_UINT32_FMT, instr->arg.u32[0]);
-            ASMGEN_ARG(&codegen->asmgen, KEFIR_UINT32_FMT, instr->arg.u32[1]);
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+                &codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
+                kefir_amd64_xasmgen_operand_label(&codegen->xasmgen_helpers.operands[0], opcode_symbol)));
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+                &codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 2,
+                kefir_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[1], instr->arg.u32[0]),
+                kefir_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[2], instr->arg.u32[1])));
         } break;
 
         case KEFIR_IROPCODE_OFFSETPTR:
@@ -157,23 +182,26 @@ kefir_result_t kefir_amd64_sysv_instruction(struct kefir_mem *mem, struct kefir_
             const char *opcode_symbol = NULL;
             if (instr->opcode == KEFIR_IROPCODE_OFFSETPTR) {
                 REQUIRE_OK(cg_symbolic_opcode(KEFIR_IROPCODE_OFFSETPTR, &opcode_symbol));
-                ASMGEN_RAW(&codegen->asmgen, KEFIR_AMD64_QUAD);
-                ASMGEN_ARG0(&codegen->asmgen, opcode_symbol);
-                ASMGEN_ARG(&codegen->asmgen, KEFIR_INT64_FMT, entry->relative_offset);
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+                    &codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 2,
+                    kefir_amd64_xasmgen_operand_label(&codegen->xasmgen_helpers.operands[0], opcode_symbol),
+                    kefir_amd64_xasmgen_operand_imm(&codegen->xasmgen_helpers.operands[1], entry->relative_offset)));
             } else {
                 REQUIRE_OK(cg_symbolic_opcode(KEFIR_IROPCODE_ELEMENTPTR, &opcode_symbol));
-                ASMGEN_RAW(&codegen->asmgen, KEFIR_AMD64_QUAD);
-                ASMGEN_ARG0(&codegen->asmgen, opcode_symbol);
-                ASMGEN_ARG(&codegen->asmgen, KEFIR_INT64_FMT, entry->size);
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+                    &codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 2,
+                    kefir_amd64_xasmgen_operand_label(&codegen->xasmgen_helpers.operands[0], opcode_symbol),
+                    kefir_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[1], entry->size)));
             }
         } break;
 
         case KEFIR_IROPCODE_GETLOCALS: {
             const char *opcode_symbol = NULL;
             REQUIRE_OK(cg_symbolic_opcode(instr->opcode, &opcode_symbol));
-            ASMGEN_RAW(&codegen->asmgen, KEFIR_AMD64_QUAD);
-            ASMGEN_ARG0(&codegen->asmgen, opcode_symbol);
-            ASMGEN_ARG(&codegen->asmgen, KEFIR_INT64_FMT, sysv_func->frame.base.locals);
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+                &codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 2,
+                kefir_amd64_xasmgen_operand_label(&codegen->xasmgen_helpers.operands[0], opcode_symbol),
+                kefir_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[1], sysv_func->frame.base.locals)));
         } break;
 
         case KEFIR_IROPCODE_GETGLOBAL: {
@@ -183,9 +211,10 @@ kefir_result_t kefir_amd64_sysv_instruction(struct kefir_mem *mem, struct kefir_
 
             const char *opcode_symbol = NULL;
             REQUIRE_OK(cg_symbolic_opcode(KEFIR_IROPCODE_PUSHI64, &opcode_symbol));
-            ASMGEN_RAW(&codegen->asmgen, KEFIR_AMD64_QUAD);
-            ASMGEN_ARG0(&codegen->asmgen, opcode_symbol);
-            ASMGEN_SYMBOL_ARG(&codegen->asmgen, symbol);
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+                &codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 2,
+                kefir_amd64_xasmgen_operand_label(&codegen->xasmgen_helpers.operands[0], opcode_symbol),
+                kefir_amd64_xasmgen_operand_symbol(&codegen->xasmgen_helpers.operands[1], symbol)));
         } break;
 
         case KEFIR_IROPCODE_GETTHRLOCAL: {
@@ -195,9 +224,13 @@ kefir_result_t kefir_amd64_sysv_instruction(struct kefir_mem *mem, struct kefir_
 
             REQUIRE_OK(kefir_codegen_amd64_sysv_module_declare_tls(mem, sysv_module, symbol));
 
-            ASMGEN_RAW(&codegen->asmgen, KEFIR_AMD64_QUAD);
-            ASMGEN_ARG(&codegen->asmgen, KEFIR_AMD64_SYSV_FUNCTION_TLS_ENTRY, symbol);
-            ASMGEN_ARG0(&codegen->asmgen, "0");
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+                &codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 2,
+                kefir_amd64_xasmgen_operand_label(
+                    &codegen->xasmgen_helpers.operands[0],
+                    kefir_amd64_xasmgen_helpers_format(&codegen->xasmgen_helpers, KEFIR_AMD64_SYSV_FUNCTION_TLS_ENTRY,
+                                                       symbol)),
+                kefir_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[1], 0)));
         } break;
 
         case KEFIR_IROPCODE_VARARG_START:
@@ -209,35 +242,39 @@ kefir_result_t kefir_amd64_sysv_instruction(struct kefir_mem *mem, struct kefir_
         case KEFIR_IROPCODE_PUSHF32: {
             const char *opcode_symbol = NULL;
             REQUIRE_OK(cg_symbolic_opcode(KEFIR_IROPCODE_PUSHI64, &opcode_symbol));
-            ASMGEN_RAW(&codegen->asmgen, KEFIR_AMD64_QUAD);
-            ASMGEN_ARG0(&codegen->asmgen, opcode_symbol);
-            ASMGEN_RAW(&codegen->asmgen, KEFIR_AMD64_DOUBLE);
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+                &codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
+                kefir_amd64_xasmgen_operand_label(&codegen->xasmgen_helpers.operands[0], opcode_symbol)));
             union {
                 kefir_float32_t fp32;
                 kefir_uint32_t uint32;
             } value = {.fp32 = instr->arg.f32[0]};
-            ASMGEN_ARG(&codegen->asmgen, "0x%08" KEFIR_UINT32_XFMT, value.uint32);
-            ASMGEN_ARG0(&codegen->asmgen, "0");
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+                &codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 2,
+                kefir_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[0], value.uint32),
+                kefir_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[1], 0)));
         } break;
 
         case KEFIR_IROPCODE_PUSHF64: {
             const char *opcode_symbol = NULL;
             REQUIRE_OK(cg_symbolic_opcode(KEFIR_IROPCODE_PUSHI64, &opcode_symbol));
-            ASMGEN_RAW(&codegen->asmgen, KEFIR_AMD64_QUAD);
-            ASMGEN_ARG0(&codegen->asmgen, opcode_symbol);
             union {
                 kefir_float64_t fp64;
                 kefir_uint64_t uint64;
             } value = {.fp64 = instr->arg.f64};
-            ASMGEN_ARG(&codegen->asmgen, "0x%016" KEFIR_UINT64_XFMT, value.uint64);
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+                &codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 2,
+                kefir_amd64_xasmgen_operand_label(&codegen->xasmgen_helpers.operands[0], opcode_symbol),
+                kefir_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[1], value.uint64)));
         } break;
 
         case KEFIR_IROPCODE_PUSHU64: {
             const char *opcode_symbol = NULL;
             REQUIRE_OK(cg_symbolic_opcode(KEFIR_IROPCODE_PUSHI64, &opcode_symbol));
-            ASMGEN_RAW(&codegen->asmgen, KEFIR_AMD64_QUAD);
-            ASMGEN_ARG0(&codegen->asmgen, opcode_symbol);
-            ASMGEN_ARG(&codegen->asmgen, KEFIR_UINT64_FMT, instr->arg.u64);
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+                &codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 2,
+                kefir_amd64_xasmgen_operand_label(&codegen->xasmgen_helpers.operands[0], opcode_symbol),
+                kefir_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[1], instr->arg.u64)));
         } break;
 
         case KEFIR_IROPCODE_PUSHLD: {
@@ -249,12 +286,12 @@ kefir_result_t kefir_amd64_sysv_instruction(struct kefir_mem *mem, struct kefir_
             *instr_width = 2;
             const char *opcode_symbol = NULL;
             REQUIRE_OK(cg_symbolic_opcode(KEFIR_IROPCODE_PUSHI64, &opcode_symbol));
-            ASMGEN_RAW(&codegen->asmgen, KEFIR_AMD64_QUAD);
-            ASMGEN_ARG0(&codegen->asmgen, opcode_symbol);
-            ASMGEN_ARG(&codegen->asmgen, KEFIR_UINT64_FMT, instr->arg.u64);
-            ASMGEN_RAW(&codegen->asmgen, KEFIR_AMD64_QUAD);
-            ASMGEN_ARG0(&codegen->asmgen, opcode_symbol);
-            ASMGEN_ARG(&codegen->asmgen, KEFIR_UINT64_FMT, instr_half2->arg.u64);
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+                &codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 4,
+                kefir_amd64_xasmgen_operand_label(&codegen->xasmgen_helpers.operands[0], opcode_symbol),
+                kefir_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[1], instr->arg.u64),
+                kefir_amd64_xasmgen_operand_label(&codegen->xasmgen_helpers.operands[2], opcode_symbol),
+                kefir_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[3], instr_half2->arg.u64)));
         } break;
 
         case KEFIR_IROPCODE_PUSHLABEL: {
@@ -262,18 +299,25 @@ kefir_result_t kefir_amd64_sysv_instruction(struct kefir_mem *mem, struct kefir_
             REQUIRE(instr->arg.u64 <= kefir_irblock_length(&sysv_func->func->body),
                     KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Label offset is out of IR block bounds"));
             REQUIRE_OK(cg_symbolic_opcode(KEFIR_IROPCODE_PUSHI64, &opcode_symbol));
-            ASMGEN_RAW(&codegen->asmgen, KEFIR_AMD64_QUAD);
-            ASMGEN_ARG0(&codegen->asmgen, opcode_symbol);
-            ASMGEN_ARG(&codegen->asmgen, KEFIR_AMD64_SYSV_PROCEDURE_BODY_LABEL " + " KEFIR_INT64_FMT,
-                       sysv_func->func->name, 2 * KEFIR_AMD64_SYSV_ABI_QWORD * instr->arg.u64);
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+                &codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 2,
+                kefir_amd64_xasmgen_operand_label(&codegen->xasmgen_helpers.operands[0], opcode_symbol),
+                kefir_amd64_xasmgen_operand_offset(
+                    &codegen->xasmgen_helpers.operands[1],
+                    kefir_amd64_xasmgen_operand_label(
+                        &codegen->xasmgen_helpers.operands[2],
+                        kefir_amd64_xasmgen_helpers_format(
+                            &codegen->xasmgen_helpers, KEFIR_AMD64_SYSV_PROCEDURE_BODY_LABEL, sysv_func->func->name)),
+                    2 * KEFIR_AMD64_SYSV_ABI_QWORD * instr->arg.u64)));
         } break;
 
         default: {
             const char *opcode_symbol = NULL;
             REQUIRE_OK(cg_symbolic_opcode(instr->opcode, &opcode_symbol));
-            ASMGEN_RAW(&codegen->asmgen, KEFIR_AMD64_QUAD);
-            ASMGEN_ARG0(&codegen->asmgen, opcode_symbol);
-            ASMGEN_ARG(&codegen->asmgen, KEFIR_INT64_FMT, instr->arg);
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+                &codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 2,
+                kefir_amd64_xasmgen_operand_label(&codegen->xasmgen_helpers.operands[0], opcode_symbol),
+                kefir_amd64_xasmgen_operand_imm(&codegen->xasmgen_helpers.operands[1], instr->arg.i64)));
         } break;
     }
     return KEFIR_OK;

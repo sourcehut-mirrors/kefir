@@ -145,7 +145,7 @@ __kefirrt_sfunction_func2_gate1:
     and %rsp, -16
     mov %rdi, [%r12 + 16]
     pinsrq %xmm0, [%r12 + 8], 0
-    mov %rsi, [%r12 + 0]
+    mov %rsi, [%r12]
     call func2
     mov %rsp, %r12
     add %rsp, 24
@@ -158,7 +158,7 @@ __kefirrt_sfunction_func3_gate2:
     and %rsp, -16
     pinsrq %xmm0, [%r12 + 16], 0
     mov %rdi, [%r12 + 8]
-    pinsrq %xmm1, [%r12 + 0], 0
+    pinsrq %xmm1, [%r12], 0
     call func3
     mov %rsp, %r12
     add %rsp, 24

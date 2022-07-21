@@ -24,7 +24,6 @@
 #include "kefir/core/basic-types.h"
 #include "kefir/core/mem.h"
 #include "kefir/codegen/codegen.h"
-#include "kefir/codegen/amd64/asmgen.h"
 #include "kefir/core/hashtree.h"
 
 typedef struct kefir_codegen_amd64_sysv_module {

@@ -30,7 +30,7 @@
 
 kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_codegen_amd64 codegen;
-    kefir_codegen_amd64_sysv_init(&codegen, stdout);
+    kefir_codegen_amd64_sysv_init(mem, &codegen, stdout);
     struct kefir_codegen_configuration codegen_config = KefirCodegenDefaultConfiguration;
 #ifdef __OpenBSD__
     codegen_config.emulated_tls = true;
@@ -226,7 +226,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, "strpointer1_1", KEFIR_IR_IDENTIFIER_THREAD_LOCAL));
 
     KEFIR_CODEGEN_TRANSLATE(mem, &codegen.iface, &module);
-    KEFIR_CODEGEN_CLOSE(&codegen.iface);
+    KEFIR_CODEGEN_CLOSE(mem, &codegen.iface);
     REQUIRE_OK(kefir_ir_module_free(mem, &module));
     return EXIT_SUCCESS;
 }

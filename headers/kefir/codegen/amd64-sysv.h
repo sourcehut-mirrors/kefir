@@ -22,16 +22,18 @@
 #define KEFIR_CODEGEN_AMD64_SYSV_H_
 
 #include "kefir/core/basic-types.h"
+#include "kefir/codegen/amd64/xasmgen/xasmgen.h"
 #include "kefir/codegen/amd64/system-v/abi/module.h"
 #include "kefir/codegen/amd64/system-v/platform.h"
 
 typedef struct kefir_codegen_amd64 {
     struct kefir_codegen iface;
     const struct kefir_codegen_configuration *config;
-    struct kefir_amd64_asmgen asmgen;
+    struct kefir_amd64_xasmgen xasmgen;
+    struct kefir_amd64_xasmgen_helpers xasmgen_helpers;
 } kefir_codegen_amd64_t;
 
-kefir_result_t kefir_codegen_amd64_sysv_init(struct kefir_codegen_amd64 *, FILE *);
+kefir_result_t kefir_codegen_amd64_sysv_init(struct kefir_mem *, struct kefir_codegen_amd64 *, FILE *);
 
 extern const char KefirAmd64SysVRuntimeCode[];
 

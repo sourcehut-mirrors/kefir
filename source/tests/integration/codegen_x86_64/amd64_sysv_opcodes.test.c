@@ -43,8 +43,8 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_ir_function *func = kefir_ir_module_new_function(mem, &module, decl, KEFIR_ID_NONE, 1024);
     REQUIRE(func != NULL, KEFIR_INTERNAL_ERROR);
     REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, decl->name, KEFIR_IR_IDENTIFIER_GLOBAL));
-    kefir_codegen_amd64_sysv_init(&codegen, stdout);
-    codegen.asmgen.settings.enable_comments = false;
+    REQUIRE_OK(kefir_codegen_amd64_sysv_init(mem, &codegen, stdout));
+    codegen.xasmgen.settings.enable_comments = false;
 
     kefir_irbuilder_block_appendi64(mem, &func->body, KEFIR_IROPCODE_NOP, 0);
     kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IROPCODE_JMP, 1);
@@ -81,7 +81,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IROPCODE_PUSHLABEL, 10);
     REQUIRE_OK(KEFIR_CODEGEN_TRANSLATE(mem, &codegen.iface, &module));
 
-    REQUIRE_OK(KEFIR_CODEGEN_CLOSE(&codegen.iface));
+    REQUIRE_OK(KEFIR_CODEGEN_CLOSE(mem, &codegen.iface));
     REQUIRE_OK(kefir_ir_module_free(mem, &module));
     return KEFIR_OK;
 }

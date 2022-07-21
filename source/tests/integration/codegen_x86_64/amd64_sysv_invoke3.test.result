@@ -142,7 +142,7 @@ __proxyadd_body:
     .quad __proxyadd_epilogue, 0
 __proxyadd_epilogue:
     pop %r12
-    mov %rax, [%r12 + 0]
+    mov %rax, [%r12]
     mov %r13, [%r12 + 8]
     pinsrq %xmm0, %r13, 0
     mov %rsp, %r14
@@ -153,8 +153,8 @@ __kefirrt_sfunction_addstruct_vgate:
     mov %r12, %rsp
     and %rsp, -16
     mov %rdi, [%r12 + 8]
-    mov %r11, [%r12 + 0]
-    mov %rsi, [%r11 + 0]
+    mov %r11, [%r12]
+    mov %rsi, [%r11]
     pinsrq %xmm0, [%r11 + 8], 0
     call [%r12 + 16]
     mov %rsp, %r12

@@ -33,9 +33,9 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_codegen_amd64 codegen;
     struct kefir_ir_module module;
     REQUIRE_OK(kefir_ir_module_alloc(mem, &module));
-    REQUIRE_OK(kefir_codegen_amd64_sysv_init(&codegen, stdout));
-    codegen.asmgen.settings.enable_comments = false;
-    codegen.asmgen.settings.enable_identation = false;
+    REQUIRE_OK(kefir_codegen_amd64_sysv_init(mem, &codegen, stdout));
+    codegen.xasmgen.settings.enable_comments = false;
+    codegen.xasmgen.settings.enable_identation = false;
 
     kefir_id_t int8type_id;
     struct kefir_ir_type *int8type = kefir_ir_module_new_type(mem, &module, 1, &int8type_id);
@@ -195,7 +195,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, "pointer1_1", KEFIR_IR_IDENTIFIER_GLOBAL));
 
     REQUIRE_OK(KEFIR_CODEGEN_TRANSLATE(mem, &codegen.iface, &module));
-    REQUIRE_OK(KEFIR_CODEGEN_CLOSE(&codegen.iface));
+    REQUIRE_OK(KEFIR_CODEGEN_CLOSE(mem, &codegen.iface));
     REQUIRE_OK(kefir_ir_module_free(mem, &module));
     return KEFIR_OK;
 }

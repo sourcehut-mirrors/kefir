@@ -26,7 +26,6 @@
 #include "kefir/core/mem.h"
 #include "kefir/codegen/amd64-sysv.h"
 #include "kefir/codegen/amd64/system-v/abi/registers.h"
-#include "kefir/codegen/amd64/asmgen.h"
 #include "kefir/ir/data.h"
 
 kefir_result_t kefir_amd64_sysv_calculate_type_properties(const struct kefir_ir_type *, struct kefir_vector *,

@@ -35,7 +35,7 @@ static kefir_result_t amd64_sysv_new_codegen(struct kefir_mem *mem, FILE *output
     struct kefir_codegen_amd64 *codegen = KEFIR_MALLOC(mem, sizeof(struct kefir_codegen_amd64));
     REQUIRE(codegen != NULL,
             KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AMD64 System-V code generator"));
-    kefir_result_t res = kefir_codegen_amd64_sysv_init(codegen, output);
+    kefir_result_t res = kefir_codegen_amd64_sysv_init(mem, codegen, output);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, codegen);
         return res;
@@ -52,7 +52,7 @@ static kefir_result_t amd64_sysv_free_codegen(struct kefir_mem *mem, struct kefi
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(codegen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid code generator"));
 
-    REQUIRE_OK(KEFIR_CODEGEN_CLOSE(codegen));
+    REQUIRE_OK(KEFIR_CODEGEN_CLOSE(mem, codegen));
     KEFIR_FREE(mem, codegen->self);
     return KEFIR_OK;
 }

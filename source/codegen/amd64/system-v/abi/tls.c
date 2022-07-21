@@ -31,39 +31,62 @@ kefir_result_t kefir_amd64_sysv_thread_local_reference(struct kefir_codegen_amd6
 
     if (!codegen->config->emulated_tls) {
         if (local) {
-            ASMGEN_INSTR(&codegen->asmgen, KEFIR_AMD64_LEA);
-            ASMGEN_ARG0(&codegen->asmgen, KEFIR_AMD64_SYSV_ABI_DATA_REG);
-            ASMGEN_ARG(&codegen->asmgen, KEFIR_AMD64_THREAD_LOCAL, identifier);
-            ASMGEN_INSTR(&codegen->asmgen, KEFIR_AMD64_ADD);
-            ASMGEN_ARG0(&codegen->asmgen, KEFIR_AMD64_SYSV_ABI_DATA_REG);
-            ASMGEN_ARG0(&codegen->asmgen, KEFIR_AMD64_FS "0");
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_LEA(
+                &codegen->xasmgen, kefir_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_DATA_REG),
+                kefir_amd64_xasmgen_operand_label(
+                    &codegen->xasmgen_helpers.operands[0],
+                    kefir_amd64_xasmgen_helpers_format(&codegen->xasmgen_helpers, KEFIR_AMD64_THREAD_LOCAL,
+                                                       identifier))));
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_ADD(
+                &codegen->xasmgen, kefir_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_DATA_REG),
+                kefir_amd64_xasmgen_operand_segment(
+                    &codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_SEGMENT_FS,
+                    kefir_amd64_xasmgen_operand_imm(&codegen->xasmgen_helpers.operands[1], 0))));
         } else {
-            ASMGEN_INSTR(&codegen->asmgen, KEFIR_AMD64_MOV);
-            ASMGEN_ARG0(&codegen->asmgen, KEFIR_AMD64_SYSV_ABI_DATA_REG);
-            ASMGEN_ARG0(&codegen->asmgen, KEFIR_AMD64_QWORD KEFIR_AMD64_FS "0");
-            ASMGEN_INSTR(&codegen->asmgen, KEFIR_AMD64_MOV);
-            ASMGEN_ARG0(&codegen->asmgen, KEFIR_AMD64_SYSV_ABI_DATA2_REG);
-            ASMGEN_ARG(&codegen->asmgen, KEFIR_AMD64_QWORD KEFIR_AMD64_THREAD_LOCAL_GOT, identifier);
-            ASMGEN_INSTR(&codegen->asmgen, KEFIR_AMD64_ADD);
-            ASMGEN_ARG0(&codegen->asmgen, KEFIR_AMD64_SYSV_ABI_DATA_REG);
-            ASMGEN_ARG0(&codegen->asmgen, KEFIR_AMD64_SYSV_ABI_DATA2_REG);
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
+                &codegen->xasmgen, kefir_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_DATA_REG),
+                kefir_amd64_xasmgen_operand_pointer(
+                    &codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_INDIRECTION_POINTER_QWORD,
+                    kefir_amd64_xasmgen_operand_segment(
+                        &codegen->xasmgen_helpers.operands[1], KEFIR_AMD64_XASMGEN_SEGMENT_FS,
+                        kefir_amd64_xasmgen_operand_imm(&codegen->xasmgen_helpers.operands[2], 0)))));
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
+                &codegen->xasmgen, kefir_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_DATA2_REG),
+                kefir_amd64_xasmgen_operand_rip_indirection(
+                    &codegen->xasmgen_helpers.operands[0],
+                    kefir_amd64_xasmgen_helpers_format(&codegen->xasmgen_helpers, "%s@gottpoff", identifier))));
+
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_ADD(&codegen->xasmgen,
+                                                     kefir_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_DATA_REG),
+                                                     kefir_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_DATA2_REG)));
         }
-        ASMGEN_INSTR(&codegen->asmgen, KEFIR_AMD64_PUSH);
-        ASMGEN_ARG0(&codegen->asmgen, KEFIR_AMD64_SYSV_ABI_DATA_REG);
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_PUSH(&codegen->xasmgen,
+                                                  kefir_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_DATA_REG)));
     } else {
         if (local) {
-            ASMGEN_INSTR(&codegen->asmgen, KEFIR_AMD64_LEA);
-            ASMGEN_ARG0(&codegen->asmgen, KEFIR_AMD64_RDI);
-            ASMGEN_ARG(&codegen->asmgen, KEFIR_AMD64_THREAD_LOCAL_EMUTLS, identifier);
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_LEA(
+                &codegen->xasmgen, kefir_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RDI),
+                kefir_amd64_xasmgen_operand_indirect(
+                    &codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_INDIRECTION_POINTER_NONE,
+                    kefir_amd64_xasmgen_operand_label(
+                        &codegen->xasmgen_helpers.operands[1],
+                        kefir_amd64_xasmgen_helpers_format(&codegen->xasmgen_helpers, "__emutls_v.%s", identifier)),
+                    0)));
         } else {
-            ASMGEN_INSTR(&codegen->asmgen, KEFIR_AMD64_MOV);
-            ASMGEN_ARG0(&codegen->asmgen, KEFIR_AMD64_RDI);
-            ASMGEN_ARG(&codegen->asmgen, KEFIR_AMD64_QWORD KEFIR_AMD64_THREAD_LOCAL_EMUTLS_GOT, identifier);
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
+                &codegen->xasmgen, kefir_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RDI),
+                kefir_amd64_xasmgen_operand_pointer(
+                    &codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_INDIRECTION_POINTER_QWORD,
+                    kefir_amd64_xasmgen_operand_rip_indirection(
+                        &codegen->xasmgen_helpers.operands[1],
+                        kefir_amd64_xasmgen_helpers_format(&codegen->xasmgen_helpers, "__emutls_v.%s@GOTPCREL",
+                                                           identifier)))));
         }
-        ASMGEN_INSTR(&codegen->asmgen, KEFIR_AMD64_CALL);
-        ASMGEN_ARG0(&codegen->asmgen, KEFIR_AMD64_EMUTLS_GET_ADDR);
-        ASMGEN_INSTR(&codegen->asmgen, KEFIR_AMD64_PUSH);
-        ASMGEN_ARG0(&codegen->asmgen, KEFIR_AMD64_RAX);
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_CALL(
+            &codegen->xasmgen,
+            kefir_amd64_xasmgen_operand_label(&codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_EMUTLS_GET_ADDR)));
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_PUSH(&codegen->xasmgen,
+                                                  kefir_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RAX)));
     }
 
     return KEFIR_OK;

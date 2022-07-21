@@ -26,7 +26,6 @@
 #include "kefir/core/mem.h"
 #include "kefir/codegen/amd64-sysv.h"
 #include "kefir/codegen/amd64/system-v/abi/registers.h"
-#include "kefir/codegen/amd64/asmgen.h"
 #include "kefir/ir/function.h"
 
 typedef struct kefir_amd64_sysv_function_decl {

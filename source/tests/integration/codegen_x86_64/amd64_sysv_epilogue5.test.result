@@ -1,4 +1,4 @@
-mov %rdi, [%r14 + 0]
+mov %rdi, [%r14]
 mov %rax, %rdi
 pop %rsi
 mov %rcx, 56

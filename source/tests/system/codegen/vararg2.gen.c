@@ -48,8 +48,8 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE(sumint != NULL, KEFIR_INTERNAL_ERROR);
     REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, sumint_decl->name, KEFIR_IR_IDENTIFIER_GLOBAL));
 
-    kefir_codegen_amd64_sysv_init(&codegen, stdout);
-    codegen.asmgen.settings.enable_comments = false;
+    REQUIRE_OK(kefir_codegen_amd64_sysv_init(mem, &codegen, stdout));
+    codegen.xasmgen.settings.enable_comments = false;
 
     REQUIRE_OK(kefir_irbuilder_type_append_v(mem, inttype, KEFIR_IR_TYPE_INT, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append_v(mem, sumint_decl_result, KEFIR_IR_TYPE_WORD, 0, 0));
@@ -76,7 +76,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     kefir_irbuilder_block_appendi64(mem, &sumint->body, KEFIR_IROPCODE_VARARG_END, 0);            // 18: [0, S]
 
     REQUIRE_OK(KEFIR_CODEGEN_TRANSLATE(mem, &codegen.iface, &module));
-    REQUIRE_OK(KEFIR_CODEGEN_CLOSE(&codegen.iface));
+    REQUIRE_OK(KEFIR_CODEGEN_CLOSE(mem, &codegen.iface));
     REQUIRE_OK(kefir_ir_module_free(mem, &module));
     return EXIT_SUCCESS;
 }

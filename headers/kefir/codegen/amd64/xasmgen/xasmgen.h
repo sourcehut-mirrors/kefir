@@ -26,6 +26,7 @@
 #include <stdio.h>
 
 typedef enum kefir_amd64_xasmgen_register {
+    KEFIR_AMD64_XASMGEN_REGISTER_EAX,
     KEFIR_AMD64_XASMGEN_REGISTER_RAX,
     KEFIR_AMD64_XASMGEN_REGISTER_RBX,
     KEFIR_AMD64_XASMGEN_REGISTER_RCX,
@@ -52,11 +53,22 @@ typedef enum kefir_amd64_xasmgen_register {
     KEFIR_AMD64_XASMGEN_REGISTER_XMM7
 } kefir_amd64_xasmgen_register_t;
 
+typedef enum kefir_amd64_xasmgen_segment_register {
+    KEFIR_AMD64_XASMGEN_SEGMENT_FS
+} kefir_amd64_xasmgen_segment_register_t;
+
 typedef enum kefir_amd64_xasmgen_operand_class {
     KEFIR_AMD64_XASMGEN_OPERAND_IMMEDIATE,
+    KEFIR_AMD64_XASMGEN_OPERAND_IMMEDIATE_UNSIGNED,
     KEFIR_AMD64_XASMGEN_OPERAND_REGISTER,
     KEFIR_AMD64_XASMGEN_OPERAND_LABEL,
-    KEFIR_AMD64_XASMGEN_OPERAND_INDIRECTION
+    KEFIR_AMD64_XASMGEN_OPERAND_SYMBOL,
+    KEFIR_AMD64_XASMGEN_OPERAND_INDIRECTION,
+    KEFIR_AMD64_XASMGEN_OPERAND_RIP_INDIRECTION,
+    KEFIR_AMD64_XASMGEN_OPERAND_OFFSET,
+    KEFIR_AMD64_XASMGEN_OPERAND_SEGMENT,
+    KEFIR_AMD64_XASMGEN_OPERAND_POINTER,
+    KEFIR_AMD64_XASMGEN_OPERAND_STRING_LITERAL
 } kefir_amd64_xasmgen_operand_class_t;
 
 typedef enum kefir_amd64_xasmgen_indirection_pointer_type {
@@ -71,15 +83,46 @@ typedef struct kefir_amd64_xasmgen_operand {
 
     union {
         kefir_int64_t imm;
+        kefir_uint64_t immu;
         kefir_amd64_xasmgen_register_t reg;
         const char *label;
+        const char *symbol;
         struct {
             kefir_amd64_xasmgen_indirection_pointer_type_t type;
             const struct kefir_amd64_xasmgen_operand *base;
             kefir_int64_t offset;
         } indirection;
+        struct {
+            const struct kefir_amd64_xasmgen_operand *base;
+            kefir_int64_t offset;
+        } offset;
+        struct {
+            kefir_amd64_xasmgen_segment_register_t segment;
+            const struct kefir_amd64_xasmgen_operand *base;
+        } segment;
+
+        struct {
+            kefir_amd64_xasmgen_indirection_pointer_type_t type;
+            const struct kefir_amd64_xasmgen_operand *base;
+        } pointer;
+
+        struct {
+            const char *identifier;
+        } rip_indirection;
+        struct {
+            const char *content;
+            kefir_size_t length;
+        } string_literal;
     };
 } kefir_amd64_xasmgen_operand_t;
+
+typedef enum kefir_amd64_xasmgen_data_type {
+    KEFIR_AMD64_XASMGEN_DATA_BYTE,
+    KEFIR_AMD64_XASMGEN_DATA_WORD,
+    KEFIR_AMD64_XASMGEN_DATA_DOUBLE,
+    KEFIR_AMD64_XASMGEN_DATA_QUAD,
+    KEFIR_AMD64_XASMGEN_DATA_ASCII
+} kefir_amd64_xasmgen_data_type_t;
 
 typedef struct kefir_amd64_xasmgen {
     kefir_result_t (*prologue)(struct kefir_amd64_xasmgen *);
@@ -90,6 +133,11 @@ typedef struct kefir_amd64_xasmgen {
     kefir_result_t (*global)(struct kefir_amd64_xasmgen *, const char *, ...);
     kefir_result_t (*external)(struct kefir_amd64_xasmgen *, const char *, ...);
     kefir_result_t (*section)(struct kefir_amd64_xasmgen *, const char *);
+    kefir_result_t (*align)(struct kefir_amd64_xasmgen *, kefir_size_t);
+    kefir_result_t (*data)(struct kefir_amd64_xasmgen *, kefir_amd64_xasmgen_data_type_t, kefir_size_t, ...);
+    kefir_result_t (*zerodata)(struct kefir_amd64_xasmgen *, kefir_size_t);
+    kefir_result_t (*bindata)(struct kefir_amd64_xasmgen *, kefir_amd64_xasmgen_data_type_t, const void *,
+                              kefir_size_t);
 
     struct {
         kefir_result_t (*push)(struct kefir_amd64_xasmgen *, const struct kefir_amd64_xasmgen_operand *);
@@ -104,8 +152,7 @@ typedef struct kefir_amd64_xasmgen {
                               const struct kefir_amd64_xasmgen_operand *);
         kefir_result_t (*movq)(struct kefir_amd64_xasmgen *, const struct kefir_amd64_xasmgen_operand *,
                                const struct kefir_amd64_xasmgen_operand *);
-        kefir_result_t (*movsb)(struct kefir_amd64_xasmgen *, const struct kefir_amd64_xasmgen_operand *,
-                                const struct kefir_amd64_xasmgen_operand *);
+        kefir_result_t (*movsb)(struct kefir_amd64_xasmgen *, kefir_bool_t);
         kefir_result_t (*jmp)(struct kefir_amd64_xasmgen *, const struct kefir_amd64_xasmgen_operand *);
         kefir_result_t (*ja)(struct kefir_amd64_xasmgen *, const struct kefir_amd64_xasmgen_operand *);
         kefir_result_t (*ret)(struct kefir_amd64_xasmgen *);
@@ -136,6 +183,11 @@ typedef struct kefir_amd64_xasmgen {
         kefir_result_t (*fld)(struct kefir_amd64_xasmgen *, const struct kefir_amd64_xasmgen_operand *);
     } instr;
 
+    struct {
+        kefir_bool_t enable_comments;
+        kefir_bool_t enable_identation;
+    } settings;
+
     void *payload;
 } kefir_amd64_xasmgen_t;
 
@@ -143,11 +195,29 @@ kefir_result_t kefir_amd64_xasmgen_init(struct kefir_mem *, struct kefir_amd64_x
 const struct kefir_amd64_xasmgen_operand *kefir_amd64_xasmgen_operand_reg(kefir_amd64_xasmgen_register_t);
 const struct kefir_amd64_xasmgen_operand *kefir_amd64_xasmgen_operand_imm(struct kefir_amd64_xasmgen_operand *,
                                                                           kefir_int64_t);
+const struct kefir_amd64_xasmgen_operand *kefir_amd64_xasmgen_operand_immu(struct kefir_amd64_xasmgen_operand *,
+                                                                           kefir_uint64_t);
 const struct kefir_amd64_xasmgen_operand *kefir_amd64_xasmgen_operand_label(struct kefir_amd64_xasmgen_operand *,
                                                                             const char *);
+const struct kefir_amd64_xasmgen_operand *kefir_amd64_xasmgen_operand_symbol(struct kefir_amd64_xasmgen_operand *,
+                                                                             const char *);
 const struct kefir_amd64_xasmgen_operand *kefir_amd64_xasmgen_operand_indirect(
     struct kefir_amd64_xasmgen_operand *, kefir_amd64_xasmgen_indirection_pointer_type_t,
     const struct kefir_amd64_xasmgen_operand *, kefir_int64_t);
+
+const struct kefir_amd64_xasmgen_operand *kefir_amd64_xasmgen_operand_offset(struct kefir_amd64_xasmgen_operand *,
+                                                                             const struct kefir_amd64_xasmgen_operand *,
+                                                                             kefir_int64_t);
+const struct kefir_amd64_xasmgen_operand *kefir_amd64_xasmgen_operand_segment(
+    struct kefir_amd64_xasmgen_operand *, kefir_amd64_xasmgen_segment_register_t,
+    const struct kefir_amd64_xasmgen_operand *);
+const struct kefir_amd64_xasmgen_operand *kefir_amd64_xasmgen_operand_pointer(
+    struct kefir_amd64_xasmgen_operand *, kefir_amd64_xasmgen_indirection_pointer_type_t,
+    const struct kefir_amd64_xasmgen_operand *);
+const struct kefir_amd64_xasmgen_operand *kefir_amd64_xasmgen_operand_rip_indirection(
+    struct kefir_amd64_xasmgen_operand *, const char *);
+const struct kefir_amd64_xasmgen_operand *kefir_amd64_xasmgen_operand_string_literal(
+    struct kefir_amd64_xasmgen_operand *, const char *, kefir_size_t);
 
 #define KEFIR_AMD64_XASMGEN_PROLOGUE(_xasmgen) ((_xasmgen)->prologue((_xasmgen)))
 #define KEFIR_AMD64_XASMGEN_CLOSE(_mem, _xasmgen) ((_xasmgen)->close((_mem), (_xasmgen)))
@@ -157,6 +227,12 @@ const struct kefir_amd64_xasmgen_operand *kefir_amd64_xasmgen_operand_indirect(
 #define KEFIR_AMD64_XASMGEN_GLOBAL(_xasmgen, _fmt, ...) ((_xasmgen)->global((_xasmgen), (_fmt), __VA_ARGS__))
 #define KEFIR_AMD64_XASMGEN_EXTERNAL(_xasmgen, _fmt, ...) ((_xasmgen)->external((_xasmgen), (_fmt), __VA_ARGS__))
 #define KEFIR_AMD64_XASMGEN_SECTION(_xasmgen, _name) ((_xasmgen)->section((_xasmgen), (_name)))
+#define KEFIR_AMD64_XASMGEN_ALIGN(_xasmgen, _arg) ((_xasmgen)->align((_xasmgen), (_arg)))
+#define KEFIR_AMD64_XASMGEN_DATA(_xasmgen, _type, _length, ...) \
+    ((_xasmgen)->data((_xasmgen), (_type), (_length), __VA_ARGS__))
+#define KEFIR_AMD64_XASMGEN_ZERODATA(_xasmgen, _length) ((_xasmgen)->zerodata((_xasmgen), (_length)))
+#define KEFIR_AMD64_XASMGEN_BINDATA(_xasmgen, _type, _ptr, _length) \
+    ((_xasmgen)->bindata((_xasmgen), (_type), (_ptr), (_length)))
 
 #define KEFIR_AMD64_XASMGEN_INSTR_PUSH(_xasmgen, _op1) ((_xasmgen)->instr.push((_xasmgen), (_op1)))
 #define KEFIR_AMD64_XASMGEN_INSTR_POP(_xasmgen, _op1) ((_xasmgen)->instr.pop((_xasmgen), (_op1)))
@@ -165,7 +241,7 @@ const struct kefir_amd64_xasmgen_operand *kefir_amd64_xasmgen_operand_indirect(
 #define KEFIR_AMD64_XASMGEN_INSTR_OR(_xasmgen, _op1, _op2) ((_xasmgen)->instr.or ((_xasmgen), (_op1), (_op2)))
 #define KEFIR_AMD64_XASMGEN_INSTR_LEA(_xasmgen, _op1, _op2) ((_xasmgen)->instr.lea((_xasmgen), (_op1), (_op2)))
 #define KEFIR_AMD64_XASMGEN_INSTR_MOVQ(_xasmgen, _op1, _op2) ((_xasmgen)->instr.movq((_xasmgen), (_op1), (_op2)))
-#define KEFIR_AMD64_XASMGEN_INSTR_MOVSB(_xasmgen, _op1, _op2) ((_xasmgen)->instr.movsb((_xasmgen), (_op1), (_op2)))
+#define KEFIR_AMD64_XASMGEN_INSTR_MOVSB(_xasmgen, _rep) ((_xasmgen)->instr.movsb((_xasmgen), (_rep)))
 #define KEFIR_AMD64_XASMGEN_INSTR_JMP(_xasmgen, _op1) ((_xasmgen)->instr.jmp((_xasmgen), (_op1)))
 #define KEFIR_AMD64_XASMGEN_INSTR_JA(_xasmgen, _op1) ((_xasmgen)->instr.ja((_xasmgen), (_op1)))
 #define KEFIR_AMD64_XASMGEN_INSTR_RET(_xasmgen) ((_xasmgen)->instr.ret((_xasmgen)))
@@ -185,5 +261,14 @@ const struct kefir_amd64_xasmgen_operand *kefir_amd64_xasmgen_operand_indirect(
 #define KEFIR_AMD64_XASMGEN_INSTR_MOVD(_xasmgen, _op1, _op2) ((_xasmgen)->instr.movd((_xasmgen), (_op1), (_op2)))
 #define KEFIR_AMD64_XASMGEN_INSTR_FSTP(_xasmgen, _op1) ((_xasmgen)->instr.fstp((_xasmgen), (_op1)))
 #define KEFIR_AMD64_XASMGEN_INSTR_FLD(_xasmgen, _op1) ((_xasmgen)->instr.fld((_xasmgen), (_op1)))
+
+#define KEFIR_AMD64_XASMGEN_HELPERS_BUFFER_LENGTH 1024
+typedef struct kefir_amd64_xasmgen_helpers {
+    char buffer[KEFIR_AMD64_XASMGEN_HELPERS_BUFFER_LENGTH];
+
+    struct kefir_amd64_xasmgen_operand operands[4];
+} kefir_amd64_xasmgen_helpers_t;
+
+const char *kefir_amd64_xasmgen_helpers_format(struct kefir_amd64_xasmgen_helpers *, const char *, ...);
 
 #endif

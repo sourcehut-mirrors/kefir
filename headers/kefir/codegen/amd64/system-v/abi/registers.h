@@ -29,14 +29,14 @@
 #include "kefir/codegen/amd64/system-v/abi/data.h"
 #include "kefir/codegen/amd64/system-v/abi/qwords.h"
 
-extern const char *KEFIR_AMD64_SYSV_INTEGER_REGISTERS[];
+extern kefir_amd64_xasmgen_register_t KEFIR_AMD64_SYSV_INTEGER_REGISTERS[];
 extern const kefir_size_t KEFIR_AMD64_SYSV_INTEGER_REGISTER_COUNT;
-extern const char *KEFIR_AMD64_SYSV_SSE_REGISTERS[];
+extern kefir_amd64_xasmgen_register_t KEFIR_AMD64_SYSV_SSE_REGISTERS[];
 extern const kefir_size_t KEFIR_AMD64_SYSV_SSE_REGISTER_COUNT;
 
-extern const char *KEFIR_AMD64_SYSV_INTEGER_RETURN_REGISTERS[];
+extern kefir_amd64_xasmgen_register_t KEFIR_AMD64_SYSV_INTEGER_RETURN_REGISTERS[];
 extern const kefir_size_t KEFIR_AMD64_SYSV_INTEGER_RETURN_REGISTER_COUNT;
-extern const char *KEFIR_AMD64_SYSV_SSE_RETURN_REGISTERS[];
+extern kefir_amd64_xasmgen_register_t KEFIR_AMD64_SYSV_SSE_RETURN_REGISTERS[];
 extern const kefir_size_t KEFIR_AMD64_SYSV_SSE_RETURN_REGISTER_COUNT;
 
 typedef enum kefir_amd64_sysv_parameter_type {

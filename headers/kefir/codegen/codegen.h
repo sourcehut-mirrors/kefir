@@ -32,14 +32,14 @@ typedef struct kefir_codegen_configuration {
 
 typedef struct kefir_codegen {
     kefir_result_t (*translate)(struct kefir_mem *, struct kefir_codegen *, struct kefir_ir_module *);
-    kefir_result_t (*close)(struct kefir_codegen *);
+    kefir_result_t (*close)(struct kefir_mem *, struct kefir_codegen *);
 
     void *data;
     void *self;
 } kefir_codegen_t;
 
 #define KEFIR_CODEGEN_TRANSLATE(mem, codegen, module) ((codegen)->translate((mem), (codegen), (module)))
-#define KEFIR_CODEGEN_CLOSE(codegen) ((codegen)->close((codegen)))
+#define KEFIR_CODEGEN_CLOSE(mem, codegen) ((codegen)->close((mem), (codegen)))
 
 extern const struct kefir_codegen_configuration KefirCodegenDefaultConfiguration;
 
