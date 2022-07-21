@@ -42,6 +42,44 @@ OPTIONS:
     --print-ir                          Print intermediate representation in JSON format
     --print-runtime-code                Print runtime code for selected target
 
+COMPILER OPTIONS:
+    Extra compiler options available via -W switch:
+        --pp-timestamp                      Override preprocessor timestamp
+        --json-errors                       Print errors in JSON format to stderr
+        --tabular-errors                    Print errors in tabular format to stderr
+        --target-profile profile            Generate code for specified target (see below)
+        --source-id identifier              Force use provided source file identifier
+        --detailed-output                   Include references to source file in AST and token dumps
+        --feature-[feature name]            Enable compiler feature (see below)
+        --no-feature-[feature name]         Disable compiler feature (see below)
+        --codegen-[option]                  Enable option for code generator (see below)
+        --no-codegen-[option]               Disable option for code generator (see below)
+
+    Supported features:
+        fail-on-attributes                  Fail if __attribute__((...)) is encountered [default: off]
+        missing-function-return-type        Permit function definitions with missing return type [default: on]
+        designated-init-colons              Permit "fieldname:" syntax in designated initializers [default: on]
+        labels-as-values                    Permit label-addressing with && operator [default: on]
+        non-strict-qualifiers               Disable strict qualifier checks for pointers [default: on]
+        signed-enums                        Force all enums to have signed integral type [default: off]
+        implicit-function-decl              Permit implicit funciton declarations at use-site [default: on]
+        empty-structs                       Permit empty structure/union definitions [default: on]
+        ext-pointer-arithmetics             Permit pointer arithmetics with function and void pointers [default: on]
+        missing-braces-subobj               Permit missing braces for subobject initialization with scalar [default: on]
+        statement-expressions               Enable statement expressions [default: on]
+        omitted-conditional-operand         Permit omission of the middle ternary expression operand [default: on]
+        int-to-pointer                      Permit any integral type conversion to pointer [default: on]
+        permissive-pointer-conv             Permit conversions between any pointer types [default: on]
+        named-macro-vararg                  Permit named macro variable arguments [default: on]
+        include-next                        Permit include_next preprocessor directive [default: on]
+
+    Support code generation options:
+        emulated-tls                        Use emulated TLS [disabled by default, enabled on openbsd platforms]
+
+    Targets (determined by platform as specified in TARGET section):
+        amd64-sysv-gas                      Produce GNU As-compatible assembly adhering System-V AMD64 ABI [default]
+
+
 TARGETS:
     Target platforms are specified in format <arch>-<platform>-<variant> where
         arch: x86_64
