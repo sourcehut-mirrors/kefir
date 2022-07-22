@@ -62,7 +62,6 @@ typedef enum kefir_amd64_xasmgen_operand_class {
     KEFIR_AMD64_XASMGEN_OPERAND_IMMEDIATE_UNSIGNED,
     KEFIR_AMD64_XASMGEN_OPERAND_REGISTER,
     KEFIR_AMD64_XASMGEN_OPERAND_LABEL,
-    KEFIR_AMD64_XASMGEN_OPERAND_SYMBOL,
     KEFIR_AMD64_XASMGEN_OPERAND_INDIRECTION,
     KEFIR_AMD64_XASMGEN_OPERAND_RIP_INDIRECTION,
     KEFIR_AMD64_XASMGEN_OPERAND_OFFSET,
@@ -86,7 +85,6 @@ typedef struct kefir_amd64_xasmgen_operand {
         kefir_uint64_t immu;
         kefir_amd64_xasmgen_register_t reg;
         const char *label;
-        const char *symbol;
         struct {
             kefir_amd64_xasmgen_indirection_pointer_type_t type;
             const struct kefir_amd64_xasmgen_operand *base;
@@ -199,8 +197,6 @@ const struct kefir_amd64_xasmgen_operand *kefir_amd64_xasmgen_operand_immu(struc
                                                                            kefir_uint64_t);
 const struct kefir_amd64_xasmgen_operand *kefir_amd64_xasmgen_operand_label(struct kefir_amd64_xasmgen_operand *,
                                                                             const char *);
-const struct kefir_amd64_xasmgen_operand *kefir_amd64_xasmgen_operand_symbol(struct kefir_amd64_xasmgen_operand *,
-                                                                             const char *);
 const struct kefir_amd64_xasmgen_operand *kefir_amd64_xasmgen_operand_indirect(
     struct kefir_amd64_xasmgen_operand *, kefir_amd64_xasmgen_indirection_pointer_type_t,
     const struct kefir_amd64_xasmgen_operand *, kefir_int64_t);

@@ -264,11 +264,7 @@ static kefir_result_t amd64_format_operand(struct kefir_amd64_xasmgen *xasmgen,
             break;
 
         case KEFIR_AMD64_XASMGEN_OPERAND_LABEL:
-            fprintf(payload->output, "%s", op->label);
-            break;
-
-        case KEFIR_AMD64_XASMGEN_OPERAND_SYMBOL:
-            REQUIRE_OK(amd64_symbol_arg(payload->output, op->symbol));
+            REQUIRE_OK(amd64_symbol_arg(payload->output, op->label));
             break;
 
         case KEFIR_AMD64_XASMGEN_OPERAND_INDIRECTION:
@@ -935,14 +931,6 @@ const struct kefir_amd64_xasmgen_operand *kefir_amd64_xasmgen_operand_label(stru
     REQUIRE(op != NULL, NULL);
     op->klass = KEFIR_AMD64_XASMGEN_OPERAND_LABEL;
     op->label = label;
-    return op;
-}
-
-const struct kefir_amd64_xasmgen_operand *kefir_amd64_xasmgen_operand_symbol(struct kefir_amd64_xasmgen_operand *op,
-                                                                             const char *symbol) {
-    REQUIRE(op != NULL, NULL);
-    op->klass = KEFIR_AMD64_XASMGEN_OPERAND_SYMBOL;
-    op->symbol = symbol;
     return op;
 }
 

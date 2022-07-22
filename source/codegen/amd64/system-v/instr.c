@@ -213,7 +213,7 @@ kefir_result_t kefir_amd64_sysv_instruction(struct kefir_mem *mem, struct kefir_
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
                 &codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 2,
                 kefir_amd64_xasmgen_operand_label(&codegen->xasmgen_helpers.operands[0], opcode_symbol),
-                kefir_amd64_xasmgen_operand_symbol(&codegen->xasmgen_helpers.operands[1], symbol)));
+                kefir_amd64_xasmgen_operand_label(&codegen->xasmgen_helpers.operands[1], symbol)));
         } break;
 
         case KEFIR_IROPCODE_GETTHRLOCAL: {
