@@ -21,7 +21,6 @@
 #include "kefir/codegen/amd64/system-v/abi.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
-#include "kefir/codegen/amd64/shortcuts.h"
 #include "kefir/codegen/amd64/system-v/runtime.h"
 #include "kefir/codegen/amd64/system-v/abi/data_layout.h"
 #include "kefir/codegen/amd64/system-v/abi/registers.h"

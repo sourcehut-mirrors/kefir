@@ -21,9 +21,9 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include "kefir/codegen/amd64-sysv.h"
-#include "kefir/codegen/amd64/shortcuts.h"
 #include "kefir/codegen/amd64/opcodes.h"
 #include "kefir/codegen/amd64/labels.h"
+#include "kefir/codegen/amd64/tls.h"
 #include "kefir/codegen/amd64/system-v/abi.h"
 #include "kefir/codegen/amd64/system-v/runtime.h"
 #include "kefir/codegen/amd64/system-v/instr.h"

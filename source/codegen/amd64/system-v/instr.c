@@ -21,7 +21,6 @@
 #include "kefir/codegen/amd64/system-v/instr.h"
 #include "kefir/codegen/amd64/system-v/abi/vararg.h"
 #include "kefir/codegen/amd64/labels.h"
-#include "kefir/codegen/amd64/shortcuts.h"
 #include "kefir/codegen/amd64/opcodes.h"
 #include "kefir/codegen/amd64/system-v/runtime.h"
 #include "kefir/core/error.h"

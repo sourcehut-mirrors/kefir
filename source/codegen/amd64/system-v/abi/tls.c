@@ -20,7 +20,7 @@
 
 #include "kefir/codegen/amd64/system-v/abi/tls.h"
 #include "kefir/codegen/amd64/system-v/abi.h"
-#include "kefir/codegen/amd64/shortcuts.h"
+#include "kefir/codegen/amd64/tls.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
@@ -33,10 +33,13 @@ kefir_result_t kefir_amd64_sysv_thread_local_reference(struct kefir_codegen_amd6
         if (local) {
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_LEA(
                 &codegen->xasmgen, kefir_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_DATA_REG),
-                kefir_amd64_xasmgen_operand_label(
-                    &codegen->xasmgen_helpers.operands[0],
-                    kefir_amd64_xasmgen_helpers_format(&codegen->xasmgen_helpers, KEFIR_AMD64_THREAD_LOCAL,
-                                                       identifier))));
+                kefir_amd64_xasmgen_operand_indirect(
+                    &codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_INDIRECTION_POINTER_NONE,
+                    kefir_amd64_xasmgen_operand_label(
+                        &codegen->xasmgen_helpers.operands[1],
+                        kefir_amd64_xasmgen_helpers_format(&codegen->xasmgen_helpers, KEFIR_AMD64_THREAD_LOCAL,
+                                                           identifier)),
+                    0)));
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_ADD(
                 &codegen->xasmgen, kefir_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_DATA_REG),
                 kefir_amd64_xasmgen_operand_segment(
@@ -54,7 +57,8 @@ kefir_result_t kefir_amd64_sysv_thread_local_reference(struct kefir_codegen_amd6
                 &codegen->xasmgen, kefir_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_DATA2_REG),
                 kefir_amd64_xasmgen_operand_rip_indirection(
                     &codegen->xasmgen_helpers.operands[0],
-                    kefir_amd64_xasmgen_helpers_format(&codegen->xasmgen_helpers, "%s@gottpoff", identifier))));
+                    kefir_amd64_xasmgen_helpers_format(&codegen->xasmgen_helpers, KEFIR_AMD64_THREAD_LOCAL_GOT,
+                                                       identifier))));
 
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_ADD(&codegen->xasmgen,
                                                      kefir_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_DATA_REG),
@@ -68,9 +72,9 @@ kefir_result_t kefir_amd64_sysv_thread_local_reference(struct kefir_codegen_amd6
                 &codegen->xasmgen, kefir_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RDI),
                 kefir_amd64_xasmgen_operand_indirect(
                     &codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_INDIRECTION_POINTER_NONE,
-                    kefir_amd64_xasmgen_operand_label(
-                        &codegen->xasmgen_helpers.operands[1],
-                        kefir_amd64_xasmgen_helpers_format(&codegen->xasmgen_helpers, "__emutls_v.%s", identifier)),
+                    kefir_amd64_xasmgen_operand_label(&codegen->xasmgen_helpers.operands[1],
+                                                      kefir_amd64_xasmgen_helpers_format(
+                                                          &codegen->xasmgen_helpers, KEFIR_AMD64_EMUTLS_V, identifier)),
                     0)));
         } else {
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
@@ -79,7 +83,7 @@ kefir_result_t kefir_amd64_sysv_thread_local_reference(struct kefir_codegen_amd6
                     &codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_INDIRECTION_POINTER_QWORD,
                     kefir_amd64_xasmgen_operand_rip_indirection(
                         &codegen->xasmgen_helpers.operands[1],
-                        kefir_amd64_xasmgen_helpers_format(&codegen->xasmgen_helpers, "__emutls_v.%s@GOTPCREL",
+                        kefir_amd64_xasmgen_helpers_format(&codegen->xasmgen_helpers, KEFIR_AMD64_EMUTLS_GOT,
                                                            identifier)))));
         }
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_CALL(

@@ -18,7 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "kefir/codegen/amd64/xasmgen/xasmgen.h"
+#include "kefir/codegen/amd64/xasmgen.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 #include <stdarg.h>

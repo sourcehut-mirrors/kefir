@@ -20,7 +20,6 @@
 
 #include <string.h>
 #include "kefir/codegen/amd64/system-v/abi.h"
-#include "kefir/codegen/amd64/shortcuts.h"
 #include "kefir/codegen/amd64/system-v/abi/data_layout.h"
 #include "kefir/codegen/amd64/system-v/runtime.h"
 #include "kefir/codegen/util.h"

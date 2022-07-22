@@ -18,8 +18,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef KEFIR_CODEGEN_AMD64_XASMGEN_ASMGEN_H_
-#define KEFIR_CODEGEN_AMD64_XASMGEN_ASMGEN_H_
+#ifndef KEFIR_CODEGEN_AMD64_XASMGEN_H_
+#define KEFIR_CODEGEN_AMD64_XASMGEN_H_
 
 #include "kefir/core/basic-types.h"
 #include "kefir/core/mem.h"

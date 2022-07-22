@@ -21,7 +21,6 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include "kefir/codegen/amd64/system-v/abi/module.h"
-#include "kefir/codegen/amd64/shortcuts.h"
 #include "kefir/codegen/amd64/opcodes.h"
 #include "kefir/codegen/amd64/labels.h"
 #include "kefir/codegen/amd64/system-v/abi.h"
