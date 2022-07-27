@@ -28,6 +28,7 @@
 
 struct xasmgen_payload {
     FILE *output;
+    kefir_amd64_xasmgen_syntax_t syntax;
 };
 
 static kefir_result_t amd64_ident(struct kefir_amd64_xasmgen *xasmgen) {
@@ -42,7 +43,13 @@ static kefir_result_t amd64_prologue(struct kefir_amd64_xasmgen *xasmgen) {
     REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 assembly generator"));
     ASSIGN_DECL_CAST(struct xasmgen_payload *, payload, xasmgen->payload);
 
-    fprintf(payload->output, ".intel_syntax prefix\n\n");
+    if (payload->syntax == KEFIR_AMD64_XASMGEN_SYNTAX_INTEL_PREFIX) {
+        fprintf(payload->output, ".intel_syntax prefix\n\n");
+    } else if (payload->syntax == KEFIR_AMD64_XASMGEN_SYNTAX_INTEL_NOPREFIX) {
+        fprintf(payload->output, ".intel_syntax noprefix\n\n");
+    } else {
+        return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected intel syntax assembly generator");
+    }
     return KEFIR_OK;
 }
 
@@ -211,13 +218,15 @@ static kefir_result_t amd64_string_literal(FILE *out, const char *literal, kefir
     return KEFIR_OK;
 }
 
-static kefir_result_t amd64_symbol_arg(FILE *out, const char *symbol) {
-    const char *EscapedSymbols[] = {// TODO Expand number of escaped symbols
-                                    "mod"};
-    for (kefir_size_t i = 0; i < sizeof(EscapedSymbols) / sizeof(EscapedSymbols[0]); i++) {
-        if (strcasecmp(symbol, EscapedSymbols[i]) == 0) {
-            fprintf(out, "$%s", symbol);
-            return KEFIR_OK;
+static kefir_result_t amd64_symbol_arg(kefir_amd64_xasmgen_syntax_t syntax, FILE *out, const char *symbol) {
+    if (syntax == KEFIR_AMD64_XASMGEN_SYNTAX_INTEL_NOPREFIX) {
+        const char *EscapedSymbols[] = {// TODO Expand number of escaped symbols
+                                        "mod"};
+        for (kefir_size_t i = 0; i < sizeof(EscapedSymbols) / sizeof(EscapedSymbols[0]); i++) {
+            if (strcasecmp(symbol, EscapedSymbols[i]) == 0) {
+                fprintf(out, "$%s", symbol);
+                return KEFIR_OK;
+            }
         }
     }
 
@@ -250,6 +259,9 @@ static kefir_result_t amd64_format_operand(struct kefir_amd64_xasmgen *xasmgen,
                                            const struct kefir_amd64_xasmgen_operand *op) {
     UNUSED(xasmgen);
     ASSIGN_DECL_CAST(struct xasmgen_payload *, payload, xasmgen->payload);
+    REQUIRE(payload->syntax == KEFIR_AMD64_XASMGEN_SYNTAX_INTEL_PREFIX ||
+                payload->syntax == KEFIR_AMD64_XASMGEN_SYNTAX_INTEL_NOPREFIX,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected intel syntax assembly generator"));
     switch (op->klass) {
         case KEFIR_AMD64_XASMGEN_OPERAND_IMMEDIATE:
             fprintf(payload->output, KEFIR_INT64_FMT, op->imm);
@@ -260,11 +272,15 @@ static kefir_result_t amd64_format_operand(struct kefir_amd64_xasmgen *xasmgen,
             break;
 
         case KEFIR_AMD64_XASMGEN_OPERAND_REGISTER:
-            fprintf(payload->output, "%%%s", register_literals[op->reg]);
+            if (payload->syntax == KEFIR_AMD64_XASMGEN_SYNTAX_INTEL_PREFIX) {
+                fprintf(payload->output, "%%%s", register_literals[op->reg]);
+            } else if (payload->syntax == KEFIR_AMD64_XASMGEN_SYNTAX_INTEL_NOPREFIX) {
+                fprintf(payload->output, "%s", register_literals[op->reg]);
+            }
             break;
 
         case KEFIR_AMD64_XASMGEN_OPERAND_LABEL:
-            REQUIRE_OK(amd64_symbol_arg(payload->output, op->label));
+            REQUIRE_OK(amd64_symbol_arg(payload->syntax, payload->output, op->label));
             break;
 
         case KEFIR_AMD64_XASMGEN_OPERAND_INDIRECTION:
@@ -291,7 +307,11 @@ static kefir_result_t amd64_format_operand(struct kefir_amd64_xasmgen *xasmgen,
         case KEFIR_AMD64_XASMGEN_OPERAND_SEGMENT:
             switch (op->segment.segment) {
                 case KEFIR_AMD64_XASMGEN_SEGMENT_FS:
-                    fprintf(payload->output, "%%fs:");
+                    if (payload->syntax == KEFIR_AMD64_XASMGEN_SYNTAX_INTEL_PREFIX) {
+                        fprintf(payload->output, "%%fs:");
+                    } else if (payload->syntax == KEFIR_AMD64_XASMGEN_SYNTAX_INTEL_NOPREFIX) {
+                        fprintf(payload->output, "fs:");
+                    }
                     break;
             }
             REQUIRE_OK(amd64_format_operand(xasmgen, op->segment.base));
@@ -303,7 +323,11 @@ static kefir_result_t amd64_format_operand(struct kefir_amd64_xasmgen *xasmgen,
             break;
 
         case KEFIR_AMD64_XASMGEN_OPERAND_RIP_INDIRECTION:
-            fprintf(payload->output, "%s[%%rip]", op->rip_indirection.identifier);
+            if (payload->syntax == KEFIR_AMD64_XASMGEN_SYNTAX_INTEL_PREFIX) {
+                fprintf(payload->output, "%s[%%rip]", op->rip_indirection.identifier);
+            } else if (payload->syntax == KEFIR_AMD64_XASMGEN_SYNTAX_INTEL_NOPREFIX) {
+                fprintf(payload->output, "%s[rip]", op->rip_indirection.identifier);
+            }
             break;
 
         case KEFIR_AMD64_XASMGEN_OPERAND_STRING_LITERAL:
@@ -799,7 +823,8 @@ static kefir_result_t amd64_instr_fld(struct kefir_amd64_xasmgen *xasmgen,
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_amd64_xasmgen_init(struct kefir_mem *mem, struct kefir_amd64_xasmgen *xasmgen, FILE *output) {
+kefir_result_t kefir_amd64_xasmgen_init(struct kefir_mem *mem, struct kefir_amd64_xasmgen *xasmgen, FILE *output,
+                                        kefir_amd64_xasmgen_syntax_t syntax) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to amd64 xasmgen"));
     REQUIRE(output != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid output FILE"));
@@ -807,6 +832,7 @@ kefir_result_t kefir_amd64_xasmgen_init(struct kefir_mem *mem, struct kefir_amd6
     struct xasmgen_payload *payload = KEFIR_MALLOC(mem, sizeof(struct xasmgen_payload));
     REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocator amd64 xasmgen payload"));
     payload->output = output;
+    payload->syntax = syntax;
 
     xasmgen->payload = payload;
 

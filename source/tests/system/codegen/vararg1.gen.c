@@ -73,7 +73,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         kefir_ir_module_new_named_data(mem, &module, kefir_ir_module_symbol(mem, &module, "result", &result_id),
                                        KEFIR_IR_DATA_GLOBAL_STORAGE, result_type_id)));
 
-    REQUIRE_OK(kefir_codegen_amd64_sysv_init(mem, &codegen, stdout));
+    REQUIRE_OK(kefir_codegen_amd64_sysv_init(mem, &codegen, stdout, NULL));
     codegen.xasmgen.settings.enable_comments = false;
 
     REQUIRE_OK(kefir_irbuilder_type_append_v(mem, printint_decl_params, KEFIR_IR_TYPE_INT, 0, 0));

@@ -21,18 +21,18 @@
 #ifndef CODEGEN_H_
 #define CODEGEN_H_
 
-#define GENCODE(fn)                                                       \
-    do {                                                                  \
-        struct kefir_codegen_amd64 codegen;                               \
-        struct kefir_ir_target_platform ir_target;                        \
-        REQUIRE_OK(kefir_codegen_amd64_sysv_target_platform(&ir_target)); \
-        REQUIRE_OK(kefir_codegen_amd64_sysv_init(mem, &codegen, stdout)); \
-        struct kefir_ir_module module;                                    \
-        REQUIRE_OK(kefir_ir_module_alloc(mem, &module));                  \
-        REQUIRE_OK((fn) (mem, &module, &ir_target));                      \
-        KEFIR_CODEGEN_TRANSLATE(mem, &codegen.iface, &module);            \
-        REQUIRE_OK(kefir_ir_module_free(mem, &module));                   \
-        KEFIR_CODEGEN_CLOSE(mem, &codegen.iface);                         \
+#define GENCODE(fn)                                                             \
+    do {                                                                        \
+        struct kefir_codegen_amd64 codegen;                                     \
+        struct kefir_ir_target_platform ir_target;                              \
+        REQUIRE_OK(kefir_codegen_amd64_sysv_target_platform(&ir_target));       \
+        REQUIRE_OK(kefir_codegen_amd64_sysv_init(mem, &codegen, stdout, NULL)); \
+        struct kefir_ir_module module;                                          \
+        REQUIRE_OK(kefir_ir_module_alloc(mem, &module));                        \
+        REQUIRE_OK((fn) (mem, &module, &ir_target));                            \
+        KEFIR_CODEGEN_TRANSLATE(mem, &codegen.iface, &module);                  \
+        REQUIRE_OK(kefir_ir_module_free(mem, &module));                         \
+        KEFIR_CODEGEN_CLOSE(mem, &codegen.iface);                               \
     } while (0)
 
 struct function {

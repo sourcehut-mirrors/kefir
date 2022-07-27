@@ -183,7 +183,8 @@ struct kefir_cli_option KefirCompilerConfigurationOptions[] = {
     FEATURE("named-macro-vararg", features.named_macro_vararg),
     FEATURE("include-next", features.include_next),
 
-    CODEGEN("emulated-tls", codegen.emulated_tls)
+    CODEGEN("emulated-tls", codegen.emulated_tls),
+    SIMPLE(0, "codegen-syntax", true, KEFIR_CLI_OPTION_ACTION_ASSIGN_STRARG, 0, codegen.syntax)
 
 #undef SIMPLE
 #undef PREHOOK

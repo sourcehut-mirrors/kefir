@@ -78,6 +78,7 @@ typedef struct kefir_compiler_runner_configuration {
 
     struct {
         kefir_bool_t emulated_tls;
+        const char *syntax;
     } codegen;
 } kefir_compiler_runner_configuration_t;
 

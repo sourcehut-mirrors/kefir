@@ -20,4 +20,5 @@
 
 #include "kefir/codegen/codegen.h"
 
-const struct kefir_codegen_configuration KefirCodegenDefaultConfiguration = {.emulated_tls = false};
+const struct kefir_codegen_configuration KefirCodegenDefaultConfiguration = {
+    .emulated_tls = false, .syntax = KEFIR_CODEGEN_SYNTAX_X86_64_INTEL_PREFIX};

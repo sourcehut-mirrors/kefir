@@ -208,7 +208,7 @@ static kefir_result_t driver_generate_compiler_config(struct kefir_mem *mem, str
     }
     kefir_size_t positional_args = extra_args_buf.length;
     REQUIRE_CHAIN(&res, kefir_parse_cli_options(
-                            mem, compiler_config, &positional_args, KefirCompilerConfigurationOptions,
+                            mem, symbols, compiler_config, &positional_args, KefirCompilerConfigurationOptions,
                             KefirCompilerConfigurationOptionCount, extra_args_buf.array, extra_args_buf.length));
     REQUIRE_CHAIN_SET(
         &res, positional_args == extra_args_buf.length,

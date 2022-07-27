@@ -122,6 +122,11 @@ typedef enum kefir_amd64_xasmgen_data_type {
     KEFIR_AMD64_XASMGEN_DATA_ASCII
 } kefir_amd64_xasmgen_data_type_t;
 
+typedef enum kefir_amd64_xasmgen_syntax {
+    KEFIR_AMD64_XASMGEN_SYNTAX_INTEL_NOPREFIX,
+    KEFIR_AMD64_XASMGEN_SYNTAX_INTEL_PREFIX
+} kefir_amd64_xasmgen_syntax_t;
+
 typedef struct kefir_amd64_xasmgen {
     kefir_result_t (*prologue)(struct kefir_amd64_xasmgen *);
     kefir_result_t (*close)(struct kefir_mem *, struct kefir_amd64_xasmgen *);
@@ -189,7 +194,9 @@ typedef struct kefir_amd64_xasmgen {
     void *payload;
 } kefir_amd64_xasmgen_t;
 
-kefir_result_t kefir_amd64_xasmgen_init(struct kefir_mem *, struct kefir_amd64_xasmgen *, FILE *);
+kefir_result_t kefir_amd64_xasmgen_init(struct kefir_mem *, struct kefir_amd64_xasmgen *, FILE *,
+                                        kefir_amd64_xasmgen_syntax_t);
+
 const struct kefir_amd64_xasmgen_operand *kefir_amd64_xasmgen_operand_reg(kefir_amd64_xasmgen_register_t);
 const struct kefir_amd64_xasmgen_operand *kefir_amd64_xasmgen_operand_imm(struct kefir_amd64_xasmgen_operand *,
                                                                           kefir_int64_t);

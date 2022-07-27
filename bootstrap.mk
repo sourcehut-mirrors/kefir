@@ -6,7 +6,7 @@ PLATFORM=
 AS=as
 LD=ld
 
-KEFIR_FLAGS=-I $(HEADERS)
+KEFIR_FLAGS=-I $(HEADERS) -W --codegen-syntax -Wx86_64-intel_noprefix
 ifeq ($(PLATFORM),freebsd)
 KEFIR_FLAGS += --target x86_64-freebsd-system -D__GNUC__=4 -D__GNUC_MINOR__=20 -D__GNUC_STDC_INLINE__=1
 else ifeq ($(PLATFORM),openbsd)

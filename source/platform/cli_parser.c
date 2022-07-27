@@ -25,8 +25,9 @@
 #include <getopt.h>
 #include <string.h>
 
-static kefir_result_t parse_impl_internal(struct kefir_mem *mem, void *data_obj, const struct kefir_cli_option *options,
-                                          kefir_size_t option_count, char *const *argv, kefir_size_t argc) {
+static kefir_result_t parse_impl_internal(struct kefir_mem *mem, struct kefir_symbol_table *symbols, void *data_obj,
+                                          const struct kefir_cli_option *options, kefir_size_t option_count,
+                                          char *const *argv, kefir_size_t argc) {
     const struct kefir_cli_option *short_option_map[1 << CHAR_BIT] = {0};
     struct kefir_string_buffer options_buf;
     REQUIRE_OK(kefir_string_buffer_init(mem, &options_buf, KEFIR_STRING_BUFFER_MULTIBYTE));
@@ -94,11 +95,22 @@ static kefir_result_t parse_impl_internal(struct kefir_mem *mem, void *data_obj,
                     // Intentionally left blank
                     break;
 
-                case KEFIR_CLI_OPTION_ACTION_ASSIGN_STRARG:
+                case KEFIR_CLI_OPTION_ACTION_ASSIGN_STRARG: {
                     REQUIRE_CHAIN_SET(&res, cli_option->param_size == sizeof(const char *),
                                       KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "CLI option is ill-defined"));
-                    *(const char **) param = optarg;
-                    break;
+                    if (res == KEFIR_OK) {
+                        const char **str_param = param;
+                        if (symbols != NULL) {
+                            *str_param = kefir_symbol_table_insert(mem, symbols, optarg, NULL);
+                            REQUIRE_CHAIN_SET(
+                                &res, *str_param != NULL,
+                                KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE,
+                                                "Failed to insert command line argument into symbol table"));
+                        } else {
+                            *str_param = optarg;
+                        }
+                    }
+                } break;
 
                 case KEFIR_CLI_OPTION_ACTION_ASSIGN_UINTARG:
                     switch (cli_option->param_size) {
@@ -165,12 +177,12 @@ static kefir_result_t parse_impl_internal(struct kefir_mem *mem, void *data_obj,
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_parse_cli_options(struct kefir_mem *mem, void *data_obj, kefir_size_t *positional_args,
-                                       const struct kefir_cli_option *options, kefir_size_t option_count,
-                                       char *const *argv, kefir_size_t argc) {
+kefir_result_t kefir_parse_cli_options(struct kefir_mem *mem, struct kefir_symbol_table *symbols, void *data_obj,
+                                       kefir_size_t *positional_args, const struct kefir_cli_option *options,
+                                       kefir_size_t option_count, char *const *argv, kefir_size_t argc) {
     optind = 0;
     opterr = 0;
-    REQUIRE_OK(parse_impl_internal(mem, data_obj, options, option_count, argv, argc));
+    REQUIRE_OK(parse_impl_internal(mem, symbols, data_obj, options, option_count, argv, argc));
     ASSIGN_PTR(positional_args, optind);
     return KEFIR_OK;
 }

@@ -26,8 +26,12 @@
 #include "kefir/core/basic-types.h"
 #include "kefir/ir/module.h"
 
+#define KEFIR_CODEGEN_SYNTAX_X86_64_INTEL_PREFIX "x86_64-intel_prefix"
+#define KEFIR_CODEGEN_SYNTAX_X86_64_INTEL_NOPREFIX "x86_64-intel_noprefix"
+
 typedef struct kefir_codegen_configuration {
     kefir_bool_t emulated_tls;
+    const char *syntax;
 } kefir_codegen_configuration_t;
 
 typedef struct kefir_codegen {

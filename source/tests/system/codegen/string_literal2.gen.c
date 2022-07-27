@@ -30,7 +30,7 @@
 
 kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_codegen_amd64 codegen;
-    kefir_codegen_amd64_sysv_init(mem, &codegen, stdout);
+    kefir_codegen_amd64_sysv_init(mem, &codegen, stdout, NULL);
 
     kefir_id_t literal_id;
     struct kefir_ir_module module;

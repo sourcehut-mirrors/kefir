@@ -20,6 +20,7 @@
 
 #include <stdio.h>
 #include <stdarg.h>
+#include <string.h>
 #include "kefir/codegen/amd64-sysv.h"
 #include "kefir/codegen/amd64/opcodes.h"
 #include "kefir/codegen/amd64/labels.h"
@@ -417,13 +418,33 @@ static kefir_result_t cg_close(struct kefir_mem *mem, struct kefir_codegen *cg) 
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_codegen_amd64_sysv_init(struct kefir_mem *mem, struct kefir_codegen_amd64 *codegen, FILE *out) {
+static kefir_result_t match_syntax(const char *syntax_descr, kefir_amd64_xasmgen_syntax_t *syntax) {
+    if (syntax_descr == NULL) {
+        *syntax = KEFIR_AMD64_XASMGEN_SYNTAX_INTEL_PREFIX;
+    } else if (strcmp(syntax_descr, KEFIR_CODEGEN_SYNTAX_X86_64_INTEL_PREFIX) == 0) {
+        *syntax = KEFIR_AMD64_XASMGEN_SYNTAX_INTEL_PREFIX;
+    } else if (strcmp(syntax_descr, KEFIR_CODEGEN_SYNTAX_X86_64_INTEL_NOPREFIX) == 0) {
+        *syntax = KEFIR_AMD64_XASMGEN_SYNTAX_INTEL_NOPREFIX;
+    } else {
+        return KEFIR_SET_ERRORF(KEFIR_INVALID_PARAMETER, "Unknown amd64 assembly syntax descriptor '%s'", syntax_descr);
+    }
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_codegen_amd64_sysv_init(struct kefir_mem *mem, struct kefir_codegen_amd64 *codegen, FILE *out,
+                                             const struct kefir_codegen_configuration *config) {
     REQUIRE(codegen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 code generator pointer"));
-    REQUIRE_OK(kefir_amd64_xasmgen_init(mem, &codegen->xasmgen, out));
+    if (config == NULL) {
+        config = &KefirCodegenDefaultConfiguration;
+    }
+
+    kefir_amd64_xasmgen_syntax_t syntax;
+    REQUIRE_OK(match_syntax(config->syntax, &syntax));
+    REQUIRE_OK(kefir_amd64_xasmgen_init(mem, &codegen->xasmgen, out, syntax));
     codegen->iface.translate = cg_translate;
     codegen->iface.close = cg_close;
     codegen->iface.data = codegen;
     codegen->iface.self = codegen;
-    codegen->config = &KefirCodegenDefaultConfiguration;
+    codegen->config = config;
     return KEFIR_OK;
 }
