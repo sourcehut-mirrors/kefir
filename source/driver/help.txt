@@ -75,7 +75,7 @@ COMPILER OPTIONS:
 
     Support code generation options:
         emulated-tls                        Use emulated TLS [disabled by default, enabled on openbsd platforms]
-        syntax=SYNTAX                       Produce assembly output with specified syntax [x86_64-intel_noprefix, x86-64-intel_prefix (default)]
+        syntax=SYNTAX                       Produce assembly output with specified syntax [x86_64-intel_noprefix, x86_64-intel_prefix (default), x86_64-att]
 
     Targets (determined by platform as specified in TARGET section):
         amd64-sysv-gas                      Produce GNU As-compatible assembly adhering System-V AMD64 ABI [default]

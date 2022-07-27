@@ -6,7 +6,7 @@ At the moment, the initial scope of work is effectively finished, and the main c
 Kefir supports modern x86-64 Linux, FreeBSD and OpenBSD environments (see `Supported environments` section below).
 Compiler is also able to produce JSON streams containing program representation on various stages of compilation (tokens, AST, IR),
 as well as outputting source in preprocessed form.
-By default, the compiler outputs GNU As-compatible assembly (Intel syntax with prefixes).
+By default, the compiler outputs GNU As-compatible assembly (Intel syntax with/without prefixes and ATT syntax are supported).
 At the moment, position-independent code generation is not supported.
 
 ### Project name

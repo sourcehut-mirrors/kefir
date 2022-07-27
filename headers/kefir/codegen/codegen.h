@@ -28,6 +28,7 @@
 
 #define KEFIR_CODEGEN_SYNTAX_X86_64_INTEL_PREFIX "x86_64-intel_prefix"
 #define KEFIR_CODEGEN_SYNTAX_X86_64_INTEL_NOPREFIX "x86_64-intel_noprefix"
+#define KEFIR_CODEGEN_SYNTAX_X86_64_ATT "x86_64-att"
 
 typedef struct kefir_codegen_configuration {
     kefir_bool_t emulated_tls;

@@ -118,7 +118,8 @@ typedef enum kefir_amd64_xasmgen_data_type {
 
 typedef enum kefir_amd64_xasmgen_syntax {
     KEFIR_AMD64_XASMGEN_SYNTAX_INTEL_NOPREFIX,
-    KEFIR_AMD64_XASMGEN_SYNTAX_INTEL_PREFIX
+    KEFIR_AMD64_XASMGEN_SYNTAX_INTEL_PREFIX,
+    KEFIR_AMD64_XASMGEN_SYNTAX_ATT
 } kefir_amd64_xasmgen_syntax_t;
 
 typedef struct kefir_amd64_xasmgen {

@@ -425,6 +425,8 @@ static kefir_result_t match_syntax(const char *syntax_descr, kefir_amd64_xasmgen
         *syntax = KEFIR_AMD64_XASMGEN_SYNTAX_INTEL_PREFIX;
     } else if (strcmp(syntax_descr, KEFIR_CODEGEN_SYNTAX_X86_64_INTEL_NOPREFIX) == 0) {
         *syntax = KEFIR_AMD64_XASMGEN_SYNTAX_INTEL_NOPREFIX;
+    } else if (strcmp(syntax_descr, KEFIR_CODEGEN_SYNTAX_X86_64_ATT) == 0) {
+        *syntax = KEFIR_AMD64_XASMGEN_SYNTAX_ATT;
     } else {
         return KEFIR_SET_ERRORF(KEFIR_INVALID_PARAMETER, "Unknown amd64 assembly syntax descriptor '%s'", syntax_descr);
     }
