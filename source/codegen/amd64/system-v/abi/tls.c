@@ -34,7 +34,7 @@ kefir_result_t kefir_amd64_sysv_thread_local_reference(struct kefir_codegen_amd6
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_LEA(
                 &codegen->xasmgen, kefir_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_DATA_REG),
                 kefir_amd64_xasmgen_operand_indirect(
-                    &codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_INDIRECTION_POINTER_NONE,
+                    &codegen->xasmgen_helpers.operands[0],
                     kefir_amd64_xasmgen_operand_label(
                         &codegen->xasmgen_helpers.operands[1],
                         kefir_amd64_xasmgen_helpers_format(&codegen->xasmgen_helpers, KEFIR_AMD64_THREAD_LOCAL,
@@ -49,7 +49,7 @@ kefir_result_t kefir_amd64_sysv_thread_local_reference(struct kefir_codegen_amd6
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
                 &codegen->xasmgen, kefir_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_DATA_REG),
                 kefir_amd64_xasmgen_operand_pointer(
-                    &codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_INDIRECTION_POINTER_QWORD,
+                    &codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_POINTER_QWORD,
                     kefir_amd64_xasmgen_operand_segment(
                         &codegen->xasmgen_helpers.operands[1], KEFIR_AMD64_XASMGEN_SEGMENT_FS,
                         kefir_amd64_xasmgen_operand_imm(&codegen->xasmgen_helpers.operands[2], 0)))));
@@ -71,7 +71,7 @@ kefir_result_t kefir_amd64_sysv_thread_local_reference(struct kefir_codegen_amd6
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_LEA(
                 &codegen->xasmgen, kefir_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RDI),
                 kefir_amd64_xasmgen_operand_indirect(
-                    &codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_INDIRECTION_POINTER_NONE,
+                    &codegen->xasmgen_helpers.operands[0],
                     kefir_amd64_xasmgen_operand_label(&codegen->xasmgen_helpers.operands[1],
                                                       kefir_amd64_xasmgen_helpers_format(
                                                           &codegen->xasmgen_helpers, KEFIR_AMD64_EMUTLS_V, identifier)),
@@ -80,7 +80,7 @@ kefir_result_t kefir_amd64_sysv_thread_local_reference(struct kefir_codegen_amd6
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
                 &codegen->xasmgen, kefir_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RDI),
                 kefir_amd64_xasmgen_operand_pointer(
-                    &codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_INDIRECTION_POINTER_QWORD,
+                    &codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_POINTER_QWORD,
                     kefir_amd64_xasmgen_operand_rip_indirection(
                         &codegen->xasmgen_helpers.operands[1],
                         kefir_amd64_xasmgen_helpers_format(&codegen->xasmgen_helpers, KEFIR_AMD64_EMUTLS_GOT,
