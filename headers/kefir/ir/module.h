@@ -27,6 +27,7 @@
 #include "kefir/core/symbol_table.h"
 #include "kefir/ir/function.h"
 #include "kefir/ir/data.h"
+#include "kefir/ir/assembly.h"
 
 typedef enum kefir_ir_identifier_type {
     KEFIR_IR_IDENTIFIER_GLOBAL,
@@ -43,10 +44,12 @@ typedef struct kefir_ir_module {
     struct kefir_hashtree named_types;
     struct kefir_hashtree named_data;
     struct kefir_hashtree string_literals;
+    struct kefir_hashtree inline_assembly;
 
     kefir_id_t next_type_id;
     kefir_id_t next_string_literal_id;
     kefir_id_t next_function_decl_id;
+    kefir_id_t next_inline_assembly_id;
 } kefir_ir_module_t;
 
 kefir_result_t kefir_ir_module_alloc(struct kefir_mem *, struct kefir_ir_module *);
@@ -113,5 +116,14 @@ kefir_result_t kefir_ir_module_string_literal_next(struct kefir_hashtree_node_it
 const struct kefir_ir_data *kefir_ir_module_named_data_iter(const struct kefir_ir_module *,
                                                             struct kefir_hashtree_node_iterator *, const char **);
 const struct kefir_ir_data *kefir_ir_module_named_data_next(struct kefir_hashtree_node_iterator *, const char **);
+
+struct kefir_ir_inline_assembly *kefir_ir_module_new_inline_assembly(struct kefir_mem *, struct kefir_ir_module *,
+                                                                     const char *, kefir_id_t *);
+const struct kefir_ir_inline_assembly *kefir_ir_module_get_inline_assembly(const struct kefir_ir_module *, kefir_id_t);
+const struct kefir_ir_inline_assembly *kefir_ir_module_inline_assembly_iter(const struct kefir_ir_module *,
+                                                                            struct kefir_hashtree_node_iterator *,
+                                                                            kefir_id_t *);
+const struct kefir_ir_inline_assembly *kefir_ir_module_inline_assembly_next(struct kefir_hashtree_node_iterator *,
+                                                                            kefir_id_t *);
 
 #endif

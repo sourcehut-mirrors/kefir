@@ -88,6 +88,16 @@ static kefir_result_t destroy_string_literal(struct kefir_mem *mem, struct kefir
     return KEFIR_OK;
 }
 
+static kefir_result_t destroy_inline_assembly(struct kefir_mem *mem, struct kefir_hashtree *tree,
+                                              kefir_hashtree_key_t key, kefir_hashtree_value_t value, void *data) {
+    UNUSED(tree);
+    UNUSED(key);
+    UNUSED(data);
+    ASSIGN_DECL_CAST(struct kefir_ir_inline_assembly *, inline_asm, value);
+    REQUIRE_OK(kefir_ir_inline_assembly_free(mem, inline_asm));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_ir_module_alloc(struct kefir_mem *mem, struct kefir_ir_module *module) {
     UNUSED(mem);
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR module pointer"));
@@ -105,15 +115,19 @@ kefir_result_t kefir_ir_module_alloc(struct kefir_mem *mem, struct kefir_ir_modu
     REQUIRE_OK(kefir_hashtree_on_removal(&module->named_data, destroy_named_data, NULL));
     REQUIRE_OK(kefir_hashtree_init(&module->string_literals, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_on_removal(&module->string_literals, destroy_string_literal, NULL));
+    REQUIRE_OK(kefir_hashtree_init(&module->inline_assembly, &kefir_hashtree_uint_ops));
+    REQUIRE_OK(kefir_hashtree_on_removal(&module->inline_assembly, destroy_inline_assembly, NULL));
     module->next_type_id = 0;
     module->next_string_literal_id = 0;
     module->next_function_decl_id = 0;
+    module->next_inline_assembly_id = 0;
     return KEFIR_OK;
 }
 
 kefir_result_t kefir_ir_module_free(struct kefir_mem *mem, struct kefir_ir_module *module) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR module pointer"));
+    REQUIRE_OK(kefir_hashtree_free(mem, &module->inline_assembly));
     REQUIRE_OK(kefir_hashtree_free(mem, &module->string_literals));
     REQUIRE_OK(kefir_hashtree_free(mem, &module->named_data));
     REQUIRE_OK(kefir_hashtree_free(mem, &module->named_types));
@@ -543,4 +557,66 @@ struct kefir_ir_type *kefir_ir_module_get_named_type(const struct kefir_ir_modul
     REQUIRE_ELSE(kefir_hashtree_at(&module->named_types, (kefir_hashtree_key_t) id, &node) == KEFIR_OK,
                  { return NULL; });
     return (struct kefir_ir_type *) node->value;
+}
+
+struct kefir_ir_inline_assembly *kefir_ir_module_new_inline_assembly(struct kefir_mem *mem,
+                                                                     struct kefir_ir_module *module,
+                                                                     const char *template, kefir_id_t *inline_asm_id) {
+    REQUIRE(mem != NULL, NULL);
+    REQUIRE(module != NULL, NULL);
+    REQUIRE(template != NULL, NULL);
+
+    kefir_id_t id = module->next_inline_assembly_id++;
+    struct kefir_ir_inline_assembly *inline_asm = kefir_ir_inline_assembly_alloc(mem, &module->symbols, id, template);
+    REQUIRE(inline_asm != NULL, NULL);
+    kefir_result_t res = kefir_hashtree_insert(mem, &module->inline_assembly, (kefir_hashtree_key_t) id,
+                                               (kefir_hashtree_value_t) inline_asm);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_ir_inline_assembly_free(mem, inline_asm);
+        return NULL;
+    });
+
+    ASSIGN_PTR(inline_asm_id, id);
+    return inline_asm;
+}
+
+const struct kefir_ir_inline_assembly *kefir_ir_module_get_inline_assembly(const struct kefir_ir_module *module,
+                                                                           kefir_id_t id) {
+    REQUIRE(module != NULL, NULL);
+
+    struct kefir_hashtree_node *node = NULL;
+    kefir_result_t res = kefir_hashtree_at(&module->inline_assembly, id, &node);
+    REQUIRE(res == KEFIR_OK, NULL);
+    return (struct kefir_ir_inline_assembly *) node->value;
+}
+
+const struct kefir_ir_inline_assembly *kefir_ir_module_inline_assembly_iter(const struct kefir_ir_module *module,
+                                                                            struct kefir_hashtree_node_iterator *iter,
+                                                                            kefir_id_t *id_ptr) {
+    REQUIRE(module != NULL, NULL);
+    REQUIRE(iter != NULL, NULL);
+    const struct kefir_hashtree_node *node = kefir_hashtree_iter(&module->named_data, iter);
+    if (node != NULL) {
+        if (id_ptr != NULL) {
+            *id_ptr = (kefir_id_t) node->key;
+        }
+        return (const struct kefir_ir_inline_assembly *) node->value;
+    } else {
+        return NULL;
+    }
+}
+
+const struct kefir_ir_inline_assembly *kefir_ir_module_inline_assembly_next(struct kefir_hashtree_node_iterator *iter,
+                                                                            kefir_id_t *id_ptr) {
+    REQUIRE(iter != NULL, NULL);
+
+    const struct kefir_hashtree_node *node = kefir_hashtree_next(iter);
+    if (node != NULL) {
+        if (id_ptr != NULL) {
+            *id_ptr = (kefir_id_t) node->key;
+        }
+        return (const struct kefir_ir_inline_assembly *) node->value;
+    } else {
+        return NULL;
+    }
 }
