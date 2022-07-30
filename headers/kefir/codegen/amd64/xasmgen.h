@@ -136,6 +136,7 @@ typedef struct kefir_amd64_xasmgen {
     kefir_result_t (*zerodata)(struct kefir_amd64_xasmgen *, kefir_size_t);
     kefir_result_t (*bindata)(struct kefir_amd64_xasmgen *, kefir_amd64_xasmgen_data_type_t, const void *,
                               kefir_size_t);
+    kefir_result_t (*inline_assembly)(struct kefir_amd64_xasmgen *, const char *);
 
     struct {
         kefir_result_t (*push)(struct kefir_amd64_xasmgen *, const struct kefir_amd64_xasmgen_operand *);
@@ -230,6 +231,7 @@ const struct kefir_amd64_xasmgen_operand *kefir_amd64_xasmgen_operand_string_lit
 #define KEFIR_AMD64_XASMGEN_ZERODATA(_xasmgen, _length) ((_xasmgen)->zerodata((_xasmgen), (_length)))
 #define KEFIR_AMD64_XASMGEN_BINDATA(_xasmgen, _type, _ptr, _length) \
     ((_xasmgen)->bindata((_xasmgen), (_type), (_ptr), (_length)))
+#define KEFIR_AMD64_XASMGEN_INLINE_ASSEMBLY(_xasmgen, _text) ((_xasmgen)->inline_assembly((_xasmgen), (_text)))
 
 #define KEFIR_AMD64_XASMGEN_INSTR_PUSH(_xasmgen, _op1) ((_xasmgen)->instr.push((_xasmgen), (_op1)))
 #define KEFIR_AMD64_XASMGEN_INSTR_POP(_xasmgen, _op1) ((_xasmgen)->instr.pop((_xasmgen), (_op1)))

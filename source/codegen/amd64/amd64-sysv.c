@@ -388,6 +388,25 @@ static kefir_result_t cg_translate_data(struct kefir_mem *mem, struct kefir_code
     return KEFIR_OK;
 }
 
+static kefir_result_t cg_translate_global_inline_assembly(struct kefir_codegen_amd64 *codegen,
+                                                          struct kefir_codegen_amd64_sysv_module *module) {
+    struct kefir_hashtree_node_iterator iter;
+    for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&module->module->global_inline_asm, &iter);
+         node != NULL; node = kefir_hashtree_next(&iter)) {
+
+        ASSIGN_DECL_CAST(const struct kefir_ir_inline_assembly *, inline_asm, node->value);
+        REQUIRE(kefir_hashtree_empty(&inline_asm->parameters),
+                KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Global IR inline assembly cannot have any parameters"));
+        REQUIRE(kefir_hashtree_empty(&inline_asm->clobbers),
+                KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Global IR inline assembly cannot have any clobbers"));
+        REQUIRE_OK(
+            KEFIR_AMD64_XASMGEN_COMMENT(&codegen->xasmgen, "Inline assembly fragment #" KEFIR_ID_FMT, inline_asm->id));
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_INLINE_ASSEMBLY(&codegen->xasmgen, inline_asm->template));
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_NEWLINE(&codegen->xasmgen, 1));
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t cg_translate(struct kefir_mem *mem, struct kefir_codegen *cg_iface,
                                    struct kefir_ir_module *module) {
     REQUIRE(cg_iface != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid code generator interface"));
@@ -403,6 +422,7 @@ static kefir_result_t cg_translate(struct kefir_mem *mem, struct kefir_codegen *
     }
     REQUIRE_OK(cg_translate_function_gates(codegen, &sysv_module.function_gates, false));
     REQUIRE_OK(cg_translate_function_gates(codegen, &sysv_module.function_vgates, true));
+    REQUIRE_OK(cg_translate_global_inline_assembly(codegen, &sysv_module));
     REQUIRE_OK(cg_translate_tls_entries(codegen, &sysv_module.tls_entries, sysv_module.module));
     REQUIRE_OK(cg_translate_data(mem, codegen, &sysv_module));
     REQUIRE_OK(kefir_codegen_amd64_sysv_module_free(mem, &sysv_module));

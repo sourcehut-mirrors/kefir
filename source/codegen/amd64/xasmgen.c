@@ -546,6 +546,15 @@ static kefir_result_t amd64_bindata(struct kefir_amd64_xasmgen *xasmgen, kefir_a
     return KEFIR_OK;
 }
 
+static kefir_result_t amd64_inline_assembly(struct kefir_amd64_xasmgen *xasmgen, const char *text) {
+    REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 assembly generator"));
+    REQUIRE(text != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid inline assembly text"));
+    ASSIGN_DECL_CAST(struct xasmgen_payload *, payload, xasmgen->payload);
+
+    fprintf(payload->output, "%s\n", text);
+    return KEFIR_OK;
+}
+
 #define INSTR0(_mnemonic)                                                                                              \
     static kefir_result_t amd64_instr_intel_##_mnemonic(struct kefir_amd64_xasmgen *xasmgen) {                         \
         REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 assembly generator")); \
@@ -833,6 +842,7 @@ kefir_result_t kefir_amd64_xasmgen_init(struct kefir_mem *mem, struct kefir_amd6
     xasmgen->data = amd64_data;
     xasmgen->zerodata = amd64_zerodata;
     xasmgen->bindata = amd64_bindata;
+    xasmgen->inline_assembly = amd64_inline_assembly;
 
     if (syntax != KEFIR_AMD64_XASMGEN_SYNTAX_ATT) {
         xasmgen->instr.add = amd64_instr_intel_add;
