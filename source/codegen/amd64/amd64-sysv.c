@@ -28,6 +28,7 @@
 #include "kefir/codegen/amd64/system-v/abi.h"
 #include "kefir/codegen/amd64/system-v/runtime.h"
 #include "kefir/codegen/amd64/system-v/instr.h"
+#include "kefir/codegen/amd64/system-v/inline_assembly.h"
 #include "kefir/codegen/amd64/system-v/abi/tls.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
@@ -407,7 +408,7 @@ static kefir_result_t cg_translate_global_inline_assembly(struct kefir_codegen_a
     return KEFIR_OK;
 }
 
-static kefir_result_t cg_translate_inline_assembly_fragments(struct kefir_codegen_amd64 *codegen,
+static kefir_result_t cg_translate_inline_assembly_fragments(struct kefir_mem *mem, struct kefir_codegen_amd64 *codegen,
                                                              struct kefir_codegen_amd64_sysv_module *module) {
     struct kefir_hashtree_node_iterator iter;
     for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&module->inline_assembly, &iter); node != NULL;
@@ -423,7 +424,7 @@ static kefir_result_t cg_translate_inline_assembly_fragments(struct kefir_codege
             KEFIR_AMD64_XASMGEN_COMMENT(&codegen->xasmgen, "Inline assembly fragment #" KEFIR_ID_FMT, inline_asm->id));
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen->xasmgen, KEFIR_AMD64_SYSTEM_V_RUNTIME_INLINE_ASSEMBLY_FRAGMENT,
                                              inline_asm->id));
-        REQUIRE_OK(KEFIR_AMD64_XASMGEN_INLINE_ASSEMBLY(&codegen->xasmgen, inline_asm->template));
+        REQUIRE_OK(kefir_codegen_amd64_sysv_inline_assembly_embed(mem, module, codegen, inline_asm));
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_ADD(
             &codegen->xasmgen, kefir_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBX),
             kefir_amd64_xasmgen_operand_imm(&codegen->xasmgen_helpers.operands[0], 2 * KEFIR_AMD64_SYSV_ABI_QWORD)));
@@ -452,7 +453,7 @@ static kefir_result_t cg_translate(struct kefir_mem *mem, struct kefir_codegen *
     REQUIRE_OK(cg_translate_function_gates(codegen, &sysv_module.function_gates, false));
     REQUIRE_OK(cg_translate_function_gates(codegen, &sysv_module.function_vgates, true));
     REQUIRE_OK(cg_translate_global_inline_assembly(codegen, &sysv_module));
-    REQUIRE_OK(cg_translate_inline_assembly_fragments(codegen, &sysv_module));
+    REQUIRE_OK(cg_translate_inline_assembly_fragments(mem, codegen, &sysv_module));
     REQUIRE_OK(cg_translate_tls_entries(codegen, &sysv_module.tls_entries, sysv_module.module));
     REQUIRE_OK(cg_translate_data(mem, codegen, &sysv_module));
     REQUIRE_OK(kefir_codegen_amd64_sysv_module_free(mem, &sysv_module));

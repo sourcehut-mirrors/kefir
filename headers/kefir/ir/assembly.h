@@ -26,6 +26,7 @@
 #include "kefir/core/hashtree.h"
 #include "kefir/core/mem.h"
 #include "kefir/core/symbol_table.h"
+#include "kefir/ir/type.h"
 
 typedef enum kefir_ir_inline_assembly_parameter_class {
     KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ,
@@ -33,9 +34,20 @@ typedef enum kefir_ir_inline_assembly_parameter_class {
     KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ_WRITE
 } kefir_ir_inline_assembly_parameter_class_t;
 
+typedef enum kefir_ir_inline_assembly_parameter_constraint {
+    KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_REGISTER,
+    KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_MEMORY,
+    KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_REGISTER_MEMORY
+} kefir_ir_inline_assembly_parameter_constraint_t;
+
 typedef struct kefir_ir_inline_assembly_parameter {
     const char *template_parameter;
     kefir_ir_inline_assembly_parameter_class_t klass;
+    struct {
+        const struct kefir_ir_type *type;
+        kefir_size_t index;
+    } type;
+    kefir_ir_inline_assembly_parameter_constraint_t constraint;
     kefir_size_t input_index;
     kefir_size_t output_index;
 } kefir_ir_inline_assembly_parameter_t;
@@ -52,7 +64,8 @@ struct kefir_ir_inline_assembly *kefir_ir_inline_assembly_alloc(struct kefir_mem
 kefir_result_t kefir_ir_inline_assembly_free(struct kefir_mem *, struct kefir_ir_inline_assembly *);
 kefir_result_t kefir_ir_inline_assembly_add_parameter(struct kefir_mem *, struct kefir_symbol_table *,
                                                       struct kefir_ir_inline_assembly *, const char *,
-                                                      kefir_ir_inline_assembly_parameter_class_t, kefir_size_t,
+                                                      kefir_ir_inline_assembly_parameter_class_t,
+                                                      const struct kefir_ir_type *, kefir_size_t, kefir_size_t,
                                                       kefir_size_t);
 kefir_result_t kefir_ir_inline_assembly_add_clobber(struct kefir_mem *, struct kefir_symbol_table *,
                                                     struct kefir_ir_inline_assembly *, const char *);

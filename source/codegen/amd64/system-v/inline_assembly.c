@@ -27,3 +27,17 @@ kefir_result_t kefir_codegen_amd64_sysv_inline_assembly_invoke(struct kefir_mem 
         kefir_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[1], 0)));
     return KEFIR_OK;
 }
+
+kefir_result_t kefir_codegen_amd64_sysv_inline_assembly_embed(struct kefir_mem *mem,
+                                                              struct kefir_codegen_amd64_sysv_module *sysv_module,
+                                                              struct kefir_codegen_amd64 *codegen,
+                                                              const struct kefir_ir_inline_assembly *inline_asm) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(sysv_module != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen AMD64 System-V module"));
+    REQUIRE(codegen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen AMD64 codegen"));
+    REQUIRE(inline_asm != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR inline assembly"));
+
+    REQUIRE_OK(KEFIR_AMD64_XASMGEN_INLINE_ASSEMBLY(&codegen->xasmgen, inline_asm->template));
+    return KEFIR_OK;
+}
