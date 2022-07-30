@@ -55,7 +55,7 @@ struct kefir_ir_inline_assembly *kefir_ir_inline_assembly_alloc(struct kefir_mem
 
     kefir_result_t res = kefir_hashtree_init(&inline_asm->parameters, &kefir_hashtree_str_ops);
     REQUIRE_CHAIN(&res, kefir_hashtree_on_removal(&inline_asm->parameters, free_inline_asm_parameter, NULL));
-    REQUIRE_CHAIN(&res, kefir_list_init(&inline_asm->clobbers));
+    REQUIRE_CHAIN(&res, kefir_hashtree_init(&inline_asm->clobbers, &kefir_hashtree_str_ops));
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, inline_asm);
         return NULL;
@@ -67,7 +67,7 @@ kefir_result_t kefir_ir_inline_assembly_free(struct kefir_mem *mem, struct kefir
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(inline_asm != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR inline assembly"));
 
-    REQUIRE_OK(kefir_list_free(mem, &inline_asm->clobbers));
+    REQUIRE_OK(kefir_hashtree_free(mem, &inline_asm->clobbers));
     REQUIRE_OK(kefir_hashtree_free(mem, &inline_asm->parameters));
     inline_asm->template = NULL;
     inline_asm->id = 0;
@@ -123,6 +123,6 @@ kefir_result_t kefir_ir_inline_assembly_add_clobber(struct kefir_mem *mem, struc
     }
 
     REQUIRE_OK(
-        kefir_list_insert_after(mem, &inline_asm->clobbers, kefir_list_tail(&inline_asm->clobbers), (void *) clobber));
+        kefir_hashtree_insert(mem, &inline_asm->clobbers, (kefir_hashtree_key_t) clobber, (kefir_hashtree_value_t) 0));
     return KEFIR_OK;
 }

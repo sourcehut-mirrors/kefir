@@ -169,5 +169,6 @@
         }
     ],
     "function_declarations": [],
-    "functions": []
+    "functions": [],
+    "inline_assembly": []
 }

@@ -799,6 +799,75 @@ static kefir_result_t format_functions(struct kefir_json_output *json, const str
     return KEFIR_OK;
 }
 
+static kefir_result_t format_inline_assembly_fragment(struct kefir_json_output *json,
+                                                      const struct kefir_ir_module *module,
+                                                      const struct kefir_ir_inline_assembly *inline_asm) {
+    REQUIRE_OK(kefir_json_output_object_begin(json));
+    REQUIRE_OK(kefir_json_output_object_key(json, "identifier"));
+    REQUIRE_OK(kefir_json_output_uinteger(json, inline_asm->id));
+    REQUIRE_OK(kefir_json_output_object_key(json, "global"));
+    REQUIRE_OK(kefir_json_output_boolean(
+        json, kefir_hashtree_has(&module->global_inline_asm, (kefir_hashtree_key_t) inline_asm->id)));
+    REQUIRE_OK(kefir_json_output_object_key(json, "template"));
+    REQUIRE_OK(kefir_json_output_string(json, inline_asm->template));
+    REQUIRE_OK(kefir_json_output_object_key(json, "parameters"));
+    REQUIRE_OK(kefir_json_output_array_begin(json));
+    struct kefir_hashtree_node_iterator iter;
+    for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&inline_asm->parameters, &iter); node != NULL;
+         node = kefir_hashtree_next(&iter)) {
+        ASSIGN_DECL_CAST(struct kefir_ir_inline_assembly_parameter *, param, node->value);
+        REQUIRE_OK(kefir_json_output_object_begin(json));
+        REQUIRE_OK(kefir_json_output_object_key(json, "parameter"));
+        REQUIRE_OK(kefir_json_output_string(json, param->template_parameter));
+        REQUIRE_OK(kefir_json_output_object_key(json, "class"));
+        switch (param->klass) {
+            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ:
+                REQUIRE_OK(kefir_json_output_string(json, "read"));
+                REQUIRE_OK(kefir_json_output_object_key(json, "input_index"));
+                REQUIRE_OK(kefir_json_output_uinteger(json, param->input_index));
+                break;
+
+            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_WRITE:
+                REQUIRE_OK(kefir_json_output_string(json, "write"));
+                REQUIRE_OK(kefir_json_output_object_key(json, "output_index"));
+                REQUIRE_OK(kefir_json_output_uinteger(json, param->output_index));
+                break;
+
+            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ_WRITE:
+                REQUIRE_OK(kefir_json_output_string(json, "read_write"));
+                REQUIRE_OK(kefir_json_output_object_key(json, "input_index"));
+                REQUIRE_OK(kefir_json_output_uinteger(json, param->input_index));
+                REQUIRE_OK(kefir_json_output_object_key(json, "output_index"));
+                REQUIRE_OK(kefir_json_output_uinteger(json, param->output_index));
+                break;
+        }
+        REQUIRE_OK(kefir_json_output_object_end(json));
+    }
+    REQUIRE_OK(kefir_json_output_array_end(json));
+    REQUIRE_OK(kefir_json_output_object_key(json, "clobbers"));
+    REQUIRE_OK(kefir_json_output_array_begin(json));
+    for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&inline_asm->clobbers, &iter); node != NULL;
+         node = kefir_hashtree_next(&iter)) {
+        ASSIGN_DECL_CAST(const char *, clobber, node->value);
+        REQUIRE_OK(kefir_json_output_string(json, clobber));
+    }
+    REQUIRE_OK(kefir_json_output_array_end(json));
+    REQUIRE_OK(kefir_json_output_object_end(json));
+    return KEFIR_OK;
+}
+
+static kefir_result_t format_inline_assembly(struct kefir_json_output *json, const struct kefir_ir_module *module) {
+    REQUIRE_OK(kefir_json_output_array_begin(json));
+    kefir_id_t id;
+    struct kefir_hashtree_node_iterator iter;
+    for (const struct kefir_ir_inline_assembly *inline_asm = kefir_ir_module_inline_assembly_iter(module, &iter, &id);
+         inline_asm != NULL; inline_asm = kefir_ir_module_inline_assembly_next(&iter, &id)) {
+        REQUIRE_OK(format_inline_assembly_fragment(json, module, inline_asm));
+    }
+    REQUIRE_OK(kefir_json_output_array_end(json));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_ir_format_module_json(struct kefir_json_output *json, const struct kefir_ir_module *module) {
     REQUIRE_OK(kefir_json_output_object_begin(json));
 
@@ -816,6 +885,8 @@ kefir_result_t kefir_ir_format_module_json(struct kefir_json_output *json, const
     REQUIRE_OK(format_function_declarations(json, module));
     REQUIRE_OK(kefir_json_output_object_key(json, "functions"));
     REQUIRE_OK(format_functions(json, module));
+    REQUIRE_OK(kefir_json_output_object_key(json, "inline_assembly"));
+    REQUIRE_OK(format_inline_assembly(json, module));
 
     REQUIRE_OK(kefir_json_output_object_end(json));
     REQUIRE_OK(kefir_json_output_finalize(json));

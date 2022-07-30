@@ -117,6 +117,7 @@ kefir_result_t kefir_ir_module_alloc(struct kefir_mem *mem, struct kefir_ir_modu
     REQUIRE_OK(kefir_hashtree_on_removal(&module->string_literals, destroy_string_literal, NULL));
     REQUIRE_OK(kefir_hashtree_init(&module->inline_assembly, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_on_removal(&module->inline_assembly, destroy_inline_assembly, NULL));
+    REQUIRE_OK(kefir_hashtree_init(&module->global_inline_asm, &kefir_hashtree_uint_ops));
     module->next_type_id = 0;
     module->next_string_literal_id = 0;
     module->next_function_decl_id = 0;
@@ -127,6 +128,7 @@ kefir_result_t kefir_ir_module_alloc(struct kefir_mem *mem, struct kefir_ir_modu
 kefir_result_t kefir_ir_module_free(struct kefir_mem *mem, struct kefir_ir_module *module) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR module pointer"));
+    REQUIRE_OK(kefir_hashtree_free(mem, &module->global_inline_asm));
     REQUIRE_OK(kefir_hashtree_free(mem, &module->inline_assembly));
     REQUIRE_OK(kefir_hashtree_free(mem, &module->string_literals));
     REQUIRE_OK(kefir_hashtree_free(mem, &module->named_data));
@@ -595,7 +597,7 @@ const struct kefir_ir_inline_assembly *kefir_ir_module_inline_assembly_iter(cons
                                                                             kefir_id_t *id_ptr) {
     REQUIRE(module != NULL, NULL);
     REQUIRE(iter != NULL, NULL);
-    const struct kefir_hashtree_node *node = kefir_hashtree_iter(&module->named_data, iter);
+    const struct kefir_hashtree_node *node = kefir_hashtree_iter(&module->inline_assembly, iter);
     if (node != NULL) {
         if (id_ptr != NULL) {
             *id_ptr = (kefir_id_t) node->key;
@@ -619,4 +621,20 @@ const struct kefir_ir_inline_assembly *kefir_ir_module_inline_assembly_next(stru
     } else {
         return NULL;
     }
+}
+
+kefir_result_t kefir_ir_module_inline_assembly_global(struct kefir_mem *mem, struct kefir_ir_module *module,
+                                                      kefir_id_t asm_id) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR module"));
+
+    const struct kefir_ir_inline_assembly *inline_asm = kefir_ir_module_get_inline_assembly(module, asm_id);
+    REQUIRE(inline_asm != NULL,
+            KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Requested inline assembly is not found in IR module"));
+    kefir_result_t res = kefir_hashtree_insert(mem, &module->global_inline_asm, (kefir_hashtree_key_t) asm_id,
+                                               (kefir_hashtree_value_t) inline_asm);
+    if (res != KEFIR_ALREADY_EXISTS) {
+        REQUIRE_OK(res);
+    }
+    return KEFIR_OK;
 }

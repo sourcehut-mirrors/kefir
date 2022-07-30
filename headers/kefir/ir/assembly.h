@@ -44,7 +44,7 @@ typedef struct kefir_ir_inline_assembly {
     kefir_id_t id;
     const char *template;
     struct kefir_hashtree parameters;
-    struct kefir_list clobbers;
+    struct kefir_hashtree clobbers;
 } kefir_ir_inline_assembly_t;
 
 struct kefir_ir_inline_assembly *kefir_ir_inline_assembly_alloc(struct kefir_mem *, struct kefir_symbol_table *,

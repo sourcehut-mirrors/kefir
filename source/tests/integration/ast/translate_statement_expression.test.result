@@ -307,5 +307,6 @@
             "locals": 18,
             "body": []
         }
-    ]
+    ],
+    "inline_assembly": []
 }
