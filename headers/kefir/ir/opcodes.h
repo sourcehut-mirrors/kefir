@@ -151,7 +151,8 @@ typedef enum kefir_iropcode {
     KEFIR_IROPCODE_F64CF32 = 0xbb,
     KEFIR_IROPCODE_F64CLD = 0xbc,
     KEFIR_IROPCODE_LDCF32 = 0xbd,
-    KEFIR_IROPCODE_LDCF64 = 0xbe
+    KEFIR_IROPCODE_LDCF64 = 0xbe,
+    KEFIR_IROPCODE_INLINEASM = 0xc0
 } kefir_iropcode_t;
 
 #endif

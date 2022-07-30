@@ -23,6 +23,7 @@
 #include "kefir/codegen/amd64/labels.h"
 #include "kefir/codegen/amd64/opcodes.h"
 #include "kefir/codegen/amd64/system-v/runtime.h"
+#include "kefir/codegen/amd64/system-v/inline_assembly.h"
 #include "kefir/core/error.h"
 
 static kefir_result_t cg_symbolic_opcode(kefir_iropcode_t opcode, const char **symbolic) {
@@ -308,6 +309,15 @@ kefir_result_t kefir_amd64_sysv_instruction(struct kefir_mem *mem, struct kefir_
                         kefir_amd64_xasmgen_helpers_format(
                             &codegen->xasmgen_helpers, KEFIR_AMD64_SYSV_PROCEDURE_BODY_LABEL, sysv_func->func->name)),
                     2 * KEFIR_AMD64_SYSV_ABI_QWORD * instr->arg.u64)));
+        } break;
+
+        case KEFIR_IROPCODE_INLINEASM: {
+            kefir_id_t asm_id = instr->arg.u64;
+            const struct kefir_ir_inline_assembly *inline_asm =
+                kefir_ir_module_get_inline_assembly(sysv_module->module, asm_id);
+            REQUIRE(inline_asm != NULL,
+                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Invalid IR inline assembly fragment identifier"));
+            REQUIRE_OK(kefir_codegen_amd64_sysv_inline_assembly_invoke(mem, sysv_module, codegen, inline_asm));
         } break;
 
         default: {

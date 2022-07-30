@@ -32,6 +32,7 @@
 #define KEFIR_AMD64_SYSTEM_V_RUNTIME_VARARG_LONG_DOUBLE "__kefirrt_load_long_double_vararg"
 #define KEFIR_AMD64_SYSTEM_V_RUNTIME_VARARG_COPY "__kefirrt_copy_vararg"
 #define KEFIR_AMD64_SYSTEM_V_RUNTIME_STRING_LITERAL "__kefirrt_string_literal" KEFIR_ID_FMT
+#define KEFIR_AMD64_SYSTEM_V_RUNTIME_INLINE_ASSEMBLY_FRAGMENT "__kefirrt_inline_assembly" KEFIR_ID_FMT
 
 extern const char *KEFIR_AMD64_SYSTEM_V_RUNTIME_SYMBOLS[];
 extern kefir_size_t KEFIR_AMD64_SYSTEM_V_RUNTIME_SYMBOL_COUNT;

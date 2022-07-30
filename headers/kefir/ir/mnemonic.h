@@ -151,6 +151,7 @@
 #define KEFIR_IROPCODE_MNEMONIC_F64CLD "f64cld"
 #define KEFIR_IROPCODE_MNEMONIC_LDCF32 "ldcf32"
 #define KEFIR_IROPCODE_MNEMONIC_LDCF64 "ldcf64"
+#define KEFIR_IROPCODE_MNEMONIC_INLINEASM "inlineasm"
 
 const char *kefir_iropcode_mnemonic(kefir_iropcode_t);
 

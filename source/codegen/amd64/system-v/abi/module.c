@@ -65,6 +65,7 @@ kefir_result_t kefir_codegen_amd64_sysv_module_alloc(struct kefir_mem *mem,
     REQUIRE_OK(kefir_hashtree_init(&sysv_module->type_layouts, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_on_removal(&sysv_module->type_layouts, type_layout_removal, NULL));
     REQUIRE_OK(kefir_hashtree_init(&sysv_module->tls_entries, &kefir_hashtree_str_ops));
+    REQUIRE_OK(kefir_hashtree_init(&sysv_module->inline_assembly, &kefir_hashtree_uint_ops));
     return KEFIR_OK;
 }
 
@@ -73,6 +74,7 @@ kefir_result_t kefir_codegen_amd64_sysv_module_free(struct kefir_mem *mem,
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(sysv_module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 System-V module"));
 
+    REQUIRE_OK(kefir_hashtree_free(mem, &sysv_module->inline_assembly));
     REQUIRE_OK(kefir_hashtree_free(mem, &sysv_module->tls_entries));
     REQUIRE_OK(kefir_hashtree_free(mem, &sysv_module->type_layouts));
     REQUIRE_OK(kefir_hashtree_free(mem, &sysv_module->function_gates));
