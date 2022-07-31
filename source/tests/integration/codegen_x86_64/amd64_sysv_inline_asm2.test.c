@@ -26,54 +26,53 @@
 #include "kefir/core/mem.h"
 #include "kefir/core/util.h"
 #include "kefir/codegen/amd64-sysv.h"
+#include "kefir/codegen/amd64/system-v/abi.h"
 
 kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_codegen_amd64 codegen;
-    kefir_codegen_amd64_sysv_init(mem, &codegen, stdout, NULL);
-
     struct kefir_ir_module module;
+    REQUIRE_OK(kefir_codegen_amd64_sysv_init(mem, &codegen, stdout, NULL));
     REQUIRE_OK(kefir_ir_module_alloc(mem, &module));
 
-#ifdef __x86_64__
+    codegen.xasmgen.settings.enable_identation = false;
 
     kefir_id_t func_params, func_returns;
-    struct kefir_ir_type *decl_params = kefir_ir_module_new_type(mem, &module, 1, &func_params),
-                         *decl_result = kefir_ir_module_new_type(mem, &module, 1, &func_returns);
+    struct kefir_ir_type *decl_params = kefir_ir_module_new_type(mem, &module, 0, &func_params),
+                         *decl_result = kefir_ir_module_new_type(mem, &module, 0, &func_returns);
     REQUIRE(decl_params != NULL, KEFIR_INTERNAL_ERROR);
     REQUIRE(decl_result != NULL, KEFIR_INTERNAL_ERROR);
     struct kefir_ir_function_decl *decl =
-        kefir_ir_module_new_function_declaration(mem, &module, "dup1", func_params, false, func_returns);
+        kefir_ir_module_new_function_declaration(mem, &module, "func1", func_params, false, func_returns);
     REQUIRE(decl != NULL, KEFIR_INTERNAL_ERROR);
     struct kefir_ir_function *func = kefir_ir_module_new_function(mem, &module, decl, KEFIR_ID_NONE, 1024);
     REQUIRE(func != NULL, KEFIR_INTERNAL_ERROR);
 
-    REQUIRE_OK(kefir_irbuilder_type_append_v(mem, decl_params, KEFIR_IR_TYPE_LONG, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append_v(mem, decl_result, KEFIR_IR_TYPE_LONG, 0, 0));
-    REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, func->name, KEFIR_IR_IDENTIFIER_GLOBAL));
-
     kefir_id_t id1, id2, id3;
-    struct kefir_ir_inline_assembly *inline_asm1 = kefir_ir_module_new_inline_assembly(
-        mem, &module, "mov %rbx, [%rsp + 24]\nadd %rbx, 1\nmov [%rsp + 24], %rbx", &id1);
+    struct kefir_ir_inline_assembly *inline_asm1 =
+        kefir_ir_module_new_inline_assembly(mem, &module, "xor rax, rax\npush rax", &id1);
     struct kefir_ir_inline_assembly *inline_asm2 =
-        kefir_ir_module_new_inline_assembly(mem, &module, "xor %rax, %rax\npush %rax", &id2);
+        kefir_ir_module_new_inline_assembly(mem, &module, "pop rbx\nadd rbx, 1\npush rbx", &id2);
     struct kefir_ir_inline_assembly *inline_asm3 =
-        kefir_ir_module_new_inline_assembly(mem, &module, "pop %rax\nadd %rax, %rax\npush %rax", &id3);
+        kefir_ir_module_new_inline_assembly(mem, &module, "pop rcx\nmov rax, rcx\nadd rax, rax\npush rax", &id3);
 
     REQUIRE(inline_asm1 != NULL, KEFIR_INTERNAL_ERROR);
     REQUIRE(inline_asm2 != NULL, KEFIR_INTERNAL_ERROR);
     REQUIRE(inline_asm3 != NULL, KEFIR_INTERNAL_ERROR);
 
-    REQUIRE_OK(kefir_ir_inline_assembly_add_clobber(mem, &module.symbols, inline_asm1, "bl"));
+    REQUIRE_OK(kefir_ir_inline_assembly_add_clobber(mem, &module.symbols, inline_asm1, "rax"));
+    REQUIRE_OK(kefir_ir_inline_assembly_add_clobber(mem, &module.symbols, inline_asm1, "xmm3"));
     REQUIRE_OK(kefir_ir_inline_assembly_add_clobber(mem, &module.symbols, inline_asm1, "memory"));
-    REQUIRE_OK(kefir_ir_inline_assembly_add_clobber(mem, &module.symbols, inline_asm1, "xmm1"));
+    REQUIRE_OK(kefir_ir_inline_assembly_add_clobber(mem, &module.symbols, inline_asm2, "rbx"));
+    REQUIRE_OK(kefir_ir_inline_assembly_add_clobber(mem, &module.symbols, inline_asm3, "rax"));
+    REQUIRE_OK(kefir_ir_inline_assembly_add_clobber(mem, &module.symbols, inline_asm3, "xmm6"));
+    REQUIRE_OK(kefir_ir_inline_assembly_add_clobber(mem, &module.symbols, inline_asm3, "rcx"));
+    REQUIRE_OK(kefir_ir_inline_assembly_add_clobber(mem, &module.symbols, inline_asm3, "test1"));
 
-    REQUIRE_OK(kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IROPCODE_INLINEASM, id3));
     REQUIRE_OK(kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IROPCODE_INLINEASM, id1));
-#endif
+    REQUIRE_OK(kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IROPCODE_INLINEASM, id3));
 
-    KEFIR_CODEGEN_TRANSLATE(mem, &codegen.iface, &module);
-
-    KEFIR_CODEGEN_CLOSE(mem, &codegen.iface);
+    REQUIRE_OK(KEFIR_CODEGEN_TRANSLATE(mem, &codegen.iface, &module));
+    REQUIRE_OK(KEFIR_CODEGEN_CLOSE(mem, &codegen.iface));
     REQUIRE_OK(kefir_ir_module_free(mem, &module));
-    return EXIT_SUCCESS;
+    return KEFIR_OK;
 }

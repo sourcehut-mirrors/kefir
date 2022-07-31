@@ -109,6 +109,8 @@ kefir_result_t kefir_amd64_xasmgen_register8(kefir_amd64_xasmgen_register_t, kef
 kefir_result_t kefir_amd64_xasmgen_register16(kefir_amd64_xasmgen_register_t, kefir_amd64_xasmgen_register_t *);
 kefir_result_t kefir_amd64_xasmgen_register32(kefir_amd64_xasmgen_register_t, kefir_amd64_xasmgen_register_t *);
 kefir_result_t kefir_amd64_xasmgen_register64(kefir_amd64_xasmgen_register_t, kefir_amd64_xasmgen_register_t *);
+kefir_bool_t kefir_amd64_xasmgen_register_is_floating_point(kefir_amd64_xasmgen_register_t);
+kefir_result_t kefir_amd64_xasmgen_register_normalize(kefir_amd64_xasmgen_register_t, kefir_amd64_xasmgen_register_t *);
 const char *kefir_amd64_xasmgen_register_symbolic_name(kefir_amd64_xasmgen_register_t);
 kefir_result_t kefir_amd64_xasmgen_register_from_symbolic_name(const char *, kefir_amd64_xasmgen_register_t *);
 
@@ -239,6 +241,8 @@ typedef struct kefir_amd64_xasmgen {
                                const struct kefir_amd64_xasmgen_operand *);
         kefir_result_t (*fstp)(struct kefir_amd64_xasmgen *, const struct kefir_amd64_xasmgen_operand *);
         kefir_result_t (*fld)(struct kefir_amd64_xasmgen *, const struct kefir_amd64_xasmgen_operand *);
+        kefir_result_t (*movdqu)(struct kefir_amd64_xasmgen *, const struct kefir_amd64_xasmgen_operand *,
+                                 const struct kefir_amd64_xasmgen_operand *);
     } instr;
 
     struct {
@@ -319,6 +323,7 @@ const struct kefir_amd64_xasmgen_operand *kefir_amd64_xasmgen_operand_string_lit
 #define KEFIR_AMD64_XASMGEN_INSTR_MOVD(_xasmgen, _op1, _op2) ((_xasmgen)->instr.movd((_xasmgen), (_op1), (_op2)))
 #define KEFIR_AMD64_XASMGEN_INSTR_FSTP(_xasmgen, _op1) ((_xasmgen)->instr.fstp((_xasmgen), (_op1)))
 #define KEFIR_AMD64_XASMGEN_INSTR_FLD(_xasmgen, _op1) ((_xasmgen)->instr.fld((_xasmgen), (_op1)))
+#define KEFIR_AMD64_XASMGEN_INSTR_MOVDQU(_xasmgen, _op1, _op2) ((_xasmgen)->instr.movdqu((_xasmgen), (_op1), (_op2)))
 
 #define KEFIR_AMD64_XASMGEN_HELPERS_BUFFER_LENGTH 1024
 typedef struct kefir_amd64_xasmgen_helpers {

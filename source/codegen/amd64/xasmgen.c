@@ -542,6 +542,35 @@ kefir_result_t kefir_amd64_xasmgen_register64(kefir_amd64_xasmgen_register_t src
     return KEFIR_OK;
 }
 
+kefir_bool_t kefir_amd64_xasmgen_register_is_floating_point(kefir_amd64_xasmgen_register_t reg) {
+    switch (reg) {
+        case KEFIR_AMD64_XASMGEN_REGISTER_XMM0:
+        case KEFIR_AMD64_XASMGEN_REGISTER_XMM1:
+        case KEFIR_AMD64_XASMGEN_REGISTER_XMM2:
+        case KEFIR_AMD64_XASMGEN_REGISTER_XMM3:
+        case KEFIR_AMD64_XASMGEN_REGISTER_XMM4:
+        case KEFIR_AMD64_XASMGEN_REGISTER_XMM5:
+        case KEFIR_AMD64_XASMGEN_REGISTER_XMM6:
+        case KEFIR_AMD64_XASMGEN_REGISTER_XMM7:
+            return true;
+
+        default:
+            return false;
+    }
+}
+
+kefir_result_t kefir_amd64_xasmgen_register_normalize(kefir_amd64_xasmgen_register_t src,
+                                                      kefir_amd64_xasmgen_register_t *dst) {
+    REQUIRE(dst != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to AMD64 xasmgen register"));
+
+    if (kefir_amd64_xasmgen_register_is_floating_point(src)) {
+        *dst = src;
+    } else {
+        REQUIRE_OK(kefir_amd64_xasmgen_register64(src, dst));
+    }
+    return KEFIR_OK;
+}
+
 static const char *register_literals[] = {
     [KEFIR_AMD64_XASMGEN_REGISTER_AL] = "al",     [KEFIR_AMD64_XASMGEN_REGISTER_BL] = "bl",
     [KEFIR_AMD64_XASMGEN_REGISTER_CL] = "cl",     [KEFIR_AMD64_XASMGEN_REGISTER_DL] = "dl",
@@ -1204,6 +1233,7 @@ INSTR2(shr)
 INSTR2(movd)
 INSTR1(fstp)
 INSTR1(fld)
+INSTR2(movdqu)
 
 #undef INSTR0
 #undef INSTR1
@@ -1353,6 +1383,7 @@ INSTR2(shr)
 INSTR2(movd)
 INSTR1(fstp)
 INSTR1(fld)
+INSTR2(movdqu)
 
 #undef INSTR0
 #undef INSTR1
@@ -1430,6 +1461,7 @@ kefir_result_t kefir_amd64_xasmgen_init(struct kefir_mem *mem, struct kefir_amd6
         xasmgen->instr.shl = amd64_instr_intel_shl;
         xasmgen->instr.shr = amd64_instr_intel_shr;
         xasmgen->instr.sub = amd64_instr_intel_sub;
+        xasmgen->instr.movdqu = amd64_instr_intel_movdqu;
     } else {
         xasmgen->instr.add = amd64_instr_att_add;
         xasmgen->instr.and = amd64_instr_att_and;
@@ -1456,6 +1488,7 @@ kefir_result_t kefir_amd64_xasmgen_init(struct kefir_mem *mem, struct kefir_amd6
         xasmgen->instr.shl = amd64_instr_att_shl;
         xasmgen->instr.shr = amd64_instr_att_shr;
         xasmgen->instr.sub = amd64_instr_att_sub;
+        xasmgen->instr.movdqu = amd64_instr_att_movdqu;
     }
     return KEFIR_OK;
 }
