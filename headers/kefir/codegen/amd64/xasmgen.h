@@ -198,6 +198,8 @@ typedef struct kefir_amd64_xasmgen {
     kefir_result_t (*bindata)(struct kefir_amd64_xasmgen *, kefir_amd64_xasmgen_data_type_t, const void *,
                               kefir_size_t);
     kefir_result_t (*inline_assembly)(struct kefir_amd64_xasmgen *, const char *);
+    kefir_result_t (*symbolic_register_name)(struct kefir_amd64_xasmgen *, kefir_amd64_xasmgen_register_t, char *,
+                                             kefir_size_t);
 
     struct {
         kefir_result_t (*push)(struct kefir_amd64_xasmgen *, const struct kefir_amd64_xasmgen_operand *);
@@ -295,6 +297,8 @@ const struct kefir_amd64_xasmgen_operand *kefir_amd64_xasmgen_operand_string_lit
 #define KEFIR_AMD64_XASMGEN_BINDATA(_xasmgen, _type, _ptr, _length) \
     ((_xasmgen)->bindata((_xasmgen), (_type), (_ptr), (_length)))
 #define KEFIR_AMD64_XASMGEN_INLINE_ASSEMBLY(_xasmgen, _text) ((_xasmgen)->inline_assembly((_xasmgen), (_text)))
+#define KEFIR_AMD64_XASMGEN_SYMBOLIC_REGISTER_NAME(_xasmgen, _reg, _buf, _buflen) \
+    ((_xasmgen)->symbolic_register_name((_xasmgen), (_reg), (_buf), (_buflen)))
 
 #define KEFIR_AMD64_XASMGEN_INSTR_PUSH(_xasmgen, _op1) ((_xasmgen)->instr.push((_xasmgen), (_op1)))
 #define KEFIR_AMD64_XASMGEN_INSTR_POP(_xasmgen, _op1) ((_xasmgen)->instr.pop((_xasmgen), (_op1)))

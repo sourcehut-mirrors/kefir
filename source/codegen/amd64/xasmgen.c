@@ -1144,6 +1144,20 @@ static kefir_result_t amd64_inline_assembly(struct kefir_amd64_xasmgen *xasmgen,
     return KEFIR_OK;
 }
 
+static kefir_result_t amd64_symbolic_register_name(struct kefir_amd64_xasmgen *xasmgen,
+                                                   kefir_amd64_xasmgen_register_t reg, char *buf, kefir_size_t buflen) {
+    REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 assembly generator"));
+    REQUIRE(buflen > 0, KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Expected non-zero buffer length"));
+    ASSIGN_DECL_CAST(struct xasmgen_payload *, payload, xasmgen->payload);
+
+    if (payload->syntax == KEFIR_AMD64_XASMGEN_SYNTAX_INTEL_NOPREFIX) {
+        snprintf(buf, buflen - 1, "%s", kefir_amd64_xasmgen_register_symbolic_name(reg));
+    } else {
+        snprintf(buf, buflen - 1, "%%%s", kefir_amd64_xasmgen_register_symbolic_name(reg));
+    }
+    return KEFIR_OK;
+}
+
 #define INSTR0(_mnemonic)                                                                                              \
     static kefir_result_t amd64_instr_intel_##_mnemonic(struct kefir_amd64_xasmgen *xasmgen) {                         \
         REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 assembly generator")); \
@@ -1434,6 +1448,7 @@ kefir_result_t kefir_amd64_xasmgen_init(struct kefir_mem *mem, struct kefir_amd6
     xasmgen->zerodata = amd64_zerodata;
     xasmgen->bindata = amd64_bindata;
     xasmgen->inline_assembly = amd64_inline_assembly;
+    xasmgen->symbolic_register_name = amd64_symbolic_register_name;
 
     if (syntax != KEFIR_AMD64_XASMGEN_SYNTAX_ATT) {
         xasmgen->instr.add = amd64_instr_intel_add;

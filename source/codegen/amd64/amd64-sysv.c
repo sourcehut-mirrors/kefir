@@ -415,8 +415,6 @@ static kefir_result_t cg_translate_inline_assembly_fragments(struct kefir_mem *m
          node = kefir_hashtree_next(&iter)) {
 
         ASSIGN_DECL_CAST(const struct kefir_ir_inline_assembly *, inline_asm, node->value);
-        REQUIRE(kefir_hashtree_empty(&inline_asm->parameters),
-                KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED, "IR inline assembly with parameters is not supported yet"));
 
         REQUIRE_OK(
             KEFIR_AMD64_XASMGEN_COMMENT(&codegen->xasmgen, "Inline assembly fragment #" KEFIR_ID_FMT, inline_asm->id));
