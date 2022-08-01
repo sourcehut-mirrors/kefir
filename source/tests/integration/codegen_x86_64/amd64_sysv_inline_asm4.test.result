@@ -154,23 +154,24 @@ __kefirrt_inline_assembly0:
 push %rax
 push %rcx
 push %rdx
-mov %rcx, [%rsp + 32]
+mov %rax, [%rsp + 32]
+push %rax
+mov %rcx, [%rsp + 40]
 mov %cx, [%rcx]
 mov %ax, %cx
 xchg %ah, %al
 mov %cx, %ax
 add %ah, %al
 mov %dl, %ah
-push %rax
-mov %rax, [%rsp + 40]
-mov [%rax], %cx
-pop %rax
 and %rdx, 255
-mov [%rsp + 32], %rdx
+mov [%rsp + 40], %rdx
+mov %rax, [%rsp]
+mov [%rsp + 32], %rax
+mov [%rax], %cx
+add %rsp, 8
 pop %rdx
 pop %rcx
 pop %rax
-add %rsp, 8
 add %rbx, 16
 jmp [%rbx]
 
