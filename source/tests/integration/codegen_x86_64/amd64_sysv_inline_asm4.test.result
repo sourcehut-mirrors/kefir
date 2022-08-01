@@ -129,23 +129,23 @@
 func1:
 # Begin prologue of func1
 call __kefirrt_preserve_state
-sub %rsp, 16
+sub %rsp, 32
 call __kefirrt_generic_prologue
 # Load parameters of func1
-push %rdi
-push %rsi
+mov [%r14 + 16], %rdi
+lea %r12, [%r14 + 16]
+push %r12
 # End prologue of func1
 lea %rbx, [__func1_body]
 jmp [%rbx]
 __func1_body:
 .quad __kefirrt_inline_assembly0, 0
-.quad __kefirrt_inline_assembly1, 0
 .quad __func1_epilogue, 0
 __func1_epilogue:
 # Begin epilogue of func1
 pop %rax
 mov %rsp, %r14
-add %rsp, 16
+add %rsp, 32
 jmp __kefirrt_restore_state
 # End of func1
 
@@ -153,35 +153,21 @@ jmp __kefirrt_restore_state
 __kefirrt_inline_assembly0:
 push %rax
 push %rcx
-mov %rax, [%rsp + 24]
-mov %rcx, [%rsp + 16]
-add %rax, %rcx
-mov [%rsp + 24], %rax
-pop %rcx
-pop %rax
-add %rsp, 8
-add %rbx, 16
-jmp [%rbx]
-
-# Inline assembly fragment #1
-__kefirrt_inline_assembly1:
+push %rdx
+mov %rcx, [%rsp + 32]
+mov %cx, [%rcx]
+mov %ax, %cx
+xchg %ah, %al
+mov %cx, %ax
+add %ah, %al
+mov %dl, %ah
 push %rax
-push %rcx
-sub %rsp, 16
-movdqu [%rsp], %xmm0
-sub %rsp, 16
-movdqu [%rsp], %xmm1
-mov %rax, [%rsp + 56]
-mov %rcx, [%rsp + 48]
-movd %xmm0, %rax
-movd %xmm1, %rcx
-addsd %xmm0, %xmm1
-movd %rax, %xmm0
-mov [%rsp + 56], %rax
-movdqu %xmm1, [%rsp]
-add %rsp, 16
-movdqu %xmm0, [%rsp]
-add %rsp, 16
+mov %rax, [%rsp + 40]
+mov [%rax], %cx
+pop %rax
+and %rdx, 255
+mov [%rsp + 32], %rdx
+pop %rdx
 pop %rcx
 pop %rax
 add %rsp, 8
