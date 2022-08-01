@@ -933,11 +933,11 @@ static kefir_result_t amd64_format_operand_att(void (*print)(void *, const char 
             break;
 
         case KEFIR_AMD64_XASMGEN_OPERAND_IMMEDIATE_UNSIGNED:
-            printf(printarg, "$" KEFIR_UINT64_FMT, op->immu);
+            print(printarg, "$" KEFIR_UINT64_FMT, op->immu);
             break;
 
         case KEFIR_AMD64_XASMGEN_OPERAND_REGISTER:
-            printf(printarg, "%%%s", register_literals[op->reg]);
+            print(printarg, "%%%s", register_literals[op->reg]);
             break;
 
         case KEFIR_AMD64_XASMGEN_OPERAND_LABEL:
