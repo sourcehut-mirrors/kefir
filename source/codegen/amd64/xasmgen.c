@@ -754,271 +754,266 @@ static kefir_result_t amd64_align(struct kefir_amd64_xasmgen *xasmgen, kefir_siz
     return KEFIR_OK;
 }
 
-static kefir_result_t amd64_string_literal(FILE *out, const char *literal, kefir_size_t length) {
-    fprintf(out, "\"");
+static kefir_result_t amd64_string_literal(void (*print)(void *, const char *, ...), void *printarg,
+                                           const char *literal, kefir_size_t length) {
+    print(printarg, "\"");
     const char *end = literal + length;
     for (; literal < end; ++literal) {
         switch (*literal) {
             case U'\0':
-                fprintf(out, "\\000");
+                print(printarg, "\\000");
                 break;
 
             case U'\"':
-                fprintf(out, "\\\"");
+                print(printarg, "\\\"");
                 break;
 
             case U'\\':
-                fprintf(out, "\\\\");
+                print(printarg, "\\\\");
                 break;
 
             case U'\a':
-                fprintf(out, "\\%03o", '\a');
+                print(printarg, "\\%03o", '\a');
                 break;
 
             case U'\b':
-                fprintf(out, "\\b");
+                print(printarg, "\\b");
                 break;
 
             case U'\t':
-                fprintf(out, "\\t");
+                print(printarg, "\\t");
                 break;
 
             case U'\n':
-                fprintf(out, "\\n");
+                print(printarg, "\\n");
                 break;
 
             case U'\v':
-                fprintf(out, "\\%03o", '\v');
+                print(printarg, "\\%03o", '\v');
                 break;
 
             case U'\f':
-                fprintf(out, "\\f");
+                print(printarg, "\\f");
                 break;
 
             case U'\r':
-                fprintf(out, "\\r");
+                print(printarg, "\\r");
                 break;
 
             default:
                 if (isprint(*literal)) {
-                    fprintf(out, "%c", *literal);
+                    print(printarg, "%c", *literal);
                 } else {
-                    fprintf(out, "\\%03o", (unsigned char) *literal);
+                    print(printarg, "\\%03o", (unsigned char) *literal);
                 }
                 break;
         }
     }
-    fprintf(out, "\"");
+    print(printarg, "\"");
     return KEFIR_OK;
 }
 
-static kefir_result_t amd64_symbol_arg(kefir_amd64_xasmgen_syntax_t syntax, FILE *out, const char *symbol) {
-    UNUSED(syntax);
+static kefir_result_t amd64_symbol_arg(void (*print)(void *, const char *, ...), void *printarg, const char *symbol) {
     const char *EscapedSymbols[] = {// TODO Expand number of escaped symbols
                                     "mod"};
     for (kefir_size_t i = 0; i < sizeof(EscapedSymbols) / sizeof(EscapedSymbols[0]); i++) {
         if (strcasecmp(symbol, EscapedSymbols[i]) == 0) {
-            fprintf(out, "$%s", symbol);
+            print(printarg, "$%s", symbol);
             return KEFIR_OK;
         }
     }
 
-    fprintf(out, "%s", symbol);
+    print(printarg, "%s", symbol);
     return KEFIR_OK;
 }
 
-static kefir_result_t format_pointer(FILE *out, kefir_amd64_xasmgen_pointer_type_t type) {
+static kefir_result_t format_pointer(void (*print)(void *, const char *, ...), void *printarg,
+                                     kefir_amd64_xasmgen_pointer_type_t type) {
     switch (type) {
         case KEFIR_AMD64_XASMGEN_POINTER_DWORD:
-            fprintf(out, "DWORD PTR ");
+            print(printarg, "DWORD PTR ");
             break;
 
         case KEFIR_AMD64_XASMGEN_POINTER_QWORD:
-            fprintf(out, "QWORD PTR ");
+            print(printarg, "QWORD PTR ");
             break;
 
         case KEFIR_AMD64_XASMGEN_POINTER_TBYTE:
-            fprintf(out, "TBYTE PTR ");
+            print(printarg, "TBYTE PTR ");
             break;
     }
     return KEFIR_OK;
 }
 
-static kefir_result_t amd64_format_operand_intel(struct kefir_amd64_xasmgen *xasmgen,
-                                                 const struct kefir_amd64_xasmgen_operand *op) {
-    UNUSED(xasmgen);
-    ASSIGN_DECL_CAST(struct xasmgen_payload *, payload, xasmgen->payload);
-    REQUIRE(payload->syntax == KEFIR_AMD64_XASMGEN_SYNTAX_INTEL_PREFIX ||
-                payload->syntax == KEFIR_AMD64_XASMGEN_SYNTAX_INTEL_NOPREFIX,
-            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected intel syntax assembly generator"));
+static kefir_result_t amd64_format_operand_intel(void (*print)(void *, const char *, ...), void *printarg,
+                                                 kefir_bool_t prefix, const struct kefir_amd64_xasmgen_operand *op) {
     switch (op->klass) {
         case KEFIR_AMD64_XASMGEN_OPERAND_IMMEDIATE:
-            fprintf(payload->output, KEFIR_INT64_FMT, op->imm);
+            print(printarg, KEFIR_INT64_FMT, op->imm);
             break;
 
         case KEFIR_AMD64_XASMGEN_OPERAND_IMMEDIATE_UNSIGNED:
-            fprintf(payload->output, KEFIR_UINT64_FMT, op->immu);
+            print(printarg, KEFIR_UINT64_FMT, op->immu);
             break;
 
         case KEFIR_AMD64_XASMGEN_OPERAND_REGISTER:
-            if (payload->syntax == KEFIR_AMD64_XASMGEN_SYNTAX_INTEL_PREFIX) {
-                fprintf(payload->output, "%%%s", register_literals[op->reg]);
-            } else if (payload->syntax == KEFIR_AMD64_XASMGEN_SYNTAX_INTEL_NOPREFIX) {
-                fprintf(payload->output, "%s", register_literals[op->reg]);
+            if (prefix) {
+                print(printarg, "%%%s", register_literals[op->reg]);
+            } else {
+                print(printarg, "%s", register_literals[op->reg]);
             }
             break;
 
         case KEFIR_AMD64_XASMGEN_OPERAND_LABEL:
-            REQUIRE_OK(amd64_symbol_arg(payload->syntax, payload->output, op->label));
+            REQUIRE_OK(amd64_symbol_arg(print, printarg, op->label));
             break;
 
         case KEFIR_AMD64_XASMGEN_OPERAND_INDIRECTION:
-            fprintf(payload->output, "[");
-            REQUIRE_OK(amd64_format_operand_intel(xasmgen, op->indirection.base));
+            print(printarg, "[");
+            REQUIRE_OK(amd64_format_operand_intel(print, printarg, prefix, op->indirection.base));
             if (op->indirection.displacement > 0) {
-                fprintf(payload->output, " + " KEFIR_INT64_FMT, op->indirection.displacement);
+                print(printarg, " + " KEFIR_INT64_FMT, op->indirection.displacement);
             } else if (op->indirection.displacement < 0) {
-                fprintf(payload->output, " - " KEFIR_INT64_FMT, -op->indirection.displacement);
+                print(printarg, " - " KEFIR_INT64_FMT, -op->indirection.displacement);
             }
-            fprintf(payload->output, "]");
+            print(printarg, "]");
             break;
 
         case KEFIR_AMD64_XASMGEN_OPERAND_OFFSET:
-            REQUIRE_OK(amd64_format_operand_intel(xasmgen, op->offset.base));
+            REQUIRE_OK(amd64_format_operand_intel(print, printarg, prefix, op->offset.base));
             if (op->offset.offset > 0) {
-                fprintf(payload->output, " + " KEFIR_INT64_FMT, op->offset.offset);
+                print(printarg, " + " KEFIR_INT64_FMT, op->offset.offset);
             } else if (op->offset.offset < 0) {
-                fprintf(payload->output, " - " KEFIR_INT64_FMT, -op->offset.offset);
+                print(printarg, " - " KEFIR_INT64_FMT, -op->offset.offset);
             }
             break;
 
         case KEFIR_AMD64_XASMGEN_OPERAND_SEGMENT:
             switch (op->segment.segment) {
                 case KEFIR_AMD64_XASMGEN_SEGMENT_FS:
-                    if (payload->syntax == KEFIR_AMD64_XASMGEN_SYNTAX_INTEL_PREFIX) {
-                        fprintf(payload->output, "%%fs:");
-                    } else if (payload->syntax == KEFIR_AMD64_XASMGEN_SYNTAX_INTEL_NOPREFIX) {
-                        fprintf(payload->output, "fs:");
+                    if (prefix) {
+                        print(printarg, "%%fs:");
+                    } else {
+                        print(printarg, "fs:");
                     }
                     break;
             }
-            REQUIRE_OK(amd64_format_operand_intel(xasmgen, op->segment.base));
+            REQUIRE_OK(amd64_format_operand_intel(print, printarg, prefix, op->segment.base));
             break;
 
         case KEFIR_AMD64_XASMGEN_OPERAND_POINTER:
-            REQUIRE_OK(format_pointer(payload->output, op->pointer.type));
-            REQUIRE_OK(amd64_format_operand_intel(xasmgen, op->pointer.base));
+            REQUIRE_OK(format_pointer(print, printarg, op->pointer.type));
+            REQUIRE_OK(amd64_format_operand_intel(print, printarg, prefix, op->pointer.base));
             break;
 
         case KEFIR_AMD64_XASMGEN_OPERAND_RIP_INDIRECTION:
-            REQUIRE_OK(amd64_symbol_arg(payload->syntax, payload->output, op->label));
-            if (payload->syntax == KEFIR_AMD64_XASMGEN_SYNTAX_INTEL_PREFIX) {
-                fprintf(payload->output, "[%%rip]");
-            } else if (payload->syntax == KEFIR_AMD64_XASMGEN_SYNTAX_INTEL_NOPREFIX) {
-                fprintf(payload->output, "[rip]");
+            REQUIRE_OK(amd64_symbol_arg(print, printarg, op->label));
+            if (prefix) {
+                print(printarg, "[%%rip]");
+            } else {
+                print(printarg, "[rip]");
             }
             break;
 
         case KEFIR_AMD64_XASMGEN_OPERAND_STRING_LITERAL:
-            REQUIRE_OK(amd64_string_literal(payload->output, op->string_literal.content, op->string_literal.length));
+            REQUIRE_OK(amd64_string_literal(print, printarg, op->string_literal.content, op->string_literal.length));
             break;
     }
     return KEFIR_OK;
 }
 
-static kefir_result_t amd64_format_unprefixed_operand_att(struct kefir_amd64_xasmgen *,
+static kefir_result_t amd64_format_unprefixed_operand_att(void (*)(void *, const char *, ...), void *,
                                                           const struct kefir_amd64_xasmgen_operand *);
 
-static kefir_result_t amd64_format_operand_att(struct kefir_amd64_xasmgen *xasmgen,
+static kefir_result_t amd64_format_operand_att(void (*print)(void *, const char *, ...), void *printarg,
                                                const struct kefir_amd64_xasmgen_operand *op) {
-    UNUSED(xasmgen);
-    ASSIGN_DECL_CAST(struct xasmgen_payload *, payload, xasmgen->payload);
-    REQUIRE(payload->syntax == KEFIR_AMD64_XASMGEN_SYNTAX_ATT,
-            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected att syntax assembly generator"));
     switch (op->klass) {
         case KEFIR_AMD64_XASMGEN_OPERAND_IMMEDIATE:
-            fprintf(payload->output, "$" KEFIR_INT64_FMT, op->imm);
+            print(printarg, "$" KEFIR_INT64_FMT, op->imm);
             break;
 
         case KEFIR_AMD64_XASMGEN_OPERAND_IMMEDIATE_UNSIGNED:
-            fprintf(payload->output, "$" KEFIR_UINT64_FMT, op->immu);
+            printf(printarg, "$" KEFIR_UINT64_FMT, op->immu);
             break;
 
         case KEFIR_AMD64_XASMGEN_OPERAND_REGISTER:
-            fprintf(payload->output, "%%%s", register_literals[op->reg]);
+            printf(printarg, "%%%s", register_literals[op->reg]);
             break;
 
         case KEFIR_AMD64_XASMGEN_OPERAND_LABEL:
-            REQUIRE_OK(amd64_symbol_arg(payload->syntax, payload->output, op->label));
+            REQUIRE_OK(amd64_symbol_arg(print, printarg, op->label));
             break;
 
         case KEFIR_AMD64_XASMGEN_OPERAND_INDIRECTION:
             if (op->indirection.displacement != 0) {
-                fprintf(payload->output, KEFIR_INT64_FMT, op->indirection.displacement);
+                print(printarg, KEFIR_INT64_FMT, op->indirection.displacement);
             }
-            fprintf(payload->output, "(");
-            REQUIRE_OK(amd64_format_operand_att(xasmgen, op->indirection.base));
-            fprintf(payload->output, ")");
+            print(printarg, "(");
+            REQUIRE_OK(amd64_format_operand_att(print, printarg, op->indirection.base));
+            print(printarg, ")");
             break;
 
         case KEFIR_AMD64_XASMGEN_OPERAND_OFFSET:
-            REQUIRE_OK(amd64_format_operand_att(xasmgen, op->offset.base));
+            REQUIRE_OK(amd64_format_operand_att(print, printarg, op->offset.base));
             if (op->offset.offset > 0) {
-                fprintf(payload->output, " + " KEFIR_INT64_FMT, op->offset.offset);
+                print(printarg, " + " KEFIR_INT64_FMT, op->offset.offset);
             } else if (op->offset.offset < 0) {
-                fprintf(payload->output, " - " KEFIR_INT64_FMT, -op->offset.offset);
+                print(printarg, " - " KEFIR_INT64_FMT, -op->offset.offset);
             }
             break;
 
         case KEFIR_AMD64_XASMGEN_OPERAND_SEGMENT:
             switch (op->segment.segment) {
                 case KEFIR_AMD64_XASMGEN_SEGMENT_FS:
-                    fprintf(payload->output, "%%fs:");
+                    print(printarg, "%%fs:");
                     break;
             }
-            REQUIRE_OK(amd64_format_unprefixed_operand_att(xasmgen, op->segment.base));
+            REQUIRE_OK(amd64_format_unprefixed_operand_att(print, printarg, op->segment.base));
             break;
 
         case KEFIR_AMD64_XASMGEN_OPERAND_POINTER:
-            REQUIRE_OK(amd64_format_operand_att(xasmgen, op->pointer.base));
+            REQUIRE_OK(amd64_format_operand_att(print, printarg, op->pointer.base));
             break;
 
         case KEFIR_AMD64_XASMGEN_OPERAND_RIP_INDIRECTION:
-            REQUIRE_OK(amd64_symbol_arg(payload->syntax, payload->output, op->label));
-            fprintf(payload->output, "(%%rip)");
+            REQUIRE_OK(amd64_symbol_arg(print, printarg, op->label));
+            print(printarg, "(%%rip)");
             break;
 
         case KEFIR_AMD64_XASMGEN_OPERAND_STRING_LITERAL:
-            REQUIRE_OK(amd64_string_literal(payload->output, op->string_literal.content, op->string_literal.length));
+            REQUIRE_OK(amd64_string_literal(print, printarg, op->string_literal.content, op->string_literal.length));
             break;
     }
     return KEFIR_OK;
 }
 
-static kefir_result_t amd64_format_unprefixed_operand_att(struct kefir_amd64_xasmgen *xasmgen,
+static kefir_result_t amd64_format_unprefixed_operand_att(void (*print)(void *, const char *, ...), void *printarg,
                                                           const struct kefir_amd64_xasmgen_operand *op) {
-    UNUSED(xasmgen);
-    ASSIGN_DECL_CAST(struct xasmgen_payload *, payload, xasmgen->payload);
-    REQUIRE(payload->syntax == KEFIR_AMD64_XASMGEN_SYNTAX_ATT,
-            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected att syntax assembly generator"));
     switch (op->klass) {
         case KEFIR_AMD64_XASMGEN_OPERAND_IMMEDIATE:
-            fprintf(payload->output, KEFIR_INT64_FMT, op->imm);
+            print(printarg, KEFIR_INT64_FMT, op->imm);
             break;
 
         case KEFIR_AMD64_XASMGEN_OPERAND_IMMEDIATE_UNSIGNED:
-            fprintf(payload->output, KEFIR_UINT64_FMT, op->immu);
+            print(printarg, KEFIR_UINT64_FMT, op->immu);
             break;
 
         case KEFIR_AMD64_XASMGEN_OPERAND_REGISTER:
-            fprintf(payload->output, "%s", register_literals[op->reg]);
+            print(printarg, "%s", register_literals[op->reg]);
             break;
 
         default:
-            REQUIRE_OK(amd64_format_operand_att(xasmgen, op));
+            REQUIRE_OK(amd64_format_operand_att(print, printarg, op));
             break;
     }
     return KEFIR_OK;
+}
+
+static void print_fprintf(void *arg, const char *fmt, ...) {
+    va_list args;
+    va_start(args, fmt);
+    vfprintf((FILE *) arg, fmt, args);
+    va_end(args);
 }
 
 static kefir_result_t amd64_data(struct kefir_amd64_xasmgen *xasmgen, kefir_amd64_xasmgen_data_type_t type,
@@ -1054,9 +1049,10 @@ static kefir_result_t amd64_data(struct kefir_amd64_xasmgen *xasmgen, kefir_amd6
     while (length--) {
         const struct kefir_amd64_xasmgen_operand *op = va_arg(args, const struct kefir_amd64_xasmgen_operand *);
         if (payload->syntax != KEFIR_AMD64_XASMGEN_SYNTAX_ATT) {
-            REQUIRE_OK(amd64_format_operand_intel(xasmgen, op));
+            REQUIRE_OK(amd64_format_operand_intel(print_fprintf, payload->output,
+                                                  payload->syntax == KEFIR_AMD64_XASMGEN_SYNTAX_INTEL_PREFIX, op));
         } else {
-            REQUIRE_OK(amd64_format_unprefixed_operand_att(xasmgen, op));
+            REQUIRE_OK(amd64_format_unprefixed_operand_att(print_fprintf, payload->output, op));
         }
         if (length > 0) {
             fprintf(payload->output, ", ");
@@ -1129,7 +1125,7 @@ static kefir_result_t amd64_bindata(struct kefir_amd64_xasmgen *xasmgen, kefir_a
             break;
 
         case KEFIR_AMD64_XASMGEN_DATA_ASCII:
-            REQUIRE_OK(amd64_string_literal(payload->output, ptr, length));
+            REQUIRE_OK(amd64_string_literal(print_fprintf, payload->output, ptr, length));
             break;
     }
     return KEFIR_OK;
@@ -1144,16 +1140,46 @@ static kefir_result_t amd64_inline_assembly(struct kefir_amd64_xasmgen *xasmgen,
     return KEFIR_OK;
 }
 
-static kefir_result_t amd64_symbolic_register_name(struct kefir_amd64_xasmgen *xasmgen,
-                                                   kefir_amd64_xasmgen_register_t reg, char *buf, kefir_size_t buflen) {
+struct op_to_str {
+    char *buffer;
+    kefir_size_t length;
+};
+
+static void print_op_to_str(void *arg, const char *fmt, ...) {
+    ASSIGN_DECL_CAST(struct op_to_str *, op_to_str, arg);
+    va_list args;
+    va_start(args, fmt);
+    int len = vsnprintf(op_to_str->buffer, op_to_str->length, fmt, args);
+    op_to_str->length -= len;
+    va_end(args);
+}
+
+static kefir_result_t amd64_format_operand(struct kefir_amd64_xasmgen *xasmgen,
+                                           const struct kefir_amd64_xasmgen_operand *op, char *buf,
+                                           kefir_size_t buflen) {
     REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 assembly generator"));
     REQUIRE(buflen > 0, KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Expected non-zero buffer length"));
     ASSIGN_DECL_CAST(struct xasmgen_payload *, payload, xasmgen->payload);
 
-    if (payload->syntax == KEFIR_AMD64_XASMGEN_SYNTAX_INTEL_NOPREFIX) {
-        snprintf(buf, buflen - 1, "%s", kefir_amd64_xasmgen_register_symbolic_name(reg));
+    struct op_to_str op_to_str_buf = {.buffer = buf, .length = buflen};
+    if (payload->syntax == KEFIR_AMD64_XASMGEN_SYNTAX_ATT) {
+        REQUIRE_OK(amd64_format_operand_att(print_op_to_str, &op_to_str_buf, op));
     } else {
-        snprintf(buf, buflen - 1, "%%%s", kefir_amd64_xasmgen_register_symbolic_name(reg));
+        REQUIRE_OK(amd64_format_operand_intel(print_op_to_str, &op_to_str_buf,
+                                              payload->syntax == KEFIR_AMD64_XASMGEN_SYNTAX_INTEL_PREFIX, op));
+    }
+    return KEFIR_OK;
+}
+
+static kefir_result_t amd64_format_op(struct kefir_amd64_xasmgen *xasmgen,
+                                      const struct kefir_amd64_xasmgen_operand *op) {
+    ASSIGN_DECL_CAST(struct xasmgen_payload *, payload, xasmgen->payload);
+
+    if (payload->syntax == KEFIR_AMD64_XASMGEN_SYNTAX_ATT) {
+        REQUIRE_OK(amd64_format_operand_att(print_fprintf, payload->output, op));
+    } else {
+        REQUIRE_OK(amd64_format_operand_intel(print_fprintf, payload->output,
+                                              payload->syntax == KEFIR_AMD64_XASMGEN_SYNTAX_INTEL_PREFIX, op));
     }
     return KEFIR_OK;
 }
@@ -1176,7 +1202,7 @@ static kefir_result_t amd64_symbolic_register_name(struct kefir_amd64_xasmgen *x
         ASSIGN_DECL_CAST(struct xasmgen_payload *, payload, xasmgen->payload);                                         \
         REQUIRE_OK(amd64_ident(xasmgen));                                                                              \
         fprintf(payload->output, #_mnemonic " ");                                                                      \
-        REQUIRE_OK(amd64_format_operand_intel(xasmgen, op1));                                                          \
+        REQUIRE_OK(amd64_format_op(xasmgen, op1));                                                                     \
         fprintf(payload->output, "\n");                                                                                \
         return KEFIR_OK;                                                                                               \
     }
@@ -1193,9 +1219,9 @@ static kefir_result_t amd64_symbolic_register_name(struct kefir_amd64_xasmgen *x
         ASSIGN_DECL_CAST(struct xasmgen_payload *, payload, xasmgen->payload);                                         \
         REQUIRE_OK(amd64_ident(xasmgen));                                                                              \
         fprintf(payload->output, #_mnemonic " ");                                                                      \
-        REQUIRE_OK(amd64_format_operand_intel(xasmgen, op1));                                                          \
+        REQUIRE_OK(amd64_format_op(xasmgen, op1));                                                                     \
         fprintf(payload->output, ", ");                                                                                \
-        REQUIRE_OK(amd64_format_operand_intel(xasmgen, op2));                                                          \
+        REQUIRE_OK(amd64_format_op(xasmgen, op2));                                                                     \
         fprintf(payload->output, "\n");                                                                                \
         return KEFIR_OK;                                                                                               \
     }
@@ -1214,11 +1240,11 @@ static kefir_result_t amd64_symbolic_register_name(struct kefir_amd64_xasmgen *x
         ASSIGN_DECL_CAST(struct xasmgen_payload *, payload, xasmgen->payload);                                         \
         REQUIRE_OK(amd64_ident(xasmgen));                                                                              \
         fprintf(payload->output, #_mnemonic " ");                                                                      \
-        REQUIRE_OK(amd64_format_operand_intel(xasmgen, op1));                                                          \
+        REQUIRE_OK(amd64_format_op(xasmgen, op1));                                                                     \
         fprintf(payload->output, ", ");                                                                                \
-        REQUIRE_OK(amd64_format_operand_intel(xasmgen, op2));                                                          \
+        REQUIRE_OK(amd64_format_op(xasmgen, op2));                                                                     \
         fprintf(payload->output, ", ");                                                                                \
-        REQUIRE_OK(amd64_format_operand_intel(xasmgen, op3));                                                          \
+        REQUIRE_OK(amd64_format_op(xasmgen, op3));                                                                     \
         fprintf(payload->output, "\n");                                                                                \
         return KEFIR_OK;                                                                                               \
     }
@@ -1306,7 +1332,7 @@ static kefir_result_t format_att_mnemonic_suffix(struct kefir_amd64_xasmgen *xas
         REQUIRE_OK(amd64_ident(xasmgen));                                                                              \
         fprintf(payload->output, #_mnemonic);                                                                          \
         REQUIRE_OK(format_att_mnemonic_suffix(xasmgen, op1, NULL, NULL));                                              \
-        REQUIRE_OK(amd64_format_operand_att(xasmgen, op1));                                                            \
+        REQUIRE_OK(amd64_format_op(xasmgen, op1));                                                                     \
         fprintf(payload->output, "\n");                                                                                \
         return KEFIR_OK;                                                                                               \
     }
@@ -1324,7 +1350,7 @@ static kefir_result_t format_att_mnemonic_suffix(struct kefir_amd64_xasmgen *xas
         if (op1->klass == KEFIR_AMD64_XASMGEN_OPERAND_INDIRECTION) {                                                   \
             fprintf(payload->output, "*");                                                                             \
         }                                                                                                              \
-        REQUIRE_OK(amd64_format_operand_att(xasmgen, op1));                                                            \
+        REQUIRE_OK(amd64_format_op(xasmgen, op1));                                                                     \
         fprintf(payload->output, "\n");                                                                                \
         return KEFIR_OK;                                                                                               \
     }
@@ -1342,9 +1368,9 @@ static kefir_result_t format_att_mnemonic_suffix(struct kefir_amd64_xasmgen *xas
         REQUIRE_OK(amd64_ident(xasmgen));                                                                              \
         fprintf(payload->output, #_mnemonic);                                                                          \
         REQUIRE_OK(format_att_mnemonic_suffix(xasmgen, op1, op2, NULL));                                               \
-        REQUIRE_OK(amd64_format_operand_att(xasmgen, op2));                                                            \
+        REQUIRE_OK(amd64_format_op(xasmgen, op2));                                                                     \
         fprintf(payload->output, ", ");                                                                                \
-        REQUIRE_OK(amd64_format_operand_att(xasmgen, op1));                                                            \
+        REQUIRE_OK(amd64_format_op(xasmgen, op1));                                                                     \
         fprintf(payload->output, "\n");                                                                                \
         return KEFIR_OK;                                                                                               \
     }
@@ -1364,11 +1390,11 @@ static kefir_result_t format_att_mnemonic_suffix(struct kefir_amd64_xasmgen *xas
         REQUIRE_OK(amd64_ident(xasmgen));                                                                              \
         fprintf(payload->output, #_mnemonic);                                                                          \
         REQUIRE_OK(format_att_mnemonic_suffix(xasmgen, op1, op2, op3));                                                \
-        REQUIRE_OK(amd64_format_operand_att(xasmgen, op3));                                                            \
+        REQUIRE_OK(amd64_format_op(xasmgen, op3));                                                                     \
         fprintf(payload->output, ", ");                                                                                \
-        REQUIRE_OK(amd64_format_operand_att(xasmgen, op2));                                                            \
+        REQUIRE_OK(amd64_format_op(xasmgen, op2));                                                                     \
         fprintf(payload->output, ", ");                                                                                \
-        REQUIRE_OK(amd64_format_operand_att(xasmgen, op1));                                                            \
+        REQUIRE_OK(amd64_format_op(xasmgen, op1));                                                                     \
         fprintf(payload->output, "\n");                                                                                \
         return KEFIR_OK;                                                                                               \
     }
@@ -1448,7 +1474,7 @@ kefir_result_t kefir_amd64_xasmgen_init(struct kefir_mem *mem, struct kefir_amd6
     xasmgen->zerodata = amd64_zerodata;
     xasmgen->bindata = amd64_bindata;
     xasmgen->inline_assembly = amd64_inline_assembly;
-    xasmgen->symbolic_register_name = amd64_symbolic_register_name;
+    xasmgen->format_operand = amd64_format_operand;
 
     if (syntax != KEFIR_AMD64_XASMGEN_SYNTAX_ATT) {
         xasmgen->instr.add = amd64_instr_intel_add;

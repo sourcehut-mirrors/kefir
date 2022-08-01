@@ -56,8 +56,12 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     kefir_id_t id1, id2;
     struct kefir_ir_inline_assembly *inline_asm1 =
         kefir_ir_module_new_inline_assembly(mem, &module, "add %1, %2", &id1);
-    struct kefir_ir_inline_assembly *inline_asm2 =
-        kefir_ir_module_new_inline_assembly(mem, &module, "addsd %1, %2", &id2);
+    struct kefir_ir_inline_assembly *inline_asm2 = kefir_ir_module_new_inline_assembly(mem, &module,
+                                                                                       "movd %xmm0, %1\n"
+                                                                                       "movd %xmm1, %2\n"
+                                                                                       "addsd %xmm0, %xmm1\n"
+                                                                                       "movd %1, %xmm0",
+                                                                                       &id2);
 
     REQUIRE(inline_asm1 != NULL, KEFIR_INTERNAL_ERROR);
     REQUIRE(inline_asm2 != NULL, KEFIR_INTERNAL_ERROR);
@@ -71,6 +75,8 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
                                                       KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ_WRITE, type2, 0, 1, 0));
     REQUIRE_OK(kefir_ir_inline_assembly_add_parameter(mem, &module.symbols, inline_asm2, "2",
                                                       KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ, type2, 0, 0, 0));
+    REQUIRE_OK(kefir_ir_inline_assembly_add_clobber(mem, &module.symbols, inline_asm2, "xmm0"));
+    REQUIRE_OK(kefir_ir_inline_assembly_add_clobber(mem, &module.symbols, inline_asm2, "xmm1"));
 
     REQUIRE_OK(kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IROPCODE_INLINEASM, id1));
     REQUIRE_OK(kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IROPCODE_INLINEASM, id2));

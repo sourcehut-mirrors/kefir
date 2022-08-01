@@ -54,10 +54,12 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     kefir_id_t id1;
     struct kefir_ir_inline_assembly *inline_asm1 = kefir_ir_module_new_inline_assembly(mem, &module,
-                                                                                       "mulsd %1, %1\n"
-                                                                                       "mulsd %2, %2\n"
-                                                                                       "movsd %3, %1\n"
-                                                                                       "addsd %3, %2",
+                                                                                       "movd %xmm0, %1\n"
+                                                                                       "movd %xmm1, %2\n"
+                                                                                       "mulsd %xmm0, %xmm0\n"
+                                                                                       "mulsd %xmm1, %xmm1\n"
+                                                                                       "addsd %xmm0, %xmm1\n"
+                                                                                       "movd %3, %xmm0",
                                                                                        &id1);
 
     REQUIRE(inline_asm1 != NULL, KEFIR_INTERNAL_ERROR);
@@ -68,6 +70,8 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
                                                       KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ, decl_params, 1, 1, 0));
     REQUIRE_OK(kefir_ir_inline_assembly_add_parameter(mem, &module.symbols, inline_asm1, "3",
                                                       KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_WRITE, decl_result, 0, 0, 0));
+    REQUIRE_OK(kefir_ir_inline_assembly_add_clobber(mem, &module.symbols, inline_asm1, "xmm0"));
+    REQUIRE_OK(kefir_ir_inline_assembly_add_clobber(mem, &module.symbols, inline_asm1, "xmm1"));
 
     REQUIRE_OK(kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IROPCODE_INLINEASM, id1));
 #endif
