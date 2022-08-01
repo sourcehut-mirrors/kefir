@@ -64,9 +64,11 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE(inline_asm1 != NULL, KEFIR_INTERNAL_ERROR);
 
     REQUIRE_OK(kefir_ir_inline_assembly_add_parameter(
-        mem, &module.symbols, inline_asm1, "1", KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ_WRITE, decl_params, 0, 1, 0));
-    REQUIRE_OK(kefir_ir_inline_assembly_add_parameter(mem, &module.symbols, inline_asm1, "2",
-                                                      KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_WRITE, decl_result, 0, 0, 1));
+        mem, &module.symbols, inline_asm1, "1", KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ_WRITE,
+        KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_REGISTER, decl_params, 0, 1, 0));
+    REQUIRE_OK(kefir_ir_inline_assembly_add_parameter(
+        mem, &module.symbols, inline_asm1, "2", KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_WRITE,
+        KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_REGISTER, decl_result, 0, 0, 1));
     REQUIRE_OK(kefir_ir_inline_assembly_add_clobber(mem, &module.symbols, inline_asm1, "ax"));
 
     REQUIRE_OK(kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IROPCODE_INLINEASM, id1));

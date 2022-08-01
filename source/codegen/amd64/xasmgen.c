@@ -1151,6 +1151,7 @@ static void print_op_to_str(void *arg, const char *fmt, ...) {
     va_start(args, fmt);
     int len = vsnprintf(op_to_str->buffer, op_to_str->length, fmt, args);
     op_to_str->length -= len;
+    op_to_str->buffer += len;
     va_end(args);
 }
 

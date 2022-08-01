@@ -37,44 +37,42 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 #ifdef __x86_64__
 
     kefir_id_t func_params, func_returns;
-    struct kefir_ir_type *decl_params = kefir_ir_module_new_type(mem, &module, 1, &func_params),
-                         *decl_result = kefir_ir_module_new_type(mem, &module, 2, &func_returns);
+    struct kefir_ir_type *decl_params = kefir_ir_module_new_type(mem, &module, 4, &func_params),
+                         *decl_result = kefir_ir_module_new_type(mem, &module, 4, &func_returns);
     REQUIRE(decl_params != NULL, KEFIR_INTERNAL_ERROR);
     REQUIRE(decl_result != NULL, KEFIR_INTERNAL_ERROR);
     struct kefir_ir_function_decl *decl =
-        kefir_ir_module_new_function_declaration(mem, &module, "custom_hypot", func_params, false, func_returns);
+        kefir_ir_module_new_function_declaration(mem, &module, "process", func_params, false, func_returns);
     REQUIRE(decl != NULL, KEFIR_INTERNAL_ERROR);
     struct kefir_ir_function *func = kefir_ir_module_new_function(mem, &module, decl, KEFIR_ID_NONE, 1024);
     REQUIRE(func != NULL, KEFIR_INTERNAL_ERROR);
 
-    REQUIRE_OK(kefir_irbuilder_type_append_v(mem, decl_params, KEFIR_IR_TYPE_FLOAT64, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append_v(mem, decl_params, KEFIR_IR_TYPE_FLOAT64, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append_v(mem, decl_result, KEFIR_IR_TYPE_FLOAT64, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append_v(mem, decl_params, KEFIR_IR_TYPE_STRUCT, 0, 2));
+    REQUIRE_OK(kefir_irbuilder_type_append_v(mem, decl_params, KEFIR_IR_TYPE_LONG, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append_v(mem, decl_params, KEFIR_IR_TYPE_LONG, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append_v(mem, decl_params, KEFIR_IR_TYPE_LONG, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append_v(mem, decl_result, KEFIR_IR_TYPE_STRUCT, 0, 2));
+    REQUIRE_OK(kefir_irbuilder_type_append_v(mem, decl_result, KEFIR_IR_TYPE_LONG, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append_v(mem, decl_result, KEFIR_IR_TYPE_LONG, 0, 0));
     REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, func->name, KEFIR_IR_IDENTIFIER_GLOBAL));
 
     kefir_id_t id1;
     struct kefir_ir_inline_assembly *inline_asm1 = kefir_ir_module_new_inline_assembly(mem, &module,
-                                                                                       "movd %xmm0, %1\n"
-                                                                                       "movd %xmm1, %2\n"
-                                                                                       "mulsd %xmm0, %xmm0\n"
-                                                                                       "mulsd %xmm1, %xmm1\n"
-                                                                                       "addsd %xmm0, %xmm1\n"
-                                                                                       "movd %3, %xmm0",
+                                                                                       "lea %rax, %1\n"
+                                                                                       "add [%rax], %2\n"
+                                                                                       "add %2, 1\n"
+                                                                                       "add [%rax + 8], %2",
                                                                                        &id1);
 
     REQUIRE(inline_asm1 != NULL, KEFIR_INTERNAL_ERROR);
 
     REQUIRE_OK(kefir_ir_inline_assembly_add_parameter(
-        mem, &module.symbols, inline_asm1, "1", KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ,
-        KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_REGISTER, decl_params, 0, 0, 0));
+        mem, &module.symbols, inline_asm1, "1", KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ_WRITE,
+        KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_REGISTER_MEMORY, decl_params, 0, 1, 0));
     REQUIRE_OK(kefir_ir_inline_assembly_add_parameter(
         mem, &module.symbols, inline_asm1, "2", KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ,
-        KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_REGISTER, decl_params, 1, 1, 0));
-    REQUIRE_OK(kefir_ir_inline_assembly_add_parameter(
-        mem, &module.symbols, inline_asm1, "3", KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_WRITE,
-        KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_REGISTER, decl_result, 0, 0, 0));
-    REQUIRE_OK(kefir_ir_inline_assembly_add_clobber(mem, &module.symbols, inline_asm1, "xmm0"));
-    REQUIRE_OK(kefir_ir_inline_assembly_add_clobber(mem, &module.symbols, inline_asm1, "xmm1"));
+        KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_REGISTER, decl_params, 3, 0, 0));
+    REQUIRE_OK(kefir_ir_inline_assembly_add_clobber(mem, &module.symbols, inline_asm1, "rax"));
 
     REQUIRE_OK(kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IROPCODE_INLINEASM, id1));
 #endif
