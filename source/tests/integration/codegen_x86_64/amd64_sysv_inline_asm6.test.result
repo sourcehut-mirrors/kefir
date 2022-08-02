@@ -132,15 +132,16 @@ call __kefirrt_preserve_state
 sub %rsp, 16
 call __kefirrt_generic_prologue
 # Load parameters of func1
+push %rdi
 # End prologue of func1
 lea %rbx, [__func1_body]
 jmp [%rbx]
 __func1_body:
 .quad __kefirrt_inline_assembly0, 0
-.quad __kefirrt_inline_assembly2, 0
 .quad __func1_epilogue, 0
 __func1_epilogue:
 # Begin epilogue of func1
+pop %rax
 mov %rsp, %r14
 add %rsp, 16
 jmp __kefirrt_restore_state
@@ -148,21 +149,18 @@ jmp __kefirrt_restore_state
 
 # Inline assembly fragment #0
 __kefirrt_inline_assembly0:
+sub %rsp, 8
+sub %rsp, 8
+mov %rax, [%rsp + 16]
+mov [%rsp], %rax
 # Begin of fragment #0 code
-xor rax, rax
-push rax
+mov %rax, [%rsp]
+add %rax, 1
 # End of fragment #0 code
-add %rbx, 16
-jmp [%rbx]
-
-# Inline assembly fragment #2
-__kefirrt_inline_assembly2:
-# Begin of fragment #2 code
-pop rcx
-mov rax, rcx
-add rax, rax
-push rax
-# End of fragment #2 code
+mov [%rsp + 16], %rax
+mov %rax, [%rsp]
+mov [%rsp + 8], %rax
+add %rsp, 8
 add %rbx, 16
 jmp [%rbx]
 

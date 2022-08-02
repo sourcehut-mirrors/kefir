@@ -155,11 +155,13 @@ mov %rax, [%rsp + 8]
 push %rax
 mov %rcx, [%rsp + 16]
 mov %cx, [%rcx]
+# Begin of fragment #0 code
 mov %ax, %cx
 xchg %ah, %al
 mov %cx, %ax
 add %ah, %al
 mov %dl, %ah
+# End of fragment #0 code
 and %rdx, 255
 mov [%rsp + 16], %rdx
 mov %rax, [%rsp]

@@ -161,10 +161,12 @@ mov %rax, [%rsp + 8]
 push %rax
 mov %rcx, [%rsp + 16]
 mov %rdx, [%rsp + 24]
+# Begin of fragment #0 code
 lea %rax, [%rcx]
 mov [%rax], %rdx
 add %rdx, 1
 mov [%rax + 8], %rdx
+# End of fragment #0 code
 mov [%rsp + 24], %rcx
 add %rsp, 8
 popfq
