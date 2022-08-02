@@ -169,5 +169,6 @@
     <opcode id="ldcf32"       mnemonic="ldcf32"     code="0xbd" type="none" />
     <opcode id="ldcf64"       mnemonic="ldcf64"     code="0xbe" type="none" />
 
+    <!-- Miscallenous -->
     <opcode id="inlineasm"    mnemonic="inlineasm"  code="0xc0" type="u64" />
 </opcodes>

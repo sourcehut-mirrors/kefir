@@ -156,22 +156,16 @@ jmp __kefirrt_restore_state
 
 # Inline assembly fragment #0
 __kefirrt_inline_assembly0:
+mov %rax, [%rsp]
 push %rax
-push %rcx
-push %rdx
-mov %rax, [%rsp + 24]
-push %rax
-mov %rcx, [%rsp + 32]
-mov %rdx, [%rsp + 40]
+mov %rcx, [%rsp + 8]
+mov %rdx, [%rsp + 16]
 lea %rax, [%rcx]
 mov [%rax], %rdx
 add %rdx, 1
 mov [%rax + 8], %rdx
-mov [%rsp + 40], %rcx
+mov [%rsp + 16], %rcx
 add %rsp, 8
-pop %rdx
-pop %rcx
-pop %rax
 add %rsp, 8
 add %rbx, 16
 jmp [%rbx]

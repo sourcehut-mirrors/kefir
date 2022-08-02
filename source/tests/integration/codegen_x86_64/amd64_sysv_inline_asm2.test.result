@@ -148,31 +148,17 @@ jmp __kefirrt_restore_state
 
 # Inline assembly fragment #0
 __kefirrt_inline_assembly0:
-push %rax
-sub %rsp, 16
-movdqu [%rsp], %xmm3
 xor rax, rax
 push rax
-movdqu %xmm3, [%rsp]
-add %rsp, 16
-pop %rax
 add %rbx, 16
 jmp [%rbx]
 
 # Inline assembly fragment #2
 __kefirrt_inline_assembly2:
-push %rax
-push %rcx
-sub %rsp, 16
-movdqu [%rsp], %xmm6
 pop rcx
 mov rax, rcx
 add rax, rax
 push rax
-movdqu %xmm6, [%rsp]
-add %rsp, 16
-pop %rcx
-pop %rax
 add %rbx, 16
 jmp [%rbx]
 

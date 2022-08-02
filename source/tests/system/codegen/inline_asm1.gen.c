@@ -53,7 +53,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     kefir_id_t id1, id2, id3;
     struct kefir_ir_inline_assembly *inline_asm1 = kefir_ir_module_new_inline_assembly(
-        mem, &module, "mov %rbx, [%rsp + 24]\nadd %rbx, 1\nmov [%rsp + 24], %rbx", &id1);
+        mem, &module, "mov %rbx, [%rsp + 8]\nadd %rbx, 1\nmov [%rsp + 8], %rbx", &id1);
     struct kefir_ir_inline_assembly *inline_asm2 =
         kefir_ir_module_new_inline_assembly(mem, &module, "xor %rax, %rax\npush %rax", &id2);
     struct kefir_ir_inline_assembly *inline_asm3 =

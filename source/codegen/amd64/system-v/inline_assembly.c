@@ -1,6 +1,7 @@
 #include "kefir/codegen/amd64/system-v/inline_assembly.h"
 #include "kefir/codegen/amd64/system-v/runtime.h"
 #include "kefir/codegen/amd64/system-v/abi/qwords.h"
+#include "kefir/codegen/amd64/system-v/abi.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 #include "kefir/core/string_builder.h"
@@ -39,7 +40,7 @@ struct inline_assembly_params {
     struct kefir_list register_aggregate_params;
     kefir_size_t num_of_inputs;
     kefir_size_t num_of_outputs;
-    kefir_size_t parameter_adress_index;
+    kefir_size_t parameter_data_index;
     kefir_size_t parameter_base_offset;
     kefir_size_t input_param_base_offset;
     kefir_size_t output_param_base_offset;
@@ -62,9 +63,14 @@ struct inline_assembly_param_map {
 };
 
 static kefir_bool_t inline_assembly_is_register_preserved(kefir_amd64_xasmgen_register_t reg) {
-    UNUSED(reg);
-    // TODO Implement specific preserved register list
-    return true;
+    switch (reg) {
+        case KEFIR_AMD64_SYSV_ABI_PROGRAM_REG:
+        case KEFIR_AMD64_SYSV_ABI_STACK_BASE_REG:
+            return true;
+
+        default:
+            return false;
+    }
 }
 
 static kefir_result_t mark_clobbers(struct kefir_mem *mem, const struct kefir_ir_inline_assembly *inline_asm,
@@ -145,6 +151,101 @@ static kefir_result_t insert_param_map(struct kefir_mem *mem, struct inline_asse
     return KEFIR_OK;
 }
 
+static kefir_result_t process_parameter_type(struct kefir_mem *mem,
+                                             const struct kefir_ir_inline_assembly_parameter *asm_param,
+                                             kefir_bool_t *aggregate_value, kefir_size_t *parameter_size) {
+    const struct kefir_ir_typeentry *param_type = kefir_ir_type_at(asm_param->type.type, asm_param->type.index);
+    REQUIRE(param_type != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to obtain IR inline assembly parameter type"));
+
+    struct kefir_vector layouts;
+    REQUIRE_OK(kefir_amd64_sysv_type_layout(asm_param->type.type, mem, &layouts));
+    ASSIGN_DECL_CAST(struct kefir_amd64_sysv_data_layout *, layout, kefir_vector_at(&layouts, asm_param->type.index));
+    REQUIRE_ELSE(layout != NULL, {
+        kefir_vector_free(mem, &layouts);
+        return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to calculate IR type layout");
+    });
+    *parameter_size = layout->size;
+    REQUIRE_OK(kefir_vector_free(mem, &layouts));
+
+    switch (param_type->typecode) {
+        case KEFIR_IR_TYPE_BOOL:
+        case KEFIR_IR_TYPE_CHAR:
+        case KEFIR_IR_TYPE_INT8:
+        case KEFIR_IR_TYPE_SHORT:
+        case KEFIR_IR_TYPE_INT16:
+        case KEFIR_IR_TYPE_INT:
+        case KEFIR_IR_TYPE_INT32:
+        case KEFIR_IR_TYPE_FLOAT32:
+        case KEFIR_IR_TYPE_INT64:
+        case KEFIR_IR_TYPE_LONG:
+        case KEFIR_IR_TYPE_WORD:
+        case KEFIR_IR_TYPE_FLOAT64:
+            *aggregate_value = false;
+            break;
+
+        case KEFIR_IR_TYPE_LONG_DOUBLE:
+            return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED,
+                                   "Long doubles as IR inline assembly parameters are not supported yet");
+
+        case KEFIR_IR_TYPE_STRUCT:
+        case KEFIR_IR_TYPE_ARRAY:
+        case KEFIR_IR_TYPE_UNION:
+        case KEFIR_IR_TYPE_MEMORY:
+            *aggregate_value = true;
+            break;
+
+        case KEFIR_IR_TYPE_PAD:
+        case KEFIR_IR_TYPE_BITS:
+        case KEFIR_IR_TYPE_BUILTIN:
+        case KEFIR_IR_TYPE_COUNT:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected IR inline assembly parameter type");
+    }
+
+    return KEFIR_OK;
+}
+
+static kefir_result_t map_parameter_to_register(struct kefir_mem *mem, struct inline_assembly_params *params,
+                                                const struct kefir_ir_inline_assembly_parameter *asm_param,
+                                                struct inline_assembly_param_map **param_map,
+                                                kefir_bool_t aggregate_value) {
+    kefir_amd64_xasmgen_register_t reg;
+    REQUIRE(kefir_list_length(&params->available_int_regs) > 0,
+            KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unable to satisfy IR inline assembly constraints"));
+    reg = (kefir_amd64_xasmgen_register_t) kefir_list_head(&params->available_int_regs)->value;
+    REQUIRE_OK(kefir_list_pop(mem, &params->available_int_regs, kefir_list_head(&params->available_int_regs)));
+    REQUIRE_OK(insert_param_map(mem, params, asm_param->template_parameter, INLINE_ASSEMBLY_PARAM_REGISTER_DIRECT, reg,
+                                0, param_map));
+    REQUIRE_OK(kefir_hashtree_insert(mem, &params->dirty_regs, (kefir_hashtree_key_t) reg, (kefir_hashtree_value_t) 0));
+    if (aggregate_value) {
+        REQUIRE_OK(kefir_list_insert_after(mem, &params->register_aggregate_params,
+                                           kefir_list_tail(&params->register_aggregate_params), (void *) asm_param));
+    }
+
+    return KEFIR_OK;
+}
+
+static kefir_result_t map_parameter_to_memory(struct kefir_mem *mem, struct inline_assembly_params *params,
+                                              const struct kefir_ir_inline_assembly_parameter *asm_param,
+                                              struct inline_assembly_param_map **param_map,
+                                              kefir_bool_t aggregate_value) {
+    if (aggregate_value) {
+        kefir_amd64_xasmgen_register_t reg;
+        REQUIRE(kefir_list_length(&params->available_int_regs) > 0,
+                KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unable to satisfy IR inline assembly constraints"));
+        reg = (kefir_amd64_xasmgen_register_t) kefir_list_head(&params->available_int_regs)->value;
+        REQUIRE_OK(kefir_list_pop(mem, &params->available_int_regs, kefir_list_head(&params->available_int_regs)));
+        REQUIRE_OK(insert_param_map(mem, params, asm_param->template_parameter, INLINE_ASSEMBLY_PARAM_REGISTER_INDIRECT,
+                                    reg, 0, param_map));
+        REQUIRE_OK(
+            kefir_hashtree_insert(mem, &params->dirty_regs, (kefir_hashtree_key_t) reg, (kefir_hashtree_value_t) 0));
+    } else {
+        return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unable to satisfy IR inline assembly constraints");
+    }
+
+    return KEFIR_OK;
+}
+
 static kefir_result_t map_parameters(struct kefir_mem *mem, const struct kefir_ir_inline_assembly *inline_asm,
                                      struct inline_assembly_params *params) {
 
@@ -153,64 +254,9 @@ static kefir_result_t map_parameters(struct kefir_mem *mem, const struct kefir_i
          node = kefir_hashtree_next(&iter)) {
         ASSIGN_DECL_CAST(const struct kefir_ir_inline_assembly_parameter *, asm_param, node->value);
 
-        const struct kefir_ir_typeentry *param_type = kefir_ir_type_at(asm_param->type.type, asm_param->type.index);
-        REQUIRE(param_type != NULL,
-                KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to obtain IR inline assembly parameter type"));
-
-        kefir_bool_t aggregate_value = false;
-        kefir_size_t parameter_size = 0;
-        switch (param_type->typecode) {
-            case KEFIR_IR_TYPE_BOOL:
-            case KEFIR_IR_TYPE_CHAR:
-            case KEFIR_IR_TYPE_INT8:
-                parameter_size = 1;
-                break;
-
-            case KEFIR_IR_TYPE_SHORT:
-            case KEFIR_IR_TYPE_INT16:
-                parameter_size = 2;
-                break;
-
-            case KEFIR_IR_TYPE_INT:
-            case KEFIR_IR_TYPE_INT32:
-            case KEFIR_IR_TYPE_FLOAT32:
-                parameter_size = 4;
-                break;
-
-            case KEFIR_IR_TYPE_INT64:
-            case KEFIR_IR_TYPE_LONG:
-            case KEFIR_IR_TYPE_WORD:
-            case KEFIR_IR_TYPE_FLOAT64:
-                parameter_size = 8;
-                break;
-
-            case KEFIR_IR_TYPE_LONG_DOUBLE:
-                return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED,
-                                       "Long doubles as IR inline assembly parameters are not supported yet");
-
-            case KEFIR_IR_TYPE_STRUCT:
-            case KEFIR_IR_TYPE_ARRAY:
-            case KEFIR_IR_TYPE_UNION:
-            case KEFIR_IR_TYPE_MEMORY: {
-                struct kefir_vector layouts;
-                REQUIRE_OK(kefir_amd64_sysv_type_layout(asm_param->type.type, mem, &layouts));
-                ASSIGN_DECL_CAST(struct kefir_amd64_sysv_data_layout *, layout,
-                                 kefir_vector_at(&layouts, asm_param->type.index));
-                REQUIRE_ELSE(layout != NULL, {
-                    kefir_vector_free(mem, &layouts);
-                    return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to calculate IR type layout");
-                });
-                aggregate_value = true;
-                parameter_size = layout->size;
-                REQUIRE_OK(kefir_vector_free(mem, &layouts));
-            } break;
-
-            case KEFIR_IR_TYPE_PAD:
-            case KEFIR_IR_TYPE_BITS:
-            case KEFIR_IR_TYPE_BUILTIN:
-            case KEFIR_IR_TYPE_COUNT:
-                return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected IR inline assembly parameter type");
-        }
+        kefir_bool_t aggregate_value;
+        kefir_size_t parameter_size;
+        REQUIRE_OK(process_parameter_type(mem, asm_param, &aggregate_value, &parameter_size));
 
         switch (asm_param->klass) {
             case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ:
@@ -229,75 +275,24 @@ static kefir_result_t map_parameters(struct kefir_mem *mem, const struct kefir_i
 
         struct inline_assembly_param_map *param_map = NULL;
         switch (asm_param->constraint) {
-            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_REGISTER: {
+            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_REGISTER:
                 REQUIRE(!aggregate_value || parameter_size <= KEFIR_AMD64_SYSV_ABI_QWORD,
                         KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unable to satisfy IR inline assembly constraints"));
-                kefir_amd64_xasmgen_register_t reg;
-                REQUIRE(kefir_list_length(&params->available_int_regs) > 0,
-                        KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unable to satisfy IR inline assembly constraints"));
-                reg = (kefir_amd64_xasmgen_register_t) kefir_list_head(&params->available_int_regs)->value;
-                REQUIRE_OK(
-                    kefir_list_pop(mem, &params->available_int_regs, kefir_list_head(&params->available_int_regs)));
-                REQUIRE_OK(insert_param_map(mem, params, asm_param->template_parameter,
-                                            INLINE_ASSEMBLY_PARAM_REGISTER_DIRECT, reg, 0, &param_map));
-                REQUIRE_OK(kefir_hashtree_insert(mem, &params->dirty_regs, (kefir_hashtree_key_t) reg,
-                                                 (kefir_hashtree_value_t) 0));
-                if (aggregate_value) {
-                    REQUIRE_OK(kefir_list_insert_after(mem, &params->register_aggregate_params,
-                                                       kefir_list_tail(&params->register_aggregate_params),
-                                                       (void *) asm_param));
-                }
-            } break;
+                REQUIRE_OK(map_parameter_to_register(mem, params, asm_param, &param_map, aggregate_value));
+                break;
 
-            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_REGISTER_MEMORY: {
+            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_REGISTER_MEMORY:
                 if ((!aggregate_value || parameter_size <= KEFIR_AMD64_SYSV_ABI_QWORD) &&
                     kefir_list_length(&params->available_int_regs) > 0) {
-                    kefir_amd64_xasmgen_register_t reg =
-                        (kefir_amd64_xasmgen_register_t) kefir_list_head(&params->available_int_regs)->value;
-                    REQUIRE_OK(
-                        kefir_list_pop(mem, &params->available_int_regs, kefir_list_head(&params->available_int_regs)));
-                    REQUIRE_OK(insert_param_map(mem, params, asm_param->template_parameter,
-                                                INLINE_ASSEMBLY_PARAM_REGISTER_DIRECT, reg, 0, &param_map));
-                    REQUIRE_OK(kefir_hashtree_insert(mem, &params->dirty_regs, (kefir_hashtree_key_t) reg,
-                                                     (kefir_hashtree_value_t) 0));
-                    if (aggregate_value) {
-                        REQUIRE_OK(kefir_list_insert_after(mem, &params->register_aggregate_params,
-                                                           kefir_list_tail(&params->register_aggregate_params),
-                                                           (void *) asm_param));
-                    }
-                } else if (aggregate_value) {
-                    kefir_amd64_xasmgen_register_t reg;
-                    REQUIRE(kefir_list_length(&params->available_int_regs) > 0,
-                            KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unable to satisfy IR inline assembly constraints"));
-                    reg = (kefir_amd64_xasmgen_register_t) kefir_list_head(&params->available_int_regs)->value;
-                    REQUIRE_OK(
-                        kefir_list_pop(mem, &params->available_int_regs, kefir_list_head(&params->available_int_regs)));
-                    REQUIRE_OK(insert_param_map(mem, params, asm_param->template_parameter,
-                                                INLINE_ASSEMBLY_PARAM_REGISTER_INDIRECT, reg, 0, &param_map));
-                    REQUIRE_OK(kefir_hashtree_insert(mem, &params->dirty_regs, (kefir_hashtree_key_t) reg,
-                                                     (kefir_hashtree_value_t) 0));
+                    REQUIRE_OK(map_parameter_to_register(mem, params, asm_param, &param_map, aggregate_value));
                 } else {
-                    return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unable to satisfy IR inline assembly constraints");
+                    REQUIRE_OK(map_parameter_to_memory(mem, params, asm_param, &param_map, aggregate_value));
                 }
-            } break;
+                break;
 
-            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_MEMORY: {
-                if (aggregate_value) {
-                    kefir_amd64_xasmgen_register_t reg;
-                    REQUIRE(kefir_list_length(&params->available_int_regs) > 0,
-                            KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unable to satisfy IR inline assembly constraints"));
-                    reg = (kefir_amd64_xasmgen_register_t) kefir_list_head(&params->available_int_regs)->value;
-                    REQUIRE_OK(
-                        kefir_list_pop(mem, &params->available_int_regs, kefir_list_head(&params->available_int_regs)));
-                    REQUIRE_OK(insert_param_map(mem, params, asm_param->template_parameter,
-                                                INLINE_ASSEMBLY_PARAM_REGISTER_INDIRECT, reg, 0, &param_map));
-                    REQUIRE_OK(kefir_hashtree_insert(mem, &params->dirty_regs, (kefir_hashtree_key_t) reg,
-                                                     (kefir_hashtree_value_t) 0));
-                } else {
-                    return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED,
-                                           "In-memoty IR inline assembly parameters are not supported yet");
-                }
-            } break;
+            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_MEMORY:
+                REQUIRE_OK(map_parameter_to_memory(mem, params, asm_param, &param_map, aggregate_value));
+                break;
         }
 
         param_map->props.parameter_size = parameter_size;
@@ -353,11 +348,12 @@ static kefir_result_t preserve_dirty_regs(struct kefir_mem *mem, struct kefir_co
 }
 
 static kefir_result_t restore_dirty_regs(struct kefir_codegen_amd64 *codegen, struct inline_assembly_params *params) {
-    if (params->parameter_adress_index > 0) {
+    // Drop parameter data
+    if (params->parameter_data_index > 0) {
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_ADD(
             &codegen->xasmgen, kefir_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
             kefir_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[0],
-                                             params->parameter_adress_index * KEFIR_AMD64_SYSV_ABI_QWORD)));
+                                             params->parameter_data_index * KEFIR_AMD64_SYSV_ABI_QWORD)));
     }
 
     for (const struct kefir_list_entry *iter = kefir_list_tail(&params->preserved_regs); iter != NULL;
@@ -406,9 +402,9 @@ static kefir_result_t match_register_to_size(kefir_amd64_xasmgen_register_t in, 
     return KEFIR_OK;
 }
 
-static kefir_result_t preserve_parameter_addresses(struct kefir_codegen_amd64 *codegen,
-                                                   const struct kefir_ir_inline_assembly *inline_asm,
-                                                   struct inline_assembly_params *params) {
+static kefir_result_t generate_parameter_data(struct kefir_codegen_amd64 *codegen,
+                                              const struct kefir_ir_inline_assembly *inline_asm,
+                                              struct inline_assembly_params *params) {
     struct kefir_hashtree_node_iterator iter;
     for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&inline_asm->parameters, &iter); node != NULL;
          node = kefir_hashtree_next(&iter)) {
@@ -431,7 +427,7 @@ static kefir_result_t preserve_parameter_addresses(struct kefir_codegen_amd64 *c
                 &codegen->xasmgen, kefir_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RAX)));
 
             params->parameter_base_offset += KEFIR_AMD64_SYSV_ABI_QWORD;
-            param_map->props.address_index = params->parameter_adress_index++;
+            param_map->props.address_index = params->parameter_data_index++;
         }
     }
     return KEFIR_OK;
@@ -557,7 +553,7 @@ static kefir_result_t store_register_aggregate_outputs(struct kefir_codegen_amd6
             kefir_amd64_xasmgen_operand_indirect(
                 &codegen->xasmgen_helpers.operands[0],
                 kefir_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
-                KEFIR_AMD64_SYSV_ABI_QWORD * (params->parameter_adress_index - param_map->props.address_index - 1))));
+                KEFIR_AMD64_SYSV_ABI_QWORD * (params->parameter_data_index - param_map->props.address_index - 1))));
 
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
             &codegen->xasmgen,
@@ -782,8 +778,8 @@ static kefir_result_t inline_assembly_embed_impl(struct kefir_mem *mem,
     // Preserve dirty regs
     REQUIRE_OK(preserve_dirty_regs(mem, codegen, params));
 
-    // Preserve parameter addresses
-    REQUIRE_OK(preserve_parameter_addresses(codegen, inline_asm, params));
+    // Generate parameter data -- preserve aggregate addresses
+    REQUIRE_OK(generate_parameter_data(codegen, inline_asm, params));
 
     // Load inputs
     REQUIRE_OK(load_inputs(codegen, inline_asm, params));
