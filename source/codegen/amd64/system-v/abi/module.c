@@ -66,6 +66,7 @@ kefir_result_t kefir_codegen_amd64_sysv_module_alloc(struct kefir_mem *mem,
     REQUIRE_OK(kefir_hashtree_on_removal(&sysv_module->type_layouts, type_layout_removal, NULL));
     REQUIRE_OK(kefir_hashtree_init(&sysv_module->tls_entries, &kefir_hashtree_str_ops));
     REQUIRE_OK(kefir_hashtree_init(&sysv_module->inline_assembly, &kefir_hashtree_uint_ops));
+    sysv_module->inline_assembly_next_id = 0;
     return KEFIR_OK;
 }
 

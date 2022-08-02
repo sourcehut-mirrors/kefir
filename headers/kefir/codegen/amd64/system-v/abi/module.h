@@ -33,6 +33,7 @@ typedef struct kefir_codegen_amd64_sysv_module {
     struct kefir_hashtree type_layouts;
     struct kefir_hashtree tls_entries;
     struct kefir_hashtree inline_assembly;
+    kefir_id_t inline_assembly_next_id;
 } kefir_codegen_amd64_sysv_module_t;
 
 kefir_result_t kefir_codegen_amd64_sysv_module_alloc(struct kefir_mem *, struct kefir_codegen_amd64_sysv_module *,

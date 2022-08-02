@@ -865,9 +865,12 @@ static kefir_result_t store_outputs(struct kefir_codegen_amd64 *codegen,
     return KEFIR_OK;
 }
 
-static kefir_result_t format_template(struct kefir_mem *mem, struct kefir_codegen_amd64 *codegen,
+static kefir_result_t format_template(struct kefir_mem *mem, struct kefir_codegen_amd64_sysv_module *sysv_module,
+                                      struct kefir_codegen_amd64 *codegen,
                                       const struct kefir_ir_inline_assembly *inline_asm,
                                       struct inline_assembly_params *params) {
+    kefir_id_t id = sysv_module->inline_assembly_next_id++;
+
     const char *template_iter = inline_asm->template;
     while (template_iter != NULL) {
         const char *format_specifier = strchr(template_iter, '%');
@@ -883,6 +886,11 @@ static kefir_result_t format_template(struct kefir_mem *mem, struct kefir_codege
                 case '|':
                 case '}':
                     REQUIRE_OK(kefir_string_builder_printf(mem, &params->formatted_asm, "%.1s", format_specifier + 1));
+                    template_iter = format_specifier + 2;
+                    break;
+
+                case '=':
+                    REQUIRE_OK(kefir_string_builder_printf(mem, &params->formatted_asm, KEFIR_ID_FMT, id));
                     template_iter = format_specifier + 2;
                     break;
 
@@ -990,8 +998,6 @@ static kefir_result_t inline_assembly_embed_impl(struct kefir_mem *mem,
                                                  struct kefir_codegen_amd64 *codegen,
                                                  const struct kefir_ir_inline_assembly *inline_asm,
                                                  struct inline_assembly_params *params) {
-    UNUSED(sysv_module);
-
     // Mark clobber regs as dirty
     REQUIRE_OK(mark_clobbers(mem, inline_asm, params));
 
@@ -1014,7 +1020,7 @@ static kefir_result_t inline_assembly_embed_impl(struct kefir_mem *mem,
     REQUIRE_OK(load_inputs(codegen, inline_asm, params));
 
     // Generate assembly code from template
-    REQUIRE_OK(format_template(mem, codegen, inline_asm, params));
+    REQUIRE_OK(format_template(mem, sysv_module, codegen, inline_asm, params));
 
     // Store outputs
     REQUIRE_OK(store_outputs(codegen, inline_asm, params));
