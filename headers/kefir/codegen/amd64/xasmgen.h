@@ -132,6 +132,8 @@ typedef enum kefir_amd64_xasmgen_operand_class {
 } kefir_amd64_xasmgen_operand_class_t;
 
 typedef enum kefir_amd64_xasmgen_pointer_type {
+    KEFIR_AMD64_XASMGEN_POINTER_BYTE,
+    KEFIR_AMD64_XASMGEN_POINTER_WORD,
     KEFIR_AMD64_XASMGEN_POINTER_DWORD,
     KEFIR_AMD64_XASMGEN_POINTER_QWORD,
     KEFIR_AMD64_XASMGEN_POINTER_TBYTE

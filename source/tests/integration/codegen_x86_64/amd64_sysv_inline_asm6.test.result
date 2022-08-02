@@ -154,7 +154,7 @@ sub %rsp, 8
 mov %rax, [%rsp + 16]
 mov [%rsp], %rax
 # Begin of fragment #0 code
-mov %rax, [%rsp]
+mov %rax, QWORD PTR [%rsp]
 add %rax, 1
 # End of fragment #0 code
 mov [%rsp + 16], %rax

@@ -163,10 +163,10 @@ fstp TBYTE PTR [%rsp + 32]
 fld TBYTE PTR [%rsp + 64]
 fstp TBYTE PTR [%rsp + 16]
 # Begin of fragment #0 code
-fld [%rsp + 32]
-fld [%rsp + 16]
+fld TBYTE PTR [%rsp + 32]
+fld TBYTE PTR [%rsp + 16]
 fadd
-fst [%rsp]
+fst TBYTE PTR [%rsp]
 # End of fragment #0 code
 fld TBYTE PTR [%rsp]
 fstp TBYTE PTR [%rsp + 64]

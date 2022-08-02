@@ -929,15 +929,35 @@ static kefir_result_t format_template(struct kefir_mem *mem, struct kefir_codege
                                 } break;
 
                                 case INLINE_ASSEMBLY_PARAM_STACK: {
+                                    kefir_amd64_xasmgen_pointer_type_t ptr_type;
+                                    if (param_map->parameter_props.size <= 1) {
+                                        ptr_type = KEFIR_AMD64_XASMGEN_POINTER_BYTE;
+                                    } else if (param_map->parameter_props.size <= 2) {
+                                        ptr_type = KEFIR_AMD64_XASMGEN_POINTER_WORD;
+                                    } else if (param_map->parameter_props.size <= 4) {
+                                        ptr_type = KEFIR_AMD64_XASMGEN_POINTER_DWORD;
+                                    } else if (param_map->parameter_props.size <= 8) {
+                                        ptr_type = KEFIR_AMD64_XASMGEN_POINTER_QWORD;
+                                    } else {
+                                        REQUIRE(param_map->parameter_props.type == INLINE_ASSEMBLY_PARAM_LONG_DOUBLE,
+                                                KEFIR_SET_ERROR(
+                                                    KEFIR_INVALID_STATE,
+                                                    "On-stack parameter size cannot exceed size of long double"));
+                                        ptr_type = KEFIR_AMD64_XASMGEN_POINTER_TBYTE;
+                                    }
+
                                     kefir_int64_t offset = KEFIR_AMD64_SYSV_ABI_QWORD *
                                                            (params->parameter_data_index - param_map->stack_index -
                                                             param_map->parameter_props.width);
                                     char register_symbol[64];
                                     REQUIRE_OK(KEFIR_AMD64_XASMGEN_FORMAT_OPERAND(
                                         &codegen->xasmgen,
-                                        kefir_amd64_xasmgen_operand_indirect(
-                                            &codegen->xasmgen_helpers.operands[0],
-                                            kefir_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP), offset),
+                                        kefir_amd64_xasmgen_operand_pointer(
+                                            &codegen->xasmgen_helpers.operands[0], ptr_type,
+                                            kefir_amd64_xasmgen_operand_indirect(
+                                                &codegen->xasmgen_helpers.operands[1],
+                                                kefir_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
+                                                offset)),
                                         register_symbol, sizeof(register_symbol) - 1));
                                     REQUIRE_OK(kefir_string_builder_printf(mem, &params->formatted_asm, "%s",
                                                                            register_symbol));

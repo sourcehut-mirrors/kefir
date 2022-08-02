@@ -54,10 +54,10 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     kefir_id_t id1;
     struct kefir_ir_inline_assembly *inline_asm1 = kefir_ir_module_new_inline_assembly(mem, &module,
-                                                                                       "fld tbyte ptr %1\n"
-                                                                                       "fld tbyte ptr %2\n"
+                                                                                       "fld %1\n"
+                                                                                       "fld %2\n"
                                                                                        "faddp\n"
-                                                                                       "fstp tbyte ptr %3",
+                                                                                       "fstp %3",
                                                                                        &id1);
 
     REQUIRE(inline_asm1 != NULL, KEFIR_INTERNAL_ERROR);

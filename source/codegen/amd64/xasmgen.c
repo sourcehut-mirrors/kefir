@@ -830,6 +830,14 @@ static kefir_result_t amd64_symbol_arg(void (*print)(void *, const char *, ...),
 static kefir_result_t format_pointer(void (*print)(void *, const char *, ...), void *printarg,
                                      kefir_amd64_xasmgen_pointer_type_t type) {
     switch (type) {
+        case KEFIR_AMD64_XASMGEN_POINTER_BYTE:
+            print(printarg, "BYTE PTR ");
+            break;
+
+        case KEFIR_AMD64_XASMGEN_POINTER_WORD:
+            print(printarg, "WORD PTR ");
+            break;
+
         case KEFIR_AMD64_XASMGEN_POINTER_DWORD:
             print(printarg, "DWORD PTR ");
             break;
@@ -1285,6 +1293,14 @@ INSTR0(popfq)
 
 static kefir_result_t format_att_mnemonic_suffix_impl(FILE *output, kefir_amd64_xasmgen_pointer_type_t ptr) {
     switch (ptr) {
+        case KEFIR_AMD64_XASMGEN_POINTER_BYTE:
+            fprintf(output, "b");
+            break;
+
+        case KEFIR_AMD64_XASMGEN_POINTER_WORD:
+            fprintf(output, "w");
+            break;
+
         case KEFIR_AMD64_XASMGEN_POINTER_DWORD:
             fprintf(output, "l");
             break;
