@@ -503,3 +503,111 @@ DEFINE_CASE(ast_nodes_attribute_list1, "AST nodes - attribute list #1") {
     ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
 }
 END_CASE
+
+DEFINE_CASE(ast_nodes_inline_assembly1, "AST nodes - inline assembly #1") {
+    struct kefir_symbol_table symbols;
+    struct kefir_ast_type_bundle type_bundle;
+
+    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    ASSERT_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
+
+    struct kefir_ast_inline_assembly *inline_asm1 = kefir_ast_new_inline_assembly(&kft_mem, "Hello, assembly!");
+    ASSERT(inline_asm1 != NULL);
+    ASSERT(inline_asm1->base.klass->type == KEFIR_AST_INLINE_ASSEMBLY);
+    ASSERT(inline_asm1->base.self == inline_asm1);
+
+    ASSERT(strcmp(inline_asm1->asm_template, "Hello, assembly!") == 0);
+    ASSERT(kefir_list_length(&inline_asm1->outputs) == 0);
+    ASSERT(kefir_list_length(&inline_asm1->inputs) == 0);
+    ASSERT(kefir_list_length(&inline_asm1->clobbers) == 0);
+    ASSERT(kefir_list_length(&inline_asm1->jump_labels) == 0);
+
+    ASSERT_OK(kefir_ast_inline_assembly_add_output(&kft_mem, &symbols, inline_asm1, "param1", "constraint1",
+                                                   KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 123))));
+    ASSERT_OK(kefir_ast_inline_assembly_add_output(&kft_mem, &symbols, inline_asm1, NULL, "constraint2",
+                                                   KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 321))));
+    ASSERT(kefir_list_length(&inline_asm1->outputs) == 2);
+    ASSERT(kefir_list_length(&inline_asm1->inputs) == 0);
+    ASSERT(kefir_list_length(&inline_asm1->clobbers) == 0);
+    ASSERT(kefir_list_length(&inline_asm1->jump_labels) == 0);
+
+    const struct kefir_ast_inline_assembly_parameter *param = kefir_list_head(&inline_asm1->outputs)->value;
+    ASSERT(param != NULL);
+    ASSERT(param->parameter_name != NULL && strcmp(param->parameter_name, "param1") == 0);
+    ASSERT(strcmp(param->constraint, "constraint1") == 0);
+    ASSERT(param->parameter != NULL);
+    ASSERT(param->parameter->klass->type == KEFIR_AST_CONSTANT);
+    ASSERT(((const struct kefir_ast_constant *) param->parameter->self)->type == KEFIR_AST_INT_CONSTANT);
+    ASSERT(((const struct kefir_ast_constant *) param->parameter->self)->value.integer == 123);
+
+    param = kefir_list_head(&inline_asm1->outputs)->next->value;
+    ASSERT(param != NULL);
+    ASSERT(param->parameter_name == NULL);
+    ASSERT(strcmp(param->constraint, "constraint2") == 0);
+    ASSERT(param->parameter != NULL);
+    ASSERT(param->parameter->klass->type == KEFIR_AST_CONSTANT);
+    ASSERT(((const struct kefir_ast_constant *) param->parameter->self)->type == KEFIR_AST_INT_CONSTANT);
+    ASSERT(((const struct kefir_ast_constant *) param->parameter->self)->value.integer == 321);
+
+    ASSERT_OK(kefir_ast_inline_assembly_add_input(&kft_mem, &symbols, inline_asm1, "param3", "constraintN",
+                                                  KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 1000))));
+    ASSERT(kefir_list_length(&inline_asm1->outputs) == 2);
+    ASSERT(kefir_list_length(&inline_asm1->inputs) == 1);
+    ASSERT(kefir_list_length(&inline_asm1->clobbers) == 0);
+    ASSERT(kefir_list_length(&inline_asm1->jump_labels) == 0);
+
+    param = kefir_list_head(&inline_asm1->inputs)->value;
+    ASSERT(param != NULL);
+    ASSERT(param->parameter_name != NULL && strcmp(param->parameter_name, "param3") == 0);
+    ASSERT(strcmp(param->constraint, "constraintN") == 0);
+    ASSERT(param->parameter != NULL);
+    ASSERT(param->parameter->klass->type == KEFIR_AST_CONSTANT);
+    ASSERT(((const struct kefir_ast_constant *) param->parameter->self)->type == KEFIR_AST_INT_CONSTANT);
+    ASSERT(((const struct kefir_ast_constant *) param->parameter->self)->value.integer == 1000);
+
+    ASSERT_OK(kefir_ast_inline_assembly_add_clobber(&kft_mem, &symbols, inline_asm1, "clobber1"));
+    ASSERT_OK(kefir_ast_inline_assembly_add_clobber(&kft_mem, &symbols, inline_asm1, "clobber2"));
+    ASSERT_OK(kefir_ast_inline_assembly_add_clobber(&kft_mem, &symbols, inline_asm1, "clobber3"));
+    ASSERT_OK(kefir_ast_inline_assembly_add_jump_label(&kft_mem, &symbols, inline_asm1, "jump1"));
+    ASSERT_OK(kefir_ast_inline_assembly_add_jump_label(&kft_mem, &symbols, inline_asm1, "jump2"));
+
+    ASSERT(kefir_list_length(&inline_asm1->outputs) == 2);
+    ASSERT(kefir_list_length(&inline_asm1->inputs) == 1);
+    ASSERT(kefir_list_length(&inline_asm1->clobbers) == 3);
+    ASSERT(kefir_list_length(&inline_asm1->jump_labels) == 2);
+
+    const char *clobber = kefir_list_head(&inline_asm1->clobbers)->value;
+    ASSERT(clobber != NULL && strcmp(clobber, "clobber1") == 0);
+    clobber = kefir_list_head(&inline_asm1->clobbers)->next->value;
+    ASSERT(clobber != NULL && strcmp(clobber, "clobber2") == 0);
+    clobber = kefir_list_head(&inline_asm1->clobbers)->next->next->value;
+    ASSERT(clobber != NULL && strcmp(clobber, "clobber3") == 0);
+
+    const char *jump = kefir_list_head(&inline_asm1->jump_labels)->value;
+    ASSERT(jump != NULL && strcmp(jump, "jump1") == 0);
+    jump = kefir_list_head(&inline_asm1->jump_labels)->next->value;
+    ASSERT(jump != NULL && strcmp(jump, "jump2") == 0);
+
+    struct kefir_ast_inline_assembly *inline_asm2 = kefir_ast_new_inline_assembly(&kft_mem, "Goodbye, assembly!");
+    ASSERT(inline_asm2 != NULL);
+    ASSERT(inline_asm2 != inline_asm1);
+    ASSERT(inline_asm2->base.klass->type == KEFIR_AST_INLINE_ASSEMBLY);
+    ASSERT(inline_asm2->base.self == inline_asm2);
+
+    ASSERT(kefir_list_length(&inline_asm1->outputs) == 2);
+    ASSERT(kefir_list_length(&inline_asm1->inputs) == 1);
+    ASSERT(kefir_list_length(&inline_asm1->clobbers) == 3);
+    ASSERT(kefir_list_length(&inline_asm1->jump_labels) == 2);
+
+    ASSERT(kefir_list_length(&inline_asm2->outputs) == 0);
+    ASSERT(kefir_list_length(&inline_asm2->inputs) == 0);
+    ASSERT(kefir_list_length(&inline_asm2->clobbers) == 0);
+    ASSERT(kefir_list_length(&inline_asm2->jump_labels) == 0);
+
+    ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(inline_asm1)));
+    ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(inline_asm2)));
+
+    ASSERT_OK(kefir_ast_type_bundle_free(&kft_mem, &type_bundle));
+    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+}
+END_CASE

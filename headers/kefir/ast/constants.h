@@ -71,6 +71,7 @@ typedef enum kefir_ast_node_type {
 
     KEFIR_AST_BUILTIN,
     KEFIR_AST_ATTRIBUTE_LIST,
+    KEFIR_AST_INLINE_ASSEMBLY,
     KEFIR_AST_EXTENSION_NODE,
 
     // Extensions
