@@ -245,6 +245,8 @@ typedef struct kefir_amd64_xasmgen {
         kefir_result_t (*fld)(struct kefir_amd64_xasmgen *, const struct kefir_amd64_xasmgen_operand *);
         kefir_result_t (*movdqu)(struct kefir_amd64_xasmgen *, const struct kefir_amd64_xasmgen_operand *,
                                  const struct kefir_amd64_xasmgen_operand *);
+        kefir_result_t (*pushfq)(struct kefir_amd64_xasmgen *);
+        kefir_result_t (*popfq)(struct kefir_amd64_xasmgen *);
     } instr;
 
     struct {
@@ -328,6 +330,8 @@ const struct kefir_amd64_xasmgen_operand *kefir_amd64_xasmgen_operand_string_lit
 #define KEFIR_AMD64_XASMGEN_INSTR_FSTP(_xasmgen, _op1) ((_xasmgen)->instr.fstp((_xasmgen), (_op1)))
 #define KEFIR_AMD64_XASMGEN_INSTR_FLD(_xasmgen, _op1) ((_xasmgen)->instr.fld((_xasmgen), (_op1)))
 #define KEFIR_AMD64_XASMGEN_INSTR_MOVDQU(_xasmgen, _op1, _op2) ((_xasmgen)->instr.movdqu((_xasmgen), (_op1), (_op2)))
+#define KEFIR_AMD64_XASMGEN_INSTR_PUSHFQ(_xasmgen) ((_xasmgen)->instr.pushfq((_xasmgen)))
+#define KEFIR_AMD64_XASMGEN_INSTR_POPFQ(_xasmgen) ((_xasmgen)->instr.popfq((_xasmgen)))
 
 #define KEFIR_AMD64_XASMGEN_HELPERS_BUFFER_LENGTH 1024
 typedef struct kefir_amd64_xasmgen_helpers {

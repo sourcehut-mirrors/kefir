@@ -34,6 +34,7 @@ kefir_result_t kefir_codegen_amd64_sysv_inline_assembly_invoke(struct kefir_mem 
 
 struct inline_assembly_params {
     struct kefir_hashtree dirty_regs;
+    kefir_bool_t dirty_cc;
     struct kefir_list available_int_regs;
     struct kefir_list preserved_regs;
     struct kefir_hashtree parameter_mapping;
@@ -79,6 +80,10 @@ static kefir_result_t mark_clobbers(struct kefir_mem *mem, const struct kefir_ir
     for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&inline_asm->clobbers, &iter); node != NULL;
          node = kefir_hashtree_next(&iter)) {
         ASSIGN_DECL_CAST(const char *, clobber, node->key);
+
+        if (strcmp(clobber, "cc") == 0) {
+            params->dirty_cc = true;
+        }
 
         kefir_amd64_xasmgen_register_t dirty_reg;
         kefir_result_t res = kefir_amd64_xasmgen_register_from_symbolic_name(clobber, &dirty_reg);
@@ -344,6 +349,11 @@ static kefir_result_t preserve_dirty_regs(struct kefir_mem *mem, struct kefir_co
             }
         }
     }
+
+    if (params->dirty_cc) {
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_PUSHFQ(&codegen->xasmgen));
+        params->parameter_base_offset += KEFIR_AMD64_SYSV_ABI_QWORD;
+    }
     return KEFIR_OK;
 }
 
@@ -354,6 +364,10 @@ static kefir_result_t restore_dirty_regs(struct kefir_codegen_amd64 *codegen, st
             &codegen->xasmgen, kefir_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
             kefir_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[0],
                                              params->parameter_data_index * KEFIR_AMD64_SYSV_ABI_QWORD)));
+    }
+
+    if (params->dirty_cc) {
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_POPFQ(&codegen->xasmgen));
     }
 
     for (const struct kefir_list_entry *iter = kefir_list_tail(&params->preserved_regs); iter != NULL;

@@ -1275,6 +1275,8 @@ INSTR2(movd)
 INSTR1(fstp)
 INSTR1(fld)
 INSTR2(movdqu)
+INSTR0(pushfq)
+INSTR0(popfq)
 
 #undef INSTR0
 #undef INSTR1
@@ -1425,6 +1427,8 @@ INSTR2(movd)
 INSTR1(fstp)
 INSTR1(fld)
 INSTR2(movdqu)
+INSTR0(pushfq)
+INSTR0(popfq)
 
 #undef INSTR0
 #undef INSTR1
@@ -1504,6 +1508,8 @@ kefir_result_t kefir_amd64_xasmgen_init(struct kefir_mem *mem, struct kefir_amd6
         xasmgen->instr.shr = amd64_instr_intel_shr;
         xasmgen->instr.sub = amd64_instr_intel_sub;
         xasmgen->instr.movdqu = amd64_instr_intel_movdqu;
+        xasmgen->instr.pushfq = amd64_instr_intel_pushfq;
+        xasmgen->instr.popfq = amd64_instr_intel_popfq;
     } else {
         xasmgen->instr.add = amd64_instr_att_add;
         xasmgen->instr.and = amd64_instr_att_and;
@@ -1531,6 +1537,8 @@ kefir_result_t kefir_amd64_xasmgen_init(struct kefir_mem *mem, struct kefir_amd6
         xasmgen->instr.shr = amd64_instr_att_shr;
         xasmgen->instr.sub = amd64_instr_att_sub;
         xasmgen->instr.movdqu = amd64_instr_att_movdqu;
+        xasmgen->instr.pushfq = amd64_instr_att_pushfq;
+        xasmgen->instr.popfq = amd64_instr_att_popfq;
     }
     return KEFIR_OK;
 }
