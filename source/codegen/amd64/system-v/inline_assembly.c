@@ -2,6 +2,7 @@
 #include "kefir/codegen/amd64/system-v/runtime.h"
 #include "kefir/codegen/amd64/system-v/abi/qwords.h"
 #include "kefir/codegen/amd64/system-v/abi.h"
+#include "kefir/codegen/amd64/labels.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 #include "kefir/core/string_builder.h"
@@ -976,6 +977,31 @@ static kefir_result_t format_template(struct kefir_mem *mem, struct kefir_codege
                         }
                     }
 
+                    for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&inline_asm->jump_targets, &iter);
+                         !match && node != NULL; node = kefir_hashtree_next(&iter)) {
+                        ASSIGN_DECL_CAST(const struct kefir_ir_inline_assembly_jump_target *, jump_target, node->value);
+
+                        kefir_size_t identifier_length = strlen(jump_target->identifier);
+                        if (strncmp(format_specifier + 1, jump_target->identifier, identifier_length) == 0) {
+                            char jump_target_text[1024];
+                            REQUIRE_OK(KEFIR_AMD64_XASMGEN_FORMAT_OPERAND(
+                                &codegen->xasmgen,
+                                kefir_amd64_xasmgen_operand_label(
+                                    &codegen->xasmgen_helpers.operands[0],
+                                    kefir_amd64_xasmgen_helpers_format(
+                                        &codegen->xasmgen_helpers,
+                                        KEFIR_AMD64_SYSTEM_V_RUNTIME_INLINE_ASSEMBLY_JUMP_TRAMPOLINE, inline_asm->id,
+                                        jump_target->uid)),
+                                jump_target_text, sizeof(jump_target_text) - 1));
+
+                            REQUIRE_OK(
+                                kefir_string_builder_printf(mem, &params->formatted_asm, "%s", jump_target_text));
+
+                            template_iter = format_specifier + 1 + identifier_length;
+                            match = true;
+                        }
+                    }
+
                     if (!match) {
                         template_iter = format_specifier + 1;
                         REQUIRE_OK(kefir_string_builder_printf(mem, &params->formatted_asm, "%%"));
@@ -990,6 +1016,61 @@ static kefir_result_t format_template(struct kefir_mem *mem, struct kefir_codege
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INLINE_ASSEMBLY(&codegen->xasmgen, params->formatted_asm.string));
     REQUIRE_OK(
         KEFIR_AMD64_XASMGEN_COMMENT(&codegen->xasmgen, "End of fragment #" KEFIR_ID_FMT " code", inline_asm->id));
+    return KEFIR_OK;
+}
+
+static kefir_result_t generate_jump_trampolines(struct kefir_codegen_amd64 *codegen,
+                                                const struct kefir_ir_inline_assembly *inline_asm,
+                                                struct inline_assembly_params *params) {
+    REQUIRE(!kefir_hashtree_empty(&inline_asm->jump_targets), KEFIR_OK);
+
+    REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_JMP(
+        &codegen->xasmgen, kefir_amd64_xasmgen_operand_label(
+                               &codegen->xasmgen_helpers.operands[0],
+                               kefir_amd64_xasmgen_helpers_format(
+                                   &codegen->xasmgen_helpers,
+                                   KEFIR_AMD64_SYSTEM_V_RUNTIME_INLINE_ASSEMBLY_JUMP_TRAMPOLINE_END, inline_asm->id))));
+
+    struct kefir_hashtree_node_iterator iter;
+    for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&inline_asm->jump_targets, &iter); node != NULL;
+         node = kefir_hashtree_next(&iter)) {
+        ASSIGN_DECL_CAST(const struct kefir_ir_inline_assembly_jump_target *, jump_target, node->value);
+
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen->xasmgen,
+                                             KEFIR_AMD64_SYSTEM_V_RUNTIME_INLINE_ASSEMBLY_JUMP_TRAMPOLINE,
+                                             inline_asm->id, jump_target->uid));
+
+        // Store outputs
+        REQUIRE_OK(store_outputs(codegen, inline_asm, params));
+
+        // Restore dirty regs
+        REQUIRE_OK(restore_dirty_regs(codegen, params));
+
+        // Clean stack
+        REQUIRE_OK(clear_stack(codegen, params));
+
+        // Perform jump
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_LEA(
+            &codegen->xasmgen, kefir_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBX),
+            kefir_amd64_xasmgen_operand_indirect(
+                &codegen->xasmgen_helpers.operands[0],
+                kefir_amd64_xasmgen_operand_offset(
+                    &codegen->xasmgen_helpers.operands[1],
+                    kefir_amd64_xasmgen_operand_label(
+                        &codegen->xasmgen_helpers.operands[2],
+                        kefir_amd64_xasmgen_helpers_format(&codegen->xasmgen_helpers,
+                                                           KEFIR_AMD64_SYSV_PROCEDURE_BODY_LABEL,
+                                                           jump_target->target_function)),
+                    2 * KEFIR_AMD64_SYSV_ABI_QWORD * jump_target->target),
+                0)));
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_JMP(
+            &codegen->xasmgen, kefir_amd64_xasmgen_operand_indirect(
+                                   &codegen->xasmgen_helpers.operands[0],
+                                   kefir_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBX), 0)));
+    }
+
+    REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(
+        &codegen->xasmgen, KEFIR_AMD64_SYSTEM_V_RUNTIME_INLINE_ASSEMBLY_JUMP_TRAMPOLINE_END, inline_asm->id));
     return KEFIR_OK;
 }
 
@@ -1030,6 +1111,9 @@ static kefir_result_t inline_assembly_embed_impl(struct kefir_mem *mem,
 
     // Clean stack
     REQUIRE_OK(clear_stack(codegen, params));
+
+    // Jump trampolines
+    REQUIRE_OK(generate_jump_trampolines(codegen, inline_asm, params));
     return KEFIR_OK;
 }
 

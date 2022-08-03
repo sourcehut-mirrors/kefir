@@ -852,6 +852,20 @@ static kefir_result_t format_inline_assembly_fragment(struct kefir_json_output *
         REQUIRE_OK(kefir_json_output_string(json, clobber));
     }
     REQUIRE_OK(kefir_json_output_array_end(json));
+    REQUIRE_OK(kefir_json_output_object_key(json, "jump_targets"));
+    REQUIRE_OK(kefir_json_output_object_begin(json));
+    for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&inline_asm->jump_targets, &iter); node != NULL;
+         node = kefir_hashtree_next(&iter)) {
+        ASSIGN_DECL_CAST(const struct kefir_ir_inline_assembly_jump_target *, jump_target, node->value);
+        REQUIRE_OK(kefir_json_output_object_key(json, jump_target->identifier));
+        REQUIRE_OK(kefir_json_output_object_begin(json));
+        REQUIRE_OK(kefir_json_output_object_key(json, "function"));
+        REQUIRE_OK(kefir_json_output_string(json, jump_target->target_function));
+        REQUIRE_OK(kefir_json_output_object_key(json, "target"));
+        REQUIRE_OK(kefir_json_output_uinteger(json, jump_target->target));
+        REQUIRE_OK(kefir_json_output_object_end(json));
+    }
+    REQUIRE_OK(kefir_json_output_object_end(json));
     REQUIRE_OK(kefir_json_output_object_end(json));
     return KEFIR_OK;
 }
