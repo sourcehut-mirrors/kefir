@@ -104,6 +104,7 @@ struct kefir_ast_node_base *ast_inline_assembly_clone(struct kefir_mem *mem, str
     clone->base.self = clone;
     clone->base.source_location = base->source_location;
 
+    clone->qualifiers = node->qualifiers;
     clone->asm_template = node->asm_template;
 
     kefir_result_t res = kefir_ast_node_properties_clone(&clone->base.properties, &node->base.properties);
@@ -130,7 +131,9 @@ struct kefir_ast_node_base *ast_inline_assembly_clone(struct kefir_mem *mem, str
     return KEFIR_AST_NODE_BASE(clone);
 }
 
-struct kefir_ast_inline_assembly *kefir_ast_new_inline_assembly(struct kefir_mem *mem, const char *asm_template) {
+struct kefir_ast_inline_assembly *kefir_ast_new_inline_assembly(struct kefir_mem *mem,
+                                                                struct kefir_ast_inline_assembly_qualifiers qualifiers,
+                                                                const char *asm_template) {
     REQUIRE(mem != NULL, NULL);
     REQUIRE(asm_template != NULL, NULL);
 
@@ -150,6 +153,7 @@ struct kefir_ast_inline_assembly *kefir_ast_new_inline_assembly(struct kefir_mem
         KEFIR_FREE(mem, inline_assembly);
         return NULL;
     });
+    inline_assembly->qualifiers = qualifiers;
     inline_assembly->asm_template = asm_template;
     return inline_assembly;
 }

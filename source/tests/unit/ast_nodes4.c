@@ -511,11 +511,14 @@ DEFINE_CASE(ast_nodes_inline_assembly1, "AST nodes - inline assembly #1") {
     ASSERT_OK(kefir_symbol_table_init(&symbols));
     ASSERT_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
 
-    struct kefir_ast_inline_assembly *inline_asm1 = kefir_ast_new_inline_assembly(&kft_mem, "Hello, assembly!");
+    struct kefir_ast_inline_assembly *inline_asm1 = kefir_ast_new_inline_assembly(
+        &kft_mem, (struct kefir_ast_inline_assembly_qualifiers){.inline_qualifier = true}, "Hello, assembly!");
     ASSERT(inline_asm1 != NULL);
     ASSERT(inline_asm1->base.klass->type == KEFIR_AST_INLINE_ASSEMBLY);
     ASSERT(inline_asm1->base.self == inline_asm1);
 
+    ASSERT(!inline_asm1->qualifiers.volatile_qualifier && inline_asm1->qualifiers.inline_qualifier &&
+           !inline_asm1->qualifiers.goto_qualifier);
     ASSERT(strcmp(inline_asm1->asm_template, "Hello, assembly!") == 0);
     ASSERT(kefir_list_length(&inline_asm1->outputs) == 0);
     ASSERT(kefir_list_length(&inline_asm1->inputs) == 0);
@@ -588,11 +591,17 @@ DEFINE_CASE(ast_nodes_inline_assembly1, "AST nodes - inline assembly #1") {
     jump = kefir_list_head(&inline_asm1->jump_labels)->next->value;
     ASSERT(jump != NULL && strcmp(jump, "jump2") == 0);
 
-    struct kefir_ast_inline_assembly *inline_asm2 = kefir_ast_new_inline_assembly(&kft_mem, "Goodbye, assembly!");
+    struct kefir_ast_inline_assembly *inline_asm2 = kefir_ast_new_inline_assembly(
+        &kft_mem, (struct kefir_ast_inline_assembly_qualifiers){.volatile_qualifier = true, .goto_qualifier = true},
+        "Goodbye, assembly!");
     ASSERT(inline_asm2 != NULL);
     ASSERT(inline_asm2 != inline_asm1);
     ASSERT(inline_asm2->base.klass->type == KEFIR_AST_INLINE_ASSEMBLY);
     ASSERT(inline_asm2->base.self == inline_asm2);
+
+    ASSERT(inline_asm2->qualifiers.volatile_qualifier && !inline_asm2->qualifiers.inline_qualifier &&
+           inline_asm2->qualifiers.goto_qualifier);
+    ASSERT(strcmp(inline_asm2->asm_template, "Goodbye, assembly!") == 0);
 
     ASSERT(kefir_list_length(&inline_asm1->outputs) == 2);
     ASSERT(kefir_list_length(&inline_asm1->inputs) == 1);

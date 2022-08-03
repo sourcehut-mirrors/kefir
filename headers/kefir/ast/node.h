@@ -243,7 +243,14 @@ typedef struct kefir_ast_inline_assembly_parameter {
     struct kefir_ast_node_base *parameter;
 } kefir_ast_inline_assembly_parameter_t;
 
+typedef struct kefir_ast_inline_assembly_qualifiers {
+    kefir_bool_t volatile_qualifier;
+    kefir_bool_t inline_qualifier;
+    kefir_bool_t goto_qualifier;
+} kefir_ast_inline_assembly_qualifiers_t;
+
 KEFIR_AST_NODE_STRUCT(kefir_ast_inline_assembly, {
+    struct kefir_ast_inline_assembly_qualifiers qualifiers;
     const char *asm_template;
     struct kefir_list outputs;
     struct kefir_list inputs;
@@ -384,7 +391,9 @@ struct kefir_ast_statement_expression *kefir_ast_new_statement_expression(struct
 
 struct kefir_ast_attribute_list *kefir_ast_new_attribute_list(struct kefir_mem *);
 
-struct kefir_ast_inline_assembly *kefir_ast_new_inline_assembly(struct kefir_mem *, const char *);
+struct kefir_ast_inline_assembly *kefir_ast_new_inline_assembly(struct kefir_mem *,
+                                                                struct kefir_ast_inline_assembly_qualifiers,
+                                                                const char *);
 
 typedef struct kefir_ast_visitor {
     KEFIR_AST_VISITOR_METHOD(generic_handler, kefir_ast_node_base);
