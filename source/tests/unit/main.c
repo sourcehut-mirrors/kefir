@@ -228,6 +228,8 @@ DECLARE_CASE(ast_node_analysis_compound_literal1);
 DECLARE_CASE(ast_node_analysis_compound_literal2);
 DECLARE_CASE(ast_node_analysis_compound_literal3);
 DECLARE_CASE(ast_node_analysis_compound_literal4);
+DECLARE_CASE(ast_node_analysis_inline_assembly1);
+DECLARE_CASE(ast_node_analysis_inline_assembly2);
 DECLARE_CASE(ast_type_traversal1);
 DECLARE_CASE(ast_type_traversal2);
 DECLARE_CASE(ast_type_traversal3);
@@ -543,7 +545,8 @@ TEST_SUITE(
     &ast_node_analysis_compound_assignment_operator2, &ast_node_analysis_compound_assignment_operator3,
     &ast_nodes_comma_operators, &ast_node_analysis_compound_literal1, &ast_node_analysis_compound_literal2,
     &ast_node_analysis_compound_literal3, &ast_node_analysis_compound_literal4, &ast_node_analysis_label_address,
-    &ast_node_analysis_goto_address_statements1, &ast_node_analysis_statement_expressions1, &ast_type_traversal1,
+    &ast_node_analysis_goto_address_statements1, &ast_node_analysis_statement_expressions1,
+    &ast_node_analysis_inline_assembly1, &ast_node_analysis_inline_assembly2, &ast_type_traversal1,
     &ast_type_traversal2, &ast_type_traversal3, &ast_type_traversal4, &ast_type_traversal5,
     &ast_initializer_construction1, &ast_initializer_construction2, &ast_initializer_analysis1,
     &ast_initializer_analysis2, &ast_initializer_analysis3, &ast_initializer_analysis4, &ast_initializer_analysis5,

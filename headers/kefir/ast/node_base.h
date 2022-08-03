@@ -91,6 +91,10 @@ typedef struct kefir_ast_node_properties {
     struct {
         kefir_size_t alignment;
     } type_props;
+
+    struct {
+        struct kefir_ast_flow_control_structure *flow_control_statement;
+    } inline_assembly;
 } kefir_ast_node_properties_t;
 
 typedef struct kefir_ast_node_base {

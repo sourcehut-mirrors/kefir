@@ -78,6 +78,7 @@ VISITOR(translation_unit, struct kefir_ast_translation_unit)
 VISITOR(builtin, struct kefir_ast_builtin)
 VISITOR(label_address, struct kefir_ast_label_address)
 VISITOR(statement_expression, struct kefir_ast_statement_expression)
+VISITOR(inline_assembly, struct kefir_ast_inline_assembly)
 
 #undef VISITOR
 
@@ -142,6 +143,7 @@ kefir_result_t kefir_ast_analyze_node(struct kefir_mem *mem, const struct kefir_
     visitor.label_address = visit_label_address;
     visitor.goto_address_statement = visit_goto_statement;
     visitor.statement_expression = visit_statement_expression;
+    visitor.inline_assembly = visit_inline_assembly;
 
     kefir_result_t res;
     KEFIR_RUN_EXTENSION(&res, mem, context, before_node_analysis, base, &visitor);
