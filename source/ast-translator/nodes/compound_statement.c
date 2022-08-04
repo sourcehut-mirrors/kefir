@@ -38,7 +38,8 @@ kefir_result_t kefir_ast_translate_compound_statement_node(struct kefir_mem *mem
          kefir_list_next(&iter)) {
         ASSIGN_DECL_CAST(struct kefir_ast_node_base *, item, iter->value);
 
-        if (item->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT) {
+        if (item->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT ||
+            item->properties.category == KEFIR_AST_NODE_CATEGORY_INLINE_ASSEMBLY) {
             REQUIRE_OK(kefir_ast_translate_statement(mem, item, builder, context));
         } else if (item->properties.category == KEFIR_AST_NODE_CATEGORY_DECLARATION ||
                    item->properties.category == KEFIR_AST_NODE_CATEGORY_INIT_DECLARATOR) {

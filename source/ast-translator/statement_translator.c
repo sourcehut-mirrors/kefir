@@ -71,6 +71,17 @@ static kefir_result_t translate_extension_node(const struct kefir_ast_visitor *v
     return KEFIR_OK;
 }
 
+static kefir_result_t translate_inline_asm(const struct kefir_ast_visitor *visitor,
+                                           const struct kefir_ast_inline_assembly *node, void *payload) {
+    REQUIRE(visitor != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid AST visitor"));
+    REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid AST node"));
+    REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid payload"));
+    ASSIGN_DECL_CAST(struct kefir_ast_translator_parameters *, param, payload);
+    REQUIRE_OK(
+        kefir_ast_translate_inline_assembly(param->mem, KEFIR_AST_NODE_BASE(node), param->builder, param->context));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_ast_translate_statement(struct kefir_mem *mem, const struct kefir_ast_node_base *base,
                                              struct kefir_irbuilder_block *builder,
                                              struct kefir_ast_translator_context *context) {
@@ -96,6 +107,7 @@ kefir_result_t kefir_ast_translate_statement(struct kefir_mem *mem, const struct
     visitor.return_statement = translate_return_statement;
     visitor.extension_node = translate_extension_node;
     visitor.goto_address_statement = translate_goto_statement;
+    visitor.inline_assembly = translate_inline_asm;
 
     kefir_result_t res;
     KEFIR_RUN_EXTENSION(&res, mem, context, before_translate, base, builder,

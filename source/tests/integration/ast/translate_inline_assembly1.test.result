@@ -1,0 +1,283 @@
+{
+    "globals": [],
+    "externals": [
+        {
+            "identifier": "variable",
+            "type": "global"
+        }
+    ],
+    "types": [
+        {
+            "identifier": 0,
+            "type": []
+        },
+        {
+            "identifier": 1,
+            "type": []
+        },
+        {
+            "identifier": 2,
+            "type": []
+        },
+        {
+            "identifier": 3,
+            "type": []
+        },
+        {
+            "identifier": 4,
+            "type": [
+                {
+                    "type": "int"
+                }
+            ]
+        },
+        {
+            "identifier": 5,
+            "type": [
+                {
+                    "type": "struct",
+                    "fields": [
+                        {
+                            "type": "long_double"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "identifier": 6,
+            "type": []
+        },
+        {
+            "identifier": 7,
+            "type": []
+        },
+        {
+            "identifier": 8,
+            "type": [
+                {
+                    "type": "struct",
+                    "fields": [
+                        {
+                            "type": "char"
+                        },
+                        {
+                            "type": "char"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "identifier": 9,
+            "type": []
+        },
+        {
+            "identifier": 10,
+            "type": []
+        }
+    ],
+    "data": [],
+    "string_literals": [],
+    "function_declarations": [
+        {
+            "identifier": 0,
+            "name": "inline_asm1",
+            "parameters": 6,
+            "vararg": false,
+            "returns": 7
+        },
+        {
+            "identifier": 1,
+            "name": "inline_asm2",
+            "parameters": 9,
+            "vararg": false,
+            "returns": 10
+        }
+    ],
+    "functions": [
+        {
+            "identifier": 0,
+            "name": "inline_asm1",
+            "locals": 5,
+            "body": [
+                {
+                    "opcode": "getglobal",
+                    "arg": {
+                        "data": "abc"
+                    }
+                },
+                {
+                    "opcode": "getlocals"
+                },
+                {
+                    "opcode": "getglobal",
+                    "arg": {
+                        "data": "abc"
+                    }
+                },
+                {
+                    "opcode": "load32i"
+                },
+                {
+                    "opcode": "pushld",
+                    "arg": 0
+                },
+                {
+                    "opcode": "push",
+                    "arg": 4616358503040784794
+                },
+                {
+                    "opcode": "inlineasm",
+                    "arg": 2
+                }
+            ]
+        },
+        {
+            "identifier": 1,
+            "name": "inline_asm2",
+            "locals": 8,
+            "body": [
+                {
+                    "opcode": "getglobal",
+                    "arg": {
+                        "data": "abc"
+                    }
+                },
+                {
+                    "opcode": "getlocals"
+                },
+                {
+                    "opcode": "getlocals"
+                },
+                {
+                    "opcode": "offsetptr",
+                    "arg": {
+                        "type": 8,
+                        "index": 2
+                    }
+                },
+                {
+                    "opcode": "getglobal",
+                    "arg": {
+                        "data": "lde"
+                    }
+                },
+                {
+                    "opcode": "load64"
+                },
+                {
+                    "opcode": "pushld",
+                    "arg": 0
+                },
+                {
+                    "opcode": "push",
+                    "arg": 4616358503040784794
+                },
+                {
+                    "opcode": "inlineasm",
+                    "arg": 3
+                },
+                {
+                    "opcode": "inlineasm",
+                    "arg": 4
+                }
+            ]
+        }
+    ],
+    "inline_assembly": [
+        {
+            "identifier": 0,
+            "global": true,
+            "template": "inline assembly code here.\ntest...test...test...",
+            "parameters": [],
+            "clobbers": [],
+            "jump_targets": {}
+        },
+        {
+            "identifier": 1,
+            "global": true,
+            "template": "some assembly code here.\nno outputs or inputs are permitted in global context",
+            "parameters": [],
+            "clobbers": [],
+            "jump_targets": {}
+        },
+        {
+            "identifier": 2,
+            "global": false,
+            "template": "some assembly code here.\nregister %0 is an output\nregister %1 is an input\nrax is clobber",
+            "parameters": [
+                {
+                    "parameter": "0",
+                    "class": "store",
+                    "address_index": 4
+                },
+                {
+                    "parameter": "1",
+                    "class": "load_store",
+                    "address_index": 3
+                },
+                {
+                    "parameter": "2",
+                    "class": "read",
+                    "input_index": 2
+                },
+                {
+                    "parameter": "3",
+                    "class": "read",
+                    "input_index": 0
+                }
+            ],
+            "clobbers": [
+                "rax"
+            ],
+            "jump_targets": {}
+        },
+        {
+            "identifier": 3,
+            "global": false,
+            "template": "some assembly code here.\nregister %0 is an output\nregister %1 is an input\nrax, rbx, rcx are clobbers",
+            "parameters": [
+                {
+                    "parameter": "0",
+                    "class": "store",
+                    "address_index": 5
+                },
+                {
+                    "parameter": "1",
+                    "class": "load_store",
+                    "address_index": 4
+                },
+                {
+                    "parameter": "2",
+                    "class": "store",
+                    "address_index": 3
+                },
+                {
+                    "parameter": "3",
+                    "class": "read",
+                    "input_index": 2
+                },
+                {
+                    "parameter": "4",
+                    "class": "read",
+                    "input_index": 0
+                }
+            ],
+            "clobbers": [
+                "rax",
+                "rbx",
+                "rcx"
+            ],
+            "jump_targets": {}
+        },
+        {
+            "identifier": 4,
+            "global": false,
+            "template": "another assembly",
+            "parameters": [],
+            "clobbers": [],
+            "jump_targets": {}
+        }
+    ]
+}

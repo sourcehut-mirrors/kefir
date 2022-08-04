@@ -88,6 +88,10 @@ static kefir_result_t translate_unit_impl(struct kefir_mem *mem, struct kefir_as
                 REQUIRE_OK(kefir_ast_translator_function_context_translate(mem, func_ctx));
             } break;
 
+            case KEFIR_AST_NODE_CATEGORY_INLINE_ASSEMBLY:
+                REQUIRE_OK(kefir_ast_translate_inline_assembly(mem, external_definition, NULL, context));
+                break;
+
             default:
                 return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected external definition node category");
         }

@@ -852,7 +852,7 @@ static kefir_result_t format_inline_assembly_fragment(struct kefir_json_output *
     REQUIRE_OK(kefir_json_output_array_begin(json));
     for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&inline_asm->clobbers, &iter); node != NULL;
          node = kefir_hashtree_next(&iter)) {
-        ASSIGN_DECL_CAST(const char *, clobber, node->value);
+        ASSIGN_DECL_CAST(const char *, clobber, node->key);
         REQUIRE_OK(kefir_json_output_string(json, clobber));
     }
     REQUIRE_OK(kefir_json_output_array_end(json));
