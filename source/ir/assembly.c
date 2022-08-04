@@ -98,12 +98,13 @@ kefir_result_t kefir_ir_inline_assembly_free(struct kefir_mem *mem, struct kefir
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_ir_inline_assembly_add_parameter(
-    struct kefir_mem *mem, struct kefir_symbol_table *symbols, struct kefir_ir_inline_assembly *inline_asm,
-    const char *identifier, kefir_ir_inline_assembly_parameter_class_t param_class,
-    kefir_ir_inline_assembly_parameter_constraint_t constraint, const struct kefir_ir_type *param_type,
-    kefir_size_t param_type_idx, kefir_size_t input_index, kefir_size_t output_index) {
-    UNUSED(output_index);
+kefir_result_t kefir_ir_inline_assembly_add_parameter(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
+                                                      struct kefir_ir_inline_assembly *inline_asm,
+                                                      const char *identifier,
+                                                      kefir_ir_inline_assembly_parameter_class_t param_class,
+                                                      kefir_ir_inline_assembly_parameter_constraint_t constraint,
+                                                      const struct kefir_ir_type *param_type,
+                                                      kefir_size_t param_type_idx, kefir_size_t input_index) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(inline_asm != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR inline assembly"));
     REQUIRE(param_type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid parameter IR type"));

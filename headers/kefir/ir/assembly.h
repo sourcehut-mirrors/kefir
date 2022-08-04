@@ -75,8 +75,7 @@ kefir_result_t kefir_ir_inline_assembly_add_parameter(struct kefir_mem *, struct
                                                       struct kefir_ir_inline_assembly *, const char *,
                                                       kefir_ir_inline_assembly_parameter_class_t,
                                                       kefir_ir_inline_assembly_parameter_constraint_t,
-                                                      const struct kefir_ir_type *, kefir_size_t, kefir_size_t,
-                                                      kefir_size_t);
+                                                      const struct kefir_ir_type *, kefir_size_t, kefir_size_t);
 kefir_result_t kefir_ir_inline_assembly_add_clobber(struct kefir_mem *, struct kefir_symbol_table *,
                                                     struct kefir_ir_inline_assembly *, const char *);
 kefir_result_t kefir_ir_inline_assembly_add_jump_target(struct kefir_mem *, struct kefir_symbol_table *,

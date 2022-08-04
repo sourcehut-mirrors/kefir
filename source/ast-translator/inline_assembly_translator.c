@@ -125,7 +125,7 @@ kefir_result_t kefir_ast_translate_inline_assembly(struct kefir_mem *mem, const 
             REQUIRE_OK(kefir_ast_translate_lvalue(mem, context, builder, param->parameter));
 
             REQUIRE_OK(kefir_ir_inline_assembly_add_parameter(mem, context->ast_context->symbols, ir_inline_asm, name,
-                                                              klass, constraint, ir_type, 0, stack_slot, 0));
+                                                              klass, constraint, ir_type, 0, stack_slot));
         }
 
         // Translate inputs
@@ -183,7 +183,7 @@ kefir_result_t kefir_ast_translate_inline_assembly(struct kefir_mem *mem, const 
             REQUIRE_OK(kefir_ast_translate_expression(mem, param->parameter, builder, context));
 
             REQUIRE_OK(kefir_ir_inline_assembly_add_parameter(mem, context->ast_context->symbols, ir_inline_asm, name,
-                                                              klass, constraint, ir_type, 0, stack_slot, 0));
+                                                              klass, constraint, ir_type, 0, stack_slot));
         }
 
         // Translate clobbers
