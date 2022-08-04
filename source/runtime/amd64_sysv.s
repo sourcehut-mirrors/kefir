@@ -71,6 +71,7 @@ declare_opcode put
 declare_opcode insert
 declare_opcode xchg
 declare_opcode drop
+declare_opcode pushstptr
 declare_opcode iadd
 declare_opcode iadd1
 declare_opcode isub
@@ -258,6 +259,13 @@ define_opcode drop
     rep movsq
     cld
     add rsp, 8
+    end_opcode
+
+define_opcode pushstptr
+    mov rcx, [INSTR_ARG_PTR]
+    shl rcx, 3
+    add rcx, rsp
+    push rcx
     end_opcode
 
 define_opcode iadd

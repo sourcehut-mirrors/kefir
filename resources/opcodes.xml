@@ -43,6 +43,7 @@
     <opcode id="insert"      mnemonic="insert"      code="0x17" type="u64" />
     <opcode id="xchg"        mnemonic="xchg"        code="0x18" type="u64" />
     <opcode id="drop"        mnemonic="drop"        code="0x19" type="u64" />
+    <opcode id="pushstptr"   mnemonic="pushstptr"   code="0x1a" type="u64" />
 
     <!-- Integer arithmetics & bitwise -->
     <opcode id="iadd"        mnemonic="iadd"        code="0x20" type="none" />
