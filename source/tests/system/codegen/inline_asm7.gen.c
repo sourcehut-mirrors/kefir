@@ -57,7 +57,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
                                                                                        "fld %1\n"
                                                                                        "fld %2\n"
                                                                                        "faddp\n"
-                                                                                       "fstp TBYTE PTR %3",
+                                                                                       "fstp %3",
                                                                                        &id1);
 
     REQUIRE(inline_asm1 != NULL, KEFIR_INTERNAL_ERROR);
