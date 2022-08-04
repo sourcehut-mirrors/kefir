@@ -827,20 +827,6 @@ static kefir_result_t format_inline_assembly_fragment(struct kefir_json_output *
                 REQUIRE_OK(kefir_json_output_uinteger(json, param->input_index));
                 break;
 
-            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_WRITE:
-                REQUIRE_OK(kefir_json_output_string(json, "write"));
-                REQUIRE_OK(kefir_json_output_object_key(json, "output_index"));
-                REQUIRE_OK(kefir_json_output_uinteger(json, param->output_index));
-                break;
-
-            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ_WRITE:
-                REQUIRE_OK(kefir_json_output_string(json, "read_write"));
-                REQUIRE_OK(kefir_json_output_object_key(json, "input_index"));
-                REQUIRE_OK(kefir_json_output_uinteger(json, param->input_index));
-                REQUIRE_OK(kefir_json_output_object_key(json, "output_index"));
-                REQUIRE_OK(kefir_json_output_uinteger(json, param->output_index));
-                break;
-
             case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_LOAD:
                 REQUIRE_OK(kefir_json_output_string(json, "load"));
                 REQUIRE_OK(kefir_json_output_object_key(json, "address_index"));

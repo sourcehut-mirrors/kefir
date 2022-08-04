@@ -103,6 +103,7 @@ kefir_result_t kefir_ir_inline_assembly_add_parameter(
     const char *identifier, kefir_ir_inline_assembly_parameter_class_t param_class,
     kefir_ir_inline_assembly_parameter_constraint_t constraint, const struct kefir_ir_type *param_type,
     kefir_size_t param_type_idx, kefir_size_t input_index, kefir_size_t output_index) {
+    UNUSED(output_index);
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(inline_asm != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR inline assembly"));
     REQUIRE(param_type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid parameter IR type"));
@@ -126,7 +127,6 @@ kefir_result_t kefir_ir_inline_assembly_add_parameter(
     param->type.index = param_type_idx;
     param->constraint = constraint;
     param->input_index = input_index;
-    param->output_index = output_index;
 
     kefir_result_t res = kefir_hashtree_insert(mem, &inline_asm->parameters, (kefir_hashtree_key_t) identifier,
                                                (kefir_hashtree_value_t) param);

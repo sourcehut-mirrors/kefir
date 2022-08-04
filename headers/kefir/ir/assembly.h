@@ -30,8 +30,6 @@
 
 typedef enum kefir_ir_inline_assembly_parameter_class {
     KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ,
-    KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_WRITE,
-    KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ_WRITE,
     KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_LOAD,
     KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_STORE,
     KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_LOAD_STORE
@@ -52,7 +50,6 @@ typedef struct kefir_ir_inline_assembly_parameter {
     } type;
     kefir_ir_inline_assembly_parameter_constraint_t constraint;
     kefir_size_t input_index;
-    kefir_size_t output_index;
 } kefir_ir_inline_assembly_parameter_t;
 
 typedef struct kefir_ir_inline_assembly_jump_target {
