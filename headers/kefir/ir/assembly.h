@@ -31,7 +31,10 @@
 typedef enum kefir_ir_inline_assembly_parameter_class {
     KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ,
     KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_WRITE,
-    KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ_WRITE
+    KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ_WRITE,
+    KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_LOAD,
+    KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_STORE,
+    KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_LOAD_STORE
 } kefir_ir_inline_assembly_parameter_class_t;
 
 typedef enum kefir_ir_inline_assembly_parameter_constraint {
