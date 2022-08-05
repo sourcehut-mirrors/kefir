@@ -104,21 +104,21 @@ kefir_result_t kefir_ast_translate_inline_assembly(struct kefir_mem *mem, const 
                                                "Unsupported inline assembly constraint '%s'", param->constraint);
             }
 
+            const struct kefir_ast_type *param_type = KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(
+                mem, context->ast_context->type_bundle, param->parameter->properties.type);
+            REQUIRE(param_type != NULL,
+                    KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to retrieve inline assembly parameter type"));
+
             REQUIRE(ir_type != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR type"));
             struct kefir_irbuilder_type ir_type_builder;
             REQUIRE_OK(kefir_irbuilder_type_init(mem, &ir_type_builder, ir_type));
-            res = kefir_ast_translate_object_type(mem, param->parameter->properties.type, 0, context->environment,
-                                                  &ir_type_builder, NULL);
+            res = kefir_ast_translate_object_type(mem, param_type, 0, context->environment, &ir_type_builder, NULL);
             REQUIRE_ELSE(res == KEFIR_OK, {
                 KEFIR_IRBUILDER_TYPE_FREE(&ir_type_builder);
                 return res;
             });
             REQUIRE_OK(KEFIR_IRBUILDER_TYPE_FREE(&ir_type_builder));
 
-            const struct kefir_ast_type *param_type = KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(
-                mem, context->ast_context->type_bundle, param->parameter->properties.type);
-            REQUIRE(param_type != NULL,
-                    KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to retrieve inline assembly parameter type"));
             stack_slot = --stack_slot_counter;
 
             REQUIRE_OK(kefir_ast_translate_lvalue(mem, context, builder, param->parameter));
@@ -162,21 +162,21 @@ kefir_result_t kefir_ast_translate_inline_assembly(struct kefir_mem *mem, const 
                                                "Unsupported inline assembly constraint '%s'", param->constraint);
             }
 
+            const struct kefir_ast_type *param_type = KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(
+                mem, context->ast_context->type_bundle, param->parameter->properties.type);
+            REQUIRE(param_type != NULL,
+                    KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to retrieve inline assembly parameter type"));
+
             REQUIRE(ir_type != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR type"));
             struct kefir_irbuilder_type ir_type_builder;
             REQUIRE_OK(kefir_irbuilder_type_init(mem, &ir_type_builder, ir_type));
-            res = kefir_ast_translate_object_type(mem, param->parameter->properties.type, 0, context->environment,
-                                                  &ir_type_builder, NULL);
+            res = kefir_ast_translate_object_type(mem, param_type, 0, context->environment, &ir_type_builder, NULL);
             REQUIRE_ELSE(res == KEFIR_OK, {
                 KEFIR_IRBUILDER_TYPE_FREE(&ir_type_builder);
                 return res;
             });
             REQUIRE_OK(KEFIR_IRBUILDER_TYPE_FREE(&ir_type_builder));
 
-            const struct kefir_ast_type *param_type = KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(
-                mem, context->ast_context->type_bundle, param->parameter->properties.type);
-            REQUIRE(param_type != NULL,
-                    KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to retrieve inline assembly parameter type"));
             if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(param_type)) {
                 stack_slot_counter -= 2;
                 stack_slot = stack_slot_counter;
@@ -221,12 +221,18 @@ kefir_result_t kefir_ast_translate_inline_assembly(struct kefir_mem *mem, const 
                 ASSIGN_DECL_CAST(struct kefir_ast_flow_control_point *, jump_target, node->value);
 
                 kefir_size_t jump_trampoline = kefir_irblock_length(builder->block);
-                REQUIRE_OK(kefir_ast_translate_jump(
-                    mem, context, builder,
-                    inline_asm->base.properties.inline_assembly.flow_control_statement->parent_point, jump_target,
-                    &inline_asm->base.source_location));
+                REQUIRE_OK(kefir_ast_translate_jump(mem, context, builder,
+                                                    inline_asm->base.properties.inline_assembly.origin, jump_target,
+                                                    &inline_asm->base.source_location));
+
+                kefir_id_t identifier = next_parameter_id++;
+                snprintf(buffer, sizeof(buffer) - 1, "l" KEFIR_ID_FMT, identifier);
                 REQUIRE_OK(kefir_ir_inline_assembly_add_jump_target(
-                    mem, context->ast_context->symbols, ir_inline_asm, jump_label,
+                    mem, context->ast_context->symbols, ir_inline_asm, buffer,
+                    context->ast_context->surrounding_function_name, jump_trampoline));
+                snprintf(buffer, sizeof(buffer) - 1, "l[%s]", jump_label);
+                REQUIRE_OK(kefir_ir_inline_assembly_add_jump_target(
+                    mem, context->ast_context->symbols, ir_inline_asm, buffer,
                     context->ast_context->surrounding_function_name, jump_trampoline));
             }
 

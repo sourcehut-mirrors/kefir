@@ -97,13 +97,21 @@
             "parameters": [],
             "clobbers": [],
             "jump_targets": {
-                "label_end": {
+                "l0": {
                     "function": "inline_asm1",
                     "target": 2
                 },
-                "label_begin": {
+                "l1": {
                     "function": "inline_asm1",
                     "target": 3
+                },
+                "l[label_begin]": {
+                    "function": "inline_asm1",
+                    "target": 3
+                },
+                "l[label_end]": {
+                    "function": "inline_asm1",
+                    "target": 2
                 }
             }
         }

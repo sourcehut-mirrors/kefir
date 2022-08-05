@@ -222,6 +222,10 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
     REQUIRE(PARSER_TOKEN_IS_KEYWORD(builder->parser, 0, KEFIR_KEYWORD_ASM),
             KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match assembly directive"));
 
+    REQUIRE(!builder->parser->configuration->fail_on_assembly,
+            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, PARSER_TOKEN_LOCATION(builder->parser, 0),
+                                   "Support of inline assembly is disabled"));
+
     struct kefir_ast_inline_assembly_qualifiers qualifiers = {0};
 
     PARSER_SHIFT(builder->parser);

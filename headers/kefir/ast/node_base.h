@@ -94,6 +94,7 @@ typedef struct kefir_ast_node_properties {
 
     struct {
         struct kefir_ast_flow_control_structure *flow_control_statement;
+        struct kefir_ast_flow_control_point *origin;
         struct kefir_ast_flow_control_branching_point *branching_point;
     } inline_assembly;
 } kefir_ast_node_properties_t;

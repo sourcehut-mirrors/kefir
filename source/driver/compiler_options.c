@@ -182,6 +182,7 @@ struct kefir_cli_option KefirCompilerConfigurationOptions[] = {
     FEATURE("permissive-pointer-conv", features.permissive_pointer_conv),
     FEATURE("named-macro-vararg", features.named_macro_vararg),
     FEATURE("include-next", features.include_next),
+    FEATURE("fail-on-assembly", features.fail_on_assembly),
 
     CODEGEN("emulated-tls", codegen.emulated_tls),
     SIMPLE(0, "codegen-syntax", true, KEFIR_CLI_OPTION_ACTION_ASSIGN_STRARG, 0, codegen.syntax)

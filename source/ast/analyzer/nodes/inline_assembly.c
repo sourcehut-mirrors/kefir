@@ -65,6 +65,7 @@ kefir_result_t kefir_ast_analyze_inline_assembly_node(struct kefir_mem *mem, con
         REQUIRE(base->properties.inline_assembly.flow_control_statement != NULL,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &base->source_location,
                                        "Expected inline assembly to be enclosed into a code block"));
+        REQUIRE_OK(context->current_flow_control_point(mem, context, &base->properties.inline_assembly.origin));
 
         REQUIRE_OK(kefir_ast_flow_control_block_add_branching_point(
             mem, base->properties.inline_assembly.flow_control_statement,

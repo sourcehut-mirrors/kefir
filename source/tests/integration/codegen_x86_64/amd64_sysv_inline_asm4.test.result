@@ -161,10 +161,10 @@ mov %cx, %ax
 add %ah, %al
 mov %dl, %ah
 # End of fragment #0 code
-mov %rax, [%rsp]
-mov [%rax], %dl
-mov %rax, [%rsp + 8]
-mov [%rax], %cx
+mov %rsi, [%rsp]
+mov [%rsi], %dl
+mov %rsi, [%rsp + 8]
+mov [%rsi], %cx
 add %rsp, 16
 add %rbx, 16
 jmp [%rbx]

@@ -158,33 +158,33 @@ jmp __kefirrt_inline_assembly0_jump0
 jmp __kefirrt_inline_assembly0_jump1
 jmp __kefirrt_inline_assembly0_jump2
 # End of fragment #0 code
-mov %rcx, [%rsp]
-mov [%rcx], %rax
-mov %rax, [%rsp]
-mov [%rax], %rcx
+mov %r8, [%rsp]
+mov [%r8], %rax
+mov %r8, [%rsp]
+mov [%r8], %rcx
 add %rsp, 24
 jmp __kefirrt_inline_assembly0_jump_end
 __kefirrt_inline_assembly0_jump0:
-mov %rcx, [%rsp]
-mov [%rcx], %rax
-mov %rax, [%rsp]
-mov [%rax], %rcx
+mov %r8, [%rsp]
+mov [%r8], %rax
+mov %r8, [%rsp]
+mov [%r8], %rcx
 add %rsp, 24
 lea %rbx, [__func1_body + 160]
 jmp [%rbx]
 __kefirrt_inline_assembly0_jump1:
-mov %rcx, [%rsp]
-mov [%rcx], %rax
-mov %rax, [%rsp]
-mov [%rax], %rcx
+mov %r8, [%rsp]
+mov [%r8], %rax
+mov %r8, [%rsp]
+mov [%r8], %rcx
 add %rsp, 24
 lea %rbx, [__func2_body + 320]
 jmp [%rbx]
 __kefirrt_inline_assembly0_jump2:
-mov %rcx, [%rsp]
-mov [%rcx], %rax
-mov %rax, [%rsp]
-mov [%rax], %rcx
+mov %r8, [%rsp]
+mov [%r8], %rax
+mov %r8, [%rsp]
+mov [%r8], %rcx
 add %rsp, 24
 lea %rbx, [__func3_body + 480]
 jmp [%rbx]

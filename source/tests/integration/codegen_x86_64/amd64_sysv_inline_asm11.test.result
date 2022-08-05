@@ -160,8 +160,8 @@ mov %rax, %rcx
 add %rcx, 1
 mov QWORD PTR [%rdx], %rcx
 # End of fragment #0 code
-mov %rcx, [%rsp]
-mov [%rcx], %rax
+mov %rsi, [%rsp]
+mov [%rsi], %rax
 add %rsp, 16
 add %rbx, 16
 jmp [%rbx]
