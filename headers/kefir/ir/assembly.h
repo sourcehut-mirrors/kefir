@@ -42,7 +42,8 @@ typedef enum kefir_ir_inline_assembly_parameter_constraint {
 } kefir_ir_inline_assembly_parameter_constraint_t;
 
 typedef struct kefir_ir_inline_assembly_parameter {
-    const char *template_parameter;
+    kefir_id_t parameter_id;
+    struct kefir_list identifiers;
     kefir_ir_inline_assembly_parameter_class_t klass;
     struct {
         const struct kefir_ir_type *type;
@@ -63,6 +64,7 @@ typedef struct kefir_ir_inline_assembly {
     kefir_id_t id;
     const char *template;
     struct kefir_hashtree parameters;
+    struct kefir_list parameter_list;
     struct kefir_hashtree clobbers;
     struct kefir_hashtree jump_targets;
     kefir_id_t next_jump_target_id;
@@ -75,7 +77,11 @@ kefir_result_t kefir_ir_inline_assembly_add_parameter(struct kefir_mem *, struct
                                                       struct kefir_ir_inline_assembly *, const char *,
                                                       kefir_ir_inline_assembly_parameter_class_t,
                                                       kefir_ir_inline_assembly_parameter_constraint_t,
-                                                      const struct kefir_ir_type *, kefir_size_t, kefir_size_t);
+                                                      const struct kefir_ir_type *, kefir_size_t, kefir_size_t,
+                                                      struct kefir_ir_inline_assembly_parameter **);
+kefir_result_t kefir_ir_inline_assembly_add_parameter_alias(struct kefir_mem *, struct kefir_symbol_table *,
+                                                            struct kefir_ir_inline_assembly *,
+                                                            struct kefir_ir_inline_assembly_parameter *, const char *);
 kefir_result_t kefir_ir_inline_assembly_add_clobber(struct kefir_mem *, struct kefir_symbol_table *,
                                                     struct kefir_ir_inline_assembly *, const char *);
 kefir_result_t kefir_ir_inline_assembly_add_jump_target(struct kefir_mem *, struct kefir_symbol_table *,

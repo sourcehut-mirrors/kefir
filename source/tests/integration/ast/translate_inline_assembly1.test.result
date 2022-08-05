@@ -208,22 +208,34 @@
             "template": "some assembly code here.\nregister %0 is an output\nregister %1 is an input\nrax is clobber",
             "parameters": [
                 {
-                    "parameter": "0",
+                    "identifier": 0,
+                    "names": [
+                        "0"
+                    ],
                     "class": "store",
                     "address_index": 4
                 },
                 {
-                    "parameter": "1",
+                    "identifier": 1,
+                    "names": [
+                        "1"
+                    ],
                     "class": "load_store",
                     "address_index": 3
                 },
                 {
-                    "parameter": "2",
+                    "identifier": 2,
+                    "names": [
+                        "2"
+                    ],
                     "class": "read",
                     "input_index": 2
                 },
                 {
-                    "parameter": "3",
+                    "identifier": 3,
+                    "names": [
+                        "3"
+                    ],
                     "class": "read",
                     "input_index": 0
                 }
@@ -239,27 +251,42 @@
             "template": "some assembly code here.\nregister %0 is an output\nregister %1 is an input\nrax, rbx, rcx are clobbers",
             "parameters": [
                 {
-                    "parameter": "0",
+                    "identifier": 0,
+                    "names": [
+                        "0"
+                    ],
                     "class": "store",
                     "address_index": 5
                 },
                 {
-                    "parameter": "1",
+                    "identifier": 1,
+                    "names": [
+                        "1"
+                    ],
                     "class": "load_store",
                     "address_index": 4
                 },
                 {
-                    "parameter": "2",
+                    "identifier": 2,
+                    "names": [
+                        "2"
+                    ],
                     "class": "store",
                     "address_index": 3
                 },
                 {
-                    "parameter": "3",
+                    "identifier": 3,
+                    "names": [
+                        "3"
+                    ],
                     "class": "read",
                     "input_index": 2
                 },
                 {
-                    "parameter": "4",
+                    "identifier": 4,
+                    "names": [
+                        "4"
+                    ],
                     "class": "read",
                     "input_index": 0
                 }

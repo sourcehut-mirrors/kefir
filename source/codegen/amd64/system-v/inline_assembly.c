@@ -137,7 +137,7 @@ static kefir_result_t init_available_regs(struct kefir_mem *mem, struct inline_a
     return KEFIR_OK;
 }
 
-static kefir_result_t insert_param_map(struct kefir_mem *mem, struct inline_assembly_params *params, const char *key,
+static kefir_result_t insert_param_map(struct kefir_mem *mem, struct inline_assembly_params *params, kefir_id_t key,
                                        enum inline_assembly_param_map_type type, kefir_amd64_xasmgen_register_t reg,
                                        kefir_int64_t stack_index, struct inline_assembly_param_map **map_ptr) {
     struct inline_assembly_param_map *map = KEFIR_MALLOC(mem, sizeof(struct inline_assembly_param_map));
@@ -234,8 +234,8 @@ static kefir_result_t map_parameter_to_register(struct kefir_mem *mem, struct in
             KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unable to satisfy IR inline assembly constraints"));
     reg = (kefir_amd64_xasmgen_register_t) kefir_list_head(&params->available_int_regs)->value;
     REQUIRE_OK(kefir_list_pop(mem, &params->available_int_regs, kefir_list_head(&params->available_int_regs)));
-    REQUIRE_OK(insert_param_map(mem, params, asm_param->template_parameter, INLINE_ASSEMBLY_PARAM_REGISTER_DIRECT, reg,
-                                0, param_map));
+    REQUIRE_OK(insert_param_map(mem, params, asm_param->parameter_id, INLINE_ASSEMBLY_PARAM_REGISTER_DIRECT, reg, 0,
+                                param_map));
     REQUIRE_OK(kefir_hashtree_insert(mem, &params->dirty_regs, (kefir_hashtree_key_t) reg, (kefir_hashtree_value_t) 0));
     if (param_type == INLINE_ASSEMBLY_PARAM_AGGREGATE) {
         REQUIRE_OK(kefir_list_insert_after(mem, &params->register_aggregate_params,
@@ -256,12 +256,12 @@ static kefir_result_t map_parameter_to_memory(struct kefir_mem *mem, struct inli
                 KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unable to satisfy IR inline assembly constraints"));
         reg = (kefir_amd64_xasmgen_register_t) kefir_list_head(&params->available_int_regs)->value;
         REQUIRE_OK(kefir_list_pop(mem, &params->available_int_regs, kefir_list_head(&params->available_int_regs)));
-        REQUIRE_OK(insert_param_map(mem, params, asm_param->template_parameter, INLINE_ASSEMBLY_PARAM_REGISTER_INDIRECT,
-                                    reg, 0, param_map));
+        REQUIRE_OK(insert_param_map(mem, params, asm_param->parameter_id, INLINE_ASSEMBLY_PARAM_REGISTER_INDIRECT, reg,
+                                    0, param_map));
         REQUIRE_OK(
             kefir_hashtree_insert(mem, &params->dirty_regs, (kefir_hashtree_key_t) reg, (kefir_hashtree_value_t) 0));
     } else {
-        REQUIRE_OK(insert_param_map(mem, params, asm_param->template_parameter, INLINE_ASSEMBLY_PARAM_STACK, 0,
+        REQUIRE_OK(insert_param_map(mem, params, asm_param->parameter_id, INLINE_ASSEMBLY_PARAM_STACK, 0,
                                     asm_param->input_index, param_map));
     }
 
@@ -271,10 +271,9 @@ static kefir_result_t map_parameter_to_memory(struct kefir_mem *mem, struct inli
 static kefir_result_t map_parameters(struct kefir_mem *mem, const struct kefir_ir_inline_assembly *inline_asm,
                                      struct inline_assembly_params *params) {
 
-    struct kefir_hashtree_node_iterator iter;
-    for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&inline_asm->parameters, &iter); node != NULL;
-         node = kefir_hashtree_next(&iter)) {
-        ASSIGN_DECL_CAST(const struct kefir_ir_inline_assembly_parameter *, asm_param, node->value);
+    for (const struct kefir_list_entry *iter = kefir_list_head(&inline_asm->parameter_list); iter != NULL;
+         kefir_list_next(&iter)) {
+        ASSIGN_DECL_CAST(const struct kefir_ir_inline_assembly_parameter *, asm_param, iter->value);
 
         enum inline_assembly_param_type param_type;
         kefir_size_t parameter_size;
@@ -421,14 +420,13 @@ static kefir_result_t match_register_to_size(kefir_amd64_xasmgen_register_t in, 
 static kefir_result_t load_inputs(struct kefir_codegen_amd64 *codegen,
                                   const struct kefir_ir_inline_assembly *inline_asm,
                                   struct inline_assembly_params *params) {
-    struct kefir_hashtree_node_iterator iter;
-    for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&inline_asm->parameters, &iter); node != NULL;
-         node = kefir_hashtree_next(&iter)) {
-        ASSIGN_DECL_CAST(const struct kefir_ir_inline_assembly_parameter *, asm_param, node->value);
+    for (const struct kefir_list_entry *iter = kefir_list_head(&inline_asm->parameter_list); iter != NULL;
+         kefir_list_next(&iter)) {
+        ASSIGN_DECL_CAST(const struct kefir_ir_inline_assembly_parameter *, asm_param, iter->value);
 
         struct kefir_hashtree_node *map_node;
-        REQUIRE_OK(kefir_hashtree_at(&params->parameter_mapping, (kefir_hashtree_key_t) asm_param->template_parameter,
-                                     &map_node));
+        REQUIRE_OK(
+            kefir_hashtree_at(&params->parameter_mapping, (kefir_hashtree_key_t) asm_param->parameter_id, &map_node));
         ASSIGN_DECL_CAST(struct inline_assembly_param_map *, param_map, map_node->value);
 
         if (asm_param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_STORE &&
@@ -571,8 +569,8 @@ static kefir_result_t store_register_aggregate_outputs(struct kefir_codegen_amd6
         }
 
         struct kefir_hashtree_node *map_node;
-        REQUIRE_OK(kefir_hashtree_at(&params->parameter_mapping, (kefir_hashtree_key_t) asm_param->template_parameter,
-                                     &map_node));
+        REQUIRE_OK(
+            kefir_hashtree_at(&params->parameter_mapping, (kefir_hashtree_key_t) asm_param->parameter_id, &map_node));
         ASSIGN_DECL_CAST(struct inline_assembly_param_map *, param_map, map_node->value);
 
         kefir_amd64_xasmgen_register_t data_reg = KEFIR_AMD64_XASMGEN_REGISTER_RAX;
@@ -603,10 +601,9 @@ static kefir_result_t store_outputs(struct kefir_codegen_amd64 *codegen,
                                     const struct kefir_ir_inline_assembly *inline_asm,
                                     struct inline_assembly_params *params) {
 
-    struct kefir_hashtree_node_iterator iter;
-    for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&inline_asm->parameters, &iter); node != NULL;
-         node = kefir_hashtree_next(&iter)) {
-        ASSIGN_DECL_CAST(const struct kefir_ir_inline_assembly_parameter *, asm_param, node->value);
+    for (const struct kefir_list_entry *iter = kefir_list_head(&inline_asm->parameter_list); iter != NULL;
+         kefir_list_next(&iter)) {
+        ASSIGN_DECL_CAST(const struct kefir_ir_inline_assembly_parameter *, asm_param, iter->value);
 
         if (asm_param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ ||
             asm_param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_LOAD) {
@@ -614,8 +611,8 @@ static kefir_result_t store_outputs(struct kefir_codegen_amd64 *codegen,
         }
 
         struct kefir_hashtree_node *map_node;
-        REQUIRE_OK(kefir_hashtree_at(&params->parameter_mapping, (kefir_hashtree_key_t) asm_param->template_parameter,
-                                     &map_node));
+        REQUIRE_OK(
+            kefir_hashtree_at(&params->parameter_mapping, (kefir_hashtree_key_t) asm_param->parameter_id, &map_node));
         ASSIGN_DECL_CAST(struct inline_assembly_param_map *, param_map, map_node->value);
 
         const struct kefir_ir_typeentry *param_type = kefir_ir_type_at(asm_param->type.type, asm_param->type.index);
@@ -768,15 +765,14 @@ static kefir_result_t format_template(struct kefir_mem *mem, struct kefir_codege
                     struct kefir_hashtree_node_iterator iter;
                     for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&inline_asm->parameters, &iter);
                          !match && node != NULL; node = kefir_hashtree_next(&iter)) {
+                        ASSIGN_DECL_CAST(const char *, identifier, node->key);
                         ASSIGN_DECL_CAST(const struct kefir_ir_inline_assembly_parameter *, asm_param, node->value);
 
-                        kefir_size_t template_parameter_length = strlen(asm_param->template_parameter);
-                        if (strncmp(format_specifier + 1, asm_param->template_parameter, template_parameter_length) ==
-                            0) {
+                        kefir_size_t template_parameter_length = strlen(identifier);
+                        if (strncmp(format_specifier + 1, identifier, template_parameter_length) == 0) {
                             struct kefir_hashtree_node *map_node;
                             REQUIRE_OK(kefir_hashtree_at(&params->parameter_mapping,
-                                                         (kefir_hashtree_key_t) asm_param->template_parameter,
-                                                         &map_node));
+                                                         (kefir_hashtree_key_t) asm_param->parameter_id, &map_node));
                             ASSIGN_DECL_CAST(struct inline_assembly_param_map *, param_map, map_node->value);
 
                             switch (param_map->type) {
@@ -993,7 +989,7 @@ kefir_result_t kefir_codegen_amd64_sysv_inline_assembly_embed(struct kefir_mem *
     REQUIRE_OK(kefir_hashtree_init(&params.dirty_regs, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_list_init(&params.available_int_regs));
     REQUIRE_OK(kefir_list_init(&params.preserved_regs));
-    REQUIRE_OK(kefir_hashtree_init(&params.parameter_mapping, &kefir_hashtree_str_ops));
+    REQUIRE_OK(kefir_hashtree_init(&params.parameter_mapping, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_on_removal(&params.parameter_mapping, param_map_free, NULL));
     REQUIRE_OK(kefir_list_init(&params.register_aggregate_params));
     REQUIRE_OK(kefir_string_builder_init(&params.formatted_asm));

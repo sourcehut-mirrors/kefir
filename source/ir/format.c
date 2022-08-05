@@ -817,8 +817,16 @@ static kefir_result_t format_inline_assembly_fragment(struct kefir_json_output *
          node = kefir_hashtree_next(&iter)) {
         ASSIGN_DECL_CAST(struct kefir_ir_inline_assembly_parameter *, param, node->value);
         REQUIRE_OK(kefir_json_output_object_begin(json));
-        REQUIRE_OK(kefir_json_output_object_key(json, "parameter"));
-        REQUIRE_OK(kefir_json_output_string(json, param->template_parameter));
+        REQUIRE_OK(kefir_json_output_object_key(json, "identifier"));
+        REQUIRE_OK(kefir_json_output_uinteger(json, param->parameter_id));
+        REQUIRE_OK(kefir_json_output_object_key(json, "names"));
+        REQUIRE_OK(kefir_json_output_array_begin(json));
+        for (const struct kefir_list_entry *iter = kefir_list_head(&param->identifiers); iter != NULL;
+             kefir_list_next(&iter)) {
+            ASSIGN_DECL_CAST(const char *, name, iter->value);
+            REQUIRE_OK(kefir_json_output_string(json, name));
+        }
+        REQUIRE_OK(kefir_json_output_array_end(json));
         REQUIRE_OK(kefir_json_output_object_key(json, "class"));
         switch (param->klass) {
             case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ:
