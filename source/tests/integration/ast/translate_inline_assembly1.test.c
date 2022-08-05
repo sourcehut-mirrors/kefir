@@ -77,6 +77,9 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         kefir_ast_translate_inline_assembly(mem, KEFIR_AST_NODE_BASE(inline_asm1), NULL, &global_translator_context));
 
     FUNC2("inline_asm1", {
+        struct kefir_ast_flow_control_structure *flow_control = NULL;
+        REQUIRE_OK(kefir_ast_flow_control_tree_push(mem, &local_context.flow_control_tree,
+                                                    KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK, &flow_control));
         REQUIRE_OK(local_context.context.define_identifier(
             mem, &local_context.context, true, "ld1", kefir_ast_type_long_double(),
             KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO, KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, NULL));
@@ -111,6 +114,9 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     });
 
     FUNC2("inline_asm2", {
+        struct kefir_ast_flow_control_structure *flow_control = NULL;
+        REQUIRE_OK(kefir_ast_flow_control_tree_push(mem, &local_context.flow_control_tree,
+                                                    KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK, &flow_control));
         REQUIRE_OK(local_context.context.define_identifier(
             mem, &local_context.context, true, "chr", kefir_ast_type_char(), KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO,
             KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, NULL));

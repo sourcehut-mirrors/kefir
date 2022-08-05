@@ -62,7 +62,27 @@ kefir_result_t kefir_ast_analyze_inline_assembly_node(struct kefir_mem *mem, con
 
         REQUIRE_OK(kefir_ast_flow_control_tree_top(context->flow_control_tree,
                                                    &base->properties.inline_assembly.flow_control_statement));
-        // TODO Analyze goto labels
+        REQUIRE(base->properties.inline_assembly.flow_control_statement != NULL,
+                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &base->source_location,
+                                       "Expected inline assembly to be enclosed into a code block"));
+
+        REQUIRE_OK(kefir_ast_flow_control_block_add_branching_point(
+            mem, base->properties.inline_assembly.flow_control_statement,
+            &base->properties.inline_assembly.branching_point));
+        for (const struct kefir_list_entry *iter = kefir_list_head(&node->jump_labels); iter != NULL;
+             kefir_list_next(&iter)) {
+
+            ASSIGN_DECL_CAST(const char *, jump_label, iter->value);
+
+            const struct kefir_ast_scoped_identifier *scoped_id = NULL;
+            REQUIRE_OK(
+                context->reference_label(mem, context, jump_label, NULL, &node->base.source_location, &scoped_id));
+            kefir_result_t res = kefir_ast_flow_control_branching_point_append(
+                mem, base->properties.inline_assembly.branching_point, jump_label, scoped_id->label.point);
+            if (res != KEFIR_ALREADY_EXISTS) {
+                REQUIRE_OK(res);
+            }
+        }
     } else {
         REQUIRE(kefir_list_length(&node->outputs) == 0,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->base.source_location,

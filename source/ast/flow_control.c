@@ -172,6 +172,40 @@ kefir_result_t kefir_ast_flow_control_structure_data_elements_current_range(
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_ast_flow_control_branching_point_init(struct kefir_ast_flow_control_branching_point *brpoint) {
+    REQUIRE(brpoint != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to AST flow control branching point"));
+
+    REQUIRE_OK(kefir_hashtree_init(&brpoint->branches, &kefir_hashtree_str_ops));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_ast_flow_control_branching_point_free(struct kefir_mem *mem,
+                                                           struct kefir_ast_flow_control_branching_point *brpoint) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(brpoint != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST flow control branching point"));
+
+    REQUIRE_OK(kefir_hashtree_free(mem, &brpoint->branches));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_ast_flow_control_branching_point_append(struct kefir_mem *mem,
+                                                             struct kefir_ast_flow_control_branching_point *brpoint,
+                                                             const char *identifier,
+                                                             struct kefir_ast_flow_control_point *point) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(brpoint != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST flow control branching point"));
+    REQUIRE(identifier != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST flow control branch identifier"));
+    REQUIRE(point != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST flow control point"));
+
+    REQUIRE_OK(kefir_hashtree_insert(mem, &brpoint->branches, (kefir_hashtree_key_t) identifier,
+                                     (kefir_hashtree_value_t) point));
+    return KEFIR_OK;
+}
+
 static kefir_result_t flow_control_statement_free(struct kefir_mem *mem, void *node, void *payload) {
     UNUSED(payload);
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
@@ -192,6 +226,7 @@ static kefir_result_t flow_control_statement_free(struct kefir_mem *mem, void *n
 
     switch (statement->type) {
         case KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK:
+            REQUIRE_OK(kefir_list_free(mem, &statement->value.block.branching_points));
             REQUIRE_OK(kefir_ast_flow_control_structure_data_elements_free(mem, &statement->value.block.data_elements));
             break;
 
@@ -268,6 +303,19 @@ static kefir_result_t point_tree_free(struct kefir_mem *mem, struct kefir_hashtr
     return KEFIR_OK;
 }
 
+static kefir_result_t free_branching_point(struct kefir_mem *mem, struct kefir_list *list,
+                                           struct kefir_list_entry *entry, void *payload) {
+    UNUSED(list);
+    UNUSED(payload);
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(entry != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid list entry"));
+
+    ASSIGN_DECL_CAST(struct kefir_ast_flow_control_branching_point *, brpoint, entry->value);
+    REQUIRE_OK(kefir_ast_flow_control_branching_point_free(mem, brpoint));
+    KEFIR_FREE(mem, brpoint);
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_ast_flow_control_tree_push(struct kefir_mem *mem, struct kefir_ast_flow_control_tree *tree,
                                                 kefir_ast_flow_control_structure_type_t type,
                                                 struct kefir_ast_flow_control_structure **statement) {
@@ -298,6 +346,8 @@ kefir_result_t kefir_ast_flow_control_tree_push(struct kefir_mem *mem, struct ke
         case KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK:
             stmt->value.block.contains_vla = false;
             REQUIRE_OK(kefir_ast_flow_control_structure_data_elements_init(&stmt->value.block.data_elements));
+            REQUIRE_OK(kefir_list_init(&stmt->value.block.branching_points));
+            REQUIRE_OK(kefir_list_on_remove(&stmt->value.block.branching_points, free_branching_point, NULL));
             break;
 
         case KEFIR_AST_FLOW_CONTROL_STRUCTURE_IF:
@@ -400,6 +450,33 @@ kefir_result_t kefir_ast_flow_control_block_add_data_element(struct kefir_mem *m
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected AST flow control tree statement to be block"));
 
     REQUIRE_OK(kefir_ast_flow_control_structure_data_elements_append(mem, &stmt->value.block.data_elements, element));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_ast_flow_control_block_add_branching_point(
+    struct kefir_mem *mem, struct kefir_ast_flow_control_structure *stmt,
+    struct kefir_ast_flow_control_branching_point **brpoint_ptr) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(stmt != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST flow control tree statement"));
+    REQUIRE(brpoint_ptr != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to AST flow control branching point"));
+    REQUIRE(stmt->type == KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected AST flow control tree statement to be block"));
+
+    struct kefir_ast_flow_control_branching_point *brpoint =
+        KEFIR_MALLOC(mem, sizeof(struct kefir_ast_flow_control_branching_point));
+    REQUIRE(brpoint != NULL,
+            KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST flow control branching point"));
+
+    kefir_result_t res = kefir_ast_flow_control_branching_point_init(brpoint);
+    REQUIRE_CHAIN(&res, kefir_list_insert_after(mem, &stmt->value.block.branching_points,
+                                                kefir_list_tail(&stmt->value.block.branching_points), brpoint));
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_FREE(mem, brpoint);
+        return res;
+    });
+
+    *brpoint_ptr = brpoint;
     return KEFIR_OK;
 }
 

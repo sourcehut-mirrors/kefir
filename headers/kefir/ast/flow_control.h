@@ -88,6 +88,17 @@ kefir_result_t kefir_ast_flow_control_structure_data_elements_current_range(
     const struct kefir_ast_flow_control_structure_data_elements *,
     struct kefir_ast_flow_control_structure_data_element_range *);
 
+typedef struct kefir_ast_flow_control_branching_point {
+    struct kefir_hashtree branches;
+} kefir_ast_flow_control_branching_point_t;
+
+kefir_result_t kefir_ast_flow_control_branching_point_init(struct kefir_ast_flow_control_branching_point *);
+kefir_result_t kefir_ast_flow_control_branching_point_free(struct kefir_mem *,
+                                                           struct kefir_ast_flow_control_branching_point *);
+kefir_result_t kefir_ast_flow_control_branching_point_append(struct kefir_mem *,
+                                                             struct kefir_ast_flow_control_branching_point *,
+                                                             const char *, struct kefir_ast_flow_control_point *);
+
 typedef enum kefir_ast_flow_control_structure_type {
     KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK,
     KEFIR_AST_FLOW_CONTROL_STRUCTURE_IF,
@@ -115,6 +126,7 @@ typedef struct kefir_ast_flow_control_structure {
         struct {
             kefir_bool_t contains_vla;
             struct kefir_ast_flow_control_structure_data_elements data_elements;
+            struct kefir_list branching_points;
         } block;
 
         struct {
@@ -167,6 +179,10 @@ kefir_result_t kefir_ast_flow_control_tree_traverse(struct kefir_ast_flow_contro
 kefir_result_t kefir_ast_flow_control_block_add_data_element(struct kefir_mem *,
                                                              struct kefir_ast_flow_control_structure *,
                                                              struct kefir_ast_flow_control_data_element *);
+
+kefir_result_t kefir_ast_flow_control_block_add_branching_point(struct kefir_mem *,
+                                                                struct kefir_ast_flow_control_structure *,
+                                                                struct kefir_ast_flow_control_branching_point **);
 
 kefir_result_t kefir_ast_flow_control_point_common_parent(struct kefir_ast_flow_control_point *,
                                                           struct kefir_ast_flow_control_point *,
