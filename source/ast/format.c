@@ -1336,6 +1336,87 @@ static kefir_result_t visit_attribute_list(const struct kefir_ast_visitor *visit
     return KEFIR_OK;
 }
 
+static kefir_result_t format_inline_assembly_param(struct kefir_json_output *json,
+                                                   const struct kefir_ast_inline_assembly_parameter *parameter,
+                                                   kefir_bool_t display_source_location) {
+    REQUIRE_OK(kefir_json_output_object_begin(json));
+    REQUIRE_OK(kefir_json_output_object_key(json, "symbolicName"));
+    if (parameter->parameter_name != NULL) {
+        REQUIRE_OK(kefir_json_output_string(json, parameter->parameter_name));
+    } else {
+        REQUIRE_OK(kefir_json_output_null(json));
+    }
+    REQUIRE_OK(kefir_json_output_object_key(json, "constraint"));
+    REQUIRE_OK(kefir_json_output_string(json, parameter->constraint));
+    REQUIRE_OK(kefir_json_output_object_key(json, "parameter"));
+    REQUIRE_OK(kefir_ast_format(json, parameter->parameter, display_source_location));
+    REQUIRE_OK(kefir_json_output_object_end(json));
+    return KEFIR_OK;
+}
+
+static kefir_result_t visit_inline_assembly(const struct kefir_ast_visitor *visitor,
+                                            const struct kefir_ast_inline_assembly *node, void *payload) {
+    UNUSED(visitor);
+    REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST inline assembly node"));
+    REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid payload"));
+    ASSIGN_DECL_CAST(struct visitor_param *, param, payload);
+    struct kefir_json_output *json = param->json;
+
+    REQUIRE_OK(kefir_json_output_object_begin(json));
+    REQUIRE_OK(kefir_json_output_object_key(json, "class"));
+    REQUIRE_OK(kefir_json_output_string(json, "inline_assembly"));
+    REQUIRE_OK(kefir_json_output_object_key(json, "template"));
+    REQUIRE_OK(kefir_json_output_string(json, node->asm_template));
+    REQUIRE_OK(kefir_json_output_object_key(json, "qualifiers"));
+    REQUIRE_OK(kefir_json_output_object_begin(json));
+    REQUIRE_OK(kefir_json_output_object_key(json, "volatile"));
+    REQUIRE_OK(kefir_json_output_boolean(json, node->qualifiers.volatile_qualifier));
+    REQUIRE_OK(kefir_json_output_object_key(json, "inline"));
+    REQUIRE_OK(kefir_json_output_boolean(json, node->qualifiers.inline_qualifier));
+    REQUIRE_OK(kefir_json_output_object_key(json, "goto"));
+    REQUIRE_OK(kefir_json_output_boolean(json, node->qualifiers.goto_qualifier));
+    REQUIRE_OK(kefir_json_output_object_end(json));
+    REQUIRE_OK(kefir_json_output_object_key(json, "outputs"));
+    REQUIRE_OK(kefir_json_output_array_begin(json));
+    for (const struct kefir_list_entry *iter = kefir_list_head(&node->outputs); iter != NULL; kefir_list_next(&iter)) {
+
+        ASSIGN_DECL_CAST(const struct kefir_ast_inline_assembly_parameter *, parameter, iter->value);
+        REQUIRE_OK(format_inline_assembly_param(json, parameter, param->display_source_location));
+    }
+    REQUIRE_OK(kefir_json_output_array_end(json));
+    REQUIRE_OK(kefir_json_output_object_key(json, "inputs"));
+    REQUIRE_OK(kefir_json_output_array_begin(json));
+    for (const struct kefir_list_entry *iter = kefir_list_head(&node->inputs); iter != NULL; kefir_list_next(&iter)) {
+
+        ASSIGN_DECL_CAST(const struct kefir_ast_inline_assembly_parameter *, parameter, iter->value);
+        REQUIRE_OK(format_inline_assembly_param(json, parameter, param->display_source_location));
+    }
+    REQUIRE_OK(kefir_json_output_array_end(json));
+    REQUIRE_OK(kefir_json_output_object_key(json, "clobbers"));
+    REQUIRE_OK(kefir_json_output_array_begin(json));
+    for (const struct kefir_list_entry *iter = kefir_list_head(&node->clobbers); iter != NULL; kefir_list_next(&iter)) {
+
+        ASSIGN_DECL_CAST(const char *, clobber, iter->value);
+        REQUIRE_OK(kefir_json_output_string(json, clobber));
+    }
+    REQUIRE_OK(kefir_json_output_array_end(json));
+    REQUIRE_OK(kefir_json_output_object_key(json, "jump_labels"));
+    REQUIRE_OK(kefir_json_output_array_begin(json));
+    for (const struct kefir_list_entry *iter = kefir_list_head(&node->jump_labels); iter != NULL;
+         kefir_list_next(&iter)) {
+
+        ASSIGN_DECL_CAST(const char *, jump_label, iter->value);
+        REQUIRE_OK(kefir_json_output_string(json, jump_label));
+    }
+    REQUIRE_OK(kefir_json_output_array_end(json));
+
+    if (param->display_source_location) {
+        REQUIRE_OK(format_source_location(json, KEFIR_AST_NODE_BASE(node)));
+    }
+    REQUIRE_OK(kefir_json_output_object_end(json));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_ast_format(struct kefir_json_output *json, const struct kefir_ast_node_base *node,
                                 kefir_bool_t display_source_location) {
     REQUIRE(json != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid JSON output"));
@@ -1384,6 +1465,7 @@ kefir_result_t kefir_ast_format(struct kefir_json_output *json, const struct kef
     visitor.goto_address_statement = visit_goto_address_statement;
     visitor.statement_expression = visit_statement_expression;
     visitor.attribute_list = visit_attribute_list;
+    visitor.inline_assembly = visit_inline_assembly;
     REQUIRE_OK(node->klass->visit(node, &visitor, &param));
     return KEFIR_OK;
 }

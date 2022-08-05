@@ -1416,3 +1416,162 @@ kefir_result_t kefir_parser_ast_builder_attribute_parameter(struct kefir_mem *me
     });
     return KEFIR_OK;
 }
+
+kefir_result_t kefir_parser_ast_builder_inline_assembly(struct kefir_mem *mem, struct kefir_parser_ast_builder *builder,
+                                                        struct kefir_ast_inline_assembly_qualifiers qualifiers,
+                                                        const char *asm_template) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST builder"));
+
+    struct kefir_ast_inline_assembly *inline_asm = kefir_ast_new_inline_assembly(mem, qualifiers, asm_template);
+    REQUIRE(inline_asm != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate AST inline assembly"));
+
+    kefir_result_t res = kefir_parser_ast_builder_push(mem, builder, KEFIR_AST_NODE_BASE(inline_asm));
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(inline_asm));
+        return res;
+    });
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_parser_ast_builder_inline_assembly_add_output(struct kefir_mem *mem,
+                                                                   struct kefir_parser_ast_builder *builder,
+                                                                   const char *parameter_name, const char *constraint) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST builder"));
+    REQUIRE(constraint != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST inline assembly parameter constraint"));
+
+    struct kefir_ast_node_base *inline_asm_node = NULL;
+    struct kefir_ast_node_base *parameter = NULL;
+    REQUIRE_OK(kefir_parser_ast_builder_pop(mem, builder, &parameter));
+    kefir_result_t res = kefir_parser_ast_builder_pop(mem, builder, &inline_asm_node);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_AST_NODE_FREE(mem, parameter);
+        return res;
+    });
+    REQUIRE_ELSE(inline_asm_node->klass->type == KEFIR_AST_INLINE_ASSEMBLY, {
+        KEFIR_AST_NODE_FREE(mem, inline_asm_node);
+        KEFIR_AST_NODE_FREE(mem, parameter);
+        return KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Expected AST inline assembly node");
+    });
+    ASSIGN_DECL_CAST(struct kefir_ast_inline_assembly *, inline_asm, inline_asm_node->self);
+
+    res = kefir_ast_inline_assembly_add_output(mem, builder->parser->symbols, inline_asm, parameter_name, constraint,
+                                               parameter);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_AST_NODE_FREE(mem, inline_asm_node);
+        KEFIR_AST_NODE_FREE(mem, parameter);
+        return res;
+    });
+
+    res = kefir_parser_ast_builder_push(mem, builder, inline_asm_node);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_AST_NODE_FREE(mem, inline_asm_node);
+        return res;
+    });
+
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_parser_ast_builder_inline_assembly_add_input(struct kefir_mem *mem,
+                                                                  struct kefir_parser_ast_builder *builder,
+                                                                  const char *parameter_name, const char *constraint) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST builder"));
+    REQUIRE(constraint != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST inline assembly parameter constraint"));
+
+    struct kefir_ast_node_base *inline_asm_node = NULL;
+    struct kefir_ast_node_base *parameter = NULL;
+    REQUIRE_OK(kefir_parser_ast_builder_pop(mem, builder, &parameter));
+    kefir_result_t res = kefir_parser_ast_builder_pop(mem, builder, &inline_asm_node);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_AST_NODE_FREE(mem, parameter);
+        return res;
+    });
+    REQUIRE_ELSE(inline_asm_node->klass->type == KEFIR_AST_INLINE_ASSEMBLY, {
+        KEFIR_AST_NODE_FREE(mem, inline_asm_node);
+        KEFIR_AST_NODE_FREE(mem, parameter);
+        return KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Expected AST inline assembly node");
+    });
+    ASSIGN_DECL_CAST(struct kefir_ast_inline_assembly *, inline_asm, inline_asm_node->self);
+
+    res = kefir_ast_inline_assembly_add_input(mem, builder->parser->symbols, inline_asm, parameter_name, constraint,
+                                              parameter);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_AST_NODE_FREE(mem, inline_asm_node);
+        KEFIR_AST_NODE_FREE(mem, parameter);
+        return res;
+    });
+
+    res = kefir_parser_ast_builder_push(mem, builder, inline_asm_node);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_AST_NODE_FREE(mem, inline_asm_node);
+        return res;
+    });
+
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_parser_ast_builder_inline_assembly_add_clobber(struct kefir_mem *mem,
+                                                                    struct kefir_parser_ast_builder *builder,
+                                                                    const char *clobber) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST builder"));
+    REQUIRE(clobber != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST inline assembly clobber"));
+
+    struct kefir_ast_node_base *inline_asm_node = NULL;
+    REQUIRE_OK(kefir_parser_ast_builder_pop(mem, builder, &inline_asm_node));
+    REQUIRE_ELSE(inline_asm_node->klass->type == KEFIR_AST_INLINE_ASSEMBLY, {
+        KEFIR_AST_NODE_FREE(mem, inline_asm_node);
+        return KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Expected AST inline assembly node");
+    });
+    ASSIGN_DECL_CAST(struct kefir_ast_inline_assembly *, inline_asm, inline_asm_node->self);
+
+    kefir_result_t res = kefir_ast_inline_assembly_add_clobber(mem, builder->parser->symbols, inline_asm, clobber);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_AST_NODE_FREE(mem, inline_asm_node);
+        return res;
+    });
+
+    res = kefir_parser_ast_builder_push(mem, builder, inline_asm_node);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_AST_NODE_FREE(mem, inline_asm_node);
+        return res;
+    });
+
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_parser_ast_builder_inline_assembly_add_jump_target(struct kefir_mem *mem,
+                                                                        struct kefir_parser_ast_builder *builder,
+                                                                        const char *jump_target) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST builder"));
+    REQUIRE(jump_target != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST inline assembly jump label"));
+
+    struct kefir_ast_node_base *inline_asm_node = NULL;
+    REQUIRE_OK(kefir_parser_ast_builder_pop(mem, builder, &inline_asm_node));
+    REQUIRE_ELSE(inline_asm_node->klass->type == KEFIR_AST_INLINE_ASSEMBLY, {
+        KEFIR_AST_NODE_FREE(mem, inline_asm_node);
+        return KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Expected AST inline assembly node");
+    });
+    ASSIGN_DECL_CAST(struct kefir_ast_inline_assembly *, inline_asm, inline_asm_node->self);
+
+    kefir_result_t res =
+        kefir_ast_inline_assembly_add_jump_label(mem, builder->parser->symbols, inline_asm, jump_target);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_AST_NODE_FREE(mem, inline_asm_node);
+        return res;
+    });
+
+    res = kefir_parser_ast_builder_push(mem, builder, inline_asm_node);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_AST_NODE_FREE(mem, inline_asm_node);
+        return res;
+    });
+
+    return KEFIR_OK;
+}

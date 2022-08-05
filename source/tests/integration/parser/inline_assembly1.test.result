@@ -1,0 +1,185 @@
+[
+    {
+        "class": "inline_assembly",
+        "template": "some inline assembly",
+        "qualifiers": {
+            "volatile": false,
+            "inline": false,
+            "goto": false
+        },
+        "outputs": [],
+        "inputs": [],
+        "clobbers": [],
+        "jump_labels": []
+    },
+    {
+        "class": "inline_assembly",
+        "template": "some inline assembly",
+        "qualifiers": {
+            "volatile": true,
+            "inline": false,
+            "goto": true
+        },
+        "outputs": [],
+        "inputs": [],
+        "clobbers": [],
+        "jump_labels": []
+    },
+    {
+        "class": "inline_assembly",
+        "template": "some inline assembly",
+        "qualifiers": {
+            "volatile": false,
+            "inline": true,
+            "goto": false
+        },
+        "outputs": [],
+        "inputs": [],
+        "clobbers": [],
+        "jump_labels": []
+    },
+    {
+        "class": "inline_assembly",
+        "template": "some inline assembly",
+        "qualifiers": {
+            "volatile": true,
+            "inline": false,
+            "goto": false
+        },
+        "outputs": [
+            {
+                "symbolicName": null,
+                "constraint": "=rm",
+                "parameter": {
+                    "class": "identifier",
+                    "identifier": "some_variable"
+                }
+            },
+            {
+                "symbolicName": "symbolicName1",
+                "constraint": "=rm",
+                "parameter": {
+                    "class": "array_subscript",
+                    "array": {
+                        "class": "identifier",
+                        "identifier": "some_other_variable"
+                    },
+                    "subscript": {
+                        "class": "identifier",
+                        "identifier": "index"
+                    }
+                }
+            }
+        ],
+        "inputs": [],
+        "clobbers": [],
+        "jump_labels": []
+    },
+    {
+        "class": "inline_assembly",
+        "template": "some inline assembly",
+        "qualifiers": {
+            "volatile": true,
+            "inline": false,
+            "goto": false
+        },
+        "outputs": [
+            {
+                "symbolicName": null,
+                "constraint": "=rm",
+                "parameter": {
+                    "class": "identifier",
+                    "identifier": "some_variable"
+                }
+            }
+        ],
+        "inputs": [
+            {
+                "symbolicName": null,
+                "constraint": "r",
+                "parameter": {
+                    "class": "constant",
+                    "type": "integer",
+                    "value": 10230
+                }
+            }
+        ],
+        "clobbers": [],
+        "jump_labels": []
+    },
+    {
+        "class": "inline_assembly",
+        "template": "some inline assembly",
+        "qualifiers": {
+            "volatile": true,
+            "inline": false,
+            "goto": false
+        },
+        "outputs": [
+            {
+                "symbolicName": null,
+                "constraint": "=rm",
+                "parameter": {
+                    "class": "identifier",
+                    "identifier": "some_variable"
+                }
+            }
+        ],
+        "inputs": [
+            {
+                "symbolicName": "input",
+                "constraint": "r",
+                "parameter": {
+                    "class": "constant",
+                    "type": "integer",
+                    "value": 10230
+                }
+            }
+        ],
+        "clobbers": [
+            "reg_one",
+            "reg_two",
+            "reg_three"
+        ],
+        "jump_labels": []
+    },
+    {
+        "class": "inline_assembly",
+        "template": "some inline assembly",
+        "qualifiers": {
+            "volatile": true,
+            "inline": false,
+            "goto": false
+        },
+        "outputs": [
+            {
+                "symbolicName": null,
+                "constraint": "=rm",
+                "parameter": {
+                    "class": "identifier",
+                    "identifier": "some_variable"
+                }
+            }
+        ],
+        "inputs": [
+            {
+                "symbolicName": null,
+                "constraint": "r",
+                "parameter": {
+                    "class": "constant",
+                    "type": "integer",
+                    "value": 10230
+                }
+            }
+        ],
+        "clobbers": [
+            "reg_one",
+            "reg_two",
+            "reg_three"
+        ],
+        "jump_labels": [
+            "jump_here",
+            "and_there"
+        ]
+    }
+]
