@@ -72,10 +72,6 @@ kefir_result_t kefir_ast_translate_inline_assembly(struct kefir_mem *mem, const 
 
             ASSIGN_DECL_CAST(const struct kefir_ast_inline_assembly_parameter *, param, iter->value);
 
-            REQUIRE(param->parameter_name == NULL,
-                    KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED,
-                                    "Named parameters in AST inline assembly directives are not supported yet"));
-
             kefir_id_t parameter_id = next_parameter_id++;
             snprintf(buffer, sizeof(buffer) - 1, KEFIR_ID_FMT, parameter_id);
 
@@ -84,6 +80,7 @@ kefir_result_t kefir_ast_translate_inline_assembly(struct kefir_mem *mem, const 
             kefir_ir_inline_assembly_parameter_constraint_t constraint;
             struct kefir_ir_type *ir_type = kefir_ir_module_new_type(mem, context->module, 0, NULL);
             kefir_size_t stack_slot = 0;
+            const char *alias = param->parameter_name;
 
             if (strncmp(param->constraint, "+", 1) == 0) {
                 klass = KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_LOAD_STORE;
@@ -124,8 +121,16 @@ kefir_result_t kefir_ast_translate_inline_assembly(struct kefir_mem *mem, const 
 
             REQUIRE_OK(kefir_ast_translate_lvalue(mem, context, builder, param->parameter));
 
+            struct kefir_ir_inline_assembly_parameter *ir_inline_asm_param = NULL;
             REQUIRE_OK(kefir_ir_inline_assembly_add_parameter(mem, context->ast_context->symbols, ir_inline_asm, name,
-                                                              klass, constraint, ir_type, 0, stack_slot, NULL));
+                                                              klass, constraint, ir_type, 0, stack_slot,
+                                                              &ir_inline_asm_param));
+
+            if (alias != NULL) {
+                snprintf(buffer, sizeof(buffer) - 1, "[%s]", alias);
+                REQUIRE_OK(kefir_ir_inline_assembly_add_parameter_alias(mem, context->ast_context->symbols,
+                                                                        ir_inline_asm, ir_inline_asm_param, buffer));
+            }
         }
 
         // Translate inputs
@@ -146,6 +151,7 @@ kefir_result_t kefir_ast_translate_inline_assembly(struct kefir_mem *mem, const 
             kefir_ir_inline_assembly_parameter_constraint_t constraint;
             struct kefir_ir_type *ir_type = kefir_ir_module_new_type(mem, context->module, 0, NULL);
             kefir_size_t stack_slot = 0;
+            const char *alias = param->parameter_name;
 
             if (strncmp(param->constraint, "rm", 2) == 0) {
                 constraint = KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_REGISTER_MEMORY;
@@ -182,8 +188,15 @@ kefir_result_t kefir_ast_translate_inline_assembly(struct kefir_mem *mem, const 
 
             REQUIRE_OK(kefir_ast_translate_expression(mem, param->parameter, builder, context));
 
+            struct kefir_ir_inline_assembly_parameter *ir_inline_asm_param = NULL;
             REQUIRE_OK(kefir_ir_inline_assembly_add_parameter(mem, context->ast_context->symbols, ir_inline_asm, name,
-                                                              klass, constraint, ir_type, 0, stack_slot, NULL));
+                                                              klass, constraint, ir_type, 0, stack_slot,
+                                                              &ir_inline_asm_param));
+            if (alias != NULL) {
+                snprintf(buffer, sizeof(buffer) - 1, "[%s]", alias);
+                REQUIRE_OK(kefir_ir_inline_assembly_add_parameter_alias(mem, context->ast_context->symbols,
+                                                                        ir_inline_asm, ir_inline_asm_param, buffer));
+            }
         }
 
         // Translate clobbers

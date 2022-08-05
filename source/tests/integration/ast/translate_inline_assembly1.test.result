@@ -253,7 +253,8 @@
                 {
                     "identifier": 0,
                     "names": [
-                        "0"
+                        "0",
+                        "[null]"
                     ],
                     "class": "store",
                     "address_index": 5
@@ -269,7 +270,8 @@
                 {
                     "identifier": 2,
                     "names": [
-                        "2"
+                        "2",
+                        "[alternativeId]"
                     ],
                     "class": "store",
                     "address_index": 3

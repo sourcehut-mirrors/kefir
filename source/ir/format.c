@@ -813,9 +813,9 @@ static kefir_result_t format_inline_assembly_fragment(struct kefir_json_output *
     REQUIRE_OK(kefir_json_output_object_key(json, "parameters"));
     REQUIRE_OK(kefir_json_output_array_begin(json));
     struct kefir_hashtree_node_iterator iter;
-    for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&inline_asm->parameters, &iter); node != NULL;
-         node = kefir_hashtree_next(&iter)) {
-        ASSIGN_DECL_CAST(struct kefir_ir_inline_assembly_parameter *, param, node->value);
+    for (const struct kefir_list_entry *iter = kefir_list_head(&inline_asm->parameter_list); iter != NULL;
+         kefir_list_next(&iter)) {
+        ASSIGN_DECL_CAST(struct kefir_ir_inline_assembly_parameter *, param, iter->value);
         REQUIRE_OK(kefir_json_output_object_begin(json));
         REQUIRE_OK(kefir_json_output_object_key(json, "identifier"));
         REQUIRE_OK(kefir_json_output_uinteger(json, param->parameter_id));

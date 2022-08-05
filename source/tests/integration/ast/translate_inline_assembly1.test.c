@@ -125,13 +125,13 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
                                           "register %1 is an input\n"
                                           "rax, rbx, rcx are clobbers");
         REQUIRE_OK(kefir_ast_inline_assembly_add_output(
-            mem, &global_context.symbols, inline_asm2, NULL, "=r",
+            mem, &global_context.symbols, inline_asm2, "null", "=r",
             KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, &global_context.symbols, "abc"))));
         REQUIRE_OK(kefir_ast_inline_assembly_add_output(
             mem, &global_context.symbols, inline_asm2, NULL, "+m",
             KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, &global_context.symbols, "chr"))));
         REQUIRE_OK(kefir_ast_inline_assembly_add_output(
-            mem, &global_context.symbols, inline_asm2, NULL, "=r",
+            mem, &global_context.symbols, inline_asm2, "alternativeId", "=r",
             KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, &global_context.symbols, "chr2"))));
         REQUIRE_OK(kefir_ast_inline_assembly_add_input(
             mem, &global_context.symbols, inline_asm2, NULL, "r",
