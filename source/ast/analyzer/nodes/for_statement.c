@@ -110,7 +110,8 @@ kefir_result_t kefir_ast_analyze_for_statement_node(struct kefir_mem *mem, const
     }
 
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, node->body));
-    REQUIRE(node->body->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT,
+    REQUIRE(node->body->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT ||
+                node->body->properties.category == KEFIR_AST_NODE_CATEGORY_INLINE_ASSEMBLY,
             KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->body->source_location,
                                    "Expected for statement body to be a statement"));
 

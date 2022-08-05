@@ -1,0 +1,111 @@
+{
+    "globals": [],
+    "externals": [
+        {
+            "identifier": "variable",
+            "type": "global"
+        }
+    ],
+    "types": [
+        {
+            "identifier": 0,
+            "type": []
+        },
+        {
+            "identifier": 1,
+            "type": []
+        },
+        {
+            "identifier": 2,
+            "type": []
+        },
+        {
+            "identifier": 3,
+            "type": []
+        },
+        {
+            "identifier": 4,
+            "type": [
+                {
+                    "type": "int"
+                }
+            ]
+        },
+        {
+            "identifier": 5,
+            "type": [
+                {
+                    "type": "struct",
+                    "fields": [
+                        {
+                            "type": "long_double"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "identifier": 6,
+            "type": []
+        },
+        {
+            "identifier": 7,
+            "type": []
+        }
+    ],
+    "data": [],
+    "string_literals": [],
+    "function_declarations": [
+        {
+            "identifier": 0,
+            "name": "inline_asm1",
+            "parameters": 6,
+            "vararg": false,
+            "returns": 7
+        }
+    ],
+    "functions": [
+        {
+            "identifier": 0,
+            "name": "inline_asm1",
+            "locals": 5,
+            "body": [
+                {
+                    "opcode": "inlineasm",
+                    "arg": 0
+                },
+                {
+                    "opcode": "jmp",
+                    "arg": 4
+                },
+                {
+                    "opcode": "jmp",
+                    "arg": 4
+                },
+                {
+                    "opcode": "jmp",
+                    "arg": 0
+                }
+            ]
+        }
+    ],
+    "inline_assembly": [
+        {
+            "identifier": 0,
+            "global": false,
+            "template": "some assembly code",
+            "parameters": [],
+            "clobbers": [],
+            "jump_targets": {
+                "label_end": {
+                    "function": "inline_asm1",
+                    "target": 2
+                },
+                "label_begin": {
+                    "function": "inline_asm1",
+                    "target": 3
+                }
+            }
+        }
+    ]
+}

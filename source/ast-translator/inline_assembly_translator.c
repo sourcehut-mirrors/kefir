@@ -19,7 +19,9 @@
 */
 
 #include "kefir/ast-translator/translator.h"
+#include "kefir/ast-translator/jump.h"
 #include "kefir/ast/downcast.h"
+#include "kefir/ast/flow_control.h"
 #include "kefir/ast/type_conv.h"
 #include "kefir/core/source_error.h"
 #include "kefir/core/error.h"
@@ -139,10 +141,6 @@ kefir_result_t kefir_ast_translate_inline_assembly(struct kefir_mem *mem, const 
 
             ASSIGN_DECL_CAST(const struct kefir_ast_inline_assembly_parameter *, param, iter->value);
 
-            REQUIRE(param->parameter_name == NULL,
-                    KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED,
-                                    "Named parameters in AST inline assembly directives are not supported yet"));
-
             kefir_id_t parameter_id = next_parameter_id++;
             snprintf(buffer, sizeof(buffer) - 1, KEFIR_ID_FMT, parameter_id);
 
@@ -209,11 +207,34 @@ kefir_result_t kefir_ast_translate_inline_assembly(struct kefir_mem *mem, const 
                 kefir_ir_inline_assembly_add_clobber(mem, context->ast_context->symbols, ir_inline_asm, clobber));
         }
 
-        REQUIRE(kefir_list_length(&inline_asm->jump_labels) == 0,
-                KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED,
-                                "Jump labels in AST inline assembly directives are not supported yet"));
-
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_INLINEASM, ir_inline_asm_id));
+
+        if (!kefir_hashtree_empty(&inline_asm->base.properties.inline_assembly.branching_point->branches)) {
+            kefir_size_t patch_index = kefir_irblock_length(builder->block);
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_JMP, 0));
+            struct kefir_hashtree_node_iterator iter;
+            for (const struct kefir_hashtree_node *node =
+                     kefir_hashtree_iter(&inline_asm->base.properties.inline_assembly.branching_point->branches, &iter);
+                 node != NULL; node = kefir_hashtree_next(&iter)) {
+
+                ASSIGN_DECL_CAST(const char *, jump_label, node->key);
+                ASSIGN_DECL_CAST(struct kefir_ast_flow_control_point *, jump_target, node->value);
+
+                kefir_size_t jump_trampoline = kefir_irblock_length(builder->block);
+                REQUIRE_OK(kefir_ast_translate_jump(
+                    mem, context, builder,
+                    inline_asm->base.properties.inline_assembly.flow_control_statement->parent_point, jump_target,
+                    &inline_asm->base.source_location));
+                REQUIRE_OK(kefir_ir_inline_assembly_add_jump_target(
+                    mem, context->ast_context->symbols, ir_inline_asm, jump_label,
+                    context->ast_context->surrounding_function_name, jump_trampoline));
+            }
+
+            struct kefir_irinstr *instr = kefir_irblock_at(builder->block, patch_index);
+            REQUIRE(instr != NULL,
+                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to retrieve IR instruction from block"));
+            instr->arg.u64 = kefir_irblock_length(builder->block);
+        }
     } else {
         REQUIRE_OK(kefir_ir_module_inline_assembly_global(mem, context->module, ir_inline_asm_id));
     }

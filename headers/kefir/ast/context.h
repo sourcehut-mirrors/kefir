@@ -97,6 +97,7 @@ typedef struct kefir_ast_context {
     struct kefir_ast_global_context *global_context;
     struct kefir_list *function_decl_contexts;
     const struct kefir_ast_scoped_identifier *surrounding_function;
+    const char *surrounding_function_name;
     const struct kefir_ast_context_configuration *configuration;
 
     const struct kefir_ast_context_extensions *extensions;

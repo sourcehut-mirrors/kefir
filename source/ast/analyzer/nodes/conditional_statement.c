@@ -73,13 +73,15 @@ kefir_result_t kefir_ast_analyze_conditional_statement_node(struct kefir_mem *me
                                    "Expected if statement condition to be scalar expression"));
 
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, node->thenBranch));
-    REQUIRE(node->thenBranch->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT,
+    REQUIRE(node->thenBranch->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT ||
+                node->thenBranch->properties.category == KEFIR_AST_NODE_CATEGORY_INLINE_ASSEMBLY,
             KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->thenBranch->source_location,
                                    "Expected the first if branch to be a statement"));
 
     if (node->elseBranch != NULL) {
         REQUIRE_OK(kefir_ast_analyze_node(mem, context, node->elseBranch));
-        REQUIRE(node->elseBranch->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT,
+        REQUIRE(node->elseBranch->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT ||
+                    node->elseBranch->properties.category == KEFIR_AST_NODE_CATEGORY_INLINE_ASSEMBLY,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->elseBranch->source_location,
                                        "Expected the second if branch to be a statement"));
     }

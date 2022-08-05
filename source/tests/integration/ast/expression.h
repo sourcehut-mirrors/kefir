@@ -57,6 +57,7 @@
         struct kefir_ast_local_context local_context;                                                                \
         REQUIRE_OK(kefir_ast_local_context_init(mem, &global_context, &local_context));                              \
         struct kefir_ast_context *context = &local_context.context;                                                  \
+        context->surrounding_function_name = (_id);                                                                  \
                                                                                                                      \
         struct kefir_ast_translator_local_scope_layout translator_local_scope;                                       \
         REQUIRE_OK(kefir_ast_translator_local_scope_layout_init(mem, &module, &translator_global_scope,              \

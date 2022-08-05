@@ -157,6 +157,7 @@ kefir_result_t kefir_preprocessor_ast_context_init(struct kefir_mem *mem,
     context->context.global_context = NULL;
     context->context.function_decl_contexts = NULL;
     context->context.surrounding_function = NULL;
+    context->context.surrounding_function_name = NULL;
     context->context.configuration = &context->configuration;
     context->context.payload = NULL;
 

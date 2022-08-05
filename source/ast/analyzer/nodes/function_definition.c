@@ -261,6 +261,7 @@ kefir_result_t kefir_ast_analyze_function_definition_node(struct kefir_mem *mem,
     base->properties.function_definition.scoped_id = scoped_id;
 
     local_context->context.surrounding_function = scoped_id;
+    local_context->context.surrounding_function_name = base->properties.function_definition.identifier;
     *scoped_id->function.local_context_ptr = local_context;
 
     REQUIRE_OK(kefir_ast_node_properties_init(&node->body->base.properties));
@@ -300,7 +301,8 @@ kefir_result_t kefir_ast_analyze_function_definition_node(struct kefir_mem *mem,
         REQUIRE_OK(kefir_ast_analyze_node(mem, &local_context->context, item));
         REQUIRE(item->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT ||
                     item->properties.category == KEFIR_AST_NODE_CATEGORY_DECLARATION ||
-                    item->properties.category == KEFIR_AST_NODE_CATEGORY_INIT_DECLARATOR,
+                    item->properties.category == KEFIR_AST_NODE_CATEGORY_INIT_DECLARATOR ||
+                    item->properties.category == KEFIR_AST_NODE_CATEGORY_INLINE_ASSEMBLY,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &item->source_location,
                                        "Compound statement items shall be either statements or declarations"));
     }

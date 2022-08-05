@@ -98,7 +98,8 @@ kefir_result_t kefir_ast_analyze_case_statement_node(struct kefir_mem *mem, cons
     }
 
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, node->statement));
-    REQUIRE(node->statement->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT,
+    REQUIRE(node->statement->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT ||
+                node->statement->properties.category == KEFIR_AST_NODE_CATEGORY_INLINE_ASSEMBLY,
             KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->statement->source_location,
                                    "Expected AST statement node to be associated with the case"));
     return KEFIR_OK;
