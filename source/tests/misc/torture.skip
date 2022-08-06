@@ -29,6 +29,7 @@ skip execute/simd-6.c
 
 # bit-field operation result type reduction -- TODO: unclear; divergence between GCC and Clang
 skip execute/bitfld-3.c
+skip execute/bitfld-5.c
 skip execute/pr32244-1.c
 skip execute/pr34971.c
 
@@ -37,3 +38,6 @@ skip execute/eeprof-1.c
 
 # push/pop macro
 skip execute/pushpop_macro.c
+
+# setjmp/longjmp
+skip execute/pr56982.c
