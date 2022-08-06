@@ -96,24 +96,26 @@
             "template": "some assembly code",
             "parameters": [],
             "clobbers": [],
-            "jump_targets": {
-                "l0": {
+            "jump_targets": [
+                {
+                    "identifier": 0,
+                    "names": [
+                        "l0",
+                        "l[label_end]"
+                    ],
                     "function": "inline_asm1",
                     "target": 2
                 },
-                "l1": {
+                {
+                    "identifier": 1,
+                    "names": [
+                        "l1",
+                        "l[label_begin]"
+                    ],
                     "function": "inline_asm1",
                     "target": 3
-                },
-                "l[label_begin]": {
-                    "function": "inline_asm1",
-                    "target": 3
-                },
-                "l[label_end]": {
-                    "function": "inline_asm1",
-                    "target": 2
                 }
-            }
+            ]
         }
     ]
 }

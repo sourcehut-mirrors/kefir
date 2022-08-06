@@ -55,7 +55,7 @@ typedef struct kefir_ir_inline_assembly_parameter {
 
 typedef struct kefir_ir_inline_assembly_jump_target {
     kefir_id_t uid;
-    const char *identifier;
+    struct kefir_list identifiers;
     const char *target_function;
     kefir_size_t target;
 } kefir_ir_inline_assembly_jump_target_t;
@@ -67,6 +67,7 @@ typedef struct kefir_ir_inline_assembly {
     struct kefir_list parameter_list;
     struct kefir_hashtree clobbers;
     struct kefir_hashtree jump_targets;
+    struct kefir_list jump_target_list;
     kefir_id_t next_jump_target_id;
 } kefir_ir_inline_assembly_t;
 
@@ -86,6 +87,10 @@ kefir_result_t kefir_ir_inline_assembly_add_clobber(struct kefir_mem *, struct k
                                                     struct kefir_ir_inline_assembly *, const char *);
 kefir_result_t kefir_ir_inline_assembly_add_jump_target(struct kefir_mem *, struct kefir_symbol_table *,
                                                         struct kefir_ir_inline_assembly *, const char *, const char *,
-                                                        kefir_size_t);
+                                                        kefir_size_t, struct kefir_ir_inline_assembly_jump_target **);
+kefir_result_t kefir_ir_inline_assembly_add_jump_target_alias(struct kefir_mem *, struct kefir_symbol_table *,
+                                                              struct kefir_ir_inline_assembly *,
+                                                              struct kefir_ir_inline_assembly_jump_target *,
+                                                              const char *);
 
 #endif

@@ -36,18 +36,17 @@ static kefir_result_t free_inline_asm_parameter(struct kefir_mem *mem, struct ke
     return KEFIR_OK;
 }
 
-static kefir_result_t free_inline_asm_jump_target(struct kefir_mem *mem, struct kefir_hashtree *tree,
-                                                  kefir_hashtree_key_t key, kefir_hashtree_value_t value,
-                                                  void *payload) {
-    UNUSED(key);
-    UNUSED(tree);
+static kefir_result_t free_inline_asm_jump_target(struct kefir_mem *mem, struct kefir_list *list,
+                                                  struct kefir_list_entry *entry, void *payload) {
+    UNUSED(list);
     UNUSED(payload);
-    ASSIGN_DECL_CAST(struct kefir_ir_inline_assembly_jump_target *, jump_target, value);
+    REQUIRE(entry != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid list entry"));
+    ASSIGN_DECL_CAST(struct kefir_ir_inline_assembly_jump_target *, jump_target, entry->value);
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(jump_target != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR inline assembly jump target"));
 
-    jump_target->identifier = NULL;
+    REQUIRE_OK(kefir_list_free(mem, &jump_target->identifiers));
     jump_target->target_function = NULL;
     jump_target->target = 0;
     jump_target->uid = 0;
@@ -78,7 +77,8 @@ struct kefir_ir_inline_assembly *kefir_ir_inline_assembly_alloc(struct kefir_mem
     REQUIRE_CHAIN(&res, kefir_list_on_remove(&inline_asm->parameter_list, free_inline_asm_parameter, NULL));
     REQUIRE_CHAIN(&res, kefir_hashtree_init(&inline_asm->clobbers, &kefir_hashtree_str_ops));
     REQUIRE_CHAIN(&res, kefir_hashtree_init(&inline_asm->jump_targets, &kefir_hashtree_str_ops));
-    REQUIRE_CHAIN(&res, kefir_hashtree_on_removal(&inline_asm->jump_targets, free_inline_asm_jump_target, NULL));
+    REQUIRE_CHAIN(&res, kefir_list_init(&inline_asm->jump_target_list));
+    REQUIRE_CHAIN(&res, kefir_list_on_remove(&inline_asm->jump_target_list, free_inline_asm_jump_target, NULL));
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, inline_asm);
         return NULL;
@@ -93,6 +93,7 @@ kefir_result_t kefir_ir_inline_assembly_free(struct kefir_mem *mem, struct kefir
     REQUIRE_OK(kefir_hashtree_free(mem, &inline_asm->jump_targets));
     REQUIRE_OK(kefir_hashtree_free(mem, &inline_asm->clobbers));
     REQUIRE_OK(kefir_hashtree_free(mem, &inline_asm->parameters));
+    REQUIRE_OK(kefir_list_free(mem, &inline_asm->jump_target_list));
     REQUIRE_OK(kefir_list_free(mem, &inline_asm->parameter_list));
     inline_asm->template = NULL;
     inline_asm->id = 0;
@@ -202,7 +203,8 @@ kefir_result_t kefir_ir_inline_assembly_add_clobber(struct kefir_mem *mem, struc
 kefir_result_t kefir_ir_inline_assembly_add_jump_target(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
                                                         struct kefir_ir_inline_assembly *inline_asm,
                                                         const char *identifier, const char *target_function,
-                                                        kefir_size_t target) {
+                                                        kefir_size_t target,
+                                                        struct kefir_ir_inline_assembly_jump_target **jump_target_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(inline_asm != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR inline assembly"));
     REQUIRE(identifier != NULL,
@@ -226,15 +228,60 @@ kefir_result_t kefir_ir_inline_assembly_add_jump_target(struct kefir_mem *mem, s
         KEFIR_MALLOC(mem, sizeof(struct kefir_ir_inline_assembly_jump_target));
 
     jump_target->uid = inline_asm->next_jump_target_id++;
-    jump_target->identifier = identifier;
     jump_target->target_function = target_function;
     jump_target->target = target;
 
-    kefir_result_t res = kefir_hashtree_insert(mem, &inline_asm->jump_targets, (kefir_hashtree_key_t) identifier,
-                                               (kefir_hashtree_value_t) jump_target);
+    kefir_result_t res = kefir_list_init(&jump_target->identifiers);
+    REQUIRE_CHAIN(&res, kefir_list_insert_after(mem, &jump_target->identifiers,
+                                                kefir_list_tail(&jump_target->identifiers), (void *) identifier));
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, jump_target);
         return res;
     });
+
+    res = kefir_list_insert_after(mem, &inline_asm->jump_target_list, kefir_list_tail(&inline_asm->jump_target_list),
+                                  (void *) jump_target);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_list_free(mem, &jump_target->identifiers);
+        KEFIR_FREE(mem, jump_target);
+        return res;
+    });
+
+    res = kefir_hashtree_insert(mem, &inline_asm->jump_targets, (kefir_hashtree_key_t) identifier,
+                                (kefir_hashtree_value_t) jump_target);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_list_pop(mem, &inline_asm->jump_target_list, kefir_list_tail(&inline_asm->jump_target_list));
+        return res;
+    });
+
+    ASSIGN_PTR(jump_target_ptr, jump_target);
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_ir_inline_assembly_add_jump_target_alias(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
+                                                              struct kefir_ir_inline_assembly *inline_asm,
+                                                              struct kefir_ir_inline_assembly_jump_target *jump_target,
+                                                              const char *alias) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(inline_asm != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR inline assembly"));
+    REQUIRE(jump_target != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR inline assembly jump target"));
+    REQUIRE(alias != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR inline assembly jump target alias"));
+
+    REQUIRE(!kefir_hashtree_has(&inline_asm->jump_targets, (kefir_hashtree_key_t) alias),
+            KEFIR_SET_ERROR(KEFIR_ALREADY_EXISTS, "Jump target with specified alias already exists"));
+
+    if (symbols != NULL) {
+        alias = kefir_symbol_table_insert(mem, symbols, alias, NULL);
+        REQUIRE(alias != NULL,
+                KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE,
+                                "Failed to insert IR inline assembly jump target alias into symbol table"));
+    }
+
+    REQUIRE_OK(kefir_list_insert_after(mem, &jump_target->identifiers, kefir_list_tail(&jump_target->identifiers),
+                                       (void *) alias));
+    REQUIRE_OK(kefir_hashtree_insert(mem, &inline_asm->jump_targets, (kefir_hashtree_key_t) alias,
+                                     (kefir_hashtree_value_t) jump_target));
     return KEFIR_OK;
 }

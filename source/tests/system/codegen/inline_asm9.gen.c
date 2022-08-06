@@ -64,8 +64,8 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_ir_inline_assembly_add_parameter(
         mem, &module.symbols, inline_asm1, "1", KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_LOAD_STORE,
         KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_REGISTER, decl_params, 0, 0, NULL));
-    REQUIRE_OK(kefir_ir_inline_assembly_add_jump_target(mem, &module.symbols, inline_asm1, "l2", func->name, 2));
-    REQUIRE_OK(kefir_ir_inline_assembly_add_jump_target(mem, &module.symbols, inline_asm1, "l3", func->name, 4));
+    REQUIRE_OK(kefir_ir_inline_assembly_add_jump_target(mem, &module.symbols, inline_asm1, "l2", func->name, 2, NULL));
+    REQUIRE_OK(kefir_ir_inline_assembly_add_jump_target(mem, &module.symbols, inline_asm1, "l3", func->name, 4, NULL));
 
     REQUIRE_OK(kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IROPCODE_PUSHSTPTR, 0));
     REQUIRE_OK(kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IROPCODE_INLINEASM, id1));

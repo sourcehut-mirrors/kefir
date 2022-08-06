@@ -865,10 +865,11 @@ static kefir_result_t format_template(struct kefir_mem *mem, struct kefir_codege
 
                     for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&inline_asm->jump_targets, &iter);
                          !match && node != NULL; node = kefir_hashtree_next(&iter)) {
+                        ASSIGN_DECL_CAST(const char *, identifier, node->key);
                         ASSIGN_DECL_CAST(const struct kefir_ir_inline_assembly_jump_target *, jump_target, node->value);
 
-                        kefir_size_t identifier_length = strlen(jump_target->identifier);
-                        if (strncmp(format_specifier + 1, jump_target->identifier, identifier_length) == 0) {
+                        kefir_size_t identifier_length = strlen(identifier);
+                        if (strncmp(format_specifier + 1, identifier, identifier_length) == 0) {
                             char jump_target_text[1024];
                             REQUIRE_OK(KEFIR_AMD64_XASMGEN_FORMAT_OPERAND(
                                 &codegen->xasmgen,
@@ -908,7 +909,7 @@ static kefir_result_t format_template(struct kefir_mem *mem, struct kefir_codege
 static kefir_result_t generate_jump_trampolines(struct kefir_codegen_amd64 *codegen,
                                                 const struct kefir_ir_inline_assembly *inline_asm,
                                                 struct inline_assembly_params *params) {
-    REQUIRE(!kefir_hashtree_empty(&inline_asm->jump_targets), KEFIR_OK);
+    REQUIRE(kefir_list_length(&inline_asm->jump_target_list) > 0, KEFIR_OK);
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_JMP(
         &codegen->xasmgen, kefir_amd64_xasmgen_operand_label(
@@ -917,10 +918,9 @@ static kefir_result_t generate_jump_trampolines(struct kefir_codegen_amd64 *code
                                    &codegen->xasmgen_helpers,
                                    KEFIR_AMD64_SYSTEM_V_RUNTIME_INLINE_ASSEMBLY_JUMP_TRAMPOLINE_END, inline_asm->id))));
 
-    struct kefir_hashtree_node_iterator iter;
-    for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&inline_asm->jump_targets, &iter); node != NULL;
-         node = kefir_hashtree_next(&iter)) {
-        ASSIGN_DECL_CAST(const struct kefir_ir_inline_assembly_jump_target *, jump_target, node->value);
+    for (const struct kefir_list_entry *iter = kefir_list_head(&inline_asm->jump_target_list); iter != NULL;
+         kefir_list_next(&iter)) {
+        ASSIGN_DECL_CAST(const struct kefir_ir_inline_assembly_jump_target *, jump_target, iter->value);
 
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen->xasmgen,
                                              KEFIR_AMD64_SYSTEM_V_RUNTIME_INLINE_ASSEMBLY_JUMP_TRAMPOLINE,
