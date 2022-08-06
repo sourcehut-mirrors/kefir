@@ -221,9 +221,9 @@ kefir_result_t kefir_ast_translate_inline_assembly(struct kefir_mem *mem, const 
                 ASSIGN_DECL_CAST(struct kefir_ast_flow_control_point *, jump_target, node->value);
 
                 kefir_size_t jump_trampoline = kefir_irblock_length(builder->block);
-                REQUIRE_OK(kefir_ast_translate_jump(mem, context, builder,
-                                                    inline_asm->base.properties.inline_assembly.origin, jump_target,
-                                                    &inline_asm->base.source_location));
+                REQUIRE_OK(kefir_ast_translate_jump(
+                    mem, context, builder, inline_asm->base.properties.inline_assembly.origin_flow_control_point,
+                    jump_target, &inline_asm->base.source_location));
 
                 kefir_id_t identifier = next_parameter_id++;
                 snprintf(buffer, sizeof(buffer) - 1, "l" KEFIR_ID_FMT, identifier);

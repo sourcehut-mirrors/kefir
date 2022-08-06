@@ -487,7 +487,7 @@ kefir_result_t kefir_codegen_amd64_sysv_init(struct kefir_mem *mem, struct kefir
         config = &KefirCodegenDefaultConfiguration;
     }
 
-    kefir_amd64_xasmgen_syntax_t syntax;
+    kefir_amd64_xasmgen_syntax_t syntax = KEFIR_AMD64_XASMGEN_SYNTAX_INTEL_PREFIX;
     REQUIRE_OK(match_syntax(config->syntax, &syntax));
     REQUIRE_OK(kefir_amd64_xasmgen_init(mem, &codegen->xasmgen, out, syntax));
     codegen->iface.translate = cg_translate;

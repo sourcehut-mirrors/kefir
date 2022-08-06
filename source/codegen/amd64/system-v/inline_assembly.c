@@ -276,7 +276,7 @@ static kefir_result_t map_parameters(struct kefir_mem *mem, const struct kefir_i
         ASSIGN_DECL_CAST(const struct kefir_ir_inline_assembly_parameter *, asm_param, iter->value);
 
         enum inline_assembly_param_type param_type;
-        kefir_size_t parameter_size;
+        kefir_size_t parameter_size = 0;
         REQUIRE_OK(process_parameter_type(mem, asm_param, &param_type, &parameter_size));
 
         kefir_bool_t parameter_indirect = false;

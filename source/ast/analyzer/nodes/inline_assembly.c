@@ -29,6 +29,16 @@
 #include "kefir/core/source_error.h"
 #include "kefir/ast/downcast.h"
 
+static kefir_result_t find_block_structure(const struct kefir_ast_flow_control_structure *stmt, void *payload,
+                                           kefir_bool_t *result) {
+    UNUSED(payload);
+    REQUIRE(stmt != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST flow control structure"));
+    REQUIRE(result != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to result"));
+
+    *result = stmt->type == KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK;
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_ast_analyze_inline_assembly_node(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                                       const struct kefir_ast_inline_assembly *node,
                                                       struct kefir_ast_node_base *base) {
@@ -60,16 +70,20 @@ kefir_result_t kefir_ast_analyze_inline_assembly_node(struct kefir_mem *mem, con
                                            "Expected an expression as inline assembly input"));
         }
 
-        REQUIRE_OK(kefir_ast_flow_control_tree_top(context->flow_control_tree,
-                                                   &base->properties.inline_assembly.flow_control_statement));
-        REQUIRE(base->properties.inline_assembly.flow_control_statement != NULL,
-                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &base->source_location,
-                                       "Expected inline assembly to be enclosed into a code block"));
-        REQUIRE_OK(context->current_flow_control_point(mem, context, &base->properties.inline_assembly.origin));
+        struct kefir_ast_flow_control_structure *block = NULL;
+        kefir_result_t res =
+            kefir_ast_flow_control_tree_traverse(context->flow_control_tree, find_block_structure, NULL, &block);
+        if (res != KEFIR_NOT_FOUND) {
+            REQUIRE_OK(res);
+        } else {
+            return KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &base->source_location,
+                                          "Expected inline assembly statement to be enclosed into a code block");
+        }
+        REQUIRE_OK(context->current_flow_control_point(mem, context,
+                                                       &base->properties.inline_assembly.origin_flow_control_point));
 
-        REQUIRE_OK(kefir_ast_flow_control_block_add_branching_point(
-            mem, base->properties.inline_assembly.flow_control_statement,
-            &base->properties.inline_assembly.branching_point));
+        REQUIRE_OK(kefir_ast_flow_control_block_add_branching_point(mem, block,
+                                                                    &base->properties.inline_assembly.branching_point));
         for (const struct kefir_list_entry *iter = kefir_list_head(&node->jump_labels); iter != NULL;
              kefir_list_next(&iter)) {
 
@@ -98,7 +112,8 @@ kefir_result_t kefir_ast_analyze_inline_assembly_node(struct kefir_mem *mem, con
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->base.source_location,
                                        "Inline assembly directive in global scope cannot have jump labels"));
 
-        base->properties.inline_assembly.flow_control_statement = NULL;
+        base->properties.inline_assembly.origin_flow_control_point = NULL;
+        base->properties.inline_assembly.branching_point = NULL;
     }
 
     return KEFIR_OK;
