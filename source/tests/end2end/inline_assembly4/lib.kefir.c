@@ -20,20 +20,19 @@
 
 #include "./definitions.h"
 
+enum { FIELD3 = 300 };
+
 #ifdef __x86_64__
-long factorial(long x) {
-    long result = 1;
-begin:
-    asm("cmp %[x], %[one]\n"
-        "jle %l3\n"
-        "imul %[result], %[x]\n"
-        "dec %[x]\n"
-        "jmp %l[begin]"
-        : [x] "+m"(x), [result] "+r"(result)
-        : [one] "i"(1)
-        : "rax", "rbx", "rcx", "rdx", "rsi", "rdi", "r8", "r9", "r10", "r11", "r12", "r13", "cc"
-        : begin, end);
-end:
-    return result;
+struct S1 init_s1() {
+    struct S1 s1;
+    asm("lea %rbx, %0\n"
+        "mov QWORD PTR [%rbx], %[field1]\n"
+        "mov DWORD PTR [%rbx + 8], %[field2]\n"
+        "mov WORD PTR [%rbx + 12], %[field3]\n"
+        "mov BYTE PTR [%rbx + 14], %[field4]"
+        : "=m"(s1)
+        : [field1] "i"(100), [field2] "i"(FIELD3 / 3 * 2), [field3] "i"(FIELD3), [field4] "i"('X')
+        : "rbx");
+    return s1;
 }
 #endif

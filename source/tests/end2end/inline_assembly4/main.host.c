@@ -18,22 +18,22 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <stdlib.h>
+#include <stdio.h>
+#include <assert.h>
 #include "./definitions.h"
 
 #ifdef __x86_64__
-long factorial(long x) {
-    long result = 1;
-begin:
-    asm("cmp %[x], %[one]\n"
-        "jle %l3\n"
-        "imul %[result], %[x]\n"
-        "dec %[x]\n"
-        "jmp %l[begin]"
-        : [x] "+m"(x), [result] "+r"(result)
-        : [one] "i"(1)
-        : "rax", "rbx", "rcx", "rdx", "rsi", "rdi", "r8", "r9", "r10", "r11", "r12", "r13", "cc"
-        : begin, end);
-end:
-    return result;
-}
+extern struct S1 init_s1();
 #endif
+
+int main() {
+#ifdef __x86_64__
+    struct S1 s1 = init_s1();
+    assert(s1.l == 100);
+    assert(s1.i == 200);
+    assert(s1.s == 300);
+    assert(s1.c == 'X');
+#endif
+    return EXIT_SUCCESS;
+}

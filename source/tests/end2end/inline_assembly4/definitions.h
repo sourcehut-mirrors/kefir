@@ -18,22 +18,14 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "./definitions.h"
+#ifndef DEFINITIONS_H_
+#define DEFINITIONS_H_
 
-#ifdef __x86_64__
-long factorial(long x) {
-    long result = 1;
-begin:
-    asm("cmp %[x], %[one]\n"
-        "jle %l3\n"
-        "imul %[result], %[x]\n"
-        "dec %[x]\n"
-        "jmp %l[begin]"
-        : [x] "+m"(x), [result] "+r"(result)
-        : [one] "i"(1)
-        : "rax", "rbx", "rcx", "rdx", "rsi", "rdi", "r8", "r9", "r10", "r11", "r12", "r13", "cc"
-        : begin, end);
-end:
-    return result;
-}
+struct S1 {
+    long l;
+    int i;
+    short s;
+    char c;
+};
+
 #endif
