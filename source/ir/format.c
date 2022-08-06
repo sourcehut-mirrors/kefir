@@ -832,25 +832,31 @@ static kefir_result_t format_inline_assembly_fragment(struct kefir_json_output *
             case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ:
                 REQUIRE_OK(kefir_json_output_string(json, "read"));
                 REQUIRE_OK(kefir_json_output_object_key(json, "input_index"));
-                REQUIRE_OK(kefir_json_output_uinteger(json, param->input_index));
+                REQUIRE_OK(kefir_json_output_uinteger(json, param->value));
                 break;
 
             case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_LOAD:
                 REQUIRE_OK(kefir_json_output_string(json, "load"));
                 REQUIRE_OK(kefir_json_output_object_key(json, "address_index"));
-                REQUIRE_OK(kefir_json_output_uinteger(json, param->input_index));
+                REQUIRE_OK(kefir_json_output_uinteger(json, param->value));
                 break;
 
             case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_STORE:
                 REQUIRE_OK(kefir_json_output_string(json, "store"));
                 REQUIRE_OK(kefir_json_output_object_key(json, "address_index"));
-                REQUIRE_OK(kefir_json_output_uinteger(json, param->input_index));
+                REQUIRE_OK(kefir_json_output_uinteger(json, param->value));
                 break;
 
             case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_LOAD_STORE:
                 REQUIRE_OK(kefir_json_output_string(json, "load_store"));
                 REQUIRE_OK(kefir_json_output_object_key(json, "address_index"));
-                REQUIRE_OK(kefir_json_output_uinteger(json, param->input_index));
+                REQUIRE_OK(kefir_json_output_uinteger(json, param->value));
+                break;
+
+            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_IMMEDIATE:
+                REQUIRE_OK(kefir_json_output_string(json, "immediate"));
+                REQUIRE_OK(kefir_json_output_object_key(json, "value"));
+                REQUIRE_OK(kefir_json_output_uinteger(json, param->value));
                 break;
         }
         REQUIRE_OK(kefir_json_output_object_end(json));

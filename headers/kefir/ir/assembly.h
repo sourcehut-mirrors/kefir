@@ -29,6 +29,7 @@
 #include "kefir/ir/type.h"
 
 typedef enum kefir_ir_inline_assembly_parameter_class {
+    KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_IMMEDIATE,
     KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ,
     KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_LOAD,
     KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_STORE,
@@ -50,7 +51,7 @@ typedef struct kefir_ir_inline_assembly_parameter {
         kefir_size_t index;
     } type;
     kefir_ir_inline_assembly_parameter_constraint_t constraint;
-    kefir_size_t input_index;
+    kefir_int64_t value;
 } kefir_ir_inline_assembly_parameter_t;
 
 typedef struct kefir_ir_inline_assembly_jump_target {
@@ -78,7 +79,7 @@ kefir_result_t kefir_ir_inline_assembly_add_parameter(struct kefir_mem *, struct
                                                       struct kefir_ir_inline_assembly *, const char *,
                                                       kefir_ir_inline_assembly_parameter_class_t,
                                                       kefir_ir_inline_assembly_parameter_constraint_t,
-                                                      const struct kefir_ir_type *, kefir_size_t, kefir_size_t,
+                                                      const struct kefir_ir_type *, kefir_size_t, kefir_int64_t,
                                                       struct kefir_ir_inline_assembly_parameter **);
 kefir_result_t kefir_ir_inline_assembly_add_parameter_alias(struct kefir_mem *, struct kefir_symbol_table *,
                                                             struct kefir_ir_inline_assembly *,
