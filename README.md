@@ -99,12 +99,21 @@ be enabled via command-line options. No specific compability guarantees are prov
 Kefir also defines a few non-standard macros by default. Specifically, macros indicating data model (`__LP64__`),
 endianess (`__BYTE_ORDER__` and `__ORDER_LITTLE_ENDIAN__`), as well as `__KEFIRCC__` which can be used to identify the compiler.
 
+Kefir has support of `asm` directive, both in file and function scope. Implementation supports output and input parameters,
+parameter constraints (immediate, register, memory), clobbers and jump labels, however there is no compatibility with respective
+GCC/Clang functionality (implemented bits behave similarly, though, thus basic use cases shall be compatible).
+
 ### Standard library
 Kefir can be used along with [musl libc](https://musl.libc.org) standard library, with the exception for
 `<complex.h>` and `<tgmath.h>` headers which are not available due to lacking support of `_Complex` types.
 Kefir also supports `glibc`, as well as `libc` provided with FreeBSD and OpenBSD, however the support is limited
 due to presence of non-standard C language extensions in header files which might cause compilation failures
 (additional macros/patched stdlib headers might need to be defined for successful compilation).
+
+**Attention:** due to very low-level nature of `setjmp`/`longjmp` functions, kefir provides special versions
+of these that take into account specifics of kefir code generator and runtime environment. Using functions provided by system
+(or any other) standard library will result in failues at runtime in any non-trivial case. Function definitions are available
+in `headers/kefir/runtime/setjmp.h`. Function implementations are included in `libkefirrt.a`.
 
 ## Build & Usage
 **Usage is strongly discouraged. This is experimental project which is not meant for production purposes.**
