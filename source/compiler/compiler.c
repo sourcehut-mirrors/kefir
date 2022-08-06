@@ -264,8 +264,8 @@ kefir_result_t kefir_compiler_preprocess_include(struct kefir_mem *mem, struct k
         mem, context->preprocessor_context.source_locator, filepath, false, NULL,
         KEFIR_PREPROCESSOR_SOURCE_LOCATOR_MODE_NORMAL, &source_file));
 
-    res = kefir_compiler_preprocess_lex(mem, context, buffer, source_file.cursor.content, source_file.cursor.length,
-                                        source_id, filepath);
+    res = kefir_compiler_preprocess(mem, context, buffer, source_file.cursor.content, source_file.cursor.length,
+                                    source_id, filepath);
     REQUIRE_ELSE(res == KEFIR_OK, {
         source_file.close(mem, &source_file);
         return res;
