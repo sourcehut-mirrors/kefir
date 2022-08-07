@@ -18,6 +18,7 @@
                             "declarator": {
                                 "class": "identifier",
                                 "identifier": "field1",
+                                "asm_label": null,
                                 "attributes": []
                             },
                             "bitwidth": null
@@ -61,6 +62,7 @@
                             "declarator": {
                                 "class": "identifier",
                                 "identifier": "field2",
+                                "asm_label": null,
                                 "attributes": []
                             },
                             "bitwidth": null
@@ -90,6 +92,7 @@
                                                 "declarator": {
                                                     "class": "identifier",
                                                     "identifier": "field3",
+                                                    "asm_label": null,
                                                     "attributes": []
                                                 },
                                                 "type_qualifiers": [

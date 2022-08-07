@@ -22,6 +22,7 @@
                         "declarator": {
                             "class": "identifier",
                             "identifier": "ints",
+                            "asm_label": null,
                             "attributes": [],
                             "source_location": {
                                 "source": "<stdin>",
@@ -206,6 +207,7 @@
                         "declarator": {
                             "class": "identifier",
                             "identifier": "string",
+                            "asm_label": null,
                             "attributes": [],
                             "source_location": {
                                 "source": "<stdin>",
@@ -317,6 +319,7 @@
                             "declarator": {
                                 "class": "identifier",
                                 "identifier": "ints",
+                                "asm_label": null,
                                 "attributes": [],
                                 "source_location": {
                                     "source": "<stdin>",

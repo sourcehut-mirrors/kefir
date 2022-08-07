@@ -132,6 +132,7 @@
                                     "declarator": {
                                         "class": "identifier",
                                         "identifier": "arr",
+                                        "asm_label": null,
                                         "attributes": []
                                     },
                                     "type": "unbounded",

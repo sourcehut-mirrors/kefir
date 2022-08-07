@@ -13,6 +13,7 @@
                 "declarator": {
                     "class": "identifier",
                     "identifier": "i",
+                    "asm_label": null,
                     "attributes": []
                 },
                 "initializer": {
@@ -46,6 +47,7 @@
                     "declarator": {
                         "class": "identifier",
                         "identifier": "ptr",
+                        "asm_label": null,
                         "attributes": []
                     },
                     "type_qualifiers": [],
@@ -62,6 +64,7 @@
                         "declarator": {
                             "class": "identifier",
                             "identifier": "pptr",
+                            "asm_label": null,
                             "attributes": []
                         },
                         "type_qualifiers": [],
@@ -111,6 +114,7 @@
                                     "declarator": {
                                         "class": "identifier",
                                         "identifier": "ip",
+                                        "asm_label": null,
                                         "attributes": []
                                     },
                                     "type": "bounded",
@@ -144,6 +148,7 @@
                                 "declarator": {
                                     "class": "identifier",
                                     "identifier": "port",
+                                    "asm_label": null,
                                     "attributes": []
                                 },
                                 "bitwidth": {

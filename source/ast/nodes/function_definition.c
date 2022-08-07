@@ -144,7 +144,7 @@ struct kefir_ast_node_base *ast_function_definition_clone(struct kefir_mem *mem,
 
 static kefir_result_t insert_function_name_builtin(struct kefir_mem *mem, struct kefir_ast_declarator *declarator,
                                                    struct kefir_ast_compound_statement *body) {
-    const char *function_identifier = NULL;
+    struct kefir_ast_declarator_identifier *function_identifier = NULL;
     REQUIRE_OK(kefir_ast_declarator_unpack_identifier(declarator, &function_identifier));
 
     struct kefir_ast_declarator *func_name_id_declarator = kefir_ast_declarator_identifier(mem, NULL, "__func__");
@@ -157,8 +157,8 @@ static kefir_result_t insert_function_name_builtin(struct kefir_mem *mem, struct
         return KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate __func__ declarator");
     });
 
-    struct kefir_ast_string_literal *func_name_value =
-        kefir_ast_new_string_literal_multibyte(mem, function_identifier, strlen(function_identifier) + 1);
+    struct kefir_ast_string_literal *func_name_value = kefir_ast_new_string_literal_multibyte(
+        mem, function_identifier->identifier, strlen(function_identifier->identifier) + 1);
     REQUIRE_ELSE(func_name_value != NULL, {
         kefir_ast_declarator_free(mem, func_name_declarator);
         return KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate __func__ string literal");

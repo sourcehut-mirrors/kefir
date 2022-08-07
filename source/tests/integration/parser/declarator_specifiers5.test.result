@@ -29,6 +29,7 @@
                             "declarator": {
                                 "class": "identifier",
                                 "identifier": "type",
+                                "asm_label": null,
                                 "attributes": []
                             },
                             "bitwidth": null
@@ -56,6 +57,7 @@
                                             "declarator": {
                                                 "class": "identifier",
                                                 "identifier": "integer",
+                                                "asm_label": null,
                                                 "attributes": []
                                             },
                                             "bitwidth": null
@@ -75,6 +77,7 @@
                                             "declarator": {
                                                 "class": "identifier",
                                                 "identifier": "floatingPoint",
+                                                "asm_label": null,
                                                 "attributes": []
                                             },
                                             "bitwidth": null
@@ -101,6 +104,7 @@
                                 "declarator": {
                                     "class": "identifier",
                                     "identifier": "payload",
+                                    "asm_label": null,
                                     "attributes": []
                                 },
                                 "type_qualifiers": [],

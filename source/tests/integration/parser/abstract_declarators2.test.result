@@ -104,6 +104,7 @@
                                 "declarator": {
                                     "class": "identifier",
                                     "identifier": "fn1",
+                                    "asm_label": null,
                                     "attributes": []
                                 },
                                 "ellipsis": false,

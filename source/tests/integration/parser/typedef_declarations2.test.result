@@ -15,6 +15,7 @@
                     "declarator": {
                         "class": "identifier",
                         "identifier": "fn1",
+                        "asm_label": null,
                         "attributes": []
                     },
                     "ellipsis": false,
@@ -46,6 +47,7 @@
                     "declarator": {
                         "class": "identifier",
                         "identifier": "fn2",
+                        "asm_label": null,
                         "attributes": []
                     },
                     "ellipsis": false,
@@ -79,6 +81,7 @@
                 "declarator": {
                     "class": "identifier",
                     "identifier": "a",
+                    "asm_label": null,
                     "attributes": []
                 },
                 "initializer": null
@@ -101,6 +104,7 @@
                     "declarator": {
                         "class": "identifier",
                         "identifier": "fn1",
+                        "asm_label": null,
                         "attributes": []
                     },
                     "ellipsis": false,
@@ -148,6 +152,7 @@
                     "declarator": {
                         "class": "identifier",
                         "identifier": "fn2",
+                        "asm_label": null,
                         "attributes": []
                     },
                     "ellipsis": false,
@@ -181,6 +186,7 @@
                 "declarator": {
                     "class": "identifier",
                     "identifier": "b",
+                    "asm_label": null,
                     "attributes": []
                 },
                 "initializer": null
@@ -203,6 +209,7 @@
                     "declarator": {
                         "class": "identifier",
                         "identifier": "fn1",
+                        "asm_label": null,
                         "attributes": []
                     },
                     "ellipsis": false,
@@ -250,6 +257,7 @@
                     "declarator": {
                         "class": "identifier",
                         "identifier": "fn2",
+                        "asm_label": null,
                         "attributes": []
                     },
                     "ellipsis": false,

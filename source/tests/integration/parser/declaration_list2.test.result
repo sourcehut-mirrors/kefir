@@ -54,6 +54,7 @@
                     "declarator": {
                         "class": "identifier",
                         "identifier": "integers",
+                        "asm_label": null,
                         "attributes": []
                     },
                     "type": "unbounded",
@@ -126,6 +127,7 @@
                     "declarator": {
                         "class": "identifier",
                         "identifier": "buffer",
+                        "asm_label": null,
                         "attributes": []
                     },
                     "type": "bounded",
@@ -194,6 +196,7 @@
                                 "declarator": {
                                     "class": "identifier",
                                     "identifier": "field1",
+                                    "asm_label": null,
                                     "attributes": []
                                 },
                                 "bitwidth": null
@@ -213,6 +216,7 @@
                                 "declarator": {
                                     "class": "identifier",
                                     "identifier": "field2",
+                                    "asm_label": null,
                                     "attributes": []
                                 },
                                 "bitwidth": null
@@ -234,6 +238,7 @@
                                     "declarator": {
                                         "class": "identifier",
                                         "identifier": "field3",
+                                        "asm_label": null,
                                         "attributes": []
                                     },
                                     "type_qualifiers": [],
@@ -252,6 +257,7 @@
                 "declarator": {
                     "class": "identifier",
                     "identifier": "something",
+                    "asm_label": null,
                     "attributes": []
                 },
                 "initializer": {

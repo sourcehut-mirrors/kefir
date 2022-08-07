@@ -52,10 +52,15 @@ typedef struct kefir_ast_declarator_function {
     struct kefir_ast_declarator *declarator;
 } kefir_ast_declarator_function_t;
 
+typedef struct kefir_ast_declarator_identifier {
+    const char *identifier;
+    const char *asm_label;
+} kefir_ast_declarator_identifier_t;
+
 typedef struct kefir_ast_declarator {
     kefir_ast_declarator_class_t klass;
     union {
-        const char *identifier;
+        struct kefir_ast_declarator_identifier identifier;
         struct kefir_ast_declarator_pointer pointer;
         struct kefir_ast_declarator_array array;
         struct kefir_ast_declarator_function function;
@@ -80,7 +85,8 @@ struct kefir_ast_declarator *kefir_ast_declarator_clone(struct kefir_mem *, cons
 kefir_result_t kefir_ast_declarator_free(struct kefir_mem *, struct kefir_ast_declarator *);
 
 kefir_result_t kefir_ast_declarator_is_abstract(struct kefir_ast_declarator *, kefir_bool_t *);
-kefir_result_t kefir_ast_declarator_unpack_identifier(struct kefir_ast_declarator *, const char **);
+kefir_result_t kefir_ast_declarator_unpack_identifier(struct kefir_ast_declarator *,
+                                                      struct kefir_ast_declarator_identifier **);
 kefir_result_t kefir_ast_declarator_unpack_function(const struct kefir_ast_declarator *,
                                                     const struct kefir_ast_declarator_function **);
 

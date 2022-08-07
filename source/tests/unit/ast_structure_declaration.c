@@ -51,7 +51,8 @@ DEFINE_CASE(ast_structure_declaration1, "AST Declarations - structure declaratio
     ASSIGN_DECL_CAST(struct kefir_ast_structure_entry_declarator *, entry1_declarator,
                      kefir_list_head(&entry1->declaration.declarators)->value);
     ASSERT(entry1_declarator->declarator->klass == KEFIR_AST_DECLARATOR_IDENTIFIER);
-    ASSERT(strcmp(entry1_declarator->declarator->identifier, "field1") == 0);
+    ASSERT(strcmp(entry1_declarator->declarator->identifier.identifier, "field1") == 0);
+    ASSERT(entry1_declarator->declarator->identifier.asm_label == NULL);
     ASSERT(entry1_declarator->bitwidth == NULL);
 
     ASSERT_NOK(kefir_ast_structure_specifier_append_entry(&kft_mem, specifier1, entry1));
@@ -148,7 +149,8 @@ DEFINE_CASE(ast_structure_declaration2, "AST Declarations - structure declaratio
         ASSERT(entry_declarator->declarator != NULL);
         ASSERT(entry_declarator->bitwidth == NULL);
         ASSERT(entry_declarator->declarator->klass == KEFIR_AST_DECLARATOR_IDENTIFIER);
-        ASSERT(strcmp(entry_declarator->declarator->identifier, "a") == 0);
+        ASSERT(strcmp(entry_declarator->declarator->identifier.identifier, "a") == 0);
+        ASSERT(entry_declarator->declarator->identifier.asm_label == NULL);
         kefir_list_next(&declarator_iter);
     } while (0);
 
@@ -176,13 +178,15 @@ DEFINE_CASE(ast_structure_declaration2, "AST Declarations - structure declaratio
         ASSERT(entry_declarator->declarator != NULL);
         ASSERT(entry_declarator->bitwidth == NULL);
         ASSERT(entry_declarator->declarator->klass == KEFIR_AST_DECLARATOR_IDENTIFIER);
-        ASSERT(strcmp(entry_declarator->declarator->identifier, "b") == 0);
+        ASSERT(strcmp(entry_declarator->declarator->identifier.identifier, "b") == 0);
+        ASSERT(entry_declarator->declarator->identifier.asm_label == NULL);
         kefir_list_next(&declarator_iter);
         ASSERT(declarator_iter != NULL);
         entry_declarator = declarator_iter->value;
         ASSERT(entry_declarator->declarator != NULL);
         ASSERT(entry_declarator->declarator->klass == KEFIR_AST_DECLARATOR_IDENTIFIER);
-        ASSERT(strcmp(entry_declarator->declarator->identifier, "c") == 0);
+        ASSERT(strcmp(entry_declarator->declarator->identifier.identifier, "c") == 0);
+        ASSERT(entry_declarator->declarator->identifier.asm_label == NULL);
         ASSERT(entry_declarator->bitwidth != NULL);
         ASSERT(entry_declarator->bitwidth->klass->type == KEFIR_AST_CONSTANT);
         ASSERT(((struct kefir_ast_constant *) entry_declarator->bitwidth->self)->type == KEFIR_AST_INT_CONSTANT);
@@ -229,7 +233,8 @@ DEFINE_CASE(ast_structure_declaration2, "AST Declarations - structure declaratio
                KEFIR_AST_INT_CONSTANT);
         ASSERT(((struct kefir_ast_constant *) entry_declarator->declarator->array.length->self)->value.character == 5);
         ASSERT(entry_declarator->declarator->array.declarator->klass == KEFIR_AST_DECLARATOR_IDENTIFIER);
-        ASSERT(strcmp(entry_declarator->declarator->array.declarator->identifier, "last") == 0);
+        ASSERT(strcmp(entry_declarator->declarator->array.declarator->identifier.identifier, "last") == 0);
+        ASSERT(entry_declarator->declarator->array.declarator->identifier.asm_label == NULL);
         kefir_list_next(&declarator_iter);
     } while (0);
 

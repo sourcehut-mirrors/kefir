@@ -430,6 +430,48 @@ static kefir_result_t scan_direct(struct kefir_mem *mem, struct kefir_parser *pa
     return KEFIR_OK;
 }
 
+static kefir_result_t scan_asm_label(struct kefir_mem *mem, struct kefir_parser *parser,
+                                     struct kefir_ast_declarator **declarator_ptr) {
+    UNUSED(mem);
+    UNUSED(declarator_ptr);
+    REQUIRE(PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_ASM), KEFIR_OK);
+
+    REQUIRE_OK(PARSER_SHIFT(parser));
+    REQUIRE(PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_LEFT_PARENTHESE),
+            KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0), "Expected left parenthese"));
+    REQUIRE(PARSER_TOKEN_IS_STRING_LITERAL(parser, 1),
+            KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 1), "Expected string literal"));
+    REQUIRE(PARSER_TOKEN_IS_PUNCTUATOR(parser, 2, KEFIR_PUNCTUATOR_RIGHT_PARENTHESE),
+            KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 2), "Expected right parenthese"));
+
+    const struct kefir_token *token = PARSER_CURSOR(parser, 1);
+    switch (token->string_literal.type) {
+        case KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE:
+        case KEFIR_STRING_LITERAL_TOKEN_UNICODE8: {
+            const char *asm_label = token->string_literal.literal;
+            struct kefir_ast_declarator_identifier *identifier = NULL;
+            REQUIRE_OK(kefir_ast_declarator_unpack_identifier(*declarator_ptr, &identifier));
+            REQUIRE(identifier != NULL && identifier->identifier != NULL,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 1),
+                                           "Cannot attach assembly label to abstract declarator"));
+            REQUIRE(identifier->asm_label == NULL,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 1),
+                                           "Duplicate assembly label"));
+            identifier->asm_label = asm_label;
+        } break;
+
+        case KEFIR_STRING_LITERAL_TOKEN_UNICODE16:
+        case KEFIR_STRING_LITERAL_TOKEN_UNICODE32:
+        case KEFIR_STRING_LITERAL_TOKEN_WIDE:
+            return KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 1),
+                                          "Non-multibyte asm label string literals are not supported yet");
+    }
+    REQUIRE_OK(PARSER_SHIFT(parser));
+    REQUIRE_OK(PARSER_SHIFT(parser));
+    REQUIRE_OK(PARSER_SHIFT(parser));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_parser_scan_declarator(struct kefir_mem *mem, struct kefir_parser *parser,
                                             struct kefir_ast_declarator **declarator_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
@@ -471,6 +513,7 @@ kefir_result_t kefir_parser_scan_declarator(struct kefir_mem *mem, struct kefir_
             kefir_ast_node_attributes_free(mem, &forward_attrs);
             return res;
         });
+        REQUIRE_OK(scan_asm_label(mem, parser, declarator_ptr));
         SCAN_ATTRIBUTES(&res, mem, parser, &(*declarator_ptr)->attributes);
         REQUIRE_OK(res);
     }
@@ -523,7 +566,7 @@ static kefir_result_t scan_direct_abstract(struct kefir_mem *mem, struct kefir_p
     struct kefir_ast_declarator *base_declarator = NULL;
     REQUIRE_OK(scan_direct_abstract_declarator_base(mem, parser, &base_declarator));
     REQUIRE_OK(scan_direct_declarator_tail(mem, parser, true, &base_declarator));
-    if (base_declarator->klass == KEFIR_AST_DECLARATOR_IDENTIFIER && base_declarator->identifier == NULL) {
+    if (base_declarator->klass == KEFIR_AST_DECLARATOR_IDENTIFIER && base_declarator->identifier.identifier == NULL) {
         REQUIRE_ELSE(permit_empty, {
             kefir_ast_declarator_free(mem, base_declarator);
             return KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to parse empty abstract declarator");

@@ -4,6 +4,7 @@
         "declarator": {
             "class": "identifier",
             "identifier": "fn1",
+            "asm_label": null,
             "attributes": []
         },
         "ellipsis": false,
@@ -35,6 +36,7 @@
         "declarator": {
             "class": "identifier",
             "identifier": "fn2",
+            "asm_label": null,
             "attributes": []
         },
         "ellipsis": false,
@@ -127,6 +129,7 @@
                             "declarator": {
                                 "class": "identifier",
                                 "identifier": "param3",
+                                "asm_label": null,
                                 "attributes": []
                             },
                             "type": "vla_unspecified",
@@ -146,6 +149,7 @@
         "declarator": {
             "class": "identifier",
             "identifier": "fn3",
+            "asm_label": null,
             "attributes": []
         },
         "ellipsis": true,
@@ -168,6 +172,7 @@
                                 "declarator": {
                                     "class": "identifier",
                                     "identifier": "callback",
+                                    "asm_label": null,
                                     "attributes": []
                                 },
                                 "type_qualifiers": [],
@@ -189,6 +194,7 @@
                                             "declarator": {
                                                 "class": "identifier",
                                                 "identifier": "param1",
+                                                "asm_label": null,
                                                 "attributes": []
                                             },
                                             "initializer": null
@@ -248,6 +254,7 @@
                                         "declarator": {
                                             "class": "identifier",
                                             "identifier": "callback2",
+                                            "asm_label": null,
                                             "attributes": []
                                         },
                                         "type": "bounded",

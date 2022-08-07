@@ -96,6 +96,7 @@
                             "declarator": {
                                 "class": "identifier",
                                 "identifier": "f",
+                                "asm_label": null,
                                 "attributes": []
                             },
                             "initializer": null

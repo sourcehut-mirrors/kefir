@@ -6,6 +6,7 @@
             "declarator": {
                 "class": "identifier",
                 "identifier": "matrix",
+                "asm_label": null,
                 "attributes": []
             },
             "type": "unbounded",
@@ -36,6 +37,7 @@
                         "declarator": {
                             "class": "identifier",
                             "identifier": "cube",
+                            "asm_label": null,
                             "attributes": []
                         },
                         "type": "vla_unspecified",
@@ -83,6 +85,7 @@
                     "declarator": {
                         "class": "identifier",
                         "identifier": "array",
+                        "asm_label": null,
                         "attributes": []
                     },
                     "type": "unbounded",

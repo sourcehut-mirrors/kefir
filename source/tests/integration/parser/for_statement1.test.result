@@ -64,6 +64,7 @@
                     "declarator": {
                         "class": "identifier",
                         "identifier": "i",
+                        "asm_label": null,
                         "attributes": []
                     },
                     "initializer": {
@@ -122,6 +123,7 @@
                     "declarator": {
                         "class": "identifier",
                         "identifier": "i",
+                        "asm_label": null,
                         "attributes": []
                     },
                     "initializer": {

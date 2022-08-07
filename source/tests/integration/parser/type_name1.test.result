@@ -102,6 +102,7 @@
                                 "declarator": {
                                     "class": "identifier",
                                     "identifier": "X",
+                                    "asm_label": null,
                                     "attributes": []
                                 },
                                 "bitwidth": null

@@ -83,6 +83,7 @@
                     "declarator": {
                         "class": "identifier",
                         "identifier": "chr",
+                        "asm_label": null,
                         "attributes": [],
                         "source_location": {
                             "source": "<stdin>",
@@ -194,6 +195,7 @@
                     "declarator": {
                         "class": "identifier",
                         "identifier": "test1",
+                        "asm_label": null,
                         "attributes": [],
                         "source_location": {
                             "source": "<stdin>",
@@ -250,6 +252,7 @@
                                     "declarator": {
                                         "class": "identifier",
                                         "identifier": "x",
+                                        "asm_label": null,
                                         "attributes": [],
                                         "source_location": {
                                             "source": "<stdin>",
@@ -297,6 +300,7 @@
                                     "declarator": {
                                         "class": "identifier",
                                         "identifier": "y",
+                                        "asm_label": null,
                                         "attributes": [],
                                         "source_location": {
                                             "source": "<stdin>",
@@ -334,6 +338,7 @@
                                                     "declarator": {
                                                         "class": "identifier",
                                                         "identifier": "a",
+                                                        "asm_label": null,
                                                         "attributes": [],
                                                         "source_location": {
                                                             "source": "<stdin>",
@@ -363,6 +368,7 @@
                                                     "declarator": {
                                                         "class": "identifier",
                                                         "identifier": "b",
+                                                        "asm_label": null,
                                                         "attributes": [],
                                                         "source_location": {
                                                             "source": "<stdin>",
@@ -417,6 +423,7 @@
                                                 "declarator": {
                                                     "class": "identifier",
                                                     "identifier": "fn",
+                                                    "asm_label": null,
                                                     "attributes": [],
                                                     "source_location": {
                                                         "source": "<stdin>",

@@ -29,6 +29,7 @@
                     "declarator": {
                         "class": "identifier",
                         "identifier": "X",
+                        "asm_label": null,
                         "attributes": [],
                         "source_location": {
                             "source": "<stdin>",
@@ -85,6 +86,7 @@
                 "declarator": {
                     "class": "identifier",
                     "identifier": "fn",
+                    "asm_label": null,
                     "attributes": [],
                     "source_location": {
                         "source": "<stdin>",
@@ -113,6 +115,7 @@
                                 "declarator": {
                                     "class": "identifier",
                                     "identifier": "x",
+                                    "asm_label": null,
                                     "attributes": [],
                                     "source_location": {
                                         "source": "<stdin>",
@@ -173,6 +176,7 @@
                                     "declarator": {
                                         "class": "identifier",
                                         "identifier": "__func__",
+                                        "asm_label": null,
                                         "attributes": [],
                                         "source_location": null
                                     },
@@ -311,6 +315,7 @@
                                     "declarator": {
                                         "class": "identifier",
                                         "identifier": "a",
+                                        "asm_label": null,
                                         "attributes": [],
                                         "source_location": {
                                             "source": "<stdin>",
@@ -340,6 +345,7 @@
                                     "declarator": {
                                         "class": "identifier",
                                         "identifier": "x",
+                                        "asm_label": null,
                                         "attributes": [],
                                         "source_location": {
                                             "source": "<stdin>",
@@ -374,6 +380,7 @@
                     "declarator": {
                         "class": "identifier",
                         "identifier": "X_t",
+                        "asm_label": null,
                         "attributes": [],
                         "source_location": {
                             "source": "<stdin>",

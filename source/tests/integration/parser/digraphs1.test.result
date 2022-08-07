@@ -17,6 +17,7 @@
                         "declarator": {
                             "class": "identifier",
                             "identifier": "Array",
+                            "asm_label": null,
                             "attributes": []
                         },
                         "type": "bounded",
@@ -54,6 +55,7 @@
                                     "declarator": {
                                         "class": "identifier",
                                         "identifier": "c",
+                                        "asm_label": null,
                                         "attributes": []
                                     },
                                     "bitwidth": null
@@ -84,6 +86,7 @@
                 "declarator": {
                     "class": "identifier",
                     "identifier": "Function",
+                    "asm_label": null,
                     "attributes": []
                 },
                 "ellipsis": false,
@@ -118,6 +121,7 @@
                                     "declarator": {
                                         "class": "identifier",
                                         "identifier": "__func__",
+                                        "asm_label": null,
                                         "attributes": []
                                     },
                                     "type": "unbounded",
@@ -153,6 +157,7 @@
                                     "declarator": {
                                         "class": "identifier",
                                         "identifier": "x",
+                                        "asm_label": null,
                                         "attributes": []
                                     },
                                     "type": "unbounded",

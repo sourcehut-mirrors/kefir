@@ -66,10 +66,16 @@ kefir_result_t kefir_ast_format_declarator(struct kefir_json_output *json,
     REQUIRE_OK(kefir_json_output_object_key(json, "class"));
     switch (declarator->klass) {
         case KEFIR_AST_DECLARATOR_IDENTIFIER:
-            if (declarator->identifier != NULL) {
+            if (declarator->identifier.identifier != NULL) {
                 REQUIRE_OK(kefir_json_output_string(json, "identifier"));
                 REQUIRE_OK(kefir_json_output_object_key(json, "identifier"));
-                REQUIRE_OK(kefir_json_output_string(json, declarator->identifier));
+                REQUIRE_OK(kefir_json_output_string(json, declarator->identifier.identifier));
+                REQUIRE_OK(kefir_json_output_object_key(json, "asm_label"));
+                if (declarator->identifier.asm_label != NULL) {
+                    REQUIRE_OK(kefir_json_output_string(json, declarator->identifier.asm_label));
+                } else {
+                    REQUIRE_OK(kefir_json_output_null(json));
+                }
             } else {
                 REQUIRE_OK(kefir_json_output_string(json, "abstract"));
             }

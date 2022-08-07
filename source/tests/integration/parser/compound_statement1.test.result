@@ -20,6 +20,7 @@
                         "declarator": {
                             "class": "identifier",
                             "identifier": "i",
+                            "asm_label": null,
                             "attributes": []
                         },
                         "initializer": {
@@ -132,6 +133,7 @@
                                 "declarator": {
                                     "class": "identifier",
                                     "identifier": "T",
+                                    "asm_label": null,
                                     "attributes": []
                                 },
                                 "initializer": null
@@ -155,6 +157,7 @@
                                     "declarator": {
                                         "class": "identifier",
                                         "identifier": "x",
+                                        "asm_label": null,
                                         "attributes": []
                                     },
                                     "type_qualifiers": [],

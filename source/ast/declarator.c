@@ -35,7 +35,8 @@ struct kefir_ast_declarator *kefir_ast_declarator_identifier(struct kefir_mem *m
     struct kefir_ast_declarator *decl = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_declarator));
     REQUIRE(decl != NULL, NULL);
     decl->klass = KEFIR_AST_DECLARATOR_IDENTIFIER;
-    decl->identifier = identifier;
+    decl->identifier.identifier = identifier;
+    decl->identifier.asm_label = NULL;
 
     kefir_result_t res = kefir_ast_node_attributes_init(&decl->attributes);
     REQUIRE_CHAIN(&res, kefir_source_location_empty(&decl->source_location));
@@ -161,7 +162,9 @@ struct kefir_ast_declarator *kefir_ast_declarator_clone(struct kefir_mem *mem,
     struct kefir_ast_declarator *clone = NULL;
     switch (declarator->klass) {
         case KEFIR_AST_DECLARATOR_IDENTIFIER:
-            clone = kefir_ast_declarator_identifier(mem, NULL, declarator->identifier);
+            clone = kefir_ast_declarator_identifier(mem, NULL, declarator->identifier.identifier);
+            REQUIRE(clone != NULL, NULL);
+            clone->identifier.asm_label = declarator->identifier.asm_label;
             break;
 
         case KEFIR_AST_DECLARATOR_POINTER: {
@@ -240,7 +243,8 @@ kefir_result_t kefir_ast_declarator_free(struct kefir_mem *mem, struct kefir_ast
 
     switch (decl->klass) {
         case KEFIR_AST_DECLARATOR_IDENTIFIER:
-            decl->identifier = NULL;
+            decl->identifier.identifier = NULL;
+            decl->identifier.asm_label = NULL;
             break;
 
         case KEFIR_AST_DECLARATOR_POINTER:
@@ -277,7 +281,7 @@ kefir_result_t kefir_ast_declarator_is_abstract(struct kefir_ast_declarator *dec
 
     switch (decl->klass) {
         case KEFIR_AST_DECLARATOR_IDENTIFIER:
-            *result = decl->identifier == NULL;
+            *result = decl->identifier.identifier == NULL;
             break;
 
         case KEFIR_AST_DECLARATOR_POINTER:
@@ -295,7 +299,8 @@ kefir_result_t kefir_ast_declarator_is_abstract(struct kefir_ast_declarator *dec
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_ast_declarator_unpack_identifier(struct kefir_ast_declarator *decl, const char **identifier_ptr) {
+kefir_result_t kefir_ast_declarator_unpack_identifier(struct kefir_ast_declarator *decl,
+                                                      struct kefir_ast_declarator_identifier **identifier_ptr) {
     REQUIRE(identifier_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to identifier"));
 
     if (decl == NULL) {
@@ -305,7 +310,7 @@ kefir_result_t kefir_ast_declarator_unpack_identifier(struct kefir_ast_declarato
 
     switch (decl->klass) {
         case KEFIR_AST_DECLARATOR_IDENTIFIER:
-            *identifier_ptr = decl->identifier;
+            *identifier_ptr = &decl->identifier;
             break;
 
         case KEFIR_AST_DECLARATOR_POINTER:

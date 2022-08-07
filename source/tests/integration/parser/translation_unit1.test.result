@@ -14,6 +14,7 @@
                 "declarator": {
                     "class": "identifier",
                     "identifier": "Fn1",
+                    "asm_label": null,
                     "attributes": []
                 },
                 "ellipsis": false,
@@ -48,6 +49,7 @@
                                     "declarator": {
                                         "class": "identifier",
                                         "identifier": "__func__",
+                                        "asm_label": null,
                                         "attributes": []
                                     },
                                     "type": "unbounded",
@@ -95,6 +97,7 @@
                                     "declarator": {
                                         "class": "identifier",
                                         "identifier": "field1",
+                                        "asm_label": null,
                                         "attributes": []
                                     },
                                     "bitwidth": null
@@ -114,6 +117,7 @@
                                     "declarator": {
                                         "class": "identifier",
                                         "identifier": "field2",
+                                        "asm_label": null,
                                         "attributes": []
                                     },
                                     "bitwidth": {
@@ -155,6 +159,7 @@
                     "declarator": {
                         "class": "identifier",
                         "identifier": "structure1_t",
+                        "asm_label": null,
                         "attributes": []
                     },
                     "initializer": null
@@ -180,6 +185,7 @@
                     "declarator": {
                         "class": "identifier",
                         "identifier": "Fn2",
+                        "asm_label": null,
                         "attributes": []
                     },
                     "ellipsis": false,
@@ -198,6 +204,7 @@
                                     "declarator": {
                                         "class": "identifier",
                                         "identifier": "x",
+                                        "asm_label": null,
                                         "attributes": []
                                     },
                                     "initializer": null
@@ -218,6 +225,7 @@
                                     "declarator": {
                                         "class": "identifier",
                                         "identifier": "y",
+                                        "asm_label": null,
                                         "attributes": []
                                     },
                                     "initializer": null
@@ -240,6 +248,7 @@
                                         "declarator": {
                                             "class": "identifier",
                                             "identifier": "z",
+                                            "asm_label": null,
                                             "attributes": []
                                         },
                                         "type": "unbounded",
@@ -285,6 +294,7 @@
                                     "declarator": {
                                         "class": "identifier",
                                         "identifier": "__func__",
+                                        "asm_label": null,
                                         "attributes": []
                                     },
                                     "type": "unbounded",
@@ -322,6 +332,7 @@
                                 "declarator": {
                                     "class": "identifier",
                                     "identifier": "base",
+                                    "asm_label": null,
                                     "attributes": []
                                 },
                                 "initializer": {
@@ -404,6 +415,7 @@
                         "declarator": {
                             "class": "identifier",
                             "identifier": "Ptr1",
+                            "asm_label": null,
                             "attributes": []
                         },
                         "type_qualifiers": [],
@@ -440,6 +452,7 @@
                         "declarator": {
                             "class": "identifier",
                             "identifier": "callback1",
+                            "asm_label": null,
                             "attributes": []
                         },
                         "ellipsis": false,
@@ -488,6 +501,7 @@
                         "declarator": {
                             "class": "identifier",
                             "identifier": "SomeFn",
+                            "asm_label": null,
                             "attributes": []
                         },
                         "ellipsis": false,
@@ -524,6 +538,7 @@
                 "declarator": {
                     "class": "identifier",
                     "identifier": "SomeFn",
+                    "asm_label": null,
                     "attributes": []
                 },
                 "ellipsis": false,
@@ -562,6 +577,7 @@
                                     "declarator": {
                                         "class": "identifier",
                                         "identifier": "x",
+                                        "asm_label": null,
                                         "attributes": []
                                     },
                                     "type_qualifiers": [],
@@ -588,6 +604,7 @@
                             "declarator": {
                                 "class": "identifier",
                                 "identifier": "y",
+                                "asm_label": null,
                                 "attributes": []
                             },
                             "initializer": null
@@ -597,6 +614,7 @@
                             "declarator": {
                                 "class": "identifier",
                                 "identifier": "z",
+                                "asm_label": null,
                                 "attributes": []
                             },
                             "initializer": null
@@ -631,6 +649,7 @@
                                     "declarator": {
                                         "class": "identifier",
                                         "identifier": "__func__",
+                                        "asm_label": null,
                                         "attributes": []
                                     },
                                     "type": "unbounded",

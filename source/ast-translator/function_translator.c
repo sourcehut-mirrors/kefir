@@ -36,10 +36,12 @@
 static kefir_result_t init_function_declaration(struct kefir_mem *mem, struct kefir_ast_translator_context *context,
                                                 struct kefir_ast_function_definition *function,
                                                 struct kefir_ast_translator_function_context *args) {
-    const char *identifier = NULL;
-    REQUIRE_OK(kefir_ast_declarator_unpack_identifier(function->declarator, &identifier));
-    REQUIRE(identifier != NULL,
+    struct kefir_ast_declarator_identifier *decl_identifier = NULL;
+    REQUIRE_OK(kefir_ast_declarator_unpack_identifier(function->declarator, &decl_identifier));
+    REQUIRE(decl_identifier != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected function definition to have valid identifier"));
+
+    const char *identifier = decl_identifier->identifier;
 
     char identifier_buf[1024];
     const struct kefir_ast_scoped_identifier *scoped_id = function->base.properties.function_definition.scoped_id;
@@ -312,15 +314,16 @@ kefir_result_t kefir_ast_translator_function_context_translate(
 
             ASSIGN_DECL_CAST(struct kefir_ast_init_declarator *, init_decl,
                              kefir_list_head(&param_decl->init_declarators)->value);
-            const char *param_identifier = NULL;
+            struct kefir_ast_declarator_identifier *param_identifier = NULL;
             REQUIRE_OK(kefir_ast_declarator_unpack_identifier(init_decl->declarator, &param_identifier));
             REQUIRE(init_decl->base.properties.type != NULL,
                     KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Function definition parameters shall have definite types"));
             if (init_decl->base.properties.type->tag != KEFIR_AST_TYPE_VOID) {
-                if (param_identifier != NULL) {
-                    REQUIRE_OK(local_context->context.resolve_ordinary_identifier(&local_context->context,
-                                                                                  param_identifier, &scoped_id));
-                    REQUIRE_OK(kefir_ast_translator_object_lvalue(mem, context, builder, param_identifier, scoped_id));
+                if (param_identifier != NULL && param_identifier->identifier != NULL) {
+                    REQUIRE_OK(local_context->context.resolve_ordinary_identifier(
+                        &local_context->context, param_identifier->identifier, &scoped_id));
+                    REQUIRE_OK(kefir_ast_translator_object_lvalue(mem, context, builder, param_identifier->identifier,
+                                                                  scoped_id));
                     REQUIRE_OK(xchg_param_address(builder, scoped_id->object.type));
                     REQUIRE_OK(kefir_ast_translator_store_value(mem, scoped_id->type, context, builder));
                 } else {

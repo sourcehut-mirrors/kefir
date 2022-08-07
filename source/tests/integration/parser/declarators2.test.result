@@ -4,6 +4,7 @@
         "declarator": {
             "class": "identifier",
             "identifier": "array",
+            "asm_label": null,
             "attributes": []
         },
         "type": "unbounded",
@@ -19,6 +20,7 @@
         "declarator": {
             "class": "identifier",
             "identifier": "array2",
+            "asm_label": null,
             "attributes": []
         },
         "type": "unbounded",
@@ -31,6 +33,7 @@
         "declarator": {
             "class": "identifier",
             "identifier": "another_array",
+            "asm_label": null,
             "attributes": []
         },
         "type": "bounded",
@@ -64,6 +67,7 @@
         "declarator": {
             "class": "identifier",
             "identifier": "another_array2",
+            "asm_label": null,
             "attributes": []
         },
         "type": "bounded",
@@ -104,6 +108,7 @@
         "declarator": {
             "class": "identifier",
             "identifier": "vla_array",
+            "asm_label": null,
             "attributes": []
         },
         "type": "vla_unspecified",
@@ -116,6 +121,7 @@
         "declarator": {
             "class": "identifier",
             "identifier": "vla_array2",
+            "asm_label": null,
             "attributes": []
         },
         "type": "vla_unspecified",
@@ -130,6 +136,7 @@
         "declarator": {
             "class": "identifier",
             "identifier": "static_array",
+            "asm_label": null,
             "attributes": []
         },
         "type": "bounded",
@@ -146,6 +153,7 @@
         "declarator": {
             "class": "identifier",
             "identifier": "static_array2",
+            "asm_label": null,
             "attributes": []
         },
         "type": "bounded",

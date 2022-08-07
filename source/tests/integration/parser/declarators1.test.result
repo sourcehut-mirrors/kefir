@@ -2,6 +2,7 @@
     {
         "class": "identifier",
         "identifier": "some_variable_name",
+        "asm_label": null,
         "attributes": []
     },
     {
@@ -9,6 +10,7 @@
         "declarator": {
             "class": "identifier",
             "identifier": "some_other_variable_name",
+            "asm_label": null,
             "attributes": []
         },
         "type_qualifiers": [],
@@ -21,6 +23,7 @@
             "declarator": {
                 "class": "identifier",
                 "identifier": "yet_another_variable_name",
+                "asm_label": null,
                 "attributes": []
             },
             "type_qualifiers": [],
@@ -34,6 +37,7 @@
     {
         "class": "identifier",
         "identifier": "brand_new_variable_name",
+        "asm_label": null,
         "attributes": []
     },
     {
@@ -45,6 +49,7 @@
                 "declarator": {
                     "class": "identifier",
                     "identifier": "not_a_variable_name",
+                    "asm_label": null,
                     "attributes": []
                 },
                 "type_qualifiers": [

@@ -25,6 +25,7 @@
                     "declarator": {
                         "class": "identifier",
                         "identifier": "i",
+                        "asm_label": null,
                         "attributes": []
                     },
                     "initializer": {
@@ -115,6 +116,7 @@
                             "declarator": {
                                 "class": "identifier",
                                 "identifier": "res",
+                                "asm_label": null,
                                 "attributes": []
                             },
                             "initializer": {
@@ -155,6 +157,7 @@
                     "declarator": {
                         "class": "identifier",
                         "identifier": "i",
+                        "asm_label": null,
                         "attributes": []
                     },
                     "initializer": {
@@ -208,6 +211,7 @@
                                 "declarator": {
                                     "class": "identifier",
                                     "identifier": "j",
+                                    "asm_label": null,
                                     "attributes": []
                                 },
                                 "initializer": {
@@ -261,6 +265,7 @@
                                             "declarator": {
                                                 "class": "identifier",
                                                 "identifier": "k",
+                                                "asm_label": null,
                                                 "attributes": []
                                             },
                                             "initializer": {

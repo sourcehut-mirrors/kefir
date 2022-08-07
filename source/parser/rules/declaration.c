@@ -149,13 +149,13 @@ static kefir_result_t update_scope(struct kefir_mem *mem, struct kefir_parser *p
     for (const struct kefir_list_entry *iter = kefir_list_head(&declaration->init_declarators); iter != NULL;
          kefir_list_next(&iter)) {
         ASSIGN_DECL_CAST(struct kefir_ast_init_declarator *, declaration, iter->value);
-        const char *identifier;
+        struct kefir_ast_declarator_identifier *identifier;
         REQUIRE_OK(kefir_ast_declarator_unpack_identifier(declaration->declarator, &identifier));
-        if (identifier != NULL) {
+        if (identifier != NULL && identifier->identifier) {
             if (is_typedef) {
-                REQUIRE_OK(kefir_parser_scope_declare_typedef(mem, &parser->scope, identifier));
+                REQUIRE_OK(kefir_parser_scope_declare_typedef(mem, &parser->scope, identifier->identifier));
             } else {
-                REQUIRE_OK(kefir_parser_scope_declare_variable(mem, &parser->scope, identifier));
+                REQUIRE_OK(kefir_parser_scope_declare_variable(mem, &parser->scope, identifier->identifier));
             }
         }
     }

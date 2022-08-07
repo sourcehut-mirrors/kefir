@@ -1,0 +1,44 @@
+[
+    {
+        "class": "identifier",
+        "identifier": "some_variable_name",
+        "asm_label": "abc",
+        "attributes": []
+    },
+    {
+        "class": "pointer",
+        "declarator": {
+            "class": "identifier",
+            "identifier": "some_other_name",
+            "asm_label": "def",
+            "attributes": []
+        },
+        "type_qualifiers": [],
+        "attributes": []
+    },
+    {
+        "class": "array",
+        "declarator": {
+            "class": "identifier",
+            "identifier": "another_name",
+            "asm_label": "xyz",
+            "attributes": []
+        },
+        "type": "unbounded",
+        "static": false,
+        "type_qualifiers": [],
+        "attributes": []
+    },
+    {
+        "class": "function",
+        "declarator": {
+            "class": "identifier",
+            "identifier": "yet_another_name",
+            "asm_label": "qwerty",
+            "attributes": []
+        },
+        "ellipsis": false,
+        "parameters": [],
+        "attributes": []
+    }
+]

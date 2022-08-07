@@ -53,7 +53,7 @@ static kefir_result_t analyze_function_parameters(const struct kefir_ast_functio
 
         ASSIGN_DECL_CAST(struct kefir_ast_init_declarator *, init_decl,
                          kefir_list_head(&param_decl->init_declarators)->value);
-        const char *param_identifier = NULL;
+        struct kefir_ast_declarator_identifier *param_identifier = NULL;
         REQUIRE_OK(kefir_ast_declarator_unpack_identifier(init_decl->declarator, &param_identifier));
         REQUIRE(init_decl->base.properties.type != NULL,
                 KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Function definition parameters shall have definite types"));

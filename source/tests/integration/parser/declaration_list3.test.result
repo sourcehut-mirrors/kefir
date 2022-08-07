@@ -15,6 +15,7 @@
                     "declarator": {
                         "class": "identifier",
                         "identifier": "integers",
+                        "asm_label": null,
                         "attributes": []
                     },
                     "ellipsis": false,
@@ -64,6 +65,7 @@
                     "declarator": {
                         "class": "identifier",
                         "identifier": "value_x",
+                        "asm_label": null,
                         "attributes": []
                     },
                     "type_qualifiers": [],

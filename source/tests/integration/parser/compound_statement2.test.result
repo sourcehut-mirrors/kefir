@@ -38,6 +38,7 @@
                                 "declarator": {
                                     "class": "identifier",
                                     "identifier": "T",
+                                    "asm_label": null,
                                     "attributes": []
                                 },
                                 "initializer": null
@@ -65,6 +66,7 @@
                                     "declarator": {
                                         "class": "identifier",
                                         "identifier": "a",
+                                        "asm_label": null,
                                         "attributes": []
                                     },
                                     "type_qualifiers": [],
@@ -94,6 +96,7 @@
                                             "declarator": {
                                                 "class": "identifier",
                                                 "identifier": "a",
+                                                "asm_label": null,
                                                 "attributes": []
                                             },
                                             "type_qualifiers": [],
@@ -117,6 +120,7 @@
                                         "declarator": {
                                             "class": "identifier",
                                             "identifier": "T",
+                                            "asm_label": null,
                                             "attributes": []
                                         },
                                         "initializer": null
@@ -160,6 +164,7 @@
                                             "declarator": {
                                                 "class": "identifier",
                                                 "identifier": "a",
+                                                "asm_label": null,
                                                 "attributes": []
                                             },
                                             "type_qualifiers": [],

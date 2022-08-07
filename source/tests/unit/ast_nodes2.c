@@ -470,7 +470,8 @@ DEFINE_CASE(ast_nodes_init_declarators1, "AST nodes - declarations #1") {
         kefir_ast_new_single_declaration(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL), NULL, &decl1);
     ASSERT(decl1 != NULL);
     ASSERT(decl1->declarator->klass == KEFIR_AST_DECLARATOR_IDENTIFIER);
-    ASSERT(decl1->declarator->identifier == NULL);
+    ASSERT(decl1->declarator->identifier.identifier == NULL);
+    ASSERT(decl1->declarator->identifier.asm_label == NULL);
     ASSERT(kefir_ast_declarator_specifier_list_iter(&decl1_list->specifiers, NULL) == NULL);
 
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &decl1_list->specifiers,
@@ -511,7 +512,8 @@ DEFINE_CASE(ast_nodes_init_declarators1, "AST nodes - declarations #1") {
     ASSERT(kefir_ast_type_qualifier_list_iter(&decl2->declarator->pointer.declarator->pointer.type_qualifiers, NULL) ==
            NULL);
     ASSERT(decl2->declarator->pointer.declarator->pointer.declarator->klass == KEFIR_AST_DECLARATOR_IDENTIFIER);
-    ASSERT(decl2->declarator->pointer.declarator->pointer.declarator->identifier == NULL);
+    ASSERT(decl2->declarator->pointer.declarator->pointer.declarator->identifier.identifier == NULL);
+    ASSERT(decl2->declarator->pointer.declarator->pointer.declarator->identifier.asm_label == NULL);
     ASSERT(kefir_ast_declarator_specifier_list_iter(&decl2_list->specifiers, NULL) == NULL);
     ASSERT(decl2->initializer == initializer2);
 

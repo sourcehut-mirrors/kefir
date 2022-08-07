@@ -992,7 +992,7 @@ static kefir_result_t analyze_declaration_declarator_impl(
     REQUIRE(declarator != NULL, KEFIR_OK);
     switch (declarator->klass) {
         case KEFIR_AST_DECLARATOR_IDENTIFIER:
-            ASSIGN_PTR(identifier, declarator->identifier);
+            ASSIGN_PTR(identifier, declarator->identifier.identifier);
             break;
 
         case KEFIR_AST_DECLARATOR_POINTER:
