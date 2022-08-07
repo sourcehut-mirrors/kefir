@@ -993,6 +993,9 @@ static kefir_result_t analyze_declaration_declarator_impl(
     switch (declarator->klass) {
         case KEFIR_AST_DECLARATOR_IDENTIFIER:
             ASSIGN_PTR(identifier, declarator->identifier.identifier);
+            if (attributes != NULL) {
+                attributes->asm_label = declarator->identifier.asm_label;
+            }
             break;
 
         case KEFIR_AST_DECLARATOR_POINTER:

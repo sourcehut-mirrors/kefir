@@ -156,7 +156,7 @@ static kefir_result_t context_define_identifier(
             case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC:
                 REQUIRE_OK(kefir_ast_global_context_define_static_function(mem, global_ctx, function_specifier,
                                                                            identifier, declaration, unqualified_type,
-                                                                           location, scoped_id));
+                                                                           attributes, location, scoped_id));
                 break;
 
             case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_THREAD_LOCAL:
@@ -965,12 +965,21 @@ kefir_result_t kefir_ast_global_context_declare_function(
                                                   kefir_ast_function_specifier_is_inline(specifier);
         if (attributes != NULL) {
             ordinary_id->function.flags.gnu_inline = ordinary_id->function.flags.gnu_inline || attributes->gnu_inline;
+            if (ordinary_id->function.asm_label == NULL) {
+                ordinary_id->function.asm_label = attributes->asm_label;
+            } else {
+                REQUIRE(attributes->asm_label == NULL ||
+                            strcmp(attributes->asm_label, ordinary_id->function.asm_label) == 0,
+                        KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
+                                               "Assembly label does not match with previous declaration"));
+            }
         }
     } else {
         REQUIRE(res == KEFIR_NOT_FOUND, res);
         ordinary_id = kefir_ast_context_allocate_scoped_function_identifier(
             mem, function, specifier, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN, true, false,
-            !external_linkage && kefir_ast_function_specifier_is_inline(specifier));
+            !external_linkage && kefir_ast_function_specifier_is_inline(specifier),
+            attributes != NULL ? attributes->asm_label : NULL);
         REQUIRE(ordinary_id != NULL,
                 KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocted AST scoped identifier"));
         const char *id = kefir_symbol_table_insert(mem, &context->symbols, identifier, NULL);
@@ -1029,12 +1038,21 @@ kefir_result_t kefir_ast_global_context_define_function(struct kefir_mem *mem, s
                                                   kefir_ast_function_specifier_is_inline(specifier);
         if (attributes != NULL) {
             ordinary_id->function.flags.gnu_inline = ordinary_id->function.flags.gnu_inline || attributes->gnu_inline;
+            if (ordinary_id->function.asm_label == NULL) {
+                ordinary_id->function.asm_label = attributes->asm_label;
+            } else {
+                REQUIRE(attributes->asm_label == NULL ||
+                            strcmp(attributes->asm_label, ordinary_id->function.asm_label) == 0,
+                        KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
+                                               "Assembly label does not match with previous declaration"));
+            }
         }
     } else {
         REQUIRE(res == KEFIR_NOT_FOUND, res);
         ordinary_id = kefir_ast_context_allocate_scoped_function_identifier(
             mem, function, specifier, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN, false, true,
-            !external_linkage && kefir_ast_function_specifier_is_inline(specifier));
+            !external_linkage && kefir_ast_function_specifier_is_inline(specifier),
+            attributes != NULL ? attributes->asm_label : NULL);
         REQUIRE(ordinary_id != NULL,
                 KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocted AST scoped identifier"));
         const char *id = kefir_symbol_table_insert(mem, &context->symbols, identifier, NULL);
@@ -1055,7 +1073,8 @@ kefir_result_t kefir_ast_global_context_define_function(struct kefir_mem *mem, s
 kefir_result_t kefir_ast_global_context_define_static_function(
     struct kefir_mem *mem, struct kefir_ast_global_context *context, kefir_ast_function_specifier_t specifier,
     const char *identifier, kefir_bool_t declaration, const struct kefir_ast_type *function,
-    const struct kefir_source_location *location, const struct kefir_ast_scoped_identifier **scoped_id) {
+    const struct kefir_ast_declarator_attributes *attributes, const struct kefir_source_location *location,
+    const struct kefir_ast_scoped_identifier **scoped_id) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST translatation context"));
     REQUIRE(function != NULL && function->tag == KEFIR_AST_TYPE_FUNCTION,
@@ -1089,11 +1108,21 @@ kefir_result_t kefir_ast_global_context_define_static_function(
         ordinary_id->function.defined = ordinary_id->function.defined || !declaration;
         ordinary_id->function.inline_definition =
             ordinary_id->function.inline_definition && kefir_ast_function_specifier_is_inline(specifier);
+        if (attributes != NULL) {
+            if (ordinary_id->function.asm_label == NULL) {
+                ordinary_id->function.asm_label = attributes->asm_label;
+            } else {
+                REQUIRE(attributes->asm_label == NULL ||
+                            strcmp(attributes->asm_label, ordinary_id->function.asm_label) == 0,
+                        KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
+                                               "Assembly label does not match with previous declaration"));
+            }
+        }
     } else {
         REQUIRE(res == KEFIR_NOT_FOUND, res);
         ordinary_id = kefir_ast_context_allocate_scoped_function_identifier(
             mem, function, specifier, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC, false, !declaration,
-            kefir_ast_function_specifier_is_inline(specifier));
+            kefir_ast_function_specifier_is_inline(specifier), attributes != NULL ? attributes->asm_label : NULL);
         REQUIRE(ordinary_id != NULL,
                 KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocted AST scoped identifier"));
         const char *id = kefir_symbol_table_insert(mem, &context->symbols, identifier, NULL);

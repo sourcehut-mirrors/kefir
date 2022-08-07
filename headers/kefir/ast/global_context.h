@@ -114,6 +114,7 @@ kefir_result_t kefir_ast_global_context_define_function(struct kefir_mem *, stru
 kefir_result_t kefir_ast_global_context_define_static_function(struct kefir_mem *, struct kefir_ast_global_context *,
                                                                kefir_ast_function_specifier_t, const char *,
                                                                kefir_bool_t, const struct kefir_ast_type *,
+                                                               const struct kefir_ast_declarator_attributes *,
                                                                const struct kefir_source_location *,
                                                                const struct kefir_ast_scoped_identifier **);
 

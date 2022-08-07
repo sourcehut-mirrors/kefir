@@ -68,6 +68,7 @@ typedef struct kefir_ast_scoped_identifier {
             } flags;
             struct kefir_ast_local_context **local_context_ptr;
             struct kefir_ast_local_context *local_context;
+            const char *asm_label;
         } function;
 
         struct {
