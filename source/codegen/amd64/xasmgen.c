@@ -1324,7 +1324,7 @@ static kefir_result_t format_att_mnemonic_suffix(struct kefir_amd64_xasmgen *xas
     if (op1 != NULL && op1->klass == KEFIR_AMD64_XASMGEN_OPERAND_POINTER) {
         REQUIRE_OK(format_att_mnemonic_suffix_impl(payload->output, op1->pointer.type));
     } else if (op2 != NULL && op2->klass == KEFIR_AMD64_XASMGEN_OPERAND_POINTER) {
-        REQUIRE_OK(format_att_mnemonic_suffix_impl(payload->output, op3->pointer.type));
+        REQUIRE_OK(format_att_mnemonic_suffix_impl(payload->output, op2->pointer.type));
     } else if (op3 != NULL && op3->klass == KEFIR_AMD64_XASMGEN_OPERAND_POINTER) {
         REQUIRE_OK(format_att_mnemonic_suffix_impl(payload->output, op3->pointer.type));
     }
