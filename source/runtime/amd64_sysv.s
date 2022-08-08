@@ -26,6 +26,9 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 .intel_syntax noprefix
+
+.section .note.GNU-stack,"",%progbits
+
 .section .text
 
 .macro declare_runtime identifier

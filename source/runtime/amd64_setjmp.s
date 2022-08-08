@@ -27,6 +27,10 @@
 
 .intel_syntax noprefix
 
+.section .note.GNU-stack,"",%progbits
+
+.section .text
+
 .global __kefirrt_setjmp
 .global __kefirrt_longjmp
 
