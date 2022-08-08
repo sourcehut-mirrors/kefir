@@ -232,7 +232,7 @@ static kefir_result_t map_parameter_to_register(struct kefir_mem *mem, struct in
     kefir_amd64_xasmgen_register_t reg;
     REQUIRE(kefir_list_length(&params->available_int_regs) > 0,
             KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unable to satisfy IR inline assembly constraints"));
-    reg = (kefir_amd64_xasmgen_register_t) kefir_list_head(&params->available_int_regs)->value;
+    reg = (kefir_amd64_xasmgen_register_t) ((kefir_uptr_t) kefir_list_head(&params->available_int_regs)->value);
     REQUIRE_OK(kefir_list_pop(mem, &params->available_int_regs, kefir_list_head(&params->available_int_regs)));
     REQUIRE_OK(insert_param_map(mem, params, asm_param->parameter_id, INLINE_ASSEMBLY_PARAM_REGISTER_DIRECT, reg, 0,
                                 param_map));
@@ -254,7 +254,7 @@ static kefir_result_t map_parameter_to_memory(struct kefir_mem *mem, struct inli
         kefir_amd64_xasmgen_register_t reg;
         REQUIRE(kefir_list_length(&params->available_int_regs) > 0,
                 KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unable to satisfy IR inline assembly constraints"));
-        reg = (kefir_amd64_xasmgen_register_t) kefir_list_head(&params->available_int_regs)->value;
+        reg = (kefir_amd64_xasmgen_register_t) ((kefir_uptr_t) kefir_list_head(&params->available_int_regs)->value);
         REQUIRE_OK(kefir_list_pop(mem, &params->available_int_regs, kefir_list_head(&params->available_int_regs)));
         REQUIRE_OK(insert_param_map(mem, params, asm_param->parameter_id, INLINE_ASSEMBLY_PARAM_REGISTER_INDIRECT, reg,
                                     0, param_map));
@@ -381,7 +381,7 @@ static kefir_result_t restore_dirty_regs(struct kefir_codegen_amd64 *codegen, st
 
     for (const struct kefir_list_entry *iter = kefir_list_tail(&params->preserved_regs); iter != NULL;
          iter = iter->prev) {
-        ASSIGN_DECL_CAST(kefir_amd64_xasmgen_register_t, reg, iter->value);
+        ASSIGN_DECL_CAST(kefir_amd64_xasmgen_register_t, reg, (kefir_uptr_t) iter->value);
 
         if (kefir_amd64_xasmgen_register_is_floating_point(reg)) {
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOVDQU(
@@ -631,7 +631,8 @@ static kefir_result_t store_outputs(struct kefir_codegen_amd64 *codegen,
     kefir_amd64_xasmgen_register_t scratch_reg;
     kefir_bool_t pushed_scratch = false;
     if (kefir_list_length(&params->available_int_regs)) {
-        scratch_reg = (kefir_amd64_xasmgen_register_t) kefir_list_head(&params->available_int_regs)->value;
+        scratch_reg =
+            (kefir_amd64_xasmgen_register_t) ((kefir_uptr_t) kefir_list_head(&params->available_int_regs)->value);
     } else {
         scratch_reg = KEFIR_AMD64_XASMGEN_REGISTER_RAX;
     }
