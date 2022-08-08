@@ -213,7 +213,7 @@
                         "0"
                     ],
                     "class": "store",
-                    "address_index": 4
+                    "operand_address": 4
                 },
                 {
                     "identifier": 1,
@@ -221,7 +221,8 @@
                         "1"
                     ],
                     "class": "load_store",
-                    "address_index": 3
+                    "load_direct_from": 3,
+                    "operand_address": 3
                 },
                 {
                     "identifier": 2,
@@ -229,7 +230,8 @@
                         "2"
                     ],
                     "class": "read",
-                    "input_index": 2
+                    "load_direct_from": 2,
+                    "operand_address": 2
                 },
                 {
                     "identifier": 3,
@@ -237,7 +239,8 @@
                         "3"
                     ],
                     "class": "read",
-                    "input_index": 0
+                    "load_direct_from": 0,
+                    "operand_address": 0
                 }
             ],
             "clobbers": [
@@ -257,7 +260,7 @@
                         "[null]"
                     ],
                     "class": "store",
-                    "address_index": 5
+                    "operand_address": 5
                 },
                 {
                     "identifier": 1,
@@ -265,7 +268,8 @@
                         "1"
                     ],
                     "class": "load_store",
-                    "address_index": 4
+                    "load_direct_from": 4,
+                    "operand_address": 4
                 },
                 {
                     "identifier": 2,
@@ -274,7 +278,7 @@
                         "[alternativeId]"
                     ],
                     "class": "store",
-                    "address_index": 3
+                    "operand_address": 3
                 },
                 {
                     "identifier": 3,
@@ -282,7 +286,8 @@
                         "3"
                     ],
                     "class": "read",
-                    "input_index": 2
+                    "load_direct_from": 2,
+                    "operand_address": 2
                 },
                 {
                     "identifier": 4,
@@ -290,7 +295,8 @@
                         "4"
                     ],
                     "class": "read",
-                    "input_index": 0
+                    "load_direct_from": 0,
+                    "operand_address": 0
                 }
             ],
             "clobbers": [

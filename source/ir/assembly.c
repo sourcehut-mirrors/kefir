@@ -128,7 +128,21 @@ kefir_result_t kefir_ir_inline_assembly_add_parameter(
     param->type.type = param_type;
     param->type.index = param_type_idx;
     param->constraint = constraint;
-    param->value = value;
+    switch (param_class) {
+        case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ:
+        case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_LOAD:
+        case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_LOAD_STORE:
+            param->direct_operand_load_from = value;
+            // Fallthrough
+
+        case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_STORE:
+            param->operand_address_at = value;
+            break;
+
+        case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_IMMEDIATE:
+            param->immediate_value = value;
+            break;
+    }
 
     kefir_result_t res = kefir_list_init(&param->identifiers);
     REQUIRE_CHAIN(&res, kefir_list_insert_after(mem, &param->identifiers, kefir_list_tail(&param->identifiers),
@@ -180,6 +194,38 @@ kefir_result_t kefir_ir_inline_assembly_add_parameter_alias(struct kefir_mem *me
     REQUIRE_OK(kefir_list_insert_after(mem, &param->identifiers, kefir_list_tail(&param->identifiers), (void *) alias));
     REQUIRE_OK(kefir_hashtree_insert(mem, &inline_asm->parameters, (kefir_hashtree_key_t) alias,
                                      (kefir_hashtree_value_t) param));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_ir_inline_assembly_parameter_direct_load_from(struct kefir_mem *mem,
+                                                                   struct kefir_ir_inline_assembly *inline_asm,
+                                                                   struct kefir_ir_inline_assembly_parameter *param,
+                                                                   kefir_int64_t direct_load_index) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(inline_asm != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR inline assembly"));
+    REQUIRE(param != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR inline assembly parameter"));
+    REQUIRE(param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_STORE ||
+                param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_LOAD ||
+                param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_LOAD_STORE,
+            KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Cannot change IR inline assembly parameter loading source"));
+
+    param->direct_operand_load_from = direct_load_index;
+    param->klass = KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_LOAD_STORE;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_ir_inline_assembly_resolve_parameter(struct kefir_ir_inline_assembly *inline_asm,
+                                                          const char *param_id,
+                                                          struct kefir_ir_inline_assembly_parameter **param_ptr) {
+    REQUIRE(inline_asm != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR inline assembly"));
+    REQUIRE(param_id != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR inline assembly parameter identifier"));
+    REQUIRE(param_ptr != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to IR inline assembly parameter"));
+
+    struct kefir_hashtree_node *node;
+    REQUIRE_OK(kefir_hashtree_at(&inline_asm->parameters, (kefir_hashtree_key_t) param_id, &node));
+    *param_ptr = (struct kefir_ir_inline_assembly_parameter *) node->value;
     return KEFIR_OK;
 }
 

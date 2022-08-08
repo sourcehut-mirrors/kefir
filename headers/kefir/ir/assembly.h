@@ -51,7 +51,11 @@ typedef struct kefir_ir_inline_assembly_parameter {
         kefir_size_t index;
     } type;
     kefir_ir_inline_assembly_parameter_constraint_t constraint;
-    kefir_int64_t value;
+    struct {
+        kefir_int64_t direct_operand_load_from;
+        kefir_int64_t operand_address_at;
+        kefir_int64_t immediate_value;
+    };
 } kefir_ir_inline_assembly_parameter_t;
 
 typedef struct kefir_ir_inline_assembly_jump_target {
@@ -84,6 +88,12 @@ kefir_result_t kefir_ir_inline_assembly_add_parameter(struct kefir_mem *, struct
 kefir_result_t kefir_ir_inline_assembly_add_parameter_alias(struct kefir_mem *, struct kefir_symbol_table *,
                                                             struct kefir_ir_inline_assembly *,
                                                             struct kefir_ir_inline_assembly_parameter *, const char *);
+kefir_result_t kefir_ir_inline_assembly_parameter_direct_load_from(struct kefir_mem *,
+                                                                   struct kefir_ir_inline_assembly *,
+                                                                   struct kefir_ir_inline_assembly_parameter *,
+                                                                   kefir_int64_t);
+kefir_result_t kefir_ir_inline_assembly_resolve_parameter(struct kefir_ir_inline_assembly *, const char *,
+                                                          struct kefir_ir_inline_assembly_parameter **);
 kefir_result_t kefir_ir_inline_assembly_add_clobber(struct kefir_mem *, struct kefir_symbol_table *,
                                                     struct kefir_ir_inline_assembly *, const char *);
 kefir_result_t kefir_ir_inline_assembly_add_jump_target(struct kefir_mem *, struct kefir_symbol_table *,
