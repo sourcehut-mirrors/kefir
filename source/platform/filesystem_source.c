@@ -21,9 +21,6 @@
 #include "kefir/core/platform.h"
 #ifdef KEFIR_LINUX_HOST_PLATFORM
 #define _XOPEN_SOURCE 500
-#elif defined(__KEFIRCC__) && defined(KEFIR_FREEBSD_HOST_PLATFORM)
-// Mask __asm__ declarations in FreeBSD's libgen.h
-#define __asm__(...)
 #endif
 
 #include "kefir/platform/filesystem_source.h"

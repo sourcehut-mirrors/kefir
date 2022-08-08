@@ -20,10 +20,6 @@
 
 #define _POSIX_SOURCE
 #include "kefir/core/platform.h"
-#if defined(__KEFIRCC__) && defined(KEFIR_FREEBSD_HOST_PLATFORM)
-// Mask __asm__ declarations in FreeBSD's libgen.h
-#define __asm__(...)
-#endif
 
 #include "kefir/driver/driver.h"
 #include "kefir/core/error.h"

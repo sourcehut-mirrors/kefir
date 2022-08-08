@@ -17,9 +17,8 @@ Kefir targets x86-64 ISA and System-V ABI. The main focus is on modern Linux env
 however Kefir also has support for modern FreeBSD and OpenBSD (base test suite and bootstrap are executed successfully in both environments).
 A platform is considered supported if base test suite and 2-stage compiler bootstrap can be executed there -- no other guarantees and claims are made.
 On Linux, `glibc` and `musl` standard libraries are supported (`musl` is recommended because it's header files are more compilant with standard C language without extensions),
-on BSDs system `libc` can be used with some restrictions (compiler will fail on inline assembly directives in include files, which can be ignored by manually
-defining suppressing macro prior to any includes, e.g. `#define asm(...)` at the beginning of file). Kefir supports selection of target platform via `--target` command line
-option.
+on BSDs system `libc` can be used (additional macro definitions, such as `__GNUC__`, `__GNUC_MINOR__`, could be necessary depending on used system libc features).
+Kefir supports selection of target platform via `--target` command line option.
 
 For each respective target, a set of environment variables (e.g. `KEFIR_GNU_INCLUDE`, `KEFIR_GNU_LIB`, `KEFIR_GNU_DYNAMIC_LINKER`) needs to be
 defined so that the compiler can find necessary headers and libraries.
@@ -101,7 +100,8 @@ endianess (`__BYTE_ORDER__` and `__ORDER_LITTLE_ENDIAN__`), as well as `__KEFIRC
 
 Kefir has support of `asm` directive, both in file and function scope. Implementation supports output and input parameters,
 parameter constraints (immediate, register, memory), clobbers and jump labels, however there is no compatibility with respective
-GCC/Clang functionality (implemented bits behave similarly, though, thus basic use cases shall be compatible).
+GCC/Clang functionality (implemented bits behave similarly, though, thus basic use cases shall be compatible). Additionally,
+`asm`-labels are supported for non-static non-local variables.
 
 ### Standard library
 Kefir can be used along with [musl libc](https://musl.libc.org) standard library, with the exception for
