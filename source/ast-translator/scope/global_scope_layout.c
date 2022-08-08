@@ -228,6 +228,10 @@ static kefir_result_t translate_global_scoped_identifier_object(
     const char *identifier, const struct kefir_ast_scoped_identifier *scoped_identifier,
     struct kefir_ast_translator_global_scope_layout *layout, const struct kefir_ast_translator_environment *env) {
     REQUIRE(scoped_identifier->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT, KEFIR_OK);
+
+    if (scoped_identifier->object.asm_label != NULL) {
+        identifier = scoped_identifier->object.asm_label;
+    }
     switch (scoped_identifier->object.storage) {
         case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN:
             REQUIRE_OK(translate_extern_identifier(mem, context, module, env, layout, identifier, scoped_identifier));

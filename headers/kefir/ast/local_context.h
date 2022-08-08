@@ -62,29 +62,33 @@ kefir_result_t kefir_ast_local_context_pop_block_scope(struct kefir_mem *, struc
 kefir_result_t kefir_ast_local_context_declare_external(struct kefir_mem *, struct kefir_ast_local_context *,
                                                         const char *, const struct kefir_ast_type *,
                                                         struct kefir_ast_alignment *,
+                                                        const struct kefir_ast_declarator_attributes *,
                                                         const struct kefir_source_location *,
                                                         const struct kefir_ast_scoped_identifier **);
 kefir_result_t kefir_ast_local_context_declare_external_thread_local(
     struct kefir_mem *, struct kefir_ast_local_context *, const char *, const struct kefir_ast_type *,
-    struct kefir_ast_alignment *, const struct kefir_source_location *, const struct kefir_ast_scoped_identifier **);
+    struct kefir_ast_alignment *, const struct kefir_ast_declarator_attributes *, const struct kefir_source_location *,
+    const struct kefir_ast_scoped_identifier **);
 kefir_result_t kefir_ast_local_context_define_static(struct kefir_mem *, struct kefir_ast_local_context *, const char *,
                                                      const struct kefir_ast_type *, struct kefir_ast_alignment *,
                                                      struct kefir_ast_initializer *,
+                                                     const struct kefir_ast_declarator_attributes *,
                                                      const struct kefir_source_location *,
                                                      const struct kefir_ast_scoped_identifier **);
-kefir_result_t kefir_ast_local_context_define_static_thread_local(struct kefir_mem *, struct kefir_ast_local_context *,
-                                                                  const char *, const struct kefir_ast_type *,
-                                                                  struct kefir_ast_alignment *,
-                                                                  struct kefir_ast_initializer *,
-                                                                  const struct kefir_source_location *,
-                                                                  const struct kefir_ast_scoped_identifier **);
+kefir_result_t kefir_ast_local_context_define_static_thread_local(
+    struct kefir_mem *, struct kefir_ast_local_context *, const char *, const struct kefir_ast_type *,
+    struct kefir_ast_alignment *, struct kefir_ast_initializer *, const struct kefir_ast_declarator_attributes *,
+    const struct kefir_source_location *, const struct kefir_ast_scoped_identifier **);
 kefir_result_t kefir_ast_local_context_define_auto(struct kefir_mem *, struct kefir_ast_local_context *, const char *,
                                                    const struct kefir_ast_type *, struct kefir_ast_alignment *,
-                                                   struct kefir_ast_initializer *, const struct kefir_source_location *,
+                                                   struct kefir_ast_initializer *,
+                                                   const struct kefir_ast_declarator_attributes *,
+                                                   const struct kefir_source_location *,
                                                    const struct kefir_ast_scoped_identifier **);
 kefir_result_t kefir_ast_local_context_define_register(struct kefir_mem *, struct kefir_ast_local_context *,
                                                        const char *, const struct kefir_ast_type *,
                                                        struct kefir_ast_alignment *, struct kefir_ast_initializer *,
+                                                       const struct kefir_ast_declarator_attributes *,
                                                        const struct kefir_source_location *,
                                                        const struct kefir_ast_scoped_identifier **);
 kefir_result_t kefir_ast_local_context_define_constant(struct kefir_mem *, struct kefir_ast_local_context *,

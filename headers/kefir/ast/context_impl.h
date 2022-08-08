@@ -29,7 +29,8 @@ kefir_result_t kefir_ast_context_free_scoped_identifier(struct kefir_mem *, stru
 
 struct kefir_ast_scoped_identifier *kefir_ast_context_allocate_scoped_object_identifier(
     struct kefir_mem *, const struct kefir_ast_type *, kefir_ast_scoped_identifier_storage_t,
-    struct kefir_ast_alignment *, kefir_ast_scoped_identifier_linkage_t, kefir_bool_t, struct kefir_ast_initializer *);
+    struct kefir_ast_alignment *, kefir_ast_scoped_identifier_linkage_t, kefir_bool_t, struct kefir_ast_initializer *,
+    const char *);
 
 struct kefir_ast_scoped_identifier *kefir_ast_context_allocate_scoped_constant(struct kefir_mem *,
                                                                                struct kefir_ast_constant_expression *,

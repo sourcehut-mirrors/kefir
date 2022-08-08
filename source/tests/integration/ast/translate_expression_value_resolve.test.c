@@ -96,7 +96,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     for (kefir_size_t i = 0; i < VAR_LENGTH; i++) {
         REQUIRE_OK(kefir_ast_global_context_define_external(mem, &global_context, VARS[i].identifier, VARS[i].type,
-                                                            NULL, NULL, NULL, NULL));
+                                                            NULL, NULL, NULL, NULL, NULL));
     }
 
     struct kefir_ir_module module;

@@ -54,7 +54,8 @@ kefir_result_t kefir_ast_evaluate_identifier_node(struct kefir_mem *mem, const s
                                            "array of static lifetime or to a function"));
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS;
             value->pointer.type = KEFIR_AST_CONSTANT_EXPRESSION_POINTER_IDENTIFER;
-            value->pointer.base.literal = node->identifier;
+            value->pointer.base.literal =
+                scoped_id->object.asm_label == NULL ? node->identifier : scoped_id->object.asm_label;
             value->pointer.offset = 0;
             value->pointer.pointer_node = KEFIR_AST_NODE_BASE(node);
             value->pointer.scoped_id = scoped_id;

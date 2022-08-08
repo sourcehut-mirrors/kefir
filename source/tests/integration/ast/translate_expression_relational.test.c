@@ -44,14 +44,14 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     REQUIRE_OK(kefir_ast_global_context_define_external(
         mem, &global_context, "ptr1", kefir_ast_type_pointer(mem, context->type_bundle, kefir_ast_type_void()), NULL,
-        NULL, NULL, NULL));
+        NULL, NULL, NULL, NULL));
 
     REQUIRE_OK(kefir_ast_local_context_define_auto(
         mem, &local_context, "ptr2",
         kefir_ast_type_pointer(mem, context->type_bundle,
                                kefir_ast_type_qualified(mem, context->type_bundle, kefir_ast_type_char(),
                                                         (struct kefir_ast_type_qualification){.constant = true})),
-        NULL, NULL, NULL, NULL));
+        NULL, NULL, NULL, NULL, NULL));
 
     struct kefir_ir_module module;
     REQUIRE_OK(kefir_ir_module_alloc(mem, &module));

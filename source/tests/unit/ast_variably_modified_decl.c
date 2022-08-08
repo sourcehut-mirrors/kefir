@@ -320,7 +320,7 @@ DEFINE_CASE(ast_declaration_variably_modified_structure_field, "AST declarations
                                             &global_context, NULL));
 
     ASSERT_OK(kefir_ast_global_context_declare_external(&kft_mem, &global_context, "x", kefir_ast_type_signed_int(),
-                                                        NULL, NULL, NULL));
+                                                        NULL, NULL, NULL, NULL));
 
     struct kefir_ast_structure_specifier *struct_specifier1 =
         kefir_ast_structure_specifier_init(&kft_mem, &global_context.symbols, "struct1", true);

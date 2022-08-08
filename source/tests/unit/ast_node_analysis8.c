@@ -211,7 +211,7 @@ DEFINE_CASE(ast_node_analysis_case_statements1, "AST node analysis - case statem
                                                       kefir_ast_constant_expression_integer(&kft_mem, 1004),
                                                       context->type_traits->underlying_enumeration_type, NULL, NULL));
     ASSERT_OK(kefir_ast_local_context_declare_external(&kft_mem, &local_context, "whatever",
-                                                       kefir_ast_type_signed_int(), NULL, NULL, NULL));
+                                                       kefir_ast_type_signed_int(), NULL, NULL, NULL, NULL));
 
     struct kefir_hashtree_node *tree_node = NULL;
     struct kefir_ast_flow_control_structure *switch_statement = NULL;

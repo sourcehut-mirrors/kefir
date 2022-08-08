@@ -138,15 +138,15 @@ DEFINE_CASE(ast_node_analysis_compound_assignment_operator1, "AST node analysis 
                    "Type array length mismatch");
 
     ASSERT_OK(kefir_ast_local_context_declare_external(&kft_mem, &local_context, "x", kefir_ast_type_signed_int(), NULL,
-                                                       NULL, NULL));
+                                                       NULL, NULL, NULL));
 
     ASSERT_OK(kefir_ast_local_context_declare_external(
         &kft_mem, &local_context, "y", kefir_ast_type_pointer(&kft_mem, context->type_bundle, kefir_ast_type_char()),
-        NULL, NULL, NULL));
+        NULL, NULL, NULL, NULL));
 
     ASSERT_OK(kefir_ast_local_context_declare_external(
         &kft_mem, &local_context, "z", kefir_ast_type_pointer(&kft_mem, context->type_bundle, kefir_ast_type_void()),
-        NULL, NULL, NULL));
+        NULL, NULL, NULL, NULL));
 
     for (kefir_size_t i = 0; i < TYPES_LEN; i++) {
         ASSERT_COMPOUND_ASSIGNMENT(
@@ -225,7 +225,7 @@ DEFINE_CASE(ast_node_analysis_compound_assignment_operator2, "AST node analysis 
 
     ASSERT_OK(kefir_ast_local_context_declare_external(
         &kft_mem, &local_context, "x", kefir_ast_type_pointer(&kft_mem, context->type_bundle, kefir_ast_type_char()),
-        NULL, NULL, NULL));
+        NULL, NULL, NULL, NULL));
 
     const struct kefir_ast_type *TYPES[] = {
         kefir_ast_type_boolean(),          kefir_ast_type_char(),         kefir_ast_type_unsigned_char(),
@@ -364,7 +364,7 @@ DEFINE_CASE(ast_node_analysis_compound_assignment_operator3, "AST node analysis 
 
     ASSERT_OK(kefir_ast_local_context_declare_external(
         &kft_mem, &local_context, "x", kefir_ast_type_pointer(&kft_mem, context->type_bundle, kefir_ast_type_char()),
-        NULL, NULL, NULL));
+        NULL, NULL, NULL, NULL));
 
     const struct kefir_ast_type *TYPES[] = {
         kefir_ast_type_boolean(),          kefir_ast_type_char(),         kefir_ast_type_unsigned_char(),
@@ -486,7 +486,7 @@ DEFINE_CASE(ast_node_analysis_comma_operator, "AST node analysis - comma operato
     struct kefir_ast_context *context = &local_context.context;
 
     ASSERT_OK(kefir_ast_local_context_declare_external(&kft_mem, &local_context, "x", kefir_ast_type_float(), NULL,
-                                                       NULL, NULL));
+                                                       NULL, NULL, NULL));
     ASSERT_OK(kefir_ast_local_context_define_constant(&kft_mem, &local_context, "y",
                                                       kefir_ast_constant_expression_integer(&kft_mem, 100),
                                                       type_traits->underlying_enumeration_type, NULL, NULL));

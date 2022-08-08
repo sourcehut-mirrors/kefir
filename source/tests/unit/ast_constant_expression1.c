@@ -96,7 +96,7 @@ DEFINE_CASE(ast_constant_expression_identifier1, "AST constant expressions - ide
         &kft_mem, &local_context, "var1",
         kefir_ast_type_qualified(&kft_mem, context->type_bundle, kefir_ast_type_signed_char(),
                                  (struct kefir_ast_type_qualification){.constant = true}),
-        NULL, NULL, NULL, NULL));
+        NULL, NULL, NULL, NULL, NULL));
 
     ASSERT_INTEGER_CONST_EXPR(&kft_mem, context, kefir_ast_new_identifier(&kft_mem, context->symbols, "x"), 0);
     ASSERT_INTEGER_CONST_EXPR(&kft_mem, context, kefir_ast_new_identifier(&kft_mem, context->symbols, "y"), 1);
@@ -584,13 +584,13 @@ DEFINE_CASE(ast_constant_expression_binary_operations4, "AST constant expression
         &kft_mem, &global_context, "x",
         kefir_ast_type_qualified(&kft_mem, context->type_bundle, kefir_ast_type_signed_int(),
                                  (struct kefir_ast_type_qualification){.constant = true}),
-        NULL, NULL, NULL, NULL));
+        NULL, NULL, NULL, NULL, NULL));
 
     ASSERT_OK(kefir_ast_global_context_define_static(
         &kft_mem, &global_context, "y",
         kefir_ast_type_qualified(&kft_mem, context->type_bundle, type1,
                                  (struct kefir_ast_type_qualification){.constant = true}),
-        NULL, NULL, NULL, NULL));
+        NULL, NULL, NULL, NULL, NULL));
 
     for (kefir_int_t i = -100; i < 100; i++) {
         ASSERT_IDENTIFIER_CONST_EXPR(

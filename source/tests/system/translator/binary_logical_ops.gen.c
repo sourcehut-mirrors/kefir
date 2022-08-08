@@ -73,11 +73,11 @@
         REQUIRE_OK(kefir_ast_context_manager_attach_local(&func->local_context, context_manager));                     \
                                                                                                                        \
         REQUIRE_OK(kefir_ast_local_context_define_auto(mem, context_manager->local, "fn1", param_type, NULL, NULL,     \
-                                                       NULL, NULL));                                                   \
-        REQUIRE_OK(kefir_ast_local_context_define_auto(mem, context_manager->local, "fn2", param_type, NULL, NULL,     \
-                                                       NULL, NULL));                                                   \
-        REQUIRE_OK(kefir_ast_local_context_define_auto(mem, context_manager->local, "payload", payload_type, NULL,     \
                                                        NULL, NULL, NULL));                                             \
+        REQUIRE_OK(kefir_ast_local_context_define_auto(mem, context_manager->local, "fn2", param_type, NULL, NULL,     \
+                                                       NULL, NULL, NULL));                                             \
+        REQUIRE_OK(kefir_ast_local_context_define_auto(mem, context_manager->local, "payload", payload_type, NULL,     \
+                                                       NULL, NULL, NULL, NULL));                                       \
                                                                                                                        \
         REQUIRE_OK(kefir_list_insert_after(                                                                            \
             mem, &func->args, kefir_list_tail(&func->args),                                                            \

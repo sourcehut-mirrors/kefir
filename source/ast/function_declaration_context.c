@@ -90,7 +90,7 @@ static kefir_result_t scoped_context_define_identifier(struct kefir_mem *mem,
         } else {
             REQUIRE(res == KEFIR_NOT_FOUND, res);
             scoped_id = kefir_ast_context_allocate_scoped_object_identifier(
-                mem, type, storage_class, NULL, KEFIR_AST_SCOPED_IDENTIFIER_NONE_LINKAGE, false, NULL);
+                mem, type, storage_class, NULL, KEFIR_AST_SCOPED_IDENTIFIER_NONE_LINKAGE, false, NULL, NULL);
             REQUIRE(scoped_id != NULL,
                     KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocted AST scoped identifier"));
 

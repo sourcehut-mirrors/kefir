@@ -333,7 +333,7 @@ DEFINE_CASE(ast_node_analysis_compound_literal1, "AST node analysis - compound l
     struct kefir_ast_context *context = &local_context.context;
 
     ASSERT_OK(kefir_ast_local_context_declare_external(&kft_mem, &local_context, "x", kefir_ast_type_signed_int(), NULL,
-                                                       NULL, NULL));
+                                                       NULL, NULL, NULL));
     ASSERT_OK(kefir_ast_local_context_define_constant(&kft_mem, &local_context, "y",
                                                       kefir_ast_constant_expression_integer(&kft_mem, 100),
                                                       type_traits->underlying_enumeration_type, NULL, NULL));
@@ -479,7 +479,7 @@ DEFINE_CASE(ast_node_analysis_compound_literal2, "AST node analysis - compound l
         &kft_mem, &local_context, "x",
         kefir_ast_type_array(&kft_mem, context->type_bundle, kefir_ast_type_char(),
                              kefir_ast_constant_expression_integer(&kft_mem, 10), NULL),
-        NULL, NULL, NULL));
+        NULL, NULL, NULL, NULL));
 
     struct kefir_ast_type_name *type_name1 = kefir_ast_new_type_name(
         &kft_mem, kefir_ast_declarator_array(&kft_mem, KEFIR_AST_DECLARATOR_ARRAY_UNBOUNDED, NULL,
@@ -695,8 +695,9 @@ DEFINE_CASE(ast_node_analysis_compound_literal3, "AST node analysis - compound l
     ASSERT(KEFIR_AST_TYPE_SAME(type3, type_name2->base.properties.type));
 
     ASSERT_OK(kefir_ast_local_context_declare_external_thread_local(&kft_mem, &local_context, "var1", type1, NULL, NULL,
-                                                                    NULL));
-    ASSERT_OK(kefir_ast_local_context_declare_external(&kft_mem, &local_context, "var2", type2, NULL, NULL, NULL));
+                                                                    NULL, NULL));
+    ASSERT_OK(
+        kefir_ast_local_context_declare_external(&kft_mem, &local_context, "var2", type2, NULL, NULL, NULL, NULL));
 
     ASSERT_COMPOUND_LITERAL(&kft_mem, context, type_name1, {}, type2, true);
 

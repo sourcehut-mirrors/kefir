@@ -121,11 +121,11 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     struct kefir_ast_function_type *fn_type = NULL;
     REQUIRE_OK(kefir_ast_global_context_define_external(mem, &global_context, "X", kefir_ast_type_signed_int(), NULL,
-                                                        NULL, NULL, NULL));
+                                                        NULL, NULL, NULL, NULL));
     REQUIRE_OK(kefir_ast_global_context_define_external(
         mem, &global_context, "fn",
         kefir_ast_type_function(mem, &global_context.type_bundle, kefir_ast_type_signed_int(), &fn_type), NULL, NULL,
-        NULL, NULL));
+        NULL, NULL, NULL));
 
     struct kefir_ast_translator_context translator_context;
     REQUIRE_OK(kefir_ast_translator_context_init(mem, &translator_context, &local_context.context,

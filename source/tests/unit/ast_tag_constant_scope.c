@@ -576,7 +576,7 @@ DEFINE_CASE(ast_ordinary_constant_scope1, "AST ordinary scope - constant scoping
             ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->enum_constant.type, type_traits->underlying_enumeration_type));
 
             ASSERT_OK(kefir_ast_local_context_define_auto(&kft_mem, &context, "c3", kefir_ast_type_unsigned_char(),
-                                                          NULL, NULL, NULL, NULL));
+                                                          NULL, NULL, NULL, NULL, NULL));
 
             struct kefir_ast_constant_expression *cexpr = kefir_ast_constant_expression_integer(&kft_mem, 300);
             ASSERT_NOK(kefir_ast_local_context_define_constant(&kft_mem, &context, "c3", cexpr,
@@ -588,7 +588,7 @@ DEFINE_CASE(ast_ordinary_constant_scope1, "AST ordinary scope - constant scoping
                                                               type_traits->underlying_enumeration_type, NULL, NULL));
 
             ASSERT_NOK(kefir_ast_local_context_define_register(&kft_mem, &context, "c5", kefir_ast_type_unsigned_char(),
-                                                               NULL, NULL, NULL, NULL));
+                                                               NULL, NULL, NULL, NULL, NULL));
 
             ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "c3", &scoped_id));
             ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT);
