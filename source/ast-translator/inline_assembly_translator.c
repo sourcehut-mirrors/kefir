@@ -311,11 +311,11 @@ kefir_result_t kefir_ast_translate_inline_assembly(struct kefir_mem *mem, const 
 
                 struct kefir_ir_inline_assembly_jump_target *ir_jump_target = NULL;
                 kefir_id_t identifier = next_parameter_id++;
-                snprintf(buffer, sizeof(buffer) - 1, "l" KEFIR_ID_FMT, identifier);
+                snprintf(buffer, sizeof(buffer) - 1, KEFIR_ID_FMT, identifier);
                 REQUIRE_OK(kefir_ir_inline_assembly_add_jump_target(
                     mem, context->ast_context->symbols, ir_inline_asm, buffer,
                     context->ast_context->surrounding_function_name, jump_trampoline, &ir_jump_target));
-                snprintf(buffer, sizeof(buffer) - 1, "l[%s]", jump_label);
+                snprintf(buffer, sizeof(buffer) - 1, "[%s]", jump_label);
                 REQUIRE_OK(kefir_ir_inline_assembly_add_jump_target_alias(mem, context->ast_context->symbols,
                                                                           ir_inline_asm, ir_jump_target, buffer));
             }

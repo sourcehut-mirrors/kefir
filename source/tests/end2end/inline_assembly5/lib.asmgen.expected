@@ -1,0 +1,464 @@
+.intel_syntax prefix
+
+.section .text
+
+# Opcode handlers
+.extern __kefirrt_nop_impl
+.extern __kefirrt_jmp_impl
+.extern __kefirrt_ijmp_impl
+.extern __kefirrt_branch_impl
+.extern __kefirrt_push_impl
+.extern __kefirrt_pop_impl
+.extern __kefirrt_pick_impl
+.extern __kefirrt_put_impl
+.extern __kefirrt_insert_impl
+.extern __kefirrt_xchg_impl
+.extern __kefirrt_drop_impl
+.extern __kefirrt_pushstptr_impl
+.extern __kefirrt_iadd_impl
+.extern __kefirrt_iadd1_impl
+.extern __kefirrt_isub_impl
+.extern __kefirrt_imul_impl
+.extern __kefirrt_idiv_impl
+.extern __kefirrt_imod_impl
+.extern __kefirrt_udiv_impl
+.extern __kefirrt_umod_impl
+.extern __kefirrt_ineg_impl
+.extern __kefirrt_inot_impl
+.extern __kefirrt_iand_impl
+.extern __kefirrt_ior_impl
+.extern __kefirrt_ixor_impl
+.extern __kefirrt_ishr_impl
+.extern __kefirrt_isar_impl
+.extern __kefirrt_ishl_impl
+.extern __kefirrt_iequals_impl
+.extern __kefirrt_igreater_impl
+.extern __kefirrt_ilesser_impl
+.extern __kefirrt_iabove_impl
+.extern __kefirrt_ibelow_impl
+.extern __kefirrt_band_impl
+.extern __kefirrt_bor_impl
+.extern __kefirrt_bnot_impl
+.extern __kefirrt_trunc1_impl
+.extern __kefirrt_extend8_impl
+.extern __kefirrt_extend16_impl
+.extern __kefirrt_extend32_impl
+.extern __kefirrt_offsetptr_impl
+.extern __kefirrt_elementptr_impl
+.extern __kefirrt_load8u_impl
+.extern __kefirrt_load8i_impl
+.extern __kefirrt_load16u_impl
+.extern __kefirrt_load16i_impl
+.extern __kefirrt_load24u_impl
+.extern __kefirrt_load32u_impl
+.extern __kefirrt_load32i_impl
+.extern __kefirrt_load40u_impl
+.extern __kefirrt_load48u_impl
+.extern __kefirrt_load56u_impl
+.extern __kefirrt_load64_impl
+.extern __kefirrt_loadld_impl
+.extern __kefirrt_store8_impl
+.extern __kefirrt_store16_impl
+.extern __kefirrt_store24_impl
+.extern __kefirrt_store32_impl
+.extern __kefirrt_store40_impl
+.extern __kefirrt_store48_impl
+.extern __kefirrt_store56_impl
+.extern __kefirrt_store64_impl
+.extern __kefirrt_storeld_impl
+.extern __kefirrt_bzero_impl
+.extern __kefirrt_bcopy_impl
+.extern __kefirrt_extubits_impl
+.extern __kefirrt_extsbits_impl
+.extern __kefirrt_insertbits_impl
+.extern __kefirrt_getlocals_impl
+.extern __kefirrt_f32add_impl
+.extern __kefirrt_f32sub_impl
+.extern __kefirrt_f32mul_impl
+.extern __kefirrt_f32div_impl
+.extern __kefirrt_f32neg_impl
+.extern __kefirrt_f64add_impl
+.extern __kefirrt_f64sub_impl
+.extern __kefirrt_f64mul_impl
+.extern __kefirrt_f64div_impl
+.extern __kefirrt_f64neg_impl
+.extern __kefirrt_ldadd_impl
+.extern __kefirrt_ldsub_impl
+.extern __kefirrt_ldmul_impl
+.extern __kefirrt_lddiv_impl
+.extern __kefirrt_ldneg_impl
+.extern __kefirrt_f32equals_impl
+.extern __kefirrt_f32greater_impl
+.extern __kefirrt_f32lesser_impl
+.extern __kefirrt_f64equals_impl
+.extern __kefirrt_f64greater_impl
+.extern __kefirrt_f64lesser_impl
+.extern __kefirrt_ldequals_impl
+.extern __kefirrt_ldgreater_impl
+.extern __kefirrt_ldlesser_impl
+.extern __kefirrt_ldtrunc1_impl
+.extern __kefirrt_f32cint_impl
+.extern __kefirrt_f64cint_impl
+.extern __kefirrt_intcf32_impl
+.extern __kefirrt_intcf64_impl
+.extern __kefirrt_uintcf32_impl
+.extern __kefirrt_uintcf64_impl
+.extern __kefirrt_f32cf64_impl
+.extern __kefirrt_f64cf32_impl
+.extern __kefirrt_alloca_impl
+.extern __kefirrt_intcld_impl
+.extern __kefirrt_uintcld_impl
+.extern __kefirrt_ldcint_impl
+.extern __kefirrt_f32cld_impl
+.extern __kefirrt_f64cld_impl
+.extern __kefirrt_ldcf32_impl
+.extern __kefirrt_ldcf64_impl
+.extern __kefirrt_pushscope_impl
+.extern __kefirrt_popscope_impl
+# Runtime functions
+.extern __kefirrt_preserve_state
+.extern __kefirrt_restore_state
+.extern __kefirrt_save_registers
+.extern __kefirrt_load_integer_vararg
+.extern __kefirrt_load_sse_vararg
+.extern __kefirrt_copy_vararg
+
+# Externals
+
+# Globals
+.global set8
+.global set16
+.global set32
+.global set64
+.global clear8
+.global clear16
+.global clear32
+.global clear64
+
+set8:
+# Begin prologue of set8
+    call __kefirrt_preserve_state
+    sub %rsp, 32
+    call __kefirrt_generic_prologue
+# Load parameters of set8
+    push %rdi
+# End prologue of set8
+    lea %rbx, [__set8_body]
+    jmp [%rbx]
+__set8_body:
+    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_xchg_impl, 1
+    .quad __kefirrt_store64_impl, 0
+    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_inline_assembly4, 0
+    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_load64_impl, 0
+    .quad __set8_epilogue, 0
+    .quad __set8_epilogue, 0
+__set8_epilogue:
+# Begin epilogue of set8
+    pop %rax
+    mov %rsp, %r14
+    add %rsp, 32
+    jmp __kefirrt_restore_state
+# End of set8
+
+set16:
+# Begin prologue of set16
+    call __kefirrt_preserve_state
+    sub %rsp, 32
+    call __kefirrt_generic_prologue
+# Load parameters of set16
+    push %rdi
+# End prologue of set16
+    lea %rbx, [__set16_body]
+    jmp [%rbx]
+__set16_body:
+    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_xchg_impl, 1
+    .quad __kefirrt_store64_impl, 0
+    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_inline_assembly5, 0
+    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_load64_impl, 0
+    .quad __set16_epilogue, 0
+    .quad __set16_epilogue, 0
+__set16_epilogue:
+# Begin epilogue of set16
+    pop %rax
+    mov %rsp, %r14
+    add %rsp, 32
+    jmp __kefirrt_restore_state
+# End of set16
+
+set32:
+# Begin prologue of set32
+    call __kefirrt_preserve_state
+    sub %rsp, 32
+    call __kefirrt_generic_prologue
+# Load parameters of set32
+    push %rdi
+# End prologue of set32
+    lea %rbx, [__set32_body]
+    jmp [%rbx]
+__set32_body:
+    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_xchg_impl, 1
+    .quad __kefirrt_store64_impl, 0
+    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_inline_assembly6, 0
+    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_load64_impl, 0
+    .quad __set32_epilogue, 0
+    .quad __set32_epilogue, 0
+__set32_epilogue:
+# Begin epilogue of set32
+    pop %rax
+    mov %rsp, %r14
+    add %rsp, 32
+    jmp __kefirrt_restore_state
+# End of set32
+
+set64:
+# Begin prologue of set64
+    call __kefirrt_preserve_state
+    sub %rsp, 32
+    call __kefirrt_generic_prologue
+# Load parameters of set64
+    push %rdi
+# End prologue of set64
+    lea %rbx, [__set64_body]
+    jmp [%rbx]
+__set64_body:
+    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_xchg_impl, 1
+    .quad __kefirrt_store64_impl, 0
+    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_inline_assembly7, 0
+    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_load64_impl, 0
+    .quad __set64_epilogue, 0
+    .quad __set64_epilogue, 0
+__set64_epilogue:
+# Begin epilogue of set64
+    pop %rax
+    mov %rsp, %r14
+    add %rsp, 32
+    jmp __kefirrt_restore_state
+# End of set64
+
+clear8:
+# Begin prologue of clear8
+    call __kefirrt_preserve_state
+    sub %rsp, 32
+    call __kefirrt_generic_prologue
+# Load parameters of clear8
+    push %rdi
+# End prologue of clear8
+    lea %rbx, [__clear8_body]
+    jmp [%rbx]
+__clear8_body:
+    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_xchg_impl, 1
+    .quad __kefirrt_store64_impl, 0
+    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_inline_assembly0, 0
+    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_load64_impl, 0
+    .quad __clear8_epilogue, 0
+    .quad __clear8_epilogue, 0
+__clear8_epilogue:
+# Begin epilogue of clear8
+    pop %rax
+    mov %rsp, %r14
+    add %rsp, 32
+    jmp __kefirrt_restore_state
+# End of clear8
+
+clear16:
+# Begin prologue of clear16
+    call __kefirrt_preserve_state
+    sub %rsp, 32
+    call __kefirrt_generic_prologue
+# Load parameters of clear16
+    push %rdi
+# End prologue of clear16
+    lea %rbx, [__clear16_body]
+    jmp [%rbx]
+__clear16_body:
+    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_xchg_impl, 1
+    .quad __kefirrt_store64_impl, 0
+    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_inline_assembly1, 0
+    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_load64_impl, 0
+    .quad __clear16_epilogue, 0
+    .quad __clear16_epilogue, 0
+__clear16_epilogue:
+# Begin epilogue of clear16
+    pop %rax
+    mov %rsp, %r14
+    add %rsp, 32
+    jmp __kefirrt_restore_state
+# End of clear16
+
+clear32:
+# Begin prologue of clear32
+    call __kefirrt_preserve_state
+    sub %rsp, 32
+    call __kefirrt_generic_prologue
+# Load parameters of clear32
+    push %rdi
+# End prologue of clear32
+    lea %rbx, [__clear32_body]
+    jmp [%rbx]
+__clear32_body:
+    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_xchg_impl, 1
+    .quad __kefirrt_store64_impl, 0
+    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_inline_assembly2, 0
+    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_load64_impl, 0
+    .quad __clear32_epilogue, 0
+    .quad __clear32_epilogue, 0
+__clear32_epilogue:
+# Begin epilogue of clear32
+    pop %rax
+    mov %rsp, %r14
+    add %rsp, 32
+    jmp __kefirrt_restore_state
+# End of clear32
+
+clear64:
+# Begin prologue of clear64
+    call __kefirrt_preserve_state
+    sub %rsp, 32
+    call __kefirrt_generic_prologue
+# Load parameters of clear64
+    push %rdi
+# End prologue of clear64
+    lea %rbx, [__clear64_body]
+    jmp [%rbx]
+__clear64_body:
+    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_xchg_impl, 1
+    .quad __kefirrt_store64_impl, 0
+    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_inline_assembly3, 0
+    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_load64_impl, 0
+    .quad __clear64_epilogue, 0
+    .quad __clear64_epilogue, 0
+__clear64_epilogue:
+# Begin epilogue of clear64
+    pop %rax
+    mov %rsp, %r14
+    add %rsp, 32
+    jmp __kefirrt_restore_state
+# End of clear64
+
+# Inline assembly fragment #0
+__kefirrt_inline_assembly0:
+# Begin of fragment #0 code
+mov %al, 0
+# End of fragment #0 code
+    mov %rcx, [%rsp]
+    mov [%rcx], %rax
+    add %rsp, 8
+    add %rbx, 16
+    jmp [%rbx]
+
+# Inline assembly fragment #1
+__kefirrt_inline_assembly1:
+# Begin of fragment #1 code
+mov %ax, 0
+# End of fragment #1 code
+    mov %rcx, [%rsp]
+    mov [%rcx], %rax
+    add %rsp, 8
+    add %rbx, 16
+    jmp [%rbx]
+
+# Inline assembly fragment #2
+__kefirrt_inline_assembly2:
+# Begin of fragment #2 code
+mov %eax, 0
+# End of fragment #2 code
+    mov %rcx, [%rsp]
+    mov [%rcx], %rax
+    add %rsp, 8
+    add %rbx, 16
+    jmp [%rbx]
+
+# Inline assembly fragment #3
+__kefirrt_inline_assembly3:
+# Begin of fragment #3 code
+mov %rax, 0
+# End of fragment #3 code
+    mov %rcx, [%rsp]
+    mov [%rcx], %rax
+    add %rsp, 8
+    add %rbx, 16
+    jmp [%rbx]
+
+# Inline assembly fragment #4
+__kefirrt_inline_assembly4:
+    mov %rcx, [%rsp]
+# Begin of fragment #4 code
+xor %al, %al
+not %al
+mov BYTE PTR [%rcx], %al
+# End of fragment #4 code
+    add %rsp, 8
+    add %rbx, 16
+    jmp [%rbx]
+
+# Inline assembly fragment #5
+__kefirrt_inline_assembly5:
+    mov %rcx, [%rsp]
+# Begin of fragment #5 code
+xor %ax, %ax
+not %ax
+mov WORD PTR [%rcx], %ax
+# End of fragment #5 code
+    add %rsp, 8
+    add %rbx, 16
+    jmp [%rbx]
+
+# Inline assembly fragment #6
+__kefirrt_inline_assembly6:
+    mov %rcx, [%rsp]
+# Begin of fragment #6 code
+xor %eax, %eax
+not %eax
+mov DWORD PTR [%rcx], %eax
+# End of fragment #6 code
+    add %rsp, 8
+    add %rbx, 16
+    jmp [%rbx]
+
+# Inline assembly fragment #7
+__kefirrt_inline_assembly7:
+    mov %rcx, [%rsp]
+# Begin of fragment #7 code
+xor %rax, %rax
+not %rax
+mov QWORD PTR [%rcx], %rax
+# End of fragment #7 code
+    add %rsp, 8
+    add %rbx, 16
+    jmp [%rbx]
+
+.section .data
+__kefirrt_module_static_vars:
+    .byte 0x63, 0x6c, 0x65, 0x61, 0x72, 0x38, 0x00
+    .byte 0x63, 0x6c, 0x65, 0x61, 0x72, 0x31, 0x36, 0x00
+    .byte 0x63, 0x6c, 0x65, 0x61, 0x72, 0x33, 0x32, 0x00
+    .byte 0x63, 0x6c, 0x65, 0x61, 0x72, 0x36, 0x34, 0x00
+    .byte 0x73, 0x65, 0x74, 0x38, 0x00
+    .byte 0x73, 0x65, 0x74, 0x31, 0x36, 0x00
+    .byte 0x73, 0x65, 0x74, 0x33, 0x32, 0x00
+    .byte 0x73, 0x65, 0x74, 0x36, 0x34, 0x00
+
