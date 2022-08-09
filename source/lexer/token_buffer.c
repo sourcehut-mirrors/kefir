@@ -119,3 +119,19 @@ kefir_result_t kefir_token_buffer_copy(struct kefir_mem *mem, struct kefir_token
     }
     return KEFIR_OK;
 }
+
+kefir_result_t kefir_token_buffer_move(struct kefir_mem *mem, struct kefir_token_buffer *dst,
+                                       struct kefir_token_buffer *src) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(dst != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid destination token buffer"));
+    REQUIRE(src != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source token buffer"));
+
+    for (kefir_size_t i = 0; i < src->length; i++) {
+        REQUIRE_OK(kefir_token_buffer_emplace(mem, dst, &src->tokens[i]));
+    }
+    KEFIR_FREE(mem, src->tokens);
+    src->tokens = NULL;
+    src->length = 0;
+    src->capacity = 0;
+    return KEFIR_OK;
+}

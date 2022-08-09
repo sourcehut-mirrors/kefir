@@ -225,14 +225,9 @@ kefir_result_t kefir_compiler_preprocess_lex(struct kefir_mem *mem, struct kefir
         return res;
     });
 
-    res = kefir_preprocessor_run(mem, &preprocessor, &pp_tokens);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_token_buffer_free(mem, &pp_tokens);
-        kefir_preprocessor_free(mem, &preprocessor);
-        return res;
-    });
-
-    res = kefir_preprocessor_token_convert_buffer(mem, &preprocessor, buffer, &pp_tokens);
+    res = kefir_token_buffer_move(mem, &pp_tokens, buffer);
+    REQUIRE_CHAIN(&res, kefir_preprocessor_run(mem, &preprocessor, &pp_tokens));
+    REQUIRE_CHAIN(&res, kefir_preprocessor_token_convert_buffer(mem, &preprocessor, buffer, &pp_tokens));
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_token_buffer_free(mem, &pp_tokens);
         kefir_preprocessor_free(mem, &preprocessor);
