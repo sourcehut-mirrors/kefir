@@ -157,6 +157,7 @@ kefir_bool_t kefir_isnondigit32(kefir_char32_t chr) {
         case U'X':
         case U'Y':
         case U'Z':
+        case U'@':
             return true;
 
         default:

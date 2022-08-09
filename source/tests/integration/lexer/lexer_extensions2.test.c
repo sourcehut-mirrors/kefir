@@ -50,7 +50,7 @@ static kefir_result_t ext_format_json(struct kefir_json_output *json, const stru
 
 static kefir_result_t ext_format(FILE *out, const struct kefir_token *token) {
     UNUSED(token);
-    fprintf(out, "@");
+    fprintf(out, "$");
     return KEFIR_OK;
 }
 
@@ -72,7 +72,7 @@ static struct kefir_token_extension_class EXT_CLASS = {.free = ext_free,
 
 static kefir_result_t failed_lex(struct kefir_mem *mem, struct kefir_lexer *lexer, struct kefir_token *token) {
     UNUSED(mem);
-    if (kefir_lexer_source_cursor_at(lexer->cursor, 0) == U'@') {
+    if (kefir_lexer_source_cursor_at(lexer->cursor, 0) == U'$') {
         REQUIRE_OK(kefir_token_new_extension(&EXT_CLASS, NULL, token));
         REQUIRE_OK(kefir_lexer_source_cursor_next(lexer->cursor, 1));
         return KEFIR_OK;
@@ -81,7 +81,7 @@ static kefir_result_t failed_lex(struct kefir_mem *mem, struct kefir_lexer *lexe
 }
 
 kefir_result_t kefir_int_test(struct kefir_mem *mem) {
-    const char CONTENT[] = "20+@/3-@at(),test=@1";
+    const char CONTENT[] = "20+$/3-$at(),test=$1";
 
     struct kefir_lexer_extensions extensions = {.failed_token_lex = failed_lex};
 

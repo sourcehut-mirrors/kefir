@@ -290,7 +290,6 @@ kefir_result_t kefir_driver_apply_target_linker_initial_configuration(
 
         REQUIRE_OK(add_library_paths(mem, linker_config, externals->netbsd.library_path));
 
-        REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-no-pie"));
         if (linker_config->flags.link_start_files) {
             LINK_FILE(externals->netbsd.library_path, "crt0.o");
             LINK_FILE(externals->netbsd.library_path, "crti.o");
