@@ -176,7 +176,6 @@ static kefir_result_t translate_inputs(struct kefir_mem *mem, const struct kefir
                                              "Unable to find matching parameter");
             }
             REQUIRE_OK(res);
-            klass = KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_LOAD;
             register_constraint = *constraint_str == '\0';
         }
         REQUIRE_OK(match_constraints(constraint_str, &immediate_constraint, &register_constraint, &memory_constraint,
@@ -191,7 +190,7 @@ static kefir_result_t translate_inputs(struct kefir_mem *mem, const struct kefir
             }
         }
 
-        if (klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ || klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_LOAD) {
+        if (klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ) {
             if (register_constraint && memory_constraint) {
                 constraint = KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_REGISTER_MEMORY;
             } else if (register_constraint) {
@@ -204,50 +203,48 @@ static kefir_result_t translate_inputs(struct kefir_mem *mem, const struct kefir
             }
         }
 
-        if (ir_inline_asm_param == NULL) {
-            const struct kefir_ast_type *param_type = KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(
-                mem, context->ast_context->type_bundle, param->parameter->properties.type);
-            REQUIRE(param_type != NULL,
-                    KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to retrieve inline assembly parameter type"));
+        const struct kefir_ast_type *param_type = KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(
+            mem, context->ast_context->type_bundle, param->parameter->properties.type);
+        REQUIRE(param_type != NULL,
+                KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to retrieve inline assembly parameter type"));
 
-            REQUIRE(ir_type != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR type"));
-            struct kefir_irbuilder_type ir_type_builder;
-            REQUIRE_OK(kefir_irbuilder_type_init(mem, &ir_type_builder, ir_type));
-            kefir_result_t res =
-                kefir_ast_translate_object_type(mem, param_type, 0, context->environment, &ir_type_builder, NULL);
-            REQUIRE_ELSE(res == KEFIR_OK, {
-                KEFIR_IRBUILDER_TYPE_FREE(&ir_type_builder);
-                return res;
-            });
-            REQUIRE_OK(KEFIR_IRBUILDER_TYPE_FREE(&ir_type_builder));
-
-            if (klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ) {
-                if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(param_type)) {
-                    (*stack_slot_counter) -= 2;
-                    param_value = (*stack_slot_counter);
-                } else {
-                    param_value = --(*stack_slot_counter);
-                }
-
-                REQUIRE_OK(kefir_ast_translate_expression(mem, param->parameter, builder, context));
+        if (klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ) {
+            if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(param_type)) {
+                (*stack_slot_counter) -= 2;
+                param_value = (*stack_slot_counter);
+            } else {
+                param_value = --(*stack_slot_counter);
             }
 
+            REQUIRE_OK(kefir_ast_translate_expression(mem, param->parameter, builder, context));
+        }
+
+        REQUIRE(ir_type != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR type"));
+        struct kefir_irbuilder_type ir_type_builder;
+        REQUIRE_OK(kefir_irbuilder_type_init(mem, &ir_type_builder, ir_type));
+        kefir_result_t res =
+            kefir_ast_translate_object_type(mem, param_type, 0, context->environment, &ir_type_builder, NULL);
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            KEFIR_IRBUILDER_TYPE_FREE(&ir_type_builder);
+            return res;
+        });
+        REQUIRE_OK(KEFIR_IRBUILDER_TYPE_FREE(&ir_type_builder));
+
+        if (ir_inline_asm_param == NULL) {
             REQUIRE_OK(kefir_ir_inline_assembly_add_parameter(mem, context->ast_context->symbols, ir_inline_asm, name,
                                                               klass, constraint, ir_type, 0, param_value,
                                                               &ir_inline_asm_param));
         } else {
-            REQUIRE(klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_LOAD &&
+            REQUIRE(klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ &&
                         constraint == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_REGISTER,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &inline_asm->base.source_location,
                                            "Cannot assign matching constraint to the parameter"));
-            param_value = --(*stack_slot_counter);
-            REQUIRE_OK(kefir_ast_translate_expression(mem, param->parameter, builder, context));
             REQUIRE(ir_inline_asm_param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_STORE &&
                         ir_inline_asm_param->constraint == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_REGISTER,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &inline_asm->base.source_location,
                                            "Cannot assign matching constraint to the parameter"));
-            REQUIRE_OK(kefir_ir_inline_assembly_parameter_direct_load_from(mem, ir_inline_asm, ir_inline_asm_param,
-                                                                           param_value));
+            REQUIRE_OK(kefir_ir_inline_assembly_parameter_read_from(mem, ir_inline_asm, ir_inline_asm_param, ir_type, 0,
+                                                                    param_value));
             REQUIRE_OK(kefir_ir_inline_assembly_add_parameter_alias(mem, context->ast_context->symbols, ir_inline_asm,
                                                                     ir_inline_asm_param, buffer));
         }

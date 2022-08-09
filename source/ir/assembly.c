@@ -112,6 +112,9 @@ kefir_result_t kefir_ir_inline_assembly_add_parameter(
     REQUIRE(identifier != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR inline assembly parameter identifier"));
 
+    REQUIRE(param_class != KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ_STORE,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Cannot directly add read-store IR inline assembly parameter"));
+
     if (symbols != NULL) {
         identifier = kefir_symbol_table_insert(mem, symbols, identifier, NULL);
         REQUIRE(identifier != NULL,
@@ -125,22 +128,28 @@ kefir_result_t kefir_ir_inline_assembly_add_parameter(
 
     param->parameter_id = kefir_list_length(&inline_asm->parameter_list);
     param->klass = param_class;
+    param->constraint = constraint;
     param->type.type = param_type;
     param->type.index = param_type_idx;
-    param->constraint = constraint;
     switch (param_class) {
         case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ:
-        case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_LOAD:
-        case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_LOAD_STORE:
-            param->direct_operand_load_from = value;
-            // Fallthrough
+            param->read_index = value;
+            param->read_type.type = param_type;
+            param->read_type.index = param_type_idx;
+            break;
 
+        case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_LOAD:
         case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_STORE:
-            param->operand_address_at = value;
+        case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_LOAD_STORE:
+            param->load_store_index = value;
             break;
 
         case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_IMMEDIATE:
             param->immediate_value = value;
+            break;
+
+        case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ_STORE:
+            // Intentionally left blank
             break;
     }
 
@@ -197,20 +206,22 @@ kefir_result_t kefir_ir_inline_assembly_add_parameter_alias(struct kefir_mem *me
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_ir_inline_assembly_parameter_direct_load_from(struct kefir_mem *mem,
-                                                                   struct kefir_ir_inline_assembly *inline_asm,
-                                                                   struct kefir_ir_inline_assembly_parameter *param,
-                                                                   kefir_int64_t direct_load_index) {
+kefir_result_t kefir_ir_inline_assembly_parameter_read_from(struct kefir_mem *mem,
+                                                            struct kefir_ir_inline_assembly *inline_asm,
+                                                            struct kefir_ir_inline_assembly_parameter *param,
+                                                            const struct kefir_ir_type *type, kefir_size_t type_idx,
+                                                            kefir_size_t read_index) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(inline_asm != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR inline assembly"));
     REQUIRE(param != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR inline assembly parameter"));
-    REQUIRE(param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_STORE ||
-                param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_LOAD ||
-                param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_LOAD_STORE,
-            KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Cannot change IR inline assembly parameter loading source"));
+    REQUIRE(param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_STORE &&
+                param->constraint == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_REGISTER,
+            KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Cannot change IR inline assembly parameter read source"));
 
-    param->direct_operand_load_from = direct_load_index;
-    param->klass = KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_LOAD_STORE;
+    param->read_index = read_index;
+    param->read_type.type = type;
+    param->read_type.index = type_idx;
+    param->klass = KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ_STORE;
     return KEFIR_OK;
 }
 

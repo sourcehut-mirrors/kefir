@@ -831,32 +831,34 @@ static kefir_result_t format_inline_assembly_fragment(struct kefir_json_output *
         switch (param->klass) {
             case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ:
                 REQUIRE_OK(kefir_json_output_string(json, "read"));
-                REQUIRE_OK(kefir_json_output_object_key(json, "load_direct_from"));
-                REQUIRE_OK(kefir_json_output_uinteger(json, param->direct_operand_load_from));
-                REQUIRE_OK(kefir_json_output_object_key(json, "operand_address"));
-                REQUIRE_OK(kefir_json_output_uinteger(json, param->operand_address_at));
+                REQUIRE_OK(kefir_json_output_object_key(json, "from"));
+                REQUIRE_OK(kefir_json_output_uinteger(json, param->read_index));
                 break;
 
             case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_LOAD:
                 REQUIRE_OK(kefir_json_output_string(json, "load"));
-                REQUIRE_OK(kefir_json_output_object_key(json, "load_direct_from"));
-                REQUIRE_OK(kefir_json_output_uinteger(json, param->direct_operand_load_from));
-                REQUIRE_OK(kefir_json_output_object_key(json, "operand_address"));
-                REQUIRE_OK(kefir_json_output_uinteger(json, param->operand_address_at));
+                REQUIRE_OK(kefir_json_output_object_key(json, "from"));
+                REQUIRE_OK(kefir_json_output_uinteger(json, param->load_store_index));
                 break;
 
             case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_STORE:
                 REQUIRE_OK(kefir_json_output_string(json, "store"));
-                REQUIRE_OK(kefir_json_output_object_key(json, "operand_address"));
-                REQUIRE_OK(kefir_json_output_uinteger(json, param->operand_address_at));
+                REQUIRE_OK(kefir_json_output_object_key(json, "to"));
+                REQUIRE_OK(kefir_json_output_uinteger(json, param->load_store_index));
                 break;
 
             case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_LOAD_STORE:
                 REQUIRE_OK(kefir_json_output_string(json, "load_store"));
-                REQUIRE_OK(kefir_json_output_object_key(json, "load_direct_from"));
-                REQUIRE_OK(kefir_json_output_uinteger(json, param->direct_operand_load_from));
-                REQUIRE_OK(kefir_json_output_object_key(json, "operand_address"));
-                REQUIRE_OK(kefir_json_output_uinteger(json, param->operand_address_at));
+                REQUIRE_OK(kefir_json_output_object_key(json, "from_to"));
+                REQUIRE_OK(kefir_json_output_uinteger(json, param->load_store_index));
+                break;
+
+            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ_STORE:
+                REQUIRE_OK(kefir_json_output_string(json, "read_store"));
+                REQUIRE_OK(kefir_json_output_object_key(json, "from"));
+                REQUIRE_OK(kefir_json_output_uinteger(json, param->read_index));
+                REQUIRE_OK(kefir_json_output_object_key(json, "to"));
+                REQUIRE_OK(kefir_json_output_uinteger(json, param->load_store_index));
                 break;
 
             case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_IMMEDIATE:
