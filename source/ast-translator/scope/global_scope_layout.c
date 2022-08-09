@@ -99,8 +99,10 @@ static kefir_result_t translate_scoped_identifier_type(struct kefir_mem *mem, co
     const struct kefir_ast_type *object_type = NULL;
     REQUIRE_OK(kefir_ast_type_completion(mem, context, &object_type, scoped_identifier->object.type));
 
-    if (KEFIR_AST_TYPE_IS_INCOMPLETE(object_type) &&
-        (object_type->tag == KEFIR_AST_TYPE_STRUCTURE || object_type->tag == KEFIR_AST_TYPE_UNION)) {
+    const struct kefir_ast_type *unqualified_object_type = kefir_ast_unqualified_type(object_type);
+    if (KEFIR_AST_TYPE_IS_INCOMPLETE(unqualified_object_type) &&
+        (unqualified_object_type->tag == KEFIR_AST_TYPE_STRUCTURE ||
+         unqualified_object_type->tag == KEFIR_AST_TYPE_UNION)) {
         REQUIRE((scoped_identifier->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN ||
                  scoped_identifier->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN_THREAD_LOCAL) &&
                     scoped_identifier->object.external,
