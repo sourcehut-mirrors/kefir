@@ -31,7 +31,7 @@ struct S1 init_s1() {
         "mov WORD PTR [%rbx + 12], %[field3]\n"
         "mov BYTE PTR [%rbx + 14], %[field4]"
         : "=m"(s1)
-        : [field1] "i"(100), [field2] "i"(FIELD3 / 3 * 2), [field3] "i"(FIELD3), [field4] "i"('X')
+        : [field1] "i"(100), [field2] "n"(FIELD3 / 3 * 2), [field3] "i"(FIELD3), [field4] "n"('X')
         : "rbx");
     return s1;
 }

@@ -40,7 +40,7 @@ extern void init_array() {
         "mov [%8], %rax"
         :
         : "i"(&array[0]), "i"(fn1), "i"(&array[1]), "i"(&array[5]), "i"(&array[2]), "i"("Hello" + 2), "i"(&array[3]),
-          "i"(&x), "i"(&array[4]), "i"(4.21)
+          "i"(&x), "i"(&array[4]), "n"(4.21)
         : "rax");
 }
 #endif

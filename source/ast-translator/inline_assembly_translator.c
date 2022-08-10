@@ -30,18 +30,24 @@
 #include <stdio.h>
 
 static kefir_result_t match_constraints(const char *constraints, kefir_bool_t *immediate_constraint,
-                                        kefir_bool_t *register_constraint, kefir_bool_t *memory_constraint,
+                                        kefir_bool_t *strict_immediate, kefir_bool_t *register_constraint,
+                                        kefir_bool_t *memory_constraint,
                                         const struct kefir_source_location *source_location) {
     for (const char *iter = constraints; *iter != '\0'; ++iter) {
         switch (*iter) {
             case 'i':
                 *immediate_constraint = true;
+                *strict_immediate = false;
+                break;
+
+            case 'n':
+                *immediate_constraint = true;
+                *strict_immediate = true;
                 break;
 
             case 'r':
                 *register_constraint = true;
                 break;
-                ;
 
             case 'm':
                 *memory_constraint = true;
@@ -87,10 +93,11 @@ static kefir_result_t translate_outputs(struct kefir_mem *mem, const struct kefi
         }
 
         kefir_bool_t immediate_constraint = false;
+        kefir_bool_t strict_immediate = false;
         kefir_bool_t register_constraint = false;
         kefir_bool_t memory_constraint = false;
-        REQUIRE_OK(match_constraints(param->constraint + 1, &immediate_constraint, &register_constraint,
-                                     &memory_constraint, &node->source_location));
+        REQUIRE_OK(match_constraints(param->constraint + 1, &immediate_constraint, &strict_immediate,
+                                     &register_constraint, &memory_constraint, &node->source_location));
         if (register_constraint && memory_constraint) {
             constraint = KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_REGISTER_MEMORY;
         } else if (register_constraint) {
@@ -222,6 +229,7 @@ static kefir_result_t translate_inputs(struct kefir_mem *mem, const struct kefir
         kefir_bool_t register_constraint = false;
         kefir_bool_t memory_constraint = false;
         kefir_bool_t immediate_constraint = false;
+        kefir_bool_t strict_immediate = false;
         const char *constraint_str = param->constraint;
         if (*constraint_str >= '0' && *constraint_str <= '9') {
             char match_name[32] = {0};
@@ -238,8 +246,8 @@ static kefir_result_t translate_inputs(struct kefir_mem *mem, const struct kefir
             REQUIRE_OK(res);
             register_constraint = *constraint_str == '\0';
         }
-        REQUIRE_OK(match_constraints(constraint_str, &immediate_constraint, &register_constraint, &memory_constraint,
-                                     &node->source_location));
+        REQUIRE_OK(match_constraints(constraint_str, &immediate_constraint, &strict_immediate, &register_constraint,
+                                     &memory_constraint, &node->source_location));
 
         if (immediate_constraint && param->parameter->properties.expression_props.constant_expression) {
             struct kefir_ast_constant_expression_value value;
@@ -252,6 +260,11 @@ static kefir_result_t translate_inputs(struct kefir_mem *mem, const struct kefir
             } else if (value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS) {
                 switch (value.pointer.type) {
                     case KEFIR_AST_CONSTANT_EXPRESSION_POINTER_IDENTIFER:
+                        REQUIRE(
+                            !strict_immediate,
+                            KEFIR_SET_SOURCE_ERROR(
+                                KEFIR_ANALYSIS_ERROR, &inline_asm->base.source_location,
+                                "Value of strict immediate inline assembly parameter shall be known at compile time"));
                         imm_type = KEFIR_IR_INLINE_ASSEMBLY_IMMEDIATE_IDENTIFIER_BASED;
                         REQUIRE_OK(translate_pointer_to_identifier(&value, &imm_identifier_base, &param_value,
                                                                    &inline_asm->base.source_location));
@@ -263,6 +276,11 @@ static kefir_result_t translate_inputs(struct kefir_mem *mem, const struct kefir
                         break;
 
                     case KEFIR_AST_CONSTANT_EXPRESSION_POINTER_LITERAL: {
+                        REQUIRE(
+                            !strict_immediate,
+                            KEFIR_SET_SOURCE_ERROR(
+                                KEFIR_ANALYSIS_ERROR, &inline_asm->base.source_location,
+                                "Value of strict immediate inline assembly parameter shall be known at compile time"));
                         imm_type = KEFIR_IR_INLINE_ASSEMBLY_IMMEDIATE_LITERAL_BASED;
                         kefir_id_t id;
                         REQUIRE_OK(kefir_ir_module_string_literal(
@@ -385,7 +403,7 @@ kefir_result_t kefir_ast_translate_inline_assembly(struct kefir_mem *mem, const 
             REQUIRE(param_type != NULL,
                     KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to retrieve inline assembly parameter type"));
 
-            if (strchr(param->constraint, 'i') != NULL &&
+            if ((strchr(param->constraint, 'i') != NULL || strchr(param->constraint, 'n') != NULL) &&
                 param->parameter->properties.expression_props.constant_expression &&
                 KEFIR_AST_TYPE_IS_SCALAR_TYPE(param_type)) {
                 continue;
