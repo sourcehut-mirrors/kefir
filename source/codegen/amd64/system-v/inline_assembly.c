@@ -305,9 +305,6 @@ static kefir_result_t map_parameters(struct kefir_mem *mem, const struct kefir_i
                         asm_param->read_index + (param_read_type != INLINE_ASSEMBLY_PARAM_LONG_DOUBLE ? 1 : 2));
                 direct_input = true;
                 input_index = asm_param->read_index;
-                REQUIRE(param_read_size <= param_size,
-                        KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unable to read IR inline assembly input parameter that "
-                                                               "exceeds matching output parameter size"));
                 break;
 
             case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ:
@@ -582,10 +579,12 @@ static kefir_result_t load_inputs(struct kefir_codegen_amd64 *codegen,
                                 params->parameter_base_offset + KEFIR_AMD64_SYSV_ABI_QWORD * param_map->input_index)));
 
                         kefir_amd64_xasmgen_register_t reg;
-                        REQUIRE_OK(match_register_to_size(param_map->reg,
-                                                          param_map->direct_read ? param_map->parameter_read_props.size
-                                                                                 : param_map->parameter_props.size,
-                                                          &reg));
+                        REQUIRE_OK(match_register_to_size(
+                            param_map->reg,
+                            param_map->direct_read
+                                ? MIN(param_map->parameter_read_props.size, KEFIR_AMD64_SYSV_ABI_QWORD)
+                                : param_map->parameter_props.size,
+                            &reg));
 
                         REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
                             &codegen->xasmgen, kefir_amd64_xasmgen_operand_reg(reg),

@@ -29,6 +29,7 @@ struct S1 {
 long sum3_one(long, long, long);
 struct S1 make_s1(unsigned int);
 unsigned int unwrap_s1(struct S1);
+unsigned int cast_int(unsigned long);
 #endif
 
 #endif

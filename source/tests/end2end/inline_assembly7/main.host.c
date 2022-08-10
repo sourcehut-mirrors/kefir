@@ -39,6 +39,13 @@ int main() {
         assert(s1.shrt[1] == ((x >> 16) & 0xffff));
         assert(unwrap_s1(s1) == x);
     }
+
+    for (unsigned long x = 0; x < 0xffff; x++) {
+        for (unsigned long y = 0; y < 0x1ff; y++) {
+            unsigned long l = (y << 32) | x;
+            assert(cast_int(l) == (unsigned int) l);
+        }
+    }
 #endif
     return EXIT_SUCCESS;
 }

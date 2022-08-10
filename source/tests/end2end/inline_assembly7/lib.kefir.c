@@ -43,4 +43,10 @@ unsigned int unwrap_s1(struct S1 s) {
     asm("" : "=r"(res) : "0"(s));
     return res;
 }
+
+unsigned int cast_int(unsigned long l) {
+    unsigned int res;
+    asm("" : "=r"(res) : "0"(l));
+    return res;
+}
 #endif

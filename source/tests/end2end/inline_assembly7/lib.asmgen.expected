@@ -128,6 +128,7 @@
 
 # Globals
 .global make_s1
+.global cast_int
 .global sum3_one
 .global unwrap_s1
 
@@ -162,6 +163,38 @@ __make_s1_epilogue:
     add %rsp, 32
     jmp __kefirrt_restore_state
 # End of make_s1
+
+cast_int:
+# Begin prologue of cast_int
+    call __kefirrt_preserve_state
+    sub %rsp, 32
+    call __kefirrt_generic_prologue
+# Load parameters of cast_int
+    push %rdi
+# End prologue of cast_int
+    lea %rbx, [__cast_int_body]
+    jmp [%rbx]
+__cast_int_body:
+    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_xchg_impl, 1
+    .quad __kefirrt_store64_impl, 0
+    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_offsetptr_impl, 8
+    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_load64_impl, 0
+    .quad __kefirrt_inline_assembly3, 0
+    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_offsetptr_impl, 8
+    .quad __kefirrt_load32u_impl, 0
+    .quad __cast_int_epilogue, 0
+    .quad __cast_int_epilogue, 0
+__cast_int_epilogue:
+# Begin epilogue of cast_int
+    pop %rax
+    mov %rsp, %r14
+    add %rsp, 32
+    jmp __kefirrt_restore_state
+# End of cast_int
 
 sum3_one:
 # Begin prologue of sum3_one
@@ -291,9 +324,22 @@ __kefirrt_inline_assembly2:
     add %rbx, 16
     jmp [%rbx]
 
+# Inline assembly fragment #3
+__kefirrt_inline_assembly3:
+    mov %rax, [%rsp]
+# Begin of fragment #3 code
+
+# End of fragment #3 code
+    mov %rcx, [%rsp + 8]
+    mov [%rcx], %eax
+    add %rsp, 16
+    add %rbx, 16
+    jmp [%rbx]
+
 .section .data
 __kefirrt_module_static_vars:
     .byte 0x73, 0x75, 0x6d, 0x33, 0x5f, 0x6f, 0x6e, 0x65, 0x00
     .byte 0x6d, 0x61, 0x6b, 0x65, 0x5f, 0x73, 0x31, 0x00
     .byte 0x75, 0x6e, 0x77, 0x72, 0x61, 0x70, 0x5f, 0x73, 0x31, 0x00
+    .byte 0x63, 0x61, 0x73, 0x74, 0x5f, 0x69, 0x6e, 0x74, 0x00
 
