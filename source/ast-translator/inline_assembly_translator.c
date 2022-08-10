@@ -153,7 +153,8 @@ static kefir_result_t translate_inputs(struct kefir_mem *mem, const struct kefir
 
         const char *name = buffer;
         kefir_ir_inline_assembly_parameter_class_t klass = KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ;
-        kefir_ir_inline_assembly_parameter_constraint_t constraint;
+        kefir_ir_inline_assembly_parameter_constraint_t constraint =
+            KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_REGISTER_MEMORY;
         struct kefir_ir_type *ir_type = kefir_ir_module_new_type(mem, context->module, 0, NULL);
         const char *alias = param->parameter_name;
         kefir_int64_t param_value = 0;
