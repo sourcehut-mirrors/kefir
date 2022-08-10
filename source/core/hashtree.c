@@ -19,6 +19,7 @@
 */
 
 #include <string.h>
+#include <assert.h>
 #include "kefir/core/hashtree.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
@@ -51,36 +52,151 @@ static struct kefir_hashtree_node *node_alloc(struct kefir_mem *mem, kefir_hasht
     return node;
 }
 
+#define NODE_HEIGHT(_node) ((_node) != NULL ? (_node)->height + 1 : 0)
+#define NODE_EVAL_HEIGHT(_node) \
+    ((_node) != NULL ? MAX(NODE_HEIGHT((_node)->left_child), NODE_HEIGHT((_node)->right_child)) : 0)
+#define NODE_BF(_node)                                                                                            \
+    ((_node) != NULL                                                                                              \
+         ? ((kefir_int64_t) NODE_HEIGHT((_node)->right_child)) - (kefir_int64_t) NODE_HEIGHT((_node)->left_child) \
+         : 0)
+#define NODE_UPDATE_HEIGHT(_node)                        \
+    do {                                                 \
+        if ((_node) != NULL) {                           \
+            (_node)->height = NODE_EVAL_HEIGHT((_node)); \
+        }                                                \
+    } while (0)
+
+static struct kefir_hashtree_node *right_rotate(struct kefir_hashtree_node *root) {
+    assert(root != NULL);
+    assert(root->left_child != NULL);
+
+    // Rotate nodes
+    struct kefir_hashtree_node *new_root = root->left_child;
+    root->left_child = new_root->right_child;
+    new_root->right_child = root;
+
+    // Update parent references
+    if (root->parent != NULL && root->parent->left_child == root) {
+        root->parent->left_child = new_root;
+    } else if (root->parent != NULL && root->parent->right_child == root) {
+        root->parent->right_child = new_root;
+    }
+    new_root->parent = root->parent;
+    root->parent = new_root;
+    if (root->left_child != NULL) {
+        root->left_child->parent = root;
+    }
+
+    // Update node heights
+    NODE_UPDATE_HEIGHT(root);
+    NODE_UPDATE_HEIGHT(new_root);
+    return new_root;
+}
+
+static struct kefir_hashtree_node *left_rotate(struct kefir_hashtree_node *root) {
+    assert(root != NULL);
+    assert(root->right_child != NULL);
+
+    // Rotate nodes
+    struct kefir_hashtree_node *new_root = root->right_child;
+    root->right_child = new_root->left_child;
+    new_root->left_child = root;
+
+    // Update node parent references
+    if (root->parent != NULL && root->parent->left_child == root) {
+        root->parent->left_child = new_root;
+    } else if (root->parent != NULL && root->parent->right_child == root) {
+        root->parent->right_child = new_root;
+    }
+    new_root->parent = root->parent;
+    root->parent = new_root;
+    if (root->right_child != NULL) {
+        root->right_child->parent = root;
+    }
+
+    // Update node heights
+    NODE_UPDATE_HEIGHT(root);
+    NODE_UPDATE_HEIGHT(new_root);
+    return new_root;
+}
+
+static struct kefir_hashtree_node *left_right_rotate(struct kefir_hashtree_node *root) {
+    root->left_child = left_rotate(root->left_child);
+    return right_rotate(root);
+}
+
+static struct kefir_hashtree_node *right_left_rotate(struct kefir_hashtree_node *root) {
+    root->right_child = right_rotate(root->right_child);
+    return left_rotate(root);
+}
+
+static struct kefir_hashtree_node *balance_node(struct kefir_hashtree_node *root) {
+    assert(root != NULL);
+    assert(NODE_BF(root) >= -2 && NODE_BF(root) <= 2);
+
+    struct kefir_hashtree_node *new_root = root;
+    if (NODE_HEIGHT(root->left_child) > NODE_HEIGHT(root->right_child) + 1) {
+        assert(root->left_child != NULL);
+        kefir_size_t leftLeftHeight = NODE_HEIGHT(root->left_child->left_child);
+        kefir_size_t leftRightHeight = NODE_HEIGHT(root->left_child->right_child);
+        if (leftLeftHeight >= leftRightHeight) {
+            new_root = right_rotate(root);
+        } else {
+            new_root = left_right_rotate(root);
+        }
+    } else if (NODE_HEIGHT(root->right_child) > NODE_HEIGHT(root->left_child) + 1) {
+        assert(root->right_child != NULL);
+        kefir_size_t rightLeftHeight = NODE_HEIGHT(root->right_child->left_child);
+        kefir_size_t rightRightHeight = NODE_HEIGHT(root->right_child->right_child);
+        if (rightRightHeight >= rightLeftHeight) {
+            new_root = left_rotate(root);
+        } else {
+            new_root = right_left_rotate(root);
+        }
+    }
+
+    NODE_UPDATE_HEIGHT(new_root);
+    assert(NODE_BF(root) >= -1 && NODE_BF(root) <= 1);
+    return new_root;
+}
+
 static kefir_result_t node_insert(struct kefir_mem *mem, struct kefir_hashtree *tree, struct kefir_hashtree_node *root,
                                   kefir_hashtree_hash_t hash, kefir_hashtree_key_t key, kefir_hashtree_value_t value,
-                                  kefir_hashtree_value_t *oldvalue, bool replace) {
+                                  kefir_hashtree_value_t *oldvalue, bool replace,
+                                  struct kefir_hashtree_node **root_ptr) {
+    assert(NODE_BF(root) >= -1 && NODE_BF(root) <= 1);
     if (hash < root->hash) {
         if (root->left_child == NULL) {
             struct kefir_hashtree_node *node = node_alloc(mem, hash, root, key, value);
             REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate hash tree node"));
             root->left_child = node;
-            return KEFIR_OK;
         } else {
-            return node_insert(mem, tree, root->left_child, hash, key, value, oldvalue, replace);
+            REQUIRE_OK(node_insert(mem, tree, root->left_child, hash, key, value, oldvalue, replace, NULL));
         }
+
+        struct kefir_hashtree_node *new_root = balance_node(root);
+        ASSIGN_PTR(root_ptr, new_root);
     } else if (hash > root->hash || !tree->ops->compare_keys(root->key, key, tree->ops->data)) {
         if (root->right_child == NULL) {
             struct kefir_hashtree_node *node = node_alloc(mem, hash, root, key, value);
             REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate hash tree node"));
             root->right_child = node;
-            return KEFIR_OK;
         } else {
-            return node_insert(mem, tree, root->right_child, hash, key, value, oldvalue, replace);
+            REQUIRE_OK(node_insert(mem, tree, root->right_child, hash, key, value, oldvalue, replace, NULL));
         }
+
+        struct kefir_hashtree_node *new_root = balance_node(root);
+        ASSIGN_PTR(root_ptr, new_root);
     } else if (replace) {
         if (oldvalue != NULL) {
             *oldvalue = root->value;
         }
         root->value = value;
-        return KEFIR_OK;
     } else {
         return KEFIR_SET_ERROR(KEFIR_ALREADY_EXISTS, "Hash tree node with specified key already exists in the tree");
     }
+    assert(NODE_BF(root) >= -1 && NODE_BF(root) <= 1);
+    return KEFIR_OK;
 }
 
 static kefir_result_t node_find(struct kefir_hashtree_node *root, const struct kefir_hashtree *tree,
@@ -89,6 +205,8 @@ static kefir_result_t node_find(struct kefir_hashtree_node *root, const struct k
     if (root == NULL) {
         return KEFIR_NOT_FOUND;
     }
+
+    assert(NODE_BF(root) >= -1 && NODE_BF(root) <= 1);
     if (hash < root->hash) {
         return node_find(root->left_child, tree, hash, key, result);
     } else if (hash < root->hash || !tree->ops->compare_keys(root->key, key, tree->ops->data)) {
@@ -140,19 +258,22 @@ kefir_result_t kefir_hashtree_insert(struct kefir_mem *mem, struct kefir_hashtre
                                      kefir_hashtree_value_t value) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(tree != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hash tree pointer"));
+    assert(NODE_BF(tree->root) >= -1 && NODE_BF(tree->root) <= 1);
     kefir_hashtree_hash_t hash = tree->ops->hash(key, tree->ops->data);
     if (tree->root == NULL) {
         tree->root = node_alloc(mem, hash, NULL, key, value);
-        return KEFIR_OK;
     } else {
-        return node_insert(mem, tree, tree->root, hash, key, value, NULL, false);
+        REQUIRE_OK(node_insert(mem, tree, tree->root, hash, key, value, NULL, false, &tree->root));
     }
+    assert(NODE_BF(tree->root) >= -1 && NODE_BF(tree->root) <= 1);
+    return KEFIR_OK;
 }
 
 kefir_result_t kefir_hashtree_at(const struct kefir_hashtree *tree, kefir_hashtree_key_t key,
                                  struct kefir_hashtree_node **result) {
     REQUIRE(tree != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hash tree pointer"));
     REQUIRE(result != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid result pointer"));
+    assert(NODE_BF(tree->root) >= -1 && NODE_BF(tree->root) <= 1);
     *result = NULL;
     kefir_hashtree_hash_t hash = tree->ops->hash(key, tree->ops->data);
     if (node_find(tree->root, tree, hash, key, result) != KEFIR_OK) {
@@ -163,6 +284,7 @@ kefir_result_t kefir_hashtree_at(const struct kefir_hashtree *tree, kefir_hashtr
 
 kefir_bool_t kefir_hashtree_has(const struct kefir_hashtree *tree, kefir_hashtree_key_t key) {
     REQUIRE(tree != NULL, false);
+    assert(NODE_BF(tree->root) >= -1 && NODE_BF(tree->root) <= 1);
     kefir_hashtree_hash_t hash = tree->ops->hash(key, tree->ops->data);
     struct kefir_hashtree_node *result = NULL;
     return node_find(tree->root, tree, hash, key, &result) == KEFIR_OK;
@@ -176,22 +298,35 @@ kefir_bool_t kefir_hashtree_empty(const struct kefir_hashtree *tree) {
 kefir_result_t kefir_hashtree_delete(struct kefir_mem *mem, struct kefir_hashtree *tree, kefir_hashtree_key_t key) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(tree != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hash tree pointer"));
+    assert(NODE_BF(tree->root) >= -1 && NODE_BF(tree->root) <= 1);
     kefir_hashtree_hash_t hash = tree->ops->hash(key, tree->ops->data);
     struct kefir_hashtree_node *node = NULL;
     REQUIRE_OK(node_find(tree->root, tree, hash, key, &node));
     struct kefir_hashtree_node *replacement = NULL;
+    struct kefir_hashtree_node *lowest_modified_node = NULL;
+
     if (node->left_child == NULL && node->right_child == NULL) {
-        // Do nothing
+        // Removed node is a leaf node itself
+        lowest_modified_node = node->parent;
     } else if (node->left_child != NULL && node->right_child == NULL) {
+        // Removed node is replaced by it's left child
         replacement = node->left_child;
+        replacement->parent = node->parent;
+        lowest_modified_node = node->parent;
     } else if (node->left_child == NULL && node->right_child != NULL) {
+        // Removed node is replaced by it's right child
         replacement = node->right_child;
+        replacement->parent = node->parent;
+        lowest_modified_node = node->parent;
     } else {
+        // Removed node is replaced by left-most leaf of it's right branch
         replacement = node_minimum(node->right_child);
-        REQUIRE(replacement != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Internal hash tree removal error"));
+        assert(replacement != NULL);
+        assert(replacement->left_child == NULL);
+        lowest_modified_node = replacement->parent;
         replacement->left_child = node->left_child;
         replacement->left_child->parent = replacement;
-        if (replacement->parent != node) {
+        if (lowest_modified_node != node) {
             if (replacement->right_child != NULL) {
                 replacement->parent->left_child = replacement->right_child;
                 replacement->right_child = NULL;
@@ -201,8 +336,13 @@ kefir_result_t kefir_hashtree_delete(struct kefir_mem *mem, struct kefir_hashtre
             }
             replacement->right_child = node->right_child;
             replacement->right_child->parent = replacement;
+        } else {
+            lowest_modified_node = replacement;
         }
+        replacement->parent = node->parent;
+        NODE_UPDATE_HEIGHT(replacement);
     }
+    // Node parent is updated to point to replaced node
     if (node->parent != NULL) {
         if (node->parent->left_child == node) {
             node->parent->left_child = replacement;
@@ -214,13 +354,24 @@ kefir_result_t kefir_hashtree_delete(struct kefir_mem *mem, struct kefir_hashtre
     } else {
         tree->root = replacement;
     }
-    if (replacement != NULL) {
-        replacement->parent = node->parent;
+
+    // Tree is traversed and rebalanced starting from replaced node parent to the root
+    for (struct kefir_hashtree_node *iter = lowest_modified_node; iter != NULL; iter = iter->parent) {
+        if (tree->root == iter) {
+            iter = balance_node(iter);
+            tree->root = iter;
+        } else {
+            iter = balance_node(iter);
+        }
+        assert(NODE_BF(iter) >= -1 && NODE_BF(iter) <= 1);
     }
+
+    // Node is removed
     if (tree->node_remove.callback != NULL) {
         REQUIRE_OK(tree->node_remove.callback(mem, tree, node->key, node->value, tree->node_remove.data));
     }
     KEFIR_FREE(mem, node);
+    assert(NODE_BF(tree->root) >= -1 && NODE_BF(tree->root) <= 1);
     return KEFIR_OK;
 }
 
