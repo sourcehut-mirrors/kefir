@@ -105,15 +105,17 @@ kefir_result_t kefir_ir_inline_assembly_add_parameter(
     struct kefir_mem *mem, struct kefir_symbol_table *symbols, struct kefir_ir_inline_assembly *inline_asm,
     const char *identifier, kefir_ir_inline_assembly_parameter_class_t param_class,
     kefir_ir_inline_assembly_parameter_constraint_t constraint, const struct kefir_ir_type *param_type,
-    kefir_size_t param_type_idx, kefir_int64_t value, struct kefir_ir_inline_assembly_parameter **param_ptr) {
+    kefir_size_t param_type_idx, kefir_size_t value, struct kefir_ir_inline_assembly_parameter **param_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(inline_asm != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR inline assembly"));
     REQUIRE(param_type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid parameter IR type"));
     REQUIRE(identifier != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR inline assembly parameter identifier"));
 
-    REQUIRE(param_class != KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ_STORE,
-            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Cannot directly add read-store IR inline assembly parameter"));
+    REQUIRE(param_class != KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ_STORE &&
+                param_class != KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_IMMEDIATE,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER,
+                            "Cannot directly add read-store/immediate IR inline assembly parameter"));
 
     if (symbols != NULL) {
         identifier = kefir_symbol_table_insert(mem, symbols, identifier, NULL);
@@ -145,9 +147,6 @@ kefir_result_t kefir_ir_inline_assembly_add_parameter(
             break;
 
         case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_IMMEDIATE:
-            param->immediate_value = value;
-            break;
-
         case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ_STORE:
             // Intentionally left blank
             break;
@@ -203,6 +202,75 @@ kefir_result_t kefir_ir_inline_assembly_add_parameter_alias(struct kefir_mem *me
     REQUIRE_OK(kefir_list_insert_after(mem, &param->identifiers, kefir_list_tail(&param->identifiers), (void *) alias));
     REQUIRE_OK(kefir_hashtree_insert(mem, &inline_asm->parameters, (kefir_hashtree_key_t) alias,
                                      (kefir_hashtree_value_t) param));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_ir_inline_assembly_add_immediate_parameter(
+    struct kefir_mem *mem, struct kefir_symbol_table *symbols, struct kefir_ir_inline_assembly *inline_asm,
+    const char *identifier, const struct kefir_ir_type *param_type, kefir_size_t param_type_idx,
+    kefir_ir_inline_assembly_immediate_type_t imm_type, const char *imm_identifier_base, kefir_id_t imm_literal_base,
+    kefir_int64_t imm_value, struct kefir_ir_inline_assembly_parameter **param_ptr) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(inline_asm != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR inline assembly"));
+    REQUIRE(param_type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid parameter IR type"));
+    REQUIRE(identifier != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR inline assembly parameter identifier"));
+
+    if (symbols != NULL) {
+        identifier = kefir_symbol_table_insert(mem, symbols, identifier, NULL);
+        REQUIRE(identifier != NULL,
+                KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE,
+                                "Failed to insert IR inline assembly parameter identifier into symbol table"));
+
+        if (imm_identifier_base != NULL) {
+            imm_identifier_base = kefir_symbol_table_insert(mem, symbols, imm_identifier_base, NULL);
+            REQUIRE(imm_identifier_base != NULL,
+                    KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE,
+                                    "Failed to insert IR inline assembly immediate parameter base into symbol table"));
+        }
+    }
+
+    struct kefir_ir_inline_assembly_parameter *param =
+        KEFIR_MALLOC(mem, sizeof(struct kefir_ir_inline_assembly_parameter));
+    REQUIRE(param != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate IR inline assembly parameter"));
+
+    param->parameter_id = kefir_list_length(&inline_asm->parameter_list);
+    param->klass = KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_IMMEDIATE;
+    param->constraint = KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_NONE;
+    param->type.type = param_type;
+    param->type.index = param_type_idx;
+    param->immediate_type = imm_type;
+    if (imm_type == KEFIR_IR_INLINE_ASSEMBLY_IMMEDIATE_IDENTIFIER_BASED) {
+        param->immediate_identifier_base = imm_identifier_base;
+    } else {
+        param->immediate_literal_base = imm_literal_base;
+    }
+    param->immediate_value = imm_value;
+
+    kefir_result_t res = kefir_list_init(&param->identifiers);
+    REQUIRE_CHAIN(&res, kefir_list_insert_after(mem, &param->identifiers, kefir_list_tail(&param->identifiers),
+                                                (void *) identifier));
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_FREE(mem, param);
+        return res;
+    });
+
+    res = kefir_list_insert_after(mem, &inline_asm->parameter_list, kefir_list_tail(&inline_asm->parameter_list),
+                                  (void *) param);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_list_free(mem, &param->identifiers);
+        KEFIR_FREE(mem, param);
+        return res;
+    });
+
+    res = kefir_hashtree_insert(mem, &inline_asm->parameters, (kefir_hashtree_key_t) identifier,
+                                (kefir_hashtree_value_t) param);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_list_pop(mem, &inline_asm->parameter_list, kefir_list_tail(&inline_asm->parameter_list));
+        return res;
+    });
+
+    ASSIGN_PTR(param_ptr, param);
     return KEFIR_OK;
 }
 

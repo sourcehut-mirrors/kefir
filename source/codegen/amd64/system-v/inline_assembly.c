@@ -329,6 +329,9 @@ static kefir_result_t map_parameters(struct kefir_mem *mem, const struct kefir_i
         if (!parameter_immediate) {
             struct inline_assembly_param_map *param_map = NULL;
             switch (asm_param->constraint) {
+                case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_NONE:
+                    return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unexpected IR inline assembly parameter constraint");
+
                 case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_REGISTER:
                     REQUIRE(param_type != INLINE_ASSEMBLY_PARAM_AGGREGATE || param_size <= KEFIR_AMD64_SYSV_ABI_QWORD,
                             KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unable to satisfy IR inline assembly constraints"));
@@ -897,8 +900,32 @@ static kefir_result_t format_normal_parameter(struct kefir_mem *mem, struct kefi
                                               kefir_size_t override_size) {
     if (asm_param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_IMMEDIATE) {
         char register_symbol[128];
-        const struct kefir_amd64_xasmgen_operand *operand =
-            kefir_amd64_xasmgen_operand_imm(&codegen->xasmgen_helpers.operands[0], asm_param->immediate_value);
+        const struct kefir_amd64_xasmgen_operand *operand = NULL;
+        switch (asm_param->immediate_type) {
+            case KEFIR_IR_INLINE_ASSEMBLY_IMMEDIATE_IDENTIFIER_BASED:
+                if (asm_param->immediate_identifier_base != NULL) {
+                    operand = kefir_amd64_xasmgen_operand_offset(
+                        &codegen->xasmgen_helpers.operands[0],
+                        kefir_amd64_xasmgen_operand_label(&codegen->xasmgen_helpers.operands[1],
+                                                          asm_param->immediate_identifier_base),
+                        asm_param->immediate_value);
+                } else {
+                    operand = kefir_amd64_xasmgen_operand_imm(&codegen->xasmgen_helpers.operands[0],
+                                                              asm_param->immediate_value);
+                }
+                break;
+
+            case KEFIR_IR_INLINE_ASSEMBLY_IMMEDIATE_LITERAL_BASED:
+                operand = kefir_amd64_xasmgen_operand_offset(
+                    &codegen->xasmgen_helpers.operands[0],
+                    kefir_amd64_xasmgen_operand_label(
+                        &codegen->xasmgen_helpers.operands[1],
+                        kefir_amd64_xasmgen_helpers_format(&codegen->xasmgen_helpers,
+                                                           KEFIR_AMD64_SYSTEM_V_RUNTIME_STRING_LITERAL,
+                                                           asm_param->immediate_identifier_base)),
+                    asm_param->immediate_value);
+                break;
+        }
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_FORMAT_OPERAND(&codegen->xasmgen, operand, register_symbol,
                                                       sizeof(register_symbol) - 1));
         REQUIRE_OK(kefir_string_builder_printf(mem, &params->formatted_asm, "%s", register_symbol));

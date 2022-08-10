@@ -20,6 +20,7 @@
 
 #include "kefir/ast-translator/translator.h"
 #include "kefir/ast-translator/jump.h"
+#include "kefir/ast/runtime.h"
 #include "kefir/ast/downcast.h"
 #include "kefir/ast/flow_control.h"
 #include "kefir/ast/type_conv.h"
@@ -136,6 +137,62 @@ static kefir_result_t translate_outputs(struct kefir_mem *mem, const struct kefi
     return KEFIR_OK;
 }
 
+static kefir_size_t resolve_identifier_offset(const struct kefir_ast_type_layout *layout) {
+    if (layout->parent != NULL) {
+        return resolve_identifier_offset(layout->parent) + layout->properties.relative_offset;
+    } else {
+        return layout->properties.relative_offset;
+    }
+}
+
+static kefir_result_t translate_pointer_to_identifier(struct kefir_ast_constant_expression_value *value,
+                                                      const char **base, kefir_int64_t *offset,
+                                                      const struct kefir_source_location *location) {
+    if (value->pointer.scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT) {
+        switch (value->pointer.scoped_id->object.storage) {
+            case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN:
+                *base = value->pointer.base.literal;
+                *offset = value->pointer.offset;
+                break;
+
+            case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC: {
+                ASSIGN_DECL_CAST(struct kefir_ast_translator_scoped_identifier_object *, identifier_data,
+                                 value->pointer.scoped_id->payload.ptr);
+                *base = value->pointer.scoped_id->object.initializer != NULL
+                            ? KEFIR_AST_TRANSLATOR_STATIC_VARIABLES_IDENTIFIER
+                            : KEFIR_AST_TRANSLATOR_STATIC_UNINIT_VARIABLES_IDENTIFIER;
+                *offset = resolve_identifier_offset(identifier_data->layout) + value->pointer.offset;
+            } break;
+
+            case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_THREAD_LOCAL:
+            case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN_THREAD_LOCAL:
+            case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC_THREAD_LOCAL:
+            case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_TYPEDEF:
+            case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO:
+            case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER:
+            case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN:
+                return KEFIR_SET_SOURCE_ERROR(
+                    KEFIR_ANALYSIS_ERROR, location,
+                    "Unexpected storage class of variable-based constant immediate inline assembly parameter");
+        }
+    } else {
+        REQUIRE(value->pointer.scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION,
+                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
+                                       "Inline assembly immediate parameters can be initialized by pointer either to "
+                                       "an object or to a function"));
+        *base = value->pointer.base.literal;
+        *offset = value->pointer.offset;
+    }
+    return KEFIR_OK;
+}
+
+static const kefir_ir_string_literal_type_t StringLiteralTypes[] = {
+    [KEFIR_AST_STRING_LITERAL_MULTIBYTE] = KEFIR_IR_STRING_LITERAL_MULTIBYTE,
+    [KEFIR_AST_STRING_LITERAL_UNICODE8] = KEFIR_IR_STRING_LITERAL_MULTIBYTE,
+    [KEFIR_AST_STRING_LITERAL_UNICODE16] = KEFIR_IR_STRING_LITERAL_UNICODE16,
+    [KEFIR_AST_STRING_LITERAL_UNICODE32] = KEFIR_IR_STRING_LITERAL_UNICODE32,
+    [KEFIR_AST_STRING_LITERAL_WIDE] = KEFIR_IR_STRING_LITERAL_UNICODE32};
+
 static kefir_result_t translate_inputs(struct kefir_mem *mem, const struct kefir_ast_node_base *node,
                                        struct kefir_irbuilder_block *builder,
                                        struct kefir_ast_translator_context *context,
@@ -153,10 +210,12 @@ static kefir_result_t translate_inputs(struct kefir_mem *mem, const struct kefir
 
         const char *name = buffer;
         kefir_ir_inline_assembly_parameter_class_t klass = KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ;
-        kefir_ir_inline_assembly_parameter_constraint_t constraint =
-            KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_REGISTER_MEMORY;
+        kefir_ir_inline_assembly_parameter_constraint_t constraint = KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_NONE;
         struct kefir_ir_type *ir_type = kefir_ir_module_new_type(mem, context->module, 0, NULL);
         const char *alias = param->parameter_name;
+        kefir_ir_inline_assembly_immediate_type_t imm_type;
+        const char *imm_identifier_base = NULL;
+        kefir_id_t imm_literal_base = 0;
         kefir_int64_t param_value = 0;
         struct kefir_ir_inline_assembly_parameter *ir_inline_asm_param = NULL;
 
@@ -181,14 +240,43 @@ static kefir_result_t translate_inputs(struct kefir_mem *mem, const struct kefir
         }
         REQUIRE_OK(match_constraints(constraint_str, &immediate_constraint, &register_constraint, &memory_constraint,
                                      &node->source_location));
+
         if (immediate_constraint && param->parameter->properties.expression_props.constant_expression) {
             struct kefir_ast_constant_expression_value value;
             REQUIRE_OK(
                 kefir_ast_constant_expression_value_evaluate(mem, context->ast_context, param->parameter, &value));
-            if (value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER) {
+            if (value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER ||
+                value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT) {
+                imm_type = KEFIR_IR_INLINE_ASSEMBLY_IMMEDIATE_IDENTIFIER_BASED;
                 param_value = value.integer;
-                klass = KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_IMMEDIATE;
+            } else if (value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS) {
+                switch (value.pointer.type) {
+                    case KEFIR_AST_CONSTANT_EXPRESSION_POINTER_IDENTIFER:
+                        imm_type = KEFIR_IR_INLINE_ASSEMBLY_IMMEDIATE_IDENTIFIER_BASED;
+                        REQUIRE_OK(translate_pointer_to_identifier(&value, &imm_identifier_base, &param_value,
+                                                                   &inline_asm->base.source_location));
+                        break;
+
+                    case KEFIR_AST_CONSTANT_EXPRESSION_POINTER_INTEGER:
+                        imm_type = KEFIR_IR_INLINE_ASSEMBLY_IMMEDIATE_IDENTIFIER_BASED;
+                        param_value = value.pointer.base.integral + value.pointer.offset;
+                        break;
+
+                    case KEFIR_AST_CONSTANT_EXPRESSION_POINTER_LITERAL: {
+                        imm_type = KEFIR_IR_INLINE_ASSEMBLY_IMMEDIATE_LITERAL_BASED;
+                        kefir_id_t id;
+                        REQUIRE_OK(kefir_ir_module_string_literal(
+                            mem, context->module, StringLiteralTypes[value.pointer.base.string.type], true,
+                            value.pointer.base.string.content, value.pointer.base.string.length, &id));
+                        imm_literal_base = id;
+                        param_value = value.pointer.offset;
+                    } break;
+                }
+            } else {
+                return KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &inline_asm->base.source_location,
+                                              "Unexpected immediate inline assembly parameter type");
             }
+            klass = KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_IMMEDIATE;
         }
 
         if (klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ) {
@@ -231,10 +319,14 @@ static kefir_result_t translate_inputs(struct kefir_mem *mem, const struct kefir
         });
         REQUIRE_OK(KEFIR_IRBUILDER_TYPE_FREE(&ir_type_builder));
 
-        if (ir_inline_asm_param == NULL) {
+        if (ir_inline_asm_param == NULL && klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ) {
             REQUIRE_OK(kefir_ir_inline_assembly_add_parameter(mem, context->ast_context->symbols, ir_inline_asm, name,
                                                               klass, constraint, ir_type, 0, param_value,
                                                               &ir_inline_asm_param));
+        } else if (ir_inline_asm_param == NULL && klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_IMMEDIATE) {
+            REQUIRE_OK(kefir_ir_inline_assembly_add_immediate_parameter(
+                mem, context->ast_context->symbols, ir_inline_asm, name, ir_type, 0, imm_type, imm_identifier_base,
+                imm_literal_base, param_value, &ir_inline_asm_param));
         } else {
             REQUIRE(klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ &&
                         constraint == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_REGISTER,
@@ -295,7 +387,7 @@ kefir_result_t kefir_ast_translate_inline_assembly(struct kefir_mem *mem, const 
 
             if (strchr(param->constraint, 'i') != NULL &&
                 param->parameter->properties.expression_props.constant_expression &&
-                KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(param_type)) {
+                KEFIR_AST_TYPE_IS_SCALAR_TYPE(param_type)) {
                 continue;
             }
 

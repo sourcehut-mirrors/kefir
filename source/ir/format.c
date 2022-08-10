@@ -863,6 +863,20 @@ static kefir_result_t format_inline_assembly_fragment(struct kefir_json_output *
 
             case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_IMMEDIATE:
                 REQUIRE_OK(kefir_json_output_string(json, "immediate"));
+                REQUIRE_OK(kefir_json_output_string(json, "type"));
+                if (param->immediate_type == KEFIR_IR_INLINE_ASSEMBLY_IMMEDIATE_IDENTIFIER_BASED) {
+                    REQUIRE_OK(kefir_json_output_string(json, "identifier_based"));
+                    REQUIRE_OK(kefir_json_output_object_key(json, "base"));
+                    if (param->immediate_identifier_base != NULL) {
+                        REQUIRE_OK(kefir_json_output_string(json, param->immediate_identifier_base));
+                    } else {
+                        REQUIRE_OK(kefir_json_output_null(json));
+                    }
+                } else {
+                    REQUIRE_OK(kefir_json_output_string(json, "literal_based"));
+                    REQUIRE_OK(kefir_json_output_object_key(json, "base"));
+                    REQUIRE_OK(kefir_json_output_uinteger(json, param->immediate_literal_base));
+                }
                 REQUIRE_OK(kefir_json_output_object_key(json, "value"));
                 REQUIRE_OK(kefir_json_output_uinteger(json, param->immediate_value));
                 break;

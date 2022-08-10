@@ -38,10 +38,16 @@ typedef enum kefir_ir_inline_assembly_parameter_class {
 } kefir_ir_inline_assembly_parameter_class_t;
 
 typedef enum kefir_ir_inline_assembly_parameter_constraint {
+    KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_NONE,
     KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_REGISTER,
     KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_MEMORY,
     KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_REGISTER_MEMORY
 } kefir_ir_inline_assembly_parameter_constraint_t;
+
+typedef enum kefir_ir_inline_assembly_immediate_type {
+    KEFIR_IR_INLINE_ASSEMBLY_IMMEDIATE_IDENTIFIER_BASED,
+    KEFIR_IR_INLINE_ASSEMBLY_IMMEDIATE_LITERAL_BASED
+} kefir_ir_inline_assembly_immediate_type_t;
 
 typedef struct kefir_ir_inline_assembly_parameter {
     kefir_id_t parameter_id;
@@ -56,10 +62,19 @@ typedef struct kefir_ir_inline_assembly_parameter {
         kefir_size_t index;
     } type;
     kefir_ir_inline_assembly_parameter_constraint_t constraint;
-    struct {
-        kefir_size_t read_index;
-        kefir_size_t load_store_index;
-        kefir_int64_t immediate_value;
+    union {
+        struct {
+            kefir_size_t read_index;
+            kefir_size_t load_store_index;
+        };
+        struct {
+            kefir_ir_inline_assembly_immediate_type_t immediate_type;
+            union {
+                const char *immediate_identifier_base;
+                kefir_id_t immediate_literal_base;
+            };
+            kefir_int64_t immediate_value;
+        };
     };
 } kefir_ir_inline_assembly_parameter_t;
 
@@ -88,11 +103,17 @@ kefir_result_t kefir_ir_inline_assembly_add_parameter(struct kefir_mem *, struct
                                                       struct kefir_ir_inline_assembly *, const char *,
                                                       kefir_ir_inline_assembly_parameter_class_t,
                                                       kefir_ir_inline_assembly_parameter_constraint_t,
-                                                      const struct kefir_ir_type *, kefir_size_t, kefir_int64_t,
+                                                      const struct kefir_ir_type *, kefir_size_t, kefir_size_t,
                                                       struct kefir_ir_inline_assembly_parameter **);
 kefir_result_t kefir_ir_inline_assembly_add_parameter_alias(struct kefir_mem *, struct kefir_symbol_table *,
                                                             struct kefir_ir_inline_assembly *,
                                                             struct kefir_ir_inline_assembly_parameter *, const char *);
+kefir_result_t kefir_ir_inline_assembly_add_immediate_parameter(struct kefir_mem *, struct kefir_symbol_table *,
+                                                                struct kefir_ir_inline_assembly *, const char *,
+                                                                const struct kefir_ir_type *, kefir_size_t,
+                                                                kefir_ir_inline_assembly_immediate_type_t, const char *,
+                                                                kefir_id_t, kefir_int64_t,
+                                                                struct kefir_ir_inline_assembly_parameter **);
 kefir_result_t kefir_ir_inline_assembly_parameter_read_from(struct kefir_mem *, struct kefir_ir_inline_assembly *,
                                                             struct kefir_ir_inline_assembly_parameter *,
                                                             const struct kefir_ir_type *, kefir_size_t, kefir_size_t);
