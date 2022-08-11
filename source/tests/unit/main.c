@@ -23,6 +23,8 @@
 #include "kefir/test/unit_test.h"
 #include <assert.h>
 
+DECLARE_CASE(core_hashtree1);
+
 DECLARE_CASE(amd64_sysv_abi_data_test1);
 DECLARE_CASE(amd64_sysv_abi_data_test2);
 DECLARE_CASE(amd64_sysv_abi_data_test3);
@@ -471,16 +473,20 @@ DECLARE_CASE(cli_options3);
 DECLARE_CASE(cli_options4);
 
 TEST_SUITE(
-    mainSuite, &amd64_sysv_abi_data_test1, &amd64_sysv_abi_data_test2, &amd64_sysv_abi_data_test3,
-    &amd64_sysv_abi_data_test4, &amd64_sysv_abi_data_test5, &amd64_sysv_abi_data_test6, &amd64_sysv_abi_data_test7,
-    &amd64_sysv_abi_data_test8, &amd64_sysv_abi_data_test9, &amd64_sysv_abi_classification_test1,
-    &amd64_sysv_abi_classification_test2, &amd64_sysv_abi_classification_test3, &amd64_sysv_abi_classification_test4,
-    &amd64_sysv_abi_classification_test5, &amd64_sysv_abi_classification_test6, &amd64_sysv_abi_classification_test7,
-    &amd64_sysv_abi_classification_test8, &amd64_sysv_abi_classification_test9, &amd64_sysv_abi_classification_test10,
-    &amd64_sysv_abi_classification_test11, &amd64_sysv_abi_classification_test12, &amd64_sysv_abi_classification_test13,
-    &amd64_sysv_abi_classification_test14, &amd64_sysv_abi_classification_test15, &amd64_sysv_abi_allocation_test1,
-    &amd64_sysv_abi_allocation_test2, &amd64_sysv_abi_allocation_test3, &amd64_sysv_abi_allocation_test4,
-    &amd64_sysv_abi_allocation_test5, &amd64_sysv_abi_allocation_test6,
+    mainSuite,
+
+    &core_hashtree1,
+
+    &amd64_sysv_abi_data_test1, &amd64_sysv_abi_data_test2, &amd64_sysv_abi_data_test3, &amd64_sysv_abi_data_test4,
+    &amd64_sysv_abi_data_test5, &amd64_sysv_abi_data_test6, &amd64_sysv_abi_data_test7, &amd64_sysv_abi_data_test8,
+    &amd64_sysv_abi_data_test9, &amd64_sysv_abi_classification_test1, &amd64_sysv_abi_classification_test2,
+    &amd64_sysv_abi_classification_test3, &amd64_sysv_abi_classification_test4, &amd64_sysv_abi_classification_test5,
+    &amd64_sysv_abi_classification_test6, &amd64_sysv_abi_classification_test7, &amd64_sysv_abi_classification_test8,
+    &amd64_sysv_abi_classification_test9, &amd64_sysv_abi_classification_test10, &amd64_sysv_abi_classification_test11,
+    &amd64_sysv_abi_classification_test12, &amd64_sysv_abi_classification_test13, &amd64_sysv_abi_classification_test14,
+    &amd64_sysv_abi_classification_test15, &amd64_sysv_abi_allocation_test1, &amd64_sysv_abi_allocation_test2,
+    &amd64_sysv_abi_allocation_test3, &amd64_sysv_abi_allocation_test4, &amd64_sysv_abi_allocation_test5,
+    &amd64_sysv_abi_allocation_test6,
 
     &ast_type_analysis_integer_promotion1, &ast_type_analysis_bitfield_promotion1,
     &ast_type_analysis_arithmetic_conversion1, &ast_type_analysis_arithmetic_conversion2,
