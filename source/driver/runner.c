@@ -159,6 +159,10 @@ static kefir_result_t build_predefined_macros(struct kefir_mem *mem,
         if (raw_value != NULL) {
             res = kefir_compiler_preprocessor_tokenize(mem, compiler, &macro->replacement, raw_value, strlen(raw_value),
                                                        identifier);
+        } else {
+            struct kefir_token token;
+            res = kefir_token_new_constant_int(1, &token);
+            REQUIRE_CHAIN(&res, kefir_token_buffer_emplace(mem, &macro->replacement, &token));
         }
         REQUIRE_CHAIN(
             &res, kefir_preprocessor_user_macro_scope_insert(mem, &compiler->preprocessor_context.user_macros, macro));
