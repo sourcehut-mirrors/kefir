@@ -90,7 +90,7 @@ static kefir_result_t define_temporaries(struct kefir_mem *mem, struct kefir_ast
         REQUIRE(res == KEFIR_NOT_FOUND, res);
         scoped_id = kefir_ast_context_allocate_scoped_object_identifier(
             mem, type, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO, NULL, KEFIR_AST_SCOPED_IDENTIFIER_NONE_LINKAGE, false,
-            NULL, NULL);
+            NULL, NULL, location);
         REQUIRE(scoped_id != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocted AST scoped identifier"));
         res = kefir_list_insert_after(mem, &context->identifiers, kefir_list_tail(&context->identifiers), scoped_id);
         REQUIRE_ELSE(res == KEFIR_OK, {
@@ -281,7 +281,7 @@ kefir_result_t context_reference_label(struct kefir_mem *mem, const struct kefir
     if (parent != NULL) {
         REQUIRE_OK(kefir_ast_local_context_define_label(mem, local_ctx, label, parent, location, scoped_id));
     } else {
-        REQUIRE_OK(kefir_ast_local_context_reference_label(mem, local_ctx, label, scoped_id));
+        REQUIRE_OK(kefir_ast_local_context_reference_label(mem, local_ctx, label, location, scoped_id));
     }
     return KEFIR_OK;
 }
@@ -562,8 +562,8 @@ kefir_result_t kefir_ast_local_context_declare_external(struct kefir_mem *mem, s
         REQUIRE(res == KEFIR_NOT_FOUND, res);
         struct kefir_ast_scoped_identifier *ordinary_id = kefir_ast_context_allocate_scoped_object_identifier(
             mem, type, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN, alignment,
-            KEFIR_AST_SCOPED_IDENTIFIER_EXTERNAL_LINKAGE, true, NULL,
-            attributes != NULL ? attributes->asm_label : NULL);
+            KEFIR_AST_SCOPED_IDENTIFIER_EXTERNAL_LINKAGE, true, NULL, attributes != NULL ? attributes->asm_label : NULL,
+            location);
         REQUIRE(ordinary_id != NULL,
                 KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocted AST scoped identifier"));
         res =
@@ -645,7 +645,7 @@ kefir_result_t kefir_ast_local_context_declare_external_thread_local(
         REQUIRE(res == KEFIR_NOT_FOUND, res);
         struct kefir_ast_scoped_identifier *ordinary_id = kefir_ast_context_allocate_scoped_object_identifier(
             mem, type, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN_THREAD_LOCAL, alignment,
-            KEFIR_AST_SCOPED_IDENTIFIER_EXTERNAL_LINKAGE, true, NULL, NULL);
+            KEFIR_AST_SCOPED_IDENTIFIER_EXTERNAL_LINKAGE, true, NULL, NULL, location);
         REQUIRE(ordinary_id != NULL,
                 KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocted AST scoped identifier"));
         res =
@@ -697,7 +697,7 @@ kefir_result_t kefir_ast_local_context_define_static(struct kefir_mem *mem, stru
         REQUIRE(res == KEFIR_NOT_FOUND, res);
         scoped_id = kefir_ast_context_allocate_scoped_object_identifier(
             mem, type, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC, alignment, KEFIR_AST_SCOPED_IDENTIFIER_NONE_LINKAGE,
-            false, initializer, NULL);
+            false, initializer, NULL, location);
         REQUIRE(scoped_id != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocted AST scoped identifier"));
         res = kefir_list_insert_after(mem, &context->identifiers, kefir_list_tail(&context->identifiers), scoped_id);
         REQUIRE_ELSE(res == KEFIR_OK, {
@@ -765,7 +765,7 @@ kefir_result_t kefir_ast_local_context_define_static_thread_local(
         REQUIRE(res == KEFIR_NOT_FOUND, res);
         scoped_id = kefir_ast_context_allocate_scoped_object_identifier(
             mem, type, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC_THREAD_LOCAL, alignment,
-            KEFIR_AST_SCOPED_IDENTIFIER_NONE_LINKAGE, false, initializer, NULL);
+            KEFIR_AST_SCOPED_IDENTIFIER_NONE_LINKAGE, false, initializer, NULL, location);
         REQUIRE(scoped_id != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocted AST scoped identifier"));
         res = kefir_list_insert_after(mem, &context->identifiers, kefir_list_tail(&context->identifiers), scoped_id);
         REQUIRE_ELSE(res == KEFIR_OK, {
@@ -870,7 +870,7 @@ kefir_result_t kefir_ast_local_context_define_auto(struct kefir_mem *mem, struct
         REQUIRE(res == KEFIR_NOT_FOUND, res);
         scoped_id = kefir_ast_context_allocate_scoped_object_identifier(
             mem, type, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO, alignment, KEFIR_AST_SCOPED_IDENTIFIER_NONE_LINKAGE,
-            false, initializer, NULL);
+            false, initializer, NULL, location);
         REQUIRE(scoped_id != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocted AST scoped identifier"));
         res = kefir_list_insert_after(mem, &context->identifiers, kefir_list_tail(&context->identifiers), scoped_id);
         REQUIRE_ELSE(res == KEFIR_OK, {
@@ -938,7 +938,7 @@ kefir_result_t kefir_ast_local_context_define_register(struct kefir_mem *mem, st
         REQUIRE(res == KEFIR_NOT_FOUND, res);
         scoped_id = kefir_ast_context_allocate_scoped_object_identifier(
             mem, type, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER, alignment, KEFIR_AST_SCOPED_IDENTIFIER_NONE_LINKAGE,
-            false, initializer, NULL);
+            false, initializer, NULL, location);
         REQUIRE(scoped_id != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocted AST scoped identifier"));
         res = kefir_list_insert_after(mem, &context->identifiers, kefir_list_tail(&context->identifiers), scoped_id);
         REQUIRE_ELSE(res == KEFIR_OK, {
@@ -994,7 +994,7 @@ kefir_result_t kefir_ast_local_context_define_constant(struct kefir_mem *mem, st
         return KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location, "Cannot redefine constant");
     } else {
         REQUIRE(res == KEFIR_NOT_FOUND, res);
-        scoped_id = kefir_ast_context_allocate_scoped_constant(mem, value, type);
+        scoped_id = kefir_ast_context_allocate_scoped_constant(mem, value, type, location);
         REQUIRE(scoped_id != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocted AST scoped identifier"));
         res = kefir_list_insert_after(mem, &context->identifiers, kefir_list_tail(&context->identifiers), scoped_id);
         REQUIRE_ELSE(res == KEFIR_OK, {
@@ -1032,7 +1032,7 @@ kefir_result_t kefir_ast_local_context_define_tag(struct kefir_mem *mem, struct 
         REQUIRE_OK(kefir_ast_context_update_existing_scoped_type_tag(scoped_id, type));
     } else {
         REQUIRE(res == KEFIR_NOT_FOUND, res);
-        scoped_id = kefir_ast_context_allocate_scoped_type_tag(mem, type);
+        scoped_id = kefir_ast_context_allocate_scoped_type_tag(mem, type, location);
         REQUIRE(scoped_id != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocted AST scoped identifier"));
         const char *id = kefir_symbol_table_insert(mem, &context->global->symbols, identifier, NULL);
         REQUIRE(id != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert identifier into symbol table"));
@@ -1071,7 +1071,7 @@ kefir_result_t kefir_ast_local_context_define_type(struct kefir_mem *mem, struct
         REQUIRE_OK(kefir_ast_context_allocate_scoped_type_definition_update_alignment(mem, scoped_id, alignment));
     } else {
         REQUIRE(res == KEFIR_NOT_FOUND, res);
-        scoped_id = kefir_ast_context_allocate_scoped_type_definition(mem, type, alignment);
+        scoped_id = kefir_ast_context_allocate_scoped_type_definition(mem, type, alignment, location);
         REQUIRE(scoped_id != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocted AST scoped identifier"));
         res = kefir_list_insert_after(mem, &context->identifiers, kefir_list_tail(&context->identifiers), scoped_id);
         REQUIRE_ELSE(res == KEFIR_OK, {
@@ -1162,7 +1162,7 @@ kefir_result_t kefir_ast_local_context_declare_function(struct kefir_mem *mem, s
         struct kefir_ast_scoped_identifier *ordinary_id = kefir_ast_context_allocate_scoped_function_identifier(
             mem, function, specifier, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN, true, false,
             !external_visibility && kefir_ast_function_specifier_is_inline(specifier),
-            attributes != NULL ? attributes->asm_label : NULL);
+            attributes != NULL ? attributes->asm_label : NULL, location);
         REQUIRE(ordinary_id != NULL,
                 KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocte AST scoped identifier"));
         res = kefir_ast_identifier_flat_scope_insert(mem, &context->global->function_identifiers, identifier,
@@ -1179,7 +1179,7 @@ kefir_result_t kefir_ast_local_context_declare_function(struct kefir_mem *mem, s
 }
 
 kefir_result_t kefir_ast_local_context_reference_label(struct kefir_mem *mem, struct kefir_ast_local_context *context,
-                                                       const char *label,
+                                                       const char *label, const struct kefir_source_location *location,
                                                        const struct kefir_ast_scoped_identifier **scoped_id) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST local context"));
@@ -1191,7 +1191,7 @@ kefir_result_t kefir_ast_local_context_reference_label(struct kefir_mem *mem, st
     struct kefir_ast_scoped_identifier *label_id = NULL;
     kefir_result_t res = kefir_ast_identifier_flat_scope_at(&context->label_scope, label, &label_id);
     if (res == KEFIR_NOT_FOUND) {
-        label_id = kefir_ast_context_allocate_scoped_label(mem, NULL);
+        label_id = kefir_ast_context_allocate_scoped_label(mem, NULL, location);
         REQUIRE(label_id != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST scoped identifier"));
         res = kefir_ast_identifier_flat_scope_insert(mem, &context->label_scope, label, label_id);
         REQUIRE_ELSE(res == KEFIR_OK, {
@@ -1221,7 +1221,7 @@ kefir_result_t kefir_ast_local_context_define_label(struct kefir_mem *mem, struc
     struct kefir_ast_scoped_identifier *label_id = NULL;
     kefir_result_t res = kefir_ast_identifier_flat_scope_at(&context->label_scope, label, &label_id);
     if (res == KEFIR_NOT_FOUND) {
-        label_id = kefir_ast_context_allocate_scoped_label(mem, parent);
+        label_id = kefir_ast_context_allocate_scoped_label(mem, parent, location);
         REQUIRE(label_id != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST scoped identifier"));
         res = kefir_ast_identifier_flat_scope_insert(mem, &context->label_scope, label, label_id);
         REQUIRE_ELSE(res == KEFIR_OK, {

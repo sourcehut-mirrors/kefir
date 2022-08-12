@@ -284,17 +284,16 @@ static kefir_result_t translate_global_scoped_identifier_function(
     struct kefir_mem *mem, const struct kefir_ast_context *context, struct kefir_ir_module *module,
     struct kefir_ast_type_bundle *type_bundle, const struct kefir_ast_type_traits *type_traits, const char *identifier,
     const struct kefir_ast_scoped_identifier *scoped_identifier,
-    struct kefir_ast_translator_global_scope_layout *layout, const struct kefir_ast_translator_environment *env,
-    const struct kefir_source_location *source_location) {
+    struct kefir_ast_translator_global_scope_layout *layout, const struct kefir_ast_translator_environment *env) {
     ASSIGN_DECL_CAST(struct kefir_ast_translator_scoped_identifier_function *, scoped_identifier_func,
                      scoped_identifier->payload.ptr);
     KEFIR_AST_SCOPE_SET_CLEANUP(scoped_identifier, kefir_ast_translator_scoped_identifer_payload_free, NULL);
 
     const struct kefir_ast_type *function_type = NULL;
     REQUIRE_OK(kefir_ast_type_completion(mem, context, &function_type, scoped_identifier->function.type));
-    REQUIRE_OK(kefir_ast_translator_function_declaration_init(mem, context, env, type_bundle, type_traits, module,
-                                                              identifier, function_type, NULL,
-                                                              &scoped_identifier_func->declaration, source_location));
+    REQUIRE_OK(kefir_ast_translator_function_declaration_init(
+        mem, context, env, type_bundle, type_traits, module, identifier, function_type, NULL,
+        &scoped_identifier_func->declaration, &scoped_identifier->source_location));
 
     switch (scoped_identifier->function.storage) {
         case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN:
@@ -317,18 +316,16 @@ static kefir_result_t translate_global_scoped_identifier(
     struct kefir_mem *mem, const struct kefir_ast_context *context, struct kefir_ir_module *module,
     struct kefir_ast_type_bundle *type_bundle, const struct kefir_ast_type_traits *type_traits, const char *identifier,
     const struct kefir_ast_scoped_identifier *scoped_identifier,
-    struct kefir_ast_translator_global_scope_layout *layout, const struct kefir_ast_translator_environment *env,
-    const struct kefir_source_location *source_location) {
+    struct kefir_ast_translator_global_scope_layout *layout, const struct kefir_ast_translator_environment *env) {
     switch (scoped_identifier->klass) {
         case KEFIR_AST_SCOPE_IDENTIFIER_OBJECT:
             REQUIRE_OK(translate_global_scoped_identifier_object(mem, context, module, identifier, scoped_identifier,
-                                                                 layout, env, source_location));
+                                                                 layout, env, &scoped_identifier->source_location));
             break;
 
         case KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION:
             REQUIRE_OK(translate_global_scoped_identifier_function(mem, context, module, type_bundle, type_traits,
-                                                                   identifier, scoped_identifier, layout, env,
-                                                                   source_location));
+                                                                   identifier, scoped_identifier, layout, env));
             break;
 
         case KEFIR_AST_SCOPE_IDENTIFIER_ENUM_CONSTANT:
@@ -361,8 +358,7 @@ kefir_result_t kefir_ast_translator_build_global_scope_layout(struct kefir_mem *
     for (res = kefir_ast_identifier_flat_scope_iter(&context->object_identifiers, &iter); res == KEFIR_OK;
          res = kefir_ast_identifier_flat_scope_next(&context->object_identifiers, &iter)) {
         REQUIRE_OK(translate_global_scoped_identifier(mem, &context->context, module, &context->type_bundle,
-                                                      context->type_traits, iter.identifier, iter.value, layout, env,
-                                                      NULL));
+                                                      context->type_traits, iter.identifier, iter.value, layout, env));
     }
     REQUIRE(res == KEFIR_ITERATOR_END, res);
 
@@ -370,7 +366,7 @@ kefir_result_t kefir_ast_translator_build_global_scope_layout(struct kefir_mem *
          res = kefir_ast_identifier_flat_scope_next(&context->function_identifiers, &iter)) {
         REQUIRE_OK(translate_global_scoped_identifier_function(mem, &context->context, module, &context->type_bundle,
                                                                context->type_traits, iter.identifier, iter.value,
-                                                               layout, env, NULL));
+                                                               layout, env));
     }
     REQUIRE(res == KEFIR_ITERATOR_END, res);
     return KEFIR_OK;

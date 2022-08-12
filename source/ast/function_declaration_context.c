@@ -90,7 +90,7 @@ static kefir_result_t scoped_context_define_identifier(struct kefir_mem *mem,
         } else {
             REQUIRE(res == KEFIR_NOT_FOUND, res);
             scoped_id = kefir_ast_context_allocate_scoped_object_identifier(
-                mem, type, storage_class, NULL, KEFIR_AST_SCOPED_IDENTIFIER_NONE_LINKAGE, false, NULL, NULL);
+                mem, type, storage_class, NULL, KEFIR_AST_SCOPED_IDENTIFIER_NONE_LINKAGE, false, NULL, NULL, location);
             REQUIRE(scoped_id != NULL,
                     KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocted AST scoped identifier"));
 
@@ -126,7 +126,7 @@ static kefir_result_t scoped_context_define_constant(struct kefir_mem *mem,
             return KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location, "Cannot redefine constant");
         } else {
             REQUIRE(res == KEFIR_NOT_FOUND, res);
-            scoped_id = kefir_ast_context_allocate_scoped_constant(mem, value, type);
+            scoped_id = kefir_ast_context_allocate_scoped_constant(mem, value, type, location);
             REQUIRE(scoped_id != NULL,
                     KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocted AST scoped identifier"));
 
@@ -162,7 +162,7 @@ static kefir_result_t scoped_context_define_tag(struct kefir_mem *mem,
             REQUIRE_OK(kefir_ast_context_update_existing_scoped_type_tag(scoped_id, type));
         } else {
             REQUIRE(res == KEFIR_NOT_FOUND, res);
-            scoped_id = kefir_ast_context_allocate_scoped_type_tag(mem, type);
+            scoped_id = kefir_ast_context_allocate_scoped_type_tag(mem, type, location);
             REQUIRE(scoped_id != NULL,
                     KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocted AST scoped identifier"));
             const char *id = kefir_symbol_table_insert(mem, context->parent->symbols, identifier, NULL);
