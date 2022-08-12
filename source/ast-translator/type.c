@@ -24,11 +24,13 @@
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 
-kefir_result_t kefir_ast_translator_type_new(struct kefir_mem *mem, const struct kefir_ast_translator_environment *env,
+kefir_result_t kefir_ast_translator_type_new(struct kefir_mem *mem, const struct kefir_ast_context *context,
+                                             const struct kefir_ast_translator_environment *env,
                                              struct kefir_ir_module *module, const struct kefir_ast_type *type,
-                                             kefir_size_t alignment,
-                                             struct kefir_ast_translator_type **translator_type) {
+                                             kefir_size_t alignment, struct kefir_ast_translator_type **translator_type,
+                                             const struct kefir_source_location *source_location) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST context"));
     REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type"));
     REQUIRE(env != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST translator environment"));
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR module"));
@@ -49,7 +51,8 @@ kefir_result_t kefir_ast_translator_type_new(struct kefir_mem *mem, const struct
         return res;
     });
 
-    res = kefir_ast_translate_object_type(mem, type, alignment, env, &type_builder, &tr_type->object.layout);
+    res = kefir_ast_translate_object_type(mem, context, type, alignment, env, &type_builder, &tr_type->object.layout,
+                                          source_location);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_IRBUILDER_TYPE_FREE(&type_builder);
         KEFIR_FREE(mem, tr_type);

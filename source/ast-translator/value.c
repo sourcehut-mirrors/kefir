@@ -76,8 +76,8 @@ static kefir_result_t resolve_bitfield_layout(struct kefir_mem *mem, struct kefi
         REQUIRE_OK(kefir_ast_type_completion(mem, context->ast_context, &structure_type, structure_type));
     }
 
-    REQUIRE_OK(
-        kefir_ast_translator_type_new(mem, context->environment, context->module, structure_type, 0, translator_type));
+    REQUIRE_OK(kefir_ast_translator_type_new(mem, context->ast_context, context->environment, context->module,
+                                             structure_type, 0, translator_type, &node->base.source_location));
 
     struct kefir_ast_designator designator = {
         .type = KEFIR_AST_DESIGNATOR_MEMBER, .member = node->member, .next = NULL};
@@ -187,7 +187,8 @@ kefir_result_t kefir_ast_translator_store_layout_value(struct kefir_mem *mem,
                                                        struct kefir_ast_translator_context *context,
                                                        struct kefir_irbuilder_block *builder,
                                                        const struct kefir_ir_type *ir_type,
-                                                       struct kefir_ast_type_layout *layout) {
+                                                       struct kefir_ast_type_layout *layout,
+                                                       const struct kefir_source_location *source_location) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST translator context"));
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR block builder"));
@@ -197,7 +198,7 @@ kefir_result_t kefir_ast_translator_store_layout_value(struct kefir_mem *mem,
     if (layout->bitfield) {
         REQUIRE_OK(store_bitfield(builder, ir_type, layout));
     } else {
-        REQUIRE_OK(kefir_ast_translator_store_value(mem, layout->type, context, builder));
+        REQUIRE_OK(kefir_ast_translator_store_value(mem, layout->type, context, builder, source_location));
     }
     return KEFIR_OK;
 }
@@ -221,8 +222,9 @@ kefir_result_t kefir_ast_translator_store_lvalue(struct kefir_mem *mem, struct k
             KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Expected bit-field node to be a direct/indirect structure member"));
 
         REQUIRE_OK(resolve_bitfield_layout(mem, context, struct_member, &translator_type, &member_layout));
-        REQUIRE_CHAIN(&res, kefir_ast_translator_store_layout_value(mem, context, builder,
-                                                                    translator_type->object.ir_type, member_layout));
+        REQUIRE_CHAIN(&res,
+                      kefir_ast_translator_store_layout_value(mem, context, builder, translator_type->object.ir_type,
+                                                              member_layout, &node->source_location));
 
         REQUIRE_ELSE(res == KEFIR_OK, {
             kefir_ast_translator_type_free(mem, translator_type);
@@ -230,7 +232,8 @@ kefir_result_t kefir_ast_translator_store_lvalue(struct kefir_mem *mem, struct k
         });
         REQUIRE_OK(kefir_ast_translator_type_free(mem, translator_type));
     } else {
-        REQUIRE_OK(kefir_ast_translator_store_value(mem, node->properties.type, context, builder));
+        REQUIRE_OK(
+            kefir_ast_translator_store_value(mem, node->properties.type, context, builder, &node->source_location));
     }
     return KEFIR_OK;
 }
@@ -316,7 +319,8 @@ kefir_result_t kefir_ast_translator_load_value(const struct kefir_ast_type *type
 
 kefir_result_t kefir_ast_translator_store_value(struct kefir_mem *mem, const struct kefir_ast_type *type,
                                                 struct kefir_ast_translator_context *context,
-                                                struct kefir_irbuilder_block *builder) {
+                                                struct kefir_irbuilder_block *builder,
+                                                const struct kefir_source_location *source_location) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST translator context"));
@@ -366,8 +370,8 @@ kefir_result_t kefir_ast_translator_store_value(struct kefir_mem *mem, const str
         case KEFIR_AST_TYPE_UNION:
         case KEFIR_AST_TYPE_ARRAY: {
             struct kefir_ast_translator_type *translator_type = NULL;
-            REQUIRE_OK(
-                kefir_ast_translator_type_new(mem, context->environment, context->module, type, 0, &translator_type));
+            REQUIRE_OK(kefir_ast_translator_type_new(mem, context->ast_context, context->environment, context->module,
+                                                     type, 0, &translator_type, source_location));
 
             kefir_result_t res =
                 KEFIR_IRBUILDER_BLOCK_APPENDU32(builder, KEFIR_IROPCODE_BCOPY, translator_type->object.ir_type_id,

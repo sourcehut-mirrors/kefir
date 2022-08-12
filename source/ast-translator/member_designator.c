@@ -108,8 +108,8 @@ kefir_result_t kefir_ast_translate_member_designator(struct kefir_mem *mem, cons
         return res;
     });
 
-    res = kefir_ast_translate_object_type(mem, type, KEFIR_AST_DEFAULT_ALIGNMENT, context->environment, &ir_builder,
-                                          &layout);
+    res = kefir_ast_translate_object_type(mem, context->ast_context, type, KEFIR_AST_DEFAULT_ALIGNMENT,
+                                          context->environment, &ir_builder, &layout, &base->source_location);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_IRBUILDER_TYPE_FREE(&ir_builder);
         kefir_ir_type_free(mem, &ir_type);

@@ -91,7 +91,8 @@ DEFINE_CASE(ast_bitfield_translator1, "AST translator - bitfields #1") {
     struct kefir_ast_type_layout *layout1 = NULL;
     ASSERT_OK(kefir_ir_type_alloc(&kft_mem, 0, &ir_type1));
     ASSERT_OK(kefir_irbuilder_type_init(&kft_mem, &type_builder, &ir_type1));
-    ASSERT_OK(kefir_ast_translate_object_type(&kft_mem, type1, 0, &env, &type_builder, &layout1));
+    ASSERT_OK(kefir_ast_translate_object_type(&kft_mem, &global_context.context, type1, 0, &env, &type_builder,
+                                              &layout1, NULL));
 
 #define ASSERT_MEMBER(_id, _pos, _width, _offset)                                                   \
     do {                                                                                            \
@@ -172,7 +173,8 @@ DEFINE_CASE(ast_bitfield_translator2, "AST translator - bitfields #2") {
     struct kefir_ast_type_layout *layout1 = NULL;
     ASSERT_OK(kefir_ir_type_alloc(&kft_mem, 0, &ir_type1));
     ASSERT_OK(kefir_irbuilder_type_init(&kft_mem, &type_builder, &ir_type1));
-    ASSERT_OK(kefir_ast_translate_object_type(&kft_mem, type1, 0, &env, &type_builder, &layout1));
+    ASSERT_OK(kefir_ast_translate_object_type(&kft_mem, &global_context.context, type1, 0, &env, &type_builder,
+                                              &layout1, NULL));
 
 #define ASSERT_MEMBER(_id, _pos, _width, _offset)                                                   \
     do {                                                                                            \
@@ -245,7 +247,8 @@ DEFINE_CASE(ast_bitfield_translator3, "AST translator - bitfields #3") {
     struct kefir_ast_type_layout *layout1 = NULL;
     ASSERT_OK(kefir_ir_type_alloc(&kft_mem, 0, &ir_type1));
     ASSERT_OK(kefir_irbuilder_type_init(&kft_mem, &type_builder, &ir_type1));
-    ASSERT_OK(kefir_ast_translate_object_type(&kft_mem, type1, 0, &env, &type_builder, &layout1));
+    ASSERT_OK(kefir_ast_translate_object_type(&kft_mem, &global_context.context, type1, 0, &env, &type_builder,
+                                              &layout1, NULL));
 
 #define ASSERT_MEMBER(_id, _pos, _width, _offset)                                                   \
     do {                                                                                            \
@@ -314,7 +317,8 @@ DEFINE_CASE(ast_bitfield_translator4, "AST translator - union bitfields #1") {
     struct kefir_ast_type_layout *layout1 = NULL;
     ASSERT_OK(kefir_ir_type_alloc(&kft_mem, 0, &ir_type1));
     ASSERT_OK(kefir_irbuilder_type_init(&kft_mem, &type_builder, &ir_type1));
-    ASSERT_OK(kefir_ast_translate_object_type(&kft_mem, type1, 0, &env, &type_builder, &layout1));
+    ASSERT_OK(kefir_ast_translate_object_type(&kft_mem, &global_context.context, type1, 0, &env, &type_builder,
+                                              &layout1, NULL));
 
 #define ASSERT_MEMBER(_id, _pos, _width, _offset)                                                   \
     do {                                                                                            \
@@ -397,7 +401,8 @@ DEFINE_CASE(ast_bitfield_translator5, "AST translator - bitfields alignments #1"
     struct kefir_ast_type_layout *layout1 = NULL;
     ASSERT_OK(kefir_ir_type_alloc(&kft_mem, 0, &ir_type1));
     ASSERT_OK(kefir_irbuilder_type_init(&kft_mem, &type_builder, &ir_type1));
-    ASSERT_OK(kefir_ast_translate_object_type(&kft_mem, type1, 0, &env, &type_builder, &layout1));
+    ASSERT_OK(kefir_ast_translate_object_type(&kft_mem, &global_context.context, type1, 0, &env, &type_builder,
+                                              &layout1, NULL));
 
 #define ASSERT_MEMBER(_id, _pos, _width, _offset)                                                   \
     do {                                                                                            \

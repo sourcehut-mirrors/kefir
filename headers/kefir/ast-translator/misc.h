@@ -25,9 +25,11 @@
 #include "kefir/ir/builder.h"
 
 kefir_result_t kefir_ast_translate_sizeof(struct kefir_mem *, struct kefir_ast_translator_context *,
-                                          struct kefir_irbuilder_block *, const struct kefir_ast_type *);
+                                          struct kefir_irbuilder_block *, const struct kefir_ast_type *,
+                                          const struct kefir_source_location *);
 kefir_result_t kefir_ast_translate_alignof(struct kefir_mem *, struct kefir_ast_translator_context *,
-                                           struct kefir_irbuilder_block *, const struct kefir_ast_type *);
+                                           struct kefir_irbuilder_block *, const struct kefir_ast_type *,
+                                           const struct kefir_source_location *);
 kefir_result_t kefir_ast_translator_resolve_type_layout(struct kefir_irbuilder_block *, kefir_id_t,
                                                         const struct kefir_ast_type_layout *,
                                                         const struct kefir_ast_type_layout *);

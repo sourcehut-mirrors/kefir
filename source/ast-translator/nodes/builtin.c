@@ -73,8 +73,9 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
 
             struct kefir_ir_type *va_type = kefir_ir_module_new_type(mem, context->module, 0, &va_type_id);
             REQUIRE_OK(kefir_irbuilder_type_init(mem, &type_builder, va_type));
-            kefir_result_t res = kefir_ast_translate_object_type(mem, type_arg->properties.type, 0,
-                                                                 context->environment, &type_builder, &type_layout);
+            kefir_result_t res = kefir_ast_translate_object_type(mem, context->ast_context, type_arg->properties.type,
+                                                                 0, context->environment, &type_builder, &type_layout,
+                                                                 &node->base.source_location);
             REQUIRE_ELSE(res == KEFIR_OK, {
                 KEFIR_IRBUILDER_TYPE_FREE(&type_builder);
                 return res;

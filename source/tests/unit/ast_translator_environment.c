@@ -21,6 +21,7 @@
 #include "kefir/test/unit_test.h"
 #include "kefir/test/util.h"
 #include "kefir/ast/type.h"
+#include "kefir/ast/global_context.h"
 
 #define ASSERT_DESIGNATOR_OFFSET(_mem, _env, _type, _designator, _size, _alignment, _offset, _max_bitfield)   \
     do {                                                                                                      \
@@ -40,10 +41,13 @@ DEFINE_CASE(ast_translator_environment1, "AST translator - environment object in
     struct kefir_symbol_table symbols;
     struct kefir_ast_type_bundle type_bundle;
     struct kefir_ast_translator_environment env;
+    struct kefir_ast_global_context global_context;
 
     ASSERT_OK(kefir_symbol_table_init(&symbols));
     ASSERT_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
     ASSERT_OK(kefir_ast_translator_environment_init(&env, kft_util_get_ir_target_platform()));
+    REQUIRE_OK(kefir_ast_global_context_init(&kft_mem, kefir_util_default_type_traits(), &env.target_env,
+                                             &global_context, NULL));
 
     struct kefir_ast_struct_type *struct1_type = NULL;
     const struct kefir_ast_type *type1 = kefir_ast_type_structure(&kft_mem, &type_bundle, "", &struct1_type);
@@ -65,7 +69,8 @@ DEFINE_CASE(ast_translator_environment1, "AST translator - environment object in
     ASSERT_OK(kefir_ast_struct_type_field(&kft_mem, &symbols, struct2_type, "field3", type1, NULL));
 
     kefir_ast_target_environment_opaque_type_t opaque_type;
-    ASSERT_OK(KEFIR_AST_TARGET_ENVIRONMENT_GET_TYPE(&kft_mem, &env.target_env, type2, &opaque_type));
+    ASSERT_OK(KEFIR_AST_TARGET_ENVIRONMENT_GET_TYPE(&kft_mem, &global_context.context, &env.target_env, type2,
+                                                    &opaque_type, NULL));
 
     ASSERT_DESIGNATOR_OFFSET(&kft_mem, &env.target_env, opaque_type, NULL, 96, 8, 0, 0);
 
@@ -124,6 +129,7 @@ DEFINE_CASE(ast_translator_environment1, "AST translator - environment object in
 
     ASSERT_OK(KEFIR_AST_TARGET_ENVIRONMENT_FREE_TYPE(&kft_mem, &env.target_env, opaque_type));
 
+    REQUIRE_OK(kefir_ast_global_context_free(&kft_mem, &global_context));
     ASSERT_OK(kefir_ast_type_bundle_free(&kft_mem, &type_bundle));
     ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
 }
@@ -131,59 +137,71 @@ END_CASE
 
 #undef ASSERT_DESIGNATOR_OFFSET
 
-#define ASSERT_OBJECT_OFFSET(_mem, _env, _type, _min, _max, _size)                                          \
-    do {                                                                                                    \
-        kefir_ast_target_environment_opaque_type_t opaque_type;                                             \
-        ASSERT_OK(KEFIR_AST_TARGET_ENVIRONMENT_GET_TYPE((_mem), (_env), (_type), &opaque_type));            \
-        for (kefir_int64_t i = (_min); i < (_max); i++) {                                                   \
-            kefir_int64_t offset;                                                                           \
-            ASSERT_OK(KEFIR_AST_TARGET_ENVIRONMENT_OBJECT_OFFSET((_mem), (_env), opaque_type, i, &offset)); \
-            ASSERT(i *(_size) == offset);                                                                   \
-        }                                                                                                   \
-        ASSERT_OK(KEFIR_AST_TARGET_ENVIRONMENT_FREE_TYPE((_mem), (_env), opaque_type));                     \
+#define ASSERT_OBJECT_OFFSET(_mem, _context, _env, _type, _min, _max, _size)                                       \
+    do {                                                                                                           \
+        kefir_ast_target_environment_opaque_type_t opaque_type;                                                    \
+        ASSERT_OK(KEFIR_AST_TARGET_ENVIRONMENT_GET_TYPE((_mem), (_context), (_env), (_type), &opaque_type, NULL)); \
+        for (kefir_int64_t i = (_min); i < (_max); i++) {                                                          \
+            kefir_int64_t offset;                                                                                  \
+            ASSERT_OK(KEFIR_AST_TARGET_ENVIRONMENT_OBJECT_OFFSET((_mem), (_env), opaque_type, i, &offset));        \
+            ASSERT(i *(_size) == offset);                                                                          \
+        }                                                                                                          \
+        ASSERT_OK(KEFIR_AST_TARGET_ENVIRONMENT_FREE_TYPE((_mem), (_env), opaque_type));                            \
     } while (0)
 
 DEFINE_CASE(ast_translator_environment2, "AST translator - environment object offset") {
     struct kefir_symbol_table symbols;
     struct kefir_ast_type_bundle type_bundle;
     struct kefir_ast_translator_environment env;
+    struct kefir_ast_global_context global_context;
 
     ASSERT_OK(kefir_symbol_table_init(&symbols));
     ASSERT_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
     ASSERT_OK(kefir_ast_translator_environment_init(&env, kft_util_get_ir_target_platform()));
+    REQUIRE_OK(kefir_ast_global_context_init(&kft_mem, kefir_util_default_type_traits(), &env.target_env,
+                                             &global_context, NULL));
 
-    ASSERT_OBJECT_OFFSET(&kft_mem, &env.target_env, kefir_ast_type_char(), -100, 100, 1);
-    ASSERT_OBJECT_OFFSET(&kft_mem, &env.target_env, kefir_ast_type_unsigned_char(), -100, 100, 1);
-    ASSERT_OBJECT_OFFSET(&kft_mem, &env.target_env, kefir_ast_type_signed_char(), -100, 100, 1);
+    ASSERT_OBJECT_OFFSET(&kft_mem, &global_context.context, &env.target_env, kefir_ast_type_char(), -100, 100, 1);
+    ASSERT_OBJECT_OFFSET(&kft_mem, &global_context.context, &env.target_env, kefir_ast_type_unsigned_char(), -100, 100,
+                         1);
+    ASSERT_OBJECT_OFFSET(&kft_mem, &global_context.context, &env.target_env, kefir_ast_type_signed_char(), -100, 100,
+                         1);
 
-    ASSERT_OBJECT_OFFSET(&kft_mem, &env.target_env, kefir_ast_type_signed_short(), -100, 100, 2);
-    ASSERT_OBJECT_OFFSET(&kft_mem, &env.target_env, kefir_ast_type_unsigned_short(), -100, 100, 2);
+    ASSERT_OBJECT_OFFSET(&kft_mem, &global_context.context, &env.target_env, kefir_ast_type_signed_short(), -100, 100,
+                         2);
+    ASSERT_OBJECT_OFFSET(&kft_mem, &global_context.context, &env.target_env, kefir_ast_type_unsigned_short(), -100, 100,
+                         2);
 
-    ASSERT_OBJECT_OFFSET(&kft_mem, &env.target_env, kefir_ast_type_signed_int(), -100, 100, 4);
-    ASSERT_OBJECT_OFFSET(&kft_mem, &env.target_env, kefir_ast_type_unsigned_int(), -100, 100, 4);
-    ASSERT_OBJECT_OFFSET(&kft_mem, &env.target_env, kefir_ast_type_float(), -100, 100, 4);
+    ASSERT_OBJECT_OFFSET(&kft_mem, &global_context.context, &env.target_env, kefir_ast_type_signed_int(), -100, 100, 4);
+    ASSERT_OBJECT_OFFSET(&kft_mem, &global_context.context, &env.target_env, kefir_ast_type_unsigned_int(), -100, 100,
+                         4);
+    ASSERT_OBJECT_OFFSET(&kft_mem, &global_context.context, &env.target_env, kefir_ast_type_float(), -100, 100, 4);
 
-    ASSERT_OBJECT_OFFSET(&kft_mem, &env.target_env, kefir_ast_type_signed_long(), -100, 100, 8);
-    ASSERT_OBJECT_OFFSET(&kft_mem, &env.target_env, kefir_ast_type_unsigned_long(), -100, 100, 8);
-    ASSERT_OBJECT_OFFSET(&kft_mem, &env.target_env, kefir_ast_type_signed_long_long(), -100, 100, 8);
-    ASSERT_OBJECT_OFFSET(&kft_mem, &env.target_env, kefir_ast_type_unsigned_long_long(), -100, 100, 8);
-    ASSERT_OBJECT_OFFSET(&kft_mem, &env.target_env, kefir_ast_type_double(), -100, 100, 8);
+    ASSERT_OBJECT_OFFSET(&kft_mem, &global_context.context, &env.target_env, kefir_ast_type_signed_long(), -100, 100,
+                         8);
+    ASSERT_OBJECT_OFFSET(&kft_mem, &global_context.context, &env.target_env, kefir_ast_type_unsigned_long(), -100, 100,
+                         8);
+    ASSERT_OBJECT_OFFSET(&kft_mem, &global_context.context, &env.target_env, kefir_ast_type_signed_long_long(), -100,
+                         100, 8);
+    ASSERT_OBJECT_OFFSET(&kft_mem, &global_context.context, &env.target_env, kefir_ast_type_unsigned_long_long(), -100,
+                         100, 8);
+    ASSERT_OBJECT_OFFSET(&kft_mem, &global_context.context, &env.target_env, kefir_ast_type_double(), -100, 100, 8);
 
-    ASSERT_OBJECT_OFFSET(&kft_mem, &env.target_env,
+    ASSERT_OBJECT_OFFSET(&kft_mem, &global_context.context, &env.target_env,
                          kefir_ast_type_pointer(&kft_mem, &type_bundle, kefir_ast_type_void()), -100, 100, 8);
-    ASSERT_OBJECT_OFFSET(&kft_mem, &env.target_env,
+    ASSERT_OBJECT_OFFSET(&kft_mem, &global_context.context, &env.target_env,
                          kefir_ast_type_pointer(&kft_mem, &type_bundle, kefir_ast_type_char()), -100, 100, 8);
-    ASSERT_OBJECT_OFFSET(&kft_mem, &env.target_env,
+    ASSERT_OBJECT_OFFSET(&kft_mem, &global_context.context, &env.target_env,
                          kefir_ast_type_pointer(&kft_mem, &type_bundle, kefir_ast_type_signed_int()), -100, 100, 8);
-    ASSERT_OBJECT_OFFSET(&kft_mem, &env.target_env,
+    ASSERT_OBJECT_OFFSET(&kft_mem, &global_context.context, &env.target_env,
                          kefir_ast_type_pointer(&kft_mem, &type_bundle, kefir_ast_type_double()), -100, 100, 8);
     ASSERT_OBJECT_OFFSET(
-        &kft_mem, &env.target_env,
+        &kft_mem, &global_context.context, &env.target_env,
         kefir_ast_type_pointer(&kft_mem, &type_bundle,
                                kefir_ast_type_pointer(&kft_mem, &type_bundle, kefir_ast_type_unsigned_short())),
         -100, 100, 8);
 
-    ASSERT_OBJECT_OFFSET(&kft_mem, &env.target_env,
+    ASSERT_OBJECT_OFFSET(&kft_mem, &global_context.context, &env.target_env,
                          kefir_ast_type_array(&kft_mem, &type_bundle, kefir_ast_type_unsigned_char(),
                                               kefir_ast_constant_expression_integer(&kft_mem, 16), NULL),
                          -100, 100, 16);
@@ -200,8 +218,9 @@ DEFINE_CASE(ast_translator_environment2, "AST translator - environment object of
                                                          kefir_ast_constant_expression_integer(&kft_mem, 5), NULL),
                                     NULL));
 
-    ASSERT_OBJECT_OFFSET(&kft_mem, &env.target_env, type1, -100, 100, 40);
+    ASSERT_OBJECT_OFFSET(&kft_mem, &global_context.context, &env.target_env, type1, -100, 100, 40);
 
+    REQUIRE_OK(kefir_ast_global_context_free(&kft_mem, &global_context));
     ASSERT_OK(kefir_ast_type_bundle_free(&kft_mem, &type_bundle));
     ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
 }

@@ -57,9 +57,9 @@ static kefir_result_t translate_function(struct kefir_mem *mem, struct function 
 
     struct kefir_ast_translator_function_declaration *func_declaration = NULL;
     REQUIRE_OK(kefir_ast_translator_function_declaration_init(
-        mem, translator_context->environment, translator_context->ast_context->type_bundle,
+        mem, context_manager->current, translator_context->environment, translator_context->ast_context->type_bundle,
         translator_context->ast_context->type_traits, translator_context->module, func->identifier, func->type, NULL,
-        &func_declaration));
+        &func_declaration, NULL));
 
     struct kefir_ast_translator_context local_translator_context;
     REQUIRE_OK(kefir_ast_translator_context_init_local(mem, &local_translator_context, &func->local_context.context,
@@ -85,7 +85,7 @@ static kefir_result_t translate_function(struct kefir_mem *mem, struct function 
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(&builder, KEFIR_IROPCODE_XCHG, 2));
         }
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(&builder, KEFIR_IROPCODE_XCHG, 1));
-        REQUIRE_OK(kefir_ast_translator_store_value(mem, arg->properties.type, translator_context, &builder));
+        REQUIRE_OK(kefir_ast_translator_store_value(mem, arg->properties.type, translator_context, &builder, NULL));
     }
 
     if (func->body->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION) {

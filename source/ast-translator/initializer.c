@@ -36,6 +36,7 @@ struct traversal_param {
     struct kefir_ast_translator_context *context;
     struct kefir_irbuilder_block *builder;
     struct kefir_ast_translator_type *translator_type;
+    const struct kefir_source_location *source_location;
 };
 
 static kefir_result_t zero_type(struct kefir_irbuilder_block *builder, kefir_id_t ir_type_id,
@@ -133,7 +134,8 @@ static kefir_result_t traverse_scalar(const struct kefir_ast_designator *designa
                                                     type_layout->type));
         }
         REQUIRE_OK(kefir_ast_translator_store_layout_value(param->mem, param->context, param->builder,
-                                                           param->translator_type->object.ir_type, type_layout));
+                                                           param->translator_type->object.ir_type, type_layout,
+                                                           param->source_location));
     }
     return KEFIR_OK;
 }
@@ -165,7 +167,7 @@ static kefir_result_t traverse_string_literal(const struct kefir_ast_designator 
 
     REQUIRE_OK(kefir_ast_translator_store_value(
         param->mem, KEFIR_AST_TYPE_SAME(type_layout->type, array_type) ? type_layout->type : array_type, param->context,
-        param->builder));
+        param->builder, &expression->source_location));
     return KEFIR_OK;
 }
 
@@ -218,12 +220,9 @@ kefir_result_t kefir_ast_translate_initializer(struct kefir_mem *mem, struct kef
     REQUIRE(initializer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST initializer"));
 
     struct traversal_param param = {
-        .mem = mem,
-        .context = context,
-        .builder = builder,
-    };
-    REQUIRE_OK(
-        kefir_ast_translator_type_new(mem, context->environment, context->module, type, 0, &param.translator_type));
+        .mem = mem, .context = context, .builder = builder, .source_location = &initializer->source_location};
+    REQUIRE_OK(kefir_ast_translator_type_new(mem, context->ast_context, context->environment, context->module, type, 0,
+                                             &param.translator_type, &initializer->source_location));
 
     struct kefir_ast_initializer_traversal initializer_traversal;
     KEFIR_AST_INITIALIZER_TRAVERSAL_INIT(&initializer_traversal);

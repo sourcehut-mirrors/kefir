@@ -89,7 +89,8 @@ static kefir_result_t analyze_function_parameter_identifiers_impl(struct kefir_m
             kefir_size_t alignment = 0;
             REQUIRE_OK(kefir_ast_analyze_declaration(
                 mem, &local_context->context, &decl_list->specifiers, decl->declarator, &identifier, &original_type,
-                &storage, &function_specifier, &alignment, KEFIR_AST_DECLARATION_ANALYSIS_NORMAL, NULL));
+                &storage, &function_specifier, &alignment, KEFIR_AST_DECLARATION_ANALYSIS_NORMAL, NULL,
+                &decl->base.source_location));
 
             if (identifier != NULL) {
                 identifier = kefir_symbol_table_insert(mem, context->symbols, identifier, NULL);
@@ -199,10 +200,11 @@ kefir_result_t kefir_ast_analyze_function_definition_node(struct kefir_mem *mem,
     kefir_size_t alignment = 0;
     const char *function_identifier = NULL;
     struct kefir_ast_declarator_attributes attributes;
-    REQUIRE_CHAIN(&res, kefir_ast_analyze_declaration(
-                            mem, &local_context->context, &node->specifiers, node->declarator, &function_identifier,
-                            &type, &storage, &base->properties.function_definition.function, &alignment,
-                            KEFIR_AST_DECLARATION_ANALYSIS_FUNCTION_DEFINITION_CONTEXT, &attributes));
+    REQUIRE_CHAIN(&res, kefir_ast_analyze_declaration(mem, &local_context->context, &node->specifiers, node->declarator,
+                                                      &function_identifier, &type, &storage,
+                                                      &base->properties.function_definition.function, &alignment,
+                                                      KEFIR_AST_DECLARATION_ANALYSIS_FUNCTION_DEFINITION_CONTEXT,
+                                                      &attributes, &node->base.source_location));
     REQUIRE_CHAIN(
         &res, kefir_ast_analyze_type(mem, context, context->type_analysis_context, type, &node->base.source_location));
 

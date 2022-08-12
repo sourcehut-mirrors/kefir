@@ -32,21 +32,25 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_ast_translator_environment env;
     struct kefir_symbol_table symbols;
     struct kefir_ast_type_bundle type_bundle;
+    struct kefir_ast_global_context global_context;
 
     REQUIRE_OK(kefir_ir_type_alloc(mem, 0, &ir_type));
     REQUIRE_OK(kefir_irbuilder_type_init(mem, &builder, &ir_type));
     REQUIRE_OK(kefir_ast_translator_environment_init(&env, kft_util_get_ir_target_platform()));
     REQUIRE_OK(kefir_symbol_table_init(&symbols));
     REQUIRE_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
+    REQUIRE_OK(
+        kefir_ast_global_context_init(mem, kefir_util_default_type_traits(), &env.target_env, &global_context, NULL));
 
     const struct kefir_ast_type *type1 = kefir_ast_type_va_list();
     REQUIRE(type1 != NULL, KEFIR_INTERNAL_ERROR);
-    REQUIRE_OK(kefir_ast_translate_object_type(mem, type1, 0, &env, &builder, NULL));
+    REQUIRE_OK(kefir_ast_translate_object_type(mem, &global_context.context, type1, 0, &env, &builder, NULL, NULL));
 
     const struct kefir_ast_type *type2 = kefir_ast_type_pointer(mem, &type_bundle, kefir_ast_type_va_list());
     REQUIRE(type1 != NULL, KEFIR_INTERNAL_ERROR);
-    REQUIRE_OK(kefir_ast_translate_object_type(mem, type2, 0, &env, &builder, NULL));
+    REQUIRE_OK(kefir_ast_translate_object_type(mem, &global_context.context, type2, 0, &env, &builder, NULL, NULL));
 
+    REQUIRE_OK(kefir_ast_global_context_free(mem, &global_context));
     REQUIRE_OK(kefir_ir_format_type(stdout, &ir_type));
     REQUIRE_OK(kefir_ast_type_bundle_free(mem, &type_bundle));
     REQUIRE_OK(kefir_symbol_table_free(mem, &symbols));

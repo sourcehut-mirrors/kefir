@@ -33,9 +33,11 @@ typedef struct kefir_ast_translator_parameters {
     struct kefir_irbuilder_block *builder;
 } kefir_ast_translator_parameters_t;
 
-kefir_result_t kefir_ast_translate_object_type(struct kefir_mem *, const struct kefir_ast_type *, kefir_size_t,
+kefir_result_t kefir_ast_translate_object_type(struct kefir_mem *, const struct kefir_ast_context *,
+                                               const struct kefir_ast_type *, kefir_size_t,
                                                const struct kefir_ast_translator_environment *,
-                                               struct kefir_irbuilder_type *, struct kefir_ast_type_layout **);
+                                               struct kefir_irbuilder_type *, struct kefir_ast_type_layout **,
+                                               const struct kefir_source_location *);
 
 kefir_result_t kefir_ast_translate_expression(struct kefir_mem *, const struct kefir_ast_node_base *,
                                               struct kefir_irbuilder_block *, struct kefir_ast_translator_context *);

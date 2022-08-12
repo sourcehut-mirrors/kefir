@@ -26,10 +26,12 @@
 #include "kefir/core/error.h"
 
 static kefir_result_t sizeof_nonvla_type(struct kefir_mem *mem, struct kefir_ast_translator_context *context,
-                                         struct kefir_irbuilder_block *builder, const struct kefir_ast_type *type) {
+                                         struct kefir_irbuilder_block *builder, const struct kefir_ast_type *type,
+                                         const struct kefir_source_location *source_location) {
     kefir_ast_target_environment_opaque_type_t opaque_type;
     struct kefir_ast_target_environment_object_info type_info;
-    REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_GET_TYPE(mem, &context->environment->target_env, type, &opaque_type));
+    REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_GET_TYPE(mem, context->ast_context, &context->environment->target_env, type,
+                                                     &opaque_type, source_location));
     kefir_result_t res =
         KEFIR_AST_TARGET_ENVIRONMENT_OBJECT_INFO(mem, &context->environment->target_env, opaque_type, NULL, &type_info);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -43,7 +45,8 @@ static kefir_result_t sizeof_nonvla_type(struct kefir_mem *mem, struct kefir_ast
 }
 
 kefir_result_t kefir_ast_translate_sizeof(struct kefir_mem *mem, struct kefir_ast_translator_context *context,
-                                          struct kefir_irbuilder_block *builder, const struct kefir_ast_type *type) {
+                                          struct kefir_irbuilder_block *builder, const struct kefir_ast_type *type,
+                                          const struct kefir_source_location *source_location) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST translator context"));
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR block builder"));
@@ -53,12 +56,12 @@ kefir_result_t kefir_ast_translate_sizeof(struct kefir_mem *mem, struct kefir_as
         const struct kefir_ast_node_base *vlen = kefir_ast_type_get_top_variable_modificator(type);
         REQUIRE(vlen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
                                               "Unable to determine size of VLA with unspecified variable modifier"));
-        REQUIRE_OK(kefir_ast_translate_sizeof(mem, context, builder, type->array_type.element_type));
+        REQUIRE_OK(kefir_ast_translate_sizeof(mem, context, builder, type->array_type.element_type, source_location));
         REQUIRE_OK(kefir_ast_translate_expression(mem, vlen, builder, context));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IMUL, 0));
     } else {
         REQUIRE_OK(kefir_ast_type_completion(mem, context->ast_context, &type, type));
-        REQUIRE_OK(sizeof_nonvla_type(mem, context, builder, type));
+        REQUIRE_OK(sizeof_nonvla_type(mem, context, builder, type, source_location));
     }
     return KEFIR_OK;
 }
@@ -88,7 +91,8 @@ static kefir_result_t unwrap_vla_type(struct kefir_mem *mem, const struct kefir_
 
 kefir_result_t kefir_ast_translate_alignof(struct kefir_mem *mem, struct kefir_ast_translator_context *context,
                                            struct kefir_irbuilder_block *builder,
-                                           const struct kefir_ast_type *base_type) {
+                                           const struct kefir_ast_type *base_type,
+                                           const struct kefir_source_location *source_location) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST translator context"));
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR block builder"));
@@ -98,7 +102,8 @@ kefir_result_t kefir_ast_translate_alignof(struct kefir_mem *mem, struct kefir_a
     struct kefir_ast_target_environment_object_info type_info;
     const struct kefir_ast_type *type = NULL;
     REQUIRE_OK(unwrap_vla_type(mem, context->ast_context, base_type, &type));
-    REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_GET_TYPE(mem, &context->environment->target_env, type, &opaque_type));
+    REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_GET_TYPE(mem, context->ast_context, &context->environment->target_env, type,
+                                                     &opaque_type, source_location));
     kefir_result_t res =
         KEFIR_AST_TARGET_ENVIRONMENT_OBJECT_INFO(mem, &context->environment->target_env, opaque_type, NULL, &type_info);
     REQUIRE_ELSE(res == KEFIR_OK, {

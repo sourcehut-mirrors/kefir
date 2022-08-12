@@ -66,7 +66,8 @@ static kefir_result_t translate_outputs(struct kefir_mem *mem, const struct kefi
                                         struct kefir_ast_translator_context *context,
                                         struct kefir_ast_inline_assembly *inline_asm,
                                         struct kefir_ir_inline_assembly *ir_inline_asm, kefir_id_t *next_parameter_id,
-                                        kefir_size_t *stack_slot_counter) {
+                                        kefir_size_t *stack_slot_counter,
+                                        const struct kefir_source_location *source_location) {
     char buffer[512];
     for (const struct kefir_list_entry *iter = kefir_list_head(&inline_asm->outputs); iter != NULL;
          kefir_list_next(&iter)) {
@@ -117,8 +118,8 @@ static kefir_result_t translate_outputs(struct kefir_mem *mem, const struct kefi
         REQUIRE(ir_type != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR type"));
         struct kefir_irbuilder_type ir_type_builder;
         REQUIRE_OK(kefir_irbuilder_type_init(mem, &ir_type_builder, ir_type));
-        kefir_result_t res =
-            kefir_ast_translate_object_type(mem, param_type, 0, context->environment, &ir_type_builder, NULL);
+        kefir_result_t res = kefir_ast_translate_object_type(
+            mem, context->ast_context, param_type, 0, context->environment, &ir_type_builder, NULL, source_location);
         REQUIRE_ELSE(res == KEFIR_OK, {
             KEFIR_IRBUILDER_TYPE_FREE(&ir_type_builder);
             return res;
@@ -205,7 +206,8 @@ static kefir_result_t translate_inputs(struct kefir_mem *mem, const struct kefir
                                        struct kefir_ast_translator_context *context,
                                        struct kefir_ast_inline_assembly *inline_asm,
                                        struct kefir_ir_inline_assembly *ir_inline_asm, kefir_id_t *next_parameter_id,
-                                       kefir_size_t *stack_slot_counter) {
+                                       kefir_size_t *stack_slot_counter,
+                                       const struct kefir_source_location *source_location) {
     char buffer[512];
     for (const struct kefir_list_entry *iter = kefir_list_head(&inline_asm->inputs); iter != NULL;
          kefir_list_next(&iter)) {
@@ -329,8 +331,8 @@ static kefir_result_t translate_inputs(struct kefir_mem *mem, const struct kefir
         REQUIRE(ir_type != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR type"));
         struct kefir_irbuilder_type ir_type_builder;
         REQUIRE_OK(kefir_irbuilder_type_init(mem, &ir_type_builder, ir_type));
-        kefir_result_t res =
-            kefir_ast_translate_object_type(mem, param_type, 0, context->environment, &ir_type_builder, NULL);
+        kefir_result_t res = kefir_ast_translate_object_type(
+            mem, context->ast_context, param_type, 0, context->environment, &ir_type_builder, NULL, source_location);
         REQUIRE_ELSE(res == KEFIR_OK, {
             KEFIR_IRBUILDER_TYPE_FREE(&ir_type_builder);
             return res;
@@ -418,11 +420,11 @@ kefir_result_t kefir_ast_translate_inline_assembly(struct kefir_mem *mem, const 
 
         // Translate outputs
         REQUIRE_OK(translate_outputs(mem, node, builder, context, inline_asm, ir_inline_asm, &next_parameter_id,
-                                     &stack_slot_counter));
+                                     &stack_slot_counter, &node->source_location));
 
         // Translate inputs
         REQUIRE_OK(translate_inputs(mem, node, builder, context, inline_asm, ir_inline_asm, &next_parameter_id,
-                                    &stack_slot_counter));
+                                    &stack_slot_counter, &node->source_location));
 
         // Translate clobbers
         for (const struct kefir_list_entry *iter = kefir_list_head(&inline_asm->clobbers); iter != NULL;

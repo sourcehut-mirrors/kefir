@@ -39,6 +39,7 @@ kefir_result_t kefir_ast_analyze_type_name_node(struct kefir_mem *mem, const str
     base->properties.type_props.alignment = 0;
     REQUIRE_OK(kefir_ast_analyze_declaration(
         mem, context, &node->type_decl.specifiers, node->type_decl.declarator, NULL, &base->properties.type, NULL, NULL,
-        &base->properties.type_props.alignment, KEFIR_AST_DECLARATION_ANALYSIS_IGNORE_ALIGNMENT_SPECIFIER, NULL));
+        &base->properties.type_props.alignment, KEFIR_AST_DECLARATION_ANALYSIS_IGNORE_ALIGNMENT_SPECIFIER, NULL,
+        &base->source_location));
     return KEFIR_OK;
 }

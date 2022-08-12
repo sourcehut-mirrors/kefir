@@ -31,9 +31,14 @@
 kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_symbol_table symbols;
     struct kefir_ast_type_bundle type_bundle;
+    struct kefir_ast_translator_environment env;
+    struct kefir_ast_global_context global_context;
 
     REQUIRE_OK(kefir_symbol_table_init(&symbols));
     REQUIRE_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
+    REQUIRE_OK(kefir_ast_translator_environment_init(&env, kft_util_get_ir_target_platform()));
+    REQUIRE_OK(
+        kefir_ast_global_context_init(mem, kefir_util_default_type_traits(), &env.target_env, &global_context, NULL));
 
     struct kefir_json_output json;
     REQUIRE_OK(kefir_json_output_init(&json, stdout, 4));
@@ -49,7 +54,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_ast_struct_type_field(
         mem, &symbols, struct_type1, "z",
         kefir_ast_type_unbounded_array(mem, &type_bundle, kefir_ast_type_signed_int(), NULL), NULL));
-    REQUIRE_OK(dump_type(mem, &json, type1));
+    REQUIRE_OK(dump_type(mem, &global_context.context, &json, type1));
 
     struct kefir_ast_struct_type *struct_type2 = NULL;
     const struct kefir_ast_type *type2 = kefir_ast_type_structure(mem, &type_bundle, "struct2", &struct_type2);
@@ -58,7 +63,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         mem, &symbols, struct_type2, "z",
         kefir_ast_type_unbounded_array(mem, &type_bundle, kefir_ast_type_signed_short(), NULL),
         kefir_ast_alignment_const_expression(mem, kefir_ast_constant_expression_integer(mem, 8))));
-    REQUIRE_OK(dump_type(mem, &json, type2));
+    REQUIRE_OK(dump_type(mem, &global_context.context, &json, type2));
 
     struct kefir_ast_struct_type *struct_type3 = NULL;
     const struct kefir_ast_type *type3 = kefir_ast_type_structure(mem, &type_bundle, "struct3", &struct_type3);
@@ -74,11 +79,12 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_ast_struct_type_field(
         mem, &symbols, struct_type4, "outer2",
         kefir_ast_type_unbounded_array(mem, &type_bundle, kefir_ast_type_signed_char(), NULL), NULL));
-    REQUIRE_OK(dump_type(mem, &json, type4));
+    REQUIRE_OK(dump_type(mem, &global_context.context, &json, type4));
 
     REQUIRE_OK(kefir_json_output_array_end(&json));
     REQUIRE_OK(kefir_json_output_finalize(&json));
 
+    REQUIRE_OK(kefir_ast_global_context_free(mem, &global_context));
     REQUIRE_OK(kefir_ast_type_bundle_free(mem, &type_bundle));
     REQUIRE_OK(kefir_symbol_table_free(mem, &symbols));
     return KEFIR_OK;

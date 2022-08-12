@@ -35,9 +35,10 @@ typedef struct kefir_ast_translator_type {
     } object;
 } kefir_ast_translator_type_t;
 
-kefir_result_t kefir_ast_translator_type_new(struct kefir_mem *, const struct kefir_ast_translator_environment *,
-                                             struct kefir_ir_module *, const struct kefir_ast_type *, kefir_size_t,
-                                             struct kefir_ast_translator_type **);
+kefir_result_t kefir_ast_translator_type_new(struct kefir_mem *, const struct kefir_ast_context *,
+                                             const struct kefir_ast_translator_environment *, struct kefir_ir_module *,
+                                             const struct kefir_ast_type *, kefir_size_t,
+                                             struct kefir_ast_translator_type **, const struct kefir_source_location *);
 
 kefir_result_t kefir_ast_translator_type_free(struct kefir_mem *, struct kefir_ast_translator_type *);
 

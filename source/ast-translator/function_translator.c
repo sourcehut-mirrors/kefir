@@ -69,9 +69,10 @@ static kefir_result_t init_function_declaration(struct kefir_mem *mem, struct ke
         case KEFIR_AST_FUNCTION_TYPE_PARAMETERS:
         case KEFIR_AST_FUNCTION_TYPE_PARAM_EMPTY:
             REQUIRE_OK(kefir_ast_translator_function_declaration_init(
-                mem, context->environment, context->ast_context->type_bundle, context->ast_context->type_traits,
-                context->module, identifier, function->base.properties.function_definition.scoped_id->type, NULL,
-                &args->function_declaration));
+                mem, context->ast_context, context->environment, context->ast_context->type_bundle,
+                context->ast_context->type_traits, context->module, identifier,
+                function->base.properties.function_definition.scoped_id->type, NULL, &args->function_declaration,
+                &function->base.source_location));
             break;
 
         case KEFIR_AST_FUNCTION_TYPE_PARAM_IDENTIFIERS: {
@@ -128,9 +129,9 @@ static kefir_result_t init_function_declaration(struct kefir_mem *mem, struct ke
             });
 
             res = kefir_ast_translator_function_declaration_init(
-                mem, context->environment, context->ast_context->type_bundle, context->ast_context->type_traits,
-                context->module, identifier, function->base.properties.type, &declaration_list,
-                &args->function_declaration);
+                mem, context->ast_context, context->environment, context->ast_context->type_bundle,
+                context->ast_context->type_traits, context->module, identifier, function->base.properties.type,
+                &declaration_list, &args->function_declaration, &function->base.source_location);
             REQUIRE_ELSE(res == KEFIR_OK, {
                 kefir_list_free(mem, &declaration_list);
                 kefir_hashtree_free(mem, &declarations);
@@ -139,14 +140,18 @@ static kefir_result_t init_function_declaration(struct kefir_mem *mem, struct ke
 
             res = kefir_list_free(mem, &declaration_list);
             REQUIRE_ELSE(res == KEFIR_OK, {
-                kefir_ast_translator_function_declaration_free(mem, args->function_declaration);
+                if (args->function_declaration != NULL) {
+                    kefir_ast_translator_function_declaration_free(mem, args->function_declaration);
+                }
                 kefir_hashtree_free(mem, &declarations);
                 return res;
             });
 
             res = kefir_hashtree_free(mem, &declarations);
             REQUIRE_ELSE(res == KEFIR_OK, {
-                kefir_ast_translator_function_declaration_free(mem, args->function_declaration);
+                if (args->function_declaration != NULL) {
+                    kefir_ast_translator_function_declaration_free(mem, args->function_declaration);
+                }
                 return res;
             });
         } break;
@@ -157,7 +162,9 @@ static kefir_result_t init_function_declaration(struct kefir_mem *mem, struct ke
 
 static kefir_result_t free_function_declaration(struct kefir_mem *mem,
                                                 struct kefir_ast_translator_function_context *args) {
-    REQUIRE_OK(kefir_ast_translator_function_declaration_free(mem, args->function_declaration));
+    if (args->function_declaration != NULL) {
+        REQUIRE_OK(kefir_ast_translator_function_declaration_free(mem, args->function_declaration));
+    }
     args->function_declaration = NULL;
     return KEFIR_OK;
 }
@@ -329,7 +336,9 @@ kefir_result_t kefir_ast_translator_function_context_translate(
                     REQUIRE_OK(kefir_ast_translator_object_lvalue(mem, context, builder, param_identifier->identifier,
                                                                   scoped_id));
                     REQUIRE_OK(xchg_param_address(builder, scoped_id->object.type));
-                    REQUIRE_OK(kefir_ast_translator_store_value(mem, scoped_id->type, context, builder));
+                    REQUIRE_OK(
+                        kefir_ast_translator_store_value(mem, scoped_id->type, context, builder,
+                                                         &function_context->function_definition->base.source_location));
                 } else {
                     if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(init_decl->base.properties.type)) {
                         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_POP, 0));
@@ -353,7 +362,8 @@ kefir_result_t kefir_ast_translator_function_context_translate(
                                                         scoped_id->object.type));
             }
 
-            REQUIRE_OK(kefir_ast_translator_store_value(mem, scoped_id->object.type, context, builder));
+            REQUIRE_OK(kefir_ast_translator_store_value(mem, scoped_id->object.type, context, builder,
+                                                        &function_context->function_definition->base.source_location));
         } else {
             return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR,
                                    "Expected function parameter to be either AST declaration or identifier");

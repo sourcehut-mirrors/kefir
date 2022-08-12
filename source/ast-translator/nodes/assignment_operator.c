@@ -358,8 +358,9 @@ static kefir_result_t translate_add(struct kefir_mem *mem, struct kefir_ast_tran
                                 "Expected scalar pointer on the left side, and an integer on the right"));
 
         struct kefir_ast_translator_type *translator_type = NULL;
-        REQUIRE_OK(kefir_ast_translator_type_new(mem, context->environment, context->module,
-                                                 target_normalized_type->referenced_type, 0, &translator_type));
+        REQUIRE_OK(kefir_ast_translator_type_new(mem, context->ast_context, context->environment, context->module,
+                                                 target_normalized_type->referenced_type, 0, &translator_type,
+                                                 &node->base.source_location));
 
         kefir_result_t res = KEFIR_OK;
         REQUIRE_CHAIN(&res, kefir_ast_translate_expression(mem, node->value, builder, context));
@@ -442,8 +443,9 @@ static kefir_result_t translate_subtract(struct kefir_mem *mem, struct kefir_ast
                                 "Expected scalar pointer on the left side, and an integer on the right"));
 
         struct kefir_ast_translator_type *translator_type = NULL;
-        REQUIRE_OK(kefir_ast_translator_type_new(mem, context->environment, context->module,
-                                                 target_normalized_type->referenced_type, 0, &translator_type));
+        REQUIRE_OK(kefir_ast_translator_type_new(mem, context->ast_context, context->environment, context->module,
+                                                 target_normalized_type->referenced_type, 0, &translator_type,
+                                                 &node->base.source_location));
 
         kefir_result_t res = KEFIR_OK;
         REQUIRE_CHAIN(&res, kefir_ast_translate_expression(mem, node->value, builder, context));

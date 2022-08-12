@@ -43,7 +43,8 @@ kefir_result_t kefir_ast_analyze_declaration_node(struct kefir_mem *mem, const s
     kefir_ast_function_specifier_t function = KEFIR_AST_FUNCTION_SPECIFIER_NONE;
     kefir_size_t alignment = 0;
     REQUIRE_OK(kefir_ast_analyze_declaration_specifiers(mem, context, &node->specifiers, &base_type, &storage,
-                                                        &function, &alignment, KEFIR_AST_DECLARATION_ANALYSIS_NORMAL));
+                                                        &function, &alignment, KEFIR_AST_DECLARATION_ANALYSIS_NORMAL,
+                                                        &node->base.source_location));
 
     for (const struct kefir_list_entry *iter = kefir_list_head(&node->init_declarators); iter != NULL;
          kefir_list_next(&iter)) {

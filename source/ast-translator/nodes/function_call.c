@@ -103,15 +103,18 @@ kefir_result_t kefir_ast_translate_function_call_node(struct kefir_mem *mem,
         case KEFIR_AST_FUNCTION_TYPE_PARAMETERS: {
             struct kefir_ast_translator_function_declaration *func_decl = NULL;
             REQUIRE_OK(kefir_ast_translator_function_declaration_init(
-                mem, context->environment, context->ast_context->type_bundle, context->ast_context->type_traits,
-                context->module, function_name, function_type, &node->arguments, &func_decl));
+                mem, context->ast_context, context->environment, context->ast_context->type_bundle,
+                context->ast_context->type_traits, context->module, function_name, function_type, &node->arguments,
+                &func_decl, &node->base.source_location));
             ir_decl = func_decl->ir_function_decl;
             if (ir_decl->name == NULL) {
                 REQUIRE_OK(kefir_ast_translate_expression(mem, node->function, builder, context));
             }
             kefir_result_t res = translate_parameters(mem, context, builder, node, func_decl);
             REQUIRE_ELSE(res == KEFIR_OK, {
-                kefir_ast_translator_function_declaration_free(mem, func_decl);
+                if (func_decl != NULL) {
+                    kefir_ast_translator_function_declaration_free(mem, func_decl);
+                }
                 return res;
             });
             REQUIRE_OK(kefir_ast_translator_function_declaration_free(mem, func_decl));
@@ -120,15 +123,18 @@ kefir_result_t kefir_ast_translate_function_call_node(struct kefir_mem *mem,
         case KEFIR_AST_FUNCTION_TYPE_PARAM_IDENTIFIERS: {
             struct kefir_ast_translator_function_declaration *func_decl = NULL;
             REQUIRE_OK(kefir_ast_translator_function_declaration_init(
-                mem, context->environment, context->ast_context->type_bundle, context->ast_context->type_traits,
-                context->module, function_name, function_type, &node->arguments, &func_decl));
+                mem, context->ast_context, context->environment, context->ast_context->type_bundle,
+                context->ast_context->type_traits, context->module, function_name, function_type, &node->arguments,
+                &func_decl, &node->base.source_location));
             ir_decl = func_decl->ir_function_decl;
             if (ir_decl->name == NULL) {
                 REQUIRE_OK(kefir_ast_translate_expression(mem, node->function, builder, context));
             }
             kefir_result_t res = translate_parameters(mem, context, builder, node, func_decl);
             REQUIRE_ELSE(res == KEFIR_OK, {
-                kefir_ast_translator_function_declaration_free(mem, func_decl);
+                if (func_decl != NULL) {
+                    kefir_ast_translator_function_declaration_free(mem, func_decl);
+                }
                 return res;
             });
             REQUIRE_OK(kefir_ast_translator_function_declaration_free(mem, func_decl));
@@ -137,15 +143,18 @@ kefir_result_t kefir_ast_translate_function_call_node(struct kefir_mem *mem,
         case KEFIR_AST_FUNCTION_TYPE_PARAM_EMPTY: {
             struct kefir_ast_translator_function_declaration *func_decl = NULL;
             REQUIRE_OK(kefir_ast_translator_function_declaration_init(
-                mem, context->environment, context->ast_context->type_bundle, context->ast_context->type_traits,
-                context->module, function_name, function_type, &node->arguments, &func_decl));
+                mem, context->ast_context, context->environment, context->ast_context->type_bundle,
+                context->ast_context->type_traits, context->module, function_name, function_type, &node->arguments,
+                &func_decl, &node->base.source_location));
             ir_decl = func_decl->ir_function_decl;
             if (ir_decl->name == NULL) {
                 REQUIRE_OK(kefir_ast_translate_expression(mem, node->function, builder, context));
             }
             kefir_result_t res = translate_parameters(mem, context, builder, node, func_decl);
             REQUIRE_ELSE(res == KEFIR_OK, {
-                kefir_ast_translator_function_declaration_free(mem, func_decl);
+                if (func_decl != NULL) {
+                    kefir_ast_translator_function_declaration_free(mem, func_decl);
+                }
                 return res;
             });
             REQUIRE_OK(kefir_ast_translator_function_declaration_free(mem, func_decl));

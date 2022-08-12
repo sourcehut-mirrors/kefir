@@ -105,8 +105,8 @@ static kefir_result_t translate_addition(struct kefir_mem *mem, struct kefir_ast
         }
 
         struct kefir_ast_translator_type *translator_type = NULL;
-        REQUIRE_OK(kefir_ast_translator_type_new(mem, context->environment, context->module, referenced_type, 0,
-                                                 &translator_type));
+        REQUIRE_OK(kefir_ast_translator_type_new(mem, context->ast_context, context->environment, context->module,
+                                                 referenced_type, 0, &translator_type, &node->base.source_location));
 
         kefir_result_t res = KEFIR_OK;
         if (arg1_normalized_type->tag == KEFIR_AST_TYPE_SCALAR_POINTER) {
@@ -170,8 +170,8 @@ static kefir_result_t translate_subtraction(struct kefir_mem *mem, struct kefir_
 
         kefir_ast_target_environment_opaque_type_t opaque_type;
         struct kefir_ast_target_environment_object_info type_info;
-        REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_GET_TYPE(mem, &context->environment->target_env, referenced_type,
-                                                         &opaque_type));
+        REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_GET_TYPE(mem, context->ast_context, &context->environment->target_env,
+                                                         referenced_type, &opaque_type, &node->base.source_location));
         kefir_result_t res = KEFIR_AST_TARGET_ENVIRONMENT_OBJECT_INFO(mem, &context->environment->target_env,
                                                                       opaque_type, NULL, &type_info);
         REQUIRE_ELSE(res == KEFIR_OK, {
@@ -192,8 +192,8 @@ static kefir_result_t translate_subtraction(struct kefir_mem *mem, struct kefir_
         }
 
         struct kefir_ast_translator_type *translator_type = NULL;
-        REQUIRE_OK(kefir_ast_translator_type_new(mem, context->environment, context->module, referenced_type, 0,
-                                                 &translator_type));
+        REQUIRE_OK(kefir_ast_translator_type_new(mem, context->ast_context, context->environment, context->module,
+                                                 referenced_type, 0, &translator_type, &node->base.source_location));
 
         kefir_result_t res = KEFIR_OK;
         REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_INEG, 0));

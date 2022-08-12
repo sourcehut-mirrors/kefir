@@ -26,10 +26,12 @@
 static kefir_result_t cast_integral_type(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                          const struct kefir_ast_type *type,
                                          struct kefir_ast_constant_expression_value *value,
-                                         kefir_ast_constant_expression_int_t source) {
+                                         kefir_ast_constant_expression_int_t source,
+                                         const struct kefir_source_location *source_location) {
     kefir_ast_target_environment_opaque_type_t opaque_type;
     struct kefir_ast_target_environment_object_info type_info;
-    REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_GET_TYPE(mem, context->target_env, type, &opaque_type));
+    REQUIRE_OK(
+        KEFIR_AST_TARGET_ENVIRONMENT_GET_TYPE(mem, context, context->target_env, type, &opaque_type, source_location));
     kefir_result_t res =
         KEFIR_AST_TARGET_ENVIRONMENT_OBJECT_INFO(mem, context->target_env, opaque_type, NULL, &type_info);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -104,7 +106,8 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *mem, c
         value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
         switch (source->klass) {
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER:
-                REQUIRE_OK(cast_integral_type(mem, context, unqualified, value, source->integer));
+                REQUIRE_OK(
+                    cast_integral_type(mem, context, unqualified, value, source->integer, &node->source_location));
                 break;
 
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT:
@@ -112,7 +115,8 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *mem, c
                     value->integer = (bool) source->floating_point;
                 } else {
                     REQUIRE_OK(cast_integral_type(mem, context, unqualified, value,
-                                                  (kefir_ast_constant_expression_int_t) source->floating_point));
+                                                  (kefir_ast_constant_expression_int_t) source->floating_point,
+                                                  &node->source_location));
                 }
                 break;
 

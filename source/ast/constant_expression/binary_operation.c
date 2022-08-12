@@ -51,8 +51,9 @@ static kefir_result_t evaluate_pointer_offset(struct kefir_mem *mem, const struc
     const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(node->properties.type);
     if (unqualified_type->tag == KEFIR_AST_TYPE_SCALAR_POINTER) {
         kefir_ast_target_environment_opaque_type_t opaque_type;
-        REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_GET_TYPE(mem, context->target_env,
-                                                         node->properties.type->referenced_type, &opaque_type));
+        REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_GET_TYPE(mem, context, context->target_env,
+                                                         node->properties.type->referenced_type, &opaque_type,
+                                                         &node->source_location));
         kefir_result_t res =
             KEFIR_AST_TARGET_ENVIRONMENT_OBJECT_OFFSET(mem, context->target_env, opaque_type, index, &offset);
         REQUIRE_ELSE(res == KEFIR_OK, {
@@ -91,8 +92,8 @@ static kefir_result_t evaluate_pointer_diff(struct kefir_mem *mem, const struct 
     const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(type);
     if (unqualified_type->tag == KEFIR_AST_TYPE_SCALAR_POINTER) {
         kefir_ast_target_environment_opaque_type_t opaque_type;
-        REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_GET_TYPE(mem, context->target_env, unqualified_type->referenced_type,
-                                                         &opaque_type));
+        REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_GET_TYPE(mem, context, context->target_env,
+                                                         unqualified_type->referenced_type, &opaque_type, location1));
 
         struct kefir_ast_target_environment_object_info objinfo;
         kefir_result_t res =

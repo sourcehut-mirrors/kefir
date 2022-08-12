@@ -155,8 +155,9 @@ kefir_result_t kefir_ast_translate_array_subscript_lvalue(struct kefir_mem *mem,
     REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST array subscript node"));
 
     struct kefir_ast_translator_type *translator_type = NULL;
-    REQUIRE_OK(kefir_ast_translator_type_new(mem, context->environment, context->module, node->base.properties.type, 0,
-                                             &translator_type));
+    REQUIRE_OK(kefir_ast_translator_type_new(mem, context->ast_context, context->environment, context->module,
+                                             node->base.properties.type, 0, &translator_type,
+                                             &node->base.source_location));
 
     kefir_result_t res = KEFIR_OK;
     const struct kefir_ast_type *array_type =
@@ -201,8 +202,8 @@ kefir_result_t kefir_ast_translate_struct_member_lvalue(struct kefir_mem *mem,
             KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected expression of complete structure/union type"));
 
     struct kefir_ast_translator_type *translator_type = NULL;
-    REQUIRE_OK(
-        kefir_ast_translator_type_new(mem, context->environment, context->module, structure_type, 0, &translator_type));
+    REQUIRE_OK(kefir_ast_translator_type_new(mem, context->ast_context, context->environment, context->module,
+                                             structure_type, 0, &translator_type, &node->base.source_location));
 
     struct kefir_ast_type_layout *member_layout = NULL;
     struct kefir_ast_designator designator = {

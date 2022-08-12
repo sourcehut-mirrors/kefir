@@ -434,6 +434,11 @@ kefir_result_t kefir_string_buffer_merge(struct kefir_mem *mem, struct kefir_str
     REQUIRE(dst != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid destination string buffer"));
     REQUIRE(src != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source string buffer"));
 
+    if (src->mode == dst->mode) {
+        REQUIRE_OK(insert_buffer(mem, dst, src->buffer, src->length));
+        return KEFIR_OK;
+    }
+
     switch (src->mode) {
         case KEFIR_STRING_BUFFER_MULTIBYTE:
         case KEFIR_STRING_BUFFER_UNICODE8: {

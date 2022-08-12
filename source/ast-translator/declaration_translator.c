@@ -53,7 +53,7 @@ static kefir_result_t translate_vla_declaration(struct kefir_mem *mem, const str
         kefir_ast_translator_resolve_type_layout(builder, identifier_data->type_id, identifier_data->layout, NULL));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32(builder, KEFIR_IROPCODE_OFFSETPTR, identifier_data->type_id,
                                                identifier_data->layout->vl_array.array_ptr_field));
-    REQUIRE_OK(kefir_ast_translate_sizeof(mem, context, builder, node->properties.type));
+    REQUIRE_OK(kefir_ast_translate_sizeof(mem, context, builder, node->properties.type, &node->source_location));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_GETLOCALS, 0));
     REQUIRE_OK(
         kefir_ast_translator_resolve_type_layout(builder, identifier_data->type_id, identifier_data->layout, NULL));
@@ -61,7 +61,7 @@ static kefir_result_t translate_vla_declaration(struct kefir_mem *mem, const str
                                                identifier_data->layout->vl_array.array_size_field));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PICK, 1));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_STORE64, 0));
-    REQUIRE_OK(kefir_ast_translate_alignof(mem, context, builder, node->properties.type));
+    REQUIRE_OK(kefir_ast_translate_alignof(mem, context, builder, node->properties.type, &node->source_location));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_ALLOCA, 0));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_STORE64, 0));
     return KEFIR_OK;

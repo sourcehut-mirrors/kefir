@@ -48,12 +48,14 @@ static kefir_result_t unwrap_vla_type(struct kefir_mem *mem, const struct kefir_
 }
 
 static kefir_result_t calculate_type_alignment(struct kefir_mem *mem, const struct kefir_ast_context *context,
-                                               const struct kefir_ast_type *base_type, kefir_size_t *alignment) {
+                                               const struct kefir_ast_type *base_type, kefir_size_t *alignment,
+                                               const struct kefir_source_location *source_location) {
     kefir_ast_target_environment_opaque_type_t opaque_type;
     struct kefir_ast_target_environment_object_info type_info;
     const struct kefir_ast_type *type = NULL;
     REQUIRE_OK(unwrap_vla_type(mem, context, base_type, &type));
-    REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_GET_TYPE(mem, context->target_env, type, &opaque_type));
+    REQUIRE_OK(
+        KEFIR_AST_TARGET_ENVIRONMENT_GET_TYPE(mem, context, context->target_env, type, &opaque_type, source_location));
     kefir_result_t res =
         KEFIR_AST_TARGET_ENVIRONMENT_OBJECT_INFO(mem, context->target_env, opaque_type, NULL, &type_info);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -171,7 +173,8 @@ kefir_result_t kefir_ast_evaluate_unary_operation_node(struct kefir_mem *mem, co
 
             kefir_ast_target_environment_opaque_type_t opaque_type;
             struct kefir_ast_target_environment_object_info type_info;
-            REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_GET_TYPE(mem, context->target_env, type, &opaque_type));
+            REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_GET_TYPE(mem, context, context->target_env, type, &opaque_type,
+                                                             &node->base.source_location));
             kefir_result_t res =
                 KEFIR_AST_TARGET_ENVIRONMENT_OBJECT_INFO(mem, context->target_env, opaque_type, NULL, &type_info);
             REQUIRE_ELSE(res == KEFIR_OK, {
@@ -187,13 +190,15 @@ kefir_result_t kefir_ast_evaluate_unary_operation_node(struct kefir_mem *mem, co
             kefir_size_t alignment = 0;
             if (node->arg->properties.category == KEFIR_AST_NODE_CATEGORY_TYPE) {
                 if (node->arg->properties.type_props.alignment == 0) {
-                    REQUIRE_OK(calculate_type_alignment(mem, context, node->arg->properties.type, &alignment));
+                    REQUIRE_OK(calculate_type_alignment(mem, context, node->arg->properties.type, &alignment,
+                                                        &node->base.source_location));
                 } else {
                     alignment = node->arg->properties.type_props.alignment;
                 }
             } else if (node->arg->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION) {
                 if (node->arg->properties.expression_props.alignment == 0) {
-                    REQUIRE_OK(calculate_type_alignment(mem, context, node->arg->properties.type, &alignment));
+                    REQUIRE_OK(calculate_type_alignment(mem, context, node->arg->properties.type, &alignment,
+                                                        &node->base.source_location));
                 } else {
                     alignment = node->arg->properties.expression_props.alignment;
                 }

@@ -92,8 +92,9 @@ static kefir_result_t visit_structure_member(const struct kefir_ast_visitor *vis
 
     struct kefir_ast_target_environment_object_info object_info;
     kefir_ast_target_environment_opaque_type_t opaque_type;
-    REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_GET_TYPE(param->mem, param->context->target_env,
-                                                     node->structure->properties.type, &opaque_type));
+    REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_GET_TYPE(param->mem, param->context, param->context->target_env,
+                                                     node->structure->properties.type, &opaque_type,
+                                                     &node->base.source_location));
     kefir_result_t res = KEFIR_AST_TARGET_ENVIRONMENT_OBJECT_INFO(param->mem, param->context->target_env, opaque_type,
                                                                   &designator, &object_info);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -155,7 +156,8 @@ static kefir_result_t visit_array_subscript(const struct kefir_ast_visitor *visi
 
     struct kefir_ast_target_environment_object_info object_info;
     kefir_ast_target_environment_opaque_type_t opaque_type;
-    REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_GET_TYPE(param->mem, param->context->target_env, array_type, &opaque_type));
+    REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_GET_TYPE(param->mem, param->context, param->context->target_env, array_type,
+                                                     &opaque_type, &node->base.source_location));
     kefir_result_t res = KEFIR_AST_TARGET_ENVIRONMENT_OBJECT_INFO(param->mem, param->context->target_env, opaque_type,
                                                                   &designator, &object_info);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -197,8 +199,9 @@ static kefir_result_t visit_struct_indirect_member(const struct kefir_ast_visito
 
     struct kefir_ast_target_environment_object_info object_info;
     kefir_ast_target_environment_opaque_type_t opaque_type;
-    REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_GET_TYPE(param->mem, param->context->target_env,
-                                                     pointer_to_structure_type->referenced_type, &opaque_type));
+    REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_GET_TYPE(param->mem, param->context, param->context->target_env,
+                                                     pointer_to_structure_type->referenced_type, &opaque_type,
+                                                     &node->base.source_location));
     kefir_result_t res = KEFIR_AST_TARGET_ENVIRONMENT_OBJECT_INFO(param->mem, param->context->target_env, opaque_type,
                                                                   &designator, &object_info);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -241,8 +244,9 @@ static kefir_result_t visit_compound_literal(const struct kefir_ast_visitor *vis
 
         struct kefir_ast_target_environment_object_info object_info;
         kefir_ast_target_environment_opaque_type_t opaque_type;
-        REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_GET_TYPE(param->mem, param->context->target_env, scoped_id->object.type,
-                                                         &opaque_type));
+        REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_GET_TYPE(param->mem, param->context, param->context->target_env,
+                                                         scoped_id->object.type, &opaque_type,
+                                                         &node->base.source_location));
         kefir_result_t res = KEFIR_AST_TARGET_ENVIRONMENT_OBJECT_INFO(
             param->mem, param->context->target_env, opaque_type, &temp_member_designator, &object_info);
         REQUIRE_ELSE(res == KEFIR_OK, {

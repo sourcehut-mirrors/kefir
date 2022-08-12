@@ -133,8 +133,9 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
             REQUIRE_OK(build_member_designator(mem, context, member_designator, &designator));
 
             kefir_ast_target_environment_opaque_type_t opaque_type;
-            kefir_result_t res = KEFIR_AST_TARGET_ENVIRONMENT_GET_TYPE(mem, context->target_env,
-                                                                       offset_base->properties.type, &opaque_type);
+            kefir_result_t res =
+                KEFIR_AST_TARGET_ENVIRONMENT_GET_TYPE(mem, context, context->target_env, offset_base->properties.type,
+                                                      &opaque_type, &node->base.source_location);
             REQUIRE_ELSE(res == KEFIR_OK, {
                 kefir_ast_designator_free(mem, designator);
                 return res;

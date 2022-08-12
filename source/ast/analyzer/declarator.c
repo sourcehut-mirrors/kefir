@@ -37,7 +37,7 @@ static kefir_result_t analyze_declaration_specifiers_impl(struct kefir_mem *, co
                                                           const struct kefir_ast_type **,
                                                           kefir_ast_scoped_identifier_storage_t *,
                                                           kefir_ast_function_specifier_t *, kefir_size_t *,
-                                                          kefir_uint64_t);
+                                                          kefir_uint64_t, const struct kefir_source_location *);
 
 static struct kefir_ast_alignment *wrap_alignment(struct kefir_mem *mem, kefir_size_t alignment) {
     if (alignment > 0) {
@@ -50,14 +50,16 @@ static struct kefir_ast_alignment *wrap_alignment(struct kefir_mem *mem, kefir_s
 static kefir_result_t process_struct_declaration_entry(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                                        struct kefir_ast_struct_type *struct_type,
                                                        struct kefir_ast_structure_declaration_entry *entry,
-                                                       kefir_uint64_t flags) {
+                                                       kefir_uint64_t flags,
+                                                       const struct kefir_source_location *source_location) {
     const struct kefir_ast_type *base_field_type = NULL;
     kefir_ast_scoped_identifier_storage_t storage_class = KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN;
     kefir_size_t alignment = 0;
     REQUIRE_OK(analyze_declaration_specifiers_impl(
         mem, context, &entry->declaration.specifiers, &base_field_type, &storage_class, NULL, &alignment,
         (flags & (~KEFIR_AST_DECLARATION_ANALYSIS_IGNORE_ALIGNMENT_SPECIFIER)) |
-            KEFIR_AST_DECLARATION_ANALYSIS_FORBID_ALIGNMENT_DECREASE));
+            KEFIR_AST_DECLARATION_ANALYSIS_FORBID_ALIGNMENT_DECREASE,
+        source_location));
 
     for (const struct kefir_list_entry *iter = kefir_list_head(&entry->declaration.declarators); iter != NULL;
          kefir_list_next(&iter)) {
@@ -97,8 +99,9 @@ static kefir_result_t process_struct_declaration_entry(struct kefir_mem *mem, co
 
             kefir_ast_target_environment_opaque_type_t target_type;
             struct kefir_ast_target_environment_object_info target_obj_info;
-            REQUIRE_OK(context->target_env->get_type(mem, context->target_env, kefir_ast_unqualified_type(field_type),
-                                                     &target_type));
+            REQUIRE_OK(context->target_env->get_type(mem, context, context->target_env,
+                                                     kefir_ast_unqualified_type(field_type), &target_type,
+                                                     &entry_declarator->declarator->source_location));
             kefir_result_t res =
                 context->target_env->object_info(mem, context->target_env, target_type, NULL, &target_obj_info);
             REQUIRE_ELSE(res == KEFIR_OK, {
@@ -167,7 +170,8 @@ static kefir_result_t process_struct_declaration_entry(struct kefir_mem *mem, co
 
 static kefir_result_t resolve_struct_type(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                           const struct kefir_ast_declarator_specifier *decl_specifier,
-                                          const struct kefir_ast_type **base_type, kefir_uint64_t flags) {
+                                          const struct kefir_ast_type **base_type, kefir_uint64_t flags,
+                                          const struct kefir_source_location *source_location) {
     const struct kefir_ast_structure_specifier *specifier = decl_specifier->type_specifier.value.structure;
     kefir_bool_t resolved = false;
     const struct kefir_ast_type *type = NULL;
@@ -184,7 +188,7 @@ static kefir_result_t resolve_struct_type(struct kefir_mem *mem, const struct ke
             if (entry->is_static_assertion) {
                 REQUIRE_OK(kefir_ast_analyze_node(mem, context, KEFIR_AST_NODE_BASE(entry->static_assertion)));
             } else {
-                REQUIRE_OK(process_struct_declaration_entry(mem, context, struct_type, entry, flags));
+                REQUIRE_OK(process_struct_declaration_entry(mem, context, struct_type, entry, flags, source_location));
             }
         }
     } else {
@@ -451,7 +455,8 @@ static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast
             REQUIRE(*seq_state == TYPE_SPECIFIER_SEQUENCE_EMPTY,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
                                            "Cannot combine struct/union type specifier with others"));
-            REQUIRE_OK(resolve_struct_type(mem, context, decl_specifier, base_type, flags));
+            REQUIRE_OK(
+                resolve_struct_type(mem, context, decl_specifier, base_type, flags, &decl_specifier->source_location));
             *seq_state = TYPE_SPECIFIER_SEQUENCE_SPECIFIERS;
             break;
 
@@ -724,11 +729,12 @@ static kefir_result_t resolve_function_specifier(kefir_ast_function_specifier_ty
 
 static kefir_result_t type_alignment(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                      const struct kefir_ast_type *type, kefir_size_t *alignment,
-                                     kefir_size_t *max_alignment) {
+                                     kefir_size_t *max_alignment, const struct kefir_source_location *source_location) {
 
     kefir_ast_target_environment_opaque_type_t target_type;
     struct kefir_ast_target_environment_object_info object_info;
-    REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_GET_TYPE(mem, context->target_env, type, &target_type));
+    REQUIRE_OK(
+        KEFIR_AST_TARGET_ENVIRONMENT_GET_TYPE(mem, context, context->target_env, type, &target_type, source_location));
     kefir_result_t res =
         KEFIR_AST_TARGET_ENVIRONMENT_OBJECT_INFO(mem, context->target_env, target_type, NULL, &object_info);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -746,7 +752,7 @@ static kefir_result_t evaluate_alignment(struct kefir_mem *mem, const struct kef
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, node));
     if (node->properties.category == KEFIR_AST_NODE_CATEGORY_TYPE) {
         kefir_size_t new_alignment = 0;
-        REQUIRE_OK(type_alignment(mem, context, node->properties.type, &new_alignment, NULL));
+        REQUIRE_OK(type_alignment(mem, context, node->properties.type, &new_alignment, NULL, &node->source_location));
         *alignment = MAX(*alignment, new_alignment);
     } else {
         struct kefir_ast_constant_expression_value value;
@@ -926,7 +932,7 @@ static kefir_result_t resolve_function_declarator(struct kefir_mem *mem, const s
 static kefir_result_t analyze_declaration_declarator_alignment_attribute(
     struct kefir_mem *mem, const struct kefir_ast_context *context, struct kefir_ast_attribute *attribute,
     const struct kefir_ast_type **base_type, kefir_size_t *alignment, kefir_uint64_t flags,
-    struct kefir_ast_declarator_attributes *attributes) {
+    struct kefir_ast_declarator_attributes *attributes, const struct kefir_source_location *source_location) {
     REQUIRE(alignment != NULL, KEFIR_OK);
 
     if (kefir_list_length(&attribute->parameters) == 1) {
@@ -940,7 +946,7 @@ static kefir_result_t analyze_declaration_declarator_alignment_attribute(
 
         if ((flags & KEFIR_AST_DECLARATION_ANALYSIS_FORBID_ALIGNMENT_DECREASE) != 0) {
             kefir_size_t natural_alignment;
-            REQUIRE_OK(type_alignment(mem, context, *base_type, &natural_alignment, NULL));
+            REQUIRE_OK(type_alignment(mem, context, *base_type, &natural_alignment, NULL, source_location));
             if (alignment_value.uinteger >= natural_alignment) {
                 *alignment = MAX(*alignment, alignment_value.uinteger);
             }
@@ -951,7 +957,7 @@ static kefir_result_t analyze_declaration_declarator_alignment_attribute(
             *alignment = alignment_value.uinteger;
         }
     } else if (kefir_list_length(&attribute->parameters) == 0) {
-        REQUIRE_OK(type_alignment(mem, context, *base_type, NULL, alignment));
+        REQUIRE_OK(type_alignment(mem, context, *base_type, NULL, alignment, source_location));
         if (attributes != NULL) {
             attributes->aligned = *alignment;
         }
@@ -974,8 +980,8 @@ static kefir_result_t analyze_declaration_declarator_attributes(struct kefir_mem
             ASSIGN_DECL_CAST(struct kefir_ast_attribute *, attribute, iter2->value);
 
             if (strcmp(attribute->name, "aligned") == 0 || strcmp(attribute->name, "__aligned__") == 0) {
-                REQUIRE_OK(analyze_declaration_declarator_alignment_attribute(mem, context, attribute, base_type,
-                                                                              alignment, flags, attributes));
+                REQUIRE_OK(analyze_declaration_declarator_alignment_attribute(
+                    mem, context, attribute, base_type, alignment, flags, attributes, &declarator->source_location));
             } else if (strcmp(attribute->name, "__gnu_inline__") == 0 && attributes != NULL) {
                 attributes->gnu_inline = true;
             }
@@ -1047,13 +1053,11 @@ kefir_result_t kefir_ast_analyze_declaration_declarator(struct kefir_mem *mem, c
     return KEFIR_OK;
 }
 
-static kefir_result_t analyze_declaration_specifiers_impl(struct kefir_mem *mem,
-                                                          const struct kefir_ast_context *context,
-                                                          const struct kefir_ast_declarator_specifier_list *specifiers,
-                                                          const struct kefir_ast_type **type,
-                                                          kefir_ast_scoped_identifier_storage_t *storage,
-                                                          kefir_ast_function_specifier_t *function,
-                                                          kefir_size_t *alignment, kefir_uint64_t flags) {
+static kefir_result_t analyze_declaration_specifiers_impl(
+    struct kefir_mem *mem, const struct kefir_ast_context *context,
+    const struct kefir_ast_declarator_specifier_list *specifiers, const struct kefir_ast_type **type,
+    kefir_ast_scoped_identifier_storage_t *storage, kefir_ast_function_specifier_t *function, kefir_size_t *alignment,
+    kefir_uint64_t flags, const struct kefir_source_location *source_location) {
     enum signedness signedness = SIGNEDNESS_DEFAULT;
     enum type_specifier_sequence_state seq_state = TYPE_SPECIFIER_SEQUENCE_EMPTY;
     const struct kefir_ast_type *base_type = NULL;
@@ -1115,7 +1119,7 @@ static kefir_result_t analyze_declaration_specifiers_impl(struct kefir_mem *mem,
     if (alignment != NULL) {
         if (alignment_specifier > 0) {
             kefir_size_t natural_alignment = 0;
-            REQUIRE_OK(type_alignment(mem, context, base_type, &natural_alignment, NULL));
+            REQUIRE_OK(type_alignment(mem, context, base_type, &natural_alignment, NULL, source_location));
             REQUIRE(natural_alignment <= alignment_specifier,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR,
                                            kefir_ast_declarator_specifier_list_source_location(specifiers),
@@ -1131,15 +1135,16 @@ kefir_result_t kefir_ast_analyze_declaration_specifiers(struct kefir_mem *mem, c
                                                         const struct kefir_ast_type **type,
                                                         kefir_ast_scoped_identifier_storage_t *storage,
                                                         kefir_ast_function_specifier_t *function,
-                                                        kefir_size_t *alignment, kefir_uint64_t flags) {
+                                                        kefir_size_t *alignment, kefir_uint64_t flags,
+                                                        const struct kefir_source_location *source_location) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST context"));
     REQUIRE(specifiers != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST declarator specifier list"));
 
     ASSIGN_PTR(alignment, 0);
-    REQUIRE_OK(
-        analyze_declaration_specifiers_impl(mem, context, specifiers, type, storage, function, alignment, flags));
+    REQUIRE_OK(analyze_declaration_specifiers_impl(mem, context, specifiers, type, storage, function, alignment, flags,
+                                                   source_location));
     return KEFIR_OK;
 }
 
@@ -1149,7 +1154,8 @@ kefir_result_t kefir_ast_analyze_declaration(struct kefir_mem *mem, const struct
                                              const struct kefir_ast_type **type,
                                              kefir_ast_scoped_identifier_storage_t *storage,
                                              kefir_ast_function_specifier_t *function, kefir_size_t *alignment,
-                                             kefir_uint64_t flags, struct kefir_ast_declarator_attributes *attributes) {
+                                             kefir_uint64_t flags, struct kefir_ast_declarator_attributes *attributes,
+                                             const struct kefir_source_location *source_location) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST context"));
     REQUIRE(specifiers != NULL,
@@ -1159,7 +1165,7 @@ kefir_result_t kefir_ast_analyze_declaration(struct kefir_mem *mem, const struct
 
     const struct kefir_ast_type *base_type = NULL;
     REQUIRE_OK(kefir_ast_analyze_declaration_specifiers(mem, context, specifiers, &base_type, storage, function,
-                                                        alignment, flags));
+                                                        alignment, flags, source_location));
     REQUIRE_OK(kefir_ast_analyze_declaration_declarator(mem, context, declarator, identifier, &base_type, alignment,
                                                         flags, attributes));
     ASSIGN_PTR(type, base_type);

@@ -71,8 +71,8 @@ static kefir_result_t dump_type_layout(struct kefir_json_output *json, const str
     return KEFIR_OK;
 }
 
-static kefir_result_t dump_type(struct kefir_mem *mem, struct kefir_json_output *json,
-                                const struct kefir_ast_type *type) {
+static kefir_result_t dump_type(struct kefir_mem *mem, const struct kefir_ast_context *context,
+                                struct kefir_json_output *json, const struct kefir_ast_type *type) {
     struct kefir_ir_type ir_type;
     struct kefir_irbuilder_type builder;
     struct kefir_ast_translator_environment env;
@@ -82,7 +82,7 @@ static kefir_result_t dump_type(struct kefir_mem *mem, struct kefir_json_output 
     REQUIRE_OK(kefir_ast_translator_environment_init(&env, kft_util_get_ir_target_platform()));
 
     struct kefir_ast_type_layout *layout1 = NULL;
-    REQUIRE_OK(kefir_ast_translate_object_type(mem, type, 0, &env, &builder, &layout1));
+    REQUIRE_OK(kefir_ast_translate_object_type(mem, context, type, 0, &env, &builder, &layout1, NULL));
     REQUIRE_OK(kefir_ast_translator_evaluate_type_layout(mem, &env, layout1, &ir_type));
     REQUIRE(layout1 != NULL, KEFIR_INTERNAL_ERROR);
 

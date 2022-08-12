@@ -35,7 +35,7 @@ kefir_result_t append_specifiers(struct kefir_mem *, struct kefir_ast_declarator
                                                                                                                       \
         const struct kefir_ast_type *type = NULL;                                                                     \
         ASSERT_OK(kefir_ast_analyze_declaration((_mem), (_context), &specifiers, NULL, NULL, &type, NULL, NULL, NULL, \
-                                                KEFIR_AST_DECLARATION_ANALYSIS_NORMAL, NULL));                        \
+                                                KEFIR_AST_DECLARATION_ANALYSIS_NORMAL, NULL, NULL));                  \
                                                                                                                       \
         ASSERT(type != NULL);                                                                                         \
         ASSERT(KEFIR_AST_TYPE_SAME(type, (_type)));                                                                   \
@@ -58,7 +58,7 @@ kefir_result_t append_specifiers(struct kefir_mem *, struct kefir_ast_declarator
         const char *identifier = NULL;                                                                                 \
         ASSERT_OK(kefir_ast_analyze_declaration((_mem), (_context), &specifiers, declarator, &identifier, &type,       \
                                                 &storage, &function_specifier, &alignment,                             \
-                                                KEFIR_AST_DECLARATION_ANALYSIS_NORMAL, NULL));                         \
+                                                KEFIR_AST_DECLARATION_ANALYSIS_NORMAL, NULL, NULL));                   \
         ASSERT_OK(kefir_ast_analyze_type((_mem), (_context), KEFIR_AST_TYPE_ANALYSIS_DEFAULT, type, NULL));            \
                                                                                                                        \
         ASSERT(strcmp(identifier, "var") == 0);                                                                        \
@@ -86,7 +86,7 @@ kefir_result_t append_specifiers(struct kefir_mem *, struct kefir_ast_declarator
         kefir_ast_function_specifier_t function_specifier;                                                          \
         ASSERT_OK(kefir_ast_analyze_declaration((_mem), (_context), &specifiers, declarator, NULL, &type, &storage, \
                                                 &function_specifier, NULL, KEFIR_AST_DECLARATION_ANALYSIS_NORMAL,   \
-                                                NULL));                                                             \
+                                                NULL, NULL));                                                       \
                                                                                                                     \
         ASSERT(type != NULL);                                                                                       \
         ASSERT(KEFIR_AST_TYPE_SAME(type, (_type)));                                                                 \
