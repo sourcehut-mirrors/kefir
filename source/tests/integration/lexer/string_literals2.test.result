@@ -2,6 +2,7 @@
     {
         "class": "string_literal",
         "preprocessor": false,
+        "raw": false,
         "type": "unicode8",
         "content": "Hello, world!\u0000",
         "length": 14
@@ -14,6 +15,7 @@
     {
         "class": "string_literal",
         "preprocessor": false,
+        "raw": false,
         "type": "unicode8",
         "content": "abc\u0000",
         "length": 4
@@ -26,6 +28,7 @@
     {
         "class": "string_literal",
         "preprocessor": false,
+        "raw": false,
         "type": "unicode8",
         "content": "\u0000\u0000\t\v\f               eHllow,, onE two Three \\ \"'\u0000",
         "length": 48
@@ -49,6 +52,7 @@
     {
         "class": "string_literal",
         "preprocessor": false,
+        "raw": false,
         "type": "unicode8",
         "content": "\"\\world!gyp\u0000",
         "length": 12

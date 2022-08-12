@@ -113,6 +113,7 @@
     {
         "class": "string_literal",
         "preprocessor": false,
+        "raw": false,
         "type": "multibyte",
         "content": "What is 3.372 + 0x62p1\u0000",
         "length": 23

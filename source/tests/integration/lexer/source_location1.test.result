@@ -64,6 +64,7 @@
     {
         "class": "string_literal",
         "preprocessor": false,
+        "raw": false,
         "type": "multibyte",
         "content": "Hello, world!\u0000",
         "length": 14,

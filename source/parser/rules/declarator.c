@@ -445,6 +445,8 @@ static kefir_result_t scan_asm_label(struct kefir_mem *mem, struct kefir_parser 
             KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 2), "Expected right parenthese"));
 
     const struct kefir_token *token = PARSER_CURSOR(parser, 1);
+    REQUIRE(!token->string_literal.raw_literal,
+            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected raw string literal in parsing phase"));
     switch (token->string_literal.type) {
         case KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE:
         case KEFIR_STRING_LITERAL_TOKEN_UNICODE8: {

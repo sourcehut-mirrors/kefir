@@ -197,6 +197,7 @@
     {
         "class": "string_literal",
         "preprocessor": false,
+        "raw": false,
         "type": "multibyte",
         "content": "\n\n\t\n\"\u0000",
         "length": 6
@@ -234,6 +235,7 @@
     {
         "class": "string_literal",
         "preprocessor": false,
+        "raw": false,
         "type": "unicode32",
         "content": [
             49,

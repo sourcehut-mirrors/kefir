@@ -2,6 +2,7 @@
     {
         "class": "string_literal",
         "preprocessor": false,
+        "raw": false,
         "type": "unicode32",
         "content": [
             71,
@@ -38,6 +39,7 @@
     {
         "class": "string_literal",
         "preprocessor": false,
+        "raw": false,
         "type": "unicode32",
         "content": [
             135,
@@ -69,6 +71,7 @@
     {
         "class": "string_literal",
         "preprocessor": false,
+        "raw": false,
         "type": "multibyte",
         "content": "123\u0000",
         "length": 4
@@ -81,6 +84,7 @@
     {
         "class": "string_literal",
         "preprocessor": false,
+        "raw": false,
         "type": "unicode32",
         "content": [
             49,
@@ -96,6 +100,7 @@
     {
         "class": "string_literal",
         "preprocessor": false,
+        "raw": false,
         "type": "unicode16",
         "content": [
             51,
@@ -111,6 +116,7 @@
     {
         "class": "string_literal",
         "preprocessor": false,
+        "raw": false,
         "type": "unicode32",
         "content": [
             13,

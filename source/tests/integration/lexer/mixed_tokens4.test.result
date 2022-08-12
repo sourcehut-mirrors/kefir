@@ -2,6 +2,7 @@
     {
         "class": "string_literal",
         "preprocessor": false,
+        "raw": false,
         "type": "multibyte",
         "content": "ABC-DEF-123\u0000",
         "length": 12
@@ -171,6 +172,7 @@
     {
         "class": "string_literal",
         "preprocessor": false,
+        "raw": false,
         "type": "multibyte",
         "content": "\a\b\u0000",
         "length": 3

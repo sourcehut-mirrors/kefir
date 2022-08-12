@@ -260,7 +260,99 @@ static kefir_result_t format_constant(FILE *out, const struct kefir_token *token
     return KEFIR_OK;
 }
 
+static kefir_result_t format_char32(FILE *out, const kefir_char32_t *str, kefir_size_t len) {
+    char mb[MB_LEN_MAX];
+    mbstate_t mbstate = {0};
+    for (kefir_size_t i = 0; i < len; i++) {
+        kefir_char32_t chr = str[i];
+        switch (chr) {
+            case U'\'':
+                fprintf(out, "\\\'");
+                break;
+
+            case U'\"':
+                fprintf(out, "\\\"");
+                break;
+
+            case U'?':
+                fprintf(out, "\\?");
+                break;
+
+            case U'\\':
+                fprintf(out, "\\\\");
+                break;
+
+            case U'\a':
+                fprintf(out, "\\a");
+                break;
+
+            case U'\b':
+                fprintf(out, "\\b");
+                break;
+
+            case U'\f':
+                fprintf(out, "\\f");
+                break;
+
+            case U'\n':
+                fprintf(out, "\\n");
+                break;
+
+            case U'\r':
+                fprintf(out, "\\r");
+                break;
+
+            case U'\t':
+                fprintf(out, "\\t");
+                break;
+
+            case U'\v':
+                fprintf(out, "\\v");
+                break;
+
+            default: {
+                size_t rc = c32rtomb(mb, chr, &mbstate);
+                if (rc == (size_t) -1) {
+                    mbstate = (mbstate_t){0};
+                    fprintf(out, "\\x%x", chr);
+                } else if (rc != 0) {
+                    fprintf(out, "%.*s", (int) rc, mb);
+                }
+            } break;
+        }
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t format_string_literal(FILE *out, const struct kefir_token *token) {
+    if (token->string_literal.raw_literal) {
+        switch (token->string_literal.type) {
+            case KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE:
+                fprintf(out, "\"");
+                break;
+
+            case KEFIR_STRING_LITERAL_TOKEN_UNICODE8:
+                fprintf(out, "u8\"");
+                break;
+
+            case KEFIR_STRING_LITERAL_TOKEN_UNICODE16:
+                fprintf(out, "u\"");
+                break;
+
+            case KEFIR_STRING_LITERAL_TOKEN_UNICODE32:
+                fprintf(out, "U\"");
+                break;
+
+            case KEFIR_STRING_LITERAL_TOKEN_WIDE:
+                fprintf(out, "L\"");
+                break;
+        }
+
+        REQUIRE_OK(
+            format_char32(out, (const kefir_char32_t *) token->string_literal.literal, token->string_literal.length));
+        fprintf(out, "\"");
+        return KEFIR_OK;
+    }
     switch (token->string_literal.type) {
         case KEFIR_STRING_LITERAL_TOKEN_UNICODE8:
             fprintf(out, "u8");
@@ -285,10 +377,8 @@ static kefir_result_t format_string_literal(FILE *out, const struct kefir_token 
 
         case KEFIR_STRING_LITERAL_TOKEN_UNICODE32:
             fprintf(out, "U\"");
-            for (kefir_size_t i = 0; i < token->string_literal.length - 1; i++) {
-                kefir_char32_t chr = ((const kefir_char32_t *) token->string_literal.literal)[i];
-                fprintf(out, "\\x%x", chr);
-            }
+            REQUIRE_OK(format_char32(out, (const kefir_char32_t *) token->string_literal.literal,
+                                     token->string_literal.length));
             fprintf(out, "\"");
             break;
 

@@ -519,6 +519,42 @@ static kefir_result_t format_constant(struct kefir_json_output *json, const stru
 }
 
 kefir_result_t format_string_literal(struct kefir_json_output *json, const struct kefir_token *token) {
+    REQUIRE_OK(kefir_json_output_object_key(json, "raw"));
+    REQUIRE_OK(kefir_json_output_boolean(json, token->string_literal.raw_literal));
+    if (token->string_literal.raw_literal) {
+        REQUIRE_OK(kefir_json_output_object_key(json, "type"));
+        switch (token->string_literal.type) {
+            case KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE:
+                REQUIRE_OK(kefir_json_output_string(json, "multibyte"));
+                break;
+
+            case KEFIR_STRING_LITERAL_TOKEN_UNICODE8:
+                REQUIRE_OK(kefir_json_output_string(json, "unicode8"));
+                break;
+
+            case KEFIR_STRING_LITERAL_TOKEN_UNICODE16: {
+                REQUIRE_OK(kefir_json_output_string(json, "unicode16"));
+            } break;
+
+            case KEFIR_STRING_LITERAL_TOKEN_UNICODE32:
+                REQUIRE_OK(kefir_json_output_string(json, "unicode32"));
+                break;
+
+            case KEFIR_STRING_LITERAL_TOKEN_WIDE:
+                REQUIRE_OK(kefir_json_output_string(json, "wide"));
+                break;
+        }
+        REQUIRE_OK(kefir_json_output_object_key(json, "content"));
+        REQUIRE_OK(kefir_json_output_array_begin(json));
+        for (kefir_size_t i = 0; i < token->string_literal.length; i++) {
+            REQUIRE_OK(kefir_json_output_uinteger(json, ((const kefir_char32_t *) token->string_literal.literal)[i]));
+        }
+        REQUIRE_OK(kefir_json_output_array_end(json));
+        REQUIRE_OK(kefir_json_output_object_key(json, "length"));
+        REQUIRE_OK(kefir_json_output_uinteger(json, token->string_literal.length));
+        return KEFIR_OK;
+    }
+
     REQUIRE_OK(kefir_json_output_object_key(json, "type"));
     switch (token->string_literal.type) {
         case KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE:

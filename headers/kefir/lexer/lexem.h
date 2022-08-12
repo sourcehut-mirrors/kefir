@@ -140,6 +140,7 @@ typedef struct kefir_constant_token {
 } kefir_constant_token_t;
 
 typedef struct kefir_string_literal_token {
+    kefir_bool_t raw_literal;
     kefir_string_literal_token_type_t type;
     void *literal;
     kefir_size_t length;
@@ -277,6 +278,8 @@ kefir_result_t kefir_token_new_string_literal_unicode32(struct kefir_mem *, cons
                                                         struct kefir_token *);
 kefir_result_t kefir_token_new_string_literal_wide(struct kefir_mem *, const kefir_wchar_t *, kefir_size_t,
                                                    struct kefir_token *);
+kefir_result_t kefir_token_new_string_literal_raw(struct kefir_mem *, kefir_string_literal_token_type_t,
+                                                  const kefir_char32_t *, kefir_size_t, struct kefir_token *);
 kefir_result_t kefir_token_new_punctuator(kefir_punctuator_token_t, struct kefir_token *);
 kefir_result_t kefir_token_new_pp_whitespace(kefir_bool_t, struct kefir_token *);
 kefir_result_t kefir_token_new_pp_number(struct kefir_mem *, const char *, kefir_size_t, struct kefir_token *);

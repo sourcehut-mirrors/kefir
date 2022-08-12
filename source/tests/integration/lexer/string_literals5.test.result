@@ -2,6 +2,7 @@
     {
         "class": "string_literal",
         "preprocessor": false,
+        "raw": false,
         "type": "wide",
         "content": [
             84,
@@ -46,6 +47,7 @@
     {
         "class": "string_literal",
         "preprocessor": false,
+        "raw": false,
         "type": "wide",
         "content": [
             64,
@@ -69,6 +71,7 @@
     {
         "class": "string_literal",
         "preprocessor": false,
+        "raw": false,
         "type": "wide",
         "content": [
             13,
@@ -112,6 +115,7 @@
     {
         "class": "string_literal",
         "preprocessor": false,
+        "raw": false,
         "type": "multibyte",
         "content": "test\u0000",
         "length": 5
@@ -124,6 +128,7 @@
     {
         "class": "string_literal",
         "preprocessor": false,
+        "raw": false,
         "type": "multibyte",
         "content": " temp \u0000",
         "length": 7
@@ -136,6 +141,7 @@
     {
         "class": "string_literal",
         "preprocessor": false,
+        "raw": false,
         "type": "wide",
         "content": [
             104,
