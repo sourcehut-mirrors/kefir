@@ -57,7 +57,7 @@ static kefir_result_t kefir_lexer_next_string_literal_impl(struct kefir_mem *mem
             kefir_char32_t result;
             REQUIRE_OK(kefir_lexer_cursor_next_escape_sequence(lexer->cursor, &result));
             if (hex_oct_sequence) {
-                kefir_result_t res = kefir_string_buffer_insert_raw(mem, buffer, result);
+                kefir_result_t res = kefir_string_buffer_append_literal(mem, buffer, result);
                 if (res == KEFIR_OUT_OF_BOUNDS) {
                     kefir_clear_error();
                     res = KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &char_location,
@@ -65,10 +65,10 @@ static kefir_result_t kefir_lexer_next_string_literal_impl(struct kefir_mem *mem
                 }
                 REQUIRE_OK(res);
             } else {
-                REQUIRE_OK(kefir_string_buffer_insert(mem, buffer, result));
+                REQUIRE_OK(kefir_string_buffer_append(mem, buffer, result));
             }
         } else {
-            REQUIRE_OK(kefir_string_buffer_insert(mem, buffer, chr));
+            REQUIRE_OK(kefir_string_buffer_append(mem, buffer, chr));
             REQUIRE_OK(kefir_lexer_source_cursor_next(lexer->cursor, 1));
         }
     }

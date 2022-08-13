@@ -18,21 +18,15 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef KEFIR_UTIL_CHAR32_H_
-#define KEFIR_UTIL_CHAR32_H_
+#ifndef KEFIR_PREPROCESSOR_UTIL_H_
+#define KEFIR_PREPROCESSOR_UTIL_H_
 
-#include "kefir/core/basic-types.h"
+#include "kefir/lexer/lexem.h"
+#include "kefir/core/mem.h"
 
-#define KEFIR_STRCMP32_ERROR KEFIR_INT_MAX
-
-kefir_size_t kefir_strlen32(const kefir_char32_t *);
-kefir_bool_t kefir_isspace32(kefir_char32_t);
-kefir_bool_t kefir_isdigit32(kefir_char32_t);
-kefir_bool_t kefir_isoctdigit32(kefir_char32_t);
-kefir_bool_t kefir_ishexdigit32(kefir_char32_t);
-kefir_bool_t kefir_isnondigit32(kefir_char32_t);
-kefir_int_t kefir_strcmp32(const kefir_char32_t *, const kefir_char32_t *);
-kefir_uint32_t kefir_hex32todec(kefir_char32_t);
-kefir_char32_t kefir_dectohex32(kefir_uint64_t);
+kefir_result_t kefir_token_new_string_literal_raw_from_escaped_multibyte(struct kefir_mem *,
+                                                                         kefir_string_literal_token_type_t,
+                                                                         const char *, kefir_size_t,
+                                                                         struct kefir_token *);
 
 #endif

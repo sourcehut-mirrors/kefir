@@ -48,7 +48,7 @@ static kefir_result_t match_header_name(struct kefir_mem *mem, struct kefir_lexe
         scan_pp_header_name = chr != terminator;
         if (scan_pp_header_name) {
             REQUIRE_OK(kefir_lexer_source_cursor_next(lexer->cursor, 1));
-            REQUIRE_OK(kefir_string_buffer_insert(mem, strbuf, chr));
+            REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
         }
     }
 

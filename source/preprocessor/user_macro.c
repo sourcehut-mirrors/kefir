@@ -20,6 +20,7 @@
 
 #include "kefir/preprocessor/user_macro.h"
 #include "kefir/preprocessor/preprocessor.h"
+#include "kefir/preprocessor/util.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 #include "kefir/core/hashtree.h"
@@ -115,7 +116,8 @@ static kefir_result_t fn_macro_parameter_stringification(struct kefir_mem *mem, 
                                                 KEFIR_PREPROCESSOR_WHITESPACE_FORMAT_SINGLE_SPACE));
 
     struct kefir_token token;
-    res = kefir_token_new_string_literal_multibyte(mem, string, string_sz, &token);
+    res = kefir_token_new_string_literal_raw_from_escaped_multibyte(mem, KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE, string,
+                                                                    string_sz - 1, &token);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, string);
         return res;

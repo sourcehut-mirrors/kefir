@@ -66,157 +66,6 @@ kefir_result_t kefir_preprocessor_token_convert(struct kefir_mem *mem, struct ke
     return KEFIR_OK;
 }
 
-static kefir_result_t init_string_buffer(struct kefir_token *literal, struct kefir_string_buffer *strbuf) {
-    switch (literal->string_literal.type) {
-        case KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE:
-            REQUIRE_OK(kefir_string_buffer_init_value(strbuf, KEFIR_STRING_BUFFER_MULTIBYTE,
-                                                      literal->string_literal.literal, literal->string_literal.length));
-            break;
-
-        case KEFIR_STRING_LITERAL_TOKEN_UNICODE8:
-            REQUIRE_OK(kefir_string_buffer_init_value(strbuf, KEFIR_STRING_BUFFER_UNICODE8,
-                                                      literal->string_literal.literal, literal->string_literal.length));
-            break;
-
-        case KEFIR_STRING_LITERAL_TOKEN_UNICODE16:
-            REQUIRE_OK(kefir_string_buffer_init_value(strbuf, KEFIR_STRING_BUFFER_UNICODE16,
-                                                      literal->string_literal.literal, literal->string_literal.length));
-            break;
-
-        case KEFIR_STRING_LITERAL_TOKEN_UNICODE32:
-            REQUIRE_OK(kefir_string_buffer_init_value(strbuf, KEFIR_STRING_BUFFER_UNICODE32,
-                                                      literal->string_literal.literal, literal->string_literal.length));
-            break;
-
-        case KEFIR_STRING_LITERAL_TOKEN_WIDE:
-            REQUIRE_OK(kefir_string_buffer_init_value(strbuf, KEFIR_STRING_BUFFER_WIDE, literal->string_literal.literal,
-                                                      literal->string_literal.length));
-            break;
-    }
-    literal->string_literal.literal = NULL;
-    literal->string_literal.length = 0;
-    return KEFIR_OK;
-}
-
-static kefir_result_t join_string_literals_impl(struct kefir_mem *mem, struct kefir_token *literal1,
-                                                struct kefir_token *literal2, struct kefir_token *result) {
-    struct kefir_string_buffer strbuf1, strbuf2;
-    REQUIRE_OK(init_string_buffer(literal1, &strbuf1));
-    kefir_result_t res = init_string_buffer(literal2, &strbuf2);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_string_buffer_free(mem, &strbuf1);
-        return res;
-    });
-
-    if (strbuf1.mode == KEFIR_STRING_BUFFER_MULTIBYTE && strbuf1.mode != strbuf2.mode) {
-        res = kefir_string_buffer_convert(mem, &strbuf1, strbuf2.mode);
-        REQUIRE_ELSE(res == KEFIR_OK, {
-            kefir_string_buffer_free(mem, &strbuf1);
-            kefir_string_buffer_free(mem, &strbuf2);
-            return res;
-        });
-    }
-
-    res = kefir_string_buffer_merge(mem, &strbuf1, &strbuf2);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_string_buffer_free(mem, &strbuf1);
-        kefir_string_buffer_free(mem, &strbuf2);
-        return res;
-    });
-
-    res = kefir_string_buffer_free(mem, &strbuf2);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_string_buffer_free(mem, &strbuf1);
-        return res;
-    });
-
-    kefir_size_t result_length;
-    const void *result_value = kefir_string_buffer_value(&strbuf1, &result_length);
-    switch (strbuf1.mode) {
-        case KEFIR_STRING_BUFFER_MULTIBYTE:
-            res = kefir_token_new_string_literal_multibyte(mem, result_value, result_length, result);
-            break;
-
-        case KEFIR_STRING_BUFFER_UNICODE8:
-            res = kefir_token_new_string_literal_unicode8(mem, result_value, result_length, result);
-            break;
-
-        case KEFIR_STRING_BUFFER_UNICODE16:
-            res = kefir_token_new_string_literal_unicode16(mem, result_value, result_length, result);
-            break;
-
-        case KEFIR_STRING_BUFFER_UNICODE32:
-            res = kefir_token_new_string_literal_unicode32(mem, result_value, result_length, result);
-            break;
-
-        case KEFIR_STRING_BUFFER_WIDE:
-            res = kefir_token_new_string_literal_wide(mem, result_value, result_length, result);
-            break;
-    }
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_string_buffer_free(mem, &strbuf1);
-        return res;
-    });
-
-    res = kefir_string_buffer_free(mem, &strbuf1);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_token_free(mem, result);
-        return res;
-    });
-    return KEFIR_OK;
-}
-
-static kefir_result_t append_string_literal(struct kefir_mem *mem, struct kefir_token_buffer *dst,
-                                            struct kefir_token *literal2) {
-    UNUSED(mem);
-    if (dst->length == 0 || dst->tokens[dst->length - 1].klass != KEFIR_TOKEN_STRING_LITERAL) {
-        return KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to join string literals");
-    }
-    struct kefir_token *literal1 = &dst->tokens[dst->length - 1];
-    switch (literal1->string_literal.type) {
-        case KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE:
-            // Intentionally left blank
-            break;
-
-        case KEFIR_STRING_LITERAL_TOKEN_UNICODE8:
-            REQUIRE(literal2->string_literal.type == KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE ||
-                        literal2->string_literal.type == KEFIR_STRING_LITERAL_TOKEN_UNICODE8,
-                    KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Can only join unicode8 with other unicode8 or multibyte"));
-            break;
-
-        case KEFIR_STRING_LITERAL_TOKEN_UNICODE16:
-            REQUIRE(literal2->string_literal.type == KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE ||
-                        literal2->string_literal.type == KEFIR_STRING_LITERAL_TOKEN_UNICODE16,
-                    KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Can only join unicode16 with other unicode16 or multibyte"));
-            break;
-
-        case KEFIR_STRING_LITERAL_TOKEN_UNICODE32:
-            REQUIRE(literal2->string_literal.type == KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE ||
-                        literal2->string_literal.type == KEFIR_STRING_LITERAL_TOKEN_UNICODE32,
-                    KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Can only join unicode32 with other unicode32 or multibyte"));
-            break;
-
-        case KEFIR_STRING_LITERAL_TOKEN_WIDE:
-            REQUIRE(literal2->string_literal.type == KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE ||
-                        literal2->string_literal.type == KEFIR_STRING_LITERAL_TOKEN_WIDE,
-                    KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Can only join wide with other wide or multibyte"));
-            break;
-    }
-
-    struct kefir_source_location source_location = literal1->source_location;
-    struct kefir_token result;
-    REQUIRE_OK(join_string_literals_impl(mem, literal1, literal2, &result));
-    result.source_location = source_location;
-    kefir_result_t res = kefir_token_buffer_pop(mem, dst);
-    REQUIRE_CHAIN(&res, kefir_token_buffer_emplace(mem, dst, &result));
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_token_free(mem, &result);
-        return res;
-    });
-    REQUIRE_OK(kefir_token_free(mem, literal2));
-    return KEFIR_OK;
-}
-
 kefir_result_t kefir_preprocessor_token_convert_buffer(struct kefir_mem *mem, struct kefir_preprocessor *preprocessor,
                                                        struct kefir_token_buffer *dst,
                                                        const struct kefir_token_buffer *src) {
@@ -225,7 +74,7 @@ kefir_result_t kefir_preprocessor_token_convert_buffer(struct kefir_mem *mem, st
     REQUIRE(dst != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid destination token buffer"));
     REQUIRE(src != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source token buffer"));
 
-    for (kefir_size_t i = 0; i < src->length; i++) {
+    for (kefir_size_t i = 0; i < src->length;) {
         switch (src->tokens[i].klass) {
             case KEFIR_TOKEN_PP_NUMBER:
             case KEFIR_TOKEN_IDENTIFIER:
@@ -241,25 +90,46 @@ kefir_result_t kefir_preprocessor_token_convert_buffer(struct kefir_mem *mem, st
                     kefir_token_free(mem, &token);
                     return res;
                 });
+                i++;
             } break;
 
             case KEFIR_TOKEN_STRING_LITERAL: {
-                kefir_result_t res = append_string_literal(mem, dst, &src->tokens[i]);
-                if (res == KEFIR_NO_MATCH) {
-                    struct kefir_token token;
-                    REQUIRE_OK(kefir_preprocessor_token_convert(mem, preprocessor, &token, &src->tokens[i]));
-                    kefir_result_t res = kefir_token_buffer_emplace(mem, dst, &token);
-                    REQUIRE_ELSE(res == KEFIR_OK, {
-                        kefir_token_free(mem, &token);
-                        return res;
-                    });
-                } else {
-                    REQUIRE_OK(res);
+                struct kefir_token token;
+                struct kefir_list literals;
+                REQUIRE_OK(kefir_list_init(&literals));
+                kefir_result_t res = KEFIR_OK;
+                kefir_string_literal_token_type_t type = KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE;
+                while (res == KEFIR_OK && i < src->length &&
+                       (src->tokens[i].klass == KEFIR_TOKEN_STRING_LITERAL ||
+                        src->tokens[i].klass == KEFIR_TOKEN_PP_WHITESPACE)) {
+                    if (src->tokens[i].klass == KEFIR_TOKEN_STRING_LITERAL) {
+                        REQUIRE(src->tokens[i].string_literal.raw_literal,
+                                KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected raw string literal"));
+                        if (!kefir_token_string_literal_type_concat(type, src->tokens[i].string_literal.type, &type)) {
+                            break;
+                        }
+                        res = kefir_list_insert_after(mem, &literals, kefir_list_tail(&literals),
+                                                      (void *) &src->tokens[i++]);
+                    } else {
+                        i++;
+                    }
                 }
+                REQUIRE_CHAIN(&res, kefir_lexer_merge_raw_string_literals(mem, &literals, &token));
+                REQUIRE_ELSE(res == KEFIR_OK, {
+                    kefir_list_free(mem, &literals);
+                    return res;
+                });
+                res = kefir_list_free(mem, &literals);
+                REQUIRE_CHAIN(&res, kefir_token_buffer_emplace(mem, dst, &token));
+                REQUIRE_ELSE(res == KEFIR_OK, {
+                    kefir_token_free(mem, &token);
+                    return res;
+                });
             } break;
 
             case KEFIR_TOKEN_PP_WHITESPACE:
                 // Skip whitespaces
+                i++;
                 break;
 
             case KEFIR_TOKEN_PP_HEADER_NAME:

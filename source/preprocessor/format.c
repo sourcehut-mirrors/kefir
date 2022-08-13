@@ -28,6 +28,7 @@
 #include "kefir/core/error.h"
 #include "kefir/core/os_error.h"
 #include "kefir/util/uchar.h"
+#include "kefir/util/char32.h"
 #include <ctype.h>
 #include <wctype.h>
 #include <string.h>
@@ -260,70 +261,6 @@ static kefir_result_t format_constant(FILE *out, const struct kefir_token *token
     return KEFIR_OK;
 }
 
-static kefir_result_t format_char32(FILE *out, const kefir_char32_t *str, kefir_size_t len) {
-    char mb[MB_LEN_MAX];
-    mbstate_t mbstate = {0};
-    for (kefir_size_t i = 0; i < len; i++) {
-        kefir_char32_t chr = str[i];
-        switch (chr) {
-            case U'\'':
-                fprintf(out, "\\\'");
-                break;
-
-            case U'\"':
-                fprintf(out, "\\\"");
-                break;
-
-            case U'?':
-                fprintf(out, "\\?");
-                break;
-
-            case U'\\':
-                fprintf(out, "\\\\");
-                break;
-
-            case U'\a':
-                fprintf(out, "\\a");
-                break;
-
-            case U'\b':
-                fprintf(out, "\\b");
-                break;
-
-            case U'\f':
-                fprintf(out, "\\f");
-                break;
-
-            case U'\n':
-                fprintf(out, "\\n");
-                break;
-
-            case U'\r':
-                fprintf(out, "\\r");
-                break;
-
-            case U'\t':
-                fprintf(out, "\\t");
-                break;
-
-            case U'\v':
-                fprintf(out, "\\v");
-                break;
-
-            default: {
-                size_t rc = c32rtomb(mb, chr, &mbstate);
-                if (rc == (size_t) -1) {
-                    mbstate = (mbstate_t){0};
-                    fprintf(out, "\\x%x", chr);
-                } else if (rc != 0) {
-                    fprintf(out, "%.*s", (int) rc, mb);
-                }
-            } break;
-        }
-    }
-    return KEFIR_OK;
-}
-
 static kefir_result_t format_string_literal(FILE *out, const struct kefir_token *token) {
     if (token->string_literal.raw_literal) {
         switch (token->string_literal.type) {
@@ -348,8 +285,18 @@ static kefir_result_t format_string_literal(FILE *out, const struct kefir_token 
                 break;
         }
 
-        REQUIRE_OK(
-            format_char32(out, (const kefir_char32_t *) token->string_literal.literal, token->string_literal.length));
+        char mb[MB_LEN_MAX];
+        mbstate_t mbstate = {0};
+        for (kefir_size_t i = 0; i < token->string_literal.length; i++) {
+            kefir_char32_t chr = ((const kefir_char32_t *) token->string_literal.literal)[i];
+            size_t rc = c32rtomb(mb, chr, &mbstate);
+            if (rc == (size_t) -1) {
+                mbstate = (mbstate_t){0};
+                fprintf(out, "\\U%8x", chr);
+            } else if (rc != 0) {
+                fprintf(out, "%.*s", (int) rc, mb);
+            }
+        }
         fprintf(out, "\"");
         return KEFIR_OK;
     }
@@ -377,8 +324,10 @@ static kefir_result_t format_string_literal(FILE *out, const struct kefir_token 
 
         case KEFIR_STRING_LITERAL_TOKEN_UNICODE32:
             fprintf(out, "U\"");
-            REQUIRE_OK(format_char32(out, (const kefir_char32_t *) token->string_literal.literal,
-                                     token->string_literal.length));
+            for (kefir_size_t i = 0; i < token->string_literal.length - 1; i++) {
+                kefir_char32_t chr = ((const kefir_char32_t *) token->string_literal.literal)[i];
+                fprintf(out, "\\x%x", chr);
+            }
             fprintf(out, "\"");
             break;
 
@@ -497,5 +446,70 @@ kefir_result_t kefir_preprocessor_format_string(struct kefir_mem *mem, char **st
     memcpy(*string_ptr, ptr, sz + 1);
     free(ptr);
     *size_ptr = sz + 1;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_preprocessor_escape_string(struct kefir_mem *mem, struct kefir_string_buffer *strbuf,
+                                                const char *content, kefir_size_t length) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(strbuf != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid string buffer"));
+    REQUIRE(content != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid string"));
+
+    mbstate_t mbstate = {0};
+    for (kefir_size_t i = 0; i < length;) {
+        kefir_char32_t chr;
+        size_t rc = mbrtoc32(&chr, content + i, length - i, &mbstate);
+        if (rc == (size_t) -1 || rc == (size_t) -2 || rc == (size_t) -3) {
+            REQUIRE_OK(kefir_string_buffer_append_string(mem, strbuf, U"\\x", 2));
+            REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, kefir_dectohex32(content[i] >> 4)));
+            REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, kefir_dectohex32(content[i])));
+        } else if (rc == 0) {
+            REQUIRE_OK(kefir_string_buffer_append_string(mem, strbuf, U"\\0", 2));
+            i++;
+        } else {
+            i += rc;
+            switch (chr) {
+                case U'\'':
+                case U'\"':
+                case U'\?':
+                case U'\\':
+                    REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, U'\\'));
+                    REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
+                    break;
+
+                case U'\a':
+                    REQUIRE_OK(kefir_string_buffer_append_string(mem, strbuf, U"\\a", 2));
+                    break;
+
+                case U'\b':
+                    REQUIRE_OK(kefir_string_buffer_append_string(mem, strbuf, U"\\b", 2));
+                    break;
+
+                case U'\f':
+                    REQUIRE_OK(kefir_string_buffer_append_string(mem, strbuf, U"\\f", 2));
+                    break;
+
+                case U'\n':
+                    REQUIRE_OK(kefir_string_buffer_append_string(mem, strbuf, U"\\n", 2));
+                    break;
+
+                case U'\r':
+                    REQUIRE_OK(kefir_string_buffer_append_string(mem, strbuf, U"\\r", 2));
+                    break;
+
+                case U'\t':
+                    REQUIRE_OK(kefir_string_buffer_append_string(mem, strbuf, U"\\t", 2));
+                    break;
+
+                case U'\v':
+                    REQUIRE_OK(kefir_string_buffer_append_string(mem, strbuf, U"\\v", 2));
+                    break;
+
+                default:
+                    REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
+                    break;
+            }
+        }
+    }
     return KEFIR_OK;
 }

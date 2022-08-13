@@ -2,4 +2,4 @@ int i = 2+2*  2;
 
 
  for (int x = 0; x < i; ++x) fn('X', "xA\n");
-       str = L"long string", xstr = U"UUU\x1111-uuuu"
+       str = L"long string", xstr = U"UUU\u1111-uuuu"

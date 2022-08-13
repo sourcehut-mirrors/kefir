@@ -3,5 +3,5 @@ const char *b = "2+   2 *20";
 const char *c = "STR(STR(x))";
 const char *d = "\"test\\n\\0\" \"123\"   \"\\\"\\\\\"";
 const char *e = ",,,,,,    1,    2";
-const char *f = "\"1\"  u\"\\x32\" \"3\" u8\"4\" \"5\" U\"6\" \"7\" L\"8\"";
+const char *f = "\"1\"  u\"2\" \"3\" u8\"4\" \"5\" U\"6\" \"7\" L\"8\"";
 const char *g = "FN(2, x)";

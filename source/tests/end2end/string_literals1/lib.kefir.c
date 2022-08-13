@@ -18,21 +18,10 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef KEFIR_UTIL_CHAR32_H_
-#define KEFIR_UTIL_CHAR32_H_
+#include "./definitions.h"
 
-#include "kefir/core/basic-types.h"
-
-#define KEFIR_STRCMP32_ERROR KEFIR_INT_MAX
-
-kefir_size_t kefir_strlen32(const kefir_char32_t *);
-kefir_bool_t kefir_isspace32(kefir_char32_t);
-kefir_bool_t kefir_isdigit32(kefir_char32_t);
-kefir_bool_t kefir_isoctdigit32(kefir_char32_t);
-kefir_bool_t kefir_ishexdigit32(kefir_char32_t);
-kefir_bool_t kefir_isnondigit32(kefir_char32_t);
-kefir_int_t kefir_strcmp32(const kefir_char32_t *, const kefir_char32_t *);
-kefir_uint32_t kefir_hex32todec(kefir_char32_t);
-kefir_char32_t kefir_dectohex32(kefir_uint64_t);
-
-#endif
+const char STR0[] = STR0_CONTENT;
+const char STR1[] = STR1_CONTENT;
+const unsigned short STR2[] = STR2_CONTENT;
+const unsigned int STR3[] = STR3_CONTENT;
+const int STR4[] = STR4_CONTENT;

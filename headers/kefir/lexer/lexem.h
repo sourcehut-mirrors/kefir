@@ -280,6 +280,9 @@ kefir_result_t kefir_token_new_string_literal_wide(struct kefir_mem *, const kef
                                                    struct kefir_token *);
 kefir_result_t kefir_token_new_string_literal_raw(struct kefir_mem *, kefir_string_literal_token_type_t,
                                                   const kefir_char32_t *, kefir_size_t, struct kefir_token *);
+kefir_bool_t kefir_token_string_literal_type_concat(kefir_string_literal_token_type_t,
+                                                    kefir_string_literal_token_type_t,
+                                                    kefir_string_literal_token_type_t *);
 kefir_result_t kefir_token_new_punctuator(kefir_punctuator_token_t, struct kefir_token *);
 kefir_result_t kefir_token_new_pp_whitespace(kefir_bool_t, struct kefir_token *);
 kefir_result_t kefir_token_new_pp_number(struct kefir_mem *, const char *, kefir_size_t, struct kefir_token *);

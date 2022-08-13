@@ -21,6 +21,8 @@
 #include "kefir/lexer/lexem.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
+#include "kefir/core/string_buffer.h"
+#include "kefir/util/char32.h"
 #include <string.h>
 
 kefir_result_t kefir_token_new_sentinel(struct kefir_token *token) {
@@ -290,6 +292,45 @@ kefir_result_t kefir_token_new_string_literal_raw(struct kefir_mem *mem, kefir_s
     token->string_literal.literal = dest_content;
     token->string_literal.length = length;
     return KEFIR_OK;
+}
+
+kefir_bool_t kefir_token_string_literal_type_concat(kefir_string_literal_token_type_t type1,
+                                                    kefir_string_literal_token_type_t type2,
+                                                    kefir_string_literal_token_type_t *result) {
+    switch (type2) {
+        case KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE:
+            *result = type1;
+            break;
+
+        case KEFIR_STRING_LITERAL_TOKEN_UNICODE8:
+            if (type1 != KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE && type1 != KEFIR_STRING_LITERAL_TOKEN_UNICODE8) {
+                return false;
+            }
+            *result = type2;
+            break;
+
+        case KEFIR_STRING_LITERAL_TOKEN_UNICODE16:
+            if (type1 != KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE && type1 != KEFIR_STRING_LITERAL_TOKEN_UNICODE16) {
+                return false;
+            }
+            *result = type2;
+            break;
+
+        case KEFIR_STRING_LITERAL_TOKEN_UNICODE32:
+            if (type1 != KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE && type1 != KEFIR_STRING_LITERAL_TOKEN_UNICODE32) {
+                return false;
+            }
+            *result = type2;
+            break;
+
+        case KEFIR_STRING_LITERAL_TOKEN_WIDE:
+            if (type1 != KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE && type1 != KEFIR_STRING_LITERAL_TOKEN_WIDE) {
+                return false;
+            }
+            *result = type2;
+            break;
+    }
+    return true;
 }
 
 kefir_result_t kefir_token_new_punctuator(kefir_punctuator_token_t punctuator, struct kefir_token *token) {

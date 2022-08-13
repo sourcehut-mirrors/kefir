@@ -33,12 +33,12 @@ static kefir_result_t match_fractional_part(struct kefir_mem *mem, struct kefir_
     kefir_char32_t chr = kefir_lexer_source_cursor_at(cursor, 0);
     for (; kefir_isdigit32(chr);
          kefir_lexer_source_cursor_next(cursor, 1), chr = kefir_lexer_source_cursor_at(cursor, 0)) {
-        REQUIRE_OK(kefir_string_buffer_insert(mem, strbuf, chr));
+        REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
         integer_digits++;
     }
 
     if (chr == U'.') {
-        REQUIRE_OK(kefir_string_buffer_insert(mem, strbuf, chr));
+        REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
         REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 1));
     } else {
         REQUIRE(integer_digits > 0 && (chr == U'e' || chr == U'E'),
@@ -48,7 +48,7 @@ static kefir_result_t match_fractional_part(struct kefir_mem *mem, struct kefir_
     chr = kefir_lexer_source_cursor_at(cursor, 0);
     for (; kefir_isdigit32(chr);
          kefir_lexer_source_cursor_next(cursor, 1), chr = kefir_lexer_source_cursor_at(cursor, 0)) {
-        REQUIRE_OK(kefir_string_buffer_insert(mem, strbuf, chr));
+        REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
         fraction_digits++;
     }
     REQUIRE(integer_digits > 0 || fraction_digits > 0,
@@ -60,11 +60,11 @@ static kefir_result_t match_exponent(struct kefir_mem *mem, struct kefir_lexer_s
                                      struct kefir_string_buffer *strbuf) {
     kefir_char32_t chr = kefir_lexer_source_cursor_at(cursor, 0);
     REQUIRE(chr == U'e' || chr == U'E', KEFIR_OK);
-    REQUIRE_OK(kefir_string_buffer_insert(mem, strbuf, chr));
+    REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
     REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 1));
     chr = kefir_lexer_source_cursor_at(cursor, 0);
     if (chr == U'+' || chr == U'-') {
-        REQUIRE_OK(kefir_string_buffer_insert(mem, strbuf, chr));
+        REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
         REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 1));
     }
 
@@ -72,7 +72,7 @@ static kefir_result_t match_exponent(struct kefir_mem *mem, struct kefir_lexer_s
     kefir_size_t exponent_digits = 0;
     for (chr = kefir_lexer_source_cursor_at(cursor, 0); kefir_isdigit32(chr);
          kefir_lexer_source_cursor_next(cursor, 1), chr = kefir_lexer_source_cursor_at(cursor, 0)) {
-        REQUIRE_OK(kefir_string_buffer_insert(mem, strbuf, chr));
+        REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
         exponent_digits++;
     }
     REQUIRE(exponent_digits > 0, KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &exponent_location,
@@ -156,12 +156,12 @@ static kefir_result_t match_hexadecimal_fractional_part(struct kefir_mem *mem, s
     kefir_char32_t chr = kefir_lexer_source_cursor_at(cursor, 0);
     for (; kefir_ishexdigit32(chr);
          kefir_lexer_source_cursor_next(cursor, 1), chr = kefir_lexer_source_cursor_at(cursor, 0)) {
-        REQUIRE_OK(kefir_string_buffer_insert(mem, strbuf, chr));
+        REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
         integer_digits++;
     }
 
     if (chr == U'.') {
-        REQUIRE_OK(kefir_string_buffer_insert(mem, strbuf, chr));
+        REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
         REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 1));
     } else {
         REQUIRE(integer_digits > 0 && (chr == U'p' || chr == U'P'),
@@ -171,7 +171,7 @@ static kefir_result_t match_hexadecimal_fractional_part(struct kefir_mem *mem, s
     chr = kefir_lexer_source_cursor_at(cursor, 0);
     for (; kefir_ishexdigit32(chr);
          kefir_lexer_source_cursor_next(cursor, 1), chr = kefir_lexer_source_cursor_at(cursor, 0)) {
-        REQUIRE_OK(kefir_string_buffer_insert(mem, strbuf, chr));
+        REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
         fraction_digits++;
     }
     REQUIRE(integer_digits > 0 || fraction_digits > 0,
@@ -183,11 +183,11 @@ static kefir_result_t match_hexadecimal_exponent(struct kefir_mem *mem, struct k
                                                  struct kefir_string_buffer *strbuf) {
     kefir_char32_t chr = kefir_lexer_source_cursor_at(cursor, 0);
     REQUIRE(chr == U'p' || chr == U'P', KEFIR_OK);
-    REQUIRE_OK(kefir_string_buffer_insert(mem, strbuf, chr));
+    REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
     REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 1));
     chr = kefir_lexer_source_cursor_at(cursor, 0);
     if (chr == U'+' || chr == U'-') {
-        REQUIRE_OK(kefir_string_buffer_insert(mem, strbuf, chr));
+        REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
         REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 1));
     }
 
@@ -195,7 +195,7 @@ static kefir_result_t match_hexadecimal_exponent(struct kefir_mem *mem, struct k
     kefir_size_t exponent_digits = 0;
     for (chr = kefir_lexer_source_cursor_at(cursor, 0); kefir_isdigit32(chr);
          kefir_lexer_source_cursor_next(cursor, 1), chr = kefir_lexer_source_cursor_at(cursor, 0)) {
-        REQUIRE_OK(kefir_string_buffer_insert(mem, strbuf, chr));
+        REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
         exponent_digits++;
     }
     REQUIRE(exponent_digits > 0, KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &exponent_location,
@@ -211,8 +211,8 @@ static kefir_result_t match_hexadecimal_impl(struct kefir_mem *mem, struct kefir
     kefir_char32_t chr2 = kefir_lexer_source_cursor_at(cursor, 1);
     REQUIRE(chr == U'0' && (chr2 == U'x' || chr2 == U'X'),
             KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match hexadecimal floating constant"));
-    REQUIRE_OK(kefir_string_buffer_insert(mem, strbuf, chr));
-    REQUIRE_OK(kefir_string_buffer_insert(mem, strbuf, chr2));
+    REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
+    REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr2));
     REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 2));
     REQUIRE_OK(match_hexadecimal_fractional_part(mem, cursor, strbuf));
     REQUIRE_OK(match_hexadecimal_exponent(mem, cursor, strbuf));

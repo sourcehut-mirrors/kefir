@@ -27,6 +27,7 @@
 #include "kefir/core/mem.h"
 #include "kefir/core/symbol_table.h"
 #include "kefir/core/trie.h"
+#include "kefir/core/list.h"
 #include "kefir/lexer/context.h"
 #include "kefir/util/json.h"
 
@@ -77,18 +78,11 @@ kefir_result_t kefir_lexer_scan_identifier_or_keyword(struct kefir_mem *, struct
 kefir_result_t kefir_lexer_match_identifier_or_keyword(struct kefir_mem *, struct kefir_lexer *, struct kefir_token *);
 kefir_result_t kefir_lexer_match_identifier(struct kefir_mem *, struct kefir_lexer *, struct kefir_token *);
 
-kefir_result_t kefir_lexer_next_narrow_string_literal(struct kefir_mem *, struct kefir_lexer *, struct kefir_token *,
-                                                      kefir_bool_t);
-kefir_result_t kefir_lexer_next_unicode8_string_literal(struct kefir_mem *, struct kefir_lexer *, struct kefir_token *,
-                                                        kefir_bool_t);
-kefir_result_t kefir_lexer_next_unicode16_string_literal(struct kefir_mem *, struct kefir_lexer *, struct kefir_token *,
-                                                         kefir_bool_t);
-kefir_result_t kefir_lexer_next_unicode32_string_literal(struct kefir_mem *, struct kefir_lexer *, struct kefir_token *,
-                                                         kefir_bool_t);
-kefir_result_t kefir_lexer_next_wide_string_literal(struct kefir_mem *, struct kefir_lexer *, struct kefir_token *,
-                                                    kefir_bool_t);
 kefir_result_t kefir_lexer_match_string_literal(struct kefir_mem *, struct kefir_lexer *, struct kefir_token *,
                                                 kefir_bool_t);
+kefir_result_t kefir_lexer_match_raw_string_literal(struct kefir_mem *, struct kefir_lexer *, struct kefir_token *);
+kefir_result_t kefir_lexer_merge_raw_string_literals(struct kefir_mem *, const struct kefir_list *,
+                                                     struct kefir_token *);
 
 kefir_result_t kefir_lexer_scan_integral_constant(struct kefir_lexer_source_cursor *,
                                                   const struct kefir_lexer_context *, struct kefir_token *);

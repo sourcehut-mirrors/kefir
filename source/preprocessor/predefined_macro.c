@@ -20,6 +20,7 @@
 
 #include "kefir/preprocessor/predefined_macro.h"
 #include "kefir/preprocessor/preprocessor.h"
+#include "kefir/preprocessor/util.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 #include <float.h>
@@ -82,7 +83,8 @@ static kefir_result_t predefined_macro_argc(const struct kefir_preprocessor_macr
 MACRO(file) {
     const char *file = source_location->source;
     struct kefir_token token;
-    REQUIRE_OK(kefir_token_new_string_literal_multibyte(mem, file, strlen(file) + 1, &token));
+    REQUIRE_OK(kefir_token_new_string_literal_raw_from_escaped_multibyte(mem, KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE,
+                                                                         file, strlen(file), &token));
     token.source_location = *source_location;
     kefir_result_t res = kefir_token_buffer_emplace(mem, buffer, &token);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -107,7 +109,8 @@ MACRO(date) {
     REQUIRE(count != 0, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Failed to format current date"));
 
     struct kefir_token token;
-    REQUIRE_OK(kefir_token_new_string_literal_multibyte(mem, strbuf, count + 1, &token));
+    REQUIRE_OK(kefir_token_new_string_literal_raw_from_escaped_multibyte(mem, KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE,
+                                                                         strbuf, count, &token));
     token.source_location = *source_location;
     kefir_result_t res = kefir_token_buffer_emplace(mem, buffer, &token);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -124,7 +127,8 @@ MACRO(time) {
     REQUIRE(count != 0, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Failed to format current time"));
 
     struct kefir_token token;
-    REQUIRE_OK(kefir_token_new_string_literal_multibyte(mem, strbuf, count + 1, &token));
+    REQUIRE_OK(kefir_token_new_string_literal_raw_from_escaped_multibyte(mem, KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE,
+                                                                         strbuf, count, &token));
     token.source_location = *source_location;
     kefir_result_t res = kefir_token_buffer_emplace(mem, buffer, &token);
     REQUIRE_ELSE(res == KEFIR_OK, {

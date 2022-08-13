@@ -41,13 +41,13 @@ static kefir_result_t parse_impl_internal(struct kefir_mem *mem, struct kefir_sy
     for (kefir_size_t i = 0; res == KEFIR_OK && i < option_count; i++) {
         if (options[i].short_option != '\0') {
             if (options_buf.length == 0) {
-                REQUIRE_CHAIN(&res, kefir_string_buffer_insert_raw(mem, &options_buf, '+'));
-                REQUIRE_CHAIN(&res, kefir_string_buffer_insert_raw(mem, &options_buf, ':'));
+                REQUIRE_CHAIN(&res, kefir_string_buffer_append_literal(mem, &options_buf, '+'));
+                REQUIRE_CHAIN(&res, kefir_string_buffer_append_literal(mem, &options_buf, ':'));
             }
 
-            REQUIRE_CHAIN(&res, kefir_string_buffer_insert_raw(mem, &options_buf, options[i].short_option));
+            REQUIRE_CHAIN(&res, kefir_string_buffer_append_literal(mem, &options_buf, options[i].short_option));
             if (options[i].has_argument) {
-                REQUIRE_CHAIN(&res, kefir_string_buffer_insert_raw(mem, &options_buf, ':'));
+                REQUIRE_CHAIN(&res, kefir_string_buffer_append_literal(mem, &options_buf, ':'));
             }
 
             short_option_map[(kefir_size_t) options[i].short_option] = &options[i];

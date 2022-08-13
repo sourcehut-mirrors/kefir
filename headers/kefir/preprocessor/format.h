@@ -22,6 +22,7 @@
 #define KEFIR_PREPROCESSOR_FORMAT_H_
 
 #include "kefir/lexer/buffer.h"
+#include "kefir/core/string_buffer.h"
 #include <stdio.h>
 
 typedef enum kefir_preprocessor_whitespace_format {
@@ -34,5 +35,7 @@ kefir_result_t kefir_preprocessor_format(FILE *, const struct kefir_token_buffer
 kefir_result_t kefir_preprocessor_format_string(struct kefir_mem *, char **, kefir_size_t *,
                                                 const struct kefir_token_buffer *,
                                                 kefir_preprocessor_whitespace_format_t);
+kefir_result_t kefir_preprocessor_escape_string(struct kefir_mem *, struct kefir_string_buffer *, const char *,
+                                                kefir_size_t);
 
 #endif

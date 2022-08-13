@@ -217,3 +217,57 @@ kefir_uint32_t kefir_hex32todec(kefir_char32_t chr) {
             }
     }
 }
+
+kefir_char32_t kefir_dectohex32(kefir_uint64_t val) {
+    switch (val & 0xf) {
+        case 0:
+            return U'0';
+
+        case 1:
+            return U'1';
+
+        case 2:
+            return U'2';
+
+        case 3:
+            return U'3';
+
+        case 4:
+            return U'4';
+
+        case 5:
+            return U'5';
+
+        case 6:
+            return U'6';
+
+        case 7:
+            return U'7';
+
+        case 8:
+            return U'8';
+
+        case 9:
+            return U'9';
+
+        case 0xa:
+            return U'a';
+
+        case 0xb:
+            return U'b';
+
+        case 0xc:
+            return U'c';
+
+        case 0xd:
+            return U'd';
+
+        case 0xe:
+            return U'e';
+
+        case 0xf:
+            return U'f';
+    }
+
+    return U'\0';
+}

@@ -40,16 +40,12 @@ typedef struct kefir_string_buffer {
 } kefir_string_buffer_t;
 
 kefir_result_t kefir_string_buffer_init(struct kefir_mem *, struct kefir_string_buffer *, kefir_string_buffer_mode_t);
-kefir_result_t kefir_string_buffer_init_value(struct kefir_string_buffer *, kefir_string_buffer_mode_t, void *,
-                                              kefir_size_t);
 kefir_result_t kefir_string_buffer_free(struct kefir_mem *, struct kefir_string_buffer *);
 
 const void *kefir_string_buffer_value(const struct kefir_string_buffer *, kefir_size_t *);
-kefir_result_t kefir_string_buffer_insert(struct kefir_mem *, struct kefir_string_buffer *, kefir_char32_t);
-kefir_result_t kefir_string_buffer_insert_raw(struct kefir_mem *, struct kefir_string_buffer *, kefir_int64_t);
-kefir_result_t kefir_string_buffer_convert(struct kefir_mem *, struct kefir_string_buffer *,
-                                           kefir_string_buffer_mode_t);
-kefir_result_t kefir_string_buffer_merge(struct kefir_mem *, struct kefir_string_buffer *,
-                                         const struct kefir_string_buffer *);
+kefir_result_t kefir_string_buffer_append(struct kefir_mem *, struct kefir_string_buffer *, kefir_char32_t);
+kefir_result_t kefir_string_buffer_append_literal(struct kefir_mem *, struct kefir_string_buffer *, kefir_int64_t);
+kefir_result_t kefir_string_buffer_append_string(struct kefir_mem *, struct kefir_string_buffer *,
+                                                 const kefir_char32_t *, kefir_size_t);
 
 #endif

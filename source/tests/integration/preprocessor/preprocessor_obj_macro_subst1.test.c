@@ -24,6 +24,7 @@
 #include "kefir/preprocessor/preprocessor.h"
 #include "kefir/preprocessor/format.h"
 #include "kefir/preprocessor/ast_context.h"
+#include "kefir/preprocessor/util.h"
 #include "kefir/test/util.h"
 #include <stdio.h>
 
@@ -88,7 +89,8 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     const char INCLUDE_NAME[] = "include1";
     struct kefir_preprocessor_user_macro *macro4 = kefir_preprocessor_user_macro_new_object(mem, &symbols, "INCLUDE");
-    REQUIRE_OK(kefir_token_new_string_literal_multibyte(mem, INCLUDE_NAME, sizeof(INCLUDE_NAME), &token));
+    REQUIRE_OK(kefir_token_new_string_literal_raw_from_escaped_multibyte(mem, KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE,
+                                                                         INCLUDE_NAME, sizeof(INCLUDE_NAME), &token));
     REQUIRE_OK(kefir_token_buffer_emplace(mem, &macro4->replacement, &token));
     REQUIRE_OK(kefir_preprocessor_user_macro_scope_insert(mem, &context.user_macros, macro4));
 

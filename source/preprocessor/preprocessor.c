@@ -27,6 +27,7 @@
 #include "kefir/ast/analyzer/analyzer.h"
 #include "kefir/ast/constant_expression.h"
 #include "kefir/preprocessor/format.h"
+#include "kefir/core/string_buffer.h"
 
 static const struct kefir_preprocessor_configuration DefaultConfiguration = {.named_macro_vararg = false,
                                                                              .include_next = false};
@@ -246,6 +247,33 @@ kefir_result_t kefir_preprocessor_skip_group(struct kefir_mem *mem, struct kefir
 
 enum if_condition_state { IF_CONDITION_NONE, IF_CONDITION_SUCCESS, IF_CONDITION_FAIL };
 
+static kefir_result_t process_raw_string(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
+                                         struct kefir_token *token, const char **str) {
+    struct kefir_list list;
+    REQUIRE_OK(kefir_list_init(&list));
+    REQUIRE_OK(kefir_list_insert_after(mem, &list, kefir_list_tail(&list), (void *) token));
+
+    struct kefir_token string_token;
+    kefir_result_t res = kefir_lexer_merge_raw_string_literals(mem, &list, &string_token);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_list_free(mem, &list);
+        return res;
+    });
+    res = kefir_list_free(mem, &list);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_token_free(mem, &string_token);
+        return res;
+    });
+
+    *str = kefir_symbol_table_insert(mem, symbols, string_token.string_literal.literal, NULL);
+    REQUIRE_ELSE(*str != NULL, {
+        kefir_token_free(mem, &string_token);
+        return KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert string literal into symbol table");
+    });
+    REQUIRE_OK(kefir_token_free(mem, &string_token));
+    return KEFIR_OK;
+}
+
 static kefir_result_t process_include(struct kefir_mem *mem, struct kefir_preprocessor *preprocessor,
                                       struct kefir_token_buffer *buffer,
                                       struct kefir_preprocessor_directive *directive) {
@@ -260,8 +288,9 @@ static kefir_result_t process_include(struct kefir_mem *mem, struct kefir_prepro
         include_path = token->pp_header_name.header_name;
         system_include = token->pp_header_name.system;
     } else if (token->klass == KEFIR_TOKEN_STRING_LITERAL &&
-               token->string_literal.type == KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE) {
-        include_path = token->string_literal.literal;
+               token->string_literal.type == KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE &&
+               token->string_literal.raw_literal) {
+        REQUIRE_OK(process_raw_string(mem, preprocessor->lexer.symbols, token, &include_path));
     } else {
         return KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &directive->source_location, "Expected file path");
     }
@@ -477,12 +506,11 @@ static kefir_result_t process_line(struct kefir_mem *mem, struct kefir_preproces
         token = &directive->pp_tokens.tokens[i];
         if (token->klass != KEFIR_TOKEN_PP_WHITESPACE) {
             REQUIRE(token->klass == KEFIR_TOKEN_STRING_LITERAL &&
-                        token->string_literal.type == KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE,
+                        token->string_literal.type == KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE &&
+                        token->string_literal.raw_literal,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &token->source_location, "Expected valid file name"));
-            source_file =
-                kefir_symbol_table_insert(mem, preprocessor->lexer.symbols, token->string_literal.literal, NULL);
-            REQUIRE(source_file != NULL,
-                    KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert file name into symbol table"));
+
+            REQUIRE_OK(process_raw_string(mem, preprocessor->lexer.symbols, token, &source_file));
         }
     }
 

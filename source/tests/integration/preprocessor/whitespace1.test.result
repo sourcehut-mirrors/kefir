@@ -197,10 +197,22 @@
     {
         "class": "string_literal",
         "preprocessor": false,
-        "raw": false,
+        "raw": true,
         "type": "multibyte",
-        "content": "\n\n\t\n\"\u0000",
-        "length": 6
+        "content": [
+            92,
+            110,
+            92,
+            110,
+            92,
+            116,
+            92,
+            110,
+            92,
+            34,
+            0
+        ],
+        "length": 11
     },
     {
         "class": "whitespace",
@@ -235,7 +247,7 @@
     {
         "class": "string_literal",
         "preprocessor": false,
-        "raw": false,
+        "raw": true,
         "type": "unicode32",
         "content": [
             49,
