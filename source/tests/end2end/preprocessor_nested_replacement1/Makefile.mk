@@ -1,0 +1,2 @@
+END2END_TEST_ID=preprocessor_nested_replacement1
+include source/tests/end2end/Makefile.template.mk

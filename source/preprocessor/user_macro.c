@@ -430,7 +430,7 @@ static kefir_result_t match_concatenation(struct kefir_mem *mem, struct kefir_sy
     });
     if (next_nonws_token == NULL || next_nonws_token->klass != KEFIR_TOKEN_PUNCTUATOR ||
         next_nonws_token->punctuator != KEFIR_PUNCTUATOR_DOUBLE_HASH) {
-        res = kefir_preprocessor_token_sequence_push_front(mem, seq, &whitespaces);
+        res = kefir_preprocessor_token_sequence_push_front(mem, seq, &whitespaces, NULL);
         REQUIRE_ELSE(res == KEFIR_OK, {
             kefir_token_buffer_free(mem, &whitespaces);
             return res;
@@ -453,7 +453,7 @@ static kefir_result_t match_concatenation(struct kefir_mem *mem, struct kefir_sy
     REQUIRE_OK(kefir_token_buffer_init(&result));
     res = macro_concatenation(mem, arg_tree, symbols, &result, left_operand, right_operand);
     REQUIRE_CHAIN(&res, kefir_preprocessor_token_sequence_next(mem, seq, NULL));
-    REQUIRE_CHAIN(&res, kefir_preprocessor_token_sequence_push_front(mem, seq, &result));
+    REQUIRE_CHAIN(&res, kefir_preprocessor_token_sequence_push_front(mem, seq, &result, NULL));
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_token_buffer_free(mem, &result);
         return res;
@@ -546,7 +546,7 @@ static kefir_result_t run_replacement_list_substitutions(struct kefir_mem *mem, 
         kefir_token_buffer_free(mem, &replacement_copy);
         return res;
     });
-    res = kefir_preprocessor_token_sequence_push_front(mem, &seq, &replacement_copy);
+    res = kefir_preprocessor_token_sequence_push_front(mem, &seq, &replacement_copy, NULL);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_preprocessor_token_sequence_free(mem, &seq);
         kefir_token_buffer_free(mem, &replacement_copy);
@@ -620,9 +620,6 @@ static kefir_result_t user_macro_apply(struct kefir_mem *mem, struct kefir_prepr
 
     for (kefir_size_t i = 0; i < inner_buffer.length; i++) {
         struct kefir_token *token = &inner_buffer.tokens[i];
-        if (token->klass == KEFIR_TOKEN_IDENTIFIER && strcmp(token->identifier, macro->identifier) == 0) {
-            token->preprocessor_props.skip_identifier_subst = true;
-        }
         token->source_location = *source_location;
 
         if (token->klass != KEFIR_TOKEN_PP_PLACEMAKER) {
