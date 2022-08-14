@@ -63,7 +63,14 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
                            "CONCAT(,)\n"
                            "CONCAT('a',    )\n"
                            "CONCAT(\t\t\n, CONCAT(\"xyz\",      ))\n"
-                           "CONCAT(CON, CAT)";
+                           "CONCAT(CON, CAT)\n"
+                           "CONCAT(L, 'h')\n"
+                           "CONCAT(u, 'e')\n"
+                           "CONCAT(U, 'l')\n"
+                           "CONCAT(L, \"hello, world!\")\n"
+                           "CONCAT(u8, \"hello, world!\")\n"
+                           "CONCAT(u, \"hello, world!\")\n"
+                           "CONCAT(U, \"hello, world!\")";
 
     struct kefir_symbol_table symbols;
     struct kefir_lexer_context parser_context;

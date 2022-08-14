@@ -235,27 +235,31 @@ static kefir_result_t format_constant(FILE *out, const struct kefir_token *token
             break;
 
         case KEFIR_CONSTANT_TOKEN_WIDE_CHAR:
-            fprintf(out, "'");
+            fprintf(out, "L'");
             REQUIRE_OK(format_wchar(out, token->constant.wide_char));
             fprintf(out, "'");
             break;
 
         case KEFIR_CONSTANT_TOKEN_UNICODE16_CHAR: {
             char buffer[MB_LEN_MAX];
-            mbstate_t mbstate;
+            mbstate_t mbstate = {0};
             int sz = (int) c16rtomb(buffer, token->constant.unicode16_char, &mbstate);
-            REQUIRE(sz >= 0,
-                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Failed to convert Unicode16 character to multibyte"));
-            fprintf(out, "%*s", sz, buffer);
+            if (sz >= 0) {
+                fprintf(out, "u'%.*s'", sz, buffer);
+            } else {
+                fprintf(out, "u'\\x%x'", token->constant.unicode16_char);
+            }
         } break;
 
         case KEFIR_CONSTANT_TOKEN_UNICODE32_CHAR: {
             char buffer[MB_LEN_MAX];
-            mbstate_t mbstate;
+            mbstate_t mbstate = {0};
             int sz = (int) c32rtomb(buffer, token->constant.unicode32_char, &mbstate);
-            REQUIRE(sz >= 0,
-                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Failed to convert Unicode32 character to multibyte"));
-            fprintf(out, "%*s", sz, buffer);
+            if (sz >= 0) {
+                fprintf(out, "U'%.*s'", sz, buffer);
+            } else {
+                fprintf(out, "U'\\x%x'", token->constant.unicode32_char);
+            }
         } break;
     }
     return KEFIR_OK;

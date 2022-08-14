@@ -34,3 +34,10 @@ test(123) + 5.000e1
 'a'
 CONCAT("xyz",      )
 CONCAT
+L'h'
+u'e'
+U'l'
+L"hello, world!"
+u8"hello, world!"
+u"hello, world!"
+U"hello, world!"
