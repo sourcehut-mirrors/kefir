@@ -25,6 +25,10 @@
 #include "kefir/core/error.h"
 #include <float.h>
 
+struct predefined_macro_payload {
+    struct kefir_preprocessor_predefined_macro_scope *scope;
+};
+
 static kefir_result_t make_pp_number(struct kefir_mem *mem, struct kefir_token_buffer *buffer, const char *buf,
                                      const struct kefir_source_location *source_location) {
     struct kefir_token token;
@@ -69,8 +73,8 @@ static kefir_result_t predefined_macro_argc(const struct kefir_preprocessor_macr
         REQUIRE(args == NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected empty macro argument list"));        \
         REQUIRE(buffer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token buffer"));             \
         REQUIRE(source_location != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source location")); \
-        ASSIGN_DECL_CAST(struct kefir_preprocessor_predefined_macro_scope *, predefined_scope, macro->payload);       \
-        UNUSED(predefined_scope);                                                                                     \
+        ASSIGN_DECL_CAST(struct predefined_macro_payload *, macro_payload, macro->payload);                           \
+        UNUSED(macro_payload);                                                                                        \
                                                                                                                       \
         do
 
@@ -103,7 +107,7 @@ MACRO(line) {
 MACRO_END
 
 MACRO(date) {
-    struct tm *tm = localtime(&predefined_scope->preprocessor->context->environment.timestamp);
+    struct tm *tm = localtime(&macro_payload->scope->preprocessor->context->environment.timestamp);
     char strbuf[256] = {0};
     size_t count = strftime(strbuf, sizeof(strbuf), "%b %e %Y", tm);
     REQUIRE(count != 0, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Failed to format current date"));
@@ -121,7 +125,7 @@ MACRO(date) {
 MACRO_END
 
 MACRO(time) {
-    struct tm *tm = localtime(&predefined_scope->preprocessor->context->environment.timestamp);
+    struct tm *tm = localtime(&macro_payload->scope->preprocessor->context->environment.timestamp);
     char strbuf[256] = {0};
     size_t count = strftime(strbuf, sizeof(strbuf), "%H:%M:%S", tm);
     REQUIRE(count != 0, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Failed to format current time"));
@@ -146,12 +150,13 @@ MACRO_END
     }                                                                     \
     MACRO_END
 
-MACRO_PP_NUMBER_FMT(stdc_hosted, 64, "%d", predefined_scope->preprocessor->context->environment.hosted ? 1 : 0)
-MACRO_PP_NUMBER_FMT(stdc_version, 64, KEFIR_ULONG_FMT "L", predefined_scope->preprocessor->context->environment.version)
+MACRO_PP_NUMBER_FMT(stdc_hosted, 64, "%d", macro_payload->scope->preprocessor->context->environment.hosted ? 1 : 0)
+MACRO_PP_NUMBER_FMT(stdc_version, 64, KEFIR_ULONG_FMT "L",
+                    macro_payload->scope->preprocessor->context->environment.version)
 MACRO_PP_NUMBER_FMT(stdc_iso_10646, 64, KEFIR_ULONG_FMT "L",
-                    predefined_scope->preprocessor->context->environment.stdc_iso10646)
+                    macro_payload->scope->preprocessor->context->environment.stdc_iso10646)
 MACRO_PP_NUMBER_FMT(stdc_lib_ext1, 64, KEFIR_ULONG_FMT "L",
-                    predefined_scope->preprocessor->context->environment.stdc_lib_ext1)
+                    macro_payload->scope->preprocessor->context->environment.stdc_lib_ext1)
 MACRO_PP_NUMBER_FMT(produce_one, 64, KEFIR_INT_FMT, 1)
 MACRO_PP_NUMBER_FMT(big_endian, 64, KEFIR_INT_FMT, 1234)
 MACRO_PP_NUMBER_FMT(little_endian, 64, KEFIR_INT_FMT, 4321)
@@ -222,6 +227,14 @@ MACRO_PP_NUMBER_FMT(flt_max, 64, "%s", preprocessor->context->environment.data_m
 MACRO_PP_NUMBER_FMT(dbl_max, 64, "%s", preprocessor->context->environment.data_model->floating_point.double_max)
 MACRO_PP_NUMBER_FMT(ldbl_max, 64, "%s", preprocessor->context->environment.data_model->floating_point.long_double_max)
 
+MACRO(counter) {
+    kefir_uint_t counter = macro_payload->scope->preprocessor->context->state.counter++;
+    char strbuf[64] = {0};
+    snprintf(strbuf, sizeof(strbuf), KEFIR_UINT_FMT, counter);
+    REQUIRE_OK(make_pp_number(mem, buffer, strbuf, source_location));
+}
+MACRO_END
+
 static kefir_result_t define_predefined_macro(
     struct kefir_mem *mem, struct kefir_preprocessor *preprocessor,
     struct kefir_preprocessor_predefined_macro_scope *scope, struct kefir_preprocessor_macro *macro,
@@ -229,15 +242,24 @@ static kefir_result_t define_predefined_macro(
     kefir_result_t (*apply)(struct kefir_mem *, struct kefir_preprocessor *, const struct kefir_preprocessor_macro *,
                             struct kefir_symbol_table *, const struct kefir_list *, struct kefir_token_buffer *,
                             const struct kefir_source_location *)) {
+    struct predefined_macro_payload *payload = KEFIR_MALLOC(mem, sizeof(struct predefined_macro_payload));
+    REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate predefined macro payload"));
+    payload->scope = scope;
     macro->identifier = identifier;
     macro->type = KEFIR_PREPROCESSOR_MACRO_OBJECT;
-    macro->payload = scope;
+    macro->payload = payload;
     macro->apply = apply;
     macro->argc = predefined_macro_argc;
 
     if (!kefir_hashtree_has(&preprocessor->context->undefined_macros, (kefir_hashtree_key_t) identifier)) {
-        REQUIRE_OK(kefir_hashtree_insert(mem, &scope->macro_tree, (kefir_hashtree_key_t) identifier,
-                                         (kefir_hashtree_value_t) macro));
+        kefir_result_t res = kefir_hashtree_insert(mem, &scope->macro_tree, (kefir_hashtree_key_t) identifier,
+                                                   (kefir_hashtree_value_t) macro);
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            KEFIR_FREE(mem, payload);
+            return res;
+        });
+    } else {
+        KEFIR_FREE(mem, payload);
     }
     return KEFIR_OK;
 }
@@ -260,6 +282,19 @@ static kefir_result_t locate_predefined(const struct kefir_preprocessor_macro_sc
     return KEFIR_OK;
 }
 
+static kefir_result_t free_macro(struct kefir_mem *mem, struct kefir_hashtree *tree, kefir_hashtree_key_t key,
+                                 kefir_hashtree_value_t value, void *payload) {
+    UNUSED(tree);
+    UNUSED(key);
+    UNUSED(payload);
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    ASSIGN_DECL_CAST(struct kefir_preprocessor_macro *, macro, value);
+    REQUIRE(macro != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid predefined macro"));
+
+    KEFIR_FREE(mem, macro->payload);
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_preprocessor_predefined_macro_scope_init(struct kefir_mem *mem,
                                                               struct kefir_preprocessor_predefined_macro_scope *scope,
                                                               struct kefir_preprocessor *preprocessor) {
@@ -272,6 +307,7 @@ kefir_result_t kefir_preprocessor_predefined_macro_scope_init(struct kefir_mem *
     scope->scope.payload = scope;
     scope->scope.locate = locate_predefined;
     REQUIRE_OK(kefir_hashtree_init(&scope->macro_tree, &kefir_hashtree_str_ops));
+    REQUIRE_OK(kefir_hashtree_on_removal(&scope->macro_tree, free_macro, NULL));
 
     kefir_result_t res =
         define_predefined_macro(mem, preprocessor, scope, &scope->macros.file, "__FILE__", macro_file_apply);
@@ -521,6 +557,9 @@ kefir_result_t kefir_preprocessor_predefined_macro_scope_init(struct kefir_mem *
         REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.floating_point.ldbl_max,
                                                     "__LDBL_MAX__", macro_ldbl_max_apply));
     }
+
+    REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.counter, "__COUNTER__",
+                                                macro_counter_apply));
 
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_hashtree_free(mem, &scope->macro_tree);

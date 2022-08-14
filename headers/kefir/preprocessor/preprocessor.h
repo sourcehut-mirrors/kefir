@@ -88,6 +88,9 @@ typedef struct kefir_preprocessor_context {
     const struct kefir_preprocessor_configuration *preprocessor_config;
     struct kefir_preprocessor_environment environment;
     const struct kefir_preprocessor_context_extensions *extensions;
+    struct {
+        kefir_uint_t counter;
+    } state;
     void *extensions_payload;
 } kefir_preprocessor_context_t;
 

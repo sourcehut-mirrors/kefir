@@ -95,6 +95,9 @@ kefir_result_t kefir_preprocessor_context_init(struct kefir_mem *mem, struct kef
     // Extension macros
     context->environment.data_model = NULL;
 
+    // State
+    context->state.counter = 0;
+
     context->extensions = extensions;
     context->extensions_payload = NULL;
     kefir_result_t res;

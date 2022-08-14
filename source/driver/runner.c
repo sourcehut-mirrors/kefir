@@ -142,6 +142,12 @@ static kefir_result_t build_predefined_macros(struct kefir_mem *mem,
         if (!kefir_hashtree_has(&compiler->preprocessor_context.undefined_macros, (kefir_hashtree_key_t) identifier)) {
             REQUIRE_OK(kefir_hashtree_insert(mem, &compiler->preprocessor_context.undefined_macros,
                                              (kefir_hashtree_key_t) identifier, (kefir_hashtree_value_t) 0));
+
+            kefir_result_t res = kefir_preprocessor_user_macro_scope_remove(
+                mem, &compiler->preprocessor_context.user_macros, identifier);
+            if (res != KEFIR_NOT_FOUND) {
+                REQUIRE_OK(res);
+            }
         }
     }
 

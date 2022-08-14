@@ -57,6 +57,43 @@ struct kefir_mem *kefir_system_memalloc() {
     return &MemoryAllocator;
 }
 
+static kefir_result_t load_predefined_macro_defs(struct kefir_mem *mem, struct kefir_compiler_context *context) {
+    extern const char KefirPredefinedMacroDefs[];
+    extern kefir_uint64_t KefirPredefinedMacroDefsLength;
+    const char *filename = "<predefined-macro-defs>";
+
+    struct kefir_lexer_source_cursor cursor;
+    REQUIRE_OK(
+        kefir_lexer_source_cursor_init(&cursor, KefirPredefinedMacroDefs, KefirPredefinedMacroDefsLength, filename));
+
+    struct kefir_preprocessor_source_file_info file_info = {
+        .filepath = filename, .system = true, .base_include_dir = NULL};
+
+    struct kefir_token_buffer buffer;
+    REQUIRE_OK(kefir_token_buffer_init(&buffer));
+
+    struct kefir_preprocessor subpreprocessor;
+    REQUIRE_OK(kefir_preprocessor_init(mem, &subpreprocessor, &context->ast_global_context.symbols, &cursor,
+                                       &context->profile->lexer_context, &context->preprocessor_context, &file_info,
+                                       NULL));
+
+    kefir_result_t res = kefir_preprocessor_run(mem, &subpreprocessor, &buffer);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_token_buffer_free(mem, &buffer);
+        kefir_preprocessor_free(mem, &subpreprocessor);
+        return res;
+    });
+
+    res = kefir_token_buffer_free(mem, &buffer);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_preprocessor_free(mem, &subpreprocessor);
+        return res;
+    });
+
+    REQUIRE_OK(kefir_preprocessor_free(mem, &subpreprocessor));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_compiler_context_init(struct kefir_mem *mem, struct kefir_compiler_context *context,
                                            struct kefir_compiler_profile *profile,
                                            const struct kefir_preprocessor_source_locator *source_locator,
@@ -95,17 +132,19 @@ kefir_result_t kefir_compiler_context_init(struct kefir_mem *mem, struct kefir_c
     context->profile = profile;
     context->source_locator = source_locator;
 
+    res = load_predefined_macro_defs(mem, context);
+
     context->extensions = extensions;
     context->extension_payload = NULL;
     if (context->extensions != NULL && context->extensions->on_init != NULL) {
-        res = context->extensions->on_init(mem, context);
-        REQUIRE_ELSE(res == KEFIR_OK, {
-            kefir_preprocessor_context_free(mem, &context->preprocessor_context);
-            kefir_preprocessor_ast_context_free(mem, &context->preprocessor_ast_context);
-            kefir_ast_global_context_free(mem, &context->ast_global_context);
-            return res;
-        });
+        REQUIRE_CHAIN(&res, context->extensions->on_init(mem, context));
     }
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_preprocessor_context_free(mem, &context->preprocessor_context);
+        kefir_preprocessor_ast_context_free(mem, &context->preprocessor_ast_context);
+        kefir_ast_global_context_free(mem, &context->ast_global_context);
+        return res;
+    });
     return KEFIR_OK;
 }
 

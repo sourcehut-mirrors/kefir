@@ -70,8 +70,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
                            "_Generic "
                            "const "
                            "__attribute__ "
-                           "asm "
-                           "__asm__";
+                           "asm ";
 
     struct kefir_symbol_table symbols;
     struct kefir_lexer_source_cursor cursor;

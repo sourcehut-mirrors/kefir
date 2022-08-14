@@ -230,11 +230,6 @@
         "keyword": "asm"
     },
     {
-        "class": "keyword",
-        "preprocessor": false,
-        "keyword": "asm"
-    },
-    {
         "class": "sentinel",
         "preprocessor": false
     }
