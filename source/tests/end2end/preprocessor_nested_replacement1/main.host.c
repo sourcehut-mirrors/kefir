@@ -28,11 +28,13 @@ extern const char *STR1;
 extern const char *STR2;
 extern const char *STR3;
 extern const char *STR4;
+extern const char *STR5;
 
 int main() {
     assert(strcmp(STR1, "char") == 0);
     assert(strcmp(STR2, "__char") == 0);
-    assert(strcmp(STR3, "2*f(9)") == 0);
-    assert(strcmp(STR4, "1+2*10-TEST1(100)") == 0);
+    assert(strcmp(STR3, "2 *9 *g") == 0);
+    assert(strcmp(STR4, "1 + 2 * 10 - TEST1(100)") == 0);
+    assert(strcmp(STR5, "xy") == 0);
     return EXIT_SUCCESS;
 }

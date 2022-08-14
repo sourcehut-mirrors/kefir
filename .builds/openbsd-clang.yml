@@ -11,6 +11,7 @@ sources:
 tasks:
   - test: |
       cd kefir
+      export LC_ALL=C.UTF-8
       gmake test all CC=clang AS=gas PLATFORM=openbsd OPT=-O3
 triggers:
   - action: email

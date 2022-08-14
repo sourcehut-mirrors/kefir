@@ -32,6 +32,10 @@
 #define TEST2(x) 10 - TEST1(x)
 #define TEST3(x) 2 * TEST2(x)
 
+#define CAT2(a, b) a##b
+#define CAT(a, b) CAT2(a, b)
+#define AB(x) CAT(x, y)
+
 #define _STR(s) #s
 #define STR(s) _STR(s)
 
@@ -39,3 +43,4 @@ const char *STR1 = STR(char);
 const char *STR2 = STR(__char);
 const char *STR3 = STR(f(2)(9));
 const char *STR4 = STR(TEST1(100));
+const char *STR5 = STR(CAT(A, B)(x));

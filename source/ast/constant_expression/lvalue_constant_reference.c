@@ -50,15 +50,22 @@ static kefir_result_t visit_identifier(const struct kefir_ast_visitor *visitor, 
 
     const struct kefir_ast_scoped_identifier *scoped_id = NULL;
     REQUIRE_OK(param->context->resolve_ordinary_identifier(param->context, node->identifier, &scoped_id));
+    const char *identifier = node->identifier;
     switch (scoped_id->klass) {
         case KEFIR_AST_SCOPE_IDENTIFIER_OBJECT: {
             REQUIRE(
                 scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC ||
                     scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location, "Not a constant expression"));
+            if (scoped_id->object.asm_label != NULL) {
+                identifier = scoped_id->object.asm_label;
+            }
         } break;
 
         case KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION:
+            if (scoped_id->function.asm_label != NULL) {
+                identifier = scoped_id->function.asm_label;
+            }
             break;
 
         case KEFIR_AST_SCOPE_IDENTIFIER_ENUM_CONSTANT:
@@ -69,7 +76,7 @@ static kefir_result_t visit_identifier(const struct kefir_ast_visitor *visitor, 
     }
 
     param->pointer->type = KEFIR_AST_CONSTANT_EXPRESSION_POINTER_IDENTIFER;
-    param->pointer->base.literal = scoped_id->object.asm_label == NULL ? node->identifier : scoped_id->object.asm_label;
+    param->pointer->base.literal = identifier;
     param->pointer->offset = 0;
     param->pointer->pointer_node = KEFIR_AST_NODE_BASE(node);
     param->pointer->scoped_id = scoped_id;
