@@ -34,7 +34,15 @@
 
 #define CAT2(a, b) a##b
 #define CAT(a, b) CAT2(a, b)
-#define AB(x) CAT(x, y)
+#define AB(o) CAT(o, y)
+
+#define TEST_X(x) ((void *) x)
+#define VAL TEST_X(VAL)
+#define TEST_Y(x) TEST_Y(x)
+
+#define XYZ(a, b) a##b(a, b) + 1
+
+#define CAST(x, y) ((x) y)
 
 #define _STR(s) #s
 #define STR(s) _STR(s)
@@ -44,3 +52,8 @@ const char *STR2 = STR(__char);
 const char *STR3 = STR(f(2)(9));
 const char *STR4 = STR(TEST1(100));
 const char *STR5 = STR(CAT(A, B)(x));
+const char *STR6 = STR(VAL);
+const char *STR7 = STR(TEST_Y(VAL));
+const char *STR8 = STR(TEST_Y(TEST_Y(1)));
+const char *STR9 = STR(XYZ(X, YZ));
+const char *STR10 = STR(CAST(int, CAST(float, a)));

@@ -25,10 +25,6 @@
 #include "kefir/core/list.h"
 #include "kefir/core/hashtree.h"
 
-typedef struct kefir_preprocessor_buffer_descriptor {
-    struct kefir_hashtree macro_expansions;
-} kefir_preprocessor_buffer_descriptor_t;
-
 typedef struct kefir_preprocessor_token_sequence {
     struct kefir_list buffer_stack;
 } kefir_preprocessor_token_sequence_t;
@@ -37,17 +33,13 @@ kefir_result_t kefir_preprocessor_token_sequence_init(struct kefir_preprocessor_
 kefir_result_t kefir_preprocessor_token_sequence_free(struct kefir_mem *, struct kefir_preprocessor_token_sequence *);
 kefir_result_t kefir_preprocessor_token_sequence_push_front(struct kefir_mem *,
                                                             struct kefir_preprocessor_token_sequence *,
-                                                            struct kefir_token_buffer *,
-                                                            struct kefir_preprocessor_buffer_descriptor **);
+                                                            struct kefir_token_buffer *);
 kefir_result_t kefir_preprocessor_token_sequence_next(struct kefir_mem *, struct kefir_preprocessor_token_sequence *,
                                                       struct kefir_token *);
 kefir_result_t kefir_preprocessor_token_sequence_shift(struct kefir_mem *, struct kefir_preprocessor_token_sequence *,
                                                        struct kefir_token_buffer *);
 kefir_result_t kefir_preprocessor_token_sequence_current(struct kefir_mem *, struct kefir_preprocessor_token_sequence *,
                                                          const struct kefir_token **);
-kefir_result_t kefir_preprocessor_token_sequence_current_buffer_descriptor(
-    struct kefir_mem *, struct kefir_preprocessor_token_sequence *,
-    const struct kefir_preprocessor_buffer_descriptor **);
 
 kefir_result_t kefir_preprocessor_token_sequence_skip_whitespaces(struct kefir_mem *,
                                                                   struct kefir_preprocessor_token_sequence *,

@@ -231,6 +231,10 @@ typedef struct kefir_token_extension {
     void *payload;
 } kefir_token_extension_t;
 
+typedef struct kefir_token_macro_expansions {
+    struct kefir_hashtree macro_expansions;
+} kefir_token_macro_expansions_t;
+
 typedef struct kefir_token {
     kefir_token_class_t klass;
     union {
@@ -247,10 +251,18 @@ typedef struct kefir_token {
 
     struct kefir_source_location source_location;
 
-    struct {
-        struct kefir_hashtree macro_expansion;
-    } props;
+    struct kefir_token_macro_expansions macro_expansions;
 } kefir_token_t;
+
+kefir_result_t kefir_token_macro_expansions_init(struct kefir_token_macro_expansions *);
+kefir_result_t kefir_token_macro_expansions_free(struct kefir_mem *, struct kefir_token_macro_expansions *);
+kefir_result_t kefir_token_macro_expansions_add(struct kefir_mem *, struct kefir_token_macro_expansions *,
+                                                const char *);
+kefir_result_t kefir_token_macro_expansions_merge(struct kefir_mem *, struct kefir_token_macro_expansions *,
+                                                  const struct kefir_token_macro_expansions *);
+kefir_result_t kefir_token_macro_expansions_move(struct kefir_token_macro_expansions *,
+                                                 struct kefir_token_macro_expansions *);
+kefir_bool_t kefir_token_macro_expansions_has(const struct kefir_token_macro_expansions *, const char *);
 
 kefir_result_t kefir_token_new_sentinel(struct kefir_token *);
 kefir_result_t kefir_token_new_keyword(kefir_keyword_token_t, struct kefir_token *);

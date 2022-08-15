@@ -491,7 +491,7 @@ static kefir_result_t match_concatenation(struct kefir_mem *mem, struct kefir_sy
     });
     if (next_nonws_token == NULL || next_nonws_token->klass != KEFIR_TOKEN_PUNCTUATOR ||
         next_nonws_token->punctuator != KEFIR_PUNCTUATOR_DOUBLE_HASH) {
-        res = kefir_preprocessor_token_sequence_push_front(mem, seq, &whitespaces, NULL);
+        res = kefir_preprocessor_token_sequence_push_front(mem, seq, &whitespaces);
         REQUIRE_ELSE(res == KEFIR_OK, {
             kefir_token_buffer_free(mem, &whitespaces);
             return res;
@@ -514,7 +514,7 @@ static kefir_result_t match_concatenation(struct kefir_mem *mem, struct kefir_sy
     REQUIRE_OK(kefir_token_buffer_init(&result));
     res = macro_concatenation(mem, arg_tree, symbols, &result, left_operand, right_operand);
     REQUIRE_CHAIN(&res, kefir_preprocessor_token_sequence_next(mem, seq, NULL));
-    REQUIRE_CHAIN(&res, kefir_preprocessor_token_sequence_push_front(mem, seq, &result, NULL));
+    REQUIRE_CHAIN(&res, kefir_preprocessor_token_sequence_push_front(mem, seq, &result));
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_token_buffer_free(mem, &result);
         return res;
@@ -607,7 +607,7 @@ static kefir_result_t run_replacement_list_substitutions(struct kefir_mem *mem, 
         kefir_token_buffer_free(mem, &replacement_copy);
         return res;
     });
-    res = kefir_preprocessor_token_sequence_push_front(mem, &seq, &replacement_copy, NULL);
+    res = kefir_preprocessor_token_sequence_push_front(mem, &seq, &replacement_copy);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_preprocessor_token_sequence_free(mem, &seq);
         kefir_token_buffer_free(mem, &replacement_copy);
@@ -683,11 +683,8 @@ static kefir_result_t user_macro_apply(struct kefir_mem *mem, struct kefir_prepr
         struct kefir_token *token = &inner_buffer.tokens[i];
         token->source_location = *source_location;
 
-        if (token->klass == KEFIR_TOKEN_IDENTIFIER &&
-            !kefir_hashtree_has(&token->props.macro_expansion, (kefir_hashtree_key_t) macro->identifier)) {
-            REQUIRE_OK(kefir_hashtree_insert(mem, &token->props.macro_expansion,
-                                             (kefir_hashtree_key_t) macro->identifier, (kefir_hashtree_value_t) 0));
-        }
+        // REQUIRE_OK(kefir_token_macro_expansions_add(mem, &token->macro_expansions, macro->identifier));
+        // REQUIRE_OK(kefir_token_macro_expansions_merge(mem, &token->macro_expansions, macro_expansions));
 
         if (token->klass != KEFIR_TOKEN_PP_PLACEMAKER) {
             res = kefir_token_buffer_emplace(mem, buffer, token);

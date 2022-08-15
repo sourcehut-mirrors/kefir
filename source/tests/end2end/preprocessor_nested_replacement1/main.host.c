@@ -29,6 +29,11 @@ extern const char *STR2;
 extern const char *STR3;
 extern const char *STR4;
 extern const char *STR5;
+extern const char *STR6;
+extern const char *STR7;
+extern const char *STR8;
+extern const char *STR9;
+extern const char *STR10;
 
 int main() {
     assert(strcmp(STR1, "char") == 0);
@@ -36,5 +41,10 @@ int main() {
     assert(strcmp(STR3, "2 *9 *g") == 0);
     assert(strcmp(STR4, "1 + 2 * 10 - TEST1(100)") == 0);
     assert(strcmp(STR5, "xy") == 0);
+    assert(strcmp(STR6, "((void *) VAL)") == 0);
+    assert(strcmp(STR7, "TEST_Y(((void *) VAL))") == 0);
+    assert(strcmp(STR8, "TEST_Y(TEST_Y(1))") == 0);
+    assert(strcmp(STR9, "XYZ(X, YZ) + 1") == 0);
+    assert(strcmp(STR10, "((int) ((float) a))") == 0);
     return EXIT_SUCCESS;
 }

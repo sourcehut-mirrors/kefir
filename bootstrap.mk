@@ -49,6 +49,7 @@ KEFIR_ASM_FILES := $(KEFIR_SOURCE:$(SOURCE)/%.c=$(BOOTSTRAP)/%.s)
 KEFIR_ASM_FILES += $(SOURCE)/runtime/amd64_sysv.s
 KEFIR_ASM_FILES += $(SOURCE)/driver/help.s
 KEFIR_ASM_FILES += $(SOURCE)/codegen/amd64/amd64-sysv-runtime-code.s
+KEFIR_ASM_FILES += $(SOURCE)/compiler/predefined_macro_defs.s
 
 $(BOOTSTRAP)/%.s: $(SOURCE)/%.c
 	@mkdir -p $(shell dirname "$@")
