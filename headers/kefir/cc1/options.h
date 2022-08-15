@@ -18,8 +18,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef KEFIR_STANDALONE_OPTIONS_H_
-#define KEFIR_STANDALONE_OPTIONS_H_
+#ifndef KEFIR_CC1_OPTIONS_H_
+#define KEFIR_CC1_OPTIONS_H_
 
 #include "kefir/core/basic-types.h"
 #include "kefir/core/mem.h"

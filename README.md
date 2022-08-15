@@ -3,9 +3,9 @@ This repository contains implementation of C17 language compiler from scratch. N
 infrastructure is being reused. The main priority is self-sufficiency of the project, compatibility with platform ABI and compliance with
 C17 language standard. Some exceptions to the standard were made (see `Exceptions` section below).
 At the moment, the initial scope of work is effectively finished, and the main concern is stabilization, bugfixes and UX improvements. 
-Kefir supports modern x86-64 Linux, FreeBSD and OpenBSD environments (see `Supported environments` section below).
+Kefir supports modern x86-64 Linux, FreeBSD, OpenBSD and NetBSD environments (see `Supported environments` section below).
 Compiler is also able to produce JSON streams containing program representation on various stages of compilation (tokens, AST, IR),
-as well as outputting source in preprocessed form.
+as well as printing source in preprocessed form.
 By default, the compiler outputs GNU As-compatible assembly (Intel syntax with/without prefixes and ATT syntax are supported).
 At the moment, position-independent code generation is not supported.
 
@@ -14,7 +14,7 @@ Kefir compiler is named after [fermented milk drink](https://en.wikipedia.org/wi
 
 ## Supported environments
 Kefir targets x86-64 ISA and System-V ABI. The main focus is on modern Linux environments (where full range of automated tests is executed there),
-however Kefir also has support for modern FreeBSD and OpenBSD (base test suite and bootstrap are executed successfully in both environments).
+however Kefir also has support for modern FreeBSD, OpenBSD and NetBSD (base test suite and bootstrap are executed successfully in both environments).
 A platform is considered supported if base test suite and 2-stage compiler bootstrap can be executed there -- no other guarantees and claims are made.
 On Linux, `glibc` and `musl` standard libraries are supported (`musl` is recommended because it's header files are more compilant with standard C language without extensions),
 on BSDs system `libc` can be used (additional macro definitions, such as `__GNUC__`, `__GNUC_MINOR__`, could be necessary depending on used system libc features).
@@ -63,7 +63,7 @@ is implemented, however refactoring and bug-fixes are still on-going. At the mom
 |Lexer                      |Implementation done       |See exceptions section below                                                   |
 |Preprocessor               |Implementation done       |Basic preprocessor with no support for pragmas                                 |
 |Standard library           |Third-party library       |See `Standard library` section below                                           |
-|Command-line interface     |Implementation done       |Driver compatible with `cc` interface, as well as standalone executable        |
+|Command-line interface     |Implementation done       |Driver compatible with `cc` interface, as well as cc1 executable               |
 
 ### Exceptions
 Following exceptions were made in C17 implementation:
@@ -106,7 +106,7 @@ GCC/Clang functionality (implemented bits behave similarly, though, thus basic u
 ### Standard library
 Kefir can be used along with [musl libc](https://musl.libc.org) standard library, with the exception for
 `<complex.h>` and `<tgmath.h>` headers which are not available due to lacking support of `_Complex` types.
-Kefir also supports `glibc`, as well as `libc` provided with FreeBSD and OpenBSD, however the support is limited
+Kefir also supports `glibc`, as well as `libc` implementations provided with FreeBSD, OpenBSD and NetBSD, however the support is limited
 due to presence of non-standard C language extensions in header files which might cause compilation failures
 (additional macros/patched stdlib headers might need to be defined for successful compilation).
 
@@ -192,8 +192,10 @@ Kefir relies on following tests, most of which are executed as part of CI:
     - [Test suite](https://github.com/protopopov1122/c-testsuite) which is a fork of [c-testsuite](https://github.com/c-testsuite/c-testsuite) is
       executed. Currently, the test suite reports 4 failures that happen due to C language extensions used in the tests. Failing test cases
       are skipped.
-    - SQLite3 -- amalgamated sqlite3 version is compiled with kefir, and a manual smoke test is performed with resulting executable. Integration
+    - SQLite3 -- sqlite3 database engine is compiled by kefir, and a manual smoke test is performed with resulting executable. Integration
       with `sqllogictest` is planned.
+    - Git (with OpenSSL disabled), Bash, TCC -- software is compiled by kefir, and a manual smoke test is performed with resulting
+      executable.
 
 Own test suite is deterministic (that is, tests do not fail spuriously), however there might arise problems when executed in unusual environments.
 For instance, some tests contain unicode characters and require the environment to have appropriate locale set. Also, issues with local musl 
@@ -232,6 +234,7 @@ License:
 * [Compiler explorer](https://godbolt.org/)
 * [C reference](https://en.cppreference.com/w/c)
 * [AMD64 instruction set reference](https://www.amd.com/system/files/TechDocs/24594.pdf)
+* [POSIX c99 specification](https://pubs.opengroup.org/onlinepubs/9699919799/)
 
 ## Further developments
 Following things can be focus of further development (in order of feasibility and priority):

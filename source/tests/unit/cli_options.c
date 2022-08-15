@@ -18,7 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "kefir/standalone/options.h"
+#include "kefir/cc1/options.h"
 #include "kefir/test/unit_test.h"
 #include <string.h>
 

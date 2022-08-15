@@ -18,7 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "kefir/standalone/options.h"
+#include "kefir/cc1/options.h"
 #include "kefir/driver/compiler_options.h"
 #include "kefir/platform/cli_parser.h"
 #include "kefir/core/util.h"

@@ -23,5 +23,5 @@
 .global KefirHelpContent
 
 KefirHelpContent:
-    .incbin "source/standalone/help.txt"
+    .incbin "source/cc1/help.txt"
     .byte 0

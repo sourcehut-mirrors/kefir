@@ -1,7 +1,7 @@
 KEFIR_UNIT_TEST_SOURCE := $(wildcard \
 	$(SOURCE_DIR)/tests/unit_test.c \
 	$(SOURCE_DIR)/tests/util/util.c \
-	$(SOURCE_DIR)/standalone/options.c \
+	$(SOURCE_DIR)/cc1/options.c \
 	$(SOURCE_DIR)/driver/compiler_options.c \
 	$(SOURCE_DIR)/tests/unit/*.c)
 KEFIR_UNIT_TEST_DEPENDENCIES := $(KEFIR_UNIT_TEST_SOURCE:$(SOURCE_DIR)/%.c=$(BIN_DIR)/%.d)

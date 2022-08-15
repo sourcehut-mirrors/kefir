@@ -38,7 +38,7 @@
 // ATTENTION: This is module is not a part of the core library, thus memory management
 //            is different here. While all the modules from core library shall correctly
 //            handle memory deallocations in all cases (leaks, use-after-free, double free,
-//            etc. are considered bugs), in standalone application part this rule is relaxed.
+//            etc. are considered bugs), in main application part this rule is relaxed.
 //            Specifically, correct memory deallocation is not deemed necessary, as it is
 //            known that all the memory will be eventually deallocated by the OS. At the same time,
 //            it is beneficially to correctly deallocate memory when there are no runtime errors:
