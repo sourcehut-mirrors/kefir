@@ -34,7 +34,8 @@ OPTIONS:
     -Xassembler option                  Pass "option" to assembler phase as command line option
     -Wl,option                          Pass "option" to linking phase as command line option
     -Xlinker option                     Pass "option" to linking phase as command line option
-    -Woption                            Pass "option" to compiling phase as command line option
+    -Woption                            Pass "--option" to compiling phase as command line option
+    -W option                           Pass "option" to compiling phase as command line option
     --restrictive-c                     Enable restrictive compiling mode with C extensions disabled
     --permissive-c                      Enable permissive compiling mode with C extensions enabled [default]
     --print-tokens                      Print tokenized source in JSON format

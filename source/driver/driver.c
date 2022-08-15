@@ -210,9 +210,10 @@ static kefir_result_t driver_generate_compiler_config(struct kefir_mem *mem, str
         REQUIRE_CHAIN(&res, kefir_string_array_append(mem, &extra_args_buf, iter->value));
     }
     kefir_size_t positional_args = extra_args_buf.length;
-    REQUIRE_CHAIN(&res, kefir_parse_cli_options(
-                            mem, symbols, compiler_config, &positional_args, KefirCompilerConfigurationOptions,
-                            KefirCompilerConfigurationOptionCount, extra_args_buf.array, extra_args_buf.length));
+    REQUIRE_CHAIN(&res,
+                  kefir_parse_cli_options(mem, symbols, compiler_config, &positional_args,
+                                          KefirCompilerConfigurationOptions, KefirCompilerConfigurationOptionCount,
+                                          extra_args_buf.array, extra_args_buf.length, stderr));
     REQUIRE_CHAIN_SET(
         &res, positional_args == extra_args_buf.length,
         KEFIR_SET_ERROR(KEFIR_UI_ERROR, "Passing positional arguments directly to compiler is not permitted"));
@@ -280,7 +281,7 @@ static kefir_result_t driver_compile_and_assemble(struct kefir_mem *mem,
                       KEFIR_INTERRUPT);
     REQUIRE_CHAIN(&res, kefir_process_wait(&assembler_process));
     REQUIRE_CHAIN_SET(&res, assembler_process.status.exited && assembler_process.status.exit_code == EXIT_SUCCESS,
-                      KEFIR_INTERRUPT);
+                      KEFIR_SET_ERRORF(KEFIR_SUBPROCESS_ERROR, "Failed to assemble '%s'", argument->value));
 
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_process_kill(&compiler_process);
@@ -334,7 +335,7 @@ static kefir_result_t driver_assemble(struct kefir_mem *mem, const struct kefir_
 
     REQUIRE_CHAIN(&res, kefir_process_wait(&assembler_process));
     REQUIRE_CHAIN_SET(&res, assembler_process.status.exited && assembler_process.status.exit_code == EXIT_SUCCESS,
-                      KEFIR_INTERRUPT);
+                      KEFIR_SET_ERRORF(KEFIR_SUBPROCESS_ERROR, "Failed to assemble '%s'", argument->value));
 
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_process_kill(&assembler_process);

@@ -46,7 +46,7 @@ kefir_result_t kefir_cli_parse_runner_configuration(struct kefir_mem *mem,
 
     kefir_size_t positional_args = argc;
     REQUIRE_OK(kefir_parse_cli_options(mem, NULL, options, &positional_args, KefirCompilerConfigurationOptions,
-                                       KefirCompilerConfigurationOptionCount, argv, argc));
+                                       KefirCompilerConfigurationOptionCount, argv, argc, stderr));
     if (positional_args < argc) {
         REQUIRE(positional_args + 1 == argc,
                 KEFIR_SET_ERROR(KEFIR_UI_ERROR, "Cannot specify more than one input file"));

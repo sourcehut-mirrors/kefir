@@ -283,9 +283,11 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_symbo
             REQUIRE_OK(kefir_driver_configuration_add_compiler_argument(mem, symbols, config, flag));
         } else if (strncmp("-W", arg, 2) == 0) {
             // Tool options
+            kefir_bool_t next_arg = false;
             if (strlen(arg) == 2) {
                 EXPECT_ARG;
                 arg = argv[++index];
+                next_arg = true;
             } else {
                 arg = &arg[2];
             }
@@ -300,6 +302,11 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_symbo
                 REQUIRE_OK(kefir_driver_configuration_add_compiler_argument(mem, symbols, config, arg + 2));
             } else {
                 // Other options
+                char buffer[512];
+                if (!next_arg) {
+                    snprintf(buffer, sizeof(buffer) - 1, "--%s", arg);
+                    arg = buffer;
+                }
                 REQUIRE_OK(kefir_driver_configuration_add_compiler_argument(mem, symbols, config, arg));
             }
         }

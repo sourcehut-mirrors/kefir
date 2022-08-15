@@ -24,10 +24,11 @@
 #include "kefir/core/string_buffer.h"
 #include <getopt.h>
 #include <string.h>
+#include <stdio.h>
 
 static kefir_result_t parse_impl_internal(struct kefir_mem *mem, struct kefir_symbol_table *symbols, void *data_obj,
                                           const struct kefir_cli_option *options, kefir_size_t option_count,
-                                          char *const *argv, kefir_size_t argc) {
+                                          char *const *argv, kefir_size_t argc, FILE *error_output) {
     const struct kefir_cli_option *short_option_map[1 << CHAR_BIT] = {0};
     struct kefir_string_buffer options_buf;
     REQUIRE_OK(kefir_string_buffer_init(mem, &options_buf, KEFIR_STRING_BUFFER_MULTIBYTE));
@@ -73,7 +74,11 @@ static kefir_result_t parse_impl_internal(struct kefir_mem *mem, struct kefir_sy
 
         const struct kefir_cli_option *cli_option = NULL;
         if (c == '?') {
-            res = KEFIR_SET_ERRORF(KEFIR_UI_ERROR, "Unknown option %s", argv[optind - 1]);
+            if (error_output != NULL) {
+                fprintf(stderr, "kefir-cc1: unknown command line option '%s'\n", argv[optind - 1]);
+            }
+            res = KEFIR_OK;
+            continue;
         } else if (c == ':') {
             res = KEFIR_SET_ERRORF(KEFIR_UI_ERROR, "Expected parameter for %s option", argv[optind - 1]);
         } else if (c != 0) {
@@ -179,10 +184,11 @@ static kefir_result_t parse_impl_internal(struct kefir_mem *mem, struct kefir_sy
 
 kefir_result_t kefir_parse_cli_options(struct kefir_mem *mem, struct kefir_symbol_table *symbols, void *data_obj,
                                        kefir_size_t *positional_args, const struct kefir_cli_option *options,
-                                       kefir_size_t option_count, char *const *argv, kefir_size_t argc) {
+                                       kefir_size_t option_count, char *const *argv, kefir_size_t argc,
+                                       FILE *error_output) {
     optind = 0;
     opterr = 0;
-    REQUIRE_OK(parse_impl_internal(mem, symbols, data_obj, options, option_count, argv, argc));
+    REQUIRE_OK(parse_impl_internal(mem, symbols, data_obj, options, option_count, argv, argc, error_output));
     ASSIGN_PTR(positional_args, optind);
     return KEFIR_OK;
 }

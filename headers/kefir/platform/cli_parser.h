@@ -24,6 +24,7 @@
 #include "kefir/core/basic-types.h"
 #include "kefir/core/mem.h"
 #include "kefir/core/symbol_table.h"
+#include <stdio.h>
 
 typedef enum kefir_cli_option_action {
     KEFIR_CLI_OPTION_ACTION_NONE,
@@ -46,6 +47,7 @@ typedef struct kefir_cli_option {
 } kefir_cli_option_t;
 
 kefir_result_t kefir_parse_cli_options(struct kefir_mem *, struct kefir_symbol_table *, void *, kefir_size_t *,
-                                       const struct kefir_cli_option *, kefir_size_t, char *const *, kefir_size_t);
+                                       const struct kefir_cli_option *, kefir_size_t, char *const *, kefir_size_t,
+                                       FILE *);
 
 #endif
