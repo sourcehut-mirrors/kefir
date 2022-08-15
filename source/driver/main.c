@@ -82,15 +82,19 @@ static kefir_result_t print_compiler_info(FILE *out, const char *exec_name) {
     );
 
     fprintf(out, "Build information:\n");
-#if defined(__clang__)
+#if defined(__KEFIRCC__)
+    fprintf(out, "    Compiler: Kefir\n");
+    fprintf(out, "    Compiler version: %s\n", __KEFIRCC_VERSION__);
+#elif defined(__clang__)
     fprintf(out, "    Compiler: Clang\n");
     fprintf(out, "    Compiler version: %s\n", __clang_version__);
 #elif defined(__GNUC__)
     fprintf(out, "    Compiler: GCC\n");
+#ifdef __VERSION__
     fprintf(out, "    Compiler version: %s\n", __VERSION__);
-#elif defined(__KEFIRCC__)
-    fprintf(out, "    Compiler: Kefir\n");
-    fprintf(out, "    Compiler version: %s\n", __KEFIRCC_VERSION__);
+#else
+    fprintf(out, "    Compiler version: unknown\n");
+#endif
 #else
     fprintf(out, "    Compiler: Unknown\n");
 #endif
