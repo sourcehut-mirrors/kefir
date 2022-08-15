@@ -320,6 +320,10 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_symbo
             // Version requested
             *command = KEFIR_DRIVER_COMMAND_VERSION;
             return KEFIR_OK;
+        } else if (strcmp("--compiler-info", arg) == 0) {
+            // Version requested
+            *command = KEFIR_DRIVER_COMMAND_COMPILER_INFO;
+            return KEFIR_OK;
         }
 
         // Ignored unsupported flags

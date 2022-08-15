@@ -130,7 +130,7 @@ kefir_result_t kefir_driver_apply_target_compiler_configuration(
         REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__FreeBSD__", "1"));
         if (target->variant == KEFIR_DRIVER_TARGET_VARIANT_SYSTEM) {
             REQUIRE(externals->freebsd.include_path != NULL,
-                    KEFIR_SET_ERROR(KEFIR_UI_ERROR, "GNU include path shall be passed as KEFIR_FREEBSD_INCLUDE "
+                    KEFIR_SET_ERROR(KEFIR_UI_ERROR, "System include path shall be passed as KEFIR_FREEBSD_INCLUDE "
                                                     "environment variable for selected target"));
 
             REQUIRE_OK(add_include_paths(mem, symbols, compiler_config, externals->freebsd.include_path));
@@ -139,7 +139,7 @@ kefir_result_t kefir_driver_apply_target_compiler_configuration(
         REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__OpenBSD__", "1"));
         if (target->variant == KEFIR_DRIVER_TARGET_VARIANT_SYSTEM) {
             REQUIRE(externals->openbsd.include_path != NULL,
-                    KEFIR_SET_ERROR(KEFIR_UI_ERROR, "GNU include path shall be passed as KEFIR_OPENBSD_INCLUDE "
+                    KEFIR_SET_ERROR(KEFIR_UI_ERROR, "System include path shall be passed as KEFIR_OPENBSD_INCLUDE "
                                                     "environment variable for selected target"));
 
             REQUIRE_OK(add_include_paths(mem, symbols, compiler_config, externals->openbsd.include_path));
@@ -148,7 +148,7 @@ kefir_result_t kefir_driver_apply_target_compiler_configuration(
         REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__NetBSD__", "1"));
         if (target->variant == KEFIR_DRIVER_TARGET_VARIANT_SYSTEM) {
             REQUIRE(externals->netbsd.include_path != NULL,
-                    KEFIR_SET_ERROR(KEFIR_UI_ERROR, "GNU include path shall be passed as KEFIR_NETBSD_INCLUDE "
+                    KEFIR_SET_ERROR(KEFIR_UI_ERROR, "System include path shall be passed as KEFIR_NETBSD_INCLUDE "
                                                     "environment variable for selected target"));
 
             REQUIRE_OK(add_include_paths(mem, symbols, compiler_config, externals->netbsd.include_path));

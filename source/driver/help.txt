@@ -5,6 +5,7 @@ USAGE: kefir [options] files...
 OPTIONS:
     -h,--help                           Print this help text
     -v,--version                        Print compiler version
+    --compiler-info                     Print compiler information
     -c                                  Skip the link-edit phase of the compilation, save object files
     -S                                  Skip assembling phase of the compilation, save assembly files
     -E                                  Preprocess C-language source files, print results to standard output

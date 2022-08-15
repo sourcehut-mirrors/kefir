@@ -17,6 +17,9 @@ else
 KEFIR_FLAGS += --target x86_64-linux-gnu
 endif
 
+KEFIR_BUILD_SOURCE_ID := $(shell $(SOURCE)/../scripts/get-source-id.sh)
+KEFIR_FLAGS += '-DKEFIR_BUILD_SOURCE_ID="$(KEFIR_BUILD_SOURCE_ID)"'
+
 KEFIR_SOURCE := $(wildcard \
 	$(SOURCE)/ast/*.c \
 	$(SOURCE)/ast/analyzer/*.c \

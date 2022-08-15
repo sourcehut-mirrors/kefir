@@ -55,6 +55,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
                            "no_threads = __STDC_NO_THREADS__\n"
                            "no_vla = __STDC_NO_VLA__\n"
                            "kefircc = __KEFIRCC__\n"
+                           "kefircc_version = __KEFIRCC_VERSION__\n"
                            "__ILP32__ __LLP64__ __LP64__ __ILP64__ __SILP64__";
 
     struct kefir_symbol_table symbols;

@@ -61,6 +61,49 @@ static kefir_result_t init_tmpmgr() {
     return KEFIR_OK;
 }
 
+static kefir_result_t print_compiler_info(FILE *out, const char *exec_name) {
+
+    fprintf(out, "Executable: %s\n", exec_name);
+    fprintf(out, "Version: %u.%u.%u\n", KEFIR_VERSION_MAJOR, KEFIR_VERSION_MINOR, KEFIR_VERSION_PATCH);
+    fprintf(out, "Host: %s\n",
+#if defined(KEFIR_LINUX_HOST_PLATFORM)
+            "linux"
+#elif defined(KEFIR_FREEBSD_HOST_PLATFORM)
+            "freebsd"
+#elif defined(KEFIR_OPENBSD_HOST_PLATFORM)
+            "openbsd"
+#elif defined(KEFIR_NETBSD_HOST_PLATFORM)
+            "netbsd"
+#elif defined(KEFIR_UNIX_HOST_PLATFORM)
+            "unix"
+#else
+            "unknown"
+#endif
+    );
+
+    fprintf(out, "Build information:\n");
+#if defined(__clang__)
+    fprintf(out, "    Compiler: Clang\n");
+    fprintf(out, "    Compiler version: %s\n", __clang_version__);
+#elif defined(__GNUC__)
+    fprintf(out, "    Compiler: GCC\n");
+    fprintf(out, "    Compiler version: %s\n", __VERSION__);
+#elif defined(__KEFIRCC__)
+    fprintf(out, "    Compiler: Kefir\n");
+    fprintf(out, "    Compiler version: %s\n", __KEFIRCC_VERSION__);
+#else
+    fprintf(out, "    Compiler: Unknown\n");
+#endif
+
+#ifdef KEFIR_BUILD_SOURCE_ID
+    fprintf(out, "    Source-ID: %s\n", KEFIR_BUILD_SOURCE_ID);
+#endif
+
+    fprintf(out, "URL: %s\n", "https://github.com/protopopov1122/Kefir");
+
+    return KEFIR_OK;
+}
+
 int main(int argc, char *const *argv) {
     UNUSED(argc);
     init_tmpmgr();
@@ -85,6 +128,8 @@ int main(int argc, char *const *argv) {
         fprintf(stdout, "%s", KefirDriverHelpContent);
     } else if (res == KEFIR_OK && command == KEFIR_DRIVER_COMMAND_VERSION) {
         fprintf(stdout, "%u.%u.%u\n", KEFIR_VERSION_MAJOR, KEFIR_VERSION_MINOR, KEFIR_VERSION_PATCH);
+    } else if (res == KEFIR_OK && command == KEFIR_DRIVER_COMMAND_COMPILER_INFO) {
+        res = print_compiler_info(stdout, argv[0]);
     } else {
         REQUIRE_CHAIN(&res, kefir_driver_run(mem, &symbols, &driver_config, &exteral_resources));
         if (res == KEFIR_INTERRUPT) {
