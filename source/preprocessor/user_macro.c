@@ -683,6 +683,12 @@ static kefir_result_t user_macro_apply(struct kefir_mem *mem, struct kefir_prepr
         struct kefir_token *token = &inner_buffer.tokens[i];
         token->source_location = *source_location;
 
+        if (token->klass == KEFIR_TOKEN_IDENTIFIER &&
+            !kefir_hashtree_has(&token->props.macro_expansion, (kefir_hashtree_key_t) macro->identifier)) {
+            REQUIRE_OK(kefir_hashtree_insert(mem, &token->props.macro_expansion,
+                                             (kefir_hashtree_key_t) macro->identifier, (kefir_hashtree_value_t) 0));
+        }
+
         if (token->klass != KEFIR_TOKEN_PP_PLACEMAKER) {
             res = kefir_token_buffer_emplace(mem, buffer, token);
             REQUIRE_ELSE(res == KEFIR_OK, {

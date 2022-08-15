@@ -246,6 +246,10 @@ typedef struct kefir_token {
     };
 
     struct kefir_source_location source_location;
+
+    struct {
+        struct kefir_hashtree macro_expansion;
+    } props;
 } kefir_token_t;
 
 kefir_result_t kefir_token_new_sentinel(struct kefir_token *);

@@ -57,6 +57,8 @@ kefir_result_t kefir_token_new_identifier(struct kefir_mem *mem, struct kefir_sy
     }
     token->klass = KEFIR_TOKEN_IDENTIFIER;
     token->identifier = identifier;
+
+    REQUIRE_OK(kefir_hashtree_init(&token->props.macro_expansion, &kefir_hashtree_str_ops));
     return KEFIR_OK;
 }
 
@@ -407,6 +409,8 @@ kefir_result_t kefir_token_move(struct kefir_token *dst, struct kefir_token *src
     } else if (src->klass == KEFIR_TOKEN_EXTENSION) {
         src->extension.klass = NULL;
         src->extension.payload = NULL;
+    } else if (src->klass == KEFIR_TOKEN_IDENTIFIER) {
+        src->props.macro_expansion = (struct kefir_hashtree){0};
     }
     return KEFIR_OK;
 }
@@ -464,6 +468,19 @@ kefir_result_t kefir_token_copy(struct kefir_mem *mem, struct kefir_token *dst, 
     } else if (src->klass == KEFIR_TOKEN_EXTENSION) {
         REQUIRE(src->extension.klass != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Invalid extension token"));
         REQUIRE_OK(src->extension.klass->copy(mem, dst, src));
+    } else if (src->klass == KEFIR_TOKEN_IDENTIFIER) {
+
+        REQUIRE_OK(kefir_hashtree_init(&dst->props.macro_expansion, &kefir_hashtree_str_ops));
+        struct kefir_hashtree_node_iterator iter;
+        kefir_result_t res = KEFIR_OK;
+        for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&src->props.macro_expansion, &iter);
+             res == KEFIR_OK && node != NULL; node = kefir_hashtree_next(&iter)) {
+            res = kefir_hashtree_insert(mem, &dst->props.macro_expansion, node->key, node->value);
+        }
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            kefir_hashtree_free(mem, &dst->props.macro_expansion);
+            return res;
+        });
     }
     return KEFIR_OK;
 }
@@ -496,9 +513,12 @@ kefir_result_t kefir_token_free(struct kefir_mem *mem, struct kefir_token *token
             }
             break;
 
+        case KEFIR_TOKEN_IDENTIFIER:
+            REQUIRE_OK(kefir_hashtree_free(mem, &token->props.macro_expansion));
+            break;
+
         case KEFIR_TOKEN_SENTINEL:
         case KEFIR_TOKEN_KEYWORD:
-        case KEFIR_TOKEN_IDENTIFIER:
         case KEFIR_TOKEN_CONSTANT:
         case KEFIR_TOKEN_PUNCTUATOR:
         case KEFIR_TOKEN_PP_WHITESPACE:

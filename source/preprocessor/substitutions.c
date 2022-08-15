@@ -444,7 +444,8 @@ static kefir_result_t run_substitutions(struct kefir_mem *mem, struct kefir_prep
             REQUIRE_OK(res);
 
             kefir_result_t res = KEFIR_NO_MATCH;
-            if (token.klass == KEFIR_TOKEN_IDENTIFIER) {
+            if (token.klass == KEFIR_TOKEN_IDENTIFIER &&
+                !kefir_hashtree_has(&token.props.macro_expansion, (kefir_hashtree_key_t) token.identifier)) {
                 res = substitute_identifier(mem, preprocessor, seq, token.identifier, subst_context, descr,
                                             &token.source_location);
                 REQUIRE_CHAIN(&res, kefir_token_free(mem, &token));
