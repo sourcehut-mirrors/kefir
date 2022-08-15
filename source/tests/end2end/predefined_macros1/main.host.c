@@ -21,41 +21,42 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
+#include <string.h>
 #include "./definitions.h"
 
 int main() {
     unsigned int counter = 0;
-    assert(Sizes[counter++] == sizeof(__SIZE_TYPE__));
-    assert(Sizes[counter++] == sizeof(__PTRDIFF_TYPE__));
-    assert(Sizes[counter++] == sizeof(__WCHAR_TYPE__));
-    assert(Sizes[counter++] == sizeof(__WINT_TYPE__));
-    assert(Sizes[counter++] == sizeof(__INTMAX_TYPE__));
-    assert(Sizes[counter++] == sizeof(__UINTMAX_TYPE__));
-    assert(Sizes[counter++] == sizeof(__INT8_TYPE__));
-    assert(Sizes[counter++] == sizeof(__INT16_TYPE__));
-    assert(Sizes[counter++] == sizeof(__INT32_TYPE__));
-    assert(Sizes[counter++] == sizeof(__INT64_TYPE__));
-    assert(Sizes[counter++] == sizeof(__UINT8_TYPE__));
-    assert(Sizes[counter++] == sizeof(__UINT16_TYPE__));
-    assert(Sizes[counter++] == sizeof(__UINT32_TYPE__));
-    assert(Sizes[counter++] == sizeof(__UINT64_TYPE__));
-    assert(Sizes[counter++] == sizeof(__INT_LEAST8_TYPE__));
-    assert(Sizes[counter++] == sizeof(__INT_LEAST16_TYPE__));
-    assert(Sizes[counter++] == sizeof(__INT_LEAST32_TYPE__));
-    assert(Sizes[counter++] == sizeof(__INT_LEAST64_TYPE__));
-    assert(Sizes[counter++] == sizeof(__UINT_LEAST8_TYPE__));
-    assert(Sizes[counter++] == sizeof(__UINT_LEAST16_TYPE__));
-    assert(Sizes[counter++] == sizeof(__UINT_LEAST32_TYPE__));
-    assert(Sizes[counter++] == sizeof(__UINT_LEAST64_TYPE__));
-    assert(Sizes[counter++] == sizeof(__INT_FAST8_TYPE__));
-    assert(Sizes[counter++] == sizeof(__INT_FAST16_TYPE__));
-    assert(Sizes[counter++] == sizeof(__INT_FAST32_TYPE__));
-    assert(Sizes[counter++] == sizeof(__INT_FAST64_TYPE__));
-    assert(Sizes[counter++] == sizeof(__UINT_FAST8_TYPE__));
-    assert(Sizes[counter++] == sizeof(__UINT_FAST16_TYPE__));
-    assert(Sizes[counter++] == sizeof(__UINT_FAST32_TYPE__));
-    assert(Sizes[counter++] == sizeof(__UINT_FAST64_TYPE__));
-    assert(Sizes[counter++] == sizeof(__INTPTR_TYPE__));
-    assert(Sizes[counter++] == sizeof(__UINTPTR_TYPE__));
+    assert(strcmp("__SIZE_TYPE__", Types[counter++]) != 0);
+    assert(strcmp("__PTRDIFF_TYPE__", Types[counter++]) != 0);
+    assert(strcmp("__WCHAR_TYPE__", Types[counter++]) != 0);
+    assert(strcmp("__WINT_TYPE__", Types[counter++]) != 0);
+    assert(strcmp("__INTMAX_TYPE__", Types[counter++]) != 0);
+    assert(strcmp("__UINTMAX_TYPE__", Types[counter++]) != 0);
+    assert(strcmp("__INT8_TYPE__", Types[counter++]) != 0);
+    assert(strcmp("__INT16_TYPE__", Types[counter++]) != 0);
+    assert(strcmp("__INT32_TYPE__", Types[counter++]) != 0);
+    assert(strcmp("__INT64_TYPE__", Types[counter++]) != 0);
+    assert(strcmp("__UINT8_TYPE__", Types[counter++]) != 0);
+    assert(strcmp("__UINT16_TYPE__", Types[counter++]) != 0);
+    assert(strcmp("__UINT32_TYPE__", Types[counter++]) != 0);
+    assert(strcmp("__UINT64_TYPE__", Types[counter++]) != 0);
+    assert(strcmp("__INT_LEAST8_TYPE__", Types[counter++]) != 0);
+    assert(strcmp("__INT_LEAST16_TYPE__", Types[counter++]) != 0);
+    assert(strcmp("__INT_LEAST32_TYPE__", Types[counter++]) != 0);
+    assert(strcmp("__INT_LEAST64_TYPE__", Types[counter++]) != 0);
+    assert(strcmp("__UINT_LEAST8_TYPE__", Types[counter++]) != 0);
+    assert(strcmp("__UINT_LEAST16_TYPE__", Types[counter++]) != 0);
+    assert(strcmp("__UINT_LEAST32_TYPE__", Types[counter++]) != 0);
+    assert(strcmp("__UINT_LEAST64_TYPE__", Types[counter++]) != 0);
+    assert(strcmp("__INT_FAST8_TYPE__", Types[counter++]) != 0);
+    assert(strcmp("__INT_FAST16_TYPE__", Types[counter++]) != 0);
+    assert(strcmp("__INT_FAST32_TYPE__", Types[counter++]) != 0);
+    assert(strcmp("__INT_FAST64_TYPE__", Types[counter++]) != 0);
+    assert(strcmp("__UINT_FAST8_TYPE__", Types[counter++]) != 0);
+    assert(strcmp("__UINT_FAST16_TYPE__", Types[counter++]) != 0);
+    assert(strcmp("__UINT_FAST32_TYPE__", Types[counter++]) != 0);
+    assert(strcmp("__UINT_FAST64_TYPE__", Types[counter++]) != 0);
+    assert(strcmp("__INTPTR_TYPE__", Types[counter++]) != 0);
+    assert(strcmp("__UINTPTR_TYPE__", Types[counter++]) != 0);
     return EXIT_SUCCESS;
 }

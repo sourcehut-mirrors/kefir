@@ -20,14 +20,15 @@
 
 #include "./definitions.h"
 
-unsigned int Sizes[] = {sizeof(__SIZE_TYPE__),         sizeof(__PTRDIFF_TYPE__),      sizeof(__WCHAR_TYPE__),
-                        sizeof(__WINT_TYPE__),         sizeof(__INTMAX_TYPE__),       sizeof(__UINTMAX_TYPE__),
-                        sizeof(__INT8_TYPE__),         sizeof(__INT16_TYPE__),        sizeof(__INT32_TYPE__),
-                        sizeof(__INT64_TYPE__),        sizeof(__UINT8_TYPE__),        sizeof(__UINT16_TYPE__),
-                        sizeof(__UINT32_TYPE__),       sizeof(__UINT64_TYPE__),       sizeof(__INT_LEAST8_TYPE__),
-                        sizeof(__INT_LEAST16_TYPE__),  sizeof(__INT_LEAST32_TYPE__),  sizeof(__INT_LEAST64_TYPE__),
-                        sizeof(__UINT_LEAST8_TYPE__),  sizeof(__UINT_LEAST16_TYPE__), sizeof(__UINT_LEAST32_TYPE__),
-                        sizeof(__UINT_LEAST64_TYPE__), sizeof(__INT_FAST8_TYPE__),    sizeof(__INT_FAST16_TYPE__),
-                        sizeof(__INT_FAST32_TYPE__),   sizeof(__INT_FAST64_TYPE__),   sizeof(__UINT_FAST8_TYPE__),
-                        sizeof(__UINT_FAST16_TYPE__),  sizeof(__UINT_FAST32_TYPE__),  sizeof(__UINT_FAST64_TYPE__),
-                        sizeof(__INTPTR_TYPE__),       sizeof(__UINTPTR_TYPE__)};
+#define _STR(x) #x
+#define STR(x) _STR(x)
+
+const char *Types[] = {
+    STR(__SIZE_TYPE__),         STR(__PTRDIFF_TYPE__),      STR(__WCHAR_TYPE__),       STR(__WINT_TYPE__),
+    STR(__INTMAX_TYPE__),       STR(__UINTMAX_TYPE__),      STR(__INT8_TYPE__),        STR(__INT16_TYPE__),
+    STR(__INT32_TYPE__),        STR(__INT64_TYPE__),        STR(__UINT8_TYPE__),       STR(__UINT16_TYPE__),
+    STR(__UINT32_TYPE__),       STR(__UINT64_TYPE__),       STR(__INT_LEAST8_TYPE__),  STR(__INT_LEAST16_TYPE__),
+    STR(__INT_LEAST32_TYPE__),  STR(__INT_LEAST64_TYPE__),  STR(__UINT_LEAST8_TYPE__), STR(__UINT_LEAST16_TYPE__),
+    STR(__UINT_LEAST32_TYPE__), STR(__UINT_LEAST64_TYPE__), STR(__INT_FAST8_TYPE__),   STR(__INT_FAST16_TYPE__),
+    STR(__INT_FAST32_TYPE__),   STR(__INT_FAST64_TYPE__),   STR(__UINT_FAST8_TYPE__),  STR(__UINT_FAST16_TYPE__),
+    STR(__UINT_FAST32_TYPE__),  STR(__UINT_FAST64_TYPE__),  STR(__INTPTR_TYPE__),      STR(__UINTPTR_TYPE__)};

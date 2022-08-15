@@ -21,6 +21,6 @@
 #ifndef DEFINITIONS_H_
 #define DEFINITIONS_H_
 
-extern unsigned int Sizes[];
+extern const char *Types[];
 
 #endif
