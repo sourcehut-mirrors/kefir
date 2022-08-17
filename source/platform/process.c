@@ -254,7 +254,7 @@ kefir_result_t kefir_process_redirect_stdout_to_file(struct kefir_process *proce
     REQUIRE(process->pid == -1, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected initialized process"));
     REQUIRE(filepath, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid file path"));
 
-    int fd = open(filepath, O_CREAT | O_WRONLY, S_IWUSR | S_IRUSR);
+    int fd = open(filepath, O_CREAT | O_WRONLY | O_TRUNC, S_IWUSR | S_IRUSR);
     REQUIRE(fd >= 0, KEFIR_SET_OS_ERROR("Failed to redirect process stdout to file"));
     kefir_result_t res = kefir_process_redirect_stdout_to(process, fd);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -269,7 +269,7 @@ kefir_result_t kefir_process_redirect_stderr_to_file(struct kefir_process *proce
     REQUIRE(process->pid == -1, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected initialized process"));
     REQUIRE(filepath, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid file path"));
 
-    int fd = open(filepath, O_CREAT | O_WRONLY, S_IWUSR | S_IRUSR);
+    int fd = open(filepath, O_CREAT | O_WRONLY | O_TRUNC, S_IWUSR | S_IRUSR);
     REQUIRE(fd >= 0, KEFIR_SET_OS_ERROR("Failed to redirect process stderr to file"));
     kefir_result_t res = kefir_process_redirect_stderr_to(process, fd);
     REQUIRE_ELSE(res == KEFIR_OK, {
