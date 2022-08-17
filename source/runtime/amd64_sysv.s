@@ -109,21 +109,13 @@ declare_opcode load8u
 declare_opcode load8i
 declare_opcode load16u
 declare_opcode load16i
-declare_opcode load24u
 declare_opcode load32u
 declare_opcode load32i
-declare_opcode load40u
-declare_opcode load48u
-declare_opcode load56u
 declare_opcode load64
 declare_opcode loadld
 declare_opcode store8
 declare_opcode store16
-declare_opcode store24
 declare_opcode store32
-declare_opcode store40
-declare_opcode store48
-declare_opcode store56
 declare_opcode store64
 declare_opcode storeld
 declare_opcode bzero
@@ -529,15 +521,6 @@ define_opcode load16i
     push DATA_REG
     end_opcode
 
-define_opcode load24u
-    pop TMP_REG
-    movzx DATA_REG, word ptr [TMP_REG]
-    movzx DATA2_REG, byte ptr [TMP_REG + 2]
-    shl DATA2_REG, 16
-    or DATA_REG, DATA2_REG
-    push DATA_REG
-    end_opcode
-
 define_opcode load32u
     pop DATA2_REG
     mov eax, [DATA2_REG]
@@ -549,36 +532,6 @@ define_opcode load32i
     mov eax, [DATA2_REG]
     movsx DATA_REG, eax
     push DATA_REG
-    end_opcode
-
-define_opcode load40u
-    pop TMP_REG
-    mov eax, [TMP_REG]
-    movzx DATA2_REG, byte ptr [TMP_REG + 4]
-    shl DATA2_REG, 32
-    or rax, DATA2_REG
-    push rax
-    end_opcode
-
-define_opcode load48u
-    pop TMP_REG
-    mov eax, [TMP_REG]
-    movzx DATA2_REG, word ptr [TMP_REG + 4]
-    shl DATA2_REG, 32
-    or rax, DATA2_REG
-    push rax
-    end_opcode
-
-define_opcode load56u
-    pop TMP_REG
-    mov eax, [TMP_REG]
-    movzx DATA2_REG, word ptr [TMP_REG + 4]
-    shl DATA2_REG, 32
-    or rax, DATA2_REG
-    movzx DATA2_REG, byte ptr [TMP_REG + 6]
-    shl DATA2_REG, 48
-    or rax, DATA2_REG
-    push rax
     end_opcode
 
 define_opcode load64
@@ -607,44 +560,10 @@ define_opcode store16
     mov [DATA2_REG], ax
     end_opcode
 
-define_opcode store24
-    pop rax
-    pop DATA2_REG
-    mov [DATA2_REG], ax
-    shr rax, 16
-    mov [DATA2_REG + 2], al
-    end_opcode
-
 define_opcode store32
     pop rax
     pop DATA2_REG
     mov [DATA2_REG], eax
-    end_opcode
-
-define_opcode store40
-    pop rax
-    pop DATA2_REG
-    mov [DATA2_REG], eax
-    shr rax, 32
-    mov [DATA2_REG + 4], al
-    end_opcode
-
-define_opcode store48
-    pop rax
-    pop DATA2_REG
-    mov [DATA2_REG], eax
-    shr rax, 32
-    mov [DATA2_REG + 4], ax
-    end_opcode
-
-define_opcode store56
-    pop rax
-    pop DATA2_REG
-    mov [DATA2_REG], eax
-    shr rax, 32
-    mov [DATA2_REG + 4], ax
-    shr rax, 16
-    mov [DATA2_REG + 6], al
     end_opcode
 
 define_opcode store64

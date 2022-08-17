@@ -570,7 +570,7 @@
                     "arg": 3
                 },
                 {
-                    "opcode": "load40u"
+                    "opcode": "load64"
                 },
                 {
                     "opcode": "extubits",

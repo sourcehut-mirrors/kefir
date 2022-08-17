@@ -139,17 +139,9 @@ kefir_result_t kefir_ir_format_instr(struct kefir_json_output *json, const struc
             return kefir_ir_format_instr_none(json, module, instr);
         case KEFIR_IROPCODE_LOAD16I:
             return kefir_ir_format_instr_none(json, module, instr);
-        case KEFIR_IROPCODE_LOAD24U:
-            return kefir_ir_format_instr_none(json, module, instr);
         case KEFIR_IROPCODE_LOAD32U:
             return kefir_ir_format_instr_none(json, module, instr);
         case KEFIR_IROPCODE_LOAD32I:
-            return kefir_ir_format_instr_none(json, module, instr);
-        case KEFIR_IROPCODE_LOAD40U:
-            return kefir_ir_format_instr_none(json, module, instr);
-        case KEFIR_IROPCODE_LOAD48U:
-            return kefir_ir_format_instr_none(json, module, instr);
-        case KEFIR_IROPCODE_LOAD56U:
             return kefir_ir_format_instr_none(json, module, instr);
         case KEFIR_IROPCODE_LOAD64:
             return kefir_ir_format_instr_none(json, module, instr);
@@ -159,15 +151,7 @@ kefir_result_t kefir_ir_format_instr(struct kefir_json_output *json, const struc
             return kefir_ir_format_instr_none(json, module, instr);
         case KEFIR_IROPCODE_STORE16:
             return kefir_ir_format_instr_none(json, module, instr);
-        case KEFIR_IROPCODE_STORE24:
-            return kefir_ir_format_instr_none(json, module, instr);
         case KEFIR_IROPCODE_STORE32:
-            return kefir_ir_format_instr_none(json, module, instr);
-        case KEFIR_IROPCODE_STORE40:
-            return kefir_ir_format_instr_none(json, module, instr);
-        case KEFIR_IROPCODE_STORE48:
-            return kefir_ir_format_instr_none(json, module, instr);
-        case KEFIR_IROPCODE_STORE56:
             return kefir_ir_format_instr_none(json, module, instr);
         case KEFIR_IROPCODE_STORE64:
             return kefir_ir_format_instr_none(json, module, instr);
