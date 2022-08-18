@@ -146,7 +146,11 @@
                     "arg": 5
                 },
                 {
-                    "opcode": "getlocals"
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 4,
+                        "index": 0
+                    }
                 }
             ]
         },
@@ -156,7 +160,11 @@
             "locals": 4,
             "body": [
                 {
-                    "opcode": "getlocals"
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 4,
+                        "index": 0
+                    }
                 },
                 {
                     "opcode": "branch",

@@ -136,7 +136,11 @@
                     "opcode": "load32u"
                 },
                 {
-                    "opcode": "getlocals"
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 4,
+                        "index": 0
+                    }
                 },
                 {
                     "opcode": "load8u"

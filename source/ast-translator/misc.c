@@ -132,6 +132,22 @@ kefir_result_t kefir_ast_translator_resolve_type_layout(struct kefir_irbuilder_b
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_ast_translator_resolve_local_type_layout(struct kefir_irbuilder_block *builder, kefir_id_t type_id,
+                                                              const struct kefir_ast_type_layout *layout) {
+    REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR block builder"));
+    REQUIRE(layout != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type layout"));
+
+    if (layout->parent != NULL) {
+        REQUIRE_OK(kefir_ast_translator_resolve_local_type_layout(builder, type_id, layout->parent));
+        if (layout->properties.relative_offset != 0) {
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32(builder, KEFIR_IROPCODE_OFFSETPTR, type_id, layout->value));
+        }
+    } else {
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32(builder, KEFIR_IROPCODE_GETLOCAL, type_id, layout->value));
+    }
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_ast_translator_resolve_vla_element(struct kefir_mem *mem,
                                                         struct kefir_ast_translator_context *context,
                                                         struct kefir_irbuilder_block *builder, kefir_id_t vla_id) {
@@ -151,8 +167,7 @@ kefir_result_t kefir_ast_translator_resolve_vla_element(struct kefir_mem *mem,
     REQUIRE_OK(kefir_ast_type_layout_resolve(scoped_id_layout->layout, &vla_element_designator, &vla_element_layout,
                                              NULL, NULL));
 
-    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_GETLOCALS, 0));
-    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32(builder, KEFIR_IROPCODE_OFFSETPTR, scoped_id_layout->type_id,
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32(builder, KEFIR_IROPCODE_GETLOCAL, scoped_id_layout->type_id,
                                                scoped_id_layout->layout->value));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PUSHU64, vla_id));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32(builder, KEFIR_IROPCODE_ELEMENTPTR, scoped_id_layout->type_id,

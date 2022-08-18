@@ -83,7 +83,7 @@
     <opcode id="offsetptr"   mnemonic="offsetptr"   code="0x50" type="typeref" />
     <opcode id="elementptr"  mnemonic="elementptr"  code="0x51" type="typeref" />
     <opcode id="getglobal"   mnemonic="getglobal"   code="0x52" type="identifier" />
-    <opcode id="getlocals"   mnemonic="getlocals"   code="0x53" type="none" />
+    <opcode id="getlocal"    mnemonic="getlocal"    code="0x53" type="typeref" />
     <opcode id="load8u"      mnemonic="load8u"      code="0x54" type="none" />
     <opcode id="load8i"      mnemonic="load8i"      code="0x55" type="none" />
     <opcode id="load16u"     mnemonic="load16u"     code="0x56" type="none" />

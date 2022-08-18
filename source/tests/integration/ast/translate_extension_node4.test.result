@@ -55,7 +55,10 @@
                     "opcode": "iadd"
                 },
                 {
-                    "opcode": "getlocals"
+                    "opcode": "getglobal",
+                    "arg": {
+                        "data": "global_var1"
+                    }
                 },
                 {
                     "opcode": "pick",

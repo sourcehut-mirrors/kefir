@@ -470,10 +470,7 @@
                     "arg": 9.130000
                 },
                 {
-                    "opcode": "getlocals"
-                },
-                {
-                    "opcode": "offsetptr",
+                    "opcode": "getlocal",
                     "arg": {
                         "type": 4,
                         "index": 1

@@ -473,7 +473,11 @@
             "locals": 18,
             "body": [
                 {
-                    "opcode": "getlocals"
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 18,
+                        "index": 0
+                    }
                 },
                 {
                     "opcode": "xchg",
@@ -483,7 +487,11 @@
                     "opcode": "store64"
                 },
                 {
-                    "opcode": "getlocals"
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 18,
+                        "index": 0
+                    }
                 },
                 {
                     "opcode": "load64"

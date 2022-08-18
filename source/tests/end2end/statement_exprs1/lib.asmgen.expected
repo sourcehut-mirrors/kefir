@@ -64,7 +64,7 @@
 .extern __kefirrt_extubits_impl
 .extern __kefirrt_extsbits_impl
 .extern __kefirrt_insertbits_impl
-.extern __kefirrt_getlocals_impl
+.extern __kefirrt_getlocal_impl
 .extern __kefirrt_f32add_impl
 .extern __kefirrt_f32sub_impl
 .extern __kefirrt_f32mul_impl
@@ -133,20 +133,20 @@ eval1:
     lea %rbx, [__eval1_body]
     jmp [%rbx]
 __eval1_body:
-    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_xchg_impl, 1
     .quad __kefirrt_store32_impl, 0
-    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_offsetptr_impl, 4
     .quad __kefirrt_pick_impl, 0
-    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_load32i_impl, 0
     .quad __kefirrt_push_impl, 1
     .quad __kefirrt_iadd_impl, 0
     .quad __kefirrt_extend32_impl, 0
     .quad __kefirrt_store32_impl, 0
     .quad __kefirrt_pop_impl, 0
-    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_pick_impl, 0
     .quad __kefirrt_load32i_impl, 0
     .quad __kefirrt_xchg_impl, 1
@@ -155,21 +155,21 @@ __eval1_body:
     .quad __kefirrt_extend32_impl, 0
     .quad __kefirrt_store32_impl, 0
     .quad __kefirrt_pop_impl, 0
-    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_offsetptr_impl, 4
     .quad __kefirrt_offsetptr_impl, 4
     .quad __kefirrt_pick_impl, 0
-    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_load32i_impl, 0
     .quad __kefirrt_push_impl, 1
     .quad __kefirrt_isub_impl, 0
     .quad __kefirrt_extend32_impl, 0
     .quad __kefirrt_store32_impl, 0
     .quad __kefirrt_pop_impl, 0
-    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_offsetptr_impl, 4
     .quad __kefirrt_load32i_impl, 0
-    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_offsetptr_impl, 4
     .quad __kefirrt_offsetptr_impl, 4
     .quad __kefirrt_load32i_impl, 0
@@ -196,25 +196,24 @@ eval2:
     lea %rbx, [__eval2_body]
     jmp [%rbx]
 __eval2_body:
-    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_xchg_impl, 1
     .quad __kefirrt_store32_impl, 0
-    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_load32i_impl, 0
-    .quad __kefirrt_getlocals_impl, 16
-    .quad __kefirrt_offsetptr_impl, 8
+    .quad __kefirrt_getlocal_impl, 24
     .quad __kefirrt_push_impl, 0
     .quad __kefirrt_elementptr_impl, 8
     .quad __kefirrt_pushscope_impl, 0
     .quad __kefirrt_store64_impl, 0
-    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_offsetptr_impl, 16
     .quad __kefirrt_offsetptr_impl, 0
     .quad __kefirrt_push_impl, 8
-    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_load32i_impl, 0
     .quad __kefirrt_imul_impl, 0
-    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_offsetptr_impl, 16
     .quad __kefirrt_offsetptr_impl, 8
     .quad __kefirrt_pick_impl, 1
@@ -222,12 +221,11 @@ __eval2_body:
     .quad __kefirrt_push_impl, 8
     .quad __kefirrt_alloca_impl, 0
     .quad __kefirrt_store64_impl, 0
-    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_offsetptr_impl, 16
     .quad __kefirrt_offsetptr_impl, 8
     .quad __kefirrt_load64_impl, 0
-    .quad __kefirrt_getlocals_impl, 16
-    .quad __kefirrt_offsetptr_impl, 8
+    .quad __kefirrt_getlocal_impl, 24
     .quad __kefirrt_push_impl, 0
     .quad __kefirrt_elementptr_impl, 8
     .quad __kefirrt_load64_impl, 0

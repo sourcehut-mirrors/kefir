@@ -264,10 +264,7 @@
             "locals": 14,
             "body": [
                 {
-                    "opcode": "getlocals"
-                },
-                {
-                    "opcode": "offsetptr",
+                    "opcode": "getlocal",
                     "arg": {
                         "type": 14,
                         "index": 1

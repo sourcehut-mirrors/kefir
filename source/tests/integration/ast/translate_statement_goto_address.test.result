@@ -108,7 +108,11 @@
             "locals": 5,
             "body": [
                 {
-                    "opcode": "getlocals"
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 5,
+                        "index": 0
+                    }
                 },
                 {
                     "opcode": "pick",
@@ -128,7 +132,11 @@
                     "opcode": "pop"
                 },
                 {
-                    "opcode": "getlocals"
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 5,
+                        "index": 0
+                    }
                 },
                 {
                     "opcode": "pick",
@@ -159,7 +167,11 @@
                     "opcode": "pop"
                 },
                 {
-                    "opcode": "getlocals"
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 5,
+                        "index": 0
+                    }
                 },
                 {
                     "opcode": "load16i"
@@ -200,7 +212,11 @@
                     "arg": 7
                 },
                 {
-                    "opcode": "getlocals"
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 5,
+                        "index": 0
+                    }
                 },
                 {
                     "opcode": "pick",

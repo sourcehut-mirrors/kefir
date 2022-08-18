@@ -135,7 +135,11 @@
             "locals": 5,
             "body": [
                 {
-                    "opcode": "getlocals"
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 5,
+                        "index": 0
+                    }
                 },
                 {
                     "opcode": "pick",
@@ -165,7 +169,11 @@
                     }
                 },
                 {
-                    "opcode": "getlocals"
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 5,
+                        "index": 0
+                    }
                 },
                 {
                     "opcode": "load32u"
@@ -201,7 +209,11 @@
                     "arg": 29
                 },
                 {
-                    "opcode": "getlocals"
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 5,
+                        "index": 0
+                    }
                 },
                 {
                     "opcode": "pick",

@@ -291,7 +291,11 @@
             "locals": 12,
             "body": [
                 {
-                    "opcode": "getlocals"
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 12,
+                        "index": 0
+                    }
                 },
                 {
                     "opcode": "pick",
@@ -308,7 +312,11 @@
                     "opcode": "pop"
                 },
                 {
-                    "opcode": "getlocals"
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 12,
+                        "index": 0
+                    }
                 },
                 {
                     "opcode": "load32i"
@@ -335,7 +343,11 @@
                     }
                 },
                 {
-                    "opcode": "getlocals"
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 12,
+                        "index": 0
+                    }
                 },
                 {
                     "opcode": "pick",
@@ -381,7 +393,11 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "getlocals"
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 18,
+                        "index": 0
+                    }
                 },
                 {
                     "opcode": "xchg",
@@ -402,7 +418,11 @@
                     "opcode": "pop"
                 },
                 {
-                    "opcode": "getlocals"
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 18,
+                        "index": 0
+                    }
                 },
                 {
                     "opcode": "load32i"
@@ -451,7 +471,11 @@
                     "arg": 30
                 },
                 {
-                    "opcode": "getlocals"
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 18,
+                        "index": 0
+                    }
                 },
                 {
                     "opcode": "pick",

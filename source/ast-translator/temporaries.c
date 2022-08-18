@@ -57,8 +57,7 @@ kefir_result_t kefir_ast_translator_fetch_temporary(struct kefir_mem *mem, struc
         REQUIRE_OK(
             kefir_ast_type_layout_resolve(temp_value_layout, &temp_member_designator, &temp_member_layout, NULL, NULL));
 
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_GETLOCALS, 0));
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32(builder, KEFIR_IROPCODE_OFFSETPTR, scoped_id_layout->type_id,
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32(builder, KEFIR_IROPCODE_GETLOCAL, scoped_id_layout->type_id,
                                                    scoped_id_layout->layout->value));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32(builder, KEFIR_IROPCODE_OFFSETPTR, scoped_id_layout->type_id,
                                                    temp_value_layout->value));

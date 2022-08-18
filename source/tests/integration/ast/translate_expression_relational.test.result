@@ -724,7 +724,11 @@
                     "opcode": "load64"
                 },
                 {
-                    "opcode": "getlocals"
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 4,
+                        "index": 0
+                    }
                 },
                 {
                     "opcode": "load64"
@@ -736,13 +740,21 @@
                     "opcode": "bnot"
                 },
                 {
-                    "opcode": "getlocals"
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 4,
+                        "index": 0
+                    }
                 },
                 {
                     "opcode": "load64"
                 },
                 {
-                    "opcode": "getlocals"
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 4,
+                        "index": 0
+                    }
                 },
                 {
                     "opcode": "load64"
@@ -791,7 +803,11 @@
                     "opcode": "load64"
                 },
                 {
-                    "opcode": "getlocals"
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 4,
+                        "index": 0
+                    }
                 },
                 {
                     "opcode": "load64"
@@ -800,13 +816,21 @@
                     "opcode": "iequals"
                 },
                 {
-                    "opcode": "getlocals"
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 4,
+                        "index": 0
+                    }
                 },
                 {
                     "opcode": "load64"
                 },
                 {
-                    "opcode": "getlocals"
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 4,
+                        "index": 0
+                    }
                 },
                 {
                     "opcode": "load64"
@@ -958,13 +982,21 @@
                     "opcode": "ibelow"
                 },
                 {
-                    "opcode": "getlocals"
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 4,
+                        "index": 0
+                    }
                 },
                 {
                     "opcode": "load64"
                 },
                 {
-                    "opcode": "getlocals"
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 4,
+                        "index": 0
+                    }
                 },
                 {
                     "opcode": "load64"
@@ -1012,13 +1044,21 @@
                     "opcode": "bor"
                 },
                 {
-                    "opcode": "getlocals"
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 4,
+                        "index": 0
+                    }
                 },
                 {
                     "opcode": "load64"
                 },
                 {
-                    "opcode": "getlocals"
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 4,
+                        "index": 0
+                    }
                 },
                 {
                     "opcode": "load64"
@@ -1066,13 +1106,21 @@
                     "opcode": "iabove"
                 },
                 {
-                    "opcode": "getlocals"
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 4,
+                        "index": 0
+                    }
                 },
                 {
                     "opcode": "load64"
                 },
                 {
-                    "opcode": "getlocals"
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 4,
+                        "index": 0
+                    }
                 },
                 {
                     "opcode": "load64"
@@ -1120,13 +1168,21 @@
                     "opcode": "bor"
                 },
                 {
-                    "opcode": "getlocals"
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 4,
+                        "index": 0
+                    }
                 },
                 {
                     "opcode": "load64"
                 },
                 {
-                    "opcode": "getlocals"
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 4,
+                        "index": 0
+                    }
                 },
                 {
                     "opcode": "load64"

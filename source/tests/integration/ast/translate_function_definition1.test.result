@@ -149,7 +149,11 @@
             "locals": 9,
             "body": [
                 {
-                    "opcode": "getlocals"
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 9,
+                        "index": 0
+                    }
                 },
                 {
                     "opcode": "offsetptr",
@@ -166,7 +170,11 @@
                     "opcode": "store32"
                 },
                 {
-                    "opcode": "getlocals"
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 9,
+                        "index": 0
+                    }
                 },
                 {
                     "opcode": "xchg",
@@ -176,13 +184,21 @@
                     "opcode": "store32"
                 },
                 {
-                    "opcode": "getlocals"
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 9,
+                        "index": 0
+                    }
                 },
                 {
                     "opcode": "load32i"
                 },
                 {
-                    "opcode": "getlocals"
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 9,
+                        "index": 0
+                    }
                 },
                 {
                     "opcode": "offsetptr",

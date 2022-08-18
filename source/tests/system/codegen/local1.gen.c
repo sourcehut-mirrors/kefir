@@ -57,10 +57,10 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     kefir_irbuilder_type_append_v(mem, fill->declaration->params, KEFIR_IR_TYPE_LONG, 0, 0);
     kefir_irbuilder_type_append_e(mem, fill->declaration->result, type1, 0);
 
-    kefir_irbuilder_block_appendi64(mem, &fill->body, KEFIR_IROPCODE_GETLOCALS, 0);  // 0:  [VAL, S*]
-    kefir_irbuilder_block_appendi64(mem, &fill->body, KEFIR_IROPCODE_XCHG, 1);       // 1:  [S*, VAL]
-    kefir_irbuilder_block_appendi64(mem, &fill->body, KEFIR_IROPCODE_PICK, 0);       // 1:  [S*, VAL, VAL]
-    kefir_irbuilder_block_appendi64(mem, &fill->body, KEFIR_IROPCODE_PICK, 2);       // 2:  [S*, VAL, VAL, S*]
+    kefir_irbuilder_block_appendu32(mem, &fill->body, KEFIR_IROPCODE_GETLOCAL, type1_id, 0);  // 0:  [VAL, S*]
+    kefir_irbuilder_block_appendi64(mem, &fill->body, KEFIR_IROPCODE_XCHG, 1);                // 1:  [S*, VAL]
+    kefir_irbuilder_block_appendi64(mem, &fill->body, KEFIR_IROPCODE_PICK, 0);                // 1:  [S*, VAL, VAL]
+    kefir_irbuilder_block_appendi64(mem, &fill->body, KEFIR_IROPCODE_PICK, 2);                // 2:  [S*, VAL, VAL, S*]
     kefir_irbuilder_block_appendu32(mem, &fill->body, KEFIR_IROPCODE_OFFSETPTR, type1_id,
                                     1);                                           // 3:  [S*, VAL, VAL, U8*]
     kefir_irbuilder_block_appendi64(mem, &fill->body, KEFIR_IROPCODE_XCHG, 1);    // 4:  [S*, VAL, U8*, VAL]

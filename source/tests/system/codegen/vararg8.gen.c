@@ -57,29 +57,29 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_irbuilder_type_append_v(mem, sumldouble_decl_result, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0));
     REQUIRE_OK(
         kefir_irbuilder_type_append_v(mem, sumldouble_locals, KEFIR_IR_TYPE_BUILTIN, 0, KEFIR_IR_TYPE_BUILTIN_VARARG));
-    kefir_irbuilder_block_appendi64(mem, &sumldouble->body, KEFIR_IROPCODE_GETLOCALS, 0);             // 0: [C, L*]
-    kefir_irbuilder_block_appendu32(mem, &sumldouble->body, KEFIR_IROPCODE_OFFSETPTR, locals_id, 0);  // 1: [C, V*]
-    kefir_irbuilder_block_appendi64(mem, &sumldouble->body, KEFIR_IROPCODE_VARARG_START, 0);          // 2: [C]
+    kefir_irbuilder_block_appendi64(mem, &sumldouble->body, KEFIR_IROPCODE_NOP, 0);                  // 0: [C, L*]
+    kefir_irbuilder_block_appendu32(mem, &sumldouble->body, KEFIR_IROPCODE_GETLOCAL, locals_id, 0);  // 1: [C, V*]
+    kefir_irbuilder_block_appendi64(mem, &sumldouble->body, KEFIR_IROPCODE_VARARG_START, 0);         // 2: [C]
     kefir_irbuilder_block_appendi64(mem, &sumldouble->body, KEFIR_IROPCODE_PUSHLD,
                                     kefir_ir_long_double_upper_half(1.0l));  // 3: [C, S1=0]
     kefir_irbuilder_block_appendi64(mem, &sumldouble->body, KEFIR_IROPCODE_PUSHU64,
-                                    kefir_ir_long_double_lower_half(1.0l));                // 4: [C, S1=0, S2=0]
-    kefir_irbuilder_block_appendi64(mem, &sumldouble->body, KEFIR_IROPCODE_PICK, 2);       // 5: [C, S1, S2, C]
-    kefir_irbuilder_block_appendi64(mem, &sumldouble->body, KEFIR_IROPCODE_PUSHI64, 0);    // 6: [C, S1, S2, C, 0]
-    kefir_irbuilder_block_appendi64(mem, &sumldouble->body, KEFIR_IROPCODE_IEQUALS, 0);    // 7: [C, S1, S2, C==0]
-    kefir_irbuilder_block_appendu64(mem, &sumldouble->body, KEFIR_IROPCODE_BRANCH, 17);    // 8: [C, S1, S2] -> @16
-    kefir_irbuilder_block_appendi64(mem, &sumldouble->body, KEFIR_IROPCODE_GETLOCALS, 0);  // 9: [C, S1, S2, L*]
-    kefir_irbuilder_block_appendu32(mem, &sumldouble->body, KEFIR_IROPCODE_OFFSETPTR, locals_id,
+                                    kefir_ir_long_double_lower_half(1.0l));              // 4: [C, S1=0, S2=0]
+    kefir_irbuilder_block_appendi64(mem, &sumldouble->body, KEFIR_IROPCODE_PICK, 2);     // 5: [C, S1, S2, C]
+    kefir_irbuilder_block_appendi64(mem, &sumldouble->body, KEFIR_IROPCODE_PUSHI64, 0);  // 6: [C, S1, S2, C, 0]
+    kefir_irbuilder_block_appendi64(mem, &sumldouble->body, KEFIR_IROPCODE_IEQUALS, 0);  // 7: [C, S1, S2, C==0]
+    kefir_irbuilder_block_appendu64(mem, &sumldouble->body, KEFIR_IROPCODE_BRANCH, 17);  // 8: [C, S1, S2] -> @16
+    kefir_irbuilder_block_appendi64(mem, &sumldouble->body, KEFIR_IROPCODE_NOP, 0);      // 9: [C, S1, S2, L*]
+    kefir_irbuilder_block_appendu32(mem, &sumldouble->body, KEFIR_IROPCODE_GETLOCAL, locals_id,
                                     0);  // 10: [C, S1, S2, V*]
     kefir_irbuilder_block_appendu32(mem, &sumldouble->body, KEFIR_IROPCODE_VARARG_GET, ldouble_type_id,
-                                    0);                                                    // 11: [C, S1, S2, A1, A2]
-    kefir_irbuilder_block_appendi64(mem, &sumldouble->body, KEFIR_IROPCODE_LDADD, 0);      // 12: [C, S1,S2 + A1,A2]
-    kefir_irbuilder_block_appendi64(mem, &sumldouble->body, KEFIR_IROPCODE_XCHG, 2);       // 13: [S2, S1, C]
-    kefir_irbuilder_block_appendi64(mem, &sumldouble->body, KEFIR_IROPCODE_IADD1, -1);     // 14: [S2, S1, C-1]
-    kefir_irbuilder_block_appendi64(mem, &sumldouble->body, KEFIR_IROPCODE_XCHG, 2);       // 15: [C-1, S1, S2]
-    kefir_irbuilder_block_appendu64(mem, &sumldouble->body, KEFIR_IROPCODE_JMP, 5);        // 16: [C-1, S1, S2] -> @4
-    kefir_irbuilder_block_appendi64(mem, &sumldouble->body, KEFIR_IROPCODE_GETLOCALS, 0);  // 17: [0, S1, S2, L*]
-    kefir_irbuilder_block_appendu32(mem, &sumldouble->body, KEFIR_IROPCODE_OFFSETPTR, locals_id,
+                                    0);                                                 // 11: [C, S1, S2, A1, A2]
+    kefir_irbuilder_block_appendi64(mem, &sumldouble->body, KEFIR_IROPCODE_LDADD, 0);   // 12: [C, S1,S2 + A1,A2]
+    kefir_irbuilder_block_appendi64(mem, &sumldouble->body, KEFIR_IROPCODE_XCHG, 2);    // 13: [S2, S1, C]
+    kefir_irbuilder_block_appendi64(mem, &sumldouble->body, KEFIR_IROPCODE_IADD1, -1);  // 14: [S2, S1, C-1]
+    kefir_irbuilder_block_appendi64(mem, &sumldouble->body, KEFIR_IROPCODE_XCHG, 2);    // 15: [C-1, S1, S2]
+    kefir_irbuilder_block_appendu64(mem, &sumldouble->body, KEFIR_IROPCODE_JMP, 5);     // 16: [C-1, S1, S2] -> @4
+    kefir_irbuilder_block_appendi64(mem, &sumldouble->body, KEFIR_IROPCODE_NOP, 0);     // 17: [0, S1, S2, L*]
+    kefir_irbuilder_block_appendu32(mem, &sumldouble->body, KEFIR_IROPCODE_GETLOCAL, locals_id,
                                     0);                                                     // 18: [0, S1, S2, V*]
     kefir_irbuilder_block_appendi64(mem, &sumldouble->body, KEFIR_IROPCODE_VARARG_END, 0);  // 19: [0, S1, S2]
 

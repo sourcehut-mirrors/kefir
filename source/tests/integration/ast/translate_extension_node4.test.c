@@ -48,7 +48,9 @@ static kefir_result_t translate_extension_node(struct kefir_mem *mem, struct kef
     UNUSED(node);
     UNUSED(context);
     REQUIRE(tag == KEFIR_AST_TRANSLATOR_CONTEXT_EXTENSION_TAG_DECLARATION, KEFIR_INTERNAL_ERROR);
-    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_GETLOCALS, 100));
+    kefir_id_t globals_id;
+    kefir_ir_module_symbol(mem, context->module, "global_var1", &globals_id);
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_GETGLOBAL, globals_id));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 0));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_IADD1, 1));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_STORE64, 100));
@@ -118,6 +120,9 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
                                              &kft_util_get_translator_environment()->target_env, &global_context,
                                              &analysis_ext));
     REQUIRE_OK(kefir_ast_local_context_init(mem, &global_context, &local_context));
+    REQUIRE_OK(global_context.context.define_identifier(
+        mem, &global_context.context, true, "global_var1", kefir_ast_type_signed_int(),
+        KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN, KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, NULL));
 
     struct kefir_ast_translator_context translator_context;
     REQUIRE_OK(kefir_ast_translator_context_init(mem, &translator_context, &local_context.context,

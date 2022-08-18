@@ -108,7 +108,11 @@
                     }
                 },
                 {
-                    "opcode": "getlocals"
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 5,
+                        "index": 0
+                    }
                 },
                 {
                     "opcode": "getglobal",
@@ -145,10 +149,18 @@
                     }
                 },
                 {
-                    "opcode": "getlocals"
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 8,
+                        "index": 0
+                    }
                 },
                 {
-                    "opcode": "getlocals"
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 8,
+                        "index": 0
+                    }
                 },
                 {
                     "opcode": "offsetptr",

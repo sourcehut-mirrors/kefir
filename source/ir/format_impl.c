@@ -129,8 +129,8 @@ kefir_result_t kefir_ir_format_instr(struct kefir_json_output *json, const struc
             return kefir_ir_format_instr_typeref(json, module, instr);
         case KEFIR_IROPCODE_GETGLOBAL:
             return kefir_ir_format_instr_identifier(json, module, instr);
-        case KEFIR_IROPCODE_GETLOCALS:
-            return kefir_ir_format_instr_none(json, module, instr);
+        case KEFIR_IROPCODE_GETLOCAL:
+            return kefir_ir_format_instr_typeref(json, module, instr);
         case KEFIR_IROPCODE_LOAD8U:
             return kefir_ir_format_instr_none(json, module, instr);
         case KEFIR_IROPCODE_LOAD8I:

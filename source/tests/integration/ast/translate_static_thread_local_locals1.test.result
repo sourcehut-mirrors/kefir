@@ -142,7 +142,11 @@
             "locals": 8,
             "body": [
                 {
-                    "opcode": "getlocals"
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 8,
+                        "index": 0
+                    }
                 },
                 {
                     "opcode": "pick",
@@ -159,7 +163,11 @@
                     "opcode": "pop"
                 },
                 {
-                    "opcode": "getlocals"
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 8,
+                        "index": 0
+                    }
                 },
                 {
                     "opcode": "load32i"

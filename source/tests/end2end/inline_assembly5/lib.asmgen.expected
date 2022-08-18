@@ -64,7 +64,7 @@
 .extern __kefirrt_extubits_impl
 .extern __kefirrt_extsbits_impl
 .extern __kefirrt_insertbits_impl
-.extern __kefirrt_getlocals_impl
+.extern __kefirrt_getlocal_impl
 .extern __kefirrt_f32add_impl
 .extern __kefirrt_f32sub_impl
 .extern __kefirrt_f32mul_impl
@@ -139,12 +139,12 @@ set8:
     lea %rbx, [__set8_body]
     jmp [%rbx]
 __set8_body:
-    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_xchg_impl, 1
     .quad __kefirrt_store64_impl, 0
-    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_inline_assembly4, 0
-    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_load64_impl, 0
     .quad __set8_epilogue, 0
     .quad __set8_epilogue, 0
@@ -167,12 +167,12 @@ set16:
     lea %rbx, [__set16_body]
     jmp [%rbx]
 __set16_body:
-    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_xchg_impl, 1
     .quad __kefirrt_store64_impl, 0
-    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_inline_assembly5, 0
-    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_load64_impl, 0
     .quad __set16_epilogue, 0
     .quad __set16_epilogue, 0
@@ -195,12 +195,12 @@ set32:
     lea %rbx, [__set32_body]
     jmp [%rbx]
 __set32_body:
-    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_xchg_impl, 1
     .quad __kefirrt_store64_impl, 0
-    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_inline_assembly6, 0
-    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_load64_impl, 0
     .quad __set32_epilogue, 0
     .quad __set32_epilogue, 0
@@ -223,12 +223,12 @@ set64:
     lea %rbx, [__set64_body]
     jmp [%rbx]
 __set64_body:
-    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_xchg_impl, 1
     .quad __kefirrt_store64_impl, 0
-    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_inline_assembly7, 0
-    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_load64_impl, 0
     .quad __set64_epilogue, 0
     .quad __set64_epilogue, 0
@@ -251,12 +251,12 @@ clear8:
     lea %rbx, [__clear8_body]
     jmp [%rbx]
 __clear8_body:
-    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_xchg_impl, 1
     .quad __kefirrt_store64_impl, 0
-    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_inline_assembly0, 0
-    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_load64_impl, 0
     .quad __clear8_epilogue, 0
     .quad __clear8_epilogue, 0
@@ -279,12 +279,12 @@ clear16:
     lea %rbx, [__clear16_body]
     jmp [%rbx]
 __clear16_body:
-    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_xchg_impl, 1
     .quad __kefirrt_store64_impl, 0
-    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_inline_assembly1, 0
-    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_load64_impl, 0
     .quad __clear16_epilogue, 0
     .quad __clear16_epilogue, 0
@@ -307,12 +307,12 @@ clear32:
     lea %rbx, [__clear32_body]
     jmp [%rbx]
 __clear32_body:
-    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_xchg_impl, 1
     .quad __kefirrt_store64_impl, 0
-    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_inline_assembly2, 0
-    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_load64_impl, 0
     .quad __clear32_epilogue, 0
     .quad __clear32_epilogue, 0
@@ -335,12 +335,12 @@ clear64:
     lea %rbx, [__clear64_body]
     jmp [%rbx]
 __clear64_body:
-    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_xchg_impl, 1
     .quad __kefirrt_store64_impl, 0
-    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_inline_assembly3, 0
-    .quad __kefirrt_getlocals_impl, 16
+    .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_load64_impl, 0
     .quad __clear64_epilogue, 0
     .quad __clear64_epilogue, 0
