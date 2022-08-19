@@ -286,23 +286,6 @@ kefir_result_t kefir_amd64_sysv_instruction(struct kefir_mem *mem, struct kefir_
                 kefir_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[1], instr->arg.u64)));
         } break;
 
-        case KEFIR_IROPCODE_PUSHLD: {
-            const struct kefir_irinstr *instr_half2 = kefir_irblock_at(block, instr_index + 1);
-            REQUIRE(instr_half2 != NULL && instr_half2->opcode == KEFIR_IROPCODE_PUSHU64,
-                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
-                                    "Pushld instruction shall be succeeded by unsigned integral push opcode"));
-
-            *instr_width = 2;
-            const char *opcode_symbol = NULL;
-            REQUIRE_OK(cg_symbolic_opcode(KEFIR_IROPCODE_PUSHI64, &opcode_symbol));
-            REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
-                &codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 4,
-                kefir_amd64_xasmgen_operand_label(&codegen->xasmgen_helpers.operands[0], opcode_symbol),
-                kefir_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[1], instr->arg.u64),
-                kefir_amd64_xasmgen_operand_label(&codegen->xasmgen_helpers.operands[2], opcode_symbol),
-                kefir_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[3], instr_half2->arg.u64)));
-        } break;
-
         case KEFIR_IROPCODE_PUSHLABEL: {
             const char *opcode_symbol = NULL;
             REQUIRE(instr->arg.u64 <= kefir_irblock_length(&sysv_func->func->body),

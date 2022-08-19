@@ -38,7 +38,7 @@ int main() {
 
     for (long double x = -100.0l; x <= 100.0l; x += 0.02l) {
         assert(ldcint(x) == (int) x);
-        assert(ldcuint(x) == (unsigned int) x);
+        assert(ldcuint(x + 200.0l) == (unsigned int) (x + 200.0l));
         assert(fabs(ldcf32(x) - (float) x) < 1e-3);
         assert(fabs(ldcf64(x) - (double) x) < 1e-6);
         assert(fabsl(neg(x) + x) < 1e-6l);

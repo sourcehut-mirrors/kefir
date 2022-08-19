@@ -419,14 +419,6 @@
                     }
                 },
                 {
-                    "opcode": "pick",
-                    "arg": 0
-                },
-                {
-                    "opcode": "pick",
-                    "arg": 0
-                },
-                {
                     "opcode": "setldh",
                     "arg": 0
                 },
@@ -443,7 +435,7 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 13
+                    "arg": 11
                 },
                 {
                     "opcode": "push",
@@ -484,14 +476,6 @@
                     }
                 },
                 {
-                    "opcode": "pick",
-                    "arg": 0
-                },
-                {
-                    "opcode": "pick",
-                    "arg": 0
-                },
-                {
                     "opcode": "setldh",
                     "arg": 0
                 },
@@ -508,7 +492,7 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 19
+                    "arg": 15
                 },
                 {
                     "opcode": "getlocal",
@@ -530,14 +514,6 @@
                         "type": 31,
                         "index": 4
                     }
-                },
-                {
-                    "opcode": "pick",
-                    "arg": 0
-                },
-                {
-                    "opcode": "pick",
-                    "arg": 0
                 },
                 {
                     "opcode": "setldh",
@@ -687,14 +663,6 @@
                     }
                 },
                 {
-                    "opcode": "pick",
-                    "arg": 0
-                },
-                {
-                    "opcode": "pick",
-                    "arg": 0
-                },
-                {
                     "opcode": "setldh",
                     "arg": 0
                 },
@@ -714,7 +682,7 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 14
+                    "arg": 12
                 },
                 {
                     "opcode": "push",
@@ -755,14 +723,6 @@
                     }
                 },
                 {
-                    "opcode": "pick",
-                    "arg": 0
-                },
-                {
-                    "opcode": "pick",
-                    "arg": 0
-                },
-                {
                     "opcode": "setldh",
                     "arg": 0
                 },
@@ -782,7 +742,7 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 20
+                    "arg": 16
                 },
                 {
                     "opcode": "getlocal",
@@ -804,14 +764,6 @@
                         "type": 16,
                         "index": 4
                     }
-                },
-                {
-                    "opcode": "pick",
-                    "arg": 0
-                },
-                {
-                    "opcode": "pick",
-                    "arg": 0
                 },
                 {
                     "opcode": "setldh",

@@ -348,14 +348,6 @@
                     }
                 },
                 {
-                    "opcode": "pick",
-                    "arg": 0
-                },
-                {
-                    "opcode": "pick",
-                    "arg": 0
-                },
-                {
                     "opcode": "setldh",
                     "arg": 0
                 },
@@ -371,7 +363,7 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 13
+                    "arg": 11
                 },
                 {
                     "opcode": "push",

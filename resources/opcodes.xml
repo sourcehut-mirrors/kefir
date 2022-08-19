@@ -39,11 +39,7 @@
     <opcode id="pushlabel"   mnemonic="pushlabel"   code="0x13" type="u64" />
     <opcode id="pop"         mnemonic="pop"         code="0x14" type="none" />
     <opcode id="pick"        mnemonic="pick"        code="0x15" type="u64" />
-    <opcode id="put"         mnemonic="put"         code="0x16" type="u64" />
-    <opcode id="insert"      mnemonic="insert"      code="0x17" type="u64" />
-    <opcode id="xchg"        mnemonic="xchg"        code="0x18" type="u64" />
-    <opcode id="drop"        mnemonic="drop"        code="0x19" type="u64" />
-    <opcode id="pushstptr"   mnemonic="pushstptr"   code="0x1a" type="u64" />
+    <opcode id="xchg"        mnemonic="xchg"        code="0x16" type="u64" />
 
     <!-- Integer arithmetics & bitwise -->
     <opcode id="iadd"        mnemonic="iadd"        code="0x20" type="none" />
@@ -116,24 +112,23 @@
     <!-- Floating-point basics -->
     <opcode id="pushf32"      mnemonic="pushf32"    code="0x80" type="f32" />
     <opcode id="pushf64"      mnemonic="pushf64"    code="0x81" type="f64" />
-    <opcode id="pushld"       mnemonic="pushld"     code="0x82" type="u64" />
-    <opcode id="f32add"       mnemonic="f32add"     code="0x83" type="none" />
-    <opcode id="f32sub"       mnemonic="f32sub"     code="0x84" type="none" />
-    <opcode id="f32mul"       mnemonic="f32mul"     code="0x85" type="none" />
-    <opcode id="f32div"       mnemonic="f32div"     code="0x86" type="none" />
-    <opcode id="f32neg"       mnemonic="f32neg"     code="0x87" type="none" />
-    <opcode id="f64add"       mnemonic="f64add"     code="0x88" type="none" />
-    <opcode id="f64sub"       mnemonic="f64sub"     code="0x89" type="none" />
-    <opcode id="f64mul"       mnemonic="f64mul"     code="0x8a" type="none" />
-    <opcode id="f64div"       mnemonic="f64div"     code="0x8b" type="none" />
-    <opcode id="f64neg"       mnemonic="f64neg"     code="0x8c" type="none" />
-    <opcode id="ldadd"        mnemonic="ldadd"      code="0x8d" type="none" />
-    <opcode id="ldsub"        mnemonic="ldsub"      code="0x8e" type="none" />
-    <opcode id="ldmul"        mnemonic="ldmul"      code="0x8f" type="none" />
-    <opcode id="lddiv"        mnemonic="lddiv"      code="0x90" type="none" />
-    <opcode id="ldneg"        mnemonic="ldneg"      code="0x91" type="none" />
-    <opcode id="setldh"       mnemonic="setldh"     code="0x92" type="u64" />
-    <opcode id="setldl"       mnemonic="setldl"     code="0x93" type="u64" />
+    <opcode id="f32add"       mnemonic="f32add"     code="0x82" type="none" />
+    <opcode id="f32sub"       mnemonic="f32sub"     code="0x83" type="none" />
+    <opcode id="f32mul"       mnemonic="f32mul"     code="0x84" type="none" />
+    <opcode id="f32div"       mnemonic="f32div"     code="0x85" type="none" />
+    <opcode id="f32neg"       mnemonic="f32neg"     code="0x86" type="none" />
+    <opcode id="f64add"       mnemonic="f64add"     code="0x87" type="none" />
+    <opcode id="f64sub"       mnemonic="f64sub"     code="0x88" type="none" />
+    <opcode id="f64mul"       mnemonic="f64mul"     code="0x89" type="none" />
+    <opcode id="f64div"       mnemonic="f64div"     code="0x8a" type="none" />
+    <opcode id="f64neg"       mnemonic="f64neg"     code="0x8b" type="none" />
+    <opcode id="ldadd"        mnemonic="ldadd"      code="0x8c" type="none" />
+    <opcode id="ldsub"        mnemonic="ldsub"      code="0x8d" type="none" />
+    <opcode id="ldmul"        mnemonic="ldmul"      code="0x8e" type="none" />
+    <opcode id="lddiv"        mnemonic="lddiv"      code="0x8f" type="none" />
+    <opcode id="ldneg"        mnemonic="ldneg"      code="0x90" type="none" />
+    <opcode id="setldh"       mnemonic="setldh"     code="0x91" type="u64" />
+    <opcode id="setldl"       mnemonic="setldl"     code="0x92" type="u64" />
 
     <!-- Floating-point comparison -->
     <opcode id="f32equals"    mnemonic="f32equals"  code="0xa0" type="none" />

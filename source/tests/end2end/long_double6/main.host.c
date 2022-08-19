@@ -18,21 +18,18 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef KEFIR_AST_ANALYZER_INITIALIZER_H_
-#define KEFIR_AST_ANALYZER_INITIALIZER_H_
+#include <stdlib.h>
+#include <stdio.h>
+#include <assert.h>
+#include <math.h>
+#include "./definitions.h"
 
-#include "kefir/ast/initializer.h"
-#include "kefir/ast/type.h"
-#include "kefir/ast/context.h"
-
-typedef struct kefir_ast_initializer_properties {
-    const struct kefir_ast_type *type;
-    kefir_bool_t constant;
-    kefir_bool_t contains_long_double;
-} kefir_ast_initializer_properties_t;
-
-kefir_result_t kefir_ast_analyze_initializer(struct kefir_mem *, const struct kefir_ast_context *,
-                                             const struct kefir_ast_type *, const struct kefir_ast_initializer *,
-                                             struct kefir_ast_initializer_properties *);
-
-#endif
+int main() {
+    for (int i = -1000; i < 1000; i++) {
+        struct S s = init_s(i, i + 2000, i * 0.25);
+        assert(fabsl(s.ldl[0] - (long double) i) < 1e-6);
+        assert(fabsl(s.ldl[1] - (long double) (i + 2000)) < 1e-6);
+        assert(fabsl(s.ldl[2] - (long double) (i * 0.25)) < 1e-6);
+    }
+    return EXIT_SUCCESS;
+}

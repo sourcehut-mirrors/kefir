@@ -18,21 +18,13 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef KEFIR_AST_ANALYZER_INITIALIZER_H_
-#define KEFIR_AST_ANALYZER_INITIALIZER_H_
+#ifndef DEFINITIONS_H_
+#define DEFINITIONS_H_
 
-#include "kefir/ast/initializer.h"
-#include "kefir/ast/type.h"
-#include "kefir/ast/context.h"
+struct S {
+    long double ldl[3];
+};
 
-typedef struct kefir_ast_initializer_properties {
-    const struct kefir_ast_type *type;
-    kefir_bool_t constant;
-    kefir_bool_t contains_long_double;
-} kefir_ast_initializer_properties_t;
-
-kefir_result_t kefir_ast_analyze_initializer(struct kefir_mem *, const struct kefir_ast_context *,
-                                             const struct kefir_ast_type *, const struct kefir_ast_initializer *,
-                                             struct kefir_ast_initializer_properties *);
+struct S init_s(int, unsigned int, double);
 
 #endif

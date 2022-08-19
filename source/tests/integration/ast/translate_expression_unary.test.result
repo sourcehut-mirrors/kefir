@@ -822,14 +822,6 @@
                     }
                 },
                 {
-                    "opcode": "pick",
-                    "arg": 0
-                },
-                {
-                    "opcode": "pick",
-                    "arg": 0
-                },
-                {
                     "opcode": "setldh",
                     "arg": 0
                 },

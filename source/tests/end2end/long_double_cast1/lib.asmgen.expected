@@ -11,11 +11,7 @@
 .extern __kefirrt_push_impl
 .extern __kefirrt_pop_impl
 .extern __kefirrt_pick_impl
-.extern __kefirrt_put_impl
-.extern __kefirrt_insert_impl
 .extern __kefirrt_xchg_impl
-.extern __kefirrt_drop_impl
-.extern __kefirrt_pushstptr_impl
 .extern __kefirrt_iadd_impl
 .extern __kefirrt_iadd1_impl
 .extern __kefirrt_isub_impl
@@ -152,8 +148,6 @@ __inc_body:
     .quad __kefirrt_getlocal_impl, 32
     .quad __kefirrt_offsetptr_impl, 0
     .quad __kefirrt_offsetptr_impl, 16
-    .quad __kefirrt_pick_impl, 0
-    .quad __kefirrt_pick_impl, 0
     .quad __kefirrt_setldh_impl, 16383
     .quad __kefirrt_setldl_impl, -9223372036854775808
     .quad __kefirrt_getlocal_impl, 32

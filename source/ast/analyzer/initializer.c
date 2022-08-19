@@ -64,6 +64,9 @@ static kefir_result_t analyze_scalar(struct kefir_mem *mem, const struct kefir_a
     }
     if (properties != NULL) {
         properties->type = type;
+        if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(kefir_ast_unqualified_type(type))) {
+            properties->contains_long_double = true;
+        }
     }
     return KEFIR_OK;
 }

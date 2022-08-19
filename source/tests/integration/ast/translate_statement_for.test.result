@@ -560,14 +560,6 @@
                     }
                 },
                 {
-                    "opcode": "pick",
-                    "arg": 0
-                },
-                {
-                    "opcode": "pick",
-                    "arg": 0
-                },
-                {
                     "opcode": "setldh",
                     "arg": 0
                 },
@@ -600,14 +592,6 @@
                     }
                 },
                 {
-                    "opcode": "pick",
-                    "arg": 0
-                },
-                {
-                    "opcode": "pick",
-                    "arg": 0
-                },
-                {
                     "opcode": "setldh",
                     "arg": 0
                 },
@@ -623,7 +607,7 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 20
+                    "arg": 16
                 },
                 {
                     "opcode": "invoke",
@@ -634,7 +618,7 @@
                 },
                 {
                     "opcode": "jmp",
-                    "arg": 8
+                    "arg": 6
                 }
             ]
         }

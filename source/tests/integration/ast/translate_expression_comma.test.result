@@ -221,14 +221,6 @@
                     }
                 },
                 {
-                    "opcode": "pick",
-                    "arg": 0
-                },
-                {
-                    "opcode": "pick",
-                    "arg": 0
-                },
-                {
                     "opcode": "setldh",
                     "arg": 0
                 },
@@ -316,14 +308,6 @@
                         "type": 13,
                         "index": 3
                     }
-                },
-                {
-                    "opcode": "pick",
-                    "arg": 0
-                },
-                {
-                    "opcode": "pick",
-                    "arg": 0
                 },
                 {
                     "opcode": "setldh",
