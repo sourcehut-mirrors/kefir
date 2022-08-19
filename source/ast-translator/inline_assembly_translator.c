@@ -80,7 +80,8 @@ static kefir_result_t translate_outputs(struct kefir_mem *mem, const struct kefi
         const char *name = buffer;
         kefir_ir_inline_assembly_parameter_class_t klass;
         kefir_ir_inline_assembly_parameter_constraint_t constraint;
-        struct kefir_ir_type *ir_type = kefir_ir_module_new_type(mem, context->module, 0, NULL);
+        kefir_id_t ir_type_id = KEFIR_ID_NONE;
+        struct kefir_ir_type *ir_type = kefir_ir_module_new_type(mem, context->module, 0, &ir_type_id);
         kefir_size_t stack_slot = 0;
         const char *alias = param->parameter_name;
 
@@ -132,7 +133,7 @@ static kefir_result_t translate_outputs(struct kefir_mem *mem, const struct kefi
 
         struct kefir_ir_inline_assembly_parameter *ir_inline_asm_param = NULL;
         REQUIRE_OK(kefir_ir_inline_assembly_add_parameter(mem, context->ast_context->symbols, ir_inline_asm, name,
-                                                          klass, constraint, ir_type, 0, stack_slot,
+                                                          klass, constraint, ir_type, ir_type_id, 0, stack_slot,
                                                           &ir_inline_asm_param));
 
         if (alias != NULL) {
@@ -220,7 +221,8 @@ static kefir_result_t translate_inputs(struct kefir_mem *mem, const struct kefir
         const char *name = buffer;
         kefir_ir_inline_assembly_parameter_class_t klass = KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ;
         kefir_ir_inline_assembly_parameter_constraint_t constraint = KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_NONE;
-        struct kefir_ir_type *ir_type = kefir_ir_module_new_type(mem, context->module, 0, NULL);
+        kefir_id_t ir_type_id = KEFIR_ID_NONE;
+        struct kefir_ir_type *ir_type = kefir_ir_module_new_type(mem, context->module, 0, &ir_type_id);
         const char *alias = param->parameter_name;
         kefir_ir_inline_assembly_immediate_type_t imm_type = KEFIR_IR_INLINE_ASSEMBLY_IMMEDIATE_IDENTIFIER_BASED;
         const char *imm_identifier_base = NULL;
@@ -335,12 +337,12 @@ static kefir_result_t translate_inputs(struct kefir_mem *mem, const struct kefir
 
         if (ir_inline_asm_param == NULL && klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ) {
             REQUIRE_OK(kefir_ir_inline_assembly_add_parameter(mem, context->ast_context->symbols, ir_inline_asm, name,
-                                                              klass, constraint, ir_type, 0, param_value,
+                                                              klass, constraint, ir_type, ir_type_id, 0, param_value,
                                                               &ir_inline_asm_param));
         } else if (ir_inline_asm_param == NULL && klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_IMMEDIATE) {
             REQUIRE_OK(kefir_ir_inline_assembly_add_immediate_parameter(
-                mem, context->ast_context->symbols, ir_inline_asm, name, ir_type, 0, imm_type, imm_identifier_base,
-                imm_literal_base, param_value, &ir_inline_asm_param));
+                mem, context->ast_context->symbols, ir_inline_asm, name, ir_type, ir_type_id, 0, imm_type,
+                imm_identifier_base, imm_literal_base, param_value, &ir_inline_asm_param));
         } else {
             REQUIRE(klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ &&
                         constraint == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_REGISTER,
@@ -350,8 +352,8 @@ static kefir_result_t translate_inputs(struct kefir_mem *mem, const struct kefir
                         ir_inline_asm_param->constraint == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_REGISTER,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &inline_asm->base.source_location,
                                            "Cannot assign matching constraint to the parameter"));
-            REQUIRE_OK(kefir_ir_inline_assembly_parameter_read_from(mem, ir_inline_asm, ir_inline_asm_param, ir_type, 0,
-                                                                    param_value));
+            REQUIRE_OK(kefir_ir_inline_assembly_parameter_read_from(mem, ir_inline_asm, ir_inline_asm_param, ir_type,
+                                                                    ir_type_id, 0, param_value));
             REQUIRE_OK(kefir_ir_inline_assembly_add_parameter_alias(mem, context->ast_context->symbols, ir_inline_asm,
                                                                     ir_inline_asm_param, buffer));
         }

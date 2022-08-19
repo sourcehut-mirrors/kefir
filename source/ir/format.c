@@ -831,30 +831,42 @@ static kefir_result_t format_inline_assembly_fragment(struct kefir_json_output *
         switch (param->klass) {
             case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ:
                 REQUIRE_OK(kefir_json_output_string(json, "read"));
+                REQUIRE_OK(kefir_json_output_object_key(json, "type"));
+                REQUIRE_OK(kefir_json_output_uinteger(json, param->read_type.type_id));
                 REQUIRE_OK(kefir_json_output_object_key(json, "from"));
                 REQUIRE_OK(kefir_json_output_uinteger(json, param->read_index));
                 break;
 
             case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_LOAD:
                 REQUIRE_OK(kefir_json_output_string(json, "load"));
+                REQUIRE_OK(kefir_json_output_object_key(json, "type"));
+                REQUIRE_OK(kefir_json_output_uinteger(json, param->type.type_id));
                 REQUIRE_OK(kefir_json_output_object_key(json, "from"));
                 REQUIRE_OK(kefir_json_output_uinteger(json, param->load_store_index));
                 break;
 
             case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_STORE:
                 REQUIRE_OK(kefir_json_output_string(json, "store"));
+                REQUIRE_OK(kefir_json_output_object_key(json, "type"));
+                REQUIRE_OK(kefir_json_output_uinteger(json, param->type.type_id));
                 REQUIRE_OK(kefir_json_output_object_key(json, "to"));
                 REQUIRE_OK(kefir_json_output_uinteger(json, param->load_store_index));
                 break;
 
             case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_LOAD_STORE:
                 REQUIRE_OK(kefir_json_output_string(json, "load_store"));
+                REQUIRE_OK(kefir_json_output_object_key(json, "type"));
+                REQUIRE_OK(kefir_json_output_uinteger(json, param->type.type_id));
                 REQUIRE_OK(kefir_json_output_object_key(json, "from_to"));
                 REQUIRE_OK(kefir_json_output_uinteger(json, param->load_store_index));
                 break;
 
             case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ_STORE:
                 REQUIRE_OK(kefir_json_output_string(json, "read_store"));
+                REQUIRE_OK(kefir_json_output_object_key(json, "from_type"));
+                REQUIRE_OK(kefir_json_output_uinteger(json, param->read_type.type_id));
+                REQUIRE_OK(kefir_json_output_object_key(json, "to_type"));
+                REQUIRE_OK(kefir_json_output_uinteger(json, param->type.type_id));
                 REQUIRE_OK(kefir_json_output_object_key(json, "from"));
                 REQUIRE_OK(kefir_json_output_uinteger(json, param->read_index));
                 REQUIRE_OK(kefir_json_output_object_key(json, "to"));
@@ -863,7 +875,7 @@ static kefir_result_t format_inline_assembly_fragment(struct kefir_json_output *
 
             case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_IMMEDIATE:
                 REQUIRE_OK(kefir_json_output_string(json, "immediate"));
-                REQUIRE_OK(kefir_json_output_string(json, "type"));
+                REQUIRE_OK(kefir_json_output_string(json, "variant"));
                 if (param->immediate_type == KEFIR_IR_INLINE_ASSEMBLY_IMMEDIATE_IDENTIFIER_BASED) {
                     REQUIRE_OK(kefir_json_output_string(json, "identifier_based"));
                     REQUIRE_OK(kefir_json_output_object_key(json, "base"));
@@ -877,6 +889,8 @@ static kefir_result_t format_inline_assembly_fragment(struct kefir_json_output *
                     REQUIRE_OK(kefir_json_output_object_key(json, "base"));
                     REQUIRE_OK(kefir_json_output_uinteger(json, param->immediate_literal_base));
                 }
+                REQUIRE_OK(kefir_json_output_object_key(json, "type"));
+                REQUIRE_OK(kefir_json_output_uinteger(json, param->type.type_id));
                 REQUIRE_OK(kefir_json_output_object_key(json, "value"));
                 REQUIRE_OK(kefir_json_output_uinteger(json, param->immediate_value));
                 break;

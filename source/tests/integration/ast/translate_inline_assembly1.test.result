@@ -69,6 +69,38 @@
             "identifier": 8,
             "type": [
                 {
+                    "type": "int"
+                }
+            ]
+        },
+        {
+            "identifier": 9,
+            "type": [
+                {
+                    "type": "long_double"
+                }
+            ]
+        },
+        {
+            "identifier": 10,
+            "type": [
+                {
+                    "type": "int"
+                }
+            ]
+        },
+        {
+            "identifier": 11,
+            "type": [
+                {
+                    "type": "long_double"
+                }
+            ]
+        },
+        {
+            "identifier": 12,
+            "type": [
+                {
                     "type": "struct",
                     "fields": [
                         {
@@ -95,12 +127,52 @@
             ]
         },
         {
-            "identifier": 9,
+            "identifier": 13,
             "type": []
         },
         {
-            "identifier": 10,
+            "identifier": 14,
             "type": []
+        },
+        {
+            "identifier": 15,
+            "type": [
+                {
+                    "type": "int"
+                }
+            ]
+        },
+        {
+            "identifier": 16,
+            "type": [
+                {
+                    "type": "char"
+                }
+            ]
+        },
+        {
+            "identifier": 17,
+            "type": [
+                {
+                    "type": "char"
+                }
+            ]
+        },
+        {
+            "identifier": 18,
+            "type": [
+                {
+                    "type": "double"
+                }
+            ]
+        },
+        {
+            "identifier": 19,
+            "type": [
+                {
+                    "type": "long_double"
+                }
+            ]
         }
     ],
     "data": [],
@@ -116,9 +188,9 @@
         {
             "identifier": 1,
             "name": "inline_asm2",
-            "parameters": 9,
+            "parameters": 13,
             "vararg": false,
-            "returns": 10
+            "returns": 14
         }
     ],
     "functions": [
@@ -187,7 +259,7 @@
         {
             "identifier": 1,
             "name": "inline_asm2",
-            "locals": 8,
+            "locals": 12,
             "body": [
                 {
                     "opcode": "getglobal",
@@ -198,21 +270,21 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 8,
+                        "type": 12,
                         "index": 0
                     }
                 },
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 8,
+                        "type": 12,
                         "index": 0
                     }
                 },
                 {
                     "opcode": "offsetptr",
                     "arg": {
-                        "type": 8,
+                        "type": 12,
                         "index": 2
                     }
                 },
@@ -228,21 +300,21 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 8,
+                        "type": 12,
                         "index": 3
                     }
                 },
                 {
                     "opcode": "offsetptr",
                     "arg": {
-                        "type": 8,
+                        "type": 12,
                         "index": 4
                     }
                 },
                 {
                     "opcode": "offsetptr",
                     "arg": {
-                        "type": 8,
+                        "type": 12,
                         "index": 5
                     }
                 },
@@ -293,6 +365,7 @@
                         "0"
                     ],
                     "class": "store",
+                    "type": 8,
                     "to": 3
                 },
                 {
@@ -301,6 +374,7 @@
                         "1"
                     ],
                     "class": "load_store",
+                    "type": 9,
                     "from_to": 2
                 },
                 {
@@ -309,6 +383,7 @@
                         "2"
                     ],
                     "class": "read",
+                    "type": 10,
                     "from": 1
                 },
                 {
@@ -317,6 +392,7 @@
                         "3"
                     ],
                     "class": "read",
+                    "type": 11,
                     "from": 0
                 }
             ],
@@ -337,6 +413,7 @@
                         "[null]"
                     ],
                     "class": "store",
+                    "type": 15,
                     "to": 4
                 },
                 {
@@ -345,6 +422,7 @@
                         "1"
                     ],
                     "class": "load_store",
+                    "type": 16,
                     "from_to": 3
                 },
                 {
@@ -354,6 +432,7 @@
                         "[alternativeId]"
                     ],
                     "class": "store",
+                    "type": 17,
                     "to": 2
                 },
                 {
@@ -362,6 +441,7 @@
                         "3"
                     ],
                     "class": "read",
+                    "type": 18,
                     "from": 1
                 },
                 {
@@ -370,6 +450,7 @@
                         "4"
                     ],
                     "class": "read",
+                    "type": 19,
                     "from": 0
                 }
             ],

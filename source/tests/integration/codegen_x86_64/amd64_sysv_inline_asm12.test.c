@@ -61,21 +61,21 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_ir_inline_assembly_parameter *param;
     REQUIRE_OK(kefir_ir_inline_assembly_add_parameter(
         mem, &module.symbols, inline_asm1, "1", KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_STORE,
-        KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_REGISTER, decl_params, 0, 0, &param));
+        KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_REGISTER, decl_params, func_params, 0, 0, &param));
 
-    REQUIRE_OK(kefir_ir_inline_assembly_add_immediate_parameter(mem, &module.symbols, inline_asm1, "2", decl_params, 0,
-                                                                KEFIR_IR_INLINE_ASSEMBLY_IMMEDIATE_IDENTIFIER_BASED,
-                                                                NULL, 0, 1234, &param));
+    REQUIRE_OK(kefir_ir_inline_assembly_add_immediate_parameter(
+        mem, &module.symbols, inline_asm1, "2", decl_params, func_params, 0,
+        KEFIR_IR_INLINE_ASSEMBLY_IMMEDIATE_IDENTIFIER_BASED, NULL, 0, 1234, &param));
     REQUIRE_OK(kefir_ir_inline_assembly_add_parameter_alias(mem, &module.symbols, inline_asm1, param, "[param2]"));
 
     REQUIRE_OK(kefir_ir_inline_assembly_add_parameter(
         mem, &module.symbols, inline_asm1, "3", KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_LOAD_STORE,
-        KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_REGISTER_MEMORY, decl_params, 0, 1, &param));
+        KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_REGISTER_MEMORY, decl_params, func_params, 0, 1, &param));
     REQUIRE_OK(kefir_ir_inline_assembly_add_parameter_alias(mem, &module.symbols, inline_asm1, param, "[param3]"));
 
-    REQUIRE_OK(kefir_ir_inline_assembly_add_immediate_parameter(mem, &module.symbols, inline_asm1, "4", decl_params, 0,
-                                                                KEFIR_IR_INLINE_ASSEMBLY_IMMEDIATE_IDENTIFIER_BASED,
-                                                                NULL, 0, -39219, &param));
+    REQUIRE_OK(kefir_ir_inline_assembly_add_immediate_parameter(
+        mem, &module.symbols, inline_asm1, "4", decl_params, func_params, 0,
+        KEFIR_IR_INLINE_ASSEMBLY_IMMEDIATE_IDENTIFIER_BASED, NULL, 0, -39219, &param));
     REQUIRE_OK(kefir_ir_inline_assembly_add_parameter_alias(mem, &module.symbols, inline_asm1, param, "[param4]"));
 
     REQUIRE_OK(kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IROPCODE_INLINEASM, id1));

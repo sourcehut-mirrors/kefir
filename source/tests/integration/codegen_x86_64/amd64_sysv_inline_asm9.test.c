@@ -61,19 +61,19 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     REQUIRE_OK(kefir_ir_inline_assembly_add_parameter(
         mem, &module.symbols, inline_asm1, "p1", KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_STORE,
-        KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_REGISTER, decl_params, 0, 0, NULL));
+        KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_REGISTER, decl_params, func_params, 0, 0, NULL));
     REQUIRE_OK(kefir_ir_inline_assembly_add_parameter(
         mem, &module.symbols, inline_asm1, "p2", KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_STORE,
-        KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_REGISTER, decl_params, 0, 0, NULL));
+        KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_REGISTER, decl_params, func_params, 0, 0, NULL));
     REQUIRE_OK(kefir_ir_inline_assembly_add_parameter(
         mem, &module.symbols, inline_asm1, "p3", KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ,
-        KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_REGISTER, decl_params, 0, 0, NULL));
+        KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_REGISTER, decl_params, func_params, 0, 0, NULL));
     REQUIRE_OK(kefir_ir_inline_assembly_add_parameter(
         mem, &module.symbols, inline_asm1, "p4", KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ,
-        KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_REGISTER, decl_params, 0, 1, NULL));
+        KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_REGISTER, decl_params, func_params, 0, 1, NULL));
     REQUIRE_OK(kefir_ir_inline_assembly_add_parameter(
         mem, &module.symbols, inline_asm1, "p5", KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ,
-        KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_REGISTER, decl_params, 0, 2, NULL));
+        KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_REGISTER, decl_params, func_params, 0, 2, NULL));
 
     REQUIRE_OK(kefir_ir_inline_assembly_add_jump_target(mem, &module.symbols, inline_asm1, "1", "func1", 10, NULL));
     REQUIRE_OK(kefir_ir_inline_assembly_add_jump_target(mem, &module.symbols, inline_asm1, "2", "func2", 20, NULL));
