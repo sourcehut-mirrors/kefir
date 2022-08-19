@@ -104,10 +104,10 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
                                                 KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_double(mem, 4.15L))));
         REQUIRE_OK(kefir_ast_inline_assembly_add_clobber(mem, &global_context.symbols, inline_asm2, "rax"));
 
+        REQUIRE_OK(kefir_ast_analyze_node(mem, &local_context.context, KEFIR_AST_NODE_BASE(inline_asm2)));
         REQUIRE_OK(
             kefir_ast_translator_build_local_scope_layout(mem, &local_context, &env, &module, &translator_local_scope));
 
-        REQUIRE_OK(kefir_ast_analyze_node(mem, &local_context.context, KEFIR_AST_NODE_BASE(inline_asm2)));
         REQUIRE_OK(kefir_ast_translate_inline_assembly(mem, KEFIR_AST_NODE_BASE(inline_asm2), &builder,
                                                        &local_translator_context));
         REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(inline_asm2)));
@@ -152,11 +152,11 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         struct kefir_ast_inline_assembly *inline_asm3 = kefir_ast_new_inline_assembly(
             mem, (struct kefir_ast_inline_assembly_qualifiers){.volatile_qualifier = true}, "another assembly");
 
+        REQUIRE_OK(kefir_ast_analyze_node(mem, &local_context.context, KEFIR_AST_NODE_BASE(inline_asm2)));
+        REQUIRE_OK(kefir_ast_analyze_node(mem, &local_context.context, KEFIR_AST_NODE_BASE(inline_asm3)));
         REQUIRE_OK(
             kefir_ast_translator_build_local_scope_layout(mem, &local_context, &env, &module, &translator_local_scope));
 
-        REQUIRE_OK(kefir_ast_analyze_node(mem, &local_context.context, KEFIR_AST_NODE_BASE(inline_asm2)));
-        REQUIRE_OK(kefir_ast_analyze_node(mem, &local_context.context, KEFIR_AST_NODE_BASE(inline_asm3)));
         REQUIRE_OK(kefir_ast_translate_inline_assembly(mem, KEFIR_AST_NODE_BASE(inline_asm2), &builder,
                                                        &local_translator_context));
         REQUIRE_OK(kefir_ast_translate_inline_assembly(mem, KEFIR_AST_NODE_BASE(inline_asm3), &builder,

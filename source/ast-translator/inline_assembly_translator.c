@@ -318,13 +318,7 @@ static kefir_result_t translate_inputs(struct kefir_mem *mem, const struct kefir
                 KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to retrieve inline assembly parameter type"));
 
         if (klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ) {
-            if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(param_type)) {
-                (*stack_slot_counter) -= 2;
-                param_value = (*stack_slot_counter);
-            } else {
-                param_value = --(*stack_slot_counter);
-            }
-
+            param_value = --(*stack_slot_counter);
             REQUIRE_OK(kefir_ast_translate_expression(mem, param->parameter, builder, context));
         }
 
@@ -411,11 +405,7 @@ kefir_result_t kefir_ast_translate_inline_assembly(struct kefir_mem *mem, const 
                 continue;
             }
 
-            if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(param_type)) {
-                stack_slot_counter += 2;
-            } else {
-                stack_slot_counter++;
-            }
+            stack_slot_counter++;
         }
 
         // Translate outputs

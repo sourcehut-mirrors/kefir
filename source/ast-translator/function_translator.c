@@ -25,6 +25,7 @@
 #include "kefir/ast-translator/value.h"
 #include "kefir/ast-translator/scope/translator.h"
 #include "kefir/ast-translator/typeconv.h"
+#include "kefir/ast-translator/temporaries.h"
 #include "kefir/ast/type_conv.h"
 #include "kefir/ast/downcast.h"
 #include "kefir/core/util.h"
@@ -268,10 +269,7 @@ kefir_result_t kefir_ast_translator_function_context_free(struct kefir_mem *mem,
     return KEFIR_OK;
 }
 
-static kefir_result_t xchg_param_address(struct kefir_irbuilder_block *builder, const struct kefir_ast_type *type) {
-    if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(type)) {
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_XCHG, 2));
-    }
+static kefir_result_t xchg_param_address(struct kefir_irbuilder_block *builder) {
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_XCHG, 1));
     return KEFIR_OK;
 }
@@ -292,6 +290,21 @@ static kefir_result_t translate_variably_modified(const struct kefir_ast_node_ba
     return KEFIR_OK;
 }
 
+struct typeconv_callback_param {
+    struct kefir_mem *mem;
+    struct kefir_ast_translator_context *context;
+    struct kefir_irbuilder_block *builder;
+    const struct kefir_ast_temporary_identifier *temporary;
+};
+
+static kefir_result_t allocate_long_double_callback(void *payload) {
+    REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid typeconv callback payload"));
+    ASSIGN_DECL_CAST(struct typeconv_callback_param *, param, payload);
+
+    REQUIRE_OK(kefir_ast_translator_fetch_temporary(param->mem, param->context, param->builder, param->temporary));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_ast_translator_function_context_translate(
     struct kefir_mem *mem, struct kefir_ast_translator_function_context *function_context) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
@@ -301,6 +314,13 @@ kefir_result_t kefir_ast_translator_function_context_translate(
     struct kefir_ast_function_definition *function = function_context->function_definition;
     struct kefir_irbuilder_block *builder = &function_context->builder;
     struct kefir_ast_translator_context *context = &function_context->local_translator_context;
+
+    struct typeconv_callback_param cb_param = {.mem = mem,
+                                               .context = context,
+                                               .builder = builder,
+                                               .temporary = &function->base.properties.function_definition.temporary};
+    struct kefir_ast_translate_typeconv_callbacks callbacks = {.allocate_long_double = allocate_long_double_callback,
+                                                               .payload = &cb_param};
 
     struct kefir_ast_local_context *local_context =
         function->base.properties.function_definition.scoped_id->function.local_context;
@@ -335,14 +355,11 @@ kefir_result_t kefir_ast_translator_function_context_translate(
                         &local_context->context, param_identifier->identifier, &scoped_id));
                     REQUIRE_OK(kefir_ast_translator_object_lvalue(mem, context, builder, param_identifier->identifier,
                                                                   scoped_id));
-                    REQUIRE_OK(xchg_param_address(builder, scoped_id->object.type));
+                    REQUIRE_OK(xchg_param_address(builder));
                     REQUIRE_OK(
                         kefir_ast_translator_store_value(mem, scoped_id->type, context, builder,
                                                          &function_context->function_definition->base.source_location));
                 } else {
-                    if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(init_decl->base.properties.type)) {
-                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_POP, 0));
-                    }
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_POP, 0));
                 }
             }
@@ -352,14 +369,14 @@ kefir_result_t kefir_ast_translator_function_context_translate(
                 &local_context->context, param->properties.expression_props.identifier, &scoped_id));
             REQUIRE_OK(kefir_ast_translator_object_lvalue(mem, context, builder,
                                                           param->properties.expression_props.identifier, scoped_id));
-            REQUIRE_OK(xchg_param_address(builder, scoped_id->object.type));
+            REQUIRE_OK(xchg_param_address(builder));
 
             const struct kefir_ast_type *default_promotion =
                 kefir_ast_type_function_default_argument_convertion_promotion(
                     mem, context->ast_context->type_bundle, context->ast_context->type_traits, scoped_id->object.type);
             if (KEFIR_AST_TYPE_IS_SCALAR_TYPE(default_promotion)) {
                 REQUIRE_OK(kefir_ast_translate_typeconv(builder, context->ast_context->type_traits, default_promotion,
-                                                        scoped_id->object.type));
+                                                        scoped_id->object.type, &callbacks));
             }
 
             REQUIRE_OK(kefir_ast_translator_store_value(mem, scoped_id->object.type, context, builder,

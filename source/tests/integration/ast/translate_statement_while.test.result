@@ -92,7 +92,26 @@
         },
         {
             "identifier": 13,
-            "type": []
+            "type": [
+                {
+                    "type": "struct",
+                    "fields": [
+                        {
+                            "type": "union",
+                            "fields": [
+                                {
+                                    "type": "struct",
+                                    "fields": [
+                                        {
+                                            "type": "long_double"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
         },
         {
             "identifier": 14,
@@ -308,11 +327,40 @@
             "locals": 13,
             "body": [
                 {
-                    "opcode": "pushld",
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 13,
+                        "index": 1
+                    }
+                },
+                {
+                    "opcode": "offsetptr",
+                    "arg": {
+                        "type": 13,
+                        "index": 2
+                    }
+                },
+                {
+                    "opcode": "offsetptr",
+                    "arg": {
+                        "type": 13,
+                        "index": 3
+                    }
+                },
+                {
+                    "opcode": "pick",
                     "arg": 0
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pick",
+                    "arg": 0
+                },
+                {
+                    "opcode": "setldh",
+                    "arg": 0
+                },
+                {
+                    "opcode": "setldl",
                     "arg": 4652018594228536869
                 },
                 {
@@ -323,7 +371,7 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 8
+                    "arg": 13
                 },
                 {
                     "opcode": "push",

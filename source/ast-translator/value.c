@@ -280,13 +280,10 @@ kefir_result_t kefir_ast_translator_load_value(const struct kefir_ast_type *type
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_LOAD64, 0));
             break;
 
-        case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_LOADLD, 0));
-            break;
-
         case KEFIR_AST_TYPE_ENUMERATION:
             return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected enumeration type");
 
+        case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
         case KEFIR_AST_TYPE_STRUCTURE:
         case KEFIR_AST_TYPE_UNION:
         case KEFIR_AST_TYPE_ARRAY:

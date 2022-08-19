@@ -25,6 +25,7 @@
 #include "kefir/ast-translator/util.h"
 #include "kefir/ast-translator/typeconv.h"
 #include "kefir/ast-translator/type.h"
+#include "kefir/ast-translator/temporaries.h"
 #include "kefir/ast/type_conv.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
@@ -33,16 +34,8 @@ static kefir_result_t store_value(struct kefir_mem *mem, struct kefir_ast_transl
                                   struct kefir_irbuilder_block *builder,
                                   const struct kefir_ast_assignment_operator *node,
                                   const struct kefir_ast_type *result_normalized_type) {
-    if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(result_normalized_type)) {
-        // [V*, V1, V2]
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_XCHG, 1));  // [V*, V2, V1]
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_XCHG, 2));  // [V1, V2, V*]
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 2));  // [V1, V2, V*, V1]
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 2));  // [V1, V2, V*, V1, V2]
-    } else {
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_XCHG, 1));
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 1));
-    }
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_XCHG, 1));
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 1));
     REQUIRE_OK(kefir_ast_translator_store_lvalue(mem, context, builder, node->target));
 
     if (node->target->properties.expression_props.bitfield_props.bitfield &&
@@ -56,6 +49,46 @@ static kefir_result_t store_value(struct kefir_mem *mem, struct kefir_ast_transl
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32(builder, KEFIR_IROPCODE_EXTUBITS, 0, bitwidth));
         }
     }
+    return KEFIR_OK;
+}
+
+static kefir_result_t fetch_temporary(struct kefir_mem *mem, struct kefir_ast_translator_context *context,
+                                      struct kefir_irbuilder_block *builder, const struct kefir_ast_node_base *base,
+                                      kefir_id_t *type_id, kefir_size_t index) {
+    if (*type_id == KEFIR_ID_NONE) {
+        struct kefir_ir_type *ldouble_type = kefir_ir_module_new_type(mem, context->module, 1, type_id);
+        REQUIRE(ldouble_type != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR type"));
+        REQUIRE_OK(kefir_irbuilder_type_append_v(mem, ldouble_type, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0));
+    }
+    REQUIRE_OK(
+        kefir_ast_translator_fetch_temporary(mem, context, builder, &base->properties.expression_props.temporary));
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PUSHU64, index));
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32(builder, KEFIR_IROPCODE_ELEMENTPTR, *type_id, 0));
+    return KEFIR_OK;
+}
+
+struct typeconv_callback_param {
+    struct kefir_mem *mem;
+    struct kefir_ast_translator_context *context;
+    struct kefir_irbuilder_block *builder;
+    const struct kefir_ast_temporary_identifier *temporary;
+    kefir_size_t temporary_index;
+    kefir_id_t ldouble_type_id;
+};
+
+static kefir_result_t allocate_long_double_callback(void *payload) {
+    REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid typeconv callback payload"));
+    ASSIGN_DECL_CAST(struct typeconv_callback_param *, param, payload);
+
+    if (param->ldouble_type_id == KEFIR_ID_NONE) {
+        struct kefir_ir_type *ldouble_type =
+            kefir_ir_module_new_type(param->mem, param->context->module, 1, &param->ldouble_type_id);
+        REQUIRE(ldouble_type != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR type"));
+        REQUIRE_OK(kefir_irbuilder_type_append_v(param->mem, ldouble_type, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0));
+    }
+    REQUIRE_OK(kefir_ast_translator_fetch_temporary(param->mem, param->context, param->builder, param->temporary));
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(param->builder, KEFIR_IROPCODE_PUSHU64, param->temporary_index));
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32(param->builder, KEFIR_IROPCODE_ELEMENTPTR, param->ldouble_type_id, 0));
     return KEFIR_OK;
 }
 
@@ -73,42 +106,29 @@ static kefir_result_t translate_simple(struct kefir_mem *mem, struct kefir_ast_t
 
     REQUIRE_OK(kefir_ast_translate_expression(mem, node->value, builder, context));
     if (KEFIR_AST_TYPE_IS_SCALAR_TYPE(result_normalized_type)) {
+        struct typeconv_callback_param cb_param = {.mem = mem,
+                                                   .context = context,
+                                                   .builder = builder,
+                                                   .temporary = &node->base.properties.expression_props.temporary,
+                                                   .temporary_index = 0,
+                                                   .ldouble_type_id = KEFIR_ID_NONE};
+        struct kefir_ast_translate_typeconv_callbacks callbacks = {
+            .allocate_long_double = allocate_long_double_callback, .payload = &cb_param};
         REQUIRE_OK(kefir_ast_translate_typeconv(builder, context->ast_context->type_traits, value_normalized_type,
-                                                result_normalized_type));
+                                                result_normalized_type, &callbacks));
     }
 
     REQUIRE_OK(kefir_ast_translate_lvalue(mem, context, builder, node->target));
 
-    if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(result_normalized_type)) {
-        // [ARGUMENT1, ARGUMENT2, VALUE*]
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_XCHG, 2));  // [VALUE*, ARGUMENT2, ARGUMENT1]
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_XCHG, 1));  // [VALUE*, ARGUMENT1, ARGUMENT2]
-    } else {
-        // [ARGUMENT, VALUE*]
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_XCHG, 1));  // [VALUE*, ARGUMENT]
-    }
-
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_XCHG, 1));  // [VALUE*, ARGUMENT]
     REQUIRE_OK(store_value(mem, context, builder, node, result_normalized_type));
     return KEFIR_OK;
 }
 
-static kefir_result_t reorder_assignment_arguments(struct kefir_irbuilder_block *builder,
-                                                   const struct kefir_ast_type *type) {
-    if (type != NULL && KEFIR_AST_TYPE_IS_LONG_DOUBLE(type)) {
-        // [ARGUMENT1, ARGUMENT2, VALUE*, CURRENT1, CURRENT2]
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_XCHG,
-                                                   2));  // [ARGUMENT1, ARGUMENT2, CURRENT2, CURRENT1, VALUE*]
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_XCHG,
-                                                   4));  // [VALUE*, ARGUMENT2, CURRENT2, CURRENT1, ARGUMENT1]
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_XCHG,
-                                                   1));  // [VALUE*, ARGUMENT2, CURRENT2, ARGUMENT1, CURRENT1]
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_XCHG,
-                                                   3));  // [VALUE*, CURRENT1, CURRENT2, ARGUMENT1, ARGUMENT2]
-    } else {
-        // [ARGUMENT, VALUE*, CURRENT]
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_XCHG, 1));  // [ARGUMENT, CURRENT, VALUE*]
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_XCHG, 2));  // [VALUE*, CURRENT, ARGUMENT]
-    }
+static kefir_result_t reorder_assignment_arguments(struct kefir_irbuilder_block *builder) {
+    // [ARGUMENT, VALUE*, CURRENT]
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_XCHG, 1));  // [ARGUMENT, CURRENT, VALUE*]
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_XCHG, 2));  // [VALUE*, CURRENT, ARGUMENT]
     return KEFIR_OK;
 }
 
@@ -130,19 +150,30 @@ static kefir_result_t translate_multiplication(struct kefir_mem *mem, struct kef
     const struct kefir_ast_type *result_normalized_type =
         kefir_ast_translator_normalize_type(node->base.properties.type);
 
+    struct typeconv_callback_param cb_param = {.mem = mem,
+                                               .context = context,
+                                               .builder = builder,
+                                               .temporary = &node->base.properties.expression_props.temporary,
+                                               .temporary_index = 0,
+                                               .ldouble_type_id = KEFIR_ID_NONE};
+    struct kefir_ast_translate_typeconv_callbacks callbacks = {.allocate_long_double = allocate_long_double_callback,
+                                                               .payload = &cb_param};
+
     REQUIRE_OK(kefir_ast_translate_expression(mem, node->value, builder, context));
-    REQUIRE_OK(
-        kefir_ast_translate_typeconv(builder, context->ast_context->type_traits, value_normalized_type, common_type));
+    REQUIRE_OK(kefir_ast_translate_typeconv(builder, context->ast_context->type_traits, value_normalized_type,
+                                            common_type, &callbacks));
 
     REQUIRE_OK(kefir_ast_translate_lvalue(mem, context, builder, node->target));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 0));
     REQUIRE_OK(kefir_ast_translator_resolve_lvalue(mem, context, builder, node->target));
-    REQUIRE_OK(
-        kefir_ast_translate_typeconv(builder, context->ast_context->type_traits, target_normalized_type, common_type));
+    cb_param.temporary_index = 1;
+    REQUIRE_OK(kefir_ast_translate_typeconv(builder, context->ast_context->type_traits, target_normalized_type,
+                                            common_type, &callbacks));
 
-    REQUIRE_OK(reorder_assignment_arguments(builder, common_type));
+    REQUIRE_OK(reorder_assignment_arguments(builder));
     switch (common_type->tag) {
         case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
+            REQUIRE_OK(fetch_temporary(mem, context, builder, KEFIR_AST_NODE_BASE(node), &cb_param.ldouble_type_id, 0));
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_LDMUL, 0));
             break;
 
@@ -158,8 +189,8 @@ static kefir_result_t translate_multiplication(struct kefir_mem *mem, struct kef
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_IMUL, 0));
             break;
     }
-    REQUIRE_OK(
-        kefir_ast_translate_typeconv(builder, context->ast_context->type_traits, common_type, result_normalized_type));
+    REQUIRE_OK(kefir_ast_translate_typeconv(builder, context->ast_context->type_traits, common_type,
+                                            result_normalized_type, &callbacks));
     REQUIRE_OK(store_value(mem, context, builder, node, result_normalized_type));
     return KEFIR_OK;
 }
@@ -182,19 +213,30 @@ static kefir_result_t translate_divide(struct kefir_mem *mem, struct kefir_ast_t
     const struct kefir_ast_type *result_normalized_type =
         kefir_ast_translator_normalize_type(node->base.properties.type);
 
+    struct typeconv_callback_param cb_param = {.mem = mem,
+                                               .context = context,
+                                               .builder = builder,
+                                               .temporary = &node->base.properties.expression_props.temporary,
+                                               .temporary_index = 0,
+                                               .ldouble_type_id = KEFIR_ID_NONE};
+    struct kefir_ast_translate_typeconv_callbacks callbacks = {.allocate_long_double = allocate_long_double_callback,
+                                                               .payload = &cb_param};
+
     REQUIRE_OK(kefir_ast_translate_expression(mem, node->value, builder, context));
-    REQUIRE_OK(
-        kefir_ast_translate_typeconv(builder, context->ast_context->type_traits, value_normalized_type, common_type));
+    REQUIRE_OK(kefir_ast_translate_typeconv(builder, context->ast_context->type_traits, value_normalized_type,
+                                            common_type, &callbacks));
 
     REQUIRE_OK(kefir_ast_translate_lvalue(mem, context, builder, node->target));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 0));
     REQUIRE_OK(kefir_ast_translator_resolve_lvalue(mem, context, builder, node->target));
-    REQUIRE_OK(
-        kefir_ast_translate_typeconv(builder, context->ast_context->type_traits, target_normalized_type, common_type));
+    cb_param.temporary_index = 1;
+    REQUIRE_OK(kefir_ast_translate_typeconv(builder, context->ast_context->type_traits, target_normalized_type,
+                                            common_type, &callbacks));
 
-    REQUIRE_OK(reorder_assignment_arguments(builder, common_type));
+    REQUIRE_OK(reorder_assignment_arguments(builder));
     switch (common_type->tag) {
         case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
+            REQUIRE_OK(fetch_temporary(mem, context, builder, KEFIR_AST_NODE_BASE(node), &cb_param.ldouble_type_id, 0));
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_LDDIV, 0));
             break;
 
@@ -216,8 +258,8 @@ static kefir_result_t translate_divide(struct kefir_mem *mem, struct kefir_ast_t
             }
         } break;
     }
-    REQUIRE_OK(
-        kefir_ast_translate_typeconv(builder, context->ast_context->type_traits, common_type, result_normalized_type));
+    REQUIRE_OK(kefir_ast_translate_typeconv(builder, context->ast_context->type_traits, common_type,
+                                            result_normalized_type, &callbacks));
     REQUIRE_OK(store_value(mem, context, builder, node, result_normalized_type));
     return KEFIR_OK;
 }
@@ -241,16 +283,18 @@ static kefir_result_t translate_modulo_bitwise(struct kefir_mem *mem, struct kef
         kefir_ast_translator_normalize_type(node->base.properties.type);
 
     REQUIRE_OK(kefir_ast_translate_expression(mem, node->value, builder, context));
-    REQUIRE_OK(
-        kefir_ast_translate_typeconv(builder, context->ast_context->type_traits, value_normalized_type, common_type));
+    REQUIRE(!KEFIR_AST_TYPE_IS_LONG_DOUBLE(common_type),
+            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected value of long double type"));
+    REQUIRE_OK(kefir_ast_translate_typeconv(builder, context->ast_context->type_traits, value_normalized_type,
+                                            common_type, NULL));
 
     REQUIRE_OK(kefir_ast_translate_lvalue(mem, context, builder, node->target));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 0));
     REQUIRE_OK(kefir_ast_translator_resolve_lvalue(mem, context, builder, node->target));
-    REQUIRE_OK(
-        kefir_ast_translate_typeconv(builder, context->ast_context->type_traits, target_normalized_type, common_type));
+    REQUIRE_OK(kefir_ast_translate_typeconv(builder, context->ast_context->type_traits, target_normalized_type,
+                                            common_type, NULL));
 
-    REQUIRE_OK(reorder_assignment_arguments(builder, common_type));
+    REQUIRE_OK(reorder_assignment_arguments(builder));
     switch (node->operation) {
         case KEFIR_AST_ASSIGNMENT_MODULO: {
             kefir_bool_t signedness;
@@ -294,8 +338,10 @@ static kefir_result_t translate_modulo_bitwise(struct kefir_mem *mem, struct kef
             return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected assignment operation");
     }
 
-    REQUIRE_OK(
-        kefir_ast_translate_typeconv(builder, context->ast_context->type_traits, common_type, result_normalized_type));
+    REQUIRE(!KEFIR_AST_TYPE_IS_LONG_DOUBLE(result_normalized_type),
+            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected value of long double type"));
+    REQUIRE_OK(kefir_ast_translate_typeconv(builder, context->ast_context->type_traits, common_type,
+                                            result_normalized_type, NULL));
     REQUIRE_OK(store_value(mem, context, builder, node, result_normalized_type));
     return KEFIR_OK;
 }
@@ -321,19 +367,31 @@ static kefir_result_t translate_add(struct kefir_mem *mem, struct kefir_ast_tran
             node->target->properties.expression_props.bitfield_props, value_normalized_type,
             node->value->properties.expression_props.bitfield_props);
 
+        struct typeconv_callback_param cb_param = {.mem = mem,
+                                                   .context = context,
+                                                   .builder = builder,
+                                                   .temporary = &node->base.properties.expression_props.temporary,
+                                                   .temporary_index = 0,
+                                                   .ldouble_type_id = KEFIR_ID_NONE};
+        struct kefir_ast_translate_typeconv_callbacks callbacks = {
+            .allocate_long_double = allocate_long_double_callback, .payload = &cb_param};
+
         REQUIRE_OK(kefir_ast_translate_expression(mem, node->value, builder, context));
         REQUIRE_OK(kefir_ast_translate_typeconv(builder, context->ast_context->type_traits, value_normalized_type,
-                                                common_type));
+                                                common_type, &callbacks));
 
         REQUIRE_OK(kefir_ast_translate_lvalue(mem, context, builder, node->target));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 0));
         REQUIRE_OK(kefir_ast_translator_resolve_lvalue(mem, context, builder, node->target));
+        cb_param.temporary_index = 1;
         REQUIRE_OK(kefir_ast_translate_typeconv(builder, context->ast_context->type_traits, target_normalized_type,
-                                                common_type));
+                                                common_type, &callbacks));
 
-        REQUIRE_OK(reorder_assignment_arguments(builder, common_type));
+        REQUIRE_OK(reorder_assignment_arguments(builder));
         switch (common_type->tag) {
             case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
+                REQUIRE_OK(
+                    fetch_temporary(mem, context, builder, KEFIR_AST_NODE_BASE(node), &cb_param.ldouble_type_id, 0));
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_LDADD, 0));
                 break;
 
@@ -350,7 +408,7 @@ static kefir_result_t translate_add(struct kefir_mem *mem, struct kefir_ast_tran
                 break;
         }
         REQUIRE_OK(kefir_ast_translate_typeconv(builder, context->ast_context->type_traits, common_type,
-                                                result_normalized_type));
+                                                result_normalized_type, &callbacks));
     } else {
         REQUIRE(target_normalized_type->tag == KEFIR_AST_TYPE_SCALAR_POINTER &&
                     KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(value_normalized_type),
@@ -369,7 +427,7 @@ static kefir_result_t translate_add(struct kefir_mem *mem, struct kefir_ast_tran
         REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 0));
         REQUIRE_CHAIN(&res, kefir_ast_translator_resolve_lvalue(mem, context, builder, node->target));
 
-        REQUIRE_CHAIN(&res, reorder_assignment_arguments(builder, NULL));
+        REQUIRE_CHAIN(&res, reorder_assignment_arguments(builder));
         REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU32(builder, KEFIR_IROPCODE_ELEMENTPTR,
                                                             translator_type->object.ir_type_id,
                                                             translator_type->object.layout->value));
@@ -406,19 +464,31 @@ static kefir_result_t translate_subtract(struct kefir_mem *mem, struct kefir_ast
             node->target->properties.expression_props.bitfield_props, value_normalized_type,
             node->value->properties.expression_props.bitfield_props);
 
+        struct typeconv_callback_param cb_param = {.mem = mem,
+                                                   .context = context,
+                                                   .builder = builder,
+                                                   .temporary = &node->base.properties.expression_props.temporary,
+                                                   .temporary_index = 0,
+                                                   .ldouble_type_id = KEFIR_ID_NONE};
+        struct kefir_ast_translate_typeconv_callbacks callbacks = {
+            .allocate_long_double = allocate_long_double_callback, .payload = &cb_param};
+
         REQUIRE_OK(kefir_ast_translate_expression(mem, node->value, builder, context));
         REQUIRE_OK(kefir_ast_translate_typeconv(builder, context->ast_context->type_traits, value_normalized_type,
-                                                common_type));
+                                                common_type, &callbacks));
 
         REQUIRE_OK(kefir_ast_translate_lvalue(mem, context, builder, node->target));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 0));
         REQUIRE_OK(kefir_ast_translator_resolve_lvalue(mem, context, builder, node->target));
+        cb_param.temporary_index = 1;
         REQUIRE_OK(kefir_ast_translate_typeconv(builder, context->ast_context->type_traits, target_normalized_type,
-                                                common_type));
+                                                common_type, &callbacks));
 
-        REQUIRE_OK(reorder_assignment_arguments(builder, common_type));
+        REQUIRE_OK(reorder_assignment_arguments(builder));
         switch (common_type->tag) {
             case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
+                REQUIRE_OK(
+                    fetch_temporary(mem, context, builder, KEFIR_AST_NODE_BASE(node), &cb_param.ldouble_type_id, 0));
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_LDSUB, 0));
                 break;
 
@@ -435,7 +505,7 @@ static kefir_result_t translate_subtract(struct kefir_mem *mem, struct kefir_ast
                 break;
         }
         REQUIRE_OK(kefir_ast_translate_typeconv(builder, context->ast_context->type_traits, common_type,
-                                                result_normalized_type));
+                                                result_normalized_type, &callbacks));
     } else {
         REQUIRE(target_normalized_type->tag == KEFIR_AST_TYPE_SCALAR_POINTER &&
                     KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(value_normalized_type),
@@ -455,7 +525,7 @@ static kefir_result_t translate_subtract(struct kefir_mem *mem, struct kefir_ast
         REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 0));
         REQUIRE_CHAIN(&res, kefir_ast_translator_resolve_lvalue(mem, context, builder, node->target));
 
-        REQUIRE_CHAIN(&res, reorder_assignment_arguments(builder, NULL));
+        REQUIRE_CHAIN(&res, reorder_assignment_arguments(builder));
         REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU32(builder, KEFIR_IROPCODE_ELEMENTPTR,
                                                             translator_type->object.ir_type_id,
                                                             translator_type->object.layout->value));

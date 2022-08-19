@@ -32,6 +32,7 @@ kefir_result_t kefir_ast_translator_fetch_temporary(struct kefir_mem *mem, struc
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST translator context"));
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR block builder"));
     REQUIRE(temporary != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST temporary identifier"));
+    REQUIRE(temporary->valid, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unable to fetch invalid temporary"));
 
 #define BUFFER_LEN 128
     if (temporary->nested) {

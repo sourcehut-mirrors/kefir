@@ -56,6 +56,19 @@
                                     "type": "struct",
                                     "fields": [
                                         {
+                                            "type": "long_double"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "type": "union",
+                            "fields": [
+                                {
+                                    "type": "struct",
+                                    "fields": [
+                                        {
                                             "type": "int"
                                         },
                                         {
@@ -183,6 +196,13 @@
                     }
                 },
                 {
+                    "opcode": "offsetptr",
+                    "arg": {
+                        "type": 8,
+                        "index": 4
+                    }
+                },
+                {
                     "opcode": "pick",
                     "arg": 0
                 },
@@ -211,6 +231,13 @@
                     }
                 },
                 {
+                    "opcode": "offsetptr",
+                    "arg": {
+                        "type": 8,
+                        "index": 7
+                    }
+                },
+                {
                     "opcode": "pick",
                     "arg": 0
                 },
@@ -225,15 +252,41 @@
                     "opcode": "pop"
                 },
                 {
-                    "opcode": "pushld",
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 8,
+                        "index": 1
+                    }
+                },
+                {
+                    "opcode": "offsetptr",
+                    "arg": {
+                        "type": 8,
+                        "index": 2
+                    }
+                },
+                {
+                    "opcode": "offsetptr",
+                    "arg": {
+                        "type": 8,
+                        "index": 3
+                    }
+                },
+                {
+                    "opcode": "pick",
                     "arg": 0
                 },
                 {
-                    "opcode": "push",
-                    "arg": 4565482689130268511
+                    "opcode": "pick",
+                    "arg": 0
                 },
                 {
-                    "opcode": "pop"
+                    "opcode": "setldh",
+                    "arg": 0
+                },
+                {
+                    "opcode": "setldl",
+                    "arg": 4565482689130268511
                 },
                 {
                     "opcode": "pop"
@@ -243,6 +296,13 @@
                     "arg": {
                         "type": 8,
                         "index": 0
+                    }
+                },
+                {
+                    "opcode": "offsetptr",
+                    "arg": {
+                        "type": 8,
+                        "index": 4
                     }
                 },
                 {
@@ -260,6 +320,13 @@
                     "arg": {
                         "type": 8,
                         "index": 4
+                    }
+                },
+                {
+                    "opcode": "offsetptr",
+                    "arg": {
+                        "type": 8,
+                        "index": 7
                     }
                 },
                 {
@@ -282,7 +349,14 @@
                     "opcode": "offsetptr",
                     "arg": {
                         "type": 8,
-                        "index": 5
+                        "index": 4
+                    }
+                },
+                {
+                    "opcode": "offsetptr",
+                    "arg": {
+                        "type": 8,
+                        "index": 8
                     }
                 },
                 {
@@ -314,7 +388,14 @@
                     "opcode": "offsetptr",
                     "arg": {
                         "type": 8,
-                        "index": 5
+                        "index": 4
+                    }
+                },
+                {
+                    "opcode": "offsetptr",
+                    "arg": {
+                        "type": 8,
+                        "index": 8
                     }
                 },
                 {
@@ -325,6 +406,13 @@
                     "arg": {
                         "type": 8,
                         "index": 0
+                    }
+                },
+                {
+                    "opcode": "offsetptr",
+                    "arg": {
+                        "type": 8,
+                        "index": 4
                     }
                 },
                 {
@@ -379,7 +467,14 @@
                     "opcode": "offsetptr",
                     "arg": {
                         "type": 8,
-                        "index": 5
+                        "index": 4
+                    }
+                },
+                {
+                    "opcode": "offsetptr",
+                    "arg": {
+                        "type": 8,
+                        "index": 8
                     }
                 },
                 {
@@ -397,6 +492,13 @@
                     "arg": {
                         "type": 8,
                         "index": 4
+                    }
+                },
+                {
+                    "opcode": "offsetptr",
+                    "arg": {
+                        "type": 8,
+                        "index": 7
                     }
                 },
                 {

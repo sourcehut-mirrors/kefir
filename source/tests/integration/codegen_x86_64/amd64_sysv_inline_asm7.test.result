@@ -108,6 +108,8 @@
 .extern __kefirrt_ldcf64_impl
 .extern __kefirrt_pushscope_impl
 .extern __kefirrt_popscope_impl
+.extern __kefirrt_setldh_impl
+.extern __kefirrt_setldl_impl
 # Runtime functions
 .extern __kefirrt_preserve_state
 .extern __kefirrt_restore_state
@@ -126,13 +128,9 @@ call __kefirrt_preserve_state
 sub %rsp, 16
 call __kefirrt_generic_prologue
 # Load parameters of func1
-mov %r12, [%rbp + 24]
+lea %r12, [%rbp + 16]
 push %r12
-mov %r12, [%rbp + 16]
-push %r12
-mov %r12, [%rbp + 40]
-push %r12
-mov %r12, [%rbp + 32]
+lea %r12, [%rbp + 32]
 push %r12
 # End prologue of func1
 lea %rbx, [__func1_body]
@@ -142,8 +140,8 @@ __func1_body:
 .quad __func1_epilogue, 0
 __func1_epilogue:
 # Begin epilogue of func1
-fld TBYTE PTR [%rsp]
-add %rsp, 16
+pop %r12
+fld TBYTE PTR [%r12]
 mov %rsp, %r14
 add %rsp, 16
 jmp __kefirrt_restore_state
@@ -152,13 +150,15 @@ jmp __kefirrt_restore_state
 # Inline assembly fragment #0
 __kefirrt_inline_assembly0:
 mov %rax, [%rsp]
+mov %rcx, [%rsp + 16]
+mov %rdx, [%rsp]
 # Begin of fragment #0 code
-fld TBYTE PTR [%rsp]
-fld TBYTE PTR [%rsp + 16]
+fld TBYTE PTR [%rax]
+fld TBYTE PTR [%rcx]
 fadd
-fst TBYTE PTR [%rax]
+fst TBYTE PTR [%rdx]
 # End of fragment #0 code
-add %rsp, 32
+add %rsp, 24
 add %rbx, 16
 jmp [%rbx]
 

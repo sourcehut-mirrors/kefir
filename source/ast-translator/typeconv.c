@@ -69,7 +69,11 @@ static kefir_result_t cast_to_float64(struct kefir_irbuilder_block *builder,
 
 static kefir_result_t cast_to_long_double(struct kefir_irbuilder_block *builder,
                                           const struct kefir_ast_type_traits *type_traits,
-                                          const struct kefir_ast_type *origin) {
+                                          const struct kefir_ast_type *origin,
+                                          const struct kefir_ast_translate_typeconv_callbacks *callbacks) {
+    REQUIRE(callbacks != NULL && callbacks->allocate_long_double != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unable cast to long double without allocation callback present"));
+    REQUIRE_OK(callbacks->allocate_long_double(callbacks->payload));
     if (KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(origin)) {
         kefir_bool_t origin_sign;
         REQUIRE_OK(kefir_ast_type_is_signed(type_traits, origin, &origin_sign));
@@ -188,7 +192,8 @@ kefir_result_t kefir_ast_translate_typeconv_normalize(struct kefir_irbuilder_blo
 kefir_result_t kefir_ast_translate_typeconv(struct kefir_irbuilder_block *builder,
                                             const struct kefir_ast_type_traits *type_traits,
                                             const struct kefir_ast_type *origin,
-                                            const struct kefir_ast_type *destination) {
+                                            const struct kefir_ast_type *destination,
+                                            const struct kefir_ast_translate_typeconv_callbacks *callbacks) {
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR block builder"));
     REQUIRE(type_traits != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid origin AST type traits"));
     REQUIRE(origin != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid origin AST type"));
@@ -205,9 +210,6 @@ kefir_result_t kefir_ast_translate_typeconv(struct kefir_irbuilder_block *builde
 
     switch (normalized_destination->tag) {
         case KEFIR_AST_TYPE_VOID:
-            if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(normalized_origin)) {
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_POP, 0));
-            }
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_POP, 0));
             break;
 
@@ -226,7 +228,7 @@ kefir_result_t kefir_ast_translate_typeconv(struct kefir_irbuilder_block *builde
             break;
 
         case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
-            REQUIRE_OK(cast_to_long_double(builder, type_traits, normalized_origin));
+            REQUIRE_OK(cast_to_long_double(builder, type_traits, normalized_origin, callbacks));
             break;
 
         default:

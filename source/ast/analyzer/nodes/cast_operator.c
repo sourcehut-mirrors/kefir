@@ -40,6 +40,7 @@ kefir_result_t kefir_ast_analyze_cast_operator_node(struct kefir_mem *mem, const
             KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &cast->base.source_location,
                                    "Cast operator operand shall be an expression"));
 
+    REQUIRE_OK(kefir_ast_node_properties_init(&base->properties));
     const struct kefir_ast_type *expr_type =
         KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(mem, context->type_bundle, cast->expr->properties.type);
     const struct kefir_ast_type *cast_type = kefir_ast_unqualified_type(cast->type_name->base.properties.type);
@@ -51,6 +52,11 @@ kefir_result_t kefir_ast_analyze_cast_operator_node(struct kefir_mem *mem, const
         REQUIRE(expr_type->tag != KEFIR_AST_TYPE_SCALAR_POINTER,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &cast->expr->source_location,
                                        "Pointer cannot be cast to floating-point value"));
+        if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(cast_type)) {
+            REQUIRE_OK(context->allocate_temporary_value(mem, context, kefir_ast_type_long_double(), NULL,
+                                                         &base->source_location,
+                                                         &base->properties.expression_props.temporary));
+        }
     }
     if (KEFIR_AST_TYPE_IS_FLOATING_POINT(expr_type)) {
         REQUIRE(cast_type->tag != KEFIR_AST_TYPE_SCALAR_POINTER,
@@ -58,7 +64,6 @@ kefir_result_t kefir_ast_analyze_cast_operator_node(struct kefir_mem *mem, const
                                        "Floating-point value cannot be cast to pointer"));
     }
 
-    REQUIRE_OK(kefir_ast_node_properties_init(&base->properties));
     base->properties.category = KEFIR_AST_NODE_CATEGORY_EXPRESSION;
     base->properties.type = cast_type;
     base->properties.expression_props.constant_expression = cast->expr->properties.expression_props.constant_expression;

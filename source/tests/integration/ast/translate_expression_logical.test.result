@@ -56,7 +56,26 @@
         },
         {
             "identifier": 13,
-            "type": []
+            "type": [
+                {
+                    "type": "struct",
+                    "fields": [
+                        {
+                            "type": "union",
+                            "fields": [
+                                {
+                                    "type": "struct",
+                                    "fields": [
+                                        {
+                                            "type": "long_double"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
         },
         {
             "identifier": 14,
@@ -68,7 +87,29 @@
         },
         {
             "identifier": 16,
-            "type": []
+            "type": [
+                {
+                    "type": "struct",
+                    "fields": [
+                        {
+                            "type": "union",
+                            "fields": [
+                                {
+                                    "type": "struct",
+                                    "fields": [
+                                        {
+                                            "type": "long_double"
+                                        },
+                                        {
+                                            "type": "long_double"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
         },
         {
             "identifier": 17,
@@ -85,6 +126,99 @@
         {
             "identifier": 20,
             "type": []
+        },
+        {
+            "identifier": 21,
+            "type": []
+        },
+        {
+            "identifier": 22,
+            "type": []
+        },
+        {
+            "identifier": 23,
+            "type": []
+        },
+        {
+            "identifier": 24,
+            "type": []
+        },
+        {
+            "identifier": 25,
+            "type": []
+        },
+        {
+            "identifier": 26,
+            "type": []
+        },
+        {
+            "identifier": 27,
+            "type": []
+        },
+        {
+            "identifier": 28,
+            "type": [
+                {
+                    "type": "struct",
+                    "fields": [
+                        {
+                            "type": "union",
+                            "fields": [
+                                {
+                                    "type": "struct",
+                                    "fields": [
+                                        {
+                                            "type": "long_double"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "identifier": 29,
+            "type": []
+        },
+        {
+            "identifier": 30,
+            "type": []
+        },
+        {
+            "identifier": 31,
+            "type": [
+                {
+                    "type": "struct",
+                    "fields": [
+                        {
+                            "type": "union",
+                            "fields": [
+                                {
+                                    "type": "struct",
+                                    "fields": [
+                                        {
+                                            "type": "long_double"
+                                        },
+                                        {
+                                            "type": "long_double"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "identifier": 32,
+            "type": []
+        },
+        {
+            "identifier": 33,
+            "type": []
         }
     ],
     "data": [],
@@ -100,58 +234,72 @@
         {
             "identifier": 1,
             "name": "logical_and2",
-            "parameters": 7,
+            "parameters": 8,
             "vararg": false,
-            "returns": 8
+            "returns": 9
         },
         {
             "identifier": 2,
             "name": "logical_and3",
-            "parameters": 9,
-            "vararg": false,
-            "returns": 10
-        },
-        {
-            "identifier": 3,
-            "name": "logical_and4",
             "parameters": 11,
             "vararg": false,
             "returns": 12
         },
         {
+            "identifier": 3,
+            "name": "logical_and4",
+            "parameters": 14,
+            "vararg": false,
+            "returns": 15
+        },
+        {
             "identifier": 4,
-            "name": "logical_or1",
-            "parameters": 13,
-            "vararg": false,
-            "returns": 14
-        },
-        {
-            "identifier": 5,
-            "name": "logical_or2",
-            "parameters": 15,
-            "vararg": false,
-            "returns": 16
-        },
-        {
-            "identifier": 6,
-            "name": "logical_or3",
+            "name": "logical_and5",
             "parameters": 17,
             "vararg": false,
             "returns": 18
         },
         {
-            "identifier": 7,
-            "name": "logical_or4",
-            "parameters": 19,
+            "identifier": 5,
+            "name": "logical_or1",
+            "parameters": 20,
             "vararg": false,
-            "returns": 20
+            "returns": 21
+        },
+        {
+            "identifier": 6,
+            "name": "logical_or2",
+            "parameters": 23,
+            "vararg": false,
+            "returns": 24
+        },
+        {
+            "identifier": 7,
+            "name": "logical_or3",
+            "parameters": 26,
+            "vararg": false,
+            "returns": 27
+        },
+        {
+            "identifier": 8,
+            "name": "logical_or4",
+            "parameters": 29,
+            "vararg": false,
+            "returns": 30
+        },
+        {
+            "identifier": 9,
+            "name": "logical_or5",
+            "parameters": 32,
+            "vararg": false,
+            "returns": 33
         }
     ],
     "functions": [
         {
-            "identifier": 4,
+            "identifier": 5,
             "name": "logical_or1",
-            "locals": 4,
+            "locals": 19,
             "body": [
                 {
                     "opcode": "push",
@@ -181,9 +329,9 @@
             ]
         },
         {
-            "identifier": 5,
+            "identifier": 6,
             "name": "logical_or2",
-            "locals": 4,
+            "locals": 22,
             "body": [
                 {
                     "opcode": "pushf32",
@@ -213,9 +361,9 @@
             ]
         },
         {
-            "identifier": 6,
+            "identifier": 7,
             "name": "logical_or3",
-            "locals": 4,
+            "locals": 25,
             "body": [
                 {
                     "opcode": "push",
@@ -245,16 +393,45 @@
             ]
         },
         {
-            "identifier": 7,
+            "identifier": 8,
             "name": "logical_or4",
-            "locals": 4,
+            "locals": 28,
             "body": [
                 {
-                    "opcode": "pushld",
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 28,
+                        "index": 1
+                    }
+                },
+                {
+                    "opcode": "offsetptr",
+                    "arg": {
+                        "type": 28,
+                        "index": 2
+                    }
+                },
+                {
+                    "opcode": "offsetptr",
+                    "arg": {
+                        "type": 28,
+                        "index": 3
+                    }
+                },
+                {
+                    "opcode": "pick",
                     "arg": 0
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pick",
+                    "arg": 0
+                },
+                {
+                    "opcode": "setldh",
+                    "arg": 0
+                },
+                {
+                    "opcode": "setldl",
                     "arg": 13830554455654793216
                 },
                 {
@@ -266,7 +443,7 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 8
+                    "arg": 13
                 },
                 {
                     "opcode": "push",
@@ -277,13 +454,49 @@
                 },
                 {
                     "opcode": "bor"
+                }
+            ]
+        },
+        {
+            "identifier": 9,
+            "name": "logical_or5",
+            "locals": 31,
+            "body": [
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 31,
+                        "index": 1
+                    }
                 },
                 {
-                    "opcode": "pushld",
+                    "opcode": "offsetptr",
+                    "arg": {
+                        "type": 31,
+                        "index": 2
+                    }
+                },
+                {
+                    "opcode": "offsetptr",
+                    "arg": {
+                        "type": 31,
+                        "index": 3
+                    }
+                },
+                {
+                    "opcode": "pick",
                     "arg": 0
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pick",
+                    "arg": 0
+                },
+                {
+                    "opcode": "setldh",
+                    "arg": 0
+                },
+                {
+                    "opcode": "setldl",
                     "arg": 4761044086503243776
                 },
                 {
@@ -295,14 +508,43 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 17
+                    "arg": 19
                 },
                 {
-                    "opcode": "pushld",
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 31,
+                        "index": 1
+                    }
+                },
+                {
+                    "opcode": "offsetptr",
+                    "arg": {
+                        "type": 31,
+                        "index": 2
+                    }
+                },
+                {
+                    "opcode": "offsetptr",
+                    "arg": {
+                        "type": 31,
+                        "index": 4
+                    }
+                },
+                {
+                    "opcode": "pick",
                     "arg": 0
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pick",
+                    "arg": 0
+                },
+                {
+                    "opcode": "setldh",
+                    "arg": 0
+                },
+                {
+                    "opcode": "setldl",
                     "arg": 4314929448377758107
                 },
                 {
@@ -351,7 +593,7 @@
         {
             "identifier": 1,
             "name": "logical_and2",
-            "locals": 4,
+            "locals": 7,
             "body": [
                 {
                     "opcode": "pushf32",
@@ -386,7 +628,7 @@
         {
             "identifier": 2,
             "name": "logical_and3",
-            "locals": 4,
+            "locals": 10,
             "body": [
                 {
                     "opcode": "push",
@@ -421,14 +663,43 @@
         {
             "identifier": 3,
             "name": "logical_and4",
-            "locals": 4,
+            "locals": 13,
             "body": [
                 {
-                    "opcode": "pushld",
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 13,
+                        "index": 1
+                    }
+                },
+                {
+                    "opcode": "offsetptr",
+                    "arg": {
+                        "type": 13,
+                        "index": 2
+                    }
+                },
+                {
+                    "opcode": "offsetptr",
+                    "arg": {
+                        "type": 13,
+                        "index": 3
+                    }
+                },
+                {
+                    "opcode": "pick",
                     "arg": 0
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pick",
+                    "arg": 0
+                },
+                {
+                    "opcode": "setldh",
+                    "arg": 0
+                },
+                {
+                    "opcode": "setldl",
                     "arg": 4607182418800017408
                 },
                 {
@@ -443,7 +714,7 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 9
+                    "arg": 14
                 },
                 {
                     "opcode": "push",
@@ -454,13 +725,49 @@
                 },
                 {
                     "opcode": "band"
+                }
+            ]
+        },
+        {
+            "identifier": 4,
+            "name": "logical_and5",
+            "locals": 16,
+            "body": [
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 16,
+                        "index": 1
+                    }
                 },
                 {
-                    "opcode": "pushld",
+                    "opcode": "offsetptr",
+                    "arg": {
+                        "type": 16,
+                        "index": 2
+                    }
+                },
+                {
+                    "opcode": "offsetptr",
+                    "arg": {
+                        "type": 16,
+                        "index": 3
+                    }
+                },
+                {
+                    "opcode": "pick",
                     "arg": 0
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pick",
+                    "arg": 0
+                },
+                {
+                    "opcode": "setldh",
+                    "arg": 0
+                },
+                {
+                    "opcode": "setldl",
                     "arg": 4611686018427387904
                 },
                 {
@@ -475,14 +782,43 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 19
+                    "arg": 20
                 },
                 {
-                    "opcode": "pushld",
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 16,
+                        "index": 1
+                    }
+                },
+                {
+                    "opcode": "offsetptr",
+                    "arg": {
+                        "type": 16,
+                        "index": 2
+                    }
+                },
+                {
+                    "opcode": "offsetptr",
+                    "arg": {
+                        "type": 16,
+                        "index": 4
+                    }
+                },
+                {
+                    "opcode": "pick",
                     "arg": 0
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pick",
+                    "arg": 0
+                },
+                {
+                    "opcode": "setldh",
+                    "arg": 0
+                },
+                {
+                    "opcode": "setldl",
                     "arg": 4613937818241073152
                 },
                 {

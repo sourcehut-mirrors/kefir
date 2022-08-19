@@ -26,6 +26,7 @@
 #include "kefir/ast/base.h"
 
 typedef struct kefir_ast_temporary_identifier {
+    kefir_bool_t valid;
     kefir_bool_t nested;
     kefir_id_t identifier;
     kefir_id_t field;

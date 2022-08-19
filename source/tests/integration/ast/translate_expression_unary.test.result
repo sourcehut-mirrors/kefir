@@ -125,7 +125,26 @@
         },
         {
             "identifier": 17,
-            "type": []
+            "type": [
+                {
+                    "type": "struct",
+                    "fields": [
+                        {
+                            "type": "union",
+                            "fields": [
+                                {
+                                    "type": "struct",
+                                    "fields": [
+                                        {
+                                            "type": "long_double"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
         },
         {
             "identifier": 18,
@@ -153,6 +172,18 @@
         },
         {
             "identifier": 24,
+            "type": []
+        },
+        {
+            "identifier": 25,
+            "type": []
+        },
+        {
+            "identifier": 26,
+            "type": []
+        },
+        {
+            "identifier": 27,
             "type": []
         }
     ],
@@ -233,31 +264,38 @@
         },
         {
             "identifier": 4,
-            "name": "sizeof1",
-            "parameters": 17,
+            "name": "logical_negate2",
+            "parameters": 18,
             "vararg": false,
-            "returns": 18
+            "returns": 19
         },
         {
             "identifier": 5,
-            "name": "sizeof2",
-            "parameters": 19,
+            "name": "sizeof1",
+            "parameters": 20,
             "vararg": false,
-            "returns": 20
+            "returns": 21
         },
         {
             "identifier": 6,
-            "name": "alignof",
-            "parameters": 21,
+            "name": "sizeof2",
+            "parameters": 22,
             "vararg": false,
-            "returns": 22
+            "returns": 23
         },
         {
             "identifier": 7,
-            "name": "indirection",
-            "parameters": 23,
+            "name": "alignof",
+            "parameters": 24,
             "vararg": false,
-            "returns": 24
+            "returns": 25
+        },
+        {
+            "identifier": 8,
+            "name": "indirection",
+            "parameters": 26,
+            "vararg": false,
+            "returns": 27
         }
     ],
     "functions": [
@@ -411,7 +449,7 @@
             ]
         },
         {
-            "identifier": 6,
+            "identifier": 7,
             "name": "alignof",
             "locals": 4,
             "body": [
@@ -494,7 +532,7 @@
             ]
         },
         {
-            "identifier": 4,
+            "identifier": 5,
             "name": "sizeof1",
             "locals": 4,
             "body": [
@@ -577,7 +615,7 @@
             ]
         },
         {
-            "identifier": 5,
+            "identifier": 6,
             "name": "sizeof2",
             "locals": 4,
             "body": [
@@ -640,7 +678,7 @@
             ]
         },
         {
-            "identifier": 7,
+            "identifier": 8,
             "name": "indirection",
             "locals": 4,
             "body": [
@@ -737,15 +775,8 @@
                     "opcode": "bnot"
                 },
                 {
-                    "opcode": "pushld",
-                    "arg": 0
-                },
-                {
-                    "opcode": "push",
-                    "arg": 4681523522024091786
-                },
-                {
-                    "opcode": "ldtrunc1"
+                    "opcode": "pushf64",
+                    "arg": 98765.432100
                 },
                 {
                     "opcode": "bnot"
@@ -758,6 +789,56 @@
                 },
                 {
                     "opcode": "load32u"
+                },
+                {
+                    "opcode": "bnot"
+                }
+            ]
+        },
+        {
+            "identifier": 4,
+            "name": "logical_negate2",
+            "locals": 17,
+            "body": [
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 17,
+                        "index": 1
+                    }
+                },
+                {
+                    "opcode": "offsetptr",
+                    "arg": {
+                        "type": 17,
+                        "index": 2
+                    }
+                },
+                {
+                    "opcode": "offsetptr",
+                    "arg": {
+                        "type": 17,
+                        "index": 3
+                    }
+                },
+                {
+                    "opcode": "pick",
+                    "arg": 0
+                },
+                {
+                    "opcode": "pick",
+                    "arg": 0
+                },
+                {
+                    "opcode": "setldh",
+                    "arg": 0
+                },
+                {
+                    "opcode": "setldl",
+                    "arg": 4681523522024091786
+                },
+                {
+                    "opcode": "ldtrunc1"
                 },
                 {
                     "opcode": "bnot"

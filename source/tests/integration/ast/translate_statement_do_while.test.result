@@ -108,7 +108,26 @@
         },
         {
             "identifier": 16,
-            "type": []
+            "type": [
+                {
+                    "type": "struct",
+                    "fields": [
+                        {
+                            "type": "union",
+                            "fields": [
+                                {
+                                    "type": "struct",
+                                    "fields": [
+                                        {
+                                            "type": "long_double"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
         },
         {
             "identifier": 17,
@@ -294,11 +313,40 @@
                     "opcode": "pop"
                 },
                 {
-                    "opcode": "pushld",
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 16,
+                        "index": 1
+                    }
+                },
+                {
+                    "opcode": "offsetptr",
+                    "arg": {
+                        "type": 16,
+                        "index": 2
+                    }
+                },
+                {
+                    "opcode": "offsetptr",
+                    "arg": {
+                        "type": 16,
+                        "index": 3
+                    }
+                },
+                {
+                    "opcode": "pick",
                     "arg": 0
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pick",
+                    "arg": 0
+                },
+                {
+                    "opcode": "setldh",
+                    "arg": 0
+                },
+                {
+                    "opcode": "setldl",
                     "arg": 14024825640004354048
                 },
                 {

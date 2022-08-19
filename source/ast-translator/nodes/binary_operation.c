@@ -23,9 +23,25 @@
 #include "kefir/ast-translator/typeconv.h"
 #include "kefir/ast-translator/util.h"
 #include "kefir/ast-translator/type.h"
+#include "kefir/ast-translator/temporaries.h"
 #include "kefir/ast/type_conv.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
+
+struct typeconv_callback_param {
+    struct kefir_mem *mem;
+    struct kefir_ast_translator_context *context;
+    struct kefir_irbuilder_block *builder;
+    const struct kefir_ast_temporary_identifier *temporary;
+};
+
+static kefir_result_t allocate_long_double_callback(void *payload) {
+    REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid typeconv callback payload"));
+    ASSIGN_DECL_CAST(struct typeconv_callback_param *, param, payload);
+
+    REQUIRE_OK(kefir_ast_translator_fetch_temporary(param->mem, param->context, param->builder, param->temporary));
+    return KEFIR_OK;
+}
 
 static kefir_result_t binary_prologue(struct kefir_mem *mem, struct kefir_ast_translator_context *context,
                                       struct kefir_irbuilder_block *builder,
@@ -45,12 +61,24 @@ static kefir_result_t binary_prologue(struct kefir_mem *mem, struct kefir_ast_tr
     const struct kefir_ast_type *result_normalized_type =
         kefir_ast_translator_normalize_type(node->base.properties.type);
 
+    REQUIRE(!KEFIR_AST_TYPE_IS_LONG_DOUBLE(result_normalized_type) ||
+                (KEFIR_AST_TYPE_IS_LONG_DOUBLE(arg1_normalized_type) ||
+                 KEFIR_AST_TYPE_IS_LONG_DOUBLE(arg2_init_normalized_type)),
+            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected conversion to long double"));
+
+    struct typeconv_callback_param cb_param = {.mem = mem,
+                                               .context = context,
+                                               .builder = builder,
+                                               .temporary = &node->base.properties.expression_props.temporary};
+    struct kefir_ast_translate_typeconv_callbacks callbacks = {.allocate_long_double = allocate_long_double_callback,
+                                                               .payload = &cb_param};
+
     REQUIRE_OK(kefir_ast_translate_expression(mem, node->arg1, builder, context));
     REQUIRE_OK(kefir_ast_translate_typeconv(builder, context->ast_context->type_traits, arg1_normalized_type,
-                                            result_normalized_type));
+                                            result_normalized_type, &callbacks));
     REQUIRE_OK(kefir_ast_translate_expression(mem, node->arg2, builder, context));
     REQUIRE_OK(kefir_ast_translate_typeconv(builder, context->ast_context->type_traits, arg2_normalized_type,
-                                            result_normalized_type));
+                                            result_normalized_type, &callbacks));
     return KEFIR_OK;
 }
 
@@ -80,6 +108,8 @@ static kefir_result_t translate_addition(struct kefir_mem *mem, struct kefir_ast
         REQUIRE_OK(binary_prologue(mem, context, builder, node));
         switch (result_normalized_type->tag) {
             case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
+                REQUIRE_OK(kefir_ast_translator_fetch_temporary(mem, context, builder,
+                                                                &node->base.properties.expression_props.temporary));
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_LDADD, 0));
                 break;
 
@@ -144,6 +174,8 @@ static kefir_result_t translate_subtraction(struct kefir_mem *mem, struct kefir_
         KEFIR_AST_TYPE_IS_ARITHMETIC_TYPE(arg2_normalized_type)) {
         switch (result_normalized_type->tag) {
             case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
+                REQUIRE_OK(kefir_ast_translator_fetch_temporary(mem, context, builder,
+                                                                &node->base.properties.expression_props.temporary));
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_LDSUB, 0));
                 break;
 
@@ -219,6 +251,8 @@ static kefir_result_t translate_multiplication(struct kefir_mem *mem, struct kef
     REQUIRE_OK(binary_prologue(mem, context, builder, node));
     switch (result_normalized_type->tag) {
         case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
+            REQUIRE_OK(kefir_ast_translator_fetch_temporary(mem, context, builder,
+                                                            &node->base.properties.expression_props.temporary));
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_LDMUL, 0));
             break;
 
@@ -247,6 +281,8 @@ static kefir_result_t translate_division(struct kefir_mem *mem, struct kefir_ast
     REQUIRE_OK(binary_prologue(mem, context, builder, node));
     switch (result_normalized_type->tag) {
         case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
+            REQUIRE_OK(kefir_ast_translator_fetch_temporary(mem, context, builder,
+                                                            &node->base.properties.expression_props.temporary));
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_LDDIV, 0));
             break;
 
@@ -469,12 +505,24 @@ static kefir_result_t translate_relational_equality(struct kefir_mem *mem, struc
                                                        node->arg1->properties.expression_props.bitfield_props,
                                                        arg2_normalized_type,
                                                        node->arg2->properties.expression_props.bitfield_props);
+        REQUIRE(
+            !KEFIR_AST_TYPE_IS_LONG_DOUBLE(common_type) || (KEFIR_AST_TYPE_IS_LONG_DOUBLE(arg1_normalized_type) ||
+                                                            KEFIR_AST_TYPE_IS_LONG_DOUBLE(arg2_init_normalized_type)),
+            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected conversion to long double"));
         REQUIRE_OK(kefir_ast_translate_expression(mem, node->arg1, builder, context));
+
+        struct typeconv_callback_param cb_param = {.mem = mem,
+                                                   .context = context,
+                                                   .builder = builder,
+                                                   .temporary = &node->base.properties.expression_props.temporary};
+        struct kefir_ast_translate_typeconv_callbacks callbacks = {
+            .allocate_long_double = allocate_long_double_callback, .payload = &cb_param};
+
         REQUIRE_OK(kefir_ast_translate_typeconv(builder, context->ast_context->type_traits, arg1_normalized_type,
-                                                common_type));
+                                                common_type, &callbacks));
         REQUIRE_OK(kefir_ast_translate_expression(mem, node->arg2, builder, context));
         REQUIRE_OK(kefir_ast_translate_typeconv(builder, context->ast_context->type_traits, arg2_normalized_type,
-                                                common_type));
+                                                common_type, &callbacks));
     } else {
         REQUIRE_OK(kefir_ast_translate_expression(mem, node->arg1, builder, context));
         REQUIRE_OK(kefir_ast_translate_expression(mem, node->arg2, builder, context));
@@ -499,75 +547,21 @@ static kefir_result_t translate_relational_equality(struct kefir_mem *mem, struc
             break;
 
         case KEFIR_AST_OPERATION_LESS_EQUAL:
-            if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(common_type)) {
-                // Initial: [A1, A2, B1, B2]
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 3));  // [A1, A2, B1, B2, A1]
-                REQUIRE_OK(
-                    KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 3));  // [A1, A2, B1, B2, A1, A2]
-                REQUIRE_OK(
-                    KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 3));  // [A1, A2, B1, B2, A1, A2, B1]
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK,
-                                                           3));  // [A1, A2, B1, B2, A1, A2, B1, B2]
-                REQUIRE_OK(                                      // [A1, A2, B1, B2, A < B]
-                    translate_relational_less(context->ast_context->type_traits, common_type, builder));
-                REQUIRE_OK(
-                    KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_XCHG, 4));  // [A < B, A2, B1, B2, A1]
-                REQUIRE_OK(
-                    KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 3));  // [A < B, A2, B1, B2, A1, A2]
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK,
-                                                           3));  // [A < B, A2, B1, B2, A1, A2, B1]
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK,
-                                                           3));                 // [A < B, A2, B1, B2, A1, A2, B1, B2]
-                REQUIRE_OK(translate_relational_equals(common_type, builder));  // [A < B, A2, B1, B2, A == B]
-                REQUIRE_OK(
-                    KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_DROP, 1));  // [A < B, A2, B1, A == B]
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_DROP, 1));  // [A < B, A2, A == B]
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_DROP, 1));  // [A < B, A == B]
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_BOR, 0));   // [A < B || A == B]
-            } else {
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 1));
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 1));
-                REQUIRE_OK(translate_relational_less(context->ast_context->type_traits, common_type, builder));
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_XCHG, 2));
-                REQUIRE_OK(translate_relational_equals(common_type, builder));
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_BOR, 0));
-            }
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 1));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 1));
+            REQUIRE_OK(translate_relational_less(context->ast_context->type_traits, common_type, builder));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_XCHG, 2));
+            REQUIRE_OK(translate_relational_equals(common_type, builder));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_BOR, 0));
             break;
 
         case KEFIR_AST_OPERATION_GREATER_EQUAL:
-            if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(common_type)) {
-                // Initial: [A1, A2, B1, B2]
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 3));  // [A1, A2, B1, B2, A1]
-                REQUIRE_OK(
-                    KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 3));  // [A1, A2, B1, B2, A1, A2]
-                REQUIRE_OK(
-                    KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 3));  // [A1, A2, B1, B2, A1, A2, B1]
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK,
-                                                           3));  // [A1, A2, B1, B2, A1, A2, B1, B2]
-                REQUIRE_OK(                                      // [A1, A2, B1, B2, A > B]
-                    translate_relational_greater(context->ast_context->type_traits, common_type, builder));
-                REQUIRE_OK(
-                    KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_XCHG, 4));  // [A > B, A2, B1, B2, A1]
-                REQUIRE_OK(
-                    KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 3));  // [A > B, A2, B1, B2, A1, A2]
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK,
-                                                           3));  // [A > B, A2, B1, B2, A1, A2, B1]
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK,
-                                                           3));                 // [A > B, A2, B1, B2, A1, A2, B1, B2]
-                REQUIRE_OK(translate_relational_equals(common_type, builder));  // [A > B, A2, B1, B2, A == B]
-                REQUIRE_OK(
-                    KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_DROP, 1));  // [A > B, A2, B1, A == B]
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_DROP, 1));  // [A > B, A2, A == B]
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_DROP, 1));  // [A > B, A == B]
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_BOR, 0));   // [A > B || A == B]
-            } else {
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 1));
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 1));
-                REQUIRE_OK(translate_relational_greater(context->ast_context->type_traits, common_type, builder));
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_XCHG, 2));
-                REQUIRE_OK(translate_relational_equals(common_type, builder));
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_BOR, 0));
-            }
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 1));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 1));
+            REQUIRE_OK(translate_relational_greater(context->ast_context->type_traits, common_type, builder));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_XCHG, 2));
+            REQUIRE_OK(translate_relational_equals(common_type, builder));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_BOR, 0));
             break;
 
         default:

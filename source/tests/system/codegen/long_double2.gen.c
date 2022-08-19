@@ -59,7 +59,6 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     kefir_irbuilder_block_appendu32(mem, &func->body, KEFIR_IROPCODE_OFFSETPTR, params_id, 1);
     kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IROPCODE_LOAD32I, 0);
     kefir_irbuilder_block_appendu32(mem, &func->body, KEFIR_IROPCODE_ELEMENTPTR, params_id, 3);
-    kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IROPCODE_LOADLD, 0);
 
     KEFIR_CODEGEN_TRANSLATE(mem, &codegen.iface, &module);
 

@@ -40,8 +40,8 @@ static kefir_result_t analyze_modulo(const struct kefir_ast_context *context, co
     return KEFIR_OK;
 }
 
-static kefir_result_t analyze_muldiv(const struct kefir_ast_context *context, const struct kefir_ast_type *type1,
-                                     struct kefir_ast_bitfield_properties bitfield1,
+static kefir_result_t analyze_muldiv(struct kefir_mem *mem, const struct kefir_ast_context *context,
+                                     const struct kefir_ast_type *type1, struct kefir_ast_bitfield_properties bitfield1,
                                      const struct kefir_source_location *location1, const struct kefir_ast_type *type2,
                                      struct kefir_ast_bitfield_properties bitfield2,
                                      const struct kefir_source_location *location2, struct kefir_ast_node_base *base) {
@@ -54,16 +54,19 @@ static kefir_result_t analyze_muldiv(const struct kefir_ast_context *context, co
     base->properties.type = kefir_ast_type_common_arithmetic(context->type_traits, type1, bitfield1, type2, bitfield2);
     REQUIRE(base->properties.type != NULL,
             KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unable to determine common AST arithmetic type"));
+    if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(base->properties.type)) {
+        REQUIRE_OK(context->allocate_temporary_value(mem, context, kefir_ast_type_long_double(), NULL,
+                                                     &base->source_location,
+                                                     &base->properties.expression_props.temporary));
+    }
     return KEFIR_OK;
 }
 
-static kefir_result_t analyze_addition(const struct kefir_ast_context *context, const struct kefir_ast_type *type1,
-                                       struct kefir_ast_bitfield_properties bitfield1,
-                                       const struct kefir_source_location *location1,
-                                       const struct kefir_ast_type *type2,
-                                       struct kefir_ast_bitfield_properties bitfield2,
-                                       const struct kefir_source_location *location2,
-                                       struct kefir_ast_node_base *base) {
+static kefir_result_t analyze_addition(
+    struct kefir_mem *mem, const struct kefir_ast_context *context, const struct kefir_ast_type *type1,
+    struct kefir_ast_bitfield_properties bitfield1, const struct kefir_source_location *location1,
+    const struct kefir_ast_type *type2, struct kefir_ast_bitfield_properties bitfield2,
+    const struct kefir_source_location *location2, struct kefir_ast_node_base *base) {
     if ((type1->tag == KEFIR_AST_TYPE_SCALAR_POINTER && !KEFIR_AST_TYPE_IS_INCOMPLETE(type1->referenced_type)) ||
         (context->configuration->analysis.ext_pointer_arithmetics && type1->tag == KEFIR_AST_TYPE_SCALAR_POINTER &&
          kefir_ast_unqualified_type(type1->referenced_type)->tag == KEFIR_AST_TYPE_VOID)) {
@@ -88,17 +91,20 @@ static kefir_result_t analyze_addition(const struct kefir_ast_context *context, 
             kefir_ast_type_common_arithmetic(context->type_traits, type1, bitfield1, type2, bitfield2);
         REQUIRE(base->properties.type != NULL,
                 KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unable to determine common AST arithmetic type"));
+        if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(base->properties.type)) {
+            REQUIRE_OK(context->allocate_temporary_value(mem, context, kefir_ast_type_long_double(), NULL,
+                                                         &base->source_location,
+                                                         &base->properties.expression_props.temporary));
+        }
     }
     return KEFIR_OK;
 }
 
-static kefir_result_t analyze_subtraction(const struct kefir_ast_context *context, const struct kefir_ast_type *type1,
-                                          struct kefir_ast_bitfield_properties bitfield1,
-                                          const struct kefir_source_location *location1,
-                                          const struct kefir_ast_type *type2,
-                                          struct kefir_ast_bitfield_properties bitfield2,
-                                          const struct kefir_source_location *location2,
-                                          struct kefir_ast_node_base *base) {
+static kefir_result_t analyze_subtraction(
+    struct kefir_mem *mem, const struct kefir_ast_context *context, const struct kefir_ast_type *type1,
+    struct kefir_ast_bitfield_properties bitfield1, const struct kefir_source_location *location1,
+    const struct kefir_ast_type *type2, struct kefir_ast_bitfield_properties bitfield2,
+    const struct kefir_source_location *location2, struct kefir_ast_node_base *base) {
     if (type1->tag == KEFIR_AST_TYPE_SCALAR_POINTER && type2->tag == KEFIR_AST_TYPE_SCALAR_POINTER) {
         const struct kefir_ast_type *obj_type1 = kefir_ast_unqualified_type(type1->referenced_type);
         const struct kefir_ast_type *obj_type2 = kefir_ast_unqualified_type(type2->referenced_type);
@@ -127,6 +133,11 @@ static kefir_result_t analyze_subtraction(const struct kefir_ast_context *contex
             kefir_ast_type_common_arithmetic(context->type_traits, type1, bitfield1, type2, bitfield2);
         REQUIRE(base->properties.type != NULL,
                 KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unable to determine common AST arithmetic type"));
+        if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(base->properties.type)) {
+            REQUIRE_OK(context->allocate_temporary_value(mem, context, kefir_ast_type_long_double(), NULL,
+                                                         &base->source_location,
+                                                         &base->properties.expression_props.temporary));
+        }
     }
     return KEFIR_OK;
 }
@@ -147,7 +158,8 @@ static kefir_result_t analyze_shift(const struct kefir_ast_context *context, con
     return KEFIR_OK;
 }
 
-static kefir_result_t analyze_relational(const struct kefir_ast_context *context, const struct kefir_ast_type *type1,
+static kefir_result_t analyze_relational(struct kefir_mem *mem, const struct kefir_ast_context *context,
+                                         const struct kefir_ast_type *type1,
                                          const struct kefir_source_location *location1,
                                          const struct kefir_ast_type *type2, struct kefir_ast_node_base *base) {
     if (type1->tag == KEFIR_AST_TYPE_SCALAR_POINTER && type2->tag == KEFIR_AST_TYPE_SCALAR_POINTER) {
@@ -160,16 +172,27 @@ static kefir_result_t analyze_relational(const struct kefir_ast_context *context
         REQUIRE(KEFIR_AST_TYPE_IS_REAL_TYPE(type1) && KEFIR_AST_TYPE_IS_REAL_TYPE(type2),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location1,
                                        "Both relation operator operands shall have real types"));
+        if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(type1) || KEFIR_AST_TYPE_IS_LONG_DOUBLE(type2)) {
+            REQUIRE_OK(context->allocate_temporary_value(mem, context, kefir_ast_type_long_double(), NULL,
+                                                         &base->source_location,
+                                                         &base->properties.expression_props.temporary));
+        }
     }
     base->properties.type = kefir_ast_type_signed_int();
     return KEFIR_OK;
 }
 
-static kefir_result_t analyze_equality(const struct kefir_ast_context *context, const struct kefir_ast_node_base *node1,
-                                       const struct kefir_ast_type *type1, const struct kefir_ast_node_base *node2,
-                                       const struct kefir_ast_type *type2, struct kefir_ast_node_base *base) {
+static kefir_result_t analyze_equality(struct kefir_mem *mem, const struct kefir_ast_context *context,
+                                       const struct kefir_ast_node_base *node1, const struct kefir_ast_type *type1,
+                                       const struct kefir_ast_node_base *node2, const struct kefir_ast_type *type2,
+                                       struct kefir_ast_node_base *base) {
     if (KEFIR_AST_TYPE_IS_ARITHMETIC_TYPE(type1) && KEFIR_AST_TYPE_IS_ARITHMETIC_TYPE(type2)) {
         base->properties.type = kefir_ast_type_signed_int();
+        if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(type1) || KEFIR_AST_TYPE_IS_LONG_DOUBLE(type2)) {
+            REQUIRE_OK(context->allocate_temporary_value(mem, context, kefir_ast_type_long_double(), NULL,
+                                                         &base->source_location,
+                                                         &base->properties.expression_props.temporary));
+        }
     } else if (type1->tag == KEFIR_AST_TYPE_SCALAR_POINTER && type2->tag == KEFIR_AST_TYPE_SCALAR_POINTER) {
         const struct kefir_ast_type *unqualified1 = kefir_ast_unqualified_type(type1->referenced_type);
         const struct kefir_ast_type *unqualified2 = kefir_ast_unqualified_type(type2->referenced_type);
@@ -264,15 +287,16 @@ kefir_result_t kefir_ast_analyze_binary_operation_node(struct kefir_mem *mem, co
 
         case KEFIR_AST_OPERATION_MULTIPLY:
         case KEFIR_AST_OPERATION_DIVIDE:
-            REQUIRE_OK(analyze_muldiv(context, type1, bitfield1, location1, type2, bitfield2, location2, base));
+            REQUIRE_OK(analyze_muldiv(mem, context, type1, bitfield1, location1, type2, bitfield2, location2, base));
             break;
 
         case KEFIR_AST_OPERATION_ADD:
-            REQUIRE_OK(analyze_addition(context, type1, bitfield1, location1, type2, bitfield2, location2, base));
+            REQUIRE_OK(analyze_addition(mem, context, type1, bitfield1, location1, type2, bitfield2, location2, base));
             break;
 
         case KEFIR_AST_OPERATION_SUBTRACT:
-            REQUIRE_OK(analyze_subtraction(context, type1, bitfield1, location1, type2, bitfield2, location2, base));
+            REQUIRE_OK(
+                analyze_subtraction(mem, context, type1, bitfield1, location1, type2, bitfield2, location2, base));
             break;
 
         case KEFIR_AST_OPERATION_SHIFT_LEFT:
@@ -284,12 +308,12 @@ kefir_result_t kefir_ast_analyze_binary_operation_node(struct kefir_mem *mem, co
         case KEFIR_AST_OPERATION_LESS_EQUAL:
         case KEFIR_AST_OPERATION_GREATER:
         case KEFIR_AST_OPERATION_GREATER_EQUAL:
-            REQUIRE_OK(analyze_relational(context, type1, location1, type2, base));
+            REQUIRE_OK(analyze_relational(mem, context, type1, location1, type2, base));
             break;
 
         case KEFIR_AST_OPERATION_EQUAL:
         case KEFIR_AST_OPERATION_NOT_EQUAL:
-            REQUIRE_OK(analyze_equality(context, node->arg1, type1, node->arg2, type2, base));
+            REQUIRE_OK(analyze_equality(mem, context, node->arg1, type1, node->arg2, type2, base));
             break;
 
         case KEFIR_AST_OPERATION_BITWISE_AND:

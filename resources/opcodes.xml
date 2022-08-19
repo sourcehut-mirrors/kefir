@@ -132,6 +132,8 @@
     <opcode id="ldmul"        mnemonic="ldmul"      code="0x8f" type="none" />
     <opcode id="lddiv"        mnemonic="lddiv"      code="0x90" type="none" />
     <opcode id="ldneg"        mnemonic="ldneg"      code="0x91" type="none" />
+    <opcode id="setldh"       mnemonic="setldh"     code="0x92" type="u64" />
+    <opcode id="setldl"       mnemonic="setldl"     code="0x93" type="u64" />
 
     <!-- Floating-point comparison -->
     <opcode id="f32equals"    mnemonic="f32equals"  code="0xa0" type="none" />

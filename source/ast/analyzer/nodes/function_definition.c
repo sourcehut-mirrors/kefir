@@ -31,7 +31,8 @@
 #include "kefir/core/source_error.h"
 
 static kefir_result_t analyze_function_parameters(const struct kefir_ast_function_definition *node,
-                                                  const struct kefir_ast_declarator_function *decl_func) {
+                                                  const struct kefir_ast_declarator_function *decl_func,
+                                                  kefir_bool_t *has_long_double_params) {
     REQUIRE(
         kefir_list_length(&node->declarations) == 0,
         KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->base.source_location,
@@ -57,16 +58,18 @@ static kefir_result_t analyze_function_parameters(const struct kefir_ast_functio
         REQUIRE_OK(kefir_ast_declarator_unpack_identifier(init_decl->declarator, &param_identifier));
         REQUIRE(init_decl->base.properties.type != NULL,
                 KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Function definition parameters shall have definite types"));
+
+        if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(kefir_ast_unqualified_type(init_decl->base.properties.type))) {
+            *has_long_double_params = true;
+        }
     }
     return KEFIR_OK;
 }
 
-static kefir_result_t analyze_function_parameter_identifiers_impl(struct kefir_mem *mem,
-                                                                  const struct kefir_ast_context *context,
-                                                                  const struct kefir_ast_function_definition *node,
-                                                                  const struct kefir_ast_declarator_function *decl_func,
-                                                                  struct kefir_ast_local_context *local_context,
-                                                                  const struct kefir_hashtree *argtree) {
+static kefir_result_t analyze_function_parameter_identifiers_impl(
+    struct kefir_mem *mem, const struct kefir_ast_context *context, const struct kefir_ast_function_definition *node,
+    const struct kefir_ast_declarator_function *decl_func, struct kefir_ast_local_context *local_context,
+    const struct kefir_hashtree *argtree, kefir_bool_t *has_long_double_params) {
     kefir_result_t res;
     for (const struct kefir_list_entry *iter = kefir_list_head(&node->declarations); iter != NULL;
          kefir_list_next(&iter)) {
@@ -127,6 +130,10 @@ static kefir_result_t analyze_function_parameter_identifiers_impl(struct kefir_m
             decl->base.properties.declaration_props.storage = storage;
             decl->base.properties.declaration_props.original_type = original_type;
             decl->base.properties.type = type;
+
+            if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(kefir_ast_unqualified_type(type))) {
+                *has_long_double_params = true;
+            }
         }
 
         decl_list->base.properties.category = KEFIR_AST_NODE_CATEGORY_DECLARATION;
@@ -149,7 +156,8 @@ static kefir_result_t analyze_function_parameter_identifiers(struct kefir_mem *m
                                                              const struct kefir_ast_context *context,
                                                              const struct kefir_ast_function_definition *node,
                                                              const struct kefir_ast_declarator_function *decl_func,
-                                                             struct kefir_ast_local_context *local_context) {
+                                                             struct kefir_ast_local_context *local_context,
+                                                             kefir_bool_t *has_long_double_params) {
     struct kefir_hashtree argtree;
     REQUIRE_OK(kefir_hashtree_init(&argtree, &kefir_hashtree_str_ops));
 
@@ -163,8 +171,8 @@ static kefir_result_t analyze_function_parameter_identifiers(struct kefir_mem *m
         REQUIRE_CHAIN(&res, kefir_hashtree_insert(mem, &argtree, (kefir_hashtree_key_t) id_node->identifier,
                                                   (kefir_hashtree_value_t) 0));
     }
-    REQUIRE_CHAIN(&res,
-                  analyze_function_parameter_identifiers_impl(mem, context, node, decl_func, local_context, &argtree));
+    REQUIRE_CHAIN(&res, analyze_function_parameter_identifiers_impl(mem, context, node, decl_func, local_context,
+                                                                    &argtree, has_long_double_params));
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_hashtree_free(mem, &argtree);
         return res;
@@ -280,13 +288,15 @@ kefir_result_t kefir_ast_analyze_function_definition_node(struct kefir_mem *mem,
     REQUIRE_OK(kefir_ast_declarator_unpack_function(node->declarator, &decl_func));
     REQUIRE(decl_func != NULL,
             KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected function definition to have function declarator"));
+    kefir_bool_t hash_long_double_params = false;
     switch (type->function_type.mode) {
         case KEFIR_AST_FUNCTION_TYPE_PARAMETERS:
-            REQUIRE_OK(analyze_function_parameters(node, decl_func));
+            REQUIRE_OK(analyze_function_parameters(node, decl_func, &hash_long_double_params));
             break;
 
         case KEFIR_AST_FUNCTION_TYPE_PARAM_IDENTIFIERS:
-            REQUIRE_OK(analyze_function_parameter_identifiers(mem, context, node, decl_func, local_context));
+            REQUIRE_OK(analyze_function_parameter_identifiers(mem, context, node, decl_func, local_context,
+                                                              &hash_long_double_params));
             break;
 
         case KEFIR_AST_FUNCTION_TYPE_PARAM_EMPTY:
@@ -295,6 +305,12 @@ kefir_result_t kefir_ast_analyze_function_definition_node(struct kefir_mem *mem,
                         KEFIR_ANALYSIS_ERROR, &node->base.source_location,
                         "Function definition with empty parameter list shall not contain any declarations"));
             break;
+    }
+
+    if (hash_long_double_params) {
+        REQUIRE_OK(local_context->context.allocate_temporary_value(
+            mem, &local_context->context, kefir_ast_type_long_double(), NULL, &base->source_location,
+            &base->properties.function_definition.temporary));
     }
 
     for (const struct kefir_list_entry *iter = kefir_list_head(&node->body->block_items); iter != NULL;

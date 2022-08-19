@@ -168,6 +168,8 @@ declare_opcode ldcf64
 declare_opcode alloca
 declare_opcode pushscope
 declare_opcode popscope
+declare_opcode setldh
+declare_opcode setldl
 # Runtime
 declare_runtime __kefirrt_preserve_state
 declare_runtime __kefirrt_generic_prologue
@@ -574,11 +576,12 @@ define_opcode store64
     end_opcode
 
 define_opcode storeld
-    pop DATA_REG
-    pop DATA2_REG
+    pop rdi
     pop rax
-    mov [rax], DATA_REG
-    mov [rax + 8], DATA2_REG
+    mov rdx, [rdi]
+    mov [rax], rdx
+    mov rdx, [rdi + 8]
+    mov [rax + 8], rdx
     end_opcode
 
 define_opcode bzero
@@ -752,41 +755,56 @@ __kefirrt_f64neg_constant:
     .quad 0x8000000000000000
 
 define_opcode ldadd
-    fld TBYTE PTR [rsp + 16]
-    fld TBYTE PTR [rsp]
+    pop rdi
+    pop rax
+    pop rdx
+    fld TBYTE PTR [rdx]
+    fld TBYTE PTR [rax]
     faddp
-    fstp TBYTE PTR [rsp + 16]
-    add rsp, 16
+    fstp TBYTE PTR [rdi]
+    push rdi
     end_opcode
 
 define_opcode ldsub
-    fld TBYTE PTR [rsp + 16]
-    fld TBYTE PTR [rsp]
+    pop rdi
+    pop rax
+    pop rdx
+    fld TBYTE PTR [rdx]
+    fld TBYTE PTR [rax]
     fsubp
-    fstp TBYTE PTR [rsp + 16]
-    add rsp, 16
+    fstp TBYTE PTR [rdi]
+    push rdi
     end_opcode
 
 define_opcode ldmul
-    fld TBYTE PTR [rsp + 16]
-    fld TBYTE PTR [rsp]
+    pop rdi
+    pop rax
+    pop rdx
+    fld TBYTE PTR [rdx]
+    fld TBYTE PTR [rax]
     fmulp
-    fstp TBYTE PTR [rsp + 16]
-    add rsp, 16
+    fstp TBYTE PTR [rdi]
+    push rdi
     end_opcode
 
 define_opcode lddiv
-    fld TBYTE PTR [rsp + 16]
-    fld TBYTE PTR [rsp]
+    pop rdi
+    pop rax
+    pop rdx
+    fld TBYTE PTR [rdx]
+    fld TBYTE PTR [rax]
     fdivp
-    fstp TBYTE PTR [rsp + 16]
-    add rsp, 16
+    fstp TBYTE PTR [rdi]
+    push rdi
     end_opcode
 
 define_opcode ldneg
-    fld TBYTE PTR [rsp]
+    pop rdi
+    pop rax
+    fld TBYTE PTR [rax]
     fchs
-    fstp TBYTE PTR [rsp]
+    fstp TBYTE PTR [rdi]
+    push rdi
     end_opcode
 
 define_opcode f32equals
@@ -851,51 +869,54 @@ define_opcode f64lesser
 
 define_opcode ldequals
     xor rax, rax
-    fld TBYTE PTR [rsp + 16]
-    fld TBYTE PTR [rsp]
+    pop rdx
+    pop rdi
+    fld TBYTE PTR [rdi]
+    fld TBYTE PTR [rdx]
     fucomip st(0), st(1)
     fstp st(0)
     setnp dl
     sete al
     and al, dl
-    mov [rsp + 24], rax
-    add rsp, 24
+    push rax
     end_opcode
 
 define_opcode ldgreater
     xor rax, rax
-    fld TBYTE PTR [rsp]
-    fld TBYTE PTR [rsp + 16]
+    pop rdx
+    pop rdi
+    fld TBYTE PTR [rdx]
+    fld TBYTE PTR [rdi]
     fucomip st(0), st(1)
     fstp st(0)
     seta al
-    mov [rsp + 24], rax
-    add rsp, 24
+    push rax
     end_opcode
 
 define_opcode ldlesser
     xor rax, rax
-    fld TBYTE PTR [rsp + 16]
-    fld TBYTE PTR [rsp]
+    pop rdx
+    pop rdi
+    fld TBYTE PTR [rdi]
+    fld TBYTE PTR [rdx]
     fucomip st(0), st(1)
     fstp st(0)
     seta al
-    mov [rsp + 24], rax
-    add rsp, 24
+    push rax
     end_opcode
 
 define_opcode ldtrunc1
     xor rax, rax
+    pop rdx
     fldz
-    fld TBYTE PTR [rsp]
+    fld TBYTE PTR [rdx]
     fucomip st(0), st(1)
     fstp st(0)
     setnp dl
     sete al
     and al, dl
     xor rax, 1
-    mov [rsp + 8], rax
-    add rsp, 8
+    push rax
     end_opcode
 
 define_opcode f32cint
@@ -972,61 +993,66 @@ define_opcode f64cf32
     movss [rsp], xmm0
     end_opcode
 
-define_opcode ldcint    
-    fld TBYTE PTR [rsp]
-    fnstcw WORD PTR [rsp]
-    movzx eax, WORD PTR [rsp]
+define_opcode ldcint   
+    mov rax, [rsp]
+    fld TBYTE PTR [rax]
+    fnstcw WORD PTR [rsp - 2]
+    movzx eax, WORD PTR [rsp - 2]
     or eax, 3072
-    mov WORD PTR [rsp + 8], ax
-    fldcw WORD PTR [rsp + 8]
-    fistp QWORD PTR [rsp + 8]
-    fldcw WORD PTR [rsp]
-    add rsp, 8
+    mov WORD PTR [rsp - 2], ax
+    fldcw WORD PTR [rsp - 2]
+    fistp QWORD PTR [rsp]
+    fldcw WORD PTR [rsp - 2]
     end_opcode
 
 define_opcode intcld
+    pop rdi
     fild QWORD PTR [rsp]
-    sub rsp, 8
-    fstp TBYTE PTR [rsp]
+    mov [rsp], rdi
+    fstp TBYTE PTR [rdi]
     end_opcode
 
 define_opcode uintcld
+    pop rdi
     fild QWORD PTR [rsp]
     mov rax, [rsp]
-    sub rsp, 8
+    mov [rsp], rdi
     test rax, rax
     js __kefirrt_uintcld_signed
-    fstp TBYTE PTR [rsp]
+    fstp TBYTE PTR [rdi]
     end_opcode
 __kefirrt_uintcld_signed:
     fadd DWORD PTR [__kefirrt_uintcld_constant]
-    fstp TBYTE PTR [rsp]
+    fstp TBYTE PTR [rdi]
     end_opcode
 __kefirrt_uintcld_constant:
     .long   1602224128
 
 define_opcode f32cld
+    pop rdi
     fld DWORD PTR [rsp]
-    sub rsp, 8
-    fstp TBYTE PTR [rsp]
+    mov [rsp], rdi
+    fstp TBYTE PTR [rdi]
     end_opcode
 
 define_opcode f64cld
+    pop rdi
     fld QWORD PTR [rsp]
-    sub rsp, 8
-    fstp TBYTE PTR [rsp]
+    mov [rsp], rdi
+    fstp TBYTE PTR [rdi]
     end_opcode
 
 define_opcode ldcf32
-    fld TBYTE PTR [rsp]
-    add rsp, 8
+    mov rax, [rsp]
+    fld TBYTE PTR [rax]
     fstp DWORD PTR [rsp]
     xor eax, eax
     mov DWORD PTR [rsp + 4], eax
     end_opcode
 
 define_opcode ldcf64
-    fld TBYTE PTR [rsp]
+    mov rax, [rsp]
+    fld TBYTE PTR [rax]
     add rsp, 8
     fstp QWORD PTR [rsp]
     end_opcode
@@ -1086,6 +1112,18 @@ define_opcode popscope
     mov [r14 - 8], r12
     mov [r14 - 16], rax
 __kefirrt_popscope_end:
+    end_opcode
+
+define_opcode setldh
+    mov rax, [INSTR_ARG_PTR]
+    pop rdi
+    mov [rdi + 8], ax
+    end_opcode
+
+define_opcode setldl
+    mov rax, [INSTR_ARG_PTR]
+    pop rdi
+    mov [rdi], rax
     end_opcode
 
 # Runtime helpers
@@ -1181,9 +1219,7 @@ __kefirrt_load_long_double_vararg:
     mov rax, [DATA_REG + 8]
     lea rdx, [rax + 16]
     mov [DATA_REG + 8], rdx
-    mov DATA_REG, [rax + 8]
-    push DATA_REG
-    mov DATA_REG, [rax]
+    lea DATA_REG, [rax]
     push DATA_REG
     end_opcode
 

@@ -25,6 +25,7 @@
 #include "kefir/ast/analyzer/analyzer.h"
 #include "kefir/ast-translator/context.h"
 #include "kefir/ast-translator/scope/local_scope_layout.h"
+#include "kefir/ast-translator/flow_control.h"
 #include "kefir/test/util.h"
 #include "kefir/ir/builder.h"
 #include "kefir/ir/format.h"
@@ -161,9 +162,21 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         UNARY_NODE(KEFIR_AST_OPERATION_LOGICAL_NEGATE,
                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double(mem, 1.23456)));
         UNARY_NODE(KEFIR_AST_OPERATION_LOGICAL_NEGATE,
-                   KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_double(mem, 9876.54321e1l)));
+                   KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double(mem, 9876.54321e1)));
         UNARY_NODE(KEFIR_AST_OPERATION_LOGICAL_NEGATE,
                    KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "X")));
+    });
+
+    FUNC2("logical_negate2", {
+        struct kefir_ast_node_base *node = KEFIR_AST_NODE_BASE(
+            kefir_ast_new_unary_operation(mem, KEFIR_AST_OPERATION_LOGICAL_NEGATE,
+                                          KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_double(mem, 9876.54321e1))));
+        REQUIRE_OK(kefir_ast_analyze_node(mem, context, node));
+        REQUIRE_OK(
+            kefir_ast_translator_build_local_scope_layout(mem, &local_context, &env, &module, &translator_local_scope));
+        REQUIRE_OK(kefir_ast_translator_flow_control_tree_init(mem, context->flow_control_tree));
+        REQUIRE_OK(kefir_ast_translate_expression(mem, node, &builder, &local_translator_context));
+        REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node));
     });
 
     struct kefir_ast_type_name *TYPES[] = {

@@ -37,6 +37,7 @@ kefir_bool_t kefir_ast_temporaries_init(struct kefir_mem *mem, struct kefir_ast_
         temporaries->current.identifier = 0;
         temporaries->current.field = 0;
         temporaries->current.nested = nested;
+        temporaries->current.valid = true;
         temporaries->init_done = true;
         return true;
     }

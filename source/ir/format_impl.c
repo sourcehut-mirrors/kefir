@@ -219,6 +219,10 @@ kefir_result_t kefir_ir_format_instr(struct kefir_json_output *json, const struc
             return kefir_ir_format_instr_none(json, module, instr);
         case KEFIR_IROPCODE_LDNEG:
             return kefir_ir_format_instr_none(json, module, instr);
+        case KEFIR_IROPCODE_SETLDH:
+            return kefir_ir_format_instr_u64(json, module, instr);
+        case KEFIR_IROPCODE_SETLDL:
+            return kefir_ir_format_instr_u64(json, module, instr);
         case KEFIR_IROPCODE_F32EQUALS:
             return kefir_ir_format_instr_none(json, module, instr);
         case KEFIR_IROPCODE_F32GREATER:

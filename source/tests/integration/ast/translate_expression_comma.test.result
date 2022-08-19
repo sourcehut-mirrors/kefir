@@ -32,7 +32,26 @@
         },
         {
             "identifier": 7,
-            "type": []
+            "type": [
+                {
+                    "type": "struct",
+                    "fields": [
+                        {
+                            "type": "union",
+                            "fields": [
+                                {
+                                    "type": "struct",
+                                    "fields": [
+                                        {
+                                            "type": "long_double"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
         },
         {
             "identifier": 8,
@@ -56,7 +75,26 @@
         },
         {
             "identifier": 13,
-            "type": []
+            "type": [
+                {
+                    "type": "struct",
+                    "fields": [
+                        {
+                            "type": "union",
+                            "fields": [
+                                {
+                                    "type": "struct",
+                                    "fields": [
+                                        {
+                                            "type": "long_double"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
         },
         {
             "identifier": 14,
@@ -68,6 +106,26 @@
         },
         {
             "identifier": 16,
+            "type": []
+        },
+        {
+            "identifier": 17,
+            "type": []
+        },
+        {
+            "identifier": 18,
+            "type": []
+        },
+        {
+            "identifier": 19,
+            "type": []
+        },
+        {
+            "identifier": 20,
+            "type": []
+        },
+        {
+            "identifier": 21,
             "type": []
         }
     ],
@@ -84,37 +142,37 @@
         {
             "identifier": 1,
             "name": "comma2",
-            "parameters": 7,
+            "parameters": 8,
             "vararg": false,
-            "returns": 8
+            "returns": 9
         },
         {
             "identifier": 2,
             "name": "comma3",
-            "parameters": 9,
-            "vararg": false,
-            "returns": 10
-        },
-        {
-            "identifier": 3,
-            "name": "comma4",
             "parameters": 11,
             "vararg": false,
             "returns": 12
         },
         {
+            "identifier": 3,
+            "name": "comma4",
+            "parameters": 14,
+            "vararg": false,
+            "returns": 15
+        },
+        {
             "identifier": 4,
             "name": "comma5",
-            "parameters": 13,
+            "parameters": 17,
             "vararg": false,
-            "returns": 14
+            "returns": 18
         },
         {
             "identifier": 5,
             "name": "comma6",
-            "parameters": 15,
+            "parameters": 20,
             "vararg": false,
-            "returns": 16
+            "returns": 21
         }
     ],
     "functions": [
@@ -132,7 +190,7 @@
         {
             "identifier": 1,
             "name": "comma2",
-            "locals": 4,
+            "locals": 7,
             "body": [
                 {
                     "opcode": "push",
@@ -142,15 +200,41 @@
                     "opcode": "pop"
                 },
                 {
-                    "opcode": "pushld",
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 7,
+                        "index": 1
+                    }
+                },
+                {
+                    "opcode": "offsetptr",
+                    "arg": {
+                        "type": 7,
+                        "index": 2
+                    }
+                },
+                {
+                    "opcode": "offsetptr",
+                    "arg": {
+                        "type": 7,
+                        "index": 3
+                    }
+                },
+                {
+                    "opcode": "pick",
                     "arg": 0
                 },
                 {
-                    "opcode": "push",
-                    "arg": 4756540486875873280
+                    "opcode": "pick",
+                    "arg": 0
                 },
                 {
-                    "opcode": "pop"
+                    "opcode": "setldh",
+                    "arg": 0
+                },
+                {
+                    "opcode": "setldl",
+                    "arg": 4756540486875873280
                 },
                 {
                     "opcode": "pop"
@@ -164,7 +248,7 @@
         {
             "identifier": 2,
             "name": "comma3",
-            "locals": 4,
+            "locals": 10,
             "body": [
                 {
                     "opcode": "push",
@@ -189,7 +273,7 @@
         {
             "identifier": 3,
             "name": "comma4",
-            "locals": 4,
+            "locals": 13,
             "body": [
                 {
                     "opcode": "push",
@@ -213,11 +297,40 @@
                     "opcode": "pop"
                 },
                 {
-                    "opcode": "pushld",
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 13,
+                        "index": 1
+                    }
+                },
+                {
+                    "opcode": "offsetptr",
+                    "arg": {
+                        "type": 13,
+                        "index": 2
+                    }
+                },
+                {
+                    "opcode": "offsetptr",
+                    "arg": {
+                        "type": 13,
+                        "index": 3
+                    }
+                },
+                {
+                    "opcode": "pick",
                     "arg": 0
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pick",
+                    "arg": 0
+                },
+                {
+                    "opcode": "setldh",
+                    "arg": 0
+                },
+                {
+                    "opcode": "setldl",
                     "arg": 4548617153841697158
                 }
             ]
@@ -225,7 +338,7 @@
         {
             "identifier": 4,
             "name": "comma5",
-            "locals": 4,
+            "locals": 16,
             "body": [
                 {
                     "opcode": "push",
@@ -250,7 +363,7 @@
         {
             "identifier": 5,
             "name": "comma6",
-            "locals": 4,
+            "locals": 19,
             "body": [
                 {
                     "opcode": "push",

@@ -178,16 +178,7 @@ static kefir_result_t load_long_double_argument(const struct kefir_ir_type *type
     REQUIRE(alloc->klass == KEFIR_AMD64_SYSV_PARAM_MEMORY,
             KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected long double argument to be allocated in memory"));
 
-    REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
-        &param->codegen->xasmgen, kefir_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_DATA_REG),
-        kefir_amd64_xasmgen_operand_indirect(
-            &param->codegen->xasmgen_helpers.operands[0],
-            kefir_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
-            alloc->location.stack_offset + 2 * KEFIR_AMD64_SYSV_ABI_QWORD + KEFIR_AMD64_SYSV_ABI_QWORD)));
-    REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_PUSH(&param->codegen->xasmgen,
-                                              kefir_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_DATA_REG)));
-
-    REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
+    REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_LEA(
         &param->codegen->xasmgen, kefir_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_DATA_REG),
         kefir_amd64_xasmgen_operand_indirect(&param->codegen->xasmgen_helpers.operands[0],
                                              kefir_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),

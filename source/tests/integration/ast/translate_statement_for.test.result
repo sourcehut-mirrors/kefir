@@ -173,7 +173,29 @@
         },
         {
             "identifier": 25,
-            "type": []
+            "type": [
+                {
+                    "type": "struct",
+                    "fields": [
+                        {
+                            "type": "union",
+                            "fields": [
+                                {
+                                    "type": "struct",
+                                    "fields": [
+                                        {
+                                            "type": "long_double"
+                                        },
+                                        {
+                                            "type": "long_double"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
         },
         {
             "identifier": 26,
@@ -517,25 +539,80 @@
             "locals": 25,
             "body": [
                 {
-                    "opcode": "pushld",
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 25,
+                        "index": 1
+                    }
+                },
+                {
+                    "opcode": "offsetptr",
+                    "arg": {
+                        "type": 25,
+                        "index": 2
+                    }
+                },
+                {
+                    "opcode": "offsetptr",
+                    "arg": {
+                        "type": 25,
+                        "index": 3
+                    }
+                },
+                {
+                    "opcode": "pick",
                     "arg": 0
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pick",
+                    "arg": 0
+                },
+                {
+                    "opcode": "setldh",
+                    "arg": 0
+                },
+                {
+                    "opcode": "setldl",
                     "arg": 4607182418800017408
                 },
                 {
                     "opcode": "pop"
                 },
                 {
-                    "opcode": "pop"
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 25,
+                        "index": 1
+                    }
                 },
                 {
-                    "opcode": "pushld",
+                    "opcode": "offsetptr",
+                    "arg": {
+                        "type": 25,
+                        "index": 2
+                    }
+                },
+                {
+                    "opcode": "offsetptr",
+                    "arg": {
+                        "type": 25,
+                        "index": 4
+                    }
+                },
+                {
+                    "opcode": "pick",
                     "arg": 0
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pick",
+                    "arg": 0
+                },
+                {
+                    "opcode": "setldh",
+                    "arg": 0
+                },
+                {
+                    "opcode": "setldl",
                     "arg": 0
                 },
                 {
@@ -546,7 +623,7 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 11
+                    "arg": 20
                 },
                 {
                     "opcode": "invoke",
@@ -557,7 +634,7 @@
                 },
                 {
                     "opcode": "jmp",
-                    "arg": 4
+                    "arg": 8
                 }
             ]
         }

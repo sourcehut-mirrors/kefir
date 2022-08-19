@@ -1,0 +1,362 @@
+.intel_syntax prefix
+.section .note.GNU-stack,"",%progbits
+
+.section .text
+
+# Opcode handlers
+.extern __kefirrt_nop_impl
+.extern __kefirrt_jmp_impl
+.extern __kefirrt_ijmp_impl
+.extern __kefirrt_branch_impl
+.extern __kefirrt_push_impl
+.extern __kefirrt_pop_impl
+.extern __kefirrt_pick_impl
+.extern __kefirrt_put_impl
+.extern __kefirrt_insert_impl
+.extern __kefirrt_xchg_impl
+.extern __kefirrt_drop_impl
+.extern __kefirrt_pushstptr_impl
+.extern __kefirrt_iadd_impl
+.extern __kefirrt_iadd1_impl
+.extern __kefirrt_isub_impl
+.extern __kefirrt_imul_impl
+.extern __kefirrt_idiv_impl
+.extern __kefirrt_imod_impl
+.extern __kefirrt_udiv_impl
+.extern __kefirrt_umod_impl
+.extern __kefirrt_ineg_impl
+.extern __kefirrt_inot_impl
+.extern __kefirrt_iand_impl
+.extern __kefirrt_ior_impl
+.extern __kefirrt_ixor_impl
+.extern __kefirrt_ishr_impl
+.extern __kefirrt_isar_impl
+.extern __kefirrt_ishl_impl
+.extern __kefirrt_iequals_impl
+.extern __kefirrt_igreater_impl
+.extern __kefirrt_ilesser_impl
+.extern __kefirrt_iabove_impl
+.extern __kefirrt_ibelow_impl
+.extern __kefirrt_band_impl
+.extern __kefirrt_bor_impl
+.extern __kefirrt_bnot_impl
+.extern __kefirrt_trunc1_impl
+.extern __kefirrt_extend8_impl
+.extern __kefirrt_extend16_impl
+.extern __kefirrt_extend32_impl
+.extern __kefirrt_offsetptr_impl
+.extern __kefirrt_elementptr_impl
+.extern __kefirrt_load8u_impl
+.extern __kefirrt_load8i_impl
+.extern __kefirrt_load16u_impl
+.extern __kefirrt_load16i_impl
+.extern __kefirrt_load32u_impl
+.extern __kefirrt_load32i_impl
+.extern __kefirrt_load64_impl
+.extern __kefirrt_loadld_impl
+.extern __kefirrt_store8_impl
+.extern __kefirrt_store16_impl
+.extern __kefirrt_store32_impl
+.extern __kefirrt_store64_impl
+.extern __kefirrt_storeld_impl
+.extern __kefirrt_bzero_impl
+.extern __kefirrt_bcopy_impl
+.extern __kefirrt_extubits_impl
+.extern __kefirrt_extsbits_impl
+.extern __kefirrt_insertbits_impl
+.extern __kefirrt_getlocal_impl
+.extern __kefirrt_f32add_impl
+.extern __kefirrt_f32sub_impl
+.extern __kefirrt_f32mul_impl
+.extern __kefirrt_f32div_impl
+.extern __kefirrt_f32neg_impl
+.extern __kefirrt_f64add_impl
+.extern __kefirrt_f64sub_impl
+.extern __kefirrt_f64mul_impl
+.extern __kefirrt_f64div_impl
+.extern __kefirrt_f64neg_impl
+.extern __kefirrt_ldadd_impl
+.extern __kefirrt_ldsub_impl
+.extern __kefirrt_ldmul_impl
+.extern __kefirrt_lddiv_impl
+.extern __kefirrt_ldneg_impl
+.extern __kefirrt_f32equals_impl
+.extern __kefirrt_f32greater_impl
+.extern __kefirrt_f32lesser_impl
+.extern __kefirrt_f64equals_impl
+.extern __kefirrt_f64greater_impl
+.extern __kefirrt_f64lesser_impl
+.extern __kefirrt_ldequals_impl
+.extern __kefirrt_ldgreater_impl
+.extern __kefirrt_ldlesser_impl
+.extern __kefirrt_ldtrunc1_impl
+.extern __kefirrt_f32cint_impl
+.extern __kefirrt_f64cint_impl
+.extern __kefirrt_intcf32_impl
+.extern __kefirrt_intcf64_impl
+.extern __kefirrt_uintcf32_impl
+.extern __kefirrt_uintcf64_impl
+.extern __kefirrt_f32cf64_impl
+.extern __kefirrt_f64cf32_impl
+.extern __kefirrt_alloca_impl
+.extern __kefirrt_intcld_impl
+.extern __kefirrt_uintcld_impl
+.extern __kefirrt_ldcint_impl
+.extern __kefirrt_f32cld_impl
+.extern __kefirrt_f64cld_impl
+.extern __kefirrt_ldcf32_impl
+.extern __kefirrt_ldcf64_impl
+.extern __kefirrt_pushscope_impl
+.extern __kefirrt_popscope_impl
+.extern __kefirrt_setldh_impl
+.extern __kefirrt_setldl_impl
+# Runtime functions
+.extern __kefirrt_preserve_state
+.extern __kefirrt_restore_state
+.extern __kefirrt_save_registers
+.extern __kefirrt_load_integer_vararg
+.extern __kefirrt_load_sse_vararg
+.extern __kefirrt_copy_vararg
+
+# Externals
+.extern sum10
+
+# Globals
+.global sum_progression
+
+sum_progression:
+# Begin prologue of sum_progression
+    call __kefirrt_preserve_state
+    sub %rsp, 528
+    call __kefirrt_generic_prologue
+# Load parameters of sum_progression
+    lea %r12, [%rbp + 16]
+    push %r12
+    lea %r12, [%rbp + 32]
+    push %r12
+# End prologue of sum_progression
+    lea %rbx, [__sum_progression_body]
+    jmp [%rbx]
+__sum_progression_body:
+    .quad __kefirrt_getlocal_impl, 32
+    .quad __kefirrt_offsetptr_impl, 16
+    .quad __kefirrt_xchg_impl, 1
+    .quad __kefirrt_storeld_impl, 0
+    .quad __kefirrt_getlocal_impl, 32
+    .quad __kefirrt_xchg_impl, 1
+    .quad __kefirrt_storeld_impl, 0
+    .quad __kefirrt_getlocal_impl, 32
+    .quad __kefirrt_getlocal_impl, 32
+    .quad __kefirrt_getlocal_impl, 32
+    .quad __kefirrt_offsetptr_impl, 16
+    .quad __kefirrt_getlocal_impl, 64
+    .quad __kefirrt_offsetptr_impl, 0
+    .quad __kefirrt_offsetptr_impl, 16
+    .quad __kefirrt_ldadd_impl, 0
+    .quad __kefirrt_getlocal_impl, 32
+    .quad __kefirrt_push_impl, 2
+    .quad __kefirrt_getlocal_impl, 64
+    .quad __kefirrt_offsetptr_impl, 0
+    .quad __kefirrt_offsetptr_impl, 32
+    .quad __kefirrt_intcld_impl, 0
+    .quad __kefirrt_getlocal_impl, 32
+    .quad __kefirrt_offsetptr_impl, 16
+    .quad __kefirrt_getlocal_impl, 64
+    .quad __kefirrt_offsetptr_impl, 0
+    .quad __kefirrt_offsetptr_impl, 32
+    .quad __kefirrt_ldmul_impl, 0
+    .quad __kefirrt_getlocal_impl, 64
+    .quad __kefirrt_offsetptr_impl, 0
+    .quad __kefirrt_offsetptr_impl, 48
+    .quad __kefirrt_ldadd_impl, 0
+    .quad __kefirrt_getlocal_impl, 32
+    .quad __kefirrt_push_impl, 3
+    .quad __kefirrt_getlocal_impl, 64
+    .quad __kefirrt_offsetptr_impl, 0
+    .quad __kefirrt_offsetptr_impl, 64
+    .quad __kefirrt_intcld_impl, 0
+    .quad __kefirrt_getlocal_impl, 32
+    .quad __kefirrt_offsetptr_impl, 16
+    .quad __kefirrt_getlocal_impl, 64
+    .quad __kefirrt_offsetptr_impl, 0
+    .quad __kefirrt_offsetptr_impl, 64
+    .quad __kefirrt_ldmul_impl, 0
+    .quad __kefirrt_getlocal_impl, 64
+    .quad __kefirrt_offsetptr_impl, 0
+    .quad __kefirrt_offsetptr_impl, 80
+    .quad __kefirrt_ldadd_impl, 0
+    .quad __kefirrt_getlocal_impl, 32
+    .quad __kefirrt_push_impl, 4
+    .quad __kefirrt_getlocal_impl, 64
+    .quad __kefirrt_offsetptr_impl, 0
+    .quad __kefirrt_offsetptr_impl, 96
+    .quad __kefirrt_intcld_impl, 0
+    .quad __kefirrt_getlocal_impl, 32
+    .quad __kefirrt_offsetptr_impl, 16
+    .quad __kefirrt_getlocal_impl, 64
+    .quad __kefirrt_offsetptr_impl, 0
+    .quad __kefirrt_offsetptr_impl, 96
+    .quad __kefirrt_ldmul_impl, 0
+    .quad __kefirrt_getlocal_impl, 64
+    .quad __kefirrt_offsetptr_impl, 0
+    .quad __kefirrt_offsetptr_impl, 112
+    .quad __kefirrt_ldadd_impl, 0
+    .quad __kefirrt_getlocal_impl, 32
+    .quad __kefirrt_push_impl, 5
+    .quad __kefirrt_getlocal_impl, 64
+    .quad __kefirrt_offsetptr_impl, 0
+    .quad __kefirrt_offsetptr_impl, 128
+    .quad __kefirrt_intcld_impl, 0
+    .quad __kefirrt_getlocal_impl, 32
+    .quad __kefirrt_offsetptr_impl, 16
+    .quad __kefirrt_getlocal_impl, 64
+    .quad __kefirrt_offsetptr_impl, 0
+    .quad __kefirrt_offsetptr_impl, 128
+    .quad __kefirrt_ldmul_impl, 0
+    .quad __kefirrt_getlocal_impl, 64
+    .quad __kefirrt_offsetptr_impl, 0
+    .quad __kefirrt_offsetptr_impl, 144
+    .quad __kefirrt_ldadd_impl, 0
+    .quad __kefirrt_getlocal_impl, 32
+    .quad __kefirrt_push_impl, 6
+    .quad __kefirrt_getlocal_impl, 64
+    .quad __kefirrt_offsetptr_impl, 0
+    .quad __kefirrt_offsetptr_impl, 160
+    .quad __kefirrt_intcld_impl, 0
+    .quad __kefirrt_getlocal_impl, 32
+    .quad __kefirrt_offsetptr_impl, 16
+    .quad __kefirrt_getlocal_impl, 64
+    .quad __kefirrt_offsetptr_impl, 0
+    .quad __kefirrt_offsetptr_impl, 160
+    .quad __kefirrt_ldmul_impl, 0
+    .quad __kefirrt_getlocal_impl, 64
+    .quad __kefirrt_offsetptr_impl, 0
+    .quad __kefirrt_offsetptr_impl, 176
+    .quad __kefirrt_ldadd_impl, 0
+    .quad __kefirrt_getlocal_impl, 32
+    .quad __kefirrt_push_impl, 7
+    .quad __kefirrt_getlocal_impl, 64
+    .quad __kefirrt_offsetptr_impl, 0
+    .quad __kefirrt_offsetptr_impl, 192
+    .quad __kefirrt_intcld_impl, 0
+    .quad __kefirrt_getlocal_impl, 32
+    .quad __kefirrt_offsetptr_impl, 16
+    .quad __kefirrt_getlocal_impl, 64
+    .quad __kefirrt_offsetptr_impl, 0
+    .quad __kefirrt_offsetptr_impl, 192
+    .quad __kefirrt_ldmul_impl, 0
+    .quad __kefirrt_getlocal_impl, 64
+    .quad __kefirrt_offsetptr_impl, 0
+    .quad __kefirrt_offsetptr_impl, 208
+    .quad __kefirrt_ldadd_impl, 0
+    .quad __kefirrt_getlocal_impl, 32
+    .quad __kefirrt_push_impl, 8
+    .quad __kefirrt_getlocal_impl, 64
+    .quad __kefirrt_offsetptr_impl, 0
+    .quad __kefirrt_offsetptr_impl, 224
+    .quad __kefirrt_intcld_impl, 0
+    .quad __kefirrt_getlocal_impl, 32
+    .quad __kefirrt_offsetptr_impl, 16
+    .quad __kefirrt_getlocal_impl, 64
+    .quad __kefirrt_offsetptr_impl, 0
+    .quad __kefirrt_offsetptr_impl, 224
+    .quad __kefirrt_ldmul_impl, 0
+    .quad __kefirrt_getlocal_impl, 64
+    .quad __kefirrt_offsetptr_impl, 0
+    .quad __kefirrt_offsetptr_impl, 240
+    .quad __kefirrt_ldadd_impl, 0
+    .quad __kefirrt_getlocal_impl, 32
+    .quad __kefirrt_push_impl, 9
+    .quad __kefirrt_getlocal_impl, 64
+    .quad __kefirrt_offsetptr_impl, 0
+    .quad __kefirrt_offsetptr_impl, 256
+    .quad __kefirrt_intcld_impl, 0
+    .quad __kefirrt_getlocal_impl, 32
+    .quad __kefirrt_offsetptr_impl, 16
+    .quad __kefirrt_getlocal_impl, 64
+    .quad __kefirrt_offsetptr_impl, 0
+    .quad __kefirrt_offsetptr_impl, 256
+    .quad __kefirrt_ldmul_impl, 0
+    .quad __kefirrt_getlocal_impl, 64
+    .quad __kefirrt_offsetptr_impl, 0
+    .quad __kefirrt_offsetptr_impl, 272
+    .quad __kefirrt_ldadd_impl, 0
+    .quad __kefirrt_sfunction_sum10_gate3, 0
+    .quad __sum_progression_epilogue, 0
+    .quad __sum_progression_epilogue, 0
+__sum_progression_epilogue:
+# Begin epilogue of sum_progression
+    pop %r12
+    fld TBYTE PTR [%r12]
+    mov %rsp, %r14
+    add %rsp, 528
+    jmp __kefirrt_restore_state
+# End of sum_progression
+
+__kefirrt_sfunction_sum10_gate3:
+    mov %r12, %rsp
+    sub %rsp, 160
+    and %rsp, -16
+    mov %r11, [%r12 + 72]
+    mov %r13, [%r11]
+    mov [%rsp], %r13
+    mov %r13, [%r11 + 8]
+    mov [%rsp + 8], %r13
+    mov %r11, [%r12 + 64]
+    mov %r13, [%r11]
+    mov [%rsp + 16], %r13
+    mov %r13, [%r11 + 8]
+    mov [%rsp + 24], %r13
+    mov %r11, [%r12 + 56]
+    mov %r13, [%r11]
+    mov [%rsp + 32], %r13
+    mov %r13, [%r11 + 8]
+    mov [%rsp + 40], %r13
+    mov %r11, [%r12 + 48]
+    mov %r13, [%r11]
+    mov [%rsp + 48], %r13
+    mov %r13, [%r11 + 8]
+    mov [%rsp + 56], %r13
+    mov %r11, [%r12 + 40]
+    mov %r13, [%r11]
+    mov [%rsp + 64], %r13
+    mov %r13, [%r11 + 8]
+    mov [%rsp + 72], %r13
+    mov %r11, [%r12 + 32]
+    mov %r13, [%r11]
+    mov [%rsp + 80], %r13
+    mov %r13, [%r11 + 8]
+    mov [%rsp + 88], %r13
+    mov %r11, [%r12 + 24]
+    mov %r13, [%r11]
+    mov [%rsp + 96], %r13
+    mov %r13, [%r11 + 8]
+    mov [%rsp + 104], %r13
+    mov %r11, [%r12 + 16]
+    mov %r13, [%r11]
+    mov [%rsp + 112], %r13
+    mov %r13, [%r11 + 8]
+    mov [%rsp + 120], %r13
+    mov %r11, [%r12 + 8]
+    mov %r13, [%r11]
+    mov [%rsp + 128], %r13
+    mov %r13, [%r11 + 8]
+    mov [%rsp + 136], %r13
+    mov %r11, [%r12]
+    mov %r13, [%r11]
+    mov [%rsp + 144], %r13
+    mov %r13, [%r11 + 8]
+    mov [%rsp + 152], %r13
+    call sum10
+    mov %rsp, %r12
+    add %rsp, 80
+    fstp TBYTE PTR [%r14 + 16]
+    lea %r11, [%r14 + 16]
+    push %r11
+    add %rbx, 16
+    jmp [%rbx]
+
+.section .data
+__kefirrt_module_static_vars:
+    .byte 0x73, 0x75, 0x6d, 0x5f, 0x70, 0x72, 0x6f, 0x67, 0x72, 0x65, 0x73, 0x73, 0x69, 0x6f, 0x6e, 0x00
+

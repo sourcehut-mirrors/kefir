@@ -30,10 +30,44 @@
 #include "kefir/core/error.h"
 #include <stdio.h>
 
+struct typeconv_callback_param {
+    struct kefir_mem *mem;
+    struct kefir_ast_translator_context *context;
+    struct kefir_irbuilder_block *builder;
+    const struct kefir_ast_temporary_identifier *temporary;
+    kefir_size_t temporary_index;
+    kefir_id_t ldouble_type_id;
+};
+
+static kefir_result_t allocate_long_double_callback(void *payload) {
+    REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid typeconv callback payload"));
+    ASSIGN_DECL_CAST(struct typeconv_callback_param *, param, payload);
+
+    if (param->ldouble_type_id == KEFIR_ID_NONE) {
+        struct kefir_ir_type *ldouble_type =
+            kefir_ir_module_new_type(param->mem, param->context->module, 1, &param->ldouble_type_id);
+        REQUIRE(ldouble_type != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR type"));
+        REQUIRE_OK(kefir_irbuilder_type_append_v(param->mem, ldouble_type, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0));
+    }
+    REQUIRE_OK(kefir_ast_translator_fetch_temporary(param->mem, param->context, param->builder, param->temporary));
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(param->builder, KEFIR_IROPCODE_PUSHU64, param->temporary_index++));
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32(param->builder, KEFIR_IROPCODE_ELEMENTPTR, param->ldouble_type_id, 0));
+    return KEFIR_OK;
+}
+
 static kefir_result_t translate_parameters(struct kefir_mem *mem, struct kefir_ast_translator_context *context,
                                            struct kefir_irbuilder_block *builder,
                                            const struct kefir_ast_function_call *node,
                                            struct kefir_ast_translator_function_declaration *func_decl) {
+    struct typeconv_callback_param cb_param = {.mem = mem,
+                                               .context = context,
+                                               .builder = builder,
+                                               .temporary = &node->base.properties.expression_props.temporary,
+                                               .temporary_index = 0,
+                                               .ldouble_type_id = KEFIR_ID_NONE};
+    struct kefir_ast_translate_typeconv_callbacks callbacks = {.allocate_long_double = allocate_long_double_callback,
+                                                               .payload = &cb_param};
+
     const struct kefir_list_entry *arg_value_iter = kefir_list_head(&node->arguments);
     const struct kefir_list_entry *decl_arg_iter = kefir_list_head(&func_decl->argument_layouts);
     for (; arg_value_iter != NULL && decl_arg_iter != NULL;
@@ -51,7 +85,7 @@ static kefir_result_t translate_parameters(struct kefir_mem *mem, struct kefir_a
         REQUIRE_OK(kefir_ast_translate_expression(mem, parameter_value, builder, context));
         if (KEFIR_AST_TYPE_IS_SCALAR_TYPE(param_normalized_type)) {
             REQUIRE_OK(kefir_ast_translate_typeconv(builder, context->ast_context->type_traits, param_normalized_type,
-                                                    parameter_layout->type));
+                                                    parameter_layout->type, &callbacks));
         }
     }
     return KEFIR_OK;

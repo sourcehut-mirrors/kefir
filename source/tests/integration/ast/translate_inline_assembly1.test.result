@@ -39,6 +39,19 @@
                     "fields": [
                         {
                             "type": "long_double"
+                        },
+                        {
+                            "type": "union",
+                            "fields": [
+                                {
+                                    "type": "struct",
+                                    "fields": [
+                                        {
+                                            "type": "long_double"
+                                        }
+                                    ]
+                                }
+                            ]
                         }
                     ]
                 }
@@ -63,6 +76,19 @@
                         },
                         {
                             "type": "char"
+                        },
+                        {
+                            "type": "union",
+                            "fields": [
+                                {
+                                    "type": "struct",
+                                    "fields": [
+                                        {
+                                            "type": "long_double"
+                                        }
+                                    ]
+                                }
+                            ]
                         }
                     ]
                 }
@@ -124,11 +150,40 @@
                     "opcode": "load32i"
                 },
                 {
-                    "opcode": "pushld",
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 5,
+                        "index": 2
+                    }
+                },
+                {
+                    "opcode": "offsetptr",
+                    "arg": {
+                        "type": 5,
+                        "index": 3
+                    }
+                },
+                {
+                    "opcode": "offsetptr",
+                    "arg": {
+                        "type": 5,
+                        "index": 4
+                    }
+                },
+                {
+                    "opcode": "pick",
                     "arg": 0
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pick",
+                    "arg": 0
+                },
+                {
+                    "opcode": "setldh",
+                    "arg": 0
+                },
+                {
+                    "opcode": "setldl",
                     "arg": 4616358503040784794
                 },
                 {
@@ -179,11 +234,40 @@
                     "opcode": "load64"
                 },
                 {
-                    "opcode": "pushld",
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 8,
+                        "index": 3
+                    }
+                },
+                {
+                    "opcode": "offsetptr",
+                    "arg": {
+                        "type": 8,
+                        "index": 4
+                    }
+                },
+                {
+                    "opcode": "offsetptr",
+                    "arg": {
+                        "type": 8,
+                        "index": 5
+                    }
+                },
+                {
+                    "opcode": "pick",
                     "arg": 0
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pick",
+                    "arg": 0
+                },
+                {
+                    "opcode": "setldh",
+                    "arg": 0
+                },
+                {
+                    "opcode": "setldl",
                     "arg": 4616358503040784794
                 },
                 {
@@ -225,7 +309,7 @@
                         "0"
                     ],
                     "class": "store",
-                    "to": 4
+                    "to": 3
                 },
                 {
                     "identifier": 1,
@@ -233,7 +317,7 @@
                         "1"
                     ],
                     "class": "load_store",
-                    "from_to": 3
+                    "from_to": 2
                 },
                 {
                     "identifier": 2,
@@ -241,7 +325,7 @@
                         "2"
                     ],
                     "class": "read",
-                    "from": 2
+                    "from": 1
                 },
                 {
                     "identifier": 3,
@@ -269,7 +353,7 @@
                         "[null]"
                     ],
                     "class": "store",
-                    "to": 5
+                    "to": 4
                 },
                 {
                     "identifier": 1,
@@ -277,7 +361,7 @@
                         "1"
                     ],
                     "class": "load_store",
-                    "from_to": 4
+                    "from_to": 3
                 },
                 {
                     "identifier": 2,
@@ -286,7 +370,7 @@
                         "[alternativeId]"
                     ],
                     "class": "store",
-                    "to": 3
+                    "to": 2
                 },
                 {
                     "identifier": 3,
@@ -294,7 +378,7 @@
                         "3"
                     ],
                     "class": "read",
-                    "from": 2
+                    "from": 1
                 },
                 {
                     "identifier": 4,

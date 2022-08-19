@@ -74,15 +74,14 @@ static kefir_result_t return_long_double(const struct kefir_ir_type *type, kefir
     UNUSED(index);
     UNUSED(typeentry);
     struct result_return *param = (struct result_return *) payload;
+    REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_POP(&param->codegen->xasmgen,
+                                             kefir_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_DATA_REG)));
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_FLD(
-        &param->codegen->xasmgen, kefir_amd64_xasmgen_operand_pointer(
-                                      &param->codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_POINTER_TBYTE,
-                                      kefir_amd64_xasmgen_operand_indirect(
-                                          &param->codegen->xasmgen_helpers.operands[1],
-                                          kefir_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP), 0))));
-    REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_ADD(
-        &param->codegen->xasmgen, kefir_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
-        kefir_amd64_xasmgen_operand_imm(&param->codegen->xasmgen_helpers.operands[0], 16)));
+        &param->codegen->xasmgen,
+        kefir_amd64_xasmgen_operand_pointer(
+            &param->codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_POINTER_TBYTE,
+            kefir_amd64_xasmgen_operand_indirect(&param->codegen->xasmgen_helpers.operands[1],
+                                                 kefir_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_DATA_REG), 0))));
     return KEFIR_OK;
 }
 
