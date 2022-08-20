@@ -20,7 +20,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
-<opcodes>
+<opcodes revision="1">
     <opcode id="reserved"    mnemonic="reserved"    code="0x0" type="none" />
 
     <!-- Flow control -->
