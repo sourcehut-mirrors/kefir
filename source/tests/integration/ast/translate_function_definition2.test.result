@@ -144,11 +144,8 @@
                     }
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 8,
-                        "index": 2
-                    }
+                    "opcode": "iadd1",
+                    "arg": 8
                 },
                 {
                     "opcode": "xchg",
@@ -189,21 +186,15 @@
                     }
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 8,
-                        "index": 2
-                    }
+                    "opcode": "iadd1",
+                    "arg": 8
                 },
                 {
                     "opcode": "load32i"
                 },
                 {
-                    "opcode": "elementptr",
-                    "arg": {
-                        "type": 9,
-                        "index": 0
-                    }
+                    "opcode": "iaddx",
+                    "arg": 4
                 },
                 {
                     "opcode": "load32i"

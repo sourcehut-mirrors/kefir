@@ -60,10 +60,10 @@ kefir_result_t kefir_ast_translator_fetch_temporary(struct kefir_mem *mem, struc
 
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32(builder, KEFIR_IROPCODE_GETLOCAL, scoped_id_layout->type_id,
                                                    scoped_id_layout->layout->value));
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32(builder, KEFIR_IROPCODE_OFFSETPTR, scoped_id_layout->type_id,
-                                                   temp_value_layout->value));
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32(builder, KEFIR_IROPCODE_OFFSETPTR, scoped_id_layout->type_id,
-                                                   temp_member_layout->value));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IADD1,
+                                                   temp_value_layout->properties.relative_offset));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IADD1,
+                                                   temp_member_layout->properties.relative_offset));
     } else {
         char buf[BUFFER_LEN] = {0};
         snprintf(buf, sizeof(buf) - 1, KEFIR_AST_TRANSLATOR_TEMPORARY_GLOBAL_IDENTIFIER, temporary->identifier,

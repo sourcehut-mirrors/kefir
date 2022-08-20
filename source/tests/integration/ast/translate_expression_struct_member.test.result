@@ -108,11 +108,8 @@
                     }
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 9,
-                        "index": 2
-                    }
+                    "opcode": "iadd1",
+                    "arg": 8
                 },
                 {
                     "opcode": "load64"

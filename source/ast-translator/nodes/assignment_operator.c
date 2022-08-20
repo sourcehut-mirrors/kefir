@@ -55,15 +55,32 @@ static kefir_result_t store_value(struct kefir_mem *mem, struct kefir_ast_transl
 static kefir_result_t fetch_temporary(struct kefir_mem *mem, struct kefir_ast_translator_context *context,
                                       struct kefir_irbuilder_block *builder, const struct kefir_ast_node_base *base,
                                       kefir_id_t *type_id, kefir_size_t index) {
+    struct kefir_ir_type *ldouble_type = NULL;
     if (*type_id == KEFIR_ID_NONE) {
-        struct kefir_ir_type *ldouble_type = kefir_ir_module_new_type(mem, context->module, 1, type_id);
+        ldouble_type = kefir_ir_module_new_type(mem, context->module, 1, type_id);
         REQUIRE(ldouble_type != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR type"));
         REQUIRE_OK(kefir_irbuilder_type_append_v(mem, ldouble_type, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0));
+    } else {
+        ldouble_type = kefir_ir_module_get_named_type(context->module, *type_id);
+        REQUIRE(ldouble_type != NULL, KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Failed to retrieve IR type"));
     }
+
+    struct kefir_ir_target_type_info ir_type_info;
+    kefir_ir_target_platform_opaque_type_t platform_type;
+    REQUIRE_OK(
+        KEFIR_IR_TARGET_PLATFORM_GET_TYPE(mem, context->environment->target_platform, ldouble_type, &platform_type));
+    kefir_result_t res =
+        KEFIR_IR_TARGET_PLATFORM_TYPE_INFO(mem, context->environment->target_platform, platform_type, 0, &ir_type_info);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_IR_TARGET_PLATFORM_FREE_TYPE(mem, context->environment->target_platform, platform_type);
+        return res;
+    });
+    REQUIRE_OK(KEFIR_IR_TARGET_PLATFORM_FREE_TYPE(mem, context->environment->target_platform, platform_type));
+
     REQUIRE_OK(
         kefir_ast_translator_fetch_temporary(mem, context, builder, &base->properties.expression_props.temporary));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PUSHU64, index));
-    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32(builder, KEFIR_IROPCODE_ELEMENTPTR, *type_id, 0));
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IADDX, ir_type_info.size));
     return KEFIR_OK;
 }
 
@@ -80,15 +97,32 @@ static kefir_result_t allocate_long_double_callback(void *payload) {
     REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid typeconv callback payload"));
     ASSIGN_DECL_CAST(struct typeconv_callback_param *, param, payload);
 
+    struct kefir_ir_type *ldouble_type = NULL;
     if (param->ldouble_type_id == KEFIR_ID_NONE) {
-        struct kefir_ir_type *ldouble_type =
-            kefir_ir_module_new_type(param->mem, param->context->module, 1, &param->ldouble_type_id);
+        ldouble_type = kefir_ir_module_new_type(param->mem, param->context->module, 1, &param->ldouble_type_id);
         REQUIRE(ldouble_type != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR type"));
         REQUIRE_OK(kefir_irbuilder_type_append_v(param->mem, ldouble_type, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0));
+    } else {
+        ldouble_type = kefir_ir_module_get_named_type(param->context->module, param->ldouble_type_id);
+        REQUIRE(ldouble_type != NULL, KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Failed to retrieve IR type"));
     }
+
+    struct kefir_ir_target_type_info ir_type_info;
+    kefir_ir_target_platform_opaque_type_t platform_type;
+    REQUIRE_OK(KEFIR_IR_TARGET_PLATFORM_GET_TYPE(param->mem, param->context->environment->target_platform, ldouble_type,
+                                                 &platform_type));
+    kefir_result_t res = KEFIR_IR_TARGET_PLATFORM_TYPE_INFO(param->mem, param->context->environment->target_platform,
+                                                            platform_type, 0, &ir_type_info);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_IR_TARGET_PLATFORM_FREE_TYPE(param->mem, param->context->environment->target_platform, platform_type);
+        return res;
+    });
+    REQUIRE_OK(
+        KEFIR_IR_TARGET_PLATFORM_FREE_TYPE(param->mem, param->context->environment->target_platform, platform_type));
+
     REQUIRE_OK(kefir_ast_translator_fetch_temporary(param->mem, param->context, param->builder, param->temporary));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(param->builder, KEFIR_IROPCODE_PUSHU64, param->temporary_index));
-    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32(param->builder, KEFIR_IROPCODE_ELEMENTPTR, param->ldouble_type_id, 0));
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(param->builder, KEFIR_IROPCODE_IADDX, ir_type_info.size));
     return KEFIR_OK;
 }
 
@@ -428,9 +462,8 @@ static kefir_result_t translate_add(struct kefir_mem *mem, struct kefir_ast_tran
         REQUIRE_CHAIN(&res, kefir_ast_translator_resolve_lvalue(mem, context, builder, node->target));
 
         REQUIRE_CHAIN(&res, reorder_assignment_arguments(builder));
-        REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU32(builder, KEFIR_IROPCODE_ELEMENTPTR,
-                                                            translator_type->object.ir_type_id,
-                                                            translator_type->object.layout->value));
+        REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IADDX,
+                                                            translator_type->object.layout->properties.size));
 
         REQUIRE_ELSE(res == KEFIR_OK, {
             kefir_ast_translator_type_free(mem, translator_type);
@@ -526,9 +559,8 @@ static kefir_result_t translate_subtract(struct kefir_mem *mem, struct kefir_ast
         REQUIRE_CHAIN(&res, kefir_ast_translator_resolve_lvalue(mem, context, builder, node->target));
 
         REQUIRE_CHAIN(&res, reorder_assignment_arguments(builder));
-        REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU32(builder, KEFIR_IROPCODE_ELEMENTPTR,
-                                                            translator_type->object.ir_type_id,
-                                                            translator_type->object.layout->value));
+        REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IADDX,
+                                                            translator_type->object.layout->properties.size));
 
         REQUIRE_ELSE(res == KEFIR_OK, {
             kefir_ast_translator_type_free(mem, translator_type);

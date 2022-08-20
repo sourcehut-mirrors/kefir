@@ -26,6 +26,7 @@
 #include "kefir/core/mem.h"
 #include "kefir/core/util.h"
 #include "kefir/codegen/amd64-sysv.h"
+#include "kefir/codegen/amd64/system-v/abi/data_layout.h"
 
 kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_codegen_amd64 codegen;
@@ -63,12 +64,20 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     kefir_irbuilder_type_append_v(mem, arrptr->declaration->params, KEFIR_IR_TYPE_LONG, 0, 0);
     kefir_irbuilder_type_append_v(mem, arrptr->declaration->result, KEFIR_IR_TYPE_WORD, 0, 0);
 
-    kefir_irbuilder_block_appendi64(mem, &arrptr->body, KEFIR_IROPCODE_XCHG, 1);
-    kefir_irbuilder_block_appendu32(mem, &arrptr->body, KEFIR_IROPCODE_OFFSETPTR, type1_id, 2);
-    kefir_irbuilder_block_appendu32(mem, &arrptr->body, KEFIR_IROPCODE_OFFSETPTR, type1_id, 4);
-    kefir_irbuilder_block_appendi64(mem, &arrptr->body, KEFIR_IROPCODE_XCHG, 1);
-    kefir_irbuilder_block_appendu32(mem, &arrptr->body, KEFIR_IROPCODE_ELEMENTPTR, type1_id, 8);
+    struct kefir_vector type_layout;
+    REQUIRE_OK(kefir_amd64_sysv_type_layout(type1, mem, &type_layout));
 
+    ASSIGN_DECL_CAST(const struct kefir_amd64_sysv_data_layout *, entry_layout, kefir_vector_at(&type_layout, 2));
+
+    kefir_irbuilder_block_appendi64(mem, &arrptr->body, KEFIR_IROPCODE_XCHG, 1);
+    kefir_irbuilder_block_appendu64(mem, &arrptr->body, KEFIR_IROPCODE_IADD1, entry_layout->relative_offset);
+    entry_layout = kefir_vector_at(&type_layout, 4);
+    kefir_irbuilder_block_appendu64(mem, &arrptr->body, KEFIR_IROPCODE_IADD1, entry_layout->relative_offset);
+    kefir_irbuilder_block_appendi64(mem, &arrptr->body, KEFIR_IROPCODE_XCHG, 1);
+    entry_layout = kefir_vector_at(&type_layout, 8);
+    kefir_irbuilder_block_appendu64(mem, &arrptr->body, KEFIR_IROPCODE_IADDX, entry_layout->size);
+
+    REQUIRE_OK(kefir_vector_free(mem, &type_layout));
     KEFIR_CODEGEN_TRANSLATE(mem, &codegen.iface, &module);
     KEFIR_CODEGEN_CLOSE(mem, &codegen.iface);
     REQUIRE_OK(kefir_ir_module_free(mem, &module));

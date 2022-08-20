@@ -324,11 +324,8 @@
                     }
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 4,
-                        "index": 5
-                    }
+                    "opcode": "iadd1",
+                    "arg": 28
                 },
                 {
                     "opcode": "pick",
@@ -413,11 +410,8 @@
                     }
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 4,
-                        "index": 5
-                    }
+                    "opcode": "iadd1",
+                    "arg": 28
                 },
                 {
                     "opcode": "pick",
@@ -463,11 +457,8 @@
                     }
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 4,
-                        "index": 6
-                    }
+                    "opcode": "iadd1",
+                    "arg": 32
                 },
                 {
                     "opcode": "pick",
@@ -509,11 +500,8 @@
                     }
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 4,
-                        "index": 2
-                    }
+                    "opcode": "iadd1",
+                    "arg": 8
                 },
                 {
                     "opcode": "pick",
@@ -527,11 +515,8 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "elementptr",
-                    "arg": {
-                        "type": 23,
-                        "index": 0
-                    }
+                    "opcode": "iaddx",
+                    "arg": 1
                 },
                 {
                     "opcode": "xchg",
@@ -559,11 +544,8 @@
                     }
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 4,
-                        "index": 3
-                    }
+                    "opcode": "iadd1",
+                    "arg": 16
                 },
                 {
                     "opcode": "pick",
@@ -577,11 +559,8 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "elementptr",
-                    "arg": {
-                        "type": 26,
-                        "index": 0
-                    }
+                    "opcode": "iaddx",
+                    "arg": 32
                 },
                 {
                     "opcode": "xchg",
@@ -609,11 +588,8 @@
                     }
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 4,
-                        "index": 6
-                    }
+                    "opcode": "iadd1",
+                    "arg": 32
                 },
                 {
                     "opcode": "pick",
@@ -655,11 +631,8 @@
                     }
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 4,
-                        "index": 2
-                    }
+                    "opcode": "iadd1",
+                    "arg": 8
                 },
                 {
                     "opcode": "pick",
@@ -673,11 +646,8 @@
                     "arg": -1
                 },
                 {
-                    "opcode": "elementptr",
-                    "arg": {
-                        "type": 29,
-                        "index": 0
-                    }
+                    "opcode": "iaddx",
+                    "arg": 1
                 },
                 {
                     "opcode": "xchg",
@@ -705,11 +675,8 @@
                     }
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 4,
-                        "index": 3
-                    }
+                    "opcode": "iadd1",
+                    "arg": 16
                 },
                 {
                     "opcode": "pick",
@@ -723,11 +690,8 @@
                     "arg": -1
                 },
                 {
-                    "opcode": "elementptr",
-                    "arg": {
-                        "type": 32,
-                        "index": 0
-                    }
+                    "opcode": "iaddx",
+                    "arg": 32
                 },
                 {
                     "opcode": "xchg",
@@ -755,11 +719,8 @@
                     }
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 4,
-                        "index": 4
-                    }
+                    "opcode": "iadd1",
+                    "arg": 24
                 },
                 {
                     "opcode": "pick",
@@ -801,11 +762,8 @@
                     }
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 4,
-                        "index": 4
-                    }
+                    "opcode": "iadd1",
+                    "arg": 24
                 },
                 {
                     "opcode": "pick",

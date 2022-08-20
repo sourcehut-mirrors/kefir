@@ -40,8 +40,7 @@
 .extern __kefirrt_extend8_impl
 .extern __kefirrt_extend16_impl
 .extern __kefirrt_extend32_impl
-.extern __kefirrt_offsetptr_impl
-.extern __kefirrt_elementptr_impl
+.extern __kefirrt_iaddx_impl
 .extern __kefirrt_load8u_impl
 .extern __kefirrt_load8i_impl
 .extern __kefirrt_load16u_impl
@@ -135,7 +134,7 @@ sum_progression:
     jmp [%rbx]
 __sum_progression_body:
     .quad __kefirrt_getlocal_impl, 32
-    .quad __kefirrt_offsetptr_impl, 16
+    .quad __kefirrt_iadd1_impl, 16
     .quad __kefirrt_xchg_impl, 1
     .quad __kefirrt_storeld_impl, 0
     .quad __kefirrt_getlocal_impl, 32
@@ -144,138 +143,138 @@ __sum_progression_body:
     .quad __kefirrt_getlocal_impl, 32
     .quad __kefirrt_getlocal_impl, 32
     .quad __kefirrt_getlocal_impl, 32
-    .quad __kefirrt_offsetptr_impl, 16
+    .quad __kefirrt_iadd1_impl, 16
     .quad __kefirrt_getlocal_impl, 64
-    .quad __kefirrt_offsetptr_impl, 0
-    .quad __kefirrt_offsetptr_impl, 16
+    .quad __kefirrt_iadd1_impl, 0
+    .quad __kefirrt_iadd1_impl, 16
     .quad __kefirrt_ldadd_impl, 0
     .quad __kefirrt_getlocal_impl, 32
     .quad __kefirrt_push_impl, 2
     .quad __kefirrt_getlocal_impl, 64
-    .quad __kefirrt_offsetptr_impl, 0
-    .quad __kefirrt_offsetptr_impl, 32
+    .quad __kefirrt_iadd1_impl, 0
+    .quad __kefirrt_iadd1_impl, 32
     .quad __kefirrt_intcld_impl, 0
     .quad __kefirrt_getlocal_impl, 32
-    .quad __kefirrt_offsetptr_impl, 16
+    .quad __kefirrt_iadd1_impl, 16
     .quad __kefirrt_getlocal_impl, 64
-    .quad __kefirrt_offsetptr_impl, 0
-    .quad __kefirrt_offsetptr_impl, 32
+    .quad __kefirrt_iadd1_impl, 0
+    .quad __kefirrt_iadd1_impl, 32
     .quad __kefirrt_ldmul_impl, 0
     .quad __kefirrt_getlocal_impl, 64
-    .quad __kefirrt_offsetptr_impl, 0
-    .quad __kefirrt_offsetptr_impl, 48
+    .quad __kefirrt_iadd1_impl, 0
+    .quad __kefirrt_iadd1_impl, 48
     .quad __kefirrt_ldadd_impl, 0
     .quad __kefirrt_getlocal_impl, 32
     .quad __kefirrt_push_impl, 3
     .quad __kefirrt_getlocal_impl, 64
-    .quad __kefirrt_offsetptr_impl, 0
-    .quad __kefirrt_offsetptr_impl, 64
+    .quad __kefirrt_iadd1_impl, 0
+    .quad __kefirrt_iadd1_impl, 64
     .quad __kefirrt_intcld_impl, 0
     .quad __kefirrt_getlocal_impl, 32
-    .quad __kefirrt_offsetptr_impl, 16
+    .quad __kefirrt_iadd1_impl, 16
     .quad __kefirrt_getlocal_impl, 64
-    .quad __kefirrt_offsetptr_impl, 0
-    .quad __kefirrt_offsetptr_impl, 64
+    .quad __kefirrt_iadd1_impl, 0
+    .quad __kefirrt_iadd1_impl, 64
     .quad __kefirrt_ldmul_impl, 0
     .quad __kefirrt_getlocal_impl, 64
-    .quad __kefirrt_offsetptr_impl, 0
-    .quad __kefirrt_offsetptr_impl, 80
+    .quad __kefirrt_iadd1_impl, 0
+    .quad __kefirrt_iadd1_impl, 80
     .quad __kefirrt_ldadd_impl, 0
     .quad __kefirrt_getlocal_impl, 32
     .quad __kefirrt_push_impl, 4
     .quad __kefirrt_getlocal_impl, 64
-    .quad __kefirrt_offsetptr_impl, 0
-    .quad __kefirrt_offsetptr_impl, 96
+    .quad __kefirrt_iadd1_impl, 0
+    .quad __kefirrt_iadd1_impl, 96
     .quad __kefirrt_intcld_impl, 0
     .quad __kefirrt_getlocal_impl, 32
-    .quad __kefirrt_offsetptr_impl, 16
+    .quad __kefirrt_iadd1_impl, 16
     .quad __kefirrt_getlocal_impl, 64
-    .quad __kefirrt_offsetptr_impl, 0
-    .quad __kefirrt_offsetptr_impl, 96
+    .quad __kefirrt_iadd1_impl, 0
+    .quad __kefirrt_iadd1_impl, 96
     .quad __kefirrt_ldmul_impl, 0
     .quad __kefirrt_getlocal_impl, 64
-    .quad __kefirrt_offsetptr_impl, 0
-    .quad __kefirrt_offsetptr_impl, 112
+    .quad __kefirrt_iadd1_impl, 0
+    .quad __kefirrt_iadd1_impl, 112
     .quad __kefirrt_ldadd_impl, 0
     .quad __kefirrt_getlocal_impl, 32
     .quad __kefirrt_push_impl, 5
     .quad __kefirrt_getlocal_impl, 64
-    .quad __kefirrt_offsetptr_impl, 0
-    .quad __kefirrt_offsetptr_impl, 128
+    .quad __kefirrt_iadd1_impl, 0
+    .quad __kefirrt_iadd1_impl, 128
     .quad __kefirrt_intcld_impl, 0
     .quad __kefirrt_getlocal_impl, 32
-    .quad __kefirrt_offsetptr_impl, 16
+    .quad __kefirrt_iadd1_impl, 16
     .quad __kefirrt_getlocal_impl, 64
-    .quad __kefirrt_offsetptr_impl, 0
-    .quad __kefirrt_offsetptr_impl, 128
+    .quad __kefirrt_iadd1_impl, 0
+    .quad __kefirrt_iadd1_impl, 128
     .quad __kefirrt_ldmul_impl, 0
     .quad __kefirrt_getlocal_impl, 64
-    .quad __kefirrt_offsetptr_impl, 0
-    .quad __kefirrt_offsetptr_impl, 144
+    .quad __kefirrt_iadd1_impl, 0
+    .quad __kefirrt_iadd1_impl, 144
     .quad __kefirrt_ldadd_impl, 0
     .quad __kefirrt_getlocal_impl, 32
     .quad __kefirrt_push_impl, 6
     .quad __kefirrt_getlocal_impl, 64
-    .quad __kefirrt_offsetptr_impl, 0
-    .quad __kefirrt_offsetptr_impl, 160
+    .quad __kefirrt_iadd1_impl, 0
+    .quad __kefirrt_iadd1_impl, 160
     .quad __kefirrt_intcld_impl, 0
     .quad __kefirrt_getlocal_impl, 32
-    .quad __kefirrt_offsetptr_impl, 16
+    .quad __kefirrt_iadd1_impl, 16
     .quad __kefirrt_getlocal_impl, 64
-    .quad __kefirrt_offsetptr_impl, 0
-    .quad __kefirrt_offsetptr_impl, 160
+    .quad __kefirrt_iadd1_impl, 0
+    .quad __kefirrt_iadd1_impl, 160
     .quad __kefirrt_ldmul_impl, 0
     .quad __kefirrt_getlocal_impl, 64
-    .quad __kefirrt_offsetptr_impl, 0
-    .quad __kefirrt_offsetptr_impl, 176
+    .quad __kefirrt_iadd1_impl, 0
+    .quad __kefirrt_iadd1_impl, 176
     .quad __kefirrt_ldadd_impl, 0
     .quad __kefirrt_getlocal_impl, 32
     .quad __kefirrt_push_impl, 7
     .quad __kefirrt_getlocal_impl, 64
-    .quad __kefirrt_offsetptr_impl, 0
-    .quad __kefirrt_offsetptr_impl, 192
+    .quad __kefirrt_iadd1_impl, 0
+    .quad __kefirrt_iadd1_impl, 192
     .quad __kefirrt_intcld_impl, 0
     .quad __kefirrt_getlocal_impl, 32
-    .quad __kefirrt_offsetptr_impl, 16
+    .quad __kefirrt_iadd1_impl, 16
     .quad __kefirrt_getlocal_impl, 64
-    .quad __kefirrt_offsetptr_impl, 0
-    .quad __kefirrt_offsetptr_impl, 192
+    .quad __kefirrt_iadd1_impl, 0
+    .quad __kefirrt_iadd1_impl, 192
     .quad __kefirrt_ldmul_impl, 0
     .quad __kefirrt_getlocal_impl, 64
-    .quad __kefirrt_offsetptr_impl, 0
-    .quad __kefirrt_offsetptr_impl, 208
+    .quad __kefirrt_iadd1_impl, 0
+    .quad __kefirrt_iadd1_impl, 208
     .quad __kefirrt_ldadd_impl, 0
     .quad __kefirrt_getlocal_impl, 32
     .quad __kefirrt_push_impl, 8
     .quad __kefirrt_getlocal_impl, 64
-    .quad __kefirrt_offsetptr_impl, 0
-    .quad __kefirrt_offsetptr_impl, 224
+    .quad __kefirrt_iadd1_impl, 0
+    .quad __kefirrt_iadd1_impl, 224
     .quad __kefirrt_intcld_impl, 0
     .quad __kefirrt_getlocal_impl, 32
-    .quad __kefirrt_offsetptr_impl, 16
+    .quad __kefirrt_iadd1_impl, 16
     .quad __kefirrt_getlocal_impl, 64
-    .quad __kefirrt_offsetptr_impl, 0
-    .quad __kefirrt_offsetptr_impl, 224
+    .quad __kefirrt_iadd1_impl, 0
+    .quad __kefirrt_iadd1_impl, 224
     .quad __kefirrt_ldmul_impl, 0
     .quad __kefirrt_getlocal_impl, 64
-    .quad __kefirrt_offsetptr_impl, 0
-    .quad __kefirrt_offsetptr_impl, 240
+    .quad __kefirrt_iadd1_impl, 0
+    .quad __kefirrt_iadd1_impl, 240
     .quad __kefirrt_ldadd_impl, 0
     .quad __kefirrt_getlocal_impl, 32
     .quad __kefirrt_push_impl, 9
     .quad __kefirrt_getlocal_impl, 64
-    .quad __kefirrt_offsetptr_impl, 0
-    .quad __kefirrt_offsetptr_impl, 256
+    .quad __kefirrt_iadd1_impl, 0
+    .quad __kefirrt_iadd1_impl, 256
     .quad __kefirrt_intcld_impl, 0
     .quad __kefirrt_getlocal_impl, 32
-    .quad __kefirrt_offsetptr_impl, 16
+    .quad __kefirrt_iadd1_impl, 16
     .quad __kefirrt_getlocal_impl, 64
-    .quad __kefirrt_offsetptr_impl, 0
-    .quad __kefirrt_offsetptr_impl, 256
+    .quad __kefirrt_iadd1_impl, 0
+    .quad __kefirrt_iadd1_impl, 256
     .quad __kefirrt_ldmul_impl, 0
     .quad __kefirrt_getlocal_impl, 64
-    .quad __kefirrt_offsetptr_impl, 0
-    .quad __kefirrt_offsetptr_impl, 272
+    .quad __kefirrt_iadd1_impl, 0
+    .quad __kefirrt_iadd1_impl, 272
     .quad __kefirrt_ldadd_impl, 0
     .quad __kefirrt_sfunction_sum10_gate3, 0
     .quad __sum_progression_epilogue, 0

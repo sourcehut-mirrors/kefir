@@ -242,18 +242,12 @@
                     }
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 4,
-                        "index": 2
-                    }
+                    "opcode": "iadd1",
+                    "arg": 0
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 4,
-                        "index": 3
-                    }
+                    "opcode": "iadd1",
+                    "arg": 0
                 },
                 {
                     "opcode": "pick",
@@ -296,18 +290,12 @@
                     }
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 4,
-                        "index": 5
-                    }
+                    "opcode": "iadd1",
+                    "arg": 0
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 4,
-                        "index": 6
-                    }
+                    "opcode": "iadd1",
+                    "arg": 0
                 },
                 {
                     "opcode": "pick",
@@ -421,18 +409,12 @@
                     }
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 4,
-                        "index": 5
-                    }
+                    "opcode": "iadd1",
+                    "arg": 0
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 4,
-                        "index": 8
-                    }
+                    "opcode": "iadd1",
+                    "arg": 4
                 },
                 {
                     "opcode": "pick",
@@ -460,18 +442,12 @@
                     }
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 4,
-                        "index": 10
-                    }
+                    "opcode": "iadd1",
+                    "arg": 0
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 4,
-                        "index": 11
-                    }
+                    "opcode": "iadd1",
+                    "arg": 0
                 },
                 {
                     "opcode": "pick",

@@ -67,11 +67,8 @@
                     "arg": 10
                 },
                 {
-                    "opcode": "elementptr",
-                    "arg": {
-                        "type": 2,
-                        "index": 0
-                    }
+                    "opcode": "iaddx",
+                    "arg": 4
                 },
                 {
                     "opcode": "load64"

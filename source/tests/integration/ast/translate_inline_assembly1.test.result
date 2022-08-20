@@ -229,18 +229,12 @@
                     }
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 5,
-                        "index": 3
-                    }
+                    "opcode": "iadd1",
+                    "arg": 0
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 5,
-                        "index": 4
-                    }
+                    "opcode": "iadd1",
+                    "arg": 0
                 },
                 {
                     "opcode": "setldh",
@@ -282,11 +276,8 @@
                     }
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 12,
-                        "index": 2
-                    }
+                    "opcode": "iadd1",
+                    "arg": 1
                 },
                 {
                     "opcode": "getglobal",
@@ -305,18 +296,12 @@
                     }
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 12,
-                        "index": 4
-                    }
+                    "opcode": "iadd1",
+                    "arg": 0
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 12,
-                        "index": 5
-                    }
+                    "opcode": "iadd1",
+                    "arg": 0
                 },
                 {
                     "opcode": "setldh",

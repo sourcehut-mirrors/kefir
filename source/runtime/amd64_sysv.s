@@ -101,6 +101,7 @@ declare_opcode extend8
 declare_opcode extend16
 declare_opcode extend32
 declare_opcode offsetptr
+declare_opcode iaddx
 declare_opcode elementptr
 declare_opcode load8u
 declare_opcode load8i
@@ -450,6 +451,14 @@ define_opcode bnot
 define_opcode offsetptr
     pop DATA_REG
     add DATA_REG, [INSTR_ARG_PTR]
+    push DATA_REG
+    end_opcode
+
+define_opcode iaddx
+    pop DATA2_REG
+    pop DATA_REG
+    imul DATA2_REG, [INSTR_ARG_PTR]
+    add DATA_REG, DATA2_REG
     push DATA_REG
     end_opcode
 

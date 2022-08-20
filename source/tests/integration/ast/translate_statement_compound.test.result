@@ -196,11 +196,8 @@
                     }
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 8,
-                        "index": 4
-                    }
+                    "opcode": "iadd1",
+                    "arg": 16
                 },
                 {
                     "opcode": "pick",
@@ -224,18 +221,12 @@
                     }
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 8,
-                        "index": 4
-                    }
+                    "opcode": "iadd1",
+                    "arg": 16
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 8,
-                        "index": 7
-                    }
+                    "opcode": "iadd1",
+                    "arg": 8
                 },
                 {
                     "opcode": "pick",
@@ -259,18 +250,12 @@
                     }
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 8,
-                        "index": 2
-                    }
+                    "opcode": "iadd1",
+                    "arg": 0
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 8,
-                        "index": 3
-                    }
+                    "opcode": "iadd1",
+                    "arg": 0
                 },
                 {
                     "opcode": "setldh",
@@ -291,11 +276,8 @@
                     }
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 8,
-                        "index": 4
-                    }
+                    "opcode": "iadd1",
+                    "arg": 16
                 },
                 {
                     "opcode": "load32i"
@@ -308,18 +290,12 @@
                     }
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 8,
-                        "index": 4
-                    }
+                    "opcode": "iadd1",
+                    "arg": 16
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 8,
-                        "index": 7
-                    }
+                    "opcode": "iadd1",
+                    "arg": 8
                 },
                 {
                     "opcode": "load64"
@@ -338,18 +314,12 @@
                     }
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 8,
-                        "index": 4
-                    }
+                    "opcode": "iadd1",
+                    "arg": 16
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 8,
-                        "index": 8
-                    }
+                    "opcode": "iadd1",
+                    "arg": 16
                 },
                 {
                     "opcode": "xchg",
@@ -377,18 +347,12 @@
                     }
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 8,
-                        "index": 4
-                    }
+                    "opcode": "iadd1",
+                    "arg": 16
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 8,
-                        "index": 8
-                    }
+                    "opcode": "iadd1",
+                    "arg": 16
                 },
                 {
                     "opcode": "load32u"
@@ -401,11 +365,8 @@
                     }
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 8,
-                        "index": 4
-                    }
+                    "opcode": "iadd1",
+                    "arg": 16
                 },
                 {
                     "opcode": "pick",
@@ -456,18 +417,12 @@
                     }
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 8,
-                        "index": 4
-                    }
+                    "opcode": "iadd1",
+                    "arg": 16
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 8,
-                        "index": 8
-                    }
+                    "opcode": "iadd1",
+                    "arg": 16
                 },
                 {
                     "opcode": "load32u"
@@ -480,18 +435,12 @@
                     }
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 8,
-                        "index": 4
-                    }
+                    "opcode": "iadd1",
+                    "arg": 16
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 8,
-                        "index": 7
-                    }
+                    "opcode": "iadd1",
+                    "arg": 8
                 },
                 {
                     "opcode": "pick",

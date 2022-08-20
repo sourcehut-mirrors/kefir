@@ -320,11 +320,8 @@
                     }
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 1,
-                        "index": 2
-                    }
+                    "opcode": "iadd1",
+                    "arg": 8
                 },
                 {
                     "opcode": "getlocal",
@@ -358,11 +355,8 @@
                     }
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 1,
-                        "index": 2
-                    }
+                    "opcode": "iadd1",
+                    "arg": 8
                 },
                 {
                     "opcode": "getglobal",
@@ -371,18 +365,12 @@
                     }
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 1,
-                        "index": 2
-                    }
+                    "opcode": "iadd1",
+                    "arg": 8
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 17,
-                        "index": 2
-                    }
+                    "opcode": "iadd1",
+                    "arg": 8
                 }
             ]
         },
@@ -405,11 +393,8 @@
                     "opcode": "load64"
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 20,
-                        "index": 2
-                    }
+                    "opcode": "iadd1",
+                    "arg": 8
                 }
             ]
         },
@@ -429,11 +414,8 @@
                     "arg": 2
                 },
                 {
-                    "opcode": "elementptr",
-                    "arg": {
-                        "type": 12,
-                        "index": 0
-                    }
+                    "opcode": "iaddx",
+                    "arg": 1
                 },
                 {
                     "opcode": "getglobal",
@@ -449,11 +431,8 @@
                     "arg": 100
                 },
                 {
-                    "opcode": "elementptr",
-                    "arg": {
-                        "type": 13,
-                        "index": 0
-                    }
+                    "opcode": "iaddx",
+                    "arg": 4
                 }
             ]
         }

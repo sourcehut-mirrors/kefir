@@ -405,18 +405,12 @@
                     }
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 28,
-                        "index": 2
-                    }
+                    "opcode": "iadd1",
+                    "arg": 0
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 28,
-                        "index": 3
-                    }
+                    "opcode": "iadd1",
+                    "arg": 0
                 },
                 {
                     "opcode": "setldh",
@@ -462,18 +456,12 @@
                     }
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 31,
-                        "index": 2
-                    }
+                    "opcode": "iadd1",
+                    "arg": 0
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 31,
-                        "index": 3
-                    }
+                    "opcode": "iadd1",
+                    "arg": 0
                 },
                 {
                     "opcode": "setldh",
@@ -502,18 +490,12 @@
                     }
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 31,
-                        "index": 2
-                    }
+                    "opcode": "iadd1",
+                    "arg": 0
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 31,
-                        "index": 4
-                    }
+                    "opcode": "iadd1",
+                    "arg": 16
                 },
                 {
                     "opcode": "setldh",
@@ -649,18 +631,12 @@
                     }
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 13,
-                        "index": 2
-                    }
+                    "opcode": "iadd1",
+                    "arg": 0
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 13,
-                        "index": 3
-                    }
+                    "opcode": "iadd1",
+                    "arg": 0
                 },
                 {
                     "opcode": "setldh",
@@ -709,18 +685,12 @@
                     }
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 16,
-                        "index": 2
-                    }
+                    "opcode": "iadd1",
+                    "arg": 0
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 16,
-                        "index": 3
-                    }
+                    "opcode": "iadd1",
+                    "arg": 0
                 },
                 {
                     "opcode": "setldh",
@@ -752,18 +722,12 @@
                     }
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 16,
-                        "index": 2
-                    }
+                    "opcode": "iadd1",
+                    "arg": 0
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 16,
-                        "index": 4
-                    }
+                    "opcode": "iadd1",
+                    "arg": 16
                 },
                 {
                     "opcode": "setldh",

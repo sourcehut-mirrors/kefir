@@ -63,6 +63,8 @@ kefir_result_t kefir_ir_format_instr(struct kefir_json_output *json, const struc
             return kefir_ir_format_instr_none(json, module, instr);
         case KEFIR_IROPCODE_IADD1:
             return kefir_ir_format_instr_i64(json, module, instr);
+        case KEFIR_IROPCODE_IADDX:
+            return kefir_ir_format_instr_u64(json, module, instr);
         case KEFIR_IROPCODE_ISUB:
             return kefir_ir_format_instr_none(json, module, instr);
         case KEFIR_IROPCODE_IMUL:
@@ -115,10 +117,6 @@ kefir_result_t kefir_ir_format_instr(struct kefir_json_output *json, const struc
             return kefir_ir_format_instr_none(json, module, instr);
         case KEFIR_IROPCODE_EXTEND32:
             return kefir_ir_format_instr_none(json, module, instr);
-        case KEFIR_IROPCODE_OFFSETPTR:
-            return kefir_ir_format_instr_typeref(json, module, instr);
-        case KEFIR_IROPCODE_ELEMENTPTR:
-            return kefir_ir_format_instr_typeref(json, module, instr);
         case KEFIR_IROPCODE_GETGLOBAL:
             return kefir_ir_format_instr_identifier(json, module, instr);
         case KEFIR_IROPCODE_GETLOCAL:

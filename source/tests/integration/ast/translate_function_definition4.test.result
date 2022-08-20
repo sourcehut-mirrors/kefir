@@ -155,11 +155,8 @@
                     }
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 8,
-                        "index": 2
-                    }
+                    "opcode": "iadd1",
+                    "arg": 4
                 },
                 {
                     "opcode": "pick",
@@ -217,11 +214,8 @@
                     }
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 8,
-                        "index": 2
-                    }
+                    "opcode": "iadd1",
+                    "arg": 4
                 },
                 {
                     "opcode": "pick",
@@ -302,11 +296,8 @@
                     }
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 8,
-                        "index": 2
-                    }
+                    "opcode": "iadd1",
+                    "arg": 4
                 },
                 {
                     "opcode": "load32i"

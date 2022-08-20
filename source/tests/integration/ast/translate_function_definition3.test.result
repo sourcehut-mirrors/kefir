@@ -226,11 +226,8 @@
                     "opcode": "load64"
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 11,
-                        "index": 2
-                    }
+                    "opcode": "iadd1",
+                    "arg": 8
                 },
                 {
                     "opcode": "load64"
@@ -249,11 +246,8 @@
                     "opcode": "load64"
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 12,
-                        "index": 3
-                    }
+                    "opcode": "iadd1",
+                    "arg": 16
                 },
                 {
                     "opcode": "xchg",

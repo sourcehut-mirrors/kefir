@@ -198,7 +198,20 @@ kefir_result_t kefir_ast_translator_evaluate_type_layout(struct kefir_mem *mem,
         layout->properties.relative_offset = 0;
         layout->properties.aligned = false;
         layout->properties.alignment = 0;
+    } else if (layout->type != NULL && KEFIR_AST_TYPE_IS_VL_ARRAY(layout->type)) {
+        struct kefir_ir_target_type_info type_info;
+        REQUIRE_CHAIN(&res, KEFIR_IR_TARGET_PLATFORM_TYPE_INFO(mem, env->target_platform, param.platform_type,
+                                                               layout->vl_array.array_ptr_field, &type_info));
+        layout->vl_array.array_ptr_relative_offset = type_info.relative_offset;
+        REQUIRE_CHAIN(&res, KEFIR_IR_TARGET_PLATFORM_TYPE_INFO(mem, env->target_platform, param.platform_type,
+                                                               layout->vl_array.array_size_field, &type_info));
+        layout->vl_array.array_size_relative_offset = type_info.relative_offset;
     }
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_IR_TARGET_PLATFORM_FREE_TYPE(mem, env->target_platform, param.platform_type);
+        kefir_hashtree_free(mem, &tree);
+        return res;
+    });
 
     REQUIRE_OK(KEFIR_IR_TARGET_PLATFORM_FREE_TYPE(mem, env->target_platform, param.platform_type));
     REQUIRE_OK(kefir_hashtree_free(mem, &tree));

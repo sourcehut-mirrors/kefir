@@ -499,11 +499,8 @@
                     "opcode": "load64"
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 15,
-                        "index": 3
-                    }
+                    "opcode": "iadd1",
+                    "arg": 4
                 },
                 {
                     "opcode": "iadd1",
@@ -529,11 +526,8 @@
                     "opcode": "load64"
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 17,
-                        "index": 3
-                    }
+                    "opcode": "iadd1",
+                    "arg": 4
                 },
                 {
                     "opcode": "iadd1",
@@ -559,11 +553,8 @@
                     "opcode": "load64"
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 19,
-                        "index": 4
-                    }
+                    "opcode": "iadd1",
+                    "arg": 5
                 },
                 {
                     "opcode": "iadd1",

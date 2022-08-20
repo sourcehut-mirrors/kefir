@@ -44,6 +44,9 @@ typedef struct kefir_ast_array_type_layout {
 typedef struct kefir_ast_vl_array_type_layout {
     kefir_size_t array_ptr_field;
     kefir_size_t array_size_field;
+
+    kefir_size_t array_ptr_relative_offset;
+    kefir_size_t array_size_relative_offset;
 } kefir_ast_vl_array_type_layout_t;
 
 typedef struct kefir_ast_custom_type_layout {

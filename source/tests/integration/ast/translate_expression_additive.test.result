@@ -289,11 +289,8 @@
                     "opcode": "ineg"
                 },
                 {
-                    "opcode": "elementptr",
-                    "arg": {
-                        "type": 23,
-                        "index": 0
-                    }
+                    "opcode": "iaddx",
+                    "arg": 1
                 },
                 {
                     "opcode": "push",
@@ -307,11 +304,8 @@
                     "opcode": "ineg"
                 },
                 {
-                    "opcode": "elementptr",
-                    "arg": {
-                        "type": 24,
-                        "index": 0
-                    }
+                    "opcode": "iaddx",
+                    "arg": 2
                 },
                 {
                     "opcode": "push",
@@ -325,11 +319,8 @@
                     "opcode": "ineg"
                 },
                 {
-                    "opcode": "elementptr",
-                    "arg": {
-                        "type": 25,
-                        "index": 0
-                    }
+                    "opcode": "iaddx",
+                    "arg": 4
                 },
                 {
                     "opcode": "push",
@@ -343,11 +334,8 @@
                     "opcode": "ineg"
                 },
                 {
-                    "opcode": "elementptr",
-                    "arg": {
-                        "type": 26,
-                        "index": 0
-                    }
+                    "opcode": "iaddx",
+                    "arg": 8
                 }
             ]
         },
@@ -365,11 +353,8 @@
                     "arg": 67
                 },
                 {
-                    "opcode": "elementptr",
-                    "arg": {
-                        "type": 11,
-                        "index": 0
-                    }
+                    "opcode": "iaddx",
+                    "arg": 2
                 },
                 {
                     "opcode": "push",
@@ -380,11 +365,8 @@
                     "arg": -5
                 },
                 {
-                    "opcode": "elementptr",
-                    "arg": {
-                        "type": 12,
-                        "index": 0
-                    }
+                    "opcode": "iaddx",
+                    "arg": 8
                 },
                 {
                     "opcode": "push",
@@ -395,11 +377,8 @@
                     "arg": 100
                 },
                 {
-                    "opcode": "elementptr",
-                    "arg": {
-                        "type": 13,
-                        "index": 0
-                    }
+                    "opcode": "iaddx",
+                    "arg": 4
                 },
                 {
                     "opcode": "push",
@@ -410,11 +389,8 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "elementptr",
-                    "arg": {
-                        "type": 14,
-                        "index": 0
-                    }
+                    "opcode": "iaddx",
+                    "arg": 8
                 }
             ]
         },

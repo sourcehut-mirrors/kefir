@@ -207,18 +207,12 @@
                     }
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 7,
-                        "index": 2
-                    }
+                    "opcode": "iadd1",
+                    "arg": 0
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 7,
-                        "index": 3
-                    }
+                    "opcode": "iadd1",
+                    "arg": 0
                 },
                 {
                     "opcode": "setldh",
@@ -296,18 +290,12 @@
                     }
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 13,
-                        "index": 2
-                    }
+                    "opcode": "iadd1",
+                    "arg": 0
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 13,
-                        "index": 3
-                    }
+                    "opcode": "iadd1",
+                    "arg": 0
                 },
                 {
                     "opcode": "setldh",

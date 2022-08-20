@@ -146,9 +146,8 @@ static kefir_result_t translate_addition(struct kefir_mem *mem, struct kefir_ast
             REQUIRE_CHAIN(&res, kefir_ast_translate_expression(mem, node->arg2, builder, context));
             REQUIRE_CHAIN(&res, kefir_ast_translate_expression(mem, node->arg1, builder, context));
         }
-        REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU32(builder, KEFIR_IROPCODE_ELEMENTPTR,
-                                                            translator_type->object.ir_type_id,
-                                                            translator_type->object.layout->value));
+        REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IADDX,
+                                                            translator_type->object.layout->properties.size));
 
         REQUIRE_ELSE(res == KEFIR_OK, {
             kefir_ast_translator_type_free(mem, translator_type);
@@ -229,9 +228,8 @@ static kefir_result_t translate_subtraction(struct kefir_mem *mem, struct kefir_
 
         kefir_result_t res = KEFIR_OK;
         REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_INEG, 0));
-        REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU32(builder, KEFIR_IROPCODE_ELEMENTPTR,
-                                                            translator_type->object.ir_type_id,
-                                                            translator_type->object.layout->value));
+        REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IADDX,
+                                                            translator_type->object.layout->properties.size));
 
         REQUIRE_ELSE(res == KEFIR_OK, {
             kefir_ast_translator_type_free(mem, translator_type);

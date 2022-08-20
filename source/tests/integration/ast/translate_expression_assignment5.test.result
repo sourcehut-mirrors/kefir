@@ -453,11 +453,8 @@
                     "arg": 2
                 },
                 {
-                    "opcode": "elementptr",
-                    "arg": {
-                        "type": 23,
-                        "index": 0
-                    }
+                    "opcode": "iaddx",
+                    "arg": 1
                 },
                 {
                     "opcode": "xchg",
@@ -549,11 +546,8 @@
                     "arg": 2
                 },
                 {
-                    "opcode": "elementptr",
-                    "arg": {
-                        "type": 26,
-                        "index": 0
-                    }
+                    "opcode": "iaddx",
+                    "arg": 64
                 },
                 {
                     "opcode": "xchg",

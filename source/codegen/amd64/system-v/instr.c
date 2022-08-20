@@ -171,30 +171,6 @@ kefir_result_t kefir_amd64_sysv_instruction(struct kefir_mem *mem, struct kefir_
                 kefir_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[2], instr->arg.u32[1])));
         } break;
 
-        case KEFIR_IROPCODE_OFFSETPTR:
-        case KEFIR_IROPCODE_ELEMENTPTR: {
-            const kefir_id_t type_id = (kefir_id_t) instr->arg.u32[0];
-            const kefir_size_t type_index = (kefir_size_t) instr->arg.u32[1];
-            struct kefir_vector *layout = kefir_codegen_amd64_sysv_module_type_layout(mem, sysv_module, type_id);
-            REQUIRE(layout != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unknown named type"));
-            ASSIGN_DECL_CAST(struct kefir_amd64_sysv_data_layout *, entry, kefir_vector_at(layout, type_index));
-            REQUIRE(entry != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unable to retrieve type node at index"));
-            const char *opcode_symbol = NULL;
-            if (instr->opcode == KEFIR_IROPCODE_OFFSETPTR) {
-                REQUIRE_OK(cg_symbolic_opcode(KEFIR_IROPCODE_OFFSETPTR, &opcode_symbol));
-                REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
-                    &codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 2,
-                    kefir_amd64_xasmgen_operand_label(&codegen->xasmgen_helpers.operands[0], opcode_symbol),
-                    kefir_amd64_xasmgen_operand_imm(&codegen->xasmgen_helpers.operands[1], entry->relative_offset)));
-            } else {
-                REQUIRE_OK(cg_symbolic_opcode(KEFIR_IROPCODE_ELEMENTPTR, &opcode_symbol));
-                REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
-                    &codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 2,
-                    kefir_amd64_xasmgen_operand_label(&codegen->xasmgen_helpers.operands[0], opcode_symbol),
-                    kefir_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[1], entry->size)));
-            }
-        } break;
-
         case KEFIR_IROPCODE_GETLOCAL: {
             const kefir_id_t type_id = (kefir_id_t) instr->arg.u32[0];
             const kefir_size_t type_index = (kefir_size_t) instr->arg.u32[1];

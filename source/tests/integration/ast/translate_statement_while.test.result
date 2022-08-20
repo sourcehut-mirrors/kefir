@@ -198,11 +198,8 @@
                     "opcode": "load32u"
                 },
                 {
-                    "opcode": "elementptr",
-                    "arg": {
-                        "type": 9,
-                        "index": 0
-                    }
+                    "opcode": "iaddx",
+                    "arg": 1
                 },
                 {
                     "opcode": "load8i"
@@ -334,18 +331,12 @@
                     }
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 13,
-                        "index": 2
-                    }
+                    "opcode": "iadd1",
+                    "arg": 0
                 },
                 {
-                    "opcode": "offsetptr",
-                    "arg": {
-                        "type": 13,
-                        "index": 3
-                    }
+                    "opcode": "iadd1",
+                    "arg": 0
                 },
                 {
                     "opcode": "setldh",
