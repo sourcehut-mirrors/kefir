@@ -29,6 +29,7 @@
 #include "kefir/ast-translator/translator.h"
 #include "kefir/preprocessor/tokenizer.h"
 #include "kefir/ast/downcast.h"
+#include "kefir/ir/compact.h"
 
 static void *kefir_malloc(struct kefir_mem *mem, kefir_size_t sz) {
     UNUSED(mem);
@@ -408,7 +409,8 @@ kefir_result_t kefir_compiler_analyze(struct kefir_mem *mem, struct kefir_compil
 }
 
 kefir_result_t kefir_compiler_translate(struct kefir_mem *mem, struct kefir_compiler_context *context,
-                                        struct kefir_ast_translation_unit *unit, struct kefir_ir_module *module) {
+                                        struct kefir_ast_translation_unit *unit, struct kefir_ir_module *module,
+                                        kefir_bool_t compaction) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid compiler context"));
     REQUIRE(unit != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST translation unit"));
@@ -444,6 +446,10 @@ kefir_result_t kefir_compiler_translate(struct kefir_mem *mem, struct kefir_comp
         return res;
     });
     REQUIRE_OK(kefir_ast_translator_context_free(mem, &translator_context));
+
+    if (compaction) {
+        REQUIRE_OK(kefir_ir_module_compact(mem, module));
+    }
     return KEFIR_OK;
 }
 

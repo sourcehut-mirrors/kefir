@@ -296,7 +296,7 @@ static kefir_result_t dump_ir_impl(struct kefir_mem *mem, const struct kefir_com
     REQUIRE_OK(kefir_compiler_parse(mem, compiler, &tokens, &unit));
     REQUIRE_OK(kefir_compiler_analyze(mem, compiler, KEFIR_AST_NODE_BASE(unit)));
     REQUIRE_OK(kefir_ir_module_alloc(mem, &module));
-    REQUIRE_OK(kefir_compiler_translate(mem, compiler, unit, &module));
+    REQUIRE_OK(kefir_compiler_translate(mem, compiler, unit, &module, true));
 
     REQUIRE_OK(kefir_ir_format_module(output, &module));
 
@@ -324,7 +324,7 @@ static kefir_result_t dump_asm_impl(struct kefir_mem *mem, const struct kefir_co
     REQUIRE_OK(kefir_compiler_parse(mem, compiler, &tokens, &unit));
     REQUIRE_OK(kefir_compiler_analyze(mem, compiler, KEFIR_AST_NODE_BASE(unit)));
     REQUIRE_OK(kefir_ir_module_alloc(mem, &module));
-    REQUIRE_OK(kefir_compiler_translate(mem, compiler, unit, &module));
+    REQUIRE_OK(kefir_compiler_translate(mem, compiler, unit, &module, true));
     REQUIRE_OK(kefir_compiler_codegen(mem, compiler, &module, output));
 
     REQUIRE_OK(kefir_ir_module_free(mem, &module));
