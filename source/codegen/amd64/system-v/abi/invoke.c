@@ -241,15 +241,6 @@ static kefir_result_t aggregate_argument(const struct kefir_ir_type *type, kefir
     return KEFIR_OK;
 }
 
-static kefir_result_t visit_pad(const struct kefir_ir_type *type, kefir_size_t index,
-                                const struct kefir_ir_typeentry *typeentry, void *payload) {
-    UNUSED(type);
-    UNUSED(index);
-    UNUSED(typeentry);
-    UNUSED(payload);
-    return KEFIR_OK;
-}
-
 static kefir_result_t builtin_argument(const struct kefir_ir_type *type, kefir_size_t index,
                                        const struct kefir_ir_typeentry *typeentry, void *payload) {
     UNUSED(typeentry);
@@ -278,8 +269,6 @@ kefir_result_t invoke_prologue(struct kefir_codegen_amd64 *codegen, const struct
     visitor.visit[KEFIR_IR_TYPE_STRUCT] = aggregate_argument;
     visitor.visit[KEFIR_IR_TYPE_ARRAY] = aggregate_argument;
     visitor.visit[KEFIR_IR_TYPE_UNION] = aggregate_argument;
-    visitor.visit[KEFIR_IR_TYPE_MEMORY] = aggregate_argument;
-    visitor.visit[KEFIR_IR_TYPE_PAD] = visit_pad;
     visitor.visit[KEFIR_IR_TYPE_BUILTIN] = builtin_argument;
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(&codegen->xasmgen,
@@ -483,8 +472,6 @@ kefir_result_t invoke_epilogue(struct kefir_codegen_amd64 *codegen, const struct
     visitor.visit[KEFIR_IR_TYPE_STRUCT] = aggregate_return;
     visitor.visit[KEFIR_IR_TYPE_UNION] = aggregate_return;
     visitor.visit[KEFIR_IR_TYPE_ARRAY] = aggregate_return;
-    visitor.visit[KEFIR_IR_TYPE_MEMORY] = aggregate_return;
-    visitor.visit[KEFIR_IR_TYPE_PAD] = visit_pad;
     visitor.visit[KEFIR_IR_TYPE_BUILTIN] = builtin_return;
     REQUIRE(kefir_ir_type_nodes(decl->decl->result) <= 1,
             KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Function cannot return more than one value"));

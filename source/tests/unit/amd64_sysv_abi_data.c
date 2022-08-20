@@ -57,14 +57,12 @@ DEFINE_CASE(amd64_sysv_abi_data_test2, "AMD64 System V ABI - single struct") {
     ASSERT_OK(kefir_irbuilder_type_append_v(&kft_mem, &type, KEFIR_IR_TYPE_STRUCT, 0, 4));
     ASSERT_OK(kefir_irbuilder_type_append_v(&kft_mem, &type, KEFIR_IR_TYPE_INT64, 0, 0));
     ASSERT_OK(kefir_irbuilder_type_append_v(&kft_mem, &type, KEFIR_IR_TYPE_INT8, 0, 0));
-    ASSERT_OK(kefir_irbuilder_type_append_v(&kft_mem, &type, KEFIR_IR_TYPE_MEMORY, 0, 13));
     ASSERT_OK(kefir_irbuilder_type_append_v(&kft_mem, &type, KEFIR_IR_TYPE_FLOAT32, 0, 0));
     ASSERT_OK(kefir_amd64_sysv_type_layout(&type, &kft_mem, &vector));
-    ASSERT_DATA_ALLOC(&vector, 0, 32, 8, 0);
+    ASSERT_DATA_ALLOC(&vector, 0, 16, 8, 0);
     ASSERT_DATA_ALLOC(&vector, 1, 8, 8, 0);
     ASSERT_DATA_ALLOC(&vector, 2, 1, 1, 8);
-    ASSERT_DATA_ALLOC(&vector, 3, 13, 1, 9);
-    ASSERT_DATA_ALLOC(&vector, 4, 4, 4, 24);
+    ASSERT_DATA_ALLOC(&vector, 3, 4, 4, 12);
     ASSERT_OK(kefir_vector_free(&kft_mem, &vector));
     ASSERT_OK(kefir_ir_type_free(&kft_mem, &type));
 }
@@ -77,14 +75,12 @@ DEFINE_CASE(amd64_sysv_abi_data_test3, "AMD64 System V ABI - single union") {
     ASSERT_OK(kefir_irbuilder_type_append_v(&kft_mem, &type, KEFIR_IR_TYPE_UNION, 0, 4));
     ASSERT_OK(kefir_irbuilder_type_append_v(&kft_mem, &type, KEFIR_IR_TYPE_INT64, 0, 0));
     ASSERT_OK(kefir_irbuilder_type_append_v(&kft_mem, &type, KEFIR_IR_TYPE_INT8, 0, 0));
-    ASSERT_OK(kefir_irbuilder_type_append_v(&kft_mem, &type, KEFIR_IR_TYPE_MEMORY, 0, 13));
     ASSERT_OK(kefir_irbuilder_type_append_v(&kft_mem, &type, KEFIR_IR_TYPE_FLOAT32, 0, 0));
     ASSERT_OK(kefir_amd64_sysv_type_layout(&type, &kft_mem, &vector));
-    ASSERT_DATA_ALLOC(&vector, 0, 16, 8, 0);
+    ASSERT_DATA_ALLOC(&vector, 0, 8, 8, 0);
     ASSERT_DATA_ALLOC(&vector, 1, 8, 8, 0);
     ASSERT_DATA_ALLOC(&vector, 2, 1, 1, 0);
-    ASSERT_DATA_ALLOC(&vector, 3, 13, 1, 0);
-    ASSERT_DATA_ALLOC(&vector, 4, 4, 4, 0);
+    ASSERT_DATA_ALLOC(&vector, 3, 4, 4, 0);
     ASSERT_OK(kefir_vector_free(&kft_mem, &vector));
     ASSERT_OK(kefir_ir_type_free(&kft_mem, &type));
 }
@@ -96,26 +92,25 @@ DEFINE_CASE(amd64_sysv_abi_data_test4, "AMD64 System V ABI - nested structs") {
     ASSERT_OK(kefir_ir_type_alloc(&kft_mem, 11, &type));
     ASSERT_OK(kefir_irbuilder_type_append_v(&kft_mem, &type, KEFIR_IR_TYPE_STRUCT, 0, 4));
     ASSERT_OK(kefir_irbuilder_type_append_v(&kft_mem, &type, KEFIR_IR_TYPE_INT8, 0, 0));
-    ASSERT_OK(kefir_irbuilder_type_append_v(&kft_mem, &type, KEFIR_IR_TYPE_STRUCT, 0, 4));
+    ASSERT_OK(kefir_irbuilder_type_append_v(&kft_mem, &type, KEFIR_IR_TYPE_STRUCT, 0, 3));
     ASSERT_OK(kefir_irbuilder_type_append_v(&kft_mem, &type, KEFIR_IR_TYPE_INT64, 0, 0));
     ASSERT_OK(kefir_irbuilder_type_append_v(&kft_mem, &type, KEFIR_IR_TYPE_WORD, 0, 0));
     ASSERT_OK(kefir_irbuilder_type_append_v(&kft_mem, &type, KEFIR_IR_TYPE_UNION, 0, 2));
     ASSERT_OK(kefir_irbuilder_type_append_v(&kft_mem, &type, KEFIR_IR_TYPE_FLOAT32, 0, 0));
-    ASSERT_OK(kefir_irbuilder_type_append_v(&kft_mem, &type, KEFIR_IR_TYPE_MEMORY, 0, 20));
     ASSERT_OK(kefir_irbuilder_type_append_v(&kft_mem, &type, KEFIR_IR_TYPE_CHAR, 0, 0));
     ASSERT_OK(kefir_irbuilder_type_append_v(&kft_mem, &type, KEFIR_IR_TYPE_FLOAT64, 0, 0));
     ASSERT_OK(kefir_irbuilder_type_append_v(&kft_mem, &type, KEFIR_IR_TYPE_INT8, 0, 0));
     ASSERT_OK(kefir_amd64_sysv_type_layout(&type, &kft_mem, &vector));
-    ASSERT_DATA_ALLOC(&vector, 0, 64, 8, 0);
+    ASSERT_DATA_ALLOC(&vector, 0, 48, 8, 0);
     ASSERT_DATA_ALLOC(&vector, 1, 1, 1, 0);
-    ASSERT_DATA_ALLOC(&vector, 2, 40, 8, 8);
+    ASSERT_DATA_ALLOC(&vector, 2, 24, 8, 8);
     ASSERT_DATA_ALLOC(&vector, 3, 8, 8, 0);
     ASSERT_DATA_ALLOC(&vector, 4, 8, 8, 8);
-    ASSERT_DATA_ALLOC(&vector, 5, 20, 4, 16);
+    ASSERT_DATA_ALLOC(&vector, 5, 4, 4, 16);
     ASSERT_DATA_ALLOC(&vector, 6, 4, 4, 0);
-    ASSERT_DATA_ALLOC(&vector, 7, 20, 1, 0);
-    ASSERT_DATA_ALLOC(&vector, 8, 1, 1, 36);
-    ASSERT_DATA_ALLOC(&vector, 9, 8, 8, 48);
+    ASSERT_DATA_ALLOC(&vector, 7, 1, 1, 0);
+    ASSERT_DATA_ALLOC(&vector, 8, 8, 8, 32);
+    ASSERT_DATA_ALLOC(&vector, 9, 1, 1, 40);
     ASSERT_OK(kefir_vector_free(&kft_mem, &vector));
     ASSERT_OK(kefir_ir_type_free(&kft_mem, &type));
 }
@@ -203,7 +198,6 @@ DEFINE_CASE(amd64_sysv_abi_data_test8, "AMD64 System V ABI - eightbyte allocatio
     ASSERT_OK(kefir_irbuilder_type_append_v(&kft_mem, &type, KEFIR_IR_TYPE_INT32, 0, 0));
     ASSERT_OK(kefir_irbuilder_type_append_v(&kft_mem, &type, KEFIR_IR_TYPE_INT8, 0, 0));
     ASSERT_OK(kefir_irbuilder_type_append_v(&kft_mem, &type, KEFIR_IR_TYPE_INT32, 0, 0));
-    ASSERT_OK(kefir_irbuilder_type_append_v(&kft_mem, &type, KEFIR_IR_TYPE_MEMORY, 0, 10));
     ASSERT_OK(kefir_irbuilder_type_append_v(&kft_mem, &type, KEFIR_IR_TYPE_INT8, 0, 0));
     ASSERT_OK(kefir_amd64_sysv_type_layout(&type, &kft_mem, &vector));
     ASSERT_OK(kefir_amd64_sysv_abi_qwords_count(&type, &vector, &qword_count));
@@ -224,10 +218,10 @@ DEFINE_CASE(amd64_sysv_abi_data_test8, "AMD64 System V ABI - eightbyte allocatio
     ASSERT(ref.qword->index == 3 && ref.offset == 4);
     ASSERT_OK(kefir_amd64_sysv_abi_qwords_next(&qwords, KEFIR_AMD64_SYSV_PARAM_INTEGER, 4, 4, &ref));
     ASSERT(ref.qword->index == 4 && ref.offset == 0);
-    ASSERT_OK(kefir_amd64_sysv_abi_qwords_next(&qwords, KEFIR_AMD64_SYSV_PARAM_INTEGER, 10, 1, &ref));
+    ASSERT_OK(kefir_amd64_sysv_abi_qwords_next(&qwords, KEFIR_AMD64_SYSV_PARAM_INTEGER, 1, 1, &ref));
     ASSERT(ref.qword->index == 4 && ref.offset == 4);
     ASSERT_OK(kefir_amd64_sysv_abi_qwords_next(&qwords, KEFIR_AMD64_SYSV_PARAM_INTEGER, 1, 1, &ref));
-    ASSERT(ref.qword->index == 5 && ref.offset == 6);
+    ASSERT(ref.qword->index == 4 && ref.offset == 5);
     ASSERT_OK(kefir_amd64_sysv_abi_qwords_free(&qwords, &kft_mem));
     ASSERT_OK(kefir_vector_free(&kft_mem, &vector));
     ASSERT_OK(kefir_ir_type_free(&kft_mem, &type));

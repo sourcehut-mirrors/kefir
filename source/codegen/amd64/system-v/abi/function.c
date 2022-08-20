@@ -70,8 +70,8 @@ static kefir_result_t update_frame_temporaries(struct kefir_amd64_sysv_function_
 
     struct kefir_ir_typeentry *typeentry = kefir_ir_type_at(decl->decl->result, 0);
     if (typeentry->typecode == KEFIR_IR_TYPE_STRUCT || typeentry->typecode == KEFIR_IR_TYPE_UNION ||
-        typeentry->typecode == KEFIR_IR_TYPE_ARRAY || typeentry->typecode == KEFIR_IR_TYPE_MEMORY ||
-        typeentry->typecode == KEFIR_IR_TYPE_BUILTIN || typeentry->typecode == KEFIR_IR_TYPE_LONG_DOUBLE) {
+        typeentry->typecode == KEFIR_IR_TYPE_ARRAY || typeentry->typecode == KEFIR_IR_TYPE_BUILTIN ||
+        typeentry->typecode == KEFIR_IR_TYPE_LONG_DOUBLE) {
         ASSIGN_DECL_CAST(struct kefir_amd64_sysv_data_layout *, layout, kefir_vector_at(&decl->returns.layout, 0));
         *size = MAX(*size, layout->size);
         *alignment = MAX(*alignment, layout->alignment);

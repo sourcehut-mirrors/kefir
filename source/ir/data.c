@@ -270,17 +270,6 @@ static kefir_result_t finalize_unsupported(const struct kefir_ir_type *type, kef
     return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unsupported IR data type");
 }
 
-static kefir_result_t finalize_pad(const struct kefir_ir_type *type, kefir_size_t index,
-                                   const struct kefir_ir_typeentry *typeentry, void *payload) {
-    UNUSED(type);
-    UNUSED(index);
-    UNUSED(typeentry);
-    REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid payload"));
-    ASSIGN_DECL_CAST(struct finalize_param *, param, payload);
-    param->slot++;
-    return KEFIR_OK;
-}
-
 static kefir_result_t finalize_scalar(const struct kefir_ir_type *type, kefir_size_t index,
                                       const struct kefir_ir_typeentry *typeentry, void *payload) {
     UNUSED(type);
@@ -417,8 +406,6 @@ kefir_result_t kefir_ir_data_finalize(struct kefir_ir_data *data) {
 
     REQUIRE_OK(kefir_ir_type_visitor_init(&visitor, finalize_unsupported));
     KEFIR_IR_TYPE_VISITOR_INIT_SCALARS(&visitor, finalize_scalar);
-    visitor.visit[KEFIR_IR_TYPE_MEMORY] = finalize_scalar;
-    visitor.visit[KEFIR_IR_TYPE_PAD] = finalize_pad;
     visitor.visit[KEFIR_IR_TYPE_STRUCT] = finalize_struct_union;
     visitor.visit[KEFIR_IR_TYPE_UNION] = finalize_struct_union;
     visitor.visit[KEFIR_IR_TYPE_ARRAY] = finalize_array;

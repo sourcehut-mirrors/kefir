@@ -767,15 +767,6 @@ static kefir_result_t vararg_visit_aggregate(const struct kefir_ir_type *type, k
     return KEFIR_OK;
 }
 
-static kefir_result_t vararg_visit_pad(const struct kefir_ir_type *type, kefir_size_t index,
-                                       const struct kefir_ir_typeentry *typeentry, void *payload) {
-    UNUSED(type);
-    UNUSED(index);
-    UNUSED(typeentry);
-    UNUSED(payload);
-    return KEFIR_OK;
-}
-
 static kefir_result_t vararg_visit_builtin_impl(struct kefir_mem *mem, struct kefir_vector *allocation,
                                                 kefir_size_t slot, const struct kefir_ir_typeentry *typeentry,
                                                 struct kefir_codegen_amd64 *codegen,
@@ -867,8 +858,6 @@ kefir_result_t kefir_codegen_amd64_sysv_vararg_instruction(struct kefir_mem *mem
             visitor.visit[KEFIR_IR_TYPE_STRUCT] = vararg_visit_aggregate;
             visitor.visit[KEFIR_IR_TYPE_UNION] = vararg_visit_aggregate;
             visitor.visit[KEFIR_IR_TYPE_ARRAY] = vararg_visit_aggregate;
-            visitor.visit[KEFIR_IR_TYPE_MEMORY] = vararg_visit_aggregate;
-            visitor.visit[KEFIR_IR_TYPE_PAD] = vararg_visit_pad;
             visitor.visit[KEFIR_IR_TYPE_BUILTIN] = vararg_visit_builtin;
             struct vararg_getter param = {.codegen = codegen,
                                           .sysv_module = sysv_module,

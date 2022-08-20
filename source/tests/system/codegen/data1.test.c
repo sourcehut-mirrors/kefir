@@ -51,8 +51,6 @@ union union1 {
 };
 extern union union1 union1_1;
 
-extern const char memory1_1[];
-extern const char pad1_1[];
 extern const char *pointer1_1;
 extern const char *strpointer1_1;
 
@@ -95,11 +93,7 @@ int main(int argc, const char **argv) {
     ASSERT(FLOAT_EQUALS(union1_1_copy.f2, 3.14, FLOAT_EPSILON));
     ASSERT(union1_1_copy.f3 == 100500);
 
-    ASSERT(strcmp(memory1_1, "Hello, cruel world!") == 0);
-    for (int i = 0; i < 10; i++) {
-        ASSERT(pad1_1[i] == 0);
-    }
-    ASSERT(strcmp(pointer1_1, "llo, cruel world!") == 0);
+    ASSERT(pointer1_1 == (void *) (((char *) &union1_1) + 2));
     ASSERT(strcmp(strpointer1_1, ", cruel world!") == 0);
     return EXIT_SUCCESS;
 }

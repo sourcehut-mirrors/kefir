@@ -233,9 +233,6 @@ struct format_param {
 
 static const char *typecode_to_string(kefir_ir_typecode_t typecode) {
     switch (typecode) {
-        case KEFIR_IR_TYPE_PAD:
-            return "pad";
-
         case KEFIR_IR_TYPE_STRUCT:
             return "struct";
 
@@ -244,9 +241,6 @@ static const char *typecode_to_string(kefir_ir_typecode_t typecode) {
 
         case KEFIR_IR_TYPE_UNION:
             return "union";
-
-        case KEFIR_IR_TYPE_MEMORY:
-            return "memory";
 
         case KEFIR_IR_TYPE_INT8:
             return "int8";
@@ -313,16 +307,6 @@ static kefir_result_t format_type_default(const struct kefir_ir_type *type, kefi
     REQUIRE_OK(kefir_json_output_string(param->json, type_literal));
 
     switch (typeentry->typecode) {
-        case KEFIR_IR_TYPE_PAD:
-            REQUIRE_OK(kefir_json_output_object_key(param->json, "length"));
-            REQUIRE_OK(kefir_json_output_integer(param->json, typeentry->param));
-            break;
-
-        case KEFIR_IR_TYPE_MEMORY:
-            REQUIRE_OK(kefir_json_output_object_key(param->json, "length"));
-            REQUIRE_OK(kefir_json_output_integer(param->json, typeentry->param));
-            break;
-
         case KEFIR_IR_TYPE_INT8:
         case KEFIR_IR_TYPE_INT16:
         case KEFIR_IR_TYPE_INT32:

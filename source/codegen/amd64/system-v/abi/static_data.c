@@ -499,57 +499,6 @@ static kefir_result_t array_static_data(const struct kefir_ir_type *type, kefir_
     return KEFIR_OK;
 }
 
-static kefir_result_t memory_static_data(const struct kefir_ir_type *type, kefir_size_t index,
-                                         const struct kefir_ir_typeentry *typeentry, void *payload) {
-    UNUSED(type);
-    UNUSED(typeentry);
-    REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid payload"));
-
-    ASSIGN_DECL_CAST(struct static_data_param *, param, payload);
-    const struct kefir_ir_data_value *entry;
-    REQUIRE_OK(kefir_ir_data_value_at(param->data, param->slot++, &entry));
-    ASSIGN_DECL_CAST(struct kefir_amd64_sysv_data_layout *, layout, kefir_vector_at(&param->layout, index));
-
-    REQUIRE_OK(align_offset(layout, param));
-    kefir_size_t start_offset = param->offset;
-
-    switch (entry->type) {
-        case KEFIR_IR_DATA_VALUE_UNDEFINED:
-            break;
-
-        case KEFIR_IR_DATA_VALUE_STRING:
-            REQUIRE_OK(dump_binary(param, entry->value.raw.data, entry->value.raw.length));
-            break;
-
-        case KEFIR_IR_DATA_VALUE_RAW: {
-            ASSIGN_DECL_CAST(const char *, raw, entry->value.raw.data);
-            REQUIRE_OK(dump_binary(param, raw, entry->value.raw.length));
-        } break;
-
-        default:
-            return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected memory data type");
-    }
-
-    REQUIRE_OK(trailing_padding(start_offset, layout, param));
-    return KEFIR_OK;
-}
-
-static kefir_result_t pad_static_data(const struct kefir_ir_type *type, kefir_size_t index,
-                                      const struct kefir_ir_typeentry *typeentry, void *payload) {
-    UNUSED(type);
-    UNUSED(typeentry);
-    REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid payload"));
-
-    ASSIGN_DECL_CAST(struct static_data_param *, param, payload);
-    ASSIGN_DECL_CAST(struct kefir_amd64_sysv_data_layout *, layout, kefir_vector_at(&param->layout, index));
-    param->slot++;
-
-    REQUIRE_OK(align_offset(layout, param));
-    REQUIRE_OK(KEFIR_AMD64_XASMGEN_ZERODATA(&param->codegen->xasmgen, layout->size));
-    param->offset += layout->size;
-    return KEFIR_OK;
-}
-
 static kefir_result_t builtin_static_data(const struct kefir_ir_type *type, kefir_size_t index,
                                           const struct kefir_ir_typeentry *typeentry, void *payload) {
     UNUSED(type);
@@ -620,8 +569,6 @@ kefir_result_t kefir_amd64_sysv_static_data(struct kefir_mem *mem, struct kefir_
     visitor.visit[KEFIR_IR_TYPE_ARRAY] = array_static_data;
     visitor.visit[KEFIR_IR_TYPE_STRUCT] = struct_static_data;
     visitor.visit[KEFIR_IR_TYPE_UNION] = union_static_data;
-    visitor.visit[KEFIR_IR_TYPE_MEMORY] = memory_static_data;
-    visitor.visit[KEFIR_IR_TYPE_PAD] = pad_static_data;
     visitor.visit[KEFIR_IR_TYPE_BUILTIN] = builtin_static_data;
 
     struct static_data_param param = {.codegen = codegen, .data = data, .visitor = &visitor, .slot = 0, .offset = 0};

@@ -26,13 +26,10 @@
 #include "kefir/core/mem.h"
 
 typedef enum kefir_ir_typecode {
-    // Padding
-    KEFIR_IR_TYPE_PAD = 0x0,
     // Aggregate types
     KEFIR_IR_TYPE_STRUCT,
     KEFIR_IR_TYPE_ARRAY,
     KEFIR_IR_TYPE_UNION,
-    KEFIR_IR_TYPE_MEMORY,
     // Fixed scalars
     KEFIR_IR_TYPE_INT8,
     KEFIR_IR_TYPE_INT16,

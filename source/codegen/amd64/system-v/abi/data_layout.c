@@ -154,31 +154,6 @@ static kefir_result_t calculate_sse_layout(const struct kefir_ir_type *type, kef
     return update_compound_type_layout(compound_type_layout, data, typeentry);
 }
 
-static kefir_result_t calculate_amorphous_layout(const struct kefir_ir_type *type, kefir_size_t index,
-                                                 const struct kefir_ir_typeentry *typeentry, void *payload) {
-    UNUSED(type);
-    struct compound_type_layout *compound_type_layout = (struct compound_type_layout *) payload;
-    ASSIGN_DECL_CAST(struct kefir_amd64_sysv_data_layout *, data, kefir_vector_at(compound_type_layout->vector, index));
-
-    switch (typeentry->typecode) {
-        case KEFIR_IR_TYPE_PAD:
-            data->size = typeentry->param;
-            data->alignment = 1;
-            break;
-
-        case KEFIR_IR_TYPE_MEMORY:
-            data->size = typeentry->param;
-            data->alignment = 1;
-            break;
-
-        default:
-            return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR,
-                                   KEFIR_AMD64_SYSV_ABI_ERROR_PREFIX "Unexpectedly encountered structured type");
-    }
-    data->aligned = true;
-    return update_compound_type_layout(compound_type_layout, data, typeentry);
-}
-
 static kefir_result_t calculate_struct_union_layout(const struct kefir_ir_type *type, kefir_size_t index,
                                                     const struct kefir_ir_typeentry *typeentry, void *payload) {
     struct compound_type_layout *compound_type_layout = (struct compound_type_layout *) payload;
@@ -246,8 +221,6 @@ static kefir_result_t calculate_layout(const struct kefir_ir_type *type, kefir_s
     KEFIR_IR_TYPE_VISITOR_INIT_INTEGERS(&visitor, calculate_integer_layout);
     KEFIR_IR_TYPE_VISITOR_INIT_FIXED_FP(&visitor, calculate_sse_layout);
     visitor.visit[KEFIR_IR_TYPE_LONG_DOUBLE] = calculate_sse_layout;
-    visitor.visit[KEFIR_IR_TYPE_PAD] = calculate_amorphous_layout;
-    visitor.visit[KEFIR_IR_TYPE_MEMORY] = calculate_amorphous_layout;
     visitor.visit[KEFIR_IR_TYPE_STRUCT] = calculate_struct_union_layout;
     visitor.visit[KEFIR_IR_TYPE_UNION] = calculate_struct_union_layout;
     visitor.visit[KEFIR_IR_TYPE_ARRAY] = calculate_array_layout;

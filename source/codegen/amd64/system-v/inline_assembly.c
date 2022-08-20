@@ -204,11 +204,9 @@ static kefir_result_t process_parameter_type(struct kefir_mem *mem, const struct
         case KEFIR_IR_TYPE_STRUCT:
         case KEFIR_IR_TYPE_ARRAY:
         case KEFIR_IR_TYPE_UNION:
-        case KEFIR_IR_TYPE_MEMORY:
             *param_type = INLINE_ASSEMBLY_PARAM_AGGREGATE;
             break;
 
-        case KEFIR_IR_TYPE_PAD:
         case KEFIR_IR_TYPE_BITS:
         case KEFIR_IR_TYPE_BUILTIN:
         case KEFIR_IR_TYPE_COUNT:
@@ -534,7 +532,6 @@ static kefir_result_t load_inputs(struct kefir_codegen_amd64 *codegen,
             case KEFIR_IR_TYPE_STRUCT:
             case KEFIR_IR_TYPE_ARRAY:
             case KEFIR_IR_TYPE_UNION:
-            case KEFIR_IR_TYPE_MEMORY:
                 switch (param_map->type) {
                     case INLINE_ASSEMBLY_PARAM_REGISTER_DIRECT: {
                         REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
@@ -574,7 +571,6 @@ static kefir_result_t load_inputs(struct kefir_codegen_amd64 *codegen,
                 }
                 break;
 
-            case KEFIR_IR_TYPE_PAD:
             case KEFIR_IR_TYPE_BITS:
             case KEFIR_IR_TYPE_BUILTIN:
             case KEFIR_IR_TYPE_COUNT:
@@ -736,7 +732,6 @@ static kefir_result_t store_outputs(struct kefir_codegen_amd64 *codegen,
             case KEFIR_IR_TYPE_STRUCT:
             case KEFIR_IR_TYPE_ARRAY:
             case KEFIR_IR_TYPE_UNION:
-            case KEFIR_IR_TYPE_MEMORY:
                 switch (param_map->type) {
                     case INLINE_ASSEMBLY_PARAM_REGISTER_DIRECT:
                     case INLINE_ASSEMBLY_PARAM_REGISTER_INDIRECT:
@@ -750,7 +745,6 @@ static kefir_result_t store_outputs(struct kefir_codegen_amd64 *codegen,
                 }
                 break;
 
-            case KEFIR_IR_TYPE_PAD:
             case KEFIR_IR_TYPE_BITS:
             case KEFIR_IR_TYPE_BUILTIN:
             case KEFIR_IR_TYPE_COUNT:

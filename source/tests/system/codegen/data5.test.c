@@ -52,16 +52,16 @@ union union1 {
 };
 extern _Thread_local union union1 union1_1;
 
-extern _Thread_local const char memory1_1[];
-extern _Thread_local const char pad1_1[];
 extern _Thread_local const char *pointer1_1;
 extern _Thread_local const char *strpointer1_1;
 
-#define PTRLIST                                                                                                   \
-    {                                                                                                             \
-        &int8_1, &int8_2, &int16_1, &int16_2, &int32_1, &int32_2, &int64_1, &int64_2, &float32_1, &float32_2,     \
-            &float64_1, &float64_2, &long_double_1, &long_double_2, &struct1_1, &array1_1, &union1_1, &memory1_1, \
-            &pad1_1, &pointer1_1, &strpointer1_1                                                                  \
+extern char int8_3;
+
+#define PTRLIST                                                                                                    \
+    {                                                                                                              \
+        &int8_1, &int8_2, &int16_1, &int16_2, &int32_1, &int32_2, &int64_1, &int64_2, &float32_1, &float32_2,      \
+            &float64_1, &float64_2, &long_double_1, &long_double_2, &struct1_1, &array1_1, &union1_1, &pointer1_1, \
+            &strpointer1_1                                                                                         \
     }
 
 static int cmp_pointers_res = 0;
@@ -116,10 +116,7 @@ int main(int argc, const char **argv) {
     ASSERT(FLOAT_EQUALS(union1_1_copy.f2, 3.14, FLOAT_EPSILON));
     ASSERT(union1_1_copy.f3 == 100500);
 
-    for (int i = 0; i < 10; i++) {
-        ASSERT(pad1_1[i] == 0);
-    }
-    ASSERT(strcmp(pointer1_1, "llo, cruel world!") == 0);
+    ASSERT(pointer1_1 == (void *) (((char *) &int8_3) + 2));
     ASSERT(strcmp(strpointer1_1, ", cruel world!") == 0);
 
     const void *Pointers[] = PTRLIST;

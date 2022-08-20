@@ -153,44 +153,12 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_ir_data_finalize(union1_data));
     REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, "union1_1", KEFIR_IR_IDENTIFIER_THREAD_LOCAL));
 
-    const char *MSG = "Hello, cruel world!";
-    kefir_id_t memory1_type_id;
-    struct kefir_ir_type *memory1_type = kefir_ir_module_new_type(mem, &module, 1, &memory1_type_id);
-    REQUIRE_OK(kefir_irbuilder_type_append_v(mem, memory1_type, KEFIR_IR_TYPE_MEMORY, 0, strlen(MSG) + 1));
-    struct kefir_ir_data *memory1_data =
-        kefir_ir_module_new_named_data(mem, &module, "memory1_1", KEFIR_IR_DATA_THREAD_LOCAL_STORAGE, memory1_type_id);
-    REQUIRE_OK(kefir_ir_data_set_string(mem, memory1_data, 0, KEFIR_IR_STRING_LITERAL_MULTIBYTE, MSG, strlen(MSG)));
-    REQUIRE_OK(kefir_ir_data_finalize(memory1_data));
-    REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, "memory1_1", KEFIR_IR_IDENTIFIER_THREAD_LOCAL));
-
-    const kefir_char16_t MSG2[] = u"Two-byte encoded message\0";
-    kefir_id_t memory2_type_id;
-    struct kefir_ir_type *memory2_type = kefir_ir_module_new_type(mem, &module, 1, &memory2_type_id);
-    REQUIRE_OK(kefir_irbuilder_type_append_v(mem, memory2_type, KEFIR_IR_TYPE_MEMORY, 0, sizeof(MSG2)));
-    struct kefir_ir_data *memory2_data =
-        kefir_ir_module_new_named_data(mem, &module, "memory1_2", KEFIR_IR_DATA_THREAD_LOCAL_STORAGE, memory2_type_id);
-    REQUIRE_OK(kefir_ir_data_set_string(mem, memory2_data, 0, KEFIR_IR_STRING_LITERAL_UNICODE16, MSG2,
-                                        sizeof(MSG2) / sizeof(MSG2[0])));
-    REQUIRE_OK(kefir_ir_data_finalize(memory2_data));
-    REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, "memory1_2", KEFIR_IR_IDENTIFIER_THREAD_LOCAL));
-
-    const kefir_char32_t MSG3[] = U"\0\0Another string literal\"";
-    kefir_id_t memory3_type_id;
-    struct kefir_ir_type *memory3_type = kefir_ir_module_new_type(mem, &module, 1, &memory3_type_id);
-    REQUIRE_OK(kefir_irbuilder_type_append_v(mem, memory3_type, KEFIR_IR_TYPE_MEMORY, 0, sizeof(MSG3)));
-    struct kefir_ir_data *memory3_data =
-        kefir_ir_module_new_named_data(mem, &module, "memory1_3", KEFIR_IR_DATA_THREAD_LOCAL_STORAGE, memory3_type_id);
-    REQUIRE_OK(kefir_ir_data_set_string(mem, memory3_data, 0, KEFIR_IR_STRING_LITERAL_UNICODE32, MSG3,
-                                        sizeof(MSG3) / sizeof(MSG3[0])));
-    REQUIRE_OK(kefir_ir_data_finalize(memory3_data));
-    REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, "memory1_3", KEFIR_IR_IDENTIFIER_THREAD_LOCAL));
-
     kefir_id_t pointer1_type_id;
     struct kefir_ir_type *pointer1_type = kefir_ir_module_new_type(mem, &module, 1, &pointer1_type_id);
     REQUIRE_OK(kefir_irbuilder_type_append_v(mem, pointer1_type, KEFIR_IR_TYPE_WORD, 0, 0));
     struct kefir_ir_data *pointer1_data = kefir_ir_module_new_named_data(
         mem, &module, "pointer1_1", KEFIR_IR_DATA_THREAD_LOCAL_STORAGE, pointer1_type_id);
-    REQUIRE_OK(kefir_ir_data_set_pointer(mem, pointer1_data, 0, "memory1_1", 2));
+    REQUIRE_OK(kefir_ir_data_set_pointer(mem, pointer1_data, 0, "union1_1", 2));
     REQUIRE_OK(kefir_ir_data_finalize(pointer1_data));
     REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, "pointer1_1", KEFIR_IR_IDENTIFIER_THREAD_LOCAL));
 

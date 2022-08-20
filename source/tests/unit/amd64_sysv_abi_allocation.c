@@ -102,8 +102,6 @@ DEFINE_CASE(amd64_sysv_abi_allocation_test2, "AMD64 System V ABI - parameter all
     ASSERT_OK(kefir_irbuilder_type_append_v(&kft_mem, &type, KEFIR_IR_TYPE_INT16, 0, 0));
     ASSERT_OK(kefir_irbuilder_type_append_v(&kft_mem, &type, KEFIR_IR_TYPE_INT, 0, 0));
     ASSERT_OK(kefir_irbuilder_type_append_v(&kft_mem, &type, KEFIR_IR_TYPE_FLOAT32, 0, 0));
-    ASSERT_OK(kefir_irbuilder_type_append_v(&kft_mem, &type, KEFIR_IR_TYPE_PAD, 0, 10));
-    ASSERT_OK(kefir_irbuilder_type_append_v(&kft_mem, &type, KEFIR_IR_TYPE_MEMORY, 0, 10));
     ASSERT_OK(kefir_irbuilder_type_append_v(&kft_mem, &type, KEFIR_IR_TYPE_INT16, 0, 0));
     ASSERT_OK(kefir_irbuilder_type_append_v(&kft_mem, &type, KEFIR_IR_TYPE_FLOAT64, 0, 0));
     ASSERT_OK(kefir_amd64_sysv_type_layout(&type, &kft_mem, &layout));
@@ -121,10 +119,8 @@ DEFINE_CASE(amd64_sysv_abi_allocation_test2, "AMD64 System V ABI - parameter all
     ASSERT_PARAM_REGISTER_ALLOCATION(&allocation, 8, KEFIR_AMD64_SYSV_PARAM_INTEGER, 5, NONE);
     ASSERT_PARAM_STACK_ALLOCATION(&allocation, 9, 0);
     ASSERT_PARAM_REGISTER_ALLOCATION(&allocation, 10, KEFIR_AMD64_SYSV_PARAM_SSE, NONE, 3);
-    ASSERT_PARAM_REGISTER_ALLOCATION(&allocation, 11, KEFIR_AMD64_SYSV_PARAM_NO_CLASS, NONE, NONE);
-    ASSERT_PARAM_STACK_ALLOCATION(&allocation, 12, 8);
-    ASSERT_PARAM_STACK_ALLOCATION(&allocation, 13, 24);
-    ASSERT_PARAM_REGISTER_ALLOCATION(&allocation, 14, KEFIR_AMD64_SYSV_PARAM_SSE, NONE, 4);
+    ASSERT_PARAM_STACK_ALLOCATION(&allocation, 11, 8);
+    ASSERT_PARAM_REGISTER_ALLOCATION(&allocation, 12, KEFIR_AMD64_SYSV_PARAM_SSE, NONE, 4);
     ASSERT_OK(kefir_amd64_sysv_parameter_free(&kft_mem, &allocation));
     ASSERT_OK(kefir_vector_free(&kft_mem, &layout));
     ASSERT_OK(kefir_ir_type_free(&kft_mem, &type));

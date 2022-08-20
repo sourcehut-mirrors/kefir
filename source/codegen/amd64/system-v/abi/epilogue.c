@@ -187,15 +187,6 @@ static kefir_result_t return_aggregate(const struct kefir_ir_type *type, kefir_s
     return KEFIR_OK;
 }
 
-static kefir_result_t return_pad(const struct kefir_ir_type *type, kefir_size_t index,
-                                 const struct kefir_ir_typeentry *typeentry, void *payload) {
-    UNUSED(type);
-    UNUSED(index);
-    UNUSED(typeentry);
-    UNUSED(payload);
-    return KEFIR_OK;
-}
-
 static kefir_result_t return_builtin(const struct kefir_ir_type *type, kefir_size_t index,
                                      const struct kefir_ir_typeentry *typeentry, void *payload) {
     struct result_return *param = (struct result_return *) payload;
@@ -220,8 +211,6 @@ static kefir_result_t return_values(struct kefir_codegen_amd64 *codegen, const s
     visitor.visit[KEFIR_IR_TYPE_STRUCT] = return_aggregate;
     visitor.visit[KEFIR_IR_TYPE_UNION] = return_aggregate;
     visitor.visit[KEFIR_IR_TYPE_ARRAY] = return_aggregate;
-    visitor.visit[KEFIR_IR_TYPE_MEMORY] = return_aggregate;
-    visitor.visit[KEFIR_IR_TYPE_PAD] = return_pad;
     visitor.visit[KEFIR_IR_TYPE_BUILTIN] = return_builtin;
     struct result_return param = {.codegen = codegen, .func = func};
     REQUIRE_OK(kefir_ir_type_visitor_list_nodes(func->func->declaration->result, &visitor, (void *) &param, 0, 1));
