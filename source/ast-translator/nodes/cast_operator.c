@@ -38,6 +38,8 @@ static kefir_result_t allocate_long_double_callback(void *payload) {
     REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid typeconv callback payload"));
     ASSIGN_DECL_CAST(struct typeconv_callback_param *, param, payload);
 
+    REQUIRE(param->temporary->valid,
+            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unallocated temporary for cast operator long double parameter"));
     REQUIRE_OK(kefir_ast_translator_fetch_temporary(param->mem, param->context, param->builder, param->temporary));
     return KEFIR_OK;
 }

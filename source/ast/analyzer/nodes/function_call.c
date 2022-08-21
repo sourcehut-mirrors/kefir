@@ -63,6 +63,8 @@ kefir_result_t kefir_ast_analyze_function_call_node(struct kefir_mem *mem, const
         REQUIRE_OK(implicit_function_declaration(mem, context, node->function));
     }
 
+    REQUIRE_OK(kefir_ast_node_properties_init(&base->properties));
+
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, node->function));
     const struct kefir_list_entry *iter;
     for (iter = kefir_list_head(&node->arguments); iter != NULL; kefir_list_next(&iter)) {
@@ -131,7 +133,6 @@ kefir_result_t kefir_ast_analyze_function_call_node(struct kefir_mem *mem, const
     REQUIRE(return_type->tag != KEFIR_AST_TYPE_ARRAY,
             KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->function->source_location,
                                    "Function cannot return array type"));
-    REQUIRE_OK(kefir_ast_node_properties_init(&base->properties));
     base->properties.category = KEFIR_AST_NODE_CATEGORY_EXPRESSION;
     base->properties.type = return_type;
 

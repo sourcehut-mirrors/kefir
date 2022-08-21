@@ -77,6 +77,9 @@ static kefir_result_t fetch_temporary(struct kefir_mem *mem, struct kefir_ast_tr
     });
     REQUIRE_OK(KEFIR_IR_TARGET_PLATFORM_FREE_TYPE(mem, context->environment->target_platform, platform_type));
 
+    REQUIRE(
+        base->properties.expression_props.temporary.valid,
+        KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unallocated temporary for assignment operator long double parameter"));
     REQUIRE_OK(
         kefir_ast_translator_fetch_temporary(mem, context, builder, &base->properties.expression_props.temporary));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PUSHU64, index));
@@ -120,6 +123,9 @@ static kefir_result_t allocate_long_double_callback(void *payload) {
     REQUIRE_OK(
         KEFIR_IR_TARGET_PLATFORM_FREE_TYPE(param->mem, param->context->environment->target_platform, platform_type));
 
+    REQUIRE(
+        param->temporary->valid,
+        KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unallocated temporary for assignment operator long double parameter"));
     REQUIRE_OK(kefir_ast_translator_fetch_temporary(param->mem, param->context, param->builder, param->temporary));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(param->builder, KEFIR_IROPCODE_PUSHU64, param->temporary_index));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(param->builder, KEFIR_IROPCODE_IADDX, ir_type_info.size));
