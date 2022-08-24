@@ -351,7 +351,9 @@
                     ],
                     "class": "store",
                     "type": 8,
-                    "to": 3
+                    "type_index": 0,
+                    "to": 3,
+                    "constraint": "register_memory"
                 },
                 {
                     "identifier": 1,
@@ -360,7 +362,9 @@
                     ],
                     "class": "load_store",
                     "type": 9,
-                    "from_to": 2
+                    "type_index": 0,
+                    "from_to": 2,
+                    "constraint": "register_memory"
                 },
                 {
                     "identifier": 2,
@@ -369,7 +373,9 @@
                     ],
                     "class": "read",
                     "type": 10,
-                    "from": 1
+                    "type_index": 0,
+                    "from": 1,
+                    "constraint": "memory"
                 },
                 {
                     "identifier": 3,
@@ -378,7 +384,9 @@
                     ],
                     "class": "read",
                     "type": 11,
-                    "from": 0
+                    "type_index": 0,
+                    "from": 0,
+                    "constraint": "memory"
                 }
             ],
             "clobbers": [
@@ -399,7 +407,9 @@
                     ],
                     "class": "store",
                     "type": 15,
-                    "to": 4
+                    "type_index": 0,
+                    "to": 4,
+                    "constraint": "register"
                 },
                 {
                     "identifier": 1,
@@ -408,7 +418,9 @@
                     ],
                     "class": "load_store",
                     "type": 16,
-                    "from_to": 3
+                    "type_index": 0,
+                    "from_to": 3,
+                    "constraint": "memory"
                 },
                 {
                     "identifier": 2,
@@ -418,7 +430,9 @@
                     ],
                     "class": "store",
                     "type": 17,
-                    "to": 2
+                    "type_index": 0,
+                    "to": 2,
+                    "constraint": "register"
                 },
                 {
                     "identifier": 3,
@@ -427,7 +441,9 @@
                     ],
                     "class": "read",
                     "type": 18,
-                    "from": 1
+                    "type_index": 0,
+                    "from": 1,
+                    "constraint": "register"
                 },
                 {
                     "identifier": 4,
@@ -436,7 +452,9 @@
                     ],
                     "class": "read",
                     "type": 19,
-                    "from": 0
+                    "type_index": 0,
+                    "from": 0,
+                    "constraint": "memory"
                 }
             ],
             "clobbers": [
