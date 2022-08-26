@@ -313,7 +313,7 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 72
                 },
                 {
@@ -331,7 +331,7 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 101
                 },
                 {
@@ -349,7 +349,7 @@
                     "arg": 2
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 108
                 },
                 {
@@ -367,7 +367,7 @@
                     "arg": 3
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 108
                 },
                 {
@@ -385,7 +385,7 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 111
                 },
                 {

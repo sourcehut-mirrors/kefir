@@ -324,7 +324,7 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 0
                 },
                 {
@@ -344,7 +344,7 @@
                     "opcode": "load32i"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 10
                 },
                 {
@@ -411,7 +411,7 @@
             "locals": 18,
             "body": [
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 0
                 },
                 {
@@ -450,7 +450,7 @@
                     "opcode": "load32i"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 10
                 },
                 {

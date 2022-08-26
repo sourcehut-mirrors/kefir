@@ -339,7 +339,7 @@
                     "arg": -1
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushu",
                     "arg": 65535
                 },
                 {
@@ -425,7 +425,7 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushu",
                     "arg": 65535
                 },
                 {
@@ -511,7 +511,7 @@
                     "opcode": "load64"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 1
                 },
                 {
@@ -555,7 +555,7 @@
                     "opcode": "load64"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 1
                 },
                 {
@@ -642,7 +642,7 @@
                     "opcode": "load64"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": -1
                 },
                 {
@@ -686,7 +686,7 @@
                     "opcode": "load64"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": -1
                 },
                 {

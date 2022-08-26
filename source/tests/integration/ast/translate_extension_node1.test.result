@@ -63,19 +63,19 @@
             "name": "func1",
             "body": [
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 0
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 2
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 3
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 4
                 },
                 {
@@ -85,7 +85,7 @@
                     "opcode": "iadd"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 0
                 },
                 {

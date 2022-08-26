@@ -338,7 +338,7 @@
             "locals": 4,
             "body": [
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 0
                 }
             ]
@@ -410,7 +410,7 @@
                     }
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 2
                 },
                 {
@@ -427,7 +427,7 @@
                     "opcode": "load64"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 100
                 },
                 {

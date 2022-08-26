@@ -67,7 +67,7 @@ declare_opcode nop
 declare_opcode jmp
 declare_opcode ijmp
 declare_opcode branch
-declare_opcode push
+declare_opcode pushi
 declare_opcode pop
 declare_opcode pick
 declare_opcode xchg
@@ -195,7 +195,7 @@ define_opcode branch
     jne __kefirrt_jmp_impl
     end_opcode
 
-define_opcode push
+define_opcode pushi
     mov DATA_REG, [INSTR_ARG_PTR]
     push DATA_REG
     end_opcode

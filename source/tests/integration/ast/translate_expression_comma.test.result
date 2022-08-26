@@ -182,7 +182,7 @@
             "locals": 4,
             "body": [
                 {
-                    "opcode": "push",
+                    "opcode": "pushu",
                     "arg": 1
                 }
             ]
@@ -193,7 +193,7 @@
             "locals": 7,
             "body": [
                 {
-                    "opcode": "push",
+                    "opcode": "pushu",
                     "arg": 1
                 },
                 {
@@ -237,7 +237,7 @@
             "locals": 10,
             "body": [
                 {
-                    "opcode": "push",
+                    "opcode": "pushu",
                     "arg": 1
                 },
                 {
@@ -251,7 +251,7 @@
                     "opcode": "pop"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 66536
                 }
             ]
@@ -262,7 +262,7 @@
             "locals": 13,
             "body": [
                 {
-                    "opcode": "push",
+                    "opcode": "pushu",
                     "arg": 1
                 },
                 {
@@ -276,7 +276,7 @@
                     "opcode": "pop"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 66536
                 },
                 {
@@ -313,7 +313,7 @@
             "locals": 16,
             "body": [
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 120
                 },
                 {
@@ -327,7 +327,7 @@
                     "opcode": "pop"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 16
                 }
             ]
@@ -338,7 +338,7 @@
             "locals": 19,
             "body": [
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 120
                 },
                 {
@@ -352,7 +352,7 @@
                     "opcode": "pop"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushu",
                     "arg": 65534
                 },
                 {

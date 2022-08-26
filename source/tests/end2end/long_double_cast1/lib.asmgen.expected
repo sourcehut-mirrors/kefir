@@ -8,7 +8,7 @@
 .extern __kefirrt_jmp_impl
 .extern __kefirrt_ijmp_impl
 .extern __kefirrt_branch_impl
-.extern __kefirrt_push_impl
+.extern __kefirrt_pushi_impl
 .extern __kefirrt_pop_impl
 .extern __kefirrt_pick_impl
 .extern __kefirrt_xchg_impl
@@ -391,7 +391,7 @@ __ldcuint_body:
     .quad __kefirrt_storeld_impl, 0
     .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_ldcint_impl, 0
-    .quad __kefirrt_push_impl, 4294967295
+    .quad __kefirrt_pushi_impl, 4294967295
     .quad __kefirrt_iand_impl, 0
     .quad __ldcuint_epilogue, 0
     .quad __ldcuint_epilogue, 0

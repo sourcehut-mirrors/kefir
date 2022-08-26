@@ -195,7 +195,7 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushu",
                     "arg": 1
                 },
                 {
@@ -291,7 +291,7 @@
                     "arg": 9
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushu",
                     "arg": 1
                 },
                 {
@@ -306,7 +306,7 @@
             "locals": 16,
             "body": [
                 {
-                    "opcode": "push",
+                    "opcode": "pushu",
                     "arg": 0
                 },
                 {

@@ -7,7 +7,7 @@
 .extern __kefirrt_jmp_impl
 .extern __kefirrt_ijmp_impl
 .extern __kefirrt_branch_impl
-.extern __kefirrt_push_impl
+.extern __kefirrt_pushi_impl
 .extern __kefirrt_pop_impl
 .extern __kefirrt_pick_impl
 .extern __kefirrt_xchg_impl
@@ -125,7 +125,7 @@ __func1_body:
     .quad __kefirrt_jmp_impl, __func1_body + 16
     .quad __kefirrt_branch_impl, __func1_body + 32
     .quad __func1_epilogue, 0
-    .quad __kefirrt_push_impl, 1000
+    .quad __kefirrt_pushi_impl, 1000
     .quad __kefirrt_pop_impl, 0
     .quad __kefirrt_pick_impl, 1
     .quad __kefirrt_iadd_impl, 0
@@ -152,7 +152,7 @@ __func1_body:
     .quad __kefirrt_extend8_impl, 21
     .quad __kefirrt_extend16_impl, 22
     .quad __kefirrt_extend32_impl, 23
-    .quad __kefirrt_push_impl, __func1_body + 160
+    .quad __kefirrt_pushi_impl, __func1_body + 160
     .quad __func1_epilogue, 0
 __func1_epilogue:
     mov %rsp, %r14

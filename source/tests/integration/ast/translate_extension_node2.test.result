@@ -45,7 +45,7 @@
             "name": "func1",
             "body": [
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 100
                 },
                 {
@@ -59,11 +59,11 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 8
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 10
                 },
                 {

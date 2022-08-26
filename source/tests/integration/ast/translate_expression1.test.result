@@ -37,21 +37,21 @@
             "name": "func1",
             "body": [
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 2
                 },
                 {
                     "opcode": "inot"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 3
                 },
                 {
                     "opcode": "imul"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 1
                 },
                 {
@@ -61,18 +61,18 @@
                     "opcode": "iadd"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 2
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 1
                 },
                 {
                     "opcode": "ishl"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 3
                 },
                 {

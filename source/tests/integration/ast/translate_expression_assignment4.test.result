@@ -239,7 +239,7 @@
             "locals": 4,
             "body": [
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": -11001100
                 },
                 {
@@ -285,7 +285,7 @@
             "locals": 4,
             "body": [
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 56
                 },
                 {
@@ -331,7 +331,7 @@
             "locals": 4,
             "body": [
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 4
                 },
                 {
@@ -377,7 +377,7 @@
             "locals": 4,
             "body": [
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 11223344
                 },
                 {
@@ -423,7 +423,7 @@
             "locals": 4,
             "body": [
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": -99000
                 },
                 {
@@ -469,7 +469,7 @@
             "locals": 4,
             "body": [
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 104
                 },
                 {
@@ -515,7 +515,7 @@
             "locals": 4,
             "body": [
                 {
-                    "opcode": "push",
+                    "opcode": "pushu",
                     "arg": 1
                 },
                 {
@@ -561,7 +561,7 @@
             "locals": 4,
             "body": [
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": -1
                 },
                 {
@@ -607,7 +607,7 @@
             "locals": 4,
             "body": [
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 90
                 },
                 {
@@ -653,7 +653,7 @@
             "locals": 4,
             "body": [
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": -8000
                 },
                 {
@@ -699,7 +699,7 @@
             "locals": 4,
             "body": [
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 10101
                 },
                 {
@@ -745,7 +745,7 @@
             "locals": 4,
             "body": [
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 19857
                 },
                 {

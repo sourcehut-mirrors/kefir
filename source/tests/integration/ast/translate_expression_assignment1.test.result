@@ -362,7 +362,7 @@
             "locals": 4,
             "body": [
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 1
                 },
                 {
@@ -394,7 +394,7 @@
             "locals": 4,
             "body": [
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 0
                 },
                 {
@@ -426,11 +426,11 @@
             "locals": 4,
             "body": [
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 131071
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushu",
                     "arg": 4294967295
                 },
                 {
@@ -458,7 +458,7 @@
                     "opcode": "store32"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": -5588207
                 },
                 {
@@ -490,7 +490,7 @@
                     "opcode": "f64cint"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushu",
                     "arg": 4294967295
                 },
                 {
@@ -525,7 +525,7 @@
             "locals": 4,
             "body": [
                 {
-                    "opcode": "push",
+                    "opcode": "pushu",
                     "arg": 1
                 },
                 {
@@ -588,7 +588,7 @@
             "locals": 4,
             "body": [
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 65
                 },
                 {
@@ -616,11 +616,11 @@
                     "opcode": "store8"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 66
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushu",
                     "arg": 255
                 },
                 {
@@ -648,7 +648,7 @@
                     "opcode": "store8"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 67
                 },
                 {
@@ -714,7 +714,7 @@
             "locals": 4,
             "body": [
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 1
                 },
                 {
@@ -739,7 +739,7 @@
                     "opcode": "store64"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": -1
                 },
                 {
@@ -799,11 +799,11 @@
             "locals": 4,
             "body": [
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 254
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushu",
                     "arg": 65535
                 },
                 {
@@ -831,7 +831,7 @@
                     "opcode": "store16"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": -74
                 },
                 {
@@ -866,7 +866,7 @@
             "locals": 4,
             "body": [
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 1990
                 },
                 {
@@ -891,7 +891,7 @@
                     "opcode": "store64"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": -65196362
                 },
                 {
@@ -976,7 +976,7 @@
                     "opcode": "store64"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 65
                 },
                 {
@@ -1004,7 +1004,7 @@
                     "opcode": "store32"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": -15
                 },
                 {

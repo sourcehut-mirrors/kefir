@@ -79,25 +79,25 @@
             "locals": 4,
             "body": [
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": -150
                 },
                 {
                     "opcode": "trunc1"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": -100
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushu",
                     "arg": 1
                 },
                 {
                     "opcode": "extend32"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushu",
                     "arg": 100
                 },
                 {
@@ -127,22 +127,22 @@
                     "opcode": "load64"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushu",
                     "arg": 1234
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushu",
                     "arg": 4294967295
                 },
                 {
                     "opcode": "iand"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 101
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushu",
                     "arg": 65535
                 },
                 {
@@ -172,14 +172,14 @@
                     "opcode": "load64"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": -67
                 },
                 {
                     "opcode": "intcf32"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushu",
                     "arg": 67
                 },
                 {
@@ -197,14 +197,14 @@
                     "opcode": "f64cf32"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": -100500
                 },
                 {
                     "opcode": "intcf64"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushu",
                     "arg": 1597
                 },
                 {
@@ -222,11 +222,11 @@
                     "arg": 42.100000
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": -4078
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushu",
                     "arg": 51934
                 },
                 {
@@ -239,14 +239,14 @@
                     "opcode": "load64"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 10000
                 },
                 {
                     "opcode": "pop"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushu",
                     "arg": 10001
                 },
                 {

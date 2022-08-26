@@ -119,7 +119,7 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 0
                 },
                 {
@@ -180,7 +180,7 @@
                     "opcode": "extend32"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 1000
                 },
                 {
@@ -208,7 +208,7 @@
                     "opcode": "ijmp"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 7
                 },
                 {
@@ -271,7 +271,7 @@
                     "opcode": "ijmp"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 0
                 },
                 {

@@ -146,7 +146,7 @@
                     "opcode": "load8u"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 10
                 }
             ]

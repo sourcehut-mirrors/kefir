@@ -202,44 +202,44 @@
             "locals": 4,
             "body": [
                 {
-                    "opcode": "push",
+                    "opcode": "pushu",
                     "arg": 1000
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 90
                 },
                 {
                     "opcode": "ibelow"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": -10
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 90
                 },
                 {
                     "opcode": "ilesser"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 835
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushu",
                     "arg": 1
                 },
                 {
                     "opcode": "ibelow"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": -844
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 955
                 },
                 {
@@ -250,7 +250,7 @@
                     "arg": 5.467000
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": -400
                 },
                 {
@@ -289,7 +289,7 @@
                     "arg": 1.000000
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 1
                 },
                 {
@@ -317,11 +317,11 @@
             "locals": 4,
             "body": [
                 {
-                    "opcode": "push",
+                    "opcode": "pushu",
                     "arg": 1000
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 90
                 },
                 {
@@ -346,11 +346,11 @@
                     "opcode": "bor"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": -10
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 90
                 },
                 {
@@ -375,11 +375,11 @@
                     "opcode": "bor"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 835
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushu",
                     "arg": 1
                 },
                 {
@@ -404,11 +404,11 @@
                     "opcode": "bor"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": -844
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 955
                 },
                 {
@@ -437,7 +437,7 @@
                     "arg": 5.467000
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": -400
                 },
                 {
@@ -530,7 +530,7 @@
                     "arg": 1.000000
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 1
                 },
                 {
@@ -594,11 +594,11 @@
             "locals": 4,
             "body": [
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 34
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 7
                 },
                 {
@@ -608,11 +608,11 @@
                     "opcode": "bnot"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": -100
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushu",
                     "arg": 100000
                 },
                 {
@@ -626,7 +626,7 @@
                     "arg": -3.140000
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 15
                 },
                 {
@@ -846,44 +846,44 @@
             "locals": 4,
             "body": [
                 {
-                    "opcode": "push",
+                    "opcode": "pushu",
                     "arg": 671
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 121
                 },
                 {
                     "opcode": "iabove"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": -1
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 80
                 },
                 {
                     "opcode": "igreater"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 945
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushu",
                     "arg": 0
                 },
                 {
                     "opcode": "iabove"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": -1755
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 900
                 },
                 {
@@ -894,7 +894,7 @@
                     "arg": 295.100006
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": -553
                 },
                 {
@@ -933,7 +933,7 @@
                     "arg": 1.991000
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 5
                 },
                 {
@@ -1216,29 +1216,29 @@
             "locals": 4,
             "body": [
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 88
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushu",
                     "arg": 4294967295
                 },
                 {
                     "opcode": "iand"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushu",
                     "arg": 67
                 },
                 {
                     "opcode": "iequals"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 1000
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushu",
                     "arg": 1010
                 },
                 {
@@ -1249,7 +1249,7 @@
                     "arg": 3.140000
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": -1
                 },
                 {
@@ -1302,11 +1302,11 @@
             "locals": 4,
             "body": [
                 {
-                    "opcode": "push",
+                    "opcode": "pushu",
                     "arg": 671
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 121
                 },
                 {
@@ -1331,11 +1331,11 @@
                     "opcode": "bor"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": -1
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 80
                 },
                 {
@@ -1360,11 +1360,11 @@
                     "opcode": "bor"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 945
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushu",
                     "arg": 0
                 },
                 {
@@ -1389,11 +1389,11 @@
                     "opcode": "bor"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": -1755
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 900
                 },
                 {
@@ -1422,7 +1422,7 @@
                     "arg": 295.100006
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": -553
                 },
                 {
@@ -1515,7 +1515,7 @@
                     "arg": 1.991000
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 5
                 },
                 {

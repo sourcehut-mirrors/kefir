@@ -49,27 +49,27 @@
             "locals": 4,
             "body": [
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 4
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 1
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 2
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 3
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 5
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 7
                 }
             ]

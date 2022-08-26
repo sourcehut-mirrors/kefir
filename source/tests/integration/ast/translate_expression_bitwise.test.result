@@ -109,11 +109,11 @@
             "locals": 4,
             "body": [
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 34
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 39
                 },
                 {
@@ -123,22 +123,22 @@
                     "opcode": "extend32"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushu",
                     "arg": 666
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 12
                 },
                 {
                     "opcode": "ior"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": -1001
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 1001
                 },
                 {
@@ -152,11 +152,11 @@
             "locals": 4,
             "body": [
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 91
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 93
                 },
                 {
@@ -166,22 +166,22 @@
                     "opcode": "extend32"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushu",
                     "arg": 87094
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 4294962926
                 },
                 {
                     "opcode": "iand"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": -736402640
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 71
                 },
                 {
@@ -195,11 +195,11 @@
             "locals": 4,
             "body": [
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 56
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 48
                 },
                 {
@@ -209,22 +209,22 @@
                     "opcode": "extend32"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushu",
                     "arg": 312
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 304
                 },
                 {
                     "opcode": "ixor"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": -206
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 101
                 },
                 {
@@ -238,11 +238,11 @@
             "locals": 4,
             "body": [
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 88
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushu",
                     "arg": 1
                 },
                 {
@@ -255,11 +255,11 @@
                     "opcode": "extend32"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 1000
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 6
                 },
                 {
@@ -272,11 +272,11 @@
                     "opcode": "extend32"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 3405691582
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 53
                 },
                 {
@@ -290,11 +290,11 @@
             "locals": 4,
             "body": [
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 84
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushu",
                     "arg": 8
                 },
                 {
@@ -307,11 +307,11 @@
                     "opcode": "extend32"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 870
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 1
                 },
                 {
@@ -324,11 +324,11 @@
                     "opcode": "extend32"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 195934910
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 48
                 },
                 {

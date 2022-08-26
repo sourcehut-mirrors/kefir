@@ -7,7 +7,7 @@
 .extern __kefirrt_jmp_impl
 .extern __kefirrt_ijmp_impl
 .extern __kefirrt_branch_impl
-.extern __kefirrt_push_impl
+.extern __kefirrt_pushi_impl
 .extern __kefirrt_pop_impl
 .extern __kefirrt_pick_impl
 .extern __kefirrt_xchg_impl
@@ -127,7 +127,7 @@ proxyadd:
     lea %rbx, [__proxyadd_body]
     jmp [%rbx]
 __proxyadd_body:
-    .quad __kefirrt_push_impl, 7
+    .quad __kefirrt_pushi_impl, 7
     .quad __kefirrt_xchg_impl, 1
     .quad __kefirrt_sfunction_addstruct_vgate, 0
     .quad __proxyadd_epilogue, 0

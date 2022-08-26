@@ -349,7 +349,7 @@
             "locals": 4,
             "body": [
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 100
                 },
                 {
@@ -360,7 +360,7 @@
                     "opcode": "f32cf64"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushu",
                     "arg": 0
                 },
                 {
@@ -384,7 +384,7 @@
             "locals": 4,
             "body": [
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 100
                 },
                 {
@@ -412,15 +412,15 @@
             "locals": 4,
             "body": [
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 100
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 101
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 102
                 },
                 {
@@ -458,11 +458,11 @@
             "locals": 4,
             "body": [
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 100
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 101
                 },
                 {

@@ -274,7 +274,7 @@
                     "arg": 24
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 1
                 },
                 {
@@ -289,7 +289,7 @@
                     "arg": 4
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 2
                 },
                 {
@@ -304,7 +304,7 @@
                     "arg": 8
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 3
                 },
                 {
@@ -319,7 +319,7 @@
                     "arg": 32
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 4
                 },
                 {
@@ -352,7 +352,7 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 65
                 },
                 {
@@ -370,7 +370,7 @@
                     "arg": 8
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 66
                 },
                 {
@@ -388,7 +388,7 @@
                     "arg": 9
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 66
                 },
                 {
@@ -409,7 +409,7 @@
                     "arg": 56
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 5
                 },
                 {
@@ -424,7 +424,7 @@
                     "arg": 64
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 6
                 },
                 {
@@ -439,7 +439,7 @@
                     "arg": 24
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 8
                 },
                 {
@@ -454,7 +454,7 @@
                     "arg": 32
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 9
                 },
                 {

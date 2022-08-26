@@ -79,11 +79,11 @@
             "locals": 4,
             "body": [
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": -100
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": -150
                 },
                 {
@@ -93,36 +93,36 @@
                     "opcode": "extend32"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushu",
                     "arg": 156
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushu",
                     "arg": 239
                 },
                 {
                     "opcode": "udiv"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushu",
                     "arg": 4294967295
                 },
                 {
                     "opcode": "iand"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": -76
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushu",
                     "arg": 1000
                 },
                 {
                     "opcode": "udiv"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": -1
                 },
                 {
@@ -140,7 +140,7 @@
                     "arg": 3.098000
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 65
                 },
                 {
@@ -161,7 +161,7 @@
                     "opcode": "f32div"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushu",
                     "arg": 1024
                 },
                 {
@@ -179,7 +179,7 @@
                     "arg": 0.000056
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": -7
                 },
                 {
@@ -235,11 +235,11 @@
             "locals": 4,
             "body": [
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 65
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 98
                 },
                 {
@@ -249,11 +249,11 @@
                     "opcode": "extend32"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 1005
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 37
                 },
                 {
@@ -263,33 +263,33 @@
                     "opcode": "extend32"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": -255
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 1024
                 },
                 {
                     "opcode": "imod"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushu",
                     "arg": 10001
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 10
                 },
                 {
                     "opcode": "umod"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushu",
                     "arg": 1
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushu",
                     "arg": 6000
                 },
                 {
@@ -303,11 +303,11 @@
             "locals": 4,
             "body": [
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": -100
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": -150
                 },
                 {
@@ -317,36 +317,36 @@
                     "opcode": "extend32"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushu",
                     "arg": 156
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushu",
                     "arg": 239
                 },
                 {
                     "opcode": "imul"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushu",
                     "arg": 4294967295
                 },
                 {
                     "opcode": "iand"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": -76
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushu",
                     "arg": 1000
                 },
                 {
                     "opcode": "imul"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": -1
                 },
                 {
@@ -364,7 +364,7 @@
                     "arg": 3.098000
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": 65
                 },
                 {
@@ -385,7 +385,7 @@
                     "opcode": "f32mul"
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushu",
                     "arg": 1024
                 },
                 {
@@ -403,7 +403,7 @@
                     "arg": 0.000056
                 },
                 {
-                    "opcode": "push",
+                    "opcode": "pushi",
                     "arg": -7
                 },
                 {

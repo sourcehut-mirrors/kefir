@@ -8,7 +8,7 @@
 .extern __kefirrt_jmp_impl
 .extern __kefirrt_ijmp_impl
 .extern __kefirrt_branch_impl
-.extern __kefirrt_push_impl
+.extern __kefirrt_pushi_impl
 .extern __kefirrt_pop_impl
 .extern __kefirrt_pick_impl
 .extern __kefirrt_xchg_impl
@@ -138,7 +138,7 @@ __eval1_body:
     .quad __kefirrt_pick_impl, 0
     .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_load32i_impl, 0
-    .quad __kefirrt_push_impl, 1
+    .quad __kefirrt_pushi_impl, 1
     .quad __kefirrt_iadd_impl, 0
     .quad __kefirrt_extend32_impl, 0
     .quad __kefirrt_store32_impl, 0
@@ -158,7 +158,7 @@ __eval1_body:
     .quad __kefirrt_pick_impl, 0
     .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_load32i_impl, 0
-    .quad __kefirrt_push_impl, 1
+    .quad __kefirrt_pushi_impl, 1
     .quad __kefirrt_isub_impl, 0
     .quad __kefirrt_extend32_impl, 0
     .quad __kefirrt_store32_impl, 0
@@ -199,14 +199,14 @@ __eval2_body:
     .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_load32i_impl, 0
     .quad __kefirrt_getlocal_impl, 24
-    .quad __kefirrt_push_impl, 0
+    .quad __kefirrt_pushi_impl, 0
     .quad __kefirrt_iaddx_impl, 8
     .quad __kefirrt_pushscope_impl, 0
     .quad __kefirrt_store64_impl, 0
     .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_iadd1_impl, 16
     .quad __kefirrt_iadd1_impl, 0
-    .quad __kefirrt_push_impl, 8
+    .quad __kefirrt_pushi_impl, 8
     .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_load32i_impl, 0
     .quad __kefirrt_imul_impl, 0
@@ -215,7 +215,7 @@ __eval2_body:
     .quad __kefirrt_iadd1_impl, 8
     .quad __kefirrt_pick_impl, 1
     .quad __kefirrt_store64_impl, 0
-    .quad __kefirrt_push_impl, 8
+    .quad __kefirrt_pushi_impl, 8
     .quad __kefirrt_alloca_impl, 0
     .quad __kefirrt_store64_impl, 0
     .quad __kefirrt_getlocal_impl, 16
@@ -223,7 +223,7 @@ __eval2_body:
     .quad __kefirrt_iadd1_impl, 8
     .quad __kefirrt_load64_impl, 0
     .quad __kefirrt_getlocal_impl, 24
-    .quad __kefirrt_push_impl, 0
+    .quad __kefirrt_pushi_impl, 0
     .quad __kefirrt_iaddx_impl, 8
     .quad __kefirrt_load64_impl, 0
     .quad __kefirrt_popscope_impl, 0
