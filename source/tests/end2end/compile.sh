@@ -27,30 +27,26 @@ if [[ "x$DST_FILE" == "x" ]]; then
 fi
 
 KEFIRCC="$BIN_DIR/kefir"
-KEFIRFLAGS="--target x86_64-host-none"
 TMPDIR="$(mktemp -d)"
 INCLUDE_FILE="$(dirname $0)/include.h"
 export LD_LIBRARY_PATH="$BIN_DIR/libs"
-
-if [[ "x$PLATFORM" == "xopenbsd" ]]; then
-    KEFIRFLAGS="$KEFIRFLAGS -D__OpenBSD__"
-fi
 
 function cleanup {
     rm -rf "$TMPDIR"
 }
 
 trap cleanup EXIT HUP INT QUIT PIPE TERM
-set -e
+
+KEFIR_CFLAGS="--target x86_64-host-none -I $(dirname $SRC_FILE) -I "$(dirname $SCRIPT)/headers" -I "$(dirname $SCRIPT)/../../../headers/kefir/runtime" -D KEFIR_END2END_TEST -U __STDC__ -D KEFIR_END2END=101  -W --pp-timestamp=1633204489 -include $INCLUDE_FILE  -I "$(dirname $SRC_FILE)""
 
 if [[ -f "$SRC_FILE.profile" ]]; then
     source "$SRC_FILE.profile"
 fi
 
+set -e
+
 if [[ "x$MEMCHECK" == "xyes" ]]; then
-    valgrind $VALGRIND_OPTIONS "$KEFIRCC" $KEFIRFLAGS -I "$(dirname $SRC_FILE)" -I "$(dirname $SCRIPT)/headers"  -I "$(dirname $SCRIPT)/../../../headers/kefir/runtime" -D KEFIR_END2END_TEST -U __STDC__ -D "KEFIR_END2END=   101   " -W --pp-timestamp=1633204489 \
-        -include "$INCLUDE_FILE" "$SRC_FILE" -c -o "$DST_FILE"
+    valgrind $VALGRIND_OPTIONS "$KEFIRCC" -c $KEFIR_CFLAGS "$SRC_FILE" -o "$DST_FILE"
 else
-    "$KEFIRCC" -I "$(dirname $SRC_FILE)"  -I "$(dirname $SCRIPT)/headers" -I "$(dirname $SCRIPT)/../../../headers/kefir/runtime" $KEFIRFLAGS -D KEFIR_END2END_TEST -U __STDC__ -D "KEFIR_END2END=   101   " -W --pp-timestamp=1633204489 \
-        -include "$INCLUDE_FILE" "$SRC_FILE" -c -o "$DST_FILE"
+    "$KEFIRCC" -c $KEFIR_CFLAGS "$SRC_FILE" -o "$DST_FILE"
 fi

@@ -152,7 +152,10 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "store32"
+                    "opcode": "store32",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "getlocal",
@@ -166,7 +169,10 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "store64"
+                    "opcode": "store64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "getlocal",
@@ -176,7 +182,10 @@
                     }
                 },
                 {
-                    "opcode": "load64"
+                    "opcode": "load64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "getlocal",
@@ -190,14 +199,20 @@
                     "arg": 8
                 },
                 {
-                    "opcode": "load32i"
+                    "opcode": "load32i",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "iaddx",
                     "arg": 4
                 },
                 {
-                    "opcode": "load32i"
+                    "opcode": "load32i",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "ret"

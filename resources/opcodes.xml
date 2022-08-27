@@ -79,19 +79,19 @@
     <!-- Data access -->
     <opcode id="getglobal"   mnemonic="getglobal"   code="0x60" type="identifier" />
     <opcode id="getlocal"    mnemonic="getlocal"    code="0x61" type="typeref" />
-    <opcode id="load8u"      mnemonic="load8u"      code="0x62" type="none" />
-    <opcode id="load8i"      mnemonic="load8i"      code="0x63" type="none" />
-    <opcode id="load16u"     mnemonic="load16u"     code="0x64" type="none" />
-    <opcode id="load16i"     mnemonic="load16i"     code="0x65" type="none" />
-    <opcode id="load32u"     mnemonic="load32u"     code="0x66" type="none" />
-    <opcode id="load32i"     mnemonic="load32i"     code="0x67" type="none" />
-    <opcode id="load64"      mnemonic="load64"      code="0x68" type="none" />
-    <opcode id="loadld"      mnemonic="loadld"      code="0x69" type="none" />
-    <opcode id="store8"      mnemonic="store8"      code="0x6a" type="none" />
-    <opcode id="store16"     mnemonic="store16"     code="0x6b" type="none" />
-    <opcode id="store32"     mnemonic="store32"     code="0x6c" type="none" />
-    <opcode id="store64"     mnemonic="store64"     code="0x6d" type="none" />
-    <opcode id="storeld"     mnemonic="storeld"     code="0x6e" type="none" />
+    <opcode id="load8u"      mnemonic="load8u"      code="0x62" type="memflags" />
+    <opcode id="load8i"      mnemonic="load8i"      code="0x63" type="memflags" />
+    <opcode id="load16u"     mnemonic="load16u"     code="0x64" type="memflags" />
+    <opcode id="load16i"     mnemonic="load16i"     code="0x65" type="memflags" />
+    <opcode id="load32u"     mnemonic="load32u"     code="0x66" type="memflags" />
+    <opcode id="load32i"     mnemonic="load32i"     code="0x67" type="memflags" />
+    <opcode id="load64"      mnemonic="load64"      code="0x68" type="memflags" />
+    <opcode id="loadld"      mnemonic="loadld"      code="0x69" type="memflags" />
+    <opcode id="store8"      mnemonic="store8"      code="0x6a" type="memflags" />
+    <opcode id="store16"     mnemonic="store16"     code="0x6b" type="memflags" />
+    <opcode id="store32"     mnemonic="store32"     code="0x6c" type="memflags" />
+    <opcode id="store64"     mnemonic="store64"     code="0x6d" type="memflags" />
+    <opcode id="storeld"     mnemonic="storeld"     code="0x6e" type="memflags" />
     <opcode id="bzero"       mnemonic="bzero"       code="0x6f" type="typeref" />
     <opcode id="bcopy"       mnemonic="bcopy"       code="0x70" type="typeref" />
     <opcode id="extubits"    mnemonic="extubits"    code="0x71" type="u32" />

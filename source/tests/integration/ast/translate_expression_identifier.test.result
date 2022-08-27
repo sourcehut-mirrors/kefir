@@ -115,7 +115,10 @@
                     }
                 },
                 {
-                    "opcode": "load32i"
+                    "opcode": "load32i",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "getglobal",
@@ -124,7 +127,10 @@
                     }
                 },
                 {
-                    "opcode": "load8i"
+                    "opcode": "load8i",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "getglobal",
@@ -133,7 +139,10 @@
                     }
                 },
                 {
-                    "opcode": "load32u"
+                    "opcode": "load32u",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "getlocal",
@@ -143,7 +152,10 @@
                     }
                 },
                 {
-                    "opcode": "load8u"
+                    "opcode": "load8u",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "pushi",

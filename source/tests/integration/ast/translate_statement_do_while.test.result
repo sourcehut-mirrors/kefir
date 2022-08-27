@@ -199,7 +199,10 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "store8"
+                    "opcode": "store8",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "pop"
@@ -234,7 +237,10 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "store8"
+                    "opcode": "store8",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "pop"
@@ -247,7 +253,10 @@
                     }
                 },
                 {
-                    "opcode": "load8u"
+                    "opcode": "load8u",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "bnot"
@@ -270,10 +279,16 @@
                     }
                 },
                 {
-                    "opcode": "load64"
+                    "opcode": "load64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
-                    "opcode": "load8u"
+                    "opcode": "load8u",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "bnot"

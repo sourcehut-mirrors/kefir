@@ -227,6 +227,8 @@ static kefir_result_t translate_bitfield(struct kefir_mem *mem, struct kefir_ast
         return KEFIR_OK;
     }
 
+    struct kefir_ast_type_qualification qualification;
+    REQUIRE_OK(kefir_ast_type_retrieve_qualifications(&qualification, field->type));
     const struct kefir_ast_type *unqualified_field_type = kefir_ast_unqualified_type(field->type);
 
     kefir_bool_t allocated = false;
@@ -273,6 +275,7 @@ static kefir_result_t translate_bitfield(struct kefir_mem *mem, struct kefir_ast
         element_layout->bitfield = true;
         element_layout->bitfield_props.width = ir_bitfield.width;
         element_layout->bitfield_props.offset = ir_bitfield.offset;
+        element_layout->type_qualification = qualification;
 
         kefir_result_t res = insert_struct_field(mem, field, layout, element_layout);
         REQUIRE_ELSE(res == KEFIR_OK, {
@@ -405,6 +408,9 @@ kefir_result_t kefir_ast_translate_object_type(struct kefir_mem *mem, const stru
         case KEFIR_AST_TYPE_QUALIFIED:
             REQUIRE_OK(kefir_ast_translate_object_type(mem, context, type->qualified_type.type, alignment, env, builder,
                                                        layout_ptr, source_location));
+            if (layout_ptr != NULL && *layout_ptr != NULL) {
+                (*layout_ptr)->type_qualification = type->qualified_type.qualification;
+            }
             break;
 
         default:

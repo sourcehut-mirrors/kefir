@@ -219,7 +219,10 @@
                     }
                 },
                 {
-                    "opcode": "load32i"
+                    "opcode": "load32i",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "getlocal",
@@ -286,7 +289,10 @@
                     }
                 },
                 {
-                    "opcode": "load64"
+                    "opcode": "load64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "getlocal",

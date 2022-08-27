@@ -59,6 +59,7 @@ typedef struct kefir_ast_type_layout {
     kefir_size_t alignment;
     kefir_uptr_t value;
     kefir_bool_t bitfield;
+    struct kefir_ast_type_qualification type_qualification;
 
     struct {
         kefir_size_t offset;

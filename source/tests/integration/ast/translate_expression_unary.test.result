@@ -330,7 +330,10 @@
                     }
                 },
                 {
-                    "opcode": "load32u"
+                    "opcode": "load32u",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "pushu",
@@ -384,7 +387,10 @@
                     }
                 },
                 {
-                    "opcode": "load32u"
+                    "opcode": "load32u",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "ineg"
@@ -434,7 +440,10 @@
                     }
                 },
                 {
-                    "opcode": "load32u"
+                    "opcode": "load32u",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "inot"
@@ -687,45 +696,66 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "load8i"
+                    "opcode": "load8i",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "pushi",
                     "arg": 1
                 },
                 {
-                    "opcode": "load16i"
+                    "opcode": "load16i",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "pushi",
                     "arg": 2
                 },
                 {
-                    "opcode": "load32u"
+                    "opcode": "load32u",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "pushi",
                     "arg": 3
                 },
                 {
-                    "opcode": "load64"
+                    "opcode": "load64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "pushi",
                     "arg": 4
                 },
                 {
-                    "opcode": "load64"
+                    "opcode": "load64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
-                    "opcode": "load8u"
+                    "opcode": "load8u",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "pushi",
                     "arg": 5
                 },
                 {
-                    "opcode": "load32u"
+                    "opcode": "load32u",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "pushi",
@@ -788,7 +818,10 @@
                     }
                 },
                 {
-                    "opcode": "load32u"
+                    "opcode": "load32u",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "bnot"

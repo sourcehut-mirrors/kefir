@@ -69,7 +69,10 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "store64"
+                    "opcode": "store64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "pushi",

@@ -198,7 +198,7 @@ static kefir_result_t traverse_string_literal(const struct kefir_ast_designator 
     REQUIRE_OK(zero_type(param->builder, param->translator_type->object.ir_type_id, type_layout));
     const struct kefir_ast_type *array_type = kefir_ast_type_array(
         param->mem, param->context->ast_context->type_bundle, type_layout->type->array_type.element_type,
-        kefir_ast_constant_expression_integer(param->mem, length), NULL);
+        kefir_ast_constant_expression_integer(param->mem, length), &type_layout->type->array_type.qualifications);
     REQUIRE_OK(kefir_ast_translate_expression(param->mem, expression, param->builder, param->context));
 
     REQUIRE_OK(kefir_ast_translator_store_value(

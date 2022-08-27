@@ -122,31 +122,31 @@ kefir_result_t kefir_ir_format_instr(struct kefir_json_output *json, const struc
         case KEFIR_IROPCODE_GETLOCAL:
             return kefir_ir_format_instr_typeref(json, module, instr);
         case KEFIR_IROPCODE_LOAD8U:
-            return kefir_ir_format_instr_none(json, module, instr);
+            return kefir_ir_format_instr_memflags(json, module, instr);
         case KEFIR_IROPCODE_LOAD8I:
-            return kefir_ir_format_instr_none(json, module, instr);
+            return kefir_ir_format_instr_memflags(json, module, instr);
         case KEFIR_IROPCODE_LOAD16U:
-            return kefir_ir_format_instr_none(json, module, instr);
+            return kefir_ir_format_instr_memflags(json, module, instr);
         case KEFIR_IROPCODE_LOAD16I:
-            return kefir_ir_format_instr_none(json, module, instr);
+            return kefir_ir_format_instr_memflags(json, module, instr);
         case KEFIR_IROPCODE_LOAD32U:
-            return kefir_ir_format_instr_none(json, module, instr);
+            return kefir_ir_format_instr_memflags(json, module, instr);
         case KEFIR_IROPCODE_LOAD32I:
-            return kefir_ir_format_instr_none(json, module, instr);
+            return kefir_ir_format_instr_memflags(json, module, instr);
         case KEFIR_IROPCODE_LOAD64:
-            return kefir_ir_format_instr_none(json, module, instr);
+            return kefir_ir_format_instr_memflags(json, module, instr);
         case KEFIR_IROPCODE_LOADLD:
-            return kefir_ir_format_instr_none(json, module, instr);
+            return kefir_ir_format_instr_memflags(json, module, instr);
         case KEFIR_IROPCODE_STORE8:
-            return kefir_ir_format_instr_none(json, module, instr);
+            return kefir_ir_format_instr_memflags(json, module, instr);
         case KEFIR_IROPCODE_STORE16:
-            return kefir_ir_format_instr_none(json, module, instr);
+            return kefir_ir_format_instr_memflags(json, module, instr);
         case KEFIR_IROPCODE_STORE32:
-            return kefir_ir_format_instr_none(json, module, instr);
+            return kefir_ir_format_instr_memflags(json, module, instr);
         case KEFIR_IROPCODE_STORE64:
-            return kefir_ir_format_instr_none(json, module, instr);
+            return kefir_ir_format_instr_memflags(json, module, instr);
         case KEFIR_IROPCODE_STORELD:
-            return kefir_ir_format_instr_none(json, module, instr);
+            return kefir_ir_format_instr_memflags(json, module, instr);
         case KEFIR_IROPCODE_BZERO:
             return kefir_ir_format_instr_typeref(json, module, instr);
         case KEFIR_IROPCODE_BCOPY:

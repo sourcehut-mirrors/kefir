@@ -406,7 +406,10 @@
                     }
                 },
                 {
-                    "opcode": "load64"
+                    "opcode": "load64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "getglobal",
@@ -419,7 +422,10 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "load64"
+                    "opcode": "load64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "xchg",
@@ -441,7 +447,10 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "store64"
+                    "opcode": "store64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "pop"
@@ -460,7 +469,10 @@
                     }
                 },
                 {
-                    "opcode": "load64"
+                    "opcode": "load64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "ret"
@@ -484,7 +496,10 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "store64"
+                    "opcode": "store64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "getlocal",
@@ -494,7 +509,10 @@
                     }
                 },
                 {
-                    "opcode": "load64"
+                    "opcode": "load64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "getglobal",
@@ -515,7 +533,10 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "store64"
+                    "opcode": "store64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "pop"
@@ -534,7 +555,10 @@
                     }
                 },
                 {
-                    "opcode": "load64"
+                    "opcode": "load64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "invoke",

@@ -112,7 +112,10 @@
                     "arg": 8
                 },
                 {
-                    "opcode": "load64"
+                    "opcode": "load64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "pushi",
@@ -123,7 +126,10 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "load8i"
+                    "opcode": "load8i",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "getglobal",
@@ -140,7 +146,10 @@
                     "arg": 8
                 },
                 {
-                    "opcode": "load64"
+                    "opcode": "load64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "pushi",
@@ -151,7 +160,10 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "load8i"
+                    "opcode": "load8i",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 }
             ]
         }

@@ -249,7 +249,10 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "load64"
+                    "opcode": "load64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "xchg",
@@ -271,7 +274,10 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "store64"
+                    "opcode": "store64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 }
             ]
         },
@@ -295,7 +301,10 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "load64"
+                    "opcode": "load64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "xchg",
@@ -317,7 +326,10 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "store64"
+                    "opcode": "store64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 }
             ]
         },
@@ -341,7 +353,10 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "load32i"
+                    "opcode": "load32i",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "xchg",
@@ -363,7 +378,10 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "store32"
+                    "opcode": "store32",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 }
             ]
         },
@@ -387,7 +405,10 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "load32i"
+                    "opcode": "load32i",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "intcf64"
@@ -418,7 +439,10 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "store32"
+                    "opcode": "store32",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 }
             ]
         },
@@ -442,7 +466,10 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "load64"
+                    "opcode": "load64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "xchg",
@@ -465,7 +492,10 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "store64"
+                    "opcode": "store64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 }
             ]
         },
@@ -489,7 +519,10 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "load32u"
+                    "opcode": "load32u",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "xchg",
@@ -511,7 +544,10 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "store32"
+                    "opcode": "store32",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 }
             ]
         },
@@ -535,7 +571,10 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "load64"
+                    "opcode": "load64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "xchg",
@@ -558,7 +597,10 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "store64"
+                    "opcode": "store64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 }
             ]
         }

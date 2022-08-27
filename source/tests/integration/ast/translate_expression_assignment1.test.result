@@ -384,7 +384,10 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "store32"
+                    "opcode": "store32",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 }
             ]
         },
@@ -416,7 +419,10 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "store64"
+                    "opcode": "store64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 }
             ]
         },
@@ -455,7 +461,10 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "store32"
+                    "opcode": "store32",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "pushi",
@@ -480,7 +489,10 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "store32"
+                    "opcode": "store32",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "pushf64",
@@ -515,7 +527,10 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "store32"
+                    "opcode": "store32",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 }
             ]
         },
@@ -547,7 +562,10 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "store8"
+                    "opcode": "store8",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "pushf32",
@@ -578,7 +596,10 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "store8"
+                    "opcode": "store8",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 }
             ]
         },
@@ -613,7 +634,10 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "store8"
+                    "opcode": "store8",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "pushi",
@@ -645,7 +669,10 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "store8"
+                    "opcode": "store8",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "pushi",
@@ -673,7 +700,10 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "store8"
+                    "opcode": "store8",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "pushf64",
@@ -704,7 +734,10 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "store8"
+                    "opcode": "store8",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 }
             ]
         },
@@ -736,7 +769,10 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "store64"
+                    "opcode": "store64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "pushi",
@@ -761,7 +797,10 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "store64"
+                    "opcode": "store64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "pushf32",
@@ -789,7 +828,10 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "store64"
+                    "opcode": "store64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 }
             ]
         },
@@ -828,7 +870,10 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "store16"
+                    "opcode": "store16",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "pushi",
@@ -856,7 +901,10 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "store16"
+                    "opcode": "store16",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 }
             ]
         },
@@ -888,7 +936,10 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "store64"
+                    "opcode": "store64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "pushi",
@@ -913,7 +964,10 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "store64"
+                    "opcode": "store64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 }
             ]
         },
@@ -945,7 +999,10 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "store32"
+                    "opcode": "store32",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "pushf32",
@@ -973,7 +1030,10 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "store64"
+                    "opcode": "store64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "pushi",
@@ -1001,7 +1061,10 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "store32"
+                    "opcode": "store32",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "pushi",
@@ -1029,7 +1092,10 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "store64"
+                    "opcode": "store64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 }
             ]
         }

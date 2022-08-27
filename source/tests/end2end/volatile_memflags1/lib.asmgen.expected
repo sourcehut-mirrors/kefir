@@ -1,0 +1,1898 @@
+{
+    "globals": [
+        {
+            "identifier": "getA",
+            "type": "global"
+        },
+        {
+            "identifier": "getB",
+            "type": "global"
+        },
+        {
+            "identifier": "getC",
+            "type": "global"
+        },
+        {
+            "identifier": "getD",
+            "type": "global"
+        },
+        {
+            "identifier": "setA",
+            "type": "global"
+        },
+        {
+            "identifier": "setB",
+            "type": "global"
+        },
+        {
+            "identifier": "setC",
+            "type": "global"
+        },
+        {
+            "identifier": "setD",
+            "type": "global"
+        },
+        {
+            "identifier": "setS",
+            "type": "global"
+        },
+        {
+            "identifier": "sumS",
+            "type": "global"
+        },
+        {
+            "identifier": "vla_test",
+            "type": "global"
+        }
+    ],
+    "externals": [
+        {
+            "identifier": "a",
+            "type": "global"
+        },
+        {
+            "identifier": "b",
+            "type": "global"
+        },
+        {
+            "identifier": "c",
+            "type": "global"
+        },
+        {
+            "identifier": "d",
+            "type": "global"
+        }
+    ],
+    "types": [
+        {
+            "identifier": 0,
+            "type": [
+                {
+                    "type": "array",
+                    "length": 5,
+                    "element_type": {
+                        "type": "char"
+                    }
+                },
+                {
+                    "type": "array",
+                    "length": 5,
+                    "element_type": {
+                        "type": "char"
+                    }
+                },
+                {
+                    "type": "array",
+                    "length": 5,
+                    "element_type": {
+                        "type": "char"
+                    }
+                },
+                {
+                    "type": "array",
+                    "length": 5,
+                    "element_type": {
+                        "type": "char"
+                    }
+                },
+                {
+                    "type": "array",
+                    "length": 5,
+                    "element_type": {
+                        "type": "char"
+                    }
+                },
+                {
+                    "type": "array",
+                    "length": 5,
+                    "element_type": {
+                        "type": "char"
+                    }
+                },
+                {
+                    "type": "array",
+                    "length": 5,
+                    "element_type": {
+                        "type": "char"
+                    }
+                },
+                {
+                    "type": "array",
+                    "length": 5,
+                    "element_type": {
+                        "type": "char"
+                    }
+                },
+                {
+                    "type": "array",
+                    "length": 5,
+                    "element_type": {
+                        "type": "char"
+                    }
+                },
+                {
+                    "type": "array",
+                    "length": 5,
+                    "element_type": {
+                        "type": "char"
+                    }
+                },
+                {
+                    "type": "array",
+                    "length": 9,
+                    "element_type": {
+                        "type": "char"
+                    }
+                }
+            ]
+        },
+        {
+            "identifier": 8,
+            "type": []
+        },
+        {
+            "identifier": 9,
+            "type": [
+                {
+                    "type": "char"
+                }
+            ]
+        },
+        {
+            "identifier": 11,
+            "type": [
+                {
+                    "type": "short"
+                }
+            ]
+        },
+        {
+            "identifier": 13,
+            "type": [
+                {
+                    "type": "int"
+                }
+            ]
+        },
+        {
+            "identifier": 15,
+            "type": [
+                {
+                    "type": "long"
+                }
+            ]
+        },
+        {
+            "identifier": 24,
+            "type": [
+                {
+                    "type": "word"
+                },
+                {
+                    "type": "int"
+                }
+            ]
+        },
+        {
+            "identifier": 26,
+            "type": [
+                {
+                    "type": "word"
+                }
+            ]
+        },
+        {
+            "identifier": 44,
+            "type": [
+                {
+                    "type": "struct",
+                    "fields": [
+                        {
+                            "type": "char"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "identifier": 47,
+            "type": [
+                {
+                    "type": "struct",
+                    "fields": [
+                        {
+                            "type": "short"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "identifier": 50,
+            "type": [
+                {
+                    "type": "struct",
+                    "fields": [
+                        {
+                            "type": "int"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "identifier": 53,
+            "type": [
+                {
+                    "type": "struct",
+                    "fields": [
+                        {
+                            "type": "long"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "identifier": 56,
+            "type": [
+                {
+                    "type": "struct",
+                    "fields": [
+                        {
+                            "type": "word"
+                        },
+                        {
+                            "type": "int"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "identifier": 68,
+            "type": [
+                {
+                    "type": "struct",
+                    "fields": [
+                        {
+                            "type": "word"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "identifier": 80,
+            "type": [
+                {
+                    "type": "struct",
+                    "fields": [
+                        {
+                            "type": "int"
+                        },
+                        {
+                            "type": "array",
+                            "length": 1,
+                            "element_type": {
+                                "type": "word"
+                            }
+                        },
+                        {
+                            "type": "union",
+                            "fields": [
+                                {
+                                    "type": "struct",
+                                    "fields": [
+                                        {
+                                            "type": "struct",
+                                            "fields": [
+                                                {
+                                                    "type": "word"
+                                                },
+                                                {
+                                                    "type": "word"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "data": [
+        {
+            "identifier": "__kefirrt_module_static_vars",
+            "storage": "global",
+            "type": 0,
+            "value": [
+                {
+                    "class": "string",
+                    "content": "getA\u0000",
+                    "length": 5
+                },
+                {
+                    "class": "undefined",
+                    "count": 5
+                },
+                {
+                    "class": "string",
+                    "content": "getB\u0000",
+                    "length": 5
+                },
+                {
+                    "class": "undefined",
+                    "count": 5
+                },
+                {
+                    "class": "string",
+                    "content": "getC\u0000",
+                    "length": 5
+                },
+                {
+                    "class": "undefined",
+                    "count": 5
+                },
+                {
+                    "class": "string",
+                    "content": "getD\u0000",
+                    "length": 5
+                },
+                {
+                    "class": "undefined",
+                    "count": 5
+                },
+                {
+                    "class": "string",
+                    "content": "setA\u0000",
+                    "length": 5
+                },
+                {
+                    "class": "undefined",
+                    "count": 5
+                },
+                {
+                    "class": "string",
+                    "content": "setB\u0000",
+                    "length": 5
+                },
+                {
+                    "class": "undefined",
+                    "count": 5
+                },
+                {
+                    "class": "string",
+                    "content": "setC\u0000",
+                    "length": 5
+                },
+                {
+                    "class": "undefined",
+                    "count": 5
+                },
+                {
+                    "class": "string",
+                    "content": "setD\u0000",
+                    "length": 5
+                },
+                {
+                    "class": "undefined",
+                    "count": 5
+                },
+                {
+                    "class": "string",
+                    "content": "setS\u0000",
+                    "length": 5
+                },
+                {
+                    "class": "undefined",
+                    "count": 5
+                },
+                {
+                    "class": "string",
+                    "content": "sumS\u0000",
+                    "length": 5
+                },
+                {
+                    "class": "undefined",
+                    "count": 5
+                },
+                {
+                    "class": "string",
+                    "content": "vla_test\u0000",
+                    "length": 9
+                },
+                {
+                    "class": "undefined",
+                    "count": 9
+                }
+            ]
+        }
+    ],
+    "string_literals": [
+        {
+            "id": 0,
+            "public": false,
+            "type": "multibyte",
+            "literal": "getA\u0000",
+            "length": 5
+        },
+        {
+            "id": 1,
+            "public": false,
+            "type": "multibyte",
+            "literal": "getB\u0000",
+            "length": 5
+        },
+        {
+            "id": 2,
+            "public": false,
+            "type": "multibyte",
+            "literal": "getC\u0000",
+            "length": 5
+        },
+        {
+            "id": 3,
+            "public": false,
+            "type": "multibyte",
+            "literal": "getD\u0000",
+            "length": 5
+        },
+        {
+            "id": 4,
+            "public": false,
+            "type": "multibyte",
+            "literal": "setA\u0000",
+            "length": 5
+        },
+        {
+            "id": 5,
+            "public": false,
+            "type": "multibyte",
+            "literal": "setB\u0000",
+            "length": 5
+        },
+        {
+            "id": 6,
+            "public": false,
+            "type": "multibyte",
+            "literal": "setC\u0000",
+            "length": 5
+        },
+        {
+            "id": 7,
+            "public": false,
+            "type": "multibyte",
+            "literal": "setD\u0000",
+            "length": 5
+        },
+        {
+            "id": 8,
+            "public": false,
+            "type": "multibyte",
+            "literal": "setS\u0000",
+            "length": 5
+        },
+        {
+            "id": 9,
+            "public": false,
+            "type": "multibyte",
+            "literal": "sumS\u0000",
+            "length": 5
+        },
+        {
+            "id": 10,
+            "public": false,
+            "type": "multibyte",
+            "literal": "vla_test\u0000",
+            "length": 9
+        }
+    ],
+    "function_declarations": [
+        {
+            "identifier": 1,
+            "name": "getB",
+            "parameters": 8,
+            "vararg": false,
+            "returns": 11
+        },
+        {
+            "identifier": 11,
+            "name": "getA",
+            "parameters": 8,
+            "vararg": false,
+            "returns": 9
+        },
+        {
+            "identifier": 12,
+            "name": "getB",
+            "parameters": 8,
+            "vararg": false,
+            "returns": 11
+        },
+        {
+            "identifier": 13,
+            "name": "getC",
+            "parameters": 8,
+            "vararg": false,
+            "returns": 13
+        },
+        {
+            "identifier": 14,
+            "name": "getD",
+            "parameters": 8,
+            "vararg": false,
+            "returns": 15
+        },
+        {
+            "identifier": 15,
+            "name": "setA",
+            "parameters": 9,
+            "vararg": false,
+            "returns": 8
+        },
+        {
+            "identifier": 16,
+            "name": "setB",
+            "parameters": 11,
+            "vararg": false,
+            "returns": 8
+        },
+        {
+            "identifier": 17,
+            "name": "setC",
+            "parameters": 13,
+            "vararg": false,
+            "returns": 8
+        },
+        {
+            "identifier": 18,
+            "name": "setD",
+            "parameters": 15,
+            "vararg": false,
+            "returns": 8
+        },
+        {
+            "identifier": 19,
+            "name": "setS",
+            "parameters": 24,
+            "vararg": false,
+            "returns": 8
+        },
+        {
+            "identifier": 20,
+            "name": "sumS",
+            "parameters": 26,
+            "vararg": false,
+            "returns": 15
+        },
+        {
+            "identifier": 21,
+            "name": "vla_test",
+            "parameters": 13,
+            "vararg": false,
+            "returns": 8
+        }
+    ],
+    "functions": [
+        {
+            "identifier": 11,
+            "name": "getA",
+            "locals": 8,
+            "body": [
+                {
+                    "opcode": "getglobal",
+                    "arg": {
+                        "data": "a"
+                    }
+                },
+                {
+                    "opcode": "load8i",
+                    "memory_flags": {
+                        "volatile": true
+                    }
+                },
+                {
+                    "opcode": "ret"
+                }
+            ]
+        },
+        {
+            "identifier": 12,
+            "name": "getB",
+            "locals": 8,
+            "body": [
+                {
+                    "opcode": "getglobal",
+                    "arg": {
+                        "data": "b"
+                    }
+                },
+                {
+                    "opcode": "load16i",
+                    "memory_flags": {
+                        "volatile": true
+                    }
+                },
+                {
+                    "opcode": "ret"
+                }
+            ]
+        },
+        {
+            "identifier": 13,
+            "name": "getC",
+            "locals": 8,
+            "body": [
+                {
+                    "opcode": "getglobal",
+                    "arg": {
+                        "data": "c"
+                    }
+                },
+                {
+                    "opcode": "load32i",
+                    "memory_flags": {
+                        "volatile": true
+                    }
+                },
+                {
+                    "opcode": "ret"
+                }
+            ]
+        },
+        {
+            "identifier": 14,
+            "name": "getD",
+            "locals": 8,
+            "body": [
+                {
+                    "opcode": "getglobal",
+                    "arg": {
+                        "data": "d"
+                    }
+                },
+                {
+                    "opcode": "load64",
+                    "memory_flags": {
+                        "volatile": true
+                    }
+                },
+                {
+                    "opcode": "ret"
+                }
+            ]
+        },
+        {
+            "identifier": 15,
+            "name": "setA",
+            "locals": 44,
+            "body": [
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 44,
+                        "index": 0
+                    }
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "store8",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 44,
+                        "index": 0
+                    }
+                },
+                {
+                    "opcode": "load8i",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "getglobal",
+                    "arg": {
+                        "data": "a"
+                    }
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "pick",
+                    "arg": 1
+                },
+                {
+                    "opcode": "store8",
+                    "memory_flags": {
+                        "volatile": true
+                    }
+                },
+                {
+                    "opcode": "pop"
+                }
+            ]
+        },
+        {
+            "identifier": 16,
+            "name": "setB",
+            "locals": 47,
+            "body": [
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 47,
+                        "index": 0
+                    }
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "store16",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 47,
+                        "index": 0
+                    }
+                },
+                {
+                    "opcode": "load16i",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "getglobal",
+                    "arg": {
+                        "data": "b"
+                    }
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "pick",
+                    "arg": 1
+                },
+                {
+                    "opcode": "store16",
+                    "memory_flags": {
+                        "volatile": true
+                    }
+                },
+                {
+                    "opcode": "pop"
+                }
+            ]
+        },
+        {
+            "identifier": 17,
+            "name": "setC",
+            "locals": 50,
+            "body": [
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 50,
+                        "index": 0
+                    }
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "store32",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 50,
+                        "index": 0
+                    }
+                },
+                {
+                    "opcode": "load32i",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "getglobal",
+                    "arg": {
+                        "data": "c"
+                    }
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "pick",
+                    "arg": 1
+                },
+                {
+                    "opcode": "store32",
+                    "memory_flags": {
+                        "volatile": true
+                    }
+                },
+                {
+                    "opcode": "pop"
+                }
+            ]
+        },
+        {
+            "identifier": 18,
+            "name": "setD",
+            "locals": 53,
+            "body": [
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 53,
+                        "index": 0
+                    }
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "store64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 53,
+                        "index": 0
+                    }
+                },
+                {
+                    "opcode": "load64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "getglobal",
+                    "arg": {
+                        "data": "d"
+                    }
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "pick",
+                    "arg": 1
+                },
+                {
+                    "opcode": "store64",
+                    "memory_flags": {
+                        "volatile": true
+                    }
+                },
+                {
+                    "opcode": "pop"
+                }
+            ]
+        },
+        {
+            "identifier": 19,
+            "name": "setS",
+            "locals": 56,
+            "body": [
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 56,
+                        "index": 0
+                    }
+                },
+                {
+                    "opcode": "iadd1",
+                    "arg": 8
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "store32",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 56,
+                        "index": 0
+                    }
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "store64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 56,
+                        "index": 0
+                    }
+                },
+                {
+                    "opcode": "iadd1",
+                    "arg": 8
+                },
+                {
+                    "opcode": "load32i",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "extend8"
+                },
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 56,
+                        "index": 0
+                    }
+                },
+                {
+                    "opcode": "load64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "pick",
+                    "arg": 1
+                },
+                {
+                    "opcode": "pick",
+                    "arg": 1
+                },
+                {
+                    "opcode": "iadd1",
+                    "arg": 0
+                },
+                {
+                    "opcode": "load8u",
+                    "memory_flags": {
+                        "volatile": true
+                    }
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "insertbits",
+                    "arg": [
+                        0,
+                        6
+                    ]
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "iadd1",
+                    "arg": 0
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "store8",
+                    "memory_flags": {
+                        "volatile": true
+                    }
+                },
+                {
+                    "opcode": "extsbits",
+                    "arg": [
+                        0,
+                        6
+                    ]
+                },
+                {
+                    "opcode": "pop"
+                },
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 56,
+                        "index": 0
+                    }
+                },
+                {
+                    "opcode": "iadd1",
+                    "arg": 8
+                },
+                {
+                    "opcode": "load32i",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "extend16"
+                },
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 56,
+                        "index": 0
+                    }
+                },
+                {
+                    "opcode": "load64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "pick",
+                    "arg": 1
+                },
+                {
+                    "opcode": "pick",
+                    "arg": 1
+                },
+                {
+                    "opcode": "iadd1",
+                    "arg": 0
+                },
+                {
+                    "opcode": "load16u",
+                    "memory_flags": {
+                        "volatile": true
+                    }
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "insertbits",
+                    "arg": [
+                        6,
+                        10
+                    ]
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "iadd1",
+                    "arg": 0
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "store16",
+                    "memory_flags": {
+                        "volatile": true
+                    }
+                },
+                {
+                    "opcode": "extsbits",
+                    "arg": [
+                        0,
+                        10
+                    ]
+                },
+                {
+                    "opcode": "pop"
+                },
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 56,
+                        "index": 0
+                    }
+                },
+                {
+                    "opcode": "iadd1",
+                    "arg": 8
+                },
+                {
+                    "opcode": "load32i",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 56,
+                        "index": 0
+                    }
+                },
+                {
+                    "opcode": "load64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "iadd1",
+                    "arg": 2
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "pick",
+                    "arg": 1
+                },
+                {
+                    "opcode": "pick",
+                    "arg": 1
+                },
+                {
+                    "opcode": "iadd1",
+                    "arg": 2
+                },
+                {
+                    "opcode": "load32u",
+                    "memory_flags": {
+                        "volatile": true
+                    }
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "insertbits",
+                    "arg": [
+                        0,
+                        24
+                    ]
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "iadd1",
+                    "arg": 2
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "store32",
+                    "memory_flags": {
+                        "volatile": true
+                    }
+                },
+                {
+                    "opcode": "extsbits",
+                    "arg": [
+                        0,
+                        24
+                    ]
+                },
+                {
+                    "opcode": "pop"
+                },
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 56,
+                        "index": 0
+                    }
+                },
+                {
+                    "opcode": "iadd1",
+                    "arg": 8
+                },
+                {
+                    "opcode": "load32i",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 56,
+                        "index": 0
+                    }
+                },
+                {
+                    "opcode": "load64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "iadd1",
+                    "arg": 7
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "pick",
+                    "arg": 1
+                },
+                {
+                    "opcode": "pick",
+                    "arg": 1
+                },
+                {
+                    "opcode": "iadd1",
+                    "arg": 1
+                },
+                {
+                    "opcode": "load64",
+                    "memory_flags": {
+                        "volatile": true
+                    }
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "insertbits",
+                    "arg": [
+                        0,
+                        45
+                    ]
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "iadd1",
+                    "arg": 1
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "store64",
+                    "memory_flags": {
+                        "volatile": true
+                    }
+                },
+                {
+                    "opcode": "extsbits",
+                    "arg": [
+                        0,
+                        45
+                    ]
+                },
+                {
+                    "opcode": "pop"
+                },
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 56,
+                        "index": 0
+                    }
+                },
+                {
+                    "opcode": "iadd1",
+                    "arg": 8
+                },
+                {
+                    "opcode": "load32i",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 56,
+                        "index": 0
+                    }
+                },
+                {
+                    "opcode": "load64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "iadd1",
+                    "arg": 16
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "pick",
+                    "arg": 1
+                },
+                {
+                    "opcode": "store32",
+                    "memory_flags": {
+                        "volatile": true
+                    }
+                },
+                {
+                    "opcode": "pop"
+                }
+            ]
+        },
+        {
+            "identifier": 20,
+            "name": "sumS",
+            "locals": 68,
+            "body": [
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 68,
+                        "index": 0
+                    }
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "store64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 68,
+                        "index": 0
+                    }
+                },
+                {
+                    "opcode": "load64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "iadd1",
+                    "arg": 0
+                },
+                {
+                    "opcode": "load8u",
+                    "memory_flags": {
+                        "volatile": true
+                    }
+                },
+                {
+                    "opcode": "extsbits",
+                    "arg": [
+                        0,
+                        6
+                    ]
+                },
+                {
+                    "opcode": "extend32"
+                },
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 68,
+                        "index": 0
+                    }
+                },
+                {
+                    "opcode": "load64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "iadd1",
+                    "arg": 0
+                },
+                {
+                    "opcode": "load16u",
+                    "memory_flags": {
+                        "volatile": true
+                    }
+                },
+                {
+                    "opcode": "extsbits",
+                    "arg": [
+                        6,
+                        10
+                    ]
+                },
+                {
+                    "opcode": "extend32"
+                },
+                {
+                    "opcode": "iadd"
+                },
+                {
+                    "opcode": "extend32"
+                },
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 68,
+                        "index": 0
+                    }
+                },
+                {
+                    "opcode": "load64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "iadd1",
+                    "arg": 2
+                },
+                {
+                    "opcode": "iadd1",
+                    "arg": 2
+                },
+                {
+                    "opcode": "load32u",
+                    "memory_flags": {
+                        "volatile": true
+                    }
+                },
+                {
+                    "opcode": "extsbits",
+                    "arg": [
+                        0,
+                        24
+                    ]
+                },
+                {
+                    "opcode": "iadd"
+                },
+                {
+                    "opcode": "extend32"
+                },
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 68,
+                        "index": 0
+                    }
+                },
+                {
+                    "opcode": "load64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "iadd1",
+                    "arg": 7
+                },
+                {
+                    "opcode": "iadd1",
+                    "arg": 1
+                },
+                {
+                    "opcode": "load64",
+                    "memory_flags": {
+                        "volatile": true
+                    }
+                },
+                {
+                    "opcode": "extsbits",
+                    "arg": [
+                        0,
+                        45
+                    ]
+                },
+                {
+                    "opcode": "iadd"
+                },
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 68,
+                        "index": 0
+                    }
+                },
+                {
+                    "opcode": "load64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "iadd1",
+                    "arg": 16
+                },
+                {
+                    "opcode": "load32i",
+                    "memory_flags": {
+                        "volatile": true
+                    }
+                },
+                {
+                    "opcode": "iadd"
+                },
+                {
+                    "opcode": "ret"
+                }
+            ]
+        },
+        {
+            "identifier": 21,
+            "name": "vla_test",
+            "locals": 80,
+            "body": [
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 80,
+                        "index": 0
+                    }
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "store32",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 80,
+                        "index": 2
+                    }
+                },
+                {
+                    "opcode": "pushu",
+                    "arg": 0
+                },
+                {
+                    "opcode": "iaddx",
+                    "arg": 8
+                },
+                {
+                    "opcode": "pushscope"
+                },
+                {
+                    "opcode": "store64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 80,
+                        "index": 0
+                    }
+                },
+                {
+                    "opcode": "iadd1",
+                    "arg": 16
+                },
+                {
+                    "opcode": "iadd1",
+                    "arg": 0
+                },
+                {
+                    "opcode": "pushu",
+                    "arg": 8
+                },
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 80,
+                        "index": 0
+                    }
+                },
+                {
+                    "opcode": "load32i",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "imul"
+                },
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 80,
+                        "index": 0
+                    }
+                },
+                {
+                    "opcode": "iadd1",
+                    "arg": 16
+                },
+                {
+                    "opcode": "iadd1",
+                    "arg": 8
+                },
+                {
+                    "opcode": "pick",
+                    "arg": 1
+                },
+                {
+                    "opcode": "store64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "pushu",
+                    "arg": 8
+                },
+                {
+                    "opcode": "alloca",
+                    "arg": false
+                },
+                {
+                    "opcode": "store64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 80,
+                        "index": 0
+                    }
+                },
+                {
+                    "opcode": "iadd1",
+                    "arg": 16
+                },
+                {
+                    "opcode": "iadd1",
+                    "arg": 8
+                },
+                {
+                    "opcode": "load64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 80,
+                        "index": 0
+                    }
+                },
+                {
+                    "opcode": "iadd1",
+                    "arg": 16
+                },
+                {
+                    "opcode": "iadd1",
+                    "arg": 0
+                },
+                {
+                    "opcode": "load64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "pushi",
+                    "arg": 0
+                },
+                {
+                    "opcode": "iaddx",
+                    "arg": 8
+                },
+                {
+                    "opcode": "load64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "iadd"
+                },
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 80,
+                        "index": 0
+                    }
+                },
+                {
+                    "opcode": "iadd1",
+                    "arg": 16
+                },
+                {
+                    "opcode": "iadd1",
+                    "arg": 0
+                },
+                {
+                    "opcode": "load64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "pushi",
+                    "arg": 0
+                },
+                {
+                    "opcode": "iaddx",
+                    "arg": 8
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "pick",
+                    "arg": 1
+                },
+                {
+                    "opcode": "store64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "pop"
+                },
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 80,
+                        "index": 2
+                    }
+                },
+                {
+                    "opcode": "pushu",
+                    "arg": 0
+                },
+                {
+                    "opcode": "iaddx",
+                    "arg": 8
+                },
+                {
+                    "opcode": "load64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "popscope"
+                }
+            ]
+        }
+    ],
+    "inline_assembly": []
+}

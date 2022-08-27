@@ -565,7 +565,10 @@
                     }
                 },
                 {
-                    "opcode": "load8u"
+                    "opcode": "load8u",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "getglobal",
@@ -574,7 +577,10 @@
                     }
                 },
                 {
-                    "opcode": "load8i"
+                    "opcode": "load8i",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "getglobal",
@@ -583,7 +589,10 @@
                     }
                 },
                 {
-                    "opcode": "load8u"
+                    "opcode": "load8u",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "getglobal",
@@ -592,7 +601,10 @@
                     }
                 },
                 {
-                    "opcode": "load8i"
+                    "opcode": "load8i",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "getglobal",
@@ -601,7 +613,10 @@
                     }
                 },
                 {
-                    "opcode": "load16u"
+                    "opcode": "load16u",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "getglobal",
@@ -610,7 +625,10 @@
                     }
                 },
                 {
-                    "opcode": "load16i"
+                    "opcode": "load16i",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "getglobal",
@@ -619,7 +637,10 @@
                     }
                 },
                 {
-                    "opcode": "load32u"
+                    "opcode": "load32u",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "getglobal",
@@ -628,7 +649,10 @@
                     }
                 },
                 {
-                    "opcode": "load32i"
+                    "opcode": "load32i",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "getglobal",
@@ -637,7 +661,10 @@
                     }
                 },
                 {
-                    "opcode": "load64"
+                    "opcode": "load64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "getglobal",
@@ -646,7 +673,10 @@
                     }
                 },
                 {
-                    "opcode": "load64"
+                    "opcode": "load64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "getglobal",
@@ -655,7 +685,10 @@
                     }
                 },
                 {
-                    "opcode": "load64"
+                    "opcode": "load64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "getglobal",
@@ -664,7 +697,10 @@
                     }
                 },
                 {
-                    "opcode": "load64"
+                    "opcode": "load64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "getglobal",
@@ -673,7 +709,10 @@
                     }
                 },
                 {
-                    "opcode": "load32u"
+                    "opcode": "load32u",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "getglobal",
@@ -682,7 +721,10 @@
                     }
                 },
                 {
-                    "opcode": "load64"
+                    "opcode": "load64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "getglobal",
@@ -691,7 +733,10 @@
                     }
                 },
                 {
-                    "opcode": "load64"
+                    "opcode": "load64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "getglobal",
@@ -700,7 +745,10 @@
                     }
                 },
                 {
-                    "opcode": "load32i"
+                    "opcode": "load32i",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "getglobal",
@@ -709,7 +757,10 @@
                     }
                 },
                 {
-                    "opcode": "load16i"
+                    "opcode": "load16i",
+                    "memory_flags": {
+                        "volatile": true
+                    }
                 },
                 {
                     "opcode": "getglobal",

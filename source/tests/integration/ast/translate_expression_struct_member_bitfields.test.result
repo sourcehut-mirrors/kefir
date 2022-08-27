@@ -440,7 +440,10 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "load16u"
+                    "opcode": "load16u",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "extsbits",
@@ -460,7 +463,10 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "load8u"
+                    "opcode": "load8u",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "extsbits",
@@ -480,7 +486,10 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "load16u"
+                    "opcode": "load16u",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "extubits",
@@ -496,7 +505,10 @@
                     }
                 },
                 {
-                    "opcode": "load64"
+                    "opcode": "load64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "iadd1",
@@ -507,7 +519,10 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "load8u"
+                    "opcode": "load8u",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "extubits",
@@ -523,7 +538,10 @@
                     }
                 },
                 {
-                    "opcode": "load64"
+                    "opcode": "load64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "iadd1",
@@ -534,7 +552,10 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "load8u"
+                    "opcode": "load8u",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "extubits",
@@ -550,7 +571,10 @@
                     }
                 },
                 {
-                    "opcode": "load64"
+                    "opcode": "load64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "iadd1",
@@ -561,7 +585,10 @@
                     "arg": 3
                 },
                 {
-                    "opcode": "load64"
+                    "opcode": "load64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "extubits",

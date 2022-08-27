@@ -278,7 +278,10 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "store64"
+                    "opcode": "store64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "pick",
@@ -293,7 +296,10 @@
                     "arg": 2
                 },
                 {
-                    "opcode": "store32"
+                    "opcode": "store32",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "pick",
@@ -308,7 +314,10 @@
                     "arg": 3
                 },
                 {
-                    "opcode": "store32"
+                    "opcode": "store32",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "pick",
@@ -326,7 +335,10 @@
                     "opcode": "intcf32"
                 },
                 {
-                    "opcode": "store32"
+                    "opcode": "store32",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "pick",
@@ -359,7 +371,10 @@
                     "opcode": "extend8"
                 },
                 {
-                    "opcode": "store8"
+                    "opcode": "store8",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "pick",
@@ -377,7 +392,10 @@
                     "opcode": "extend8"
                 },
                 {
-                    "opcode": "store8"
+                    "opcode": "store8",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "pick",
@@ -395,7 +413,10 @@
                     "opcode": "extend8"
                 },
                 {
-                    "opcode": "store8"
+                    "opcode": "store8",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "pop"
@@ -413,7 +434,10 @@
                     "arg": 5
                 },
                 {
-                    "opcode": "store64"
+                    "opcode": "store64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "pick",
@@ -428,7 +452,10 @@
                     "arg": 6
                 },
                 {
-                    "opcode": "store64"
+                    "opcode": "store64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "pick",
@@ -443,7 +470,10 @@
                     "arg": 8
                 },
                 {
-                    "opcode": "store64"
+                    "opcode": "store64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "pick",
@@ -461,7 +491,10 @@
                     "opcode": "intcf32"
                 },
                 {
-                    "opcode": "store32"
+                    "opcode": "store32",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 }
             ]
         }

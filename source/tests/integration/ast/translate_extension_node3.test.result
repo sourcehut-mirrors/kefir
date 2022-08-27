@@ -53,7 +53,10 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "load64"
+                    "opcode": "load64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 }
             ]
         }

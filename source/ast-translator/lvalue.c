@@ -113,7 +113,7 @@ kefir_result_t kefir_ast_translator_object_lvalue(struct kefir_mem *mem, struct 
                                                                           identifier_data->layout));
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(
                     builder, KEFIR_IROPCODE_IADD1, identifier_data->layout->vl_array.array_ptr_relative_offset));
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_LOAD64, 0));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_LOAD64, KEFIR_IR_MEMORY_FLAG_NONE));
             } else {
                 REQUIRE_OK(kefir_ast_translator_resolve_local_type_layout(builder, identifier_data->type_id,
                                                                           identifier_data->layout));

@@ -28,9 +28,18 @@
 #include "kefir/core/error.h"
 #include "kefir/core/source_error.h"
 
+static kefir_uint64_t retrieve_memflags(const struct kefir_ast_type_qualification *qualification) {
+    kefir_uint64_t mem_flags = KEFIR_IR_MEMORY_FLAG_NONE;
+    if (qualification->volatile_type) {
+        mem_flags |= KEFIR_IR_MEMORY_FLAG_VOLATILE;
+    }
+    return mem_flags;
+}
+
 static kefir_result_t load_bitfield(struct kefir_irbuilder_block *builder, struct kefir_ast_type_layout *layout,
                                     const struct kefir_ir_type *ir_type,
                                     const struct kefir_ir_typeentry **typeentry_ptr) {
+    kefir_uint64_t mem_flags = retrieve_memflags(&layout->type_qualification);
     struct kefir_ir_typeentry *typeentry = kefir_ir_type_at(ir_type, layout->value);
     REQUIRE(typeentry->typecode == KEFIR_IR_TYPE_BITS,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected a bit-field"));
@@ -43,13 +52,13 @@ static kefir_result_t load_bitfield(struct kefir_irbuilder_block *builder, struc
 
     kefir_size_t bits = bit_offset + layout->bitfield_props.width;
     if (bits <= 8) {
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_LOAD8U, 0));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_LOAD8U, mem_flags));
     } else if (bits <= 16) {
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_LOAD16U, 0));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_LOAD16U, mem_flags));
     } else if (bits <= 32) {
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_LOAD32U, 0));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_LOAD32U, mem_flags));
     } else if (bits <= 64) {
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_LOAD64, 0));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_LOAD64, mem_flags));
     } else {
         return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Bit-field exceeds storage unit width");
     }
@@ -115,6 +124,7 @@ static kefir_result_t resolve_bitfield(struct kefir_mem *mem, struct kefir_ast_t
 
 static kefir_result_t store_bitfield(struct kefir_irbuilder_block *builder, const struct kefir_ir_type *ir_type,
                                      struct kefir_ast_type_layout *member_layout) {
+    kefir_uint64_t mem_flags = retrieve_memflags(&member_layout->type_qualification);
     const struct kefir_ir_typeentry *typeentry = NULL;
 
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PICK, 1));
@@ -133,13 +143,13 @@ static kefir_result_t store_bitfield(struct kefir_irbuilder_block *builder, cons
 
     kefir_size_t bits = bit_offset + member_layout->bitfield_props.width;
     if (bits <= 8) {
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_STORE8, 0));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_STORE8, mem_flags));
     } else if (bits <= 16) {
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_STORE16, 0));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_STORE16, mem_flags));
     } else if (bits <= 32) {
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_STORE32, 0));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_STORE32, mem_flags));
     } else if (bits <= 64) {
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_STORE64, 0));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_STORE64, mem_flags));
     } else {
         return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Bit-field exceeds storage unit width");
     }
@@ -228,6 +238,9 @@ kefir_result_t kefir_ast_translator_load_value(const struct kefir_ast_type *type
     REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type"));
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR block builder"));
 
+    kefir_uint64_t mem_flags = type->tag == KEFIR_AST_TYPE_QUALIFIED
+                                   ? retrieve_memflags(&type->qualified_type.qualification)
+                                   : KEFIR_IR_MEMORY_FLAG_NONE;
     const struct kefir_ast_type *normalizer = kefir_ast_translator_normalize_type(type);
 
     switch (normalizer->tag) {
@@ -235,40 +248,40 @@ kefir_result_t kefir_ast_translator_load_value(const struct kefir_ast_type *type
             return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Cannot load variable with void type");
 
         case KEFIR_AST_TYPE_SCALAR_BOOL:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_LOAD8U, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_LOAD8U, mem_flags));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_CHAR:
             if (type_traits->character_type_signedness) {
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_LOAD8I, 0));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_LOAD8I, mem_flags));
             } else {
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_LOAD8U, 0));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_LOAD8U, mem_flags));
             }
             break;
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_LOAD8U, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_LOAD8U, mem_flags));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_LOAD8I, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_LOAD8I, mem_flags));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_LOAD16U, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_LOAD16U, mem_flags));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_LOAD16I, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_LOAD16I, mem_flags));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
         case KEFIR_AST_TYPE_SCALAR_FLOAT:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_LOAD32U, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_LOAD32U, mem_flags));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_SIGNED_INT:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_LOAD32I, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_LOAD32I, mem_flags));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
@@ -277,7 +290,7 @@ kefir_result_t kefir_ast_translator_load_value(const struct kefir_ast_type *type
         case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
         case KEFIR_AST_TYPE_SCALAR_DOUBLE:
         case KEFIR_AST_TYPE_SCALAR_POINTER:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_LOAD64, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_LOAD64, mem_flags));
             break;
 
         case KEFIR_AST_TYPE_ENUMERATION:
@@ -308,6 +321,9 @@ kefir_result_t kefir_ast_translator_store_value(struct kefir_mem *mem, const str
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR block builder"));
 
     const struct kefir_ast_type *normalizer = kefir_ast_translator_normalize_type(type);
+    kefir_uint64_t mem_flags = type->tag == KEFIR_AST_TYPE_QUALIFIED
+                                   ? retrieve_memflags(&type->qualified_type.qualification)
+                                   : KEFIR_IR_MEMORY_FLAG_NONE;
 
     switch (normalizer->tag) {
         case KEFIR_AST_TYPE_VOID:
@@ -317,18 +333,18 @@ kefir_result_t kefir_ast_translator_store_value(struct kefir_mem *mem, const str
         case KEFIR_AST_TYPE_SCALAR_CHAR:
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
         case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_STORE8, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_STORE8, mem_flags));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
         case KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_STORE16, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_STORE16, mem_flags));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
         case KEFIR_AST_TYPE_SCALAR_SIGNED_INT:
         case KEFIR_AST_TYPE_SCALAR_FLOAT:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_STORE32, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_STORE32, mem_flags));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
@@ -337,11 +353,11 @@ kefir_result_t kefir_ast_translator_store_value(struct kefir_mem *mem, const str
         case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
         case KEFIR_AST_TYPE_SCALAR_DOUBLE:
         case KEFIR_AST_TYPE_SCALAR_POINTER:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_STORE64, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_STORE64, mem_flags));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_STORELD, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_STORELD, mem_flags));
             break;
 
         case KEFIR_AST_TYPE_ENUMERATION:

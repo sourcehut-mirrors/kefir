@@ -26,6 +26,9 @@
 #include "kefir/core/vector.h"
 #include "kefir/core/mem.h"
 
+#define KEFIR_IR_MEMORY_FLAG_NONE 0
+#define KEFIR_IR_MEMORY_FLAG_VOLATILE 1
+
 typedef struct kefir_irinstr {
     kefir_iropcode_t opcode;
     union {

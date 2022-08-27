@@ -223,10 +223,16 @@
                     "arg": 5
                 },
                 {
-                    "opcode": "store64"
+                    "opcode": "store64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
-                    "opcode": "load64"
+                    "opcode": "load64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 }
             ]
         },
@@ -270,7 +276,10 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "store8"
+                    "opcode": "store8",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "pick",
@@ -285,7 +294,10 @@
                     "arg": 1.000000
                 },
                 {
-                    "opcode": "store32"
+                    "opcode": "store32",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "pick",
@@ -300,7 +312,10 @@
                     "arg": 2
                 },
                 {
-                    "opcode": "store32"
+                    "opcode": "store32",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "pick",
@@ -315,7 +330,10 @@
                     "arg": 3
                 },
                 {
-                    "opcode": "store64"
+                    "opcode": "store64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 }
             ]
         },
@@ -359,7 +377,10 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "store8"
+                    "opcode": "store8",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "pick",
@@ -374,7 +395,10 @@
                     "arg": 2.000000
                 },
                 {
-                    "opcode": "store32"
+                    "opcode": "store32",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "pick",
@@ -389,7 +413,10 @@
                     "arg": 3
                 },
                 {
-                    "opcode": "store32"
+                    "opcode": "store32",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "pick",
@@ -411,7 +438,10 @@
                     "opcode": "iand"
                 },
                 {
-                    "opcode": "store32"
+                    "opcode": "store32",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "pick",
@@ -426,7 +456,10 @@
                     "arg": 6
                 },
                 {
-                    "opcode": "store64"
+                    "opcode": "store64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 }
             ]
         }

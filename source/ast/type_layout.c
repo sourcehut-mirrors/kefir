@@ -59,6 +59,7 @@ struct kefir_ast_type_layout *kefir_ast_new_type_layout(struct kefir_mem *mem, c
     layout->value = value;
     layout->properties.valid = false;
     layout->bitfield = false;
+    layout->type_qualification = (struct kefir_ast_type_qualification){0};
     if (type == NULL) {
         kefir_result_t res = kefir_list_init(&layout->custom_layout.sublayouts);
         REQUIRE_ELSE(res == KEFIR_OK, {

@@ -320,7 +320,10 @@
                     "opcode": "extend8"
                 },
                 {
-                    "opcode": "store8"
+                    "opcode": "store8",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "pick",
@@ -338,7 +341,10 @@
                     "opcode": "extend8"
                 },
                 {
-                    "opcode": "store8"
+                    "opcode": "store8",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "pick",
@@ -356,7 +362,10 @@
                     "opcode": "extend8"
                 },
                 {
-                    "opcode": "store8"
+                    "opcode": "store8",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "pick",
@@ -374,7 +383,10 @@
                     "opcode": "extend8"
                 },
                 {
-                    "opcode": "store8"
+                    "opcode": "store8",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 },
                 {
                     "opcode": "pick",
@@ -392,7 +404,10 @@
                     "opcode": "extend8"
                 },
                 {
-                    "opcode": "store8"
+                    "opcode": "store8",
+                    "memory_flags": {
+                        "volatile": false
+                    }
                 }
             ]
         },
