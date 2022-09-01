@@ -305,5 +305,8 @@
             "body": []
         }
     ],
-    "inline_assembly": []
+    "inline_assembly": [],
+    "meta_info": {
+        "opcode_rev": 1
+    }
 }

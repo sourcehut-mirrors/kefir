@@ -478,5 +478,8 @@
             "clobbers": [],
             "jump_targets": []
         }
-    ]
+    ],
+    "meta_info": {
+        "opcode_rev": 1
+    }
 }

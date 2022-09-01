@@ -998,6 +998,12 @@ kefir_result_t kefir_ir_format_module_json(struct kefir_json_output *json, const
     REQUIRE_OK(kefir_json_output_object_key(json, "inline_assembly"));
     REQUIRE_OK(format_inline_assembly(json, module));
 
+    REQUIRE_OK(kefir_json_output_object_key(json, "meta_info"));
+    REQUIRE_OK(kefir_json_output_object_begin(json));
+    REQUIRE_OK(kefir_json_output_object_key(json, "opcode_rev"));
+    REQUIRE_OK(kefir_json_output_uinteger(json, KEFIR_IR_OPCODES_REVISION));
+    REQUIRE_OK(kefir_json_output_object_end(json));
+
     REQUIRE_OK(kefir_json_output_object_end(json));
     REQUIRE_OK(kefir_json_output_finalize(json));
     return KEFIR_OK;
