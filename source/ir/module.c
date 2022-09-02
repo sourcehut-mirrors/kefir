@@ -260,8 +260,8 @@ struct kefir_ir_function_decl *kefir_ir_module_new_function_declaration(struct k
         KEFIR_FREE(mem, decl);
         return NULL;
     });
-    res = kefir_hashtree_insert(mem, &module->function_declarations,
-                                (kefir_hashtree_key_t) module->next_function_decl_id, (kefir_hashtree_value_t) decl);
+    res = kefir_hashtree_insert(mem, &module->function_declarations, (kefir_hashtree_key_t) decl->id,
+                                (kefir_hashtree_value_t) decl);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_ir_function_decl_free(mem, decl);
         KEFIR_FREE(mem, decl);
