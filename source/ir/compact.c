@@ -65,6 +65,7 @@ struct compact_params {
     struct kefir_hashtree function_decl_index;
     struct kefir_hashtree symbol_index;
     struct kefir_hashtree inline_asm_index;
+    struct kefir_hashtree string_literal_index;
 
     struct kefir_list symbol_scan_queue;
 };
@@ -116,11 +117,29 @@ static kefir_result_t compact_inline_asm(struct kefir_mem *mem, struct compact_p
                 // Fallthrough
 
             case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_LOAD:
-            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_IMMEDIATE:
             case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_STORE:
             case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_LOAD_STORE:
                 REQUIRE_OK(
                     compact_type(mem, params, (const struct kefir_ir_type **) &param->type.type, &param->type.type_id));
+                break;
+
+            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_IMMEDIATE:
+                REQUIRE_OK(
+                    compact_type(mem, params, (const struct kefir_ir_type **) &param->type.type, &param->type.type_id));
+                switch (param->immediate_type) {
+                    case KEFIR_IR_INLINE_ASSEMBLY_IMMEDIATE_IDENTIFIER_BASED:
+                        // Intentionally left blank
+                        break;
+
+                    case KEFIR_IR_INLINE_ASSEMBLY_IMMEDIATE_LITERAL_BASED:
+                        res = kefir_hashtree_insert(mem, &params->string_literal_index,
+                                                    (kefir_hashtree_key_t) param->immediate_literal_base,
+                                                    (kefir_hashtree_value_t) 0);
+                        if (res != KEFIR_ALREADY_EXISTS) {
+                            REQUIRE_OK(res);
+                        }
+                        break;
+                }
                 break;
         }
     }
@@ -185,6 +204,15 @@ static kefir_result_t compact_function(struct kefir_mem *mem, struct kefir_ir_mo
                 REQUIRE_OK(compact_inline_asm(mem, params, (struct kefir_ir_inline_assembly *) node->value));
             } break;
 
+            case KEFIR_IROPCODE_PUSHSTRING: {
+                kefir_id_t id = (kefir_id_t) instr->arg.u64;
+                kefir_result_t res = kefir_hashtree_insert(mem, &params->string_literal_index,
+                                                           (kefir_hashtree_key_t) id, (kefir_hashtree_value_t) 0);
+                if (res != KEFIR_ALREADY_EXISTS) {
+                    REQUIRE_OK(res);
+                }
+            } break;
+
             default:
                 // Intentionally left blank
                 break;
@@ -199,6 +227,10 @@ static kefir_result_t compact_data(struct kefir_mem *mem, struct kefir_ir_data *
         const struct kefir_ir_data_value *value;
         REQUIRE_OK(kefir_ir_data_value_at(data, i, &value));
 
+        if (!value->defined) {
+            continue;
+        }
+
         switch (value->type) {
             case KEFIR_IR_DATA_VALUE_UNDEFINED:
             case KEFIR_IR_DATA_VALUE_INTEGER:
@@ -206,18 +238,24 @@ static kefir_result_t compact_data(struct kefir_mem *mem, struct kefir_ir_data *
             case KEFIR_IR_DATA_VALUE_FLOAT64:
             case KEFIR_IR_DATA_VALUE_LONG_DOUBLE:
             case KEFIR_IR_DATA_VALUE_STRING:
-            case KEFIR_IR_DATA_VALUE_STRING_POINTER:
             case KEFIR_IR_DATA_VALUE_RAW:
             case KEFIR_IR_DATA_VALUE_AGGREGATE:
                 // Intentionally left blank
                 break;
 
-            case KEFIR_IR_DATA_VALUE_POINTER:
-                if (value->defined) {
-                    REQUIRE_OK(kefir_list_insert_after(mem, &params->symbol_scan_queue,
-                                                       kefir_list_tail(&params->symbol_scan_queue),
-                                                       (void *) value->value.pointer.reference));
+            case KEFIR_IR_DATA_VALUE_STRING_POINTER: {
+                kefir_result_t res = kefir_hashtree_insert(mem, &params->string_literal_index,
+                                                           (kefir_hashtree_key_t) value->value.string_ptr.id,
+                                                           (kefir_hashtree_value_t) 0);
+                if (res != KEFIR_ALREADY_EXISTS) {
+                    REQUIRE_OK(res);
                 }
+            } break;
+
+            case KEFIR_IR_DATA_VALUE_POINTER:
+                REQUIRE_OK(kefir_list_insert_after(mem, &params->symbol_scan_queue,
+                                                   kefir_list_tail(&params->symbol_scan_queue),
+                                                   (void *) value->value.pointer.reference));
                 break;
         }
     }
@@ -331,6 +369,24 @@ static kefir_result_t drop_unused_inline_asm(struct kefir_mem *mem, struct kefir
     return KEFIR_OK;
 }
 
+static kefir_result_t drop_unused_string_literals(struct kefir_mem *mem, struct kefir_ir_module *module,
+                                                  struct compact_params *params) {
+    struct kefir_hashtree_node_iterator iter;
+    for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&module->string_literals, &iter); node != NULL;) {
+
+        ASSIGN_DECL_CAST(kefir_id_t, id, node->key);
+        ASSIGN_DECL_CAST(const struct kefir_ir_module_string_literal *, literal, node->value);
+
+        if (!kefir_hashtree_has(&params->string_literal_index, (kefir_hashtree_key_t) id) && literal->public) {
+            REQUIRE_OK(kefir_hashtree_delete(mem, &module->string_literals, node->key));
+            node = kefir_hashtree_iter(&module->string_literals, &iter);
+        } else {
+            node = kefir_hashtree_next(&iter);
+        }
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t compact_impl(struct kefir_mem *mem, struct kefir_ir_module *module,
                                    struct compact_params *params) {
     struct kefir_hashtree_node_iterator iter;
@@ -381,6 +437,7 @@ static kefir_result_t compact_impl(struct kefir_mem *mem, struct kefir_ir_module
     REQUIRE_OK(drop_unused_inline_asm(mem, module, params));
     REQUIRE_OK(drop_unused_functions(mem, module, params));
     REQUIRE_OK(drop_unused_data(mem, module, params));
+    REQUIRE_OK(drop_unused_string_literals(mem, module, params));
     return KEFIR_OK;
 }
 
@@ -394,15 +451,18 @@ kefir_result_t kefir_ir_module_compact(struct kefir_mem *mem, struct kefir_ir_mo
     REQUIRE_OK(kefir_hashtree_init(&params.function_decl_index, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&params.symbol_index, &kefir_hashtree_str_ops));
     REQUIRE_OK(kefir_hashtree_init(&params.inline_asm_index, &kefir_hashtree_uint_ops));
+    REQUIRE_OK(kefir_hashtree_init(&params.string_literal_index, &kefir_hashtree_uint_ops));
 
     kefir_result_t res = compact_impl(mem, module, &params);
     REQUIRE_CHAIN(&res, kefir_list_free(mem, &params.symbol_scan_queue));
+    REQUIRE_CHAIN(&res, kefir_hashtree_free(mem, &params.string_literal_index));
     REQUIRE_CHAIN(&res, kefir_hashtree_free(mem, &params.inline_asm_index));
     REQUIRE_CHAIN(&res, kefir_hashtree_free(mem, &params.symbol_index));
     REQUIRE_CHAIN(&res, kefir_hashtree_free(mem, &params.function_decl_index));
     REQUIRE_CHAIN(&res, kefir_hashtree_free(mem, &params.type_index));
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_list_free(mem, &params.symbol_scan_queue);
+        kefir_hashtree_free(mem, &params.string_literal_index);
         kefir_hashtree_free(mem, &params.inline_asm_index);
         kefir_hashtree_free(mem, &params.symbol_index);
         kefir_hashtree_free(mem, &params.function_decl_index);

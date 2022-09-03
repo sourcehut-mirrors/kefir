@@ -34,6 +34,13 @@ typedef enum kefir_ir_identifier_type {
     KEFIR_IR_IDENTIFIER_THREAD_LOCAL
 } kefir_ir_identifier_type_t;
 
+typedef struct kefir_ir_module_string_literal {
+    kefir_ir_string_literal_type_t type;
+    kefir_bool_t public;
+    void *content;
+    kefir_size_t length;
+} kefir_ir_module_string_literal_;
+
 typedef struct kefir_ir_module {
     struct kefir_symbol_table symbols;
     struct kefir_list types;

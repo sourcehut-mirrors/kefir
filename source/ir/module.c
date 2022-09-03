@@ -23,13 +23,6 @@
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 
-struct string_literal {
-    kefir_ir_string_literal_type_t type;
-    kefir_bool_t public;
-    void *content;
-    kefir_size_t length;
-};
-
 static kefir_result_t destroy_type(struct kefir_mem *mem, struct kefir_list *list, struct kefir_list_entry *entry,
                                    void *data) {
     UNUSED(list);
@@ -82,7 +75,7 @@ static kefir_result_t destroy_string_literal(struct kefir_mem *mem, struct kefir
     UNUSED(tree);
     UNUSED(key);
     UNUSED(data);
-    ASSIGN_DECL_CAST(struct string_literal *, literal, value);
+    ASSIGN_DECL_CAST(struct kefir_ir_module_string_literal *, literal, value);
     KEFIR_FREE(mem, literal->content);
     KEFIR_FREE(mem, literal);
     return KEFIR_OK;
@@ -158,7 +151,7 @@ kefir_result_t kefir_ir_module_string_literal(struct kefir_mem *mem, struct kefi
     REQUIRE(content != NULL && length > 0, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid literal"));
     REQUIRE(id != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid literal id pointer"));
 
-    struct string_literal *literal = KEFIR_MALLOC(mem, sizeof(struct string_literal));
+    struct kefir_ir_module_string_literal *literal = KEFIR_MALLOC(mem, sizeof(struct kefir_ir_module_string_literal));
     REQUIRE(literal != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate string literal"));
 
     literal->type = type;
@@ -414,7 +407,7 @@ kefir_result_t kefir_ir_module_get_string_literal(const struct kefir_ir_module *
 
     struct kefir_hashtree_node *node = NULL;
     REQUIRE_OK(kefir_hashtree_at(&module->string_literals, (kefir_hashtree_key_t) id, &node));
-    ASSIGN_DECL_CAST(struct string_literal *, literal, node->value);
+    ASSIGN_DECL_CAST(struct kefir_ir_module_string_literal *, literal, node->value);
     *type = literal->type;
     *public = literal->public;
     *content = literal->content;
@@ -436,7 +429,7 @@ kefir_result_t kefir_ir_module_string_literal_iter(const struct kefir_ir_module 
 
     const struct kefir_hashtree_node *node = kefir_hashtree_iter(&module->string_literals, iter);
     REQUIRE(node != NULL, KEFIR_ITERATOR_END);
-    ASSIGN_DECL_CAST(struct string_literal *, literal, node->value);
+    ASSIGN_DECL_CAST(struct kefir_ir_module_string_literal *, literal, node->value);
     *id = (kefir_id_t) node->key;
     *type = literal->type;
     *public = literal->public;
@@ -457,7 +450,7 @@ kefir_result_t kefir_ir_module_string_literal_next(struct kefir_hashtree_node_it
 
     const struct kefir_hashtree_node *node = kefir_hashtree_next(iter);
     REQUIRE(node != NULL, KEFIR_ITERATOR_END);
-    ASSIGN_DECL_CAST(struct string_literal *, literal, node->value);
+    ASSIGN_DECL_CAST(struct kefir_ir_module_string_literal *, literal, node->value);
     *id = (kefir_id_t) node->key;
     *type = literal->type;
     *public = literal->public;
