@@ -22,6 +22,7 @@ OPTIONS:
     -u symbol                           Add undefined symbol to linked executable
     -l library                          Link library
     -L directory                        Add directory to linker library search path
+    -rpath directory                    Add directory to runtime library search path
     -static                             Produce statically linked executable
     -nostartfiles                       Do not link start files
     -nodefaultlib                       Do not link default libraries

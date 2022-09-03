@@ -233,6 +233,20 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_symbo
 
             REQUIRE_OK(kefir_driver_configuration_add_argument(mem, symbols, config, directory,
                                                                KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_LINK_PATH));
+        } else if (strncmp("-rpath", arg, 6) == 0) {
+            // Library search path
+            const char *directory = NULL;
+            if (strlen(arg) == 6 || arg[6] != '=') {
+                EXPECT_ARG;
+                directory = argv[++index];
+            } else {
+                directory = &arg[7];
+            }
+
+            REQUIRE_OK(kefir_driver_configuration_add_argument(mem, symbols, config, "-rpath",
+                                                               KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_EXTRA));
+            REQUIRE_OK(kefir_driver_configuration_add_argument(mem, symbols, config, directory,
+                                                               KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_EXTRA));
         } else if (strcmp("-static", arg) == 0) {
             // Static linking
             config->flags.static_linking = true;
