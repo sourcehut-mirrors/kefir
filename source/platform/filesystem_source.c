@@ -120,7 +120,7 @@ static kefir_result_t open_source(struct kefir_mem *mem, const struct kefir_prep
     REQUIRE(source_locator != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid filesystem source locator"));
     REQUIRE(filepath != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid file path"));
-    REQUIRE(filepath != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to source file"));
+    REQUIRE(source_file != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to source file"));
     ASSIGN_DECL_CAST(struct kefir_preprocessor_filesystem_source_locator *, locator, source_locator);
 
     if (current_file != NULL && current_file->filepath && !system &&
