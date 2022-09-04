@@ -6,7 +6,7 @@ install: $(LIBKEFIR_DEP) $(BIN_DIR)/kefir
 	@install -d "$(DESTDIR)"/lib
 	@install -d "$(DESTDIR)"/bin
 	@echo "Installing libraries.."
-ifneq ($(wildcard "$(LIBKEFIR_SO).$(LIBKEFIR_SO_VERSION)"),)
+ifneq ($(wildcard $(LIBKEFIR_SO).$(LIBKEFIR_SO_VERSION)),)
 	@install -D "$(LIBKEFIR_SO).$(LIBKEFIR_SO_VERSION)" -t "$(DESTDIR)"/lib
 	@ln -sf libkefir.so.$(LIBKEFIR_SO_VERSION) "$(DESTDIR)"/lib/libkefir.so
 endif
