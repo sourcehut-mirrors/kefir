@@ -7,11 +7,11 @@ install: $(LIBKEFIR_SO) $(BIN_DIR)/kefir
 	@install -d "$(DESTDIR)"/bin
 	@echo "Installing libraries.."
 	@install -D "$(LIBKEFIR_SO).$(LIBKEFIR_SO_VERSION)" -t "$(DESTDIR)"/lib
-	@ln -sf "$(DESTDIR)"/lib/libkefir.so.$(LIBKEFIR_SO_VERSION) "$(DESTDIR)"/lib/libkefir.so
+	@ln -sf libkefir.so.$(LIBKEFIR_SO_VERSION) "$(DESTDIR)"/lib/libkefir.so
 	@install -D "$(LIBKEFIRRT_A)" -t "$(DESTDIR)"/lib
 	@echo "Installing headers..."
 	@cp -r --no-dereference -p "$(HEADERS_DIR)"/kefir "$(DESTDIR)"/include/kefir/toolchain
-	@ln -sf "$(DESTDIR)"/include/kefir/toolchain/kefir/runtime "$(DESTDIR)"/include/kefir/runtime
+	@ln -sf toolchain/kefir/runtime "$(DESTDIR)"/include/kefir/runtime
 	@echo "Installing binaries..."
 	@install "$(BIN_DIR)"/kefir "$(DESTDIR)"/bin/kefir-cc
 	@install "$(BIN_DIR)"/kefir-cc1 "$(DESTDIR)"/bin/kefir-cc1
