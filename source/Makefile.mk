@@ -37,6 +37,13 @@ CFLAGS += '-DKEFIR_BUILD_SOURCE_ID="$(KEFIR_BUILD_SOURCE_ID)"'
 $(BIN_DIR)/codegen/amd64/amd64-sysv-runtime-code.s.o: $(SOURCE_DIR)/runtime/amd64_sysv.s
 $(BIN_DIR)/compiler/predefined_macro_defs.s.o: $(SOURCE_DIR)/compiler/predefined_macro_defs.h
 
+ifeq ($(USE_SHARED),yes)
+BINARIES += $(LIBKEFIR_SO)
+LIBKEFIR_DEP=$(LIBKEFIR_SO)
+else
+LIBKEFIR_DEP=$(LIBKEFIR_A)
+endif
+
 $(LIBKEFIR_SO).$(LIBKEFIR_SO_VERSION): $(KEFIR_LIB_OBJECT_FILES)
 	@mkdir -p $(shell dirname "$@")
 	@echo "Linking $@"
@@ -46,6 +53,12 @@ $(LIBKEFIR_SO): $(LIBKEFIR_SO).$(LIBKEFIR_SO_VERSION)
 	@echo "Symlinking $@"
 	@ln -sf $(shell basename $<) $@
 
+$(LIBKEFIR_A): $(KEFIR_LIB_OBJECT_FILES)
+	@mkdir -p $(shell dirname "$@")
+	@echo "Archiving $@"
+	@$(AR) cr $@ $^
+	@ranlib $@
+
 $(LIBKEFIRRT_A): $(BIN_DIR)/runtime/amd64_sysv.s.o $(BIN_DIR)/runtime/amd64_setjmp.s.o
 	@mkdir -p $(shell dirname "$@")
 	@echo "Archiving $@"
@@ -54,5 +67,5 @@ $(LIBKEFIRRT_A): $(BIN_DIR)/runtime/amd64_sysv.s.o $(BIN_DIR)/runtime/amd64_setj
 
 DEPENDENCIES += $(KEFIR_LIB_DEPENDENCIES)
 OBJECT_FILES += $(KEFIR_LIB_OBJECT_FILES)
-BINARIES += $(LIBKEFIR_SO)
+BINARIES += $(LIBKEFIR_A)
 BINARIES += $(LIBKEFIRRT_A)

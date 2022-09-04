@@ -12,10 +12,16 @@ ifeq ($(SANITIZE),undefined)
 KEFIR_UNIT_TEST_LINKED_LIBS=-fsanitize=undefined
 endif
 
-$(BIN_DIR)/tests/unit.tests: $(LIBKEFIR_SO) $(KEFIR_UNIT_TEST_OBJECT_FILES)
+ifeq ($(USE_SHARED),yes)
+KEFIR_UNIT_TEST_LINKED_LIBS+=-L $(LIB_DIR) -lkefir
+else
+KEFIR_UNIT_TEST_LINKED_LIBS+=$(LIBKEFIR_A)
+endif
+
+$(BIN_DIR)/tests/unit.tests: $(LIBKEFIR_DEP) $(KEFIR_UNIT_TEST_OBJECT_FILES)
 	@mkdir -p $(@D)
 	@echo "Linking $@"
-	@$(CC) -o $@ $(KEFIR_UNIT_TEST_OBJECT_FILES) $(KEFIR_UNIT_TEST_LINKED_LIBS) -L $(LIB_DIR) -lm -lkefir
+	@$(CC) -o $@ $(KEFIR_UNIT_TEST_OBJECT_FILES) $(KEFIR_UNIT_TEST_LINKED_LIBS) -lm
 
 $(BIN_DIR)/tests/unit.tests.done: $(BIN_DIR)/tests/unit.tests
 	@LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(LIB_DIR) VALGRIND_OPTIONS="$(VALGRIND_OPTIONS)" $(SOURCE_DIR)/tests/unit/run.sh $^

@@ -121,7 +121,8 @@ in `headers/kefir/runtime/setjmp.h`. Function implementations are included in `l
 Kefir depends on C11 compiler (tested with `gcc` and `clang`), GNU As assembler, GNU Makefile as well as basic UNIX utilities for build.
 Development and test dependencies include `valgrind` (for test execution), `xsltproc` (for code generation) and `clang-format` (for code formatting)
 as well. After installing all dependencies, kefir can be built with a single command: `make all OPT="-O2 -march=native -DNDEBUG" DBG="" -j$(nproc)`.
-Sample `PKGBUILD` is provided in `dist` directory.
+By default, kefir builds a shared library and links executables to it. Static linkage can be used by specifying `USE_SHARED=no` in make command line
+arguments. Sample `PKGBUILD` is provided in `dist` directory.
 
 It is also advised to run basic test suite:
 ```bash

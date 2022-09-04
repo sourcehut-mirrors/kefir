@@ -18,7 +18,13 @@ ifeq ($(SANITIZE),undefined)
 KEFIR_INTEGRATION_TEST_LINKED_LIBS=-fsanitize=undefined
 endif
 
-$(BIN_DIR)/tests/integration/%: $(BIN_DIR)/tests/integration/%.o $(LIBKEFIR_SO) \
+ifeq ($(USE_SHARED),yes)
+KEFIR_INTEGRATION_TEST_LINKED_LIBS+=-L $(LIB_DIR) -lkefir
+else
+KEFIR_INTEGRATION_TEST_LINKED_LIBS+=$(LIBKEFIR_A)
+endif
+
+$(BIN_DIR)/tests/integration/%: $(BIN_DIR)/tests/integration/%.o $(LIBKEFIR_DEP) \
                                      $(BIN_DIR)/tests/int_test.o \
 									 $(BIN_DIR)/tests/util/util.o
 	@mkdir -p $(@D)
@@ -26,8 +32,8 @@ $(BIN_DIR)/tests/integration/%: $(BIN_DIR)/tests/integration/%.o $(LIBKEFIR_SO) 
 	@$(CC) -o $@ $(BIN_DIR)/tests/int_test.o \
 	                             $(BIN_DIR)/tests/util/util.o \
 								 $< \
-								 $(KEFIR_INTEGRATION_TEST_LINKED_LIBS) \
-								 -L $(LIB_DIR) -lkefir
+								 $(KEFIR_INTEGRATION_TEST_LINKED_LIBS)
+								 
 
 $(BIN_DIR)/tests/integration/%.done: $(BIN_DIR)/tests/integration/%
 	@LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(LIB_DIR) VALGRIND_OPTIONS="$(VALGRIND_OPTIONS)" MEMCHECK="$(MEMCHECK)" \

@@ -27,8 +27,10 @@ RESOURCES_DIR=$(ROOT)/resources
 SCRIPTS_DIR=$(ROOT)/scripts
 BOOTSTRAP_DIR=$(ROOT)/bootstrap
 
+USE_SHARED=yes
 LIBKEFIR_SO=$(LIB_DIR)/libkefir.so
 LIBKEFIR_SO_VERSION=0.0
+LIBKEFIR_A=$(LIB_DIR)/libkefir.a
 
 LIBKEFIRRT_A=$(LIB_DIR)/libkefirrt.a
 LIBKEFIR_X86_64_LIBC_A=$(LIB_DIR)/libkefir_x86_64_libc.a
