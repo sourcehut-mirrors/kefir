@@ -346,10 +346,6 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_symbo
             if (warning_output != NULL) {
                 fprintf(warning_output, "Warning: Unsupported command line option '%s'\n", arg);
             }
-            if (strlen(arg) == 2) {
-                EXPECT_ARG;
-                ++index;
-            }
         } else if (strncmp("-x", arg, 2) == 0) {
             // Language: ignored
             if (warning_output != NULL) {
