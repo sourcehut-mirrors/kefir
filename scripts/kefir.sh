@@ -20,4 +20,7 @@
 #
 
 BIN_DIR="$(dirname $0)"
-LD_LIBRARY_PATH="$BIN_DIR"/../lib:"$LD_LIBRARY_PATH" KEFIR_RTLIB=""$BIN_DIR"/../lib/libkefirrt.a" exec "$BIN_DIR"/kefircc $@
+export LD_LIBRARY_PATH="$BIN_DIR"/../lib:"$LD_LIBRARY_PATH"
+export KEFIR_RTLIB=""$BIN_DIR"/../lib/libkefirrt.a"
+export KEFIR_RTINC=""$BIN_DIR"/../include/kefir/runtime"
+exec "$BIN_DIR"/kefir-cc $@

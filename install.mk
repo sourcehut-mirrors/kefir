@@ -2,7 +2,7 @@ DESTDIR=/opt/kefir
 
 install: $(LIBKEFIR_SO) $(BIN_DIR)/kefir
 	@echo "Creating directories..."
-	@install -d "$(DESTDIR)"/include/kefir
+	@install -d "$(DESTDIR)"/include/kefir/toolchain
 	@install -d "$(DESTDIR)"/lib
 	@install -d "$(DESTDIR)"/bin
 	@echo "Installing libraries.."
@@ -10,15 +10,16 @@ install: $(LIBKEFIR_SO) $(BIN_DIR)/kefir
 	@ln -sf "$(DESTDIR)"/lib/libkefir.so.$(LIBKEFIR_SO_VERSION) "$(DESTDIR)"/lib/libkefir.so
 	@install -D "$(LIBKEFIRRT_A)" -t "$(DESTDIR)"/lib
 	@echo "Installing headers..."
-	@cp -r --no-dereference -p "$(HEADERS_DIR)"/kefir "$(DESTDIR)"/include/kefir
+	@cp -r --no-dereference -p "$(HEADERS_DIR)"/kefir "$(DESTDIR)"/include/kefir/toolchain
+	@ln -sf "$(DESTDIR)"/include/kefir/toolchain/kefir/runtime "$(DESTDIR)"/include/kefir/runtime
 	@echo "Installing binaries..."
-	@install "$(BIN_DIR)"/kefir "$(DESTDIR)"/bin/kefircc
+	@install "$(BIN_DIR)"/kefir "$(DESTDIR)"/bin/kefir-cc
 	@install "$(BIN_DIR)"/kefir-cc1 "$(DESTDIR)"/bin/kefir-cc1
 	@install "$(SCRIPTS_DIR)"/kefir.sh "$(DESTDIR)"/bin/kefir
 
 uninstall:
 	@echo "Removing binaries..."
-	@rm -rf "$(DESTDIR)"/bin/kefir "$(DESTDIR)"/bin/kefircc "$(DESTDIR)"/bin/kefir-cc1
+	@rm -rf "$(DESTDIR)"/bin/kefir "$(DESTDIR)"/bin/kefir-cc "$(DESTDIR)"/bin/kefir-cc1
 	@echo "Removing headers..."
 	@rm -rf "$(DESTDIR)"/include/kefir
 	@echo "Removing libraries..."

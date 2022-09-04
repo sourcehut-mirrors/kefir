@@ -93,19 +93,28 @@ static kefir_result_t add_library_paths(struct kefir_mem *mem, struct kefir_driv
 
 kefir_result_t kefir_driver_apply_target_compiler_configuration(
     struct kefir_mem *mem, struct kefir_symbol_table *symbols, const struct kefir_driver_external_resources *externals,
-    struct kefir_compiler_runner_configuration *compiler_config, const struct kefir_driver_target *target) {
+    struct kefir_compiler_runner_configuration *compiler_config, const struct kefir_driver_target *target,
+    const struct kefir_driver_configuration *driver_config) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(symbols != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid symbol table"));
     REQUIRE(externals != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver externals"));
     REQUIRE(compiler_config != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver compiler runner configuration"));
     REQUIRE(target != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver target"));
+    REQUIRE(driver_config != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver configuration"));
 
     REQUIRE_OK(kefir_driver_apply_target_profile_configuration(compiler_config, target));
 
     if (target->arch == KEFIR_DRIVER_TARGET_ARCH_X86_64) {
         REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__x86_64__", "1"));
         REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__amd64__", "1"));
+    }
+
+    if (driver_config->flags.include_rtinc && target->variant != KEFIR_DRIVER_TARGET_VARIANT_NONE) {
+        REQUIRE(externals->runtime_include != NULL,
+                KEFIR_SET_ERROR(KEFIR_UI_ERROR, "Runtime include path shall be passed as KEFIR_RTINC "
+                                                "environment variable"));
+        REQUIRE_OK(add_include_paths(mem, symbols, compiler_config, externals->runtime_include));
     }
 
     if (target->platform == KEFIR_DRIVER_TARGET_PLATFORM_LINUX) {

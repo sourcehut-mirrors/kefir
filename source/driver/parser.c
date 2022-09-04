@@ -266,6 +266,9 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_symbo
         } else if (strcmp("-nortlib", arg) == 0) {
             // Do not link runtime library
             config->flags.link_rtlib = false;
+        } else if (strcmp("-nortinc", arg) == 0) {
+            // Do not include runtime headers
+            config->flags.include_rtinc = false;
         }
 
         // Extra tool options

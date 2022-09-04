@@ -34,7 +34,8 @@ kefir_result_t kefir_driver_apply_target_profile_configuration(struct kefir_comp
 kefir_result_t kefir_driver_apply_target_compiler_configuration(struct kefir_mem *, struct kefir_symbol_table *,
                                                                 const struct kefir_driver_external_resources *,
                                                                 struct kefir_compiler_runner_configuration *,
-                                                                const struct kefir_driver_target *);
+                                                                const struct kefir_driver_target *,
+                                                                const struct kefir_driver_configuration *);
 
 kefir_result_t kefir_driver_apply_target_assembler_configuration(struct kefir_mem *, struct kefir_symbol_table *,
                                                                  const struct kefir_driver_external_resources *,

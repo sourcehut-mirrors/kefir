@@ -29,6 +29,7 @@ OPTIONS:
     -nolibc                             Do not link libc
     -nostdlib                           Do not link start files and default libraries
     -nortlib                            Do not link runtime routine library
+    -nortinc                            Do not add runtime includes to include path
     -Wp,option                          Pass "option" to preprocessing phase as command line option
     -Xpreprocessor option               Pass "option" to linking phase as command line option
     -Wc,option                          Pass "option" to compiling phase as command line option
@@ -98,6 +99,7 @@ ENVIRONMENT VARIABLES:
     KEFIR_AS, AS                        Override the default "as" assembler
     KEFIR_LD, LD                        Override the default "ld" linker
     KEFIR_RTLIB                         Specify kefir runtime library location. Mandatory for all platform variants except "*-none"
+    KEFIR_RTINC                         Specify kefir runtime include location. Mandatory for all platform variants except "*-none"
     KEFIR_MUSL_INCLUDE                  Specify musl include paths (separated by ';'). Mandatory for "linux-musl" platform variant
     KEFIR_MUSL_LIB                      Specify musl library paths (separated by ';'). Mandatory for "linux-musl" platform variant
     KEFIR_MUSL_DYNAMIC_LINKER           Specify dynamic linker path. Optional for "linux-musl" platform variant

@@ -118,7 +118,7 @@ static kefir_result_t driver_generate_compiler_config(struct kefir_mem *mem, str
         REQUIRE_OK(kefir_driver_apply_target_profile_configuration(compiler_config, &config->target));
     } else {
         REQUIRE_OK(kefir_driver_apply_target_compiler_configuration(mem, symbols, externals, compiler_config,
-                                                                    &config->target));
+                                                                    &config->target, config));
     }
 
     switch (config->stage) {
