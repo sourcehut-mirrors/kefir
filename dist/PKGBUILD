@@ -8,7 +8,7 @@ license=('GPL3' 'BSD')
 
 depends=()
 makedepends=()
-source=('kefir::git+https://github.com/protopopov1122/kefir#branch=backend')
+source=('kefir::git+https://github.com/protopopov1122/kefir')
 sha512sums=('SKIP')
 
 build () {
