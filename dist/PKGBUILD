@@ -1,0 +1,25 @@
+pkgname='kefir'
+pkgver='0.0.1'
+pkgrel='1'
+pkgdesc='C17 language compiler for x86_64 systems'
+arch=('x86_64')
+url='https://github.com/protopopov1122/kefir'
+license=('GPL3' 'BSD')
+
+depends=()
+makedepends=()
+source=('kefir::git+https://github.com/protopopov1122/kefir#branch=backend')
+sha512sums=('SKIP')
+
+build () {
+    cd kefir
+    make all OPT="-O2 -march=native -DNDEBUG" DBG=""
+}
+
+package () {
+    cd kefir
+    make DESTDIR="$pkgdir/usr/" install
+    install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
+    install -Dm644 source/runtime/LICENSE "$pkgdir/usr/share/licenses/$pkgname/runtime/LICENSE"
+    install -Dm644 dist/README.license "$pkgdir/usr/share/licenses/$pkgname/README"
+}
