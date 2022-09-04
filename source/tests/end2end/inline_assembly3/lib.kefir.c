@@ -24,10 +24,10 @@
 long factorial(long x) {
     long result = 1;
 begin:
-    asm("cmp %[x], %[one]\n"
+    asm("cmpq %[one], %[x]\n"
         "jle %l3\n"
-        "imul %[result], %[x]\n"
-        "dec %[x]\n"
+        "imul %[x], %[result]\n"
+        "decq %[x]\n"
         "jmp %l[begin]"
         : [x] "+m"(x), [result] "+r"(result)
         : [one] "i"(1)

@@ -1,4 +1,4 @@
-.intel_syntax prefix
+.att_syntax
 .section .note.GNU-stack,"",%progbits
 
 .section .text
@@ -122,16 +122,16 @@
 sum_progression:
 # Begin prologue of sum_progression
     call __kefirrt_preserve_state
-    sub %rsp, 528
+    sub $528, %rsp
     call __kefirrt_generic_prologue
 # Load parameters of sum_progression
-    lea %r12, [%rbp + 16]
+    lea 16(%rbp), %r12
     push %r12
-    lea %r12, [%rbp + 32]
+    lea 32(%rbp), %r12
     push %r12
 # End prologue of sum_progression
-    lea %rbx, [__sum_progression_body]
-    jmp [%rbx]
+    lea (__sum_progression_body), %rbx
+    jmp *(%rbx)
 __sum_progression_body:
     .quad __kefirrt_getlocal_impl, 32
     .quad __kefirrt_iadd1_impl, 16
@@ -282,72 +282,72 @@ __sum_progression_body:
 __sum_progression_epilogue:
 # Begin epilogue of sum_progression
     pop %r12
-    fld TBYTE PTR [%r12]
-    mov %rsp, %r14
-    add %rsp, 528
+    fldt (%r12)
+    mov %r14, %rsp
+    add $528, %rsp
     jmp __kefirrt_restore_state
 # End of sum_progression
 
 __kefirrt_sfunction_sum10_gate3:
-    mov %r12, %rsp
-    sub %rsp, 160
-    and %rsp, -16
-    mov %r11, [%r12 + 72]
-    mov %r13, [%r11]
-    mov [%rsp], %r13
-    mov %r13, [%r11 + 8]
-    mov [%rsp + 8], %r13
-    mov %r11, [%r12 + 64]
-    mov %r13, [%r11]
-    mov [%rsp + 16], %r13
-    mov %r13, [%r11 + 8]
-    mov [%rsp + 24], %r13
-    mov %r11, [%r12 + 56]
-    mov %r13, [%r11]
-    mov [%rsp + 32], %r13
-    mov %r13, [%r11 + 8]
-    mov [%rsp + 40], %r13
-    mov %r11, [%r12 + 48]
-    mov %r13, [%r11]
-    mov [%rsp + 48], %r13
-    mov %r13, [%r11 + 8]
-    mov [%rsp + 56], %r13
-    mov %r11, [%r12 + 40]
-    mov %r13, [%r11]
-    mov [%rsp + 64], %r13
-    mov %r13, [%r11 + 8]
-    mov [%rsp + 72], %r13
-    mov %r11, [%r12 + 32]
-    mov %r13, [%r11]
-    mov [%rsp + 80], %r13
-    mov %r13, [%r11 + 8]
-    mov [%rsp + 88], %r13
-    mov %r11, [%r12 + 24]
-    mov %r13, [%r11]
-    mov [%rsp + 96], %r13
-    mov %r13, [%r11 + 8]
-    mov [%rsp + 104], %r13
-    mov %r11, [%r12 + 16]
-    mov %r13, [%r11]
-    mov [%rsp + 112], %r13
-    mov %r13, [%r11 + 8]
-    mov [%rsp + 120], %r13
-    mov %r11, [%r12 + 8]
-    mov %r13, [%r11]
-    mov [%rsp + 128], %r13
-    mov %r13, [%r11 + 8]
-    mov [%rsp + 136], %r13
-    mov %r11, [%r12]
-    mov %r13, [%r11]
-    mov [%rsp + 144], %r13
-    mov %r13, [%r11 + 8]
-    mov [%rsp + 152], %r13
-    call sum10
     mov %rsp, %r12
-    add %rsp, 80
-    fstp TBYTE PTR [%r14 + 16]
-    lea %r11, [%r14 + 16]
+    sub $160, %rsp
+    and $-16, %rsp
+    mov 72(%r12), %r11
+    mov (%r11), %r13
+    mov %r13, (%rsp)
+    mov 8(%r11), %r13
+    mov %r13, 8(%rsp)
+    mov 64(%r12), %r11
+    mov (%r11), %r13
+    mov %r13, 16(%rsp)
+    mov 8(%r11), %r13
+    mov %r13, 24(%rsp)
+    mov 56(%r12), %r11
+    mov (%r11), %r13
+    mov %r13, 32(%rsp)
+    mov 8(%r11), %r13
+    mov %r13, 40(%rsp)
+    mov 48(%r12), %r11
+    mov (%r11), %r13
+    mov %r13, 48(%rsp)
+    mov 8(%r11), %r13
+    mov %r13, 56(%rsp)
+    mov 40(%r12), %r11
+    mov (%r11), %r13
+    mov %r13, 64(%rsp)
+    mov 8(%r11), %r13
+    mov %r13, 72(%rsp)
+    mov 32(%r12), %r11
+    mov (%r11), %r13
+    mov %r13, 80(%rsp)
+    mov 8(%r11), %r13
+    mov %r13, 88(%rsp)
+    mov 24(%r12), %r11
+    mov (%r11), %r13
+    mov %r13, 96(%rsp)
+    mov 8(%r11), %r13
+    mov %r13, 104(%rsp)
+    mov 16(%r12), %r11
+    mov (%r11), %r13
+    mov %r13, 112(%rsp)
+    mov 8(%r11), %r13
+    mov %r13, 120(%rsp)
+    mov 8(%r12), %r11
+    mov (%r11), %r13
+    mov %r13, 128(%rsp)
+    mov 8(%r11), %r13
+    mov %r13, 136(%rsp)
+    mov (%r12), %r11
+    mov (%r11), %r13
+    mov %r13, 144(%rsp)
+    mov 8(%r11), %r13
+    mov %r13, 152(%rsp)
+    call sum10
+    mov %r12, %rsp
+    add $80, %rsp
+    fstpt 16(%r14)
+    lea 16(%r14), %r11
     push %r11
-    add %rbx, 16
-    jmp [%rbx]
+    add $16, %rbx
+    jmp *(%rbx)
 

@@ -23,9 +23,9 @@
 #ifdef __x86_64__
 long sum3_one(long a, long b, long c) {
     long result;
-    asm("add %[result], %[arg1]\n"
-        "add %[arg3], %[arg2]\n"
-        "add %[result], %[arg3]"
+    asm("add %[arg1], %[result]\n"
+        "add %[arg2], %[arg3]\n"
+        "add %[arg3], %[result]"
         : [result] "=r"(result), [arg3] "=r"(c)
         : [arg1] "r"(a), [arg2] "r"(b), "1"(c), [imm] "0"(1)
         : "rax");

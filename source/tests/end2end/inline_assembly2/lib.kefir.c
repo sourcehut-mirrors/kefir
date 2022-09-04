@@ -23,12 +23,12 @@
 #ifdef __x86_64__
 double custom_hypot(double x, double y) {
     double result;
-    asm("movd %xmm0, %1\n"
-        "movd %xmm1, %[y]\n"
+    asm("movd %1, %xmm0\n"
+        "movd %[y], %xmm1\n"
         "mulsd %xmm0, %xmm0\n"
         "mulsd %xmm1, %xmm1\n"
-        "addsd %xmm0, %xmm1\n"
-        "movd %0, %xmm0"
+        "addsd %xmm1, %xmm0\n"
+        "movd %xmm0, %0"
         : "=rm"(result)
         : [x] "r"(x), [y] "m"(y)
         : "xmm0", "xmm1");

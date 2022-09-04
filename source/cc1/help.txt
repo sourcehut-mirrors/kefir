@@ -57,7 +57,7 @@ Target code generation setup:
 
 Target code generation options:
     emulated-tls                         Use emulated TLS
-    syntax=SYNTAX                        Produce assembly output with specified syntax [x86_64-intel_noprefix, x86_64-intel_prefix (default), x86_64-att]
+    syntax=SYNTAX                        Produce assembly output with specified syntax [x86_64-intel_noprefix, x86_64-intel_prefix, x86_64-att (default)]
 
 License: GNU GPLv3
 Author: Jevgenijs Protopopovs

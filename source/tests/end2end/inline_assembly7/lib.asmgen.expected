@@ -1,4 +1,4 @@
-.intel_syntax prefix
+.att_syntax
 .section .note.GNU-stack,"",%progbits
 
 .section .text
@@ -124,13 +124,13 @@
 make_s1:
 # Begin prologue of make_s1
     call __kefirrt_preserve_state
-    sub %rsp, 32
+    sub $32, %rsp
     call __kefirrt_generic_prologue
 # Load parameters of make_s1
     push %rdi
 # End prologue of make_s1
-    lea %rbx, [__make_s1_body]
-    jmp [%rbx]
+    lea (__make_s1_body), %rbx
+    jmp *(%rbx)
 __make_s1_body:
     .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_xchg_impl, 1
@@ -147,22 +147,22 @@ __make_s1_body:
 __make_s1_epilogue:
 # Begin epilogue of make_s1
     pop %r12
-    mov %rax, [%r12]
-    mov %rsp, %r14
-    add %rsp, 32
+    mov (%r12), %rax
+    mov %r14, %rsp
+    add $32, %rsp
     jmp __kefirrt_restore_state
 # End of make_s1
 
 cast_int:
 # Begin prologue of cast_int
     call __kefirrt_preserve_state
-    sub %rsp, 32
+    sub $32, %rsp
     call __kefirrt_generic_prologue
 # Load parameters of cast_int
     push %rdi
 # End prologue of cast_int
-    lea %rbx, [__cast_int_body]
-    jmp [%rbx]
+    lea (__cast_int_body), %rbx
+    jmp *(%rbx)
 __cast_int_body:
     .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_xchg_impl, 1
@@ -180,23 +180,23 @@ __cast_int_body:
 __cast_int_epilogue:
 # Begin epilogue of cast_int
     pop %rax
-    mov %rsp, %r14
-    add %rsp, 32
+    mov %r14, %rsp
+    add $32, %rsp
     jmp __kefirrt_restore_state
 # End of cast_int
 
 sum3_one:
 # Begin prologue of sum3_one
     call __kefirrt_preserve_state
-    sub %rsp, 48
+    sub $48, %rsp
     call __kefirrt_generic_prologue
 # Load parameters of sum3_one
     push %rdi
     push %rsi
     push %rdx
 # End prologue of sum3_one
-    lea %rbx, [__sum3_one_body]
-    jmp [%rbx]
+    lea (__sum3_one_body), %rbx
+    jmp *(%rbx)
 __sum3_one_body:
     .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_iadd1_impl, 16
@@ -231,23 +231,23 @@ __sum3_one_body:
 __sum3_one_epilogue:
 # Begin epilogue of sum3_one
     pop %rax
-    mov %rsp, %r14
-    add %rsp, 48
+    mov %r14, %rsp
+    add $48, %rsp
     jmp __kefirrt_restore_state
 # End of sum3_one
 
 unwrap_s1:
 # Begin prologue of unwrap_s1
     call __kefirrt_preserve_state
-    sub %rsp, 48
+    sub $48, %rsp
     call __kefirrt_generic_prologue
 # Load parameters of unwrap_s1
-    mov [%r14 + 16], %rdi
-    lea %r12, [%r14 + 16]
+    mov %rdi, 16(%r14)
+    lea 16(%r14), %r12
     push %r12
 # End prologue of unwrap_s1
-    lea %rbx, [__unwrap_s1_body]
-    jmp [%rbx]
+    lea (__unwrap_s1_body), %rbx
+    jmp *(%rbx)
 __unwrap_s1_body:
     .quad __kefirrt_getlocal_impl, 32
     .quad __kefirrt_xchg_impl, 1
@@ -264,64 +264,64 @@ __unwrap_s1_body:
 __unwrap_s1_epilogue:
 # Begin epilogue of unwrap_s1
     pop %rax
-    mov %rsp, %r14
-    add %rsp, 48
+    mov %r14, %rsp
+    add $48, %rsp
     jmp __kefirrt_restore_state
 # End of unwrap_s1
 
 # Inline assembly fragment #0
 __kefirrt_inline_assembly0:
-    mov %rcx, [%rsp]
-    mov %rdx, [%rsp + 8]
-    mov %rsi, [%rsp + 24]
-    mov %rdi, [%rsp + 16]
+    mov (%rsp), %rcx
+    mov 8(%rsp), %rdx
+    mov 24(%rsp), %rsi
+    mov 16(%rsp), %rdi
 # Begin of fragment #0 code
-add %rcx, %rsi
-add %rdx, %rdi
-add %rcx, %rdx
+add %rsi, %rcx
+add %rdi, %rdx
+add %rdx, %rcx
 # End of fragment #0 code
-    mov %r8, [%rsp + 40]
-    mov [%r8], %rcx
-    mov %r8, [%rsp + 32]
-    mov [%r8], %rdx
-    add %rsp, 48
-    add %rbx, 16
-    jmp [%rbx]
+    mov 40(%rsp), %r8
+    mov %rcx, (%r8)
+    mov 32(%rsp), %r8
+    mov %rdx, (%r8)
+    add $48, %rsp
+    add $16, %rbx
+    jmp *(%rbx)
 
 # Inline assembly fragment #1
 __kefirrt_inline_assembly1:
-    mov %rax, [%rsp]
+    mov (%rsp), %rax
 # Begin of fragment #1 code
 
 # End of fragment #1 code
-    mov %rcx, [%rsp + 8]
-    mov [%rcx], %eax
-    add %rsp, 16
-    add %rbx, 16
-    jmp [%rbx]
+    mov 8(%rsp), %rcx
+    mov %eax, (%rcx)
+    add $16, %rsp
+    add $16, %rbx
+    jmp *(%rbx)
 
 # Inline assembly fragment #2
 __kefirrt_inline_assembly2:
-    mov %rax, [%rsp]
-    mov %eax, [%rax]
+    mov (%rsp), %rax
+    mov (%rax), %eax
 # Begin of fragment #2 code
 
 # End of fragment #2 code
-    mov %rcx, [%rsp + 8]
-    mov [%rcx], %eax
-    add %rsp, 16
-    add %rbx, 16
-    jmp [%rbx]
+    mov 8(%rsp), %rcx
+    mov %eax, (%rcx)
+    add $16, %rsp
+    add $16, %rbx
+    jmp *(%rbx)
 
 # Inline assembly fragment #3
 __kefirrt_inline_assembly3:
-    mov %rax, [%rsp]
+    mov (%rsp), %rax
 # Begin of fragment #3 code
 
 # End of fragment #3 code
-    mov %rcx, [%rsp + 8]
-    mov [%rcx], %eax
-    add %rsp, 16
-    add %rbx, 16
-    jmp [%rbx]
+    mov 8(%rsp), %rcx
+    mov %eax, (%rcx)
+    add $16, %rsp
+    add $16, %rbx
+    jmp *(%rbx)
 

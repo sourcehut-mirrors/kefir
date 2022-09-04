@@ -33,7 +33,7 @@ label8:
 label9:
 label10:;
     long x;
-    asm goto("mov %0, %l10"
+    asm goto("movq %l10, %0"
              : "=r"(x)
              : "r"(0)
              :

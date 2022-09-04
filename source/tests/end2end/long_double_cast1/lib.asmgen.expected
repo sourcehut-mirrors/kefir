@@ -1,4 +1,4 @@
-.intel_syntax prefix
+.att_syntax
 .section .note.GNU-stack,"",%progbits
 
 .section .text
@@ -131,14 +131,14 @@
 inc:
 # Begin prologue of inc
     call __kefirrt_preserve_state
-    sub %rsp, 96
+    sub $96, %rsp
     call __kefirrt_generic_prologue
 # Load parameters of inc
-    lea %r12, [%rbp + 16]
+    lea 16(%rbp), %r12
     push %r12
 # End prologue of inc
-    lea %rbx, [__inc_body]
-    jmp [%rbx]
+    lea (__inc_body), %rbx
+    jmp *(%rbx)
 __inc_body:
     .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_xchg_impl, 1
@@ -158,23 +158,23 @@ __inc_body:
 __inc_epilogue:
 # Begin epilogue of inc
     pop %r12
-    fld TBYTE PTR [%r12]
-    mov %rsp, %r14
-    add %rsp, 96
+    fldt (%r12)
+    mov %r14, %rsp
+    add $96, %rsp
     jmp __kefirrt_restore_state
 # End of inc
 
 neg:
 # Begin prologue of neg
     call __kefirrt_preserve_state
-    sub %rsp, 80
+    sub $80, %rsp
     call __kefirrt_generic_prologue
 # Load parameters of neg
-    lea %r12, [%rbp + 16]
+    lea 16(%rbp), %r12
     push %r12
 # End prologue of neg
-    lea %rbx, [__neg_body]
-    jmp [%rbx]
+    lea (__neg_body), %rbx
+    jmp *(%rbx)
 __neg_body:
     .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_xchg_impl, 1
@@ -189,23 +189,23 @@ __neg_body:
 __neg_epilogue:
 # Begin epilogue of neg
     pop %r12
-    fld TBYTE PTR [%r12]
-    mov %rsp, %r14
-    add %rsp, 80
+    fldt (%r12)
+    mov %r14, %rsp
+    add $80, %rsp
     jmp __kefirrt_restore_state
 # End of neg
 
 f32cld:
 # Begin prologue of f32cld
     call __kefirrt_preserve_state
-    sub %rsp, 64
+    sub $64, %rsp
     call __kefirrt_generic_prologue
 # Load parameters of f32cld
-    pextrq %r12, %xmm0, 0
+    pextrq $0, %xmm0, %r12
     push %r12
 # End prologue of f32cld
-    lea %rbx, [__f32cld_body]
-    jmp [%rbx]
+    lea (__f32cld_body), %rbx
+    jmp *(%rbx)
 __f32cld_body:
     .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_xchg_impl, 1
@@ -221,23 +221,23 @@ __f32cld_body:
 __f32cld_epilogue:
 # Begin epilogue of f32cld
     pop %r12
-    fld TBYTE PTR [%r12]
-    mov %rsp, %r14
-    add %rsp, 64
+    fldt (%r12)
+    mov %r14, %rsp
+    add $64, %rsp
     jmp __kefirrt_restore_state
 # End of f32cld
 
 f64cld:
 # Begin prologue of f64cld
     call __kefirrt_preserve_state
-    sub %rsp, 64
+    sub $64, %rsp
     call __kefirrt_generic_prologue
 # Load parameters of f64cld
-    pextrq %r12, %xmm0, 0
+    pextrq $0, %xmm0, %r12
     push %r12
 # End prologue of f64cld
-    lea %rbx, [__f64cld_body]
-    jmp [%rbx]
+    lea (__f64cld_body), %rbx
+    jmp *(%rbx)
 __f64cld_body:
     .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_xchg_impl, 1
@@ -253,22 +253,22 @@ __f64cld_body:
 __f64cld_epilogue:
 # Begin epilogue of f64cld
     pop %r12
-    fld TBYTE PTR [%r12]
-    mov %rsp, %r14
-    add %rsp, 64
+    fldt (%r12)
+    mov %r14, %rsp
+    add $64, %rsp
     jmp __kefirrt_restore_state
 # End of f64cld
 
 intcld:
 # Begin prologue of intcld
     call __kefirrt_preserve_state
-    sub %rsp, 64
+    sub $64, %rsp
     call __kefirrt_generic_prologue
 # Load parameters of intcld
     push %rdi
 # End prologue of intcld
-    lea %rbx, [__intcld_body]
-    jmp [%rbx]
+    lea (__intcld_body), %rbx
+    jmp *(%rbx)
 __intcld_body:
     .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_xchg_impl, 1
@@ -284,23 +284,23 @@ __intcld_body:
 __intcld_epilogue:
 # Begin epilogue of intcld
     pop %r12
-    fld TBYTE PTR [%r12]
-    mov %rsp, %r14
-    add %rsp, 64
+    fldt (%r12)
+    mov %r14, %rsp
+    add $64, %rsp
     jmp __kefirrt_restore_state
 # End of intcld
 
 ldcf32:
 # Begin prologue of ldcf32
     call __kefirrt_preserve_state
-    sub %rsp, 48
+    sub $48, %rsp
     call __kefirrt_generic_prologue
 # Load parameters of ldcf32
-    lea %r12, [%rbp + 16]
+    lea 16(%rbp), %r12
     push %r12
 # End prologue of ldcf32
-    lea %rbx, [__ldcf32_body]
-    jmp [%rbx]
+    lea (__ldcf32_body), %rbx
+    jmp *(%rbx)
 __ldcf32_body:
     .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_xchg_impl, 1
@@ -312,23 +312,23 @@ __ldcf32_body:
 __ldcf32_epilogue:
 # Begin epilogue of ldcf32
     pop %r12
-    pinsrq %xmm0, %r12, 0
-    mov %rsp, %r14
-    add %rsp, 48
+    pinsrq $0, %r12, %xmm0
+    mov %r14, %rsp
+    add $48, %rsp
     jmp __kefirrt_restore_state
 # End of ldcf32
 
 ldcf64:
 # Begin prologue of ldcf64
     call __kefirrt_preserve_state
-    sub %rsp, 48
+    sub $48, %rsp
     call __kefirrt_generic_prologue
 # Load parameters of ldcf64
-    lea %r12, [%rbp + 16]
+    lea 16(%rbp), %r12
     push %r12
 # End prologue of ldcf64
-    lea %rbx, [__ldcf64_body]
-    jmp [%rbx]
+    lea (__ldcf64_body), %rbx
+    jmp *(%rbx)
 __ldcf64_body:
     .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_xchg_impl, 1
@@ -340,23 +340,23 @@ __ldcf64_body:
 __ldcf64_epilogue:
 # Begin epilogue of ldcf64
     pop %r12
-    pinsrq %xmm0, %r12, 0
-    mov %rsp, %r14
-    add %rsp, 48
+    pinsrq $0, %r12, %xmm0
+    mov %r14, %rsp
+    add $48, %rsp
     jmp __kefirrt_restore_state
 # End of ldcf64
 
 ldcint:
 # Begin prologue of ldcint
     call __kefirrt_preserve_state
-    sub %rsp, 48
+    sub $48, %rsp
     call __kefirrt_generic_prologue
 # Load parameters of ldcint
-    lea %r12, [%rbp + 16]
+    lea 16(%rbp), %r12
     push %r12
 # End prologue of ldcint
-    lea %rbx, [__ldcint_body]
-    jmp [%rbx]
+    lea (__ldcint_body), %rbx
+    jmp *(%rbx)
 __ldcint_body:
     .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_xchg_impl, 1
@@ -369,22 +369,22 @@ __ldcint_body:
 __ldcint_epilogue:
 # Begin epilogue of ldcint
     pop %rax
-    mov %rsp, %r14
-    add %rsp, 48
+    mov %r14, %rsp
+    add $48, %rsp
     jmp __kefirrt_restore_state
 # End of ldcint
 
 ldcuint:
 # Begin prologue of ldcuint
     call __kefirrt_preserve_state
-    sub %rsp, 48
+    sub $48, %rsp
     call __kefirrt_generic_prologue
 # Load parameters of ldcuint
-    lea %r12, [%rbp + 16]
+    lea 16(%rbp), %r12
     push %r12
 # End prologue of ldcuint
-    lea %rbx, [__ldcuint_body]
-    jmp [%rbx]
+    lea (__ldcuint_body), %rbx
+    jmp *(%rbx)
 __ldcuint_body:
     .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_xchg_impl, 1
@@ -398,21 +398,21 @@ __ldcuint_body:
 __ldcuint_epilogue:
 # Begin epilogue of ldcuint
     pop %rax
-    mov %rsp, %r14
-    add %rsp, 48
+    mov %r14, %rsp
+    add $48, %rsp
     jmp __kefirrt_restore_state
 # End of ldcuint
 
 uintcld:
 # Begin prologue of uintcld
     call __kefirrt_preserve_state
-    sub %rsp, 64
+    sub $64, %rsp
     call __kefirrt_generic_prologue
 # Load parameters of uintcld
     push %rdi
 # End prologue of uintcld
-    lea %rbx, [__uintcld_body]
-    jmp [%rbx]
+    lea (__uintcld_body), %rbx
+    jmp *(%rbx)
 __uintcld_body:
     .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_xchg_impl, 1
@@ -428,22 +428,22 @@ __uintcld_body:
 __uintcld_epilogue:
 # Begin epilogue of uintcld
     pop %r12
-    fld TBYTE PTR [%r12]
-    mov %rsp, %r14
-    add %rsp, 64
+    fldt (%r12)
+    mov %r14, %rsp
+    add $64, %rsp
     jmp __kefirrt_restore_state
 # End of uintcld
 
 imp_cast:
 # Begin prologue of imp_cast
     call __kefirrt_preserve_state
-    sub %rsp, 48
+    sub $48, %rsp
     call __kefirrt_generic_prologue
 # Load parameters of imp_cast
     push %rdi
 # End prologue of imp_cast
-    lea %rbx, [__imp_cast_body]
-    jmp [%rbx]
+    lea (__imp_cast_body), %rbx
+    jmp *(%rbx)
 __imp_cast_body:
     .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_xchg_impl, 1
@@ -459,9 +459,9 @@ __imp_cast_body:
 __imp_cast_epilogue:
 # Begin epilogue of imp_cast
     pop %r12
-    fld TBYTE PTR [%r12]
-    mov %rsp, %r14
-    add %rsp, 48
+    fldt (%r12)
+    mov %r14, %rsp
+    add $48, %rsp
     jmp __kefirrt_restore_state
 # End of imp_cast
 

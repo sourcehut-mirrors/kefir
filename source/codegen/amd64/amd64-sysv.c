@@ -467,7 +467,7 @@ static kefir_result_t cg_close(struct kefir_mem *mem, struct kefir_codegen *cg) 
 
 static kefir_result_t match_syntax(const char *syntax_descr, kefir_amd64_xasmgen_syntax_t *syntax) {
     if (syntax_descr == NULL) {
-        *syntax = KEFIR_AMD64_XASMGEN_SYNTAX_INTEL_PREFIX;
+        *syntax = KEFIR_AMD64_XASMGEN_SYNTAX_ATT;
     } else if (strcmp(syntax_descr, KEFIR_CODEGEN_SYNTAX_X86_64_INTEL_PREFIX) == 0) {
         *syntax = KEFIR_AMD64_XASMGEN_SYNTAX_INTEL_PREFIX;
     } else if (strcmp(syntax_descr, KEFIR_CODEGEN_SYNTAX_X86_64_INTEL_NOPREFIX) == 0) {
@@ -487,7 +487,7 @@ kefir_result_t kefir_codegen_amd64_sysv_init(struct kefir_mem *mem, struct kefir
         config = &KefirCodegenDefaultConfiguration;
     }
 
-    kefir_amd64_xasmgen_syntax_t syntax = KEFIR_AMD64_XASMGEN_SYNTAX_INTEL_PREFIX;
+    kefir_amd64_xasmgen_syntax_t syntax = KEFIR_AMD64_XASMGEN_SYNTAX_ATT;
     REQUIRE_OK(match_syntax(config->syntax, &syntax));
     REQUIRE_OK(kefir_amd64_xasmgen_init(mem, &codegen->xasmgen, out, syntax));
     codegen->iface.translate = cg_translate;

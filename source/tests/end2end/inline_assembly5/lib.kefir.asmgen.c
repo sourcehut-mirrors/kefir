@@ -22,29 +22,29 @@
 
 #ifdef __x86_64__
 long clear8(long x) {
-    asm("mov %b0, 0" : "=r"(x));
+    asm("movb $0, %b0" : "=r"(x));
     return x;
 }
 
 long clear16(long x) {
-    asm("mov %w0, 0" : "=r"(x));
+    asm("movw $0, %w0" : "=r"(x));
     return x;
 }
 
 long clear32(long x) {
-    asm("mov %d0, 0" : "=r"(x));
+    asm("movl $0, %d0" : "=r"(x));
     return x;
 }
 
 long clear64(long x) {
-    asm("mov %q0, 0" : "=r"(x));
+    asm("movq $0, %q0" : "=r"(x));
     return x;
 }
 
 long set8(long x) {
     asm("xor %al, %al\n"
         "not %al\n"
-        "mov %b0, %al"
+        "movb %al, %b0"
         : "=m"(x)
         :
         : "al");
@@ -54,7 +54,7 @@ long set8(long x) {
 long set16(long x) {
     asm("xor %ax, %ax\n"
         "not %ax\n"
-        "mov %w0, %ax"
+        "movw %ax, %w0"
         : "=m"(x)
         :
         : "ax");
@@ -64,7 +64,7 @@ long set16(long x) {
 long set32(long x) {
     asm("xor %eax, %eax\n"
         "not %eax\n"
-        "mov %d0, %eax"
+        "movl %eax, %d0"
         : "=m"(x)
         :
         : "eax");
@@ -74,7 +74,7 @@ long set32(long x) {
 long set64(long x) {
     asm("xor %rax, %rax\n"
         "not %rax\n"
-        "mov %q0, %rax"
+        "movq %rax, %q0"
         : "=m"(x)
         :
         : "rax");

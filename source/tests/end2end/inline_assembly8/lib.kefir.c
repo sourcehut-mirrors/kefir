@@ -28,16 +28,16 @@ extern int *getx() {
 }
 
 extern void init_array() {
-    asm("lea %rax, %1\n"
-        "mov [%0], %rax\n"
-        "lea %rax, %3\n"
-        "mov [%2], %rax\n"
-        "lea %rax, %5\n"
-        "mov [%4], %rax\n"
-        "lea %rax, %7\n"
-        "mov [%6], %rax\n"
-        "mov %rax, %9\n"
-        "mov [%8], %rax"
+    asm("lea %1, %rax\n"
+        "mov %rax, [%0]\n"
+        "lea %3, %rax\n"
+        "mov %rax, [%2]\n"
+        "lea %5, %rax\n"
+        "mov %rax, [%4]\n"
+        "lea %7, %rax\n"
+        "mov %rax, [%6]\n"
+        "mov %9, %rax\n"
+        "mov %rax, [%8]"
         :
         : "i"(&array[0]), "i"(fn1), "i"(&array[1]), "i"(&array[5]), "i"(&array[2]), "i"("Hello" + 2), "i"(&array[3]),
           "i"(&x), "i"(&array[4]), "n"(4.21)

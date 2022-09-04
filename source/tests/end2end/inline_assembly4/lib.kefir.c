@@ -25,11 +25,11 @@ enum { FIELD3 = 300 };
 #ifdef __x86_64__
 struct S1 init_s1() {
     struct S1 s1;
-    asm("lea %rbx, %0\n"
-        "mov QWORD PTR [%rbx], %[field1]\n"
-        "mov DWORD PTR [%rbx + 8], %[field2]\n"
-        "mov WORD PTR [%rbx + 12], %[field3]\n"
-        "mov BYTE PTR [%rbx + 14], %[field4]"
+    asm("lea %0, %rbx\n"
+        "movq %[field1], (%rbx)\n"
+        "movl %[field2], 8(%rbx)\n"
+        "movw %[field3], 12(%rbx)\n"
+        "movb %[field4], 14(%rbx)"
         : "=m"(s1)
         : [field1] "i"(100), [field2] "n"(FIELD3 / 3 * 2), [field3] "i"(FIELD3), [field4] "n"('X')
         : "rbx");
