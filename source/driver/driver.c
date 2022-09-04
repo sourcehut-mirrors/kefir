@@ -165,6 +165,7 @@ static kefir_result_t driver_generate_compiler_config(struct kefir_mem *mem, str
         compiler_config->features.permissive_pointer_conv = true;
         compiler_config->features.named_macro_vararg = true;
         compiler_config->features.include_next = true;
+        compiler_config->features.va_args_concat = true;
     }
 
     struct kefir_list_entry *include_insert_iter = NULL;

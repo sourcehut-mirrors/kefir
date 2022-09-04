@@ -29,8 +29,8 @@
 #include "kefir/preprocessor/format.h"
 #include "kefir/core/string_buffer.h"
 
-static const struct kefir_preprocessor_configuration DefaultConfiguration = {.named_macro_vararg = false,
-                                                                             .include_next = false};
+static const struct kefir_preprocessor_configuration DefaultConfiguration = {
+    .named_macro_vararg = false, .include_next = false, .va_args_concat = false};
 
 kefir_result_t kefir_preprocessor_configuration_default(struct kefir_preprocessor_configuration *config) {
     REQUIRE(config != NULL,

@@ -46,6 +46,7 @@ Supported features:
     named-macro-vararg                  Permit named macro variable arguments
     include-next                        Permit include_next preprocessor directive
     fail-on-assembly                    Disable support of inline assembly
+    va-args-comma-concat                Enable special processing for ", ##__VA_ARGS" case in preprocessor
 
 Targets:
     amd64-sysv-gas (default)             Produce GNU As-compatible assembly adhering System-V AMD64 ABI

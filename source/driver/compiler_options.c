@@ -183,6 +183,7 @@ struct kefir_cli_option KefirCompilerConfigurationOptions[] = {
     FEATURE("named-macro-vararg", features.named_macro_vararg),
     FEATURE("include-next", features.include_next),
     FEATURE("fail-on-assembly", features.fail_on_assembly),
+    FEATURE("va-args-comma-concat", features.va_args_concat),
 
     CODEGEN("emulated-tls", codegen.emulated_tls),
     SIMPLE(0, "codegen-syntax", true, KEFIR_CLI_OPTION_ACTION_ASSIGN_STRARG, 0, codegen.syntax)

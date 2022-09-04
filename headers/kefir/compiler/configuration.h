@@ -75,6 +75,7 @@ typedef struct kefir_compiler_runner_configuration {
         kefir_bool_t named_macro_vararg;
         kefir_bool_t include_next;
         kefir_bool_t fail_on_assembly;
+        kefir_bool_t va_args_concat;
     } features;
 
     struct {

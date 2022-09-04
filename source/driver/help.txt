@@ -76,6 +76,7 @@ COMPILER OPTIONS:
         named-macro-vararg                  Permit named macro variable arguments [default: on]
         include-next                        Permit include_next preprocessor directive [default: on]
         fail-on-assembly                    Disable support of inline assembly [default: off]
+        va-args-comma-concat                Enable special processing for ", ##__VA_ARGS" case in preprocessor [default: on]
 
     Support code generation options:
         emulated-tls                        Use emulated TLS [disabled by default, enabled on openbsd platforms]
