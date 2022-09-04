@@ -10,6 +10,7 @@ depends=()
 makedepends=()
 source=('kefir::git+https://github.com/protopopov1122/kefir')
 sha512sums=('SKIP')
+options=('staticlibs')
 
 build () {
     cd kefir
