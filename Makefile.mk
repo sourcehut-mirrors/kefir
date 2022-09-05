@@ -3,14 +3,20 @@ AS=as
 AR=ar
 XSLTPROC=xsltproc
 CLANG_FORMAT=clang-format
+USE_SHARED=yes
 
 OPT=-O0
 DBG=-g3 -ggdb -DKFT_NOFORK
 EXTRAFLAGS=
-CFLAGS=-std=c11 -Wall -Wextra -pedantic -Wno-overlength-strings -fPIC $(OPT) $(DBG) $(EXTRAFLAGS)
+CFLAGS=-std=c11 -Wall -Wextra -pedantic -Wno-overlength-strings
 INCLUDES=-Iheaders
 SANFLAGS=
 PLATFORM=
+
+ifeq ($(USE_SHARED),yes)
+CFLAGS+=-fPIC
+endif
+CFLAGS+=$(OPT) $(DBG) $(EXTRAFLAGS)
 
 ifeq ($(SANITIZE),undefined)
 SANFLAGS=-fsanitize=undefined -fno-sanitize-recover=all
@@ -27,7 +33,6 @@ RESOURCES_DIR=$(ROOT)/resources
 SCRIPTS_DIR=$(ROOT)/scripts
 BOOTSTRAP_DIR=$(ROOT)/bootstrap
 
-USE_SHARED=yes
 LIBKEFIR_SO=$(LIB_DIR)/libkefir.so
 LIBKEFIR_SO_VERSION=0.0
 LIBKEFIR_A=$(LIB_DIR)/libkefir.a

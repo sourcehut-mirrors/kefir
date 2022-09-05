@@ -1,6 +1,6 @@
 DESTDIR=/opt/kefir
 
-install: $(LIBKEFIR_DEP) $(BIN_DIR)/kefir
+install:
 	@echo "Creating directories..."
 	@install -d "$(DESTDIR)"/include/kefir/toolchain
 	@install -d "$(DESTDIR)"/lib
