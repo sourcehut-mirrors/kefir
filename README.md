@@ -50,6 +50,8 @@ when the original plan was mostly finished. During the migration applicable DRs 
 accordingly. The compiler itself is still written in compliance with C11 language standard.
 
 ## Progress
+See `CHANGELOG`.
+
 Table below lists progress on various compiler components. 'Implemenataion done' in the status field means that the main body of component
 is implemented, however refactoring and bug-fixes are still on-going. At the moment, initial development effort is mostly finished.
 

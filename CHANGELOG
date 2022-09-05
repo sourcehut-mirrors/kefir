@@ -1,0 +1,18 @@
+# Changelog
+
+This file documents notable changes to the project.
+
+## [0.1.0] - 2022-09-05
+First project release. Project features:
+* C language compiler for x86_64 architecture.
+* Compiler implements C17 language standard with a few omissions (namely, `_Complex` numbers, atomics and several `STDC` pragmas), and some common language extensions.
+* Compiler targets System-V ABI-compatible systems. Specifically, Linux, FreeBSD, OpenBSD and NetBSD are supported (support is determined by correct execution of test suite and subsequent bootstrap).
+* Compiler re-uses libc of target systems (on Linux, both Glibc and Musl are supported). Degree of re-use is limited by C language extensions not yet supported by the compiler.
+* Compiler produces GNU As-compatible assembly code and supports 3 syntax variants: AT&T (default), Intel, Intel with prefixes.
+* Compiler provides cc-compatible command line interface.
+* Compiler is able to compile itself via 2-stage bootstrap on all supported platforms.
+* Besides own test suite, compiler compliance is validated via c-testsuite and GCC Torture suite. Furthermore,
+* Compiler is able to compile unmodified versions of Lua, Bash, SQLite3, Zlib (static) and Git. Furthermore, compiler compliance to the standard is validated via own test suite, as well as third-party c-testsuite and GCC Torture suite.
+* Compiler is able to output all intermediate program representations (tokens, AST, IR code) in JSON format.
+* Compiler provides facilities for reproducible builds.
+* Compiler is licensed under GNU GPLv3 license conditions. Runtime portion are licensed under 3-clause BSD license conditions.
