@@ -358,6 +358,10 @@ static kefir_result_t generate_object_name(struct kefir_mem *mem,
 }
 
 static kefir_result_t get_file_basename(char *buffer, kefir_size_t buffer_size, const char *filename, char **result) {
+    if (strcmp(filename, "-") == 0) {
+        *result = "out";
+        return KEFIR_OK;
+    }
     strncpy(buffer, filename, buffer_size);
     char *input_basename = basename(buffer);
     REQUIRE(input_basename != NULL, KEFIR_SET_OS_ERROR("Failed to retrieve input file base name"));
