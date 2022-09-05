@@ -338,8 +338,12 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_symbo
             *command = KEFIR_DRIVER_COMMAND_VERSION;
             return KEFIR_OK;
         } else if (strcmp("--compiler-info", arg) == 0) {
-            // Version requested
+            // Compiler info requested
             *command = KEFIR_DRIVER_COMMAND_COMPILER_INFO;
+            return KEFIR_OK;
+        } else if (strcmp("--environment-info", arg) == 0) {
+            // Environment info requested
+            *command = KEFIR_DRIVER_COMMAND_COMPILER_ENVIRONMENT;
             return KEFIR_OK;
         }
 

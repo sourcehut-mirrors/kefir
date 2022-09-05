@@ -29,7 +29,8 @@ typedef enum kefir_driver_command {
     KEFIR_DRIVER_COMMAND_RUN,
     KEFIR_DRIVER_COMMAND_HELP,
     KEFIR_DRIVER_COMMAND_VERSION,
-    KEFIR_DRIVER_COMMAND_COMPILER_INFO
+    KEFIR_DRIVER_COMMAND_COMPILER_INFO,
+    KEFIR_DRIVER_COMMAND_COMPILER_ENVIRONMENT
 } kefir_driver_command_t;
 
 kefir_result_t kefir_driver_parse_args(struct kefir_mem *, struct kefir_symbol_table *,

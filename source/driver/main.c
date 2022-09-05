@@ -104,7 +104,32 @@ static kefir_result_t print_compiler_info(FILE *out, const char *exec_name) {
 #endif
 
     fprintf(out, "URL: %s\n", "https://github.com/protopopov1122/Kefir");
+    return KEFIR_OK;
+}
 
+static const char *str_nonnull_or(const char *str, const char *alternative) {
+    return str != NULL ? str : alternative;
+}
+
+static kefir_result_t print_toolchain_env(FILE *out, const char *name,
+                                          const struct kefir_driver_external_resource_toolchain_config *config) {
+    fprintf(out, "KEFIR_%s_INCLUDE=\"%s\"\n", name, str_nonnull_or(config->include_path, ""));
+    fprintf(out, "KEFIR_%s_LIB=\"%s\"\n", name, str_nonnull_or(config->library_path, ""));
+    fprintf(out, "KEFIR_%s_DYNAMIC_LINKER=\"%s\"\n", name, str_nonnull_or(config->dynamic_linker, ""));
+    return KEFIR_OK;
+}
+
+static kefir_result_t print_environment(FILE *out, const struct kefir_driver_external_resources *externals) {
+    fprintf(out, "KEFIR_AS=\"%s\"\n", externals->assembler_path);
+    fprintf(out, "KEFIR_LD=\"%s\"\n", externals->linker_path);
+    fprintf(out, "KEFIR_RTINC=\"%s\"\n", str_nonnull_or(externals->runtime_include, ""));
+    fprintf(out, "KEFIR_RTLIB=\"%s\"\n", str_nonnull_or(externals->runtime_library, ""));
+    fprintf(out, "KEFIR_WORKDIR=\"%s\"\n", externals->work_dir);
+    REQUIRE_OK(print_toolchain_env(out, "GNU", &externals->gnu));
+    REQUIRE_OK(print_toolchain_env(out, "MUSL", &externals->musl));
+    REQUIRE_OK(print_toolchain_env(out, "FREEBSD", &externals->freebsd));
+    REQUIRE_OK(print_toolchain_env(out, "OPENBSD", &externals->openbsd));
+    REQUIRE_OK(print_toolchain_env(out, "NETBSD", &externals->netbsd));
     return KEFIR_OK;
 }
 
@@ -134,6 +159,8 @@ int main(int argc, char *const *argv) {
         fprintf(stdout, "%u.%u.%u\n", KEFIR_VERSION_MAJOR, KEFIR_VERSION_MINOR, KEFIR_VERSION_PATCH);
     } else if (res == KEFIR_OK && command == KEFIR_DRIVER_COMMAND_COMPILER_INFO) {
         res = print_compiler_info(stdout, argv[0]);
+    } else if (res == KEFIR_OK && command == KEFIR_DRIVER_COMMAND_COMPILER_ENVIRONMENT) {
+        res = print_environment(stdout, &exteral_resources);
     } else {
         REQUIRE_CHAIN(&res, kefir_driver_run(mem, &symbols, &driver_config, &exteral_resources));
         if (res == KEFIR_INTERRUPT) {
