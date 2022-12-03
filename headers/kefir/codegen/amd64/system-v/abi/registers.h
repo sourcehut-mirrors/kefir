@@ -27,7 +27,7 @@
 #include "kefir/core/mem.h"
 #include "kefir/target/abi/system-v-amd64/data_layout.h"
 #include "kefir/codegen/amd64/system-v/abi/data.h"
-#include "kefir/codegen/amd64/system-v/abi/qwords.h"
+#include "kefir/target/abi/system-v-amd64/qwords.h"
 
 extern kefir_amd64_xasmgen_register_t KEFIR_AMD64_SYSV_INTEGER_REGISTERS[];
 extern const kefir_size_t KEFIR_AMD64_SYSV_INTEGER_REGISTER_COUNT;
@@ -71,8 +71,8 @@ typedef struct kefir_amd64_sysv_parameter_allocation {
     kefir_abi_sysv_amd64_data_class_t klass;
     kefir_size_t index;
     union {
-        struct kefir_amd64_sysv_abi_qwords container;
-        struct kefir_amd64_sysv_abi_qword_ref container_reference;
+        struct kefir_abi_sysv_amd64_qwords container;
+        struct kefir_abi_sysv_amd64_qword_ref container_reference;
     };
     struct kefir_amd64_sysv_parameter_location_requirements requirements;
     struct kefir_amd64_sysv_parameter_location location;

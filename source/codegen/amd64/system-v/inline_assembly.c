@@ -1,6 +1,6 @@
 #include "kefir/codegen/amd64/system-v/inline_assembly.h"
 #include "kefir/codegen/amd64/system-v/runtime.h"
-#include "kefir/codegen/amd64/system-v/abi/qwords.h"
+#include "kefir/target/abi/system-v-amd64/qwords.h"
 #include "kefir/codegen/amd64/system-v/abi.h"
 #include "kefir/codegen/amd64/labels.h"
 #include "kefir/core/error.h"

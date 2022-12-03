@@ -20,7 +20,7 @@
 
 #include "kefir/codegen/amd64/system-v/platform.h"
 #include "kefir/target/abi/system-v-amd64/data_layout.h"
-#include "kefir/codegen/amd64/system-v/abi/qwords.h"
+#include "kefir/target/abi/system-v-amd64/qwords.h"
 #include "kefir/codegen/amd64/system-v/bitfields.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"

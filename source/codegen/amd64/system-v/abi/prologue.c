@@ -193,7 +193,7 @@ static kefir_result_t load_reg_aggregate(struct argument_load *param,
                                          struct kefir_amd64_sysv_parameter_allocation *alloc) {
     param->frame_offset = kefir_target_abi_pad_aligned(param->frame_offset, layout->alignment);
     for (kefir_size_t i = 0; i < kefir_vector_length(&alloc->container.qwords); i++) {
-        ASSIGN_DECL_CAST(struct kefir_amd64_sysv_abi_qword *, qword, kefir_vector_at(&alloc->container.qwords, i));
+        ASSIGN_DECL_CAST(struct kefir_abi_sysv_amd64_qword *, qword, kefir_vector_at(&alloc->container.qwords, i));
         switch (qword->klass) {
             case KEFIR_AMD64_SYSV_PARAM_INTEGER:
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(

@@ -19,7 +19,7 @@
 */
 
 #include "kefir/codegen/amd64/system-v/abi/vararg.h"
-#include "kefir/codegen/amd64/system-v/abi/qwords.h"
+#include "kefir/target/abi/system-v-amd64/qwords.h"
 #include "kefir/codegen/amd64/labels.h"
 #include "kefir/codegen/amd64/system-v/runtime.h"
 #include "kefir/target/abi/util.h"
@@ -448,7 +448,7 @@ static kefir_result_t register_aggregate_requirements(struct vararg_aggregate_in
     req->integers = 0;
     req->sse = 0;
     for (kefir_size_t i = 0; i < kefir_vector_length(&info->arg_alloc->container.qwords); i++) {
-        ASSIGN_DECL_CAST(struct kefir_amd64_sysv_abi_qword *, qword,
+        ASSIGN_DECL_CAST(struct kefir_abi_sysv_amd64_qword *, qword,
                          kefir_vector_at(&info->arg_alloc->container.qwords, i));
         switch (qword->klass) {
             case KEFIR_AMD64_SYSV_PARAM_INTEGER:
@@ -598,7 +598,7 @@ static kefir_result_t vararg_get_register_aggregate_load(struct kefir_codegen_am
 
     kefir_size_t integer_offset = 0, sse_offset = 0;
     for (kefir_size_t i = 0; i < kefir_vector_length(&info->arg_alloc->container.qwords); i++) {
-        ASSIGN_DECL_CAST(struct kefir_amd64_sysv_abi_qword *, qword,
+        ASSIGN_DECL_CAST(struct kefir_abi_sysv_amd64_qword *, qword,
                          kefir_vector_at(&info->arg_alloc->container.qwords, i));
         switch (qword->klass) {
             case KEFIR_AMD64_SYSV_PARAM_INTEGER:

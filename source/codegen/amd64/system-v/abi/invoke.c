@@ -194,7 +194,7 @@ static kefir_result_t register_aggregate_argument(struct invoke_info *info,
             &info->codegen->xasmgen_helpers.operands[0], kefir_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_DATA_REG),
             (info->total_arguments - info->argument - 1) * KEFIR_AMD64_SYSV_ABI_QWORD)));
     for (kefir_size_t i = 0; i < kefir_vector_length(&allocation->container.qwords); i++) {
-        ASSIGN_DECL_CAST(struct kefir_amd64_sysv_abi_qword *, qword, kefir_vector_at(&allocation->container.qwords, i));
+        ASSIGN_DECL_CAST(struct kefir_abi_sysv_amd64_qword *, qword, kefir_vector_at(&allocation->container.qwords, i));
         switch (qword->klass) {
             case KEFIR_AMD64_SYSV_PARAM_INTEGER:
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
@@ -356,7 +356,7 @@ static kefir_result_t register_aggregate_return(struct invoke_info *info,
     kefir_size_t integer_register = 0;
     kefir_size_t sse_register = 0;
     for (kefir_size_t i = 0; i < kefir_vector_length(&allocation->container.qwords); i++) {
-        ASSIGN_DECL_CAST(struct kefir_amd64_sysv_abi_qword *, qword, kefir_vector_at(&allocation->container.qwords, i));
+        ASSIGN_DECL_CAST(struct kefir_abi_sysv_amd64_qword *, qword, kefir_vector_at(&allocation->container.qwords, i));
         switch (qword->klass) {
             case KEFIR_AMD64_SYSV_PARAM_INTEGER:
                 if (integer_register >= KEFIR_AMD64_SYSV_INTEGER_RETURN_REGISTER_COUNT) {
@@ -390,7 +390,7 @@ static kefir_result_t register_aggregate_return(struct invoke_info *info,
             case KEFIR_AMD64_SYSV_PARAM_X87:
                 REQUIRE(i + 1 < kefir_vector_length(&allocation->container.qwords),
                         KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected X87 qword to be directly followed by X87UP"));
-                ASSIGN_DECL_CAST(struct kefir_amd64_sysv_abi_qword *, next_qword,
+                ASSIGN_DECL_CAST(struct kefir_abi_sysv_amd64_qword *, next_qword,
                                  kefir_vector_at(&allocation->container.qwords, ++i));
                 REQUIRE(next_qword->klass == KEFIR_AMD64_SYSV_PARAM_X87UP,
                         KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected X87 qword to be directly followed by X87UP"));
