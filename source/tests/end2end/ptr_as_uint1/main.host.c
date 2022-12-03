@@ -23,13 +23,14 @@
 #include <assert.h>
 #include <math.h>
 #include <string.h>
+#include <inttypes.h>
 #include "./definitions.h"
 
 int Value = 0;
 
 int main() {
     assert(Ptr1 == ((long long) &Value) - 1000);
-    assert(Ptr2 == (unsigned long) (&Value + 245));
+    assert(Ptr2 == (unsigned long) (((intptr_t) &Value) + 245 * sizeof(int)));
     assert(Ptr3 == ((long) &Value) + 2000 - 1);
     assert(strcmp((const char *) (Str1 + 0x200000ull), "Hello, cruel world!") == 0);
     return EXIT_SUCCESS;
