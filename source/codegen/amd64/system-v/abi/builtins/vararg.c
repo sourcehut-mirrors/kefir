@@ -23,59 +23,10 @@
 #include "kefir/target/abi/util.h"
 #include "kefir/core/error.h"
 
-static kefir_result_t vararg_classify_nested_argument(
-    const struct kefir_codegen_amd64_sysv_builtin_type *builtin_type, const struct kefir_ir_typeentry *typeentry,
-    struct kefir_amd64_sysv_parameter_allocation *immediate_allocation,
-    struct kefir_amd64_sysv_parameter_allocation *allocation) {
-    UNUSED(builtin_type);
-    UNUSED(typeentry);
-    REQUIRE(immediate_allocation != NULL,
-            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid nested data classificator"));
-    REQUIRE(allocation != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid nested data classificator"));
-    REQUIRE_OK(kefir_abi_sysv_amd64_qwords_next(&immediate_allocation->container, KEFIR_AMD64_SYSV_PARAM_INTEGER,
-                                                KEFIR_AMD64_SYSV_ABI_QWORD, KEFIR_AMD64_SYSV_ABI_QWORD,
-                                                &allocation->container_reference));
-    return KEFIR_OK;
-}
-
-static kefir_result_t vararg_classify_immediate_argument(
-    const struct kefir_codegen_amd64_sysv_builtin_type *builtin_type, const struct kefir_ir_typeentry *typeentry,
-    struct kefir_amd64_sysv_parameter_allocation *allocation) {
-    UNUSED(builtin_type);
-    UNUSED(typeentry);
-    REQUIRE(allocation != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid nested data classificator"));
-    allocation->type = KEFIR_AMD64_SYSV_INPUT_PARAM_IMMEDIATE;
-    allocation->klass = KEFIR_AMD64_SYSV_PARAM_INTEGER;
-    allocation->requirements.integer = 1;
-    return KEFIR_OK;
-}
-
-static kefir_result_t vararg_allocate_immediate_argument(
-    const struct kefir_codegen_amd64_sysv_builtin_type *builtin_type, const struct kefir_ir_typeentry *typeentry,
-    struct kefir_amd64_sysv_parameter_location *total_allocation,
-    struct kefir_amd64_sysv_parameter_allocation *allocation) {
-    UNUSED(builtin_type);
-    UNUSED(typeentry);
-    REQUIRE(total_allocation != NULL,
-            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid built-in data allocation"));
-    REQUIRE(allocation != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid built-in data allocation"));
-
-    if (total_allocation->integer_register + 1 <= KEFIR_AMD64_SYSV_INTEGER_REGISTER_COUNT) {
-        allocation->location.integer_register = total_allocation->integer_register++;
-    } else {
-        const kefir_size_t alignment = MAX(allocation->requirements.memory.alignment, KEFIR_AMD64_SYSV_ABI_QWORD);
-        total_allocation->stack_offset = kefir_target_abi_pad_aligned(total_allocation->stack_offset, alignment);
-        allocation->klass = KEFIR_AMD64_SYSV_PARAM_MEMORY;
-        allocation->location.stack_offset = total_allocation->stack_offset;
-        total_allocation->stack_offset += KEFIR_AMD64_SYSV_ABI_QWORD;
-    }
-    return KEFIR_OK;
-}
-
 static kefir_result_t vararg_load_function_argument(const struct kefir_codegen_amd64_sysv_builtin_type *builtin_type,
                                                     const struct kefir_ir_typeentry *typeentry,
                                                     struct kefir_codegen_amd64 *codegen,
-                                                    struct kefir_amd64_sysv_parameter_allocation *allocation) {
+                                                    struct kefir_abi_sysv_amd64_parameter_allocation *allocation) {
     UNUSED(builtin_type);
     UNUSED(typeentry);
     REQUIRE(codegen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid code generator"));
@@ -102,7 +53,7 @@ static kefir_result_t vararg_load_function_argument(const struct kefir_codegen_a
 static kefir_result_t vararg_store_function_return(const struct kefir_codegen_amd64_sysv_builtin_type *builtin_type,
                                                    const struct kefir_ir_typeentry *typeentry,
                                                    struct kefir_codegen_amd64 *codegen,
-                                                   struct kefir_amd64_sysv_parameter_allocation *allocation) {
+                                                   struct kefir_abi_sysv_amd64_parameter_allocation *allocation) {
     UNUSED(builtin_type);
     UNUSED(typeentry);
     UNUSED(codegen);
@@ -113,7 +64,7 @@ static kefir_result_t vararg_store_function_return(const struct kefir_codegen_am
 static kefir_result_t vararg_store_function_argument(const struct kefir_codegen_amd64_sysv_builtin_type *builtin_type,
                                                      const struct kefir_ir_typeentry *typeentry,
                                                      struct kefir_codegen_amd64 *codegen,
-                                                     struct kefir_amd64_sysv_parameter_allocation *allocation,
+                                                     struct kefir_abi_sysv_amd64_parameter_allocation *allocation,
                                                      kefir_size_t argument_index) {
     UNUSED(builtin_type);
     UNUSED(typeentry);
@@ -148,7 +99,7 @@ static kefir_result_t vararg_store_function_argument(const struct kefir_codegen_
 static kefir_result_t vararg_load_function_return(const struct kefir_codegen_amd64_sysv_builtin_type *builtin_type,
                                                   const struct kefir_ir_typeentry *typeentry,
                                                   struct kefir_codegen_amd64 *codegen,
-                                                  struct kefir_amd64_sysv_parameter_allocation *allocation) {
+                                                  struct kefir_abi_sysv_amd64_parameter_allocation *allocation) {
     UNUSED(builtin_type);
     UNUSED(typeentry);
     UNUSED(codegen);
@@ -195,7 +146,7 @@ static kefir_result_t vararg_load_vararg(struct kefir_mem *mem,
                                          const struct kefir_ir_typeentry *typeentry,
                                          struct kefir_codegen_amd64 *codegen,
                                          struct kefir_amd64_sysv_function *sysv_func, const char *identifier,
-                                         struct kefir_amd64_sysv_parameter_allocation *allocation) {
+                                         struct kefir_abi_sysv_amd64_parameter_allocation *allocation) {
     UNUSED(builtin_type);
     UNUSED(typeentry);
     REQUIRE(codegen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid code generator"));
@@ -214,9 +165,6 @@ static kefir_result_t vararg_load_vararg(struct kefir_mem *mem,
 }
 
 const struct kefir_codegen_amd64_sysv_builtin_type KEFIR_CODEGEN_AMD64_SYSV_BUILIN_VARARG_TYPE = {
-    .classify_nested_argument = vararg_classify_nested_argument,
-    .classify_immediate_argument = vararg_classify_immediate_argument,
-    .allocate_immediate_argument = vararg_allocate_immediate_argument,
     .load_function_argument = vararg_load_function_argument,
     .store_function_return = vararg_store_function_return,
     .store_function_argument = vararg_store_function_argument,

@@ -33,7 +33,7 @@ typedef struct kefir_amd64_sysv_function_decl {
     struct {
         struct kefir_abi_sysv_amd64_type_layout layout;
         struct kefir_vector allocation;
-        struct kefir_amd64_sysv_parameter_location location;
+        struct kefir_abi_sysv_amd64_parameter_location location;
     } parameters;
 
     struct {
