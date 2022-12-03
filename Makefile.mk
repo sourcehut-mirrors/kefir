@@ -8,7 +8,7 @@ USE_SHARED=yes
 OPT=-O0
 DBG=-g3 -ggdb -DKFT_NOFORK
 EXTRAFLAGS=
-CFLAGS=-std=c11 -Wall -Wextra -pedantic -Wno-overlength-strings -Werror
+CFLAGS=-std=c11 -Wall -Wextra -pedantic -Wno-overlength-strings
 INCLUDES=-Iheaders
 SANFLAGS=
 PLATFORM=
