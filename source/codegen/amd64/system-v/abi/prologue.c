@@ -22,10 +22,10 @@
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 #include "kefir/codegen/amd64/system-v/runtime.h"
-#include "kefir/codegen/amd64/system-v/abi/data_layout.h"
+#include "kefir/target/abi/system-v-amd64/data_layout.h"
 #include "kefir/codegen/amd64/system-v/abi/registers.h"
 #include "kefir/codegen/amd64/system-v/abi/builtins.h"
-#include "kefir/codegen/util.h"
+#include "kefir/target/abi/util.h"
 #include <stdio.h>
 
 static kefir_result_t preserve_state(struct kefir_amd64_xasmgen *xasmgen) {
@@ -188,9 +188,10 @@ static kefir_result_t load_long_double_argument(const struct kefir_ir_type *type
     return KEFIR_OK;
 }
 
-static kefir_result_t load_reg_aggregate(struct argument_load *param, struct kefir_amd64_sysv_data_layout *layout,
+static kefir_result_t load_reg_aggregate(struct argument_load *param,
+                                         const struct kefir_abi_sysv_amd64_typeentry_layout *layout,
                                          struct kefir_amd64_sysv_parameter_allocation *alloc) {
-    param->frame_offset = kefir_codegen_pad_aligned(param->frame_offset, layout->alignment);
+    param->frame_offset = kefir_target_abi_pad_aligned(param->frame_offset, layout->alignment);
     for (kefir_size_t i = 0; i < kefir_vector_length(&alloc->container.qwords); i++) {
         ASSIGN_DECL_CAST(struct kefir_amd64_sysv_abi_qword *, qword, kefir_vector_at(&alloc->container.qwords, i));
         switch (qword->klass) {
@@ -248,8 +249,8 @@ static kefir_result_t load_aggregate_argument(const struct kefir_ir_type *type, 
                                                  kefir_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
                                                  alloc->location.stack_offset + 2 * KEFIR_AMD64_SYSV_ABI_QWORD)));
     } else {
-        ASSIGN_DECL_CAST(struct kefir_amd64_sysv_data_layout *, layout,
-                         kefir_vector_at(&param->sysv_func->decl.parameters.layout, index));
+        const struct kefir_abi_sysv_amd64_typeentry_layout *layout = NULL;
+        REQUIRE_OK(kefir_abi_sysv_amd64_type_layout_at(&param->sysv_func->decl.parameters.layout, index, &layout));
         REQUIRE_OK(load_reg_aggregate(param, layout, alloc));
     }
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_PUSH(&param->codegen->xasmgen,

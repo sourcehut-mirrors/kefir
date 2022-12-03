@@ -45,8 +45,8 @@ kefir_result_t type_layout_removal(struct kefir_mem *mem, struct kefir_hashtree 
     UNUSED(tree);
     UNUSED(key);
     UNUSED(payload);
-    ASSIGN_DECL_CAST(struct kefir_vector *, layout, value);
-    REQUIRE_OK(kefir_vector_free(mem, layout));
+    ASSIGN_DECL_CAST(struct kefir_abi_sysv_amd64_type_layout *, layout, value);
+    REQUIRE_OK(kefir_abi_sysv_amd64_type_layout_free(mem, layout));
     KEFIR_FREE(mem, layout);
     return KEFIR_OK;
 }
@@ -117,24 +117,24 @@ struct kefir_amd64_sysv_function_decl *kefir_codegen_amd64_sysv_module_function_
     }
 }
 
-struct kefir_vector *kefir_codegen_amd64_sysv_module_type_layout(struct kefir_mem *mem,
-                                                                 struct kefir_codegen_amd64_sysv_module *sysv_module,
-                                                                 kefir_id_t id) {
+struct kefir_abi_sysv_amd64_type_layout *kefir_codegen_amd64_sysv_module_type_layout(
+    struct kefir_mem *mem, struct kefir_codegen_amd64_sysv_module *sysv_module, kefir_id_t id) {
     REQUIRE(mem != NULL, NULL);
     REQUIRE(sysv_module != NULL, NULL);
 
     struct kefir_hashtree_node *node = NULL;
     kefir_result_t res = kefir_hashtree_at(&sysv_module->type_layouts, (kefir_hashtree_key_t) id, &node);
     if (res == KEFIR_OK) {
-        return (struct kefir_vector *) node->value;
+        return (struct kefir_abi_sysv_amd64_type_layout *) node->value;
     } else {
         REQUIRE(res == KEFIR_NOT_FOUND, NULL);
     }
     struct kefir_ir_type *type = kefir_ir_module_get_named_type(sysv_module->module, id);
     REQUIRE(type != NULL, NULL);
-    struct kefir_vector *layout = KEFIR_MALLOC(mem, sizeof(struct kefir_vector));
+    struct kefir_abi_sysv_amd64_type_layout *layout =
+        KEFIR_MALLOC(mem, sizeof(struct kefir_abi_sysv_amd64_type_layout));
     REQUIRE(layout != NULL, NULL);
-    res = kefir_amd64_sysv_type_layout(type, mem, layout);
+    res = kefir_abi_sysv_amd64_type_layout(type, mem, layout);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, layout);
         return NULL;
@@ -142,7 +142,7 @@ struct kefir_vector *kefir_codegen_amd64_sysv_module_type_layout(struct kefir_me
     res = kefir_hashtree_insert(mem, &sysv_module->type_layouts, (kefir_hashtree_key_t) id,
                                 (kefir_hashtree_value_t) layout);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_vector_free(mem, layout);
+        kefir_abi_sysv_amd64_type_layout_free(mem, layout);
         KEFIR_FREE(mem, layout);
         return NULL;
     });

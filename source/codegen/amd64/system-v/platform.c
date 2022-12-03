@@ -19,7 +19,7 @@
 */
 
 #include "kefir/codegen/amd64/system-v/platform.h"
-#include "kefir/codegen/amd64/system-v/abi/data_layout.h"
+#include "kefir/target/abi/system-v-amd64/data_layout.h"
 #include "kefir/codegen/amd64/system-v/abi/qwords.h"
 #include "kefir/codegen/amd64/system-v/bitfields.h"
 #include "kefir/core/util.h"
@@ -37,7 +37,7 @@ static kefir_result_t amd64_sysv_get_type(struct kefir_mem *mem, struct kefir_ir
     struct kefir_codegen_amd64_sysv_type *type = KEFIR_MALLOC(mem, sizeof(struct kefir_codegen_amd64_sysv_type));
     REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AMD64 SysV platform IR type"));
     type->ir_type = ir_type;
-    kefir_result_t res = kefir_amd64_sysv_type_layout(ir_type, mem, &type->layout);
+    kefir_result_t res = kefir_abi_sysv_amd64_type_layout(ir_type, mem, &type->layout);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, type);
         return res;
@@ -54,7 +54,7 @@ static kefir_result_t amd64_sysv_free_type(struct kefir_mem *mem, struct kefir_i
     REQUIRE(platform_type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR platform type"));
 
     ASSIGN_DECL_CAST(struct kefir_codegen_amd64_sysv_type *, type, platform_type);
-    REQUIRE_OK(kefir_vector_free(mem, &type->layout));
+    REQUIRE_OK(kefir_abi_sysv_amd64_type_layout_free(mem, &type->layout));
     type->ir_type = NULL;
     KEFIR_FREE(mem, type);
     return KEFIR_OK;
@@ -71,7 +71,8 @@ static kefir_result_t amd64_sysv_type_info(struct kefir_mem *mem, struct kefir_i
     ASSIGN_DECL_CAST(struct kefir_codegen_amd64_sysv_type *, type, platform_type);
     REQUIRE(index < kefir_ir_type_total_length(type->ir_type),
             KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Specified index is out of bounds of IR type"));
-    ASSIGN_DECL_CAST(struct kefir_amd64_sysv_data_layout *, data_layout, kefir_vector_at(&type->layout, index));
+    const struct kefir_abi_sysv_amd64_typeentry_layout *data_layout = NULL;
+    REQUIRE_OK(kefir_abi_sysv_amd64_type_layout_at(&type->layout, index, &data_layout));
     type_info->size = data_layout->size;
     type_info->alignment = data_layout->alignment;
     type_info->aligned = data_layout->aligned;

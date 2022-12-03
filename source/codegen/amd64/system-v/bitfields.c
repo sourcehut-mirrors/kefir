@@ -19,8 +19,8 @@
 */
 
 #include "kefir/codegen/amd64/system-v/bitfields.h"
-#include "kefir/codegen/amd64/system-v/abi/data_layout.h"
-#include "kefir/codegen/util.h"
+#include "kefir/target/abi/system-v-amd64/data_layout.h"
+#include "kefir/target/abi/util.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 
@@ -95,7 +95,8 @@ static kefir_result_t visit_struct_layout(const struct kefir_ir_type *type, kefi
     REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid payload"));
     ASSIGN_DECL_CAST(struct struct_layout_visitor *, visitor_payload, payload);
 
-    ASSIGN_DECL_CAST(struct kefir_amd64_sysv_data_layout *, layout, kefir_vector_at(&visitor_payload->layout, index));
+    ASSIGN_DECL_CAST(struct kefir_abi_sysv_amd64_typeentry_layout *, layout,
+                     kefir_vector_at(&visitor_payload->layout, index));
     REQUIRE(layout != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Failed to fetch IR type layout"));
     *visitor_payload->offset = MAX(*visitor_payload->offset, layout->relative_offset + layout->size);
     return KEFIR_OK;
@@ -110,7 +111,7 @@ static kefir_result_t struct_current_offset(struct kefir_mem *mem, const struct 
         struct kefir_ir_type_visitor visitor;
         struct struct_layout_visitor payload = {.offset = offset};
         REQUIRE_OK(kefir_ir_type_visitor_init(&visitor, &visit_struct_layout));
-        REQUIRE_OK(kefir_amd64_sysv_type_layout_of(mem, type, struct_index, 1, &payload.layout));
+        REQUIRE_OK(kefir_abi_sysv_amd64_type_layout_of(mem, type, struct_index, 1, &payload.layout));
         kefir_result_t res =
             kefir_ir_type_visitor_list_nodes(type, &visitor, &payload, struct_index + 1, struct_typeentry->param);
         REQUIRE_ELSE(res == KEFIR_OK, {
@@ -156,7 +157,7 @@ static kefir_result_t amd64_sysv_bitfield_next(struct kefir_mem *mem, struct kef
     payload->props.head_offset = current_bit_offset;
     payload->props.tail_offset = current_bit_offset;
     if ((current_bit_offset & (base_bit_alignment - 1)) + bitwidth > base_bit_size) {
-        payload->props.tail_offset = kefir_codegen_pad_aligned(current_bit_offset, base_bit_alignment);
+        payload->props.tail_offset = kefir_target_abi_pad_aligned(current_bit_offset, base_bit_alignment);
     }
 
     bitfield->offset = payload->props.tail_offset - payload->props.head_offset;

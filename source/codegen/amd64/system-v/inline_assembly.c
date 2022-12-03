@@ -174,15 +174,16 @@ static kefir_result_t process_parameter_type(struct kefir_mem *mem, const struct
     REQUIRE(param_typeentry != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to obtain IR inline assembly parameter type"));
 
-    struct kefir_vector layouts;
-    REQUIRE_OK(kefir_amd64_sysv_type_layout(ir_type, mem, &layouts));
-    ASSIGN_DECL_CAST(struct kefir_amd64_sysv_data_layout *, layout, kefir_vector_at(&layouts, ir_type_idx));
-    REQUIRE_ELSE(layout != NULL, {
-        kefir_vector_free(mem, &layouts);
-        return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to calculate IR type layout");
+    struct kefir_abi_sysv_amd64_type_layout layouts;
+    REQUIRE_OK(kefir_abi_sysv_amd64_type_layout(ir_type, mem, &layouts));
+    const struct kefir_abi_sysv_amd64_typeentry_layout *layout = NULL;
+    kefir_result_t res = kefir_abi_sysv_amd64_type_layout_at(&layouts, ir_type_idx, &layout);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_abi_sysv_amd64_type_layout_free(mem, &layouts);
+        return res;
     });
     *parameter_size = layout->size;
-    REQUIRE_OK(kefir_vector_free(mem, &layouts));
+    REQUIRE_OK(kefir_abi_sysv_amd64_type_layout_free(mem, &layouts));
 
     switch (param_typeentry->typecode) {
         case KEFIR_IR_TYPE_BOOL:

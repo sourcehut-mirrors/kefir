@@ -27,8 +27,6 @@
 #include "kefir/codegen/amd64-sysv.h"
 
 typedef struct kefir_codegen_amd64_sysv_builtin_type {
-    kefir_result_t (*layout)(const struct kefir_codegen_amd64_sysv_builtin_type *, const struct kefir_ir_typeentry *,
-                             struct kefir_amd64_sysv_data_layout *);
     kefir_result_t (*classify_nested_argument)(const struct kefir_codegen_amd64_sysv_builtin_type *,
                                                const struct kefir_ir_typeentry *,
                                                struct kefir_amd64_sysv_parameter_allocation *immediate_allocation,

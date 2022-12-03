@@ -144,10 +144,11 @@ kefir_result_t kefir_amd64_sysv_instruction(struct kefir_mem *mem, struct kefir_
         case KEFIR_IROPCODE_BCOPY: {
             const kefir_id_t type_id = (kefir_id_t) instr->arg.u32[0];
             const kefir_size_t type_index = (kefir_size_t) instr->arg.u32[1];
-            struct kefir_vector *layout = kefir_codegen_amd64_sysv_module_type_layout(mem, sysv_module, type_id);
+            struct kefir_abi_sysv_amd64_type_layout *layout =
+                kefir_codegen_amd64_sysv_module_type_layout(mem, sysv_module, type_id);
             REQUIRE(layout != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unknown named type"));
-            ASSIGN_DECL_CAST(struct kefir_amd64_sysv_data_layout *, entry, kefir_vector_at(layout, type_index));
-            REQUIRE(entry != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unable to retrieve type node at index"));
+            const struct kefir_abi_sysv_amd64_typeentry_layout *entry = NULL;
+            REQUIRE_OK(kefir_abi_sysv_amd64_type_layout_at(layout, type_index, &entry));
 
             const char *opcode_symbol = NULL;
             REQUIRE_OK(cg_symbolic_opcode(instr->opcode, &opcode_symbol));
@@ -176,10 +177,11 @@ kefir_result_t kefir_amd64_sysv_instruction(struct kefir_mem *mem, struct kefir_
             const kefir_size_t type_index = (kefir_size_t) instr->arg.u32[1];
             REQUIRE(type_id == sysv_func->func->locals_type_id,
                     KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Requested local variable type does not match actual"));
-            struct kefir_vector *layout = kefir_codegen_amd64_sysv_module_type_layout(mem, sysv_module, type_id);
+            struct kefir_abi_sysv_amd64_type_layout *layout =
+                kefir_codegen_amd64_sysv_module_type_layout(mem, sysv_module, type_id);
             REQUIRE(layout != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unknown named type"));
-            ASSIGN_DECL_CAST(struct kefir_amd64_sysv_data_layout *, entry, kefir_vector_at(layout, type_index));
-            REQUIRE(entry != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unable to retrieve type node at index"));
+            const struct kefir_abi_sysv_amd64_typeentry_layout *entry = NULL;
+            REQUIRE_OK(kefir_abi_sysv_amd64_type_layout_at(layout, type_index, &entry));
             const char *opcode_symbol = NULL;
             REQUIRE_OK(cg_symbolic_opcode(instr->opcode, &opcode_symbol));
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(

@@ -24,6 +24,8 @@ KEFIR_LIB_SOURCE := $(wildcard \
 	$(SOURCE_DIR)/parser/rules/*.c \
 	$(SOURCE_DIR)/platform/*.c \
 	$(SOURCE_DIR)/preprocessor/*.c \
+	$(SOURCE_DIR)/target/abi/*.c \
+	$(SOURCE_DIR)/target/abi/system-v-amd64/*.c \
 	$(SOURCE_DIR)/util/*.c)
 
 KEFIR_LIB_DEPENDENCIES := $(KEFIR_LIB_SOURCE:$(SOURCE_DIR)/%.c=$(BIN_DIR)/%.d)

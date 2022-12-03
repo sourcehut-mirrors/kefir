@@ -22,10 +22,10 @@
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 #include "kefir/codegen/amd64/system-v/runtime.h"
-#include "kefir/codegen/amd64/system-v/abi/data_layout.h"
+#include "kefir/target/abi/system-v-amd64/data_layout.h"
 #include "kefir/codegen/amd64/system-v/abi/registers.h"
 #include "kefir/codegen/amd64/system-v/abi/builtins.h"
-#include "kefir/codegen/util.h"
+#include "kefir/target/abi/util.h"
 #include <stdio.h>
 
 struct result_return {
@@ -86,7 +86,7 @@ static kefir_result_t return_long_double(const struct kefir_ir_type *type, kefir
 }
 
 static kefir_result_t return_memory_aggregate(struct kefir_codegen_amd64 *codegen,
-                                              struct kefir_amd64_sysv_data_layout *layout) {
+                                              const struct kefir_abi_sysv_amd64_typeentry_layout *layout) {
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
         &codegen->xasmgen, kefir_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RDI),
         kefir_amd64_xasmgen_operand_indirect(&codegen->xasmgen_helpers.operands[0],
@@ -177,8 +177,8 @@ static kefir_result_t return_aggregate(const struct kefir_ir_type *type, kefir_s
     REQUIRE_OK(kefir_ir_type_iterator_goto(&iter, index));
     ASSIGN_DECL_CAST(struct kefir_amd64_sysv_parameter_allocation *, alloc,
                      kefir_vector_at(&param->func->decl.returns.allocation, iter.slot));
-    ASSIGN_DECL_CAST(struct kefir_amd64_sysv_data_layout *, layout,
-                     kefir_vector_at(&param->func->decl.returns.layout, index));
+    const struct kefir_abi_sysv_amd64_typeentry_layout *layout = NULL;
+    REQUIRE_OK(kefir_abi_sysv_amd64_type_layout_at(&param->func->decl.returns.layout, index, &layout));
     if (alloc->klass == KEFIR_AMD64_SYSV_PARAM_MEMORY) {
         REQUIRE_OK(return_memory_aggregate(param->codegen, layout));
     } else {

@@ -148,7 +148,8 @@ static kefir_result_t long_double_argument(const struct kefir_ir_type *type, kef
     return KEFIR_OK;
 }
 
-static kefir_result_t memory_aggregate_argument(struct invoke_info *info, struct kefir_amd64_sysv_data_layout *layout,
+static kefir_result_t memory_aggregate_argument(struct invoke_info *info,
+                                                const struct kefir_abi_sysv_amd64_typeentry_layout *layout,
                                                 struct kefir_amd64_sysv_parameter_allocation *allocation) {
     if (layout->size > 0) {
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_PUSH(&info->codegen->xasmgen,
@@ -231,8 +232,8 @@ static kefir_result_t aggregate_argument(const struct kefir_ir_type *type, kefir
     ASSIGN_DECL_CAST(struct kefir_amd64_sysv_parameter_allocation *, allocation,
                      kefir_vector_at(&info->decl->parameters.allocation, iter.slot));
     if (allocation->klass == KEFIR_AMD64_SYSV_PARAM_MEMORY) {
-        ASSIGN_DECL_CAST(struct kefir_amd64_sysv_data_layout *, layout,
-                         kefir_vector_at(&info->decl->parameters.layout, index));
+        const struct kefir_abi_sysv_amd64_typeentry_layout *layout = NULL;
+        REQUIRE_OK(kefir_abi_sysv_amd64_type_layout_at(&info->decl->parameters.layout, index, &layout));
         REQUIRE_OK(memory_aggregate_argument(info, layout, allocation));
     } else {
         REQUIRE_OK(register_aggregate_argument(info, allocation));

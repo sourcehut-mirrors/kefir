@@ -348,16 +348,16 @@ static kefir_result_t cg_translate_emulated_tls(struct kefir_mem *mem, struct ke
         char emutls_identifier[1024] = {0};
         snprintf(emutls_identifier, sizeof(emutls_identifier) - 1, KEFIR_AMD64_EMUTLS_V, identifier);
 
-        struct kefir_vector type_layout;
-        REQUIRE_OK(kefir_amd64_sysv_type_layout(data->type, mem, &type_layout));
+        struct kefir_abi_sysv_amd64_type_layout type_layout;
+        REQUIRE_OK(kefir_abi_sysv_amd64_type_layout(data->type, mem, &type_layout));
         kefir_size_t total_size, total_alignment;
         kefir_result_t res =
-            kefir_amd64_sysv_calculate_type_properties(data->type, &type_layout, &total_size, &total_alignment);
+            kefir_amd64_sysv_calculate_type_properties(data->type, &type_layout.layout, &total_size, &total_alignment);
         REQUIRE_ELSE(res == KEFIR_OK, {
-            kefir_vector_free(mem, &type_layout);
+            kefir_abi_sysv_amd64_type_layout_free(mem, &type_layout);
             return res;
         });
-        REQUIRE_OK(kefir_vector_free(mem, &type_layout));
+        REQUIRE_OK(kefir_abi_sysv_amd64_type_layout_free(mem, &type_layout));
 
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_ALIGN(&codegen->xasmgen, 8));
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen->xasmgen, "%s", emutls_identifier));

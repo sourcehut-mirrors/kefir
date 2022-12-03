@@ -20,20 +20,8 @@
 
 #include "kefir/codegen/amd64/system-v/abi/builtins.h"
 #include "kefir/codegen/amd64/system-v/runtime.h"
-#include "kefir/codegen/util.h"
+#include "kefir/target/abi/util.h"
 #include "kefir/core/error.h"
-
-static kefir_result_t vararg_layout(const struct kefir_codegen_amd64_sysv_builtin_type *builin_type,
-                                    const struct kefir_ir_typeentry *typeentry,
-                                    struct kefir_amd64_sysv_data_layout *data_layout) {
-    UNUSED(builin_type);
-    UNUSED(typeentry);
-    REQUIRE(data_layout != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid data layout pointer"));
-    data_layout->aligned = true;
-    data_layout->size = 3 * KEFIR_AMD64_SYSV_ABI_QWORD;
-    data_layout->alignment = KEFIR_AMD64_SYSV_ABI_QWORD;
-    return KEFIR_OK;
-}
 
 static kefir_result_t vararg_classify_nested_argument(
     const struct kefir_codegen_amd64_sysv_builtin_type *builtin_type, const struct kefir_ir_typeentry *typeentry,
@@ -76,7 +64,7 @@ static kefir_result_t vararg_allocate_immediate_argument(
         allocation->location.integer_register = total_allocation->integer_register++;
     } else {
         const kefir_size_t alignment = MAX(allocation->requirements.memory.alignment, KEFIR_AMD64_SYSV_ABI_QWORD);
-        total_allocation->stack_offset = kefir_codegen_pad_aligned(total_allocation->stack_offset, alignment);
+        total_allocation->stack_offset = kefir_target_abi_pad_aligned(total_allocation->stack_offset, alignment);
         allocation->klass = KEFIR_AMD64_SYSV_PARAM_MEMORY;
         allocation->location.stack_offset = total_allocation->stack_offset;
         total_allocation->stack_offset += KEFIR_AMD64_SYSV_ABI_QWORD;
@@ -226,7 +214,6 @@ static kefir_result_t vararg_load_vararg(struct kefir_mem *mem,
 }
 
 const struct kefir_codegen_amd64_sysv_builtin_type KEFIR_CODEGEN_AMD64_SYSV_BUILIN_VARARG_TYPE = {
-    .layout = vararg_layout,
     .classify_nested_argument = vararg_classify_nested_argument,
     .classify_immediate_argument = vararg_classify_immediate_argument,
     .allocate_immediate_argument = vararg_allocate_immediate_argument,

@@ -24,14 +24,13 @@
 #include "kefir/core/basic-types.h"
 #include "kefir/core/vector.h"
 #include "kefir/core/mem.h"
-#include "kefir/codegen/amd64/system-v/abi/data_layout.h"
+#include "kefir/target/abi/system-v-amd64/data_layout.h"
 #include "kefir/codegen/amd64/system-v/abi/data.h"
-
-#define KEFIR_AMD64_SYSV_ABI_QWORD 8
+#include "kefir/target/abi/system-v-amd64/qwords.h"
 
 typedef struct kefir_amd64_sysv_abi_qword {
     kefir_size_t index;
-    kefir_amd64_sysv_data_class_t klass;
+    kefir_abi_sysv_amd64_data_class_t klass;
     kefir_size_t location;
     kefir_size_t current_offset;
 } kefir_amd64_sysv_abi_qword_t;
@@ -59,15 +58,15 @@ kefir_result_t kefir_amd64_sysv_abi_qwords_alloc(struct kefir_amd64_sysv_abi_qwo
 
 kefir_result_t kefir_amd64_sysv_abi_qwords_free(struct kefir_amd64_sysv_abi_qwords *, struct kefir_mem *);
 
-kefir_result_t kefir_amd64_sysv_abi_qwords_next(struct kefir_amd64_sysv_abi_qwords *, kefir_amd64_sysv_data_class_t,
+kefir_result_t kefir_amd64_sysv_abi_qwords_next(struct kefir_amd64_sysv_abi_qwords *, kefir_abi_sysv_amd64_data_class_t,
                                                 kefir_size_t, kefir_size_t, struct kefir_amd64_sysv_abi_qword_ref *);
 
 kefir_result_t kefir_amd64_sysv_abi_qwords_next_bitfield(struct kefir_amd64_sysv_abi_qwords *,
-                                                         kefir_amd64_sysv_data_class_t, kefir_size_t,
+                                                         kefir_abi_sysv_amd64_data_class_t, kefir_size_t,
                                                          struct kefir_amd64_sysv_abi_qword_ref *);
 
 kefir_result_t kefir_amd64_sysv_abi_qwords_reset_class(struct kefir_amd64_sysv_abi_qwords *,
-                                                       kefir_amd64_sysv_data_class_t, kefir_size_t, kefir_size_t);
+                                                       kefir_abi_sysv_amd64_data_class_t, kefir_size_t, kefir_size_t);
 
 kefir_result_t kefir_amd64_sysv_abi_qwords_save_position(const struct kefir_amd64_sysv_abi_qwords *,
                                                          struct kefir_amd64_sysv_abi_qword_position *);

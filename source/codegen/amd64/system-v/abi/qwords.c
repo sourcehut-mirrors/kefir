@@ -31,7 +31,8 @@ static kefir_result_t count_qwords_visitor(const struct kefir_ir_type *type, kef
     UNUSED(type);
     UNUSED(typeentry);
     struct qword_counter *counter = (struct qword_counter *) payload;
-    ASSIGN_DECL_CAST(const struct kefir_amd64_sysv_data_layout *, layout, kefir_vector_at(counter->layout, index));
+    ASSIGN_DECL_CAST(const struct kefir_abi_sysv_amd64_typeentry_layout *, layout,
+                     kefir_vector_at(counter->layout, index));
     kefir_size_t count = layout->size / KEFIR_AMD64_SYSV_ABI_QWORD;
     if (layout->size % KEFIR_AMD64_SYSV_ABI_QWORD != 0) {
         count++;
@@ -73,8 +74,8 @@ kefir_result_t kefir_amd64_sysv_abi_qwords_free(struct kefir_amd64_sysv_abi_qwor
     return kefir_vector_free(mem, &qwords->qwords);
 }
 
-static kefir_amd64_sysv_data_class_t derive_dataclass(kefir_amd64_sysv_data_class_t first,
-                                                      kefir_amd64_sysv_data_class_t second) {
+static kefir_abi_sysv_amd64_data_class_t derive_dataclass(kefir_abi_sysv_amd64_data_class_t first,
+                                                          kefir_abi_sysv_amd64_data_class_t second) {
     if (first == second) {
         return first;
     }
@@ -114,7 +115,7 @@ static struct kefir_amd64_sysv_abi_qword *next_qword(struct kefir_amd64_sysv_abi
 }
 
 kefir_result_t kefir_amd64_sysv_abi_qwords_next(struct kefir_amd64_sysv_abi_qwords *qwords,
-                                                kefir_amd64_sysv_data_class_t dataclass, kefir_size_t size,
+                                                kefir_abi_sysv_amd64_data_class_t dataclass, kefir_size_t size,
                                                 kefir_size_t alignment, struct kefir_amd64_sysv_abi_qword_ref *ref) {
     REQUIRE(qwords != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid QWord vector"));
     REQUIRE(size > 0, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected non-zero data size"));
@@ -139,7 +140,8 @@ kefir_result_t kefir_amd64_sysv_abi_qwords_next(struct kefir_amd64_sysv_abi_qwor
 }
 
 kefir_result_t kefir_amd64_sysv_abi_qwords_next_bitfield(struct kefir_amd64_sysv_abi_qwords *qwords,
-                                                         kefir_amd64_sysv_data_class_t dataclass, kefir_size_t width,
+                                                         kefir_abi_sysv_amd64_data_class_t dataclass,
+                                                         kefir_size_t width,
                                                          struct kefir_amd64_sysv_abi_qword_ref *ref) {
     REQUIRE(qwords != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid QWord vector"));
     REQUIRE(width > 0, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected non-zero bitfield width"));
@@ -165,7 +167,7 @@ kefir_result_t kefir_amd64_sysv_abi_qwords_next_bitfield(struct kefir_amd64_sysv
 }
 
 kefir_result_t kefir_amd64_sysv_abi_qwords_reset_class(struct kefir_amd64_sysv_abi_qwords *qwords,
-                                                       kefir_amd64_sysv_data_class_t dataclass, kefir_size_t begin,
+                                                       kefir_abi_sysv_amd64_data_class_t dataclass, kefir_size_t begin,
                                                        kefir_size_t count) {
     REQUIRE(qwords != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid QWord vector"));
     const kefir_size_t length = kefir_vector_length(&qwords->qwords);

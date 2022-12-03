@@ -25,7 +25,7 @@
 #include "kefir/core/basic-types.h"
 #include "kefir/core/vector.h"
 #include "kefir/core/mem.h"
-#include "kefir/codegen/amd64/system-v/abi/data_layout.h"
+#include "kefir/target/abi/system-v-amd64/data_layout.h"
 #include "kefir/codegen/amd64/system-v/abi/data.h"
 #include "kefir/codegen/amd64/system-v/abi/qwords.h"
 
@@ -68,7 +68,7 @@ typedef struct kefir_amd64_sysv_parameter_location_requirements {
 
 typedef struct kefir_amd64_sysv_parameter_allocation {
     kefir_amd64_sysv_parameter_type_t type;
-    kefir_amd64_sysv_data_class_t klass;
+    kefir_abi_sysv_amd64_data_class_t klass;
     kefir_size_t index;
     union {
         struct kefir_amd64_sysv_abi_qwords container;

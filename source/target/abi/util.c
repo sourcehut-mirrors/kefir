@@ -18,17 +18,15 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef KEFIR_CODEGEN_AMD64_SYSTEM_V_ABI_DATA_H_
-#define KEFIR_CODEGEN_AMD64_SYSTEM_V_ABI_DATA_H_
+#include "kefir/target/abi/util.h"
 
-#include <stdbool.h>
-#include "kefir/core/basic-types.h"
-#include "kefir/core/util.h"
-#include "kefir/core/vector.h"
-#include "kefir/codegen/amd64-sysv.h"
-#include "kefir/target/abi/system-v-amd64/data.h"
-#include "kefir/ir/type.h"
-
-#define KEFIR_AMD64_SYSV_ABI_ERROR_PREFIX "AMD64 System-V ABI: "
-
-#endif
+kefir_size_t kefir_target_abi_pad_aligned(kefir_size_t offset, kefir_size_t alignment) {
+    if (alignment == 0) {
+        return offset;
+    }
+    const kefir_size_t padding = offset % alignment;
+    if (padding != 0) {
+        offset += alignment - padding;
+    }
+    return offset;
+}

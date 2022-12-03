@@ -18,11 +18,9 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef KEFIR_CODEGEN_UTIL_H_
-#define KEFIR_CODEGEN_UTIL_H_
+#ifndef KEFIR_TARGET_ABI_SYSTEM_V_AMD64_QWORDS_H_
+#define KEFIR_TARGET_ABI_SYSTEM_V_AMD64_QWORDS_H_
 
-#include "kefir/core/basic-types.h"
-
-kefir_size_t kefir_codegen_pad_aligned(kefir_size_t, kefir_size_t);
+#define KEFIR_AMD64_SYSV_ABI_QWORD 8
 
 #endif

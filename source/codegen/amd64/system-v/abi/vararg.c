@@ -22,7 +22,7 @@
 #include "kefir/codegen/amd64/system-v/abi/qwords.h"
 #include "kefir/codegen/amd64/labels.h"
 #include "kefir/codegen/amd64/system-v/runtime.h"
-#include "kefir/codegen/util.h"
+#include "kefir/target/abi/util.h"
 #include "kefir/core/error.h"
 #include "kefir/codegen/amd64/system-v/abi/builtins.h"
 
@@ -370,10 +370,10 @@ static kefir_result_t vararg_visit_long_double(const struct kefir_ir_type *type,
 }
 
 struct vararg_aggregate_info {
-    struct kefir_amd64_sysv_data_layout *arg_layout;
+    const struct kefir_abi_sysv_amd64_typeentry_layout *arg_layout;
     struct kefir_amd64_sysv_parameter_allocation *arg_alloc;
 
-    struct kefir_vector layout;
+    struct kefir_abi_sysv_amd64_type_layout layout;
     struct kefir_vector allocation;
     struct kefir_amd64_sysv_parameter_location location;
 };
@@ -402,7 +402,7 @@ static kefir_result_t vararg_load_memory_aggregate(struct kefir_codegen_amd64 *c
         &codegen->xasmgen, kefir_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_DATA2_REG),
         kefir_amd64_xasmgen_operand_immu(
             &codegen->xasmgen_helpers.operands[0],
-            kefir_codegen_pad_aligned(info->arg_layout->size, KEFIR_AMD64_SYSV_ABI_QWORD))));
+            kefir_target_abi_pad_aligned(info->arg_layout->size, KEFIR_AMD64_SYSV_ABI_QWORD))));
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
         &codegen->xasmgen,
@@ -687,7 +687,7 @@ static kefir_result_t free_vararg_aggregate_info(struct kefir_mem *mem, void *pa
     REQUIRE(payload != NULL, KEFIR_OK);
     ASSIGN_DECL_CAST(struct vararg_aggregate_info *, info, payload);
     REQUIRE_OK(kefir_amd64_sysv_parameter_free(mem, &info->allocation));
-    REQUIRE_OK(kefir_vector_free(mem, &info->layout));
+    REQUIRE_OK(kefir_abi_sysv_amd64_type_layout_free(mem, &info->layout));
     KEFIR_FREE(mem, payload);
     return KEFIR_OK;
 }
@@ -729,27 +729,35 @@ static kefir_result_t vararg_visit_aggregate(const struct kefir_ir_type *type, k
     REQUIRE(info != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate memory aggregate vararg info"));
     *info = (struct vararg_aggregate_info){0};
 
-    REQUIRE_OK(kefir_amd64_sysv_type_layout(type, param->mem, &info->layout));
-    kefir_result_t res = kefir_amd64_sysv_parameter_classify(param->mem, type, &info->layout, &info->allocation);
+    REQUIRE_OK(kefir_abi_sysv_amd64_type_layout(type, param->mem, &info->layout));
+    kefir_result_t res = kefir_amd64_sysv_parameter_classify(param->mem, type, &info->layout.layout, &info->allocation);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_vector_free(param->mem, &info->layout);
+        kefir_abi_sysv_amd64_type_layout_free(param->mem, &info->layout);
         KEFIR_FREE(param->mem, info);
         return res;
     });
 
-    res = kefir_amd64_sysv_parameter_allocate(param->mem, type, &info->layout, &info->allocation, &info->location);
+    res =
+        kefir_amd64_sysv_parameter_allocate(param->mem, type, &info->layout.layout, &info->allocation, &info->location);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_vector_free(param->mem, &info->allocation);
-        kefir_vector_free(param->mem, &info->layout);
+        kefir_abi_sysv_amd64_type_layout_free(param->mem, &info->layout);
         KEFIR_FREE(param->mem, info);
         return res;
     });
 
-    info->arg_layout = (struct kefir_amd64_sysv_data_layout *) kefir_vector_at(&info->layout, index);
-    info->arg_alloc = (struct kefir_amd64_sysv_parameter_allocation *) kefir_vector_at(&info->allocation, iter.slot);
-    REQUIRE_ELSE(info->arg_layout != NULL && info->arg_alloc != NULL, {
+    info->arg_layout = NULL;
+    res = kefir_abi_sysv_amd64_type_layout_at(&info->layout, index, &info->arg_layout);
+    REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_amd64_sysv_parameter_free(param->mem, &info->allocation);
-        KEFIR_FREE(param->mem, &info->layout);
+        kefir_abi_sysv_amd64_type_layout_free(param->mem, &info->layout);
+        KEFIR_FREE(param->mem, info);
+        return res;
+    });
+    info->arg_alloc = (struct kefir_amd64_sysv_parameter_allocation *) kefir_vector_at(&info->allocation, iter.slot);
+    REQUIRE_ELSE(info->arg_alloc != NULL, {
+        kefir_amd64_sysv_parameter_free(param->mem, &info->allocation);
+        kefir_abi_sysv_amd64_type_layout_free(param->mem, &info->layout);
         KEFIR_FREE(param->mem, info);
         return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected to have layout and allocation info for slot");
     });
@@ -788,25 +796,25 @@ static kefir_result_t vararg_visit_builtin(const struct kefir_ir_type *type, kef
     REQUIRE_OK(kefir_ir_type_iterator_init(type, &iter));
     REQUIRE_OK(kefir_ir_type_iterator_goto(&iter, index));
 
-    struct kefir_vector layout;
+    struct kefir_abi_sysv_amd64_type_layout layout;
     struct kefir_vector allocation;
 
-    REQUIRE_OK(kefir_amd64_sysv_type_layout(type, param->mem, &layout));
-    kefir_result_t res = kefir_amd64_sysv_parameter_classify(param->mem, type, &layout, &allocation);
+    REQUIRE_OK(kefir_abi_sysv_amd64_type_layout(type, param->mem, &layout));
+    kefir_result_t res = kefir_amd64_sysv_parameter_classify(param->mem, type, &layout.layout, &allocation);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_vector_free(param->mem, &layout);
+        kefir_abi_sysv_amd64_type_layout_free(param->mem, &layout);
         return res;
     });
     res = vararg_visit_builtin_impl(param->mem, &allocation, iter.slot, typeentry, param->codegen, param->sysv_func,
                                     param->identifier);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_amd64_sysv_parameter_free(param->mem, &allocation);
-        kefir_vector_free(param->mem, &layout);
+        kefir_abi_sysv_amd64_type_layout_free(param->mem, &layout);
         return res;
     });
 
     REQUIRE_OK(kefir_amd64_sysv_parameter_free(param->mem, &allocation));
-    kefir_vector_free(param->mem, &layout);
+    kefir_abi_sysv_amd64_type_layout_free(param->mem, &layout);
     return KEFIR_OK;
 }
 

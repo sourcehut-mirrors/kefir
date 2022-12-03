@@ -61,19 +61,20 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_irbuilder_type_append_v(mem, decl_params, KEFIR_IR_TYPE_CHAR, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append_v(mem, decl_params, KEFIR_IR_TYPE_LONG, 0, 0));
 
-    struct kefir_vector type_layout;
-    REQUIRE_OK(kefir_amd64_sysv_type_layout(decl_params, mem, &type_layout));
+    struct kefir_abi_sysv_amd64_type_layout type_layout;
+    REQUIRE_OK(kefir_abi_sysv_amd64_type_layout(decl_params, mem, &type_layout));
 
-    ASSIGN_DECL_CAST(const struct kefir_amd64_sysv_data_layout *, entry_layout, kefir_vector_at(&type_layout, 3));
+    ASSIGN_DECL_CAST(const struct kefir_abi_sysv_amd64_typeentry_layout *, entry_layout,
+                     kefir_vector_at(&type_layout.layout, 3));
     REQUIRE_OK(kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IROPCODE_IADD1, entry_layout->relative_offset));
     REQUIRE_OK(kefir_irbuilder_block_appendi64(mem, &func->body, KEFIR_IROPCODE_PUSHI64, 5));
-    entry_layout = kefir_vector_at(&type_layout, 4);
+    entry_layout = kefir_vector_at(&type_layout.layout, 4);
     REQUIRE_OK(kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IROPCODE_IADDX, entry_layout->size));
-    entry_layout = kefir_vector_at(&type_layout, 6);
+    entry_layout = kefir_vector_at(&type_layout.layout, 6);
     REQUIRE_OK(kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IROPCODE_IADD1, entry_layout->relative_offset));
     REQUIRE_OK(KEFIR_CODEGEN_TRANSLATE(mem, &codegen.iface, &module));
 
-    REQUIRE_OK(kefir_vector_free(mem, &type_layout));
+    REQUIRE_OK(kefir_abi_sysv_amd64_type_layout_free(mem, &type_layout));
     REQUIRE_OK(KEFIR_CODEGEN_CLOSE(mem, &codegen.iface));
     REQUIRE_OK(kefir_ir_module_free(mem, &module));
     return KEFIR_OK;

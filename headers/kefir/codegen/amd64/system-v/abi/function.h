@@ -31,13 +31,13 @@
 typedef struct kefir_amd64_sysv_function_decl {
     const struct kefir_ir_function_decl *decl;
     struct {
-        struct kefir_vector layout;
+        struct kefir_abi_sysv_amd64_type_layout layout;
         struct kefir_vector allocation;
         struct kefir_amd64_sysv_parameter_location location;
     } parameters;
 
     struct {
-        struct kefir_vector layout;
+        struct kefir_abi_sysv_amd64_type_layout layout;
         struct kefir_vector allocation;
         bool implicit_parameter;
     } returns;
@@ -46,7 +46,7 @@ typedef struct kefir_amd64_sysv_function_decl {
 typedef struct kefir_amd64_sysv_function {
     const struct kefir_ir_function *func;
     struct kefir_amd64_sysv_function_decl decl;
-    struct kefir_vector local_layout;
+    struct kefir_abi_sysv_amd64_type_layout local_layout;
     struct kefir_hashtree appendix;
 
     struct {
