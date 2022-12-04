@@ -538,36 +538,6 @@ static kefir_result_t builtin_static_data(const struct kefir_ir_type *type, kefi
     return KEFIR_OK;
 }
 
-struct type_properties {
-    kefir_size_t size;
-    kefir_size_t alignment;
-    struct kefir_vector *layout;
-};
-
-static kefir_result_t calculate_type_properties_visitor(const struct kefir_ir_type *type, kefir_size_t index,
-                                                        const struct kefir_ir_typeentry *typeentry, void *payload) {
-    UNUSED(type);
-    UNUSED(typeentry);
-
-    ASSIGN_DECL_CAST(struct type_properties *, props, payload);
-    ASSIGN_DECL_CAST(struct kefir_abi_sysv_amd64_typeentry_layout *, layout, kefir_vector_at(props->layout, index));
-    props->size = kefir_target_abi_pad_aligned(props->size, layout->alignment);
-    props->size += layout->size;
-    props->alignment = MAX(props->alignment, layout->alignment);
-    return KEFIR_OK;
-}
-
-kefir_result_t kefir_amd64_sysv_calculate_type_properties(const struct kefir_ir_type *type, struct kefir_vector *layout,
-                                                          kefir_size_t *size, kefir_size_t *alignment) {
-    struct type_properties props = {.size = 0, .alignment = 0, .layout = layout};
-    struct kefir_ir_type_visitor visitor;
-    REQUIRE_OK(kefir_ir_type_visitor_init(&visitor, calculate_type_properties_visitor));
-    REQUIRE_OK(kefir_ir_type_visitor_list_nodes(type, &visitor, (void *) &props, 0, kefir_ir_type_nodes(type)));
-    *size = props.size;
-    *alignment = props.alignment;
-    return KEFIR_OK;
-}
-
 kefir_result_t kefir_amd64_sysv_static_data(struct kefir_mem *mem, struct kefir_codegen_amd64 *codegen,
                                             const struct kefir_ir_data *data, const char *identifier) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
@@ -593,7 +563,7 @@ kefir_result_t kefir_amd64_sysv_static_data(struct kefir_mem *mem, struct kefir_
 
     kefir_size_t total_size, total_alignment;
     kefir_result_t res =
-        kefir_amd64_sysv_calculate_type_properties(data->type, &param.layout.layout, &total_size, &total_alignment);
+        kefir_abi_sysv_amd64_calculate_type_properties(data->type, &param.layout.layout, &total_size, &total_alignment);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_abi_sysv_amd64_type_layout_free(mem, &param.layout);
         return res;
