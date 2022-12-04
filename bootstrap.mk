@@ -45,7 +45,7 @@ KEFIR_SOURCE := $(wildcard \
 	$(SOURCE)/preprocessor/*.c \
 	$(SOURCE)/target/abi/*.c \
 	$(SOURCE)/target/abi/system-v-amd64/*.c \
-	$(SOURCE)/target/asm/*.c \
+	$(SOURCE)/target/asm/amd64/*.c \
 	$(SOURCE)/util/*.c \
 	$(SOURCE)/driver/*.c)
 
