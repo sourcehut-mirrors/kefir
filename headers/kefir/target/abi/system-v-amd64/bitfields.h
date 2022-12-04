@@ -18,12 +18,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef KEFIR_CODEGEN_AMD64_SYSTEM_V_BITFIELDS_H_
-#define KEFIR_CODEGEN_AMD64_SYSTEM_V_BITFIELDS_H_
+#ifndef KEFIR_TARGET_ABI_SYSTEM_V_AMD64_BITFIELDS_H_
+#define KEFIR_TARGET_ABI_SYSTEM_V_AMD64_BITFIELDS_H_
 
 #include "kefir/ir/bitfields.h"
 
-kefir_result_t kefir_codegen_amd64_sysv_bitfield_allocator(struct kefir_mem *, struct kefir_ir_type *,
-                                                           struct kefir_ir_bitfield_allocator *);
+kefir_result_t kefir_abi_sysv_amd64_bitfield_allocator(struct kefir_mem *, struct kefir_ir_type *,
+                                                       struct kefir_ir_bitfield_allocator *);
 
 #endif

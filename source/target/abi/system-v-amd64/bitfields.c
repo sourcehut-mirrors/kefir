@@ -18,7 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "kefir/codegen/amd64/system-v/bitfields.h"
+#include "kefir/target/abi/system-v-amd64/bitfields.h"
 #include "kefir/target/abi/system-v-amd64/data_layout.h"
 #include "kefir/target/abi/util.h"
 #include "kefir/core/util.h"
@@ -225,8 +225,8 @@ static kefir_result_t amd64_sysv_bitfield_free(struct kefir_mem *mem, struct kef
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_codegen_amd64_sysv_bitfield_allocator(struct kefir_mem *mem, struct kefir_ir_type *type,
-                                                           struct kefir_ir_bitfield_allocator *allocator) {
+kefir_result_t kefir_abi_sysv_amd64_bitfield_allocator(struct kefir_mem *mem, struct kefir_ir_type *type,
+                                                       struct kefir_ir_bitfield_allocator *allocator) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR type"));
     REQUIRE(allocator != NULL,

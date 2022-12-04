@@ -21,7 +21,7 @@
 #include "kefir/codegen/amd64/system-v/platform.h"
 #include "kefir/target/abi/system-v-amd64/data_layout.h"
 #include "kefir/target/abi/system-v-amd64/qwords.h"
-#include "kefir/codegen/amd64/system-v/bitfields.h"
+#include "kefir/target/abi/system-v-amd64/bitfields.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 
@@ -90,7 +90,7 @@ static kefir_result_t amd64_sysv_bitfield_allocator(struct kefir_mem *mem, struc
     REQUIRE(allocator != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to IR bitfield allocator"));
 
-    REQUIRE_OK(kefir_codegen_amd64_sysv_bitfield_allocator(mem, type, allocator));
+    REQUIRE_OK(kefir_abi_sysv_amd64_bitfield_allocator(mem, type, allocator));
     return KEFIR_OK;
 }
 
