@@ -25,7 +25,7 @@ LIB_OBJ="$TMPDIR/lib.o"
 TEST_EXE="$TMPDIR/test"
 VALGRIND_FILE="$TMPDIR/gen.log"
 VALGRIND="valgrind $VALGRIND_OPTIONS --log-file=$VALGRIND_FILE"
-COMPILE="$CC -std=c11 -Wall -Wextra -pedantic -Wno-overlength-strings $OPT $DBG -I$DIR/../../../headers $CC_TEST_FLAGS -o $TEST_EXE -lm -pthread"
+COMPILE="$CC -std=c11 -Wall -Wextra -pedantic -Wno-overlength-strings $OPT $DBG $EXTRAFLAGS -I$DIR/../../../headers $CC_TEST_FLAGS -o $TEST_EXE -lm -pthread"
 
 if [[ "x$PLATFORM" == "xfreebsd" ]]; then
     COMPILE="$COMPILE -lstdthreads"

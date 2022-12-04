@@ -101,10 +101,10 @@ static kefir_result_t integral_static_data(const struct kefir_ir_type *type, kef
 
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
                 &param->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
-                kefir_amd64_xasmgen_operand_offset(
+                kefir_asm_amd64_xasmgen_operand_offset(
                     &param->codegen->xasmgen_helpers.operands[0],
-                    kefir_amd64_xasmgen_operand_label(&param->codegen->xasmgen_helpers.operands[1],
-                                                      entry->value.pointer.reference),
+                    kefir_asm_amd64_xasmgen_operand_label(&param->codegen->xasmgen_helpers.operands[1],
+                                                          entry->value.pointer.reference),
                     entry->value.pointer.offset)));
 
             param->offset += layout->size;
@@ -121,13 +121,13 @@ static kefir_result_t integral_static_data(const struct kefir_ir_type *type, kef
 
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
                 &param->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
-                kefir_amd64_xasmgen_operand_offset(
+                kefir_asm_amd64_xasmgen_operand_offset(
                     &param->codegen->xasmgen_helpers.operands[0],
-                    kefir_amd64_xasmgen_operand_label(
+                    kefir_asm_amd64_xasmgen_operand_label(
                         &param->codegen->xasmgen_helpers.operands[1],
-                        kefir_amd64_xasmgen_helpers_format(&param->codegen->xasmgen_helpers,
-                                                           KEFIR_AMD64_SYSTEM_V_RUNTIME_STRING_LITERAL,
-                                                           entry->value.string_ptr.id)),
+                        kefir_asm_amd64_xasmgen_helpers_format(&param->codegen->xasmgen_helpers,
+                                                               KEFIR_AMD64_SYSTEM_V_RUNTIME_STRING_LITERAL,
+                                                               entry->value.string_ptr.id)),
                     entry->value.string_ptr.offset)));
 
             param->offset += layout->size;
@@ -147,33 +147,34 @@ static kefir_result_t integral_static_data(const struct kefir_ir_type *type, kef
         case KEFIR_IR_TYPE_BOOL:
         case KEFIR_IR_TYPE_CHAR:
         case KEFIR_IR_TYPE_INT8:
-            REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
-                &param->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_BYTE, 1,
-                kefir_amd64_xasmgen_operand_immu(&param->codegen->xasmgen_helpers.operands[0], (kefir_uint8_t) value)));
+            REQUIRE_OK(
+                KEFIR_AMD64_XASMGEN_DATA(&param->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_BYTE, 1,
+                                         kefir_asm_amd64_xasmgen_operand_immu(
+                                             &param->codegen->xasmgen_helpers.operands[0], (kefir_uint8_t) value)));
             break;
 
         case KEFIR_IR_TYPE_SHORT:
         case KEFIR_IR_TYPE_INT16:
             REQUIRE_OK(
                 KEFIR_AMD64_XASMGEN_DATA(&param->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_WORD, 1,
-                                         kefir_amd64_xasmgen_operand_immu(&param->codegen->xasmgen_helpers.operands[0],
-                                                                          (kefir_uint16_t) value)));
+                                         kefir_asm_amd64_xasmgen_operand_immu(
+                                             &param->codegen->xasmgen_helpers.operands[0], (kefir_uint16_t) value)));
             break;
 
         case KEFIR_IR_TYPE_INT:
         case KEFIR_IR_TYPE_INT32:
             REQUIRE_OK(
                 KEFIR_AMD64_XASMGEN_DATA(&param->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 1,
-                                         kefir_amd64_xasmgen_operand_immu(&param->codegen->xasmgen_helpers.operands[0],
-                                                                          (kefir_uint32_t) value)));
+                                         kefir_asm_amd64_xasmgen_operand_immu(
+                                             &param->codegen->xasmgen_helpers.operands[0], (kefir_uint32_t) value)));
             break;
 
         case KEFIR_IR_TYPE_LONG:
         case KEFIR_IR_TYPE_INT64:
             REQUIRE_OK(
                 KEFIR_AMD64_XASMGEN_DATA(&param->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
-                                         kefir_amd64_xasmgen_operand_immu(&param->codegen->xasmgen_helpers.operands[0],
-                                                                          (kefir_uint64_t) value)));
+                                         kefir_asm_amd64_xasmgen_operand_immu(
+                                             &param->codegen->xasmgen_helpers.operands[0], (kefir_uint64_t) value)));
             break;
 
         case KEFIR_IR_TYPE_BITS: {
@@ -185,8 +186,8 @@ static kefir_result_t integral_static_data(const struct kefir_ir_type *type, kef
             for (kefir_size_t i = 0; i < bytes; i++) {
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
                     &param->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_BYTE, 1,
-                    kefir_amd64_xasmgen_operand_immu(&param->codegen->xasmgen_helpers.operands[0],
-                                                     (kefir_uint8_t) ((value >> (i << 3)) & 0xff))));
+                    kefir_asm_amd64_xasmgen_operand_immu(&param->codegen->xasmgen_helpers.operands[0],
+                                                         (kefir_uint8_t) ((value >> (i << 3)) & 0xff))));
             }
         } break;
 
@@ -215,35 +216,36 @@ static kefir_result_t word_static_data(const struct kefir_ir_type *type, kefir_s
         case KEFIR_IR_DATA_VALUE_UNDEFINED:
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
                 &param->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
-                kefir_amd64_xasmgen_operand_imm(&param->codegen->xasmgen_helpers.operands[0], 0)));
+                kefir_asm_amd64_xasmgen_operand_imm(&param->codegen->xasmgen_helpers.operands[0], 0)));
             break;
 
         case KEFIR_IR_DATA_VALUE_INTEGER:
-            REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
-                &param->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
-                kefir_amd64_xasmgen_operand_imm(&param->codegen->xasmgen_helpers.operands[0], entry->value.integer)));
+            REQUIRE_OK(
+                KEFIR_AMD64_XASMGEN_DATA(&param->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
+                                         kefir_asm_amd64_xasmgen_operand_imm(
+                                             &param->codegen->xasmgen_helpers.operands[0], entry->value.integer)));
             break;
 
         case KEFIR_IR_DATA_VALUE_POINTER:
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
                 &param->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
-                kefir_amd64_xasmgen_operand_offset(
+                kefir_asm_amd64_xasmgen_operand_offset(
                     &param->codegen->xasmgen_helpers.operands[0],
-                    kefir_amd64_xasmgen_operand_label(&param->codegen->xasmgen_helpers.operands[1],
-                                                      entry->value.pointer.reference),
+                    kefir_asm_amd64_xasmgen_operand_label(&param->codegen->xasmgen_helpers.operands[1],
+                                                          entry->value.pointer.reference),
                     entry->value.pointer.offset)));
             break;
 
         case KEFIR_IR_DATA_VALUE_STRING_POINTER:
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
                 &param->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
-                kefir_amd64_xasmgen_operand_offset(
+                kefir_asm_amd64_xasmgen_operand_offset(
                     &param->codegen->xasmgen_helpers.operands[0],
-                    kefir_amd64_xasmgen_operand_label(
+                    kefir_asm_amd64_xasmgen_operand_label(
                         &param->codegen->xasmgen_helpers.operands[1],
-                        kefir_amd64_xasmgen_helpers_format(&param->codegen->xasmgen_helpers,
-                                                           KEFIR_AMD64_SYSTEM_V_RUNTIME_STRING_LITERAL,
-                                                           entry->value.string_ptr.id)),
+                        kefir_asm_amd64_xasmgen_helpers_format(&param->codegen->xasmgen_helpers,
+                                                               KEFIR_AMD64_SYSTEM_V_RUNTIME_STRING_LITERAL,
+                                                               entry->value.string_ptr.id)),
                     entry->value.pointer.offset)));
             break;
 
@@ -288,7 +290,7 @@ static kefir_result_t float32_static_data(const struct kefir_ir_type *type, kefi
         case KEFIR_IR_TYPE_FLOAT32:
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
                 &param->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 1,
-                kefir_amd64_xasmgen_operand_immu(&param->codegen->xasmgen_helpers.operands[0], value.uint32)));
+                kefir_asm_amd64_xasmgen_operand_immu(&param->codegen->xasmgen_helpers.operands[0], value.uint32)));
             break;
 
         default:
@@ -332,7 +334,7 @@ static kefir_result_t float64_static_data(const struct kefir_ir_type *type, kefi
         case KEFIR_IR_TYPE_FLOAT64:
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
                 &param->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
-                kefir_amd64_xasmgen_operand_immu(&param->codegen->xasmgen_helpers.operands[0], value.uint64)));
+                kefir_asm_amd64_xasmgen_operand_immu(&param->codegen->xasmgen_helpers.operands[0], value.uint64)));
             break;
 
         default:
@@ -376,8 +378,8 @@ static kefir_result_t long_double_static_data(const struct kefir_ir_type *type, 
         case KEFIR_IR_TYPE_LONG_DOUBLE:
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
                 &param->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 2,
-                kefir_amd64_xasmgen_operand_immu(&param->codegen->xasmgen_helpers.operands[0], value.uint64[0]),
-                kefir_amd64_xasmgen_operand_immu(&param->codegen->xasmgen_helpers.operands[1], value.uint64[1])));
+                kefir_asm_amd64_xasmgen_operand_immu(&param->codegen->xasmgen_helpers.operands[0], value.uint64[0]),
+                kefir_asm_amd64_xasmgen_operand_immu(&param->codegen->xasmgen_helpers.operands[1], value.uint64[1])));
             break;
 
         default:

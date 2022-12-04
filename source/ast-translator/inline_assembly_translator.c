@@ -254,7 +254,7 @@ static kefir_result_t translate_inputs(struct kefir_mem *mem, const struct kefir
                                      &memory_constraint, &node->source_location));
 
         if (immediate_constraint && param->parameter->properties.expression_props.constant_expression) {
-            struct kefir_ast_constant_expression_value value;
+            struct kefir_ast_constant_expression_value value = {0};
             REQUIRE_OK(
                 kefir_ast_constant_expression_value_evaluate(mem, context->ast_context, param->parameter, &value));
             if (value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER ||

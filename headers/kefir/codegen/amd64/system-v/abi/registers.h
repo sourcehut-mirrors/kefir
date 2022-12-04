@@ -30,14 +30,14 @@
 #include "kefir/target/abi/system-v-amd64/qwords.h"
 #include "kefir/target/abi/system-v-amd64/parameters.h"
 
-extern kefir_amd64_xasmgen_register_t KEFIR_AMD64_SYSV_INTEGER_REGISTERS[];
+extern kefir_asm_amd64_xasmgen_register_t KEFIR_AMD64_SYSV_INTEGER_REGISTERS[];
 extern const kefir_size_t KEFIR_AMD64_SYSV_INTEGER_REGISTER_COUNT;
-extern kefir_amd64_xasmgen_register_t KEFIR_AMD64_SYSV_SSE_REGISTERS[];
+extern kefir_asm_amd64_xasmgen_register_t KEFIR_AMD64_SYSV_SSE_REGISTERS[];
 extern const kefir_size_t KEFIR_AMD64_SYSV_SSE_REGISTER_COUNT;
 
-extern kefir_amd64_xasmgen_register_t KEFIR_AMD64_SYSV_INTEGER_RETURN_REGISTERS[];
+extern kefir_asm_amd64_xasmgen_register_t KEFIR_AMD64_SYSV_INTEGER_RETURN_REGISTERS[];
 extern const kefir_size_t KEFIR_AMD64_SYSV_INTEGER_RETURN_REGISTER_COUNT;
-extern kefir_amd64_xasmgen_register_t KEFIR_AMD64_SYSV_SSE_RETURN_REGISTERS[];
+extern kefir_asm_amd64_xasmgen_register_t KEFIR_AMD64_SYSV_SSE_RETURN_REGISTERS[];
 extern const kefir_size_t KEFIR_AMD64_SYSV_SSE_RETURN_REGISTER_COUNT;
 
 #endif
