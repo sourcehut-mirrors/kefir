@@ -26,7 +26,7 @@
         struct kefir_codegen_amd64 codegen;                                     \
         struct kefir_ir_target_platform ir_target;                              \
         REQUIRE_OK(kefir_codegen_amd64_sysv_target_platform(&ir_target));       \
-        REQUIRE_OK(kefir_codegen_amd64_sysv_init(mem, &codegen, stdout, NULL)); \
+        REQUIRE_OK(kefir_codegen_sysv_amd64_init(mem, &codegen, stdout, NULL)); \
         struct kefir_ir_module module;                                          \
         REQUIRE_OK(kefir_ir_module_alloc(mem, &module));                        \
         REQUIRE_OK((fn) (mem, &module, &ir_target));                            \

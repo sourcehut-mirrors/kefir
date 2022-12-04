@@ -25,11 +25,11 @@
 #include "kefir/ir/builder.h"
 #include "kefir/core/mem.h"
 #include "kefir/core/util.h"
-#include "kefir/codegen/amd64-sysv.h"
+#include "kefir/codegen/system-v-amd64.h"
 
 kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_codegen_amd64 codegen;
-    kefir_codegen_amd64_sysv_init(mem, &codegen, stdout, NULL);
+    kefir_codegen_sysv_amd64_init(mem, &codegen, stdout, NULL);
 
     kefir_id_t locals_id;
     struct kefir_ir_module module;

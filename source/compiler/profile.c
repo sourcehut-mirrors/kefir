@@ -21,8 +21,8 @@
 #include "kefir/compiler/profile.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
-#include "kefir/codegen/amd64/system-v/platform.h"
-#include "kefir/codegen/amd64-sysv.h"
+#include "kefir/codegen/system-v-amd64/platform.h"
+#include "kefir/codegen/system-v-amd64.h"
 #include <float.h>
 
 static kefir_result_t amd64_sysv_new_codegen(struct kefir_mem *mem, FILE *output,
@@ -35,7 +35,7 @@ static kefir_result_t amd64_sysv_new_codegen(struct kefir_mem *mem, FILE *output
     struct kefir_codegen_amd64 *codegen = KEFIR_MALLOC(mem, sizeof(struct kefir_codegen_amd64));
     REQUIRE(codegen != NULL,
             KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AMD64 System-V code generator"));
-    kefir_result_t res = kefir_codegen_amd64_sysv_init(mem, codegen, output, config);
+    kefir_result_t res = kefir_codegen_sysv_amd64_init(mem, codegen, output, config);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, codegen);
         return res;
@@ -104,7 +104,7 @@ static kefir_result_t kefir_compiler_amd64_sysv_profile(struct kefir_compiler_pr
     profile->type_traits = &TYPE_TRAITS;
     profile->new_codegen = amd64_sysv_new_codegen;
     profile->free_codegen = amd64_sysv_free_codegen;
-    profile->runtime_code = KefirAmd64SysVRuntimeCode;
+    profile->runtime_code = KefirSysVAmd64RuntimeCode;
     return KEFIR_OK;
 }
 

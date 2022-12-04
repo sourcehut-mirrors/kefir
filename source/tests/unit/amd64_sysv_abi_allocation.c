@@ -24,7 +24,7 @@
 #include "kefir/ir/type.h"
 #include "kefir/ir/builder.h"
 #include "kefir/target/abi/system-v-amd64/data_layout.h"
-#include "kefir/codegen/amd64/system-v/abi/registers.h"
+#include "kefir/codegen/system-v-amd64/registers.h"
 
 #define ASSERT_PARAM_REGISTER_ALLOCATION(allocation, index, _klass, _integer, _sse) \
     do {                                                                            \

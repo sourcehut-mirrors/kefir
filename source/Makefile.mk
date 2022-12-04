@@ -10,11 +10,9 @@ KEFIR_LIB_SOURCE := $(wildcard \
 	$(SOURCE_DIR)/ast/type/*.c \
 	$(SOURCE_DIR)/core/*.c \
 	$(SOURCE_DIR)/codegen/*.c \
-	$(SOURCE_DIR)/codegen/amd64/*.c \
-	$(SOURCE_DIR)/codegen/amd64/system-v/*.c \
-	$(SOURCE_DIR)/codegen/amd64/system-v/abi/*.c \
-	$(SOURCE_DIR)/codegen/amd64/system-v/abi/builtins/*.c \
-	$(SOURCE_DIR)/codegen/amd64/xasmgen/*.c \
+	$(SOURCE_DIR)/codegen/system-v-amd64/*.c \
+	$(SOURCE_DIR)/codegen/system-v-amd64/builtins/*.c \
+	$(SOURCE_DIR)/codegen/system-v-amd64/xasmgen/*.c \
 	$(SOURCE_DIR)/compiler/*.c \
 	$(SOURCE_DIR)/ir/*.c \
 	$(SOURCE_DIR)/lexer/*.c \
@@ -31,13 +29,13 @@ KEFIR_LIB_SOURCE := $(wildcard \
 
 KEFIR_LIB_DEPENDENCIES := $(KEFIR_LIB_SOURCE:$(SOURCE_DIR)/%.c=$(BIN_DIR)/%.d)
 KEFIR_LIB_OBJECT_FILES := $(KEFIR_LIB_SOURCE:$(SOURCE_DIR)/%.c=$(BIN_DIR)/%.o)
-KEFIR_LIB_OBJECT_FILES += $(BIN_DIR)/codegen/amd64/amd64-sysv-runtime-code.s.o
+KEFIR_LIB_OBJECT_FILES += $(BIN_DIR)/codegen/system-v-amd64/sysv-amd64-runtime-code.s.o
 KEFIR_LIB_OBJECT_FILES += $(BIN_DIR)/compiler/predefined_macro_defs.s.o
 
 KEFIR_BUILD_SOURCE_ID := $(shell $(ROOT)/scripts/get-source-id.sh)
 CFLAGS += '-DKEFIR_BUILD_SOURCE_ID="$(KEFIR_BUILD_SOURCE_ID)"'
 
-$(BIN_DIR)/codegen/amd64/amd64-sysv-runtime-code.s.o: $(SOURCE_DIR)/runtime/amd64_sysv.s
+$(BIN_DIR)/codegen/system-v-amd64/amd64-sysv-runtime-code.s.o: $(SOURCE_DIR)/runtime/amd64_sysv.s
 $(BIN_DIR)/compiler/predefined_macro_defs.s.o: $(SOURCE_DIR)/compiler/predefined_macro_defs.h
 
 ifeq ($(USE_SHARED),yes)

@@ -34,7 +34,7 @@
 #include "kefir/ast/analyzer/analyzer.h"
 #include "kefir/ast-translator/context.h"
 #include "kefir/ast-translator/scope/translator.h"
-#include "kefir/codegen/amd64-sysv.h"
+#include "kefir/codegen/system-v-amd64.h"
 #include "codegen.h"
 #include "kefir/test/util.h"
 
