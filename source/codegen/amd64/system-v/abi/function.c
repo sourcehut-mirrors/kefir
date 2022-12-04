@@ -170,8 +170,8 @@ static kefir_result_t calculate_frame(struct kefir_mem *mem, struct kefir_codege
     sysv_func->frame.size = PAD_DQWORD(sysv_func->frame.size);
     if (sysv_func->func->declaration->vararg) {
         sysv_func->frame.base.register_save_area = sysv_func->frame.size;
-        sysv_func->frame.size += KEFIR_AMD64_SYSV_ABI_QWORD * KEFIR_AMD64_SYSV_INTEGER_REGISTER_COUNT +
-                                 2 * KEFIR_AMD64_SYSV_ABI_QWORD * KEFIR_AMD64_SYSV_SSE_REGISTER_COUNT;
+        sysv_func->frame.size += KEFIR_AMD64_SYSV_ABI_QWORD * KEFIR_ABI_SYSV_AMD64_PARAMETER_INTEGER_REGISTER_COUNT +
+                                 2 * KEFIR_AMD64_SYSV_ABI_QWORD * KEFIR_ABI_SYSV_AMD64_PARAMETER_SSE_REGISTER_COUNT;
         sysv_func->frame.size = PAD_DQWORD(sysv_func->frame.size);
     }
     sysv_func->frame.base.locals = sysv_func->frame.size;

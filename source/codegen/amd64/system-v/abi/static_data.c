@@ -22,6 +22,7 @@
 #include "kefir/codegen/amd64/system-v/abi.h"
 #include "kefir/target/abi/system-v-amd64/data_layout.h"
 #include "kefir/codegen/amd64/system-v/runtime.h"
+#include "kefir/codegen/amd64/system-v/abi/data.h"
 #include "kefir/target/abi/util.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"

@@ -27,6 +27,12 @@
 #include "kefir/core/mem.h"
 #include "kefir/target/abi/system-v-amd64/data_layout.h"
 #include "kefir/target/abi/system-v-amd64/qwords.h"
+#include "kefir/target/asm/amd64/xasmgen.h"
+
+extern kefir_asm_amd64_xasmgen_register_t KEFIR_ABI_SYSV_AMD64_PARAMETER_INTEGER_REGISTERS[];
+extern const kefir_size_t KEFIR_ABI_SYSV_AMD64_PARAMETER_INTEGER_REGISTER_COUNT;
+extern kefir_asm_amd64_xasmgen_register_t KEFIR_ABI_SYSV_AMD64_PARAMETER_SSE_REGISTERS[];
+extern const kefir_size_t KEFIR_ABI_SYSV_AMD64_PARAMETER_SSE_REGISTER_COUNT;
 
 typedef enum kefir_abi_sysv_amd64_parameter_type {
     KEFIR_AMD64_SYSV_INPUT_PARAM_IMMEDIATE,

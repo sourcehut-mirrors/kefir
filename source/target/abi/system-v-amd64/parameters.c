@@ -19,15 +19,30 @@
 */
 
 #include "kefir/target/abi/system-v-amd64/parameters.h"
-// #include "kefir/codegen/amd64/system-v/abi/vararg.h"
 #include "kefir/target/abi/util.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 #include "kefir/core/mem.h"
 #include "kefir/ir/builtins.h"
 
-#define ABI_INTEGER_REGS 6 /* rdi, rsi, rdx, rcx, r8, r9 */
-#define ABI_SSE_REGS 8     /* xmm0..xmm7 */
+kefir_asm_amd64_xasmgen_register_t KEFIR_ABI_SYSV_AMD64_PARAMETER_INTEGER_REGISTERS[] = {
+    KEFIR_AMD64_XASMGEN_REGISTER_RDI, KEFIR_AMD64_XASMGEN_REGISTER_RSI, KEFIR_AMD64_XASMGEN_REGISTER_RDX,
+    KEFIR_AMD64_XASMGEN_REGISTER_RCX, KEFIR_AMD64_XASMGEN_REGISTER_R8,  KEFIR_AMD64_XASMGEN_REGISTER_R9};
+
+const kefir_size_t KEFIR_ABI_SYSV_AMD64_PARAMETER_INTEGER_REGISTER_COUNT =
+    sizeof(KEFIR_ABI_SYSV_AMD64_PARAMETER_INTEGER_REGISTERS) /
+    sizeof(KEFIR_ABI_SYSV_AMD64_PARAMETER_INTEGER_REGISTERS[0]);
+
+kefir_asm_amd64_xasmgen_register_t KEFIR_ABI_SYSV_AMD64_PARAMETER_SSE_REGISTERS[] = {
+    KEFIR_AMD64_XASMGEN_REGISTER_XMM0, KEFIR_AMD64_XASMGEN_REGISTER_XMM1, KEFIR_AMD64_XASMGEN_REGISTER_XMM2,
+    KEFIR_AMD64_XASMGEN_REGISTER_XMM3, KEFIR_AMD64_XASMGEN_REGISTER_XMM4, KEFIR_AMD64_XASMGEN_REGISTER_XMM5,
+    KEFIR_AMD64_XASMGEN_REGISTER_XMM6, KEFIR_AMD64_XASMGEN_REGISTER_XMM7};
+
+const kefir_size_t KEFIR_ABI_SYSV_AMD64_PARAMETER_SSE_REGISTER_COUNT =
+    sizeof(KEFIR_ABI_SYSV_AMD64_PARAMETER_SSE_REGISTERS) / sizeof(KEFIR_ABI_SYSV_AMD64_PARAMETER_SSE_REGISTERS[0]);
+
+#define ABI_INTEGER_REGS KEFIR_ABI_SYSV_AMD64_PARAMETER_INTEGER_REGISTER_COUNT
+#define ABI_SSE_REGS KEFIR_ABI_SYSV_AMD64_PARAMETER_SSE_REGISTER_COUNT
 
 static kefir_result_t visitor_not_supported(const struct kefir_ir_type *type, kefir_size_t index,
                                             const struct kefir_ir_typeentry *typeentry, void *payload) {

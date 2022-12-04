@@ -34,8 +34,9 @@ static kefir_result_t vararg_load_function_argument(const struct kefir_codegen_a
 
     if (allocation->klass == KEFIR_AMD64_SYSV_PARAM_INTEGER) {
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_PUSH(
-            &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(
-                                   KEFIR_AMD64_SYSV_INTEGER_REGISTERS[allocation->location.integer_register])));
+            &codegen->xasmgen,
+            kefir_asm_amd64_xasmgen_operand_reg(
+                KEFIR_ABI_SYSV_AMD64_PARAMETER_INTEGER_REGISTERS[allocation->location.integer_register])));
     } else {
         REQUIRE(allocation->klass == KEFIR_AMD64_SYSV_PARAM_MEMORY,
                 KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected va_list to be either integer or memory parameter"));
@@ -76,7 +77,7 @@ static kefir_result_t vararg_store_function_argument(const struct kefir_codegen_
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
             &codegen->xasmgen,
             kefir_asm_amd64_xasmgen_operand_reg(
-                KEFIR_AMD64_SYSV_INTEGER_REGISTERS[allocation->location.integer_register]),
+                KEFIR_ABI_SYSV_AMD64_PARAMETER_INTEGER_REGISTERS[allocation->location.integer_register]),
             kefir_asm_amd64_xasmgen_operand_indirect(&codegen->xasmgen_helpers.operands[0],
                                                      kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_DATA_REG),
                                                      argument_index * KEFIR_AMD64_SYSV_ABI_QWORD)));

@@ -18,10 +18,15 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef KEFIR_CODEGEN_AMD64_SYSTEM_V_ABI_REGISTERS_H_
-#define KEFIR_CODEGEN_AMD64_SYSTEM_V_ABI_REGISTERS_H_
+#ifndef KEFIR_TARGET_ABI_SYSTEM_V_AMD64_RETURN_H_
+#define KEFIR_TARGET_ABI_SYSTEM_V_AMD64_RETURN_H_
 
-#include "kefir/target/abi/system-v-amd64/parameters.h"
-#include "kefir/target/abi/system-v-amd64/return.h"
+#include "kefir/core/basic-types.h"
+#include "kefir/target/asm/amd64/xasmgen.h"
+
+extern kefir_asm_amd64_xasmgen_register_t KEFIR_ABI_SYSV_AMD64_RETURN_INTEGER_REGISTERS[];
+extern const kefir_size_t KEFIR_ABI_SYSV_AMD64_RETURN_INTEGER_REGISTER_COUNT;
+extern kefir_asm_amd64_xasmgen_register_t KEFIR_ABI_SYSV_AMD64_RETURN_SSE_REGISTERS[];
+extern const kefir_size_t KEFIR_ABI_SYSV_AMD64_RETURN_SSE_REGISTER_COUNT;
 
 #endif

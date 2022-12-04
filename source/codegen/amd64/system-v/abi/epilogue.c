@@ -116,13 +116,14 @@ static kefir_result_t return_register_aggregate(struct kefir_codegen_amd64 *code
         ASSIGN_DECL_CAST(struct kefir_abi_sysv_amd64_qword *, qword, kefir_vector_at(&alloc->container.qwords, i));
         switch (qword->klass) {
             case KEFIR_AMD64_SYSV_PARAM_INTEGER:
-                if (integer_register >= KEFIR_AMD64_SYSV_INTEGER_RETURN_REGISTER_COUNT) {
+                if (integer_register >= KEFIR_ABI_SYSV_AMD64_RETURN_INTEGER_REGISTER_COUNT) {
                     return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR,
                                            "Unable to return aggregate which exceeds available registers");
                 }
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
                     &codegen->xasmgen,
-                    kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_INTEGER_RETURN_REGISTERS[integer_register++]),
+                    kefir_asm_amd64_xasmgen_operand_reg(
+                        KEFIR_ABI_SYSV_AMD64_RETURN_INTEGER_REGISTERS[integer_register++]),
                     kefir_asm_amd64_xasmgen_operand_indirect(
                         &codegen->xasmgen_helpers.operands[0],
                         kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_DATA_REG),
@@ -130,7 +131,7 @@ static kefir_result_t return_register_aggregate(struct kefir_codegen_amd64 *code
                 break;
 
             case KEFIR_AMD64_SYSV_PARAM_SSE:
-                if (sse_register >= KEFIR_AMD64_SYSV_SSE_RETURN_REGISTER_COUNT) {
+                if (sse_register >= KEFIR_ABI_SYSV_AMD64_RETURN_SSE_REGISTER_COUNT) {
                     return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR,
                                            "Unable to return aggregate which exceeds available registers");
                 }
@@ -142,7 +143,7 @@ static kefir_result_t return_register_aggregate(struct kefir_codegen_amd64 *code
                         i * KEFIR_AMD64_SYSV_ABI_QWORD)));
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_PINSRQ(
                     &codegen->xasmgen,
-                    kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_SSE_RETURN_REGISTERS[sse_register++]),
+                    kefir_asm_amd64_xasmgen_operand_reg(KEFIR_ABI_SYSV_AMD64_RETURN_SSE_REGISTERS[sse_register++]),
                     kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_DATA2_REG),
                     kefir_asm_amd64_xasmgen_operand_imm(&codegen->xasmgen_helpers.operands[0], 0)));
                 break;

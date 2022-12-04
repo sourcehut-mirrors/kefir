@@ -56,7 +56,7 @@ static kefir_result_t vararg_start(struct kefir_codegen_amd64 *codegen,
                                                      KEFIR_AMD64_SYSV_ABI_QWORD / 2)),
         kefir_asm_amd64_xasmgen_operand_immu(
             &codegen->xasmgen_helpers.operands[2],
-            KEFIR_AMD64_SYSV_ABI_QWORD * KEFIR_AMD64_SYSV_INTEGER_REGISTER_COUNT +
+            KEFIR_AMD64_SYSV_ABI_QWORD * KEFIR_ABI_SYSV_AMD64_PARAMETER_INTEGER_REGISTER_COUNT +
                 2 * KEFIR_AMD64_SYSV_ABI_QWORD * sysv_func->decl.parameters.location.sse_register)));
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_LEA(
@@ -491,8 +491,9 @@ static kefir_result_t vararg_get_register_aggregate_intro(struct kefir_codegen_a
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_CMP(
         &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RAX),
-        kefir_asm_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[0],
-                                             KEFIR_AMD64_SYSV_INTEGER_REGISTER_COUNT * KEFIR_AMD64_SYSV_ABI_QWORD)));
+        kefir_asm_amd64_xasmgen_operand_immu(
+            &codegen->xasmgen_helpers.operands[0],
+            KEFIR_ABI_SYSV_AMD64_PARAMETER_INTEGER_REGISTER_COUNT * KEFIR_AMD64_SYSV_ABI_QWORD)));
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_JA(
         &codegen->xasmgen,
@@ -515,8 +516,8 @@ static kefir_result_t vararg_get_register_aggregate_intro(struct kefir_codegen_a
         &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RAX),
         kefir_asm_amd64_xasmgen_operand_immu(
             &codegen->xasmgen_helpers.operands[0],
-            KEFIR_AMD64_SYSV_INTEGER_REGISTER_COUNT * KEFIR_AMD64_SYSV_ABI_QWORD +
-                2 * KEFIR_AMD64_SYSV_SSE_REGISTER_COUNT * KEFIR_AMD64_SYSV_ABI_QWORD)));
+            KEFIR_ABI_SYSV_AMD64_PARAMETER_INTEGER_REGISTER_COUNT * KEFIR_AMD64_SYSV_ABI_QWORD +
+                2 * KEFIR_ABI_SYSV_AMD64_PARAMETER_SSE_REGISTER_COUNT * KEFIR_AMD64_SYSV_ABI_QWORD)));
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_JA(
         &codegen->xasmgen,
