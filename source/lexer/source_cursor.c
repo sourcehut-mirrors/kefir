@@ -42,29 +42,43 @@ static kefir_char32_t at_impl(const struct kefir_lexer_source_cursor *cursor, ke
     kefir_size_t index = cursor->index;
     mbstate_t mbstate = cursor->mbstate;
     do {
+        if (cursor->length == index) {
+            break;
+        }
         size_t rc = mbrtoc32(&character, cursor->content + index, cursor->length - index, &mbstate);
         switch (rc) {
             case 0:
-            case (size_t) -1:
-            case (size_t) -2:
-            case (size_t) -3:
                 character = U'\0';
                 count = 0;
                 break;
+
+            case (size_t) -1:
+            case (size_t) -2:
+            case (size_t) -3:
+                return KEFIR_SET_ERRORF(KEFIR_INVALID_STATE,
+                                        "Decoding error occured at %s@" KEFIR_UINT64_FMT ":" KEFIR_UINT64_FMT,
+                                        cursor->location.source, cursor->location.line, cursor->location.column);
 
             default:
                 index += rc;
                 if (character == U'\\' && index < cursor->length) {  // Convert physical line to logical
                     kefir_char32_t character2;
                     mbstate_t mbstate2 = {0};
+                    if (cursor->length == index) {
+                        break;
+                    }
                     rc = mbrtoc32(&character2, cursor->content + index, cursor->length - index, &mbstate2);
                     switch (rc) {
                         case 0:
+                            break;
+
                         case (size_t) -1:
                         case (size_t) -2:
                         case (size_t) -3:
-                            // Ignoring failure
-                            break;
+                            return KEFIR_SET_ERRORF(
+                                KEFIR_INVALID_STATE,
+                                "Decoding error occured at %s@" KEFIR_UINT64_FMT ":" KEFIR_UINT64_FMT,
+                                cursor->location.source, cursor->location.line, cursor->location.column);
 
                         default:
                             if (character2 == cursor->newline_char) {  // Skip line break
@@ -88,12 +102,17 @@ kefir_char32_t kefir_lexer_source_cursor_at(const struct kefir_lexer_source_curs
 static kefir_result_t next_impl(struct kefir_lexer_source_cursor *cursor, kefir_size_t count) {
     while (count--) {
         kefir_char32_t chr;
+        if (cursor->length == cursor->index) {
+            break;
+        }
         size_t rc = mbrtoc32(&chr, cursor->content + cursor->index, cursor->length - cursor->index, &cursor->mbstate);
         switch (rc) {
             case (size_t) -1:
             case (size_t) -2:
             case (size_t) -3:
-                return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Invalid lexer source cursor input");
+                return KEFIR_SET_ERRORF(KEFIR_INVALID_STATE,
+                                        "Decoding error occured at %s@" KEFIR_UINT64_FMT ":" KEFIR_UINT64_FMT,
+                                        cursor->location.source, cursor->location.line, cursor->location.column);
 
             case 0:
                 return KEFIR_OK;
@@ -108,15 +127,22 @@ static kefir_result_t next_impl(struct kefir_lexer_source_cursor *cursor, kefir_
                     if (chr == U'\\' && cursor->index < cursor->length) {  // Convert physical line to logical
                         kefir_char32_t character2;
                         mbstate_t mbstate2 = {0};
+                        if (cursor->length == cursor->index) {
+                            break;
+                        }
                         rc = mbrtoc32(&character2, cursor->content + cursor->index, cursor->length - cursor->index,
                                       &mbstate2);
                         switch (rc) {
                             case 0:
+                                break;
+
                             case (size_t) -1:
                             case (size_t) -2:
                             case (size_t) -3:
-                                // Ignore failure
-                                break;
+                                return KEFIR_SET_ERRORF(
+                                    KEFIR_INVALID_STATE,
+                                    "Decoding error occured at %s@" KEFIR_UINT64_FMT ":" KEFIR_UINT64_FMT,
+                                    cursor->location.source, cursor->location.line, cursor->location.column);
 
                             default:
                                 if (character2 == cursor->newline_char) {  // Skip line break
