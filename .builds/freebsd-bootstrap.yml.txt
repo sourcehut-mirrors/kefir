@@ -25,4 +25,4 @@ tasks:
 triggers:
   - action: email
     condition: failure
-    to: jprotopopov1122@gmail.com
+    to: jevgenij@protopopov.lv
