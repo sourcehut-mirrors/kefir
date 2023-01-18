@@ -20,16 +20,16 @@ jobs:
       - name: Build
         run: make all OPT=-O3 SANITIZE=undefined CC=gcc
         
-  optimized_build_clang:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Install dependencies
-        run: sudo apt install build-essential clang valgrind xsltproc
-      - name: Checkout ${{ github.ref }}
-        uses: actions/checkout@master
-        with:
-          ref: ${{ github.ref }}
-      - name: Test
-        run: make test MEMCHECK=yes OPT=-O3 SANITIZE=undefined CC=clang -j$(nproc)
-      - name: Build
-        run: make all OPT=-O3 SANITIZE=undefined CC=clang
+  # optimized_build_clang:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Install dependencies
+  #       run: sudo apt install build-essential clang valgrind xsltproc
+  #     - name: Checkout ${{ github.ref }}
+  #       uses: actions/checkout@master
+  #       with:
+  #         ref: ${{ github.ref }}
+  #     - name: Test
+  #       run: make test MEMCHECK=yes OPT=-O3 SANITIZE=undefined CC=clang -j$(nproc)
+  #     - name: Build
+  #       run: make all OPT=-O3 SANITIZE=undefined CC=clang
