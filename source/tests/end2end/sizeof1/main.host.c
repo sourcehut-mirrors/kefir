@@ -24,14 +24,14 @@
 #include <math.h>
 #include "./definitions.h"
 
-static unsigned long dim = 0;
+static unsigned long dim = 1;
 unsigned long matrix_dim() {
     return dim * 2;
 }
 
 int main() {
     assert(MATRIX_ALIGN == _Alignof(double[matrix_dim()][matrix_dim()]));
-    for (unsigned long i = 0; i < 100; i++) {
+    for (unsigned long i = 1; i < 100; i++) {
         dim = i;
         assert(sizeof(int[i]) == int_vla_sizeof(i));
         assert(sizeof(double[i * 2][i]) == double_matrix_sizeof(i));

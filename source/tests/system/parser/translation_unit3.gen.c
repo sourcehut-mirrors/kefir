@@ -33,7 +33,7 @@
 #include "kefir/ast/analyzer/analyzer.h"
 #include "kefir/ast-translator/context.h"
 #include "kefir/ast-translator/scope/translator.h"
-#include "kefir/codegen/amd64-sysv.h"
+#include "kefir/codegen/system-v-amd64.h"
 #include "kefir/parser/parser.h"
 #include "kefir/lexer/lexer.h"
 #include "kefir/lexer/format.h"
@@ -110,7 +110,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_codegen_amd64 codegen;
     struct kefir_ir_target_platform ir_target;
     REQUIRE_OK(kefir_codegen_amd64_sysv_target_platform(&ir_target));
-    REQUIRE_OK(kefir_codegen_amd64_sysv_init(mem, &codegen, stdout, NULL));
+    REQUIRE_OK(kefir_codegen_sysv_amd64_init(mem, &codegen, stdout, NULL));
     struct kefir_ir_module module;
     REQUIRE_OK(kefir_ir_module_alloc(mem, &module));
     REQUIRE_OK(generate_ir(mem, &module, &ir_target));

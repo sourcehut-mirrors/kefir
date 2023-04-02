@@ -19,7 +19,7 @@
 */
 
 #include "kefir/test/util.h"
-#include "kefir/codegen/amd64/system-v/platform.h"
+#include "kefir/codegen/system-v-amd64/platform.h"
 #include <float.h>
 
 static kefir_bool_t init_done = false;
