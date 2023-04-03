@@ -47,7 +47,7 @@ tasks:
       export KEFIR_GNU_INCLUDE="/usr/lib/gcc/x86_64-linux-gnu/10/include;/usr/include/x86_64-linux-gnu;/usr/include;/usr/local/include"
       export KEFIR_GNU_LIB="/usr/lib/x86_64-linux-gnu;/usr/lib/gcc/x86_64-linux-gnu/10/;/usr/lib;/usr/local/lib"
       export KEFIR_GNU_DYNAMIC_LINKER="/lib64/ld-linux-x86-64.so.2"
-      ./kefir/source/tests/misc/run_gcc_torture_suite.sh 2>&1 | tee torture.log
+      LC_ALL=C.UTF-8 ./kefir/source/tests/misc/run_gcc_torture_suite.sh 2>&1 | tee torture.log
       grep -v "Interrupted system call" torture.log | grep -i "fatal\|abort\|timeout\|segm" && exit 1 || true
 triggers:
   - action: email
