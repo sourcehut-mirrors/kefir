@@ -6,7 +6,7 @@ USE_SHARED=yes
 OPT=-O0
 DBG=-g3 -ggdb -DKFT_NOFORK
 EXTRAFLAGS=
-CFLAGS=-std=c11 -Wall -Wextra -pedantic -Wno-overlength-strings -Wstrict-prototypes
+CFLAGS=-std=c11 -Wall -Wextra -pedantic -Wno-overlength-strings -Wstrict-prototypes -Wformat=2 -Wno-format-nonliteral -Wundef -Wswitch-default -Wunreachable-code -Wstrict-aliasing=2  -fno-common
 INCLUDES=-Iheaders
 SANFLAGS=
 PLATFORM=
