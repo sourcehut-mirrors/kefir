@@ -2,9 +2,7 @@ image: ubuntu/focal
 packages:
   - build-essential
   - gcc-10
-  - clang-format
   - valgrind
-  - xsltproc
   - wget
 sources:
   - https://git.sr.ht/~jprotopopov/kefir

@@ -177,4 +177,6 @@ typedef enum kefir_result_category {
 
 kefir_result_category_t kefir_result_get_category(kefir_result_t);
 
+#define COMMA ,
+
 #endif

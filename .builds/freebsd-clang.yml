@@ -4,7 +4,6 @@ packages:
   - llvm
   - binutils
   - valgrind
-  - libxslt
 sources:
   - https://git.sr.ht/~jprotopopov/kefir
 tasks:

@@ -6,7 +6,6 @@ packages:
   - llvm
   - binutils
   - valgrind
-  - libxslt
   - coreutils
 sources:
   - https://git.sr.ht/~jprotopopov/kefir

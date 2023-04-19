@@ -35,7 +35,6 @@ function format_file {
 cd "$ROOT"
 trap cleanup EXIT
 
-make generate -B
 make clean
 make test MEMCHECK=yes OPT=-O3 SANITIZE=undefined -j$(nproc)
 for file in `git diff-index --cached --name-only HEAD | grep '\.c$\|\.h$'` ; do

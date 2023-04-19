@@ -1,8 +1,6 @@
 CC=gcc
 AS=as
 AR=ar
-XSLTPROC=xsltproc
-CLANG_FORMAT=clang-format
 USE_SHARED=yes
 
 OPT=-O0
@@ -29,7 +27,6 @@ LIB_DIR=$(BIN_DIR)/libs
 GENERATED_DIR=$(BIN_DIR)/generated
 SOURCE_DIR=$(ROOT)/source
 HEADERS_DIR=$(ROOT)/headers
-RESOURCES_DIR=$(ROOT)/resources
 SCRIPTS_DIR=$(ROOT)/scripts
 BOOTSTRAP_DIR=$(ROOT)/bootstrap
 
@@ -40,7 +37,6 @@ LIBKEFIR_A=$(LIB_DIR)/libkefir.a
 LIBKEFIRRT_A=$(LIB_DIR)/libkefirrt.a
 LIBKEFIR_X86_64_LIBC_A=$(LIB_DIR)/libkefir_x86_64_libc.a
 
-GENERATED_SOURCES :=
 DEPENDENCIES :=
 ASM_FILES :=
 OBJECT_FILES :=

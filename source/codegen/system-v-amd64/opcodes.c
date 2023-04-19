@@ -22,9 +22,13 @@
 #include "kefir/core/util.h"
 #include "kefir/ir/mnemonic.h"
 
-#define LABEL(opcode) "__kefirrt_" opcode "_impl"
+#define KEFIR_IROPCODE_MNEMONICS(_id, _mnemonic, _code, _type) \
+    const char KEFIR_IROPCODE_HANDLER_LABEL_##_id[] = "__kefirrt_" _mnemonic "_impl";
+KEFIR_IR_OPCODE_DEFS(KEFIR_IROPCODE_MNEMONICS, )
+#undef KEFIR_IROPCODE_MNEMONICS
+
 #define HANDLER(opcode) \
-    { KEFIR_IROPCODE_##opcode, LABEL(KEFIR_IROPCODE_MNEMONIC_##opcode) }
+    { KEFIR_IROPCODE_##opcode, KEFIR_IROPCODE_HANDLER_LABEL_##opcode }
 
 static struct {
     kefir_iropcode_t opcode;

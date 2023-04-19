@@ -1,5 +1,4 @@
 include Makefile.mk
-include resources/Makefile.mk
 include source/Makefile.mk
 include source/tests/Makefile.mk
 include source/cc1/Makefile.mk
@@ -7,7 +6,6 @@ include source/driver/Makefile.mk
 include install.mk
 include self.mk
 
-.GENERATED_SOURCES: $(GENERATED_SOURCES)
 .DEPENDENCIES: $(DEPENDENCIES)
 .ASM_FILES: $(ASM_FILES)
 .OBJECT_FILES: $(OBJECT_FILES)
@@ -25,6 +23,4 @@ clean:
 	@echo "Removing $(BIN_DIR)"
 	@rm -rf $(BIN_DIR)
 
-generate: .GENERATED_SOURCES
-
-.PHONY: all test generate clean .GENERATED_SOURCES .DEPENDENCIES .ASM_FILES .OBJECT_FILES .BINARIES .TEST_BINARIES .TEST_RESULTS .TESTS
+.PHONY: all test generate clean .DEPENDENCIES .ASM_FILES .OBJECT_FILES .BINARIES .TEST_BINARIES .TEST_RESULTS .TESTS
