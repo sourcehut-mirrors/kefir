@@ -23,7 +23,7 @@
 
 extern int long INTEGER, INTEGER2;
 
-long get_one();
-long get_two();
+long get_one(void);
+long get_two(void);
 
 #endif

@@ -21,9 +21,9 @@
 #ifndef DEFINITIONS_H_
 #define DEFINITIONS_H_
 
-const char *function1();
-const char *get_fn_name();
-const char *another_function();
-const char *fourth_procedure();
+const char *function1(void);
+const char *get_fn_name(void);
+const char *another_function(void);
+const char *fourth_procedure(void);
 
 #endif

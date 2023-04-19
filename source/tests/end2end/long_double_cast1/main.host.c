@@ -24,7 +24,7 @@
 #include <math.h>
 #include "./definitions.h"
 
-int main() {
+int main(void) {
     for (int i = -100; i < 100; i++) {
         unsigned int u = (unsigned int) i;
         float f = ((float) i) / 10.0f + 0.02f;

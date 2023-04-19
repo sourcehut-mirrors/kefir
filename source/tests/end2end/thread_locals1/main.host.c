@@ -61,7 +61,7 @@ static void *thread2(void *payload) {
     return NULL;
 }
 
-int main() {
+int main(void) {
     assert(get_counter() == 0);
     advance_counter();
     assert(get_counter() == 1);

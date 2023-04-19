@@ -23,7 +23,7 @@
 #include <assert.h>
 #include "./definitions.h"
 
-int main() {
+int main(void) {
 #ifdef __x86_64__
     for (long l1 = 0; l1 < 5000; l1++) {
         for (long l2 = 0; l2 < 100; l2++) {

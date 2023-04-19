@@ -24,7 +24,7 @@
 #include <math.h>
 #include "./definitions.h"
 
-int main() {
+int main(void) {
     for (int i = 1; i < 128; i++) {
         test_vla(i, i << 3);
     }

@@ -21,8 +21,8 @@
 #ifndef DEFINITIONS_H_
 #define DEFINITIONS_H_
 
-int getValue();
-int getFakeValue();
-int getAnotherFakeValue();
+int getValue(void);
+int getFakeValue(void);
+int getAnotherFakeValue(void);
 
 #endif

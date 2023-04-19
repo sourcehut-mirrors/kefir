@@ -21,7 +21,7 @@
 #ifndef DEFINITIONS_H_
 #define DEFINITIONS_H_
 
-void *get_value();
-extern void *test();
+void *get_value(void);
+extern void *test(void);
 
 #endif

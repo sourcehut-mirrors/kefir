@@ -23,7 +23,7 @@
 #include <assert.h>
 #include "./definitions.h"
 
-int main() {
+int main(void) {
     for (int i = -100; i < 100; i++) {
         for (int j = -100; j < 100; j++) {
             int res = sum(i, j);

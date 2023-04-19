@@ -23,7 +23,7 @@
 #include <assert.h>
 #include "./definitions.h"
 
-int main() {
+int main(void) {
     for (int i = -1000; i < 1000; i++) {
         assert(eval1(i) == 2 * i + 1);
         if (i > 0) {

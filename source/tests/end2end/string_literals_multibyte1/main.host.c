@@ -24,7 +24,7 @@
 #include <string.h>
 #include "./definitions.h"
 
-int main() {
+int main(void) {
     assert(strcmp(GREETING, "Привет, мир!") == 0);
     return EXIT_SUCCESS;
 }

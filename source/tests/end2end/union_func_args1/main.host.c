@@ -23,7 +23,7 @@
 #include <assert.h>
 #include "./definitions.h"
 
-int main() {
+int main(void) {
     for (int i = -100; i < 100; i++) {
         struct Struct1 s = {.c1 = i, .c2 = ~i, .s1 = -i, .i1 = i / 2, .i2 = i + 1, .i3 = i ^ 0xffe, .i4 = i & 0xffe};
 

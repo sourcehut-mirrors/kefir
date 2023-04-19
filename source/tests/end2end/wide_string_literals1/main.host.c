@@ -26,7 +26,7 @@
 #include "kefir/util/uchar.h"
 #include "./definitions.h"
 
-int main() {
+int main(void) {
     const char Expected1[] = u8"Test...test..test...\0u8-prefixed string\r\n\0?";
     const char16_t Expected2[] = u"x\\\"16-bit\0string\0literal";
     const char32_t Expected3[] = U"32-bit string    \t\t\v literal is here\0\0\0";

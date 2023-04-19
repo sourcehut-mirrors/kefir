@@ -25,7 +25,7 @@
 #include <stddef.h>
 #include "./definitions.h"
 
-int main() {
+int main(void) {
     assert(Alignments[0] == _Alignof(long));
     assert(Alignments[1] == _Alignof(long));
     assert(Alignments[2] == _Alignof(long));

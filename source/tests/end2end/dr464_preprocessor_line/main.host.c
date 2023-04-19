@@ -23,7 +23,7 @@
 #include <assert.h>
 #include "./definitions.h"
 
-int main() {
+int main(void) {
     assert(Lines[0] == 23);
     assert(Lines[1] == 24);
     assert(Lines[2] == 1);

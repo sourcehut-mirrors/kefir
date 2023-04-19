@@ -31,6 +31,6 @@ struct S {
     } x;
 };
 
-struct S get_empty_s();
+struct S get_empty_s(void);
 
 #endif

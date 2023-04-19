@@ -24,7 +24,7 @@
 extern int (*fnsum)(int, int);
 extern float (*fnfsum)(float, float);
 
-extern int (*getsum())(int, int);
-float (*getfsum())(float, float);
+extern int (*getsum(void))(int, int);
+float (*getfsum(void))(float, float);
 
 #endif

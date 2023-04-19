@@ -23,7 +23,7 @@
 #include <assert.h>
 #include "./definitions.h"
 
-int main() {
+int main(void) {
     for (int i = 0; i < 10000; i++) {
         if (i == 1) {
             assert(Array[i].x == 1);

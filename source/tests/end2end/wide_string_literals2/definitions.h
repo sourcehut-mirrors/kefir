@@ -36,6 +36,6 @@ struct content {
     wchar_t literal6[32];
 };
 
-struct content init_content();
+struct content init_content(void);
 
 #endif

@@ -23,11 +23,11 @@
 
 extern _Thread_local long external_counter;
 
-long get_counter();
-void advance_counter();
-void import_counter();
-void save_counter();
-void restore_counter();
-int reset_counter();
+long get_counter(void);
+void advance_counter(void);
+void import_counter(void);
+void save_counter(void);
+void restore_counter(void);
+int reset_counter(void);
 
 #endif

@@ -23,7 +23,7 @@
 #include <assert.h>
 #include "./definitions.h"
 
-int main() {
+int main(void) {
     assert(Values[0] == 1);
     assert(Values[1] == 1);
     assert(Values[2] == 3);

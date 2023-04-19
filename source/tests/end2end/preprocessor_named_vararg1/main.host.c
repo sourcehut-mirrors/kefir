@@ -35,7 +35,7 @@ int sum(int count, ...) {
     return sum;
 }
 
-int main() {
+int main(void) {
     for (int i = -10; i < 10; i++) {
         for (int j = -10; j < 10; j++) {
             for (int k = -10; k < 10; k++) {

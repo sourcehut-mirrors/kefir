@@ -23,7 +23,7 @@
 #include <assert.h>
 #include "./definitions.h"
 
-int main() {
+int main(void) {
     assert(STRUCT1.x.a == 1);
     assert(STRUCT1.x.b == 2);
     assert(STRUCT1.y[0].a == 3);

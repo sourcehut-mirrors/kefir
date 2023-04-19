@@ -23,7 +23,7 @@
 #include <assert.h>
 #include "./definitions.h"
 
-int main() {
+int main(void) {
     for (int i = -100; i < 100; i++) {
         setx(i);
         assert(getx() == i);

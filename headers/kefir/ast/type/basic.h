@@ -27,7 +27,7 @@ typedef struct kefir_ast_basic_type_properties {
     kefir_size_t rank;
 } kefir_ast_basic_type_properties_t;
 
-#define SCALAR_TYPE(id) const struct kefir_ast_type *kefir_ast_type_##id()
+#define SCALAR_TYPE(id) const struct kefir_ast_type *kefir_ast_type_##id(void)
 SCALAR_TYPE(void);
 SCALAR_TYPE(boolean);
 SCALAR_TYPE(char);
@@ -46,7 +46,7 @@ SCALAR_TYPE(double);
 SCALAR_TYPE(long_double);
 #undef SCALAR_TYPE
 
-const struct kefir_ast_type *kefir_ast_type_va_list();
+const struct kefir_ast_type *kefir_ast_type_va_list(void);
 
 #define KEFIR_AST_TYPE_IS_CHARACTER(base)                                                             \
     ((base)->tag == KEFIR_AST_TYPE_SCALAR_CHAR || (base)->tag == KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR || \

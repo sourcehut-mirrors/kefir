@@ -23,7 +23,7 @@
 #include <assert.h>
 #include "./definitions.h"
 
-int main() {
+int main(void) {
     assert(getuint(A) == 1);
     assert(getuint(B) == 2);
     assert(getuint(C) == 3000);

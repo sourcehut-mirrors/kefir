@@ -23,7 +23,7 @@
 #include <assert.h>
 #include "./definitions.h"
 
-int main() {
+int main(void) {
     assert(Value == 0x0badbabe);
     return EXIT_SUCCESS;
 }

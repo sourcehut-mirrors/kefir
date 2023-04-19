@@ -23,7 +23,7 @@
 #include <assert.h>
 #include "./definitions.h"
 
-int main() {
+int main(void) {
     struct Struct1 str;
     for (int i = -100; i < 100; i++) {
         assert(ptradd(&str, i) == str.arr + i);

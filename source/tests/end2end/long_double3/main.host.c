@@ -29,7 +29,7 @@ long double sum10(const long double a, long double b, long double c, long double
     return a + b + c + d + e + f + g + h + i + j;
 }
 
-int main() {
+int main(void) {
     for (long double x = 0.0l; x < 1000.0l; x += 0.1l) {
         for (long double step = -1.0l; step <= 1.0l; step += 0.1l) {
             long double res = sum_progression(x, step);

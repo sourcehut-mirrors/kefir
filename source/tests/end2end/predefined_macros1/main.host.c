@@ -24,7 +24,7 @@
 #include <string.h>
 #include "./definitions.h"
 
-int main() {
+int main(void) {
     unsigned int counter = 0;
     assert(strcmp("__SIZE_TYPE__", Types[counter++]) != 0);
     assert(strcmp("__PTRDIFF_TYPE__", Types[counter++]) != 0);

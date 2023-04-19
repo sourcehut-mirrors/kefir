@@ -24,7 +24,7 @@
 #include "kefir/core/util.h"
 #include "kefir/test/unit_test.h"
 
-void fn1() {}
+void fn1(void) {}
 
 extern char character1;
 extern unsigned integer1;
@@ -52,7 +52,7 @@ int main(int argc, const char **argv) {
     ASSERT(strcmp(str3, str1) == 0);
     ASSERT(int1ptr == &integer1);
     ASSERT(*int1ptr == 0x4efd);
-    void (*someptr)() = &fn1;
+    void (*someptr)(void) = &fn1;
     ASSERT(fn1ptr == *(void **) &someptr);
     ASSERT(null_ptr == NULL);
     return EXIT_SUCCESS;

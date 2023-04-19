@@ -46,8 +46,8 @@ typedef struct kefir_error {
     const struct kefir_error *prev_error;
 } kefir_error_t;
 
-const struct kefir_error *kefir_current_error();
-void kefir_clear_error();
+const struct kefir_error *kefir_current_error(void);
+void kefir_clear_error(void);
 kefir_result_t kefir_set_error(kefir_result_t, const char *, const char *, unsigned int, struct kefir_error **);
 
 #define KEFIR_SET_ERROR(code, message) kefir_set_error((code), (message), __FILE__, __LINE__, NULL)

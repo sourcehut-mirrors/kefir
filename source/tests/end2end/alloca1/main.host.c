@@ -23,7 +23,7 @@
 #include <assert.h>
 #include "./definitions.h"
 
-int main() {
+int main(void) {
     assert(total_strlen("Hello, ", "world!") == 13);
     assert(total_strlen("", "") == 0);
     assert(total_strlen("", "test...") == 7);

@@ -36,6 +36,6 @@ struct Param1 ldsum(struct Param2);
 struct Param1 ldvsum(int, ...);
 struct Param1 ldvsum2(int, ...);
 
-long double ldunwrap(struct Param1 (*)());
+long double ldunwrap(struct Param1 (*)(void));
 
 #endif

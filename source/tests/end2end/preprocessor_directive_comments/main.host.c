@@ -23,7 +23,7 @@
 #include <assert.h>
 #include "./definitions.h"
 
-int main() {
+int main(void) {
     assert(get_value() == 13827621);
     assert(get_value2() == 10203040);
     return EXIT_SUCCESS;

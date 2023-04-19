@@ -23,7 +23,7 @@
 
 extern const unsigned long MATRIX_ALIGN;
 
-unsigned long matrix_dim();
+unsigned long matrix_dim(void);
 
 unsigned long int_vla_sizeof(unsigned long);
 unsigned long double_matrix_sizeof(unsigned long);

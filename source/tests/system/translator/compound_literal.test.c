@@ -35,7 +35,7 @@ struct structure {
     } floats[4];
 };
 
-struct structure compound1();
+struct structure compound1(void);
 
 int main(int argc, const char **argv) {
     UNUSED(argc);

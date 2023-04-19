@@ -22,7 +22,7 @@
 #define DEFINITIONS_H_
 
 #ifdef __x86_64__
-long test();
+long test(void);
 #endif
 
 #endif

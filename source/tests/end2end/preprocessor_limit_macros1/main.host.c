@@ -24,7 +24,7 @@
 #include <limits.h>
 #include "./definitions.h"
 
-int main() {
+int main(void) {
     assert(Limits[0] == CHAR_BIT);
     assert(Limits[1] == SCHAR_MAX);
     assert(Limits[2] == SHRT_MAX);

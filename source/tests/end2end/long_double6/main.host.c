@@ -24,7 +24,7 @@
 #include <math.h>
 #include "./definitions.h"
 
-int main() {
+int main(void) {
     for (int i = -1000; i < 1000; i++) {
         struct S s = init_s(i, i + 2000, i * 0.25);
         assert(fabsl(s.ldl[0] - (long double) i) < 1e-6);

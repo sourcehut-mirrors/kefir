@@ -21,7 +21,7 @@
 #ifndef DEFINITIONS_H_
 #define DEFINITIONS_H_
 
-int get_value();
-int get_value2();
+int get_value(void);
+int get_value2(void);
 
 #endif

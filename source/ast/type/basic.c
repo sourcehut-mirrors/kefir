@@ -71,7 +71,7 @@ static const struct kefir_ast_type SCALAR_VOID = {.tag = KEFIR_AST_TYPE_VOID,
                                                           .composite = composite_basic_types,
                                                           .free = free_nothing}};
 
-const struct kefir_ast_type *kefir_ast_type_void() {
+const struct kefir_ast_type *kefir_ast_type_void(void) {
     return &SCALAR_VOID;
 }
 
@@ -84,9 +84,7 @@ const struct kefir_ast_type *kefir_ast_type_void() {
                                                                       .free = free_nothing},                \
                                                               .basic_type = {.rank = (_rank)}};             \
                                                                                                             \
-    const struct kefir_ast_type *kefir_ast_type_##id() {                                                    \
-        return &DEFAULT_SCALAR_##id;                                                                        \
-    }
+    const struct kefir_ast_type *kefir_ast_type_##id(void) { return &DEFAULT_SCALAR_##id; }
 
 SCALAR_TYPE(boolean, KEFIR_AST_TYPE_SCALAR_BOOL, 0)
 SCALAR_TYPE(char, KEFIR_AST_TYPE_SCALAR_CHAR, 1)
@@ -113,7 +111,7 @@ static const struct kefir_ast_type VA_LIST = {.tag = KEFIR_AST_TYPE_VA_LIST,
                                                       .composite = composite_basic_types,
                                                       .free = free_nothing}};
 
-const struct kefir_ast_type *kefir_ast_type_va_list() {
+const struct kefir_ast_type *kefir_ast_type_va_list(void) {
     return &VA_LIST;
 }
 

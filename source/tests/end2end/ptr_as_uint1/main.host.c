@@ -28,7 +28,7 @@
 
 int Value = 0;
 
-int main() {
+int main(void) {
     assert(Ptr1 == ((long long) &Value) - 1000);
     assert(Ptr2 == (unsigned long) (((intptr_t) &Value) + 245 * sizeof(int)));
     assert(Ptr3 == ((long) &Value) + 2000 - 1);

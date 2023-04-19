@@ -23,7 +23,7 @@
 #include <assert.h>
 #include "./definitions.h"
 
-int main() {
+int main(void) {
     assert(is_kefir_end2end_test);
     assert(kefir_end2end_version == 101);
     return EXIT_SUCCESS;

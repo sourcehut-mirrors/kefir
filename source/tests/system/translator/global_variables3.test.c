@@ -30,10 +30,10 @@ typedef struct matrix {
 } matrix_t;
 
 extern matrix_t matrix1;
-extern matrix_t *(*matrices[])();
-matrix_t *get_matrix2();
-matrix_t *get_matrix3();
-matrix_t *get_matrix4();
+extern matrix_t *(*matrices[])(void);
+matrix_t *get_matrix2(void);
+matrix_t *get_matrix3(void);
+matrix_t *get_matrix4(void);
 
 void assert_matrix(struct matrix *matrix, int offset) {
     ASSERT(matrix->dim == (unsigned) (5 + offset));

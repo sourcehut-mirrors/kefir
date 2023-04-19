@@ -23,7 +23,7 @@
 #include <assert.h>
 #include "./definitions.h"
 
-int main() {
+int main(void) {
     assert(GLOBAL_UNINIT_STATIC != NULL);
     assert(get_global_uninit_static() == GLOBAL_UNINIT_STATIC);
     assert(GLOBAL_UNINIT_STATIC->x == 0);

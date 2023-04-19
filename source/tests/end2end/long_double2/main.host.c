@@ -26,11 +26,11 @@
 
 static long double GENERATOR_VALUE = 0.0L;
 
-static long double generator() {
+static long double generator(void) {
     return GENERATOR_VALUE;
 }
 
-int main() {
+int main(void) {
     for (long double x = -20.0l; x < 20.0l; x += 0.02l) {
         GENERATOR_VALUE = x;
         long double y = increment(generator);

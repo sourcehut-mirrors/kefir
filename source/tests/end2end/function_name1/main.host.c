@@ -24,7 +24,7 @@
 #include <string.h>
 #include "./definitions.h"
 
-int main() {
+int main(void) {
     assert(strcmp(function1(), "function1") == 0);
     assert(strcmp(get_fn_name(), "get_fn_name") == 0);
     assert(strcmp(another_function(), "another_function") == 0);

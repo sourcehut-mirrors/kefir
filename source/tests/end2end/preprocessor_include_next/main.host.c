@@ -24,7 +24,7 @@
 #include <stdarg.h>
 #include "./definitions.h"
 
-int main() {
+int main(void) {
     assert(get_value() == 1000);
     return EXIT_SUCCESS;
 }

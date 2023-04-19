@@ -25,7 +25,7 @@
 #include <stddef.h>
 #include "./definitions.h"
 
-int main() {
+int main(void) {
     assert(X1 == (unsigned short) EXPR1);
     assert(X2 == EXPR2);
     assert(X3 == (unsigned char) EXPR3);

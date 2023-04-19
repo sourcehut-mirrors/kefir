@@ -24,7 +24,7 @@
 #include <string.h>
 #include "./definitions.h"
 
-int main() {
+int main(void) {
     assert(Uniont1Size == sizeof(union Union1));
     assert(Uniont1Alignment == _Alignof(union Union1));
     for (int i = -100; i < 100; i++) {

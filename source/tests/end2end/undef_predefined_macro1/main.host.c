@@ -23,7 +23,7 @@
 #include <assert.h>
 #include "./definitions.h"
 
-int main() {
+int main(void) {
     assert(!stdc_detected);
     return EXIT_SUCCESS;
 }

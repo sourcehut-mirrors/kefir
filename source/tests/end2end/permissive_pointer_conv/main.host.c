@@ -23,7 +23,7 @@
 #include <assert.h>
 #include "./definitions.h"
 
-int main() {
+int main(void) {
     assert(compare_strings((unsigned char *) "Hello, world!", "Hello, world!") == 0);
     assert(compare_strings((unsigned char *) "Hello, world!", "Goodbye, world!") != 0);
     return EXIT_SUCCESS;

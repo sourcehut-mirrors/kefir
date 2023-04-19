@@ -24,17 +24,17 @@
 #include "kefir/core/util.h"
 #include "kefir/test/unit_test.h"
 
-char *get_character1();
-unsigned *get_integer1();
-long *get_long1();
-float *get_float1();
-double *get_double1();
-char *get_str1();
-char **get_str2();
-char **get_str3();
-unsigned **get_int1ptr();
-void **get_fnptr();
-void **get_null_ptr();
+char *get_character1(void);
+unsigned *get_integer1(void);
+long *get_long1(void);
+float *get_float1(void);
+double *get_double1(void);
+char *get_str1(void);
+char **get_str2(void);
+char **get_str3(void);
+unsigned **get_int1ptr(void);
+void **get_fnptr(void);
+void **get_null_ptr(void);
 
 int main(int argc, const char **argv) {
     UNUSED(argc);
@@ -50,7 +50,7 @@ int main(int argc, const char **argv) {
     ASSERT(strcmp(*get_str3(), get_str1()) == 0);
     ASSERT(*get_int1ptr() == get_integer1());
     ASSERT(**get_int1ptr() == 0xfefea6);
-    unsigned *(*someptr)() = get_integer1;
+    unsigned *(*someptr)(void) = get_integer1;
     ASSERT(*get_fnptr() == *(void **) &someptr);
     ASSERT(*get_null_ptr() == NULL);
     return EXIT_SUCCESS;

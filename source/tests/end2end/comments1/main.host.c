@@ -23,7 +23,7 @@
 #include <assert.h>
 #include "./definitions.h"
 
-int main() {
+int main(void) {
     assert(Constant1 == 2);
     const float val = getf();
     assert(val > 199.0f && val < 201.0f);

@@ -23,7 +23,7 @@
 #include <assert.h>
 #include "./definitions.h"
 
-int main() {
+int main(void) {
     for (int i = 0; i < 10; i++) {
         assert(ARRAY[i] == (int) (i * sizeof(int) + 100));
     }

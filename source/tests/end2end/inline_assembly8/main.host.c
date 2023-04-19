@@ -26,9 +26,9 @@
 
 void *array[10];
 
-void fn1() {}
+void fn1(void) {}
 
-int main() {
+int main(void) {
 #ifdef __x86_64__
     memset(array, 0, sizeof(array));
 
@@ -39,7 +39,7 @@ int main() {
     assert(array[4] == NULL);
     init_array();
 
-    void (*fn1_ptr)() = fn1;
+    void (*fn1_ptr)(void) = fn1;
     assert(array[0] == *(void **) &fn1_ptr);
     assert(array[1] == &array[5]);
     assert(strcmp(array[2], "llo") == 0);

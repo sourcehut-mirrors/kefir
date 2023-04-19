@@ -54,7 +54,7 @@ static void kefir_free(struct kefir_mem *mem, void *ptr) {
 static struct kefir_mem MemoryAllocator = {
     .malloc = kefir_malloc, .calloc = kefir_calloc, .realloc = kefir_realloc, .free = kefir_free, .data = NULL};
 
-struct kefir_mem *kefir_system_memalloc() {
+struct kefir_mem *kefir_system_memalloc(void) {
     return &MemoryAllocator;
 }
 

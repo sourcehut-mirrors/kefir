@@ -28,7 +28,7 @@
 extern int foo_;
 extern const char *foobar;
 
-int main() {
+int main(void) {
     assert(strcmp(f, "foo") == 0);
     assert(strcmp(f2, "test") == 0);
     assert(foo_ == 1234);

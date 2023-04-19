@@ -23,7 +23,7 @@
 #include <assert.h>
 #include "./definitions.h"
 
-int main() {
+int main(void) {
     const long Offset = -0x1ffffffffll;
     for (long i = 0; i < 0xffff; i++) {
         long x = i + Offset;

@@ -25,7 +25,7 @@
 #include "kefir/util/uchar.h"
 #include "./definitions.h"
 
-int main() {
+int main(void) {
     wchar_t wstr[] = L"abcdefghijklmnopqrstuvwxyz"
                      L"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     const wchar_t wexpected[] = L"ABCDEFGHIJKLMNOPQRSTUVWXYZ"

@@ -28,7 +28,7 @@ ENUM1;
 
 void get_vals(struct Struct1, enum Enum1, int *, int *, int *);
 
-int main() {
+int main(void) {
     int sz, algn, b_val;
     get_vals((struct Struct1){0}, A, &sz, &algn, &b_val);
     assert(sz == sizeof(struct Struct1));

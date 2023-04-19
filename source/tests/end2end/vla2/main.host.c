@@ -25,25 +25,25 @@
 #include "./definitions.h"
 
 static unsigned int DIM[3] = {0, 0, 0};
-unsigned int dim1() {
+unsigned int dim1(void) {
     unsigned int val = DIM[0];
     DIM[0] = 0;
     return val;
 }
 
-unsigned int dim2() {
+unsigned int dim2(void) {
     unsigned int val = DIM[1];
     DIM[1] = 0;
     return val;
 }
 
-unsigned int dim3() {
+unsigned int dim3(void) {
     unsigned int val = DIM[2];
     DIM[2] = 0;
     return val;
 }
 
-int main() {
+int main(void) {
     assert(sizeof_float_cube() == 0);
     DIM[0] = 1;
     DIM[1] = 2;

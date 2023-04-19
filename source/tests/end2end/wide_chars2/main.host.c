@@ -25,7 +25,7 @@
 #include "kefir/util/uchar.h"
 #include "./definitions.h"
 
-int main() {
+int main(void) {
     const wchar_t wexpected[] = L"Hello, world!";
     const char16_t c16expected[] = u"Hello, world!";
     const char32_t c32expected[] = U"Hello, world!";

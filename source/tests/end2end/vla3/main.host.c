@@ -27,17 +27,17 @@
 static unsigned call1 = 0;
 static unsigned call2 = 0;
 
-int callback1() {
+int callback1(void) {
     call1++;
     return 1;
 }
 
-long callback2() {
+long callback2(void) {
     call2++;
     return 2;
 }
 
-int main() {
+int main(void) {
     run_callbacks(NULL, NULL, NULL);
     assert(call1 == 1);
     assert(call2 == 1);

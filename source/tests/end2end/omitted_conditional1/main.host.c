@@ -24,7 +24,7 @@
 #include <math.h>
 #include "./definitions.h"
 
-int main() {
+int main(void) {
     assert(ONE == 1);
     assert(TWO == 2);
     for (int i = -100; i < 100; i++) {

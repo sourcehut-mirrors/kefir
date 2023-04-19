@@ -24,7 +24,7 @@
 #include <math.h>
 #include "./definitions.h"
 
-int main() {
+int main(void) {
     for (int x = -100; x < 100; x++) {
         for (int y = -10; y < 10; y++) {
             for (int z = -10; z < 10; z++) {

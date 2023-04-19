@@ -23,7 +23,7 @@
 #include <assert.h>
 #include "./definitions.h"
 
-int main() {
+int main(void) {
     assert(getfn(FNONE)() == 1);
     assert(getfn(FNZERO)() == 0);
     assert(getfn(FNNEG)() == -1);

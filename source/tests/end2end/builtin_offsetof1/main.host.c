@@ -25,7 +25,7 @@
 #include <stddef.h>
 #include "./definitions.h"
 
-int main() {
+int main(void) {
     assert(offsets[0] == offsetof(struct Struct1, a));
     assert(getoffset(0) == offsetof(struct Struct1, a));
 

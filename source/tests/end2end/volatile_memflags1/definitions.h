@@ -34,10 +34,10 @@ struct S {
     volatile int x;
 };
 
-char getA();
-short getB();
-int getC();
-long getD();
+char getA(void);
+short getB(void);
+int getC(void);
+long getD(void);
 
 void setA(char);
 void setB(short);

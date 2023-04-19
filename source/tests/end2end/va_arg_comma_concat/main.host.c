@@ -36,7 +36,7 @@ void fn(int count, ...) {
     va_end(args);
 }
 
-int main() {
+int main(void) {
     test();
     return EXIT_SUCCESS;
 }

@@ -26,7 +26,7 @@
 #include "kefir/util/uchar.h"
 #include "./definitions.h"
 
-int main() {
+int main(void) {
     const char16_t Expected1[] = u"String literal#1.";
     const char16_t Expected2[] = u"String literal#2.";
     const char32_t Expected3[] = U"String literal#3.";

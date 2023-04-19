@@ -21,10 +21,10 @@
 #ifndef DEFINITIONS_H_
 #define DEFINITIONS_H_
 
-int callback1();
-long callback2();
+int callback1(void);
+long callback2(void);
 
 void run_callbacks(int[*], char[*], double (*)[*]);
-void run_callbacks2();
+void run_callbacks2(void);
 
 #endif

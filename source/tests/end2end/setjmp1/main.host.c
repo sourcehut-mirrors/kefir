@@ -23,7 +23,7 @@
 #include <assert.h>
 #include "./definitions.h"
 
-int main() {
+int main(void) {
     for (int i = -100; i < 100; i++) {
         for (int j = 0; j < 100; j++) {
             assert(add_n_times(i, j) == i * j);

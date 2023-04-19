@@ -23,14 +23,14 @@
 #include <assert.h>
 #include "./definitions.h"
 
-extern void *get_ptr();
+extern void *get_ptr(void);
 
-extern void *get_value() {
+extern void *get_value(void) {
     abort();
 }
 
-int main() {
-    void *(*fnptr)() = get_value;
+int main(void) {
+    void *(*fnptr)(void) = get_value;
     assert(get_ptr() == *(void **) &fnptr);
     fnptr = get_ptr;
     assert(test() == *(void **) &fnptr);

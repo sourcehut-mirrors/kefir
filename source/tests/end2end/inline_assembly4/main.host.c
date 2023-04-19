@@ -24,10 +24,10 @@
 #include "./definitions.h"
 
 #ifdef __x86_64__
-extern struct S1 init_s1();
+extern struct S1 init_s1(void);
 #endif
 
-int main() {
+int main(void) {
 #ifdef __x86_64__
     struct S1 s1 = init_s1();
     assert(s1.l == 100);

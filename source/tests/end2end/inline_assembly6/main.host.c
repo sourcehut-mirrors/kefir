@@ -23,7 +23,7 @@
 #include <assert.h>
 #include "./definitions.h"
 
-int main() {
+int main(void) {
 #ifdef __x86_64__
     assert(test() != 0);
 #endif

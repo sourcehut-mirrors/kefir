@@ -50,7 +50,7 @@ void double_void_cast(double);
 void voidptr_void_cast(void *);
 void struct_void_cast(struct test);
 
-static void integral_casts() {
+static void integral_casts(void) {
     for (char c = CHAR_MIN; c < CHAR_MAX; c++) {
         ASSERT(char_int_cast(c) == ((int) c));
         ASSERT(char_uint_cast(c) == ((unsigned int) c));
@@ -72,7 +72,7 @@ static void integral_casts() {
     }
 }
 
-static void floating_point_casts() {
+static void floating_point_casts(void) {
     for (long i = -0x7ff; i < 0x7ff; i++) {
         ASSERT(FLOAT_EQUALS(long_float_cast(i), ((float) i), FLOAT_EPSILON));
     }
@@ -99,7 +99,7 @@ static void floating_point_casts() {
     }
 }
 
-static void pointer_casts() {
+static void pointer_casts(void) {
     for (unsigned long l = 0; l < 65536; l += 32) {
         ASSERT(ulong_voidptr_cast(l) == ((void *) l));
     }
@@ -112,7 +112,7 @@ static void pointer_casts() {
 #undef LEN
 }
 
-static void void_casts() {
+static void void_casts(void) {
     for (int i = -100; i < 100; i++) {
         int_void_cast(i);
     }

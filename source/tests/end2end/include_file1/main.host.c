@@ -23,7 +23,7 @@
 #include <assert.h>
 #include "./definitions.h"
 
-int main() {
+int main(void) {
     assert(get_value() == 314);
     return EXIT_SUCCESS;
 }

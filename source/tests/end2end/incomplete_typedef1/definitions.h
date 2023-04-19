@@ -22,6 +22,6 @@
 #define DEFINITIONS_H_
 
 void setx(int);
-int getx();
+int getx(void);
 
 #endif

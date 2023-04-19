@@ -26,7 +26,7 @@ static kefir_bool_t init_done = false;
 static struct kefir_ir_target_platform IR_TARGET;
 static struct kefir_ast_translator_environment TRANSLATOR_ENV;
 
-struct kefir_ir_target_platform *kft_util_get_ir_target_platform() {
+struct kefir_ir_target_platform *kft_util_get_ir_target_platform(void) {
     if (!init_done) {
         REQUIRE(kefir_codegen_amd64_sysv_target_platform(&IR_TARGET) == KEFIR_OK, NULL);
         REQUIRE(kefir_ast_translator_environment_init(&TRANSLATOR_ENV, &IR_TARGET) == KEFIR_OK, NULL);
@@ -35,7 +35,7 @@ struct kefir_ir_target_platform *kft_util_get_ir_target_platform() {
     return &IR_TARGET;
 }
 
-struct kefir_ast_translator_environment *kft_util_get_translator_environment() {
+struct kefir_ast_translator_environment *kft_util_get_translator_environment(void) {
     if (!init_done) {
         REQUIRE(kefir_codegen_amd64_sysv_target_platform(&IR_TARGET) == KEFIR_OK, NULL);
         REQUIRE(kefir_ast_translator_environment_init(&TRANSLATOR_ENV, &IR_TARGET) == KEFIR_OK, NULL);
@@ -44,7 +44,7 @@ struct kefir_ast_translator_environment *kft_util_get_translator_environment() {
     return &TRANSLATOR_ENV;
 }
 
-const struct kefir_data_model_descriptor *kefir_util_default_data_model() {
+const struct kefir_data_model_descriptor *kefir_util_default_data_model(void) {
     static const struct kefir_data_model_descriptor DATA_MODEL_DESCRIPTOR = {
         .model = KEFIR_DATA_MODEL_LP64,
         .byte_order = KEFIR_BYTE_ORDER_LITTLE_ENDIAN,
@@ -81,7 +81,7 @@ const struct kefir_data_model_descriptor *kefir_util_default_data_model() {
     return &DATA_MODEL_DESCRIPTOR;
 }
 
-const struct kefir_ast_type_traits *kefir_util_default_type_traits() {
+const struct kefir_ast_type_traits *kefir_util_default_type_traits(void) {
     static struct kefir_ast_type_traits DEFAULT_TYPE_TRAITS;
     static kefir_bool_t DEFAULT_TYPE_TRAITS_INIT_DONE = false;
     if (!DEFAULT_TYPE_TRAITS_INIT_DONE) {

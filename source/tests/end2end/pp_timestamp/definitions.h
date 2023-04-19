@@ -21,6 +21,6 @@
 #ifndef DEFINITIONS_H_
 #define DEFINITIONS_H_
 
-const char *get_build_timestamp();
+const char *get_build_timestamp(void);
 
 #endif

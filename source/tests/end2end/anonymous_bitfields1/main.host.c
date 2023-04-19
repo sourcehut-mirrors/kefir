@@ -23,7 +23,7 @@
 #include <assert.h>
 #include "./definitions.h"
 
-int main() {
+int main(void) {
     assert(S1.i = 40);
     assert(S1.j = 30);
     assert(S1.k = 20);

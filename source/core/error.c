@@ -26,7 +26,7 @@
 static _Thread_local kefir_size_t next_error_index = 0;
 static _Thread_local struct kefir_error error_stack[KEFIR_ERROR_STACK_SIZE];
 
-const struct kefir_error *kefir_current_error() {
+const struct kefir_error *kefir_current_error(void) {
     if (next_error_index != 0) {
         return &error_stack[next_error_index - 1];
     } else {
@@ -34,7 +34,7 @@ const struct kefir_error *kefir_current_error() {
     }
 }
 
-void kefir_clear_error() {
+void kefir_clear_error(void) {
     next_error_index = 0;
 }
 

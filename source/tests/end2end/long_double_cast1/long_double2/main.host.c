@@ -30,7 +30,7 @@ static long double generator() {
     return GENERATOR_VALUE;
 }
 
-int main() {
+int main(void) {
     for (long double x = -20.0l; x < 20.0l; x += 0.02l) {
         GENERATOR_VALUE = x;
         long double y = increment(generator);

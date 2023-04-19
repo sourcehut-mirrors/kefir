@@ -24,7 +24,7 @@
 #include <math.h>
 #include "./definitions.h"
 
-int main() {
+int main(void) {
     for (long double x = -100.0l; x < 100.0l; x += 0.1l) {
         assert(eq(x, x));
         assert(neq(x, x + 1));

@@ -25,7 +25,7 @@
 
 unsigned long VAL = 0;
 
-int main() {
+int main(void) {
     for (unsigned int i = 0; i < 1000; i++) {
         for (unsigned int j = 1; j < 1000; j++) {
             assert(udiv(i, j) == i / j);

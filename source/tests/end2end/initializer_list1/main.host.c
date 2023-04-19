@@ -24,7 +24,7 @@
 #include <math.h>
 #include "./definitions.h"
 
-int main() {
+int main(void) {
     struct S s = get_empty_s();
 
     assert(s.a == 0);

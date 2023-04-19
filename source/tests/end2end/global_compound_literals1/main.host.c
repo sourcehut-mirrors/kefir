@@ -24,7 +24,7 @@
 #include <math.h>
 #include "./definitions.h"
 
-int main() {
+int main(void) {
     assert(S1 != NULL);
     assert(S2 != NULL);
     assert(S3 != NULL);

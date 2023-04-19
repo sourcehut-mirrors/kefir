@@ -43,7 +43,7 @@ struct aligns {
     int tarray;
 };
 
-struct aligns get_alignof();
+struct aligns get_alignof(void);
 
 int main(int argc, const char **argv) {
     UNUSED(argc);

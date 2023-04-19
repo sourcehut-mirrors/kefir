@@ -30,7 +30,7 @@ long double divide_assign(long double *, long double);
 long double add_assign(long double *, long double);
 long double sub_assign(long double *, long double);
 
-static void simple_assign() {
+static void simple_assign(void) {
     long double ld;
     for (long double x = -100.0l; x < 100.0l; x += 0.01l) {
         long double res = assign(&ld, x);
@@ -39,7 +39,7 @@ static void simple_assign() {
     }
 }
 
-static void mul_assign() {
+static void mul_assign(void) {
     long double mul = 1.0l;
     long double ld = 1.0l;
     for (long double x = 1.0l; x < 3.0l; x += 0.01l) {
@@ -50,7 +50,7 @@ static void mul_assign() {
     }
 }
 
-static void div_assign() {
+static void div_assign(void) {
     long double mul = 1000.0l;
     long double ld = 1000.0l;
     for (long double x = 1.0l; x < 3.0l; x += 0.01l) {
@@ -61,7 +61,7 @@ static void div_assign() {
     }
 }
 
-static void sum_assign() {
+static void sum_assign(void) {
     long double sum = 0.0l;
     long double ld = 0.0l;
     for (long double x = -10.0l; x < 100.0l; x += 0.01l) {
@@ -72,7 +72,7 @@ static void sum_assign() {
     }
 }
 
-static void subtract_assign() {
+static void subtract_assign(void) {
     long double sum = 1000.0l;
     long double ld = 1000.0l;
     for (long double x = -10.0l; x < 100.0l; x += 0.01l) {

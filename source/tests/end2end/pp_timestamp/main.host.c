@@ -26,7 +26,7 @@
 #include <string.h>
 #include "./definitions.h"
 
-int main() {
+int main(void) {
     time_t expected_timestamp = 1633204489;
     struct tm *time = localtime(&expected_timestamp);
     char buffer[256] = {0};

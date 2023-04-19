@@ -35,7 +35,7 @@ extern const char *STR8;
 extern const char *STR9;
 extern const char *STR10;
 
-int main() {
+int main(void) {
     assert(strcmp(STR1, "char") == 0);
     assert(strcmp(STR2, "__char") == 0);
     assert(strcmp(STR3, "2 *9 *g") == 0);

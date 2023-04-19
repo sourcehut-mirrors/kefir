@@ -21,10 +21,10 @@
 #ifndef DEFINITIONS_H_
 #define DEFINITIONS_H_
 
-unsigned int dim1();
-unsigned int dim2();
-unsigned int dim3();
+unsigned int dim1(void);
+unsigned int dim2(void);
+unsigned int dim3(void);
 
-unsigned int sizeof_float_cube();
+unsigned int sizeof_float_cube(void);
 
 #endif

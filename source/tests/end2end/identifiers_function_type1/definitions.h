@@ -21,9 +21,9 @@
 #ifndef DEFINITIONS_H_
 #define DEFINITIONS_H_
 
-typedef int fn_t();
+typedef int fn_t(void);
 typedef int fn2_t(int);
 
-int test1();
+int test1(void);
 
 #endif

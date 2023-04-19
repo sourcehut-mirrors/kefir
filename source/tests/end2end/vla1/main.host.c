@@ -34,7 +34,7 @@ void callback2(unsigned int val) {
     ARR[1] = val;
 }
 
-int main() {
+int main(void) {
     assert(int_at(0, 0) == 0);
     assert(int_at(1, 0) == 1);
     assert(ARR[0] == 1);

@@ -34,7 +34,7 @@ long fact2(long x) {
     return x * fact2(x - 1);
 }
 
-int main() {
+int main(void) {
 #ifdef __x86_64__
     for (long x = 0; x <= 15; x++) {
         assert(factorial(x) == fact2(x));

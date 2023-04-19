@@ -23,7 +23,7 @@
 #include <assert.h>
 #include "./definitions.h"
 
-int main() {
+int main(void) {
     for (unsigned int i = 1; i <= 10; i++) {
         assert(func1(i) == i * 10);
     }

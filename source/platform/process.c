@@ -279,6 +279,6 @@ kefir_result_t kefir_process_redirect_stderr_to_file(struct kefir_process *proce
     return KEFIR_OK;
 }
 
-kefir_bool_t kefir_process_is_fork() {
+kefir_bool_t kefir_process_is_fork(void) {
     return process_is_fork;
 }

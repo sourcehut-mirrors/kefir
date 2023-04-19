@@ -44,7 +44,7 @@ struct sizes {
     int tstring;
 };
 
-struct sizes get_sizeof();
+struct sizes get_sizeof(void);
 
 int main(int argc, const char **argv) {
     UNUSED(argc);

@@ -24,7 +24,7 @@
 #include <math.h>
 #include "./definitions.h"
 
-int main() {
+int main(void) {
     assert(test_vla(0xffff, 256));
     return EXIT_SUCCESS;
 }

@@ -23,7 +23,7 @@
 #include <assert.h>
 #include "./definitions.h"
 
-int main() {
+int main(void) {
     (void) _temp;
     (void) _temp2;
     assert(Counters[0] == 2);

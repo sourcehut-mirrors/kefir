@@ -64,7 +64,7 @@ typedef struct kefir_compiler_context {
     void *extension_payload;
 } kefir_compiler_context_t;
 
-struct kefir_mem *kefir_system_memalloc();
+struct kefir_mem *kefir_system_memalloc(void);
 kefir_result_t kefir_compiler_context_init(struct kefir_mem *, struct kefir_compiler_context *,
                                            struct kefir_compiler_profile *,
                                            const struct kefir_preprocessor_source_locator *,

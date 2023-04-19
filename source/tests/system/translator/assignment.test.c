@@ -49,7 +49,7 @@ long long sub_assign_long_long(long long *, long long);
 float sub_assign_float(float *, float);
 char *sub_assign_charptr(char **, int);
 
-static void simple_assign() {
+static void simple_assign(void) {
     long l = 0;
     for (long i = -1000; i < 1000; i++) {
         ASSERT(assign_long(&l, i) == i);
@@ -66,7 +66,7 @@ static void simple_assign() {
     ASSERT(p2.payload == &p);
 }
 
-static void multiply_assign() {
+static void multiply_assign(void) {
     for (int i = -250; i < 250; i++) {
         int j = 3;
         ASSERT(multiply_assign_int(&j, i) == 3 * i);
@@ -81,7 +81,7 @@ static void multiply_assign() {
     }
 }
 
-static void divide_assign() {
+static void divide_assign(void) {
     for (unsigned long i = 1; i < 2000; i++) {
         unsigned long a = 0xbadcafeu;
         ASSERT(divide_assign_ulong(&a, i) == 0xbadcafeu / i);
@@ -95,7 +95,7 @@ static void divide_assign() {
     }
 }
 
-static void modulo_assign() {
+static void modulo_assign(void) {
     for (short i = -0xfff; i < 0xfff; i += 3) {
         if (i != 0) {
             short a = (short) 0xbadb;
@@ -105,7 +105,7 @@ static void modulo_assign() {
     }
 }
 
-static void shift_assign() {
+static void shift_assign(void) {
     for (unsigned int i = 0; i < 32; i++) {
         unsigned int a = 0xcafebabeu;
         ASSERT(shl_assign_uint(&a, i) == 0xcafebabeu << i);
@@ -117,7 +117,7 @@ static void shift_assign() {
     }
 }
 
-static void bitwise_assign() {
+static void bitwise_assign(void) {
     for (long l = -2048; l < 2048; l++) {
         long a = 0x6eba1e0c;
         ASSERT(iand_assign_long(&a, l) == (0x6eba1e0c & l));
@@ -133,7 +133,7 @@ static void bitwise_assign() {
     }
 }
 
-static void add_assign() {
+static void add_assign(void) {
     for (int i = -1000; i < 1000; i++) {
         int a = ~i;
         ASSERT(add_assign_int(&a, i) == (~i + i));
@@ -156,7 +156,7 @@ static void add_assign() {
 #undef LEN
 }
 
-static void sub_assign() {
+static void sub_assign(void) {
     for (long long l = -0xffe; l < 0xffe; l++) {
         long long a = -0x6efcba3;
         ASSERT(sub_assign_long_long(&a, l) == (-0x6efcba3 - l));

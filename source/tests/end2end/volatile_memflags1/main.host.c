@@ -28,7 +28,7 @@ volatile short b = 1000;
 volatile int c = 10000;
 volatile long d = 100000;
 
-int main() {
+int main(void) {
     assert(getA() == 100);
     assert(getB() == 1000);
     assert(getC() == 10000);

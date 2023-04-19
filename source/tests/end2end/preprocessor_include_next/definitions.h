@@ -21,6 +21,6 @@
 #ifndef DEFINITIONS_H_
 #define DEFINITIONS_H_
 
-extern int get_value();
+extern int get_value(void);
 
 #endif

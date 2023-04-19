@@ -24,7 +24,7 @@
 #include "kefir/core/util.h"
 #include "kefir/test/unit_test.h"
 
-int fn();
+int fn(void);
 
 int main(int argc, const char **argv) {
     UNUSED(argc);

@@ -27,9 +27,9 @@
 long value_to_add = 0;
 
 void set_value(long);
-long get_value();
-void add_value();
-long invoke_callback();
+long get_value(void);
+void add_value(void);
+long invoke_callback(void);
 
 static long offset = 0;
 long value_callback(long value) {

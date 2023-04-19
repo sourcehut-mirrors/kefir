@@ -24,7 +24,7 @@
 #include <math.h>
 #include "./definitions.h"
 
-int main() {
+int main(void) {
     for (long double x = -2.0l; x < 2.0l; x += 0.02l) {
         for (long double y = -2.0l; y < 2.0l; y += 0.02l) {
             assert(fabsl(hypot_sq(x, y) - (x * x + y * y)) < 0.001l);

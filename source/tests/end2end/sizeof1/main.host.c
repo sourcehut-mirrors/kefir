@@ -25,11 +25,11 @@
 #include "./definitions.h"
 
 static unsigned long dim = 1;
-unsigned long matrix_dim() {
+unsigned long matrix_dim(void) {
     return dim * 2;
 }
 
-int main() {
+int main(void) {
     assert(MATRIX_ALIGN == _Alignof(double[matrix_dim()][matrix_dim()]));
     for (unsigned long i = 1; i < 100; i++) {
         dim = i;

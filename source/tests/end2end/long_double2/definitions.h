@@ -23,6 +23,6 @@
 
 extern long double LAST_VALUE;
 
-long double increment(long double (*)());
+long double increment(long double (*)(void));
 
 #endif

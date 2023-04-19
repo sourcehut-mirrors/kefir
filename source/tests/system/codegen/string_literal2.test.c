@@ -25,9 +25,9 @@
 #include "kefir/util/uchar.h"
 #include "kefir/test/unit_test.h"
 
-const char16_t *string1();
-const char16_t *string2();
-const char16_t *string3();
+const char16_t *string1(void);
+const char16_t *string2(void);
+const char16_t *string3(void);
 
 int main(int argc, const char **argv) {
     UNUSED(argc);

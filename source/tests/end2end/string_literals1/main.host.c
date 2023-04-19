@@ -24,7 +24,7 @@
 #include <string.h>
 #include "./definitions.h"
 
-int main() {
+int main(void) {
     assert(memcmp(STR0, STR0_CONTENT, sizeof(STR0_CONTENT)) == 0);
     return EXIT_SUCCESS;
 }

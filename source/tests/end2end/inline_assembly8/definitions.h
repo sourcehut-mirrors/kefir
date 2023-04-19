@@ -24,9 +24,9 @@
 #ifdef __x86_64__
 extern void *array[];
 
-extern void fn1();
-extern int *getx();
-extern void init_array();
+extern void fn1(void);
+extern int *getx(void);
+extern void init_array(void);
 #endif
 
 #endif

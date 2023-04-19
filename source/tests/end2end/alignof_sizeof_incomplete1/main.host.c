@@ -28,7 +28,7 @@ STRUCT_S;
 
 const S_t S_Instance = {0};
 
-int main() {
+int main(void) {
     assert(AlignmentX[0] == _Alignof(S_t));
     assert(AlignmentX[1] == _Alignof(S_t));
     assert(SizeofX[0] == sizeof(S_t));

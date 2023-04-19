@@ -25,8 +25,8 @@ extern struct Structure1 X;
 extern struct Structure1 Y;
 extern _Thread_local struct Structure1 Z;
 
-void *getx();
-void *gety();
-void *getz();
+void *getx(void);
+void *gety(void);
+void *getz(void);
 
 #endif

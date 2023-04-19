@@ -24,7 +24,7 @@
 #include <string.h>
 #include "./definitions.h"
 
-int main() {
+int main(void) {
     assert(strcmp(STRING.str, "123456789") == 0);
     assert(strcmp(init_string("Hello").str, "olleH!!!!") == 0);
     assert(strcmp(init_string("Hell").str, "") == 0);

@@ -22,6 +22,6 @@
 #define DEFINITIONS_H_
 
 void fn(int, ...);
-void test();
+void test(void);
 
 #endif

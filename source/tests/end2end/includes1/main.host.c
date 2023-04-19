@@ -23,7 +23,7 @@
 #include <assert.h>
 #include "./definitions.h"
 
-int main() {
+int main(void) {
     assert(getValue() == 314159);
     assert(getFakeValue() == 271828);
     assert(getAnotherFakeValue() == 271828);

@@ -23,7 +23,7 @@
 #include <assert.h>
 #include "./definitions.h"
 
-int main() {
+int main(void) {
     struct S s = {0};
     assert(get_a(&s) == &s.a);
     assert(get_b(&s) == &s.b);

@@ -30,7 +30,7 @@ float fadd2(float x, float y) {
     return x + y;
 }
 
-int main() {
+int main(void) {
     for (int x = -100; x < 100; x++) {
         for (int y = -100; y < 100; y++) {
             assert(add2(x, y) == x + y);

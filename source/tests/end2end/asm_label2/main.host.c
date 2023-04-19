@@ -29,9 +29,9 @@ int Array1SubN = 2;
 
 extern const char *Array1Sub1;
 
-const char *getArray1SubN();
+const char *getArray1SubN(void);
 
-int main() {
+int main(void) {
     assert(Array1Sub1 == &Array1[1]);
     assert(getArray1SubN() == &Array1[2]);
     return EXIT_SUCCESS;

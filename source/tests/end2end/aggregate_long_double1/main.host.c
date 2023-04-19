@@ -25,11 +25,11 @@
 #include "./definitions.h"
 
 static long double LD;
-static struct Param1 getLD() {
+static struct Param1 getLD(void) {
     return (struct Param1){LD};
 }
 
-int main() {
+int main(void) {
     for (long double x = -100.0; x < 100.0; x += 0.01) {
         struct Param1 p = ldneg((struct Param1){x});
         assert(fabsl(x + p.value) < 1e-5);

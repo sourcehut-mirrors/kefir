@@ -23,7 +23,7 @@
 #include <assert.h>
 #include "./definitions.h"
 
-int main() {
+int main(void) {
     assert((int) sumall(0) == 0);
     assert((int) sumall(1, 10.0) == 10);
     assert((int) sumall(1, 5.0, 10.0) == 5);

@@ -22,6 +22,6 @@
 #define DEFINITIONS_H_
 
 extern const int Constant1;
-float getf();
+float getf(void);
 
 #endif

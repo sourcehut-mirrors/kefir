@@ -48,7 +48,7 @@ static void sighandler(int signum) {
     exit(EXIT_FAILURE);
 }
 
-static kefir_result_t init_tmpmgr() {
+static kefir_result_t init_tmpmgr(void) {
     REQUIRE_OK(kefir_tempfile_manager_init(&tmpmgr));
     atexit(tmpmgr_cleanup);
     signal(SIGTERM, sighandler);

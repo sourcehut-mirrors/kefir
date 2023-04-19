@@ -21,10 +21,10 @@
 #ifndef DEFINITIONS_H_
 #define DEFINITIONS_H_
 
-const char *getstr1();
-const char *getstr2();
-const char *getstr3();
-const char *getstr4();
-const char *getstr5();
+const char *getstr1(void);
+const char *getstr2(void);
+const char *getstr3(void);
+const char *getstr4(void);
+const char *getstr5(void);
 
 #endif

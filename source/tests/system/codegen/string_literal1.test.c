@@ -24,9 +24,9 @@
 #include "kefir/core/util.h"
 #include "kefir/test/unit_test.h"
 
-const char *string1();
-const char *string2();
-const char *string3();
+const char *string1(void);
+const char *string2(void);
+const char *string3(void);
 
 int main(int argc, const char **argv) {
     UNUSED(argc);

@@ -32,7 +32,7 @@ float ldcf32(long double);
 double ldcf64(long double);
 
 long double neg(const long double);
-long double inc();
+long double inc(long double);
 long double imp_cast(int);
 
 #endif

@@ -27,7 +27,7 @@
 extern double custom_hypot(double, double);
 #endif
 
-int main() {
+int main(void) {
 #ifdef __x86_64__
     for (double x = 0.0; x < 100.0; x += 0.1) {
         for (double y = 0.0; y < 100.0; y += 0.1) {

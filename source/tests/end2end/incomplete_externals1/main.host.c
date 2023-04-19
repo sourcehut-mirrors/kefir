@@ -33,7 +33,7 @@ struct Structure1 X = {0};
 struct Structure1 Y = {0};
 _Thread_local struct Structure1 Z = {0};
 
-int main() {
+int main(void) {
     assert(getx() == &X);
     assert(gety() == &Y);
     assert(getz() == &Z);
