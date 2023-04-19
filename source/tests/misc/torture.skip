@@ -41,3 +41,6 @@ skip execute/pushpop_macro.c
 
 # setjmp/longjmp
 skip execute/pr56982.c
+
+# ISO-8859-1 encoding
+skip execute/20000227-1.c
