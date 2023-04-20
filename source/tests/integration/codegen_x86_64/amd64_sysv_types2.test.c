@@ -49,17 +49,17 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     codegen.xasmgen.settings.enable_comments = false;
     codegen.xasmgen.settings.enable_identation = false;
 
-    REQUIRE_OK(kefir_irbuilder_type_append_v(mem, func->declaration->params, KEFIR_IR_TYPE_STRUCT, 0, 7));
-    REQUIRE_OK(kefir_irbuilder_type_append_v(mem, func->declaration->params, KEFIR_IR_TYPE_CHAR, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append_v(mem, func->declaration->params, KEFIR_IR_TYPE_CHAR, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append_v(mem, func->declaration->params, KEFIR_IR_TYPE_SHORT, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append_v(mem, func->declaration->params, KEFIR_IR_TYPE_INT, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append_v(mem, func->declaration->params, KEFIR_IR_TYPE_INT, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append_v(mem, func->declaration->params, KEFIR_IR_TYPE_INT, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append_v(mem, func->declaration->params, KEFIR_IR_TYPE_UNION, 0, 3));
-    REQUIRE_OK(kefir_irbuilder_type_append_v(mem, func->declaration->params, KEFIR_IR_TYPE_INT, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append_v(mem, func->declaration->params, KEFIR_IR_TYPE_INT, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append_v(mem, func->declaration->params, KEFIR_IR_TYPE_WORD, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, func->declaration->params, KEFIR_IR_TYPE_STRUCT, 0, 7));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, func->declaration->params, KEFIR_IR_TYPE_CHAR, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, func->declaration->params, KEFIR_IR_TYPE_CHAR, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, func->declaration->params, KEFIR_IR_TYPE_SHORT, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, func->declaration->params, KEFIR_IR_TYPE_INT, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, func->declaration->params, KEFIR_IR_TYPE_INT, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, func->declaration->params, KEFIR_IR_TYPE_INT, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, func->declaration->params, KEFIR_IR_TYPE_UNION, 0, 3));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, func->declaration->params, KEFIR_IR_TYPE_INT, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, func->declaration->params, KEFIR_IR_TYPE_INT, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, func->declaration->params, KEFIR_IR_TYPE_WORD, 0, 0));
 
     REQUIRE_OK(codegen.iface.translate(mem, &codegen.iface, &module));
 

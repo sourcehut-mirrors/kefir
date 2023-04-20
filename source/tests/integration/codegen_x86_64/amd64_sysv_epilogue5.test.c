@@ -50,11 +50,11 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     codegen.xasmgen.settings.enable_comments = false;
     codegen.xasmgen.settings.enable_identation = false;
 
-    REQUIRE_OK(kefir_irbuilder_type_append_v(mem, func->declaration->result, KEFIR_IR_TYPE_STRUCT, 0, 2));
-    REQUIRE_OK(kefir_irbuilder_type_append_v(mem, func->declaration->result, KEFIR_IR_TYPE_ARRAY, 0, 4));
-    REQUIRE_OK(kefir_irbuilder_type_append_v(mem, func->declaration->result, KEFIR_IR_TYPE_FLOAT32, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append_v(mem, func->declaration->result, KEFIR_IR_TYPE_ARRAY, 0, 10));
-    REQUIRE_OK(kefir_irbuilder_type_append_v(mem, func->declaration->result, KEFIR_IR_TYPE_INT32, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, func->declaration->result, KEFIR_IR_TYPE_STRUCT, 0, 2));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, func->declaration->result, KEFIR_IR_TYPE_ARRAY, 0, 4));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, func->declaration->result, KEFIR_IR_TYPE_FLOAT32, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, func->declaration->result, KEFIR_IR_TYPE_ARRAY, 0, 10));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, func->declaration->result, KEFIR_IR_TYPE_INT32, 0, 0));
 
     REQUIRE_OK(kefir_amd64_sysv_function_alloc(mem, &sysv_module, func, &sysv_func));
     REQUIRE_OK(kefir_amd64_sysv_function_epilogue(&codegen, &sysv_func));

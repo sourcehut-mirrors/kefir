@@ -59,7 +59,7 @@ static kefir_result_t fetch_temporary(struct kefir_mem *mem, struct kefir_ast_tr
     if (*type_id == KEFIR_ID_NONE) {
         ldouble_type = kefir_ir_module_new_type(mem, context->module, 1, type_id);
         REQUIRE(ldouble_type != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR type"));
-        REQUIRE_OK(kefir_irbuilder_type_append_v(mem, ldouble_type, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0));
+        REQUIRE_OK(kefir_irbuilder_type_append(mem, ldouble_type, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0));
     } else {
         ldouble_type = kefir_ir_module_get_named_type(context->module, *type_id);
         REQUIRE(ldouble_type != NULL, KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Failed to retrieve IR type"));
@@ -104,7 +104,7 @@ static kefir_result_t allocate_long_double_callback(void *payload) {
     if (param->ldouble_type_id == KEFIR_ID_NONE) {
         ldouble_type = kefir_ir_module_new_type(param->mem, param->context->module, 1, &param->ldouble_type_id);
         REQUIRE(ldouble_type != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR type"));
-        REQUIRE_OK(kefir_irbuilder_type_append_v(param->mem, ldouble_type, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0));
+        REQUIRE_OK(kefir_irbuilder_type_append(param->mem, ldouble_type, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0));
     } else {
         ldouble_type = kefir_ir_module_get_named_type(param->context->module, param->ldouble_type_id);
         REQUIRE(ldouble_type != NULL, KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Failed to retrieve IR type"));

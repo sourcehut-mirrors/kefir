@@ -734,9 +734,8 @@ static kefir_result_t vararg_visit_aggregate(const struct kefir_ir_type *type, k
                                              const struct kefir_ir_typeentry *typeentry, void *payload) {
     UNUSED(typeentry);
     ASSIGN_DECL_CAST(struct vararg_getter *, param, payload);
-    struct kefir_ir_type_iterator iter;
-    REQUIRE_OK(kefir_ir_type_iterator_init(type, &iter));
-    REQUIRE_OK(kefir_ir_type_iterator_goto(&iter, index));
+    kefir_size_t slot;
+    REQUIRE_OK(kefir_ir_type_slot_of(type, index, &slot));
 
     struct vararg_aggregate_info *info = KEFIR_MALLOC(param->mem, sizeof(struct vararg_aggregate_info));
     REQUIRE(info != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate memory aggregate vararg info"));
@@ -766,8 +765,7 @@ static kefir_result_t vararg_visit_aggregate(const struct kefir_ir_type *type, k
         KEFIR_FREE(param->mem, info);
         return res;
     });
-    info->arg_alloc =
-        (struct kefir_abi_sysv_amd64_parameter_allocation *) kefir_vector_at(&info->allocation, iter.slot);
+    info->arg_alloc = (struct kefir_abi_sysv_amd64_parameter_allocation *) kefir_vector_at(&info->allocation, slot);
     REQUIRE_ELSE(info->arg_alloc != NULL, {
         kefir_abi_sysv_amd64_parameter_free(param->mem, &info->allocation);
         kefir_abi_sysv_amd64_type_layout_free(param->mem, &info->layout);
@@ -806,9 +804,8 @@ static kefir_result_t vararg_visit_builtin_impl(struct kefir_mem *mem, struct ke
 static kefir_result_t vararg_visit_builtin(const struct kefir_ir_type *type, kefir_size_t index,
                                            const struct kefir_ir_typeentry *typeentry, void *payload) {
     ASSIGN_DECL_CAST(struct vararg_getter *, param, payload);
-    struct kefir_ir_type_iterator iter;
-    REQUIRE_OK(kefir_ir_type_iterator_init(type, &iter));
-    REQUIRE_OK(kefir_ir_type_iterator_goto(&iter, index));
+    kefir_size_t slot;
+    REQUIRE_OK(kefir_ir_type_slot_of(type, index, &slot));
 
     struct kefir_abi_sysv_amd64_type_layout layout;
     struct kefir_vector allocation;
@@ -819,7 +816,7 @@ static kefir_result_t vararg_visit_builtin(const struct kefir_ir_type *type, kef
         kefir_abi_sysv_amd64_type_layout_free(param->mem, &layout);
         return res;
     });
-    res = vararg_visit_builtin_impl(param->mem, &allocation, iter.slot, typeentry, param->codegen, param->sysv_func,
+    res = vararg_visit_builtin_impl(param->mem, &allocation, slot, typeentry, param->codegen, param->sysv_func,
                                     param->identifier);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_abi_sysv_amd64_parameter_free(param->mem, &allocation);

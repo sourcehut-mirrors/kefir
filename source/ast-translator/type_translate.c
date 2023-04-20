@@ -92,12 +92,12 @@ static kefir_result_t scalar_typeentry(const struct kefir_ast_type *type, kefir_
 static kefir_result_t translate_scalar_type(struct kefir_mem *mem, const struct kefir_ast_type *type,
                                             kefir_size_t alignment, struct kefir_irbuilder_type *builder,
                                             struct kefir_ast_type_layout **layout_ptr) {
-    kefir_size_t type_index = kefir_ir_type_total_length(builder->type);
+    kefir_size_t type_index = kefir_ir_type_length(builder->type);
 
     if (type->tag != KEFIR_AST_TYPE_VOID) {
         struct kefir_ir_typeentry typeentry = {0};
         REQUIRE_OK(scalar_typeentry(type, alignment, &typeentry));
-        REQUIRE_OK(KEFIR_IRBUILDER_TYPE_APPEND(builder, &typeentry));
+        REQUIRE_OK(KEFIR_IRBUILDER_TYPE_APPEND_ENTRY(builder, &typeentry));
     }
 
     if (layout_ptr != NULL) {
@@ -113,12 +113,12 @@ static kefir_result_t translate_array_type(struct kefir_mem *mem, const struct k
                                            struct kefir_irbuilder_type *builder,
                                            struct kefir_ast_type_layout **layout_ptr,
                                            const struct kefir_source_location *source_location) {
-    kefir_size_t type_index = kefir_ir_type_total_length(builder->type);
+    kefir_size_t type_index = kefir_ir_type_length(builder->type);
     struct kefir_ast_type_layout *element_layout = NULL;
 
     switch (type->array_type.boundary) {
         case KEFIR_AST_ARRAY_UNBOUNDED: {
-            REQUIRE_OK(KEFIR_IRBUILDER_TYPE_APPEND_V(builder, KEFIR_IR_TYPE_ARRAY, alignment, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_TYPE_APPEND(builder, KEFIR_IR_TYPE_ARRAY, alignment, 0));
             REQUIRE_OK(kefir_ast_translate_object_type(mem, context, type->array_type.element_type,
                                                        KEFIR_AST_DEFAULT_ALIGNMENT, env, builder,
                                                        layout_ptr != NULL ? &element_layout : NULL, source_location));
@@ -131,8 +131,8 @@ static kefir_result_t translate_array_type(struct kefir_mem *mem, const struct k
         } break;
 
         case KEFIR_AST_ARRAY_BOUNDED:
-            REQUIRE_OK(KEFIR_IRBUILDER_TYPE_APPEND_V(builder, KEFIR_IR_TYPE_ARRAY, alignment,
-                                                     kefir_ast_type_array_const_length(&type->array_type)));
+            REQUIRE_OK(KEFIR_IRBUILDER_TYPE_APPEND(builder, KEFIR_IR_TYPE_ARRAY, alignment,
+                                                   kefir_ast_type_array_const_length(&type->array_type)));
             REQUIRE_OK(kefir_ast_translate_object_type(mem, context, type->array_type.element_type,
                                                        KEFIR_AST_DEFAULT_ALIGNMENT, env, builder,
                                                        layout_ptr != NULL ? &element_layout : NULL, source_location));
@@ -145,9 +145,9 @@ static kefir_result_t translate_array_type(struct kefir_mem *mem, const struct k
             break;
 
         case KEFIR_AST_ARRAY_VLA:
-            REQUIRE_OK(KEFIR_IRBUILDER_TYPE_APPEND_V(builder, KEFIR_IR_TYPE_STRUCT, 0, 2));
-            REQUIRE_OK(KEFIR_IRBUILDER_TYPE_APPEND_V(builder, KEFIR_IR_TYPE_WORD, 0, 0));
-            REQUIRE_OK(KEFIR_IRBUILDER_TYPE_APPEND_V(builder, KEFIR_IR_TYPE_WORD, 0, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_TYPE_APPEND(builder, KEFIR_IR_TYPE_STRUCT, 0, 2));
+            REQUIRE_OK(KEFIR_IRBUILDER_TYPE_APPEND(builder, KEFIR_IR_TYPE_WORD, 0, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_TYPE_APPEND(builder, KEFIR_IR_TYPE_WORD, 0, 0));
             if (layout_ptr != NULL) {
                 *layout_ptr = kefir_ast_new_type_layout(mem, type, 0, type_index);
                 REQUIRE(*layout_ptr != NULL,
@@ -259,8 +259,8 @@ static kefir_result_t translate_bitfield(struct kefir_mem *mem, struct kefir_ast
         REQUIRE_OK(KEFIR_IR_BITFIELD_ALLOCATOR_NEXT(mem, &bitfield_mgr->allocator, type_index,
                                                     field->identifier != NULL, typeentry.typecode,
                                                     field->bitwidth->value.integer, &typeentry, &ir_bitfield));
-        bitfield_mgr->last_bitfield_storage = kefir_ir_type_total_length(builder->type);
-        REQUIRE_OK(KEFIR_IRBUILDER_TYPE_APPEND(builder, &typeentry));
+        bitfield_mgr->last_bitfield_storage = kefir_ir_type_length(builder->type);
+        REQUIRE_OK(KEFIR_IRBUILDER_TYPE_APPEND_ENTRY(builder, &typeentry));
         if (layout != NULL) {
             element_layout = kefir_ast_new_type_layout(mem, unqualified_field_type, field->alignment->value,
                                                        bitfield_mgr->last_bitfield_storage);
@@ -296,8 +296,8 @@ static kefir_result_t translate_struct_type(struct kefir_mem *mem, const struct 
     REQUIRE(type->structure_type.complete,
             KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, source_location, "Expected complete structure/union type"));
 
-    kefir_size_t type_index = kefir_ir_type_total_length(builder->type);
-    REQUIRE_OK(KEFIR_IRBUILDER_TYPE_APPEND_V(
+    kefir_size_t type_index = kefir_ir_type_length(builder->type);
+    REQUIRE_OK(KEFIR_IRBUILDER_TYPE_APPEND(
         builder, type->tag == KEFIR_AST_TYPE_STRUCTURE ? KEFIR_IR_TYPE_STRUCT : KEFIR_IR_TYPE_UNION, alignment, 0));
 
     kefir_bool_t allocated = false;
@@ -337,7 +337,7 @@ static kefir_result_t translate_struct_type(struct kefir_mem *mem, const struct 
     }
 
     if (res == KEFIR_OK && kefir_list_length(&type->structure_type.fields) == 0 && env->configuration->empty_structs) {
-        res = KEFIR_IRBUILDER_TYPE_APPEND_V(builder, KEFIR_IR_TYPE_CHAR, 0, 0);
+        res = KEFIR_IRBUILDER_TYPE_APPEND(builder, KEFIR_IR_TYPE_CHAR, 0, 0);
         kefir_ir_type_at(builder->type, type_index)->param++;
     }
 

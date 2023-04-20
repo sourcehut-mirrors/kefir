@@ -151,7 +151,7 @@ static kefir_result_t translate_static(struct kefir_mem *mem, const struct kefir
                                        struct kefir_ir_module *module,
                                        const struct kefir_ast_translator_global_scope_layout *global_scope) {
     struct kefir_ir_data *static_data = NULL;
-    if (kefir_ir_type_total_length(global_scope->static_layout) > 0) {
+    if (kefir_ir_type_length(global_scope->static_layout) > 0) {
         REQUIRE_OK(get_static_data(mem, module, global_scope->static_layout_id, &static_data));
     }
 
@@ -182,7 +182,7 @@ static kefir_result_t translate_static(struct kefir_mem *mem, const struct kefir
         REQUIRE_OK(kefir_ir_data_finalize(static_data));
     }
 
-    if (kefir_ir_type_total_length(global_scope->static_uninit_layout) > 0) {
+    if (kefir_ir_type_length(global_scope->static_uninit_layout) > 0) {
         struct kefir_ir_data *static_uninit_data;
         REQUIRE_OK(get_static_uninit_data(mem, module, global_scope->static_uninit_layout_id, &static_uninit_data));
         REQUIRE_OK(kefir_ir_data_finalize(static_uninit_data));
@@ -261,7 +261,7 @@ static kefir_result_t translate_static_thread_locals(
     struct kefir_mem *mem, const struct kefir_ast_context *context, struct kefir_ir_module *module,
     const struct kefir_ast_translator_global_scope_layout *global_scope) {
     struct kefir_ir_data *static_tlocal_data = NULL;
-    if (kefir_ir_type_total_length(global_scope->static_thread_local_layout) > 0) {
+    if (kefir_ir_type_length(global_scope->static_thread_local_layout) > 0) {
         REQUIRE_OK(get_static_thread_local_data(mem, module, global_scope->static_thread_local_layout_id,
                                                 &static_tlocal_data));
     }
@@ -289,7 +289,7 @@ static kefir_result_t translate_static_thread_locals(
         REQUIRE_OK(kefir_ir_data_finalize(static_tlocal_data));
     }
 
-    if (kefir_ir_type_total_length(global_scope->static_thread_local_uninit_layout) > 0) {
+    if (kefir_ir_type_length(global_scope->static_thread_local_uninit_layout) > 0) {
         struct kefir_ir_data *static_thread_local_uninit_data;
         REQUIRE_OK(get_static_thread_local_uninit_data(mem, module, global_scope->static_thread_local_uninit_layout_id,
                                                        &static_thread_local_uninit_data));
@@ -318,7 +318,7 @@ static kefir_result_t translate_local_static(struct kefir_mem *mem, const struct
                                              struct kefir_ir_module *module,
                                              const struct kefir_ast_translator_local_scope_layout *local_scope) {
     struct kefir_ir_data *static_data = NULL;
-    if (kefir_ir_type_total_length(local_scope->global->static_layout) > 0) {
+    if (kefir_ir_type_length(local_scope->global->static_layout) > 0) {
         REQUIRE_OK(get_static_data(mem, module, local_scope->global->static_layout_id, &static_data));
     }
 
@@ -351,7 +351,7 @@ static kefir_result_t translate_local_static_thread_locals(
     struct kefir_mem *mem, const struct kefir_ast_context *context, struct kefir_ir_module *module,
     const struct kefir_ast_translator_local_scope_layout *local_scope) {
     struct kefir_ir_data *static_tlocal_data = NULL;
-    if (kefir_ir_type_total_length(local_scope->global->static_thread_local_layout) > 0) {
+    if (kefir_ir_type_length(local_scope->global->static_thread_local_layout) > 0) {
         REQUIRE_OK(get_static_thread_local_data(mem, module, local_scope->global->static_thread_local_layout_id,
                                                 &static_tlocal_data));
     }

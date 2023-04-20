@@ -50,16 +50,16 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     codegen.xasmgen.settings.enable_comments = false;
     codegen.xasmgen.settings.enable_identation = false;
 
-    REQUIRE_OK(kefir_irbuilder_type_append_v(mem, func->declaration->params, KEFIR_IR_TYPE_STRUCT, 0, 5));
-    REQUIRE_OK(kefir_irbuilder_type_append_v(mem, func->declaration->params, KEFIR_IR_TYPE_WORD, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append_v(mem, func->declaration->params, KEFIR_IR_TYPE_WORD, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append_v(mem, func->declaration->params, KEFIR_IR_TYPE_CHAR, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append_v(mem, func->declaration->params, KEFIR_IR_TYPE_BITS, 4, 6));
-    REQUIRE_OK(kefir_irbuilder_type_append_v(mem, func->declaration->params, KEFIR_IR_TYPE_UNION, 0, 2));
-    REQUIRE_OK(kefir_irbuilder_type_append_v(mem, func->declaration->params, KEFIR_IR_TYPE_STRUCT, 0, 2));
-    REQUIRE_OK(kefir_irbuilder_type_append_v(mem, func->declaration->params, KEFIR_IR_TYPE_SHORT, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append_v(mem, func->declaration->params, KEFIR_IR_TYPE_SHORT, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append_v(mem, func->declaration->params, KEFIR_IR_TYPE_INT, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, func->declaration->params, KEFIR_IR_TYPE_STRUCT, 0, 5));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, func->declaration->params, KEFIR_IR_TYPE_WORD, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, func->declaration->params, KEFIR_IR_TYPE_WORD, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, func->declaration->params, KEFIR_IR_TYPE_CHAR, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, func->declaration->params, KEFIR_IR_TYPE_BITS, 4, 6));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, func->declaration->params, KEFIR_IR_TYPE_UNION, 0, 2));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, func->declaration->params, KEFIR_IR_TYPE_STRUCT, 0, 2));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, func->declaration->params, KEFIR_IR_TYPE_SHORT, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, func->declaration->params, KEFIR_IR_TYPE_SHORT, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, func->declaration->params, KEFIR_IR_TYPE_INT, 0, 0));
 
     struct kefir_ir_data *data1 =
         kefir_ir_module_new_named_data(mem, &module, "DataX", KEFIR_IR_DATA_GLOBAL_STORAGE, type_id);

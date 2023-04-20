@@ -48,7 +48,7 @@ kefir_result_t kefir_abi_sysv_amd64_qwords_count(const struct kefir_ir_type *typ
     struct kefir_ir_type_visitor visitor;
     kefir_ir_type_visitor_init(&visitor, count_qwords_visitor);
     struct qword_counter counter = {.layout = layout, .count = 0};
-    REQUIRE_OK(kefir_ir_type_visitor_list_nodes(type, &visitor, (void *) &counter, 0, kefir_ir_type_nodes(type)));
+    REQUIRE_OK(kefir_ir_type_visitor_list_nodes(type, &visitor, (void *) &counter, 0, kefir_ir_type_children(type)));
     *count = counter.count;
     return KEFIR_OK;
 }

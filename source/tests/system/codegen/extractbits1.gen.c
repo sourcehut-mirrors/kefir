@@ -45,8 +45,8 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE(func != NULL, KEFIR_INTERNAL_ERROR);
     REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, decl->name, KEFIR_IR_IDENTIFIER_GLOBAL));
 
-    kefir_irbuilder_type_append_v(mem, func->declaration->params, KEFIR_IR_TYPE_WORD, 0, 0);
-    kefir_irbuilder_type_append_v(mem, func->declaration->result, KEFIR_IR_TYPE_WORD, 0, 0);
+    kefir_irbuilder_type_append(mem, func->declaration->params, KEFIR_IR_TYPE_WORD, 0, 0);
+    kefir_irbuilder_type_append(mem, func->declaration->result, KEFIR_IR_TYPE_WORD, 0, 0);
     kefir_irbuilder_block_appendi64(mem, &func->body, KEFIR_IROPCODE_PICK, 0);
     kefir_irbuilder_block_appendu32(mem, &func->body, KEFIR_IROPCODE_EXTUBITS, 0, 4);
     kefir_irbuilder_block_appendi64(mem, &func->body, KEFIR_IROPCODE_PICK, 1);

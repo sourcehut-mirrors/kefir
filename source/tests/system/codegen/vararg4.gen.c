@@ -52,15 +52,14 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_codegen_sysv_amd64_init(mem, &codegen, stdout, NULL));
     codegen.xasmgen.settings.enable_comments = false;
 
-    REQUIRE_OK(kefir_irbuilder_type_append_v(mem, inttype, KEFIR_IR_TYPE_INT, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append_v(mem, aggtype, KEFIR_IR_TYPE_STRUCT, 0, 1));
-    REQUIRE_OK(kefir_irbuilder_type_append_v(mem, aggtype, KEFIR_IR_TYPE_ARRAY, 0, 4));
-    REQUIRE_OK(kefir_irbuilder_type_append_v(mem, aggtype, KEFIR_IR_TYPE_LONG, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append_v(mem, getarg_decl_result, KEFIR_IR_TYPE_STRUCT, 0, 1));
-    REQUIRE_OK(kefir_irbuilder_type_append_v(mem, getarg_decl_result, KEFIR_IR_TYPE_ARRAY, 0, 4));
-    REQUIRE_OK(kefir_irbuilder_type_append_v(mem, getarg_decl_result, KEFIR_IR_TYPE_LONG, 0, 0));
-    REQUIRE_OK(
-        kefir_irbuilder_type_append_v(mem, getarg_locals, KEFIR_IR_TYPE_BUILTIN, 0, KEFIR_IR_TYPE_BUILTIN_VARARG));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, inttype, KEFIR_IR_TYPE_INT, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, aggtype, KEFIR_IR_TYPE_STRUCT, 0, 1));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, aggtype, KEFIR_IR_TYPE_ARRAY, 0, 4));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, aggtype, KEFIR_IR_TYPE_LONG, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, getarg_decl_result, KEFIR_IR_TYPE_STRUCT, 0, 1));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, getarg_decl_result, KEFIR_IR_TYPE_ARRAY, 0, 4));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, getarg_decl_result, KEFIR_IR_TYPE_LONG, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, getarg_locals, KEFIR_IR_TYPE_BUILTIN, 0, KEFIR_IR_TYPE_BUILTIN_VARARG));
     kefir_irbuilder_block_appendi64(mem, &getarg->body, KEFIR_IROPCODE_NOP, 0);                     // 0: [C, L*]
     kefir_irbuilder_block_appendu32(mem, &getarg->body, KEFIR_IROPCODE_GETLOCAL, locals_id, 0);     // 1: [C, V*]
     kefir_irbuilder_block_appendi64(mem, &getarg->body, KEFIR_IROPCODE_VARARG_START, 0);            // 2: [C]

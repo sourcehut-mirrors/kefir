@@ -176,11 +176,10 @@ static kefir_result_t return_aggregate(const struct kefir_ir_type *type, kefir_s
                                        const struct kefir_ir_typeentry *typeentry, void *payload) {
     UNUSED(typeentry);
     struct result_return *param = (struct result_return *) payload;
-    struct kefir_ir_type_iterator iter;
-    REQUIRE_OK(kefir_ir_type_iterator_init(type, &iter));
-    REQUIRE_OK(kefir_ir_type_iterator_goto(&iter, index));
+    kefir_size_t slot;
+    REQUIRE_OK(kefir_ir_type_slot_of(type, index, &slot));
     ASSIGN_DECL_CAST(struct kefir_abi_sysv_amd64_parameter_allocation *, alloc,
-                     kefir_vector_at(&param->func->decl.returns.allocation, iter.slot));
+                     kefir_vector_at(&param->func->decl.returns.allocation, slot));
     const struct kefir_abi_sysv_amd64_typeentry_layout *layout = NULL;
     REQUIRE_OK(kefir_abi_sysv_amd64_type_layout_at(&param->func->decl.returns.layout, index, &layout));
     if (alloc->klass == KEFIR_AMD64_SYSV_PARAM_MEMORY) {
@@ -194,11 +193,10 @@ static kefir_result_t return_aggregate(const struct kefir_ir_type *type, kefir_s
 static kefir_result_t return_builtin(const struct kefir_ir_type *type, kefir_size_t index,
                                      const struct kefir_ir_typeentry *typeentry, void *payload) {
     struct result_return *param = (struct result_return *) payload;
-    struct kefir_ir_type_iterator iter;
-    REQUIRE_OK(kefir_ir_type_iterator_init(type, &iter));
-    REQUIRE_OK(kefir_ir_type_iterator_goto(&iter, index));
+    kefir_size_t slot;
+    REQUIRE_OK(kefir_ir_type_slot_of(type, index, &slot));
     ASSIGN_DECL_CAST(struct kefir_abi_sysv_amd64_parameter_allocation *, alloc,
-                     kefir_vector_at(&param->func->decl.returns.allocation, iter.slot));
+                     kefir_vector_at(&param->func->decl.returns.allocation, slot));
     kefir_ir_builtin_type_t builtin = (kefir_ir_builtin_type_t) typeentry->param;
     REQUIRE(builtin < KEFIR_IR_TYPE_BUILTIN_COUNT, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unknown built-in type"));
     const struct kefir_codegen_amd64_sysv_builtin_type *builtin_type =

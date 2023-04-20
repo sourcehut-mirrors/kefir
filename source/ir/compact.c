@@ -29,7 +29,7 @@ static kefir_hashtree_hash_t ir_type_hash(kefir_hashtree_key_t key, void *data) 
     REQUIRE(type != NULL, 0);
     kefir_hashtree_hash_t hash = 0;
 
-    for (kefir_size_t i = 0; i < kefir_ir_type_total_length(type); i++) {
+    for (kefir_size_t i = 0; i < kefir_ir_type_length(type); i++) {
         const struct kefir_ir_typeentry *typeentry = kefir_ir_type_at(type, i);
 
         hash *= 37;
@@ -45,8 +45,8 @@ static bool ir_type_equals(kefir_hashtree_key_t key1, kefir_hashtree_key_t key2,
 
     REQUIRE(type1 != type2, true);
     REQUIRE(type1 != NULL && type2 != NULL, type1 == NULL && type2 == NULL);
-    REQUIRE(kefir_ir_type_total_length(type1) == kefir_ir_type_total_length(type2), false);
-    for (kefir_size_t i = 0; i < kefir_ir_type_total_length(type1); i++) {
+    REQUIRE(kefir_ir_type_length(type1) == kefir_ir_type_length(type2), false);
+    for (kefir_size_t i = 0; i < kefir_ir_type_length(type1); i++) {
         const struct kefir_ir_typeentry *typeentry1 = kefir_ir_type_at(type1, i);
         const struct kefir_ir_typeentry *typeentry2 = kefir_ir_type_at(type2, i);
 

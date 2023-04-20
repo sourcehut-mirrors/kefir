@@ -24,40 +24,39 @@
 
 #define GROW(x) (3 * (x) / 2 + 5)
 
-kefir_result_t kefir_irbuilder_type_append(struct kefir_mem *mem, struct kefir_ir_type *type,
-                                           const struct kefir_ir_typeentry *typeentry) {
+kefir_result_t kefir_irbuilder_type_append_entry(struct kefir_mem *mem, struct kefir_ir_type *type,
+                                                 const struct kefir_ir_typeentry *typeentry) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Epected valid IR type"));
     REQUIRE(typeentry != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR type entry"));
-    if (kefir_ir_type_raw_available(type) == 0) {
-        REQUIRE_OK(kefir_ir_type_realloc(mem, GROW(kefir_ir_type_total_length(type)), type));
+    if (kefir_ir_type_available_entries(type) == 0) {
+        REQUIRE_OK(kefir_ir_type_realloc(mem, GROW(kefir_ir_type_length(type)), type));
     }
-    REQUIRE_OK(kefir_ir_type_append(type, typeentry));
+    REQUIRE_OK(kefir_ir_type_append_entry(type, typeentry));
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_irbuilder_type_append_v(struct kefir_mem *mem, struct kefir_ir_type *type,
-                                             kefir_ir_typecode_t typecode, kefir_uint32_t alignment,
-                                             kefir_int64_t arg) {
+kefir_result_t kefir_irbuilder_type_append(struct kefir_mem *mem, struct kefir_ir_type *type,
+                                           kefir_ir_typecode_t typecode, kefir_uint32_t alignment, kefir_int64_t arg) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Epected valid IR type"));
-    if (kefir_ir_type_raw_available(type) == 0) {
-        REQUIRE_OK(kefir_ir_type_realloc(mem, GROW(kefir_ir_type_total_length(type)), type));
+    if (kefir_ir_type_available_entries(type) == 0) {
+        REQUIRE_OK(kefir_ir_type_realloc(mem, GROW(kefir_ir_type_length(type)), type));
     }
-    REQUIRE_OK(kefir_ir_type_append_v(type, typecode, alignment, arg));
+    REQUIRE_OK(kefir_ir_type_append(type, typecode, alignment, arg));
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_irbuilder_type_append_e(struct kefir_mem *mem, struct kefir_ir_type *type,
-                                             const struct kefir_ir_type *source, kefir_size_t index) {
+kefir_result_t kefir_irbuilder_type_append_from(struct kefir_mem *mem, struct kefir_ir_type *type,
+                                                const struct kefir_ir_type *source, kefir_size_t index) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Epected valid IR type"));
     REQUIRE(source != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Epected valid source IR type"));
-    const kefir_size_t length = kefir_ir_type_node_total_length(source, index);
-    if (kefir_ir_type_raw_available(type) < length) {
-        REQUIRE_OK(kefir_ir_type_realloc(mem, GROW(kefir_ir_type_total_length(type) + length), type));
+    const kefir_size_t length = kefir_ir_type_length_of(source, index);
+    if (kefir_ir_type_available_entries(type) < length) {
+        REQUIRE_OK(kefir_ir_type_realloc(mem, GROW(kefir_ir_type_length(type) + length), type));
     }
-    REQUIRE_OK(kefir_ir_type_append_e(type, source, index));
+    REQUIRE_OK(kefir_ir_type_append_from(type, source, index));
     return KEFIR_OK;
 }
 
@@ -185,21 +184,22 @@ kefir_result_t kefir_irbuilder_block_init(struct kefir_mem *mem, struct kefir_ir
     return KEFIR_OK;
 }
 
-kefir_result_t type_builder_append(struct kefir_irbuilder_type *builder, const struct kefir_ir_typeentry *typeentry) {
+kefir_result_t type_builder_append_entry(struct kefir_irbuilder_type *builder,
+                                         const struct kefir_ir_typeentry *typeentry) {
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR type builder"));
-    return kefir_irbuilder_type_append(builder->payload, builder->type, typeentry);
+    return kefir_irbuilder_type_append_entry(builder->payload, builder->type, typeentry);
 }
 
-kefir_result_t type_builder_append_v(struct kefir_irbuilder_type *builder, kefir_ir_typecode_t typecode,
-                                     kefir_uint32_t alignment, kefir_int64_t param) {
+kefir_result_t type_builder_append(struct kefir_irbuilder_type *builder, kefir_ir_typecode_t typecode,
+                                   kefir_uint32_t alignment, kefir_int64_t param) {
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR type builder"));
-    return kefir_irbuilder_type_append_v(builder->payload, builder->type, typecode, alignment, param);
+    return kefir_irbuilder_type_append(builder->payload, builder->type, typecode, alignment, param);
 }
 
-kefir_result_t type_builder_append_e(struct kefir_irbuilder_type *builder, const struct kefir_ir_type *type,
-                                     kefir_size_t index) {
+kefir_result_t type_builder_append_from(struct kefir_irbuilder_type *builder, const struct kefir_ir_type *type,
+                                        kefir_size_t index) {
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR type builder"));
-    return kefir_irbuilder_type_append_e(builder->payload, builder->type, type, index);
+    return kefir_irbuilder_type_append_from(builder->payload, builder->type, type, index);
 }
 
 kefir_result_t type_builder_free(struct kefir_irbuilder_type *builder) {
@@ -214,9 +214,9 @@ kefir_result_t kefir_irbuilder_type_init(struct kefir_mem *mem, struct kefir_irb
     REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR type"));
     builder->type = type;
     builder->payload = mem;
+    builder->append_entry = type_builder_append_entry;
     builder->append = type_builder_append;
-    builder->append_v = type_builder_append_v;
-    builder->append_e = type_builder_append_e;
+    builder->append_from = type_builder_append_from;
     builder->free = type_builder_free;
     return KEFIR_OK;
 }

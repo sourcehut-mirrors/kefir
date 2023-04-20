@@ -411,7 +411,7 @@ static kefir_result_t assign_immediate_struct(const struct kefir_ir_type *type, 
 
     if (layout->size > 8 * KEFIR_AMD64_SYSV_ABI_QWORD || !layout->aligned) {
         allocation->klass = KEFIR_AMD64_SYSV_PARAM_MEMORY;
-        info->slot += kefir_ir_type_node_slots(type, index) - 1;
+        info->slot += kefir_ir_type_slots_of(type, index) - 1;
     } else {
         REQUIRE_OK(immediate_struct_unwrap(info->mem, type, index, typeentry, layout, info->layout, info->allocation,
                                            &info->slot, allocation));
@@ -464,7 +464,7 @@ static kefir_result_t assign_immediate_array(const struct kefir_ir_type *type, k
 
     if (layout->size > 8 * KEFIR_AMD64_SYSV_ABI_QWORD || !layout->aligned) {
         allocation->klass = KEFIR_AMD64_SYSV_PARAM_MEMORY;
-        info->slot += kefir_ir_type_node_slots(type, index) - 1;
+        info->slot += kefir_ir_type_slots_of(type, index) - 1;
     } else {
         immediate_array_unwrap(info->mem, type, index, typeentry, layout, info->layout, info->allocation, &info->slot,
                                allocation);
@@ -519,7 +519,7 @@ static kefir_result_t assign_immediate_union(const struct kefir_ir_type *type, k
 
     if (layout->size > 8 * KEFIR_AMD64_SYSV_ABI_QWORD || !layout->aligned) {
         allocation->klass = KEFIR_AMD64_SYSV_PARAM_MEMORY;
-        info->slot += kefir_ir_type_node_slots(type, index) - 1;
+        info->slot += kefir_ir_type_slots_of(type, index) - 1;
     } else {
         immediate_union_unwrap(info->mem, type, index, typeentry, layout, info->layout, info->allocation, &info->slot,
                                allocation);
@@ -556,7 +556,7 @@ kefir_result_t kefir_abi_sysv_amd64_parameter_classify(struct kefir_mem *mem, co
     REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR type definition"));
     REQUIRE(layout != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid System-V AMD64 ABI type layout"));
     REQUIRE(allocation != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid allocation vector"));
-    kefir_size_t slots = kefir_ir_type_total_slots(type);
+    kefir_size_t slots = kefir_ir_type_slots(type);
     REQUIRE_OK(kefir_vector_alloc(mem, sizeof(struct kefir_abi_sysv_amd64_parameter_allocation), slots, allocation));
     kefir_result_t res = kefir_vector_extend(allocation, slots);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -583,7 +583,7 @@ kefir_result_t kefir_abi_sysv_amd64_parameter_classify(struct kefir_mem *mem, co
     visitor.visit[KEFIR_IR_TYPE_ARRAY] = assign_immediate_array;
     visitor.visit[KEFIR_IR_TYPE_BUILTIN] = assign_immediate_builtin;
     struct input_allocation info = {.mem = mem, .layout = layout, .allocation = allocation};
-    res = kefir_ir_type_visitor_list_nodes(type, &visitor, (void *) &info, 0, kefir_ir_type_nodes(type));
+    res = kefir_ir_type_visitor_list_nodes(type, &visitor, (void *) &info, 0, kefir_ir_type_children(type));
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_vector_free(mem, allocation);
         return res;
@@ -616,11 +616,10 @@ static kefir_result_t integer_allocate(const struct kefir_ir_type *type, kefir_s
     UNUSED(index);
     UNUSED(typeentry);
     struct allocation_state *state = (struct allocation_state *) payload;
-    struct kefir_ir_type_iterator iter;
-    REQUIRE_OK(kefir_ir_type_iterator_init(type, &iter));
-    REQUIRE_OK(kefir_ir_type_iterator_goto(&iter, index));
+    kefir_size_t slot;
+    REQUIRE_OK(kefir_ir_type_slot_of(type, index, &slot));
     ASSIGN_DECL_CAST(struct kefir_abi_sysv_amd64_parameter_allocation *, alloc,
-                     kefir_vector_at(state->allocation, iter.slot));
+                     kefir_vector_at(state->allocation, slot));
     REQUIRE(alloc->requirements.integer == 1 && alloc->requirements.sse == 0 && alloc->requirements.sseup == 0 &&
                 alloc->requirements.memory.size == 0,
             KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected INTEGER to require exactly 1 int eightbyte"));
@@ -641,11 +640,10 @@ static kefir_result_t sse_allocate(const struct kefir_ir_type *type, kefir_size_
     UNUSED(index);
     UNUSED(typeentry);
     struct allocation_state *state = (struct allocation_state *) payload;
-    struct kefir_ir_type_iterator iter;
-    REQUIRE_OK(kefir_ir_type_iterator_init(type, &iter));
-    REQUIRE_OK(kefir_ir_type_iterator_goto(&iter, index));
+    kefir_size_t slot;
+    REQUIRE_OK(kefir_ir_type_slot_of(type, index, &slot));
     ASSIGN_DECL_CAST(struct kefir_abi_sysv_amd64_parameter_allocation *, alloc,
-                     kefir_vector_at(state->allocation, iter.slot));
+                     kefir_vector_at(state->allocation, slot));
     REQUIRE(alloc->requirements.integer == 0 && alloc->requirements.sse == 1 && alloc->requirements.sseup == 0 &&
                 alloc->requirements.memory.size == 0,
             KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected SSE to require exactly 1 sse eightbyte"));
@@ -666,11 +664,10 @@ static kefir_result_t long_double_allocate(const struct kefir_ir_type *type, kef
     UNUSED(index);
     UNUSED(typeentry);
     struct allocation_state *state = (struct allocation_state *) payload;
-    struct kefir_ir_type_iterator iter;
-    REQUIRE_OK(kefir_ir_type_iterator_init(type, &iter));
-    REQUIRE_OK(kefir_ir_type_iterator_goto(&iter, index));
+    kefir_size_t slot;
+    REQUIRE_OK(kefir_ir_type_slot_of(type, index, &slot));
     ASSIGN_DECL_CAST(struct kefir_abi_sysv_amd64_parameter_allocation *, alloc,
-                     kefir_vector_at(state->allocation, iter.slot));
+                     kefir_vector_at(state->allocation, slot));
 
     const kefir_size_t alignment = MAX(alloc->requirements.memory.alignment, KEFIR_AMD64_SYSV_ABI_QWORD * 2);
     state->current->stack_offset = kefir_target_abi_pad_aligned(state->current->stack_offset, alignment);
@@ -693,13 +690,12 @@ static kefir_result_t aggregate_allocate(const struct kefir_ir_type *type, kefir
     UNUSED(index);
     UNUSED(typeentry);
     struct allocation_state *state = (struct allocation_state *) payload;
-    struct kefir_ir_type_iterator iter;
-    REQUIRE_OK(kefir_ir_type_iterator_init(type, &iter));
-    REQUIRE_OK(kefir_ir_type_iterator_goto(&iter, index));
+    kefir_size_t slot;
+    REQUIRE_OK(kefir_ir_type_slot_of(type, index, &slot));
     const struct kefir_abi_sysv_amd64_typeentry_layout *layout = NULL;
     REQUIRE_OK(kefir_abi_sysv_amd64_type_layout_at(state->layout, index, &layout));
     ASSIGN_DECL_CAST(struct kefir_abi_sysv_amd64_parameter_allocation *, alloc,
-                     kefir_vector_at(state->allocation, iter.slot));
+                     kefir_vector_at(state->allocation, slot));
     if (aggregate_register_allocate(alloc, state->current)) {
         if (alloc->requirements.integer > 0) {
             alloc->location.integer_register = state->current->integer_register;
@@ -748,11 +744,10 @@ static kefir_result_t builtin_allocate(const struct kefir_ir_type *type, kefir_s
     UNUSED(type);
     UNUSED(index);
     struct allocation_state *state = (struct allocation_state *) payload;
-    struct kefir_ir_type_iterator iter;
-    REQUIRE_OK(kefir_ir_type_iterator_init(type, &iter));
-    REQUIRE_OK(kefir_ir_type_iterator_goto(&iter, index));
+    kefir_size_t slot;
+    REQUIRE_OK(kefir_ir_type_slot_of(type, index, &slot));
     ASSIGN_DECL_CAST(struct kefir_abi_sysv_amd64_parameter_allocation *, alloc,
-                     kefir_vector_at(state->allocation, iter.slot));
+                     kefir_vector_at(state->allocation, slot));
     kefir_ir_builtin_type_t builtin = (kefir_ir_builtin_type_t) typeentry->param;
 
     switch (builtin) {
@@ -793,6 +788,6 @@ kefir_result_t kefir_abi_sysv_amd64_parameter_allocate(struct kefir_mem *mem, co
     visitor.visit[KEFIR_IR_TYPE_UNION] = aggregate_allocate;
     visitor.visit[KEFIR_IR_TYPE_BUILTIN] = builtin_allocate;
     struct allocation_state state = {.mem = mem, .current = location, .layout = layout, .allocation = allocation};
-    REQUIRE_OK(kefir_ir_type_visitor_list_nodes(type, &visitor, (void *) &state, 0, kefir_ir_type_nodes(type)));
+    REQUIRE_OK(kefir_ir_type_visitor_list_nodes(type, &visitor, (void *) &state, 0, kefir_ir_type_children(type)));
     return KEFIR_OK;
 }

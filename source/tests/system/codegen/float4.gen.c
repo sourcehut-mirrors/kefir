@@ -46,8 +46,8 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         kefir_ir_module_new_function(mem, &module, floatToLong_decl, KEFIR_ID_NONE, 1024);
     REQUIRE(floatToLong != NULL, KEFIR_INTERNAL_ERROR);
     REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, floatToLong_decl->name, KEFIR_IR_IDENTIFIER_GLOBAL));
-    kefir_irbuilder_type_append_v(mem, floatToLong->declaration->params, KEFIR_IR_TYPE_FLOAT32, 0, 0);
-    kefir_irbuilder_type_append_v(mem, floatToLong->declaration->result, KEFIR_IR_TYPE_LONG, 0, 3);
+    kefir_irbuilder_type_append(mem, floatToLong->declaration->params, KEFIR_IR_TYPE_FLOAT32, 0, 0);
+    kefir_irbuilder_type_append(mem, floatToLong->declaration->result, KEFIR_IR_TYPE_LONG, 0, 3);
     kefir_irbuilder_block_appendi64(mem, &floatToLong->body, KEFIR_IROPCODE_F32CINT, 0);
 
     struct kefir_ir_type *doubleToLong_decl_params = kefir_ir_module_new_type(mem, &module, 1, &func_params),
@@ -61,8 +61,8 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         kefir_ir_module_new_function(mem, &module, doubleToLong_decl, KEFIR_ID_NONE, 1024);
     REQUIRE(doubleToLong != NULL, KEFIR_INTERNAL_ERROR);
     REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, doubleToLong_decl->name, KEFIR_IR_IDENTIFIER_GLOBAL));
-    kefir_irbuilder_type_append_v(mem, doubleToLong->declaration->params, KEFIR_IR_TYPE_FLOAT64, 0, 0);
-    kefir_irbuilder_type_append_v(mem, doubleToLong->declaration->result, KEFIR_IR_TYPE_LONG, 0, 3);
+    kefir_irbuilder_type_append(mem, doubleToLong->declaration->params, KEFIR_IR_TYPE_FLOAT64, 0, 0);
+    kefir_irbuilder_type_append(mem, doubleToLong->declaration->result, KEFIR_IR_TYPE_LONG, 0, 3);
     kefir_irbuilder_block_appendi64(mem, &doubleToLong->body, KEFIR_IROPCODE_F64CINT, 0);
 
     struct kefir_ir_type *longToFloat_decl_params = kefir_ir_module_new_type(mem, &module, 1, &func_params),
@@ -76,8 +76,8 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         kefir_ir_module_new_function(mem, &module, longToFloat_decl, KEFIR_ID_NONE, 1024);
     REQUIRE(longToFloat != NULL, KEFIR_INTERNAL_ERROR);
     REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, longToFloat_decl->name, KEFIR_IR_IDENTIFIER_GLOBAL));
-    kefir_irbuilder_type_append_v(mem, longToFloat->declaration->params, KEFIR_IR_TYPE_LONG, 0, 0);
-    kefir_irbuilder_type_append_v(mem, longToFloat->declaration->result, KEFIR_IR_TYPE_FLOAT32, 0, 3);
+    kefir_irbuilder_type_append(mem, longToFloat->declaration->params, KEFIR_IR_TYPE_LONG, 0, 0);
+    kefir_irbuilder_type_append(mem, longToFloat->declaration->result, KEFIR_IR_TYPE_FLOAT32, 0, 3);
     kefir_irbuilder_block_appendi64(mem, &longToFloat->body, KEFIR_IROPCODE_INTCF32, 0);
 
     struct kefir_ir_type *longToDouble_decl_params = kefir_ir_module_new_type(mem, &module, 1, &func_params),
@@ -91,8 +91,8 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         kefir_ir_module_new_function(mem, &module, longToDouble_decl, KEFIR_ID_NONE, 1024);
     REQUIRE(longToDouble != NULL, KEFIR_INTERNAL_ERROR);
     REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, longToDouble_decl->name, KEFIR_IR_IDENTIFIER_GLOBAL));
-    kefir_irbuilder_type_append_v(mem, longToDouble->declaration->params, KEFIR_IR_TYPE_LONG, 0, 0);
-    kefir_irbuilder_type_append_v(mem, longToDouble->declaration->result, KEFIR_IR_TYPE_FLOAT64, 0, 3);
+    kefir_irbuilder_type_append(mem, longToDouble->declaration->params, KEFIR_IR_TYPE_LONG, 0, 0);
+    kefir_irbuilder_type_append(mem, longToDouble->declaration->result, KEFIR_IR_TYPE_FLOAT64, 0, 3);
     kefir_irbuilder_block_appendi64(mem, &longToDouble->body, KEFIR_IROPCODE_INTCF64, 0);
 
     struct kefir_ir_type *floatToDouble_decl_params = kefir_ir_module_new_type(mem, &module, 1, &func_params),
@@ -106,8 +106,8 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         kefir_ir_module_new_function(mem, &module, floatToDouble_decl, KEFIR_ID_NONE, 1024);
     REQUIRE(floatToDouble != NULL, KEFIR_INTERNAL_ERROR);
     REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, floatToDouble_decl->name, KEFIR_IR_IDENTIFIER_GLOBAL));
-    kefir_irbuilder_type_append_v(mem, floatToDouble->declaration->params, KEFIR_IR_TYPE_FLOAT32, 0, 0);
-    kefir_irbuilder_type_append_v(mem, floatToDouble->declaration->result, KEFIR_IR_TYPE_FLOAT64, 0, 3);
+    kefir_irbuilder_type_append(mem, floatToDouble->declaration->params, KEFIR_IR_TYPE_FLOAT32, 0, 0);
+    kefir_irbuilder_type_append(mem, floatToDouble->declaration->result, KEFIR_IR_TYPE_FLOAT64, 0, 3);
     kefir_irbuilder_block_appendi64(mem, &floatToDouble->body, KEFIR_IROPCODE_F32CF64, 0);
 
     struct kefir_ir_type *doubleToFloat_decl_params = kefir_ir_module_new_type(mem, &module, 1, &func_params),
@@ -121,8 +121,8 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         kefir_ir_module_new_function(mem, &module, doubleToFloat_decl, KEFIR_ID_NONE, 1024);
     REQUIRE(doubleToFloat != NULL, KEFIR_INTERNAL_ERROR);
     REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, doubleToFloat_decl->name, KEFIR_IR_IDENTIFIER_GLOBAL));
-    kefir_irbuilder_type_append_v(mem, doubleToFloat->declaration->params, KEFIR_IR_TYPE_FLOAT64, 0, 0);
-    kefir_irbuilder_type_append_v(mem, doubleToFloat->declaration->result, KEFIR_IR_TYPE_FLOAT32, 0, 3);
+    kefir_irbuilder_type_append(mem, doubleToFloat->declaration->params, KEFIR_IR_TYPE_FLOAT64, 0, 0);
+    kefir_irbuilder_type_append(mem, doubleToFloat->declaration->result, KEFIR_IR_TYPE_FLOAT32, 0, 3);
     kefir_irbuilder_block_appendi64(mem, &doubleToFloat->body, KEFIR_IROPCODE_F64CF32, 0);
 
     struct kefir_ir_type *ulongToFloat_decl_params = kefir_ir_module_new_type(mem, &module, 1, &func_params),
@@ -136,8 +136,8 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         kefir_ir_module_new_function(mem, &module, ulongToFloat_decl, KEFIR_ID_NONE, 1024);
     REQUIRE(ulongToFloat != NULL, KEFIR_INTERNAL_ERROR);
     REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, ulongToFloat_decl->name, KEFIR_IR_IDENTIFIER_GLOBAL));
-    kefir_irbuilder_type_append_v(mem, ulongToFloat->declaration->params, KEFIR_IR_TYPE_LONG, 0, 0);
-    kefir_irbuilder_type_append_v(mem, ulongToFloat->declaration->result, KEFIR_IR_TYPE_FLOAT32, 0, 3);
+    kefir_irbuilder_type_append(mem, ulongToFloat->declaration->params, KEFIR_IR_TYPE_LONG, 0, 0);
+    kefir_irbuilder_type_append(mem, ulongToFloat->declaration->result, KEFIR_IR_TYPE_FLOAT32, 0, 3);
     kefir_irbuilder_block_appendi64(mem, &ulongToFloat->body, KEFIR_IROPCODE_UINTCF32, 0);
 
     struct kefir_ir_type *ulongToDouble_decl_params = kefir_ir_module_new_type(mem, &module, 1, &func_params),
@@ -151,8 +151,8 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         kefir_ir_module_new_function(mem, &module, ulongToDouble_decl, KEFIR_ID_NONE, 1024);
     REQUIRE(ulongToDouble != NULL, KEFIR_INTERNAL_ERROR);
     REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, ulongToDouble_decl->name, KEFIR_IR_IDENTIFIER_GLOBAL));
-    kefir_irbuilder_type_append_v(mem, ulongToDouble->declaration->params, KEFIR_IR_TYPE_LONG, 0, 0);
-    kefir_irbuilder_type_append_v(mem, ulongToDouble->declaration->result, KEFIR_IR_TYPE_FLOAT64, 0, 3);
+    kefir_irbuilder_type_append(mem, ulongToDouble->declaration->params, KEFIR_IR_TYPE_LONG, 0, 0);
+    kefir_irbuilder_type_append(mem, ulongToDouble->declaration->result, KEFIR_IR_TYPE_FLOAT64, 0, 3);
     kefir_irbuilder_block_appendi64(mem, &ulongToDouble->body, KEFIR_IROPCODE_UINTCF64, 0);
 
     KEFIR_CODEGEN_TRANSLATE(mem, &codegen.iface, &module);

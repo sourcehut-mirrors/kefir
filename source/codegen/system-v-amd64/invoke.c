@@ -51,11 +51,10 @@ static kefir_result_t scalar_argument(const struct kefir_ir_type *type, kefir_si
                                       const struct kefir_ir_typeentry *typeentry, void *payload) {
     UNUSED(typeentry);
     ASSIGN_DECL_CAST(struct invoke_info *, info, payload);
-    struct kefir_ir_type_iterator iter;
-    REQUIRE_OK(kefir_ir_type_iterator_init(type, &iter));
-    REQUIRE_OK(kefir_ir_type_iterator_goto(&iter, index));
+    kefir_size_t slot;
+    REQUIRE_OK(kefir_ir_type_slot_of(type, index, &slot));
     ASSIGN_DECL_CAST(struct kefir_abi_sysv_amd64_parameter_allocation *, allocation,
-                     kefir_vector_at(&info->decl->parameters.allocation, iter.slot));
+                     kefir_vector_at(&info->decl->parameters.allocation, slot));
     switch (allocation->klass) {
         case KEFIR_AMD64_SYSV_PARAM_INTEGER:
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
@@ -109,11 +108,10 @@ static kefir_result_t long_double_argument(const struct kefir_ir_type *type, kef
 
     UNUSED(typeentry);
     ASSIGN_DECL_CAST(struct invoke_info *, info, payload);
-    struct kefir_ir_type_iterator iter;
-    REQUIRE_OK(kefir_ir_type_iterator_init(type, &iter));
-    REQUIRE_OK(kefir_ir_type_iterator_goto(&iter, index));
+    kefir_size_t slot;
+    REQUIRE_OK(kefir_ir_type_slot_of(type, index, &slot));
     ASSIGN_DECL_CAST(struct kefir_abi_sysv_amd64_parameter_allocation *, allocation,
-                     kefir_vector_at(&info->decl->parameters.allocation, iter.slot));
+                     kefir_vector_at(&info->decl->parameters.allocation, slot));
     REQUIRE(allocation->klass == KEFIR_AMD64_SYSV_PARAM_MEMORY,
             KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected long double argument to have memory allocation class"));
 
@@ -235,11 +233,10 @@ static kefir_result_t aggregate_argument(const struct kefir_ir_type *type, kefir
                                          const struct kefir_ir_typeentry *typeentry, void *payload) {
     UNUSED(typeentry);
     ASSIGN_DECL_CAST(struct invoke_info *, info, payload);
-    struct kefir_ir_type_iterator iter;
-    REQUIRE_OK(kefir_ir_type_iterator_init(type, &iter));
-    REQUIRE_OK(kefir_ir_type_iterator_goto(&iter, index));
+    kefir_size_t slot;
+    REQUIRE_OK(kefir_ir_type_slot_of(type, index, &slot));
     ASSIGN_DECL_CAST(struct kefir_abi_sysv_amd64_parameter_allocation *, allocation,
-                     kefir_vector_at(&info->decl->parameters.allocation, iter.slot));
+                     kefir_vector_at(&info->decl->parameters.allocation, slot));
     if (allocation->klass == KEFIR_AMD64_SYSV_PARAM_MEMORY) {
         const struct kefir_abi_sysv_amd64_typeentry_layout *layout = NULL;
         REQUIRE_OK(kefir_abi_sysv_amd64_type_layout_at(&info->decl->parameters.layout, index, &layout));
@@ -255,11 +252,10 @@ static kefir_result_t builtin_argument(const struct kefir_ir_type *type, kefir_s
                                        const struct kefir_ir_typeentry *typeentry, void *payload) {
     UNUSED(typeentry);
     ASSIGN_DECL_CAST(struct invoke_info *, info, payload);
-    struct kefir_ir_type_iterator iter;
-    REQUIRE_OK(kefir_ir_type_iterator_init(type, &iter));
-    REQUIRE_OK(kefir_ir_type_iterator_goto(&iter, index));
+    kefir_size_t slot;
+    REQUIRE_OK(kefir_ir_type_slot_of(type, index, &slot));
     ASSIGN_DECL_CAST(struct kefir_abi_sysv_amd64_parameter_allocation *, allocation,
-                     kefir_vector_at(&info->decl->parameters.allocation, iter.slot));
+                     kefir_vector_at(&info->decl->parameters.allocation, slot));
     kefir_ir_builtin_type_t builtin = (kefir_ir_builtin_type_t) typeentry->param;
     REQUIRE(builtin < KEFIR_IR_TYPE_BUILTIN_COUNT, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unknown built-in type"));
     const struct kefir_codegen_amd64_sysv_builtin_type *builtin_type =
@@ -438,11 +434,10 @@ static kefir_result_t aggregate_return(const struct kefir_ir_type *type, kefir_s
     UNUSED(type);
     UNUSED(typeentry);
     ASSIGN_DECL_CAST(struct invoke_info *, info, payload);
-    struct kefir_ir_type_iterator iter;
-    REQUIRE_OK(kefir_ir_type_iterator_init(type, &iter));
-    REQUIRE_OK(kefir_ir_type_iterator_goto(&iter, index));
+    kefir_size_t slot;
+    REQUIRE_OK(kefir_ir_type_slot_of(type, index, &slot));
     ASSIGN_DECL_CAST(struct kefir_abi_sysv_amd64_parameter_allocation *, allocation,
-                     kefir_vector_at(&info->decl->returns.allocation, iter.slot));
+                     kefir_vector_at(&info->decl->returns.allocation, slot));
     if (allocation->klass == KEFIR_AMD64_SYSV_PARAM_MEMORY) {
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_PUSH(
             &info->codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RAX)));
@@ -455,11 +450,10 @@ static kefir_result_t aggregate_return(const struct kefir_ir_type *type, kefir_s
 static kefir_result_t builtin_return(const struct kefir_ir_type *type, kefir_size_t index,
                                      const struct kefir_ir_typeentry *typeentry, void *payload) {
     ASSIGN_DECL_CAST(struct invoke_info *, info, payload);
-    struct kefir_ir_type_iterator iter;
-    REQUIRE_OK(kefir_ir_type_iterator_init(type, &iter));
-    REQUIRE_OK(kefir_ir_type_iterator_goto(&iter, index));
+    kefir_size_t slot;
+    REQUIRE_OK(kefir_ir_type_slot_of(type, index, &slot));
     ASSIGN_DECL_CAST(struct kefir_abi_sysv_amd64_parameter_allocation *, allocation,
-                     kefir_vector_at(&info->decl->returns.allocation, iter.slot));
+                     kefir_vector_at(&info->decl->returns.allocation, slot));
     kefir_ir_builtin_type_t builtin = (kefir_ir_builtin_type_t) typeentry->param;
     REQUIRE(builtin < KEFIR_IR_TYPE_BUILTIN_COUNT, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unknown built-in type"));
     const struct kefir_codegen_amd64_sysv_builtin_type *builtin_type =
@@ -489,7 +483,7 @@ kefir_result_t invoke_epilogue(struct kefir_codegen_amd64 *codegen, const struct
     visitor.visit[KEFIR_IR_TYPE_UNION] = aggregate_return;
     visitor.visit[KEFIR_IR_TYPE_ARRAY] = aggregate_return;
     visitor.visit[KEFIR_IR_TYPE_BUILTIN] = builtin_return;
-    REQUIRE(kefir_ir_type_nodes(decl->decl->result) <= 1,
+    REQUIRE(kefir_ir_type_children(decl->decl->result) <= 1,
             KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Function cannot return more than one value"));
     REQUIRE_OK(kefir_ir_type_visitor_list_nodes(decl->decl->result, &visitor, (void *) info, 0, 1));
     return KEFIR_OK;
@@ -513,7 +507,7 @@ kefir_result_t kefir_amd64_sysv_function_invoke(struct kefir_codegen_amd64 *code
     struct kefir_ir_type_visitor visitor;
     kefir_ir_type_visitor_init(&visitor, argument_counter);
     REQUIRE_OK(kefir_ir_type_visitor_list_nodes(decl->decl->params, &visitor, (void *) &info.total_arguments, 0,
-                                                kefir_ir_type_total_length(decl->decl->params)));
+                                                kefir_ir_type_length(decl->decl->params)));
 
     REQUIRE_OK(invoke_prologue(codegen, decl, &info));
     if (virtualDecl) {

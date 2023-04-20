@@ -121,7 +121,7 @@ DEFINE_CASE(ast_bitfield_translator1, "AST translator - bitfields #1") {
 
 #undef ASSERT_MEMBER
 
-    ASSERT(kefir_ir_type_total_length(&ir_type1) == 5);
+    ASSERT(kefir_ir_type_length(&ir_type1) == 5);
 
     ASSERT_OK(kefir_ast_type_layout_free(&kft_mem, layout1));
     ASSERT_OK(KEFIR_IRBUILDER_TYPE_FREE(&type_builder));
@@ -197,7 +197,7 @@ DEFINE_CASE(ast_bitfield_translator2, "AST translator - bitfields #2") {
 
 #undef ASSERT_MEMBER
 
-    ASSERT(kefir_ir_type_total_length(&ir_type1) == 4);
+    ASSERT(kefir_ir_type_length(&ir_type1) == 4);
 
     ASSERT_OK(kefir_ast_type_layout_free(&kft_mem, layout1));
     ASSERT_OK(KEFIR_IRBUILDER_TYPE_FREE(&type_builder));
@@ -269,7 +269,7 @@ DEFINE_CASE(ast_bitfield_translator3, "AST translator - bitfields #3") {
 
 #undef ASSERT_MEMBER
 
-    ASSERT(kefir_ir_type_total_length(&ir_type1) == 6);
+    ASSERT(kefir_ir_type_length(&ir_type1) == 6);
 
     ASSERT_OK(kefir_ast_type_layout_free(&kft_mem, layout1));
     ASSERT_OK(KEFIR_IRBUILDER_TYPE_FREE(&type_builder));
@@ -337,7 +337,7 @@ DEFINE_CASE(ast_bitfield_translator4, "AST translator - union bitfields #1") {
 
 #undef ASSERT_MEMBER
 
-    ASSERT(kefir_ir_type_total_length(&ir_type1) == 6);
+    ASSERT(kefir_ir_type_length(&ir_type1) == 6);
 
     ASSERT_OK(kefir_ast_type_layout_free(&kft_mem, layout1));
     ASSERT_OK(KEFIR_IRBUILDER_TYPE_FREE(&type_builder));
@@ -429,7 +429,7 @@ DEFINE_CASE(ast_bitfield_translator5, "AST translator - bitfields alignments #1"
 
 #undef ASSERT_MEMBER
 
-    ASSERT(kefir_ir_type_total_length(&ir_type1) == 5);
+    ASSERT(kefir_ir_type_length(&ir_type1) == 5);
 
     ASSERT_OK(kefir_ast_type_layout_free(&kft_mem, layout1));
     ASSERT_OK(KEFIR_IRBUILDER_TYPE_FREE(&type_builder));

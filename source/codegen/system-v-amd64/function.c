@@ -34,11 +34,10 @@ static kefir_result_t frame_parameter_visitor(const struct kefir_ir_type *type, 
     UNUSED(index);
     UNUSED(typeentry);
     struct kefir_amd64_sysv_function *sysv_func = (struct kefir_amd64_sysv_function *) payload;
-    struct kefir_ir_type_iterator iter;
-    REQUIRE_OK(kefir_ir_type_iterator_init(type, &iter));
-    REQUIRE_OK(kefir_ir_type_iterator_goto(&iter, index));
+    kefir_size_t slot;
+    REQUIRE_OK(kefir_ir_type_slot_of(type, index, &slot));
     ASSIGN_DECL_CAST(struct kefir_abi_sysv_amd64_parameter_allocation *, alloc,
-                     kefir_vector_at(&sysv_func->decl.parameters.allocation, iter.slot));
+                     kefir_vector_at(&sysv_func->decl.parameters.allocation, slot));
     if (alloc->type == KEFIR_AMD64_SYSV_INPUT_PARAM_OWNING_CONTAINER) {
         const struct kefir_abi_sysv_amd64_typeentry_layout *layout = NULL;
         REQUIRE_OK(kefir_abi_sysv_amd64_type_layout_at(&sysv_func->decl.parameters.layout, index, &layout));
@@ -65,7 +64,7 @@ static kefir_result_t frame_local_visitor(const struct kefir_ir_type *type, kefi
 
 static kefir_result_t update_frame_temporaries(struct kefir_amd64_sysv_function_decl *decl, kefir_size_t *size,
                                                kefir_size_t *alignment) {
-    if (kefir_ir_type_nodes(decl->decl->result) == 0) {
+    if (kefir_ir_type_children(decl->decl->result) == 0) {
         return KEFIR_OK;
     }
 
@@ -166,7 +165,7 @@ static kefir_result_t calculate_frame(struct kefir_mem *mem, struct kefir_codege
     struct kefir_ir_type_visitor visitor;
     kefir_ir_type_visitor_init(&visitor, frame_parameter_visitor);
     REQUIRE_OK(kefir_ir_type_visitor_list_nodes(sysv_func->func->declaration->params, &visitor, (void *) sysv_func, 0,
-                                                kefir_ir_type_nodes(sysv_func->func->declaration->params)));
+                                                kefir_ir_type_children(sysv_func->func->declaration->params)));
     sysv_func->frame.size = PAD_DQWORD(sysv_func->frame.size);
     if (sysv_func->func->declaration->vararg) {
         sysv_func->frame.base.register_save_area = sysv_func->frame.size;
@@ -178,14 +177,14 @@ static kefir_result_t calculate_frame(struct kefir_mem *mem, struct kefir_codege
     if (sysv_func->func->locals != NULL) {
         kefir_ir_type_visitor_init(&visitor, frame_local_visitor);
         REQUIRE_OK(kefir_ir_type_visitor_list_nodes(sysv_func->func->locals, &visitor, (void *) sysv_func, 0,
-                                                    kefir_ir_type_nodes(sysv_func->func->locals)));
+                                                    kefir_ir_type_children(sysv_func->func->locals)));
         sysv_func->frame.size = PAD_DQWORD(sysv_func->frame.size);
     }
     return KEFIR_OK;
 }
 
 static kefir_result_t function_alloc_return(struct kefir_mem *mem, struct kefir_amd64_sysv_function_decl *sysv_decl) {
-    REQUIRE(kefir_ir_type_nodes(sysv_decl->decl->result) <= 1,
+    REQUIRE(kefir_ir_type_children(sysv_decl->decl->result) <= 1,
             KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected IR function to have return type count less than 2"));
     REQUIRE_OK(kefir_abi_sysv_amd64_type_layout(sysv_decl->decl->result, mem, &sysv_decl->returns.layout));
     kefir_result_t res = kefir_abi_sysv_amd64_parameter_classify(
@@ -195,7 +194,7 @@ static kefir_result_t function_alloc_return(struct kefir_mem *mem, struct kefir_
         return res;
     });
     sysv_decl->returns.implicit_parameter = false;
-    if (kefir_ir_type_nodes(sysv_decl->decl->result) > 0) {
+    if (kefir_ir_type_children(sysv_decl->decl->result) > 0) {
         ASSIGN_DECL_CAST(struct kefir_abi_sysv_amd64_parameter_allocation *, result,
                          kefir_vector_at(&sysv_decl->returns.allocation, 0));
         sysv_decl->returns.implicit_parameter = result->klass == KEFIR_AMD64_SYSV_PARAM_MEMORY;

@@ -47,10 +47,10 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     kefir_id_t type_id;
     struct kefir_ir_type *type1 = kefir_ir_module_new_type(mem, &module, 0, &type_id);
-    REQUIRE_OK(kefir_irbuilder_type_append_v(mem, type1, KEFIR_IR_TYPE_BOOL, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, type1, KEFIR_IR_TYPE_BOOL, 0, 0));
 
-    kefir_irbuilder_type_append_v(mem, func->declaration->params, KEFIR_IR_TYPE_WORD, 0, 0);
-    kefir_irbuilder_type_append_v(mem, func->declaration->params, KEFIR_IR_TYPE_WORD, 0, 0);
+    kefir_irbuilder_type_append(mem, func->declaration->params, KEFIR_IR_TYPE_WORD, 0, 0);
+    kefir_irbuilder_type_append(mem, func->declaration->params, KEFIR_IR_TYPE_WORD, 0, 0);
     kefir_irbuilder_block_appendi64(mem, &func->body, KEFIR_IROPCODE_XCHG, 1);
     kefir_irbuilder_block_appendu32(mem, &func->body, KEFIR_IROPCODE_BCOPY, type_id, 0);
 

@@ -63,23 +63,22 @@ typedef struct kefir_ir_type {
 } kefir_ir_type_t;
 
 kefir_result_t kefir_ir_type_init(struct kefir_ir_type *, void *, kefir_size_t);
-kefir_size_t kefir_ir_type_raw_available(const struct kefir_ir_type *);
-kefir_size_t kefir_ir_type_raw_length(const struct kefir_ir_type *);
-struct kefir_ir_typeentry *kefir_ir_type_raw_at(const struct kefir_ir_type *, kefir_size_t);
-kefir_result_t kefir_ir_type_append(struct kefir_ir_type *, const struct kefir_ir_typeentry *);
-kefir_result_t kefir_ir_type_append_v(struct kefir_ir_type *, kefir_ir_typecode_t, kefir_uint32_t, kefir_int64_t);
-kefir_result_t kefir_ir_type_append_e(struct kefir_ir_type *, const struct kefir_ir_type *, kefir_size_t);
 kefir_result_t kefir_ir_type_alloc(struct kefir_mem *, kefir_size_t, struct kefir_ir_type *);
 kefir_result_t kefir_ir_type_realloc(struct kefir_mem *, kefir_size_t, struct kefir_ir_type *);
 kefir_result_t kefir_ir_type_free(struct kefir_mem *, struct kefir_ir_type *);
 
+kefir_result_t kefir_ir_type_append_entry(struct kefir_ir_type *, const struct kefir_ir_typeentry *);
+kefir_result_t kefir_ir_type_append(struct kefir_ir_type *, kefir_ir_typecode_t, kefir_uint32_t, kefir_int64_t);
+kefir_result_t kefir_ir_type_append_from(struct kefir_ir_type *, const struct kefir_ir_type *, kefir_size_t);
+
 struct kefir_ir_typeentry *kefir_ir_type_at(const struct kefir_ir_type *, kefir_size_t);
-kefir_size_t kefir_ir_type_total_length(const struct kefir_ir_type *);
-kefir_size_t kefir_ir_type_nodes(const struct kefir_ir_type *);
-kefir_size_t kefir_ir_type_subnodes(const struct kefir_ir_type *, kefir_size_t);
-kefir_size_t kefir_ir_type_node_total_length(const struct kefir_ir_type *, kefir_size_t);
-kefir_size_t kefir_ir_type_node_slots(const struct kefir_ir_type *, kefir_size_t);
-kefir_size_t kefir_ir_type_total_slots(const struct kefir_ir_type *);
+kefir_size_t kefir_ir_type_available_entries(const struct kefir_ir_type *);
+kefir_size_t kefir_ir_type_length(const struct kefir_ir_type *);
+kefir_size_t kefir_ir_type_children(const struct kefir_ir_type *);
+kefir_size_t kefir_ir_type_length_of(const struct kefir_ir_type *, kefir_size_t);
+kefir_size_t kefir_ir_type_slots_of(const struct kefir_ir_type *, kefir_size_t);
+kefir_size_t kefir_ir_type_slots(const struct kefir_ir_type *);
+kefir_result_t kefir_ir_type_slot_of(const struct kefir_ir_type *, kefir_size_t, kefir_size_t *);
 
 typedef kefir_result_t (*kefir_ir_type_visitor_callback_t)(const struct kefir_ir_type *, kefir_size_t,
                                                            const struct kefir_ir_typeentry *, void *);
@@ -129,16 +128,5 @@ kefir_result_t kefir_ir_type_visitor_list_nodes(const struct kefir_ir_type *, co
         KEFIR_IR_TYPE_VISITOR_INIT_FIXED_FP((visitor), (callback)); \
         (visitor)->visit[KEFIR_IR_TYPE_LONG_DOUBLE] = (callback);   \
     } while (0)
-
-typedef struct kefir_ir_type_iterator {
-    const struct kefir_ir_type *type;
-    kefir_size_t index;
-    kefir_size_t slot;
-} kefir_ir_type_iterator_t;
-
-kefir_result_t kefir_ir_type_iterator_init(const struct kefir_ir_type *, struct kefir_ir_type_iterator *);
-kefir_result_t kefir_ir_type_iterator_goto(struct kefir_ir_type_iterator *, kefir_size_t);
-kefir_result_t kefir_ir_type_iterator_goto_field(struct kefir_ir_type_iterator *, kefir_size_t);
-kefir_result_t kefir_ir_type_iterator_goto_index(struct kefir_ir_type_iterator *, kefir_size_t);
 
 #endif

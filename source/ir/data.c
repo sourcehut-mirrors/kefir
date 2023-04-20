@@ -48,7 +48,7 @@ kefir_result_t kefir_ir_data_alloc(struct kefir_mem *mem, kefir_ir_data_storage_
     REQUIRE(data != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR data pointer"));
 
     data->storage = storage;
-    data->total_length = kefir_ir_type_total_slots(type);
+    data->total_length = kefir_ir_type_slots(type);
     REQUIRE_OK(kefir_block_tree_init(&data->value_tree, BLOCK_SIZE));
     REQUIRE_OK(kefir_block_tree_on_block_init(&data->value_tree, on_block_init, NULL));
     data->type = type;
@@ -333,7 +333,7 @@ static kefir_result_t finalize_array(const struct kefir_ir_type *type, kefir_siz
                                       .defined = false,
                                       .block_iterator = param->block_iterator};
 
-    const kefir_size_t array_element_slots = kefir_ir_type_node_slots(type, index + 1);
+    const kefir_size_t array_element_slots = kefir_ir_type_slots_of(type, index + 1);
     const kefir_size_t array_end_slot = param->slot + array_element_slots * (kefir_size_t) typeentry->param;
     for (kefir_size_t i = 0; i < (kefir_size_t) typeentry->param; i++) {
         REQUIRE_OK(kefir_block_tree_iter_skip_to(&param->data->value_tree, &subparam.block_iterator,
@@ -410,8 +410,7 @@ kefir_result_t kefir_ir_data_finalize(struct kefir_ir_data *data) {
     visitor.visit[KEFIR_IR_TYPE_UNION] = finalize_struct_union;
     visitor.visit[KEFIR_IR_TYPE_ARRAY] = finalize_array;
     visitor.visit[KEFIR_IR_TYPE_BUILTIN] = finalize_builtin;
-    REQUIRE_OK(
-        kefir_ir_type_visitor_list_nodes(data->type, &visitor, &param, 0, kefir_ir_type_total_length(data->type)));
+    REQUIRE_OK(kefir_ir_type_visitor_list_nodes(data->type, &visitor, &param, 0, kefir_ir_type_length(data->type)));
     data->finalized = true;
     data->defined = param.defined;
     return KEFIR_OK;

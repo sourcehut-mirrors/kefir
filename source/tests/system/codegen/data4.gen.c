@@ -38,11 +38,11 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     kefir_id_t type1_id;
     struct kefir_ir_type *type1 = kefir_ir_module_new_type(mem, &module, 5, &type1_id);
     REQUIRE(type1 != NULL, KEFIR_INTERNAL_ERROR);
-    REQUIRE_OK(kefir_irbuilder_type_append_v(mem, type1, KEFIR_IR_TYPE_STRUCT, 0, 4));
-    REQUIRE_OK(kefir_irbuilder_type_append_v(mem, type1, KEFIR_IR_TYPE_INT8, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append_v(mem, type1, KEFIR_IR_TYPE_INT16, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append_v(mem, type1, KEFIR_IR_TYPE_INT32, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append_v(mem, type1, KEFIR_IR_TYPE_INT64, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, type1, KEFIR_IR_TYPE_STRUCT, 0, 4));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, type1, KEFIR_IR_TYPE_INT8, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, type1, KEFIR_IR_TYPE_INT16, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, type1, KEFIR_IR_TYPE_INT32, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, type1, KEFIR_IR_TYPE_INT64, 0, 0));
 
     kefir_id_t func_params, func_returns;
     struct kefir_ir_type *trunc_decl_params = kefir_ir_module_new_type(mem, &module, 2, &func_params),
@@ -55,8 +55,8 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_ir_function *trunc = kefir_ir_module_new_function(mem, &module, trunc_decl, KEFIR_ID_NONE, 1024);
     REQUIRE(trunc != NULL, KEFIR_INTERNAL_ERROR);
     REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, trunc_decl->name, KEFIR_IR_IDENTIFIER_GLOBAL));
-    kefir_irbuilder_type_append_v(mem, trunc->declaration->params, KEFIR_IR_TYPE_WORD, 0, 0);
-    kefir_irbuilder_type_append_v(mem, trunc->declaration->params, KEFIR_IR_TYPE_LONG, 0, 0);
+    kefir_irbuilder_type_append(mem, trunc->declaration->params, KEFIR_IR_TYPE_WORD, 0, 0);
+    kefir_irbuilder_type_append(mem, trunc->declaration->params, KEFIR_IR_TYPE_LONG, 0, 0);
 
     struct kefir_abi_sysv_amd64_type_layout type_layout;
     REQUIRE_OK(kefir_abi_sysv_amd64_type_layout(type1, mem, &type_layout));

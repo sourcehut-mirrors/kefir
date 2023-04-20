@@ -69,7 +69,7 @@ static kefir_result_t amd64_sysv_type_info(struct kefir_mem *mem, struct kefir_i
     REQUIRE(type_info != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target type info"));
 
     ASSIGN_DECL_CAST(struct kefir_codegen_amd64_sysv_type *, type, platform_type);
-    REQUIRE(index < kefir_ir_type_total_length(type->ir_type),
+    REQUIRE(index < kefir_ir_type_length(type->ir_type),
             KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Specified index is out of bounds of IR type"));
     const struct kefir_abi_sysv_amd64_typeentry_layout *data_layout = NULL;
     REQUIRE_OK(kefir_abi_sysv_amd64_type_layout_at(&type->layout, index, &data_layout));

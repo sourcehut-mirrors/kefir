@@ -245,7 +245,7 @@ kefir_result_t kefir_abi_sysv_amd64_type_layout_of(struct kefir_mem *mem, const 
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(layout != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid layout vector"));
 
-    const kefir_size_t length = kefir_ir_type_total_length(type);
+    const kefir_size_t length = kefir_ir_type_length(type);
     REQUIRE_OK(kefir_vector_alloc(mem, sizeof(struct kefir_abi_sysv_amd64_typeentry_layout), length, layout));
     kefir_result_t res = kefir_vector_extend(layout, length);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -266,7 +266,7 @@ kefir_result_t kefir_abi_sysv_amd64_type_layout(const struct kefir_ir_type *type
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(layout != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to ABI type layout"));
 
-    REQUIRE_OK(kefir_abi_sysv_amd64_type_layout_of(mem, type, 0, kefir_ir_type_nodes(type), &layout->layout));
+    REQUIRE_OK(kefir_abi_sysv_amd64_type_layout_of(mem, type, 0, kefir_ir_type_children(type), &layout->layout));
     return KEFIR_OK;
 }
 
@@ -318,7 +318,7 @@ kefir_result_t kefir_abi_sysv_amd64_calculate_type_properties(const struct kefir
     struct type_properties props = {.size = 0, .alignment = 0, .layout = layout};
     struct kefir_ir_type_visitor visitor;
     REQUIRE_OK(kefir_ir_type_visitor_init(&visitor, calculate_type_properties_visitor));
-    REQUIRE_OK(kefir_ir_type_visitor_list_nodes(type, &visitor, (void *) &props, 0, kefir_ir_type_nodes(type)));
+    REQUIRE_OK(kefir_ir_type_visitor_list_nodes(type, &visitor, (void *) &props, 0, kefir_ir_type_children(type)));
     *size = props.size;
     *alignment = props.alignment;
     return KEFIR_OK;

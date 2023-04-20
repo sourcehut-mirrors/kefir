@@ -135,7 +135,7 @@ kefir_result_t kefir_ir_type_tree_init(struct kefir_mem *mem, const struct kefir
     REQUIRE_OK(kefir_hashtree_on_removal(&tree->index, free_node, NULL));
 
     struct traversal_payload param = {.mem = mem, .parent = NULL, .slot = 0, .tree = tree, .visitor = &visitor};
-    kefir_result_t res = kefir_ir_type_visitor_list_nodes(type, &visitor, &param, 0, kefir_ir_type_nodes(type));
+    kefir_result_t res = kefir_ir_type_visitor_list_nodes(type, &visitor, &param, 0, kefir_ir_type_children(type));
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_hashtree_free(mem, &tree->index);
         kefir_list_free(mem, &tree->roots);

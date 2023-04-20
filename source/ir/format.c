@@ -447,7 +447,7 @@ kefir_result_t kefir_ir_format_type_json(struct kefir_json_output *json, const s
 
     struct format_param param = {.json = json, .visitor = &visitor};
     REQUIRE_OK(kefir_json_output_array_begin(json));
-    REQUIRE_OK(kefir_ir_type_visitor_list_nodes(type, &visitor, &param, 0, kefir_ir_type_total_length(type)));
+    REQUIRE_OK(kefir_ir_type_visitor_list_nodes(type, &visitor, &param, 0, kefir_ir_type_length(type)));
     REQUIRE_OK(kefir_json_output_array_end(json));
     return KEFIR_OK;
 }

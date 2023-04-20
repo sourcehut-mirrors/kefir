@@ -432,9 +432,9 @@ static kefir_result_t union_static_data(const struct kefir_ir_type *type, kefir_
             REQUIRE_OK(kefir_ir_type_visitor_list_nodes(type, param->visitor, payload, subindex, 1));
             defined = true;
         } else {
-            param->slot += kefir_ir_type_node_slots(type, subindex);
+            param->slot += kefir_ir_type_slots_of(type, subindex);
         }
-        subindex += kefir_ir_type_node_total_length(type, subindex);
+        subindex += kefir_ir_type_length_of(type, subindex);
     }
 
     REQUIRE_OK(trailing_padding(start_offset, layout, param));
@@ -462,8 +462,8 @@ static kefir_result_t array_static_data(const struct kefir_ir_type *type, kefir_
     REQUIRE_OK(align_offset(layout, param));
     kefir_size_t start_offset = param->offset;
 
-    kefir_size_t array_element_slots = kefir_ir_type_node_slots(type, index + 1);
-    kefir_size_t array_content_slots = kefir_ir_type_node_slots(type, index) - 1;
+    kefir_size_t array_element_slots = kefir_ir_type_slots_of(type, index + 1);
+    kefir_size_t array_content_slots = kefir_ir_type_slots_of(type, index) - 1;
 
     switch (entry->type) {
         case KEFIR_IR_DATA_VALUE_UNDEFINED:
@@ -574,7 +574,8 @@ kefir_result_t kefir_amd64_sysv_static_data(struct kefir_mem *mem, struct kefir_
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen->xasmgen, "%s", identifier));
     }
 
-    res = kefir_ir_type_visitor_list_nodes(data->type, &visitor, (void *) &param, 0, kefir_ir_type_nodes(data->type));
+    res =
+        kefir_ir_type_visitor_list_nodes(data->type, &visitor, (void *) &param, 0, kefir_ir_type_children(data->type));
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_abi_sysv_amd64_type_layout_free(mem, &param.layout);
         return res;

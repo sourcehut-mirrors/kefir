@@ -51,10 +51,9 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_codegen_sysv_amd64_init(mem, &codegen, stdout, NULL));
     codegen.xasmgen.settings.enable_comments = false;
 
-    REQUIRE_OK(kefir_irbuilder_type_append_v(mem, inttype, KEFIR_IR_TYPE_INT, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append_v(mem, sumint_decl_result, KEFIR_IR_TYPE_WORD, 0, 0));
-    REQUIRE_OK(
-        kefir_irbuilder_type_append_v(mem, sumint_locals, KEFIR_IR_TYPE_BUILTIN, 0, KEFIR_IR_TYPE_BUILTIN_VARARG));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, inttype, KEFIR_IR_TYPE_INT, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, sumint_decl_result, KEFIR_IR_TYPE_WORD, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, sumint_locals, KEFIR_IR_TYPE_BUILTIN, 0, KEFIR_IR_TYPE_BUILTIN_VARARG));
     kefir_irbuilder_block_appendi64(mem, &sumint->body, KEFIR_IROPCODE_NOP, 0);                     // 0: [C, L*]
     kefir_irbuilder_block_appendu32(mem, &sumint->body, KEFIR_IROPCODE_GETLOCAL, locals_id, 0);     // 1: [C, V*]
     kefir_irbuilder_block_appendi64(mem, &sumint->body, KEFIR_IROPCODE_VARARG_START, 0);            // 2: [C]
