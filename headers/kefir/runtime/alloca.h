@@ -1,7 +1,7 @@
 /*
     SPDX-License-Identifier: BSD-3-Clause
 
-    Copyright 2020-2022 Jevgenijs Protopopovs
+    Copyright 2020-2023 Jevgenijs Protopopovs
 
     Redistribution and use in source and binary forms, with or without modification,
     are permitted provided that the following conditions are met:
