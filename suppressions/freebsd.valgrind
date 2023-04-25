@@ -38,3 +38,14 @@
    fun:c16rtomb_l
    ...
 }
+{
+   mbrtoc32_l leak
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   obj:/usr/lib/i18n/libiconv_std.so.4
+   obj:/lib/libc.so.7
+   fun:mbrtoc32_l
+   fun:at_impl
+   ...
+}
