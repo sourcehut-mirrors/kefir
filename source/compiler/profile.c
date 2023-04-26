@@ -21,7 +21,7 @@
 #include "kefir/compiler/profile.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
-#include "kefir/codegen/system-v-amd64/platform.h"
+#include "kefir/target/abi/system-v-amd64/platform.h"
 #include "kefir/codegen/system-v-amd64.h"
 #include <float.h>
 
@@ -99,7 +99,7 @@ static kefir_result_t kefir_compiler_amd64_sysv_profile(struct kefir_compiler_pr
     }
 
     REQUIRE_OK(kefir_lexer_context_default(&profile->lexer_context));
-    REQUIRE_OK(kefir_codegen_amd64_sysv_target_platform(&profile->ir_target_platform));
+    REQUIRE_OK(kefir_abi_sysv_amd64_target_platform(&profile->ir_target_platform));
     profile->data_model = &DATA_MODEL_DESCRIPTOR;
     profile->type_traits = &TYPE_TRAITS;
     profile->new_codegen = amd64_sysv_new_codegen;

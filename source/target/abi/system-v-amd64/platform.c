@@ -18,12 +18,17 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "kefir/codegen/system-v-amd64/platform.h"
+#include "kefir/target/abi/system-v-amd64/platform.h"
 #include "kefir/target/abi/system-v-amd64/data_layout.h"
 #include "kefir/target/abi/system-v-amd64/qwords.h"
 #include "kefir/target/abi/system-v-amd64/bitfields.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
+
+typedef struct kefir_abi_sysv_amd64_type {
+    const struct kefir_ir_type *ir_type;
+    struct kefir_abi_sysv_amd64_type_layout layout;
+} kefir_abi_sysv_amd64_type_t;
 
 static kefir_result_t amd64_sysv_get_type(struct kefir_mem *mem, struct kefir_ir_target_platform *platform,
                                           const struct kefir_ir_type *ir_type,
@@ -34,7 +39,7 @@ static kefir_result_t amd64_sysv_get_type(struct kefir_mem *mem, struct kefir_ir
     REQUIRE(type_ptr != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR target platform type pointer"));
 
-    struct kefir_codegen_amd64_sysv_type *type = KEFIR_MALLOC(mem, sizeof(struct kefir_codegen_amd64_sysv_type));
+    struct kefir_abi_sysv_amd64_type *type = KEFIR_MALLOC(mem, sizeof(struct kefir_abi_sysv_amd64_type));
     REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AMD64 SysV platform IR type"));
     type->ir_type = ir_type;
     kefir_result_t res = kefir_abi_sysv_amd64_type_layout(ir_type, mem, &type->layout);
@@ -53,7 +58,7 @@ static kefir_result_t amd64_sysv_free_type(struct kefir_mem *mem, struct kefir_i
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(platform_type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR platform type"));
 
-    ASSIGN_DECL_CAST(struct kefir_codegen_amd64_sysv_type *, type, platform_type);
+    ASSIGN_DECL_CAST(struct kefir_abi_sysv_amd64_type *, type, platform_type);
     REQUIRE_OK(kefir_abi_sysv_amd64_type_layout_free(mem, &type->layout));
     type->ir_type = NULL;
     KEFIR_FREE(mem, type);
@@ -68,7 +73,7 @@ static kefir_result_t amd64_sysv_type_info(struct kefir_mem *mem, struct kefir_i
     REQUIRE(platform_type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR platform type"));
     REQUIRE(type_info != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target type info"));
 
-    ASSIGN_DECL_CAST(struct kefir_codegen_amd64_sysv_type *, type, platform_type);
+    ASSIGN_DECL_CAST(struct kefir_abi_sysv_amd64_type *, type, platform_type);
     REQUIRE(index < kefir_ir_type_length(type->ir_type),
             KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Specified index is out of bounds of IR type"));
     const struct kefir_abi_sysv_amd64_typeentry_layout *data_layout = NULL;
@@ -103,7 +108,7 @@ static kefir_result_t amd64_sysv_free(struct kefir_mem *mem, struct kefir_ir_tar
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_codegen_amd64_sysv_target_platform(struct kefir_ir_target_platform *platform) {
+kefir_result_t kefir_abi_sysv_amd64_target_platform(struct kefir_ir_target_platform *platform) {
     REQUIRE(platform != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST translation platform pointer"));
     platform->get_type = amd64_sysv_get_type;

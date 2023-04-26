@@ -18,18 +18,11 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef KEFIR_CODEGEN_SYSTEM_V_AMD64_PLATFORM_H_
-#define KEFIR_CODEGEN_SYSTEM_V_AMD64_PLATFORM_H_
+#ifndef KEFIR_TARGET_ABI_SYSTEM_V_AMD64_PLATFORM_H_
+#define KEFIR_TARGET_ABI_SYSTEM_V_AMD64_PLATFORM_H_
 
 #include "kefir/ir/platform.h"
-#include "kefir/codegen/system-v-amd64/module.h"
-#include "kefir/target/abi/system-v-amd64/data_layout.h"
 
-typedef struct kefir_codegen_amd64_sysv_type {
-    const struct kefir_ir_type *ir_type;
-    struct kefir_abi_sysv_amd64_type_layout layout;
-} kefir_codegen_amd64_sysv_type_t;
-
-kefir_result_t kefir_codegen_amd64_sysv_target_platform(struct kefir_ir_target_platform *);
+kefir_result_t kefir_abi_sysv_amd64_target_platform(struct kefir_ir_target_platform *);
 
 #endif

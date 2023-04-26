@@ -109,7 +109,7 @@ static kefir_result_t generate_ir(struct kefir_mem *mem, struct kefir_ir_module 
 kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_codegen_amd64 codegen;
     struct kefir_ir_target_platform ir_target;
-    REQUIRE_OK(kefir_codegen_amd64_sysv_target_platform(&ir_target));
+    REQUIRE_OK(kefir_abi_sysv_amd64_target_platform(&ir_target));
     REQUIRE_OK(kefir_codegen_sysv_amd64_init(mem, &codegen, stdout, NULL));
     struct kefir_ir_module module;
     REQUIRE_OK(kefir_ir_module_alloc(mem, &module));
