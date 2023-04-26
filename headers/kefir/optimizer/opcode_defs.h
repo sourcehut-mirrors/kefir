@@ -23,6 +23,12 @@
 
 #include "kefir/optimizer/base.h"
 
-#define KEFIR_OPTIMIZER_OPCODE_DEFS(OPCODE, SEPARATOR) OPCODE(JUMP, "jump", branch) SEPARATOR
+// clang-format off
+#define KEFIR_OPTIMIZER_OPCODE_DEFS(OPCODE, SEPARATOR) \
+    OPCODE(JUMP, "jump", jump) SEPARATOR \
+    OPCODE(IJUMP, "indirect_jump", arg1) SEPARATOR \
+    OPCODE(BRANCH, "branch", branch) SEPARATOR \
+    OPCODE(RETURN, "return", arg1)
+// clang-format on
 
 #endif
