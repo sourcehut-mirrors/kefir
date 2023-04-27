@@ -26,7 +26,7 @@
 struct eval_param {
     struct kefir_mem *mem;
     const struct kefir_ast_translator_environment *env;
-    kefir_ir_target_platform_opaque_type_t platform_type;
+    kefir_ir_target_platform_type_handle_t platform_type;
     struct kefir_hashtree *tree;
     struct kefir_ir_type_visitor *visitor;
 };
@@ -91,9 +91,9 @@ static kefir_result_t type_visit(const struct kefir_ir_type *type, kefir_size_t 
                                  const struct kefir_ir_typeentry *typeentry, void *payload) {
     ASSIGN_DECL_CAST(struct eval_param *, param, payload);
 
-    struct kefir_ir_target_type_info type_info;
-    REQUIRE_OK(KEFIR_IR_TARGET_PLATFORM_TYPE_INFO(param->mem, param->env->target_platform, param->platform_type, index,
-                                                  &type_info));
+    struct kefir_ir_target_platform_typeentry_info type_info;
+    REQUIRE_OK(KEFIR_IR_TARGET_PLATFORM_TYPEENTRY_INFO(param->mem, param->env->target_platform, param->platform_type,
+                                                       index, &type_info));
 
     struct kefir_hashtree_node *list_node = NULL;
     kefir_result_t res = kefir_hashtree_at(param->tree, (kefir_hashtree_key_t) index, &list_node);
@@ -199,12 +199,12 @@ kefir_result_t kefir_ast_translator_evaluate_type_layout(struct kefir_mem *mem,
         layout->properties.aligned = false;
         layout->properties.alignment = 0;
     } else if (layout->type != NULL && KEFIR_AST_TYPE_IS_VL_ARRAY(layout->type)) {
-        struct kefir_ir_target_type_info type_info;
-        REQUIRE_CHAIN(&res, KEFIR_IR_TARGET_PLATFORM_TYPE_INFO(mem, env->target_platform, param.platform_type,
-                                                               layout->vl_array.array_ptr_field, &type_info));
+        struct kefir_ir_target_platform_typeentry_info type_info;
+        REQUIRE_CHAIN(&res, KEFIR_IR_TARGET_PLATFORM_TYPEENTRY_INFO(mem, env->target_platform, param.platform_type,
+                                                                    layout->vl_array.array_ptr_field, &type_info));
         layout->vl_array.array_ptr_relative_offset = type_info.relative_offset;
-        REQUIRE_CHAIN(&res, KEFIR_IR_TARGET_PLATFORM_TYPE_INFO(mem, env->target_platform, param.platform_type,
-                                                               layout->vl_array.array_size_field, &type_info));
+        REQUIRE_CHAIN(&res, KEFIR_IR_TARGET_PLATFORM_TYPEENTRY_INFO(mem, env->target_platform, param.platform_type,
+                                                                    layout->vl_array.array_size_field, &type_info));
         layout->vl_array.array_size_relative_offset = type_info.relative_offset;
     }
     REQUIRE_ELSE(res == KEFIR_OK, {

@@ -30,9 +30,9 @@ typedef struct kefir_abi_sysv_amd64_type {
     struct kefir_abi_sysv_amd64_type_layout layout;
 } kefir_abi_sysv_amd64_type_t;
 
-static kefir_result_t amd64_sysv_get_type(struct kefir_mem *mem, struct kefir_ir_target_platform *platform,
+static kefir_result_t amd64_sysv_get_type(struct kefir_mem *mem, const struct kefir_ir_target_platform *platform,
                                           const struct kefir_ir_type *ir_type,
-                                          kefir_ir_target_platform_opaque_type_t *type_ptr) {
+                                          kefir_ir_target_platform_type_handle_t *type_ptr) {
     UNUSED(platform);
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(ir_type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR type"));
@@ -52,9 +52,8 @@ static kefir_result_t amd64_sysv_get_type(struct kefir_mem *mem, struct kefir_ir
     return KEFIR_OK;
 }
 
-static kefir_result_t amd64_sysv_free_type(struct kefir_mem *mem, struct kefir_ir_target_platform *platform,
-                                           kefir_ir_target_platform_opaque_type_t platform_type) {
-    UNUSED(platform);
+static kefir_result_t amd64_sysv_free_type(struct kefir_mem *mem,
+                                           kefir_ir_target_platform_type_handle_t platform_type) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(platform_type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR platform type"));
 
@@ -65,10 +64,10 @@ static kefir_result_t amd64_sysv_free_type(struct kefir_mem *mem, struct kefir_i
     return KEFIR_OK;
 }
 
-static kefir_result_t amd64_sysv_type_info(struct kefir_mem *mem, struct kefir_ir_target_platform *platform,
-                                           kefir_ir_target_platform_opaque_type_t platform_type, kefir_size_t index,
-                                           struct kefir_ir_target_type_info *type_info) {
-    UNUSED(platform);
+static kefir_result_t amd64_sysv_typeentry_info(struct kefir_mem *mem,
+                                                kefir_ir_target_platform_type_handle_t platform_type,
+                                                kefir_size_t index,
+                                                struct kefir_ir_target_platform_typeentry_info *type_info) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(platform_type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR platform type"));
     REQUIRE(type_info != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target type info"));
@@ -86,7 +85,8 @@ static kefir_result_t amd64_sysv_type_info(struct kefir_mem *mem, struct kefir_i
     return KEFIR_OK;
 }
 
-static kefir_result_t amd64_sysv_bitfield_allocator(struct kefir_mem *mem, struct kefir_ir_target_platform *platform,
+static kefir_result_t amd64_sysv_bitfield_allocator(struct kefir_mem *mem,
+                                                    const struct kefir_ir_target_platform *platform,
                                                     struct kefir_ir_type *type,
                                                     struct kefir_ir_bitfield_allocator *allocator) {
     UNUSED(platform);
@@ -102,7 +102,7 @@ static kefir_result_t amd64_sysv_bitfield_allocator(struct kefir_mem *mem, struc
 static kefir_result_t amd64_sysv_free(struct kefir_mem *mem, struct kefir_ir_target_platform *platform) {
     UNUSED(mem);
     REQUIRE(platform != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target platform"));
-    platform->type_info = NULL;
+    platform->typeentry_info = NULL;
     platform->free = NULL;
     platform->payload = NULL;
     return KEFIR_OK;
@@ -113,7 +113,7 @@ kefir_result_t kefir_abi_sysv_amd64_target_platform(struct kefir_ir_target_platf
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST translation platform pointer"));
     platform->get_type = amd64_sysv_get_type;
     platform->free_type = amd64_sysv_free_type;
-    platform->type_info = amd64_sysv_type_info;
+    platform->typeentry_info = amd64_sysv_typeentry_info;
     platform->bitfield_allocator = amd64_sysv_bitfield_allocator;
     platform->free = amd64_sysv_free;
     platform->payload = NULL;

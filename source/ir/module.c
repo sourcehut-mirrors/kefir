@@ -532,6 +532,33 @@ const struct kefir_ir_data *kefir_ir_module_named_data_next(struct kefir_hashtre
     }
 }
 
+const struct kefir_ir_type *kefir_ir_module_named_type_iter(const struct kefir_ir_module *module,
+                                                            struct kefir_hashtree_node_iterator *iter,
+                                                            kefir_id_t *type_id_ptr) {
+    REQUIRE(module != NULL, NULL);
+    REQUIRE(iter != NULL, NULL);
+
+    const struct kefir_hashtree_node *node = kefir_hashtree_iter(&module->named_types, iter);
+    if (node != NULL) {
+        ASSIGN_PTR(type_id_ptr, (kefir_id_t) node->key);
+        return (const struct kefir_ir_type *) node->value;
+    } else {
+        return NULL;
+    }
+}
+
+const struct kefir_ir_type *kefir_ir_module_named_type_next(struct kefir_hashtree_node_iterator *iter,
+                                                            kefir_id_t *type_id_ptr) {
+    REQUIRE(iter != NULL, NULL);
+    const struct kefir_hashtree_node *node = kefir_hashtree_next(iter);
+    if (node != NULL) {
+        ASSIGN_PTR(type_id_ptr, (kefir_id_t) node->key);
+        return (const struct kefir_ir_type *) node->value;
+    } else {
+        return NULL;
+    }
+}
+
 const char *kefir_ir_module_get_named_symbol(const struct kefir_ir_module *module, kefir_id_t id) {
     REQUIRE(module != NULL, NULL);
     return kefir_symbol_table_get(&module->symbols, id);

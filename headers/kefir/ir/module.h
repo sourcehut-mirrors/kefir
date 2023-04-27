@@ -125,6 +125,10 @@ const struct kefir_ir_data *kefir_ir_module_named_data_iter(const struct kefir_i
                                                             struct kefir_hashtree_node_iterator *, const char **);
 const struct kefir_ir_data *kefir_ir_module_named_data_next(struct kefir_hashtree_node_iterator *, const char **);
 
+const struct kefir_ir_type *kefir_ir_module_named_type_iter(const struct kefir_ir_module *,
+                                                            struct kefir_hashtree_node_iterator *, kefir_id_t *);
+const struct kefir_ir_type *kefir_ir_module_named_type_next(struct kefir_hashtree_node_iterator *, kefir_id_t *);
+
 struct kefir_ir_inline_assembly *kefir_ir_module_new_inline_assembly(struct kefir_mem *, struct kefir_ir_module *,
                                                                      const char *, kefir_id_t *);
 const struct kefir_ir_inline_assembly *kefir_ir_module_get_inline_assembly(const struct kefir_ir_module *, kefir_id_t);

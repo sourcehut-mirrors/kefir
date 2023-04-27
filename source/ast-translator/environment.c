@@ -89,8 +89,8 @@ static kefir_result_t target_env_get_type(struct kefir_mem *mem, const struct ke
         return res;
     });
 
-    struct kefir_ir_target_type_info ir_type_info;
-    res = KEFIR_IR_TARGET_PLATFORM_TYPE_INFO(mem, env->target_platform, env_type->target_type, 0, &ir_type_info);
+    struct kefir_ir_target_platform_typeentry_info ir_type_info;
+    res = KEFIR_IR_TARGET_PLATFORM_TYPEENTRY_INFO(mem, env->target_platform, env_type->target_type, 0, &ir_type_info);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_ir_type_free(mem, &env_type->type);
         KEFIR_FREE(mem, env_type);

@@ -53,12 +53,12 @@ static kefir_result_t allocate_long_double_callback(void *payload) {
         REQUIRE(ldouble_type != NULL, KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Failed to retrieve IR type"));
     }
 
-    struct kefir_ir_target_type_info ir_type_info;
-    kefir_ir_target_platform_opaque_type_t platform_type;
+    struct kefir_ir_target_platform_typeentry_info ir_type_info;
+    kefir_ir_target_platform_type_handle_t platform_type;
     REQUIRE_OK(KEFIR_IR_TARGET_PLATFORM_GET_TYPE(param->mem, param->context->environment->target_platform, ldouble_type,
                                                  &platform_type));
-    kefir_result_t res = KEFIR_IR_TARGET_PLATFORM_TYPE_INFO(param->mem, param->context->environment->target_platform,
-                                                            platform_type, 0, &ir_type_info);
+    kefir_result_t res = KEFIR_IR_TARGET_PLATFORM_TYPEENTRY_INFO(
+        param->mem, param->context->environment->target_platform, platform_type, 0, &ir_type_info);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_IR_TARGET_PLATFORM_FREE_TYPE(param->mem, param->context->environment->target_platform, platform_type);
         return res;
