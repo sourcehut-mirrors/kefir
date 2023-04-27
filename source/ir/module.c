@@ -326,6 +326,28 @@ struct kefir_ir_function *kefir_ir_module_new_function(struct kefir_mem *mem, st
     return func;
 }
 
+const struct kefir_ir_function_decl *kefir_ir_module_function_declaration_iter(
+    const struct kefir_ir_module *module, struct kefir_hashtree_node_iterator *iter) {
+    REQUIRE(module != NULL, NULL);
+    REQUIRE(iter != NULL, NULL);
+    const struct kefir_hashtree_node *node = kefir_hashtree_iter(&module->function_declarations, iter);
+    if (node != NULL) {
+        return (const struct kefir_ir_function_decl *) node->value;
+    } else {
+        return NULL;
+    }
+}
+const struct kefir_ir_function_decl *kefir_ir_module_function_declaration_next(
+    struct kefir_hashtree_node_iterator *iter) {
+    REQUIRE(iter != NULL, NULL);
+    const struct kefir_hashtree_node *node = kefir_hashtree_next(iter);
+    if (node != NULL) {
+        return (const struct kefir_ir_function_decl *) node->value;
+    } else {
+        return NULL;
+    }
+}
+
 const struct kefir_ir_function *kefir_ir_module_function_iter(const struct kefir_ir_module *module,
                                                               struct kefir_hashtree_node_iterator *iter) {
     REQUIRE(module != NULL, NULL);

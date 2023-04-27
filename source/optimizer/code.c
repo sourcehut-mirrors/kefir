@@ -45,6 +45,7 @@ kefir_result_t kefir_opt_code_container_init(struct kefir_opt_code_container *co
     code->capacity = 0;
     code->length = 0;
     code->next_block_id = 0;
+    code->entry_point = KEFIR_OPT_ID_NONE;
     REQUIRE_OK(kefir_hashtree_init(&code->blocks, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_on_removal(&code->blocks, free_block, NULL));
     return KEFIR_OK;
@@ -60,10 +61,17 @@ kefir_result_t kefir_opt_code_container_free(struct kefir_mem *mem, struct kefir
     return KEFIR_OK;
 }
 
+kefir_bool_t kefir_opt_code_container_is_empty(const struct kefir_opt_code_container *code) {
+    REQUIRE(code != NULL, true);
+    return kefir_hashtree_empty(&code->blocks) && code->length == 0 && code->entry_point == KEFIR_OPT_ID_NONE;
+}
+
 kefir_result_t kefir_opt_code_container_new_block(struct kefir_mem *mem, struct kefir_opt_code_container *code,
-                                                  kefir_opt_id_t *block_id_ptr) {
+                                                  kefir_bool_t entry_point, kefir_opt_id_t *block_id_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
+    REQUIRE(!entry_point || code->entry_point == KEFIR_OPT_ID_NONE,
+            KEFIR_SET_ERROR(KEFIR_ALREADY_EXISTS, "Entry point to optimizer code container already exists"));
     REQUIRE(block_id_ptr != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer code block identifier"));
 
@@ -83,6 +91,10 @@ kefir_result_t kefir_opt_code_container_new_block(struct kefir_mem *mem, struct 
     });
 
     code->next_block_id++;
+    if (entry_point) {
+        code->entry_point = block->id;
+    }
+
     *block_id_ptr = block->id;
     return KEFIR_OK;
 }

@@ -27,13 +27,14 @@
 #include "kefir/optimizer/base.h"
 
 typedef struct kefir_opt_type_descriptor {
+    kefir_id_t ir_type_id;
     const struct kefir_ir_type *ir_type;
 
     const struct kefir_ir_target_platform *target_platform;
     kefir_ir_target_platform_type_handle_t target_type;
 } kefir_opt_type_descriptor_t;
 
-kefir_result_t kefir_opt_type_descriptor_init(struct kefir_mem *, const struct kefir_ir_target_platform *,
+kefir_result_t kefir_opt_type_descriptor_init(struct kefir_mem *, const struct kefir_ir_target_platform *, kefir_id_t,
                                               const struct kefir_ir_type *, struct kefir_opt_type_descriptor *);
 kefir_result_t kefir_opt_type_descriptor_free(struct kefir_mem *, struct kefir_opt_type_descriptor *);
 kefir_result_t kefir_opt_type_descriptor_entry_info(struct kefir_mem *, const struct kefir_opt_type_descriptor *,

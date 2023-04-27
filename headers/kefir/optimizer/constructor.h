@@ -18,17 +18,13 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef KEFIR_OPTIMIZER_OPCODE_DEFS_H_
-#define KEFIR_OPTIMIZER_OPCODE_DEFS_H_
+#ifndef KEFIR_OPTIMIZER_CONSTRUCTOR_H_
+#define KEFIR_OPTIMIZER_CONSTRUCTOR_H_
 
-#include "kefir/optimizer/base.h"
+#include "kefir/optimizer/module.h"
+#include "kefir/ir/instr.h"
 
-// clang-format off
-#define KEFIR_OPTIMIZER_OPCODE_DEFS(OPCODE, SEPARATOR) \
-    OPCODE(JUMP, "jump", jump) SEPARATOR \
-    OPCODE(IJUMP, "indirect_jump", arg1) SEPARATOR \
-    OPCODE(BRANCH, "branch", branch) SEPARATOR \
-    OPCODE(RETURN, "return", arg1)
-// clang-format on
+kefir_result_t kefir_opt_construct_code_from_ir(struct kefir_mem *, const struct kefir_opt_module *,
+                                                const struct kefir_irblock *, struct kefir_opt_code_container *);
 
 #endif

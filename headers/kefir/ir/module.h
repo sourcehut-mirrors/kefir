@@ -96,6 +96,10 @@ const struct kefir_ir_function_decl *kefir_ir_module_get_declaration(const struc
 
 struct kefir_ir_type *kefir_ir_module_get_named_type(const struct kefir_ir_module *, kefir_id_t);
 
+const struct kefir_ir_function_decl *kefir_ir_module_function_declaration_iter(const struct kefir_ir_module *,
+                                                                               struct kefir_hashtree_node_iterator *);
+const struct kefir_ir_function_decl *kefir_ir_module_function_declaration_next(struct kefir_hashtree_node_iterator *);
+
 const struct kefir_ir_function *kefir_ir_module_function_iter(const struct kefir_ir_module *,
                                                               struct kefir_hashtree_node_iterator *);
 const struct kefir_ir_function *kefir_ir_module_function_next(struct kefir_hashtree_node_iterator *);

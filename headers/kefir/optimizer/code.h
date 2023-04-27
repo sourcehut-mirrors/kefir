@@ -82,12 +82,15 @@ typedef struct kefir_opt_code_container {
 
     struct kefir_hashtree blocks;
     kefir_opt_id_t next_block_id;
+
+    kefir_opt_id_t entry_point;
 } kefir_opt_code_container_t;
 
 kefir_result_t kefir_opt_code_container_init(struct kefir_opt_code_container *);
 kefir_result_t kefir_opt_code_container_free(struct kefir_mem *, struct kefir_opt_code_container *);
 
-kefir_result_t kefir_opt_code_container_new_block(struct kefir_mem *, struct kefir_opt_code_container *,
+kefir_bool_t kefir_opt_code_container_is_empty(const struct kefir_opt_code_container *);
+kefir_result_t kefir_opt_code_container_new_block(struct kefir_mem *, struct kefir_opt_code_container *, kefir_bool_t,
                                                   kefir_opt_id_t *);
 kefir_result_t kefir_opt_code_container_block(const struct kefir_opt_code_container *, kefir_opt_id_t,
                                               struct kefir_opt_code_block **);

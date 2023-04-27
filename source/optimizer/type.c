@@ -25,7 +25,7 @@
 
 kefir_result_t kefir_opt_type_descriptor_init(struct kefir_mem *mem,
                                               const struct kefir_ir_target_platform *target_platform,
-                                              const struct kefir_ir_type *ir_type,
+                                              kefir_id_t ir_type_id, const struct kefir_ir_type *ir_type,
                                               struct kefir_opt_type_descriptor *type_descr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(target_platform != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR target platform"));
@@ -34,6 +34,7 @@ kefir_result_t kefir_opt_type_descriptor_init(struct kefir_mem *mem,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer type descriptor"));
 
     REQUIRE_OK(KEFIR_IR_TARGET_PLATFORM_GET_TYPE(mem, target_platform, ir_type, &type_descr->target_type));
+    type_descr->ir_type_id = ir_type_id;
     type_descr->ir_type = ir_type;
     type_descr->target_platform = target_platform;
     return KEFIR_OK;
