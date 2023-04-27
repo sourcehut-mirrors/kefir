@@ -31,17 +31,17 @@ typedef enum kefir_opt_opcode {
 #undef KEFIR_OPT_OPCODE
 } kefir_opt_opcode_t;
 
-typedef kefir_size_t kefir_opt_id_t;
-#define KEFIR_OPT_ID_NONE (~(kefir_opt_id_t) 0ull)
+typedef kefir_id_t kefir_opt_block_id_t;
+typedef kefir_id_t kefir_opt_instruction_ref_t;
 
 typedef union kefir_opt_operation_parameters {
     struct {
-        kefir_opt_id_t target_block;
-        kefir_opt_id_t alternative_block;
-        kefir_opt_id_t condition_ref;
+        kefir_opt_block_id_t target_block;
+        kefir_opt_block_id_t alternative_block;
+        kefir_opt_instruction_ref_t condition_ref;
     } branch;
 
-    kefir_opt_id_t refs[3];
+    kefir_opt_instruction_ref_t refs[3];
 } kefir_opt_operation_parameters_t;
 
 typedef struct kefir_opt_operation {
@@ -50,13 +50,13 @@ typedef struct kefir_opt_operation {
 } kefir_opt_operation_t;
 
 typedef struct kefir_opt_instruction_link {
-    kefir_opt_id_t prev;
-    kefir_opt_id_t next;
+    kefir_opt_instruction_ref_t prev;
+    kefir_opt_instruction_ref_t next;
 } kefir_opt_instruction_link_t;
 
 typedef struct kefir_opt_instruction {
-    kefir_opt_id_t id;
-    kefir_opt_id_t block_id;
+    kefir_opt_instruction_ref_t id;
+    kefir_opt_block_id_t block_id;
 
     struct kefir_opt_operation operation;
     struct kefir_opt_instruction_link siblings;
@@ -64,12 +64,12 @@ typedef struct kefir_opt_instruction {
 } kefir_opt_instruction_t;
 
 typedef struct kefir_opt_code_instruction_list {
-    kefir_opt_id_t head;
-    kefir_opt_id_t tail;
+    kefir_opt_instruction_ref_t head;
+    kefir_opt_instruction_ref_t tail;
 } kefir_opt_code_instruction_list_t;
 
 typedef struct kefir_opt_code_block {
-    kefir_opt_id_t id;
+    kefir_opt_block_id_t id;
 
     struct kefir_opt_code_instruction_list content;
     struct kefir_opt_code_instruction_list control_flow;
@@ -81,9 +81,9 @@ typedef struct kefir_opt_code_container {
     kefir_size_t capacity;
 
     struct kefir_hashtree blocks;
-    kefir_opt_id_t next_block_id;
+    kefir_opt_block_id_t next_block_id;
 
-    kefir_opt_id_t entry_point;
+    kefir_opt_block_id_t entry_point;
 } kefir_opt_code_container_t;
 
 kefir_result_t kefir_opt_code_container_init(struct kefir_opt_code_container *);
@@ -91,21 +91,24 @@ kefir_result_t kefir_opt_code_container_free(struct kefir_mem *, struct kefir_op
 
 kefir_bool_t kefir_opt_code_container_is_empty(const struct kefir_opt_code_container *);
 kefir_result_t kefir_opt_code_container_new_block(struct kefir_mem *, struct kefir_opt_code_container *, kefir_bool_t,
-                                                  kefir_opt_id_t *);
-kefir_result_t kefir_opt_code_container_block(const struct kefir_opt_code_container *, kefir_opt_id_t,
+                                                  kefir_opt_block_id_t *);
+kefir_result_t kefir_opt_code_container_block(const struct kefir_opt_code_container *, kefir_opt_block_id_t,
                                               struct kefir_opt_code_block **);
 
-kefir_result_t kefir_opt_code_container_instr(const struct kefir_opt_code_container *, kefir_opt_id_t,
+kefir_result_t kefir_opt_code_container_instr(const struct kefir_opt_code_container *, kefir_opt_instruction_ref_t,
                                               struct kefir_opt_instruction **);
 kefir_result_t kefir_opt_code_container_new_instruction(struct kefir_mem *, struct kefir_opt_code_container *,
                                                         struct kefir_opt_code_block *,
-                                                        const struct kefir_opt_operation *, kefir_opt_id_t *);
+                                                        const struct kefir_opt_operation *,
+                                                        kefir_opt_instruction_ref_t *);
 
 kefir_result_t kefir_opt_code_container_add_control(const struct kefir_opt_code_container *,
-                                                    struct kefir_opt_code_block *, kefir_opt_id_t);
+                                                    struct kefir_opt_code_block *, kefir_opt_instruction_ref_t);
 kefir_result_t kefir_opt_code_container_insert_control(const struct kefir_opt_code_container *,
-                                                       struct kefir_opt_code_block *, kefir_opt_id_t, kefir_opt_id_t);
-kefir_result_t kefir_opt_code_container_drop_control(const struct kefir_opt_code_container *, kefir_opt_id_t);
+                                                       struct kefir_opt_code_block *, kefir_opt_instruction_ref_t,
+                                                       kefir_opt_instruction_ref_t);
+kefir_result_t kefir_opt_code_container_drop_control(const struct kefir_opt_code_container *,
+                                                     kefir_opt_instruction_ref_t);
 
 kefir_result_t kefir_opt_code_block_instr_head(const struct kefir_opt_code_container *,
                                                const struct kefir_opt_code_block *,

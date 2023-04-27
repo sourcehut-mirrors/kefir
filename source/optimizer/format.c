@@ -22,8 +22,8 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
-static kefir_result_t id_format(struct kefir_json_output *json, kefir_opt_id_t id) {
-    if (id == KEFIR_OPT_ID_NONE) {
+static kefir_result_t id_format(struct kefir_json_output *json, kefir_id_t id) {
+    if (id == KEFIR_ID_NONE) {
         REQUIRE_OK(kefir_json_output_null(json));
     } else {
         REQUIRE_OK(kefir_json_output_uinteger(json, id));
