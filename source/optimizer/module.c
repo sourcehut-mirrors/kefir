@@ -92,7 +92,7 @@ static kefir_result_t add_func(struct kefir_mem *mem, struct kefir_opt_module *m
         return res;
     });
 
-    REQUIRE_OK(kefir_opt_construct_code_from_ir(mem, module, &ir_func->body, &func->code));
+    REQUIRE_OK(kefir_opt_construct_function_code(mem, module, func));
     return KEFIR_OK;
 }
 

@@ -18,10 +18,22 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-int factorial(int x) {
-    if (x > 1) {
-        return x * factorial(x - 1);
-    } else {
-        return 1;
+void none(void) {
+    2 + 3 * 4;
+}
+
+int test1(void) {
+    if (1 & 3) {
+        return 2 + 3;
+    } else if (6 ^ 5 << 1) {
+        return 7 - 1 % 4;
+    }
+
+    return 10u % 5 / 100ul;
+}
+
+long test2(void) {
+    while (1 | 4 - 5) {
+        return -1 ^ ~1;
     }
 }

@@ -41,7 +41,14 @@ typedef union kefir_opt_operation_parameters {
         kefir_opt_instruction_ref_t condition_ref;
     } branch;
 
-    kefir_opt_instruction_ref_t refs[3];
+    kefir_id_t refs[3];
+
+    union {
+        kefir_int64_t integer;
+        kefir_uint64_t uinteger;
+        kefir_float32_t float32;
+        kefir_float64_t float64;
+    } imm;
 } kefir_opt_operation_parameters_t;
 
 typedef struct kefir_opt_operation {

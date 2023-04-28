@@ -28,9 +28,12 @@
 kefir_result_t kefir_opt_constructor_start_code_block_at(struct kefir_mem *mem,
                                                          struct kefir_opt_constructor_state *state,
                                                          kefir_size_t ir_location) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(state != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer constructor state"));
+
     kefir_opt_block_id_t code_block_id;
     REQUIRE(!kefir_hashtree_has(&state->code_blocks, (kefir_hashtree_key_t) ir_location), KEFIR_OK);
-    REQUIRE_OK(kefir_opt_code_container_new_block(mem, state->code, ir_location == 0, &code_block_id));
+    REQUIRE_OK(kefir_opt_code_container_new_block(mem, &state->function->code, ir_location == 0, &code_block_id));
 
     struct kefir_opt_constructor_code_block_state *block_state =
         KEFIR_MALLOC(mem, sizeof(struct kefir_opt_constructor_code_block_state));
@@ -58,6 +61,10 @@ kefir_result_t kefir_opt_constructor_start_code_block_at(struct kefir_mem *mem,
 kefir_result_t kefir_opt_constructor_find_code_block_for(const struct kefir_opt_constructor_state *state,
                                                          kefir_size_t ir_location,
                                                          struct kefir_opt_constructor_code_block_state **state_ptr) {
+    REQUIRE(state != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer constructor state"));
+    REQUIRE(state_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER,
+                                               "Expected valid pointer to optimizer code block contructor state"));
+
     struct kefir_hashtree_node *node = NULL;
     kefir_result_t res = kefir_hashtree_at(&state->code_blocks, (kefir_hashtree_key_t) ir_location, &node);
     if (res == KEFIR_NOT_FOUND) {
@@ -70,17 +77,20 @@ kefir_result_t kefir_opt_constructor_find_code_block_for(const struct kefir_opt_
 
 kefir_result_t kefir_opt_constructor_update_current_code_block(struct kefir_mem *mem,
                                                                struct kefir_opt_constructor_state *state) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(state != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer constructor state"));
+
     struct kefir_opt_constructor_code_block_state *block_state = NULL;
     kefir_result_t res = kefir_opt_constructor_find_code_block_for(state, state->ir_location, &block_state);
     if (res != KEFIR_NOT_FOUND && block_state != state->current_block) {
         REQUIRE_OK(res);
         if (state->current_block != NULL) {
             kefir_bool_t current_block_finalized = false;
-            REQUIRE_OK(kefir_opt_code_builder_is_finalized(state->code, state->current_block->block_id,
+            REQUIRE_OK(kefir_opt_code_builder_is_finalized(&state->function->code, state->current_block->block_id,
                                                            &current_block_finalized));
             if (!current_block_finalized) {
-                REQUIRE_OK(kefir_opt_code_builder_finalize_jump(mem, state->code, state->current_block->block_id,
-                                                                block_state->block_id, NULL));
+                REQUIRE_OK(kefir_opt_code_builder_finalize_jump(
+                    mem, &state->function->code, state->current_block->block_id, block_state->block_id, NULL));
             }
         }
         state->current_block = block_state;
@@ -103,15 +113,15 @@ static kefir_result_t free_kefir_opt_constructor_code_block_state(struct kefir_m
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_opt_constructor_init(struct kefir_opt_code_container *code,
+kefir_result_t kefir_opt_constructor_init(struct kefir_opt_function *function,
                                           struct kefir_opt_constructor_state *state) {
-    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
+    REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer function"));
     REQUIRE(state != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected vaid optimizer constructor state"));
 
     REQUIRE_OK(kefir_hashtree_init(&state->code_blocks, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_on_removal(&state->code_blocks, free_kefir_opt_constructor_code_block_state, NULL));
 
-    state->code = code;
+    state->function = function;
     state->current_block = NULL;
     state->ir_location = 0;
     return KEFIR_OK;
@@ -119,11 +129,84 @@ kefir_result_t kefir_opt_constructor_init(struct kefir_opt_code_container *code,
 
 kefir_result_t kefir_opt_constructor_free(struct kefir_mem *mem, struct kefir_opt_constructor_state *state) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(state != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected vaid optimizer constructor state"));
+    REQUIRE(state != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer constructor state"));
 
     REQUIRE_OK(kefir_hashtree_free(mem, &state->code_blocks));
-    state->code = NULL;
+    state->function = NULL;
     state->current_block = NULL;
     state->ir_location = 0;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_constructor_stack_push(struct kefir_mem *mem, struct kefir_opt_constructor_state *state,
+                                                kefir_opt_instruction_ref_t ref) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(state != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer constructor state"));
+    REQUIRE(state->current_block != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected valid current optimizer code block state"));
+
+    REQUIRE_OK(kefir_list_insert_after(mem, &state->current_block->stack, kefir_list_tail(&state->current_block->stack),
+                                       (void *) ref));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_constructor_stack_pop(struct kefir_mem *mem, struct kefir_opt_constructor_state *state,
+                                               kefir_opt_instruction_ref_t *ref_ptr) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(state != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer constructor state"));
+    REQUIRE(state->current_block != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected valid current optimizer code block state"));
+    REQUIRE(kefir_list_length(&state->current_block->stack) > 0,
+            KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Current optimizer code block stack is empty"));
+    REQUIRE(ref_ptr != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer instruction reference"));
+
+    struct kefir_list_entry *tail = kefir_list_tail(&state->current_block->stack);
+    REQUIRE(tail != NULL, KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Optimizer code block constructor stack is empty"));
+    *ref_ptr = (kefir_opt_instruction_ref_t) tail->value;
+    REQUIRE_OK(kefir_list_pop(mem, &state->current_block->stack, tail));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_constructor_stack_at(struct kefir_mem *mem, struct kefir_opt_constructor_state *state,
+                                              kefir_size_t index, kefir_opt_instruction_ref_t *ref_ptr) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(state != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer constructor state"));
+    REQUIRE(state->current_block != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected valid current optimizer code block state"));
+    REQUIRE(kefir_list_length(&state->current_block->stack) > 0,
+            KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Current optimizer code block stack is empty"));
+    REQUIRE(ref_ptr != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer instruction reference"));
+
+    struct kefir_list_entry *entry =
+        kefir_list_at(&state->current_block->stack, kefir_list_length(&state->current_block->stack) - index - 1);
+    REQUIRE(entry != NULL,
+            KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS,
+                            "Provided index is out of bounds of optimizer code block constructor stack"));
+    *ref_ptr = (kefir_opt_instruction_ref_t) entry->value;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_constructor_stack_exchange(struct kefir_mem *mem, struct kefir_opt_constructor_state *state,
+                                                    kefir_size_t index) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(state != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer constructor state"));
+    REQUIRE(state->current_block != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected valid current optimizer code block state"));
+    REQUIRE(kefir_list_length(&state->current_block->stack) > 0,
+            KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Current optimizer code block stack is empty"));
+
+    struct kefir_list_entry *tail = kefir_list_tail(&state->current_block->stack);
+    REQUIRE(tail != NULL, KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Optimizer code block constructor stack is empty"));
+    struct kefir_list_entry *entry =
+        kefir_list_at(&state->current_block->stack, kefir_list_length(&state->current_block->stack) - index - 1);
+    REQUIRE(entry != NULL,
+            KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS,
+                            "Provided index is out of bounds of optimizer code block constructor stack"));
+
+    void *tail_value = tail->value;
+    tail->value = entry->value;
+    entry->value = tail_value;
     return KEFIR_OK;
 }

@@ -24,7 +24,7 @@
 #include "kefir/optimizer/module.h"
 #include "kefir/ir/instr.h"
 
-kefir_result_t kefir_opt_construct_code_from_ir(struct kefir_mem *, const struct kefir_opt_module *,
-                                                const struct kefir_irblock *, struct kefir_opt_code_container *);
+kefir_result_t kefir_opt_construct_function_code(struct kefir_mem *, const struct kefir_opt_module *,
+                                                 struct kefir_opt_function *);
 
 #endif
