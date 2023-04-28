@@ -87,6 +87,9 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_symbo
         } else if (strcmp("--print-ir", arg) == 0) {
             // Print IR
             config->stage = KEFIR_DRIVER_STAGE_PRINT_IR;
+        } else if (strcmp("--print-opt", arg) == 0) {
+            // Print optimizer code
+            config->stage = KEFIR_DRIVER_STAGE_PRINT_OPT;
         } else if (strcmp("--print-runtime-code", arg) == 0) {
             // Print IR
             config->stage = KEFIR_DRIVER_STAGE_PRINT_RUNTIME_CODE;

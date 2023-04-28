@@ -32,21 +32,9 @@ kefir_result_t kefir_opt_code_builder_add_instruction(struct kefir_mem *mem, str
     struct kefir_opt_code_block *block = NULL;
     REQUIRE_OK(kefir_opt_code_container_block(code, block_id, &block));
 
-    const struct kefir_opt_instruction *prev_instr = NULL;
-    REQUIRE_OK(kefir_opt_code_block_instr_control_tail(code, block, &prev_instr));
-    if (prev_instr != NULL) {
-        switch (prev_instr->operation.opcode) {
-            case KEFIR_OPT_OPCODE_JUMP:
-            case KEFIR_OPT_OPCODE_IJUMP:
-            case KEFIR_OPT_OPCODE_BRANCH:
-            case KEFIR_OPT_OPCODE_RETURN:
-                return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Optimizer code block has already been finalized");
-
-            default:
-                // Intentionally left blank
-                break;
-        }
-    }
+    kefir_bool_t finalized = false;
+    REQUIRE_OK(kefir_opt_code_builder_is_finalized(code, block_id, &finalized));
+    REQUIRE(!finalized, KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Optimizer code block has already been finalized"));
 
     kefir_opt_instruction_ref_t instr_id;
     REQUIRE_OK(kefir_opt_code_container_new_instruction(mem, code, block, operation, &instr_id));
@@ -55,6 +43,34 @@ kefir_result_t kefir_opt_code_builder_add_instruction(struct kefir_mem *mem, str
     }
 
     ASSIGN_PTR(instr_id_ptr, instr_id);
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_code_builder_is_finalized(const struct kefir_opt_code_container *code,
+                                                   kefir_opt_block_id_t block_id, kefir_bool_t *finalized_ptr) {
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
+    REQUIRE(finalized_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
+
+    struct kefir_opt_code_block *block = NULL;
+    REQUIRE_OK(kefir_opt_code_container_block(code, block_id, &block));
+
+    const struct kefir_opt_instruction *prev_instr = NULL;
+    REQUIRE_OK(kefir_opt_code_block_instr_control_tail(code, block, &prev_instr));
+    if (prev_instr != NULL) {
+        switch (prev_instr->operation.opcode) {
+            case KEFIR_OPT_OPCODE_JUMP:
+            case KEFIR_OPT_OPCODE_IJUMP:
+            case KEFIR_OPT_OPCODE_BRANCH:
+            case KEFIR_OPT_OPCODE_RETURN:
+                *finalized_ptr = true;
+                break;
+
+            default:
+                *finalized_ptr = false;
+                break;
+        }
+    }
+
     return KEFIR_OK;
 }
 
@@ -115,7 +131,7 @@ kefir_result_t kefir_opt_code_builder_finalize_branch(struct kefir_mem *mem, str
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
 
-    REQUIRE_OK(instr_exists(code, block_id, condition, false));
+    // REQUIRE_OK(instr_exists(code, block_id, condition, false));
     REQUIRE_OK(block_exists(code, target_block));
     REQUIRE_OK(block_exists(code, alternative_block));
     REQUIRE_OK(kefir_opt_code_builder_add_instruction(
@@ -135,7 +151,7 @@ kefir_result_t kefir_opt_code_builder_finalize_return(struct kefir_mem *mem, str
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
 
-    REQUIRE_OK(instr_exists(code, block_id, arg_instr_id, true));
+    // REQUIRE_OK(instr_exists(code, block_id, arg_instr_id, true));
     REQUIRE_OK(kefir_opt_code_builder_add_instruction(
         mem, code, block_id,
         &(struct kefir_opt_operation){.opcode = KEFIR_OPT_OPCODE_RETURN, .parameters.refs[0] = arg_instr_id}, true,

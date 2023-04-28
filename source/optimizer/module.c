@@ -111,7 +111,7 @@ static kefir_result_t add_func_decl(struct kefir_mem *mem, struct kefir_opt_modu
 
 static kefir_result_t add_func(struct kefir_mem *mem, struct kefir_opt_module *module,
                                const struct kefir_ir_function *ir_func) {
-    struct kefir_opt_function *func = KEFIR_MALLOC(mem, sizeof(struct kefir_ir_function));
+    struct kefir_opt_function *func = KEFIR_MALLOC(mem, sizeof(struct kefir_opt_function));
     REQUIRE(func != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate optimizer function"));
 
     kefir_result_t res = kefir_opt_function_init(module, ir_func, func);
@@ -170,8 +170,8 @@ kefir_result_t kefir_opt_module_init(struct kefir_mem *mem, const struct kefir_i
     REQUIRE_OK(kefir_hashtree_init(&module->function_declarations, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_on_removal(&module->function_declarations, free_function_declaration, NULL));
 
-    REQUIRE_OK(kefir_hashtree_init(&module->function_declarations, &kefir_hashtree_uint_ops));
-    REQUIRE_OK(kefir_hashtree_on_removal(&module->function_declarations, free_function, NULL));
+    REQUIRE_OK(kefir_hashtree_init(&module->functions, &kefir_hashtree_uint_ops));
+    REQUIRE_OK(kefir_hashtree_on_removal(&module->functions, free_function, NULL));
 
     module->ir_module = ir_module;
     module->ir_target_platform = target_platform;
@@ -193,6 +193,8 @@ kefir_result_t kefir_opt_module_free(struct kefir_mem *mem, struct kefir_opt_mod
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer module"));
 
     REQUIRE_OK(kefir_hashtree_free(mem, &module->type_descriptors));
+    REQUIRE_OK(kefir_hashtree_free(mem, &module->function_declarations));
+    REQUIRE_OK(kefir_hashtree_free(mem, &module->functions));
 
     module->ir_module = NULL;
     module->ir_target_platform = NULL;
@@ -223,7 +225,7 @@ kefir_result_t kefir_opt_module_get_function_declaration(const struct kefir_opt_
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer function declaration"));
 
     struct kefir_hashtree_node *node = NULL;
-    kefir_result_t res = kefir_hashtree_at(&module->type_descriptors, (kefir_hashtree_key_t) identifier, &node);
+    kefir_result_t res = kefir_hashtree_at(&module->function_declarations, (kefir_hashtree_key_t) identifier, &node);
     if (res == KEFIR_NOT_FOUND) {
         res = KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find requested optimizer type descriptor in the registry");
     }
@@ -240,7 +242,7 @@ kefir_result_t kefir_opt_module_get_function(const struct kefir_opt_module *modu
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer function"));
 
     struct kefir_hashtree_node *node = NULL;
-    kefir_result_t res = kefir_hashtree_at(&module->type_descriptors, (kefir_hashtree_key_t) identifier, &node);
+    kefir_result_t res = kefir_hashtree_at(&module->functions, (kefir_hashtree_key_t) identifier, &node);
     if (res == KEFIR_NOT_FOUND) {
         res = KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find requested optimizer type descriptor in the registry");
     }

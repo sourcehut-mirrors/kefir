@@ -56,6 +56,8 @@ static kefir_result_t format_operation_arg1(struct kefir_json_output *json, cons
 static kefir_result_t instr_format(struct kefir_json_output *json, const struct kefir_opt_instruction *instr) {
     REQUIRE_OK(kefir_json_output_object_begin(json));
     REQUIRE_OK(kefir_json_output_object_key(json, "id"));
+    REQUIRE_OK(kefir_json_output_uinteger(json, instr->id));
+    REQUIRE_OK(kefir_json_output_object_key(json, "opcode"));
 
     switch (instr->operation.opcode) {
 #define OPCODE(_id, _name, _class)                                      \
@@ -106,11 +108,44 @@ kefir_result_t kefir_opt_code_format(struct kefir_json_output *json, const struc
     REQUIRE_OK(kefir_json_output_object_begin(json));
 
     struct kefir_opt_code_container_iterator iter;
+    REQUIRE_OK(kefir_json_output_object_key(json, "entry_point"));
+    REQUIRE_OK(id_format(json, code->entry_point));
     REQUIRE_OK(kefir_json_output_object_key(json, "blocks"));
     REQUIRE_OK(kefir_json_output_array_begin(json));
     for (const struct kefir_opt_code_block *block = kefir_opt_code_container_iter(code, &iter); block != NULL;
          block = kefir_opt_code_container_next(&iter)) {
         REQUIRE_OK(code_block_format(json, code, block));
+    }
+    REQUIRE_OK(kefir_json_output_array_end(json));
+
+    REQUIRE_OK(kefir_json_output_object_end(json));
+    return KEFIR_OK;
+}
+
+static kefir_result_t format_function(struct kefir_json_output *json, const struct kefir_opt_function *function) {
+    REQUIRE_OK(kefir_json_output_object_begin(json));
+    REQUIRE_OK(kefir_json_output_object_key(json, "id"));
+    REQUIRE_OK(kefir_json_output_uinteger(json, function->declaration->ir_func_decl->id));
+    REQUIRE_OK(kefir_json_output_object_key(json, "code"));
+    REQUIRE_OK(kefir_opt_code_format(json, &function->code));
+    REQUIRE_OK(kefir_json_output_object_end(json));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_module_format(struct kefir_json_output *json, const struct kefir_opt_module *module) {
+    REQUIRE(json != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid json output"));
+    REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module"));
+
+    REQUIRE_OK(kefir_json_output_object_begin(json));
+
+    REQUIRE_OK(kefir_json_output_object_key(json, "functions"));
+    REQUIRE_OK(kefir_json_output_array_begin(json));
+    struct kefir_hashtree_node_iterator iter;
+    for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&module->functions, &iter); node != NULL;
+         node = kefir_hashtree_next(&iter)) {
+
+        ASSIGN_DECL_CAST(const struct kefir_opt_function *, function, node->value);
+        REQUIRE_OK(format_function(json, function));
     }
     REQUIRE_OK(kefir_json_output_array_end(json));
 

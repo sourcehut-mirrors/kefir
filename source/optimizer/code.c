@@ -235,6 +235,9 @@ kefir_result_t kefir_opt_code_container_insert_control(const struct kefir_opt_co
         }
         instr->control_flow.next = block->control_flow.head;
         block->control_flow.head = instr->id;
+        if (block->control_flow.tail == KEFIR_ID_NONE) {
+            block->control_flow.tail = instr->id;
+        }
     } else {
         if (after_instr->control_flow.next != KEFIR_ID_NONE) {
             struct kefir_opt_instruction *next_instr = NULL;
