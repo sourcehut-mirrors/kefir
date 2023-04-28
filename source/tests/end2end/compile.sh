@@ -27,17 +27,27 @@ if [[ "x$DST_FILE" == "x" ]]; then
 fi
 
 KEFIRCC="$BIN_DIR/kefir"
-TMPDIR="$(mktemp -d)"
 INCLUDE_FILE="$(dirname $0)/include.h"
 export LD_LIBRARY_PATH="$BIN_DIR/libs"
 
-function cleanup {
-    rm -rf "$TMPDIR"
-}
+KEFIR_CFLAGS=`echo \
+             "--target x86_64-host-none " \
+             "-I \"$(dirname $SRC_FILE)\" " \
+             "-I \"$(dirname $SCRIPT)/headers\" " \
+             "-I \"$(dirname $SCRIPT)/../../../headers/kefir/runtime\" " \
+             "-D KEFIR_END2END_TEST " \
+             "-U __STDC__ " \
+             "-D KEFIR_END2END=101 " \
+             "-W " \
+             "--pp-timestamp=1633204489 " \
+             "-include \"$INCLUDE_FILE\" " \
+             "-I \"$(dirname $SRC_FILE)\""`
 
-trap cleanup EXIT HUP INT QUIT PIPE TERM
-
-KEFIR_CFLAGS="--target x86_64-host-none -I $(dirname $SRC_FILE) -I "$(dirname $SCRIPT)/headers" -I "$(dirname $SCRIPT)/../../../headers/kefir/runtime" -D KEFIR_END2END_TEST -U __STDC__ -D KEFIR_END2END=101  -W --pp-timestamp=1633204489 -include $INCLUDE_FILE  -I "$(dirname $SRC_FILE)""
+if [[ "x$ASMGEN" == "xyes" ]]; then
+    KEFIR_CFLAGS="$KEFIR_CFLAGS -S"
+else
+    KEFIR_CFLAGS="$KEFIR_CFLAGS -c"
+fi
 
 if [[ -f "$SRC_FILE.profile" ]]; then
     source "$SRC_FILE.profile"
@@ -46,7 +56,7 @@ fi
 set -e
 
 if [[ "x$MEMCHECK" == "xyes" ]]; then
-    valgrind $VALGRIND_OPTIONS "$KEFIRCC" -c $KEFIR_CFLAGS "$SRC_FILE" -o "$DST_FILE"
+    eval valgrind $VALGRIND_OPTIONS "$KEFIRCC" $KEFIR_CFLAGS "$SRC_FILE" -o "$DST_FILE"
 else
-    "$KEFIRCC" -c $KEFIR_CFLAGS "$SRC_FILE" -o "$DST_FILE"
+    eval "$KEFIRCC" $KEFIR_CFLAGS "$SRC_FILE" -o "$DST_FILE"
 fi

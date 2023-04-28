@@ -29,7 +29,7 @@ endif
 $(END2END_BIN_PATH)/%.asmgen.output: $(SOURCE_DIR)/tests/end2end/%.kefir.asmgen.c $(BIN_DIR)/kefir
 	@mkdir -p $(shell dirname "$@")
 	@echo "Kefir-Translate $@"
-	@VALGRIND_OPTIONS="$(VALGRIND_OPTIONS)" MEMCHECK="$(MEMCHECK)" PLATFORM="$(PLATFORM)" AS="$(AS)" $(SOURCE_DIR)/tests/end2end/asmgen.sh $(BIN_DIR) $< $@
+	@VALGRIND_OPTIONS="$(VALGRIND_OPTIONS)" MEMCHECK="$(MEMCHECK)" PLATFORM="$(PLATFORM)" AS="$(AS)" ASMGEN=yes $(SOURCE_DIR)/tests/end2end/compile.sh $(BIN_DIR) $< $@
 
 $(END2END_BIN_PATH)/%.test.asmgen.done: $(END2END_BIN_PATH)/%.asmgen.output
 	@echo "Asmgen-Diff $^"
@@ -38,7 +38,7 @@ $(END2END_BIN_PATH)/%.test.asmgen.done: $(END2END_BIN_PATH)/%.asmgen.output
 
 $(SOURCE_DIR)/tests/end2end/%.asmgen.expected: $(SOURCE_DIR)/tests/end2end/%.kefir.asmgen.c $(BIN_DIR)/kefir
 	@echo "Rebuilding $@"
-	@VALGRIND_OPTIONS="$(VALGRIND_OPTIONS)" MEMCHECK="$(MEMCHECK)" PLATFORM="$(PLATFORM)" AS="$(AS)" $(SOURCE_DIR)/tests/end2end/asmgen.sh $(BIN_DIR) $< $@
+	@VALGRIND_OPTIONS="$(VALGRIND_OPTIONS)" MEMCHECK="$(MEMCHECK)" PLATFORM="$(PLATFORM)" AS="$(AS)" ASMGEN=yes $(SOURCE_DIR)/tests/end2end/compile.sh $(BIN_DIR) $< $@
 
 include source/tests/end2end/*/Makefile.mk
 
