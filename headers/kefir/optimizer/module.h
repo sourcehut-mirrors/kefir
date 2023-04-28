@@ -30,7 +30,6 @@ typedef struct kefir_opt_module {
     const struct kefir_ir_target_platform *ir_target_platform;
 
     struct kefir_hashtree type_descriptors;
-    struct kefir_hashtree function_declarations;
     struct kefir_hashtree functions;
 } kefir_opt_module_t;
 
@@ -40,8 +39,6 @@ kefir_result_t kefir_opt_module_free(struct kefir_mem *, struct kefir_opt_module
 
 kefir_result_t kefir_opt_module_get_type(const struct kefir_opt_module *, kefir_id_t,
                                          const struct kefir_opt_type_descriptor **);
-kefir_result_t kefir_opt_module_get_function_declaration(const struct kefir_opt_module *, kefir_id_t,
-                                                         const struct kefir_opt_function_declaration **);
 kefir_result_t kefir_opt_module_get_function(const struct kefir_opt_module *, kefir_id_t,
                                              const struct kefir_opt_function **);
 

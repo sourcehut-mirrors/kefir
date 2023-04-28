@@ -1,0 +1,75 @@
+{
+    "functions": [
+        {
+            "id": 1,
+            "name": "factorial",
+            "code": {
+                "entry_point": 0,
+                "blocks": [
+                    {
+                        "id": 0,
+                        "control_flow": 0,
+                        "code": [
+                            {
+                                "id": 0,
+                                "opcode": "branch",
+                                "target_block": 1,
+                                "alternative_block": 2,
+                                "condition": null,
+                                "control_next": null
+                            }
+                        ]
+                    },
+                    {
+                        "id": 1,
+                        "control_flow": 3,
+                        "code": [
+                            {
+                                "id": 3,
+                                "opcode": "return",
+                                "arg": null,
+                                "control_next": null
+                            }
+                        ]
+                    },
+                    {
+                        "id": 2,
+                        "control_flow": 1,
+                        "code": [
+                            {
+                                "id": 1,
+                                "opcode": "return",
+                                "arg": null,
+                                "control_next": null
+                            }
+                        ]
+                    },
+                    {
+                        "id": 3,
+                        "control_flow": 2,
+                        "code": [
+                            {
+                                "id": 2,
+                                "opcode": "jump",
+                                "target_block": 4,
+                                "control_next": null
+                            }
+                        ]
+                    },
+                    {
+                        "id": 4,
+                        "control_flow": 4,
+                        "code": [
+                            {
+                                "id": 4,
+                                "opcode": "return",
+                                "arg": null,
+                                "control_next": null
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    ]
+}

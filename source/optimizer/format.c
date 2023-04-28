@@ -125,7 +125,13 @@ kefir_result_t kefir_opt_code_format(struct kefir_json_output *json, const struc
 static kefir_result_t format_function(struct kefir_json_output *json, const struct kefir_opt_function *function) {
     REQUIRE_OK(kefir_json_output_object_begin(json));
     REQUIRE_OK(kefir_json_output_object_key(json, "id"));
-    REQUIRE_OK(kefir_json_output_uinteger(json, function->declaration->ir_func_decl->id));
+    REQUIRE_OK(kefir_json_output_uinteger(json, function->ir_func->declaration->id));
+    REQUIRE_OK(kefir_json_output_object_key(json, "name"));
+    if (function->ir_func->declaration->name != NULL) {
+        REQUIRE_OK(kefir_json_output_string(json, function->ir_func->declaration->name));
+    } else {
+        REQUIRE_OK(kefir_json_output_null(json));
+    }
     REQUIRE_OK(kefir_json_output_object_key(json, "code"));
     REQUIRE_OK(kefir_opt_code_format(json, &function->code));
     REQUIRE_OK(kefir_json_output_object_end(json));

@@ -18,22 +18,10 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef KEFIR_OPTIMIZER_FUNCTION_H_
-#define KEFIR_OPTIMIZER_FUNCTION_H_
-
-#include "kefir/optimizer/code.h"
-#include "kefir/optimizer/type.h"
-#include "kefir/ir/function.h"
-
-typedef struct kefir_opt_module kefir_opt_module_t;  // Forward declaration
-
-typedef struct kefir_opt_function {
-    const struct kefir_ir_function *ir_func;
-    struct kefir_opt_code_container code;
-} kefir_opt_function_t;
-
-kefir_result_t kefir_opt_function_init(const struct kefir_opt_module *, const struct kefir_ir_function *,
-                                       struct kefir_opt_function *);
-kefir_result_t kefir_opt_function_free(struct kefir_mem *, struct kefir_opt_function *);
-
-#endif
+int factorial(int x) {
+    if (x > 1) {
+        return x * factorial(x - 1);
+    } else {
+        return 1;
+    }
+}

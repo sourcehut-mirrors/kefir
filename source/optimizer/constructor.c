@@ -22,22 +22,15 @@
 #include "kefir/optimizer/builder.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
-
-struct constructor_state {
-    struct kefir_hashtree code_blocks;
-    kefir_opt_block_id_t current_block;
-    kefir_size_t ir_pc;
-};
+#define KEFIR_OPTIMIZER_CONSTRUCTOR_INTERNAL_INCLUDE
+#include "kefir/optimizer/constructor_internal.h"
 
 static kefir_result_t identify_code_blocks(struct kefir_mem *mem, const struct kefir_irblock *ir_block,
-                                           struct kefir_opt_code_container *code, struct constructor_state *state) {
-    kefir_opt_block_id_t code_block_id;
+                                           struct kefir_opt_constructor_state *state) {
     kefir_bool_t start_new_block = true;
     for (kefir_size_t i = 0; i < kefir_irblock_length(ir_block); i++) {
-        if (start_new_block && !kefir_hashtree_has(&state->code_blocks, (kefir_hashtree_key_t) i)) {
-            REQUIRE_OK(kefir_opt_code_container_new_block(mem, code, i == 0, &code_block_id));
-            REQUIRE_OK(kefir_hashtree_insert(mem, &state->code_blocks, (kefir_hashtree_key_t) i,
-                                             (kefir_hashtree_value_t) code_block_id));
+        if (start_new_block) {
+            REQUIRE_OK(kefir_opt_constructor_start_code_block_at(mem, state, i));
         }
         start_new_block = false;
 
@@ -46,15 +39,9 @@ static kefir_result_t identify_code_blocks(struct kefir_mem *mem, const struct k
         switch (instr->opcode) {
             case KEFIR_IROPCODE_JMP:
             case KEFIR_IROPCODE_BRANCH:
-            case KEFIR_IROPCODE_PUSHLABEL: {
-                kefir_size_t jump_target = instr->arg.u64;
-                if (!kefir_hashtree_has(&state->code_blocks, (kefir_hashtree_key_t) jump_target)) {
-                    REQUIRE_OK(kefir_opt_code_container_new_block(mem, code, false, &code_block_id));
-                    REQUIRE_OK(kefir_hashtree_insert(mem, &state->code_blocks, (kefir_hashtree_key_t) jump_target,
-                                                     (kefir_hashtree_value_t) code_block_id));
-                }
-                start_new_block = true;
-            } break;
+            case KEFIR_IROPCODE_PUSHLABEL:
+                REQUIRE_OK(kefir_opt_constructor_start_code_block_at(mem, state, instr->arg.u64));
+                // Fallthrough
 
             case KEFIR_IROPCODE_IJMP:
             case KEFIR_IROPCODE_RET:
@@ -69,57 +56,32 @@ static kefir_result_t identify_code_blocks(struct kefir_mem *mem, const struct k
     return KEFIR_OK;
 }
 
-static kefir_opt_block_id_t get_code_block_by_pc(const struct constructor_state *state, kefir_size_t pc) {
-    struct kefir_hashtree_node *node = NULL;
-    kefir_result_t res = kefir_hashtree_at(&state->code_blocks, (kefir_hashtree_key_t) pc, &node);
-    if (res != KEFIR_OK) {
-        return KEFIR_ID_NONE;
-    } else {
-        return (kefir_opt_block_id_t) node->value;
-    }
-}
-
-static kefir_result_t find_current_code_block(struct kefir_mem *mem, struct kefir_opt_code_container *code,
-                                              struct constructor_state *state) {
-    kefir_opt_block_id_t block_by_pc = get_code_block_by_pc(state, state->ir_pc);
-    if (block_by_pc != KEFIR_ID_NONE && block_by_pc != state->current_block) {
-        if (state->current_block != KEFIR_ID_NONE) {
-            kefir_bool_t current_block_finalized = false;
-            REQUIRE_OK(kefir_opt_code_builder_is_finalized(code, state->current_block, &current_block_finalized));
-            if (!current_block_finalized) {
-                REQUIRE_OK(kefir_opt_code_builder_finalize_jump(mem, code, state->current_block, block_by_pc, NULL));
-            }
-        }
-        state->current_block = block_by_pc;
-    }
-    return KEFIR_OK;
-}
-
 static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct kefir_opt_module *module,
-                                            struct kefir_opt_code_container *code, struct constructor_state *state,
+                                            struct kefir_opt_code_container *code,
+                                            struct kefir_opt_constructor_state *state,
                                             const struct kefir_irinstr *instr) {
     UNUSED(module);
     switch (instr->opcode) {
         case KEFIR_IROPCODE_JMP: {
-            kefir_opt_block_id_t jump_target_block = get_code_block_by_pc(state, instr->arg.u64);
-            REQUIRE(jump_target_block != KEFIR_ID_NONE,
-                    KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid optimizer block to exist for the jump"));
-            REQUIRE_OK(kefir_opt_code_builder_finalize_jump(mem, code, state->current_block, jump_target_block, NULL));
+            struct kefir_opt_constructor_code_block_state *jump_target_block = NULL;
+            REQUIRE_OK(kefir_opt_constructor_find_code_block_for(state, instr->arg.u64, &jump_target_block));
+            REQUIRE_OK(kefir_opt_code_builder_finalize_jump(mem, code, state->current_block->block_id,
+                                                            jump_target_block->block_id, NULL));
         } break;
 
         case KEFIR_IROPCODE_BRANCH: {
-            kefir_opt_block_id_t jump_target_block = get_code_block_by_pc(state, instr->arg.u64);
-            kefir_opt_block_id_t alternative_block = get_code_block_by_pc(state, state->ir_pc + 1);
-            REQUIRE(
-                jump_target_block != KEFIR_ID_NONE && alternative_block != KEFIR_ID_NONE,
-                KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid optimizer blocks to exist for both branches"));
-            REQUIRE_OK(kefir_opt_code_builder_finalize_branch(mem, code, state->current_block, KEFIR_ID_NONE,
-                                                              jump_target_block, alternative_block, NULL));
+            struct kefir_opt_constructor_code_block_state *jump_target_block = NULL, *alternative_block = NULL;
+            REQUIRE_OK(kefir_opt_constructor_find_code_block_for(state, instr->arg.u64, &jump_target_block));
+            REQUIRE_OK(kefir_opt_constructor_find_code_block_for(state, state->ir_location + 1, &alternative_block));
+            REQUIRE_OK(kefir_opt_code_builder_finalize_branch(mem, code, state->current_block->block_id, KEFIR_ID_NONE,
+                                                              jump_target_block->block_id, alternative_block->block_id,
+                                                              NULL));
         } break;
 
-        case KEFIR_IROPCODE_RET: {
-            REQUIRE_OK(kefir_opt_code_builder_finalize_return(mem, code, state->current_block, KEFIR_ID_NONE, NULL));
-        } break;
+        case KEFIR_IROPCODE_RET:
+            REQUIRE_OK(
+                kefir_opt_code_builder_finalize_return(mem, code, state->current_block->block_id, KEFIR_ID_NONE, NULL));
+            break;
 
         default:
             // TODO Implement complete translation
@@ -130,31 +92,33 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
 
 static kefir_result_t translate_code(struct kefir_mem *mem, const struct kefir_opt_module *module,
                                      const struct kefir_irblock *ir_block, struct kefir_opt_code_container *code,
-                                     struct constructor_state *state) {
+                                     struct kefir_opt_constructor_state *state) {
     UNUSED(module);
-    state->current_block = KEFIR_ID_NONE;
-    state->ir_pc = 0;
-    for (; state->ir_pc < kefir_irblock_length(ir_block); state->ir_pc++) {
-        REQUIRE_OK(find_current_code_block(mem, code, state));
+    state->current_block = NULL;
+    state->ir_location = 0;
+    for (; state->ir_location < kefir_irblock_length(ir_block); state->ir_location++) {
+        REQUIRE_OK(kefir_opt_constructor_update_current_code_block(mem, state));
 
-        const struct kefir_irinstr *instr = kefir_irblock_at(ir_block, state->ir_pc);
+        const struct kefir_irinstr *instr = kefir_irblock_at(ir_block, state->ir_location);
         REQUIRE(instr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected valid IR instruction to be returned"));
         REQUIRE_OK(translate_instruction(mem, module, code, state, instr));
     }
 
-    REQUIRE_OK(find_current_code_block(mem, code, state));
+    REQUIRE_OK(kefir_opt_constructor_update_current_code_block(mem, state));
     kefir_bool_t last_block_finalized = false;
-    REQUIRE_OK(kefir_opt_code_builder_is_finalized(code, state->current_block, &last_block_finalized));
+    REQUIRE_OK(kefir_opt_code_builder_is_finalized(code, state->current_block->block_id, &last_block_finalized));
     if (!last_block_finalized) {
-        REQUIRE_OK(kefir_opt_code_builder_finalize_return(mem, code, state->current_block, KEFIR_ID_NONE, NULL));
+        REQUIRE_OK(
+            kefir_opt_code_builder_finalize_return(mem, code, state->current_block->block_id, KEFIR_ID_NONE, NULL));
     }
     return KEFIR_OK;
 }
 
 static kefir_result_t construct_code_from_ir(struct kefir_mem *mem, const struct kefir_opt_module *module,
                                              const struct kefir_irblock *ir_block,
-                                             struct kefir_opt_code_container *code, struct constructor_state *state) {
-    REQUIRE_OK(identify_code_blocks(mem, ir_block, code, state));
+                                             struct kefir_opt_code_container *code,
+                                             struct kefir_opt_constructor_state *state) {
+    REQUIRE_OK(identify_code_blocks(mem, ir_block, state));
     REQUIRE_OK(translate_code(mem, module, ir_block, code, state));
     return KEFIR_OK;
 }
@@ -168,15 +132,15 @@ kefir_result_t kefir_opt_construct_code_from_ir(struct kefir_mem *mem, const str
     REQUIRE(code != NULL && kefir_opt_code_container_is_empty(code),
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid empty optimizer code container"));
 
-    struct constructor_state state = {0};
-    REQUIRE_OK(kefir_hashtree_init(&state.code_blocks, &kefir_hashtree_uint_ops));
+    struct kefir_opt_constructor_state state;
+    REQUIRE_OK(kefir_opt_constructor_init(code, &state));
 
     kefir_result_t res = construct_code_from_ir(mem, module, ir_block, code, &state);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_hashtree_free(mem, &state.code_blocks);
+        kefir_opt_constructor_free(mem, &state);
         return res;
     });
 
-    REQUIRE_OK(kefir_hashtree_free(mem, &state.code_blocks));
+    REQUIRE_OK(kefir_opt_constructor_free(mem, &state));
     return KEFIR_OK;
 }
