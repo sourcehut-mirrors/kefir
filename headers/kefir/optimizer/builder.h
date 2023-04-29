@@ -70,6 +70,11 @@ UNARY_OP(int_not);
 UNARY_OP(int_neg);
 UNARY_OP(bool_not);
 
+UNARY_OP(int64_zero_extend_1bit);
+UNARY_OP(int64_sign_extend_8bits);
+UNARY_OP(int64_sign_extend_16bits);
+UNARY_OP(int64_sign_extend_32bits);
+
 #undef UNARY_OP
 
 #define BINARY_OP(_id)                                                                                 \

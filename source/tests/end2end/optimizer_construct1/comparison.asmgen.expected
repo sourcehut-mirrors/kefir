@@ -8,7 +8,7 @@
                 "blocks": [
                     {
                         "id": 0,
-                        "control_flow": 15,
+                        "control_flow": 17,
                         "code": [
                             {
                                 "id": 0,
@@ -48,95 +48,107 @@
                             },
                             {
                                 "id": 5,
-                                "opcode": "int_const",
-                                "value": 3,
+                                "opcode": "int64_sign_extend_32bits",
+                                "arg": 4,
                                 "control_next": null
                             },
                             {
                                 "id": 6,
                                 "opcode": "int_const",
-                                "value": 4,
+                                "value": 3,
                                 "control_next": null
                             },
                             {
                                 "id": 7,
-                                "opcode": "int_lesser",
-                                "args": [
-                                    5,
-                                    6
-                                ],
+                                "opcode": "int_const",
+                                "value": 4,
                                 "control_next": null
                             },
                             {
                                 "id": 8,
-                                "opcode": "int_equals",
+                                "opcode": "int_lesser",
                                 "args": [
                                     6,
-                                    5
+                                    7
                                 ],
                                 "control_next": null
                             },
                             {
                                 "id": 9,
-                                "opcode": "bool_or",
+                                "opcode": "int_equals",
                                 "args": [
                                     7,
-                                    8
+                                    6
                                 ],
                                 "control_next": null
                             },
                             {
                                 "id": 10,
+                                "opcode": "bool_or",
+                                "args": [
+                                    8,
+                                    9
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 11,
                                 "opcode": "int_const",
                                 "value": 5,
                                 "control_next": null
                             },
                             {
-                                "id": 11,
+                                "id": 12,
                                 "opcode": "int_equals",
                                 "args": [
-                                    9,
-                                    10
+                                    10,
+                                    11
                                 ],
-                                "control_next": null
-                            },
-                            {
-                                "id": 12,
-                                "opcode": "bool_not",
-                                "arg": 11,
                                 "control_next": null
                             },
                             {
                                 "id": 13,
-                                "opcode": "int_and",
-                                "args": [
-                                    4,
-                                    12
-                                ],
+                                "opcode": "bool_not",
+                                "arg": 12,
                                 "control_next": null
                             },
                             {
                                 "id": 14,
-                                "opcode": "bool_not",
-                                "arg": 13,
+                                "opcode": "int_and",
+                                "args": [
+                                    5,
+                                    13
+                                ],
                                 "control_next": null
                             },
                             {
                                 "id": 15,
+                                "opcode": "int64_sign_extend_32bits",
+                                "arg": 14,
+                                "control_next": null
+                            },
+                            {
+                                "id": 16,
+                                "opcode": "bool_not",
+                                "arg": 15,
+                                "control_next": null
+                            },
+                            {
+                                "id": 17,
                                 "opcode": "branch",
                                 "target_block": 1,
                                 "alternative_block": 2,
-                                "condition": 14,
+                                "condition": 16,
                                 "control_next": null
                             }
                         ]
                     },
                     {
                         "id": 1,
-                        "control_flow": 37,
+                        "control_flow": 41,
                         "code": [
                             {
-                                "id": 37,
+                                "id": 41,
                                 "opcode": "return",
                                 "arg": null,
                                 "control_next": null
@@ -145,128 +157,110 @@
                     },
                     {
                         "id": 2,
-                        "control_flow": 20,
+                        "control_flow": 22,
                         "code": [
                             {
-                                "id": 16,
+                                "id": 18,
                                 "opcode": "int_const",
                                 "value": 0,
                                 "control_next": null
                             },
                             {
-                                "id": 17,
+                                "id": 19,
                                 "opcode": "int_const",
                                 "value": 10,
                                 "control_next": null
                             },
                             {
-                                "id": 18,
+                                "id": 20,
                                 "opcode": "int_lesser",
                                 "args": [
-                                    16,
-                                    17
+                                    18,
+                                    19
                                 ],
                                 "control_next": null
                             },
                             {
-                                "id": 19,
+                                "id": 21,
                                 "opcode": "bool_not",
-                                "arg": 18,
+                                "arg": 20,
                                 "control_next": null
                             },
                             {
-                                "id": 20,
+                                "id": 22,
                                 "opcode": "branch",
                                 "target_block": 3,
                                 "alternative_block": 4,
-                                "condition": 19,
+                                "condition": 21,
                                 "control_next": null
                             }
                         ]
                     },
                     {
                         "id": 3,
-                        "control_flow": 35,
+                        "control_flow": 39,
                         "code": [
                             {
-                                "id": 23,
+                                "id": 25,
                                 "opcode": "int_const",
                                 "value": 1,
                                 "control_next": null
                             },
                             {
-                                "id": 24,
-                                "opcode": "int_const",
-                                "value": 2,
-                                "control_next": null
-                            },
-                            {
-                                "id": 25,
-                                "opcode": "int_const",
-                                "value": 2,
-                                "control_next": null
-                            },
-                            {
                                 "id": 26,
-                                "opcode": "int_sub",
-                                "args": [
-                                    24,
-                                    25
-                                ],
+                                "opcode": "int_const",
+                                "value": 2,
                                 "control_next": null
                             },
                             {
                                 "id": 27,
-                                "opcode": "int_mul",
-                                "args": [
-                                    23,
-                                    26
-                                ],
+                                "opcode": "int_const",
+                                "value": 2,
                                 "control_next": null
                             },
                             {
                                 "id": 28,
-                                "opcode": "int_const",
-                                "value": 5,
-                                "control_next": null
-                            },
-                            {
-                                "id": 29,
-                                "opcode": "int_greater",
+                                "opcode": "int_sub",
                                 "args": [
-                                    27,
-                                    28
-                                ],
-                                "control_next": null
-                            },
-                            {
-                                "id": 30,
-                                "opcode": "int_equals",
-                                "args": [
-                                    28,
+                                    26,
                                     27
                                 ],
                                 "control_next": null
                             },
                             {
-                                "id": 31,
-                                "opcode": "bool_or",
+                                "id": 29,
+                                "opcode": "int64_sign_extend_32bits",
+                                "arg": 28,
+                                "control_next": null
+                            },
+                            {
+                                "id": 30,
+                                "opcode": "int_mul",
                                 "args": [
-                                    29,
-                                    30
+                                    25,
+                                    29
                                 ],
                                 "control_next": null
                             },
                             {
+                                "id": 31,
+                                "opcode": "int64_sign_extend_32bits",
+                                "arg": 30,
+                                "control_next": null
+                            },
+                            {
                                 "id": 32,
-                                "opcode": "bool_not",
-                                "arg": 31,
+                                "opcode": "int_const",
+                                "value": 5,
                                 "control_next": null
                             },
                             {
                                 "id": 33,
-                                "opcode": "int_const",
-                                "value": 0,
+                                "opcode": "int_greater",
+                                "args": [
+                                    31,
+                                    32
+                                ],
                                 "control_next": null
                             },
                             {
@@ -274,44 +268,74 @@
                                 "opcode": "int_equals",
                                 "args": [
                                     32,
-                                    33
+                                    31
                                 ],
                                 "control_next": null
                             },
                             {
                                 "id": 35,
+                                "opcode": "bool_or",
+                                "args": [
+                                    33,
+                                    34
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 36,
+                                "opcode": "bool_not",
+                                "arg": 35,
+                                "control_next": null
+                            },
+                            {
+                                "id": 37,
+                                "opcode": "int_const",
+                                "value": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 38,
+                                "opcode": "int_equals",
+                                "args": [
+                                    36,
+                                    37
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 39,
                                 "opcode": "branch",
                                 "target_block": 2,
                                 "alternative_block": 5,
-                                "condition": 34,
+                                "condition": 38,
                                 "control_next": null
                             }
                         ]
                     },
                     {
                         "id": 4,
-                        "control_flow": 22,
+                        "control_flow": 24,
                         "code": [
                             {
-                                "id": 21,
+                                "id": 23,
                                 "opcode": "float64_const",
                                 "value": 3.000000,
                                 "control_next": null
                             },
                             {
-                                "id": 22,
+                                "id": 24,
                                 "opcode": "return",
-                                "arg": 21,
+                                "arg": 23,
                                 "control_next": null
                             }
                         ]
                     },
                     {
                         "id": 5,
-                        "control_flow": 36,
+                        "control_flow": 40,
                         "code": [
                             {
-                                "id": 36,
+                                "id": 40,
                                 "opcode": "jump",
                                 "target_block": 0,
                                 "control_next": null

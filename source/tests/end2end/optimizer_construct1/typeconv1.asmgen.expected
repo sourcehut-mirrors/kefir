@@ -1,0 +1,73 @@
+{
+    "functions": [
+        {
+            "id": 1,
+            "name": "test",
+            "code": {
+                "entry_point": 0,
+                "blocks": [
+                    {
+                        "id": 0,
+                        "control_flow": 8,
+                        "code": [
+                            {
+                                "id": 0,
+                                "opcode": "uint_const",
+                                "value": 1,
+                                "control_next": null
+                            },
+                            {
+                                "id": 1,
+                                "opcode": "int64_zero_extend_1bit",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 2,
+                                "opcode": "uint_const",
+                                "value": 1,
+                                "control_next": null
+                            },
+                            {
+                                "id": 3,
+                                "opcode": "int64_sign_extend_8bits",
+                                "arg": 2,
+                                "control_next": null
+                            },
+                            {
+                                "id": 4,
+                                "opcode": "uint_const",
+                                "value": 1,
+                                "control_next": null
+                            },
+                            {
+                                "id": 5,
+                                "opcode": "int64_sign_extend_16bits",
+                                "arg": 4,
+                                "control_next": null
+                            },
+                            {
+                                "id": 6,
+                                "opcode": "uint_const",
+                                "value": 1,
+                                "control_next": null
+                            },
+                            {
+                                "id": 7,
+                                "opcode": "int64_sign_extend_32bits",
+                                "arg": 6,
+                                "control_next": null
+                            },
+                            {
+                                "id": 8,
+                                "opcode": "return",
+                                "arg": null,
+                                "control_next": null
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    ]
+}

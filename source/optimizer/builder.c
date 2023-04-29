@@ -258,6 +258,11 @@ UNARY_OP(int_not, KEFIR_OPT_OPCODE_INT_NOT)
 UNARY_OP(int_neg, KEFIR_OPT_OPCODE_INT_NEG)
 UNARY_OP(bool_not, KEFIR_OPT_OPCODE_BOOL_NOT)
 
+UNARY_OP(int64_zero_extend_1bit, KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_1BIT)
+UNARY_OP(int64_sign_extend_8bits, KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_8BITS)
+UNARY_OP(int64_sign_extend_16bits, KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_16BITS)
+UNARY_OP(int64_sign_extend_32bits, KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_32BITS)
+
 #undef UNARY_OP
 
 #define BINARY_OP(_id, _opcode)                                                                                       \

@@ -61,7 +61,12 @@
     OPCODE(INT_BELOW, "int_below", ref2) SEPARATOR \
     OPCODE(BOOL_AND, "bool_and", ref2) SEPARATOR \
     OPCODE(BOOL_OR, "bool_or", ref2) SEPARATOR \
-    OPCODE(BOOL_NOT, "bool_not", ref1)
+    OPCODE(BOOL_NOT, "bool_not", ref1) SEPARATOR \
+    /* Type conversions */ \
+    OPCODE(INT64_ZERO_EXTEND_1BIT, "int64_zero_extend_1bit", ref1) SEPARATOR \
+    OPCODE(INT64_SIGN_EXTEND_8BITS, "int64_sign_extend_8bits", ref1) SEPARATOR \
+    OPCODE(INT64_SIGN_EXTEND_16BITS, "int64_sign_extend_16bits", ref1) SEPARATOR \
+    OPCODE(INT64_SIGN_EXTEND_32BITS, "int64_sign_extend_32bits", ref1)
 // clang-format on
 
 #endif
