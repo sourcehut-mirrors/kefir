@@ -68,6 +68,7 @@ kefir_result_t kefir_opt_code_builder_block_label(struct kefir_mem *, struct kef
 
 UNARY_OP(int_not);
 UNARY_OP(int_neg);
+UNARY_OP(bool_not);
 
 #undef UNARY_OP
 
@@ -89,6 +90,13 @@ BINARY_OP(int_xor);
 BINARY_OP(int_lshift);
 BINARY_OP(int_rshift);
 BINARY_OP(int_arshift);
+BINARY_OP(int_equals);
+BINARY_OP(int_greater);
+BINARY_OP(int_lesser);
+BINARY_OP(int_above);
+BINARY_OP(int_below);
+BINARY_OP(bool_and);
+BINARY_OP(bool_or);
 
 #undef BINARY_OP
 

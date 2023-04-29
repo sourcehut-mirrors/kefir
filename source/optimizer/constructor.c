@@ -124,14 +124,12 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
         } break;
 
         case KEFIR_IROPCODE_PICK:
-            // TODO Enable pick
-            // REQUIRE_OK(kefir_opt_constructor_stack_at(mem, state, instr->arg.u64, &instr_ref));
-            // REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
+            REQUIRE_OK(kefir_opt_constructor_stack_at(mem, state, instr->arg.u64, &instr_ref));
+            REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
             break;
 
         case KEFIR_IROPCODE_XCHG:
-            // TODO Enable exchange
-            // REQUIRE_OK(kefir_opt_constructor_stack_exchange(mem, state, instr->arg.u64));
+            REQUIRE_OK(kefir_opt_constructor_stack_exchange(mem, state, instr->arg.u64));
             break;
 
 #define UNARY_OP(_id, _opcode)                                                                         \
@@ -143,6 +141,7 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
 
             UNARY_OP(int_not, KEFIR_IROPCODE_INOT)
             UNARY_OP(int_neg, KEFIR_IROPCODE_INEG)
+            UNARY_OP(bool_not, KEFIR_IROPCODE_BNOT)
 
 #undef UNARY_OP
 
@@ -167,6 +166,13 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             BINARY_OP(int_lshift, KEFIR_IROPCODE_ILSHIFT)
             BINARY_OP(int_rshift, KEFIR_IROPCODE_IRSHIFT)
             BINARY_OP(int_arshift, KEFIR_IROPCODE_IARSHIFT)
+            BINARY_OP(int_equals, KEFIR_IROPCODE_IEQUALS)
+            BINARY_OP(int_greater, KEFIR_IROPCODE_IGREATER)
+            BINARY_OP(int_lesser, KEFIR_IROPCODE_ILESSER)
+            BINARY_OP(int_above, KEFIR_IROPCODE_IABOVE)
+            BINARY_OP(int_below, KEFIR_IROPCODE_IBELOW)
+            BINARY_OP(bool_and, KEFIR_IROPCODE_BAND)
+            BINARY_OP(bool_or, KEFIR_IROPCODE_BOR)
 
 #undef BINARY_OP
 

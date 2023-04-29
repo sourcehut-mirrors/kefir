@@ -52,7 +52,16 @@
     OPCODE(INT_RSHIFT, "int_rshift", ref2) SEPARATOR \
     OPCODE(INT_ARSHIFT, "int_arshift", ref2) SEPARATOR \
     OPCODE(INT_NOT, "int_not", ref1) SEPARATOR \
-    OPCODE(INT_NEG, "int_neg", ref1)
+    OPCODE(INT_NEG, "int_neg", ref1) SEPARATOR \
+    /* Logical & comparison operations */ \
+    OPCODE(INT_EQUALS, "int_equals", ref2) SEPARATOR \
+    OPCODE(INT_GREATER, "int_greater", ref2) SEPARATOR \
+    OPCODE(INT_LESSER, "int_lesser", ref2) SEPARATOR \
+    OPCODE(INT_ABOVE, "int_above", ref2) SEPARATOR \
+    OPCODE(INT_BELOW, "int_below", ref2) SEPARATOR \
+    OPCODE(BOOL_AND, "bool_and", ref2) SEPARATOR \
+    OPCODE(BOOL_OR, "bool_or", ref2) SEPARATOR \
+    OPCODE(BOOL_NOT, "bool_not", ref1)
 // clang-format on
 
 #endif
