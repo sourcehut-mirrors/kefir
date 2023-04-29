@@ -44,7 +44,7 @@ KEFIR_CFLAGS=`echo \
              "-I \"$(dirname $SRC_FILE)\""`
 
 if [[ "x$ASMGEN" == "xyes" ]]; then
-    KEFIR_CFLAGS="$KEFIR_CFLAGS -S"
+    KEFIR_CFLAGS="$KEFIR_CFLAGS --target x86_64-linux-none -S"
 else
     KEFIR_CFLAGS="$KEFIR_CFLAGS -c"
 fi
