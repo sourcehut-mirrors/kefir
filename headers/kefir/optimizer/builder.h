@@ -72,6 +72,23 @@ kefir_result_t kefir_opt_code_builder_get_thread_local(struct kefir_mem *, struc
                                                        kefir_opt_block_id_t, kefir_id_t, kefir_opt_instruction_ref_t *);
 kefir_result_t kefir_opt_code_builder_get_local(struct kefir_mem *, struct kefir_opt_code_container *,
                                                 kefir_opt_block_id_t, kefir_id_t, kefir_opt_instruction_ref_t *);
+kefir_result_t kefir_opt_code_builder_zero_memory(struct kefir_mem *, struct kefir_opt_code_container *,
+                                                  kefir_opt_block_id_t, kefir_opt_instruction_ref_t, kefir_id_t,
+                                                  kefir_size_t, kefir_opt_instruction_ref_t *);
+kefir_result_t kefir_opt_code_builder_copy_memory(struct kefir_mem *, struct kefir_opt_code_container *,
+                                                  kefir_opt_block_id_t, kefir_opt_instruction_ref_t,
+                                                  kefir_opt_instruction_ref_t, kefir_id_t, kefir_size_t,
+                                                  kefir_opt_instruction_ref_t *);
+kefir_result_t kefir_opt_code_builder_bits_extract_signed(struct kefir_mem *, struct kefir_opt_code_container *,
+                                                          kefir_opt_block_id_t, kefir_opt_instruction_ref_t,
+                                                          kefir_size_t, kefir_size_t, kefir_opt_instruction_ref_t *);
+kefir_result_t kefir_opt_code_builder_bits_extract_unsigned(struct kefir_mem *, struct kefir_opt_code_container *,
+                                                            kefir_opt_block_id_t, kefir_opt_instruction_ref_t,
+                                                            kefir_size_t, kefir_size_t, kefir_opt_instruction_ref_t *);
+kefir_result_t kefir_opt_code_builder_bits_insert(struct kefir_mem *, struct kefir_opt_code_container *,
+                                                  kefir_opt_block_id_t, kefir_opt_instruction_ref_t,
+                                                  kefir_opt_instruction_ref_t, kefir_size_t, kefir_size_t,
+                                                  kefir_opt_instruction_ref_t *);
 
 #define UNARY_OP(_id)                                                                                  \
     kefir_result_t kefir_opt_code_builder_##_id(struct kefir_mem *, struct kefir_opt_code_container *, \

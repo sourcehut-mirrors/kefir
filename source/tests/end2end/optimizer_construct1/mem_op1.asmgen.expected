@@ -1,0 +1,366 @@
+{
+    "functions": [
+        {
+            "id": 3,
+            "name": "getY",
+            "code": {
+                "entry_point": 0,
+                "blocks": [
+                    {
+                        "id": 0,
+                        "control_flow": 2,
+                        "code": [
+                            {
+                                "id": 0,
+                                "opcode": "get_argument",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 1,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 2,
+                                "opcode": "int64_store",
+                                "location": 1,
+                                "value": 0,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": 9
+                            },
+                            {
+                                "id": 3,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 4,
+                                "opcode": "int64_load",
+                                "location": 3,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 5,
+                                "opcode": "int_const",
+                                "value": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 6,
+                                "opcode": "int_add",
+                                "args": [
+                                    4,
+                                    5
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 7,
+                                "opcode": "int16_load_unsigned",
+                                "location": 6,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 8,
+                                "opcode": "bits_extract_signed",
+                                "base": 7,
+                                "value": null,
+                                "offset": 5,
+                                "length": 10,
+                                "control_next": null
+                            },
+                            {
+                                "id": 9,
+                                "opcode": "return",
+                                "arg": 8,
+                                "control_next": null
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "id": 4,
+            "name": "getZ",
+            "code": {
+                "entry_point": 0,
+                "blocks": [
+                    {
+                        "id": 0,
+                        "control_flow": 2,
+                        "code": [
+                            {
+                                "id": 0,
+                                "opcode": "get_argument",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 1,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 2,
+                                "opcode": "int64_store",
+                                "location": 1,
+                                "value": 0,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": 9
+                            },
+                            {
+                                "id": 3,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 4,
+                                "opcode": "int64_load",
+                                "location": 3,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 5,
+                                "opcode": "int_const",
+                                "value": 1,
+                                "control_next": null
+                            },
+                            {
+                                "id": 6,
+                                "opcode": "int_add",
+                                "args": [
+                                    4,
+                                    5
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 7,
+                                "opcode": "int16_load_unsigned",
+                                "location": 6,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 8,
+                                "opcode": "bits_extract_unsigned",
+                                "base": 7,
+                                "value": null,
+                                "offset": 7,
+                                "length": 3,
+                                "control_next": null
+                            },
+                            {
+                                "id": 9,
+                                "opcode": "return",
+                                "arg": 8,
+                                "control_next": null
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "id": 5,
+            "name": "test_zero",
+            "code": {
+                "entry_point": 0,
+                "blocks": [
+                    {
+                        "id": 0,
+                        "control_flow": 2,
+                        "code": [
+                            {
+                                "id": 0,
+                                "opcode": "get_argument",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 1,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 2,
+                                "opcode": "int64_store",
+                                "location": 1,
+                                "value": 0,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": 8
+                            },
+                            {
+                                "id": 3,
+                                "opcode": "get_local",
+                                "arg": 2,
+                                "control_next": null
+                            },
+                            {
+                                "id": 4,
+                                "opcode": "int_const",
+                                "value": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 5,
+                                "opcode": "int_add",
+                                "args": [
+                                    3,
+                                    4
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 6,
+                                "opcode": "int_const",
+                                "value": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 7,
+                                "opcode": "int_add",
+                                "args": [
+                                    5,
+                                    6
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 8,
+                                "opcode": "zero_memory",
+                                "target": 7,
+                                "source": null,
+                                "type": {
+                                    "id": 23,
+                                    "index": 0
+                                },
+                                "control_next": 16
+                            },
+                            {
+                                "id": 9,
+                                "opcode": "int_const",
+                                "value": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 10,
+                                "opcode": "int_const",
+                                "value": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 11,
+                                "opcode": "int_add",
+                                "args": [
+                                    8,
+                                    10
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 12,
+                                "opcode": "int8_load_unsigned",
+                                "location": 11,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 13,
+                                "opcode": "bits_insert",
+                                "base": 9,
+                                "value": 12,
+                                "offset": 0,
+                                "length": 5,
+                                "control_next": null
+                            },
+                            {
+                                "id": 14,
+                                "opcode": "int_const",
+                                "value": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 15,
+                                "opcode": "int_add",
+                                "args": [
+                                    8,
+                                    14
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 16,
+                                "opcode": "int8_store",
+                                "location": 15,
+                                "value": 13,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": 19
+                            },
+                            {
+                                "id": 17,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 18,
+                                "opcode": "int64_load",
+                                "location": 17,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 19,
+                                "opcode": "copy_memory",
+                                "target": 18,
+                                "source": 8,
+                                "type": {
+                                    "id": 23,
+                                    "index": 0
+                                },
+                                "control_next": 20
+                            },
+                            {
+                                "id": 20,
+                                "opcode": "return",
+                                "arg": null,
+                                "control_next": null
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    ]
+}

@@ -59,6 +59,20 @@ typedef union kefir_opt_operation_parameters {
         kefir_opt_instruction_ref_t value;
         struct kefir_opt_memory_access_flags flags;
     } memory_access;
+
+    struct {
+        kefir_opt_instruction_ref_t target;
+        kefir_opt_instruction_ref_t source;
+        kefir_id_t type_id;
+        kefir_size_t type_index;
+    } memory_operation;
+
+    struct {
+        kefir_size_t offset;
+        kefir_size_t length;
+        kefir_opt_instruction_ref_t base_ref;
+        kefir_opt_instruction_ref_t value_ref;
+    } bitfield;
 } kefir_opt_operation_parameters_t;
 
 typedef struct kefir_opt_operation {

@@ -88,6 +88,34 @@ static kefir_result_t format_operation_store_mem(struct kefir_json_output *json,
     return KEFIR_OK;
 }
 
+static kefir_result_t format_operation_mem_op(struct kefir_json_output *json, const struct kefir_opt_operation *oper) {
+    REQUIRE_OK(kefir_json_output_object_key(json, "target"));
+    REQUIRE_OK(id_format(json, oper->parameters.memory_operation.target));
+    REQUIRE_OK(kefir_json_output_object_key(json, "source"));
+    REQUIRE_OK(id_format(json, oper->parameters.memory_operation.source));
+    REQUIRE_OK(kefir_json_output_object_key(json, "type"));
+    REQUIRE_OK(kefir_json_output_object_begin(json));
+    REQUIRE_OK(kefir_json_output_object_key(json, "id"));
+    REQUIRE_OK(id_format(json, oper->parameters.memory_operation.type_id));
+    REQUIRE_OK(kefir_json_output_object_key(json, "index"));
+    REQUIRE_OK(kefir_json_output_uinteger(json, oper->parameters.memory_operation.type_index));
+    REQUIRE_OK(kefir_json_output_object_end(json));
+    return KEFIR_OK;
+}
+
+static kefir_result_t format_operation_bitfield(struct kefir_json_output *json,
+                                                const struct kefir_opt_operation *oper) {
+    REQUIRE_OK(kefir_json_output_object_key(json, "base"));
+    REQUIRE_OK(id_format(json, oper->parameters.bitfield.base_ref));
+    REQUIRE_OK(kefir_json_output_object_key(json, "value"));
+    REQUIRE_OK(id_format(json, oper->parameters.bitfield.value_ref));
+    REQUIRE_OK(kefir_json_output_object_key(json, "offset"));
+    REQUIRE_OK(kefir_json_output_uinteger(json, oper->parameters.bitfield.offset));
+    REQUIRE_OK(kefir_json_output_object_key(json, "length"));
+    REQUIRE_OK(kefir_json_output_uinteger(json, oper->parameters.bitfield.length));
+    return KEFIR_OK;
+}
+
 static kefir_result_t format_operation_imm_int(struct kefir_json_output *json, const struct kefir_opt_operation *oper) {
     REQUIRE_OK(kefir_json_output_object_key(json, "value"));
     REQUIRE_OK(kefir_json_output_integer(json, oper->parameters.imm.integer));

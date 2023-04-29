@@ -151,6 +151,45 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
             break;
 
+        case KEFIR_IROPCODE_EXTSBITS:
+            REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
+            REQUIRE_OK(kefir_opt_code_builder_bits_extract_signed(mem, code, current_block_id, instr_ref2,
+                                                                  instr->arg.u32[0], instr->arg.u32[1], &instr_ref));
+            REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
+            break;
+
+        case KEFIR_IROPCODE_EXTUBITS:
+            REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
+            REQUIRE_OK(kefir_opt_code_builder_bits_extract_unsigned(mem, code, current_block_id, instr_ref2,
+                                                                    instr->arg.u32[0], instr->arg.u32[1], &instr_ref));
+            REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
+            break;
+
+        case KEFIR_IROPCODE_INSERTBITS:
+            REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
+            REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref3));
+            REQUIRE_OK(kefir_opt_code_builder_bits_insert(mem, code, current_block_id, instr_ref2, instr_ref3,
+                                                          instr->arg.u32[0], instr->arg.u32[1], &instr_ref));
+            REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
+            break;
+
+        case KEFIR_IROPCODE_BZERO:
+            REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
+            REQUIRE_OK(kefir_opt_code_builder_zero_memory(mem, code, current_block_id, instr_ref2, instr->arg.u32[0],
+                                                          instr->arg.u32[1], &instr_ref));
+            REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));
+            REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
+            break;
+
+        case KEFIR_IROPCODE_BCOPY:
+            REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
+            REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref3));
+            REQUIRE_OK(kefir_opt_code_builder_copy_memory(mem, code, current_block_id, instr_ref3, instr_ref2,
+                                                          instr->arg.u32[0], instr->arg.u32[1], &instr_ref));
+            REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));
+            REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
+            break;
+
 #define UNARY_OP(_id, _opcode)                                                                         \
     case _opcode:                                                                                      \
         REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));                          \
@@ -231,9 +270,7 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
         REQUIRE_OK(kefir_opt_code_builder_##_id(                                                             \
             mem, code, current_block_id, instr_ref2, instr_ref3,                                             \
             &(const struct kefir_opt_memory_access_flags){.volatile_access = volatile_access}, &instr_ref)); \
-        if (volatile_access) {                                                                               \
-            REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));               \
-        }                                                                                                    \
+        REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));                   \
     } break;
 
             STORE_OP(int8_store, KEFIR_IROPCODE_STORE8)

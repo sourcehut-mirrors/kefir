@@ -83,7 +83,12 @@
     OPCODE(INT8_STORE, "int8_store", store_mem) SEPARATOR \
     OPCODE(INT16_STORE, "int16_store", store_mem) SEPARATOR \
     OPCODE(INT32_STORE, "int32_store", store_mem) SEPARATOR \
-    OPCODE(INT64_STORE, "int64_store", store_mem)
+    OPCODE(INT64_STORE, "int64_store", store_mem) SEPARATOR \
+    OPCODE(ZERO_MEMORY, "zero_memory", mem_op) SEPARATOR \
+    OPCODE(COPY_MEMORY, "copy_memory", mem_op) SEPARATOR \
+    OPCODE(BITS_EXTRACT_SIGNED, "bits_extract_signed", bitfield) SEPARATOR \
+    OPCODE(BITS_EXTRACT_UNSIGNED, "bits_extract_unsigned", bitfield) SEPARATOR \
+    OPCODE(BITS_INSERT, "bits_insert", bitfield)
 // clang-format on
 
 #endif
