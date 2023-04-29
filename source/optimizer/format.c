@@ -62,6 +62,32 @@ static kefir_result_t format_operation_ref2(struct kefir_json_output *json, cons
     return KEFIR_OK;
 }
 
+static kefir_result_t format_operation_load_mem(struct kefir_json_output *json,
+                                                const struct kefir_opt_operation *oper) {
+    REQUIRE_OK(kefir_json_output_object_key(json, "location"));
+    REQUIRE_OK(id_format(json, oper->parameters.memory_access.location));
+    REQUIRE_OK(kefir_json_output_object_key(json, "flags"));
+    REQUIRE_OK(kefir_json_output_object_begin(json));
+    REQUIRE_OK(kefir_json_output_object_key(json, "volatile"));
+    REQUIRE_OK(kefir_json_output_boolean(json, oper->parameters.memory_access.flags.volatile_access));
+    REQUIRE_OK(kefir_json_output_object_end(json));
+    return KEFIR_OK;
+}
+
+static kefir_result_t format_operation_store_mem(struct kefir_json_output *json,
+                                                 const struct kefir_opt_operation *oper) {
+    REQUIRE_OK(kefir_json_output_object_key(json, "location"));
+    REQUIRE_OK(id_format(json, oper->parameters.memory_access.location));
+    REQUIRE_OK(kefir_json_output_object_key(json, "value"));
+    REQUIRE_OK(id_format(json, oper->parameters.memory_access.value));
+    REQUIRE_OK(kefir_json_output_object_key(json, "flags"));
+    REQUIRE_OK(kefir_json_output_object_begin(json));
+    REQUIRE_OK(kefir_json_output_object_key(json, "volatile"));
+    REQUIRE_OK(kefir_json_output_boolean(json, oper->parameters.memory_access.flags.volatile_access));
+    REQUIRE_OK(kefir_json_output_object_end(json));
+    return KEFIR_OK;
+}
+
 static kefir_result_t format_operation_imm_int(struct kefir_json_output *json, const struct kefir_opt_operation *oper) {
     REQUIRE_OK(kefir_json_output_object_key(json, "value"));
     REQUIRE_OK(kefir_json_output_integer(json, oper->parameters.imm.integer));

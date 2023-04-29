@@ -26,6 +26,8 @@
 kefir_result_t kefir_opt_code_builder_add_instruction(struct kefir_mem *, struct kefir_opt_code_container *,
                                                       kefir_opt_block_id_t, const struct kefir_opt_operation *,
                                                       kefir_bool_t, kefir_opt_instruction_ref_t *);
+kefir_result_t kefir_opt_code_builder_add_control(struct kefir_opt_code_container *, kefir_opt_block_id_t,
+                                                  kefir_opt_instruction_ref_t);
 
 kefir_result_t kefir_opt_code_builder_is_finalized(const struct kefir_opt_code_container *, kefir_opt_block_id_t,
                                                    kefir_bool_t *);
@@ -44,6 +46,9 @@ kefir_result_t kefir_opt_code_builder_finalize_return(struct kefir_mem *, struct
                                                       kefir_opt_block_id_t, kefir_opt_instruction_ref_t,
                                                       kefir_opt_instruction_ref_t *);
 
+kefir_result_t kefir_opt_code_builder_get_argument(struct kefir_mem *, struct kefir_opt_code_container *,
+                                                   kefir_opt_block_id_t, kefir_id_t, kefir_opt_instruction_ref_t *);
+
 kefir_result_t kefir_opt_code_builder_int_constant(struct kefir_mem *, struct kefir_opt_code_container *,
                                                    kefir_opt_block_id_t, kefir_int64_t, kefir_opt_instruction_ref_t *);
 kefir_result_t kefir_opt_code_builder_uint_constant(struct kefir_mem *, struct kefir_opt_code_container *,
@@ -60,6 +65,13 @@ kefir_result_t kefir_opt_code_builder_string_reference(struct kefir_mem *, struc
 kefir_result_t kefir_opt_code_builder_block_label(struct kefir_mem *, struct kefir_opt_code_container *,
                                                   kefir_opt_block_id_t, kefir_opt_block_id_t,
                                                   kefir_opt_instruction_ref_t *);
+
+kefir_result_t kefir_opt_code_builder_get_global(struct kefir_mem *, struct kefir_opt_code_container *,
+                                                 kefir_opt_block_id_t, kefir_id_t, kefir_opt_instruction_ref_t *);
+kefir_result_t kefir_opt_code_builder_get_thread_local(struct kefir_mem *, struct kefir_opt_code_container *,
+                                                       kefir_opt_block_id_t, kefir_id_t, kefir_opt_instruction_ref_t *);
+kefir_result_t kefir_opt_code_builder_get_local(struct kefir_mem *, struct kefir_opt_code_container *,
+                                                kefir_opt_block_id_t, kefir_id_t, kefir_opt_instruction_ref_t *);
 
 #define UNARY_OP(_id)                                                                                  \
     kefir_result_t kefir_opt_code_builder_##_id(struct kefir_mem *, struct kefir_opt_code_container *, \
@@ -105,4 +117,30 @@ BINARY_OP(bool_or);
 
 #undef BINARY_OP
 
+#define LOAD_OP(_id)                                                                                              \
+    kefir_result_t kefir_opt_code_builder_##_id(                                                                  \
+        struct kefir_mem *, struct kefir_opt_code_container *, kefir_opt_block_id_t, kefir_opt_instruction_ref_t, \
+        const struct kefir_opt_memory_access_flags *, kefir_opt_instruction_ref_t *)
+
+LOAD_OP(int8_load_signed);
+LOAD_OP(int8_load_unsigned);
+LOAD_OP(int16_load_signed);
+LOAD_OP(int16_load_unsigned);
+LOAD_OP(int32_load_signed);
+LOAD_OP(int32_load_unsigned);
+LOAD_OP(int64_load);
+
+#undef LOAD_OP
+
+#define STORE_OP(_id)                                                                                             \
+    kefir_result_t kefir_opt_code_builder_##_id(                                                                  \
+        struct kefir_mem *, struct kefir_opt_code_container *, kefir_opt_block_id_t, kefir_opt_instruction_ref_t, \
+        kefir_opt_instruction_ref_t, const struct kefir_opt_memory_access_flags *, kefir_opt_instruction_ref_t *)
+
+STORE_OP(int8_store);
+STORE_OP(int16_store);
+STORE_OP(int32_store);
+STORE_OP(int64_store);
+
+#undef STORE_OP
 #endif

@@ -25,6 +25,8 @@
 
 // clang-format off
 #define KEFIR_OPTIMIZER_OPCODE_DEFS(OPCODE, SEPARATOR) \
+    /* Special */ \
+    OPCODE(GET_ARGUMENT, "get_argument", ref1) SEPARATOR \
     /* Flow control */ \
     OPCODE(JUMP, "jump", jump) SEPARATOR \
     OPCODE(IJUMP, "indirect_jump", ref1) SEPARATOR \
@@ -66,7 +68,22 @@
     OPCODE(INT64_ZERO_EXTEND_1BIT, "int64_zero_extend_1bit", ref1) SEPARATOR \
     OPCODE(INT64_SIGN_EXTEND_8BITS, "int64_sign_extend_8bits", ref1) SEPARATOR \
     OPCODE(INT64_SIGN_EXTEND_16BITS, "int64_sign_extend_16bits", ref1) SEPARATOR \
-    OPCODE(INT64_SIGN_EXTEND_32BITS, "int64_sign_extend_32bits", ref1)
+    OPCODE(INT64_SIGN_EXTEND_32BITS, "int64_sign_extend_32bits", ref1) SEPARATOR \
+    /* Data access */ \
+    OPCODE(GET_GLOBAL, "get_global", ref1) SEPARATOR \
+    OPCODE(GET_THREAD_LOCAL, "get_thread_local", ref1) SEPARATOR \
+    OPCODE(GET_LOCAL, "get_local", ref1) SEPARATOR \
+    OPCODE(INT8_LOAD_SIGNED, "int8_load_signed", load_mem) SEPARATOR \
+    OPCODE(INT8_LOAD_UNSIGNED, "int8_load_unsigned", load_mem) SEPARATOR \
+    OPCODE(INT16_LOAD_SIGNED, "int16_load_signed", load_mem) SEPARATOR \
+    OPCODE(INT16_LOAD_UNSIGNED, "int16_load_unsigned", load_mem) SEPARATOR \
+    OPCODE(INT32_LOAD_SIGNED, "int32_load_signed", load_mem) SEPARATOR \
+    OPCODE(INT32_LOAD_UNSIGNED, "int32_load_unsigned", load_mem) SEPARATOR \
+    OPCODE(INT64_LOAD, "int64_load", load_mem) SEPARATOR \
+    OPCODE(INT8_STORE, "int8_store", store_mem) SEPARATOR \
+    OPCODE(INT16_STORE, "int16_store", store_mem) SEPARATOR \
+    OPCODE(INT32_STORE, "int32_store", store_mem) SEPARATOR \
+    OPCODE(INT64_STORE, "int64_store", store_mem)
 // clang-format on
 
 #endif

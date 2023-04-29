@@ -132,6 +132,25 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             REQUIRE_OK(kefir_opt_constructor_stack_exchange(mem, state, instr->arg.u64));
             break;
 
+        case KEFIR_IROPCODE_GETGLOBAL:
+            REQUIRE_OK(kefir_opt_code_builder_get_global(mem, code, current_block_id, instr->arg.u64, &instr_ref));
+            REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
+            break;
+
+        case KEFIR_IROPCODE_GETTHRLOCAL:
+            REQUIRE_OK(
+                kefir_opt_code_builder_get_thread_local(mem, code, current_block_id, instr->arg.u64, &instr_ref));
+            REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
+            break;
+
+        case KEFIR_IROPCODE_GETLOCAL:
+            REQUIRE(instr->arg.u32[0] == state->function->ir_func->locals_type_id,
+                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
+                                    "Expected IR operation type reference to correspond to IR function local type"));
+            REQUIRE_OK(kefir_opt_code_builder_get_local(mem, code, current_block_id, instr->arg.u32[1], &instr_ref));
+            REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
+            break;
+
 #define UNARY_OP(_id, _opcode)                                                                         \
     case _opcode:                                                                                      \
         REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));                          \
@@ -181,6 +200,49 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
 
 #undef BINARY_OP
 
+#define LOAD_OP(_id, _opcode)                                                                                \
+    case _opcode: {                                                                                          \
+        REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));                                \
+        kefir_bool_t volatile_access = (instr->arg.u64 & KEFIR_IR_MEMORY_FLAG_VOLATILE) != 0;                \
+        REQUIRE_OK(kefir_opt_code_builder_##_id(                                                             \
+            mem, code, current_block_id, instr_ref2,                                                         \
+            &(const struct kefir_opt_memory_access_flags){.volatile_access = volatile_access}, &instr_ref)); \
+        if (volatile_access) {                                                                               \
+            REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));               \
+        }                                                                                                    \
+        REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));                                 \
+    } break;
+
+            LOAD_OP(int8_load_signed, KEFIR_IROPCODE_LOAD8I)
+            LOAD_OP(int8_load_unsigned, KEFIR_IROPCODE_LOAD8U)
+            LOAD_OP(int16_load_signed, KEFIR_IROPCODE_LOAD16I)
+            LOAD_OP(int16_load_unsigned, KEFIR_IROPCODE_LOAD16U)
+            LOAD_OP(int32_load_signed, KEFIR_IROPCODE_LOAD32I)
+            LOAD_OP(int32_load_unsigned, KEFIR_IROPCODE_LOAD32U)
+            LOAD_OP(int64_load, KEFIR_IROPCODE_LOAD64)
+
+#undef LOAD_OP
+
+#define STORE_OP(_id, _opcode)                                                                               \
+    case _opcode: {                                                                                          \
+        REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref3));                                \
+        REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));                                \
+        kefir_bool_t volatile_access = (instr->arg.u64 & KEFIR_IR_MEMORY_FLAG_VOLATILE) != 0;                \
+        REQUIRE_OK(kefir_opt_code_builder_##_id(                                                             \
+            mem, code, current_block_id, instr_ref2, instr_ref3,                                             \
+            &(const struct kefir_opt_memory_access_flags){.volatile_access = volatile_access}, &instr_ref)); \
+        if (volatile_access) {                                                                               \
+            REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));               \
+        }                                                                                                    \
+    } break;
+
+            STORE_OP(int8_store, KEFIR_IROPCODE_STORE8)
+            STORE_OP(int16_store, KEFIR_IROPCODE_STORE16)
+            STORE_OP(int32_store, KEFIR_IROPCODE_STORE32)
+            STORE_OP(int64_store, KEFIR_IROPCODE_STORE64)
+
+#undef STORE_OP
+
         case KEFIR_IROPCODE_IADD1:
             REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
             REQUIRE_OK(kefir_opt_code_builder_int_constant(mem, code, current_block_id, instr->arg.i64, &instr_ref3));
@@ -204,11 +266,23 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
     return KEFIR_OK;
 }
 
+static kefir_result_t push_function_arguments(struct kefir_mem *mem, struct kefir_opt_constructor_state *state) {
+    REQUIRE_OK(kefir_opt_constructor_update_current_code_block(mem, state));
+    kefir_opt_instruction_ref_t instr_ref;
+    for (kefir_size_t i = 0; i < kefir_ir_type_children(state->function->ir_func->declaration->params); i++) {
+        REQUIRE_OK(kefir_opt_code_builder_get_argument(mem, &state->function->code, state->current_block->block_id, i,
+                                                       &instr_ref));
+        REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t translate_code(struct kefir_mem *mem, const struct kefir_opt_module *module,
                                      struct kefir_opt_constructor_state *state) {
     UNUSED(module);
     state->current_block = NULL;
     state->ir_location = 0;
+    REQUIRE_OK(push_function_arguments(mem, state));
     const struct kefir_irblock *ir_block = &state->function->ir_func->body;
     for (; state->ir_location < kefir_irblock_length(ir_block); state->ir_location++) {
         REQUIRE_OK(kefir_opt_constructor_update_current_code_block(mem, state));

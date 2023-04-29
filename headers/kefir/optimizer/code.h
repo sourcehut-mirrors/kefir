@@ -34,6 +34,10 @@ typedef enum kefir_opt_opcode {
 typedef kefir_id_t kefir_opt_block_id_t;
 typedef kefir_id_t kefir_opt_instruction_ref_t;
 
+typedef struct kefir_opt_memory_access_flags {
+    kefir_bool_t volatile_access;
+} kefir_opt_memory_access_flags_t;
+
 typedef union kefir_opt_operation_parameters {
     struct {
         kefir_opt_block_id_t target_block;
@@ -49,6 +53,12 @@ typedef union kefir_opt_operation_parameters {
         kefir_float32_t float32;
         kefir_float64_t float64;
     } imm;
+
+    struct {
+        kefir_opt_instruction_ref_t location;
+        kefir_opt_instruction_ref_t value;
+        struct kefir_opt_memory_access_flags flags;
+    } memory_access;
 } kefir_opt_operation_parameters_t;
 
 typedef struct kefir_opt_operation {

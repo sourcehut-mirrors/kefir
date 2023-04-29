@@ -1,0 +1,991 @@
+{
+    "functions": [
+        {
+            "id": 5,
+            "name": "load_unsigned",
+            "code": {
+                "entry_point": 0,
+                "blocks": [
+                    {
+                        "id": 0,
+                        "control_flow": 8,
+                        "code": [
+                            {
+                                "id": 0,
+                                "opcode": "get_global",
+                                "arg": 5,
+                                "control_next": null
+                            },
+                            {
+                                "id": 1,
+                                "opcode": "int8_load_unsigned",
+                                "location": 0,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 2,
+                                "opcode": "get_global",
+                                "arg": 6,
+                                "control_next": null
+                            },
+                            {
+                                "id": 3,
+                                "opcode": "int16_load_unsigned",
+                                "location": 2,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 4,
+                                "opcode": "get_global",
+                                "arg": 7,
+                                "control_next": null
+                            },
+                            {
+                                "id": 5,
+                                "opcode": "int32_load_unsigned",
+                                "location": 4,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 6,
+                                "opcode": "get_global",
+                                "arg": 8,
+                                "control_next": null
+                            },
+                            {
+                                "id": 7,
+                                "opcode": "int64_load",
+                                "location": 6,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 8,
+                                "opcode": "return",
+                                "arg": null,
+                                "control_next": null
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "id": 6,
+            "name": "load_signed",
+            "code": {
+                "entry_point": 0,
+                "blocks": [
+                    {
+                        "id": 0,
+                        "control_flow": 8,
+                        "code": [
+                            {
+                                "id": 0,
+                                "opcode": "get_global",
+                                "arg": 9,
+                                "control_next": null
+                            },
+                            {
+                                "id": 1,
+                                "opcode": "int8_load_signed",
+                                "location": 0,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 2,
+                                "opcode": "get_global",
+                                "arg": 10,
+                                "control_next": null
+                            },
+                            {
+                                "id": 3,
+                                "opcode": "int16_load_signed",
+                                "location": 2,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 4,
+                                "opcode": "get_global",
+                                "arg": 11,
+                                "control_next": null
+                            },
+                            {
+                                "id": 5,
+                                "opcode": "int32_load_signed",
+                                "location": 4,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 6,
+                                "opcode": "get_global",
+                                "arg": 12,
+                                "control_next": null
+                            },
+                            {
+                                "id": 7,
+                                "opcode": "int64_load",
+                                "location": 6,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 8,
+                                "opcode": "return",
+                                "arg": null,
+                                "control_next": null
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "id": 7,
+            "name": "store",
+            "code": {
+                "entry_point": 0,
+                "blocks": [
+                    {
+                        "id": 0,
+                        "control_flow": 32,
+                        "code": [
+                            {
+                                "id": 0,
+                                "opcode": "int_const",
+                                "value": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 1,
+                                "opcode": "uint_const",
+                                "value": 255,
+                                "control_next": null
+                            },
+                            {
+                                "id": 2,
+                                "opcode": "int_and",
+                                "args": [
+                                    0,
+                                    1
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 3,
+                                "opcode": "get_global",
+                                "arg": 5,
+                                "control_next": null
+                            },
+                            {
+                                "id": 4,
+                                "opcode": "int8_store",
+                                "location": 3,
+                                "value": 2,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 5,
+                                "opcode": "int_const",
+                                "value": 1,
+                                "control_next": null
+                            },
+                            {
+                                "id": 6,
+                                "opcode": "uint_const",
+                                "value": 65535,
+                                "control_next": null
+                            },
+                            {
+                                "id": 7,
+                                "opcode": "int_and",
+                                "args": [
+                                    5,
+                                    6
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 8,
+                                "opcode": "get_global",
+                                "arg": 6,
+                                "control_next": null
+                            },
+                            {
+                                "id": 9,
+                                "opcode": "int16_store",
+                                "location": 8,
+                                "value": 7,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 10,
+                                "opcode": "int_const",
+                                "value": 2,
+                                "control_next": null
+                            },
+                            {
+                                "id": 11,
+                                "opcode": "uint_const",
+                                "value": 4294967295,
+                                "control_next": null
+                            },
+                            {
+                                "id": 12,
+                                "opcode": "int_and",
+                                "args": [
+                                    10,
+                                    11
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 13,
+                                "opcode": "get_global",
+                                "arg": 7,
+                                "control_next": null
+                            },
+                            {
+                                "id": 14,
+                                "opcode": "int32_store",
+                                "location": 13,
+                                "value": 12,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 15,
+                                "opcode": "int_const",
+                                "value": 3,
+                                "control_next": null
+                            },
+                            {
+                                "id": 16,
+                                "opcode": "get_global",
+                                "arg": 8,
+                                "control_next": null
+                            },
+                            {
+                                "id": 17,
+                                "opcode": "int64_store",
+                                "location": 16,
+                                "value": 15,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 18,
+                                "opcode": "int_const",
+                                "value": 4,
+                                "control_next": null
+                            },
+                            {
+                                "id": 19,
+                                "opcode": "int64_sign_extend_8bits",
+                                "arg": 18,
+                                "control_next": null
+                            },
+                            {
+                                "id": 20,
+                                "opcode": "get_global",
+                                "arg": 9,
+                                "control_next": null
+                            },
+                            {
+                                "id": 21,
+                                "opcode": "int8_store",
+                                "location": 20,
+                                "value": 19,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 22,
+                                "opcode": "int_const",
+                                "value": 5,
+                                "control_next": null
+                            },
+                            {
+                                "id": 23,
+                                "opcode": "int64_sign_extend_16bits",
+                                "arg": 22,
+                                "control_next": null
+                            },
+                            {
+                                "id": 24,
+                                "opcode": "get_global",
+                                "arg": 10,
+                                "control_next": null
+                            },
+                            {
+                                "id": 25,
+                                "opcode": "int16_store",
+                                "location": 24,
+                                "value": 23,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 26,
+                                "opcode": "int_const",
+                                "value": 6,
+                                "control_next": null
+                            },
+                            {
+                                "id": 27,
+                                "opcode": "get_global",
+                                "arg": 11,
+                                "control_next": null
+                            },
+                            {
+                                "id": 28,
+                                "opcode": "int32_store",
+                                "location": 27,
+                                "value": 26,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 29,
+                                "opcode": "int_const",
+                                "value": 7,
+                                "control_next": null
+                            },
+                            {
+                                "id": 30,
+                                "opcode": "get_global",
+                                "arg": 12,
+                                "control_next": null
+                            },
+                            {
+                                "id": 31,
+                                "opcode": "int64_store",
+                                "location": 30,
+                                "value": 29,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 32,
+                                "opcode": "return",
+                                "arg": null,
+                                "control_next": null
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "id": 8,
+            "name": "locals",
+            "code": {
+                "entry_point": 0,
+                "blocks": [
+                    {
+                        "id": 0,
+                        "control_flow": 28,
+                        "code": [
+                            {
+                                "id": 0,
+                                "opcode": "get_argument",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 1,
+                                "opcode": "get_argument",
+                                "arg": 1,
+                                "control_next": null
+                            },
+                            {
+                                "id": 2,
+                                "opcode": "get_argument",
+                                "arg": 2,
+                                "control_next": null
+                            },
+                            {
+                                "id": 3,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 4,
+                                "opcode": "int_const",
+                                "value": 8,
+                                "control_next": null
+                            },
+                            {
+                                "id": 5,
+                                "opcode": "int_add",
+                                "args": [
+                                    3,
+                                    4
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 6,
+                                "opcode": "int64_store",
+                                "location": 5,
+                                "value": 2,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 7,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 8,
+                                "opcode": "int_const",
+                                "value": 4,
+                                "control_next": null
+                            },
+                            {
+                                "id": 9,
+                                "opcode": "int_add",
+                                "args": [
+                                    7,
+                                    8
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 10,
+                                "opcode": "int8_store",
+                                "location": 9,
+                                "value": 1,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 11,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 12,
+                                "opcode": "int32_store",
+                                "location": 11,
+                                "value": 0,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 13,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 14,
+                                "opcode": "int32_load_signed",
+                                "location": 13,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 15,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 16,
+                                "opcode": "int_const",
+                                "value": 4,
+                                "control_next": null
+                            },
+                            {
+                                "id": 17,
+                                "opcode": "int_add",
+                                "args": [
+                                    15,
+                                    16
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 18,
+                                "opcode": "int8_load_signed",
+                                "location": 17,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 19,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 20,
+                                "opcode": "int_const",
+                                "value": 8,
+                                "control_next": null
+                            },
+                            {
+                                "id": 21,
+                                "opcode": "int_add",
+                                "args": [
+                                    19,
+                                    20
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 22,
+                                "opcode": "int64_load",
+                                "location": 21,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 23,
+                                "opcode": "int_mul",
+                                "args": [
+                                    18,
+                                    22
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 24,
+                                "opcode": "get_thread_local",
+                                "arg": 13,
+                                "control_next": null
+                            },
+                            {
+                                "id": 25,
+                                "opcode": "int16_load_signed",
+                                "location": 24,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 26,
+                                "opcode": "int_div",
+                                "args": [
+                                    23,
+                                    25
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 27,
+                                "opcode": "int_add",
+                                "args": [
+                                    14,
+                                    26
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 28,
+                                "opcode": "return",
+                                "arg": 27,
+                                "control_next": null
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "id": 9,
+            "name": "volatiles1",
+            "code": {
+                "entry_point": 0,
+                "blocks": [
+                    {
+                        "id": 0,
+                        "control_flow": 5,
+                        "code": [
+                            {
+                                "id": 0,
+                                "opcode": "get_global",
+                                "arg": 14,
+                                "control_next": null
+                            },
+                            {
+                                "id": 1,
+                                "opcode": "int64_load",
+                                "location": 0,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 2,
+                                "opcode": "get_global",
+                                "arg": 14,
+                                "control_next": null
+                            },
+                            {
+                                "id": 3,
+                                "opcode": "int_const",
+                                "value": 8,
+                                "control_next": null
+                            },
+                            {
+                                "id": 4,
+                                "opcode": "int_add",
+                                "args": [
+                                    2,
+                                    3
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 5,
+                                "opcode": "int8_load_signed",
+                                "location": 4,
+                                "flags": {
+                                    "volatile": true
+                                },
+                                "control_next": 10
+                            },
+                            {
+                                "id": 6,
+                                "opcode": "int64_sign_extend_32bits",
+                                "arg": 5,
+                                "control_next": null
+                            },
+                            {
+                                "id": 7,
+                                "opcode": "get_global",
+                                "arg": 14,
+                                "control_next": null
+                            },
+                            {
+                                "id": 8,
+                                "opcode": "int_const",
+                                "value": 12,
+                                "control_next": null
+                            },
+                            {
+                                "id": 9,
+                                "opcode": "int_add",
+                                "args": [
+                                    7,
+                                    8
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 10,
+                                "opcode": "int32_load_signed",
+                                "location": 9,
+                                "flags": {
+                                    "volatile": true
+                                },
+                                "control_next": 16
+                            },
+                            {
+                                "id": 11,
+                                "opcode": "int_add",
+                                "args": [
+                                    6,
+                                    10
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 12,
+                                "opcode": "int64_sign_extend_32bits",
+                                "arg": 11,
+                                "control_next": null
+                            },
+                            {
+                                "id": 13,
+                                "opcode": "get_global",
+                                "arg": 14,
+                                "control_next": null
+                            },
+                            {
+                                "id": 14,
+                                "opcode": "int_const",
+                                "value": 16,
+                                "control_next": null
+                            },
+                            {
+                                "id": 15,
+                                "opcode": "int_add",
+                                "args": [
+                                    13,
+                                    14
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 16,
+                                "opcode": "int64_load",
+                                "location": 15,
+                                "flags": {
+                                    "volatile": true
+                                },
+                                "control_next": 21
+                            },
+                            {
+                                "id": 17,
+                                "opcode": "int_sub",
+                                "args": [
+                                    12,
+                                    16
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 18,
+                                "opcode": "int_const",
+                                "value": 4,
+                                "control_next": null
+                            },
+                            {
+                                "id": 19,
+                                "opcode": "int_mul",
+                                "args": [
+                                    17,
+                                    18
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 20,
+                                "opcode": "int_add",
+                                "args": [
+                                    19,
+                                    1
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 21,
+                                "opcode": "int32_load_unsigned",
+                                "location": 20,
+                                "flags": {
+                                    "volatile": true
+                                },
+                                "control_next": 27
+                            },
+                            {
+                                "id": 22,
+                                "opcode": "int_const",
+                                "value": 1,
+                                "control_next": null
+                            },
+                            {
+                                "id": 23,
+                                "opcode": "int64_sign_extend_8bits",
+                                "arg": 22,
+                                "control_next": null
+                            },
+                            {
+                                "id": 24,
+                                "opcode": "get_global",
+                                "arg": 14,
+                                "control_next": null
+                            },
+                            {
+                                "id": 25,
+                                "opcode": "int_const",
+                                "value": 8,
+                                "control_next": null
+                            },
+                            {
+                                "id": 26,
+                                "opcode": "int_add",
+                                "args": [
+                                    24,
+                                    25
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 27,
+                                "opcode": "int8_store",
+                                "location": 26,
+                                "value": 23,
+                                "flags": {
+                                    "volatile": true
+                                },
+                                "control_next": 32
+                            },
+                            {
+                                "id": 28,
+                                "opcode": "int_const",
+                                "value": 2,
+                                "control_next": null
+                            },
+                            {
+                                "id": 29,
+                                "opcode": "get_global",
+                                "arg": 14,
+                                "control_next": null
+                            },
+                            {
+                                "id": 30,
+                                "opcode": "int_const",
+                                "value": 12,
+                                "control_next": null
+                            },
+                            {
+                                "id": 31,
+                                "opcode": "int_add",
+                                "args": [
+                                    29,
+                                    30
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 32,
+                                "opcode": "int32_store",
+                                "location": 31,
+                                "value": 28,
+                                "flags": {
+                                    "volatile": true
+                                },
+                                "control_next": 37
+                            },
+                            {
+                                "id": 33,
+                                "opcode": "int_const",
+                                "value": 3,
+                                "control_next": null
+                            },
+                            {
+                                "id": 34,
+                                "opcode": "get_global",
+                                "arg": 14,
+                                "control_next": null
+                            },
+                            {
+                                "id": 35,
+                                "opcode": "int_const",
+                                "value": 16,
+                                "control_next": null
+                            },
+                            {
+                                "id": 36,
+                                "opcode": "int_add",
+                                "args": [
+                                    34,
+                                    35
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 37,
+                                "opcode": "int64_store",
+                                "location": 36,
+                                "value": 33,
+                                "flags": {
+                                    "volatile": true
+                                },
+                                "control_next": 41
+                            },
+                            {
+                                "id": 38,
+                                "opcode": "float64_const",
+                                "value": 4.500000,
+                                "control_next": null
+                            },
+                            {
+                                "id": 39,
+                                "opcode": "get_global",
+                                "arg": 14,
+                                "control_next": null
+                            },
+                            {
+                                "id": 40,
+                                "opcode": "int64_load",
+                                "location": 39,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 41,
+                                "opcode": "int32_store",
+                                "location": 40,
+                                "value": 38,
+                                "flags": {
+                                    "volatile": true
+                                },
+                                "control_next": 42
+                            },
+                            {
+                                "id": 42,
+                                "opcode": "return",
+                                "arg": null,
+                                "control_next": null
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    ]
+}
