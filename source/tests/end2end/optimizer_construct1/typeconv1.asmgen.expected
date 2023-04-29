@@ -9,6 +9,7 @@
                     {
                         "id": 0,
                         "control_flow": 8,
+                        "phi": [],
                         "code": [
                             {
                                 "id": 0,

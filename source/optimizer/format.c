@@ -167,6 +167,32 @@ static kefir_result_t instr_format(struct kefir_json_output *json, const struct 
     return KEFIR_OK;
 }
 
+static kefir_result_t phi_format(struct kefir_json_output *json, const struct kefir_opt_phi_node *phi) {
+    REQUIRE_OK(kefir_json_output_object_begin(json));
+    REQUIRE_OK(kefir_json_output_object_key(json, "id"));
+    REQUIRE_OK(kefir_json_output_uinteger(json, phi->node_id));
+    REQUIRE_OK(kefir_json_output_object_key(json, "links"));
+    REQUIRE_OK(kefir_json_output_array_begin(json));
+
+    struct kefir_hashtree_node_iterator iter;
+    for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&phi->links, &iter); node != NULL;
+         node = kefir_hashtree_next(&iter)) {
+
+        ASSIGN_DECL_CAST(kefir_opt_block_id_t, block_id, node->key);
+        ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, instr_ref, node->value);
+        REQUIRE_OK(kefir_json_output_object_begin(json));
+        REQUIRE_OK(kefir_json_output_object_key(json, "block_id"));
+        REQUIRE_OK(kefir_json_output_uinteger(json, block_id));
+        REQUIRE_OK(kefir_json_output_object_key(json, "instr_ref"));
+        REQUIRE_OK(kefir_json_output_uinteger(json, instr_ref));
+        REQUIRE_OK(kefir_json_output_object_end(json));
+    }
+
+    REQUIRE_OK(kefir_json_output_array_end(json));
+    REQUIRE_OK(kefir_json_output_object_end(json));
+    return KEFIR_OK;
+}
+
 static kefir_result_t code_block_format(struct kefir_json_output *json, const struct kefir_opt_code_container *code,
                                         const struct kefir_opt_code_block *block) {
     REQUIRE_OK(kefir_json_output_object_begin(json));
@@ -174,10 +200,21 @@ static kefir_result_t code_block_format(struct kefir_json_output *json, const st
     REQUIRE_OK(kefir_json_output_uinteger(json, block->id));
     REQUIRE_OK(kefir_json_output_object_key(json, "control_flow"));
     REQUIRE_OK(id_format(json, block->control_flow.head));
+
+    REQUIRE_OK(kefir_json_output_object_key(json, "phi"));
+    REQUIRE_OK(kefir_json_output_array_begin(json));
+    kefir_result_t res;
+    const struct kefir_opt_phi_node *phi = NULL;
+    for (res = kefir_opt_code_block_phi_head(code, block, &phi); res == KEFIR_OK && phi != NULL;
+         res = kefir_opt_phi_next_sibling(code, phi, &phi)) {
+
+        REQUIRE_OK(phi_format(json, phi));
+    }
+    REQUIRE_OK(res);
+    REQUIRE_OK(kefir_json_output_array_end(json));
+
     REQUIRE_OK(kefir_json_output_object_key(json, "code"));
     REQUIRE_OK(kefir_json_output_array_begin(json));
-
-    kefir_result_t res;
     const struct kefir_opt_instruction *instr = NULL;
     for (res = kefir_opt_code_block_instr_head(code, block, &instr); res == KEFIR_OK && instr != NULL;
          res = kefir_opt_instruction_next_sibling(code, instr, &instr)) {

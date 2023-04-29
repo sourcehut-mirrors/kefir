@@ -27,6 +27,7 @@
 #define KEFIR_OPTIMIZER_OPCODE_DEFS(OPCODE, SEPARATOR) \
     /* Special */ \
     OPCODE(GET_ARGUMENT, "get_argument", ref1) SEPARATOR \
+    OPCODE(PHI, "phi", ref1) SEPARATOR \
     /* Flow control */ \
     OPCODE(JUMP, "jump", jump) SEPARATOR \
     OPCODE(IJUMP, "indirect_jump", ref1) SEPARATOR \

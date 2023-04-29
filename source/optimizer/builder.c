@@ -34,7 +34,8 @@ kefir_result_t kefir_opt_code_builder_add_instruction(struct kefir_mem *mem, str
 
     kefir_bool_t finalized = false;
     REQUIRE_OK(kefir_opt_code_builder_is_finalized(code, block_id, &finalized));
-    REQUIRE(!finalized, KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Optimizer code block has already been finalized"));
+    REQUIRE(!control || !finalized,
+            KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Optimizer code block has already been finalized"));
 
     kefir_opt_instruction_ref_t instr_id;
     REQUIRE_OK(kefir_opt_code_container_new_instruction(mem, code, block, operation, &instr_id));
@@ -102,6 +103,12 @@ static kefir_result_t instr_exists(const struct kefir_opt_code_container *code, 
             instr->block_id == block_id || block_id == KEFIR_ID_NONE,
             KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Optimized code instruction does not belong to specified block"));
     }
+    return KEFIR_OK;
+}
+
+static kefir_result_t phi_exists(const struct kefir_opt_code_container *code, kefir_opt_phi_id_t phi_ref) {
+    struct kefir_opt_phi_node *phi = NULL;
+    REQUIRE_OK(kefir_opt_code_container_phi(code, phi_ref, &phi));
     return KEFIR_OK;
 }
 
@@ -181,6 +188,20 @@ kefir_result_t kefir_opt_code_builder_get_argument(struct kefir_mem *mem, struct
     REQUIRE_OK(kefir_opt_code_builder_add_instruction(
         mem, code, block_id,
         &(struct kefir_opt_operation){.opcode = KEFIR_OPT_OPCODE_GET_ARGUMENT, .parameters.refs[0] = identifier}, false,
+        instr_id_ptr));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_code_builder_phi(struct kefir_mem *mem, struct kefir_opt_code_container *code,
+                                          kefir_opt_block_id_t block_id, kefir_opt_phi_id_t identifier,
+                                          kefir_opt_instruction_ref_t *instr_id_ptr) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
+
+    REQUIRE_OK(phi_exists(code, identifier));
+    REQUIRE_OK(kefir_opt_code_builder_add_instruction(
+        mem, code, block_id,
+        &(struct kefir_opt_operation){.opcode = KEFIR_OPT_OPCODE_PHI, .parameters.refs[0] = identifier}, false,
         instr_id_ptr));
     return KEFIR_OK;
 }
