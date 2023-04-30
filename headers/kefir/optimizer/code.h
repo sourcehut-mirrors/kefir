@@ -54,6 +54,11 @@ typedef union kefir_opt_operation_parameters {
         kefir_uint64_t uinteger;
         kefir_float32_t float32;
         kefir_float64_t float64;
+
+        struct {
+            kefir_long_double_t value;
+            kefir_opt_instruction_ref_t base_ref;
+        } long_double;
     } imm;
 
     struct {

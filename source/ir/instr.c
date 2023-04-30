@@ -161,3 +161,15 @@ kefir_uint64_t kefir_ir_long_double_lower_half(kefir_long_double_t value) {
         return halves.halves[0];
     }
 }
+
+kefir_long_double_t kefir_ir_long_double_construct(kefir_uint64_t upper_half, kefir_uint64_t lower_half) {
+    // volatile qualifier is necessary to suppress memory access optimizations
+    // that upset valgrind
+    if (getenv(KEFIR_DISABLE_LONG_DOUBLE_FLAG) != NULL) {
+        volatile union double_halves halves = {.halves = {lower_half, upper_half}};
+        return halves.float64;
+    } else {
+        volatile union long_double_halves halves = {.halves = {lower_half, upper_half}};
+        return halves.long_double;
+    }
+}

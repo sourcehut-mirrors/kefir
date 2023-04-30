@@ -83,7 +83,6 @@
     OPCODE(LOAD32U,     "load32u",     0x66, memflags) SEPARATOR \
     OPCODE(LOAD32I,     "load32i",     0x67, memflags) SEPARATOR \
     OPCODE(LOAD64,      "load64",      0x68, memflags) SEPARATOR \
-    OPCODE(LOADLD,      "loadld",      0x69, memflags) SEPARATOR \
     OPCODE(STORE8,      "store8",      0x6a, memflags) SEPARATOR \
     OPCODE(STORE16,     "store16",     0x6b, memflags) SEPARATOR \
     OPCODE(STORE32,     "store32",     0x6c, memflags) SEPARATOR \

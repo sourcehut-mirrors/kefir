@@ -110,7 +110,6 @@ declare_opcode load16i
 declare_opcode load32u
 declare_opcode load32i
 declare_opcode load64
-declare_opcode loadld
 declare_opcode store8
 declare_opcode store16
 declare_opcode store32
@@ -512,14 +511,6 @@ define_opcode load32i
 
 define_opcode load64
     pop DATA2_REG
-    mov DATA_REG, [DATA2_REG]
-    push DATA_REG
-    end_opcode
-
-define_opcode loadld
-    pop DATA2_REG
-    mov DATA_REG, [DATA2_REG + 8]
-    push DATA_REG
     mov DATA_REG, [DATA2_REG]
     push DATA_REG
     end_opcode

@@ -42,6 +42,7 @@
     OPCODE(FLOAT64_CONST, "float64_const", imm_float64) SEPARATOR \
     OPCODE(STRING_REF, "string_ref", ref1) SEPARATOR \
     OPCODE(BLOCK_LABEL, "block_label", ref1) SEPARATOR \
+    OPCODE(LONG_DOUBLE_INIT, "long_double_init", imm_long_double) SEPARATOR \
     /* Integral arithmetics & binary operations */ \
     OPCODE(INT_ADD, "int_add", ref2) SEPARATOR \
     OPCODE(INT_SUB, "int_sub", ref2) SEPARATOR \
@@ -87,6 +88,7 @@
     OPCODE(INT16_STORE, "int16_store", store_mem) SEPARATOR \
     OPCODE(INT32_STORE, "int32_store", store_mem) SEPARATOR \
     OPCODE(INT64_STORE, "int64_store", store_mem) SEPARATOR \
+    OPCODE(LONG_DOUBLE_STORE, "long_double_store", store_mem) SEPARATOR \
     OPCODE(ZERO_MEMORY, "zero_memory", mem_op) SEPARATOR \
     OPCODE(COPY_MEMORY, "copy_memory", mem_op) SEPARATOR \
     OPCODE(BITS_EXTRACT_SIGNED, "bits_extract_signed", bitfield) SEPARATOR \
@@ -111,6 +113,11 @@
     OPCODE(FLOAT64_MUL, "float64_mul", ref2) SEPARATOR \
     OPCODE(FLOAT64_DIV, "float64_div", ref2) SEPARATOR \
     OPCODE(FLOAT64_NEG, "float64_neg", ref1) SEPARATOR \
+    OPCODE(LONG_DOUBLE_ADD, "long_double_add", ref3) SEPARATOR \
+    OPCODE(LONG_DOUBLE_SUB, "long_double_sub", ref3) SEPARATOR \
+    OPCODE(LONG_DOUBLE_MUL, "long_double_mul", ref3) SEPARATOR \
+    OPCODE(LONG_DOUBLE_DIV, "long_double_div", ref3) SEPARATOR \
+    OPCODE(LONG_DOUBLE_NEG, "long_double_neg", ref2) SEPARATOR \
     /* Floating-point comparison */ \
     OPCODE(FLOAT32_EQUALS, "float32_equals", ref2) SEPARATOR \
     OPCODE(FLOAT32_GREATER, "float32_greater", ref2) SEPARATOR \
@@ -118,6 +125,9 @@
     OPCODE(FLOAT64_EQUALS, "float64_equals", ref2) SEPARATOR \
     OPCODE(FLOAT64_GREATER, "float64_greater", ref2) SEPARATOR \
     OPCODE(FLOAT64_LESSER, "float64_lesser", ref2) SEPARATOR \
+    OPCODE(LONG_DOUBLE_EQUALS, "long_double_equals", ref2) SEPARATOR \
+    OPCODE(LONG_DOUBLE_GREATER, "long_double_greater", ref2) SEPARATOR \
+    OPCODE(LONG_DOUBLE_LESSER, "long_double_lesser", ref2) SEPARATOR \
     /* Floating-point conversions */ \
     OPCODE(FLOAT32_TO_INT, "float32_to_int", ref1) SEPARATOR \
     OPCODE(FLOAT64_TO_INT, "float64_to_int", ref1) SEPARATOR \
@@ -126,7 +136,15 @@
     OPCODE(UINT_TO_FLOAT32, "uint_to_float32", ref1) SEPARATOR \
     OPCODE(UINT_TO_FLOAT64, "uint_to_float64", ref1) SEPARATOR \
     OPCODE(FLOAT32_TO_FLOAT64, "float32_to_float64", ref1) SEPARATOR \
-    OPCODE(FLOAT64_TO_FLOAT32, "float64_to_float32", ref1)
+    OPCODE(FLOAT64_TO_FLOAT32, "float64_to_float32", ref1) SEPARATOR \
+    OPCODE(LONG_DOUBLE_TRUNCATE, "long_double_truncate", ref1) SEPARATOR \
+    OPCODE(LONG_DOUBLE_TO_INT, "long_double_to_int", ref1) SEPARATOR \
+    OPCODE(LONG_DOUBLE_TO_FLOAT32, "long_double_to_float32", ref1) SEPARATOR \
+    OPCODE(LONG_DOUBLE_TO_FLOAT64, "long_double_to_float64", ref1) SEPARATOR \
+    OPCODE(INT_TO_LONG_DOUBLE, "int_to_long_double", ref2) SEPARATOR \
+    OPCODE(UINT_TO_LONG_DOUBLE, "uint_to_long_double", ref2) SEPARATOR \
+    OPCODE(FLOAT32_TO_LONG_DOUBLE, "float32_to_long_double", ref2) SEPARATOR \
+    OPCODE(FLOAT64_TO_LONG_DOUBLE, "float64_to_long_double", ref2)
 // clang-format on
 
 #endif
