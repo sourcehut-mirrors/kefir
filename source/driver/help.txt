@@ -57,6 +57,8 @@ COMPILER OPTIONS:
         --detailed-output                   Include references to source file in AST and token dumps
         --feature-[feature name]            Enable compiler feature (see below)
         --no-feature-[feature name]         Disable compiler feature (see below)
+        --internal-[internal name]          Enable compiler internal flag (see below)
+        --no-internal-[internal name]       Disable compiler internal flag (see below)
         --codegen-[option]                  Enable option for code generator (see below)
         --no-codegen-[option]               Disable option for code generator (see below)
 
@@ -79,6 +81,9 @@ COMPILER OPTIONS:
         include-next                        Permit include_next preprocessor directive [default: on]
         fail-on-assembly                    Disable support of inline assembly [default: off]
         va-args-comma-concat                Enable special processing for ", ##__VA_ARGS" case in preprocessor [default: on]
+
+    Supported internal flags:
+        flat-local-scope-layout             Use flat layout for function local variable scope [default: off]
 
     Support code generation options:
         emulated-tls                        Use emulated TLS [disabled by default, enabled on openbsd platforms]

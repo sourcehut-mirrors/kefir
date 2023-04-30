@@ -28,6 +28,10 @@ Kefir supports disabled-by-default optional features:
     --feature-[feature name]            Enable feature
     --no-feature-[feature name]         Disable feature
 
+Kefir supports disabled-by-default internal compiler flags:
+    --internal-[internal name]          Enable compiler internal flag
+    --no-internal-[internal name]       Disable compiler internal flag
+
 Supported features:
     fail-on-attributes                  Fail if __attribute__((...)) is encountered
     missing-function-return-type        Permit function definitions with missing return type
@@ -47,6 +51,9 @@ Supported features:
     include-next                        Permit include_next preprocessor directive
     fail-on-assembly                    Disable support of inline assembly
     va-args-comma-concat                Enable special processing for ", ##__VA_ARGS" case in preprocessor
+
+Supported internal flags:
+    flat-local-scope-layout             Use flat layout for function local variable scope
 
 Targets:
     amd64-sysv-gas (default)             Produce GNU As-compatible assembly adhering System-V AMD64 ABI

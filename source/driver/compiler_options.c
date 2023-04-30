@@ -136,6 +136,9 @@ struct kefir_cli_option KefirCompilerConfigurationOptions[] = {
 #define FEATURE(name, field)                                                                 \
     SIMPLE(0, "feature-" name, false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, true, field), \
         SIMPLE(0, "no-feature-" name, false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, false, field)
+#define INTERNAL(name, field)                                                                 \
+    SIMPLE(0, "internal-" name, false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, true, field), \
+        SIMPLE(0, "no-internal-" name, false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, false, field)
 #define CODEGEN(name, field)                                                                 \
     SIMPLE(0, "codegen-" name, false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, true, field), \
         SIMPLE(0, "no-codegen-" name, false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, false, field)
@@ -185,6 +188,8 @@ struct kefir_cli_option KefirCompilerConfigurationOptions[] = {
     FEATURE("fail-on-assembly", features.fail_on_assembly),
     FEATURE("va-args-comma-concat", features.va_args_concat),
 
+    INTERNAL("flat-local-scope-layout", internals.flat_local_scope_layout),
+
     CODEGEN("emulated-tls", codegen.emulated_tls),
     SIMPLE(0, "codegen-syntax", true, KEFIR_CLI_OPTION_ACTION_ASSIGN_STRARG, 0, codegen.syntax)
 
@@ -192,6 +197,7 @@ struct kefir_cli_option KefirCompilerConfigurationOptions[] = {
 #undef PREHOOK
 #undef POSTHOOK
 #undef CUSTOM
+#undef INTERNAL
 #undef FEATURE
 #undef CODEGEN
 };

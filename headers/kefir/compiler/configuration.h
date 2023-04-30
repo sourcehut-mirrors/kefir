@@ -79,6 +79,10 @@ typedef struct kefir_compiler_runner_configuration {
     } features;
 
     struct {
+        kefir_bool_t flat_local_scope_layout;
+    } internals;
+
+    struct {
         kefir_bool_t emulated_tls;
         const char *syntax;
     } codegen;

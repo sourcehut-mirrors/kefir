@@ -137,14 +137,14 @@ kefir_result_t kefir_ast_translator_resolve_local_type_layout(struct kefir_irbui
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR block builder"));
     REQUIRE(layout != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type layout"));
 
-    if (layout->parent != NULL) {
+    if (layout->parent == NULL || (layout->parent->type == NULL && layout->parent->value == ~(kefir_uptr_t) 0ull)) {
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32(builder, KEFIR_IROPCODE_GETLOCAL, type_id, layout->value));
+    } else {
         REQUIRE_OK(kefir_ast_translator_resolve_local_type_layout(builder, type_id, layout->parent));
         if (layout->properties.relative_offset != 0) {
             REQUIRE_OK(
                 KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IADD1, layout->properties.relative_offset));
         }
-    } else {
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32(builder, KEFIR_IROPCODE_GETLOCAL, type_id, layout->value));
     }
     return KEFIR_OK;
 }

@@ -168,6 +168,8 @@ static kefir_result_t driver_generate_compiler_config(struct kefir_mem *mem, str
         compiler_config->features.va_args_concat = true;
     }
 
+    compiler_config->internals.flat_local_scope_layout = false;
+
     struct kefir_list_entry *include_insert_iter = NULL;
     for (const struct kefir_list_entry *iter = kefir_list_head(&config->include_directories); iter != NULL;
          kefir_list_next(&iter)) {
