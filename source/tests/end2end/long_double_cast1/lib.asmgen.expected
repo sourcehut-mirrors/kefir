@@ -105,8 +105,8 @@
 .extern __kefirrt_ldcf64_impl
 .extern __kefirrt_pushscope_impl
 .extern __kefirrt_popscope_impl
-.extern __kefirrt_setldh_impl
-.extern __kefirrt_setldl_impl
+.extern __kefirrt_ldinith_impl
+.extern __kefirrt_ldinitl_impl
 # Runtime functions
 .extern __kefirrt_preserve_state
 .extern __kefirrt_restore_state
@@ -148,8 +148,8 @@ __inc_body:
     .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_iadd1_impl, 32
-    .quad __kefirrt_setldh_impl, 16383
-    .quad __kefirrt_setldl_impl, -9223372036854775808
+    .quad __kefirrt_ldinith_impl, 16383
+    .quad __kefirrt_ldinitl_impl, -9223372036854775808
     .quad __kefirrt_getlocal_impl, 16
     .quad __kefirrt_iadd1_impl, 48
     .quad __kefirrt_ldadd_impl, 0

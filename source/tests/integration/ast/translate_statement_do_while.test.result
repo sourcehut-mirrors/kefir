@@ -345,11 +345,11 @@
                     }
                 },
                 {
-                    "opcode": "setldh",
+                    "opcode": "ldinith",
                     "arg": 0
                 },
                 {
-                    "opcode": "setldl",
+                    "opcode": "ldinitl",
                     "arg": 14024825640004354048
                 },
                 {

@@ -120,8 +120,8 @@
     OPCODE(LDMUL,        "ldmul",      0x9e, none) SEPARATOR \
     OPCODE(LDDIV,        "lddiv",      0x9f, none) SEPARATOR \
     OPCODE(LDNEG,        "ldneg",      0xa0, none) SEPARATOR \
-    OPCODE(SETLDH,       "setldh",     0xa1, u64) SEPARATOR \
-    OPCODE(SETLDL,       "setldl",     0xa2, u64) SEPARATOR \
+    OPCODE(LDINITH,      "ldinith",    0xa1, u64) SEPARATOR \
+    OPCODE(LDINITL,      "ldinitl",    0xa2, u64) SEPARATOR \
     /* Floating-point comparison */ \
     OPCODE(F32EQUALS,    "f32equals",  0xb0, none) SEPARATOR \
     OPCODE(F32GREATER,   "f32greater", 0xb1, none) SEPARATOR \

@@ -580,11 +580,11 @@
                     }
                 },
                 {
-                    "opcode": "setldh",
+                    "opcode": "ldinith",
                     "arg": 0
                 },
                 {
-                    "opcode": "setldl",
+                    "opcode": "ldinitl",
                     "arg": 4607182418800017408
                 },
                 {
@@ -602,11 +602,11 @@
                     "arg": 16
                 },
                 {
-                    "opcode": "setldh",
+                    "opcode": "ldinith",
                     "arg": 0
                 },
                 {
-                    "opcode": "setldl",
+                    "opcode": "ldinitl",
                     "arg": 0
                 },
                 {

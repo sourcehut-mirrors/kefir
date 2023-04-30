@@ -70,14 +70,14 @@ kefir_result_t kefir_opt_code_builder_float32_constant(struct kefir_mem *, struc
 kefir_result_t kefir_opt_code_builder_float64_constant(struct kefir_mem *, struct kefir_opt_code_container *,
                                                        kefir_opt_block_id_t, kefir_float64_t,
                                                        kefir_opt_instruction_ref_t *);
+kefir_result_t kefir_opt_code_builder_long_double_constant(struct kefir_mem *, struct kefir_opt_code_container *,
+                                                           kefir_opt_block_id_t, kefir_long_double_t,
+                                                           kefir_opt_instruction_ref_t *);
 kefir_result_t kefir_opt_code_builder_string_reference(struct kefir_mem *, struct kefir_opt_code_container *,
                                                        kefir_opt_block_id_t, kefir_id_t, kefir_opt_instruction_ref_t *);
 kefir_result_t kefir_opt_code_builder_block_label(struct kefir_mem *, struct kefir_opt_code_container *,
                                                   kefir_opt_block_id_t, kefir_opt_block_id_t,
                                                   kefir_opt_instruction_ref_t *);
-kefir_result_t kefir_opt_code_builder_long_double_init(struct kefir_mem *, struct kefir_opt_code_container *,
-                                                       kefir_opt_block_id_t, kefir_long_double_t,
-                                                       kefir_opt_instruction_ref_t, kefir_opt_instruction_ref_t *);
 
 kefir_result_t kefir_opt_code_builder_get_global(struct kefir_mem *, struct kefir_opt_code_container *,
                                                  kefir_opt_block_id_t, kefir_id_t, kefir_opt_instruction_ref_t *);
@@ -133,6 +133,7 @@ UNARY_OP(scope_pop);
 
 UNARY_OP(float32_neg);
 UNARY_OP(float64_neg);
+UNARY_OP(long_double_neg);
 
 UNARY_OP(float32_to_int);
 UNARY_OP(float64_to_int);
@@ -146,6 +147,10 @@ UNARY_OP(long_double_truncate);
 UNARY_OP(long_double_to_int);
 UNARY_OP(long_double_to_float32);
 UNARY_OP(long_double_to_float64);
+UNARY_OP(int_to_long_double);
+UNARY_OP(uint_to_long_double);
+UNARY_OP(float32_to_long_double);
+UNARY_OP(float64_to_long_double);
 
 #undef UNARY_OP
 
@@ -185,8 +190,10 @@ BINARY_OP(float64_add);
 BINARY_OP(float64_sub);
 BINARY_OP(float64_mul);
 BINARY_OP(float64_div);
-
-BINARY_OP(long_double_neg);
+BINARY_OP(long_double_add);
+BINARY_OP(long_double_sub);
+BINARY_OP(long_double_mul);
+BINARY_OP(long_double_div);
 
 BINARY_OP(float32_equals);
 BINARY_OP(float32_greater);
@@ -198,24 +205,7 @@ BINARY_OP(long_double_equals);
 BINARY_OP(long_double_greater);
 BINARY_OP(long_double_lesser);
 
-BINARY_OP(int_to_long_double);
-BINARY_OP(uint_to_long_double);
-BINARY_OP(float32_to_long_double);
-BINARY_OP(float64_to_long_double);
-
 #undef BINARY_OP
-
-#define TERNARY_OP(_id)                                                                                           \
-    kefir_result_t kefir_opt_code_builder_##_id(                                                                  \
-        struct kefir_mem *, struct kefir_opt_code_container *, kefir_opt_block_id_t, kefir_opt_instruction_ref_t, \
-        kefir_opt_instruction_ref_t, kefir_opt_instruction_ref_t, kefir_opt_instruction_ref_t *)
-
-TERNARY_OP(long_double_add);
-TERNARY_OP(long_double_sub);
-TERNARY_OP(long_double_mul);
-TERNARY_OP(long_double_div);
-
-#undef TERNARY_OP
 
 #define LOAD_OP(_id)                                                                                              \
     kefir_result_t kefir_opt_code_builder_##_id(                                                                  \

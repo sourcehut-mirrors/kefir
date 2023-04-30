@@ -470,11 +470,11 @@
                     }
                 },
                 {
-                    "opcode": "setldh",
+                    "opcode": "ldinith",
                     "arg": 0
                 },
                 {
-                    "opcode": "setldl",
+                    "opcode": "ldinitl",
                     "arg": 13849415305714239485
                 },
                 {
@@ -499,11 +499,11 @@
                     "arg": 16
                 },
                 {
-                    "opcode": "setldh",
+                    "opcode": "ldinith",
                     "arg": 0
                 },
                 {
-                    "opcode": "setldl",
+                    "opcode": "ldinitl",
                     "arg": 4607182418800017408
                 },
                 {
@@ -525,11 +525,11 @@
                     "arg": 32
                 },
                 {
-                    "opcode": "setldh",
+                    "opcode": "ldinith",
                     "arg": 0
                 },
                 {
-                    "opcode": "setldl",
+                    "opcode": "ldinitl",
                     "arg": 13830554455654793216
                 },
                 {

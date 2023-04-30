@@ -62,16 +62,6 @@ static kefir_result_t format_operation_ref2(struct kefir_json_output *json, cons
     return KEFIR_OK;
 }
 
-static kefir_result_t format_operation_ref3(struct kefir_json_output *json, const struct kefir_opt_operation *oper) {
-    REQUIRE_OK(kefir_json_output_object_key(json, "args"));
-    REQUIRE_OK(kefir_json_output_array_begin(json));
-    REQUIRE_OK(id_format(json, oper->parameters.refs[0]));
-    REQUIRE_OK(id_format(json, oper->parameters.refs[1]));
-    REQUIRE_OK(id_format(json, oper->parameters.refs[2]));
-    REQUIRE_OK(kefir_json_output_array_end(json));
-    return KEFIR_OK;
-}
-
 static kefir_result_t format_operation_load_mem(struct kefir_json_output *json,
                                                 const struct kefir_opt_operation *oper) {
     REQUIRE_OK(kefir_json_output_object_key(json, "location"));
@@ -203,9 +193,7 @@ static kefir_result_t format_operation_imm_float64(struct kefir_json_output *jso
 static kefir_result_t format_operation_imm_long_double(struct kefir_json_output *json,
                                                        const struct kefir_opt_operation *oper) {
     REQUIRE_OK(kefir_json_output_object_key(json, "value"));
-    REQUIRE_OK(kefir_json_output_long_double(json, oper->parameters.imm.long_double.value));
-    REQUIRE_OK(kefir_json_output_object_key(json, "base_ref"));
-    REQUIRE_OK(id_format(json, oper->parameters.imm.long_double.base_ref));
+    REQUIRE_OK(kefir_json_output_long_double(json, oper->parameters.imm.long_double));
     return KEFIR_OK;
 }
 

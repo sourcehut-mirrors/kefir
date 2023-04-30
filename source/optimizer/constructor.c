@@ -134,11 +134,11 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
         } break;
 
-        case KEFIR_IROPCODE_SETLDH: {
+        case KEFIR_IROPCODE_LDINITH: {
             REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
             REQUIRE(state->ir_location + 1 < kefir_irblock_length(&state->function->ir_func->body) &&
                         kefir_irblock_at(&state->function->ir_func->body, state->ir_location + 1)->opcode ==
-                            KEFIR_IROPCODE_SETLDL,
+                            KEFIR_IROPCODE_LDINITL,
                     KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
                                     "Expected long double upper half set opcode to be followed by the lower half"));
 
@@ -146,13 +146,12 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             kefir_uint64_t lower_half =
                 kefir_irblock_at(&state->function->ir_func->body, ++state->ir_location)->arg.u64;
 
-            REQUIRE_OK(kefir_opt_code_builder_long_double_init(mem, code, current_block_id,
-                                                               kefir_ir_long_double_construct(upper_half, lower_half),
-                                                               instr_ref2, &instr_ref));
+            REQUIRE_OK(kefir_opt_code_builder_long_double_constant(
+                mem, code, current_block_id, kefir_ir_long_double_construct(upper_half, lower_half), &instr_ref));
             REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
         } break;
 
-        case KEFIR_IROPCODE_SETLDL:
+        case KEFIR_IROPCODE_LDINITL:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected long double lower half set IR opcode");
 
         case KEFIR_IROPCODE_PICK:
@@ -360,6 +359,22 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
 
 #undef UNARY_OP
 
+#define LONG_DOUBLE_UNARY_OP(_id, _opcode)                                                             \
+    case _opcode:                                                                                      \
+        REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref3));                          \
+        REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));                          \
+        REQUIRE_OK(kefir_opt_code_builder_##_id(mem, code, current_block_id, instr_ref2, &instr_ref)); \
+        REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));                           \
+        break;
+
+            LONG_DOUBLE_UNARY_OP(int_to_long_double, KEFIR_IROPCODE_INTCLD)
+            LONG_DOUBLE_UNARY_OP(uint_to_long_double, KEFIR_IROPCODE_UINTCLD)
+            LONG_DOUBLE_UNARY_OP(float32_to_long_double, KEFIR_IROPCODE_F32CLD)
+            LONG_DOUBLE_UNARY_OP(float64_to_long_double, KEFIR_IROPCODE_F64CLD)
+            LONG_DOUBLE_UNARY_OP(long_double_neg, KEFIR_IROPCODE_LDNEG)
+
+#undef LONG_DOUBLE_UNARY_OP
+
 #define BINARY_OP(_id, _opcode)                                                                                    \
     case _opcode:                                                                                                  \
         REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref3));                                      \
@@ -400,8 +415,6 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             BINARY_OP(float64_mul, KEFIR_IROPCODE_F64MUL)
             BINARY_OP(float64_div, KEFIR_IROPCODE_F64DIV)
 
-            BINARY_OP(long_double_neg, KEFIR_IROPCODE_LDNEG)
-
             BINARY_OP(float32_equals, KEFIR_IROPCODE_F32EQUALS)
             BINARY_OP(float32_greater, KEFIR_IROPCODE_F32GREATER)
             BINARY_OP(float32_lesser, KEFIR_IROPCODE_F32LESSER)
@@ -412,29 +425,23 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             BINARY_OP(long_double_greater, KEFIR_IROPCODE_LDGREATER)
             BINARY_OP(long_double_lesser, KEFIR_IROPCODE_LDLESSER)
 
-            BINARY_OP(int_to_long_double, KEFIR_IROPCODE_INTCLD)
-            BINARY_OP(uint_to_long_double, KEFIR_IROPCODE_UINTCLD)
-            BINARY_OP(float32_to_long_double, KEFIR_IROPCODE_F32CLD)
-            BINARY_OP(float64_to_long_double, KEFIR_IROPCODE_F64CLD)
-
 #undef BINARY_OP
 
-#define TERNARY_OP(_id, _opcode)                                                                                 \
-    case _opcode:                                                                                                \
-        REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref4));                                    \
-        REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref3));                                    \
-        REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));                                    \
-        REQUIRE_OK(kefir_opt_code_builder_##_id(mem, code, current_block_id, instr_ref2, instr_ref3, instr_ref4, \
-                                                &instr_ref));                                                    \
-        REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));                                     \
+#define LONG_DOUBLE_BINARY_OP(_id, _opcode)                                                                        \
+    case _opcode:                                                                                                  \
+        REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref4));                                      \
+        REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref3));                                      \
+        REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));                                      \
+        REQUIRE_OK(kefir_opt_code_builder_##_id(mem, code, current_block_id, instr_ref2, instr_ref3, &instr_ref)); \
+        REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));                                       \
         break;
 
-            TERNARY_OP(long_double_add, KEFIR_IROPCODE_LDADD)
-            TERNARY_OP(long_double_sub, KEFIR_IROPCODE_LDSUB)
-            TERNARY_OP(long_double_mul, KEFIR_IROPCODE_LDMUL)
-            TERNARY_OP(long_double_div, KEFIR_IROPCODE_LDDIV)
+            LONG_DOUBLE_BINARY_OP(long_double_add, KEFIR_IROPCODE_LDADD)
+            LONG_DOUBLE_BINARY_OP(long_double_sub, KEFIR_IROPCODE_LDSUB)
+            LONG_DOUBLE_BINARY_OP(long_double_mul, KEFIR_IROPCODE_LDMUL)
+            LONG_DOUBLE_BINARY_OP(long_double_div, KEFIR_IROPCODE_LDDIV)
 
-#undef TERNARY_OP
+#undef LONG_DOUBLE_BINARY_OP
 
 #define LOAD_OP(_id, _opcode)                                                                                \
     case _opcode: {                                                                                          \

@@ -212,9 +212,9 @@ static kefir_result_t incdec_impl(struct kefir_mem *mem, struct kefir_ast_transl
         case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
             REQUIRE_OK(kefir_ast_translator_fetch_temporary(mem, context, builder,
                                                             &node->base.properties.expression_props.temp_identifier));
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_SETLDH,
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_LDINITH,
                                                        kefir_ir_long_double_upper_half((kefir_long_double_t) diff)));
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_SETLDL,
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_LDINITL,
                                                        kefir_ir_long_double_lower_half((kefir_long_double_t) diff)));
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_LDADD, 0));
             break;

@@ -310,6 +310,20 @@ kefir_result_t kefir_opt_code_builder_float64_constant(struct kefir_mem *mem, st
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_opt_code_builder_long_double_constant(struct kefir_mem *mem, struct kefir_opt_code_container *code,
+                                                           kefir_opt_block_id_t block_id, kefir_long_double_t value,
+                                                           kefir_opt_instruction_ref_t *instr_id_ptr) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
+
+    REQUIRE_OK(kefir_opt_code_builder_add_instruction(
+        mem, code, block_id,
+        &(struct kefir_opt_operation){.opcode = KEFIR_OPT_OPCODE_LONG_DOUBLE_CONST,
+                                      .parameters.imm.long_double = value},
+        false, instr_id_ptr));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_opt_code_builder_string_reference(struct kefir_mem *mem, struct kefir_opt_code_container *code,
                                                        kefir_opt_block_id_t block_id, kefir_id_t ref,
                                                        kefir_opt_instruction_ref_t *instr_id_ptr) {
@@ -334,22 +348,6 @@ kefir_result_t kefir_opt_code_builder_block_label(struct kefir_mem *mem, struct 
         mem, code, block_id,
         &(struct kefir_opt_operation){.opcode = KEFIR_OPT_OPCODE_BLOCK_LABEL, .parameters.block_ref = ref}, false,
         instr_id_ptr));
-    return KEFIR_OK;
-}
-
-kefir_result_t kefir_opt_code_builder_long_double_init(struct kefir_mem *mem, struct kefir_opt_code_container *code,
-                                                       kefir_opt_block_id_t block_id, kefir_long_double_t value,
-                                                       kefir_opt_instruction_ref_t base_ref,
-                                                       kefir_opt_instruction_ref_t *instr_id_ptr) {
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
-
-    REQUIRE_OK(instr_exists(code, block_id, base_ref, false));
-    REQUIRE_OK(kefir_opt_code_builder_add_instruction(
-        mem, code, block_id,
-        &(struct kefir_opt_operation){.opcode = KEFIR_OPT_OPCODE_LONG_DOUBLE_INIT,
-                                      .parameters.imm.long_double = {.value = value, .base_ref = base_ref}},
-        false, instr_id_ptr));
     return KEFIR_OK;
 }
 
@@ -567,6 +565,7 @@ UNARY_OP(scope_pop, KEFIR_OPT_OPCODE_SCOPE_POP)
 
 UNARY_OP(float32_neg, KEFIR_OPT_OPCODE_FLOAT32_NEG)
 UNARY_OP(float64_neg, KEFIR_OPT_OPCODE_FLOAT64_NEG)
+UNARY_OP(long_double_neg, KEFIR_OPT_OPCODE_LONG_DOUBLE_NEG)
 
 UNARY_OP(float32_to_int, KEFIR_OPT_OPCODE_FLOAT32_TO_INT)
 UNARY_OP(float64_to_int, KEFIR_OPT_OPCODE_FLOAT64_TO_INT)
@@ -580,6 +579,10 @@ UNARY_OP(long_double_truncate, KEFIR_OPT_OPCODE_LONG_DOUBLE_TRUNCATE)
 UNARY_OP(long_double_to_int, KEFIR_OPT_OPCODE_LONG_DOUBLE_TO_INT)
 UNARY_OP(long_double_to_float32, KEFIR_OPT_OPCODE_LONG_DOUBLE_TO_FLOAT32)
 UNARY_OP(long_double_to_float64, KEFIR_OPT_OPCODE_LONG_DOUBLE_TO_FLOAT64)
+UNARY_OP(int_to_long_double, KEFIR_OPT_OPCODE_INT_TO_LONG_DOUBLE)
+UNARY_OP(uint_to_long_double, KEFIR_OPT_OPCODE_UINT_TO_LONG_DOUBLE)
+UNARY_OP(float32_to_long_double, KEFIR_OPT_OPCODE_FLOAT32_TO_LONG_DOUBLE)
+UNARY_OP(float64_to_long_double, KEFIR_OPT_OPCODE_FLOAT64_TO_LONG_DOUBLE)
 
 #undef UNARY_OP
 
@@ -629,8 +632,10 @@ BINARY_OP(float64_add, KEFIR_OPT_OPCODE_FLOAT64_ADD)
 BINARY_OP(float64_sub, KEFIR_OPT_OPCODE_FLOAT64_SUB)
 BINARY_OP(float64_mul, KEFIR_OPT_OPCODE_FLOAT64_MUL)
 BINARY_OP(float64_div, KEFIR_OPT_OPCODE_FLOAT64_DIV)
-
-BINARY_OP(long_double_neg, KEFIR_OPT_OPCODE_LONG_DOUBLE_NEG)
+BINARY_OP(long_double_add, KEFIR_OPT_OPCODE_LONG_DOUBLE_ADD)
+BINARY_OP(long_double_sub, KEFIR_OPT_OPCODE_LONG_DOUBLE_SUB)
+BINARY_OP(long_double_mul, KEFIR_OPT_OPCODE_LONG_DOUBLE_MUL)
+BINARY_OP(long_double_div, KEFIR_OPT_OPCODE_LONG_DOUBLE_DIV)
 
 BINARY_OP(float32_equals, KEFIR_OPT_OPCODE_FLOAT32_EQUALS)
 BINARY_OP(float32_greater, KEFIR_OPT_OPCODE_FLOAT32_GREATER)
@@ -642,36 +647,7 @@ BINARY_OP(long_double_equals, KEFIR_OPT_OPCODE_LONG_DOUBLE_EQUALS)
 BINARY_OP(long_double_greater, KEFIR_OPT_OPCODE_LONG_DOUBLE_GREATER)
 BINARY_OP(long_double_lesser, KEFIR_OPT_OPCODE_LONG_DOUBLE_LESSER)
 
-BINARY_OP(int_to_long_double, KEFIR_OPT_OPCODE_INT_TO_LONG_DOUBLE)
-BINARY_OP(uint_to_long_double, KEFIR_OPT_OPCODE_UINT_TO_LONG_DOUBLE)
-BINARY_OP(float32_to_long_double, KEFIR_OPT_OPCODE_FLOAT32_TO_LONG_DOUBLE)
-BINARY_OP(float64_to_long_double, KEFIR_OPT_OPCODE_FLOAT64_TO_LONG_DOUBLE)
-
 #undef BINARY_OP
-
-#define TERNARY_OP(_id, _opcode)                                                                                    \
-    kefir_result_t kefir_opt_code_builder_##_id(struct kefir_mem *mem, struct kefir_opt_code_container *code,       \
-                                                kefir_opt_block_id_t block_id, kefir_opt_instruction_ref_t ref1,    \
-                                                kefir_opt_instruction_ref_t ref2, kefir_opt_instruction_ref_t ref3, \
-                                                kefir_opt_instruction_ref_t *instr_id_ptr) {                        \
-        REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));          \
-        REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container")); \
-        REQUIRE_OK(instr_exists(code, block_id, ref1, false));                                                      \
-        REQUIRE_OK(instr_exists(code, block_id, ref2, false));                                                      \
-        REQUIRE_OK(instr_exists(code, block_id, ref3, false));                                                      \
-        REQUIRE_OK(kefir_opt_code_builder_add_instruction(                                                          \
-            mem, code, block_id,                                                                                    \
-            &(struct kefir_opt_operation){.opcode = (_opcode), .parameters.refs = {ref1, ref2, ref3}}, false,       \
-            instr_id_ptr));                                                                                         \
-        return KEFIR_OK;                                                                                            \
-    }
-
-TERNARY_OP(long_double_add, KEFIR_OPT_OPCODE_LONG_DOUBLE_ADD)
-TERNARY_OP(long_double_sub, KEFIR_OPT_OPCODE_LONG_DOUBLE_SUB)
-TERNARY_OP(long_double_mul, KEFIR_OPT_OPCODE_LONG_DOUBLE_MUL)
-TERNARY_OP(long_double_div, KEFIR_OPT_OPCODE_LONG_DOUBLE_DIV)
-
-#undef TERNARY_OP
 
 #define LOAD_OP(_id, _opcode)                                                                                        \
     kefir_result_t kefir_opt_code_builder_##_id(struct kefir_mem *mem, struct kefir_opt_code_container *code,        \

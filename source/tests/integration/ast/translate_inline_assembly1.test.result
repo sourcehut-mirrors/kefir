@@ -216,11 +216,11 @@
                     "arg": 16
                 },
                 {
-                    "opcode": "setldh",
+                    "opcode": "ldinith",
                     "arg": 0
                 },
                 {
-                    "opcode": "setldl",
+                    "opcode": "ldinitl",
                     "arg": 4616358503040784794
                 },
                 {
@@ -282,11 +282,11 @@
                     "arg": 16
                 },
                 {
-                    "opcode": "setldh",
+                    "opcode": "ldinith",
                     "arg": 0
                 },
                 {
-                    "opcode": "setldl",
+                    "opcode": "ldinitl",
                     "arg": 4616358503040784794
                 },
                 {

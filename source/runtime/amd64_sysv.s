@@ -168,8 +168,8 @@ declare_opcode ldcf64
 declare_opcode alloca
 declare_opcode pushscope
 declare_opcode popscope
-declare_opcode setldh
-declare_opcode setldl
+declare_opcode ldinith
+declare_opcode ldinitl
 # Runtime
 declare_runtime __kefirrt_preserve_state
 declare_runtime __kefirrt_generic_prologue
@@ -1146,13 +1146,13 @@ define_opcode popscope
 __kefirrt_popscope_end:
     end_opcode
 
-define_opcode setldh
+define_opcode ldinith
     mov rax, [INSTR_ARG_PTR]
     mov rdi, [rsp]
     mov [rdi + 8], ax
     end_opcode
 
-define_opcode setldl
+define_opcode ldinitl
     mov rax, [INSTR_ARG_PTR]
     mov rdi, [rsp]
     mov [rdi], rax

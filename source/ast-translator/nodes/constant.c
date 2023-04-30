@@ -99,9 +99,9 @@ kefir_result_t kefir_ast_translate_constant_node(struct kefir_mem *mem, struct k
         case KEFIR_AST_LONG_DOUBLE_CONSTANT:
             REQUIRE_OK(kefir_ast_translator_fetch_temporary(mem, context, builder,
                                                             &node->base.properties.expression_props.temp_identifier));
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_SETLDH,
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_LDINITH,
                                                        kefir_ir_long_double_upper_half(node->value.long_double)));
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_SETLDL,
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_LDINITL,
                                                        kefir_ir_long_double_lower_half(node->value.long_double)));
             break;
 
