@@ -1,0 +1,39 @@
+{
+    "functions": [
+        {
+            "id": 1,
+            "name": "test",
+            "code": {
+                "entry_point": 0,
+                "blocks": [
+                    {
+                        "id": 0,
+                        "control_flow": 0,
+                        "phi": [],
+                        "calls": [],
+                        "code": [
+                            {
+                                "id": 0,
+                                "opcode": "inline_assembly",
+                                "inline_asm_id": 0,
+                                "control_next": 1
+                            },
+                            {
+                                "id": 1,
+                                "opcode": "inline_assembly",
+                                "inline_asm_id": 1,
+                                "control_next": 2
+                            },
+                            {
+                                "id": 2,
+                                "opcode": "return",
+                                "arg": null,
+                                "control_next": null
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    ]
+}

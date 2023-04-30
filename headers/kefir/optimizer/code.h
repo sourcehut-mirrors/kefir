@@ -97,6 +97,10 @@ typedef union kefir_opt_operation_parameters {
         kefir_opt_call_id_t call_ref;
         kefir_opt_instruction_ref_t indirect_ref;
     } function_call;
+
+    struct {
+        kefir_id_t inline_asm_id;
+    } inline_assembly;
 } kefir_opt_operation_parameters_t;
 
 typedef struct kefir_opt_operation {

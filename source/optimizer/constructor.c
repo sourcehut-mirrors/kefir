@@ -294,6 +294,34 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             }
         } break;
 
+        case KEFIR_IROPCODE_IADD1:
+            REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
+            REQUIRE_OK(kefir_opt_code_builder_int_constant(mem, code, current_block_id, instr->arg.i64, &instr_ref3));
+            REQUIRE_OK(kefir_opt_code_builder_int_add(mem, code, current_block_id, instr_ref2, instr_ref3, &instr_ref));
+            REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
+            break;
+
+        case KEFIR_IROPCODE_IADDX:
+            REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
+            REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref3));
+            REQUIRE_OK(kefir_opt_code_builder_int_constant(mem, code, current_block_id, instr->arg.i64, &instr_ref4));
+            REQUIRE_OK(kefir_opt_code_builder_int_mul(mem, code, current_block_id, instr_ref2, instr_ref4, &instr_ref));
+            REQUIRE_OK(kefir_opt_code_builder_int_add(mem, code, current_block_id, instr_ref, instr_ref3, &instr_ref2));
+            REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref2));
+            break;
+
+        case KEFIR_IROPCODE_RESERVED:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected IR opcode");
+
+        case KEFIR_IROPCODE_NOP:
+            break;
+
+        case KEFIR_IROPCODE_INLINEASM:
+            REQUIRE_OK(kefir_opt_code_builder_inline_assembly(mem, code, current_block_id, instr->arg.u64, &instr_ref));
+            REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));
+            REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
+            break;
+
 #define UNARY_OP(_id, _opcode)                                                                         \
     case _opcode:                                                                                      \
         REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));                          \
@@ -449,26 +477,6 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             STORE_OP(long_double_store, KEFIR_IROPCODE_STORELD)
 
 #undef STORE_OP
-
-        case KEFIR_IROPCODE_IADD1:
-            REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
-            REQUIRE_OK(kefir_opt_code_builder_int_constant(mem, code, current_block_id, instr->arg.i64, &instr_ref3));
-            REQUIRE_OK(kefir_opt_code_builder_int_add(mem, code, current_block_id, instr_ref2, instr_ref3, &instr_ref));
-            REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
-            break;
-
-        case KEFIR_IROPCODE_IADDX:
-            REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
-            REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref3));
-            REQUIRE_OK(kefir_opt_code_builder_int_constant(mem, code, current_block_id, instr->arg.i64, &instr_ref4));
-            REQUIRE_OK(kefir_opt_code_builder_int_mul(mem, code, current_block_id, instr_ref2, instr_ref4, &instr_ref));
-            REQUIRE_OK(kefir_opt_code_builder_int_add(mem, code, current_block_id, instr_ref, instr_ref3, &instr_ref2));
-            REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref2));
-            break;
-
-        default:
-            // TODO Implement complete translation
-            break;
     }
     return KEFIR_OK;
 }

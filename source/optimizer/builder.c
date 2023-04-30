@@ -212,6 +212,20 @@ kefir_result_t kefir_opt_code_builder_phi(struct kefir_mem *mem, struct kefir_op
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_opt_code_builder_inline_assembly(struct kefir_mem *mem, struct kefir_opt_code_container *code,
+                                                      kefir_opt_block_id_t block_id, kefir_id_t identifier,
+                                                      kefir_opt_instruction_ref_t *instr_id_ptr) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
+
+    REQUIRE_OK(kefir_opt_code_builder_add_instruction(
+        mem, code, block_id,
+        &(struct kefir_opt_operation){.opcode = KEFIR_OPT_OPCODE_INLINE_ASSEMBLY,
+                                      .parameters.inline_assembly.inline_asm_id = identifier},
+        false, instr_id_ptr));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_opt_code_builder_invoke(struct kefir_mem *mem, struct kefir_opt_code_container *code,
                                              kefir_opt_block_id_t block_id, kefir_opt_call_id_t call_ref,
                                              kefir_opt_instruction_ref_t *instr_id_ptr) {
