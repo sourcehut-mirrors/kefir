@@ -423,6 +423,54 @@ kefir_result_t kefir_opt_code_builder_bits_insert(struct kefir_mem *mem, struct 
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_opt_code_builder_vararg_get(struct kefir_mem *mem, struct kefir_opt_code_container *code,
+                                                 kefir_opt_block_id_t block_id, kefir_opt_instruction_ref_t source_ref,
+                                                 kefir_id_t type_id, kefir_size_t type_index,
+                                                 kefir_opt_instruction_ref_t *instr_id_ptr) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
+
+    REQUIRE_OK(instr_exists(code, block_id, source_ref, false));
+    REQUIRE_OK(kefir_opt_code_builder_add_instruction(
+        mem, code, block_id,
+        &(struct kefir_opt_operation){
+            .opcode = KEFIR_OPT_OPCODE_VARARG_GET,
+            .parameters.typed_ref = {.ref = source_ref, .type_id = type_id, .type_index = type_index}},
+        false, instr_id_ptr));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_code_builder_stack_alloc(struct kefir_mem *mem, struct kefir_opt_code_container *code,
+                                                  kefir_opt_block_id_t block_id, kefir_opt_instruction_ref_t size_ref,
+                                                  kefir_opt_instruction_ref_t alignment_ref, kefir_bool_t within_scope,
+                                                  kefir_opt_instruction_ref_t *instr_id_ptr) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
+
+    REQUIRE_OK(instr_exists(code, block_id, size_ref, false));
+    REQUIRE_OK(instr_exists(code, block_id, alignment_ref, false));
+    REQUIRE_OK(kefir_opt_code_builder_add_instruction(
+        mem, code, block_id,
+        &(struct kefir_opt_operation){.opcode = KEFIR_OPT_OPCODE_STACK_ALLOC,
+                                      .parameters.stack_allocation = {.size_ref = size_ref,
+                                                                      .alignment_ref = alignment_ref,
+                                                                      .within_scope = within_scope}},
+        false, instr_id_ptr));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_code_builder_scope_push(struct kefir_mem *mem, struct kefir_opt_code_container *code,
+                                                 kefir_opt_block_id_t block_id,
+                                                 kefir_opt_instruction_ref_t *instr_id_ptr) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
+
+    REQUIRE_OK(kefir_opt_code_builder_add_instruction(
+        mem, code, block_id, &(struct kefir_opt_operation){.opcode = KEFIR_OPT_OPCODE_SCOPE_PUSH}, false,
+        instr_id_ptr));
+    return KEFIR_OK;
+}
+
 #define UNARY_OP(_id, _opcode)                                                                                         \
     kefir_result_t kefir_opt_code_builder_##_id(struct kefir_mem *mem, struct kefir_opt_code_container *code,          \
                                                 kefir_opt_block_id_t block_id, kefir_opt_instruction_ref_t ref1,       \
@@ -444,6 +492,10 @@ UNARY_OP(int64_zero_extend_1bit, KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_1BIT)
 UNARY_OP(int64_sign_extend_8bits, KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_8BITS)
 UNARY_OP(int64_sign_extend_16bits, KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_16BITS)
 UNARY_OP(int64_sign_extend_32bits, KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_32BITS)
+
+UNARY_OP(vararg_start, KEFIR_OPT_OPCODE_VARARG_START)
+UNARY_OP(vararg_end, KEFIR_OPT_OPCODE_VARARG_END)
+UNARY_OP(scope_pop, KEFIR_OPT_OPCODE_SCOPE_POP)
 
 #undef UNARY_OP
 
@@ -482,6 +534,8 @@ BINARY_OP(int_above, KEFIR_OPT_OPCODE_INT_ABOVE)
 BINARY_OP(int_below, KEFIR_OPT_OPCODE_INT_BELOW)
 BINARY_OP(bool_and, KEFIR_OPT_OPCODE_BOOL_AND)
 BINARY_OP(bool_or, KEFIR_OPT_OPCODE_BOOL_OR)
+
+BINARY_OP(vararg_copy, KEFIR_OPT_OPCODE_VARARG_COPY)
 
 #undef BINARY_OP
 

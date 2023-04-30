@@ -116,6 +116,31 @@ static kefir_result_t format_operation_bitfield(struct kefir_json_output *json,
     return KEFIR_OK;
 }
 
+static kefir_result_t format_operation_typed_ref1(struct kefir_json_output *json,
+                                                  const struct kefir_opt_operation *oper) {
+    REQUIRE_OK(kefir_json_output_object_key(json, "ref"));
+    REQUIRE_OK(id_format(json, oper->parameters.typed_ref.ref));
+    REQUIRE_OK(kefir_json_output_object_key(json, "type"));
+    REQUIRE_OK(kefir_json_output_object_begin(json));
+    REQUIRE_OK(kefir_json_output_object_key(json, "id"));
+    REQUIRE_OK(id_format(json, oper->parameters.typed_ref.type_id));
+    REQUIRE_OK(kefir_json_output_object_key(json, "index"));
+    REQUIRE_OK(kefir_json_output_uinteger(json, oper->parameters.typed_ref.type_index));
+    REQUIRE_OK(kefir_json_output_object_end(json));
+    return KEFIR_OK;
+}
+
+static kefir_result_t format_operation_stack_alloc(struct kefir_json_output *json,
+                                                   const struct kefir_opt_operation *oper) {
+    REQUIRE_OK(kefir_json_output_object_key(json, "size_ref"));
+    REQUIRE_OK(id_format(json, oper->parameters.stack_allocation.size_ref));
+    REQUIRE_OK(kefir_json_output_object_key(json, "alignment_ref"));
+    REQUIRE_OK(id_format(json, oper->parameters.stack_allocation.alignment_ref));
+    REQUIRE_OK(kefir_json_output_object_key(json, "within_scope"));
+    REQUIRE_OK(kefir_json_output_boolean(json, oper->parameters.stack_allocation.within_scope));
+    return KEFIR_OK;
+}
+
 static kefir_result_t format_operation_imm_int(struct kefir_json_output *json, const struct kefir_opt_operation *oper) {
     REQUIRE_OK(kefir_json_output_object_key(json, "value"));
     REQUIRE_OK(kefir_json_output_integer(json, oper->parameters.imm.integer));
@@ -140,6 +165,12 @@ static kefir_result_t format_operation_imm_float64(struct kefir_json_output *jso
                                                    const struct kefir_opt_operation *oper) {
     REQUIRE_OK(kefir_json_output_object_key(json, "value"));
     REQUIRE_OK(kefir_json_output_float(json, oper->parameters.imm.float64));
+    return KEFIR_OK;
+}
+
+static kefir_result_t format_operation_none(struct kefir_json_output *json, const struct kefir_opt_operation *oper) {
+    UNUSED(json);
+    UNUSED(oper);
     return KEFIR_OK;
 }
 

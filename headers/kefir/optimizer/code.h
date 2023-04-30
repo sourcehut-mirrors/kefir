@@ -74,6 +74,18 @@ typedef union kefir_opt_operation_parameters {
         kefir_opt_instruction_ref_t base_ref;
         kefir_opt_instruction_ref_t value_ref;
     } bitfield;
+
+    struct {
+        kefir_opt_instruction_ref_t ref;
+        kefir_id_t type_id;
+        kefir_size_t type_index;
+    } typed_ref;
+
+    struct {
+        kefir_opt_instruction_ref_t size_ref;
+        kefir_opt_instruction_ref_t alignment_ref;
+        kefir_bool_t within_scope;
+    } stack_allocation;
 } kefir_opt_operation_parameters_t;
 
 typedef struct kefir_opt_operation {

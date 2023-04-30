@@ -89,7 +89,15 @@
     OPCODE(COPY_MEMORY, "copy_memory", mem_op) SEPARATOR \
     OPCODE(BITS_EXTRACT_SIGNED, "bits_extract_signed", bitfield) SEPARATOR \
     OPCODE(BITS_EXTRACT_UNSIGNED, "bits_extract_unsigned", bitfield) SEPARATOR \
-    OPCODE(BITS_INSERT, "bits_insert", bitfield)
+    OPCODE(BITS_INSERT, "bits_insert", bitfield) SEPARATOR \
+    /* Built-ins */ \
+    OPCODE(VARARG_START, "vararg_start", ref1) SEPARATOR \
+    OPCODE(VARARG_COPY, "vararg_copy", ref2) SEPARATOR \
+    OPCODE(VARARG_GET, "vararg_get", typed_ref1) SEPARATOR \
+    OPCODE(VARARG_END, "vararg_end", ref1) SEPARATOR \
+    OPCODE(STACK_ALLOC, "stack_alloc", stack_alloc) SEPARATOR \
+    OPCODE(SCOPE_PUSH, "scope_push", none) SEPARATOR \
+    OPCODE(SCOPE_POP, "scope_pop", ref1)
 // clang-format on
 
 #endif

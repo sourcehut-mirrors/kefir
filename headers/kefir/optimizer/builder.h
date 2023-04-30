@@ -92,6 +92,16 @@ kefir_result_t kefir_opt_code_builder_bits_insert(struct kefir_mem *, struct kef
                                                   kefir_opt_instruction_ref_t, kefir_size_t, kefir_size_t,
                                                   kefir_opt_instruction_ref_t *);
 
+kefir_result_t kefir_opt_code_builder_vararg_get(struct kefir_mem *, struct kefir_opt_code_container *,
+                                                 kefir_opt_block_id_t, kefir_opt_instruction_ref_t, kefir_id_t,
+                                                 kefir_size_t, kefir_opt_instruction_ref_t *);
+kefir_result_t kefir_opt_code_builder_stack_alloc(struct kefir_mem *, struct kefir_opt_code_container *,
+                                                  kefir_opt_block_id_t, kefir_opt_instruction_ref_t,
+                                                  kefir_opt_instruction_ref_t, kefir_bool_t,
+                                                  kefir_opt_instruction_ref_t *);
+kefir_result_t kefir_opt_code_builder_scope_push(struct kefir_mem *, struct kefir_opt_code_container *,
+                                                 kefir_opt_block_id_t, kefir_opt_instruction_ref_t *);
+
 #define UNARY_OP(_id)                                                                                  \
     kefir_result_t kefir_opt_code_builder_##_id(struct kefir_mem *, struct kefir_opt_code_container *, \
                                                 kefir_opt_block_id_t, kefir_opt_instruction_ref_t,     \
@@ -105,6 +115,10 @@ UNARY_OP(int64_zero_extend_1bit);
 UNARY_OP(int64_sign_extend_8bits);
 UNARY_OP(int64_sign_extend_16bits);
 UNARY_OP(int64_sign_extend_32bits);
+
+UNARY_OP(vararg_start);
+UNARY_OP(vararg_end);
+UNARY_OP(scope_pop);
 
 #undef UNARY_OP
 
@@ -133,6 +147,8 @@ BINARY_OP(int_above);
 BINARY_OP(int_below);
 BINARY_OP(bool_and);
 BINARY_OP(bool_or);
+
+BINARY_OP(vararg_copy);
 
 #undef BINARY_OP
 

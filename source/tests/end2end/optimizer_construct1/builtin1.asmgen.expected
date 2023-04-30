@@ -1,0 +1,242 @@
+{
+    "functions": [
+        {
+            "id": 2,
+            "name": "test",
+            "code": {
+                "entry_point": 0,
+                "blocks": [
+                    {
+                        "id": 0,
+                        "control_flow": 2,
+                        "phi": [],
+                        "code": [
+                            {
+                                "id": 0,
+                                "opcode": "get_argument",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 1,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 2,
+                                "opcode": "int32_store",
+                                "location": 1,
+                                "value": 0,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": 22
+                            },
+                            {
+                                "id": 3,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 4,
+                                "opcode": "int_const",
+                                "value": 8,
+                                "control_next": null
+                            },
+                            {
+                                "id": 5,
+                                "opcode": "int_add",
+                                "args": [
+                                    3,
+                                    4
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 6,
+                                "opcode": "vararg_start",
+                                "arg": 5,
+                                "control_next": null
+                            },
+                            {
+                                "id": 7,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 8,
+                                "opcode": "int_const",
+                                "value": 32,
+                                "control_next": null
+                            },
+                            {
+                                "id": 9,
+                                "opcode": "int_add",
+                                "args": [
+                                    7,
+                                    8
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 10,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 11,
+                                "opcode": "int_const",
+                                "value": 8,
+                                "control_next": null
+                            },
+                            {
+                                "id": 12,
+                                "opcode": "int_add",
+                                "args": [
+                                    10,
+                                    11
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 13,
+                                "opcode": "vararg_copy",
+                                "args": [
+                                    9,
+                                    12
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 14,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 15,
+                                "opcode": "int_const",
+                                "value": 32,
+                                "control_next": null
+                            },
+                            {
+                                "id": 16,
+                                "opcode": "int_add",
+                                "args": [
+                                    14,
+                                    15
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 17,
+                                "opcode": "vararg_get",
+                                "ref": 16,
+                                "type": {
+                                    "id": 11,
+                                    "index": 0
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 18,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 19,
+                                "opcode": "int_const",
+                                "value": 8,
+                                "control_next": null
+                            },
+                            {
+                                "id": 20,
+                                "opcode": "int_add",
+                                "args": [
+                                    18,
+                                    19
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 21,
+                                "opcode": "vararg_end",
+                                "arg": 20,
+                                "control_next": null
+                            },
+                            {
+                                "id": 22,
+                                "opcode": "return",
+                                "arg": null,
+                                "control_next": null
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "id": 3,
+            "name": "test2",
+            "code": {
+                "entry_point": 0,
+                "blocks": [
+                    {
+                        "id": 0,
+                        "control_flow": 4,
+                        "phi": [],
+                        "code": [
+                            {
+                                "id": 0,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 1,
+                                "opcode": "int_const",
+                                "value": 100,
+                                "control_next": null
+                            },
+                            {
+                                "id": 2,
+                                "opcode": "int_const",
+                                "value": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 3,
+                                "opcode": "stack_alloc",
+                                "size_ref": 1,
+                                "alignment_ref": 2,
+                                "within_scope": true,
+                                "control_next": null
+                            },
+                            {
+                                "id": 4,
+                                "opcode": "int64_store",
+                                "location": 0,
+                                "value": 3,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": 5
+                            },
+                            {
+                                "id": 5,
+                                "opcode": "return",
+                                "arg": null,
+                                "control_next": null
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    ]
+}
