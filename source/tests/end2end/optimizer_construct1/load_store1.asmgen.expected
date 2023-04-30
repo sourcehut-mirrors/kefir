@@ -10,6 +10,7 @@
                         "id": 0,
                         "control_flow": 8,
                         "phi": [],
+                        "calls": [],
                         "code": [
                             {
                                 "id": 0,
@@ -92,6 +93,7 @@
                         "id": 0,
                         "control_flow": 8,
                         "phi": [],
+                        "calls": [],
                         "code": [
                             {
                                 "id": 0,
@@ -174,6 +176,7 @@
                         "id": 0,
                         "control_flow": 4,
                         "phi": [],
+                        "calls": [],
                         "code": [
                             {
                                 "id": 0,
@@ -429,6 +432,7 @@
                         "id": 0,
                         "control_flow": 6,
                         "phi": [],
+                        "calls": [],
                         "code": [
                             {
                                 "id": 0,
@@ -664,6 +668,7 @@
                         "id": 0,
                         "control_flow": 5,
                         "phi": [],
+                        "calls": [],
                         "code": [
                             {
                                 "id": 0,

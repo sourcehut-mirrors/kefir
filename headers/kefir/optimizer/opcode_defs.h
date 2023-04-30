@@ -33,6 +33,8 @@
     OPCODE(IJUMP, "indirect_jump", ref1) SEPARATOR \
     OPCODE(BRANCH, "branch", branch) SEPARATOR \
     OPCODE(RETURN, "return", ref1) SEPARATOR \
+    OPCODE(INVOKE, "invoke", call_ref) SEPARATOR \
+    OPCODE(INVOKE_VIRTUAL, "invoke_virtual", call_ref) SEPARATOR \
     /* Constants */ \
     OPCODE(INT_CONST, "int_const", imm_int) SEPARATOR \
     OPCODE(UINT_CONST, "uint_const", imm_uint) SEPARATOR \

@@ -225,6 +225,54 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
             break;
 
+        case KEFIR_IROPCODE_INVOKE: {
+            const struct kefir_ir_function_decl *ir_decl =
+                kefir_ir_module_get_declaration(module->ir_module, (kefir_id_t) instr->arg.u64);
+            REQUIRE(ir_decl != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Failed to obtain IR function declaration"));
+            kefir_size_t num_of_params = kefir_ir_type_children(ir_decl->params);
+            kefir_bool_t has_return = kefir_ir_type_children(ir_decl->result) > 0;
+
+            kefir_opt_call_id_t call_ref;
+            REQUIRE_OK(
+                kefir_opt_code_container_new_call(mem, code, current_block_id, ir_decl->id, num_of_params, &call_ref));
+            for (kefir_size_t i = 0; i < num_of_params; i++) {
+                REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_container_call_set_argument(mem, code, call_ref, num_of_params - i - 1, instr_ref));
+            }
+
+            REQUIRE_OK(kefir_opt_code_builder_invoke(mem, code, current_block_id, call_ref, &instr_ref));
+            REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));
+            if (has_return) {
+                REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
+            }
+        } break;
+
+        case KEFIR_IROPCODE_INVOKEV: {
+            const struct kefir_ir_function_decl *ir_decl =
+                kefir_ir_module_get_declaration(module->ir_module, (kefir_id_t) instr->arg.u64);
+            REQUIRE(ir_decl != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Failed to obtain IR function declaration"));
+            kefir_size_t num_of_params = kefir_ir_type_children(ir_decl->params);
+            kefir_bool_t has_return = kefir_ir_type_children(ir_decl->result) > 0;
+
+            kefir_opt_call_id_t call_ref;
+            REQUIRE_OK(
+                kefir_opt_code_container_new_call(mem, code, current_block_id, ir_decl->id, num_of_params, &call_ref));
+            for (kefir_size_t i = 0; i < num_of_params; i++) {
+                REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_container_call_set_argument(mem, code, call_ref, num_of_params - i - 1, instr_ref));
+            }
+            REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
+
+            REQUIRE_OK(
+                kefir_opt_code_builder_invoke_virtual(mem, code, current_block_id, call_ref, instr_ref2, &instr_ref));
+            REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));
+            if (has_return) {
+                REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
+            }
+        } break;
+
 #define UNARY_OP(_id, _opcode)                                                                         \
     case _opcode:                                                                                      \
         REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));                          \

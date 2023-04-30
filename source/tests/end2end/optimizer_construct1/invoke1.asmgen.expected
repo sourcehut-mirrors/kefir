@@ -1,0 +1,400 @@
+{
+    "functions": [
+        {
+            "id": 6,
+            "name": "main",
+            "code": {
+                "entry_point": 0,
+                "blocks": [
+                    {
+                        "id": 0,
+                        "control_flow": 0,
+                        "phi": [],
+                        "calls": [
+                            {
+                                "id": 0,
+                                "function_declaration_id": 7,
+                                "arguments": []
+                            },
+                            {
+                                "id": 1,
+                                "function_declaration_id": 8,
+                                "arguments": [
+                                    1
+                                ]
+                            },
+                            {
+                                "id": 2,
+                                "function_declaration_id": 9,
+                                "arguments": [
+                                    3,
+                                    4,
+                                    5,
+                                    6,
+                                    7,
+                                    8
+                                ]
+                            },
+                            {
+                                "id": 3,
+                                "function_declaration_id": 10,
+                                "arguments": []
+                            },
+                            {
+                                "id": 4,
+                                "function_declaration_id": 11,
+                                "arguments": [
+                                    12,
+                                    19
+                                ]
+                            },
+                            {
+                                "id": 5,
+                                "function_declaration_id": 13,
+                                "arguments": []
+                            },
+                            {
+                                "id": 6,
+                                "function_declaration_id": 14,
+                                "arguments": [
+                                    25,
+                                    26,
+                                    27
+                                ]
+                            },
+                            {
+                                "id": 7,
+                                "function_declaration_id": 15,
+                                "arguments": [
+                                    29,
+                                    30
+                                ]
+                            },
+                            {
+                                "id": 8,
+                                "function_declaration_id": 16,
+                                "arguments": []
+                            },
+                            {
+                                "id": 9,
+                                "function_declaration_id": 12,
+                                "arguments": [
+                                    22,
+                                    24,
+                                    31,
+                                    33
+                                ]
+                            },
+                            {
+                                "id": 10,
+                                "function_declaration_id": 17,
+                                "arguments": [
+                                    36
+                                ]
+                            },
+                            {
+                                "id": 11,
+                                "function_declaration_id": 18,
+                                "arguments": [
+                                    39,
+                                    40,
+                                    41
+                                ]
+                            }
+                        ],
+                        "code": [
+                            {
+                                "id": 0,
+                                "opcode": "invoke",
+                                "call_ref": 0,
+                                "indirect_ref": null,
+                                "control_next": 2
+                            },
+                            {
+                                "id": 1,
+                                "opcode": "int_const",
+                                "value": 1,
+                                "control_next": null
+                            },
+                            {
+                                "id": 2,
+                                "opcode": "invoke",
+                                "call_ref": 1,
+                                "indirect_ref": null,
+                                "control_next": 9
+                            },
+                            {
+                                "id": 3,
+                                "opcode": "int_const",
+                                "value": 1,
+                                "control_next": null
+                            },
+                            {
+                                "id": 4,
+                                "opcode": "int_const",
+                                "value": 2,
+                                "control_next": null
+                            },
+                            {
+                                "id": 5,
+                                "opcode": "int_const",
+                                "value": 3,
+                                "control_next": null
+                            },
+                            {
+                                "id": 6,
+                                "opcode": "int_const",
+                                "value": 4,
+                                "control_next": null
+                            },
+                            {
+                                "id": 7,
+                                "opcode": "int_const",
+                                "value": 5,
+                                "control_next": null
+                            },
+                            {
+                                "id": 8,
+                                "opcode": "int_const",
+                                "value": 7,
+                                "control_next": null
+                            },
+                            {
+                                "id": 9,
+                                "opcode": "invoke",
+                                "call_ref": 2,
+                                "indirect_ref": null,
+                                "control_next": 10
+                            },
+                            {
+                                "id": 10,
+                                "opcode": "invoke",
+                                "call_ref": 3,
+                                "indirect_ref": null,
+                                "control_next": 20
+                            },
+                            {
+                                "id": 11,
+                                "opcode": "int64_sign_extend_32bits",
+                                "arg": 10,
+                                "control_next": null
+                            },
+                            {
+                                "id": 12,
+                                "opcode": "string_ref",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 13,
+                                "opcode": "int_const",
+                                "value": 2,
+                                "control_next": null
+                            },
+                            {
+                                "id": 14,
+                                "opcode": "int_const",
+                                "value": 2,
+                                "control_next": null
+                            },
+                            {
+                                "id": 15,
+                                "opcode": "int_const",
+                                "value": 2,
+                                "control_next": null
+                            },
+                            {
+                                "id": 16,
+                                "opcode": "int_mul",
+                                "args": [
+                                    14,
+                                    15
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 17,
+                                "opcode": "int64_sign_extend_32bits",
+                                "arg": 16,
+                                "control_next": null
+                            },
+                            {
+                                "id": 18,
+                                "opcode": "int_add",
+                                "args": [
+                                    13,
+                                    17
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 19,
+                                "opcode": "int64_sign_extend_32bits",
+                                "arg": 18,
+                                "control_next": null
+                            },
+                            {
+                                "id": 20,
+                                "opcode": "invoke",
+                                "call_ref": 4,
+                                "indirect_ref": null,
+                                "control_next": 23
+                            },
+                            {
+                                "id": 21,
+                                "opcode": "int64_sign_extend_32bits",
+                                "arg": 20,
+                                "control_next": null
+                            },
+                            {
+                                "id": 22,
+                                "opcode": "int_const",
+                                "value": 5,
+                                "control_next": null
+                            },
+                            {
+                                "id": 23,
+                                "opcode": "invoke",
+                                "call_ref": 5,
+                                "indirect_ref": null,
+                                "control_next": 28
+                            },
+                            {
+                                "id": 24,
+                                "opcode": "int64_sign_extend_32bits",
+                                "arg": 23,
+                                "control_next": null
+                            },
+                            {
+                                "id": 25,
+                                "opcode": "int_const",
+                                "value": 1,
+                                "control_next": null
+                            },
+                            {
+                                "id": 26,
+                                "opcode": "int_const",
+                                "value": 2,
+                                "control_next": null
+                            },
+                            {
+                                "id": 27,
+                                "opcode": "int_const",
+                                "value": 3,
+                                "control_next": null
+                            },
+                            {
+                                "id": 28,
+                                "opcode": "invoke",
+                                "call_ref": 6,
+                                "indirect_ref": null,
+                                "control_next": 31
+                            },
+                            {
+                                "id": 29,
+                                "opcode": "int_const",
+                                "value": 1,
+                                "control_next": null
+                            },
+                            {
+                                "id": 30,
+                                "opcode": "string_ref",
+                                "arg": 1,
+                                "control_next": null
+                            },
+                            {
+                                "id": 31,
+                                "opcode": "invoke",
+                                "call_ref": 7,
+                                "indirect_ref": null,
+                                "control_next": 32
+                            },
+                            {
+                                "id": 32,
+                                "opcode": "invoke",
+                                "call_ref": 8,
+                                "indirect_ref": null,
+                                "control_next": 34
+                            },
+                            {
+                                "id": 33,
+                                "opcode": "float32_to_float64",
+                                "arg": 32,
+                                "control_next": null
+                            },
+                            {
+                                "id": 34,
+                                "opcode": "invoke",
+                                "call_ref": 9,
+                                "indirect_ref": null,
+                                "control_next": 37
+                            },
+                            {
+                                "id": 35,
+                                "opcode": "get_global",
+                                "arg": 1,
+                                "control_next": null
+                            },
+                            {
+                                "id": 36,
+                                "opcode": "string_ref",
+                                "arg": 2,
+                                "control_next": null
+                            },
+                            {
+                                "id": 37,
+                                "opcode": "invoke_virtual",
+                                "call_ref": 10,
+                                "indirect_ref": 35,
+                                "control_next": 42
+                            },
+                            {
+                                "id": 38,
+                                "opcode": "get_global",
+                                "arg": 2,
+                                "control_next": null
+                            },
+                            {
+                                "id": 39,
+                                "opcode": "int_const",
+                                "value": 2,
+                                "control_next": null
+                            },
+                            {
+                                "id": 40,
+                                "opcode": "int_const",
+                                "value": 3,
+                                "control_next": null
+                            },
+                            {
+                                "id": 41,
+                                "opcode": "int_const",
+                                "value": 4,
+                                "control_next": null
+                            },
+                            {
+                                "id": 42,
+                                "opcode": "invoke_virtual",
+                                "call_ref": 11,
+                                "indirect_ref": 38,
+                                "control_next": 44
+                            },
+                            {
+                                "id": 43,
+                                "opcode": "int64_sign_extend_32bits",
+                                "arg": 42,
+                                "control_next": null
+                            },
+                            {
+                                "id": 44,
+                                "opcode": "return",
+                                "arg": null,
+                                "control_next": null
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    ]
+}

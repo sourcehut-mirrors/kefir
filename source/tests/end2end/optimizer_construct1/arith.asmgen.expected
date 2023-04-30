@@ -10,6 +10,7 @@
                         "id": 0,
                         "control_flow": 7,
                         "phi": [],
+                        "calls": [],
                         "code": [
                             {
                                 "id": 0,
@@ -80,6 +81,7 @@
                         "id": 0,
                         "control_flow": 5,
                         "phi": [],
+                        "calls": [],
                         "code": [
                             {
                                 "id": 0,
@@ -128,6 +130,7 @@
                         "id": 1,
                         "control_flow": 20,
                         "phi": [],
+                        "calls": [],
                         "code": [
                             {
                                 "id": 12,
@@ -197,6 +200,7 @@
                         "id": 2,
                         "control_flow": 10,
                         "phi": [],
+                        "calls": [],
                         "code": [
                             {
                                 "id": 6,
@@ -237,6 +241,7 @@
                         "id": 3,
                         "control_flow": 11,
                         "phi": [],
+                        "calls": [],
                         "code": [
                             {
                                 "id": 11,
@@ -250,6 +255,7 @@
                         "id": 4,
                         "control_flow": 39,
                         "phi": [],
+                        "calls": [],
                         "code": [
                             {
                                 "id": 29,
@@ -335,6 +341,7 @@
                         "id": 5,
                         "control_flow": 28,
                         "phi": [],
+                        "calls": [],
                         "code": [
                             {
                                 "id": 21,
@@ -405,6 +412,7 @@
                         "id": 0,
                         "control_flow": 8,
                         "phi": [],
+                        "calls": [],
                         "code": [
                             {
                                 "id": 0,
@@ -474,6 +482,7 @@
                         "id": 1,
                         "control_flow": 19,
                         "phi": [],
+                        "calls": [],
                         "code": [
                             {
                                 "id": 19,
@@ -487,6 +496,7 @@
                         "id": 2,
                         "control_flow": 17,
                         "phi": [],
+                        "calls": [],
                         "code": [
                             {
                                 "id": 9,
@@ -551,6 +561,7 @@
                         "id": 3,
                         "control_flow": 18,
                         "phi": [],
+                        "calls": [],
                         "code": [
                             {
                                 "id": 18,

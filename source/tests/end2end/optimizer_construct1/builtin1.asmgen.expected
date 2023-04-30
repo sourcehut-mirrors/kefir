@@ -10,6 +10,7 @@
                         "id": 0,
                         "control_flow": 2,
                         "phi": [],
+                        "calls": [],
                         "code": [
                             {
                                 "id": 0,
@@ -190,6 +191,7 @@
                         "id": 0,
                         "control_flow": 4,
                         "phi": [],
+                        "calls": [],
                         "code": [
                             {
                                 "id": 0,
