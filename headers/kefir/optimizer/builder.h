@@ -120,6 +120,18 @@ UNARY_OP(vararg_start);
 UNARY_OP(vararg_end);
 UNARY_OP(scope_pop);
 
+UNARY_OP(float32_neg);
+UNARY_OP(float64_neg);
+
+UNARY_OP(float32_to_int);
+UNARY_OP(float64_to_int);
+UNARY_OP(int_to_float32);
+UNARY_OP(int_to_float64);
+UNARY_OP(uint_to_float32);
+UNARY_OP(uint_to_float64);
+UNARY_OP(float32_to_float64);
+UNARY_OP(float64_to_float32);
+
 #undef UNARY_OP
 
 #define BINARY_OP(_id)                                                                                 \
@@ -149,6 +161,22 @@ BINARY_OP(bool_and);
 BINARY_OP(bool_or);
 
 BINARY_OP(vararg_copy);
+
+BINARY_OP(float32_add);
+BINARY_OP(float32_sub);
+BINARY_OP(float32_mul);
+BINARY_OP(float32_div);
+BINARY_OP(float64_add);
+BINARY_OP(float64_sub);
+BINARY_OP(float64_mul);
+BINARY_OP(float64_div);
+
+BINARY_OP(float32_equals);
+BINARY_OP(float32_greater);
+BINARY_OP(float32_lesser);
+BINARY_OP(float64_equals);
+BINARY_OP(float64_greater);
+BINARY_OP(float64_lesser);
 
 #undef BINARY_OP
 

@@ -1,0 +1,1847 @@
+{
+    "functions": [
+        {
+            "id": 5,
+            "name": "arith1",
+            "code": {
+                "entry_point": 0,
+                "blocks": [
+                    {
+                        "id": 0,
+                        "control_flow": 5,
+                        "phi": [],
+                        "code": [
+                            {
+                                "id": 0,
+                                "opcode": "get_argument",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 1,
+                                "opcode": "get_argument",
+                                "arg": 1,
+                                "control_next": null
+                            },
+                            {
+                                "id": 2,
+                                "opcode": "get_argument",
+                                "arg": 2,
+                                "control_next": null
+                            },
+                            {
+                                "id": 3,
+                                "opcode": "get_argument",
+                                "arg": 3,
+                                "control_next": null
+                            },
+                            {
+                                "id": 4,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 5,
+                                "opcode": "int32_store",
+                                "location": 4,
+                                "value": 3,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": 9
+                            },
+                            {
+                                "id": 6,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 7,
+                                "opcode": "int_const",
+                                "value": 12,
+                                "control_next": null
+                            },
+                            {
+                                "id": 8,
+                                "opcode": "int_add",
+                                "args": [
+                                    6,
+                                    7
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 9,
+                                "opcode": "int32_store",
+                                "location": 8,
+                                "value": 2,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": 13
+                            },
+                            {
+                                "id": 10,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 11,
+                                "opcode": "int_const",
+                                "value": 8,
+                                "control_next": null
+                            },
+                            {
+                                "id": 12,
+                                "opcode": "int_add",
+                                "args": [
+                                    10,
+                                    11
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 13,
+                                "opcode": "int32_store",
+                                "location": 12,
+                                "value": 1,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": 17
+                            },
+                            {
+                                "id": 14,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 15,
+                                "opcode": "int_const",
+                                "value": 4,
+                                "control_next": null
+                            },
+                            {
+                                "id": 16,
+                                "opcode": "int_add",
+                                "args": [
+                                    14,
+                                    15
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 17,
+                                "opcode": "int32_store",
+                                "location": 16,
+                                "value": 0,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": 38
+                            },
+                            {
+                                "id": 18,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 19,
+                                "opcode": "int_const",
+                                "value": 4,
+                                "control_next": null
+                            },
+                            {
+                                "id": 20,
+                                "opcode": "int_add",
+                                "args": [
+                                    18,
+                                    19
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 21,
+                                "opcode": "int32_load_unsigned",
+                                "location": 20,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 22,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 23,
+                                "opcode": "int_const",
+                                "value": 8,
+                                "control_next": null
+                            },
+                            {
+                                "id": 24,
+                                "opcode": "int_add",
+                                "args": [
+                                    22,
+                                    23
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 25,
+                                "opcode": "int32_load_unsigned",
+                                "location": 24,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 26,
+                                "opcode": "float32_add",
+                                "args": [
+                                    21,
+                                    25
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 27,
+                                "opcode": "float32_neg",
+                                "arg": 26,
+                                "control_next": null
+                            },
+                            {
+                                "id": 28,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 29,
+                                "opcode": "int_const",
+                                "value": 12,
+                                "control_next": null
+                            },
+                            {
+                                "id": 30,
+                                "opcode": "int_add",
+                                "args": [
+                                    28,
+                                    29
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 31,
+                                "opcode": "int32_load_unsigned",
+                                "location": 30,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 32,
+                                "opcode": "float32_mul",
+                                "args": [
+                                    27,
+                                    31
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 33,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 34,
+                                "opcode": "int32_load_unsigned",
+                                "location": 33,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 35,
+                                "opcode": "float32_const",
+                                "value": 10.000000,
+                                "control_next": null
+                            },
+                            {
+                                "id": 36,
+                                "opcode": "float32_sub",
+                                "args": [
+                                    34,
+                                    35
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 37,
+                                "opcode": "float32_div",
+                                "args": [
+                                    32,
+                                    36
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 38,
+                                "opcode": "return",
+                                "arg": 37,
+                                "control_next": null
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "id": 6,
+            "name": "arith2",
+            "code": {
+                "entry_point": 0,
+                "blocks": [
+                    {
+                        "id": 0,
+                        "control_flow": 5,
+                        "phi": [],
+                        "code": [
+                            {
+                                "id": 0,
+                                "opcode": "get_argument",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 1,
+                                "opcode": "get_argument",
+                                "arg": 1,
+                                "control_next": null
+                            },
+                            {
+                                "id": 2,
+                                "opcode": "get_argument",
+                                "arg": 2,
+                                "control_next": null
+                            },
+                            {
+                                "id": 3,
+                                "opcode": "get_argument",
+                                "arg": 3,
+                                "control_next": null
+                            },
+                            {
+                                "id": 4,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 5,
+                                "opcode": "int64_store",
+                                "location": 4,
+                                "value": 3,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": 9
+                            },
+                            {
+                                "id": 6,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 7,
+                                "opcode": "int_const",
+                                "value": 24,
+                                "control_next": null
+                            },
+                            {
+                                "id": 8,
+                                "opcode": "int_add",
+                                "args": [
+                                    6,
+                                    7
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 9,
+                                "opcode": "int64_store",
+                                "location": 8,
+                                "value": 2,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": 13
+                            },
+                            {
+                                "id": 10,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 11,
+                                "opcode": "int_const",
+                                "value": 16,
+                                "control_next": null
+                            },
+                            {
+                                "id": 12,
+                                "opcode": "int_add",
+                                "args": [
+                                    10,
+                                    11
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 13,
+                                "opcode": "int64_store",
+                                "location": 12,
+                                "value": 1,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": 17
+                            },
+                            {
+                                "id": 14,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 15,
+                                "opcode": "int_const",
+                                "value": 8,
+                                "control_next": null
+                            },
+                            {
+                                "id": 16,
+                                "opcode": "int_add",
+                                "args": [
+                                    14,
+                                    15
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 17,
+                                "opcode": "int64_store",
+                                "location": 16,
+                                "value": 0,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": 38
+                            },
+                            {
+                                "id": 18,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 19,
+                                "opcode": "int_const",
+                                "value": 8,
+                                "control_next": null
+                            },
+                            {
+                                "id": 20,
+                                "opcode": "int_add",
+                                "args": [
+                                    18,
+                                    19
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 21,
+                                "opcode": "int64_load",
+                                "location": 20,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 22,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 23,
+                                "opcode": "int_const",
+                                "value": 16,
+                                "control_next": null
+                            },
+                            {
+                                "id": 24,
+                                "opcode": "int_add",
+                                "args": [
+                                    22,
+                                    23
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 25,
+                                "opcode": "int64_load",
+                                "location": 24,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 26,
+                                "opcode": "float64_add",
+                                "args": [
+                                    21,
+                                    25
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 27,
+                                "opcode": "float64_neg",
+                                "arg": 26,
+                                "control_next": null
+                            },
+                            {
+                                "id": 28,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 29,
+                                "opcode": "int_const",
+                                "value": 24,
+                                "control_next": null
+                            },
+                            {
+                                "id": 30,
+                                "opcode": "int_add",
+                                "args": [
+                                    28,
+                                    29
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 31,
+                                "opcode": "int64_load",
+                                "location": 30,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 32,
+                                "opcode": "float64_mul",
+                                "args": [
+                                    27,
+                                    31
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 33,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 34,
+                                "opcode": "int64_load",
+                                "location": 33,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 35,
+                                "opcode": "float64_const",
+                                "value": 10.000000,
+                                "control_next": null
+                            },
+                            {
+                                "id": 36,
+                                "opcode": "float64_sub",
+                                "args": [
+                                    34,
+                                    35
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 37,
+                                "opcode": "float64_div",
+                                "args": [
+                                    32,
+                                    36
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 38,
+                                "opcode": "return",
+                                "arg": 37,
+                                "control_next": null
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "id": 7,
+            "name": "comparison1",
+            "code": {
+                "entry_point": 0,
+                "blocks": [
+                    {
+                        "id": 0,
+                        "control_flow": 5,
+                        "phi": [],
+                        "code": [
+                            {
+                                "id": 0,
+                                "opcode": "get_argument",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 1,
+                                "opcode": "get_argument",
+                                "arg": 1,
+                                "control_next": null
+                            },
+                            {
+                                "id": 2,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 3,
+                                "opcode": "int_const",
+                                "value": 4,
+                                "control_next": null
+                            },
+                            {
+                                "id": 4,
+                                "opcode": "int_add",
+                                "args": [
+                                    2,
+                                    3
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 5,
+                                "opcode": "int32_store",
+                                "location": 4,
+                                "value": 1,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": 7
+                            },
+                            {
+                                "id": 6,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 7,
+                                "opcode": "int32_store",
+                                "location": 6,
+                                "value": 0,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": 55
+                            },
+                            {
+                                "id": 8,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 9,
+                                "opcode": "int32_load_unsigned",
+                                "location": 8,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 10,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 11,
+                                "opcode": "int_const",
+                                "value": 4,
+                                "control_next": null
+                            },
+                            {
+                                "id": 12,
+                                "opcode": "int_add",
+                                "args": [
+                                    10,
+                                    11
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 13,
+                                "opcode": "int32_load_unsigned",
+                                "location": 12,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 14,
+                                "opcode": "float32_equals",
+                                "args": [
+                                    9,
+                                    13
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 15,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 16,
+                                "opcode": "int32_load_unsigned",
+                                "location": 15,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 17,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 18,
+                                "opcode": "int_const",
+                                "value": 4,
+                                "control_next": null
+                            },
+                            {
+                                "id": 19,
+                                "opcode": "int_add",
+                                "args": [
+                                    17,
+                                    18
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 20,
+                                "opcode": "int32_load_unsigned",
+                                "location": 19,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 21,
+                                "opcode": "float32_greater",
+                                "args": [
+                                    16,
+                                    20
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 22,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 23,
+                                "opcode": "int32_load_unsigned",
+                                "location": 22,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 24,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 25,
+                                "opcode": "int_const",
+                                "value": 4,
+                                "control_next": null
+                            },
+                            {
+                                "id": 26,
+                                "opcode": "int_add",
+                                "args": [
+                                    24,
+                                    25
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 27,
+                                "opcode": "int32_load_unsigned",
+                                "location": 26,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 28,
+                                "opcode": "float32_lesser",
+                                "args": [
+                                    23,
+                                    27
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 29,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 30,
+                                "opcode": "int32_load_unsigned",
+                                "location": 29,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 31,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 32,
+                                "opcode": "int_const",
+                                "value": 4,
+                                "control_next": null
+                            },
+                            {
+                                "id": 33,
+                                "opcode": "int_add",
+                                "args": [
+                                    31,
+                                    32
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 34,
+                                "opcode": "int32_load_unsigned",
+                                "location": 33,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 35,
+                                "opcode": "float32_equals",
+                                "args": [
+                                    30,
+                                    34
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 36,
+                                "opcode": "bool_not",
+                                "arg": 35,
+                                "control_next": null
+                            },
+                            {
+                                "id": 37,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 38,
+                                "opcode": "int32_load_unsigned",
+                                "location": 37,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 39,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 40,
+                                "opcode": "int_const",
+                                "value": 4,
+                                "control_next": null
+                            },
+                            {
+                                "id": 41,
+                                "opcode": "int_add",
+                                "args": [
+                                    39,
+                                    40
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 42,
+                                "opcode": "int32_load_unsigned",
+                                "location": 41,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 43,
+                                "opcode": "float32_greater",
+                                "args": [
+                                    38,
+                                    42
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 44,
+                                "opcode": "float32_equals",
+                                "args": [
+                                    42,
+                                    38
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 45,
+                                "opcode": "bool_or",
+                                "args": [
+                                    43,
+                                    44
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 46,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 47,
+                                "opcode": "int32_load_unsigned",
+                                "location": 46,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 48,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 49,
+                                "opcode": "int_const",
+                                "value": 4,
+                                "control_next": null
+                            },
+                            {
+                                "id": 50,
+                                "opcode": "int_add",
+                                "args": [
+                                    48,
+                                    49
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 51,
+                                "opcode": "int32_load_unsigned",
+                                "location": 50,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 52,
+                                "opcode": "float32_lesser",
+                                "args": [
+                                    47,
+                                    51
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 53,
+                                "opcode": "float32_equals",
+                                "args": [
+                                    51,
+                                    47
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 54,
+                                "opcode": "bool_or",
+                                "args": [
+                                    52,
+                                    53
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 55,
+                                "opcode": "return",
+                                "arg": null,
+                                "control_next": null
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "id": 8,
+            "name": "comparison2",
+            "code": {
+                "entry_point": 0,
+                "blocks": [
+                    {
+                        "id": 0,
+                        "control_flow": 5,
+                        "phi": [],
+                        "code": [
+                            {
+                                "id": 0,
+                                "opcode": "get_argument",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 1,
+                                "opcode": "get_argument",
+                                "arg": 1,
+                                "control_next": null
+                            },
+                            {
+                                "id": 2,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 3,
+                                "opcode": "int_const",
+                                "value": 8,
+                                "control_next": null
+                            },
+                            {
+                                "id": 4,
+                                "opcode": "int_add",
+                                "args": [
+                                    2,
+                                    3
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 5,
+                                "opcode": "int64_store",
+                                "location": 4,
+                                "value": 1,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": 7
+                            },
+                            {
+                                "id": 6,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 7,
+                                "opcode": "int64_store",
+                                "location": 6,
+                                "value": 0,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": 55
+                            },
+                            {
+                                "id": 8,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 9,
+                                "opcode": "int64_load",
+                                "location": 8,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 10,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 11,
+                                "opcode": "int_const",
+                                "value": 8,
+                                "control_next": null
+                            },
+                            {
+                                "id": 12,
+                                "opcode": "int_add",
+                                "args": [
+                                    10,
+                                    11
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 13,
+                                "opcode": "int64_load",
+                                "location": 12,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 14,
+                                "opcode": "float64_equals",
+                                "args": [
+                                    9,
+                                    13
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 15,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 16,
+                                "opcode": "int64_load",
+                                "location": 15,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 17,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 18,
+                                "opcode": "int_const",
+                                "value": 8,
+                                "control_next": null
+                            },
+                            {
+                                "id": 19,
+                                "opcode": "int_add",
+                                "args": [
+                                    17,
+                                    18
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 20,
+                                "opcode": "int64_load",
+                                "location": 19,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 21,
+                                "opcode": "float64_greater",
+                                "args": [
+                                    16,
+                                    20
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 22,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 23,
+                                "opcode": "int64_load",
+                                "location": 22,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 24,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 25,
+                                "opcode": "int_const",
+                                "value": 8,
+                                "control_next": null
+                            },
+                            {
+                                "id": 26,
+                                "opcode": "int_add",
+                                "args": [
+                                    24,
+                                    25
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 27,
+                                "opcode": "int64_load",
+                                "location": 26,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 28,
+                                "opcode": "float64_lesser",
+                                "args": [
+                                    23,
+                                    27
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 29,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 30,
+                                "opcode": "int64_load",
+                                "location": 29,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 31,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 32,
+                                "opcode": "int_const",
+                                "value": 8,
+                                "control_next": null
+                            },
+                            {
+                                "id": 33,
+                                "opcode": "int_add",
+                                "args": [
+                                    31,
+                                    32
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 34,
+                                "opcode": "int64_load",
+                                "location": 33,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 35,
+                                "opcode": "float64_equals",
+                                "args": [
+                                    30,
+                                    34
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 36,
+                                "opcode": "bool_not",
+                                "arg": 35,
+                                "control_next": null
+                            },
+                            {
+                                "id": 37,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 38,
+                                "opcode": "int64_load",
+                                "location": 37,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 39,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 40,
+                                "opcode": "int_const",
+                                "value": 8,
+                                "control_next": null
+                            },
+                            {
+                                "id": 41,
+                                "opcode": "int_add",
+                                "args": [
+                                    39,
+                                    40
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 42,
+                                "opcode": "int64_load",
+                                "location": 41,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 43,
+                                "opcode": "float64_greater",
+                                "args": [
+                                    38,
+                                    42
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 44,
+                                "opcode": "float64_equals",
+                                "args": [
+                                    42,
+                                    38
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 45,
+                                "opcode": "bool_or",
+                                "args": [
+                                    43,
+                                    44
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 46,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 47,
+                                "opcode": "int64_load",
+                                "location": 46,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 48,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 49,
+                                "opcode": "int_const",
+                                "value": 8,
+                                "control_next": null
+                            },
+                            {
+                                "id": 50,
+                                "opcode": "int_add",
+                                "args": [
+                                    48,
+                                    49
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 51,
+                                "opcode": "int64_load",
+                                "location": 50,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 52,
+                                "opcode": "float64_lesser",
+                                "args": [
+                                    47,
+                                    51
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 53,
+                                "opcode": "float64_equals",
+                                "args": [
+                                    51,
+                                    47
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 54,
+                                "opcode": "bool_or",
+                                "args": [
+                                    52,
+                                    53
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 55,
+                                "opcode": "return",
+                                "arg": null,
+                                "control_next": null
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "id": 9,
+            "name": "conversion",
+            "code": {
+                "entry_point": 0,
+                "blocks": [
+                    {
+                        "id": 0,
+                        "control_flow": 5,
+                        "phi": [],
+                        "code": [
+                            {
+                                "id": 0,
+                                "opcode": "get_argument",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 1,
+                                "opcode": "get_argument",
+                                "arg": 1,
+                                "control_next": null
+                            },
+                            {
+                                "id": 2,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 3,
+                                "opcode": "int_const",
+                                "value": 8,
+                                "control_next": null
+                            },
+                            {
+                                "id": 4,
+                                "opcode": "int_add",
+                                "args": [
+                                    2,
+                                    3
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 5,
+                                "opcode": "int64_store",
+                                "location": 4,
+                                "value": 1,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": 7
+                            },
+                            {
+                                "id": 6,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 7,
+                                "opcode": "int32_store",
+                                "location": 6,
+                                "value": 0,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": 44
+                            },
+                            {
+                                "id": 8,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 9,
+                                "opcode": "int32_load_unsigned",
+                                "location": 8,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 10,
+                                "opcode": "float32_to_float64",
+                                "arg": 9,
+                                "control_next": null
+                            },
+                            {
+                                "id": 11,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 12,
+                                "opcode": "int_const",
+                                "value": 8,
+                                "control_next": null
+                            },
+                            {
+                                "id": 13,
+                                "opcode": "int_add",
+                                "args": [
+                                    11,
+                                    12
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 14,
+                                "opcode": "int64_load",
+                                "location": 13,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 15,
+                                "opcode": "float64_to_float32",
+                                "arg": 14,
+                                "control_next": null
+                            },
+                            {
+                                "id": 16,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 17,
+                                "opcode": "int32_load_unsigned",
+                                "location": 16,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 18,
+                                "opcode": "float32_to_int",
+                                "arg": 17,
+                                "control_next": null
+                            },
+                            {
+                                "id": 19,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 20,
+                                "opcode": "int_const",
+                                "value": 8,
+                                "control_next": null
+                            },
+                            {
+                                "id": 21,
+                                "opcode": "int_add",
+                                "args": [
+                                    19,
+                                    20
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 22,
+                                "opcode": "int64_load",
+                                "location": 21,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 23,
+                                "opcode": "float64_to_int",
+                                "arg": 22,
+                                "control_next": null
+                            },
+                            {
+                                "id": 24,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 25,
+                                "opcode": "int_const",
+                                "value": 8,
+                                "control_next": null
+                            },
+                            {
+                                "id": 26,
+                                "opcode": "int_add",
+                                "args": [
+                                    24,
+                                    25
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 27,
+                                "opcode": "int64_load",
+                                "location": 26,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 28,
+                                "opcode": "float64_to_int",
+                                "arg": 27,
+                                "control_next": null
+                            },
+                            {
+                                "id": 29,
+                                "opcode": "int_to_float32",
+                                "arg": 28,
+                                "control_next": null
+                            },
+                            {
+                                "id": 30,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 31,
+                                "opcode": "int_const",
+                                "value": 8,
+                                "control_next": null
+                            },
+                            {
+                                "id": 32,
+                                "opcode": "int_add",
+                                "args": [
+                                    30,
+                                    31
+                                ],
+                                "control_next": null
+                            },
+                            {
+                                "id": 33,
+                                "opcode": "int64_load",
+                                "location": 32,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 34,
+                                "opcode": "float64_to_int",
+                                "arg": 33,
+                                "control_next": null
+                            },
+                            {
+                                "id": 35,
+                                "opcode": "uint_to_float32",
+                                "arg": 34,
+                                "control_next": null
+                            },
+                            {
+                                "id": 36,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 37,
+                                "opcode": "int32_load_unsigned",
+                                "location": 36,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 38,
+                                "opcode": "float32_to_int",
+                                "arg": 37,
+                                "control_next": null
+                            },
+                            {
+                                "id": 39,
+                                "opcode": "int_to_float64",
+                                "arg": 38,
+                                "control_next": null
+                            },
+                            {
+                                "id": 40,
+                                "opcode": "get_local",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
+                                "id": 41,
+                                "opcode": "int32_load_unsigned",
+                                "location": 40,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null
+                            },
+                            {
+                                "id": 42,
+                                "opcode": "float32_to_int",
+                                "arg": 41,
+                                "control_next": null
+                            },
+                            {
+                                "id": 43,
+                                "opcode": "uint_to_float64",
+                                "arg": 42,
+                                "control_next": null
+                            },
+                            {
+                                "id": 44,
+                                "opcode": "return",
+                                "arg": null,
+                                "control_next": null
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    ]
+}

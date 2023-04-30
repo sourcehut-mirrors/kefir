@@ -97,7 +97,34 @@
     OPCODE(VARARG_END, "vararg_end", ref1) SEPARATOR \
     OPCODE(STACK_ALLOC, "stack_alloc", stack_alloc) SEPARATOR \
     OPCODE(SCOPE_PUSH, "scope_push", none) SEPARATOR \
-    OPCODE(SCOPE_POP, "scope_pop", ref1)
+    OPCODE(SCOPE_POP, "scope_pop", ref1) SEPARATOR \
+    /* Floating-point arithmetics */ \
+    OPCODE(FLOAT32_ADD, "float32_add", ref2) SEPARATOR \
+    OPCODE(FLOAT32_SUB, "float32_sub", ref2) SEPARATOR \
+    OPCODE(FLOAT32_MUL, "float32_mul", ref2) SEPARATOR \
+    OPCODE(FLOAT32_DIV, "float32_div", ref2) SEPARATOR \
+    OPCODE(FLOAT32_NEG, "float32_neg", ref1) SEPARATOR \
+    OPCODE(FLOAT64_ADD, "float64_add", ref2) SEPARATOR \
+    OPCODE(FLOAT64_SUB, "float64_sub", ref2) SEPARATOR \
+    OPCODE(FLOAT64_MUL, "float64_mul", ref2) SEPARATOR \
+    OPCODE(FLOAT64_DIV, "float64_div", ref2) SEPARATOR \
+    OPCODE(FLOAT64_NEG, "float64_neg", ref1) SEPARATOR \
+    /* Floating-point comparison */ \
+    OPCODE(FLOAT32_EQUALS, "float32_equals", ref2) SEPARATOR \
+    OPCODE(FLOAT32_GREATER, "float32_greater", ref2) SEPARATOR \
+    OPCODE(FLOAT32_LESSER, "float32_lesser", ref2) SEPARATOR \
+    OPCODE(FLOAT64_EQUALS, "float64_equals", ref2) SEPARATOR \
+    OPCODE(FLOAT64_GREATER, "float64_greater", ref2) SEPARATOR \
+    OPCODE(FLOAT64_LESSER, "float64_lesser", ref2) SEPARATOR \
+    /* Floating-point conversions */ \
+    OPCODE(FLOAT32_TO_INT, "float32_to_int", ref1) SEPARATOR \
+    OPCODE(FLOAT64_TO_INT, "float64_to_int", ref1) SEPARATOR \
+    OPCODE(INT_TO_FLOAT32, "int_to_float32", ref1) SEPARATOR \
+    OPCODE(INT_TO_FLOAT64, "int_to_float64", ref1) SEPARATOR \
+    OPCODE(UINT_TO_FLOAT32, "uint_to_float32", ref1) SEPARATOR \
+    OPCODE(UINT_TO_FLOAT64, "uint_to_float64", ref1) SEPARATOR \
+    OPCODE(FLOAT32_TO_FLOAT64, "float32_to_float64", ref1) SEPARATOR \
+    OPCODE(FLOAT64_TO_FLOAT32, "float64_to_float32", ref1)
 // clang-format on
 
 #endif

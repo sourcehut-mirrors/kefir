@@ -245,6 +245,18 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             UNARY_OP(vararg_end, KEFIR_IROPCODE_VARARG_END)
             UNARY_OP(scope_pop, KEFIR_IROPCODE_POPSCOPE)
 
+            UNARY_OP(float32_neg, KEFIR_IROPCODE_F32NEG)
+            UNARY_OP(float64_neg, KEFIR_IROPCODE_F64NEG)
+
+            UNARY_OP(float32_to_int, KEFIR_IROPCODE_F32CINT)
+            UNARY_OP(float64_to_int, KEFIR_IROPCODE_F64CINT)
+            UNARY_OP(int_to_float32, KEFIR_IROPCODE_INTCF32)
+            UNARY_OP(int_to_float64, KEFIR_IROPCODE_INTCF64)
+            UNARY_OP(uint_to_float32, KEFIR_IROPCODE_UINTCF32)
+            UNARY_OP(uint_to_float64, KEFIR_IROPCODE_UINTCF64)
+            UNARY_OP(float32_to_float64, KEFIR_IROPCODE_F32CF64)
+            UNARY_OP(float64_to_float32, KEFIR_IROPCODE_F64CF32)
+
 #undef UNARY_OP
 
 #define BINARY_OP(_id, _opcode)                                                                                    \
@@ -277,6 +289,22 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             BINARY_OP(bool_or, KEFIR_IROPCODE_BOR)
 
             BINARY_OP(vararg_copy, KEFIR_IROPCODE_VARARG_COPY)
+
+            BINARY_OP(float32_add, KEFIR_IROPCODE_F32ADD)
+            BINARY_OP(float32_sub, KEFIR_IROPCODE_F32SUB)
+            BINARY_OP(float32_mul, KEFIR_IROPCODE_F32MUL)
+            BINARY_OP(float32_div, KEFIR_IROPCODE_F32DIV)
+            BINARY_OP(float64_add, KEFIR_IROPCODE_F64ADD)
+            BINARY_OP(float64_sub, KEFIR_IROPCODE_F64SUB)
+            BINARY_OP(float64_mul, KEFIR_IROPCODE_F64MUL)
+            BINARY_OP(float64_div, KEFIR_IROPCODE_F64DIV)
+
+            BINARY_OP(float32_equals, KEFIR_IROPCODE_F32EQUALS)
+            BINARY_OP(float32_greater, KEFIR_IROPCODE_F32GREATER)
+            BINARY_OP(float32_lesser, KEFIR_IROPCODE_F32LESSER)
+            BINARY_OP(float64_equals, KEFIR_IROPCODE_F64EQUALS)
+            BINARY_OP(float64_greater, KEFIR_IROPCODE_F64GREATER)
+            BINARY_OP(float64_lesser, KEFIR_IROPCODE_F64LESSER)
 
 #undef BINARY_OP
 

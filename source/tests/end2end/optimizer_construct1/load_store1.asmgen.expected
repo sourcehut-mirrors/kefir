@@ -948,7 +948,7 @@
                                 "flags": {
                                     "volatile": true
                                 },
-                                "control_next": 41
+                                "control_next": 42
                             },
                             {
                                 "id": 38,
@@ -958,31 +958,37 @@
                             },
                             {
                                 "id": 39,
+                                "opcode": "float64_to_float32",
+                                "arg": 38,
+                                "control_next": null
+                            },
+                            {
+                                "id": 40,
                                 "opcode": "get_global",
                                 "arg": 14,
                                 "control_next": null
                             },
                             {
-                                "id": 40,
+                                "id": 41,
                                 "opcode": "int64_load",
-                                "location": 39,
+                                "location": 40,
                                 "flags": {
                                     "volatile": false
                                 },
                                 "control_next": null
                             },
                             {
-                                "id": 41,
+                                "id": 42,
                                 "opcode": "int32_store",
-                                "location": 40,
-                                "value": 38,
+                                "location": 41,
+                                "value": 39,
                                 "flags": {
                                     "volatile": true
                                 },
-                                "control_next": 42
+                                "control_next": 43
                             },
                             {
-                                "id": 42,
+                                "id": 43,
                                 "opcode": "return",
                                 "arg": null,
                                 "control_next": null
