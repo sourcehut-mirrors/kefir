@@ -15,7 +15,7 @@
                             {
                                 "id": 0,
                                 "opcode": "get_local",
-                                "arg": 1,
+                                "ir_ref": 1,
                                 "control_next": null
                             },
                             {
@@ -58,7 +58,7 @@
                             {
                                 "id": 6,
                                 "opcode": "get_local",
-                                "arg": 1,
+                                "ir_ref": 1,
                                 "control_next": null
                             },
                             {
@@ -101,7 +101,7 @@
                             {
                                 "id": 12,
                                 "opcode": "get_local",
-                                "arg": 1,
+                                "ir_ref": 1,
                                 "control_next": null
                             },
                             {
@@ -144,7 +144,7 @@
                             {
                                 "id": 18,
                                 "opcode": "get_local",
-                                "arg": 1,
+                                "ir_ref": 1,
                                 "control_next": null
                             },
                             {
@@ -190,7 +190,7 @@
                             {
                                 "id": 24,
                                 "opcode": "get_local",
-                                "arg": 1,
+                                "ir_ref": 1,
                                 "control_next": null
                             },
                             {
@@ -233,7 +233,7 @@
                             {
                                 "id": 30,
                                 "opcode": "get_local",
-                                "arg": 1,
+                                "ir_ref": 1,
                                 "control_next": null
                             },
                             {
@@ -276,7 +276,7 @@
                             {
                                 "id": 36,
                                 "opcode": "get_local",
-                                "arg": 1,
+                                "ir_ref": 1,
                                 "control_next": null
                             },
                             {
@@ -322,7 +322,7 @@
                             {
                                 "id": 42,
                                 "opcode": "get_local",
-                                "arg": 1,
+                                "ir_ref": 1,
                                 "control_next": null
                             },
                             {
@@ -365,7 +365,7 @@
                             {
                                 "id": 48,
                                 "opcode": "get_local",
-                                "arg": 1,
+                                "ir_ref": 1,
                                 "control_next": null
                             },
                             {
@@ -408,7 +408,7 @@
                             {
                                 "id": 54,
                                 "opcode": "get_local",
-                                "arg": 1,
+                                "ir_ref": 1,
                                 "control_next": null
                             },
                             {
@@ -454,7 +454,7 @@
                             {
                                 "id": 60,
                                 "opcode": "get_local",
-                                "arg": 1,
+                                "ir_ref": 1,
                                 "control_next": null
                             },
                             {
@@ -497,7 +497,7 @@
                             {
                                 "id": 66,
                                 "opcode": "get_local",
-                                "arg": 1,
+                                "ir_ref": 1,
                                 "control_next": null
                             },
                             {
@@ -540,7 +540,7 @@
                             {
                                 "id": 72,
                                 "opcode": "get_local",
-                                "arg": 1,
+                                "ir_ref": 1,
                                 "control_next": null
                             },
                             {
@@ -586,7 +586,7 @@
                             {
                                 "id": 78,
                                 "opcode": "get_local",
-                                "arg": 1,
+                                "ir_ref": 1,
                                 "control_next": null
                             },
                             {
@@ -629,7 +629,7 @@
                             {
                                 "id": 84,
                                 "opcode": "get_local",
-                                "arg": 1,
+                                "ir_ref": 1,
                                 "control_next": null
                             },
                             {
@@ -697,13 +697,13 @@
                             {
                                 "id": 0,
                                 "opcode": "get_local",
-                                "arg": 0,
+                                "ir_ref": 0,
                                 "control_next": null
                             },
                             {
                                 "id": 1,
                                 "opcode": "get_local",
-                                "arg": 2,
+                                "ir_ref": 2,
                                 "control_next": null
                             },
                             {
@@ -779,7 +779,7 @@
                             {
                                 "id": 0,
                                 "opcode": "get_local",
-                                "arg": 1,
+                                "ir_ref": 1,
                                 "control_next": null
                             },
                             {
@@ -850,7 +850,7 @@
                             {
                                 "id": 9,
                                 "opcode": "get_local",
-                                "arg": 1,
+                                "ir_ref": 1,
                                 "control_next": null
                             },
                             {
@@ -905,7 +905,7 @@
                             {
                                 "id": 17,
                                 "opcode": "get_local",
-                                "arg": 1,
+                                "ir_ref": 1,
                                 "control_next": null
                             },
                             {
@@ -954,7 +954,7 @@
                             {
                                 "id": 24,
                                 "opcode": "get_local",
-                                "arg": 1,
+                                "ir_ref": 1,
                                 "control_next": null
                             },
                             {
@@ -1032,7 +1032,7 @@
                             {
                                 "id": 1,
                                 "opcode": "get_local",
-                                "arg": 1,
+                                "ir_ref": 1,
                                 "control_next": null
                             },
                             {
@@ -1083,7 +1083,7 @@
                             {
                                 "id": 8,
                                 "opcode": "get_local",
-                                "arg": 1,
+                                "ir_ref": 1,
                                 "control_next": null
                             },
                             {
@@ -1134,7 +1134,7 @@
                             {
                                 "id": 15,
                                 "opcode": "get_local",
-                                "arg": 1,
+                                "ir_ref": 1,
                                 "control_next": null
                             },
                             {
@@ -1185,7 +1185,7 @@
                             {
                                 "id": 22,
                                 "opcode": "get_local",
-                                "arg": 1,
+                                "ir_ref": 1,
                                 "control_next": null
                             },
                             {

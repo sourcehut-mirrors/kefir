@@ -15,13 +15,13 @@
                             {
                                 "id": 0,
                                 "opcode": "inline_assembly",
-                                "inline_asm_id": 0,
+                                "ir_ref": 0,
                                 "control_next": 1
                             },
                             {
                                 "id": 1,
                                 "opcode": "inline_assembly",
-                                "inline_asm_id": 1,
+                                "ir_ref": 1,
                                 "control_next": 2
                             },
                             {

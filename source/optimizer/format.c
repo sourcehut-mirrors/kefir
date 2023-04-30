@@ -160,10 +160,16 @@ static kefir_result_t format_operation_call_ref(struct kefir_json_output *json,
     return KEFIR_OK;
 }
 
-static kefir_result_t format_operation_inline_assembly(struct kefir_json_output *json,
-                                                       const struct kefir_opt_operation *oper) {
-    REQUIRE_OK(kefir_json_output_object_key(json, "inline_asm_id"));
-    REQUIRE_OK(id_format(json, oper->parameters.inline_assembly.inline_asm_id));
+static kefir_result_t format_operation_ir_ref(struct kefir_json_output *json, const struct kefir_opt_operation *oper) {
+    REQUIRE_OK(kefir_json_output_object_key(json, "ir_ref"));
+    REQUIRE_OK(id_format(json, oper->parameters.ir_ref));
+    return KEFIR_OK;
+}
+
+static kefir_result_t format_operation_block_ref(struct kefir_json_output *json,
+                                                 const struct kefir_opt_operation *oper) {
+    REQUIRE_OK(kefir_json_output_object_key(json, "block_ref"));
+    REQUIRE_OK(id_format(json, oper->parameters.block_ref));
     return KEFIR_OK;
 }
 

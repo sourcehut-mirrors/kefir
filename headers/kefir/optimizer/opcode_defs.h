@@ -28,7 +28,7 @@
     /* Special */ \
     OPCODE(GET_ARGUMENT, "get_argument", ref1) SEPARATOR \
     OPCODE(PHI, "phi", ref1) SEPARATOR \
-    OPCODE(INLINE_ASSEMBLY, "inline_assembly", inline_assembly) SEPARATOR \
+    OPCODE(INLINE_ASSEMBLY, "inline_assembly", ir_ref) SEPARATOR \
     /* Flow control */ \
     OPCODE(JUMP, "jump", jump) SEPARATOR \
     OPCODE(IJUMP, "indirect_jump", ref1) SEPARATOR \
@@ -41,8 +41,8 @@
     OPCODE(UINT_CONST, "uint_const", imm_uint) SEPARATOR \
     OPCODE(FLOAT32_CONST, "float32_const", imm_float32) SEPARATOR \
     OPCODE(FLOAT64_CONST, "float64_const", imm_float64) SEPARATOR \
-    OPCODE(STRING_REF, "string_ref", ref1) SEPARATOR \
-    OPCODE(BLOCK_LABEL, "block_label", ref1) SEPARATOR \
+    OPCODE(STRING_REF, "string_ref", ir_ref) SEPARATOR \
+    OPCODE(BLOCK_LABEL, "block_label", block_ref) SEPARATOR \
     OPCODE(LONG_DOUBLE_INIT, "long_double_init", imm_long_double) SEPARATOR \
     /* Integral arithmetics & binary operations */ \
     OPCODE(INT_ADD, "int_add", ref2) SEPARATOR \
@@ -75,9 +75,9 @@
     OPCODE(INT64_SIGN_EXTEND_16BITS, "int64_sign_extend_16bits", ref1) SEPARATOR \
     OPCODE(INT64_SIGN_EXTEND_32BITS, "int64_sign_extend_32bits", ref1) SEPARATOR \
     /* Data access */ \
-    OPCODE(GET_GLOBAL, "get_global", ref1) SEPARATOR \
-    OPCODE(GET_THREAD_LOCAL, "get_thread_local", ref1) SEPARATOR \
-    OPCODE(GET_LOCAL, "get_local", ref1) SEPARATOR \
+    OPCODE(GET_GLOBAL, "get_global", ir_ref) SEPARATOR \
+    OPCODE(GET_THREAD_LOCAL, "get_thread_local", ir_ref) SEPARATOR \
+    OPCODE(GET_LOCAL, "get_local", ir_ref) SEPARATOR \
     OPCODE(INT8_LOAD_SIGNED, "int8_load_signed", load_mem) SEPARATOR \
     OPCODE(INT8_LOAD_UNSIGNED, "int8_load_unsigned", load_mem) SEPARATOR \
     OPCODE(INT16_LOAD_SIGNED, "int16_load_signed", load_mem) SEPARATOR \

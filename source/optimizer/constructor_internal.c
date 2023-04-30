@@ -68,7 +68,8 @@ kefir_result_t kefir_opt_constructor_start_code_block_at(struct kefir_mem *mem,
 
     if (indirect_jump_target) {
         REQUIRE_OK(kefir_list_insert_after(mem, &state->indirect_jump_targets,
-                                           kefir_list_tail(&state->indirect_jump_targets), (void *) code_block_id));
+                                           kefir_list_tail(&state->indirect_jump_targets),
+                                           (void *) (kefir_uptr_t) code_block_id));
     }
     return KEFIR_OK;
 }
@@ -166,7 +167,7 @@ kefir_result_t kefir_opt_constructor_stack_push(struct kefir_mem *mem, struct ke
             KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected valid current optimizer code block state"));
 
     REQUIRE_OK(kefir_list_insert_after(mem, &state->current_block->stack, kefir_list_tail(&state->current_block->stack),
-                                       (void *) ref));
+                                       (void *) (kefir_uptr_t) ref));
     return KEFIR_OK;
 }
 
@@ -179,8 +180,9 @@ static kefir_result_t stack_ensure_depth(struct kefir_mem *mem, struct kefir_opt
             kefir_opt_code_container_new_phi(mem, &state->function->code, state->current_block->block_id, &phi_ref));
         REQUIRE_OK(kefir_opt_code_builder_phi(mem, &state->function->code, state->current_block->block_id, phi_ref,
                                               &instr_ref));
-        REQUIRE_OK(kefir_list_insert_after(mem, &state->current_block->stack, NULL, (void *) instr_ref));
-        REQUIRE_OK(kefir_list_insert_after(mem, &state->current_block->phi_stack, NULL, (void *) phi_ref));
+        REQUIRE_OK(kefir_list_insert_after(mem, &state->current_block->stack, NULL, (void *) (kefir_uptr_t) instr_ref));
+        REQUIRE_OK(
+            kefir_list_insert_after(mem, &state->current_block->phi_stack, NULL, (void *) (kefir_uptr_t) phi_ref));
     }
     return KEFIR_OK;
 }
@@ -197,7 +199,7 @@ kefir_result_t kefir_opt_constructor_stack_pop(struct kefir_mem *mem, struct kef
     REQUIRE_OK(stack_ensure_depth(mem, state, 1));
     struct kefir_list_entry *tail = kefir_list_tail(&state->current_block->stack);
     REQUIRE(tail != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Optimizer code block constructor stack is empty"));
-    *ref_ptr = (kefir_opt_instruction_ref_t) tail->value;
+    *ref_ptr = (kefir_opt_instruction_ref_t) (kefir_uptr_t) tail->value;
     REQUIRE_OK(kefir_list_pop(mem, &state->current_block->stack, tail));
     return KEFIR_OK;
 }
@@ -217,7 +219,7 @@ kefir_result_t kefir_opt_constructor_stack_at(struct kefir_mem *mem, struct kefi
     REQUIRE(entry != NULL,
             KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR,
                             "Provided index is out of bounds of optimizer code block constructor stack"));
-    *ref_ptr = (kefir_opt_instruction_ref_t) entry->value;
+    *ref_ptr = (kefir_opt_instruction_ref_t) (kefir_uptr_t) entry->value;
     return KEFIR_OK;
 }
 

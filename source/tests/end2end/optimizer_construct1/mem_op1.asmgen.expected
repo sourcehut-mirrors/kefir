@@ -21,7 +21,7 @@
                             {
                                 "id": 1,
                                 "opcode": "get_local",
-                                "arg": 0,
+                                "ir_ref": 0,
                                 "control_next": null
                             },
                             {
@@ -37,7 +37,7 @@
                             {
                                 "id": 3,
                                 "opcode": "get_local",
-                                "arg": 0,
+                                "ir_ref": 0,
                                 "control_next": null
                             },
                             {
@@ -114,7 +114,7 @@
                             {
                                 "id": 1,
                                 "opcode": "get_local",
-                                "arg": 0,
+                                "ir_ref": 0,
                                 "control_next": null
                             },
                             {
@@ -130,7 +130,7 @@
                             {
                                 "id": 3,
                                 "opcode": "get_local",
-                                "arg": 0,
+                                "ir_ref": 0,
                                 "control_next": null
                             },
                             {
@@ -207,7 +207,7 @@
                             {
                                 "id": 1,
                                 "opcode": "get_local",
-                                "arg": 0,
+                                "ir_ref": 0,
                                 "control_next": null
                             },
                             {
@@ -223,7 +223,7 @@
                             {
                                 "id": 3,
                                 "opcode": "get_local",
-                                "arg": 2,
+                                "ir_ref": 2,
                                 "control_next": null
                             },
                             {
@@ -334,7 +334,7 @@
                             {
                                 "id": 17,
                                 "opcode": "get_local",
-                                "arg": 0,
+                                "ir_ref": 0,
                                 "control_next": null
                             },
                             {

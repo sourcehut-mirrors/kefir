@@ -533,8 +533,8 @@ static kefir_result_t link_blocks_impl(struct kefir_mem *mem, struct kefir_opt_c
     const struct kefir_list_entry *target_iter = kefir_list_tail(&target_state->phi_stack);
     for (; source_iter != NULL && target_iter != NULL;
          source_iter = source_iter->prev, target_iter = target_iter->prev) {
-        ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, instr_ref, source_iter->value);
-        ASSIGN_DECL_CAST(kefir_opt_phi_id_t, phi_ref, target_iter->value);
+        ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, instr_ref, (kefir_uptr_t) source_iter->value);
+        ASSIGN_DECL_CAST(kefir_opt_phi_id_t, phi_ref, (kefir_uptr_t) target_iter->value);
         REQUIRE_OK(
             kefir_opt_code_container_phi_attach(mem, &state->function->code, phi_ref, source_block_id, instr_ref));
     }
@@ -561,7 +561,7 @@ static kefir_result_t link_blocks_match(struct kefir_mem *mem, struct kefir_opt_
         case KEFIR_OPT_OPCODE_IJUMP:
             for (const struct kefir_list_entry *iter = kefir_list_head(&state->indirect_jump_targets); iter != NULL;
                  kefir_list_next(&iter)) {
-                ASSIGN_DECL_CAST(kefir_opt_block_id_t, target_block_id, iter->value);
+                ASSIGN_DECL_CAST(kefir_opt_block_id_t, target_block_id, (kefir_uptr_t) iter->value);
                 REQUIRE_OK(link_blocks_impl(mem, state, block->id, target_block_id));
             }
             break;
@@ -587,8 +587,8 @@ static kefir_result_t link_blocks_equalize_stack(struct kefir_mem *mem, struct k
         kefir_opt_instruction_ref_t instr_ref;
         REQUIRE_OK(kefir_opt_code_container_new_phi(mem, &state->function->code, target_block_id, &phi_ref));
         REQUIRE_OK(kefir_opt_code_builder_phi(mem, &state->function->code, target_block_id, phi_ref, &instr_ref));
-        REQUIRE_OK(kefir_list_insert_after(mem, &target_state->stack, NULL, (void *) instr_ref));
-        REQUIRE_OK(kefir_list_insert_after(mem, &target_state->phi_stack, NULL, (void *) phi_ref));
+        REQUIRE_OK(kefir_list_insert_after(mem, &target_state->stack, NULL, (void *) (kefir_uptr_t) instr_ref));
+        REQUIRE_OK(kefir_list_insert_after(mem, &target_state->phi_stack, NULL, (void *) (kefir_uptr_t) phi_ref));
     }
     return KEFIR_OK;
 }
@@ -638,7 +638,7 @@ static kefir_result_t link_blocks(struct kefir_mem *mem, struct kefir_opt_constr
     REQUIRE_OK(link_blocks_traverse(mem, state, state->function->code.entry_point));
     for (const struct kefir_list_entry *iter = kefir_list_head(&state->indirect_jump_targets); iter != NULL;
          kefir_list_next(&iter)) {
-        ASSIGN_DECL_CAST(kefir_opt_block_id_t, target_block_id, iter->value);
+        ASSIGN_DECL_CAST(kefir_opt_block_id_t, target_block_id, (kefir_uptr_t) iter->value);
         REQUIRE_OK(link_blocks_traverse(mem, state, target_block_id));
     }
 

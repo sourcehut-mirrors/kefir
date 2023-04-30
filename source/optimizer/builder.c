@@ -220,8 +220,7 @@ kefir_result_t kefir_opt_code_builder_inline_assembly(struct kefir_mem *mem, str
 
     REQUIRE_OK(kefir_opt_code_builder_add_instruction(
         mem, code, block_id,
-        &(struct kefir_opt_operation){.opcode = KEFIR_OPT_OPCODE_INLINE_ASSEMBLY,
-                                      .parameters.inline_assembly.inline_asm_id = identifier},
+        &(struct kefir_opt_operation){.opcode = KEFIR_OPT_OPCODE_INLINE_ASSEMBLY, .parameters.ir_ref = identifier},
         false, instr_id_ptr));
     return KEFIR_OK;
 }
@@ -319,7 +318,7 @@ kefir_result_t kefir_opt_code_builder_string_reference(struct kefir_mem *mem, st
 
     REQUIRE_OK(kefir_opt_code_builder_add_instruction(
         mem, code, block_id,
-        &(struct kefir_opt_operation){.opcode = KEFIR_OPT_OPCODE_STRING_REF, .parameters.refs[0] = ref}, false,
+        &(struct kefir_opt_operation){.opcode = KEFIR_OPT_OPCODE_STRING_REF, .parameters.ir_ref = ref}, false,
         instr_id_ptr));
     return KEFIR_OK;
 }
@@ -333,7 +332,7 @@ kefir_result_t kefir_opt_code_builder_block_label(struct kefir_mem *mem, struct 
     REQUIRE_OK(block_exists(code, ref));
     REQUIRE_OK(kefir_opt_code_builder_add_instruction(
         mem, code, block_id,
-        &(struct kefir_opt_operation){.opcode = KEFIR_OPT_OPCODE_BLOCK_LABEL, .parameters.refs[0] = ref}, false,
+        &(struct kefir_opt_operation){.opcode = KEFIR_OPT_OPCODE_BLOCK_LABEL, .parameters.block_ref = ref}, false,
         instr_id_ptr));
     return KEFIR_OK;
 }
@@ -362,7 +361,7 @@ kefir_result_t kefir_opt_code_builder_get_global(struct kefir_mem *mem, struct k
 
     REQUIRE_OK(kefir_opt_code_builder_add_instruction(
         mem, code, block_id,
-        &(struct kefir_opt_operation){.opcode = KEFIR_OPT_OPCODE_GET_GLOBAL, .parameters.refs[0] = identifier}, false,
+        &(struct kefir_opt_operation){.opcode = KEFIR_OPT_OPCODE_GET_GLOBAL, .parameters.ir_ref = identifier}, false,
         instr_id_ptr));
     return KEFIR_OK;
 }
@@ -375,7 +374,7 @@ kefir_result_t kefir_opt_code_builder_get_thread_local(struct kefir_mem *mem, st
 
     REQUIRE_OK(kefir_opt_code_builder_add_instruction(
         mem, code, block_id,
-        &(struct kefir_opt_operation){.opcode = KEFIR_OPT_OPCODE_GET_THREAD_LOCAL, .parameters.refs[0] = identifier},
+        &(struct kefir_opt_operation){.opcode = KEFIR_OPT_OPCODE_GET_THREAD_LOCAL, .parameters.ir_ref = identifier},
         false, instr_id_ptr));
     return KEFIR_OK;
 }
@@ -388,7 +387,7 @@ kefir_result_t kefir_opt_code_builder_get_local(struct kefir_mem *mem, struct ke
 
     REQUIRE_OK(kefir_opt_code_builder_add_instruction(
         mem, code, block_id,
-        &(struct kefir_opt_operation){.opcode = KEFIR_OPT_OPCODE_GET_LOCAL, .parameters.refs[0] = identifier}, false,
+        &(struct kefir_opt_operation){.opcode = KEFIR_OPT_OPCODE_GET_LOCAL, .parameters.ir_ref = identifier}, false,
         instr_id_ptr));
     return KEFIR_OK;
 }
