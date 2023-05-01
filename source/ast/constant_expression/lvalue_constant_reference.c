@@ -232,7 +232,8 @@ static kefir_result_t visit_compound_literal(const struct kefir_ast_visitor *vis
     ASSIGN_DECL_CAST(struct visitor_param *, param, payload);
 
 #define BUFFER_LEN 128
-    if (node->base.properties.expression_props.temporary.nested) {
+    const kefir_ast_temporary_mode_t temp_mode = node->base.properties.expression_props.temporary.mode;
+    if (temp_mode == KEFIR_AST_TEMPORARY_MODE_LOCAL_NESTED) {
         const struct kefir_ast_scoped_identifier *scoped_id = NULL;
         REQUIRE_OK(param->context->resolve_ordinary_identifier(
             param->context, KEFIR_AST_TRANSLATOR_TEMPORARIES_IDENTIFIER, &scoped_id));
@@ -269,7 +270,9 @@ static kefir_result_t visit_compound_literal(const struct kefir_ast_visitor *vis
         param->pointer->scoped_id = scoped_id;
     } else {
         char buf[BUFFER_LEN] = {0};
-        snprintf(buf, sizeof(buf) - 1, KEFIR_AST_TRANSLATOR_TEMPORARY_GLOBAL_IDENTIFIER,
+        snprintf(buf, sizeof(buf) - 1,
+                 temp_mode == KEFIR_AST_TEMPORARY_MODE_GLOBAL ? KEFIR_AST_TRANSLATOR_TEMPORARY_GLOBAL_IDENTIFIER
+                                                              : KEFIR_AST_TRANSLATOR_TEMPORARY_LOCAL_IDENTIFIER,
                  node->base.properties.expression_props.temporary.identifier,
                  node->base.properties.expression_props.temporary.field);
 

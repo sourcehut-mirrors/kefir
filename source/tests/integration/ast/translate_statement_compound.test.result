@@ -256,14 +256,6 @@
                     }
                 },
                 {
-                    "opcode": "iadd1",
-                    "arg": 0
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 0
-                },
-                {
                     "opcode": "setldh",
                     "arg": 0
                 },

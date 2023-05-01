@@ -21,6 +21,7 @@
 #include <stdio.h>
 #include "kefir/ast-translator/temporaries.h"
 #include "kefir/ast-translator/scope/scoped_identifier.h"
+#include "kefir/ast-translator/lvalue.h"
 #include "kefir/ast/runtime.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
@@ -35,7 +36,7 @@ kefir_result_t kefir_ast_translator_fetch_temporary(struct kefir_mem *mem, struc
     REQUIRE(temporary->valid, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unable to fetch invalid temporary"));
 
 #define BUFFER_LEN 128
-    if (temporary->nested) {
+    if (temporary->mode == KEFIR_AST_TEMPORARY_MODE_LOCAL_NESTED) {
         const struct kefir_ast_scoped_identifier *scoped_id = NULL;
         REQUIRE_OK(context->ast_context->resolve_ordinary_identifier(
             context->ast_context, KEFIR_AST_TRANSLATOR_TEMPORARIES_IDENTIFIER, &scoped_id));
@@ -60,11 +61,12 @@ kefir_result_t kefir_ast_translator_fetch_temporary(struct kefir_mem *mem, struc
 
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32(builder, KEFIR_IROPCODE_GETLOCAL, scoped_id_layout->type_id,
                                                    scoped_id_layout->layout->value));
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IADD1,
-                                                   temp_value_layout->properties.relative_offset));
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IADD1,
-                                                   temp_member_layout->properties.relative_offset));
-    } else {
+        kefir_size_t total_offset =
+            temp_value_layout->properties.relative_offset + temp_member_layout->properties.relative_offset;
+        if (total_offset > 0) {
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IADD1, total_offset));
+        }
+    } else if (temporary->mode == KEFIR_AST_TEMPORARY_MODE_GLOBAL) {
         char buf[BUFFER_LEN] = {0};
         snprintf(buf, sizeof(buf) - 1, KEFIR_AST_TRANSLATOR_TEMPORARY_GLOBAL_IDENTIFIER, temporary->identifier,
                  temporary->field);
@@ -73,6 +75,14 @@ kefir_result_t kefir_ast_translator_fetch_temporary(struct kefir_mem *mem, struc
         REQUIRE(kefir_ir_module_symbol(mem, context->module, buf, &id) != NULL,
                 KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate IR module symbol"));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_GETGLOBAL, id));
+    } else {
+        char buf[BUFFER_LEN] = {0};
+        snprintf(buf, sizeof(buf) - 1, KEFIR_AST_TRANSLATOR_TEMPORARY_LOCAL_IDENTIFIER, temporary->identifier,
+                 temporary->field);
+
+        const struct kefir_ast_scoped_identifier *scoped_id = NULL;
+        REQUIRE_OK(context->ast_context->resolve_ordinary_identifier(context->ast_context, buf, &scoped_id));
+        REQUIRE_OK(kefir_ast_translator_object_lvalue(mem, context, builder, buf, scoped_id));
     }
 #undef BUFFER_LEN
     return KEFIR_OK;

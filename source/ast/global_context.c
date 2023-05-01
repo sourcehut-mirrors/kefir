@@ -67,8 +67,8 @@ static kefir_result_t context_allocate_temporary_value(struct kefir_mem *mem, co
     ASSIGN_DECL_CAST(struct kefir_ast_global_context *, global_ctx, context->payload);
     UNUSED(kefir_ast_temporaries_init(mem, context->type_bundle, false, context->temporaries));
     REQUIRE_OK(kefir_ast_temporaries_new_temporary(mem, context, type, temp_id));
-    REQUIRE(!temp_id->nested,
-            KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected AST global context temporaries to have flat structure"));
+    REQUIRE(temp_id->mode == KEFIR_AST_TEMPORARY_MODE_GLOBAL,
+            KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected AST global context temporaries to have global flat mode"));
 
 #define BUFSIZE 128
     char buf[BUFSIZE] = {0};

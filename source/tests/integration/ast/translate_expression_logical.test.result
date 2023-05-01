@@ -405,14 +405,6 @@
                     }
                 },
                 {
-                    "opcode": "iadd1",
-                    "arg": 0
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 0
-                },
-                {
                     "opcode": "setldh",
                     "arg": 0
                 },
@@ -429,7 +421,7 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 11
+                    "arg": 9
                 },
                 {
                     "opcode": "pushi",
@@ -456,14 +448,6 @@
                     }
                 },
                 {
-                    "opcode": "iadd1",
-                    "arg": 0
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 0
-                },
-                {
                     "opcode": "setldh",
                     "arg": 0
                 },
@@ -480,7 +464,7 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 15
+                    "arg": 12
                 },
                 {
                     "opcode": "getlocal",
@@ -488,10 +472,6 @@
                         "type": 31,
                         "index": 1
                     }
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 0
                 },
                 {
                     "opcode": "iadd1",
@@ -631,14 +611,6 @@
                     }
                 },
                 {
-                    "opcode": "iadd1",
-                    "arg": 0
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 0
-                },
-                {
                     "opcode": "setldh",
                     "arg": 0
                 },
@@ -658,7 +630,7 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 12
+                    "arg": 10
                 },
                 {
                     "opcode": "pushi",
@@ -685,14 +657,6 @@
                     }
                 },
                 {
-                    "opcode": "iadd1",
-                    "arg": 0
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 0
-                },
-                {
                     "opcode": "setldh",
                     "arg": 0
                 },
@@ -712,7 +676,7 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 16
+                    "arg": 13
                 },
                 {
                     "opcode": "getlocal",
@@ -720,10 +684,6 @@
                         "type": 16,
                         "index": 1
                     }
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 0
                 },
                 {
                     "opcode": "iadd1",

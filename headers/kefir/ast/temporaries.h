@@ -25,9 +25,15 @@
 #include "kefir/core/mem.h"
 #include "kefir/ast/base.h"
 
+typedef enum kefir_ast_temporary_mode {
+    KEFIR_AST_TEMPORARY_MODE_GLOBAL,
+    KEFIR_AST_TEMPORARY_MODE_LOCAL_FLAT,
+    KEFIR_AST_TEMPORARY_MODE_LOCAL_NESTED
+} kefir_ast_temporary_mode_t;
+
 typedef struct kefir_ast_temporary_identifier {
     kefir_bool_t valid;
-    kefir_bool_t nested;
+    kefir_ast_temporary_mode_t mode;
     kefir_id_t identifier;
     kefir_id_t field;
 } kefir_ast_temporary_identifier_t;
@@ -39,7 +45,7 @@ typedef struct kefir_ast_context_temporaries {
     struct kefir_ast_temporary_identifier current;
 } kefir_ast_context_temporaries_t;
 
-kefir_bool_t kefir_ast_temporaries_init(struct kefir_mem *, struct kefir_ast_type_bundle *, kefir_bool_t,
+kefir_bool_t kefir_ast_temporaries_init(struct kefir_mem *, struct kefir_ast_type_bundle *, kefir_ast_temporary_mode_t,
                                         struct kefir_ast_context_temporaries *);
 kefir_result_t kefir_ast_temporaries_next_block(struct kefir_ast_context_temporaries *);
 kefir_result_t kefir_ast_temporaries_new_temporary(struct kefir_mem *, const struct kefir_ast_context *,

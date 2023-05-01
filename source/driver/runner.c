@@ -116,6 +116,8 @@ static kefir_result_t dump_action_impl(struct kefir_mem *mem, const struct kefir
     compiler.ast_global_context.configuration.analysis.int_to_pointer = options->features.int_to_pointer;
     compiler.ast_global_context.configuration.analysis.permissive_pointer_conv =
         options->features.permissive_pointer_conv;
+    compiler.ast_global_context.configuration.internals.flat_local_temporaries =
+        options->internals.flat_local_scope_layout;
 
     compiler.translator_configuration.empty_structs = options->features.empty_structs;
     compiler.translator_configuration.flat_local_scope_layout = options->internals.flat_local_scope_layout;

@@ -27,16 +27,17 @@
 #include "kefir/core/error.h"
 
 kefir_bool_t kefir_ast_temporaries_init(struct kefir_mem *mem, struct kefir_ast_type_bundle *type_bundle,
-                                        kefir_bool_t nested, struct kefir_ast_context_temporaries *temporaries) {
+                                        kefir_ast_temporary_mode_t mode,
+                                        struct kefir_ast_context_temporaries *temporaries) {
     REQUIRE(temporaries != NULL, false);
     if (!temporaries->init_done) {
-        if (nested) {
+        if (mode == KEFIR_AST_TEMPORARY_MODE_LOCAL_NESTED) {
             temporaries->type = kefir_ast_type_union(mem, type_bundle, "", &temporaries->temporaries);
             REQUIRE(temporaries->type != NULL && temporaries->temporaries != NULL, false);
         }
         temporaries->current.identifier = 0;
         temporaries->current.field = 0;
-        temporaries->current.nested = nested;
+        temporaries->current.mode = mode;
         temporaries->current.valid = true;
         temporaries->init_done = true;
         return true;
@@ -63,7 +64,7 @@ kefir_result_t kefir_ast_temporaries_new_temporary(struct kefir_mem *mem, const 
     REQUIRE(context->temporaries != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Provided AST context has no support for temporary values"));
 
-    if (context->temporaries->current.nested) {
+    if (context->temporaries->current.mode == KEFIR_AST_TEMPORARY_MODE_LOCAL_NESTED) {
 #define BUFFER_LEN 128
         char BUFFER[BUFFER_LEN] = {0};
         snprintf(BUFFER, BUFFER_LEN - 1, KEFIR_AST_TRANSLATOR_TEMPORARY_VALUE_IDENTIFIER,

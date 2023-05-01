@@ -460,14 +460,6 @@
                     }
                 },
                 {
-                    "opcode": "iadd1",
-                    "arg": 0
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 0
-                },
-                {
                     "opcode": "setldh",
                     "arg": 0
                 },
@@ -483,7 +475,7 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 15
+                    "arg": 12
                 },
                 {
                     "opcode": "getlocal",
@@ -491,10 +483,6 @@
                         "type": 14,
                         "index": 1
                     }
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 0
                 },
                 {
                     "opcode": "iadd1",
@@ -513,7 +501,7 @@
                 },
                 {
                     "opcode": "jmp",
-                    "arg": 21
+                    "arg": 17
                 },
                 {
                     "opcode": "getlocal",
@@ -521,10 +509,6 @@
                         "type": 14,
                         "index": 1
                     }
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 0
                 },
                 {
                     "opcode": "iadd1",

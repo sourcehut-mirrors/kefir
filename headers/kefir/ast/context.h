@@ -39,6 +39,10 @@ typedef struct kefir_ast_context_configuration {
         kefir_bool_t missing_braces_subobj;
         kefir_bool_t int_to_pointer;
     } analysis;
+
+    struct {
+        kefir_bool_t flat_local_temporaries;
+    } internals;
 } kefir_ast_context_configuration_t;
 
 kefir_result_t kefir_ast_context_configuration_defaults(struct kefir_ast_context_configuration *);

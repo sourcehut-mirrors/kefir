@@ -117,15 +117,50 @@ static kefir_result_t context_allocate_temporary_value(struct kefir_mem *mem, co
     REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type"));
     REQUIRE(temp_id != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid temporary identifier pointer"));
 
+    const kefir_ast_temporary_mode_t temporary_mode = context->configuration->internals.flat_local_temporaries
+                                                          ? KEFIR_AST_TEMPORARY_MODE_LOCAL_FLAT
+                                                          : KEFIR_AST_TEMPORARY_MODE_LOCAL_NESTED;
+
     ASSIGN_DECL_CAST(struct kefir_ast_local_context *, local_ctx, context->payload);
-    if (kefir_ast_temporaries_init(mem, context->type_bundle, true, context->temporaries)) {
+    if (kefir_ast_temporaries_init(mem, context->type_bundle, temporary_mode, context->temporaries) &&
+        temporary_mode == KEFIR_AST_TEMPORARY_MODE_LOCAL_NESTED) {
         REQUIRE(context->temporaries->type != NULL,
                 KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to initialize a temporary type"));
         REQUIRE_OK(define_temporaries(mem, local_ctx, context->temporaries->type, location, NULL));
     }
+
     REQUIRE_OK(kefir_ast_temporaries_new_temporary(mem, context, type, temp_id));
-    REQUIRE(temp_id->nested,
-            KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected AST local context temporaries to have nested structure"));
+    REQUIRE(temp_id->mode == temporary_mode,
+            KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected AST local context temporaries to have local mode"));
+    if (temp_id->mode == KEFIR_AST_TEMPORARY_MODE_LOCAL_FLAT) {
+#define BUFSIZE 128
+        char buf[BUFSIZE] = {0};
+        snprintf(buf, sizeof(buf) - 1, KEFIR_AST_TRANSLATOR_TEMPORARY_LOCAL_IDENTIFIER, temp_id->identifier,
+                 temp_id->field);
+
+        struct kefir_ast_scoped_identifier *scoped_id = NULL;
+        ASSIGN_DECL_CAST(struct kefir_ast_identifier_flat_scope *, root_scope, local_ctx->ordinary_scope.root.value);
+        kefir_result_t res = kefir_ast_identifier_flat_scope_at(root_scope, buf, &scoped_id);
+        if (res == KEFIR_OK) {
+            res = KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected duplicate local temporary identifier");
+        }
+        REQUIRE(res == KEFIR_NOT_FOUND, res);
+
+        scoped_id = kefir_ast_context_allocate_scoped_object_identifier(
+            mem, type, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO, NULL, KEFIR_AST_SCOPED_IDENTIFIER_NONE_LINKAGE, false,
+            NULL, NULL, location);
+        REQUIRE(scoped_id != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocted AST scoped identifier"));
+        res =
+            kefir_list_insert_after(mem, &local_ctx->identifiers, kefir_list_tail(&local_ctx->identifiers), scoped_id);
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            kefir_ast_context_free_scoped_identifier(mem, scoped_id, NULL);
+            return res;
+        });
+        const char *id = kefir_symbol_table_insert(mem, &local_ctx->global->symbols, buf, NULL);
+        REQUIRE(id != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert identifier into symbol table"));
+        REQUIRE_OK(kefir_ast_identifier_flat_scope_insert(mem, root_scope, id, scoped_id));
+#undef BUFSIZE
+    }
     return KEFIR_OK;
 }
 

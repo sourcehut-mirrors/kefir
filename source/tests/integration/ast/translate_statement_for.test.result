@@ -570,14 +570,6 @@
                     }
                 },
                 {
-                    "opcode": "iadd1",
-                    "arg": 0
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 0
-                },
-                {
                     "opcode": "setldh",
                     "arg": 0
                 },
@@ -594,10 +586,6 @@
                         "type": 25,
                         "index": 1
                     }
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 0
                 },
                 {
                     "opcode": "iadd1",
@@ -619,7 +607,7 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 16
+                    "arg": 13
                 },
                 {
                     "opcode": "invoke",
@@ -630,7 +618,7 @@
                 },
                 {
                     "opcode": "jmp",
-                    "arg": 6
+                    "arg": 4
                 }
             ]
         }

@@ -9,6 +9,7 @@ kefir_result_t kefir_ast_context_configuration_defaults(struct kefir_ast_context
                                                                     .non_strict_qualifiers = false,
                                                                     .fixed_enum_type = false,
                                                                     .implicit_function_declaration = false,
-                                                                    .int_to_pointer = false}};
+                                                                    .int_to_pointer = false},
+                                                       .internals = {.flat_local_temporaries = false}};
     return KEFIR_OK;
 }

@@ -207,14 +207,6 @@
                     }
                 },
                 {
-                    "opcode": "iadd1",
-                    "arg": 0
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 0
-                },
-                {
                     "opcode": "pick",
                     "arg": 0
                 },
@@ -247,10 +239,6 @@
                         "type": 4,
                         "index": 1
                     }
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 0
                 },
                 {
                     "opcode": "iadd1",
@@ -348,10 +336,6 @@
                         "type": 4,
                         "index": 1
                     }
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 0
                 },
                 {
                     "opcode": "iadd1",

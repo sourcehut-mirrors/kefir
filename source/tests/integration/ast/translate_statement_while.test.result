@@ -352,14 +352,6 @@
                     }
                 },
                 {
-                    "opcode": "iadd1",
-                    "arg": 0
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 0
-                },
-                {
                     "opcode": "setldh",
                     "arg": 0
                 },
@@ -375,7 +367,7 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 11
+                    "arg": 9
                 },
                 {
                     "opcode": "pushu",

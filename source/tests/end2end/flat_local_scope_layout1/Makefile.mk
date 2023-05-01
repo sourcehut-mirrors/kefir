@@ -1,0 +1,2 @@
+END2END_TEST_ID=flat_local_scope_layout1
+include source/tests/end2end/Makefile.template.mk
