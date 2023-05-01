@@ -1,24 +1,34 @@
-image: ubuntu/focal
+image: ubuntu/jammy
 packages:
   - build-essential
-  - gcc-10
+  - gcc-12
+  - clang-15
   - valgrind
   - wget
 sources:
   - https://git.sr.ht/~jprotopopov/kefir
   - https://github.com/protopopov1122/c-testsuite.git
 tasks:
-  - kefircc: |
+  - test_gcc: |
       cd kefir
-      make all OPT=-O2 -j$(nproc)
+      make clean
+      LC_ALL=C.UTF-8 make test MEMCHECK=yes OPT=-O3 SANITIZE=undefined CC=gcc-12 -j$(nproc)
+  - test_clang: |
+      cd kefir
+      make clean
+      LC_ALL=C.UTF-8 make test MEMCHECK=yes OPT=-O3 DBG=-gdwarf-4 SANITIZE=undefined CC=clang-15 -j$(nproc)
+  - build: |
+      cd kefir
+      make clean
+      LC_ALL=C.UTF-8 make all OPT=-O3 CC=gcc-12
   - lua_tests: |
       cd kefir
       export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(pwd)/bin/libs
       export LC_ALL=C.UTF-8
       export KEFIR_RTLIB="$HOME/kefir/bin/libs/libkefirrt.a"
       export KEFIR_RTINC="$HOME/kefir/headers/kefir/runtime"
-      export KEFIR_GNU_INCLUDE="/usr/lib/gcc/x86_64-linux-gnu/10/include;/usr/include/x86_64-linux-gnu;/usr/include;/usr/local/include"
-      export KEFIR_GNU_LIB="/usr/lib/x86_64-linux-gnu;/usr/lib/gcc/x86_64-linux-gnu/10/;/usr/lib;/usr/local/lib"
+      export KEFIR_GNU_INCLUDE="/usr/lib/gcc/x86_64-linux-gnu/12/include;/usr/include/x86_64-linux-gnu;/usr/include;/usr/local/include"
+      export KEFIR_GNU_LIB="/usr/lib/x86_64-linux-gnu;/usr/lib/gcc/x86_64-linux-gnu/12/;/usr/lib;/usr/local/lib"
       export KEFIR_GNU_DYNAMIC_LINKER="/lib64/ld-linux-x86-64.so.2"
       ./source/tests/misc/run-lua-tests.sh "$(pwd)/bin/kefir" "$(pwd)/bin/lua-test"
   - c_testsuite: |
@@ -27,8 +37,8 @@ tasks:
       export KEFIRCC="$HOME/kefir/bin/kefir"
       export KEFIR_RTLIB="$HOME/kefir/bin/libs/libkefirrt.a"
       export KEFIR_RTINC="$HOME/kefir/headers/kefir/runtime"
-      export KEFIR_GNU_INCLUDE="/usr/lib/gcc/x86_64-linux-gnu/10/include;/usr/include/x86_64-linux-gnu;/usr/include;/usr/local/include"
-      export KEFIR_GNU_LIB="/usr/lib/x86_64-linux-gnu;/usr/lib/gcc/x86_64-linux-gnu/10/;/usr/lib;/usr/local/lib"
+      export KEFIR_GNU_INCLUDE="/usr/lib/gcc/x86_64-linux-gnu/12/include;/usr/include/x86_64-linux-gnu;/usr/include;/usr/local/include"
+      export KEFIR_GNU_LIB="/usr/lib/x86_64-linux-gnu;/usr/lib/gcc/x86_64-linux-gnu/12/;/usr/lib;/usr/local/lib"
       export KEFIR_GNU_DYNAMIC_LINKER="/lib64/ld-linux-x86-64.so.2"
       export CFLAGS=""
       export LC_ALL=C.UTF-8 
@@ -42,8 +52,8 @@ tasks:
       export KEFIRCC="$HOME/kefir/bin/kefir"
       export KEFIR_RTLIB="$HOME/kefir/bin/libs/libkefirrt.a"
       export KEFIR_RTINC="$HOME/kefir/headers/kefir/runtime"
-      export KEFIR_GNU_INCLUDE="/usr/lib/gcc/x86_64-linux-gnu/10/include;/usr/include/x86_64-linux-gnu;/usr/include;/usr/local/include"
-      export KEFIR_GNU_LIB="/usr/lib/x86_64-linux-gnu;/usr/lib/gcc/x86_64-linux-gnu/10/;/usr/lib;/usr/local/lib"
+      export KEFIR_GNU_INCLUDE="/usr/lib/gcc/x86_64-linux-gnu/12/include;/usr/include/x86_64-linux-gnu;/usr/include;/usr/local/include"
+      export KEFIR_GNU_LIB="/usr/lib/x86_64-linux-gnu;/usr/lib/gcc/x86_64-linux-gnu/12/;/usr/lib;/usr/local/lib"
       export KEFIR_GNU_DYNAMIC_LINKER="/lib64/ld-linux-x86-64.so.2"
       LC_ALL=C.UTF-8 ./kefir/source/tests/misc/run_gcc_torture_suite.sh 2>&1 | tee torture.log
       grep -v "Interrupted system call" torture.log | grep -i "fatal\|abort\|timeout\|segm" && exit 1 || true
