@@ -177,7 +177,7 @@
                             },
                             {
                                 "id": 22,
-                                "opcode": "int64_zero_extend_1bit",
+                                "opcode": "int64_truncate_1bit",
                                 "arg": 21,
                                 "control_next": null
                             },
@@ -225,7 +225,7 @@
                             },
                             {
                                 "id": 34,
-                                "opcode": "int64_zero_extend_1bit",
+                                "opcode": "int64_truncate_1bit",
                                 "arg": 33,
                                 "control_next": null
                             },
@@ -287,7 +287,7 @@
                             },
                             {
                                 "id": 29,
-                                "opcode": "int64_zero_extend_1bit",
+                                "opcode": "int64_truncate_1bit",
                                 "arg": 28,
                                 "control_next": null
                             },
@@ -342,7 +342,7 @@
                             },
                             {
                                 "id": 55,
-                                "opcode": "int64_zero_extend_1bit",
+                                "opcode": "int64_truncate_1bit",
                                 "arg": 54,
                                 "control_next": null
                             },
@@ -402,7 +402,7 @@
                             },
                             {
                                 "id": 40,
-                                "opcode": "int64_zero_extend_1bit",
+                                "opcode": "int64_truncate_1bit",
                                 "arg": 39,
                                 "control_next": null
                             },
@@ -469,7 +469,7 @@
                             },
                             {
                                 "id": 50,
-                                "opcode": "int64_zero_extend_1bit",
+                                "opcode": "int64_truncate_1bit",
                                 "arg": 49,
                                 "control_next": null
                             },
@@ -538,7 +538,7 @@
                             },
                             {
                                 "id": 45,
-                                "opcode": "int64_zero_extend_1bit",
+                                "opcode": "int64_truncate_1bit",
                                 "arg": 44,
                                 "control_next": null
                             },
@@ -699,7 +699,7 @@
                             },
                             {
                                 "id": 15,
-                                "opcode": "int64_zero_extend_1bit",
+                                "opcode": "int64_truncate_1bit",
                                 "arg": 14,
                                 "control_next": null
                             },
@@ -825,7 +825,7 @@
                             },
                             {
                                 "id": 19,
-                                "opcode": "int64_zero_extend_1bit",
+                                "opcode": "int64_truncate_1bit",
                                 "arg": 18,
                                 "control_next": null
                             },

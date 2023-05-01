@@ -20,7 +20,7 @@
                             },
                             {
                                 "id": 1,
-                                "opcode": "int64_zero_extend_1bit",
+                                "opcode": "int64_truncate_1bit",
                                 "arg": 0,
                                 "control_next": null
                             },

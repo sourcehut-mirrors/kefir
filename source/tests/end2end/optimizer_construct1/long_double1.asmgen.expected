@@ -532,7 +532,7 @@
                             },
                             {
                                 "id": 4,
-                                "opcode": "long_double_truncate",
+                                "opcode": "long_double_truncate_1bit",
                                 "arg": 3,
                                 "control_next": null
                             },
