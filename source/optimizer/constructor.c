@@ -58,6 +58,10 @@ static kefir_result_t identify_code_blocks(struct kefir_mem *mem, struct kefir_o
                 break;
         }
     }
+
+    if (kefir_irblock_length(&state->function->ir_func->body) == 0) {
+        REQUIRE_OK(kefir_opt_constructor_start_code_block_at(mem, state, 0, false));
+    }
     return KEFIR_OK;
 }
 
@@ -515,14 +519,12 @@ static kefir_result_t translate_code(struct kefir_mem *mem, const struct kefir_o
     }
 
     REQUIRE_OK(kefir_opt_constructor_update_current_code_block(mem, state));
-    if (state->current_block != NULL) {
-        kefir_bool_t last_block_finalized = false;
-        REQUIRE_OK(kefir_opt_code_builder_is_finalized(&state->function->code, state->current_block->block_id,
-                                                       &last_block_finalized));
-        if (!last_block_finalized) {
-            REQUIRE_OK(kefir_opt_code_builder_finalize_return(mem, &state->function->code,
-                                                              state->current_block->block_id, KEFIR_ID_NONE, NULL));
-        }
+    kefir_bool_t last_block_finalized = false;
+    REQUIRE_OK(kefir_opt_code_builder_is_finalized(&state->function->code, state->current_block->block_id,
+                                                   &last_block_finalized));
+    if (!last_block_finalized) {
+        REQUIRE_OK(kefir_opt_code_builder_finalize_return(mem, &state->function->code, state->current_block->block_id,
+                                                          KEFIR_ID_NONE, NULL));
     }
     return KEFIR_OK;
 }
