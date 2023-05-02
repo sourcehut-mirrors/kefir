@@ -196,6 +196,9 @@ kefir_result_t kefir_opt_code_container_new_instruction(struct kefir_mem *, stru
                                                         struct kefir_opt_code_block *,
                                                         const struct kefir_opt_operation *,
                                                         kefir_opt_instruction_ref_t *);
+kefir_result_t kefir_opt_code_container_instruction_move_after(const struct kefir_opt_code_container *,
+                                                               kefir_opt_instruction_ref_t,
+                                                               kefir_opt_instruction_ref_t);
 
 kefir_result_t kefir_opt_code_container_add_control(const struct kefir_opt_code_container *,
                                                     struct kefir_opt_code_block *, kefir_opt_instruction_ref_t);

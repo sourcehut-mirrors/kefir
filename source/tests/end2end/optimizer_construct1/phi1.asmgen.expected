@@ -256,6 +256,12 @@
                         "calls": [],
                         "code": [
                             {
+                                "id": 30,
+                                "opcode": "phi",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
                                 "id": 25,
                                 "opcode": "get_local",
                                 "ir_ref": 0,
@@ -289,12 +295,6 @@
                                 "id": 29,
                                 "opcode": "int64_truncate_1bit",
                                 "arg": 28,
-                                "control_next": null
-                            },
-                            {
-                                "id": 30,
-                                "opcode": "phi",
-                                "arg": 0,
                                 "control_next": null
                             },
                             {
@@ -371,6 +371,12 @@
                         "calls": [],
                         "code": [
                             {
+                                "id": 57,
+                                "opcode": "phi",
+                                "arg": 6,
+                                "control_next": null
+                            },
+                            {
                                 "id": 36,
                                 "opcode": "get_local",
                                 "ir_ref": 0,
@@ -419,12 +425,6 @@
                                 "alternative_block": 6,
                                 "condition": 41,
                                 "control_next": null
-                            },
-                            {
-                                "id": 57,
-                                "opcode": "phi",
-                                "arg": 6,
-                                "control_next": null
                             }
                         ]
                     },
@@ -462,6 +462,12 @@
                         "calls": [],
                         "code": [
                             {
+                                "id": 51,
+                                "opcode": "phi",
+                                "arg": 4,
+                                "control_next": null
+                            },
+                            {
                                 "id": 49,
                                 "opcode": "phi",
                                 "arg": 3,
@@ -471,12 +477,6 @@
                                 "id": 50,
                                 "opcode": "int64_truncate_1bit",
                                 "arg": 49,
-                                "control_next": null
-                            },
-                            {
-                                "id": 51,
-                                "opcode": "phi",
-                                "arg": 4,
                                 "control_next": null
                             },
                             {
@@ -522,6 +522,18 @@
                         "calls": [],
                         "code": [
                             {
+                                "id": 58,
+                                "opcode": "phi",
+                                "arg": 7,
+                                "control_next": null
+                            },
+                            {
+                                "id": 46,
+                                "opcode": "phi",
+                                "arg": 2,
+                                "control_next": null
+                            },
+                            {
                                 "id": 43,
                                 "opcode": "get_local",
                                 "ir_ref": 0,
@@ -543,12 +555,6 @@
                                 "control_next": null
                             },
                             {
-                                "id": 46,
-                                "opcode": "phi",
-                                "arg": 2,
-                                "control_next": null
-                            },
-                            {
                                 "id": 47,
                                 "opcode": "bool_and",
                                 "args": [
@@ -561,12 +567,6 @@
                                 "id": 48,
                                 "opcode": "jump",
                                 "target_block": 5,
-                                "control_next": null
-                            },
-                            {
-                                "id": 58,
-                                "opcode": "phi",
-                                "arg": 7,
                                 "control_next": null
                             }
                         ]
@@ -818,6 +818,12 @@
                         "calls": [],
                         "code": [
                             {
+                                "id": 20,
+                                "opcode": "phi",
+                                "arg": 0,
+                                "control_next": null
+                            },
+                            {
                                 "id": 18,
                                 "opcode": "int_const",
                                 "value": 1,
@@ -827,12 +833,6 @@
                                 "id": 19,
                                 "opcode": "int64_truncate_1bit",
                                 "arg": 18,
-                                "control_next": null
-                            },
-                            {
-                                "id": 20,
-                                "opcode": "phi",
-                                "arg": 0,
                                 "control_next": null
                             },
                             {
