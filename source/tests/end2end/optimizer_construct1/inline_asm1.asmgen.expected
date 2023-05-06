@@ -16,21 +16,33 @@
                                 "id": 0,
                                 "opcode": "inline_assembly",
                                 "ir_ref": 0,
-                                "control_next": 1
+                                "control_next": 1,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 1,
                                 "opcode": "inline_assembly",
                                 "ir_ref": 1,
-                                "control_next": 2
+                                "control_next": 2,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 2,
                                 "opcode": "return",
                                 "arg": null,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             }
-                        ]
+                        ],
+                        "properties": {
+                            "reachable": true
+                        }
                     }
                 ]
             }

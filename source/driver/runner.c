@@ -36,6 +36,7 @@
 #include "kefir/driver/runner.h"
 #include "kefir/optimizer/module.h"
 #include "kefir/optimizer/format.h"
+#include "kefir/optimizer/analysis.h"
 
 // ATTENTION: This is module is not a part of the core library, thus memory management
 //            is different here. While all the modules from core library shall correctly
@@ -325,6 +326,7 @@ static kefir_result_t dump_opt_impl(struct kefir_mem *mem, const struct kefir_co
     struct kefir_ast_translation_unit *unit = NULL;
     struct kefir_ir_module module;
     struct kefir_opt_module opt_module;
+    struct kefir_opt_module_analysis opt_analysis;
 
     REQUIRE_OK(kefir_token_buffer_init(&tokens));
     REQUIRE_OK(lex_file(mem, options, compiler, source_id, source, length, &tokens));
@@ -333,12 +335,14 @@ static kefir_result_t dump_opt_impl(struct kefir_mem *mem, const struct kefir_co
     REQUIRE_OK(kefir_ir_module_alloc(mem, &module));
     REQUIRE_OK(kefir_compiler_translate(mem, compiler, unit, &module, true));
     REQUIRE_OK(kefir_opt_module_init(mem, compiler->translator_env.target_platform, &module, &opt_module));
+    REQUIRE_OK(kefir_opt_module_analyze(mem, &opt_module, &opt_analysis));
 
     struct kefir_json_output json;
     REQUIRE_OK(kefir_json_output_init(&json, output, 4));
-    REQUIRE_OK(kefir_opt_module_format(&json, &opt_module));
+    REQUIRE_OK(kefir_opt_module_format(&json, &opt_module, &opt_analysis));
     REQUIRE_OK(kefir_json_output_finalize(&json));
 
+    REQUIRE_OK(kefir_opt_module_analysis_free(mem, &opt_analysis));
     REQUIRE_OK(kefir_opt_module_free(mem, &opt_module));
     REQUIRE_OK(kefir_ir_module_free(mem, &module));
     REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(unit)));

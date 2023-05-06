@@ -104,6 +104,11 @@ kefir_bool_t kefir_opt_code_container_is_empty(const struct kefir_opt_code_conta
     return kefir_hashtree_empty(&code->blocks) && code->length == 0 && code->entry_point == KEFIR_ID_NONE;
 }
 
+kefir_size_t kefir_opt_code_container_length(const struct kefir_opt_code_container *code) {
+    REQUIRE(code != NULL, 0);
+    return code->length;
+}
+
 kefir_result_t kefir_opt_code_container_new_block(struct kefir_mem *mem, struct kefir_opt_code_container *code,
                                                   kefir_bool_t entry_point, kefir_opt_block_id_t *block_id_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
@@ -904,4 +909,32 @@ const struct kefir_opt_code_block *kefir_opt_code_container_next(struct kefir_op
     } else {
         return NULL;
     }
+}
+
+kefir_result_t kefir_opt_phi_node_link_iter(const struct kefir_opt_phi_node *phi_node,
+                                            struct kefir_opt_phi_node_link_iterator *iter,
+                                            kefir_opt_block_id_t *block_id_ptr,
+                                            kefir_opt_instruction_ref_t *instr_ref_ptr) {
+    REQUIRE(phi_node != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer phi node"));
+    REQUIRE(iter != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer phi node link iterator"));
+
+    const struct kefir_hashtree_node *node = kefir_hashtree_iter(&phi_node->links, &iter->iter);
+    REQUIRE(node != NULL, KEFIR_ITERATOR_END);
+    ASSIGN_PTR(block_id_ptr, (kefir_opt_block_id_t) node->key);
+    ASSIGN_PTR(instr_ref_ptr, (kefir_opt_instruction_ref_t) node->value);
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_phi_node_link_next(struct kefir_opt_phi_node_link_iterator *iter,
+                                            kefir_opt_block_id_t *block_id_ptr,
+                                            kefir_opt_instruction_ref_t *instr_ref_ptr) {
+    REQUIRE(iter != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer phi node link iterator"));
+
+    const struct kefir_hashtree_node *node = kefir_hashtree_next(&iter->iter);
+    REQUIRE(node != NULL, KEFIR_ITERATOR_END);
+    ASSIGN_PTR(block_id_ptr, (kefir_opt_block_id_t) node->key);
+    ASSIGN_PTR(instr_ref_ptr, (kefir_opt_instruction_ref_t) node->value);
+    return KEFIR_OK;
 }

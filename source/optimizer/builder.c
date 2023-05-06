@@ -186,14 +186,14 @@ kefir_result_t kefir_opt_code_builder_finalize_return(struct kefir_mem *mem, str
 }
 
 kefir_result_t kefir_opt_code_builder_get_argument(struct kefir_mem *mem, struct kefir_opt_code_container *code,
-                                                   kefir_opt_block_id_t block_id, kefir_id_t identifier,
+                                                   kefir_opt_block_id_t block_id, kefir_size_t index,
                                                    kefir_opt_instruction_ref_t *instr_id_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
 
     REQUIRE_OK(kefir_opt_code_builder_add_instruction(
         mem, code, block_id,
-        &(struct kefir_opt_operation){.opcode = KEFIR_OPT_OPCODE_GET_ARGUMENT, .parameters.refs[0] = identifier}, false,
+        &(struct kefir_opt_operation){.opcode = KEFIR_OPT_OPCODE_GET_ARGUMENT, .parameters.index = index}, false,
         instr_id_ptr));
     return KEFIR_OK;
 }
@@ -207,7 +207,7 @@ kefir_result_t kefir_opt_code_builder_phi(struct kefir_mem *mem, struct kefir_op
     REQUIRE_OK(phi_exists(code, identifier));
     REQUIRE_OK(kefir_opt_code_builder_add_instruction(
         mem, code, block_id,
-        &(struct kefir_opt_operation){.opcode = KEFIR_OPT_OPCODE_PHI, .parameters.refs[0] = identifier}, false,
+        &(struct kefir_opt_operation){.opcode = KEFIR_OPT_OPCODE_PHI, .parameters.phi_ref = identifier}, false,
         instr_id_ptr));
     return KEFIR_OK;
 }
@@ -332,7 +332,7 @@ kefir_result_t kefir_opt_code_builder_string_reference(struct kefir_mem *mem, st
 
     REQUIRE_OK(kefir_opt_code_builder_add_instruction(
         mem, code, block_id,
-        &(struct kefir_opt_operation){.opcode = KEFIR_OPT_OPCODE_STRING_REF, .parameters.ir_ref = ref}, false,
+        &(struct kefir_opt_operation){.opcode = KEFIR_OPT_OPCODE_STRING_REF, .parameters.imm.string_ref = ref}, false,
         instr_id_ptr));
     return KEFIR_OK;
 }
@@ -346,7 +346,7 @@ kefir_result_t kefir_opt_code_builder_block_label(struct kefir_mem *mem, struct 
     REQUIRE_OK(block_exists(code, ref));
     REQUIRE_OK(kefir_opt_code_builder_add_instruction(
         mem, code, block_id,
-        &(struct kefir_opt_operation){.opcode = KEFIR_OPT_OPCODE_BLOCK_LABEL, .parameters.block_ref = ref}, false,
+        &(struct kefir_opt_operation){.opcode = KEFIR_OPT_OPCODE_BLOCK_LABEL, .parameters.imm.block_ref = ref}, false,
         instr_id_ptr));
     return KEFIR_OK;
 }
@@ -378,14 +378,14 @@ kefir_result_t kefir_opt_code_builder_get_thread_local(struct kefir_mem *mem, st
 }
 
 kefir_result_t kefir_opt_code_builder_get_local(struct kefir_mem *mem, struct kefir_opt_code_container *code,
-                                                kefir_opt_block_id_t block_id, kefir_id_t identifier,
+                                                kefir_opt_block_id_t block_id, kefir_size_t index,
                                                 kefir_opt_instruction_ref_t *instr_id_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
 
     REQUIRE_OK(kefir_opt_code_builder_add_instruction(
         mem, code, block_id,
-        &(struct kefir_opt_operation){.opcode = KEFIR_OPT_OPCODE_GET_LOCAL, .parameters.ir_ref = identifier}, false,
+        &(struct kefir_opt_operation){.opcode = KEFIR_OPT_OPCODE_GET_LOCAL, .parameters.index = index}, false,
         instr_id_ptr));
     return KEFIR_OK;
 }
@@ -401,10 +401,9 @@ kefir_result_t kefir_opt_code_builder_zero_memory(struct kefir_mem *mem, struct 
     REQUIRE_OK(kefir_opt_code_builder_add_instruction(
         mem, code, block_id,
         &(struct kefir_opt_operation){.opcode = KEFIR_OPT_OPCODE_ZERO_MEMORY,
-                                      .parameters.memory_operation = {.target = location_ref,
-                                                                      .source = KEFIR_ID_NONE,
-                                                                      .type_id = type_id,
-                                                                      .type_index = type_index}},
+                                      .parameters.typed_refs = {.ref = {location_ref, KEFIR_ID_NONE},
+                                                                .type_id = type_id,
+                                                                .type_index = type_index}},
         false, instr_id_ptr));
     return KEFIR_OK;
 }
@@ -421,11 +420,9 @@ kefir_result_t kefir_opt_code_builder_copy_memory(struct kefir_mem *mem, struct 
     REQUIRE_OK(instr_exists(code, block_id, source_ref, false));
     REQUIRE_OK(kefir_opt_code_builder_add_instruction(
         mem, code, block_id,
-        &(struct kefir_opt_operation){.opcode = KEFIR_OPT_OPCODE_COPY_MEMORY,
-                                      .parameters.memory_operation = {.target = location_ref,
-                                                                      .source = source_ref,
-                                                                      .type_id = type_id,
-                                                                      .type_index = type_index}},
+        &(struct kefir_opt_operation){
+            .opcode = KEFIR_OPT_OPCODE_COPY_MEMORY,
+            .parameters.typed_refs = {.ref = {location_ref, source_ref}, .type_id = type_id, .type_index = type_index}},
         false, instr_id_ptr));
     return KEFIR_OK;
 }
@@ -501,7 +498,7 @@ kefir_result_t kefir_opt_code_builder_vararg_get(struct kefir_mem *mem, struct k
         mem, code, block_id,
         &(struct kefir_opt_operation){
             .opcode = KEFIR_OPT_OPCODE_VARARG_GET,
-            .parameters.typed_ref = {.ref = source_ref, .type_id = type_id, .type_index = type_index}},
+            .parameters.typed_refs = {.ref = {source_ref}, .type_id = type_id, .type_index = type_index}},
         false, instr_id_ptr));
     return KEFIR_OK;
 }

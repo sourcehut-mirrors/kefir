@@ -16,13 +16,19 @@
                                 "id": 0,
                                 "opcode": "int_const",
                                 "value": 1,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 1,
                                 "opcode": "int_const",
                                 "value": 2,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 2,
@@ -31,13 +37,19 @@
                                     0,
                                     1
                                 ],
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 3,
                                 "opcode": "int_const",
                                 "value": 1,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 4,
@@ -46,25 +58,37 @@
                                     2,
                                     3
                                 ],
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 5,
                                 "opcode": "int64_sign_extend_32bits",
                                 "arg": 4,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 6,
                                 "opcode": "int_const",
                                 "value": 3,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 7,
                                 "opcode": "int_const",
                                 "value": 4,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 8,
@@ -73,7 +97,10 @@
                                     6,
                                     7
                                 ],
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 9,
@@ -82,7 +109,10 @@
                                     7,
                                     6
                                 ],
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 10,
@@ -91,13 +121,19 @@
                                     8,
                                     9
                                 ],
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 11,
                                 "opcode": "int_const",
                                 "value": 5,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 12,
@@ -106,13 +142,19 @@
                                     10,
                                     11
                                 ],
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 13,
                                 "opcode": "bool_not",
                                 "arg": 12,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 14,
@@ -121,19 +163,28 @@
                                     5,
                                     13
                                 ],
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 15,
                                 "opcode": "int64_sign_extend_32bits",
                                 "arg": 14,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 16,
                                 "opcode": "bool_not",
                                 "arg": 15,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 17,
@@ -141,9 +192,15 @@
                                 "target_block": 1,
                                 "alternative_block": 2,
                                 "condition": 16,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             }
-                        ]
+                        ],
+                        "properties": {
+                            "reachable": true
+                        }
                     },
                     {
                         "id": 1,
@@ -155,9 +212,15 @@
                                 "id": 42,
                                 "opcode": "return",
                                 "arg": null,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             }
-                        ]
+                        ],
+                        "properties": {
+                            "reachable": true
+                        }
                     },
                     {
                         "id": 2,
@@ -169,13 +232,19 @@
                                 "id": 18,
                                 "opcode": "int_const",
                                 "value": 0,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 19,
                                 "opcode": "int_const",
                                 "value": 10,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 20,
@@ -184,13 +253,19 @@
                                     18,
                                     19
                                 ],
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 21,
                                 "opcode": "bool_not",
                                 "arg": 20,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 22,
@@ -198,9 +273,15 @@
                                 "target_block": 3,
                                 "alternative_block": 4,
                                 "condition": 21,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             }
-                        ]
+                        ],
+                        "properties": {
+                            "reachable": true
+                        }
                     },
                     {
                         "id": 3,
@@ -212,19 +293,28 @@
                                 "id": 26,
                                 "opcode": "int_const",
                                 "value": 1,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 27,
                                 "opcode": "int_const",
                                 "value": 2,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 28,
                                 "opcode": "int_const",
                                 "value": 2,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 29,
@@ -233,13 +323,19 @@
                                     27,
                                     28
                                 ],
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 30,
                                 "opcode": "int64_sign_extend_32bits",
                                 "arg": 29,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 31,
@@ -248,19 +344,28 @@
                                     26,
                                     30
                                 ],
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 32,
                                 "opcode": "int64_sign_extend_32bits",
                                 "arg": 31,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 33,
                                 "opcode": "int_const",
                                 "value": 5,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 34,
@@ -269,7 +374,10 @@
                                     32,
                                     33
                                 ],
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 35,
@@ -278,7 +386,10 @@
                                     33,
                                     32
                                 ],
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 36,
@@ -287,19 +398,28 @@
                                     34,
                                     35
                                 ],
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 37,
                                 "opcode": "bool_not",
                                 "arg": 36,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 38,
                                 "opcode": "int_const",
                                 "value": 0,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 39,
@@ -308,7 +428,10 @@
                                     37,
                                     38
                                 ],
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 40,
@@ -316,9 +439,15 @@
                                 "target_block": 2,
                                 "alternative_block": 5,
                                 "condition": 39,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             }
-                        ]
+                        ],
+                        "properties": {
+                            "reachable": true
+                        }
                     },
                     {
                         "id": 4,
@@ -330,21 +459,33 @@
                                 "id": 23,
                                 "opcode": "float64_const",
                                 "value": 3.000000,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 24,
                                 "opcode": "float64_to_float32",
                                 "arg": 23,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 25,
                                 "opcode": "return",
                                 "arg": 24,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             }
-                        ]
+                        ],
+                        "properties": {
+                            "reachable": true
+                        }
                     },
                     {
                         "id": 5,
@@ -356,9 +497,15 @@
                                 "id": 41,
                                 "opcode": "jump",
                                 "target_block": 0,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             }
-                        ]
+                        ],
+                        "properties": {
+                            "reachable": true
+                        }
                     }
                 ]
             }

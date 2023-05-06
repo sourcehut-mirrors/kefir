@@ -15,32 +15,47 @@
                             {
                                 "id": 0,
                                 "opcode": "get_argument",
-                                "arg": 0,
-                                "control_next": null
+                                "index": 0,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 1,
                                 "opcode": "get_argument",
-                                "arg": 1,
-                                "control_next": null
+                                "index": 1,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 2,
                                 "opcode": "get_argument",
-                                "arg": 2,
-                                "control_next": null
+                                "index": 2,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 3,
                                 "opcode": "get_argument",
-                                "arg": 3,
-                                "control_next": null
+                                "index": 3,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 4,
                                 "opcode": "get_local",
-                                "ir_ref": 0,
-                                "control_next": null
+                                "index": 0,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 5,
@@ -50,19 +65,28 @@
                                 "flags": {
                                     "volatile": false
                                 },
-                                "control_next": 9
+                                "control_next": 9,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 6,
                                 "opcode": "get_local",
-                                "ir_ref": 0,
-                                "control_next": null
+                                "index": 0,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 7,
                                 "opcode": "int_const",
                                 "value": 12,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 8,
@@ -71,7 +95,10 @@
                                     6,
                                     7
                                 ],
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 9,
@@ -81,19 +108,28 @@
                                 "flags": {
                                     "volatile": false
                                 },
-                                "control_next": 13
+                                "control_next": 13,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 10,
                                 "opcode": "get_local",
-                                "ir_ref": 0,
-                                "control_next": null
+                                "index": 0,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 11,
                                 "opcode": "int_const",
                                 "value": 8,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 12,
@@ -102,7 +138,10 @@
                                     10,
                                     11
                                 ],
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 13,
@@ -112,19 +151,28 @@
                                 "flags": {
                                     "volatile": false
                                 },
-                                "control_next": 17
+                                "control_next": 17,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 14,
                                 "opcode": "get_local",
-                                "ir_ref": 0,
-                                "control_next": null
+                                "index": 0,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 15,
                                 "opcode": "int_const",
                                 "value": 4,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 16,
@@ -133,7 +181,10 @@
                                     14,
                                     15
                                 ],
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 17,
@@ -143,19 +194,28 @@
                                 "flags": {
                                     "volatile": false
                                 },
-                                "control_next": 24
+                                "control_next": 24,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 18,
                                 "opcode": "get_local",
-                                "ir_ref": 0,
-                                "control_next": null
+                                "index": 0,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 19,
                                 "opcode": "int_const",
                                 "value": 4,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 20,
@@ -164,7 +224,10 @@
                                     18,
                                     19
                                 ],
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 21,
@@ -173,19 +236,28 @@
                                 "flags": {
                                     "volatile": false
                                 },
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 22,
                                 "opcode": "int64_truncate_1bit",
                                 "arg": 21,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 23,
                                 "opcode": "bool_not",
                                 "arg": 22,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 24,
@@ -193,9 +265,15 @@
                                 "target_block": 1,
                                 "alternative_block": 2,
                                 "condition": 23,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             }
-                        ]
+                        ],
+                        "properties": {
+                            "reachable": true
+                        }
                     },
                     {
                         "id": 1,
@@ -220,14 +298,20 @@
                             {
                                 "id": 33,
                                 "opcode": "phi",
-                                "arg": 1,
-                                "control_next": null
+                                "phi_ref": 1,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 34,
                                 "opcode": "int64_truncate_1bit",
                                 "arg": 33,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 35,
@@ -235,9 +319,15 @@
                                 "target_block": 3,
                                 "alternative_block": 4,
                                 "condition": 34,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             }
-                        ]
+                        ],
+                        "properties": {
+                            "reachable": true
+                        }
                     },
                     {
                         "id": 2,
@@ -258,20 +348,29 @@
                             {
                                 "id": 30,
                                 "opcode": "phi",
-                                "arg": 0,
-                                "control_next": null
+                                "phi_ref": 0,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 25,
                                 "opcode": "get_local",
-                                "ir_ref": 0,
-                                "control_next": null
+                                "index": 0,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 26,
                                 "opcode": "int_const",
                                 "value": 8,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 27,
@@ -280,7 +379,10 @@
                                     25,
                                     26
                                 ],
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 28,
@@ -289,13 +391,19 @@
                                 "flags": {
                                     "volatile": false
                                 },
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 29,
                                 "opcode": "int64_truncate_1bit",
                                 "arg": 28,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 31,
@@ -304,15 +412,24 @@
                                     30,
                                     29
                                 ],
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 32,
                                 "opcode": "jump",
                                 "target_block": 1,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             }
-                        ]
+                        ],
+                        "properties": {
+                            "reachable": true
+                        }
                     },
                     {
                         "id": 3,
@@ -337,22 +454,34 @@
                             {
                                 "id": 54,
                                 "opcode": "phi",
-                                "arg": 5,
-                                "control_next": null
+                                "phi_ref": 5,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 55,
                                 "opcode": "int64_truncate_1bit",
                                 "arg": 54,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 56,
                                 "opcode": "return",
                                 "arg": 55,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             }
-                        ]
+                        ],
+                        "properties": {
+                            "reachable": true
+                        }
                     },
                     {
                         "id": 4,
@@ -373,20 +502,29 @@
                             {
                                 "id": 57,
                                 "opcode": "phi",
-                                "arg": 6,
-                                "control_next": null
+                                "phi_ref": 6,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 36,
                                 "opcode": "get_local",
-                                "ir_ref": 0,
-                                "control_next": null
+                                "index": 0,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 37,
                                 "opcode": "int_const",
                                 "value": 12,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 38,
@@ -395,7 +533,10 @@
                                     36,
                                     37
                                 ],
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 39,
@@ -404,19 +545,28 @@
                                 "flags": {
                                     "volatile": false
                                 },
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 40,
                                 "opcode": "int64_truncate_1bit",
                                 "arg": 39,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 41,
                                 "opcode": "bool_not",
                                 "arg": 40,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 42,
@@ -424,9 +574,15 @@
                                 "target_block": 5,
                                 "alternative_block": 6,
                                 "condition": 41,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             }
-                        ]
+                        ],
+                        "properties": {
+                            "reachable": true
+                        }
                     },
                     {
                         "id": 5,
@@ -464,20 +620,29 @@
                             {
                                 "id": 51,
                                 "opcode": "phi",
-                                "arg": 4,
-                                "control_next": null
+                                "phi_ref": 4,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 49,
                                 "opcode": "phi",
-                                "arg": 3,
-                                "control_next": null
+                                "phi_ref": 3,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 50,
                                 "opcode": "int64_truncate_1bit",
                                 "arg": 49,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 52,
@@ -486,15 +651,24 @@
                                     51,
                                     50
                                 ],
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 53,
                                 "opcode": "jump",
                                 "target_block": 3,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             }
-                        ]
+                        ],
+                        "properties": {
+                            "reachable": true
+                        }
                     },
                     {
                         "id": 6,
@@ -524,20 +698,29 @@
                             {
                                 "id": 58,
                                 "opcode": "phi",
-                                "arg": 7,
-                                "control_next": null
+                                "phi_ref": 7,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 46,
                                 "opcode": "phi",
-                                "arg": 2,
-                                "control_next": null
+                                "phi_ref": 2,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 43,
                                 "opcode": "get_local",
-                                "ir_ref": 0,
-                                "control_next": null
+                                "index": 0,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 44,
@@ -546,13 +729,19 @@
                                 "flags": {
                                     "volatile": false
                                 },
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 45,
                                 "opcode": "int64_truncate_1bit",
                                 "arg": 44,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 47,
@@ -561,15 +750,24 @@
                                     46,
                                     45
                                 ],
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 48,
                                 "opcode": "jump",
                                 "target_block": 5,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             }
-                        ]
+                        ],
+                        "properties": {
+                            "reachable": true
+                        }
                     }
                 ]
             }
@@ -589,14 +787,20 @@
                             {
                                 "id": 0,
                                 "opcode": "get_argument",
-                                "arg": 0,
-                                "control_next": null
+                                "index": 0,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 1,
                                 "opcode": "get_local",
-                                "ir_ref": 0,
-                                "control_next": null
+                                "index": 0,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 2,
@@ -606,19 +810,28 @@
                                 "flags": {
                                     "volatile": false
                                 },
-                                "control_next": 7
+                                "control_next": 7,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 3,
                                 "opcode": "get_local",
-                                "ir_ref": 0,
-                                "control_next": null
+                                "index": 0,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 4,
                                 "opcode": "int_const",
                                 "value": 8,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 5,
@@ -627,13 +840,19 @@
                                     3,
                                     4
                                 ],
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 6,
                                 "opcode": "block_label",
-                                "block_ref": 1,
-                                "control_next": null
+                                "value": 1,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 7,
@@ -643,19 +862,28 @@
                                 "flags": {
                                     "volatile": false
                                 },
-                                "control_next": 12
+                                "control_next": 12,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 8,
                                 "opcode": "get_local",
-                                "ir_ref": 0,
-                                "control_next": null
+                                "index": 0,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 9,
                                 "opcode": "int_const",
                                 "value": 16,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 10,
@@ -664,13 +892,19 @@
                                     8,
                                     9
                                 ],
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 11,
                                 "opcode": "block_label",
-                                "block_ref": 2,
-                                "control_next": null
+                                "value": 2,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 12,
@@ -680,13 +914,19 @@
                                 "flags": {
                                     "volatile": false
                                 },
-                                "control_next": 17
+                                "control_next": 17,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 13,
                                 "opcode": "get_local",
-                                "ir_ref": 0,
-                                "control_next": null
+                                "index": 0,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 14,
@@ -695,19 +935,28 @@
                                 "flags": {
                                     "volatile": false
                                 },
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 15,
                                 "opcode": "int64_truncate_1bit",
                                 "arg": 14,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 16,
                                 "opcode": "bool_not",
                                 "arg": 15,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 17,
@@ -715,9 +964,15 @@
                                 "target_block": 3,
                                 "alternative_block": 4,
                                 "condition": 16,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             }
-                        ]
+                        ],
+                        "properties": {
+                            "reachable": true
+                        }
                     },
                     {
                         "id": 1,
@@ -729,15 +984,24 @@
                                 "id": 37,
                                 "opcode": "int_const",
                                 "value": 1,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 38,
                                 "opcode": "return",
                                 "arg": 37,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             }
-                        ]
+                        ],
+                        "properties": {
+                            "reachable": true
+                        }
                     },
                     {
                         "id": 2,
@@ -749,15 +1013,24 @@
                                 "id": 39,
                                 "opcode": "int_const",
                                 "value": 2,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 40,
                                 "opcode": "return",
                                 "arg": 39,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             }
-                        ]
+                        ],
+                        "properties": {
+                            "reachable": true
+                        }
                     },
                     {
                         "id": 3,
@@ -782,14 +1055,20 @@
                             {
                                 "id": 23,
                                 "opcode": "phi",
-                                "arg": 1,
-                                "control_next": null
+                                "phi_ref": 1,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 24,
                                 "opcode": "bool_not",
                                 "arg": 23,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 25,
@@ -797,9 +1076,15 @@
                                 "target_block": 5,
                                 "alternative_block": 6,
                                 "condition": 24,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             }
-                        ]
+                        ],
+                        "properties": {
+                            "reachable": true
+                        }
                     },
                     {
                         "id": 4,
@@ -820,20 +1105,29 @@
                             {
                                 "id": 20,
                                 "opcode": "phi",
-                                "arg": 0,
-                                "control_next": null
+                                "phi_ref": 0,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 18,
                                 "opcode": "int_const",
                                 "value": 1,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 19,
                                 "opcode": "int64_truncate_1bit",
                                 "arg": 18,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 21,
@@ -842,15 +1136,24 @@
                                     20,
                                     19
                                 ],
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 22,
                                 "opcode": "jump",
                                 "target_block": 3,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             }
-                        ]
+                        ],
+                        "properties": {
+                            "reachable": true
+                        }
                     },
                     {
                         "id": 5,
@@ -861,14 +1164,20 @@
                             {
                                 "id": 32,
                                 "opcode": "get_local",
-                                "ir_ref": 0,
-                                "control_next": null
+                                "index": 0,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 33,
                                 "opcode": "int_const",
                                 "value": 16,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 34,
@@ -877,7 +1186,10 @@
                                     32,
                                     33
                                 ],
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 35,
@@ -886,15 +1198,24 @@
                                 "flags": {
                                     "volatile": false
                                 },
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 36,
                                 "opcode": "indirect_jump",
                                 "arg": 35,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             }
-                        ]
+                        ],
+                        "properties": {
+                            "reachable": true
+                        }
                     },
                     {
                         "id": 6,
@@ -905,14 +1226,20 @@
                             {
                                 "id": 26,
                                 "opcode": "get_local",
-                                "ir_ref": 0,
-                                "control_next": null
+                                "index": 0,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 27,
                                 "opcode": "int_const",
                                 "value": 8,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 28,
@@ -921,7 +1248,10 @@
                                     26,
                                     27
                                 ],
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 29,
@@ -930,15 +1260,24 @@
                                 "flags": {
                                     "volatile": false
                                 },
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             },
                             {
                                 "id": 30,
                                 "opcode": "indirect_jump",
                                 "arg": 29,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true
+                                }
                             }
-                        ]
+                        ],
+                        "properties": {
+                            "reachable": true
+                        }
                     },
                     {
                         "id": 7,
@@ -950,9 +1289,15 @@
                                 "id": 31,
                                 "opcode": "jump",
                                 "target_block": 1,
-                                "control_next": null
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": false
+                                }
                             }
-                        ]
+                        ],
+                        "properties": {
+                            "reachable": false
+                        }
                     }
                 ]
             }

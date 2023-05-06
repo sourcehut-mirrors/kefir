@@ -40,6 +40,7 @@ KEFIR_SOURCE := $(wildcard \
 	$(SOURCE)/lexer/tokens/*.c \
 	$(SOURCE)/lexer/tokens/string_literal/*.c \
 	$(SOURCE)/optimizer/*.c \
+	$(SOURCE)/optimizer/analysis/*.c \
 	$(SOURCE)/parser/*.c \
 	$(SOURCE)/parser/rules/*.c \
 	$(SOURCE)/platform/*.c \

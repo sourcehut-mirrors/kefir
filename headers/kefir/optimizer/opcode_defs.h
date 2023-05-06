@@ -26,24 +26,24 @@
 // clang-format off
 #define KEFIR_OPTIMIZER_OPCODE_DEFS(OPCODE, SEPARATOR) \
     /* Special */ \
-    OPCODE(GET_ARGUMENT, "get_argument", ref1) SEPARATOR \
-    OPCODE(PHI, "phi", ref1) SEPARATOR \
+    OPCODE(GET_ARGUMENT, "get_argument", index) SEPARATOR \
+    OPCODE(PHI, "phi", phi_ref) SEPARATOR \
     OPCODE(INLINE_ASSEMBLY, "inline_assembly", ir_ref) SEPARATOR \
     /* Flow control */ \
-    OPCODE(JUMP, "jump", jump) SEPARATOR \
+    OPCODE(JUMP, "jump", branch) SEPARATOR \
     OPCODE(IJUMP, "indirect_jump", ref1) SEPARATOR \
     OPCODE(BRANCH, "branch", branch) SEPARATOR \
     OPCODE(RETURN, "return", ref1) SEPARATOR \
     OPCODE(INVOKE, "invoke", call_ref) SEPARATOR \
     OPCODE(INVOKE_VIRTUAL, "invoke_virtual", call_ref) SEPARATOR \
     /* Constants */ \
-    OPCODE(INT_CONST, "int_const", imm_int) SEPARATOR \
-    OPCODE(UINT_CONST, "uint_const", imm_uint) SEPARATOR \
-    OPCODE(FLOAT32_CONST, "float32_const", imm_float32) SEPARATOR \
-    OPCODE(FLOAT64_CONST, "float64_const", imm_float64) SEPARATOR \
-    OPCODE(LONG_DOUBLE_CONST, "long_double_const", imm_long_double) SEPARATOR \
-    OPCODE(STRING_REF, "string_ref", ir_ref) SEPARATOR \
-    OPCODE(BLOCK_LABEL, "block_label", block_ref) SEPARATOR \
+    OPCODE(INT_CONST, "int_const", immediate) SEPARATOR \
+    OPCODE(UINT_CONST, "uint_const", immediate) SEPARATOR \
+    OPCODE(FLOAT32_CONST, "float32_const", immediate) SEPARATOR \
+    OPCODE(FLOAT64_CONST, "float64_const", immediate) SEPARATOR \
+    OPCODE(LONG_DOUBLE_CONST, "long_double_const", immediate) SEPARATOR \
+    OPCODE(STRING_REF, "string_ref", immediate) SEPARATOR \
+    OPCODE(BLOCK_LABEL, "block_label", immediate) SEPARATOR \
     /* Integral arithmetics & binary operations */ \
     OPCODE(INT_ADD, "int_add", ref2) SEPARATOR \
     OPCODE(INT_SUB, "int_sub", ref2) SEPARATOR \
@@ -80,7 +80,7 @@
     /* Data access */ \
     OPCODE(GET_GLOBAL, "get_global", ir_ref) SEPARATOR \
     OPCODE(GET_THREAD_LOCAL, "get_thread_local", ir_ref) SEPARATOR \
-    OPCODE(GET_LOCAL, "get_local", ir_ref) SEPARATOR \
+    OPCODE(GET_LOCAL, "get_local", index) SEPARATOR \
     OPCODE(INT8_LOAD_SIGNED, "int8_load_signed", load_mem) SEPARATOR \
     OPCODE(INT8_LOAD_UNSIGNED, "int8_load_unsigned", load_mem) SEPARATOR \
     OPCODE(INT16_LOAD_SIGNED, "int16_load_signed", load_mem) SEPARATOR \
@@ -93,8 +93,8 @@
     OPCODE(INT32_STORE, "int32_store", store_mem) SEPARATOR \
     OPCODE(INT64_STORE, "int64_store", store_mem) SEPARATOR \
     OPCODE(LONG_DOUBLE_STORE, "long_double_store", store_mem) SEPARATOR \
-    OPCODE(ZERO_MEMORY, "zero_memory", mem_op) SEPARATOR \
-    OPCODE(COPY_MEMORY, "copy_memory", mem_op) SEPARATOR \
+    OPCODE(ZERO_MEMORY, "zero_memory", typed_ref2) SEPARATOR \
+    OPCODE(COPY_MEMORY, "copy_memory", typed_ref2) SEPARATOR \
     OPCODE(BITS_EXTRACT_SIGNED, "bits_extract_signed", bitfield) SEPARATOR \
     OPCODE(BITS_EXTRACT_UNSIGNED, "bits_extract_unsigned", bitfield) SEPARATOR \
     OPCODE(BITS_INSERT, "bits_insert", bitfield) SEPARATOR \

@@ -22,9 +22,12 @@
 #define KEFIR_OPTIMIZER_FORMAT_H_
 
 #include "kefir/optimizer/module.h"
+#include "kefir/optimizer/analysis.h"
 #include "kefir/util/json.h"
 
-kefir_result_t kefir_opt_code_format(struct kefir_json_output *, const struct kefir_opt_code_container *);
-kefir_result_t kefir_opt_module_format(struct kefir_json_output *, const struct kefir_opt_module *);
+kefir_result_t kefir_opt_code_format(struct kefir_json_output *, const struct kefir_opt_code_container *,
+                                     const struct kefir_opt_code_analysis *);
+kefir_result_t kefir_opt_module_format(struct kefir_json_output *, const struct kefir_opt_module *,
+                                       const struct kefir_opt_module_analysis *);
 
 #endif
