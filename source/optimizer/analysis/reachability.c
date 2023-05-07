@@ -212,6 +212,7 @@ static kefir_result_t find_reachable_code_impl(struct kefir_mem *mem, struct kef
             continue;
         }
         analysis->instructions[instr_ref].reachable = true;
+        analysis->linearization_length++;
 
         struct kefir_opt_instruction *instr = NULL;
         REQUIRE_OK(kefir_opt_code_container_instr(analysis->code, instr_ref, &instr));

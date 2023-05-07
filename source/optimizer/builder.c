@@ -127,7 +127,10 @@ kefir_result_t kefir_opt_code_builder_finalize_jump(struct kefir_mem *mem, struc
     REQUIRE_OK(block_exists(code, target_block));
     REQUIRE_OK(kefir_opt_code_builder_add_instruction(
         mem, code, block_id,
-        &(struct kefir_opt_operation){.opcode = KEFIR_OPT_OPCODE_JUMP, .parameters.branch.target_block = target_block},
+        &(struct kefir_opt_operation){.opcode = KEFIR_OPT_OPCODE_JUMP,
+                                      .parameters.branch = {.target_block = target_block,
+                                                            .alternative_block = KEFIR_ID_NONE,
+                                                            .condition_ref = KEFIR_ID_NONE}},
         true, instr_id_ptr));
     return KEFIR_OK;
 }

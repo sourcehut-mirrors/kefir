@@ -18,7 +18,12 @@
                                 "index": 0,
                                 "control_next": null,
                                 "properties": {
-                                    "reachable": true
+                                    "reachable": true,
+                                    "linear_index": 0,
+                                    "liveness": {
+                                        "begin": 0,
+                                        "end": 3
+                                    }
                                 }
                             },
                             {
@@ -27,7 +32,12 @@
                                 "index": 0,
                                 "control_next": null,
                                 "properties": {
-                                    "reachable": true
+                                    "reachable": true,
+                                    "linear_index": 1,
+                                    "liveness": {
+                                        "begin": 1,
+                                        "end": 3
+                                    }
                                 }
                             },
                             {
@@ -40,7 +50,12 @@
                                 },
                                 "control_next": 22,
                                 "properties": {
-                                    "reachable": true
+                                    "reachable": true,
+                                    "linear_index": 2,
+                                    "liveness": {
+                                        "begin": 2,
+                                        "end": 3
+                                    }
                                 }
                             },
                             {
@@ -49,7 +64,9 @@
                                 "index": 0,
                                 "control_next": null,
                                 "properties": {
-                                    "reachable": false
+                                    "reachable": false,
+                                    "linear_index": null,
+                                    "liveness": null
                                 }
                             },
                             {
@@ -58,7 +75,9 @@
                                 "value": 8,
                                 "control_next": null,
                                 "properties": {
-                                    "reachable": false
+                                    "reachable": false,
+                                    "linear_index": null,
+                                    "liveness": null
                                 }
                             },
                             {
@@ -70,7 +89,9 @@
                                 ],
                                 "control_next": null,
                                 "properties": {
-                                    "reachable": false
+                                    "reachable": false,
+                                    "linear_index": null,
+                                    "liveness": null
                                 }
                             },
                             {
@@ -79,7 +100,9 @@
                                 "arg": 5,
                                 "control_next": null,
                                 "properties": {
-                                    "reachable": false
+                                    "reachable": false,
+                                    "linear_index": null,
+                                    "liveness": null
                                 }
                             },
                             {
@@ -88,7 +111,9 @@
                                 "index": 0,
                                 "control_next": null,
                                 "properties": {
-                                    "reachable": false
+                                    "reachable": false,
+                                    "linear_index": null,
+                                    "liveness": null
                                 }
                             },
                             {
@@ -97,7 +122,9 @@
                                 "value": 32,
                                 "control_next": null,
                                 "properties": {
-                                    "reachable": false
+                                    "reachable": false,
+                                    "linear_index": null,
+                                    "liveness": null
                                 }
                             },
                             {
@@ -109,7 +136,9 @@
                                 ],
                                 "control_next": null,
                                 "properties": {
-                                    "reachable": false
+                                    "reachable": false,
+                                    "linear_index": null,
+                                    "liveness": null
                                 }
                             },
                             {
@@ -118,7 +147,9 @@
                                 "index": 0,
                                 "control_next": null,
                                 "properties": {
-                                    "reachable": false
+                                    "reachable": false,
+                                    "linear_index": null,
+                                    "liveness": null
                                 }
                             },
                             {
@@ -127,7 +158,9 @@
                                 "value": 8,
                                 "control_next": null,
                                 "properties": {
-                                    "reachable": false
+                                    "reachable": false,
+                                    "linear_index": null,
+                                    "liveness": null
                                 }
                             },
                             {
@@ -139,7 +172,9 @@
                                 ],
                                 "control_next": null,
                                 "properties": {
-                                    "reachable": false
+                                    "reachable": false,
+                                    "linear_index": null,
+                                    "liveness": null
                                 }
                             },
                             {
@@ -151,7 +186,9 @@
                                 ],
                                 "control_next": null,
                                 "properties": {
-                                    "reachable": false
+                                    "reachable": false,
+                                    "linear_index": null,
+                                    "liveness": null
                                 }
                             },
                             {
@@ -160,7 +197,9 @@
                                 "index": 0,
                                 "control_next": null,
                                 "properties": {
-                                    "reachable": false
+                                    "reachable": false,
+                                    "linear_index": null,
+                                    "liveness": null
                                 }
                             },
                             {
@@ -169,7 +208,9 @@
                                 "value": 32,
                                 "control_next": null,
                                 "properties": {
-                                    "reachable": false
+                                    "reachable": false,
+                                    "linear_index": null,
+                                    "liveness": null
                                 }
                             },
                             {
@@ -181,7 +222,9 @@
                                 ],
                                 "control_next": null,
                                 "properties": {
-                                    "reachable": false
+                                    "reachable": false,
+                                    "linear_index": null,
+                                    "liveness": null
                                 }
                             },
                             {
@@ -194,7 +237,9 @@
                                 },
                                 "control_next": null,
                                 "properties": {
-                                    "reachable": false
+                                    "reachable": false,
+                                    "linear_index": null,
+                                    "liveness": null
                                 }
                             },
                             {
@@ -203,7 +248,9 @@
                                 "index": 0,
                                 "control_next": null,
                                 "properties": {
-                                    "reachable": false
+                                    "reachable": false,
+                                    "linear_index": null,
+                                    "liveness": null
                                 }
                             },
                             {
@@ -212,7 +259,9 @@
                                 "value": 8,
                                 "control_next": null,
                                 "properties": {
-                                    "reachable": false
+                                    "reachable": false,
+                                    "linear_index": null,
+                                    "liveness": null
                                 }
                             },
                             {
@@ -224,7 +273,9 @@
                                 ],
                                 "control_next": null,
                                 "properties": {
-                                    "reachable": false
+                                    "reachable": false,
+                                    "linear_index": null,
+                                    "liveness": null
                                 }
                             },
                             {
@@ -233,7 +284,9 @@
                                 "arg": 20,
                                 "control_next": null,
                                 "properties": {
-                                    "reachable": false
+                                    "reachable": false,
+                                    "linear_index": null,
+                                    "liveness": null
                                 }
                             },
                             {
@@ -242,15 +295,27 @@
                                 "arg": null,
                                 "control_next": null,
                                 "properties": {
-                                    "reachable": true
+                                    "reachable": true,
+                                    "linear_index": 3,
+                                    "liveness": {
+                                        "begin": 3,
+                                        "end": 4
+                                    }
                                 }
                             }
                         ],
                         "properties": {
-                            "reachable": true
+                            "reachable": true,
+                            "linear_interval": {
+                                "begin": 0,
+                                "end": 4
+                            }
                         }
                     }
-                ]
+                ],
+                "properties": {
+                    "linear_length": 4
+                }
             }
         },
         {
@@ -271,7 +336,12 @@
                                 "index": 0,
                                 "control_next": null,
                                 "properties": {
-                                    "reachable": true
+                                    "reachable": true,
+                                    "linear_index": 0,
+                                    "liveness": {
+                                        "begin": 0,
+                                        "end": 5
+                                    }
                                 }
                             },
                             {
@@ -280,7 +350,12 @@
                                 "value": 100,
                                 "control_next": null,
                                 "properties": {
-                                    "reachable": true
+                                    "reachable": true,
+                                    "linear_index": 1,
+                                    "liveness": {
+                                        "begin": 1,
+                                        "end": 4
+                                    }
                                 }
                             },
                             {
@@ -289,7 +364,12 @@
                                 "value": 0,
                                 "control_next": null,
                                 "properties": {
-                                    "reachable": true
+                                    "reachable": true,
+                                    "linear_index": 2,
+                                    "liveness": {
+                                        "begin": 2,
+                                        "end": 4
+                                    }
                                 }
                             },
                             {
@@ -300,7 +380,12 @@
                                 "within_scope": true,
                                 "control_next": null,
                                 "properties": {
-                                    "reachable": true
+                                    "reachable": true,
+                                    "linear_index": 3,
+                                    "liveness": {
+                                        "begin": 3,
+                                        "end": 5
+                                    }
                                 }
                             },
                             {
@@ -313,7 +398,12 @@
                                 },
                                 "control_next": 5,
                                 "properties": {
-                                    "reachable": true
+                                    "reachable": true,
+                                    "linear_index": 4,
+                                    "liveness": {
+                                        "begin": 4,
+                                        "end": 5
+                                    }
                                 }
                             },
                             {
@@ -322,15 +412,27 @@
                                 "arg": null,
                                 "control_next": null,
                                 "properties": {
-                                    "reachable": true
+                                    "reachable": true,
+                                    "linear_index": 5,
+                                    "liveness": {
+                                        "begin": 5,
+                                        "end": 6
+                                    }
                                 }
                             }
                         ],
                         "properties": {
-                            "reachable": true
+                            "reachable": true,
+                            "linear_interval": {
+                                "begin": 0,
+                                "end": 6
+                            }
                         }
                     }
-                ]
+                ],
+                "properties": {
+                    "linear_length": 6
+                }
             }
         }
     ]

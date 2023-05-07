@@ -28,14 +28,23 @@ static kefir_result_t analyze_code(struct kefir_mem *mem, struct kefir_opt_code_
     kefir_size_t num_of_blocks;
     REQUIRE_OK(kefir_opt_code_container_block_count(analysis->code, &num_of_blocks));
     for (kefir_size_t i = 0; i < num_of_blocks; i++) {
-        analysis->blocks[i] = (struct kefir_opt_code_analysis_block_properties){.block_id = i, .reachable = false};
+        analysis->blocks[i] = (struct kefir_opt_code_analysis_block_properties){
+            .block_id = i,
+            .reachable = false,
+            .linear_interval = {.begin_index = KEFIR_OPT_CODE_ANALYSIS_LINEAR_INDEX_UNDEFINED,
+                                .end_index = KEFIR_OPT_CODE_ANALYSIS_LINEAR_INDEX_UNDEFINED}};
     }
     for (kefir_size_t i = 0; i < kefir_opt_code_container_length(analysis->code); i++) {
-        analysis->instructions[i] =
-            (struct kefir_opt_code_analysis_instruction_properties){.instr_ref = i, .reachable = false};
+        analysis->instructions[i] = (struct kefir_opt_code_analysis_instruction_properties){
+            .instr_ref = i,
+            .reachable = false,
+            .linear_position = KEFIR_OPT_CODE_ANALYSIS_LINEAR_INDEX_UNDEFINED,
+            .liveness_interval = {.begin_index = KEFIR_OPT_CODE_ANALYSIS_LINEAR_INDEX_UNDEFINED,
+                                  .end_index = KEFIR_OPT_CODE_ANALYSIS_LINEAR_INDEX_UNDEFINED}};
     }
 
     REQUIRE_OK(kefir_opt_code_analyze_reachability(mem, analysis));
+    REQUIRE_OK(kefir_opt_code_analyze_linearize(mem, analysis));
     return KEFIR_OK;
 }
 
@@ -62,14 +71,15 @@ kefir_result_t kefir_opt_code_analyze(struct kefir_mem *mem, const struct kefir_
     });
 
     analysis->code = code;
+    analysis->linearization_length = 0;
+    analysis->linearization = NULL;
 
     kefir_result_t res = analyze_code(mem, analysis);
     REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_FREE(mem, analysis->linearization);
         KEFIR_FREE(mem, analysis->instructions);
         KEFIR_FREE(mem, analysis->blocks);
-        analysis->blocks = NULL;
-        analysis->instructions = NULL;
-        analysis->code = NULL;
+        memset(analysis, 0, sizeof(struct kefir_opt_code_analysis));
         return res;
     });
     return KEFIR_OK;
@@ -79,11 +89,10 @@ kefir_result_t kefir_opt_code_analysis_free(struct kefir_mem *mem, struct kefir_
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(analysis != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code analysis"));
 
+    KEFIR_FREE(mem, analysis->linearization);
     KEFIR_FREE(mem, analysis->instructions);
     KEFIR_FREE(mem, analysis->blocks);
-    analysis->blocks = NULL;
-    analysis->instructions = NULL;
-    analysis->code = NULL;
+    memset(analysis, 0, sizeof(struct kefir_opt_code_analysis));
     return KEFIR_OK;
 }
 

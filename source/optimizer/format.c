@@ -248,6 +248,23 @@ static kefir_result_t instr_format(struct kefir_json_output *json, const struct 
         REQUIRE_OK(kefir_json_output_object_begin(json));
         REQUIRE_OK(kefir_json_output_object_key(json, "reachable"));
         REQUIRE_OK(kefir_json_output_boolean(json, instr_props->reachable));
+        REQUIRE_OK(kefir_json_output_object_key(json, "linear_index"));
+        if (instr_props->linear_position != KEFIR_OPT_CODE_ANALYSIS_LINEAR_INDEX_UNDEFINED) {
+            REQUIRE_OK(kefir_json_output_uinteger(json, instr_props->linear_position));
+        } else {
+            REQUIRE_OK(kefir_json_output_null(json));
+        }
+        REQUIRE_OK(kefir_json_output_object_key(json, "liveness"));
+        if (instr_props->liveness_interval.begin_index != KEFIR_OPT_CODE_ANALYSIS_LINEAR_INDEX_UNDEFINED) {
+            REQUIRE_OK(kefir_json_output_object_begin(json));
+            REQUIRE_OK(kefir_json_output_object_key(json, "begin"));
+            REQUIRE_OK(kefir_json_output_uinteger(json, instr_props->liveness_interval.begin_index));
+            REQUIRE_OK(kefir_json_output_object_key(json, "end"));
+            REQUIRE_OK(kefir_json_output_uinteger(json, instr_props->liveness_interval.end_index));
+            REQUIRE_OK(kefir_json_output_object_end(json));
+        } else {
+            REQUIRE_OK(kefir_json_output_null(json));
+        }
         REQUIRE_OK(kefir_json_output_object_end(json));
     } else {
         REQUIRE_OK(kefir_json_output_null(json));
@@ -353,6 +370,17 @@ static kefir_result_t code_block_format(struct kefir_json_output *json, const st
         REQUIRE_OK(kefir_json_output_object_begin(json));
         REQUIRE_OK(kefir_json_output_object_key(json, "reachable"));
         REQUIRE_OK(kefir_json_output_boolean(json, block_props->reachable));
+        REQUIRE_OK(kefir_json_output_object_key(json, "linear_interval"));
+        if (block_props->linear_interval.begin_index != KEFIR_OPT_CODE_ANALYSIS_LINEAR_INDEX_UNDEFINED) {
+            REQUIRE_OK(kefir_json_output_object_begin(json));
+            REQUIRE_OK(kefir_json_output_object_key(json, "begin"));
+            REQUIRE_OK(kefir_json_output_uinteger(json, block_props->linear_interval.begin_index));
+            REQUIRE_OK(kefir_json_output_object_key(json, "end"));
+            REQUIRE_OK(kefir_json_output_uinteger(json, block_props->linear_interval.end_index));
+            REQUIRE_OK(kefir_json_output_object_end(json));
+        } else {
+            REQUIRE_OK(kefir_json_output_null(json));
+        }
         REQUIRE_OK(kefir_json_output_object_end(json));
     } else {
         REQUIRE_OK(kefir_json_output_null(json));
@@ -379,6 +407,16 @@ kefir_result_t kefir_opt_code_format(struct kefir_json_output *json, const struc
         REQUIRE_OK(code_block_format(json, code, block, code_analysis));
     }
     REQUIRE_OK(kefir_json_output_array_end(json));
+
+    REQUIRE_OK(kefir_json_output_object_key(json, "properties"));
+    if (code_analysis != NULL) {
+        REQUIRE_OK(kefir_json_output_object_begin(json));
+        REQUIRE_OK(kefir_json_output_object_key(json, "linear_length"));
+        REQUIRE_OK(kefir_json_output_uinteger(json, code_analysis->linearization_length));
+        REQUIRE_OK(kefir_json_output_object_end(json));
+    } else {
+        REQUIRE_OK(kefir_json_output_null(json));
+    }
 
     REQUIRE_OK(kefir_json_output_object_end(json));
     return KEFIR_OK;

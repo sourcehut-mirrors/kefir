@@ -18,7 +18,12 @@
                                 "ir_ref": 0,
                                 "control_next": 1,
                                 "properties": {
-                                    "reachable": true
+                                    "reachable": true,
+                                    "linear_index": 0,
+                                    "liveness": {
+                                        "begin": 0,
+                                        "end": 1
+                                    }
                                 }
                             },
                             {
@@ -27,7 +32,12 @@
                                 "ir_ref": 1,
                                 "control_next": 2,
                                 "properties": {
-                                    "reachable": true
+                                    "reachable": true,
+                                    "linear_index": 1,
+                                    "liveness": {
+                                        "begin": 1,
+                                        "end": 2
+                                    }
                                 }
                             },
                             {
@@ -36,15 +46,27 @@
                                 "arg": null,
                                 "control_next": null,
                                 "properties": {
-                                    "reachable": true
+                                    "reachable": true,
+                                    "linear_index": 2,
+                                    "liveness": {
+                                        "begin": 2,
+                                        "end": 3
+                                    }
                                 }
                             }
                         ],
                         "properties": {
-                            "reachable": true
+                            "reachable": true,
+                            "linear_interval": {
+                                "begin": 0,
+                                "end": 3
+                            }
                         }
                     }
-                ]
+                ],
+                "properties": {
+                    "linear_length": 3
+                }
             }
         }
     ]
