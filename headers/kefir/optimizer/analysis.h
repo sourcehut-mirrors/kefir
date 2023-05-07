@@ -64,9 +64,18 @@ kefir_result_t kefir_opt_code_analysis_instruction_properties(
     const struct kefir_opt_code_analysis *, kefir_opt_instruction_ref_t,
     const struct kefir_opt_code_analysis_instruction_properties **);
 
+typedef struct kefir_opt_code_analyze_block_scheduler {
+    kefir_result_t (*schedule)(struct kefir_mem *, const struct kefir_opt_code_container *, struct kefir_list *,
+                               void *);
+    void *payload;
+} kefir_opt_code_analyze_block_scheduler_t;
+
+extern const struct kefir_opt_code_analyze_block_scheduler kefir_opt_code_analyze_dfs_block_scheduler;
+
 #ifdef KEFIR_OPTIMIZER_ANALYSIS_INTERNAL
 kefir_result_t kefir_opt_code_analyze_reachability(struct kefir_mem *, struct kefir_opt_code_analysis *);
-kefir_result_t kefir_opt_code_analyze_linearize(struct kefir_mem *, struct kefir_opt_code_analysis *);
+kefir_result_t kefir_opt_code_analyze_linearize(struct kefir_mem *, struct kefir_opt_code_analysis *,
+                                                const struct kefir_opt_code_analyze_block_scheduler *);
 #endif
 
 typedef struct kefir_opt_module_analysis {

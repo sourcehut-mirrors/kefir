@@ -24,6 +24,100 @@
 #include "kefir/core/util.h"
 #include <string.h>
 
+static kefir_result_t block_schedule_dfs_impl(struct kefir_mem *mem, const struct kefir_opt_code_container *code,
+                                              struct kefir_list *block_queue, struct kefir_list *work_queue,
+                                              kefir_bool_t *marks) {
+    REQUIRE_OK(kefir_list_insert_after(mem, work_queue, kefir_list_tail(work_queue),
+                                       (void *) (kefir_uptr_t) code->entry_point));
+
+    kefir_result_t res = KEFIR_OK;
+    for (struct kefir_list_entry *head_entry = kefir_list_head(work_queue); res == KEFIR_OK && head_entry != NULL;
+         res = kefir_list_pop(mem, work_queue, head_entry), head_entry = kefir_list_head(work_queue)) {
+        ASSIGN_DECL_CAST(kefir_opt_block_id_t, block_id, (kefir_uptr_t) head_entry->value);
+
+        if (marks[block_id]) {
+            continue;
+        }
+        REQUIRE_OK(
+            kefir_list_insert_after(mem, block_queue, kefir_list_tail(block_queue), (void *) (kefir_uptr_t) block_id));
+        marks[block_id] = true;
+
+        struct kefir_opt_code_block *block = NULL;
+        REQUIRE_OK(kefir_opt_code_container_block(code, block_id, &block));
+
+        const struct kefir_opt_instruction *instr = NULL;
+        REQUIRE_OK(kefir_opt_code_block_instr_control_tail(code, block, &instr));
+
+        switch (instr->operation.opcode) {
+            case KEFIR_OPT_OPCODE_JUMP:
+                REQUIRE_OK(kefir_list_insert_after(
+                    mem, work_queue, NULL, (void *) (kefir_uptr_t) instr->operation.parameters.branch.target_block));
+                break;
+
+            case KEFIR_OPT_OPCODE_BRANCH:
+                REQUIRE_OK(kefir_list_insert_after(
+                    mem, work_queue, NULL,
+                    (void *) (kefir_uptr_t) instr->operation.parameters.branch.alternative_block));
+                REQUIRE_OK(kefir_list_insert_after(
+                    mem, work_queue, NULL, (void *) (kefir_uptr_t) instr->operation.parameters.branch.target_block));
+                break;
+
+            case KEFIR_OPT_OPCODE_IJUMP:
+            case KEFIR_OPT_OPCODE_RETURN:
+                // Intentionally left blank
+                break;
+
+            default:
+                return KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
+                                       "Unexpected terminating instruction in optimizer block control flow");
+        }
+    }
+
+    kefir_size_t num_of_blocks;
+    REQUIRE_OK(kefir_opt_code_container_block_count(code, &num_of_blocks));
+    for (kefir_opt_block_id_t i = 0; i < num_of_blocks; i++) {
+        if (!marks[i]) {
+            REQUIRE_OK(
+                kefir_list_insert_after(mem, block_queue, kefir_list_tail(block_queue), (void *) (kefir_uptr_t) i));
+        }
+    }
+    return KEFIR_OK;
+}
+
+static kefir_result_t block_schedule_dfs(struct kefir_mem *mem, const struct kefir_opt_code_container *code,
+                                         struct kefir_list *block_queue, void *payload) {
+    UNUSED(payload);
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code"));
+    REQUIRE(block_queue != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer analysis block schedule queue"));
+
+    kefir_size_t num_of_blocks;
+    REQUIRE_OK(kefir_opt_code_container_block_count(code, &num_of_blocks));
+
+    struct kefir_list work_queue;
+    REQUIRE_OK(kefir_list_init(&work_queue));
+
+    kefir_bool_t *scheduled_marks = KEFIR_MALLOC(mem, sizeof(kefir_bool_t) * num_of_blocks);
+    REQUIRE(scheduled_marks != NULL,
+            KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate optimizer DFS scheduler data"));
+    memset(scheduled_marks, 0, sizeof(kefir_bool_t) * num_of_blocks);
+
+    kefir_result_t res = block_schedule_dfs_impl(mem, code, block_queue, &work_queue, scheduled_marks);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_FREE(mem, scheduled_marks);
+        kefir_list_free(mem, &work_queue);
+        return res;
+    });
+
+    KEFIR_FREE(mem, scheduled_marks);
+    REQUIRE_OK(kefir_list_free(mem, &work_queue));
+    return KEFIR_OK;
+}
+
+const struct kefir_opt_code_analyze_block_scheduler kefir_opt_code_analyze_dfs_block_scheduler = {
+    .schedule = block_schedule_dfs, .payload = NULL};
+
 static kefir_result_t analyze_code(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis) {
     kefir_size_t num_of_blocks;
     REQUIRE_OK(kefir_opt_code_container_block_count(analysis->code, &num_of_blocks));
@@ -44,7 +138,7 @@ static kefir_result_t analyze_code(struct kefir_mem *mem, struct kefir_opt_code_
     }
 
     REQUIRE_OK(kefir_opt_code_analyze_reachability(mem, analysis));
-    REQUIRE_OK(kefir_opt_code_analyze_linearize(mem, analysis));
+    REQUIRE_OK(kefir_opt_code_analyze_linearize(mem, analysis, &kefir_opt_code_analyze_dfs_block_scheduler));
     return KEFIR_OK;
 }
 

@@ -1407,49 +1407,6 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 38,
-                                    "liveness": {
-                                        "begin": 38,
-                                        "end": 40
-                                    }
-                                }
-                            },
-                            {
-                                "id": 38,
-                                "opcode": "return",
-                                "arg": 37,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 39,
-                                    "liveness": {
-                                        "begin": 39,
-                                        "end": 40
-                                    }
-                                }
-                            }
-                        ],
-                        "properties": {
-                            "reachable": true,
-                            "linear_interval": {
-                                "begin": 38,
-                                "end": 40
-                            }
-                        }
-                    },
-                    {
-                        "id": 2,
-                        "control_flow": 40,
-                        "phi": [],
-                        "calls": [],
-                        "code": [
-                            {
-                                "id": 39,
-                                "opcode": "int_const",
-                                "value": 2,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": true,
                                     "linear_index": 36,
                                     "liveness": {
                                         "begin": 36,
@@ -1458,9 +1415,9 @@
                                 }
                             },
                             {
-                                "id": 40,
+                                "id": 38,
                                 "opcode": "return",
-                                "arg": 39,
+                                "arg": 37,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -1477,6 +1434,49 @@
                             "linear_interval": {
                                 "begin": 36,
                                 "end": 38
+                            }
+                        }
+                    },
+                    {
+                        "id": 2,
+                        "control_flow": 40,
+                        "phi": [],
+                        "calls": [],
+                        "code": [
+                            {
+                                "id": 39,
+                                "opcode": "int_const",
+                                "value": 2,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 38,
+                                    "liveness": {
+                                        "begin": 38,
+                                        "end": 40
+                                    }
+                                }
+                            },
+                            {
+                                "id": 40,
+                                "opcode": "return",
+                                "arg": 39,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 39,
+                                    "liveness": {
+                                        "begin": 39,
+                                        "end": 40
+                                    }
+                                }
+                            }
+                        ],
+                        "properties": {
+                            "reachable": true,
+                            "linear_interval": {
+                                "begin": 38,
+                                "end": 40
                             }
                         }
                     },
