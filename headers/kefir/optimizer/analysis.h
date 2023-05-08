@@ -26,22 +26,22 @@
 
 #define KEFIR_OPT_CODE_ANALYSIS_LINEAR_INDEX_UNDEFINED (~(kefir_size_t) 0ull)
 
-typedef struct kefir_opt_code_analysis_linear_interval {
+typedef struct kefir_opt_code_analysis_linear_range {
     kefir_size_t begin_index;
     kefir_size_t end_index;
-} kefir_opt_code_analysis_linear_interval_t;
+} kefir_opt_code_analysis_linear_range_t;
 
 typedef struct kefir_opt_code_analysis_block_properties {
     kefir_opt_block_id_t block_id;
     kefir_bool_t reachable;
-    struct kefir_opt_code_analysis_linear_interval linear_interval;
+    kefir_size_t linear_position;
+    struct kefir_opt_code_analysis_linear_range linear_range;
 } kefir_opt_code_analysis_block_properties_t;
 
 typedef struct kefir_opt_code_analysis_instruction_properties {
     kefir_opt_instruction_ref_t instr_ref;
     kefir_bool_t reachable;
     kefir_size_t linear_position;
-    struct kefir_opt_code_analysis_linear_interval liveness_interval;
 } kefir_opt_code_analysis_instruction_properties_t;
 
 typedef struct kefir_opt_code_analysis {
@@ -49,6 +49,9 @@ typedef struct kefir_opt_code_analysis {
 
     struct kefir_opt_code_analysis_block_properties *blocks;
     struct kefir_opt_code_analysis_instruction_properties *instructions;
+
+    kefir_size_t block_linearization_length;
+    struct kefir_opt_code_analysis_block_properties **block_linearization;
 
     kefir_size_t linearization_length;
     struct kefir_opt_code_analysis_instruction_properties **linearization;
@@ -65,8 +68,9 @@ kefir_result_t kefir_opt_code_analysis_instruction_properties(
     const struct kefir_opt_code_analysis_instruction_properties **);
 
 typedef struct kefir_opt_code_analyze_block_scheduler {
-    kefir_result_t (*schedule)(struct kefir_mem *, const struct kefir_opt_code_container *, struct kefir_list *,
-                               void *);
+    kefir_result_t (*schedule)(struct kefir_mem *, const struct kefir_opt_code_analyze_block_scheduler *,
+                               const struct kefir_opt_code_container *,
+                               kefir_result_t (*)(kefir_opt_block_id_t, void *), void *);
     void *payload;
 } kefir_opt_code_analyze_block_scheduler_t;
 

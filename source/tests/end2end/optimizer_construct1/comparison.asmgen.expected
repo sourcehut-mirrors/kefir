@@ -19,11 +19,7 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 0,
-                                    "liveness": {
-                                        "begin": 0,
-                                        "end": 3
-                                    }
+                                    "linear_index": 0
                                 }
                             },
                             {
@@ -33,11 +29,7 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 1,
-                                    "liveness": {
-                                        "begin": 1,
-                                        "end": 3
-                                    }
+                                    "linear_index": 1
                                 }
                             },
                             {
@@ -50,11 +42,7 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 2,
-                                    "liveness": {
-                                        "begin": 2,
-                                        "end": 5
-                                    }
+                                    "linear_index": 2
                                 }
                             },
                             {
@@ -64,11 +52,7 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 3,
-                                    "liveness": {
-                                        "begin": 3,
-                                        "end": 5
-                                    }
+                                    "linear_index": 3
                                 }
                             },
                             {
@@ -81,11 +65,7 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 4,
-                                    "liveness": {
-                                        "begin": 4,
-                                        "end": 6
-                                    }
+                                    "linear_index": 4
                                 }
                             },
                             {
@@ -95,11 +75,7 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 5,
-                                    "liveness": {
-                                        "begin": 5,
-                                        "end": 15
-                                    }
+                                    "linear_index": 5
                                 }
                             },
                             {
@@ -109,11 +85,7 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 6,
-                                    "liveness": {
-                                        "begin": 6,
-                                        "end": 10
-                                    }
+                                    "linear_index": 6
                                 }
                             },
                             {
@@ -123,11 +95,7 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 7,
-                                    "liveness": {
-                                        "begin": 7,
-                                        "end": 10
-                                    }
+                                    "linear_index": 7
                                 }
                             },
                             {
@@ -140,11 +108,7 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 8,
-                                    "liveness": {
-                                        "begin": 8,
-                                        "end": 11
-                                    }
+                                    "linear_index": 8
                                 }
                             },
                             {
@@ -157,11 +121,7 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 9,
-                                    "liveness": {
-                                        "begin": 9,
-                                        "end": 11
-                                    }
+                                    "linear_index": 9
                                 }
                             },
                             {
@@ -174,11 +134,7 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 10,
-                                    "liveness": {
-                                        "begin": 10,
-                                        "end": 13
-                                    }
+                                    "linear_index": 10
                                 }
                             },
                             {
@@ -188,11 +144,7 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 11,
-                                    "liveness": {
-                                        "begin": 11,
-                                        "end": 13
-                                    }
+                                    "linear_index": 11
                                 }
                             },
                             {
@@ -205,11 +157,7 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 12,
-                                    "liveness": {
-                                        "begin": 12,
-                                        "end": 14
-                                    }
+                                    "linear_index": 12
                                 }
                             },
                             {
@@ -219,11 +167,7 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 13,
-                                    "liveness": {
-                                        "begin": 13,
-                                        "end": 15
-                                    }
+                                    "linear_index": 13
                                 }
                             },
                             {
@@ -236,11 +180,7 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 14,
-                                    "liveness": {
-                                        "begin": 14,
-                                        "end": 16
-                                    }
+                                    "linear_index": 14
                                 }
                             },
                             {
@@ -250,11 +190,7 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 15,
-                                    "liveness": {
-                                        "begin": 15,
-                                        "end": 17
-                                    }
+                                    "linear_index": 15
                                 }
                             },
                             {
@@ -264,11 +200,7 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 16,
-                                    "liveness": {
-                                        "begin": 16,
-                                        "end": 18
-                                    }
+                                    "linear_index": 16
                                 }
                             },
                             {
@@ -280,16 +212,13 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 17,
-                                    "liveness": {
-                                        "begin": 17,
-                                        "end": 18
-                                    }
+                                    "linear_index": 17
                                 }
                             }
                         ],
                         "properties": {
                             "reachable": true,
+                            "linear_position": 1,
                             "linear_interval": {
                                 "begin": 0,
                                 "end": 18
@@ -309,16 +238,13 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 18,
-                                    "liveness": {
-                                        "begin": 18,
-                                        "end": 19
-                                    }
+                                    "linear_index": 18
                                 }
                             }
                         ],
                         "properties": {
                             "reachable": true,
+                            "linear_position": 2,
                             "linear_interval": {
                                 "begin": 18,
                                 "end": 19
@@ -338,11 +264,7 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 19,
-                                    "liveness": {
-                                        "begin": 19,
-                                        "end": 22
-                                    }
+                                    "linear_index": 19
                                 }
                             },
                             {
@@ -352,11 +274,7 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 20,
-                                    "liveness": {
-                                        "begin": 20,
-                                        "end": 22
-                                    }
+                                    "linear_index": 20
                                 }
                             },
                             {
@@ -369,11 +287,7 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 21,
-                                    "liveness": {
-                                        "begin": 21,
-                                        "end": 23
-                                    }
+                                    "linear_index": 21
                                 }
                             },
                             {
@@ -383,11 +297,7 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 22,
-                                    "liveness": {
-                                        "begin": 22,
-                                        "end": 24
-                                    }
+                                    "linear_index": 22
                                 }
                             },
                             {
@@ -399,16 +309,13 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 23,
-                                    "liveness": {
-                                        "begin": 23,
-                                        "end": 24
-                                    }
+                                    "linear_index": 23
                                 }
                             }
                         ],
                         "properties": {
                             "reachable": true,
+                            "linear_position": 3,
                             "linear_interval": {
                                 "begin": 19,
                                 "end": 24
@@ -428,11 +335,7 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 24,
-                                    "liveness": {
-                                        "begin": 24,
-                                        "end": 30
-                                    }
+                                    "linear_index": 24
                                 }
                             },
                             {
@@ -442,11 +345,7 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 25,
-                                    "liveness": {
-                                        "begin": 25,
-                                        "end": 28
-                                    }
+                                    "linear_index": 25
                                 }
                             },
                             {
@@ -456,11 +355,7 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 26,
-                                    "liveness": {
-                                        "begin": 26,
-                                        "end": 28
-                                    }
+                                    "linear_index": 26
                                 }
                             },
                             {
@@ -473,11 +368,7 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 27,
-                                    "liveness": {
-                                        "begin": 27,
-                                        "end": 29
-                                    }
+                                    "linear_index": 27
                                 }
                             },
                             {
@@ -487,11 +378,7 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 28,
-                                    "liveness": {
-                                        "begin": 28,
-                                        "end": 30
-                                    }
+                                    "linear_index": 28
                                 }
                             },
                             {
@@ -504,11 +391,7 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 29,
-                                    "liveness": {
-                                        "begin": 29,
-                                        "end": 31
-                                    }
+                                    "linear_index": 29
                                 }
                             },
                             {
@@ -518,11 +401,7 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 30,
-                                    "liveness": {
-                                        "begin": 30,
-                                        "end": 34
-                                    }
+                                    "linear_index": 30
                                 }
                             },
                             {
@@ -532,11 +411,7 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 31,
-                                    "liveness": {
-                                        "begin": 31,
-                                        "end": 34
-                                    }
+                                    "linear_index": 31
                                 }
                             },
                             {
@@ -549,11 +424,7 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 32,
-                                    "liveness": {
-                                        "begin": 32,
-                                        "end": 35
-                                    }
+                                    "linear_index": 32
                                 }
                             },
                             {
@@ -566,11 +437,7 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 33,
-                                    "liveness": {
-                                        "begin": 33,
-                                        "end": 35
-                                    }
+                                    "linear_index": 33
                                 }
                             },
                             {
@@ -583,11 +450,7 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 34,
-                                    "liveness": {
-                                        "begin": 34,
-                                        "end": 36
-                                    }
+                                    "linear_index": 34
                                 }
                             },
                             {
@@ -597,11 +460,7 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 35,
-                                    "liveness": {
-                                        "begin": 35,
-                                        "end": 38
-                                    }
+                                    "linear_index": 35
                                 }
                             },
                             {
@@ -611,11 +470,7 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 36,
-                                    "liveness": {
-                                        "begin": 36,
-                                        "end": 38
-                                    }
+                                    "linear_index": 36
                                 }
                             },
                             {
@@ -628,11 +483,7 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 37,
-                                    "liveness": {
-                                        "begin": 37,
-                                        "end": 39
-                                    }
+                                    "linear_index": 37
                                 }
                             },
                             {
@@ -644,16 +495,13 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 38,
-                                    "liveness": {
-                                        "begin": 38,
-                                        "end": 39
-                                    }
+                                    "linear_index": 38
                                 }
                             }
                         ],
                         "properties": {
                             "reachable": true,
+                            "linear_position": 4,
                             "linear_interval": {
                                 "begin": 24,
                                 "end": 39
@@ -673,11 +521,7 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 40,
-                                    "liveness": {
-                                        "begin": 40,
-                                        "end": 42
-                                    }
+                                    "linear_index": 40
                                 }
                             },
                             {
@@ -687,11 +531,7 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 41,
-                                    "liveness": {
-                                        "begin": 41,
-                                        "end": 43
-                                    }
+                                    "linear_index": 41
                                 }
                             },
                             {
@@ -701,16 +541,13 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 42,
-                                    "liveness": {
-                                        "begin": 42,
-                                        "end": 43
-                                    }
+                                    "linear_index": 42
                                 }
                             }
                         ],
                         "properties": {
                             "reachable": true,
+                            "linear_position": 6,
                             "linear_interval": {
                                 "begin": 40,
                                 "end": 43
@@ -730,16 +567,13 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 39,
-                                    "liveness": {
-                                        "begin": 39,
-                                        "end": 40
-                                    }
+                                    "linear_index": 39
                                 }
                             }
                         ],
                         "properties": {
                             "reachable": true,
+                            "linear_position": 5,
                             "linear_interval": {
                                 "begin": 39,
                                 "end": 40

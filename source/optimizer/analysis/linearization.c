@@ -24,138 +24,9 @@
 #include "kefir/core/util.h"
 #include <string.h>
 
-#define MARK_LIVENESS(_analysis, _target_ref, _instr_ref)                                                 \
-    do {                                                                                                  \
-        if ((_target_ref) != KEFIR_ID_NONE) {                                                             \
-            kefir_size_t _end_index = (_analysis)->instructions[_target_ref].liveness_interval.end_index; \
-            (_analysis)->instructions[_target_ref].liveness_interval.end_index =                          \
-                MAX(_end_index, (_analysis)->instructions[(_instr_ref)].linear_position + 1);             \
-        }                                                                                                 \
-    } while (0)
-
-static kefir_result_t mark_liveness_store_mem(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
-                                              const struct kefir_opt_instruction *instr) {
-    UNUSED(mem);
-    MARK_LIVENESS(analysis, instr->operation.parameters.memory_access.location, instr->id);
-    MARK_LIVENESS(analysis, instr->operation.parameters.memory_access.value, instr->id);
-    return KEFIR_OK;
-}
-
-static kefir_result_t mark_liveness_load_mem(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
-                                             const struct kefir_opt_instruction *instr) {
-    UNUSED(mem);
-    MARK_LIVENESS(analysis, instr->operation.parameters.memory_access.location, instr->id);
-    return KEFIR_OK;
-}
-
-static kefir_result_t mark_liveness_stack_alloc(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
-                                                const struct kefir_opt_instruction *instr) {
-    UNUSED(mem);
-    MARK_LIVENESS(analysis, instr->operation.parameters.stack_allocation.alignment_ref, instr->id);
-    MARK_LIVENESS(analysis, instr->operation.parameters.stack_allocation.size_ref, instr->id);
-    return KEFIR_OK;
-}
-
-static kefir_result_t mark_liveness_bitfield(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
-                                             const struct kefir_opt_instruction *instr) {
-    UNUSED(mem);
-    MARK_LIVENESS(analysis, instr->operation.parameters.bitfield.base_ref, instr->id);
-    MARK_LIVENESS(analysis, instr->operation.parameters.bitfield.value_ref, instr->id);
-    return KEFIR_OK;
-}
-
-static kefir_result_t mark_liveness_branch(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
-                                           const struct kefir_opt_instruction *instr) {
-    UNUSED(mem);
-    MARK_LIVENESS(analysis, instr->operation.parameters.branch.condition_ref, instr->id);
-    return KEFIR_OK;
-}
-
-static kefir_result_t mark_liveness_typed_ref1(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
-                                               const struct kefir_opt_instruction *instr) {
-    UNUSED(mem);
-    MARK_LIVENESS(analysis, instr->operation.parameters.typed_refs.ref[0], instr->id);
-    return KEFIR_OK;
-}
-
-static kefir_result_t mark_liveness_typed_ref2(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
-                                               const struct kefir_opt_instruction *instr) {
-    UNUSED(mem);
-    MARK_LIVENESS(analysis, instr->operation.parameters.typed_refs.ref[0], instr->id);
-    MARK_LIVENESS(analysis, instr->operation.parameters.typed_refs.ref[1], instr->id);
-    return KEFIR_OK;
-}
-
-static kefir_result_t mark_liveness_ref1(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
-                                         const struct kefir_opt_instruction *instr) {
-    UNUSED(mem);
-    MARK_LIVENESS(analysis, instr->operation.parameters.refs[0], instr->id);
-    return KEFIR_OK;
-}
-
-static kefir_result_t mark_liveness_ref2(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
-                                         const struct kefir_opt_instruction *instr) {
-    UNUSED(mem);
-    MARK_LIVENESS(analysis, instr->operation.parameters.refs[0], instr->id);
-    MARK_LIVENESS(analysis, instr->operation.parameters.refs[1], instr->id);
-    return KEFIR_OK;
-}
-
-static kefir_result_t mark_liveness_immediate(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
-                                              const struct kefir_opt_instruction *instr) {
-    UNUSED(mem);
-    UNUSED(analysis);
-    UNUSED(instr);
-    return KEFIR_OK;
-}
-
-static kefir_result_t mark_liveness_index(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
-                                          const struct kefir_opt_instruction *instr) {
-    UNUSED(mem);
-    UNUSED(analysis);
-    UNUSED(instr);
-    return KEFIR_OK;
-}
-
-static kefir_result_t mark_liveness_none(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
-                                         const struct kefir_opt_instruction *instr) {
-    UNUSED(mem);
-    UNUSED(analysis);
-    UNUSED(instr);
-    return KEFIR_OK;
-}
-
-static kefir_result_t mark_liveness_ir_ref(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
-                                           const struct kefir_opt_instruction *instr) {
-    UNUSED(mem);
-    UNUSED(analysis);
-    UNUSED(instr);
-    return KEFIR_OK;
-}
-
-static kefir_result_t mark_liveness_call_ref(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
-                                             const struct kefir_opt_instruction *instr) {
-    UNUSED(mem);
-    struct kefir_opt_call_node *call = NULL;
-    REQUIRE_OK(
-        kefir_opt_code_container_call(analysis->code, instr->operation.parameters.function_call.call_ref, &call));
-    MARK_LIVENESS(analysis, instr->operation.parameters.function_call.indirect_ref, instr->id);
-    for (kefir_size_t i = 0; i < call->argument_count; i++) {
-        MARK_LIVENESS(analysis, call->arguments[i], instr->id);
-    }
-    return KEFIR_OK;
-}
-
-static kefir_result_t mark_liveness_phi_ref(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
-                                            const struct kefir_opt_instruction *instr) {
-    UNUSED(mem);
-    UNUSED(analysis);
-    UNUSED(instr);
-    return KEFIR_OK;
-}
-
 static kefir_result_t linearize_impl(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
                                      struct kefir_list *queue) {
+    kefir_size_t block_index = 0;
     kefir_size_t linear_index = 0;
     kefir_result_t res = KEFIR_OK;
     for (struct kefir_list_entry *head_entry = kefir_list_head(queue); res == KEFIR_OK && head_entry != NULL;
@@ -166,7 +37,9 @@ static kefir_result_t linearize_impl(struct kefir_mem *mem, struct kefir_opt_cod
             continue;
         }
 
-        analysis->blocks[block_id].linear_interval.begin_index = linear_index;
+        analysis->block_linearization[block_index] = &analysis->blocks[block_id];
+        analysis->blocks[block_id].linear_position = ++block_index;
+        analysis->blocks[block_id].linear_range.begin_index = linear_index;
 
         struct kefir_opt_code_block *block = NULL;
         REQUIRE_OK(kefir_opt_code_container_block(analysis->code, block_id, &block));
@@ -179,26 +52,29 @@ static kefir_result_t linearize_impl(struct kefir_mem *mem, struct kefir_opt_cod
             }
 
             analysis->linearization[linear_index] = &analysis->instructions[instr->id];
-            analysis->instructions[instr->id].linear_position = linear_index;
-            analysis->instructions[instr->id].liveness_interval.begin_index = linear_index;
-            analysis->instructions[instr->id].liveness_interval.end_index = ++linear_index;
-
-            switch (instr->operation.opcode) {
-#define OPCODE_DEF(_id, _symbolic, _class)                        \
-    case KEFIR_OPT_OPCODE_##_id:                                  \
-        REQUIRE_OK(mark_liveness_##_class(mem, analysis, instr)); \
-        break;
-
-                KEFIR_OPTIMIZER_OPCODE_DEFS(OPCODE_DEF, )
-#undef OPCODE_DEF
-            }
+            analysis->instructions[instr->id].linear_position = linear_index++;
         }
         REQUIRE_OK(res);
 
-        analysis->blocks[block_id].linear_interval.end_index = linear_index;
+        analysis->blocks[block_id].linear_range.end_index = linear_index;
     }
     REQUIRE_OK(res);
 
+    return KEFIR_OK;
+}
+
+struct scheduler_callback_payload {
+    struct kefir_mem *mem;
+    struct kefir_list *queue;
+};
+
+static kefir_result_t scheduler_callback(kefir_opt_block_id_t block_id, void *payload) {
+    REQUIRE(payload != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer scheduler callback payload"));
+    ASSIGN_DECL_CAST(struct scheduler_callback_payload *, param, payload);
+
+    REQUIRE_OK(kefir_list_insert_after(param->mem, param->queue, kefir_list_tail(param->queue),
+                                       (void *) (kefir_uptr_t) block_id));
     return KEFIR_OK;
 }
 
@@ -214,9 +90,15 @@ kefir_result_t kefir_opt_code_analyze_linearize(struct kefir_mem *mem, struct ke
     REQUIRE(analysis->linearization != NULL,
             KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate optimizer analysis linearization"));
 
+    analysis->block_linearization = KEFIR_MALLOC(
+        mem, sizeof(struct kefir_opt_code_analysis_block_properties *) * analysis->block_linearization_length);
+    REQUIRE(analysis->block_linearization != NULL,
+            KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate optimizer analysis linearization"));
+
     struct kefir_list queue;
     REQUIRE_OK(kefir_list_init(&queue));
-    kefir_result_t res = block_scheduler->schedule(mem, analysis->code, &queue, block_scheduler->payload);
+    kefir_result_t res = block_scheduler->schedule(mem, block_scheduler, analysis->code, scheduler_callback,
+                                                   &(struct scheduler_callback_payload){.mem = mem, .queue = &queue});
     REQUIRE_CHAIN(&res, linearize_impl(mem, analysis, &queue));
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_list_free(mem, &queue);

@@ -36,6 +36,7 @@ static kefir_result_t mark_reachable_code_in_block(struct kefir_mem *mem, struct
                                                    kefir_opt_block_id_t block_id, struct kefir_list *queue) {
     REQUIRE(!analysis->blocks[block_id].reachable, KEFIR_OK);
     analysis->blocks[block_id].reachable = true;
+    analysis->block_linearization_length++;
 
     struct kefir_opt_code_block *block = NULL;
     REQUIRE_OK(kefir_opt_code_container_block(analysis->code, block_id, &block));

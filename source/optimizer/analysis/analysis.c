@@ -25,8 +25,8 @@
 #include <string.h>
 
 static kefir_result_t block_schedule_dfs_impl(struct kefir_mem *mem, const struct kefir_opt_code_container *code,
-                                              struct kefir_list *block_queue, struct kefir_list *work_queue,
-                                              kefir_bool_t *marks) {
+                                              kefir_result_t (*callback)(kefir_opt_block_id_t, void *), void *payload,
+                                              struct kefir_list *work_queue, kefir_bool_t *marks) {
     REQUIRE_OK(kefir_list_insert_after(mem, work_queue, kefir_list_tail(work_queue),
                                        (void *) (kefir_uptr_t) code->entry_point));
 
@@ -38,8 +38,7 @@ static kefir_result_t block_schedule_dfs_impl(struct kefir_mem *mem, const struc
         if (marks[block_id]) {
             continue;
         }
-        REQUIRE_OK(
-            kefir_list_insert_after(mem, block_queue, kefir_list_tail(block_queue), (void *) (kefir_uptr_t) block_id));
+        REQUIRE_OK(callback(block_id, payload));
         marks[block_id] = true;
 
         struct kefir_opt_code_block *block = NULL;
@@ -77,20 +76,21 @@ static kefir_result_t block_schedule_dfs_impl(struct kefir_mem *mem, const struc
     REQUIRE_OK(kefir_opt_code_container_block_count(code, &num_of_blocks));
     for (kefir_opt_block_id_t i = 0; i < num_of_blocks; i++) {
         if (!marks[i]) {
-            REQUIRE_OK(
-                kefir_list_insert_after(mem, block_queue, kefir_list_tail(block_queue), (void *) (kefir_uptr_t) i));
+            REQUIRE_OK(callback(i, payload));
         }
     }
     return KEFIR_OK;
 }
 
-static kefir_result_t block_schedule_dfs(struct kefir_mem *mem, const struct kefir_opt_code_container *code,
-                                         struct kefir_list *block_queue, void *payload) {
-    UNUSED(payload);
+static kefir_result_t block_schedule_dfs(struct kefir_mem *mem,
+                                         const struct kefir_opt_code_analyze_block_scheduler *scheduler,
+                                         const struct kefir_opt_code_container *code,
+                                         kefir_result_t (*callback)(kefir_opt_block_id_t, void *), void *payload) {
+    UNUSED(scheduler);
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code"));
-    REQUIRE(block_queue != NULL,
-            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer analysis block schedule queue"));
+    REQUIRE(callback != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer analysis block schedule callback"));
 
     kefir_size_t num_of_blocks;
     REQUIRE_OK(kefir_opt_code_container_block_count(code, &num_of_blocks));
@@ -103,7 +103,7 @@ static kefir_result_t block_schedule_dfs(struct kefir_mem *mem, const struct kef
             KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate optimizer DFS scheduler data"));
     memset(scheduled_marks, 0, sizeof(kefir_bool_t) * num_of_blocks);
 
-    kefir_result_t res = block_schedule_dfs_impl(mem, code, block_queue, &work_queue, scheduled_marks);
+    kefir_result_t res = block_schedule_dfs_impl(mem, code, callback, payload, &work_queue, scheduled_marks);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, scheduled_marks);
         kefir_list_free(mem, &work_queue);
@@ -125,16 +125,13 @@ static kefir_result_t analyze_code(struct kefir_mem *mem, struct kefir_opt_code_
         analysis->blocks[i] = (struct kefir_opt_code_analysis_block_properties){
             .block_id = i,
             .reachable = false,
-            .linear_interval = {.begin_index = KEFIR_OPT_CODE_ANALYSIS_LINEAR_INDEX_UNDEFINED,
-                                .end_index = KEFIR_OPT_CODE_ANALYSIS_LINEAR_INDEX_UNDEFINED}};
+            .linear_position = ~(kefir_size_t) 0ull,
+            .linear_range = {.begin_index = KEFIR_OPT_CODE_ANALYSIS_LINEAR_INDEX_UNDEFINED,
+                             .end_index = KEFIR_OPT_CODE_ANALYSIS_LINEAR_INDEX_UNDEFINED}};
     }
     for (kefir_size_t i = 0; i < kefir_opt_code_container_length(analysis->code); i++) {
         analysis->instructions[i] = (struct kefir_opt_code_analysis_instruction_properties){
-            .instr_ref = i,
-            .reachable = false,
-            .linear_position = KEFIR_OPT_CODE_ANALYSIS_LINEAR_INDEX_UNDEFINED,
-            .liveness_interval = {.begin_index = KEFIR_OPT_CODE_ANALYSIS_LINEAR_INDEX_UNDEFINED,
-                                  .end_index = KEFIR_OPT_CODE_ANALYSIS_LINEAR_INDEX_UNDEFINED}};
+            .instr_ref = i, .reachable = false, .linear_position = KEFIR_OPT_CODE_ANALYSIS_LINEAR_INDEX_UNDEFINED};
     }
 
     REQUIRE_OK(kefir_opt_code_analyze_reachability(mem, analysis));
@@ -165,12 +162,15 @@ kefir_result_t kefir_opt_code_analyze(struct kefir_mem *mem, const struct kefir_
     });
 
     analysis->code = code;
+    analysis->block_linearization_length = 0;
+    analysis->block_linearization = NULL;
     analysis->linearization_length = 0;
     analysis->linearization = NULL;
 
     kefir_result_t res = analyze_code(mem, analysis);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, analysis->linearization);
+        KEFIR_FREE(mem, analysis->block_linearization);
         KEFIR_FREE(mem, analysis->instructions);
         KEFIR_FREE(mem, analysis->blocks);
         memset(analysis, 0, sizeof(struct kefir_opt_code_analysis));
@@ -184,6 +184,7 @@ kefir_result_t kefir_opt_code_analysis_free(struct kefir_mem *mem, struct kefir_
     REQUIRE(analysis != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code analysis"));
 
     KEFIR_FREE(mem, analysis->linearization);
+    KEFIR_FREE(mem, analysis->block_linearization);
     KEFIR_FREE(mem, analysis->instructions);
     KEFIR_FREE(mem, analysis->blocks);
     memset(analysis, 0, sizeof(struct kefir_opt_code_analysis));
