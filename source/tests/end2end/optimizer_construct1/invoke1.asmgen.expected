@@ -578,7 +578,8 @@
                             "linear_interval": {
                                 "begin": 0,
                                 "end": 42
-                            }
+                            },
+                            "successors": []
                         }
                     }
                 ],

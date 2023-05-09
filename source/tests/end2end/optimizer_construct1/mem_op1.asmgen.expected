@@ -135,7 +135,8 @@
                             "linear_interval": {
                                 "begin": 0,
                                 "end": 10
-                            }
+                            },
+                            "successors": []
                         }
                     }
                 ],
@@ -279,7 +280,8 @@
                             "linear_interval": {
                                 "begin": 0,
                                 "end": 10
-                            }
+                            },
+                            "successors": []
                         }
                     }
                 ],
@@ -533,7 +535,8 @@
                             "linear_interval": {
                                 "begin": 0,
                                 "end": 19
-                            }
+                            },
+                            "successors": []
                         }
                     }
                 ],

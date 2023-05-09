@@ -222,7 +222,11 @@
                             "linear_interval": {
                                 "begin": 0,
                                 "end": 18
-                            }
+                            },
+                            "successors": [
+                                1,
+                                2
+                            ]
                         }
                     },
                     {
@@ -248,7 +252,8 @@
                             "linear_interval": {
                                 "begin": 18,
                                 "end": 19
-                            }
+                            },
+                            "successors": []
                         }
                     },
                     {
@@ -319,7 +324,11 @@
                             "linear_interval": {
                                 "begin": 19,
                                 "end": 24
-                            }
+                            },
+                            "successors": [
+                                3,
+                                4
+                            ]
                         }
                     },
                     {
@@ -505,7 +514,11 @@
                             "linear_interval": {
                                 "begin": 24,
                                 "end": 39
-                            }
+                            },
+                            "successors": [
+                                2,
+                                5
+                            ]
                         }
                     },
                     {
@@ -551,7 +564,8 @@
                             "linear_interval": {
                                 "begin": 40,
                                 "end": 43
-                            }
+                            },
+                            "successors": []
                         }
                     },
                     {
@@ -577,7 +591,10 @@
                             "linear_interval": {
                                 "begin": 39,
                                 "end": 40
-                            }
+                            },
+                            "successors": [
+                                0
+                            ]
                         }
                     }
                 ],

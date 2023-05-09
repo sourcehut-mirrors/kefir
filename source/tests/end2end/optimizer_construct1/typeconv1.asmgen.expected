@@ -109,7 +109,8 @@
                             "linear_interval": {
                                 "begin": 0,
                                 "end": 1
-                            }
+                            },
+                            "successors": []
                         }
                     }
                 ],

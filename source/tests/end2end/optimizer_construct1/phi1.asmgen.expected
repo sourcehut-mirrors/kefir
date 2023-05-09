@@ -302,7 +302,11 @@
                             "linear_interval": {
                                 "begin": 0,
                                 "end": 25
-                            }
+                            },
+                            "successors": [
+                                1,
+                                2
+                            ]
                         }
                     },
                     {
@@ -364,7 +368,11 @@
                             "linear_interval": {
                                 "begin": 25,
                                 "end": 28
-                            }
+                            },
+                            "successors": [
+                                3,
+                                4
+                            ]
                         }
                     },
                     {
@@ -479,7 +487,10 @@
                             "linear_interval": {
                                 "begin": 51,
                                 "end": 59
-                            }
+                            },
+                            "successors": [
+                                1
+                            ]
                         }
                     },
                     {
@@ -539,7 +550,8 @@
                             "linear_interval": {
                                 "begin": 28,
                                 "end": 31
-                            }
+                            },
+                            "successors": []
                         }
                     },
                     {
@@ -653,7 +665,11 @@
                             "linear_interval": {
                                 "begin": 31,
                                 "end": 39
-                            }
+                            },
+                            "successors": [
+                                5,
+                                6
+                            ]
                         }
                     },
                     {
@@ -749,7 +765,10 @@
                             "linear_interval": {
                                 "begin": 39,
                                 "end": 44
-                            }
+                            },
+                            "successors": [
+                                3
+                            ]
                         }
                     },
                     {
@@ -860,7 +879,10 @@
                             "linear_interval": {
                                 "begin": 44,
                                 "end": 51
-                            }
+                            },
+                            "successors": [
+                                5
+                            ]
                         }
                     }
                 ],
@@ -1091,7 +1113,11 @@
                             "linear_interval": {
                                 "begin": 0,
                                 "end": 18
-                            }
+                            },
+                            "successors": [
+                                3,
+                                4
+                            ]
                         }
                     },
                     {
@@ -1127,7 +1153,8 @@
                             "linear_interval": {
                                 "begin": 36,
                                 "end": 38
-                            }
+                            },
+                            "successors": []
                         }
                     },
                     {
@@ -1163,7 +1190,8 @@
                             "linear_interval": {
                                 "begin": 38,
                                 "end": 40
-                            }
+                            },
+                            "successors": []
                         }
                     },
                     {
@@ -1225,7 +1253,11 @@
                             "linear_interval": {
                                 "begin": 18,
                                 "end": 21
-                            }
+                            },
+                            "successors": [
+                                5,
+                                6
+                            ]
                         }
                     },
                     {
@@ -1304,7 +1336,10 @@
                             "linear_interval": {
                                 "begin": 31,
                                 "end": 36
-                            }
+                            },
+                            "successors": [
+                                3
+                            ]
                         }
                     },
                     {
@@ -1376,7 +1411,11 @@
                             "linear_interval": {
                                 "begin": 21,
                                 "end": 26
-                            }
+                            },
+                            "successors": [
+                                1,
+                                2
+                            ]
                         }
                     },
                     {
@@ -1448,7 +1487,11 @@
                             "linear_interval": {
                                 "begin": 26,
                                 "end": 31
-                            }
+                            },
+                            "successors": [
+                                1,
+                                2
+                            ]
                         }
                     },
                     {
@@ -1471,7 +1514,10 @@
                         "properties": {
                             "reachable": false,
                             "linear_position": null,
-                            "linear_interval": null
+                            "linear_interval": null,
+                            "successors": [
+                                1
+                            ]
                         }
                     }
                 ],

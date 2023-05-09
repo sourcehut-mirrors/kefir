@@ -134,6 +134,9 @@ static kefir_result_t find_reachable_code_immediate(struct kefir_mem *mem, struc
                                                     const struct kefir_opt_instruction *instr) {
     if (instr->operation.opcode == KEFIR_OPT_OPCODE_BLOCK_LABEL) {
         REQUIRE_OK(mark_reachable_code_in_block(mem, analysis, instr->operation.parameters.imm.block_ref, queue));
+        REQUIRE_OK(kefir_list_insert_after(mem, &analysis->indirect_jump_target_blocks,
+                                           kefir_list_tail(&analysis->indirect_jump_target_blocks),
+                                           (void *) (kefir_uptr_t) instr->operation.parameters.imm.block_ref));
     }
     return KEFIR_OK;
 }

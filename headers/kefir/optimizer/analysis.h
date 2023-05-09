@@ -36,6 +36,7 @@ typedef struct kefir_opt_code_analysis_block_properties {
     kefir_bool_t reachable;
     kefir_size_t linear_position;
     struct kefir_opt_code_analysis_linear_range linear_range;
+    struct kefir_list successors;
 } kefir_opt_code_analysis_block_properties_t;
 
 typedef struct kefir_opt_code_analysis_instruction_properties {
@@ -49,6 +50,8 @@ typedef struct kefir_opt_code_analysis {
 
     struct kefir_opt_code_analysis_block_properties *blocks;
     struct kefir_opt_code_analysis_instruction_properties *instructions;
+
+    struct kefir_list indirect_jump_target_blocks;
 
     kefir_size_t block_linearization_length;
     struct kefir_opt_code_analysis_block_properties **block_linearization;

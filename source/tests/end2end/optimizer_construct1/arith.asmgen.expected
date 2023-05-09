@@ -105,7 +105,8 @@
                             "linear_interval": {
                                 "begin": 0,
                                 "end": 1
-                            }
+                            },
+                            "successors": []
                         }
                     }
                 ],
@@ -198,7 +199,11 @@
                             "linear_interval": {
                                 "begin": 0,
                                 "end": 6
-                            }
+                            },
+                            "successors": [
+                                1,
+                                2
+                            ]
                         }
                     },
                     {
@@ -312,7 +317,11 @@
                             "linear_interval": {
                                 "begin": 6,
                                 "end": 15
-                            }
+                            },
+                            "successors": [
+                                4,
+                                5
+                            ]
                         }
                     },
                     {
@@ -381,7 +390,8 @@
                             "linear_interval": {
                                 "begin": 34,
                                 "end": 39
-                            }
+                            },
+                            "successors": []
                         }
                     },
                     {
@@ -404,7 +414,10 @@
                         "properties": {
                             "reachable": false,
                             "linear_position": null,
-                            "linear_interval": null
+                            "linear_interval": null,
+                            "successors": [
+                                4
+                            ]
                         }
                     },
                     {
@@ -542,7 +555,8 @@
                             "linear_interval": {
                                 "begin": 15,
                                 "end": 26
-                            }
+                            },
+                            "successors": []
                         }
                     },
                     {
@@ -644,7 +658,8 @@
                             "linear_interval": {
                                 "begin": 26,
                                 "end": 34
-                            }
+                            },
+                            "successors": []
                         }
                     }
                 ],
@@ -770,7 +785,11 @@
                             "linear_interval": {
                                 "begin": 0,
                                 "end": 9
-                            }
+                            },
+                            "successors": [
+                                1,
+                                2
+                            ]
                         }
                     },
                     {
@@ -796,7 +815,8 @@
                             "linear_interval": {
                                 "begin": 9,
                                 "end": 10
-                            }
+                            },
+                            "successors": []
                         }
                     },
                     {
@@ -905,7 +925,8 @@
                             "linear_interval": {
                                 "begin": 10,
                                 "end": 19
-                            }
+                            },
+                            "successors": []
                         }
                     },
                     {
@@ -928,7 +949,10 @@
                         "properties": {
                             "reachable": false,
                             "linear_position": null,
-                            "linear_interval": null
+                            "linear_interval": null,
+                            "successors": [
+                                0
+                            ]
                         }
                     }
                 ],

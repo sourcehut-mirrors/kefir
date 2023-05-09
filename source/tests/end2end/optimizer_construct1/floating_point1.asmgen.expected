@@ -467,7 +467,8 @@
                             "linear_interval": {
                                 "begin": 0,
                                 "end": 39
-                            }
+                            },
+                            "successors": []
                         }
                     }
                 ],
@@ -943,7 +944,8 @@
                             "linear_interval": {
                                 "begin": 0,
                                 "end": 39
-                            }
+                            },
+                            "successors": []
                         }
                     }
                 ],
@@ -1626,7 +1628,8 @@
                             "linear_interval": {
                                 "begin": 0,
                                 "end": 9
-                            }
+                            },
+                            "successors": []
                         }
                     }
                 ],
@@ -2309,7 +2312,8 @@
                             "linear_interval": {
                                 "begin": 0,
                                 "end": 9
-                            }
+                            },
+                            "successors": []
                         }
                     }
                 ],
@@ -2834,7 +2838,8 @@
                             "linear_interval": {
                                 "begin": 0,
                                 "end": 9
-                            }
+                            },
+                            "successors": []
                         }
                     }
                 ],
