@@ -451,6 +451,8 @@ kefir_result_t kefir_opt_code_container_new_phi(struct kefir_mem *mem, struct ke
 
     phi_node->block_id = block_id;
     phi_node->node_id = code->next_phi_node_id;
+    phi_node->output_ref = KEFIR_ID_NONE;
+    phi_node->number_of_links = 0u;
 
     kefir_result_t res = kefir_hashtree_init(&phi_node->links, &kefir_hashtree_uint_ops);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -518,6 +520,48 @@ kefir_result_t kefir_opt_code_container_phi_attach(struct kefir_mem *mem, struct
 
     REQUIRE_OK(kefir_hashtree_insert(mem, &phi_node->links, (kefir_hashtree_key_t) block_id,
                                      (kefir_hashtree_value_t) instr_ref));
+    phi_node->number_of_links++;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_code_container_phi_set_output(const struct kefir_opt_code_container *code,
+                                                       kefir_opt_phi_id_t phi_ref,
+                                                       kefir_opt_instruction_ref_t instr_ref) {
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
+
+    struct kefir_opt_phi_node *phi_node = NULL;
+    REQUIRE_OK(kefir_opt_code_container_phi(code, phi_ref, &phi_node));
+    REQUIRE(phi_node->output_ref == KEFIR_ID_NONE,
+            KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Optimizer phi node already has output instruction"));
+
+    struct kefir_opt_instruction *instr = NULL;
+    REQUIRE_OK(kefir_opt_code_container_instr(code, instr_ref, &instr));
+
+    REQUIRE(
+        phi_node->block_id == instr->block_id,
+        KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Both optimizer phi node and its output shall be in the same block"));
+    phi_node->output_ref = instr_ref;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_code_container_phi_link_for(const struct kefir_opt_code_container *code,
+                                                     kefir_opt_phi_id_t phi_ref, kefir_opt_block_id_t block_id,
+                                                     kefir_opt_instruction_ref_t *instr_ref_ptr) {
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
+    REQUIRE(instr_ref_ptr != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer instruction reference"));
+
+    struct kefir_opt_phi_node *phi_node = NULL;
+    REQUIRE_OK(kefir_opt_code_container_phi(code, phi_ref, &phi_node));
+
+    struct kefir_hashtree_node *node = NULL;
+    kefir_result_t res = kefir_hashtree_at(&phi_node->links, (kefir_hashtree_key_t) block_id, &node);
+    if (res == KEFIR_NOT_FOUND) {
+        res = KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find requested optimizer phi node link");
+    }
+    REQUIRE_OK(res);
+
+    *instr_ref_ptr = (kefir_opt_instruction_ref_t) node->value;
     return KEFIR_OK;
 }
 

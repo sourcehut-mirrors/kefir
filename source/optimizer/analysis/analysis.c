@@ -159,6 +159,14 @@ static kefir_result_t find_successors(struct kefir_mem *mem, struct kefir_opt_co
                 return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER,
                                        "Unexpected terminating instruction of optimizer code block");
         }
+
+        for (const struct kefir_list_entry *iter = kefir_list_head(successors); iter != NULL; kefir_list_next(&iter)) {
+            ASSIGN_DECL_CAST(kefir_opt_block_id_t, successor_block, (kefir_uptr_t) iter->value);
+
+            REQUIRE_OK(kefir_list_insert_after(mem, &analysis->blocks[successor_block].predecessors,
+                                               kefir_list_tail(&analysis->blocks[successor_block].predecessors),
+                                               (void *) (kefir_uptr_t) block->id));
+        }
     }
     return KEFIR_OK;
 }
@@ -167,6 +175,7 @@ static kefir_result_t analyze_code(struct kefir_mem *mem, struct kefir_opt_code_
     REQUIRE_OK(kefir_opt_code_analyze_reachability(mem, analysis));
     REQUIRE_OK(find_successors(mem, analysis));
     REQUIRE_OK(kefir_opt_code_analyze_linearize(mem, analysis, &kefir_opt_code_analyze_dfs_block_scheduler));
+    REQUIRE_OK(kefir_opt_code_liveness_intervals_build(mem, analysis, &analysis->liveness));
     return KEFIR_OK;
 }
 
@@ -193,9 +202,11 @@ kefir_result_t kefir_opt_code_analyze(struct kefir_mem *mem, const struct kefir_
             .linear_range = {.begin_index = KEFIR_OPT_CODE_ANALYSIS_LINEAR_INDEX_UNDEFINED,
                              .end_index = KEFIR_OPT_CODE_ANALYSIS_LINEAR_INDEX_UNDEFINED}};
         kefir_result_t res = kefir_list_init(&analysis->blocks[i].successors);
+        REQUIRE_CHAIN(&res, kefir_list_init(&analysis->blocks[i].predecessors));
         REQUIRE_ELSE(res == KEFIR_OK, {
             for (kefir_size_t j = 0; j < i; j++) {
-                kefir_list_free(mem, &analysis->blocks[i].successors);
+                kefir_list_free(mem, &analysis->blocks[j].successors);
+                kefir_list_free(mem, &analysis->blocks[j].predecessors);
             }
             KEFIR_FREE(mem, analysis->blocks);
             kefir_list_free(mem, &analysis->indirect_jump_target_blocks);
@@ -209,6 +220,7 @@ kefir_result_t kefir_opt_code_analyze(struct kefir_mem *mem, const struct kefir_
     REQUIRE_ELSE(analysis->instructions != NULL, {
         for (kefir_size_t i = 0; i < num_of_blocks; i++) {
             kefir_list_free(mem, &analysis->blocks[i].successors);
+            kefir_list_free(mem, &analysis->blocks[i].predecessors);
         }
         KEFIR_FREE(mem, analysis->blocks);
         analysis->blocks = NULL;
@@ -231,6 +243,7 @@ kefir_result_t kefir_opt_code_analyze(struct kefir_mem *mem, const struct kefir_
     REQUIRE_ELSE(res == KEFIR_OK, {
         for (kefir_size_t i = 0; i < num_of_blocks; i++) {
             REQUIRE_OK(kefir_list_free(mem, &analysis->blocks[i].successors));
+            REQUIRE_OK(kefir_list_free(mem, &analysis->blocks[i].predecessors));
         }
         KEFIR_FREE(mem, analysis->linearization);
         KEFIR_FREE(mem, analysis->block_linearization);
@@ -247,10 +260,13 @@ kefir_result_t kefir_opt_code_analysis_free(struct kefir_mem *mem, struct kefir_
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(analysis != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code analysis"));
 
+    REQUIRE_OK(kefir_opt_code_liveness_intervals_free(mem, &analysis->liveness));
+
     kefir_size_t num_of_blocks;
     REQUIRE_OK(kefir_opt_code_container_block_count(analysis->code, &num_of_blocks));
     for (kefir_size_t i = 0; i < num_of_blocks; i++) {
         REQUIRE_OK(kefir_list_free(mem, &analysis->blocks[i].successors));
+        REQUIRE_OK(kefir_list_free(mem, &analysis->blocks[i].predecessors));
     }
 
     REQUIRE_OK(kefir_list_free(mem, &analysis->indirect_jump_target_blocks));

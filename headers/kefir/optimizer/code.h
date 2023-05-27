@@ -136,7 +136,9 @@ typedef struct kefir_opt_code_block {
 typedef struct kefir_opt_phi_node {
     kefir_opt_block_id_t block_id;
     kefir_opt_phi_id_t node_id;
+    kefir_size_t number_of_links;
     struct kefir_hashtree links;
+    kefir_opt_instruction_ref_t output_ref;
 
     struct {
         kefir_opt_phi_id_t prev;
@@ -211,6 +213,10 @@ kefir_result_t kefir_opt_code_container_phi(const struct kefir_opt_code_containe
 kefir_result_t kefir_opt_code_container_phi_attach(struct kefir_mem *, struct kefir_opt_code_container *,
                                                    kefir_opt_phi_id_t, kefir_opt_block_id_t,
                                                    kefir_opt_instruction_ref_t);
+kefir_result_t kefir_opt_code_container_phi_set_output(const struct kefir_opt_code_container *, kefir_opt_phi_id_t,
+                                                       kefir_opt_instruction_ref_t);
+kefir_result_t kefir_opt_code_container_phi_link_for(const struct kefir_opt_code_container *, kefir_opt_phi_id_t,
+                                                     kefir_opt_block_id_t, kefir_opt_instruction_ref_t *);
 
 kefir_result_t kefir_opt_code_container_new_call(struct kefir_mem *, struct kefir_opt_code_container *,
                                                  kefir_opt_block_id_t, kefir_id_t, kefir_size_t, kefir_opt_call_id_t *);

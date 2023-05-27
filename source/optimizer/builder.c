@@ -208,10 +208,14 @@ kefir_result_t kefir_opt_code_builder_phi(struct kefir_mem *mem, struct kefir_op
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
 
     REQUIRE_OK(phi_exists(code, identifier));
+
+    kefir_opt_instruction_ref_t instr_ref;
     REQUIRE_OK(kefir_opt_code_builder_add_instruction(
         mem, code, block_id,
         &(struct kefir_opt_operation){.opcode = KEFIR_OPT_OPCODE_PHI, .parameters.phi_ref = identifier}, false,
-        instr_id_ptr));
+        &instr_ref));
+    REQUIRE_OK(kefir_opt_code_container_phi_set_output(code, identifier, instr_ref));
+    ASSIGN_PTR(instr_id_ptr, instr_ref);
     return KEFIR_OK;
 }
 

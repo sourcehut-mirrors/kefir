@@ -254,6 +254,21 @@ static kefir_result_t instr_format(struct kefir_json_output *json, const struct 
         } else {
             REQUIRE_OK(kefir_json_output_null(json));
         }
+        REQUIRE_OK(kefir_json_output_object_key(json, "linear_liveness"));
+        if (instr_props->reachable) {
+            const struct kefir_opt_instruction_liveness_interval *instr_liveness =
+                &code_analysis->liveness.intervals[instr_props->linear_position];
+            REQUIRE_OK(kefir_json_output_object_begin(json));
+            REQUIRE_OK(kefir_json_output_object_key(json, "alias"));
+            REQUIRE_OK(id_format(json, instr_liveness->alias_ref));
+            REQUIRE_OK(kefir_json_output_object_key(json, "begin"));
+            REQUIRE_OK(kefir_json_output_uinteger(json, instr_liveness->range.begin));
+            REQUIRE_OK(kefir_json_output_object_key(json, "end"));
+            REQUIRE_OK(kefir_json_output_uinteger(json, instr_liveness->range.end));
+            REQUIRE_OK(kefir_json_output_object_end(json));
+        } else {
+            REQUIRE_OK(kefir_json_output_null(json));
+        }
         REQUIRE_OK(kefir_json_output_object_end(json));
     } else {
         REQUIRE_OK(kefir_json_output_null(json));
@@ -380,6 +395,15 @@ static kefir_result_t code_block_format(struct kefir_json_output *json, const st
         REQUIRE_OK(kefir_json_output_object_key(json, "successors"));
         REQUIRE_OK(kefir_json_output_array_begin(json));
         for (const struct kefir_list_entry *iter = kefir_list_head(&block_props->successors); iter != NULL;
+             kefir_list_next(&iter)) {
+            ASSIGN_DECL_CAST(kefir_opt_block_id_t, block_id, (kefir_uptr_t) iter->value);
+            REQUIRE_OK(kefir_json_output_uinteger(json, block_id));
+        }
+        REQUIRE_OK(kefir_json_output_array_end(json));
+
+        REQUIRE_OK(kefir_json_output_object_key(json, "predecessors"));
+        REQUIRE_OK(kefir_json_output_array_begin(json));
+        for (const struct kefir_list_entry *iter = kefir_list_head(&block_props->predecessors); iter != NULL;
              kefir_list_next(&iter)) {
             ASSIGN_DECL_CAST(kefir_opt_block_id_t, block_id, (kefir_uptr_t) iter->value);
             REQUIRE_OK(kefir_json_output_uinteger(json, block_id));

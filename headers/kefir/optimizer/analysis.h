@@ -22,6 +22,7 @@
 #define KEFIR_OPTIMIZER_ANALYSIS_H_
 
 #include "kefir/optimizer/module.h"
+#include "kefir/optimizer/liveness.h"
 #include "kefir/core/hashtree.h"
 
 #define KEFIR_OPT_CODE_ANALYSIS_LINEAR_INDEX_UNDEFINED (~(kefir_size_t) 0ull)
@@ -36,6 +37,7 @@ typedef struct kefir_opt_code_analysis_block_properties {
     kefir_bool_t reachable;
     kefir_size_t linear_position;
     struct kefir_opt_code_analysis_linear_range linear_range;
+    struct kefir_list predecessors;
     struct kefir_list successors;
 } kefir_opt_code_analysis_block_properties_t;
 
@@ -58,6 +60,8 @@ typedef struct kefir_opt_code_analysis {
 
     kefir_size_t linearization_length;
     struct kefir_opt_code_analysis_instruction_properties **linearization;
+
+    struct kefir_opt_code_liveness_intervals liveness;
 } kefir_opt_code_analysis_t;
 
 kefir_result_t kefir_opt_code_analyze(struct kefir_mem *, const struct kefir_opt_code_container *,
