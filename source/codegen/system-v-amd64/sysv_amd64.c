@@ -436,12 +436,17 @@ static kefir_result_t cg_translate_inline_assembly_fragments(struct kefir_mem *m
 }
 
 static kefir_result_t cg_translate(struct kefir_mem *mem, struct kefir_codegen *cg_iface,
-                                   struct kefir_ir_module *module) {
+                                   struct kefir_opt_module *opt_module,
+                                   struct kefir_opt_module_analysis *opt_analysis) {
+    UNUSED(opt_analysis);
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(cg_iface != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid code generator interface"));
     REQUIRE(cg_iface->data != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 code generator"));
+    REQUIRE(opt_module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module"));
+
     struct kefir_codegen_amd64 *codegen = (struct kefir_codegen_amd64 *) cg_iface->data;
     struct kefir_codegen_amd64_sysv_module sysv_module;
-    REQUIRE_OK(kefir_codegen_amd64_sysv_module_alloc(mem, &sysv_module, module));
+    REQUIRE_OK(kefir_codegen_amd64_sysv_module_alloc(mem, &sysv_module, opt_module->ir_module));
     REQUIRE_OK(cg_module_prologue(&sysv_module, codegen));
     struct kefir_hashtree_node_iterator iter;
     for (const struct kefir_ir_function *func = kefir_ir_module_function_iter(sysv_module.module, &iter); func != NULL;
@@ -492,7 +497,7 @@ kefir_result_t kefir_codegen_sysv_amd64_init(struct kefir_mem *mem, struct kefir
     kefir_asm_amd64_xasmgen_syntax_t syntax = KEFIR_AMD64_XASMGEN_SYNTAX_ATT;
     REQUIRE_OK(match_syntax(config->syntax, &syntax));
     REQUIRE_OK(kefir_asm_amd64_xasmgen_init(mem, &codegen->xasmgen, out, syntax));
-    codegen->iface.translate = cg_translate;
+    codegen->iface.translate_optimized = cg_translate;
     codegen->iface.close = cg_close;
     codegen->iface.data = codegen;
     codegen->iface.self = codegen;

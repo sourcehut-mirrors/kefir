@@ -66,7 +66,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE(data1 != NULL, KEFIR_INTERNAL_ERROR);
     REQUIRE_OK(kefir_ir_data_finalize(data1));
 
-    REQUIRE_OK(codegen.iface.translate(mem, &codegen.iface, &module));
+    REQUIRE_OK(KEFIR_CODEGEN_TRANSLATE(mem, &codegen.iface, &module));
 
     REQUIRE_OK(KEFIR_CODEGEN_CLOSE(mem, &codegen.iface));
     REQUIRE_OK(kefir_codegen_amd64_sysv_module_free(mem, &sysv_module));

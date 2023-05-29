@@ -100,6 +100,7 @@ static kefir_result_t kefir_compiler_amd64_sysv_profile(struct kefir_compiler_pr
 
     REQUIRE_OK(kefir_lexer_context_default(&profile->lexer_context));
     REQUIRE_OK(kefir_abi_sysv_amd64_target_platform(&profile->ir_target_platform));
+    profile->optimizer_enabled = false;
     profile->data_model = &DATA_MODEL_DESCRIPTOR;
     profile->type_traits = &TYPE_TRAITS;
     profile->new_codegen = amd64_sysv_new_codegen;
@@ -108,10 +109,20 @@ static kefir_result_t kefir_compiler_amd64_sysv_profile(struct kefir_compiler_pr
     return KEFIR_OK;
 }
 
+static kefir_result_t kefir_compiler_opt_amd64_sysv_profile(struct kefir_compiler_profile *profile) {
+    REQUIRE(profile != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid compiler profile"));
+
+    REQUIRE_OK(kefir_compiler_amd64_sysv_profile(profile));
+    profile->optimizer_enabled = true;
+    return KEFIR_OK;
+}
+
 const struct Profile {
     const char *identifier;
     kefir_result_t (*init)(struct kefir_compiler_profile *);
-} Profiles[] = {{"amd64-sysv-gas", kefir_compiler_amd64_sysv_profile}, {NULL, kefir_compiler_amd64_sysv_profile}};
+} Profiles[] = {{"amd64-sysv-gas", kefir_compiler_amd64_sysv_profile},
+                {"opt-amd64-sysv-gas", kefir_compiler_opt_amd64_sysv_profile},
+                {NULL, kefir_compiler_amd64_sysv_profile}};
 const kefir_size_t ProfileCount = sizeof(Profiles) / sizeof(Profiles[0]);
 
 kefir_result_t kefir_compiler_profile(struct kefir_compiler_profile *profile, const char *identifier) {

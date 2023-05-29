@@ -57,6 +57,7 @@ Supported internal flags:
 
 Targets:
     amd64-sysv-gas (default)             Produce GNU As-compatible assembly adhering System-V AMD64 ABI
+    opt-amd64-sysv-gas                   Produce optimized GNU As-compatible assembly adhering System-V AMD64 ABI
 
 Target code generation setup:
     --codegen-[option]                   Enable option for code generator

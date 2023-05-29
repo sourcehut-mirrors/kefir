@@ -19,6 +19,26 @@
 */
 
 #include "kefir/codegen/codegen.h"
+#include "kefir/core/util.h"
+#include "kefir/core/error.h"
 
 const struct kefir_codegen_configuration KefirCodegenDefaultConfiguration = {
     .emulated_tls = false, .syntax = KEFIR_CODEGEN_SYNTAX_X86_64_INTEL_PREFIX};
+
+kefir_result_t kefir_codegen_translate_ir(struct kefir_mem *mem, struct kefir_codegen *codegen,
+                                          struct kefir_ir_module *ir_module) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(codegen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid code generator"));
+    REQUIRE(ir_module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR module"));
+
+    struct kefir_opt_module opt_module;
+    REQUIRE_OK(kefir_opt_module_init(mem, ir_module, &opt_module));
+
+    kefir_result_t res = codegen->translate_optimized(mem, codegen, &opt_module, NULL);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_opt_module_free(mem, &opt_module);
+        return res;
+    });
+    REQUIRE_OK(kefir_opt_module_free(mem, &opt_module));
+    return KEFIR_OK;
+}

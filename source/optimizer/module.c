@@ -52,12 +52,13 @@ static kefir_result_t free_function(struct kefir_mem *mem, struct kefir_hashtree
     return KEFIR_OK;
 }
 
-static kefir_result_t add_type_descr(struct kefir_mem *mem, struct kefir_opt_module *module, kefir_id_t ir_type_id,
+static kefir_result_t add_type_descr(struct kefir_mem *mem, struct kefir_opt_module *module,
+                                     const struct kefir_ir_target_platform *target_platform, kefir_id_t ir_type_id,
                                      const struct kefir_ir_type *ir_type) {
     struct kefir_opt_type_descriptor *descr = KEFIR_MALLOC(mem, sizeof(struct kefir_opt_type_descriptor));
     REQUIRE(descr != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate optimizer type descriptor"));
 
-    kefir_result_t res = kefir_opt_type_descriptor_init(mem, module->ir_target_platform, ir_type_id, ir_type, descr);
+    kefir_result_t res = kefir_opt_type_descriptor_init(mem, target_platform, ir_type_id, ir_type, descr);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, descr);
         return res;
@@ -96,28 +97,9 @@ static kefir_result_t add_func(struct kefir_mem *mem, struct kefir_opt_module *m
     return KEFIR_OK;
 }
 
-static kefir_result_t init_module(struct kefir_mem *mem, struct kefir_opt_module *module) {
-    struct kefir_hashtree_node_iterator iter;
-
-    kefir_id_t ir_type_id;
-    for (const struct kefir_ir_type *ir_type = kefir_ir_module_named_type_iter(module->ir_module, &iter, &ir_type_id);
-         ir_type != NULL; ir_type = kefir_ir_module_named_type_next(&iter, &ir_type_id)) {
-
-        REQUIRE_OK(add_type_descr(mem, module, ir_type_id, ir_type));
-    }
-
-    for (const struct kefir_ir_function *ir_func = kefir_ir_module_function_iter(module->ir_module, &iter);
-         ir_func != NULL; ir_func = kefir_ir_module_function_next(&iter)) {
-
-        REQUIRE_OK(add_func(mem, module, ir_func));
-    }
-    return KEFIR_OK;
-}
-
-kefir_result_t kefir_opt_module_init(struct kefir_mem *mem, const struct kefir_ir_target_platform *target_platform,
-                                     const struct kefir_ir_module *ir_module, struct kefir_opt_module *module) {
+kefir_result_t kefir_opt_module_init(struct kefir_mem *mem, struct kefir_ir_module *ir_module,
+                                     struct kefir_opt_module *module) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(target_platform != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR target platform"));
     REQUIRE(ir_module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR module"));
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer module"));
 
@@ -128,16 +110,29 @@ kefir_result_t kefir_opt_module_init(struct kefir_mem *mem, const struct kefir_i
     REQUIRE_OK(kefir_hashtree_on_removal(&module->functions, free_function, NULL));
 
     module->ir_module = ir_module;
-    module->ir_target_platform = target_platform;
+    return KEFIR_OK;
+}
 
-    kefir_result_t res = init_module(mem, module);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_hashtree_free(mem, &module->functions);
-        kefir_hashtree_free(mem, &module->type_descriptors);
-        module->ir_module = NULL;
-        module->ir_target_platform = NULL;
-        return res;
-    });
+kefir_result_t kefir_opt_module_construct(struct kefir_mem *mem, const struct kefir_ir_target_platform *target_platform,
+                                          struct kefir_opt_module *module) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(target_platform != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR target platform"));
+    REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer module"));
+
+    struct kefir_hashtree_node_iterator iter;
+
+    kefir_id_t ir_type_id;
+    for (const struct kefir_ir_type *ir_type = kefir_ir_module_named_type_iter(module->ir_module, &iter, &ir_type_id);
+         ir_type != NULL; ir_type = kefir_ir_module_named_type_next(&iter, &ir_type_id)) {
+
+        REQUIRE_OK(add_type_descr(mem, module, target_platform, ir_type_id, ir_type));
+    }
+
+    for (const struct kefir_ir_function *ir_func = kefir_ir_module_function_iter(module->ir_module, &iter);
+         ir_func != NULL; ir_func = kefir_ir_module_function_next(&iter)) {
+
+        REQUIRE_OK(add_func(mem, module, ir_func));
+    }
     return KEFIR_OK;
 }
 
@@ -149,7 +144,6 @@ kefir_result_t kefir_opt_module_free(struct kefir_mem *mem, struct kefir_opt_mod
     REQUIRE_OK(kefir_hashtree_free(mem, &module->functions));
 
     module->ir_module = NULL;
-    module->ir_target_platform = NULL;
     return KEFIR_OK;
 }
 

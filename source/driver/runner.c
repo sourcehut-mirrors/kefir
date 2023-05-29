@@ -119,11 +119,13 @@ static kefir_result_t dump_action_impl(struct kefir_mem *mem, const struct kefir
     compiler.ast_global_context.configuration.analysis.int_to_pointer = options->features.int_to_pointer;
     compiler.ast_global_context.configuration.analysis.permissive_pointer_conv =
         options->features.permissive_pointer_conv;
-    compiler.ast_global_context.configuration.internals.flat_local_temporaries =
-        options->internals.flat_local_scope_layout;
+
+    kefir_bool_t flat_local_scope_layout =
+        options->internals.flat_local_scope_layout || compiler.profile->optimizer_enabled;
+    compiler.ast_global_context.configuration.internals.flat_local_temporaries = flat_local_scope_layout;
 
     compiler.translator_configuration.empty_structs = options->features.empty_structs;
-    compiler.translator_configuration.flat_local_scope_layout = options->internals.flat_local_scope_layout;
+    compiler.translator_configuration.flat_local_scope_layout = flat_local_scope_layout;
 
     compiler.codegen_configuration.emulated_tls = options->codegen.emulated_tls;
     compiler.codegen_configuration.syntax = options->codegen.syntax;
@@ -334,8 +336,8 @@ static kefir_result_t dump_opt_impl(struct kefir_mem *mem, const struct kefir_co
     REQUIRE_OK(kefir_compiler_analyze(mem, compiler, KEFIR_AST_NODE_BASE(unit)));
     REQUIRE_OK(kefir_ir_module_alloc(mem, &module));
     REQUIRE_OK(kefir_compiler_translate(mem, compiler, unit, &module, true));
-    REQUIRE_OK(kefir_opt_module_init(mem, compiler->translator_env.target_platform, &module, &opt_module));
-    REQUIRE_OK(kefir_opt_module_analyze(mem, &opt_module, &opt_analysis));
+    REQUIRE_OK(kefir_opt_module_init(mem, &module, &opt_module));
+    REQUIRE_OK(kefir_compiler_optimize(mem, compiler, &module, &opt_module, &opt_analysis));
 
     struct kefir_json_output json;
     REQUIRE_OK(kefir_json_output_init(&json, output, 4));
@@ -363,6 +365,8 @@ static kefir_result_t dump_asm_impl(struct kefir_mem *mem, const struct kefir_co
     struct kefir_token_buffer tokens;
     struct kefir_ast_translation_unit *unit = NULL;
     struct kefir_ir_module module;
+    struct kefir_opt_module opt_module;
+    struct kefir_opt_module_analysis opt_module_analysis;
 
     REQUIRE_OK(kefir_token_buffer_init(&tokens));
     REQUIRE_OK(lex_file(mem, options, compiler, source_id, source, length, &tokens));
@@ -370,8 +374,16 @@ static kefir_result_t dump_asm_impl(struct kefir_mem *mem, const struct kefir_co
     REQUIRE_OK(kefir_compiler_analyze(mem, compiler, KEFIR_AST_NODE_BASE(unit)));
     REQUIRE_OK(kefir_ir_module_alloc(mem, &module));
     REQUIRE_OK(kefir_compiler_translate(mem, compiler, unit, &module, true));
-    REQUIRE_OK(kefir_compiler_codegen(mem, compiler, &module, output));
+    REQUIRE_OK(kefir_opt_module_init(mem, &module, &opt_module));
+    if (compiler->profile->optimizer_enabled) {
+        REQUIRE_OK(kefir_compiler_optimize(mem, compiler, &module, &opt_module, &opt_module_analysis));
+        REQUIRE_OK(kefir_compiler_codegen_optimized(mem, compiler, &opt_module, &opt_module_analysis, output));
+        REQUIRE_OK(kefir_opt_module_analysis_free(mem, &opt_module_analysis));
+    } else {
+        REQUIRE_OK(kefir_compiler_codegen(mem, compiler, &module, output));
+    }
 
+    REQUIRE_OK(kefir_opt_module_free(mem, &opt_module));
     REQUIRE_OK(kefir_ir_module_free(mem, &module));
     REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(unit)));
     REQUIRE_OK(kefir_token_buffer_free(mem, &tokens));

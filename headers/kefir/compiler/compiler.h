@@ -32,6 +32,8 @@
 #include "kefir/lexer/lexer.h"
 #include "kefir/ast/node.h"
 #include "kefir/ir/module.h"
+#include "kefir/optimizer/module.h"
+#include "kefir/optimizer/analysis.h"
 #include "kefir/core/error.h"
 
 typedef struct kefir_compiler_context kefir_compiler_context_t;
@@ -91,7 +93,11 @@ kefir_result_t kefir_compiler_analyze(struct kefir_mem *, struct kefir_compiler_
                                       struct kefir_ast_node_base *);
 kefir_result_t kefir_compiler_translate(struct kefir_mem *, struct kefir_compiler_context *,
                                         struct kefir_ast_translation_unit *, struct kefir_ir_module *, kefir_bool_t);
+kefir_result_t kefir_compiler_optimize(struct kefir_mem *, struct kefir_compiler_context *, struct kefir_ir_module *,
+                                       struct kefir_opt_module *, struct kefir_opt_module_analysis *);
 kefir_result_t kefir_compiler_codegen(struct kefir_mem *, struct kefir_compiler_context *, struct kefir_ir_module *,
                                       FILE *);
+kefir_result_t kefir_compiler_codegen_optimized(struct kefir_mem *, struct kefir_compiler_context *,
+                                                struct kefir_opt_module *, struct kefir_opt_module_analysis *, FILE *);
 
 #endif

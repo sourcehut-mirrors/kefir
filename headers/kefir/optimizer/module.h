@@ -26,15 +26,15 @@
 #include "kefir/ir/module.h"
 
 typedef struct kefir_opt_module {
-    const struct kefir_ir_module *ir_module;
-    const struct kefir_ir_target_platform *ir_target_platform;
+    struct kefir_ir_module *ir_module;
 
     struct kefir_hashtree type_descriptors;
     struct kefir_hashtree functions;
 } kefir_opt_module_t;
 
-kefir_result_t kefir_opt_module_init(struct kefir_mem *, const struct kefir_ir_target_platform *,
-                                     const struct kefir_ir_module *, struct kefir_opt_module *);
+kefir_result_t kefir_opt_module_init(struct kefir_mem *, struct kefir_ir_module *, struct kefir_opt_module *);
+kefir_result_t kefir_opt_module_construct(struct kefir_mem *, const struct kefir_ir_target_platform *,
+                                          struct kefir_opt_module *);
 kefir_result_t kefir_opt_module_free(struct kefir_mem *, struct kefir_opt_module *);
 
 kefir_result_t kefir_opt_module_get_type(const struct kefir_opt_module *, kefir_id_t,

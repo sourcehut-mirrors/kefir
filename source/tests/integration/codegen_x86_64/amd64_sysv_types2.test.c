@@ -61,7 +61,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, func->declaration->params, KEFIR_IR_TYPE_INT, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, func->declaration->params, KEFIR_IR_TYPE_WORD, 0, 0));
 
-    REQUIRE_OK(codegen.iface.translate(mem, &codegen.iface, &module));
+    REQUIRE_OK(KEFIR_CODEGEN_TRANSLATE(mem, &codegen.iface, &module));
 
     REQUIRE_OK(KEFIR_CODEGEN_CLOSE(mem, &codegen.iface));
     REQUIRE_OK(kefir_codegen_amd64_sysv_module_free(mem, &sysv_module));

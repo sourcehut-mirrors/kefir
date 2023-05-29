@@ -91,6 +91,7 @@ COMPILER OPTIONS:
 
     Targets (determined by platform as specified in TARGET section):
         amd64-sysv-gas                      Produce GNU As-compatible assembly adhering System-V AMD64 ABI [default]
+        opt-amd64-sysv-gas                  Produce optimized GNU As-compatible assembly adhering System-V AMD64 ABI
 
 
 TARGETS:
