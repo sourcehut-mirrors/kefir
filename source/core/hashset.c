@@ -107,6 +107,14 @@ kefir_bool_t kefir_hashtreeset_empty(const struct kefir_hashtreeset *set) {
     return kefir_hashtree_empty(&set->tree);
 }
 
+kefir_result_t kefir_hashtreeset_clean(struct kefir_mem *mem, struct kefir_hashtreeset *set) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(set != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hashtreeset"));
+
+    REQUIRE_OK(kefir_hashtree_clean(mem, &set->tree));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_hashtreeset_merge(struct kefir_mem *mem, struct kefir_hashtreeset *target_set,
                                        const struct kefir_hashtreeset *source_set,
                                        kefir_result_t (*clone_fn)(struct kefir_mem *, kefir_hashtreeset_entry_t,

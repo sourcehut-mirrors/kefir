@@ -45,6 +45,7 @@ kefir_result_t kefir_hashtreeset_add(struct kefir_mem *, struct kefir_hashtreese
 kefir_result_t kefir_hashtreeset_delete(struct kefir_mem *, struct kefir_hashtreeset *, kefir_hashtreeset_entry_t);
 kefir_bool_t kefir_hashtreeset_has(const struct kefir_hashtreeset *, kefir_hashtreeset_entry_t);
 kefir_bool_t kefir_hashtreeset_empty(const struct kefir_hashtreeset *);
+kefir_result_t kefir_hashtreeset_clean(struct kefir_mem *, struct kefir_hashtreeset *);
 
 kefir_result_t kefir_hashtreeset_merge(struct kefir_mem *, struct kefir_hashtreeset *, const struct kefir_hashtreeset *,
                                        kefir_result_t (*)(struct kefir_mem *, kefir_hashtreeset_entry_t,
