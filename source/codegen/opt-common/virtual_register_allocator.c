@@ -171,7 +171,7 @@ kefir_result_t kefir_codegen_opt_virtual_register_allocator_allocate_any(
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_codegen_opt_virtual_register_allocator_deallocte(
+kefir_result_t kefir_codegen_opt_virtual_register_allocator_deallocate(
     const struct kefir_codegen_opt_virtual_register_allocator *regs, kefir_codegen_opt_virtual_register_t vreg) {
     REQUIRE(regs != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer codegen register allocator"));

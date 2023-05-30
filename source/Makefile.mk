@@ -11,9 +11,9 @@ KEFIR_LIB_SOURCE := $(wildcard \
 	$(SOURCE_DIR)/core/*.c \
 	$(SOURCE_DIR)/codegen/*.c \
 	$(SOURCE_DIR)/codegen/opt-common/*.c \
+	$(SOURCE_DIR)/codegen/opt-system-v-amd64/*.c \
 	$(SOURCE_DIR)/codegen/system-v-amd64/*.c \
 	$(SOURCE_DIR)/codegen/system-v-amd64/builtins/*.c \
-	$(SOURCE_DIR)/codegen/system-v-amd64/xasmgen/*.c \
 	$(SOURCE_DIR)/compiler/*.c \
 	$(SOURCE_DIR)/ir/*.c \
 	$(SOURCE_DIR)/lexer/*.c \

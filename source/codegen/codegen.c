@@ -19,6 +19,7 @@
 */
 
 #include "kefir/codegen/codegen.h"
+#include "kefir/codegen/amd64-common.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 

@@ -29,6 +29,7 @@
 #include "kefir/codegen/system-v-amd64/instr.h"
 #include "kefir/codegen/system-v-amd64/inline_assembly.h"
 #include "kefir/codegen/system-v-amd64/tls.h"
+#include "kefir/codegen/amd64-common.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 
@@ -472,21 +473,6 @@ static kefir_result_t cg_close(struct kefir_mem *mem, struct kefir_codegen *cg) 
     return KEFIR_OK;
 }
 
-static kefir_result_t match_syntax(const char *syntax_descr, kefir_asm_amd64_xasmgen_syntax_t *syntax) {
-    if (syntax_descr == NULL) {
-        *syntax = KEFIR_AMD64_XASMGEN_SYNTAX_ATT;
-    } else if (strcmp(syntax_descr, KEFIR_CODEGEN_SYNTAX_X86_64_INTEL_PREFIX) == 0) {
-        *syntax = KEFIR_AMD64_XASMGEN_SYNTAX_INTEL_PREFIX;
-    } else if (strcmp(syntax_descr, KEFIR_CODEGEN_SYNTAX_X86_64_INTEL_NOPREFIX) == 0) {
-        *syntax = KEFIR_AMD64_XASMGEN_SYNTAX_INTEL_NOPREFIX;
-    } else if (strcmp(syntax_descr, KEFIR_CODEGEN_SYNTAX_X86_64_ATT) == 0) {
-        *syntax = KEFIR_AMD64_XASMGEN_SYNTAX_ATT;
-    } else {
-        return KEFIR_SET_ERRORF(KEFIR_INVALID_PARAMETER, "Unknown amd64 assembly syntax descriptor '%s'", syntax_descr);
-    }
-    return KEFIR_OK;
-}
-
 kefir_result_t kefir_codegen_sysv_amd64_init(struct kefir_mem *mem, struct kefir_codegen_amd64 *codegen, FILE *out,
                                              const struct kefir_codegen_configuration *config) {
     REQUIRE(codegen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 code generator pointer"));
@@ -495,7 +481,7 @@ kefir_result_t kefir_codegen_sysv_amd64_init(struct kefir_mem *mem, struct kefir
     }
 
     kefir_asm_amd64_xasmgen_syntax_t syntax = KEFIR_AMD64_XASMGEN_SYNTAX_ATT;
-    REQUIRE_OK(match_syntax(config->syntax, &syntax));
+    REQUIRE_OK(kefir_codegen_match_syntax(config->syntax, &syntax));
     REQUIRE_OK(kefir_asm_amd64_xasmgen_init(mem, &codegen->xasmgen, out, syntax));
     codegen->iface.translate_optimized = cg_translate;
     codegen->iface.close = cg_close;

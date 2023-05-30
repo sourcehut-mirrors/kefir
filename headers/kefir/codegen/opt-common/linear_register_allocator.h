@@ -26,36 +26,27 @@
 #include "kefir/core/graph.h"
 
 typedef enum kefir_codegen_opt_linear_register_allocator_constraint_type {
+    KEFIR_CODEGEN_OPT_LINEAR_REGISTER_ALLOCATOR_CONSTRAINT_SKIP_ALLOCATION,
     KEFIR_CODEGEN_OPT_LINEAR_REGISTER_ALLOCATOR_CONSTRAINT_GENERAL_PURPOSE,
     KEFIR_CODEGEN_OPT_LINEAR_REGISTER_ALLOCATOR_CONSTRAINT_FLOATING_POINT
 } kefir_codegen_opt_linear_register_allocator_constraint_type_t;
 
-typedef enum kefir_codegen_opt_linear_register_allocator_constraint_allocation {
-    KEFIR_CODEGEN_OPT_LINEAR_REGISTER_ALLOCATOR_CONSTRAINT_REGISTER,
-    KEFIR_CODEGEN_OPT_LINEAR_REGISTER_ALLOCATOR_CONSTRAINT_REGISTER_OR_STORAGE
-} kefir_codegen_opt_linear_register_allocator_constraint_allocation_t;
-
-typedef enum kefir_codegen_opt_linear_register_allocator_constraint_hint {
-    KEFIR_CODEGEN_OPT_LINEAR_REGISTER_ALLOCATOR_CONSTRAINT_HINT_NONE,
-    KEFIR_CODEGEN_OPT_LINEAR_REGISTER_ALLOCATOR_CONSTRAINT_HINT_REGISTER,
-    KEFIR_CODEGEN_OPT_LINEAR_REGISTER_ALLOCATOR_CONSTRAINT_HINT_SAME_AS
-} kefir_codegen_opt_linear_register_allocator_constraint_hint_t;
-
 typedef struct kefir_codegen_opt_linear_register_allocator_constraint {
     kefir_codegen_opt_linear_register_allocator_constraint_type_t type;
-    kefir_codegen_opt_linear_register_allocator_constraint_allocation_t allocation;
     struct {
-        kefir_codegen_opt_linear_register_allocator_constraint_hint_t hint;
-        union {
-            kefir_codegen_opt_virtual_register_t vreg;
-            kefir_opt_instruction_ref_t instr_ref;
-        };
-    } hint;
+        kefir_bool_t present;
+        kefir_codegen_opt_virtual_register_t vreg;
+    } register_hint;
+
+    struct {
+        kefir_bool_t present;
+        kefir_opt_instruction_ref_t alias;
+    } alias_hint;
 } kefir_codegen_opt_linear_register_allocator_constraint_t;
 
 typedef struct kefir_codegen_opt_linear_register_allocation {
     kefir_bool_t done;
-    kefir_codegen_opt_virtual_register_t vreg;
+    kefir_codegen_opt_virtual_register_t allocation;
     struct kefir_codegen_opt_linear_register_allocator_constraint constraint;
 } kefir_codegen_opt_linear_register_allocation_t;
 
@@ -73,11 +64,23 @@ kefir_result_t kefir_codegen_opt_linear_register_allocator_init(struct kefir_mem
 kefir_result_t kefir_codegen_opt_linear_register_allocator_free(struct kefir_mem *,
                                                                 struct kefir_codegen_opt_linear_register_allocator *);
 
-kefir_result_t kefir_codegen_opt_linear_register_allocator_set_constraint(
+kefir_result_t kefir_codegen_opt_linear_register_allocator_set_type(
     const struct kefir_codegen_opt_linear_register_allocator *, kefir_opt_instruction_ref_t,
-    const struct kefir_codegen_opt_linear_register_allocator_constraint *);
+    kefir_codegen_opt_linear_register_allocator_constraint_type_t);
+
+kefir_result_t kefir_codegen_opt_linear_register_allocator_hint_register(
+    const struct kefir_codegen_opt_linear_register_allocator *, kefir_opt_instruction_ref_t,
+    kefir_codegen_opt_virtual_register_t);
+
+kefir_result_t kefir_codegen_opt_linear_register_allocator_hint_alias(
+    const struct kefir_codegen_opt_linear_register_allocator *, kefir_opt_instruction_ref_t,
+    kefir_opt_instruction_ref_t);
 
 kefir_result_t kefir_codegen_opt_linear_register_allocator_run(struct kefir_mem *,
                                                                struct kefir_codegen_opt_linear_register_allocator *);
+
+kefir_result_t kefir_codegen_opt_linear_register_allocator_allocation_of(
+    const struct kefir_codegen_opt_linear_register_allocator *, kefir_opt_instruction_ref_t,
+    const struct kefir_codegen_opt_linear_register_allocation **);
 
 #endif

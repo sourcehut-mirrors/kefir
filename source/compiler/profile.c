@@ -23,6 +23,7 @@
 #include "kefir/core/error.h"
 #include "kefir/target/abi/system-v-amd64/platform.h"
 #include "kefir/codegen/system-v-amd64.h"
+#include "kefir/codegen/opt-system-v-amd64.h"
 #include <float.h>
 
 static kefir_result_t amd64_sysv_new_codegen(struct kefir_mem *mem, FILE *output,
@@ -46,6 +47,35 @@ static kefir_result_t amd64_sysv_new_codegen(struct kefir_mem *mem, FILE *output
 }
 
 static kefir_result_t amd64_sysv_free_codegen(struct kefir_mem *mem, struct kefir_codegen *codegen) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(codegen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid code generator"));
+
+    REQUIRE_OK(KEFIR_CODEGEN_CLOSE(mem, codegen));
+    KEFIR_FREE(mem, codegen->self);
+    return KEFIR_OK;
+}
+
+static kefir_result_t opt_amd64_sysv_new_codegen(struct kefir_mem *mem, FILE *output,
+                                                 const struct kefir_codegen_configuration *config,
+                                                 struct kefir_codegen **codegen_ptr) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(output != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid FILE"));
+    REQUIRE(codegen_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to code generator"));
+
+    struct kefir_codegen_opt_amd64 *codegen = KEFIR_MALLOC(mem, sizeof(struct kefir_codegen_opt_amd64));
+    REQUIRE(codegen != NULL,
+            KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate optimized AMD64 System-V code generator"));
+    kefir_result_t res = kefir_codegen_opt_sysv_amd64_init(mem, codegen, output, config);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_FREE(mem, codegen);
+        return res;
+    });
+
+    *codegen_ptr = &codegen->codegen;
+    return KEFIR_OK;
+}
+
+static kefir_result_t opt_amd64_sysv_free_codegen(struct kefir_mem *mem, struct kefir_codegen *codegen) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(codegen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid code generator"));
 
@@ -114,6 +144,8 @@ static kefir_result_t kefir_compiler_opt_amd64_sysv_profile(struct kefir_compile
 
     REQUIRE_OK(kefir_compiler_amd64_sysv_profile(profile));
     profile->optimizer_enabled = true;
+    profile->new_codegen = opt_amd64_sysv_new_codegen;
+    profile->free_codegen = opt_amd64_sysv_free_codegen;
     return KEFIR_OK;
 }
 
