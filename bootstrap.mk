@@ -32,7 +32,7 @@ KEFIR_SOURCE := $(wildcard \
 	$(SOURCE)/ast/type/*.c \
 	$(SOURCE)/core/*.c \
 	$(SOURCE)/codegen/*.c \
-	$(SOURCE)/codegen/opt-common/*.c \
+	$(SOURCE)/codegen/opt-system-v-amd64/*.c \
 	$(SOURCE)/codegen/system-v-amd64/*.c \
 	$(SOURCE)/codegen/system-v-amd64/builtins/*.c \
 	$(SOURCE)/compiler/*.c \
