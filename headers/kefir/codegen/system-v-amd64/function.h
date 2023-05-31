@@ -27,25 +27,11 @@
 #include "kefir/codegen/system-v-amd64.h"
 #include "kefir/codegen/system-v-amd64/registers.h"
 #include "kefir/ir/function.h"
-
-typedef struct kefir_amd64_sysv_function_decl {
-    const struct kefir_ir_function_decl *decl;
-    struct {
-        struct kefir_abi_sysv_amd64_type_layout layout;
-        struct kefir_vector allocation;
-        struct kefir_abi_sysv_amd64_parameter_location location;
-    } parameters;
-
-    struct {
-        struct kefir_abi_sysv_amd64_type_layout layout;
-        struct kefir_vector allocation;
-        bool implicit_parameter;
-    } returns;
-} kefir_amd64_sysv_function_decl_t;
+#include "kefir/target/abi/system-v-amd64/function.h"
 
 typedef struct kefir_amd64_sysv_function {
     const struct kefir_ir_function *func;
-    struct kefir_amd64_sysv_function_decl decl;
+    struct kefir_abi_amd64_sysv_function_decl decl;
     struct kefir_abi_sysv_amd64_type_layout local_layout;
     struct kefir_hashtree appendix;
 
@@ -73,9 +59,6 @@ typedef struct kefir_amd64_sysv_function_appendix_data {
     void *payload;
 } kefir_amd64_sysv_function_appendix_data_t;
 
-kefir_result_t kefir_amd64_sysv_function_decl_alloc(struct kefir_mem *, const struct kefir_ir_function_decl *,
-                                                    struct kefir_amd64_sysv_function_decl *);
-kefir_result_t kefir_amd64_sysv_function_decl_free(struct kefir_mem *, struct kefir_amd64_sysv_function_decl *);
 kefir_result_t kefir_amd64_sysv_function_alloc(struct kefir_mem *, struct kefir_codegen_amd64_sysv_module *,
                                                const struct kefir_ir_function *, struct kefir_amd64_sysv_function *);
 kefir_result_t kefir_amd64_sysv_function_free(struct kefir_mem *, struct kefir_amd64_sysv_function *);
@@ -89,6 +72,6 @@ kefir_result_t kefir_amd64_sysv_function_prologue(struct kefir_codegen_amd64 *,
 kefir_result_t kefir_amd64_sysv_function_epilogue(struct kefir_codegen_amd64 *,
                                                   const struct kefir_amd64_sysv_function *);
 kefir_result_t kefir_amd64_sysv_function_invoke(struct kefir_codegen_amd64 *,
-                                                const struct kefir_amd64_sysv_function_decl *, bool);
+                                                const struct kefir_abi_amd64_sysv_function_decl *, bool);
 
 #endif

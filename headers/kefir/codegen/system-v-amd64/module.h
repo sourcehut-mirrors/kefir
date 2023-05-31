@@ -39,7 +39,7 @@ typedef struct kefir_codegen_amd64_sysv_module {
 kefir_result_t kefir_codegen_amd64_sysv_module_alloc(struct kefir_mem *, struct kefir_codegen_amd64_sysv_module *,
                                                      struct kefir_ir_module *);
 kefir_result_t kefir_codegen_amd64_sysv_module_free(struct kefir_mem *, struct kefir_codegen_amd64_sysv_module *);
-struct kefir_amd64_sysv_function_decl *kefir_codegen_amd64_sysv_module_function_decl(
+struct kefir_abi_amd64_sysv_function_decl *kefir_codegen_amd64_sysv_module_function_decl(
     struct kefir_mem *, struct kefir_codegen_amd64_sysv_module *, kefir_id_t, bool);
 struct kefir_abi_sysv_amd64_type_layout *kefir_codegen_amd64_sysv_module_type_layout(
     struct kefir_mem *, struct kefir_codegen_amd64_sysv_module *, kefir_id_t);

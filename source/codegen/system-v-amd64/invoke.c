@@ -27,14 +27,14 @@
 
 struct invoke_info {
     struct kefir_codegen_amd64 *codegen;
-    const struct kefir_amd64_sysv_function_decl *decl;
+    const struct kefir_abi_amd64_sysv_function_decl *decl;
     const kefir_size_t total_arguments;
     kefir_size_t argument;
 };
 
 struct invoke_returns {
     struct kefir_codegen_amd64 *codegen;
-    const struct kefir_amd64_sysv_function_decl *decl;
+    const struct kefir_abi_amd64_sysv_function_decl *decl;
 };
 
 static kefir_result_t visitor_not_supported(const struct kefir_ir_type *type, kefir_size_t index,
@@ -266,8 +266,8 @@ static kefir_result_t builtin_argument(const struct kefir_ir_type *type, kefir_s
     return KEFIR_OK;
 }
 
-kefir_result_t invoke_prologue(struct kefir_codegen_amd64 *codegen, const struct kefir_amd64_sysv_function_decl *decl,
-                               struct invoke_info *info) {
+kefir_result_t invoke_prologue(struct kefir_codegen_amd64 *codegen,
+                               const struct kefir_abi_amd64_sysv_function_decl *decl, struct invoke_info *info) {
     struct kefir_ir_type_visitor visitor;
     REQUIRE_OK(kefir_ir_type_visitor_init(&visitor, visitor_not_supported));
     KEFIR_IR_TYPE_VISITOR_INIT_INTEGERS(&visitor, scalar_argument);
@@ -462,8 +462,9 @@ static kefir_result_t builtin_return(const struct kefir_ir_type *type, kefir_siz
     return KEFIR_OK;
 }
 
-kefir_result_t invoke_epilogue(struct kefir_codegen_amd64 *codegen, const struct kefir_amd64_sysv_function_decl *decl,
-                               struct invoke_info *info, bool virtualDecl) {
+kefir_result_t invoke_epilogue(struct kefir_codegen_amd64 *codegen,
+                               const struct kefir_abi_amd64_sysv_function_decl *decl, struct invoke_info *info,
+                               bool virtualDecl) {
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(&codegen->xasmgen,
                                              kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
                                              kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_DATA_REG)));
@@ -502,7 +503,8 @@ static kefir_result_t argument_counter(const struct kefir_ir_type *type, kefir_s
 }
 
 kefir_result_t kefir_amd64_sysv_function_invoke(struct kefir_codegen_amd64 *codegen,
-                                                const struct kefir_amd64_sysv_function_decl *decl, bool virtualDecl) {
+                                                const struct kefir_abi_amd64_sysv_function_decl *decl,
+                                                bool virtualDecl) {
     struct invoke_info info = {.codegen = codegen, .decl = decl, .total_arguments = 0, .argument = 0};
     struct kefir_ir_type_visitor visitor;
     kefir_ir_type_visitor_init(&visitor, argument_counter);

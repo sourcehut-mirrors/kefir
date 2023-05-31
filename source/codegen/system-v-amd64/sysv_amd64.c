@@ -184,7 +184,7 @@ static kefir_result_t cg_translate_function_gates(struct kefir_codegen_amd64 *co
     struct kefir_hashtree_node_iterator iter;
     for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(tree, &iter); node != NULL;
          node = kefir_hashtree_next(&iter)) {
-        ASSIGN_DECL_CAST(struct kefir_amd64_sysv_function_decl *, sysv_decl, node->value);
+        ASSIGN_DECL_CAST(struct kefir_abi_amd64_sysv_function_decl *, sysv_decl, node->value);
         if (virtualDecl) {
             if (sysv_decl->decl->name == NULL) {
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen->xasmgen, KEFIR_AMD64_SYSV_FUNCTION_VIRTUAL_GATE_ID_LABEL,
