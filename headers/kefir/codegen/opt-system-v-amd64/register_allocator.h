@@ -1,8 +1,29 @@
+/*
+    SPDX-License-Identifier: GPL-3.0
+
+    Copyright (C) 2020-2023  Jevgenijs Protopopovs
+
+    This file is part of Kefir project.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, version 3.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 #ifndef KEFIR_CODEGEN_OPT_SYSTEM_V_AMD64_REGISTER_ALLOCATOR_H_
 #define KEFIR_CODEGEN_OPT_SYSTEM_V_AMD64_REGISTER_ALLOCATOR_H_
 
 #include "kefir/codegen/opt-system-v-amd64.h"
 #include "kefir/target/abi/system-v-amd64/function.h"
+#include "kefir/codegen/opt-system-v-amd64/parameters.h"
 #include "kefir/optimizer/module.h"
 #include "kefir/optimizer/analysis.h"
 #include "kefir/core/bitset.h"
@@ -59,12 +80,12 @@ typedef struct kefir_codegen_opt_sysv_amd64_register_allocator {
     struct kefir_bitset floating_point_regs;
     struct kefir_bitset spilled_regs;
     struct kefir_graph allocation;
-    struct kefir_hashtree argument_preallocations;
 } kefir_codegen_opt_sysv_amd64_register_allocator_t;
 
 kefir_result_t kefir_codegen_opt_sysv_amd64_register_allocation(
     struct kefir_mem *, const struct kefir_opt_function *, const struct kefir_opt_code_analysis *,
-    const struct kefir_abi_amd64_sysv_function_decl *, struct kefir_codegen_opt_sysv_amd64_register_allocator *);
+    const struct kefir_codegen_opt_amd64_sysv_function_parameters *,
+    struct kefir_codegen_opt_sysv_amd64_register_allocator *);
 
 kefir_result_t kefir_codegen_opt_sysv_amd64_register_allocation_of(
     const struct kefir_codegen_opt_sysv_amd64_register_allocator *, kefir_opt_instruction_ref_t,
