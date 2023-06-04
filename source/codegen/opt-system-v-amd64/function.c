@@ -23,21 +23,24 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
-kefir_result_t generate_code(struct kefir_mem *mem, struct kefir_codegen_opt_amd64 *codegen,
-                             struct kefir_opt_module *module, const struct kefir_opt_function *function,
-                             const struct kefir_opt_code_analysis *func_analysis,
-                             struct kefir_codegen_opt_sysv_amd64_register_allocator *register_allocator) {
-    UNUSED(mem);
+static kefir_result_t generate_code(struct kefir_mem *mem, struct kefir_codegen_opt_amd64 *codegen,
+                                    struct kefir_opt_module *module, const struct kefir_opt_function *function,
+                                    const struct kefir_opt_code_analysis *func_analysis,
+                                    struct kefir_opt_sysv_amd64_function *codegen_func) {
     UNUSED(module);
-    UNUSED(func_analysis);
-    UNUSED(register_allocator);
+    UNUSED(mem);
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen->xasmgen, "%s", function->ir_func->name));
+    if (function->ir_func->locals != NULL) {
+        REQUIRE_OK(kefir_codegen_opt_sysv_amd64_stack_frame_allocate_set_locals(
+            &codegen_func->stack_frame, function->ir_func->locals, &codegen_func->locals_layout));
+    }
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_stack_frame_prologue(&codegen_func->stack_frame, &codegen->xasmgen));
     for (kefir_size_t instr_idx = 0; instr_idx < func_analysis->linearization_length; instr_idx++) {
         const struct kefir_opt_code_analysis_instruction_properties *instr_props =
             func_analysis->linearization[instr_idx];
         const struct kefir_codegen_opt_sysv_amd64_register_allocation *reg_allocation = NULL;
-        REQUIRE_OK(kefir_codegen_opt_sysv_amd64_register_allocation_of(register_allocator, instr_props->instr_ref,
-                                                                       &reg_allocation));
+        REQUIRE_OK(kefir_codegen_opt_sysv_amd64_register_allocation_of(&codegen_func->register_allocator,
+                                                                       instr_props->instr_ref, &reg_allocation));
 
         switch (reg_allocation->result.type) {
             case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_NONE:
@@ -47,20 +50,23 @@ kefir_result_t generate_code(struct kefir_mem *mem, struct kefir_codegen_opt_amd
             case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_GENERAL_PURPOSE_REGISTER:
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_COMMENT(
                     &codegen->xasmgen, "%zu - GENERAL PURPOSE REGISTER %s", instr_idx,
-                    kefir_asm_amd64_xasmgen_register_symbolic_name(
-                        KefirOptSysvAmd64GeneralPurposeRegisters[reg_allocation->result.register_index])));
+                    kefir_asm_amd64_xasmgen_register_symbolic_name(reg_allocation->result.reg)));
                 break;
 
             case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_FLOATING_POINT_REGISTER:
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_COMMENT(
                     &codegen->xasmgen, "%zu - FLOATING POINT REGISTER %s", instr_idx,
-                    kefir_asm_amd64_xasmgen_register_symbolic_name(
-                        KefirOptSysvAmd64FloatingPointRegisters[reg_allocation->result.register_index])));
+                    kefir_asm_amd64_xasmgen_register_symbolic_name(reg_allocation->result.reg)));
                 break;
 
             case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_SPILL_AREA:
-                REQUIRE_OK(KEFIR_AMD64_XASMGEN_COMMENT(&codegen->xasmgen, "%zu - STORAGE %zu", instr_idx,
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_COMMENT(&codegen->xasmgen, "%zu - SPILL AREA %zu", instr_idx,
                                                        reg_allocation->result.spill_index));
+                break;
+
+            case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_PARAMETER_REGISTER_AGGREGATE:
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_COMMENT(&codegen->xasmgen, "%zu - REGISTER AGGREGATE AREA %zu",
+                                                       instr_idx, reg_allocation->result.register_aggregate_offset));
                 break;
 
             case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_INDIRECT:
@@ -71,6 +77,7 @@ kefir_result_t generate_code(struct kefir_mem *mem, struct kefir_codegen_opt_amd
                 break;
         }
     }
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_stack_frame_epilogue(&codegen_func->stack_frame, &codegen->xasmgen));
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_RET(&codegen->xasmgen));
     return KEFIR_OK;
 }
@@ -85,6 +92,7 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_translate_function(struct kefir_mem 
     UNUSED(func_analysis);
 
     struct kefir_opt_sysv_amd64_function sysv_amd64_function;
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_stack_frame_init(&sysv_amd64_function.stack_frame));
     REQUIRE_OK(kefir_abi_amd64_sysv_function_decl_alloc(mem, function->ir_func->declaration,
                                                         &sysv_amd64_function.declaration));
 
@@ -96,20 +104,44 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_translate_function(struct kefir_mem 
     });
 
     res = kefir_codegen_opt_sysv_amd64_register_allocation(
-        mem, function, func_analysis, &sysv_amd64_function.parameters, &sysv_amd64_function.register_allocator);
+        mem, function, func_analysis, &sysv_amd64_function.parameters, &sysv_amd64_function.stack_frame,
+        &sysv_amd64_function.register_allocator);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_codegen_opt_amd64_sysv_function_parameters_free(mem, &sysv_amd64_function.parameters);
         kefir_abi_amd64_sysv_function_decl_free(mem, &sysv_amd64_function.declaration);
         return res;
     });
 
-    res = generate_code(mem, codegen, module, function, func_analysis, &sysv_amd64_function.register_allocator);
+    if (function->ir_func->locals != NULL) {
+        res = kefir_abi_sysv_amd64_type_layout(function->ir_func->locals, mem, &sysv_amd64_function.locals_layout);
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            kefir_codegen_opt_sysv_amd64_register_allocation_free(mem, &sysv_amd64_function.register_allocator);
+            kefir_codegen_opt_amd64_sysv_function_parameters_free(mem, &sysv_amd64_function.parameters);
+            kefir_abi_amd64_sysv_function_decl_free(mem, &sysv_amd64_function.declaration);
+            return res;
+        });
+    }
+
+    res = generate_code(mem, codegen, module, function, func_analysis, &sysv_amd64_function);
     REQUIRE_ELSE(res == KEFIR_OK, {
+        if (function->ir_func->locals != NULL) {
+            kefir_abi_sysv_amd64_type_layout_free(mem, &sysv_amd64_function.locals_layout);
+        }
         kefir_codegen_opt_sysv_amd64_register_allocation_free(mem, &sysv_amd64_function.register_allocator);
         kefir_codegen_opt_amd64_sysv_function_parameters_free(mem, &sysv_amd64_function.parameters);
         kefir_abi_amd64_sysv_function_decl_free(mem, &sysv_amd64_function.declaration);
         return res;
     });
+
+    if (function->ir_func->locals != NULL) {
+        res = kefir_abi_sysv_amd64_type_layout_free(mem, &sysv_amd64_function.locals_layout);
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            kefir_codegen_opt_sysv_amd64_register_allocation_free(mem, &sysv_amd64_function.register_allocator);
+            kefir_codegen_opt_amd64_sysv_function_parameters_free(mem, &sysv_amd64_function.parameters);
+            kefir_abi_amd64_sysv_function_decl_free(mem, &sysv_amd64_function.declaration);
+            return res;
+        });
+    }
 
     res = kefir_codegen_opt_sysv_amd64_register_allocation_free(mem, &sysv_amd64_function.register_allocator);
     REQUIRE_ELSE(res == KEFIR_OK, {

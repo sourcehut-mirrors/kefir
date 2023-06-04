@@ -8,9 +8,11 @@ typedef struct kefir_bitset {
     kefir_uint64_t *content;
     kefir_size_t length;
     kefir_size_t capacity;
+    kefir_bool_t static_content;
 } kefir_bitset_t;
 
 kefir_result_t kefir_bitset_init(struct kefir_bitset *);
+kefir_result_t kefir_bitset_init_static(struct kefir_bitset *, kefir_uint64_t *, kefir_size_t, kefir_size_t);
 kefir_result_t kefir_bitset_free(struct kefir_mem *, struct kefir_bitset *);
 
 kefir_result_t kefir_bitset_get(const struct kefir_bitset *, kefir_size_t, kefir_bool_t *);
@@ -19,5 +21,8 @@ kefir_result_t kefir_bitset_find(const struct kefir_bitset *, kefir_bool_t, kefi
 
 kefir_result_t kefir_bitset_length(const struct kefir_bitset *, kefir_size_t *);
 kefir_result_t kefir_bitset_resize(struct kefir_mem *, struct kefir_bitset *, kefir_size_t);
+
+#define KEFIR_BITSET_STATIC_CONTENT_CAPACITY(_bits) \
+    (((_bits) + (sizeof(kefir_uint64_t) * CHAR_BIT - 1)) / (sizeof(kefir_uint64_t) * CHAR_BIT))
 
 #endif

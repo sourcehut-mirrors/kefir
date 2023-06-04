@@ -296,7 +296,7 @@ kefir_result_t kefir_abi_sysv_amd64_type_layout_at(
 struct type_properties {
     kefir_size_t size;
     kefir_size_t alignment;
-    struct kefir_vector *layout;
+    const struct kefir_vector *layout;
 };
 
 static kefir_result_t calculate_type_properties_visitor(const struct kefir_ir_type *type, kefir_size_t index,
@@ -312,10 +312,10 @@ static kefir_result_t calculate_type_properties_visitor(const struct kefir_ir_ty
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_abi_sysv_amd64_calculate_type_properties(const struct kefir_ir_type *type,
-                                                              struct kefir_vector *layout, kefir_size_t *size,
-                                                              kefir_size_t *alignment) {
-    struct type_properties props = {.size = 0, .alignment = 0, .layout = layout};
+kefir_result_t kefir_abi_sysv_amd64_calculate_type_properties(
+    const struct kefir_ir_type *type, const struct kefir_abi_sysv_amd64_type_layout *type_layout, kefir_size_t *size,
+    kefir_size_t *alignment) {
+    struct type_properties props = {.size = 0, .alignment = 0, .layout = &type_layout->layout};
     struct kefir_ir_type_visitor visitor;
     REQUIRE_OK(kefir_ir_type_visitor_init(&visitor, calculate_type_properties_visitor));
     REQUIRE_OK(kefir_ir_type_visitor_list_nodes(type, &visitor, (void *) &props, 0, kefir_ir_type_children(type)));

@@ -497,7 +497,7 @@
                                     "linear_liveness": {
                                         "alias": null,
                                         "begin": 5,
-                                        "end": 7
+                                        "end": 18
                                     }
                                 }
                             },
@@ -517,7 +517,7 @@
                                     "linear_liveness": {
                                         "alias": null,
                                         "begin": 6,
-                                        "end": 18
+                                        "end": 7
                                     }
                                 }
                             },
@@ -555,7 +555,7 @@
                                 "id": 9,
                                 "opcode": "int_add",
                                 "args": [
-                                    6,
+                                    5,
                                     8
                                 ],
                                 "control_next": null,
@@ -624,7 +624,7 @@
                                 "id": 13,
                                 "opcode": "int_add",
                                 "args": [
-                                    6,
+                                    5,
                                     12
                                 ],
                                 "control_next": null,
@@ -694,7 +694,7 @@
                                 "id": 17,
                                 "opcode": "copy_memory",
                                 "target": 16,
-                                "source": 6,
+                                "source": 5,
                                 "type": {
                                     "id": 23,
                                     "index": 0

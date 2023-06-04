@@ -24,6 +24,7 @@
 #include "kefir/codegen/opt-system-v-amd64.h"
 #include "kefir/target/abi/system-v-amd64/function.h"
 #include "kefir/codegen/opt-system-v-amd64/parameters.h"
+#include "kefir/codegen/opt-system-v-amd64/stack_frame.h"
 #include "kefir/optimizer/module.h"
 #include "kefir/optimizer/analysis.h"
 #include "kefir/core/bitset.h"
@@ -45,6 +46,7 @@ typedef enum kefir_codegen_opt_sysv_amd64_register_allocation_type {
     KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_GENERAL_PURPOSE_REGISTER,
     KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_FLOATING_POINT_REGISTER,
     KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_SPILL_AREA,
+    KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_PARAMETER_REGISTER_AGGREGATE,
     KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_INDIRECT
 } kefir_codegen_opt_sysv_amd64_register_allocation_type_t;
 
@@ -55,18 +57,19 @@ typedef struct kefir_codegen_opt_sysv_amd64_register_allocation {
         kefir_codegen_opt_sysv_amd64_register_allocation_type_t type;
 
         union {
-            kefir_size_t register_index;
+            kefir_asm_amd64_xasmgen_register_t reg;
             kefir_size_t spill_index;
             struct {
                 kefir_asm_amd64_xasmgen_register_t base_register;
                 kefir_int64_t offset;
             } indirect;
+            kefir_size_t register_aggregate_offset;
         };
     } result;
 
     struct {
         kefir_bool_t present;
-        kefir_size_t index;
+        kefir_asm_amd64_xasmgen_register_t hint;
     } register_hint;
 
     struct {
@@ -84,7 +87,7 @@ typedef struct kefir_codegen_opt_sysv_amd64_register_allocator {
 
 kefir_result_t kefir_codegen_opt_sysv_amd64_register_allocation(
     struct kefir_mem *, const struct kefir_opt_function *, const struct kefir_opt_code_analysis *,
-    const struct kefir_codegen_opt_amd64_sysv_function_parameters *,
+    const struct kefir_codegen_opt_amd64_sysv_function_parameters *, struct kefir_codegen_opt_sysv_amd64_stack_frame *,
     struct kefir_codegen_opt_sysv_amd64_register_allocator *);
 
 kefir_result_t kefir_codegen_opt_sysv_amd64_register_allocation_of(

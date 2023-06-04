@@ -9,6 +9,23 @@ kefir_result_t kefir_bitset_init(struct kefir_bitset *bitset) {
     bitset->content = NULL;
     bitset->length = 0;
     bitset->capacity = 0;
+    bitset->static_content = false;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_bitset_init_static(struct kefir_bitset *bitset, kefir_uint64_t *content, kefir_size_t capacity,
+                                        kefir_size_t length) {
+    REQUIRE(bitset != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to bitset"));
+    REQUIRE(content != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to static bitset content"));
+    REQUIRE(capacity > 0, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected non-empty static bitset content"));
+
+    bitset->content = content;
+    bitset->capacity = capacity;
+    bitset->length = length;
+    bitset->static_content = true;
+
+    memset(content, 0, sizeof(kefir_uint64_t) * capacity);
     return KEFIR_OK;
 }
 
@@ -16,10 +33,13 @@ kefir_result_t kefir_bitset_free(struct kefir_mem *mem, struct kefir_bitset *bit
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(bitset != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid bitset"));
 
-    KEFIR_FREE(mem, bitset->content);
+    if (!bitset->static_content) {
+        KEFIR_FREE(mem, bitset->content);
+    }
     bitset->content = NULL;
     bitset->length = 0;
     bitset->capacity = 0;
+    bitset->static_content = false;
     return KEFIR_OK;
 }
 
@@ -81,6 +101,7 @@ kefir_result_t kefir_bitset_length(const struct kefir_bitset *bitset, kefir_size
 kefir_result_t kefir_bitset_resize(struct kefir_mem *mem, struct kefir_bitset *bitset, kefir_size_t new_length) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(bitset != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid bitset"));
+    REQUIRE(!bitset->static_content, KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Cannot resize static bitset"));
     REQUIRE(new_length != bitset->length, KEFIR_OK);
 
     if (new_length < bitset->length) {

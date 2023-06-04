@@ -562,7 +562,7 @@ kefir_result_t kefir_amd64_sysv_static_data(struct kefir_mem *mem, struct kefir_
 
     kefir_size_t total_size, total_alignment;
     kefir_result_t res =
-        kefir_abi_sysv_amd64_calculate_type_properties(data->type, &param.layout.layout, &total_size, &total_alignment);
+        kefir_abi_sysv_amd64_calculate_type_properties(data->type, &param.layout, &total_size, &total_alignment);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_abi_sysv_amd64_type_layout_free(mem, &param.layout);
         return res;

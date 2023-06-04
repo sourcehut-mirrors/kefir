@@ -217,7 +217,6 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             REQUIRE_OK(kefir_opt_code_builder_zero_memory(mem, code, current_block_id, instr_ref2, instr->arg.u32[0],
                                                           instr->arg.u32[1], &instr_ref));
             REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));
-            REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
             break;
 
         case KEFIR_IROPCODE_BCOPY:
@@ -226,7 +225,6 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             REQUIRE_OK(kefir_opt_code_builder_copy_memory(mem, code, current_block_id, instr_ref3, instr_ref2,
                                                           instr->arg.u32[0], instr->arg.u32[1], &instr_ref));
             REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));
-            REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
             break;
 
         case KEFIR_IROPCODE_VARARG_GET:

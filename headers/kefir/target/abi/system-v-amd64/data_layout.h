@@ -49,7 +49,8 @@ kefir_result_t kefir_abi_sysv_amd64_type_layout_free(struct kefir_mem *, struct 
 kefir_result_t kefir_abi_sysv_amd64_type_layout_at(const struct kefir_abi_sysv_amd64_type_layout *, kefir_size_t,
                                                    const struct kefir_abi_sysv_amd64_typeentry_layout **);
 
-kefir_result_t kefir_abi_sysv_amd64_calculate_type_properties(const struct kefir_ir_type *, struct kefir_vector *,
+kefir_result_t kefir_abi_sysv_amd64_calculate_type_properties(const struct kefir_ir_type *,
+                                                              const struct kefir_abi_sysv_amd64_type_layout *,
                                                               kefir_size_t *, kefir_size_t *);
 
 #endif
