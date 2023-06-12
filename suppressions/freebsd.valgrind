@@ -46,6 +46,5 @@
    obj:/usr/lib/i18n/libiconv_std.so.4
    obj:/lib/libc.so.7
    fun:mbrtoc32_l
-   fun:at_impl
    ...
 }
