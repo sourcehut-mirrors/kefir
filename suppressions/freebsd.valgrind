@@ -1,7 +1,7 @@
 {
    mbrtoc32 memleak
    Memcheck:Leak
-   match-leak-kinds: definite
+   match-leak-kinds: all
    fun:malloc
    obj:/usr/lib/i18n/libiconv_std.so.4
    obj:/lib/libc.so.7
@@ -11,7 +11,7 @@
 {
    c32rtomb memleak
    Memcheck:Leak
-   match-leak-kinds: definite
+   match-leak-kinds: all
    fun:malloc
    obj:/usr/lib/i18n/libiconv_std.so.4
    obj:/lib/libc.so.7
@@ -21,7 +21,7 @@
 {
    mbrtoc16 memleak
    Memcheck:Leak
-   match-leak-kinds: definite
+   match-leak-kinds: all
    fun:malloc
    obj:/usr/lib/i18n/libiconv_std.so.4
    obj:/lib/libc.so.7
@@ -31,7 +31,7 @@
 {
    c16rtomb memleak
    Memcheck:Leak
-   match-leak-kinds: definite
+   match-leak-kinds: all
    fun:malloc
    obj:/usr/lib/i18n/libiconv_std.so.4
    obj:/lib/libc.so.7
@@ -41,7 +41,7 @@
 {
    mbrtoc32_l leak
    Memcheck:Leak
-   match-leak-kinds: possible
+   match-leak-kinds: all
    fun:malloc
    obj:/usr/lib/i18n/libiconv_std.so.4
    obj:/lib/libc.so.7
