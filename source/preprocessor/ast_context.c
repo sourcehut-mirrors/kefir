@@ -151,7 +151,6 @@ kefir_result_t kefir_preprocessor_ast_context_init(struct kefir_mem *mem,
     REQUIRE_OK(kefir_ast_context_configuration_defaults(&context->configuration));
     context->context.type_bundle = &context->type_bundle;
     context->context.target_env = target_env;
-    context->context.temporaries = NULL;
     context->context.type_analysis_context = KEFIR_AST_TYPE_ANALYSIS_DEFAULT;
     context->context.flow_control_tree = NULL;
     context->context.global_context = NULL;

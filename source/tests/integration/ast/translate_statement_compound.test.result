@@ -56,19 +56,6 @@
                                     "type": "struct",
                                     "fields": [
                                         {
-                                            "type": "long_double"
-                                        }
-                                    ]
-                                }
-                            ]
-                        },
-                        {
-                            "type": "union",
-                            "fields": [
-                                {
-                                    "type": "struct",
-                                    "fields": [
-                                        {
                                             "type": "int"
                                         },
                                         {
@@ -76,6 +63,9 @@
                                         },
                                         {
                                             "type": "float"
+                                        },
+                                        {
+                                            "type": "long_double"
                                         }
                                     ]
                                 }
@@ -196,10 +186,6 @@
                     }
                 },
                 {
-                    "opcode": "iadd1",
-                    "arg": 16
-                },
-                {
                     "opcode": "pick",
                     "arg": 0
                 },
@@ -222,10 +208,6 @@
                         "type": 8,
                         "index": 0
                     }
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 16
                 },
                 {
                     "opcode": "iadd1",
@@ -252,8 +234,12 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 8,
-                        "index": 1
+                        "index": 0
                     }
+                },
+                {
+                    "opcode": "iadd1",
+                    "arg": 32
                 },
                 {
                     "opcode": "setldh",
@@ -274,10 +260,6 @@
                     }
                 },
                 {
-                    "opcode": "iadd1",
-                    "arg": 16
-                },
-                {
                     "opcode": "load32i",
                     "memory_flags": {
                         "volatile": false
@@ -289,10 +271,6 @@
                         "type": 8,
                         "index": 0
                     }
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 16
                 },
                 {
                     "opcode": "iadd1",
@@ -322,10 +300,6 @@
                     "arg": 16
                 },
                 {
-                    "opcode": "iadd1",
-                    "arg": 16
-                },
-                {
                     "opcode": "xchg",
                     "arg": 1
                 },
@@ -358,10 +332,6 @@
                     "arg": 16
                 },
                 {
-                    "opcode": "iadd1",
-                    "arg": 16
-                },
-                {
                     "opcode": "load32u",
                     "memory_flags": {
                         "volatile": false
@@ -373,10 +343,6 @@
                         "type": 8,
                         "index": 0
                     }
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 16
                 },
                 {
                     "opcode": "pick",
@@ -437,10 +403,6 @@
                     "arg": 16
                 },
                 {
-                    "opcode": "iadd1",
-                    "arg": 16
-                },
-                {
                     "opcode": "load32u",
                     "memory_flags": {
                         "volatile": false
@@ -452,10 +414,6 @@
                         "type": 8,
                         "index": 0
                     }
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 16
                 },
                 {
                     "opcode": "iadd1",

@@ -55,7 +55,7 @@ kefir_result_t kefir_ast_analyze_cast_operator_node(struct kefir_mem *mem, const
         if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(cast_type)) {
             REQUIRE_OK(context->allocate_temporary_value(mem, context, kefir_ast_type_long_double(), NULL,
                                                          &base->source_location,
-                                                         &base->properties.expression_props.temporary));
+                                                         &base->properties.expression_props.temp_identifier));
         }
     }
     if (KEFIR_AST_TYPE_IS_FLOATING_POINT(expr_type)) {

@@ -55,11 +55,8 @@ static kefir_result_t translate_arithmetic_unary(struct kefir_mem *mem, struct k
                     break;
 
                 case KEFIR_AST_OPERATION_NEGATE:
-                    REQUIRE(node->base.properties.expression_props.temporary.valid,
-                            KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
-                                            "Unallocated temporary for unary operator long double parameter"));
-                    REQUIRE_OK(kefir_ast_translator_fetch_temporary(mem, context, builder,
-                                                                    &node->base.properties.expression_props.temporary));
+                    REQUIRE_OK(kefir_ast_translator_fetch_temporary(
+                        mem, context, builder, &node->base.properties.expression_props.temp_identifier));
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_LDNEG, 0));
                     break;
 
@@ -213,11 +210,8 @@ static kefir_result_t incdec_impl(struct kefir_mem *mem, struct kefir_ast_transl
             break;
 
         case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
-            REQUIRE(
-                node->base.properties.expression_props.temporary.valid,
-                KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unallocated temporary for unary operator long double parameter"));
             REQUIRE_OK(kefir_ast_translator_fetch_temporary(mem, context, builder,
-                                                            &node->base.properties.expression_props.temporary));
+                                                            &node->base.properties.expression_props.temp_identifier));
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_SETLDH,
                                                        kefir_ir_long_double_upper_half((kefir_long_double_t) diff)));
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_SETLDL,

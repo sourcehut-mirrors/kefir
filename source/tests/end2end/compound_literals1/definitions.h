@@ -18,18 +18,9 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef KEFIR_AST_TEMPORARIES_H_
-#define KEFIR_AST_TEMPORARIES_H_
+#ifndef DEFINITIONS_H_
+#define DEFINITIONS_H_
 
-#include "kefir/core/basic-types.h"
-#include "kefir/core/mem.h"
-#include "kefir/ast/base.h"
-
-typedef struct kefir_ast_scoped_identifier kefir_ast_scoped_identifier_t;  // Forward declaration
-
-typedef struct kefir_ast_temporary_identifier {
-    const char *identifier;
-    const struct kefir_ast_scoped_identifier *scoped_id;
-} kefir_ast_temporary_identifier_t;
+long test_compound_literals(long);
 
 #endif

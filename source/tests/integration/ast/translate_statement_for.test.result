@@ -184,10 +184,20 @@
                                     "type": "struct",
                                     "fields": [
                                         {
-                                            "type": "long_double"
-                                        },
-                                        {
-                                            "type": "long_double"
+                                            "type": "union",
+                                            "fields": [
+                                                {
+                                                    "type": "struct",
+                                                    "fields": [
+                                                        {
+                                                            "type": "long_double"
+                                                        },
+                                                        {
+                                                            "type": "long_double"
+                                                        }
+                                                    ]
+                                                }
+                                            ]
                                         }
                                     ]
                                 }
@@ -566,7 +576,7 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 25,
-                        "index": 1
+                        "index": 0
                     }
                 },
                 {
@@ -584,7 +594,7 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 25,
-                        "index": 1
+                        "index": 0
                     }
                 },
                 {

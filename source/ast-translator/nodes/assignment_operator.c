@@ -77,11 +77,8 @@ static kefir_result_t fetch_temporary(struct kefir_mem *mem, struct kefir_ast_tr
     });
     REQUIRE_OK(KEFIR_IR_TARGET_PLATFORM_FREE_TYPE(mem, context->environment->target_platform, platform_type));
 
-    REQUIRE(
-        base->properties.expression_props.temporary.valid,
-        KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unallocated temporary for assignment operator long double parameter"));
-    REQUIRE_OK(
-        kefir_ast_translator_fetch_temporary(mem, context, builder, &base->properties.expression_props.temporary));
+    REQUIRE_OK(kefir_ast_translator_fetch_temporary(mem, context, builder,
+                                                    &base->properties.expression_props.temp_identifier));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PUSHU64, index));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IADDX, ir_type_info.size));
     return KEFIR_OK;
@@ -123,9 +120,6 @@ static kefir_result_t allocate_long_double_callback(void *payload) {
     REQUIRE_OK(
         KEFIR_IR_TARGET_PLATFORM_FREE_TYPE(param->mem, param->context->environment->target_platform, platform_type));
 
-    REQUIRE(
-        param->temporary->valid,
-        KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unallocated temporary for assignment operator long double parameter"));
     REQUIRE_OK(kefir_ast_translator_fetch_temporary(param->mem, param->context, param->builder, param->temporary));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(param->builder, KEFIR_IROPCODE_PUSHU64, param->temporary_index));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(param->builder, KEFIR_IROPCODE_IADDX, ir_type_info.size));
@@ -149,7 +143,7 @@ static kefir_result_t translate_simple(struct kefir_mem *mem, struct kefir_ast_t
         struct typeconv_callback_param cb_param = {.mem = mem,
                                                    .context = context,
                                                    .builder = builder,
-                                                   .temporary = &node->base.properties.expression_props.temporary,
+                                                   .temporary = &node->base.properties.expression_props.temp_identifier,
                                                    .temporary_index = 0,
                                                    .ldouble_type_id = KEFIR_ID_NONE};
         struct kefir_ast_translate_typeconv_callbacks callbacks = {
@@ -193,7 +187,7 @@ static kefir_result_t translate_multiplication(struct kefir_mem *mem, struct kef
     struct typeconv_callback_param cb_param = {.mem = mem,
                                                .context = context,
                                                .builder = builder,
-                                               .temporary = &node->base.properties.expression_props.temporary,
+                                               .temporary = &node->base.properties.expression_props.temp_identifier,
                                                .temporary_index = 0,
                                                .ldouble_type_id = KEFIR_ID_NONE};
     struct kefir_ast_translate_typeconv_callbacks callbacks = {.allocate_long_double = allocate_long_double_callback,
@@ -256,7 +250,7 @@ static kefir_result_t translate_divide(struct kefir_mem *mem, struct kefir_ast_t
     struct typeconv_callback_param cb_param = {.mem = mem,
                                                .context = context,
                                                .builder = builder,
-                                               .temporary = &node->base.properties.expression_props.temporary,
+                                               .temporary = &node->base.properties.expression_props.temp_identifier,
                                                .temporary_index = 0,
                                                .ldouble_type_id = KEFIR_ID_NONE};
     struct kefir_ast_translate_typeconv_callbacks callbacks = {.allocate_long_double = allocate_long_double_callback,
@@ -410,7 +404,7 @@ static kefir_result_t translate_add(struct kefir_mem *mem, struct kefir_ast_tran
         struct typeconv_callback_param cb_param = {.mem = mem,
                                                    .context = context,
                                                    .builder = builder,
-                                                   .temporary = &node->base.properties.expression_props.temporary,
+                                                   .temporary = &node->base.properties.expression_props.temp_identifier,
                                                    .temporary_index = 0,
                                                    .ldouble_type_id = KEFIR_ID_NONE};
         struct kefir_ast_translate_typeconv_callbacks callbacks = {
@@ -506,7 +500,7 @@ static kefir_result_t translate_subtract(struct kefir_mem *mem, struct kefir_ast
         struct typeconv_callback_param cb_param = {.mem = mem,
                                                    .context = context,
                                                    .builder = builder,
-                                                   .temporary = &node->base.properties.expression_props.temporary,
+                                                   .temporary = &node->base.properties.expression_props.temp_identifier,
                                                    .temporary_index = 0,
                                                    .ldouble_type_id = KEFIR_ID_NONE};
         struct kefir_ast_translate_typeconv_callbacks callbacks = {

@@ -39,8 +39,6 @@ static kefir_result_t allocate_long_double_callback(void *payload) {
     REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid typeconv callback payload"));
     ASSIGN_DECL_CAST(struct typeconv_callback_param *, param, payload);
 
-    REQUIRE(param->temporary->valid,
-            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unallocated temporary for binary operation long double parameter"));
     REQUIRE_OK(kefir_ast_translator_fetch_temporary(param->mem, param->context, param->builder, param->temporary));
     return KEFIR_OK;
 }
@@ -71,7 +69,7 @@ static kefir_result_t binary_prologue(struct kefir_mem *mem, struct kefir_ast_tr
     struct typeconv_callback_param cb_param = {.mem = mem,
                                                .context = context,
                                                .builder = builder,
-                                               .temporary = &node->base.properties.expression_props.temporary};
+                                               .temporary = &node->base.properties.expression_props.temp_identifier};
     struct kefir_ast_translate_typeconv_callbacks callbacks = {.allocate_long_double = allocate_long_double_callback,
                                                                .payload = &cb_param};
 
@@ -110,11 +108,8 @@ static kefir_result_t translate_addition(struct kefir_mem *mem, struct kefir_ast
         REQUIRE_OK(binary_prologue(mem, context, builder, node));
         switch (result_normalized_type->tag) {
             case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
-                REQUIRE(node->base.properties.expression_props.temporary.valid,
-                        KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
-                                        "Unallocated temporary for binary operator long double parameter"));
-                REQUIRE_OK(kefir_ast_translator_fetch_temporary(mem, context, builder,
-                                                                &node->base.properties.expression_props.temporary));
+                REQUIRE_OK(kefir_ast_translator_fetch_temporary(
+                    mem, context, builder, &node->base.properties.expression_props.temp_identifier));
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_LDADD, 0));
                 break;
 
@@ -178,11 +173,8 @@ static kefir_result_t translate_subtraction(struct kefir_mem *mem, struct kefir_
         KEFIR_AST_TYPE_IS_ARITHMETIC_TYPE(arg2_normalized_type)) {
         switch (result_normalized_type->tag) {
             case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
-                REQUIRE(node->base.properties.expression_props.temporary.valid,
-                        KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
-                                        "Unallocated temporary for binary operator long double parameter"));
-                REQUIRE_OK(kefir_ast_translator_fetch_temporary(mem, context, builder,
-                                                                &node->base.properties.expression_props.temporary));
+                REQUIRE_OK(kefir_ast_translator_fetch_temporary(
+                    mem, context, builder, &node->base.properties.expression_props.temp_identifier));
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_LDSUB, 0));
                 break;
 
@@ -257,11 +249,8 @@ static kefir_result_t translate_multiplication(struct kefir_mem *mem, struct kef
     REQUIRE_OK(binary_prologue(mem, context, builder, node));
     switch (result_normalized_type->tag) {
         case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
-            REQUIRE(node->base.properties.expression_props.temporary.valid,
-                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
-                                    "Unallocated temporary for binary operator long double parameter"));
             REQUIRE_OK(kefir_ast_translator_fetch_temporary(mem, context, builder,
-                                                            &node->base.properties.expression_props.temporary));
+                                                            &node->base.properties.expression_props.temp_identifier));
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_LDMUL, 0));
             break;
 
@@ -290,11 +279,8 @@ static kefir_result_t translate_division(struct kefir_mem *mem, struct kefir_ast
     REQUIRE_OK(binary_prologue(mem, context, builder, node));
     switch (result_normalized_type->tag) {
         case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
-            REQUIRE(node->base.properties.expression_props.temporary.valid,
-                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
-                                    "Unallocated temporary for binary operator long double parameter"));
             REQUIRE_OK(kefir_ast_translator_fetch_temporary(mem, context, builder,
-                                                            &node->base.properties.expression_props.temporary));
+                                                            &node->base.properties.expression_props.temp_identifier));
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_LDDIV, 0));
             break;
 
@@ -523,10 +509,11 @@ static kefir_result_t translate_relational_equality(struct kefir_mem *mem, struc
             KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected conversion to long double"));
         REQUIRE_OK(kefir_ast_translate_expression(mem, node->arg1, builder, context));
 
-        struct typeconv_callback_param cb_param = {.mem = mem,
-                                                   .context = context,
-                                                   .builder = builder,
-                                                   .temporary = &node->base.properties.expression_props.temporary};
+        struct typeconv_callback_param cb_param = {
+            .mem = mem,
+            .context = context,
+            .builder = builder,
+            .temporary = &node->base.properties.expression_props.temp_identifier};
         struct kefir_ast_translate_typeconv_callbacks callbacks = {
             .allocate_long_double = allocate_long_double_callback, .payload = &cb_param};
 

@@ -25,45 +25,35 @@
                     "type": "struct",
                     "fields": [
                         {
-                            "type": "union",
+                            "type": "struct",
                             "fields": [
                                 {
-                                    "type": "struct",
-                                    "fields": [
-                                        {
-                                            "type": "struct",
-                                            "fields": [
-                                                {
-                                                    "type": "array",
-                                                    "length": 24,
-                                                    "element_type": {
-                                                        "type": "char"
-                                                    }
-                                                },
-                                                {
-                                                    "type": "array",
-                                                    "length": 24,
-                                                    "element_type": {
-                                                        "type": "short"
-                                                    }
-                                                },
-                                                {
-                                                    "type": "array",
-                                                    "length": 24,
-                                                    "element_type": {
-                                                        "type": "int"
-                                                    }
-                                                },
-                                                {
-                                                    "type": "array",
-                                                    "length": 24,
-                                                    "element_type": {
-                                                        "type": "int"
-                                                    }
-                                                }
-                                            ]
-                                        }
-                                    ]
+                                    "type": "array",
+                                    "length": 24,
+                                    "element_type": {
+                                        "type": "char"
+                                    }
+                                },
+                                {
+                                    "type": "array",
+                                    "length": 24,
+                                    "element_type": {
+                                        "type": "short"
+                                    }
+                                },
+                                {
+                                    "type": "array",
+                                    "length": 24,
+                                    "element_type": {
+                                        "type": "int"
+                                    }
+                                },
+                                {
+                                    "type": "array",
+                                    "length": 24,
+                                    "element_type": {
+                                        "type": "int"
+                                    }
                                 }
                             ]
                         }
@@ -267,7 +257,7 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 4,
-                        "index": 1
+                        "index": 0
                     }
                 },
                 {

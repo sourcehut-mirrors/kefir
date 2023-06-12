@@ -57,7 +57,7 @@ static kefir_result_t analyze_muldiv(struct kefir_mem *mem, const struct kefir_a
     if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(base->properties.type)) {
         REQUIRE_OK(context->allocate_temporary_value(mem, context, kefir_ast_type_long_double(), NULL,
                                                      &base->source_location,
-                                                     &base->properties.expression_props.temporary));
+                                                     &base->properties.expression_props.temp_identifier));
     }
     return KEFIR_OK;
 }
@@ -94,7 +94,7 @@ static kefir_result_t analyze_addition(
         if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(base->properties.type)) {
             REQUIRE_OK(context->allocate_temporary_value(mem, context, kefir_ast_type_long_double(), NULL,
                                                          &base->source_location,
-                                                         &base->properties.expression_props.temporary));
+                                                         &base->properties.expression_props.temp_identifier));
         }
     }
     return KEFIR_OK;
@@ -136,7 +136,7 @@ static kefir_result_t analyze_subtraction(
         if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(base->properties.type)) {
             REQUIRE_OK(context->allocate_temporary_value(mem, context, kefir_ast_type_long_double(), NULL,
                                                          &base->source_location,
-                                                         &base->properties.expression_props.temporary));
+                                                         &base->properties.expression_props.temp_identifier));
         }
     }
     return KEFIR_OK;
@@ -175,7 +175,7 @@ static kefir_result_t analyze_relational(struct kefir_mem *mem, const struct kef
         if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(type1) || KEFIR_AST_TYPE_IS_LONG_DOUBLE(type2)) {
             REQUIRE_OK(context->allocate_temporary_value(mem, context, kefir_ast_type_long_double(), NULL,
                                                          &base->source_location,
-                                                         &base->properties.expression_props.temporary));
+                                                         &base->properties.expression_props.temp_identifier));
         }
     }
     base->properties.type = kefir_ast_type_signed_int();
@@ -191,7 +191,7 @@ static kefir_result_t analyze_equality(struct kefir_mem *mem, const struct kefir
         if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(type1) || KEFIR_AST_TYPE_IS_LONG_DOUBLE(type2)) {
             REQUIRE_OK(context->allocate_temporary_value(mem, context, kefir_ast_type_long_double(), NULL,
                                                          &base->source_location,
-                                                         &base->properties.expression_props.temporary));
+                                                         &base->properties.expression_props.temp_identifier));
         }
     } else if (type1->tag == KEFIR_AST_TYPE_SCALAR_POINTER && type2->tag == KEFIR_AST_TYPE_SCALAR_POINTER) {
         const struct kefir_ast_type *unqualified1 = kefir_ast_unqualified_type(type1->referenced_type);

@@ -62,10 +62,11 @@ kefir_result_t kefir_ast_translate_return_statement_node(struct kefir_mem *mem,
 
         REQUIRE_OK(kefir_ast_translate_expression(mem, node->expression, builder, context));
         if (KEFIR_AST_TYPE_IS_SCALAR_TYPE(node->expression->properties.type)) {
-            struct typeconv_callback_param cb_param = {.mem = mem,
-                                                       .context = context,
-                                                       .builder = builder,
-                                                       .temporary = &node->base.properties.statement_props.temporary};
+            struct typeconv_callback_param cb_param = {
+                .mem = mem,
+                .context = context,
+                .builder = builder,
+                .temporary = &node->base.properties.statement_props.temp_identifier};
             struct kefir_ast_translate_typeconv_callbacks callbacks = {
                 .allocate_long_double = allocate_long_double_callback, .payload = &cb_param};
             REQUIRE_OK(kefir_ast_translate_typeconv(builder, context->ast_context->type_traits,

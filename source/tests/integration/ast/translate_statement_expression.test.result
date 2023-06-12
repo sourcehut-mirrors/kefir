@@ -74,20 +74,10 @@
                     "type": "struct",
                     "fields": [
                         {
-                            "type": "union",
+                            "type": "struct",
                             "fields": [
                                 {
-                                    "type": "struct",
-                                    "fields": [
-                                        {
-                                            "type": "struct",
-                                            "fields": [
-                                                {
-                                                    "type": "char"
-                                                }
-                                            ]
-                                        }
-                                    ]
+                                    "type": "char"
                                 }
                             ]
                         }
@@ -254,7 +244,7 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 14,
-                        "index": 1
+                        "index": 0
                     }
                 },
                 {

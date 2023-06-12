@@ -25,66 +25,56 @@
                     "type": "struct",
                     "fields": [
                         {
-                            "type": "union",
+                            "type": "struct",
                             "fields": [
                                 {
-                                    "type": "struct",
+                                    "type": "union",
                                     "fields": [
                                         {
                                             "type": "struct",
                                             "fields": [
                                                 {
-                                                    "type": "union",
-                                                    "fields": [
-                                                        {
-                                                            "type": "struct",
-                                                            "fields": [
-                                                                {
-                                                                    "type": "array",
-                                                                    "length": 10,
-                                                                    "element_type": {
-                                                                        "type": "char"
-                                                                    }
-                                                                },
-                                                                {
-                                                                    "type": "word"
-                                                                },
-                                                                {
-                                                                    "type": "long"
-                                                                }
-                                                            ]
-                                                        },
-                                                        {
-                                                            "type": "array",
-                                                            "length": 3,
-                                                            "element_type": {
-                                                                "type": "int"
-                                                            }
-                                                        }
-                                                    ]
+                                                    "type": "array",
+                                                    "length": 10,
+                                                    "element_type": {
+                                                        "type": "char"
+                                                    }
                                                 },
                                                 {
-                                                    "type": "float"
+                                                    "type": "word"
                                                 },
                                                 {
-                                                    "type": "struct",
-                                                    "fields": [
-                                                        {
-                                                            "type": "array",
-                                                            "length": 10,
-                                                            "element_type": {
-                                                                "type": "char"
-                                                            }
-                                                        },
-                                                        {
-                                                            "type": "word"
-                                                        },
-                                                        {
-                                                            "type": "long"
-                                                        }
-                                                    ]
+                                                    "type": "long"
                                                 }
                                             ]
+                                        },
+                                        {
+                                            "type": "array",
+                                            "length": 3,
+                                            "element_type": {
+                                                "type": "int"
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "float"
+                                },
+                                {
+                                    "type": "struct",
+                                    "fields": [
+                                        {
+                                            "type": "array",
+                                            "length": 10,
+                                            "element_type": {
+                                                "type": "char"
+                                            }
+                                        },
+                                        {
+                                            "type": "word"
+                                        },
+                                        {
+                                            "type": "long"
                                         }
                                     ]
                                 }
@@ -217,7 +207,7 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 4,
-                        "index": 1
+                        "index": 0
                     }
                 },
                 {

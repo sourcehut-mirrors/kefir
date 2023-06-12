@@ -61,17 +61,7 @@
                     "type": "struct",
                     "fields": [
                         {
-                            "type": "union",
-                            "fields": [
-                                {
-                                    "type": "struct",
-                                    "fields": [
-                                        {
-                                            "type": "long_double"
-                                        }
-                                    ]
-                                }
-                            ]
+                            "type": "long_double"
                         }
                     ]
                 }
@@ -92,20 +82,10 @@
                     "type": "struct",
                     "fields": [
                         {
-                            "type": "union",
-                            "fields": [
-                                {
-                                    "type": "struct",
-                                    "fields": [
-                                        {
-                                            "type": "long_double"
-                                        },
-                                        {
-                                            "type": "long_double"
-                                        }
-                                    ]
-                                }
-                            ]
+                            "type": "long_double"
+                        },
+                        {
+                            "type": "long_double"
                         }
                     ]
                 }
@@ -162,17 +142,7 @@
                     "type": "struct",
                     "fields": [
                         {
-                            "type": "union",
-                            "fields": [
-                                {
-                                    "type": "struct",
-                                    "fields": [
-                                        {
-                                            "type": "long_double"
-                                        }
-                                    ]
-                                }
-                            ]
+                            "type": "long_double"
                         }
                     ]
                 }
@@ -193,20 +163,10 @@
                     "type": "struct",
                     "fields": [
                         {
-                            "type": "union",
-                            "fields": [
-                                {
-                                    "type": "struct",
-                                    "fields": [
-                                        {
-                                            "type": "long_double"
-                                        },
-                                        {
-                                            "type": "long_double"
-                                        }
-                                    ]
-                                }
-                            ]
+                            "type": "long_double"
+                        },
+                        {
+                            "type": "long_double"
                         }
                     ]
                 }
@@ -401,7 +361,7 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 28,
-                        "index": 1
+                        "index": 0
                     }
                 },
                 {
@@ -444,7 +404,7 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 31,
-                        "index": 1
+                        "index": 0
                     }
                 },
                 {
@@ -470,7 +430,7 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 31,
-                        "index": 1
+                        "index": 0
                     }
                 },
                 {
@@ -607,7 +567,7 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 13,
-                        "index": 1
+                        "index": 0
                     }
                 },
                 {
@@ -653,7 +613,7 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 16,
-                        "index": 1
+                        "index": 0
                     }
                 },
                 {
@@ -682,7 +642,7 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 16,
-                        "index": 1
+                        "index": 0
                     }
                 },
                 {

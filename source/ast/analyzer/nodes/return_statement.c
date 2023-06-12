@@ -71,7 +71,7 @@ kefir_result_t kefir_ast_analyze_return_statement_node(struct kefir_mem *mem, co
         if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(function_return_type)) {
             REQUIRE_OK(context->allocate_temporary_value(mem, context, kefir_ast_type_long_double(), NULL,
                                                          &base->source_location,
-                                                         &base->properties.statement_props.temporary));
+                                                         &base->properties.statement_props.temp_identifier));
         }
     }
     base->properties.statement_props.return_type = function_return_type;

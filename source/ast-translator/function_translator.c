@@ -315,10 +315,11 @@ kefir_result_t kefir_ast_translator_function_context_translate(
     struct kefir_irbuilder_block *builder = &function_context->builder;
     struct kefir_ast_translator_context *context = &function_context->local_translator_context;
 
-    struct typeconv_callback_param cb_param = {.mem = mem,
-                                               .context = context,
-                                               .builder = builder,
-                                               .temporary = &function->base.properties.function_definition.temporary};
+    struct typeconv_callback_param cb_param = {
+        .mem = mem,
+        .context = context,
+        .builder = builder,
+        .temporary = &function->base.properties.function_definition.temp_identifier};
     struct kefir_ast_translate_typeconv_callbacks callbacks = {.allocate_long_double = allocate_long_double_callback,
                                                                .payload = &cb_param};
 

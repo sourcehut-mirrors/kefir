@@ -39,7 +39,10 @@ typedef struct kefir_ast_local_context {
     struct kefir_ast_identifier_block_scope tag_scope;
     struct kefir_ast_identifier_flat_scope label_scope;
 
-    struct kefir_ast_context_temporaries temporaries;
+    struct {
+        kefir_id_t next_id;
+    } temporary_ids;
+
     struct kefir_ast_flow_control_tree flow_control_tree;
     struct kefir_list flow_control_points;
 } kefir_ast_local_context_t;

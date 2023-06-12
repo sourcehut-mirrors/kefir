@@ -49,7 +49,7 @@ static kefir_result_t validate_simple_assignment(struct kefir_mem *mem, const st
             return KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate AST array type");
         });
         REQUIRE_OK(context->allocate_temporary_value(mem, context, array_type, NULL, &base->source_location,
-                                                     &base->properties.expression_props.temporary));
+                                                     &base->properties.expression_props.temp_identifier));
     }
     return KEFIR_OK;
 }
@@ -73,7 +73,7 @@ static kefir_result_t validate_compound_assignment(struct kefir_mem *mem, const 
             if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(target_type) || KEFIR_AST_TYPE_IS_LONG_DOUBLE(value_type)) {
                 REQUIRE_OK(context->allocate_temporary_value(mem, context, kefir_ast_type_long_double(), NULL,
                                                              &base->source_location,
-                                                             &base->properties.expression_props.temporary));
+                                                             &base->properties.expression_props.temp_identifier));
             }
             break;
 
@@ -110,7 +110,7 @@ static kefir_result_t validate_compound_assignment(struct kefir_mem *mem, const 
                 if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(target_type) || KEFIR_AST_TYPE_IS_LONG_DOUBLE(value_type)) {
                     REQUIRE_OK(context->allocate_temporary_value(mem, context, kefir_ast_type_long_double(), NULL,
                                                                  &base->source_location,
-                                                                 &base->properties.expression_props.temporary));
+                                                                 &base->properties.expression_props.temp_identifier));
                 }
             }
             break;

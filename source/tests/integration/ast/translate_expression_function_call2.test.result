@@ -30,30 +30,20 @@
                     "type": "struct",
                     "fields": [
                         {
-                            "type": "union",
+                            "type": "struct",
                             "fields": [
                                 {
-                                    "type": "struct",
-                                    "fields": [
-                                        {
-                                            "type": "struct",
-                                            "fields": [
-                                                {
-                                                    "type": "int"
-                                                },
-                                                {
-                                                    "type": "double"
-                                                },
-                                                {
-                                                    "type": "array",
-                                                    "length": 16,
-                                                    "element_type": {
-                                                        "type": "char"
-                                                    }
-                                                }
-                                            ]
-                                        }
-                                    ]
+                                    "type": "int"
+                                },
+                                {
+                                    "type": "double"
+                                },
+                                {
+                                    "type": "array",
+                                    "length": 16,
+                                    "element_type": {
+                                        "type": "char"
+                                    }
                                 }
                             ]
                         }
@@ -390,7 +380,7 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 4,
-                        "index": 1
+                        "index": 0
                     }
                 },
                 {

@@ -25,52 +25,32 @@
                     "type": "struct",
                     "fields": [
                         {
-                            "type": "union",
-                            "fields": [
-                                {
-                                    "type": "struct",
-                                    "fields": [
-                                        {
-                                            "type": "array",
-                                            "length": 14,
-                                            "element_type": {
-                                                "type": "char"
-                                            }
-                                        }
-                                    ]
-                                },
-                                {
-                                    "type": "struct",
-                                    "fields": [
-                                        {
-                                            "type": "array",
-                                            "length": 4,
-                                            "element_type": {
-                                                "type": "char"
-                                            }
-                                        },
-                                        {
-                                            "type": "array",
-                                            "length": 0,
-                                            "element_type": {
-                                                "type": "char"
-                                            }
-                                        }
-                                    ]
-                                },
-                                {
-                                    "type": "struct",
-                                    "fields": [
-                                        {
-                                            "type": "array",
-                                            "length": 8,
-                                            "element_type": {
-                                                "type": "char"
-                                            }
-                                        }
-                                    ]
-                                }
-                            ]
+                            "type": "array",
+                            "length": 14,
+                            "element_type": {
+                                "type": "char"
+                            }
+                        },
+                        {
+                            "type": "array",
+                            "length": 4,
+                            "element_type": {
+                                "type": "char"
+                            }
+                        },
+                        {
+                            "type": "array",
+                            "length": 0,
+                            "element_type": {
+                                "type": "char"
+                            }
+                        },
+                        {
+                            "type": "array",
+                            "length": 8,
+                            "element_type": {
+                                "type": "char"
+                            }
                         }
                     ]
                 }
@@ -238,7 +218,7 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 4,
-                        "index": 1
+                        "index": 0
                     }
                 },
                 {
@@ -278,8 +258,12 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 4,
-                        "index": 1
+                        "index": 0
                     }
+                },
+                {
+                    "opcode": "iadd1",
+                    "arg": 14
                 },
                 {
                     "opcode": "pick",
@@ -404,12 +388,12 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 4,
-                        "index": 1
+                        "index": 0
                     }
                 },
                 {
                     "opcode": "iadd1",
-                    "arg": 4
+                    "arg": 18
                 },
                 {
                     "opcode": "pick",
@@ -433,8 +417,12 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 4,
-                        "index": 1
+                        "index": 0
                     }
+                },
+                {
+                    "opcode": "iadd1",
+                    "arg": 18
                 },
                 {
                     "opcode": "pick",

@@ -59,8 +59,6 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
             mem, KEFIR_AST_NODE_BASE(KEFIR_AST_MAKE_STRING_LITERAL_MULTIBYTE(mem, "Hello, world!")))));
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, KEFIR_AST_NODE_BASE(literal1)));
 
-    REQUIRE_OK(kefir_ast_temporaries_next_block(context->temporaries));
-
     struct kefir_ast_compound_literal *literal2 = kefir_ast_new_compound_literal(
         mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_CLONE(mem, KEFIR_AST_NODE_BASE(type_name1)));
     REQUIRE_OK(kefir_ast_initializer_list_append(
@@ -84,8 +82,6 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_ast_compound_literal *literal3 = kefir_ast_new_compound_literal(
         mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_CLONE(mem, KEFIR_AST_NODE_BASE(type_name1)));
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, KEFIR_AST_NODE_BASE(literal3)));
-
-    REQUIRE_OK(kefir_ast_temporaries_next_block(context->temporaries));
 
     struct kefir_ast_compound_literal *literal4 = kefir_ast_new_compound_literal(mem, type_name1);
     struct kefir_ast_initializer *init4_1 = kefir_ast_new_list_initializer(mem);

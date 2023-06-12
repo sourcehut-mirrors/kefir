@@ -130,17 +130,7 @@
                     "type": "struct",
                     "fields": [
                         {
-                            "type": "union",
-                            "fields": [
-                                {
-                                    "type": "struct",
-                                    "fields": [
-                                        {
-                                            "type": "long_double"
-                                        }
-                                    ]
-                                }
-                            ]
+                            "type": "long_double"
                         }
                     ]
                 }
@@ -837,7 +827,7 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 17,
-                        "index": 1
+                        "index": 0
                     }
                 },
                 {

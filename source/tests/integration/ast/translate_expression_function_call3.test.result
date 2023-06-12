@@ -38,21 +38,11 @@
                     "type": "struct",
                     "fields": [
                         {
-                            "type": "union",
-                            "fields": [
-                                {
-                                    "type": "struct",
-                                    "fields": [
-                                        {
-                                            "type": "array",
-                                            "length": 2,
-                                            "element_type": {
-                                                "type": "char"
-                                            }
-                                        }
-                                    ]
-                                }
-                            ]
+                            "type": "array",
+                            "length": 2,
+                            "element_type": {
+                                "type": "char"
+                            }
                         }
                     ]
                 }
@@ -473,7 +463,7 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 4,
-                        "index": 1
+                        "index": 0
                     }
                 },
                 {

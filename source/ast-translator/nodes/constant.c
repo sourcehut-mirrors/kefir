@@ -97,10 +97,8 @@ kefir_result_t kefir_ast_translate_constant_node(struct kefir_mem *mem, struct k
             break;
 
         case KEFIR_AST_LONG_DOUBLE_CONSTANT:
-            REQUIRE(node->base.properties.expression_props.temporary.valid,
-                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unallocated temporary for constant long double"));
             REQUIRE_OK(kefir_ast_translator_fetch_temporary(mem, context, builder,
-                                                            &node->base.properties.expression_props.temporary));
+                                                            &node->base.properties.expression_props.temp_identifier));
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_SETLDH,
                                                        kefir_ir_long_double_upper_half(node->value.long_double)));
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_SETLDL,

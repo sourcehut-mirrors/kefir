@@ -66,8 +66,6 @@ static kefir_result_t allocate_long_double_callback(void *payload) {
     REQUIRE_OK(
         KEFIR_IR_TARGET_PLATFORM_FREE_TYPE(param->mem, param->context->environment->target_platform, platform_type));
 
-    REQUIRE(param->temporary->valid,
-            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unallocated temporary for function call long double parameter"));
     REQUIRE_OK(kefir_ast_translator_fetch_temporary(param->mem, param->context, param->builder, param->temporary));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(param->builder, KEFIR_IROPCODE_PUSHU64, param->temporary_index++));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(param->builder, KEFIR_IROPCODE_IADDX, ir_type_info.size));
@@ -81,7 +79,7 @@ static kefir_result_t translate_parameters(struct kefir_mem *mem, struct kefir_a
     struct typeconv_callback_param cb_param = {.mem = mem,
                                                .context = context,
                                                .builder = builder,
-                                               .temporary = &node->base.properties.expression_props.temporary,
+                                               .temporary = &node->base.properties.expression_props.temp_identifier,
                                                .temporary_index = 0,
                                                .ldouble_type_id = KEFIR_ID_NONE};
     struct kefir_ast_translate_typeconv_callbacks callbacks = {.allocate_long_double = allocate_long_double_callback,
@@ -225,7 +223,7 @@ kefir_result_t kefir_ast_translate_function_call_node(struct kefir_mem *mem,
                                                           node->base.properties.type));
     } else if (KEFIR_AST_TYPE_IS_AGGREGATE_TYPE(node->base.properties.type)) {
         REQUIRE_OK(kefir_ast_translator_fetch_temporary(mem, context, builder,
-                                                        &node->base.properties.expression_props.temporary));
+                                                        &node->base.properties.expression_props.temp_identifier));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PICK, 0));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_XCHG, 2));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32(builder, KEFIR_IROPCODE_BCOPY, ir_decl->result_type_id, 0));

@@ -54,8 +54,8 @@ typedef struct kefir_ast_node_properties {
             void *content;
             kefir_size_t length;
         } string_literal;
-        struct kefir_ast_temporary_identifier temporary;
         const struct kefir_ast_scoped_identifier *scoped_id;
+        struct kefir_ast_temporary_identifier temp_identifier;
         struct kefir_ast_flow_control_structure *flow_control_statement;
         kefir_size_t alignment;
     } expression_props;
@@ -68,6 +68,7 @@ typedef struct kefir_ast_node_properties {
         kefir_bool_t static_assertion;
         const struct kefir_ast_type *original_type;
         const struct kefir_ast_scoped_identifier *scoped_id;
+        struct kefir_ast_temporary_identifier temp_identifier;
     } declaration_props;
 
     struct {
@@ -79,7 +80,7 @@ typedef struct kefir_ast_node_properties {
         struct kefir_ast_flow_control_point *target_flow_control_point;
         struct kefir_ast_flow_control_structure *flow_control_statement;
         const struct kefir_ast_type *return_type;
-        struct kefir_ast_temporary_identifier temporary;
+        struct kefir_ast_temporary_identifier temp_identifier;
     } statement_props;
 
     struct {
@@ -87,7 +88,7 @@ typedef struct kefir_ast_node_properties {
         kefir_ast_function_specifier_t function;
         const char *identifier;
         const struct kefir_ast_scoped_identifier *scoped_id;
-        struct kefir_ast_temporary_identifier temporary;
+        struct kefir_ast_temporary_identifier temp_identifier;
     } function_definition;
 
     struct {

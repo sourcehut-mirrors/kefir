@@ -25,57 +25,47 @@
                     "type": "struct",
                     "fields": [
                         {
-                            "type": "union",
+                            "type": "long"
+                        },
+                        {
+                            "type": "struct",
+                            "fields": [
+                                {
+                                    "type": "bool"
+                                },
+                                {
+                                    "type": "long"
+                                },
+                                {
+                                    "type": "float"
+                                },
+                                {
+                                    "type": "int"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "struct",
                             "fields": [
                                 {
                                     "type": "struct",
                                     "fields": [
                                         {
+                                            "type": "bool"
+                                        },
+                                        {
                                             "type": "long"
                                         },
                                         {
-                                            "type": "struct",
-                                            "fields": [
-                                                {
-                                                    "type": "bool"
-                                                },
-                                                {
-                                                    "type": "long"
-                                                },
-                                                {
-                                                    "type": "float"
-                                                },
-                                                {
-                                                    "type": "int"
-                                                }
-                                            ]
+                                            "type": "float"
                                         },
                                         {
-                                            "type": "struct",
-                                            "fields": [
-                                                {
-                                                    "type": "struct",
-                                                    "fields": [
-                                                        {
-                                                            "type": "bool"
-                                                        },
-                                                        {
-                                                            "type": "long"
-                                                        },
-                                                        {
-                                                            "type": "float"
-                                                        },
-                                                        {
-                                                            "type": "int"
-                                                        }
-                                                    ]
-                                                },
-                                                {
-                                                    "type": "int"
-                                                }
-                                            ]
+                                            "type": "int"
                                         }
                                     ]
+                                },
+                                {
+                                    "type": "int"
                                 }
                             ]
                         }
@@ -203,7 +193,7 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 4,
-                        "index": 1
+                        "index": 0
                     }
                 },
                 {
@@ -237,7 +227,7 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 4,
-                        "index": 1
+                        "index": 0
                     }
                 },
                 {
@@ -334,7 +324,7 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 4,
-                        "index": 1
+                        "index": 0
                     }
                 },
                 {

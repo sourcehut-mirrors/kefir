@@ -41,17 +41,7 @@
                             "type": "long_double"
                         },
                         {
-                            "type": "union",
-                            "fields": [
-                                {
-                                    "type": "struct",
-                                    "fields": [
-                                        {
-                                            "type": "long_double"
-                                        }
-                                    ]
-                                }
-                            ]
+                            "type": "long_double"
                         }
                     ]
                 }
@@ -110,17 +100,7 @@
                             "type": "char"
                         },
                         {
-                            "type": "union",
-                            "fields": [
-                                {
-                                    "type": "struct",
-                                    "fields": [
-                                        {
-                                            "type": "long_double"
-                                        }
-                                    ]
-                                }
-                            ]
+                            "type": "long_double"
                         }
                     ]
                 }
@@ -228,8 +208,12 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 5,
-                        "index": 2
+                        "index": 0
                     }
+                },
+                {
+                    "opcode": "iadd1",
+                    "arg": 16
                 },
                 {
                     "opcode": "setldh",
@@ -290,8 +274,12 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 12,
-                        "index": 3
+                        "index": 0
                     }
+                },
+                {
+                    "opcode": "iadd1",
+                    "arg": 16
                 },
                 {
                     "opcode": "setldh",

@@ -58,24 +58,27 @@ static kefir_result_t context_allocate_temporary_value(struct kefir_mem *mem, co
                                                        const struct kefir_ast_type *type,
                                                        struct kefir_ast_initializer *initializer,
                                                        const struct kefir_source_location *location,
-                                                       struct kefir_ast_temporary_identifier *temp_id) {
+                                                       struct kefir_ast_temporary_identifier *temp_identifier) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST context"));
     REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type"));
-    REQUIRE(temp_id != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid temporary identifier pointer"));
+    REQUIRE(temp_identifier != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to temporary identifier"));
 
     ASSIGN_DECL_CAST(struct kefir_ast_global_context *, global_ctx, context->payload);
-    UNUSED(kefir_ast_temporaries_init(mem, context->type_bundle, false, context->temporaries));
-    REQUIRE_OK(kefir_ast_temporaries_new_temporary(mem, context, type, temp_id));
-    REQUIRE(temp_id->mode == KEFIR_AST_TEMPORARY_MODE_GLOBAL,
-            KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected AST global context temporaries to have global flat mode"));
 
+    kefir_id_t temp_id = global_ctx->temporary_ids.next_id++;
 #define BUFSIZE 128
     char buf[BUFSIZE] = {0};
-    snprintf(buf, sizeof(buf) - 1, KEFIR_AST_TRANSLATOR_TEMPORARY_GLOBAL_IDENTIFIER, temp_id->identifier,
-             temp_id->field);
-    REQUIRE_OK(
-        kefir_ast_global_context_define_static(mem, global_ctx, buf, type, NULL, initializer, NULL, location, NULL));
+    snprintf(buf, sizeof(buf) - 1, KEFIR_AST_TRANSLATOR_TEMPORARY_GLOBAL_IDENTIFIER, temp_id);
+
+    temp_identifier->identifier = kefir_symbol_table_insert(mem, context->symbols, buf, NULL);
+    REQUIRE(temp_identifier->identifier != NULL,
+            KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert temporary identifier into symbol table"));
+
+    REQUIRE_OK(kefir_ast_global_context_define_static(mem, global_ctx, buf, type, NULL, initializer, NULL, location,
+                                                      &temp_identifier->scoped_id));
+
 #undef BUFSIZE
     return KEFIR_OK;
 }
@@ -293,7 +296,7 @@ kefir_result_t kefir_ast_global_context_init(struct kefir_mem *mem, const struct
     REQUIRE_OK(kefir_ast_type_bundle_init(&context->type_bundle, &context->symbols));
     context->type_traits = type_traits;
     context->target_env = target_env;
-    context->temporaries = (struct kefir_ast_context_temporaries){0};
+    context->temporary_ids.next_id = 0;
     REQUIRE_OK(kefir_ast_identifier_flat_scope_init(&context->tag_scope));
     REQUIRE_OK(kefir_ast_identifier_flat_scope_on_removal(&context->tag_scope, kefir_ast_context_free_scoped_identifier,
                                                           NULL));
@@ -330,7 +333,6 @@ kefir_result_t kefir_ast_global_context_init(struct kefir_mem *mem, const struct
     context->context.type_bundle = &context->type_bundle;
     context->context.type_traits = context->type_traits;
     context->context.target_env = context->target_env;
-    context->context.temporaries = &context->temporaries;
     context->context.type_analysis_context = KEFIR_AST_TYPE_ANALYSIS_DEFAULT;
     context->context.flow_control_tree = NULL;
     context->context.global_context = context;

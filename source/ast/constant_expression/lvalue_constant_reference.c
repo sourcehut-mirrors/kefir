@@ -231,62 +231,11 @@ static kefir_result_t visit_compound_literal(const struct kefir_ast_visitor *vis
     REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid payload"));
     ASSIGN_DECL_CAST(struct visitor_param *, param, payload);
 
-#define BUFFER_LEN 128
-    const kefir_ast_temporary_mode_t temp_mode = node->base.properties.expression_props.temporary.mode;
-    if (temp_mode == KEFIR_AST_TEMPORARY_MODE_LOCAL_NESTED) {
-        const struct kefir_ast_scoped_identifier *scoped_id = NULL;
-        REQUIRE_OK(param->context->resolve_ordinary_identifier(
-            param->context, KEFIR_AST_TRANSLATOR_TEMPORARIES_IDENTIFIER, &scoped_id));
-
-        char TEMP_VALUE[BUFFER_LEN] = {0}, TEMP_MEMBER[BUFFER_LEN] = {0};
-
-        snprintf(TEMP_VALUE, BUFFER_LEN - 1, KEFIR_AST_TRANSLATOR_TEMPORARY_VALUE_IDENTIFIER,
-                 node->base.properties.expression_props.temporary.identifier);
-        snprintf(TEMP_MEMBER, BUFFER_LEN - 1, KEFIR_AST_TRANSLATOR_TEMPORARY_MEMBER_IDENTIFIER,
-                 node->base.properties.expression_props.temporary.field);
-
-        struct kefir_ast_designator temp_value_designator = {
-            .type = KEFIR_AST_DESIGNATOR_MEMBER, .member = TEMP_VALUE, .next = NULL};
-        struct kefir_ast_designator temp_member_designator = {
-            .type = KEFIR_AST_DESIGNATOR_MEMBER, .member = TEMP_MEMBER, .next = &temp_value_designator};
-
-        struct kefir_ast_target_environment_object_info object_info;
-        kefir_ast_target_environment_opaque_type_t opaque_type;
-        REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_GET_TYPE(param->mem, param->context, param->context->target_env,
-                                                         scoped_id->object.type, &opaque_type,
-                                                         &node->base.source_location));
-        kefir_result_t res = KEFIR_AST_TARGET_ENVIRONMENT_OBJECT_INFO(
-            param->mem, param->context->target_env, opaque_type, &temp_member_designator, &object_info);
-        REQUIRE_ELSE(res == KEFIR_OK, {
-            KEFIR_AST_TARGET_ENVIRONMENT_FREE_TYPE(param->mem, param->context->target_env, opaque_type);
-            return res;
-        });
-        REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_FREE_TYPE(param->mem, param->context->target_env, opaque_type));
-
-        param->pointer->type = KEFIR_AST_CONSTANT_EXPRESSION_POINTER_IDENTIFER;
-        param->pointer->base.literal = KEFIR_AST_TRANSLATOR_TEMPORARIES_IDENTIFIER;
-        param->pointer->offset = object_info.relative_offset;
-        param->pointer->pointer_node = KEFIR_AST_NODE_BASE(node);
-        param->pointer->scoped_id = scoped_id;
-    } else {
-        char buf[BUFFER_LEN] = {0};
-        snprintf(buf, sizeof(buf) - 1,
-                 temp_mode == KEFIR_AST_TEMPORARY_MODE_GLOBAL ? KEFIR_AST_TRANSLATOR_TEMPORARY_GLOBAL_IDENTIFIER
-                                                              : KEFIR_AST_TRANSLATOR_TEMPORARY_LOCAL_IDENTIFIER,
-                 node->base.properties.expression_props.temporary.identifier,
-                 node->base.properties.expression_props.temporary.field);
-
-        const struct kefir_ast_scoped_identifier *scoped_id = NULL;
-        REQUIRE_OK(param->context->resolve_ordinary_identifier(param->context, buf, &scoped_id));
-
-        param->pointer->type = KEFIR_AST_CONSTANT_EXPRESSION_POINTER_IDENTIFER;
-        param->pointer->base.literal = buf;
-        param->pointer->offset = 0;
-        param->pointer->pointer_node = KEFIR_AST_NODE_BASE(node);
-        param->pointer->scoped_id = scoped_id;
-    }
-
-#undef BUFFER_LEN
+    param->pointer->type = KEFIR_AST_CONSTANT_EXPRESSION_POINTER_IDENTIFER;
+    param->pointer->base.literal = node->base.properties.expression_props.temp_identifier.identifier;
+    param->pointer->offset = 0;
+    param->pointer->pointer_node = KEFIR_AST_NODE_BASE(node);
+    param->pointer->scoped_id = node->base.properties.expression_props.temp_identifier.scoped_id;
     return KEFIR_OK;
 }
 

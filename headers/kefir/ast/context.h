@@ -95,7 +95,6 @@ typedef struct kefir_ast_context {
     const struct kefir_ast_type_traits *type_traits;
     struct kefir_ast_type_bundle *type_bundle;
     const struct kefir_ast_target_environment *target_env;
-    struct kefir_ast_context_temporaries *temporaries;
     kefir_ast_type_analysis_context_t type_analysis_context;
     struct kefir_ast_flow_control_tree *flow_control_tree;
     struct kefir_ast_global_context *global_context;

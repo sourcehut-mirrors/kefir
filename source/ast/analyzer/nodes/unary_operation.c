@@ -59,7 +59,7 @@ kefir_result_t kefir_ast_analyze_unary_operation_node(struct kefir_mem *mem, con
             if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(type1)) {
                 REQUIRE_OK(context->allocate_temporary_value(mem, context, kefir_ast_type_long_double(), NULL,
                                                              &base->source_location,
-                                                             &base->properties.expression_props.temporary));
+                                                             &base->properties.expression_props.temp_identifier));
             }
         } break;
 
@@ -118,7 +118,7 @@ kefir_result_t kefir_ast_analyze_unary_operation_node(struct kefir_mem *mem, con
             if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(target_type)) {
                 REQUIRE_OK(context->allocate_temporary_value(mem, context, kefir_ast_type_long_double(), NULL,
                                                              &base->source_location,
-                                                             &base->properties.expression_props.temporary));
+                                                             &base->properties.expression_props.temp_identifier));
             }
         } break;
 
