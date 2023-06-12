@@ -63,7 +63,10 @@ typedef struct kefir_codegen_opt_sysv_amd64_register_allocation {
                 kefir_asm_amd64_xasmgen_register_t base_register;
                 kefir_int64_t offset;
             } indirect;
-            kefir_size_t register_aggregate_offset;
+            struct {
+                kefir_size_t index;
+                const struct kefir_abi_sysv_amd64_parameter_allocation *allocation;
+            } register_aggregate;
         };
     } result;
 

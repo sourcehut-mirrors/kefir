@@ -1312,6 +1312,8 @@ static kefir_result_t amd64_format_op(struct kefir_amd64_xasmgen *xasmgen,
 INSTR1(push)
 INSTR1(pop)
 INSTR2(mov)
+INSTR2(movsx)
+INSTR2(movzx)
 INSTR2(movabs)
 INSTR2(or)
 INSTR2(lea)
@@ -1475,6 +1477,8 @@ static kefir_result_t format_att_mnemonic_suffix(struct kefir_amd64_xasmgen *xas
 INSTR1(push)
 INSTR1(pop)
 INSTR2(mov)
+INSTR2(movsx)
+INSTR2(movzx)
 INSTR2(movabs)
 INSTR2(or)
 INSTR2(lea)
@@ -1568,6 +1572,8 @@ kefir_result_t kefir_asm_amd64_xasmgen_init(struct kefir_mem *mem, struct kefir_
         xasmgen->instr.jmp = amd64_instr_intel_jmp;
         xasmgen->instr.lea = amd64_instr_intel_lea;
         xasmgen->instr.mov = amd64_instr_intel_mov;
+        xasmgen->instr.movsx = amd64_instr_intel_movsx;
+        xasmgen->instr.movzx = amd64_instr_intel_movzx;
         xasmgen->instr.movabs = amd64_instr_intel_movabs;
         xasmgen->instr.movd = amd64_instr_intel_movd;
         xasmgen->instr.movq = amd64_instr_intel_movq;
@@ -1600,6 +1606,8 @@ kefir_result_t kefir_asm_amd64_xasmgen_init(struct kefir_mem *mem, struct kefir_
         xasmgen->instr.jmp = amd64_instr_att_jmp;
         xasmgen->instr.lea = amd64_instr_att_lea;
         xasmgen->instr.mov = amd64_instr_att_mov;
+        xasmgen->instr.movsx = amd64_instr_att_movsx;
+        xasmgen->instr.movzx = amd64_instr_att_movzx;
         xasmgen->instr.movabs = amd64_instr_att_movabs;
         xasmgen->instr.movd = amd64_instr_att_movd;
         xasmgen->instr.movq = amd64_instr_att_movq;

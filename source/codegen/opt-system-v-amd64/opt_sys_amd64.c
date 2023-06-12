@@ -216,6 +216,7 @@ static kefir_result_t translate_impl(struct kefir_mem *mem, struct kefir_codegen
     REQUIRE(analysis != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module analysis"));
     ASSIGN_DECL_CAST(struct kefir_codegen_opt_amd64 *, codegen, cg->data);
 
+    REQUIRE_OK(KEFIR_AMD64_XASMGEN_PROLOGUE(&codegen->xasmgen));
     REQUIRE_OK(translate_module_globals(module->ir_module, codegen));
     REQUIRE_OK(translate_module_externals(module->ir_module, codegen));
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_NEWLINE(&codegen->xasmgen, 1));

@@ -34,6 +34,11 @@ typedef struct kefir_opt_sysv_amd64_function {
     struct kefir_codegen_opt_sysv_amd64_stack_frame stack_frame;
     struct kefir_codegen_opt_sysv_amd64_register_allocator register_allocator;
     struct kefir_abi_sysv_amd64_type_layout locals_layout;
+
+    struct kefir_codegen_opt_sysv_amd64_stack_frame_map stack_frame_map;
+    struct kefir_hashtreeset occupied_general_purpose_regs;
+    struct kefir_hashtreeset borrowed_general_purpose_regs;
+    struct kefir_list alive_instr;
 } kefir_opt_sysv_amd64_function_t;
 
 kefir_result_t kefir_codegen_opt_sysv_amd64_translate_function(struct kefir_mem *, struct kefir_codegen_opt_amd64 *,

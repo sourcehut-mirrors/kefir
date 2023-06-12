@@ -708,7 +708,8 @@ static kefir_result_t do_allocation_impl(struct kefir_mem *mem, const struct kef
             case KEFIR_CODEGEN_OPT_AMD64_SYSV_FUNCTION_PARAMETER_LOCATION_REGISTER_AGGREGATE:
                 REQUIRE_OK(kefir_codegen_opt_sysv_amd64_stack_frame_allocate_register_aggregate(
                     stack_frame, kefir_vector_length(&parameter_location->parameter_allocation->container.qwords),
-                    &allocation->result.register_aggregate_offset));
+                    &allocation->result.register_aggregate.index));
+                allocation->result.register_aggregate.allocation = parameter_location->parameter_allocation;
                 allocation->result.type = KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_PARAMETER_REGISTER_AGGREGATE;
                 break;
         }

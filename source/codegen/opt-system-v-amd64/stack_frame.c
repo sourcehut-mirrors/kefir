@@ -102,14 +102,14 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_stack_frame_ensure_spill(
 }
 
 kefir_result_t kefir_codegen_opt_sysv_amd64_stack_frame_allocate_register_aggregate(
-    struct kefir_codegen_opt_sysv_amd64_stack_frame *frame, kefir_size_t size, kefir_size_t *offset) {
+    struct kefir_codegen_opt_sysv_amd64_stack_frame *frame, kefir_size_t size, kefir_size_t *index) {
     REQUIRE(frame != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer codegen System-V AMD64 stack frame"));
     REQUIRE(size != 0, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen register aggregate size"));
-    REQUIRE(offset != NULL,
-            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to codegen register aggregate offset"));
+    REQUIRE(index != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to codegen register aggregate index"));
 
-    *offset = frame->register_aggregate_area_size;
+    *index = frame->register_aggregate_area_size;
     frame->register_aggregate_area_size += size;
     return KEFIR_OK;
 }

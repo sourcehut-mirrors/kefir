@@ -221,6 +221,10 @@ typedef struct kefir_amd64_xasmgen {
         kefir_result_t (*pop)(struct kefir_amd64_xasmgen *, const struct kefir_asm_amd64_xasmgen_operand *);
         kefir_result_t (*mov)(struct kefir_amd64_xasmgen *, const struct kefir_asm_amd64_xasmgen_operand *,
                               const struct kefir_asm_amd64_xasmgen_operand *);
+        kefir_result_t (*movsx)(struct kefir_amd64_xasmgen *, const struct kefir_asm_amd64_xasmgen_operand *,
+                              const struct kefir_asm_amd64_xasmgen_operand *);
+        kefir_result_t (*movzx)(struct kefir_amd64_xasmgen *, const struct kefir_asm_amd64_xasmgen_operand *,
+                              const struct kefir_asm_amd64_xasmgen_operand *);
         kefir_result_t (*movabs)(struct kefir_amd64_xasmgen *, const struct kefir_asm_amd64_xasmgen_operand *,
                                  const struct kefir_asm_amd64_xasmgen_operand *);
         kefir_result_t (* or)(struct kefir_amd64_xasmgen *, const struct kefir_asm_amd64_xasmgen_operand *,
@@ -322,6 +326,8 @@ const struct kefir_asm_amd64_xasmgen_operand *kefir_asm_amd64_xasmgen_operand_st
 #define KEFIR_AMD64_XASMGEN_INSTR_PUSH(_xasmgen, _op1) ((_xasmgen)->instr.push((_xasmgen), (_op1)))
 #define KEFIR_AMD64_XASMGEN_INSTR_POP(_xasmgen, _op1) ((_xasmgen)->instr.pop((_xasmgen), (_op1)))
 #define KEFIR_AMD64_XASMGEN_INSTR_MOV(_xasmgen, _op1, _op2) ((_xasmgen)->instr.mov((_xasmgen), (_op1), (_op2)))
+#define KEFIR_AMD64_XASMGEN_INSTR_MOVSX(_xasmgen, _op1, _op2) ((_xasmgen)->instr.movsx((_xasmgen), (_op1), (_op2)))
+#define KEFIR_AMD64_XASMGEN_INSTR_MOVZX(_xasmgen, _op1, _op2) ((_xasmgen)->instr.movzx((_xasmgen), (_op1), (_op2)))
 #define KEFIR_AMD64_XASMGEN_INSTR_MOVABS(_xasmgen, _op1, _op2) ((_xasmgen)->instr.movabs((_xasmgen), (_op1), (_op2)))
 #define KEFIR_AMD64_XASMGEN_INSTR_OR(_xasmgen, _op1, _op2) ((_xasmgen)->instr.or ((_xasmgen), (_op1), (_op2)))
 #define KEFIR_AMD64_XASMGEN_INSTR_LEA(_xasmgen, _op1, _op2) ((_xasmgen)->instr.lea((_xasmgen), (_op1), (_op2)))
