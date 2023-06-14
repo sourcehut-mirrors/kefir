@@ -55,6 +55,7 @@ static kefir_result_t general_purpose_index_of(kefir_asm_amd64_xasmgen_register_
         }
     }
 
+    *index = KefirOptSysvAmd64NumOfGeneralPurposeRegisters;
     return KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find requested general purpose AMD64 register");
 }
 
@@ -66,6 +67,7 @@ static kefir_result_t floating_point_index_of(kefir_asm_amd64_xasmgen_register_t
         }
     }
 
+    *index = KefirOptSysvAmd64NumOfFloatingPointRegisters;
     return KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find requested floating point AMD64 register");
 }
 
@@ -552,7 +554,8 @@ static kefir_result_t allocate_register(struct kefir_mem *mem,
                                         struct kefir_codegen_opt_sysv_amd64_register_allocation *current_allocation,
                                         struct kefir_hashtreeset *conflict_hints) {
     struct kefir_bitset *regs_bits = NULL;
-    kefir_codegen_opt_sysv_amd64_register_allocation_type_t allocation_type;
+    kefir_codegen_opt_sysv_amd64_register_allocation_type_t allocation_type =
+        KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_NONE;
     switch (current_allocation->klass) {
         case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_CLASS_GENERAL_PURPOSE:
             regs_bits = &allocator->general_purpose_regs;
@@ -579,7 +582,7 @@ static kefir_result_t allocate_register(struct kefir_mem *mem,
         }
         REQUIRE_OK(res);
 
-        kefir_asm_amd64_xasmgen_register_t available_reg;
+        kefir_asm_amd64_xasmgen_register_t available_reg = KEFIR_AMD64_XASMGEN_REGISTER_RAX;
         switch (current_allocation->klass) {
             case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_CLASS_GENERAL_PURPOSE:
                 available_reg = KefirOptSysvAmd64GeneralPurposeRegisters[available_index];
@@ -610,7 +613,7 @@ static kefir_result_t allocate_register(struct kefir_mem *mem,
         if (res != KEFIR_NOT_FOUND) {
             REQUIRE_OK(res);
 
-            kefir_asm_amd64_xasmgen_register_t available_reg;
+            kefir_asm_amd64_xasmgen_register_t available_reg = KEFIR_AMD64_XASMGEN_REGISTER_RAX;
             switch (current_allocation->klass) {
                 case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_CLASS_GENERAL_PURPOSE:
                     available_reg = KefirOptSysvAmd64GeneralPurposeRegisters[available_reg_index];

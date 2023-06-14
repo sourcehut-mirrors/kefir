@@ -39,10 +39,8 @@ DEFINE_TRANSLATOR(store) {
     REQUIRE_OK(kefir_codegen_opt_sysv_amd64_temporary_general_purpose_register_obtain(mem, codegen, target_allocation,
                                                                                       codegen_func, &target_reg));
     if (target_reg.borrow) {
-        REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
-            &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(target_reg.reg),
-            kefir_codegen_opt_sysv_amd64_reg_allocation_operand(&codegen->xasmgen_helpers.operands[0],
-                                                                &codegen_func->stack_frame_map, target_allocation)));
+        REQUIRE_OK(kefir_codegen_opt_sysv_amd64_load_reg_allocation_into(codegen, &codegen_func->stack_frame_map,
+                                                                         target_allocation, target_reg.reg));
     }
 
     kefir_asm_amd64_xasmgen_pointer_type_t pointer_type;

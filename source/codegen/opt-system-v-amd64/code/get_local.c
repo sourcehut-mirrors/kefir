@@ -47,11 +47,8 @@ DEFINE_TRANSLATOR(get_local) {
                                           kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
                                           codegen_func->stack_frame_map.offset.local_area + entry->relative_offset)));
     if (tmp_reg.borrow) {
-        REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
-            &codegen->xasmgen,
-            kefir_codegen_opt_sysv_amd64_reg_allocation_operand(&codegen->xasmgen_helpers.operands[0],
-                                                                &codegen_func->stack_frame_map, reg_allocation),
-            kefir_asm_amd64_xasmgen_operand_reg(tmp_reg.reg)));
+        REQUIRE_OK(kefir_codegen_opt_sysv_amd64_store_reg_allocation_from(codegen, &codegen_func->stack_frame_map,
+                                                                          reg_allocation, tmp_reg.reg));
     }
 
     REQUIRE_OK(kefir_codegen_opt_sysv_amd64_temporary_register_free(mem, codegen, codegen_func, &tmp_reg));

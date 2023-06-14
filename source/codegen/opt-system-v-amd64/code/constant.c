@@ -31,16 +31,39 @@ DEFINE_TRANSLATOR(constant) {
     const struct kefir_codegen_opt_sysv_amd64_register_allocation *reg_allocation = NULL;
     REQUIRE_OK(kefir_codegen_opt_sysv_amd64_register_allocation_of(&codegen_func->register_allocator, instr_ref,
                                                                    &reg_allocation));
+    kefir_bool_t unsigned_integer = false;
     switch (instr->operation.opcode) {
+        case KEFIR_OPT_OPCODE_UINT_CONST:
+            unsigned_integer = true;
+            // Fallthrough
         case KEFIR_OPT_OPCODE_INT_CONST: {
             struct kefir_codegen_opt_sysv_amd64_translate_temporary_register result_reg;
             REQUIRE_OK(kefir_codegen_opt_sysv_amd64_temporary_general_purpose_register_obtain(
                 mem, codegen, reg_allocation, codegen_func, &result_reg));
 
-            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
-                &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_reg.reg),
-                kefir_asm_amd64_xasmgen_operand_imm(&codegen->xasmgen_helpers.operands[0],
-                                                    instr->operation.parameters.imm.integer)));
+            if (instr->operation.parameters.imm.integer >= KEFIR_INT32_MIN &&
+                instr->operation.parameters.imm.integer <= KEFIR_INT32_MAX) {
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
+                    &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_reg.reg),
+                    !unsigned_integer
+                        ? kefir_asm_amd64_xasmgen_operand_imm(&codegen->xasmgen_helpers.operands[0],
+                                                              instr->operation.parameters.imm.integer)
+                        : kefir_asm_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[0],
+                                                               instr->operation.parameters.imm.uinteger)));
+            } else {
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOVABS(
+                    &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_reg.reg),
+                    !unsigned_integer
+                        ? kefir_asm_amd64_xasmgen_operand_imm(&codegen->xasmgen_helpers.operands[0],
+                                                              instr->operation.parameters.imm.integer)
+                        : kefir_asm_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[0],
+                                                               instr->operation.parameters.imm.uinteger)));
+            }
+
+            if (result_reg.borrow) {
+                REQUIRE_OK(kefir_codegen_opt_sysv_amd64_store_reg_allocation_from(
+                    codegen, &codegen_func->stack_frame_map, reg_allocation, result_reg.reg));
+            }
 
             REQUIRE_OK(kefir_codegen_opt_sysv_amd64_temporary_register_free(mem, codegen, codegen_func, &result_reg));
         } break;

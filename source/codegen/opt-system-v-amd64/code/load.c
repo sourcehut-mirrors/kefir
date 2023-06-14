@@ -45,10 +45,8 @@ DEFINE_TRANSLATOR(load) {
                                                                                       codegen_func, &target_reg));
 
     if (source_reg.borrow) {
-        REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
-            &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(source_reg.reg),
-            kefir_codegen_opt_sysv_amd64_reg_allocation_operand(&codegen->xasmgen_helpers.operands[0],
-                                                                &codegen_func->stack_frame_map, source_allocation)));
+        REQUIRE_OK(kefir_codegen_opt_sysv_amd64_load_reg_allocation_into(codegen, &codegen_func->stack_frame_map,
+                                                                         source_allocation, source_reg.reg));
     }
 
     kefir_asm_amd64_xasmgen_register_t target_variant_reg;
@@ -103,7 +101,7 @@ DEFINE_TRANSLATOR(load) {
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
                 &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(target_variant_reg),
                 kefir_asm_amd64_xasmgen_operand_pointer(
-                    &codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_POINTER_WORD,
+                    &codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_POINTER_DWORD,
                     kefir_asm_amd64_xasmgen_operand_indirect(&codegen->xasmgen_helpers.operands[1],
                                                              kefir_asm_amd64_xasmgen_operand_reg(source_reg.reg), 0))));
             break;
@@ -112,7 +110,7 @@ DEFINE_TRANSLATOR(load) {
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
                 &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(target_reg.reg),
                 kefir_asm_amd64_xasmgen_operand_pointer(
-                    &codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_POINTER_WORD,
+                    &codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_POINTER_QWORD,
                     kefir_asm_amd64_xasmgen_operand_indirect(&codegen->xasmgen_helpers.operands[1],
                                                              kefir_asm_amd64_xasmgen_operand_reg(source_reg.reg), 0))));
             break;
@@ -122,11 +120,8 @@ DEFINE_TRANSLATOR(load) {
     }
 
     if (target_reg.borrow) {
-        REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
-            &codegen->xasmgen,
-            kefir_codegen_opt_sysv_amd64_reg_allocation_operand(&codegen->xasmgen_helpers.operands[0],
-                                                                &codegen_func->stack_frame_map, target_allocation),
-            kefir_asm_amd64_xasmgen_operand_reg(target_reg.reg)));
+        REQUIRE_OK(kefir_codegen_opt_sysv_amd64_store_reg_allocation_from(codegen, &codegen_func->stack_frame_map,
+                                                                          target_allocation, target_reg.reg));
     }
 
     REQUIRE_OK(kefir_codegen_opt_sysv_amd64_temporary_register_free(mem, codegen, codegen_func, &target_reg));

@@ -18,17 +18,29 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <assert.h>
-#include <math.h>
-#include "./definitions.h"
+#ifndef DEFINITIONS_H_
+#define DEFINITIONS_H_
 
-int main(void) {
-    for (int x = -100; x <= 100; x++) {
-        for (int y = -100; y <= 100; y++) {
-            assert(add1(x, y) == (x + y + 1));
-        }
-    }
-    return EXIT_SUCCESS;
-}
+typedef unsigned char uchar;
+typedef unsigned short ushort;
+typedef unsigned int uint;
+typedef unsigned long ulong;
+typedef long long llong;
+typedef unsigned long long ullong;
+
+#define NEG_DISCRIMINANT(_a, _b, _c) (0 - ((_b) * (_b) -4u * (_a) * (_c)))
+
+#define DECL_NEG_DISCRIMINANT(_type) extern _type neg_discriminant_##_type(_type, _type, _type);
+
+DECL_NEG_DISCRIMINANT(char)
+DECL_NEG_DISCRIMINANT(uchar)
+DECL_NEG_DISCRIMINANT(short)
+DECL_NEG_DISCRIMINANT(ushort)
+DECL_NEG_DISCRIMINANT(int)
+DECL_NEG_DISCRIMINANT(uint)
+DECL_NEG_DISCRIMINANT(long)
+DECL_NEG_DISCRIMINANT(ulong)
+DECL_NEG_DISCRIMINANT(llong)
+DECL_NEG_DISCRIMINANT(ullong)
+
+#endif

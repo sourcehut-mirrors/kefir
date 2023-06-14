@@ -122,6 +122,7 @@ kefir_result_t kefir_asm_amd64_xasmgen_register32(kefir_asm_amd64_xasmgen_regist
 kefir_result_t kefir_asm_amd64_xasmgen_register64(kefir_asm_amd64_xasmgen_register_t,
                                                   kefir_asm_amd64_xasmgen_register_t *);
 kefir_bool_t kefir_asm_amd64_xasmgen_register_is_floating_point(kefir_asm_amd64_xasmgen_register_t);
+kefir_bool_t kefir_asm_amd64_xasmgen_register_is_wide(kefir_asm_amd64_xasmgen_register_t, kefir_size_t);
 kefir_result_t kefir_asm_amd64_xasmgen_register_widest(kefir_asm_amd64_xasmgen_register_t,
                                                        kefir_asm_amd64_xasmgen_register_t *);
 const char *kefir_asm_amd64_xasmgen_register_symbolic_name(kefir_asm_amd64_xasmgen_register_t);
@@ -222,9 +223,9 @@ typedef struct kefir_amd64_xasmgen {
         kefir_result_t (*mov)(struct kefir_amd64_xasmgen *, const struct kefir_asm_amd64_xasmgen_operand *,
                               const struct kefir_asm_amd64_xasmgen_operand *);
         kefir_result_t (*movsx)(struct kefir_amd64_xasmgen *, const struct kefir_asm_amd64_xasmgen_operand *,
-                              const struct kefir_asm_amd64_xasmgen_operand *);
+                                const struct kefir_asm_amd64_xasmgen_operand *);
         kefir_result_t (*movzx)(struct kefir_amd64_xasmgen *, const struct kefir_asm_amd64_xasmgen_operand *,
-                              const struct kefir_asm_amd64_xasmgen_operand *);
+                                const struct kefir_asm_amd64_xasmgen_operand *);
         kefir_result_t (*movabs)(struct kefir_amd64_xasmgen *, const struct kefir_asm_amd64_xasmgen_operand *,
                                  const struct kefir_asm_amd64_xasmgen_operand *);
         kefir_result_t (* or)(struct kefir_amd64_xasmgen *, const struct kefir_asm_amd64_xasmgen_operand *,
@@ -252,6 +253,8 @@ typedef struct kefir_amd64_xasmgen {
                               const struct kefir_asm_amd64_xasmgen_operand *);
         kefir_result_t (*sub)(struct kefir_amd64_xasmgen *, const struct kefir_asm_amd64_xasmgen_operand *,
                               const struct kefir_asm_amd64_xasmgen_operand *);
+        kefir_result_t (*imul)(struct kefir_amd64_xasmgen *, const struct kefir_asm_amd64_xasmgen_operand *,
+                               const struct kefir_asm_amd64_xasmgen_operand *);
         kefir_result_t (*cld)(struct kefir_amd64_xasmgen *);
         kefir_result_t (*and)(struct kefir_amd64_xasmgen *, const struct kefir_asm_amd64_xasmgen_operand *,
                               const struct kefir_asm_amd64_xasmgen_operand *);
@@ -346,6 +349,7 @@ const struct kefir_asm_amd64_xasmgen_operand *kefir_asm_amd64_xasmgen_operand_st
 #define KEFIR_AMD64_XASMGEN_INSTR_ADD(_xasmgen, _op1, _op2) ((_xasmgen)->instr.add((_xasmgen), (_op1), (_op2)))
 #define KEFIR_AMD64_XASMGEN_INSTR_CMP(_xasmgen, _op1, _op2) ((_xasmgen)->instr.cmp((_xasmgen), (_op1), (_op2)))
 #define KEFIR_AMD64_XASMGEN_INSTR_SUB(_xasmgen, _op1, _op2) ((_xasmgen)->instr.sub((_xasmgen), (_op1), (_op2)))
+#define KEFIR_AMD64_XASMGEN_INSTR_IMUL(_xasmgen, _op1, _op2) ((_xasmgen)->instr.imul((_xasmgen), (_op1), (_op2)))
 #define KEFIR_AMD64_XASMGEN_INSTR_CLD(_xasmgen) ((_xasmgen)->instr.cld((_xasmgen)))
 #define KEFIR_AMD64_XASMGEN_INSTR_AND(_xasmgen, _op1, _op2) ((_xasmgen)->instr.and ((_xasmgen), (_op1), (_op2)))
 #define KEFIR_AMD64_XASMGEN_INSTR_SHL(_xasmgen, _op1, _op2) ((_xasmgen)->instr.shl((_xasmgen), (_op1), (_op2)))

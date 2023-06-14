@@ -18,9 +18,18 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef DEFINITIONS_H_
-#define DEFINITIONS_H_
+#include "./definitions.h"
 
-extern int add1(int, int);
+#define IMPL_NEG_DISCRIMINANT(_type) \
+    _type neg_discriminant_##_type(_type a, _type b, _type c) { return NEG_DISCRIMINANT(a, b, c); }
 
-#endif
+IMPL_NEG_DISCRIMINANT(char)
+IMPL_NEG_DISCRIMINANT(uchar)
+IMPL_NEG_DISCRIMINANT(short)
+IMPL_NEG_DISCRIMINANT(ushort)
+IMPL_NEG_DISCRIMINANT(int)
+IMPL_NEG_DISCRIMINANT(uint)
+IMPL_NEG_DISCRIMINANT(long)
+IMPL_NEG_DISCRIMINANT(ulong)
+IMPL_NEG_DISCRIMINANT(llong)
+IMPL_NEG_DISCRIMINANT(ullong)
