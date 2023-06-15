@@ -270,6 +270,11 @@ typedef struct kefir_amd64_xasmgen {
         kefir_result_t (*test)(struct kefir_amd64_xasmgen *, const struct kefir_asm_amd64_xasmgen_operand *,
                                const struct kefir_asm_amd64_xasmgen_operand *);
         kefir_result_t (*sete)(struct kefir_amd64_xasmgen *, const struct kefir_asm_amd64_xasmgen_operand *);
+        kefir_result_t (*setg)(struct kefir_amd64_xasmgen *, const struct kefir_asm_amd64_xasmgen_operand *);
+        kefir_result_t (*setl)(struct kefir_amd64_xasmgen *, const struct kefir_asm_amd64_xasmgen_operand *);
+        kefir_result_t (*seta)(struct kefir_amd64_xasmgen *, const struct kefir_asm_amd64_xasmgen_operand *);
+        kefir_result_t (*setb)(struct kefir_amd64_xasmgen *, const struct kefir_asm_amd64_xasmgen_operand *);
+        kefir_result_t (*setne)(struct kefir_amd64_xasmgen *, const struct kefir_asm_amd64_xasmgen_operand *);
 
         kefir_result_t (*fstp)(struct kefir_amd64_xasmgen *, const struct kefir_asm_amd64_xasmgen_operand *);
         kefir_result_t (*fld)(struct kefir_amd64_xasmgen *, const struct kefir_asm_amd64_xasmgen_operand *);
@@ -380,6 +385,11 @@ const struct kefir_asm_amd64_xasmgen_operand *kefir_asm_amd64_xasmgen_operand_st
 #define KEFIR_AMD64_XASMGEN_INSTR_CLD(_xasmgen) ((_xasmgen)->instr.cld((_xasmgen)))
 #define KEFIR_AMD64_XASMGEN_INSTR_TEST(_xasmgen, _op1, _op2) ((_xasmgen)->instr.test((_xasmgen), (_op1), (_op2)))
 #define KEFIR_AMD64_XASMGEN_INSTR_SETE(_xasmgen, _op1) ((_xasmgen)->instr.sete((_xasmgen), (_op1)))
+#define KEFIR_AMD64_XASMGEN_INSTR_SETG(_xasmgen, _op1) ((_xasmgen)->instr.setg((_xasmgen), (_op1)))
+#define KEFIR_AMD64_XASMGEN_INSTR_SETL(_xasmgen, _op1) ((_xasmgen)->instr.setl((_xasmgen), (_op1)))
+#define KEFIR_AMD64_XASMGEN_INSTR_SETA(_xasmgen, _op1) ((_xasmgen)->instr.seta((_xasmgen), (_op1)))
+#define KEFIR_AMD64_XASMGEN_INSTR_SETB(_xasmgen, _op1) ((_xasmgen)->instr.setb((_xasmgen), (_op1)))
+#define KEFIR_AMD64_XASMGEN_INSTR_SETNE(_xasmgen, _op1) ((_xasmgen)->instr.setne((_xasmgen), (_op1)))
 
 #define KEFIR_AMD64_XASMGEN_INSTR_FSTCW(_xasmgen, _op1) ((_xasmgen)->instr.fstcw((_xasmgen), (_op1)))
 #define KEFIR_AMD64_XASMGEN_INSTR_FLDCW(_xasmgen, _op1) ((_xasmgen)->instr.fldcw((_xasmgen), (_op1)))

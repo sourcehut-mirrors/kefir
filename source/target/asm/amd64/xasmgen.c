@@ -1573,6 +1573,11 @@ INSTR2(add)
 INSTR2(cmp)
 INSTR2(test)
 INSTR1(sete)
+INSTR1(setg)
+INSTR1(setl)
+INSTR1(seta)
+INSTR1(setb)
+INSTR1(setne)
 INSTR2(sub)
 INSTR2(imul)
 INSTR1(idiv)
@@ -1665,6 +1670,11 @@ kefir_result_t kefir_asm_amd64_xasmgen_init(struct kefir_mem *mem, struct kefir_
         xasmgen->instr.cmp = amd64_instr_intel_cmp;
         xasmgen->instr.test = amd64_instr_intel_test;
         xasmgen->instr.sete = amd64_instr_intel_sete;
+        xasmgen->instr.setg = amd64_instr_intel_setg;
+        xasmgen->instr.setl = amd64_instr_intel_setl;
+        xasmgen->instr.seta = amd64_instr_intel_seta;
+        xasmgen->instr.setb = amd64_instr_intel_setb;
+        xasmgen->instr.setne = amd64_instr_intel_setne;
         xasmgen->instr.fld = amd64_instr_intel_fld;
         xasmgen->instr.fstcw = amd64_instr_intel_fstcw;
         xasmgen->instr.fldcw = amd64_instr_intel_fldcw;
@@ -1708,6 +1718,11 @@ kefir_result_t kefir_asm_amd64_xasmgen_init(struct kefir_mem *mem, struct kefir_
         xasmgen->instr.cmp = amd64_instr_att_cmp;
         xasmgen->instr.test = amd64_instr_att_test;
         xasmgen->instr.sete = amd64_instr_att_sete;
+        xasmgen->instr.setg = amd64_instr_att_setg;
+        xasmgen->instr.setl = amd64_instr_att_setl;
+        xasmgen->instr.seta = amd64_instr_att_seta;
+        xasmgen->instr.setb = amd64_instr_att_setb;
+        xasmgen->instr.setne = amd64_instr_att_setne;
         xasmgen->instr.fld = amd64_instr_att_fld;
         xasmgen->instr.fstcw = amd64_instr_att_fstcw;
         xasmgen->instr.fldcw = amd64_instr_att_fldcw;

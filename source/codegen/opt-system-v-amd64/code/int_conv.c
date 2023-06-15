@@ -22,7 +22,7 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
-DEFINE_TRANSLATOR(int_extend) {
+DEFINE_TRANSLATOR(int_conv) {
     DEFINE_TRANSLATOR_PROLOGUE;
 
     struct kefir_opt_instruction *instr = NULL;
@@ -50,6 +50,18 @@ DEFINE_TRANSLATOR(int_extend) {
 
     kefir_asm_amd64_xasmgen_register_t source_variant_reg, target_variant_reg;
     switch (instr->operation.opcode) {
+        case KEFIR_OPT_OPCODE_INT64_TRUNCATE_1BIT:
+            REQUIRE_OK(kefir_asm_amd64_xasmgen_register8(target_reg.reg, &target_variant_reg));
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_TEST(&codegen->xasmgen,
+                                                      kefir_asm_amd64_xasmgen_operand_reg(target_reg.reg),
+                                                      kefir_asm_amd64_xasmgen_operand_reg(source_reg.reg)));
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_SETNE(&codegen->xasmgen,
+                                                       kefir_asm_amd64_xasmgen_operand_reg(target_variant_reg)));
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOVZX(&codegen->xasmgen,
+                                                       kefir_asm_amd64_xasmgen_operand_reg(target_reg.reg),
+                                                       kefir_asm_amd64_xasmgen_operand_reg(target_variant_reg)));
+            break;
+
         case KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_8BITS:
             REQUIRE_OK(kefir_asm_amd64_xasmgen_register8(source_reg.reg, &source_variant_reg));
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOVSX(&codegen->xasmgen,

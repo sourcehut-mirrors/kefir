@@ -413,6 +413,8 @@ static kefir_result_t translate_instr(struct kefir_mem *mem, struct kefir_codege
         case KEFIR_OPT_OPCODE_INT_AND:
         case KEFIR_OPT_OPCODE_INT_OR:
         case KEFIR_OPT_OPCODE_INT_XOR:
+        case KEFIR_OPT_OPCODE_BOOL_AND:
+        case KEFIR_OPT_OPCODE_BOOL_OR:
             REQUIRE_OK(INVOKE_TRANSLATOR(binary_op));
             break;
 
@@ -434,13 +436,22 @@ static kefir_result_t translate_instr(struct kefir_mem *mem, struct kefir_codege
             REQUIRE_OK(INVOKE_TRANSLATOR(unary_op));
             break;
 
+        case KEFIR_OPT_OPCODE_INT64_TRUNCATE_1BIT:
         case KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_8BITS:
         case KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_16BITS:
         case KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_32BITS:
         case KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_8BITS:
         case KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_16BITS:
         case KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_32BITS:
-            REQUIRE_OK(INVOKE_TRANSLATOR(int_extend));
+            REQUIRE_OK(INVOKE_TRANSLATOR(int_conv));
+            break;
+
+        case KEFIR_OPT_OPCODE_INT_EQUALS:
+        case KEFIR_OPT_OPCODE_INT_GREATER:
+        case KEFIR_OPT_OPCODE_INT_LESSER:
+        case KEFIR_OPT_OPCODE_INT_ABOVE:
+        case KEFIR_OPT_OPCODE_INT_BELOW:
+            REQUIRE_OK(INVOKE_TRANSLATOR(comparison));
             break;
 
         case KEFIR_OPT_OPCODE_RETURN:
@@ -448,6 +459,7 @@ static kefir_result_t translate_instr(struct kefir_mem *mem, struct kefir_codege
             break;
 
         default:
+            break;
             return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED,
                                    "Code generation for provided optimizer opcode is not implemented yet");
     }
