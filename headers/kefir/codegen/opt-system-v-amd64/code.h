@@ -40,6 +40,11 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_temporary_general_purpose_register_o
     const struct kefir_codegen_opt_sysv_amd64_register_allocation *, struct kefir_opt_sysv_amd64_function *,
     struct kefir_codegen_opt_sysv_amd64_translate_temporary_register *);
 
+kefir_result_t kefir_codegen_opt_sysv_amd64_temporary_general_purpose_register_obtain_specific(
+    struct kefir_mem *, struct kefir_codegen_opt_amd64 *,
+    const struct kefir_codegen_opt_sysv_amd64_register_allocation *, kefir_asm_amd64_xasmgen_register_t,
+    struct kefir_opt_sysv_amd64_function *, struct kefir_codegen_opt_sysv_amd64_translate_temporary_register *);
+
 kefir_result_t kefir_codegen_opt_sysv_amd64_temporary_register_free(
     struct kefir_mem *, struct kefir_codegen_opt_amd64 *, struct kefir_opt_sysv_amd64_function *,
     const struct kefir_codegen_opt_sysv_amd64_translate_temporary_register *);
@@ -68,6 +73,8 @@ DECLARE_TRANSLATOR(get_local);
 DECLARE_TRANSLATOR(load);
 DECLARE_TRANSLATOR(store);
 DECLARE_TRANSLATOR(binary_op);
+DECLARE_TRANSLATOR(div_mod);
+DECLARE_TRANSLATOR(bitshift);
 DECLARE_TRANSLATOR(int_extend);
 DECLARE_TRANSLATOR(return);
 #undef DECLARE

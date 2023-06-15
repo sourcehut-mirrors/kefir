@@ -25,27 +25,54 @@
 #include "./definitions.h"
 
 int main(void) {
-#define BEGIN -25
-#define END 25
-    for (int a = BEGIN; a <= END; a++) {
-        for (int b = BEGIN; b <= END; b++) {
-            for (int c = BEGIN; c <= END; c++) {
-#define ASSERT_TYPE(_type, a, b, c)                                     \
-    assert(neg_discriminant_##_type((_type) a, (_type) b, (_type) c) == \
-           (_type) NEG_DISCRIMINANT((_type) a, (_type) b, (_type) c))
+#define BEGIN -300
+#define END 300
+    for (int i = BEGIN; i <= END; i++) {
+        for (int j = BEGIN; j <= END; j++) {
+#define ASSERT_OP(_id, _type, _op, _x, _y) \
+    assert(op_##_id##_##_type((_type) (_x), (_type) (_y)) == (_type) OP_##_op((_type) (_x), (_type) (_y)))
+#define ASSERT_OPS_SIGNED(_id, _op, _x, _y) \
+    ASSERT_OP(_id, char, _op, _x, _y);      \
+    ASSERT_OP(_id, short, _op, _x, _y);     \
+    ASSERT_OP(_id, int, _op, _x, _y);       \
+    ASSERT_OP(_id, long, _op, _x, _y);      \
+    ASSERT_OP(_id, llong, _op, _x, _y)
+#define ASSERT_OPS_UNSIGNED(_id, _op, _x, _y) \
+    ASSERT_OP(_id, uchar, _op, _x, _y);       \
+    ASSERT_OP(_id, ushort, _op, _x, _y);      \
+    ASSERT_OP(_id, uint, _op, _x, _y);        \
+    ASSERT_OP(_id, ulong, _op, _x, _y);       \
+    ASSERT_OP(_id, ullong, _op, _x, _y)
+#define ASSERT_OPS(_id, _op, _x, _y)     \
+    ASSERT_OPS_SIGNED(_id, _op, _x, _y); \
+    ASSERT_OPS_UNSIGNED(_id, _op, _x, _y)
 
-                ASSERT_TYPE(char, a, b, c);
-                ASSERT_TYPE(uchar, a, b, c);
-                ASSERT_TYPE(short, a, b, c);
-                ASSERT_TYPE(ushort, (a + (-BEGIN)), (b + (-BEGIN)), (c + (-BEGIN)));
-                ASSERT_TYPE(int, a, b, c);
-                ASSERT_TYPE(uint, (a + (-BEGIN)), (b + (-BEGIN)), (c + (-BEGIN)));
-                ASSERT_TYPE(long, a, b, c);
-                ASSERT_TYPE(ulong, (a + (-BEGIN)), (b + (-BEGIN)), (c + (-BEGIN)));
-                ASSERT_TYPE(llong, a, b, c);
-                ASSERT_TYPE(ullong, (a + (-BEGIN)), (b + (-BEGIN)), (c + (-BEGIN)));
-                ASSERT_TYPE(llong, a * -100, b * 250, c * 10000);
-                ASSERT_TYPE(ullong, a + 0xbadcafe, (b + (-BEGIN)) * 250, (c + (-BEGIN)) * 0xfefec);
+#define ASSERTS(_a, _b)                        \
+    ASSERT_OPS(add, ADD, _a, _b);              \
+    ASSERT_OPS(sub, SUB, _a, _b);              \
+    ASSERT_OPS_SIGNED(mul, MUL, _a, _b);       \
+    if ((_a) >= 0 && (_b) >= 0) {              \
+        ASSERT_OPS_UNSIGNED(mul, MUL, _a, _b); \
+    }                                          \
+    if (((_b) % 256) != 0) {                   \
+        ASSERT_OPS_SIGNED(div, DIV, _a, _b);   \
+        ASSERT_OPS_UNSIGNED(div, DIV, _a, _b); \
+        ASSERT_OPS_SIGNED(mod, MOD, _a, _b);   \
+        ASSERT_OPS_UNSIGNED(mod, MOD, _a, _b); \
+    }                                          \
+    ASSERT_OPS(and, AND, _a, _b);              \
+    ASSERT_OPS(or, OR, _a, _b);                \
+    ASSERT_OPS(xor, XOR, _a, _b);              \
+    if ((_b) >= 0) {                           \
+        ASSERT_OPS(shr, SHR, _a, (_b) & (31)); \
+    }
+
+            ASSERTS(i, j);
+            ASSERTS(i * 100, j * 100);
+            ASSERTS(i - 10000, j + 500);
+
+            if (i >= 0 && (char) i >= 0 && j >= 0) {
+                ASSERT_OPS(shl, SHL, i, j % 20);
             }
         }
     }

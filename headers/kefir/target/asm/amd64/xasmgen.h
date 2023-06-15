@@ -255,12 +255,19 @@ typedef struct kefir_amd64_xasmgen {
                               const struct kefir_asm_amd64_xasmgen_operand *);
         kefir_result_t (*imul)(struct kefir_amd64_xasmgen *, const struct kefir_asm_amd64_xasmgen_operand *,
                                const struct kefir_asm_amd64_xasmgen_operand *);
+        kefir_result_t (*idiv)(struct kefir_amd64_xasmgen *, const struct kefir_asm_amd64_xasmgen_operand *);
+        kefir_result_t (*div)(struct kefir_amd64_xasmgen *, const struct kefir_asm_amd64_xasmgen_operand *);
+        kefir_result_t (*xor)(struct kefir_amd64_xasmgen *, const struct kefir_asm_amd64_xasmgen_operand *,
+                              const struct kefir_asm_amd64_xasmgen_operand *);
+        kefir_result_t (*cqo)(struct kefir_amd64_xasmgen *);
         kefir_result_t (*cld)(struct kefir_amd64_xasmgen *);
         kefir_result_t (*and)(struct kefir_amd64_xasmgen *, const struct kefir_asm_amd64_xasmgen_operand *,
                               const struct kefir_asm_amd64_xasmgen_operand *);
         kefir_result_t (*shl)(struct kefir_amd64_xasmgen *, const struct kefir_asm_amd64_xasmgen_operand *,
                               const struct kefir_asm_amd64_xasmgen_operand *);
         kefir_result_t (*shr)(struct kefir_amd64_xasmgen *, const struct kefir_asm_amd64_xasmgen_operand *,
+                              const struct kefir_asm_amd64_xasmgen_operand *);
+        kefir_result_t (*sar)(struct kefir_amd64_xasmgen *, const struct kefir_asm_amd64_xasmgen_operand *,
                               const struct kefir_asm_amd64_xasmgen_operand *);
         kefir_result_t (*movd)(struct kefir_amd64_xasmgen *, const struct kefir_asm_amd64_xasmgen_operand *,
                                const struct kefir_asm_amd64_xasmgen_operand *);
@@ -350,10 +357,15 @@ const struct kefir_asm_amd64_xasmgen_operand *kefir_asm_amd64_xasmgen_operand_st
 #define KEFIR_AMD64_XASMGEN_INSTR_CMP(_xasmgen, _op1, _op2) ((_xasmgen)->instr.cmp((_xasmgen), (_op1), (_op2)))
 #define KEFIR_AMD64_XASMGEN_INSTR_SUB(_xasmgen, _op1, _op2) ((_xasmgen)->instr.sub((_xasmgen), (_op1), (_op2)))
 #define KEFIR_AMD64_XASMGEN_INSTR_IMUL(_xasmgen, _op1, _op2) ((_xasmgen)->instr.imul((_xasmgen), (_op1), (_op2)))
+#define KEFIR_AMD64_XASMGEN_INSTR_IDIV(_xasmgen, _op1) ((_xasmgen)->instr.idiv((_xasmgen), (_op1)))
+#define KEFIR_AMD64_XASMGEN_INSTR_DIV(_xasmgen, _op1) ((_xasmgen)->instr.div((_xasmgen), (_op1)))
+#define KEFIR_AMD64_XASMGEN_INSTR_XOR(_xasmgen, _op1, _op2) ((_xasmgen)->instr.xor ((_xasmgen), (_op1), (_op2)))
+#define KEFIR_AMD64_XASMGEN_INSTR_CQO(_xasmgen) ((_xasmgen)->instr.cqo((_xasmgen)))
 #define KEFIR_AMD64_XASMGEN_INSTR_CLD(_xasmgen) ((_xasmgen)->instr.cld((_xasmgen)))
 #define KEFIR_AMD64_XASMGEN_INSTR_AND(_xasmgen, _op1, _op2) ((_xasmgen)->instr.and ((_xasmgen), (_op1), (_op2)))
 #define KEFIR_AMD64_XASMGEN_INSTR_SHL(_xasmgen, _op1, _op2) ((_xasmgen)->instr.shl((_xasmgen), (_op1), (_op2)))
 #define KEFIR_AMD64_XASMGEN_INSTR_SHR(_xasmgen, _op1, _op2) ((_xasmgen)->instr.shr((_xasmgen), (_op1), (_op2)))
+#define KEFIR_AMD64_XASMGEN_INSTR_SAR(_xasmgen, _op1, _op2) ((_xasmgen)->instr.sar((_xasmgen), (_op1), (_op2)))
 #define KEFIR_AMD64_XASMGEN_INSTR_MOVD(_xasmgen, _op1, _op2) ((_xasmgen)->instr.movd((_xasmgen), (_op1), (_op2)))
 #define KEFIR_AMD64_XASMGEN_INSTR_FSTP(_xasmgen, _op1) ((_xasmgen)->instr.fstp((_xasmgen), (_op1)))
 #define KEFIR_AMD64_XASMGEN_INSTR_FLD(_xasmgen, _op1) ((_xasmgen)->instr.fld((_xasmgen), (_op1)))

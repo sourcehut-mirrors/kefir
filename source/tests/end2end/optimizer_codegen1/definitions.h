@@ -28,19 +28,40 @@ typedef unsigned long ulong;
 typedef long long llong;
 typedef unsigned long long ullong;
 
-#define NEG_DISCRIMINANT(_a, _b, _c) (0 - ((_b) * (_b) -4u * (_a) * (_c)))
+#define OP_ADD(x, y) ((x) + (y))
+#define OP_SUB(x, y) ((x) - (y))
+#define OP_MUL(x, y) ((x) * (y))
+#define OP_DIV(x, y) ((x) / (y))
+#define OP_MOD(x, y) ((x) % (y))
+#define OP_AND(x, y) ((x) & (y))
+#define OP_OR(x, y) ((x) | (y))
+#define OP_XOR(x, y) ((x) ^ (y))
+#define OP_SHL(x, y) ((x) << (y))
+#define OP_SHR(x, y) ((x) >> (y))
 
-#define DECL_NEG_DISCRIMINANT(_type) extern _type neg_discriminant_##_type(_type, _type, _type);
+#define DECL_BIN_FN(_id, _type) _type op_##_id##_##_type(_type, _type)
 
-DECL_NEG_DISCRIMINANT(char)
-DECL_NEG_DISCRIMINANT(uchar)
-DECL_NEG_DISCRIMINANT(short)
-DECL_NEG_DISCRIMINANT(ushort)
-DECL_NEG_DISCRIMINANT(int)
-DECL_NEG_DISCRIMINANT(uint)
-DECL_NEG_DISCRIMINANT(long)
-DECL_NEG_DISCRIMINANT(ulong)
-DECL_NEG_DISCRIMINANT(llong)
-DECL_NEG_DISCRIMINANT(ullong)
+#define DECL_BIN_FNS(_id)     \
+    DECL_BIN_FN(_id, char);   \
+    DECL_BIN_FN(_id, uchar);  \
+    DECL_BIN_FN(_id, short);  \
+    DECL_BIN_FN(_id, ushort); \
+    DECL_BIN_FN(_id, int);    \
+    DECL_BIN_FN(_id, uint);   \
+    DECL_BIN_FN(_id, long);   \
+    DECL_BIN_FN(_id, ulong);  \
+    DECL_BIN_FN(_id, llong);  \
+    DECL_BIN_FN(_id, ullong)
+
+DECL_BIN_FNS(add);
+DECL_BIN_FNS(sub);
+DECL_BIN_FNS(mul);
+DECL_BIN_FNS(div);
+DECL_BIN_FNS(mod);
+DECL_BIN_FNS(and);
+DECL_BIN_FNS(or);
+DECL_BIN_FNS(xor);
+DECL_BIN_FNS(shl);
+DECL_BIN_FNS(shr);
 
 #endif

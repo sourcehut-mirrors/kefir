@@ -22,7 +22,7 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
-DEFINE_TRANSLATOR(binary_op) {
+DEFINE_TRANSLATOR(div_mod) {
     DEFINE_TRANSLATOR_PROLOGUE;
 
     struct kefir_opt_instruction *instr = NULL;
@@ -39,98 +39,106 @@ DEFINE_TRANSLATOR(binary_op) {
     REQUIRE_OK(kefir_codegen_opt_sysv_amd64_register_allocation_of(
         &codegen_func->register_allocator, instr->operation.parameters.refs[1], &arg2_allocation));
 
-    struct kefir_codegen_opt_sysv_amd64_translate_temporary_register result_reg;
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_temporary_general_purpose_register_obtain(mem, codegen, reg_allocation,
-                                                                                      codegen_func, &result_reg));
+    struct kefir_codegen_opt_sysv_amd64_translate_temporary_register quotient_reg;
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_temporary_general_purpose_register_obtain_specific(
+        mem, codegen, reg_allocation, KEFIR_AMD64_XASMGEN_REGISTER_RAX, codegen_func, &quotient_reg));
+
+    struct kefir_codegen_opt_sysv_amd64_translate_temporary_register remainder_reg;
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_temporary_general_purpose_register_obtain_specific(
+        mem, codegen, reg_allocation, KEFIR_AMD64_XASMGEN_REGISTER_RDX, codegen_func, &remainder_reg));
 
     if (arg1_allocation->result.type != KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_GENERAL_PURPOSE_REGISTER ||
-        arg1_allocation->result.reg != result_reg.reg) {
+        arg1_allocation->result.reg != quotient_reg.reg) {
         REQUIRE_OK(kefir_codegen_opt_sysv_amd64_load_reg_allocation_into(codegen, &codegen_func->stack_frame_map,
-                                                                         arg1_allocation, result_reg.reg));
+                                                                         arg1_allocation, quotient_reg.reg));
     }
 
     switch (instr->operation.opcode) {
-        case KEFIR_OPT_OPCODE_INT_ADD:
-            REQUIRE(arg2_allocation->result.type !=
-                        KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_FLOATING_POINT_REGISTER,
-                    KEFIR_SET_ERROR(
-                        KEFIR_INVALID_STATE,
-                        "Expected non-floating-point allocation for the second argument of integral add operation"));
-            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_ADD(
-                &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_reg.reg),
-                kefir_codegen_opt_sysv_amd64_reg_allocation_operand(&codegen->xasmgen_helpers.operands[0],
-                                                                    &codegen_func->stack_frame_map, arg2_allocation)));
-            break;
-
-        case KEFIR_OPT_OPCODE_INT_SUB:
+        case KEFIR_OPT_OPCODE_INT_DIV: {
             REQUIRE(arg2_allocation->result.type !=
                         KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_FLOATING_POINT_REGISTER,
                     KEFIR_SET_ERROR(
                         KEFIR_INVALID_STATE,
                         "Expected non-floating-point allocation for the second argument of integral operation"));
-            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_SUB(
-                &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_reg.reg),
+
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_CQO(&codegen->xasmgen));
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_IDIV(
+                &codegen->xasmgen,
                 kefir_codegen_opt_sysv_amd64_reg_allocation_operand(&codegen->xasmgen_helpers.operands[0],
                                                                     &codegen_func->stack_frame_map, arg2_allocation)));
-            break;
 
-        case KEFIR_OPT_OPCODE_INT_MUL:
+            if (quotient_reg.borrow) {
+                REQUIRE_OK(kefir_codegen_opt_sysv_amd64_store_reg_allocation_from(
+                    codegen, &codegen_func->stack_frame_map, reg_allocation, quotient_reg.reg));
+            }
+        } break;
+
+        case KEFIR_OPT_OPCODE_UINT_DIV: {
             REQUIRE(arg2_allocation->result.type !=
                         KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_FLOATING_POINT_REGISTER,
                     KEFIR_SET_ERROR(
                         KEFIR_INVALID_STATE,
                         "Expected non-floating-point allocation for the second argument of integral operation"));
-            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_IMUL(
-                &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_reg.reg),
+
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_XOR(&codegen->xasmgen,
+                                                     kefir_asm_amd64_xasmgen_operand_reg(remainder_reg.reg),
+                                                     kefir_asm_amd64_xasmgen_operand_reg(remainder_reg.reg)));
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_DIV(
+                &codegen->xasmgen,
                 kefir_codegen_opt_sysv_amd64_reg_allocation_operand(&codegen->xasmgen_helpers.operands[0],
                                                                     &codegen_func->stack_frame_map, arg2_allocation)));
-            break;
 
-        case KEFIR_OPT_OPCODE_INT_AND:
+            if (quotient_reg.borrow) {
+                REQUIRE_OK(kefir_codegen_opt_sysv_amd64_store_reg_allocation_from(
+                    codegen, &codegen_func->stack_frame_map, reg_allocation, quotient_reg.reg));
+            }
+        } break;
+
+        case KEFIR_OPT_OPCODE_INT_MOD: {
             REQUIRE(arg2_allocation->result.type !=
                         KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_FLOATING_POINT_REGISTER,
                     KEFIR_SET_ERROR(
                         KEFIR_INVALID_STATE,
                         "Expected non-floating-point allocation for the second argument of integral operation"));
-            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_AND(
-                &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_reg.reg),
+
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_CQO(&codegen->xasmgen));
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_IDIV(
+                &codegen->xasmgen,
                 kefir_codegen_opt_sysv_amd64_reg_allocation_operand(&codegen->xasmgen_helpers.operands[0],
                                                                     &codegen_func->stack_frame_map, arg2_allocation)));
-            break;
 
-        case KEFIR_OPT_OPCODE_INT_OR:
+            if (remainder_reg.borrow) {
+                REQUIRE_OK(kefir_codegen_opt_sysv_amd64_store_reg_allocation_from(
+                    codegen, &codegen_func->stack_frame_map, reg_allocation, remainder_reg.reg));
+            }
+        } break;
+
+        case KEFIR_OPT_OPCODE_UINT_MOD: {
             REQUIRE(arg2_allocation->result.type !=
                         KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_FLOATING_POINT_REGISTER,
                     KEFIR_SET_ERROR(
                         KEFIR_INVALID_STATE,
                         "Expected non-floating-point allocation for the second argument of integral operation"));
-            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_OR(
-                &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_reg.reg),
-                kefir_codegen_opt_sysv_amd64_reg_allocation_operand(&codegen->xasmgen_helpers.operands[0],
-                                                                    &codegen_func->stack_frame_map, arg2_allocation)));
-            break;
 
-        case KEFIR_OPT_OPCODE_INT_XOR:
-            REQUIRE(arg2_allocation->result.type !=
-                        KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_FLOATING_POINT_REGISTER,
-                    KEFIR_SET_ERROR(
-                        KEFIR_INVALID_STATE,
-                        "Expected non-floating-point allocation for the second argument of integral operation"));
-            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_XOR(
-                &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_reg.reg),
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_XOR(&codegen->xasmgen,
+                                                     kefir_asm_amd64_xasmgen_operand_reg(remainder_reg.reg),
+                                                     kefir_asm_amd64_xasmgen_operand_reg(remainder_reg.reg)));
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_DIV(
+                &codegen->xasmgen,
                 kefir_codegen_opt_sysv_amd64_reg_allocation_operand(&codegen->xasmgen_helpers.operands[0],
                                                                     &codegen_func->stack_frame_map, arg2_allocation)));
-            break;
+
+            if (remainder_reg.borrow) {
+                REQUIRE_OK(kefir_codegen_opt_sysv_amd64_store_reg_allocation_from(
+                    codegen, &codegen_func->stack_frame_map, reg_allocation, remainder_reg.reg));
+            }
+        } break;
 
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected optimizer instruction opcode");
     }
 
-    if (result_reg.borrow) {
-        REQUIRE_OK(kefir_codegen_opt_sysv_amd64_store_reg_allocation_from(codegen, &codegen_func->stack_frame_map,
-                                                                          reg_allocation, result_reg.reg));
-    }
-
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_temporary_register_free(mem, codegen, codegen_func, &result_reg));
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_temporary_register_free(mem, codegen, codegen_func, &remainder_reg));
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_temporary_register_free(mem, codegen, codegen_func, &quotient_reg));
     return KEFIR_OK;
 }

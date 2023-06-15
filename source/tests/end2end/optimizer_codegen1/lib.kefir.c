@@ -20,16 +20,28 @@
 
 #include "./definitions.h"
 
-#define IMPL_NEG_DISCRIMINANT(_type) \
-    _type neg_discriminant_##_type(_type a, _type b, _type c) { return NEG_DISCRIMINANT(a, b, c); }
+#define DEFINE_BIN_FN(_id, _type, _op) \
+    _type op_##_id##_##_type(_type x, _type y) { return OP_##_op(x, y); }
 
-IMPL_NEG_DISCRIMINANT(char)
-IMPL_NEG_DISCRIMINANT(uchar)
-IMPL_NEG_DISCRIMINANT(short)
-IMPL_NEG_DISCRIMINANT(ushort)
-IMPL_NEG_DISCRIMINANT(int)
-IMPL_NEG_DISCRIMINANT(uint)
-IMPL_NEG_DISCRIMINANT(long)
-IMPL_NEG_DISCRIMINANT(ulong)
-IMPL_NEG_DISCRIMINANT(llong)
-IMPL_NEG_DISCRIMINANT(ullong)
+#define DEFINE_BIN_FNS(_id, _op)    \
+    DEFINE_BIN_FN(_id, char, _op)   \
+    DEFINE_BIN_FN(_id, uchar, _op)  \
+    DEFINE_BIN_FN(_id, short, _op)  \
+    DEFINE_BIN_FN(_id, ushort, _op) \
+    DEFINE_BIN_FN(_id, int, _op)    \
+    DEFINE_BIN_FN(_id, uint, _op)   \
+    DEFINE_BIN_FN(_id, long, _op)   \
+    DEFINE_BIN_FN(_id, ulong, _op)  \
+    DEFINE_BIN_FN(_id, llong, _op)  \
+    DEFINE_BIN_FN(_id, ullong, _op)
+
+DEFINE_BIN_FNS(add, ADD)
+DEFINE_BIN_FNS(sub, SUB)
+DEFINE_BIN_FNS(mul, MUL)
+DEFINE_BIN_FNS(div, DIV)
+DEFINE_BIN_FNS(mod, MOD)
+DEFINE_BIN_FNS(and, AND)
+DEFINE_BIN_FNS(or, OR)
+DEFINE_BIN_FNS(xor, XOR)
+DEFINE_BIN_FNS(shl, SHL)
+DEFINE_BIN_FNS(shr, SHR)
