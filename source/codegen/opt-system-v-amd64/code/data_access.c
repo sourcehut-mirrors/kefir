@@ -22,7 +22,7 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
-DEFINE_TRANSLATOR(get_local) {
+DEFINE_TRANSLATOR(data_access) {
     DEFINE_TRANSLATOR_PROLOGUE;
 
     struct kefir_opt_instruction *instr = NULL;
@@ -32,20 +32,43 @@ DEFINE_TRANSLATOR(get_local) {
     REQUIRE_OK(kefir_codegen_opt_sysv_amd64_register_allocation_of(&codegen_func->register_allocator, instr_ref,
                                                                    &reg_allocation));
 
-    const struct kefir_abi_sysv_amd64_typeentry_layout *entry = NULL;
-    REQUIRE_OK(
-        kefir_abi_sysv_amd64_type_layout_at(&codegen_func->locals_layout, instr->operation.parameters.index, &entry));
-
     struct kefir_codegen_opt_sysv_amd64_translate_temporary_register tmp_reg;
     REQUIRE_OK(kefir_codegen_opt_sysv_amd64_temporary_general_purpose_register_obtain(
         mem, codegen, reg_allocation, codegen_func, &tmp_reg, NULL, NULL));
 
-    REQUIRE_OK(
-        KEFIR_AMD64_XASMGEN_INSTR_LEA(&codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(tmp_reg.reg),
-                                      kefir_asm_amd64_xasmgen_operand_indirect(
-                                          &codegen->xasmgen_helpers.operands[0],
-                                          kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
-                                          codegen_func->stack_frame_map.offset.local_area + entry->relative_offset)));
+    switch (instr->operation.opcode) {
+        case KEFIR_OPT_OPCODE_GET_LOCAL: {
+            const struct kefir_abi_sysv_amd64_typeentry_layout *entry = NULL;
+            REQUIRE_OK(kefir_abi_sysv_amd64_type_layout_at(&codegen_func->locals_layout,
+                                                           instr->operation.parameters.index, &entry));
+
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_LEA(
+                &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(tmp_reg.reg),
+                kefir_asm_amd64_xasmgen_operand_indirect(
+                    &codegen->xasmgen_helpers.operands[0],
+                    kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
+                    codegen_func->stack_frame_map.offset.local_area + entry->relative_offset)));
+        } break;
+
+        case KEFIR_OPT_OPCODE_GET_GLOBAL: {
+            const char *symbol =
+                kefir_ir_module_get_named_symbol(module->ir_module, instr->operation.parameters.ir_ref);
+            REQUIRE(symbol != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to find named IR symbol"));
+
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_LEA(
+                &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(tmp_reg.reg),
+                kefir_asm_amd64_xasmgen_operand_indirect(
+                    &codegen->xasmgen_helpers.operands[0],
+                    kefir_asm_amd64_xasmgen_operand_label(
+                        &codegen->xasmgen_helpers.operands[1],
+                        kefir_asm_amd64_xasmgen_helpers_format(&codegen->xasmgen_helpers, "%s", symbol)),
+                    0)));
+        } break;
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected optimizer instruction opcode");
+    }
+
     if (tmp_reg.borrow) {
         REQUIRE_OK(kefir_codegen_opt_sysv_amd64_store_reg_allocation_from(codegen, &codegen_func->stack_frame_map,
                                                                           reg_allocation, tmp_reg.reg));

@@ -382,7 +382,8 @@ static kefir_result_t translate_instr(struct kefir_mem *mem, struct kefir_codege
             break;
 
         case KEFIR_OPT_OPCODE_GET_LOCAL:
-            REQUIRE_OK(INVOKE_TRANSLATOR(get_local));
+        case KEFIR_OPT_OPCODE_GET_GLOBAL:
+            REQUIRE_OK(INVOKE_TRANSLATOR(data_access));
             break;
 
         case KEFIR_OPT_OPCODE_INT8_STORE:
@@ -404,6 +405,7 @@ static kefir_result_t translate_instr(struct kefir_mem *mem, struct kefir_codege
 
         case KEFIR_OPT_OPCODE_INT_CONST:
         case KEFIR_OPT_OPCODE_UINT_CONST:
+        case KEFIR_OPT_OPCODE_STRING_REF:
             REQUIRE_OK(INVOKE_TRANSLATOR(constant));
             break;
 
@@ -459,7 +461,6 @@ static kefir_result_t translate_instr(struct kefir_mem *mem, struct kefir_codege
             break;
 
         default:
-            break;
             return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED,
                                    "Code generation for provided optimizer opcode is not implemented yet");
     }

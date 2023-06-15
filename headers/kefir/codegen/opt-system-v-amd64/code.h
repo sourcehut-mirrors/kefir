@@ -70,7 +70,7 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_store_reg_allocation_from(
 
 DECLARE_TRANSLATOR(constant);
 DECLARE_TRANSLATOR(get_argument);
-DECLARE_TRANSLATOR(get_local);
+DECLARE_TRANSLATOR(data_access);
 DECLARE_TRANSLATOR(load);
 DECLARE_TRANSLATOR(store);
 DECLARE_TRANSLATOR(binary_op);
