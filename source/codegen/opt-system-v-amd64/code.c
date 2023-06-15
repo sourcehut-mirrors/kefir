@@ -28,7 +28,9 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_temporary_general_purpose_register_o
     struct kefir_mem *mem, struct kefir_codegen_opt_amd64 *codegen,
     const struct kefir_codegen_opt_sysv_amd64_register_allocation *reg_allocation,
     struct kefir_opt_sysv_amd64_function *codegen_func,
-    struct kefir_codegen_opt_sysv_amd64_translate_temporary_register *tmp_reg) {
+    struct kefir_codegen_opt_sysv_amd64_translate_temporary_register *tmp_reg,
+    kefir_result_t (*filter_callback)(kefir_asm_amd64_xasmgen_register_t, kefir_bool_t *, void *),
+    void *filter_payload) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(codegen != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 System-V optimizer codegen"));
@@ -38,12 +40,20 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_temporary_general_purpose_register_o
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER,
                             "Expected valid pointer to AMD64 System-V optimizer codegen temporary register"));
 
+    kefir_bool_t filter_success = true;
     if (reg_allocation != NULL &&
         reg_allocation->result.type == KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_GENERAL_PURPOSE_REGISTER) {
-        tmp_reg->borrow = false;
-        tmp_reg->evicted = false;
-        tmp_reg->reg = reg_allocation->result.reg;
-        return KEFIR_OK;
+
+        if (filter_callback != NULL) {
+            REQUIRE_OK(filter_callback(reg_allocation->result.reg, &filter_success, filter_payload));
+        }
+
+        if (filter_success) {
+            tmp_reg->borrow = false;
+            tmp_reg->evicted = false;
+            tmp_reg->reg = reg_allocation->result.reg;
+            return KEFIR_OK;
+        }
     }
 
     tmp_reg->borrow = true;
@@ -53,11 +63,18 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_temporary_general_purpose_register_o
                                    (kefir_hashtreeset_entry_t) candidate) &&
             !kefir_hashtreeset_has(&codegen_func->borrowed_general_purpose_regs,
                                    (kefir_hashtreeset_entry_t) candidate)) {
-            REQUIRE_OK(kefir_hashtreeset_add(mem, &codegen_func->borrowed_general_purpose_regs,
-                                             (kefir_hashtreeset_entry_t) candidate));
-            tmp_reg->evicted = false;
-            tmp_reg->reg = candidate;
-            return KEFIR_OK;
+            filter_success = true;
+            if (filter_callback != NULL) {
+                REQUIRE_OK(filter_callback(candidate, &filter_success, filter_payload));
+            }
+
+            if (filter_success) {
+                REQUIRE_OK(kefir_hashtreeset_add(mem, &codegen_func->borrowed_general_purpose_regs,
+                                                 (kefir_hashtreeset_entry_t) candidate));
+                tmp_reg->evicted = false;
+                tmp_reg->reg = candidate;
+                return KEFIR_OK;
+            }
         }
     }
 
@@ -66,12 +83,18 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_temporary_general_purpose_register_o
         kefir_asm_amd64_xasmgen_register_t candidate = KefirOptSysvAmd64GeneralPurposeRegisters[i];
         if (!kefir_hashtreeset_has(&codegen_func->borrowed_general_purpose_regs,
                                    (kefir_hashtreeset_entry_t) candidate)) {
-            REQUIRE_OK(kefir_hashtreeset_add(mem, &codegen_func->borrowed_general_purpose_regs,
-                                             (kefir_hashtreeset_entry_t) candidate));
-            tmp_reg->reg = candidate;
-            REQUIRE_OK(
-                KEFIR_AMD64_XASMGEN_INSTR_PUSH(&codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(tmp_reg->reg)));
-            return KEFIR_OK;
+            filter_success = true;
+            if (filter_callback != NULL) {
+                REQUIRE_OK(filter_callback(candidate, &filter_success, filter_payload));
+            }
+            if (filter_success) {
+                REQUIRE_OK(kefir_hashtreeset_add(mem, &codegen_func->borrowed_general_purpose_regs,
+                                                 (kefir_hashtreeset_entry_t) candidate));
+                tmp_reg->reg = candidate;
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_PUSH(&codegen->xasmgen,
+                                                          kefir_asm_amd64_xasmgen_operand_reg(tmp_reg->reg)));
+                return KEFIR_OK;
+            }
         }
     }
 
@@ -301,12 +324,16 @@ static kefir_result_t update_translate_context_liveness(
 
         const struct kefir_opt_instruction_liveness_interval *liveness =
             &func_analysis->liveness.intervals[func_analysis->instructions[instr_ref].linear_position];
-        if (liveness->range.end <= instr_props->linear_position) {
+        if (liveness->range.end <= instr_props->linear_position + 1) {
             const struct kefir_codegen_opt_sysv_amd64_register_allocation *instr_reg_allocation = NULL;
             REQUIRE_OK(kefir_codegen_opt_sysv_amd64_register_allocation_of(&codegen_func->register_allocator, instr_ref,
                                                                            &instr_reg_allocation));
-            REQUIRE_OK(kefir_hashtreeset_delete(mem, &codegen_func->occupied_general_purpose_regs,
-                                                (kefir_hashtreeset_entry_t) instr_reg_allocation->result.reg));
+
+            if (instr_reg_allocation->result.type ==
+                KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_GENERAL_PURPOSE_REGISTER) {
+                REQUIRE_OK(kefir_hashtreeset_delete(mem, &codegen_func->occupied_general_purpose_regs,
+                                                    (kefir_hashtreeset_entry_t) instr_reg_allocation->result.reg));
+            }
 
             const struct kefir_list_entry *next_iter = iter->next;
             REQUIRE_OK(kefir_list_pop(mem, &codegen_func->alive_instr, (struct kefir_list_entry *) iter));
@@ -402,6 +429,11 @@ static kefir_result_t translate_instr(struct kefir_mem *mem, struct kefir_codege
             REQUIRE_OK(INVOKE_TRANSLATOR(bitshift));
             break;
 
+        case KEFIR_OPT_OPCODE_INT_NOT:
+        case KEFIR_OPT_OPCODE_BOOL_NOT:
+            REQUIRE_OK(INVOKE_TRANSLATOR(unary_op));
+            break;
+
         case KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_8BITS:
         case KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_16BITS:
         case KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_32BITS:
@@ -425,6 +457,8 @@ static kefir_result_t translate_instr(struct kefir_mem *mem, struct kefir_codege
         REQUIRE_OK(kefir_hashtreeset_delete(mem, &codegen_func->borrowed_general_purpose_regs,
                                             (kefir_hashtreeset_entry_t) reg_allocation->result.reg));
     }
+    REQUIRE(kefir_hashtreeset_empty(&codegen_func->borrowed_general_purpose_regs),
+            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected set of borrowed general purpose registers to be empty"));
     return KEFIR_OK;
 }
 

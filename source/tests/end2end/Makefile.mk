@@ -7,6 +7,8 @@ endif
 
 END2END_ASMGEN_EXPECTED_FILES :=
 
+$(BIN_DIR)/%.o: CFLAGS += -Wno-int-in-bool-context
+
 $(BIN_DIR)/%.kefir.o: $(SOURCE_DIR)/%.kefir.c $(BIN_DIR)/kefir
 	@mkdir -p $(shell dirname "$@")
 	@echo "Kefir-Compile $@"

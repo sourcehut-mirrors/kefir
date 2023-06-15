@@ -20,8 +20,23 @@
 
 #include "./definitions.h"
 
+#define DEFINE_UN_FN(_id, _type, _op) \
+    _type op_##_id##_##_type(_type x) { return OP_##_op(x); }
+
 #define DEFINE_BIN_FN(_id, _type, _op) \
     _type op_##_id##_##_type(_type x, _type y) { return OP_##_op(x, y); }
+
+#define DEFINE_UN_FNS(_id, _op)    \
+    DEFINE_UN_FN(_id, char, _op)   \
+    DEFINE_UN_FN(_id, uchar, _op)  \
+    DEFINE_UN_FN(_id, short, _op)  \
+    DEFINE_UN_FN(_id, ushort, _op) \
+    DEFINE_UN_FN(_id, int, _op)    \
+    DEFINE_UN_FN(_id, uint, _op)   \
+    DEFINE_UN_FN(_id, long, _op)   \
+    DEFINE_UN_FN(_id, ulong, _op)  \
+    DEFINE_UN_FN(_id, llong, _op)  \
+    DEFINE_UN_FN(_id, ullong, _op)
 
 #define DEFINE_BIN_FNS(_id, _op)    \
     DEFINE_BIN_FN(_id, char, _op)   \
@@ -45,3 +60,5 @@ DEFINE_BIN_FNS(or, OR)
 DEFINE_BIN_FNS(xor, XOR)
 DEFINE_BIN_FNS(shl, SHL)
 DEFINE_BIN_FNS(shr, SHR)
+DEFINE_UN_FNS(not, NOT)
+DEFINE_UN_FNS(bnot, BNOT)

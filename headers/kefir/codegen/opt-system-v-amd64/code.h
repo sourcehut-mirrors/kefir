@@ -38,7 +38,8 @@ typedef struct kefir_codegen_opt_sysv_amd64_translate_temporary_register {
 kefir_result_t kefir_codegen_opt_sysv_amd64_temporary_general_purpose_register_obtain(
     struct kefir_mem *, struct kefir_codegen_opt_amd64 *,
     const struct kefir_codegen_opt_sysv_amd64_register_allocation *, struct kefir_opt_sysv_amd64_function *,
-    struct kefir_codegen_opt_sysv_amd64_translate_temporary_register *);
+    struct kefir_codegen_opt_sysv_amd64_translate_temporary_register *,
+    kefir_result_t (*)(kefir_asm_amd64_xasmgen_register_t, kefir_bool_t *, void *), void *);
 
 kefir_result_t kefir_codegen_opt_sysv_amd64_temporary_general_purpose_register_obtain_specific(
     struct kefir_mem *, struct kefir_codegen_opt_amd64 *,
@@ -75,6 +76,7 @@ DECLARE_TRANSLATOR(store);
 DECLARE_TRANSLATOR(binary_op);
 DECLARE_TRANSLATOR(div_mod);
 DECLARE_TRANSLATOR(bitshift);
+DECLARE_TRANSLATOR(unary_op);
 DECLARE_TRANSLATOR(int_extend);
 DECLARE_TRANSLATOR(return);
 #undef DECLARE

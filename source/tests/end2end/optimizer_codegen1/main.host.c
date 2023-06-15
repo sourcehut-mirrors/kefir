@@ -31,6 +31,7 @@ int main(void) {
         for (int j = BEGIN; j <= END; j++) {
 #define ASSERT_OP(_id, _type, _op, _x, _y) \
     assert(op_##_id##_##_type((_type) (_x), (_type) (_y)) == (_type) OP_##_op((_type) (_x), (_type) (_y)))
+#define ASSERT_OP1(_id, _type, _op, _x) assert(op_##_id##_##_type((_type) (_x)) == (_type) OP_##_op((_type) (_x)))
 #define ASSERT_OPS_SIGNED(_id, _op, _x, _y) \
     ASSERT_OP(_id, char, _op, _x, _y);      \
     ASSERT_OP(_id, short, _op, _x, _y);     \
@@ -46,6 +47,21 @@ int main(void) {
 #define ASSERT_OPS(_id, _op, _x, _y)     \
     ASSERT_OPS_SIGNED(_id, _op, _x, _y); \
     ASSERT_OPS_UNSIGNED(_id, _op, _x, _y)
+#define ASSERT_OPS_SIGNED1(_id, _op, _x) \
+    ASSERT_OP1(_id, char, _op, _x);      \
+    ASSERT_OP1(_id, short, _op, _x);     \
+    ASSERT_OP1(_id, int, _op, _x);       \
+    ASSERT_OP1(_id, long, _op, _x);      \
+    ASSERT_OP1(_id, llong, _op, _x)
+#define ASSERT_OPS_UNSIGNED1(_id, _op, _x) \
+    ASSERT_OP1(_id, uchar, _op, _x);       \
+    ASSERT_OP1(_id, ushort, _op, _x);      \
+    ASSERT_OP1(_id, uint, _op, _x);        \
+    ASSERT_OP1(_id, ulong, _op, _x);       \
+    ASSERT_OP1(_id, ullong, _op, _x)
+#define ASSERT_OPS1(_id, _op, _x)     \
+    ASSERT_OPS_SIGNED1(_id, _op, _x); \
+    ASSERT_OPS_UNSIGNED1(_id, _op, _x)
 
 #define ASSERTS(_a, _b)                        \
     ASSERT_OPS(add, ADD, _a, _b);              \
@@ -65,7 +81,9 @@ int main(void) {
     ASSERT_OPS(xor, XOR, _a, _b);              \
     if ((_b) >= 0) {                           \
         ASSERT_OPS(shr, SHR, _a, (_b) & (31)); \
-    }
+    }                                          \
+    ASSERT_OPS1(not, NOT, _a);                 \
+    ASSERT_OPS1(bnot, BNOT, _a)
 
             ASSERTS(i, j);
             ASSERTS(i * 100, j * 100);

@@ -39,7 +39,7 @@ DEFINE_TRANSLATOR(constant) {
         case KEFIR_OPT_OPCODE_INT_CONST: {
             struct kefir_codegen_opt_sysv_amd64_translate_temporary_register result_reg;
             REQUIRE_OK(kefir_codegen_opt_sysv_amd64_temporary_general_purpose_register_obtain(
-                mem, codegen, reg_allocation, codegen_func, &result_reg));
+                mem, codegen, reg_allocation, codegen_func, &result_reg, NULL, NULL));
 
             if (instr->operation.parameters.imm.integer >= KEFIR_INT32_MIN &&
                 instr->operation.parameters.imm.integer <= KEFIR_INT32_MAX) {

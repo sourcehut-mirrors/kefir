@@ -22,6 +22,17 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
+static kefir_result_t filter_reg_allocation(kefir_asm_amd64_xasmgen_register_t reg, kefir_bool_t *success,
+                                            void *payload) {
+    REQUIRE(success != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
+    REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to payload"));
+
+    ASSIGN_DECL_CAST(const struct kefir_codegen_opt_sysv_amd64_register_allocation *, allocation, payload);
+    *success = allocation->result.type != KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_GENERAL_PURPOSE_REGISTER ||
+               allocation->result.reg != reg;
+    return KEFIR_OK;
+}
+
 DEFINE_TRANSLATOR(bitshift) {
     DEFINE_TRANSLATOR_PROLOGUE;
 
@@ -47,8 +58,8 @@ DEFINE_TRANSLATOR(bitshift) {
         mem, codegen, arg2_allocation, KEFIR_AMD64_XASMGEN_REGISTER_RCX, codegen_func, &shift_reg));
 
     struct kefir_codegen_opt_sysv_amd64_translate_temporary_register result_reg;
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_temporary_general_purpose_register_obtain(mem, codegen, reg_allocation,
-                                                                                      codegen_func, &result_reg));
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_temporary_general_purpose_register_obtain(
+        mem, codegen, reg_allocation, codegen_func, &result_reg, filter_reg_allocation, (void *) arg2_allocation));
 
     if (arg1_allocation->result.type != KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_GENERAL_PURPOSE_REGISTER ||
         arg1_allocation->result.reg != result_reg.reg) {

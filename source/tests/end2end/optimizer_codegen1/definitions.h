@@ -38,8 +38,23 @@ typedef unsigned long long ullong;
 #define OP_XOR(x, y) ((x) ^ (y))
 #define OP_SHL(x, y) ((x) << (y))
 #define OP_SHR(x, y) ((x) >> (y))
+#define OP_NOT(x) (~(x))
+#define OP_BNOT(x) (!(x))
 
+#define DECL_UN_FN(_id, _type) _type op_##_id##_##_type(_type)
 #define DECL_BIN_FN(_id, _type) _type op_##_id##_##_type(_type, _type)
+
+#define DECL_UN_FNS(_id)     \
+    DECL_UN_FN(_id, char);   \
+    DECL_UN_FN(_id, uchar);  \
+    DECL_UN_FN(_id, short);  \
+    DECL_UN_FN(_id, ushort); \
+    DECL_UN_FN(_id, int);    \
+    DECL_UN_FN(_id, uint);   \
+    DECL_UN_FN(_id, long);   \
+    DECL_UN_FN(_id, ulong);  \
+    DECL_UN_FN(_id, llong);  \
+    DECL_UN_FN(_id, ullong)
 
 #define DECL_BIN_FNS(_id)     \
     DECL_BIN_FN(_id, char);   \
@@ -63,5 +78,7 @@ DECL_BIN_FNS(or);
 DECL_BIN_FNS(xor);
 DECL_BIN_FNS(shl);
 DECL_BIN_FNS(shr);
+DECL_UN_FNS(not );
+DECL_UN_FNS(bnot);
 
 #endif

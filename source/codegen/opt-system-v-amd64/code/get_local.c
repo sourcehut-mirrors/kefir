@@ -37,8 +37,8 @@ DEFINE_TRANSLATOR(get_local) {
         kefir_abi_sysv_amd64_type_layout_at(&codegen_func->locals_layout, instr->operation.parameters.index, &entry));
 
     struct kefir_codegen_opt_sysv_amd64_translate_temporary_register tmp_reg;
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_temporary_general_purpose_register_obtain(mem, codegen, reg_allocation,
-                                                                                      codegen_func, &tmp_reg));
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_temporary_general_purpose_register_obtain(
+        mem, codegen, reg_allocation, codegen_func, &tmp_reg, NULL, NULL));
 
     REQUIRE_OK(
         KEFIR_AMD64_XASMGEN_INSTR_LEA(&codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(tmp_reg.reg),

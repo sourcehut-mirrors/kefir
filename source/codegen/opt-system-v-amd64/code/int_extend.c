@@ -37,12 +37,12 @@ DEFINE_TRANSLATOR(int_extend) {
         &codegen_func->register_allocator, instr->operation.parameters.refs[0], &source_allocation));
 
     struct kefir_codegen_opt_sysv_amd64_translate_temporary_register source_reg;
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_temporary_general_purpose_register_obtain(mem, codegen, source_allocation,
-                                                                                      codegen_func, &source_reg));
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_temporary_general_purpose_register_obtain(
+        mem, codegen, source_allocation, codegen_func, &source_reg, NULL, NULL));
 
     struct kefir_codegen_opt_sysv_amd64_translate_temporary_register target_reg;
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_temporary_general_purpose_register_obtain(mem, codegen, target_allocation,
-                                                                                      codegen_func, &target_reg));
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_temporary_general_purpose_register_obtain(
+        mem, codegen, target_allocation, codegen_func, &target_reg, NULL, NULL));
     if (source_reg.borrow) {
         REQUIRE_OK(kefir_codegen_opt_sysv_amd64_load_reg_allocation_into(codegen, &codegen_func->stack_frame_map,
                                                                          source_allocation, source_reg.reg));

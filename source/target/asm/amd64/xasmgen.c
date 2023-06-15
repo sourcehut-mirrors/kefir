@@ -1571,6 +1571,8 @@ INSTR3(pextrq)
 INSTR3(pinsrq)
 INSTR2(add)
 INSTR2(cmp)
+INSTR2(test)
+INSTR1(sete)
 INSTR2(sub)
 INSTR2(imul)
 INSTR1(idiv)
@@ -1582,6 +1584,7 @@ INSTR2(and)
 INSTR2(shl)
 INSTR2(shr)
 INSTR2(sar)
+INSTR1(not )
 INSTR2(movd)
 INSTR1(fstp)
 INSTR1(fld)
@@ -1660,6 +1663,8 @@ kefir_result_t kefir_asm_amd64_xasmgen_init(struct kefir_mem *mem, struct kefir_
         xasmgen->instr.call = amd64_instr_intel_call;
         xasmgen->instr.cld = amd64_instr_intel_cld;
         xasmgen->instr.cmp = amd64_instr_intel_cmp;
+        xasmgen->instr.test = amd64_instr_intel_test;
+        xasmgen->instr.sete = amd64_instr_intel_sete;
         xasmgen->instr.fld = amd64_instr_intel_fld;
         xasmgen->instr.fstcw = amd64_instr_intel_fstcw;
         xasmgen->instr.fldcw = amd64_instr_intel_fldcw;
@@ -1683,6 +1688,7 @@ kefir_result_t kefir_asm_amd64_xasmgen_init(struct kefir_mem *mem, struct kefir_
         xasmgen->instr.shl = amd64_instr_intel_shl;
         xasmgen->instr.shr = amd64_instr_intel_shr;
         xasmgen->instr.sar = amd64_instr_intel_sar;
+        xasmgen->instr.not = amd64_instr_intel_not;
         xasmgen->instr.sub = amd64_instr_intel_sub;
         xasmgen->instr.imul = amd64_instr_intel_imul;
         xasmgen->instr.idiv = amd64_instr_intel_idiv;
@@ -1700,6 +1706,8 @@ kefir_result_t kefir_asm_amd64_xasmgen_init(struct kefir_mem *mem, struct kefir_
         xasmgen->instr.call = amd64_instr_att_call;
         xasmgen->instr.cld = amd64_instr_att_cld;
         xasmgen->instr.cmp = amd64_instr_att_cmp;
+        xasmgen->instr.test = amd64_instr_att_test;
+        xasmgen->instr.sete = amd64_instr_att_sete;
         xasmgen->instr.fld = amd64_instr_att_fld;
         xasmgen->instr.fstcw = amd64_instr_att_fstcw;
         xasmgen->instr.fldcw = amd64_instr_att_fldcw;
@@ -1723,6 +1731,7 @@ kefir_result_t kefir_asm_amd64_xasmgen_init(struct kefir_mem *mem, struct kefir_
         xasmgen->instr.shl = amd64_instr_att_shl;
         xasmgen->instr.shr = amd64_instr_att_shr;
         xasmgen->instr.sar = amd64_instr_att_sar;
+        xasmgen->instr.not = amd64_instr_att_not;
         xasmgen->instr.sub = amd64_instr_att_sub;
         xasmgen->instr.imul = amd64_instr_att_imul;
         xasmgen->instr.idiv = amd64_instr_att_idiv;
