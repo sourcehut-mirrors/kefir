@@ -55,23 +55,25 @@ DEFINE_TRANSLATOR(bitshift) {
     REQUIRE_OK(kefir_codegen_opt_sysv_amd64_load_reg_allocation(codegen, &codegen_func->stack_frame_map,
                                                                 arg1_allocation, result_reg.reg));
 
+    kefir_asm_amd64_xasmgen_register_t shift_variant;
+    REQUIRE_OK(kefir_asm_amd64_xasmgen_register8(shift_reg.reg, &shift_variant));
     switch (instr->operation.opcode) {
         case KEFIR_OPT_OPCODE_INT_LSHIFT:
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_SHL(&codegen->xasmgen,
                                                      kefir_asm_amd64_xasmgen_operand_reg(result_reg.reg),
-                                                     kefir_asm_amd64_xasmgen_operand_reg(shift_reg.reg)));
+                                                     kefir_asm_amd64_xasmgen_operand_reg(shift_variant)));
             break;
 
         case KEFIR_OPT_OPCODE_INT_RSHIFT:
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_SHR(&codegen->xasmgen,
                                                      kefir_asm_amd64_xasmgen_operand_reg(result_reg.reg),
-                                                     kefir_asm_amd64_xasmgen_operand_reg(shift_reg.reg)));
+                                                     kefir_asm_amd64_xasmgen_operand_reg(shift_variant)));
             break;
 
         case KEFIR_OPT_OPCODE_INT_ARSHIFT:
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_SAR(&codegen->xasmgen,
                                                      kefir_asm_amd64_xasmgen_operand_reg(result_reg.reg),
-                                                     kefir_asm_amd64_xasmgen_operand_reg(shift_reg.reg)));
+                                                     kefir_asm_amd64_xasmgen_operand_reg(shift_variant)));
             break;
 
         default:
