@@ -29,8 +29,10 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_filter_regs_allocation(kefir_asm_amd
 
     ASSIGN_DECL_CAST(const struct kefir_codegen_opt_sysv_amd64_register_allocation **, allocation_iter, payload);
     for (; *allocation_iter != NULL; ++allocation_iter) {
-        if ((*allocation_iter)->result.type ==
-                KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_GENERAL_PURPOSE_REGISTER &&
+        if (((*allocation_iter)->result.type ==
+                 KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_GENERAL_PURPOSE_REGISTER ||
+             (*allocation_iter)->result.type ==
+                 KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_FLOATING_POINT_REGISTER) &&
             (*allocation_iter)->result.reg == reg) {
             *success = false;
             return KEFIR_OK;

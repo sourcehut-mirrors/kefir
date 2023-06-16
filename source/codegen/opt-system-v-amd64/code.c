@@ -446,6 +446,7 @@ static kefir_result_t translate_instr(struct kefir_mem *mem, struct kefir_codege
             break;
 
         case KEFIR_OPT_OPCODE_INT_NOT:
+        case KEFIR_OPT_OPCODE_INT_NEG:
         case KEFIR_OPT_OPCODE_BOOL_NOT:
             REQUIRE_OK(INVOKE_TRANSLATOR(unary_op));
             break;
@@ -483,7 +484,6 @@ static kefir_result_t translate_instr(struct kefir_mem *mem, struct kefir_codege
         case KEFIR_OPT_OPCODE_FLOAT64_CONST:
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_CONST:
         case KEFIR_OPT_OPCODE_BLOCK_LABEL:
-        case KEFIR_OPT_OPCODE_INT_NEG:
         case KEFIR_OPT_OPCODE_GET_THREAD_LOCAL:
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_STORE:
         case KEFIR_OPT_OPCODE_ZERO_MEMORY:

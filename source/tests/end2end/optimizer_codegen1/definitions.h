@@ -40,6 +40,7 @@ typedef unsigned long long ullong;
 #define OP_SHR(x, y) ((x) >> (y))
 #define OP_NOT(x) (~(x))
 #define OP_BNOT(x) (!(x))
+#define OP_NEG(x) (-(x))
 
 #define DECL_UN_FN(_id, _type) _type op_##_id##_##_type(_type)
 #define DECL_BIN_FN(_id, _type) _type op_##_id##_##_type(_type, _type)
@@ -80,5 +81,6 @@ DECL_BIN_FNS(shl);
 DECL_BIN_FNS(shr);
 DECL_UN_FNS(not );
 DECL_UN_FNS(bnot);
+DECL_UN_FNS(neg);
 
 #endif

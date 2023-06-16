@@ -1590,6 +1590,7 @@ INSTR2(shl)
 INSTR2(shr)
 INSTR2(sar)
 INSTR1(not )
+INSTR1(neg)
 INSTR2(movd)
 INSTR1(fstp)
 INSTR1(fld)
@@ -1699,6 +1700,7 @@ kefir_result_t kefir_asm_amd64_xasmgen_init(struct kefir_mem *mem, struct kefir_
         xasmgen->instr.shr = amd64_instr_intel_shr;
         xasmgen->instr.sar = amd64_instr_intel_sar;
         xasmgen->instr.not = amd64_instr_intel_not;
+        xasmgen->instr.neg = amd64_instr_intel_neg;
         xasmgen->instr.sub = amd64_instr_intel_sub;
         xasmgen->instr.imul = amd64_instr_intel_imul;
         xasmgen->instr.idiv = amd64_instr_intel_idiv;
@@ -1747,6 +1749,7 @@ kefir_result_t kefir_asm_amd64_xasmgen_init(struct kefir_mem *mem, struct kefir_
         xasmgen->instr.shr = amd64_instr_att_shr;
         xasmgen->instr.sar = amd64_instr_att_sar;
         xasmgen->instr.not = amd64_instr_att_not;
+        xasmgen->instr.neg = amd64_instr_att_neg;
         xasmgen->instr.sub = amd64_instr_att_sub;
         xasmgen->instr.imul = amd64_instr_att_imul;
         xasmgen->instr.idiv = amd64_instr_att_idiv;

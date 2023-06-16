@@ -261,6 +261,7 @@ typedef struct kefir_amd64_xasmgen {
         kefir_result_t (*sar)(struct kefir_amd64_xasmgen *, const struct kefir_asm_amd64_xasmgen_operand *,
                               const struct kefir_asm_amd64_xasmgen_operand *);
         kefir_result_t (*not )(struct kefir_amd64_xasmgen *, const struct kefir_asm_amd64_xasmgen_operand *);
+        kefir_result_t (*neg)(struct kefir_amd64_xasmgen *, const struct kefir_asm_amd64_xasmgen_operand *);
 
         kefir_result_t (*cqo)(struct kefir_amd64_xasmgen *);
 
@@ -378,6 +379,7 @@ const struct kefir_asm_amd64_xasmgen_operand *kefir_asm_amd64_xasmgen_operand_st
 #define KEFIR_AMD64_XASMGEN_INSTR_SHR(_xasmgen, _op1, _op2) ((_xasmgen)->instr.shr((_xasmgen), (_op1), (_op2)))
 #define KEFIR_AMD64_XASMGEN_INSTR_SAR(_xasmgen, _op1, _op2) ((_xasmgen)->instr.sar((_xasmgen), (_op1), (_op2)))
 #define KEFIR_AMD64_XASMGEN_INSTR_NOT(_xasmgen, _op1) ((_xasmgen)->instr.not((_xasmgen), (_op1)))
+#define KEFIR_AMD64_XASMGEN_INSTR_NEG(_xasmgen, _op1) ((_xasmgen)->instr.neg((_xasmgen), (_op1)))
 
 #define KEFIR_AMD64_XASMGEN_INSTR_CQO(_xasmgen) ((_xasmgen)->instr.cqo((_xasmgen)))
 

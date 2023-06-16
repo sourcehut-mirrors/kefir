@@ -83,7 +83,8 @@ int main(void) {
         ASSERT_OPS(shr, SHR, _a, (_b) & (31)); \
     }                                          \
     ASSERT_OPS1(not, NOT, _a);                 \
-    ASSERT_OPS1(bnot, BNOT, _a)
+    ASSERT_OPS1(bnot, BNOT, _a);               \
+    ASSERT_OPS1(neg, NEG, _a)
 
             ASSERTS(i, j);
             ASSERTS(i * 100, j * 100);

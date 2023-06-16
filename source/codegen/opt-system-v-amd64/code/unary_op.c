@@ -40,12 +40,19 @@ DEFINE_TRANSLATOR(unary_op) {
     REQUIRE_OK(kefir_codegen_opt_sysv_amd64_temporary_general_purpose_register_obtain(
         mem, codegen, result_allocation, codegen_func, &result_reg, NULL, NULL));
     switch (instr->operation.opcode) {
-        case KEFIR_OPT_OPCODE_INT_NOT: {
+        case KEFIR_OPT_OPCODE_INT_NOT:
             REQUIRE_OK(kefir_codegen_opt_sysv_amd64_load_reg_allocation(codegen, &codegen_func->stack_frame_map,
                                                                         arg1_allocation, result_reg.reg));
             REQUIRE_OK(
                 KEFIR_AMD64_XASMGEN_INSTR_NOT(&codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_reg.reg)));
-        } break;
+            break;
+
+        case KEFIR_OPT_OPCODE_INT_NEG:
+            REQUIRE_OK(kefir_codegen_opt_sysv_amd64_load_reg_allocation(codegen, &codegen_func->stack_frame_map,
+                                                                        arg1_allocation, result_reg.reg));
+            REQUIRE_OK(
+                KEFIR_AMD64_XASMGEN_INSTR_NEG(&codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_reg.reg)));
+            break;
 
         case KEFIR_OPT_OPCODE_BOOL_NOT: {
             struct kefir_codegen_opt_sysv_amd64_translate_temporary_register arg1_reg;
