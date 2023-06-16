@@ -79,7 +79,7 @@ kefir_result_t kefir_graph_node(const struct kefir_graph *graph, kefir_graph_nod
     struct kefir_hashtree_node *node = NULL;
     kefir_result_t res = kefir_hashtree_at(&graph->nodes, (kefir_hashtree_key_t) identifier, &node);
     if (res == KEFIR_NOT_FOUND) {
-        res = KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find request graph node");
+        res = KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find requested graph node");
     }
     REQUIRE_OK(res);
 

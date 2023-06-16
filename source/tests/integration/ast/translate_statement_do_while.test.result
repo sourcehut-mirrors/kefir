@@ -297,7 +297,7 @@
                 {
                     "opcode": "load8u",
                     "memory_flags": {
-                        "volatile": false
+                        "volatile": true
                     }
                 },
                 {

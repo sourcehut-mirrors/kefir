@@ -225,6 +225,7 @@ typedef struct kefir_amd64_xasmgen {
 
         kefir_result_t (*jmp)(struct kefir_amd64_xasmgen *, const struct kefir_asm_amd64_xasmgen_operand *);
         kefir_result_t (*ja)(struct kefir_amd64_xasmgen *, const struct kefir_asm_amd64_xasmgen_operand *);
+        kefir_result_t (*jz)(struct kefir_amd64_xasmgen *, const struct kefir_asm_amd64_xasmgen_operand *);
         kefir_result_t (*call)(struct kefir_amd64_xasmgen *, const struct kefir_asm_amd64_xasmgen_operand *);
         kefir_result_t (*ret)(struct kefir_amd64_xasmgen *);
 
@@ -352,6 +353,7 @@ const struct kefir_asm_amd64_xasmgen_operand *kefir_asm_amd64_xasmgen_operand_st
 
 #define KEFIR_AMD64_XASMGEN_INSTR_JMP(_xasmgen, _op1) ((_xasmgen)->instr.jmp((_xasmgen), (_op1)))
 #define KEFIR_AMD64_XASMGEN_INSTR_JA(_xasmgen, _op1) ((_xasmgen)->instr.ja((_xasmgen), (_op1)))
+#define KEFIR_AMD64_XASMGEN_INSTR_JZ(_xasmgen, _op1) ((_xasmgen)->instr.jz((_xasmgen), (_op1)))
 #define KEFIR_AMD64_XASMGEN_INSTR_CALL(_xasmgen, _op1) ((_xasmgen)->instr.call((_xasmgen), (_op1)))
 #define KEFIR_AMD64_XASMGEN_INSTR_RET(_xasmgen) ((_xasmgen)->instr.ret((_xasmgen)))
 

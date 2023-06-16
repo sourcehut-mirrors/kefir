@@ -1562,6 +1562,8 @@ INSTR1_INTEL(jmp)
 INSTR1_ATT_BR(jmp)
 INSTR1_INTEL(ja)
 INSTR1_ATT_BR(ja)
+INSTR1_INTEL(jz)
+INSTR1_ATT_BR(jz)
 INSTR0(ret)
 INSTR1(fstcw)
 INSTR1(fldcw)
@@ -1681,6 +1683,7 @@ kefir_result_t kefir_asm_amd64_xasmgen_init(struct kefir_mem *mem, struct kefir_
         xasmgen->instr.fldcw = amd64_instr_intel_fldcw;
         xasmgen->instr.fstp = amd64_instr_intel_fstp;
         xasmgen->instr.ja = amd64_instr_intel_ja;
+        xasmgen->instr.jz = amd64_instr_intel_jz;
         xasmgen->instr.jmp = amd64_instr_intel_jmp;
         xasmgen->instr.lea = amd64_instr_intel_lea;
         xasmgen->instr.mov = amd64_instr_intel_mov;
@@ -1730,6 +1733,7 @@ kefir_result_t kefir_asm_amd64_xasmgen_init(struct kefir_mem *mem, struct kefir_
         xasmgen->instr.fldcw = amd64_instr_att_fldcw;
         xasmgen->instr.fstp = amd64_instr_att_fstp;
         xasmgen->instr.ja = amd64_instr_att_ja;
+        xasmgen->instr.jz = amd64_instr_att_jz;
         xasmgen->instr.jmp = amd64_instr_att_jmp;
         xasmgen->instr.lea = amd64_instr_att_lea;
         xasmgen->instr.mov = amd64_instr_att_mov;

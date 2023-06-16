@@ -88,12 +88,16 @@ static kefir_result_t build_block_intervals(struct kefir_mem *mem, struct kefir_
             kefir_opt_instruction_ref_t link_ref;
             REQUIRE_OK(kefir_opt_code_container_phi_link_for(intervals->analysis->code, successor_phi->node_id,
                                                              block_props->block_id, &link_ref));
-            REQUIRE_OK(kefir_hashtreeset_add(mem, live, (kefir_hashtreeset_entry_t) link_ref));
 
-            if (successor_phi->number_of_links == 1) {
-                kefir_size_t successor_output =
-                    intervals->analysis->instructions[successor_phi->output_ref].linear_position;
-                intervals->intervals[successor_output].alias_ref = link_ref;
+            if (intervals->analysis->instructions[link_ref].reachable) {
+                REQUIRE_OK(kefir_hashtreeset_add(mem, live, (kefir_hashtreeset_entry_t) link_ref));
+
+                if (successor_phi->number_of_links == 1 &&
+                    intervals->analysis->instructions[successor_phi->output_ref].reachable) {
+                    kefir_size_t successor_output =
+                        intervals->analysis->instructions[successor_phi->output_ref].linear_position;
+                    intervals->intervals[successor_output].alias_ref = link_ref;
+                }
             }
         }
         REQUIRE_OK(res);

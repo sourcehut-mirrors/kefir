@@ -167,7 +167,8 @@ static kefir_result_t translate_indirection(struct kefir_mem *mem, struct kefir_
     const struct kefir_ast_type *normalized_type = kefir_ast_translator_normalize_type(node->base.properties.type);
     REQUIRE_OK(kefir_ast_translate_expression(mem, node->arg, builder, context));
     if (normalized_type->tag != KEFIR_AST_TYPE_VOID) {
-        REQUIRE_OK(kefir_ast_translator_load_value(normalized_type, context->ast_context->type_traits, builder));
+        REQUIRE_OK(
+            kefir_ast_translator_load_value(node->base.properties.type, context->ast_context->type_traits, builder));
     } else {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_POP, 0));
     }

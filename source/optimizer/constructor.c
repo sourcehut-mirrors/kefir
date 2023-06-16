@@ -616,20 +616,21 @@ static kefir_result_t link_blocks_traverse(struct kefir_mem *mem, struct kefir_o
     REQUIRE_OK(kefir_opt_code_block_instr_control_tail(&state->function->code, block, &instr));
 
     switch (instr->operation.opcode) {
-        case KEFIR_OPT_OPCODE_JUMP:
-            REQUIRE_OK(
-                link_blocks_equalize_stack(mem, state, block_id, instr->operation.parameters.branch.target_block));
-            REQUIRE_OK(link_blocks_traverse(mem, state, instr->operation.parameters.branch.target_block));
-            break;
+        case KEFIR_OPT_OPCODE_JUMP: {
+            kefir_opt_block_id_t target_block = instr->operation.parameters.branch.target_block;
+            REQUIRE_OK(link_blocks_equalize_stack(mem, state, block_id, target_block));
+            REQUIRE_OK(link_blocks_traverse(mem, state, target_block));
+        } break;
 
-        case KEFIR_OPT_OPCODE_BRANCH:
-            REQUIRE_OK(
-                link_blocks_equalize_stack(mem, state, block_id, instr->operation.parameters.branch.target_block));
-            REQUIRE_OK(
-                link_blocks_equalize_stack(mem, state, block_id, instr->operation.parameters.branch.alternative_block));
-            REQUIRE_OK(link_blocks_traverse(mem, state, instr->operation.parameters.branch.target_block));
-            REQUIRE_OK(link_blocks_traverse(mem, state, instr->operation.parameters.branch.alternative_block));
-            break;
+        case KEFIR_OPT_OPCODE_BRANCH: {
+            kefir_opt_block_id_t target_block = instr->operation.parameters.branch.target_block;
+            kefir_opt_block_id_t alternative_block = instr->operation.parameters.branch.alternative_block;
+
+            REQUIRE_OK(link_blocks_equalize_stack(mem, state, block_id, target_block));
+            REQUIRE_OK(link_blocks_equalize_stack(mem, state, block_id, alternative_block));
+            REQUIRE_OK(link_blocks_traverse(mem, state, target_block));
+            REQUIRE_OK(link_blocks_traverse(mem, state, alternative_block));
+        } break;
 
         case KEFIR_OPT_OPCODE_IJUMP:
         case KEFIR_OPT_OPCODE_RETURN:

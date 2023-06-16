@@ -68,6 +68,8 @@ static kefir_result_t init_codegen_func(struct kefir_mem *mem, const struct kefi
             return res;
         });
     }
+
+    sysv_amd64_function->nonblock_labels = 0;
     return KEFIR_OK;
 }
 

@@ -39,6 +39,7 @@ typedef struct kefir_opt_sysv_amd64_function {
     struct kefir_hashtreeset occupied_general_purpose_regs;
     struct kefir_hashtreeset borrowed_general_purpose_regs;
     struct kefir_list alive_instr;
+    kefir_id_t nonblock_labels;
 } kefir_opt_sysv_amd64_function_t;
 
 kefir_result_t kefir_codegen_opt_sysv_amd64_translate_function(struct kefir_mem *, struct kefir_codegen_opt_amd64 *,
