@@ -22,4 +22,7 @@
                 KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer codegen function"));           \
     } while (false)
 
+kefir_result_t kefir_codegen_opt_sysv_amd64_filter_regs_allocation(kefir_asm_amd64_xasmgen_register_t, kefir_bool_t *,
+                                                                   void *);
+
 #endif

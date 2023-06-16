@@ -28,30 +28,27 @@ DEFINE_TRANSLATOR(div_mod) {
     struct kefir_opt_instruction *instr = NULL;
     REQUIRE_OK(kefir_opt_code_container_instr(&function->code, instr_ref, &instr));
 
-    const struct kefir_codegen_opt_sysv_amd64_register_allocation *reg_allocation = NULL;
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_register_allocation_of(&codegen_func->register_allocator, instr_ref,
-                                                                   &reg_allocation));
-
+    const struct kefir_codegen_opt_sysv_amd64_register_allocation *result_allocation = NULL;
     const struct kefir_codegen_opt_sysv_amd64_register_allocation *arg1_allocation = NULL;
+    const struct kefir_codegen_opt_sysv_amd64_register_allocation *arg2_allocation = NULL;
+
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_register_allocation_of(&codegen_func->register_allocator, instr_ref,
+                                                                   &result_allocation));
     REQUIRE_OK(kefir_codegen_opt_sysv_amd64_register_allocation_of(
         &codegen_func->register_allocator, instr->operation.parameters.refs[0], &arg1_allocation));
-    const struct kefir_codegen_opt_sysv_amd64_register_allocation *arg2_allocation = NULL;
     REQUIRE_OK(kefir_codegen_opt_sysv_amd64_register_allocation_of(
         &codegen_func->register_allocator, instr->operation.parameters.refs[1], &arg2_allocation));
 
     struct kefir_codegen_opt_sysv_amd64_translate_temporary_register quotient_reg;
     REQUIRE_OK(kefir_codegen_opt_sysv_amd64_temporary_general_purpose_register_obtain_specific(
-        mem, codegen, reg_allocation, KEFIR_AMD64_XASMGEN_REGISTER_RAX, codegen_func, &quotient_reg));
+        mem, codegen, result_allocation, KEFIR_AMD64_XASMGEN_REGISTER_RAX, codegen_func, &quotient_reg));
 
     struct kefir_codegen_opt_sysv_amd64_translate_temporary_register remainder_reg;
     REQUIRE_OK(kefir_codegen_opt_sysv_amd64_temporary_general_purpose_register_obtain_specific(
-        mem, codegen, reg_allocation, KEFIR_AMD64_XASMGEN_REGISTER_RDX, codegen_func, &remainder_reg));
+        mem, codegen, result_allocation, KEFIR_AMD64_XASMGEN_REGISTER_RDX, codegen_func, &remainder_reg));
 
-    if (arg1_allocation->result.type != KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_GENERAL_PURPOSE_REGISTER ||
-        arg1_allocation->result.reg != quotient_reg.reg) {
-        REQUIRE_OK(kefir_codegen_opt_sysv_amd64_load_reg_allocation_into(codegen, &codegen_func->stack_frame_map,
-                                                                         arg1_allocation, quotient_reg.reg));
-    }
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_load_reg_allocation(codegen, &codegen_func->stack_frame_map,
+                                                                arg1_allocation, quotient_reg.reg));
 
     switch (instr->operation.opcode) {
         case KEFIR_OPT_OPCODE_INT_DIV: {
@@ -67,10 +64,8 @@ DEFINE_TRANSLATOR(div_mod) {
                 kefir_codegen_opt_sysv_amd64_reg_allocation_operand(&codegen->xasmgen_helpers.operands[0],
                                                                     &codegen_func->stack_frame_map, arg2_allocation)));
 
-            if (quotient_reg.borrow) {
-                REQUIRE_OK(kefir_codegen_opt_sysv_amd64_store_reg_allocation_from(
-                    codegen, &codegen_func->stack_frame_map, reg_allocation, quotient_reg.reg));
-            }
+            REQUIRE_OK(kefir_codegen_opt_sysv_amd64_store_reg_allocation(codegen, &codegen_func->stack_frame_map,
+                                                                         result_allocation, quotient_reg.reg));
         } break;
 
         case KEFIR_OPT_OPCODE_UINT_DIV: {
@@ -88,10 +83,8 @@ DEFINE_TRANSLATOR(div_mod) {
                 kefir_codegen_opt_sysv_amd64_reg_allocation_operand(&codegen->xasmgen_helpers.operands[0],
                                                                     &codegen_func->stack_frame_map, arg2_allocation)));
 
-            if (quotient_reg.borrow) {
-                REQUIRE_OK(kefir_codegen_opt_sysv_amd64_store_reg_allocation_from(
-                    codegen, &codegen_func->stack_frame_map, reg_allocation, quotient_reg.reg));
-            }
+            REQUIRE_OK(kefir_codegen_opt_sysv_amd64_store_reg_allocation(codegen, &codegen_func->stack_frame_map,
+                                                                         result_allocation, quotient_reg.reg));
         } break;
 
         case KEFIR_OPT_OPCODE_INT_MOD: {
@@ -107,10 +100,8 @@ DEFINE_TRANSLATOR(div_mod) {
                 kefir_codegen_opt_sysv_amd64_reg_allocation_operand(&codegen->xasmgen_helpers.operands[0],
                                                                     &codegen_func->stack_frame_map, arg2_allocation)));
 
-            if (remainder_reg.borrow) {
-                REQUIRE_OK(kefir_codegen_opt_sysv_amd64_store_reg_allocation_from(
-                    codegen, &codegen_func->stack_frame_map, reg_allocation, remainder_reg.reg));
-            }
+            REQUIRE_OK(kefir_codegen_opt_sysv_amd64_store_reg_allocation(codegen, &codegen_func->stack_frame_map,
+                                                                         result_allocation, remainder_reg.reg));
         } break;
 
         case KEFIR_OPT_OPCODE_UINT_MOD: {
@@ -128,10 +119,8 @@ DEFINE_TRANSLATOR(div_mod) {
                 kefir_codegen_opt_sysv_amd64_reg_allocation_operand(&codegen->xasmgen_helpers.operands[0],
                                                                     &codegen_func->stack_frame_map, arg2_allocation)));
 
-            if (remainder_reg.borrow) {
-                REQUIRE_OK(kefir_codegen_opt_sysv_amd64_store_reg_allocation_from(
-                    codegen, &codegen_func->stack_frame_map, reg_allocation, remainder_reg.reg));
-            }
+            REQUIRE_OK(kefir_codegen_opt_sysv_amd64_store_reg_allocation(codegen, &codegen_func->stack_frame_map,
+                                                                         result_allocation, remainder_reg.reg));
         } break;
 
         default:

@@ -197,7 +197,7 @@ const struct kefir_asm_amd64_xasmgen_operand *kefir_codegen_opt_sysv_amd64_reg_a
     return NULL;
 }
 
-kefir_result_t kefir_codegen_opt_sysv_amd64_load_reg_allocation_into(
+kefir_result_t kefir_codegen_opt_sysv_amd64_load_reg_allocation(
     struct kefir_codegen_opt_amd64 *codegen, struct kefir_codegen_opt_sysv_amd64_stack_frame_map *stack_frame_map,
     const struct kefir_codegen_opt_sysv_amd64_register_allocation *reg_allocation,
     kefir_asm_amd64_xasmgen_register_t target_reg) {
@@ -206,6 +206,12 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_load_reg_allocation_into(
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer codegen stack frame map"));
     REQUIRE(reg_allocation != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer codegen register allocation"));
+
+    REQUIRE(
+        !((reg_allocation->result.type == KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_GENERAL_PURPOSE_REGISTER ||
+           reg_allocation->result.type == KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_FLOATING_POINT_REGISTER) &&
+          reg_allocation->result.reg == target_reg),
+        KEFIR_OK);
 
     switch (reg_allocation->result.type) {
         case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_NONE:
@@ -253,7 +259,7 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_load_reg_allocation_into(
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_codegen_opt_sysv_amd64_store_reg_allocation_from(
+kefir_result_t kefir_codegen_opt_sysv_amd64_store_reg_allocation(
     struct kefir_codegen_opt_amd64 *codegen, struct kefir_codegen_opt_sysv_amd64_stack_frame_map *stack_frame_map,
     const struct kefir_codegen_opt_sysv_amd64_register_allocation *reg_allocation,
     kefir_asm_amd64_xasmgen_register_t source_reg) {
@@ -262,6 +268,12 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_store_reg_allocation_from(
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer codegen stack frame map"));
     REQUIRE(reg_allocation != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer codegen register allocation"));
+
+    REQUIRE(
+        !((reg_allocation->result.type == KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_GENERAL_PURPOSE_REGISTER ||
+           reg_allocation->result.type == KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_FLOATING_POINT_REGISTER) &&
+          reg_allocation->result.reg == source_reg),
+        KEFIR_OK);
 
     switch (reg_allocation->result.type) {
         case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_NONE:
@@ -460,7 +472,72 @@ static kefir_result_t translate_instr(struct kefir_mem *mem, struct kefir_codege
             REQUIRE_OK(INVOKE_TRANSLATOR(return));
             break;
 
-        default:
+        case KEFIR_OPT_OPCODE_PHI:
+        case KEFIR_OPT_OPCODE_INLINE_ASSEMBLY:
+        case KEFIR_OPT_OPCODE_JUMP:
+        case KEFIR_OPT_OPCODE_IJUMP:
+        case KEFIR_OPT_OPCODE_BRANCH:
+        case KEFIR_OPT_OPCODE_INVOKE:
+        case KEFIR_OPT_OPCODE_INVOKE_VIRTUAL:
+        case KEFIR_OPT_OPCODE_FLOAT32_CONST:
+        case KEFIR_OPT_OPCODE_FLOAT64_CONST:
+        case KEFIR_OPT_OPCODE_LONG_DOUBLE_CONST:
+        case KEFIR_OPT_OPCODE_BLOCK_LABEL:
+        case KEFIR_OPT_OPCODE_INT_NEG:
+        case KEFIR_OPT_OPCODE_GET_THREAD_LOCAL:
+        case KEFIR_OPT_OPCODE_LONG_DOUBLE_STORE:
+        case KEFIR_OPT_OPCODE_ZERO_MEMORY:
+        case KEFIR_OPT_OPCODE_COPY_MEMORY:
+        case KEFIR_OPT_OPCODE_BITS_EXTRACT_SIGNED:
+        case KEFIR_OPT_OPCODE_BITS_EXTRACT_UNSIGNED:
+        case KEFIR_OPT_OPCODE_BITS_INSERT:
+        case KEFIR_OPT_OPCODE_VARARG_START:
+        case KEFIR_OPT_OPCODE_VARARG_COPY:
+        case KEFIR_OPT_OPCODE_VARARG_GET:
+        case KEFIR_OPT_OPCODE_VARARG_END:
+        case KEFIR_OPT_OPCODE_STACK_ALLOC:
+        case KEFIR_OPT_OPCODE_SCOPE_PUSH:
+        case KEFIR_OPT_OPCODE_SCOPE_POP:
+        case KEFIR_OPT_OPCODE_FLOAT32_ADD:
+        case KEFIR_OPT_OPCODE_FLOAT32_SUB:
+        case KEFIR_OPT_OPCODE_FLOAT32_MUL:
+        case KEFIR_OPT_OPCODE_FLOAT32_DIV:
+        case KEFIR_OPT_OPCODE_FLOAT32_NEG:
+        case KEFIR_OPT_OPCODE_FLOAT64_ADD:
+        case KEFIR_OPT_OPCODE_FLOAT64_SUB:
+        case KEFIR_OPT_OPCODE_FLOAT64_MUL:
+        case KEFIR_OPT_OPCODE_FLOAT64_DIV:
+        case KEFIR_OPT_OPCODE_FLOAT64_NEG:
+        case KEFIR_OPT_OPCODE_LONG_DOUBLE_ADD:
+        case KEFIR_OPT_OPCODE_LONG_DOUBLE_SUB:
+        case KEFIR_OPT_OPCODE_LONG_DOUBLE_MUL:
+        case KEFIR_OPT_OPCODE_LONG_DOUBLE_DIV:
+        case KEFIR_OPT_OPCODE_LONG_DOUBLE_NEG:
+        case KEFIR_OPT_OPCODE_FLOAT32_EQUALS:
+        case KEFIR_OPT_OPCODE_FLOAT32_GREATER:
+        case KEFIR_OPT_OPCODE_FLOAT32_LESSER:
+        case KEFIR_OPT_OPCODE_FLOAT64_EQUALS:
+        case KEFIR_OPT_OPCODE_FLOAT64_GREATER:
+        case KEFIR_OPT_OPCODE_FLOAT64_LESSER:
+        case KEFIR_OPT_OPCODE_LONG_DOUBLE_EQUALS:
+        case KEFIR_OPT_OPCODE_LONG_DOUBLE_GREATER:
+        case KEFIR_OPT_OPCODE_LONG_DOUBLE_LESSER:
+        case KEFIR_OPT_OPCODE_FLOAT32_TO_INT:
+        case KEFIR_OPT_OPCODE_FLOAT32_TO_FLOAT64:
+        case KEFIR_OPT_OPCODE_FLOAT32_TO_LONG_DOUBLE:
+        case KEFIR_OPT_OPCODE_FLOAT64_TO_INT:
+        case KEFIR_OPT_OPCODE_FLOAT64_TO_FLOAT32:
+        case KEFIR_OPT_OPCODE_FLOAT64_TO_LONG_DOUBLE:
+        case KEFIR_OPT_OPCODE_LONG_DOUBLE_TO_INT:
+        case KEFIR_OPT_OPCODE_LONG_DOUBLE_TO_FLOAT32:
+        case KEFIR_OPT_OPCODE_LONG_DOUBLE_TO_FLOAT64:
+        case KEFIR_OPT_OPCODE_LONG_DOUBLE_TRUNCATE_1BIT:
+        case KEFIR_OPT_OPCODE_INT_TO_FLOAT32:
+        case KEFIR_OPT_OPCODE_INT_TO_FLOAT64:
+        case KEFIR_OPT_OPCODE_INT_TO_LONG_DOUBLE:
+        case KEFIR_OPT_OPCODE_UINT_TO_FLOAT32:
+        case KEFIR_OPT_OPCODE_UINT_TO_FLOAT64:
+        case KEFIR_OPT_OPCODE_UINT_TO_LONG_DOUBLE:
             return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED,
                                    "Code generation for provided optimizer opcode is not implemented yet");
     }

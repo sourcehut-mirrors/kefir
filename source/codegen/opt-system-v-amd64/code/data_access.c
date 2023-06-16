@@ -28,13 +28,13 @@ DEFINE_TRANSLATOR(data_access) {
     struct kefir_opt_instruction *instr = NULL;
     REQUIRE_OK(kefir_opt_code_container_instr(&function->code, instr_ref, &instr));
 
-    const struct kefir_codegen_opt_sysv_amd64_register_allocation *reg_allocation = NULL;
+    const struct kefir_codegen_opt_sysv_amd64_register_allocation *result_allocation = NULL;
     REQUIRE_OK(kefir_codegen_opt_sysv_amd64_register_allocation_of(&codegen_func->register_allocator, instr_ref,
-                                                                   &reg_allocation));
+                                                                   &result_allocation));
 
-    struct kefir_codegen_opt_sysv_amd64_translate_temporary_register tmp_reg;
+    struct kefir_codegen_opt_sysv_amd64_translate_temporary_register result_reg;
     REQUIRE_OK(kefir_codegen_opt_sysv_amd64_temporary_general_purpose_register_obtain(
-        mem, codegen, reg_allocation, codegen_func, &tmp_reg, NULL, NULL));
+        mem, codegen, result_allocation, codegen_func, &result_reg, NULL, NULL));
 
     switch (instr->operation.opcode) {
         case KEFIR_OPT_OPCODE_GET_LOCAL: {
@@ -43,7 +43,7 @@ DEFINE_TRANSLATOR(data_access) {
                                                            instr->operation.parameters.index, &entry));
 
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_LEA(
-                &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(tmp_reg.reg),
+                &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_reg.reg),
                 kefir_asm_amd64_xasmgen_operand_indirect(
                     &codegen->xasmgen_helpers.operands[0],
                     kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
@@ -56,7 +56,7 @@ DEFINE_TRANSLATOR(data_access) {
             REQUIRE(symbol != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to find named IR symbol"));
 
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_LEA(
-                &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(tmp_reg.reg),
+                &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_reg.reg),
                 kefir_asm_amd64_xasmgen_operand_indirect(
                     &codegen->xasmgen_helpers.operands[0],
                     kefir_asm_amd64_xasmgen_operand_label(
@@ -69,11 +69,9 @@ DEFINE_TRANSLATOR(data_access) {
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected optimizer instruction opcode");
     }
 
-    if (tmp_reg.borrow) {
-        REQUIRE_OK(kefir_codegen_opt_sysv_amd64_store_reg_allocation_from(codegen, &codegen_func->stack_frame_map,
-                                                                          reg_allocation, tmp_reg.reg));
-    }
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_store_reg_allocation(codegen, &codegen_func->stack_frame_map,
+                                                                 result_allocation, result_reg.reg));
 
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_temporary_register_free(mem, codegen, codegen_func, &tmp_reg));
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_temporary_register_free(mem, codegen, codegen_func, &result_reg));
     return KEFIR_OK;
 }

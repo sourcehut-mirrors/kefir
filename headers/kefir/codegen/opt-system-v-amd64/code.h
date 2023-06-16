@@ -54,11 +54,11 @@ const struct kefir_asm_amd64_xasmgen_operand *kefir_codegen_opt_sysv_amd64_reg_a
     struct kefir_asm_amd64_xasmgen_operand *, struct kefir_codegen_opt_sysv_amd64_stack_frame_map *,
     const struct kefir_codegen_opt_sysv_amd64_register_allocation *);
 
-kefir_result_t kefir_codegen_opt_sysv_amd64_load_reg_allocation_into(
+kefir_result_t kefir_codegen_opt_sysv_amd64_load_reg_allocation(
     struct kefir_codegen_opt_amd64 *, struct kefir_codegen_opt_sysv_amd64_stack_frame_map *,
     const struct kefir_codegen_opt_sysv_amd64_register_allocation *, kefir_asm_amd64_xasmgen_register_t);
 
-kefir_result_t kefir_codegen_opt_sysv_amd64_store_reg_allocation_from(
+kefir_result_t kefir_codegen_opt_sysv_amd64_store_reg_allocation(
     struct kefir_codegen_opt_amd64 *, struct kefir_codegen_opt_sysv_amd64_stack_frame_map *,
     const struct kefir_codegen_opt_sysv_amd64_register_allocation *, kefir_asm_amd64_xasmgen_register_t);
 

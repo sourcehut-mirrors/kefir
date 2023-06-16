@@ -29,13 +29,13 @@ DEFINE_TRANSLATOR(constant) {
     struct kefir_opt_instruction *instr = NULL;
     REQUIRE_OK(kefir_opt_code_container_instr(&function->code, instr_ref, &instr));
 
-    const struct kefir_codegen_opt_sysv_amd64_register_allocation *reg_allocation = NULL;
+    const struct kefir_codegen_opt_sysv_amd64_register_allocation *result_allocation = NULL;
     REQUIRE_OK(kefir_codegen_opt_sysv_amd64_register_allocation_of(&codegen_func->register_allocator, instr_ref,
-                                                                   &reg_allocation));
+                                                                   &result_allocation));
 
     struct kefir_codegen_opt_sysv_amd64_translate_temporary_register result_reg;
     REQUIRE_OK(kefir_codegen_opt_sysv_amd64_temporary_general_purpose_register_obtain(
-        mem, codegen, reg_allocation, codegen_func, &result_reg, NULL, NULL));
+        mem, codegen, result_allocation, codegen_func, &result_reg, NULL, NULL));
 
     kefir_bool_t unsigned_integer = false;
     switch (instr->operation.opcode) {
@@ -80,10 +80,8 @@ DEFINE_TRANSLATOR(constant) {
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected optimizer instruction opcode");
     }
 
-    if (result_reg.borrow) {
-        REQUIRE_OK(kefir_codegen_opt_sysv_amd64_store_reg_allocation_from(codegen, &codegen_func->stack_frame_map,
-                                                                          reg_allocation, result_reg.reg));
-    }
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_store_reg_allocation(codegen, &codegen_func->stack_frame_map,
+                                                                 result_allocation, result_reg.reg));
 
     REQUIRE_OK(kefir_codegen_opt_sysv_amd64_temporary_register_free(mem, codegen, codegen_func, &result_reg));
     return KEFIR_OK;

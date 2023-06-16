@@ -25,19 +25,20 @@
 DEFINE_TRANSLATOR(get_argument) {
     DEFINE_TRANSLATOR_PROLOGUE;
 
-    const struct kefir_codegen_opt_sysv_amd64_register_allocation *reg_allocation = NULL;
+    const struct kefir_codegen_opt_sysv_amd64_register_allocation *result_allocation = NULL;
     REQUIRE_OK(kefir_codegen_opt_sysv_amd64_register_allocation_of(&codegen_func->register_allocator, instr_ref,
-                                                                   &reg_allocation));
+                                                                   &result_allocation));
 
     REQUIRE(
-        reg_allocation->result.type == KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_PARAMETER_REGISTER_AGGREGATE,
+        result_allocation->result.type == KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_PARAMETER_REGISTER_AGGREGATE,
         KEFIR_OK);
 
-    kefir_size_t offset = reg_allocation->result.register_aggregate.index;
+    kefir_size_t offset = result_allocation->result.register_aggregate.index;
     for (kefir_size_t i = 0;
-         i < kefir_vector_length(&reg_allocation->result.register_aggregate.allocation->container.qwords); i++) {
-        ASSIGN_DECL_CAST(struct kefir_abi_sysv_amd64_qword *, qword,
-                         kefir_vector_at(&reg_allocation->result.register_aggregate.allocation->container.qwords, i));
+         i < kefir_vector_length(&result_allocation->result.register_aggregate.allocation->container.qwords); i++) {
+        ASSIGN_DECL_CAST(
+            struct kefir_abi_sysv_amd64_qword *, qword,
+            kefir_vector_at(&result_allocation->result.register_aggregate.allocation->container.qwords, i));
         switch (qword->klass) {
             case KEFIR_AMD64_SYSV_PARAM_INTEGER:
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(

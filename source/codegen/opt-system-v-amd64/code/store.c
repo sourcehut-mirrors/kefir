@@ -29,19 +29,18 @@ DEFINE_TRANSLATOR(store) {
     REQUIRE_OK(kefir_opt_code_container_instr(&function->code, instr_ref, &instr));
 
     const struct kefir_codegen_opt_sysv_amd64_register_allocation *source_allocation = NULL;
+    const struct kefir_codegen_opt_sysv_amd64_register_allocation *target_allocation = NULL;
+
     REQUIRE_OK(kefir_codegen_opt_sysv_amd64_register_allocation_of(
         &codegen_func->register_allocator, instr->operation.parameters.memory_access.value, &source_allocation));
-    const struct kefir_codegen_opt_sysv_amd64_register_allocation *target_allocation = NULL;
     REQUIRE_OK(kefir_codegen_opt_sysv_amd64_register_allocation_of(
         &codegen_func->register_allocator, instr->operation.parameters.memory_access.location, &target_allocation));
 
     struct kefir_codegen_opt_sysv_amd64_translate_temporary_register target_reg;
     REQUIRE_OK(kefir_codegen_opt_sysv_amd64_temporary_general_purpose_register_obtain(
         mem, codegen, target_allocation, codegen_func, &target_reg, NULL, NULL));
-    if (target_reg.borrow) {
-        REQUIRE_OK(kefir_codegen_opt_sysv_amd64_load_reg_allocation_into(codegen, &codegen_func->stack_frame_map,
-                                                                         target_allocation, target_reg.reg));
-    }
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_load_reg_allocation(codegen, &codegen_func->stack_frame_map,
+                                                                target_allocation, target_reg.reg));
 
     kefir_asm_amd64_xasmgen_pointer_type_t pointer_type;
     switch (instr->operation.opcode) {
