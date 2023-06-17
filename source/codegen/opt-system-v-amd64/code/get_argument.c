@@ -29,15 +29,16 @@ DEFINE_TRANSLATOR(get_argument) {
     REQUIRE_OK(kefir_codegen_opt_sysv_amd64_register_allocation_of(&codegen_func->register_allocator, instr_ref,
                                                                    &result_allocation));
 
-    REQUIRE(result_allocation->result.type == KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_SPILL_AREA, KEFIR_OK);
-    REQUIRE(result_allocation->result.spill.parameter_allocation != NULL,
-            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected parameter allocation as part of argument spill"));
+    REQUIRE(result_allocation->result.parameter_allocation.parameter_allocation != NULL, KEFIR_OK);
 
-    kefir_size_t offset = result_allocation->result.spill.index;
+    kefir_size_t offset = result_allocation->result.parameter_allocation.index;
     for (kefir_size_t i = 0;
-         i < kefir_vector_length(&result_allocation->result.spill.parameter_allocation->container.qwords); i++) {
-        ASSIGN_DECL_CAST(struct kefir_abi_sysv_amd64_qword *, qword,
-                         kefir_vector_at(&result_allocation->result.spill.parameter_allocation->container.qwords, i));
+         i <
+         kefir_vector_length(&result_allocation->result.parameter_allocation.parameter_allocation->container.qwords);
+         i++) {
+        ASSIGN_DECL_CAST(
+            struct kefir_abi_sysv_amd64_qword *, qword,
+            kefir_vector_at(&result_allocation->result.parameter_allocation.parameter_allocation->container.qwords, i));
         switch (qword->klass) {
             case KEFIR_AMD64_SYSV_PARAM_INTEGER:
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
@@ -70,5 +71,21 @@ DEFINE_TRANSLATOR(get_argument) {
                                        "Aggregates with non-INTEGER and non-SSE members are not supported yet");
         }
     }
+
+    struct kefir_codegen_opt_sysv_amd64_translate_temporary_register result_reg;
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_temporary_general_purpose_register_obtain(
+        mem, codegen, result_allocation, codegen_func, &result_reg, NULL, NULL));
+
+    REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_LEA(
+        &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_reg.reg),
+        kefir_asm_amd64_xasmgen_operand_indirect(
+            &codegen->xasmgen_helpers.operands[0],
+            kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
+            codegen_func->stack_frame_map.offset.spill_area + offset * KEFIR_AMD64_SYSV_ABI_QWORD)));
+
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_store_reg_allocation(codegen, &codegen_func->stack_frame_map,
+                                                                 result_allocation, result_reg.reg));
+
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_temporary_register_free(mem, codegen, codegen_func, &result_reg));
     return KEFIR_OK;
 }

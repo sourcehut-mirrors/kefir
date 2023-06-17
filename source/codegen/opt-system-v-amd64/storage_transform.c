@@ -437,7 +437,8 @@ kefir_result_t kefir_codegen_opt_amd64_sysv_storage_transform_perform(
             kefir_hashtree_has(&transform->map, (kefir_hashtree_key_t) &entry->source)) {
             REQUIRE_OK(load_temporary(mem, codegen, codegen_func, &entry->destination,
                                       entry->mapping.stack_temporary_index, num_of_stack_temporaries));
-        } else if (hashcode_source > hashcode_destination) {
+        } else if (!transform_location_compare((kefir_hashtree_key_t) &entry->source,
+                                               (kefir_hashtree_key_t) &entry->destination, NULL)) {
             REQUIRE_OK(load_from_location(mem, codegen, codegen_func, &entry->destination, &entry->source,
                                           num_of_stack_temporaries));
         }
