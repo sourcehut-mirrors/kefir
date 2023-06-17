@@ -418,6 +418,7 @@ static kefir_result_t translate_instr(struct kefir_mem *mem, struct kefir_codege
         case KEFIR_OPT_OPCODE_INT_CONST:
         case KEFIR_OPT_OPCODE_UINT_CONST:
         case KEFIR_OPT_OPCODE_STRING_REF:
+        case KEFIR_OPT_OPCODE_BLOCK_LABEL:
             REQUIRE_OK(INVOKE_TRANSLATOR(constant));
             break;
 
@@ -475,6 +476,7 @@ static kefir_result_t translate_instr(struct kefir_mem *mem, struct kefir_codege
 
         case KEFIR_OPT_OPCODE_JUMP:
         case KEFIR_OPT_OPCODE_BRANCH:
+        case KEFIR_OPT_OPCODE_IJUMP:
             REQUIRE_OK(INVOKE_TRANSLATOR(jump));
             break;
 
@@ -483,13 +485,11 @@ static kefir_result_t translate_instr(struct kefir_mem *mem, struct kefir_codege
             break;
 
         case KEFIR_OPT_OPCODE_INLINE_ASSEMBLY:
-        case KEFIR_OPT_OPCODE_IJUMP:
         case KEFIR_OPT_OPCODE_INVOKE:
         case KEFIR_OPT_OPCODE_INVOKE_VIRTUAL:
         case KEFIR_OPT_OPCODE_FLOAT32_CONST:
         case KEFIR_OPT_OPCODE_FLOAT64_CONST:
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_CONST:
-        case KEFIR_OPT_OPCODE_BLOCK_LABEL:
         case KEFIR_OPT_OPCODE_GET_THREAD_LOCAL:
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_STORE:
         case KEFIR_OPT_OPCODE_ZERO_MEMORY:

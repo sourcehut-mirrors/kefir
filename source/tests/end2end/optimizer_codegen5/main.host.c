@@ -38,6 +38,10 @@ int main(void) {
     for (long i = -10; i <= 20; i++) {
         assert(factorial(i) == test_factorial(i));
         assert(factorial2(i) == test_factorial(i));
+
+        if (i <= 8) {
+            assert(dummy_factorial(i) == test_factorial(i));
+        }
     }
     return EXIT_SUCCESS;
 }

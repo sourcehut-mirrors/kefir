@@ -54,3 +54,39 @@ long factorial2(long x) {
         }
     return result;
 }
+
+long dummy_factorial(long x) {
+    void *array[8];
+    array[0] = &&l1;
+    array[1] = &&l2;
+    array[2] = &&l3;
+    array[3] = &&l4;
+    array[4] = &&l5;
+    array[5] = &&l6;
+    array[6] = &&l7;
+    array[7] = &&l8;
+
+    if (x > 0 && x <= 20) {
+        goto *array[x - 1];
+    } else if (x < 0) {
+        return -1;
+    }
+    return 0;
+
+l1:
+    return 1;
+l2:
+    return 2;
+l3:
+    return 6;
+l4:
+    return 24;
+l5:
+    return 120;
+l6:
+    return 720;
+l7:
+    return 5040;
+l8:
+    return 40320;
+}

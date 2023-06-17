@@ -1481,7 +1481,7 @@ static kefir_result_t format_att_mnemonic_suffix(struct kefir_amd64_xasmgen *xas
         REQUIRE_OK(amd64_ident(xasmgen));                                                                              \
         fprintf(payload->output, #_mnemonic);                                                                          \
         REQUIRE_OK(format_att_mnemonic_suffix(xasmgen, op1, NULL, NULL));                                              \
-        if (op1->klass == KEFIR_AMD64_XASMGEN_OPERAND_INDIRECTION) {                                                   \
+        if (op1->klass != KEFIR_AMD64_XASMGEN_OPERAND_LABEL) {                                                         \
             fprintf(payload->output, "*");                                                                             \
         }                                                                                                              \
         REQUIRE_OK(amd64_format_op(xasmgen, op1));                                                                     \

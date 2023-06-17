@@ -569,7 +569,14 @@ static kefir_result_t link_blocks_match(struct kefir_mem *mem, struct kefir_opt_
             for (const struct kefir_list_entry *iter = kefir_list_head(&state->indirect_jump_targets); iter != NULL;
                  kefir_list_next(&iter)) {
                 ASSIGN_DECL_CAST(kefir_opt_block_id_t, target_block_id, (kefir_uptr_t) iter->value);
-                REQUIRE_OK(link_blocks_impl(mem, state, block->id, target_block_id));
+
+                struct kefir_hashtree_node *hashtree_node = NULL;
+                REQUIRE_OK(kefir_hashtree_at(&state->code_block_index, (kefir_hashtree_key_t) target_block_id,
+                                             &hashtree_node));
+                ASSIGN_DECL_CAST(struct kefir_opt_constructor_code_block_state *, target_state, hashtree_node->value);
+                REQUIRE(
+                    kefir_list_length(&target_state->phi_stack) == 0,
+                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Potential target of indirect jump shall have no phi nodes"));
             }
             break;
 

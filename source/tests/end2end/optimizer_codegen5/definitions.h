@@ -23,5 +23,6 @@
 
 extern long factorial(long);
 extern long factorial2(long);
+extern long dummy_factorial(long);
 
 #endif

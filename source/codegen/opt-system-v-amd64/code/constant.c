@@ -76,6 +76,16 @@ DEFINE_TRANSLATOR(constant) {
                     0)));
             break;
 
+        case KEFIR_OPT_OPCODE_BLOCK_LABEL:
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_LEA(
+                &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_reg.reg),
+                kefir_asm_amd64_xasmgen_operand_label(
+                    &codegen->xasmgen_helpers.operands[0],
+                    kefir_asm_amd64_xasmgen_helpers_format(
+                        &codegen->xasmgen_helpers, KEFIR_OPT_AMD64_SYSTEM_V_FUNCTION_BLOCK, function->ir_func->name,
+                        instr->operation.parameters.imm.block_ref))));
+            break;
+
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected optimizer instruction opcode");
     }

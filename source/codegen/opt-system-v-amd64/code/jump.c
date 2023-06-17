@@ -400,11 +400,11 @@ static kefir_result_t map_registers(struct kefir_mem *mem, struct kefir_codegen_
     return KEFIR_OK;
 }
 
-static kefir_result_t is_map_registers_necessary(const struct kefir_opt_function *function,
-                                                 const struct kefir_opt_code_analysis *func_analysis,
-                                                 struct kefir_opt_sysv_amd64_function *codegen_func,
-                                                 kefir_opt_block_id_t source_block_id,
-                                                 kefir_opt_block_id_t target_block_id, kefir_bool_t *necessary) {
+static kefir_result_t has_mapped_registers(const struct kefir_opt_function *function,
+                                           const struct kefir_opt_code_analysis *func_analysis,
+                                           struct kefir_opt_sysv_amd64_function *codegen_func,
+                                           kefir_opt_block_id_t source_block_id, kefir_opt_block_id_t target_block_id,
+                                           kefir_bool_t *result) {
     struct kefir_opt_code_block *target_block = NULL;
     REQUIRE_OK(kefir_opt_code_container_block(&function->code, target_block_id, &target_block));
 
@@ -435,13 +435,13 @@ static kefir_result_t is_map_registers_necessary(const struct kefir_opt_function
         REQUIRE_OK(reg_allocation_index(codegen_func, source_allocation, &target_index));
 
         if (source_index != target_index) {
-            *necessary = true;
+            *result = true;
             return KEFIR_OK;
         }
     }
     REQUIRE_OK(res);
 
-    *necessary = false;
+    *result = false;
     return KEFIR_OK;
 }
 
@@ -456,8 +456,12 @@ DEFINE_TRANSLATOR(jump) {
             REQUIRE_OK(map_registers(mem, codegen, function, func_analysis, codegen_func, instr->block_id,
                                      instr->operation.parameters.branch.target_block));
 
-            if (func_analysis->blocks[instr->operation.parameters.branch.target_block].linear_position !=
-                func_analysis->blocks[instr->block_id].linear_position + 1) {
+            const struct kefir_opt_code_analysis_block_properties *source_block_props =
+                &func_analysis->blocks[instr->block_id];
+            const struct kefir_opt_code_analysis_block_properties *target_block_props =
+                &func_analysis->blocks[instr->operation.parameters.branch.target_block];
+
+            if (target_block_props->linear_position != source_block_props->linear_position + 1) {
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_JMP(
                     &codegen->xasmgen,
                     kefir_asm_amd64_xasmgen_operand_label(
@@ -485,14 +489,13 @@ DEFINE_TRANSLATOR(jump) {
                                                       kefir_asm_amd64_xasmgen_operand_reg(condition_reg.reg),
                                                       kefir_asm_amd64_xasmgen_operand_reg(condition_reg.reg)));
 
-            kefir_bool_t map_necessary_for_alternative;
+            kefir_bool_t has_mapped_regs;
             kefir_id_t alternative_label;
-            kefir_bool_t separate_alternative_jmp = false;
-            REQUIRE_OK(is_map_registers_necessary(function, func_analysis, codegen_func, instr->block_id,
-                                                  instr->operation.parameters.branch.alternative_block,
-                                                  &map_necessary_for_alternative));
-            if (map_necessary_for_alternative || condition_reg.evicted) {
-                kefir_id_t alternative_label = true;
+            REQUIRE_OK(has_mapped_registers(function, func_analysis, codegen_func, instr->block_id,
+                                            instr->operation.parameters.branch.alternative_block, &has_mapped_regs));
+            kefir_bool_t separate_alternative_jmp = has_mapped_regs || condition_reg.evicted;
+
+            if (separate_alternative_jmp) {
                 alternative_label = codegen_func->nonblock_labels++;
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_JZ(
                     &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_label(
@@ -517,9 +520,13 @@ DEFINE_TRANSLATOR(jump) {
             REQUIRE_OK(map_registers(mem, codegen, function, func_analysis, codegen_func, instr->block_id,
                                      instr->operation.parameters.branch.target_block));
 
+            const struct kefir_opt_code_analysis_block_properties *source_block_props =
+                &func_analysis->blocks[instr->block_id];
+            const struct kefir_opt_code_analysis_block_properties *target_block_props =
+                &func_analysis->blocks[instr->operation.parameters.branch.target_block];
+
             if (separate_alternative_jmp ||
-                func_analysis->blocks[instr->operation.parameters.branch.target_block].linear_position !=
-                    func_analysis->blocks[instr->block_id].linear_position + 1) {
+                target_block_props->linear_position != source_block_props->linear_position + 1) {
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_JMP(
                     &codegen->xasmgen,
                     kefir_asm_amd64_xasmgen_operand_label(
@@ -538,8 +545,10 @@ DEFINE_TRANSLATOR(jump) {
                 REQUIRE_OK(map_registers(mem, codegen, function, func_analysis, codegen_func, instr->block_id,
                                          instr->operation.parameters.branch.alternative_block));
 
-                if (func_analysis->blocks[instr->operation.parameters.branch.alternative_block].linear_position !=
-                    func_analysis->blocks[instr->block_id].linear_position + 1) {
+                const struct kefir_opt_code_analysis_block_properties *alternative_block_props =
+                    &func_analysis->blocks[instr->operation.parameters.branch.alternative_block];
+
+                if (alternative_block_props->linear_position != source_block_props->linear_position + 1) {
                     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_JMP(
                         &codegen->xasmgen,
                         kefir_asm_amd64_xasmgen_operand_label(
@@ -549,6 +558,17 @@ DEFINE_TRANSLATOR(jump) {
                                 function->ir_func->name, instr->operation.parameters.branch.alternative_block))));
                 }
             }
+        } break;
+
+        case KEFIR_OPT_OPCODE_IJUMP: {
+            const struct kefir_codegen_opt_sysv_amd64_register_allocation *target_allocation = NULL;
+            REQUIRE_OK(kefir_codegen_opt_sysv_amd64_register_allocation_of(
+                &codegen_func->register_allocator, instr->operation.parameters.refs[0], &target_allocation));
+
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_JMP(
+                &codegen->xasmgen,
+                kefir_codegen_opt_sysv_amd64_reg_allocation_operand(
+                    &codegen->xasmgen_helpers.operands[0], &codegen_func->stack_frame_map, target_allocation)));
         } break;
 
         default:
