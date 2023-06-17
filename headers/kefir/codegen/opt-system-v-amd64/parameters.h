@@ -41,6 +41,10 @@ typedef struct kefir_codegen_opt_amd64_sysv_function_parameter_location {
         } indirect;
     };
     const struct kefir_abi_sysv_amd64_parameter_allocation *parameter_allocation;
+    struct {
+        kefir_size_t size;
+        kefir_size_t alignment;
+    } register_aggregate_props;
 } kefir_codegen_opt_amd64_sysv_function_parameter_location_t;
 
 typedef struct kefir_codegen_opt_amd64_sysv_function_parameters {

@@ -181,13 +181,7 @@ const struct kefir_asm_amd64_xasmgen_operand *kefir_codegen_opt_sysv_amd64_reg_a
         case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_SPILL_AREA:
             return kefir_asm_amd64_xasmgen_operand_indirect(
                 operand, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
-                stack_frame_map->offset.spill_area + reg_allocation->result.spill_index * KEFIR_AMD64_SYSV_ABI_QWORD);
-
-        case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_PARAMETER_REGISTER_AGGREGATE:
-            return kefir_asm_amd64_xasmgen_operand_indirect(
-                operand, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
-                stack_frame_map->offset.register_aggregate_area +
-                    reg_allocation->result.register_aggregate.index * KEFIR_AMD64_SYSV_ABI_QWORD);
+                stack_frame_map->offset.spill_area + reg_allocation->result.spill.index * KEFIR_AMD64_SYSV_ABI_QWORD);
 
         case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_INDIRECT:
             return kefir_asm_amd64_xasmgen_operand_indirect(
@@ -219,7 +213,6 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_load_reg_allocation(
 
         case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_GENERAL_PURPOSE_REGISTER:
         case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_SPILL_AREA:
-        case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_PARAMETER_REGISTER_AGGREGATE:
         case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_INDIRECT:
             if (!kefir_asm_amd64_xasmgen_register_is_floating_point(target_reg)) {
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
@@ -281,7 +274,6 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_store_reg_allocation(
 
         case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_GENERAL_PURPOSE_REGISTER:
         case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_SPILL_AREA:
-        case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_PARAMETER_REGISTER_AGGREGATE:
         case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_INDIRECT:
             if (!kefir_asm_amd64_xasmgen_register_is_floating_point(source_reg)) {
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(

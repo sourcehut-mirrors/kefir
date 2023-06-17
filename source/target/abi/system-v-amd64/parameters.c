@@ -723,6 +723,10 @@ static kefir_result_t aggregate_allocate(const struct kefir_ir_type *type, kefir
                     qword->location = sse_location;
                     break;
 
+                case KEFIR_AMD64_SYSV_PARAM_NO_CLASS:
+                    // Intentionally left blank
+                    break;
+
                 default:
                     return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected QWord class");
             }

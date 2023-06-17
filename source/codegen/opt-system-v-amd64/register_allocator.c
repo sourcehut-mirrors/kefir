@@ -377,11 +377,11 @@ static kefir_result_t deallocate(struct kefir_codegen_opt_sysv_amd64_register_al
             break;
 
         case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_SPILL_AREA:
-            REQUIRE_OK(kefir_bitset_set(&allocator->spilled_regs, allocation->result.spill_index, false));
+            REQUIRE_OK(kefir_bitset_set_consecutive(&allocator->spilled_regs, allocation->result.spill.index,
+                                                    allocation->result.spill.length, false));
             break;
 
         case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_INDIRECT:
-        case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_PARAMETER_REGISTER_AGGREGATE:
             // Intentionally left blank
             break;
     }
@@ -642,13 +642,15 @@ static kefir_result_t allocate_register(struct kefir_mem *mem,
             kefir_size_t spill_length;
             REQUIRE_OK(kefir_bitset_length(&allocator->spilled_regs, &spill_length));
             REQUIRE_OK(kefir_bitset_resize(mem, &allocator->spilled_regs, spill_length++));
-            REQUIRE_OK(kefir_codegen_opt_sysv_amd64_stack_frame_ensure_spill(stack_frame, spill_length));
+            REQUIRE_OK(kefir_codegen_opt_sysv_amd64_stack_frame_ensure_spill(stack_frame, spill_length, 1));
             res = kefir_bitset_find(&allocator->spilled_regs, false, search_index, &available_spill_index);
         }
 
         REQUIRE_OK(res);
         current_allocation->result.type = KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_SPILL_AREA;
-        current_allocation->result.spill_index = available_spill_index;
+        current_allocation->result.spill.index = available_spill_index;
+        current_allocation->result.spill.length = 1;
+        current_allocation->result.spill.parameter_allocation = NULL;
         REQUIRE_OK(kefir_bitset_set(&allocator->spilled_regs, available_spill_index, true));
         found = true;
     }
@@ -708,13 +710,41 @@ static kefir_result_t do_allocation_impl(struct kefir_mem *mem, const struct kef
                 allocation->result.indirect.offset = parameter_location->indirect.offset;
                 break;
 
-            case KEFIR_CODEGEN_OPT_AMD64_SYSV_FUNCTION_PARAMETER_LOCATION_REGISTER_AGGREGATE:
-                REQUIRE_OK(kefir_codegen_opt_sysv_amd64_stack_frame_allocate_register_aggregate(
-                    stack_frame, kefir_vector_length(&parameter_location->parameter_allocation->container.qwords),
-                    &allocation->result.register_aggregate.index));
-                allocation->result.register_aggregate.allocation = parameter_location->parameter_allocation;
-                allocation->result.type = KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_PARAMETER_REGISTER_AGGREGATE;
-                break;
+            case KEFIR_CODEGEN_OPT_AMD64_SYSV_FUNCTION_PARAMETER_LOCATION_REGISTER_AGGREGATE: {
+                kefir_size_t aggregate_length =
+                    kefir_vector_length(&parameter_location->parameter_allocation->container.qwords);
+                kefir_size_t reg_aggregate_alignment =
+                    MAX(parameter_location->register_aggregate_props.alignment, KEFIR_AMD64_SYSV_ABI_QWORD);
+                kefir_size_t qword_alignment = reg_aggregate_alignment / KEFIR_AMD64_SYSV_ABI_QWORD;
+                kefir_size_t allocated_length = aggregate_length + qword_alignment - 1;
+
+                kefir_size_t available_spill_index;
+                kefir_result_t res = kefir_bitset_find_consecutive(&allocator->spilled_regs, false, allocated_length, 0,
+                                                                   &available_spill_index);
+                if (res == KEFIR_NOT_FOUND) {
+                    kefir_size_t spill_length;
+                    REQUIRE_OK(kefir_bitset_length(&allocator->spilled_regs, &spill_length));
+                    spill_length += allocated_length;
+                    REQUIRE_OK(kefir_bitset_resize(mem, &allocator->spilled_regs, spill_length));
+                    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_stack_frame_ensure_spill(stack_frame, spill_length,
+                                                                                     qword_alignment));
+                    res = kefir_bitset_find_consecutive(&allocator->spilled_regs, false, allocated_length, 0,
+                                                        &available_spill_index);
+                }
+                REQUIRE_OK(res);
+
+                kefir_size_t misalignment = available_spill_index % qword_alignment;
+                if (misalignment != 0) {
+                    available_spill_index += qword_alignment - misalignment;
+                }
+
+                allocation->result.type = KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_SPILL_AREA;
+                allocation->result.spill.index = available_spill_index;
+                allocation->result.spill.length = aggregate_length;
+                allocation->result.spill.parameter_allocation = parameter_location->parameter_allocation;
+                REQUIRE_OK(kefir_bitset_set_consecutive(&allocator->spilled_regs, available_spill_index,
+                                                        aggregate_length, true));
+            } break;
         }
 
         if (update_alive) {

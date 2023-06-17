@@ -46,7 +46,7 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_stack_frame_init(struct kefir_codege
     frame->preserve.implicit_parameter = false;
     frame->preserve_area_size = 0;
     frame->spill_area_size = 0;
-    frame->register_aggregate_area_size = 0;
+    frame->spill_area_alignment = 0;
     frame->local_area_size = 0;
     frame->local_area_alignment = 0;
     return KEFIR_OK;
@@ -106,24 +106,12 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_stack_frame_preserve_implicit_parame
 }
 
 kefir_result_t kefir_codegen_opt_sysv_amd64_stack_frame_ensure_spill(
-    struct kefir_codegen_opt_sysv_amd64_stack_frame *frame, kefir_size_t spill_area) {
+    struct kefir_codegen_opt_sysv_amd64_stack_frame *frame, kefir_size_t spill_area, kefir_size_t qword_alignment) {
     REQUIRE(frame != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer codegen System-V AMD64 stack frame"));
 
     frame->spill_area_size = MAX(frame->spill_area_size, spill_area);
-    return KEFIR_OK;
-}
-
-kefir_result_t kefir_codegen_opt_sysv_amd64_stack_frame_allocate_register_aggregate(
-    struct kefir_codegen_opt_sysv_amd64_stack_frame *frame, kefir_size_t size, kefir_size_t *index) {
-    REQUIRE(frame != NULL,
-            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer codegen System-V AMD64 stack frame"));
-    REQUIRE(size != 0, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen register aggregate size"));
-    REQUIRE(index != NULL,
-            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to codegen register aggregate index"));
-
-    *index = frame->register_aggregate_area_size;
-    frame->register_aggregate_area_size += size;
+    frame->spill_area_alignment = MAX(frame->spill_area_alignment, qword_alignment);
     return KEFIR_OK;
 }
 
@@ -180,10 +168,12 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_stack_frame_compute(
     }
 
     map->offset.spill_area = map->offset.implicit_parameter - (frame->spill_area_size * KEFIR_AMD64_SYSV_ABI_QWORD);
-    map->offset.register_aggregate_area =
-        map->offset.spill_area - (frame->register_aggregate_area_size * KEFIR_AMD64_SYSV_ABI_QWORD);
+    if (frame->spill_area_alignment > 1) {
+        map->offset.spill_area = -(kefir_int64_t) kefir_target_abi_pad_aligned(
+            (kefir_size_t) -map->offset.spill_area, MAX(frame->spill_area_alignment, 1) * KEFIR_AMD64_SYSV_ABI_QWORD);
+    }
 
-    map->offset.local_area = map->offset.register_aggregate_area - frame->local_area_size;
+    map->offset.local_area = map->offset.spill_area - frame->local_area_size;
     if (frame->local_area_size > 0) {
         map->offset.local_area = -(kefir_int64_t) kefir_target_abi_pad_aligned(
             (kefir_size_t) -map->offset.local_area, MAX(frame->local_area_alignment, 2 * KEFIR_AMD64_SYSV_ABI_QWORD));

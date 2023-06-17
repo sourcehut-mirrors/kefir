@@ -90,6 +90,42 @@ kefir_result_t kefir_bitset_find(const struct kefir_bitset *bitset, kefir_bool_t
     return KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find requested bit in bitset");
 }
 
+kefir_result_t kefir_bitset_set_consecutive(const struct kefir_bitset *bitset, kefir_size_t index, kefir_size_t length,
+                                            kefir_bool_t value) {
+    REQUIRE(bitset != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid bitset"));
+
+    for (kefir_size_t i = 0; i < length; i++) {
+        REQUIRE_OK(kefir_bitset_set(bitset, index + i, value));
+    }
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_bitset_find_consecutive(const struct kefir_bitset *bitset, kefir_bool_t value, kefir_size_t length,
+                                             kefir_size_t begin, kefir_size_t *result_ptr) {
+    REQUIRE(bitset != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid bitset"));
+    REQUIRE(result_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to index"));
+
+    kefir_size_t index = begin;
+    for (;;) {
+        REQUIRE_OK(kefir_bitset_find(bitset, value, index, &index));
+        kefir_bool_t found = true;
+        for (kefir_size_t i = index; i < index + length; i++) {
+            kefir_bool_t bit;
+            REQUIRE_OK(kefir_bitset_get(bitset, i, &bit));
+            if (bit != value) {
+                found = false;
+                break;
+            }
+        }
+
+        if (found) {
+            *result_ptr = index;
+            break;
+        }
+    }
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_bitset_length(const struct kefir_bitset *bitset, kefir_size_t *length_ptr) {
     REQUIRE(bitset != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid bitset"));
     REQUIRE(length_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to bitset length"));

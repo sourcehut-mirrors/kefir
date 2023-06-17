@@ -132,6 +132,11 @@ static kefir_result_t traverse_aggregate_argument(const struct kefir_ir_type *ty
         argument.indirect.offset = alloc->location.stack_offset + 2 * KEFIR_AMD64_SYSV_ABI_QWORD;
     } else {
         argument.type = KEFIR_CODEGEN_OPT_AMD64_SYSV_FUNCTION_PARAMETER_LOCATION_REGISTER_AGGREGATE;
+        const struct kefir_abi_sysv_amd64_typeentry_layout *layout = NULL;
+        REQUIRE_OK(kefir_abi_sysv_amd64_type_layout_at(&param->target_func_decl->parameters.layout,
+                                                       param->argument_index, &layout));
+        argument.register_aggregate_props.size = layout->size;
+        argument.register_aggregate_props.alignment = layout->alignment;
     }
     argument.parameter_allocation = alloc;
     REQUIRE_OK(insert_argument(param->mem, param->parameters, param->argument_index, &argument));

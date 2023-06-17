@@ -18,6 +18,9 @@ kefir_result_t kefir_bitset_free(struct kefir_mem *, struct kefir_bitset *);
 kefir_result_t kefir_bitset_get(const struct kefir_bitset *, kefir_size_t, kefir_bool_t *);
 kefir_result_t kefir_bitset_set(const struct kefir_bitset *, kefir_size_t, kefir_bool_t);
 kefir_result_t kefir_bitset_find(const struct kefir_bitset *, kefir_bool_t, kefir_size_t, kefir_size_t *);
+kefir_result_t kefir_bitset_set_consecutive(const struct kefir_bitset *, kefir_size_t, kefir_size_t, kefir_bool_t);
+kefir_result_t kefir_bitset_find_consecutive(const struct kefir_bitset *, kefir_bool_t, kefir_size_t, kefir_size_t,
+                                             kefir_size_t *);
 
 kefir_result_t kefir_bitset_length(const struct kefir_bitset *, kefir_size_t *);
 kefir_result_t kefir_bitset_resize(struct kefir_mem *, struct kefir_bitset *, kefir_size_t);

@@ -50,20 +50,14 @@ static kefir_result_t reg_allocation_index(struct kefir_opt_sysv_amd64_function 
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected register allocation");
 
         case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_SPILL_AREA:
-            *index = reg_alloc->result.spill_index + KefirOptSysvAmd64NumOfGeneralPurposeRegisters +
+            *index = reg_alloc->result.spill.index + KefirOptSysvAmd64NumOfGeneralPurposeRegisters +
                      KefirOptSysvAmd64NumOfFloatingPointRegisters;
-            break;
-
-        case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_PARAMETER_REGISTER_AGGREGATE:
-            *index = reg_alloc->result.register_aggregate.index + codegen_func->stack_frame.spill_area_size +
-                     KefirOptSysvAmd64NumOfGeneralPurposeRegisters + KefirOptSysvAmd64NumOfFloatingPointRegisters;
             break;
 
         case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_INDIRECT:
             *index = (((kefir_size_t) reg_alloc->result.indirect.base_register) << 16) +
-                     reg_alloc->result.indirect.offset + codegen_func->stack_frame.register_aggregate_area_size +
-                     codegen_func->stack_frame.spill_area_size + KefirOptSysvAmd64NumOfGeneralPurposeRegisters +
-                     KefirOptSysvAmd64NumOfFloatingPointRegisters;
+                     reg_alloc->result.indirect.offset + codegen_func->stack_frame.spill_area_size +
+                     KefirOptSysvAmd64NumOfGeneralPurposeRegisters + KefirOptSysvAmd64NumOfFloatingPointRegisters;
             break;
     }
     return KEFIR_OK;
@@ -104,7 +98,6 @@ static kefir_result_t push_register_allocation(
             break;
 
         case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_SPILL_AREA:
-        case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_PARAMETER_REGISTER_AGGREGATE:
         case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_INDIRECT: {
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_SUB(
                 &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
@@ -146,7 +139,6 @@ static kefir_result_t pop_register_allocation(
     kefir_size_t total_tmp_positions) {
     switch (reg_allocation->result.type) {
         case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_NONE:
-        case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_PARAMETER_REGISTER_AGGREGATE:
         case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_INDIRECT:
             return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unexpected register allocation type");
 
@@ -199,7 +191,6 @@ static kefir_result_t load_register_allocation(
     const struct kefir_codegen_opt_sysv_amd64_register_allocation *source_allocation) {
     switch (target_allocation->result.type) {
         case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_NONE:
-        case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_PARAMETER_REGISTER_AGGREGATE:
         case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_INDIRECT:
             return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unexpected register allocation type");
 
@@ -254,7 +245,6 @@ static kefir_result_t load_register_allocation(
                         kefir_asm_amd64_xasmgen_operand_reg(source_allocation->result.reg)));
                     break;
 
-                case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_PARAMETER_REGISTER_AGGREGATE:
                 case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_INDIRECT:
                 case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_SPILL_AREA: {
                     struct kefir_codegen_opt_sysv_amd64_translate_temporary_register tmp_reg;
