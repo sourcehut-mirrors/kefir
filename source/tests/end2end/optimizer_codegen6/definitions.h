@@ -29,4 +29,19 @@ struct Test1 {
 
 int sum1(struct Test1);
 
+struct Test2 {
+    _Alignas(16) int x;
+    _Alignas(long) char y;
+};
+
+int sum2(struct Test2);
+
+struct Test3 {
+    int x;
+    float y;
+    long z;
+};
+
+long sum3(struct Test3);
+
 #endif

@@ -29,16 +29,16 @@ DEFINE_TRANSLATOR(get_argument) {
     REQUIRE_OK(kefir_codegen_opt_sysv_amd64_register_allocation_of(&codegen_func->register_allocator, instr_ref,
                                                                    &result_allocation));
 
-    REQUIRE(result_allocation->result.parameter_allocation.parameter_allocation != NULL, KEFIR_OK);
+    REQUIRE(result_allocation->result.type == KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_POINTER_SPILL_AREA,
+            KEFIR_OK);
+    REQUIRE(result_allocation->result.parameter_allocation != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected valid function parameter allocation"));
 
-    kefir_size_t offset = result_allocation->result.parameter_allocation.index;
-    for (kefir_size_t i = 0;
-         i <
-         kefir_vector_length(&result_allocation->result.parameter_allocation.parameter_allocation->container.qwords);
+    kefir_size_t offset = result_allocation->result.spill.index;
+    for (kefir_size_t i = 0; i < kefir_vector_length(&result_allocation->result.parameter_allocation->container.qwords);
          i++) {
-        ASSIGN_DECL_CAST(
-            struct kefir_abi_sysv_amd64_qword *, qword,
-            kefir_vector_at(&result_allocation->result.parameter_allocation.parameter_allocation->container.qwords, i));
+        ASSIGN_DECL_CAST(struct kefir_abi_sysv_amd64_qword *, qword,
+                         kefir_vector_at(&result_allocation->result.parameter_allocation->container.qwords, i));
         switch (qword->klass) {
             case KEFIR_AMD64_SYSV_PARAM_INTEGER:
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(

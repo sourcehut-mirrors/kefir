@@ -137,6 +137,18 @@ kefir_result_t kefir_codegen_opt_amd64_sysv_storage_transform_location_from_reg_
                 stack_frame_map->offset.spill_area + reg_allocation->result.spill.index * KEFIR_AMD64_SYSV_ABI_QWORD;
             break;
 
+        case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_POINTER_SPILL_AREA:
+            if (reg_allocation->result.spill.pointer.spilled) {
+                location->type = KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_TRANSFORM_MEMORY;
+                location->memory.base_reg = KEFIR_AMD64_XASMGEN_REGISTER_RBP;
+                location->memory.offset = stack_frame_map->offset.spill_area +
+                                          reg_allocation->result.spill.pointer.spill_index * KEFIR_AMD64_SYSV_ABI_QWORD;
+            } else {
+                location->type = KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_TRANSFORM_REGISTER;
+                location->reg = reg_allocation->result.spill.pointer.reg;
+            }
+            break;
+
         case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_INDIRECT:
             location->type = KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_TRANSFORM_MEMORY;
             location->memory.base_reg = reg_allocation->result.indirect.base_register;

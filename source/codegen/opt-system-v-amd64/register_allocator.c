@@ -87,7 +87,7 @@ static kefir_result_t build_graph_impl(struct kefir_mem *mem, const struct kefir
         instr_allocation->klass = KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_CLASS_GENERAL_PURPOSE;
         instr_allocation->register_hint.present = false;
         instr_allocation->alias_hint.present = false;
-        instr_allocation->result.parameter_allocation.parameter_allocation = NULL;
+        instr_allocation->result.parameter_allocation = NULL;
 
         kefir_result_t res =
             kefir_graph_new_node(mem, &allocator->allocation, (kefir_graph_node_id_t) instr_props->instr_ref,
@@ -377,18 +377,24 @@ static kefir_result_t deallocate(struct kefir_codegen_opt_sysv_amd64_register_al
             REQUIRE_OK(kefir_bitset_set(&allocator->floating_point_regs, register_index, false));
             break;
 
+        case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_POINTER_SPILL_AREA:
+            if (allocation->result.spill.pointer.spilled) {
+                REQUIRE_OK(
+                    kefir_bitset_set(&allocator->spilled_regs, allocation->result.spill.pointer.spill_index, false));
+            } else {
+                REQUIRE_OK(general_purpose_index_of(allocation->result.spill.pointer.reg, &register_index));
+                REQUIRE_OK(kefir_bitset_set(&allocator->general_purpose_regs, register_index, false));
+            }
+            // Fallthrough
+
         case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_SPILL_AREA:
-            REQUIRE_OK(kefir_bitset_set(&allocator->spilled_regs, allocation->result.spill.index, false));
+            REQUIRE_OK(kefir_bitset_set_consecutive(&allocator->spilled_regs, allocation->result.spill.index,
+                                                    allocation->result.spill.length, false));
             break;
 
         case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_INDIRECT:
             // Intentionally left blank
             break;
-    }
-
-    if (allocation->result.parameter_allocation.parameter_allocation != NULL) {
-        REQUIRE_OK(kefir_bitset_set_consecutive(&allocator->spilled_regs, allocation->result.parameter_allocation.index,
-                                                allocation->result.parameter_allocation.length, false));
     }
     return KEFIR_OK;
 }
@@ -760,13 +766,28 @@ static kefir_result_t do_allocation_impl(struct kefir_mem *mem, const struct kef
                     available_spill_index += qword_alignment - misalignment;
                 }
 
-                REQUIRE_OK(allocate_register(mem, allocator, stack_frame, allocation, conflict_hints,
-                                             filter_non_parameter_regs));
-                allocation->result.parameter_allocation.index = available_spill_index;
-                allocation->result.parameter_allocation.length = aggregate_length;
-                allocation->result.parameter_allocation.parameter_allocation = parameter_location->parameter_allocation;
                 REQUIRE_OK(kefir_bitset_set_consecutive(&allocator->spilled_regs, available_spill_index,
                                                         aggregate_length, true));
+
+                REQUIRE_OK(allocate_register(mem, allocator, stack_frame, allocation, conflict_hints,
+                                             filter_non_parameter_regs));
+                if (allocation->result.type ==
+                    KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_GENERAL_PURPOSE_REGISTER) {
+                    kefir_asm_amd64_xasmgen_register_t reg = allocation->result.reg;
+                    allocation->result.spill.pointer.reg = reg;
+                    allocation->result.spill.pointer.spilled = false;
+                } else {
+                    REQUIRE(allocation->result.type == KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_SPILL_AREA &&
+                                allocation->result.spill.length == 1,
+                            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected register allocation state"));
+                    kefir_size_t index = allocation->result.spill.index;
+                    allocation->result.spill.pointer.spill_index = index;
+                    allocation->result.spill.pointer.spilled = true;
+                }
+                allocation->result.type = KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_POINTER_SPILL_AREA;
+                allocation->result.spill.index = available_spill_index;
+                allocation->result.spill.length = aggregate_length;
+                allocation->result.parameter_allocation = parameter_location->parameter_allocation;
             } break;
         }
 

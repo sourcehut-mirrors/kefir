@@ -30,7 +30,10 @@ int main(void) {
         for (int y = -500; y <= 500; y++) {
             for (short z = -10; z <= 10; z++) {
                 assert(sum1((struct Test1){x, y * 1000, z}) == (x + (y * 1000) + z));
+                assert(sum3((struct Test3){x, y, z}) == ((int) x + (long) z));
             }
+
+            assert(sum2((struct Test2){x, y}) == (-(int) x - (char) y));
         }
     }
     return EXIT_SUCCESS;

@@ -46,6 +46,7 @@ typedef enum kefir_codegen_opt_sysv_amd64_register_allocation_type {
     KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_GENERAL_PURPOSE_REGISTER,
     KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_FLOATING_POINT_REGISTER,
     KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_SPILL_AREA,
+    KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_POINTER_SPILL_AREA,
     KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_INDIRECT
 } kefir_codegen_opt_sysv_amd64_register_allocation_type_t;
 
@@ -59,6 +60,12 @@ typedef struct kefir_codegen_opt_sysv_amd64_register_allocation {
             kefir_asm_amd64_xasmgen_register_t reg;
             struct {
                 kefir_size_t index;
+                kefir_size_t length;
+                struct {
+                    kefir_bool_t spilled;
+                    kefir_asm_amd64_xasmgen_register_t reg;
+                    kefir_size_t spill_index;
+                } pointer;
             } spill;
             struct {
                 kefir_asm_amd64_xasmgen_register_t base_register;
@@ -66,11 +73,7 @@ typedef struct kefir_codegen_opt_sysv_amd64_register_allocation {
             } indirect;
         };
 
-        struct {
-            kefir_size_t index;
-            kefir_size_t length;
-            const struct kefir_abi_sysv_amd64_parameter_allocation *parameter_allocation;
-        } parameter_allocation;
+        const struct kefir_abi_sysv_amd64_parameter_allocation *parameter_allocation;
     } result;
 
     struct {

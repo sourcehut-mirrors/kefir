@@ -23,3 +23,11 @@
 int sum1(struct Test1 t) {
     return t.x + t.y + t.z;
 }
+
+int sum2(struct Test2 t) {
+    return -t.x - t.y;
+}
+
+long sum3(struct Test3 t) {
+    return t.x + t.z;
+}

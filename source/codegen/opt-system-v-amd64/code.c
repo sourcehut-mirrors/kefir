@@ -183,6 +183,16 @@ const struct kefir_asm_amd64_xasmgen_operand *kefir_codegen_opt_sysv_amd64_reg_a
                 operand, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
                 stack_frame_map->offset.spill_area + reg_allocation->result.spill.index * KEFIR_AMD64_SYSV_ABI_QWORD);
 
+        case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_POINTER_SPILL_AREA:
+            if (reg_allocation->result.spill.pointer.spilled) {
+                return kefir_asm_amd64_xasmgen_operand_indirect(
+                    operand, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
+                    stack_frame_map->offset.spill_area +
+                        reg_allocation->result.spill.pointer.spill_index * KEFIR_AMD64_SYSV_ABI_QWORD);
+            } else {
+                return kefir_asm_amd64_xasmgen_operand_reg(reg_allocation->result.spill.pointer.reg);
+            }
+
         case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_INDIRECT:
             return kefir_asm_amd64_xasmgen_operand_indirect(
                 operand, kefir_asm_amd64_xasmgen_operand_reg(reg_allocation->result.indirect.base_register),
@@ -204,7 +214,9 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_load_reg_allocation(
     REQUIRE(
         !((reg_allocation->result.type == KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_GENERAL_PURPOSE_REGISTER ||
            reg_allocation->result.type == KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_FLOATING_POINT_REGISTER) &&
-          reg_allocation->result.reg == target_reg),
+          reg_allocation->result.reg == target_reg) &&
+            !(reg_allocation->result.type == KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_POINTER_SPILL_AREA &&
+              !reg_allocation->result.spill.pointer.spilled && reg_allocation->result.spill.pointer.reg == target_reg),
         KEFIR_OK);
 
     switch (reg_allocation->result.type) {
@@ -213,6 +225,7 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_load_reg_allocation(
 
         case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_GENERAL_PURPOSE_REGISTER:
         case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_SPILL_AREA:
+        case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_POINTER_SPILL_AREA:
         case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_INDIRECT:
             if (!kefir_asm_amd64_xasmgen_register_is_floating_point(target_reg)) {
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
@@ -265,7 +278,9 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_store_reg_allocation(
     REQUIRE(
         !((reg_allocation->result.type == KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_GENERAL_PURPOSE_REGISTER ||
            reg_allocation->result.type == KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_FLOATING_POINT_REGISTER) &&
-          reg_allocation->result.reg == source_reg),
+          reg_allocation->result.reg == source_reg) &&
+            !(reg_allocation->result.type == KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_POINTER_SPILL_AREA &&
+              !reg_allocation->result.spill.pointer.spilled && reg_allocation->result.spill.pointer.reg == source_reg),
         KEFIR_OK);
 
     switch (reg_allocation->result.type) {
@@ -274,6 +289,7 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_store_reg_allocation(
 
         case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_GENERAL_PURPOSE_REGISTER:
         case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_SPILL_AREA:
+        case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_POINTER_SPILL_AREA:
         case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_INDIRECT:
             if (!kefir_asm_amd64_xasmgen_register_is_floating_point(source_reg)) {
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
