@@ -28,6 +28,9 @@
 extern const kefir_asm_amd64_xasmgen_register_t KefirCodegenOptSysvAmd64StackFramePreservedRegs[];
 enum { KefirCodegenOptSysvAmd64StackFrameNumOfPreservedRegs = 5 };
 
+extern const kefir_asm_amd64_xasmgen_register_t KefirCodegenOptSysvAmd64StackFrameCallerSavedRegs[];
+enum { KefirCodegenOptSysvAmd64StackFrameNumOfCallerSavedRegs = 25 };
+
 typedef struct kefir_codegen_opt_sysv_amd64_stack_frame {
     kefir_uint64_t preserved_regs_content[KEFIR_BITSET_STATIC_CONTENT_CAPACITY(
         KefirCodegenOptSysvAmd64StackFrameNumOfPreservedRegs)];

@@ -663,6 +663,22 @@ kefir_result_t kefir_opt_code_container_call_set_argument(struct kefir_mem *mem,
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_opt_code_container_call_get_argument(const struct kefir_opt_code_container *code,
+                                                          kefir_opt_call_id_t call_ref, kefir_size_t argument_index,
+                                                          kefir_opt_instruction_ref_t *argument_ref) {
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
+    REQUIRE(argument_ref != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer optimizer instruction reference"));
+
+    struct kefir_opt_call_node *call_node = NULL;
+    REQUIRE_OK(kefir_opt_code_container_call(code, call_ref, &call_node));
+
+    REQUIRE(argument_index < call_node->argument_count,
+            KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Requested argument is out of call node bounds"));
+    *argument_ref = call_node->arguments[argument_index];
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_opt_code_block_instr_head(const struct kefir_opt_code_container *code,
                                                const struct kefir_opt_code_block *block,
                                                const struct kefir_opt_instruction **instr_ptr) {

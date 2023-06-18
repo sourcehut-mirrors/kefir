@@ -225,6 +225,8 @@ kefir_result_t kefir_opt_code_container_call(const struct kefir_opt_code_contain
 kefir_result_t kefir_opt_code_container_call_set_argument(struct kefir_mem *, struct kefir_opt_code_container *,
                                                           kefir_opt_call_id_t, kefir_size_t,
                                                           kefir_opt_instruction_ref_t);
+kefir_result_t kefir_opt_code_container_call_get_argument(const struct kefir_opt_code_container *, kefir_opt_call_id_t,
+                                                          kefir_size_t, kefir_opt_instruction_ref_t *);
 
 kefir_result_t kefir_opt_code_block_instr_head(const struct kefir_opt_code_container *,
                                                const struct kefir_opt_code_block *,

@@ -503,12 +503,15 @@ static kefir_result_t translate_instr(struct kefir_mem *mem, struct kefir_codege
             REQUIRE_OK(INVOKE_TRANSLATOR(memory));
             break;
 
+        case KEFIR_OPT_OPCODE_INVOKE:
+            REQUIRE_OK(INVOKE_TRANSLATOR(invoke));
+            break;
+
         case KEFIR_OPT_OPCODE_PHI:
             // Intentionally left blank
             break;
 
         case KEFIR_OPT_OPCODE_INLINE_ASSEMBLY:
-        case KEFIR_OPT_OPCODE_INVOKE:
         case KEFIR_OPT_OPCODE_INVOKE_VIRTUAL:
         case KEFIR_OPT_OPCODE_FLOAT32_CONST:
         case KEFIR_OPT_OPCODE_FLOAT64_CONST:

@@ -33,6 +33,22 @@ _Static_assert(sizeof(KefirCodegenOptSysvAmd64StackFramePreservedRegs) /
                    KefirCodegenOptSysvAmd64StackFrameNumOfPreservedRegs,
                "Optimizer codegen for System-V AMD64: mismatch in preserved register numbers");
 
+const kefir_asm_amd64_xasmgen_register_t KefirCodegenOptSysvAmd64StackFrameCallerSavedRegs[] = {
+    KEFIR_AMD64_XASMGEN_REGISTER_RAX,   KEFIR_AMD64_XASMGEN_REGISTER_RCX,   KEFIR_AMD64_XASMGEN_REGISTER_RDX,
+    KEFIR_AMD64_XASMGEN_REGISTER_RSI,   KEFIR_AMD64_XASMGEN_REGISTER_RDI,   KEFIR_AMD64_XASMGEN_REGISTER_R8,
+    KEFIR_AMD64_XASMGEN_REGISTER_R9,    KEFIR_AMD64_XASMGEN_REGISTER_R10,   KEFIR_AMD64_XASMGEN_REGISTER_R11,
+    KEFIR_AMD64_XASMGEN_REGISTER_XMM0,  KEFIR_AMD64_XASMGEN_REGISTER_XMM1,  KEFIR_AMD64_XASMGEN_REGISTER_XMM2,
+    KEFIR_AMD64_XASMGEN_REGISTER_XMM3,  KEFIR_AMD64_XASMGEN_REGISTER_XMM4,  KEFIR_AMD64_XASMGEN_REGISTER_XMM5,
+    KEFIR_AMD64_XASMGEN_REGISTER_XMM6,  KEFIR_AMD64_XASMGEN_REGISTER_XMM7,  KEFIR_AMD64_XASMGEN_REGISTER_XMM8,
+    KEFIR_AMD64_XASMGEN_REGISTER_XMM9,  KEFIR_AMD64_XASMGEN_REGISTER_XMM10, KEFIR_AMD64_XASMGEN_REGISTER_XMM11,
+    KEFIR_AMD64_XASMGEN_REGISTER_XMM12, KEFIR_AMD64_XASMGEN_REGISTER_XMM13, KEFIR_AMD64_XASMGEN_REGISTER_XMM14,
+    KEFIR_AMD64_XASMGEN_REGISTER_XMM15};
+
+_Static_assert(sizeof(KefirCodegenOptSysvAmd64StackFrameCallerSavedRegs) /
+                       sizeof(KefirCodegenOptSysvAmd64StackFrameCallerSavedRegs[0]) ==
+                   KefirCodegenOptSysvAmd64StackFrameNumOfCallerSavedRegs,
+               "Optimizer codegen for System-V AMD64: mismatch in caller-saved register numbers");
+
 kefir_result_t kefir_codegen_opt_sysv_amd64_stack_frame_init(struct kefir_codegen_opt_sysv_amd64_stack_frame *frame) {
     REQUIRE(frame != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER,
                                            "Expected valid pointer to optimizer codegen System-V AMD64 stack frame"));
