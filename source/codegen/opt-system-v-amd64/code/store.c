@@ -122,11 +122,11 @@ DEFINE_TRANSLATOR(store) {
             break;
 
         case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_SPILL_AREA:
-        case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_POINTER_SPILL_AREA:
         case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_INDIRECT: {
             struct kefir_codegen_opt_sysv_amd64_translate_temporary_register source_tmp_reg;
             REQUIRE_OK(kefir_codegen_opt_sysv_amd64_temporary_general_purpose_register_obtain(
-                mem, codegen, NULL, codegen_func, &source_tmp_reg, NULL, NULL));
+                mem, codegen, NULL, codegen_func, &source_tmp_reg, kefir_codegen_opt_sysv_amd64_filter_regs_allocation,
+                (const struct kefir_codegen_opt_sysv_amd64_register_allocation *[]){target_allocation, NULL}));
 
             kefir_asm_amd64_xasmgen_register_t source_reg_variant;
             switch (instr->operation.opcode) {

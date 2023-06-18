@@ -46,26 +46,26 @@ typedef enum kefir_codegen_opt_sysv_amd64_register_allocation_type {
     KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_GENERAL_PURPOSE_REGISTER,
     KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_FLOATING_POINT_REGISTER,
     KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_SPILL_AREA,
-    KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_POINTER_SPILL_AREA,
     KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_INDIRECT
 } kefir_codegen_opt_sysv_amd64_register_allocation_type_t;
+
+typedef enum kefir_codegen_opt_sysv_amd64_register_allocation_backing_storage {
+    KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_BACKING_STORAGE_NONE,
+    KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_BACKING_STORAGE_SPILL_AREA,
+    KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_BACKING_STORAGE_INDIRECT
+} kefir_codegen_opt_sysv_amd64_register_allocation_backing_storage_t;
 
 typedef struct kefir_codegen_opt_sysv_amd64_register_allocation {
     kefir_codegen_opt_sysv_amd64_register_allocation_class_t klass;
 
     struct {
         kefir_codegen_opt_sysv_amd64_register_allocation_type_t type;
+        kefir_codegen_opt_sysv_amd64_register_allocation_backing_storage_t backing_storage_type;
 
         union {
             kefir_asm_amd64_xasmgen_register_t reg;
             struct {
                 kefir_size_t index;
-                kefir_size_t length;
-                struct {
-                    kefir_bool_t spilled;
-                    kefir_asm_amd64_xasmgen_register_t reg;
-                    kefir_size_t spill_index;
-                } pointer;
             } spill;
             struct {
                 kefir_asm_amd64_xasmgen_register_t base_register;
@@ -73,7 +73,19 @@ typedef struct kefir_codegen_opt_sysv_amd64_register_allocation {
             } indirect;
         };
 
-        const struct kefir_abi_sysv_amd64_parameter_allocation *parameter_allocation;
+        union {
+            struct {
+                kefir_size_t index;
+                kefir_size_t length;
+            } spill;
+
+            struct {
+                kefir_asm_amd64_xasmgen_register_t base_register;
+                kefir_int64_t offset;
+            } indirect;
+        } backing_storage;
+
+        const struct kefir_abi_sysv_amd64_parameter_allocation *register_aggregate_allocation;
     } result;
 
     struct {

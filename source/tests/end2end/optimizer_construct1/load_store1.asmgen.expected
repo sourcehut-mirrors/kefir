@@ -893,7 +893,7 @@
                                     "linear_index": 1,
                                     "linear_liveness": {
                                         "alias": null,
-                                        "begin": 1,
+                                        "begin": 0,
                                         "end": 11
                                     }
                                 }
@@ -908,7 +908,7 @@
                                     "linear_index": 2,
                                     "linear_liveness": {
                                         "alias": null,
-                                        "begin": 2,
+                                        "begin": 0,
                                         "end": 7
                                     }
                                 }

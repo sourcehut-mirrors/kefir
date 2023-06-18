@@ -31,7 +31,13 @@ static kefir_result_t add_liveness_range(struct kefir_opt_code_liveness_interval
     REQUIRE(instr_props->reachable,
             KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unable to add liveness range to an unreachable instruction"));
 
-    from = MAX(instr_props->linear_position, from);
+    struct kefir_opt_instruction *instr = NULL;
+    REQUIRE_OK(kefir_opt_code_container_instr(intervals->analysis->code, instr_props->instr_ref, &instr));
+    if (instr->operation.opcode != KEFIR_OPT_OPCODE_GET_ARGUMENT) {
+        from = MAX(instr_props->linear_position, from);
+    } else {
+        from = MIN(intervals->analysis->blocks[instr->block_id].linear_range.begin_index, from);
+    }
 
     struct kefir_opt_instruction_liveness_interval *liveness = &intervals->intervals[instr_props->linear_position];
 

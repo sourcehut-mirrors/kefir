@@ -77,6 +77,7 @@ static kefir_result_t traverse_integer_argument(const struct kefir_ir_type *type
         argument.type = KEFIR_CODEGEN_OPT_AMD64_SYSV_FUNCTION_PARAMETER_LOCATION_INDIRECT;
         argument.indirect.base = KEFIR_AMD64_XASMGEN_REGISTER_RBP;
         argument.indirect.offset = alloc->location.stack_offset + 2 * KEFIR_AMD64_SYSV_ABI_QWORD;
+        argument.indirect.aggregate = false;
     }
     argument.parameter_allocation = alloc;
     REQUIRE_OK(insert_argument(param->mem, param->parameters, param->argument_index, &argument));
@@ -105,6 +106,7 @@ static kefir_result_t traverse_sse_argument(const struct kefir_ir_type *type, ke
         argument.type = KEFIR_CODEGEN_OPT_AMD64_SYSV_FUNCTION_PARAMETER_LOCATION_INDIRECT;
         argument.indirect.base = KEFIR_AMD64_XASMGEN_REGISTER_RBP;
         argument.indirect.offset = alloc->location.stack_offset + 2 * KEFIR_AMD64_SYSV_ABI_QWORD;
+        argument.indirect.aggregate = false;
     }
     argument.parameter_allocation = alloc;
     REQUIRE_OK(insert_argument(param->mem, param->parameters, param->argument_index, &argument));
@@ -130,6 +132,7 @@ static kefir_result_t traverse_aggregate_argument(const struct kefir_ir_type *ty
         argument.type = KEFIR_CODEGEN_OPT_AMD64_SYSV_FUNCTION_PARAMETER_LOCATION_INDIRECT;
         argument.indirect.base = KEFIR_AMD64_XASMGEN_REGISTER_RBP;
         argument.indirect.offset = alloc->location.stack_offset + 2 * KEFIR_AMD64_SYSV_ABI_QWORD;
+        argument.indirect.aggregate = true;
     } else {
         argument.type = KEFIR_CODEGEN_OPT_AMD64_SYSV_FUNCTION_PARAMETER_LOCATION_REGISTER_AGGREGATE;
         const struct kefir_abi_sysv_amd64_typeentry_layout *layout = NULL;

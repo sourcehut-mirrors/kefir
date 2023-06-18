@@ -84,10 +84,12 @@ static kefir_result_t build_graph_impl(struct kefir_mem *mem, const struct kefir
                 KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate register allocation entry"));
 
         instr_allocation->result.type = KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_NONE;
+        instr_allocation->result.backing_storage_type =
+            KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_BACKING_STORAGE_NONE;
         instr_allocation->klass = KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_CLASS_GENERAL_PURPOSE;
         instr_allocation->register_hint.present = false;
         instr_allocation->alias_hint.present = false;
-        instr_allocation->result.parameter_allocation = NULL;
+        instr_allocation->result.register_aggregate_allocation = NULL;
 
         kefir_result_t res =
             kefir_graph_new_node(mem, &allocator->allocation, (kefir_graph_node_id_t) instr_props->instr_ref,
@@ -362,11 +364,11 @@ static kefir_result_t propagate_hints(const struct kefir_opt_code_analysis *func
 
 static kefir_result_t deallocate(struct kefir_codegen_opt_sysv_amd64_register_allocator *allocator,
                                  struct kefir_codegen_opt_sysv_amd64_register_allocation *allocation) {
+    kefir_size_t register_index;
     switch (allocation->result.type) {
         case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_NONE:
             return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected register entry allocation type");
 
-            kefir_size_t register_index;
         case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_GENERAL_PURPOSE_REGISTER:
             REQUIRE_OK(general_purpose_index_of(allocation->result.reg, &register_index));
             REQUIRE_OK(kefir_bitset_set(&allocator->general_purpose_regs, register_index, false));
@@ -377,24 +379,55 @@ static kefir_result_t deallocate(struct kefir_codegen_opt_sysv_amd64_register_al
             REQUIRE_OK(kefir_bitset_set(&allocator->floating_point_regs, register_index, false));
             break;
 
-        case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_POINTER_SPILL_AREA:
-            if (allocation->result.spill.pointer.spilled) {
-                REQUIRE_OK(
-                    kefir_bitset_set(&allocator->spilled_regs, allocation->result.spill.pointer.spill_index, false));
-            } else {
-                REQUIRE_OK(general_purpose_index_of(allocation->result.spill.pointer.reg, &register_index));
-                REQUIRE_OK(kefir_bitset_set(&allocator->general_purpose_regs, register_index, false));
-            }
-            // Fallthrough
-
         case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_SPILL_AREA:
-            REQUIRE_OK(kefir_bitset_set_consecutive(&allocator->spilled_regs, allocation->result.spill.index,
-                                                    allocation->result.spill.length, false));
+            REQUIRE_OK(kefir_bitset_set(&allocator->spilled_regs, allocation->result.spill.index, false));
             break;
 
         case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_INDIRECT:
             // Intentionally left blank
             break;
+    }
+
+    switch (allocation->result.backing_storage_type) {
+        case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_BACKING_STORAGE_NONE:
+        case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_BACKING_STORAGE_INDIRECT:
+            // Intentionally left blank
+            break;
+
+        case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_BACKING_STORAGE_SPILL_AREA:
+            REQUIRE_OK(kefir_bitset_set_consecutive(&allocator->spilled_regs,
+                                                    allocation->result.backing_storage.spill.index,
+                                                    allocation->result.backing_storage.spill.length, false));
+            break;
+    }
+
+    if (allocation->result.register_aggregate_allocation != NULL) {
+        for (kefir_size_t i = 0;
+             i < kefir_vector_length(&allocation->result.register_aggregate_allocation->container.qwords); i++) {
+            ASSIGN_DECL_CAST(struct kefir_abi_sysv_amd64_qword *, qword,
+                             kefir_vector_at(&allocation->result.register_aggregate_allocation->container.qwords, i));
+            switch (qword->klass) {
+                case KEFIR_AMD64_SYSV_PARAM_INTEGER:
+                    REQUIRE_OK(general_purpose_index_of(
+                        KEFIR_ABI_SYSV_AMD64_PARAMETER_INTEGER_REGISTERS[qword->location], &register_index));
+                    REQUIRE_OK(kefir_bitset_set(&allocator->general_purpose_regs, register_index, false));
+                    break;
+
+                case KEFIR_AMD64_SYSV_PARAM_SSE:
+                    REQUIRE_OK(floating_point_index_of(KEFIR_ABI_SYSV_AMD64_PARAMETER_SSE_REGISTERS[qword->location],
+                                                       &register_index));
+                    REQUIRE_OK(kefir_bitset_set(&allocator->floating_point_regs, register_index, false));
+                    break;
+
+                case KEFIR_AMD64_SYSV_PARAM_NO_CLASS:
+                    // Intentionally left blank
+                    break;
+
+                default:
+                    return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED,
+                                           "Aggregates with non-INTEGER and non-SSE members are not supported yet");
+            }
+        }
     }
     return KEFIR_OK;
 }
@@ -733,12 +766,55 @@ static kefir_result_t do_allocation_impl(struct kefir_mem *mem, const struct kef
             } break;
 
             case KEFIR_CODEGEN_OPT_AMD64_SYSV_FUNCTION_PARAMETER_LOCATION_INDIRECT:
-                allocation->result.type = KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_INDIRECT;
-                allocation->result.indirect.base_register = parameter_location->indirect.base;
-                allocation->result.indirect.offset = parameter_location->indirect.offset;
+                if (parameter_location->indirect.aggregate) {
+                    REQUIRE_OK(allocate_register(mem, allocator, stack_frame, allocation, conflict_hints,
+                                                 filter_non_parameter_regs));
+                    allocation->result.backing_storage_type =
+                        KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_BACKING_STORAGE_INDIRECT;
+                    allocation->result.backing_storage.indirect.base_register = parameter_location->indirect.base;
+                    allocation->result.backing_storage.indirect.offset = parameter_location->indirect.offset;
+                } else {
+                    allocation->result.type = KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_INDIRECT;
+                    allocation->result.indirect.base_register = parameter_location->indirect.base;
+                    allocation->result.indirect.offset = parameter_location->indirect.offset;
+                }
                 break;
 
             case KEFIR_CODEGEN_OPT_AMD64_SYSV_FUNCTION_PARAMETER_LOCATION_REGISTER_AGGREGATE: {
+                for (kefir_size_t i = 0;
+                     i < kefir_vector_length(&parameter_location->parameter_allocation->container.qwords); i++) {
+                    ASSIGN_DECL_CAST(struct kefir_abi_sysv_amd64_qword *, qword,
+                                     kefir_vector_at(&parameter_location->parameter_allocation->container.qwords, i));
+                    switch (qword->klass) {
+                        case KEFIR_AMD64_SYSV_PARAM_INTEGER:
+                            REQUIRE_OK(mark_register_allocated(
+                                allocator, stack_frame,
+                                KEFIR_ABI_SYSV_AMD64_PARAMETER_INTEGER_REGISTERS[qword->location], &reg_allocated));
+                            REQUIRE(reg_allocated,
+                                    KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR,
+                                                    "Unable to allocate register for function parameter"));
+                            break;
+
+                        case KEFIR_AMD64_SYSV_PARAM_SSE:
+                            REQUIRE_OK(mark_register_allocated(
+                                allocator, stack_frame, KEFIR_ABI_SYSV_AMD64_PARAMETER_SSE_REGISTERS[qword->location],
+                                &reg_allocated));
+                            REQUIRE(reg_allocated,
+                                    KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR,
+                                                    "Unable to allocate register for function parameter"));
+                            break;
+
+                        case KEFIR_AMD64_SYSV_PARAM_NO_CLASS:
+                            // Intentionally left blank
+                            break;
+
+                        default:
+                            return KEFIR_SET_ERROR(
+                                KEFIR_NOT_SUPPORTED,
+                                "Aggregates with non-INTEGER and non-SSE members are not supported yet");
+                    }
+                }
+
                 kefir_size_t aggregate_length =
                     kefir_vector_length(&parameter_location->parameter_allocation->container.qwords);
                 kefir_size_t reg_aggregate_alignment =
@@ -771,23 +847,11 @@ static kefir_result_t do_allocation_impl(struct kefir_mem *mem, const struct kef
 
                 REQUIRE_OK(allocate_register(mem, allocator, stack_frame, allocation, conflict_hints,
                                              filter_non_parameter_regs));
-                if (allocation->result.type ==
-                    KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_GENERAL_PURPOSE_REGISTER) {
-                    kefir_asm_amd64_xasmgen_register_t reg = allocation->result.reg;
-                    allocation->result.spill.pointer.reg = reg;
-                    allocation->result.spill.pointer.spilled = false;
-                } else {
-                    REQUIRE(allocation->result.type == KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_SPILL_AREA &&
-                                allocation->result.spill.length == 1,
-                            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected register allocation state"));
-                    kefir_size_t index = allocation->result.spill.index;
-                    allocation->result.spill.pointer.spill_index = index;
-                    allocation->result.spill.pointer.spilled = true;
-                }
-                allocation->result.type = KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_POINTER_SPILL_AREA;
-                allocation->result.spill.index = available_spill_index;
-                allocation->result.spill.length = aggregate_length;
-                allocation->result.parameter_allocation = parameter_location->parameter_allocation;
+                allocation->result.backing_storage_type =
+                    KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_BACKING_STORAGE_SPILL_AREA;
+                allocation->result.backing_storage.spill.index = available_spill_index;
+                allocation->result.backing_storage.spill.length = aggregate_length;
+                allocation->result.register_aggregate_allocation = parameter_location->parameter_allocation;
             } break;
         }
 

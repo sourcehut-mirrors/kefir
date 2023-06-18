@@ -31,3 +31,11 @@ int sum2(struct Test2 t) {
 long sum3(struct Test3 t) {
     return t.x + t.z;
 }
+
+long sum4(long a, long b, long c, long d, long e, long f, long g, long h, long i) {
+    return a + b + c + d + e + f + g + h + i;
+}
+
+long sum5(long a, struct Test4 b, long c, struct Test5 d, long e, struct Test4 f) {
+    return a + b.x + b.y + c + d.arr[0] + d.arr[1] + d.arr[2] + d.arr[3] + e + f.x + f.y;
+}

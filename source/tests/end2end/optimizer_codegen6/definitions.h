@@ -44,4 +44,17 @@ struct Test3 {
 
 long sum3(struct Test3);
 
+long sum4(long, long, long, long, long, long, long, long, long);
+
+struct Test4 {
+    long x;
+    long y;
+};
+
+struct Test5 {
+    long arr[4];
+};
+
+long sum5(long, struct Test4, long, struct Test5, long, struct Test4);
+
 #endif
