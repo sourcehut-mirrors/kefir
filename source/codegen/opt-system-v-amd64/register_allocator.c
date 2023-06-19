@@ -689,7 +689,7 @@ static kefir_result_t allocate_register(struct kefir_mem *mem,
         if (res == KEFIR_NOT_FOUND) {
             kefir_size_t spill_length;
             REQUIRE_OK(kefir_bitset_length(&allocator->spilled_regs, &spill_length));
-            REQUIRE_OK(kefir_bitset_resize(mem, &allocator->spilled_regs, spill_length++));
+            REQUIRE_OK(kefir_bitset_resize(mem, &allocator->spilled_regs, ++spill_length));
             REQUIRE_OK(kefir_codegen_opt_sysv_amd64_stack_frame_ensure_spill(stack_frame, spill_length, 1));
             res = kefir_bitset_find(&allocator->spilled_regs, false, search_index, &available_spill_index);
         }

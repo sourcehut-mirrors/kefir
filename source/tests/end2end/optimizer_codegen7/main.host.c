@@ -29,34 +29,24 @@ long mul(long x, long y) {
     return x * y;
 }
 
-int dummy_fun(int a, int b, int c, int d, int e, int f, int g, int h, int i, int j, int k) {
+static int dummy_fun_res = 0;
+
+int dummy_fun(int a, int b, int c, int d, int e, int f, int g, int h, int i, int j, int k, int m, int n, int o, int p,
+              int q, int r) {
     int res = a == b - 1 && b == c - 1 && c == d - 1 && d == e - 1 && e == f - 1 && f == g - 1 && g == h - 1 &&
-              h == i - 1 && i == j - 1 && j == k - 1;
+              h == i - 1 && i == j - 1 && j == k - 1 && k == m - 1 && m == n - 1 && n == o - 1 && o == p - 1 &&
+              p == q - 1 && q == r - 1;
     if (!res) {
         abort();
     }
-    return res;
+    return dummy_fun_res;
 }
 
 int main(void) {
-    // for (char x = -100; x <= 100; x++) {
-    //     for (int y = -500; y <= 500; y++) {
-    //         for (short z = -10; z <= 10; z++) {
-    //             assert(sum1((struct Test1){x, y * 1000, z}) == (x + (y * 1000) + z));
-    //             assert(sum3((struct Test3){x, y, z}) == ((int) x + (long) z));
-    //             assert(sum4(x, y, z, ~x, ~y, ~z, x / 2, y / 2, z / 3) ==
-    //                    ((long) x) + ((long) y) + ((long) z) + ((long) ~x) + ((long) ~y) + ((long) ~z) + ((long) x /
-    //                    2) +
-    //                        ((long) y / 2) + ((long) z / 3));
-    //             assert(sum5(x, (struct Test4){y, z}, x, (struct Test5){{y, z, x, y}}, z, (struct Test4){x, y}) ==
-    //                    (long) x + (long) y + (long) z + (long) x + (long) y + (long) z + (long) x + (long) y +
-    //                        (long) z + (long) x + (long) y);
-    //         }
-
-    //         assert(sum2((struct Test2){x, y}) == (-(int) x - (char) y));
-    //     }
-    // }
-    assert(dummy_test());
+    for (int i = -10; i <= 10; i++) {
+        dummy_fun_res = i;
+        assert(dummy_test() == dummy_fun_res);
+    }
     for (long x = -1000; x <= 1000; x++) {
         for (long y = -100; y <= 100; y++) {
             assert(test_hypot(x, y) == (x * x) + (y * y));

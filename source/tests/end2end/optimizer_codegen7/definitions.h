@@ -26,7 +26,7 @@ extern long mul(long, long);
 
 long test_hypot(long, long);
 
-extern int dummy_fun(int, int, int, int, int, int, int, int, int, int, int);
+extern int dummy_fun(int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int);
 int dummy_test(void);
 
 #endif
