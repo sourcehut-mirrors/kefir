@@ -24,10 +24,35 @@ long sum(long x, long y) {
     return x + y;
 }
 
+long sump(struct Pair p) {
+    return p.a + p.b;
+}
+
 long test_hypot(long x, long y) {
     return sum(mul(x, x), mul(y, y));
 }
 
+long test_hypotp(struct Pair p) {
+    struct Pair pa, pb, pm;
+    pa.a = p.a;
+    pa.b = p.a;
+    pb.a = p.b;
+    pb.b = p.b;
+    pm.a = mulp(pa);
+    pm.b = mulp(pb);
+    return sump(pm);
+}
+
 int dummy_test(void) {
     return dummy_fun(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17);
+}
+
+int dummy_test2(void) {
+    struct IPair i1;
+    i1.a = 1;
+    i1.b = 2;
+    struct Pair i2;
+    i2.a = 4;
+    i2.b = 5;
+    return dummy_fun2(i1, 3, i2, 6);
 }

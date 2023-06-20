@@ -24,9 +24,11 @@
 #include "kefir/target/asm/amd64/xasmgen.h"
 #include "kefir/codegen/opt-system-v-amd64/function.h"
 #include "kefir/core/hashtree.h"
+#include "kefir/core/hashtreeset.h"
 
 typedef struct kefir_codegen_opt_amd64_sysv_storage_transform {
     struct kefir_hashtree map;
+    struct kefir_hashtreeset active_regs;
 } kefir_codegen_opt_amd64_sysv_storage_transform_t;
 
 kefir_result_t kefir_codegen_opt_amd64_sysv_storage_transform_init(

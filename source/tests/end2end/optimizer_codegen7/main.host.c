@@ -29,6 +29,10 @@ long mul(long x, long y) {
     return x * y;
 }
 
+long mulp(struct Pair p) {
+    return p.a * p.b;
+}
+
 static int dummy_fun_res = 0;
 
 int dummy_fun(int a, int b, int c, int d, int e, int f, int g, int h, int i, int j, int k, int m, int n, int o, int p,
@@ -42,14 +46,24 @@ int dummy_fun(int a, int b, int c, int d, int e, int f, int g, int h, int i, int
     return dummy_fun_res;
 }
 
+int dummy_fun2(struct IPair a, long b, struct Pair c, long d) {
+    int res = a.a == a.b - 1 && a.b == b - 1 && b == c.a - 1 && c.a == c.b - 1 && c.b == d - 1;
+    if (!res) {
+        abort();
+    }
+    return dummy_fun_res;
+}
+
 int main(void) {
     for (int i = -10; i <= 10; i++) {
         dummy_fun_res = i;
         assert(dummy_test() == dummy_fun_res);
+        assert(dummy_test2() == dummy_fun_res);
     }
     for (long x = -1000; x <= 1000; x++) {
         for (long y = -100; y <= 100; y++) {
             assert(test_hypot(x, y) == (x * x) + (y * y));
+            assert(test_hypotp((struct Pair){x, y}) == (x * x) + (y * y));
         }
     }
     return EXIT_SUCCESS;

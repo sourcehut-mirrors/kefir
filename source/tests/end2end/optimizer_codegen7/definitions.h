@@ -21,12 +21,29 @@
 #ifndef DEFINITIONS_H_
 #define DEFINITIONS_H_
 
+struct Pair {
+    long a;
+    long b;
+};
+
+struct IPair {
+    int a;
+    int b;
+};
+
 extern long sum(long, long);
 extern long mul(long, long);
 
+extern long sump(struct Pair);
+extern long mulp(struct Pair);
+
 long test_hypot(long, long);
+long test_hypotp(struct Pair);
 
 extern int dummy_fun(int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int);
 int dummy_test(void);
+
+extern int dummy_fun2(struct IPair, long, struct Pair, long);
+int dummy_test2(void);
 
 #endif
