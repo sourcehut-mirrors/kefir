@@ -65,6 +65,8 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_stack_frame_init(struct kefir_codege
     frame->spill_area_alignment = 0;
     frame->local_area_size = 0;
     frame->local_area_alignment = 0;
+    frame->temporary_area_size = 0;
+    frame->temporary_area_alignment = 0;
     return KEFIR_OK;
 }
 
@@ -131,6 +133,16 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_stack_frame_ensure_spill(
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_codegen_opt_sysv_amd64_stack_frame_ensure_temporary(
+    struct kefir_codegen_opt_sysv_amd64_stack_frame *frame, kefir_size_t size, kefir_size_t alignment) {
+    REQUIRE(frame != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer codegen System-V AMD64 stack frame"));
+
+    frame->temporary_area_size = MAX(frame->temporary_area_size, size);
+    frame->temporary_area_alignment = MAX(frame->temporary_area_alignment, alignment);
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_codegen_opt_sysv_amd64_stack_frame_allocate_set_locals(
     struct kefir_codegen_opt_sysv_amd64_stack_frame *frame, const struct kefir_ir_type *locals_type,
     const struct kefir_abi_sysv_amd64_type_layout *locals_layout) {
@@ -194,6 +206,15 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_stack_frame_compute(
         map->offset.local_area = -(kefir_int64_t) kefir_target_abi_pad_aligned(
             (kefir_size_t) -map->offset.local_area, MAX(frame->local_area_alignment, 2 * KEFIR_AMD64_SYSV_ABI_QWORD));
     }
+
+    map->offset.temporary_area = map->offset.local_area - frame->temporary_area_size;
+    if (frame->local_area_size > 0) {
+        map->offset.temporary_area = -(kefir_int64_t) kefir_target_abi_pad_aligned(
+            (kefir_size_t) -map->offset.temporary_area,
+            MAX(frame->temporary_area_alignment, KEFIR_AMD64_SYSV_ABI_QWORD));
+    }
+
+    map->total_size = map->offset.temporary_area;
     return KEFIR_OK;
 }
 
@@ -223,7 +244,7 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_stack_frame_prologue(
     struct kefir_codegen_opt_sysv_amd64_stack_frame_map frame_map;
     REQUIRE_OK(kefir_codegen_opt_sysv_amd64_stack_frame_compute(frame, &frame_map));
     kefir_size_t stack_frame_size =
-        (kefir_size_t) - (frame_map.offset.local_area - frame_map.offset.preserved_general_purpose_registers);
+        (kefir_size_t) - (frame_map.total_size - frame_map.offset.preserved_general_purpose_registers);
     if (stack_frame_size > KEFIR_INT32_MAX) {
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOVABS(
             xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RAX),
@@ -274,7 +295,7 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_stack_frame_epilogue(
     struct kefir_codegen_opt_sysv_amd64_stack_frame_map frame_map;
     REQUIRE_OK(kefir_codegen_opt_sysv_amd64_stack_frame_compute(frame, &frame_map));
     kefir_size_t stack_frame_size =
-        (kefir_size_t) - (frame_map.offset.local_area - frame_map.offset.preserved_general_purpose_registers);
+        (kefir_size_t) - (frame_map.total_size - frame_map.offset.preserved_general_purpose_registers);
 
     if (frame->preserve.x87_control_word) {
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_FLDCW(

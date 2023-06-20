@@ -45,6 +45,8 @@ typedef struct kefir_codegen_opt_sysv_amd64_stack_frame {
     kefir_size_t spill_area_alignment;
     kefir_size_t local_area_size;
     kefir_size_t local_area_alignment;
+    kefir_size_t temporary_area_size;
+    kefir_size_t temporary_area_alignment;
 } kefir_codegen_opt_sysv_amd64_stack_frame_t;
 
 kefir_result_t kefir_codegen_opt_sysv_amd64_stack_frame_init(struct kefir_codegen_opt_sysv_amd64_stack_frame *);
@@ -58,6 +60,8 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_stack_frame_preserve_implicit_parame
     struct kefir_codegen_opt_sysv_amd64_stack_frame *);
 kefir_result_t kefir_codegen_opt_sysv_amd64_stack_frame_ensure_spill(struct kefir_codegen_opt_sysv_amd64_stack_frame *,
                                                                      kefir_size_t, kefir_size_t);
+kefir_result_t kefir_codegen_opt_sysv_amd64_stack_frame_ensure_temporary(
+    struct kefir_codegen_opt_sysv_amd64_stack_frame *, kefir_size_t, kefir_size_t);
 kefir_result_t kefir_codegen_opt_sysv_amd64_stack_frame_allocate_set_locals(
     struct kefir_codegen_opt_sysv_amd64_stack_frame *, const struct kefir_ir_type *,
     const struct kefir_abi_sysv_amd64_type_layout *);
@@ -71,7 +75,9 @@ typedef struct kefir_codegen_opt_sysv_amd64_stack_frame_map {
         kefir_int64_t implicit_parameter;
         kefir_int64_t spill_area;
         kefir_int64_t local_area;
+        kefir_int64_t temporary_area;
     } offset;
+    kefir_int64_t total_size;
 } kefir_codegen_opt_sysv_amd64_stack_frame_map_t;
 
 kefir_result_t kefir_codegen_opt_sysv_amd64_stack_frame_compute(const struct kefir_codegen_opt_sysv_amd64_stack_frame *,

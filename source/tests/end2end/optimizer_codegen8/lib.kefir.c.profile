@@ -1,0 +1,1 @@
+KEFIR_CFLAGS="$KEFIR_CFLAGS -Wtarget-profile=opt-amd64-sysv-gas"

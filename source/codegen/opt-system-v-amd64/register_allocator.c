@@ -270,6 +270,8 @@ static kefir_result_t insert_hints(const struct kefir_opt_function *function,
             case KEFIR_OPT_OPCODE_INT16_STORE:
             case KEFIR_OPT_OPCODE_INT32_STORE:
             case KEFIR_OPT_OPCODE_INT64_STORE:
+            case KEFIR_OPT_OPCODE_COPY_MEMORY:
+            case KEFIR_OPT_OPCODE_ZERO_MEMORY:
                 allocation->klass = KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_CLASS_SKIP;
                 coalesce_input_output = false;
                 break;
