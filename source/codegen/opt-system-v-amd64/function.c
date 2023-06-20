@@ -27,8 +27,7 @@
 static kefir_result_t init_codegen_func(struct kefir_mem *mem, const struct kefir_opt_function *function,
                                         const struct kefir_opt_code_analysis *func_analysis,
                                         struct kefir_opt_sysv_amd64_function *sysv_amd64_function) {
-    REQUIRE_OK(kefir_hashtreeset_init(&sysv_amd64_function->occupied_general_purpose_regs, &kefir_hashtree_uint_ops));
-    REQUIRE_OK(kefir_hashtreeset_init(&sysv_amd64_function->borrowed_general_purpose_regs, &kefir_hashtree_uint_ops));
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_init(&sysv_amd64_function->storage));
     REQUIRE_OK(kefir_list_init(&sysv_amd64_function->alive_instr));
     REQUIRE_OK(kefir_codegen_opt_sysv_amd64_stack_frame_init(&sysv_amd64_function->stack_frame));
     REQUIRE_OK(kefir_abi_amd64_sysv_function_decl_alloc(mem, function->ir_func->declaration,
@@ -39,8 +38,7 @@ static kefir_result_t init_codegen_func(struct kefir_mem *mem, const struct kefi
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_abi_amd64_sysv_function_decl_free(mem, &sysv_amd64_function->declaration);
         kefir_list_free(mem, &sysv_amd64_function->alive_instr);
-        kefir_hashtreeset_free(mem, &sysv_amd64_function->occupied_general_purpose_regs);
-        kefir_hashtreeset_free(mem, &sysv_amd64_function->borrowed_general_purpose_regs);
+        kefir_codegen_opt_sysv_amd64_storage_free(mem, &sysv_amd64_function->storage);
         return res;
     });
 
@@ -51,8 +49,7 @@ static kefir_result_t init_codegen_func(struct kefir_mem *mem, const struct kefi
         kefir_codegen_opt_amd64_sysv_function_parameters_free(mem, &sysv_amd64_function->parameters);
         kefir_abi_amd64_sysv_function_decl_free(mem, &sysv_amd64_function->declaration);
         kefir_list_free(mem, &sysv_amd64_function->alive_instr);
-        kefir_hashtreeset_free(mem, &sysv_amd64_function->occupied_general_purpose_regs);
-        kefir_hashtreeset_free(mem, &sysv_amd64_function->borrowed_general_purpose_regs);
+        kefir_codegen_opt_sysv_amd64_storage_free(mem, &sysv_amd64_function->storage);
         return res;
     });
 
@@ -63,8 +60,7 @@ static kefir_result_t init_codegen_func(struct kefir_mem *mem, const struct kefi
             kefir_codegen_opt_amd64_sysv_function_parameters_free(mem, &sysv_amd64_function->parameters);
             kefir_abi_amd64_sysv_function_decl_free(mem, &sysv_amd64_function->declaration);
             kefir_list_free(mem, &sysv_amd64_function->alive_instr);
-            kefir_hashtreeset_free(mem, &sysv_amd64_function->occupied_general_purpose_regs);
-            kefir_hashtreeset_free(mem, &sysv_amd64_function->borrowed_general_purpose_regs);
+            kefir_codegen_opt_sysv_amd64_storage_free(mem, &sysv_amd64_function->storage);
             return res;
         });
     }
@@ -84,8 +80,7 @@ static kefir_result_t free_codegen_func(struct kefir_mem *mem, const struct kefi
             kefir_codegen_opt_amd64_sysv_function_parameters_free(mem, &sysv_amd64_function->parameters);
             kefir_abi_amd64_sysv_function_decl_free(mem, &sysv_amd64_function->declaration);
             kefir_list_free(mem, &sysv_amd64_function->alive_instr);
-            kefir_hashtreeset_free(mem, &sysv_amd64_function->occupied_general_purpose_regs);
-            kefir_hashtreeset_free(mem, &sysv_amd64_function->borrowed_general_purpose_regs);
+            kefir_codegen_opt_sysv_amd64_storage_free(mem, &sysv_amd64_function->storage);
             return res;
         });
     }
@@ -95,8 +90,7 @@ static kefir_result_t free_codegen_func(struct kefir_mem *mem, const struct kefi
         kefir_codegen_opt_amd64_sysv_function_parameters_free(mem, &sysv_amd64_function->parameters);
         kefir_abi_amd64_sysv_function_decl_free(mem, &sysv_amd64_function->declaration);
         kefir_list_free(mem, &sysv_amd64_function->alive_instr);
-        kefir_hashtreeset_free(mem, &sysv_amd64_function->occupied_general_purpose_regs);
-        kefir_hashtreeset_free(mem, &sysv_amd64_function->borrowed_general_purpose_regs);
+        kefir_codegen_opt_sysv_amd64_storage_free(mem, &sysv_amd64_function->storage);
         return res;
     });
 
@@ -104,33 +98,24 @@ static kefir_result_t free_codegen_func(struct kefir_mem *mem, const struct kefi
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_abi_amd64_sysv_function_decl_free(mem, &sysv_amd64_function->declaration);
         kefir_list_free(mem, &sysv_amd64_function->alive_instr);
-        kefir_hashtreeset_free(mem, &sysv_amd64_function->occupied_general_purpose_regs);
-        kefir_hashtreeset_free(mem, &sysv_amd64_function->borrowed_general_purpose_regs);
+        kefir_codegen_opt_sysv_amd64_storage_free(mem, &sysv_amd64_function->storage);
         return res;
     });
 
     res = kefir_abi_amd64_sysv_function_decl_free(mem, &sysv_amd64_function->declaration);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_list_free(mem, &sysv_amd64_function->alive_instr);
-        kefir_hashtreeset_free(mem, &sysv_amd64_function->occupied_general_purpose_regs);
-        kefir_hashtreeset_free(mem, &sysv_amd64_function->borrowed_general_purpose_regs);
+        kefir_codegen_opt_sysv_amd64_storage_free(mem, &sysv_amd64_function->storage);
         return res;
     });
 
     res = kefir_list_free(mem, &sysv_amd64_function->alive_instr);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_hashtreeset_free(mem, &sysv_amd64_function->occupied_general_purpose_regs);
-        kefir_hashtreeset_free(mem, &sysv_amd64_function->borrowed_general_purpose_regs);
+        kefir_codegen_opt_sysv_amd64_storage_free(mem, &sysv_amd64_function->storage);
         return res;
     });
 
-    res = kefir_hashtreeset_free(mem, &sysv_amd64_function->occupied_general_purpose_regs);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_hashtreeset_free(mem, &sysv_amd64_function->borrowed_general_purpose_regs);
-        return res;
-    });
-
-    REQUIRE_OK(kefir_hashtreeset_free(mem, &sysv_amd64_function->borrowed_general_purpose_regs));
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_free(mem, &sysv_amd64_function->storage));
     return KEFIR_OK;
 }
 

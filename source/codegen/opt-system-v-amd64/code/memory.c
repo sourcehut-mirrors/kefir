@@ -38,14 +38,16 @@ DEFINE_TRANSLATOR(memory) {
     REQUIRE_OK(kefir_codegen_opt_sysv_amd64_register_allocation_of(
         &codegen_func->register_allocator, instr->operation.parameters.typed_refs.ref[0], &destination_allocation));
 
-    struct kefir_codegen_opt_sysv_amd64_translate_temporary_register source_reg;
-    struct kefir_codegen_opt_sysv_amd64_translate_temporary_register destination_reg;
-    struct kefir_codegen_opt_sysv_amd64_translate_temporary_register count_reg;
+    struct kefir_codegen_opt_sysv_amd64_storage_temporary_register source_reg;
+    struct kefir_codegen_opt_sysv_amd64_storage_temporary_register destination_reg;
+    struct kefir_codegen_opt_sysv_amd64_storage_temporary_register count_reg;
 
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_temporary_general_purpose_register_obtain_specific(
-        mem, codegen, source_allocation, KEFIR_AMD64_XASMGEN_REGISTER_RSI, codegen_func, &source_reg));
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_temporary_general_purpose_register_obtain_specific(
-        mem, codegen, destination_allocation, KEFIR_AMD64_XASMGEN_REGISTER_RDI, codegen_func, &destination_reg));
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_acquire_specific_temporary_register(
+        mem, &codegen->xasmgen, &codegen_func->storage, source_allocation, KEFIR_AMD64_XASMGEN_REGISTER_RSI,
+        &source_reg));
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_acquire_specific_temporary_register(
+        mem, &codegen->xasmgen, &codegen_func->storage, destination_allocation, KEFIR_AMD64_XASMGEN_REGISTER_RDI,
+        &destination_reg));
 
     struct kefir_codegen_opt_amd64_sysv_storage_transform_location source_location_origin;
     struct kefir_codegen_opt_amd64_sysv_storage_transform_location destination_location_origin;
@@ -66,15 +68,17 @@ DEFINE_TRANSLATOR(memory) {
         mem, &transform, &source_location_intended, &source_location_origin);
     REQUIRE_CHAIN(&res, kefir_codegen_opt_amd64_sysv_storage_transform_insert(
                             mem, &transform, &destination_location_intended, &destination_location_origin));
-    REQUIRE_CHAIN(&res, kefir_codegen_opt_amd64_sysv_storage_transform_perform(mem, codegen, codegen_func, &transform));
+    REQUIRE_CHAIN(
+        &res, kefir_codegen_opt_amd64_sysv_storage_transform_perform(mem, codegen, &codegen_func->storage, &transform));
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_codegen_opt_amd64_sysv_storage_transform_free(mem, &transform);
         return res;
     });
     REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_transform_free(mem, &transform));
 
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_temporary_general_purpose_register_obtain_specific(
-        mem, codegen, destination_allocation, KEFIR_AMD64_XASMGEN_REGISTER_RCX, codegen_func, &count_reg));
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_acquire_specific_temporary_register(
+        mem, &codegen->xasmgen, &codegen_func->storage, destination_allocation, KEFIR_AMD64_XASMGEN_REGISTER_RCX,
+        &count_reg));
 
     const struct kefir_ir_type *ir_type =
         kefir_ir_module_get_named_type(module->ir_module, instr->operation.parameters.typed_refs.type_id);
@@ -105,8 +109,11 @@ DEFINE_TRANSLATOR(memory) {
     }
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOVSB(&codegen->xasmgen, true));
 
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_temporary_register_free(mem, codegen, codegen_func, &count_reg));
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_temporary_register_free(mem, codegen, codegen_func, &destination_reg));
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_temporary_register_free(mem, codegen, codegen_func, &source_reg));
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_release_temporary_register(mem, &codegen->xasmgen,
+                                                                               &codegen_func->storage, &count_reg));
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_release_temporary_register(
+        mem, &codegen->xasmgen, &codegen_func->storage, &destination_reg));
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_release_temporary_register(mem, &codegen->xasmgen,
+                                                                               &codegen_func->storage, &source_reg));
     return KEFIR_OK;
 }

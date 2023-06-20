@@ -35,9 +35,9 @@ DEFINE_TRANSLATOR(get_argument) {
 
     if (result_allocation->result.backing_storage_type ==
         KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_BACKING_STORAGE_INDIRECT) {
-        struct kefir_codegen_opt_sysv_amd64_translate_temporary_register result_reg;
-        REQUIRE_OK(kefir_codegen_opt_sysv_amd64_temporary_general_purpose_register_obtain(
-            mem, codegen, result_allocation, codegen_func, &result_reg, NULL, NULL));
+        struct kefir_codegen_opt_sysv_amd64_storage_temporary_register result_reg;
+        REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_acquire_temporary_general_purpose_register(
+            mem, &codegen->xasmgen, &codegen_func->storage, result_allocation, &result_reg, NULL, NULL));
 
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_LEA(
             &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_reg.reg),
@@ -49,7 +49,8 @@ DEFINE_TRANSLATOR(get_argument) {
         REQUIRE_OK(kefir_codegen_opt_sysv_amd64_store_reg_allocation(codegen, &codegen_func->stack_frame_map,
                                                                      result_allocation, result_reg.reg));
 
-        REQUIRE_OK(kefir_codegen_opt_sysv_amd64_temporary_register_free(mem, codegen, codegen_func, &result_reg));
+        REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_release_temporary_register(
+            mem, &codegen->xasmgen, &codegen_func->storage, &result_reg));
         return KEFIR_OK;
     }
 
@@ -97,9 +98,9 @@ DEFINE_TRANSLATOR(get_argument) {
         }
     }
 
-    struct kefir_codegen_opt_sysv_amd64_translate_temporary_register result_reg;
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_temporary_general_purpose_register_obtain(
-        mem, codegen, result_allocation, codegen_func, &result_reg, NULL, NULL));
+    struct kefir_codegen_opt_sysv_amd64_storage_temporary_register result_reg;
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_acquire_temporary_general_purpose_register(
+        mem, &codegen->xasmgen, &codegen_func->storage, result_allocation, &result_reg, NULL, NULL));
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_LEA(
         &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_reg.reg),
@@ -111,7 +112,8 @@ DEFINE_TRANSLATOR(get_argument) {
     REQUIRE_OK(kefir_codegen_opt_sysv_amd64_store_reg_allocation(codegen, &codegen_func->stack_frame_map,
                                                                  result_allocation, result_reg.reg));
 
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_temporary_register_free(mem, codegen, codegen_func, &result_reg));
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_release_temporary_register(mem, &codegen->xasmgen,
+                                                                               &codegen_func->storage, &result_reg));
 
     for (kefir_size_t i = 0;
          i < kefir_vector_length(&result_allocation->result.register_aggregate_allocation->container.qwords); i++) {
@@ -120,9 +122,8 @@ DEFINE_TRANSLATOR(get_argument) {
             kefir_vector_at(&result_allocation->result.register_aggregate_allocation->container.qwords, i));
         switch (qword->klass) {
             case KEFIR_AMD64_SYSV_PARAM_INTEGER:
-                REQUIRE_OK(kefir_hashtreeset_delete(
-                    mem, &codegen_func->occupied_general_purpose_regs,
-                    (kefir_hashtreeset_entry_t) KEFIR_ABI_SYSV_AMD64_PARAMETER_INTEGER_REGISTERS[qword->location]));
+                REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_mark_register_unused(
+                    mem, &codegen_func->storage, KEFIR_ABI_SYSV_AMD64_PARAMETER_INTEGER_REGISTERS[qword->location]));
                 break;
 
             case KEFIR_AMD64_SYSV_PARAM_SSE:

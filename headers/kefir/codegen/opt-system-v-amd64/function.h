@@ -25,6 +25,7 @@
 #include "kefir/codegen/opt-system-v-amd64/register_allocator.h"
 #include "kefir/codegen/opt-system-v-amd64/parameters.h"
 #include "kefir/codegen/opt-system-v-amd64/stack_frame.h"
+#include "kefir/codegen/opt-system-v-amd64/storage.h"
 #include "kefir/target/abi/system-v-amd64/function.h"
 #include "kefir/target/abi/system-v-amd64/data_layout.h"
 
@@ -36,8 +37,7 @@ typedef struct kefir_opt_sysv_amd64_function {
     struct kefir_abi_sysv_amd64_type_layout locals_layout;
 
     struct kefir_codegen_opt_sysv_amd64_stack_frame_map stack_frame_map;
-    struct kefir_hashtreeset occupied_general_purpose_regs;
-    struct kefir_hashtreeset borrowed_general_purpose_regs;
+    struct kefir_codegen_opt_sysv_amd64_storage storage;
     struct kefir_list alive_instr;
     kefir_id_t nonblock_labels;
 } kefir_opt_sysv_amd64_function_t;

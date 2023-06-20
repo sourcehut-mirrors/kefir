@@ -36,7 +36,10 @@ static kefir_result_t calculate_stack_increment(
             result_allocation->result.reg == reg) {
             continue;
         }
-        if (kefir_hashtreeset_has(&codegen_func->occupied_general_purpose_regs, (kefir_hashtreeset_entry_t) reg)) {
+
+        kefir_bool_t occupied;
+        REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_is_register_occupied(&codegen_func->storage, reg, &occupied));
+        if (occupied) {
             *stack_increment += KEFIR_AMD64_SYSV_ABI_QWORD;
         }
     }
@@ -62,15 +65,19 @@ static kefir_result_t save_registers(struct kefir_codegen_opt_amd64 *codegen,
             result_allocation->result.reg == reg) {
             continue;
         }
-        if (!kefir_asm_amd64_xasmgen_register_is_floating_point(reg) &&
-            kefir_hashtreeset_has(&codegen_func->occupied_general_purpose_regs, (kefir_hashtreeset_entry_t) reg)) {
-            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
-                &codegen->xasmgen,
-                kefir_asm_amd64_xasmgen_operand_indirect(
-                    &codegen->xasmgen_helpers.operands[0],
-                    kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP), -offset),
-                kefir_asm_amd64_xasmgen_operand_reg(reg)));
-            offset += KEFIR_AMD64_SYSV_ABI_QWORD;
+        if (!kefir_asm_amd64_xasmgen_register_is_floating_point(reg)) {
+            kefir_bool_t occupied;
+            REQUIRE_OK(
+                kefir_codegen_opt_sysv_amd64_storage_is_register_occupied(&codegen_func->storage, reg, &occupied));
+            if (occupied) {
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
+                    &codegen->xasmgen,
+                    kefir_asm_amd64_xasmgen_operand_indirect(
+                        &codegen->xasmgen_helpers.operands[0],
+                        kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP), -offset),
+                    kefir_asm_amd64_xasmgen_operand_reg(reg)));
+                offset += KEFIR_AMD64_SYSV_ABI_QWORD;
+            }
         }
     }
     return KEFIR_OK;
@@ -88,14 +95,18 @@ static kefir_result_t restore_registers(
             result_allocation->result.reg == reg) {
             continue;
         }
-        if (!kefir_asm_amd64_xasmgen_register_is_floating_point(reg) &&
-            kefir_hashtreeset_has(&codegen_func->occupied_general_purpose_regs, (kefir_hashtreeset_entry_t) reg)) {
-            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
-                &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(reg),
-                kefir_asm_amd64_xasmgen_operand_indirect(
-                    &codegen->xasmgen_helpers.operands[0],
-                    kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP), -offset)));
-            offset += KEFIR_AMD64_SYSV_ABI_QWORD;
+        if (!kefir_asm_amd64_xasmgen_register_is_floating_point(reg)) {
+            kefir_bool_t occupied;
+            REQUIRE_OK(
+                kefir_codegen_opt_sysv_amd64_storage_is_register_occupied(&codegen_func->storage, reg, &occupied));
+            if (occupied) {
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
+                    &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(reg),
+                    kefir_asm_amd64_xasmgen_operand_indirect(
+                        &codegen->xasmgen_helpers.operands[0],
+                        kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP), -offset)));
+                offset += KEFIR_AMD64_SYSV_ABI_QWORD;
+            }
         }
     }
     return KEFIR_OK;
@@ -332,7 +343,8 @@ static kefir_result_t prepare_parameters(struct kefir_mem *mem, struct kefir_cod
 
     kefir_result_t res =
         kefir_ir_type_visitor_list_nodes(ir_func_decl->params, &visitor, (void *) &arg, 0, call_node->argument_count);
-    REQUIRE_CHAIN(&res, kefir_codegen_opt_amd64_sysv_storage_transform_perform(mem, codegen, codegen_func, &transform));
+    REQUIRE_CHAIN(
+        &res, kefir_codegen_opt_amd64_sysv_storage_transform_perform(mem, codegen, &codegen_func->storage, &transform));
 
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_codegen_opt_amd64_sysv_storage_transform_free(mem, &transform);

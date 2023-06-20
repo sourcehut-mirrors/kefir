@@ -32,9 +32,9 @@ DEFINE_TRANSLATOR(data_access) {
     REQUIRE_OK(kefir_codegen_opt_sysv_amd64_register_allocation_of(&codegen_func->register_allocator, instr_ref,
                                                                    &result_allocation));
 
-    struct kefir_codegen_opt_sysv_amd64_translate_temporary_register result_reg;
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_temporary_general_purpose_register_obtain(
-        mem, codegen, result_allocation, codegen_func, &result_reg, NULL, NULL));
+    struct kefir_codegen_opt_sysv_amd64_storage_temporary_register result_reg;
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_acquire_temporary_general_purpose_register(
+        mem, &codegen->xasmgen, &codegen_func->storage, result_allocation, &result_reg, NULL, NULL));
 
     switch (instr->operation.opcode) {
         case KEFIR_OPT_OPCODE_GET_LOCAL: {
@@ -72,6 +72,7 @@ DEFINE_TRANSLATOR(data_access) {
     REQUIRE_OK(kefir_codegen_opt_sysv_amd64_store_reg_allocation(codegen, &codegen_func->stack_frame_map,
                                                                  result_allocation, result_reg.reg));
 
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_temporary_register_free(mem, codegen, codegen_func, &result_reg));
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_release_temporary_register(mem, &codegen->xasmgen,
+                                                                               &codegen_func->storage, &result_reg));
     return KEFIR_OK;
 }

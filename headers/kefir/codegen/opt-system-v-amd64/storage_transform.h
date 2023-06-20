@@ -22,7 +22,7 @@
 #define KEFIR_CODEGEN_OPT_SYSTEM_V_AMD64_STORAGE_TRANSFORM_H_
 
 #include "kefir/target/asm/amd64/xasmgen.h"
-#include "kefir/codegen/opt-system-v-amd64/function.h"
+#include "kefir/codegen/opt-system-v-amd64/storage.h"
 #include "kefir/core/hashtree.h"
 #include "kefir/core/hashtreeset.h"
 
@@ -67,7 +67,7 @@ kefir_result_t kefir_codegen_opt_amd64_sysv_storage_transform_operations(
     const struct kefir_codegen_opt_amd64_sysv_storage_transform *, kefir_size_t *);
 
 kefir_result_t kefir_codegen_opt_amd64_sysv_storage_transform_perform(
-    struct kefir_mem *, struct kefir_codegen_opt_amd64 *, struct kefir_opt_sysv_amd64_function *,
+    struct kefir_mem *, struct kefir_codegen_opt_amd64 *, struct kefir_codegen_opt_sysv_amd64_storage *,
     const struct kefir_codegen_opt_amd64_sysv_storage_transform *);
 
 #endif

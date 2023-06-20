@@ -29,26 +29,6 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_translate_code(struct kefir_mem *, s
                                                            struct kefir_opt_sysv_amd64_function *);
 
 #ifdef KEFIR_CODEGEN_OPT_SYSTEM_V_AMD64_CODE_INTERNAL
-typedef struct kefir_codegen_opt_sysv_amd64_translate_temporary_register {
-    kefir_bool_t borrow;
-    kefir_bool_t evicted;
-    kefir_asm_amd64_xasmgen_register_t reg;
-} kefir_codegen_opt_sysv_amd64_translate_temporary_register_t;
-
-kefir_result_t kefir_codegen_opt_sysv_amd64_temporary_general_purpose_register_obtain(
-    struct kefir_mem *, struct kefir_codegen_opt_amd64 *,
-    const struct kefir_codegen_opt_sysv_amd64_register_allocation *, struct kefir_opt_sysv_amd64_function *,
-    struct kefir_codegen_opt_sysv_amd64_translate_temporary_register *,
-    kefir_result_t (*)(kefir_asm_amd64_xasmgen_register_t, kefir_bool_t *, void *), void *);
-
-kefir_result_t kefir_codegen_opt_sysv_amd64_temporary_general_purpose_register_obtain_specific(
-    struct kefir_mem *, struct kefir_codegen_opt_amd64 *,
-    const struct kefir_codegen_opt_sysv_amd64_register_allocation *, kefir_asm_amd64_xasmgen_register_t,
-    struct kefir_opt_sysv_amd64_function *, struct kefir_codegen_opt_sysv_amd64_translate_temporary_register *);
-
-kefir_result_t kefir_codegen_opt_sysv_amd64_temporary_register_free(
-    struct kefir_mem *, struct kefir_codegen_opt_amd64 *, struct kefir_opt_sysv_amd64_function *,
-    const struct kefir_codegen_opt_sysv_amd64_translate_temporary_register *);
 
 const struct kefir_asm_amd64_xasmgen_operand *kefir_codegen_opt_sysv_amd64_reg_allocation_operand(
     struct kefir_asm_amd64_xasmgen_operand *, struct kefir_codegen_opt_sysv_amd64_stack_frame_map *,
