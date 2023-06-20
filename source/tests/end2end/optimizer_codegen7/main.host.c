@@ -33,6 +33,10 @@ long mulp(struct Pair p) {
     return p.a * p.b;
 }
 
+long mulh(struct HugePair p) {
+    return p.a * p.b;
+}
+
 static int dummy_fun_res = 0;
 
 int dummy_fun(int a, int b, int c, int d, int e, int f, int g, int h, int i, int j, int k, int m, int n, int o, int p,
@@ -54,16 +58,27 @@ int dummy_fun2(struct IPair a, long b, struct Pair c, long d) {
     return dummy_fun_res;
 }
 
+int dummy_fun3(struct IPair a, short b, short c, struct HugePair d, long e, struct IPair f) {
+    int res = a.a == a.b - 1 && a.b == b - 1 && b == c - 1 && c == d.a - 1 && d.a == d.b - 1 && d.b == e - 1 &&
+              e == f.a - 1 && f.a == f.b - 1;
+    if (!res) {
+        abort();
+    }
+    return dummy_fun_res;
+}
+
 int main(void) {
     for (int i = -10; i <= 10; i++) {
         dummy_fun_res = i;
         assert(dummy_test() == dummy_fun_res);
         assert(dummy_test2() == dummy_fun_res);
+        assert(dummy_test3() == dummy_fun_res);
     }
     for (long x = -1000; x <= 1000; x++) {
         for (long y = -100; y <= 100; y++) {
             assert(test_hypot(x, y) == (x * x) + (y * y));
             assert(test_hypotp((struct Pair){x, y}) == (x * x) + (y * y));
+            assert(test_hypoth((struct HugePair){.a = x, .b = y}) == (x * x) + (y * y));
         }
     }
     return EXIT_SUCCESS;

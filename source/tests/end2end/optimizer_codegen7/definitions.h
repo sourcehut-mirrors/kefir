@@ -31,19 +31,34 @@ struct IPair {
     int b;
 };
 
+struct HugePair {
+    char buffer1[13];
+    long a;
+    char buffer2[5];
+    long b;
+    char buffer3[17];
+};
+
 extern long sum(long, long);
 extern long mul(long, long);
 
 extern long sump(struct Pair);
 extern long mulp(struct Pair);
 
+extern long sumh(struct HugePair);
+extern long mulh(struct HugePair);
+
 long test_hypot(long, long);
 long test_hypotp(struct Pair);
+long test_hypoth(struct HugePair);
 
 extern int dummy_fun(int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int, int);
 int dummy_test(void);
 
 extern int dummy_fun2(struct IPair, long, struct Pair, long);
 int dummy_test2(void);
+
+extern int dummy_fun3(struct IPair, short, short, struct HugePair, long, struct IPair);
+int dummy_test3(void);
 
 #endif
