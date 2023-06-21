@@ -45,7 +45,7 @@ DEFINE_TRANSLATOR(binary_op) {
                         "Expected non-floating-point allocation for the second argument of integral add operation"));
 
     struct kefir_codegen_opt_sysv_amd64_storage_temporary_register result_reg;
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_acquire_temporary_general_purpose_register(
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_acquire_general_purpose_register(
         mem, &codegen->xasmgen, &codegen_func->storage, result_allocation, &result_reg,
         kefir_codegen_opt_sysv_amd64_filter_regs_allocation,
         (const struct kefir_codegen_opt_sysv_amd64_register_allocation *[]){arg2_allocation, NULL}));
@@ -98,7 +98,7 @@ DEFINE_TRANSLATOR(binary_op) {
 
         case KEFIR_OPT_OPCODE_BOOL_AND: {
             struct kefir_codegen_opt_sysv_amd64_storage_temporary_register tmp_reg;
-            REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_acquire_temporary_general_purpose_register(
+            REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_acquire_general_purpose_register(
                 mem, &codegen->xasmgen, &codegen_func->storage, NULL, &tmp_reg,
                 kefir_codegen_opt_sysv_amd64_filter_regs_allocation,
                 (void *) (const struct kefir_codegen_opt_sysv_amd64_register_allocation *[]){arg1_allocation, NULL}));
@@ -138,8 +138,8 @@ DEFINE_TRANSLATOR(binary_op) {
                                                        kefir_asm_amd64_xasmgen_operand_reg(result_reg.reg),
                                                        kefir_asm_amd64_xasmgen_operand_reg(result_variant)));
 
-            REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_release_temporary_register(
-                mem, &codegen->xasmgen, &codegen_func->storage, &tmp_reg));
+            REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_release_register(mem, &codegen->xasmgen,
+                                                                             &codegen_func->storage, &tmp_reg));
         } break;
 
         case KEFIR_OPT_OPCODE_BOOL_OR: {
@@ -164,7 +164,7 @@ DEFINE_TRANSLATOR(binary_op) {
     REQUIRE_OK(kefir_codegen_opt_sysv_amd64_store_reg_allocation(codegen, &codegen_func->stack_frame_map,
                                                                  result_allocation, result_reg.reg));
 
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_release_temporary_register(mem, &codegen->xasmgen,
-                                                                               &codegen_func->storage, &result_reg));
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_release_register(mem, &codegen->xasmgen, &codegen_func->storage,
+                                                                     &result_reg));
     return KEFIR_OK;
 }

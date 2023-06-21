@@ -143,7 +143,7 @@ DEFINE_TRANSLATOR(jump) {
                 &condition_allocation));
 
             struct kefir_codegen_opt_sysv_amd64_storage_temporary_register condition_reg;
-            REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_acquire_temporary_general_purpose_register(
+            REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_acquire_general_purpose_register(
                 mem, &codegen->xasmgen, &codegen_func->storage, condition_allocation, &condition_reg, NULL, NULL));
 
             REQUIRE_OK(kefir_codegen_opt_sysv_amd64_load_reg_allocation(codegen, &codegen_func->stack_frame_map,
@@ -168,8 +168,8 @@ DEFINE_TRANSLATOR(jump) {
                                                &codegen->xasmgen_helpers, KEFIR_OPT_AMD64_SYSTEM_V_FUNCTION_BLOCK_LABEL,
                                                function->ir_func->name, instr->block_id, alternative_label))));
             } else {
-                REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_release_temporary_register(
-                    mem, &codegen->xasmgen, &codegen_func->storage, &condition_reg));
+                REQUIRE_OK(
+                    kefir_codegen_opt_sysv_amd64_storage_restore_evicted_register(&codegen->xasmgen, &condition_reg));
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_JZ(
                     &codegen->xasmgen,
                     kefir_asm_amd64_xasmgen_operand_label(
@@ -179,8 +179,8 @@ DEFINE_TRANSLATOR(jump) {
                             instr->operation.parameters.branch.alternative_block))));
             }
 
-            REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_release_temporary_register(
-                mem, &codegen->xasmgen, &codegen_func->storage, &condition_reg));
+            REQUIRE_OK(
+                kefir_codegen_opt_sysv_amd64_storage_restore_evicted_register(&codegen->xasmgen, &condition_reg));
             REQUIRE_OK(map_registers(mem, codegen, function, func_analysis, codegen_func, instr->block_id,
                                      instr->operation.parameters.branch.target_block));
 
@@ -204,8 +204,8 @@ DEFINE_TRANSLATOR(jump) {
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen->xasmgen, KEFIR_OPT_AMD64_SYSTEM_V_FUNCTION_BLOCK_LABEL,
                                                      function->ir_func->name, instr->block_id, alternative_label));
 
-                REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_release_temporary_register(
-                    mem, &codegen->xasmgen, &codegen_func->storage, &condition_reg));
+                REQUIRE_OK(
+                    kefir_codegen_opt_sysv_amd64_storage_restore_evicted_register(&codegen->xasmgen, &condition_reg));
                 REQUIRE_OK(map_registers(mem, codegen, function, func_analysis, codegen_func, instr->block_id,
                                          instr->operation.parameters.branch.alternative_block));
 
@@ -222,6 +222,11 @@ DEFINE_TRANSLATOR(jump) {
                                 function->ir_func->name, instr->operation.parameters.branch.alternative_block))));
                 }
             }
+
+            REQUIRE(!condition_reg.evicted,
+                    KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected temporary register state"));
+            REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_release_register(mem, &codegen->xasmgen,
+                                                                             &codegen_func->storage, &condition_reg));
         } break;
 
         case KEFIR_OPT_OPCODE_IJUMP: {

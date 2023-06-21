@@ -40,12 +40,12 @@ DEFINE_TRANSLATOR(div_mod) {
         &codegen_func->register_allocator, instr->operation.parameters.refs[1], &arg2_allocation));
 
     struct kefir_codegen_opt_sysv_amd64_storage_temporary_register quotient_reg;
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_acquire_specific_temporary_register(
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_acquire_specific_register(
         mem, &codegen->xasmgen, &codegen_func->storage, result_allocation, KEFIR_AMD64_XASMGEN_REGISTER_RAX,
         &quotient_reg));
 
     struct kefir_codegen_opt_sysv_amd64_storage_temporary_register remainder_reg;
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_acquire_specific_temporary_register(
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_acquire_specific_register(
         mem, &codegen->xasmgen, &codegen_func->storage, result_allocation, KEFIR_AMD64_XASMGEN_REGISTER_RDX,
         &remainder_reg));
 
@@ -129,9 +129,9 @@ DEFINE_TRANSLATOR(div_mod) {
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected optimizer instruction opcode");
     }
 
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_release_temporary_register(mem, &codegen->xasmgen,
-                                                                               &codegen_func->storage, &remainder_reg));
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_release_temporary_register(mem, &codegen->xasmgen,
-                                                                               &codegen_func->storage, &quotient_reg));
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_release_register(mem, &codegen->xasmgen, &codegen_func->storage,
+                                                                     &remainder_reg));
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_release_register(mem, &codegen->xasmgen, &codegen_func->storage,
+                                                                     &quotient_reg));
     return KEFIR_OK;
 }

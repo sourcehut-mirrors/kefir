@@ -22,10 +22,6 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_storage_mark_register_used(struct ke
 kefir_result_t kefir_codegen_opt_sysv_amd64_storage_mark_register_unused(struct kefir_mem *,
                                                                          struct kefir_codegen_opt_sysv_amd64_storage *,
                                                                          kefir_asm_amd64_xasmgen_register_t);
-kefir_result_t kefir_codegen_opt_sysv_amd64_storage_mark_register_acquired(
-    struct kefir_mem *, struct kefir_codegen_opt_sysv_amd64_storage *, kefir_asm_amd64_xasmgen_register_t);
-kefir_result_t kefir_codegen_opt_sysv_amd64_storage_mark_register_released(
-    struct kefir_mem *, struct kefir_codegen_opt_sysv_amd64_storage *, kefir_asm_amd64_xasmgen_register_t);
 
 kefir_result_t kefir_codegen_opt_sysv_amd64_storage_is_register_occupied(
     const struct kefir_codegen_opt_sysv_amd64_storage *, kefir_asm_amd64_xasmgen_register_t, kefir_bool_t *);
@@ -35,23 +31,25 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_storage_has_borrowed_registers(
     const struct kefir_codegen_opt_sysv_amd64_storage *, kefir_bool_t *);
 
 typedef struct kefir_codegen_opt_sysv_amd64_storage_temporary_register {
-    kefir_bool_t borrow;
     kefir_bool_t evicted;
     kefir_asm_amd64_xasmgen_register_t reg;
 } kefir_codegen_opt_sysv_amd64_storage_temporary_register_t;
 
-kefir_result_t kefir_codegen_opt_sysv_amd64_storage_acquire_temporary_general_purpose_register(
+kefir_result_t kefir_codegen_opt_sysv_amd64_storage_acquire_general_purpose_register(
     struct kefir_mem *, struct kefir_amd64_xasmgen *, struct kefir_codegen_opt_sysv_amd64_storage *,
     const struct kefir_codegen_opt_sysv_amd64_register_allocation *,
     struct kefir_codegen_opt_sysv_amd64_storage_temporary_register *,
     kefir_result_t (*)(kefir_asm_amd64_xasmgen_register_t, kefir_bool_t *, void *), void *);
 
-kefir_result_t kefir_codegen_opt_sysv_amd64_storage_acquire_specific_temporary_register(
+kefir_result_t kefir_codegen_opt_sysv_amd64_storage_acquire_specific_register(
     struct kefir_mem *, struct kefir_amd64_xasmgen *, struct kefir_codegen_opt_sysv_amd64_storage *,
     const struct kefir_codegen_opt_sysv_amd64_register_allocation *, kefir_asm_amd64_xasmgen_register_t,
     struct kefir_codegen_opt_sysv_amd64_storage_temporary_register *);
 
-kefir_result_t kefir_codegen_opt_sysv_amd64_storage_release_temporary_register(
+kefir_result_t kefir_codegen_opt_sysv_amd64_storage_restore_evicted_register(
+    struct kefir_amd64_xasmgen *, struct kefir_codegen_opt_sysv_amd64_storage_temporary_register *);
+
+kefir_result_t kefir_codegen_opt_sysv_amd64_storage_release_register(
     struct kefir_mem *, struct kefir_amd64_xasmgen *, struct kefir_codegen_opt_sysv_amd64_storage *,
     const struct kefir_codegen_opt_sysv_amd64_storage_temporary_register *);
 

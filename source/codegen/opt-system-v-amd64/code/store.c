@@ -37,7 +37,7 @@ DEFINE_TRANSLATOR(store) {
         &codegen_func->register_allocator, instr->operation.parameters.memory_access.location, &target_allocation));
 
     struct kefir_codegen_opt_sysv_amd64_storage_temporary_register target_reg;
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_acquire_temporary_general_purpose_register(
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_acquire_general_purpose_register(
         mem, &codegen->xasmgen, &codegen_func->storage, target_allocation, &target_reg, NULL, NULL));
     REQUIRE_OK(kefir_codegen_opt_sysv_amd64_load_reg_allocation(codegen, &codegen_func->stack_frame_map,
                                                                 target_allocation, target_reg.reg));
@@ -124,7 +124,7 @@ DEFINE_TRANSLATOR(store) {
         case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_SPILL_AREA:
         case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_INDIRECT: {
             struct kefir_codegen_opt_sysv_amd64_storage_temporary_register source_tmp_reg;
-            REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_acquire_temporary_general_purpose_register(
+            REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_acquire_general_purpose_register(
                 mem, &codegen->xasmgen, &codegen_func->storage, NULL, &source_tmp_reg,
                 kefir_codegen_opt_sysv_amd64_filter_regs_allocation,
                 (const struct kefir_codegen_opt_sysv_amd64_register_allocation *[]){target_allocation, NULL}));
@@ -165,15 +165,15 @@ DEFINE_TRANSLATOR(store) {
                                                              kefir_asm_amd64_xasmgen_operand_reg(target_reg.reg), 0)),
                 kefir_asm_amd64_xasmgen_operand_reg(source_reg_variant)));
 
-            REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_release_temporary_register(
-                mem, &codegen->xasmgen, &codegen_func->storage, &source_tmp_reg));
+            REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_release_register(mem, &codegen->xasmgen,
+                                                                             &codegen_func->storage, &source_tmp_reg));
         } break;
 
         case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_NONE:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected optimizer codegen register allocation");
     }
 
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_release_temporary_register(mem, &codegen->xasmgen,
-                                                                               &codegen_func->storage, &target_reg));
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_release_register(mem, &codegen->xasmgen, &codegen_func->storage,
+                                                                     &target_reg));
     return KEFIR_OK;
 }

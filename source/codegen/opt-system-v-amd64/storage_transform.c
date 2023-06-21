@@ -253,8 +253,8 @@ static kefir_result_t obtain_temporary(struct kefir_mem *mem, struct kefir_codeg
                                        const struct kefir_codegen_opt_amd64_sysv_storage_transform *transform,
                                        struct kefir_codegen_opt_sysv_amd64_storage_temporary_register *tmp_reg,
                                        kefir_size_t *num_of_stack_temporaries) {
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_acquire_temporary_general_purpose_register(
-        mem, &codegen->xasmgen, storage, NULL, tmp_reg, NULL, NULL));
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_acquire_general_purpose_register(mem, &codegen->xasmgen, storage,
+                                                                                     NULL, tmp_reg, NULL, NULL));
 
     kefir_bool_t self_evicted = false;
     if (!tmp_reg->evicted && kefir_hashtreeset_has(&transform->active_regs, (kefir_hashtreeset_entry_t) tmp_reg->reg)) {
@@ -281,8 +281,7 @@ static kefir_result_t free_temporary(struct kefir_mem *mem, struct kefir_codegen
     if (self_evicted || tmp_reg->evicted) {
         (*num_of_stack_temporaries)--;
     }
-    REQUIRE_OK(
-        kefir_codegen_opt_sysv_amd64_storage_release_temporary_register(mem, &codegen->xasmgen, storage, tmp_reg));
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_release_register(mem, &codegen->xasmgen, storage, tmp_reg));
     return KEFIR_OK;
 }
 

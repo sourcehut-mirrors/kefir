@@ -44,11 +44,11 @@ DEFINE_TRANSLATOR(bitshift) {
                             "Expected non-floating-point allocation for the second argument of integral operation"));
 
     struct kefir_codegen_opt_sysv_amd64_storage_temporary_register shift_reg;
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_acquire_specific_temporary_register(
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_acquire_specific_register(
         mem, &codegen->xasmgen, &codegen_func->storage, arg2_allocation, KEFIR_AMD64_XASMGEN_REGISTER_RCX, &shift_reg));
 
     struct kefir_codegen_opt_sysv_amd64_storage_temporary_register result_reg;
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_acquire_temporary_general_purpose_register(
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_acquire_general_purpose_register(
         mem, &codegen->xasmgen, &codegen_func->storage, result_allocation, &result_reg,
         kefir_codegen_opt_sysv_amd64_filter_regs_allocation,
         (const struct kefir_codegen_opt_sysv_amd64_register_allocation *[]){arg2_allocation, NULL}));
@@ -84,9 +84,9 @@ DEFINE_TRANSLATOR(bitshift) {
     REQUIRE_OK(kefir_codegen_opt_sysv_amd64_store_reg_allocation(codegen, &codegen_func->stack_frame_map,
                                                                  result_allocation, result_reg.reg));
 
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_release_temporary_register(mem, &codegen->xasmgen,
-                                                                               &codegen_func->storage, &result_reg));
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_release_temporary_register(mem, &codegen->xasmgen,
-                                                                               &codegen_func->storage, &shift_reg));
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_release_register(mem, &codegen->xasmgen, &codegen_func->storage,
+                                                                     &result_reg));
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_release_register(mem, &codegen->xasmgen, &codegen_func->storage,
+                                                                     &shift_reg));
     return KEFIR_OK;
 }

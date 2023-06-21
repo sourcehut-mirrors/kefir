@@ -180,11 +180,9 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_store_reg_allocation(
     return KEFIR_OK;
 }
 
-static kefir_result_t update_translate_context_liveness(
-    struct kefir_mem *mem, const struct kefir_opt_code_analysis *func_analysis,
-    struct kefir_opt_sysv_amd64_function *codegen_func, const struct kefir_opt_instruction *instr,
-    const struct kefir_opt_code_analysis_instruction_properties *instr_props,
-    const struct kefir_codegen_opt_sysv_amd64_register_allocation *reg_allocation, kefir_bool_t argument_liveness) {
+static kefir_result_t collect_dead_registers(struct kefir_mem *mem, const struct kefir_opt_code_analysis *func_analysis,
+                                             struct kefir_opt_sysv_amd64_function *codegen_func,
+                                             const struct kefir_opt_code_analysis_instruction_properties *instr_props) {
     for (const struct kefir_list_entry *iter = kefir_list_head(&codegen_func->alive_instr); iter != NULL;) {
         ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, instr_ref, (kefir_uptr_t) iter->value);
 
@@ -208,42 +206,45 @@ static kefir_result_t update_translate_context_liveness(
             kefir_list_next(&iter);
         }
     }
+    return KEFIR_OK;
+}
 
-    if (instr->operation.opcode != KEFIR_OPT_OPCODE_GET_ARGUMENT || argument_liveness) {
-        if (reg_allocation->result.type == KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_GENERAL_PURPOSE_REGISTER) {
-            REQUIRE_OK(kefir_list_insert_after(mem, &codegen_func->alive_instr,
-                                               kefir_list_tail(&codegen_func->alive_instr),
-                                               (void *) (kefir_uptr_t) instr_props->instr_ref));
+static kefir_result_t update_live_registers(
+    struct kefir_mem *mem, struct kefir_opt_sysv_amd64_function *codegen_func,
+    const struct kefir_opt_code_analysis_instruction_properties *instr_props,
+    const struct kefir_codegen_opt_sysv_amd64_register_allocation *reg_allocation) {
 
-            REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_mark_register_used(mem, &codegen_func->storage,
-                                                                               reg_allocation->result.reg));
-        }
-        if (reg_allocation->result.register_aggregate_allocation != NULL) {
-            for (kefir_size_t i = 0;
-                 i < kefir_vector_length(&reg_allocation->result.register_aggregate_allocation->container.qwords);
-                 i++) {
-                ASSIGN_DECL_CAST(
-                    struct kefir_abi_sysv_amd64_qword *, qword,
-                    kefir_vector_at(&reg_allocation->result.register_aggregate_allocation->container.qwords, i));
-                switch (qword->klass) {
-                    case KEFIR_AMD64_SYSV_PARAM_INTEGER:
-                        REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_mark_register_used(
-                            mem, &codegen_func->storage,
-                            KEFIR_ABI_SYSV_AMD64_PARAMETER_INTEGER_REGISTERS[qword->location]));
-                        break;
+    if (reg_allocation->result.type == KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_GENERAL_PURPOSE_REGISTER) {
+        REQUIRE_OK(kefir_list_insert_after(mem, &codegen_func->alive_instr, kefir_list_tail(&codegen_func->alive_instr),
+                                           (void *) (kefir_uptr_t) instr_props->instr_ref));
 
-                    case KEFIR_AMD64_SYSV_PARAM_SSE:
-                        // Intentionally left blank
-                        break;
+        REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_mark_register_used(mem, &codegen_func->storage,
+                                                                           reg_allocation->result.reg));
+    }
+    if (reg_allocation->result.register_aggregate_allocation != NULL) {
+        for (kefir_size_t i = 0;
+             i < kefir_vector_length(&reg_allocation->result.register_aggregate_allocation->container.qwords); i++) {
+            ASSIGN_DECL_CAST(
+                struct kefir_abi_sysv_amd64_qword *, qword,
+                kefir_vector_at(&reg_allocation->result.register_aggregate_allocation->container.qwords, i));
+            switch (qword->klass) {
+                case KEFIR_AMD64_SYSV_PARAM_INTEGER:
+                    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_mark_register_used(
+                        mem, &codegen_func->storage,
+                        KEFIR_ABI_SYSV_AMD64_PARAMETER_INTEGER_REGISTERS[qword->location]));
+                    break;
 
-                    case KEFIR_AMD64_SYSV_PARAM_NO_CLASS:
-                        // Intentionally left blank
-                        break;
+                case KEFIR_AMD64_SYSV_PARAM_SSE:
+                    // Intentionally left blank
+                    break;
 
-                    default:
-                        return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED,
-                                               "Aggregates with non-INTEGER and non-SSE members are not supported yet");
-                }
+                case KEFIR_AMD64_SYSV_PARAM_NO_CLASS:
+                    // Intentionally left blank
+                    break;
+
+                default:
+                    return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED,
+                                           "Aggregates with non-INTEGER and non-SSE members are not supported yet");
             }
         }
     }
@@ -262,13 +263,7 @@ static kefir_result_t translate_instr(struct kefir_mem *mem, struct kefir_codege
     struct kefir_opt_instruction *instr = NULL;
     REQUIRE_OK(kefir_opt_code_container_instr(&function->code, instr_props->instr_ref, &instr));
 
-    REQUIRE_OK(
-        update_translate_context_liveness(mem, func_analysis, codegen_func, instr, instr_props, reg_allocation, false));
-
-    if (reg_allocation->result.type == KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_GENERAL_PURPOSE_REGISTER) {
-        REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_mark_register_acquired(mem, &codegen_func->storage,
-                                                                               reg_allocation->result.reg));
-    }
+    REQUIRE_OK(collect_dead_registers(mem, func_analysis, codegen_func, instr_props));
 
 #define INVOKE_TRANSLATOR(_id)                                                                                 \
     (kefir_codegen_opt_sysv_amd64_translate_##_id(mem, codegen, module, function, func_analysis, codegen_func, \
@@ -441,10 +436,10 @@ static kefir_result_t translate_instr(struct kefir_mem *mem, struct kefir_codege
     }
 #undef INVOKE_TRANSLATOR
 
-    if (reg_allocation->result.type == KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_GENERAL_PURPOSE_REGISTER) {
-        REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_mark_register_released(mem, &codegen_func->storage,
-                                                                               reg_allocation->result.reg));
+    if (instr->operation.opcode != KEFIR_OPT_OPCODE_GET_ARGUMENT) {
+        REQUIRE_OK(update_live_registers(mem, codegen_func, instr_props, reg_allocation));
     }
+
     kefir_bool_t has_borrowed_regs;
     REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_has_borrowed_registers(&codegen_func->storage, &has_borrowed_regs));
     REQUIRE(!has_borrowed_regs,
@@ -620,8 +615,7 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_translate_code(struct kefir_mem *mem
                 const struct kefir_codegen_opt_sysv_amd64_register_allocation *reg_allocation = NULL;
                 REQUIRE_OK(kefir_codegen_opt_sysv_amd64_register_allocation_of(
                     &codegen_func->register_allocator, instr_props->instr_ref, &reg_allocation));
-                REQUIRE_OK(update_translate_context_liveness(mem, func_analysis, codegen_func, instr, instr_props,
-                                                             reg_allocation, true));
+                REQUIRE_OK(update_live_registers(mem, codegen_func, instr_props, reg_allocation));
             } else {
                 scan_arguments = false;
             }
