@@ -24,3 +24,8 @@ long struct1sum(long seed) {
     struct Struct1 s = getstruct1(seed);
     return s.a + s.b + s.c + s.d;
 }
+
+int struct2sum(int seed) {
+    struct Struct2 s = getstruct2(seed);
+    return s.arr[0] + s.arr[1] + s.arr[2];
+}

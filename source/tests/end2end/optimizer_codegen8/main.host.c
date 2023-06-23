@@ -29,10 +29,14 @@ struct Struct1 getstruct1(long seed) {
     return (struct Struct1){.a = seed, .b = seed / 2, .c = ~seed, .d = seed | 17251};
 }
 
+struct Struct2 getstruct2(int seed) {
+    return (struct Struct2) {.arr = { seed, seed / 2, ~seed }};
+}
+
 int main(void) {
     for (long x = -1000; x < 1000; x++) {
-        long res = struct1sum(x);
-        assert(res == (int) x + (long) x / 2 + (char) ~x + (long) (x | 17251));
+        assert(struct1sum(x) == (int) x + (long) x / 2 + (char) ~x + (long) (x | 17251));
+        assert(struct2sum((int) x) == (int) x + ((int) x) / 2 + ~(int) x);
     }
     return EXIT_SUCCESS;
 }

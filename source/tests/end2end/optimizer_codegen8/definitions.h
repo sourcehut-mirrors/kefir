@@ -32,4 +32,11 @@ struct Struct1 {
 extern struct Struct1 getstruct1(long);
 long struct1sum(long);
 
+struct Struct2 {
+    int arr[3];
+};
+
+extern struct Struct2 getstruct2(int);
+int struct2sum(int);
+
 #endif
