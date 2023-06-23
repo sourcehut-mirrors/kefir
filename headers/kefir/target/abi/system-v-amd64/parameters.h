@@ -34,6 +34,8 @@ extern const kefir_size_t KEFIR_ABI_SYSV_AMD64_PARAMETER_INTEGER_REGISTER_COUNT;
 extern kefir_asm_amd64_xasmgen_register_t KEFIR_ABI_SYSV_AMD64_PARAMETER_SSE_REGISTERS[];
 extern const kefir_size_t KEFIR_ABI_SYSV_AMD64_PARAMETER_SSE_REGISTER_COUNT;
 
+kefir_bool_t kefir_abi_sysv_amd64_is_parameter_register(kefir_asm_amd64_xasmgen_register_t);
+
 typedef enum kefir_abi_sysv_amd64_parameter_type {
     KEFIR_AMD64_SYSV_INPUT_PARAM_IMMEDIATE,
     KEFIR_AMD64_SYSV_INPUT_PARAM_NESTED,

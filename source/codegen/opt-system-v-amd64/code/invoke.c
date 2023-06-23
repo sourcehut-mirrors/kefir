@@ -29,7 +29,7 @@ static kefir_result_t calculate_stack_increment(
     struct kefir_codegen_opt_amd64 *codegen, struct kefir_opt_sysv_amd64_function *codegen_func,
     struct kefir_abi_amd64_sysv_function_decl *abi_func_decl,
     const struct kefir_codegen_opt_sysv_amd64_register_allocation *result_allocation, kefir_size_t *stack_increment) {
-    *stack_increment = abi_func_decl->parameters.location.stack_offset;
+    *stack_increment += abi_func_decl->parameters.location.stack_offset;
     for (kefir_size_t i = 0; i < KefirCodegenOptSysvAmd64StackFrameNumOfCallerSavedRegs; i++) {
         kefir_asm_amd64_xasmgen_register_t reg = KefirCodegenOptSysvAmd64StackFrameCallerSavedRegs[i];
         if (result_allocation->result.type ==
@@ -75,7 +75,7 @@ static kefir_result_t save_registers(struct kefir_codegen_opt_amd64 *codegen,
                     &codegen->xasmgen,
                     kefir_asm_amd64_xasmgen_operand_indirect(
                         &codegen->xasmgen_helpers.operands[0],
-                        kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP), -offset),
+                        kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP), offset),
                     kefir_asm_amd64_xasmgen_operand_reg(reg)));
                 offset += KEFIR_AMD64_SYSV_ABI_QWORD;
             }
@@ -105,7 +105,7 @@ static kefir_result_t restore_registers(
                     &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(reg),
                     kefir_asm_amd64_xasmgen_operand_indirect(
                         &codegen->xasmgen_helpers.operands[0],
-                        kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP), -offset)));
+                        kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP), offset)));
                 offset += KEFIR_AMD64_SYSV_ABI_QWORD;
             }
         }
@@ -489,7 +489,8 @@ static kefir_result_t register_aggregate_return(struct invoke_arg *arg,
                         kefir_asm_amd64_xasmgen_operand_indirect(
                             &arg->codegen->xasmgen_helpers.operands[1],
                             kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
-                            arg->codegen_func->stack_frame_map.offset.temporary_area + (i - 1) * KEFIR_AMD64_SYSV_ABI_QWORD))));
+                            arg->codegen_func->stack_frame_map.offset.temporary_area +
+                                (i - 1) * KEFIR_AMD64_SYSV_ABI_QWORD))));
                 break;
 
             default:
@@ -498,16 +499,18 @@ static kefir_result_t register_aggregate_return(struct invoke_arg *arg,
     }
 
     struct kefir_codegen_opt_sysv_amd64_storage_temporary_register result_reg;
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_acquire_general_purpose_register(arg->mem, &arg->codegen->xasmgen,
-        &arg->codegen_func->storage, arg->result_allocation, &result_reg, NULL, NULL));
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_acquire_general_purpose_register(
+        arg->mem, &arg->codegen->xasmgen, &arg->codegen_func->storage, arg->result_allocation, &result_reg, NULL,
+        NULL));
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_LEA(
         &arg->codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_reg.reg),
-        kefir_asm_amd64_xasmgen_operand_indirect(
-            &arg->codegen->xasmgen_helpers.operands[0],
-            kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
-            arg->codegen_func->stack_frame_map.offset.temporary_area)));
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_store_reg_allocation(arg->codegen, &arg->codegen_func->stack_frame_map, arg->result_allocation, result_reg.reg));
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_release_register(arg->mem, &arg->codegen->xasmgen, &arg->codegen_func->storage, &result_reg));
+        kefir_asm_amd64_xasmgen_operand_indirect(&arg->codegen->xasmgen_helpers.operands[0],
+                                                 kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
+                                                 arg->codegen_func->stack_frame_map.offset.temporary_area)));
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_store_reg_allocation(arg->codegen, &arg->codegen_func->stack_frame_map,
+                                                                 arg->result_allocation, result_reg.reg));
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_release_register(arg->mem, &arg->codegen->xasmgen,
+                                                                     &arg->codegen_func->storage, &result_reg));
     return KEFIR_OK;
 }
 
@@ -565,19 +568,62 @@ static kefir_result_t invoke_impl(struct kefir_mem *mem, struct kefir_codegen_op
                                   struct kefir_opt_sysv_amd64_function *codegen_func,
                                   const struct kefir_ir_function_decl *ir_func_decl,
                                   struct kefir_abi_amd64_sysv_function_decl *abi_func_decl,
-                                  const struct kefir_opt_call_node *call_node,
+                                  struct kefir_opt_instruction *instr, const struct kefir_opt_call_node *call_node,
                                   const struct kefir_codegen_opt_sysv_amd64_register_allocation *result_allocation) {
-    kefir_size_t stack_increment;
+    kefir_size_t stack_increment = 0;
+    const struct kefir_codegen_opt_sysv_amd64_register_allocation *virtual_func = NULL;
+    if (instr->operation.opcode == KEFIR_OPT_OPCODE_INVOKE_VIRTUAL) {
+        REQUIRE_OK(kefir_codegen_opt_sysv_amd64_register_allocation_of(
+            &codegen_func->register_allocator, instr->operation.parameters.function_call.indirect_ref, &virtual_func));
+    }
 
     // Prologue
+    kefir_bool_t preserve_virtual_func = false;
+    if (virtual_func != NULL &&
+        virtual_func->result.type == KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_GENERAL_PURPOSE_REGISTER &&
+        kefir_abi_sysv_amd64_is_parameter_register(virtual_func->result.reg)) {
+        stack_increment += KEFIR_AMD64_SYSV_ABI_QWORD;
+        preserve_virtual_func = true;
+    }
     REQUIRE_OK(calculate_stack_increment(codegen, codegen_func, abi_func_decl, result_allocation, &stack_increment));
+    if (preserve_virtual_func) {
+        REQUIRE_OK(
+            KEFIR_AMD64_XASMGEN_INSTR_MOV(&codegen->xasmgen,
+                                          kefir_asm_amd64_xasmgen_operand_indirect(
+                                              &codegen->xasmgen_helpers.operands[0],
+                                              kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
+                                              stack_increment - KEFIR_AMD64_SYSV_ABI_QWORD),
+                                          kefir_asm_amd64_xasmgen_operand_reg(virtual_func->result.reg)));
+    }
     REQUIRE_OK(save_registers(codegen, codegen_func, abi_func_decl, result_allocation));
     REQUIRE_OK(prepare_parameters(mem, codegen, function, codegen_func, ir_func_decl, abi_func_decl, call_node));
 
     // Call the function
-    REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_CALL(
-        &codegen->xasmgen,
-        kefir_asm_amd64_xasmgen_operand_label(&codegen->xasmgen_helpers.operands[0], ir_func_decl->name)));
+    switch (instr->operation.opcode) {
+        case KEFIR_OPT_OPCODE_INVOKE:
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_CALL(
+                &codegen->xasmgen,
+                kefir_asm_amd64_xasmgen_operand_label(&codegen->xasmgen_helpers.operands[0], ir_func_decl->name)));
+            break;
+
+        case KEFIR_OPT_OPCODE_INVOKE_VIRTUAL:
+            if (preserve_virtual_func) {
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_CALL(
+                    &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_indirect(
+                                           &codegen->xasmgen_helpers.operands[0],
+                                           kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
+                                           stack_increment - KEFIR_AMD64_SYSV_ABI_QWORD)));
+            } else {
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_CALL(
+                    &codegen->xasmgen,
+                    kefir_codegen_opt_sysv_amd64_reg_allocation_operand(&codegen->xasmgen_helpers.operands[0],
+                                                                        &codegen_func->stack_frame_map, virtual_func)));
+            }
+            break;
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected optimizer instruction opcode");
+    }
 
     // Epilogue
     REQUIRE_OK(save_return_value(mem, codegen, function, codegen_func, ir_func_decl, abi_func_decl, call_node,
@@ -612,8 +658,8 @@ DEFINE_TRANSLATOR(invoke) {
     struct kefir_abi_amd64_sysv_function_decl abi_func_decl;
     REQUIRE_OK(kefir_abi_amd64_sysv_function_decl_alloc(mem, ir_func_decl, &abi_func_decl));
 
-    kefir_result_t res =
-        invoke_impl(mem, codegen, function, codegen_func, ir_func_decl, &abi_func_decl, call_node, result_allocation);
+    kefir_result_t res = invoke_impl(mem, codegen, function, codegen_func, ir_func_decl, &abi_func_decl, instr,
+                                     call_node, result_allocation);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_abi_amd64_sysv_function_decl_free(mem, &abi_func_decl);
         return res;

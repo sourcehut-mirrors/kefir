@@ -41,6 +41,22 @@ kefir_asm_amd64_xasmgen_register_t KEFIR_ABI_SYSV_AMD64_PARAMETER_SSE_REGISTERS[
 const kefir_size_t KEFIR_ABI_SYSV_AMD64_PARAMETER_SSE_REGISTER_COUNT =
     sizeof(KEFIR_ABI_SYSV_AMD64_PARAMETER_SSE_REGISTERS) / sizeof(KEFIR_ABI_SYSV_AMD64_PARAMETER_SSE_REGISTERS[0]);
 
+kefir_bool_t kefir_abi_sysv_amd64_is_parameter_register(kefir_asm_amd64_xasmgen_register_t reg) {
+    for (kefir_size_t i = 0; i < KEFIR_ABI_SYSV_AMD64_PARAMETER_INTEGER_REGISTER_COUNT; i++) {
+        if (KEFIR_ABI_SYSV_AMD64_PARAMETER_INTEGER_REGISTERS[i] == reg) {
+            return true;
+        }
+    }
+
+    for (kefir_size_t i = 0; i < KEFIR_ABI_SYSV_AMD64_PARAMETER_SSE_REGISTER_COUNT; i++) {
+        if (KEFIR_ABI_SYSV_AMD64_PARAMETER_SSE_REGISTERS[i] == reg) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 #define ABI_INTEGER_REGS KEFIR_ABI_SYSV_AMD64_PARAMETER_INTEGER_REGISTER_COUNT
 #define ABI_SSE_REGS KEFIR_ABI_SYSV_AMD64_PARAMETER_SSE_REGISTER_COUNT
 
