@@ -498,8 +498,8 @@ static kefir_result_t register_aggregate_return(struct invoke_arg *arg,
         }
     }
 
-    struct kefir_codegen_opt_sysv_amd64_storage_temporary_register result_reg;
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_acquire_general_purpose_register(
+    struct kefir_codegen_opt_sysv_amd64_storage_register result_reg;
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_try_acquire_exclusive_allocated_general_purpose_register(
         arg->mem, &arg->codegen->xasmgen, &arg->codegen_func->storage, arg->result_allocation, &result_reg, NULL,
         NULL));
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_LEA(

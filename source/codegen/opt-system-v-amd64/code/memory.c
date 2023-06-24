@@ -38,9 +38,9 @@ DEFINE_TRANSLATOR(memory) {
     REQUIRE_OK(kefir_codegen_opt_sysv_amd64_register_allocation_of(
         &codegen_func->register_allocator, instr->operation.parameters.typed_refs.ref[0], &destination_allocation));
 
-    struct kefir_codegen_opt_sysv_amd64_storage_temporary_register source_reg;
-    struct kefir_codegen_opt_sysv_amd64_storage_temporary_register destination_reg;
-    struct kefir_codegen_opt_sysv_amd64_storage_temporary_register count_reg;
+    struct kefir_codegen_opt_sysv_amd64_storage_register source_reg;
+    struct kefir_codegen_opt_sysv_amd64_storage_register destination_reg;
+    struct kefir_codegen_opt_sysv_amd64_storage_register count_reg;
 
     REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_acquire_specific_register(
         mem, &codegen->xasmgen, &codegen_func->storage, source_allocation, KEFIR_AMD64_XASMGEN_REGISTER_RSI,

@@ -33,8 +33,8 @@ DEFINE_TRANSLATOR(constant) {
     REQUIRE_OK(kefir_codegen_opt_sysv_amd64_register_allocation_of(&codegen_func->register_allocator, instr_ref,
                                                                    &result_allocation));
 
-    struct kefir_codegen_opt_sysv_amd64_storage_temporary_register result_reg;
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_acquire_general_purpose_register(
+    struct kefir_codegen_opt_sysv_amd64_storage_register result_reg;
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_try_acquire_exclusive_allocated_general_purpose_register(
         mem, &codegen->xasmgen, &codegen_func->storage, result_allocation, &result_reg, NULL, NULL));
 
     kefir_bool_t unsigned_integer = false;

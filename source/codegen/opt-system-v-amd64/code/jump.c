@@ -142,8 +142,8 @@ DEFINE_TRANSLATOR(jump) {
                 &codegen_func->register_allocator, instr->operation.parameters.branch.condition_ref,
                 &condition_allocation));
 
-            struct kefir_codegen_opt_sysv_amd64_storage_temporary_register condition_reg;
-            REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_acquire_general_purpose_register(
+            struct kefir_codegen_opt_sysv_amd64_storage_register condition_reg;
+            REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_try_acquire_shared_allocated_general_purpose_register(
                 mem, &codegen->xasmgen, &codegen_func->storage, condition_allocation, &condition_reg, NULL, NULL));
 
             REQUIRE_OK(kefir_codegen_opt_sysv_amd64_load_reg_allocation(codegen, &codegen_func->stack_frame_map,

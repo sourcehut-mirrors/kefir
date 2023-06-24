@@ -44,8 +44,8 @@ DEFINE_TRANSLATOR(binary_op) {
         KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
                         "Expected non-floating-point allocation for the second argument of integral add operation"));
 
-    struct kefir_codegen_opt_sysv_amd64_storage_temporary_register result_reg;
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_acquire_general_purpose_register(
+    struct kefir_codegen_opt_sysv_amd64_storage_register result_reg;
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_try_acquire_exclusive_allocated_general_purpose_register(
         mem, &codegen->xasmgen, &codegen_func->storage, result_allocation, &result_reg,
         kefir_codegen_opt_sysv_amd64_filter_regs_allocation,
         (const struct kefir_codegen_opt_sysv_amd64_register_allocation *[]){arg2_allocation, NULL}));
@@ -97,9 +97,9 @@ DEFINE_TRANSLATOR(binary_op) {
             break;
 
         case KEFIR_OPT_OPCODE_BOOL_AND: {
-            struct kefir_codegen_opt_sysv_amd64_storage_temporary_register tmp_reg;
-            REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_acquire_general_purpose_register(
-                mem, &codegen->xasmgen, &codegen_func->storage, NULL, &tmp_reg,
+            struct kefir_codegen_opt_sysv_amd64_storage_register tmp_reg;
+            REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_acquire_any_general_purpose_register(
+                mem, &codegen->xasmgen, &codegen_func->storage, &tmp_reg,
                 kefir_codegen_opt_sysv_amd64_filter_regs_allocation,
                 (void *) (const struct kefir_codegen_opt_sysv_amd64_register_allocation *[]){arg1_allocation, NULL}));
 

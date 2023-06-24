@@ -43,12 +43,12 @@ DEFINE_TRANSLATOR(bitshift) {
             KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
                             "Expected non-floating-point allocation for the second argument of integral operation"));
 
-    struct kefir_codegen_opt_sysv_amd64_storage_temporary_register shift_reg;
+    struct kefir_codegen_opt_sysv_amd64_storage_register shift_reg;
     REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_acquire_specific_register(
         mem, &codegen->xasmgen, &codegen_func->storage, arg2_allocation, KEFIR_AMD64_XASMGEN_REGISTER_RCX, &shift_reg));
 
-    struct kefir_codegen_opt_sysv_amd64_storage_temporary_register result_reg;
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_acquire_general_purpose_register(
+    struct kefir_codegen_opt_sysv_amd64_storage_register result_reg;
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_try_acquire_exclusive_allocated_general_purpose_register(
         mem, &codegen->xasmgen, &codegen_func->storage, result_allocation, &result_reg,
         kefir_codegen_opt_sysv_amd64_filter_regs_allocation,
         (const struct kefir_codegen_opt_sysv_amd64_register_allocation *[]){arg2_allocation, NULL}));
