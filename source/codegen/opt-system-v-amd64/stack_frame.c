@@ -325,12 +325,12 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_stack_frame_epilogue(
             kefir_asm_amd64_xasmgen_operand_immu(&xasmgen_oper[0], stack_frame_size)));
     }
 
-    for (kefir_size_t i = 0; i < KefirCodegenOptSysvAmd64StackFrameNumOfPreservedRegs; i++) {
+    for (kefir_size_t i = KefirCodegenOptSysvAmd64StackFrameNumOfPreservedRegs; i > 0; i--) {
         kefir_bool_t preserve_reg;
-        REQUIRE_OK(kefir_bitset_get(&frame->preserve.regs, i, &preserve_reg));
+        REQUIRE_OK(kefir_bitset_get(&frame->preserve.regs, i - 1, &preserve_reg));
         if (preserve_reg) {
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_POP(
-                xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KefirCodegenOptSysvAmd64StackFramePreservedRegs[i])));
+                xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KefirCodegenOptSysvAmd64StackFramePreservedRegs[i - 1])));
         }
     }
 
