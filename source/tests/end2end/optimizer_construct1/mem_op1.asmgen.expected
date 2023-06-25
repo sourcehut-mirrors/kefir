@@ -590,8 +590,8 @@
                             {
                                 "id": 11,
                                 "opcode": "bits_insert",
-                                "base": 7,
-                                "value": 10,
+                                "base": 10,
+                                "value": 7,
                                 "offset": 0,
                                 "length": 5,
                                 "control_next": null,

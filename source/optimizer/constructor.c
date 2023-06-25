@@ -207,7 +207,7 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
         case KEFIR_IROPCODE_INSERTBITS:
             REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
             REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref3));
-            REQUIRE_OK(kefir_opt_code_builder_bits_insert(mem, code, current_block_id, instr_ref2, instr_ref3,
+            REQUIRE_OK(kefir_opt_code_builder_bits_insert(mem, code, current_block_id, instr_ref3, instr_ref2,
                                                           instr->arg.u32[0], instr->arg.u32[1], &instr_ref));
             REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
             break;

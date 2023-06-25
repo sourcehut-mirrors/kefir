@@ -65,6 +65,8 @@ DECLARE_TRANSLATOR(copy_memory);
 DECLARE_TRANSLATOR(zero_memory);
 DECLARE_TRANSLATOR(invoke);
 DECLARE_TRANSLATOR(thread_local_storage);
+DECLARE_TRANSLATOR(extract_bits);
+DECLARE_TRANSLATOR(insert_bits);
 #undef DECLARE
 
 #endif
