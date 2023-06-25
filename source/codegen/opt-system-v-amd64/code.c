@@ -370,6 +370,10 @@ static kefir_result_t translate_instr(struct kefir_mem *mem, struct kefir_codege
             REQUIRE_OK(INVOKE_TRANSLATOR(invoke));
             break;
 
+        case KEFIR_OPT_OPCODE_GET_THREAD_LOCAL:
+            REQUIRE_OK(INVOKE_TRANSLATOR(thread_local_storage));
+            break;
+
         case KEFIR_OPT_OPCODE_PHI:
             // Intentionally left blank
             break;
@@ -378,7 +382,6 @@ static kefir_result_t translate_instr(struct kefir_mem *mem, struct kefir_codege
         case KEFIR_OPT_OPCODE_FLOAT32_CONST:
         case KEFIR_OPT_OPCODE_FLOAT64_CONST:
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_CONST:
-        case KEFIR_OPT_OPCODE_GET_THREAD_LOCAL:
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_STORE:
         case KEFIR_OPT_OPCODE_ZERO_MEMORY:
         case KEFIR_OPT_OPCODE_BITS_EXTRACT_SIGNED:

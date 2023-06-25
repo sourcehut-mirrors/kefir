@@ -63,6 +63,7 @@ DECLARE_TRANSLATOR(return);
 DECLARE_TRANSLATOR(jump);
 DECLARE_TRANSLATOR(memory);
 DECLARE_TRANSLATOR(invoke);
+DECLARE_TRANSLATOR(thread_local_storage);
 #undef DECLARE
 
 #endif
