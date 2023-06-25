@@ -1634,6 +1634,21 @@ static kefir_result_t amd64_instr_intel_movsb(struct kefir_amd64_xasmgen *xasmge
 
 #define amd64_instr_att_movsb amd64_instr_intel_movsb
 
+static kefir_result_t amd64_instr_intel_stosb(struct kefir_amd64_xasmgen *xasmgen, kefir_bool_t rep) {
+    REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 assembly generator"));
+    ASSIGN_DECL_CAST(struct xasmgen_payload *, payload, xasmgen->payload);
+
+    REQUIRE_OK(amd64_ident(xasmgen));
+    if (rep) {
+        fprintf(payload->output, "rep ");
+    }
+
+    fprintf(payload->output, "stosb\n");
+    return KEFIR_OK;
+}
+
+#define amd64_instr_att_stosb amd64_instr_intel_stosb
+
 kefir_result_t kefir_asm_amd64_xasmgen_init(struct kefir_mem *mem, struct kefir_amd64_xasmgen *xasmgen, FILE *output,
                                             kefir_asm_amd64_xasmgen_syntax_t syntax) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
@@ -1693,6 +1708,7 @@ kefir_result_t kefir_asm_amd64_xasmgen_init(struct kefir_mem *mem, struct kefir_
         xasmgen->instr.movd = amd64_instr_intel_movd;
         xasmgen->instr.movq = amd64_instr_intel_movq;
         xasmgen->instr.movsb = amd64_instr_intel_movsb;
+        xasmgen->instr.stosb = amd64_instr_intel_stosb;
         xasmgen->instr.or = amd64_instr_intel_or;
         xasmgen->instr.pextrq = amd64_instr_intel_pextrq;
         xasmgen->instr.pinsrq = amd64_instr_intel_pinsrq;
@@ -1743,6 +1759,7 @@ kefir_result_t kefir_asm_amd64_xasmgen_init(struct kefir_mem *mem, struct kefir_
         xasmgen->instr.movd = amd64_instr_att_movd;
         xasmgen->instr.movq = amd64_instr_att_movq;
         xasmgen->instr.movsb = amd64_instr_att_movsb;
+        xasmgen->instr.stosb = amd64_instr_att_stosb;
         xasmgen->instr.or = amd64_instr_att_or;
         xasmgen->instr.pextrq = amd64_instr_att_pextrq;
         xasmgen->instr.pinsrq = amd64_instr_att_pinsrq;

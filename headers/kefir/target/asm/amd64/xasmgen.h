@@ -238,6 +238,7 @@ typedef struct kefir_amd64_xasmgen {
         kefir_result_t (*movabs)(struct kefir_amd64_xasmgen *, const struct kefir_asm_amd64_xasmgen_operand *,
                                  const struct kefir_asm_amd64_xasmgen_operand *);
         kefir_result_t (*movsb)(struct kefir_amd64_xasmgen *, kefir_bool_t);
+        kefir_result_t (*stosb)(struct kefir_amd64_xasmgen *, kefir_bool_t);
         kefir_result_t (*lea)(struct kefir_amd64_xasmgen *, const struct kefir_asm_amd64_xasmgen_operand *,
                               const struct kefir_asm_amd64_xasmgen_operand *);
 
@@ -367,6 +368,7 @@ const struct kefir_asm_amd64_xasmgen_operand *kefir_asm_amd64_xasmgen_operand_st
 #define KEFIR_AMD64_XASMGEN_INSTR_MOVZX(_xasmgen, _op1, _op2) ((_xasmgen)->instr.movzx((_xasmgen), (_op1), (_op2)))
 #define KEFIR_AMD64_XASMGEN_INSTR_MOVABS(_xasmgen, _op1, _op2) ((_xasmgen)->instr.movabs((_xasmgen), (_op1), (_op2)))
 #define KEFIR_AMD64_XASMGEN_INSTR_MOVSB(_xasmgen, _rep) ((_xasmgen)->instr.movsb((_xasmgen), (_rep)))
+#define KEFIR_AMD64_XASMGEN_INSTR_STOSB(_xasmgen, _rep) ((_xasmgen)->instr.stosb((_xasmgen), (_rep)))
 #define KEFIR_AMD64_XASMGEN_INSTR_LEA(_xasmgen, _op1, _op2) ((_xasmgen)->instr.lea((_xasmgen), (_op1), (_op2)))
 
 #define KEFIR_AMD64_XASMGEN_INSTR_ADD(_xasmgen, _op1, _op2) ((_xasmgen)->instr.add((_xasmgen), (_op1), (_op2)))
