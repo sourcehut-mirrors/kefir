@@ -61,6 +61,7 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_stack_frame_init(struct kefir_codege
     frame->preserve.mxcsr_register = false;
     frame->preserve.implicit_parameter = false;
     frame->preserve_area_size = 0;
+    frame->dynamic_scope = false;
     frame->spill_area_size = 0;
     frame->spill_area_alignment = 0;
     frame->local_area_size = 0;
@@ -120,6 +121,15 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_stack_frame_preserve_implicit_parame
         frame->preserve_area_size++;
     }
     frame->preserve.implicit_parameter = true;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_codegen_opt_sysv_amd64_stack_frame_enable_dynamic_scope(
+    struct kefir_codegen_opt_sysv_amd64_stack_frame *frame) {
+    REQUIRE(frame != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer codegen System-V AMD64 stack frame"));
+
+    frame->dynamic_scope = true;
     return KEFIR_OK;
 }
 
@@ -195,7 +205,12 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_stack_frame_compute(
         map->offset.implicit_parameter -= KEFIR_AMD64_SYSV_ABI_QWORD;
     }
 
-    map->offset.spill_area = map->offset.implicit_parameter - (frame->spill_area_size * KEFIR_AMD64_SYSV_ABI_QWORD);
+    map->offset.dynamic_scope = map->offset.implicit_parameter;
+    if (frame->dynamic_scope) {
+        map->offset.dynamic_scope -= KEFIR_AMD64_SYSV_ABI_QWORD;
+    }
+
+    map->offset.spill_area = map->offset.dynamic_scope - (frame->spill_area_size * KEFIR_AMD64_SYSV_ABI_QWORD);
     if (frame->spill_area_alignment > 1) {
         map->offset.spill_area = -(kefir_int64_t) kefir_target_abi_pad_aligned(
             (kefir_size_t) -map->offset.spill_area, MAX(frame->spill_area_alignment, 1) * KEFIR_AMD64_SYSV_ABI_QWORD);
@@ -281,6 +296,18 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_stack_frame_prologue(
                 frame_map.offset.implicit_parameter),
             kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RDI)));
     }
+
+    if (frame->dynamic_scope) {
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_XOR(
+            xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_R10),
+            kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_R10)));
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
+            xasmgen,
+            kefir_asm_amd64_xasmgen_operand_indirect(
+                &xasmgen_oper[0], kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
+                frame_map.offset.dynamic_scope),
+            kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_R10)));
+    }
     return KEFIR_OK;
 }
 
@@ -294,8 +321,6 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_stack_frame_epilogue(
 
     struct kefir_codegen_opt_sysv_amd64_stack_frame_map frame_map;
     REQUIRE_OK(kefir_codegen_opt_sysv_amd64_stack_frame_compute(frame, &frame_map));
-    kefir_size_t stack_frame_size =
-        (kefir_size_t) - (frame_map.total_size - frame_map.offset.preserved_general_purpose_registers);
 
     if (frame->preserve.x87_control_word) {
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_FLDCW(
@@ -311,19 +336,11 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_stack_frame_epilogue(
                          frame_map.offset.mxcsr)));
     }
 
-    if (stack_frame_size > KEFIR_INT32_MAX) {
-        REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOVABS(
-            xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSI),
-            kefir_asm_amd64_xasmgen_operand_immu(&xasmgen_oper[0], stack_frame_size)));
-
-        REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_ADD(
-            xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
-            kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSI)));
-    } else if (stack_frame_size > 0) {
-        REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_ADD(
-            xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
-            kefir_asm_amd64_xasmgen_operand_immu(&xasmgen_oper[0], stack_frame_size)));
-    }
+    REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_LEA(
+        xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
+        kefir_asm_amd64_xasmgen_operand_indirect(&xasmgen_oper[0],
+                                                 kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
+                                                 frame_map.offset.preserved_general_purpose_registers)));
 
     for (kefir_size_t i = KefirCodegenOptSysvAmd64StackFrameNumOfPreservedRegs; i > 0; i--) {
         kefir_bool_t preserve_reg;

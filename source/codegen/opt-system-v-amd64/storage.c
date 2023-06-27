@@ -324,7 +324,7 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_storage_acquire_specific_register(
 }
 
 kefir_result_t kefir_codegen_opt_sysv_amd64_storage_restore_evicted_register(
-    struct kefir_amd64_xasmgen *xasmgen, struct kefir_codegen_opt_sysv_amd64_storage_register *tmp_reg) {
+    struct kefir_amd64_xasmgen *xasmgen, const struct kefir_codegen_opt_sysv_amd64_storage_register *tmp_reg) {
     REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 assembly generator"));
     REQUIRE(tmp_reg != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER,
                                              "Expected valid pointer optimizer codegen storage temporary register"));
@@ -334,7 +334,6 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_storage_restore_evicted_register(
 
     if (tmp_reg->evicted) {
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_POP(xasmgen, kefir_asm_amd64_xasmgen_operand_reg(reg)));
-        tmp_reg->evicted = false;
     }
     return KEFIR_OK;
 }
@@ -355,8 +354,6 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_storage_release_register(
         REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_mark_register_released(mem, storage, reg));
     }
 
-    if (tmp_reg->evicted) {
-        REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_POP(xasmgen, kefir_asm_amd64_xasmgen_operand_reg(reg)));
-    }
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_restore_evicted_register(xasmgen, tmp_reg));
     return KEFIR_OK;
 }

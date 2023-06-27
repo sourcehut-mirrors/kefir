@@ -1564,6 +1564,8 @@ INSTR1_INTEL(ja)
 INSTR1_ATT_BR(ja)
 INSTR1_INTEL(jz)
 INSTR1_ATT_BR(jz)
+INSTR1_INTEL(je)
+INSTR1_ATT_BR(je)
 INSTR0(ret)
 INSTR1(fstcw)
 INSTR1(fldcw)
@@ -1573,6 +1575,7 @@ INSTR3(pextrq)
 INSTR3(pinsrq)
 INSTR2(add)
 INSTR2(cmp)
+INSTR2(cmovl)
 INSTR2(test)
 INSTR1(sete)
 INSTR1(setg)
@@ -1686,6 +1689,7 @@ kefir_result_t kefir_asm_amd64_xasmgen_init(struct kefir_mem *mem, struct kefir_
         xasmgen->instr.call = amd64_instr_intel_call;
         xasmgen->instr.cld = amd64_instr_intel_cld;
         xasmgen->instr.cmp = amd64_instr_intel_cmp;
+        xasmgen->instr.cmovl = amd64_instr_intel_cmovl;
         xasmgen->instr.test = amd64_instr_intel_test;
         xasmgen->instr.sete = amd64_instr_intel_sete;
         xasmgen->instr.setg = amd64_instr_intel_setg;
@@ -1699,6 +1703,7 @@ kefir_result_t kefir_asm_amd64_xasmgen_init(struct kefir_mem *mem, struct kefir_
         xasmgen->instr.fstp = amd64_instr_intel_fstp;
         xasmgen->instr.ja = amd64_instr_intel_ja;
         xasmgen->instr.jz = amd64_instr_intel_jz;
+        xasmgen->instr.je = amd64_instr_intel_je;
         xasmgen->instr.jmp = amd64_instr_intel_jmp;
         xasmgen->instr.lea = amd64_instr_intel_lea;
         xasmgen->instr.mov = amd64_instr_intel_mov;
@@ -1737,6 +1742,7 @@ kefir_result_t kefir_asm_amd64_xasmgen_init(struct kefir_mem *mem, struct kefir_
         xasmgen->instr.call = amd64_instr_att_call;
         xasmgen->instr.cld = amd64_instr_att_cld;
         xasmgen->instr.cmp = amd64_instr_att_cmp;
+        xasmgen->instr.cmovl = amd64_instr_att_cmovl;
         xasmgen->instr.test = amd64_instr_att_test;
         xasmgen->instr.sete = amd64_instr_att_sete;
         xasmgen->instr.setg = amd64_instr_att_setg;
@@ -1750,6 +1756,7 @@ kefir_result_t kefir_asm_amd64_xasmgen_init(struct kefir_mem *mem, struct kefir_
         xasmgen->instr.fstp = amd64_instr_att_fstp;
         xasmgen->instr.ja = amd64_instr_att_ja;
         xasmgen->instr.jz = amd64_instr_att_jz;
+        xasmgen->instr.je = amd64_instr_att_je;
         xasmgen->instr.jmp = amd64_instr_att_jmp;
         xasmgen->instr.lea = amd64_instr_att_lea;
         xasmgen->instr.mov = amd64_instr_att_mov;

@@ -238,13 +238,20 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
             REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref3));
             REQUIRE_OK(kefir_opt_code_builder_stack_alloc(mem, code, current_block_id, instr_ref3, instr_ref2,
-                                                          instr->arg.u64 != 0, &instr_ref));
+                                                          instr->arg.u64 == 0, &instr_ref));
             REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
             break;
 
         case KEFIR_IROPCODE_PUSHSCOPE:
             REQUIRE_OK(kefir_opt_code_builder_scope_push(mem, code, current_block_id, &instr_ref));
             REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
+            REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));
+            break;
+
+        case KEFIR_IROPCODE_POPSCOPE:
+            REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
+            REQUIRE_OK(kefir_opt_code_builder_scope_pop(mem, code, current_block_id, instr_ref2, &instr_ref));
+            REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));
             break;
 
         case KEFIR_IROPCODE_INVOKE: {
@@ -341,7 +348,6 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
 
             UNARY_OP(vararg_start, KEFIR_IROPCODE_VARARG_START)
             UNARY_OP(vararg_end, KEFIR_IROPCODE_VARARG_END)
-            UNARY_OP(scope_pop, KEFIR_IROPCODE_POPSCOPE)
 
             UNARY_OP(float32_neg, KEFIR_IROPCODE_F32NEG)
             UNARY_OP(float64_neg, KEFIR_IROPCODE_F64NEG)

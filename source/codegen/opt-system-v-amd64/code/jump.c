@@ -223,8 +223,7 @@ DEFINE_TRANSLATOR(jump) {
                 }
             }
 
-            REQUIRE(!condition_reg.evicted,
-                    KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected temporary register state"));
+            condition_reg.evicted = false;
             REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_release_register(mem, &codegen->xasmgen,
                                                                              &codegen_func->storage, &condition_reg));
         } break;

@@ -67,6 +67,9 @@ DECLARE_TRANSLATOR(invoke);
 DECLARE_TRANSLATOR(thread_local_storage);
 DECLARE_TRANSLATOR(extract_bits);
 DECLARE_TRANSLATOR(insert_bits);
+DECLARE_TRANSLATOR(push_scope);
+DECLARE_TRANSLATOR(pop_scope);
+DECLARE_TRANSLATOR(stack_alloc);
 #undef DECLARE
 
 #endif

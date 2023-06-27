@@ -387,6 +387,18 @@ static kefir_result_t translate_instr(struct kefir_mem *mem, struct kefir_codege
             REQUIRE_OK(INVOKE_TRANSLATOR(insert_bits));
             break;
 
+        case KEFIR_OPT_OPCODE_SCOPE_PUSH:
+            REQUIRE_OK(INVOKE_TRANSLATOR(push_scope));
+            break;
+
+        case KEFIR_OPT_OPCODE_SCOPE_POP:
+            REQUIRE_OK(INVOKE_TRANSLATOR(pop_scope));
+            break;
+
+        case KEFIR_OPT_OPCODE_STACK_ALLOC:
+            REQUIRE_OK(INVOKE_TRANSLATOR(stack_alloc));
+            break;
+
         case KEFIR_OPT_OPCODE_PHI:
             // Intentionally left blank
             break;
@@ -400,9 +412,6 @@ static kefir_result_t translate_instr(struct kefir_mem *mem, struct kefir_codege
         case KEFIR_OPT_OPCODE_VARARG_COPY:
         case KEFIR_OPT_OPCODE_VARARG_GET:
         case KEFIR_OPT_OPCODE_VARARG_END:
-        case KEFIR_OPT_OPCODE_STACK_ALLOC:
-        case KEFIR_OPT_OPCODE_SCOPE_PUSH:
-        case KEFIR_OPT_OPCODE_SCOPE_POP:
         case KEFIR_OPT_OPCODE_FLOAT32_ADD:
         case KEFIR_OPT_OPCODE_FLOAT32_SUB:
         case KEFIR_OPT_OPCODE_FLOAT32_MUL:
@@ -562,6 +571,10 @@ static kefir_result_t calculate_frame_temporaries(struct kefir_mem *mem, const s
             REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unable to find named type"));
             REQUIRE_OK(update_frame_temporaries_type(mem, codegen_func, type,
                                                      instr->operation.parameters.typed_refs.type_index));
+        } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_SCOPE_PUSH ||
+                   instr->operation.opcode == KEFIR_OPT_OPCODE_SCOPE_POP ||
+                   instr->operation.opcode == KEFIR_OPT_OPCODE_STACK_ALLOC) {
+            REQUIRE_OK(kefir_codegen_opt_sysv_amd64_stack_frame_enable_dynamic_scope(&codegen_func->stack_frame));
         }
     }
     return KEFIR_OK;

@@ -65,7 +65,7 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_storage_acquire_specific_register(
     struct kefir_codegen_opt_sysv_amd64_storage_register *);
 
 kefir_result_t kefir_codegen_opt_sysv_amd64_storage_restore_evicted_register(
-    struct kefir_amd64_xasmgen *, struct kefir_codegen_opt_sysv_amd64_storage_register *);
+    struct kefir_amd64_xasmgen *, const struct kefir_codegen_opt_sysv_amd64_storage_register *);
 
 kefir_result_t kefir_codegen_opt_sysv_amd64_storage_release_register(
     struct kefir_mem *, struct kefir_amd64_xasmgen *, struct kefir_codegen_opt_sysv_amd64_storage *,

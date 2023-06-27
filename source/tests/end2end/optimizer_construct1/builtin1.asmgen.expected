@@ -387,7 +387,7 @@
                                 "opcode": "stack_alloc",
                                 "size_ref": 1,
                                 "alignment_ref": 2,
-                                "within_scope": true,
+                                "within_scope": false,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
