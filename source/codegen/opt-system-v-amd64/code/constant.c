@@ -34,7 +34,7 @@ DEFINE_TRANSLATOR(constant) {
                                                                    &result_allocation));
 
     struct kefir_codegen_opt_sysv_amd64_storage_register result_reg;
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_try_acquire_exclusive_allocated_general_purpose_register(
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_try_acquire_exclusive_allocated_register(
         mem, &codegen->xasmgen, &codegen_func->storage, result_allocation, &result_reg, NULL, NULL));
 
     kefir_bool_t unsigned_integer = false;
@@ -84,6 +84,32 @@ DEFINE_TRANSLATOR(constant) {
                     kefir_asm_amd64_xasmgen_helpers_format(
                         &codegen->xasmgen_helpers, KEFIR_OPT_AMD64_SYSTEM_V_FUNCTION_BLOCK, function->ir_func->name,
                         instr->operation.parameters.imm.block_ref))));
+            break;
+
+        case KEFIR_OPT_OPCODE_FLOAT32_CONST:
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOVD(
+                &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_reg.reg),
+                kefir_asm_amd64_xasmgen_operand_indirect(
+                    &codegen->xasmgen_helpers.operands[0],
+                    kefir_asm_amd64_xasmgen_operand_label(
+                        &codegen->xasmgen_helpers.operands[1],
+                        kefir_asm_amd64_xasmgen_helpers_format(&codegen->xasmgen_helpers,
+                                                               KEFIR_OPT_AMD64_SYSTEM_V_FUNCTION_CONSTANT_LABEL,
+                                                               function->ir_func->name, instr->id)),
+                    0)));
+            break;
+
+        case KEFIR_OPT_OPCODE_FLOAT64_CONST:
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOVQ(
+                &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_reg.reg),
+                kefir_asm_amd64_xasmgen_operand_indirect(
+                    &codegen->xasmgen_helpers.operands[0],
+                    kefir_asm_amd64_xasmgen_operand_label(
+                        &codegen->xasmgen_helpers.operands[1],
+                        kefir_asm_amd64_xasmgen_helpers_format(&codegen->xasmgen_helpers,
+                                                               KEFIR_OPT_AMD64_SYSTEM_V_FUNCTION_CONSTANT_LABEL,
+                                                               function->ir_func->name, instr->id)),
+                    0)));
             break;
 
         default:

@@ -31,7 +31,7 @@ static kefir_result_t normal_tls(struct kefir_mem *mem, struct kefir_codegen_opt
                                  const struct kefir_codegen_opt_sysv_amd64_register_allocation *result_allocation) {
 
     struct kefir_codegen_opt_sysv_amd64_storage_register result_reg;
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_try_acquire_exclusive_allocated_general_purpose_register(
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_try_acquire_exclusive_allocated_register(
         mem, &codegen->xasmgen, &codegen_func->storage, result_allocation, &result_reg, NULL, NULL));
 
     const char *identifier = kefir_ir_module_get_named_symbol(module->ir_module, instr->operation.parameters.ir_ref);

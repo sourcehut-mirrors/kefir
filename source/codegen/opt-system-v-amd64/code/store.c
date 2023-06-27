@@ -37,7 +37,7 @@ DEFINE_TRANSLATOR(store) {
         &codegen_func->register_allocator, instr->operation.parameters.memory_access.location, &target_allocation));
 
     struct kefir_codegen_opt_sysv_amd64_storage_register target_reg;
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_try_acquire_exclusive_allocated_general_purpose_register(
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_try_acquire_exclusive_allocated_register(
         mem, &codegen->xasmgen, &codegen_func->storage, target_allocation, &target_reg, NULL, NULL));
     REQUIRE_OK(kefir_codegen_opt_sysv_amd64_load_reg_allocation(codegen, &codegen_func->stack_frame_map,
                                                                 target_allocation, target_reg.reg));

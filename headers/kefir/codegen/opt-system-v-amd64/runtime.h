@@ -13,5 +13,6 @@
 #define KEFIR_OPT_AMD64_SYSTEM_V_RUNTIME_STRING_LITERAL "__kefirrt_string_literal" KEFIR_ID_FMT
 #define KEFIR_OPT_AMD64_SYSTEM_V_FUNCTION_BLOCK "__kefir_func_%s_block" KEFIR_ID_FMT
 #define KEFIR_OPT_AMD64_SYSTEM_V_FUNCTION_BLOCK_LABEL "__kefir_func_%s_block" KEFIR_ID_FMT "_label" KEFIR_ID_FMT
+#define KEFIR_OPT_AMD64_SYSTEM_V_FUNCTION_CONSTANT_LABEL "__kefir_func_%s_const" KEFIR_ID_FMT
 
 #endif

@@ -194,7 +194,9 @@ static kefir_result_t collect_dead_registers(struct kefir_mem *mem, const struct
                                                                            &instr_reg_allocation));
 
             if (instr_reg_allocation->result.type ==
-                KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_GENERAL_PURPOSE_REGISTER) {
+                    KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_GENERAL_PURPOSE_REGISTER ||
+                instr_reg_allocation->result.type ==
+                    KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_FLOATING_POINT_REGISTER) {
                 REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_mark_register_unused(mem, &codegen_func->storage,
                                                                                      instr_reg_allocation->result.reg));
             }
@@ -214,7 +216,8 @@ static kefir_result_t update_live_registers(
     const struct kefir_opt_code_analysis_instruction_properties *instr_props,
     const struct kefir_codegen_opt_sysv_amd64_register_allocation *reg_allocation) {
 
-    if (reg_allocation->result.type == KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_GENERAL_PURPOSE_REGISTER) {
+    if (reg_allocation->result.type == KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_GENERAL_PURPOSE_REGISTER ||
+        reg_allocation->result.type == KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_FLOATING_POINT_REGISTER) {
         REQUIRE_OK(kefir_list_insert_after(mem, &codegen_func->alive_instr, kefir_list_tail(&codegen_func->alive_instr),
                                            (void *) (kefir_uptr_t) instr_props->instr_ref));
 
@@ -298,6 +301,8 @@ static kefir_result_t translate_instr(struct kefir_mem *mem, struct kefir_codege
 
         case KEFIR_OPT_OPCODE_INT_CONST:
         case KEFIR_OPT_OPCODE_UINT_CONST:
+        case KEFIR_OPT_OPCODE_FLOAT32_CONST:
+        case KEFIR_OPT_OPCODE_FLOAT64_CONST:
         case KEFIR_OPT_OPCODE_STRING_REF:
         case KEFIR_OPT_OPCODE_BLOCK_LABEL:
             REQUIRE_OK(INVOKE_TRANSLATOR(constant));
@@ -404,8 +409,6 @@ static kefir_result_t translate_instr(struct kefir_mem *mem, struct kefir_codege
             break;
 
         case KEFIR_OPT_OPCODE_INLINE_ASSEMBLY:
-        case KEFIR_OPT_OPCODE_FLOAT32_CONST:
-        case KEFIR_OPT_OPCODE_FLOAT64_CONST:
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_CONST:
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_STORE:
         case KEFIR_OPT_OPCODE_VARARG_START:
@@ -592,6 +595,56 @@ static kefir_result_t init_translator(struct kefir_mem *mem, struct kefir_opt_sy
     return KEFIR_OK;
 }
 
+static kefir_result_t generate_constants(struct kefir_codegen_opt_amd64 *codegen,
+                                         const struct kefir_opt_function *function,
+                                         const struct kefir_opt_code_analysis *func_analysis) {
+    for (kefir_size_t instr_idx = 0; instr_idx < func_analysis->linearization_length; instr_idx++) {
+        const struct kefir_opt_code_analysis_instruction_properties *instr_props =
+            func_analysis->linearization[instr_idx];
+        struct kefir_opt_instruction *instr = NULL;
+        REQUIRE_OK(kefir_opt_code_container_instr(&function->code, instr_props->instr_ref, &instr));
+
+        switch (instr->operation.opcode) {
+            case KEFIR_OPT_OPCODE_FLOAT32_CONST: {
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_ALIGN(&codegen->xasmgen, 4));
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen->xasmgen,
+                                                     KEFIR_OPT_AMD64_SYSTEM_V_FUNCTION_CONSTANT_LABEL,
+                                                     function->ir_func->name, instr_props->instr_ref));
+
+                union {
+                    kefir_uint32_t u32;
+                    kefir_float32_t f32;
+                } value = {.f32 = instr->operation.parameters.imm.float32};
+
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+                    &codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 1,
+                    kefir_asm_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[0], value.u32)));
+            } break;
+
+            case KEFIR_OPT_OPCODE_FLOAT64_CONST: {
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_ALIGN(&codegen->xasmgen, 8));
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen->xasmgen,
+                                                     KEFIR_OPT_AMD64_SYSTEM_V_FUNCTION_CONSTANT_LABEL,
+                                                     function->ir_func->name, instr_props->instr_ref));
+
+                union {
+                    kefir_uint64_t u64;
+                    kefir_float64_t f64;
+                } value = {.f64 = instr->operation.parameters.imm.float64};
+
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+                    &codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
+                    kefir_asm_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[0], value.u64)));
+            } break;
+
+            default:
+                // Intentionally left blank
+                break;
+        }
+    }
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_codegen_opt_sysv_amd64_translate_code(struct kefir_mem *mem,
                                                            struct kefir_codegen_opt_amd64 *codegen,
                                                            struct kefir_opt_module *module,
@@ -659,5 +712,7 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_translate_code(struct kefir_mem *mem
                                        func_analysis->linearization[instr_idx]));
         }
     }
+
+    REQUIRE_OK(generate_constants(codegen, function, func_analysis));
     return KEFIR_OK;
 }

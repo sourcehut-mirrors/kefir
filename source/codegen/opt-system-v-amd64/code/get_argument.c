@@ -36,7 +36,7 @@ DEFINE_TRANSLATOR(get_argument) {
     if (result_allocation->result.backing_storage_type ==
         KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_BACKING_STORAGE_INDIRECT) {
         struct kefir_codegen_opt_sysv_amd64_storage_register result_reg;
-        REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_try_acquire_exclusive_allocated_general_purpose_register(
+        REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_try_acquire_exclusive_allocated_register(
             mem, &codegen->xasmgen, &codegen_func->storage, result_allocation, &result_reg, NULL, NULL));
 
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_LEA(
@@ -99,7 +99,7 @@ DEFINE_TRANSLATOR(get_argument) {
     }
 
     struct kefir_codegen_opt_sysv_amd64_storage_register result_reg;
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_try_acquire_exclusive_allocated_general_purpose_register(
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_try_acquire_exclusive_allocated_register(
         mem, &codegen->xasmgen, &codegen_func->storage, result_allocation, &result_reg, NULL, NULL));
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_LEA(

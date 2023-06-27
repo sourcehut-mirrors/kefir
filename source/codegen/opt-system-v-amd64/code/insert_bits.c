@@ -42,7 +42,7 @@ DEFINE_TRANSLATOR(insert_bits) {
     struct kefir_codegen_opt_sysv_amd64_storage_register bitfield_reg;
     struct kefir_codegen_opt_sysv_amd64_storage_register tmp_reg;
 
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_try_acquire_exclusive_allocated_general_purpose_register(
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_try_acquire_exclusive_allocated_register(
         mem, &codegen->xasmgen, &codegen_func->storage, result_allocation, &result_reg,
         kefir_codegen_opt_sysv_amd64_filter_regs_allocation,
         (const struct kefir_codegen_opt_sysv_amd64_register_allocation *[]){bitfield_allocation, NULL}));
