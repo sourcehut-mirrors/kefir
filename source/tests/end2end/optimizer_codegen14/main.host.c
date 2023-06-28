@@ -44,8 +44,10 @@ int main(void) {
     for (double i = -100.0; i < 100.0; i += 0.1) {
         assert(float_to_long((float) i) == (long) (float) i);
         assert(double_to_long(i) == (long) i);
-        assert(float_to_ulong((float) i) == (unsigned long) (float) i);
-        assert(double_to_ulong(i) == (unsigned long) i);
+        if (i >= 0.0) {
+            assert(float_to_ulong((float) i) == (unsigned long) (float) i);
+            assert(double_to_ulong(i) == (unsigned long) i);
+        }
         assert(fabs(double_to_float(i) - (float) i) < EPSILON_F);
         assert(fabs(float_to_double((float) i) - (double) (float) i) < EPSILON_D);
     }
