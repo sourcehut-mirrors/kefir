@@ -272,7 +272,13 @@ typedef enum kefir_asm_amd64_xasmgen_syntax {
     \
     _opcode(pxor, "pxor", 2, normal) _separator \
     _opcode(addss, "addss", 2, normal) _separator \
-    _opcode(addsd, "addsd", 2, normal)
+    _opcode(addsd, "addsd", 2, normal) _separator \
+    _opcode(subss, "subss", 2, normal) _separator \
+    _opcode(subsd, "subsd", 2, normal) _separator \
+    _opcode(mulss, "mulss", 2, normal) _separator \
+    _opcode(mulsd, "mulsd", 2, normal) _separator \
+    _opcode(divss, "divss", 2, normal) _separator \
+    _opcode(divsd, "divsd", 2, normal)
 // clang-format on
 
 typedef struct kefir_amd64_xasmgen {
@@ -455,6 +461,12 @@ const struct kefir_asm_amd64_xasmgen_operand *kefir_asm_amd64_xasmgen_operand_st
 #define KEFIR_AMD64_XASMGEN_INSTR_PXOR(_xasmgen, _op1, _op2) ((_xasmgen)->instr.pxor((_xasmgen), (_op1), (_op2)))
 #define KEFIR_AMD64_XASMGEN_INSTR_ADDSS(_xasmgen, _op1, _op2) ((_xasmgen)->instr.addss((_xasmgen), (_op1), (_op2)))
 #define KEFIR_AMD64_XASMGEN_INSTR_ADDSD(_xasmgen, _op1, _op2) ((_xasmgen)->instr.addsd((_xasmgen), (_op1), (_op2)))
+#define KEFIR_AMD64_XASMGEN_INSTR_SUBSS(_xasmgen, _op1, _op2) ((_xasmgen)->instr.subss((_xasmgen), (_op1), (_op2)))
+#define KEFIR_AMD64_XASMGEN_INSTR_SUBSD(_xasmgen, _op1, _op2) ((_xasmgen)->instr.subsd((_xasmgen), (_op1), (_op2)))
+#define KEFIR_AMD64_XASMGEN_INSTR_MULSS(_xasmgen, _op1, _op2) ((_xasmgen)->instr.mulss((_xasmgen), (_op1), (_op2)))
+#define KEFIR_AMD64_XASMGEN_INSTR_MULSD(_xasmgen, _op1, _op2) ((_xasmgen)->instr.mulsd((_xasmgen), (_op1), (_op2)))
+#define KEFIR_AMD64_XASMGEN_INSTR_DIVSS(_xasmgen, _op1, _op2) ((_xasmgen)->instr.divss((_xasmgen), (_op1), (_op2)))
+#define KEFIR_AMD64_XASMGEN_INSTR_DIVSD(_xasmgen, _op1, _op2) ((_xasmgen)->instr.divsd((_xasmgen), (_op1), (_op2)))
 
 #define KEFIR_AMD64_XASMGEN_HELPERS_BUFFER_LENGTH 1024
 typedef struct kefir_asm_amd64_xasmgen_helpers {

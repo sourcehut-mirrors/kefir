@@ -71,6 +71,7 @@ DECLARE_TRANSLATOR(push_scope);
 DECLARE_TRANSLATOR(pop_scope);
 DECLARE_TRANSLATOR(stack_alloc);
 DECLARE_TRANSLATOR(float_conv);
+DECLARE_TRANSLATOR(float_binary_op);
 #undef DECLARE
 
 #endif
