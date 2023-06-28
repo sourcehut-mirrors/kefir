@@ -73,6 +73,7 @@ DECLARE_TRANSLATOR(stack_alloc);
 DECLARE_TRANSLATOR(float_conv);
 DECLARE_TRANSLATOR(float_binary_op);
 DECLARE_TRANSLATOR(float_unary_op);
+DECLARE_TRANSLATOR(float_comparison);
 #undef DECLARE
 
 #endif

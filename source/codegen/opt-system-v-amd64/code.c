@@ -431,6 +431,15 @@ static kefir_result_t translate_instr(struct kefir_mem *mem, struct kefir_codege
             REQUIRE_OK(INVOKE_TRANSLATOR(float_unary_op));
             break;
 
+        case KEFIR_OPT_OPCODE_FLOAT32_EQUALS:
+        case KEFIR_OPT_OPCODE_FLOAT64_EQUALS:
+        case KEFIR_OPT_OPCODE_FLOAT32_GREATER:
+        case KEFIR_OPT_OPCODE_FLOAT64_GREATER:
+        case KEFIR_OPT_OPCODE_FLOAT32_LESSER:
+        case KEFIR_OPT_OPCODE_FLOAT64_LESSER:
+            REQUIRE_OK(INVOKE_TRANSLATOR(float_comparison));
+            break;
+
         case KEFIR_OPT_OPCODE_PHI:
             // Intentionally left blank
             break;
@@ -447,12 +456,6 @@ static kefir_result_t translate_instr(struct kefir_mem *mem, struct kefir_codege
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_MUL:
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_DIV:
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_NEG:
-        case KEFIR_OPT_OPCODE_FLOAT32_EQUALS:
-        case KEFIR_OPT_OPCODE_FLOAT32_GREATER:
-        case KEFIR_OPT_OPCODE_FLOAT32_LESSER:
-        case KEFIR_OPT_OPCODE_FLOAT64_EQUALS:
-        case KEFIR_OPT_OPCODE_FLOAT64_GREATER:
-        case KEFIR_OPT_OPCODE_FLOAT64_LESSER:
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_EQUALS:
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_GREATER:
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_LESSER:
