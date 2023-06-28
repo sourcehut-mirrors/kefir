@@ -42,6 +42,9 @@ int main(void) {
             assert(fabs(divf(i, j) - (i / j)) < EPSILON_F);
             assert(fabs(divd(id, jd) - (id / jd)) < EPSILON_D);
         }
+
+        assert(fabs(negf(i) + i) < EPSILON_F);
+        assert(fabs(negd((double) i) + (double) i) < EPSILON_D);
     }
 
     return EXIT_SUCCESS;

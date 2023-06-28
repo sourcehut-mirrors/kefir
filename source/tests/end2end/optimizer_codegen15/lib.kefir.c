@@ -51,3 +51,11 @@ float divf(float a, float b) {
 double divd(double a, double b) {
     return a / b;
 }
+
+float negf(float a) {
+    return -a;
+}
+
+double negd(double a) {
+    return -a;
+}

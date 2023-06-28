@@ -19,7 +19,7 @@
 */
 
 #define KEFIR_CODEGEN_OPT_SYSTEM_V_AMD64_CODE_INTERNAL
-#include "kefir/codegen/opt-system-v-amd64/code_impl.h"
+#include "kefir/codegen/opt-system-v-amd64/code.h"
 #include "kefir/codegen/opt-system-v-amd64/runtime.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
@@ -426,6 +426,11 @@ static kefir_result_t translate_instr(struct kefir_mem *mem, struct kefir_codege
             REQUIRE_OK(INVOKE_TRANSLATOR(float_binary_op));
             break;
 
+        case KEFIR_OPT_OPCODE_FLOAT32_NEG:
+        case KEFIR_OPT_OPCODE_FLOAT64_NEG:
+            REQUIRE_OK(INVOKE_TRANSLATOR(float_unary_op));
+            break;
+
         case KEFIR_OPT_OPCODE_PHI:
             // Intentionally left blank
             break;
@@ -437,8 +442,6 @@ static kefir_result_t translate_instr(struct kefir_mem *mem, struct kefir_codege
         case KEFIR_OPT_OPCODE_VARARG_COPY:
         case KEFIR_OPT_OPCODE_VARARG_GET:
         case KEFIR_OPT_OPCODE_VARARG_END:
-        case KEFIR_OPT_OPCODE_FLOAT32_NEG:
-        case KEFIR_OPT_OPCODE_FLOAT64_NEG:
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_ADD:
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_SUB:
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_MUL:
@@ -604,6 +607,9 @@ static kefir_result_t init_translator(struct kefir_mem *mem, struct kefir_opt_sy
 static kefir_result_t generate_constants(struct kefir_codegen_opt_amd64 *codegen,
                                          const struct kefir_opt_function *function,
                                          const struct kefir_opt_code_analysis *func_analysis) {
+    kefir_bool_t f32neg = false;
+    kefir_bool_t f64neg = false;
+
     for (kefir_size_t instr_idx = 0; instr_idx < func_analysis->linearization_length; instr_idx++) {
         const struct kefir_opt_code_analysis_instruction_properties *instr_props =
             func_analysis->linearization[instr_idx];
@@ -643,10 +649,50 @@ static kefir_result_t generate_constants(struct kefir_codegen_opt_amd64 *codegen
                     kefir_asm_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[0], value.u64)));
             } break;
 
+            case KEFIR_OPT_OPCODE_FLOAT32_NEG:
+                f32neg = true;
+                break;
+
+            case KEFIR_OPT_OPCODE_FLOAT64_NEG:
+                f64neg = true;
+                break;
+
             default:
                 // Intentionally left blank
                 break;
         }
+    }
+
+    if (f32neg) {
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_ALIGN(&codegen->xasmgen, 16));
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen->xasmgen, KEFIR_OPT_AMD64_SYSTEM_V_FUNCTION_CONSTANT_FLOAT32_NEG,
+                                             function->ir_func->name));
+
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+            &codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 1,
+            kefir_asm_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[0], 0x80000000ull)));
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+            &codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 1,
+            kefir_asm_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[0], 0x80000000ull)));
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+            &codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 1,
+            kefir_asm_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[0], 0x80000000ull)));
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+            &codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 1,
+            kefir_asm_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[0], 0x80000000ull)));
+    }
+
+    if (f64neg) {
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_ALIGN(&codegen->xasmgen, 16));
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen->xasmgen, KEFIR_OPT_AMD64_SYSTEM_V_FUNCTION_CONSTANT_FLOAT64_NEG,
+                                             function->ir_func->name));
+
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+            &codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
+            kefir_asm_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[0], 0x8000000000000000ull)));
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+            &codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
+            kefir_asm_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[0], 0x8000000000000000ull)));
     }
     return KEFIR_OK;
 }
@@ -720,58 +766,5 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_translate_code(struct kefir_mem *mem
     }
 
     REQUIRE_OK(generate_constants(codegen, function, func_analysis));
-    return KEFIR_OK;
-}
-
-kefir_result_t kefir_codegen_opt_sysv_amd64_floating_point_operand_init(
-    struct kefir_mem *mem, struct kefir_codegen_opt_amd64 *codegen,
-    struct kefir_codegen_opt_sysv_amd64_storage *storage,
-    struct kefir_codegen_opt_sysv_amd64_stack_frame_map *stack_frame_map,
-    const struct kefir_codegen_opt_sysv_amd64_register_allocation *reg_allocation,
-    struct kefir_codegen_opt_sysv_amd64_floating_point_operand *fp_operand,
-    kefir_result_t (*filter_callback)(kefir_asm_amd64_xasmgen_register_t, kefir_bool_t *, void *),
-    void *filter_payload) {
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(codegen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer codegen"));
-    REQUIRE(storage != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer codegen storage"));
-    REQUIRE(stack_frame_map != NULL,
-            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer codegen stack frame map"));
-    REQUIRE(fp_operand != NULL,
-            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to the floating point operand"));
-
-    fp_operand->reg_allocation = reg_allocation;
-    if (reg_allocation == NULL ||
-        reg_allocation->result.type == KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_GENERAL_PURPOSE_REGISTER) {
-        REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_try_acquire_exclusive_floating_point_allocated_register(
-            mem, &codegen->xasmgen, storage, reg_allocation, &fp_operand->storage_reg, filter_callback,
-            filter_payload));
-
-        REQUIRE_OK(kefir_codegen_opt_sysv_amd64_load_reg_allocation(codegen, stack_frame_map, reg_allocation,
-                                                                    fp_operand->storage_reg.reg));
-
-        fp_operand->operand = kefir_asm_amd64_xasmgen_operand_reg(fp_operand->storage_reg.reg);
-    } else {
-        fp_operand->operand = kefir_codegen_opt_sysv_amd64_reg_allocation_operand(&fp_operand->value_operand,
-                                                                                  stack_frame_map, reg_allocation);
-    }
-    return KEFIR_OK;
-}
-
-kefir_result_t kefir_codegen_opt_sysv_amd64_floating_point_operand_free(
-    struct kefir_mem *mem, struct kefir_codegen_opt_amd64 *codegen,
-    struct kefir_codegen_opt_sysv_amd64_storage *storage,
-    struct kefir_codegen_opt_sysv_amd64_floating_point_operand *fp_operand) {
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(codegen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer codegen"));
-    REQUIRE(storage != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer codegen storage"));
-    REQUIRE(fp_operand != NULL,
-            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to the floating point operand"));
-
-    if (fp_operand->reg_allocation == NULL ||
-        fp_operand->reg_allocation->result.type ==
-            KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_GENERAL_PURPOSE_REGISTER) {
-        REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_release_register(mem, &codegen->xasmgen, storage,
-                                                                         &fp_operand->storage_reg));
-    }
     return KEFIR_OK;
 }

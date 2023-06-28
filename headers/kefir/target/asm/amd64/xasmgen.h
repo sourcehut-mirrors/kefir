@@ -150,7 +150,8 @@ typedef enum kefir_asm_amd64_xasmgen_pointer_type {
     KEFIR_AMD64_XASMGEN_POINTER_WORD,
     KEFIR_AMD64_XASMGEN_POINTER_DWORD,
     KEFIR_AMD64_XASMGEN_POINTER_QWORD,
-    KEFIR_AMD64_XASMGEN_POINTER_TBYTE
+    KEFIR_AMD64_XASMGEN_POINTER_TBYTE,
+    KEFIR_AMD64_XASMGEN_POINTER_XMMWORD
 } kefir_asm_amd64_xasmgen_pointer_type_t;
 
 typedef struct kefir_asm_amd64_xasmgen_operand {
@@ -271,6 +272,8 @@ typedef enum kefir_asm_amd64_xasmgen_syntax {
     _opcode(ldmxcsr, "ldmxcsr", 1, normal) _separator \
     \
     _opcode(pxor, "pxor", 2, normal) _separator \
+    _opcode(xorps, "xorps", 2, normal) _separator \
+    _opcode(xorpd, "xorpd", 2, normal) _separator \
     _opcode(addss, "addss", 2, normal) _separator \
     _opcode(addsd, "addsd", 2, normal) _separator \
     _opcode(subss, "subss", 2, normal) _separator \
@@ -459,6 +462,8 @@ const struct kefir_asm_amd64_xasmgen_operand *kefir_asm_amd64_xasmgen_operand_st
 #define KEFIR_AMD64_XASMGEN_INSTR_LDMXCSR(_xasmgen, _op1) ((_xasmgen)->instr.ldmxcsr((_xasmgen), (_op1)))
 
 #define KEFIR_AMD64_XASMGEN_INSTR_PXOR(_xasmgen, _op1, _op2) ((_xasmgen)->instr.pxor((_xasmgen), (_op1), (_op2)))
+#define KEFIR_AMD64_XASMGEN_INSTR_XORPS(_xasmgen, _op1, _op2) ((_xasmgen)->instr.xorps((_xasmgen), (_op1), (_op2)))
+#define KEFIR_AMD64_XASMGEN_INSTR_XORPD(_xasmgen, _op1, _op2) ((_xasmgen)->instr.xorpd((_xasmgen), (_op1), (_op2)))
 #define KEFIR_AMD64_XASMGEN_INSTR_ADDSS(_xasmgen, _op1, _op2) ((_xasmgen)->instr.addss((_xasmgen), (_op1), (_op2)))
 #define KEFIR_AMD64_XASMGEN_INSTR_ADDSD(_xasmgen, _op1, _op2) ((_xasmgen)->instr.addsd((_xasmgen), (_op1), (_op2)))
 #define KEFIR_AMD64_XASMGEN_INSTR_SUBSS(_xasmgen, _op1, _op2) ((_xasmgen)->instr.subss((_xasmgen), (_op1), (_op2)))

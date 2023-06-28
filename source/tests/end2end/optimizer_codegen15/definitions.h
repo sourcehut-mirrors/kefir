@@ -33,4 +33,7 @@ double muld(double, double);
 float divf(float, float);
 double divd(double, double);
 
+float negf(float);
+double negd(double);
+
 #endif

@@ -996,6 +996,10 @@ static kefir_result_t format_pointer(void (*print)(void *, const char *, ...), v
         case KEFIR_AMD64_XASMGEN_POINTER_TBYTE:
             print(printarg, "TBYTE PTR ");
             break;
+
+        case KEFIR_AMD64_XASMGEN_POINTER_XMMWORD:
+            print(printarg, "XMMWORD PTR ");
+            break;
     }
     return KEFIR_OK;
 }
@@ -1426,6 +1430,10 @@ static kefir_result_t format_att_mnemonic_suffix_impl(FILE *output, kefir_asm_am
 
         case KEFIR_AMD64_XASMGEN_POINTER_TBYTE:
             fprintf(output, "t");
+            break;
+
+        case KEFIR_AMD64_XASMGEN_POINTER_XMMWORD:
+            // Intentionally left blank
             break;
     }
     return KEFIR_OK;
