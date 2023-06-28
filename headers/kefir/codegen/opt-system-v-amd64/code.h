@@ -70,6 +70,7 @@ DECLARE_TRANSLATOR(insert_bits);
 DECLARE_TRANSLATOR(push_scope);
 DECLARE_TRANSLATOR(pop_scope);
 DECLARE_TRANSLATOR(stack_alloc);
+DECLARE_TRANSLATOR(float_conv);
 #undef DECLARE
 
 #endif

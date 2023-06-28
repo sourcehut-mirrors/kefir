@@ -1341,33 +1341,33 @@ static kefir_result_t amd64_format_op(struct kefir_amd64_xasmgen *xasmgen,
     return KEFIR_OK;
 }
 
-#define INSTR0_INTEL(_mnemonic)                                                                                        \
-    static kefir_result_t amd64_instr_intel_##_mnemonic(struct kefir_amd64_xasmgen *xasmgen) {                         \
+#define INSTR0_INTEL(_id, _mnemonic)                                                                                   \
+    static kefir_result_t amd64_instr_intel_##_id(struct kefir_amd64_xasmgen *xasmgen) {                               \
         REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 assembly generator")); \
         ASSIGN_DECL_CAST(struct xasmgen_payload *, payload, xasmgen->payload);                                         \
         REQUIRE_OK(amd64_ident(xasmgen));                                                                              \
-        fprintf(payload->output, #_mnemonic "\n");                                                                     \
+        fprintf(payload->output, _mnemonic "\n");                                                                      \
         return KEFIR_OK;                                                                                               \
     }
 
-#define INSTR1_INTEL(_mnemonic)                                                                                        \
-    static kefir_result_t amd64_instr_intel_##_mnemonic(struct kefir_amd64_xasmgen *xasmgen,                           \
-                                                        const struct kefir_asm_amd64_xasmgen_operand *op1) {           \
+#define INSTR1_INTEL(_id, _mnemonic)                                                                                   \
+    static kefir_result_t amd64_instr_intel_##_id(struct kefir_amd64_xasmgen *xasmgen,                                 \
+                                                  const struct kefir_asm_amd64_xasmgen_operand *op1) {                 \
         REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 assembly generator")); \
         REQUIRE(op1 != NULL,                                                                                           \
                 KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 assembly generator operand"));          \
         ASSIGN_DECL_CAST(struct xasmgen_payload *, payload, xasmgen->payload);                                         \
         REQUIRE_OK(amd64_ident(xasmgen));                                                                              \
-        fprintf(payload->output, #_mnemonic " ");                                                                      \
+        fprintf(payload->output, _mnemonic " ");                                                                       \
         REQUIRE_OK(amd64_format_op(xasmgen, op1));                                                                     \
         fprintf(payload->output, "\n");                                                                                \
         return KEFIR_OK;                                                                                               \
     }
 
-#define INSTR2_INTEL(_mnemonic)                                                                                        \
-    static kefir_result_t amd64_instr_intel_##_mnemonic(struct kefir_amd64_xasmgen *xasmgen,                           \
-                                                        const struct kefir_asm_amd64_xasmgen_operand *op1,             \
-                                                        const struct kefir_asm_amd64_xasmgen_operand *op2) {           \
+#define INSTR2_INTEL(_id, _mnemonic)                                                                                   \
+    static kefir_result_t amd64_instr_intel_##_id(struct kefir_amd64_xasmgen *xasmgen,                                 \
+                                                  const struct kefir_asm_amd64_xasmgen_operand *op1,                   \
+                                                  const struct kefir_asm_amd64_xasmgen_operand *op2) {                 \
         REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 assembly generator")); \
         REQUIRE(op1 != NULL,                                                                                           \
                 KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 assembly generator operand"));          \
@@ -1375,7 +1375,7 @@ static kefir_result_t amd64_format_op(struct kefir_amd64_xasmgen *xasmgen,
                 KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 assembly generator operand"));          \
         ASSIGN_DECL_CAST(struct xasmgen_payload *, payload, xasmgen->payload);                                         \
         REQUIRE_OK(amd64_ident(xasmgen));                                                                              \
-        fprintf(payload->output, #_mnemonic " ");                                                                      \
+        fprintf(payload->output, _mnemonic " ");                                                                       \
         REQUIRE_OK(amd64_format_op(xasmgen, op1));                                                                     \
         fprintf(payload->output, ", ");                                                                                \
         REQUIRE_OK(amd64_format_op(xasmgen, op2));                                                                     \
@@ -1383,8 +1383,8 @@ static kefir_result_t amd64_format_op(struct kefir_amd64_xasmgen *xasmgen,
         return KEFIR_OK;                                                                                               \
     }
 
-#define INSTR3_INTEL(_mnemonic)                                                                                        \
-    static kefir_result_t amd64_instr_intel_##_mnemonic(                                                               \
+#define INSTR3_INTEL(_id, _mnemonic)                                                                                   \
+    static kefir_result_t amd64_instr_intel_##_id(                                                                     \
         struct kefir_amd64_xasmgen *xasmgen, const struct kefir_asm_amd64_xasmgen_operand *op1,                        \
         const struct kefir_asm_amd64_xasmgen_operand *op2, const struct kefir_asm_amd64_xasmgen_operand *op3) {        \
         REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 assembly generator")); \
@@ -1396,7 +1396,7 @@ static kefir_result_t amd64_format_op(struct kefir_amd64_xasmgen *xasmgen,
                 KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 assembly generator operand"));          \
         ASSIGN_DECL_CAST(struct xasmgen_payload *, payload, xasmgen->payload);                                         \
         REQUIRE_OK(amd64_ident(xasmgen));                                                                              \
-        fprintf(payload->output, #_mnemonic " ");                                                                      \
+        fprintf(payload->output, _mnemonic " ");                                                                       \
         REQUIRE_OK(amd64_format_op(xasmgen, op1));                                                                     \
         fprintf(payload->output, ", ");                                                                                \
         REQUIRE_OK(amd64_format_op(xasmgen, op2));                                                                     \
@@ -1447,39 +1447,39 @@ static kefir_result_t format_att_mnemonic_suffix(struct kefir_amd64_xasmgen *xas
     return KEFIR_OK;
 }
 
-#define INSTR0_ATT(_mnemonic)                                                                                          \
-    static kefir_result_t amd64_instr_att_##_mnemonic(struct kefir_amd64_xasmgen *xasmgen) {                           \
+#define INSTR0_ATT(_id, _mnemonic)                                                                                     \
+    static kefir_result_t amd64_instr_att_##_id(struct kefir_amd64_xasmgen *xasmgen) {                                 \
         REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 assembly generator")); \
         ASSIGN_DECL_CAST(struct xasmgen_payload *, payload, xasmgen->payload);                                         \
         REQUIRE_OK(amd64_ident(xasmgen));                                                                              \
-        fprintf(payload->output, #_mnemonic "\n");                                                                     \
+        fprintf(payload->output, _mnemonic "\n");                                                                      \
         return KEFIR_OK;                                                                                               \
     }
 
-#define INSTR1_ATT(_mnemonic)                                                                                          \
-    static kefir_result_t amd64_instr_att_##_mnemonic(struct kefir_amd64_xasmgen *xasmgen,                             \
-                                                      const struct kefir_asm_amd64_xasmgen_operand *op1) {             \
+#define INSTR1_ATT(_id, _mnemonic)                                                                                     \
+    static kefir_result_t amd64_instr_att_##_id(struct kefir_amd64_xasmgen *xasmgen,                                   \
+                                                const struct kefir_asm_amd64_xasmgen_operand *op1) {                   \
         REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 assembly generator")); \
         REQUIRE(op1 != NULL,                                                                                           \
                 KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 assembly generator operand"));          \
         ASSIGN_DECL_CAST(struct xasmgen_payload *, payload, xasmgen->payload);                                         \
         REQUIRE_OK(amd64_ident(xasmgen));                                                                              \
-        fprintf(payload->output, #_mnemonic);                                                                          \
+        fprintf(payload->output, _mnemonic);                                                                           \
         REQUIRE_OK(format_att_mnemonic_suffix(xasmgen, op1, NULL, NULL));                                              \
         REQUIRE_OK(amd64_format_op(xasmgen, op1));                                                                     \
         fprintf(payload->output, "\n");                                                                                \
         return KEFIR_OK;                                                                                               \
     }
 
-#define INSTR1_ATT_BR(_mnemonic)                                                                                       \
-    static kefir_result_t amd64_instr_att_##_mnemonic(struct kefir_amd64_xasmgen *xasmgen,                             \
-                                                      const struct kefir_asm_amd64_xasmgen_operand *op1) {             \
+#define INSTR1_ATT_BR(_id, _mnemonic)                                                                                  \
+    static kefir_result_t amd64_instr_att_##_id(struct kefir_amd64_xasmgen *xasmgen,                                   \
+                                                const struct kefir_asm_amd64_xasmgen_operand *op1) {                   \
         REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 assembly generator")); \
         REQUIRE(op1 != NULL,                                                                                           \
                 KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 assembly generator operand"));          \
         ASSIGN_DECL_CAST(struct xasmgen_payload *, payload, xasmgen->payload);                                         \
         REQUIRE_OK(amd64_ident(xasmgen));                                                                              \
-        fprintf(payload->output, #_mnemonic);                                                                          \
+        fprintf(payload->output, _mnemonic);                                                                           \
         REQUIRE_OK(format_att_mnemonic_suffix(xasmgen, op1, NULL, NULL));                                              \
         if (op1->klass != KEFIR_AMD64_XASMGEN_OPERAND_LABEL) {                                                         \
             fprintf(payload->output, "*");                                                                             \
@@ -1489,10 +1489,10 @@ static kefir_result_t format_att_mnemonic_suffix(struct kefir_amd64_xasmgen *xas
         return KEFIR_OK;                                                                                               \
     }
 
-#define INSTR2_ATT(_mnemonic)                                                                                          \
-    static kefir_result_t amd64_instr_att_##_mnemonic(struct kefir_amd64_xasmgen *xasmgen,                             \
-                                                      const struct kefir_asm_amd64_xasmgen_operand *op1,               \
-                                                      const struct kefir_asm_amd64_xasmgen_operand *op2) {             \
+#define INSTR2_ATT(_id, _mnemonic)                                                                                     \
+    static kefir_result_t amd64_instr_att_##_id(struct kefir_amd64_xasmgen *xasmgen,                                   \
+                                                const struct kefir_asm_amd64_xasmgen_operand *op1,                     \
+                                                const struct kefir_asm_amd64_xasmgen_operand *op2) {                   \
         REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 assembly generator")); \
         REQUIRE(op1 != NULL,                                                                                           \
                 KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 assembly generator operand"));          \
@@ -1500,7 +1500,7 @@ static kefir_result_t format_att_mnemonic_suffix(struct kefir_amd64_xasmgen *xas
                 KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 assembly generator operand"));          \
         ASSIGN_DECL_CAST(struct xasmgen_payload *, payload, xasmgen->payload);                                         \
         REQUIRE_OK(amd64_ident(xasmgen));                                                                              \
-        fprintf(payload->output, #_mnemonic);                                                                          \
+        fprintf(payload->output, _mnemonic);                                                                           \
         REQUIRE_OK(format_att_mnemonic_suffix(xasmgen, op1, op2, NULL));                                               \
         REQUIRE_OK(amd64_format_op(xasmgen, op2));                                                                     \
         fprintf(payload->output, ", ");                                                                                \
@@ -1509,8 +1509,8 @@ static kefir_result_t format_att_mnemonic_suffix(struct kefir_amd64_xasmgen *xas
         return KEFIR_OK;                                                                                               \
     }
 
-#define INSTR3_ATT(_mnemonic)                                                                                          \
-    static kefir_result_t amd64_instr_att_##_mnemonic(                                                                 \
+#define INSTR3_ATT(_id, _mnemonic)                                                                                     \
+    static kefir_result_t amd64_instr_att_##_id(                                                                       \
         struct kefir_amd64_xasmgen *xasmgen, const struct kefir_asm_amd64_xasmgen_operand *op1,                        \
         const struct kefir_asm_amd64_xasmgen_operand *op2, const struct kefir_asm_amd64_xasmgen_operand *op3) {        \
         REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 assembly generator")); \
@@ -1522,7 +1522,7 @@ static kefir_result_t format_att_mnemonic_suffix(struct kefir_amd64_xasmgen *xas
                 KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 assembly generator operand"));          \
         ASSIGN_DECL_CAST(struct xasmgen_payload *, payload, xasmgen->payload);                                         \
         REQUIRE_OK(amd64_ident(xasmgen));                                                                              \
-        fprintf(payload->output, #_mnemonic);                                                                          \
+        fprintf(payload->output, _mnemonic);                                                                           \
         REQUIRE_OK(format_att_mnemonic_suffix(xasmgen, op1, op2, op3));                                                \
         REQUIRE_OK(amd64_format_op(xasmgen, op3));                                                                     \
         fprintf(payload->output, ", ");                                                                                \
@@ -1533,82 +1533,55 @@ static kefir_result_t format_att_mnemonic_suffix(struct kefir_amd64_xasmgen *xas
         return KEFIR_OK;                                                                                               \
     }
 
-#define INSTR0(_opcode) \
-    INSTR0_ATT(_opcode) \
-    INSTR0_INTEL(_opcode)
+#define INSTR_REPEATED0(_id, _mnemonic)                                                                                \
+    static kefir_result_t amd64_instr_##_id(struct kefir_amd64_xasmgen *xasmgen, kefir_bool_t rep) {                   \
+        REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 assembly generator")); \
+        ASSIGN_DECL_CAST(struct xasmgen_payload *, payload, xasmgen->payload);                                         \
+                                                                                                                       \
+        REQUIRE_OK(amd64_ident(xasmgen));                                                                              \
+        if (rep) {                                                                                                     \
+            fprintf(payload->output, "rep ");                                                                          \
+        }                                                                                                              \
+                                                                                                                       \
+        fprintf(payload->output, "%s\n", _mnemonic);                                                                   \
+        return KEFIR_OK;                                                                                               \
+    }
 
-#define INSTR1(_opcode) \
-    INSTR1_ATT(_opcode) \
-    INSTR1_INTEL(_opcode)
+#define INSTR0(_id, _mnemonic) \
+    INSTR0_ATT(_id, _mnemonic) \
+    INSTR0_INTEL(_id, _mnemonic)
 
-#define INSTR2(_opcode) \
-    INSTR2_ATT(_opcode) \
-    INSTR2_INTEL(_opcode)
+#define INSTR1(_id, _mnemonic) \
+    INSTR1_ATT(_id, _mnemonic) \
+    INSTR1_INTEL(_id, _mnemonic)
 
-#define INSTR3(_opcode) \
-    INSTR3_ATT(_opcode) \
-    INSTR3_INTEL(_opcode)
+#define INSTR2(_id, _mnemonic) \
+    INSTR2_ATT(_id, _mnemonic) \
+    INSTR2_INTEL(_id, _mnemonic)
 
-INSTR1(push)
-INSTR1(pop)
-INSTR2(mov)
-INSTR2(movsx)
-INSTR2(movzx)
-INSTR2(movabs)
-INSTR2(or)
-INSTR2(lea)
-INSTR2(movq)
-INSTR1_INTEL(jmp)
-INSTR1_ATT_BR(jmp)
-INSTR1_INTEL(ja)
-INSTR1_ATT_BR(ja)
-INSTR1_INTEL(jz)
-INSTR1_ATT_BR(jz)
-INSTR1_INTEL(je)
-INSTR1_ATT_BR(je)
-INSTR0(ret)
-INSTR1(fstcw)
-INSTR1(fldcw)
-INSTR1_INTEL(call)
-INSTR1_ATT_BR(call)
-INSTR3(pextrq)
-INSTR3(pinsrq)
-INSTR2(add)
-INSTR2(cmp)
-INSTR2(cmovl)
-INSTR2(test)
-INSTR1(sete)
-INSTR1(setg)
-INSTR1(setl)
-INSTR1(seta)
-INSTR1(setb)
-INSTR1(setne)
-INSTR2(sub)
-INSTR2(imul)
-INSTR1(idiv)
-INSTR1(div)
-INSTR2(xor)
-INSTR0(cqo)
-INSTR0(cld)
-INSTR2(and)
-INSTR2(shl)
-INSTR2(shr)
-INSTR2(sar)
-INSTR1(not )
-INSTR1(neg)
-INSTR2(movd)
-INSTR1(fstp)
-INSTR1(fld)
-INSTR2(movdqu)
-INSTR0(pushfq)
-INSTR0(popfq)
-INSTR1(stmxcsr)
-INSTR1(ldmxcsr)
+#define INSTR3(_id, _mnemonic) \
+    INSTR3_ATT(_id, _mnemonic) \
+    INSTR3_INTEL(_id, _mnemonic)
+
+#define OPCODE_DEF(_id, _mnemonic, _argc, _class) OPCODE_DEF_##_class(_id, _mnemonic, _argc)
+#define OPCODE_DEF_normal(_id, _mnemonic, _argc) INSTR##_argc(_id, _mnemonic)
+#define OPCODE_DEF_branch(_id, _mnemonic, _argc) \
+    INSTR##_argc##_INTEL(_id, _mnemonic) INSTR##_argc##_ATT_BR(_id, _mnemonic)
+#define OPCODE_DEF_repeated(_id, _mnemonic, _argc) \
+    INSTR_REPEATED##_argc(intel_##_id, _mnemonic) INSTR_REPEATED##_argc(att_##_id, _mnemonic)
+
+KEFIR_AMD64_XASMGEN_OPCODE_DEFS(OPCODE_DEF, )
+
+#undef OPCODE_DEF_branch
+#undef OPCODE_DEF_normal
+#undef OPCODE_DEF_repeated
+#undef OPCODE_DEF
 
 #undef INSTR0
 #undef INSTR1
 #undef INSTR2
 #undef INSTR3
+#undef INSTR_REPEATED0
 
 #undef INSTR0_ATT
 #undef INSTR1_ATT
@@ -1621,36 +1594,6 @@ INSTR1(ldmxcsr)
 #undef INSTR1_INTEL
 #undef INSTR2_INTEL
 #undef INSTR3_INTEL
-
-static kefir_result_t amd64_instr_intel_movsb(struct kefir_amd64_xasmgen *xasmgen, kefir_bool_t rep) {
-    REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 assembly generator"));
-    ASSIGN_DECL_CAST(struct xasmgen_payload *, payload, xasmgen->payload);
-
-    REQUIRE_OK(amd64_ident(xasmgen));
-    if (rep) {
-        fprintf(payload->output, "rep ");
-    }
-
-    fprintf(payload->output, "movsb\n");
-    return KEFIR_OK;
-}
-
-#define amd64_instr_att_movsb amd64_instr_intel_movsb
-
-static kefir_result_t amd64_instr_intel_stosb(struct kefir_amd64_xasmgen *xasmgen, kefir_bool_t rep) {
-    REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 assembly generator"));
-    ASSIGN_DECL_CAST(struct xasmgen_payload *, payload, xasmgen->payload);
-
-    REQUIRE_OK(amd64_ident(xasmgen));
-    if (rep) {
-        fprintf(payload->output, "rep ");
-    }
-
-    fprintf(payload->output, "stosb\n");
-    return KEFIR_OK;
-}
-
-#define amd64_instr_att_stosb amd64_instr_intel_stosb
 
 kefir_result_t kefir_asm_amd64_xasmgen_init(struct kefir_mem *mem, struct kefir_amd64_xasmgen *xasmgen, FILE *output,
                                             kefir_asm_amd64_xasmgen_syntax_t syntax) {
@@ -1684,111 +1627,13 @@ kefir_result_t kefir_asm_amd64_xasmgen_init(struct kefir_mem *mem, struct kefir_
     xasmgen->format_operand = amd64_format_operand;
 
     if (syntax != KEFIR_AMD64_XASMGEN_SYNTAX_ATT) {
-        xasmgen->instr.add = amd64_instr_intel_add;
-        xasmgen->instr.and = amd64_instr_intel_and;
-        xasmgen->instr.call = amd64_instr_intel_call;
-        xasmgen->instr.cld = amd64_instr_intel_cld;
-        xasmgen->instr.cmp = amd64_instr_intel_cmp;
-        xasmgen->instr.cmovl = amd64_instr_intel_cmovl;
-        xasmgen->instr.test = amd64_instr_intel_test;
-        xasmgen->instr.sete = amd64_instr_intel_sete;
-        xasmgen->instr.setg = amd64_instr_intel_setg;
-        xasmgen->instr.setl = amd64_instr_intel_setl;
-        xasmgen->instr.seta = amd64_instr_intel_seta;
-        xasmgen->instr.setb = amd64_instr_intel_setb;
-        xasmgen->instr.setne = amd64_instr_intel_setne;
-        xasmgen->instr.fld = amd64_instr_intel_fld;
-        xasmgen->instr.fstcw = amd64_instr_intel_fstcw;
-        xasmgen->instr.fldcw = amd64_instr_intel_fldcw;
-        xasmgen->instr.fstp = amd64_instr_intel_fstp;
-        xasmgen->instr.ja = amd64_instr_intel_ja;
-        xasmgen->instr.jz = amd64_instr_intel_jz;
-        xasmgen->instr.je = amd64_instr_intel_je;
-        xasmgen->instr.jmp = amd64_instr_intel_jmp;
-        xasmgen->instr.lea = amd64_instr_intel_lea;
-        xasmgen->instr.mov = amd64_instr_intel_mov;
-        xasmgen->instr.movsx = amd64_instr_intel_movsx;
-        xasmgen->instr.movzx = amd64_instr_intel_movzx;
-        xasmgen->instr.movabs = amd64_instr_intel_movabs;
-        xasmgen->instr.movd = amd64_instr_intel_movd;
-        xasmgen->instr.movq = amd64_instr_intel_movq;
-        xasmgen->instr.movsb = amd64_instr_intel_movsb;
-        xasmgen->instr.stosb = amd64_instr_intel_stosb;
-        xasmgen->instr.or = amd64_instr_intel_or;
-        xasmgen->instr.pextrq = amd64_instr_intel_pextrq;
-        xasmgen->instr.pinsrq = amd64_instr_intel_pinsrq;
-        xasmgen->instr.pop = amd64_instr_intel_pop;
-        xasmgen->instr.push = amd64_instr_intel_push;
-        xasmgen->instr.ret = amd64_instr_intel_ret;
-        xasmgen->instr.shl = amd64_instr_intel_shl;
-        xasmgen->instr.shr = amd64_instr_intel_shr;
-        xasmgen->instr.sar = amd64_instr_intel_sar;
-        xasmgen->instr.not = amd64_instr_intel_not;
-        xasmgen->instr.neg = amd64_instr_intel_neg;
-        xasmgen->instr.sub = amd64_instr_intel_sub;
-        xasmgen->instr.imul = amd64_instr_intel_imul;
-        xasmgen->instr.idiv = amd64_instr_intel_idiv;
-        xasmgen->instr.div = amd64_instr_intel_div;
-        xasmgen->instr.xor = amd64_instr_intel_xor;
-        xasmgen->instr.cqo = amd64_instr_intel_cqo;
-        xasmgen->instr.movdqu = amd64_instr_intel_movdqu;
-        xasmgen->instr.pushfq = amd64_instr_intel_pushfq;
-        xasmgen->instr.popfq = amd64_instr_intel_popfq;
-        xasmgen->instr.stmxcsr = amd64_instr_intel_stmxcsr;
-        xasmgen->instr.ldmxcsr = amd64_instr_intel_ldmxcsr;
+#define OPCODE_DEF(_id, _mnemonic, _argc, _class) xasmgen->instr._id = amd64_instr_intel_##_id
+        KEFIR_AMD64_XASMGEN_OPCODE_DEFS(OPCODE_DEF, ;);
+#undef OPCODE_DEF
     } else {
-        xasmgen->instr.add = amd64_instr_att_add;
-        xasmgen->instr.and = amd64_instr_att_and;
-        xasmgen->instr.call = amd64_instr_att_call;
-        xasmgen->instr.cld = amd64_instr_att_cld;
-        xasmgen->instr.cmp = amd64_instr_att_cmp;
-        xasmgen->instr.cmovl = amd64_instr_att_cmovl;
-        xasmgen->instr.test = amd64_instr_att_test;
-        xasmgen->instr.sete = amd64_instr_att_sete;
-        xasmgen->instr.setg = amd64_instr_att_setg;
-        xasmgen->instr.setl = amd64_instr_att_setl;
-        xasmgen->instr.seta = amd64_instr_att_seta;
-        xasmgen->instr.setb = amd64_instr_att_setb;
-        xasmgen->instr.setne = amd64_instr_att_setne;
-        xasmgen->instr.fld = amd64_instr_att_fld;
-        xasmgen->instr.fstcw = amd64_instr_att_fstcw;
-        xasmgen->instr.fldcw = amd64_instr_att_fldcw;
-        xasmgen->instr.fstp = amd64_instr_att_fstp;
-        xasmgen->instr.ja = amd64_instr_att_ja;
-        xasmgen->instr.jz = amd64_instr_att_jz;
-        xasmgen->instr.je = amd64_instr_att_je;
-        xasmgen->instr.jmp = amd64_instr_att_jmp;
-        xasmgen->instr.lea = amd64_instr_att_lea;
-        xasmgen->instr.mov = amd64_instr_att_mov;
-        xasmgen->instr.movsx = amd64_instr_att_movsx;
-        xasmgen->instr.movzx = amd64_instr_att_movzx;
-        xasmgen->instr.movabs = amd64_instr_att_movabs;
-        xasmgen->instr.movd = amd64_instr_att_movd;
-        xasmgen->instr.movq = amd64_instr_att_movq;
-        xasmgen->instr.movsb = amd64_instr_att_movsb;
-        xasmgen->instr.stosb = amd64_instr_att_stosb;
-        xasmgen->instr.or = amd64_instr_att_or;
-        xasmgen->instr.pextrq = amd64_instr_att_pextrq;
-        xasmgen->instr.pinsrq = amd64_instr_att_pinsrq;
-        xasmgen->instr.pop = amd64_instr_att_pop;
-        xasmgen->instr.push = amd64_instr_att_push;
-        xasmgen->instr.ret = amd64_instr_att_ret;
-        xasmgen->instr.shl = amd64_instr_att_shl;
-        xasmgen->instr.shr = amd64_instr_att_shr;
-        xasmgen->instr.sar = amd64_instr_att_sar;
-        xasmgen->instr.not = amd64_instr_att_not;
-        xasmgen->instr.neg = amd64_instr_att_neg;
-        xasmgen->instr.sub = amd64_instr_att_sub;
-        xasmgen->instr.imul = amd64_instr_att_imul;
-        xasmgen->instr.idiv = amd64_instr_att_idiv;
-        xasmgen->instr.div = amd64_instr_att_div;
-        xasmgen->instr.xor = amd64_instr_att_xor;
-        xasmgen->instr.cqo = amd64_instr_att_cqo;
-        xasmgen->instr.movdqu = amd64_instr_att_movdqu;
-        xasmgen->instr.pushfq = amd64_instr_att_pushfq;
-        xasmgen->instr.popfq = amd64_instr_att_popfq;
-        xasmgen->instr.stmxcsr = amd64_instr_att_stmxcsr;
-        xasmgen->instr.ldmxcsr = amd64_instr_att_ldmxcsr;
+#define OPCODE_DEF(_id, _mnemonic, _argc, _class) xasmgen->instr._id = amd64_instr_att_##_id
+        KEFIR_AMD64_XASMGEN_OPCODE_DEFS(OPCODE_DEF, ;);
+#undef OPCODE_DEF
     }
     return KEFIR_OK;
 }

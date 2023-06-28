@@ -35,3 +35,43 @@ float E_float(void) {
 double E_double(void) {
     return E_D;
 }
+
+float long_to_float(long x) {
+    return (float) x;
+}
+
+double long_to_double(long x) {
+    return (double) x;
+}
+
+float ulong_to_float(unsigned long x) {
+    return (float) x;
+}
+
+double ulong_to_double(unsigned long x) {
+    return (double) x;
+}
+
+extern long float_to_long(float x) {
+    return (long) x;
+}
+
+extern long double_to_long(double x) {
+    return (long) x;
+}
+
+extern unsigned long float_to_ulong(float x) {
+    return (unsigned long) x;
+}
+
+extern unsigned long double_to_ulong(double x) {
+    return (unsigned long) x;
+}
+
+extern double float_to_double(float x) {
+    return (double) x;
+}
+
+extern float double_to_float(double x) {
+    return (float) x;
+}

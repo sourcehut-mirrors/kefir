@@ -222,6 +222,55 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_storage_try_acquire_shared_allocated
     return KEFIR_OK;
 }
 
+struct filter_floating_point_arg {
+    kefir_result_t (*filter_callback)(kefir_asm_amd64_xasmgen_register_t, kefir_bool_t *, void *);
+    void *filter_payload;
+};
+
+static kefir_result_t filter_floating_point(kefir_asm_amd64_xasmgen_register_t reg, kefir_bool_t *result,
+                                            void *payload) {
+    REQUIRE(result != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
+    ASSIGN_DECL_CAST(struct filter_floating_point_arg *, arg, payload);
+    REQUIRE(arg != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid register filter parameter"));
+
+    if (!kefir_asm_amd64_xasmgen_register_is_floating_point(reg)) {
+        *result = false;
+    } else {
+        *result = true;
+        if (arg->filter_callback != NULL) {
+            REQUIRE_OK(arg->filter_callback(reg, result, arg->filter_payload));
+        }
+    }
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_codegen_opt_sysv_amd64_storage_try_acquire_exclusive_floating_point_allocated_register(
+    struct kefir_mem *mem, struct kefir_amd64_xasmgen *xasmgen, struct kefir_codegen_opt_sysv_amd64_storage *storage,
+    const struct kefir_codegen_opt_sysv_amd64_register_allocation *reg_allocation,
+    struct kefir_codegen_opt_sysv_amd64_storage_register *tmp_reg,
+    kefir_result_t (*filter_callback)(kefir_asm_amd64_xasmgen_register_t, kefir_bool_t *, void *),
+    void *filter_payload) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 assembly generator"));
+    REQUIRE(storage != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer codegen storage"));
+    REQUIRE(tmp_reg != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER,
+                                             "Expected valid pointer optimizer codegen storage temporary register"));
+    REQUIRE(reg_allocation != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer codegen register allocation"));
+
+    struct filter_floating_point_arg filter_arg = {.filter_callback = filter_callback,
+                                                   .filter_payload = filter_payload};
+    kefir_result_t res = kefir_codegen_opt_sysv_amd64_storage_acquire_allocated_register(
+        mem, storage, reg_allocation, true, tmp_reg, filter_floating_point, &filter_arg);
+    if (res == KEFIR_NO_MATCH) {
+        res = kefir_codegen_opt_sysv_amd64_storage_acquire_any_floating_point_register(mem, xasmgen, storage, tmp_reg,
+                                                                                       filter_callback, filter_payload);
+    }
+
+    REQUIRE_OK(res);
+    return KEFIR_OK;
+}
+
 static kefir_result_t push_candidate(struct kefir_amd64_xasmgen *xasmgen, kefir_asm_amd64_xasmgen_register_t reg) {
     if (!kefir_asm_amd64_xasmgen_register_is_floating_point(reg)) {
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_PUSH(xasmgen, kefir_asm_amd64_xasmgen_operand_reg(reg)));

@@ -19,7 +19,7 @@
 */
 
 #define KEFIR_CODEGEN_OPT_SYSTEM_V_AMD64_CODE_INTERNAL
-#include "kefir/codegen/opt-system-v-amd64/code.h"
+#include "kefir/codegen/opt-system-v-amd64/code_impl.h"
 #include "kefir/codegen/opt-system-v-amd64/runtime.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
@@ -404,6 +404,17 @@ static kefir_result_t translate_instr(struct kefir_mem *mem, struct kefir_codege
             REQUIRE_OK(INVOKE_TRANSLATOR(stack_alloc));
             break;
 
+        case KEFIR_OPT_OPCODE_INT_TO_FLOAT32:
+        case KEFIR_OPT_OPCODE_INT_TO_FLOAT64:
+        case KEFIR_OPT_OPCODE_UINT_TO_FLOAT32:
+        case KEFIR_OPT_OPCODE_UINT_TO_FLOAT64:
+        case KEFIR_OPT_OPCODE_FLOAT32_TO_INT:
+        case KEFIR_OPT_OPCODE_FLOAT64_TO_INT:
+        case KEFIR_OPT_OPCODE_FLOAT32_TO_FLOAT64:
+        case KEFIR_OPT_OPCODE_FLOAT64_TO_FLOAT32:
+            REQUIRE_OK(INVOKE_TRANSLATOR(float_conv));
+            break;
+
         case KEFIR_OPT_OPCODE_PHI:
             // Intentionally left blank
             break;
@@ -439,21 +450,13 @@ static kefir_result_t translate_instr(struct kefir_mem *mem, struct kefir_codege
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_EQUALS:
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_GREATER:
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_LESSER:
-        case KEFIR_OPT_OPCODE_FLOAT32_TO_INT:
-        case KEFIR_OPT_OPCODE_FLOAT32_TO_FLOAT64:
         case KEFIR_OPT_OPCODE_FLOAT32_TO_LONG_DOUBLE:
-        case KEFIR_OPT_OPCODE_FLOAT64_TO_INT:
-        case KEFIR_OPT_OPCODE_FLOAT64_TO_FLOAT32:
         case KEFIR_OPT_OPCODE_FLOAT64_TO_LONG_DOUBLE:
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_TO_INT:
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_TO_FLOAT32:
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_TO_FLOAT64:
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_TRUNCATE_1BIT:
-        case KEFIR_OPT_OPCODE_INT_TO_FLOAT32:
-        case KEFIR_OPT_OPCODE_INT_TO_FLOAT64:
         case KEFIR_OPT_OPCODE_INT_TO_LONG_DOUBLE:
-        case KEFIR_OPT_OPCODE_UINT_TO_FLOAT32:
-        case KEFIR_OPT_OPCODE_UINT_TO_FLOAT64:
         case KEFIR_OPT_OPCODE_UINT_TO_LONG_DOUBLE:
             return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED,
                                    "Code generation for provided optimizer opcode is not implemented yet");
@@ -714,5 +717,58 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_translate_code(struct kefir_mem *mem
     }
 
     REQUIRE_OK(generate_constants(codegen, function, func_analysis));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_codegen_opt_sysv_amd64_floating_point_operand_init(
+    struct kefir_mem *mem, struct kefir_codegen_opt_amd64 *codegen,
+    struct kefir_codegen_opt_sysv_amd64_storage *storage,
+    struct kefir_codegen_opt_sysv_amd64_stack_frame_map *stack_frame_map,
+    const struct kefir_codegen_opt_sysv_amd64_register_allocation *reg_allocation,
+    struct kefir_codegen_opt_sysv_amd64_floating_point_operand *fp_operand,
+    kefir_result_t (*filter_callback)(kefir_asm_amd64_xasmgen_register_t, kefir_bool_t *, void *),
+    void *filter_payload) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(codegen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer codegen"));
+    REQUIRE(storage != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer codegen storage"));
+    REQUIRE(stack_frame_map != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer codegen stack frame map"));
+    REQUIRE(fp_operand != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to the floating point operand"));
+
+    fp_operand->reg_allocation = reg_allocation;
+    if (reg_allocation == NULL ||
+        reg_allocation->result.type == KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_GENERAL_PURPOSE_REGISTER) {
+        REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_try_acquire_exclusive_floating_point_allocated_register(
+            mem, &codegen->xasmgen, storage, reg_allocation, &fp_operand->storage_reg, filter_callback,
+            filter_payload));
+
+        REQUIRE_OK(kefir_codegen_opt_sysv_amd64_load_reg_allocation(codegen, stack_frame_map, reg_allocation,
+                                                                    fp_operand->storage_reg.reg));
+
+        fp_operand->operand = kefir_asm_amd64_xasmgen_operand_reg(fp_operand->storage_reg.reg);
+    } else {
+        fp_operand->operand = kefir_codegen_opt_sysv_amd64_reg_allocation_operand(&fp_operand->value_operand,
+                                                                                  stack_frame_map, reg_allocation);
+    }
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_codegen_opt_sysv_amd64_floating_point_operand_free(
+    struct kefir_mem *mem, struct kefir_codegen_opt_amd64 *codegen,
+    struct kefir_codegen_opt_sysv_amd64_storage *storage,
+    struct kefir_codegen_opt_sysv_amd64_floating_point_operand *fp_operand) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(codegen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer codegen"));
+    REQUIRE(storage != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer codegen storage"));
+    REQUIRE(fp_operand != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to the floating point operand"));
+
+    if (fp_operand->reg_allocation == NULL ||
+        fp_operand->reg_allocation->result.type ==
+            KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_GENERAL_PURPOSE_REGISTER) {
+        REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_release_register(mem, &codegen->xasmgen, storage,
+                                                                         &fp_operand->storage_reg));
+    }
     return KEFIR_OK;
 }

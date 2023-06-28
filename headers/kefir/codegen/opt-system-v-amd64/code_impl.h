@@ -25,4 +25,22 @@
 kefir_result_t kefir_codegen_opt_sysv_amd64_filter_regs_allocation(kefir_asm_amd64_xasmgen_register_t, kefir_bool_t *,
                                                                    void *);
 
+typedef struct kefir_codegen_opt_sysv_amd64_floating_point_operand {
+    const struct kefir_codegen_opt_sysv_amd64_register_allocation *reg_allocation;
+    struct kefir_codegen_opt_sysv_amd64_storage_register storage_reg;
+    struct kefir_asm_amd64_xasmgen_operand value_operand;
+    const struct kefir_asm_amd64_xasmgen_operand *operand;
+} kefir_codegen_opt_sysv_amd64_floating_point_operand_t;
+
+kefir_result_t kefir_codegen_opt_sysv_amd64_floating_point_operand_init(
+    struct kefir_mem *, struct kefir_codegen_opt_amd64 *, struct kefir_codegen_opt_sysv_amd64_storage *,
+    struct kefir_codegen_opt_sysv_amd64_stack_frame_map *,
+    const struct kefir_codegen_opt_sysv_amd64_register_allocation *,
+    struct kefir_codegen_opt_sysv_amd64_floating_point_operand *,
+    kefir_result_t (*)(kefir_asm_amd64_xasmgen_register_t, kefir_bool_t *, void *), void *);
+
+kefir_result_t kefir_codegen_opt_sysv_amd64_floating_point_operand_free(
+    struct kefir_mem *, struct kefir_codegen_opt_amd64 *, struct kefir_codegen_opt_sysv_amd64_storage *,
+    struct kefir_codegen_opt_sysv_amd64_floating_point_operand *);
+
 #endif

@@ -54,6 +54,12 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_storage_try_acquire_shared_allocated
     struct kefir_codegen_opt_sysv_amd64_storage_register *,
     kefir_result_t (*)(kefir_asm_amd64_xasmgen_register_t, kefir_bool_t *, void *), void *);
 
+kefir_result_t kefir_codegen_opt_sysv_amd64_storage_try_acquire_exclusive_floating_point_allocated_register(
+    struct kefir_mem *, struct kefir_amd64_xasmgen *, struct kefir_codegen_opt_sysv_amd64_storage *,
+    const struct kefir_codegen_opt_sysv_amd64_register_allocation *,
+    struct kefir_codegen_opt_sysv_amd64_storage_register *,
+    kefir_result_t (*)(kefir_asm_amd64_xasmgen_register_t, kefir_bool_t *, void *), void *);
+
 kefir_result_t kefir_codegen_opt_sysv_amd64_storage_acquire_any_general_purpose_register(
     struct kefir_mem *, struct kefir_amd64_xasmgen *, struct kefir_codegen_opt_sysv_amd64_storage *,
     struct kefir_codegen_opt_sysv_amd64_storage_register *,

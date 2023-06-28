@@ -25,11 +25,30 @@
 #include <string.h>
 #include "./definitions.h"
 
+#define EPSILON_F 1e-3f
+#define EPSILON_D 1e-6
+
 int main(void) {
-    assert(fabs(PI_float() - PI_F) < 1e-3f);
-    assert(fabs(PI_double() - PI_D) < 1e-6);
-    assert(fabs(E_float() - E_F) < 1e-3f);
-    assert(fabs(E_double() - E_D) < 1e-6);
+    assert(fabs(PI_float() - PI_F) < EPSILON_F);
+    assert(fabs(PI_double() - PI_D) < EPSILON_D);
+    assert(fabs(E_float() - E_F) < EPSILON_F);
+    assert(fabs(E_double() - E_D) < EPSILON_D);
+
+    for (long i = -1000; i <= 1000; i++) {
+        assert(fabs(long_to_float(i) - (float) i) < EPSILON_F);
+        assert(fabs(long_to_double(i) - (double) i) < EPSILON_D);
+        assert(fabs(ulong_to_float((unsigned long) i) - (float) (unsigned long) i) < EPSILON_F);
+        assert(fabs(ulong_to_double((unsigned long) i) - (double) (unsigned long) i) < EPSILON_D);
+    }
+
+    for (double i = -100.0; i < 100.0; i += 0.1) {
+        assert(float_to_long((float) i) == (long) (float) i);
+        assert(double_to_long(i) == (long) i);
+        assert(float_to_ulong((float) i) == (unsigned long) (float) i);
+        assert(double_to_ulong(i) == (unsigned long) i);
+        assert(fabs(double_to_float(i) - (float) i) < EPSILON_F);
+        assert(fabs(float_to_double((float) i) - (double) (float) i) < EPSILON_D);
+    }
 
     return EXIT_SUCCESS;
 }

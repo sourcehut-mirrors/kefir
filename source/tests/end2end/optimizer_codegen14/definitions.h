@@ -32,4 +32,19 @@ extern double PI_double(void);
 extern float E_float(void);
 extern double E_double(void);
 
+extern float long_to_float(long);
+extern double long_to_double(long);
+
+extern float ulong_to_float(unsigned long);
+extern double ulong_to_double(unsigned long);
+
+extern long float_to_long(float);
+extern long double_to_long(double);
+
+extern unsigned long float_to_ulong(float);
+extern unsigned long double_to_ulong(double);
+
+extern double float_to_double(float);
+extern float double_to_float(double);
+
 #endif
