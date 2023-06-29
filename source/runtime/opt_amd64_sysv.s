@@ -31,9 +31,9 @@
 
 .section .text
 
-.global __kefirrt_save_registers
-.hidden __kefirrt_save_registers
-__kefirrt_save_registers:
+.global __kefirrt_opt_save_registers
+.hidden __kefirrt_opt_save_registers
+__kefirrt_opt_save_registers:
     test    al, al
     je      __kefirrt_save_int_registers
     movaps  [r10 + 48], xmm0
@@ -51,4 +51,52 @@ __kefirrt_save_int_registers:
     mov     [r10 + 24], rcx
     mov     [r10 + 32], r8
     mov     [r10 + 40], r9
+    ret
+
+.global __kefirrt_opt_load_int_vararg
+.hidden __kefirrt_opt_load_int_vararg
+__kefirrt_opt_load_int_vararg:
+# Determine whether the argument is in reg_save or overflow area
+    mov eax, [rdi]
+    cmp eax, 48
+    jae __kefirrt_opt_load_int_vararg_overflow
+# Update gp_offset: next_gp_offset = gp_offset + 8
+    lea eax, [eax + 8]
+    mov [rdi], eax
+# Calculate reg_save area pointer as reg_save_area + next_gp_offset - 8
+    add rax, [rdi + 2*8]
+    mov rax, [rax - 8]
+    ret
+__kefirrt_opt_load_int_vararg_overflow:
+# Load current overflow area pointer
+    mov rax, [rdi + 8]
+# Calculate next overflow area pointer and update it
+    lea rax, [rax + 8]
+    mov [rdi + 8], rax
+# Load from overflow area
+    mov rax, [rax - 8]
+    ret
+
+.global __kefirrt_opt_load_sse_vararg
+.hidden __kefirrt_opt_load_sse_vararg
+__kefirrt_opt_load_sse_vararg:
+# Determine whether the argument is in reg_save or overflow area
+    mov eax, [rdi + 4]
+    cmp eax, 176
+    jae __kefirrt_opt_load_sse_vararg_overflow
+# Update gp_offset: next_fp_offset = fp_offset + 16
+    lea eax, [eax + 16]
+    mov [rdi + 4], eax
+# Calculate reg_save area pointer as reg_save_area + next_fp_offset - 16
+    add rax, [rdi + 2*8]
+    movaps xmm0, [rax - 16]
+    ret
+__kefirrt_opt_load_sse_vararg_overflow:
+# Load current overflow area pointer
+    mov rax, [rdi + 8]
+# Calculate next overflow area pointer and update it
+    lea rax, [rax + 8]
+    mov [rdi + 8], rax
+# Load from overflow area
+    movq xmm0, [rax - 8]
     ret

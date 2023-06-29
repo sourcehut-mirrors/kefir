@@ -74,6 +74,9 @@ DECLARE_TRANSLATOR(float_conv);
 DECLARE_TRANSLATOR(float_binary_op);
 DECLARE_TRANSLATOR(float_unary_op);
 DECLARE_TRANSLATOR(float_comparison);
+DECLARE_TRANSLATOR(vararg_start);
+DECLARE_TRANSLATOR(vararg_copy);
+DECLARE_TRANSLATOR(vararg_get);
 #undef DECLARE
 
 #endif

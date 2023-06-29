@@ -39,8 +39,8 @@ KEFIR_LIB_OBJECT_FILES += $(BIN_DIR)/compiler/predefined_macro_defs.s.o
 KEFIR_BUILD_SOURCE_ID := $(shell $(ROOT)/scripts/get-source-id.sh)
 CFLAGS += '-DKEFIR_BUILD_SOURCE_ID="$(KEFIR_BUILD_SOURCE_ID)"'
 
-$(BIN_DIR)/codegen/system-v-amd64/amd64-sysv-runtime-code.s.o: $(SOURCE_DIR)/runtime/amd64_sysv.s
-$(BIN_DIR)/codegen/opt-system-v-amd64/opt-amd64-sysv-runtime-code.s.o: $(SOURCE_DIR)/runtime/opt_amd64_sysv.s
+$(BIN_DIR)/codegen/system-v-amd64/sysv-amd64-runtime-code.s.o: $(SOURCE_DIR)/runtime/amd64_sysv.s
+$(BIN_DIR)/codegen/opt-system-v-amd64/opt-sysv-amd64-runtime-code.s.o: $(SOURCE_DIR)/runtime/opt_amd64_sysv.s
 $(BIN_DIR)/compiler/predefined_macro_defs.s.o: $(SOURCE_DIR)/compiler/predefined_macro_defs.h
 
 ifeq ($(USE_SHARED),yes)

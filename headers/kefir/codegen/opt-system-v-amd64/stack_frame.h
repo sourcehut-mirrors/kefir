@@ -42,6 +42,7 @@ typedef struct kefir_codegen_opt_sysv_amd64_stack_frame {
     } preserve;
     kefir_size_t preserve_area_size;
     kefir_bool_t dynamic_scope;
+    kefir_bool_t save_registers;
     kefir_size_t spill_area_size;
     kefir_size_t spill_area_alignment;
     kefir_size_t local_area_size;
@@ -61,6 +62,8 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_stack_frame_preserve_implicit_parame
     struct kefir_codegen_opt_sysv_amd64_stack_frame *);
 kefir_result_t kefir_codegen_opt_sysv_amd64_stack_frame_enable_dynamic_scope(
     struct kefir_codegen_opt_sysv_amd64_stack_frame *);
+kefir_result_t kefir_codegen_opt_sysv_amd64_stack_frame_save_registers(
+    struct kefir_codegen_opt_sysv_amd64_stack_frame *);
 kefir_result_t kefir_codegen_opt_sysv_amd64_stack_frame_ensure_spill(struct kefir_codegen_opt_sysv_amd64_stack_frame *,
                                                                      kefir_size_t, kefir_size_t);
 kefir_result_t kefir_codegen_opt_sysv_amd64_stack_frame_ensure_temporary(
@@ -77,6 +80,7 @@ typedef struct kefir_codegen_opt_sysv_amd64_stack_frame_map {
         kefir_int64_t mxcsr;
         kefir_int64_t implicit_parameter;
         kefir_int64_t dynamic_scope;
+        kefir_int64_t register_save_area;
         kefir_int64_t spill_area;
         kefir_int64_t local_area;
         kefir_int64_t temporary_area;

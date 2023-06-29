@@ -17,4 +17,8 @@
 #define KEFIR_OPT_AMD64_SYSTEM_V_FUNCTION_CONSTANT_FLOAT32_NEG "__kefir_func_%s_f32neg"
 #define KEFIR_OPT_AMD64_SYSTEM_V_FUNCTION_CONSTANT_FLOAT64_NEG "__kefir_func_%s_f64neg"
 
+#define KEFIR_OPT_AMD64_SYSTEM_V_RUNTIME_SAVE_REGISTERS "__kefirrt_opt_save_registers"
+#define KEFIR_OPT_AMD64_SYSTEM_V_RUNTIME_LOAD_INT_VARARG "__kefirrt_opt_load_int_vararg"
+#define KEFIR_OPT_AMD64_SYSTEM_V_RUNTIME_LOAD_SSE_VARARG "__kefirrt_opt_load_sse_vararg"
+
 #endif

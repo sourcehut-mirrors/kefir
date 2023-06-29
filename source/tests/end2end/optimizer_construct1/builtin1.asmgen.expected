@@ -50,7 +50,7 @@
                                 "flags": {
                                     "volatile": false
                                 },
-                                "control_next": 22,
+                                "control_next": 6,
                                 "properties": {
                                     "reachable": true,
                                     "linear_index": 2,
@@ -67,9 +67,13 @@
                                 "index": 0,
                                 "control_next": null,
                                 "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
+                                    "reachable": true,
+                                    "linear_index": 3,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 3,
+                                        "end": 6
+                                    }
                                 }
                             },
                             {
@@ -78,9 +82,13 @@
                                 "value": 8,
                                 "control_next": null,
                                 "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
+                                    "reachable": true,
+                                    "linear_index": 4,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 4,
+                                        "end": 6
+                                    }
                                 }
                             },
                             {
@@ -92,20 +100,28 @@
                                 ],
                                 "control_next": null,
                                 "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
+                                    "reachable": true,
+                                    "linear_index": 5,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 5,
+                                        "end": 7
+                                    }
                                 }
                             },
                             {
                                 "id": 6,
                                 "opcode": "vararg_start",
                                 "arg": 5,
-                                "control_next": null,
+                                "control_next": 13,
                                 "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
+                                    "reachable": true,
+                                    "linear_index": 6,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 6,
+                                        "end": 7
+                                    }
                                 }
                             },
                             {
@@ -114,9 +130,13 @@
                                 "index": 0,
                                 "control_next": null,
                                 "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
+                                    "reachable": true,
+                                    "linear_index": 7,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 7,
+                                        "end": 10
+                                    }
                                 }
                             },
                             {
@@ -125,9 +145,13 @@
                                 "value": 32,
                                 "control_next": null,
                                 "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
+                                    "reachable": true,
+                                    "linear_index": 8,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 8,
+                                        "end": 10
+                                    }
                                 }
                             },
                             {
@@ -139,9 +163,13 @@
                                 ],
                                 "control_next": null,
                                 "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
+                                    "reachable": true,
+                                    "linear_index": 9,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 9,
+                                        "end": 14
+                                    }
                                 }
                             },
                             {
@@ -150,9 +178,13 @@
                                 "index": 0,
                                 "control_next": null,
                                 "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
+                                    "reachable": true,
+                                    "linear_index": 10,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 10,
+                                        "end": 13
+                                    }
                                 }
                             },
                             {
@@ -161,9 +193,13 @@
                                 "value": 8,
                                 "control_next": null,
                                 "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
+                                    "reachable": true,
+                                    "linear_index": 11,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 11,
+                                        "end": 13
+                                    }
                                 }
                             },
                             {
@@ -175,23 +211,31 @@
                                 ],
                                 "control_next": null,
                                 "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
+                                    "reachable": true,
+                                    "linear_index": 12,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 12,
+                                        "end": 14
+                                    }
                                 }
                             },
                             {
                                 "id": 13,
                                 "opcode": "vararg_copy",
                                 "args": [
-                                    9,
-                                    12
+                                    12,
+                                    9
                                 ],
-                                "control_next": null,
+                                "control_next": 17,
                                 "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
+                                    "reachable": true,
+                                    "linear_index": 13,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 13,
+                                        "end": 14
+                                    }
                                 }
                             },
                             {
@@ -200,9 +244,13 @@
                                 "index": 0,
                                 "control_next": null,
                                 "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
+                                    "reachable": true,
+                                    "linear_index": 14,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 14,
+                                        "end": 17
+                                    }
                                 }
                             },
                             {
@@ -211,9 +259,13 @@
                                 "value": 32,
                                 "control_next": null,
                                 "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
+                                    "reachable": true,
+                                    "linear_index": 15,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 15,
+                                        "end": 17
+                                    }
                                 }
                             },
                             {
@@ -225,9 +277,13 @@
                                 ],
                                 "control_next": null,
                                 "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
+                                    "reachable": true,
+                                    "linear_index": 16,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 16,
+                                        "end": 18
+                                    }
                                 }
                             },
                             {
@@ -238,11 +294,15 @@
                                     "id": 11,
                                     "index": 0
                                 },
-                                "control_next": null,
+                                "control_next": 21,
                                 "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
+                                    "reachable": true,
+                                    "linear_index": 17,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 17,
+                                        "end": 18
+                                    }
                                 }
                             },
                             {
@@ -251,9 +311,13 @@
                                 "index": 0,
                                 "control_next": null,
                                 "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
+                                    "reachable": true,
+                                    "linear_index": 18,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 18,
+                                        "end": 21
+                                    }
                                 }
                             },
                             {
@@ -262,9 +326,13 @@
                                 "value": 8,
                                 "control_next": null,
                                 "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
+                                    "reachable": true,
+                                    "linear_index": 19,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 19,
+                                        "end": 21
+                                    }
                                 }
                             },
                             {
@@ -276,20 +344,28 @@
                                 ],
                                 "control_next": null,
                                 "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
+                                    "reachable": true,
+                                    "linear_index": 20,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 20,
+                                        "end": 22
+                                    }
                                 }
                             },
                             {
                                 "id": 21,
                                 "opcode": "vararg_end",
                                 "arg": 20,
-                                "control_next": null,
+                                "control_next": 22,
                                 "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
+                                    "reachable": true,
+                                    "linear_index": 21,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 21,
+                                        "end": 22
+                                    }
                                 }
                             },
                             {
@@ -299,11 +375,11 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 3,
+                                    "linear_index": 22,
                                     "linear_liveness": {
                                         "alias": null,
-                                        "begin": 3,
-                                        "end": 4
+                                        "begin": 22,
+                                        "end": 23
                                     }
                                 }
                             }
@@ -313,7 +389,7 @@
                             "linear_position": 1,
                             "linear_interval": {
                                 "begin": 0,
-                                "end": 4
+                                "end": 23
                             },
                             "successors": [],
                             "predecessors": []
@@ -321,7 +397,7 @@
                     }
                 ],
                 "properties": {
-                    "linear_length": 4
+                    "linear_length": 23
                 }
             }
         },

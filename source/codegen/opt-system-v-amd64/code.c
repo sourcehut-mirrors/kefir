@@ -440,6 +440,22 @@ static kefir_result_t translate_instr(struct kefir_mem *mem, struct kefir_codege
             REQUIRE_OK(INVOKE_TRANSLATOR(float_comparison));
             break;
 
+        case KEFIR_OPT_OPCODE_VARARG_START:
+            REQUIRE_OK(INVOKE_TRANSLATOR(vararg_start));
+            break;
+
+        case KEFIR_OPT_OPCODE_VARARG_COPY:
+            REQUIRE_OK(INVOKE_TRANSLATOR(vararg_copy));
+            break;
+
+        case KEFIR_OPT_OPCODE_VARARG_END:
+            // Intentionally left blank
+            break;
+
+        case KEFIR_OPT_OPCODE_VARARG_GET:
+            REQUIRE_OK(INVOKE_TRANSLATOR(vararg_get));
+            break;
+
         case KEFIR_OPT_OPCODE_PHI:
             // Intentionally left blank
             break;
@@ -447,10 +463,6 @@ static kefir_result_t translate_instr(struct kefir_mem *mem, struct kefir_codege
         case KEFIR_OPT_OPCODE_INLINE_ASSEMBLY:
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_CONST:
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_STORE:
-        case KEFIR_OPT_OPCODE_VARARG_START:
-        case KEFIR_OPT_OPCODE_VARARG_COPY:
-        case KEFIR_OPT_OPCODE_VARARG_GET:
-        case KEFIR_OPT_OPCODE_VARARG_END:
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_ADD:
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_SUB:
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_MUL:
@@ -722,6 +734,9 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_translate_code(struct kefir_mem *mem
     }
     if (codegen_func->declaration.returns.implicit_parameter) {
         REQUIRE_OK(kefir_codegen_opt_sysv_amd64_stack_frame_preserve_implicit_parameter(&codegen_func->stack_frame));
+    }
+    if (function->ir_func->declaration->vararg) {
+        REQUIRE_OK(kefir_codegen_opt_sysv_amd64_stack_frame_save_registers(&codegen_func->stack_frame));
     }
     REQUIRE_OK(calculate_frame_temporaries(mem, module, function, func_analysis, codegen_func));
     REQUIRE_OK(kefir_codegen_opt_sysv_amd64_stack_frame_prologue(&codegen_func->stack_frame, &codegen->xasmgen));
