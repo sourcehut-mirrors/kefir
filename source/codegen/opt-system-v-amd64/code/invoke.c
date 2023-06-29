@@ -169,6 +169,15 @@ static kefir_result_t scalar_argument(const struct kefir_ir_type *type, kefir_si
                 &argument_location));
             break;
 
+        case KEFIR_AMD64_SYSV_PARAM_SSE:
+            REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_transform_insert(
+                arg->mem, arg->transform,
+                &(struct kefir_codegen_opt_amd64_sysv_storage_transform_location){
+                    .type = KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_TRANSFORM_REGISTER,
+                    .reg = KEFIR_ABI_SYSV_AMD64_PARAMETER_SSE_REGISTERS[allocation->location.sse_register]},
+                &argument_location));
+            break;
+
         case KEFIR_AMD64_SYSV_PARAM_MEMORY:
             REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_transform_insert(
                 arg->mem, arg->transform,
@@ -178,18 +187,6 @@ static kefir_result_t scalar_argument(const struct kefir_ir_type *type, kefir_si
                     .memory.offset = allocation->location.stack_offset},
                 &argument_location));
             break;
-
-            // case KEFIR_AMD64_SYSV_PARAM_SSE:
-            //     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_PINSRQ(
-            //         &info->codegen->xasmgen,
-            //         kefir_asm_amd64_xasmgen_operand_reg(
-            //             KEFIR_ABI_SYSV_AMD64_PARAMETER_SSE_REGISTERS[allocation->location.sse_register]),
-            //         kefir_asm_amd64_xasmgen_operand_indirect(
-            //             &info->codegen->xasmgen_helpers.operands[0],
-            //             kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_DATA_REG),
-            //             (info->total_arguments - info->argument - 1) * KEFIR_AMD64_SYSV_ABI_QWORD),
-            //         kefir_asm_amd64_xasmgen_operand_imm(&info->codegen->xasmgen_helpers.operands[1], 0)));
-            //     break;
 
         default:
             return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR,
@@ -225,16 +222,14 @@ static kefir_result_t register_aggregate_argument(struct invoke_arg *arg,
                     &argument_location));
                 break;
 
-                // case KEFIR_AMD64_SYSV_PARAM_SSE:
-                //     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_PINSRQ(
-                //         &info->codegen->xasmgen,
-                //         kefir_asm_amd64_xasmgen_operand_reg(KEFIR_ABI_SYSV_AMD64_PARAMETER_SSE_REGISTERS[qword->location]),
-                //         kefir_asm_amd64_xasmgen_operand_indirect(
-                //             &info->codegen->xasmgen_helpers.operands[0],
-                //             kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_TMP_REG),
-                //             i * KEFIR_AMD64_SYSV_ABI_QWORD),
-                //         kefir_asm_amd64_xasmgen_operand_imm(&info->codegen->xasmgen_helpers.operands[1], 0)));
-                //     break;
+            case KEFIR_AMD64_SYSV_PARAM_SSE:
+                REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_transform_insert(
+                    arg->mem, arg->transform,
+                    &(struct kefir_codegen_opt_amd64_sysv_storage_transform_location){
+                        .type = KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_TRANSFORM_REGISTER,
+                        .reg = KEFIR_ABI_SYSV_AMD64_PARAMETER_SSE_REGISTERS[qword->location]},
+                    &argument_location));
+                break;
 
             default:
                 return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED, "Non-INTEGER & non-SSE arguments are not supported");
@@ -311,6 +306,22 @@ static kefir_result_t aggregate_argument(const struct kefir_ir_type *type, kefir
     return KEFIR_OK;
 }
 
+static kefir_result_t filter_parameter_regiters(kefir_asm_amd64_xasmgen_register_t reg, kefir_bool_t *success,
+                                                void *payload) {
+    UNUSED(payload);
+    REQUIRE(success != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
+
+    for (kefir_size_t i = 0; i < KEFIR_ABI_SYSV_AMD64_PARAMETER_INTEGER_REGISTER_COUNT; i++) {
+        if (reg == KEFIR_ABI_SYSV_AMD64_PARAMETER_INTEGER_REGISTERS[i]) {
+            *success = false;
+            return KEFIR_OK;
+        }
+    }
+
+    *success = true;
+    return KEFIR_OK;
+}
+
 static kefir_result_t load_register_aggregate_argument(const struct kefir_ir_type *type, kefir_size_t index,
                                                        const struct kefir_ir_typeentry *typeentry, void *payload) {
     UNUSED(typeentry);
@@ -340,16 +351,28 @@ static kefir_result_t load_register_aggregate_argument(const struct kefir_ir_typ
                             i * KEFIR_AMD64_SYSV_ABI_QWORD)));
                     break;
 
-                    // case KEFIR_AMD64_SYSV_PARAM_SSE:
-                    //     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_PINSRQ(
-                    //         &info->codegen->xasmgen,
-                    //         kefir_asm_amd64_xasmgen_operand_reg(KEFIR_ABI_SYSV_AMD64_PARAMETER_SSE_REGISTERS[qword->location]),
-                    //         kefir_asm_amd64_xasmgen_operand_indirect(
-                    //             &info->codegen->xasmgen_helpers.operands[0],
-                    //             kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_TMP_REG),
-                    //             i * KEFIR_AMD64_SYSV_ABI_QWORD),
-                    //         kefir_asm_amd64_xasmgen_operand_imm(&info->codegen->xasmgen_helpers.operands[1], 0)));
-                    //     break;
+                case KEFIR_AMD64_SYSV_PARAM_SSE: {
+                    struct kefir_codegen_opt_sysv_amd64_storage_register tmp_reg;
+                    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_acquire_any_general_purpose_register(
+                        arg->mem, &arg->codegen->xasmgen, &arg->codegen_func->storage, &tmp_reg,
+                        filter_parameter_regiters, NULL));
+
+                    REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOVQ(
+                        &arg->codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(tmp_reg.reg),
+                        kefir_asm_amd64_xasmgen_operand_reg(
+                            KEFIR_ABI_SYSV_AMD64_PARAMETER_SSE_REGISTERS[qword->location])));
+
+                    REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOVQ(
+                        &arg->codegen->xasmgen,
+                        kefir_asm_amd64_xasmgen_operand_reg(
+                            KEFIR_ABI_SYSV_AMD64_PARAMETER_SSE_REGISTERS[qword->location]),
+                        kefir_asm_amd64_xasmgen_operand_indirect(&arg->codegen->xasmgen_helpers.operands[0],
+                                                                 kefir_asm_amd64_xasmgen_operand_reg(tmp_reg.reg),
+                                                                 i * KEFIR_AMD64_SYSV_ABI_QWORD)));
+
+                    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_release_register(
+                        arg->mem, &arg->codegen->xasmgen, &arg->codegen_func->storage, &tmp_reg));
+                } break;
 
                 default:
                     return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED, "Non-INTEGER & non-SSE arguments are not supported");
@@ -435,6 +458,20 @@ static kefir_result_t integer_return(const struct kefir_ir_type *type, kefir_siz
 
     REQUIRE_OK(kefir_codegen_opt_sysv_amd64_store_reg_allocation(
         arg->codegen, &arg->codegen_func->stack_frame_map, arg->result_allocation, KEFIR_AMD64_XASMGEN_REGISTER_RAX));
+    return KEFIR_OK;
+}
+
+static kefir_result_t sse_return(const struct kefir_ir_type *type, kefir_size_t index,
+                                 const struct kefir_ir_typeentry *typeentry, void *payload) {
+    UNUSED(type);
+    UNUSED(index);
+    UNUSED(typeentry);
+    ASSIGN_DECL_CAST(struct invoke_arg *, arg, payload);
+    REQUIRE(arg != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER,
+                                         "Expected valid optimizer codegen invoke parameter preparation argument"));
+
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_store_reg_allocation(
+        arg->codegen, &arg->codegen_func->stack_frame_map, arg->result_allocation, KEFIR_AMD64_XASMGEN_REGISTER_XMM0));
     return KEFIR_OK;
 }
 
@@ -544,6 +581,7 @@ static kefir_result_t save_return_value(
     struct kefir_ir_type_visitor visitor;
     REQUIRE_OK(kefir_ir_type_visitor_init(&visitor, visitor_not_supported));
     KEFIR_IR_TYPE_VISITOR_INIT_INTEGERS(&visitor, integer_return);
+    KEFIR_IR_TYPE_VISITOR_INIT_FIXED_FP(&visitor, sse_return);
     visitor.visit[KEFIR_IR_TYPE_STRUCT] = aggregate_return;
     visitor.visit[KEFIR_IR_TYPE_UNION] = aggregate_return;
     visitor.visit[KEFIR_IR_TYPE_ARRAY] = aggregate_return;
