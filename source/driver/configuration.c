@@ -85,6 +85,8 @@ kefir_result_t kefir_driver_linker_configuration_init(struct kefir_driver_linker
     config->flags.link_default_libs = true;
     config->flags.link_libc = true;
     config->flags.link_rtlib = true;
+
+    config->rtlib_location = NULL;
     return KEFIR_OK;
 }
 

@@ -105,7 +105,7 @@ TARGETS:
 ENVIRONMENT VARIABLES:
     KEFIR_AS, AS                        Override the default "as" assembler
     KEFIR_LD, LD                        Override the default "ld" linker
-    KEFIR_RTLIB                         Specify kefir runtime library location. Mandatory for all platform variants except "*-none"
+    KEFIR_RTLIB                         Specify kefir runtime library location. Optional: it not specified, built-in runtime library will be used.
     KEFIR_RTINC                         Specify kefir runtime include location. Mandatory for all platform variants except "*-none"
     KEFIR_MUSL_INCLUDE                  Specify musl include paths (separated by ';'). Mandatory for "linux-musl" platform variant
     KEFIR_MUSL_LIB                      Specify musl library paths (separated by ';'). Mandatory for "linux-musl" platform variant

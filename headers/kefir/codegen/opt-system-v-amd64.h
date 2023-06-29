@@ -36,4 +36,6 @@ typedef struct kefir_codegen_opt_amd64 {
 kefir_result_t kefir_codegen_opt_sysv_amd64_init(struct kefir_mem *, struct kefir_codegen_opt_amd64 *, FILE *,
                                                  const struct kefir_codegen_configuration *);
 
+extern const char KefirOptSysVAmd64RuntimeCode[];
+
 #endif

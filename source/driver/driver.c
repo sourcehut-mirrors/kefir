@@ -551,12 +551,50 @@ static kefir_result_t driver_run_argument(struct kefir_mem *mem, struct kefir_dr
     return KEFIR_OK;
 }
 
+static kefir_result_t driver_assemble_runtime(struct kefir_mem *mem,
+                                              const struct kefir_driver_external_resources *externals,
+                                              struct kefir_compiler_runner_configuration *compiler_config,
+                                              struct kefir_driver_assembler_configuration *assembler_config,
+                                              const char **runtime_code_object_ptr) {
+    char runtime_assembly_filename_template[PATH_MAX + 1], runtime_object_filename_template[PATH_MAX + 1];
+    snprintf(runtime_assembly_filename_template, PATH_MAX, "%s/libkefirrt.s.XXXXXX", externals->work_dir);
+    snprintf(runtime_object_filename_template, PATH_MAX, "%s/libkefirrt.p.XXXXXX", externals->work_dir);
+
+    const char *runtime_assembly_filename, *runtime_object_filename;
+    REQUIRE_OK(kefir_tempfile_manager_create_file(mem, externals->tmpfile_manager, runtime_assembly_filename_template,
+                                                  &runtime_assembly_filename));
+    REQUIRE_OK(kefir_tempfile_manager_create_file(mem, externals->tmpfile_manager, runtime_object_filename_template,
+                                                  &runtime_object_filename));
+
+    struct kefir_compiler_runner_configuration patched_compiler_config = *compiler_config;
+    patched_compiler_config.action = KEFIR_COMPILER_RUNNER_ACTION_DUMP_RUNTIME_CODE;
+
+    REQUIRE_OK(driver_compile(&patched_compiler_config, NULL, runtime_object_filename));
+
+    struct kefir_process assembler_process;
+    REQUIRE_OK(kefir_process_init(&assembler_process));
+    kefir_result_t res = KEFIR_OK;
+    REQUIRE_CHAIN(&res, kefir_process_redirect_stdin_from_file(&assembler_process, runtime_object_filename));
+    REQUIRE_CHAIN(&res, kefir_driver_run_assembler(mem, runtime_object_filename, assembler_config, externals,
+                                                   &assembler_process));
+    REQUIRE_CHAIN(&res, kefir_process_wait(&assembler_process));
+    REQUIRE_CHAIN_SET(&res, assembler_process.status.exited && assembler_process.status.exit_code == EXIT_SUCCESS,
+                      KEFIR_SET_ERROR(KEFIR_SUBPROCESS_ERROR, "Failed to assemble kefir runtime code"));
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_process_kill(&assembler_process);
+        return res;
+    });
+
+    *runtime_code_object_ptr = runtime_object_filename;
+    return KEFIR_OK;
+}
+
 static kefir_result_t driver_run_linker(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
                                         struct kefir_driver_configuration *config,
                                         const struct kefir_driver_external_resources *externals,
                                         struct kefir_driver_linker_configuration *linker_config) {
-    REQUIRE_OK(
-        kefir_driver_apply_target_linker_final_configuration(mem, symbols, externals, linker_config, &config->target));
+    REQUIRE_OK(kefir_driver_apply_target_linker_final_configuration(mem, symbols, externals, linker_config,
+                                                                    &config->target));
 
     struct kefir_process linker_process;
     REQUIRE_OK(kefir_process_init(&linker_process));
@@ -615,6 +653,15 @@ static kefir_result_t driver_run_impl(struct kefir_mem *mem, struct kefir_symbol
     }
 
     if (config->stage == KEFIR_DRIVER_STAGE_LINK) {
+        if (linker_config->flags.link_rtlib) {
+            if (externals->runtime_library == NULL) {
+                REQUIRE_OK(
+                    driver_assemble_runtime(mem, externals, compiler_config, assembler_config, &linker_config->rtlib_location));
+            } else {
+                linker_config->rtlib_location = externals->runtime_library;
+            }
+        }
+
         REQUIRE_OK(driver_run_linker(mem, symbols, config, externals, linker_config));
     } else if (config->stage == KEFIR_DRIVER_STAGE_PRINT_RUNTIME_CODE) {
         REQUIRE_OK(driver_print_runtime_code(config, compiler_config));

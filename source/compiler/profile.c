@@ -146,6 +146,7 @@ static kefir_result_t kefir_compiler_opt_amd64_sysv_profile(struct kefir_compile
     profile->optimizer_enabled = true;
     profile->new_codegen = opt_amd64_sysv_new_codegen;
     profile->free_codegen = opt_amd64_sysv_free_codegen;
+    profile->runtime_code = KefirOptSysVAmd64RuntimeCode;
     return KEFIR_OK;
 }
 

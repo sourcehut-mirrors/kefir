@@ -330,10 +330,9 @@ kefir_result_t kefir_driver_apply_target_linker_final_configuration(
     REQUIRE(target != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver target"));
 
     if (linker_config->flags.link_rtlib && target->variant != KEFIR_DRIVER_TARGET_VARIANT_NONE) {
-        REQUIRE(externals->runtime_library != NULL,
-                KEFIR_SET_ERROR(KEFIR_UI_ERROR, "Kefir runtime library path shall be passed as KEFIR_RTLIB "
-                                                "environment variable for selected target"));
-        REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, externals->runtime_library));
+        REQUIRE(linker_config->rtlib_location != NULL,
+                KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid kefir runtime library file name"));
+        REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, linker_config->rtlib_location));
     }
 
     if (target->platform == KEFIR_DRIVER_TARGET_PLATFORM_LINUX) {

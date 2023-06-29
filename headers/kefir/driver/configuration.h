@@ -46,6 +46,8 @@ typedef struct kefir_driver_linker_configuration {
         kefir_bool_t link_libc;
         kefir_bool_t link_rtlib;
     } flags;
+
+    const char *rtlib_location;
 } kefir_driver_linker_configuration_t;
 
 kefir_result_t kefir_driver_linker_configuration_init(struct kefir_driver_linker_configuration *);

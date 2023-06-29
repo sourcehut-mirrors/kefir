@@ -54,9 +54,9 @@ KEFIR_SOURCE := $(wildcard \
 	$(SOURCE)/driver/*.c)
 
 KEFIR_ASM_FILES := $(KEFIR_SOURCE:$(SOURCE)/%.c=$(BOOTSTRAP)/%.s)
-KEFIR_ASM_FILES += $(SOURCE)/runtime/amd64_sysv.s
 KEFIR_ASM_FILES += $(SOURCE)/driver/help.s
 KEFIR_ASM_FILES += $(SOURCE)/codegen/system-v-amd64/sysv-amd64-runtime-code.s
+KEFIR_ASM_FILES += $(SOURCE)/codegen/opt-system-v-amd64/opt-sysv-amd64-runtime-code.s
 KEFIR_ASM_FILES += $(SOURCE)/compiler/predefined_macro_defs.s
 
 $(BOOTSTRAP)/%.s: $(SOURCE)/%.c
@@ -68,14 +68,10 @@ $(BOOTSTRAP)/%.s.o: $(SOURCE)/%.s
 	@echo "Assemble $^"
 	@KEFIR_AS=$(AS) $(KEFIRCC) $(KEFIR_FLAGS) -c -o $@ $<
 
-$(BOOTSTRAP)/runtime.o: $(SOURCE)/runtime/amd64_sysv.s
-	@mkdir -p $(shell dirname "$@")
-	@echo "Assemble $^"
-	@KEFIR_AS=$(AS) $(KEFIRCC) $(KEFIR_FLAGS) -c -o $@ $<
-
 $(BOOTSTRAP)/driver/help.s.o: $(SOURCE)/driver/help.txt
 
 $(BOOTSTRAP)/codegen/system-v-amd64/amd64-sysv-runtime-code.s.o: $(SOURCE)/runtime/amd64_sysv.s
+$(BOOTSTRAP)/codegen/system-v-amd64/opt-amd64-sysv-runtime-code.s.o: $(SOURCE)/runtime/opt_amd64_sysv.s
 
 $(BOOTSTRAP)/kefir: $(KEFIR_ASM_FILES)
 	@echo "Linking $@"
