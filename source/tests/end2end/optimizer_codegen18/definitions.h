@@ -30,4 +30,25 @@ struct Struct1 {
 
 extern long sum1(int, ...);
 
+struct Struct2 {
+    int a;
+    double b;
+};
+
+extern struct Struct2 sum2(int, ...);
+
+struct Struct3 {
+    long a;
+    long b;
+};
+
+extern long sum3(int, ...);
+
+struct Struct4 {
+    float a;
+    float b;
+};
+
+extern float sum4(int, ...);
+
 #endif

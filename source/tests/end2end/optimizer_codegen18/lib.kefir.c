@@ -59,3 +59,46 @@ extern long sum1(int n, ...) {
     __builtin_va_end(args2);
     return result;
 }
+
+extern struct Struct2 sum2(int n, ...) {
+    __builtin_va_list args, args2;
+    __builtin_va_start(args, n);
+    __builtin_va_copy(args2, args);
+    struct Struct2 result = {0, 0.0};
+    while (n--) {
+        struct Struct2 arg = __builtin_va_arg(args2, struct Struct2);
+        result.a += arg.a;
+        result.b += arg.b;
+    }
+    __builtin_va_end(args);
+    __builtin_va_end(args2);
+    return result;
+}
+
+extern long sum3(int n, ...) {
+    __builtin_va_list args, args2;
+    __builtin_va_start(args, n);
+    __builtin_va_copy(args2, args);
+    long result = 0;
+    while (n--) {
+        struct Struct3 s3 = __builtin_va_arg(args2, struct Struct3);
+        result += s3.a * s3.b;
+    }
+    __builtin_va_end(args);
+    __builtin_va_end(args2);
+    return result;
+}
+
+extern float sum4(int n, ...) {
+    __builtin_va_list args, args2;
+    __builtin_va_start(args, n);
+    __builtin_va_copy(args2, args);
+    float result = 0;
+    while (n--) {
+        struct Struct4 s4 = __builtin_va_arg(args2, struct Struct4);
+        result += s4.a * s4.b;
+    }
+    __builtin_va_end(args);
+    __builtin_va_end(args2);
+    return result;
+}

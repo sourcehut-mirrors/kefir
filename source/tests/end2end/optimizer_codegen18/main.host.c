@@ -26,6 +26,7 @@
 #include "./definitions.h"
 
 #define EPSILON_D 1e-6
+#define EPSILON_F 1e-3
 
 int main(void) {
     assert(sum(0) == 0);
@@ -53,6 +54,77 @@ int main(void) {
     assert(sum1(2, (struct Struct1){{1, 2, 3, 4, 5}}, (struct Struct1){{6, 7, 8, 9, 10}}) == 55);
     assert(sum1(3, (struct Struct1){{1, 2, 3, 4, 5}}, (struct Struct1){{6, 7, 8, 9, 10}},
                 (struct Struct1){{100, 0, 1}}) == 156);
+
+    struct Struct2 s2;
+    s2 = sum2(0);
+    assert(s2.a == 0 && fabs(s2.b) < EPSILON_D);
+    s2 = sum2(0, (struct Struct2){1, 1.5});
+    assert(s2.a == 0 && fabs(s2.b) < EPSILON_D);
+    s2 = sum2(1, (struct Struct2){1, 1.5});
+    assert(s2.a == 1 && fabs(s2.b - 1.5) < EPSILON_D);
+    s2 = sum2(1, (struct Struct2){1, 1.5}, (struct Struct2){10, -7.6});
+    assert(s2.a == 1 && fabs(s2.b - 1.5) < EPSILON_D);
+    s2 = sum2(2, (struct Struct2){1, 1.5}, (struct Struct2){10, -7.6});
+    assert(s2.a == 11 && fabs(s2.b + 6.1) < EPSILON_D);
+    s2 = sum2(3, (struct Struct2){1, 1.5}, (struct Struct2){10, -7.6}, (struct Struct2){-3, 100.05});
+    assert(s2.a == 8 && fabs(s2.b - 93.95) < EPSILON_D);
+    s2 = sum2(4, (struct Struct2){1, 1.5}, (struct Struct2){10, -7.6}, (struct Struct2){0, 0.0},
+              (struct Struct2){-3, 100.05});
+    assert(s2.a == 8 && fabs(s2.b - 93.95) < EPSILON_D);
+    s2 = sum2(5, (struct Struct2){1, 1.5}, (struct Struct2){10, -7.6}, (struct Struct2){0, 0.0},
+              (struct Struct2){-3, 100.05}, (struct Struct2){67, -3.14});
+    assert(s2.a == 75 && fabs(s2.b - 90.81) < EPSILON_D);
+    s2 = sum2(6, (struct Struct2){1, 1.5}, (struct Struct2){10, -7.6}, (struct Struct2){0, 0.0},
+              (struct Struct2){-3, 100.05}, (struct Struct2){67, -3.14}, (struct Struct2){9, 5.67});
+    assert(s2.a == 84 && fabs(s2.b - 96.48) < EPSILON_D);
+    s2 = sum2(7, (struct Struct2){1, 1.5}, (struct Struct2){10, -7.6}, (struct Struct2){0, 0.0},
+              (struct Struct2){-3, 100.05}, (struct Struct2){67, -3.14}, (struct Struct2){9, 5.67},
+              (struct Struct2){-100, -100.0});
+    assert(s2.a == -16 && fabs(s2.b + 3.52) < EPSILON_D);
+
+    assert(sum3(0) == 0);
+    assert(sum3(0, (struct Struct3){10, 3}) == 0);
+    assert(sum3(1, (struct Struct3){10, 3}) == 30);
+    assert(sum3(2, (struct Struct3){10, 3}, (struct Struct3){-7, 2}) == 16);
+    assert(sum3(3, (struct Struct3){10, 3}, (struct Struct3){-7, 2}, (struct Struct3){24, 10}) == 256);
+    assert(sum3(4, (struct Struct3){10, 3}, (struct Struct3){-7, 2}, (struct Struct3){24, 10},
+                (struct Struct3){-1, 100}) == 156);
+    assert(sum3(5, (struct Struct3){10, 3}, (struct Struct3){-7, 2}, (struct Struct3){24, 10},
+                (struct Struct3){-1, 100}, (struct Struct3){20, 6}) == 276);
+
+    assert(sum4(0) - 0.0f < EPSILON_F);
+    assert(sum4(0, (struct Struct4){1.5f, 2.0f}) - 0.0f < EPSILON_F);
+    assert(sum4(1, (struct Struct4){1.5f, 2.0f}) - 3.0f < EPSILON_F);
+    assert(sum4(2, (struct Struct4){1.5f, 2.0f}, (struct Struct4){6.5f, 5.3f}) - 37.45f < EPSILON_F);
+    assert(sum4(3, (struct Struct4){1.5f, 2.0f}, (struct Struct4){0.0f, 0.5f}, (struct Struct4){6.5f, 5.3f}) - 37.45f <
+           EPSILON_F);
+    assert(sum4(4, (struct Struct4){1.5f, 2.0f}, (struct Struct4){0.0f, 0.5f}, (struct Struct4){6.5f, 5.3f},
+                (struct Struct4){100.0f, 1.0f}) -
+               137.45f <
+           EPSILON_F);
+    assert(sum4(5, (struct Struct4){1.5f, 2.0f}, (struct Struct4){0.0f, 0.5f}, (struct Struct4){6.5f, 5.3f},
+                (struct Struct4){100.0f, 1.0f}, (struct Struct4){2.0f, 0.5f}) -
+               138.45f <
+           EPSILON_F);
+    assert(sum4(6, (struct Struct4){1.5f, 2.0f}, (struct Struct4){0.0f, 0.5f}, (struct Struct4){6.5f, 5.3f},
+                (struct Struct4){100.0f, 1.0f}, (struct Struct4){0.0f, 0.0f}, (struct Struct4){2.0f, 0.5f}) -
+               138.45f <
+           EPSILON_F);
+    assert(sum4(7, (struct Struct4){1.5f, 2.0f}, (struct Struct4){0.0f, 0.5f}, (struct Struct4){6.5f, 5.3f},
+                (struct Struct4){100.0f, 1.0f}, (struct Struct4){0.0f, 0.0f}, (struct Struct4){2.0f, 0.5f},
+                (struct Struct4){-100.0f, 3.5f}) +
+               211.55f <
+           EPSILON_F);
+    assert(sum4(8, (struct Struct4){1.5f, 2.0f}, (struct Struct4){0.0f, 0.5f}, (struct Struct4){6.5f, 5.3f},
+                (struct Struct4){100.0f, 1.0f}, (struct Struct4){0.0f, 0.0f}, (struct Struct4){2.0f, 0.5f},
+                (struct Struct4){-100.0f, 3.5f}, (struct Struct4){6.0f, 0.1f}) +
+               210.95f <
+           EPSILON_F);
+    assert(sum4(9, (struct Struct4){1.5f, 2.0f}, (struct Struct4){0.0f, 0.5f}, (struct Struct4){6.5f, 5.3f},
+                (struct Struct4){100.0f, 1.0f}, (struct Struct4){0.0f, 0.0f}, (struct Struct4){2.0f, 0.5f},
+                (struct Struct4){-100.0f, 3.5f}, (struct Struct4){6.0f, 0.1f}, (struct Struct4){-50.0f, -2.0f}) +
+               110.95f <
+           EPSILON_F);
 
     return EXIT_SUCCESS;
 }
