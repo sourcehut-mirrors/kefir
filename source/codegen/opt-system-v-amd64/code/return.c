@@ -210,6 +210,30 @@ static kefir_result_t return_builtin(const struct kefir_ir_type *type, kefir_siz
     return KEFIR_OK;
 }
 
+static kefir_result_t return_long_double(const struct kefir_ir_type *type, kefir_size_t index,
+                                         const struct kefir_ir_typeentry *typeentry, void *payload) {
+    UNUSED(type);
+    UNUSED(index);
+    UNUSED(typeentry);
+    struct result_return *param = (struct result_return *) payload;
+    REQUIRE(param != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer codegen return parameter"));
+
+    const struct kefir_codegen_opt_sysv_amd64_register_allocation *reg_allocation = NULL;
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_register_allocation_of(
+        &param->codegen_func->register_allocator, param->instr->operation.parameters.refs[0], &reg_allocation));
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_load_reg_allocation(param->codegen, &param->codegen_func->stack_frame_map,
+                                                                reg_allocation, KEFIR_AMD64_XASMGEN_REGISTER_RAX));
+
+    REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_FLD(
+        &param->codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_pointer(
+                                      &param->codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_POINTER_TBYTE,
+                                      kefir_asm_amd64_xasmgen_operand_indirect(
+                                          &param->codegen->xasmgen_helpers.operands[1],
+                                          kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RAX), 0))));
+    return KEFIR_OK;
+}
+
 DEFINE_TRANSLATOR(return) {
     DEFINE_TRANSLATOR_PROLOGUE;
 
@@ -221,6 +245,7 @@ DEFINE_TRANSLATOR(return) {
         REQUIRE_OK(kefir_ir_type_visitor_init(&visitor, visitor_not_supported));
         KEFIR_IR_TYPE_VISITOR_INIT_INTEGERS(&visitor, return_integer);
         KEFIR_IR_TYPE_VISITOR_INIT_FIXED_FP(&visitor, return_sse);
+        visitor.visit[KEFIR_IR_TYPE_LONG_DOUBLE] = return_long_double;
         visitor.visit[KEFIR_IR_TYPE_STRUCT] = return_aggregate;
         visitor.visit[KEFIR_IR_TYPE_UNION] = return_aggregate;
         visitor.visit[KEFIR_IR_TYPE_ARRAY] = return_aggregate;

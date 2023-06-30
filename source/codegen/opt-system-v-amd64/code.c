@@ -305,6 +305,7 @@ static kefir_result_t translate_instr(struct kefir_mem *mem, struct kefir_codege
         case KEFIR_OPT_OPCODE_FLOAT64_CONST:
         case KEFIR_OPT_OPCODE_STRING_REF:
         case KEFIR_OPT_OPCODE_BLOCK_LABEL:
+        case KEFIR_OPT_OPCODE_LONG_DOUBLE_CONST:
             REQUIRE_OK(INVOKE_TRANSLATOR(constant));
             break;
 
@@ -456,18 +457,26 @@ static kefir_result_t translate_instr(struct kefir_mem *mem, struct kefir_codege
             REQUIRE_OK(INVOKE_TRANSLATOR(vararg_get));
             break;
 
+        case KEFIR_OPT_OPCODE_LONG_DOUBLE_ADD:
+        case KEFIR_OPT_OPCODE_LONG_DOUBLE_SUB:
+        case KEFIR_OPT_OPCODE_LONG_DOUBLE_MUL:
+        case KEFIR_OPT_OPCODE_LONG_DOUBLE_DIV:
+            REQUIRE_OK(INVOKE_TRANSLATOR(long_double_binary_op));
+            break;
+
+        case KEFIR_OPT_OPCODE_LONG_DOUBLE_NEG:
+            REQUIRE_OK(INVOKE_TRANSLATOR(long_double_unary_op));
+            break;
+
+        case KEFIR_OPT_OPCODE_LONG_DOUBLE_STORE:
+            REQUIRE_OK(INVOKE_TRANSLATOR(long_double_store));
+            break;
+
         case KEFIR_OPT_OPCODE_PHI:
             // Intentionally left blank
             break;
 
         case KEFIR_OPT_OPCODE_INLINE_ASSEMBLY:
-        case KEFIR_OPT_OPCODE_LONG_DOUBLE_CONST:
-        case KEFIR_OPT_OPCODE_LONG_DOUBLE_STORE:
-        case KEFIR_OPT_OPCODE_LONG_DOUBLE_ADD:
-        case KEFIR_OPT_OPCODE_LONG_DOUBLE_SUB:
-        case KEFIR_OPT_OPCODE_LONG_DOUBLE_MUL:
-        case KEFIR_OPT_OPCODE_LONG_DOUBLE_DIV:
-        case KEFIR_OPT_OPCODE_LONG_DOUBLE_NEG:
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_EQUALS:
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_GREATER:
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_LESSER:
@@ -662,6 +671,27 @@ static kefir_result_t generate_constants(struct kefir_codegen_opt_amd64 *codegen
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
                     &codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
                     kefir_asm_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[0], value.u64)));
+            } break;
+
+            case KEFIR_OPT_OPCODE_LONG_DOUBLE_CONST: {
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_ALIGN(&codegen->xasmgen, 16));
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen->xasmgen,
+                                                     KEFIR_OPT_AMD64_SYSTEM_V_FUNCTION_CONSTANT_LABEL,
+                                                     function->ir_func->name, instr_props->instr_ref));
+
+                volatile union {
+                    kefir_uint64_t u64[2];
+                    kefir_long_double_t ld;
+                } value = {.u64 = {0, 0}};
+                value.ld = instr->operation.parameters.imm.long_double.value;
+
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+                    &codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
+                    kefir_asm_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[0], value.u64[0])));
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+                    &codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
+                    kefir_asm_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[0], value.u64[1])));
+
             } break;
 
             case KEFIR_OPT_OPCODE_FLOAT32_NEG:

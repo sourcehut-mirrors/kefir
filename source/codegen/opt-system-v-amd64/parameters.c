@@ -184,12 +184,37 @@ static kefir_result_t traverse_builtin_argument(const struct kefir_ir_type *type
     return KEFIR_OK;
 }
 
+static kefir_result_t traverse_long_double_argument(const struct kefir_ir_type *type, kefir_size_t index,
+                                                    const struct kefir_ir_typeentry *typeentry, void *payload) {
+    REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR type"));
+    REQUIRE(typeentry != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR type entry"));
+    ASSIGN_DECL_CAST(struct parameter_traversal_param *, param, payload);
+    REQUIRE(param != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer codegen argument traversal parameter"));
+
+    kefir_size_t slot;
+    REQUIRE_OK(kefir_ir_type_slot_of(type, index, &slot));
+    ASSIGN_DECL_CAST(struct kefir_abi_sysv_amd64_parameter_allocation *, alloc,
+                     kefir_vector_at(&param->target_func_decl->parameters.allocation, slot));
+
+    struct kefir_codegen_opt_amd64_sysv_function_parameter_location argument = {0};
+    argument.type = KEFIR_CODEGEN_OPT_AMD64_SYSV_FUNCTION_PARAMETER_LOCATION_INDIRECT;
+    argument.indirect.base = KEFIR_AMD64_XASMGEN_REGISTER_RBP;
+    argument.indirect.offset = alloc->location.stack_offset + 2 * KEFIR_AMD64_SYSV_ABI_QWORD;
+    argument.indirect.aggregate = true;
+    argument.parameter_allocation = alloc;
+    REQUIRE_OK(insert_argument(param->mem, param->parameters, param->argument_index, &argument));
+    param->argument_index++;
+    return KEFIR_OK;
+}
+
 static kefir_result_t parameters_init(struct kefir_mem *mem,
                                       struct kefir_codegen_opt_amd64_sysv_function_parameters *parameters) {
     struct kefir_ir_type_visitor visitor;
     REQUIRE_OK(kefir_ir_type_visitor_init(&visitor, visitor_not_supported));
     KEFIR_IR_TYPE_VISITOR_INIT_INTEGERS(&visitor, traverse_integer_argument);
     KEFIR_IR_TYPE_VISITOR_INIT_FIXED_FP(&visitor, traverse_sse_argument);
+    visitor.visit[KEFIR_IR_TYPE_LONG_DOUBLE] = traverse_long_double_argument;
     visitor.visit[KEFIR_IR_TYPE_STRUCT] = traverse_aggregate_argument;
     visitor.visit[KEFIR_IR_TYPE_UNION] = traverse_aggregate_argument;
     visitor.visit[KEFIR_IR_TYPE_ARRAY] = traverse_aggregate_argument;

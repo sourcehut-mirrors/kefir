@@ -129,6 +129,15 @@ static kefir_result_t find_reachable_code_ref2(struct kefir_mem *mem, struct kef
     return KEFIR_OK;
 }
 
+static kefir_result_t find_reachable_code_ref3(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
+                                               struct kefir_list *queue, const struct kefir_opt_instruction *instr) {
+    UNUSED(analysis);
+    INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.refs[0]);
+    INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.refs[1]);
+    INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.refs[2]);
+    return KEFIR_OK;
+}
+
 static kefir_result_t find_reachable_code_immediate(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
                                                     struct kefir_list *queue,
                                                     const struct kefir_opt_instruction *instr) {
@@ -137,6 +146,8 @@ static kefir_result_t find_reachable_code_immediate(struct kefir_mem *mem, struc
         REQUIRE_OK(kefir_list_insert_after(mem, &analysis->indirect_jump_target_blocks,
                                            kefir_list_tail(&analysis->indirect_jump_target_blocks),
                                            (void *) (kefir_uptr_t) instr->operation.parameters.imm.block_ref));
+    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_LONG_DOUBLE_CONST) {
+        INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.imm.long_double.storage);
     }
     return KEFIR_OK;
 }

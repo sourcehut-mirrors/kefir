@@ -41,7 +41,7 @@ typedef struct kefir_opt_memory_access_flags {
 } kefir_opt_memory_access_flags_t;
 
 typedef union kefir_opt_operation_parameters {
-    kefir_opt_instruction_ref_t refs[2];
+    kefir_opt_instruction_ref_t refs[3];
     kefir_opt_phi_id_t phi_ref;
     kefir_size_t index;
     kefir_id_t ir_ref;
@@ -57,7 +57,10 @@ typedef union kefir_opt_operation_parameters {
         kefir_uint64_t uinteger;
         kefir_float32_t float32;
         kefir_float64_t float64;
-        kefir_long_double_t long_double;
+        struct {
+            kefir_long_double_t value;
+            kefir_opt_instruction_ref_t storage;
+        } long_double;
         kefir_id_t string_ref;
         kefir_opt_block_id_t block_ref;
     } imm;

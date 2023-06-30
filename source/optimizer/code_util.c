@@ -115,14 +115,25 @@ static kefir_result_t extract_inputs_ref2(const struct kefir_opt_code_container 
     return KEFIR_OK;
 }
 
+static kefir_result_t extract_inputs_ref3(const struct kefir_opt_code_container *code,
+                                          const struct kefir_opt_instruction *instr,
+                                          kefir_result_t (*callback)(kefir_opt_instruction_ref_t, void *),
+                                          void *payload) {
+    UNUSED(code);
+    INPUT_CALLBACK(instr->operation.parameters.refs[0], callback, payload);
+    INPUT_CALLBACK(instr->operation.parameters.refs[1], callback, payload);
+    INPUT_CALLBACK(instr->operation.parameters.refs[2], callback, payload);
+    return KEFIR_OK;
+}
+
 static kefir_result_t extract_inputs_immediate(const struct kefir_opt_code_container *code,
                                                const struct kefir_opt_instruction *instr,
                                                kefir_result_t (*callback)(kefir_opt_instruction_ref_t, void *),
                                                void *payload) {
     UNUSED(code);
-    UNUSED(instr);
-    UNUSED(callback);
-    UNUSED(payload);
+    if (instr->operation.opcode == KEFIR_OPT_OPCODE_LONG_DOUBLE_CONST) {
+        INPUT_CALLBACK(instr->operation.parameters.imm.long_double.storage, callback, payload);
+    }
     return KEFIR_OK;
 }
 

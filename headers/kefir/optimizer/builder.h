@@ -72,7 +72,7 @@ kefir_result_t kefir_opt_code_builder_float64_constant(struct kefir_mem *, struc
                                                        kefir_opt_instruction_ref_t *);
 kefir_result_t kefir_opt_code_builder_long_double_constant(struct kefir_mem *, struct kefir_opt_code_container *,
                                                            kefir_opt_block_id_t, kefir_long_double_t,
-                                                           kefir_opt_instruction_ref_t *);
+                                                           kefir_opt_instruction_ref_t, kefir_opt_instruction_ref_t *);
 kefir_result_t kefir_opt_code_builder_string_reference(struct kefir_mem *, struct kefir_opt_code_container *,
                                                        kefir_opt_block_id_t, kefir_id_t, kefir_opt_instruction_ref_t *);
 kefir_result_t kefir_opt_code_builder_block_label(struct kefir_mem *, struct kefir_opt_code_container *,
@@ -136,7 +136,6 @@ UNARY_OP(scope_pop);
 
 UNARY_OP(float32_neg);
 UNARY_OP(float64_neg);
-UNARY_OP(long_double_neg);
 
 UNARY_OP(float32_to_int);
 UNARY_OP(float64_to_int);
@@ -193,10 +192,7 @@ BINARY_OP(float64_add);
 BINARY_OP(float64_sub);
 BINARY_OP(float64_mul);
 BINARY_OP(float64_div);
-BINARY_OP(long_double_add);
-BINARY_OP(long_double_sub);
-BINARY_OP(long_double_mul);
-BINARY_OP(long_double_div);
+BINARY_OP(long_double_neg);
 
 BINARY_OP(float32_equals);
 BINARY_OP(float32_greater);
@@ -237,4 +233,17 @@ STORE_OP(int64_store);
 STORE_OP(long_double_store);
 
 #undef STORE_OP
+
+#define TERNARY_OP(_id)                                                                                           \
+    kefir_result_t kefir_opt_code_builder_##_id(                                                                  \
+        struct kefir_mem *, struct kefir_opt_code_container *, kefir_opt_block_id_t, kefir_opt_instruction_ref_t, \
+        kefir_opt_instruction_ref_t, kefir_opt_instruction_ref_t, kefir_opt_instruction_ref_t *)
+
+TERNARY_OP(long_double_add);
+TERNARY_OP(long_double_sub);
+TERNARY_OP(long_double_mul);
+TERNARY_OP(long_double_div);
+
+#undef TERNARY_OP
+
 #endif

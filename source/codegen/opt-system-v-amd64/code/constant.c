@@ -112,6 +112,34 @@ DEFINE_TRANSLATOR(constant) {
                     0)));
             break;
 
+        case KEFIR_OPT_OPCODE_LONG_DOUBLE_CONST: {
+            const struct kefir_codegen_opt_sysv_amd64_register_allocation *arg_allocation = NULL;
+            REQUIRE_OK(kefir_codegen_opt_sysv_amd64_register_allocation_of(
+                &codegen_func->register_allocator, instr->operation.parameters.imm.long_double.storage,
+                &arg_allocation));
+
+            REQUIRE_OK(kefir_codegen_opt_sysv_amd64_load_reg_allocation(codegen, &codegen_func->stack_frame_map,
+                                                                        arg_allocation, result_reg.reg));
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_FLD(
+                &codegen->xasmgen,
+                kefir_asm_amd64_xasmgen_operand_pointer(
+                    &codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_POINTER_TBYTE,
+                    kefir_asm_amd64_xasmgen_operand_indirect(
+                        &codegen->xasmgen_helpers.operands[1],
+                        kefir_asm_amd64_xasmgen_operand_label(
+                            &codegen->xasmgen_helpers.operands[2],
+                            kefir_asm_amd64_xasmgen_helpers_format(&codegen->xasmgen_helpers,
+                                                                   KEFIR_OPT_AMD64_SYSTEM_V_FUNCTION_CONSTANT_LABEL,
+                                                                   function->ir_func->name, instr->id)),
+                        0))));
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_FSTP(
+                &codegen->xasmgen,
+                kefir_asm_amd64_xasmgen_operand_pointer(
+                    &codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_POINTER_TBYTE,
+                    kefir_asm_amd64_xasmgen_operand_indirect(&codegen->xasmgen_helpers.operands[1],
+                                                             kefir_asm_amd64_xasmgen_operand_reg(result_reg.reg), 0))));
+        } break;
+
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected optimizer instruction opcode");
     }

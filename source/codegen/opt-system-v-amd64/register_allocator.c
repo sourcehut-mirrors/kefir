@@ -310,9 +310,8 @@ static kefir_result_t insert_hints(const struct kefir_opt_function *function,
             case KEFIR_OPT_OPCODE_UINT_TO_LONG_DOUBLE:
             case KEFIR_OPT_OPCODE_FLOAT32_TO_LONG_DOUBLE:
             case KEFIR_OPT_OPCODE_FLOAT64_TO_LONG_DOUBLE:
-                return KEFIR_SET_ERROR(
-                    KEFIR_NOT_IMPLEMENTED,
-                    "Long double support is not implemented in the System-V AMD64 optimized code generator yet");
+                // Intentionally left blank
+                break;
 
             default:
                 // Intentionally left blank

@@ -52,6 +52,7 @@
                                 "id": 3,
                                 "opcode": "long_double_const",
                                 "value": 3.140000,
+                                "storage": 2,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": false,
@@ -99,6 +100,7 @@
                                 "id": 7,
                                 "opcode": "long_double_const",
                                 "value": 1.000000,
+                                "storage": 6,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": false,
@@ -146,6 +148,7 @@
                                 "id": 11,
                                 "opcode": "long_double_const",
                                 "value": 2.000000,
+                                "storage": 10,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": false,
@@ -194,7 +197,8 @@
                                 "opcode": "long_double_add",
                                 "args": [
                                     7,
-                                    11
+                                    11,
+                                    14
                                 ],
                                 "control_next": null,
                                 "properties": {
@@ -243,6 +247,7 @@
                                 "id": 19,
                                 "opcode": "long_double_const",
                                 "value": 2.000000,
+                                "storage": 18,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": false,
@@ -290,6 +295,7 @@
                                 "id": 23,
                                 "opcode": "long_double_const",
                                 "value": 3.000000,
+                                "storage": 22,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": false,
@@ -338,7 +344,8 @@
                                 "opcode": "long_double_mul",
                                 "args": [
                                     19,
-                                    23
+                                    23,
+                                    26
                                 ],
                                 "control_next": null,
                                 "properties": {
@@ -387,6 +394,7 @@
                                 "id": 31,
                                 "opcode": "long_double_const",
                                 "value": 100.000000,
+                                "storage": 30,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": false,
@@ -434,6 +442,7 @@
                                 "id": 35,
                                 "opcode": "long_double_const",
                                 "value": 5.400000,
+                                "storage": 34,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": false,
@@ -482,7 +491,8 @@
                                 "opcode": "long_double_sub",
                                 "args": [
                                     31,
-                                    35
+                                    35,
+                                    38
                                 ],
                                 "control_next": null,
                                 "properties": {
@@ -506,6 +516,7 @@
                                 "id": 41,
                                 "opcode": "long_double_const",
                                 "value": 324.200000,
+                                "storage": 40,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": false,
@@ -553,6 +564,7 @@
                                 "id": 45,
                                 "opcode": "long_double_const",
                                 "value": 100.000000,
+                                "storage": 44,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": false,
@@ -601,7 +613,8 @@
                                 "opcode": "long_double_div",
                                 "args": [
                                     41,
-                                    45
+                                    45,
+                                    48
                                 ],
                                 "control_next": null,
                                 "properties": {
@@ -650,6 +663,7 @@
                                 "id": 53,
                                 "opcode": "long_double_const",
                                 "value": 1982.100000,
+                                "storage": 52,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": false,
@@ -696,7 +710,10 @@
                             {
                                 "id": 57,
                                 "opcode": "long_double_neg",
-                                "arg": 53,
+                                "args": [
+                                    53,
+                                    56
+                                ],
                                 "control_next": null,
                                 "properties": {
                                     "reachable": false,
@@ -760,7 +777,7 @@
                                     "linear_liveness": {
                                         "alias": null,
                                         "begin": 0,
-                                        "end": 3
+                                        "end": 6
                                     }
                                 }
                             },
@@ -770,9 +787,13 @@
                                 "index": 0,
                                 "control_next": null,
                                 "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
+                                    "reachable": true,
+                                    "linear_index": 1,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 1,
+                                        "end": 4
+                                    }
                                 }
                             },
                             {
@@ -781,9 +802,13 @@
                                 "value": 16,
                                 "control_next": null,
                                 "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
+                                    "reachable": true,
+                                    "linear_index": 2,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 2,
+                                        "end": 4
+                                    }
                                 }
                             },
                             {
@@ -795,23 +820,28 @@
                                 ],
                                 "control_next": null,
                                 "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
+                                    "reachable": true,
+                                    "linear_index": 3,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 3,
+                                        "end": 5
+                                    }
                                 }
                             },
                             {
                                 "id": 4,
                                 "opcode": "long_double_const",
                                 "value": 4.281000,
+                                "storage": 3,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 1,
+                                    "linear_index": 4,
                                     "linear_liveness": {
                                         "alias": null,
-                                        "begin": 1,
-                                        "end": 3
+                                        "begin": 4,
+                                        "end": 6
                                     }
                                 }
                             },
@@ -826,11 +856,11 @@
                                 "control_next": 6,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 2,
+                                    "linear_index": 5,
                                     "linear_liveness": {
                                         "alias": null,
-                                        "begin": 2,
-                                        "end": 3
+                                        "begin": 5,
+                                        "end": 6
                                     }
                                 }
                             },
@@ -841,11 +871,11 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 3,
+                                    "linear_index": 6,
                                     "linear_liveness": {
                                         "alias": null,
-                                        "begin": 3,
-                                        "end": 4
+                                        "begin": 6,
+                                        "end": 7
                                     }
                                 }
                             }
@@ -855,7 +885,7 @@
                             "linear_position": 1,
                             "linear_interval": {
                                 "begin": 0,
-                                "end": 4
+                                "end": 7
                             },
                             "successors": [],
                             "predecessors": []
@@ -863,7 +893,7 @@
                     }
                 ],
                 "properties": {
-                    "linear_length": 4
+                    "linear_length": 7
                 }
             }
         },
@@ -885,55 +915,19 @@
                                 "index": 0,
                                 "control_next": null,
                                 "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
+                                    "reachable": true,
+                                    "linear_index": 0,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 0,
+                                        "end": 3
+                                    }
                                 }
                             },
                             {
                                 "id": 1,
                                 "opcode": "int_const",
                                 "value": 48,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 2,
-                                "opcode": "int_add",
-                                "args": [
-                                    0,
-                                    1
-                                ],
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 3,
-                                "opcode": "long_double_const",
-                                "value": 1.000000,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 0,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 0,
-                                        "end": 2
-                                    }
-                                }
-                            },
-                            {
-                                "id": 4,
-                                "opcode": "long_double_truncate_1bit",
-                                "arg": 3,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -946,9 +940,12 @@
                                 }
                             },
                             {
-                                "id": 5,
-                                "opcode": "bool_not",
-                                "arg": 4,
+                                "id": 2,
+                                "opcode": "int_add",
+                                "args": [
+                                    0,
+                                    1
+                                ],
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -961,6 +958,52 @@
                                 }
                             },
                             {
+                                "id": 3,
+                                "opcode": "long_double_const",
+                                "value": 1.000000,
+                                "storage": 2,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 3,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 3,
+                                        "end": 5
+                                    }
+                                }
+                            },
+                            {
+                                "id": 4,
+                                "opcode": "long_double_truncate_1bit",
+                                "arg": 3,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 4,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 4,
+                                        "end": 6
+                                    }
+                                }
+                            },
+                            {
+                                "id": 5,
+                                "opcode": "bool_not",
+                                "arg": 4,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 5,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 5,
+                                        "end": 7
+                                    }
+                                }
+                            },
+                            {
                                 "id": 6,
                                 "opcode": "branch",
                                 "target_block": 1,
@@ -969,11 +1012,11 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 3,
+                                    "linear_index": 6,
                                     "linear_liveness": {
                                         "alias": null,
-                                        "begin": 3,
-                                        "end": 4
+                                        "begin": 6,
+                                        "end": 7
                                     }
                                 }
                             }
@@ -983,7 +1026,7 @@
                             "linear_position": 1,
                             "linear_interval": {
                                 "begin": 0,
-                                "end": 4
+                                "end": 7
                             },
                             "successors": [
                                 1,
@@ -1013,6 +1056,7 @@
                                 "id": 8,
                                 "opcode": "long_double_const",
                                 "value": 1.000000,
+                                "storage": 7,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": false,
@@ -1082,6 +1126,7 @@
                                 "id": 14,
                                 "opcode": "long_double_const",
                                 "value": 1.000000,
+                                "storage": 13,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": false,
@@ -1140,6 +1185,7 @@
                                 "id": 19,
                                 "opcode": "long_double_const",
                                 "value": 1.000000,
+                                "storage": 18,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": false,
@@ -1165,11 +1211,11 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 4,
+                                    "linear_index": 7,
                                     "linear_liveness": {
                                         "alias": null,
-                                        "begin": 4,
-                                        "end": 5
+                                        "begin": 7,
+                                        "end": 8
                                     }
                                 }
                             }
@@ -1178,8 +1224,8 @@
                             "reachable": true,
                             "linear_position": 2,
                             "linear_interval": {
-                                "begin": 4,
-                                "end": 5
+                                "begin": 7,
+                                "end": 8
                             },
                             "successors": [],
                             "predecessors": [
@@ -1190,7 +1236,7 @@
                     }
                 ],
                 "properties": {
-                    "linear_length": 5
+                    "linear_length": 8
                 }
             }
         },

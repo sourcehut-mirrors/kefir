@@ -117,11 +117,11 @@
     OPCODE(FLOAT64_MUL, "float64_mul", ref2) SEPARATOR \
     OPCODE(FLOAT64_DIV, "float64_div", ref2) SEPARATOR \
     OPCODE(FLOAT64_NEG, "float64_neg", ref1) SEPARATOR \
-    OPCODE(LONG_DOUBLE_ADD, "long_double_add", ref2) SEPARATOR \
-    OPCODE(LONG_DOUBLE_SUB, "long_double_sub", ref2) SEPARATOR \
-    OPCODE(LONG_DOUBLE_MUL, "long_double_mul", ref2) SEPARATOR \
-    OPCODE(LONG_DOUBLE_DIV, "long_double_div", ref2) SEPARATOR \
-    OPCODE(LONG_DOUBLE_NEG, "long_double_neg", ref1) SEPARATOR \
+    OPCODE(LONG_DOUBLE_ADD, "long_double_add", ref3) SEPARATOR \
+    OPCODE(LONG_DOUBLE_SUB, "long_double_sub", ref3) SEPARATOR \
+    OPCODE(LONG_DOUBLE_MUL, "long_double_mul", ref3) SEPARATOR \
+    OPCODE(LONG_DOUBLE_DIV, "long_double_div", ref3) SEPARATOR \
+    OPCODE(LONG_DOUBLE_NEG, "long_double_neg", ref2) SEPARATOR \
     /* Floating-point comparison */ \
     OPCODE(FLOAT32_EQUALS, "float32_equals", ref2) SEPARATOR \
     OPCODE(FLOAT32_GREATER, "float32_greater", ref2) SEPARATOR \
