@@ -20,6 +20,7 @@
 
 #include "kefir/codegen/opt-system-v-amd64/code_impl.h"
 #include "kefir/codegen/opt-system-v-amd64/runtime.h"
+#include "kefir/target/abi/util.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
@@ -115,6 +116,123 @@ static kefir_result_t vararg_visit_sse(const struct kefir_ir_type *type, kefir_s
     return KEFIR_OK;
 }
 
+static kefir_result_t vararg_visit_memory_aggregate(struct vararg_getter_arg *arg,
+                                                    const struct kefir_abi_sysv_amd64_typeentry_layout *param_layout) {
+    struct kefir_codegen_opt_sysv_amd64_storage_register param_reg, result_reg, tmp_reg;
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_try_acquire_exclusive_allocated_register(
+        arg->mem, &arg->codegen->xasmgen, &arg->codegen_func->storage, arg->result_allocation, &result_reg, NULL,
+        NULL));
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_try_acquire_exclusive_allocated_register(
+        arg->mem, &arg->codegen->xasmgen, &arg->codegen_func->storage, arg->arg_allocation, &param_reg, NULL, NULL));
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_acquire_any_general_purpose_register(
+        arg->mem, &arg->codegen->xasmgen, &arg->codegen_func->storage, &tmp_reg, NULL, NULL));
+
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_load_reg_allocation(arg->codegen, &arg->codegen_func->stack_frame_map,
+                                                                arg->arg_allocation, param_reg.reg));
+
+    REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
+        &arg->codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_reg.reg),
+        kefir_asm_amd64_xasmgen_operand_indirect(&arg->codegen->xasmgen_helpers.operands[0],
+                                                 kefir_asm_amd64_xasmgen_operand_reg(param_reg.reg),
+                                                 KEFIR_AMD64_SYSV_ABI_QWORD)));
+    if (param_layout->alignment > KEFIR_AMD64_SYSV_ABI_QWORD) {
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_ADD(
+            &arg->codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_reg.reg),
+            kefir_asm_amd64_xasmgen_operand_immu(&arg->codegen->xasmgen_helpers.operands[0],
+                                                 param_layout->alignment - 1)));
+
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_AND(
+            &arg->codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_reg.reg),
+            kefir_asm_amd64_xasmgen_operand_imm(&arg->codegen->xasmgen_helpers.operands[0],
+                                                -((kefir_int64_t) param_layout->alignment))));
+    }
+
+    REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_LEA(
+        &arg->codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(tmp_reg.reg),
+        kefir_asm_amd64_xasmgen_operand_indirect(
+            &arg->codegen->xasmgen_helpers.operands[0], kefir_asm_amd64_xasmgen_operand_reg(result_reg.reg),
+            kefir_target_abi_pad_aligned(param_layout->size, KEFIR_AMD64_SYSV_ABI_QWORD))));
+
+    REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
+        &arg->codegen->xasmgen,
+        kefir_asm_amd64_xasmgen_operand_indirect(&arg->codegen->xasmgen_helpers.operands[0],
+                                                 kefir_asm_amd64_xasmgen_operand_reg(param_reg.reg),
+                                                 KEFIR_AMD64_SYSV_ABI_QWORD),
+        kefir_asm_amd64_xasmgen_operand_reg(tmp_reg.reg)));
+
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_release_register(arg->mem, &arg->codegen->xasmgen,
+                                                                     &arg->codegen_func->storage, &tmp_reg));
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_release_register(arg->mem, &arg->codegen->xasmgen,
+                                                                     &arg->codegen_func->storage, &param_reg));
+
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_store_reg_allocation(arg->codegen, &arg->codegen_func->stack_frame_map,
+                                                                 arg->result_allocation, result_reg.reg));
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_release_register(arg->mem, &arg->codegen->xasmgen,
+                                                                     &arg->codegen_func->storage, &result_reg));
+    return KEFIR_OK;
+}
+
+static kefir_result_t vararg_visit_aggregate_impl(struct vararg_getter_arg *arg, const struct kefir_ir_type *type,
+                                                  kefir_size_t index,
+                                                  struct kefir_abi_sysv_amd64_type_layout *type_layout,
+                                                  struct kefir_vector *allocation) {
+    kefir_size_t slot;
+    REQUIRE_OK(kefir_ir_type_slot_of(type, index, &slot));
+
+    const struct kefir_abi_sysv_amd64_typeentry_layout *param_layout = NULL;
+    REQUIRE_OK(kefir_abi_sysv_amd64_type_layout_at(type_layout, index, &param_layout));
+
+    struct kefir_abi_sysv_amd64_parameter_allocation *param_allocation =
+        (struct kefir_abi_sysv_amd64_parameter_allocation *) kefir_vector_at(allocation, slot);
+    REQUIRE(param_allocation != NULL,
+            KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected to have layout and allocation info for slot"));
+
+    if (param_allocation->klass == KEFIR_AMD64_SYSV_PARAM_MEMORY) {
+        REQUIRE_OK(vararg_visit_memory_aggregate(arg, param_layout));
+    } else {
+        // res = vararg_visit_register_aggregate(info, param);
+    }
+    return KEFIR_OK;
+}
+
+static kefir_result_t vararg_visit_aggregate(const struct kefir_ir_type *type, kefir_size_t index,
+                                             const struct kefir_ir_typeentry *typeentry, void *payload) {
+    UNUSED(index);
+    UNUSED(typeentry);
+    REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR type"));
+    ASSIGN_DECL_CAST(struct vararg_getter_arg *, arg, payload);
+    REQUIRE(arg != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid vararg type traversal argument"));
+
+    struct kefir_abi_sysv_amd64_type_layout type_layout;
+    struct kefir_vector allocation;
+    struct kefir_abi_sysv_amd64_parameter_location param_location = {0};
+
+    REQUIRE_OK(kefir_abi_sysv_amd64_type_layout(type, arg->mem, &type_layout));
+
+    kefir_result_t res = kefir_abi_sysv_amd64_parameter_classify(arg->mem, type, &type_layout, &allocation);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_abi_sysv_amd64_type_layout_free(arg->mem, &type_layout);
+        return res;
+    });
+
+    res = kefir_abi_sysv_amd64_parameter_allocate(arg->mem, type, &type_layout, &allocation, &param_location);
+    REQUIRE_CHAIN(&res, vararg_visit_aggregate_impl(arg, type, index, &type_layout, &allocation));
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_abi_sysv_amd64_parameter_free(arg->mem, &allocation);
+        kefir_abi_sysv_amd64_type_layout_free(arg->mem, &type_layout);
+        return res;
+    });
+
+    res = kefir_abi_sysv_amd64_parameter_free(arg->mem, &allocation);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_abi_sysv_amd64_type_layout_free(arg->mem, &type_layout);
+        return res;
+    });
+    REQUIRE_OK(kefir_abi_sysv_amd64_type_layout_free(arg->mem, &type_layout));
+
+    return KEFIR_OK;
+}
+
 DEFINE_TRANSLATOR(vararg_get) {
     DEFINE_TRANSLATOR_PROLOGUE;
 
@@ -138,11 +256,9 @@ DEFINE_TRANSLATOR(vararg_get) {
     REQUIRE_OK(kefir_ir_type_visitor_init(&visitor, visitor_not_supported));
     KEFIR_IR_TYPE_VISITOR_INIT_INTEGERS(&visitor, vararg_visit_integer);
     KEFIR_IR_TYPE_VISITOR_INIT_FIXED_FP(&visitor, vararg_visit_sse);
-    // visitor.visit[KEFIR_IR_TYPE_LONG_DOUBLE] = vararg_visit_long_double;
-    // visitor.visit[KEFIR_IR_TYPE_STRUCT] = vararg_visit_aggregate;
-    // visitor.visit[KEFIR_IR_TYPE_UNION] = vararg_visit_aggregate;
-    // visitor.visit[KEFIR_IR_TYPE_ARRAY] = vararg_visit_aggregate;
-    // visitor.visit[KEFIR_IR_TYPE_BUILTIN] = vararg_visit_builtin;
+    visitor.visit[KEFIR_IR_TYPE_STRUCT] = vararg_visit_aggregate;
+    visitor.visit[KEFIR_IR_TYPE_UNION] = vararg_visit_aggregate;
+    visitor.visit[KEFIR_IR_TYPE_ARRAY] = vararg_visit_aggregate;
     struct vararg_getter_arg param = {.mem = mem,
                                       .codegen = codegen,
                                       .codegen_func = codegen_func,

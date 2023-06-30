@@ -24,4 +24,10 @@
 extern int sum(int, ...);
 extern double sumd(int, ...);
 
+struct Struct1 {
+    long arr[5];
+};
+
+extern long sum1(int, ...);
+
 #endif

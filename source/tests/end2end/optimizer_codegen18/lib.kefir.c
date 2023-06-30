@@ -45,3 +45,17 @@ extern double sumd(int n, ...) {
     __builtin_va_end(args2);
     return result;
 }
+
+extern long sum1(int n, ...) {
+    __builtin_va_list args, args2;
+    __builtin_va_start(args, n);
+    __builtin_va_copy(args2, args);
+    long result = 0;
+    while (n--) {
+        struct Struct1 arg = __builtin_va_arg(args2, struct Struct1);
+        result += arg.arr[0] + arg.arr[1] + arg.arr[2] + arg.arr[3] + arg.arr[4];
+    }
+    __builtin_va_end(args);
+    __builtin_va_end(args2);
+    return result;
+}

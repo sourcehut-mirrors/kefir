@@ -44,5 +44,15 @@ int main(void) {
     assert(fabs(sumd(3, 1.0, 2.0, 3.0) - 6.0) < EPSILON_D);
     assert(fabs(sumd(10, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0) - 55.0) < EPSILON_D);
 
+    assert(sum1(0) == 0);
+    assert(sum1(0, (struct Struct1){{0}}) == 0);
+    assert(sum1(0, (struct Struct1){{0}}, (struct Struct1){{0}}) == 0);
+    assert(sum1(1, (struct Struct1){{0}}, (struct Struct1){{0}}) == 0);
+    assert(sum1(1, (struct Struct1){{1, 2, 3, 4, 5}}, (struct Struct1){{0}}) == 15);
+    assert(sum1(1, (struct Struct1){{1, 2, 3, 4, 5}}, (struct Struct1){{6, 7, 8, 9, 10}}) == 15);
+    assert(sum1(2, (struct Struct1){{1, 2, 3, 4, 5}}, (struct Struct1){{6, 7, 8, 9, 10}}) == 55);
+    assert(sum1(3, (struct Struct1){{1, 2, 3, 4, 5}}, (struct Struct1){{6, 7, 8, 9, 10}},
+                (struct Struct1){{100, 0, 1}}) == 156);
+
     return EXIT_SUCCESS;
 }
