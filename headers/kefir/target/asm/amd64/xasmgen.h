@@ -142,7 +142,8 @@ typedef enum kefir_asm_amd64_xasmgen_operand_class {
     KEFIR_AMD64_XASMGEN_OPERAND_OFFSET,
     KEFIR_AMD64_XASMGEN_OPERAND_SEGMENT,
     KEFIR_AMD64_XASMGEN_OPERAND_POINTER,
-    KEFIR_AMD64_XASMGEN_OPERAND_STRING_LITERAL
+    KEFIR_AMD64_XASMGEN_OPERAND_STRING_LITERAL,
+    KEFIR_AMD64_XASMGEN_OPERAND_FPU_REGISTER
 } kefir_asm_amd64_xasmgen_operand_class_t;
 
 typedef enum kefir_asm_amd64_xasmgen_pointer_type {
@@ -183,6 +184,7 @@ typedef struct kefir_asm_amd64_xasmgen_operand {
             const char *content;
             kefir_size_t length;
         } string_literal;
+        kefir_uint64_t fpu_register;
     };
 } kefir_asm_amd64_xasmgen_operand_t;
 
@@ -269,6 +271,9 @@ typedef enum kefir_asm_amd64_xasmgen_syntax {
     _opcode(fmulp, "fmulp", 0, normal) _separator \
     _opcode(fdivp, "fdivp", 0, normal) _separator \
     _opcode(fchs, "fchs", 0, normal) _separator \
+    \
+    _opcode(fucomip, "fucomip", 0, normal) _separator \
+    _opcode(fcomip, "fcomip", 0, normal) _separator \
     \
     _opcode(pextrq, "pextrq", 3, normal) _separator \
     _opcode(pinsrq, "pinsrq", 3, normal) _separator \
@@ -377,6 +382,8 @@ const struct kefir_asm_amd64_xasmgen_operand *kefir_asm_amd64_xasmgen_operand_ri
     struct kefir_asm_amd64_xasmgen_operand *, const char *);
 const struct kefir_asm_amd64_xasmgen_operand *kefir_asm_amd64_xasmgen_operand_string_literal(
     struct kefir_asm_amd64_xasmgen_operand *, const char *, kefir_size_t);
+const struct kefir_asm_amd64_xasmgen_operand *kefir_asm_amd64_xasmgen_operand_fpu_register(
+    struct kefir_asm_amd64_xasmgen_operand *, kefir_uint64_t);
 
 #define KEFIR_AMD64_XASMGEN_PROLOGUE(_xasmgen) ((_xasmgen)->prologue((_xasmgen)))
 #define KEFIR_AMD64_XASMGEN_CLOSE(_mem, _xasmgen) ((_xasmgen)->close((_mem), (_xasmgen)))
@@ -469,6 +476,9 @@ const struct kefir_asm_amd64_xasmgen_operand *kefir_asm_amd64_xasmgen_operand_st
 #define KEFIR_AMD64_XASMGEN_INSTR_FMULP(_xasmgen) ((_xasmgen)->instr.fmulp((_xasmgen)))
 #define KEFIR_AMD64_XASMGEN_INSTR_FDIVP(_xasmgen) ((_xasmgen)->instr.fdivp((_xasmgen)))
 #define KEFIR_AMD64_XASMGEN_INSTR_FCHS(_xasmgen) ((_xasmgen)->instr.fchs((_xasmgen)))
+
+#define KEFIR_AMD64_XASMGEN_INSTR_FUCOMIP(_xasmgen) ((_xasmgen)->instr.fucomip((_xasmgen)))
+#define KEFIR_AMD64_XASMGEN_INSTR_FCOMIP(_xasmgen) ((_xasmgen)->instr.fcomip((_xasmgen)))
 
 #define KEFIR_AMD64_XASMGEN_INSTR_PEXTRQ(_xasmgen, _op1, _op2, _op3) \
     ((_xasmgen)->instr.pextrq((_xasmgen), (_op1), (_op2), (_op3)))

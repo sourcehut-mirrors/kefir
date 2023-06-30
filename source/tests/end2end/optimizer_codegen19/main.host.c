@@ -32,11 +32,15 @@ int main(void) {
     assert(fabsl(get_e() - E_LD) < EPSILON_LD);
 
     for (long double x = -100.0L; x < 100.0L; x += 0.1L) {
+        assert(ldequals(x, x));
+        assert(!ldequals(x, x + 0.001L));
         for (long double y = -5.0L; y < 5.0L; y += 0.05L) {
             assert(fabsl(addld(x, y) - (x + y)) < EPSILON_LD);
             assert(fabsl(subld(x, y) - (x - y)) < EPSILON_LD);
             assert(fabsl(mulld(x, y) - (x * y)) < EPSILON_LD);
             assert(fabsl(divld(x, y) - (x / y)) < EPSILON_LD);
+            assert(ldgreater(x, y) == (x > y));
+            assert(ldlesser(x, y) == (x < y));
         }
         assert(fabsl(negld(x) + x) < EPSILON_LD);
     }

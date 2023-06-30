@@ -80,6 +80,7 @@ DECLARE_TRANSLATOR(vararg_get);
 DECLARE_TRANSLATOR(long_double_binary_op);
 DECLARE_TRANSLATOR(long_double_unary_op);
 DECLARE_TRANSLATOR(long_double_store);
+DECLARE_TRANSLATOR(long_double_comparison);
 #undef DECLARE
 
 #endif

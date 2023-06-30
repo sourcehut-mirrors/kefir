@@ -33,4 +33,8 @@ long double mulld(long double, long double);
 long double divld(long double, long double);
 long double negld(long double);
 
+int ldequals(long double, long double);
+int ldgreater(long double, long double);
+int ldlesser(long double, long double);
+
 #endif

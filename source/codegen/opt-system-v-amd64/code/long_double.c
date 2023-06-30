@@ -216,3 +216,118 @@ DEFINE_TRANSLATOR(long_double_store) {
 
     return KEFIR_OK;
 }
+
+DEFINE_TRANSLATOR(long_double_comparison) {
+    DEFINE_TRANSLATOR_PROLOGUE;
+
+    struct kefir_opt_instruction *instr = NULL;
+    REQUIRE_OK(kefir_opt_code_container_instr(&function->code, instr_ref, &instr));
+
+    const struct kefir_codegen_opt_sysv_amd64_register_allocation *result_allocation = NULL;
+    const struct kefir_codegen_opt_sysv_amd64_register_allocation *arg1_allocation = NULL;
+    const struct kefir_codegen_opt_sysv_amd64_register_allocation *arg2_allocation = NULL;
+
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_register_allocation_of(&codegen_func->register_allocator, instr_ref,
+                                                                   &result_allocation));
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_register_allocation_of(
+        &codegen_func->register_allocator, instr->operation.parameters.refs[0], &arg1_allocation));
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_register_allocation_of(
+        &codegen_func->register_allocator, instr->operation.parameters.refs[1], &arg2_allocation));
+
+    struct kefir_codegen_opt_sysv_amd64_storage_register arg_reg;
+
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_try_acquire_exclusive_allocated_register(
+        mem, &codegen->xasmgen, &codegen_func->storage, arg2_allocation, &arg_reg, NULL, NULL));
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_load_reg_allocation(codegen, &codegen_func->stack_frame_map,
+                                                                arg2_allocation, arg_reg.reg));
+    REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_FLD(
+        &codegen->xasmgen,
+        kefir_asm_amd64_xasmgen_operand_pointer(
+            &codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_POINTER_TBYTE,
+            kefir_asm_amd64_xasmgen_operand_indirect(&codegen->xasmgen_helpers.operands[1],
+                                                     kefir_asm_amd64_xasmgen_operand_reg(arg_reg.reg), 0))));
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_release_register(mem, &codegen->xasmgen, &codegen_func->storage,
+                                                                     &arg_reg));
+
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_try_acquire_exclusive_allocated_register(
+        mem, &codegen->xasmgen, &codegen_func->storage, arg1_allocation, &arg_reg, NULL, NULL));
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_load_reg_allocation(codegen, &codegen_func->stack_frame_map,
+                                                                arg1_allocation, arg_reg.reg));
+    REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_FLD(
+        &codegen->xasmgen,
+        kefir_asm_amd64_xasmgen_operand_pointer(
+            &codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_POINTER_TBYTE,
+            kefir_asm_amd64_xasmgen_operand_indirect(&codegen->xasmgen_helpers.operands[1],
+                                                     kefir_asm_amd64_xasmgen_operand_reg(arg_reg.reg), 0))));
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_release_register(mem, &codegen->xasmgen, &codegen_func->storage,
+                                                                     &arg_reg));
+
+    struct kefir_codegen_opt_sysv_amd64_storage_register result_reg;
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_try_acquire_exclusive_allocated_register(
+        mem, &codegen->xasmgen, &codegen_func->storage, result_allocation, &result_reg, NULL, NULL));
+
+    REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_XOR(&codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_reg.reg),
+                                             kefir_asm_amd64_xasmgen_operand_reg(result_reg.reg)));
+
+    kefir_asm_amd64_xasmgen_register_t result_reg_variant;
+    REQUIRE_OK(kefir_asm_amd64_xasmgen_register8(result_reg.reg, &result_reg_variant));
+
+    switch (instr->operation.opcode) {
+        case KEFIR_OPT_OPCODE_LONG_DOUBLE_EQUALS: {
+            struct kefir_codegen_opt_sysv_amd64_storage_register tmp_reg;
+            REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_acquire_any_general_purpose_register(
+                mem, &codegen->xasmgen, &codegen_func->storage, &tmp_reg, NULL, NULL));
+
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_XOR(&codegen->xasmgen,
+                                                     kefir_asm_amd64_xasmgen_operand_reg(tmp_reg.reg),
+                                                     kefir_asm_amd64_xasmgen_operand_reg(tmp_reg.reg)));
+
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_FUCOMIP(&codegen->xasmgen));
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_FSTP(
+                &codegen->xasmgen,
+                kefir_asm_amd64_xasmgen_operand_fpu_register(&codegen->xasmgen_helpers.operands[0], 0)));
+
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_SETNP(&codegen->xasmgen,
+                                                       kefir_asm_amd64_xasmgen_operand_reg(result_reg_variant)));
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_CMOVNE(&codegen->xasmgen,
+                                                        kefir_asm_amd64_xasmgen_operand_reg(result_reg.reg),
+                                                        kefir_asm_amd64_xasmgen_operand_reg(tmp_reg.reg)));
+
+            REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_release_register(mem, &codegen->xasmgen,
+                                                                             &codegen_func->storage, &tmp_reg));
+        } break;
+
+        case KEFIR_OPT_OPCODE_LONG_DOUBLE_GREATER:
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_FCOMIP(&codegen->xasmgen));
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_FSTP(
+                &codegen->xasmgen,
+                kefir_asm_amd64_xasmgen_operand_fpu_register(&codegen->xasmgen_helpers.operands[0], 0)));
+
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_SETA(&codegen->xasmgen,
+                                                      kefir_asm_amd64_xasmgen_operand_reg(result_reg_variant)));
+            break;
+
+        case KEFIR_OPT_OPCODE_LONG_DOUBLE_LESSER:
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_FSTP(
+                &codegen->xasmgen,
+                kefir_asm_amd64_xasmgen_operand_fpu_register(&codegen->xasmgen_helpers.operands[0], 2)));
+
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_FCOMIP(&codegen->xasmgen));
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_FSTP(
+                &codegen->xasmgen,
+                kefir_asm_amd64_xasmgen_operand_fpu_register(&codegen->xasmgen_helpers.operands[0], 0)));
+
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_SETA(&codegen->xasmgen,
+                                                      kefir_asm_amd64_xasmgen_operand_reg(result_reg_variant)));
+            break;
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected optimizer instruction opcode");
+    }
+
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_store_reg_allocation(codegen, &codegen_func->stack_frame_map,
+                                                                 result_allocation, result_reg.reg));
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_release_register(mem, &codegen->xasmgen, &codegen_func->storage,
+                                                                     &result_reg));
+    return KEFIR_OK;
+}

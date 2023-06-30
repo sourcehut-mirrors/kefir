@@ -47,3 +47,15 @@ long double divld(long double x, long double y) {
 long double negld(long double x) {
     return -x;
 }
+
+int ldequals(long double x, long double y) {
+    return x == y;
+}
+
+int ldgreater(long double x, long double y) {
+    return x > y;
+}
+
+int ldlesser(long double x, long double y) {
+    return x < y;
+}

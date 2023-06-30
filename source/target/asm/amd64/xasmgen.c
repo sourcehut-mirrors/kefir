@@ -1078,6 +1078,14 @@ static kefir_result_t amd64_format_operand_intel(void (*print)(void *, const cha
         case KEFIR_AMD64_XASMGEN_OPERAND_STRING_LITERAL:
             REQUIRE_OK(amd64_string_literal(print, printarg, op->string_literal.content, op->string_literal.length));
             break;
+
+        case KEFIR_AMD64_XASMGEN_OPERAND_FPU_REGISTER:
+            if (prefix) {
+                print(printarg, "%%st(" KEFIR_UINT64_FMT ")", op->fpu_register);
+            } else {
+                print(printarg, "st(" KEFIR_UINT64_FMT ")", op->fpu_register);
+            }
+            break;
     }
     return KEFIR_OK;
 }
@@ -1143,6 +1151,10 @@ static kefir_result_t amd64_format_operand_att(void (*print)(void *, const char 
         case KEFIR_AMD64_XASMGEN_OPERAND_STRING_LITERAL:
             REQUIRE_OK(amd64_string_literal(print, printarg, op->string_literal.content, op->string_literal.length));
             break;
+
+        case KEFIR_AMD64_XASMGEN_OPERAND_FPU_REGISTER:
+            print(printarg, "%%st(" KEFIR_UINT64_FMT ")", op->fpu_register);
+            break;
     }
     return KEFIR_OK;
 }
@@ -1160,6 +1172,10 @@ static kefir_result_t amd64_format_unprefixed_operand_att(void (*print)(void *, 
 
         case KEFIR_AMD64_XASMGEN_OPERAND_REGISTER:
             print(printarg, "%s", register_literals[op->reg]);
+            break;
+
+        case KEFIR_AMD64_XASMGEN_OPERAND_FPU_REGISTER:
+            print(printarg, "st(" KEFIR_UINT64_FMT ")", op->fpu_register);
             break;
 
         default:
@@ -1820,6 +1836,14 @@ const struct kefir_asm_amd64_xasmgen_operand *kefir_asm_amd64_xasmgen_operand_st
     op->klass = KEFIR_AMD64_XASMGEN_OPERAND_STRING_LITERAL;
     op->string_literal.content = content;
     op->string_literal.length = length;
+    return op;
+}
+
+const struct kefir_asm_amd64_xasmgen_operand *kefir_asm_amd64_xasmgen_operand_fpu_register(
+    struct kefir_asm_amd64_xasmgen_operand *op, kefir_uint64_t reg) {
+    REQUIRE(op != NULL, NULL);
+    op->klass = KEFIR_AMD64_XASMGEN_OPERAND_FPU_REGISTER;
+    op->fpu_register = reg;
     return op;
 }
 
