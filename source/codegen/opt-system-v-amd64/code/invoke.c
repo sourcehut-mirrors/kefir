@@ -22,6 +22,7 @@
 #include "kefir/codegen/opt-system-v-amd64/storage_transform.h"
 #include "kefir/target/abi/util.h"
 #include "kefir/target/abi/system-v-amd64/return.h"
+#include "kefir/ir/builtins.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
@@ -383,6 +384,20 @@ static kefir_result_t load_register_aggregate_argument(const struct kefir_ir_typ
     return KEFIR_OK;
 }
 
+static kefir_result_t builtin_argument(const struct kefir_ir_type *type, kefir_size_t index,
+                                       const struct kefir_ir_typeentry *typeentry, void *payload) {
+    REQUIRE(typeentry != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR type entry"));
+    switch (typeentry->param) {
+        case KEFIR_IR_TYPE_BUILTIN_VARARG:
+            REQUIRE_OK(scalar_argument(type, index, typeentry, payload));
+            break;
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unknown IR builtin type");
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t prepare_parameters(struct kefir_mem *mem, struct kefir_codegen_opt_amd64 *codegen,
                                          const struct kefir_opt_function *function,
                                          struct kefir_opt_sysv_amd64_function *codegen_func,
@@ -406,6 +421,7 @@ static kefir_result_t prepare_parameters(struct kefir_mem *mem, struct kefir_cod
     visitor.visit[KEFIR_IR_TYPE_STRUCT] = aggregate_argument;
     visitor.visit[KEFIR_IR_TYPE_ARRAY] = aggregate_argument;
     visitor.visit[KEFIR_IR_TYPE_UNION] = aggregate_argument;
+    visitor.visit[KEFIR_IR_TYPE_BUILTIN] = builtin_argument;
 
     struct kefir_codegen_opt_amd64_sysv_storage_transform transform;
     REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_transform_init(&transform));
@@ -573,6 +589,23 @@ static kefir_result_t aggregate_return(const struct kefir_ir_type *type, kefir_s
     return KEFIR_OK;
 }
 
+static kefir_result_t builtin_return(const struct kefir_ir_type *type, kefir_size_t index,
+                                     const struct kefir_ir_typeentry *typeentry, void *payload) {
+    UNUSED(type);
+    UNUSED(index);
+    UNUSED(payload);
+    REQUIRE(typeentry != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR type entry"));
+
+    switch (typeentry->param) {
+        case KEFIR_IR_TYPE_BUILTIN_VARARG:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Returning va_list from function is not supported");
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unknown IR builtin type");
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t save_return_value(
     struct kefir_mem *mem, struct kefir_codegen_opt_amd64 *codegen, const struct kefir_opt_function *function,
     struct kefir_opt_sysv_amd64_function *codegen_func, const struct kefir_ir_function_decl *ir_func_decl,
@@ -585,6 +618,7 @@ static kefir_result_t save_return_value(
     visitor.visit[KEFIR_IR_TYPE_STRUCT] = aggregate_return;
     visitor.visit[KEFIR_IR_TYPE_UNION] = aggregate_return;
     visitor.visit[KEFIR_IR_TYPE_ARRAY] = aggregate_return;
+    visitor.visit[KEFIR_IR_TYPE_BUILTIN] = builtin_return;
 
     struct invoke_arg arg = {.mem = mem,
                              .codegen = codegen,

@@ -28,6 +28,22 @@
 #define EPSILON_D 1e-6
 #define EPSILON_F 1e-3
 
+static long sum5_proxy(int n, ...) {
+    va_list args;
+    va_start(args, n);
+    long result = sum5(n, args);
+    va_end(args);
+    return result;
+}
+
+extern long sum6(int n, va_list args) {
+    long result = 0;
+    while (n--) {
+        result += va_arg(args, long);
+    }
+    return result;
+}
+
 int main(void) {
     assert(sum(0) == 0);
     assert(sum(0, 1) == 0);
@@ -125,6 +141,20 @@ int main(void) {
                 (struct Struct4){-100.0f, 3.5f}, (struct Struct4){6.0f, 0.1f}, (struct Struct4){-50.0f, -2.0f}) +
                110.95f <
            EPSILON_F);
+
+    assert(sum5_proxy(0) == 0);
+    assert(sum5_proxy(0, 1) == 0);
+    assert(sum5_proxy(0, 1, 2) == 0);
+    assert(sum5_proxy(1, 1, 2) == 1);
+    assert(sum5_proxy(2, 1, 2) == 3);
+    assert(sum5_proxy(10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10) == 55);
+
+    assert(sum6_proxy(0) == 0);
+    assert(sum6_proxy(0, 1) == 0);
+    assert(sum6_proxy(0, 1, 2) == 0);
+    assert(sum6_proxy(1, 1, 2) == 1);
+    assert(sum6_proxy(2, 1, 2) == 3);
+    assert(sum6_proxy(10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10) == 55);
 
     return EXIT_SUCCESS;
 }

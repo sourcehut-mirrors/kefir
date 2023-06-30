@@ -21,6 +21,12 @@
 #ifndef DEFINITIONS_H_
 #define DEFINITIONS_H_
 
+#ifdef __KEFIRCC__
+#define va_list __builtin_va_list
+#else
+#include <stdarg.h>
+#endif
+
 extern int sum(int, ...);
 extern double sumd(int, ...);
 
@@ -50,5 +56,12 @@ struct Struct4 {
 };
 
 extern float sum4(int, ...);
+
+extern long sum5(int, va_list);
+
+extern long sum6(int, va_list);
+extern long sum6_proxy(int, ...);
+
+extern long sum7(int, ...);
 
 #endif

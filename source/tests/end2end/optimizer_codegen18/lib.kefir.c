@@ -102,3 +102,19 @@ extern float sum4(int n, ...) {
     __builtin_va_end(args2);
     return result;
 }
+
+extern long sum5(int n, va_list args) {
+    long result = 0;
+    while (n--) {
+        result += __builtin_va_arg(args, long);
+    }
+    return result;
+}
+
+extern long sum6_proxy(int n, ...) {
+    __builtin_va_list args;
+    __builtin_va_start(args, n);
+    long result = sum6(n, args);
+    __builtin_va_end(args);
+    return result;
+}

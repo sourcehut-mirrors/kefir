@@ -518,6 +518,48 @@ static kefir_result_t vararg_visit_aggregate(const struct kefir_ir_type *type, k
     return KEFIR_OK;
 }
 
+static kefir_result_t vararg_visit_builtin(const struct kefir_ir_type *type, kefir_size_t index,
+                                           const struct kefir_ir_typeentry *typeentry, void *payload) {
+    UNUSED(type);
+    UNUSED(index);
+    REQUIRE(typeentry != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR type entry"));
+    ASSIGN_DECL_CAST(struct vararg_getter_arg *, arg, payload);
+    REQUIRE(arg != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid vararg type traversal argument"));
+
+    switch (typeentry->param) {
+        case KEFIR_IR_TYPE_BUILTIN: {
+            struct kefir_codegen_opt_sysv_amd64_storage_register param_reg, result_reg;
+            REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_acquire_specific_register(
+                arg->mem, &arg->codegen->xasmgen, &arg->codegen_func->storage, arg->result_allocation,
+                KEFIR_AMD64_XASMGEN_REGISTER_RAX, &result_reg));
+            REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_acquire_specific_register(
+                arg->mem, &arg->codegen->xasmgen, &arg->codegen_func->storage, arg->arg_allocation,
+                KEFIR_AMD64_XASMGEN_REGISTER_RDI, &param_reg));
+
+            REQUIRE_OK(kefir_codegen_opt_sysv_amd64_load_reg_allocation(
+                arg->codegen, &arg->codegen_func->stack_frame_map, arg->arg_allocation, param_reg.reg));
+
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_CALL(
+                &arg->codegen->xasmgen,
+                kefir_asm_amd64_xasmgen_operand_label(&arg->codegen->xasmgen_helpers.operands[0],
+                                                      KEFIR_OPT_AMD64_SYSTEM_V_RUNTIME_LOAD_INT_VARARG)));
+
+            REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_release_register(arg->mem, &arg->codegen->xasmgen,
+                                                                             &arg->codegen_func->storage, &param_reg));
+
+            REQUIRE_OK(kefir_codegen_opt_sysv_amd64_store_reg_allocation(
+                arg->codegen, &arg->codegen_func->stack_frame_map, arg->result_allocation, result_reg.reg));
+            REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_release_register(arg->mem, &arg->codegen->xasmgen,
+                                                                             &arg->codegen_func->storage, &result_reg));
+        } break;
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unknown IR builtin type");
+    }
+
+    return KEFIR_OK;
+}
+
 DEFINE_TRANSLATOR(vararg_get) {
     DEFINE_TRANSLATOR_PROLOGUE;
 
@@ -544,6 +586,7 @@ DEFINE_TRANSLATOR(vararg_get) {
     visitor.visit[KEFIR_IR_TYPE_STRUCT] = vararg_visit_aggregate;
     visitor.visit[KEFIR_IR_TYPE_UNION] = vararg_visit_aggregate;
     visitor.visit[KEFIR_IR_TYPE_ARRAY] = vararg_visit_aggregate;
+    visitor.visit[KEFIR_IR_TYPE_BUILTIN] = vararg_visit_builtin;
     struct vararg_getter_arg param = {.mem = mem,
                                       .codegen = codegen,
                                       .function = function,
