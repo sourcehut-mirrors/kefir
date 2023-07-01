@@ -83,6 +83,7 @@ DECLARE_TRANSLATOR(long_double_unary_op);
 DECLARE_TRANSLATOR(long_double_store);
 DECLARE_TRANSLATOR(long_double_comparison);
 DECLARE_TRANSLATOR(long_double_conversion_to);
+DECLARE_TRANSLATOR(long_double_conversion_from);
 #undef DECLARE
 
 #endif

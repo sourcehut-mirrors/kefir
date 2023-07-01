@@ -75,3 +75,27 @@ long double float_to_long_double(float x) {
 long double double_to_long_double(double x) {
     return (long double) x;
 }
+
+long long_double_to_long(long double x) {
+    return (long) x;
+}
+
+unsigned long long_double_to_ulong(long double x) {
+    return (unsigned long) x;
+}
+
+int long_double_trunc(long double x) {
+    return x ? 1 : 0;
+}
+
+_Bool long_double_to_bool(long double x) {
+    return (_Bool) x;
+}
+
+float long_double_to_float(long double x) {
+    return (float) x;
+}
+
+double long_double_to_double(long double x) {
+    return (double) x;
+}

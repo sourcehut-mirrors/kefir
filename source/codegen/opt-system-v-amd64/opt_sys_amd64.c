@@ -42,6 +42,8 @@ static kefir_result_t translate_module_externals(struct kefir_ir_module *module,
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_EXTERNAL(&codegen->xasmgen, "%s", KEFIR_OPT_AMD64_SYSTEM_V_RUNTIME_LOAD_SSE_VARARG));
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_EXTERNAL(&codegen->xasmgen, "%s", KEFIR_OPT_AMD64_SYSTEM_V_RUNTIME_FLOAT32_TO_UINT));
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_EXTERNAL(&codegen->xasmgen, "%s", KEFIR_OPT_AMD64_SYSTEM_V_RUNTIME_FLOAT64_TO_UINT));
+    REQUIRE_OK(
+        KEFIR_AMD64_XASMGEN_EXTERNAL(&codegen->xasmgen, "%s", KEFIR_OPT_AMD64_SYSTEM_V_RUNTIME_LONG_DOUBLE_TO_INT));
     return KEFIR_OK;
 }
 

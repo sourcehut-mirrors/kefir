@@ -42,4 +42,11 @@ long double ulong_to_long_double(unsigned long);
 long double float_to_long_double(float);
 long double double_to_long_double(double);
 
+long long_double_to_long(long double);
+unsigned long long_double_to_ulong(long double);
+int long_double_trunc(long double);
+_Bool long_double_to_bool(long double);
+float long_double_to_float(long double);
+double long_double_to_double(long double);
+
 #endif

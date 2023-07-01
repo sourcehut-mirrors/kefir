@@ -132,3 +132,63 @@ __kefirrt_opt_float64_to_uint_overflow:
 __kefirrt_opt_float64_to_uint_constant:
     .long   0
     .long   1138753536
+
+.global __kefirrt_opt_long_double_to_int
+.hidden __kefirrt_opt_long_double_to_int
+__kefirrt_opt_long_double_to_int:
+    fnstcw WORD PTR [rsp - 2]
+    movzx eax, WORD PTR [rsp - 2]
+    or eax, 3072
+    mov WORD PTR [rsp - 2], ax
+    fldcw WORD PTR [rsp - 2]
+    fistp QWORD PTR [rsp - 16]
+    mov rax, QWORD PTR [rsp - 16]
+    fldcw WORD PTR [rsp - 2]
+    ret
+
+.global __kefirrt_opt_long_double_to_uint
+.hidden __kefirrt_opt_long_double_to_uint
+__kefirrt_opt_long_double_to_uint:
+    fld DWORD PTR __kefirrt_opt_long_double_to_uint_constant
+    fstp st(2)
+    fcomi st, st(1)
+    jnb __kefirrt_opt_long_double_to_uint_overflow
+    fstp st(1)
+    fnstcw WORD PTR [rsp - 10]
+    movzx eax, WORD PTR [rsp - 10]
+    or ah, 12
+    mov WORD PTR [rsp - 12], ax
+    fldcw WORD PTR [rsp - 12]
+    fistp QWORD PTR [rsp - 24]
+    fldcw WORD PTR [rsp - 10]
+    mov rax, QWORD PTR [rsp - 24]
+    ret
+__kefirrt_opt_long_double_to_uint_overflow:
+    fnstcw WORD PTR [rsp - 10]
+    fsubrp st(1), st
+    movzx eax, WORD PTR [rsp - 10]
+    or ah, 12
+    mov WORD PTR [rsp - 12], ax
+    fldcw WORD PTR [rsp - 12]
+    fistp QWORD PTR [rsp - 24]
+    fldcw WORD PTR [rsp - 10]
+    mov rax, QWORD PTR [rsp - 24]
+    btc rax, 63
+    ret
+__kefirrt_opt_long_double_to_uint_constant:
+    .long   1593835520
+
+.global __kefirrt_opt_long_double_trunc_1bit
+.hidden __kefirrt_opt_long_double_trunc_1bit
+__kefirrt_opt_long_double_trunc_1bit:
+    xor rax, rax
+    fldz
+    fstp st(2)
+    fucomip st(0), st(1)
+    fstp st(0)
+    setnp ah
+    sete al
+    and al, ah
+    xor ah, ah
+    xor rax, 1
+    ret

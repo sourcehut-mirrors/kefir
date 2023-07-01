@@ -23,9 +23,12 @@
 #include <assert.h>
 #include <math.h>
 #include <string.h>
+#include <limits.h>
 #include "./definitions.h"
 
 #define EPSILON_LD 1e-8
+#define EPSILON_D 1e-6
+#define EPSILON_F 1e-3
 
 int main(void) {
     assert(fabsl(get_pi() - PI_LD) < EPSILON_LD);
@@ -43,7 +46,21 @@ int main(void) {
             assert(ldlesser(x, y) == (x < y));
         }
         assert(fabsl(negld(x) + x) < EPSILON_LD);
+
+        assert(long_double_to_long(x) == (long) x);
+        if (x >= 0.0L) {
+            assert(long_double_to_ulong(x) == (unsigned long) x);
+        }
+        assert(long_double_trunc(x) == (x ? 1 : 0));
+        _Bool b = long_double_to_bool(x);
+        assert((b && (_Bool) x) || (!b && !(_Bool) x));
+
+        assert(fabs(long_double_to_float(x) - (float) x) < EPSILON_F);
+        assert(fabs(long_double_to_double(x) - (double) x) < EPSILON_D);
     }
+
+    assert(long_double_to_ulong((long double) (ULONG_MAX - 1000000)) ==
+           (unsigned long) (volatile long double){(long double) (ULONG_MAX - 1000000)});
 
     for (long i = -1000; i < 1000; i++) {
         assert(fabsl(long_to_long_double(i) - (long double) i) < EPSILON_LD);
