@@ -115,7 +115,7 @@
                 },
                 {
                     "opcode": "jmp",
-                    "arg": 24
+                    "arg": 25
                 },
                 {
                     "opcode": "pick",
@@ -140,7 +140,7 @@
                 },
                 {
                     "opcode": "jmp",
-                    "arg": 32
+                    "arg": 33
                 },
                 {
                     "opcode": "pick",
@@ -165,11 +165,14 @@
                 },
                 {
                     "opcode": "jmp",
-                    "arg": 40
+                    "arg": 41
+                },
+                {
+                    "opcode": "pop"
                 },
                 {
                     "opcode": "jmp",
-                    "arg": 48
+                    "arg": 49
                 },
                 {
                     "opcode": "pushi",
@@ -204,7 +207,7 @@
                 },
                 {
                     "opcode": "jmp",
-                    "arg": 56
+                    "arg": 57
                 },
                 {
                     "opcode": "pushi",
@@ -239,7 +242,7 @@
                 },
                 {
                     "opcode": "jmp",
-                    "arg": 56
+                    "arg": 57
                 },
                 {
                     "opcode": "pushi",
@@ -274,7 +277,7 @@
                 },
                 {
                     "opcode": "jmp",
-                    "arg": 56
+                    "arg": 57
                 },
                 {
                     "opcode": "pushi",
@@ -309,7 +312,7 @@
                 },
                 {
                     "opcode": "jmp",
-                    "arg": 56
+                    "arg": 57
                 }
             ]
         },
@@ -353,11 +356,14 @@
                 },
                 {
                     "opcode": "jmp",
-                    "arg": 10
+                    "arg": 11
+                },
+                {
+                    "opcode": "pop"
                 },
                 {
                     "opcode": "jmp",
-                    "arg": 18
+                    "arg": 19
                 },
                 {
                     "opcode": "pushi",
@@ -392,7 +398,7 @@
                 },
                 {
                     "opcode": "jmp",
-                    "arg": 52
+                    "arg": 54
                 },
                 {
                     "opcode": "getglobal",
@@ -422,14 +428,14 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 27
+                    "arg": 28
                 },
                 {
                     "opcode": "pop"
                 },
                 {
                     "opcode": "jmp",
-                    "arg": 43
+                    "arg": 45
                 },
                 {
                     "opcode": "pick",
@@ -447,18 +453,21 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 34
+                    "arg": 35
                 },
                 {
                     "opcode": "pop"
                 },
                 {
                     "opcode": "jmp",
-                    "arg": 35
+                    "arg": 37
+                },
+                {
+                    "opcode": "pop"
                 },
                 {
                     "opcode": "jmp",
-                    "arg": 51
+                    "arg": 53
                 },
                 {
                     "opcode": "pushi",
@@ -493,7 +502,7 @@
                 },
                 {
                     "opcode": "jmp",
-                    "arg": 51
+                    "arg": 53
                 },
                 {
                     "opcode": "pushi",
@@ -528,11 +537,11 @@
                 },
                 {
                     "opcode": "jmp",
-                    "arg": 51
+                    "arg": 53
                 },
                 {
                     "opcode": "jmp",
-                    "arg": 52
+                    "arg": 54
                 }
             ]
         }
