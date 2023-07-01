@@ -156,14 +156,14 @@
                     "arg": 2.710000
                 },
                 {
-                    "opcode": "f32cint"
+                    "opcode": "f32cuint"
                 },
                 {
                     "opcode": "pushf64",
                     "arg": 2.710000
                 },
                 {
-                    "opcode": "f64cint"
+                    "opcode": "f64cuint"
                 },
                 {
                     "opcode": "getglobal",

@@ -138,20 +138,23 @@
     OPCODE(F32CINT,      "f32cint",    0xc0, none) SEPARATOR \
     OPCODE(F64CINT,      "f64cint",    0xc1, none) SEPARATOR \
     OPCODE(LDCINT,       "ldcint",     0xc2, none) SEPARATOR \
-    OPCODE(INTCF32,      "intcf32",    0xc3, none) SEPARATOR \
-    OPCODE(INTCF64,      "intcf64",    0xc4, none) SEPARATOR \
-    OPCODE(INTCLD,       "intcld",     0xc5, none) SEPARATOR \
-    OPCODE(UINTCF32,     "uintcf32",   0xc6, none) SEPARATOR \
-    OPCODE(UINTCF64,     "uintcf64",   0xc7, none) SEPARATOR \
-    OPCODE(UINTCLD,      "uintcld",    0xc8, none) SEPARATOR \
-    OPCODE(F32CF64,      "f32cf64",    0xc9, none) SEPARATOR \
-    OPCODE(F32CLD,       "f32cld",     0xca, none) SEPARATOR \
-    OPCODE(F64CF32,      "f64cf32",    0xcb, none) SEPARATOR \
-    OPCODE(F64CLD,       "f64cld",     0xcc, none) SEPARATOR \
-    OPCODE(LDCF32,       "ldcf32",     0xcd, none) SEPARATOR \
-    OPCODE(LDCF64,       "ldcf64",     0xce, none) SEPARATOR \
+    OPCODE(F32CUINT,     "f32cuint",   0xc3, none) SEPARATOR \
+    OPCODE(F64CUINT,     "f64cuint",   0xc4, none) SEPARATOR \
+    OPCODE(LDCUINT,      "ldcuint",    0xc5, none) SEPARATOR \
+    OPCODE(INTCF32,      "intcf32",    0xc6, none) SEPARATOR \
+    OPCODE(INTCF64,      "intcf64",    0xc7, none) SEPARATOR \
+    OPCODE(INTCLD,       "intcld",     0xc8, none) SEPARATOR \
+    OPCODE(UINTCF32,     "uintcf32",   0xc9, none) SEPARATOR \
+    OPCODE(UINTCF64,     "uintcf64",   0xca, none) SEPARATOR \
+    OPCODE(UINTCLD,      "uintcld",    0xcb, none) SEPARATOR \
+    OPCODE(F32CF64,      "f32cf64",    0xcc, none) SEPARATOR \
+    OPCODE(F32CLD,       "f32cld",     0xcd, none) SEPARATOR \
+    OPCODE(F64CF32,      "f64cf32",    0xce, none) SEPARATOR \
+    OPCODE(F64CLD,       "f64cld",     0xcf, none) SEPARATOR \
+    OPCODE(LDCF32,       "ldcf32",     0xd0, none) SEPARATOR \
+    OPCODE(LDCF64,       "ldcf64",     0xd1, none) SEPARATOR \
     /* Miscallenous */ \
-    OPCODE(INLINEASM,    "inlineasm",  0xd0, u64)
+    OPCODE(INLINEASM,    "inlineasm",  0xe0, u64)
 // clang-format on
 
 #endif

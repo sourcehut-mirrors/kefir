@@ -150,6 +150,8 @@ declare_opcode ldlesser
 declare_opcode ldtrunc1
 declare_opcode f32cint
 declare_opcode f64cint
+declare_opcode f32cuint
+declare_opcode f64cuint
 declare_opcode intcf32
 declare_opcode intcf64
 declare_opcode uintcf32
@@ -157,6 +159,7 @@ declare_opcode uintcf64
 declare_opcode f32cf64
 declare_opcode f64cf32
 declare_opcode ldcint
+declare_opcode ldcuint
 declare_opcode intcld
 declare_opcode uintcld
 declare_opcode f32cld
@@ -895,11 +898,46 @@ define_opcode f32cint
     mov [rsp], rax
     end_opcode
 
+define_opcode f32cuint
+    movss xmm0, [rsp]
+    comiss xmm0, DWORD PTR __kefirrt_f32cuint_constant[rip]
+    jnb __kefirrt_f32cuint_overflow
+    cvttss2si rax, xmm0
+    mov [rsp], rax
+    end_opcode
+__kefirrt_f32cuint_overflow:
+    subss xmm0, DWORD PTR __kefirrt_f32cuint_constant[rip]
+    cvttss2si rax, xmm0
+    btc rax, 63
+    mov [rsp], rax
+    end_opcode
+__kefirrt_f32cuint_constant:
+    .long   1593835520
+
 define_opcode f64cint
     movsd xmm0, [rsp]
     cvttsd2si rax, xmm0
     mov [rsp], rax
     end_opcode
+
+define_opcode f64cuint
+    movsd xmm0, [rsp]
+    movsd xmm1, QWORD PTR __kefirrt_f64cuint_constant[rip]
+    comisd xmm0, xmm1
+    jnb __kefirrt_f64cuint_overflow
+    cvttsd2si rax, xmm0
+    mov [rsp], rax
+    end_opcode
+__kefirrt_f64cuint_overflow:
+    subsd xmm0, xmm1
+    cvttsd2si rax, xmm0
+    btc rax, 63
+    mov [rsp], rax
+    end_opcode
+    .align 8
+__kefirrt_f64cuint_constant:
+    .long   0
+    .long   1138753536
 
 define_opcode intcf32
     mov rax, [rsp]
@@ -974,6 +1012,39 @@ define_opcode ldcint
     fistp QWORD PTR [rsp]
     fldcw WORD PTR [rsp - 2]
     end_opcode
+
+define_opcode ldcuint
+    mov rax, [rsp]
+    fld DWORD PTR __kefirrt_ldcuint_constant
+    fld TBYTE PTR [rax]
+    fcomi st, st(1)
+    jnb __kefirrt_ldcuint_overflow
+    fstp st(1)
+    fnstcw WORD PTR [rsp - 10]
+    movzx eax, WORD PTR [rsp - 10]
+    or ah, 12
+    mov WORD PTR [rsp - 12], ax
+    fldcw WORD PTR [rsp - 12]
+    fistp QWORD PTR [rsp - 24]
+    fldcw WORD PTR [rsp - 10]
+    mov rax, QWORD PTR [rsp - 24]
+    mov [rsp], rax
+    end_opcode
+__kefirrt_ldcuint_overflow:
+    fnstcw WORD PTR [rsp - 10]
+    fsubrp st(1), st
+    movzx eax, WORD PTR [rsp - 10]
+    or ah, 12
+    mov WORD PTR [rsp - 12], ax
+    fldcw WORD PTR [rsp - 12]
+    fistp QWORD PTR [rsp - 24]
+    fldcw WORD PTR [rsp - 10]
+    mov rax, QWORD PTR [rsp - 24]
+    btc rax, 63
+    mov [rsp], rax
+    end_opcode
+__kefirrt_ldcuint_constant:
+    .long   1593835520
 
 define_opcode intcld
     pop rdi

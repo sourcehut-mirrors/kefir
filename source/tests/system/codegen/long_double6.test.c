@@ -24,6 +24,7 @@
 #include "kefir/test/unit_test.h"
 
 long ldouble_to_long(long double);
+unsigned long ldouble_to_ulong(long double);
 long double ldouble_from_long(long);
 long double ldouble_from_ulong(unsigned long);
 long double ldouble_from_float(float);
@@ -36,9 +37,14 @@ int main(int argc, const char **argv) {
     UNUSED(argv);
     for (long double x = -100.0; x < 100.0; x += 0.1) {
         ASSERT(ldouble_to_long(x) == (long) x);
+
+        long double y = x + LONG_MAX + 1;
+        ASSERT(ldouble_to_ulong(y) == (unsigned long) y);
         ASSERT(FLOAT_EQUALS(ldouble_to_float(x), (float) x, FLOAT_EPSILON));
         ASSERT(DOUBLE_EQUALS(ldouble_to_double(x), (double) x, DOUBLE_EPSILON));
     }
+    ASSERT(ldouble_to_ulong((long double) (ULONG_MAX - 1000000)) ==
+           (unsigned long) (volatile long double){(long double) (ULONG_MAX - 1000000)});
 
     for (long l = -1000; l < 1000; l++) {
         ASSERT(LONG_DOUBLE_EQUALS(ldouble_from_long(l), (long double) l, LONG_DOUBLE_EPSILON));

@@ -499,7 +499,7 @@
                     "arg": 10000.000000
                 },
                 {
-                    "opcode": "f64cint"
+                    "opcode": "f64cuint"
                 },
                 {
                     "opcode": "pushu",
@@ -572,7 +572,7 @@
                     "arg": 1.000000
                 },
                 {
-                    "opcode": "f32cint"
+                    "opcode": "f32cuint"
                 },
                 {
                     "opcode": "trunc1"

@@ -26,6 +26,8 @@
 
 long floatToLong(float);
 long doubleToLong(double);
+unsigned long floatToULong(float);
+unsigned long doubleToULong(double);
 float longToFloat(long);
 double longToDouble(long);
 double floatToDouble(float);
@@ -39,9 +41,17 @@ int main(int argc, const char **argv) {
     for (float i = -1000.0f; i < 1000.0f; i += 0.01) {
         ASSERT(floatToLong(i) == ((long) i));
         ASSERT(doubleToLong((double) i) == ((long) i));
+
+        float j = i + (float) LONG_MAX + 1;
+        ASSERT(floatToULong(j) == ((unsigned long) j));
+        ASSERT(doubleToULong((double) j) == ((unsigned long) (double) j));
         ASSERT(DOUBLE_EQUALS(floatToDouble(i), ((double) i), DOUBLE_EPSILON));
         ASSERT(FLOAT_EQUALS(doubleToFloat((double) i), i, FLOAT_EPSILON));
     }
+    ASSERT(floatToULong((float) (ULONG_MAX - 1000000000000)) ==
+           (unsigned long) (volatile float){(float) (ULONG_MAX - 1000000000000)});
+    ASSERT(doubleToULong((double) (ULONG_MAX - 10000000000)) ==
+           (unsigned long) (volatile double){(double) (ULONG_MAX - 10000000000)});
     for (long i = -1000; i < 1000; i++) {
         ASSERT(FLOAT_EQUALS(longToFloat((long) i), (float) i, FLOAT_EPSILON));
         ASSERT(DOUBLE_EQUALS(longToDouble((long) i), (double) i, DOUBLE_EPSILON));

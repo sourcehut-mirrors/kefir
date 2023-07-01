@@ -542,7 +542,7 @@
                     "opcode": "f64div"
                 },
                 {
-                    "opcode": "f64cint"
+                    "opcode": "f64cuint"
                 },
                 {
                     "opcode": "xchg",

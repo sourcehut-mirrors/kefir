@@ -96,14 +96,29 @@ static kefir_result_t cast_to_long_double(struct kefir_irbuilder_block *builder,
 static kefir_result_t cast_to_integer(const struct kefir_ast_type_traits *type_traits,
                                       struct kefir_irbuilder_block *builder, const struct kefir_ast_type *origin,
                                       const struct kefir_ast_type *target) {
+    kefir_bool_t target_sign;
+    REQUIRE_OK(kefir_ast_type_is_signed(type_traits, target, &target_sign));
+
     if (KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(origin) || origin->tag == KEFIR_AST_TYPE_SCALAR_POINTER) {
         // Do nothing
     } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_FLOAT) {
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_F32CINT, 0));
+        if (target_sign) {
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_F32CINT, 0));
+        } else {
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_F32CUINT, 0));
+        }
     } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DOUBLE) {
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_F64CINT, 0));
+        if (target_sign) {
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_F64CINT, 0));
+        } else {
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_F64CUINT, 0));
+        }
     } else if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(origin)) {
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_LDCINT, 0));
+        if (target_sign) {
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_LDCINT, 0));
+        } else {
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_LDCUINT, 0));
+        }
     } else {
         return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected type in integral conversion");
     }
