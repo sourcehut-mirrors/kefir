@@ -45,13 +45,13 @@ extern long sum6(int n, va_list args) {
 }
 
 int main(void) {
-    assert(sum(0) == 0);
-    assert(sum(0, 1) == 0);
-    assert(sum(0, 1, 2, 3) == 0);
-    assert(sum(1, 1, 2, 3) == 1);
-    assert(sum(2, 1, 2, 3) == 3);
-    assert(sum(3, 1, 2, 3) == 6);
-    assert(sum(10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10) == 55);
+    assert(sum(0) == 0l);
+    assert(sum(0, 1l) == 0l);
+    assert(sum(0, 1l, 2l, 3l) == 0l);
+    assert(sum(1, 1l, 2l, 3l) == 1l);
+    assert(sum(2, 1l, 2l, 3l) == 3l);
+    assert(sum(3, 1l, 2l, 3l) == 6l);
+    assert(sum(10, 1l, 2l, 3l, 4l, 5l, 6l, 7l, 8l, 9l, 10l) == 55l);
 
     assert(fabs(sumd(0)) < EPSILON_D);
     assert(fabs(sumd(0, 1.0)) < EPSILON_D);
@@ -143,18 +143,18 @@ int main(void) {
            EPSILON_F);
 
     assert(sum5_proxy(0) == 0);
-    assert(sum5_proxy(0, 1) == 0);
-    assert(sum5_proxy(0, 1, 2) == 0);
-    assert(sum5_proxy(1, 1, 2) == 1);
-    assert(sum5_proxy(2, 1, 2) == 3);
-    assert(sum5_proxy(10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10) == 55);
+    assert(sum5_proxy(0, 1l) == 0);
+    assert(sum5_proxy(0, 1l, 2l) == 0);
+    assert(sum5_proxy(1, 1l, 2l) == 1);
+    assert(sum5_proxy(2, 1l, 2l) == 3);
+    assert(sum5_proxy(10, 1l, 2l, 3l, 4l, 5l, 6l, 7l, 8l, 9l, 10l) == 55l);
 
     assert(sum6_proxy(0) == 0);
-    assert(sum6_proxy(0, 1) == 0);
-    assert(sum6_proxy(0, 1, 2) == 0);
-    assert(sum6_proxy(1, 1, 2) == 1);
-    assert(sum6_proxy(2, 1, 2) == 3);
-    assert(sum6_proxy(10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10) == 55);
+    assert(sum6_proxy(0, 1l) == 0);
+    assert(sum6_proxy(0, 1l, 2l) == 0);
+    assert(sum6_proxy(1, 1l, 2l) == 1);
+    assert(sum6_proxy(2, 1l, 2l) == 3);
+    assert(sum6_proxy(10, 1l, 2l, 3l, 4l, 5l, 6l, 7l, 8l, 9l, 10l) == 55l);
 
     return EXIT_SUCCESS;
 }
