@@ -572,9 +572,6 @@
                     "arg": 1.000000
                 },
                 {
-                    "opcode": "f32cuint"
-                },
-                {
                     "opcode": "trunc1"
                 },
                 {

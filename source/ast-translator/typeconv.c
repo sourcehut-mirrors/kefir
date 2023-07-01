@@ -99,7 +99,7 @@ static kefir_result_t cast_to_integer(const struct kefir_ast_type_traits *type_t
     kefir_bool_t target_sign;
     REQUIRE_OK(kefir_ast_type_is_signed(type_traits, target, &target_sign));
 
-    if (KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(origin) || origin->tag == KEFIR_AST_TYPE_SCALAR_POINTER) {
+    if (KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(origin) || origin->tag == KEFIR_AST_TYPE_SCALAR_POINTER || target->tag == KEFIR_AST_TYPE_SCALAR_BOOL) {
         // Do nothing
     } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_FLOAT) {
         if (target_sign) {
@@ -125,7 +125,11 @@ static kefir_result_t cast_to_integer(const struct kefir_ast_type_traits *type_t
 
     switch (target->tag) {
         case KEFIR_AST_TYPE_SCALAR_BOOL:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_TRUNCATE1, 0));
+            if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(origin)) {
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_LDTRUNC1, 0));
+            } else {
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_TRUNCATE1, 0));
+            }
             break;
 
         case KEFIR_AST_TYPE_SCALAR_CHAR:
