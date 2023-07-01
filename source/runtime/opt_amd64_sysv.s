@@ -100,3 +100,35 @@ __kefirrt_opt_load_sse_vararg_overflow:
 # Load from overflow area
     movq xmm0, [rax - 8]
     ret
+
+.global __kefirrt_opt_float32_to_uint
+.hidden __kefirrt_opt_float32_to_uint
+__kefirrt_opt_float32_to_uint:
+    comiss xmm0, DWORD PTR __kefirrt_opt_float32_to_uint_constant[rip]
+    jnb __kefirrt_opt_float32_to_uint_overflow
+    cvttss2si rax, xmm0
+    ret
+__kefirrt_opt_float32_to_uint_overflow:
+    subss xmm0, DWORD PTR __kefirrt_opt_float32_to_uint_constant[rip]
+    cvttss2si rax, xmm0
+    btc rax, 63
+    ret
+__kefirrt_opt_float32_to_uint_constant:
+    .long   1593835520
+
+.global __kefirrt_opt_float64_to_uint
+.hidden __kefirrt_opt_float64_to_uint
+__kefirrt_opt_float64_to_uint:
+    comisd xmm0, QWORD PTR __kefirrt_opt_float64_to_uint_constant[rip]
+    jnb __kefirrt_opt_float64_to_uint_overflow
+    cvttsd2si rax, xmm0
+    ret
+__kefirrt_opt_float64_to_uint_overflow:
+    subsd xmm0, QWORD PTR __kefirrt_opt_float64_to_uint_constant[rip]
+    cvttsd2si rax, xmm0
+    btc rax, 63
+    ret
+    .align 8
+__kefirrt_opt_float64_to_uint_constant:
+    .long   0
+    .long   1138753536

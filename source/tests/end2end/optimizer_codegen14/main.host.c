@@ -23,6 +23,7 @@
 #include <assert.h>
 #include <math.h>
 #include <string.h>
+#include <limits.h>
 #include "./definitions.h"
 
 #define EPSILON_F 1e-3f
@@ -52,5 +53,9 @@ int main(void) {
         assert(fabs(float_to_double((float) i) - (double) (float) i) < EPSILON_D);
     }
 
+    assert(float_to_ulong((float) (ULONG_MAX - 1000000000000)) ==
+           (unsigned long) (volatile float){(float) (ULONG_MAX - 1000000000000)});
+    assert(double_to_ulong((double) (ULONG_MAX - 10000000000)) ==
+           (unsigned long) (volatile double){(double) (ULONG_MAX - 10000000000)});
     return EXIT_SUCCESS;
 }

@@ -416,6 +416,11 @@ static kefir_result_t translate_instr(struct kefir_mem *mem, struct kefir_codege
             REQUIRE_OK(INVOKE_TRANSLATOR(float_conv));
             break;
 
+        case KEFIR_OPT_OPCODE_FLOAT32_TO_UINT:
+        case KEFIR_OPT_OPCODE_FLOAT64_TO_UINT:
+            REQUIRE_OK(INVOKE_TRANSLATOR(float_to_uint_conv));
+            break;
+
         case KEFIR_OPT_OPCODE_FLOAT32_ADD:
         case KEFIR_OPT_OPCODE_FLOAT32_SUB:
         case KEFIR_OPT_OPCODE_FLOAT32_MUL:
@@ -491,6 +496,7 @@ static kefir_result_t translate_instr(struct kefir_mem *mem, struct kefir_codege
 
         case KEFIR_OPT_OPCODE_INLINE_ASSEMBLY:
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_TO_INT:
+        case KEFIR_OPT_OPCODE_LONG_DOUBLE_TO_UINT:
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_TO_FLOAT32:
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_TO_FLOAT64:
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_TRUNCATE_1BIT:

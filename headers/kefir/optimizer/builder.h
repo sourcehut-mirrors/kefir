@@ -139,6 +139,8 @@ UNARY_OP(float64_neg);
 
 UNARY_OP(float32_to_int);
 UNARY_OP(float64_to_int);
+UNARY_OP(float32_to_uint);
+UNARY_OP(float64_to_uint);
 UNARY_OP(int_to_float32);
 UNARY_OP(int_to_float64);
 UNARY_OP(uint_to_float32);
@@ -147,6 +149,7 @@ UNARY_OP(float32_to_float64);
 UNARY_OP(float64_to_float32);
 UNARY_OP(long_double_truncate_1bit);
 UNARY_OP(long_double_to_int);
+UNARY_OP(long_double_to_uint);
 UNARY_OP(long_double_to_float32);
 UNARY_OP(long_double_to_float64);
 

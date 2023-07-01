@@ -3361,7 +3361,7 @@
                             },
                             {
                                 "id": 34,
-                                "opcode": "float64_to_int",
+                                "opcode": "float64_to_uint",
                                 "arg": 33,
                                 "control_next": null,
                                 "properties": {
@@ -3455,7 +3455,7 @@
                             },
                             {
                                 "id": 42,
-                                "opcode": "float32_to_int",
+                                "opcode": "float32_to_uint",
                                 "arg": 41,
                                 "control_next": null,
                                 "properties": {

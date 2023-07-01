@@ -135,6 +135,8 @@
     /* Floating-point conversions */ \
     OPCODE(FLOAT32_TO_INT, "float32_to_int", ref1) SEPARATOR \
     OPCODE(FLOAT64_TO_INT, "float64_to_int", ref1) SEPARATOR \
+    OPCODE(FLOAT32_TO_UINT, "float32_to_uint", ref1) SEPARATOR \
+    OPCODE(FLOAT64_TO_UINT, "float64_to_uint", ref1) SEPARATOR \
     OPCODE(INT_TO_FLOAT32, "int_to_float32", ref1) SEPARATOR \
     OPCODE(INT_TO_FLOAT64, "int_to_float64", ref1) SEPARATOR \
     OPCODE(UINT_TO_FLOAT32, "uint_to_float32", ref1) SEPARATOR \
@@ -143,6 +145,7 @@
     OPCODE(FLOAT64_TO_FLOAT32, "float64_to_float32", ref1) SEPARATOR \
     OPCODE(LONG_DOUBLE_TRUNCATE_1BIT, "long_double_truncate_1bit", ref1) SEPARATOR \
     OPCODE(LONG_DOUBLE_TO_INT, "long_double_to_int", ref1) SEPARATOR \
+    OPCODE(LONG_DOUBLE_TO_UINT, "long_double_to_uint", ref1) SEPARATOR \
     OPCODE(LONG_DOUBLE_TO_FLOAT32, "long_double_to_float32", ref1) SEPARATOR \
     OPCODE(LONG_DOUBLE_TO_FLOAT64, "long_double_to_float64", ref1) SEPARATOR \
     OPCODE(INT_TO_LONG_DOUBLE, "int_to_long_double", ref2) SEPARATOR \
