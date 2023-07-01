@@ -37,4 +37,9 @@ int ldequals(long double, long double);
 int ldgreater(long double, long double);
 int ldlesser(long double, long double);
 
+long double long_to_long_double(long);
+long double ulong_to_long_double(unsigned long);
+long double float_to_long_double(float);
+long double double_to_long_double(double);
+
 #endif

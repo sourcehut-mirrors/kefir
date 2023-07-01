@@ -59,3 +59,19 @@ int ldgreater(long double x, long double y) {
 int ldlesser(long double x, long double y) {
     return x < y;
 }
+
+long double long_to_long_double(long x) {
+    return (long double) x;
+}
+
+long double ulong_to_long_double(unsigned long x) {
+    return (long double) x;
+}
+
+long double float_to_long_double(float x) {
+    return (long double) x;
+}
+
+long double double_to_long_double(double x) {
+    return (long double) x;
+}

@@ -478,19 +478,22 @@ static kefir_result_t translate_instr(struct kefir_mem *mem, struct kefir_codege
             REQUIRE_OK(INVOKE_TRANSLATOR(long_double_comparison));
             break;
 
+        case KEFIR_OPT_OPCODE_INT_TO_LONG_DOUBLE:
+        case KEFIR_OPT_OPCODE_UINT_TO_LONG_DOUBLE:
+        case KEFIR_OPT_OPCODE_FLOAT32_TO_LONG_DOUBLE:
+        case KEFIR_OPT_OPCODE_FLOAT64_TO_LONG_DOUBLE:
+            REQUIRE_OK(INVOKE_TRANSLATOR(long_double_conversion_to));
+            break;
+
         case KEFIR_OPT_OPCODE_PHI:
             // Intentionally left blank
             break;
 
         case KEFIR_OPT_OPCODE_INLINE_ASSEMBLY:
-        case KEFIR_OPT_OPCODE_FLOAT32_TO_LONG_DOUBLE:
-        case KEFIR_OPT_OPCODE_FLOAT64_TO_LONG_DOUBLE:
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_TO_INT:
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_TO_FLOAT32:
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_TO_FLOAT64:
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_TRUNCATE_1BIT:
-        case KEFIR_OPT_OPCODE_INT_TO_LONG_DOUBLE:
-        case KEFIR_OPT_OPCODE_UINT_TO_LONG_DOUBLE:
             return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED,
                                    "Code generation for provided optimizer opcode is not implemented yet");
     }
@@ -636,6 +639,7 @@ static kefir_result_t generate_constants(struct kefir_codegen_opt_amd64 *codegen
                                          const struct kefir_opt_code_analysis *func_analysis) {
     kefir_bool_t f32neg = false;
     kefir_bool_t f64neg = false;
+    kefir_bool_t uint_to_ld = false;
 
     for (kefir_size_t instr_idx = 0; instr_idx < func_analysis->linearization_length; instr_idx++) {
         const struct kefir_opt_code_analysis_instruction_properties *instr_props =
@@ -705,6 +709,10 @@ static kefir_result_t generate_constants(struct kefir_codegen_opt_amd64 *codegen
                 f64neg = true;
                 break;
 
+            case KEFIR_OPT_OPCODE_UINT_TO_LONG_DOUBLE:
+                uint_to_ld = true;
+                break;
+
             default:
                 // Intentionally left blank
                 break;
@@ -741,6 +749,16 @@ static kefir_result_t generate_constants(struct kefir_codegen_opt_amd64 *codegen
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
             &codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
             kefir_asm_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[0], 0x8000000000000000ull)));
+    }
+
+    if (uint_to_ld) {
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_ALIGN(&codegen->xasmgen, 4));
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen->xasmgen, KEFIR_OPT_AMD64_SYSTEM_V_FUNCTION_CONSTANT_UINT_TO_LD,
+                                             function->ir_func->name));
+
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+            &codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 1,
+            kefir_asm_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[0], 0x5F800000)));
     }
     return KEFIR_OK;
 }

@@ -149,10 +149,6 @@ UNARY_OP(long_double_truncate_1bit);
 UNARY_OP(long_double_to_int);
 UNARY_OP(long_double_to_float32);
 UNARY_OP(long_double_to_float64);
-UNARY_OP(int_to_long_double);
-UNARY_OP(uint_to_long_double);
-UNARY_OP(float32_to_long_double);
-UNARY_OP(float64_to_long_double);
 
 #undef UNARY_OP
 
@@ -203,6 +199,11 @@ BINARY_OP(float64_lesser);
 BINARY_OP(long_double_equals);
 BINARY_OP(long_double_greater);
 BINARY_OP(long_double_lesser);
+
+BINARY_OP(int_to_long_double);
+BINARY_OP(uint_to_long_double);
+BINARY_OP(float32_to_long_double);
+BINARY_OP(float64_to_long_double);
 
 #undef BINARY_OP
 

@@ -45,5 +45,19 @@ int main(void) {
         assert(fabsl(negld(x) + x) < EPSILON_LD);
     }
 
+    for (long i = -1000; i < 1000; i++) {
+        assert(fabsl(long_to_long_double(i) - (long double) i) < EPSILON_LD);
+    }
+
+    for (unsigned long i = 0; i < 1000; i++) {
+        assert(fabsl(ulong_to_long_double(i) - (long double) i) < EPSILON_LD);
+        assert(fabsl(ulong_to_long_double(~i - 0xffff) - (long double) (~i - 0xffff)) < EPSILON_LD);
+    }
+
+    for (float i = -100.0f; i < 100.0f; i += 0.1f) {
+        assert(fabsl(float_to_long_double(i) - (long double) i) < EPSILON_LD);
+        assert(fabsl(double_to_long_double((double) i) - (long double) (double) i) < EPSILON_LD);
+    }
+
     return EXIT_SUCCESS;
 }

@@ -145,10 +145,10 @@
     OPCODE(LONG_DOUBLE_TO_INT, "long_double_to_int", ref1) SEPARATOR \
     OPCODE(LONG_DOUBLE_TO_FLOAT32, "long_double_to_float32", ref1) SEPARATOR \
     OPCODE(LONG_DOUBLE_TO_FLOAT64, "long_double_to_float64", ref1) SEPARATOR \
-    OPCODE(INT_TO_LONG_DOUBLE, "int_to_long_double", ref1) SEPARATOR \
-    OPCODE(UINT_TO_LONG_DOUBLE, "uint_to_long_double", ref1) SEPARATOR \
-    OPCODE(FLOAT32_TO_LONG_DOUBLE, "float32_to_long_double", ref1) SEPARATOR \
-    OPCODE(FLOAT64_TO_LONG_DOUBLE, "float64_to_long_double", ref1)
+    OPCODE(INT_TO_LONG_DOUBLE, "int_to_long_double", ref2) SEPARATOR \
+    OPCODE(UINT_TO_LONG_DOUBLE, "uint_to_long_double", ref2) SEPARATOR \
+    OPCODE(FLOAT32_TO_LONG_DOUBLE, "float32_to_long_double", ref2) SEPARATOR \
+    OPCODE(FLOAT64_TO_LONG_DOUBLE, "float64_to_long_double", ref2)
 // clang-format on
 
 #endif

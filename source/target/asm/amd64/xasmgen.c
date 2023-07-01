@@ -1000,6 +1000,14 @@ static kefir_result_t format_pointer(void (*print)(void *, const char *, ...), v
         case KEFIR_AMD64_XASMGEN_POINTER_XMMWORD:
             print(printarg, "XMMWORD PTR ");
             break;
+
+        case KEFIR_AMD64_XASMGEN_POINTER_FP_SINGLE:
+            print(printarg, "DWORD PTR ");
+            break;
+
+        case KEFIR_AMD64_XASMGEN_POINTER_FP_DOUBLE:
+            print(printarg, "QWORD PTR ");
+            break;
     }
     return KEFIR_OK;
 }
@@ -1437,6 +1445,7 @@ static kefir_result_t format_att_mnemonic_suffix_impl(FILE *output, kefir_asm_am
             break;
 
         case KEFIR_AMD64_XASMGEN_POINTER_DWORD:
+        case KEFIR_AMD64_XASMGEN_POINTER_FP_DOUBLE:
             fprintf(output, "l");
             break;
 
@@ -1450,6 +1459,10 @@ static kefir_result_t format_att_mnemonic_suffix_impl(FILE *output, kefir_asm_am
 
         case KEFIR_AMD64_XASMGEN_POINTER_XMMWORD:
             // Intentionally left blank
+            break;
+
+        case KEFIR_AMD64_XASMGEN_POINTER_FP_SINGLE:
+            fprintf(output, "s");
             break;
     }
     return KEFIR_OK;
