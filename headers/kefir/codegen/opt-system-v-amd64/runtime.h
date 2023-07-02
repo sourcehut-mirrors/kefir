@@ -9,7 +9,6 @@
 #define KEFIR_AMD64_EMUTLS_T "__emutls_t.%s"
 #define KEFIR_AMD64_EMUTLS_GOT "__emutls_v.%s@GOTPCREL"
 #define KEFIR_AMD64_EMUTLS_GET_ADDR "__emutls_get_address@PLT"
-#define KEFIR_AMD64_SYSTEM_V_STRING_LITERAL "__kefir_string_literal" KEFIR_ID_FMT
 #define KEFIR_OPT_AMD64_SYSTEM_V_RUNTIME_STRING_LITERAL "__kefirrt_string_literal" KEFIR_ID_FMT
 #define KEFIR_OPT_AMD64_SYSTEM_V_FUNCTION_BLOCK "__kefir_func_%s_block" KEFIR_ID_FMT
 #define KEFIR_OPT_AMD64_SYSTEM_V_FUNCTION_BLOCK_LABEL "__kefir_func_%s_block" KEFIR_ID_FMT "_label" KEFIR_ID_FMT
