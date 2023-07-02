@@ -136,7 +136,7 @@ kefir_result_t kefir_ast_analyze_function_call_node(struct kefir_mem *mem, const
     base->properties.category = KEFIR_AST_NODE_CATEGORY_EXPRESSION;
     base->properties.type = return_type;
 
-    if (KEFIR_AST_TYPE_IS_AGGREGATE_TYPE(return_type)) {
+    if (KEFIR_AST_TYPE_IS_AGGREGATE_TYPE(return_type) || KEFIR_AST_TYPE_IS_LONG_DOUBLE(return_type)) {
         REQUIRE_OK(context->allocate_temporary_value(mem, context, return_type, NULL, &base->source_location,
                                                      &base->properties.expression_props.temp_identifier));
     }

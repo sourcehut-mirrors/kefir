@@ -125,7 +125,7 @@
 sum_progression:
 # Begin prologue of sum_progression
     call __kefirrt_preserve_state
-    sub $528, %rsp
+    sub $544, %rsp
     call __kefirrt_generic_prologue
 # Load parameters of sum_progression
     lea 16(%rbp), %r12
@@ -148,59 +148,59 @@ __sum_progression_body:
     .quad __kefirrt_getlocal_impl, 32
     .quad __kefirrt_iadd1_impl, 16
     .quad __kefirrt_getlocal_impl, 32
-    .quad __kefirrt_iadd1_impl, 352
+    .quad __kefirrt_iadd1_impl, 368
     .quad __kefirrt_ldadd_impl, 0
     .quad __kefirrt_getlocal_impl, 32
     .quad __kefirrt_pushi_impl, 2
     .quad __kefirrt_getlocal_impl, 32
-    .quad __kefirrt_iadd1_impl, 368
+    .quad __kefirrt_iadd1_impl, 384
     .quad __kefirrt_intcld_impl, 0
     .quad __kefirrt_getlocal_impl, 32
     .quad __kefirrt_iadd1_impl, 16
     .quad __kefirrt_getlocal_impl, 32
-    .quad __kefirrt_iadd1_impl, 368
+    .quad __kefirrt_iadd1_impl, 384
     .quad __kefirrt_ldmul_impl, 0
     .quad __kefirrt_getlocal_impl, 32
-    .quad __kefirrt_iadd1_impl, 384
+    .quad __kefirrt_iadd1_impl, 400
     .quad __kefirrt_ldadd_impl, 0
     .quad __kefirrt_getlocal_impl, 32
     .quad __kefirrt_pushi_impl, 3
     .quad __kefirrt_getlocal_impl, 32
-    .quad __kefirrt_iadd1_impl, 400
+    .quad __kefirrt_iadd1_impl, 416
     .quad __kefirrt_intcld_impl, 0
     .quad __kefirrt_getlocal_impl, 32
     .quad __kefirrt_iadd1_impl, 16
     .quad __kefirrt_getlocal_impl, 32
-    .quad __kefirrt_iadd1_impl, 400
+    .quad __kefirrt_iadd1_impl, 416
     .quad __kefirrt_ldmul_impl, 0
     .quad __kefirrt_getlocal_impl, 32
-    .quad __kefirrt_iadd1_impl, 416
+    .quad __kefirrt_iadd1_impl, 432
     .quad __kefirrt_ldadd_impl, 0
     .quad __kefirrt_getlocal_impl, 32
     .quad __kefirrt_pushi_impl, 4
     .quad __kefirrt_getlocal_impl, 32
-    .quad __kefirrt_iadd1_impl, 432
+    .quad __kefirrt_iadd1_impl, 448
     .quad __kefirrt_intcld_impl, 0
     .quad __kefirrt_getlocal_impl, 32
     .quad __kefirrt_iadd1_impl, 16
     .quad __kefirrt_getlocal_impl, 32
-    .quad __kefirrt_iadd1_impl, 432
+    .quad __kefirrt_iadd1_impl, 448
     .quad __kefirrt_ldmul_impl, 0
     .quad __kefirrt_getlocal_impl, 32
-    .quad __kefirrt_iadd1_impl, 448
+    .quad __kefirrt_iadd1_impl, 464
     .quad __kefirrt_ldadd_impl, 0
     .quad __kefirrt_getlocal_impl, 32
     .quad __kefirrt_pushi_impl, 5
     .quad __kefirrt_getlocal_impl, 32
-    .quad __kefirrt_iadd1_impl, 464
+    .quad __kefirrt_iadd1_impl, 480
     .quad __kefirrt_intcld_impl, 0
     .quad __kefirrt_getlocal_impl, 32
     .quad __kefirrt_iadd1_impl, 16
     .quad __kefirrt_getlocal_impl, 32
-    .quad __kefirrt_iadd1_impl, 464
+    .quad __kefirrt_iadd1_impl, 480
     .quad __kefirrt_ldmul_impl, 0
     .quad __kefirrt_getlocal_impl, 32
-    .quad __kefirrt_iadd1_impl, 480
+    .quad __kefirrt_iadd1_impl, 496
     .quad __kefirrt_ldadd_impl, 0
     .quad __kefirrt_getlocal_impl, 32
     .quad __kefirrt_pushi_impl, 6
@@ -255,6 +255,11 @@ __sum_progression_body:
     .quad __kefirrt_iadd1_impl, 144
     .quad __kefirrt_ldadd_impl, 0
     .quad __kefirrt_sfunction_sum10_gate3, 0
+    .quad __kefirrt_getlocal_impl, 32
+    .quad __kefirrt_iadd1_impl, 320
+    .quad __kefirrt_pick_impl, 0
+    .quad __kefirrt_xchg_impl, 2
+    .quad __kefirrt_bcopy_impl, 16
     .quad __sum_progression_epilogue, 0
     .quad __sum_progression_epilogue, 0
 __sum_progression_epilogue:
@@ -262,7 +267,7 @@ __sum_progression_epilogue:
     pop %r12
     fldt (%r12)
     mov %r14, %rsp
-    add $528, %rsp
+    add $544, %rsp
     jmp __kefirrt_restore_state
 # End of sum_progression
 
