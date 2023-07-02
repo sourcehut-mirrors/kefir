@@ -53,12 +53,12 @@ static kefir_result_t map_registers_prepare(struct kefir_mem *mem, const struct 
         REQUIRE_OK(kefir_codegen_opt_sysv_amd64_register_allocation_of(&codegen_func->register_allocator,
                                                                        phi->output_ref, &target_allocation));
 
-        struct kefir_codegen_opt_amd64_sysv_storage_transform_location source_location;
-        struct kefir_codegen_opt_amd64_sysv_storage_transform_location target_location;
+        struct kefir_codegen_opt_amd64_sysv_storage_location source_location;
+        struct kefir_codegen_opt_amd64_sysv_storage_location target_location;
 
-        REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_transform_location_from_reg_allocation(
+        REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_location_from_reg_allocation(
             &source_location, &codegen_func->stack_frame_map, source_allocation));
-        REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_transform_location_from_reg_allocation(
+        REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_location_from_reg_allocation(
             &target_location, &codegen_func->stack_frame_map, target_allocation));
         REQUIRE_OK(
             kefir_codegen_opt_amd64_sysv_storage_transform_insert(mem, transform, &target_location, &source_location));
@@ -77,8 +77,8 @@ static kefir_result_t map_registers(struct kefir_mem *mem, struct kefir_codegen_
 
     kefir_result_t res =
         map_registers_prepare(mem, function, func_analysis, codegen_func, source_block_id, target_block_id, &transform);
-    REQUIRE_CHAIN(
-        &res, kefir_codegen_opt_amd64_sysv_storage_transform_perform(mem, codegen, &codegen_func->storage, &transform));
+    REQUIRE_CHAIN(&res, kefir_codegen_opt_amd64_sysv_storage_transform_perform(
+                            mem, codegen, &codegen_func->storage, &codegen_func->stack_frame_map, &transform));
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_codegen_opt_amd64_sysv_storage_transform_free(mem, &transform);
         return res;

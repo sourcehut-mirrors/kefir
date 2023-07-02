@@ -48,50 +48,71 @@ DEFINE_TRANSLATOR(float_binary_op) {
     REQUIRE_OK(kefir_codegen_opt_sysv_amd64_load_reg_allocation(codegen, &codegen_func->stack_frame_map,
                                                                 arg1_allocation, result_reg.reg));
 
-    struct kefir_codegen_opt_sysv_amd64_floating_point_operand arg2_operand;
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_floating_point_operand_init(mem, codegen, &codegen_func->storage,
-                                                                        &codegen_func->stack_frame_map, arg2_allocation,
-                                                                        &arg2_operand, NULL, NULL));
+    struct kefir_codegen_opt_amd64_sysv_storage_handle arg2_handle;
+    REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_acquire(
+        mem, &codegen->xasmgen, &codegen_func->storage, &codegen_func->stack_frame_map,
+        KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_FLOATING_POINTER_REGISTER |
+            KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_REGISTER_ALLOCATION_MEMORY,
+        arg2_allocation, &arg2_handle, NULL, NULL));
+
+    REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_location_load(&codegen->xasmgen, &codegen_func->stack_frame_map,
+                                                                  arg2_allocation, &arg2_handle.location));
 
     switch (instr->operation.opcode) {
         case KEFIR_OPT_OPCODE_FLOAT32_ADD:
-            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_ADDSS(
-                &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_reg.reg), arg2_operand.operand));
+            REQUIRE_OK(
+                KEFIR_AMD64_XASMGEN_INSTR_ADDSS(&codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_reg.reg),
+                                                kefir_codegen_opt_amd64_sysv_storage_location_operand(
+                                                    &codegen->xasmgen_helpers.operands[0], &arg2_handle.location)));
             break;
 
         case KEFIR_OPT_OPCODE_FLOAT64_ADD:
-            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_ADDSD(
-                &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_reg.reg), arg2_operand.operand));
+            REQUIRE_OK(
+                KEFIR_AMD64_XASMGEN_INSTR_ADDSD(&codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_reg.reg),
+                                                kefir_codegen_opt_amd64_sysv_storage_location_operand(
+                                                    &codegen->xasmgen_helpers.operands[0], &arg2_handle.location)));
             break;
 
         case KEFIR_OPT_OPCODE_FLOAT32_SUB:
-            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_SUBSS(
-                &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_reg.reg), arg2_operand.operand));
+            REQUIRE_OK(
+                KEFIR_AMD64_XASMGEN_INSTR_SUBSS(&codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_reg.reg),
+                                                kefir_codegen_opt_amd64_sysv_storage_location_operand(
+                                                    &codegen->xasmgen_helpers.operands[0], &arg2_handle.location)));
             break;
 
         case KEFIR_OPT_OPCODE_FLOAT64_SUB:
-            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_SUBSD(
-                &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_reg.reg), arg2_operand.operand));
+            REQUIRE_OK(
+                KEFIR_AMD64_XASMGEN_INSTR_SUBSD(&codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_reg.reg),
+                                                kefir_codegen_opt_amd64_sysv_storage_location_operand(
+                                                    &codegen->xasmgen_helpers.operands[0], &arg2_handle.location)));
             break;
 
         case KEFIR_OPT_OPCODE_FLOAT32_MUL:
-            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MULSS(
-                &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_reg.reg), arg2_operand.operand));
+            REQUIRE_OK(
+                KEFIR_AMD64_XASMGEN_INSTR_MULSS(&codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_reg.reg),
+                                                kefir_codegen_opt_amd64_sysv_storage_location_operand(
+                                                    &codegen->xasmgen_helpers.operands[0], &arg2_handle.location)));
             break;
 
         case KEFIR_OPT_OPCODE_FLOAT64_MUL:
-            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MULSD(
-                &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_reg.reg), arg2_operand.operand));
+            REQUIRE_OK(
+                KEFIR_AMD64_XASMGEN_INSTR_MULSD(&codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_reg.reg),
+                                                kefir_codegen_opt_amd64_sysv_storage_location_operand(
+                                                    &codegen->xasmgen_helpers.operands[0], &arg2_handle.location)));
             break;
 
         case KEFIR_OPT_OPCODE_FLOAT32_DIV:
-            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_DIVSS(
-                &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_reg.reg), arg2_operand.operand));
+            REQUIRE_OK(
+                KEFIR_AMD64_XASMGEN_INSTR_DIVSS(&codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_reg.reg),
+                                                kefir_codegen_opt_amd64_sysv_storage_location_operand(
+                                                    &codegen->xasmgen_helpers.operands[0], &arg2_handle.location)));
             break;
 
         case KEFIR_OPT_OPCODE_FLOAT64_DIV:
-            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_DIVSD(
-                &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_reg.reg), arg2_operand.operand));
+            REQUIRE_OK(
+                KEFIR_AMD64_XASMGEN_INSTR_DIVSD(&codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_reg.reg),
+                                                kefir_codegen_opt_amd64_sysv_storage_location_operand(
+                                                    &codegen->xasmgen_helpers.operands[0], &arg2_handle.location)));
             break;
 
         default:
@@ -102,7 +123,7 @@ DEFINE_TRANSLATOR(float_binary_op) {
                                                                  result_allocation, result_reg.reg));
 
     REQUIRE_OK(
-        kefir_codegen_opt_sysv_amd64_floating_point_operand_free(mem, codegen, &codegen_func->storage, &arg2_operand));
+        kefir_codegen_opt_amd64_sysv_storage_release(mem, &codegen->xasmgen, &codegen_func->storage, &arg2_handle));
 
     REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_release_register(mem, &codegen->xasmgen, &codegen_func->storage,
                                                                      &result_reg));

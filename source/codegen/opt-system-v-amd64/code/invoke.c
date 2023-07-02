@@ -156,16 +156,16 @@ static kefir_result_t scalar_argument(const struct kefir_ir_type *type, kefir_si
     REQUIRE_OK(kefir_codegen_opt_sysv_amd64_register_allocation_of(&arg->codegen_func->register_allocator, argument_ref,
                                                                    &argument_allocation));
 
-    struct kefir_codegen_opt_amd64_sysv_storage_transform_location argument_location;
-    REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_transform_location_from_reg_allocation(
+    struct kefir_codegen_opt_amd64_sysv_storage_location argument_location;
+    REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_location_from_reg_allocation(
         &argument_location, &arg->codegen_func->stack_frame_map, argument_allocation));
 
     switch (allocation->klass) {
         case KEFIR_AMD64_SYSV_PARAM_INTEGER:
             REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_transform_insert(
                 arg->mem, arg->transform,
-                &(struct kefir_codegen_opt_amd64_sysv_storage_transform_location){
-                    .type = KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_TRANSFORM_REGISTER,
+                &(struct kefir_codegen_opt_amd64_sysv_storage_location){
+                    .type = KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_REGISTER,
                     .reg = KEFIR_ABI_SYSV_AMD64_PARAMETER_INTEGER_REGISTERS[allocation->location.integer_register]},
                 &argument_location));
             break;
@@ -173,8 +173,8 @@ static kefir_result_t scalar_argument(const struct kefir_ir_type *type, kefir_si
         case KEFIR_AMD64_SYSV_PARAM_SSE:
             REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_transform_insert(
                 arg->mem, arg->transform,
-                &(struct kefir_codegen_opt_amd64_sysv_storage_transform_location){
-                    .type = KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_TRANSFORM_REGISTER,
+                &(struct kefir_codegen_opt_amd64_sysv_storage_location){
+                    .type = KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_REGISTER,
                     .reg = KEFIR_ABI_SYSV_AMD64_PARAMETER_SSE_REGISTERS[allocation->location.sse_register]},
                 &argument_location));
             break;
@@ -182,8 +182,8 @@ static kefir_result_t scalar_argument(const struct kefir_ir_type *type, kefir_si
         case KEFIR_AMD64_SYSV_PARAM_MEMORY:
             REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_transform_insert(
                 arg->mem, arg->transform,
-                &(struct kefir_codegen_opt_amd64_sysv_storage_transform_location){
-                    .type = KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_TRANSFORM_MEMORY,
+                &(struct kefir_codegen_opt_amd64_sysv_storage_location){
+                    .type = KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_MEMORY,
                     .memory.base_reg = KEFIR_AMD64_XASMGEN_REGISTER_RSP,
                     .memory.offset = allocation->location.stack_offset},
                 &argument_location));
@@ -207,8 +207,8 @@ static kefir_result_t register_aggregate_argument(struct invoke_arg *arg,
     REQUIRE_OK(kefir_codegen_opt_sysv_amd64_register_allocation_of(&arg->codegen_func->register_allocator, argument_ref,
                                                                    &argument_allocation));
 
-    struct kefir_codegen_opt_amd64_sysv_storage_transform_location argument_location;
-    REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_transform_location_from_reg_allocation(
+    struct kefir_codegen_opt_amd64_sysv_storage_location argument_location;
+    REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_location_from_reg_allocation(
         &argument_location, &arg->codegen_func->stack_frame_map, argument_allocation));
 
     for (kefir_size_t i = 0; i < kefir_vector_length(&allocation->container.qwords); i++) {
@@ -217,8 +217,8 @@ static kefir_result_t register_aggregate_argument(struct invoke_arg *arg,
             case KEFIR_AMD64_SYSV_PARAM_INTEGER:
                 REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_transform_insert(
                     arg->mem, arg->transform,
-                    &(struct kefir_codegen_opt_amd64_sysv_storage_transform_location){
-                        .type = KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_TRANSFORM_REGISTER,
+                    &(struct kefir_codegen_opt_amd64_sysv_storage_location){
+                        .type = KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_REGISTER,
                         .reg = KEFIR_ABI_SYSV_AMD64_PARAMETER_INTEGER_REGISTERS[qword->location]},
                     &argument_location));
                 break;
@@ -226,8 +226,8 @@ static kefir_result_t register_aggregate_argument(struct invoke_arg *arg,
             case KEFIR_AMD64_SYSV_PARAM_SSE:
                 REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_transform_insert(
                     arg->mem, arg->transform,
-                    &(struct kefir_codegen_opt_amd64_sysv_storage_transform_location){
-                        .type = KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_TRANSFORM_REGISTER,
+                    &(struct kefir_codegen_opt_amd64_sysv_storage_location){
+                        .type = KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_REGISTER,
                         .reg = KEFIR_ABI_SYSV_AMD64_PARAMETER_SSE_REGISTERS[qword->location]},
                     &argument_location));
                 break;
@@ -504,8 +504,8 @@ static kefir_result_t prepare_parameters(struct kefir_mem *mem, struct kefir_cod
 
     kefir_result_t res =
         kefir_ir_type_visitor_list_nodes(ir_func_decl->params, &visitor, (void *) &arg, 0, call_node->argument_count);
-    REQUIRE_CHAIN(
-        &res, kefir_codegen_opt_amd64_sysv_storage_transform_perform(mem, codegen, &codegen_func->storage, &transform));
+    REQUIRE_CHAIN(&res, kefir_codegen_opt_amd64_sysv_storage_transform_perform(
+                            mem, codegen, &codegen_func->storage, &codegen_func->stack_frame_map, &transform));
 
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_codegen_opt_amd64_sysv_storage_transform_free(mem, &transform);

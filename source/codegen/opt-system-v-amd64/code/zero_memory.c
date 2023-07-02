@@ -45,11 +45,11 @@ DEFINE_TRANSLATOR(zero_memory) {
         mem, &codegen->xasmgen, &codegen_func->storage, destination_allocation, KEFIR_AMD64_XASMGEN_REGISTER_RDI,
         &destination_reg));
 
-    struct kefir_codegen_opt_amd64_sysv_storage_transform_location destination_location_origin;
-    struct kefir_codegen_opt_amd64_sysv_storage_transform_location destination_location_intended = {
-        .type = KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_TRANSFORM_REGISTER, .reg = destination_reg.reg};
+    struct kefir_codegen_opt_amd64_sysv_storage_location destination_location_origin;
+    struct kefir_codegen_opt_amd64_sysv_storage_location destination_location_intended = {
+        .type = KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_REGISTER, .reg = destination_reg.reg};
 
-    REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_transform_location_from_reg_allocation(
+    REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_location_from_reg_allocation(
         &destination_location_origin, &codegen_func->stack_frame_map, destination_allocation));
 
     struct kefir_codegen_opt_amd64_sysv_storage_transform transform;
@@ -57,8 +57,8 @@ DEFINE_TRANSLATOR(zero_memory) {
 
     kefir_result_t res = kefir_codegen_opt_amd64_sysv_storage_transform_insert(
         mem, &transform, &destination_location_intended, &destination_location_origin);
-    REQUIRE_CHAIN(
-        &res, kefir_codegen_opt_amd64_sysv_storage_transform_perform(mem, codegen, &codegen_func->storage, &transform));
+    REQUIRE_CHAIN(&res, kefir_codegen_opt_amd64_sysv_storage_transform_perform(
+                            mem, codegen, &codegen_func->storage, &codegen_func->stack_frame_map, &transform));
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_codegen_opt_amd64_sysv_storage_transform_free(mem, &transform);
         return res;

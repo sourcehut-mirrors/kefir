@@ -36,38 +36,17 @@ kefir_result_t kefir_codegen_opt_amd64_sysv_storage_transform_init(
 kefir_result_t kefir_codegen_opt_amd64_sysv_storage_transform_free(
     struct kefir_mem *, struct kefir_codegen_opt_amd64_sysv_storage_transform *);
 
-typedef enum kefir_codegen_opt_amd64_sysv_storage_transform_location_type {
-    KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_TRANSFORM_REGISTER,
-    KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_TRANSFORM_MEMORY
-} kefir_codegen_opt_amd64_sysv_storage_transform_location_type_t;
-
-typedef struct kefir_codegen_opt_amd64_sysv_storage_transform_location {
-    kefir_codegen_opt_amd64_sysv_storage_transform_location_type_t type;
-
-    union {
-        kefir_asm_amd64_xasmgen_register_t reg;
-        struct {
-            kefir_asm_amd64_xasmgen_register_t base_reg;
-            kefir_int64_t offset;
-        } memory;
-    };
-} kefir_codegen_opt_amd64_sysv_storage_transform_location_t;
-
-kefir_result_t kefir_codegen_opt_amd64_sysv_storage_transform_location_from_reg_allocation(
-    struct kefir_codegen_opt_amd64_sysv_storage_transform_location *,
-    const struct kefir_codegen_opt_sysv_amd64_stack_frame_map *,
-    const struct kefir_codegen_opt_sysv_amd64_register_allocation *);
-
 kefir_result_t kefir_codegen_opt_amd64_sysv_storage_transform_insert(
     struct kefir_mem *, struct kefir_codegen_opt_amd64_sysv_storage_transform *,
-    const struct kefir_codegen_opt_amd64_sysv_storage_transform_location *,
-    const struct kefir_codegen_opt_amd64_sysv_storage_transform_location *);
+    const struct kefir_codegen_opt_amd64_sysv_storage_location *,
+    const struct kefir_codegen_opt_amd64_sysv_storage_location *);
 
 kefir_result_t kefir_codegen_opt_amd64_sysv_storage_transform_operations(
     const struct kefir_codegen_opt_amd64_sysv_storage_transform *, kefir_size_t *);
 
 kefir_result_t kefir_codegen_opt_amd64_sysv_storage_transform_perform(
     struct kefir_mem *, struct kefir_codegen_opt_amd64 *, struct kefir_codegen_opt_sysv_amd64_storage *,
+    const struct kefir_codegen_opt_sysv_amd64_stack_frame_map *,
     const struct kefir_codegen_opt_amd64_sysv_storage_transform *);
 
 #endif
