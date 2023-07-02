@@ -49,4 +49,8 @@ _Bool long_double_to_bool(long double);
 float long_double_to_float(long double);
 double long_double_to_double(long double);
 
+long double my_hypot(long double, long double);
+
+long double sumallld(int, ...);
+
 #endif

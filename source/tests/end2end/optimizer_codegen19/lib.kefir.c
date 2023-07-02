@@ -99,3 +99,18 @@ float long_double_to_float(long double x) {
 double long_double_to_double(long double x) {
     return (double) x;
 }
+
+long double my_hypot(long double x, long double y) {
+    return addld(mulld(x, x), mulld(y, y));
+}
+
+long double sumallld(int n, ...) {
+    __builtin_va_list args;
+    __builtin_va_start(args, n);
+    long double result = 0.0L;
+    while (n--) {
+        result += __builtin_va_arg(args, long double);
+    }
+    __builtin_va_end(args);
+    return result;
+}

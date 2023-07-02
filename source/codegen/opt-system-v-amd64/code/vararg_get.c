@@ -587,6 +587,7 @@ DEFINE_TRANSLATOR(vararg_get) {
     visitor.visit[KEFIR_IR_TYPE_UNION] = vararg_visit_aggregate;
     visitor.visit[KEFIR_IR_TYPE_ARRAY] = vararg_visit_aggregate;
     visitor.visit[KEFIR_IR_TYPE_BUILTIN] = vararg_visit_builtin;
+    visitor.visit[KEFIR_IR_TYPE_LONG_DOUBLE] = vararg_visit_aggregate;
     struct vararg_getter_arg param = {.mem = mem,
                                       .codegen = codegen,
                                       .function = function,

@@ -44,6 +44,17 @@ int main(void) {
             assert(fabsl(divld(x, y) - (x / y)) < EPSILON_LD);
             assert(ldgreater(x, y) == (x > y));
             assert(ldlesser(x, y) == (x < y));
+
+            assert(fabsl(my_hypot(x, y) - (x * x + y * y)) < EPSILON_LD);
+
+            assert(fabsl(sumallld(0) - 0.0L) < EPSILON_LD);
+            assert(fabsl(sumallld(0, x) - 0.0L) < EPSILON_LD);
+            assert(fabsl(sumallld(0, x, y) - 0.0L) < EPSILON_LD);
+            assert(fabsl(sumallld(1, x, y) - x) < EPSILON_LD);
+            assert(fabsl(sumallld(2, x, y) - (x + y)) < EPSILON_LD);
+            assert(fabsl(sumallld(3, x, y, 1.0L) - (x + y + 1.0L)) < EPSILON_LD);
+            assert(fabsl(sumallld(4, x, y, 1.0L, x * y) - (x + y + 1.0L + x * y)) < EPSILON_LD);
+            assert(fabsl(sumallld(5, x, y, 1.0L, x * y, x / y) - (x + y + 1.0L + x * y + x / y)) < EPSILON_LD);
         }
         assert(fabsl(negld(x) + x) < EPSILON_LD);
 
