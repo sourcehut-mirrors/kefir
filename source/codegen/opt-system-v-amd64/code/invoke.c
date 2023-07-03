@@ -762,7 +762,8 @@ static kefir_result_t invoke_impl(struct kefir_mem *mem, struct kefir_codegen_op
     kefir_bool_t preserve_virtual_func = false;
     if (virtual_func != NULL &&
         virtual_func->result.type == KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_GENERAL_PURPOSE_REGISTER &&
-        kefir_abi_sysv_amd64_is_parameter_register(virtual_func->result.reg)) {
+        (kefir_abi_sysv_amd64_is_parameter_register(virtual_func->result.reg) ||
+         virtual_func->result.reg == KEFIR_AMD64_XASMGEN_REGISTER_RAX)) {
         stack_increment += KEFIR_AMD64_SYSV_ABI_QWORD;
         preserve_virtual_func = true;
     }
