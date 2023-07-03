@@ -60,7 +60,8 @@ DEFINE_TRANSLATOR(float_conv) {
             REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_acquire(
                 mem, &codegen->xasmgen, &codegen_func->storage, &codegen_func->stack_frame_map,
                 KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_FLOATING_POINTER_REGISTER |
-                    KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_REGISTER_ALLOCATION_MEMORY,
+                    KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_REGISTER_ALLOCATION_MEMORY |
+                    KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_REGISTER_ALLOCATION_RDONLY,
                 arg_allocation, &arg_handle, NULL, NULL));
 
             REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_location_load(
@@ -80,7 +81,8 @@ DEFINE_TRANSLATOR(float_conv) {
             REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_acquire(
                 mem, &codegen->xasmgen, &codegen_func->storage, &codegen_func->stack_frame_map,
                 KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_FLOATING_POINTER_REGISTER |
-                    KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_REGISTER_ALLOCATION_MEMORY,
+                    KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_REGISTER_ALLOCATION_MEMORY |
+                    KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_REGISTER_ALLOCATION_RDONLY,
                 arg_allocation, &arg_handle, NULL, NULL));
 
             REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_location_load(
@@ -100,7 +102,8 @@ DEFINE_TRANSLATOR(float_conv) {
             REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_acquire(
                 mem, &codegen->xasmgen, &codegen_func->storage, &codegen_func->stack_frame_map,
                 KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_FLOATING_POINTER_REGISTER |
-                    KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_REGISTER_ALLOCATION_MEMORY,
+                    KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_REGISTER_ALLOCATION_MEMORY |
+                    KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_REGISTER_ALLOCATION_RDONLY,
                 arg_allocation, &arg_handle, NULL, NULL));
 
             REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_location_load(
@@ -120,7 +123,8 @@ DEFINE_TRANSLATOR(float_conv) {
             REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_acquire(
                 mem, &codegen->xasmgen, &codegen_func->storage, &codegen_func->stack_frame_map,
                 KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_FLOATING_POINTER_REGISTER |
-                    KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_REGISTER_ALLOCATION_MEMORY,
+                    KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_REGISTER_ALLOCATION_MEMORY |
+                    KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_REGISTER_ALLOCATION_RDONLY,
                 arg_allocation, &arg_handle, NULL, NULL));
 
             REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_location_load(
@@ -140,7 +144,9 @@ DEFINE_TRANSLATOR(float_conv) {
             struct kefir_codegen_opt_amd64_sysv_storage_handle arg_handle;
             REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_acquire(
                 mem, &codegen->xasmgen, &codegen_func->storage, &codegen_func->stack_frame_map,
-                KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_GENERAL_PURPOSE_REGISTER, NULL, &arg_handle, NULL, NULL));
+                KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_GENERAL_PURPOSE_REGISTER |
+                    KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_REGISTER_ALLOCATION_RDONLY,
+                NULL, &arg_handle, NULL, NULL));
 
             REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_location_load(
                 &codegen->xasmgen, &codegen_func->stack_frame_map, arg_allocation, &arg_handle.location));
@@ -277,7 +283,8 @@ DEFINE_TRANSLATOR(float_to_uint_conv) {
 
     REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_acquire(
         mem, &codegen->xasmgen, &codegen_func->storage, &codegen_func->stack_frame_map,
-        KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_SPECIFIC_REGISTER(KEFIR_AMD64_XASMGEN_REGISTER_RAX),
+        KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_SPECIFIC_REGISTER(KEFIR_AMD64_XASMGEN_REGISTER_RAX) |
+            KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_REGISTER_ALLOCATION_OWNER,
         result_allocation, &result_handle, NULL, NULL));
     REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_acquire(
         mem, &codegen->xasmgen, &codegen_func->storage, &codegen_func->stack_frame_map,

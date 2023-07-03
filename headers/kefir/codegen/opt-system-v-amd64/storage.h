@@ -103,14 +103,13 @@ const struct kefir_asm_amd64_xasmgen_operand *kefir_codegen_opt_amd64_sysv_stora
 #define KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_GENERAL_PURPOSE_REGISTER (1ull)
 #define KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_FLOATING_POINTER_REGISTER (1ull << 1)
 #define KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_REGISTER_ALLOCATION_MEMORY (1ull << 2)
-#define KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_SHARED_REGISTER (1ull << 3)
-#define KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_SPECIFIC_REGISTER_FLAG (1ull << 4)
+#define KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_REGISTER_ALLOCATION_RDONLY (1ull << 3)
+#define KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_REGISTER_ALLOCATION_OWNER (1ull << 4)
+#define KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_SPECIFIC_REGISTER_FLAG (1ull << 5)
 #define KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_SPECIFIC_REGISTER(_reg) \
     ((((kefir_uint64_t) (_reg)) << 48) | KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_SPECIFIC_REGISTER_FLAG)
 typedef struct kefir_codegen_opt_amd64_sysv_storage_handle {
     struct kefir_codegen_opt_amd64_sysv_storage_location location;
-
-    const struct kefir_codegen_opt_sysv_amd64_register_allocation *reg_allocation;
     struct kefir_codegen_opt_sysv_amd64_storage_register storage_reg;
 } kefir_codegen_opt_amd64_sysv_storage_handle_t;
 

@@ -444,14 +444,21 @@ static kefir_result_t long_double_argument(const struct kefir_ir_type *type, kef
     struct kefir_codegen_opt_amd64_sysv_storage_handle src_handle, tmp_handle;
     REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_acquire(
         arg->mem, &arg->codegen->xasmgen, &arg->codegen_func->storage, &arg->codegen_func->stack_frame_map,
-        KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_GENERAL_PURPOSE_REGISTER, argument_allocation, &src_handle,
-        storage_filter_parameter_regiters, NULL));
+        KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_GENERAL_PURPOSE_REGISTER |
+            KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_REGISTER_ALLOCATION_RDONLY,
+        argument_allocation, &src_handle, storage_filter_parameter_regiters, NULL));
     REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_acquire(
         arg->mem, &arg->codegen->xasmgen, &arg->codegen_func->storage, &arg->codegen_func->stack_frame_map,
         KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_GENERAL_PURPOSE_REGISTER, NULL, &tmp_handle,
         storage_filter_parameter_regiters, NULL));
 
-    const kefir_size_t extra_stack_offset = 0;
+    kefir_size_t extra_stack_offset = 0;
+    if (KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_HANDLE_IS_REG_EVICTED(&src_handle)) {
+        extra_stack_offset += KEFIR_AMD64_SYSV_ABI_QWORD;
+    }
+    if (KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_HANDLE_IS_REG_EVICTED(&tmp_handle)) {
+        extra_stack_offset += KEFIR_AMD64_SYSV_ABI_QWORD;
+    }
 
     REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_location_load(
         &arg->codegen->xasmgen, &arg->codegen_func->stack_frame_map, argument_allocation, &src_handle.location));

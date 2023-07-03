@@ -52,7 +52,8 @@ DEFINE_TRANSLATOR(float_binary_op) {
     REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_acquire(
         mem, &codegen->xasmgen, &codegen_func->storage, &codegen_func->stack_frame_map,
         KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_FLOATING_POINTER_REGISTER |
-            KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_REGISTER_ALLOCATION_MEMORY,
+            KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_REGISTER_ALLOCATION_MEMORY |
+            KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_REGISTER_ALLOCATION_RDONLY,
         arg2_allocation, &arg2_handle, NULL, NULL));
 
     REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_location_load(&codegen->xasmgen, &codegen_func->stack_frame_map,

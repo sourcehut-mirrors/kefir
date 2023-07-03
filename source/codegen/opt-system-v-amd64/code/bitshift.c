@@ -47,12 +47,14 @@ DEFINE_TRANSLATOR(bitshift) {
     struct kefir_codegen_opt_amd64_sysv_storage_handle result_handle;
     REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_acquire(
         mem, &codegen->xasmgen, &codegen_func->storage, &codegen_func->stack_frame_map,
-        KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_SPECIFIC_REGISTER(KEFIR_AMD64_XASMGEN_REGISTER_RCX),
+        KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_SPECIFIC_REGISTER(KEFIR_AMD64_XASMGEN_REGISTER_RCX) |
+            KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_REGISTER_ALLOCATION_RDONLY,
         arg2_allocation, &shift_handle, NULL, NULL));
     REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_acquire(
         mem, &codegen->xasmgen, &codegen_func->storage, &codegen_func->stack_frame_map,
-        KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_GENERAL_PURPOSE_REGISTER, result_allocation, &result_handle,
-        kefir_codegen_opt_sysv_amd64_storage_filter_regs_allocation,
+        KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_GENERAL_PURPOSE_REGISTER |
+            KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_REGISTER_ALLOCATION_OWNER,
+        result_allocation, &result_handle, kefir_codegen_opt_sysv_amd64_storage_filter_regs_allocation,
         (const struct kefir_codegen_opt_sysv_amd64_register_allocation *[]){arg2_allocation, NULL}));
 
     REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_location_load(&codegen->xasmgen, &codegen_func->stack_frame_map,
