@@ -128,7 +128,7 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_storage_has_borrowed_registers(
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_codegen_opt_sysv_amd64_storage_acquire_allocated_register(
+static kefir_result_t kefir_codegen_opt_sysv_amd64_storage_acquire_allocated_register(
     struct kefir_mem *mem, struct kefir_codegen_opt_sysv_amd64_storage *storage,
     const struct kefir_codegen_opt_sysv_amd64_register_allocation *reg_allocation, kefir_bool_t exclusive,
     struct kefir_codegen_opt_sysv_amd64_storage_register *tmp_reg,

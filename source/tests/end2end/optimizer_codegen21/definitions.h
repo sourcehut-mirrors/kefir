@@ -23,4 +23,7 @@
 
 extern long invoke(long (*)(int, ...), long);
 
+extern long double sumld(long, long double);
+extern long double testsumld(long);
+
 #endif

@@ -23,3 +23,7 @@
 long invoke(long (*callback)(int, ...), long base) {
     return callback(5, base, base + 1, base * 2, base / 2, base ^ 0x0badbabe);
 }
+
+long double testsumld(long x) {
+    return sumld(~x, (long double) x);
+}

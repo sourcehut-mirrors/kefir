@@ -22,7 +22,10 @@
 #include <stdio.h>
 #include <assert.h>
 #include <stdarg.h>
+#include <math.h>
 #include "./definitions.h"
+
+#define EPSILON_LD 1e-8
 
 static long sum(int n, ...) {
     va_list args;
@@ -35,9 +38,15 @@ static long sum(int n, ...) {
     return result;
 }
 
+extern long double sumld(long x, long double y) {
+    return ((long double) x) + y;
+}
+
 int main(void) {
     for (long i = -100; i < 100; i++) {
         assert(invoke(sum, i) == (i + i + 1 + i * 2 + i / 2 + (i ^ 0x0badbabe)));
+
+        assert(fabsl(testsumld(i) - ((long double) ~i + (long double) i)) < EPSILON_LD);
     }
 
     return EXIT_SUCCESS;

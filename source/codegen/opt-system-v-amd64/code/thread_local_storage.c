@@ -90,15 +90,26 @@ static kefir_result_t emulated_tls(struct kefir_codegen_opt_amd64 *codegen, cons
             result_allocation->result.reg == reg) {
             continue;
         }
-        if (!kefir_asm_amd64_xasmgen_register_is_floating_point(reg)) {
-            kefir_bool_t occupied;
-            REQUIRE_OK(
-                kefir_codegen_opt_sysv_amd64_storage_is_register_occupied(&codegen_func->storage, reg, &occupied));
-            if (occupied) {
-                REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_PUSH(&codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(reg)));
-                offset += KEFIR_AMD64_SYSV_ABI_QWORD;
-            }
+        kefir_bool_t occupied;
+        REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_is_register_occupied(&codegen_func->storage, reg, &occupied));
+        if (!occupied) {
+            continue;
         }
+        if (!kefir_asm_amd64_xasmgen_register_is_floating_point(reg)) {
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_PUSH(&codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(reg)));
+        } else {
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_SUB(
+                &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
+                kefir_asm_amd64_xasmgen_operand_imm(&codegen->xasmgen_helpers.operands[0],
+                                                    KEFIR_AMD64_SYSV_ABI_QWORD)));
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOVQ(
+                &codegen->xasmgen,
+                kefir_asm_amd64_xasmgen_operand_indirect(
+                    &codegen->xasmgen_helpers.operands[0],
+                    kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP), 0),
+                kefir_asm_amd64_xasmgen_operand_reg(reg)));
+        }
+        offset += KEFIR_AMD64_SYSV_ABI_QWORD;
     }
 
     kefir_int64_t aligned_offset = kefir_target_abi_pad_aligned(offset, 2 * KEFIR_AMD64_SYSV_ABI_QWORD);
@@ -150,14 +161,25 @@ static kefir_result_t emulated_tls(struct kefir_codegen_opt_amd64 *codegen, cons
             result_allocation->result.reg == reg) {
             continue;
         }
+
+        kefir_bool_t occupied;
+        REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_is_register_occupied(&codegen_func->storage, reg, &occupied));
+        if (!occupied) {
+            continue;
+        }
+
         if (!kefir_asm_amd64_xasmgen_register_is_floating_point(reg)) {
-            kefir_bool_t occupied;
-            REQUIRE_OK(
-                kefir_codegen_opt_sysv_amd64_storage_is_register_occupied(&codegen_func->storage, reg, &occupied));
-            if (occupied) {
-                REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_POP(&codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(reg)));
-                offset += KEFIR_AMD64_SYSV_ABI_QWORD;
-            }
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_POP(&codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(reg)));
+        } else {
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOVQ(
+                &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(reg),
+                kefir_asm_amd64_xasmgen_operand_indirect(
+                    &codegen->xasmgen_helpers.operands[0],
+                    kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP), 0)));
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_ADD(
+                &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
+                kefir_asm_amd64_xasmgen_operand_imm(&codegen->xasmgen_helpers.operands[0],
+                                                    KEFIR_AMD64_SYSV_ABI_QWORD)));
         }
     }
     return KEFIR_OK;

@@ -36,12 +36,6 @@ typedef struct kefir_codegen_opt_sysv_amd64_storage_register {
     kefir_asm_amd64_xasmgen_register_t reg;
 } kefir_codegen_opt_sysv_amd64_storage_register_t;
 
-kefir_result_t kefir_codegen_opt_sysv_amd64_storage_acquire_allocated_register(
-    struct kefir_mem *, struct kefir_codegen_opt_sysv_amd64_storage *,
-    const struct kefir_codegen_opt_sysv_amd64_register_allocation *, kefir_bool_t,
-    struct kefir_codegen_opt_sysv_amd64_storage_register *,
-    kefir_result_t (*)(kefir_asm_amd64_xasmgen_register_t, kefir_bool_t *, void *), void *);
-
 kefir_result_t kefir_codegen_opt_sysv_amd64_storage_try_acquire_exclusive_allocated_register(
     struct kefir_mem *, struct kefir_amd64_xasmgen *, struct kefir_codegen_opt_sysv_amd64_storage *,
     const struct kefir_codegen_opt_sysv_amd64_register_allocation *,
