@@ -2,6 +2,7 @@ SOURCE=
 HEADERS=
 BOOTSTRAP=
 KEFIRCC=
+KEFIR_EXTRAFLAGS=
 PLATFORM=
 AS=as
 LD=ld
@@ -16,6 +17,8 @@ KEFIR_FLAGS += --target x86_64-netbsd-system -D__GNUC__=4 -D__GNUC_MINOR__=20 -D
 else
 KEFIR_FLAGS += --target x86_64-linux-gnu
 endif
+
+KEFIR_FLAGS += $(KEFIR_EXTRAFLAGS)
 
 KEFIR_BUILD_SOURCE_ID := $(shell $(SOURCE)/../scripts/get-source-id.sh)
 KEFIR_FLAGS += '-DKEFIR_BUILD_SOURCE_ID="$(KEFIR_BUILD_SOURCE_ID)"'
