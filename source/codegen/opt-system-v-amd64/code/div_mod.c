@@ -41,6 +41,7 @@ DEFINE_TRANSLATOR(div_mod) {
 
     struct kefir_codegen_opt_amd64_sysv_storage_handle quotient_handle;
     struct kefir_codegen_opt_amd64_sysv_storage_handle remainder_handle;
+    struct kefir_codegen_opt_amd64_sysv_storage_handle divisor_handle;
 
     REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_acquire(
         mem, &codegen->xasmgen, &codegen_func->storage, &codegen_func->stack_frame_map,
@@ -54,8 +55,17 @@ DEFINE_TRANSLATOR(div_mod) {
             KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_REGISTER_ALLOCATION_OWNER,
         result_allocation, &remainder_handle, NULL, NULL));
 
+    REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_acquire(
+        mem, &codegen->xasmgen, &codegen_func->storage, &codegen_func->stack_frame_map,
+        KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_GENERAL_PURPOSE_REGISTER |
+            KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_REGISTER_ALLOCATION_MEMORY |
+            KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_REGISTER_ALLOCATION_RDONLY,
+        arg2_allocation, &divisor_handle, NULL, NULL));
+
     REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_location_load(&codegen->xasmgen, &codegen_func->stack_frame_map,
                                                                   arg1_allocation, &quotient_handle.location));
+    REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_location_load(&codegen->xasmgen, &codegen_func->stack_frame_map,
+                                                                  arg2_allocation, &divisor_handle.location));
 
     switch (instr->operation.opcode) {
         case KEFIR_OPT_OPCODE_INT_DIV: {
@@ -67,9 +77,8 @@ DEFINE_TRANSLATOR(div_mod) {
 
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_CQO(&codegen->xasmgen));
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_IDIV(
-                &codegen->xasmgen,
-                kefir_codegen_opt_sysv_amd64_reg_allocation_operand(&codegen->xasmgen_helpers.operands[0],
-                                                                    &codegen_func->stack_frame_map, arg2_allocation)));
+                &codegen->xasmgen, kefir_codegen_opt_amd64_sysv_storage_location_operand(
+                                       &codegen->xasmgen_helpers.operands[0], &divisor_handle.location)));
 
             REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_location_store(
                 &codegen->xasmgen, &codegen_func->stack_frame_map, result_allocation, &quotient_handle.location));
@@ -86,9 +95,8 @@ DEFINE_TRANSLATOR(div_mod) {
                 &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(remainder_handle.location.reg),
                 kefir_asm_amd64_xasmgen_operand_reg(remainder_handle.location.reg)));
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_DIV(
-                &codegen->xasmgen,
-                kefir_codegen_opt_sysv_amd64_reg_allocation_operand(&codegen->xasmgen_helpers.operands[0],
-                                                                    &codegen_func->stack_frame_map, arg2_allocation)));
+                &codegen->xasmgen, kefir_codegen_opt_amd64_sysv_storage_location_operand(
+                                       &codegen->xasmgen_helpers.operands[0], &divisor_handle.location)));
 
             REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_location_store(
                 &codegen->xasmgen, &codegen_func->stack_frame_map, result_allocation, &quotient_handle.location));
@@ -103,9 +111,8 @@ DEFINE_TRANSLATOR(div_mod) {
 
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_CQO(&codegen->xasmgen));
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_IDIV(
-                &codegen->xasmgen,
-                kefir_codegen_opt_sysv_amd64_reg_allocation_operand(&codegen->xasmgen_helpers.operands[0],
-                                                                    &codegen_func->stack_frame_map, arg2_allocation)));
+                &codegen->xasmgen, kefir_codegen_opt_amd64_sysv_storage_location_operand(
+                                       &codegen->xasmgen_helpers.operands[0], &divisor_handle.location)));
 
             REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_location_store(
                 &codegen->xasmgen, &codegen_func->stack_frame_map, result_allocation, &remainder_handle.location));
@@ -122,9 +129,8 @@ DEFINE_TRANSLATOR(div_mod) {
                 &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(remainder_handle.location.reg),
                 kefir_asm_amd64_xasmgen_operand_reg(remainder_handle.location.reg)));
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_DIV(
-                &codegen->xasmgen,
-                kefir_codegen_opt_sysv_amd64_reg_allocation_operand(&codegen->xasmgen_helpers.operands[0],
-                                                                    &codegen_func->stack_frame_map, arg2_allocation)));
+                &codegen->xasmgen, kefir_codegen_opt_amd64_sysv_storage_location_operand(
+                                       &codegen->xasmgen_helpers.operands[0], &divisor_handle.location)));
 
             REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_location_store(
                 &codegen->xasmgen, &codegen_func->stack_frame_map, result_allocation, &remainder_handle.location));
@@ -134,6 +140,8 @@ DEFINE_TRANSLATOR(div_mod) {
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected optimizer instruction opcode");
     }
 
+    REQUIRE_OK(
+        kefir_codegen_opt_amd64_sysv_storage_release(mem, &codegen->xasmgen, &codegen_func->storage, &divisor_handle));
     REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_release(mem, &codegen->xasmgen, &codegen_func->storage,
                                                             &remainder_handle));
     REQUIRE_OK(
