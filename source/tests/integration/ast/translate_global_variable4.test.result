@@ -97,7 +97,7 @@
                 },
                 {
                     "class": "string",
-                    "content": "WTF world\?\u0000",
+                    "content": "WTF world?\u0000",
                     "length": 11
                 },
                 {
@@ -126,7 +126,7 @@
             "id": 2,
             "public": false,
             "type": "multibyte",
-            "literal": "WTF world\?\u0000",
+            "literal": "WTF world?\u0000",
             "length": 11
         }
     ],

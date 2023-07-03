@@ -30,7 +30,7 @@
         "string_literal": {
             "class": "string_literal",
             "type": "multibyte",
-            "content": "What's wrong\?\u0000",
+            "content": "What's wrong?\u0000",
             "length": 14
         }
     },

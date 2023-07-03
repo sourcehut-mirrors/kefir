@@ -184,7 +184,7 @@
             "id": 0,
             "public": true,
             "type": "multibyte",
-            "literal": "WTF\?\u0000",
+            "literal": "WTF?\u0000",
             "length": 5
         }
     ],

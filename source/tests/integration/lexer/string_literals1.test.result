@@ -30,7 +30,7 @@
         "preprocessor": false,
         "raw": false,
         "type": "multibyte",
-        "content": "hxr\v\f\r\?\a\\\u0000",
+        "content": "hxr\v\f\r?\a\\\u0000",
         "length": 10
     },
     {
