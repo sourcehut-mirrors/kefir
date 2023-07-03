@@ -22,26 +22,6 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
-kefir_result_t kefir_codegen_opt_sysv_amd64_filter_regs_allocation(kefir_asm_amd64_xasmgen_register_t reg,
-                                                                   kefir_bool_t *success, void *payload) {
-    REQUIRE(success != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
-    REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to payload"));
-
-    ASSIGN_DECL_CAST(const struct kefir_codegen_opt_sysv_amd64_register_allocation **, allocation_iter, payload);
-    for (; *allocation_iter != NULL; ++allocation_iter) {
-        if (((*allocation_iter)->result.type ==
-                 KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_GENERAL_PURPOSE_REGISTER ||
-             (*allocation_iter)->result.type ==
-                 KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_FLOATING_POINT_REGISTER) &&
-            (*allocation_iter)->result.reg == reg) {
-            *success = false;
-            return KEFIR_OK;
-        }
-    }
-    *success = true;
-    return KEFIR_OK;
-}
-
 kefir_result_t kefir_codegen_opt_sysv_amd64_storage_filter_regs_allocation(
     const struct kefir_codegen_opt_amd64_sysv_storage_location *location, kefir_bool_t *success, void *payload) {
     REQUIRE(location != NULL,

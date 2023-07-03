@@ -653,19 +653,22 @@ static kefir_result_t register_aggregate_return(struct invoke_arg *arg,
         }
     }
 
-    struct kefir_codegen_opt_sysv_amd64_storage_register result_reg;
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_try_acquire_exclusive_allocated_register(
-        arg->mem, &arg->codegen->xasmgen, &arg->codegen_func->storage, arg->result_allocation, &result_reg, NULL,
-        NULL));
+    struct kefir_codegen_opt_amd64_sysv_storage_handle result_handle;
+    REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_acquire(
+        arg->mem, &arg->codegen->xasmgen, &arg->codegen_func->storage, &arg->codegen_func->stack_frame_map,
+        KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_GENERAL_PURPOSE_REGISTER |
+            KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_REGISTER_ALLOCATION_OWNER,
+        arg->result_allocation, &result_handle, NULL, NULL));
+
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_LEA(
-        &arg->codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_reg.reg),
+        &arg->codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_handle.location.reg),
         kefir_asm_amd64_xasmgen_operand_indirect(&arg->codegen->xasmgen_helpers.operands[0],
                                                  kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
                                                  arg->codegen_func->stack_frame_map.offset.temporary_area)));
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_store_reg_allocation(arg->codegen, &arg->codegen_func->stack_frame_map,
-                                                                 arg->result_allocation, result_reg.reg));
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_release_register(arg->mem, &arg->codegen->xasmgen,
-                                                                     &arg->codegen_func->storage, &result_reg));
+    REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_location_store(
+        &arg->codegen->xasmgen, &arg->codegen_func->stack_frame_map, arg->result_allocation, &result_handle.location));
+    REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_release(arg->mem, &arg->codegen->xasmgen,
+                                                            &arg->codegen_func->storage, &result_handle));
     return KEFIR_OK;
 }
 
@@ -717,27 +720,29 @@ static kefir_result_t long_double_return(const struct kefir_ir_type *type, kefir
     REQUIRE(arg != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER,
                                          "Expected valid optimizer codegen invoke parameter preparation argument"));
 
-    struct kefir_codegen_opt_sysv_amd64_storage_register result_reg;
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_try_acquire_exclusive_allocated_register(
-        arg->mem, &arg->codegen->xasmgen, &arg->codegen_func->storage, arg->result_allocation, &result_reg, NULL,
-        NULL));
+    struct kefir_codegen_opt_amd64_sysv_storage_handle result_handle;
+    REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_acquire(
+        arg->mem, &arg->codegen->xasmgen, &arg->codegen_func->storage, &arg->codegen_func->stack_frame_map,
+        KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_GENERAL_PURPOSE_REGISTER |
+            KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_REGISTER_ALLOCATION_OWNER,
+        arg->result_allocation, &result_handle, NULL, NULL));
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_LEA(
-        &arg->codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_reg.reg),
+        &arg->codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_handle.location.reg),
         kefir_asm_amd64_xasmgen_operand_indirect(&arg->codegen->xasmgen_helpers.operands[0],
                                                  kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
                                                  arg->codegen_func->stack_frame_map.offset.temporary_area)));
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_FSTP(
-        &arg->codegen->xasmgen,
-        kefir_asm_amd64_xasmgen_operand_pointer(
-            &arg->codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_POINTER_TBYTE,
-            kefir_asm_amd64_xasmgen_operand_indirect(&arg->codegen->xasmgen_helpers.operands[1],
-                                                     kefir_asm_amd64_xasmgen_operand_reg(result_reg.reg), 0))));
+        &arg->codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_pointer(
+                                    &arg->codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_POINTER_TBYTE,
+                                    kefir_asm_amd64_xasmgen_operand_indirect(
+                                        &arg->codegen->xasmgen_helpers.operands[1],
+                                        kefir_asm_amd64_xasmgen_operand_reg(result_handle.location.reg), 0))));
 
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_store_reg_allocation(arg->codegen, &arg->codegen_func->stack_frame_map,
-                                                                 arg->result_allocation, result_reg.reg));
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_release_register(arg->mem, &arg->codegen->xasmgen,
-                                                                     &arg->codegen_func->storage, &result_reg));
+    REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_location_store(
+        &arg->codegen->xasmgen, &arg->codegen_func->stack_frame_map, arg->result_allocation, &result_handle.location));
+    REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_release(arg->mem, &arg->codegen->xasmgen,
+                                                            &arg->codegen_func->storage, &result_handle));
     return KEFIR_OK;
 }
 

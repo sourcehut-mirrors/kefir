@@ -142,22 +142,26 @@ DEFINE_TRANSLATOR(jump) {
                 &codegen_func->register_allocator, instr->operation.parameters.branch.condition_ref,
                 &condition_allocation));
 
-            struct kefir_codegen_opt_sysv_amd64_storage_register condition_reg;
-            REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_try_acquire_shared_allocated_register(
-                mem, &codegen->xasmgen, &codegen_func->storage, condition_allocation, &condition_reg, NULL, NULL));
+            struct kefir_codegen_opt_amd64_sysv_storage_handle condition_handle;
+            REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_acquire(
+                mem, &codegen->xasmgen, &codegen_func->storage, &codegen_func->stack_frame_map,
+                KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_GENERAL_PURPOSE_REGISTER |
+                    KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_REGISTER_ALLOCATION_RDONLY,
+                condition_allocation, &condition_handle, NULL, NULL));
 
-            REQUIRE_OK(kefir_codegen_opt_sysv_amd64_load_reg_allocation(codegen, &codegen_func->stack_frame_map,
-                                                                        condition_allocation, condition_reg.reg));
+            REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_location_load(
+                &codegen->xasmgen, &codegen_func->stack_frame_map, condition_allocation, &condition_handle.location));
 
-            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_TEST(&codegen->xasmgen,
-                                                      kefir_asm_amd64_xasmgen_operand_reg(condition_reg.reg),
-                                                      kefir_asm_amd64_xasmgen_operand_reg(condition_reg.reg)));
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_TEST(
+                &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(condition_handle.location.reg),
+                kefir_asm_amd64_xasmgen_operand_reg(condition_handle.location.reg)));
 
             kefir_bool_t has_mapped_regs;
             kefir_id_t alternative_label;
             REQUIRE_OK(has_mapped_registers(mem, function, func_analysis, codegen_func, instr->block_id,
                                             instr->operation.parameters.branch.alternative_block, &has_mapped_regs));
-            kefir_bool_t separate_alternative_jmp = has_mapped_regs || condition_reg.evicted;
+            kefir_bool_t separate_alternative_jmp =
+                has_mapped_regs || KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_HANDLE_IS_REG_EVICTED(&condition_handle);
 
             if (separate_alternative_jmp) {
                 alternative_label = codegen_func->nonblock_labels++;
@@ -169,7 +173,7 @@ DEFINE_TRANSLATOR(jump) {
                                                function->ir_func->name, instr->block_id, alternative_label))));
             } else {
                 REQUIRE_OK(
-                    kefir_codegen_opt_sysv_amd64_storage_restore_evicted_register(&codegen->xasmgen, &condition_reg));
+                    kefir_codegen_opt_amd64_sysv_storage_handle_restore_evicted(&codegen->xasmgen, &condition_handle));
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_JZ(
                     &codegen->xasmgen,
                     kefir_asm_amd64_xasmgen_operand_label(
@@ -180,7 +184,7 @@ DEFINE_TRANSLATOR(jump) {
             }
 
             REQUIRE_OK(
-                kefir_codegen_opt_sysv_amd64_storage_restore_evicted_register(&codegen->xasmgen, &condition_reg));
+                kefir_codegen_opt_amd64_sysv_storage_handle_restore_evicted(&codegen->xasmgen, &condition_handle));
             REQUIRE_OK(map_registers(mem, codegen, function, func_analysis, codegen_func, instr->block_id,
                                      instr->operation.parameters.branch.target_block));
 
@@ -205,7 +209,7 @@ DEFINE_TRANSLATOR(jump) {
                                                      function->ir_func->name, instr->block_id, alternative_label));
 
                 REQUIRE_OK(
-                    kefir_codegen_opt_sysv_amd64_storage_restore_evicted_register(&codegen->xasmgen, &condition_reg));
+                    kefir_codegen_opt_amd64_sysv_storage_handle_restore_evicted(&codegen->xasmgen, &condition_handle));
                 REQUIRE_OK(map_registers(mem, codegen, function, func_analysis, codegen_func, instr->block_id,
                                          instr->operation.parameters.branch.alternative_block));
 
@@ -223,9 +227,9 @@ DEFINE_TRANSLATOR(jump) {
                 }
             }
 
-            condition_reg.evicted = false;
-            REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_release_register(mem, &codegen->xasmgen,
-                                                                             &codegen_func->storage, &condition_reg));
+            REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_handle_mask_evicted(&codegen->xasmgen, &condition_handle));
+            REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_release(mem, &codegen->xasmgen, &codegen_func->storage,
+                                                                    &condition_handle));
         } break;
 
         case KEFIR_OPT_OPCODE_IJUMP: {

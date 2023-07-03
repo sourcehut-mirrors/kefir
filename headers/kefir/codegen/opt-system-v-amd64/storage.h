@@ -36,46 +36,6 @@ typedef struct kefir_codegen_opt_sysv_amd64_storage_register {
     kefir_asm_amd64_xasmgen_register_t reg;
 } kefir_codegen_opt_sysv_amd64_storage_register_t;
 
-kefir_result_t kefir_codegen_opt_sysv_amd64_storage_try_acquire_exclusive_allocated_register(
-    struct kefir_mem *, struct kefir_amd64_xasmgen *, struct kefir_codegen_opt_sysv_amd64_storage *,
-    const struct kefir_codegen_opt_sysv_amd64_register_allocation *,
-    struct kefir_codegen_opt_sysv_amd64_storage_register *,
-    kefir_result_t (*)(kefir_asm_amd64_xasmgen_register_t, kefir_bool_t *, void *), void *);
-
-kefir_result_t kefir_codegen_opt_sysv_amd64_storage_try_acquire_shared_allocated_register(
-    struct kefir_mem *, struct kefir_amd64_xasmgen *, struct kefir_codegen_opt_sysv_amd64_storage *,
-    const struct kefir_codegen_opt_sysv_amd64_register_allocation *,
-    struct kefir_codegen_opt_sysv_amd64_storage_register *,
-    kefir_result_t (*)(kefir_asm_amd64_xasmgen_register_t, kefir_bool_t *, void *), void *);
-
-kefir_result_t kefir_codegen_opt_sysv_amd64_storage_try_acquire_exclusive_floating_point_allocated_register(
-    struct kefir_mem *, struct kefir_amd64_xasmgen *, struct kefir_codegen_opt_sysv_amd64_storage *,
-    const struct kefir_codegen_opt_sysv_amd64_register_allocation *,
-    struct kefir_codegen_opt_sysv_amd64_storage_register *,
-    kefir_result_t (*)(kefir_asm_amd64_xasmgen_register_t, kefir_bool_t *, void *), void *);
-
-kefir_result_t kefir_codegen_opt_sysv_amd64_storage_acquire_any_general_purpose_register(
-    struct kefir_mem *, struct kefir_amd64_xasmgen *, struct kefir_codegen_opt_sysv_amd64_storage *,
-    struct kefir_codegen_opt_sysv_amd64_storage_register *,
-    kefir_result_t (*)(kefir_asm_amd64_xasmgen_register_t, kefir_bool_t *, void *), void *);
-
-kefir_result_t kefir_codegen_opt_sysv_amd64_storage_acquire_any_floating_point_register(
-    struct kefir_mem *, struct kefir_amd64_xasmgen *, struct kefir_codegen_opt_sysv_amd64_storage *,
-    struct kefir_codegen_opt_sysv_amd64_storage_register *,
-    kefir_result_t (*)(kefir_asm_amd64_xasmgen_register_t, kefir_bool_t *, void *), void *);
-
-kefir_result_t kefir_codegen_opt_sysv_amd64_storage_acquire_specific_register(
-    struct kefir_mem *, struct kefir_amd64_xasmgen *, struct kefir_codegen_opt_sysv_amd64_storage *,
-    const struct kefir_codegen_opt_sysv_amd64_register_allocation *, kefir_asm_amd64_xasmgen_register_t,
-    struct kefir_codegen_opt_sysv_amd64_storage_register *);
-
-kefir_result_t kefir_codegen_opt_sysv_amd64_storage_restore_evicted_register(
-    struct kefir_amd64_xasmgen *, const struct kefir_codegen_opt_sysv_amd64_storage_register *);
-
-kefir_result_t kefir_codegen_opt_sysv_amd64_storage_release_register(
-    struct kefir_mem *, struct kefir_amd64_xasmgen *, struct kefir_codegen_opt_sysv_amd64_storage *,
-    const struct kefir_codegen_opt_sysv_amd64_storage_register *);
-
 typedef enum kefir_codegen_opt_amd64_sysv_storage_location_type {
     KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_REGISTER,
     KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_MEMORY
@@ -105,7 +65,8 @@ const struct kefir_asm_amd64_xasmgen_operand *kefir_codegen_opt_amd64_sysv_stora
 #define KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_REGISTER_ALLOCATION_MEMORY (1ull << 2)
 #define KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_REGISTER_ALLOCATION_RDONLY (1ull << 3)
 #define KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_REGISTER_ALLOCATION_OWNER (1ull << 4)
-#define KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_SPECIFIC_REGISTER_FLAG (1ull << 5)
+#define KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_MATCH_REGISTER_ALLOCATION (1ull << 5)
+#define KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_SPECIFIC_REGISTER_FLAG (1ull << 6)
 #define KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_SPECIFIC_REGISTER(_reg) \
     ((((kefir_uint64_t) (_reg)) << 48) | KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_SPECIFIC_REGISTER_FLAG)
 typedef struct kefir_codegen_opt_amd64_sysv_storage_handle {

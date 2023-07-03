@@ -36,16 +36,18 @@ DEFINE_TRANSLATOR(extract_bits) {
     REQUIRE_OK(kefir_codegen_opt_sysv_amd64_register_allocation_of(
         &codegen_func->register_allocator, instr->operation.parameters.bitfield.base_ref, &bitfield_allocation));
 
-    struct kefir_codegen_opt_sysv_amd64_storage_register result_reg;
+    struct kefir_codegen_opt_amd64_sysv_storage_handle result_handle;
+    REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_acquire(
+        mem, &codegen->xasmgen, &codegen_func->storage, &codegen_func->stack_frame_map,
+        KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_GENERAL_PURPOSE_REGISTER |
+            KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_REGISTER_ALLOCATION_OWNER,
+        result_allocation, &result_handle, NULL, NULL));
 
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_try_acquire_exclusive_allocated_register(
-        mem, &codegen->xasmgen, &codegen_func->storage, result_allocation, &result_reg, NULL, NULL));
-
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_load_reg_allocation(codegen, &codegen_func->stack_frame_map,
-                                                                bitfield_allocation, result_reg.reg));
+    REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_location_load(&codegen->xasmgen, &codegen_func->stack_frame_map,
+                                                                  bitfield_allocation, &result_handle.location));
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_SHL(
-        &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_reg.reg),
+        &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_handle.location.reg),
         kefir_asm_amd64_xasmgen_operand_immu(
             &codegen->xasmgen_helpers.operands[0],
             64 - (instr->operation.parameters.bitfield.length + instr->operation.parameters.bitfield.offset))));
@@ -53,14 +55,14 @@ DEFINE_TRANSLATOR(extract_bits) {
     switch (instr->operation.opcode) {
         case KEFIR_OPT_OPCODE_BITS_EXTRACT_SIGNED:
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_SAR(
-                &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_reg.reg),
+                &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_handle.location.reg),
                 kefir_asm_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[0],
                                                      64 - (instr->operation.parameters.bitfield.length))));
             break;
 
         case KEFIR_OPT_OPCODE_BITS_EXTRACT_UNSIGNED:
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_SHR(
-                &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_reg.reg),
+                &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_handle.location.reg),
                 kefir_asm_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[0],
                                                      64 - (instr->operation.parameters.bitfield.length))));
             break;
@@ -69,10 +71,10 @@ DEFINE_TRANSLATOR(extract_bits) {
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected optimizer instruction opcode");
     }
 
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_store_reg_allocation(codegen, &codegen_func->stack_frame_map,
-                                                                 result_allocation, result_reg.reg));
+    REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_location_store(&codegen->xasmgen, &codegen_func->stack_frame_map,
+                                                                   result_allocation, &result_handle.location));
 
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_release_register(mem, &codegen->xasmgen, &codegen_func->storage,
-                                                                     &result_reg));
+    REQUIRE_OK(
+        kefir_codegen_opt_amd64_sysv_storage_release(mem, &codegen->xasmgen, &codegen_func->storage, &result_handle));
     return KEFIR_OK;
 }
