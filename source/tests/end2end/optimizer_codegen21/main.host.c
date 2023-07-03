@@ -25,6 +25,8 @@
 #include <math.h>
 #include "./definitions.h"
 
+#define EPSILON_F 1e-3
+#define EPSILON_D 1e-6
 #define EPSILON_LD 1e-8
 
 static long sum(int n, ...) {
@@ -49,5 +51,9 @@ int main(void) {
         assert(fabsl(testsumld(i) - ((long double) ~i + (long double) i)) < EPSILON_LD);
     }
 
+    assert(zerofnl() == 0);
+    assert(fabs(zerofnf()) < EPSILON_F);
+    assert(fabs(zerofnd()) < EPSILON_D);
+    assert(fabsl(zerofnld()) < EPSILON_LD);
     return EXIT_SUCCESS;
 }

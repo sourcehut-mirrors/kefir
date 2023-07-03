@@ -26,4 +26,9 @@ extern long invoke(long (*)(int, ...), long);
 extern long double sumld(long, long double);
 extern long double testsumld(long);
 
+extern long zerofnl(void);
+extern float zerofnf(void);
+extern double zerofnd(void);
+extern long double zerofnld(void);
+
 #endif

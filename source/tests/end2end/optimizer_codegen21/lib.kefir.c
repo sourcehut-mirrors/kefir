@@ -27,3 +27,8 @@ long invoke(long (*callback)(int, ...), long base) {
 long double testsumld(long x) {
     return sumld(~x, (long double) x);
 }
+
+long zerofnl(void) {}
+float zerofnf(void) {}
+double zerofnd(void) {}
+long double zerofnld(void) {}
