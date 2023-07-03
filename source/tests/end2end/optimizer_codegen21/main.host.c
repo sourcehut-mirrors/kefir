@@ -55,5 +55,8 @@ int main(void) {
     assert(fabs(zerofnf()) < EPSILON_F);
     assert(fabs(zerofnd()) < EPSILON_D);
     assert(fabsl(zerofnld()) < EPSILON_LD);
+
+    test_fn();
+    test_fn2();
     return EXIT_SUCCESS;
 }

@@ -31,4 +31,7 @@ extern float zerofnf(void);
 extern double zerofnd(void);
 extern long double zerofnld(void);
 
+extern void test_fn(void);
+extern void test_fn2(void);
+
 #endif

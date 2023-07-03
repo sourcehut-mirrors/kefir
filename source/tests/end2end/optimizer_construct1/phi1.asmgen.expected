@@ -778,7 +778,7 @@
                         "calls": [],
                         "code": [
                             {
-                                "id": 57,
+                                "id": 58,
                                 "opcode": "phi",
                                 "phi_ref": 6,
                                 "control_next": null,
@@ -944,11 +944,11 @@
                                 "links": [
                                     {
                                         "block_id": 4,
-                                        "instr_ref": 57
+                                        "instr_ref": 58
                                     },
                                     {
                                         "block_id": 6,
-                                        "instr_ref": 58
+                                        "instr_ref": 59
                                     }
                                 ]
                             }
@@ -1068,7 +1068,7 @@
                                 "links": [
                                     {
                                         "block_id": 4,
-                                        "instr_ref": 57
+                                        "instr_ref": 58
                                     }
                                 ]
                             }
@@ -1076,7 +1076,7 @@
                         "calls": [],
                         "code": [
                             {
-                                "id": 58,
+                                "id": 59,
                                 "opcode": "phi",
                                 "phi_ref": 7,
                                 "control_next": null,
@@ -1084,7 +1084,7 @@
                                     "reachable": true,
                                     "linear_index": 44,
                                     "linear_liveness": {
-                                        "alias": 57,
+                                        "alias": 58,
                                         "begin": 44,
                                         "end": 51
                                     }
@@ -1200,6 +1200,32 @@
                             "predecessors": [
                                 4
                             ]
+                        }
+                    },
+                    {
+                        "id": 7,
+                        "control_flow": 57,
+                        "phi": [],
+                        "calls": [],
+                        "code": [
+                            {
+                                "id": 57,
+                                "opcode": "return",
+                                "arg": null,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": false,
+                                    "linear_index": null,
+                                    "linear_liveness": null
+                                }
+                            }
+                        ],
+                        "properties": {
+                            "reachable": false,
+                            "linear_position": null,
+                            "linear_interval": null,
+                            "successors": [],
+                            "predecessors": []
                         }
                     }
                 ],
@@ -2059,6 +2085,32 @@
                             "successors": [
                                 1
                             ],
+                            "predecessors": []
+                        }
+                    },
+                    {
+                        "id": 8,
+                        "control_flow": 41,
+                        "phi": [],
+                        "calls": [],
+                        "code": [
+                            {
+                                "id": 41,
+                                "opcode": "return",
+                                "arg": null,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": false,
+                                    "linear_index": null,
+                                    "linear_liveness": null
+                                }
+                            }
+                        ],
+                        "properties": {
+                            "reachable": false,
+                            "linear_position": null,
+                            "linear_interval": null,
+                            "successors": [],
                             "predecessors": []
                         }
                     }

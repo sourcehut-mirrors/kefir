@@ -28,7 +28,8 @@
 
 static kefir_result_t identify_code_blocks(struct kefir_mem *mem, struct kefir_opt_constructor_state *state) {
     kefir_bool_t start_new_block = true;
-    for (kefir_size_t i = 0; i < kefir_irblock_length(&state->function->ir_func->body); i++) {
+    kefir_size_t i = 0;
+    for (; i < kefir_irblock_length(&state->function->ir_func->body); i++) {
         const struct kefir_irinstr *instr = kefir_irblock_at(&state->function->ir_func->body, i);
         REQUIRE(instr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected valid IR instruction to be returned"));
 
@@ -59,8 +60,8 @@ static kefir_result_t identify_code_blocks(struct kefir_mem *mem, struct kefir_o
         }
     }
 
-    if (kefir_irblock_length(&state->function->ir_func->body) == 0) {
-        REQUIRE_OK(kefir_opt_constructor_start_code_block_at(mem, state, 0, false));
+    if (start_new_block) {
+        REQUIRE_OK(kefir_opt_constructor_start_code_block_at(mem, state, i, false));
     }
     return KEFIR_OK;
 }

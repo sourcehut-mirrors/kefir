@@ -1359,6 +1359,32 @@
                             "successors": [],
                             "predecessors": []
                         }
+                    },
+                    {
+                        "id": 1,
+                        "control_flow": 29,
+                        "phi": [],
+                        "calls": [],
+                        "code": [
+                            {
+                                "id": 29,
+                                "opcode": "return",
+                                "arg": null,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": false,
+                                    "linear_index": null,
+                                    "linear_liveness": null
+                                }
+                            }
+                        ],
+                        "properties": {
+                            "reachable": false,
+                            "linear_position": null,
+                            "linear_interval": null,
+                            "successors": [],
+                            "predecessors": []
+                        }
                     }
                 ],
                 "properties": {

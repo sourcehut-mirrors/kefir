@@ -885,6 +885,32 @@
                                 1
                             ]
                         }
+                    },
+                    {
+                        "id": 6,
+                        "control_flow": 40,
+                        "phi": [],
+                        "calls": [],
+                        "code": [
+                            {
+                                "id": 40,
+                                "opcode": "return",
+                                "arg": null,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": false,
+                                    "linear_index": null,
+                                    "linear_liveness": null
+                                }
+                            }
+                        ],
+                        "properties": {
+                            "reachable": false,
+                            "linear_position": null,
+                            "linear_interval": null,
+                            "successors": [],
+                            "predecessors": []
+                        }
                     }
                 ],
                 "properties": {

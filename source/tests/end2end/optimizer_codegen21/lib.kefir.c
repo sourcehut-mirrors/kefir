@@ -32,3 +32,14 @@ long zerofnl(void) {}
 float zerofnf(void) {}
 double zerofnd(void) {}
 long double zerofnld(void) {}
+
+void test_fn() {
+    do {
+        (void) zerofnl();
+        (void) zerofnf();
+        (void) zerofnd();
+        (void) zerofnld();
+    } while (0);
+}
+
+void test_fn2() {}
