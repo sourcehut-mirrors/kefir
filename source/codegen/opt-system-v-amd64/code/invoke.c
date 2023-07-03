@@ -899,10 +899,10 @@ static kefir_result_t invoke_impl(struct kefir_mem *mem, struct kefir_codegen_op
     }
 
     // Epilogue
-    REQUIRE_OK(unmark_argument_regs(mem, codegen_func, argument_regs));
     REQUIRE_OK(save_return_value(mem, codegen, function, codegen_func, ir_func_decl, abi_func_decl, call_node,
                                  result_allocation));
     REQUIRE_OK(restore_registers(codegen, codegen_func, abi_func_decl, result_allocation));
+    REQUIRE_OK(unmark_argument_regs(mem, codegen_func, argument_regs));
     if (stack_increment > 0) {
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_ADD(
             &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
