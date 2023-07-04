@@ -20,6 +20,7 @@
 
 #define _POSIX_SOURCE
 #include "kefir/driver/target_configuration.h"
+#include "kefir/compiler/profile.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 #include "kefir/platform/filesystem.h"
@@ -35,10 +36,18 @@ kefir_result_t kefir_driver_apply_target_profile_configuration(
         if (target->platform == KEFIR_DRIVER_TARGET_PLATFORM_LINUX ||
             target->platform == KEFIR_DRIVER_TARGET_PLATFORM_FREEBSD ||
             target->platform == KEFIR_DRIVER_TARGET_PLATFORM_NETBSD) {
-            compiler_config->target_profile = "amd64-sysv-gas";
+            if (target->backend == KEFIR_DRIVER_TARGET_BACKEND_NAIVE) {
+                compiler_config->target_profile = "amd64-sysv-gas";
+            } else {
+                compiler_config->target_profile = "opt-amd64-sysv-gas";
+            }
             compiler_config->codegen.emulated_tls = false;
         } else if (target->platform == KEFIR_DRIVER_TARGET_PLATFORM_OPENBSD) {
-            compiler_config->target_profile = "amd64-sysv-gas";
+            if (target->backend == KEFIR_DRIVER_TARGET_BACKEND_NAIVE) {
+                compiler_config->target_profile = "amd64-sysv-gas";
+            } else {
+                compiler_config->target_profile = "opt-amd64-sysv-gas";
+            }
             compiler_config->codegen.emulated_tls = true;
         }
     }
@@ -114,7 +123,18 @@ kefir_result_t kefir_driver_apply_target_compiler_configuration(
         REQUIRE(externals->runtime_include != NULL,
                 KEFIR_SET_ERROR(KEFIR_UI_ERROR, "Runtime include path shall be passed as KEFIR_RTINC "
                                                 "environment variable"));
-        REQUIRE_OK(add_include_paths(mem, symbols, compiler_config, externals->runtime_include));
+
+        struct kefir_compiler_profile profile;
+        REQUIRE_OK(kefir_compiler_profile(&profile, compiler_config->target_profile));
+
+        char buffer[PATH_MAX + 1];
+        if (profile.runtime_include_dirname != NULL) {
+            snprintf(buffer, PATH_MAX, "%s/%s", externals->runtime_include, profile.runtime_include_dirname);
+            REQUIRE_OK(add_include_paths(mem, symbols, compiler_config, buffer));
+        }
+
+        snprintf(buffer, PATH_MAX, "%s/common", externals->runtime_include);
+        REQUIRE_OK(add_include_paths(mem, symbols, compiler_config, buffer));
     }
 
     if (target->platform == KEFIR_DRIVER_TARGET_PLATFORM_LINUX) {

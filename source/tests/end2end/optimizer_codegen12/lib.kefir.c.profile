@@ -1,1 +1,1 @@
-KEFIR_CFLAGS="$KEFIR_CFLAGS -Wtarget-profile=opt-amd64-sysv-gas"
+KEFIR_CFLAGS="$KEFIR_CFLAGS --target opt-x86_64-host-none"

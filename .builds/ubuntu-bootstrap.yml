@@ -14,7 +14,7 @@ tasks:
       export KEFIR_GNU_INCLUDE="/usr/lib/gcc/x86_64-linux-gnu/12/include;/usr/include/x86_64-linux-gnu;/usr/include;/usr/local/include"
       export KEFIR_GNU_LIB="/usr/lib/x86_64-linux-gnu;/usr/lib/gcc/x86_64-linux-gnu/12/;/usr/lib;/usr/local/lib"
       export KEFIR_GNU_DYNAMIC_LINKER="/lib64/ld-linux-x86-64.so.2"
-      LC_ALL=C.UTF-8 make bootstrap KEFIR_EXTRAFLAGS="-Wtarget-profile=opt-amd64-sysv-gas" -j$(nproc)
+      LC_ALL=C.UTF-8 make bootstrap KEFIR_EXTRAFLAGS="--target opt-x86_64-host-gnu" -j$(nproc)
 triggers:
   - action: email
     condition: failure

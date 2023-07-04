@@ -34,7 +34,8 @@ KEFIR_CFLAGS=`echo \
              "--target x86_64-host-none " \
              "-I \"$(dirname $SRC_FILE)\" " \
              "-I \"$(dirname $SCRIPT)/headers\" " \
-             "-I \"$(dirname $SCRIPT)/../../../headers/kefir/runtime\" " \
+             "-I \"$(dirname $SCRIPT)/../../../headers/kefir/runtime/amd64-sysv-gas\" " \
+             "-I \"$(dirname $SCRIPT)/../../../headers/kefir/runtime/common\" " \
              "-D KEFIR_END2END_TEST " \
              "-U __STDC__ " \
              "-D KEFIR_END2END=101 " \

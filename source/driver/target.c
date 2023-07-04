@@ -24,6 +24,20 @@
 #include "kefir/core/platform.h"
 #include <string.h>
 
+static kefir_result_t match_backend(const char *spec, struct kefir_driver_target *target, const char **next) {
+    const char spec_naive[] = "naive-";
+    const char spec_optimized[] = "opt-";
+
+    if (strncmp(spec_naive, spec, sizeof(spec_naive) - 1) == 0) {
+        target->backend = KEFIR_DRIVER_TARGET_BACKEND_NAIVE;
+        *next = spec + (sizeof(spec_naive) - 1);
+    } else if (strncmp(spec_optimized, spec, sizeof(spec_optimized) - 1) == 0) {
+        target->backend = KEFIR_DRIVER_TARGET_BACKEND_OPTIMIZED;
+        *next = spec + (sizeof(spec_optimized) - 1);
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t match_arch(const char *spec, struct kefir_driver_target *target, const char **next) {
     const char *delim = strchr(spec, '-');
     REQUIRE(delim != NULL, KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Architecture specification is not found"));
@@ -104,6 +118,7 @@ kefir_result_t kefir_driver_target_match(const char *spec, struct kefir_driver_t
     REQUIRE(spec != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target specification"));
     REQUIRE(target != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to driver target"));
 
+    REQUIRE_OK(match_backend(spec, target, &spec));
     REQUIRE_OK(match_arch(spec, target, &spec));
     REQUIRE_OK(match_platform(spec, target, &spec));
     REQUIRE_OK(match_variant(spec, target));
@@ -113,6 +128,7 @@ kefir_result_t kefir_driver_target_match(const char *spec, struct kefir_driver_t
 kefir_result_t kefir_driver_target_default(struct kefir_driver_target *target) {
     REQUIRE(target != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to driver target"));
 
+    target->backend = KEFIR_DRIVER_TARGET_BACKEND_NAIVE;
     target->arch = KEFIR_DRIVER_TARGET_ARCH_X86_64;
     REQUIRE_OK(select_host_platform(target));
     REQUIRE_OK(select_default_variant(target));

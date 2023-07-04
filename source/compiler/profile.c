@@ -136,6 +136,7 @@ static kefir_result_t kefir_compiler_amd64_sysv_profile(struct kefir_compiler_pr
     profile->new_codegen = amd64_sysv_new_codegen;
     profile->free_codegen = amd64_sysv_free_codegen;
     profile->runtime_code = KefirSysVAmd64RuntimeCode;
+    profile->runtime_include_dirname = "amd64-sysv-gas";
     return KEFIR_OK;
 }
 
@@ -147,6 +148,7 @@ static kefir_result_t kefir_compiler_opt_amd64_sysv_profile(struct kefir_compile
     profile->new_codegen = opt_amd64_sysv_new_codegen;
     profile->free_codegen = opt_amd64_sysv_free_codegen;
     profile->runtime_code = KefirOptSysVAmd64RuntimeCode;
+    profile->runtime_include_dirname = NULL;
     return KEFIR_OK;
 }
 

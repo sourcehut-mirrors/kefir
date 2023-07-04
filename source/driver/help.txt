@@ -95,12 +95,13 @@ COMPILER OPTIONS:
 
 
 TARGETS:
-    Target platforms are specified in format <arch>-<platform>-<variant> where
+    Target platforms are specified in format [<backend>-]<arch>-<platform>-<variant> where
+        backend: naive, opt
         arch: x86_64
         platform: linux, freebsd, openbsd, host
         variant: none, musl, gnu, system, default
-    Variant "none" avoids any implicit library linkages and include path. On linux, "default" is equivalent
-    to "gnu", on other platforms -- to "system".
+    Backend is an optional part of target specification. Variant "none" avoids any implicit library linkages and include path. On linux, "default" is
+    equivalent to "gnu", on other platforms -- to "system".
 
 ENVIRONMENT VARIABLES:
     KEFIR_AS, AS                        Override the default "as" assembler
