@@ -27,7 +27,7 @@
 
 kefir_result_t kefir_opt_constructor_start_code_block_at(struct kefir_mem *mem,
                                                          struct kefir_opt_constructor_state *state,
-                                                         kefir_size_t ir_location, kefir_bool_t indirect_jump_target) {
+                                                         kefir_size_t ir_location) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(state != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer constructor state"));
 
@@ -65,12 +65,19 @@ kefir_result_t kefir_opt_constructor_start_code_block_at(struct kefir_mem *mem,
 
     REQUIRE_OK(kefir_hashtree_insert(mem, &state->code_block_index, (kefir_hashtree_key_t) code_block_id,
                                      (kefir_hashtree_value_t) block_state));
+    return KEFIR_OK;
+}
 
-    if (indirect_jump_target) {
-        REQUIRE_OK(kefir_list_insert_after(mem, &state->indirect_jump_targets,
-                                           kefir_list_tail(&state->indirect_jump_targets),
-                                           (void *) (kefir_uptr_t) code_block_id));
-    }
+kefir_result_t kefir_opt_constructor_mark_code_block_for_indirect_jump(struct kefir_mem *mem,
+                                                                       struct kefir_opt_constructor_state *state,
+                                                                       kefir_size_t ir_location) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(state != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer constructor state"));
+
+    struct kefir_opt_constructor_code_block_state *block_state;
+    REQUIRE_OK(kefir_opt_constructor_find_code_block_for(state, ir_location, &block_state));
+    REQUIRE_OK(
+        kefir_hashtreeset_add(mem, &state->indirect_jump_targets, (kefir_hashtreeset_entry_t) block_state->block_id));
     return KEFIR_OK;
 }
 
@@ -138,7 +145,7 @@ kefir_result_t kefir_opt_constructor_init(struct kefir_opt_function *function,
     REQUIRE_OK(kefir_hashtree_init(&state->code_blocks, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_on_removal(&state->code_blocks, free_kefir_opt_constructor_code_block_state, NULL));
     REQUIRE_OK(kefir_hashtree_init(&state->code_block_index, &kefir_hashtree_uint_ops));
-    REQUIRE_OK(kefir_list_init(&state->indirect_jump_targets));
+    REQUIRE_OK(kefir_hashtreeset_init(&state->indirect_jump_targets, &kefir_hashtree_uint_ops));
 
     state->function = function;
     state->current_block = NULL;
@@ -150,7 +157,7 @@ kefir_result_t kefir_opt_constructor_free(struct kefir_mem *mem, struct kefir_op
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(state != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer constructor state"));
 
-    REQUIRE_OK(kefir_list_free(mem, &state->indirect_jump_targets));
+    REQUIRE_OK(kefir_hashtreeset_free(mem, &state->indirect_jump_targets));
     REQUIRE_OK(kefir_hashtree_free(mem, &state->code_block_index));
     REQUIRE_OK(kefir_hashtree_free(mem, &state->code_blocks));
     state->function = NULL;

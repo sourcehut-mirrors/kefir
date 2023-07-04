@@ -14,9 +14,9 @@
                         "code": [
                             {
                                 "id": 0,
-                                "opcode": "inline_assembly",
-                                "ir_ref": 0,
-                                "control_next": 1,
+                                "opcode": "return",
+                                "arg": null,
+                                "control_next": null,
                                 "properties": {
                                     "reachable": true,
                                     "linear_index": 0,
@@ -26,36 +26,6 @@
                                         "end": 1
                                     }
                                 }
-                            },
-                            {
-                                "id": 1,
-                                "opcode": "inline_assembly",
-                                "ir_ref": 1,
-                                "control_next": 2,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 1,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 1,
-                                        "end": 2
-                                    }
-                                }
-                            },
-                            {
-                                "id": 2,
-                                "opcode": "return",
-                                "arg": null,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 2,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 2,
-                                        "end": 3
-                                    }
-                                }
                             }
                         ],
                         "properties": {
@@ -63,7 +33,7 @@
                             "linear_position": 1,
                             "linear_interval": {
                                 "begin": 0,
-                                "end": 3
+                                "end": 1
                             },
                             "successors": [],
                             "predecessors": []
@@ -71,7 +41,7 @@
                     }
                 ],
                 "properties": {
-                    "linear_length": 3
+                    "linear_length": 1
                 }
             }
         }

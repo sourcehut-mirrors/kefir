@@ -251,9 +251,8 @@ static kefir_result_t insert_hints(const struct kefir_opt_function *function,
                 break;
 
             case KEFIR_OPT_OPCODE_INLINE_ASSEMBLY:
-                return KEFIR_SET_ERROR(
-                    KEFIR_NOT_IMPLEMENTED,
-                    "Inlint assembly support is not implemented in the System-V AMD64 optimized code generator yet");
+                // Intentionally left blank
+                break;
 
             case KEFIR_OPT_OPCODE_RETURN:
                 REQUIRE_OK(hint_return_coalescing(instr, allocator));
