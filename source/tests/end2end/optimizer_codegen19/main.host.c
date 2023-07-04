@@ -87,5 +87,10 @@ int main(void) {
         assert(fabsl(double_to_long_double((double) i) - (long double) (double) i) < EPSILON_LD);
     }
 
+    long double ld_nan = 0.0L / 0.0L;
+    assert(!ldequals(ld_nan, ld_nan));
+    assert(!ldgreater(ld_nan, 0.0L));
+    assert(!ldlesser(ld_nan, 0.0L));
+
     return EXIT_SUCCESS;
 }

@@ -62,5 +62,15 @@ int main(void) {
         assert(!lessereqd(j + 0.1, j));
     }
 
+    float f_nan = 0.0f / 0.0f;
+    assert(!equalsf(f_nan, f_nan));
+    assert(!greaterf(f_nan, 0.0f));
+    assert(!lesserf(f_nan, 0.0f));
+
+    double d_nan = 0.0 / 0.0;
+    assert(!equalsd(d_nan, d_nan));
+    assert(!greaterd(d_nan, 0.0));
+    assert(!lesserd(d_nan, 0.0));
+
     return EXIT_SUCCESS;
 }
