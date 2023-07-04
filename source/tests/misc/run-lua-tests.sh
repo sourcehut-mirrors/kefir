@@ -49,7 +49,7 @@ pushd "$LUA_DIR"
 
 echo "Building Lua..."
 mkdir -p bin
-"$KEFIRCC" -o bin/lua \
+"$KEFIRCC" $KEFIR_CFLAGS -o bin/lua \
 	$PWD/src/lapi.c \
 	$PWD/src/lauxlib.c \
 	$PWD/src/lbaselib.c \
