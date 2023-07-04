@@ -60,12 +60,13 @@ DEFINE_TRANSLATOR(div_mod) {
         KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_GENERAL_PURPOSE_REGISTER |
             KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_REGISTER_ALLOCATION_MEMORY |
             KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_REGISTER_ALLOCATION_RDONLY,
-        arg2_allocation, &divisor_handle, NULL, NULL));
+        arg2_allocation, &divisor_handle, kefir_codegen_opt_sysv_amd64_storage_filter_regs_allocation,
+        (const struct kefir_codegen_opt_sysv_amd64_register_allocation *[]){arg1_allocation, NULL}));
 
     REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_location_load(&codegen->xasmgen, &codegen_func->stack_frame_map,
-                                                                  arg1_allocation, &quotient_handle.location));
-    REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_location_load(&codegen->xasmgen, &codegen_func->stack_frame_map,
                                                                   arg2_allocation, &divisor_handle.location));
+    REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_location_load(&codegen->xasmgen, &codegen_func->stack_frame_map,
+                                                                  arg1_allocation, &quotient_handle.location));
 
     switch (instr->operation.opcode) {
         case KEFIR_OPT_OPCODE_INT_DIV: {
