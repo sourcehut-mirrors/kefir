@@ -44,3 +44,6 @@ skip execute/pr56982.c
 
 # ISO-8859-1 encoding
 skip execute/20000227-1.c
+
+# Memory allocation failre in CI
+skip compile/20050622-1.c
