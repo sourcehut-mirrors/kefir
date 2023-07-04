@@ -251,6 +251,8 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_stack_frame_compute(
     }
 
     map->total_size = map->offset.temporary_area;
+    map->total_size = -(kefir_int64_t) kefir_target_abi_pad_aligned(
+        (kefir_size_t) -map->total_size, 2 * KEFIR_AMD64_SYSV_ABI_QWORD);
     return KEFIR_OK;
 }
 
