@@ -119,6 +119,13 @@ kefir_result_t kefir_ast_analyze_unary_operation_node(struct kefir_mem *mem, con
                 REQUIRE_OK(context->allocate_temporary_value(mem, context, kefir_ast_type_long_double(), NULL,
                                                              &base->source_location,
                                                              &base->properties.expression_props.temp_identifier));
+
+                if (node->type == KEFIR_AST_OPERATION_POSTFIX_DECREMENT ||
+                    node->type == KEFIR_AST_OPERATION_POSTFIX_INCREMENT) {
+                    REQUIRE_OK(context->allocate_temporary_value(mem, context, kefir_ast_type_long_double(), NULL,
+                                                                 &base->source_location,
+                                                                 &base->properties.expression_props.temp2_identifier));
+                }
             }
         } break;
 

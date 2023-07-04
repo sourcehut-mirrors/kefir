@@ -53,4 +53,11 @@ long double my_hypot(long double, long double);
 
 long double sumallld(int, ...);
 
+long double test1(long double, long double);
+long double test2(long double, long double);
+long double test3(long double, long double);
+long double test4(long double, long double);
+long double test5(long double, long double);
+long double test6(long double, long double);
+
 #endif

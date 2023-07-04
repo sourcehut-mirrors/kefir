@@ -55,6 +55,13 @@ int main(void) {
             assert(fabsl(sumallld(3, x, y, 1.0L) - (x + y + 1.0L)) < EPSILON_LD);
             assert(fabsl(sumallld(4, x, y, 1.0L, x * y) - (x + y + 1.0L + x * y)) < EPSILON_LD);
             assert(fabsl(sumallld(5, x, y, 1.0L, x * y, x / y) - (x + y + 1.0L + x * y + x / y)) < EPSILON_LD);
+
+            assert(fabsl(test1(x, y) - ((x + 1) * (y + 1))) < EPSILON_LD);
+            assert(fabsl(test2(x, y) - ((x - 1) * (y - 1))) < EPSILON_LD);
+            assert(fabsl(test3(x, y) - (x * (y + 1))) < EPSILON_LD);
+            assert(fabsl(test4(x, y) - ((x + 1) * y)) < EPSILON_LD);
+            assert(fabsl(test5(x, y) - (x * y)) < EPSILON_LD);
+            assert(fabsl(test6(x, y) - (x * y + (x + 1) + (y + 1))) < EPSILON_LD);
         }
         assert(fabsl(negld(x) + x) < EPSILON_LD);
 

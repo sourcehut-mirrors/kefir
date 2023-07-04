@@ -114,3 +114,29 @@ long double sumallld(int n, ...) {
     __builtin_va_end(args);
     return result;
 }
+
+long double test1(long double x, long double y) {
+    return (++x) * (++y);
+}
+
+long double test2(long double x, long double y) {
+    return (--x) * (--y);
+}
+
+long double test3(long double x, long double y) {
+    return (x++) * (++y);
+}
+
+long double test4(long double x, long double y) {
+    return (++x) * (y++);
+}
+
+long double test5(long double x, long double y) {
+    return (x++) * (y++);
+}
+
+long double test6(long double x, long double y) {
+    long double res = (x++) * (y++);
+    res += x + y;
+    return res;
+}
