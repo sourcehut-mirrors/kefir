@@ -51,7 +51,8 @@ kefir_result_t kefir_opt_code_builder_get_argument(struct kefir_mem *, struct ke
 kefir_result_t kefir_opt_code_builder_phi(struct kefir_mem *, struct kefir_opt_code_container *, kefir_opt_block_id_t,
                                           kefir_opt_phi_id_t, kefir_opt_instruction_ref_t *);
 kefir_result_t kefir_opt_code_builder_inline_assembly(struct kefir_mem *, struct kefir_opt_code_container *,
-                                                      kefir_opt_block_id_t, kefir_id_t, kefir_opt_instruction_ref_t *);
+                                                      kefir_opt_block_id_t, kefir_opt_inline_assembly_id_t,
+                                                      kefir_opt_instruction_ref_t *);
 
 kefir_result_t kefir_opt_code_builder_invoke(struct kefir_mem *, struct kefir_opt_code_container *,
                                              kefir_opt_block_id_t, kefir_opt_call_id_t, kefir_opt_instruction_ref_t *);

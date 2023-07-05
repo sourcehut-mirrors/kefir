@@ -102,6 +102,7 @@
                                 ]
                             }
                         ],
+                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 0,

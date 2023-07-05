@@ -11,6 +11,7 @@
                         "control_flow": 8,
                         "phi": [],
                         "calls": [],
+                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 0,

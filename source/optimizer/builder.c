@@ -118,6 +118,13 @@ static kefir_result_t call_exists(const struct kefir_opt_code_container *code, k
     return KEFIR_OK;
 }
 
+static kefir_result_t inline_asm_exists(const struct kefir_opt_code_container *code,
+                                        kefir_opt_inline_assembly_id_t inline_asm_ref) {
+    struct kefir_opt_inline_assembly_node *inline_asm = NULL;
+    REQUIRE_OK(kefir_opt_code_container_inline_assembly(code, inline_asm_ref, &inline_asm));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_opt_code_builder_finalize_jump(struct kefir_mem *mem, struct kefir_opt_code_container *code,
                                                     kefir_opt_block_id_t block_id, kefir_opt_block_id_t target_block,
                                                     kefir_opt_instruction_ref_t *instr_id_ptr) {
@@ -220,15 +227,19 @@ kefir_result_t kefir_opt_code_builder_phi(struct kefir_mem *mem, struct kefir_op
 }
 
 kefir_result_t kefir_opt_code_builder_inline_assembly(struct kefir_mem *mem, struct kefir_opt_code_container *code,
-                                                      kefir_opt_block_id_t block_id, kefir_id_t identifier,
+                                                      kefir_opt_block_id_t block_id,
+                                                      kefir_opt_inline_assembly_id_t identifier,
                                                       kefir_opt_instruction_ref_t *instr_id_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
 
-    REQUIRE_OK(kefir_opt_code_builder_add_instruction(
-        mem, code, block_id,
-        &(struct kefir_opt_operation){.opcode = KEFIR_OPT_OPCODE_INLINE_ASSEMBLY, .parameters.ir_ref = identifier},
-        false, instr_id_ptr));
+    REQUIRE_OK(inline_asm_exists(code, identifier));
+
+    REQUIRE_OK(
+        kefir_opt_code_builder_add_instruction(mem, code, block_id,
+                                               &(struct kefir_opt_operation){.opcode = KEFIR_OPT_OPCODE_INLINE_ASSEMBLY,
+                                                                             .parameters.inline_asm_ref = identifier},
+                                               false, instr_id_ptr));
     return KEFIR_OK;
 }
 

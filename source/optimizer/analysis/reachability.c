@@ -212,6 +212,19 @@ static kefir_result_t find_reachable_code_phi_ref(struct kefir_mem *mem, struct 
     return KEFIR_OK;
 }
 
+static kefir_result_t find_reachable_code_inline_asm(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
+                                                     struct kefir_list *queue,
+                                                     const struct kefir_opt_instruction *instr) {
+    struct kefir_opt_inline_assembly_node *inline_asm = NULL;
+    REQUIRE_OK(kefir_opt_code_container_inline_assembly(analysis->code, instr->operation.parameters.inline_asm_ref,
+                                                        &inline_asm));
+    for (kefir_size_t i = 0; i < inline_asm->parameter_count; i++) {
+        INSERT_INTO_QUEUE(mem, queue, inline_asm->parameters[i].read_ref);
+        INSERT_INTO_QUEUE(mem, queue, inline_asm->parameters[i].load_store_ref);
+    }
+    return KEFIR_OK;
+}
+
 #undef INSERT_INTO_QUEUE
 
 static kefir_result_t find_reachable_code_impl(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,

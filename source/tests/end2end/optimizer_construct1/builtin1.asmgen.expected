@@ -11,6 +11,7 @@
                         "control_flow": 2,
                         "phi": [],
                         "calls": [],
+                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 0,
@@ -412,6 +413,7 @@
                         "control_flow": 4,
                         "phi": [],
                         "calls": [],
+                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 0,

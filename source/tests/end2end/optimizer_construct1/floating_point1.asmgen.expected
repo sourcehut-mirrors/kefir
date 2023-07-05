@@ -11,6 +11,7 @@
                         "control_flow": 5,
                         "phi": [],
                         "calls": [],
+                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 0,
@@ -672,6 +673,7 @@
                         "control_flow": 39,
                         "phi": [],
                         "calls": [],
+                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 39,
@@ -710,6 +712,7 @@
                         "control_flow": 5,
                         "phi": [],
                         "calls": [],
+                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 0,
@@ -1371,6 +1374,7 @@
                         "control_flow": 39,
                         "phi": [],
                         "calls": [],
+                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 39,
@@ -1409,6 +1413,7 @@
                         "control_flow": 5,
                         "phi": [],
                         "calls": [],
+                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 0,
@@ -2186,6 +2191,7 @@
                         "control_flow": 5,
                         "phi": [],
                         "calls": [],
+                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 0,
@@ -2963,6 +2969,7 @@
                         "control_flow": 5,
                         "phi": [],
                         "calls": [],
+                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 0,

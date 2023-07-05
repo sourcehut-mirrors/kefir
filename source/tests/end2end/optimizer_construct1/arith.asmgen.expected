@@ -11,6 +11,7 @@
                         "control_flow": 7,
                         "phi": [],
                         "calls": [],
+                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 0,
@@ -139,6 +140,7 @@
                         "control_flow": 5,
                         "phi": [],
                         "calls": [],
+                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 0,
@@ -255,6 +257,7 @@
                         "control_flow": 20,
                         "phi": [],
                         "calls": [],
+                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 12,
@@ -421,6 +424,7 @@
                         "control_flow": 10,
                         "phi": [],
                         "calls": [],
+                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 6,
@@ -519,6 +523,7 @@
                         "control_flow": 11,
                         "phi": [],
                         "calls": [],
+                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 11,
@@ -547,6 +552,7 @@
                         "control_flow": 39,
                         "phi": [],
                         "calls": [],
+                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 29,
@@ -745,6 +751,7 @@
                         "control_flow": 28,
                         "phi": [],
                         "calls": [],
+                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 21,
@@ -891,6 +898,7 @@
                         "control_flow": 40,
                         "phi": [],
                         "calls": [],
+                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 40,
@@ -929,6 +937,7 @@
                         "control_flow": 8,
                         "phi": [],
                         "calls": [],
+                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 0,
@@ -1095,6 +1104,7 @@
                         "control_flow": 19,
                         "phi": [],
                         "calls": [],
+                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 19,
@@ -1130,6 +1140,7 @@
                         "control_flow": 17,
                         "phi": [],
                         "calls": [],
+                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 9,
@@ -1288,6 +1299,7 @@
                         "control_flow": 18,
                         "phi": [],
                         "calls": [],
+                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 18,

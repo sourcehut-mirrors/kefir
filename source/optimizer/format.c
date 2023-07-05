@@ -185,6 +185,13 @@ static kefir_result_t format_operation_phi_ref(struct kefir_json_output *json, c
     return KEFIR_OK;
 }
 
+static kefir_result_t format_operation_inline_asm(struct kefir_json_output *json,
+                                                  const struct kefir_opt_operation *oper) {
+    REQUIRE_OK(kefir_json_output_object_key(json, "inline_asm_ref"));
+    REQUIRE_OK(id_format(json, oper->parameters.inline_asm_ref));
+    return KEFIR_OK;
+}
+
 static kefir_result_t format_operation_immediate(struct kefir_json_output *json,
                                                  const struct kefir_opt_operation *oper) {
     REQUIRE_OK(kefir_json_output_object_key(json, "value"));
@@ -334,6 +341,30 @@ static kefir_result_t call_format(struct kefir_json_output *json, const struct k
     return KEFIR_OK;
 }
 
+static kefir_result_t inline_asm_format(struct kefir_json_output *json,
+                                        const struct kefir_opt_inline_assembly_node *inline_asm) {
+    REQUIRE_OK(kefir_json_output_object_begin(json));
+    REQUIRE_OK(kefir_json_output_object_key(json, "id"));
+    REQUIRE_OK(kefir_json_output_uinteger(json, inline_asm->node_id));
+    REQUIRE_OK(kefir_json_output_object_key(json, "inline_asm_id"));
+    REQUIRE_OK(kefir_json_output_uinteger(json, inline_asm->inline_asm_id));
+    REQUIRE_OK(kefir_json_output_object_key(json, "parameters"));
+    REQUIRE_OK(kefir_json_output_array_begin(json));
+
+    for (kefir_size_t i = 0; i < inline_asm->parameter_count; i++) {
+        REQUIRE_OK(kefir_json_output_object_begin(json));
+        REQUIRE_OK(kefir_json_output_object_key(json, "load_store"));
+        REQUIRE_OK(id_format(json, inline_asm->parameters[i].load_store_ref));
+        REQUIRE_OK(kefir_json_output_object_key(json, "read"));
+        REQUIRE_OK(id_format(json, inline_asm->parameters[i].read_ref));
+        REQUIRE_OK(kefir_json_output_object_end(json));
+    }
+
+    REQUIRE_OK(kefir_json_output_array_end(json));
+    REQUIRE_OK(kefir_json_output_object_end(json));
+    return KEFIR_OK;
+}
+
 static kefir_result_t code_block_format(struct kefir_json_output *json, const struct kefir_opt_code_container *code,
                                         const struct kefir_opt_code_block *block,
                                         const struct kefir_opt_code_analysis *code_analysis) {
@@ -362,6 +393,18 @@ static kefir_result_t code_block_format(struct kefir_json_output *json, const st
          res = kefir_opt_call_next_sibling(code, call, &call)) {
 
         REQUIRE_OK(call_format(json, call));
+    }
+    REQUIRE_OK(res);
+    REQUIRE_OK(kefir_json_output_array_end(json));
+
+    REQUIRE_OK(kefir_json_output_object_key(json, "inline_assembly"));
+    REQUIRE_OK(kefir_json_output_array_begin(json));
+    const struct kefir_opt_inline_assembly_node *inline_asm = NULL;
+    for (res = kefir_opt_code_block_inline_assembly_head(code, block, &inline_asm);
+         res == KEFIR_OK && inline_asm != NULL;
+         res = kefir_opt_inline_assembly_next_sibling(code, inline_asm, &inline_asm)) {
+
+        REQUIRE_OK(inline_asm_format(json, inline_asm));
     }
     REQUIRE_OK(res);
     REQUIRE_OK(kefir_json_output_array_end(json));

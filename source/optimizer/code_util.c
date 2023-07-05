@@ -194,6 +194,19 @@ static kefir_result_t extract_inputs_phi_ref(const struct kefir_opt_code_contain
     return KEFIR_OK;
 }
 
+static kefir_result_t extract_inputs_inline_asm(const struct kefir_opt_code_container *code,
+                                                const struct kefir_opt_instruction *instr,
+                                                kefir_result_t (*callback)(kefir_opt_instruction_ref_t, void *),
+                                                void *payload) {
+    struct kefir_opt_inline_assembly_node *inline_asm = NULL;
+    REQUIRE_OK(kefir_opt_code_container_inline_assembly(code, instr->operation.parameters.inline_asm_ref, &inline_asm));
+    for (kefir_size_t i = 0; i < inline_asm->parameter_count; i++) {
+        INPUT_CALLBACK(inline_asm->parameters[i].read_ref, callback, payload);
+        INPUT_CALLBACK(inline_asm->parameters[i].load_store_ref, callback, payload);
+    }
+    return KEFIR_OK;
+}
+
 #undef INPUT_CALLBACK
 
 kefir_result_t kefir_opt_instruction_extract_inputs(const struct kefir_opt_code_container *code,

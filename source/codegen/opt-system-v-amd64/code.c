@@ -503,8 +503,7 @@ static kefir_result_t translate_instr(struct kefir_mem *mem, struct kefir_codege
             break;
 
         case KEFIR_OPT_OPCODE_INLINE_ASSEMBLY:
-            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED,
-                                   "Code generation for provided optimizer opcode is not implemented yet");
+            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Inline assembly support is not implemented yet");
     }
 #undef INVOKE_TRANSLATOR
 

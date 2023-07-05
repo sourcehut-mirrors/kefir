@@ -28,7 +28,7 @@
     /* Special */ \
     OPCODE(GET_ARGUMENT, "get_argument", index) SEPARATOR \
     OPCODE(PHI, "phi", phi_ref) SEPARATOR \
-    OPCODE(INLINE_ASSEMBLY, "inline_assembly", ir_ref) SEPARATOR \
+    OPCODE(INLINE_ASSEMBLY, "inline_assembly", inline_asm) SEPARATOR \
     /* Flow control */ \
     OPCODE(JUMP, "jump", branch) SEPARATOR \
     OPCODE(IJUMP, "indirect_jump", ref1) SEPARATOR \
