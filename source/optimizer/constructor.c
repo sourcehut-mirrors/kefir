@@ -26,7 +26,8 @@
 #include "kefir/optimizer/constructor_internal.h"
 #include <string.h>
 
-static kefir_result_t identify_code_blocks(struct kefir_mem *mem, struct kefir_opt_constructor_state *state) {
+static kefir_result_t identify_code_blocks(struct kefir_mem *mem, const struct kefir_opt_module *module,
+                                           struct kefir_opt_constructor_state *state) {
     kefir_bool_t start_new_block = true;
     kefir_size_t i = 0;
     for (; i < kefir_irblock_length(&state->function->ir_func->body); i++) {
@@ -53,6 +54,22 @@ static kefir_result_t identify_code_blocks(struct kefir_mem *mem, struct kefir_o
             case KEFIR_IROPCODE_RET:
                 start_new_block = true;
                 break;
+
+            case KEFIR_IROPCODE_INLINEASM: {
+                const struct kefir_ir_inline_assembly *inline_asm =
+                    kefir_ir_module_get_inline_assembly(module->ir_module, instr->arg.i64);
+                REQUIRE(inline_asm != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to find IR inline assembly"));
+
+                if (kefir_list_length(&inline_asm->jump_target_list) > 0) {
+                    for (const struct kefir_list_entry *iter = kefir_list_head(&inline_asm->jump_target_list);
+                         iter != NULL; kefir_list_next(&iter)) {
+                        ASSIGN_DECL_CAST(struct kefir_ir_inline_assembly_jump_target *, jump_target, iter->value);
+
+                        REQUIRE_OK(kefir_opt_constructor_start_code_block_at(mem, state, jump_target->target));
+                    }
+                    start_new_block = true;
+                }
+            } break;
 
             default:
                 // Intentionally left blank
@@ -153,6 +170,24 @@ static kefir_result_t construct_inline_asm(struct kefir_mem *mem, const struct k
     while (num_of_parameter_indices--) {
         REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &param_ref));
     }
+
+    if (kefir_list_length(&ir_inline_asm->jump_target_list) > 0) {
+        struct kefir_opt_constructor_code_block_state *default_control_flow = NULL;
+        REQUIRE_OK(kefir_opt_constructor_find_code_block_for(state, state->ir_location + 1, &default_control_flow));
+        REQUIRE_OK(kefir_opt_code_container_inline_assembly_set_default_jump_target(code, inline_asm_ref,
+                                                                                    default_control_flow->block_id));
+
+        for (const struct kefir_list_entry *iter = kefir_list_head(&ir_inline_asm->jump_target_list); iter != NULL;
+             kefir_list_next(&iter)) {
+            ASSIGN_DECL_CAST(struct kefir_ir_inline_assembly_jump_target *, ir_jump_target, iter->value);
+
+            struct kefir_opt_constructor_code_block_state *target_block_state = NULL;
+            REQUIRE_OK(kefir_opt_constructor_find_code_block_for(state, ir_jump_target->target, &target_block_state));
+
+            REQUIRE_OK(kefir_opt_code_container_inline_assembly_add_jump_target(
+                mem, &state->function->code, inline_asm_ref, ir_jump_target->uid, target_block_state->block_id));
+        }
+    }
     return KEFIR_OK;
 }
 
@@ -160,7 +195,6 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
                                             struct kefir_opt_code_container *code,
                                             struct kefir_opt_constructor_state *state,
                                             const struct kefir_irinstr *instr) {
-    UNUSED(module);
     kefir_opt_instruction_ref_t instr_ref, instr_ref2, instr_ref3, instr_ref4;
     const kefir_opt_block_id_t current_block_id = state->current_block->block_id;
     switch (instr->opcode) {
@@ -701,6 +735,22 @@ static kefir_result_t link_blocks_match(struct kefir_mem *mem, struct kefir_opt_
             }
         } break;
 
+        case KEFIR_OPT_OPCODE_INLINE_ASSEMBLY: {
+            struct kefir_opt_inline_assembly_node *inline_asm = NULL;
+            REQUIRE_OK(kefir_opt_code_container_inline_assembly(
+                &state->function->code, instr->operation.parameters.inline_asm_ref, &inline_asm));
+            if (!kefir_hashtree_empty(&inline_asm->jump_targets)) {
+                REQUIRE_OK(link_blocks_impl(mem, state, block->id, inline_asm->default_jump_target));
+
+                struct kefir_hashtree_node_iterator iter;
+                for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&inline_asm->jump_targets, &iter);
+                     node != NULL; node = kefir_hashtree_next(&iter)) {
+                    ASSIGN_DECL_CAST(kefir_opt_block_id_t, target_block, node->value);
+                    REQUIRE_OK(link_blocks_impl(mem, state, block->id, target_block));
+                }
+            }
+        } break;
+
         default:
             // Intentionally left blank
             break;
@@ -765,6 +815,29 @@ static kefir_result_t link_blocks_traverse(struct kefir_mem *mem, struct kefir_o
             // Intentionally left blank
             break;
 
+        case KEFIR_OPT_OPCODE_INLINE_ASSEMBLY: {
+            struct kefir_opt_inline_assembly_node *inline_asm = NULL;
+            REQUIRE_OK(kefir_opt_code_container_inline_assembly(
+                &state->function->code, instr->operation.parameters.inline_asm_ref, &inline_asm));
+            if (!kefir_hashtree_empty(&inline_asm->jump_targets)) {
+                REQUIRE_OK(link_blocks_equalize_stack(mem, state, block_id, inline_asm->default_jump_target));
+
+                struct kefir_hashtree_node_iterator iter;
+                for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&inline_asm->jump_targets, &iter);
+                     node != NULL; node = kefir_hashtree_next(&iter)) {
+                    ASSIGN_DECL_CAST(kefir_opt_block_id_t, target_block, node->value);
+                    REQUIRE_OK(link_blocks_equalize_stack(mem, state, block_id, target_block));
+                }
+
+                REQUIRE_OK(link_blocks_traverse(mem, state, inline_asm->default_jump_target));
+                for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&inline_asm->jump_targets, &iter);
+                     node != NULL; node = kefir_hashtree_next(&iter)) {
+                    ASSIGN_DECL_CAST(kefir_opt_block_id_t, target_block, node->value);
+                    REQUIRE_OK(link_blocks_traverse(mem, state, target_block));
+                }
+            }
+        } break;
+
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Encountered unterminated optimizer code block");
     }
@@ -795,7 +868,7 @@ static kefir_result_t link_blocks(struct kefir_mem *mem, struct kefir_opt_constr
 
 static kefir_result_t construct_code_from_ir(struct kefir_mem *mem, const struct kefir_opt_module *module,
                                              struct kefir_opt_constructor_state *state) {
-    REQUIRE_OK(identify_code_blocks(mem, state));
+    REQUIRE_OK(identify_code_blocks(mem, module, state));
     REQUIRE_OK(translate_code(mem, module, state));
     REQUIRE_OK(link_blocks(mem, state));
     return KEFIR_OK;

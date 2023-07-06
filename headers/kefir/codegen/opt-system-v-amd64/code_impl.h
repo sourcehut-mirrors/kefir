@@ -25,4 +25,10 @@
 kefir_result_t kefir_codegen_opt_sysv_amd64_storage_filter_regs_allocation(
     const struct kefir_codegen_opt_amd64_sysv_storage_location *, kefir_bool_t *, void *);
 
+kefir_result_t kefir_codegen_opt_sysv_amd64_map_registers(struct kefir_mem *, struct kefir_codegen_opt_amd64 *,
+                                                          const struct kefir_opt_function *,
+                                                          const struct kefir_opt_code_analysis *,
+                                                          struct kefir_opt_sysv_amd64_function *, kefir_opt_block_id_t,
+                                                          kefir_opt_block_id_t);
+
 #endif

@@ -222,6 +222,16 @@ static kefir_result_t find_reachable_code_inline_asm(struct kefir_mem *mem, stru
         INSERT_INTO_QUEUE(mem, queue, inline_asm->parameters[i].read_ref);
         INSERT_INTO_QUEUE(mem, queue, inline_asm->parameters[i].load_store_ref);
     }
+    if (!kefir_hashtree_empty(&inline_asm->jump_targets)) {
+        struct kefir_hashtree_node_iterator iter;
+        for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&inline_asm->jump_targets, &iter);
+             node != NULL; node = kefir_hashtree_next(&iter)) {
+            ASSIGN_DECL_CAST(kefir_opt_block_id_t, target_block, node->value);
+            REQUIRE_OK(mark_reachable_code_in_block(mem, analysis, target_block, queue));
+        }
+
+        REQUIRE_OK(mark_reachable_code_in_block(mem, analysis, inline_asm->default_jump_target, queue));
+    }
     return KEFIR_OK;
 }
 

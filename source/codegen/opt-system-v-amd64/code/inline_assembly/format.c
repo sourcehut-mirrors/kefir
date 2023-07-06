@@ -97,22 +97,22 @@ static kefir_result_t match_parameter(const struct kefir_ir_inline_assembly *inl
     }
 }
 
-// static kefir_result_t format_label_parameter(struct kefir_mem *mem,
-//                                              struct kefir_codegen_opt_sysv_amd64_inline_assembly_context *params,
-//                                              const struct kefir_ir_inline_assembly_jump_target *jump_target) {
-//     char jump_target_text[1024];
-//     REQUIRE_OK(KEFIR_AMD64_XASMGEN_FORMAT_OPERAND(
-//         &codegen->xasmgen,
-//         kefir_asm_amd64_xasmgen_operand_label(
-//             &codegen->xasmgen_helpers.operands[0],
-//             kefir_asm_amd64_xasmgen_helpers_format(&codegen->xasmgen_helpers,
-//                                                    KEFIR_AMD64_SYSTEM_V_RUNTIME_INLINE_ASSEMBLY_JUMP_TRAMPOLINE,
-//                                                    inline_asm->id, jump_target->uid)),
-//         jump_target_text, sizeof(jump_target_text) - 1));
+static kefir_result_t format_label_parameter(struct kefir_mem *mem,
+                                             struct kefir_codegen_opt_sysv_amd64_inline_assembly_context *context,
+                                             const struct kefir_ir_inline_assembly_jump_target *jump_target) {
+    char jump_target_text[1024];
+    REQUIRE_OK(KEFIR_AMD64_XASMGEN_FORMAT_OPERAND(
+        &context->codegen->xasmgen,
+        kefir_asm_amd64_xasmgen_operand_label(
+            &context->codegen->xasmgen_helpers.operands[0],
+            kefir_asm_amd64_xasmgen_helpers_format(
+                &context->codegen->xasmgen_helpers, KEFIR_OPT_AMD64_SYSTEM_V_INLINE_ASSEMBLY_JUMP_TRAMPOLINE_LABEL,
+                context->function->ir_func->name, context->inline_assembly->node_id, jump_target->uid)),
+        jump_target_text, sizeof(jump_target_text) - 1));
 
-//     REQUIRE_OK(kefir_string_builder_printf(mem, &params->formatted_asm, "%s", jump_target_text));
-//     return KEFIR_OK;
-// }
+    REQUIRE_OK(kefir_string_builder_printf(mem, &context->formatted_asm, "%s", jump_target_text));
+    return KEFIR_OK;
+}
 
 static kefir_result_t format_normal_parameter(struct kefir_mem *mem,
                                               struct kefir_codegen_opt_sysv_amd64_inline_assembly_context *context,
@@ -214,7 +214,7 @@ static kefir_result_t default_param_modifier(struct kefir_mem *mem,
     if (asm_param != NULL) {
         REQUIRE_OK(format_normal_parameter(mem, context, asm_param, 0));
     } else if (jump_target != NULL) {
-        // REQUIRE_OK(format_label_parameter(mem, context, jump_target));
+        REQUIRE_OK(format_label_parameter(mem, context, jump_target));
     } else {
         return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected parameter matching result");
     }
@@ -232,7 +232,7 @@ static kefir_result_t byte_param_modifier(struct kefir_mem *mem,
     if (asm_param != NULL) {
         REQUIRE_OK(format_normal_parameter(mem, context, asm_param, 1));
     } else if (jump_target != NULL) {
-        // REQUIRE_OK(format_label_parameter(mem, context, jump_target));
+        REQUIRE_OK(format_label_parameter(mem, context, jump_target));
     } else {
         return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected parameter matching result");
     }
@@ -250,7 +250,7 @@ static kefir_result_t word_param_modifier(struct kefir_mem *mem,
     if (asm_param != NULL) {
         REQUIRE_OK(format_normal_parameter(mem, context, asm_param, 2));
     } else if (jump_target != NULL) {
-        // REQUIRE_OK(format_label_parameter(mem, context, jump_target));
+        REQUIRE_OK(format_label_parameter(mem, context, jump_target));
     } else {
         return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected parameter matching result");
     }
@@ -268,7 +268,7 @@ static kefir_result_t dword_param_modifier(struct kefir_mem *mem,
     if (asm_param != NULL) {
         REQUIRE_OK(format_normal_parameter(mem, context, asm_param, 4));
     } else if (jump_target != NULL) {
-        // REQUIRE_OK(format_label_parameter(mem, context, jump_target));
+        REQUIRE_OK(format_label_parameter(mem, context, jump_target));
     } else {
         return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected parameter matching result");
     }
@@ -286,7 +286,7 @@ static kefir_result_t qword_param_modifier(struct kefir_mem *mem,
     if (asm_param != NULL) {
         REQUIRE_OK(format_normal_parameter(mem, context, asm_param, 8));
     } else if (jump_target != NULL) {
-        // REQUIRE_OK(format_label_parameter(mem, context, jump_target));
+        REQUIRE_OK(format_label_parameter(mem, context, jump_target));
     } else {
         return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected parameter matching result");
     }
@@ -306,7 +306,7 @@ static kefir_result_t label_param_modifier(struct kefir_mem *mem,
                             "Inline assembly label parameter modifier cannot be applied to register parameters"));
     REQUIRE(jump_target != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected parameter matching result"));
     *input_str = input;
-    // REQUIRE_OK(format_label_parameter(mem, context, jump_target));
+    REQUIRE_OK(format_label_parameter(mem, context, jump_target));
     return KEFIR_OK;
 }
 

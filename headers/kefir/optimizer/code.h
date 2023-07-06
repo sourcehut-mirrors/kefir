@@ -183,6 +183,9 @@ typedef struct kefir_opt_inline_assembly_node {
     kefir_size_t parameter_count;
     struct kefir_opt_inline_assembly_parameter *parameters;
 
+    kefir_opt_block_id_t default_jump_target;
+    struct kefir_hashtree jump_targets;
+
     struct {
         kefir_opt_inline_assembly_id_t prev;
         kefir_opt_inline_assembly_id_t next;
@@ -269,6 +272,16 @@ kefir_result_t kefir_opt_code_container_inline_assembly(const struct kefir_opt_c
 kefir_result_t kefir_opt_code_container_inline_assembly_parameter(const struct kefir_opt_code_container *,
                                                                   kefir_opt_inline_assembly_id_t, kefir_size_t,
                                                                   struct kefir_opt_inline_assembly_parameter **);
+kefir_result_t kefir_opt_code_container_inline_assembly_set_default_jump_target(const struct kefir_opt_code_container *,
+                                                                                kefir_opt_inline_assembly_id_t,
+                                                                                kefir_opt_block_id_t);
+kefir_result_t kefir_opt_code_container_inline_assembly_add_jump_target(struct kefir_mem *,
+                                                                        const struct kefir_opt_code_container *,
+                                                                        kefir_opt_inline_assembly_id_t, kefir_id_t,
+                                                                        kefir_opt_block_id_t);
+kefir_result_t kefir_opt_code_container_inline_assembly_jump_target(const struct kefir_opt_code_container *,
+                                                                    kefir_opt_inline_assembly_id_t, kefir_id_t,
+                                                                    kefir_opt_block_id_t *);
 
 kefir_result_t kefir_opt_code_block_instr_head(const struct kefir_opt_code_container *,
                                                const struct kefir_opt_code_block *,

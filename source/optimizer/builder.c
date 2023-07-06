@@ -76,6 +76,13 @@ kefir_result_t kefir_opt_code_builder_is_finalized(const struct kefir_opt_code_c
                 *finalized_ptr = true;
                 break;
 
+            case KEFIR_OPT_OPCODE_INLINE_ASSEMBLY: {
+                struct kefir_opt_inline_assembly_node *inline_asm = NULL;
+                REQUIRE_OK(kefir_opt_code_container_inline_assembly(
+                    code, prev_instr->operation.parameters.inline_asm_ref, &inline_asm));
+                *finalized_ptr = !kefir_hashtree_empty(&inline_asm->jump_targets);
+            } break;
+
             default:
                 *finalized_ptr = false;
                 break;

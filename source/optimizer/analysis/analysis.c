@@ -66,6 +66,24 @@ static kefir_result_t block_schedule_dfs_impl(struct kefir_mem *mem, const struc
                 // Intentionally left blank
                 break;
 
+            case KEFIR_OPT_OPCODE_INLINE_ASSEMBLY: {
+                struct kefir_opt_inline_assembly_node *inline_asm = NULL;
+                REQUIRE_OK(kefir_opt_code_container_inline_assembly(code, instr->operation.parameters.inline_asm_ref,
+                                                                    &inline_asm));
+                if (!kefir_hashtree_empty(&inline_asm->jump_targets)) {
+                    struct kefir_hashtree_node_iterator iter;
+                    for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&inline_asm->jump_targets, &iter);
+                         node != NULL; node = kefir_hashtree_next(&iter)) {
+                        ASSIGN_DECL_CAST(kefir_opt_block_id_t, target_block, node->value);
+                        REQUIRE_OK(
+                            kefir_list_insert_after(mem, work_queue, NULL, (void *) (kefir_uptr_t) target_block));
+                    }
+
+                    REQUIRE_OK(kefir_list_insert_after(mem, work_queue, NULL,
+                                                       (void *) (kefir_uptr_t) inline_asm->default_jump_target));
+                }
+            } break;
+
             default:
                 return KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
                                        "Unexpected terminating instruction in optimizer block control flow");
@@ -150,6 +168,24 @@ static kefir_result_t find_successors(struct kefir_mem *mem, struct kefir_opt_co
                         kefir_list_insert_after(mem, successors, kefir_list_tail(successors), indirect_iter->value));
                 }
                 break;
+
+            case KEFIR_OPT_OPCODE_INLINE_ASSEMBLY: {
+                struct kefir_opt_inline_assembly_node *inline_asm = NULL;
+                REQUIRE_OK(kefir_opt_code_container_inline_assembly(
+                    analysis->code, tail_instr->operation.parameters.inline_asm_ref, &inline_asm));
+                if (!kefir_hashtree_empty(&inline_asm->jump_targets)) {
+                    REQUIRE_OK(kefir_list_insert_after(mem, successors, kefir_list_tail(successors),
+                                                       (void *) (kefir_uptr_t) inline_asm->default_jump_target));
+
+                    struct kefir_hashtree_node_iterator iter;
+                    for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&inline_asm->jump_targets, &iter);
+                         node != NULL; node = kefir_hashtree_next(&iter)) {
+                        ASSIGN_DECL_CAST(kefir_opt_block_id_t, target_block, node->value);
+                        REQUIRE_OK(kefir_list_insert_after(mem, successors, kefir_list_tail(successors),
+                                                           (void *) (kefir_uptr_t) target_block));
+                    }
+                }
+            } break;
 
             case KEFIR_OPT_OPCODE_RETURN:
                 // Intentionally left blank

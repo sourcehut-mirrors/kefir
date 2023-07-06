@@ -55,7 +55,9 @@ typedef struct kefir_codegen_opt_sysv_amd64_inline_assembly_parameter_allocation
 typedef struct kefir_codegen_opt_sysv_amd64_inline_assembly_context {
     struct kefir_codegen_opt_amd64 *codegen;
     const struct kefir_opt_function *function;
+    const struct kefir_opt_code_analysis *func_analysis;
     struct kefir_opt_sysv_amd64_function *codegen_func;
+    const struct kefir_opt_instruction *instr;
     struct kefir_opt_inline_assembly_node *inline_assembly;
     const struct kefir_ir_inline_assembly *ir_inline_assembly;
 
@@ -97,6 +99,8 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_inline_assembly_format(
     struct kefir_mem *, struct kefir_codegen_opt_sysv_amd64_inline_assembly_context *);
 kefir_result_t kefir_codegen_opt_sysv_amd64_inline_assembly_store_outputs(
     struct kefir_codegen_opt_sysv_amd64_inline_assembly_context *);
+kefir_result_t kefir_codegen_opt_sysv_amd64_inline_assembly_jump_trampolines(
+    struct kefir_mem *, struct kefir_codegen_opt_sysv_amd64_inline_assembly_context *);
 
 kefir_result_t kefir_codegen_opt_sysv_amd64_inline_assembly_match_register_to_size(
     kefir_asm_amd64_xasmgen_register_t, kefir_size_t, kefir_asm_amd64_xasmgen_register_t *);

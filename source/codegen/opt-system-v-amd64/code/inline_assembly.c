@@ -32,6 +32,7 @@ static kefir_result_t inline_assembly_impl(struct kefir_mem *mem,
     REQUIRE_OK(kefir_codegen_opt_sysv_amd64_inline_assembly_format(mem, context));
     REQUIRE_OK(kefir_codegen_opt_sysv_amd64_inline_assembly_store_outputs(context));
     REQUIRE_OK(kefir_codegen_opt_sysv_amd64_inline_assembly_restore_state(mem, context));
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_inline_assembly_jump_trampolines(mem, context));
     return KEFIR_OK;
 }
 
@@ -44,7 +45,9 @@ DEFINE_TRANSLATOR(inline_assembly) {
     struct kefir_codegen_opt_sysv_amd64_inline_assembly_context context = {
         .codegen = codegen,
         .function = function,
+        .func_analysis = func_analysis,
         .codegen_func = codegen_func,
+        .instr = instr,
         .dirty_cc = false,
         .stack_input_parameters = {.initialized = false, .count = 0},
         .stack_output_parameters = {.count = 0},

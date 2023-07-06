@@ -67,11 +67,10 @@ static kefir_result_t map_registers_prepare(struct kefir_mem *mem, const struct 
     return KEFIR_OK;
 }
 
-static kefir_result_t map_registers(struct kefir_mem *mem, struct kefir_codegen_opt_amd64 *codegen,
-                                    const struct kefir_opt_function *function,
-                                    const struct kefir_opt_code_analysis *func_analysis,
-                                    struct kefir_opt_sysv_amd64_function *codegen_func,
-                                    kefir_opt_block_id_t source_block_id, kefir_opt_block_id_t target_block_id) {
+kefir_result_t kefir_codegen_opt_sysv_amd64_map_registers(
+    struct kefir_mem *mem, struct kefir_codegen_opt_amd64 *codegen, const struct kefir_opt_function *function,
+    const struct kefir_opt_code_analysis *func_analysis, struct kefir_opt_sysv_amd64_function *codegen_func,
+    kefir_opt_block_id_t source_block_id, kefir_opt_block_id_t target_block_id) {
     struct kefir_codegen_opt_amd64_sysv_storage_transform transform;
     REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_transform_init(&transform));
 
@@ -117,8 +116,9 @@ DEFINE_TRANSLATOR(jump) {
 
     switch (instr->operation.opcode) {
         case KEFIR_OPT_OPCODE_JUMP:
-            REQUIRE_OK(map_registers(mem, codegen, function, func_analysis, codegen_func, instr->block_id,
-                                     instr->operation.parameters.branch.target_block));
+            REQUIRE_OK(kefir_codegen_opt_sysv_amd64_map_registers(mem, codegen, function, func_analysis, codegen_func,
+                                                                  instr->block_id,
+                                                                  instr->operation.parameters.branch.target_block));
 
             const struct kefir_opt_code_analysis_block_properties *source_block_props =
                 &func_analysis->blocks[instr->block_id];
@@ -185,8 +185,9 @@ DEFINE_TRANSLATOR(jump) {
 
             REQUIRE_OK(
                 kefir_codegen_opt_amd64_sysv_storage_handle_restore_evicted(&codegen->xasmgen, &condition_handle));
-            REQUIRE_OK(map_registers(mem, codegen, function, func_analysis, codegen_func, instr->block_id,
-                                     instr->operation.parameters.branch.target_block));
+            REQUIRE_OK(kefir_codegen_opt_sysv_amd64_map_registers(mem, codegen, function, func_analysis, codegen_func,
+                                                                  instr->block_id,
+                                                                  instr->operation.parameters.branch.target_block));
 
             const struct kefir_opt_code_analysis_block_properties *source_block_props =
                 &func_analysis->blocks[instr->block_id];
@@ -210,8 +211,9 @@ DEFINE_TRANSLATOR(jump) {
 
                 REQUIRE_OK(
                     kefir_codegen_opt_amd64_sysv_storage_handle_restore_evicted(&codegen->xasmgen, &condition_handle));
-                REQUIRE_OK(map_registers(mem, codegen, function, func_analysis, codegen_func, instr->block_id,
-                                         instr->operation.parameters.branch.alternative_block));
+                REQUIRE_OK(kefir_codegen_opt_sysv_amd64_map_registers(
+                    mem, codegen, function, func_analysis, codegen_func, instr->block_id,
+                    instr->operation.parameters.branch.alternative_block));
 
                 const struct kefir_opt_code_analysis_block_properties *alternative_block_props =
                     &func_analysis->blocks[instr->operation.parameters.branch.alternative_block];
