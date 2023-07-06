@@ -41,6 +41,9 @@ kefir_result_t kefir_codegen_opt_amd64_sysv_storage_transform_insert(
     const struct kefir_codegen_opt_amd64_sysv_storage_location *,
     const struct kefir_codegen_opt_amd64_sysv_storage_location *);
 
+kefir_result_t kefir_codegen_opt_amd64_sysv_storage_transform_reset(
+    struct kefir_mem *, struct kefir_codegen_opt_amd64_sysv_storage_transform *);
+
 kefir_result_t kefir_codegen_opt_amd64_sysv_storage_transform_operations(
     const struct kefir_codegen_opt_amd64_sysv_storage_transform *, kefir_size_t *);
 

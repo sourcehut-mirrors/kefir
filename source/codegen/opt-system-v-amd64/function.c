@@ -66,6 +66,7 @@ static kefir_result_t init_codegen_func(struct kefir_mem *mem, const struct kefi
     }
 
     sysv_amd64_function->nonblock_labels = 0;
+    sysv_amd64_function->inline_asm_id = 0;
     return KEFIR_OK;
 }
 

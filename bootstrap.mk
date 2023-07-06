@@ -37,6 +37,7 @@ KEFIR_SOURCE := $(wildcard \
 	$(SOURCE)/codegen/*.c \
 	$(SOURCE)/codegen/opt-system-v-amd64/*.c \
 	$(SOURCE)/codegen/opt-system-v-amd64/code/*.c \
+	$(SOURCE)/codegen/opt-system-v-amd64/code/inline_assembly/*.c \
 	$(SOURCE)/codegen/system-v-amd64/*.c \
 	$(SOURCE)/codegen/system-v-amd64/builtins/*.c \
 	$(SOURCE)/compiler/*.c \

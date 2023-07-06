@@ -40,6 +40,7 @@ typedef struct kefir_opt_sysv_amd64_function {
     struct kefir_codegen_opt_sysv_amd64_storage storage;
     struct kefir_list alive_instr;
     kefir_id_t nonblock_labels;
+    kefir_id_t inline_asm_id;
 } kefir_opt_sysv_amd64_function_t;
 
 kefir_result_t kefir_codegen_opt_sysv_amd64_translate_function(struct kefir_mem *, struct kefir_codegen_opt_amd64 *,

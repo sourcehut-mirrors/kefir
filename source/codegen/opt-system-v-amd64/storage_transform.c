@@ -173,6 +173,17 @@ kefir_result_t kefir_codegen_opt_amd64_sysv_storage_transform_insert(
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_codegen_opt_amd64_sysv_storage_transform_reset(
+    struct kefir_mem *mem, struct kefir_codegen_opt_amd64_sysv_storage_transform *transform) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(transform != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer codegen storage transform"));
+
+    REQUIRE_OK(kefir_hashtreeset_clean(mem, &transform->active_regs));
+    REQUIRE_OK(kefir_hashtree_clean(mem, &transform->map));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_codegen_opt_amd64_sysv_storage_transform_operations(
     const struct kefir_codegen_opt_amd64_sysv_storage_transform *transform, kefir_size_t *num_of_ops) {
     REQUIRE(transform != NULL,

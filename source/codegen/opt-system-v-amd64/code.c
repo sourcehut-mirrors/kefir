@@ -503,7 +503,8 @@ static kefir_result_t translate_instr(struct kefir_mem *mem, struct kefir_codege
             break;
 
         case KEFIR_OPT_OPCODE_INLINE_ASSEMBLY:
-            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Inline assembly support is not implemented yet");
+            REQUIRE_OK(INVOKE_TRANSLATOR(inline_assembly));
+            break;
     }
 #undef INVOKE_TRANSLATOR
 
@@ -631,6 +632,8 @@ static kefir_result_t calculate_frame_temporaries(struct kefir_mem *mem, const s
 }
 
 static kefir_result_t init_translator(struct kefir_mem *mem, struct kefir_opt_sysv_amd64_function *codegen_func) {
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_mark_register_used(mem, &codegen_func->storage,
+                                                                       KEFIR_AMD64_XASMGEN_REGISTER_RBP));
     for (kefir_size_t i = 0; i < KefirCodegenOptSysvAmd64StackFrameNumOfPreservedRegs; i++) {
         kefir_bool_t preserved;
         REQUIRE_OK(kefir_bitset_get(&codegen_func->stack_frame.preserve.regs, i, &preserved));
