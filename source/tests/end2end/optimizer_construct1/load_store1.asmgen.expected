@@ -867,7 +867,7 @@
                 "blocks": [
                     {
                         "id": 0,
-                        "control_flow": 6,
+                        "control_flow": 4,
                         "phi": [],
                         "calls": [],
                         "inline_assembly": [],
@@ -883,7 +883,7 @@
                                     "linear_liveness": {
                                         "alias": null,
                                         "begin": 0,
-                                        "end": 13
+                                        "end": 9
                                     }
                                 }
                             },
@@ -898,7 +898,7 @@
                                     "linear_liveness": {
                                         "alias": null,
                                         "begin": 0,
-                                        "end": 11
+                                        "end": 7
                                     }
                                 }
                             },
@@ -913,14 +913,14 @@
                                     "linear_liveness": {
                                         "alias": null,
                                         "begin": 0,
-                                        "end": 7
+                                        "end": 5
                                     }
                                 }
                             },
                             {
                                 "id": 3,
                                 "opcode": "get_local",
-                                "index": 0,
+                                "index": 2,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -928,32 +928,33 @@
                                     "linear_liveness": {
                                         "alias": null,
                                         "begin": 3,
-                                        "end": 6
+                                        "end": 5
                                     }
                                 }
                             },
                             {
                                 "id": 4,
-                                "opcode": "int_const",
-                                "value": 8,
-                                "control_next": null,
+                                "opcode": "int64_store",
+                                "location": 3,
+                                "value": 2,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": 6,
                                 "properties": {
                                     "reachable": true,
                                     "linear_index": 4,
                                     "linear_liveness": {
                                         "alias": null,
                                         "begin": 4,
-                                        "end": 6
+                                        "end": 5
                                     }
                                 }
                             },
                             {
                                 "id": 5,
-                                "opcode": "int_add",
-                                "args": [
-                                    3,
-                                    4
-                                ],
+                                "opcode": "get_local",
+                                "index": 1,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -967,13 +968,13 @@
                             },
                             {
                                 "id": 6,
-                                "opcode": "int64_store",
+                                "opcode": "int8_store",
                                 "location": 5,
-                                "value": 2,
+                                "value": 1,
                                 "flags": {
                                     "volatile": false
                                 },
-                                "control_next": 10,
+                                "control_next": 8,
                                 "properties": {
                                     "reachable": true,
                                     "linear_index": 6,
@@ -995,32 +996,33 @@
                                     "linear_liveness": {
                                         "alias": null,
                                         "begin": 7,
-                                        "end": 10
+                                        "end": 9
                                     }
                                 }
                             },
                             {
                                 "id": 8,
-                                "opcode": "int_const",
-                                "value": 4,
-                                "control_next": null,
+                                "opcode": "int32_store",
+                                "location": 7,
+                                "value": 0,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": 20,
                                 "properties": {
                                     "reachable": true,
                                     "linear_index": 8,
                                     "linear_liveness": {
                                         "alias": null,
                                         "begin": 8,
-                                        "end": 10
+                                        "end": 9
                                     }
                                 }
                             },
                             {
                                 "id": 9,
-                                "opcode": "int_add",
-                                "args": [
-                                    7,
-                                    8
-                                ],
+                                "opcode": "get_local",
+                                "index": 0,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -1034,27 +1036,26 @@
                             },
                             {
                                 "id": 10,
-                                "opcode": "int8_store",
+                                "opcode": "int32_load_signed",
                                 "location": 9,
-                                "value": 1,
                                 "flags": {
                                     "volatile": false
                                 },
-                                "control_next": 12,
+                                "control_next": null,
                                 "properties": {
                                     "reachable": true,
                                     "linear_index": 10,
                                     "linear_liveness": {
                                         "alias": null,
                                         "begin": 10,
-                                        "end": 11
+                                        "end": 20
                                     }
                                 }
                             },
                             {
                                 "id": 11,
                                 "opcode": "get_local",
-                                "index": 0,
+                                "index": 1,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -1068,27 +1069,26 @@
                             },
                             {
                                 "id": 12,
-                                "opcode": "int32_store",
+                                "opcode": "int8_load_signed",
                                 "location": 11,
-                                "value": 0,
                                 "flags": {
                                     "volatile": false
                                 },
-                                "control_next": 28,
+                                "control_next": null,
                                 "properties": {
                                     "reachable": true,
                                     "linear_index": 12,
                                     "linear_liveness": {
                                         "alias": null,
                                         "begin": 12,
-                                        "end": 13
+                                        "end": 16
                                     }
                                 }
                             },
                             {
                                 "id": 13,
                                 "opcode": "get_local",
-                                "index": 0,
+                                "index": 2,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -1102,7 +1102,7 @@
                             },
                             {
                                 "id": 14,
-                                "opcode": "int32_load_signed",
+                                "opcode": "int64_load",
                                 "location": 13,
                                 "flags": {
                                     "volatile": false
@@ -1114,14 +1114,17 @@
                                     "linear_liveness": {
                                         "alias": null,
                                         "begin": 14,
-                                        "end": 28
+                                        "end": 16
                                     }
                                 }
                             },
                             {
                                 "id": 15,
-                                "opcode": "get_local",
-                                "index": 0,
+                                "opcode": "int_mul",
+                                "args": [
+                                    12,
+                                    14
+                                ],
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -1129,14 +1132,14 @@
                                     "linear_liveness": {
                                         "alias": null,
                                         "begin": 15,
-                                        "end": 18
+                                        "end": 19
                                     }
                                 }
                             },
                             {
                                 "id": 16,
-                                "opcode": "int_const",
-                                "value": 4,
+                                "opcode": "get_thread_local",
+                                "ir_ref": 13,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -1150,11 +1153,11 @@
                             },
                             {
                                 "id": 17,
-                                "opcode": "int_add",
-                                "args": [
-                                    15,
-                                    16
-                                ],
+                                "opcode": "int16_load_signed",
+                                "location": 16,
+                                "flags": {
+                                    "volatile": false
+                                },
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -1168,11 +1171,11 @@
                             },
                             {
                                 "id": 18,
-                                "opcode": "int8_load_signed",
-                                "location": 17,
-                                "flags": {
-                                    "volatile": false
-                                },
+                                "opcode": "int_div",
+                                "args": [
+                                    15,
+                                    17
+                                ],
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -1180,14 +1183,17 @@
                                     "linear_liveness": {
                                         "alias": null,
                                         "begin": 18,
-                                        "end": 24
+                                        "end": 20
                                     }
                                 }
                             },
                             {
                                 "id": 19,
-                                "opcode": "get_local",
-                                "index": 0,
+                                "opcode": "int_add",
+                                "args": [
+                                    10,
+                                    18
+                                ],
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -1195,14 +1201,14 @@
                                     "linear_liveness": {
                                         "alias": null,
                                         "begin": 19,
-                                        "end": 22
+                                        "end": 21
                                     }
                                 }
                             },
                             {
                                 "id": 20,
-                                "opcode": "int_const",
-                                "value": 8,
+                                "opcode": "return",
+                                "arg": 19,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -1210,145 +1216,7 @@
                                     "linear_liveness": {
                                         "alias": null,
                                         "begin": 20,
-                                        "end": 22
-                                    }
-                                }
-                            },
-                            {
-                                "id": 21,
-                                "opcode": "int_add",
-                                "args": [
-                                    19,
-                                    20
-                                ],
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 21,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 21,
-                                        "end": 23
-                                    }
-                                }
-                            },
-                            {
-                                "id": 22,
-                                "opcode": "int64_load",
-                                "location": 21,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 22,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 22,
-                                        "end": 24
-                                    }
-                                }
-                            },
-                            {
-                                "id": 23,
-                                "opcode": "int_mul",
-                                "args": [
-                                    18,
-                                    22
-                                ],
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 23,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 23,
-                                        "end": 27
-                                    }
-                                }
-                            },
-                            {
-                                "id": 24,
-                                "opcode": "get_thread_local",
-                                "ir_ref": 13,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 24,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 24,
-                                        "end": 26
-                                    }
-                                }
-                            },
-                            {
-                                "id": 25,
-                                "opcode": "int16_load_signed",
-                                "location": 24,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 25,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 25,
-                                        "end": 27
-                                    }
-                                }
-                            },
-                            {
-                                "id": 26,
-                                "opcode": "int_div",
-                                "args": [
-                                    23,
-                                    25
-                                ],
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 26,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 26,
-                                        "end": 28
-                                    }
-                                }
-                            },
-                            {
-                                "id": 27,
-                                "opcode": "int_add",
-                                "args": [
-                                    14,
-                                    26
-                                ],
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 27,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 27,
-                                        "end": 29
-                                    }
-                                }
-                            },
-                            {
-                                "id": 28,
-                                "opcode": "return",
-                                "arg": 27,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 28,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 28,
-                                        "end": 29
+                                        "end": 21
                                     }
                                 }
                             }
@@ -1358,7 +1226,7 @@
                             "linear_position": 1,
                             "linear_interval": {
                                 "begin": 0,
-                                "end": 29
+                                "end": 21
                             },
                             "successors": [],
                             "predecessors": []
@@ -1366,13 +1234,13 @@
                     },
                     {
                         "id": 1,
-                        "control_flow": 29,
+                        "control_flow": 21,
                         "phi": [],
                         "calls": [],
                         "inline_assembly": [],
                         "code": [
                             {
-                                "id": 29,
+                                "id": 21,
                                 "opcode": "return",
                                 "arg": null,
                                 "control_next": null,
@@ -1393,7 +1261,7 @@
                     }
                 ],
                 "properties": {
-                    "linear_length": 29
+                    "linear_length": 21
                 }
             }
         },

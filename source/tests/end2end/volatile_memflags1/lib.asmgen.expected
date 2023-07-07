@@ -101,58 +101,6 @@
             ]
         },
         {
-            "identifier": 44,
-            "type": [
-                {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "char"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "identifier": 47,
-            "type": [
-                {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "short"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "identifier": 50,
-            "type": [
-                {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "int"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "identifier": 53,
-            "type": [
-                {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "long"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
             "identifier": 54,
             "type": [
                 {
@@ -160,22 +108,6 @@
                 },
                 {
                     "type": "int"
-                }
-            ]
-        },
-        {
-            "identifier": 56,
-            "type": [
-                {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "word"
-                        },
-                        {
-                            "type": "int"
-                        }
-                    ]
                 }
             ]
         },
@@ -188,54 +120,26 @@
             ]
         },
         {
-            "identifier": 68,
+            "identifier": 80,
             "type": [
+                {
+                    "type": "int"
+                },
+                {
+                    "type": "array",
+                    "length": 1,
+                    "element_type": {
+                        "type": "word"
+                    }
+                },
                 {
                     "type": "struct",
                     "fields": [
                         {
                             "type": "word"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "identifier": 80,
-            "type": [
-                {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "int"
                         },
                         {
-                            "type": "array",
-                            "length": 1,
-                            "element_type": {
-                                "type": "word"
-                            }
-                        },
-                        {
-                            "type": "union",
-                            "fields": [
-                                {
-                                    "type": "struct",
-                                    "fields": [
-                                        {
-                                            "type": "struct",
-                                            "fields": [
-                                                {
-                                                    "type": "word"
-                                                },
-                                                {
-                                                    "type": "word"
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                }
-                            ]
+                            "type": "word"
                         }
                     ]
                 }
@@ -493,12 +397,12 @@
         {
             "identifier": 15,
             "name": "setA",
-            "locals": 44,
+            "locals": 31,
             "body": [
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 44,
+                        "type": 31,
                         "index": 0
                     }
                 },
@@ -515,7 +419,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 44,
+                        "type": 31,
                         "index": 0
                     }
                 },
@@ -557,12 +461,12 @@
         {
             "identifier": 16,
             "name": "setB",
-            "locals": 47,
+            "locals": 34,
             "body": [
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 47,
+                        "type": 34,
                         "index": 0
                     }
                 },
@@ -579,7 +483,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 47,
+                        "type": 34,
                         "index": 0
                     }
                 },
@@ -621,12 +525,12 @@
         {
             "identifier": 17,
             "name": "setC",
-            "locals": 50,
+            "locals": 37,
             "body": [
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 50,
+                        "type": 37,
                         "index": 0
                     }
                 },
@@ -643,7 +547,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 50,
+                        "type": 37,
                         "index": 0
                     }
                 },
@@ -685,12 +589,12 @@
         {
             "identifier": 18,
             "name": "setD",
-            "locals": 53,
+            "locals": 40,
             "body": [
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 53,
+                        "type": 40,
                         "index": 0
                     }
                 },
@@ -707,7 +611,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 53,
+                        "type": 40,
                         "index": 0
                     }
                 },
@@ -749,18 +653,14 @@
         {
             "identifier": 19,
             "name": "setS",
-            "locals": 56,
+            "locals": 54,
             "body": [
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 56,
-                        "index": 0
+                        "type": 54,
+                        "index": 1
                     }
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 8
                 },
                 {
                     "opcode": "xchg",
@@ -775,7 +675,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 56,
+                        "type": 54,
                         "index": 0
                     }
                 },
@@ -792,13 +692,9 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 56,
-                        "index": 0
+                        "type": 54,
+                        "index": 1
                     }
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 8
                 },
                 {
                     "opcode": "load32i",
@@ -812,7 +708,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 56,
+                        "type": 54,
                         "index": 0
                     }
                 },
@@ -890,13 +786,9 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 56,
-                        "index": 0
+                        "type": 54,
+                        "index": 1
                     }
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 8
                 },
                 {
                     "opcode": "load32i",
@@ -910,7 +802,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 56,
+                        "type": 54,
                         "index": 0
                     }
                 },
@@ -988,13 +880,9 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 56,
-                        "index": 0
+                        "type": 54,
+                        "index": 1
                     }
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 8
                 },
                 {
                     "opcode": "load32i",
@@ -1005,7 +893,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 56,
+                        "type": 54,
                         "index": 0
                     }
                 },
@@ -1087,13 +975,9 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 56,
-                        "index": 0
+                        "type": 54,
+                        "index": 1
                     }
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 8
                 },
                 {
                     "opcode": "load32i",
@@ -1104,7 +988,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 56,
+                        "type": 54,
                         "index": 0
                     }
                 },
@@ -1186,13 +1070,9 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 56,
-                        "index": 0
+                        "type": 54,
+                        "index": 1
                     }
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 8
                 },
                 {
                     "opcode": "load32i",
@@ -1203,7 +1083,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 56,
+                        "type": 54,
                         "index": 0
                     }
                 },
@@ -1243,12 +1123,12 @@
         {
             "identifier": 20,
             "name": "sumS",
-            "locals": 68,
+            "locals": 66,
             "body": [
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 68,
+                        "type": 66,
                         "index": 0
                     }
                 },
@@ -1265,7 +1145,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 68,
+                        "type": 66,
                         "index": 0
                     }
                 },
@@ -1298,7 +1178,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 68,
+                        "type": 66,
                         "index": 0
                     }
                 },
@@ -1337,7 +1217,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 68,
+                        "type": 66,
                         "index": 0
                     }
                 },
@@ -1377,7 +1257,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 68,
+                        "type": 66,
                         "index": 0
                     }
                 },
@@ -1414,7 +1294,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 68,
+                        "type": 66,
                         "index": 0
                     }
                 },
@@ -1468,7 +1348,7 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 80,
-                        "index": 2
+                        "index": 1
                     }
                 },
                 {
@@ -1492,12 +1372,8 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 80,
-                        "index": 0
+                        "index": 3
                     }
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 16
                 },
                 {
                     "opcode": "iadd1",
@@ -1527,12 +1403,8 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 80,
-                        "index": 0
+                        "index": 3
                     }
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 16
                 },
                 {
                     "opcode": "iadd1",
@@ -1566,12 +1438,8 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 80,
-                        "index": 0
+                        "index": 3
                     }
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 16
                 },
                 {
                     "opcode": "iadd1",
@@ -1587,12 +1455,8 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 80,
-                        "index": 0
+                        "index": 3
                     }
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 16
                 },
                 {
                     "opcode": "iadd1",
@@ -1625,12 +1489,8 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 80,
-                        "index": 0
+                        "index": 3
                     }
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 16
                 },
                 {
                     "opcode": "iadd1",
@@ -1675,7 +1535,7 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 80,
-                        "index": 2
+                        "index": 1
                     }
                 },
                 {

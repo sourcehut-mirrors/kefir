@@ -1,123 +1,6 @@
 .att_syntax
 .section .note.GNU-stack,"",%progbits
 
-.section .text
-
-# Opcode handlers
-.extern __kefirrt_nop_impl
-.extern __kefirrt_jmp_impl
-.extern __kefirrt_ijmp_impl
-.extern __kefirrt_branch_impl
-.extern __kefirrt_pushi_impl
-.extern __kefirrt_pop_impl
-.extern __kefirrt_pick_impl
-.extern __kefirrt_xchg_impl
-.extern __kefirrt_iadd_impl
-.extern __kefirrt_iadd1_impl
-.extern __kefirrt_isub_impl
-.extern __kefirrt_imul_impl
-.extern __kefirrt_idiv_impl
-.extern __kefirrt_imod_impl
-.extern __kefirrt_udiv_impl
-.extern __kefirrt_umod_impl
-.extern __kefirrt_ineg_impl
-.extern __kefirrt_inot_impl
-.extern __kefirrt_iand_impl
-.extern __kefirrt_ior_impl
-.extern __kefirrt_ixor_impl
-.extern __kefirrt_ishr_impl
-.extern __kefirrt_isar_impl
-.extern __kefirrt_ishl_impl
-.extern __kefirrt_iequals_impl
-.extern __kefirrt_igreater_impl
-.extern __kefirrt_ilesser_impl
-.extern __kefirrt_iabove_impl
-.extern __kefirrt_ibelow_impl
-.extern __kefirrt_band_impl
-.extern __kefirrt_bor_impl
-.extern __kefirrt_bnot_impl
-.extern __kefirrt_trunc1_impl
-.extern __kefirrt_extend8_impl
-.extern __kefirrt_extend16_impl
-.extern __kefirrt_extend32_impl
-.extern __kefirrt_iaddx_impl
-.extern __kefirrt_load8u_impl
-.extern __kefirrt_load8i_impl
-.extern __kefirrt_load16u_impl
-.extern __kefirrt_load16i_impl
-.extern __kefirrt_load32u_impl
-.extern __kefirrt_load32i_impl
-.extern __kefirrt_load64_impl
-.extern __kefirrt_store8_impl
-.extern __kefirrt_store16_impl
-.extern __kefirrt_store32_impl
-.extern __kefirrt_store64_impl
-.extern __kefirrt_storeld_impl
-.extern __kefirrt_bzero_impl
-.extern __kefirrt_bcopy_impl
-.extern __kefirrt_extubits_impl
-.extern __kefirrt_extsbits_impl
-.extern __kefirrt_insertbits_impl
-.extern __kefirrt_getlocal_impl
-.extern __kefirrt_f32add_impl
-.extern __kefirrt_f32sub_impl
-.extern __kefirrt_f32mul_impl
-.extern __kefirrt_f32div_impl
-.extern __kefirrt_f32neg_impl
-.extern __kefirrt_f64add_impl
-.extern __kefirrt_f64sub_impl
-.extern __kefirrt_f64mul_impl
-.extern __kefirrt_f64div_impl
-.extern __kefirrt_f64neg_impl
-.extern __kefirrt_ldadd_impl
-.extern __kefirrt_ldsub_impl
-.extern __kefirrt_ldmul_impl
-.extern __kefirrt_lddiv_impl
-.extern __kefirrt_ldneg_impl
-.extern __kefirrt_f32equals_impl
-.extern __kefirrt_f32greater_impl
-.extern __kefirrt_f32lesser_impl
-.extern __kefirrt_f64equals_impl
-.extern __kefirrt_f64greater_impl
-.extern __kefirrt_f64lesser_impl
-.extern __kefirrt_ldequals_impl
-.extern __kefirrt_ldgreater_impl
-.extern __kefirrt_ldlesser_impl
-.extern __kefirrt_ldtrunc1_impl
-.extern __kefirrt_f32cint_impl
-.extern __kefirrt_f64cint_impl
-.extern __kefirrt_f32cuint_impl
-.extern __kefirrt_f64cuint_impl
-.extern __kefirrt_intcf32_impl
-.extern __kefirrt_intcf64_impl
-.extern __kefirrt_uintcf32_impl
-.extern __kefirrt_uintcf64_impl
-.extern __kefirrt_f32cf64_impl
-.extern __kefirrt_f64cf32_impl
-.extern __kefirrt_alloca_impl
-.extern __kefirrt_intcld_impl
-.extern __kefirrt_uintcld_impl
-.extern __kefirrt_ldcint_impl
-.extern __kefirrt_ldcuint_impl
-.extern __kefirrt_f32cld_impl
-.extern __kefirrt_f64cld_impl
-.extern __kefirrt_ldcf32_impl
-.extern __kefirrt_ldcf64_impl
-.extern __kefirrt_pushscope_impl
-.extern __kefirrt_popscope_impl
-.extern __kefirrt_ldinith_impl
-.extern __kefirrt_ldinitl_impl
-# Runtime functions
-.extern __kefirrt_preserve_state
-.extern __kefirrt_restore_state
-.extern __kefirrt_save_registers
-.extern __kefirrt_load_integer_vararg
-.extern __kefirrt_load_sse_vararg
-.extern __kefirrt_copy_vararg
-
-# Externals
-
-# Globals
 .global inc
 .global neg
 .global f32cld
@@ -129,333 +12,257 @@
 .global ldcuint
 .global uintcld
 .global imp_cast
+.extern __kefirrt_opt_save_registers
+.extern __kefirrt_opt_load_int_vararg
+.extern __kefirrt_opt_load_sse_vararg
+.extern __kefirrt_opt_float32_to_uint
+.extern __kefirrt_opt_float64_to_uint
+.extern __kefirrt_opt_long_double_to_int
 
+.section .text
 inc:
-# Begin prologue of inc
-    call __kefirrt_preserve_state
-    sub $96, %rsp
-    call __kefirrt_generic_prologue
-# Load parameters of inc
-    lea 16(%rbp), %r12
-    push %r12
-# End prologue of inc
-    lea (__inc_body), %rbx
-    jmp *(%rbx)
-__inc_body:
-    .quad __kefirrt_getlocal_impl, 16
-    .quad __kefirrt_xchg_impl, 1
-    .quad __kefirrt_storeld_impl, 0
-    .quad __kefirrt_getlocal_impl, 16
-    .quad __kefirrt_getlocal_impl, 16
-    .quad __kefirrt_iadd1_impl, 32
-    .quad __kefirrt_ldinith_impl, 16383
-    .quad __kefirrt_ldinitl_impl, -9223372036854775808
-    .quad __kefirrt_getlocal_impl, 16
-    .quad __kefirrt_iadd1_impl, 48
-    .quad __kefirrt_ldadd_impl, 0
-    .quad __inc_epilogue, 0
-    .quad __inc_epilogue, 0
-__inc_epilogue:
-# Begin epilogue of inc
-    pop %r12
-    fldt (%r12)
-    mov %r14, %rsp
-    add $96, %rsp
-    jmp __kefirrt_restore_state
-# End of inc
+    push %rbp
+    mov %rsp, %rbp
+    sub $80, %rsp
+__kefir_func_inc_block0:
+    lea 16(%rbp), %rax
+    lea -80(%rbp), %rcx
+    fldt (%rax)
+    fstpt (%rcx)
+    lea -80(%rbp), %rcx
+    lea -48(%rbp), %rdx
+    fldt (__kefir_func_inc_const5)
+    fstpt (%rdx)
+    lea -32(%rbp), %rsi
+    fldt (%rdx)
+    fldt (%rcx)
+    faddp
+    mov %rsi, %rcx
+    fstpt (%rcx)
+    mov %rcx, %rax
+    fldt (%rax)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+    .align 16
+__kefir_func_inc_const5:
+    .quad 9223372036854775808
+    .quad 16383
 
 neg:
-# Begin prologue of neg
-    call __kefirrt_preserve_state
-    sub $80, %rsp
-    call __kefirrt_generic_prologue
-# Load parameters of neg
-    lea 16(%rbp), %r12
-    push %r12
-# End prologue of neg
-    lea (__neg_body), %rbx
-    jmp *(%rbx)
-__neg_body:
-    .quad __kefirrt_getlocal_impl, 16
-    .quad __kefirrt_xchg_impl, 1
-    .quad __kefirrt_storeld_impl, 0
-    .quad __kefirrt_getlocal_impl, 16
-    .quad __kefirrt_getlocal_impl, 16
-    .quad __kefirrt_iadd1_impl, 32
-    .quad __kefirrt_ldneg_impl, 0
-    .quad __neg_epilogue, 0
-    .quad __neg_epilogue, 0
-__neg_epilogue:
-# Begin epilogue of neg
-    pop %r12
-    fldt (%r12)
-    mov %r14, %rsp
-    add $80, %rsp
-    jmp __kefirrt_restore_state
-# End of neg
+    push %rbp
+    mov %rsp, %rbp
+    sub $64, %rsp
+__kefir_func_neg_block0:
+    lea 16(%rbp), %rax
+    lea -64(%rbp), %rcx
+    fldt (%rax)
+    fstpt (%rcx)
+    lea -64(%rbp), %rcx
+    lea -32(%rbp), %rdx
+    fldt (%rcx)
+    fchs
+    mov %rdx, %rcx
+    fstpt (%rcx)
+    mov %rcx, %rax
+    fldt (%rax)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
 
 f32cld:
-# Begin prologue of f32cld
-    call __kefirrt_preserve_state
-    sub $64, %rsp
-    call __kefirrt_generic_prologue
-# Load parameters of f32cld
-    pextrq $0, %xmm0, %r12
-    push %r12
-# End prologue of f32cld
-    lea (__f32cld_body), %rbx
-    jmp *(%rbx)
-__f32cld_body:
-    .quad __kefirrt_getlocal_impl, 16
-    .quad __kefirrt_xchg_impl, 1
-    .quad __kefirrt_store32_impl, 0
-    .quad __kefirrt_getlocal_impl, 16
-    .quad __kefirrt_load32u_impl, 0
-    .quad __kefirrt_getlocal_impl, 16
-    .quad __kefirrt_iadd1_impl, 16
-    .quad __kefirrt_f32cld_impl, 0
-    .quad __f32cld_epilogue, 0
-    .quad __f32cld_epilogue, 0
-__f32cld_epilogue:
-# Begin epilogue of f32cld
-    pop %r12
-    fldt (%r12)
-    mov %r14, %rsp
-    add $64, %rsp
-    jmp __kefirrt_restore_state
-# End of f32cld
+    push %rbp
+    mov %rsp, %rbp
+    sub $48, %rsp
+__kefir_func_f32cld_block0:
+    lea -48(%rbp), %rax
+    movd %xmm0, (%rax)
+    lea -48(%rbp), %rax
+    movl (%rax), %ecx
+    mov %rcx, %rax
+    lea -32(%rbp), %rcx
+    sub $4, %rsp
+    mov %eax, (%rsp)
+    flds (%rsp)
+    add $4, %rsp
+    mov %rcx, %rax
+    fstpt (%rax)
+    fldt (%rax)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
 
 f64cld:
-# Begin prologue of f64cld
-    call __kefirrt_preserve_state
-    sub $64, %rsp
-    call __kefirrt_generic_prologue
-# Load parameters of f64cld
-    pextrq $0, %xmm0, %r12
-    push %r12
-# End prologue of f64cld
-    lea (__f64cld_body), %rbx
-    jmp *(%rbx)
-__f64cld_body:
-    .quad __kefirrt_getlocal_impl, 16
-    .quad __kefirrt_xchg_impl, 1
-    .quad __kefirrt_store64_impl, 0
-    .quad __kefirrt_getlocal_impl, 16
-    .quad __kefirrt_load64_impl, 0
-    .quad __kefirrt_getlocal_impl, 16
-    .quad __kefirrt_iadd1_impl, 16
-    .quad __kefirrt_f64cld_impl, 0
-    .quad __f64cld_epilogue, 0
-    .quad __f64cld_epilogue, 0
-__f64cld_epilogue:
-# Begin epilogue of f64cld
-    pop %r12
-    fldt (%r12)
-    mov %r14, %rsp
-    add $64, %rsp
-    jmp __kefirrt_restore_state
-# End of f64cld
+    push %rbp
+    mov %rsp, %rbp
+    sub $48, %rsp
+__kefir_func_f64cld_block0:
+    lea -48(%rbp), %rax
+    movq %xmm0, (%rax)
+    lea -48(%rbp), %rax
+    movq (%rax), %rcx
+    mov %rcx, %rax
+    lea -32(%rbp), %rcx
+    push %rax
+    fldl (%rsp)
+    add $8, %rsp
+    mov %rcx, %rax
+    fstpt (%rax)
+    fldt (%rax)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
 
 intcld:
-# Begin prologue of intcld
-    call __kefirrt_preserve_state
-    sub $64, %rsp
-    call __kefirrt_generic_prologue
-# Load parameters of intcld
-    push %rdi
-# End prologue of intcld
-    lea (__intcld_body), %rbx
-    jmp *(%rbx)
-__intcld_body:
-    .quad __kefirrt_getlocal_impl, 16
-    .quad __kefirrt_xchg_impl, 1
-    .quad __kefirrt_store32_impl, 0
-    .quad __kefirrt_getlocal_impl, 16
-    .quad __kefirrt_load32i_impl, 0
-    .quad __kefirrt_getlocal_impl, 16
-    .quad __kefirrt_iadd1_impl, 16
-    .quad __kefirrt_intcld_impl, 0
-    .quad __intcld_epilogue, 0
-    .quad __intcld_epilogue, 0
-__intcld_epilogue:
-# Begin epilogue of intcld
-    pop %r12
-    fldt (%r12)
-    mov %r14, %rsp
-    add $64, %rsp
-    jmp __kefirrt_restore_state
-# End of intcld
+    push %rbp
+    mov %rsp, %rbp
+    sub $48, %rsp
+__kefir_func_intcld_block0:
+    lea -48(%rbp), %rax
+    movl %edi, (%rax)
+    lea -48(%rbp), %rax
+    movsxl (%rax), %rcx
+    mov %rcx, %rax
+    lea -32(%rbp), %rcx
+    push %rax
+    fildq (%rsp)
+    add $8, %rsp
+    mov %rcx, %rax
+    fstpt (%rax)
+    fldt (%rax)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
 
 ldcf32:
-# Begin prologue of ldcf32
-    call __kefirrt_preserve_state
+    push %rbp
+    mov %rsp, %rbp
     sub $48, %rsp
-    call __kefirrt_generic_prologue
-# Load parameters of ldcf32
-    lea 16(%rbp), %r12
-    push %r12
-# End prologue of ldcf32
-    lea (__ldcf32_body), %rbx
-    jmp *(%rbx)
-__ldcf32_body:
-    .quad __kefirrt_getlocal_impl, 16
-    .quad __kefirrt_xchg_impl, 1
-    .quad __kefirrt_storeld_impl, 0
-    .quad __kefirrt_getlocal_impl, 16
-    .quad __kefirrt_ldcf32_impl, 0
-    .quad __ldcf32_epilogue, 0
-    .quad __ldcf32_epilogue, 0
-__ldcf32_epilogue:
-# Begin epilogue of ldcf32
-    pop %r12
-    pinsrq $0, %r12, %xmm0
-    mov %r14, %rsp
-    add $48, %rsp
-    jmp __kefirrt_restore_state
-# End of ldcf32
+    stmxcsr -8(%rbp)
+__kefir_func_ldcf32_block0:
+    lea 16(%rbp), %rax
+    lea -48(%rbp), %rcx
+    fldt (%rax)
+    fstpt (%rcx)
+    lea -48(%rbp), %rcx
+    mov %rcx, %rax
+    fldt (%rax)
+    fstps -4(%rsp)
+    movd -4(%rsp), %xmm0
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
 
 ldcf64:
-# Begin prologue of ldcf64
-    call __kefirrt_preserve_state
+    push %rbp
+    mov %rsp, %rbp
     sub $48, %rsp
-    call __kefirrt_generic_prologue
-# Load parameters of ldcf64
-    lea 16(%rbp), %r12
-    push %r12
-# End prologue of ldcf64
-    lea (__ldcf64_body), %rbx
-    jmp *(%rbx)
-__ldcf64_body:
-    .quad __kefirrt_getlocal_impl, 16
-    .quad __kefirrt_xchg_impl, 1
-    .quad __kefirrt_storeld_impl, 0
-    .quad __kefirrt_getlocal_impl, 16
-    .quad __kefirrt_ldcf64_impl, 0
-    .quad __ldcf64_epilogue, 0
-    .quad __ldcf64_epilogue, 0
-__ldcf64_epilogue:
-# Begin epilogue of ldcf64
-    pop %r12
-    pinsrq $0, %r12, %xmm0
-    mov %r14, %rsp
-    add $48, %rsp
-    jmp __kefirrt_restore_state
-# End of ldcf64
+    stmxcsr -8(%rbp)
+__kefir_func_ldcf64_block0:
+    lea 16(%rbp), %rax
+    lea -48(%rbp), %rcx
+    fldt (%rax)
+    fstpt (%rcx)
+    lea -48(%rbp), %rcx
+    mov %rcx, %rax
+    fldt (%rax)
+    fstpl -8(%rsp)
+    movq -8(%rsp), %xmm0
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
 
 ldcint:
-# Begin prologue of ldcint
-    call __kefirrt_preserve_state
-    sub $48, %rsp
-    call __kefirrt_generic_prologue
-# Load parameters of ldcint
-    lea 16(%rbp), %r12
-    push %r12
-# End prologue of ldcint
-    lea (__ldcint_body), %rbx
-    jmp *(%rbx)
-__ldcint_body:
-    .quad __kefirrt_getlocal_impl, 16
-    .quad __kefirrt_xchg_impl, 1
-    .quad __kefirrt_storeld_impl, 0
-    .quad __kefirrt_getlocal_impl, 16
-    .quad __kefirrt_ldcint_impl, 0
-    .quad __kefirrt_extend32_impl, 0
-    .quad __ldcint_epilogue, 0
-    .quad __ldcint_epilogue, 0
-__ldcint_epilogue:
-# Begin epilogue of ldcint
-    pop %rax
-    mov %r14, %rsp
-    add $48, %rsp
-    jmp __kefirrt_restore_state
-# End of ldcint
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+__kefir_func_ldcint_block0:
+    lea 16(%rbp), %rax
+    lea -32(%rbp), %rcx
+    fldt (%rax)
+    fstpt (%rcx)
+    lea -32(%rbp), %rcx
+    mov %rcx, %rax
+    fldt (%rax)
+    call __kefirrt_opt_long_double_to_int
+    mov %rax, %rcx
+    movsx %ecx, %rax
+    mov %rax, %rcx
+    mov %rcx, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
 
 ldcuint:
-# Begin prologue of ldcuint
-    call __kefirrt_preserve_state
-    sub $48, %rsp
-    call __kefirrt_generic_prologue
-# Load parameters of ldcuint
-    lea 16(%rbp), %r12
-    push %r12
-# End prologue of ldcuint
-    lea (__ldcuint_body), %rbx
-    jmp *(%rbx)
-__ldcuint_body:
-    .quad __kefirrt_getlocal_impl, 16
-    .quad __kefirrt_xchg_impl, 1
-    .quad __kefirrt_storeld_impl, 0
-    .quad __kefirrt_getlocal_impl, 16
-    .quad __kefirrt_ldcuint_impl, 0
-    .quad __kefirrt_pushi_impl, 4294967295
-    .quad __kefirrt_iand_impl, 0
-    .quad __ldcuint_epilogue, 0
-    .quad __ldcuint_epilogue, 0
-__ldcuint_epilogue:
-# Begin epilogue of ldcuint
-    pop %rax
-    mov %r14, %rsp
-    add $48, %rsp
-    jmp __kefirrt_restore_state
-# End of ldcuint
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+__kefir_func_ldcuint_block0:
+    lea 16(%rbp), %rax
+    lea -32(%rbp), %rcx
+    fldt (%rax)
+    fstpt (%rcx)
+    lea -32(%rbp), %rcx
+    mov %rcx, %rax
+    fldt (%rax)
+    call __kefirrt_opt_long_double_to_uint
+    mov %rax, %rcx
+    movabs $4294967295, %rdx
+    and %rdx, %rcx
+    mov %rcx, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
 
 uintcld:
-# Begin prologue of uintcld
-    call __kefirrt_preserve_state
-    sub $64, %rsp
-    call __kefirrt_generic_prologue
-# Load parameters of uintcld
-    push %rdi
-# End prologue of uintcld
-    lea (__uintcld_body), %rbx
-    jmp *(%rbx)
-__uintcld_body:
-    .quad __kefirrt_getlocal_impl, 16
-    .quad __kefirrt_xchg_impl, 1
-    .quad __kefirrt_store32_impl, 0
-    .quad __kefirrt_getlocal_impl, 16
-    .quad __kefirrt_load32u_impl, 0
-    .quad __kefirrt_getlocal_impl, 16
-    .quad __kefirrt_iadd1_impl, 16
-    .quad __kefirrt_uintcld_impl, 0
-    .quad __uintcld_epilogue, 0
-    .quad __uintcld_epilogue, 0
-__uintcld_epilogue:
-# Begin epilogue of uintcld
-    pop %r12
-    fldt (%r12)
-    mov %r14, %rsp
-    add $64, %rsp
-    jmp __kefirrt_restore_state
-# End of uintcld
+    push %rbp
+    mov %rsp, %rbp
+    sub $48, %rsp
+__kefir_func_uintcld_block0:
+    lea -48(%rbp), %rax
+    movl %edi, (%rax)
+    lea -48(%rbp), %rax
+    movl (%rax), %ecx
+    mov %rcx, %rax
+    lea -32(%rbp), %rcx
+    push %rax
+    fildq (%rsp)
+    add $8, %rsp
+    test %rax, %rax
+    jns __kefir_func_uintcld_block0_label0
+    fadds (__kefir_func_uintcld_uint2ld)
+__kefir_func_uintcld_block0_label0:
+    mov %rcx, %rax
+    fstpt (%rax)
+    fldt (%rax)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+    .align 4
+__kefir_func_uintcld_uint2ld:
+    .long 1602224128
 
 imp_cast:
-# Begin prologue of imp_cast
-    call __kefirrt_preserve_state
-    sub $48, %rsp
-    call __kefirrt_generic_prologue
-# Load parameters of imp_cast
-    push %rdi
-# End prologue of imp_cast
-    lea (__imp_cast_body), %rbx
-    jmp *(%rbx)
-__imp_cast_body:
-    .quad __kefirrt_getlocal_impl, 16
-    .quad __kefirrt_xchg_impl, 1
-    .quad __kefirrt_store32_impl, 0
-    .quad __kefirrt_getlocal_impl, 16
-    .quad __kefirrt_load32i_impl, 0
-    .quad __kefirrt_getlocal_impl, 16
-    .quad __kefirrt_iadd1_impl, 16
-    .quad __kefirrt_intcld_impl, 0
-    .quad __imp_cast_epilogue, 0
-    .quad __imp_cast_epilogue, 0
-__imp_cast_epilogue:
-# Begin epilogue of imp_cast
-    pop %r12
-    fldt (%r12)
-    mov %r14, %rsp
-    add $48, %rsp
-    jmp __kefirrt_restore_state
-# End of imp_cast
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+__kefir_func_imp_cast_block0:
+    lea -32(%rbp), %rax
+    movl %edi, (%rax)
+    lea -32(%rbp), %rax
+    movsxl (%rax), %rcx
+    mov %rcx, %rax
+    lea -16(%rbp), %rcx
+    push %rax
+    fildq (%rsp)
+    add $8, %rsp
+    mov %rcx, %rax
+    fstpt (%rax)
+    fldt (%rax)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
 
