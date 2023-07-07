@@ -24,10 +24,12 @@
 #include "kefir/preprocessor/source_file.h"
 #include "kefir/core/list.h"
 #include "kefir/core/symbol_table.h"
+#include "kefir/core/hashtreeset.h"
 
 typedef struct kefir_preprocessor_filesystem_source_locator {
     struct kefir_preprocessor_source_locator locator;
     struct kefir_list include_roots;
+    struct kefir_hashtreeset include_root_set;
     struct kefir_symbol_table *symbols;
 } kefir_preprocessor_filesystem_source_locator_t;
 

@@ -203,6 +203,7 @@ kefir_result_t kefir_preprocessor_filesystem_source_locator_init(
 
     REQUIRE_OK(kefir_list_init(&locator->include_roots));
     REQUIRE_OK(kefir_list_on_remove(&locator->include_roots, free_string, NULL));
+    REQUIRE_OK(kefir_hashtreeset_init(&locator->include_root_set, &kefir_hashtree_str_ops));
     locator->symbols = symbols;
     locator->locator.payload = &locator;
     locator->locator.open = open_source;
@@ -215,6 +216,7 @@ kefir_result_t kefir_preprocessor_filesystem_source_locator_free(
     REQUIRE(locator != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to filesystem source locator"));
 
+    REQUIRE_OK(kefir_hashtreeset_free(mem, &locator->include_root_set));
     REQUIRE_OK(kefir_list_free(mem, &locator->include_roots));
     locator->locator.payload = NULL;
     locator->locator.open = NULL;
@@ -227,6 +229,7 @@ kefir_result_t kefir_preprocessor_filesystem_source_locator_append(
     REQUIRE(locator != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to filesystem source locator"));
     REQUIRE(path != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid filesystem path"));
+    REQUIRE(!kefir_hashtreeset_has(&locator->include_root_set, (kefir_hashtreeset_entry_t) path), KEFIR_OK);
 
     char *copy = KEFIR_MALLOC(mem, strlen(path) + 1);
     REQUIRE(copy != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate filesystem path"));
@@ -237,5 +240,7 @@ kefir_result_t kefir_preprocessor_filesystem_source_locator_append(
         KEFIR_FREE(mem, copy);
         return res;
     });
+
+    REQUIRE_OK(kefir_hashtreeset_add(mem, &locator->include_root_set, (kefir_hashtreeset_entry_t) copy));
     return KEFIR_OK;
 }

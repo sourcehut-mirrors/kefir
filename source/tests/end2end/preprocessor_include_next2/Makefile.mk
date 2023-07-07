@@ -1,0 +1,2 @@
+END2END_TEST_ID=preprocessor_include_next2
+include source/tests/end2end/Makefile.template.mk
