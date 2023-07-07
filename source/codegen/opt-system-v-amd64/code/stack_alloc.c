@@ -78,22 +78,25 @@ DEFINE_TRANSLATOR(stack_alloc) {
         KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_GENERAL_PURPOSE_REGISTER, alignment_allocation, &alignment_handle,
         NULL, NULL));
 
+    struct kefir_codegen_opt_amd64_sysv_storage_handle tmp_handle;
+    REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_acquire(
+        mem, &codegen->xasmgen, &codegen_func->storage, &codegen_func->stack_frame_map,
+        KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_GENERAL_PURPOSE_REGISTER, NULL, &tmp_handle, NULL, NULL));
+
     REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_location_load(&codegen->xasmgen, &codegen_func->stack_frame_map,
                                                                   alignment_allocation, &alignment_handle.location));
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
-        &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(alignment_handle.location.reg),
+        &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(tmp_handle.location.reg),
         kefir_asm_amd64_xasmgen_operand_imm(&codegen->xasmgen_helpers.operands[0], 2 * KEFIR_AMD64_SYSV_ABI_QWORD)));
 
-    REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_CMP(
-        &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(alignment_handle.location.reg),
-        kefir_codegen_opt_sysv_amd64_reg_allocation_operand(&codegen->xasmgen_helpers.operands[0],
-                                                            &codegen_func->stack_frame_map, alignment_allocation)));
+    REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_CMP(&codegen->xasmgen,
+                                             kefir_asm_amd64_xasmgen_operand_reg(alignment_handle.location.reg),
+                                             kefir_asm_amd64_xasmgen_operand_reg(tmp_handle.location.reg)));
 
-    REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_CMOVL(
-        &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(alignment_handle.location.reg),
-        kefir_codegen_opt_sysv_amd64_reg_allocation_operand(&codegen->xasmgen_helpers.operands[0],
-                                                            &codegen_func->stack_frame_map, alignment_allocation)));
+    REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_CMOVL(&codegen->xasmgen,
+                                               kefir_asm_amd64_xasmgen_operand_reg(alignment_handle.location.reg),
+                                               kefir_asm_amd64_xasmgen_operand_reg(tmp_handle.location.reg)));
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_NEG(&codegen->xasmgen,
                                              kefir_asm_amd64_xasmgen_operand_reg(alignment_handle.location.reg)));
@@ -102,6 +105,8 @@ DEFINE_TRANSLATOR(stack_alloc) {
                                              kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
                                              kefir_asm_amd64_xasmgen_operand_reg(alignment_handle.location.reg)));
 
+    REQUIRE_OK(
+        kefir_codegen_opt_amd64_sysv_storage_release(mem, &codegen->xasmgen, &codegen_func->storage, &tmp_handle));
     REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_release(mem, &codegen->xasmgen, &codegen_func->storage,
                                                             &alignment_handle));
 
