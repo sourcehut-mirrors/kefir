@@ -128,7 +128,7 @@ kefir_result_t kefir_driver_target_match(const char *spec, struct kefir_driver_t
 kefir_result_t kefir_driver_target_default(struct kefir_driver_target *target) {
     REQUIRE(target != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to driver target"));
 
-    target->backend = KEFIR_DRIVER_TARGET_BACKEND_NAIVE;
+    target->backend = KEFIR_DRIVER_TARGET_BACKEND_OPTIMIZED;
     target->arch = KEFIR_DRIVER_TARGET_ARCH_X86_64;
     REQUIRE_OK(select_host_platform(target));
     REQUIRE_OK(select_default_variant(target));

@@ -45,6 +45,7 @@ OPTIONS:
     --print-tokens                      Print tokenized source in JSON format
     --print-ast                         Print AST in JSON format
     --print-ir                          Print intermediate representation in JSON format
+    --print-opt                         Print optimization representation in JSON format
     --print-runtime-code                Print runtime code for selected target
 
 COMPILER OPTIONS:
@@ -96,7 +97,7 @@ COMPILER OPTIONS:
 
 TARGETS:
     Target platforms are specified in format [<backend>-]<arch>-<platform>-<variant> where
-        backend: naive, opt
+        backend: naive, opt [default]
         arch: x86_64
         platform: linux, freebsd, openbsd, host
         variant: none, musl, gnu, system, default
