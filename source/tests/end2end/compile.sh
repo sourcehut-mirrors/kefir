@@ -29,17 +29,15 @@ fi
 KEFIRCC="$BIN_DIR/kefir"
 export LD_LIBRARY_PATH="$BIN_DIR/libs"
 
-KEFIR_CFLAGS=`echo \
-             "--target x86_64-host-none " \
-             "-I \"$(dirname $SRC_FILE)\" " \
-             "-I \"$(dirname $SCRIPT)/../../../headers/kefir/runtime/amd64-sysv-gas\" " \
-             "-I \"$(dirname $SCRIPT)/../../../headers/kefir/runtime/common\" "`
+KEFIR_CFLAGS="-I \"$(dirname $SRC_FILE)\""
 
 if [[ "x$ASMGEN" == "xyes" ]]; then
-    KEFIR_CFLAGS="$KEFIR_CFLAGS -S"
+    KEFIR_CFLAGS="$KEFIR_CFLAGS -S --target naive-x86_64-host-none -I \"$(dirname $SCRIPT)/../../../headers/kefir/runtime/amd64-sysv-gas\""
 else
-    KEFIR_CFLAGS="$KEFIR_CFLAGS -c"
+    KEFIR_CFLAGS="$KEFIR_CFLAGS -c --target opt-x86_64-host-none"
 fi
+
+KEFIR_CFLAGS="$KEFIR_CFLAGS -I \"$(dirname $SCRIPT)/../../../headers/kefir/runtime/common\""
 
 if [[ -f "$SRC_FILE.profile" ]]; then
     source "$SRC_FILE.profile"

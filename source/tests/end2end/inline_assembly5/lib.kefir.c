@@ -22,22 +22,22 @@
 
 #ifdef __x86_64__
 long clear8(long x) {
-    asm("movb $0, %b0" : "=r"(x));
+    asm("movb $0, %b0" : "+r"(x));
     return x;
 }
 
 long clear16(long x) {
-    asm("movw $0, %w0" : "=r"(x));
+    asm("movw $0, %w0" : "+r"(x));
     return x;
 }
 
 long clear32(long x) {
-    asm("movl $0, %d0" : "=r"(x));
+    asm("movl $0, %d0" : "+r"(x));
     return x;
 }
 
 long clear64(long x) {
-    asm("movq $0, %q0" : "=r"(x));
+    asm("movq $0, %q0" : "+r"(x));
     return x;
 }
 
