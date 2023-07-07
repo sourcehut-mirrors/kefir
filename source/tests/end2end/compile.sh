@@ -27,25 +27,16 @@ if [[ "x$DST_FILE" == "x" ]]; then
 fi
 
 KEFIRCC="$BIN_DIR/kefir"
-INCLUDE_FILE="$(dirname $0)/include.h"
 export LD_LIBRARY_PATH="$BIN_DIR/libs"
 
 KEFIR_CFLAGS=`echo \
              "--target x86_64-host-none " \
              "-I \"$(dirname $SRC_FILE)\" " \
-             "-I \"$(dirname $SCRIPT)/headers\" " \
              "-I \"$(dirname $SCRIPT)/../../../headers/kefir/runtime/amd64-sysv-gas\" " \
-             "-I \"$(dirname $SCRIPT)/../../../headers/kefir/runtime/common\" " \
-             "-D KEFIR_END2END_TEST " \
-             "-U __STDC__ " \
-             "-D KEFIR_END2END=101 " \
-             "-W " \
-             "--pp-timestamp=1633204489 " \
-             "-include \"$INCLUDE_FILE\" " \
-             "-I \"$(dirname $SRC_FILE)\""`
+             "-I \"$(dirname $SCRIPT)/../../../headers/kefir/runtime/common\" "`
 
 if [[ "x$ASMGEN" == "xyes" ]]; then
-    KEFIR_CFLAGS="$KEFIR_CFLAGS --target x86_64-linux-none -S"
+    KEFIR_CFLAGS="$KEFIR_CFLAGS -S"
 else
     KEFIR_CFLAGS="$KEFIR_CFLAGS -c"
 fi
