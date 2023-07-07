@@ -32,7 +32,7 @@ export LD_LIBRARY_PATH="$BIN_DIR/libs"
 KEFIR_CFLAGS=" --target opt-x86_64-host-none -I \"$(dirname $SRC_FILE)\" -I \"$(dirname $SCRIPT)/../../../headers/kefir/runtime/common\""
 
 if [[ "x$ASMGEN" == "xyes" ]]; then
-    KEFIR_CFLAGS="$KEFIR_CFLAGS -S"
+    KEFIR_CFLAGS="$KEFIR_CFLAGS -Wno-codegen-emulated-tls -S"
 else
     KEFIR_CFLAGS="$KEFIR_CFLAGS -c"
 fi
