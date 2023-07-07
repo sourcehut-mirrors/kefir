@@ -817,6 +817,7 @@ static kefir_result_t do_allocation_impl(struct kefir_mem *mem, const struct kef
 
                 kefir_size_t aggregate_length =
                     kefir_vector_length(&parameter_location->parameter_allocation->container.qwords);
+                aggregate_length = MAX(aggregate_length, 1);
                 kefir_size_t reg_aggregate_alignment =
                     MAX(parameter_location->register_aggregate_props.alignment, KEFIR_AMD64_SYSV_ABI_QWORD);
                 kefir_size_t qword_alignment = reg_aggregate_alignment / KEFIR_AMD64_SYSV_ABI_QWORD;
