@@ -209,7 +209,7 @@ static kefir_result_t return_aggregate(const struct kefir_ir_type *type, kefir_s
     REQUIRE_OK(kefir_abi_sysv_amd64_type_layout_at(&param->codegen_func->declaration.returns.layout, index, &layout));
     if (alloc->klass == KEFIR_AMD64_SYSV_PARAM_MEMORY) {
         REQUIRE_OK(return_memory_aggregate(param->codegen, layout, param->codegen_func, param->instr));
-    } else {
+    } else if (param->instr->operation.parameters.refs[0] != KEFIR_ID_NONE) {
         REQUIRE_OK(return_register_aggregate(param->codegen, alloc, param->codegen_func, param->instr));
     }
     return KEFIR_OK;
