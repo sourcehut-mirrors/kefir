@@ -1262,3 +1262,61 @@ __kefirrt_copy_vararg:
     movsq
     movsq
     end_opcode
+
+# Setjmp implementation
+.global __kefirrt_setjmp
+.type __kefirrt_setjmp, @function
+__kefirrt_setjmp:
+# Save registers
+    mov [rdi], rbx
+    mov [rdi + 8], rbp
+    mov [rdi + 16], r12
+    mov [rdi + 24], r13
+    mov [rdi + 32], r14
+    mov [rdi + 40], r15
+# Save stack pointer
+    lea rdx, [rsp + 8]
+    mov [rdi + 48], rdx
+# Save return address
+    mov rdx, [rsp]
+    mov [rdi + 56], rdx
+# Save stack
+    lea rsi, [rsp + 8]  # Stack contents
+    mov rcx, r14        # Number of qwords on stack (max. 31)
+    sub rcx, rsi
+    shr rcx, 3
+    and rcx, 31
+    mov [rdi + 64], rcx # Save number of qwords
+    lea rdi, [rdi + 72] # Buffer with stack contents
+    rep movsq
+# Return
+    xor rax, rax
+    ret
+
+.global __kefirrt_longjmp
+.type __kefirrt_longjmp, @function
+__kefirrt_longjmp:
+# Return (val != 0 ? val : 1)
+    xor rax, rax
+	cmp esi, 1
+    adc eax, esi
+# Restore registers
+    mov rbx, [rdi]
+    mov rbp, [rdi + 8]
+    mov r12, [rdi + 16]
+    mov r13, [rdi + 24]
+    mov r14, [rdi + 32]
+    mov r15, [rdi + 40]
+    mov rsp, [rdi + 48]
+# Restore stack
+    mov r8, [rdi + 56]  # Return address
+    mov rcx, [rdi + 64] # Number of qwords on stack
+    lea rsi, [rdi + 72] # Buffer with stack contents
+    mov rdx, rcx        # Stack pointer
+    shl rdx, 3
+    mov rsp, r14
+    sub rsp, rdx
+    lea rdi, [rsp]      # Stack contents
+    rep movsq
+# Return to setjmp site
+    jmp r8

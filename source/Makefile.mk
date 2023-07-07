@@ -66,7 +66,7 @@ $(LIBKEFIR_A): $(KEFIR_LIB_OBJECT_FILES)
 	@$(AR) cr $@ $^
 	@ranlib $@
 
-$(LIBKEFIRRT_A): $(BIN_DIR)/runtime/amd64_sysv.s.o $(BIN_DIR)/runtime/amd64_setjmp.s.o $(BIN_DIR)/runtime/opt_amd64_sysv.s.o
+$(LIBKEFIRRT_A): $(BIN_DIR)/runtime/amd64_sysv.s.o $(BIN_DIR)/runtime/opt_amd64_sysv.s.o
 	@mkdir -p $(shell dirname "$@")
 	@echo "Archiving $@"
 	@$(AR) cr $@ $^
