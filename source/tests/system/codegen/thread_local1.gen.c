@@ -27,10 +27,11 @@
 #include "kefir/core/util.h"
 #include "kefir/codegen/system-v-amd64.h"
 #include "kefir/target/abi/system-v-amd64/data_layout.h"
+#include "kefir/test/codegen.h"
 
 kefir_result_t kefir_int_test(struct kefir_mem *mem) {
-    struct kefir_codegen_amd64 codegen;
-    kefir_codegen_sysv_amd64_init(mem, &codegen, stdout, NULL);
+    struct kefir_test_codegen codegen;
+    kefir_test_codegen_init(mem, &codegen, stdout, NULL);
     struct kefir_codegen_configuration codegen_config = KefirCodegenDefaultConfiguration;
 #ifdef __OpenBSD__
     codegen_config.emulated_tls = true;

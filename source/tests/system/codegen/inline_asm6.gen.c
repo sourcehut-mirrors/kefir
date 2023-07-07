@@ -26,10 +26,11 @@
 #include "kefir/core/mem.h"
 #include "kefir/core/util.h"
 #include "kefir/codegen/system-v-amd64.h"
+#include "kefir/test/codegen.h"
 
 kefir_result_t kefir_int_test(struct kefir_mem *mem) {
-    struct kefir_codegen_amd64 codegen;
-    kefir_codegen_sysv_amd64_init(mem, &codegen, stdout, NULL);
+    struct kefir_test_codegen codegen;
+    kefir_test_codegen_init(mem, &codegen, stdout, NULL);
 
     struct kefir_ir_module module;
     REQUIRE_OK(kefir_ir_module_alloc(mem, &module));
@@ -80,6 +81,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_irbuilder_block_appendu32(mem, &func->body, KEFIR_IROPCODE_GETLOCAL, locals_id, 1));
     REQUIRE_OK(kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IROPCODE_LOAD64, 0));
     REQUIRE_OK(kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IROPCODE_IADD, 0));
+    REQUIRE_OK(kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IROPCODE_RET, 0));
 #endif
 
     KEFIR_CODEGEN_TRANSLATE(mem, &codegen.iface, &module);

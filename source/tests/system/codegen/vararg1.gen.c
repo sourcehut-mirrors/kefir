@@ -27,11 +27,12 @@
 #include "kefir/core/mem.h"
 #include "kefir/core/util.h"
 #include "kefir/codegen/system-v-amd64.h"
+#include "kefir/test/codegen.h"
 
 kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     const char *FMT = "INTEGER: %i\n";
 
-    struct kefir_codegen_amd64 codegen;
+    struct kefir_test_codegen codegen;
     struct kefir_ir_module module;
     REQUIRE_OK(kefir_ir_module_alloc(mem, &module));
 
@@ -73,8 +74,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         kefir_ir_module_new_named_data(mem, &module, kefir_ir_module_symbol(mem, &module, "result", &result_id),
                                        KEFIR_IR_DATA_GLOBAL_STORAGE, result_type_id)));
 
-    REQUIRE_OK(kefir_codegen_sysv_amd64_init(mem, &codegen, stdout, NULL));
-    codegen.xasmgen.settings.enable_comments = false;
+    REQUIRE_OK(kefir_test_codegen_init(mem, &codegen, stdout, NULL));
 
     REQUIRE_OK(kefir_irbuilder_type_append(mem, printint_decl_params, KEFIR_IR_TYPE_INT, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, printint_decl_result, KEFIR_IR_TYPE_WORD, 0, 0));
@@ -84,6 +84,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     kefir_irbuilder_block_appendi64(mem, &printint->body, KEFIR_IROPCODE_PICK, 3);  // 3: [I, R*, R*, F*, I]
     kefir_irbuilder_block_appendu64(mem, &printint->body, KEFIR_IROPCODE_INVOKE, sprintf_decl->id);  // 4: [I, R*, O]
     kefir_irbuilder_block_appendi64(mem, &printint->body, KEFIR_IROPCODE_POP, 0);                    // 5: [I, R*]
+    kefir_irbuilder_block_appendi64(mem, &printint->body, KEFIR_IROPCODE_RET, 0);                    // 5: [I, R*]
 
     REQUIRE_OK(kefir_irbuilder_type_append(mem, sprintf_decl_params, KEFIR_IR_TYPE_WORD, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, sprintf_decl_params, KEFIR_IR_TYPE_WORD, 0, 0));

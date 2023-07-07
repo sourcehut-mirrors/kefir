@@ -27,10 +27,11 @@
 #include "kefir/core/util.h"
 #include "kefir/codegen/system-v-amd64.h"
 #include "kefir/target/abi/system-v-amd64/data_layout.h"
+#include "kefir/test/codegen.h"
 
 kefir_result_t kefir_int_test(struct kefir_mem *mem) {
-    struct kefir_codegen_amd64 codegen;
-    kefir_codegen_sysv_amd64_init(mem, &codegen, stdout, NULL);
+    struct kefir_test_codegen codegen;
+    kefir_test_codegen_init(mem, &codegen, stdout, NULL);
 
     kefir_id_t locals_id, params_id;
     struct kefir_ir_module module;
@@ -68,6 +69,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IROPCODE_LOAD32I, 0);
     entry_layout = kefir_vector_at(&type_layout.layout, 3);
     kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IROPCODE_IADDX, entry_layout->size);
+    kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IROPCODE_RET, 0);
 
     REQUIRE_OK(kefir_abi_sysv_amd64_type_layout_free(mem, &type_layout));
     KEFIR_CODEGEN_TRANSLATE(mem, &codegen.iface, &module);

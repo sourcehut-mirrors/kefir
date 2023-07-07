@@ -26,10 +26,11 @@
 #include "kefir/core/mem.h"
 #include "kefir/core/util.h"
 #include "kefir/codegen/system-v-amd64.h"
+#include "kefir/test/codegen.h"
 
 kefir_result_t kefir_int_test(struct kefir_mem *mem) {
-    struct kefir_codegen_amd64 codegen;
-    kefir_codegen_sysv_amd64_init(mem, &codegen, stdout, NULL);
+    struct kefir_test_codegen codegen;
+    kefir_test_codegen_init(mem, &codegen, stdout, NULL);
 
     kefir_id_t locals_id, params_id;
     kefir_id_t func_returns;

@@ -27,10 +27,11 @@
 #include "kefir/core/mem.h"
 #include "kefir/core/util.h"
 #include "kefir/codegen/system-v-amd64.h"
+#include "kefir/test/codegen.h"
 
 kefir_result_t kefir_int_test(struct kefir_mem *mem) {
-    struct kefir_codegen_amd64 codegen;
-    kefir_codegen_sysv_amd64_init(mem, &codegen, stdout, NULL);
+    struct kefir_test_codegen codegen;
+    kefir_test_codegen_init(mem, &codegen, stdout, NULL);
 
     kefir_id_t literal_id;
     struct kefir_ir_module module;
@@ -53,6 +54,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_ir_module_string_literal(mem, &module, KEFIR_IR_STRING_LITERAL_MULTIBYTE, true, literal,
                                               strlen(literal) + 1, &literal_id));
     kefir_irbuilder_block_appendi64(mem, &func1->body, KEFIR_IROPCODE_PUSHSTRING, literal_id);
+    kefir_irbuilder_block_appendi64(mem, &func1->body, KEFIR_IROPCODE_RET, 0);
 
     struct kefir_ir_type *decl2_params = kefir_ir_module_new_type(mem, &module, 0, &func_params),
                          *decl2_result = kefir_ir_module_new_type(mem, &module, 1, &func_returns);
@@ -70,6 +72,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_ir_module_string_literal(mem, &module, KEFIR_IR_STRING_LITERAL_MULTIBYTE, true, literal,
                                               strlen(literal) + 1, &literal_id));
     kefir_irbuilder_block_appendi64(mem, &func2->body, KEFIR_IROPCODE_PUSHSTRING, literal_id);
+    kefir_irbuilder_block_appendi64(mem, &func2->body, KEFIR_IROPCODE_RET, 0);
 
     struct kefir_ir_type *decl3_params = kefir_ir_module_new_type(mem, &module, 0, &func_params),
                          *decl3_result = kefir_ir_module_new_type(mem, &module, 1, &func_returns);
@@ -87,6 +90,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(
         kefir_ir_module_string_literal(mem, &module, KEFIR_IR_STRING_LITERAL_MULTIBYTE, true, literal, 4, &literal_id));
     kefir_irbuilder_block_appendi64(mem, &func3->body, KEFIR_IROPCODE_PUSHSTRING, literal_id);
+    kefir_irbuilder_block_appendi64(mem, &func3->body, KEFIR_IROPCODE_RET, 0);
 
     KEFIR_CODEGEN_TRANSLATE(mem, &codegen.iface, &module);
 

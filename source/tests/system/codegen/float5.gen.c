@@ -26,10 +26,11 @@
 #include "kefir/core/mem.h"
 #include "kefir/core/util.h"
 #include "kefir/codegen/system-v-amd64.h"
+#include "kefir/test/codegen.h"
 
 kefir_result_t kefir_int_test(struct kefir_mem *mem) {
-    struct kefir_codegen_amd64 codegen;
-    kefir_codegen_sysv_amd64_init(mem, &codegen, stdout, NULL);
+    struct kefir_test_codegen codegen;
+    kefir_test_codegen_init(mem, &codegen, stdout, NULL);
 
     struct kefir_ir_module module;
     REQUIRE_OK(kefir_ir_module_alloc(mem, &module));
@@ -48,6 +49,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     kefir_irbuilder_type_append(mem, fneg->declaration->params, KEFIR_IR_TYPE_FLOAT32, 0, 0);
     kefir_irbuilder_type_append(mem, fneg->declaration->result, KEFIR_IR_TYPE_FLOAT32, 0, 3);
     kefir_irbuilder_block_appendi64(mem, &fneg->body, KEFIR_IROPCODE_F32NEG, 0);
+    kefir_irbuilder_block_appendi64(mem, &fneg->body, KEFIR_IROPCODE_RET, 0);
 
     struct kefir_ir_type *dneg_decl_params = kefir_ir_module_new_type(mem, &module, 1, &func_params),
                          *dneg_decl_result = kefir_ir_module_new_type(mem, &module, 1, &func_returns);
@@ -62,6 +64,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     kefir_irbuilder_type_append(mem, dneg->declaration->params, KEFIR_IR_TYPE_FLOAT64, 0, 0);
     kefir_irbuilder_type_append(mem, dneg->declaration->result, KEFIR_IR_TYPE_FLOAT64, 0, 3);
     kefir_irbuilder_block_appendi64(mem, &dneg->body, KEFIR_IROPCODE_F64NEG, 0);
+    kefir_irbuilder_block_appendi64(mem, &dneg->body, KEFIR_IROPCODE_RET, 0);
 
     KEFIR_CODEGEN_TRANSLATE(mem, &codegen.iface, &module);
     KEFIR_CODEGEN_CLOSE(mem, &codegen.iface);

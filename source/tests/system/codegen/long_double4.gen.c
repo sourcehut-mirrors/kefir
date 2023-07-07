@@ -26,10 +26,11 @@
 #include "kefir/core/mem.h"
 #include "kefir/core/util.h"
 #include "kefir/codegen/system-v-amd64.h"
+#include "kefir/test/codegen.h"
 
 kefir_result_t kefir_int_test(struct kefir_mem *mem) {
-    struct kefir_codegen_amd64 codegen;
-    kefir_codegen_sysv_amd64_init(mem, &codegen, stdout, NULL);
+    struct kefir_test_codegen codegen;
+    kefir_test_codegen_init(mem, &codegen, stdout, NULL);
 
     struct kefir_ir_module module;
     REQUIRE_OK(kefir_ir_module_alloc(mem, &module));
@@ -55,6 +56,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     kefir_irbuilder_block_appendu32(mem, &sum_func->body, KEFIR_IROPCODE_GETLOCAL, locals_id, 0);
     kefir_irbuilder_block_appendi64(mem, &sum_func->body, KEFIR_IROPCODE_LDADD, 0);
+    kefir_irbuilder_block_appendi64(mem, &sum_func->body, KEFIR_IROPCODE_RET, 0);
 
     struct kefir_ir_type *sub_decl_params = kefir_ir_module_new_type(mem, &module, 2, &func_params),
                          *sub_decl_result = kefir_ir_module_new_type(mem, &module, 1, &func_returns),
@@ -64,7 +66,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE(sub_locals != NULL, KEFIR_INTERNAL_ERROR);
     struct kefir_ir_function_decl *sub_decl =
         kefir_ir_module_new_function_declaration(mem, &module, "ldouble_sub", func_params, false, func_returns);
-    REQUIRE(sum_decl != NULL, KEFIR_INTERNAL_ERROR);
+    REQUIRE(sub_decl != NULL, KEFIR_INTERNAL_ERROR);
 
     struct kefir_ir_function *sub_func = kefir_ir_module_new_function(mem, &module, sub_decl, locals_id, 1024);
     REQUIRE(sub_func != NULL, KEFIR_INTERNAL_ERROR);
@@ -74,8 +76,10 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     kefir_irbuilder_type_append(mem, sub_func->declaration->result, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0);
     kefir_irbuilder_type_append(mem, sub_locals, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0);
 
+    kefir_irbuilder_block_appendu64(mem, &sub_func->body, KEFIR_IROPCODE_XCHG, 1);
     kefir_irbuilder_block_appendu32(mem, &sub_func->body, KEFIR_IROPCODE_GETLOCAL, locals_id, 0);
     kefir_irbuilder_block_appendi64(mem, &sub_func->body, KEFIR_IROPCODE_LDSUB, 0);
+    kefir_irbuilder_block_appendi64(mem, &sub_func->body, KEFIR_IROPCODE_RET, 0);
 
     struct kefir_ir_type *mul_decl_params = kefir_ir_module_new_type(mem, &module, 2, &func_params),
                          *mul_decl_result = kefir_ir_module_new_type(mem, &module, 1, &func_returns),
@@ -97,6 +101,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     kefir_irbuilder_block_appendu32(mem, &mul_func->body, KEFIR_IROPCODE_GETLOCAL, locals_id, 0);
     kefir_irbuilder_block_appendi64(mem, &mul_func->body, KEFIR_IROPCODE_LDMUL, 0);
+    kefir_irbuilder_block_appendi64(mem, &mul_func->body, KEFIR_IROPCODE_RET, 0);
 
     struct kefir_ir_type *div_decl_params = kefir_ir_module_new_type(mem, &module, 2, &func_params),
                          *div_decl_result = kefir_ir_module_new_type(mem, &module, 1, &func_returns),
@@ -116,8 +121,10 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     kefir_irbuilder_type_append(mem, div_func->declaration->result, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0);
     kefir_irbuilder_type_append(mem, div_locals, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0);
 
+    kefir_irbuilder_block_appendi64(mem, &div_func->body, KEFIR_IROPCODE_XCHG, 1);
     kefir_irbuilder_block_appendu32(mem, &div_func->body, KEFIR_IROPCODE_GETLOCAL, locals_id, 0);
     kefir_irbuilder_block_appendi64(mem, &div_func->body, KEFIR_IROPCODE_LDDIV, 0);
+    kefir_irbuilder_block_appendi64(mem, &div_func->body, KEFIR_IROPCODE_RET, 0);
 
     struct kefir_ir_type *neg_decl_params = kefir_ir_module_new_type(mem, &module, 1, &func_params),
                          *neg_decl_result = kefir_ir_module_new_type(mem, &module, 1, &func_returns),
@@ -138,6 +145,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     kefir_irbuilder_block_appendu32(mem, &neg_func->body, KEFIR_IROPCODE_GETLOCAL, locals_id, 0);
     kefir_irbuilder_block_appendi64(mem, &neg_func->body, KEFIR_IROPCODE_LDNEG, 0);
+    kefir_irbuilder_block_appendi64(mem, &neg_func->body, KEFIR_IROPCODE_RET, 0);
 
     KEFIR_CODEGEN_TRANSLATE(mem, &codegen.iface, &module);
 
