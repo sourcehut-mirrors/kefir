@@ -20,6 +20,7 @@
 
 #include "kefir/ast/analyzer/nodes.h"
 #include "kefir/ast/analyzer/analyzer.h"
+#include "kefir/ast/type_completion.h"
 #include "kefir/ast/type_conv.h"
 #include "kefir/ast/downcast.h"
 #include "kefir/core/util.h"
@@ -133,6 +134,8 @@ kefir_result_t kefir_ast_analyze_function_call_node(struct kefir_mem *mem, const
     REQUIRE(return_type->tag != KEFIR_AST_TYPE_ARRAY,
             KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->function->source_location,
                                    "Function cannot return array type"));
+
+    REQUIRE_OK(kefir_ast_type_completion(mem, context, &return_type, return_type));
     base->properties.category = KEFIR_AST_NODE_CATEGORY_EXPRESSION;
     base->properties.type = return_type;
 
