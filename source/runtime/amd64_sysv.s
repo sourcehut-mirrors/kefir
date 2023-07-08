@@ -669,12 +669,14 @@ define_opcode f32neg
     xorps xmm0, XMMWORD PTR __kefirrt_f32neg_constant[rip]
     movss [rsp], xmm0
     end_opcode
-.align 16
+.section .rodata
+    .align 16
 __kefirrt_f32neg_constant:
     .long 0x80000000
     .long 0x80000000
     .long 0x80000000
     .long 0x80000000
+.section .text
 
 define_opcode f64add
     movsd xmm0, [rsp]
@@ -713,10 +715,12 @@ define_opcode f64neg
     xorps xmm0, XMMWORD PTR __kefirrt_f64neg_constant[rip]
     movsd [rsp], xmm0
     end_opcode
+.section .rodata
 .align 16
 __kefirrt_f64neg_constant:
     .quad 0x8000000000000000
     .quad 0x8000000000000000
+.section .text
 
 define_opcode ldadd
     pop rdi
@@ -902,8 +906,11 @@ __kefirrt_f32cuint_overflow:
     btc rax, 63
     mov [rsp], rax
     end_opcode
+.section .rodata
+    .align 4
 __kefirrt_f32cuint_constant:
     .long   1593835520
+.section .text
 
 define_opcode f64cint
     movsd xmm0, [rsp]
@@ -925,10 +932,12 @@ __kefirrt_f64cuint_overflow:
     btc rax, 63
     mov [rsp], rax
     end_opcode
+.section .rodata
     .align 8
 __kefirrt_f64cuint_constant:
     .long   0
     .long   1138753536
+.section .text
 
 define_opcode intcf32
     mov rax, [rsp]
@@ -1034,8 +1043,11 @@ __kefirrt_ldcuint_overflow:
     btc rax, 63
     mov [rsp], rax
     end_opcode
+.section .rodata
+    .align 4
 __kefirrt_ldcuint_constant:
     .long   1593835520
+.section .text
 
 define_opcode intcld
     pop rdi
@@ -1057,8 +1069,11 @@ __kefirrt_uintcld_signed:
     fadd DWORD PTR [__kefirrt_uintcld_constant]
     fstp TBYTE PTR [rdi]
     end_opcode
+.section .rodata
+    .align 4
 __kefirrt_uintcld_constant:
     .long   1602224128
+.section .text
 
 define_opcode f32cld
     pop rdi

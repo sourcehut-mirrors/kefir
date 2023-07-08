@@ -124,10 +124,12 @@ func1:
     call __kefirrt_generic_prologue
     lea %rbx, [__func1_body]
     jmp [%rbx]
+.section .rodata
 __func1_body:
     .quad __kefirrt_sfunction_func2_gate1, 0
     .quad __kefirrt_sfunction_func3_gate2, 0
     .quad __func1_epilogue, 0
+.section .text
 __func1_epilogue:
     mov %rsp, %r14
     add %rsp, 16

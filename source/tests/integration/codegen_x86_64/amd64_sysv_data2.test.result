@@ -128,12 +128,14 @@ func1:
     push %r12
     lea %rbx, [__func1_body]
     jmp [%rbx]
+.section .rodata
 __func1_body:
     .quad __kefirrt_iadd1_impl, 8
     .quad __kefirrt_pushi_impl, 5
     .quad __kefirrt_iaddx_impl, 8
     .quad __kefirrt_iadd1_impl, 0
     .quad __func1_epilogue, 0
+.section .text
 __func1_epilogue:
     mov %rsp, %r14
     add %rsp, 32

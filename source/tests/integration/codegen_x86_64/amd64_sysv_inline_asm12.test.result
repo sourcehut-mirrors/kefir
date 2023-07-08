@@ -129,9 +129,11 @@ push %rdi
 # End prologue of fn1
 lea %rbx, [__fn1_body]
 jmp [%rbx]
+.section .rodata
 __fn1_body:
 .quad __kefirrt_inline_assembly0, 0
 .quad __fn1_epilogue, 0
+.section .text
 __fn1_epilogue:
 # Begin epilogue of fn1
 pop %rax

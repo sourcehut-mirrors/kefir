@@ -128,11 +128,13 @@ proxyadd:
     push %r12
     lea %rbx, [__proxyadd_body]
     jmp [%rbx]
+.section .rodata
 __proxyadd_body:
     .quad __kefirrt_pushi_impl, 7
     .quad __kefirrt_xchg_impl, 1
     .quad __kefirrt_sfunction_addstruct_vgate, 0
     .quad __proxyadd_epilogue, 0
+.section .text
 __proxyadd_epilogue:
     pop %r12
     mov %rax, [%r12]

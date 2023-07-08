@@ -129,9 +129,11 @@ push %rdi
 # End prologue of func1
 lea %rbx, [__func1_body]
 jmp [%rbx]
+.section .rodata
 __func1_body:
 .quad __kefirrt_inline_assembly0, 0
 .quad __func1_epilogue, 0
+.section .text
 __func1_epilogue:
 # Begin epilogue of func1
 pop %rax

@@ -127,6 +127,8 @@ static kefir_result_t cg_function_body(struct kefir_mem *mem, struct kefir_codeg
         &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_indirect(
                                &codegen->xasmgen_helpers.operands[0],
                                kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_PROGRAM_REG), 0)));
+    
+    REQUIRE_OK(KEFIR_AMD64_XASMGEN_SECTION(&codegen->xasmgen, ".rodata"));
     REQUIRE_OK(
         KEFIR_AMD64_XASMGEN_LABEL(&codegen->xasmgen, KEFIR_AMD64_SYSV_PROCEDURE_BODY_LABEL, sysv_func->func->name));
     kefir_size_t instr_width;
@@ -142,6 +144,7 @@ static kefir_result_t cg_function_body(struct kefir_mem *mem, struct kefir_codeg
             kefir_asm_amd64_xasmgen_helpers_format(&codegen->xasmgen_helpers, KEFIR_AMD64_SYSV_PROCEDURE_EPILOGUE_LABEL,
                                                    sysv_func->func->name)),
         kefir_asm_amd64_xasmgen_operand_imm(&codegen->xasmgen_helpers.operands[1], 0)));
+    REQUIRE_OK(KEFIR_AMD64_XASMGEN_SECTION(&codegen->xasmgen, ".text"));
     return KEFIR_OK;
 }
 
