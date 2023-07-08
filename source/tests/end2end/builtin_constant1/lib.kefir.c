@@ -22,8 +22,9 @@
 
 extern void abort(void);
 
-int arr[] = {__builtin_constant_p(1), __builtin_constant_p(abort()), __builtin_constant_p(2 + 2 * 2),
-             __builtin_constant_p(*((int *) 0)), __builtin_constant_p(&abort)};
+int arr[] = {__builtin_constant_p(1),         __builtin_constant_p(abort()),
+             __builtin_constant_p(2 + 2 * 2), __builtin_constant_p(*((int *) 0)),
+             __builtin_constant_p("hello"),   __builtin_constant_p(&abort)};
 
 int arr_len = sizeof(arr) / sizeof(arr[0]);
 
@@ -38,6 +39,8 @@ int test(int x) {
         case 3:
             return __builtin_constant_p(*((int *) 0));
         case 4:
+            return __builtin_constant_p("hello");
+        case 5:
             return __builtin_constant_p(&abort);
         default:
             return -1;

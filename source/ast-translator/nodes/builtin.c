@@ -183,7 +183,14 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PUSHU64, 0));
             } else {
                 REQUIRE_OK(res);
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PUSHU64, 1));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(
+                    builder, KEFIR_IROPCODE_PUSHU64,
+                    (node_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER ||
+                     node_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT ||
+                     (node_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS &&
+                      node_value.pointer.type != KEFIR_AST_CONSTANT_EXPRESSION_POINTER_IDENTIFER))
+                        ? 1
+                        : 0));
             }
         } break;
 
