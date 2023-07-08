@@ -34,8 +34,6 @@
 #define __builtin_memset(p, v, n) memset(p, v, n)
 #define __builtin_memcpy(d, s, n) memcpy(d, s, n)
 #define __builtin_memcmp(d, s, n) memcmp(d, s, n)
-#define __builtin_expect(e, x) (x, e)
-#define __builtin_trap() abort()
 #define __builtin_strcpy(d, s) strcpy(d, s)
 #define __builtin_strncpy(d, s, n) strncpy(d, s, n)
 #define __builtin_strcmp(d, s) strcmp(d, s)
@@ -44,14 +42,9 @@
 #define __builtin_abort() abort()
 #define __builtin_printf printf
 #define __builtin_sprintf sprintf
-#define __builtin_prefetch(addr, ...) \
-    do {                              \
-        (void) (addr);                \
-    } while (0)
 #define __builtin_longjmp(env, status) longjmp(env, status)
 #define __builtin_setjmp(env) setjmp(env, status)
 #define __builtin_exit() exit()
-#define __builtin_unreachable() abort()
 #define __builtin_abs(n) abs(n)
 #define __builtin_ffs(n) ffs(n)
 

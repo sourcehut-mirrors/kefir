@@ -33,6 +33,10 @@
 #define KEFIR_PARSER_BUILTIN_ALLOCA_WITH_ALIGN "__builtin_alloca_with_align"
 #define KEFIR_PARSER_BUILTIN_ALLOCA_WITH_ALIGN_AND_MAX "__builtin_alloca_with_align_and_max"
 #define KEFIR_PARSER_BUILTIN_OFFSETOF "__builtin_offsetof"
+#define KEFIR_PARSER_BUILTIN_TYPES_COMPATIBLE "__builtin_types_compatible_p"
+#define KEFIR_PARSER_BUILTIN_CHOOSE_EXPRESSION "__builtin_choose_expr"
+#define KEFIR_PARSER_BUILTIN_CONSTANT "__builtin_constant_p"
+#define KEFIR_PARSER_BUILTIN_CLASSIFY_TYPE "__builtin_classify_type"
 
 kefir_result_t kefir_parser_get_builtin_operation(const char *, kefir_ast_builtin_operator_t *);
 

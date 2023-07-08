@@ -123,4 +123,6 @@ kefir_bool_t kefir_ast_function_specifier_is_inline(kefir_ast_function_specifier
 
 extern const struct kefir_ast_bitfield_properties KEFIR_AST_BITFIELD_PROPERTIES_NONE;
 
+kefir_result_t kefir_ast_type_classify(const struct kefir_ast_type *, kefir_int_t *);
+
 #endif

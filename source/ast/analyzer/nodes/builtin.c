@@ -193,6 +193,94 @@ kefir_result_t kefir_ast_analyze_builtin_node(struct kefir_mem *mem, const struc
             base->properties.type = context->type_traits->size_type;
             base->properties.expression_props.constant_expression = field->properties.member_designator.constant;
         } break;
+
+        case KEFIR_AST_BUILTIN_TYPES_COMPATIBLE: {
+            REQUIRE(kefir_list_length(&node->arguments) == 2,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &base->source_location,
+                                           "type compatible builtin invocation should have exactly two parameters"));
+
+            const struct kefir_list_entry *iter = kefir_list_head(&node->arguments);
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, type1_node, iter->value);
+            REQUIRE_OK(kefir_ast_analyze_node(mem, context, type1_node));
+            REQUIRE(type1_node->properties.category == KEFIR_AST_NODE_CATEGORY_TYPE,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &type1_node->source_location, "Expected a type name"));
+            kefir_list_next(&iter);
+
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, type2_node, iter->value);
+            REQUIRE_OK(kefir_ast_analyze_node(mem, context, type2_node));
+            REQUIRE(type2_node->properties.category == KEFIR_AST_NODE_CATEGORY_TYPE,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &type2_node->source_location, "Expected a type name"));
+
+            base->properties.type = kefir_ast_type_signed_int();
+            base->properties.expression_props.constant_expression = true;
+        } break;
+
+        case KEFIR_AST_BUILTIN_CHOOSE_EXPRESSION: {
+            REQUIRE(
+                kefir_list_length(&node->arguments) == 3,
+                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &base->source_location,
+                                       "choose expression builtin invocation should have exactly three parameters"));
+
+            const struct kefir_list_entry *iter = kefir_list_head(&node->arguments);
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, cond_node, iter->value);
+            REQUIRE_OK(kefir_ast_analyze_node(mem, context, cond_node));
+            REQUIRE(cond_node->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION &&
+                        cond_node->properties.expression_props.constant_expression,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &cond_node->source_location,
+                                           "Expected a constant expression"));
+            kefir_list_next(&iter);
+
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, expr1_node, iter->value);
+            kefir_list_next(&iter);
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, expr2_node, iter->value);
+
+            struct kefir_ast_constant_expression_value cond_value;
+            REQUIRE_OK(kefir_ast_constant_expression_value_evaluate(mem, context, cond_node, &cond_value));
+
+            REQUIRE(cond_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &cond_node->source_location,
+                                           "Expected a constant expression evaluating to an integer"));
+
+            if (cond_value.integer != 0) {
+                REQUIRE_OK(kefir_ast_analyze_node(mem, context, expr1_node));
+                REQUIRE_OK(kefir_ast_node_properties_clone(&base->properties, &expr1_node->properties));
+            } else {
+                REQUIRE_OK(kefir_ast_analyze_node(mem, context, expr2_node));
+                REQUIRE_OK(kefir_ast_node_properties_clone(&base->properties, &expr2_node->properties));
+            }
+        } break;
+
+        case KEFIR_AST_BUILTIN_CONSTANT: {
+            REQUIRE(kefir_list_length(&node->arguments) == 1,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &base->source_location,
+                                           "constant builtin invocation should have exactly one parameter"));
+
+            const struct kefir_list_entry *iter = kefir_list_head(&node->arguments);
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, iter->value);
+            REQUIRE_OK(kefir_ast_analyze_node(mem, context, node));
+            REQUIRE(node->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->source_location, "Expected an expression"));
+            kefir_list_next(&iter);
+
+            base->properties.type = kefir_ast_type_signed_int();
+            base->properties.expression_props.constant_expression = true;
+        } break;
+
+        case KEFIR_AST_BUILTIN_CLASSIFY_TYPE: {
+            REQUIRE(kefir_list_length(&node->arguments) == 1,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &base->source_location,
+                                           "classify type builtin invocation should have exactly one parameter"));
+
+            const struct kefir_list_entry *iter = kefir_list_head(&node->arguments);
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, iter->value);
+            REQUIRE_OK(kefir_ast_analyze_node(mem, context, node));
+            REQUIRE(node->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->source_location, "Expected an expression"));
+            kefir_list_next(&iter);
+
+            base->properties.type = kefir_ast_type_signed_int();
+            base->properties.expression_props.constant_expression = true;
+        } break;
     }
     return KEFIR_OK;
 }

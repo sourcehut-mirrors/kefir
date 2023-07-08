@@ -27,6 +27,7 @@
 #include "kefir/ast-translator/util.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
+#include "kefir/core/source_error.h"
 
 static kefir_result_t resolve_vararg(struct kefir_mem *mem, struct kefir_ast_translator_context *context,
                                      struct kefir_irbuilder_block *builder, const struct kefir_ast_node_base *vararg) {
@@ -134,6 +135,64 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PUSHU64, 0));
             REQUIRE_OK(
                 kefir_ast_translate_member_designator(mem, field, offset_base->properties.type, builder, context));
+        } break;
+
+        case KEFIR_AST_BUILTIN_TYPES_COMPATIBLE: {
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, type1_node, iter->value);
+            kefir_list_next(&iter);
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, type2_node, iter->value);
+
+            const struct kefir_ast_type *type1 = kefir_ast_unqualified_type(type1_node->properties.type);
+            const struct kefir_ast_type *type2 = kefir_ast_unqualified_type(type2_node->properties.type);
+
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(
+                builder, KEFIR_IROPCODE_PUSHU64,
+                KEFIR_AST_TYPE_COMPATIBLE(context->ast_context->type_traits, type1, type2) ? 1 : 0));
+        } break;
+
+        case KEFIR_AST_BUILTIN_CHOOSE_EXPRESSION: {
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, cond_node, iter->value);
+            kefir_list_next(&iter);
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, expr1_node, iter->value);
+            kefir_list_next(&iter);
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, expr2_node, iter->value);
+
+            struct kefir_ast_constant_expression_value cond_value;
+            REQUIRE_OK(kefir_ast_constant_expression_value_evaluate(mem, context->ast_context, cond_node, &cond_value));
+
+            REQUIRE(cond_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &cond_node->source_location,
+                                           "Expected a constant expression evaluating to an integer"));
+
+            if (cond_value.integer != 0) {
+                REQUIRE_OK(kefir_ast_translate_expression(mem, expr1_node, builder, context));
+            } else {
+                REQUIRE_OK(kefir_ast_translate_expression(mem, expr2_node, builder, context));
+            }
+        } break;
+
+        case KEFIR_AST_BUILTIN_CONSTANT: {
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, iter->value);
+
+            struct kefir_ast_constant_expression_value node_value;
+            kefir_result_t res =
+                kefir_ast_constant_expression_value_evaluate(mem, context->ast_context, node, &node_value);
+
+            if (res == KEFIR_NOT_CONSTANT) {
+                kefir_clear_error();
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PUSHU64, 0));
+            } else {
+                REQUIRE_OK(res);
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PUSHU64, 1));
+            }
+        } break;
+
+        case KEFIR_AST_BUILTIN_CLASSIFY_TYPE: {
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, iter->value);
+
+            kefir_int_t klass;
+            REQUIRE_OK(kefir_ast_type_classify(node->properties.type, &klass));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PUSHI64, klass));
         } break;
     }
     return KEFIR_OK;

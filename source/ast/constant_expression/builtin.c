@@ -159,6 +159,64 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
             value->integer = objinfo.relative_offset;
         } break;
 
+        case KEFIR_AST_BUILTIN_TYPES_COMPATIBLE: {
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, type1_node, iter->value);
+            kefir_list_next(&iter);
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, type2_node, iter->value);
+
+            const struct kefir_ast_type *type1 = kefir_ast_unqualified_type(type1_node->properties.type);
+            const struct kefir_ast_type *type2 = kefir_ast_unqualified_type(type2_node->properties.type);
+
+            value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
+            value->integer = KEFIR_AST_TYPE_COMPATIBLE(context->type_traits, type1, type2) ? 1 : 0;
+        } break;
+
+        case KEFIR_AST_BUILTIN_CHOOSE_EXPRESSION: {
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, cond_node, iter->value);
+            kefir_list_next(&iter);
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, expr1_node, iter->value);
+            kefir_list_next(&iter);
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, expr2_node, iter->value);
+
+            struct kefir_ast_constant_expression_value cond_value;
+            REQUIRE_OK(kefir_ast_constant_expression_value_evaluate(mem, context, cond_node, &cond_value));
+
+            REQUIRE(cond_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &cond_node->source_location,
+                                           "Expected a constant expression evaluating to an integer"));
+
+            if (cond_value.integer != 0) {
+                REQUIRE_OK(kefir_ast_constant_expression_value_evaluate(mem, context, expr1_node, value));
+            } else {
+                REQUIRE_OK(kefir_ast_constant_expression_value_evaluate(mem, context, expr2_node, value));
+            }
+        } break;
+
+        case KEFIR_AST_BUILTIN_CONSTANT: {
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, iter->value);
+
+            struct kefir_ast_constant_expression_value node_value;
+            kefir_result_t res = kefir_ast_constant_expression_value_evaluate(mem, context, node, &node_value);
+
+            value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
+            if (res == KEFIR_NOT_CONSTANT) {
+                kefir_clear_error();
+                value->integer = 0;
+            } else {
+                REQUIRE_OK(res);
+                value->integer = 1;
+            }
+        } break;
+
+        case KEFIR_AST_BUILTIN_CLASSIFY_TYPE: {
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, iter->value);
+
+            value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
+            kefir_int_t klass;
+            REQUIRE_OK(kefir_ast_type_classify(node->properties.type, &klass));
+            value->integer = klass;
+        } break;
+
         case KEFIR_AST_BUILTIN_VA_START:
         case KEFIR_AST_BUILTIN_VA_END:
         case KEFIR_AST_BUILTIN_VA_ARG:

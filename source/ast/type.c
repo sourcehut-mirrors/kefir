@@ -22,6 +22,9 @@
 #include "kefir/ast/type.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
+#define __KEFIR_IMPL_TYPECLASS_HEADER__
+#include "kefir/runtime/common/typeclass_kefir_impl.h"
+#undef __KEFIR_IMPL_TYPECLASS_HEADER__
 
 const struct kefir_ast_bitfield_properties KEFIR_AST_BITFIELD_PROPERTIES_NONE = {.bitfield = false};
 
@@ -319,4 +322,45 @@ kefir_ast_function_specifier_t kefir_ast_context_merge_function_specifiers(kefir
 kefir_bool_t kefir_ast_function_specifier_is_inline(kefir_ast_function_specifier_t specifier) {
     return specifier == KEFIR_AST_FUNCTION_SPECIFIER_INLINE ||
            specifier == KEFIR_AST_FUNCTION_SPECIFIER_INLINE_NORETURN;
+}
+
+kefir_result_t kefir_ast_type_classify(const struct kefir_ast_type *type, kefir_int_t *klass_ptr) {
+    REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type"));
+    REQUIRE(klass_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to type"));
+
+    type = kefir_ast_unqualified_type(type);
+    if (type->tag == KEFIR_AST_TYPE_VOID) {
+        *klass_ptr = __KEFIR_IMPL_TYPECLASS_VOID_TYPE_CLASS;
+    } else if (type->tag == KEFIR_AST_TYPE_SCALAR_CHAR || type->tag == KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR ||
+               type->tag == KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR) {
+        *klass_ptr = __KEFIR_IMPL_TYPECLASS_CHAR_TYPE_CLASS;
+    } else if (type->tag == KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT || type->tag == KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT ||
+               type->tag == KEFIR_AST_TYPE_SCALAR_SIGNED_INT || type->tag == KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT ||
+               type->tag == KEFIR_AST_TYPE_SCALAR_SIGNED_LONG || type->tag == KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG ||
+               type->tag == KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG ||
+               type->tag == KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG) {
+        *klass_ptr = __KEFIR_IMPL_TYPECLASS_INTEGER_TYPE_CLASS;
+    } else if (type->tag == KEFIR_AST_TYPE_ENUMERATION) {
+        *klass_ptr = __KEFIR_IMPL_TYPECLASS_ENUMERAL_TYPE_CLASS;
+    } else if (type->tag == KEFIR_AST_TYPE_SCALAR_BOOL) {
+        *klass_ptr = __KEFIR_IMPL_TYPECLASS_BOOLEAN_TYPE_CLASS;
+    } else if (type->tag == KEFIR_AST_TYPE_SCALAR_POINTER) {
+        *klass_ptr = __KEFIR_IMPL_TYPECLASS_POINTER_TYPE_CLASS;
+    } else if (type->tag == KEFIR_AST_TYPE_SCALAR_FLOAT || type->tag == KEFIR_AST_TYPE_SCALAR_DOUBLE ||
+               type->tag == KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE) {
+        *klass_ptr = __KEFIR_IMPL_TYPECLASS_REAL_TYPE_CLASS;
+    } else if (type->tag == KEFIR_AST_TYPE_FUNCTION) {
+        *klass_ptr = __KEFIR_IMPL_TYPECLASS_FUNCTION_TYPE_CLASS;
+    } else if (type->tag == KEFIR_AST_TYPE_STRUCTURE) {
+        *klass_ptr = __KEFIR_IMPL_TYPECLASS_RECORD_TYPE_CLASS;
+    } else if (type->tag == KEFIR_AST_TYPE_UNION) {
+        *klass_ptr = __KEFIR_IMPL_TYPECLASS_UNION_TYPE_CLASS;
+    } else if (type->tag == KEFIR_AST_TYPE_ARRAY) {
+        *klass_ptr = __KEFIR_IMPL_TYPECLASS_ARRAY_TYPE_CLASS;
+    } else if (type->tag == KEFIR_AST_TYPE_VA_LIST) {
+        *klass_ptr = __KEFIR_IMPL_TYPECLASS_LANG_TYPE_CLASS;
+    } else {
+        *klass_ptr = __KEFIR_IMPL_TYPECLASS_NO_TYPE_CLASS;
+    }
+    return KEFIR_OK;
 }

@@ -322,6 +322,22 @@ static kefir_result_t visit_builtin(const struct kefir_ast_visitor *visitor, con
         case KEFIR_AST_BUILTIN_OFFSETOF:
             REQUIRE_OK(kefir_json_output_string(json, "offset"));
             break;
+
+        case KEFIR_AST_BUILTIN_TYPES_COMPATIBLE:
+            REQUIRE_OK(kefir_json_output_string(json, "types_compatible"));
+            break;
+
+        case KEFIR_AST_BUILTIN_CHOOSE_EXPRESSION:
+            REQUIRE_OK(kefir_json_output_string(json, "choose_expression"));
+            break;
+
+        case KEFIR_AST_BUILTIN_CONSTANT:
+            REQUIRE_OK(kefir_json_output_string(json, "constant_p"));
+            break;
+
+        case KEFIR_AST_BUILTIN_CLASSIFY_TYPE:
+            REQUIRE_OK(kefir_json_output_string(json, "classify_type"));
+            break;
     }
     REQUIRE_OK(kefir_json_output_object_key(json, "arguments"));
     REQUIRE_OK(kefir_json_output_array_begin(json));
