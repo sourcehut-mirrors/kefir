@@ -456,7 +456,7 @@ static kefir_result_t vararg_visit_register_aggregate(
 
     kefir_id_t overflow_area_label = arg->codegen_func->nonblock_labels++;
     kefir_id_t overflow_area_end_label = arg->codegen_func->nonblock_labels++;
-    kefir_size_t integer_qwords, sse_qwords;
+    kefir_size_t integer_qwords = 0, sse_qwords = 0;
     REQUIRE_OK(vararg_register_aggregate_check(arg, param_allocation, param_handle.location.reg,
                                                tmp_handle.location.reg, overflow_area_label, &integer_qwords,
                                                &sse_qwords));
