@@ -218,57 +218,68 @@ __kefirrt_parityll:
 __kefirrt_huge_val:
     movsd xmm0, QWORD PTR __kefirrt_huge_val_const[rip]
     ret
+.section .rodata
     .align 8
 __kefirrt_huge_val_const:
     .long   0
     .long   2146435072
+.section .text
 
 .global __kefirrt_huge_valf
 .hidden __kefirrt_huge_valf
 __kefirrt_huge_valf:
     movss xmm0, DWORD PTR __kefirrt_huge_valf_const[rip]
     ret
+.section .rodata
     .align 4
 __kefirrt_huge_valf_const:
     .long   2139095040
+.section .text
 
 .global __kefirrt_huge_vall
 .hidden __kefirrt_huge_vall
 __kefirrt_huge_vall:
     fld DWORD PTR __kefirrt_huge_vall_const[rip]
     ret
+.section .rodata
     .align 4
 __kefirrt_huge_vall_const:
     .long   2139095040
+.section .text
 
 .global __kefirrt_inf
 .hidden __kefirrt_inf
 __kefirrt_inf:
     movsd xmm0, QWORD PTR __kefirrt_inf_const[rip]
     ret
+.section .rodata
     .align 8
 __kefirrt_inf_const:
     .long   0
     .long   2146435072
+.section .text
 
 .global __kefirrt_inff
 .hidden __kefirrt_inff
 __kefirrt_inff:
     movss xmm0, DWORD PTR __kefirrt_inff_const[rip]
     ret
+.section .rodata
     .align 4
 __kefirrt_inff_const:
     .long   2139095040
-
+.section .text
 
 .global __kefirrt_infl
 .hidden __kefirrt_infl
 __kefirrt_infl:
     fld DWORD PTR __kefirrt_infl_const[rip]
     ret
+.section .rodata
     .align 4
 __kefirrt_infl_const:
     .long   2139095040
+.section .text
 
 .global __kefirrt_bswap16
 .hidden __kefirrt_bswap16

@@ -55,6 +55,8 @@ __kefir_func_eval1_block0:
     lea (%rbp), %rsp
     pop %rbp
     ret
+.section .rodata
+.section .text
 
 eval2:
     push %rbp
@@ -128,5 +130,7 @@ __kefir_func_eval2_block0_label0:
     lea (%rbp), %rsp
     pop %rbp
     ret
+.section .rodata
+.section .text
 
 

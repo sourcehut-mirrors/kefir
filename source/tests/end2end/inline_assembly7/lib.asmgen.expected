@@ -37,6 +37,8 @@ __kefir_func_make_s1_block0:
     lea (%rbp), %rsp
     pop %rbp
     ret
+.section .rodata
+.section .text
 
 cast_int:
     push %rbp
@@ -62,6 +64,8 @@ __kefir_func_cast_int_block0:
     lea (%rbp), %rsp
     pop %rbp
     ret
+.section .rodata
+.section .text
 
 sum3_one:
     push %rbp
@@ -110,6 +114,8 @@ add %rdx, %rcx
     lea (%rbp), %rsp
     pop %rbp
     ret
+.section .rodata
+.section .text
 
 unwrap_s1:
     push %rbp
@@ -140,5 +146,7 @@ __kefir_func_unwrap_s1_block0:
     lea (%rbp), %rsp
     pop %rbp
     ret
+.section .rodata
+.section .text
 
 

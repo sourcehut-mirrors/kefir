@@ -652,6 +652,8 @@ static kefir_result_t generate_constants(struct kefir_codegen_opt_amd64 *codegen
     kefir_bool_t f64neg = false;
     kefir_bool_t uint_to_ld = false;
 
+    REQUIRE_OK(KEFIR_AMD64_XASMGEN_SECTION(&codegen->xasmgen, ".rodata"));
+
     for (kefir_size_t instr_idx = 0; instr_idx < func_analysis->linearization_length; instr_idx++) {
         const struct kefir_opt_code_analysis_instruction_properties *instr_props =
             func_analysis->linearization[instr_idx];
@@ -771,6 +773,8 @@ static kefir_result_t generate_constants(struct kefir_codegen_opt_amd64 *codegen
             &codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 1,
             kefir_asm_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[0], 0x5F800000)));
     }
+
+    REQUIRE_OK(KEFIR_AMD64_XASMGEN_SECTION(&codegen->xasmgen, ".text"));
     return KEFIR_OK;
 }
 

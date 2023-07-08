@@ -44,10 +44,12 @@ __kefir_func_inc_block0:
     lea (%rbp), %rsp
     pop %rbp
     ret
+.section .rodata
     .align 16
 __kefir_func_inc_const5:
     .quad 9223372036854775808
     .quad 16383
+.section .text
 
 neg:
     push %rbp
@@ -69,6 +71,8 @@ __kefir_func_neg_block0:
     lea (%rbp), %rsp
     pop %rbp
     ret
+.section .rodata
+.section .text
 
 f32cld:
     push %rbp
@@ -91,6 +95,8 @@ __kefir_func_f32cld_block0:
     lea (%rbp), %rsp
     pop %rbp
     ret
+.section .rodata
+.section .text
 
 f64cld:
     push %rbp
@@ -112,6 +118,8 @@ __kefir_func_f64cld_block0:
     lea (%rbp), %rsp
     pop %rbp
     ret
+.section .rodata
+.section .text
 
 intcld:
     push %rbp
@@ -133,6 +141,8 @@ __kefir_func_intcld_block0:
     lea (%rbp), %rsp
     pop %rbp
     ret
+.section .rodata
+.section .text
 
 ldcf32:
     push %rbp
@@ -153,6 +163,8 @@ __kefir_func_ldcf32_block0:
     lea (%rbp), %rsp
     pop %rbp
     ret
+.section .rodata
+.section .text
 
 ldcf64:
     push %rbp
@@ -173,6 +185,8 @@ __kefir_func_ldcf64_block0:
     lea (%rbp), %rsp
     pop %rbp
     ret
+.section .rodata
+.section .text
 
 ldcint:
     push %rbp
@@ -194,6 +208,8 @@ __kefir_func_ldcint_block0:
     lea (%rbp), %rsp
     pop %rbp
     ret
+.section .rodata
+.section .text
 
 ldcuint:
     push %rbp
@@ -215,6 +231,8 @@ __kefir_func_ldcuint_block0:
     lea (%rbp), %rsp
     pop %rbp
     ret
+.section .rodata
+.section .text
 
 uintcld:
     push %rbp
@@ -240,9 +258,11 @@ __kefir_func_uintcld_block0_label0:
     lea (%rbp), %rsp
     pop %rbp
     ret
+.section .rodata
     .align 4
 __kefir_func_uintcld_uint2ld:
     .long 1602224128
+.section .text
 
 imp_cast:
     push %rbp
@@ -264,5 +284,7 @@ __kefir_func_imp_cast_block0:
     lea (%rbp), %rsp
     pop %rbp
     ret
+.section .rodata
+.section .text
 
 

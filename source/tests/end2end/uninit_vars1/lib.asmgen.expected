@@ -22,6 +22,8 @@ __kefir_func_get_global_uninit_static_block0:
     lea (%rbp), %rsp
     pop %rbp
     ret
+.section .rodata
+.section .text
 
 get_global_tlocal_uninit_static:
     push %rbp
@@ -32,6 +34,8 @@ __kefir_func_get_global_tlocal_uninit_static_block0:
     lea (%rbp), %rsp
     pop %rbp
     ret
+.section .rodata
+.section .text
 
 get_local_tlocal_uninit_static:
     push %rbp
@@ -44,6 +48,8 @@ __kefir_func_get_local_tlocal_uninit_static_block0:
     lea (%rbp), %rsp
     pop %rbp
     ret
+.section .rodata
+.section .text
 
 get_local_uninit_static:
     push %rbp
@@ -55,6 +61,8 @@ __kefir_func_get_local_uninit_static_block0:
     lea (%rbp), %rsp
     pop %rbp
     ret
+.section .rodata
+.section .text
 
 
 .section .data

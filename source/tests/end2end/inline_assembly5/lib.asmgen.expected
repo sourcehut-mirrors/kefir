@@ -35,6 +35,8 @@ movb %al, (%rcx)
     lea (%rbp), %rsp
     pop %rbp
     ret
+.section .rodata
+.section .text
 
 set16:
     push %rbp
@@ -54,6 +56,8 @@ movw %ax, (%rcx)
     lea (%rbp), %rsp
     pop %rbp
     ret
+.section .rodata
+.section .text
 
 set32:
     push %rbp
@@ -73,6 +77,8 @@ movl %eax, (%rcx)
     lea (%rbp), %rsp
     pop %rbp
     ret
+.section .rodata
+.section .text
 
 set64:
     push %rbp
@@ -92,6 +98,8 @@ movq %rax, (%rcx)
     lea (%rbp), %rsp
     pop %rbp
     ret
+.section .rodata
+.section .text
 
 clear8:
     push %rbp
@@ -113,6 +121,8 @@ movb $0, %al
     lea (%rbp), %rsp
     pop %rbp
     ret
+.section .rodata
+.section .text
 
 clear16:
     push %rbp
@@ -134,6 +144,8 @@ movw $0, %ax
     lea (%rbp), %rsp
     pop %rbp
     ret
+.section .rodata
+.section .text
 
 clear32:
     push %rbp
@@ -155,6 +167,8 @@ movl $0, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
+.section .rodata
+.section .text
 
 clear64:
     push %rbp
@@ -176,5 +190,7 @@ movq $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
+.section .rodata
+.section .text
 
 

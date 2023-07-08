@@ -113,8 +113,10 @@ __kefirrt_opt_float32_to_uint_overflow:
     cvttss2si rax, xmm0
     btc rax, 63
     ret
+.section .rodata
 __kefirrt_opt_float32_to_uint_constant:
     .long   1593835520
+.section .text
 
 .global __kefirrt_opt_float64_to_uint
 .hidden __kefirrt_opt_float64_to_uint
@@ -128,10 +130,12 @@ __kefirrt_opt_float64_to_uint_overflow:
     cvttsd2si rax, xmm0
     btc rax, 63
     ret
+.section .rodata
     .align 8
 __kefirrt_opt_float64_to_uint_constant:
     .long   0
     .long   1138753536
+.section .text
 
 .global __kefirrt_opt_long_double_to_int
 .hidden __kefirrt_opt_long_double_to_int
@@ -175,8 +179,10 @@ __kefirrt_opt_long_double_to_uint_overflow:
     mov rax, QWORD PTR [rsp - 24]
     btc rax, 63
     ret
+.section .rodata
 __kefirrt_opt_long_double_to_uint_constant:
     .long   1593835520
+.section .text
 
 .global __kefirrt_opt_long_double_trunc_1bit
 .hidden __kefirrt_opt_long_double_trunc_1bit
