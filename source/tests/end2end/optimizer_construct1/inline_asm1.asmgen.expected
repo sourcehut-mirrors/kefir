@@ -1,7 +1,7 @@
 {
     "functions": [
         {
-            "id": 1,
+            "id": 31,
             "name": "test",
             "code": {
                 "entry_point": 0,
@@ -66,7 +66,7 @@
                             {
                                 "id": 2,
                                 "opcode": "get_global",
-                                "ir_ref": 3,
+                                "ir_ref": 33,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -155,7 +155,7 @@
                             {
                                 "id": 9,
                                 "opcode": "get_global",
-                                "ir_ref": 5,
+                                "ir_ref": 35,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -262,7 +262,7 @@
                             {
                                 "id": 6,
                                 "opcode": "get_global",
-                                "ir_ref": 3,
+                                "ir_ref": 33,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -413,7 +413,7 @@
                             {
                                 "id": 13,
                                 "opcode": "get_global",
-                                "ir_ref": 3,
+                                "ir_ref": 33,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -428,7 +428,7 @@
                             {
                                 "id": 14,
                                 "opcode": "get_global",
-                                "ir_ref": 5,
+                                "ir_ref": 35,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -443,7 +443,7 @@
                             {
                                 "id": 15,
                                 "opcode": "get_global",
-                                "ir_ref": 3,
+                                "ir_ref": 33,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,

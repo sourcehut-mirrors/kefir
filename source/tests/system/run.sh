@@ -23,6 +23,7 @@ ASM_FILE="$TMPDIR/gen.asm"
 ASM_OBJ="$TMPDIR/gen.o"
 LIB_OBJ="$TMPDIR/lib.o"
 LIB2_OBJ="$TMPDIR/lib2.o"
+LIB3_OBJ="$TMPDIR/lib3.o"
 TEST_EXE="$TMPDIR/test"
 VALGRIND_FILE="$TMPDIR/gen.log"
 VALGRIND="valgrind $VALGRIND_OPTIONS --log-file=$VALGRIND_FILE"
@@ -57,6 +58,11 @@ if [[ "x$?" != "x0" ]]; then
     exit 126
 fi
 
+$AS -o "$LIB3_OBJ" "$DIR/../../runtime/common_amd64.s"
+if [[ "x$?" != "x0" ]]; then
+    exit 126
+fi
+
 for SYS_TEST in "$@"
 do
     printf "Running $SYS_TEST..."
@@ -72,7 +78,7 @@ do
         exit 128
     fi
     TEST_FILE="$DIR/$(basename $(dirname $SYS_TEST))/$(basename $SYS_TEST .gen).test.c"
-    $COMPILE $TEST_FILE $ASM_OBJ $LIB_OBJ $LIB2_OBJ
+    $COMPILE $TEST_FILE $ASM_OBJ $LIB_OBJ $LIB2_OBJ $LIB3_OBJ
     if [[ "x$DISASM" == "xexe" ]]; then
         objdump -d "$TEST_EXE"
     fi

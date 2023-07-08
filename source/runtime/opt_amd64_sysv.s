@@ -192,3 +192,4 @@ __kefirrt_opt_long_double_trunc_1bit:
     xor ah, ah
     xor rax, 1
     ret
+

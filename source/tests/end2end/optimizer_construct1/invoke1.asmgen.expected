@@ -1,7 +1,7 @@
 {
     "functions": [
         {
-            "id": 6,
+            "id": 36,
             "name": "main",
             "code": {
                 "entry_point": 0,
@@ -13,19 +13,19 @@
                         "calls": [
                             {
                                 "id": 0,
-                                "function_declaration_id": 7,
+                                "function_declaration_id": 37,
                                 "arguments": []
                             },
                             {
                                 "id": 1,
-                                "function_declaration_id": 8,
+                                "function_declaration_id": 38,
                                 "arguments": [
                                     1
                                 ]
                             },
                             {
                                 "id": 2,
-                                "function_declaration_id": 9,
+                                "function_declaration_id": 39,
                                 "arguments": [
                                     3,
                                     4,
@@ -37,12 +37,12 @@
                             },
                             {
                                 "id": 3,
-                                "function_declaration_id": 10,
+                                "function_declaration_id": 40,
                                 "arguments": []
                             },
                             {
                                 "id": 4,
-                                "function_declaration_id": 11,
+                                "function_declaration_id": 41,
                                 "arguments": [
                                     12,
                                     19
@@ -50,12 +50,12 @@
                             },
                             {
                                 "id": 5,
-                                "function_declaration_id": 13,
+                                "function_declaration_id": 43,
                                 "arguments": []
                             },
                             {
                                 "id": 6,
-                                "function_declaration_id": 14,
+                                "function_declaration_id": 44,
                                 "arguments": [
                                     25,
                                     26,
@@ -64,7 +64,7 @@
                             },
                             {
                                 "id": 7,
-                                "function_declaration_id": 15,
+                                "function_declaration_id": 45,
                                 "arguments": [
                                     29,
                                     30
@@ -72,12 +72,12 @@
                             },
                             {
                                 "id": 8,
-                                "function_declaration_id": 16,
+                                "function_declaration_id": 46,
                                 "arguments": []
                             },
                             {
                                 "id": 9,
-                                "function_declaration_id": 12,
+                                "function_declaration_id": 42,
                                 "arguments": [
                                     22,
                                     24,
@@ -87,14 +87,14 @@
                             },
                             {
                                 "id": 10,
-                                "function_declaration_id": 17,
+                                "function_declaration_id": 47,
                                 "arguments": [
                                     36
                                 ]
                             },
                             {
                                 "id": 11,
-                                "function_declaration_id": 18,
+                                "function_declaration_id": 48,
                                 "arguments": [
                                     39,
                                     40,

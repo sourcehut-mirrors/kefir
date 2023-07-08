@@ -1,7 +1,7 @@
 {
     "functions": [
         {
-            "id": 3,
+            "id": 33,
             "name": "getY",
             "code": {
                 "entry_point": 0,
@@ -225,7 +225,7 @@
             }
         },
         {
-            "id": 4,
+            "id": 34,
             "name": "getZ",
             "code": {
                 "entry_point": 0,
@@ -449,7 +449,7 @@
             }
         },
         {
-            "id": 5,
+            "id": 35,
             "name": "test_zero",
             "code": {
                 "entry_point": 0,
@@ -531,7 +531,7 @@
                                 "target": 3,
                                 "source": null,
                                 "type": {
-                                    "id": 23,
+                                    "id": 83,
                                     "index": 0
                                 },
                                 "control_next": 12,
@@ -720,7 +720,7 @@
                                 "target": 14,
                                 "source": 3,
                                 "type": {
-                                    "id": 23,
+                                    "id": 83,
                                     "index": 0
                                 },
                                 "control_next": 16,

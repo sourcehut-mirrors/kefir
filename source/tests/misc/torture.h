@@ -46,7 +46,6 @@
 #define __builtin_setjmp(env) setjmp(env, status)
 #define __builtin_exit() exit()
 #define __builtin_abs(n) abs(n)
-#define __builtin_ffs(n) ffs(n)
 
 #define __alignof__(arg) _Alignof(arg)
 

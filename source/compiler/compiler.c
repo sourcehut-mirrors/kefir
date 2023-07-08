@@ -58,40 +58,36 @@ struct kefir_mem *kefir_system_memalloc(void) {
     return &MemoryAllocator;
 }
 
-static kefir_result_t load_predefined_macro_defs(struct kefir_mem *mem, struct kefir_compiler_context *context) {
-    extern const char KefirPredefinedMacroDefs[];
-    extern kefir_uint64_t KefirPredefinedMacroDefsLength;
-    const char *filename = "<predefined-macro-defs>";
-
-    struct kefir_lexer_source_cursor cursor;
-    REQUIRE_OK(
-        kefir_lexer_source_cursor_init(&cursor, KefirPredefinedMacroDefs, KefirPredefinedMacroDefsLength, filename));
-
-    struct kefir_preprocessor_source_file_info file_info = {
-        .filepath = filename, .system = true, .base_include_dir = NULL};
+static kefir_result_t load_predefined_defs(struct kefir_mem *mem, struct kefir_compiler_context *context) {
+    extern const char KefirPredefinedDefs[];
+    extern kefir_uint64_t KefirPredefinedDefsLength;
+    const char *filename = "<predefined-defs>";
 
     struct kefir_token_buffer buffer;
     REQUIRE_OK(kefir_token_buffer_init(&buffer));
 
-    struct kefir_preprocessor subpreprocessor;
-    REQUIRE_OK(kefir_preprocessor_init(mem, &subpreprocessor, &context->ast_global_context.symbols, &cursor,
-                                       &context->profile->lexer_context, &context->preprocessor_context, &file_info,
-                                       NULL));
-
-    kefir_result_t res = kefir_preprocessor_run(mem, &subpreprocessor, &buffer);
+    kefir_result_t res = kefir_compiler_preprocess_lex(mem, context, &buffer, KefirPredefinedDefs,
+                                                       KefirPredefinedDefsLength, filename, filename);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_token_buffer_free(mem, &buffer);
-        kefir_preprocessor_free(mem, &subpreprocessor);
         return res;
     });
+
+    struct kefir_ast_translation_unit *defs_unit = NULL;
+    res = kefir_compiler_parse(mem, context, &buffer, &defs_unit);
 
     res = kefir_token_buffer_free(mem, &buffer);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_preprocessor_free(mem, &subpreprocessor);
+        KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(defs_unit));
         return res;
     });
 
-    REQUIRE_OK(kefir_preprocessor_free(mem, &subpreprocessor));
+    res = kefir_compiler_analyze(mem, context, KEFIR_AST_NODE_BASE(defs_unit));
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(defs_unit));
+        return res;
+    });
+    REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(defs_unit)));
     return KEFIR_OK;
 }
 
@@ -133,7 +129,8 @@ kefir_result_t kefir_compiler_context_init(struct kefir_mem *mem, struct kefir_c
     context->profile = profile;
     context->source_locator = source_locator;
 
-    res = load_predefined_macro_defs(mem, context);
+    context->extensions = NULL;
+    res = load_predefined_defs(mem, context);
 
     context->extensions = extensions;
     context->extension_payload = NULL;

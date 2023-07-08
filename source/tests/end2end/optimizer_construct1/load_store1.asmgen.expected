@@ -1,7 +1,7 @@
 {
     "functions": [
         {
-            "id": 5,
+            "id": 35,
             "name": "load_unsigned",
             "code": {
                 "entry_point": 0,
@@ -16,7 +16,7 @@
                             {
                                 "id": 0,
                                 "opcode": "get_global",
-                                "ir_ref": 5,
+                                "ir_ref": 35,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": false,
@@ -41,7 +41,7 @@
                             {
                                 "id": 2,
                                 "opcode": "get_global",
-                                "ir_ref": 6,
+                                "ir_ref": 36,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": false,
@@ -66,7 +66,7 @@
                             {
                                 "id": 4,
                                 "opcode": "get_global",
-                                "ir_ref": 7,
+                                "ir_ref": 37,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": false,
@@ -91,7 +91,7 @@
                             {
                                 "id": 6,
                                 "opcode": "get_global",
-                                "ir_ref": 8,
+                                "ir_ref": 38,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": false,
@@ -147,7 +147,7 @@
             }
         },
         {
-            "id": 6,
+            "id": 36,
             "name": "load_signed",
             "code": {
                 "entry_point": 0,
@@ -162,7 +162,7 @@
                             {
                                 "id": 0,
                                 "opcode": "get_global",
-                                "ir_ref": 9,
+                                "ir_ref": 39,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": false,
@@ -187,7 +187,7 @@
                             {
                                 "id": 2,
                                 "opcode": "get_global",
-                                "ir_ref": 10,
+                                "ir_ref": 40,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": false,
@@ -212,7 +212,7 @@
                             {
                                 "id": 4,
                                 "opcode": "get_global",
-                                "ir_ref": 11,
+                                "ir_ref": 41,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": false,
@@ -237,7 +237,7 @@
                             {
                                 "id": 6,
                                 "opcode": "get_global",
-                                "ir_ref": 12,
+                                "ir_ref": 42,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": false,
@@ -293,7 +293,7 @@
             }
         },
         {
-            "id": 7,
+            "id": 37,
             "name": "store",
             "code": {
                 "entry_point": 0,
@@ -356,7 +356,7 @@
                             {
                                 "id": 3,
                                 "opcode": "get_global",
-                                "ir_ref": 5,
+                                "ir_ref": 35,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -438,7 +438,7 @@
                             {
                                 "id": 8,
                                 "opcode": "get_global",
-                                "ir_ref": 6,
+                                "ir_ref": 36,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -520,7 +520,7 @@
                             {
                                 "id": 13,
                                 "opcode": "get_global",
-                                "ir_ref": 7,
+                                "ir_ref": 37,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -569,7 +569,7 @@
                             {
                                 "id": 16,
                                 "opcode": "get_global",
-                                "ir_ref": 8,
+                                "ir_ref": 38,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -633,7 +633,7 @@
                             {
                                 "id": 20,
                                 "opcode": "get_global",
-                                "ir_ref": 9,
+                                "ir_ref": 39,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -697,7 +697,7 @@
                             {
                                 "id": 24,
                                 "opcode": "get_global",
-                                "ir_ref": 10,
+                                "ir_ref": 40,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -746,7 +746,7 @@
                             {
                                 "id": 27,
                                 "opcode": "get_global",
-                                "ir_ref": 11,
+                                "ir_ref": 41,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -795,7 +795,7 @@
                             {
                                 "id": 30,
                                 "opcode": "get_global",
-                                "ir_ref": 12,
+                                "ir_ref": 42,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -860,7 +860,7 @@
             }
         },
         {
-            "id": 8,
+            "id": 38,
             "name": "locals",
             "code": {
                 "entry_point": 0,
@@ -1139,7 +1139,7 @@
                             {
                                 "id": 16,
                                 "opcode": "get_thread_local",
-                                "ir_ref": 13,
+                                "ir_ref": 43,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -1266,7 +1266,7 @@
             }
         },
         {
-            "id": 9,
+            "id": 39,
             "name": "volatiles1",
             "code": {
                 "entry_point": 0,
@@ -1281,7 +1281,7 @@
                             {
                                 "id": 0,
                                 "opcode": "get_global",
-                                "ir_ref": 14,
+                                "ir_ref": 44,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -1314,7 +1314,7 @@
                             {
                                 "id": 2,
                                 "opcode": "get_global",
-                                "ir_ref": 14,
+                                "ir_ref": 44,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -1395,7 +1395,7 @@
                             {
                                 "id": 7,
                                 "opcode": "get_global",
-                                "ir_ref": 14,
+                                "ir_ref": 44,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -1494,7 +1494,7 @@
                             {
                                 "id": 13,
                                 "opcode": "get_global",
-                                "ir_ref": 14,
+                                "ir_ref": 44,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -1677,7 +1677,7 @@
                             {
                                 "id": 24,
                                 "opcode": "get_global",
-                                "ir_ref": 14,
+                                "ir_ref": 44,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -1759,7 +1759,7 @@
                             {
                                 "id": 29,
                                 "opcode": "get_global",
-                                "ir_ref": 14,
+                                "ir_ref": 44,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -1841,7 +1841,7 @@
                             {
                                 "id": 34,
                                 "opcode": "get_global",
-                                "ir_ref": 14,
+                                "ir_ref": 44,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -1938,7 +1938,7 @@
                             {
                                 "id": 40,
                                 "opcode": "get_global",
-                                "ir_ref": 14,
+                                "ir_ref": 44,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,

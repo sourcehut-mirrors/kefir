@@ -24,4 +24,5 @@
 
 KefirOptSysVAmd64RuntimeCode:
     .incbin "source/runtime/opt_amd64_sysv.s"
+    .incbin "source/runtime/common_amd64.inc.s"
     .byte 0

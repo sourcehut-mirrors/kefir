@@ -20,14 +20,14 @@
 
 .section .rodata
 
-.global KefirPredefinedMacroDefs
-.global KefirPredefinedMacroDefsLength
+.global KefirPredefinedDefs
+.global KefirPredefinedDefsLength
 
-KefirPredefinedMacroDefs:
-    .incbin "source/compiler/predefined_macro_defs.h"
+KefirPredefinedDefs:
+    .incbin "source/compiler/predefined_defs.h"
     .byte 0
-KefirPredefinedMacroDefsEnd:
+KefirPredefinedDefsEnd:
 
 .align 8
-KefirPredefinedMacroDefsLength:
-    .quad KefirPredefinedMacroDefsEnd - KefirPredefinedMacroDefs
+KefirPredefinedDefsLength:
+    .quad KefirPredefinedDefsEnd - KefirPredefinedDefs
