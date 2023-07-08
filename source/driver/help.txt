@@ -91,8 +91,8 @@ COMPILER OPTIONS:
         syntax=SYNTAX                       Produce assembly output with specified syntax [x86_64-intel_noprefix, x86_64-intel_prefix, x86_64-att (default)]
 
     Targets (determined by platform as specified in TARGET section):
-        amd64-sysv-gas                      Produce GNU As-compatible assembly adhering System-V AMD64 ABI [default]
-        opt-amd64-sysv-gas                  Produce optimized GNU As-compatible assembly adhering System-V AMD64 ABI
+        amd64-sysv-gas                      Produce naive GNU As-compatible assembly adhering System-V AMD64 ABI
+        opt-amd64-sysv-gas                  Produce optimized GNU As-compatible assembly adhering System-V AMD64 ABI [default]
 
 
 TARGETS:
@@ -127,4 +127,5 @@ NOTES:
     License                             GNU GPLv3
     Author                              Jevgenijs Protopopovs
     Website                             https://github.com/protopopov1122/Kefir
-    Contacts                            jprotopopov1122@gmail.com
+                                        https://sr.ht/~jprotopopov/kefir/
+    Contacts                            jevgenij@protopopov.lv
