@@ -204,7 +204,7 @@ kefir_result_t kefir_driver_apply_target_assembler_configuration(
         const char *filepath = NULL;                                                                            \
         kefir_result_t res = kefir_filesystem_find_in_path_list(mem, symbols, (_path), (_filename), &filepath); \
         if (res == KEFIR_NOT_FOUND) {                                                                           \
-            res = KEFIR_SET_ERRORF(KEFIR_UI_ERROR, "Unable to find %s in GNU library path", (_filename));       \
+            res = KEFIR_SET_ERRORF(KEFIR_UI_ERROR, "Unable to find %s in library path", (_filename));           \
         }                                                                                                       \
         REQUIRE_OK(res);                                                                                        \
         REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, filepath));               \
