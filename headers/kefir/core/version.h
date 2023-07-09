@@ -4,7 +4,7 @@
 #include "kefir/core/base.h"
 
 #define KEFIR_VERSION_MAJOR 0
-#define KEFIR_VERSION_MINOR 1
+#define KEFIR_VERSION_MINOR 2
 #define KEFIR_VERSION_PATCH 0
 
 #endif
