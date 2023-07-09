@@ -199,7 +199,7 @@ Optionally, Kefir can be installed via: `make install DESTDIR=...`. Short
 reference on compiler options can be obtained by running `kefir --help`.
 
 At the moment, Kefir is automatically tested in Ubuntu 22.04 (full range of
-tests), FreeBSD 13.2 and OpenBSD 7.0 (base test suite) environments. Arch Linux
+tests), FreeBSD 13.2 and OpenBSD 7.2 (base test suite) environments. Arch Linux
 is used as primary development environment.
 
 ## Bootstrap
@@ -255,7 +255,7 @@ Kefir relies on following tests, most of which are executed as part of CI:
   technique as described above.
 * GCC Torture Suite -- `compile` & `execute` parts of GCC torture test suite are
   executed with kefir compiler, with some permissive options enabled. At the
-  moment, out of 3445 tests, 606 fail and 27 are skipped due to being irrelevant
+  moment, out of 3445 tests, 584 fail and 29 are skipped due to being irrelevant
   (e.g. SIMD or profiling test cases; there is no exhaustive skip list yet). All
   failures happen on compilation stage, no abortions occur at runtime. The work
   with torture test suite will be continued in order to reduce the number of
