@@ -2,6 +2,13 @@
 
 This file documents notable changes to the project.
 
+## [0.2.0] - 2023-07-09
+Project release:
+* New code generator for x86_64 System V ABI systems -- improved generated code performance due to straightforward code generation technique. Implementation of optimizations and debug information generation within the scope of the new code generator is planned for the next releases. The old (threaded) code generator is still available as an option.
+* Extended number of supported GCC built-ins.
+* Minor bug fixes and compatibility improvements.
+* Tested on recent versions of Linux distributions, FreeBSD, OpenBSD and NetBSD operating systems.
+
 ## [0.1.0] - 2022-09-05
 First project release. Project features:
 * C language compiler for x86_64 architecture.

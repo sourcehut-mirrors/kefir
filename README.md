@@ -21,17 +21,17 @@ intended.
 
 ## Supported environments
 Kefir targets x86-64 ISA and System-V ABI. The main focus is on modern Linux
-environments (where full range of automated tests is executed there), however
-Kefir also has support for modern FreeBSD, OpenBSD and NetBSD (base test suite
-and bootstrap are executed successfully in these environments). A platform is
-considered supported if base test suite and 2-stage compiler bootstrap can be
-executed there -- no other guarantees and claims are made. On Linux, `glibc` and
-`musl` standard libraries are supported (`musl` is recommended because it's
-header files are more compilant with standard C language without extensions), on
-BSDs system `libc` can be used (additional macro definitions, such as
-`__GNUC__`, `__GNUC_MINOR__`, could be necessary depending on used system libc
-features). Kefir supports selection of target platform via `--target` command
-line option.
+environments (with full range of automated tests is executed there), however
+Kefir also has support for modern FreeBSD, OpenBSD and NetBSD operating systems
+(base test suite and bootstrap are executed successfully in these environments).
+A platform is considered supported if the base test suite and 2-stage compiler
+bootstrap can be executed there -- no other guarantees and claims are made. On
+Linux, `glibc` and `musl` standard libraries are supported (`musl` is
+recommended because it's header files are more compilant with standard C
+language without extensions), on BSDs system `libc` can be used (additional
+macro definitions, such as `__GNUC__`, `__GNUC_MINOR__`, could be necessary
+depending on used system libc features). Kefir supports selection of target
+platform via `--target` command line option.
 
 For each respective target, a set of environment variables (e.g.
 `KEFIR_GNU_INCLUDE`, `KEFIR_GNU_LIB`, `KEFIR_GNU_DYNAMIC_LINKER`) needs to be
@@ -57,7 +57,7 @@ currently out-of-scope. Instead, compiler supports some of widespread C
 extensions in order to re-use existing `libc` implementations.
 * Portability - compiler code itself should be easily portable across different
 environments. Currently, the development is concentrated on a single target
-platform, however it might be extended in future.
+platform, however it might be extended in the future.
 
 Following things are **NON-goals**:
 * Performance - trying to outcompete well-established compiler backends, such as
@@ -94,12 +94,13 @@ extending the compiler, including:
 * Improving compatibility with mainstream compiler by implementing additional
   extensions and built-ins.
 * Bugfixes, improvements in error reporting.
+* Extending the number of supported platforms.
 * Reimplementing parser and lexer for better performance.
 
 ### Exceptions
 Following exceptions were made in C17 implementation:
 * Absence of `_Complex` floating-point number support. This feature is not being
-used particularly frequently, at the same time, it complicates target code
+used particularly frequently, but, at the same time, it complicates target code
 generator.
 * Absence of atomics. C17 standard defines them as optional feature, which I
 decided to omit in initial implementation. Support of atomics would complicate
@@ -170,9 +171,9 @@ successful compilation).
 **Attention:** code produced by Kefir shall be linked with a runtime library
 `libkefirrt.a`. The library is linked automatically if environment is configured
 correctly. Kefir can also link built-in versions of runtime, however make sure
-that correct `--target` is specified during link phase. Kefir also provides own
-versions of some header files -- if environment is configured correctly, they
-are also added to include path automatically.
+that correct `--target` is specified during link phase. Kefir provides own
+versions of some header files as well -- if environment is configured correctly,
+they are also added to include path automatically.
 
 ## Build & Usage
 **Usage is strongly discouraged. This is experimental project which is not meant
