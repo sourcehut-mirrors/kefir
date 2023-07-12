@@ -54,6 +54,7 @@ static kefir_result_t block_schedule_dfs_impl(struct kefir_mem *mem, const struc
                 break;
 
             case KEFIR_OPT_OPCODE_BRANCH:
+            case KEFIR_OPT_OPCODE_COMPARE_BRANCH:
                 REQUIRE_OK(kefir_list_insert_after(
                     mem, work_queue, NULL,
                     (void *) (kefir_uptr_t) instr->operation.parameters.branch.alternative_block));
@@ -152,6 +153,7 @@ static kefir_result_t find_successors(struct kefir_mem *mem, struct kefir_opt_co
                 break;
 
             case KEFIR_OPT_OPCODE_BRANCH:
+            case KEFIR_OPT_OPCODE_COMPARE_BRANCH:
                 REQUIRE_OK(kefir_list_insert_after(
                     mem, successors, kefir_list_tail(successors),
                     (void *) (kefir_uptr_t) tail_instr->operation.parameters.branch.target_block));

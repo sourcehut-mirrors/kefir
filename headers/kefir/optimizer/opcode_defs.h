@@ -36,6 +36,7 @@
     OPCODE(RETURN, "return", ref1) SEPARATOR \
     OPCODE(INVOKE, "invoke", call_ref) SEPARATOR \
     OPCODE(INVOKE_VIRTUAL, "invoke_virtual", call_ref) SEPARATOR \
+    OPCODE(COMPARE_BRANCH, "compare_branch", cmp_branch) SEPARATOR \
     /* Constants */ \
     OPCODE(INT_CONST, "int_const", immediate) SEPARATOR \
     OPCODE(UINT_CONST, "uint_const", immediate) SEPARATOR \

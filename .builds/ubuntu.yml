@@ -30,6 +30,7 @@ tasks:
       export KEFIR_GNU_INCLUDE="/usr/lib/gcc/x86_64-linux-gnu/12/include;/usr/include/x86_64-linux-gnu;/usr/include;/usr/local/include"
       export KEFIR_GNU_LIB="/usr/lib/x86_64-linux-gnu;/usr/lib/gcc/x86_64-linux-gnu/12/;/usr/lib;/usr/local/lib"
       export KEFIR_GNU_DYNAMIC_LINKER="/lib64/ld-linux-x86-64.so.2"
+      export KEFIR_CFLAGS="-Woptimizer-pipeline=compare-branch-fuse"
       ./source/tests/misc/run-lua-tests.sh "$(pwd)/bin/kefir" "$(pwd)/bin/lua-test"
   - c_testsuite: |
       cd c-testsuite
@@ -40,7 +41,7 @@ tasks:
       export KEFIR_GNU_INCLUDE="/usr/lib/gcc/x86_64-linux-gnu/12/include;/usr/include/x86_64-linux-gnu;/usr/include;/usr/local/include"
       export KEFIR_GNU_LIB="/usr/lib/x86_64-linux-gnu;/usr/lib/gcc/x86_64-linux-gnu/12/;/usr/lib;/usr/local/lib"
       export KEFIR_GNU_DYNAMIC_LINKER="/lib64/ld-linux-x86-64.so.2"
-      export CFLAGS="--target x86_64-host-gnu"
+      export CFLAGS="--target x86_64-host-gnu -Woptimizer-pipeline=compare-branch-fuse"
       export LC_ALL=C.UTF-8 
       ./single-exec kefir | tee ~/c-tests.log
       [[ "x$(cat ~/c-tests.log | scripts/tapsummary | grep 'fail 0' | wc -l)" == "x1" ]] || exit 1
@@ -55,6 +56,7 @@ tasks:
       export KEFIR_GNU_INCLUDE="/usr/lib/gcc/x86_64-linux-gnu/12/include;/usr/include/x86_64-linux-gnu;/usr/include;/usr/local/include"
       export KEFIR_GNU_LIB="/usr/lib/x86_64-linux-gnu;/usr/lib/gcc/x86_64-linux-gnu/12/;/usr/lib;/usr/local/lib"
       export KEFIR_GNU_DYNAMIC_LINKER="/lib64/ld-linux-x86-64.so.2"
+      export KEFIR_EXTRAFLAGS="-Woptimizer-pipeline=compare-branch-fuse"
       LC_ALL=C.UTF-8 ./kefir/source/tests/misc/run_gcc_torture_suite.sh 2>&1 | tee torture.log
       grep -v "Interrupted system call" torture.log | grep -i "fatal\|abort\|timeout\|segm" && exit 1 || true
 triggers:

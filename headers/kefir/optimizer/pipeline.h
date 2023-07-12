@@ -51,6 +51,7 @@ kefir_result_t kefir_optimizer_pipeline_apply_function(struct kefir_mem *, const
 #ifdef KEFIR_OPTIMIZER_PIPELINE_INTERNAL
 #define DECLARE_PASS(_id) extern const struct kefir_optimizer_pass KefirOptimizerPass##_id
 DECLARE_PASS(Noop);
+DECLARE_PASS(CompareBranchFuse);
 #undef DECLARE_PASS
 #endif
 

@@ -234,6 +234,124 @@ DEFINE_TRANSLATOR(jump) {
                                                                     &condition_handle));
         } break;
 
+        case KEFIR_OPT_OPCODE_COMPARE_BRANCH: {
+            const struct kefir_codegen_opt_sysv_amd64_register_allocation *arg1_allocation = NULL;
+            const struct kefir_codegen_opt_sysv_amd64_register_allocation *arg2_allocation = NULL;
+
+            REQUIRE_OK(kefir_codegen_opt_sysv_amd64_register_allocation_of(
+                &codegen_func->register_allocator, instr->operation.parameters.branch.comparison.refs[0],
+                &arg1_allocation));
+            REQUIRE_OK(kefir_codegen_opt_sysv_amd64_register_allocation_of(
+                &codegen_func->register_allocator, instr->operation.parameters.branch.comparison.refs[1],
+                &arg2_allocation));
+
+            struct kefir_codegen_opt_amd64_sysv_storage_handle arg1_handle;
+            REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_acquire(
+                mem, &codegen->xasmgen, &codegen_func->storage, &codegen_func->stack_frame_map,
+                KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_GENERAL_PURPOSE_REGISTER |
+                    KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_REGISTER_ALLOCATION_RDONLY,
+                arg1_allocation, &arg1_handle, NULL, NULL));
+
+            REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_location_load(
+                &codegen->xasmgen, &codegen_func->stack_frame_map, arg1_allocation, &arg1_handle.location));
+
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_CMP(
+                &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(arg1_handle.location.reg),
+                kefir_codegen_opt_sysv_amd64_reg_allocation_operand(&codegen->xasmgen_helpers.operands[0],
+                                                                    &codegen_func->stack_frame_map, arg2_allocation)));
+
+            REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_release(mem, &codegen->xasmgen, &codegen_func->storage,
+                                                                    &arg1_handle));
+
+            kefir_bool_t has_mapped_regs;
+            kefir_id_t alternative_label;
+            REQUIRE_OK(has_mapped_registers(mem, function, func_analysis, codegen_func, instr->block_id,
+                                            instr->operation.parameters.branch.alternative_block, &has_mapped_regs));
+
+            const struct kefir_asm_amd64_xasmgen_operand *alternative_oper = NULL;
+            if (has_mapped_regs) {
+                alternative_label = codegen_func->nonblock_labels++;
+                alternative_oper = kefir_asm_amd64_xasmgen_operand_label(
+                    &codegen->xasmgen_helpers.operands[0],
+                    kefir_asm_amd64_xasmgen_helpers_format(
+                        &codegen->xasmgen_helpers, KEFIR_OPT_AMD64_SYSTEM_V_FUNCTION_BLOCK_LABEL,
+                        function->ir_func->name, instr->block_id, alternative_label));
+            } else {
+                alternative_oper = kefir_asm_amd64_xasmgen_operand_label(
+                    &codegen->xasmgen_helpers.operands[0],
+                    kefir_asm_amd64_xasmgen_helpers_format(
+                        &codegen->xasmgen_helpers, KEFIR_OPT_AMD64_SYSTEM_V_FUNCTION_BLOCK, function->ir_func->name,
+                        instr->operation.parameters.branch.alternative_block));
+            }
+
+            switch (instr->operation.parameters.branch.comparison.type) {
+                case KEFIR_OPT_COMPARE_BRANCH_INT_EQUALS:
+                    REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_JNE(&codegen->xasmgen, alternative_oper));
+                    break;
+
+                case KEFIR_OPT_COMPARE_BRANCH_INT_NOT_EQUALS:
+                    REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_JE(&codegen->xasmgen, alternative_oper));
+                    break;
+
+                case KEFIR_OPT_COMPARE_BRANCH_INT_GREATER:
+                    REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_JLE(&codegen->xasmgen, alternative_oper));
+                    break;
+
+                case KEFIR_OPT_COMPARE_BRANCH_INT_GREATER_OR_EQUALS:
+                    REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_JL(&codegen->xasmgen, alternative_oper));
+                    break;
+
+                case KEFIR_OPT_COMPARE_BRANCH_INT_LESS:
+                    REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_JGE(&codegen->xasmgen, alternative_oper));
+                    break;
+
+                case KEFIR_OPT_COMPARE_BRANCH_INT_LESS_OR_EQUALS:
+                    REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_JG(&codegen->xasmgen, alternative_oper));
+                    break;
+            }
+
+            REQUIRE_OK(kefir_codegen_opt_sysv_amd64_map_registers(mem, codegen, function, func_analysis, codegen_func,
+                                                                  instr->block_id,
+                                                                  instr->operation.parameters.branch.target_block));
+
+            const struct kefir_opt_code_analysis_block_properties *source_block_props =
+                &func_analysis->blocks[instr->block_id];
+            const struct kefir_opt_code_analysis_block_properties *target_block_props =
+                &func_analysis->blocks[instr->operation.parameters.branch.target_block];
+
+            if (has_mapped_regs || target_block_props->linear_position != source_block_props->linear_position + 1) {
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_JMP(
+                    &codegen->xasmgen,
+                    kefir_asm_amd64_xasmgen_operand_label(
+                        &codegen->xasmgen_helpers.operands[0],
+                        kefir_asm_amd64_xasmgen_helpers_format(
+                            &codegen->xasmgen_helpers, KEFIR_OPT_AMD64_SYSTEM_V_FUNCTION_BLOCK, function->ir_func->name,
+                            instr->operation.parameters.branch.target_block))));
+            }
+
+            if (has_mapped_regs) {
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen->xasmgen, KEFIR_OPT_AMD64_SYSTEM_V_FUNCTION_BLOCK_LABEL,
+                                                     function->ir_func->name, instr->block_id, alternative_label));
+
+                REQUIRE_OK(kefir_codegen_opt_sysv_amd64_map_registers(
+                    mem, codegen, function, func_analysis, codegen_func, instr->block_id,
+                    instr->operation.parameters.branch.alternative_block));
+
+                const struct kefir_opt_code_analysis_block_properties *alternative_block_props =
+                    &func_analysis->blocks[instr->operation.parameters.branch.alternative_block];
+
+                if (alternative_block_props->linear_position != source_block_props->linear_position + 1) {
+                    REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_JMP(
+                        &codegen->xasmgen,
+                        kefir_asm_amd64_xasmgen_operand_label(
+                            &codegen->xasmgen_helpers.operands[0],
+                            kefir_asm_amd64_xasmgen_helpers_format(
+                                &codegen->xasmgen_helpers, KEFIR_OPT_AMD64_SYSTEM_V_FUNCTION_BLOCK,
+                                function->ir_func->name, instr->operation.parameters.branch.alternative_block))));
+                }
+            }
+        } break;
+
         case KEFIR_OPT_OPCODE_IJUMP: {
             const struct kefir_codegen_opt_sysv_amd64_register_allocation *target_allocation = NULL;
             REQUIRE_OK(kefir_codegen_opt_sysv_amd64_register_allocation_of(

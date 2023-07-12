@@ -347,6 +347,25 @@ kefir_result_t kefir_opt_code_container_instruction_move_after(const struct kefi
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_opt_code_container_operation_swap(const struct kefir_opt_code_container *code,
+                                                       kefir_opt_instruction_ref_t ref1,
+                                                       kefir_opt_instruction_ref_t ref2) {
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
+
+    struct kefir_opt_instruction *instr1 = NULL;
+    struct kefir_opt_instruction *instr2 = NULL;
+
+    REQUIRE_OK(kefir_opt_code_container_instr(code, ref1, &instr1));
+    REQUIRE_OK(kefir_opt_code_container_instr(code, ref2, &instr2));
+    REQUIRE(instr1->block_id == instr2->block_id,
+            KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Swapped optimizer instructions shall belong to the same block"));
+
+    struct kefir_opt_instruction tmp = *instr1;
+    instr1->operation = instr2->operation;
+    instr2->operation = tmp.operation;
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_opt_code_container_add_control(const struct kefir_opt_code_container *code,
                                                     struct kefir_opt_code_block *block,
                                                     kefir_opt_instruction_ref_t instr_id) {

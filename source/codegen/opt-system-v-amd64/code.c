@@ -363,6 +363,7 @@ static kefir_result_t translate_instr(struct kefir_mem *mem, struct kefir_codege
 
         case KEFIR_OPT_OPCODE_JUMP:
         case KEFIR_OPT_OPCODE_BRANCH:
+        case KEFIR_OPT_OPCODE_COMPARE_BRANCH:
         case KEFIR_OPT_OPCODE_IJUMP:
             REQUIRE_OK(INVOKE_TRANSLATOR(jump));
             break;
