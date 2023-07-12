@@ -48,7 +48,8 @@ kefir_result_t kefir_compiler_runner_configuration_init(struct kefir_compiler_ru
                                                      .skip_preprocessor = false,
                                                      .default_pp_timestamp = true,
                                                      .features = {false},
-                                                     .codegen = {false}};
+                                                     .codegen = {false},
+                                                     .optimizer_pipeline_spec = NULL};
     REQUIRE_OK(kefir_list_init(&options->include_path));
     REQUIRE_OK(kefir_list_init(&options->include_files));
     REQUIRE_OK(kefir_hashtree_init(&options->defines, &kefir_hashtree_str_ops));

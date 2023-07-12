@@ -165,6 +165,7 @@ struct kefir_cli_option KefirCompilerConfigurationOptions[] = {
     SIMPLE(0, "source-id", true, KEFIR_CLI_OPTION_ACTION_ASSIGN_STRARG, 0, source_id),
     SIMPLE(0, "detailed-output", false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, true, detailed_output),
     POSTHOOK(0, "pp-timestamp", true, KEFIR_CLI_OPTION_ACTION_ASSIGN_UINTARG, 0, pp_timestamp, pp_timestamp_hook),
+    SIMPLE(0, "optimizer-pipeline", true, KEFIR_CLI_OPTION_ACTION_ASSIGN_STRARG, 0, optimizer_pipeline_spec),
 
     CUSTOM('D', "define", true, define_hook),
     CUSTOM('U', "undefine", true, undefine_hook),

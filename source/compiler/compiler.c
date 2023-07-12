@@ -104,6 +104,7 @@ kefir_result_t kefir_compiler_context_init(struct kefir_mem *mem, struct kefir_c
     REQUIRE_OK(kefir_parser_configuration_default(&context->parser_configuration));
     REQUIRE_OK(kefir_ast_translator_configuration_default(&context->translator_configuration));
     REQUIRE_OK(kefir_ast_translator_environment_init(&context->translator_env, &profile->ir_target_platform));
+    REQUIRE_OK(kefir_optimizer_configuration_init(&context->optimizer_configuration));
     context->translator_env.configuration = &context->translator_configuration;
     REQUIRE_OK(kefir_ast_global_context_init(mem, profile->type_traits, &context->translator_env.target_env,
                                              &context->ast_global_context,
@@ -138,6 +139,7 @@ kefir_result_t kefir_compiler_context_init(struct kefir_mem *mem, struct kefir_c
         REQUIRE_CHAIN(&res, context->extensions->on_init(mem, context));
     }
     REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_optimizer_configuration_free(mem, &context->optimizer_configuration);
         kefir_preprocessor_context_free(mem, &context->preprocessor_context);
         kefir_preprocessor_ast_context_free(mem, &context->preprocessor_ast_context);
         kefir_ast_global_context_free(mem, &context->ast_global_context);
@@ -156,6 +158,7 @@ kefir_result_t kefir_compiler_context_free(struct kefir_mem *mem, struct kefir_c
         context->extension_payload = NULL;
     }
 
+    REQUIRE_OK(kefir_optimizer_configuration_free(mem, &context->optimizer_configuration));
     REQUIRE_OK(kefir_preprocessor_context_free(mem, &context->preprocessor_context));
     REQUIRE_OK(kefir_preprocessor_ast_context_free(mem, &context->preprocessor_ast_context));
     REQUIRE_OK(kefir_ast_global_context_free(mem, &context->ast_global_context));
@@ -461,6 +464,7 @@ kefir_result_t kefir_compiler_optimize(struct kefir_mem *mem, struct kefir_compi
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer module analysis"));
 
     REQUIRE_OK(kefir_opt_module_construct(mem, context->translator_env.target_platform, opt_module));
+    REQUIRE_OK(kefir_optimizer_pipeline_apply(mem, opt_module, &context->optimizer_configuration.pipeline));
     REQUIRE_OK(kefir_opt_module_analyze(mem, opt_module, opt_module_analysis));
 
     return KEFIR_OK;

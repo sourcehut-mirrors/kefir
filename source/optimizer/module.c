@@ -165,7 +165,7 @@ kefir_result_t kefir_opt_module_get_type(const struct kefir_opt_module *module, 
 }
 
 kefir_result_t kefir_opt_module_get_function(const struct kefir_opt_module *module, kefir_id_t identifier,
-                                             const struct kefir_opt_function **function_ptr) {
+                                             struct kefir_opt_function **function_ptr) {
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer module"));
     REQUIRE(function_ptr != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer function"));
@@ -177,6 +177,6 @@ kefir_result_t kefir_opt_module_get_function(const struct kefir_opt_module *modu
     }
     REQUIRE_OK(res);
 
-    *function_ptr = (const struct kefir_opt_function *) node->value;
+    *function_ptr = (struct kefir_opt_function *) node->value;
     return KEFIR_OK;
 }

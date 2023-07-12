@@ -22,6 +22,7 @@ KEFIR_LIB_SOURCE := $(wildcard \
 	$(SOURCE_DIR)/lexer/tokens/string_literal/*.c \
 	$(SOURCE_DIR)/optimizer/*.c \
 	$(SOURCE_DIR)/optimizer/analysis/*.c \
+	$(SOURCE_DIR)/optimizer/pipeline/*.c \
 	$(SOURCE_DIR)/parser/*.c \
 	$(SOURCE_DIR)/parser/rules/*.c \
 	$(SOURCE_DIR)/platform/*.c \

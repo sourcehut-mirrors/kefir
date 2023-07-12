@@ -130,6 +130,30 @@ static kefir_result_t dump_action_impl(struct kefir_mem *mem, const struct kefir
     compiler.codegen_configuration.emulated_tls = options->codegen.emulated_tls;
     compiler.codegen_configuration.syntax = options->codegen.syntax;
 
+    if (options->optimizer_pipeline_spec != NULL) {
+        char buf[256];
+        const char *spec = options->optimizer_pipeline_spec;
+
+        while (spec != NULL && *spec != '\0') {
+            const char *next_spec = strchr(spec, ',');
+            if (next_spec == NULL) {
+                REQUIRE_OK(
+                    kefir_optimizer_configuration_add_pipeline_pass(mem, &compiler.optimizer_configuration, spec));
+                spec = NULL;
+            } else if (next_spec - spec > 0) {
+                size_t length = next_spec - spec;
+                REQUIRE(length < sizeof(buf) - 1,
+                        KEFIR_SET_ERROR(KEFIR_UI_ERROR, "Optimizer pass specification element exceeds maximum length"));
+                snprintf(buf, sizeof(buf), "%.*s", (int) length, spec);
+                REQUIRE_OK(
+                    kefir_optimizer_configuration_add_pipeline_pass(mem, &compiler.optimizer_configuration, buf));
+                spec = next_spec + 1;
+            } else {
+                spec++;
+            }
+        }
+    }
+
     REQUIRE_OK(action(mem, options, &compiler, source_id, input.content, input.length, output));
     fclose(output);
     REQUIRE_OK(kefir_compiler_context_free(mem, &compiler));

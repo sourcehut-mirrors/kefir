@@ -34,6 +34,7 @@
 #include "kefir/ir/module.h"
 #include "kefir/optimizer/module.h"
 #include "kefir/optimizer/analysis.h"
+#include "kefir/optimizer/configuration.h"
 #include "kefir/core/error.h"
 
 typedef struct kefir_compiler_context kefir_compiler_context_t;
@@ -61,6 +62,7 @@ typedef struct kefir_compiler_context {
     struct kefir_preprocessor_context preprocessor_context;
     struct kefir_preprocessor_ast_context preprocessor_ast_context;
     struct kefir_ast_translator_configuration translator_configuration;
+    struct kefir_optimizer_configuration optimizer_configuration;
     struct kefir_codegen_configuration codegen_configuration;
     const struct kefir_compiler_extensions *extensions;
     void *extension_payload;

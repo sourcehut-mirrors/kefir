@@ -234,7 +234,7 @@ static kefir_result_t translate_impl(struct kefir_mem *mem, struct kefir_codegen
     struct kefir_hashtree_node_iterator iter;
     for (const struct kefir_ir_function *ir_func = kefir_ir_module_function_iter(module->ir_module, &iter);
          ir_func != NULL; ir_func = kefir_ir_module_function_next(&iter)) {
-        const struct kefir_opt_function *func = NULL;
+        struct kefir_opt_function *func = NULL;
         const struct kefir_opt_code_analysis *func_analysis = NULL;
         REQUIRE_OK(kefir_opt_module_get_function(module, ir_func->declaration->id, &func));
         REQUIRE_OK(kefir_opt_module_analysis_get_function(analysis, ir_func->declaration->id, &func_analysis));

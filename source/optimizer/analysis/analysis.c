@@ -364,7 +364,7 @@ static kefir_result_t module_analyze_impl(struct kefir_mem *mem, struct kefir_op
     for (const struct kefir_ir_function *func = kefir_ir_module_function_iter(analysis->module->ir_module, &iter);
          func != NULL; func = kefir_ir_module_function_next(&iter)) {
 
-        const struct kefir_opt_function *opt_func = NULL;
+        struct kefir_opt_function *opt_func = NULL;
         REQUIRE_OK(kefir_opt_module_get_function(analysis->module, func->declaration->id, &opt_func));
 
         struct kefir_opt_code_analysis *code_analysis = KEFIR_MALLOC(mem, sizeof(struct kefir_opt_code_analysis));
