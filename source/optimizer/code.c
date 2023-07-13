@@ -331,7 +331,7 @@ kefir_result_t kefir_opt_code_container_instruction_move_after(const struct kefi
     } else {
         if (insert_after->siblings.next != KEFIR_ID_NONE) {
             struct kefir_opt_instruction *next_instr = NULL;
-            REQUIRE_OK(kefir_opt_code_container_instr(code, instr->siblings.next, &next_instr));
+            REQUIRE_OK(kefir_opt_code_container_instr(code, insert_after->siblings.next, &next_instr));
             next_instr->siblings.prev = instr->id;
         }
         instr->siblings.prev = insert_after->id;
