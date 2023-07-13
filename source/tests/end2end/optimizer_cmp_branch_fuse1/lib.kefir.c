@@ -75,3 +75,35 @@ int not_less(int x, int y) {
         return 0;
     }
 }
+
+int above(unsigned int x, unsigned int y) {
+    if (x > y) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+int not_above(unsigned int x, unsigned int y) {
+    if (!(x > y)) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+int below(unsigned int x, unsigned int y) {
+    if (x < y) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+int not_below(unsigned int x, unsigned int y) {
+    if (!(x < y)) {
+        return 1;
+    } else {
+        return 0;
+    }
+}

@@ -29,4 +29,9 @@ int not_greater(int, int);
 int less(int, int);
 int not_less(int, int);
 
+int above(unsigned int, unsigned int);
+int not_above(unsigned int, unsigned int);
+int below(unsigned int, unsigned int);
+int not_below(unsigned int, unsigned int);
+
 #endif

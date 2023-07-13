@@ -89,6 +89,22 @@ static kefir_result_t format_operation_cmp_branch(struct kefir_json_output *json
             REQUIRE_OK(kefir_json_output_string(json, "int_less_or_equals"));
             break;
 
+        case KEFIR_OPT_COMPARE_BRANCH_INT_ABOVE:
+            REQUIRE_OK(kefir_json_output_string(json, "int_above"));
+            break;
+
+        case KEFIR_OPT_COMPARE_BRANCH_INT_ABOVE_OR_EQUALS:
+            REQUIRE_OK(kefir_json_output_string(json, "int_above_or_equals"));
+            break;
+
+        case KEFIR_OPT_COMPARE_BRANCH_INT_BELOW:
+            REQUIRE_OK(kefir_json_output_string(json, "int_below"));
+            break;
+
+        case KEFIR_OPT_COMPARE_BRANCH_INT_BELOW_OR_EQUALS:
+            REQUIRE_OK(kefir_json_output_string(json, "int_below_or_equals"));
+            break;
+
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected optimizer branch comparison type");
     }

@@ -213,6 +213,9 @@ typedef enum kefir_asm_amd64_xasmgen_syntax {
     \
     _opcode(jmp, "jmp", 1, branch) _separator \
     _opcode(ja, "ja", 1, branch) _separator \
+    _opcode(jae, "jae", 1, branch) _separator \
+    _opcode(jb, "jb", 1, branch) _separator \
+    _opcode(jbe, "jbe", 1, branch) _separator \
     _opcode(jz, "jz", 1, branch) _separator \
     _opcode(je, "je", 1, branch) _separator \
     _opcode(jne, "jne", 1, branch) _separator \
@@ -416,6 +419,9 @@ const struct kefir_asm_amd64_xasmgen_operand *kefir_asm_amd64_xasmgen_operand_fp
 
 #define KEFIR_AMD64_XASMGEN_INSTR_JMP(_xasmgen, _op1) ((_xasmgen)->instr.jmp((_xasmgen), (_op1)))
 #define KEFIR_AMD64_XASMGEN_INSTR_JA(_xasmgen, _op1) ((_xasmgen)->instr.ja((_xasmgen), (_op1)))
+#define KEFIR_AMD64_XASMGEN_INSTR_JAE(_xasmgen, _op1) ((_xasmgen)->instr.jae((_xasmgen), (_op1)))
+#define KEFIR_AMD64_XASMGEN_INSTR_JB(_xasmgen, _op1) ((_xasmgen)->instr.jb((_xasmgen), (_op1)))
+#define KEFIR_AMD64_XASMGEN_INSTR_JBE(_xasmgen, _op1) ((_xasmgen)->instr.jbe((_xasmgen), (_op1)))
 #define KEFIR_AMD64_XASMGEN_INSTR_JZ(_xasmgen, _op1) ((_xasmgen)->instr.jz((_xasmgen), (_op1)))
 #define KEFIR_AMD64_XASMGEN_INSTR_JE(_xasmgen, _op1) ((_xasmgen)->instr.je((_xasmgen), (_op1)))
 #define KEFIR_AMD64_XASMGEN_INSTR_JNE(_xasmgen, _op1) ((_xasmgen)->instr.jne((_xasmgen), (_op1)))

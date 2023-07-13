@@ -308,6 +308,22 @@ DEFINE_TRANSLATOR(jump) {
                 case KEFIR_OPT_COMPARE_BRANCH_INT_LESS_OR_EQUALS:
                     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_JG(&codegen->xasmgen, alternative_oper));
                     break;
+
+                case KEFIR_OPT_COMPARE_BRANCH_INT_ABOVE:
+                    REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_JBE(&codegen->xasmgen, alternative_oper));
+                    break;
+
+                case KEFIR_OPT_COMPARE_BRANCH_INT_ABOVE_OR_EQUALS:
+                    REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_JB(&codegen->xasmgen, alternative_oper));
+                    break;
+
+                case KEFIR_OPT_COMPARE_BRANCH_INT_BELOW:
+                    REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_JAE(&codegen->xasmgen, alternative_oper));
+                    break;
+
+                case KEFIR_OPT_COMPARE_BRANCH_INT_BELOW_OR_EQUALS:
+                    REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_JA(&codegen->xasmgen, alternative_oper));
+                    break;
             }
 
             REQUIRE_OK(kefir_codegen_opt_sysv_amd64_map_registers(mem, codegen, function, func_analysis, codegen_func,

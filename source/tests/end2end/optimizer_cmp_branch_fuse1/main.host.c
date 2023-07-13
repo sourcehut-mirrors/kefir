@@ -27,7 +27,11 @@ void fn1(void) {}
 
 int main(void) {
     for (int i = -100; i <= 100; i++) {
+        unsigned int ui = (unsigned int) (i + 100);
+
         for (int j = -100; j <= 100; j++) {
+            unsigned int uj = (unsigned int) (j + 100);
+
             assert(equals(i, j) == (i == j ? 1 : 0));
             assert(not_equals(i, j) == (i != j ? 1 : 0));
             assert(not_equals2(i, j) == (i != j ? 1 : 0));
@@ -35,6 +39,10 @@ int main(void) {
             assert(not_greater(i, j) == (i <= j ? 1 : 0));
             assert(less(i, j) == (i < j ? 1 : 0));
             assert(not_less(i, j) == (i >= j ? 1 : 0));
+            assert(above(ui, uj) == (ui > uj ? 1 : 0));
+            assert(not_above(ui, uj) == (ui <= uj ? 1 : 0));
+            assert(below(ui, uj) == (ui < uj ? 1 : 0));
+            assert(not_below(ui, uj) == (ui >= uj ? 1 : 0));
         }
     }
     return EXIT_SUCCESS;
