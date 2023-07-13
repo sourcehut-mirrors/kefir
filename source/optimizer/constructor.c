@@ -702,7 +702,7 @@ static kefir_result_t link_blocks_impl(struct kefir_mem *mem, struct kefir_opt_c
 
 static kefir_result_t link_blocks_match(struct kefir_mem *mem, struct kefir_opt_constructor_state *state,
                                         const struct kefir_opt_code_block *block) {
-    const struct kefir_opt_instruction *instr = NULL;
+    struct kefir_opt_instruction *instr = NULL;
     REQUIRE_OK(kefir_opt_code_block_instr_control_tail(&state->function->code, block, &instr));
 
     switch (instr->operation.opcode) {
@@ -790,7 +790,7 @@ static kefir_result_t link_blocks_traverse(struct kefir_mem *mem, struct kefir_o
     block_state->reachable = true;
 
     struct kefir_opt_code_block *block = NULL;
-    const struct kefir_opt_instruction *instr = NULL;
+    struct kefir_opt_instruction *instr = NULL;
     REQUIRE_OK(kefir_opt_code_container_block(&state->function->code, block_id, &block));
     REQUIRE_OK(kefir_opt_code_block_instr_control_tail(&state->function->code, block, &instr));
 
@@ -859,7 +859,7 @@ static kefir_result_t link_blocks(struct kefir_mem *mem, struct kefir_opt_constr
     }
 
     struct kefir_opt_code_container_iterator iter;
-    for (const struct kefir_opt_code_block *block = kefir_opt_code_container_iter(&state->function->code, &iter);
+    for (struct kefir_opt_code_block *block = kefir_opt_code_container_iter(&state->function->code, &iter);
          block != NULL; block = kefir_opt_code_container_next(&iter)) {
 
         REQUIRE_OK(link_blocks_match(mem, state, block));

@@ -31,10 +31,10 @@ static kefir_result_t cmp_branch_fuse_apply(struct kefir_mem *mem, const struct 
     REQUIRE(func != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer function"));
 
     struct kefir_opt_code_container_iterator iter;
-    for (const struct kefir_opt_code_block *block = kefir_opt_code_container_iter(&func->code, &iter); block != NULL;
+    for (struct kefir_opt_code_block *block = kefir_opt_code_container_iter(&func->code, &iter); block != NULL;
          block = kefir_opt_code_container_next(&iter)) {
 
-        const struct kefir_opt_instruction *branch_instr = NULL;
+        struct kefir_opt_instruction *branch_instr = NULL;
         REQUIRE_OK(kefir_opt_code_block_instr_control_tail(&func->code, block, &branch_instr));
         if (branch_instr->operation.opcode != KEFIR_OPT_OPCODE_BRANCH) {
             continue;
@@ -154,7 +154,9 @@ static kefir_result_t cmp_branch_fuse_apply(struct kefir_mem *mem, const struct 
         }
 
         if (replacement_ref != KEFIR_ID_NONE) {
-            REQUIRE_OK(kefir_opt_code_container_operation_swap(&func->code, branch_instr->id, replacement_ref));
+            REQUIRE_OK(kefir_opt_code_container_replace_references(&func->code, replacement_ref, branch_instr->id));
+            REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, branch_instr->id));
+            REQUIRE_OK(kefir_opt_code_container_add_control(&func->code, block, replacement_ref));
         }
     }
     return KEFIR_OK;

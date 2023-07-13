@@ -87,7 +87,7 @@ static kefir_result_t build_block_intervals(struct kefir_mem *mem, struct kefir_
         struct kefir_opt_code_block *successor_block = NULL;
         REQUIRE_OK(kefir_opt_code_container_block(intervals->analysis->code, successor_block_id, &successor_block));
 
-        const struct kefir_opt_phi_node *successor_phi = NULL;
+        struct kefir_opt_phi_node *successor_phi = NULL;
         for (res = kefir_opt_code_block_phi_head(intervals->analysis->code, successor_block, &successor_phi);
              res == KEFIR_OK && successor_phi != NULL;
              res = kefir_opt_phi_next_sibling(intervals->analysis->code, successor_phi, &successor_phi)) {
@@ -141,7 +141,7 @@ static kefir_result_t build_block_intervals(struct kefir_mem *mem, struct kefir_
     // Remove phi nodes from live set
     struct kefir_opt_code_block *block = NULL;
     REQUIRE_OK(kefir_opt_code_container_block(intervals->analysis->code, block_props->block_id, &block));
-    const struct kefir_opt_phi_node *phi = NULL;
+    struct kefir_opt_phi_node *phi = NULL;
     for (res = kefir_opt_code_block_phi_head(intervals->analysis->code, block, &phi); res == KEFIR_OK && phi != NULL;
          res = kefir_opt_phi_next_sibling(intervals->analysis->code, phi, &phi)) {
         REQUIRE_OK(kefir_hashtreeset_delete(mem, live, (kefir_hashtreeset_entry_t) phi->output_ref));

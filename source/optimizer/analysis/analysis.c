@@ -44,7 +44,7 @@ static kefir_result_t block_schedule_dfs_impl(struct kefir_mem *mem, const struc
         struct kefir_opt_code_block *block = NULL;
         REQUIRE_OK(kefir_opt_code_container_block(code, block_id, &block));
 
-        const struct kefir_opt_instruction *instr = NULL;
+        struct kefir_opt_instruction *instr = NULL;
         REQUIRE_OK(kefir_opt_code_block_instr_control_tail(code, block, &instr));
 
         switch (instr->operation.opcode) {
@@ -139,11 +139,11 @@ const struct kefir_opt_code_analyze_block_scheduler kefir_opt_code_analyze_dfs_b
 
 static kefir_result_t find_successors(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis) {
     struct kefir_opt_code_container_iterator iter;
-    for (const struct kefir_opt_code_block *block = kefir_opt_code_container_iter(analysis->code, &iter); block != NULL;
+    for (struct kefir_opt_code_block *block = kefir_opt_code_container_iter(analysis->code, &iter); block != NULL;
          block = kefir_opt_code_container_next(&iter)) {
         struct kefir_list *successors = &analysis->blocks[block->id].successors;
 
-        const struct kefir_opt_instruction *tail_instr = NULL;
+        struct kefir_opt_instruction *tail_instr = NULL;
         REQUIRE_OK(kefir_opt_code_block_instr_control_tail(analysis->code, block, &tail_instr));
         switch (tail_instr->operation.opcode) {
             case KEFIR_OPT_OPCODE_JUMP:

@@ -40,7 +40,7 @@ static kefir_result_t mark_reachable_code_in_block(struct kefir_mem *mem, struct
 
     struct kefir_opt_code_block *block = NULL;
     REQUIRE_OK(kefir_opt_code_container_block(analysis->code, block_id, &block));
-    const struct kefir_opt_instruction *instr = NULL;
+    struct kefir_opt_instruction *instr = NULL;
     kefir_result_t res;
     for (res = kefir_opt_code_block_instr_control_head(analysis->code, block, &instr); res == KEFIR_OK && instr != NULL;
          res = kefir_opt_instruction_next_control(analysis->code, instr, &instr)) {

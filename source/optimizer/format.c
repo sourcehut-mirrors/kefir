@@ -439,7 +439,7 @@ static kefir_result_t code_block_format(struct kefir_json_output *json, const st
     REQUIRE_OK(kefir_json_output_object_key(json, "phi"));
     REQUIRE_OK(kefir_json_output_array_begin(json));
     kefir_result_t res;
-    const struct kefir_opt_phi_node *phi = NULL;
+    struct kefir_opt_phi_node *phi = NULL;
     for (res = kefir_opt_code_block_phi_head(code, block, &phi); res == KEFIR_OK && phi != NULL;
          res = kefir_opt_phi_next_sibling(code, phi, &phi)) {
 
@@ -450,7 +450,7 @@ static kefir_result_t code_block_format(struct kefir_json_output *json, const st
 
     REQUIRE_OK(kefir_json_output_object_key(json, "calls"));
     REQUIRE_OK(kefir_json_output_array_begin(json));
-    const struct kefir_opt_call_node *call = NULL;
+    struct kefir_opt_call_node *call = NULL;
     for (res = kefir_opt_code_block_call_head(code, block, &call); res == KEFIR_OK && call != NULL;
          res = kefir_opt_call_next_sibling(code, call, &call)) {
 
@@ -461,7 +461,7 @@ static kefir_result_t code_block_format(struct kefir_json_output *json, const st
 
     REQUIRE_OK(kefir_json_output_object_key(json, "inline_assembly"));
     REQUIRE_OK(kefir_json_output_array_begin(json));
-    const struct kefir_opt_inline_assembly_node *inline_asm = NULL;
+    struct kefir_opt_inline_assembly_node *inline_asm = NULL;
     for (res = kefir_opt_code_block_inline_assembly_head(code, block, &inline_asm);
          res == KEFIR_OK && inline_asm != NULL;
          res = kefir_opt_inline_assembly_next_sibling(code, inline_asm, &inline_asm)) {
@@ -473,7 +473,7 @@ static kefir_result_t code_block_format(struct kefir_json_output *json, const st
 
     REQUIRE_OK(kefir_json_output_object_key(json, "code"));
     REQUIRE_OK(kefir_json_output_array_begin(json));
-    const struct kefir_opt_instruction *instr = NULL;
+    struct kefir_opt_instruction *instr = NULL;
     for (res = kefir_opt_code_block_instr_head(code, block, &instr); res == KEFIR_OK && instr != NULL;
          res = kefir_opt_instruction_next_sibling(code, instr, &instr)) {
 
@@ -547,7 +547,7 @@ kefir_result_t kefir_opt_code_format(struct kefir_json_output *json, const struc
     REQUIRE_OK(id_format(json, code->entry_point));
     REQUIRE_OK(kefir_json_output_object_key(json, "blocks"));
     REQUIRE_OK(kefir_json_output_array_begin(json));
-    for (const struct kefir_opt_code_block *block = kefir_opt_code_container_iter(code, &iter); block != NULL;
+    for (struct kefir_opt_code_block *block = kefir_opt_code_container_iter(code, &iter); block != NULL;
          block = kefir_opt_code_container_next(&iter)) {
         REQUIRE_OK(code_block_format(json, code, block, code_analysis));
     }

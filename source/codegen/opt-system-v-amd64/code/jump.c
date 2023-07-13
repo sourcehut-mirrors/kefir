@@ -34,7 +34,7 @@ static kefir_result_t map_registers_prepare(struct kefir_mem *mem, const struct 
     REQUIRE_OK(kefir_opt_code_container_block(&function->code, target_block_id, &target_block));
 
     kefir_result_t res;
-    const struct kefir_opt_phi_node *phi = NULL;
+    struct kefir_opt_phi_node *phi = NULL;
     for (res = kefir_opt_code_block_phi_head(&function->code, target_block, &phi); res == KEFIR_OK && phi != NULL;
          res = kefir_opt_phi_next_sibling(&function->code, phi, &phi)) {
 
