@@ -1,0 +1,1 @@
+KEFIR_CFLAGS="$KEFIR_CFLAGS --target opt-x86_64-host-none -Woptimizer-pipeline=op-simplify,compare-branch-fuse"

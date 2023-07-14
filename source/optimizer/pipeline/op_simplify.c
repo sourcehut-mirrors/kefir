@@ -46,7 +46,9 @@ static kefir_result_t simplify_boot_not(struct kefir_mem *mem, struct kefir_opt_
         case KEFIR_OPT_OPCODE_INT_BELOW_OR_EQUALS:
         case KEFIR_OPT_OPCODE_FLOAT32_EQUALS:
         case KEFIR_OPT_OPCODE_FLOAT32_GREATER:
+        case KEFIR_OPT_OPCODE_FLOAT32_GREATER_OR_EQUALS:
         case KEFIR_OPT_OPCODE_FLOAT32_LESSER:
+        case KEFIR_OPT_OPCODE_FLOAT32_LESSER_OR_EQUALS:
         case KEFIR_OPT_OPCODE_FLOAT64_EQUALS:
         case KEFIR_OPT_OPCODE_FLOAT64_GREATER:
         case KEFIR_OPT_OPCODE_FLOAT64_LESSER:
@@ -136,6 +138,30 @@ static kefir_result_t simplify_boot_or(struct kefir_mem *mem, struct kefir_opt_f
         REQUIRE_OK(kefir_opt_code_builder_int_below_or_equals(mem, &func->code, instr->block_id,
                                                               arg1->operation.parameters.refs[0],
                                                               arg1->operation.parameters.refs[1], replacement_ref));
+        REQUIRE_OK(kefir_opt_code_container_instruction_move_after(&func->code, instr->id, *replacement_ref));
+    } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_FLOAT32_GREATER) {
+        REQUIRE(arg2->operation.opcode == KEFIR_OPT_OPCODE_FLOAT32_EQUALS, KEFIR_OK);
+        REQUIRE((arg1->operation.parameters.refs[0] == arg2->operation.parameters.refs[0] &&
+                 arg1->operation.parameters.refs[1] == arg2->operation.parameters.refs[1]) ||
+                    (arg1->operation.parameters.refs[0] == arg2->operation.parameters.refs[1] &&
+                     arg1->operation.parameters.refs[1] == arg2->operation.parameters.refs[0]),
+                KEFIR_OK);
+
+        REQUIRE_OK(kefir_opt_code_builder_float32_greater_or_equals(
+            mem, &func->code, instr->block_id, arg1->operation.parameters.refs[0], arg1->operation.parameters.refs[1],
+            replacement_ref));
+        REQUIRE_OK(kefir_opt_code_container_instruction_move_after(&func->code, instr->id, *replacement_ref));
+    } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_FLOAT32_LESSER) {
+        REQUIRE(arg2->operation.opcode == KEFIR_OPT_OPCODE_FLOAT32_EQUALS, KEFIR_OK);
+        REQUIRE((arg1->operation.parameters.refs[0] == arg2->operation.parameters.refs[0] &&
+                 arg1->operation.parameters.refs[1] == arg2->operation.parameters.refs[1]) ||
+                    (arg1->operation.parameters.refs[0] == arg2->operation.parameters.refs[1] &&
+                     arg1->operation.parameters.refs[1] == arg2->operation.parameters.refs[0]),
+                KEFIR_OK);
+
+        REQUIRE_OK(kefir_opt_code_builder_float32_lesser_or_equals(
+            mem, &func->code, instr->block_id, arg1->operation.parameters.refs[0], arg1->operation.parameters.refs[1],
+            replacement_ref));
         REQUIRE_OK(kefir_opt_code_container_instruction_move_after(&func->code, instr->id, *replacement_ref));
     }
 
