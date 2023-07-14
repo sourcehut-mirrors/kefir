@@ -21,16 +21,8 @@
 #ifndef DEFINITIONS_H_
 #define DEFINITIONS_H_
 
-int greater_or_equals(int, int);
-int less_or_equals(int, int);
-
-int greater_or_equals2(int, int);
-int less_or_equals2(int, int);
-
-int above_or_equals(unsigned int, unsigned int);
-int below_or_equals(unsigned int, unsigned int);
-
-int above_or_equals2(unsigned int, unsigned int);
-int below_or_equals2(unsigned int, unsigned int);
+unsigned char ulong2uchar(unsigned long);
+unsigned short ulong2ushort(unsigned long);
+unsigned int ulong2uint(unsigned long);
 
 #endif

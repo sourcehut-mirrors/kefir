@@ -351,9 +351,13 @@ static kefir_result_t translate_instr(struct kefir_mem *mem, struct kefir_codege
 
         case KEFIR_OPT_OPCODE_INT_EQUALS:
         case KEFIR_OPT_OPCODE_INT_GREATER:
+        case KEFIR_OPT_OPCODE_INT_GREATER_OR_EQUALS:
         case KEFIR_OPT_OPCODE_INT_LESSER:
+        case KEFIR_OPT_OPCODE_INT_LESSER_OR_EQUALS:
         case KEFIR_OPT_OPCODE_INT_ABOVE:
+        case KEFIR_OPT_OPCODE_INT_ABOVE_OR_EQUALS:
         case KEFIR_OPT_OPCODE_INT_BELOW:
+        case KEFIR_OPT_OPCODE_INT_BELOW_OR_EQUALS:
             REQUIRE_OK(INVOKE_TRANSLATOR(comparison));
             break;
 

@@ -267,9 +267,13 @@ typedef enum kefir_asm_amd64_xasmgen_syntax {
     _opcode(test, "test", 2, normal) _separator \
     _opcode(sete, "sete", 1, normal) _separator \
     _opcode(setg, "setg", 1, normal) _separator \
+    _opcode(setge, "setge", 1, normal) _separator \
     _opcode(setl, "setl", 1, normal) _separator \
+    _opcode(setle, "setle", 1, normal) _separator \
     _opcode(seta, "seta", 1, normal) _separator \
+    _opcode(setae, "setae", 1, normal) _separator \
     _opcode(setb, "setb", 1, normal) _separator \
+    _opcode(setbe, "setbe", 1, normal) _separator \
     _opcode(setne, "setne", 1, normal) _separator \
     _opcode(setnp, "setnp", 1, normal) _separator \
     \
@@ -481,9 +485,13 @@ const struct kefir_asm_amd64_xasmgen_operand *kefir_asm_amd64_xasmgen_operand_fp
 #define KEFIR_AMD64_XASMGEN_INSTR_TEST(_xasmgen, _op1, _op2) ((_xasmgen)->instr.test((_xasmgen), (_op1), (_op2)))
 #define KEFIR_AMD64_XASMGEN_INSTR_SETE(_xasmgen, _op1) ((_xasmgen)->instr.sete((_xasmgen), (_op1)))
 #define KEFIR_AMD64_XASMGEN_INSTR_SETG(_xasmgen, _op1) ((_xasmgen)->instr.setg((_xasmgen), (_op1)))
+#define KEFIR_AMD64_XASMGEN_INSTR_SETGE(_xasmgen, _op1) ((_xasmgen)->instr.setge((_xasmgen), (_op1)))
 #define KEFIR_AMD64_XASMGEN_INSTR_SETL(_xasmgen, _op1) ((_xasmgen)->instr.setl((_xasmgen), (_op1)))
+#define KEFIR_AMD64_XASMGEN_INSTR_SETLE(_xasmgen, _op1) ((_xasmgen)->instr.setle((_xasmgen), (_op1)))
 #define KEFIR_AMD64_XASMGEN_INSTR_SETA(_xasmgen, _op1) ((_xasmgen)->instr.seta((_xasmgen), (_op1)))
+#define KEFIR_AMD64_XASMGEN_INSTR_SETAE(_xasmgen, _op1) ((_xasmgen)->instr.setae((_xasmgen), (_op1)))
 #define KEFIR_AMD64_XASMGEN_INSTR_SETB(_xasmgen, _op1) ((_xasmgen)->instr.setb((_xasmgen), (_op1)))
+#define KEFIR_AMD64_XASMGEN_INSTR_SETBE(_xasmgen, _op1) ((_xasmgen)->instr.setbe((_xasmgen), (_op1)))
 #define KEFIR_AMD64_XASMGEN_INSTR_SETNE(_xasmgen, _op1) ((_xasmgen)->instr.setne((_xasmgen), (_op1)))
 #define KEFIR_AMD64_XASMGEN_INSTR_SETNP(_xasmgen, _op1) ((_xasmgen)->instr.setnp((_xasmgen), (_op1)))
 

@@ -25,9 +25,19 @@
 
 int main(void) {
     for (int i = -100; i <= 100; i++) {
+        unsigned int ui = (unsigned int) (i + 100);
         for (int j = -100; j <= 100; j++) {
+            unsigned int uj = (unsigned int) (j + 100);
+
             assert(greater_or_equals(i, j) == (i >= j ? 1 : 0));
+            assert(greater_or_equals2(i, j) == (i >= j ? 1 : 0));
             assert(less_or_equals(i, j) == (i <= j ? 1 : 0));
+            assert(less_or_equals2(i, j) == (i <= j ? 1 : 0));
+
+            assert(above_or_equals(ui, uj) == (ui >= uj ? 1 : 0));
+            assert(above_or_equals2(ui, uj) == (ui >= uj ? 1 : 0));
+            assert(below_or_equals(ui, uj) == (ui <= uj ? 1 : 0));
+            assert(below_or_equals2(ui, uj) == (ui <= uj ? 1 : 0));
         }
     }
     return EXIT_SUCCESS;

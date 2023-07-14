@@ -18,52 +18,18 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <stdlib.h>
+#include <stdio.h>
+#include <assert.h>
 #include "./definitions.h"
 
-int greater_or_equals(int x, int y) {
-    if (x >= y) {
-        return 1;
-    } else {
-        return 0;
+int main(void) {
+    for (unsigned long i = 0; i < 4096; i++) {
+        assert(ulong2uchar(i) == (unsigned char) i);
+        assert(ulong2ushort(i) == (unsigned short) i);
+        assert(ulong2ushort(i << 16) == (unsigned short) (i << 16));
+        assert(ulong2uint(i) == (unsigned int) i);
+        assert(ulong2uint(i << 32) == (unsigned int) (i << 32));
     }
-}
-
-int less_or_equals(int x, int y) {
-    if (x <= y) {
-        return 1;
-    } else {
-        return 0;
-    }
-}
-
-int greater_or_equals2(int x, int y) {
-    return x >= y;
-}
-
-int less_or_equals2(int x, int y) {
-    return x <= y;
-}
-
-int above_or_equals(unsigned int x, unsigned int y) {
-    if (x >= y) {
-        return 1;
-    } else {
-        return 0;
-    }
-}
-
-int below_or_equals(unsigned int x, unsigned int y) {
-    if (x <= y) {
-        return 1;
-    } else {
-        return 0;
-    }
-}
-
-int above_or_equals2(unsigned int x, unsigned int y) {
-    return x >= y;
-}
-
-int below_or_equals2(unsigned int x, unsigned int y) {
-    return x <= y;
+    return EXIT_SUCCESS;
 }

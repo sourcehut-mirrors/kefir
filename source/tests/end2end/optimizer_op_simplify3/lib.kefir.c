@@ -20,50 +20,14 @@
 
 #include "./definitions.h"
 
-int greater_or_equals(int x, int y) {
-    if (x >= y) {
-        return 1;
-    } else {
-        return 0;
-    }
+unsigned char ulong2uchar(unsigned long x) {
+    return (unsigned char) x;
 }
 
-int less_or_equals(int x, int y) {
-    if (x <= y) {
-        return 1;
-    } else {
-        return 0;
-    }
+unsigned short ulong2ushort(unsigned long x) {
+    return (unsigned short) x;
 }
 
-int greater_or_equals2(int x, int y) {
-    return x >= y;
-}
-
-int less_or_equals2(int x, int y) {
-    return x <= y;
-}
-
-int above_or_equals(unsigned int x, unsigned int y) {
-    if (x >= y) {
-        return 1;
-    } else {
-        return 0;
-    }
-}
-
-int below_or_equals(unsigned int x, unsigned int y) {
-    if (x <= y) {
-        return 1;
-    } else {
-        return 0;
-    }
-}
-
-int above_or_equals2(unsigned int x, unsigned int y) {
-    return x >= y;
-}
-
-int below_or_equals2(unsigned int x, unsigned int y) {
-    return x <= y;
+unsigned int ulong2uint(unsigned long x) {
+    return (unsigned int) x;
 }

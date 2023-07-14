@@ -79,9 +79,19 @@ DEFINE_TRANSLATOR(comparison) {
                 KEFIR_AMD64_XASMGEN_INSTR_SETG(&codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_variant)));
             break;
 
+        case KEFIR_OPT_OPCODE_INT_GREATER_OR_EQUALS:
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_SETGE(&codegen->xasmgen,
+                                                       kefir_asm_amd64_xasmgen_operand_reg(result_variant)));
+            break;
+
         case KEFIR_OPT_OPCODE_INT_LESSER:
             REQUIRE_OK(
                 KEFIR_AMD64_XASMGEN_INSTR_SETL(&codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_variant)));
+            break;
+
+        case KEFIR_OPT_OPCODE_INT_LESSER_OR_EQUALS:
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_SETLE(&codegen->xasmgen,
+                                                       kefir_asm_amd64_xasmgen_operand_reg(result_variant)));
             break;
 
         case KEFIR_OPT_OPCODE_INT_ABOVE:
@@ -89,9 +99,19 @@ DEFINE_TRANSLATOR(comparison) {
                 KEFIR_AMD64_XASMGEN_INSTR_SETA(&codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_variant)));
             break;
 
+        case KEFIR_OPT_OPCODE_INT_ABOVE_OR_EQUALS:
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_SETAE(&codegen->xasmgen,
+                                                       kefir_asm_amd64_xasmgen_operand_reg(result_variant)));
+            break;
+
         case KEFIR_OPT_OPCODE_INT_BELOW:
             REQUIRE_OK(
                 KEFIR_AMD64_XASMGEN_INSTR_SETB(&codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_variant)));
+            break;
+
+        case KEFIR_OPT_OPCODE_INT_BELOW_OR_EQUALS:
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_SETBE(&codegen->xasmgen,
+                                                       kefir_asm_amd64_xasmgen_operand_reg(result_variant)));
             break;
 
         default:

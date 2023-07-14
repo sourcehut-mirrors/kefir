@@ -182,9 +182,13 @@ BINARY_OP(int_rshift);
 BINARY_OP(int_arshift);
 BINARY_OP(int_equals);
 BINARY_OP(int_greater);
+BINARY_OP(int_greater_or_equals);
 BINARY_OP(int_lesser);
+BINARY_OP(int_lesser_or_equals);
 BINARY_OP(int_above);
+BINARY_OP(int_above_or_equals);
 BINARY_OP(int_below);
+BINARY_OP(int_below_or_equals);
 BINARY_OP(bool_and);
 BINARY_OP(bool_or);
 
