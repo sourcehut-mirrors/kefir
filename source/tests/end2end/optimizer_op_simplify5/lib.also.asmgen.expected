@@ -1,0 +1,135 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global less_or_equalsld
+.global greater_or_equalsd
+.global less_or_equalsd
+.global greater_or_equalsld
+.extern __kefirrt_opt_save_registers
+.extern __kefirrt_opt_load_int_vararg
+.extern __kefirrt_opt_load_sse_vararg
+.extern __kefirrt_opt_float32_to_uint
+.extern __kefirrt_opt_float64_to_uint
+.extern __kefirrt_opt_long_double_to_int
+
+.section .text
+less_or_equalsld:
+    push %rbp
+    mov %rsp, %rbp
+    sub $64, %rsp
+__kefir_func_less_or_equalsld_block0:
+    lea 16(%rbp), %rax
+    lea 32(%rbp), %r10
+    lea -48(%rbp), %rcx
+    fldt (%r10)
+    fstpt (%rcx)
+    lea -64(%rbp), %rcx
+    fldt (%rax)
+    fstpt (%rcx)
+    lea -64(%rbp), %rcx
+    lea -48(%rbp), %rdx
+    fldt (%rdx)
+    fldt (%rcx)
+    xor %rcx, %rcx
+    fcomip
+    fstp %st(0)
+    seta %cl
+    mov %rcx, %rax
+    xor %rcx, %rcx
+    test %rax, %rax
+    sete %cl
+    mov %rcx, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+greater_or_equalsd:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+__kefir_func_greater_or_equalsd_block0:
+    lea -8(%rbp), %rax
+    movq %xmm1, (%rax)
+    lea -16(%rbp), %rax
+    movq %xmm0, (%rax)
+    lea -16(%rbp), %rax
+    movq (%rax), %rcx
+    mov %rcx, %rax
+    lea -8(%rbp), %rcx
+    movq (%rcx), %rdx
+    mov %rdx, %rcx
+    movq %rcx, %xmm1
+    movq %rax, %xmm0
+    xor %rdx, %rdx
+    comisd %xmm1, %xmm0
+    setae %dl
+    mov %rdx, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+less_or_equalsd:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+__kefir_func_less_or_equalsd_block0:
+    lea -8(%rbp), %rax
+    movq %xmm1, (%rax)
+    lea -16(%rbp), %rax
+    movq %xmm0, (%rax)
+    lea -16(%rbp), %rax
+    movq (%rax), %rcx
+    mov %rcx, %rax
+    lea -8(%rbp), %rcx
+    movq (%rcx), %rdx
+    mov %rdx, %rcx
+    movq %rcx, %xmm1
+    movq %rax, %xmm0
+    xor %rdx, %rdx
+    comisd %xmm0, %xmm1
+    setae %dl
+    mov %rdx, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+greater_or_equalsld:
+    push %rbp
+    mov %rsp, %rbp
+    sub $64, %rsp
+__kefir_func_greater_or_equalsld_block0:
+    lea 16(%rbp), %rax
+    lea 32(%rbp), %r10
+    lea -48(%rbp), %rcx
+    fldt (%r10)
+    fstpt (%rcx)
+    lea -64(%rbp), %rcx
+    fldt (%rax)
+    fstpt (%rcx)
+    lea -64(%rbp), %rcx
+    lea -48(%rbp), %rdx
+    fldt (%rdx)
+    fldt (%rcx)
+    xor %rcx, %rcx
+    fstp %st(2)
+    fcomip
+    fstp %st(0)
+    seta %cl
+    mov %rcx, %rax
+    xor %rcx, %rcx
+    test %rax, %rax
+    sete %cl
+    mov %rcx, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+

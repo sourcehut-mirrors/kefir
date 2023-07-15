@@ -1,0 +1,353 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global less
+.global above
+.global below
+.global equals
+.global greater
+.global not_less
+.global not_above
+.global not_below
+.global not_equals
+.global not_equals2
+.global not_greater
+.extern __kefirrt_opt_save_registers
+.extern __kefirrt_opt_load_int_vararg
+.extern __kefirrt_opt_load_sse_vararg
+.extern __kefirrt_opt_float32_to_uint
+.extern __kefirrt_opt_float64_to_uint
+.extern __kefirrt_opt_long_double_to_int
+
+.section .text
+less:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+__kefir_func_less_block0:
+    lea -12(%rbp), %rax
+    movl %esi, (%rax)
+    lea -16(%rbp), %rax
+    movl %edi, (%rax)
+    lea -16(%rbp), %rax
+    movsxl (%rax), %rcx
+    mov %rcx, %rax
+    lea -12(%rbp), %rcx
+    movsxl (%rcx), %rdx
+    mov %rdx, %rcx
+    cmp %rcx, %rax
+    jl __kefir_func_less_block2
+__kefir_func_less_block1:
+    mov $0, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_func_less_block2:
+    mov $1, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+above:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+__kefir_func_above_block0:
+    lea -12(%rbp), %rax
+    movl %esi, (%rax)
+    lea -16(%rbp), %rax
+    movl %edi, (%rax)
+    lea -16(%rbp), %rax
+    movl (%rax), %ecx
+    mov %rcx, %rax
+    lea -12(%rbp), %rcx
+    movl (%rcx), %edx
+    mov %rdx, %rcx
+    cmp %rcx, %rax
+    ja __kefir_func_above_block2
+__kefir_func_above_block1:
+    mov $0, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_func_above_block2:
+    mov $1, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+below:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+__kefir_func_below_block0:
+    lea -12(%rbp), %rax
+    movl %esi, (%rax)
+    lea -16(%rbp), %rax
+    movl %edi, (%rax)
+    lea -16(%rbp), %rax
+    movl (%rax), %ecx
+    mov %rcx, %rax
+    lea -12(%rbp), %rcx
+    movl (%rcx), %edx
+    mov %rdx, %rcx
+    cmp %rcx, %rax
+    jb __kefir_func_below_block2
+__kefir_func_below_block1:
+    mov $0, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_func_below_block2:
+    mov $1, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+equals:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+__kefir_func_equals_block0:
+    lea -12(%rbp), %rax
+    movl %esi, (%rax)
+    lea -16(%rbp), %rax
+    movl %edi, (%rax)
+    lea -16(%rbp), %rax
+    movsxl (%rax), %rcx
+    mov %rcx, %rax
+    lea -12(%rbp), %rcx
+    movsxl (%rcx), %rdx
+    mov %rdx, %rcx
+    cmp %rcx, %rax
+    je __kefir_func_equals_block2
+__kefir_func_equals_block1:
+    mov $0, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_func_equals_block2:
+    mov $1, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+greater:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+__kefir_func_greater_block0:
+    lea -12(%rbp), %rax
+    movl %esi, (%rax)
+    lea -16(%rbp), %rax
+    movl %edi, (%rax)
+    lea -16(%rbp), %rax
+    movsxl (%rax), %rcx
+    mov %rcx, %rax
+    lea -12(%rbp), %rcx
+    movsxl (%rcx), %rdx
+    mov %rdx, %rcx
+    cmp %rcx, %rax
+    jg __kefir_func_greater_block2
+__kefir_func_greater_block1:
+    mov $0, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_func_greater_block2:
+    mov $1, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+not_less:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+__kefir_func_not_less_block0:
+    lea -12(%rbp), %rax
+    movl %esi, (%rax)
+    lea -16(%rbp), %rax
+    movl %edi, (%rax)
+    lea -16(%rbp), %rax
+    movsxl (%rax), %rcx
+    mov %rcx, %rax
+    lea -12(%rbp), %rcx
+    movsxl (%rcx), %rdx
+    mov %rdx, %rcx
+    cmp %rcx, %rax
+    jge __kefir_func_not_less_block2
+__kefir_func_not_less_block1:
+    mov $0, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_func_not_less_block2:
+    mov $1, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+not_above:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+__kefir_func_not_above_block0:
+    lea -12(%rbp), %rax
+    movl %esi, (%rax)
+    lea -16(%rbp), %rax
+    movl %edi, (%rax)
+    lea -16(%rbp), %rax
+    movl (%rax), %ecx
+    mov %rcx, %rax
+    lea -12(%rbp), %rcx
+    movl (%rcx), %edx
+    mov %rdx, %rcx
+    cmp %rcx, %rax
+    jbe __kefir_func_not_above_block2
+__kefir_func_not_above_block1:
+    mov $0, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_func_not_above_block2:
+    mov $1, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+not_below:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+__kefir_func_not_below_block0:
+    lea -12(%rbp), %rax
+    movl %esi, (%rax)
+    lea -16(%rbp), %rax
+    movl %edi, (%rax)
+    lea -16(%rbp), %rax
+    movl (%rax), %ecx
+    mov %rcx, %rax
+    lea -12(%rbp), %rcx
+    movl (%rcx), %edx
+    mov %rdx, %rcx
+    cmp %rcx, %rax
+    jae __kefir_func_not_below_block2
+__kefir_func_not_below_block1:
+    mov $0, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_func_not_below_block2:
+    mov $1, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+not_equals:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+__kefir_func_not_equals_block0:
+    lea -12(%rbp), %rax
+    movl %esi, (%rax)
+    lea -16(%rbp), %rax
+    movl %edi, (%rax)
+    lea -16(%rbp), %rax
+    movsxl (%rax), %rcx
+    mov %rcx, %rax
+    lea -12(%rbp), %rcx
+    movsxl (%rcx), %rdx
+    mov %rdx, %rcx
+    cmp %rcx, %rax
+    jne __kefir_func_not_equals_block2
+__kefir_func_not_equals_block1:
+    mov $0, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_func_not_equals_block2:
+    mov $1, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+not_equals2:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+__kefir_func_not_equals2_block0:
+    lea -12(%rbp), %rax
+    movl %esi, (%rax)
+    lea -16(%rbp), %rax
+    movl %edi, (%rax)
+    lea -16(%rbp), %rax
+    movsxl (%rax), %rcx
+    mov %rcx, %rax
+    lea -12(%rbp), %rcx
+    movsxl (%rcx), %rdx
+    mov %rdx, %rcx
+    cmp %rcx, %rax
+    jne __kefir_func_not_equals2_block2
+__kefir_func_not_equals2_block1:
+    mov $0, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_func_not_equals2_block2:
+    mov $1, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+not_greater:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+__kefir_func_not_greater_block0:
+    lea -12(%rbp), %rax
+    movl %esi, (%rax)
+    lea -16(%rbp), %rax
+    movl %edi, (%rax)
+    lea -16(%rbp), %rax
+    movsxl (%rax), %rcx
+    mov %rcx, %rax
+    lea -12(%rbp), %rcx
+    movsxl (%rcx), %rdx
+    mov %rdx, %rcx
+    cmp %rcx, %rax
+    jle __kefir_func_not_greater_block2
+__kefir_func_not_greater_block1:
+    mov $0, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_func_not_greater_block2:
+    mov $1, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+

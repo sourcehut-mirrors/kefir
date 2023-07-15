@@ -1,0 +1,150 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global dnot
+.global dnotd
+.global dnotf
+.global dnotld
+.extern __kefirrt_opt_save_registers
+.extern __kefirrt_opt_load_int_vararg
+.extern __kefirrt_opt_load_sse_vararg
+.extern __kefirrt_opt_float32_to_uint
+.extern __kefirrt_opt_float64_to_uint
+.extern __kefirrt_opt_long_double_to_int
+
+.section .text
+dnot:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+__kefir_func_dnot_block0:
+    lea -16(%rbp), %rax
+    movl %edi, (%rax)
+    lea -16(%rbp), %rax
+    movsxl (%rax), %rcx
+    mov %rcx, %rax
+    test %rax, %rax
+    setne %cl
+    movzx %cl, %rcx
+    mov %rcx, %rax
+    mov %rax, %rcx
+    xor %rax, %rax
+    test %rcx, %rcx
+    sete %al
+    test %rax, %rax
+    jz __kefir_func_dnot_block2
+__kefir_func_dnot_block1:
+    mov $0, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_func_dnot_block2:
+    mov $1, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+dnotd:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+__kefir_func_dnotd_block0:
+    lea -16(%rbp), %rax
+    movq %xmm0, (%rax)
+    lea -16(%rbp), %rax
+    movq (%rax), %rcx
+    mov %rcx, %rax
+    test %rax, %rax
+    setne %cl
+    movzx %cl, %rcx
+    mov %rcx, %rax
+    mov %rax, %rcx
+    xor %rax, %rax
+    test %rcx, %rcx
+    sete %al
+    test %rax, %rax
+    jz __kefir_func_dnotd_block2
+__kefir_func_dnotd_block1:
+    mov $0, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_func_dnotd_block2:
+    mov $1, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+dnotf:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+__kefir_func_dnotf_block0:
+    lea -16(%rbp), %rax
+    movd %xmm0, (%rax)
+    lea -16(%rbp), %rax
+    movl (%rax), %ecx
+    mov %rcx, %rax
+    test %rax, %rax
+    setne %cl
+    movzx %cl, %rcx
+    mov %rcx, %rax
+    mov %rax, %rcx
+    xor %rax, %rax
+    test %rcx, %rcx
+    sete %al
+    test %rax, %rax
+    jz __kefir_func_dnotf_block2
+__kefir_func_dnotf_block1:
+    mov $0, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_func_dnotf_block2:
+    mov $1, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+dnotld:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+__kefir_func_dnotld_block0:
+    lea 16(%rbp), %rax
+    lea -32(%rbp), %rcx
+    fldt (%rax)
+    fstpt (%rcx)
+    lea -32(%rbp), %rcx
+    mov %rcx, %rax
+    fldt (%rax)
+    call __kefirrt_opt_long_double_trunc_1bit
+    mov %rax, %rcx
+    mov %rcx, %rax
+    xor %rcx, %rcx
+    test %rax, %rax
+    sete %cl
+    test %rcx, %rcx
+    jz __kefir_func_dnotld_block2
+__kefir_func_dnotld_block1:
+    mov $0, %rcx
+    mov %rcx, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_func_dnotld_block2:
+    mov $1, %rcx
+    mov %rcx, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+

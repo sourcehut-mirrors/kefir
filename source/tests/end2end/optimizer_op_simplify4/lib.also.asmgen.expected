@@ -1,0 +1,68 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global greater_or_equalsf
+.global less_or_equalsf
+.extern __kefirrt_opt_save_registers
+.extern __kefirrt_opt_load_int_vararg
+.extern __kefirrt_opt_load_sse_vararg
+.extern __kefirrt_opt_float32_to_uint
+.extern __kefirrt_opt_float64_to_uint
+.extern __kefirrt_opt_long_double_to_int
+
+.section .text
+greater_or_equalsf:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+__kefir_func_greater_or_equalsf_block0:
+    lea -12(%rbp), %rax
+    movd %xmm1, (%rax)
+    lea -16(%rbp), %rax
+    movd %xmm0, (%rax)
+    lea -16(%rbp), %rax
+    movl (%rax), %ecx
+    mov %rcx, %rax
+    lea -12(%rbp), %rcx
+    movl (%rcx), %edx
+    mov %rdx, %rcx
+    movq %rcx, %xmm1
+    movq %rax, %xmm0
+    xor %rdx, %rdx
+    comiss %xmm1, %xmm0
+    setae %dl
+    mov %rdx, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+less_or_equalsf:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+__kefir_func_less_or_equalsf_block0:
+    lea -12(%rbp), %rax
+    movd %xmm1, (%rax)
+    lea -16(%rbp), %rax
+    movd %xmm0, (%rax)
+    lea -16(%rbp), %rax
+    movl (%rax), %ecx
+    mov %rcx, %rax
+    lea -12(%rbp), %rcx
+    movl (%rcx), %edx
+    mov %rdx, %rcx
+    movq %rcx, %xmm1
+    movq %rax, %xmm0
+    xor %rdx, %rdx
+    comiss %xmm0, %xmm1
+    setae %dl
+    mov %rdx, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+
