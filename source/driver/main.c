@@ -103,7 +103,7 @@ static kefir_result_t print_compiler_info(FILE *out, const char *exec_name) {
     fprintf(out, "    Source-ID: %s\n", KEFIR_BUILD_SOURCE_ID);
 #endif
 
-    fprintf(out, "URL: %s\n", "https://github.com/protopopov1122/Kefir");
+    fprintf(out, "URL: %s\n     %s\n", "https://github.com/protopopov1122/kefir", "https://sr.ht/~jprotopopov/kefir");
     return KEFIR_OK;
 }
 

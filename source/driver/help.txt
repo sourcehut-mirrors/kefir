@@ -98,8 +98,10 @@ COMPILER OPTIONS:
 
     Optimizer pipeline specification (supported only for opt-* targets) consists of comma separated names of optimization pipeline passes:
         noop                                No-operation pass
-        op-simplify                         General code simplification pass
-        compare-branch-fuse                 Pass for fusing comparisons with subsequent branch instructions
+        op-simplify                         General code simplification
+        constant-fold                       Folding constant expressions
+        branch-removal                      Eliminating branches with constant conditions
+        compare-branch-fuse                 Fusing comparisons with subsequent branch instructions
 
 
 TARGETS:
@@ -133,6 +135,6 @@ ENVIRONMENT VARIABLES:
 NOTES:
     License                             GNU GPLv3
     Author                              Jevgenijs Protopopovs
-    Website                             https://github.com/protopopov1122/Kefir
+    Website                             https://github.com/protopopov1122/kefir
                                         https://sr.ht/~jprotopopov/kefir/
     Contacts                            jevgenij@protopopov.lv

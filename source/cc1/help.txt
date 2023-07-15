@@ -69,9 +69,11 @@ Target code generation options:
     syntax=SYNTAX                        Produce assembly output with specified syntax [x86_64-intel_noprefix, x86_64-intel_prefix, x86_64-att (default)]
 
 Optimizer pipeline specification (supported only for opt-* targets) consists of comma separated names of optimization pipeline passes:
-    noop                                No-operation pass
-    op-simplify                         General code simplification pass
-    compare-branch-fuse                 Pass for fusing comparisons with subsequent branch instructions
+    noop                                 No-operation pass
+    op-simplify                          General code simplification
+    constant-fold                        Folding constant expressions
+    branch-removal                       Eliminating branches with constant conditions
+    compare-branch-fuse                  Fusing comparisons with subsequent branch instructions
 
 License                                 GNU GPLv3
 Author                                  Jevgenijs Protopopovs
