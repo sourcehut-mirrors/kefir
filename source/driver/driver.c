@@ -34,6 +34,8 @@
 #include <limits.h>
 #include <libgen.h>
 
+#define KEFIR_OPTIMIZER_PIPELINE_FULL_SPEC "op-simplify,compare-branch-fuse"
+
 static kefir_result_t driver_generate_asm_config(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
                                                  struct kefir_driver_configuration *config,
                                                  const struct kefir_driver_external_resources *externals,
@@ -229,6 +231,18 @@ static kefir_result_t driver_generate_compiler_config(struct kefir_mem *mem, str
         return res;
     });
     REQUIRE_OK(kefir_string_array_free(mem, &extra_args_buf));
+
+    switch (config->compiler.optimization_level) {
+        case 0:
+            compiler_config->optimizer_pipeline_spec = NULL;
+            break;
+
+        default:
+            if (config->compiler.optimization_level > 0) {
+                compiler_config->optimizer_pipeline_spec = KEFIR_OPTIMIZER_PIPELINE_FULL_SPEC;
+            }
+            break;
+    }
     return KEFIR_OK;
 }
 
@@ -593,8 +607,8 @@ static kefir_result_t driver_run_linker(struct kefir_mem *mem, struct kefir_symb
                                         struct kefir_driver_configuration *config,
                                         const struct kefir_driver_external_resources *externals,
                                         struct kefir_driver_linker_configuration *linker_config) {
-    REQUIRE_OK(kefir_driver_apply_target_linker_final_configuration(mem, symbols, externals, linker_config,
-                                                                    &config->target));
+    REQUIRE_OK(
+        kefir_driver_apply_target_linker_final_configuration(mem, symbols, externals, linker_config, &config->target));
 
     struct kefir_process linker_process;
     REQUIRE_OK(kefir_process_init(&linker_process));
@@ -655,8 +669,8 @@ static kefir_result_t driver_run_impl(struct kefir_mem *mem, struct kefir_symbol
     if (config->stage == KEFIR_DRIVER_STAGE_LINK) {
         if (linker_config->flags.link_rtlib) {
             if (externals->runtime_library == NULL) {
-                REQUIRE_OK(
-                    driver_assemble_runtime(mem, externals, compiler_config, assembler_config, &linker_config->rtlib_location));
+                REQUIRE_OK(driver_assemble_runtime(mem, externals, compiler_config, assembler_config,
+                                                   &linker_config->rtlib_location));
             } else {
                 linker_config->rtlib_location = externals->runtime_library;
             }

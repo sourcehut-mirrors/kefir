@@ -106,6 +106,10 @@ typedef struct kefir_driver_configuration {
     struct kefir_driver_target target;
 
     struct {
+        kefir_int_t optimization_level;
+    } compiler;
+
+    struct {
         kefir_bool_t restrictive_mode;
         kefir_bool_t static_linking;
         kefir_bool_t link_start_files;

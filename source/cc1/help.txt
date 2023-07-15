@@ -23,6 +23,7 @@ Options:
     --target-profile profile            Generate code for specified target (see targets section below)
     --source-id identifier              Force use provided source file identifier
     --detailed-output                   Include references to source file in AST and token dumps
+    --optimizer-pipeline spec           Optimizer pipeline specification (see below)
 
 Kefir supports disabled-by-default optional features:
     --feature-[feature name]            Enable feature
@@ -67,7 +68,13 @@ Target code generation options:
     emulated-tls                         Use emulated TLS
     syntax=SYNTAX                        Produce assembly output with specified syntax [x86_64-intel_noprefix, x86_64-intel_prefix, x86_64-att (default)]
 
-License: GNU GPLv3
-Author: Jevgenijs Protopopovs
-Website: https://github.com/protopopov1122/Kefir
-Contacts: jprotopopov1122@gmail.com
+Optimizer pipeline specification (supported only for opt-* targets) consists of comma separated names of optimization pipeline passes:
+    noop                                No-operation pass
+    op-simplify                         General code simplification pass
+    compare-branch-fuse                 Pass for fusing comparisons with subsequent branch instructions
+
+License                                 GNU GPLv3
+Author                                  Jevgenijs Protopopovs
+Website                                 https://github.com/protopopov1122/Kefir
+                                        https://sr.ht/~jprotopopov/kefir/
+Contacts                                jevgenij@protopopov.lv

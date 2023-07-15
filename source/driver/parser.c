@@ -127,6 +127,19 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_symbo
             config->flags.restrictive_mode = false;
         }
 
+        // Compiler flags
+        else if (strncmp("-O", arg, 2) == 0) {
+            kefir_uint_t level;
+            if (strlen(arg) == 2) {
+                EXPECT_ARG;
+                level = strtoul(argv[++index], NULL, 10);
+            } else {
+                level = strtoul(&arg[2], NULL, 10);
+            }
+
+            config->compiler.optimization_level = (kefir_int_t) level;
+        }
+
         // Preprocessor flags
         else if (strncmp("-D", arg, 2) == 0) {
             // Define macro
@@ -351,12 +364,7 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_symbo
         }
 
         // Ignored unsupported flags
-        else if (strncmp("-O", arg, 2) == 0) {
-            // Optimization level: ignored
-            if (warning_output != NULL) {
-                fprintf(warning_output, "Warning: Unsupported command line option '%s'\n", arg);
-            }
-        } else if (strncmp("-x", arg, 2) == 0) {
+        else if (strncmp("-x", arg, 2) == 0) {
             // Language: ignored
             if (warning_output != NULL) {
                 fprintf(warning_output, "Warning: Unsupported command line option '%s'\n", arg);

@@ -13,6 +13,7 @@ OPTIONS:
     -P                                  Preprocess C-language source files, save results
     -o output file                      Save results to the output file
     --target specification              Generate code for specified target system (see TARGETS section below)
+    -O level                            Code optimization level. All non-zero levels are equivalent to 1
     -D name[=value]                     Define preprocessor macro
     -U name                             Undefine predefined preprocessor macro
     -I directory                        Add directory to preprocessor include path
@@ -62,6 +63,7 @@ COMPILER OPTIONS:
         --no-internal-[internal name]       Disable compiler internal flag (see below)
         --codegen-[option]                  Enable option for code generator (see below)
         --no-codegen-[option]               Disable option for code generator (see below)
+        --optimizer-pipeline spec           Optimizer pipeline specification (see below)
 
     Supported features:
         fail-on-attributes                  Fail if __attribute__((...)) is encountered [default: off]
@@ -93,6 +95,11 @@ COMPILER OPTIONS:
     Targets (determined by platform as specified in TARGET section):
         amd64-sysv-gas                      Produce naive GNU As-compatible assembly adhering System-V AMD64 ABI
         opt-amd64-sysv-gas                  Produce optimized GNU As-compatible assembly adhering System-V AMD64 ABI [default]
+
+    Optimizer pipeline specification (supported only for opt-* targets) consists of comma separated names of optimization pipeline passes:
+        noop                                No-operation pass
+        op-simplify                         General code simplification pass
+        compare-branch-fuse                 Pass for fusing comparisons with subsequent branch instructions
 
 
 TARGETS:
