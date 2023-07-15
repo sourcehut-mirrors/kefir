@@ -172,6 +172,14 @@ int int_not(void) {
     return ~1234;
 }
 
+int bool_not(void) {
+    return !189;
+}
+
+int bool_not2(void) {
+    return !0;
+}
+
 _Bool truct1bit(void) {
     return (_Bool) 0xcafebabe;
 }

@@ -34,7 +34,7 @@
 #include <limits.h>
 #include <libgen.h>
 
-#define KEFIR_OPTIMIZER_PIPELINE_FULL_SPEC "op-simplify,constant-fold,compare-branch-fuse"
+#define KEFIR_OPTIMIZER_PIPELINE_FULL_SPEC "op-simplify,constant-fold,branch-removal,compare-branch-fuse"
 
 static kefir_result_t driver_generate_asm_config(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
                                                  struct kefir_driver_configuration *config,

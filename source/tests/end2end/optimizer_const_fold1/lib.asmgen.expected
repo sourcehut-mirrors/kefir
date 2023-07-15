@@ -13,6 +13,7 @@
 .global int_shr
 .global int_sub
 .global int_xor
+.global bool_not
 .global int_ashr
 .global int_div2
 .global int_div3
@@ -20,6 +21,7 @@
 .global int_mod2
 .global int_mod3
 .global int_sub2
+.global bool_not2
 .global int_above
 .global int_ashr2
 .global int_below
@@ -187,6 +189,17 @@ __kefir_func_int_xor_block0:
 .section .rodata
 .section .text
 
+bool_not:
+    push %rbp
+    mov %rsp, %rbp
+__kefir_func_bool_not_block0:
+    mov $0, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
 int_ashr:
     push %rbp
     mov %rsp, %rbp
@@ -258,6 +271,17 @@ int_sub2:
     mov %rsp, %rbp
 __kefir_func_int_sub2_block0:
     movabs $18446744073709551615, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+bool_not2:
+    push %rbp
+    mov %rsp, %rbp
+__kefir_func_bool_not2_block0:
+    mov $1, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret

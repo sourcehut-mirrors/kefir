@@ -54,6 +54,7 @@ DECLARE_PASS(Noop);
 DECLARE_PASS(CompareBranchFuse);
 DECLARE_PASS(OpSimplify);
 DECLARE_PASS(ConstFold);
+DECLARE_PASS(BranchRemoval);
 #undef DECLARE_PASS
 #endif
 
