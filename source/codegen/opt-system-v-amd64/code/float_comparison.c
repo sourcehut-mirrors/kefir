@@ -145,26 +145,27 @@ DEFINE_TRANSLATOR(float_comparison) {
                 KEFIR_AMD64_XASMGEN_INSTR_SETA(&codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(reg_variant)));
         } break;
 
-        case KEFIR_OPT_OPCODE_FLOAT32_GREATER_OR_EQUALS: {
+        case KEFIR_OPT_OPCODE_FLOAT32_GREATER_OR_EQUALS:
+        case KEFIR_OPT_OPCODE_FLOAT64_GREATER_OR_EQUALS: {
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_XOR(&codegen->xasmgen,
                                                      kefir_asm_amd64_xasmgen_operand_reg(result_handle.location.reg),
                                                      kefir_asm_amd64_xasmgen_operand_reg(result_handle.location.reg)));
 
-            // if (instr->operation.opcode == KEFIR_OPT_OPCODE_FLOAT64_GREATER) {
-            //     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_COMISD(
-            //         &codegen->xasmgen,
-            //         kefir_codegen_opt_amd64_sysv_storage_location_operand(&codegen->xasmgen_helpers.operands[0],
-            //                                                               &arg1_handle.location),
-            //         kefir_codegen_opt_amd64_sysv_storage_location_operand(&codegen->xasmgen_helpers.operands[1],
-            //                                                               &arg2_handle.location)));
-            // } else {
-            REQUIRE_OK(
-                KEFIR_AMD64_XASMGEN_INSTR_COMISS(&codegen->xasmgen,
-                                                 kefir_codegen_opt_amd64_sysv_storage_location_operand(
-                                                     &codegen->xasmgen_helpers.operands[0], &arg1_handle.location),
-                                                 kefir_codegen_opt_amd64_sysv_storage_location_operand(
-                                                     &codegen->xasmgen_helpers.operands[1], &arg2_handle.location)));
-            // }
+            if (instr->operation.opcode == KEFIR_OPT_OPCODE_FLOAT64_GREATER_OR_EQUALS) {
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_COMISD(
+                    &codegen->xasmgen,
+                    kefir_codegen_opt_amd64_sysv_storage_location_operand(&codegen->xasmgen_helpers.operands[0],
+                                                                          &arg1_handle.location),
+                    kefir_codegen_opt_amd64_sysv_storage_location_operand(&codegen->xasmgen_helpers.operands[1],
+                                                                          &arg2_handle.location)));
+            } else {
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_COMISS(
+                    &codegen->xasmgen,
+                    kefir_codegen_opt_amd64_sysv_storage_location_operand(&codegen->xasmgen_helpers.operands[0],
+                                                                          &arg1_handle.location),
+                    kefir_codegen_opt_amd64_sysv_storage_location_operand(&codegen->xasmgen_helpers.operands[1],
+                                                                          &arg2_handle.location)));
+            }
 
             kefir_asm_amd64_xasmgen_register_t reg_variant;
             REQUIRE_OK(kefir_asm_amd64_xasmgen_register8(result_handle.location.reg, &reg_variant));
@@ -202,26 +203,27 @@ DEFINE_TRANSLATOR(float_comparison) {
                 KEFIR_AMD64_XASMGEN_INSTR_SETA(&codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(reg_variant)));
         } break;
 
-        case KEFIR_OPT_OPCODE_FLOAT32_LESSER_OR_EQUALS: {
+        case KEFIR_OPT_OPCODE_FLOAT32_LESSER_OR_EQUALS:
+        case KEFIR_OPT_OPCODE_FLOAT64_LESSER_OR_EQUALS: {
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_XOR(&codegen->xasmgen,
                                                      kefir_asm_amd64_xasmgen_operand_reg(result_handle.location.reg),
                                                      kefir_asm_amd64_xasmgen_operand_reg(result_handle.location.reg)));
 
-            // if (instr->operation.opcode == KEFIR_OPT_OPCODE_FLOAT64_LESSER) {
-            //     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_COMISD(
-            //         &codegen->xasmgen,
-            //         kefir_codegen_opt_amd64_sysv_storage_location_operand(&codegen->xasmgen_helpers.operands[0],
-            //                                                               &arg2_handle.location),
-            //         kefir_codegen_opt_amd64_sysv_storage_location_operand(&codegen->xasmgen_helpers.operands[1],
-            //                                                               &arg1_handle.location)));
-            // } else {
-            REQUIRE_OK(
-                KEFIR_AMD64_XASMGEN_INSTR_COMISS(&codegen->xasmgen,
-                                                 kefir_codegen_opt_amd64_sysv_storage_location_operand(
-                                                     &codegen->xasmgen_helpers.operands[0], &arg2_handle.location),
-                                                 kefir_codegen_opt_amd64_sysv_storage_location_operand(
-                                                     &codegen->xasmgen_helpers.operands[1], &arg1_handle.location)));
-            // }
+            if (instr->operation.opcode == KEFIR_OPT_OPCODE_FLOAT64_LESSER_OR_EQUALS) {
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_COMISD(
+                    &codegen->xasmgen,
+                    kefir_codegen_opt_amd64_sysv_storage_location_operand(&codegen->xasmgen_helpers.operands[0],
+                                                                          &arg2_handle.location),
+                    kefir_codegen_opt_amd64_sysv_storage_location_operand(&codegen->xasmgen_helpers.operands[1],
+                                                                          &arg1_handle.location)));
+            } else {
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_COMISS(
+                    &codegen->xasmgen,
+                    kefir_codegen_opt_amd64_sysv_storage_location_operand(&codegen->xasmgen_helpers.operands[0],
+                                                                          &arg2_handle.location),
+                    kefir_codegen_opt_amd64_sysv_storage_location_operand(&codegen->xasmgen_helpers.operands[1],
+                                                                          &arg1_handle.location)));
+            }
 
             kefir_asm_amd64_xasmgen_register_t reg_variant;
             REQUIRE_OK(kefir_asm_amd64_xasmgen_register8(result_handle.location.reg, &reg_variant));

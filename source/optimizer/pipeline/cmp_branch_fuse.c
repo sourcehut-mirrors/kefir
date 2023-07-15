@@ -158,6 +158,46 @@ static kefir_result_t cmp_branch_fuse_apply(struct kefir_mem *mem, const struct 
                     branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
                 break;
 
+            case KEFIR_OPT_OPCODE_FLOAT64_EQUALS:
+                REQUIRE_OK(kefir_opt_code_builder_compare_branch(
+                    mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_FLOAT64_EQUALS,
+                    condition_instr->operation.parameters.refs[0], condition_instr->operation.parameters.refs[1],
+                    branch_instr->operation.parameters.branch.target_block,
+                    branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
+                break;
+
+            case KEFIR_OPT_OPCODE_FLOAT64_GREATER:
+                REQUIRE_OK(kefir_opt_code_builder_compare_branch(
+                    mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_FLOAT64_GREATER,
+                    condition_instr->operation.parameters.refs[0], condition_instr->operation.parameters.refs[1],
+                    branch_instr->operation.parameters.branch.target_block,
+                    branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
+                break;
+
+            case KEFIR_OPT_OPCODE_FLOAT64_GREATER_OR_EQUALS:
+                REQUIRE_OK(kefir_opt_code_builder_compare_branch(
+                    mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_FLOAT64_GREATER_OR_EQUALS,
+                    condition_instr->operation.parameters.refs[0], condition_instr->operation.parameters.refs[1],
+                    branch_instr->operation.parameters.branch.target_block,
+                    branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
+                break;
+
+            case KEFIR_OPT_OPCODE_FLOAT64_LESSER:
+                REQUIRE_OK(kefir_opt_code_builder_compare_branch(
+                    mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_FLOAT64_LESS,
+                    condition_instr->operation.parameters.refs[0], condition_instr->operation.parameters.refs[1],
+                    branch_instr->operation.parameters.branch.target_block,
+                    branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
+                break;
+
+            case KEFIR_OPT_OPCODE_FLOAT64_LESSER_OR_EQUALS:
+                REQUIRE_OK(kefir_opt_code_builder_compare_branch(
+                    mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_FLOAT64_LESS_OR_EQUALS,
+                    condition_instr->operation.parameters.refs[0], condition_instr->operation.parameters.refs[1],
+                    branch_instr->operation.parameters.branch.target_block,
+                    branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
+                break;
+
             case KEFIR_OPT_OPCODE_BOOL_NOT: {
                 struct kefir_opt_instruction *negated_condition_instr = NULL;
                 REQUIRE_OK(kefir_opt_code_container_instr(&func->code, condition_instr->operation.parameters.refs[0],
@@ -290,6 +330,51 @@ static kefir_result_t cmp_branch_fuse_apply(struct kefir_mem *mem, const struct 
                             branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
                         break;
 
+                    case KEFIR_OPT_OPCODE_FLOAT64_EQUALS:
+                        REQUIRE_OK(kefir_opt_code_builder_compare_branch(
+                            mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_FLOAT64_NOT_EQUALS,
+                            negated_condition_instr->operation.parameters.refs[0],
+                            negated_condition_instr->operation.parameters.refs[1],
+                            branch_instr->operation.parameters.branch.target_block,
+                            branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
+                        break;
+
+                    case KEFIR_OPT_OPCODE_FLOAT64_GREATER:
+                        REQUIRE_OK(kefir_opt_code_builder_compare_branch(
+                            mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_FLOAT64_LESS_OR_EQUALS,
+                            negated_condition_instr->operation.parameters.refs[0],
+                            negated_condition_instr->operation.parameters.refs[1],
+                            branch_instr->operation.parameters.branch.target_block,
+                            branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
+                        break;
+
+                    case KEFIR_OPT_OPCODE_FLOAT64_GREATER_OR_EQUALS:
+                        REQUIRE_OK(kefir_opt_code_builder_compare_branch(
+                            mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_FLOAT64_LESS,
+                            negated_condition_instr->operation.parameters.refs[0],
+                            negated_condition_instr->operation.parameters.refs[1],
+                            branch_instr->operation.parameters.branch.target_block,
+                            branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
+                        break;
+
+                    case KEFIR_OPT_OPCODE_FLOAT64_LESSER:
+                        REQUIRE_OK(kefir_opt_code_builder_compare_branch(
+                            mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_FLOAT64_GREATER_OR_EQUALS,
+                            negated_condition_instr->operation.parameters.refs[0],
+                            negated_condition_instr->operation.parameters.refs[1],
+                            branch_instr->operation.parameters.branch.target_block,
+                            branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
+                        break;
+
+                    case KEFIR_OPT_OPCODE_FLOAT64_LESSER_OR_EQUALS:
+                        REQUIRE_OK(kefir_opt_code_builder_compare_branch(
+                            mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_FLOAT64_GREATER,
+                            negated_condition_instr->operation.parameters.refs[0],
+                            negated_condition_instr->operation.parameters.refs[1],
+                            branch_instr->operation.parameters.branch.target_block,
+                            branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
+                        break;
+
                     case KEFIR_OPT_OPCODE_BOOL_NOT:
                         REQUIRE_OK(kefir_opt_code_container_instr(&func->code,
                                                                   negated_condition_instr->operation.parameters.refs[0],
@@ -416,6 +501,51 @@ static kefir_result_t cmp_branch_fuse_apply(struct kefir_mem *mem, const struct 
                             case KEFIR_OPT_OPCODE_FLOAT32_LESSER_OR_EQUALS:
                                 REQUIRE_OK(kefir_opt_code_builder_compare_branch(
                                     mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_FLOAT32_LESS_OR_EQUALS,
+                                    negated_condition_instr->operation.parameters.refs[0],
+                                    negated_condition_instr->operation.parameters.refs[1],
+                                    branch_instr->operation.parameters.branch.target_block,
+                                    branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
+                                break;
+
+                            case KEFIR_OPT_OPCODE_FLOAT64_EQUALS:
+                                REQUIRE_OK(kefir_opt_code_builder_compare_branch(
+                                    mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_FLOAT64_EQUALS,
+                                    negated_condition_instr->operation.parameters.refs[0],
+                                    negated_condition_instr->operation.parameters.refs[1],
+                                    branch_instr->operation.parameters.branch.target_block,
+                                    branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
+                                break;
+
+                            case KEFIR_OPT_OPCODE_FLOAT64_GREATER:
+                                REQUIRE_OK(kefir_opt_code_builder_compare_branch(
+                                    mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_FLOAT64_GREATER,
+                                    negated_condition_instr->operation.parameters.refs[0],
+                                    negated_condition_instr->operation.parameters.refs[1],
+                                    branch_instr->operation.parameters.branch.target_block,
+                                    branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
+                                break;
+
+                            case KEFIR_OPT_OPCODE_FLOAT64_GREATER_OR_EQUALS:
+                                REQUIRE_OK(kefir_opt_code_builder_compare_branch(
+                                    mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_FLOAT64_GREATER_OR_EQUALS,
+                                    negated_condition_instr->operation.parameters.refs[0],
+                                    negated_condition_instr->operation.parameters.refs[1],
+                                    branch_instr->operation.parameters.branch.target_block,
+                                    branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
+                                break;
+
+                            case KEFIR_OPT_OPCODE_FLOAT64_LESSER:
+                                REQUIRE_OK(kefir_opt_code_builder_compare_branch(
+                                    mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_FLOAT64_LESS,
+                                    negated_condition_instr->operation.parameters.refs[0],
+                                    negated_condition_instr->operation.parameters.refs[1],
+                                    branch_instr->operation.parameters.branch.target_block,
+                                    branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
+                                break;
+
+                            case KEFIR_OPT_OPCODE_FLOAT64_LESSER_OR_EQUALS:
+                                REQUIRE_OK(kefir_opt_code_builder_compare_branch(
+                                    mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_FLOAT64_LESS_OR_EQUALS,
                                     negated_condition_instr->operation.parameters.refs[0],
                                     negated_condition_instr->operation.parameters.refs[1],
                                     branch_instr->operation.parameters.branch.target_block,

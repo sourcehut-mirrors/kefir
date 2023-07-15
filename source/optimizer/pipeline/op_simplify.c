@@ -51,7 +51,9 @@ static kefir_result_t simplify_boot_not(struct kefir_mem *mem, struct kefir_opt_
         case KEFIR_OPT_OPCODE_FLOAT32_LESSER_OR_EQUALS:
         case KEFIR_OPT_OPCODE_FLOAT64_EQUALS:
         case KEFIR_OPT_OPCODE_FLOAT64_GREATER:
+        case KEFIR_OPT_OPCODE_FLOAT64_GREATER_OR_EQUALS:
         case KEFIR_OPT_OPCODE_FLOAT64_LESSER:
+        case KEFIR_OPT_OPCODE_FLOAT64_LESSER_OR_EQUALS:
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_EQUALS:
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_GREATER:
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_LESSER:
@@ -163,6 +165,60 @@ static kefir_result_t simplify_boot_or(struct kefir_mem *mem, struct kefir_opt_f
             mem, &func->code, instr->block_id, arg1->operation.parameters.refs[0], arg1->operation.parameters.refs[1],
             replacement_ref));
         REQUIRE_OK(kefir_opt_code_container_instruction_move_after(&func->code, instr->id, *replacement_ref));
+    } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_FLOAT64_GREATER) {
+        REQUIRE(arg2->operation.opcode == KEFIR_OPT_OPCODE_FLOAT64_EQUALS, KEFIR_OK);
+        REQUIRE((arg1->operation.parameters.refs[0] == arg2->operation.parameters.refs[0] &&
+                 arg1->operation.parameters.refs[1] == arg2->operation.parameters.refs[1]) ||
+                    (arg1->operation.parameters.refs[0] == arg2->operation.parameters.refs[1] &&
+                     arg1->operation.parameters.refs[1] == arg2->operation.parameters.refs[0]),
+                KEFIR_OK);
+
+        REQUIRE_OK(kefir_opt_code_builder_float64_greater_or_equals(
+            mem, &func->code, instr->block_id, arg1->operation.parameters.refs[0], arg1->operation.parameters.refs[1],
+            replacement_ref));
+        REQUIRE_OK(kefir_opt_code_container_instruction_move_after(&func->code, instr->id, *replacement_ref));
+    } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_FLOAT64_LESSER) {
+        REQUIRE(arg2->operation.opcode == KEFIR_OPT_OPCODE_FLOAT64_EQUALS, KEFIR_OK);
+        REQUIRE((arg1->operation.parameters.refs[0] == arg2->operation.parameters.refs[0] &&
+                 arg1->operation.parameters.refs[1] == arg2->operation.parameters.refs[1]) ||
+                    (arg1->operation.parameters.refs[0] == arg2->operation.parameters.refs[1] &&
+                     arg1->operation.parameters.refs[1] == arg2->operation.parameters.refs[0]),
+                KEFIR_OK);
+
+        REQUIRE_OK(kefir_opt_code_builder_float64_lesser_or_equals(
+            mem, &func->code, instr->block_id, arg1->operation.parameters.refs[0], arg1->operation.parameters.refs[1],
+            replacement_ref));
+        REQUIRE_OK(kefir_opt_code_container_instruction_move_after(&func->code, instr->id, *replacement_ref));
+    } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_LONG_DOUBLE_GREATER) {
+        REQUIRE(arg2->operation.opcode == KEFIR_OPT_OPCODE_LONG_DOUBLE_EQUALS, KEFIR_OK);
+        REQUIRE((arg1->operation.parameters.refs[0] == arg2->operation.parameters.refs[0] &&
+                 arg1->operation.parameters.refs[1] == arg2->operation.parameters.refs[1]) ||
+                    (arg1->operation.parameters.refs[0] == arg2->operation.parameters.refs[1] &&
+                     arg1->operation.parameters.refs[1] == arg2->operation.parameters.refs[0]),
+                KEFIR_OK);
+
+        kefir_opt_instruction_ref_t cmp_ref;
+        REQUIRE_OK(kefir_opt_code_builder_long_double_lesser(mem, &func->code, instr->block_id,
+                                                             arg1->operation.parameters.refs[0],
+                                                             arg1->operation.parameters.refs[1], &cmp_ref));
+        REQUIRE_OK(kefir_opt_code_builder_bool_not(mem, &func->code, instr->block_id, cmp_ref, replacement_ref));
+        REQUIRE_OK(kefir_opt_code_container_instruction_move_after(&func->code, instr->id, cmp_ref));
+        REQUIRE_OK(kefir_opt_code_container_instruction_move_after(&func->code, cmp_ref, *replacement_ref));
+    } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_LONG_DOUBLE_LESSER) {
+        REQUIRE(arg2->operation.opcode == KEFIR_OPT_OPCODE_LONG_DOUBLE_EQUALS, KEFIR_OK);
+        REQUIRE((arg1->operation.parameters.refs[0] == arg2->operation.parameters.refs[0] &&
+                 arg1->operation.parameters.refs[1] == arg2->operation.parameters.refs[1]) ||
+                    (arg1->operation.parameters.refs[0] == arg2->operation.parameters.refs[1] &&
+                     arg1->operation.parameters.refs[1] == arg2->operation.parameters.refs[0]),
+                KEFIR_OK);
+
+        kefir_opt_instruction_ref_t cmp_ref;
+        REQUIRE_OK(kefir_opt_code_builder_long_double_greater(mem, &func->code, instr->block_id,
+                                                              arg1->operation.parameters.refs[0],
+                                                              arg1->operation.parameters.refs[1], &cmp_ref));
+        REQUIRE_OK(kefir_opt_code_builder_bool_not(mem, &func->code, instr->block_id, cmp_ref, replacement_ref));
+        REQUIRE_OK(kefir_opt_code_container_instruction_move_after(&func->code, instr->id, cmp_ref));
+        REQUIRE_OK(kefir_opt_code_container_instruction_move_after(&func->code, cmp_ref, *replacement_ref));
     }
 
     return KEFIR_OK;

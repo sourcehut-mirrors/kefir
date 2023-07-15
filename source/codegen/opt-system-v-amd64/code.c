@@ -447,9 +447,11 @@ static kefir_result_t translate_instr(struct kefir_mem *mem, struct kefir_codege
         case KEFIR_OPT_OPCODE_FLOAT32_GREATER:
         case KEFIR_OPT_OPCODE_FLOAT32_GREATER_OR_EQUALS:
         case KEFIR_OPT_OPCODE_FLOAT64_GREATER:
+        case KEFIR_OPT_OPCODE_FLOAT64_GREATER_OR_EQUALS:
         case KEFIR_OPT_OPCODE_FLOAT32_LESSER:
         case KEFIR_OPT_OPCODE_FLOAT32_LESSER_OR_EQUALS:
         case KEFIR_OPT_OPCODE_FLOAT64_LESSER:
+        case KEFIR_OPT_OPCODE_FLOAT64_LESSER_OR_EQUALS:
             REQUIRE_OK(INVOKE_TRANSLATOR(float_comparison));
             break;
 
