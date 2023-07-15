@@ -53,6 +53,7 @@ kefir_result_t kefir_optimizer_pipeline_apply_function(struct kefir_mem *, const
 DECLARE_PASS(Noop);
 DECLARE_PASS(CompareBranchFuse);
 DECLARE_PASS(OpSimplify);
+DECLARE_PASS(ConstFold);
 #undef DECLARE_PASS
 #endif
 

@@ -307,7 +307,7 @@ static kefir_result_t format_operation_immediate(struct kefir_json_output *json,
             break;
 
         case KEFIR_OPT_OPCODE_UINT_CONST:
-            REQUIRE_OK(kefir_json_output_integer(json, oper->parameters.imm.uinteger));
+            REQUIRE_OK(kefir_json_output_uinteger(json, oper->parameters.imm.uinteger));
             break;
 
         case KEFIR_OPT_OPCODE_FLOAT32_CONST:

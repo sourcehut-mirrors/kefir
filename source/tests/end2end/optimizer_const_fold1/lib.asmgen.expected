@@ -1,0 +1,564 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global int_or
+.global int_add
+.global int_and
+.global int_div
+.global int_mod
+.global int_mul
+.global int_neg
+.global int_not
+.global int_shl
+.global int_shr
+.global int_sub
+.global int_xor
+.global int_ashr
+.global int_div2
+.global int_div3
+.global int_less
+.global int_mod2
+.global int_mod3
+.global int_sub2
+.global int_above
+.global int_ashr2
+.global int_below
+.global int_less2
+.global truct1bit
+.global int_above2
+.global int_below2
+.global int_equals
+.global truct1bit2
+.global int_equals2
+.global int_equals3
+.global int_greater
+.global int_less_or_equals2
+.global int_greater_or_equals2
+.global sign_extend16
+.global sign_extend32
+.global int_greater2
+.global sign_extend8
+.global zero_extend8
+.global int_below_or_equals
+.global int_less_or_equals
+.global int_greater_or_equals
+.global zero_extend16
+.global zero_extend32
+.global int_above_or_equals
+.global int_below_or_equals2
+.global int_above_or_equals2
+.extern __kefirrt_opt_save_registers
+.extern __kefirrt_opt_load_int_vararg
+.extern __kefirrt_opt_load_sse_vararg
+.extern __kefirrt_opt_float32_to_uint
+.extern __kefirrt_opt_float64_to_uint
+.extern __kefirrt_opt_long_double_to_int
+
+.section .text
+int_or:
+    push %rbp
+    mov %rsp, %rbp
+__kefir_func_int_or_block0:
+    movabs $3741317886, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+int_add:
+    push %rbp
+    mov %rsp, %rbp
+__kefir_func_int_add_block0:
+    mov $14, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+int_and:
+    push %rbp
+    mov %rsp, %rbp
+__kefir_func_int_and_block0:
+    movabs $3400302782, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+int_div:
+    push %rbp
+    mov %rsp, %rbp
+__kefir_func_int_div_block0:
+    mov $-50, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+int_mod:
+    push %rbp
+    mov %rsp, %rbp
+__kefir_func_int_mod_block0:
+    mov $19, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+int_mul:
+    push %rbp
+    mov %rsp, %rbp
+__kefir_func_int_mul_block0:
+    mov $3000, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+int_neg:
+    push %rbp
+    mov %rsp, %rbp
+__kefir_func_int_neg_block0:
+    mov $-1234, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+int_not:
+    push %rbp
+    mov %rsp, %rbp
+__kefir_func_int_not_block0:
+    mov $-1235, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+int_shl:
+    push %rbp
+    mov %rsp, %rbp
+__kefir_func_int_shl_block0:
+    mov $4096, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+int_shr:
+    push %rbp
+    mov %rsp, %rbp
+__kefir_func_int_shr_block0:
+    movabs $4611686018427387903, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+int_sub:
+    push %rbp
+    mov %rsp, %rbp
+__kefir_func_int_sub_block0:
+    mov $-150, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+int_xor:
+    push %rbp
+    mov %rsp, %rbp
+__kefir_func_int_xor_block0:
+    mov $341015104, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+int_ashr:
+    push %rbp
+    mov %rsp, %rbp
+__kefir_func_int_ashr_block0:
+    mov $-1, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+int_div2:
+    push %rbp
+    mov %rsp, %rbp
+__kefir_func_int_div2_block0:
+    mov $0, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+int_div3:
+    push %rbp
+    mov %rsp, %rbp
+__kefir_func_int_div3_block0:
+    mov $25, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+int_less:
+    push %rbp
+    mov %rsp, %rbp
+__kefir_func_int_less_block0:
+    mov $1, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+int_mod2:
+    push %rbp
+    mov %rsp, %rbp
+__kefir_func_int_mod2_block0:
+    mov $-19, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+int_mod3:
+    push %rbp
+    mov %rsp, %rbp
+__kefir_func_int_mod3_block0:
+    mov $2147483647, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+int_sub2:
+    push %rbp
+    mov %rsp, %rbp
+__kefir_func_int_sub2_block0:
+    movabs $18446744073709551615, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+int_above:
+    push %rbp
+    mov %rsp, %rbp
+__kefir_func_int_above_block0:
+    mov $1, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+int_ashr2:
+    push %rbp
+    mov %rsp, %rbp
+__kefir_func_int_ashr2_block0:
+    mov $-256, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+int_below:
+    push %rbp
+    mov %rsp, %rbp
+__kefir_func_int_below_block0:
+    mov $0, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+int_less2:
+    push %rbp
+    mov %rsp, %rbp
+__kefir_func_int_less2_block0:
+    mov $0, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+truct1bit:
+    push %rbp
+    mov %rsp, %rbp
+__kefir_func_truct1bit_block0:
+    mov $1, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+int_above2:
+    push %rbp
+    mov %rsp, %rbp
+__kefir_func_int_above2_block0:
+    mov $0, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+int_below2:
+    push %rbp
+    mov %rsp, %rbp
+__kefir_func_int_below2_block0:
+    mov $1, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+int_equals:
+    push %rbp
+    mov %rsp, %rbp
+__kefir_func_int_equals_block0:
+    mov $1, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+truct1bit2:
+    push %rbp
+    mov %rsp, %rbp
+__kefir_func_truct1bit2_block0:
+    mov $0, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+int_equals2:
+    push %rbp
+    mov %rsp, %rbp
+__kefir_func_int_equals2_block0:
+    mov $0, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+int_equals3:
+    push %rbp
+    mov %rsp, %rbp
+__kefir_func_int_equals3_block0:
+    mov $1, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+int_greater:
+    push %rbp
+    mov %rsp, %rbp
+__kefir_func_int_greater_block0:
+    mov $0, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+int_less_or_equals2:
+    push %rbp
+    mov %rsp, %rbp
+__kefir_func_int_less_or_equals2_block0:
+    mov $0, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+int_greater_or_equals2:
+    push %rbp
+    mov %rsp, %rbp
+__kefir_func_int_greater_or_equals2_block0:
+    mov $0, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+sign_extend16:
+    push %rbp
+    mov %rsp, %rbp
+__kefir_func_sign_extend16_block0:
+    mov $-28674, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+sign_extend32:
+    push %rbp
+    mov %rsp, %rbp
+__kefir_func_sign_extend32_block0:
+    mov $-2, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+int_greater2:
+    push %rbp
+    mov %rsp, %rbp
+__kefir_func_int_greater2_block0:
+    mov $1, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+sign_extend8:
+    push %rbp
+    mov %rsp, %rbp
+__kefir_func_sign_extend8_block0:
+    mov $-128, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+zero_extend8:
+    push %rbp
+    mov %rsp, %rbp
+__kefir_func_zero_extend8_block0:
+    mov $128, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+int_below_or_equals:
+    push %rbp
+    mov %rsp, %rbp
+__kefir_func_int_below_or_equals_block0:
+    mov $1, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+int_less_or_equals:
+    push %rbp
+    mov %rsp, %rbp
+__kefir_func_int_less_or_equals_block0:
+    mov $1, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+int_greater_or_equals:
+    push %rbp
+    mov %rsp, %rbp
+__kefir_func_int_greater_or_equals_block0:
+    mov $1, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+zero_extend16:
+    push %rbp
+    mov %rsp, %rbp
+__kefir_func_zero_extend16_block0:
+    mov $36862, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+zero_extend32:
+    push %rbp
+    mov %rsp, %rbp
+__kefir_func_zero_extend32_block0:
+    movabs $4294967294, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+int_above_or_equals:
+    push %rbp
+    mov %rsp, %rbp
+__kefir_func_int_above_or_equals_block0:
+    mov $1, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+int_below_or_equals2:
+    push %rbp
+    mov %rsp, %rbp
+__kefir_func_int_below_or_equals2_block0:
+    mov $0, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+int_above_or_equals2:
+    push %rbp
+    mov %rsp, %rbp
+__kefir_func_int_above_or_equals2_block0:
+    mov $0, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+.section .text
+
+
