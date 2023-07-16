@@ -17,6 +17,7 @@
          float f;         \
      }){.l = 2139095039}) \
          .f)
+#define __SIZEOF_SHORT__ 2
 #define __SIZEOF_INT__ 4
 #define __SIZEOF_LONG_LONG__ 8
 #define __FUNCTION__ __func__
