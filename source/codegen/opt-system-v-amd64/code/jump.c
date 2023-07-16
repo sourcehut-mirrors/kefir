@@ -282,7 +282,8 @@ DEFINE_TRANSLATOR(jump) {
                         mem, &codegen->xasmgen, &codegen_func->storage, &codegen_func->stack_frame_map,
                         KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_FLOATING_POINTER_REGISTER |
                             KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_REGISTER_ALLOCATION_RDONLY,
-                        arg1_allocation, &arg1_handle, NULL, NULL));
+                        arg1_allocation, &arg1_handle, kefir_codegen_opt_sysv_amd64_storage_filter_regs_allocation,
+                        (const struct kefir_codegen_opt_sysv_amd64_register_allocation *[]){arg2_allocation, NULL}));
 
                     REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_acquire(
                         mem, &codegen->xasmgen, &codegen_func->storage, &codegen_func->stack_frame_map,
@@ -311,7 +312,8 @@ DEFINE_TRANSLATOR(jump) {
                         mem, &codegen->xasmgen, &codegen_func->storage, &codegen_func->stack_frame_map,
                         KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_FLOATING_POINTER_REGISTER |
                             KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_REGISTER_ALLOCATION_RDONLY,
-                        arg1_allocation, &arg1_handle, NULL, NULL));
+                        arg1_allocation, &arg1_handle, kefir_codegen_opt_sysv_amd64_storage_filter_regs_allocation,
+                        (const struct kefir_codegen_opt_sysv_amd64_register_allocation *[]){arg2_allocation, NULL}));
 
                     REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_acquire(
                         mem, &codegen->xasmgen, &codegen_func->storage, &codegen_func->stack_frame_map,
@@ -338,7 +340,8 @@ DEFINE_TRANSLATOR(jump) {
                         mem, &codegen->xasmgen, &codegen_func->storage, &codegen_func->stack_frame_map,
                         KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_FLOATING_POINTER_REGISTER |
                             KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_REGISTER_ALLOCATION_RDONLY,
-                        arg1_allocation, &arg1_handle, NULL, NULL));
+                        arg1_allocation, &arg1_handle, kefir_codegen_opt_sysv_amd64_storage_filter_regs_allocation,
+                        (const struct kefir_codegen_opt_sysv_amd64_register_allocation *[]){arg2_allocation, NULL}));
 
                     REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_acquire(
                         mem, &codegen->xasmgen, &codegen_func->storage, &codegen_func->stack_frame_map,
@@ -365,7 +368,8 @@ DEFINE_TRANSLATOR(jump) {
                         mem, &codegen->xasmgen, &codegen_func->storage, &codegen_func->stack_frame_map,
                         KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_FLOATING_POINTER_REGISTER |
                             KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_ACQUIRE_REGISTER_ALLOCATION_RDONLY,
-                        arg1_allocation, &arg1_handle, NULL, NULL));
+                        arg1_allocation, &arg1_handle, kefir_codegen_opt_sysv_amd64_storage_filter_regs_allocation,
+                        (const struct kefir_codegen_opt_sysv_amd64_register_allocation *[]){arg2_allocation, NULL}));
 
                     REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_acquire(
                         mem, &codegen->xasmgen, &codegen_func->storage, &codegen_func->stack_frame_map,
