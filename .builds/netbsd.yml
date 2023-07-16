@@ -1,0 +1,16 @@
+image: netbsd/9.x
+packages:
+  - gmake
+  - binutils
+  - bash
+sources:
+  - https://git.sr.ht/~jprotopopov/kefir
+tasks:
+  - test: |
+      cd kefir
+      export LC_ALL=C.UTF-8
+      gmake test all CC=gcc AS=gas PLATFORM=netbsd OPT=-O3
+triggers:
+  - action: email
+    condition: failure
+    to: jevgenij@protopopov.lv
