@@ -44,6 +44,8 @@ static kefir_result_t cmp_branch_fuse_apply(struct kefir_mem *mem, const struct 
         REQUIRE_OK(kefir_opt_code_container_instr(&func->code, branch_instr->operation.parameters.branch.condition_ref,
                                                   &condition_instr));
 
+        const kefir_opt_instruction_ref_t branch_instr_id = branch_instr->id;
+
         kefir_opt_instruction_ref_t replacement_ref = KEFIR_ID_NONE;
         switch (condition_instr->operation.opcode) {
             case KEFIR_OPT_OPCODE_INT_EQUALS:
@@ -570,8 +572,8 @@ static kefir_result_t cmp_branch_fuse_apply(struct kefir_mem *mem, const struct 
         }
 
         if (replacement_ref != KEFIR_ID_NONE) {
-            REQUIRE_OK(kefir_opt_code_container_replace_references(&func->code, replacement_ref, branch_instr->id));
-            REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, branch_instr->id));
+            REQUIRE_OK(kefir_opt_code_container_replace_references(&func->code, replacement_ref, branch_instr_id));
+            REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, branch_instr_id));
             REQUIRE_OK(kefir_opt_code_container_add_control(&func->code, block, replacement_ref));
         }
     }
