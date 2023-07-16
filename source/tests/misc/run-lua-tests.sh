@@ -23,7 +23,7 @@ set -xe
 
 KEFIRCC="$1"
 BUILDDIR="$2"
-LUA_VERSION="5.4.3"
+LUA_VERSION="5.4.6"
 SCRIPTDIR="$(realpath $(dirname $0))"
 
 LUA_ARCHIVE="lua-$LUA_VERSION.tar.gz"
@@ -87,9 +87,11 @@ mkdir -p bin
 popd
 
 pushd "$LUA_TESTS_DIR"
-echo "Patching Lua test suite..."
-# Patch is necessary due to musl locale quirks. The same issue arises with GCC-built Lua linked with musl
-patch < "$SCRIPTDIR/lua-$LUA_VERSION-tests.patch"
+if [ -f "$SCRIPTDIR/lua-$LUA_VERSION-tests.patch" ]; then
+	echo "Patching Lua test suite..."
+	# Patch is necessary due to musl locale quirks. The same issue arises with GCC-built Lua linked with musl
+	patch < "$SCRIPTDIR/lua-$LUA_VERSION-tests.patch"
+fi
 
 echo "Running Lua basic test suite..."
 "../$LUA_DIR/bin/lua" -e"_U=true" all.lua
