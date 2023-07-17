@@ -141,7 +141,7 @@ static kefir_result_t format_normal_parameter(struct kefir_mem *mem,
                     kefir_asm_amd64_xasmgen_operand_label(
                         &context->codegen->xasmgen_helpers.operands[1],
                         kefir_asm_amd64_xasmgen_helpers_format(&context->codegen->xasmgen_helpers,
-                                                               KEFIR_OPT_AMD64_SYSTEM_V_RUNTIME_STRING_LITERAL,
+                                                               KEFIR_OPT_AMD64_SYSTEM_V_STRING_LITERAL,
                                                                asm_param->immediate_identifier_base)),
                     asm_param->immediate_value);
                 break;

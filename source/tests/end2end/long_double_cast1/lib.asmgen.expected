@@ -31,7 +31,7 @@ __kefir_func_inc_block0:
     fstpt (%rcx)
     lea -80(%rbp), %rcx
     lea -48(%rbp), %rdx
-    fldt (__kefir_func_inc_const5)
+    fldt __kefir_func_inc_const5(%rip)
     fstpt (%rdx)
     lea -32(%rbp), %rsi
     fldt (%rdx)
@@ -200,7 +200,7 @@ __kefir_func_ldcint_block0:
     lea -32(%rbp), %rcx
     mov %rcx, %rax
     fldt (%rax)
-    call __kefirrt_opt_long_double_to_int
+    call __kefirrt_opt_long_double_to_int@PLT
     mov %rax, %rcx
     movsx %ecx, %rax
     mov %rax, %rcx
@@ -223,7 +223,7 @@ __kefir_func_ldcuint_block0:
     lea -32(%rbp), %rcx
     mov %rcx, %rax
     fldt (%rax)
-    call __kefirrt_opt_long_double_to_uint
+    call __kefirrt_opt_long_double_to_uint@PLT
     mov %rax, %rcx
     movabs $4294967295, %rdx
     and %rdx, %rcx
@@ -250,7 +250,7 @@ __kefir_func_uintcld_block0:
     add $8, %rsp
     test %rax, %rax
     jns __kefir_func_uintcld_block0_label0
-    fadds (__kefir_func_uintcld_uint2ld)
+    fadds __kefir_func_uintcld_uint2ld(%rip)
 __kefir_func_uintcld_block0_label0:
     mov %rcx, %rax
     fstpt (%rax)

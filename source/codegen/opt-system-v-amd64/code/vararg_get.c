@@ -68,8 +68,12 @@ static kefir_result_t vararg_visit_integer(const struct kefir_ir_type *type, kef
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_CALL(
         &arg->codegen->xasmgen,
-        kefir_asm_amd64_xasmgen_operand_label(&arg->codegen->xasmgen_helpers.operands[0],
-                                              KEFIR_OPT_AMD64_SYSTEM_V_RUNTIME_LOAD_INT_VARARG)));
+        kefir_asm_amd64_xasmgen_operand_label(
+            &arg->codegen->xasmgen_helpers.operands[0],
+            arg->codegen->config->position_independent_code
+                ? kefir_asm_amd64_xasmgen_helpers_format(&arg->codegen->xasmgen_helpers, KEFIR_AMD64_PLT,
+                                                         KEFIR_OPT_AMD64_SYSTEM_V_RUNTIME_LOAD_INT_VARARG)
+                : KEFIR_OPT_AMD64_SYSTEM_V_RUNTIME_LOAD_INT_VARARG)));
 
     REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_release(arg->mem, &arg->codegen->xasmgen,
                                                             &arg->codegen_func->storage, &param_handle));
@@ -112,8 +116,12 @@ static kefir_result_t vararg_visit_sse(const struct kefir_ir_type *type, kefir_s
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_CALL(
         &arg->codegen->xasmgen,
-        kefir_asm_amd64_xasmgen_operand_label(&arg->codegen->xasmgen_helpers.operands[0],
-                                              KEFIR_OPT_AMD64_SYSTEM_V_RUNTIME_LOAD_SSE_VARARG)));
+        kefir_asm_amd64_xasmgen_operand_label(
+            &arg->codegen->xasmgen_helpers.operands[0],
+            arg->codegen->config->position_independent_code
+                ? kefir_asm_amd64_xasmgen_helpers_format(&arg->codegen->xasmgen_helpers, KEFIR_AMD64_PLT,
+                                                         KEFIR_OPT_AMD64_SYSTEM_V_RUNTIME_LOAD_SSE_VARARG)
+                : KEFIR_OPT_AMD64_SYSTEM_V_RUNTIME_LOAD_SSE_VARARG)));
 
     REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_release(arg->mem, &arg->codegen->xasmgen,
                                                             &arg->codegen_func->storage, &param_handle));
@@ -573,8 +581,12 @@ static kefir_result_t vararg_visit_builtin(const struct kefir_ir_type *type, kef
 
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_CALL(
                 &arg->codegen->xasmgen,
-                kefir_asm_amd64_xasmgen_operand_label(&arg->codegen->xasmgen_helpers.operands[0],
-                                                      KEFIR_OPT_AMD64_SYSTEM_V_RUNTIME_LOAD_INT_VARARG)));
+                kefir_asm_amd64_xasmgen_operand_label(
+                    &arg->codegen->xasmgen_helpers.operands[0],
+                    arg->codegen->config->position_independent_code
+                        ? kefir_asm_amd64_xasmgen_helpers_format(&arg->codegen->xasmgen_helpers, KEFIR_AMD64_PLT,
+                                                                 KEFIR_OPT_AMD64_SYSTEM_V_RUNTIME_LOAD_INT_VARARG)
+                        : KEFIR_OPT_AMD64_SYSTEM_V_RUNTIME_LOAD_INT_VARARG)));
 
             REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_release(arg->mem, &arg->codegen->xasmgen,
                                                                     &arg->codegen_func->storage, &param_handle));

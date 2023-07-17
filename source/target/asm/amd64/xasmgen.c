@@ -1584,6 +1584,15 @@ static kefir_result_t format_att_mnemonic_suffix(struct kefir_amd64_xasmgen *xas
         return KEFIR_OK;                                                                                               \
     }
 
+#define INSTR_PREFIX0(_id, _type, _mnemonic)                                                                           \
+    static kefir_result_t amd64_instr_##_type##_##_id(struct kefir_amd64_xasmgen *xasmgen) {                           \
+        REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 assembly generator")); \
+        ASSIGN_DECL_CAST(struct xasmgen_payload *, payload, xasmgen->payload);                                         \
+        REQUIRE_OK(amd64_ident(xasmgen));                                                                              \
+        fprintf(payload->output, _mnemonic " ");                                                                       \
+        return KEFIR_OK;                                                                                               \
+    }
+
 #define INSTR0(_id, _mnemonic) \
     INSTR0_ATT(_id, _mnemonic) \
     INSTR0_INTEL(_id, _mnemonic)
@@ -1601,6 +1610,8 @@ static kefir_result_t format_att_mnemonic_suffix(struct kefir_amd64_xasmgen *xas
     INSTR3_INTEL(_id, _mnemonic)
 
 #define OPCODE_DEF(_id, _mnemonic, _argc, _class) OPCODE_DEF_##_class(_id, _mnemonic, _argc)
+#define OPCODE_DEF_prefix(_id, _mnemonic, _argc) \
+    INSTR_PREFIX##_argc(_id, intel, _mnemonic) INSTR_PREFIX##_argc(_id, att, _mnemonic)
 #define OPCODE_DEF_normal(_id, _mnemonic, _argc) INSTR##_argc(_id, _mnemonic)
 #define OPCODE_DEF_branch(_id, _mnemonic, _argc) \
     INSTR##_argc##_INTEL(_id, _mnemonic) INSTR##_argc##_ATT_BR(_id, _mnemonic)
@@ -1612,6 +1623,7 @@ KEFIR_AMD64_XASMGEN_OPCODE_DEFS(OPCODE_DEF, )
 #undef OPCODE_DEF_branch
 #undef OPCODE_DEF_normal
 #undef OPCODE_DEF_repeated
+#undef OPCODE_DEF_prefix
 #undef OPCODE_DEF
 
 #undef INSTR0

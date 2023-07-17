@@ -26,6 +26,10 @@ OPTIONS:
     -L directory                        Add directory to linker library search path
     -rpath directory                    Add directory to runtime library search path
     -static                             Produce statically linked executable
+    -fPIC | -fpic                       Produce position-independent code
+    -fno-pic                            Do not produce position-independent code [default]
+    -pie                                Produce position-independent executable (requires -fPIC)
+    -no-pie                             Do not produce position-independent executable [default]
     -nostartfiles                       Do not link start files
     -nodefaultlib                       Do not link default libraries
     -nolibc                             Do not link libc
@@ -90,6 +94,7 @@ COMPILER OPTIONS:
 
     Support code generation options:
         emulated-tls                        Use emulated TLS [disabled by default, enabled on openbsd platforms]
+        pic                                 Generate position-independent code
         syntax=SYNTAX                       Produce assembly output with specified syntax [x86_64-intel_noprefix, x86_64-intel_prefix, x86_64-att (default)]
 
     Targets (determined by platform as specified in TARGET section):

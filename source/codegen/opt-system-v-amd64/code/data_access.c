@@ -19,6 +19,7 @@
 */
 
 #include "kefir/codegen/opt-system-v-amd64/code_impl.h"
+#include "kefir/codegen/opt-system-v-amd64/runtime.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
@@ -58,14 +59,30 @@ DEFINE_TRANSLATOR(data_access) {
                 kefir_ir_module_get_named_symbol(module->ir_module, instr->operation.parameters.ir_ref);
             REQUIRE(symbol != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to find named IR symbol"));
 
-            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_LEA(
-                &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_handle.location.reg),
-                kefir_asm_amd64_xasmgen_operand_indirect(
-                    &codegen->xasmgen_helpers.operands[0],
-                    kefir_asm_amd64_xasmgen_operand_label(
-                        &codegen->xasmgen_helpers.operands[1],
-                        kefir_asm_amd64_xasmgen_helpers_format(&codegen->xasmgen_helpers, "%s", symbol)),
-                    0)));
+            if (!codegen->config->position_independent_code) {
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_LEA(
+                    &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_handle.location.reg),
+                    kefir_asm_amd64_xasmgen_operand_indirect(
+                        &codegen->xasmgen_helpers.operands[0],
+                        kefir_asm_amd64_xasmgen_operand_label(
+                            &codegen->xasmgen_helpers.operands[1],
+                            kefir_asm_amd64_xasmgen_helpers_format(&codegen->xasmgen_helpers, "%s", symbol)),
+                        0)));
+            } else if (!kefir_ir_module_has_external(module->ir_module, symbol) &&
+                       !kefir_ir_module_has_global(module->ir_module, symbol)) {
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_LEA(
+                    &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_handle.location.reg),
+                    kefir_asm_amd64_xasmgen_operand_rip_indirection(&codegen->xasmgen_helpers.operands[0], symbol)));
+            } else {
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
+                    &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_handle.location.reg),
+                    kefir_asm_amd64_xasmgen_operand_pointer(
+                        &codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_POINTER_QWORD,
+                        kefir_asm_amd64_xasmgen_operand_rip_indirection(
+                            &codegen->xasmgen_helpers.operands[1],
+                            kefir_asm_amd64_xasmgen_helpers_format(&codegen->xasmgen_helpers, KEFIR_AMD64_GOTPCREL,
+                                                                   symbol)))));
+            }
         } break;
 
         default:

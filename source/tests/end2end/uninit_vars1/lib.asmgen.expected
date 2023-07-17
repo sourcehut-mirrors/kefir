@@ -18,7 +18,7 @@ get_global_uninit_static:
     push %rbp
     mov %rsp, %rbp
 __kefir_func_get_global_uninit_static_block0:
-    lea (__kefirrt_module_static_uninit_vars), %rax
+    lea __kefirrt_module_static_uninit_vars(%rip), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -29,8 +29,9 @@ get_global_tlocal_uninit_static:
     push %rbp
     mov %rsp, %rbp
 __kefir_func_get_global_tlocal_uninit_static_block0:
-    lea (__kefirrt_module_static_tlocal_uninit_vars@tpoff), %rax
-    add %fs:0, %rax
+    data16     lea __kefirrt_module_static_tlocal_uninit_vars@tlsgd(%rip), %rdi
+    .word 26214
+    rex.W     call __tls_get_addr@PLT
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -41,8 +42,9 @@ get_local_tlocal_uninit_static:
     push %rbp
     mov %rsp, %rbp
 __kefir_func_get_local_tlocal_uninit_static_block0:
-    lea (__kefirrt_module_static_tlocal_uninit_vars@tpoff), %rax
-    add %fs:0, %rax
+    data16     lea __kefirrt_module_static_tlocal_uninit_vars@tlsgd(%rip), %rdi
+    .word 26214
+    rex.W     call __tls_get_addr@PLT
     mov $24, %rcx
     add %rcx, %rax
     lea (%rbp), %rsp
@@ -55,7 +57,7 @@ get_local_uninit_static:
     push %rbp
     mov %rsp, %rbp
 __kefir_func_get_local_uninit_static_block0:
-    lea (__kefirrt_module_static_uninit_vars), %rax
+    lea __kefirrt_module_static_uninit_vars(%rip), %rax
     mov $24, %rcx
     add %rcx, %rax
     lea (%rbp), %rsp

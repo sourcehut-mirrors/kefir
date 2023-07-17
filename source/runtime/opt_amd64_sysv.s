@@ -153,7 +153,7 @@ __kefirrt_opt_long_double_to_int:
 .global __kefirrt_opt_long_double_to_uint
 .hidden __kefirrt_opt_long_double_to_uint
 __kefirrt_opt_long_double_to_uint:
-    fld DWORD PTR __kefirrt_opt_long_double_to_uint_constant
+    fld DWORD PTR __kefirrt_opt_long_double_to_uint_constant[rip]
     fstp st(2)
     fcomi st, st(1)
     jnb __kefirrt_opt_long_double_to_uint_overflow

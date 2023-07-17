@@ -206,6 +206,9 @@ typedef enum kefir_asm_amd64_xasmgen_syntax {
 
 // clang-format off
 #define KEFIR_AMD64_XASMGEN_OPCODE_DEFS(_opcode, _separator) \
+    _opcode(data16, "data16", 0, prefix) _separator \
+    _opcode(rexW, "rex.W", 0, prefix) _separator \
+    \
     _opcode(push, "push", 1, normal) _separator \
     _opcode(pop, "pop", 1, normal) _separator \
     _opcode(pushfq, "pushfq", 0, normal) _separator \
@@ -341,6 +344,7 @@ typedef struct kefir_amd64_xasmgen {
 
     struct {
 #define OPCODE_DEF(_id, _mnemonic, _argc, _class) OPCODE_DEF_##_class(_id, _argc)
+#define OPCODE_DEF_prefix(_id, _argc) OPCODE_DEF##_argc(_id)
 #define OPCODE_DEF_normal(_id, _argc) OPCODE_DEF##_argc(_id)
 #define OPCODE_DEF_branch(_id, _argc) OPCODE_DEF##_argc(_id)
 #define OPCODE_DEF_repeated(_id, _argc) OPCODE_DEF_REPEATED##_argc(_id)
@@ -363,6 +367,7 @@ typedef struct kefir_amd64_xasmgen {
 #undef OPCODE_DEF2
 #undef OPCODE_DEF3
 #undef OPCODE_DEF_REPEATED0
+#undef OPCODE_DEF_prefix
 #undef OPCODE_DEF_normal
 #undef OPCODE_DEF_branch
 #undef OPCODE_DEF_repeated
@@ -422,6 +427,9 @@ const struct kefir_asm_amd64_xasmgen_operand *kefir_asm_amd64_xasmgen_operand_fp
 #define KEFIR_AMD64_XASMGEN_INLINE_ASSEMBLY(_xasmgen, _text) ((_xasmgen)->inline_assembly((_xasmgen), (_text)))
 #define KEFIR_AMD64_XASMGEN_FORMAT_OPERAND(_xasmgen, _op, _buf, _buflen) \
     ((_xasmgen)->format_operand((_xasmgen), (_op), (_buf), (_buflen)))
+
+#define KEFIR_AMD64_XASMGEN_INSTR_DATA16(_xasmgen) ((_xasmgen)->instr.data16((_xasmgen)))
+#define KEFIR_AMD64_XASMGEN_INSTR_REXW(_xasmgen) ((_xasmgen)->instr.rexW((_xasmgen)))
 
 #define KEFIR_AMD64_XASMGEN_INSTR_JMP(_xasmgen, _op1) ((_xasmgen)->instr.jmp((_xasmgen), (_op1)))
 #define KEFIR_AMD64_XASMGEN_INSTR_JA(_xasmgen, _op1) ((_xasmgen)->instr.ja((_xasmgen), (_op1)))

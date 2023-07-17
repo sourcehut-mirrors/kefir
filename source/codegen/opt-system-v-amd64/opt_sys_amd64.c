@@ -160,7 +160,7 @@ static kefir_result_t translate_strings(struct kefir_codegen_opt_amd64 *codegen,
             first = false;
         }
 
-        REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen->xasmgen, KEFIR_OPT_AMD64_SYSTEM_V_RUNTIME_STRING_LITERAL, id));
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen->xasmgen, KEFIR_OPT_AMD64_SYSTEM_V_STRING_LITERAL, id));
         switch (literal_type) {
             case KEFIR_IR_STRING_LITERAL_MULTIBYTE:
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(&codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_ASCII, 1,

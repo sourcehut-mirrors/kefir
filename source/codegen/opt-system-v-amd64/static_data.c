@@ -126,7 +126,7 @@ static kefir_result_t integral_static_data(const struct kefir_ir_type *type, kef
                     kefir_asm_amd64_xasmgen_operand_label(
                         &param->codegen->xasmgen_helpers.operands[1],
                         kefir_asm_amd64_xasmgen_helpers_format(&param->codegen->xasmgen_helpers,
-                                                               KEFIR_OPT_AMD64_SYSTEM_V_RUNTIME_STRING_LITERAL,
+                                                               KEFIR_OPT_AMD64_SYSTEM_V_STRING_LITERAL,
                                                                entry->value.string_ptr.id)),
                     entry->value.string_ptr.offset)));
 
@@ -243,7 +243,7 @@ static kefir_result_t word_static_data(const struct kefir_ir_type *type, kefir_s
                     kefir_asm_amd64_xasmgen_operand_label(
                         &param->codegen->xasmgen_helpers.operands[1],
                         kefir_asm_amd64_xasmgen_helpers_format(&param->codegen->xasmgen_helpers,
-                                                               KEFIR_OPT_AMD64_SYSTEM_V_RUNTIME_STRING_LITERAL,
+                                                               KEFIR_OPT_AMD64_SYSTEM_V_STRING_LITERAL,
                                                                entry->value.string_ptr.id)),
                     entry->value.pointer.offset)));
             break;

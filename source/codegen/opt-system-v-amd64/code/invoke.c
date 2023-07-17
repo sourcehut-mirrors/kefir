@@ -20,6 +20,7 @@
 
 #include "kefir/codegen/opt-system-v-amd64/code_impl.h"
 #include "kefir/codegen/opt-system-v-amd64/storage_transform.h"
+#include "kefir/codegen/opt-system-v-amd64/runtime.h"
 #include "kefir/target/abi/util.h"
 #include "kefir/target/abi/system-v-amd64/return.h"
 #include "kefir/ir/builtins.h"
@@ -823,7 +824,7 @@ static kefir_result_t unmark_argument_regs(struct kefir_mem *mem, struct kefir_o
 }
 
 static kefir_result_t invoke_impl(struct kefir_mem *mem, struct kefir_codegen_opt_amd64 *codegen,
-                                  const struct kefir_opt_function *function,
+                                  const struct kefir_opt_module *module, const struct kefir_opt_function *function,
                                   struct kefir_opt_sysv_amd64_function *codegen_func,
                                   const struct kefir_ir_function_decl *ir_func_decl,
                                   struct kefir_abi_amd64_sysv_function_decl *abi_func_decl,
@@ -874,9 +875,19 @@ static kefir_result_t invoke_impl(struct kefir_mem *mem, struct kefir_codegen_op
     // Call the function
     switch (instr->operation.opcode) {
         case KEFIR_OPT_OPCODE_INVOKE:
-            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_CALL(
-                &codegen->xasmgen,
-                kefir_asm_amd64_xasmgen_operand_label(&codegen->xasmgen_helpers.operands[0], ir_func_decl->name)));
+            if (!codegen->config->position_independent_code ||
+                (!kefir_ir_module_has_external(module->ir_module, ir_func_decl->name) &&
+                 !kefir_ir_module_has_global(module->ir_module, ir_func_decl->name))) {
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_CALL(
+                    &codegen->xasmgen,
+                    kefir_asm_amd64_xasmgen_operand_label(&codegen->xasmgen_helpers.operands[0], ir_func_decl->name)));
+            } else {
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_CALL(
+                    &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_label(
+                                           &codegen->xasmgen_helpers.operands[0],
+                                           kefir_asm_amd64_xasmgen_helpers_format(
+                                               &codegen->xasmgen_helpers, KEFIR_AMD64_PLT, ir_func_decl->name))));
+            }
             break;
 
         case KEFIR_OPT_OPCODE_INVOKE_VIRTUAL:
@@ -939,7 +950,7 @@ DEFINE_TRANSLATOR(invoke) {
         return res;
     });
 
-    res = invoke_impl(mem, codegen, function, codegen_func, ir_func_decl, &abi_func_decl, instr, call_node,
+    res = invoke_impl(mem, codegen, module, function, codegen_func, ir_func_decl, &abi_func_decl, instr, call_node,
                       result_allocation, &argument_regs);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_hashtreeset_free(mem, &argument_regs);

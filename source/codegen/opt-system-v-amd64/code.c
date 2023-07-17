@@ -814,7 +814,8 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_translate_code(struct kefir_mem *mem
         REQUIRE_OK(kefir_codegen_opt_sysv_amd64_stack_frame_save_registers(&codegen_func->stack_frame));
     }
     REQUIRE_OK(calculate_frame_temporaries(mem, module, function, func_analysis, codegen_func));
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_stack_frame_prologue(&codegen_func->stack_frame, &codegen->xasmgen));
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_stack_frame_prologue(&codegen_func->stack_frame, &codegen->xasmgen,
+                                                                 codegen->config->position_independent_code));
 
     REQUIRE_OK(
         kefir_codegen_opt_sysv_amd64_stack_frame_compute(&codegen_func->stack_frame, &codegen_func->stack_frame_map));

@@ -461,14 +461,20 @@ DEFINE_TRANSLATOR(long_double_conversion_to) {
                 &codegen->xasmgen,
                 kefir_asm_amd64_xasmgen_operand_pointer(
                     &codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_POINTER_FP_SINGLE,
-                    kefir_asm_amd64_xasmgen_operand_indirect(
-                        &codegen->xasmgen_helpers.operands[1],
-                        kefir_asm_amd64_xasmgen_operand_label(
-                            &codegen->xasmgen_helpers.operands[2],
-                            kefir_asm_amd64_xasmgen_helpers_format(
-                                &codegen->xasmgen_helpers, KEFIR_OPT_AMD64_SYSTEM_V_FUNCTION_CONSTANT_UINT_TO_LD,
-                                function->ir_func->name)),
-                        0))));
+                    codegen->config->position_independent_code
+                        ? kefir_asm_amd64_xasmgen_operand_rip_indirection(
+                              &codegen->xasmgen_helpers.operands[1],
+                              kefir_asm_amd64_xasmgen_helpers_format(
+                                  &codegen->xasmgen_helpers, KEFIR_OPT_AMD64_SYSTEM_V_FUNCTION_CONSTANT_UINT_TO_LD,
+                                  function->ir_func->name))
+                        : kefir_asm_amd64_xasmgen_operand_indirect(
+                              &codegen->xasmgen_helpers.operands[1],
+                              kefir_asm_amd64_xasmgen_operand_label(
+                                  &codegen->xasmgen_helpers.operands[2],
+                                  kefir_asm_amd64_xasmgen_helpers_format(
+                                      &codegen->xasmgen_helpers, KEFIR_OPT_AMD64_SYSTEM_V_FUNCTION_CONSTANT_UINT_TO_LD,
+                                      function->ir_func->name)),
+                              0))));
 
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen->xasmgen, KEFIR_OPT_AMD64_SYSTEM_V_FUNCTION_BLOCK_LABEL,
                                                  function->ir_func->name, instr->block_id, unsigned_label));
@@ -669,8 +675,12 @@ DEFINE_TRANSLATOR(long_double_conversion_from) {
 
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_CALL(
                 &codegen->xasmgen,
-                kefir_asm_amd64_xasmgen_operand_label(&codegen->xasmgen_helpers.operands[0],
-                                                      KEFIR_OPT_AMD64_SYSTEM_V_RUNTIME_LONG_DOUBLE_TO_INT)));
+                kefir_asm_amd64_xasmgen_operand_label(
+                    &codegen->xasmgen_helpers.operands[0],
+                    codegen->config->position_independent_code
+                        ? kefir_asm_amd64_xasmgen_helpers_format(&codegen->xasmgen_helpers, KEFIR_AMD64_PLT,
+                                                                 KEFIR_OPT_AMD64_SYSTEM_V_RUNTIME_LONG_DOUBLE_TO_INT)
+                        : KEFIR_OPT_AMD64_SYSTEM_V_RUNTIME_LONG_DOUBLE_TO_INT)));
             break;
 
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_TO_UINT:
@@ -682,8 +692,12 @@ DEFINE_TRANSLATOR(long_double_conversion_from) {
 
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_CALL(
                 &codegen->xasmgen,
-                kefir_asm_amd64_xasmgen_operand_label(&codegen->xasmgen_helpers.operands[0],
-                                                      KEFIR_OPT_AMD64_SYSTEM_V_RUNTIME_LONG_DOUBLE_TO_UINT)));
+                kefir_asm_amd64_xasmgen_operand_label(
+                    &codegen->xasmgen_helpers.operands[0],
+                    codegen->config->position_independent_code
+                        ? kefir_asm_amd64_xasmgen_helpers_format(&codegen->xasmgen_helpers, KEFIR_AMD64_PLT,
+                                                                 KEFIR_OPT_AMD64_SYSTEM_V_RUNTIME_LONG_DOUBLE_TO_UINT)
+                        : KEFIR_OPT_AMD64_SYSTEM_V_RUNTIME_LONG_DOUBLE_TO_UINT)));
             break;
 
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_TRUNCATE_1BIT:
@@ -696,7 +710,11 @@ DEFINE_TRANSLATOR(long_double_conversion_from) {
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_CALL(
                 &codegen->xasmgen,
                 kefir_asm_amd64_xasmgen_operand_label(&codegen->xasmgen_helpers.operands[0],
-                                                      KEFIR_OPT_AMD64_SYSTEM_V_RUNTIME_LONG_DOUBLE_TRUNC_1BIT)));
+                                                      codegen->config->position_independent_code
+                                                          ? kefir_asm_amd64_xasmgen_helpers_format(
+                                                                &codegen->xasmgen_helpers, KEFIR_AMD64_PLT,
+                                                                KEFIR_OPT_AMD64_SYSTEM_V_RUNTIME_LONG_DOUBLE_TRUNC_1BIT)
+                                                          : KEFIR_OPT_AMD64_SYSTEM_V_RUNTIME_LONG_DOUBLE_TRUNC_1BIT)));
             break;
 
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_TO_FLOAT32:

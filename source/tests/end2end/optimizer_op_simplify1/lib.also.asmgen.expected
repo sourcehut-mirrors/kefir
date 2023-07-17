@@ -124,7 +124,7 @@ __kefir_func_dnotld_block0:
     lea -32(%rbp), %rcx
     mov %rcx, %rax
     fldt (%rax)
-    call __kefirrt_opt_long_double_trunc_1bit
+    call __kefirrt_opt_long_double_trunc_1bit@PLT
     mov %rax, %rcx
     mov %rcx, %rax
     xor %rcx, %rcx

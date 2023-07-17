@@ -52,3 +52,4 @@
 
 // Missing declarations
 void *malloc(__SIZE_TYPE__);
+void *memset(void *, int, __SIZE_TYPE__);

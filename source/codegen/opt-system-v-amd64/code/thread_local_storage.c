@@ -24,11 +24,10 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
-static kefir_result_t normal_tls(struct kefir_mem *mem, struct kefir_codegen_opt_amd64 *codegen,
-                                 const struct kefir_opt_module *module,
-                                 struct kefir_opt_sysv_amd64_function *codegen_func,
-                                 const struct kefir_opt_instruction *instr,
-                                 const struct kefir_codegen_opt_sysv_amd64_register_allocation *result_allocation) {
+static kefir_result_t initial_exec_tls(
+    struct kefir_mem *mem, struct kefir_codegen_opt_amd64 *codegen, const struct kefir_opt_module *module,
+    struct kefir_opt_sysv_amd64_function *codegen_func, const struct kefir_opt_instruction *instr,
+    const struct kefir_codegen_opt_sysv_amd64_register_allocation *result_allocation) {
 
     struct kefir_codegen_opt_amd64_sysv_storage_handle result_handle;
     REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_acquire(
@@ -40,7 +39,7 @@ static kefir_result_t normal_tls(struct kefir_mem *mem, struct kefir_codegen_opt
     const char *identifier = kefir_ir_module_get_named_symbol(module->ir_module, instr->operation.parameters.ir_ref);
     REQUIRE(identifier != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to find named IR symbol"));
 
-    if (!kefir_ir_module_has_external(module->ir_module, identifier)) {
+    if (!kefir_ir_module_has_external(module->ir_module, identifier) && !codegen->config->position_independent_code) {
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_LEA(
             &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_handle.location.reg),
             kefir_asm_amd64_xasmgen_operand_indirect(
@@ -81,11 +80,11 @@ static kefir_result_t normal_tls(struct kefir_mem *mem, struct kefir_codegen_opt
     return KEFIR_OK;
 }
 
-static kefir_result_t emulated_tls(struct kefir_codegen_opt_amd64 *codegen, const struct kefir_opt_module *module,
-                                   struct kefir_opt_sysv_amd64_function *codegen_func,
-                                   const struct kefir_opt_instruction *instr,
-                                   const struct kefir_codegen_opt_sysv_amd64_register_allocation *result_allocation) {
-    kefir_int64_t offset = 0;
+static kefir_result_t save_regs(struct kefir_codegen_opt_amd64 *codegen,
+                                struct kefir_opt_sysv_amd64_function *codegen_func,
+                                const struct kefir_codegen_opt_sysv_amd64_register_allocation *result_allocation,
+                                kefir_int64_t *offset_ptr) {
+    *offset_ptr = 0;
     for (kefir_size_t i = 0; i < KefirCodegenOptSysvAmd64StackFrameNumOfCallerSavedRegs; i++) {
         kefir_asm_amd64_xasmgen_register_t reg = KefirCodegenOptSysvAmd64StackFrameCallerSavedRegs[i];
         if (result_allocation->result.type ==
@@ -112,45 +111,23 @@ static kefir_result_t emulated_tls(struct kefir_codegen_opt_amd64 *codegen, cons
                     kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP), 0),
                 kefir_asm_amd64_xasmgen_operand_reg(reg)));
         }
-        offset += KEFIR_AMD64_SYSV_ABI_QWORD;
+        *offset_ptr += KEFIR_AMD64_SYSV_ABI_QWORD;
     }
 
-    kefir_int64_t aligned_offset = kefir_target_abi_pad_aligned(offset, 2 * KEFIR_AMD64_SYSV_ABI_QWORD);
-    if (aligned_offset > offset) {
+    kefir_int64_t aligned_offset = kefir_target_abi_pad_aligned(*offset_ptr, 2 * KEFIR_AMD64_SYSV_ABI_QWORD);
+    if (aligned_offset > *offset_ptr) {
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_SUB(
             &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
-            kefir_asm_amd64_xasmgen_operand_imm(&codegen->xasmgen_helpers.operands[0], aligned_offset - offset)));
+            kefir_asm_amd64_xasmgen_operand_imm(&codegen->xasmgen_helpers.operands[0], aligned_offset - *offset_ptr)));
     }
+    return KEFIR_OK;
+}
 
-    const char *identifier = kefir_ir_module_get_named_symbol(module->ir_module, instr->operation.parameters.ir_ref);
-    REQUIRE(identifier != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to find named IR symbol"));
-
-    if (!kefir_ir_module_has_external(module->ir_module, identifier)) {
-        REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_LEA(
-            &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RDI),
-            kefir_asm_amd64_xasmgen_operand_indirect(
-                &codegen->xasmgen_helpers.operands[0],
-                kefir_asm_amd64_xasmgen_operand_label(&codegen->xasmgen_helpers.operands[1],
-                                                      kefir_asm_amd64_xasmgen_helpers_format(
-                                                          &codegen->xasmgen_helpers, KEFIR_AMD64_EMUTLS_V, identifier)),
-                0)));
-    } else {
-        REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
-            &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RDI),
-            kefir_asm_amd64_xasmgen_operand_pointer(
-                &codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_POINTER_QWORD,
-                kefir_asm_amd64_xasmgen_operand_rip_indirection(
-                    &codegen->xasmgen_helpers.operands[1],
-                    kefir_asm_amd64_xasmgen_helpers_format(&codegen->xasmgen_helpers, KEFIR_AMD64_EMUTLS_GOT,
-                                                           identifier)))));
-    }
-    REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_CALL(
-        &codegen->xasmgen,
-        kefir_asm_amd64_xasmgen_operand_label(&codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_EMUTLS_GET_ADDR)));
-
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_store_reg_allocation(codegen, &codegen_func->stack_frame_map,
-                                                                 result_allocation, KEFIR_AMD64_XASMGEN_REGISTER_RAX));
-
+static kefir_result_t restore_regs(struct kefir_codegen_opt_amd64 *codegen,
+                                   struct kefir_opt_sysv_amd64_function *codegen_func,
+                                   const struct kefir_codegen_opt_sysv_amd64_register_allocation *result_allocation,
+                                   kefir_int64_t offset) {
+    kefir_int64_t aligned_offset = kefir_target_abi_pad_aligned(offset, 2 * KEFIR_AMD64_SYSV_ABI_QWORD);
     if (aligned_offset > offset) {
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_ADD(
             &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
@@ -188,6 +165,78 @@ static kefir_result_t emulated_tls(struct kefir_codegen_opt_amd64 *codegen, cons
     return KEFIR_OK;
 }
 
+static kefir_result_t general_dynamic_tls(
+    struct kefir_codegen_opt_amd64 *codegen, const struct kefir_opt_module *module,
+    struct kefir_opt_sysv_amd64_function *codegen_func, const struct kefir_opt_instruction *instr,
+    const struct kefir_codegen_opt_sysv_amd64_register_allocation *result_allocation) {
+    kefir_int64_t offset;
+    REQUIRE_OK(save_regs(codegen, codegen_func, result_allocation, &offset));
+
+    const char *identifier = kefir_ir_module_get_named_symbol(module->ir_module, instr->operation.parameters.ir_ref);
+    REQUIRE(identifier != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to find named IR symbol"));
+
+    REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_DATA16(&codegen->xasmgen));
+    REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_LEA(
+        &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RDI),
+        kefir_asm_amd64_xasmgen_operand_rip_indirection(
+            &codegen->xasmgen_helpers.operands[0],
+            kefir_asm_amd64_xasmgen_helpers_format(&codegen->xasmgen_helpers, KEFIR_AMD64_TLSGD, identifier))));
+
+    REQUIRE_OK(
+        KEFIR_AMD64_XASMGEN_DATA(&codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_WORD, 1,
+                                 kefir_asm_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[0], 0x6666)));
+    REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_REXW(&codegen->xasmgen));
+    REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_CALL(
+        &codegen->xasmgen,
+        kefir_asm_amd64_xasmgen_operand_label(&codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_TLS_GET_ADDR)));
+
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_store_reg_allocation(codegen, &codegen_func->stack_frame_map,
+                                                                 result_allocation, KEFIR_AMD64_XASMGEN_REGISTER_RAX));
+
+    REQUIRE_OK(restore_regs(codegen, codegen_func, result_allocation, offset));
+    return KEFIR_OK;
+}
+
+static kefir_result_t emulated_tls(struct kefir_codegen_opt_amd64 *codegen, const struct kefir_opt_module *module,
+                                   struct kefir_opt_sysv_amd64_function *codegen_func,
+                                   const struct kefir_opt_instruction *instr,
+                                   const struct kefir_codegen_opt_sysv_amd64_register_allocation *result_allocation) {
+    kefir_int64_t offset;
+    REQUIRE_OK(save_regs(codegen, codegen_func, result_allocation, &offset));
+
+    const char *identifier = kefir_ir_module_get_named_symbol(module->ir_module, instr->operation.parameters.ir_ref);
+    REQUIRE(identifier != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to find named IR symbol"));
+
+    if (!kefir_ir_module_has_external(module->ir_module, identifier) && !codegen->config->position_independent_code) {
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_LEA(
+            &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RDI),
+            kefir_asm_amd64_xasmgen_operand_indirect(
+                &codegen->xasmgen_helpers.operands[0],
+                kefir_asm_amd64_xasmgen_operand_label(&codegen->xasmgen_helpers.operands[1],
+                                                      kefir_asm_amd64_xasmgen_helpers_format(
+                                                          &codegen->xasmgen_helpers, KEFIR_AMD64_EMUTLS_V, identifier)),
+                0)));
+    } else {
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
+            &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RDI),
+            kefir_asm_amd64_xasmgen_operand_pointer(
+                &codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_POINTER_QWORD,
+                kefir_asm_amd64_xasmgen_operand_rip_indirection(
+                    &codegen->xasmgen_helpers.operands[1],
+                    kefir_asm_amd64_xasmgen_helpers_format(&codegen->xasmgen_helpers, KEFIR_AMD64_EMUTLS_GOT,
+                                                           identifier)))));
+    }
+    REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_CALL(
+        &codegen->xasmgen,
+        kefir_asm_amd64_xasmgen_operand_label(&codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_EMUTLS_GET_ADDR)));
+
+    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_store_reg_allocation(codegen, &codegen_func->stack_frame_map,
+                                                                 result_allocation, KEFIR_AMD64_XASMGEN_REGISTER_RAX));
+
+    REQUIRE_OK(restore_regs(codegen, codegen_func, result_allocation, offset));
+    return KEFIR_OK;
+}
+
 DEFINE_TRANSLATOR(thread_local_storage) {
     DEFINE_TRANSLATOR_PROLOGUE;
 
@@ -197,10 +246,13 @@ DEFINE_TRANSLATOR(thread_local_storage) {
     const struct kefir_codegen_opt_sysv_amd64_register_allocation *result_allocation = NULL;
     REQUIRE_OK(kefir_codegen_opt_sysv_amd64_register_allocation_of(&codegen_func->register_allocator, instr_ref,
                                                                    &result_allocation));
-    if (!codegen->config->emulated_tls) {
-        REQUIRE_OK(normal_tls(mem, codegen, module, codegen_func, instr, result_allocation));
-    } else {
+
+    if (codegen->config->emulated_tls) {
         REQUIRE_OK(emulated_tls(codegen, module, codegen_func, instr, result_allocation));
+    } else if (codegen->config->position_independent_code) {
+        REQUIRE_OK(general_dynamic_tls(codegen, module, codegen_func, instr, result_allocation));
+    } else {
+        REQUIRE_OK(initial_exec_tls(mem, codegen, module, codegen_func, instr, result_allocation));
     }
     return KEFIR_OK;
 }

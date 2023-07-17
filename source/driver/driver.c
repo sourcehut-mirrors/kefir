@@ -56,6 +56,7 @@ static kefir_result_t driver_generate_linker_config(struct kefir_mem *mem, struc
                                                     const struct kefir_driver_external_resources *externals,
                                                     struct kefir_driver_linker_configuration *linker_config) {
     linker_config->flags.static_linking = config->flags.static_linking;
+    linker_config->flags.pie_linking = config->flags.position_independent_executable;
     linker_config->flags.link_start_files = config->flags.link_start_files;
     linker_config->flags.link_default_libs = config->flags.link_default_libs;
     linker_config->flags.link_libc = config->flags.link_libc;
@@ -175,6 +176,12 @@ static kefir_result_t driver_generate_compiler_config(struct kefir_mem *mem, str
     }
 
     compiler_config->internals.flat_local_scope_layout = false;
+
+    compiler_config->codegen.position_independent_code = config->flags.position_independent_code;
+    if (compiler_config->codegen.position_independent_code) {
+        REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__pic__", "2"));
+        REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__PIC__", "2"));
+    }
 
     struct kefir_list_entry *include_insert_iter = NULL;
     for (const struct kefir_list_entry *iter = kefir_list_head(&config->include_directories); iter != NULL;

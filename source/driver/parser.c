@@ -138,6 +138,10 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_symbo
             }
 
             config->compiler.optimization_level = (kefir_int_t) level;
+        } else if (strcmp("-fPIC", arg) == 0 || strcmp("-fpic", arg) == 0) {
+            config->flags.position_independent_code = true;
+        } else if (strcmp("-fno-pic", arg) == 0) {
+            config->flags.position_independent_code = false;
         }
 
         // Preprocessor flags
@@ -266,6 +270,12 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_symbo
         } else if (strcmp("-static", arg) == 0) {
             // Static linking
             config->flags.static_linking = true;
+        } else if (strcmp("-pie", arg) == 0) {
+            // Position-independent executable
+            config->flags.position_independent_executable = true;
+        } else if (strcmp("-no-pie", arg) == 0) {
+            // Position-independent executable
+            config->flags.position_independent_executable = false;
         } else if (strcmp("-nostartfiles", arg) == 0) {
             // Do not link start files
             config->flags.link_start_files = false;

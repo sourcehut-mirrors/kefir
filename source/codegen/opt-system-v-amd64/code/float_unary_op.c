@@ -53,14 +53,20 @@ DEFINE_TRANSLATOR(float_unary_op) {
                 &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_handle.location.reg),
                 kefir_asm_amd64_xasmgen_operand_pointer(
                     &codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_POINTER_XMMWORD,
-                    kefir_asm_amd64_xasmgen_operand_indirect(
-                        &codegen->xasmgen_helpers.operands[1],
-                        kefir_asm_amd64_xasmgen_operand_label(
-                            &codegen->xasmgen_helpers.operands[2],
-                            kefir_asm_amd64_xasmgen_helpers_format(
-                                &codegen->xasmgen_helpers, KEFIR_OPT_AMD64_SYSTEM_V_FUNCTION_CONSTANT_FLOAT32_NEG,
-                                function->ir_func->name)),
-                        0))));
+                    codegen->config->position_independent_code
+                        ? kefir_asm_amd64_xasmgen_operand_rip_indirection(
+                              &codegen->xasmgen_helpers.operands[1],
+                              kefir_asm_amd64_xasmgen_helpers_format(
+                                  &codegen->xasmgen_helpers, KEFIR_OPT_AMD64_SYSTEM_V_FUNCTION_CONSTANT_FLOAT32_NEG,
+                                  function->ir_func->name))
+                        : kefir_asm_amd64_xasmgen_operand_indirect(
+                              &codegen->xasmgen_helpers.operands[1],
+                              kefir_asm_amd64_xasmgen_operand_label(
+                                  &codegen->xasmgen_helpers.operands[2],
+                                  kefir_asm_amd64_xasmgen_helpers_format(
+                                      &codegen->xasmgen_helpers, KEFIR_OPT_AMD64_SYSTEM_V_FUNCTION_CONSTANT_FLOAT32_NEG,
+                                      function->ir_func->name)),
+                              0))));
             break;
 
         case KEFIR_OPT_OPCODE_FLOAT64_NEG:
@@ -68,14 +74,20 @@ DEFINE_TRANSLATOR(float_unary_op) {
                 &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_handle.location.reg),
                 kefir_asm_amd64_xasmgen_operand_pointer(
                     &codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_POINTER_XMMWORD,
-                    kefir_asm_amd64_xasmgen_operand_indirect(
-                        &codegen->xasmgen_helpers.operands[1],
-                        kefir_asm_amd64_xasmgen_operand_label(
-                            &codegen->xasmgen_helpers.operands[2],
-                            kefir_asm_amd64_xasmgen_helpers_format(
-                                &codegen->xasmgen_helpers, KEFIR_OPT_AMD64_SYSTEM_V_FUNCTION_CONSTANT_FLOAT64_NEG,
-                                function->ir_func->name)),
-                        0))));
+                    codegen->config->position_independent_code
+                        ? kefir_asm_amd64_xasmgen_operand_rip_indirection(
+                              &codegen->xasmgen_helpers.operands[1],
+                              kefir_asm_amd64_xasmgen_helpers_format(
+                                  &codegen->xasmgen_helpers, KEFIR_OPT_AMD64_SYSTEM_V_FUNCTION_CONSTANT_FLOAT64_NEG,
+                                  function->ir_func->name))
+                        : kefir_asm_amd64_xasmgen_operand_indirect(
+                              &codegen->xasmgen_helpers.operands[1],
+                              kefir_asm_amd64_xasmgen_operand_label(
+                                  &codegen->xasmgen_helpers.operands[2],
+                                  kefir_asm_amd64_xasmgen_helpers_format(
+                                      &codegen->xasmgen_helpers, KEFIR_OPT_AMD64_SYSTEM_V_FUNCTION_CONSTANT_FLOAT64_NEG,
+                                      function->ir_func->name)),
+                              0))));
             break;
 
         default:

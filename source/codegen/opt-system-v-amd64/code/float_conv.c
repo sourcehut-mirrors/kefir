@@ -301,15 +301,23 @@ DEFINE_TRANSLATOR(float_to_uint_conv) {
         case KEFIR_OPT_OPCODE_FLOAT32_TO_UINT:
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_CALL(
                 &codegen->xasmgen,
-                kefir_asm_amd64_xasmgen_operand_label(&codegen->xasmgen_helpers.operands[0],
-                                                      KEFIR_OPT_AMD64_SYSTEM_V_RUNTIME_FLOAT32_TO_UINT)));
+                kefir_asm_amd64_xasmgen_operand_label(
+                    &codegen->xasmgen_helpers.operands[0],
+                    codegen->config->position_independent_code
+                        ? kefir_asm_amd64_xasmgen_helpers_format(&codegen->xasmgen_helpers, KEFIR_AMD64_PLT,
+                                                                 KEFIR_OPT_AMD64_SYSTEM_V_RUNTIME_FLOAT32_TO_UINT)
+                        : KEFIR_OPT_AMD64_SYSTEM_V_RUNTIME_FLOAT32_TO_UINT)));
             break;
 
         case KEFIR_OPT_OPCODE_FLOAT64_TO_UINT:
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_CALL(
                 &codegen->xasmgen,
-                kefir_asm_amd64_xasmgen_operand_label(&codegen->xasmgen_helpers.operands[0],
-                                                      KEFIR_OPT_AMD64_SYSTEM_V_RUNTIME_FLOAT64_TO_UINT)));
+                kefir_asm_amd64_xasmgen_operand_label(
+                    &codegen->xasmgen_helpers.operands[0],
+                    codegen->config->position_independent_code
+                        ? kefir_asm_amd64_xasmgen_helpers_format(&codegen->xasmgen_helpers, KEFIR_AMD64_PLT,
+                                                                 KEFIR_OPT_AMD64_SYSTEM_V_RUNTIME_FLOAT64_TO_UINT)
+                        : KEFIR_OPT_AMD64_SYSTEM_V_RUNTIME_FLOAT64_TO_UINT)));
             break;
 
         default:

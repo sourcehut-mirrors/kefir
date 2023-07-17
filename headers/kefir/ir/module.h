@@ -110,6 +110,7 @@ const char *kefir_ir_module_externals_iter(const struct kefir_ir_module *, struc
                                            kefir_ir_identifier_type_t *);
 const char *kefir_ir_module_globals_iter_next(struct kefir_hashtree_node_iterator *, kefir_ir_identifier_type_t *);
 const char *kefir_ir_module_externals_iter_next(struct kefir_hashtree_node_iterator *, kefir_ir_identifier_type_t *);
+kefir_bool_t kefir_ir_module_has_global(const struct kefir_ir_module *, const char *);
 kefir_bool_t kefir_ir_module_has_external(const struct kefir_ir_module *, const char *);
 
 kefir_result_t kefir_ir_module_get_string_literal(const struct kefir_ir_module *, kefir_id_t,

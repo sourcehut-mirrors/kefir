@@ -260,7 +260,7 @@ __kefir_func_sum_progression_block0:
     mov %rax, 144(%rsp)
     mov 8(%r13), %ax
     mov %ax, 152(%rsp)
-    call sum10
+    call sum10@PLT
     lea -576(%rbp), %rcx
     fstpt (%rcx)
     mov 160(%rsp), %rdx

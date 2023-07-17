@@ -130,6 +130,8 @@ kefir_result_t kefir_driver_configuration_init(struct kefir_driver_configuration
 
     config->flags.restrictive_mode = false;
     config->flags.static_linking = false;
+    config->flags.position_independent_code = false;
+    config->flags.position_independent_executable = false;
     config->flags.link_start_files = true;
     config->flags.link_default_libs = true;
     config->flags.link_libc = true;

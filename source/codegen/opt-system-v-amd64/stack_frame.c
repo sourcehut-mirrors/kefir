@@ -251,18 +251,20 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_stack_frame_compute(
     }
 
     map->total_size = map->offset.temporary_area;
-    map->total_size = -(kefir_int64_t) kefir_target_abi_pad_aligned(
-        (kefir_size_t) -map->total_size, 2 * KEFIR_AMD64_SYSV_ABI_QWORD);
+    map->total_size =
+        -(kefir_int64_t) kefir_target_abi_pad_aligned((kefir_size_t) -map->total_size, 2 * KEFIR_AMD64_SYSV_ABI_QWORD);
     return KEFIR_OK;
 }
 
 kefir_result_t kefir_codegen_opt_sysv_amd64_stack_frame_prologue(
-    const struct kefir_codegen_opt_sysv_amd64_stack_frame *frame, struct kefir_amd64_xasmgen *xasmgen) {
+    const struct kefir_codegen_opt_sysv_amd64_stack_frame *frame, struct kefir_amd64_xasmgen *xasmgen,
+    kefir_bool_t position_independent_code) {
     REQUIRE(frame != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer codegen System-V AMD64 stack frame"));
     REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 assembly generator"));
 
     struct kefir_asm_amd64_xasmgen_operand xasmgen_oper[1];
+    struct kefir_asm_amd64_xasmgen_helpers xasmgen_helpers;
 
     REQUIRE_OK(
         KEFIR_AMD64_XASMGEN_INSTR_PUSH(xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP)));
@@ -340,8 +342,12 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_stack_frame_prologue(
                 frame_map.offset.register_save_area)));
 
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_CALL(
-            xasmgen,
-            kefir_asm_amd64_xasmgen_operand_label(&xasmgen_oper[0], KEFIR_OPT_AMD64_SYSTEM_V_RUNTIME_SAVE_REGISTERS)));
+            xasmgen, kefir_asm_amd64_xasmgen_operand_label(
+                         &xasmgen_oper[0],
+                         position_independent_code
+                             ? kefir_asm_amd64_xasmgen_helpers_format(&xasmgen_helpers, KEFIR_AMD64_PLT,
+                                                                      KEFIR_OPT_AMD64_SYSTEM_V_RUNTIME_SAVE_REGISTERS)
+                             : KEFIR_OPT_AMD64_SYSTEM_V_RUNTIME_SAVE_REGISTERS)));
     }
     return KEFIR_OK;
 }

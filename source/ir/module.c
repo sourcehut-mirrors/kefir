@@ -412,6 +412,12 @@ const char *kefir_ir_module_externals_iter_next(struct kefir_hashtree_node_itera
     return (const char *) node->key;
 }
 
+kefir_bool_t kefir_ir_module_has_global(const struct kefir_ir_module *module, const char *identifier) {
+    REQUIRE(module != NULL, false);
+    REQUIRE(identifier != NULL, false);
+    return kefir_hashtree_has(&module->global_symbols, (kefir_hashtree_key_t) identifier);
+}
+
 kefir_bool_t kefir_ir_module_has_external(const struct kefir_ir_module *module, const char *identifier) {
     REQUIRE(module != NULL, false);
     REQUIRE(identifier != NULL, false);

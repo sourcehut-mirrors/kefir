@@ -29,6 +29,7 @@
 
 typedef struct kefir_codegen_configuration {
     kefir_bool_t emulated_tls;
+    kefir_bool_t position_independent_code;
     const char *syntax;
 } kefir_codegen_configuration_t;
 

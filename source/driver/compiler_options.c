@@ -194,6 +194,7 @@ struct kefir_cli_option KefirCompilerConfigurationOptions[] = {
     INTERNAL("flat-local-scope-layout", internals.flat_local_scope_layout),
 
     CODEGEN("emulated-tls", codegen.emulated_tls),
+    CODEGEN("pic", codegen.position_independent_code),
     SIMPLE(0, "codegen-syntax", true, KEFIR_CLI_OPTION_ACTION_ASSIGN_STRARG, 0, codegen.syntax)
 
 #undef SIMPLE
