@@ -41,6 +41,7 @@ typedef struct kefir_driver_linker_configuration {
 
     struct {
         kefir_bool_t static_linking;
+        kefir_bool_t shared_linking;
         kefir_bool_t pie_linking;
         kefir_bool_t link_start_files;
         kefir_bool_t link_default_libs;
@@ -113,6 +114,7 @@ typedef struct kefir_driver_configuration {
     struct {
         kefir_bool_t restrictive_mode;
         kefir_bool_t static_linking;
+        kefir_bool_t shared_linking;
         kefir_bool_t position_independent_code;
         kefir_bool_t position_independent_executable;
         kefir_bool_t link_start_files;

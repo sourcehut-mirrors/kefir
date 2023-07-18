@@ -220,14 +220,21 @@ kefir_result_t kefir_driver_apply_target_linker_initial_configuration(
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver linker configuration"));
     REQUIRE(target != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver target"));
 
+    kefir_bool_t position_independent = false;
     if (linker_config->flags.static_linking) {
         REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-static"));
+    } else if (linker_config->flags.shared_linking) {
+        position_independent = true;
+        REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-shared"));
     }
 
-    if (linker_config->flags.pie_linking) {
-        REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-pie"));
-    } else {
-        REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-no-pie"));
+    if (!linker_config->flags.shared_linking) {
+        if (linker_config->flags.pie_linking) {
+            position_independent = true;
+            REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-pie"));
+        } else {
+            REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-no-pie"));
+        }
     }
 
     if (target->platform == KEFIR_DRIVER_TARGET_PLATFORM_LINUX) {
@@ -236,14 +243,16 @@ kefir_result_t kefir_driver_apply_target_linker_initial_configuration(
                     KEFIR_SET_ERROR(KEFIR_UI_ERROR, "GNU library path shall be passed as KEFIR_GNU_LIB "
                                                     "environment variable for selected target"));
 
-            REQUIRE_OK(add_library_paths(mem, linker_config, externals->gnu.library_path));
-
             if (linker_config->flags.link_start_files) {
-                LINK_FILE(externals->gnu.library_path, "crt1.o");
+                if (linker_config->flags.pie_linking) {
+                    LINK_FILE(externals->gnu.library_path, "Scrt1.o");
+                } else if (!linker_config->flags.shared_linking) {
+                    LINK_FILE(externals->gnu.library_path, "crt1.o");
+                }
                 LINK_FILE(externals->gnu.library_path, "crti.o");
                 if (linker_config->flags.static_linking) {
                     LINK_FILE(externals->gnu.library_path, "crtbeginT.o");
-                } else if (linker_config->flags.pie_linking) {
+                } else if (position_independent) {
                     LINK_FILE(externals->gnu.library_path, "crtbeginS.o");
                 } else {
                     LINK_FILE(externals->gnu.library_path, "crtbegin.o");
@@ -260,10 +269,12 @@ kefir_result_t kefir_driver_apply_target_linker_initial_configuration(
                     KEFIR_SET_ERROR(KEFIR_UI_ERROR, "Musl library path shall be passed as KEFIR_MUSL_LIB "
                                                     "environment variable for selected target"));
 
-            REQUIRE_OK(add_library_paths(mem, linker_config, externals->musl.library_path));
-
             if (linker_config->flags.link_start_files) {
-                LINK_FILE(externals->musl.library_path, "crt1.o");
+                if (linker_config->flags.pie_linking) {
+                    LINK_FILE(externals->gnu.library_path, "Scrt1.o");
+                } else if (!linker_config->flags.shared_linking) {
+                    LINK_FILE(externals->gnu.library_path, "crt1.o");
+                }
                 LINK_FILE(externals->musl.library_path, "crti.o");
             }
 
@@ -279,14 +290,16 @@ kefir_result_t kefir_driver_apply_target_linker_initial_configuration(
                 KEFIR_SET_ERROR(KEFIR_UI_ERROR, "System library path shall be passed as KEFIR_FREEBSD_LIB "
                                                 "environment variable for selected target"));
 
-        REQUIRE_OK(add_library_paths(mem, linker_config, externals->freebsd.library_path));
-
         if (linker_config->flags.link_start_files) {
-            LINK_FILE(externals->freebsd.library_path, "crt1.o");
+            if (linker_config->flags.pie_linking) {
+                LINK_FILE(externals->gnu.library_path, "Scrt1.o");
+            } else if (!linker_config->flags.shared_linking) {
+                LINK_FILE(externals->gnu.library_path, "crt1.o");
+            }
             LINK_FILE(externals->freebsd.library_path, "crti.o");
             if (linker_config->flags.static_linking) {
                 LINK_FILE(externals->freebsd.library_path, "crtbeginT.o");
-            } else if (linker_config->flags.pie_linking) {
+            } else if (position_independent) {
                 LINK_FILE(externals->freebsd.library_path, "crtbeginS.o");
             } else {
                 LINK_FILE(externals->freebsd.library_path, "crtbegin.o");
@@ -304,13 +317,11 @@ kefir_result_t kefir_driver_apply_target_linker_initial_configuration(
                 KEFIR_SET_ERROR(KEFIR_UI_ERROR, "System library path shall be passed as KEFIR_OPENBSD_LIB "
                                                 "environment variable for selected target"));
 
-        REQUIRE_OK(add_library_paths(mem, linker_config, externals->openbsd.library_path));
-
         if (linker_config->flags.link_start_files) {
             LINK_FILE(externals->openbsd.library_path, "crt0.o");
             if (linker_config->flags.static_linking) {
                 LINK_FILE(externals->openbsd.library_path, "crtbeginT.o");
-            } else if (linker_config->flags.pie_linking) {
+            } else if (position_independent) {
                 LINK_FILE(externals->openbsd.library_path, "crtbeginS.o");
             } else {
                 LINK_FILE(externals->openbsd.library_path, "crtbegin.o");
@@ -328,14 +339,12 @@ kefir_result_t kefir_driver_apply_target_linker_initial_configuration(
                 KEFIR_SET_ERROR(KEFIR_UI_ERROR, "System library path shall be passed as KEFIR_NETBSD_LIB "
                                                 "environment variable for selected target"));
 
-        REQUIRE_OK(add_library_paths(mem, linker_config, externals->netbsd.library_path));
-
         if (linker_config->flags.link_start_files) {
             LINK_FILE(externals->netbsd.library_path, "crt0.o");
             LINK_FILE(externals->netbsd.library_path, "crti.o");
             if (linker_config->flags.static_linking) {
                 LINK_FILE(externals->netbsd.library_path, "crtbeginT.o");
-            } else if (linker_config->flags.pie_linking) {
+            } else if (position_independent) {
                 LINK_FILE(externals->netbsd.library_path, "crtbeginS.o");
             } else {
                 LINK_FILE(externals->netbsd.library_path, "crtbegin.o");
@@ -362,6 +371,8 @@ kefir_result_t kefir_driver_apply_target_linker_final_configuration(
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver linker configuration"));
     REQUIRE(target != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver target"));
 
+    kefir_bool_t position_independent = linker_config->flags.shared_linking || linker_config->flags.pie_linking;
+
     if (linker_config->flags.link_rtlib && target->variant != KEFIR_DRIVER_TARGET_VARIANT_NONE) {
         REQUIRE(linker_config->rtlib_location != NULL,
                 KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid kefir runtime library file name"));
@@ -373,6 +384,8 @@ kefir_result_t kefir_driver_apply_target_linker_final_configuration(
             REQUIRE(externals->gnu.library_path != NULL,
                     KEFIR_SET_ERROR(KEFIR_UI_ERROR, "GNU library path shall be passed as KEFIR_GNU_LIB "
                                                     "environment variable for selected target"));
+
+            REQUIRE_OK(add_library_paths(mem, linker_config, externals->gnu.library_path));
 
             if (linker_config->flags.link_default_libs) {
                 if (linker_config->flags.link_libc) {
@@ -387,7 +400,7 @@ kefir_result_t kefir_driver_apply_target_linker_final_configuration(
             if (linker_config->flags.link_start_files) {
                 if (linker_config->flags.static_linking) {
                     LINK_FILE(externals->gnu.library_path, "crtend.o");
-                } else if (linker_config->flags.pie_linking) {
+                } else if (position_independent) {
                     LINK_FILE(externals->gnu.library_path, "crtendS.o");
                 } else {
                     LINK_FILE(externals->gnu.library_path, "crtend.o");
@@ -399,6 +412,8 @@ kefir_result_t kefir_driver_apply_target_linker_final_configuration(
             REQUIRE(externals->musl.library_path != NULL,
                     KEFIR_SET_ERROR(KEFIR_UI_ERROR, "Musl library path shall be passed as KEFIR_MUSL_LIB "
                                                     "environment variable for selected target"));
+
+            REQUIRE_OK(add_library_paths(mem, linker_config, externals->musl.library_path));
 
             if (linker_config->flags.link_default_libs && linker_config->flags.link_libc) {
                 LINK_FILE(externals->musl.library_path, "libc.a");
@@ -414,6 +429,8 @@ kefir_result_t kefir_driver_apply_target_linker_final_configuration(
                 KEFIR_SET_ERROR(KEFIR_UI_ERROR, "System library path shall be passed as KEFIR_FREEBSD_LIB "
                                                 "environment variable for selected target"));
 
+        REQUIRE_OK(add_library_paths(mem, linker_config, externals->freebsd.library_path));
+
         if (linker_config->flags.link_default_libs) {
             if (linker_config->flags.link_libc) {
                 REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-lc"));
@@ -424,7 +441,7 @@ kefir_result_t kefir_driver_apply_target_linker_final_configuration(
         if (linker_config->flags.link_start_files) {
             if (linker_config->flags.static_linking) {
                 LINK_FILE(externals->freebsd.library_path, "crtend.o");
-            } else if (linker_config->flags.pie_linking) {
+            } else if (position_independent) {
                 LINK_FILE(externals->freebsd.library_path, "crtendS.o");
             } else {
                 LINK_FILE(externals->freebsd.library_path, "crtend.o");
@@ -437,6 +454,8 @@ kefir_result_t kefir_driver_apply_target_linker_final_configuration(
                 KEFIR_SET_ERROR(KEFIR_UI_ERROR, "System library path shall be passed as KEFIR_OPENBSD_LIB "
                                                 "environment variable for selected target"));
 
+        REQUIRE_OK(add_library_paths(mem, linker_config, externals->openbsd.library_path));
+
         if (linker_config->flags.link_default_libs) {
             if (linker_config->flags.link_libc) {
                 REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-lcompiler_rt"));
@@ -448,7 +467,7 @@ kefir_result_t kefir_driver_apply_target_linker_final_configuration(
         if (linker_config->flags.link_start_files) {
             if (linker_config->flags.static_linking) {
                 LINK_FILE(externals->openbsd.library_path, "crtend.o");
-            } else if (linker_config->flags.pie_linking) {
+            } else if (position_independent) {
                 LINK_FILE(externals->openbsd.library_path, "crtendS.o");
             } else {
                 LINK_FILE(externals->openbsd.library_path, "crtend.o");
@@ -459,6 +478,8 @@ kefir_result_t kefir_driver_apply_target_linker_final_configuration(
         REQUIRE(externals->netbsd.library_path != NULL,
                 KEFIR_SET_ERROR(KEFIR_UI_ERROR, "System library path shall be passed as KEFIR_NETBSD_LIB "
                                                 "environment variable for selected target"));
+
+        REQUIRE_OK(add_library_paths(mem, linker_config, externals->netbsd.library_path));
 
         if (linker_config->flags.link_default_libs) {
             if (linker_config->flags.link_libc) {
@@ -471,7 +492,7 @@ kefir_result_t kefir_driver_apply_target_linker_final_configuration(
             LINK_FILE(externals->netbsd.library_path, "crtn.o");
             if (linker_config->flags.static_linking) {
                 LINK_FILE(externals->netbsd.library_path, "crtend.o");
-            } else if (linker_config->flags.pie_linking) {
+            } else if (position_independent) {
                 LINK_FILE(externals->netbsd.library_path, "crtendS.o");
             } else {
                 LINK_FILE(externals->netbsd.library_path, "crtend.o");

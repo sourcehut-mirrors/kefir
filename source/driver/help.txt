@@ -25,13 +25,14 @@ OPTIONS:
     -l library                          Link library
     -L directory                        Add directory to linker library search path
     -rpath directory                    Add directory to runtime library search path
-    -static                             Produce statically linked executable
+    -static                             Produce a statically linked executable
+    -shared                             Produce a shared object
     -fPIC | -fpic                       Produce position-independent code
     -fno-pic                            Do not produce position-independent code [default]
     -pie                                Produce position-independent executable (requires -fPIC)
     -no-pie                             Do not produce position-independent executable [default]
     -nostartfiles                       Do not link start files
-    -nodefaultlib                       Do not link default libraries
+    -nodefaultlibs                      Do not link default libraries
     -nolibc                             Do not link libc
     -nostdlib                           Do not link start files and default libraries
     -nortlib                            Do not link runtime routine library

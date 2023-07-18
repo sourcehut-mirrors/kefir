@@ -270,6 +270,11 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_symbo
         } else if (strcmp("-static", arg) == 0) {
             // Static linking
             config->flags.static_linking = true;
+            config->flags.shared_linking = false;
+        } else if (strcmp("-shared", arg) == 0) {
+            // Static linking
+            config->flags.static_linking = false;
+            config->flags.shared_linking = true;
         } else if (strcmp("-pie", arg) == 0) {
             // Position-independent executable
             config->flags.position_independent_executable = true;

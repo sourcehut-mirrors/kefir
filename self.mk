@@ -1,18 +1,20 @@
 $(BOOTSTRAP_DIR)/stage1/kefir: $(BIN_DIR)/kefir $(LIBKEFIRRT_A)
 	@echo "Bootstrapping $@"
-	@LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(BIN_DIR)/libs $(MAKE) -f $(ROOT)/bootstrap.mk bootstrap \
+	@LD_LIBRARY_PATH=$(BIN_DIR)/libs:$LD_LIBRARY_PATH $(MAKE) -f $(ROOT)/bootstrap.mk bootstrap \
 		SOURCE=$(SOURCE_DIR) \
 		HEADERS=$(HEADERS_DIR) \
 		BOOTSTRAP=$(BOOTSTRAP_DIR)/stage1 \
-		KEFIRCC=$(BIN_DIR)/kefir
+		KEFIRCC=$(BIN_DIR)/kefir \
+		USE_SHARED=$(USE_SHARED)
 
 $(BOOTSTRAP_DIR)/stage2/kefir: $(BOOTSTRAP_DIR)/stage1/kefir $(LIBKEFIRRT_A)
 	@echo "Bootstrapping $@"
-	@$(MAKE) -f $(ROOT)/bootstrap.mk bootstrap \
+	@LD_LIBRARY_PATH=$(BOOTSTRAP_DIR)/stage1:$LD_LIBRARY_PATH $(MAKE) -f $(ROOT)/bootstrap.mk bootstrap \
 		SOURCE=$(SOURCE_DIR) \
 		HEADERS=$(HEADERS_DIR) \
 		BOOTSTRAP=$(BOOTSTRAP_DIR)/stage2 \
-		KEFIRCC=$(BOOTSTRAP_DIR)/stage1/kefir
+		KEFIRCC=$(BOOTSTRAP_DIR)/stage1/kefir \
+		USE_SHARED=$(USE_SHARED)
 
 $(BOOTSTRAP_DIR)/stage2/comparison.done: $(BOOTSTRAP_DIR)/stage1/kefir $(BOOTSTRAP_DIR)/stage2/kefir
 	@echo "Comparing stage1 and stage2 results"

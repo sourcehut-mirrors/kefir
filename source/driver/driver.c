@@ -56,6 +56,7 @@ static kefir_result_t driver_generate_linker_config(struct kefir_mem *mem, struc
                                                     const struct kefir_driver_external_resources *externals,
                                                     struct kefir_driver_linker_configuration *linker_config) {
     linker_config->flags.static_linking = config->flags.static_linking;
+    linker_config->flags.shared_linking = config->flags.shared_linking;
     linker_config->flags.pie_linking = config->flags.position_independent_executable;
     linker_config->flags.link_start_files = config->flags.link_start_files;
     linker_config->flags.link_default_libs = config->flags.link_default_libs;
