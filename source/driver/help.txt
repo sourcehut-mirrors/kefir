@@ -27,7 +27,7 @@ OPTIONS:
     -rpath directory                    Add directory to runtime library search path
     -static                             Produce a statically linked executable
     -shared                             Produce a shared object
-    -fPIC | -fpic                       Produce position-independent code
+    -fPIC | -fpic                       Produce position-independent code (supported only for opt-* targets)
     -fno-pic                            Do not produce position-independent code [default]
     -pie                                Produce position-independent executable (requires -fPIC)
     -no-pie                             Do not produce position-independent executable [default]

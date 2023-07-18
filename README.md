@@ -10,9 +10,8 @@ Kefir supports modern x86-64 Linux, FreeBSD, OpenBSD and NetBSD environments
 JSON streams containing program representation on various stages of compilation
 (tokens, AST, IR), as well as printing source code in preprocessed form. By
 default, the compiler outputs GNU As-compatible assembly (Intel syntax
-with/without prefixes and ATT syntax are supported). At the moment,
-position-independent code generation is not supported. Kefir features
-`cc`-compatible command line interface.
+with/without prefixes and ATT syntax are supported). Position-independent code
+generation is supported. Kefir features `cc`-compatible command line interface.
 
 ### Project name
 Kefir compiler is named after [fermented milk
@@ -86,9 +85,10 @@ provided by host system. Further effort is concentrated on improving and
 extending the compiler, including:
 * Implementing alternative, optimizing code generator -- initial basic
   implementation has been finished. Pending subtasks are:
-  * Implementing actual optimization passes.
+  * Implementing actual optimization passes -- several basic optimizations have been implemented.
   * Producing debug information during code generation.
-  * Implementing position-independent code generation.
+  * Position-independent code generation, building position-independent
+    executables and shared libraries is supported.
 * Implementing missing C17 standard features and adding support for upcoming C23
   standard.
 * Improving compatibility with mainstream compiler by implementing additional
