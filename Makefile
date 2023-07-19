@@ -16,16 +16,20 @@ include $(wildcard $(DEPENDENCIES))
 .TEST_BINARIES: $(TEST_BINARIES)
 .TEST_RESULTS: $(TEST_RESULTS)
 .TESTS: $(TESTS)
+.BOOTSTRAP: $(BOOTSTRAP)
 
 all: .BINARIES
 
-generate_test_artifacts: $(TEST_ARTIFACTS)
+generate_test_artifacts: .TEST_ARTIFACTS
 
 test: .TESTS
 	@echo "Tests succeeded"
 
-clean:
-	@echo "Removing $(BIN_DIR)"
-	@rm -rf $(BIN_DIR)
+bootstrap: .BOOTSTRAP
+	@echo "Bootstrap successfully finished"
 
-.PHONY: all test generate_test_artifacts generate clean .DEPENDENCIES .TEST_ARTIFACTS .ASM_FILES .OBJECT_FILES .BINARIES .TEST_BINARIES .TEST_RESULTS .TESTS
+clean:
+	@echo "Removing $(CLEAN_LIST)"
+	@rm -rf $(CLEAN_LIST)
+
+.PHONY: all test generate_test_artifacts bootstrap clean .DEPENDENCIES .TEST_ARTIFACTS .ASM_FILES .OBJECT_FILES .BINARIES .TEST_BINARIES .TEST_RESULTS .TESTS .BOOTSTRAP

@@ -21,11 +21,4 @@ $(BOOTSTRAP_DIR)/stage2/comparison.done: $(BOOTSTRAP_DIR)/stage1/kefir $(BOOTSTR
 	@$(SCRIPTS_DIR)/bootstrap_compare.sh "$(BOOTSTRAP_DIR)/stage1" "$(BOOTSTRAP_DIR)/stage2"
 	@touch "$@"
 
-bootstrap: $(BOOTSTRAP_DIR)/stage2/comparison.done
-	@echo "Bootstrap successfully finished"
-
-clean_bootstrap:
-	@echo "Removing $(BOOTSTRAP_DIR)"
-	@rm -rf $(BOOTSTRAP_DIR)
-
-.PHONY: bootstrap
+BOOTSTRAP += $(BOOTSTRAP_DIR)/stage2/comparison.done

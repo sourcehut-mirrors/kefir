@@ -31,4 +31,4 @@ uninstall:
 	@rm -rf "$(DESTDIR)"/lib/libkefirrt.a
 	@rm -rf "$(DESTDIR)"/lib/libkefir.a
 
-.PHONY: install
+.PHONY: install uninstall

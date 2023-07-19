@@ -35,6 +35,7 @@ LIBKEFIR_A=$(LIB_DIR)/libkefir.a
 
 LIBKEFIRRT_A=$(LIB_DIR)/libkefirrt.a
 
+CLEAN_LIST := $(BIN_DIR) $(BOOTSTRAP_DIR)
 DEPENDENCIES :=
 TEST_ARTIFACTS :=
 ASM_FILES :=
@@ -43,6 +44,7 @@ BINARIES :=
 TEST_BINARIES :=
 TEST_RESULTS :=
 TESTS :=
+BOOTSTRAP :=
 
 $(BIN_DIR)/%.d: $(SOURCE_DIR)/%.c
 	@mkdir -p $(shell dirname "$@")
