@@ -323,6 +323,7 @@ static kefir_result_t const_fold_apply(struct kefir_mem *mem, const struct kefir
                     }
                     REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr_id));
                 }
+                REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr_id, &instr));
             }
         }
     }
