@@ -24,7 +24,7 @@ VALGRIND_FILE="$(mktemp)"
 DIFF="diff -u"
 
 if [[ "x$MEMCHECK" == "xyes" ]]; then
-    VALGRIND="valgrind $VALGRIND_OPTIONS --log-file=$VALGRIND_FILE"
+    VALGRIND="valgrind $VALGRIND_TEST_OPTIONS --log-file=$VALGRIND_FILE"
 else
     VALGRIND=""
 fi

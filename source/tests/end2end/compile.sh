@@ -44,7 +44,7 @@ fi
 set -e
 
 if [[ "x$MEMCHECK" == "xyes" ]]; then
-    eval valgrind $VALGRIND_OPTIONS "$KEFIRCC" $KEFIR_CFLAGS "$SRC_FILE" -o "$DST_FILE"
+    eval valgrind $VALGRIND_TEST_OPTIONS "$KEFIRCC" $KEFIR_CFLAGS "$SRC_FILE" -o "$DST_FILE"
 else
     eval "$KEFIRCC" $KEFIR_CFLAGS "$SRC_FILE" -o "$DST_FILE"
 fi

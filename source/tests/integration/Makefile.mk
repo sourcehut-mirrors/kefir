@@ -13,18 +13,18 @@ KEFIR_INTEGRATION_TEST_BINARIES := $(KEFIR_INTEGRATION_TESTS_SOURCES:$(SOURCE_DI
 KEFIR_INTEGRATION_TEST_DONE := $(KEFIR_INTEGRATION_TESTS_SOURCES:$(SOURCE_DIR)/tests/integration/%.c=$(BIN_DIR)/tests/integration/%.done)
 KEFIR_INTEGRATION_TEST_RESULTS := $(KEFIR_INTEGRATION_TESTS_SOURCES:$(SOURCE_DIR)/tests/integration/%.test.c=$(SOURCE_DIR)/tests/integration/%.test.result)
 
-KEFIR_INTEGRATION_TEST_LINKED_LIBS=
+KEFIR_INTEGRATION_TEST_LIBS=
 ifeq ($(SANITIZE),undefined)
-KEFIR_INTEGRATION_TEST_LINKED_LIBS=-fsanitize=undefined
+KEFIR_INTEGRATION_TEST_LIBS=-fsanitize=undefined
 endif
 
 ifeq ($(USE_SHARED),yes)
-KEFIR_INTEGRATION_TEST_LINKED_LIBS+=-L $(LIB_DIR) -lkefir
+KEFIR_INTEGRATION_TEST_LIBS+=-L $(LIB_DIR) -lkefir
 else
-KEFIR_INTEGRATION_TEST_LINKED_LIBS+=$(LIBKEFIR_A)
+KEFIR_INTEGRATION_TEST_LIBS+=$(LIBKEFIR_A)
 endif
 
-$(BIN_DIR)/tests/integration/%: $(BIN_DIR)/tests/integration/%.o $(LIBKEFIR_DEP) \
+$(BIN_DIR)/tests/integration/%: $(BIN_DIR)/tests/integration/%.o $(LIBKEFIR_DEPENDENCY) \
                                      $(BIN_DIR)/tests/int_test.o \
 									 $(BIN_DIR)/tests/util/util.o
 	@mkdir -p $(@D)
@@ -32,11 +32,13 @@ $(BIN_DIR)/tests/integration/%: $(BIN_DIR)/tests/integration/%.o $(LIBKEFIR_DEP)
 	@$(CC) -o $@ $(BIN_DIR)/tests/int_test.o \
 	                             $(BIN_DIR)/tests/util/util.o \
 								 $< \
-								 $(KEFIR_INTEGRATION_TEST_LINKED_LIBS)
+								 $(KEFIR_INTEGRATION_TEST_LIBS)
 								 
 
 $(BIN_DIR)/tests/integration/%.done: $(BIN_DIR)/tests/integration/%
-	@LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(LIB_DIR) VALGRIND_OPTIONS="$(VALGRIND_OPTIONS)" MEMCHECK="$(MEMCHECK)" \
+	@LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(LIB_DIR) \
+	 VALGRIND_TEST_OPTIONS="$(VALGRIND_TEST_OPTIONS)" \
+	 MEMCHECK="$(MEMCHECK)" \
 		$(SOURCE_DIR)/tests/integration/run.sh $<
 	@touch $@
 
@@ -44,11 +46,8 @@ $(SOURCE_DIR)/tests/integration/%.test.result: $(BIN_DIR)/tests/integration/%.te
 	@echo "Rebuilding $@"
 	@LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(LIB_DIR) KEFIR_DISABLE_LONG_DOUBLE=1 $^ > $@
 
-rebuild_integration_tests: $(KEFIR_INTEGRATION_TEST_RESULTS)
-
+TEST_ARTIFACTS += $(KEFIR_INTEGRATION_TEST_RESULTS)
 DEPENDENCIES += $(KEFIR_INTEGRATION_TEST_DEPENDENCIES)
 OBJECT_FILES += $(KEFIR_INTEGRATION_TEST_OBJECT_FILES)
 TEST_BINARIES += $(KEFIR_INTEGRATION_TEST_BINARIES)
 TESTS += $(KEFIR_INTEGRATION_TEST_DONE)
-
-.PHONY: rebuild_integration_tests

@@ -11,28 +11,41 @@ KEFIR_SYSTEM_TESTS_OBJECT_FILES := $(KEFIR_SYSTEM_TESTS_ALL_SOURCES:$(SOURCE_DIR
 KEFIR_SYSTEM_TESTS_GENERATORS := $(KEFIR_SYSTEM_TESTS_TEST_SOURCES:$(SOURCE_DIR)/tests/system/%.gen.c=$(BIN_DIR)/tests/system/%.gen)
 KEFIR_SYSTEM_TESTS_DONE := $(KEFIR_SYSTEM_TESTS_TEST_SOURCES:$(SOURCE_DIR)/tests/system/%.gen.c=$(BIN_DIR)/tests/system/%.test.done)
 
-KEFIR_SYSTEM_TEST_LINKED_LIBS=
+KEFIR_SYSTEM_TEST_LIBS=
 ifeq ($(SANITIZE),undefined)
-KEFIR_SYSTEM_TEST_LINKED_LIBS=-fsanitize=undefined
+KEFIR_SYSTEM_TEST_LIBS=-fsanitize=undefined
 endif
 
 ifeq ($(USE_SHARED),yes)
-KEFIR_SYSTEM_TEST_LINKED_LIBS+=-L $(LIB_DIR) -lkefir
+KEFIR_SYSTEM_TEST_LIBS+=-L $(LIB_DIR) -lkefir
 else
-KEFIR_SYSTEM_TEST_LINKED_LIBS+=$(LIBKEFIR_A)
+KEFIR_SYSTEM_TEST_LIBS+=$(LIBKEFIR_A)
 endif
 
+KEFIR_SYSTEM_TEST_GEN_COMMON_OBJECT_FILES := $(BIN_DIR)/tests/int_test.o \
+							                 $(BIN_DIR)/tests/util/util.o \
+							                 $(BIN_DIR)/tests/util/codegen.o
+
 $(BIN_DIR)/tests/system/%.gen: $(BIN_DIR)/tests/system/%.gen.o \
-							   $(LIBKEFIR_DEP) \
-							   $(BIN_DIR)/tests/int_test.o \
-							   $(BIN_DIR)/tests/util/util.o \
-							   $(BIN_DIR)/tests/util/codegen.o
+							   $(LIBKEFIR_DEPENDENCY) \
+							   $(KEFIR_SYSTEM_TEST_GEN_COMMON_OBJECT_FILES)
 	@mkdir -p $(@D)
 	@echo "Linking $@"
-	@$(CC) -o $@ $(BIN_DIR)/tests/int_test.o $(BIN_DIR)/tests/util/util.o $(BIN_DIR)/tests/util/codegen.o $< $(KEFIR_SYSTEM_TEST_LINKED_LIBS)
+	@$(CC) -o $@ $(KEFIR_SYSTEM_TEST_GEN_COMMON_OBJECT_FILES) $< $(KEFIR_SYSTEM_TEST_LIBS)
 
 $(BIN_DIR)/tests/system/%.test.done: $(BIN_DIR)/tests/system/%.gen
-	@CC="$(CC)" AS="$(AS)" LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(LIB_DIR) MEMCHECK="$(MEMCHECK)" SANITIZE="$(SANITIZE)" OPT="$(OPT)" DBG="$(DBG)" EXTRAFLAGS="$(EXTRAFLAGS)" VALGRIND_OPTIONS="$(VALGRIND_OPTIONS)" CC_TEST_FLAGS="$(CC_TEST_FLAGS)" PLATFORM="$(PLATFORM)" "$(SOURCE_DIR)/tests/system/run.sh" $^
+	@CC="$(CC)" \
+	 AS="$(AS)" \
+	 OPT="$(OPT)" \
+	 DBG="$(DBG)" \
+	 EXTRAFLAGS="$(EXTRAFLAGS)" \
+	 TEST_CFLAGS="$(TEST_CFLAGS)" \
+	 LD_LIBRARY_PATH="$(LIB_DIR):$LD_LIBRARY_PATH" \
+	 MEMCHECK="$(MEMCHECK)" \
+	 SANITIZE="$(SANITIZE)" \
+	 VALGRIND_TEST_OPTIONS="$(VALGRIND_TEST_OPTIONS)" \
+	 PLATFORM="$(PLATFORM)" \
+	 	"$(SOURCE_DIR)/tests/system/run.sh" $^
 	@touch $@
 
 DEPENDENCIES += $(KEFIR_SYSTEM_TESTS_DEPENDENCIES)
