@@ -101,7 +101,7 @@ $(BOOTSTRAP)/kefir: $(KEFIR_ASM_FILES)
 	@KEFIR_LD=$(LD) $(KEFIRCC) $(KEFIR_FLAGS) $^ -o $@
 endif
 
-bootstrap: $(BOOTSTRAP)/kefir $(BOOTSTRAP)/libkefir.so
+bootstrap: $(BOOTSTRAP)/kefir
 
 .ASM_FILES: $(KEFIR_ASM_FILES)
 
