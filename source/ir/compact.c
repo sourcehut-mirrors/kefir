@@ -38,27 +38,54 @@ static kefir_hashtree_hash_t ir_type_hash(kefir_hashtree_key_t key, void *data) 
     return hash;
 }
 
-static bool ir_type_equals(kefir_hashtree_key_t key1, kefir_hashtree_key_t key2, void *data) {
+static kefir_int_t ir_type_compare(kefir_hashtree_key_t key1, kefir_hashtree_key_t key2, void *data) {
     UNUSED(data);
     const struct kefir_ir_type *type1 = (const struct kefir_ir_type *) key1;
     const struct kefir_ir_type *type2 = (const struct kefir_ir_type *) key2;
 
-    REQUIRE(type1 != type2, true);
-    REQUIRE(type1 != NULL && type2 != NULL, type1 == NULL && type2 == NULL);
-    REQUIRE(kefir_ir_type_length(type1) == kefir_ir_type_length(type2), false);
+    if ((type1 == NULL && type2 == NULL) || type1 == type2) {
+        return 0;
+    } else if (type1 == NULL) {
+        return -1;
+    } else if (type2 == NULL) {
+        return 1;
+    }
+
+    kefir_size_t len1 = kefir_ir_type_length(type1);
+    kefir_size_t len2 = kefir_ir_type_length(type2);
+    if (len1 < len2) {
+        return -1;
+    } else if (len1 > len2) {
+        return 1;
+    }
+
     for (kefir_size_t i = 0; i < kefir_ir_type_length(type1); i++) {
         const struct kefir_ir_typeentry *typeentry1 = kefir_ir_type_at(type1, i);
         const struct kefir_ir_typeentry *typeentry2 = kefir_ir_type_at(type2, i);
 
-        REQUIRE(typeentry1->typecode == typeentry2->typecode, false);
-        REQUIRE(typeentry1->alignment == typeentry2->alignment, false);
-        REQUIRE(typeentry1->param == typeentry2->param, false);
+        if ((kefir_int64_t) typeentry1->typecode < (kefir_int64_t) typeentry2->typecode) {
+            return -1;
+        } else if ((kefir_int64_t) typeentry1->typecode > (kefir_int64_t) typeentry2->typecode) {
+            return 1;
+        }
+
+        if (typeentry1->alignment < typeentry2->alignment) {
+            return -1;
+        } else if (typeentry1->alignment < typeentry2->alignment) {
+            return 1;
+        }
+
+        if (typeentry1->param < typeentry2->param) {
+            return -1;
+        } else if (typeentry1->param < typeentry2->param) {
+            return 1;
+        }
     }
-    return true;
+    return 0;
 }
 
 const struct kefir_hashtree_ops kefir_hashtree_ir_type_ops = {
-    .hash = ir_type_hash, .compare_keys = ir_type_equals, .data = NULL};
+    .hash = ir_type_hash, .compare = ir_type_compare, .data = NULL};
 
 struct compact_params {
     struct kefir_hashtree type_index;

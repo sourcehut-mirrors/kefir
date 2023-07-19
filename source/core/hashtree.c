@@ -165,7 +165,7 @@ static kefir_result_t node_insert(struct kefir_mem *mem, struct kefir_hashtree *
                                   kefir_hashtree_value_t *oldvalue, bool replace,
                                   struct kefir_hashtree_node **root_ptr) {
     assert(NODE_BF(root) >= -1 && NODE_BF(root) <= 1);
-    if (hash < root->hash) {
+    if (hash < root->hash || (hash == root->hash && tree->ops->compare(key, root->key, tree->ops->data) < 0)) {
         if (root->left_child == NULL) {
             struct kefir_hashtree_node *node = node_alloc(mem, hash, root, key, value);
             REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate hash tree node"));
@@ -176,7 +176,7 @@ static kefir_result_t node_insert(struct kefir_mem *mem, struct kefir_hashtree *
 
         struct kefir_hashtree_node *new_root = balance_node(root);
         ASSIGN_PTR(root_ptr, new_root);
-    } else if (hash > root->hash || !tree->ops->compare_keys(root->key, key, tree->ops->data)) {
+    } else if (hash > root->hash || (hash == root->hash && tree->ops->compare(key, root->key, tree->ops->data) > 0)) {
         if (root->right_child == NULL) {
             struct kefir_hashtree_node *node = node_alloc(mem, hash, root, key, value);
             REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate hash tree node"));
@@ -207,9 +207,9 @@ static kefir_result_t node_find(struct kefir_hashtree_node *root, const struct k
     }
 
     assert(NODE_BF(root) >= -1 && NODE_BF(root) <= 1);
-    if (hash < root->hash) {
+    if (hash < root->hash || (hash == root->hash && tree->ops->compare(key, root->key, tree->ops->data) < 0)) {
         return node_find(root->left_child, tree, hash, key, result);
-    } else if (hash < root->hash || !tree->ops->compare_keys(root->key, key, tree->ops->data)) {
+    } else if (hash > root->hash || (hash == root->hash && tree->ops->compare(key, root->key, tree->ops->data) > 0)) {
         return node_find(root->right_child, tree, hash, key, result);
     } else {
         *result = root;
@@ -439,24 +439,45 @@ static kefir_hashtree_hash_t str_hash(kefir_hashtree_key_t key, void *data) {
     return hash;
 }
 
-static bool str_compare(kefir_hashtree_key_t key1, kefir_hashtree_key_t key2, void *data) {
+static kefir_int_t str_compare(kefir_hashtree_key_t key1, kefir_hashtree_key_t key2, void *data) {
     UNUSED(data);
     const char *str1 = (const char *) key1;
     const char *str2 = (const char *) key2;
-    return (str1 == NULL && str2 == NULL) || strcmp(str1, str2) == 0;
+    if (str1 == NULL && str2 == NULL) {
+        return 0;
+    } else if (str1 == NULL) {
+        return -1;
+    } else if (str2 == NULL) {
+        return 1;
+    }
+
+    int cmp = strcmp(str1, str2);
+    // Clamp the result
+    if (cmp == 0) {
+        return 0;
+    } else if (cmp < 0) {
+        return -1;
+    } else {
+        return 1;
+    }
 }
 
-const struct kefir_hashtree_ops kefir_hashtree_str_ops = {.hash = str_hash, .compare_keys = str_compare, .data = NULL};
+const struct kefir_hashtree_ops kefir_hashtree_str_ops = {.hash = str_hash, .compare = str_compare, .data = NULL};
 
 static kefir_hashtree_hash_t uint_hash(kefir_hashtree_key_t key, void *data) {
     UNUSED(data);
     return (kefir_hashtree_hash_t) key;
 }
 
-static bool uint_compare(kefir_hashtree_key_t key1, kefir_hashtree_key_t key2, void *data) {
+static kefir_int_t uint_compare(kefir_hashtree_key_t key1, kefir_hashtree_key_t key2, void *data) {
     UNUSED(data);
-    return key1 == key2;
+    if (key1 == key2) {
+        return 0;
+    } else if (key1 < key2) {
+        return -1;
+    } else {
+        return 1;
+    }
 }
 
-const struct kefir_hashtree_ops kefir_hashtree_uint_ops = {
-    .hash = uint_hash, .compare_keys = uint_compare, .data = NULL};
+const struct kefir_hashtree_ops kefir_hashtree_uint_ops = {.hash = uint_hash, .compare = uint_compare, .data = NULL};

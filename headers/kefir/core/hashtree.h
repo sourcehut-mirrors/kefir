@@ -57,7 +57,7 @@ typedef struct kefir_hashtree_node_iterator {
 
 typedef struct kefir_hashtree_ops {
     kefir_hashtree_hash_t (*hash)(kefir_hashtree_key_t, void *);
-    bool (*compare_keys)(kefir_hashtree_key_t, kefir_hashtree_key_t, void *);
+    kefir_int_t (*compare)(kefir_hashtree_key_t, kefir_hashtree_key_t, void *);
     void *data;
 } kefir_hashtree_ops_t;
 

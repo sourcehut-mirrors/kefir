@@ -56,26 +56,52 @@ static kefir_hashtree_hash_t transform_location_ops_hash(kefir_hashtree_key_t ke
     return transform_location_hash(loc);
 }
 
-static bool transform_location_compare(const struct kefir_codegen_opt_amd64_sysv_storage_location *loc1,
-                                       const struct kefir_codegen_opt_amd64_sysv_storage_location *loc2) {
+static kefir_int_t transform_location_compare(const struct kefir_codegen_opt_amd64_sysv_storage_location *loc1,
+                                              const struct kefir_codegen_opt_amd64_sysv_storage_location *loc2) {
     if (loc1 == NULL && loc2 == NULL) {
-        return true;
-    } else if (loc1 == NULL || loc2 == NULL) {
-        return false;
+        return 0;
+    } else if (loc1 == NULL) {
+        return -1;
+    } else if (loc2 == NULL) {
+        return 1;
+    }
+
+    if (loc1->type == KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_REGISTER &&
+        loc2->type == KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_MEMORY) {
+        return -1;
+    } else if (loc1->type == KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_MEMORY &&
+               loc2->type == KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_REGISTER) {
+        return 1;
     }
 
     switch (loc1->type) {
         case KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_REGISTER:
-            return loc2->type == KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_REGISTER && loc1->reg == loc2->reg;
+            if ((kefir_int64_t) loc1->reg < (kefir_int64_t) loc2->reg) {
+                return -1;
+            } else if (loc1->reg != loc2->reg) {
+                return 1;
+            }
+            break;
 
         case KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_MEMORY:
-            return loc2->type == KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_MEMORY &&
-                   loc1->memory.base_reg == loc2->memory.base_reg && loc1->memory.offset == loc2->memory.offset;
+            if (loc1->memory.base_reg == loc2->memory.base_reg) {
+                if (loc1->memory.offset < loc2->memory.offset) {
+                    return -1;
+                } else if (loc1->memory.offset > loc2->memory.offset) {
+                    return 1;
+                }
+            } else if ((kefir_int64_t) loc1->memory.base_reg < (kefir_int64_t) loc2->memory.base_reg) {
+                return -1;
+            } else {
+                return 1;
+            }
+            break;
     }
-    return false;
+
+    return 0;
 }
 
-static bool transform_location_ops_compare(kefir_hashtree_key_t key1, kefir_hashtree_key_t key2, void *data) {
+static kefir_int_t transform_location_ops_compare(kefir_hashtree_key_t key1, kefir_hashtree_key_t key2, void *data) {
     UNUSED(data);
     ASSIGN_DECL_CAST(const struct kefir_codegen_opt_amd64_sysv_storage_location *, loc1, key1);
     ASSIGN_DECL_CAST(const struct kefir_codegen_opt_amd64_sysv_storage_location *, loc2, key2);
@@ -83,7 +109,7 @@ static bool transform_location_ops_compare(kefir_hashtree_key_t key1, kefir_hash
 }
 
 const struct kefir_hashtree_ops kefir_hashtree_transform_location_ops = {
-    .hash = transform_location_ops_hash, .compare_keys = transform_location_ops_compare, .data = NULL};
+    .hash = transform_location_ops_hash, .compare = transform_location_ops_compare, .data = NULL};
 
 static kefir_result_t free_transform_entry(struct kefir_mem *mem, struct kefir_hashtree *tree, kefir_hashtree_key_t key,
                                            kefir_hashtree_value_t value, void *payload) {
@@ -198,7 +224,7 @@ kefir_result_t kefir_codegen_opt_amd64_sysv_storage_transform_operations(
 
         ASSIGN_DECL_CAST(const struct kefir_codegen_opt_amd64_sysv_storage_transform_entry *, entry, node->value);
 
-        if (!transform_location_compare(&entry->destination, &entry->source)) {
+        if (transform_location_compare(&entry->destination, &entry->source) != 0) {
             (*num_of_ops)++;
         }
     }
@@ -614,8 +640,8 @@ kefir_result_t kefir_codegen_opt_amd64_sysv_storage_transform_perform(
         if (entry->temporaries.source_preserved) {
             REQUIRE_OK(
                 load_temporary(mem, codegen, storage, stack_frame_map, transform, entry, num_of_stack_temporaries));
-        } else if (!transform_location_ops_compare((kefir_hashtree_key_t) &entry->source,
-                                                   (kefir_hashtree_key_t) &entry->destination, NULL)) {
+        } else if (transform_location_ops_compare((kefir_hashtree_key_t) &entry->source,
+                                                  (kefir_hashtree_key_t) &entry->destination, NULL) != 0) {
             REQUIRE_OK(
                 load_from_location(mem, codegen, storage, stack_frame_map, transform, entry, num_of_stack_temporaries));
         }
