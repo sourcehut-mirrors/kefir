@@ -141,6 +141,9 @@ kefir_result_t kefir_driver_configuration_init(struct kefir_driver_configuration
     config->flags.link_rtlib = true;
     config->flags.include_rtinc = true;
 
+    config->dependency_output.output_system_deps = true;
+    config->dependency_output.target_name = NULL;
+
     return KEFIR_OK;
 }
 

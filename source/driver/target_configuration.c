@@ -75,6 +75,8 @@ static kefir_result_t add_include_paths(struct kefir_mem *mem, struct kefir_symb
         REQUIRE(path_copy != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert path into symbol table"));
         REQUIRE_OK(kefir_list_insert_after(mem, &compiler_config->include_path,
                                            kefir_list_tail(&compiler_config->include_path), (void *) path_copy));
+        REQUIRE_OK(kefir_hashtreeset_add(mem, &compiler_config->system_include_directories,
+                                         (kefir_hashtreeset_entry_t) path_copy));
     }
     return KEFIR_OK;
 }

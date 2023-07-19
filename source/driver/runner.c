@@ -65,15 +65,17 @@ static kefir_result_t open_output(const char *filepath, FILE **output) {
 }
 
 static kefir_result_t dump_action_impl(struct kefir_mem *mem, const struct kefir_compiler_runner_configuration *options,
+                                       struct kefir_preprocessor_source_locator *source_locator,
                                        kefir_result_t (*action)(struct kefir_mem *,
                                                                 const struct kefir_compiler_runner_configuration *,
                                                                 struct kefir_compiler_context *, const char *,
                                                                 const char *, kefir_size_t, FILE *)) {
     FILE *output;
     struct kefir_cli_input input;
+    struct kefir_symbol_table symbols;
     struct kefir_compiler_profile profile;
     struct kefir_compiler_context compiler;
-    struct kefir_preprocessor_filesystem_source_locator source_locator;
+    struct kefir_preprocessor_filesystem_source_locator filesystem_source_locator;
 
     const char *source_id = NULL;
     if (options->source_id != NULL) {
@@ -86,15 +88,20 @@ static kefir_result_t dump_action_impl(struct kefir_mem *mem, const struct kefir
 
     REQUIRE_OK(open_output(options->output_filepath, &output));
     REQUIRE_OK(kefir_cli_input_open(mem, &input, options->input_filepath, stdin));
-    REQUIRE_OK(
-        kefir_preprocessor_filesystem_source_locator_init(&source_locator, &compiler.ast_global_context.symbols));
-    for (const struct kefir_list_entry *iter = kefir_list_head(&options->include_path); iter != NULL;
-         kefir_list_next(&iter)) {
-        REQUIRE_OK(
-            kefir_preprocessor_filesystem_source_locator_append(mem, &source_locator, (const char *) iter->value));
+    REQUIRE_OK(kefir_symbol_table_init(&symbols));
+    REQUIRE_OK(kefir_preprocessor_filesystem_source_locator_init(&filesystem_source_locator, &symbols));
+    kefir_bool_t free_source_locator = false;
+    if (source_locator == NULL) {
+        for (const struct kefir_list_entry *iter = kefir_list_head(&options->include_path); iter != NULL;
+             kefir_list_next(&iter)) {
+            REQUIRE_OK(kefir_preprocessor_filesystem_source_locator_append(mem, &filesystem_source_locator,
+                                                                           (const char *) iter->value));
+        }
+        free_source_locator = true;
+        source_locator = &filesystem_source_locator.locator;
     }
     REQUIRE_OK(kefir_compiler_profile(&profile, options->target_profile));
-    REQUIRE_OK(kefir_compiler_context_init(mem, &compiler, &profile, &source_locator.locator, NULL));
+    REQUIRE_OK(kefir_compiler_context_init(mem, &compiler, &profile, source_locator, NULL));
 
     compiler.preprocessor_configuration.named_macro_vararg = options->features.named_macro_vararg;
     compiler.preprocessor_configuration.include_next = options->features.include_next;
@@ -158,7 +165,10 @@ static kefir_result_t dump_action_impl(struct kefir_mem *mem, const struct kefir
     REQUIRE_OK(action(mem, options, &compiler, source_id, input.content, input.length, output));
     fclose(output);
     REQUIRE_OK(kefir_compiler_context_free(mem, &compiler));
-    REQUIRE_OK(kefir_preprocessor_filesystem_source_locator_free(mem, &source_locator));
+    if (free_source_locator) {
+        REQUIRE_OK(kefir_preprocessor_filesystem_source_locator_free(mem, &filesystem_source_locator));
+    }
+    REQUIRE_OK(kefir_symbol_table_free(mem, &symbols));
     REQUIRE_OK(kefir_cli_input_close(mem, &input));
     return KEFIR_OK;
 }
@@ -261,7 +271,135 @@ static kefir_result_t dump_preprocessed_impl(struct kefir_mem *mem,
 
 static kefir_result_t action_dump_preprocessed(struct kefir_mem *mem,
                                                const struct kefir_compiler_runner_configuration *options) {
-    REQUIRE_OK(dump_action_impl(mem, options, dump_preprocessed_impl));
+    REQUIRE_OK(dump_action_impl(mem, options, NULL, dump_preprocessed_impl));
+    return KEFIR_OK;
+}
+
+struct dependencies_proxy_source_locator {
+    struct kefir_preprocessor_source_locator locator;
+    struct kefir_preprocessor_source_locator *base_locator;
+    const struct kefir_compiler_runner_configuration *compiler_config;
+    struct kefir_hashtree includes;
+    struct kefir_hashtreeset direct_system_includes;
+};
+
+static kefir_result_t is_system_dependency(const struct dependencies_proxy_source_locator *locator,
+                                           const char *filepath, kefir_bool_t *system_dep) {
+    while (filepath != NULL) {
+        if (kefir_hashtreeset_has(&locator->direct_system_includes, (kefir_hashtreeset_entry_t) filepath)) {
+            *system_dep = true;
+            return KEFIR_OK;
+        }
+
+        struct kefir_hashtree_node *node = NULL;
+        kefir_result_t res = kefir_hashtree_at(&locator->includes, (kefir_hashtree_key_t) filepath, &node);
+        if (res == KEFIR_NOT_FOUND) {
+            filepath = NULL;
+        } else {
+            REQUIRE_OK(res);
+            filepath = (const char *) node->value;
+        }
+    }
+
+    *system_dep = false;
+    return KEFIR_OK;
+}
+
+static kefir_result_t dump_dependencies_impl(struct kefir_mem *mem,
+                                             const struct kefir_compiler_runner_configuration *options,
+                                             struct kefir_compiler_context *compiler, const char *source_id,
+                                             const char *source, kefir_size_t length, FILE *output) {
+    UNUSED(options);
+    struct kefir_token_buffer tokens;
+    REQUIRE_OK(kefir_token_buffer_init(&tokens));
+    REQUIRE_OK(build_predefined_macros(mem, options, compiler));
+    REQUIRE_OK(include_predefined(mem, options, compiler, source_id, &tokens));
+    REQUIRE_OK(kefir_compiler_preprocess(mem, compiler, &tokens, source, length, source_id, options->input_filepath));
+    REQUIRE_OK(open_output(options->output_filepath, &output));
+
+    struct kefir_hashtree_node_iterator iter;
+    ASSIGN_DECL_CAST(struct dependencies_proxy_source_locator *, proxy_locator, compiler->source_locator->payload);
+
+    const char *first_dep = options->input_filepath != NULL ? options->input_filepath : "";
+    if (options->dependency_output.target_name != NULL) {
+        fprintf(output, "%s: %s", options->dependency_output.target_name, first_dep);
+    } else if (first_dep != NULL) {
+        fprintf(output, "%s.o: %s", first_dep, first_dep);
+    } else {
+        fprintf(output, "a.out: %s", first_dep);
+    }
+    for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&proxy_locator->includes, &iter); node != NULL;
+         node = kefir_hashtree_next(&iter)) {
+        ASSIGN_DECL_CAST(const char *, filepath, node->key);
+
+        kefir_bool_t output_filepath;
+        if (options->dependency_output.output_system_deps) {
+            output_filepath = true;
+        } else {
+            REQUIRE_OK(is_system_dependency(proxy_locator, filepath, &output_filepath));
+            output_filepath = !output_filepath;
+        }
+        if (output_filepath) {
+            fprintf(output, " \\\n %s", filepath);
+        }
+    }
+    fprintf(output, "\n");
+    REQUIRE_OK(kefir_token_buffer_free(mem, &tokens));
+    return KEFIR_OK;
+}
+
+static kefir_result_t dependencies_proxy_source_locator_open(
+    struct kefir_mem *mem, const struct kefir_preprocessor_source_locator *source_locator, const char *filepath,
+    kefir_bool_t system, const struct kefir_preprocessor_source_file_info *file_info,
+    kefir_preprocessor_source_locator_mode_t mode, struct kefir_preprocessor_source_file *source_file) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(source_locator != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid filesystem source locator"));
+    REQUIRE(filepath != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid file path"));
+    REQUIRE(source_file != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to source file"));
+    ASSIGN_DECL_CAST(struct dependencies_proxy_source_locator *, locator, source_locator);
+
+    REQUIRE_OK(locator->base_locator->open(mem, locator->base_locator, filepath, system, file_info, mode, source_file));
+    if (!kefir_hashtree_has(&locator->includes, (kefir_hashtree_key_t) source_file->info.filepath)) {
+        REQUIRE_OK(kefir_hashtree_insert(mem, &locator->includes, (kefir_hashtree_key_t) source_file->info.filepath,
+                                         (kefir_hashtree_value_t) 0));
+    }
+
+    if (kefir_hashtreeset_has(&locator->compiler_config->system_include_directories,
+                              (kefir_hashtreeset_entry_t) source_file->info.base_include_dir)) {
+        REQUIRE_OK(kefir_hashtreeset_add(mem, &locator->direct_system_includes,
+                                         (kefir_hashtreeset_entry_t) source_file->info.filepath));
+    }
+    return KEFIR_OK;
+}
+
+static kefir_result_t action_dump_dependencies(struct kefir_mem *mem,
+                                               const struct kefir_compiler_runner_configuration *options) {
+    struct kefir_symbol_table symbols;
+    struct kefir_preprocessor_filesystem_source_locator filesystem_source_locator;
+
+    REQUIRE_OK(kefir_symbol_table_init(&symbols));
+    REQUIRE_OK(kefir_preprocessor_filesystem_source_locator_init(&filesystem_source_locator, &symbols));
+    for (const struct kefir_list_entry *iter = kefir_list_head(&options->include_path); iter != NULL;
+         kefir_list_next(&iter)) {
+        REQUIRE_OK(kefir_preprocessor_filesystem_source_locator_append(mem, &filesystem_source_locator,
+                                                                       (const char *) iter->value));
+    }
+
+    struct dependencies_proxy_source_locator proxy_locator;
+    REQUIRE_OK(kefir_hashtree_init(&proxy_locator.includes, &kefir_hashtree_str_ops));
+    REQUIRE_OK(kefir_hashtreeset_init(&proxy_locator.direct_system_includes, &kefir_hashtree_str_ops));
+    proxy_locator.locator.open = dependencies_proxy_source_locator_open;
+    proxy_locator.locator.payload = &proxy_locator;
+    proxy_locator.base_locator = &filesystem_source_locator.locator;
+    proxy_locator.compiler_config = options;
+
+    REQUIRE_OK(dump_action_impl(mem, options, &proxy_locator.locator, dump_dependencies_impl));
+
+    REQUIRE_OK(kefir_hashtreeset_free(mem, &proxy_locator.direct_system_includes));
+    REQUIRE_OK(kefir_hashtree_free(mem, &proxy_locator.includes));
+    REQUIRE_OK(kefir_preprocessor_filesystem_source_locator_free(mem, &filesystem_source_locator));
+    REQUIRE_OK(kefir_symbol_table_free(mem, &symbols));
     return KEFIR_OK;
 }
 
@@ -284,7 +422,7 @@ static kefir_result_t dump_tokens_impl(struct kefir_mem *mem, const struct kefir
 
 static kefir_result_t action_dump_tokens(struct kefir_mem *mem,
                                          const struct kefir_compiler_runner_configuration *options) {
-    REQUIRE_OK(dump_action_impl(mem, options, dump_tokens_impl));
+    REQUIRE_OK(dump_action_impl(mem, options, NULL, dump_tokens_impl));
     return KEFIR_OK;
 }
 
@@ -313,7 +451,7 @@ static kefir_result_t dump_ast_impl(struct kefir_mem *mem, const struct kefir_co
 
 static kefir_result_t action_dump_ast(struct kefir_mem *mem,
                                       const struct kefir_compiler_runner_configuration *options) {
-    REQUIRE_OK(dump_action_impl(mem, options, dump_ast_impl));
+    REQUIRE_OK(dump_action_impl(mem, options, NULL, dump_ast_impl));
     return KEFIR_OK;
 }
 
@@ -341,7 +479,7 @@ static kefir_result_t dump_ir_impl(struct kefir_mem *mem, const struct kefir_com
 }
 
 static kefir_result_t action_dump_ir(struct kefir_mem *mem, const struct kefir_compiler_runner_configuration *options) {
-    REQUIRE_OK(dump_action_impl(mem, options, dump_ir_impl));
+    REQUIRE_OK(dump_action_impl(mem, options, NULL, dump_ir_impl));
     return KEFIR_OK;
 }
 
@@ -379,7 +517,7 @@ static kefir_result_t dump_opt_impl(struct kefir_mem *mem, const struct kefir_co
 
 static kefir_result_t action_dump_opt(struct kefir_mem *mem,
                                       const struct kefir_compiler_runner_configuration *options) {
-    REQUIRE_OK(dump_action_impl(mem, options, dump_opt_impl));
+    REQUIRE_OK(dump_action_impl(mem, options, NULL, dump_opt_impl));
     return KEFIR_OK;
 }
 
@@ -417,7 +555,7 @@ static kefir_result_t dump_asm_impl(struct kefir_mem *mem, const struct kefir_co
 
 static kefir_result_t action_dump_asm(struct kefir_mem *mem,
                                       const struct kefir_compiler_runner_configuration *options) {
-    REQUIRE_OK(dump_action_impl(mem, options, dump_asm_impl));
+    REQUIRE_OK(dump_action_impl(mem, options, NULL, dump_asm_impl));
     return KEFIR_OK;
 }
 
@@ -434,6 +572,7 @@ static kefir_result_t action_dump_runtime_code(struct kefir_mem *mem,
 
 static kefir_result_t (*Actions[])(struct kefir_mem *, const struct kefir_compiler_runner_configuration *) = {
     [KEFIR_COMPILER_RUNNER_ACTION_PREPROCESS] = action_dump_preprocessed,
+    [KEFIR_COMPILER_RUNNER_ACTION_DUMP_DEPENDENCIES] = action_dump_dependencies,
     [KEFIR_COMPILER_RUNNER_ACTION_DUMP_TOKENS] = action_dump_tokens,
     [KEFIR_COMPILER_RUNNER_ACTION_DUMP_AST] = action_dump_ast,
     [KEFIR_COMPILER_RUNNER_ACTION_DUMP_IR] = action_dump_ir,

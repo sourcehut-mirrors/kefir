@@ -78,6 +78,14 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_symbo
         } else if (strcmp("-P", arg) == 0) {
             // Preprocess and save
             config->stage = KEFIR_DRIVER_STAGE_PREPROCESS_SAVE;
+        } else if (strcmp("-M", arg) == 0) {
+            // Print all dependencies
+            config->stage = KEFIR_DRIVER_STAGE_DEPENDENCY_OUTPUT;
+            config->dependency_output.output_system_deps = true;
+        } else if (strcmp("-MM", arg) == 0) {
+            // Print all non-system dependencies
+            config->stage = KEFIR_DRIVER_STAGE_DEPENDENCY_OUTPUT;
+            config->dependency_output.output_system_deps = false;
         } else if (strcmp("--print-tokens", arg) == 0) {
             // Print tokens
             config->stage = KEFIR_DRIVER_STAGE_PRINT_TOKENS;
@@ -196,6 +204,15 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_symbo
             const char *file = argv[++index];
 
             REQUIRE_OK(kefir_driver_configuration_add_include_file(mem, symbols, config, file));
+        } else if (strcmp("-MT", arg) == 0) {
+            // Dependency target name
+            EXPECT_ARG;
+            const char *target_name = argv[++index];
+            target_name = kefir_symbol_table_insert(mem, symbols, target_name, NULL);
+            REQUIRE(target_name != NULL,
+                    KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert dependency target name into symbols"));
+
+            config->dependency_output.target_name = target_name;
         }
 
         // Linker flags

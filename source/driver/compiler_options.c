@@ -104,6 +104,18 @@ static kefir_result_t include_hook(struct kefir_mem *mem, const struct kefir_cli
     return KEFIR_OK;
 }
 
+static kefir_result_t sys_include_hook(struct kefir_mem *mem, const struct kefir_cli_option *option, void *raw_options,
+                                       const char *arg) {
+    UNUSED(mem);
+    UNUSED(option);
+    ASSIGN_DECL_CAST(struct kefir_compiler_runner_configuration *, options, raw_options);
+
+    REQUIRE_OK(
+        kefir_list_insert_after(mem, &options->include_path, kefir_list_tail(&options->include_path), (void *) arg));
+    REQUIRE_OK(kefir_hashtreeset_add(mem, &options->system_include_directories, (kefir_hashtreeset_entry_t) arg));
+    return KEFIR_OK;
+}
+
 static kefir_result_t include_file_hook(struct kefir_mem *mem, const struct kefir_cli_option *option, void *raw_options,
                                         const char *arg) {
     UNUSED(mem);
@@ -146,6 +158,8 @@ struct kefir_cli_option KefirCompilerConfigurationOptions[] = {
     SIMPLE('o', "output", true, KEFIR_CLI_OPTION_ACTION_ASSIGN_STRARG, 0, output_filepath),
     PREHOOK('p', "preprocess", false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, KEFIR_COMPILER_RUNNER_ACTION_PREPROCESS,
             action, preprocess_hook),
+    PREHOOK(0, "dump-dependencies", false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT,
+            KEFIR_COMPILER_RUNNER_ACTION_DUMP_DEPENDENCIES, action, preprocess_hook),
     PREHOOK('P', "skip-preprocessor", false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, true, skip_preprocessor,
             skip_preprocessor_hook),
     SIMPLE(0, "dump-tokens", false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, KEFIR_COMPILER_RUNNER_ACTION_DUMP_TOKENS,
@@ -166,10 +180,16 @@ struct kefir_cli_option KefirCompilerConfigurationOptions[] = {
     SIMPLE(0, "detailed-output", false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, true, detailed_output),
     POSTHOOK(0, "pp-timestamp", true, KEFIR_CLI_OPTION_ACTION_ASSIGN_UINTARG, 0, pp_timestamp, pp_timestamp_hook),
     SIMPLE(0, "optimizer-pipeline", true, KEFIR_CLI_OPTION_ACTION_ASSIGN_STRARG, 0, optimizer_pipeline_spec),
+    SIMPLE(0, "system-dependencies", false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, true,
+           dependency_output.output_system_deps),
+    SIMPLE(0, "no-system-dependencies", false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, false,
+           dependency_output.output_system_deps),
+    SIMPLE(0, "dependency-target", true, KEFIR_CLI_OPTION_ACTION_ASSIGN_STRARG, 0, dependency_output.target_name),
 
     CUSTOM('D', "define", true, define_hook),
     CUSTOM('U', "undefine", true, undefine_hook),
     CUSTOM('I', "include-dir", true, include_hook),
+    CUSTOM(0, "system-include-dir", true, sys_include_hook),
     CUSTOM(0, "include", true, include_file_hook),
 
     FEATURE("non-strict-qualifiers", features.non_strict_qualifiers),

@@ -11,9 +11,11 @@ Options:
     --dump-ast                          Print abstract syntax tree (AST)
     --dump-tokens                       Print tokens
     --dump-runtime-code                 Print runtime assembly code for specified target
+    --dump-dependencies                 Print source file dependencies in make format
     -p,--preprocess                     Print result of preprocessing
     -P,--skip-preprocessor              Skip preprocessing stage. Cannot be specified along with -p
     -I,--include-path dir               Add directory to include search path
+    --sys-include-path dir              Add directory to include search path and mark it as a system include path (used for dependency output)
     --include file                      Include file at the beginning
     -D,--define identifier[=macro]      Define macro
     -U,--undefine identifier            Undefine predefined macro
@@ -24,6 +26,9 @@ Options:
     --source-id identifier              Force use provided source file identifier
     --detailed-output                   Include references to source file in AST and token dumps
     --optimizer-pipeline spec           Optimizer pipeline specification (see below)
+    --system-dependencies               Include system paths in source file dependencies (used with --dump-dependencies)
+    --no-system-dependencies            Exclude system paths from source file dependencies (used with --dump-dependencies)
+    --dependency-target                 Override default target of generated make rule (used with --dump-dependencies)
 
 Kefir supports disabled-by-default optional features:
     --feature-[feature name]            Enable feature

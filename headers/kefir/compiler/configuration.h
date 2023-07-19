@@ -25,10 +25,12 @@
 #include "kefir/core/mem.h"
 #include "kefir/core/list.h"
 #include "kefir/core/hashtree.h"
+#include "kefir/core/hashtreeset.h"
 #include <time.h>
 
 typedef enum kefir_compiler_runner_action {
     KEFIR_COMPILER_RUNNER_ACTION_PREPROCESS,
+    KEFIR_COMPILER_RUNNER_ACTION_DUMP_DEPENDENCIES,
     KEFIR_COMPILER_RUNNER_ACTION_DUMP_TOKENS,
     KEFIR_COMPILER_RUNNER_ACTION_DUMP_AST,
     KEFIR_COMPILER_RUNNER_ACTION_DUMP_IR,
@@ -52,12 +54,18 @@ typedef struct kefir_compiler_runner_configuration {
     kefir_bool_t detailed_output;
     kefir_bool_t skip_preprocessor;
     struct kefir_list include_path;
+    struct kefir_hashtreeset system_include_directories;
     struct kefir_list include_files;
     struct kefir_hashtree defines;
     struct kefir_list undefines;
     time_t pp_timestamp;
     kefir_bool_t default_pp_timestamp;
     const char *optimizer_pipeline_spec;
+
+    struct {
+        const char *target_name;
+        kefir_bool_t output_system_deps;
+    } dependency_output;
 
     struct {
         kefir_bool_t fail_on_attributes;

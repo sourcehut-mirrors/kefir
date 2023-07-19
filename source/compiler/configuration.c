@@ -49,8 +49,10 @@ kefir_result_t kefir_compiler_runner_configuration_init(struct kefir_compiler_ru
         .default_pp_timestamp = true,
         .features = {false},
         .codegen = {.emulated_tls = false, .position_independent_code = false, .syntax = NULL},
-        .optimizer_pipeline_spec = NULL};
+        .optimizer_pipeline_spec = NULL,
+        .dependency_output = {.target_name = NULL, .output_system_deps = true}};
     REQUIRE_OK(kefir_list_init(&options->include_path));
+    REQUIRE_OK(kefir_hashtreeset_init(&options->system_include_directories, &kefir_hashtree_str_ops));
     REQUIRE_OK(kefir_list_init(&options->include_files));
     REQUIRE_OK(kefir_hashtree_init(&options->defines, &kefir_hashtree_str_ops));
     REQUIRE_OK(kefir_hashtree_on_removal(&options->defines, free_define_identifier, NULL));
@@ -64,6 +66,7 @@ kefir_result_t kefir_compiler_runner_configuration_free(struct kefir_mem *mem,
     REQUIRE(options != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to cli options"));
 
     REQUIRE_OK(kefir_list_free(mem, &options->include_files));
+    REQUIRE_OK(kefir_hashtreeset_free(mem, &options->system_include_directories));
     REQUIRE_OK(kefir_list_free(mem, &options->include_path));
     REQUIRE_OK(kefir_hashtree_free(mem, &options->defines));
     REQUIRE_OK(kefir_list_free(mem, &options->undefines));

@@ -29,7 +29,11 @@ bootstrap: .BOOTSTRAP
 	@echo "Bootstrap successfully finished"
 
 clean:
-	@echo "Removing $(CLEAN_LIST)"
-	@rm -rf $(CLEAN_LIST)
+	@echo "Removing $(BIN_DIR)"
+	@rm -rf $(BIN_DIR)
 
-.PHONY: all test generate_test_artifacts bootstrap clean .DEPENDENCIES .TEST_ARTIFACTS .ASM_FILES .OBJECT_FILES .BINARIES .TEST_BINARIES .TEST_RESULTS .TESTS .BOOTSTRAP
+clean_bootstrap:
+	@echo "Removing $(BOOTSTRAP_DIR)"
+	@rm -rf $(BOOTSTRAP_DIR)
+
+.PHONY: all test generate_test_artifacts bootstrap clean clean_bootstrap .DEPENDENCIES .TEST_ARTIFACTS .ASM_FILES .OBJECT_FILES .BINARIES .TEST_BINARIES .TEST_RESULTS .TESTS .BOOTSTRAP

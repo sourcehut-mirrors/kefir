@@ -17,6 +17,9 @@ OPTIONS:
     -D name[=value]                     Define preprocessor macro
     -U name                             Undefine predefined preprocessor macro
     -I directory                        Add directory to preprocessor include path
+    -M                                  Output a make rule describing the dependencies of source file (including the dependencies from system path)
+    -MM                                 Output a make rule describing the dependencies of source file (excluding the dependencies from system path and their transitive includes)
+    -MT target                          Override the default target name of make rule produced by dependency generation (used with -M and -MM options)
     -include file                       Include file during preprocessing phase
     -s                                  Strip linked executable
     -r                                  Retain relocations in linked executable
@@ -61,6 +64,7 @@ COMPILER OPTIONS:
         --tabular-errors                    Print errors in tabular format to stderr
         --target-profile profile            Generate code for specified target (see below)
         --source-id identifier              Force use provided source file identifier
+        --sys-include-path dir              Add directory to include search path and mark it as a system include path (used for dependency output)
         --detailed-output                   Include references to source file in AST and token dumps
         --feature-[feature name]            Enable compiler feature (see below)
         --no-feature-[feature name]         Disable compiler feature (see below)
