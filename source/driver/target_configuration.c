@@ -292,9 +292,9 @@ kefir_result_t kefir_driver_apply_target_linker_initial_configuration(
 
         if (linker_config->flags.link_start_files) {
             if (linker_config->flags.pie_linking) {
-                LINK_FILE(externals->gnu.library_path, "Scrt1.o");
+                LINK_FILE(externals->freebsd.library_path, "Scrt1.o");
             } else if (!linker_config->flags.shared_linking) {
-                LINK_FILE(externals->gnu.library_path, "crt1.o");
+                LINK_FILE(externals->freebsd.library_path, "crt1.o");
             }
             LINK_FILE(externals->freebsd.library_path, "crti.o");
             if (linker_config->flags.static_linking) {
