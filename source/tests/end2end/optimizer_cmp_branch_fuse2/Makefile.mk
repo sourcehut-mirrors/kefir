@@ -1,2 +1,0 @@
-END2END_TEST_ID=optimizer_cmp_branch_fuse2
-include source/tests/end2end/Makefile.template.mk

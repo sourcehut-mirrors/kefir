@@ -1,2 +1,0 @@
-END2END_TEST_ID=undef_predefined_macro1
-include source/tests/end2end/Makefile.template.mk

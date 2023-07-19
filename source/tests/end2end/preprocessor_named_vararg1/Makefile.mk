@@ -1,2 +1,0 @@
-END2END_TEST_ID=preprocessor_named_vararg1
-include source/tests/end2end/Makefile.template.mk

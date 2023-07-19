@@ -1,2 +1,0 @@
-END2END_TEST_ID=floating_point_to_unsigned1
-include source/tests/end2end/Makefile.template.mk
