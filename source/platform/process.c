@@ -67,6 +67,12 @@ static kefir_result_t close_process(struct kefir_process *process) {
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_process_close(struct kefir_process *process) {
+    REQUIRE(process != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to process"));
+    REQUIRE_OK(close_process(process));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_process_wait(struct kefir_process *process) {
     REQUIRE(process != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to process"));
     REQUIRE(process->pid > 0, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected running process"));
@@ -122,6 +128,19 @@ kefir_result_t kefir_process_run(struct kefir_process *process, int (*callback)(
         exit(callback(payload));
     }
     return KEFIR_OK;
+}
+
+kefir_result_t kefir_process_self_execute(struct kefir_process *process, const char *file, char *const *args) {
+    REQUIRE(process != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to process"));
+    REQUIRE(process->pid == -1, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected initialized process"));
+    REQUIRE(file != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid executable file"));
+    REQUIRE(args != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid executable arguments"));
+
+    REQUIRE(dup2(process->io.input_fd, STDIN_FILENO) != -1, KEFIR_SET_OS_ERROR("Failed to set up process stdin"));
+    REQUIRE(dup2(process->io.output_fd, STDOUT_FILENO) != -1, KEFIR_SET_OS_ERROR("Failed to set up process stdout"));
+    REQUIRE(dup2(process->io.error_fd, STDERR_FILENO) != -1, KEFIR_SET_OS_ERROR("Failed to set up process stderr"));
+    REQUIRE(execvp(file, (char *const *) args) != -1, KEFIR_SET_OS_ERRORF("Failed to execute %s\n", file));
+    abort();  // Execution flow shall not reach this statement
 }
 
 kefir_result_t kefir_process_execute(struct kefir_process *process, const char *file, char *const *args) {

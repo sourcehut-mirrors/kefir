@@ -127,6 +127,7 @@ kefir_result_t kefir_driver_configuration_init(struct kefir_driver_configuration
     REQUIRE_OK(kefir_list_init(&config->include_directories));
     REQUIRE_OK(kefir_list_init(&config->include_files));
     REQUIRE_OK(kefir_driver_target_default(&config->target));
+    REQUIRE_OK(kefir_list_init(&config->run.args));
 
     config->compiler.optimization_level = -1;
 
@@ -144,6 +145,11 @@ kefir_result_t kefir_driver_configuration_init(struct kefir_driver_configuration
     config->dependency_output.output_system_deps = true;
     config->dependency_output.target_name = NULL;
 
+    config->run.file_stdin = NULL;
+    config->run.file_stdout = NULL;
+    config->run.stderr_to_stdout = false;
+    config->run.file_stderr = NULL;
+
     return KEFIR_OK;
 }
 
@@ -151,6 +157,7 @@ kefir_result_t kefir_driver_configuration_free(struct kefir_mem *mem, struct kef
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(config != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver configuration"));
 
+    REQUIRE_OK(kefir_list_free(mem, &config->run.args));
     REQUIRE_OK(kefir_list_free(mem, &config->arguments));
     REQUIRE_OK(kefir_list_free(mem, &config->assembler_arguments));
     REQUIRE_OK(kefir_list_free(mem, &config->compiler_arguments));

@@ -56,6 +56,13 @@ OPTIONS:
     --print-ir                          Print intermediate representation in JSON format
     --print-opt                         Print optimization representation in JSON format
     --print-runtime-code                Print runtime code for selected target
+    -run [file] args...                 Run the linked executable with the rest of command line arguments.
+                                        If no input file was specified, the first argument is treated as input file.
+    -runarg arg                         Pass an argument to the runned process (shall precede -run)
+    -run-stdin file                     Redirect runned process stdin from file (shall precede -run)
+    -run-stdout file                    Redirect runned process stdout to file (shall precede -run)
+    -run-stderr file                    Redirect runned process stderr to file (shall precede -run)
+    -run-stderr2out                     Redirect runned process stderr to stdout (shall precede -run)
 
 COMPILER OPTIONS:
     Extra compiler options available via -W switch:

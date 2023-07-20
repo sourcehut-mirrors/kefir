@@ -99,8 +99,27 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_symbo
             // Print optimizer code
             config->stage = KEFIR_DRIVER_STAGE_PRINT_OPT;
         } else if (strcmp("--print-runtime-code", arg) == 0) {
-            // Print IR
+            // Print runtime code
             config->stage = KEFIR_DRIVER_STAGE_PRINT_RUNTIME_CODE;
+        } else if (strcmp("-run", arg) == 0) {
+            // Run executable
+            config->stage = KEFIR_DRIVER_STAGE_RUN;
+
+            if (kefir_list_length(&config->arguments) == 0) {
+                EXPECT_ARG;
+                arg = argv[++index];
+                REQUIRE_OK(kefir_driver_configuration_add_argument(mem, symbols, config, arg, detect_file_type(arg)));
+            }
+
+            for (; index + 1 < argc;) {
+                const char *arg = argv[++index];
+                arg = kefir_symbol_table_insert(mem, symbols, arg, NULL);
+                REQUIRE(arg != NULL,
+                        KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert run argument into symbols"));
+
+                REQUIRE_OK(
+                    kefir_list_insert_after(mem, &config->run.args, kefir_list_tail(&config->run.args), (void *) arg));
+            }
         }
 
         // Generic flags
@@ -317,6 +336,48 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_symbo
         } else if (strcmp("-nortinc", arg) == 0) {
             // Do not include runtime headers
             config->flags.include_rtinc = false;
+        }
+
+        // Run options
+        else if (strcmp("-runarg", arg) == 0) {
+            // Run argument
+
+            EXPECT_ARG;
+            const char *arg = argv[++index];
+            arg = kefir_symbol_table_insert(mem, symbols, arg, NULL);
+            REQUIRE(arg != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert run argument into symbols"));
+
+            REQUIRE_OK(
+                kefir_list_insert_after(mem, &config->run.args, kefir_list_tail(&config->run.args), (void *) arg));
+        } else if (strcmp("-run-stdin", arg) == 0) {
+            // Run stdin
+            EXPECT_ARG;
+            const char *arg = argv[++index];
+            arg = kefir_symbol_table_insert(mem, symbols, arg, NULL);
+            REQUIRE(arg != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert run argument into symbols"));
+
+            config->run.file_stdin = arg;
+        } else if (strcmp("-run-stdout", arg) == 0) {
+            // Run stdout
+            EXPECT_ARG;
+            const char *arg = argv[++index];
+            arg = kefir_symbol_table_insert(mem, symbols, arg, NULL);
+            REQUIRE(arg != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert run argument into symbols"));
+
+            config->run.file_stdout = arg;
+        } else if (strcmp("-run-stderr", arg) == 0) {
+            // Run stderr
+            EXPECT_ARG;
+            const char *arg = argv[++index];
+            arg = kefir_symbol_table_insert(mem, symbols, arg, NULL);
+            REQUIRE(arg != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert run argument into symbols"));
+
+            config->run.stderr_to_stdout = false;
+            config->run.file_stderr = arg;
+        } else if (strcmp("-run-stderr2out", arg) == 0) {
+            // Run stderr to stdout
+            config->run.stderr_to_stdout = true;
+            config->run.file_stderr = NULL;
         }
 
         // Extra tool options

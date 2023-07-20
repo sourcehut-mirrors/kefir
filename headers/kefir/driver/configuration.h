@@ -68,7 +68,8 @@ typedef enum kefir_driver_stage {
     KEFIR_DRIVER_STAGE_COMPILE,
     KEFIR_DRIVER_STAGE_ASSEMBLE,
     KEFIR_DRIVER_STAGE_LINK,
-    KEFIR_DRIVER_STAGE_PRINT_RUNTIME_CODE
+    KEFIR_DRIVER_STAGE_PRINT_RUNTIME_CODE,
+    KEFIR_DRIVER_STAGE_RUN
 } kefir_driver_stage_t;
 
 typedef enum kefir_driver_argument_type {
@@ -129,6 +130,14 @@ typedef struct kefir_driver_configuration {
         kefir_bool_t output_system_deps;
         const char *target_name;
     } dependency_output;
+
+    struct {
+        struct kefir_list args;
+        const char *file_stdin;
+        const char *file_stdout;
+        kefir_bool_t stderr_to_stdout;
+        const char *file_stderr;
+    } run;
 } kefir_driver_configuration_t;
 
 kefir_result_t kefir_driver_configuration_init(struct kefir_driver_configuration *);

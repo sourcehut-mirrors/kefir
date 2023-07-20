@@ -156,6 +156,7 @@ static kefir_result_t driver_generate_compiler_config(struct kefir_mem *mem, str
         case KEFIR_DRIVER_STAGE_COMPILE:
         case KEFIR_DRIVER_STAGE_ASSEMBLE:
         case KEFIR_DRIVER_STAGE_LINK:
+        case KEFIR_DRIVER_STAGE_RUN:
             compiler_config->action = KEFIR_COMPILER_RUNNER_ACTION_DUMP_ASSEMBLY;
             break;
 
@@ -419,6 +420,7 @@ static kefir_result_t driver_run_argument(struct kefir_mem *mem, struct kefir_dr
     const char *output_filename = NULL;
     switch (config->stage) {
         case KEFIR_DRIVER_STAGE_LINK:
+        case KEFIR_DRIVER_STAGE_RUN:
             switch (argument->type) {
                 case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_CODE:
                 case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_PREPROCESSED:
@@ -665,6 +667,7 @@ static kefir_result_t driver_run_impl(struct kefir_mem *mem, struct kefir_symbol
             KEFIR_SET_ERROR(KEFIR_UI_ERROR, "Selected operation requires non-empty argument list"));
     switch (config->stage) {
         case KEFIR_DRIVER_STAGE_LINK:
+        case KEFIR_DRIVER_STAGE_RUN:
             REQUIRE_OK(driver_generate_linker_config(mem, symbols, config, externals, linker_config));
             // Fallthrough
 
@@ -694,20 +697,64 @@ static kefir_result_t driver_run_impl(struct kefir_mem *mem, struct kefir_symbol
             driver_run_argument(mem, config, externals, assembler_config, linker_config, compiler_config, argument));
     }
 
+    if (config->stage == KEFIR_DRIVER_STAGE_PRINT_RUNTIME_CODE) {
+        REQUIRE_OK(driver_print_runtime_code(config, compiler_config));
+        return KEFIR_OK;
+    }
+
+    if (linker_config->flags.link_rtlib) {
+        if (externals->runtime_library == NULL) {
+            REQUIRE_OK(driver_assemble_runtime(mem, externals, compiler_config, assembler_config,
+                                               &linker_config->rtlib_location));
+        } else {
+            linker_config->rtlib_location = externals->runtime_library;
+        }
+    }
+
     if (config->stage == KEFIR_DRIVER_STAGE_LINK) {
-        if (linker_config->flags.link_rtlib) {
-            if (externals->runtime_library == NULL) {
-                REQUIRE_OK(driver_assemble_runtime(mem, externals, compiler_config, assembler_config,
-                                                   &linker_config->rtlib_location));
-            } else {
-                linker_config->rtlib_location = externals->runtime_library;
-            }
+
+        REQUIRE_OK(driver_run_linker(mem, symbols, config, externals, linker_config));
+    } else if (config->stage == KEFIR_DRIVER_STAGE_RUN) {
+        char output_file[PATH_MAX + 1];
+        if (config->output_file == NULL) {
+            snprintf(output_file, PATH_MAX, "%s/exe.XXXXXX", externals->work_dir);
+
+            REQUIRE_OK(
+                kefir_tempfile_manager_create_file(mem, externals->tmpfile_manager, output_file, &config->output_file));
         }
 
         REQUIRE_OK(driver_run_linker(mem, symbols, config, externals, linker_config));
-    } else if (config->stage == KEFIR_DRIVER_STAGE_PRINT_RUNTIME_CODE) {
-        REQUIRE_OK(driver_print_runtime_code(config, compiler_config));
+
+        struct kefir_string_array argv;
+        REQUIRE_OK(kefir_string_array_init(mem, &argv));
+        REQUIRE_OK(kefir_string_array_append(mem, &argv, config->output_file));
+        for (const struct kefir_list_entry *iter = kefir_list_head(&config->run.args); iter != NULL;
+             kefir_list_next(&iter)) {
+            ASSIGN_DECL_CAST(const char *, arg, iter->value);
+            REQUIRE_OK(kefir_string_array_append(mem, &argv, arg));
+        }
+
+        struct kefir_process process;
+        REQUIRE_OK(kefir_process_init(&process));
+        kefir_result_t res = KEFIR_OK;
+        if (config->run.file_stdin != NULL) {
+            REQUIRE_CHAIN(&res, kefir_process_redirect_stdin_from_file(&process, config->run.file_stdin));
+        }
+        if (config->run.file_stdout != NULL) {
+            REQUIRE_CHAIN(&res, kefir_process_redirect_stdout_to_file(&process, config->run.file_stdout));
+        }
+        if (config->run.file_stderr != NULL) {
+            REQUIRE_CHAIN(&res, kefir_process_redirect_stderr_to_file(&process, config->run.file_stderr));
+        } else if (config->run.stderr_to_stdout) {
+            REQUIRE_CHAIN(&res, kefir_process_redirect_stderr_to_stdout(&process));
+        }
+        REQUIRE_CHAIN(&res, kefir_process_self_execute(&process, config->output_file, argv.array));
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            kefir_process_close(&process);
+            return res;
+        });
     }
+
     return KEFIR_OK;
 }
 
