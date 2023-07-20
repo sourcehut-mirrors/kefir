@@ -73,7 +73,7 @@ static kefir_result_t dump_action_impl(struct kefir_mem *mem, const struct kefir
                                                                 const char *, kefir_size_t, FILE *)) {
     FILE *output;
     struct kefir_cli_input input;
-    struct kefir_symbol_table symbols;
+    struct kefir_string_pool symbols;
     struct kefir_compiler_profile profile;
     struct kefir_compiler_context compiler;
     struct kefir_preprocessor_filesystem_source_locator filesystem_source_locator;
@@ -89,7 +89,7 @@ static kefir_result_t dump_action_impl(struct kefir_mem *mem, const struct kefir
 
     REQUIRE_OK(open_output(options->output_filepath, &output));
     REQUIRE_OK(kefir_cli_input_open(mem, &input, options->input_filepath, stdin));
-    REQUIRE_OK(kefir_symbol_table_init(&symbols));
+    REQUIRE_OK(kefir_string_pool_init(&symbols));
     REQUIRE_OK(kefir_preprocessor_filesystem_source_locator_init(&filesystem_source_locator, &symbols));
     kefir_bool_t free_source_locator = false;
     if (source_locator == NULL) {
@@ -169,7 +169,7 @@ static kefir_result_t dump_action_impl(struct kefir_mem *mem, const struct kefir
     if (free_source_locator) {
         REQUIRE_OK(kefir_preprocessor_filesystem_source_locator_free(mem, &filesystem_source_locator));
     }
-    REQUIRE_OK(kefir_symbol_table_free(mem, &symbols));
+    REQUIRE_OK(kefir_string_pool_free(mem, &symbols));
     REQUIRE_OK(kefir_cli_input_close(mem, &input));
     return KEFIR_OK;
 }
@@ -181,7 +181,7 @@ static kefir_result_t build_predefined_macros(struct kefir_mem *mem,
          kefir_list_next(&iter)) {
 
         ASSIGN_DECL_CAST(const char *, identifier, iter->value);
-        identifier = kefir_symbol_table_insert(mem, &compiler->ast_global_context.symbols, identifier, NULL);
+        identifier = kefir_string_pool_insert(mem, &compiler->ast_global_context.symbols, identifier, NULL);
         REQUIRE(identifier != NULL,
                 KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert undefined macro into symbol table"));
         if (!kefir_hashtree_has(&compiler->preprocessor_context.undefined_macros, (kefir_hashtree_key_t) identifier)) {
@@ -318,11 +318,11 @@ static kefir_result_t is_system_include_path(const char *path, kefir_bool_t *res
 
 static kefir_result_t action_dump_dependencies(struct kefir_mem *mem,
                                                const struct kefir_compiler_runner_configuration *options) {
-    struct kefir_symbol_table symbols;
+    struct kefir_string_pool symbols;
     struct kefir_preprocessor_filesystem_source_locator filesystem_source_locator;
     struct kefir_preprocessor_dependencies_source_locator source_locator;
 
-    REQUIRE_OK(kefir_symbol_table_init(&symbols));
+    REQUIRE_OK(kefir_string_pool_init(&symbols));
     REQUIRE_OK(kefir_preprocessor_filesystem_source_locator_init(&filesystem_source_locator, &symbols));
     for (const struct kefir_list_entry *iter = kefir_list_head(&options->include_path); iter != NULL;
          kefir_list_next(&iter)) {
@@ -336,7 +336,7 @@ static kefir_result_t action_dump_dependencies(struct kefir_mem *mem,
 
     REQUIRE_OK(kefir_preprocessor_dependencies_source_locator_free(mem, &source_locator));
     REQUIRE_OK(kefir_preprocessor_filesystem_source_locator_free(mem, &filesystem_source_locator));
-    REQUIRE_OK(kefir_symbol_table_free(mem, &symbols));
+    REQUIRE_OK(kefir_string_pool_free(mem, &symbols));
     return KEFIR_OK;
 }
 

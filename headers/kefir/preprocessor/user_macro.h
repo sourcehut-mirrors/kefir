@@ -32,10 +32,10 @@ typedef struct kefir_preprocessor_user_macro {
 } kefir_preprocessor_user_macro_t;
 
 struct kefir_preprocessor_user_macro *kefir_preprocessor_user_macro_new_object(struct kefir_mem *,
-                                                                               struct kefir_symbol_table *,
+                                                                               struct kefir_string_pool *,
                                                                                const char *);
 struct kefir_preprocessor_user_macro *kefir_preprocessor_user_macro_new_function(struct kefir_mem *,
-                                                                                 struct kefir_symbol_table *,
+                                                                                 struct kefir_string_pool *,
                                                                                  const char *);
 kefir_result_t kefir_preprocessor_user_macro_free(struct kefir_mem *, struct kefir_preprocessor_user_macro *);
 

@@ -34,8 +34,8 @@
 
 DEFINE_CASE(ast_type_compatibility1, "AST Types - function paramter adjusted types") {
     struct kefir_ast_type_bundle type_bundle;
-    struct kefir_symbol_table symbols;
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    struct kefir_string_pool symbols;
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     ASSERT_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
 
     struct kefir_ast_function_type *function_type = NULL;
@@ -97,7 +97,7 @@ DEFINE_CASE(ast_type_compatibility1, "AST Types - function paramter adjusted typ
     ASSERT_FUNCTION_PARAM_ADJ_TYPE(function_type, 6, kefir_ast_type_pointer(&kft_mem, &type_bundle, type2));
 
     ASSERT_OK(kefir_ast_type_bundle_free(&kft_mem, &type_bundle));
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE
 
@@ -135,7 +135,7 @@ DEFINE_CASE(ast_type_basic_compatibility, "AST Types - basic type compatibility"
 }
 END_CASE
 
-static const struct kefir_ast_type *build_enum_type(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
+static const struct kefir_ast_type *build_enum_type(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                                     struct kefir_ast_type_bundle *type_bundle,
                                                     const struct kefir_ast_type_traits *type_traits,
                                                     struct kefir_ast_enum_type **enum1_type) {
@@ -156,8 +156,8 @@ static const struct kefir_ast_type *build_enum_type(struct kefir_mem *mem, struc
 DEFINE_CASE(ast_type_enum_compatibility, "AST Types - enumeration compatibility") {
     const struct kefir_ast_type_traits *type_traits = kefir_util_default_type_traits();
     struct kefir_ast_type_bundle type_bundle;
-    struct kefir_symbol_table symbols;
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    struct kefir_string_pool symbols;
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     ASSERT_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
 
     struct kefir_ast_enum_type *enum1_type;
@@ -183,15 +183,15 @@ DEFINE_CASE(ast_type_enum_compatibility, "AST Types - enumeration compatibility"
     ASSERT(KEFIR_AST_TYPE_COMPATIBLE(type_traits, kefir_ast_enumeration_underlying_type(enum3_type), enum3));
 
     ASSERT_OK(kefir_ast_type_bundle_free(&kft_mem, &type_bundle));
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE
 
 DEFINE_CASE(ast_type_pointer_compatibility, "AST Types - pointer type compatibility") {
     const struct kefir_ast_type_traits *type_traits = kefir_util_default_type_traits();
     struct kefir_ast_type_bundle type_bundle;
-    struct kefir_symbol_table symbols;
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    struct kefir_string_pool symbols;
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     ASSERT_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
     struct kefir_ast_enum_type *enum1_type;
     const struct kefir_ast_type *type1 = kefir_ast_type_enumeration(
@@ -255,15 +255,15 @@ DEFINE_CASE(ast_type_pointer_compatibility, "AST Types - pointer type compatibil
     }
 
     ASSERT_OK(kefir_ast_type_bundle_free(&kft_mem, &type_bundle));
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE
 
 DEFINE_CASE(ast_type_qualified_compatibility, "AST Types - qualified type compatibility") {
     const struct kefir_ast_type_traits *type_traits = kefir_util_default_type_traits();
     struct kefir_ast_type_bundle type_bundle;
-    struct kefir_symbol_table symbols;
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    struct kefir_string_pool symbols;
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     ASSERT_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
     struct kefir_ast_enum_type *enum1_type;
     const struct kefir_ast_type *type1 = kefir_ast_type_enumeration(
@@ -332,7 +332,7 @@ DEFINE_CASE(ast_type_qualified_compatibility, "AST Types - qualified type compat
     }
 
     ASSERT_OK(kefir_ast_type_bundle_free(&kft_mem, &type_bundle));
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE
 
@@ -400,8 +400,8 @@ END_CASE
 DEFINE_CASE(ast_type_union_compatibility, "AST Types - union type compatibility") {
     const struct kefir_ast_type_traits *type_traits = kefir_util_default_type_traits();
     struct kefir_ast_type_bundle type_bundle;
-    struct kefir_symbol_table symbols;
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    struct kefir_string_pool symbols;
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     ASSERT_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
 
     struct kefir_ast_struct_type *union_type1 = NULL;
@@ -456,15 +456,15 @@ DEFINE_CASE(ast_type_union_compatibility, "AST Types - union type compatibility"
     ASSERT(!KEFIR_AST_TYPE_COMPATIBLE(type_traits, type3, type2));
 
     ASSERT_OK(kefir_ast_type_bundle_free(&kft_mem, &type_bundle));
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE
 
 DEFINE_CASE(ast_type_array_compatibility, "AST Types - array type compatibility") {
     const struct kefir_ast_type_traits *type_traits = kefir_util_default_type_traits();
     struct kefir_ast_type_bundle type_bundle;
-    struct kefir_symbol_table symbols;
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    struct kefir_string_pool symbols;
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     ASSERT_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
 
     const struct kefir_ast_type *type1 =
@@ -507,7 +507,7 @@ DEFINE_CASE(ast_type_array_compatibility, "AST Types - array type compatibility"
     ASSERT(KEFIR_AST_TYPE_COMPATIBLE(type_traits, type5, type4));
 
     ASSERT_OK(kefir_ast_type_bundle_free(&kft_mem, &type_bundle));
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE
 
@@ -553,8 +553,8 @@ static const struct kefir_ast_type *build_function_type2(struct kefir_mem *mem,
 DEFINE_CASE(ast_type_function_compatibility, "AST Types - function type compatibility") {
     const struct kefir_ast_type_traits *type_traits = kefir_util_default_type_traits();
     struct kefir_ast_type_bundle type_bundle;
-    struct kefir_symbol_table symbols;
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    struct kefir_string_pool symbols;
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     ASSERT_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
 
     struct kefir_ast_function_type *function_type1 = NULL;
@@ -594,6 +594,6 @@ DEFINE_CASE(ast_type_function_compatibility, "AST Types - function type compatib
     ASSERT(!KEFIR_AST_TYPE_COMPATIBLE(type_traits, type5, type3));
 
     ASSERT_OK(kefir_ast_type_bundle_free(&kft_mem, &type_bundle));
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE

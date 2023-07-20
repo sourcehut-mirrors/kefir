@@ -211,7 +211,7 @@ static char *concat_strings(struct kefir_mem *mem, const char *str1, const char 
     return result;
 }
 
-static kefir_result_t concat_tokens_impl(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
+static kefir_result_t concat_tokens_impl(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                          const struct kefir_token *left, const struct kefir_token *right,
                                          struct kefir_token_buffer *buffer) {
     REQUIRE(
@@ -371,7 +371,7 @@ static kefir_result_t concat_extension(struct kefir_mem *mem, const struct kefir
     return KEFIR_OK;
 }
 
-static kefir_result_t macro_concatenation_impl(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
+static kefir_result_t macro_concatenation_impl(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                                struct kefir_token_buffer *buffer, const struct kefir_token *left,
                                                const struct kefir_token *right) {
     if (left->klass == KEFIR_TOKEN_PP_PLACEMAKER) {
@@ -461,7 +461,7 @@ static kefir_result_t macro_concatenation_impl(struct kefir_mem *mem, struct kef
 static kefir_result_t macro_concatenation(struct kefir_mem *mem, struct kefir_preprocessor *preprocessor,
                                           const struct kefir_hashtree *arg_tree,
                                           const struct kefir_preprocessor_user_macro *user_macro,
-                                          struct kefir_symbol_table *symbols, struct kefir_token_buffer *buffer,
+                                          struct kefir_string_pool *symbols, struct kefir_token_buffer *buffer,
                                           const struct kefir_token *arg1, const struct kefir_token *arg2) {
     if (preprocessor->context->preprocessor_config->va_args_concat && user_macro->vararg &&
         arg1->klass == KEFIR_TOKEN_PUNCTUATOR && arg1->punctuator == KEFIR_PUNCTUATOR_COMMA &&
@@ -510,7 +510,7 @@ static kefir_result_t macro_concatenation(struct kefir_mem *mem, struct kefir_pr
 }
 
 static kefir_result_t match_concatenation(struct kefir_mem *mem, struct kefir_preprocessor *preprocessor,
-                                          struct kefir_symbol_table *symbols,
+                                          struct kefir_string_pool *symbols,
                                           const struct kefir_preprocessor_user_macro *user_macro,
                                           struct kefir_preprocessor_token_sequence *seq,
                                           const struct kefir_hashtree *arg_tree, struct kefir_token *left_operand) {
@@ -562,7 +562,7 @@ static kefir_result_t match_concatenation(struct kefir_mem *mem, struct kefir_pr
 }
 
 static kefir_result_t run_replacement_list_substitutions_impl(
-    struct kefir_mem *mem, struct kefir_preprocessor *preprocessor, struct kefir_symbol_table *symbols,
+    struct kefir_mem *mem, struct kefir_preprocessor *preprocessor, struct kefir_string_pool *symbols,
     const struct kefir_preprocessor_user_macro *user_macro, struct kefir_preprocessor_token_sequence *seq,
     const struct kefir_hashtree *arg_tree, struct kefir_token_buffer *result) {
     while (true) {
@@ -623,7 +623,7 @@ static kefir_result_t run_replacement_list_substitutions_impl(
 }
 
 static kefir_result_t run_replacement_list_substitutions(struct kefir_mem *mem, struct kefir_preprocessor *preprocessor,
-                                                         struct kefir_symbol_table *symbols,
+                                                         struct kefir_string_pool *symbols,
                                                          const struct kefir_preprocessor_user_macro *user_macro,
                                                          const struct kefir_token_buffer *replacement,
                                                          const struct kefir_hashtree *arg_tree,
@@ -663,7 +663,7 @@ static kefir_result_t run_replacement_list_substitutions(struct kefir_mem *mem, 
 
 static kefir_result_t apply_function_macro(struct kefir_mem *mem, struct kefir_preprocessor *preprocessor,
                                            const struct kefir_preprocessor_user_macro *user_macro,
-                                           struct kefir_symbol_table *symbols, const struct kefir_list *args,
+                                           struct kefir_string_pool *symbols, const struct kefir_list *args,
                                            struct kefir_token_buffer *buffer) {
     REQUIRE(kefir_list_length(&user_macro->parameters) + (user_macro->vararg ? 1 : 0) <= kefir_list_length(args),
             KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Argument list length mismatch"));
@@ -684,14 +684,14 @@ static kefir_result_t apply_function_macro(struct kefir_mem *mem, struct kefir_p
 
 static kefir_result_t apply_object_macro(struct kefir_mem *mem, struct kefir_preprocessor *preprocessor,
                                          const struct kefir_preprocessor_user_macro *user_macro,
-                                         struct kefir_symbol_table *symbols, struct kefir_token_buffer *buffer) {
+                                         struct kefir_string_pool *symbols, struct kefir_token_buffer *buffer) {
     REQUIRE_OK(run_replacement_list_substitutions(mem, preprocessor, symbols, user_macro, &user_macro->replacement,
                                                   NULL, buffer));
     return KEFIR_OK;
 }
 
 static kefir_result_t user_macro_apply(struct kefir_mem *mem, struct kefir_preprocessor *preprocessor,
-                                       const struct kefir_preprocessor_macro *macro, struct kefir_symbol_table *symbols,
+                                       const struct kefir_preprocessor_macro *macro, struct kefir_string_pool *symbols,
                                        const struct kefir_list *args, struct kefir_token_buffer *buffer,
                                        const struct kefir_source_location *source_location) {
     UNUSED(source_location);
@@ -738,13 +738,13 @@ static kefir_result_t user_macro_apply(struct kefir_mem *mem, struct kefir_prepr
 }
 
 struct kefir_preprocessor_user_macro *kefir_preprocessor_user_macro_new_object(struct kefir_mem *mem,
-                                                                               struct kefir_symbol_table *symbols,
+                                                                               struct kefir_string_pool *symbols,
                                                                                const char *identifier) {
     REQUIRE(mem != NULL, NULL);
     REQUIRE(identifier != NULL, NULL);
 
     if (symbols != NULL) {
-        identifier = kefir_symbol_table_insert(mem, symbols, identifier, NULL);
+        identifier = kefir_string_pool_insert(mem, symbols, identifier, NULL);
         REQUIRE(identifier != NULL, NULL);
     }
 
@@ -766,13 +766,13 @@ struct kefir_preprocessor_user_macro *kefir_preprocessor_user_macro_new_object(s
 }
 
 struct kefir_preprocessor_user_macro *kefir_preprocessor_user_macro_new_function(struct kefir_mem *mem,
-                                                                                 struct kefir_symbol_table *symbols,
+                                                                                 struct kefir_string_pool *symbols,
                                                                                  const char *identifier) {
     REQUIRE(mem != NULL, NULL);
     REQUIRE(identifier != NULL, NULL);
 
     if (symbols != NULL) {
-        identifier = kefir_symbol_table_insert(mem, symbols, identifier, NULL);
+        identifier = kefir_string_pool_insert(mem, symbols, identifier, NULL);
         REQUIRE(identifier != NULL, NULL);
     }
 

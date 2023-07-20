@@ -38,7 +38,7 @@ kefir_result_t kefir_parser_configuration_default(struct kefir_parser_configurat
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_parser_init(struct kefir_mem *mem, struct kefir_parser *parser, struct kefir_symbol_table *symbols,
+kefir_result_t kefir_parser_init(struct kefir_mem *mem, struct kefir_parser *parser, struct kefir_string_pool *symbols,
                                  struct kefir_parser_token_cursor *cursor,
                                  const struct kefir_parser_extensions *extensions) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));

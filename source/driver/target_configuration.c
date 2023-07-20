@@ -55,7 +55,7 @@ kefir_result_t kefir_driver_apply_target_profile_configuration(
     return KEFIR_OK;
 }
 
-static kefir_result_t add_include_paths(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
+static kefir_result_t add_include_paths(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                         struct kefir_compiler_runner_configuration *compiler_config,
                                         const char *paths) {
     struct kefir_filesystem_path_list_iter iter;
@@ -71,7 +71,7 @@ static kefir_result_t add_include_paths(struct kefir_mem *mem, struct kefir_symb
         strncpy(buffer, path, length);
         buffer[length] = '\0';
 
-        const char *path_copy = kefir_symbol_table_insert(mem, symbols, buffer, NULL);
+        const char *path_copy = kefir_string_pool_insert(mem, symbols, buffer, NULL);
         REQUIRE(path_copy != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert path into symbol table"));
         REQUIRE_OK(kefir_list_insert_after(mem, &compiler_config->include_path,
                                            kefir_list_tail(&compiler_config->include_path), (void *) path_copy));
@@ -103,7 +103,7 @@ static kefir_result_t add_library_paths(struct kefir_mem *mem, struct kefir_driv
 }
 
 kefir_result_t kefir_driver_apply_target_compiler_configuration(
-    struct kefir_mem *mem, struct kefir_symbol_table *symbols, const struct kefir_driver_external_resources *externals,
+    struct kefir_mem *mem, struct kefir_string_pool *symbols, const struct kefir_driver_external_resources *externals,
     struct kefir_compiler_runner_configuration *compiler_config, const struct kefir_driver_target *target,
     const struct kefir_driver_configuration *driver_config) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
@@ -189,7 +189,7 @@ kefir_result_t kefir_driver_apply_target_compiler_configuration(
 }
 
 kefir_result_t kefir_driver_apply_target_assembler_configuration(
-    struct kefir_mem *mem, struct kefir_symbol_table *symbols, const struct kefir_driver_external_resources *externals,
+    struct kefir_mem *mem, struct kefir_string_pool *symbols, const struct kefir_driver_external_resources *externals,
     struct kefir_driver_assembler_configuration *assembler_config, const struct kefir_driver_target *target) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(symbols != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid symbol table"));
@@ -213,7 +213,7 @@ kefir_result_t kefir_driver_apply_target_assembler_configuration(
     } while (0)
 
 kefir_result_t kefir_driver_apply_target_linker_initial_configuration(
-    struct kefir_mem *mem, struct kefir_symbol_table *symbols, const struct kefir_driver_external_resources *externals,
+    struct kefir_mem *mem, struct kefir_string_pool *symbols, const struct kefir_driver_external_resources *externals,
     struct kefir_driver_linker_configuration *linker_config, const struct kefir_driver_target *target) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(symbols != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid symbol table"));
@@ -364,7 +364,7 @@ kefir_result_t kefir_driver_apply_target_linker_initial_configuration(
 }
 
 kefir_result_t kefir_driver_apply_target_linker_final_configuration(
-    struct kefir_mem *mem, struct kefir_symbol_table *symbols, const struct kefir_driver_external_resources *externals,
+    struct kefir_mem *mem, struct kefir_string_pool *symbols, const struct kefir_driver_external_resources *externals,
     struct kefir_driver_linker_configuration *linker_config, const struct kefir_driver_target *target) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(symbols != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid symbol table"));

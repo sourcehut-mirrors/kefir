@@ -47,9 +47,8 @@ static kefir_result_t close_source(struct kefir_mem *mem, struct kefir_preproces
 }
 
 static kefir_result_t open_file(struct kefir_mem *mem, const char *root, const char *filepath, kefir_bool_t system,
-                                struct kefir_preprocessor_source_file *source_file,
-                                struct kefir_symbol_table *symbols) {
-    filepath = kefir_symbol_table_insert(mem, symbols, filepath, NULL);
+                                struct kefir_preprocessor_source_file *source_file, struct kefir_string_pool *symbols) {
+    filepath = kefir_string_pool_insert(mem, symbols, filepath, NULL);
     REQUIRE(filepath != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert file path into symbol table"));
 
     REQUIRE(access(filepath, R_OK) == 0, KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Cannot find requested file"));
@@ -134,7 +133,7 @@ static kefir_result_t open_source(struct kefir_mem *mem, const struct kefir_prep
             return KEFIR_SET_OS_ERROR("Failed to obtain dirname");
         });
 
-        const char *directory_copy = kefir_symbol_table_insert(mem, locator->symbols, directory, NULL);
+        const char *directory_copy = kefir_string_pool_insert(mem, locator->symbols, directory, NULL);
         REQUIRE_ELSE(directory_copy != NULL, {
             KEFIR_FREE(mem, current_clone);
             return KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert directory path into symbol table");
@@ -196,7 +195,7 @@ static kefir_result_t free_string(struct kefir_mem *mem, struct kefir_list *list
 }
 
 kefir_result_t kefir_preprocessor_filesystem_source_locator_init(
-    struct kefir_preprocessor_filesystem_source_locator *locator, struct kefir_symbol_table *symbols) {
+    struct kefir_preprocessor_filesystem_source_locator *locator, struct kefir_string_pool *symbols) {
     REQUIRE(locator != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to filesystem source locator"));
     REQUIRE(symbols != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid symbol table"));

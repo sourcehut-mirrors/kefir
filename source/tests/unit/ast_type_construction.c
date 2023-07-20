@@ -182,8 +182,8 @@ END_CASE
 
 DEFINE_CASE(ast_type_construction2, "AST Types - pointer type") {
     struct kefir_ast_type_bundle type_bundle;
-    struct kefir_symbol_table symbols;
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    struct kefir_string_pool symbols;
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     ASSERT_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
 
     const struct kefir_ast_type *BASE_TYPES[] = {
@@ -263,14 +263,14 @@ DEFINE_CASE(ast_type_construction2, "AST Types - pointer type") {
     }
 
     ASSERT_OK(kefir_ast_type_bundle_free(&kft_mem, &type_bundle));
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE
 
 DEFINE_CASE(ast_type_construction3, "AST Types - qualified type") {
     struct kefir_ast_type_bundle type_bundle;
-    struct kefir_symbol_table symbols;
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    struct kefir_string_pool symbols;
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     ASSERT_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
 
     const struct kefir_ast_type *BASE_TYPES[] = {
@@ -387,7 +387,7 @@ DEFINE_CASE(ast_type_construction3, "AST Types - qualified type") {
     }
 
     ASSERT_OK(kefir_ast_type_bundle_free(&kft_mem, &type_bundle));
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE
 
@@ -469,8 +469,8 @@ END_CASE
 
 DEFINE_CASE(ast_type_construction5, "AST Types - array type") {
     struct kefir_ast_type_bundle type_bundle;
-    struct kefir_symbol_table symbols;
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    struct kefir_string_pool symbols;
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     ASSERT_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
 
     const struct kefir_ast_type *type1 = kefir_ast_type_unbounded_array(
@@ -543,7 +543,7 @@ DEFINE_CASE(ast_type_construction5, "AST Types - array type") {
     ASSERT(!type5->array_type.qualifications.volatile_type);
 
     ASSERT_OK(kefir_ast_type_bundle_free(&kft_mem, &type_bundle));
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE
 
@@ -566,8 +566,8 @@ END_CASE
 
 DEFINE_CASE(ast_type_construction6, "AST Types - struct type") {
     struct kefir_ast_type_bundle type_bundle;
-    struct kefir_symbol_table symbols;
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    struct kefir_string_pool symbols;
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     ASSERT_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
 
     const struct kefir_ast_type *type1 = kefir_ast_type_incomplete_structure(&kft_mem, &type_bundle, "struct1");
@@ -611,14 +611,14 @@ DEFINE_CASE(ast_type_construction6, "AST Types - struct type") {
     ASSERT_STRUCT_FIELD(struct_type2, "field21", kefir_ast_type_boolean());
 
     ASSERT_OK(kefir_ast_type_bundle_free(&kft_mem, &type_bundle));
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE
 
 DEFINE_CASE(ast_type_construction7, "AST Types - union type") {
     struct kefir_ast_type_bundle type_bundle;
-    struct kefir_symbol_table symbols;
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    struct kefir_string_pool symbols;
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     ASSERT_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
 
     const struct kefir_ast_type *type1 = kefir_ast_type_incomplete_union(&kft_mem, &type_bundle, "union1");
@@ -661,7 +661,7 @@ DEFINE_CASE(ast_type_construction7, "AST Types - union type") {
     ASSERT_STRUCT_FIELD(union_type2, "field21", kefir_ast_type_boolean());
 
     ASSERT_OK(kefir_ast_type_bundle_free(&kft_mem, &type_bundle));
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE
 
@@ -689,8 +689,8 @@ END_CASE
 
 DEFINE_CASE(ast_type_construction8, "AST Types - function type") {
     struct kefir_ast_type_bundle type_bundle;
-    struct kefir_symbol_table symbols;
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    struct kefir_string_pool symbols;
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     ASSERT_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
     const kefir_ast_scoped_identifier_storage_t REGISTER = KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER;
 
@@ -749,7 +749,7 @@ DEFINE_CASE(ast_type_construction8, "AST Types - function type") {
     ASSERT(!func_type2->ellipsis);
 
     ASSERT_OK(kefir_ast_type_bundle_free(&kft_mem, &type_bundle));
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE
 

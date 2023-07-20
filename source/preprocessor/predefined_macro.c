@@ -66,7 +66,7 @@ static kefir_result_t predefined_macro_argc(const struct kefir_preprocessor_macr
 #define MACRO(_name)                                                                                                  \
     static kefir_result_t macro_##_name##_apply(                                                                      \
         struct kefir_mem *mem, struct kefir_preprocessor *preprocessor, const struct kefir_preprocessor_macro *macro, \
-        struct kefir_symbol_table *symbols, const struct kefir_list *args, struct kefir_token_buffer *buffer,         \
+        struct kefir_string_pool *symbols, const struct kefir_list *args, struct kefir_token_buffer *buffer,          \
         const struct kefir_source_location *source_location) {                                                        \
         UNUSED(symbols);                                                                                              \
         UNUSED(preprocessor);                                                                                         \
@@ -260,7 +260,7 @@ static kefir_result_t define_predefined_macro(
     struct kefir_preprocessor_predefined_macro_scope *scope, struct kefir_preprocessor_macro *macro,
     const char *identifier,
     kefir_result_t (*apply)(struct kefir_mem *, struct kefir_preprocessor *, const struct kefir_preprocessor_macro *,
-                            struct kefir_symbol_table *, const struct kefir_list *, struct kefir_token_buffer *,
+                            struct kefir_string_pool *, const struct kefir_list *, struct kefir_token_buffer *,
                             const struct kefir_source_location *)) {
     struct predefined_macro_payload *payload = KEFIR_MALLOC(mem, sizeof(struct predefined_macro_payload));
     REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate predefined macro payload"));

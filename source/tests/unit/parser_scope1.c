@@ -2,8 +2,8 @@
 #include "kefir/parser/scope.h"
 
 DEFINE_CASE(parser_block_scope1, "Parser - block scope #1") {
-    struct kefir_symbol_table symbols;
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    struct kefir_string_pool symbols;
+    ASSERT_OK(kefir_string_pool_init(&symbols));
 
     struct kefir_parser_block_scope block_scope;
     ASSERT_OK(kefir_parser_block_scope_init(&block_scope, &symbols));
@@ -46,7 +46,7 @@ DEFINE_CASE(parser_block_scope1, "Parser - block scope #1") {
     ASSERT(kefir_parser_block_scope_declare_typedef(&kft_mem, &block_scope, "T4") == KEFIR_ALREADY_EXISTS);
 
     ASSERT_OK(kefir_parser_block_scope_free(&kft_mem, &block_scope));
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE
 
@@ -58,8 +58,8 @@ END_CASE
     } while (0)
 
 DEFINE_CASE(parser_scope1, "Parser - scope #1") {
-    struct kefir_symbol_table symbols;
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    struct kefir_string_pool symbols;
+    ASSERT_OK(kefir_string_pool_init(&symbols));
 
     struct kefir_parser_scope scope;
     ASSERT_OK(kefir_parser_scope_init(&kft_mem, &scope, &symbols));
@@ -183,6 +183,6 @@ DEFINE_CASE(parser_scope1, "Parser - scope #1") {
     ASSERT(kefir_parser_scope_is_typedef(&scope, "T5", &result) == KEFIR_NOT_FOUND);
 
     ASSERT_OK(kefir_parser_scope_free(&kft_mem, &scope));
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE

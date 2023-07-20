@@ -236,7 +236,7 @@ static kefir_result_t next_ifdef(struct kefir_mem *mem, struct kefir_preprocesso
         kefir_token_free(mem, &token);
         return KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &token.source_location, "Expected identifier");
     });
-    const char *identifier = kefir_symbol_table_insert(mem, directive_scanner->lexer->symbols, token.identifier, NULL);
+    const char *identifier = kefir_string_pool_insert(mem, directive_scanner->lexer->symbols, token.identifier, NULL);
     REQUIRE_ELSE(identifier != NULL, {
         kefir_token_free(mem, &token);
         return KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert identifier into symbol table");
@@ -360,7 +360,7 @@ static kefir_result_t scan_define_parameters(struct kefir_mem *mem,
         REQUIRE_OK(skip_whitespaces(mem, directive_scanner, token));
         if (token->klass == KEFIR_TOKEN_IDENTIFIER) {
             const char *identifier =
-                kefir_symbol_table_insert(mem, directive_scanner->lexer->symbols, token->identifier, NULL);
+                kefir_string_pool_insert(mem, directive_scanner->lexer->symbols, token->identifier, NULL);
             REQUIRE(identifier != NULL,
                     KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate macro argument identifier"));
             REQUIRE_OK(skip_whitespaces(mem, directive_scanner, token));
@@ -424,7 +424,7 @@ static kefir_result_t next_define(struct kefir_mem *mem, struct kefir_preprocess
     REQUIRE(token.klass == KEFIR_TOKEN_IDENTIFIER,
             KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &token.source_location, "Expected identifier"));
     directive->define_directive.identifier =
-        kefir_symbol_table_insert(mem, directive_scanner->lexer->symbols, token.identifier, NULL);
+        kefir_string_pool_insert(mem, directive_scanner->lexer->symbols, token.identifier, NULL);
     REQUIRE(directive->define_directive.identifier != NULL,
             KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate identifier"));
 
@@ -446,7 +446,7 @@ static kefir_result_t next_undef(struct kefir_mem *mem, struct kefir_preprocesso
         kefir_token_free(mem, &token);
         return KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &token.source_location, "Expected identifier");
     });
-    const char *identifier = kefir_symbol_table_insert(mem, directive_scanner->lexer->symbols, token.identifier, NULL);
+    const char *identifier = kefir_string_pool_insert(mem, directive_scanner->lexer->symbols, token.identifier, NULL);
     REQUIRE_ELSE(identifier != NULL, {
         kefir_token_free(mem, &token);
         return KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert identifier into symbol table");

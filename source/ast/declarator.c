@@ -23,12 +23,12 @@
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 
-struct kefir_ast_declarator *kefir_ast_declarator_identifier(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
+struct kefir_ast_declarator *kefir_ast_declarator_identifier(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                                              const char *identifier) {
     REQUIRE(mem != NULL, NULL);
 
     if (symbols != NULL && identifier != NULL) {
-        identifier = kefir_symbol_table_insert(mem, symbols, identifier, NULL);
+        identifier = kefir_string_pool_insert(mem, symbols, identifier, NULL);
         REQUIRE(identifier != NULL, NULL);
     }
 

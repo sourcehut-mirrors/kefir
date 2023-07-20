@@ -24,8 +24,8 @@
 #include <string.h>
 
 DEFINE_CASE(ast_enum_declaration1, "AST Declarations - enum declaration #1") {
-    struct kefir_symbol_table symbols;
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    struct kefir_string_pool symbols;
+    ASSERT_OK(kefir_string_pool_init(&symbols));
 
     struct kefir_ast_enum_specifier *specifier = kefir_ast_enum_specifier_init(&kft_mem, &symbols, "test123", false);
     ASSERT(specifier != NULL);
@@ -42,13 +42,13 @@ DEFINE_CASE(ast_enum_declaration1, "AST Declarations - enum declaration #1") {
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, value1));
 
     ASSERT_OK(kefir_ast_enum_specifier_free(&kft_mem, specifier));
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE
 
 DEFINE_CASE(ast_enum_declaration2, "AST Declarations - enum declaration #2") {
-    struct kefir_symbol_table symbols;
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    struct kefir_string_pool symbols;
+    ASSERT_OK(kefir_string_pool_init(&symbols));
 
     struct kefir_ast_enum_specifier *specifier = kefir_ast_enum_specifier_init(&kft_mem, &symbols, "some_enum", true);
     ASSERT(specifier != NULL);
@@ -127,6 +127,6 @@ DEFINE_CASE(ast_enum_declaration2, "AST Declarations - enum declaration #2") {
     ASSERT(iter == NULL);
 
     ASSERT_OK(kefir_ast_enum_specifier_free(&kft_mem, specifier));
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE

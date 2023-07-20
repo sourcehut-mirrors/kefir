@@ -22,7 +22,7 @@
 #define KEFIR_AST_NODE_H_
 
 #include "kefir/ast/node_base.h"
-#include "kefir/core/symbol_table.h"
+#include "kefir/core/string_pool.h"
 #include "kefir/ast/initializer.h"
 #include "kefir/ast/declarator.h"
 
@@ -272,7 +272,7 @@ struct kefir_ast_constant *kefir_ast_new_constant_ulong_long(struct kefir_mem *,
 struct kefir_ast_constant *kefir_ast_new_constant_float(struct kefir_mem *, kefir_float32_t);
 struct kefir_ast_constant *kefir_ast_new_constant_double(struct kefir_mem *, kefir_float64_t);
 struct kefir_ast_constant *kefir_ast_new_constant_long_double(struct kefir_mem *, kefir_long_double_t);
-struct kefir_ast_identifier *kefir_ast_new_identifier(struct kefir_mem *, struct kefir_symbol_table *, const char *);
+struct kefir_ast_identifier *kefir_ast_new_identifier(struct kefir_mem *, struct kefir_string_pool *, const char *);
 
 struct kefir_ast_string_literal *kefir_ast_new_string_literal_multibyte(struct kefir_mem *, const char *, kefir_size_t);
 struct kefir_ast_string_literal *kefir_ast_new_string_literal_unicode8(struct kefir_mem *, const char *, kefir_size_t);
@@ -305,9 +305,9 @@ struct kefir_ast_array_subscript *kefir_ast_new_array_subscript(struct kefir_mem
 
 struct kefir_ast_function_call *kefir_ast_new_function_call(struct kefir_mem *, struct kefir_ast_node_base *);
 
-struct kefir_ast_struct_member *kefir_ast_new_struct_member(struct kefir_mem *, struct kefir_symbol_table *,
+struct kefir_ast_struct_member *kefir_ast_new_struct_member(struct kefir_mem *, struct kefir_string_pool *,
                                                             struct kefir_ast_node_base *, const char *);
-struct kefir_ast_struct_member *kefir_ast_new_struct_indirect_member(struct kefir_mem *, struct kefir_symbol_table *,
+struct kefir_ast_struct_member *kefir_ast_new_struct_indirect_member(struct kefir_mem *, struct kefir_string_pool *,
                                                                      struct kefir_ast_node_base *, const char *);
 struct kefir_ast_unary_operation *kefir_ast_new_unary_operation(struct kefir_mem *, kefir_ast_unary_operation_type_t,
                                                                 struct kefir_ast_node_base *);
@@ -333,7 +333,7 @@ struct kefir_ast_comma_operator *kefir_ast_new_comma_operator(struct kefir_mem *
 struct kefir_ast_static_assertion *kefir_ast_new_static_assertion(struct kefir_mem *, struct kefir_ast_node_base *,
                                                                   struct kefir_ast_string_literal *);
 
-struct kefir_ast_labeled_statement *kefir_ast_new_labeled_statement(struct kefir_mem *, struct kefir_symbol_table *,
+struct kefir_ast_labeled_statement *kefir_ast_new_labeled_statement(struct kefir_mem *, struct kefir_string_pool *,
                                                                     const char *, struct kefir_ast_node_base *);
 
 struct kefir_ast_case_statement *kefir_ast_new_case_statement(struct kefir_mem *, struct kefir_ast_node_base *,
@@ -362,7 +362,7 @@ struct kefir_ast_for_statement *kefir_ast_new_for_statement(struct kefir_mem *, 
                                                             struct kefir_ast_node_base *, struct kefir_ast_node_base *,
                                                             struct kefir_ast_node_base *);
 
-struct kefir_ast_goto_statement *kefir_ast_new_goto_statement(struct kefir_mem *, struct kefir_symbol_table *,
+struct kefir_ast_goto_statement *kefir_ast_new_goto_statement(struct kefir_mem *, struct kefir_string_pool *,
                                                               const char *);
 
 struct kefir_ast_goto_statement *kefir_ast_new_goto_address_statement(struct kefir_mem *, struct kefir_ast_node_base *);
@@ -384,7 +384,7 @@ struct kefir_ast_builtin *kefir_ast_new_builtin(struct kefir_mem *, kefir_ast_bu
 struct kefir_ast_extension_node *kefir_ast_new_extension_node(struct kefir_mem *,
                                                               const struct kefir_ast_extension_node_class *, void *);
 
-struct kefir_ast_label_address *kefir_ast_new_label_address(struct kefir_mem *, struct kefir_symbol_table *,
+struct kefir_ast_label_address *kefir_ast_new_label_address(struct kefir_mem *, struct kefir_string_pool *,
                                                             const char *);
 
 struct kefir_ast_statement_expression *kefir_ast_new_statement_expression(struct kefir_mem *);

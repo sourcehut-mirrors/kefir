@@ -79,13 +79,13 @@ struct kefir_ast_node_base *ast_goto_statement_clone(struct kefir_mem *mem, stru
     return KEFIR_AST_NODE_BASE(clone);
 }
 
-struct kefir_ast_goto_statement *kefir_ast_new_goto_statement(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
+struct kefir_ast_goto_statement *kefir_ast_new_goto_statement(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                                               const char *identifier) {
     REQUIRE(mem != NULL, NULL);
     REQUIRE(identifier != NULL, NULL);
 
     if (symbols != NULL) {
-        identifier = kefir_symbol_table_insert(mem, symbols, identifier, NULL);
+        identifier = kefir_string_pool_insert(mem, symbols, identifier, NULL);
         REQUIRE(identifier != NULL, NULL);
     }
 

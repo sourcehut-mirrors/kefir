@@ -158,7 +158,7 @@ struct kefir_ast_inline_assembly *kefir_ast_new_inline_assembly(struct kefir_mem
     return inline_assembly;
 }
 
-kefir_result_t kefir_ast_inline_assembly_add_output(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
+kefir_result_t kefir_ast_inline_assembly_add_output(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                                     struct kefir_ast_inline_assembly *inline_asm,
                                                     const char *param_name, const char *constraint,
                                                     struct kefir_ast_node_base *param) {
@@ -169,13 +169,13 @@ kefir_result_t kefir_ast_inline_assembly_add_output(struct kefir_mem *mem, struc
     REQUIRE(param != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST inline assembly parameter"));
 
     if (symbols != NULL) {
-        constraint = kefir_symbol_table_insert(mem, symbols, constraint, NULL);
+        constraint = kefir_string_pool_insert(mem, symbols, constraint, NULL);
         REQUIRE(constraint != NULL,
                 KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE,
                                 "Failed to insert AST inline assembly parameter constraint into symbol table"));
 
         if (param_name != NULL) {
-            param_name = kefir_symbol_table_insert(mem, symbols, param_name, NULL);
+            param_name = kefir_string_pool_insert(mem, symbols, param_name, NULL);
             REQUIRE(param_name != NULL,
                     KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE,
                                     "Failed to insert AST inline assembly parameter name into symbol table"));
@@ -200,7 +200,7 @@ kefir_result_t kefir_ast_inline_assembly_add_output(struct kefir_mem *mem, struc
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_ast_inline_assembly_add_input(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
+kefir_result_t kefir_ast_inline_assembly_add_input(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                                    struct kefir_ast_inline_assembly *inline_asm, const char *param_name,
                                                    const char *constraint, struct kefir_ast_node_base *param) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
@@ -210,13 +210,13 @@ kefir_result_t kefir_ast_inline_assembly_add_input(struct kefir_mem *mem, struct
     REQUIRE(param != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST inline assembly parameter"));
 
     if (symbols != NULL) {
-        constraint = kefir_symbol_table_insert(mem, symbols, constraint, NULL);
+        constraint = kefir_string_pool_insert(mem, symbols, constraint, NULL);
         REQUIRE(constraint != NULL,
                 KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE,
                                 "Failed to insert AST inline assembly parameter constraint into symbol table"));
 
         if (param_name != NULL) {
-            param_name = kefir_symbol_table_insert(mem, symbols, param_name, NULL);
+            param_name = kefir_string_pool_insert(mem, symbols, param_name, NULL);
             REQUIRE(param_name != NULL,
                     KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE,
                                     "Failed to insert AST inline assembly parameter name into symbol table"));
@@ -241,7 +241,7 @@ kefir_result_t kefir_ast_inline_assembly_add_input(struct kefir_mem *mem, struct
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_ast_inline_assembly_add_clobber(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
+kefir_result_t kefir_ast_inline_assembly_add_clobber(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                                      struct kefir_ast_inline_assembly *inline_asm,
                                                      const char *clobber) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
@@ -249,7 +249,7 @@ kefir_result_t kefir_ast_inline_assembly_add_clobber(struct kefir_mem *mem, stru
     REQUIRE(clobber != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST inline assembly clobber"));
 
     if (symbols != NULL) {
-        clobber = kefir_symbol_table_insert(mem, symbols, clobber, NULL);
+        clobber = kefir_string_pool_insert(mem, symbols, clobber, NULL);
         REQUIRE(clobber != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE,
                                                  "Failed to insert AST inline assembly clobber into symbol table"));
     }
@@ -259,7 +259,7 @@ kefir_result_t kefir_ast_inline_assembly_add_clobber(struct kefir_mem *mem, stru
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_ast_inline_assembly_add_jump_label(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
+kefir_result_t kefir_ast_inline_assembly_add_jump_label(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                                         struct kefir_ast_inline_assembly *inline_asm,
                                                         const char *jump_label) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
@@ -268,7 +268,7 @@ kefir_result_t kefir_ast_inline_assembly_add_jump_label(struct kefir_mem *mem, s
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST inline assembly jump label"));
 
     if (symbols != NULL) {
-        jump_label = kefir_symbol_table_insert(mem, symbols, jump_label, NULL);
+        jump_label = kefir_string_pool_insert(mem, symbols, jump_label, NULL);
         REQUIRE(jump_label != NULL,
                 KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE,
                                 "Failed to insert AST inline assembly jump label into symbol table"));

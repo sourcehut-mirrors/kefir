@@ -55,7 +55,7 @@ struct match_payload {
 };
 
 kefir_result_t kefir_lexer_scan_identifier_or_keyword(struct kefir_mem *mem, struct kefir_lexer_source_cursor *cursor,
-                                                      struct kefir_symbol_table *symbols,
+                                                      struct kefir_string_pool *symbols,
                                                       const struct kefir_trie *keywords, struct kefir_token *token) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(cursor != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source cursor"));

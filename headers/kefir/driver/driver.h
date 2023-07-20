@@ -23,12 +23,12 @@
 
 #include "kefir/compiler/configuration.h"
 #include "kefir/core/list.h"
-#include "kefir/core/symbol_table.h"
+#include "kefir/core/string_pool.h"
 #include "kefir/driver/externals.h"
 #include "kefir/driver/configuration.h"
 #include "kefir/driver/tools.h"
 
-kefir_result_t kefir_driver_run(struct kefir_mem *, struct kefir_symbol_table *, struct kefir_driver_configuration *,
+kefir_result_t kefir_driver_run(struct kefir_mem *, struct kefir_string_pool *, struct kefir_driver_configuration *,
                                 const struct kefir_driver_external_resources *);
 
 #endif

@@ -23,13 +23,13 @@
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 
-struct kefir_ast_designator *kefir_ast_new_member_designator(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
+struct kefir_ast_designator *kefir_ast_new_member_designator(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                                              const char *member, struct kefir_ast_designator *child) {
     REQUIRE(mem != NULL, NULL);
     REQUIRE(member != NULL && strlen(member) > 0, NULL);
 
     if (symbols != NULL) {
-        member = kefir_symbol_table_insert(mem, symbols, member, NULL);
+        member = kefir_string_pool_insert(mem, symbols, member, NULL);
         REQUIRE(member != NULL, NULL);
     }
     struct kefir_ast_designator *designator = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_designator));

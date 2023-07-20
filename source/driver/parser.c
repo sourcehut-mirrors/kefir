@@ -51,7 +51,7 @@ static kefir_driver_argument_type_t detect_file_type(const char *filename) {
     }
 }
 
-kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
+kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                        struct kefir_driver_configuration *config, const char *const *argv,
                                        kefir_size_t argc, kefir_driver_command_t *command, FILE *warning_output) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
@@ -113,7 +113,7 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_symbo
 
             for (; index + 1 < argc;) {
                 const char *arg = argv[++index];
-                arg = kefir_symbol_table_insert(mem, symbols, arg, NULL);
+                arg = kefir_string_pool_insert(mem, symbols, arg, NULL);
                 REQUIRE(arg != NULL,
                         KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert run argument into symbols"));
 
@@ -133,7 +133,7 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_symbo
                 output_filename = &arg[2];
             }
 
-            config->output_file = kefir_symbol_table_insert(mem, symbols, output_filename, NULL);
+            config->output_file = kefir_string_pool_insert(mem, symbols, output_filename, NULL);
             REQUIRE(config->output_file != NULL,
                     KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert output file name into symbols"));
         } else if (strcmp("--target", arg) == 0) {
@@ -189,7 +189,7 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_symbo
                 value = delim + 1;
                 char name_buf[1024] = {0};
                 strncpy(name_buf, name, MIN(sizeof(name_buf) - 1, (kefir_size_t) (delim - name)));
-                name = kefir_symbol_table_insert(mem, symbols, name_buf, NULL);
+                name = kefir_string_pool_insert(mem, symbols, name_buf, NULL);
                 REQUIRE(name != NULL,
                         KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert macro definition name into symbols"));
             }
@@ -227,7 +227,7 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_symbo
             // Dependency target name
             EXPECT_ARG;
             const char *target_name = argv[++index];
-            target_name = kefir_symbol_table_insert(mem, symbols, target_name, NULL);
+            target_name = kefir_string_pool_insert(mem, symbols, target_name, NULL);
             REQUIRE(target_name != NULL,
                     KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert dependency target name into symbols"));
 
@@ -344,7 +344,7 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_symbo
 
             EXPECT_ARG;
             const char *arg = argv[++index];
-            arg = kefir_symbol_table_insert(mem, symbols, arg, NULL);
+            arg = kefir_string_pool_insert(mem, symbols, arg, NULL);
             REQUIRE(arg != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert run argument into symbols"));
 
             REQUIRE_OK(
@@ -353,7 +353,7 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_symbo
             // Run stdin
             EXPECT_ARG;
             const char *arg = argv[++index];
-            arg = kefir_symbol_table_insert(mem, symbols, arg, NULL);
+            arg = kefir_string_pool_insert(mem, symbols, arg, NULL);
             REQUIRE(arg != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert run argument into symbols"));
 
             config->run.file_stdin = arg;
@@ -361,7 +361,7 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_symbo
             // Run stdout
             EXPECT_ARG;
             const char *arg = argv[++index];
-            arg = kefir_symbol_table_insert(mem, symbols, arg, NULL);
+            arg = kefir_string_pool_insert(mem, symbols, arg, NULL);
             REQUIRE(arg != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert run argument into symbols"));
 
             config->run.file_stdout = arg;
@@ -369,7 +369,7 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_symbo
             // Run stderr
             EXPECT_ARG;
             const char *arg = argv[++index];
-            arg = kefir_symbol_table_insert(mem, symbols, arg, NULL);
+            arg = kefir_string_pool_insert(mem, symbols, arg, NULL);
             REQUIRE(arg != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert run argument into symbols"));
 
             config->run.stderr_to_stdout = false;

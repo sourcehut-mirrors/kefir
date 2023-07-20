@@ -66,14 +66,14 @@ struct kefir_ast_node_base *ast_labeled_statement_clone(struct kefir_mem *mem, s
 }
 
 struct kefir_ast_labeled_statement *kefir_ast_new_labeled_statement(struct kefir_mem *mem,
-                                                                    struct kefir_symbol_table *symbols,
+                                                                    struct kefir_string_pool *symbols,
                                                                     const char *label,
                                                                     struct kefir_ast_node_base *statement) {
     REQUIRE(mem != NULL, NULL);
     REQUIRE(symbols != NULL, NULL);
     REQUIRE(label != NULL, NULL);
     REQUIRE(statement != NULL, NULL);
-    const char *label_copy = kefir_symbol_table_insert(mem, symbols, label, NULL);
+    const char *label_copy = kefir_string_pool_insert(mem, symbols, label, NULL);
     REQUIRE(label_copy != NULL, NULL);
 
     struct kefir_ast_labeled_statement *labeled_stmt = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_labeled_statement));

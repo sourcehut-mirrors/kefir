@@ -62,7 +62,7 @@ typedef struct kefir_ast_initializer_list_entry {
 } kefir_ast_initializer_list_entry_t;
 
 struct kefir_ast_initializer_designation *kefir_ast_new_initializer_member_designation(
-    struct kefir_mem *, struct kefir_symbol_table *, const char *, struct kefir_ast_initializer_designation *);
+    struct kefir_mem *, struct kefir_string_pool *, const char *, struct kefir_ast_initializer_designation *);
 struct kefir_ast_initializer_designation *kefir_ast_new_initializer_index_designation(
     struct kefir_mem *, struct kefir_ast_node_base *, struct kefir_ast_initializer_designation *);
 struct kefir_ast_initializer_designation *kefir_ast_initializer_designation_clone(

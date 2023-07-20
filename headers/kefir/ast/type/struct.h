@@ -50,11 +50,11 @@ kefir_result_t kefir_ast_struct_type_get_field(const struct kefir_ast_struct_typ
 kefir_result_t kefir_ast_struct_type_resolve_field(const struct kefir_ast_struct_type *, const char *,
                                                    const struct kefir_ast_struct_field **);
 
-kefir_result_t kefir_ast_struct_type_field(struct kefir_mem *, struct kefir_symbol_table *,
+kefir_result_t kefir_ast_struct_type_field(struct kefir_mem *, struct kefir_string_pool *,
                                            struct kefir_ast_struct_type *, const char *, const struct kefir_ast_type *,
                                            struct kefir_ast_alignment *);
 
-kefir_result_t kefir_ast_struct_type_bitfield(struct kefir_mem *, struct kefir_symbol_table *,
+kefir_result_t kefir_ast_struct_type_bitfield(struct kefir_mem *, struct kefir_string_pool *,
                                               struct kefir_ast_struct_type *, const char *,
                                               const struct kefir_ast_type *, struct kefir_ast_alignment *,
                                               struct kefir_ast_constant_expression *);

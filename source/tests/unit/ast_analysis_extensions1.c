@@ -35,14 +35,14 @@ static kefir_result_t analyze_extension_node(struct kefir_mem *mem, const struct
 
 DEFINE_CASE(ast_analysis_extension_node1, "AST analysis - extension node #1") {
     const struct kefir_ast_type_traits *type_traits = kefir_util_default_type_traits();
-    struct kefir_symbol_table symbols;
+    struct kefir_string_pool symbols;
     struct kefir_ast_translator_environment env;
     struct kefir_ast_global_context context;
 
     struct kefir_ast_context_extensions ext = {.analyze_extension_node = analyze_extension_node};
     struct kefir_ast_extension_node_class ext_node_class = {0};
 
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     ASSERT_OK(kefir_ast_translator_environment_init(&env, kft_util_get_ir_target_platform()));
     ASSERT_OK(kefir_ast_global_context_init(&kft_mem, type_traits, &env.target_env, &context, &ext));
 
@@ -98,14 +98,14 @@ static kefir_result_t after_node_analysis(struct kefir_mem *mem, const struct ke
 
 DEFINE_CASE(ast_analysis_before_after_extensions, "AST analysis - before & after extension hooks") {
     const struct kefir_ast_type_traits *type_traits = kefir_util_default_type_traits();
-    struct kefir_symbol_table symbols;
+    struct kefir_string_pool symbols;
     struct kefir_ast_translator_environment env;
     struct kefir_ast_global_context context;
 
     struct kefir_ast_context_extensions ext = {.before_node_analysis = before_node_analysis,
                                                .after_node_analysis = after_node_analysis};
 
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     ASSERT_OK(kefir_ast_translator_environment_init(&env, kft_util_get_ir_target_platform()));
     ASSERT_OK(kefir_ast_global_context_init(&kft_mem, type_traits, &env.target_env, &context, &ext));
 

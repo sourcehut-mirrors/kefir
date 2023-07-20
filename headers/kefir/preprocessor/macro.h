@@ -23,7 +23,7 @@
 
 #include "kefir/core/list.h"
 #include "kefir/core/hashtree.h"
-#include "kefir/core/symbol_table.h"
+#include "kefir/core/string_pool.h"
 #include "kefir/lexer/buffer.h"
 
 typedef struct kefir_preprocessor kefir_preprocessor_t;  // Forward declaration
@@ -39,7 +39,7 @@ typedef struct kefir_preprocessor_macro {
 
     kefir_result_t (*argc)(const struct kefir_preprocessor_macro *, kefir_size_t *, kefir_bool_t *);
     kefir_result_t (*apply)(struct kefir_mem *, struct kefir_preprocessor *, const struct kefir_preprocessor_macro *,
-                            struct kefir_symbol_table *, const struct kefir_list *, struct kefir_token_buffer *,
+                            struct kefir_string_pool *, const struct kefir_list *, struct kefir_token_buffer *,
                             const struct kefir_source_location *);
     void *payload;
 } kefir_preprocessor_macro_t;

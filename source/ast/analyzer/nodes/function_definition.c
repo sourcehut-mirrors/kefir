@@ -96,7 +96,7 @@ static kefir_result_t analyze_function_parameter_identifiers_impl(
                 &decl->base.source_location));
 
             if (identifier != NULL) {
-                identifier = kefir_symbol_table_insert(mem, context->symbols, identifier, NULL);
+                identifier = kefir_string_pool_insert(mem, context->symbols, identifier, NULL);
                 REQUIRE(identifier != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE,
                                                             "Failed to insert parameter identifier into symbol table"));
             }
@@ -227,7 +227,7 @@ kefir_result_t kefir_ast_analyze_function_definition_node(struct kefir_mem *mem,
                                              "Function definition cannot have non-zero alignment"));
     if (res == KEFIR_OK) {
         base->properties.function_definition.identifier =
-            kefir_symbol_table_insert(mem, context->symbols, function_identifier, NULL);
+            kefir_string_pool_insert(mem, context->symbols, function_identifier, NULL);
         REQUIRE_CHAIN_SET(
             &res, base->properties.function_definition.identifier != NULL,
             KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert function identifier into symbol table"));

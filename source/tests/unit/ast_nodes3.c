@@ -23,10 +23,10 @@
 #include "kefir/ast/node.h"
 
 DEFINE_CASE(ast_nodes_static_assertions1, "AST nodes - static assertions #1") {
-    struct kefir_symbol_table symbols;
+    struct kefir_string_pool symbols;
     struct kefir_ast_type_bundle type_bundle;
 
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     ASSERT_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
 
     struct kefir_ast_static_assertion *assert1 =
@@ -61,15 +61,15 @@ DEFINE_CASE(ast_nodes_static_assertions1, "AST nodes - static assertions #1") {
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(assert1)));
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(assert2)));
     ASSERT_OK(kefir_ast_type_bundle_free(&kft_mem, &type_bundle));
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE
 
 DEFINE_CASE(ast_nodes_labeled_statements1, "AST nodes - labeled statements #1") {
-    struct kefir_symbol_table symbols;
+    struct kefir_string_pool symbols;
     struct kefir_ast_type_bundle type_bundle;
 
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     ASSERT_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
 
     struct kefir_ast_labeled_statement *stmt1 = kefir_ast_new_labeled_statement(
@@ -99,15 +99,15 @@ DEFINE_CASE(ast_nodes_labeled_statements1, "AST nodes - labeled statements #1") 
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(stmt1)));
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(stmt2)));
     ASSERT_OK(kefir_ast_type_bundle_free(&kft_mem, &type_bundle));
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE
 
 DEFINE_CASE(ast_nodes_case_statements1, "AST nodes - case statements #1") {
-    struct kefir_symbol_table symbols;
+    struct kefir_string_pool symbols;
     struct kefir_ast_type_bundle type_bundle;
 
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     ASSERT_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
 
     struct kefir_ast_case_statement *stmt1 =
@@ -155,15 +155,15 @@ DEFINE_CASE(ast_nodes_case_statements1, "AST nodes - case statements #1") {
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(stmt2)));
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(stmt3)));
     ASSERT_OK(kefir_ast_type_bundle_free(&kft_mem, &type_bundle));
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE
 
 DEFINE_CASE(ast_nodes_expression_statements1, "AST nodes - expression statements #1") {
-    struct kefir_symbol_table symbols;
+    struct kefir_string_pool symbols;
     struct kefir_ast_type_bundle type_bundle;
 
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     ASSERT_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
 
     struct kefir_ast_expression_statement *stmt1 = kefir_ast_new_expression_statement(
@@ -198,15 +198,15 @@ DEFINE_CASE(ast_nodes_expression_statements1, "AST nodes - expression statements
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(stmt2)));
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(stmt3)));
     ASSERT_OK(kefir_ast_type_bundle_free(&kft_mem, &type_bundle));
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE
 
 DEFINE_CASE(ast_nodes_compound_statements1, "AST nodes - compound statements #1") {
-    struct kefir_symbol_table symbols;
+    struct kefir_string_pool symbols;
     struct kefir_ast_type_bundle type_bundle;
 
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     ASSERT_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
 
     struct kefir_ast_compound_statement *stmt1 = kefir_ast_new_compound_statement(&kft_mem);
@@ -235,15 +235,15 @@ DEFINE_CASE(ast_nodes_compound_statements1, "AST nodes - compound statements #1"
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(stmt1)));
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(stmt2)));
     ASSERT_OK(kefir_ast_type_bundle_free(&kft_mem, &type_bundle));
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE
 
 DEFINE_CASE(ast_nodes_conditional_statements1, "AST nodes - conditional statements #1") {
-    struct kefir_symbol_table symbols;
+    struct kefir_string_pool symbols;
     struct kefir_ast_type_bundle type_bundle;
 
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     ASSERT_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
 
     struct kefir_ast_conditional_statement *stmt1 =
@@ -288,15 +288,15 @@ DEFINE_CASE(ast_nodes_conditional_statements1, "AST nodes - conditional statemen
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(stmt1)));
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(stmt2)));
     ASSERT_OK(kefir_ast_type_bundle_free(&kft_mem, &type_bundle));
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE
 
 DEFINE_CASE(ast_nodes_switch_statements1, "AST nodes - switch statements #1") {
-    struct kefir_symbol_table symbols;
+    struct kefir_string_pool symbols;
     struct kefir_ast_type_bundle type_bundle;
 
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     ASSERT_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
 
     struct kefir_ast_switch_statement *stmt1 =
@@ -328,15 +328,15 @@ DEFINE_CASE(ast_nodes_switch_statements1, "AST nodes - switch statements #1") {
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, node2));
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(stmt1)));
     ASSERT_OK(kefir_ast_type_bundle_free(&kft_mem, &type_bundle));
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE
 
 DEFINE_CASE(ast_nodes_while_statements1, "AST nodes - while statements #1") {
-    struct kefir_symbol_table symbols;
+    struct kefir_string_pool symbols;
     struct kefir_ast_type_bundle type_bundle;
 
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     ASSERT_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
 
     struct kefir_ast_while_statement *stmt1 =
@@ -355,15 +355,15 @@ DEFINE_CASE(ast_nodes_while_statements1, "AST nodes - while statements #1") {
 
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(stmt1)));
     ASSERT_OK(kefir_ast_type_bundle_free(&kft_mem, &type_bundle));
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE
 
 DEFINE_CASE(ast_nodes_while_statements2, "AST nodes - while statements #2") {
-    struct kefir_symbol_table symbols;
+    struct kefir_string_pool symbols;
     struct kefir_ast_type_bundle type_bundle;
 
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     ASSERT_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
 
     struct kefir_ast_node_base *node1 = KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool(&kft_mem, false));
@@ -377,15 +377,15 @@ DEFINE_CASE(ast_nodes_while_statements2, "AST nodes - while statements #2") {
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, node1));
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, node2));
     ASSERT_OK(kefir_ast_type_bundle_free(&kft_mem, &type_bundle));
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE
 
 DEFINE_CASE(ast_nodes_do_while_statements1, "AST nodes - do while statements #1") {
-    struct kefir_symbol_table symbols;
+    struct kefir_string_pool symbols;
     struct kefir_ast_type_bundle type_bundle;
 
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     ASSERT_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
 
     struct kefir_ast_do_while_statement *stmt1 =
@@ -404,15 +404,15 @@ DEFINE_CASE(ast_nodes_do_while_statements1, "AST nodes - do while statements #1"
 
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(stmt1)));
     ASSERT_OK(kefir_ast_type_bundle_free(&kft_mem, &type_bundle));
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE
 
 DEFINE_CASE(ast_nodes_do_while_statements2, "AST nodes - do while statements #2") {
-    struct kefir_symbol_table symbols;
+    struct kefir_string_pool symbols;
     struct kefir_ast_type_bundle type_bundle;
 
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     ASSERT_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
 
     struct kefir_ast_node_base *node1 = KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool(&kft_mem, false));
@@ -426,15 +426,15 @@ DEFINE_CASE(ast_nodes_do_while_statements2, "AST nodes - do while statements #2"
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, node1));
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, node2));
     ASSERT_OK(kefir_ast_type_bundle_free(&kft_mem, &type_bundle));
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE
 
 DEFINE_CASE(ast_nodes_for_statements1, "AST nodes - for statements #1") {
-    struct kefir_symbol_table symbols;
+    struct kefir_string_pool symbols;
     struct kefir_ast_type_bundle type_bundle;
 
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     ASSERT_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
 
     struct kefir_ast_for_statement *stmt1 =
@@ -463,15 +463,15 @@ DEFINE_CASE(ast_nodes_for_statements1, "AST nodes - for statements #1") {
 
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(stmt1)));
     ASSERT_OK(kefir_ast_type_bundle_free(&kft_mem, &type_bundle));
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE
 
 DEFINE_CASE(ast_nodes_for_statements2, "AST nodes - for statements #2") {
-    struct kefir_symbol_table symbols;
+    struct kefir_string_pool symbols;
     struct kefir_ast_type_bundle type_bundle;
 
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     ASSERT_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
 
     struct kefir_ast_for_statement *stmt1 =
@@ -496,15 +496,15 @@ DEFINE_CASE(ast_nodes_for_statements2, "AST nodes - for statements #2") {
 
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(stmt1)));
     ASSERT_OK(kefir_ast_type_bundle_free(&kft_mem, &type_bundle));
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE
 
 DEFINE_CASE(ast_nodes_for_statements3, "AST nodes - for statements #3") {
-    struct kefir_symbol_table symbols;
+    struct kefir_string_pool symbols;
     struct kefir_ast_type_bundle type_bundle;
 
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     ASSERT_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
 
     struct kefir_ast_for_statement *stmt1 =
@@ -529,15 +529,15 @@ DEFINE_CASE(ast_nodes_for_statements3, "AST nodes - for statements #3") {
 
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(stmt1)));
     ASSERT_OK(kefir_ast_type_bundle_free(&kft_mem, &type_bundle));
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE
 
 DEFINE_CASE(ast_nodes_for_statements4, "AST nodes - for statements #4") {
-    struct kefir_symbol_table symbols;
+    struct kefir_string_pool symbols;
     struct kefir_ast_type_bundle type_bundle;
 
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     ASSERT_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
 
     struct kefir_ast_for_statement *stmt1 =
@@ -562,15 +562,15 @@ DEFINE_CASE(ast_nodes_for_statements4, "AST nodes - for statements #4") {
 
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(stmt1)));
     ASSERT_OK(kefir_ast_type_bundle_free(&kft_mem, &type_bundle));
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE
 
 DEFINE_CASE(ast_nodes_for_statements5, "AST nodes - for statements #5") {
-    struct kefir_symbol_table symbols;
+    struct kefir_string_pool symbols;
     struct kefir_ast_type_bundle type_bundle;
 
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     ASSERT_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
 
     struct kefir_ast_node_base *node1 = KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0));
@@ -640,6 +640,6 @@ DEFINE_CASE(ast_nodes_for_statements5, "AST nodes - for statements #5") {
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(stmt4)));
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(stmt5)));
     ASSERT_OK(kefir_ast_type_bundle_free(&kft_mem, &type_bundle));
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE

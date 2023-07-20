@@ -25,12 +25,12 @@
 
 DEFINE_CASE(ast_label_scope1, "AST ordinary scope - label scope #1") {
     const struct kefir_ast_type_traits *type_traits = kefir_util_default_type_traits();
-    struct kefir_symbol_table symbols;
+    struct kefir_string_pool symbols;
     struct kefir_ast_type_bundle type_bundle;
     struct kefir_ast_global_context global_context;
     struct kefir_ast_local_context local_context;
 
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     ASSERT_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
     ASSERT_OK(kefir_ast_global_context_init(&kft_mem, type_traits, &kft_util_get_translator_environment()->target_env,
                                             &global_context, NULL));
@@ -51,19 +51,19 @@ DEFINE_CASE(ast_label_scope1, "AST ordinary scope - label scope #1") {
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &local_context));
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &global_context));
     ASSERT_OK(kefir_ast_type_bundle_free(&kft_mem, &type_bundle));
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE
 
 DEFINE_CASE(ast_label_scope2, "AST ordinary scope - label scope #2") {
     const struct kefir_ast_type_traits *type_traits = kefir_util_default_type_traits();
-    struct kefir_symbol_table symbols;
+    struct kefir_string_pool symbols;
     struct kefir_ast_type_bundle type_bundle;
     struct kefir_ast_global_context global_context;
     struct kefir_ast_local_context local_context;
     struct kefir_ast_function_declaration_context func_decl_context;
 
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     ASSERT_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
     ASSERT_OK(kefir_ast_global_context_init(&kft_mem, type_traits, &kft_util_get_translator_environment()->target_env,
                                             &global_context, NULL));
@@ -89,13 +89,13 @@ DEFINE_CASE(ast_label_scope2, "AST ordinary scope - label scope #2") {
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &local_context));
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &global_context));
     ASSERT_OK(kefir_ast_type_bundle_free(&kft_mem, &type_bundle));
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE
 
 DEFINE_CASE(ast_label_scope3, "AST ordinary scope - label scope #3") {
     const struct kefir_ast_type_traits *type_traits = kefir_util_default_type_traits();
-    struct kefir_symbol_table symbols;
+    struct kefir_string_pool symbols;
     struct kefir_ast_type_bundle type_bundle;
     struct kefir_ast_global_context global_context;
     struct kefir_ast_local_context context;
@@ -114,7 +114,7 @@ DEFINE_CASE(ast_label_scope3, "AST ordinary scope - label scope #3") {
         ASSERT_NOK((_context)->reference_label((_mem), (_context), (_label), (_parent), NULL, NULL)); \
     } while (0)
 
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     ASSERT_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
     ASSERT_OK(kefir_ast_global_context_init(&kft_mem, type_traits, &kft_util_get_translator_environment()->target_env,
                                             &global_context, NULL));
@@ -165,18 +165,18 @@ DEFINE_CASE(ast_label_scope3, "AST ordinary scope - label scope #3") {
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &context));
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &global_context));
     ASSERT_OK(kefir_ast_type_bundle_free(&kft_mem, &type_bundle));
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE
 
 DEFINE_CASE(ast_label_scope4, "AST ordinary scope - label scope #4") {
     const struct kefir_ast_type_traits *type_traits = kefir_util_default_type_traits();
-    struct kefir_symbol_table symbols;
+    struct kefir_string_pool symbols;
     struct kefir_ast_type_bundle type_bundle;
     struct kefir_ast_global_context global_context;
     struct kefir_ast_local_context context;
 
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     ASSERT_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
     ASSERT_OK(kefir_ast_global_context_init(&kft_mem, type_traits, &kft_util_get_translator_environment()->target_env,
                                             &global_context, NULL));
@@ -256,6 +256,6 @@ DEFINE_CASE(ast_label_scope4, "AST ordinary scope - label scope #4") {
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &context));
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &global_context));
     ASSERT_OK(kefir_ast_type_bundle_free(&kft_mem, &type_bundle));
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE

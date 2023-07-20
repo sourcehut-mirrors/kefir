@@ -10,7 +10,7 @@ typedef struct kefir_preprocessor_ast_context {
 } kefir_preprocessor_ast_context_t;
 
 kefir_result_t kefir_preprocessor_ast_context_init(struct kefir_mem *, struct kefir_preprocessor_ast_context *,
-                                                   struct kefir_symbol_table *, const struct kefir_ast_type_traits *,
+                                                   struct kefir_string_pool *, const struct kefir_ast_type_traits *,
                                                    const struct kefir_ast_target_environment *,
                                                    const struct kefir_ast_context_extensions *);
 

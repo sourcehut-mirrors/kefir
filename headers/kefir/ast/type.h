@@ -24,7 +24,7 @@
 #include "kefir/core/basic-types.h"
 #include "kefir/core/list.h"
 #include "kefir/core/hashtree.h"
-#include "kefir/core/symbol_table.h"
+#include "kefir/core/string_pool.h"
 #include "kefir/ast/base.h"
 #include "kefir/ast/type/base.h"
 #include "kefir/ast/type/basic.h"
@@ -83,7 +83,7 @@ typedef struct kefir_ast_type_traits {
 } kefir_ast_type_traits_t;
 
 typedef struct kefir_ast_type_bundle {
-    struct kefir_symbol_table *symbols;
+    struct kefir_string_pool *symbols;
     struct kefir_list types;
 } kefir_ast_type_bundle_t;
 
@@ -95,7 +95,7 @@ kefir_result_t kefir_ast_type_list_variable_modificators(const struct kefir_ast_
 const struct kefir_ast_node_base *kefir_ast_type_get_top_variable_modificator(const struct kefir_ast_type *);
 kefir_bool_t kefir_ast_type_is_variably_modified(const struct kefir_ast_type *);
 
-kefir_result_t kefir_ast_type_bundle_init(struct kefir_ast_type_bundle *, struct kefir_symbol_table *);
+kefir_result_t kefir_ast_type_bundle_init(struct kefir_ast_type_bundle *, struct kefir_string_pool *);
 kefir_result_t kefir_ast_type_bundle_free(struct kefir_mem *, struct kefir_ast_type_bundle *);
 
 kefir_ast_function_specifier_t kefir_ast_context_merge_function_specifiers(kefir_ast_function_specifier_t,

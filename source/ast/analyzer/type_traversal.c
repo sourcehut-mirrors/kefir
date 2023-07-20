@@ -456,7 +456,7 @@ kefir_bool_t kefir_ast_type_traversal_empty(struct kefir_ast_type_traversal *tra
 }
 
 struct kefir_ast_designator *kefir_ast_type_traversal_layer_designator(
-    struct kefir_mem *mem, struct kefir_symbol_table *symbols, const struct kefir_ast_type_traversal_layer *layer) {
+    struct kefir_mem *mem, struct kefir_string_pool *symbols, const struct kefir_ast_type_traversal_layer *layer) {
     REQUIRE(mem != NULL, NULL);
     REQUIRE(layer != NULL, NULL);
 

@@ -92,7 +92,7 @@ const struct kefir_ast_type *composite_struct_types(struct kefir_mem *mem, struc
     REQUIRE(KEFIR_AST_TYPE_COMPATIBLE(type_traits, type1, type2), NULL);
     struct kefir_ast_struct_type *composite_struct = NULL;
     const struct kefir_ast_type *composite_type = NULL;
-    struct kefir_symbol_table *symbols = NULL;
+    struct kefir_string_pool *symbols = NULL;
     if (type_bundle != NULL) {
         symbols = type_bundle->symbols;
     }
@@ -218,7 +218,7 @@ const struct kefir_ast_type *composite_union_types(struct kefir_mem *mem, struct
     REQUIRE(KEFIR_AST_TYPE_COMPATIBLE(type_traits, type1, type2), NULL);
     struct kefir_ast_struct_type *composite_union = NULL;
     const struct kefir_ast_type *composite_type = NULL;
-    struct kefir_symbol_table *symbols = NULL;
+    struct kefir_string_pool *symbols = NULL;
     if (type_bundle != NULL) {
         symbols = type_bundle->symbols;
     }
@@ -297,7 +297,7 @@ const struct kefir_ast_type *kefir_ast_type_incomplete_structure(struct kefir_me
     struct kefir_ast_type *type = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_type));
     REQUIRE(type != NULL, NULL);
     if (type_bundle != NULL) {
-        identifier = kefir_symbol_table_insert(mem, type_bundle->symbols, identifier, NULL);
+        identifier = kefir_string_pool_insert(mem, type_bundle->symbols, identifier, NULL);
         REQUIRE_ELSE(identifier != NULL, {
             KEFIR_FREE(mem, type);
             return NULL;
@@ -328,7 +328,7 @@ const struct kefir_ast_type *kefir_ast_type_incomplete_union(struct kefir_mem *m
     struct kefir_ast_type *type = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_type));
     REQUIRE(type != NULL, NULL);
     if (type_bundle != NULL) {
-        identifier = kefir_symbol_table_insert(mem, type_bundle->symbols, identifier, NULL);
+        identifier = kefir_string_pool_insert(mem, type_bundle->symbols, identifier, NULL);
         REQUIRE_ELSE(identifier != NULL, {
             KEFIR_FREE(mem, type);
             return NULL;
@@ -368,7 +368,7 @@ static kefir_result_t struct_field_free(struct kefir_mem *mem, struct kefir_list
     return KEFIR_OK;
 }
 
-static kefir_result_t kefir_ast_struct_type_field_impl(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
+static kefir_result_t kefir_ast_struct_type_field_impl(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                                        struct kefir_ast_struct_type *struct_type,
                                                        const char *identifier, const struct kefir_ast_type *type,
                                                        struct kefir_ast_alignment *alignment, kefir_bool_t bitfield,
@@ -384,7 +384,7 @@ static kefir_result_t kefir_ast_struct_type_field_impl(struct kefir_mem *mem, st
     struct kefir_ast_struct_field *field = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_struct_field));
     REQUIRE(field != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate memory for aggregate field"));
     if (symbols != NULL && identifier != NULL) {
-        identifier = kefir_symbol_table_insert(mem, symbols, identifier, NULL);
+        identifier = kefir_string_pool_insert(mem, symbols, identifier, NULL);
         REQUIRE_ELSE(identifier != NULL, {
             KEFIR_FREE(mem, field);
             return KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate field identifier");
@@ -468,13 +468,13 @@ kefir_result_t kefir_ast_struct_type_resolve_field(const struct kefir_ast_struct
     return res;
 }
 
-kefir_result_t kefir_ast_struct_type_field(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
+kefir_result_t kefir_ast_struct_type_field(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                            struct kefir_ast_struct_type *struct_type, const char *identifier,
                                            const struct kefir_ast_type *type, struct kefir_ast_alignment *alignment) {
     return kefir_ast_struct_type_field_impl(mem, symbols, struct_type, identifier, type, alignment, false, NULL);
 }
 
-kefir_result_t kefir_ast_struct_type_bitfield(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
+kefir_result_t kefir_ast_struct_type_bitfield(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                               struct kefir_ast_struct_type *struct_type, const char *identifier,
                                               const struct kefir_ast_type *type, struct kefir_ast_alignment *alignment,
                                               struct kefir_ast_constant_expression *bitwidth) {
@@ -492,7 +492,7 @@ const struct kefir_ast_type *kefir_ast_type_structure(struct kefir_mem *mem, str
     REQUIRE(type != NULL, NULL);
     if (type_bundle != NULL) {
         if (identifier != NULL) {
-            identifier = kefir_symbol_table_insert(mem, type_bundle->symbols, identifier, NULL);
+            identifier = kefir_string_pool_insert(mem, type_bundle->symbols, identifier, NULL);
             REQUIRE_ELSE(identifier != NULL, {
                 KEFIR_FREE(mem, type);
                 return NULL;
@@ -543,7 +543,7 @@ const struct kefir_ast_type *kefir_ast_type_union(struct kefir_mem *mem, struct 
     REQUIRE(type != NULL, NULL);
     if (type_bundle != NULL) {
         if (identifier != NULL) {
-            identifier = kefir_symbol_table_insert(mem, type_bundle->symbols, identifier, NULL);
+            identifier = kefir_string_pool_insert(mem, type_bundle->symbols, identifier, NULL);
             REQUIRE_ELSE(identifier != NULL, {
                 KEFIR_FREE(mem, type);
                 return NULL;

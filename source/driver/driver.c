@@ -36,7 +36,7 @@
 
 #define KEFIR_OPTIMIZER_PIPELINE_FULL_SPEC "op-simplify,constant-fold,branch-removal,compare-branch-fuse"
 
-static kefir_result_t driver_generate_asm_config(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
+static kefir_result_t driver_generate_asm_config(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                                  struct kefir_driver_configuration *config,
                                                  const struct kefir_driver_external_resources *externals,
                                                  struct kefir_driver_assembler_configuration *assembler_config) {
@@ -51,7 +51,7 @@ static kefir_result_t driver_generate_asm_config(struct kefir_mem *mem, struct k
     return KEFIR_OK;
 }
 
-static kefir_result_t driver_generate_linker_config(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
+static kefir_result_t driver_generate_linker_config(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                                     struct kefir_driver_configuration *config,
                                                     const struct kefir_driver_external_resources *externals,
                                                     struct kefir_driver_linker_configuration *linker_config) {
@@ -112,7 +112,7 @@ static kefir_result_t driver_handle_linker_argument(struct kefir_mem *mem, const
     return KEFIR_OK;
 }
 
-static kefir_result_t driver_generate_compiler_config(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
+static kefir_result_t driver_generate_compiler_config(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                                       struct kefir_driver_configuration *config,
                                                       const struct kefir_driver_external_resources *externals,
                                                       struct kefir_compiler_runner_configuration *compiler_config) {
@@ -632,7 +632,7 @@ static kefir_result_t driver_assemble_runtime(struct kefir_mem *mem,
     return KEFIR_OK;
 }
 
-static kefir_result_t driver_run_linker(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
+static kefir_result_t driver_run_linker(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                         struct kefir_driver_configuration *config,
                                         const struct kefir_driver_external_resources *externals,
                                         struct kefir_driver_linker_configuration *linker_config) {
@@ -657,7 +657,7 @@ static kefir_result_t driver_print_runtime_code(struct kefir_driver_configuratio
     return KEFIR_OK;
 }
 
-static kefir_result_t driver_run_impl(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
+static kefir_result_t driver_run_impl(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                       struct kefir_driver_configuration *config,
                                       const struct kefir_driver_external_resources *externals,
                                       struct kefir_driver_assembler_configuration *assembler_config,
@@ -758,7 +758,7 @@ static kefir_result_t driver_run_impl(struct kefir_mem *mem, struct kefir_symbol
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_driver_run(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
+kefir_result_t kefir_driver_run(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                 struct kefir_driver_configuration *config,
                                 const struct kefir_driver_external_resources *externals) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));

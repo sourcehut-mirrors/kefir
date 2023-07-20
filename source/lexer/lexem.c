@@ -105,7 +105,7 @@ kefir_result_t kefir_token_new_keyword(kefir_keyword_token_t keyword, struct kef
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_token_new_identifier(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
+kefir_result_t kefir_token_new_identifier(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                           const char *identifier, struct kefir_token *token) {
     REQUIRE(identifier != NULL && strlen(identifier) > 0,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid identifier"));
@@ -117,7 +117,7 @@ kefir_result_t kefir_token_new_identifier(struct kefir_mem *mem, struct kefir_sy
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
 
     if (symbols != NULL) {
-        const char *copy = kefir_symbol_table_insert(mem, symbols, identifier, NULL);
+        const char *copy = kefir_string_pool_insert(mem, symbols, identifier, NULL);
         REQUIRE(copy != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to insert identifier into symbol table"));
         identifier = copy;
     }

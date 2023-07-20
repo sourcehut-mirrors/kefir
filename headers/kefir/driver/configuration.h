@@ -22,7 +22,7 @@
 #define KEFIR_DRIVER_CONFIGURATION_H_
 
 #include "kefir/core/list.h"
-#include "kefir/core/symbol_table.h"
+#include "kefir/core/string_pool.h"
 #include "kefir/driver/target.h"
 
 typedef struct kefir_driver_assembler_configuration {
@@ -143,20 +143,20 @@ typedef struct kefir_driver_configuration {
 kefir_result_t kefir_driver_configuration_init(struct kefir_driver_configuration *);
 kefir_result_t kefir_driver_configuration_free(struct kefir_mem *, struct kefir_driver_configuration *);
 
-kefir_result_t kefir_driver_configuration_add_argument(struct kefir_mem *, struct kefir_symbol_table *,
+kefir_result_t kefir_driver_configuration_add_argument(struct kefir_mem *, struct kefir_string_pool *,
                                                        struct kefir_driver_configuration *, const char *,
                                                        kefir_driver_argument_type_t);
-kefir_result_t kefir_driver_configuration_add_assembler_argument(struct kefir_mem *, struct kefir_symbol_table *,
+kefir_result_t kefir_driver_configuration_add_assembler_argument(struct kefir_mem *, struct kefir_string_pool *,
                                                                  struct kefir_driver_configuration *, const char *);
-kefir_result_t kefir_driver_configuration_add_compiler_argument(struct kefir_mem *, struct kefir_symbol_table *,
+kefir_result_t kefir_driver_configuration_add_compiler_argument(struct kefir_mem *, struct kefir_string_pool *,
                                                                 struct kefir_driver_configuration *, const char *);
-kefir_result_t kefir_driver_configuration_add_define(struct kefir_mem *, struct kefir_symbol_table *,
+kefir_result_t kefir_driver_configuration_add_define(struct kefir_mem *, struct kefir_string_pool *,
                                                      struct kefir_driver_configuration *, const char *, const char *);
-kefir_result_t kefir_driver_configuration_add_undefine(struct kefir_mem *, struct kefir_symbol_table *,
+kefir_result_t kefir_driver_configuration_add_undefine(struct kefir_mem *, struct kefir_string_pool *,
                                                        struct kefir_driver_configuration *, const char *);
-kefir_result_t kefir_driver_configuration_add_include_directory(struct kefir_mem *, struct kefir_symbol_table *,
+kefir_result_t kefir_driver_configuration_add_include_directory(struct kefir_mem *, struct kefir_string_pool *,
                                                                 struct kefir_driver_configuration *, const char *);
-kefir_result_t kefir_driver_configuration_add_include_file(struct kefir_mem *, struct kefir_symbol_table *,
+kefir_result_t kefir_driver_configuration_add_include_file(struct kefir_mem *, struct kefir_string_pool *,
                                                            struct kefir_driver_configuration *, const char *);
 
 #endif

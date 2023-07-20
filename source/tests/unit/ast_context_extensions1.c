@@ -37,13 +37,13 @@ static kefir_result_t on_free(struct kefir_mem *mem, struct kefir_ast_context *c
 }
 
 DEFINE_CASE(ast_context_preprocessor_extensions1, "AST context - preprocessor context #1") {
-    struct kefir_symbol_table symbols;
+    struct kefir_string_pool symbols;
     struct kefir_ast_translator_environment env;
     struct kefir_preprocessor_ast_context ast_context;
 
     struct kefir_ast_context_extensions ext = {.on_init = on_init, .on_free = on_free};
 
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     ASSERT_OK(kefir_ast_translator_environment_init(&env, kft_util_get_ir_target_platform()));
     ASSERT_OK(kefir_preprocessor_ast_context_init(&kft_mem, &ast_context, &symbols, kefir_util_default_type_traits(),
                                                   &env.target_env, &ext));
@@ -57,13 +57,13 @@ END_CASE
 
 DEFINE_CASE(ast_context_global_extensions1, "AST context - global context #1") {
     const struct kefir_ast_type_traits *type_traits = kefir_util_default_type_traits();
-    struct kefir_symbol_table symbols;
+    struct kefir_string_pool symbols;
     struct kefir_ast_translator_environment env;
     struct kefir_ast_global_context context;
 
     struct kefir_ast_context_extensions ext = {.on_init = on_init, .on_free = on_free};
 
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     ASSERT_OK(kefir_ast_translator_environment_init(&env, kft_util_get_ir_target_platform()));
     ASSERT_OK(kefir_ast_global_context_init(&kft_mem, type_traits, &env.target_env, &context, &ext));
 
@@ -76,14 +76,14 @@ END_CASE
 
 DEFINE_CASE(ast_context_local_extensions1, "AST context - local context #1") {
     const struct kefir_ast_type_traits *type_traits = kefir_util_default_type_traits();
-    struct kefir_symbol_table symbols;
+    struct kefir_string_pool symbols;
     struct kefir_ast_translator_environment env;
     struct kefir_ast_global_context global_context;
     struct kefir_ast_local_context context;
 
     struct kefir_ast_context_extensions ext = {.on_init = on_init, .on_free = on_free};
 
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     ASSERT_OK(kefir_ast_translator_environment_init(&env, kft_util_get_ir_target_platform()));
     ASSERT_OK(kefir_ast_global_context_init(&kft_mem, type_traits, &env.target_env, &global_context, &ext));
     ASSERT_OK(kefir_ast_local_context_init(&kft_mem, &global_context, &context));
@@ -100,7 +100,7 @@ END_CASE
 
 DEFINE_CASE(ast_context_function_decl_context_extensions1, "AST context - function declaration context #1") {
     const struct kefir_ast_type_traits *type_traits = kefir_util_default_type_traits();
-    struct kefir_symbol_table symbols;
+    struct kefir_string_pool symbols;
     struct kefir_ast_translator_environment env;
     struct kefir_ast_global_context global_context;
     struct kefir_ast_local_context local_context;
@@ -108,7 +108,7 @@ DEFINE_CASE(ast_context_function_decl_context_extensions1, "AST context - functi
 
     struct kefir_ast_context_extensions ext = {.on_init = on_init, .on_free = on_free};
 
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     ASSERT_OK(kefir_ast_translator_environment_init(&env, kft_util_get_ir_target_platform()));
     ASSERT_OK(kefir_ast_global_context_init(&kft_mem, type_traits, &env.target_env, &global_context, &ext));
     ASSERT_OK(kefir_ast_local_context_init(&kft_mem, &global_context, &local_context));

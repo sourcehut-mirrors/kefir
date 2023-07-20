@@ -26,13 +26,13 @@
 #include "kefir/core/source_error.h"
 
 struct kefir_ast_initializer_designation *kefir_ast_new_initializer_member_designation(
-    struct kefir_mem *mem, struct kefir_symbol_table *symbols, const char *identifier,
+    struct kefir_mem *mem, struct kefir_string_pool *symbols, const char *identifier,
     struct kefir_ast_initializer_designation *next) {
     REQUIRE(mem != NULL, NULL);
     REQUIRE(identifier != NULL, NULL);
 
     if (symbols != NULL) {
-        identifier = kefir_symbol_table_insert(mem, symbols, identifier, NULL);
+        identifier = kefir_string_pool_insert(mem, symbols, identifier, NULL);
         REQUIRE(identifier != NULL, NULL);
     }
 

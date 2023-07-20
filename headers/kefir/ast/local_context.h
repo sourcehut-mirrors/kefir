@@ -22,7 +22,7 @@
 #define KEFIR_AST_LOCAL_CONTEXT_H_
 
 #include "kefir/core/mem.h"
-#include "kefir/core/symbol_table.h"
+#include "kefir/core/string_pool.h"
 #include "kefir/core/list.h"
 #include "kefir/ast/scope.h"
 #include "kefir/ast/global_context.h"

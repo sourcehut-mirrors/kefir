@@ -23,7 +23,7 @@
 
 #include "kefir/core/basic-types.h"
 #include "kefir/core/mem.h"
-#include "kefir/core/symbol_table.h"
+#include "kefir/core/string_pool.h"
 
 typedef enum kefir_ast_designator_type {
     KEFIR_AST_DESIGNATOR_MEMBER,
@@ -39,7 +39,7 @@ typedef struct kefir_ast_designator {
     struct kefir_ast_designator *next;
 } kefir_ast_designator_t;
 
-struct kefir_ast_designator *kefir_ast_new_member_designator(struct kefir_mem *, struct kefir_symbol_table *,
+struct kefir_ast_designator *kefir_ast_new_member_designator(struct kefir_mem *, struct kefir_string_pool *,
                                                              const char *, struct kefir_ast_designator *);
 
 struct kefir_ast_designator *kefir_ast_new_index_designator(struct kefir_mem *, kefir_size_t,

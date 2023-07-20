@@ -37,10 +37,10 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
                            "#define PREFIX(sth) \"This is \" #sth\n"
                            "PREFIX(2+2), u8\"\"PREFIX(100), u\"\" PREFIX(Hello) U\"\" PREFIX(\"test\")";
 
-    struct kefir_symbol_table symbols;
+    struct kefir_string_pool symbols;
     struct kefir_lexer_context parser_context;
     struct kefir_token_buffer tokens;
-    REQUIRE_OK(kefir_symbol_table_init(&symbols));
+    REQUIRE_OK(kefir_string_pool_init(&symbols));
     REQUIRE_OK(kefir_lexer_context_default(&parser_context));
     REQUIRE_OK(kefir_token_buffer_init(&tokens));
 
@@ -74,6 +74,6 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     REQUIRE_OK(kefir_token_buffer_free(mem, &tokens));
     REQUIRE_OK(kefir_preprocessor_ast_context_free(mem, &ast_context));
-    REQUIRE_OK(kefir_symbol_table_free(mem, &symbols));
+    REQUIRE_OK(kefir_string_pool_free(mem, &symbols));
     return KEFIR_OK;
 }

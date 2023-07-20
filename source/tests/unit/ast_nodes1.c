@@ -147,8 +147,8 @@ DEFINE_CASE(ast_nodes_constants, "AST nodes - constants") {
 END_CASE
 
 DEFINE_CASE(ast_nodes_identifiers, "AST nodes - identifiers") {
-    struct kefir_symbol_table symbols;
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    struct kefir_string_pool symbols;
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     struct kefir_ast_identifier *sym1 = kefir_ast_new_identifier(&kft_mem, &symbols, "symbol1");
     struct kefir_ast_identifier *sym2 = kefir_ast_new_identifier(&kft_mem, &symbols, "symbol_test1234");
     ASSERT(sym1 != NULL);
@@ -161,13 +161,13 @@ DEFINE_CASE(ast_nodes_identifiers, "AST nodes - identifiers") {
     ASSERT(strcmp(sym2->identifier, "symbol_test1234") == 0);
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(sym1)));
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(sym2)));
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE
 
 DEFINE_CASE(ast_nodes_label_address, "AST nodes - label address") {
-    struct kefir_symbol_table symbols;
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    struct kefir_string_pool symbols;
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     struct kefir_ast_label_address *addr1 = kefir_ast_new_label_address(&kft_mem, &symbols, "label1");
     struct kefir_ast_label_address *addr2 =
         kefir_ast_new_label_address(&kft_mem, &symbols, "label123_test827_testTestTEST");
@@ -181,7 +181,7 @@ DEFINE_CASE(ast_nodes_label_address, "AST nodes - label address") {
     ASSERT(strcmp(addr2->label, "label123_test827_testTestTEST") == 0);
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(addr1)));
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(addr2)));
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE
 
@@ -207,8 +207,8 @@ DEFINE_CASE(ast_nodes_string_literals_unicode8, "AST nodes - unicode8 string lit
     const char STRING1[] = u8"Hello, pretty world!\0";
     const char STRING2[] = u8"Goodbye,\0 not so pretty world!\n";
 
-    struct kefir_symbol_table symbols;
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    struct kefir_string_pool symbols;
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     struct kefir_ast_string_literal *sym1 = kefir_ast_new_string_literal_unicode8(&kft_mem, STRING1, sizeof(STRING1));
     struct kefir_ast_string_literal *sym2 = kefir_ast_new_string_literal_unicode8(&kft_mem, STRING2, sizeof(STRING2));
     ASSERT(sym1 != NULL);
@@ -223,7 +223,7 @@ DEFINE_CASE(ast_nodes_string_literals_unicode8, "AST nodes - unicode8 string lit
     ASSERT(memcmp(sym2->literal, STRING2, sizeof(STRING2)) == 0);
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(sym1)));
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(sym2)));
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE
 
@@ -231,8 +231,8 @@ DEFINE_CASE(ast_nodes_string_literals_unicode16, "AST nodes - unicode16 string l
     const kefir_char16_t STRING1[] = u"Another char16 string constant here\r\n...";
     const kefir_char16_t STRING2[] = u"Yet another\0\00one. Surprise\u0180";
 
-    struct kefir_symbol_table symbols;
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    struct kefir_string_pool symbols;
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     struct kefir_ast_string_literal *sym1 = kefir_ast_new_string_literal_unicode16(&kft_mem, STRING1, sizeof(STRING1));
     struct kefir_ast_string_literal *sym2 = kefir_ast_new_string_literal_unicode16(&kft_mem, STRING2, sizeof(STRING2));
     ASSERT(sym1 != NULL);
@@ -247,7 +247,7 @@ DEFINE_CASE(ast_nodes_string_literals_unicode16, "AST nodes - unicode16 string l
     ASSERT(memcmp(sym2->literal, STRING2, sizeof(STRING2)) == 0);
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(sym1)));
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(sym2)));
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE
 
@@ -255,8 +255,8 @@ DEFINE_CASE(ast_nodes_string_literals_unicode32, "AST nodes - unicode32 string l
     const kefir_char32_t STRING1[] = U"\t\v\fThe real text actually goes there\n!\0";
     const kefir_char32_t STRING2[] = U"\0Joking. In fact it\'s here\n\0Is it\?\"";
 
-    struct kefir_symbol_table symbols;
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    struct kefir_string_pool symbols;
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     struct kefir_ast_string_literal *sym1 = kefir_ast_new_string_literal_unicode32(&kft_mem, STRING1, sizeof(STRING1));
     struct kefir_ast_string_literal *sym2 = kefir_ast_new_string_literal_unicode32(&kft_mem, STRING2, sizeof(STRING2));
     ASSERT(sym1 != NULL);
@@ -271,7 +271,7 @@ DEFINE_CASE(ast_nodes_string_literals_unicode32, "AST nodes - unicode32 string l
     ASSERT(memcmp(sym2->literal, STRING2, sizeof(STRING2)) == 0);
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(sym1)));
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(sym2)));
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE
 
@@ -279,8 +279,8 @@ DEFINE_CASE(ast_nodes_string_literals_wide, "AST nodes - wide string literals") 
     const kefir_wchar_t STRING1[] = L"Some fake wide char...\n\tRight here\U00000100";
     const kefir_wchar_t STRING2[] = L"And\000here\x00000 as well.\vSurprising\\";
 
-    struct kefir_symbol_table symbols;
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    struct kefir_string_pool symbols;
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     struct kefir_ast_string_literal *sym1 = kefir_ast_new_string_literal_wide(&kft_mem, STRING1, sizeof(STRING1));
     struct kefir_ast_string_literal *sym2 = kefir_ast_new_string_literal_wide(&kft_mem, STRING2, sizeof(STRING2));
     ASSERT(sym1 != NULL);
@@ -295,14 +295,14 @@ DEFINE_CASE(ast_nodes_string_literals_wide, "AST nodes - wide string literals") 
     ASSERT(memcmp(sym2->literal, STRING2, sizeof(STRING2)) == 0);
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(sym1)));
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(sym2)));
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE
 
 DEFINE_CASE(ast_nodes_type_name, "AST nodes - type name") {
-    struct kefir_symbol_table symbols;
+    struct kefir_string_pool symbols;
     struct kefir_ast_type_bundle type_bundle;
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     ASSERT_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
 
     struct kefir_ast_type_name *type1 = kefir_ast_new_type_name(
@@ -365,13 +365,13 @@ DEFINE_CASE(ast_nodes_type_name, "AST nodes - type name") {
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(type1)));
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(type2)));
     ASSERT_OK(kefir_ast_type_bundle_free(&kft_mem, &type_bundle));
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE
 
 DEFINE_CASE(ast_nodes_array_subscripts, "AST nodes - array sybscripts") {
-    struct kefir_symbol_table symbols;
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    struct kefir_string_pool symbols;
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     struct kefir_ast_identifier *array = kefir_ast_new_identifier(&kft_mem, &symbols, "array1");
     ASSERT(array != NULL);
     struct kefir_ast_constant *index = kefir_ast_new_constant_int(&kft_mem, 100);
@@ -384,13 +384,13 @@ DEFINE_CASE(ast_nodes_array_subscripts, "AST nodes - array sybscripts") {
     ASSERT(subscript->array == KEFIR_AST_NODE_BASE(array));
     ASSERT(subscript->subscript == KEFIR_AST_NODE_BASE(index));
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(subscript)));
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE
 
 DEFINE_CASE(ast_nodes_function_calls, "AST nodes - function calls") {
-    struct kefir_symbol_table symbols;
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    struct kefir_string_pool symbols;
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     struct kefir_ast_identifier *function = kefir_ast_new_identifier(&kft_mem, &symbols, "function1");
     struct kefir_ast_function_call *call = kefir_ast_new_function_call(&kft_mem, KEFIR_AST_NODE_BASE(function));
     ASSERT_OK(kefir_ast_function_call_append(
@@ -411,13 +411,13 @@ DEFINE_CASE(ast_nodes_function_calls, "AST nodes - function calls") {
     ASSERT(((struct kefir_ast_node_base *) kefir_list_at(&call->arguments, 2)->value)->klass->type ==
            KEFIR_AST_ARRAY_SUBSCRIPT);
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(call)));
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE
 
 DEFINE_CASE(ast_nodes_builtins, "AST nodes - builtins") {
-    struct kefir_symbol_table symbols;
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    struct kefir_string_pool symbols;
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     struct kefir_ast_builtin *builtin = kefir_ast_new_builtin(&kft_mem, KEFIR_AST_BUILTIN_VA_ARG);
     ASSERT_OK(kefir_ast_builtin_append(&kft_mem, builtin,
                                        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, &symbols, "list"))));
@@ -437,13 +437,13 @@ DEFINE_CASE(ast_nodes_builtins, "AST nodes - builtins") {
     ASSERT(((struct kefir_ast_node_base *) kefir_list_at(&builtin->arguments, 2)->value)->klass->type ==
            KEFIR_AST_ARRAY_SUBSCRIPT);
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(builtin)));
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE
 
 DEFINE_CASE(ast_nodes_struct_members, "AST nodes - struct members") {
-    struct kefir_symbol_table symbols;
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    struct kefir_string_pool symbols;
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     struct kefir_ast_struct_member *member = kefir_ast_new_struct_member(
         &kft_mem, &symbols,
         KEFIR_AST_NODE_BASE(kefir_ast_new_struct_indirect_member(
@@ -467,13 +467,13 @@ DEFINE_CASE(ast_nodes_struct_members, "AST nodes - struct members") {
     ASSERT(((struct kefir_ast_node_base *) member2->structure)->klass->type == KEFIR_AST_ARRAY_SUBSCRIPT);
 
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(member)));
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE
 
 DEFINE_CASE(ast_nodes_unary_operations, "AST nodes - unary operations") {
-    struct kefir_symbol_table symbols;
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    struct kefir_string_pool symbols;
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     kefir_ast_unary_operation_type_t UNARY_OPERATORS[] = {KEFIR_AST_OPERATION_PLUS, KEFIR_AST_OPERATION_NEGATE,
                                                           KEFIR_AST_OPERATION_INVERT,
                                                           KEFIR_AST_OPERATION_LOGICAL_NEGATE};
@@ -492,13 +492,13 @@ DEFINE_CASE(ast_nodes_unary_operations, "AST nodes - unary operations") {
         ASSERT(arg->value.uinteger == i);
         ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(unary_op)));
     }
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE
 
 DEFINE_CASE(ast_nodes_binary_operations, "AST nodes - binary operations") {
-    struct kefir_symbol_table symbols;
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    struct kefir_string_pool symbols;
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     kefir_ast_binary_operation_type_t BINARY_OPERATORS[] = {
         KEFIR_AST_OPERATION_ADD,         KEFIR_AST_OPERATION_SUBTRACT,     KEFIR_AST_OPERATION_MULTIPLY,
         KEFIR_AST_OPERATION_DIVIDE,      KEFIR_AST_OPERATION_MODULO,       KEFIR_AST_OPERATION_SHIFT_LEFT,
@@ -527,6 +527,6 @@ DEFINE_CASE(ast_nodes_binary_operations, "AST nodes - binary operations") {
         ASSERT(arg2->value.uinteger == i);
         ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(binary_op)));
     }
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE

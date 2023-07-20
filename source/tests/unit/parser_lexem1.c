@@ -88,8 +88,8 @@ DEFINE_CASE(parser_lexem_construction_keyword, "Parser - keyword tokens") {
 END_CASE
 
 DEFINE_CASE(parser_lexem_construction_identifier, "Parser - identifier tokens") {
-    struct kefir_symbol_table symbols;
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    struct kefir_string_pool symbols;
+    ASSERT_OK(kefir_string_pool_init(&symbols));
 
     struct kefir_token token;
     ASSERT_NOK(kefir_token_new_identifier(&kft_mem, NULL, "abc", &token));
@@ -129,7 +129,7 @@ DEFINE_CASE(parser_lexem_construction_identifier, "Parser - identifier tokens") 
 
 #undef ASSERT_IDENTIFIER
 
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE
 
@@ -460,8 +460,8 @@ DEFINE_CASE(parser_lexem_construction_pp_header_name, "Parser - pp header names"
 END_CASE
 
 DEFINE_CASE(parser_lexem_move, "Parser - moving tokens") {
-    struct kefir_symbol_table symbols;
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    struct kefir_string_pool symbols;
+    ASSERT_OK(kefir_string_pool_init(&symbols));
 
     struct kefir_token src, dst;
     ASSERT_NOK(kefir_token_move(NULL, NULL));
@@ -558,13 +558,13 @@ DEFINE_CASE(parser_lexem_move, "Parser - moving tokens") {
     ASSERT(strcmp(LITERAL2, dst.pp_header_name.header_name) == 0);
     ASSERT_OK(kefir_token_free(&kft_mem, &dst));
 
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE
 
 DEFINE_CASE(parser_lexem_copy, "Parser - copying tokens") {
-    struct kefir_symbol_table symbols;
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    struct kefir_string_pool symbols;
+    ASSERT_OK(kefir_string_pool_init(&symbols));
 
     struct kefir_token src, dst;
     ASSERT_NOK(kefir_token_copy(&kft_mem, NULL, NULL));
@@ -725,6 +725,6 @@ DEFINE_CASE(parser_lexem_copy, "Parser - copying tokens") {
     ASSERT_OK(kefir_token_free(&kft_mem, &src));
     ASSERT_OK(kefir_token_free(&kft_mem, &dst));
 
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE

@@ -40,10 +40,10 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         "int i = FN6(test-- * func(1, 2, func2(3)) + 2,     +100, a*b+1, fn(1, -100),,\n\n*tmp_ptr,  );\n"
         "int j = FN3(FN1(), FN2(FN1()))";
 
-    struct kefir_symbol_table symbols;
+    struct kefir_string_pool symbols;
     struct kefir_lexer_context parser_context;
     struct kefir_token_buffer tokens;
-    REQUIRE_OK(kefir_symbol_table_init(&symbols));
+    REQUIRE_OK(kefir_string_pool_init(&symbols));
     REQUIRE_OK(kefir_lexer_context_default(&parser_context));
     REQUIRE_OK(kefir_token_buffer_init(&tokens));
 
@@ -199,6 +199,6 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_preprocessor_format(stdout, &tokens, KEFIR_PREPROCESSOR_WHITESPACE_FORMAT_ORIGINAL));
     REQUIRE_OK(kefir_token_buffer_free(mem, &tokens));
     REQUIRE_OK(kefir_preprocessor_ast_context_free(mem, &ast_context));
-    REQUIRE_OK(kefir_symbol_table_free(mem, &symbols));
+    REQUIRE_OK(kefir_string_pool_free(mem, &symbols));
     return KEFIR_OK;
 }

@@ -70,13 +70,13 @@ struct kefir_ast_node_base *ast_struct_member_clone(struct kefir_mem *mem, struc
     return KEFIR_AST_NODE_BASE(clone);
 }
 
-struct kefir_ast_struct_member *kefir_ast_new_struct_member(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
+struct kefir_ast_struct_member *kefir_ast_new_struct_member(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                                             struct kefir_ast_node_base *structure, const char *member) {
     REQUIRE(mem != NULL, NULL);
     REQUIRE(symbols != NULL, NULL);
     REQUIRE(structure != NULL, NULL);
     REQUIRE(member != NULL, NULL);
-    const char *member_copy = kefir_symbol_table_insert(mem, symbols, member, NULL);
+    const char *member_copy = kefir_string_pool_insert(mem, symbols, member, NULL);
     REQUIRE(member != NULL, NULL);
     struct kefir_ast_struct_member *struct_member = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_struct_member));
     REQUIRE(struct_member != NULL, NULL);
@@ -98,14 +98,14 @@ struct kefir_ast_struct_member *kefir_ast_new_struct_member(struct kefir_mem *me
 }
 
 struct kefir_ast_struct_member *kefir_ast_new_struct_indirect_member(struct kefir_mem *mem,
-                                                                     struct kefir_symbol_table *symbols,
+                                                                     struct kefir_string_pool *symbols,
                                                                      struct kefir_ast_node_base *structure,
                                                                      const char *member) {
     REQUIRE(mem != NULL, NULL);
     REQUIRE(symbols != NULL, NULL);
     REQUIRE(structure != NULL, NULL);
     REQUIRE(member != NULL, NULL);
-    const char *member_copy = kefir_symbol_table_insert(mem, symbols, member, NULL);
+    const char *member_copy = kefir_string_pool_insert(mem, symbols, member, NULL);
     REQUIRE(member != NULL, NULL);
     struct kefir_ast_struct_member *struct_member = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_struct_member));
     REQUIRE(struct_member != NULL, NULL);

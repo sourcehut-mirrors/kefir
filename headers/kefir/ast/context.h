@@ -91,7 +91,7 @@ typedef struct kefir_ast_context {
     kefir_result_t (*current_flow_control_point)(struct kefir_mem *, const struct kefir_ast_context *,
                                                  struct kefir_ast_flow_control_point **);
 
-    struct kefir_symbol_table *symbols;
+    struct kefir_string_pool *symbols;
     const struct kefir_ast_type_traits *type_traits;
     struct kefir_ast_type_bundle *type_bundle;
     const struct kefir_ast_target_environment *target_env;

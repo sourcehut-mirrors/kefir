@@ -158,7 +158,7 @@ struct kefir_ast_attribute_list *kefir_ast_new_attribute_list(struct kefir_mem *
     return attribute_list;
 }
 
-kefir_result_t kefir_ast_attribute_list_append(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
+kefir_result_t kefir_ast_attribute_list_append(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                                const char *name, struct kefir_ast_attribute_list *attribute_list,
                                                struct kefir_ast_attribute **attribute) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expeted valid memory allocator"));
@@ -167,7 +167,7 @@ kefir_result_t kefir_ast_attribute_list_append(struct kefir_mem *mem, struct kef
     REQUIRE(attribute != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expeted valid pointer to attribute"));
 
     if (symbols != NULL) {
-        name = kefir_symbol_table_insert(mem, symbols, name, NULL);
+        name = kefir_string_pool_insert(mem, symbols, name, NULL);
         REQUIRE(name != NULL,
                 KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert attribute name into symbol table"));
     }

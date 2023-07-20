@@ -54,7 +54,7 @@ const char *kefir_filesystem_path_list_iter_next(struct kefir_filesystem_path_li
     return result;
 }
 
-kefir_result_t kefir_filesystem_find_in_path_list(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
+kefir_result_t kefir_filesystem_find_in_path_list(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                                   const char *paths, const char *name, const char **result) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(symbols != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid symbol table"));
@@ -74,7 +74,7 @@ kefir_result_t kefir_filesystem_find_in_path_list(struct kefir_mem *mem, struct 
         snprintf(buffer, sizeof(buffer) - 1, "%.*s/%s", (int) length, path, name);
 
         if (access(buffer, F_OK) == 0) {
-            *result = kefir_symbol_table_insert(mem, symbols, buffer, NULL);
+            *result = kefir_string_pool_insert(mem, symbols, buffer, NULL);
             REQUIRE(*result != NULL,
                     KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert file path into symbol table"));
             return KEFIR_OK;

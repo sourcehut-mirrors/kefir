@@ -25,7 +25,7 @@
 enum identifier_type { IDENTIFIER_TYPEDEF = 0, IDENTIFIER_VARIABLE };
 
 kefir_result_t kefir_parser_block_scope_init(struct kefir_parser_block_scope *scope,
-                                             struct kefir_symbol_table *symbols) {
+                                             struct kefir_string_pool *symbols) {
     REQUIRE(scope != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid parser block scope"));
 
     scope->symbols = symbols;
@@ -49,7 +49,7 @@ kefir_result_t kefir_parser_block_scope_declare_typedef(struct kefir_mem *mem, s
     REQUIRE(identifier != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid identifier"));
 
     if (scope->symbols != NULL) {
-        identifier = kefir_symbol_table_insert(mem, scope->symbols, identifier, NULL);
+        identifier = kefir_string_pool_insert(mem, scope->symbols, identifier, NULL);
         REQUIRE(identifier != NULL,
                 KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to insert indentifier into symbol table"));
     }
@@ -72,7 +72,7 @@ kefir_result_t kefir_parser_block_scope_declare_variable(struct kefir_mem *mem, 
     REQUIRE(identifier != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid identifier"));
 
     if (scope->symbols != NULL) {
-        identifier = kefir_symbol_table_insert(mem, scope->symbols, identifier, NULL);
+        identifier = kefir_string_pool_insert(mem, scope->symbols, identifier, NULL);
         REQUIRE(identifier != NULL,
                 KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to insert indentifier into symbol table"));
     }
@@ -114,7 +114,7 @@ static kefir_result_t remove_block_scope(struct kefir_mem *mem, struct kefir_lis
 }
 
 kefir_result_t kefir_parser_scope_init(struct kefir_mem *mem, struct kefir_parser_scope *scope,
-                                       struct kefir_symbol_table *symbols) {
+                                       struct kefir_string_pool *symbols) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(scope != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid parser block scope"));
 

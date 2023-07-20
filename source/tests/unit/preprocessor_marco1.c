@@ -23,8 +23,8 @@
 #include <string.h>
 
 DEFINE_CASE(preprocessor_macro_construction1, "Preprocessor - macro construction") {
-    struct kefir_symbol_table symbols;
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    struct kefir_string_pool symbols;
+    ASSERT_OK(kefir_string_pool_init(&symbols));
 
     struct kefir_preprocessor_user_macro *macro1 =
         kefir_preprocessor_user_macro_new_function(&kft_mem, &symbols, "macro1");
@@ -55,13 +55,13 @@ DEFINE_CASE(preprocessor_macro_construction1, "Preprocessor - macro construction
     ASSERT(macro2->replacement.length == 0);
     ASSERT_OK(kefir_preprocessor_user_macro_free(&kft_mem, macro2));
 
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE
 
 DEFINE_CASE(preprocessor_macro_user_scope1, "Preprocessor - user scope") {
-    struct kefir_symbol_table symbols;
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    struct kefir_string_pool symbols;
+    ASSERT_OK(kefir_string_pool_init(&symbols));
 
     struct kefir_preprocessor_user_macro_scope scope1;
     struct kefir_preprocessor_user_macro_scope scope2;
@@ -124,6 +124,6 @@ DEFINE_CASE(preprocessor_macro_user_scope1, "Preprocessor - user scope") {
     ASSERT_OK(kefir_preprocessor_user_macro_scope_free(&kft_mem, &scope2));
     ASSERT_OK(kefir_preprocessor_user_macro_scope_free(&kft_mem, &scope1));
 
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE

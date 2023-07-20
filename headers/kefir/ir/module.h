@@ -24,7 +24,7 @@
 #include "kefir/core/mem.h"
 #include "kefir/core/list.h"
 #include "kefir/core/hashtree.h"
-#include "kefir/core/symbol_table.h"
+#include "kefir/core/string_pool.h"
 #include "kefir/ir/function.h"
 #include "kefir/ir/data.h"
 #include "kefir/ir/assembly.h"
@@ -42,7 +42,7 @@ typedef struct kefir_ir_module_string_literal {
 } kefir_ir_module_string_literal_;
 
 typedef struct kefir_ir_module {
-    struct kefir_symbol_table symbols;
+    struct kefir_string_pool symbols;
     struct kefir_list types;
     struct kefir_hashtree function_declarations;
     struct kefir_hashtree global_symbols;

@@ -142,13 +142,13 @@ int main(int argc, char *const *argv) {
     setlocale(LC_ALL, "");
     setlocale(LC_NUMERIC, "C");
 
-    struct kefir_symbol_table symbols;
+    struct kefir_string_pool symbols;
     struct kefir_driver_configuration driver_config;
     struct kefir_driver_external_resources exteral_resources;
     kefir_driver_command_t command;
     int exit_code = EXIT_SUCCESS;
 
-    REQUIRE_CHAIN(&res, kefir_symbol_table_init(&symbols));
+    REQUIRE_CHAIN(&res, kefir_string_pool_init(&symbols));
     REQUIRE_CHAIN(&res, kefir_driver_configuration_init(&driver_config));
     REQUIRE_CHAIN(&res, kefir_driver_external_resources_init_from_env(mem, &exteral_resources, &tmpmgr));
     REQUIRE_CHAIN(&res, kefir_driver_parse_args(mem, &symbols, &driver_config, (const char *const *) argv + 1, argc - 1,
@@ -170,6 +170,6 @@ int main(int argc, char *const *argv) {
     }
 
     REQUIRE_CHAIN(&res, kefir_driver_configuration_free(mem, &driver_config));
-    REQUIRE_CHAIN(&res, kefir_symbol_table_free(mem, &symbols));
+    REQUIRE_CHAIN(&res, kefir_string_pool_free(mem, &symbols));
     return kefir_report_error(stderr, res, false) ? exit_code : EXIT_FAILURE;
 }

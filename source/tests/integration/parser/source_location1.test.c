@@ -35,12 +35,12 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
                                "\tlong x : 3;\n"
                                "} X_t;";
 
-    struct kefir_symbol_table symbols;
+    struct kefir_string_pool symbols;
     struct kefir_lexer_source_cursor source_cursor;
     struct kefir_lexer_context parser_context;
     struct kefir_lexer lexer;
     struct kefir_token_buffer tokens;
-    REQUIRE_OK(kefir_symbol_table_init(&symbols));
+    REQUIRE_OK(kefir_string_pool_init(&symbols));
     REQUIRE_OK(kefir_lexer_source_cursor_init(&source_cursor, SOURCE_CODE, sizeof(SOURCE_CODE), "<stdin>"));
     REQUIRE_OK(kefir_lexer_context_default(&parser_context));
     REQUIRE_OK(kefir_lexer_init(mem, &lexer, &symbols, &source_cursor, &parser_context, NULL));
@@ -65,6 +65,6 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     REQUIRE_OK(kefir_parser_free(mem, &parser));
     REQUIRE_OK(kefir_token_buffer_free(mem, &tokens));
-    REQUIRE_OK(kefir_symbol_table_free(mem, &symbols));
+    REQUIRE_OK(kefir_string_pool_free(mem, &symbols));
     return KEFIR_OK;
 }

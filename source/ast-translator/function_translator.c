@@ -52,7 +52,7 @@ static kefir_result_t init_function_declaration(struct kefir_mem *mem, struct ke
         !scoped_id->function.inline_definition && scoped_id->function.asm_label == NULL) {
         snprintf(identifier_buf, sizeof(identifier_buf) - 1, KEFIR_AST_TRANSLATOR_GNU_INLINE_FUNCTION_IDENTIFIER,
                  identifier);
-        identifier = kefir_symbol_table_insert(mem, context->ast_context->symbols, identifier_buf, NULL);
+        identifier = kefir_string_pool_insert(mem, context->ast_context->symbols, identifier_buf, NULL);
         REQUIRE(identifier != NULL,
                 KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE,
                                 "Failed to insert generated function identifier into symbol table"));

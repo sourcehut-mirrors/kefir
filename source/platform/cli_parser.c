@@ -26,7 +26,7 @@
 #include <string.h>
 #include <stdio.h>
 
-static kefir_result_t parse_impl_internal(struct kefir_mem *mem, struct kefir_symbol_table *symbols, void *data_obj,
+static kefir_result_t parse_impl_internal(struct kefir_mem *mem, struct kefir_string_pool *symbols, void *data_obj,
                                           const struct kefir_cli_option *options, kefir_size_t option_count,
                                           char *const *argv, kefir_size_t argc, FILE *error_output) {
     const struct kefir_cli_option *short_option_map[1 << CHAR_BIT] = {0};
@@ -106,7 +106,7 @@ static kefir_result_t parse_impl_internal(struct kefir_mem *mem, struct kefir_sy
                     if (res == KEFIR_OK) {
                         const char **str_param = param;
                         if (symbols != NULL) {
-                            *str_param = kefir_symbol_table_insert(mem, symbols, optarg, NULL);
+                            *str_param = kefir_string_pool_insert(mem, symbols, optarg, NULL);
                             REQUIRE_CHAIN_SET(
                                 &res, *str_param != NULL,
                                 KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE,
@@ -182,7 +182,7 @@ static kefir_result_t parse_impl_internal(struct kefir_mem *mem, struct kefir_sy
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_parse_cli_options(struct kefir_mem *mem, struct kefir_symbol_table *symbols, void *data_obj,
+kefir_result_t kefir_parse_cli_options(struct kefir_mem *mem, struct kefir_string_pool *symbols, void *data_obj,
                                        kefir_size_t *positional_args, const struct kefir_cli_option *options,
                                        kefir_size_t option_count, char *const *argv, kefir_size_t argc,
                                        FILE *error_output) {

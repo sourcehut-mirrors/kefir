@@ -124,7 +124,7 @@ kefir_result_t kefir_preprocessor_context_free(struct kefir_mem *mem, struct kef
 }
 
 kefir_result_t kefir_preprocessor_init(struct kefir_mem *mem, struct kefir_preprocessor *preprocessor,
-                                       struct kefir_symbol_table *symbols, struct kefir_lexer_source_cursor *cursor,
+                                       struct kefir_string_pool *symbols, struct kefir_lexer_source_cursor *cursor,
                                        const struct kefir_lexer_context *context,
                                        struct kefir_preprocessor_context *preprocessor_context,
                                        const struct kefir_preprocessor_source_file_info *current_file,
@@ -250,7 +250,7 @@ kefir_result_t kefir_preprocessor_skip_group(struct kefir_mem *mem, struct kefir
 
 enum if_condition_state { IF_CONDITION_NONE, IF_CONDITION_SUCCESS, IF_CONDITION_FAIL };
 
-static kefir_result_t process_raw_string(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
+static kefir_result_t process_raw_string(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                          struct kefir_token *token, const char **str) {
     struct kefir_list list;
     REQUIRE_OK(kefir_list_init(&list));
@@ -268,7 +268,7 @@ static kefir_result_t process_raw_string(struct kefir_mem *mem, struct kefir_sym
         return res;
     });
 
-    *str = kefir_symbol_table_insert(mem, symbols, string_token.string_literal.literal, NULL);
+    *str = kefir_string_pool_insert(mem, symbols, string_token.string_literal.literal, NULL);
     REQUIRE_ELSE(*str != NULL, {
         kefir_token_free(mem, &string_token);
         return KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert string literal into symbol table");

@@ -156,13 +156,13 @@ static kefir_result_t struct_entry_remove(struct kefir_mem *mem, struct kefir_li
 }
 
 struct kefir_ast_structure_specifier *kefir_ast_structure_specifier_init(struct kefir_mem *mem,
-                                                                         struct kefir_symbol_table *symbols,
+                                                                         struct kefir_string_pool *symbols,
                                                                          const char *identifier,
                                                                          kefir_bool_t complete) {
     REQUIRE(mem != NULL, NULL);
 
     if (symbols != NULL && identifier != NULL) {
-        identifier = kefir_symbol_table_insert(mem, symbols, identifier, NULL);
+        identifier = kefir_string_pool_insert(mem, symbols, identifier, NULL);
         REQUIRE(identifier != NULL, NULL);
     }
 
@@ -428,13 +428,12 @@ static kefir_result_t remove_enum_entry(struct kefir_mem *mem, struct kefir_list
     return KEFIR_OK;
 }
 
-struct kefir_ast_enum_specifier *kefir_ast_enum_specifier_init(struct kefir_mem *mem,
-                                                               struct kefir_symbol_table *symbols,
+struct kefir_ast_enum_specifier *kefir_ast_enum_specifier_init(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                                                const char *identifier, kefir_bool_t complete) {
     REQUIRE(mem != NULL, NULL);
 
     if (symbols != NULL && identifier != NULL) {
-        identifier = kefir_symbol_table_insert(mem, symbols, identifier, NULL);
+        identifier = kefir_string_pool_insert(mem, symbols, identifier, NULL);
         REQUIRE(identifier != NULL, NULL);
     }
 
@@ -494,7 +493,7 @@ struct kefir_ast_enum_specifier *kefir_ast_enum_specifier_clone(struct kefir_mem
 }
 
 kefir_result_t kefir_ast_enum_specifier_append(struct kefir_mem *mem, struct kefir_ast_enum_specifier *specifier,
-                                               struct kefir_symbol_table *symbols, const char *identifier,
+                                               struct kefir_string_pool *symbols, const char *identifier,
                                                struct kefir_ast_node_base *value) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(specifier != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST enum specifier"));
@@ -503,7 +502,7 @@ kefir_result_t kefir_ast_enum_specifier_append(struct kefir_mem *mem, struct kef
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected AST enum specifier to be complete"));
 
     if (symbols != NULL) {
-        identifier = kefir_symbol_table_insert(mem, symbols, identifier, NULL);
+        identifier = kefir_string_pool_insert(mem, symbols, identifier, NULL);
         REQUIRE(identifier != NULL,
                 KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to insert identifier into symbol table"));
     }
@@ -630,13 +629,13 @@ struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_enum(struct kefi
 }
 
 struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_typedef(struct kefir_mem *mem,
-                                                                        struct kefir_symbol_table *symbols,
+                                                                        struct kefir_string_pool *symbols,
                                                                         const char *literal) {
     REQUIRE(mem != NULL, NULL);
     REQUIRE(literal != NULL, NULL);
 
     if (symbols != NULL) {
-        literal = kefir_symbol_table_insert(mem, symbols, literal, NULL);
+        literal = kefir_string_pool_insert(mem, symbols, literal, NULL);
         REQUIRE(literal != NULL, NULL);
     }
 

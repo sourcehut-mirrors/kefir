@@ -35,13 +35,13 @@ static kefir_result_t on_free(struct kefir_mem *mem, struct kefir_parser *parser
 }
 
 DEFINE_CASE(parser_extensions1, "Parser - extensions #1") {
-    struct kefir_symbol_table symbols;
+    struct kefir_string_pool symbols;
     struct kefir_token TOKENS[1024];
     struct kefir_parser_token_cursor cursor;
     struct kefir_parser parser;
     struct kefir_parser_extensions extensions = {.on_init = on_init, .on_free = on_free};
 
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    ASSERT_OK(kefir_string_pool_init(&symbols));
 
     kefir_size_t counter = 0;
     ASSERT_OK(kefir_token_new_identifier(&kft_mem, &symbols, "idx", &TOKENS[counter++]));
@@ -58,6 +58,6 @@ DEFINE_CASE(parser_extensions1, "Parser - extensions #1") {
     for (kefir_size_t i = 0; i < counter; i++) {
         ASSERT_OK(kefir_token_free(&kft_mem, &TOKENS[i]));
     }
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE

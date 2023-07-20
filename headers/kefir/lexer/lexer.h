@@ -25,7 +25,7 @@
 #include "kefir/lexer/buffer.h"
 #include "kefir/lexer/source_cursor.h"
 #include "kefir/core/mem.h"
-#include "kefir/core/symbol_table.h"
+#include "kefir/core/string_pool.h"
 #include "kefir/core/trie.h"
 #include "kefir/core/list.h"
 #include "kefir/lexer/context.h"
@@ -43,7 +43,7 @@ typedef struct kefir_lexer_extensions {
 } kefir_lexer_extensions_t;
 
 typedef struct kefir_lexer {
-    struct kefir_symbol_table *symbols;
+    struct kefir_string_pool *symbols;
     struct kefir_lexer_source_cursor *cursor;
     const struct kefir_lexer_context *context;
 
@@ -56,7 +56,7 @@ typedef struct kefir_lexer {
 
 typedef kefir_result_t (*kefir_lexer_callback_fn_t)(struct kefir_mem *, struct kefir_lexer *, void *);
 
-kefir_result_t kefir_lexer_init(struct kefir_mem *, struct kefir_lexer *, struct kefir_symbol_table *,
+kefir_result_t kefir_lexer_init(struct kefir_mem *, struct kefir_lexer *, struct kefir_string_pool *,
                                 struct kefir_lexer_source_cursor *, const struct kefir_lexer_context *,
                                 const struct kefir_lexer_extensions *);
 kefir_result_t kefir_lexer_free(struct kefir_mem *, struct kefir_lexer *);
@@ -73,7 +73,7 @@ kefir_result_t kefir_lexer_match_punctuator(struct kefir_mem *, struct kefir_lex
 kefir_result_t kefir_lexer_init_keywords(struct kefir_mem *, struct kefir_lexer *);
 kefir_result_t kefir_lexer_get_keyword(const struct kefir_trie *, const kefir_char32_t *, kefir_keyword_token_t *);
 kefir_result_t kefir_lexer_scan_identifier_or_keyword(struct kefir_mem *, struct kefir_lexer_source_cursor *,
-                                                      struct kefir_symbol_table *, const struct kefir_trie *,
+                                                      struct kefir_string_pool *, const struct kefir_trie *,
                                                       struct kefir_token *);
 kefir_result_t kefir_lexer_match_identifier_or_keyword(struct kefir_mem *, struct kefir_lexer *, struct kefir_token *);
 kefir_result_t kefir_lexer_match_identifier(struct kefir_mem *, struct kefir_lexer *, struct kefir_token *);

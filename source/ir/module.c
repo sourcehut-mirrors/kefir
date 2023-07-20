@@ -94,7 +94,7 @@ static kefir_result_t destroy_inline_assembly(struct kefir_mem *mem, struct kefi
 kefir_result_t kefir_ir_module_alloc(struct kefir_mem *mem, struct kefir_ir_module *module) {
     UNUSED(mem);
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR module pointer"));
-    REQUIRE_OK(kefir_symbol_table_init(&module->symbols));
+    REQUIRE_OK(kefir_string_pool_init(&module->symbols));
     REQUIRE_OK(kefir_list_init(&module->types));
     REQUIRE_OK(kefir_list_on_remove(&module->types, destroy_type, NULL));
     REQUIRE_OK(kefir_hashtree_init(&module->function_declarations, &kefir_hashtree_uint_ops));
@@ -131,7 +131,7 @@ kefir_result_t kefir_ir_module_free(struct kefir_mem *mem, struct kefir_ir_modul
     REQUIRE_OK(kefir_hashtree_free(mem, &module->global_symbols));
     REQUIRE_OK(kefir_hashtree_free(mem, &module->function_declarations));
     REQUIRE_OK(kefir_list_free(mem, &module->types));
-    REQUIRE_OK(kefir_symbol_table_free(mem, &module->symbols));
+    REQUIRE_OK(kefir_string_pool_free(mem, &module->symbols));
     return KEFIR_OK;
 }
 
@@ -140,7 +140,7 @@ const char *kefir_ir_module_symbol(struct kefir_mem *mem, struct kefir_ir_module
     REQUIRE(mem != NULL, NULL);
     REQUIRE(module != NULL, NULL);
     REQUIRE(symbol != NULL, NULL);
-    return kefir_symbol_table_insert(mem, &module->symbols, symbol, id);
+    return kefir_string_pool_insert(mem, &module->symbols, symbol, id);
 }
 
 kefir_result_t kefir_ir_module_string_literal(struct kefir_mem *mem, struct kefir_ir_module *module,
@@ -589,7 +589,7 @@ const struct kefir_ir_type *kefir_ir_module_named_type_next(struct kefir_hashtre
 
 const char *kefir_ir_module_get_named_symbol(const struct kefir_ir_module *module, kefir_id_t id) {
     REQUIRE(module != NULL, NULL);
-    return kefir_symbol_table_get(&module->symbols, id);
+    return kefir_string_pool_get(&module->symbols, id);
 }
 
 const struct kefir_ir_function_decl *kefir_ir_module_get_declaration(const struct kefir_ir_module *module,

@@ -65,8 +65,8 @@ DEFINE_CASE(ast_declarator_construction3, "AST declarators - identifier construc
     const char *IDENTS[] = {"a", "abc", "test_123_test_56", "quite_long_identifier_here",
                             "reallyReallyLongIdentifierHere"};
     const kefir_size_t IDENT_COUNT = sizeof(IDENTS) / sizeof(IDENTS[0]);
-    struct kefir_symbol_table symbols;
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    struct kefir_string_pool symbols;
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     ASSERT(kefir_ast_declarator_identifier(NULL, &symbols, NULL) == NULL);
 
     for (kefir_size_t i = 0; i < IDENT_COUNT; i++) {
@@ -84,7 +84,7 @@ DEFINE_CASE(ast_declarator_construction3, "AST declarators - identifier construc
         ASSERT_OK(kefir_ast_declarator_free(&kft_mem, decl));
     }
 
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE
 
@@ -295,8 +295,8 @@ DEFINE_CASE(ast_declarator_construction9, "AST declarators - array construction 
 END_CASE
 
 DEFINE_CASE(ast_declarator_construction10, "AST declarators - function construction #1") {
-    struct kefir_symbol_table symbols;
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    struct kefir_string_pool symbols;
+    ASSERT_OK(kefir_string_pool_init(&symbols));
 
     struct kefir_ast_declarator *decl =
         kefir_ast_declarator_function(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, "func1"));
@@ -339,7 +339,7 @@ DEFINE_CASE(ast_declarator_construction10, "AST declarators - function construct
     ASSERT(!abstract);
 
     ASSERT_OK(kefir_ast_declarator_free(&kft_mem, decl));
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE
 

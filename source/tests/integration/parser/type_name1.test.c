@@ -24,12 +24,12 @@
 #include <stdio.h>
 
 kefir_result_t kefir_int_test(struct kefir_mem *mem) {
-    struct kefir_symbol_table symbols;
+    struct kefir_string_pool symbols;
     struct kefir_token TOKENS[1024];
     struct kefir_parser_token_cursor cursor;
     struct kefir_parser parser;
 
-    REQUIRE_OK(kefir_symbol_table_init(&symbols));
+    REQUIRE_OK(kefir_string_pool_init(&symbols));
 
     kefir_size_t counter = 0;
     REQUIRE_OK(kefir_token_new_keyword(KEFIR_KEYWORD_INT, &TOKENS[counter++]));
@@ -101,6 +101,6 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     for (kefir_size_t i = 0; i < counter; i++) {
         REQUIRE_OK(kefir_token_free(mem, &TOKENS[i]));
     }
-    REQUIRE_OK(kefir_symbol_table_free(mem, &symbols));
+    REQUIRE_OK(kefir_string_pool_free(mem, &symbols));
     return KEFIR_OK;
 }

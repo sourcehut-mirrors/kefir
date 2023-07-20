@@ -22,7 +22,7 @@
 #define KEFIR_PLATFORM_FILESYSTEM_H_
 
 #include "kefir/core/basic-types.h"
-#include "kefir/core/symbol_table.h"
+#include "kefir/core/string_pool.h"
 
 typedef struct kefir_filesystem_path_list_iter {
     const char *current_list;
@@ -33,7 +33,7 @@ const char *kefir_filesystem_path_list_iter_init(struct kefir_filesystem_path_li
                                                  kefir_size_t *);
 const char *kefir_filesystem_path_list_iter_next(struct kefir_filesystem_path_list_iter *, kefir_size_t *);
 
-kefir_result_t kefir_filesystem_find_in_path_list(struct kefir_mem *, struct kefir_symbol_table *, const char *,
+kefir_result_t kefir_filesystem_find_in_path_list(struct kefir_mem *, struct kefir_string_pool *, const char *,
                                                   const char *, const char **result);
 
 #endif

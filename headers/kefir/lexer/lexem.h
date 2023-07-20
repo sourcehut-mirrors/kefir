@@ -24,7 +24,7 @@
 #include "kefir/lexer/base.h"
 #include "kefir/core/mem.h"
 #include "kefir/core/basic-types.h"
-#include "kefir/core/symbol_table.h"
+#include "kefir/core/string_pool.h"
 #include "kefir/core/source_location.h"
 #include <stdio.h>
 
@@ -266,7 +266,7 @@ kefir_bool_t kefir_token_macro_expansions_has(const struct kefir_token_macro_exp
 
 kefir_result_t kefir_token_new_sentinel(struct kefir_token *);
 kefir_result_t kefir_token_new_keyword(kefir_keyword_token_t, struct kefir_token *);
-kefir_result_t kefir_token_new_identifier(struct kefir_mem *, struct kefir_symbol_table *, const char *,
+kefir_result_t kefir_token_new_identifier(struct kefir_mem *, struct kefir_string_pool *, const char *,
                                           struct kefir_token *);
 kefir_result_t kefir_token_new_constant_int(kefir_int64_t, struct kefir_token *);
 kefir_result_t kefir_token_new_constant_uint(kefir_uint64_t, struct kefir_token *);

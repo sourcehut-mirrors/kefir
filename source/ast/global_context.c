@@ -72,7 +72,7 @@ static kefir_result_t context_allocate_temporary_value(struct kefir_mem *mem, co
     char buf[BUFSIZE] = {0};
     snprintf(buf, sizeof(buf) - 1, KEFIR_AST_TRANSLATOR_TEMPORARY_GLOBAL_IDENTIFIER, temp_id);
 
-    temp_identifier->identifier = kefir_symbol_table_insert(mem, context->symbols, buf, NULL);
+    temp_identifier->identifier = kefir_string_pool_insert(mem, context->symbols, buf, NULL);
     REQUIRE(temp_identifier->identifier != NULL,
             KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert temporary identifier into symbol table"));
 
@@ -292,7 +292,7 @@ kefir_result_t kefir_ast_global_context_init(struct kefir_mem *mem, const struct
     REQUIRE(type_traits != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type traits"));
     REQUIRE(target_env != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST target environment"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST translatation context"));
-    REQUIRE_OK(kefir_symbol_table_init(&context->symbols));
+    REQUIRE_OK(kefir_string_pool_init(&context->symbols));
     REQUIRE_OK(kefir_ast_type_bundle_init(&context->type_bundle, &context->symbols));
     context->type_traits = type_traits;
     context->target_env = target_env;
@@ -368,7 +368,7 @@ kefir_result_t kefir_ast_global_context_free(struct kefir_mem *mem, struct kefir
     REQUIRE_OK(kefir_ast_identifier_flat_scope_free(mem, &context->object_identifiers));
     REQUIRE_OK(kefir_list_free(mem, &context->function_decl_contexts));
     REQUIRE_OK(kefir_ast_type_bundle_free(mem, &context->type_bundle));
-    REQUIRE_OK(kefir_symbol_table_free(mem, &context->symbols));
+    REQUIRE_OK(kefir_string_pool_free(mem, &context->symbols));
     return KEFIR_OK;
 }
 
@@ -442,7 +442,7 @@ kefir_result_t kefir_ast_global_context_declare_external(struct kefir_mem *mem,
 
     REQUIRE_OK(require_ordinary_identifier_type(context, identifier, KEFIR_AST_SCOPE_IDENTIFIER_OBJECT, location));
 
-    identifier = kefir_symbol_table_insert(mem, &context->symbols, identifier, NULL);
+    identifier = kefir_string_pool_insert(mem, &context->symbols, identifier, NULL);
     REQUIRE(identifier != NULL,
             KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert identifier into symbol table"));
 
@@ -503,7 +503,7 @@ kefir_result_t kefir_ast_global_context_declare_external_thread_local(
 
     REQUIRE_OK(require_ordinary_identifier_type(context, identifier, KEFIR_AST_SCOPE_IDENTIFIER_OBJECT, location));
 
-    identifier = kefir_symbol_table_insert(mem, &context->symbols, identifier, NULL);
+    identifier = kefir_string_pool_insert(mem, &context->symbols, identifier, NULL);
     REQUIRE(identifier != NULL,
             KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert identifier into symbol table"));
 
@@ -566,7 +566,7 @@ kefir_result_t kefir_ast_global_context_define_external(struct kefir_mem *mem, s
 
     REQUIRE_OK(require_ordinary_identifier_type(context, identifier, KEFIR_AST_SCOPE_IDENTIFIER_OBJECT, location));
 
-    identifier = kefir_symbol_table_insert(mem, &context->symbols, identifier, NULL);
+    identifier = kefir_string_pool_insert(mem, &context->symbols, identifier, NULL);
     REQUIRE(identifier != NULL,
             KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert identifier into symbol table"));
 
@@ -647,7 +647,7 @@ kefir_result_t kefir_ast_global_context_define_external_thread_local(
 
     REQUIRE_OK(require_ordinary_identifier_type(context, identifier, KEFIR_AST_SCOPE_IDENTIFIER_OBJECT, location));
 
-    identifier = kefir_symbol_table_insert(mem, &context->symbols, identifier, NULL);
+    identifier = kefir_string_pool_insert(mem, &context->symbols, identifier, NULL);
     REQUIRE(identifier != NULL,
             KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert identifier into symbol table"));
 
@@ -730,7 +730,7 @@ kefir_result_t kefir_ast_global_context_define_static(struct kefir_mem *mem, str
 
     REQUIRE_OK(require_ordinary_identifier_type(context, identifier, KEFIR_AST_SCOPE_IDENTIFIER_OBJECT, location));
 
-    identifier = kefir_symbol_table_insert(mem, &context->symbols, identifier, NULL);
+    identifier = kefir_string_pool_insert(mem, &context->symbols, identifier, NULL);
     REQUIRE(identifier != NULL,
             KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert identifier into symbol table"));
 
@@ -806,7 +806,7 @@ kefir_result_t kefir_ast_global_context_define_static_thread_local(
 
     REQUIRE_OK(require_ordinary_identifier_type(context, identifier, KEFIR_AST_SCOPE_IDENTIFIER_OBJECT, location));
 
-    identifier = kefir_symbol_table_insert(mem, &context->symbols, identifier, NULL);
+    identifier = kefir_string_pool_insert(mem, &context->symbols, identifier, NULL);
     REQUIRE(identifier != NULL,
             KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert identifier into symbol table"));
 
@@ -879,7 +879,7 @@ kefir_result_t kefir_ast_global_context_define_constant(struct kefir_mem *mem, s
             KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
                                    "Constant definition cannot have variably-modified type"));
 
-    identifier = kefir_symbol_table_insert(mem, &context->symbols, identifier, NULL);
+    identifier = kefir_string_pool_insert(mem, &context->symbols, identifier, NULL);
     REQUIRE(identifier != NULL,
             KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert identifier into symbol table"));
 
@@ -926,7 +926,7 @@ kefir_result_t kefir_ast_global_context_define_tag(struct kefir_mem *mem, struct
         REQUIRE(res == KEFIR_NOT_FOUND, res);
         scoped_id = kefir_ast_context_allocate_scoped_type_tag(mem, type, location);
         REQUIRE(scoped_id != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocted AST scoped identifier"));
-        const char *id = kefir_symbol_table_insert(mem, &context->symbols, identifier, NULL);
+        const char *id = kefir_string_pool_insert(mem, &context->symbols, identifier, NULL);
         REQUIRE(id != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert identifier into symbol table"));
         res = kefir_ast_identifier_flat_scope_insert(mem, &context->tag_scope, id, scoped_id);
         REQUIRE_ELSE(res == KEFIR_OK, {
@@ -954,7 +954,7 @@ kefir_result_t kefir_ast_global_context_define_type(struct kefir_mem *mem, struc
     REQUIRE_OK(
         require_ordinary_identifier_type(context, identifier, KEFIR_AST_SCOPE_IDENTIFIER_TYPE_DEFINITION, location));
 
-    identifier = kefir_symbol_table_insert(mem, &context->symbols, identifier, NULL);
+    identifier = kefir_string_pool_insert(mem, &context->symbols, identifier, NULL);
     REQUIRE(identifier != NULL,
             KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert identifier into symbol table"));
 
@@ -1037,7 +1037,7 @@ kefir_result_t kefir_ast_global_context_declare_function(
             attributes != NULL ? attributes->asm_label : NULL, location);
         REQUIRE(ordinary_id != NULL,
                 KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocted AST scoped identifier"));
-        const char *id = kefir_symbol_table_insert(mem, &context->symbols, identifier, NULL);
+        const char *id = kefir_string_pool_insert(mem, &context->symbols, identifier, NULL);
         REQUIRE(id != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert identifier into symbol table"));
         res = kefir_ast_identifier_flat_scope_insert(mem, &context->function_identifiers, id, ordinary_id);
         REQUIRE_ELSE(res == KEFIR_OK, {
@@ -1110,7 +1110,7 @@ kefir_result_t kefir_ast_global_context_define_function(struct kefir_mem *mem, s
             attributes != NULL ? attributes->asm_label : NULL, location);
         REQUIRE(ordinary_id != NULL,
                 KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocted AST scoped identifier"));
-        const char *id = kefir_symbol_table_insert(mem, &context->symbols, identifier, NULL);
+        const char *id = kefir_string_pool_insert(mem, &context->symbols, identifier, NULL);
         REQUIRE(id != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert identifier into symbol table"));
         res = kefir_ast_identifier_flat_scope_insert(mem, &context->function_identifiers, id, ordinary_id);
         REQUIRE_ELSE(res == KEFIR_OK, {
@@ -1181,7 +1181,7 @@ kefir_result_t kefir_ast_global_context_define_static_function(
             location);
         REQUIRE(ordinary_id != NULL,
                 KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocted AST scoped identifier"));
-        const char *id = kefir_symbol_table_insert(mem, &context->symbols, identifier, NULL);
+        const char *id = kefir_string_pool_insert(mem, &context->symbols, identifier, NULL);
         REQUIRE(id != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert identifier into symbol table"));
         res = kefir_ast_identifier_flat_scope_insert(mem, &context->function_identifiers, id, ordinary_id);
         REQUIRE_ELSE(res == KEFIR_OK, {

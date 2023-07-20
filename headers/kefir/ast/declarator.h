@@ -76,7 +76,7 @@ typedef struct kefir_ast_declarator_attributes {
     const char *asm_label;
 } kefir_ast_declarator_attributes_t;
 
-struct kefir_ast_declarator *kefir_ast_declarator_identifier(struct kefir_mem *, struct kefir_symbol_table *,
+struct kefir_ast_declarator *kefir_ast_declarator_identifier(struct kefir_mem *, struct kefir_string_pool *,
                                                              const char *);
 struct kefir_ast_declarator *kefir_ast_declarator_pointer(struct kefir_mem *, struct kefir_ast_declarator *);
 struct kefir_ast_declarator *kefir_ast_declarator_array(struct kefir_mem *, kefir_ast_declarator_array_type_t,

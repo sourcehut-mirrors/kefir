@@ -37,7 +37,7 @@ static kefir_result_t on_free(struct kefir_mem *mem, struct kefir_ast_translator
 
 DEFINE_CASE(ast_translator_context_extensions1, "AST translator context - extensions #1") {
     const struct kefir_ast_type_traits *type_traits = kefir_util_default_type_traits();
-    struct kefir_symbol_table symbols;
+    struct kefir_string_pool symbols;
     struct kefir_ast_translator_environment env;
     struct kefir_ast_global_context context;
     struct kefir_ast_translator_context translator_context;
@@ -45,7 +45,7 @@ DEFINE_CASE(ast_translator_context_extensions1, "AST translator context - extens
 
     struct kefir_ast_translator_context_extensions ext = {.on_init = on_init, .on_free = on_free};
 
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     ASSERT_OK(kefir_ast_translator_environment_init(&env, kft_util_get_ir_target_platform()));
     ASSERT_OK(kefir_ast_global_context_init(&kft_mem, type_traits, &env.target_env, &context, NULL));
     ASSERT_OK(kefir_ir_module_alloc(&kft_mem, &module));
@@ -62,7 +62,7 @@ END_CASE
 
 DEFINE_CASE(ast_translator_context_local_extensions1, "AST translator context - local extensions #1") {
     const struct kefir_ast_type_traits *type_traits = kefir_util_default_type_traits();
-    struct kefir_symbol_table symbols;
+    struct kefir_string_pool symbols;
     struct kefir_ast_translator_environment env;
     struct kefir_ast_global_context context;
     struct kefir_ast_translator_context translator_context, local_translator_context;
@@ -70,7 +70,7 @@ DEFINE_CASE(ast_translator_context_local_extensions1, "AST translator context - 
 
     struct kefir_ast_translator_context_extensions ext = {.on_init = on_init, .on_free = on_free};
 
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     ASSERT_OK(kefir_ast_translator_environment_init(&env, kft_util_get_ir_target_platform()));
     ASSERT_OK(kefir_ast_global_context_init(&kft_mem, type_traits, &env.target_env, &context, NULL));
     ASSERT_OK(kefir_ir_module_alloc(&kft_mem, &module));

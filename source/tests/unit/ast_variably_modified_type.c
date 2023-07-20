@@ -25,9 +25,9 @@
 #include "kefir/test/util.h"
 
 DEFINE_CASE(ast_type_variably_modified1, "AST types - variably modified types #1") {
-    struct kefir_symbol_table symbols;
+    struct kefir_string_pool symbols;
     struct kefir_ast_type_bundle type_bundle;
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     ASSERT_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
 
     ASSERT(!kefir_ast_type_is_variably_modified(kefir_ast_type_void()));
@@ -73,14 +73,14 @@ DEFINE_CASE(ast_type_variably_modified1, "AST types - variably modified types #1
     ASSERT(!kefir_ast_type_is_variably_modified(type4));
 
     ASSERT_OK(kefir_ast_type_bundle_free(&kft_mem, &type_bundle));
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE
 
 DEFINE_CASE(ast_type_variably_modified2, "AST types - variably modified types #2") {
-    struct kefir_symbol_table symbols;
+    struct kefir_string_pool symbols;
     struct kefir_ast_type_bundle type_bundle;
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    ASSERT_OK(kefir_string_pool_init(&symbols));
     ASSERT_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
 
     const struct kefir_ast_type *type1 =
@@ -120,7 +120,7 @@ DEFINE_CASE(ast_type_variably_modified2, "AST types - variably modified types #2
     ASSERT(!kefir_ast_type_is_variably_modified(type8));
 
     ASSERT_OK(kefir_ast_type_bundle_free(&kft_mem, &type_bundle));
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE
 

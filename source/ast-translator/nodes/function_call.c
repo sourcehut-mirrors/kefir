@@ -138,7 +138,7 @@ kefir_result_t kefir_ast_translate_function_call_node(struct kefir_mem *mem,
             !scoped_id->function.inline_definition && scoped_id->function.asm_label == NULL) {
             snprintf(identifier_buf, sizeof(identifier_buf) - 1, KEFIR_AST_TRANSLATOR_GNU_INLINE_FUNCTION_IDENTIFIER,
                      function_name);
-            function_name = kefir_symbol_table_insert(mem, context->ast_context->symbols, identifier_buf, NULL);
+            function_name = kefir_string_pool_insert(mem, context->ast_context->symbols, identifier_buf, NULL);
             REQUIRE(
                 function_name != NULL,
                 KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert generated function name into symbol table"));
@@ -218,7 +218,8 @@ kefir_result_t kefir_ast_translate_function_call_node(struct kefir_mem *mem,
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_INVOKE, ir_decl->id));
     }
 
-    if (KEFIR_AST_TYPE_IS_AGGREGATE_TYPE(node->base.properties.type) || KEFIR_AST_TYPE_IS_LONG_DOUBLE(node->base.properties.type)) {
+    if (KEFIR_AST_TYPE_IS_AGGREGATE_TYPE(node->base.properties.type) ||
+        KEFIR_AST_TYPE_IS_LONG_DOUBLE(node->base.properties.type)) {
         REQUIRE_OK(kefir_ast_translator_fetch_temporary(mem, context, builder,
                                                         &node->base.properties.expression_props.temp_identifier));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PICK, 0));

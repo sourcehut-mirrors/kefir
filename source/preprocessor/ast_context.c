@@ -123,7 +123,7 @@ static kefir_result_t context_current_flow_control_point(struct kefir_mem *mem, 
 
 kefir_result_t kefir_preprocessor_ast_context_init(struct kefir_mem *mem,
                                                    struct kefir_preprocessor_ast_context *context,
-                                                   struct kefir_symbol_table *symbols,
+                                                   struct kefir_string_pool *symbols,
                                                    const struct kefir_ast_type_traits *type_traits,
                                                    const struct kefir_ast_target_environment *target_env,
                                                    const struct kefir_ast_context_extensions *extensions) {

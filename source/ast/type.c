@@ -270,7 +270,7 @@ static kefir_result_t free_type_bundle(struct kefir_mem *mem, struct kefir_list 
 }
 
 kefir_result_t kefir_ast_type_bundle_init(struct kefir_ast_type_bundle *type_bundle,
-                                          struct kefir_symbol_table *symbols) {
+                                          struct kefir_string_pool *symbols) {
     REQUIRE(type_bundle != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type type_bundlesitory"));
     type_bundle->symbols = symbols;
     REQUIRE_OK(kefir_list_init(&type_bundle->types));

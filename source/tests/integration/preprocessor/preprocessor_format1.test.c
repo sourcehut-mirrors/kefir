@@ -32,10 +32,10 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
                            "\tfor (int x = 0; x < i; ++x) fn(\'X\', \"xA\\n\");\n"
                            "     \t str = L\"long string\", xstr = U\"UUU\\u1111-uuuu\"";
 
-    struct kefir_symbol_table symbols;
+    struct kefir_string_pool symbols;
     struct kefir_lexer_source_cursor cursor;
     struct kefir_lexer_context parser_context;
-    REQUIRE_OK(kefir_symbol_table_init(&symbols));
+    REQUIRE_OK(kefir_string_pool_init(&symbols));
     REQUIRE_OK(kefir_lexer_source_cursor_init(&cursor, CONTENT, sizeof(CONTENT), ""));
     REQUIRE_OK(kefir_lexer_context_default(&parser_context));
 
@@ -60,6 +60,6 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     REQUIRE_OK(kefir_token_buffer_free(mem, &tokens));
     REQUIRE_OK(kefir_preprocessor_ast_context_free(mem, &ast_context));
-    REQUIRE_OK(kefir_symbol_table_free(mem, &symbols));
+    REQUIRE_OK(kefir_string_pool_free(mem, &symbols));
     return KEFIR_OK;
 }

@@ -28,11 +28,11 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     const char CONTENT[] = "12345      0xef7368\n\n\n918.816e8 /* 100 *///200\n 1e-9\n"
                            "\t\t\t\v\f    .1abcde918P+100e1 abc100e-1 /*1.*/ 2.2.2.3";
 
-    struct kefir_symbol_table symbols;
+    struct kefir_string_pool symbols;
     struct kefir_lexer_source_cursor cursor;
     struct kefir_lexer_context parser_context;
     struct kefir_lexer lexer;
-    REQUIRE_OK(kefir_symbol_table_init(&symbols));
+    REQUIRE_OK(kefir_string_pool_init(&symbols));
     REQUIRE_OK(kefir_lexer_source_cursor_init(&cursor, CONTENT, sizeof(CONTENT), ""));
     REQUIRE_OK(kefir_lexer_context_default(&parser_context));
     REQUIRE_OK(kefir_lexer_init(mem, &lexer, &symbols, &cursor, &parser_context, NULL));
@@ -54,6 +54,6 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_json_output_finalize(&json));
 
     REQUIRE_OK(kefir_lexer_free(mem, &lexer));
-    REQUIRE_OK(kefir_symbol_table_free(mem, &symbols));
+    REQUIRE_OK(kefir_string_pool_free(mem, &symbols));
     return KEFIR_OK;
 }

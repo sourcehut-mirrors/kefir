@@ -55,13 +55,13 @@ static kefir_result_t free_inline_asm_jump_target(struct kefir_mem *mem, struct 
 }
 
 struct kefir_ir_inline_assembly *kefir_ir_inline_assembly_alloc(struct kefir_mem *mem,
-                                                                struct kefir_symbol_table *symbols, kefir_id_t id,
+                                                                struct kefir_string_pool *symbols, kefir_id_t id,
                                                                 const char *template) {
     REQUIRE(mem != NULL, NULL);
     REQUIRE(template != NULL, NULL);
 
     if (symbols != NULL) {
-        template = kefir_symbol_table_insert(mem, symbols, template, NULL);
+        template = kefir_string_pool_insert(mem, symbols, template, NULL);
         REQUIRE(template != NULL, NULL);
     }
 
@@ -101,7 +101,7 @@ kefir_result_t kefir_ir_inline_assembly_free(struct kefir_mem *mem, struct kefir
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_ir_inline_assembly_add_parameter(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
+kefir_result_t kefir_ir_inline_assembly_add_parameter(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                                       struct kefir_ir_inline_assembly *inline_asm,
                                                       const char *identifier,
                                                       kefir_ir_inline_assembly_parameter_class_t param_class,
@@ -121,7 +121,7 @@ kefir_result_t kefir_ir_inline_assembly_add_parameter(struct kefir_mem *mem, str
                             "Cannot directly add read-store/immediate IR inline assembly parameter"));
 
     if (symbols != NULL) {
-        identifier = kefir_symbol_table_insert(mem, symbols, identifier, NULL);
+        identifier = kefir_string_pool_insert(mem, symbols, identifier, NULL);
         REQUIRE(identifier != NULL,
                 KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE,
                                 "Failed to insert IR inline assembly parameter identifier into symbol table"));
@@ -184,7 +184,7 @@ kefir_result_t kefir_ir_inline_assembly_add_parameter(struct kefir_mem *mem, str
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_ir_inline_assembly_add_parameter_alias(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
+kefir_result_t kefir_ir_inline_assembly_add_parameter_alias(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                                             struct kefir_ir_inline_assembly *inline_asm,
                                                             struct kefir_ir_inline_assembly_parameter *param,
                                                             const char *alias) {
@@ -198,7 +198,7 @@ kefir_result_t kefir_ir_inline_assembly_add_parameter_alias(struct kefir_mem *me
             KEFIR_SET_ERROR(KEFIR_ALREADY_EXISTS, "Provided IR inline assembly parameter alias already exists"));
 
     if (symbols != NULL) {
-        alias = kefir_symbol_table_insert(mem, symbols, alias, NULL);
+        alias = kefir_string_pool_insert(mem, symbols, alias, NULL);
         REQUIRE(alias != NULL,
                 KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE,
                                 "Failed to insert IR inline assembly parameter alias into symbol table"));
@@ -211,7 +211,7 @@ kefir_result_t kefir_ir_inline_assembly_add_parameter_alias(struct kefir_mem *me
 }
 
 kefir_result_t kefir_ir_inline_assembly_add_immediate_parameter(
-    struct kefir_mem *mem, struct kefir_symbol_table *symbols, struct kefir_ir_inline_assembly *inline_asm,
+    struct kefir_mem *mem, struct kefir_string_pool *symbols, struct kefir_ir_inline_assembly *inline_asm,
     const char *identifier, const struct kefir_ir_type *param_type, kefir_id_t param_type_id,
     kefir_size_t param_type_idx, kefir_ir_inline_assembly_immediate_type_t imm_type, const char *imm_identifier_base,
     kefir_id_t imm_literal_base, kefir_int64_t imm_value, struct kefir_ir_inline_assembly_parameter **param_ptr) {
@@ -222,13 +222,13 @@ kefir_result_t kefir_ir_inline_assembly_add_immediate_parameter(
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR inline assembly parameter identifier"));
 
     if (symbols != NULL) {
-        identifier = kefir_symbol_table_insert(mem, symbols, identifier, NULL);
+        identifier = kefir_string_pool_insert(mem, symbols, identifier, NULL);
         REQUIRE(identifier != NULL,
                 KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE,
                                 "Failed to insert IR inline assembly parameter identifier into symbol table"));
 
         if (imm_identifier_base != NULL) {
-            imm_identifier_base = kefir_symbol_table_insert(mem, symbols, imm_identifier_base, NULL);
+            imm_identifier_base = kefir_string_pool_insert(mem, symbols, imm_identifier_base, NULL);
             REQUIRE(imm_identifier_base != NULL,
                     KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE,
                                     "Failed to insert IR inline assembly immediate parameter base into symbol table"));
@@ -315,14 +315,14 @@ kefir_result_t kefir_ir_inline_assembly_resolve_parameter(struct kefir_ir_inline
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_ir_inline_assembly_add_clobber(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
+kefir_result_t kefir_ir_inline_assembly_add_clobber(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                                     struct kefir_ir_inline_assembly *inline_asm, const char *clobber) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(inline_asm != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR inline assembly"));
     REQUIRE(clobber != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR inline assembly clobber"));
 
     if (symbols != NULL) {
-        clobber = kefir_symbol_table_insert(mem, symbols, clobber, NULL);
+        clobber = kefir_string_pool_insert(mem, symbols, clobber, NULL);
         REQUIRE(clobber != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE,
                                                  "Failed to insert IR inline assembly clobber into symbol table"));
     }
@@ -332,7 +332,7 @@ kefir_result_t kefir_ir_inline_assembly_add_clobber(struct kefir_mem *mem, struc
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_ir_inline_assembly_add_jump_target(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
+kefir_result_t kefir_ir_inline_assembly_add_jump_target(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                                         struct kefir_ir_inline_assembly *inline_asm,
                                                         const char *identifier, const char *target_function,
                                                         kefir_size_t target,
@@ -345,12 +345,12 @@ kefir_result_t kefir_ir_inline_assembly_add_jump_target(struct kefir_mem *mem, s
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR inline assembly jump target target function"));
 
     if (symbols != NULL) {
-        identifier = kefir_symbol_table_insert(mem, symbols, identifier, NULL);
+        identifier = kefir_string_pool_insert(mem, symbols, identifier, NULL);
         REQUIRE(identifier != NULL,
                 KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE,
                                 "Failed to insert IR inline assembly jump target identifier into symbol table"));
 
-        target_function = kefir_symbol_table_insert(mem, symbols, target_function, NULL);
+        target_function = kefir_string_pool_insert(mem, symbols, target_function, NULL);
         REQUIRE(identifier != NULL,
                 KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE,
                                 "Failed to insert IR inline assembly jump target function into symbol table"));
@@ -390,7 +390,7 @@ kefir_result_t kefir_ir_inline_assembly_add_jump_target(struct kefir_mem *mem, s
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_ir_inline_assembly_add_jump_target_alias(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
+kefir_result_t kefir_ir_inline_assembly_add_jump_target_alias(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                                               struct kefir_ir_inline_assembly *inline_asm,
                                                               struct kefir_ir_inline_assembly_jump_target *jump_target,
                                                               const char *alias) {
@@ -405,7 +405,7 @@ kefir_result_t kefir_ir_inline_assembly_add_jump_target_alias(struct kefir_mem *
             KEFIR_SET_ERROR(KEFIR_ALREADY_EXISTS, "Jump target with specified alias already exists"));
 
     if (symbols != NULL) {
-        alias = kefir_symbol_table_insert(mem, symbols, alias, NULL);
+        alias = kefir_string_pool_insert(mem, symbols, alias, NULL);
         REQUIRE(alias != NULL,
                 KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE,
                                 "Failed to insert IR inline assembly jump target alias into symbol table"));

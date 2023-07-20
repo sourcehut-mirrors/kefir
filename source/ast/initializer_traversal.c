@@ -100,7 +100,7 @@ static kefir_result_t string_literal_stop_fn(struct kefir_ast_node_base *node,
     return KEFIR_OK;
 }
 
-static kefir_result_t layer_designator(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
+static kefir_result_t layer_designator(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                        struct kefir_ast_designator *current_designator,
                                        const struct kefir_ast_type_traversal_layer *layer,
                                        struct kefir_ast_designator **result) {

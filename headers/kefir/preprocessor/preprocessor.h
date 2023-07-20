@@ -119,7 +119,7 @@ typedef enum kefir_preprocessor_substitution_context {
     KEFIR_PREPROCESSOR_SUBSTITUTION_IF_CONDITION
 } kefir_preprocessor_substitution_context_t;
 
-kefir_result_t kefir_preprocessor_init(struct kefir_mem *, struct kefir_preprocessor *, struct kefir_symbol_table *,
+kefir_result_t kefir_preprocessor_init(struct kefir_mem *, struct kefir_preprocessor *, struct kefir_string_pool *,
                                        struct kefir_lexer_source_cursor *, const struct kefir_lexer_context *,
                                        struct kefir_preprocessor_context *,
                                        const struct kefir_preprocessor_source_file_info *,

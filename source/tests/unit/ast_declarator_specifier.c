@@ -69,8 +69,8 @@ END_CASE
 
 DEFINE_CASE(ast_declarator_specifier_construction3,
             "AST declarator specifiers - structure type specifier construction") {
-    struct kefir_symbol_table symbols;
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    struct kefir_string_pool symbols;
+    ASSERT_OK(kefir_string_pool_init(&symbols));
 
     struct kefir_ast_structure_specifier *structure_specifier =
         kefir_ast_structure_specifier_init(&kft_mem, &symbols, "struct1", false);
@@ -81,13 +81,13 @@ DEFINE_CASE(ast_declarator_specifier_construction3,
     ASSERT(specifier->type_specifier.value.structure == structure_specifier);
     ASSERT_OK(kefir_ast_declarator_specifier_free(&kft_mem, specifier));
 
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE
 
 DEFINE_CASE(ast_declarator_specifier_construction4, "AST declarator specifiers - union type specifier construction") {
-    struct kefir_symbol_table symbols;
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    struct kefir_string_pool symbols;
+    ASSERT_OK(kefir_string_pool_init(&symbols));
 
     struct kefir_ast_structure_specifier *structure_specifier =
         kefir_ast_structure_specifier_init(&kft_mem, &symbols, "union1", false);
@@ -99,14 +99,14 @@ DEFINE_CASE(ast_declarator_specifier_construction4, "AST declarator specifiers -
     ASSERT(specifier->type_specifier.value.structure == structure_specifier);
     ASSERT_OK(kefir_ast_declarator_specifier_free(&kft_mem, specifier));
 
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE
 
 DEFINE_CASE(ast_declarator_specifier_construction5,
             "AST declarator specifiers - enumeration type specifier construction") {
-    struct kefir_symbol_table symbols;
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    struct kefir_string_pool symbols;
+    ASSERT_OK(kefir_string_pool_init(&symbols));
 
     struct kefir_ast_enum_specifier *enum_specifier = kefir_ast_enum_specifier_init(&kft_mem, &symbols, "enum1", false);
     struct kefir_ast_declarator_specifier *specifier = kefir_ast_type_specifier_enum(&kft_mem, enum_specifier);
@@ -116,7 +116,7 @@ DEFINE_CASE(ast_declarator_specifier_construction5,
     ASSERT(specifier->type_specifier.value.enumeration == enum_specifier);
     ASSERT_OK(kefir_ast_declarator_specifier_free(&kft_mem, specifier));
 
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE
 
@@ -144,8 +144,8 @@ DEFINE_CASE(ast_declarator_specifier_construction7,
     const char *TYPE_NAMES[] = {
         "", "Hello_world", "Goodbye_cruel_world", "one_two_THREE", "A", "some_pretty_long_type_name_1"};
     const kefir_size_t TYPE_NAME_COUNT = sizeof(TYPE_NAMES) / sizeof(TYPE_NAMES[0]);
-    struct kefir_symbol_table symbols;
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    struct kefir_string_pool symbols;
+    ASSERT_OK(kefir_string_pool_init(&symbols));
 
     for (kefir_size_t i = 0; i < TYPE_NAME_COUNT; i++) {
         struct kefir_ast_declarator_specifier *specifier =
@@ -159,7 +159,7 @@ DEFINE_CASE(ast_declarator_specifier_construction7,
         ASSERT_OK(kefir_ast_declarator_specifier_free(&kft_mem, specifier));
     }
 
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE
 

@@ -29,11 +29,11 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
                            "\t\t\t\f    U\"\" U\"\\u0087Hop\\U00000060    \\\"\\\\\\t\"--\n"
                            " \n \t \n U \"123\", U\"123123\"u\"321321\" U\"\\r\\n\\t\" \"\\0\"";
 
-    struct kefir_symbol_table symbols;
+    struct kefir_string_pool symbols;
     struct kefir_lexer_source_cursor cursor;
     struct kefir_lexer_context integral_types;
     struct kefir_lexer lexer;
-    REQUIRE_OK(kefir_symbol_table_init(&symbols));
+    REQUIRE_OK(kefir_string_pool_init(&symbols));
     REQUIRE_OK(kefir_lexer_source_cursor_init(&cursor, CONTENT, sizeof(CONTENT), ""));
     REQUIRE_OK(kefir_lexer_context_default(&integral_types));
     REQUIRE_OK(kefir_lexer_init(mem, &lexer, &symbols, &cursor, &integral_types, NULL));
@@ -55,6 +55,6 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_json_output_finalize(&json));
 
     REQUIRE_OK(kefir_lexer_free(mem, &lexer));
-    REQUIRE_OK(kefir_symbol_table_free(mem, &symbols));
+    REQUIRE_OK(kefir_string_pool_free(mem, &symbols));
     return KEFIR_OK;
 }

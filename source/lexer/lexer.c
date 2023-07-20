@@ -25,7 +25,7 @@
 #include "kefir/core/source_error.h"
 #include <string.h>
 
-kefir_result_t kefir_lexer_init(struct kefir_mem *mem, struct kefir_lexer *lexer, struct kefir_symbol_table *symbols,
+kefir_result_t kefir_lexer_init(struct kefir_mem *mem, struct kefir_lexer *lexer, struct kefir_string_pool *symbols,
                                 struct kefir_lexer_source_cursor *cursor, const struct kefir_lexer_context *context,
                                 const struct kefir_lexer_extensions *extensions) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));

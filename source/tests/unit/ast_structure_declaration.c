@@ -24,8 +24,8 @@
 #include <string.h>
 
 DEFINE_CASE(ast_structure_declaration1, "AST Declarations - structure declarations #1") {
-    struct kefir_symbol_table symbols;
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    struct kefir_string_pool symbols;
+    ASSERT_OK(kefir_string_pool_init(&symbols));
 
     struct kefir_ast_structure_specifier *specifier1 =
         kefir_ast_structure_specifier_init(&kft_mem, &symbols, "struct1", false);
@@ -59,13 +59,13 @@ DEFINE_CASE(ast_structure_declaration1, "AST Declarations - structure declaratio
     ASSERT_OK(kefir_ast_structure_declaration_entry_free(&kft_mem, entry1));
 
     ASSERT_OK(kefir_ast_structure_specifier_free(&kft_mem, specifier1));
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE
 
 DEFINE_CASE(ast_structure_declaration2, "AST Declarations - structure declarations #2") {
-    struct kefir_symbol_table symbols;
-    ASSERT_OK(kefir_symbol_table_init(&symbols));
+    struct kefir_string_pool symbols;
+    ASSERT_OK(kefir_string_pool_init(&symbols));
 
     struct kefir_ast_structure_specifier *specifier1 =
         kefir_ast_structure_specifier_init(&kft_mem, &symbols, "struct_one", true);
@@ -242,6 +242,6 @@ DEFINE_CASE(ast_structure_declaration2, "AST Declarations - structure declaratio
     ASSERT(entry_iter == NULL);
 
     ASSERT_OK(kefir_ast_structure_specifier_free(&kft_mem, specifier1));
-    ASSERT_OK(kefir_symbol_table_free(&kft_mem, &symbols));
+    ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
 }
 END_CASE

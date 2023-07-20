@@ -36,10 +36,10 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
                            "const char *f = STR(\"1\"  u\"2\" \"3\" u8\"4\" \"5\" U\"6\" \"7\" L\"8\");\n"
                            "const char *g = STR(FN(2, x));";
 
-    struct kefir_symbol_table symbols;
+    struct kefir_string_pool symbols;
     struct kefir_lexer_context parser_context;
     struct kefir_token_buffer tokens;
-    REQUIRE_OK(kefir_symbol_table_init(&symbols));
+    REQUIRE_OK(kefir_string_pool_init(&symbols));
     REQUIRE_OK(kefir_lexer_context_default(&parser_context));
     REQUIRE_OK(kefir_token_buffer_init(&tokens));
 
@@ -93,6 +93,6 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_preprocessor_format(stdout, &tokens, KEFIR_PREPROCESSOR_WHITESPACE_FORMAT_ORIGINAL));
     REQUIRE_OK(kefir_token_buffer_free(mem, &tokens));
     REQUIRE_OK(kefir_preprocessor_ast_context_free(mem, &ast_context));
-    REQUIRE_OK(kefir_symbol_table_free(mem, &symbols));
+    REQUIRE_OK(kefir_string_pool_free(mem, &symbols));
     return KEFIR_OK;
 }

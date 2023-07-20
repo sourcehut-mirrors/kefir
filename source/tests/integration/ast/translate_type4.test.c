@@ -29,12 +29,12 @@
 #include "./translate_type_common.c"
 
 kefir_result_t kefir_int_test(struct kefir_mem *mem) {
-    struct kefir_symbol_table symbols;
+    struct kefir_string_pool symbols;
     struct kefir_ast_type_bundle type_bundle;
     struct kefir_ast_translator_environment env;
     struct kefir_ast_global_context global_context;
 
-    REQUIRE_OK(kefir_symbol_table_init(&symbols));
+    REQUIRE_OK(kefir_string_pool_init(&symbols));
     REQUIRE_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
     REQUIRE_OK(kefir_ast_translator_environment_init(&env, kft_util_get_ir_target_platform()));
     REQUIRE_OK(
@@ -86,6 +86,6 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     REQUIRE_OK(kefir_ast_global_context_free(mem, &global_context));
     REQUIRE_OK(kefir_ast_type_bundle_free(mem, &type_bundle));
-    REQUIRE_OK(kefir_symbol_table_free(mem, &symbols));
+    REQUIRE_OK(kefir_string_pool_free(mem, &symbols));
     return KEFIR_OK;
 }

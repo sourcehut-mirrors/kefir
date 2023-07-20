@@ -58,12 +58,12 @@ struct kefir_ast_node_base *ast_label_address_clone(struct kefir_mem *mem, struc
     return KEFIR_AST_NODE_BASE(clone);
 }
 
-struct kefir_ast_label_address *kefir_ast_new_label_address(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
+struct kefir_ast_label_address *kefir_ast_new_label_address(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                                             const char *label_address) {
     REQUIRE(mem != NULL, NULL);
     REQUIRE(symbols != NULL, NULL);
     REQUIRE(label_address != NULL, NULL);
-    const char *id_copy = kefir_symbol_table_insert(mem, symbols, label_address, NULL);
+    const char *id_copy = kefir_string_pool_insert(mem, symbols, label_address, NULL);
     REQUIRE(id_copy != NULL, NULL);
     struct kefir_ast_label_address *id = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_label_address));
     REQUIRE(id != NULL, NULL);

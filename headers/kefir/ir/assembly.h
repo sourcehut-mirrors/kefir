@@ -25,7 +25,7 @@
 #include "kefir/core/list.h"
 #include "kefir/core/hashtree.h"
 #include "kefir/core/mem.h"
-#include "kefir/core/symbol_table.h"
+#include "kefir/core/string_pool.h"
 #include "kefir/ir/type.h"
 
 typedef enum kefir_ir_inline_assembly_parameter_class {
@@ -98,19 +98,19 @@ typedef struct kefir_ir_inline_assembly {
     kefir_id_t next_jump_target_id;
 } kefir_ir_inline_assembly_t;
 
-struct kefir_ir_inline_assembly *kefir_ir_inline_assembly_alloc(struct kefir_mem *, struct kefir_symbol_table *,
+struct kefir_ir_inline_assembly *kefir_ir_inline_assembly_alloc(struct kefir_mem *, struct kefir_string_pool *,
                                                                 kefir_id_t, const char *);
 kefir_result_t kefir_ir_inline_assembly_free(struct kefir_mem *, struct kefir_ir_inline_assembly *);
-kefir_result_t kefir_ir_inline_assembly_add_parameter(struct kefir_mem *, struct kefir_symbol_table *,
+kefir_result_t kefir_ir_inline_assembly_add_parameter(struct kefir_mem *, struct kefir_string_pool *,
                                                       struct kefir_ir_inline_assembly *, const char *,
                                                       kefir_ir_inline_assembly_parameter_class_t,
                                                       kefir_ir_inline_assembly_parameter_constraint_t,
                                                       const struct kefir_ir_type *, kefir_id_t, kefir_size_t,
                                                       kefir_size_t, struct kefir_ir_inline_assembly_parameter **);
-kefir_result_t kefir_ir_inline_assembly_add_parameter_alias(struct kefir_mem *, struct kefir_symbol_table *,
+kefir_result_t kefir_ir_inline_assembly_add_parameter_alias(struct kefir_mem *, struct kefir_string_pool *,
                                                             struct kefir_ir_inline_assembly *,
                                                             struct kefir_ir_inline_assembly_parameter *, const char *);
-kefir_result_t kefir_ir_inline_assembly_add_immediate_parameter(struct kefir_mem *, struct kefir_symbol_table *,
+kefir_result_t kefir_ir_inline_assembly_add_immediate_parameter(struct kefir_mem *, struct kefir_string_pool *,
                                                                 struct kefir_ir_inline_assembly *, const char *,
                                                                 const struct kefir_ir_type *, kefir_id_t, kefir_size_t,
                                                                 kefir_ir_inline_assembly_immediate_type_t, const char *,
@@ -122,12 +122,12 @@ kefir_result_t kefir_ir_inline_assembly_parameter_read_from(struct kefir_mem *, 
                                                             kefir_size_t);
 kefir_result_t kefir_ir_inline_assembly_resolve_parameter(struct kefir_ir_inline_assembly *, const char *,
                                                           struct kefir_ir_inline_assembly_parameter **);
-kefir_result_t kefir_ir_inline_assembly_add_clobber(struct kefir_mem *, struct kefir_symbol_table *,
+kefir_result_t kefir_ir_inline_assembly_add_clobber(struct kefir_mem *, struct kefir_string_pool *,
                                                     struct kefir_ir_inline_assembly *, const char *);
-kefir_result_t kefir_ir_inline_assembly_add_jump_target(struct kefir_mem *, struct kefir_symbol_table *,
+kefir_result_t kefir_ir_inline_assembly_add_jump_target(struct kefir_mem *, struct kefir_string_pool *,
                                                         struct kefir_ir_inline_assembly *, const char *, const char *,
                                                         kefir_size_t, struct kefir_ir_inline_assembly_jump_target **);
-kefir_result_t kefir_ir_inline_assembly_add_jump_target_alias(struct kefir_mem *, struct kefir_symbol_table *,
+kefir_result_t kefir_ir_inline_assembly_add_jump_target_alias(struct kefir_mem *, struct kefir_string_pool *,
                                                               struct kefir_ir_inline_assembly *,
                                                               struct kefir_ir_inline_assembly_jump_target *,
                                                               const char *);

@@ -142,7 +142,7 @@ const struct kefir_ast_type *kefir_ast_type_incomplete_enumeration(struct kefir_
     struct kefir_ast_type *type = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_type));
     REQUIRE(type != NULL, NULL);
     if (type_bundle != NULL) {
-        identifier = kefir_symbol_table_insert(mem, type_bundle->symbols, identifier, NULL);
+        identifier = kefir_string_pool_insert(mem, type_bundle->symbols, identifier, NULL);
         REQUIRE_ELSE(identifier != NULL, {
             KEFIR_FREE(mem, type);
             return NULL;
@@ -180,7 +180,7 @@ static kefir_result_t enumeration_free(struct kefir_mem *mem, struct kefir_list 
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_ast_enumeration_type_constant(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
+kefir_result_t kefir_ast_enumeration_type_constant(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                                    struct kefir_ast_enum_type *enum_type, const char *identifier,
                                                    struct kefir_ast_constant_expression *value) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
@@ -194,7 +194,7 @@ kefir_result_t kefir_ast_enumeration_type_constant(struct kefir_mem *mem, struct
     REQUIRE(enum_constant != NULL,
             KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate memory for enumeration constant"));
     if (symbols != NULL && identifier != NULL) {
-        identifier = kefir_symbol_table_insert(mem, symbols, identifier, NULL);
+        identifier = kefir_string_pool_insert(mem, symbols, identifier, NULL);
         REQUIRE_ELSE(identifier != NULL, {
             KEFIR_FREE(mem, enum_constant);
             return KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate enumeration constant");
@@ -218,7 +218,7 @@ kefir_result_t kefir_ast_enumeration_type_constant(struct kefir_mem *mem, struct
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_ast_enumeration_type_constant_auto(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
+kefir_result_t kefir_ast_enumeration_type_constant_auto(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                                         struct kefir_ast_enum_type *enum_type, const char *identifier) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(enum_type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST enum type"));
@@ -244,7 +244,7 @@ const struct kefir_ast_type *kefir_ast_type_enumeration(struct kefir_mem *mem,
     REQUIRE(type != NULL, NULL);
     if (type_bundle != NULL) {
         if (identifier != NULL) {
-            identifier = kefir_symbol_table_insert(mem, type_bundle->symbols, identifier, NULL);
+            identifier = kefir_string_pool_insert(mem, type_bundle->symbols, identifier, NULL);
             REQUIRE_ELSE(identifier != NULL, {
                 KEFIR_FREE(mem, type);
                 return NULL;

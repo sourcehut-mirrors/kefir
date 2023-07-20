@@ -157,7 +157,7 @@ kefir_result_t kefir_codegen_amd64_sysv_module_declare_tls(struct kefir_mem *mem
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 System-V codegen module"));
     REQUIRE(identifier != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid identifier"));
 
-    identifier = kefir_symbol_table_insert(mem, &sysv_module->module->symbols, identifier, NULL);
+    identifier = kefir_string_pool_insert(mem, &sysv_module->module->symbols, identifier, NULL);
     REQUIRE(identifier != NULL,
             KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert identifier into symbol table"));
     kefir_result_t res = kefir_hashtree_insert(mem, &sysv_module->tls_entries, (kefir_hashtree_key_t) identifier,

@@ -169,7 +169,7 @@ kefir_result_t kefir_driver_configuration_free(struct kefir_mem *mem, struct kef
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_driver_configuration_add_argument(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
+kefir_result_t kefir_driver_configuration_add_argument(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                                        struct kefir_driver_configuration *config, const char *file,
                                                        kefir_driver_argument_type_t type) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
@@ -177,7 +177,7 @@ kefir_result_t kefir_driver_configuration_add_argument(struct kefir_mem *mem, st
     REQUIRE(file != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid argument"));
 
     if (symbols != NULL) {
-        file = kefir_symbol_table_insert(mem, symbols, file, NULL);
+        file = kefir_string_pool_insert(mem, symbols, file, NULL);
         REQUIRE(file != NULL,
                 KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert driver argument name into symbol table"));
     }
@@ -197,7 +197,7 @@ kefir_result_t kefir_driver_configuration_add_argument(struct kefir_mem *mem, st
 }
 
 kefir_result_t kefir_driver_configuration_add_assembler_argument(struct kefir_mem *mem,
-                                                                 struct kefir_symbol_table *symbols,
+                                                                 struct kefir_string_pool *symbols,
                                                                  struct kefir_driver_configuration *config,
                                                                  const char *argument) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
@@ -205,7 +205,7 @@ kefir_result_t kefir_driver_configuration_add_assembler_argument(struct kefir_me
     REQUIRE(argument != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid assembler argument"));
 
     if (symbols != NULL) {
-        argument = kefir_symbol_table_insert(mem, symbols, argument, NULL);
+        argument = kefir_string_pool_insert(mem, symbols, argument, NULL);
         REQUIRE(argument != NULL,
                 KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert assembler argument into symbol table"));
     }
@@ -216,7 +216,7 @@ kefir_result_t kefir_driver_configuration_add_assembler_argument(struct kefir_me
 }
 
 kefir_result_t kefir_driver_configuration_add_compiler_argument(struct kefir_mem *mem,
-                                                                struct kefir_symbol_table *symbols,
+                                                                struct kefir_string_pool *symbols,
                                                                 struct kefir_driver_configuration *config,
                                                                 const char *argument) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
@@ -224,7 +224,7 @@ kefir_result_t kefir_driver_configuration_add_compiler_argument(struct kefir_mem
     REQUIRE(argument != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid compiler argument"));
 
     if (symbols != NULL) {
-        argument = kefir_symbol_table_insert(mem, symbols, argument, NULL);
+        argument = kefir_string_pool_insert(mem, symbols, argument, NULL);
         REQUIRE(argument != NULL,
                 KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert compiler argument into symbol table"));
     }
@@ -234,7 +234,7 @@ kefir_result_t kefir_driver_configuration_add_compiler_argument(struct kefir_mem
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_driver_configuration_add_define(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
+kefir_result_t kefir_driver_configuration_add_define(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                                      struct kefir_driver_configuration *config, const char *name,
                                                      const char *value) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
@@ -242,12 +242,12 @@ kefir_result_t kefir_driver_configuration_add_define(struct kefir_mem *mem, stru
     REQUIRE(name != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid define name"));
 
     if (symbols != NULL) {
-        name = kefir_symbol_table_insert(mem, symbols, name, NULL);
+        name = kefir_string_pool_insert(mem, symbols, name, NULL);
         REQUIRE(name != NULL,
                 KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert define name into symbol table"));
 
         if (value != NULL) {
-            value = kefir_symbol_table_insert(mem, symbols, value, NULL);
+            value = kefir_string_pool_insert(mem, symbols, value, NULL);
             REQUIRE(value != NULL,
                     KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert define value into symbol table"));
         }
@@ -261,14 +261,14 @@ kefir_result_t kefir_driver_configuration_add_define(struct kefir_mem *mem, stru
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_driver_configuration_add_undefine(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
+kefir_result_t kefir_driver_configuration_add_undefine(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                                        struct kefir_driver_configuration *config, const char *name) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(config != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver configuration"));
     REQUIRE(name != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid undefine name"));
 
     if (symbols != NULL) {
-        name = kefir_symbol_table_insert(mem, symbols, name, NULL);
+        name = kefir_string_pool_insert(mem, symbols, name, NULL);
         REQUIRE(name != NULL,
                 KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert undefine name into symbol table"));
     }
@@ -281,7 +281,7 @@ kefir_result_t kefir_driver_configuration_add_undefine(struct kefir_mem *mem, st
 }
 
 kefir_result_t kefir_driver_configuration_add_include_directory(struct kefir_mem *mem,
-                                                                struct kefir_symbol_table *symbols,
+                                                                struct kefir_string_pool *symbols,
                                                                 struct kefir_driver_configuration *config,
                                                                 const char *dir) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
@@ -289,7 +289,7 @@ kefir_result_t kefir_driver_configuration_add_include_directory(struct kefir_mem
     REQUIRE(dir != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid include directory"));
 
     if (symbols != NULL) {
-        dir = kefir_symbol_table_insert(mem, symbols, dir, NULL);
+        dir = kefir_string_pool_insert(mem, symbols, dir, NULL);
         REQUIRE(dir != NULL,
                 KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert include directory into symbol table"));
     }
@@ -299,7 +299,7 @@ kefir_result_t kefir_driver_configuration_add_include_directory(struct kefir_mem
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_driver_configuration_add_include_file(struct kefir_mem *mem, struct kefir_symbol_table *symbols,
+kefir_result_t kefir_driver_configuration_add_include_file(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                                            struct kefir_driver_configuration *config,
                                                            const char *file) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
@@ -307,7 +307,7 @@ kefir_result_t kefir_driver_configuration_add_include_file(struct kefir_mem *mem
     REQUIRE(file != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid include file"));
 
     if (symbols != NULL) {
-        file = kefir_symbol_table_insert(mem, symbols, file, NULL);
+        file = kefir_string_pool_insert(mem, symbols, file, NULL);
         REQUIRE(file != NULL,
                 KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert include file into symbol table"));
     }

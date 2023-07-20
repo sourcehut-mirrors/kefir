@@ -22,14 +22,14 @@
 #define KEFIR_AST_GLOBAL_CONTEXT_H_
 
 #include "kefir/core/mem.h"
-#include "kefir/core/symbol_table.h"
+#include "kefir/core/string_pool.h"
 #include "kefir/ast/scope.h"
 #include "kefir/ast/context.h"
 
 typedef struct kefir_ast_global_context {
     struct kefir_ast_context context;
 
-    struct kefir_symbol_table symbols;
+    struct kefir_string_pool symbols;
     const struct kefir_ast_type_traits *type_traits;
     struct kefir_ast_type_bundle type_bundle;
     const struct kefir_ast_target_environment *target_env;

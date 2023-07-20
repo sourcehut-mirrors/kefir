@@ -23,15 +23,15 @@
 
 #include "kefir/parser/base.h"
 #include "kefir/core/hashtree.h"
-#include "kefir/core/symbol_table.h"
+#include "kefir/core/string_pool.h"
 #include "kefir/core/list.h"
 
 typedef struct kefir_parser_block_scope {
-    struct kefir_symbol_table *symbols;
+    struct kefir_string_pool *symbols;
     struct kefir_hashtree identifier_declarations;
 } kefir_parser_block_scope_t;
 
-kefir_result_t kefir_parser_block_scope_init(struct kefir_parser_block_scope *, struct kefir_symbol_table *);
+kefir_result_t kefir_parser_block_scope_init(struct kefir_parser_block_scope *, struct kefir_string_pool *);
 kefir_result_t kefir_parser_block_scope_free(struct kefir_mem *, struct kefir_parser_block_scope *);
 kefir_result_t kefir_parser_block_scope_declare_typedef(struct kefir_mem *, struct kefir_parser_block_scope *,
                                                         const char *);
@@ -41,10 +41,10 @@ kefir_result_t kefir_parser_block_scope_is_typedef(struct kefir_parser_block_sco
 
 typedef struct kefir_parser_scope {
     struct kefir_list block_scopes;
-    struct kefir_symbol_table *symbols;
+    struct kefir_string_pool *symbols;
 } kefir_parser_scope_t;
 
-kefir_result_t kefir_parser_scope_init(struct kefir_mem *, struct kefir_parser_scope *, struct kefir_symbol_table *);
+kefir_result_t kefir_parser_scope_init(struct kefir_mem *, struct kefir_parser_scope *, struct kefir_string_pool *);
 kefir_result_t kefir_parser_scope_free(struct kefir_mem *, struct kefir_parser_scope *);
 kefir_result_t kefir_parser_scope_push_block(struct kefir_mem *, struct kefir_parser_scope *);
 kefir_result_t kefir_parser_scope_pop_block(struct kefir_mem *, struct kefir_parser_scope *);

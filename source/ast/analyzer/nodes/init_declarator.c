@@ -48,7 +48,7 @@ kefir_result_t kefir_ast_analyze_init_declarator_node(struct kefir_mem *mem, con
     base->properties.declaration_props.alignment = aligment;
 
     if (identifier != NULL) {
-        identifier = kefir_symbol_table_insert(mem, context->symbols, identifier, NULL);
+        identifier = kefir_string_pool_insert(mem, context->symbols, identifier, NULL);
         REQUIRE(identifier != NULL,
                 KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert declarator identifier into symbol table"));
     }

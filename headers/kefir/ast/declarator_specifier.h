@@ -22,7 +22,7 @@
 #define KEFIR_AST_DECLARATOR_SPECIFIER_H_
 
 #include "kefir/core/mem.h"
-#include "kefir/core/symbol_table.h"
+#include "kefir/core/string_pool.h"
 #include "kefir/core/list.h"
 #include "kefir/ast/constants.h"
 #include "kefir/ast/base.h"
@@ -78,9 +78,8 @@ typedef struct kefir_ast_structure_specifier {
     struct kefir_list entries;
 } kefir_ast_structure_specifier_t;
 
-struct kefir_ast_structure_specifier *kefir_ast_structure_specifier_init(struct kefir_mem *,
-                                                                         struct kefir_symbol_table *, const char *,
-                                                                         kefir_bool_t);
+struct kefir_ast_structure_specifier *kefir_ast_structure_specifier_init(struct kefir_mem *, struct kefir_string_pool *,
+                                                                         const char *, kefir_bool_t);
 
 kefir_result_t kefir_ast_structure_specifier_free(struct kefir_mem *, struct kefir_ast_structure_specifier *);
 
@@ -114,7 +113,7 @@ typedef struct kefir_ast_enum_specifier {
     struct kefir_list entries;
 } kefir_ast_enum_specifier_t;
 
-struct kefir_ast_enum_specifier *kefir_ast_enum_specifier_init(struct kefir_mem *, struct kefir_symbol_table *,
+struct kefir_ast_enum_specifier *kefir_ast_enum_specifier_init(struct kefir_mem *, struct kefir_string_pool *,
                                                                const char *, kefir_bool_t);
 
 kefir_result_t kefir_ast_enum_specifier_free(struct kefir_mem *, struct kefir_ast_enum_specifier *);
@@ -123,7 +122,7 @@ struct kefir_ast_enum_specifier *kefir_ast_enum_specifier_clone(struct kefir_mem
                                                                 const struct kefir_ast_enum_specifier *);
 
 kefir_result_t kefir_ast_enum_specifier_append(struct kefir_mem *, struct kefir_ast_enum_specifier *,
-                                               struct kefir_symbol_table *, const char *, struct kefir_ast_node_base *);
+                                               struct kefir_string_pool *, const char *, struct kefir_ast_node_base *);
 
 typedef struct kefir_ast_type_specifier {
     kefir_ast_type_specifier_type_t specifier;
@@ -166,7 +165,7 @@ struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_union(struct kef
                                                                       struct kefir_ast_structure_specifier *);
 struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_enum(struct kefir_mem *,
                                                                      struct kefir_ast_enum_specifier *);
-struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_typedef(struct kefir_mem *, struct kefir_symbol_table *,
+struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_typedef(struct kefir_mem *, struct kefir_string_pool *,
                                                                         const char *);
 
 struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_va_list(struct kefir_mem *);
