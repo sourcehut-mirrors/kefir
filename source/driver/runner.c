@@ -32,6 +32,7 @@
 #include "kefir/ast/format.h"
 #include "kefir/ir/format.h"
 #include "kefir/preprocessor/format.h"
+#include "kefir/preprocessor/source_dependency_locator.h"
 #include "kefir/core/version.h"
 #include "kefir/driver/runner.h"
 #include "kefir/optimizer/module.h"
@@ -275,36 +276,6 @@ static kefir_result_t action_dump_preprocessed(struct kefir_mem *mem,
     return KEFIR_OK;
 }
 
-struct dependencies_proxy_source_locator {
-    struct kefir_preprocessor_source_locator locator;
-    struct kefir_preprocessor_source_locator *base_locator;
-    const struct kefir_compiler_runner_configuration *compiler_config;
-    struct kefir_hashtree includes;
-    struct kefir_hashtreeset direct_system_includes;
-};
-
-static kefir_result_t is_system_dependency(const struct dependencies_proxy_source_locator *locator,
-                                           const char *filepath, kefir_bool_t *system_dep) {
-    while (filepath != NULL) {
-        if (kefir_hashtreeset_has(&locator->direct_system_includes, (kefir_hashtreeset_entry_t) filepath)) {
-            *system_dep = true;
-            return KEFIR_OK;
-        }
-
-        struct kefir_hashtree_node *node = NULL;
-        kefir_result_t res = kefir_hashtree_at(&locator->includes, (kefir_hashtree_key_t) filepath, &node);
-        if (res == KEFIR_NOT_FOUND) {
-            filepath = NULL;
-        } else {
-            REQUIRE_OK(res);
-            filepath = (const char *) node->value;
-        }
-    }
-
-    *system_dep = false;
-    return KEFIR_OK;
-}
-
 static kefir_result_t dump_dependencies_impl(struct kefir_mem *mem,
                                              const struct kefir_compiler_runner_configuration *options,
                                              struct kefir_compiler_context *compiler, const char *source_id,
@@ -317,9 +288,8 @@ static kefir_result_t dump_dependencies_impl(struct kefir_mem *mem,
     REQUIRE_OK(kefir_compiler_preprocess(mem, compiler, &tokens, source, length, source_id, options->input_filepath));
     REQUIRE_OK(open_output(options->output_filepath, &output));
 
-    struct kefir_hashtree_node_iterator iter;
-    ASSIGN_DECL_CAST(struct dependencies_proxy_source_locator *, proxy_locator, compiler->source_locator->payload);
-
+    ASSIGN_DECL_CAST(struct kefir_preprocessor_dependencies_source_locator *, source_locator,
+                     compiler->source_locator->payload);
     const char *first_dep = options->input_filepath != NULL ? options->input_filepath : "";
     if (options->dependency_output.target_name != NULL) {
         fprintf(output, "%s: %s", options->dependency_output.target_name, first_dep);
@@ -328,48 +298,21 @@ static kefir_result_t dump_dependencies_impl(struct kefir_mem *mem,
     } else {
         fprintf(output, "a.out: %s", first_dep);
     }
-    for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&proxy_locator->includes, &iter); node != NULL;
-         node = kefir_hashtree_next(&iter)) {
-        ASSIGN_DECL_CAST(const char *, filepath, node->key);
-
-        kefir_bool_t output_filepath;
-        if (options->dependency_output.output_system_deps) {
-            output_filepath = true;
-        } else {
-            REQUIRE_OK(is_system_dependency(proxy_locator, filepath, &output_filepath));
-            output_filepath = !output_filepath;
-        }
-        if (output_filepath) {
-            fprintf(output, " \\\n %s", filepath);
-        }
-    }
+    REQUIRE_OK(kefir_preprocessor_dependencies_source_locator_format_make_rule_prerequisites(
+        source_locator, options->dependency_output.output_system_deps, output));
     fprintf(output, "\n");
+
     REQUIRE_OK(kefir_token_buffer_free(mem, &tokens));
     return KEFIR_OK;
 }
 
-static kefir_result_t dependencies_proxy_source_locator_open(
-    struct kefir_mem *mem, const struct kefir_preprocessor_source_locator *source_locator, const char *filepath,
-    kefir_bool_t system, const struct kefir_preprocessor_source_file_info *file_info,
-    kefir_preprocessor_source_locator_mode_t mode, struct kefir_preprocessor_source_file *source_file) {
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(source_locator != NULL,
-            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid filesystem source locator"));
-    REQUIRE(filepath != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid file path"));
-    REQUIRE(source_file != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to source file"));
-    ASSIGN_DECL_CAST(struct dependencies_proxy_source_locator *, locator, source_locator);
+static kefir_result_t is_system_include_path(const char *path, kefir_bool_t *res, void *payload) {
+    REQUIRE(path != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid path"));
+    REQUIRE(res != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to flag"));
+    REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid payload"));
+    ASSIGN_DECL_CAST(const struct kefir_compiler_runner_configuration *, options, payload);
 
-    REQUIRE_OK(locator->base_locator->open(mem, locator->base_locator, filepath, system, file_info, mode, source_file));
-    if (!kefir_hashtree_has(&locator->includes, (kefir_hashtree_key_t) source_file->info.filepath)) {
-        REQUIRE_OK(kefir_hashtree_insert(mem, &locator->includes, (kefir_hashtree_key_t) source_file->info.filepath,
-                                         (kefir_hashtree_value_t) 0));
-    }
-
-    if (kefir_hashtreeset_has(&locator->compiler_config->system_include_directories,
-                              (kefir_hashtreeset_entry_t) source_file->info.base_include_dir)) {
-        REQUIRE_OK(kefir_hashtreeset_add(mem, &locator->direct_system_includes,
-                                         (kefir_hashtreeset_entry_t) source_file->info.filepath));
-    }
+    *res = kefir_hashtreeset_has(&options->system_include_directories, (kefir_hashtreeset_entry_t) path);
     return KEFIR_OK;
 }
 
@@ -377,6 +320,7 @@ static kefir_result_t action_dump_dependencies(struct kefir_mem *mem,
                                                const struct kefir_compiler_runner_configuration *options) {
     struct kefir_symbol_table symbols;
     struct kefir_preprocessor_filesystem_source_locator filesystem_source_locator;
+    struct kefir_preprocessor_dependencies_source_locator source_locator;
 
     REQUIRE_OK(kefir_symbol_table_init(&symbols));
     REQUIRE_OK(kefir_preprocessor_filesystem_source_locator_init(&filesystem_source_locator, &symbols));
@@ -385,19 +329,12 @@ static kefir_result_t action_dump_dependencies(struct kefir_mem *mem,
         REQUIRE_OK(kefir_preprocessor_filesystem_source_locator_append(mem, &filesystem_source_locator,
                                                                        (const char *) iter->value));
     }
+    REQUIRE_OK(kefir_preprocessor_dependencies_source_locator_init(
+        &filesystem_source_locator.locator, is_system_include_path, (void *) options, &source_locator));
 
-    struct dependencies_proxy_source_locator proxy_locator;
-    REQUIRE_OK(kefir_hashtree_init(&proxy_locator.includes, &kefir_hashtree_str_ops));
-    REQUIRE_OK(kefir_hashtreeset_init(&proxy_locator.direct_system_includes, &kefir_hashtree_str_ops));
-    proxy_locator.locator.open = dependencies_proxy_source_locator_open;
-    proxy_locator.locator.payload = &proxy_locator;
-    proxy_locator.base_locator = &filesystem_source_locator.locator;
-    proxy_locator.compiler_config = options;
+    REQUIRE_OK(dump_action_impl(mem, options, &source_locator.locator, dump_dependencies_impl));
 
-    REQUIRE_OK(dump_action_impl(mem, options, &proxy_locator.locator, dump_dependencies_impl));
-
-    REQUIRE_OK(kefir_hashtreeset_free(mem, &proxy_locator.direct_system_includes));
-    REQUIRE_OK(kefir_hashtree_free(mem, &proxy_locator.includes));
+    REQUIRE_OK(kefir_preprocessor_dependencies_source_locator_free(mem, &source_locator));
     REQUIRE_OK(kefir_preprocessor_filesystem_source_locator_free(mem, &filesystem_source_locator));
     REQUIRE_OK(kefir_symbol_table_free(mem, &symbols));
     return KEFIR_OK;
