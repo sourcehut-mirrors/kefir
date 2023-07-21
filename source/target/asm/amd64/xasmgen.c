@@ -897,7 +897,7 @@ static kefir_result_t amd64_align(struct kefir_amd64_xasmgen *xasmgen, kefir_siz
     ASSIGN_DECL_CAST(struct xasmgen_payload *, payload, xasmgen->payload);
 
     REQUIRE_OK(amd64_ident(xasmgen));
-    fprintf(payload->output, ".align " KEFIR_SIZE_FMT "\n", alignment);
+    fprintf(payload->output, ".align %" KEFIR_SIZE_FMT "\n", alignment);
     return KEFIR_OK;
 }
 
@@ -1017,11 +1017,11 @@ static kefir_result_t amd64_format_operand_intel(void (*print)(void *, const cha
                                                  const struct kefir_asm_amd64_xasmgen_operand *op) {
     switch (op->klass) {
         case KEFIR_AMD64_XASMGEN_OPERAND_IMMEDIATE:
-            print(printarg, KEFIR_INT64_FMT, op->imm);
+            print(printarg, "%" KEFIR_INT64_FMT, op->imm);
             break;
 
         case KEFIR_AMD64_XASMGEN_OPERAND_IMMEDIATE_UNSIGNED:
-            print(printarg, KEFIR_UINT64_FMT, op->immu);
+            print(printarg, "%" KEFIR_UINT64_FMT, op->immu);
             break;
 
         case KEFIR_AMD64_XASMGEN_OPERAND_REGISTER:
@@ -1040,9 +1040,9 @@ static kefir_result_t amd64_format_operand_intel(void (*print)(void *, const cha
             print(printarg, "[");
             REQUIRE_OK(amd64_format_operand_intel(print, printarg, prefix, op->indirection.base));
             if (op->indirection.displacement > 0) {
-                print(printarg, " + " KEFIR_INT64_FMT, op->indirection.displacement);
+                print(printarg, " + %" KEFIR_INT64_FMT, op->indirection.displacement);
             } else if (op->indirection.displacement < 0) {
-                print(printarg, " - " KEFIR_INT64_FMT, -op->indirection.displacement);
+                print(printarg, " - %" KEFIR_INT64_FMT, -op->indirection.displacement);
             }
             print(printarg, "]");
             break;
@@ -1050,9 +1050,9 @@ static kefir_result_t amd64_format_operand_intel(void (*print)(void *, const cha
         case KEFIR_AMD64_XASMGEN_OPERAND_OFFSET:
             REQUIRE_OK(amd64_format_operand_intel(print, printarg, prefix, op->offset.base));
             if (op->offset.offset > 0) {
-                print(printarg, " + " KEFIR_INT64_FMT, op->offset.offset);
+                print(printarg, " + %" KEFIR_INT64_FMT, op->offset.offset);
             } else if (op->offset.offset < 0) {
-                print(printarg, " - " KEFIR_INT64_FMT, -op->offset.offset);
+                print(printarg, " - %" KEFIR_INT64_FMT, -op->offset.offset);
             }
             break;
 
@@ -1089,9 +1089,9 @@ static kefir_result_t amd64_format_operand_intel(void (*print)(void *, const cha
 
         case KEFIR_AMD64_XASMGEN_OPERAND_FPU_REGISTER:
             if (prefix) {
-                print(printarg, "%%st(" KEFIR_UINT64_FMT ")", op->fpu_register);
+                print(printarg, "%%st(%" KEFIR_UINT64_FMT ")", op->fpu_register);
             } else {
-                print(printarg, "st(" KEFIR_UINT64_FMT ")", op->fpu_register);
+                print(printarg, "st(%" KEFIR_UINT64_FMT ")", op->fpu_register);
             }
             break;
     }
@@ -1105,11 +1105,11 @@ static kefir_result_t amd64_format_operand_att(void (*print)(void *, const char 
                                                const struct kefir_asm_amd64_xasmgen_operand *op) {
     switch (op->klass) {
         case KEFIR_AMD64_XASMGEN_OPERAND_IMMEDIATE:
-            print(printarg, "$" KEFIR_INT64_FMT, op->imm);
+            print(printarg, "$%" KEFIR_INT64_FMT, op->imm);
             break;
 
         case KEFIR_AMD64_XASMGEN_OPERAND_IMMEDIATE_UNSIGNED:
-            print(printarg, "$" KEFIR_UINT64_FMT, op->immu);
+            print(printarg, "$%" KEFIR_UINT64_FMT, op->immu);
             break;
 
         case KEFIR_AMD64_XASMGEN_OPERAND_REGISTER:
@@ -1122,7 +1122,7 @@ static kefir_result_t amd64_format_operand_att(void (*print)(void *, const char 
 
         case KEFIR_AMD64_XASMGEN_OPERAND_INDIRECTION:
             if (op->indirection.displacement != 0) {
-                print(printarg, KEFIR_INT64_FMT, op->indirection.displacement);
+                print(printarg, "%" KEFIR_INT64_FMT, op->indirection.displacement);
             }
             print(printarg, "(");
             REQUIRE_OK(amd64_format_operand_att(print, printarg, op->indirection.base));
@@ -1132,9 +1132,9 @@ static kefir_result_t amd64_format_operand_att(void (*print)(void *, const char 
         case KEFIR_AMD64_XASMGEN_OPERAND_OFFSET:
             REQUIRE_OK(amd64_format_operand_att(print, printarg, op->offset.base));
             if (op->offset.offset > 0) {
-                print(printarg, " + " KEFIR_INT64_FMT, op->offset.offset);
+                print(printarg, " + %" KEFIR_INT64_FMT, op->offset.offset);
             } else if (op->offset.offset < 0) {
-                print(printarg, " - " KEFIR_INT64_FMT, -op->offset.offset);
+                print(printarg, " - %" KEFIR_INT64_FMT, -op->offset.offset);
             }
             break;
 
@@ -1161,7 +1161,7 @@ static kefir_result_t amd64_format_operand_att(void (*print)(void *, const char 
             break;
 
         case KEFIR_AMD64_XASMGEN_OPERAND_FPU_REGISTER:
-            print(printarg, "%%st(" KEFIR_UINT64_FMT ")", op->fpu_register);
+            print(printarg, "%%st(%" KEFIR_UINT64_FMT ")", op->fpu_register);
             break;
     }
     return KEFIR_OK;
@@ -1171,11 +1171,11 @@ static kefir_result_t amd64_format_unprefixed_operand_att(void (*print)(void *, 
                                                           const struct kefir_asm_amd64_xasmgen_operand *op) {
     switch (op->klass) {
         case KEFIR_AMD64_XASMGEN_OPERAND_IMMEDIATE:
-            print(printarg, KEFIR_INT64_FMT, op->imm);
+            print(printarg, "%" KEFIR_INT64_FMT, op->imm);
             break;
 
         case KEFIR_AMD64_XASMGEN_OPERAND_IMMEDIATE_UNSIGNED:
-            print(printarg, KEFIR_UINT64_FMT, op->immu);
+            print(printarg, "%" KEFIR_UINT64_FMT, op->immu);
             break;
 
         case KEFIR_AMD64_XASMGEN_OPERAND_REGISTER:
@@ -1183,7 +1183,7 @@ static kefir_result_t amd64_format_unprefixed_operand_att(void (*print)(void *, 
             break;
 
         case KEFIR_AMD64_XASMGEN_OPERAND_FPU_REGISTER:
-            print(printarg, "st(" KEFIR_UINT64_FMT ")", op->fpu_register);
+            print(printarg, "st(%" KEFIR_UINT64_FMT ")", op->fpu_register);
             break;
 
         default:
@@ -1252,7 +1252,7 @@ static kefir_result_t amd64_zerodata(struct kefir_amd64_xasmgen *xasmgen, kefir_
     ASSIGN_DECL_CAST(struct xasmgen_payload *, payload, xasmgen->payload);
 
     REQUIRE_OK(amd64_ident(xasmgen));
-    fprintf(payload->output, ".zero " KEFIR_SIZE_FMT "\n", length);
+    fprintf(payload->output, ".zero %" KEFIR_SIZE_FMT "\n", length);
     return KEFIR_OK;
 }
 

@@ -31,12 +31,12 @@
 #define KEFIR_AMD64_SYSTEM_V_RUNTIME_VARARG_SSE "__kefirrt_load_sse_vararg"
 #define KEFIR_AMD64_SYSTEM_V_RUNTIME_VARARG_LONG_DOUBLE "__kefirrt_load_long_double_vararg"
 #define KEFIR_AMD64_SYSTEM_V_RUNTIME_VARARG_COPY "__kefirrt_copy_vararg"
-#define KEFIR_AMD64_SYSTEM_V_RUNTIME_STRING_LITERAL "__kefirrt_string_literal" KEFIR_ID_FMT
-#define KEFIR_AMD64_SYSTEM_V_RUNTIME_INLINE_ASSEMBLY_FRAGMENT "__kefirrt_inline_assembly" KEFIR_ID_FMT
+#define KEFIR_AMD64_SYSTEM_V_RUNTIME_STRING_LITERAL "__kefirrt_string_literal%" KEFIR_ID_FMT
+#define KEFIR_AMD64_SYSTEM_V_RUNTIME_INLINE_ASSEMBLY_FRAGMENT "__kefirrt_inline_assembly%" KEFIR_ID_FMT
 #define KEFIR_AMD64_SYSTEM_V_RUNTIME_INLINE_ASSEMBLY_JUMP_TRAMPOLINE \
-    "__kefirrt_inline_assembly" KEFIR_ID_FMT "_jump" KEFIR_ID_FMT
+    "__kefirrt_inline_assembly%" KEFIR_ID_FMT "_jump%" KEFIR_ID_FMT
 #define KEFIR_AMD64_SYSTEM_V_RUNTIME_INLINE_ASSEMBLY_JUMP_TRAMPOLINE_END \
-    "__kefirrt_inline_assembly" KEFIR_ID_FMT "_jump_end"
+    "__kefirrt_inline_assembly%" KEFIR_ID_FMT "_jump_end"
 
 extern const char *KEFIR_AMD64_SYSTEM_V_RUNTIME_SYMBOLS[];
 extern kefir_size_t KEFIR_AMD64_SYSTEM_V_RUNTIME_SYMBOL_COUNT;
@@ -44,15 +44,15 @@ extern kefir_size_t KEFIR_AMD64_SYSTEM_V_RUNTIME_SYMBOL_COUNT;
 #define KEFIR_AMD64_SYSV_PROCEDURE_LABEL "%s"
 #define KEFIR_AMD64_SYSV_PROCEDURE_BODY_LABEL "__%s_body"
 #define KEFIR_AMD64_SYSV_PROCEDURE_EPILOGUE_LABEL "__%s_epilogue"
-#define KEFIR_AMD64_SYSV_FUNCTION_GATE_NAMED_LABEL "__kefirrt_sfunction_%s_gate" KEFIR_ID_FMT
-#define KEFIR_AMD64_SYSV_FUNCTION_GATE_ID_LABEL "__kefirrt_ifunction_gate" KEFIR_ID_FMT
+#define KEFIR_AMD64_SYSV_FUNCTION_GATE_NAMED_LABEL "__kefirrt_sfunction_%s_gate%" KEFIR_ID_FMT
+#define KEFIR_AMD64_SYSV_FUNCTION_GATE_ID_LABEL "__kefirrt_ifunction_gate%" KEFIR_ID_FMT
 #define KEFIR_AMD64_SYSV_FUNCTION_VIRTUAL_GATE_NAMED_LABEL "__kefirrt_sfunction_%s_vgate"
-#define KEFIR_AMD64_SYSV_FUNCTION_VIRTUAL_GATE_ID_LABEL "__kefirrt_ifunction_vgate" KEFIR_ID_FMT
+#define KEFIR_AMD64_SYSV_FUNCTION_VIRTUAL_GATE_ID_LABEL "__kefirrt_ifunction_vgate%" KEFIR_ID_FMT
 #define KEFIR_AMD64_SYSV_FUNCTION_TLS_ENTRY "__kefirrt_tls_entry_%s"
 #define KEFIR_AMD64_SYSV_FUNCTION_VARARG_START_LABEL "__%s_vararg_start"
 #define KEFIR_AMD64_SYSV_FUNCTION_VARARG_END_LABEL "__%s_vararg_end"
-#define KEFIR_AMD64_SYSV_FUNCTION_VARARG_ARG_LABEL "__%s_vararg_type" KEFIR_UINT32_FMT "_" KEFIR_UINT32_FMT
-#define KEFIR_AMD64_SYSV_FUNCTION_VARARG_ARG_SCALAR_LABEL "__%s_vararg_" KEFIR_INT_FMT "_type"
+#define KEFIR_AMD64_SYSV_FUNCTION_VARARG_ARG_LABEL "__%s_vararg_type%" KEFIR_UINT32_FMT "_%" KEFIR_UINT32_FMT
+#define KEFIR_AMD64_SYSV_FUNCTION_VARARG_ARG_SCALAR_LABEL "__%s_vararg_%" KEFIR_INT_FMT "_type"
 
 #define KEFIR_AMD64_THREAD_LOCAL "%s@tpoff"
 #define KEFIR_AMD64_THREAD_LOCAL_GOT "%s@gottpoff"

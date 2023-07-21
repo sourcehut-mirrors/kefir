@@ -1072,7 +1072,7 @@ static kefir_result_t format_template(struct kefir_mem *mem, struct kefir_codege
                     break;
 
                 case '=':
-                    REQUIRE_OK(kefir_string_builder_printf(mem, &params->formatted_asm, KEFIR_ID_FMT, id));
+                    REQUIRE_OK(kefir_string_builder_printf(mem, &params->formatted_asm, "%" KEFIR_ID_FMT, id));
                     template_iter = format_specifier + 2;
                     break;
 
@@ -1154,10 +1154,10 @@ static kefir_result_t format_template(struct kefir_mem *mem, struct kefir_codege
     }
 
     REQUIRE_OK(
-        KEFIR_AMD64_XASMGEN_COMMENT(&codegen->xasmgen, "Begin of fragment #" KEFIR_ID_FMT " code", inline_asm->id));
+        KEFIR_AMD64_XASMGEN_COMMENT(&codegen->xasmgen, "Begin of fragment #%" KEFIR_ID_FMT " code", inline_asm->id));
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INLINE_ASSEMBLY(&codegen->xasmgen, params->formatted_asm.string));
     REQUIRE_OK(
-        KEFIR_AMD64_XASMGEN_COMMENT(&codegen->xasmgen, "End of fragment #" KEFIR_ID_FMT " code", inline_asm->id));
+        KEFIR_AMD64_XASMGEN_COMMENT(&codegen->xasmgen, "End of fragment #%" KEFIR_ID_FMT " code", inline_asm->id));
     return KEFIR_OK;
 }
 

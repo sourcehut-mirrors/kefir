@@ -127,7 +127,7 @@ static kefir_result_t cg_function_body(struct kefir_mem *mem, struct kefir_codeg
         &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_indirect(
                                &codegen->xasmgen_helpers.operands[0],
                                kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_PROGRAM_REG), 0)));
-    
+
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_SECTION(&codegen->xasmgen, ".rodata"));
     REQUIRE_OK(
         KEFIR_AMD64_XASMGEN_LABEL(&codegen->xasmgen, KEFIR_AMD64_SYSV_PROCEDURE_BODY_LABEL, sysv_func->func->name));
@@ -406,7 +406,7 @@ static kefir_result_t cg_translate_global_inline_assembly(struct kefir_codegen_a
         REQUIRE(kefir_hashtree_empty(&inline_asm->clobbers),
                 KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Global IR inline assembly cannot have any clobbers"));
         REQUIRE_OK(
-            KEFIR_AMD64_XASMGEN_COMMENT(&codegen->xasmgen, "Inline assembly fragment #" KEFIR_ID_FMT, inline_asm->id));
+            KEFIR_AMD64_XASMGEN_COMMENT(&codegen->xasmgen, "Inline assembly fragment #%" KEFIR_ID_FMT, inline_asm->id));
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_INLINE_ASSEMBLY(&codegen->xasmgen, inline_asm->template));
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_NEWLINE(&codegen->xasmgen, 1));
     }
@@ -422,7 +422,7 @@ static kefir_result_t cg_translate_inline_assembly_fragments(struct kefir_mem *m
         ASSIGN_DECL_CAST(const struct kefir_ir_inline_assembly *, inline_asm, node->value);
 
         REQUIRE_OK(
-            KEFIR_AMD64_XASMGEN_COMMENT(&codegen->xasmgen, "Inline assembly fragment #" KEFIR_ID_FMT, inline_asm->id));
+            KEFIR_AMD64_XASMGEN_COMMENT(&codegen->xasmgen, "Inline assembly fragment #%" KEFIR_ID_FMT, inline_asm->id));
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen->xasmgen, KEFIR_AMD64_SYSTEM_V_RUNTIME_INLINE_ASSEMBLY_FRAGMENT,
                                              inline_asm->id));
         REQUIRE_OK(kefir_codegen_amd64_sysv_inline_assembly_embed(mem, module, codegen, inline_asm));

@@ -49,7 +49,7 @@ static kefir_char32_t at_impl(const struct kefir_lexer_source_cursor *cursor, ke
             case (size_t) -3:
                 if (cursor->length > index) {
                     return KEFIR_SET_ERRORF(KEFIR_INVALID_STATE,
-                                            "Decoding error occured at %s@" KEFIR_UINT64_FMT ":" KEFIR_UINT64_FMT,
+                                            "Decoding error occured at %s@%" KEFIR_UINT64_FMT ":%" KEFIR_UINT64_FMT,
                                             cursor->location.source, cursor->location.line, cursor->location.column);
                 }
                 // Fallthrough
@@ -75,7 +75,7 @@ static kefir_char32_t at_impl(const struct kefir_lexer_source_cursor *cursor, ke
                             if (cursor->length > index) {
                                 return KEFIR_SET_ERRORF(
                                     KEFIR_INVALID_STATE,
-                                    "Decoding error occured at %s@" KEFIR_UINT64_FMT ":" KEFIR_UINT64_FMT,
+                                    "Decoding error occured at %s@%" KEFIR_UINT64_FMT ":%" KEFIR_UINT64_FMT,
                                     cursor->location.source, cursor->location.line, cursor->location.column);
                             }
                             break;
@@ -112,7 +112,7 @@ static kefir_result_t next_impl(struct kefir_lexer_source_cursor *cursor, kefir_
             case (size_t) -3:
                 if (cursor->length > cursor->index) {
                     return KEFIR_SET_ERRORF(KEFIR_INVALID_STATE,
-                                            "Decoding error occured at %s@" KEFIR_UINT64_FMT ":" KEFIR_UINT64_FMT,
+                                            "Decoding error occured at %s@%" KEFIR_UINT64_FMT ":%" KEFIR_UINT64_FMT,
                                             cursor->location.source, cursor->location.line, cursor->location.column);
                 }
                 // Fallthrough
@@ -142,7 +142,7 @@ static kefir_result_t next_impl(struct kefir_lexer_source_cursor *cursor, kefir_
                                 if (cursor->length > cursor->index) {
                                     return KEFIR_SET_ERRORF(
                                         KEFIR_INVALID_STATE,
-                                        "Decoding error occured at %s@" KEFIR_UINT64_FMT ":" KEFIR_UINT64_FMT,
+                                        "Decoding error occured at %s@%" KEFIR_UINT64_FMT ":%" KEFIR_UINT64_FMT,
                                         cursor->location.source, cursor->location.line, cursor->location.column);
                                 }
                                 break;

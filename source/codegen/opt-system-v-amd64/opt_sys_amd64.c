@@ -209,7 +209,7 @@ static kefir_result_t translate_global_inline_assembly(struct kefir_codegen_opt_
         REQUIRE(kefir_hashtree_empty(&inline_asm->clobbers),
                 KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Global IR inline assembly cannot have any clobbers"));
         REQUIRE_OK(
-            KEFIR_AMD64_XASMGEN_COMMENT(&codegen->xasmgen, "Inline assembly fragment #" KEFIR_ID_FMT, inline_asm->id));
+            KEFIR_AMD64_XASMGEN_COMMENT(&codegen->xasmgen, "Inline assembly fragment #%" KEFIR_ID_FMT, inline_asm->id));
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_INLINE_ASSEMBLY(&codegen->xasmgen, inline_asm->template));
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_NEWLINE(&codegen->xasmgen, 1));
     }

@@ -269,7 +269,7 @@ kefir_result_t kefir_json_output_integer(struct kefir_json_output *json, kefir_i
     REQUIRE_OK(write_separator(json));
     REQUIRE_OK(validate_value(json));
 
-    fprintf(json->file, KEFIR_INT64_FMT, value);
+    fprintf(json->file, "%" KEFIR_INT64_FMT, value);
     return KEFIR_OK;
 }
 
@@ -278,7 +278,7 @@ kefir_result_t kefir_json_output_uinteger(struct kefir_json_output *json, kefir_
     REQUIRE_OK(write_separator(json));
     REQUIRE_OK(validate_value(json));
 
-    fprintf(json->file, KEFIR_UINT64_FMT, value);
+    fprintf(json->file, "%" KEFIR_UINT64_FMT, value);
     return KEFIR_OK;
 }
 
@@ -287,7 +287,7 @@ kefir_result_t kefir_json_output_float(struct kefir_json_output *json, kefir_flo
     REQUIRE_OK(write_separator(json));
     REQUIRE_OK(validate_value(json));
 
-    fprintf(json->file, KEFIR_FLOAT64_FMT, value);
+    fprintf(json->file, "%" KEFIR_FLOAT64_FMT, value);
     return KEFIR_OK;
 }
 
@@ -299,7 +299,7 @@ kefir_result_t kefir_json_output_long_double(struct kefir_json_output *json, kef
     if (getenv(KEFIR_DISABLE_LONG_DOUBLE_FLAG) != NULL) {
         fprintf(json->file, "%lf", (double) value);
     } else {
-        fprintf(json->file, KEFIR_LONG_DOUBLE_FMT, value);
+        fprintf(json->file, "%" KEFIR_LONG_DOUBLE_FMT, value);
     }
     return KEFIR_OK;
 }

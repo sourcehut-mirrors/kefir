@@ -14,12 +14,12 @@
 #define KEFIR_AMD64_EMUTLS_GOT "__emutls_v.%s@GOTPCREL"
 #define KEFIR_AMD64_EMUTLS_GET_ADDR "__emutls_get_address@PLT"
 
-#define KEFIR_OPT_AMD64_SYSTEM_V_STRING_LITERAL "__kefirrt_string_literal" KEFIR_ID_FMT
-#define KEFIR_OPT_AMD64_SYSTEM_V_FUNCTION_BLOCK "__kefir_func_%s_block" KEFIR_ID_FMT
-#define KEFIR_OPT_AMD64_SYSTEM_V_FUNCTION_BLOCK_LABEL "__kefir_func_%s_block" KEFIR_ID_FMT "_label" KEFIR_ID_FMT
-#define KEFIR_OPT_AMD64_SYSTEM_V_FUNCTION_CONSTANT_LABEL "__kefir_func_%s_const" KEFIR_ID_FMT
+#define KEFIR_OPT_AMD64_SYSTEM_V_STRING_LITERAL "__kefirrt_string_literal%" KEFIR_ID_FMT
+#define KEFIR_OPT_AMD64_SYSTEM_V_FUNCTION_BLOCK "__kefir_func_%s_block%" KEFIR_ID_FMT
+#define KEFIR_OPT_AMD64_SYSTEM_V_FUNCTION_BLOCK_LABEL "__kefir_func_%s_block%" KEFIR_ID_FMT "_label%" KEFIR_ID_FMT
+#define KEFIR_OPT_AMD64_SYSTEM_V_FUNCTION_CONSTANT_LABEL "__kefir_func_%s_const%" KEFIR_ID_FMT
 #define KEFIR_OPT_AMD64_SYSTEM_V_INLINE_ASSEMBLY_JUMP_TRAMPOLINE_LABEL \
-    "__kefir_func_%s_inline_asm" KEFIR_ID_FMT "_trampoline" KEFIR_ID_FMT
+    "__kefir_func_%s_inline_asm%" KEFIR_ID_FMT "_trampoline%" KEFIR_ID_FMT
 #define KEFIR_OPT_AMD64_SYSTEM_V_FUNCTION_CONSTANT_FLOAT32_NEG "__kefir_func_%s_f32neg"
 #define KEFIR_OPT_AMD64_SYSTEM_V_FUNCTION_CONSTANT_FLOAT64_NEG "__kefir_func_%s_f64neg"
 #define KEFIR_OPT_AMD64_SYSTEM_V_FUNCTION_CONSTANT_UINT_TO_LD "__kefir_func_%s_uint2ld"

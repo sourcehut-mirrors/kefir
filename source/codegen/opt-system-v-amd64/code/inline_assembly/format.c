@@ -337,7 +337,7 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_inline_assembly_format(
                     break;
 
                 case '=':
-                    REQUIRE_OK(kefir_string_builder_printf(mem, &context->formatted_asm, KEFIR_ID_FMT, id));
+                    REQUIRE_OK(kefir_string_builder_printf(mem, &context->formatted_asm, "%" KEFIR_ID_FMT, id));
                     template_iter = format_specifier + 2;
                     break;
 

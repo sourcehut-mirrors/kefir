@@ -103,7 +103,7 @@ MACRO_END
 MACRO(line) {
     kefir_source_location_line_t line = source_location->line;
     char strbuf[64] = {0};
-    snprintf(strbuf, sizeof(strbuf), KEFIR_UINT_FMT, line);
+    snprintf(strbuf, sizeof(strbuf), "%" KEFIR_UINT_FMT, line);
     REQUIRE_OK(make_pp_number(mem, buffer, strbuf, source_location));
 }
 MACRO_END
@@ -171,70 +171,72 @@ MACRO_END
     MACRO_END
 
 MACRO_PP_NUMBER_FMT(stdc_hosted, 64, "%d", macro_payload->scope->preprocessor->context->environment.hosted ? 1 : 0)
-MACRO_PP_NUMBER_FMT(stdc_version, 64, KEFIR_ULONG_FMT "L",
+MACRO_PP_NUMBER_FMT(stdc_version, 64, "%" KEFIR_ULONG_FMT "L",
                     macro_payload->scope->preprocessor->context->environment.version)
-MACRO_PP_NUMBER_FMT(stdc_iso_10646, 64, KEFIR_ULONG_FMT "L",
+MACRO_PP_NUMBER_FMT(stdc_iso_10646, 64, "%" KEFIR_ULONG_FMT "L",
                     macro_payload->scope->preprocessor->context->environment.stdc_iso10646)
-MACRO_PP_NUMBER_FMT(stdc_lib_ext1, 64, KEFIR_ULONG_FMT "L",
+MACRO_PP_NUMBER_FMT(stdc_lib_ext1, 64, "%" KEFIR_ULONG_FMT "L",
                     macro_payload->scope->preprocessor->context->environment.stdc_lib_ext1)
-MACRO_PP_NUMBER_FMT(produce_one, 64, KEFIR_INT_FMT, 1)
-MACRO_PP_NUMBER_FMT(big_endian, 64, KEFIR_INT_FMT, 1234)
-MACRO_PP_NUMBER_FMT(little_endian, 64, KEFIR_INT_FMT, 4321)
-MACRO_PP_NUMBER_FMT(pdp_endian, 64, KEFIR_INT_FMT, 3412)
-MACRO_PP_NUMBER_FMT(char_bit, 64, KEFIR_UINT64_FMT, preprocessor->context->environment.data_model->char_bit)
-MACRO_PP_NUMBER_FMT(schar_max, 64, KEFIR_UINT64_FMT,
+MACRO_PP_NUMBER_FMT(produce_one, 64, "%" KEFIR_INT_FMT, 1)
+MACRO_PP_NUMBER_FMT(big_endian, 64, "%" KEFIR_INT_FMT, 1234)
+MACRO_PP_NUMBER_FMT(little_endian, 64, "%" KEFIR_INT_FMT, 4321)
+MACRO_PP_NUMBER_FMT(pdp_endian, 64, "%" KEFIR_INT_FMT, 3412)
+MACRO_PP_NUMBER_FMT(char_bit, 64, "%" KEFIR_UINT64_FMT, preprocessor->context->environment.data_model->char_bit)
+MACRO_PP_NUMBER_FMT(schar_max, 64, "%" KEFIR_UINT64_FMT,
                     (1ul << (preprocessor->context->environment.data_model->char_bit - 1)) - 1)
-MACRO_PP_NUMBER_FMT(shrt_max, 64, KEFIR_UINT64_FMT,
+MACRO_PP_NUMBER_FMT(shrt_max, 64, "%" KEFIR_UINT64_FMT,
                     (1ul << (preprocessor->context->environment.data_model->int_width.short_int - 1)) - 1)
-MACRO_PP_NUMBER_FMT(int_max, 64, KEFIR_UINT64_FMT,
+MACRO_PP_NUMBER_FMT(int_max, 64, "%" KEFIR_UINT64_FMT,
                     (1ul << (preprocessor->context->environment.data_model->int_width.integer - 1)) - 1)
-MACRO_PP_NUMBER_FMT(long_max, 64, KEFIR_UINT64_FMT,
+MACRO_PP_NUMBER_FMT(long_max, 64, "%" KEFIR_UINT64_FMT,
                     (1ul << (preprocessor->context->environment.data_model->int_width.long_int - 1)) - 1)
-MACRO_PP_NUMBER_FMT(long_long_max, 64, KEFIR_UINT64_FMT,
+MACRO_PP_NUMBER_FMT(long_long_max, 64, "%" KEFIR_UINT64_FMT,
                     (1ul << (preprocessor->context->environment.data_model->int_width.long_long_int - 1)) - 1)
-MACRO_PP_NUMBER_FMT(shrt_width, 64, KEFIR_UINT64_FMT,
+MACRO_PP_NUMBER_FMT(shrt_width, 64, "%" KEFIR_UINT64_FMT,
                     preprocessor->context->environment.data_model->int_width.short_int)
-MACRO_PP_NUMBER_FMT(int_width, 64, KEFIR_UINT64_FMT, preprocessor->context->environment.data_model->int_width.integer)
-MACRO_PP_NUMBER_FMT(long_width, 64, KEFIR_UINT64_FMT, preprocessor->context->environment.data_model->int_width.long_int)
-MACRO_PP_NUMBER_FMT(long_long_width, 64, KEFIR_UINT64_FMT,
+MACRO_PP_NUMBER_FMT(int_width, 64, "%" KEFIR_UINT64_FMT,
+                    preprocessor->context->environment.data_model->int_width.integer)
+MACRO_PP_NUMBER_FMT(long_width, 64, "%" KEFIR_UINT64_FMT,
+                    preprocessor->context->environment.data_model->int_width.long_int)
+MACRO_PP_NUMBER_FMT(long_long_width, 64, "%" KEFIR_UINT64_FMT,
                     preprocessor->context->environment.data_model->int_width.long_long_int)
-MACRO_PP_NUMBER_FMT(flt_radix, 64, KEFIR_INT64_FMT,
+MACRO_PP_NUMBER_FMT(flt_radix, 64, "%" KEFIR_INT64_FMT,
                     preprocessor->context->environment.data_model->floating_point.float_radix)
-MACRO_PP_NUMBER_FMT(flt_mant_dig, 64, KEFIR_INT64_FMT,
+MACRO_PP_NUMBER_FMT(flt_mant_dig, 64, "%" KEFIR_INT64_FMT,
                     preprocessor->context->environment.data_model->floating_point.float_mantissa_digits)
-MACRO_PP_NUMBER_FMT(dbl_mant_dig, 64, KEFIR_INT64_FMT,
+MACRO_PP_NUMBER_FMT(dbl_mant_dig, 64, "%" KEFIR_INT64_FMT,
                     preprocessor->context->environment.data_model->floating_point.double_mantissa_digits)
-MACRO_PP_NUMBER_FMT(ldbl_mant_dig, 64, KEFIR_INT64_FMT,
+MACRO_PP_NUMBER_FMT(ldbl_mant_dig, 64, "%" KEFIR_INT64_FMT,
                     preprocessor->context->environment.data_model->floating_point.long_double_mantissa_digits)
-MACRO_PP_NUMBER_FMT(flt_dig, 64, KEFIR_INT64_FMT,
+MACRO_PP_NUMBER_FMT(flt_dig, 64, "%" KEFIR_INT64_FMT,
                     preprocessor->context->environment.data_model->floating_point.float_digits)
-MACRO_PP_NUMBER_FMT(dbl_dig, 64, KEFIR_INT64_FMT,
+MACRO_PP_NUMBER_FMT(dbl_dig, 64, "%" KEFIR_INT64_FMT,
                     preprocessor->context->environment.data_model->floating_point.double_digits)
-MACRO_PP_NUMBER_FMT(ldbl_dig, 64, KEFIR_INT64_FMT,
+MACRO_PP_NUMBER_FMT(ldbl_dig, 64, "%" KEFIR_INT64_FMT,
                     preprocessor->context->environment.data_model->floating_point.long_double_digits)
-MACRO_PP_NUMBER_FMT(flt_min_exp, 64, KEFIR_INT64_FMT,
+MACRO_PP_NUMBER_FMT(flt_min_exp, 64, "%" KEFIR_INT64_FMT,
                     preprocessor->context->environment.data_model->floating_point.float_min_exponent)
-MACRO_PP_NUMBER_FMT(dbl_min_exp, 64, KEFIR_INT64_FMT,
+MACRO_PP_NUMBER_FMT(dbl_min_exp, 64, "%" KEFIR_INT64_FMT,
                     preprocessor->context->environment.data_model->floating_point.double_min_exponent)
-MACRO_PP_NUMBER_FMT(ldbl_min_exp, 64, KEFIR_INT64_FMT,
+MACRO_PP_NUMBER_FMT(ldbl_min_exp, 64, "%" KEFIR_INT64_FMT,
                     preprocessor->context->environment.data_model->floating_point.long_double_min_exponent)
-MACRO_PP_NUMBER_FMT(flt_min10_exp, 64, KEFIR_INT64_FMT,
+MACRO_PP_NUMBER_FMT(flt_min10_exp, 64, "%" KEFIR_INT64_FMT,
                     preprocessor->context->environment.data_model->floating_point.float_min10_exponent)
-MACRO_PP_NUMBER_FMT(dbl_min10_exp, 64, KEFIR_INT64_FMT,
+MACRO_PP_NUMBER_FMT(dbl_min10_exp, 64, "%" KEFIR_INT64_FMT,
                     preprocessor->context->environment.data_model->floating_point.double_min10_exponent)
-MACRO_PP_NUMBER_FMT(ldbl_min10_exp, 64, KEFIR_INT64_FMT,
+MACRO_PP_NUMBER_FMT(ldbl_min10_exp, 64, "%" KEFIR_INT64_FMT,
                     preprocessor->context->environment.data_model->floating_point.long_double_min10_exponent)
-MACRO_PP_NUMBER_FMT(flt_max_exp, 64, KEFIR_INT64_FMT,
+MACRO_PP_NUMBER_FMT(flt_max_exp, 64, "%" KEFIR_INT64_FMT,
                     preprocessor->context->environment.data_model->floating_point.float_max_exponent)
-MACRO_PP_NUMBER_FMT(dbl_max_exp, 64, KEFIR_INT64_FMT,
+MACRO_PP_NUMBER_FMT(dbl_max_exp, 64, "%" KEFIR_INT64_FMT,
                     preprocessor->context->environment.data_model->floating_point.double_max_exponent)
-MACRO_PP_NUMBER_FMT(ldbl_max_exp, 64, KEFIR_INT64_FMT,
+MACRO_PP_NUMBER_FMT(ldbl_max_exp, 64, "%" KEFIR_INT64_FMT,
                     preprocessor->context->environment.data_model->floating_point.long_double_max_exponent)
-MACRO_PP_NUMBER_FMT(flt_max10_exp, 64, KEFIR_INT64_FMT,
+MACRO_PP_NUMBER_FMT(flt_max10_exp, 64, "%" KEFIR_INT64_FMT,
                     preprocessor->context->environment.data_model->floating_point.float_max10_exponent)
-MACRO_PP_NUMBER_FMT(dbl_max10_exp, 64, KEFIR_INT64_FMT,
+MACRO_PP_NUMBER_FMT(dbl_max10_exp, 64, "%" KEFIR_INT64_FMT,
                     preprocessor->context->environment.data_model->floating_point.double_max10_exponent)
-MACRO_PP_NUMBER_FMT(ldbl_max10_exp, 64, KEFIR_INT64_FMT,
+MACRO_PP_NUMBER_FMT(ldbl_max10_exp, 64, "%" KEFIR_INT64_FMT,
                     preprocessor->context->environment.data_model->floating_point.long_double_max10_exponent)
 MACRO_PP_NUMBER_FMT(flt_min, 64, "%s", preprocessor->context->environment.data_model->floating_point.float_min)
 MACRO_PP_NUMBER_FMT(dbl_min, 64, "%s", preprocessor->context->environment.data_model->floating_point.double_min)
@@ -250,7 +252,7 @@ MACRO_PP_NUMBER_FMT(ldbl_max, 64, "%s", preprocessor->context->environment.data_
 MACRO(counter) {
     kefir_uint_t counter = macro_payload->scope->preprocessor->context->state.counter++;
     char strbuf[64] = {0};
-    snprintf(strbuf, sizeof(strbuf), KEFIR_UINT_FMT, counter);
+    snprintf(strbuf, sizeof(strbuf), "%" KEFIR_UINT_FMT, counter);
     REQUIRE_OK(make_pp_number(mem, buffer, strbuf, source_location));
 }
 MACRO_END
