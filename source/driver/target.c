@@ -59,6 +59,8 @@ static kefir_result_t select_host_platform(struct kefir_driver_target *target) {
     target->platform = KEFIR_DRIVER_TARGET_PLATFORM_OPENBSD;
 #elif defined(KEFIR_NETBSD_HOST_PLATFORM)
     target->platform = KEFIR_DRIVER_TARGET_PLATFORM_NETBSD;
+#elif defined(KEFIR_EMSCRIPTEN_HOST_PLATFORM)
+    target->platform = KEFIR_DRIVER_TARGET_PLATFORM_LINUX;
 #endif
     return KEFIR_OK;
 }

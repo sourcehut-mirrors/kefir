@@ -78,6 +78,8 @@ static kefir_result_t print_compiler_info(FILE *out, const char *exec_name) {
             "netbsd"
 #elif defined(KEFIR_UNIX_HOST_PLATFORM)
             "unix"
+#elif defined(KEFIR_EMSCRIPTEN_HOST_PLATFORM)
+            "emscripten"
 #else
             "unknown"
 #endif
