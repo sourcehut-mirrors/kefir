@@ -28,6 +28,11 @@
 #include "kefir/driver/configuration.h"
 #include "kefir/driver/tools.h"
 
+kefir_result_t kefir_driver_generate_compiler_config(struct kefir_mem *, struct kefir_string_pool *,
+                                                      struct kefir_driver_configuration *,
+                                                      const struct kefir_driver_external_resources *,
+                                                      struct kefir_compiler_runner_configuration *);
+                                                      
 kefir_result_t kefir_driver_run(struct kefir_mem *, struct kefir_string_pool *, struct kefir_driver_configuration *,
                                 const struct kefir_driver_external_resources *);
 

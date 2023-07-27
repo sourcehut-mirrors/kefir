@@ -112,7 +112,7 @@ static kefir_result_t driver_handle_linker_argument(struct kefir_mem *mem, const
     return KEFIR_OK;
 }
 
-static kefir_result_t driver_generate_compiler_config(struct kefir_mem *mem, struct kefir_string_pool *symbols,
+kefir_result_t kefir_driver_generate_compiler_config(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                                       struct kefir_driver_configuration *config,
                                                       const struct kefir_driver_external_resources *externals,
                                                       struct kefir_compiler_runner_configuration *compiler_config) {
@@ -684,7 +684,7 @@ static kefir_result_t driver_run_impl(struct kefir_mem *mem, struct kefir_string
         case KEFIR_DRIVER_STAGE_PRINT_OPT:
         case KEFIR_DRIVER_STAGE_COMPILE:
         case KEFIR_DRIVER_STAGE_PRINT_RUNTIME_CODE:
-            REQUIRE_OK(driver_generate_compiler_config(mem, symbols, config, externals, compiler_config));
+            REQUIRE_OK(kefir_driver_generate_compiler_config(mem, symbols, config, externals, compiler_config));
             // Intentionally left blank
             break;
     }

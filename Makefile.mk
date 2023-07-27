@@ -45,6 +45,7 @@ TEST_BINARIES :=
 TEST_RESULTS :=
 TESTS :=
 BOOTSTRAP :=
+WEB :=
 
 $(BIN_DIR)/%.d: $(SOURCE_DIR)/%.c
 	@mkdir -p $(shell dirname "$@")

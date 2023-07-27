@@ -19,7 +19,7 @@
 */
 
 #include "kefir/core/platform.h"
-#ifdef KEFIR_LINUX_HOST_PLATFORM
+#if defined(KEFIR_LINUX_HOST_PLATFORM) || defined(KEFIR_EMSCRIPTEN_HOST_PLATFORM)
 #define _POSIX_C_SOURCE 200809L
 #endif
 

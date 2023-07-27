@@ -100,6 +100,9 @@
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
 #define MAX(a, b) ((a) > (b) ? (a) : (b))
 
+#define _STRINGIFY(x) #x
+#define STRINGIFY(x) _STRINGIFY(x)
+
 const char *kefir_format(char *buf, kefir_size_t, const char *format, ...);
 
 #define KEFIR_DISABLE_LONG_DOUBLE_FLAG "KEFIR_DISABLE_LONG_DOUBLE"

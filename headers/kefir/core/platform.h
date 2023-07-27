@@ -23,7 +23,9 @@
 
 #include "kefir/core/base.h"
 
-#ifdef __linux__
+#ifdef __EMSCRIPTEN__
+#define KEFIR_EMSCRIPTEN_HOST_PLATFORM
+#elif defined(__linux__)
 #define KEFIR_LINUX_HOST_PLATFORM
 #elif defined(__FreeBSD__)
 #define KEFIR_FREEBSD_HOST_PLATFORM
