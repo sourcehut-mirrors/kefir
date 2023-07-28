@@ -27,36 +27,59 @@
   height: calc(100vh - 20px);
 }
 
+#content header {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+
 #content main {
   flex: 1 1 1px;
-  min-width: 400px;
+  flex-wrap: wrap;
   display: flex;
   flex-direction: row;
   align-items: stretch;
-  min-height: 0;
+}
+
+#content footer {
+  flex-grow: 0;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+#content footer :first-child {
+  flex-grow: 1;
+}
+
+#content main > * {
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 1px;
+  min-width: 30ch;
+  min-height: 40ch;
 }
 
 #inputArea {
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
-  max-width: fit-content;
-}
-
-#stdin {
-  flex-grow: 1;
 }
 
 #outputArea {
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
   white-space: pre;
   overflow: scroll;
 }
 
-pre {
+#stdin {
+  flex-grow: 1;
+  resize: none;
+}
+
+#outputArea pre {
   margin: 0px;
+  max-height: 0;
 }
 
 #stderr {
@@ -64,13 +87,14 @@ pre {
   padding-bottom: 25px;
 }
 
-footer {
+#actions {
   display: flex;
   flex-direction: row;
 }
 
-footer :first-child {
+#actions button {
   flex-grow: 1;
+  flex-basis: 1px;
 }
 
 .monospace-font {

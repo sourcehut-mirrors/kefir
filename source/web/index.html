@@ -20,6 +20,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="expires" content="0">
     <meta charset="utf-8">
     <title>Kefir C17 compiler playground</title>
@@ -37,7 +38,7 @@
             <li>
               The Kefir compiler is running entirely in the browser.
               In order to implement that, this page uses JavaScript, WebAssembly and browser worker threads.
-              Upon the first compilation the WebAssembly binary is fetched and a worker thread is spawned.
+              Upon the first request the WebAssembly binary is fetched and a worker thread is spawned.
               No local storage or cookies are used.
             </li>
 
@@ -52,14 +53,17 @@
             </li>
           </ul>
         </p>
-        <a href="#" onclick="hideHeader()">Hide</a>
+        <a href="#" onclick="onHideHeader()">Hide</a>
       </header>
 
       <main>
         <div id="inputArea">
           <input id="args" class="monospace-font" placeholder="Command-line arguments" />
-          <textarea id="stdin" class="monospace-font" placeholder="C code" cols="80"></textarea>
-          <button onclick="onCompile()">Translate</button>
+          <textarea id="stdin" class="monospace-font" placeholder="C code"></textarea>
+          <div id="actions">
+            <button onclick="onCompile()">Translate</button>
+            <button onclick="onHelp()">Help</button>
+          </div>
         </div>
         <div id="outputArea" class="monospace-font rc-success">
           <pre id="stderr" class="no-display"><code></code></pre>
@@ -126,27 +130,35 @@
         }
       }
 
-      async function onCompile() {
-        const stdinEl = document.querySelector("#stdin");
-        const argsEl = document.querySelector("#args");
-
-        const argsStr = argsEl.value;
-        const args = [...argsStr.matchAll(argsRegex)].map(el => el[0].trim());
-        const code = stdinEl.value;
-        
+      function sendCommand (args, code) {
         if (!playgroundWorker) {
           playgroundWorker = new Worker("playground.js");
           playgroundWorker.onmessage = onCompilationDone;
         }
 
-        setStdout('Compilation requested, please wait...');
+        setStdout('Processing the request, please wait...');
         setStderr('');
         indicateError(false);
 
         playgroundWorker.postMessage([args, code]);
       }
 
-      function hideHeader () {
+      function onCompile() {
+        const stdinEl = document.querySelector("#stdin");
+        const argsEl = document.querySelector("#args");
+
+        const argsStr = argsEl.value;
+        const args = [...argsStr.matchAll(argsRegex)].map(el => el[0].trim());
+        const code = stdinEl.value;
+
+        sendCommand(args, code);
+      }
+
+      function onHelp() {
+        sendCommand(['--help'], '');
+      }
+
+      function onHideHeader () {
         const headerEl = document.querySelector('header');
         headerEl.classList.add('no-display');
       }

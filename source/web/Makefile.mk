@@ -1,6 +1,9 @@
 EMCC=emcc
 EMCC_CFGLAGS=$(CFLAGS)
+
+ifneq ($(REALPATH),)
 REALPATH=realpath
+endif
 
 WEB_BIN_DIR=$(BIN_DIR)/webapp
 EMSCRIPTEN_BIN_DIR=$(BIN_DIR)/emscripten
