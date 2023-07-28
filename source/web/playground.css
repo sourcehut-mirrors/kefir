@@ -1,0 +1,88 @@
+/*
+  SPDX-License-Identifier: GPL-3.0
+
+  Copyright (C) 2020-2023  Jevgenijs Protopopovs
+
+  This file is part of Kefir project.
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, version 3.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+#content {
+  display: flex;
+  flex-direction: column;
+  max-width: calc(100vw - 20px);
+  max-height: calc(100vh - 20px);
+  width: calc(100vw - 20px);
+  height: calc(100vh - 20px);
+}
+
+#content main {
+  flex: 1 1 1px;
+  min-width: 400px;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  min-height: 0;
+}
+
+#inputArea {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  max-width: fit-content;
+}
+
+#stdin {
+  flex-grow: 1;
+}
+
+#outputArea {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  white-space: pre;
+  overflow: scroll;
+}
+
+#stderr {
+  color: red;
+  padding-bottom: 25px;
+}
+
+footer {
+  display: flex;
+  flex-direction: row;
+}
+
+footer :first-child {
+  flex-grow: 1;
+}
+
+.monospace-font {
+  font-family: Monospace;
+}
+
+.rc-success {
+  border: solid 1px;
+  border-color: black;
+}
+
+.rc-error {
+  border: solid 1px;
+  border-color: red;
+}
+
+.no-display {
+  display: none;
+}

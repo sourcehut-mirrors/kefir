@@ -167,7 +167,8 @@ int kefir_run_with_args(int argc, char *const *argv) {
         res = print_environment(stdout, &exteral_resources);
     } else {
         struct kefir_compiler_runner_configuration compiler_config;
-        REQUIRE_CHAIN(&res, kefir_driver_generate_compiler_config(mem, &symbols, &driver_config, &exteral_resources, &compiler_config));
+        REQUIRE_CHAIN(&res, kefir_driver_generate_compiler_config(mem, &symbols, &driver_config, &exteral_resources,
+                                                                  &compiler_config));
         compiler_config.input_filepath = NULL;
         compiler_config.output_filepath = NULL;
         REQUIRE_CHAIN(&res, kefir_run_compiler(mem, &compiler_config));

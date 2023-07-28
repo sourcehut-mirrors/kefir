@@ -3,7 +3,7 @@ include source/Makefile.mk
 include source/tests/Makefile.mk
 include source/cc1/Makefile.mk
 include source/driver/Makefile.mk
-include source/emscripten/Makefile.mk
+include source/web/Makefile.mk
 include install.mk
 include self.mk
 
