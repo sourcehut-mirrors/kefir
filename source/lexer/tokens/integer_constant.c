@@ -21,6 +21,7 @@
 #include "kefir/lexer/lexer.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
+#include "kefir/core/source_error.h"
 #include "kefir/util/char32.h"
 
 enum integer_constant_type {
@@ -140,7 +141,8 @@ static kefir_result_t make_integral_constant(const struct kefir_lexer_context *c
 
 static kefir_result_t build_integral_constant(const struct kefir_lexer_context *context,
                                               enum integer_constant_type type, kefir_bool_t decimal,
-                                              kefir_uint64_t value, struct kefir_token *token) {
+                                              kefir_uint64_t value, struct kefir_token *token,
+                                              const struct kefir_source_location *source_location) {
     const enum integer_constant_type *permitted_types = NULL;
     kefir_size_t permitted_types_length = 0;
     REQUIRE_OK(get_permitted_constant_types(type, decimal, &permitted_types, &permitted_types_length));
@@ -152,7 +154,9 @@ static kefir_result_t build_integral_constant(const struct kefir_lexer_context *
             REQUIRE(res == KEFIR_NO_MATCH, res);
         }
     }
-    return KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Provided constant exceeds maximum value of its type");
+
+    return KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, source_location,
+                                  "Provided constant exceeds maximum value of its type");
 }
 
 static kefir_result_t next_decimal_constant(struct kefir_lexer_source_cursor *cursor, kefir_uint64_t *value) {
@@ -201,7 +205,8 @@ static kefir_result_t next_octal_constant(struct kefir_lexer_source_cursor *curs
 
 static kefir_result_t scan_suffix(struct kefir_lexer_source_cursor *cursor,
                                   const struct kefir_lexer_context *lexer_context, kefir_bool_t decimal,
-                                  kefir_uint64_t value, struct kefir_token *token) {
+                                  kefir_uint64_t value, struct kefir_token *token,
+                                  const struct kefir_source_location *source_location) {
     static const struct Suffix {
         const kefir_char32_t *suffix;
         enum integer_constant_type type;
@@ -244,9 +249,9 @@ static kefir_result_t scan_suffix(struct kefir_lexer_source_cursor *cursor,
     }
 
     if (matchedSuffix == NULL) {
-        REQUIRE_OK(build_integral_constant(lexer_context, CONSTANT_INT, decimal, value, token));
+        REQUIRE_OK(build_integral_constant(lexer_context, CONSTANT_INT, decimal, value, token, source_location));
     } else {
-        REQUIRE_OK(build_integral_constant(lexer_context, matchedSuffix->type, decimal, value, token));
+        REQUIRE_OK(build_integral_constant(lexer_context, matchedSuffix->type, decimal, value, token, source_location));
     }
     return KEFIR_OK;
 }
@@ -258,6 +263,7 @@ kefir_result_t kefir_lexer_scan_integral_constant(struct kefir_lexer_source_curs
     REQUIRE(lexer_context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid lexer context"));
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
 
+    struct kefir_source_location source_location = cursor->location;
     kefir_uint64_t value = 0;
     kefir_bool_t decimal = true;
     kefir_result_t res = next_decimal_constant(cursor, &value);
@@ -272,7 +278,7 @@ kefir_result_t kefir_lexer_scan_integral_constant(struct kefir_lexer_source_curs
         return KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match integer constant");
     }
     REQUIRE_OK(res);
-    REQUIRE_OK(scan_suffix(cursor, lexer_context, decimal, value, token));
+    REQUIRE_OK(scan_suffix(cursor, lexer_context, decimal, value, token, &source_location));
     return KEFIR_OK;
 }
 

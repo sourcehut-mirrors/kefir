@@ -162,7 +162,7 @@ struct kefir_ast_constant *kefir_ast_new_constant_unicode32_char(struct kefir_me
     return constant;
 }
 
-struct kefir_ast_constant *kefir_ast_new_constant_int(struct kefir_mem *mem, kefir_int_t value) {
+struct kefir_ast_constant *kefir_ast_new_constant_int(struct kefir_mem *mem, kefir_int64_t value) {
     REQUIRE(mem != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
     REQUIRE(constant != NULL, NULL);
@@ -183,7 +183,7 @@ struct kefir_ast_constant *kefir_ast_new_constant_int(struct kefir_mem *mem, kef
     return constant;
 }
 
-struct kefir_ast_constant *kefir_ast_new_constant_uint(struct kefir_mem *mem, kefir_uint_t value) {
+struct kefir_ast_constant *kefir_ast_new_constant_uint(struct kefir_mem *mem, kefir_uint64_t value) {
     REQUIRE(mem != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
     REQUIRE(constant != NULL, NULL);
@@ -204,7 +204,7 @@ struct kefir_ast_constant *kefir_ast_new_constant_uint(struct kefir_mem *mem, ke
     return constant;
 }
 
-struct kefir_ast_constant *kefir_ast_new_constant_long(struct kefir_mem *mem, kefir_long_t value) {
+struct kefir_ast_constant *kefir_ast_new_constant_long(struct kefir_mem *mem, kefir_int64_t value) {
     REQUIRE(mem != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
     REQUIRE(constant != NULL, NULL);
@@ -225,7 +225,7 @@ struct kefir_ast_constant *kefir_ast_new_constant_long(struct kefir_mem *mem, ke
     return constant;
 }
 
-struct kefir_ast_constant *kefir_ast_new_constant_ulong(struct kefir_mem *mem, kefir_ulong_t value) {
+struct kefir_ast_constant *kefir_ast_new_constant_ulong(struct kefir_mem *mem, kefir_uint64_t value) {
     REQUIRE(mem != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
     REQUIRE(constant != NULL, NULL);
@@ -246,7 +246,7 @@ struct kefir_ast_constant *kefir_ast_new_constant_ulong(struct kefir_mem *mem, k
     return constant;
 }
 
-struct kefir_ast_constant *kefir_ast_new_constant_long_long(struct kefir_mem *mem, kefir_long_long_t value) {
+struct kefir_ast_constant *kefir_ast_new_constant_long_long(struct kefir_mem *mem, kefir_int64_t value) {
     REQUIRE(mem != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
     REQUIRE(constant != NULL, NULL);
@@ -267,7 +267,7 @@ struct kefir_ast_constant *kefir_ast_new_constant_long_long(struct kefir_mem *me
     return constant;
 }
 
-struct kefir_ast_constant *kefir_ast_new_constant_ulong_long(struct kefir_mem *mem, kefir_ulong_long_t value) {
+struct kefir_ast_constant *kefir_ast_new_constant_ulong_long(struct kefir_mem *mem, kefir_uint64_t value) {
     REQUIRE(mem != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
     REQUIRE(constant != NULL, NULL);
