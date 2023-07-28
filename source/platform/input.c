@@ -73,7 +73,11 @@ kefir_result_t kefir_cli_input_open(struct kefir_mem *mem, struct kefir_cli_inpu
             input->length += sz;
         }
     }
+#ifndef KEFIR_EMSCRIPTEN_HOST_PLATFORM
     close(fd);
+#else
+    input->file_descriptor = fd;
+#endif
     return KEFIR_OK;
 }
 
@@ -86,6 +90,10 @@ kefir_result_t kefir_cli_input_close(struct kefir_mem *mem, struct kefir_cli_inp
             int err = munmap(input->content, input->length);
             REQUIRE(err == 0, KEFIR_SET_OS_ERROR("Failed to unmap file"));
         }
+#ifdef KEFIR_EMSCRIPTEN_HOST_PLATFORM
+        close(input->file_descriptor);
+        input->file_descriptor = -1;
+#endif
     } else {
         KEFIR_FREE(mem, input->content);
     }
