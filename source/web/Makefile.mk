@@ -78,7 +78,6 @@ $(WEB_INCLUDE_DIR): $(WEB_MUSL_BUILD)
 	@mkdir -p $@/musl $@/kefir $@/extra
 	@find $(shell dirname $(WEB_MUSL_BUILD))/dist/musl/include -mindepth 1 -maxdepth 1 -exec cp -r {} $(WEB_INCLUDE_DIR)/musl \;
 	@find $(HEADERS_DIR)/kefir/runtime -mindepth 1 -maxdepth 1 -exec cp -r {} $(WEB_INCLUDE_DIR)/kefir \;
-	echo $(WEB_INCLUDE_EXTRA)
 ifneq ($(WEB_INCLUDE_EXTRA),)
 	@find $(WEB_INCLUDE_EXTRA) -mindepth 1 -maxdepth 1 -exec cp -r {} $(WEB_INCLUDE_DIR)/extra \;
 endif

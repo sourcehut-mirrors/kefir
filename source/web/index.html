@@ -62,8 +62,8 @@
           <button onclick="onCompile()">Translate</button>
         </div>
         <div id="outputArea" class="monospace-font rc-success">
-          <div id="stderr" class="no-display"></div>
-          <div id="stdout"></div>
+          <pre id="stderr" class="no-display"><code></code></pre>
+          <pre id="stdout"><code></code></pre>
         </div>
       </main>
 
@@ -87,7 +87,7 @@
       function setStderr(content) {
         const stderrEl = document.querySelector("#stderr");
 
-        stderrEl.innerText = content;
+        stderrEl.firstChild.innerText = content;
         if (content.length > 0) {
           stderrEl.classList.remove('no-display');
         } else {
@@ -98,7 +98,7 @@
       function setStdout(content) {
         const stdoutEl = document.querySelector("#stdout");
 
-        stdoutEl.innerText = content;
+        stdoutEl.firstChild.innerText = content;
       }
 
       function indicateError(err) {

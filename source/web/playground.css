@@ -55,6 +55,10 @@
   overflow: scroll;
 }
 
+pre {
+  margin: 0px;
+}
+
 #stderr {
   color: red;
   padding-bottom: 25px;
