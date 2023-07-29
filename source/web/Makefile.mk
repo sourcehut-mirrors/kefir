@@ -1,7 +1,7 @@
 EMCC=emcc
 EMCC_CFGLAGS=$(CFLAGS)
 
-ifneq ($(REALPATH),)
+ifeq ($(REALPATH),)
 REALPATH=realpath
 endif
 

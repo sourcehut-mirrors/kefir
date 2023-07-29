@@ -172,7 +172,9 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
         }
 
         // Preprocessor flags
-        else if (strncmp("-D", arg, 2) == 0) {
+        else if (strcmp("-fpreprocessed", arg) == 0) {
+            config->flags.skip_preprocessor = true;
+        } else if (strncmp("-D", arg, 2) == 0) {
             // Define macro
             const char *definition = NULL;
             if (strlen(arg) == 2) {

@@ -131,6 +131,7 @@ kefir_result_t kefir_driver_configuration_init(struct kefir_driver_configuration
 
     config->compiler.optimization_level = -1;
 
+    config->flags.skip_preprocessor = false;
     config->flags.restrictive_mode = false;
     config->flags.static_linking = false;
     config->flags.shared_linking = false;

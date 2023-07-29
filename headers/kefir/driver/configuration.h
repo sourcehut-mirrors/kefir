@@ -114,6 +114,7 @@ typedef struct kefir_driver_configuration {
     } compiler;
 
     struct {
+        kefir_bool_t skip_preprocessor;
         kefir_bool_t restrictive_mode;
         kefir_bool_t static_linking;
         kefir_bool_t shared_linking;

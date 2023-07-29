@@ -14,6 +14,7 @@ OPTIONS:
     -o output file                      Save results to the output file
     --target specification              Generate code for specified target system (see TARGETS section below)
     -O level                            Code optimization level. All non-zero levels are equivalent to 1
+    -fpreprocessed                      Skip preprocessing stage
     -D name[=value]                     Define preprocessor macro
     -U name                             Undefine predefined preprocessor macro
     -I directory                        Add directory to preprocessor include path

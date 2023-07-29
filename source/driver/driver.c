@@ -113,9 +113,9 @@ static kefir_result_t driver_handle_linker_argument(struct kefir_mem *mem, const
 }
 
 kefir_result_t kefir_driver_generate_compiler_config(struct kefir_mem *mem, struct kefir_string_pool *symbols,
-                                                      struct kefir_driver_configuration *config,
-                                                      const struct kefir_driver_external_resources *externals,
-                                                      struct kefir_compiler_runner_configuration *compiler_config) {
+                                                     struct kefir_driver_configuration *config,
+                                                     const struct kefir_driver_external_resources *externals,
+                                                     struct kefir_compiler_runner_configuration *compiler_config) {
     REQUIRE_OK(kefir_compiler_runner_configuration_init(compiler_config));
 
     if (config->stage == KEFIR_DRIVER_STAGE_PRINT_RUNTIME_CODE) {
@@ -165,6 +165,7 @@ kefir_result_t kefir_driver_generate_compiler_config(struct kefir_mem *mem, stru
             break;
     }
 
+    compiler_config->skip_preprocessor = config->flags.skip_preprocessor;
     if (!config->flags.restrictive_mode) {
         compiler_config->features.missing_function_return_type = true;
         compiler_config->features.designated_initializer_colons = true;
