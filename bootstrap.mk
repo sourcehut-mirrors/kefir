@@ -4,8 +4,8 @@ BOOTSTRAP=
 KEFIRCC=
 KEFIR_EXTRAFLAGS=
 PLATFORM=
-AS=as
-LD=ld
+KEFIR_AS=$(AS)
+KEFIR_LD=ld
 
 KEFIR_FLAGS=-I $(HEADERS)
 ifeq ($(PLATFORM),freebsd)
@@ -77,11 +77,11 @@ KEFIR_ASM_FILES += $(KEFIR_DRIVER_ASM_FILES)
 $(BOOTSTRAP)/%.s: $(SOURCE)/%.c
 	@mkdir -p $(shell dirname "$@")
 	@echo "Kefir-Compile $^"
-	@KEFIR_AS=$(AS) $(KEFIRCC) $(KEFIR_FLAGS) -S -o $@ $<
+	@KEFIR_AS=$(KEFIR_AS) $(KEFIRCC) $(KEFIR_FLAGS) -S -o $@ $<
 
 $(BOOTSTRAP)/%.s.o: $(SOURCE)/%.s
 	@echo "Assemble $^"
-	@KEFIR_AS=$(AS) $(KEFIRCC) $(KEFIR_FLAGS) -c -o $@ $<
+	@KEFIR_AS=$(KEFIR_AS) $(KEFIRCC) $(KEFIR_FLAGS) -c -o $@ $<
 
 $(BOOTSTRAP)/driver/help.s.o: $(SOURCE)/driver/help.txt
 $(BOOTSTRAP)/codegen/system-v-amd64/amd64-sysv-runtime-code.s.o: $(SOURCE)/runtime/amd64_sysv.s $(SOURCE)/runtime/common_amd64.s
@@ -89,16 +89,16 @@ $(BOOTSTRAP)/codegen/system-v-amd64/opt-amd64-sysv-runtime-code.s.o: $(SOURCE)/r
 
 $(BOOTSTRAP)/libkefir.so: $(KEFIR_LIB_ASM_FILES)
 	@echo "Linking $@"
-	@KEFIR_LD=$(LD) $(KEFIRCC) $(KEFIR_FLAGS) -shared $^ -o $@
+	@KEFIR_LD=$(KEFIR_LD) $(KEFIRCC) $(KEFIR_FLAGS) -shared $^ -o $@
 
 ifeq ($(USE_SHARED),yes)
 $(BOOTSTRAP)/kefir: $(KEFIR_DRIVER_ASM_FILES) $(BOOTSTRAP)/libkefir.so
 	@echo "Linking $@"
-	@KEFIR_LD=$(LD) $(KEFIRCC) -pie $(KEFIR_FLAGS) $(KEFIR_DRIVER_ASM_FILES) -o $@ -L$(BOOTSTRAP) -lkefir
+	@KEFIR_LD=$(KEFIR_LD) $(KEFIRCC) -pie $(KEFIR_FLAGS) $(KEFIR_DRIVER_ASM_FILES) -o $@ -L$(BOOTSTRAP) -lkefir
 else
 $(BOOTSTRAP)/kefir: $(KEFIR_ASM_FILES)
 	@echo "Linking $@"
-	@KEFIR_LD=$(LD) $(KEFIRCC) $(KEFIR_FLAGS) $^ -o $@
+	@KEFIR_LD=$(KEFIR_LD) $(KEFIRCC) $(KEFIR_FLAGS) $^ -o $@
 endif
 
 bootstrap: $(BOOTSTRAP)/kefir
