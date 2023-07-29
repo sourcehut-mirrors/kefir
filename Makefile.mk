@@ -1,15 +1,22 @@
 CC=gcc
+LD=gcc
 AS=as
 AR=ar
+EMCC=emcc
 USE_SHARED=yes
 
 OPT=-O0
 DBG=-g3 -ggdb -DKFT_NOFORK
 EXTRAFLAGS=
 CFLAGS=-std=c11 -Wall -Wextra -pedantic -Wno-overlength-strings -Wstrict-prototypes -Wformat=2 -Wno-format-nonliteral -Wundef -Wunreachable-code  -fno-common
+LDFLAGS=
 INCLUDES=-Iheaders
 SANFLAGS=
 PLATFORM=
+
+ifeq ($(REALPATH),)
+REALPATH=realpath
+endif
 
 ifeq ($(USE_SHARED),yes)
 CFLAGS+=-fPIC
@@ -32,10 +39,11 @@ BOOTSTRAP_DIR=$(ROOT)/bootstrap
 LIBKEFIR_SO=$(LIB_DIR)/libkefir.so
 LIBKEFIR_SO_VERSION=0.0
 LIBKEFIR_A=$(LIB_DIR)/libkefir.a
-
 LIBKEFIRRT_A=$(LIB_DIR)/libkefirrt.a
+KEFIR_EXE=$(BIN_DIR)/kefir
+KEFIR_CC1_EXE=$(BIN_DIR)/kefir-cc1
+KEFIR_JS=$(BIN_DIR)/kefir.js
 
-CLEAN_LIST := $(BIN_DIR) $(BOOTSTRAP_DIR)
 DEPENDENCIES :=
 TEST_ARTIFACTS :=
 ASM_FILES :=
@@ -46,6 +54,7 @@ TEST_RESULTS :=
 TESTS :=
 BOOTSTRAP :=
 WEB :=
+WEBAPP :=
 
 $(BIN_DIR)/%.d: $(SOURCE_DIR)/%.c
 	@mkdir -p $(shell dirname "$@")

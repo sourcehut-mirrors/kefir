@@ -21,7 +21,7 @@ tasks:
       export KEFIR_RTINC="$HOME/kefir/headers/kefir/runtime"
       export KEFIR_OPENBSD_INCLUDE="/usr/include;/usr/local/include"
       export KEFIR_OPENBSD_LIB="/usr/lib;/usr/local/lib"
-      export KEFIR_OPENBSD_DYNAMIC_LINKER="/usr/lib/ld.so"
+      export KEFIR_OPENBSD_DYNAMIC_LINKER="/usr/libexec/ld.so"
       export REALPATH=grealpath
       LC_ALL=C.UTF-8 gmake bootstrap KEFIR_EXTRAFLAGS="-O1" CC=clang AS=gas PLATFORM=openbsd
 triggers:

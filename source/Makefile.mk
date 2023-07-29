@@ -66,7 +66,7 @@ endif
 $(LIBKEFIR_SO).$(LIBKEFIR_SO_VERSION): $(KEFIR_LIB_OBJECT_FILES)
 	@mkdir -p $(shell dirname "$@")
 	@echo "Linking $@"
-	@$(CC) -shared -o $@ $(KEFIR_LIB_OBJECT_FILES)
+	@$(LD) $(LDFLAGS) -shared -o $@ $(KEFIR_LIB_OBJECT_FILES)
 
 $(LIBKEFIR_SO): $(LIBKEFIR_SO).$(LIBKEFIR_SO_VERSION)
 	@echo "Symlinking $@"

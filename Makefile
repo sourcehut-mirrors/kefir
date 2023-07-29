@@ -21,6 +21,7 @@ endif
 .TESTS: $(TESTS)
 .BOOTSTRAP: $(BOOTSTRAP)
 .WEB: $(WEB)
+.WEBAPP: $(WEBAPP)
 
 all: .BINARIES
 
@@ -34,6 +35,8 @@ bootstrap: .BOOTSTRAP
 
 web: .WEB
 
+webapp: .WEBAPP
+
 clean:
 	@echo "Removing $(BIN_DIR)"
 	@rm -rf $(BIN_DIR)
@@ -42,4 +45,4 @@ clean_bootstrap:
 	@echo "Removing $(BOOTSTRAP_DIR)"
 	@rm -rf $(BOOTSTRAP_DIR)
 
-.PHONY: all test generate_test_artifacts bootstrap web clean clean_bootstrap .DEPENDENCIES .TEST_ARTIFACTS .ASM_FILES .OBJECT_FILES .BINARIES .TEST_BINARIES .TEST_RESULTS .TESTS .BOOTSTRAP
+.PHONY: all test generate_test_artifacts bootstrap web webapp clean clean_bootstrap .DEPENDENCIES .TEST_ARTIFACTS .ASM_FILES .OBJECT_FILES .BINARIES .TEST_BINARIES .TEST_RESULTS .TESTS .BOOTSTRAP
