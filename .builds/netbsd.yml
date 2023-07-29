@@ -2,6 +2,7 @@ image: netbsd/9.x
 packages:
   - gmake
   - binutils
+  - coreutils
   - bash
 sources:
   - https://git.sr.ht/~jprotopopov/kefir

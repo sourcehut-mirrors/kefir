@@ -3,6 +3,7 @@ packages:
   - gmake
   - llvm
   - binutils
+  - coreutils
   - gas
   - bash
 sources:
