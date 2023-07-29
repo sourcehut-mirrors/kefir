@@ -1,5 +1,5 @@
 CC=gcc
-LD=gcc
+LD=$(CC)
 AS=as
 AR=ar
 EMCC=emcc

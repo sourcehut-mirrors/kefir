@@ -12,7 +12,7 @@ tasks:
   - test: |
       cd kefir
       export LC_ALL=C.UTF-8
-      gmake test all CC=clang AS=gas PLATFORM=openbsd OPT=-O3
+      gmake test all CC=clang LD=clang AS=gas PLATFORM=openbsd OPT=-O3
   - bootstrap: |
       cd kefir
       gmake clean clean_bootstrap
@@ -23,7 +23,7 @@ tasks:
       export KEFIR_OPENBSD_LIB="/usr/lib;/usr/local/lib"
       export KEFIR_OPENBSD_DYNAMIC_LINKER="/usr/libexec/ld.so"
       export REALPATH=grealpath
-      LC_ALL=C.UTF-8 gmake bootstrap KEFIR_EXTRAFLAGS="-O1" CC=clang AS=gas PLATFORM=openbsd
+      LC_ALL=C.UTF-8 gmake bootstrap KEFIR_EXTRAFLAGS="-O1" CC=clang LD=clang AS=gas PLATFORM=openbsd
 triggers:
   - action: email
     condition: failure
