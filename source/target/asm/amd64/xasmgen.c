@@ -1300,7 +1300,7 @@ static kefir_result_t amd64_bindata(struct kefir_amd64_xasmgen *xasmgen, kefir_a
         case KEFIR_AMD64_XASMGEN_DATA_QUAD:
             fprintf(payload->output, ".quad ");
             for (kefir_size_t i = 0; i < length; i++) {
-                fprintf(payload->output, "0x%016lx", ((const kefir_uint64_t *) ptr)[i]);
+                fprintf(payload->output, "0x%016llx", (kefir_ulong_long_t) ((const kefir_uint64_t *) ptr)[i]);
                 if (i + 1 < length) {
                     fprintf(payload->output, ", ");
                 }

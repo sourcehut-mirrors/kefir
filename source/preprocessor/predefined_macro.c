@@ -181,25 +181,31 @@ MACRO_PP_NUMBER_FMT(produce_one, 64, "%" KEFIR_INT_FMT, 1)
 MACRO_PP_NUMBER_FMT(big_endian, 64, "%" KEFIR_INT_FMT, 1234)
 MACRO_PP_NUMBER_FMT(little_endian, 64, "%" KEFIR_INT_FMT, 4321)
 MACRO_PP_NUMBER_FMT(pdp_endian, 64, "%" KEFIR_INT_FMT, 3412)
-MACRO_PP_NUMBER_FMT(char_bit, 64, "%" KEFIR_UINT64_FMT, preprocessor->context->environment.data_model->char_bit)
+MACRO_PP_NUMBER_FMT(char_bit, 64, "%" KEFIR_UINT64_FMT,
+                    (kefir_uint64_t) preprocessor->context->environment.data_model->char_bit)
 MACRO_PP_NUMBER_FMT(schar_max, 64, "%" KEFIR_UINT64_FMT,
-                    (1ul << (preprocessor->context->environment.data_model->char_bit - 1)) - 1)
+                    (kefir_uint64_t) (1ul << (preprocessor->context->environment.data_model->char_bit - 1)) - 1)
 MACRO_PP_NUMBER_FMT(shrt_max, 64, "%" KEFIR_UINT64_FMT,
-                    (1ul << (preprocessor->context->environment.data_model->int_width.short_int - 1)) - 1)
+                    (kefir_uint64_t) (1ul << (preprocessor->context->environment.data_model->int_width.short_int - 1)) -
+                        1)
 MACRO_PP_NUMBER_FMT(int_max, 64, "%" KEFIR_UINT64_FMT,
-                    (1ul << (preprocessor->context->environment.data_model->int_width.integer - 1)) - 1)
+                    (kefir_uint64_t) (1ul << (preprocessor->context->environment.data_model->int_width.integer - 1)) -
+                        1)
 MACRO_PP_NUMBER_FMT(long_max, 64, "%" KEFIR_UINT64_FMT,
-                    (1ul << (preprocessor->context->environment.data_model->int_width.long_int - 1)) - 1)
+                    (kefir_uint64_t) (1ul << (preprocessor->context->environment.data_model->int_width.long_int - 1)) -
+                        1)
 MACRO_PP_NUMBER_FMT(long_long_max, 64, "%" KEFIR_UINT64_FMT,
-                    (1ul << (preprocessor->context->environment.data_model->int_width.long_long_int - 1)) - 1)
+                    (kefir_uint64_t) (1ul
+                                      << (preprocessor->context->environment.data_model->int_width.long_long_int - 1)) -
+                        1)
 MACRO_PP_NUMBER_FMT(shrt_width, 64, "%" KEFIR_UINT64_FMT,
-                    preprocessor->context->environment.data_model->int_width.short_int)
+                    (kefir_uint64_t) preprocessor->context->environment.data_model->int_width.short_int)
 MACRO_PP_NUMBER_FMT(int_width, 64, "%" KEFIR_UINT64_FMT,
-                    preprocessor->context->environment.data_model->int_width.integer)
+                    (kefir_uint64_t) preprocessor->context->environment.data_model->int_width.integer)
 MACRO_PP_NUMBER_FMT(long_width, 64, "%" KEFIR_UINT64_FMT,
-                    preprocessor->context->environment.data_model->int_width.long_int)
+                    (kefir_uint64_t) preprocessor->context->environment.data_model->int_width.long_int)
 MACRO_PP_NUMBER_FMT(long_long_width, 64, "%" KEFIR_UINT64_FMT,
-                    preprocessor->context->environment.data_model->int_width.long_long_int)
+                    (kefir_uint64_t) preprocessor->context->environment.data_model->int_width.long_long_int)
 MACRO_PP_NUMBER_FMT(flt_radix, 64, "%" KEFIR_INT64_FMT,
                     preprocessor->context->environment.data_model->floating_point.float_radix)
 MACRO_PP_NUMBER_FMT(flt_mant_dig, 64, "%" KEFIR_INT64_FMT,
