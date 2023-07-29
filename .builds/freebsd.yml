@@ -24,8 +24,7 @@ tasks:
       export KEFIR_FREEBSD_INCLUDE="/usr/include;/usr/local/include"
       export KEFIR_FREEBSD_LIB="/usr/lib;/usr/local/lib"
       export KEFIR_FREEBSD_DYNAMIC_LINKER="/libexec/ld-elf.so.1"
-      export REALPATH=grealpath
-      LC_ALL=C.UTF-8 gmake bootstrap KEFIR_EXTRAFLAGS="-O1" CC=clang PLATFORM=freebsd
+      LC_ALL=C.UTF-8 gmake bootstrap KEFIR_EXTRAFLAGS="-O1" CC=clang PLATFORM=freebsd REALPATH=grealpath
 triggers:
   - action: email
     condition: failure
