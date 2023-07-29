@@ -10,6 +10,17 @@ tasks:
       cd kefir
       export LC_ALL=C.UTF-8
       gmake test all CC=gcc AS=gas PLATFORM=netbsd OPT=-O3
+  - bootstrap: |
+      cd kefir
+      gmake clean clean_bootstrap
+      export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/kefir/bin/libs"
+      export KEFIR_RTLIB="$HOME/kefir/bin/libs/libkefirrt.a"
+      export KEFIR_RTINC="$HOME/kefir/headers/kefir/runtime"
+      export KEFIR_NETBSD_INCLUDE="/usr/include"
+      export KEFIR_NETBSD_LIB="/usr/lib"
+      export KEFIR_NETBSD_DYNAMIC_LINKER="/libexec/ld.elf_so"
+      export REALPATH=grealpath
+      LC_ALL=C.UTF-8 gmake bootstrap KEFIR_EXTRAFLAGS="-O1" PLATFORM=netbsd
 triggers:
   - action: email
     condition: failure

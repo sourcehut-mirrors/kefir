@@ -7,7 +7,9 @@ include source/web/Makefile.mk
 include install.mk
 include self.mk
 
+ifeq (,$(filter clean,$(MAKECMDGOALS)))
 include $(wildcard $(DEPENDENCIES))
+endif
 
 .DEPENDENCIES: $(DEPENDENCIES)
 .TEST_ARTIFACTS: $(TEST_ARTIFACTS)

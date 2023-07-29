@@ -234,7 +234,7 @@ kefir_result_t kefir_driver_apply_target_linker_initial_configuration(
         if (linker_config->flags.pie_linking) {
             position_independent = true;
             REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-pie"));
-        } else {
+        } else if (target->platform != KEFIR_DRIVER_TARGET_PLATFORM_NETBSD) {
             REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-no-pie"));
         }
     }
@@ -320,10 +320,12 @@ kefir_result_t kefir_driver_apply_target_linker_initial_configuration(
                                                 "environment variable for selected target"));
 
         if (linker_config->flags.link_start_files) {
-            LINK_FILE(externals->openbsd.library_path, "crt0.o");
+            if (!linker_config->flags.shared_linking) {
+                LINK_FILE(externals->openbsd.library_path, "crt0.o");
+            }
             if (linker_config->flags.static_linking) {
                 LINK_FILE(externals->openbsd.library_path, "crtbeginT.o");
-            } else if (position_independent) {
+            } else if (linker_config->flags.shared_linking) {
                 LINK_FILE(externals->openbsd.library_path, "crtbeginS.o");
             } else {
                 LINK_FILE(externals->openbsd.library_path, "crtbegin.o");
@@ -342,7 +344,9 @@ kefir_result_t kefir_driver_apply_target_linker_initial_configuration(
                                                 "environment variable for selected target"));
 
         if (linker_config->flags.link_start_files) {
-            LINK_FILE(externals->netbsd.library_path, "crt0.o");
+            if (!linker_config->flags.shared_linking) {
+                LINK_FILE(externals->netbsd.library_path, "crt0.o");
+            }
             LINK_FILE(externals->netbsd.library_path, "crti.o");
             if (linker_config->flags.static_linking) {
                 LINK_FILE(externals->netbsd.library_path, "crtbeginT.o");
@@ -469,7 +473,7 @@ kefir_result_t kefir_driver_apply_target_linker_final_configuration(
         if (linker_config->flags.link_start_files) {
             if (linker_config->flags.static_linking) {
                 LINK_FILE(externals->openbsd.library_path, "crtend.o");
-            } else if (position_independent) {
+            } else if (linker_config->flags.shared_linking) {
                 LINK_FILE(externals->openbsd.library_path, "crtendS.o");
             } else {
                 LINK_FILE(externals->openbsd.library_path, "crtend.o");
@@ -491,7 +495,6 @@ kefir_result_t kefir_driver_apply_target_linker_final_configuration(
         }
 
         if (linker_config->flags.link_start_files) {
-            LINK_FILE(externals->netbsd.library_path, "crtn.o");
             if (linker_config->flags.static_linking) {
                 LINK_FILE(externals->netbsd.library_path, "crtend.o");
             } else if (position_independent) {
@@ -499,6 +502,7 @@ kefir_result_t kefir_driver_apply_target_linker_final_configuration(
             } else {
                 LINK_FILE(externals->netbsd.library_path, "crtend.o");
             }
+            LINK_FILE(externals->netbsd.library_path, "crtn.o");
         }
     }
     return KEFIR_OK;
