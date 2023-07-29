@@ -1,3 +1,4 @@
+ROOT=
 SOURCE=
 HEADERS=
 BOOTSTRAP=
@@ -61,31 +62,38 @@ KEFIR_LIB_SOURCE := $(wildcard \
 	$(SOURCE)/target/asm/amd64/*.c \
 	$(SOURCE)/util/*.c)
 KEFIR_LIB_ASM_FILES := $(KEFIR_LIB_SOURCE:$(SOURCE)/%.c=$(BOOTSTRAP)/%.s)
-KEFIR_LIB_ASM_FILES += $(SOURCE)/codegen/system-v-amd64/sysv-amd64-runtime-code.s
-KEFIR_LIB_ASM_FILES += $(SOURCE)/codegen/opt-system-v-amd64/opt-sysv-amd64-runtime-code.s
-KEFIR_LIB_ASM_FILES += $(SOURCE)/compiler/predefined_defs.s
 
 KEFIR_DRIVER_SOURCE := $(wildcard $(SOURCE)/driver/*.c)
 KEFIR_DRIVER_ASM_FILES := $(KEFIR_DRIVER_SOURCE:$(SOURCE)/%.c=$(BOOTSTRAP)/%.s)
-KEFIR_DRIVER_ASM_FILES += $(SOURCE)/driver/help.s
 
 KEFIR_SOURCE := $(KEFIR_LIB_SOURCE)
 KEFIR_SOURCE += $(KEFIR_DRIVER_SOURCE)
+KEFIR_COMPILE_DEPS := $(KEFIR_SOURCE:$(SOURCE)/%.c=$(BOOTSTRAP)/%.deps)
 KEFIR_ASM_FILES := $(KEFIR_LIB_ASM_FILES)
 KEFIR_ASM_FILES += $(KEFIR_DRIVER_ASM_FILES)
 
-$(BOOTSTRAP)/%.s: $(SOURCE)/%.c
+$(BOOTSTRAP)/hexdump: $(ROOT)/util/hexdump.c
 	@mkdir -p $(shell dirname "$@")
-	@echo "Kefir-Compile $^"
-	@KEFIR_AS=$(KEFIR_AS) $(KEFIRCC) $(KEFIR_FLAGS) -S -o $@ $<
+	@echo "Building $@"
+	@$(KEFIRCC) $(KEFIR_FLAGS) -o $@ $^
 
-$(BOOTSTRAP)/%.s.o: $(SOURCE)/%.s
-	@echo "Assemble $^"
-	@KEFIR_AS=$(KEFIR_AS) $(KEFIRCC) $(KEFIR_FLAGS) -c -o $@ $<
+$(BOOTSTRAP)/%.binary.h: $(BOOTSTRAP)/hexdump
+	@mkdir -p $(shell dirname "$@")
+	@echo "Generating $@"
+	@$(BOOTSTRAP)/hexdump $(BINARY_HEADER_CONTENT) > $@
 
-$(BOOTSTRAP)/driver/help.s.o: $(SOURCE)/driver/help.txt
-$(BOOTSTRAP)/codegen/system-v-amd64/amd64-sysv-runtime-code.s.o: $(SOURCE)/runtime/amd64_sysv.s $(SOURCE)/runtime/common_amd64.s
-$(BOOTSTRAP)/codegen/system-v-amd64/opt-amd64-sysv-runtime-code.s.o: $(SOURCE)/runtime/opt_amd64_sysv.s $(SOURCE)/runtime/common_amd64.s
+$(BOOTSTRAP)/%.deps:
+	@mkdir -p $(shell dirname "$@")
+	@touch $@
+
+$(BOOTSTRAP)/%.s: $(SOURCE)/%.c $(BOOTSTRAP)/%.deps
+	@mkdir -p $(shell dirname "$@")
+	@echo "Kefir-Compile $<"
+	@KEFIR_AS=$(KEFIR_AS) $(KEFIRCC) $(KEFIR_FLAGS) $$(cat $(subst .s,.deps,$@)) -S -o $@ $<
+
+BIN_HEADERS_SRCDIR=$(SOURCE)
+BIN_HEADERS_DESTDIR=$(BOOTSTRAP)
+include source/binary_headers.mk
 
 $(BOOTSTRAP)/libkefir.so: $(KEFIR_LIB_ASM_FILES)
 	@echo "Linking $@"
@@ -103,6 +111,7 @@ endif
 
 bootstrap: $(BOOTSTRAP)/kefir
 
+.COMPILE_DEPS: $(KEFIR_COMPILE_DEPS)
 .ASM_FILES: $(KEFIR_ASM_FILES)
 
-.PHONY: bootstrap .ASM_FILES .OBJECT_FILES
+.PHONY: bootstrap .COMPILE_DEPS .ASM_FILES

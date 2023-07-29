@@ -26,14 +26,13 @@
 #include "kefir/codegen/opt-system-v-amd64.h"
 #include <float.h>
 
-#ifdef KEFIR_EMSCRIPTEN_HOST_PLATFORM
 const char KefirSysVAmd64RuntimeCode[] = {
 #include STRINGIFY(KEFIR_AMD64_SYSV_RUNTIME_INCLUDE)
 };
+
 const char KefirOptSysVAmd64RuntimeCode[] = {
 #include STRINGIFY(KEFIR_OPT_AMD64_SYSV_RUNTIME_INCLUDE)
 };
-#endif
 
 static kefir_result_t amd64_sysv_new_codegen(struct kefir_mem *mem, FILE *output,
                                              const struct kefir_codegen_configuration *config,

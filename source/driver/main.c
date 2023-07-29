@@ -31,7 +31,9 @@
 
 // Driver main entry
 
-extern const char KefirDriverHelpContent[];
+static const char KefirDriverHelpContent[] = {
+#include STRINGIFY(KEFIR_DRIVER_HELP_INCLUDE)
+};
 static struct kefir_tempfile_manager tmpmgr;
 
 static void tmpmgr_cleanup(void) {

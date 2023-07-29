@@ -1,6 +1,7 @@
 $(BOOTSTRAP_DIR)/stage1/kefir: $(BIN_DIR)/kefir $(LIBKEFIRRT_A)
 	@echo "Bootstrapping $@"
 	@LD_LIBRARY_PATH=$(BIN_DIR)/libs:$LD_LIBRARY_PATH $(MAKE) -f $(ROOT)/bootstrap.mk bootstrap \
+		ROOT=$(ROOT) \
 		SOURCE=$(SOURCE_DIR) \
 		HEADERS=$(HEADERS_DIR) \
 		BOOTSTRAP=$(BOOTSTRAP_DIR)/stage1 \
@@ -10,6 +11,7 @@ $(BOOTSTRAP_DIR)/stage1/kefir: $(BIN_DIR)/kefir $(LIBKEFIRRT_A)
 $(BOOTSTRAP_DIR)/stage2/kefir: $(BOOTSTRAP_DIR)/stage1/kefir $(LIBKEFIRRT_A)
 	@echo "Bootstrapping $@"
 	@LD_LIBRARY_PATH=$(BOOTSTRAP_DIR)/stage1:$LD_LIBRARY_PATH $(MAKE) -f $(ROOT)/bootstrap.mk bootstrap \
+		ROOT=$(ROOT) \
 		SOURCE=$(SOURCE_DIR) \
 		HEADERS=$(HEADERS_DIR) \
 		BOOTSTRAP=$(BOOTSTRAP_DIR)/stage2 \

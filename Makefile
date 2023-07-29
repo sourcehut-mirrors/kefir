@@ -1,4 +1,5 @@
 include Makefile.mk
+include util/Makefile.mk
 include source/Makefile.mk
 include source/tests/Makefile.mk
 include source/cc1/Makefile.mk
@@ -11,6 +12,7 @@ ifeq (,$(filter clean,$(MAKECMDGOALS)))
 include $(wildcard $(DEPENDENCIES))
 endif
 
+.COMPILE_DEPS: $(COMPILE_DEPS)
 .DEPENDENCIES: $(DEPENDENCIES)
 .TEST_ARTIFACTS: $(TEST_ARTIFACTS)
 .ASM_FILES: $(ASM_FILES)
@@ -45,4 +47,4 @@ clean_bootstrap:
 	@echo "Removing $(BOOTSTRAP_DIR)"
 	@rm -rf $(BOOTSTRAP_DIR)
 
-.PHONY: all test generate_test_artifacts bootstrap web webapp clean clean_bootstrap .DEPENDENCIES .TEST_ARTIFACTS .ASM_FILES .OBJECT_FILES .BINARIES .TEST_BINARIES .TEST_RESULTS .TESTS .BOOTSTRAP
+.PHONY: all test generate_test_artifacts bootstrap web webapp clean clean_bootstrap .DEPENDENCIES .COMPILE_DEPS .TEST_ARTIFACTS .ASM_FILES .OBJECT_FILES .BINARIES .TEST_BINARIES .TEST_RESULTS .TESTS .BOOTSTRAP

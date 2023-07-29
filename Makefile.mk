@@ -43,7 +43,9 @@ LIBKEFIRRT_A=$(LIB_DIR)/libkefirrt.a
 KEFIR_EXE=$(BIN_DIR)/kefir
 KEFIR_CC1_EXE=$(BIN_DIR)/kefir-cc1
 KEFIR_JS=$(BIN_DIR)/kefir.js
+HEXDUMP_EXE=$(BIN_DIR)/hexdump
 
+COMPILE_DEPS :=
 DEPENDENCIES :=
 TEST_ARTIFACTS :=
 ASM_FILES :=
@@ -56,17 +58,26 @@ BOOTSTRAP :=
 WEB :=
 WEBAPP :=
 
-$(BIN_DIR)/%.d: $(SOURCE_DIR)/%.c
+$(BIN_DIR)/%.deps:
+	@mkdir -p $(shell dirname "$@")
+	@touch $@
+
+$(BIN_DIR)/%.d: $(SOURCE_DIR)/%.c $(BIN_DIR)/%.deps
 	@mkdir -p $(shell dirname "$@")
 	@echo "Generating $@"
-	@$(CC) $(INCLUDES) -MM -MT '$(@:.d=.o)' $< > $@
+	@$(CC) $(INCLUDES) $$(cat $(subst .d,.deps,$@)) -MM -MT '$(@:.d=.o)' $< > $@
 
-$(BIN_DIR)/%.o: $(SOURCE_DIR)/%.c $(BIN_DIR)/%.d
+$(BIN_DIR)/%.o: $(SOURCE_DIR)/%.c $(BIN_DIR)/%.d $(BIN_DIR)/%.deps
 	@mkdir -p $(shell dirname "$@")
 	@echo "Building $@"
-	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+	@$(CC) $(CFLAGS) $(INCLUDES) $$(cat $(subst .o,.deps,$@)) -c $< -o $@
 
 $(BIN_DIR)/%.s.o: $(SOURCE_DIR)/%.s
 	@mkdir -p $(shell dirname "$@")
 	@echo "Building $@"
 	@$(AS) -o $@ $<
+
+$(BIN_DIR)/%.binary.h: $(HEXDUMP_EXE)
+	@mkdir -p $(shell dirname "$@")
+	@echo "Generating $@"
+	@$(HEXDUMP_EXE) $(BINARY_HEADER_CONTENT) > $@

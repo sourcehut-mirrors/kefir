@@ -30,9 +30,7 @@
 #include "kefir/platform/tempfile.h"
 
 static const char KefirDriverHelpContent[] = {
-#ifdef KEFIR_EMSCRIPTEN_HOST_PLATFORM
 #include STRINGIFY(KEFIR_DRIVER_HELP_INCLUDE)
-#endif
 };
 static struct kefir_tempfile_manager tmpmgr;
 

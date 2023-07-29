@@ -28,7 +28,9 @@
 
 // Standalone compiler without driver
 
-extern const char KefirHelpContent[];
+static const char KefirHelpContent[] = {
+#include STRINGIFY(KEFIR_CC1_HELP_INCLUDE)
+};
 
 int main(int argc, char *const *argv) {
     struct kefir_mem *mem = kefir_system_memalloc();

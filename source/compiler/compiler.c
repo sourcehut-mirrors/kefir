@@ -58,16 +58,12 @@ struct kefir_mem *kefir_system_memalloc(void) {
     return &MemoryAllocator;
 }
 
-#ifdef KEFIR_EMSCRIPTEN_HOST_PLATFORM
-    const char KefirPredefinedDefs[] = {
+const char KefirPredefinedDefs[] = {
 #include STRINGIFY(KEFIR_COMPILER_PREDEFINED_DEFS_INCLUDE)
-    };
-    kefir_uint64_t KefirPredefinedDefsLength = sizeof(KefirPredefinedDefs);
-#endif
+};
+kefir_uint64_t KefirPredefinedDefsLength = sizeof(KefirPredefinedDefs);
 
 static kefir_result_t load_predefined_defs(struct kefir_mem *mem, struct kefir_compiler_context *context) {
-    extern const char KefirPredefinedDefs[];
-    extern kefir_uint64_t KefirPredefinedDefsLength;
     const char *filename = "<predefined-defs>";
 
     struct kefir_token_buffer buffer;

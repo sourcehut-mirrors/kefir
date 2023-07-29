@@ -32,11 +32,9 @@ KEFIR_LIB_SOURCE := $(wildcard \
 	$(SOURCE_DIR)/target/asm/amd64/*.c \
 	$(SOURCE_DIR)/util/*.c)
 
+KEFIR_LIB_COMPILE_DEPS := $(KEFIR_LIB_SOURCE:$(SOURCE_DIR)/%.c=$(BIN_DIR)/%.deps)
 KEFIR_LIB_DEPENDENCIES := $(KEFIR_LIB_SOURCE:$(SOURCE_DIR)/%.c=$(BIN_DIR)/%.d)
 KEFIR_LIB_OBJECT_FILES := $(KEFIR_LIB_SOURCE:$(SOURCE_DIR)/%.c=$(BIN_DIR)/%.o)
-KEFIR_LIB_OBJECT_FILES += $(BIN_DIR)/codegen/system-v-amd64/sysv-amd64-runtime-code.s.o
-KEFIR_LIB_OBJECT_FILES += $(BIN_DIR)/codegen/opt-system-v-amd64/opt-sysv-amd64-runtime-code.s.o
-KEFIR_LIB_OBJECT_FILES += $(BIN_DIR)/compiler/predefined_defs.s.o
 
 KEFIR_RUNTIME_SOURCE := $(SOURCE_DIR)/runtime/amd64_sysv.s \
                         $(SOURCE_DIR)/runtime/opt_amd64_sysv.s \
@@ -46,13 +44,10 @@ KEFIR_RUNTIME_OBJECT_FILES := $(KEFIR_RUNTIME_SOURCE:$(SOURCE_DIR)/%.s=$(BIN_DIR
 KEFIR_BUILD_SOURCE_ID := $(shell $(ROOT)/scripts/get-source-id.sh)
 
 $(BIN_DIR)/runtime/common_amd64.s.o: $(SOURCE_DIR)/runtime/common_amd64.inc.s
-$(BIN_DIR)/codegen/system-v-amd64/sysv-amd64-runtime-code.s.o: $(SOURCE_DIR)/runtime/amd64_sysv.s \
-                                                               $(SOURCE_DIR)/runtime/common_amd64.s \
-															   $(SOURCE_DIR)/runtime/common_amd64.inc.s
-$(BIN_DIR)/codegen/opt-system-v-amd64/opt-sysv-amd64-runtime-code.s.o: $(SOURCE_DIR)/runtime/opt_amd64_sysv.s \
-                                                                       $(SOURCE_DIR)/runtime/common_amd64.s \
-																	   $(SOURCE_DIR)/runtime/common_amd64.inc.s
-$(BIN_DIR)/compiler/predefined_defs.s.o: $(SOURCE_DIR)/compiler/predefined_defs.h
+
+BIN_HEADERS_SRCDIR=$(SOURCE_DIR)
+BIN_HEADERS_DESTDIR=$(BIN_DIR)
+include source/binary_headers.mk
 
 $(BIN_DIR)/%.o: CFLAGS += '-DKEFIR_BUILD_SOURCE_ID="$(KEFIR_BUILD_SOURCE_ID)"'
 
@@ -84,6 +79,7 @@ $(LIBKEFIRRT_A): $(KEFIR_RUNTIME_OBJECT_FILES)
 	@$(AR) cr $@ $^
 	@ranlib $@
 
+COMPILE_DEPS += $(KEFIR_LIB_COMPILE_DEPS)
 DEPENDENCIES += $(KEFIR_LIB_DEPENDENCIES)
 OBJECT_FILES += $(KEFIR_LIB_OBJECT_FILES)
 BINARIES += $(LIBKEFIR_A)
