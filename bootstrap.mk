@@ -75,7 +75,7 @@ KEFIR_ASM_FILES += $(KEFIR_DRIVER_ASM_FILES)
 $(BOOTSTRAP)/hexdump: $(ROOT)/util/hexdump.c
 	@mkdir -p $(shell dirname "$@")
 	@echo "Building $@"
-	@$(KEFIRCC) $(KEFIR_FLAGS) -o $@ $^
+	@KEFIR_AS=$(KEFIR_AS) KEFIR_LD=$(KEFIR_LD) $(KEFIRCC) $(KEFIR_FLAGS) -o $@ $^
 
 $(BOOTSTRAP)/%.binary.h: $(BOOTSTRAP)/hexdump
 	@mkdir -p $(shell dirname "$@")
