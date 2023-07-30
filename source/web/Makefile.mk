@@ -4,22 +4,18 @@ KEFIR_EMCC_SOURCE = $(KEFIR_LIB_SOURCE)
 KEFIR_EMCC_SOURCE += $(wildcard $(SOURCE_DIR)/web/*.c)
 KEFIR_EMCC_SOURCE += $(filter-out $(SOURCE_DIR)/driver/main.c,$(wildcard $(SOURCE_DIR)/driver/*.c))
 
-KEFIR_EMCC_COMPILE_DEPS := $(KEFIR_EMCC_SOURCE:$(SOURCE_DIR)/%.c=$(KEFIR_EMCC_BIN_DIR)/%.deps)
+KEFIR_EMCC_COMPILE_DEPS := $(KEFIR_EMCC_SOURCE:$(SOURCE_DIR)/%.c=$(BIN_DIR)/%.deps)
 KEFIR_EMCC_DEPENDENCY_FILES := $(KEFIR_EMCC_SOURCE:$(SOURCE_DIR)/%.c=$(BIN_DIR)/%.d)
 KEFIR_EMCC_OBJECT_FILES := $(KEFIR_EMCC_SOURCE:$(SOURCE_DIR)/%.c=$(KEFIR_EMCC_BIN_DIR)/%.o)
 
-$(KEFIR_EMCC_BIN_DIR)/%.deps:
-	@mkdir -p $(shell dirname "$@")
-	@touch $@
-
-BIN_HEADERS_SRCDIR=$(SOURCE_DIR)
-BIN_HEADERS_DESTDIR=$(KEFIR_EMCC_BIN_DIR)
-include source/binary_headers.mk
-
-$(KEFIR_EMCC_BIN_DIR)/%.o: $(SOURCE_DIR)/%.c $(BIN_DIR)/%.d $(KEFIR_EMCC_BIN_DIR)/%.deps
+KEFIR_EMCC_BUILD_CFLAGS := $(CFLAGS)
+$(KEFIR_EMCC_BIN_DIR)/%.o: CFLAGS += '-DKEFIR_BUILD_CFLAGS="$(KEFIR_EMCC_BUILD_CFLAGS)"'
+$(KEFIR_EMCC_BIN_DIR)/%.o: CFLAGS += '-DKEFIR_BUILD_SOURCE_ID="$(KEFIR_BUILD_SOURCE_ID)"'
+$(KEFIR_EMCC_BIN_DIR)/%.o: KEFIR_EMCC_TARGET_DEPS=$(patsubst $(abspath $(KEFIR_EMCC_BIN_DIR))/%.o,$(abspath $(BIN_DIR))/%.deps,$(abspath $@))
+$(KEFIR_EMCC_BIN_DIR)/%.o: $(SOURCE_DIR)/%.c $(BIN_DIR)/%.d $(BIN_DIR)/%.deps
 	@mkdir -p $(shell dirname "$@")
 	@echo "Building $@"
-	@$(EMCC) $(CFLAGS) $(INCLUDES) $$(cat $(subst .o,.deps,$@)) -c $< -o $@
+	@$(EMCC) $(CFLAGS) $(INCLUDES) $$(cat $(KEFIR_EMCC_TARGET_DEPS)) -c $< -o $@
 
 $(KEFIR_JS): $(KEFIR_EMCC_OBJECT_FILES)
 	@mkdir -p $(shell dirname "$@")
