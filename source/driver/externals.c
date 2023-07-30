@@ -22,6 +22,12 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
+static void set_if_null(const char **target, const char *value) {
+    if (*target == NULL) {
+        *target = value;
+    }
+}
+
 kefir_result_t kefir_driver_external_resources_init_from_env(struct kefir_mem *mem,
                                                              struct kefir_driver_external_resources *externals,
                                                              struct kefir_tempfile_manager *tmpmgr) {
@@ -65,6 +71,32 @@ kefir_result_t kefir_driver_external_resources_init_from_env(struct kefir_mem *m
     externals->netbsd.include_path = getenv("KEFIR_NETBSD_INCLUDE");
     externals->netbsd.library_path = getenv("KEFIR_NETBSD_LIB");
     externals->netbsd.dynamic_linker = getenv("KEFIR_NETBSD_DYNAMIC_LINKER");
+
+    UNUSED(set_if_null);
+
+#ifdef KEFIR_CONFIG_HOST_LINUX_GNU_INCLUDE_PATH
+    set_if_null(&externals->gnu.include_path, KEFIR_CONFIG_HOST_LINUX_GNU_INCLUDE_PATH);
+#endif
+
+#ifdef KEFIR_CONFIG_HOST_LINUX_GNU_LIBRARY_PATH
+    set_if_null(&externals->gnu.library_path, KEFIR_CONFIG_HOST_LINUX_GNU_LIBRARY_PATH);
+#endif
+
+#ifdef KEFIR_CONFIG_HOST_LINUX_GNU_DYNAMIC_LINKER
+    set_if_null(&externals->gnu.dynamic_linker, KEFIR_CONFIG_HOST_LINUX_GNU_DYNAMIC_LINKER);
+#endif
+
+#ifdef KEFIR_CONFIG_HOST_LINUX_MUSL_INCLUDE_PATH
+    set_if_null(&externals->musl.include_path, KEFIR_CONFIG_HOST_LINUX_MUSL_INCLUDE_PATH);
+#endif
+
+#ifdef KEFIR_CONFIG_HOST_LINUX_MUSL_LIBRARY_PATH
+    set_if_null(&externals->musl.library_path, KEFIR_CONFIG_HOST_LINUX_MUSL_LIBRARY_PATH);
+#endif
+
+#ifdef KEFIR_CONFIG_HOST_LINUX_MUSL_DYNAMIC_LINKER
+    set_if_null(&externals->musl.dynamic_linker, KEFIR_CONFIG_HOST_LINUX_MUSL_DYNAMIC_LINKER);
+#endif
 
     externals->work_dir = getenv("KEFIR_WORKDIR");
     if (externals->work_dir == NULL) {

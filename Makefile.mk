@@ -23,6 +23,10 @@ CFLAGS+=-fPIC
 endif
 CFLAGS+=$(OPT) $(DBG) $(EXTRAFLAGS)
 
+DETECT_HOST_ENV=yes
+DETECT_HOST_ENV_CC:=$(CC)
+DETECT_HOST_ENV_CFLAGS:=$(CFLAGS)
+
 ifeq ($(SANITIZE),undefined)
 SANFLAGS=-fsanitize=undefined -fno-sanitize-recover=all
 CFLAGS+=$(SANFLAGS)
@@ -36,6 +40,7 @@ HEADERS_DIR=$(ROOT)/headers
 SCRIPTS_DIR=$(ROOT)/scripts
 BOOTSTRAP_DIR=$(ROOT)/bootstrap
 
+KEFIR_HOST_ENV_CONFIG_HEADER=$(BIN_DIR)/config.h
 LIBKEFIR_SO=$(LIB_DIR)/libkefir.so
 LIBKEFIR_SO_VERSION=0.0
 LIBKEFIR_A=$(LIB_DIR)/libkefir.a
@@ -58,19 +63,28 @@ BOOTSTRAP :=
 WEB :=
 WEBAPP :=
 
+$(KEFIR_HOST_ENV_CONFIG_HEADER):
+	@mkdir -p $(shell dirname "$@")
+	@echo "Generating $@"
+ifeq ($(DETECT_HOST_ENV),yes)
+	@CC='$(DETECT_HOST_ENV_CC)' CFLAGS='$(DETECT_HOST_ENV_CFLAGS)' $(SCRIPTS_DIR)/detect-host-env.sh "$@" && true || echo -n > "$@"
+else
+	@echo -n > "$@"
+endif
+
 $(BIN_DIR)/%.deps:
 	@mkdir -p $(shell dirname "$@")
 	@touch $@
 
-$(BIN_DIR)/%.d: $(SOURCE_DIR)/%.c $(BIN_DIR)/%.deps
+$(BIN_DIR)/%.d: $(SOURCE_DIR)/%.c $(BIN_DIR)/%.deps $(KEFIR_HOST_ENV_CONFIG_HEADER)
 	@mkdir -p $(shell dirname "$@")
 	@echo "Generating $@"
-	@$(CC) $(INCLUDES) $$(cat $(subst .d,.deps,$@)) -MM -MT '$(@:.d=.o)' $< > $@
+	@$(CC) $(INCLUDES) -include "$(KEFIR_HOST_ENV_CONFIG_HEADER)" $$(cat $(subst .d,.deps,$@)) -MM -MT '$(@:.d=.o)' $< > $@
 
-$(BIN_DIR)/%.o: $(SOURCE_DIR)/%.c $(BIN_DIR)/%.d $(BIN_DIR)/%.deps
+$(BIN_DIR)/%.o: $(SOURCE_DIR)/%.c $(BIN_DIR)/%.d $(BIN_DIR)/%.deps $(KEFIR_HOST_ENV_CONFIG_HEADER)
 	@mkdir -p $(shell dirname "$@")
 	@echo "Building $@"
-	@$(CC) $(CFLAGS) $(INCLUDES) $$(cat $(subst .o,.deps,$@)) -c $< -o $@
+	@$(CC) $(CFLAGS) $(INCLUDES) -include "$(KEFIR_HOST_ENV_CONFIG_HEADER)" $$(cat $(subst .o,.deps,$@)) -c $< -o $@
 
 $(BIN_DIR)/%.s.o: $(SOURCE_DIR)/%.s
 	@mkdir -p $(shell dirname "$@")

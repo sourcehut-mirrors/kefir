@@ -51,6 +51,9 @@ static kefir_result_t match_arch(const char *spec, struct kefir_driver_target *t
 }
 
 static kefir_result_t select_host_platform(struct kefir_driver_target *target) {
+#ifdef KEFIR_CONFIG_HOST_PLATFORM
+    target->platform = KEFIR_CONFIG_HOST_PLATFORM;
+#else
 #ifdef KEFIR_LINUX_HOST_PLATFORM
     target->platform = KEFIR_DRIVER_TARGET_PLATFORM_LINUX;
 #elif defined(KEFIR_FREEBSD_HOST_PLATFORM)
@@ -61,6 +64,7 @@ static kefir_result_t select_host_platform(struct kefir_driver_target *target) {
     target->platform = KEFIR_DRIVER_TARGET_PLATFORM_NETBSD;
 #elif defined(KEFIR_EMSCRIPTEN_HOST_PLATFORM)
     target->platform = KEFIR_DRIVER_TARGET_PLATFORM_LINUX;
+#endif
 #endif
     return KEFIR_OK;
 }
@@ -86,6 +90,9 @@ static kefir_result_t match_platform(const char *spec, struct kefir_driver_targe
 }
 
 static kefir_result_t select_default_variant(struct kefir_driver_target *target) {
+#ifdef KEFIR_CONFIG_HOST_VARIANT
+    target->variant = KEFIR_CONFIG_HOST_VARIANT;
+#else
     target->variant = KEFIR_DRIVER_TARGET_VARIANT_NONE;
     if (target->arch == KEFIR_DRIVER_TARGET_ARCH_X86_64 && target->platform == KEFIR_DRIVER_TARGET_PLATFORM_LINUX) {
         target->variant = KEFIR_DRIVER_TARGET_VARIANT_GNU;
@@ -96,6 +103,7 @@ static kefir_result_t select_default_variant(struct kefir_driver_target *target)
                target->platform == KEFIR_DRIVER_TARGET_PLATFORM_OPENBSD) {
         target->variant = KEFIR_DRIVER_TARGET_VARIANT_SYSTEM;
     }
+#endif
     return KEFIR_OK;
 }
 

@@ -307,10 +307,14 @@ static kefir_result_t dump_dependencies_impl(struct kefir_mem *mem,
 }
 
 static kefir_result_t is_system_include_path(const char *path, kefir_bool_t *res, void *payload) {
-    REQUIRE(path != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid path"));
     REQUIRE(res != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to flag"));
     REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid payload"));
     ASSIGN_DECL_CAST(const struct kefir_compiler_runner_configuration *, options, payload);
+
+    if (path == NULL) {
+        *res = false;
+        return KEFIR_OK;
+    }
 
     *res = kefir_hashtreeset_has(&options->system_include_directories, (kefir_hashtreeset_entry_t) path);
     return KEFIR_OK;

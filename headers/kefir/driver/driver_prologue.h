@@ -95,6 +95,14 @@ static kefir_result_t print_compiler_info(FILE *out, const char *exec_name) {
     fprintf(out, "    Compiler flags: %s\n", KEFIR_BUILD_CFLAGS);
 #endif
 
+    fprintf(out, "    Pre-configured host enviroment: %s\n",
+#ifdef KEFIR_CONFIG_HOST_ENVIRONMENT
+            KEFIR_CONFIG_HOST_ENVIRONMENT
+#else
+            "none"
+#endif
+    );
+
     fprintf(out, "URL: %s\n     %s\n", "https://github.com/protopopov1122/kefir", "https://sr.ht/~jprotopopov/kefir");
     return KEFIR_OK;
 }
@@ -122,6 +130,49 @@ static kefir_result_t print_environment(FILE *out, const struct kefir_driver_ext
     REQUIRE_OK(print_toolchain_env(out, "FREEBSD", &externals->freebsd));
     REQUIRE_OK(print_toolchain_env(out, "OPENBSD", &externals->openbsd));
     REQUIRE_OK(print_toolchain_env(out, "NETBSD", &externals->netbsd));
+    return KEFIR_OK;
+}
+
+static kefir_result_t print_host_environment(FILE *out) {
+#ifdef KEFIR_CONFIG_HOST_ENVIRONMENT
+    fprintf(out, "#define KEFIR_CONFIG_HOST_ENVIRONMENT \"%s\"\n", KEFIR_CONFIG_HOST_ENVIRONMENT);
+#endif
+
+#ifdef KEFIR_CONFIG_HOST_PLATFORM
+    fprintf(out, "#define KEFIR_CONFIG_HOST_PLATFORM %s\n", STRINGIFY(KEFIR_CONFIG_HOST_PLATFORM));
+#endif
+
+#ifdef KEFIR_CONFIG_HOST_VARIANT
+    fprintf(out, "#define KEFIR_CONFIG_HOST_VARIANT %s\n", STRINGIFY(KEFIR_CONFIG_HOST_VARIANT));
+#endif
+
+#ifdef KEFIR_CONFIG_HOST_LINUX_GNU_INCLUDE_PATH
+    fprintf(out, "#define KEFIR_CONFIG_HOST_LINUX_GNU_INCLUDE_PATH \"%s\"\n", KEFIR_CONFIG_HOST_LINUX_GNU_INCLUDE_PATH);
+#endif
+
+#ifdef KEFIR_CONFIG_HOST_LINUX_GNU_LIBRARY_PATH
+    fprintf(out, "#define KEFIR_CONFIG_HOST_LINUX_GNU_LIBRARY_PATH \"%s\"\n", KEFIR_CONFIG_HOST_LINUX_GNU_LIBRARY_PATH);
+#endif
+
+#ifdef KEFIR_CONFIG_HOST_LINUX_GNU_DYNAMIC_LINKER
+    fprintf(out, "#define KEFIR_CONFIG_HOST_LINUX_GNU_DYNAMIC_LINKER \"%s\"\n",
+            KEFIR_CONFIG_HOST_LINUX_GNU_DYNAMIC_LINKER);
+#endif
+
+#ifdef KEFIR_CONFIG_HOST_LINUX_MUSL_INCLUDE_PATH
+    fprintf(out, "#define KEFIR_CONFIG_HOST_LINUX_MUSL_INCLUDE_PATH \"%s\"\n",
+            KEFIR_CONFIG_HOST_LINUX_MUSL_INCLUDE_PATH);
+#endif
+
+#ifdef KEFIR_CONFIG_HOST_LINUX_MUSL_LIBRARY_PATH
+    fprintf(out, "#define KEFIR_CONFIG_HOST_LINUX_MUSL_LIBRARY_PATH \"%s\"\n",
+            KEFIR_CONFIG_HOST_LINUX_MUSL_LIBRARY_PATH);
+#endif
+
+#ifdef KEFIR_CONFIG_HOST_LINUX_MUSL_DYNAMIC_LINKER
+    fprintf(out, "#define KEFIR_CONFIG_HOST_LINUX_MUSL_DYNAMIC_LINKER \"%s\"\n",
+            KEFIR_CONFIG_HOST_LINUX_MUSL_DYNAMIC_LINKER);
+#endif
     return KEFIR_OK;
 }
 
