@@ -52,8 +52,15 @@ EOF
 }
 
 detect_host_os () {
-    if [ `uname` = 'Linux' ]; then
+    local os=`uname`
+    if [ "$os" = 'Linux' ]; then
         echo 'linux'
+    elif [ "$os" = 'FreeBSD' ]; then
+        echo 'freebsd'
+    elif [ "$os" = 'OpenBSD' ]; then
+        echo 'openbsd'
+    elif [ "$os" = 'NetBSD' ]; then
+        echo 'netbsd'
     else
         echo 'unknown'
     fi
@@ -70,13 +77,31 @@ detect_host_env () {
         else
             echo "linux-musl"
         fi
+    elif [ "$host_os" = "freebsd" ]; then
+        echo "freebsd-system"
+    elif [ "$host_os" = "openbsd" ]; then
+        echo "openbsd-system"
+    elif [ "$host_os" = "netbsd" ]; then
+        echo "netbsd-system"
     else
         echo "unknown"
     fi
 }
 
 detect_include_path () {
-    echo | $cc $cflags -E -Wp,-v - 2>&1 >/dev/null | sed -nr 's/^ (.*)$/\1/p' | paste -sd ';' -
+    case "$host_env" in
+        "freebsd-system")
+            echo | $cc $cflags -E -Wp,-v - 2>&1 >/dev/null | grep -v clang | sed -nr 's/^ (.*)$/\1/p' | paste -sd ';' -
+            ;;
+
+        "openbsd-system")
+            echo | $cc $cflags -E -Wp,-v - 2>&1 >/dev/null | grep -v clang | sed -nr 's/^ (.*)$/\1/p' | paste -sd ';' -
+            ;;
+        
+        *)
+            echo | $cc $cflags -E -Wp,-v - 2>&1 >/dev/null | sed -nr 's/^ (.*)$/\1/p' | paste -sd ';' -
+            ;;
+    esac
 }
 
 detect_musl_libc () {
@@ -137,7 +162,7 @@ echo -n "Detecting host environment... "
 host_env=`detect_host_env`
 echo "$host_env"
 if [ "$host_env" = "unknown" ]; then
-    echo "Failed to configure the project"
+    echo "Failed to detect host environment"
     exit -1
 fi
 
@@ -176,6 +201,36 @@ EOF
 #define KEFIR_CONFIG_HOST_LINUX_MUSL_INCLUDE_PATH "$include_path"
 #define KEFIR_CONFIG_HOST_LINUX_MUSL_LIBRARY_PATH "$library_path"
 #define KEFIR_CONFIG_HOST_LINUX_MUSL_DYNAMIC_LINKER "$dynamic_linker"
+EOF
+        ;;
+
+    "freebsd-system")
+        cat >>"$outfile" <<EOF
+#define KEFIR_CONFIG_HOST_PLATFORM KEFIR_DRIVER_TARGET_PLATFORM_FREEBSD
+#define KEFIR_CONFIG_HOST_VARIANT KEFIR_DRIVER_TARGET_VARIANT_SYSTEM
+#define KEFIR_CONFIG_HOST_FREEBSD_SYSTEM_INCLUDE_PATH "$include_path"
+#define KEFIR_CONFIG_HOST_FREEBSD_SYSTEM_LIBRARY_PATH "$library_path"
+#define KEFIR_CONFIG_HOST_FREEBSD_SYSTEM_DYNAMIC_LINKER "$dynamic_linker"
+EOF
+        ;;
+
+    "openbsd-system")
+        cat >>"$outfile" <<EOF
+#define KEFIR_CONFIG_HOST_PLATFORM KEFIR_DRIVER_TARGET_PLATFORM_OPENBSD
+#define KEFIR_CONFIG_HOST_VARIANT KEFIR_DRIVER_TARGET_VARIANT_SYSTEM
+#define KEFIR_CONFIG_HOST_OPENBSD_SYSTEM_INCLUDE_PATH "$include_path"
+#define KEFIR_CONFIG_HOST_OPENBSD_SYSTEM_LIBRARY_PATH "$library_path"
+#define KEFIR_CONFIG_HOST_OPENBSD_SYSTEM_DYNAMIC_LINKER "$dynamic_linker"
+EOF
+        ;;
+
+    "netbsd-system")
+        cat >>"$outfile" <<EOF
+#define KEFIR_CONFIG_HOST_PLATFORM KEFIR_DRIVER_TARGET_PLATFORM_NETBSD
+#define KEFIR_CONFIG_HOST_VARIANT KEFIR_DRIVER_TARGET_VARIANT_SYSTEM
+#define KEFIR_CONFIG_HOST_NETBSD_SYSTEM_INCLUDE_PATH "$include_path"
+#define KEFIR_CONFIG_HOST_NETBSD_SYSTEM_LIBRARY_PATH "$library_path"
+#define KEFIR_CONFIG_HOST_NETBSD_SYSTEM_DYNAMIC_LINKER "$dynamic_linker"
 EOF
         ;;
 esac

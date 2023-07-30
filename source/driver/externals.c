@@ -98,6 +98,42 @@ kefir_result_t kefir_driver_external_resources_init_from_env(struct kefir_mem *m
     set_if_null(&externals->musl.dynamic_linker, KEFIR_CONFIG_HOST_LINUX_MUSL_DYNAMIC_LINKER);
 #endif
 
+#ifdef KEFIR_CONFIG_HOST_FREEBSD_SYSTEM_INCLUDE_PATH
+    set_if_null(&externals->freebsd.include_path, KEFIR_CONFIG_HOST_FREEBSD_SYSTEM_INCLUDE_PATH);
+#endif
+
+#ifdef KEFIR_CONFIG_HOST_FREEBSD_SYSTEM_LIBRARY_PATH
+    set_if_null(&externals->freebsd.library_path, KEFIR_CONFIG_HOST_FREEBSD_SYSTEM_LIBRARY_PATH);
+#endif
+
+#ifdef KEFIR_CONFIG_HOST_FREEBSD_SYSTEM_DYNAMIC_LINKER
+    set_if_null(&externals->freebsd.dynamic_linker, KEFIR_CONFIG_HOST_FREEBSD_SYSTEM_DYNAMIC_LINKER);
+#endif
+
+#ifdef KEFIR_CONFIG_HOST_OPENBSD_SYSTEM_INCLUDE_PATH
+    set_if_null(&externals->openbsd.include_path, KEFIR_CONFIG_HOST_OPENBSD_SYSTEM_INCLUDE_PATH);
+#endif
+
+#ifdef KEFIR_CONFIG_HOST_OPENBSD_SYSTEM_LIBRARY_PATH
+    set_if_null(&externals->openbsd.library_path, KEFIR_CONFIG_HOST_OPENBSD_SYSTEM_LIBRARY_PATH);
+#endif
+
+#ifdef KEFIR_CONFIG_HOST_OPENBSD_SYSTEM_DYNAMIC_LINKER
+    set_if_null(&externals->openbsd.dynamic_linker, KEFIR_CONFIG_HOST_OPENBSD_SYSTEM_DYNAMIC_LINKER);
+#endif
+
+#ifdef KEFIR_CONFIG_HOST_NETBSD_SYSTEM_INCLUDE_PATH
+    set_if_null(&externals->netbsd.include_path, KEFIR_CONFIG_HOST_NETBSD_SYSTEM_INCLUDE_PATH);
+#endif
+
+#ifdef KEFIR_CONFIG_HOST_NETBSD_SYSTEM_LIBRARY_PATH
+    set_if_null(&externals->netbsd.library_path, KEFIR_CONFIG_HOST_NETBSD_SYSTEM_LIBRARY_PATH);
+#endif
+
+#ifdef KEFIR_CONFIG_HOST_NETBSD_SYSTEM_DYNAMIC_LINKER
+    set_if_null(&externals->netbsd.dynamic_linker, KEFIR_CONFIG_HOST_NETBSD_SYSTEM_DYNAMIC_LINKER);
+#endif
+
     externals->work_dir = getenv("KEFIR_WORKDIR");
     if (externals->work_dir == NULL) {
         REQUIRE_OK(kefir_tempfile_manager_tmpdir(mem, tmpmgr, "kefir-workdir-XXXXXX", &externals->work_dir));
