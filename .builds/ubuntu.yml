@@ -27,9 +27,6 @@ tasks:
       export LC_ALL=C.UTF-8
       export KEFIR_RTLIB="$HOME/kefir/bin/libs/libkefirrt.a"
       export KEFIR_RTINC="$HOME/kefir/headers/kefir/runtime"
-      export KEFIR_GNU_INCLUDE="/usr/lib/gcc/x86_64-linux-gnu/12/include;/usr/include/x86_64-linux-gnu;/usr/include;/usr/local/include"
-      export KEFIR_GNU_LIB="/usr/lib/x86_64-linux-gnu;/usr/lib/gcc/x86_64-linux-gnu/12/;/usr/lib;/usr/local/lib"
-      export KEFIR_GNU_DYNAMIC_LINKER="/lib64/ld-linux-x86-64.so.2"
       export KEFIR_CFLAGS="-O1 -fPIC -pie"
       ./source/tests/misc/run-lua-tests.sh "$(pwd)/bin/kefir" "$(pwd)/bin/lua-test"
   - c_testsuite: |
@@ -38,9 +35,6 @@ tasks:
       export KEFIRCC="$HOME/kefir/bin/kefir"
       export KEFIR_RTLIB="$HOME/kefir/bin/libs/libkefirrt.a"
       export KEFIR_RTINC="$HOME/kefir/headers/kefir/runtime"
-      export KEFIR_GNU_INCLUDE="/usr/lib/gcc/x86_64-linux-gnu/12/include;/usr/include/x86_64-linux-gnu;/usr/include;/usr/local/include"
-      export KEFIR_GNU_LIB="/usr/lib/x86_64-linux-gnu;/usr/lib/gcc/x86_64-linux-gnu/12/;/usr/lib;/usr/local/lib"
-      export KEFIR_GNU_DYNAMIC_LINKER="/lib64/ld-linux-x86-64.so.2"
       export CFLAGS="--target x86_64-host-gnu -O1 -fPIC -pie"
       export LC_ALL=C.UTF-8 
       ./single-exec kefir | tee ~/c-tests.log
@@ -53,9 +47,6 @@ tasks:
       export KEFIRCC="$HOME/kefir/bin/kefir"
       export KEFIR_RTLIB="$HOME/kefir/bin/libs/libkefirrt.a"
       export KEFIR_RTINC="$HOME/kefir/headers/kefir/runtime"
-      export KEFIR_GNU_INCLUDE="/usr/lib/gcc/x86_64-linux-gnu/12/include;/usr/include/x86_64-linux-gnu;/usr/include;/usr/local/include"
-      export KEFIR_GNU_LIB="/usr/lib/x86_64-linux-gnu;/usr/lib/gcc/x86_64-linux-gnu/12/;/usr/lib;/usr/local/lib"
-      export KEFIR_GNU_DYNAMIC_LINKER="/lib64/ld-linux-x86-64.so.2"
       export KEFIR_EXTRAFLAGS="-O1 -fPIC -pie"
       LC_ALL=C.UTF-8 ./kefir/source/tests/misc/run_gcc_torture_suite.sh 2>&1 | tee torture.log
       grep -v "Interrupted system call" torture.log | grep -i "fatal\|abort\|timeout\|segm" && exit 1 || true
@@ -64,9 +55,6 @@ tasks:
       make clean clean_bootstrap
       export KEFIR_RTLIB="$HOME/kefir/bin/libs/libkefirrt.a"
       export KEFIR_RTINC="$HOME/kefir/headers/kefir/runtime"
-      export KEFIR_GNU_INCLUDE="/usr/lib/gcc/x86_64-linux-gnu/12/include;/usr/include/x86_64-linux-gnu;/usr/include;/usr/local/include"
-      export KEFIR_GNU_LIB="/usr/lib/x86_64-linux-gnu;/usr/lib/gcc/x86_64-linux-gnu/12/;/usr/lib;/usr/local/lib"
-      export KEFIR_GNU_DYNAMIC_LINKER="/lib64/ld-linux-x86-64.so.2"
       LC_ALL=C.UTF-8 make bootstrap KEFIR_EXTRAFLAGS="-O1" -j$(nproc)
 triggers:
   - action: email
