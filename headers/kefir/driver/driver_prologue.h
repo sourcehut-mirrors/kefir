@@ -133,92 +133,143 @@ static kefir_result_t print_environment(FILE *out, const struct kefir_driver_ext
     return KEFIR_OK;
 }
 
-static kefir_result_t print_host_environment(FILE *out) {
+static kefir_result_t print_target_environment_header(FILE *out, const struct kefir_driver_target *target,
+                                                      const struct kefir_driver_external_resources *externals) {
     UNUSED(out);
-#ifdef KEFIR_CONFIG_HOST_ENVIRONMENT
-    fprintf(out, "#define KEFIR_CONFIG_HOST_ENVIRONMENT \"%s\"\n", KEFIR_CONFIG_HOST_ENVIRONMENT);
-#endif
+    switch (target->platform) {
+        case KEFIR_DRIVER_TARGET_PLATFORM_LINUX:
+            switch (target->variant) {
+                case KEFIR_DRIVER_TARGET_VARIANT_NONE:
+                case KEFIR_DRIVER_TARGET_VARIANT_SYSTEM:
+                    break;
 
-#ifdef KEFIR_CONFIG_HOST_PLATFORM
-    fprintf(out, "#define KEFIR_CONFIG_HOST_PLATFORM %s\n", STRINGIFY(KEFIR_CONFIG_HOST_PLATFORM));
-#endif
+                case KEFIR_DRIVER_TARGET_VARIANT_GNU:
+                    fprintf(out, "#define KEFIR_CONFIG_HOST_ENVIRONMENT \"%s\"\n", "linux-gnu");
+                    fprintf(out, "#define KEFIR_CONFIG_HOST_PLATFORM %s\n",
+                            STRINGIFY(KEFIR_DRIVER_TARGET_PLATFORM_LINUX));
+                    fprintf(out, "#define KEFIR_CONFIG_HOST_VARIANT %s\n", STRINGIFY(KEFIR_DRIVER_TARGET_VARIANT_GNU));
+                    if (externals->gnu.include_path != NULL) {
+                        fprintf(out, "#define KEFIR_CONFIG_HOST_LINUX_GNU_INCLUDE_PATH \"%s\"\n",
+                                externals->gnu.include_path);
+                    }
+                    if (externals->gnu.library_path != NULL) {
+                        fprintf(out, "#define KEFIR_CONFIG_HOST_LINUX_GNU_LIBRARY_PATH \"%s\"\n",
+                                externals->gnu.library_path);
+                    }
+                    if (externals->gnu.dynamic_linker != NULL) {
+                        fprintf(out, "#define KEFIR_CONFIG_HOST_LINUX_GNU_DYNAMIC_LINKER \"%s\"\n",
+                                externals->gnu.dynamic_linker);
+                    }
+                    break;
 
-#ifdef KEFIR_CONFIG_HOST_VARIANT
-    fprintf(out, "#define KEFIR_CONFIG_HOST_VARIANT %s\n", STRINGIFY(KEFIR_CONFIG_HOST_VARIANT));
-#endif
+                case KEFIR_DRIVER_TARGET_VARIANT_MUSL:
+                    fprintf(out, "#define KEFIR_CONFIG_HOST_ENVIRONMENT \"%s\"\n", "linux-musl");
+                    fprintf(out, "#define KEFIR_CONFIG_HOST_PLATFORM %s\n",
+                            STRINGIFY(KEFIR_DRIVER_TARGET_PLATFORM_LINUX));
+                    fprintf(out, "#define KEFIR_CONFIG_HOST_VARIANT %s\n", STRINGIFY(KEFIR_DRIVER_TARGET_VARIANT_MUSL));
+                    if (externals->musl.include_path != NULL) {
+                        fprintf(out, "#define KEFIR_CONFIG_HOST_LINUX_MUSL_INCLUDE_PATH \"%s\"\n",
+                                externals->musl.include_path);
+                    }
+                    if (externals->musl.library_path != NULL) {
+                        fprintf(out, "#define KEFIR_CONFIG_HOST_LINUX_MUSL_LIBRARY_PATH \"%s\"\n",
+                                externals->musl.library_path);
+                    }
+                    if (externals->musl.dynamic_linker != NULL) {
+                        fprintf(out, "#define KEFIR_CONFIG_HOST_LINUX_MUSL_DYNAMIC_LINKER \"%s\"\n",
+                                externals->musl.dynamic_linker);
+                    }
+                    break;
+            }
+            break;
 
-#ifdef KEFIR_CONFIG_HOST_LINUX_GNU_INCLUDE_PATH
-    fprintf(out, "#define KEFIR_CONFIG_HOST_LINUX_GNU_INCLUDE_PATH \"%s\"\n", KEFIR_CONFIG_HOST_LINUX_GNU_INCLUDE_PATH);
-#endif
+        case KEFIR_DRIVER_TARGET_PLATFORM_FREEBSD:
+            switch (target->variant) {
+                case KEFIR_DRIVER_TARGET_VARIANT_NONE:
+                case KEFIR_DRIVER_TARGET_VARIANT_GNU:
+                case KEFIR_DRIVER_TARGET_VARIANT_MUSL:
+                    break;
 
-#ifdef KEFIR_CONFIG_HOST_LINUX_GNU_LIBRARY_PATH
-    fprintf(out, "#define KEFIR_CONFIG_HOST_LINUX_GNU_LIBRARY_PATH \"%s\"\n", KEFIR_CONFIG_HOST_LINUX_GNU_LIBRARY_PATH);
-#endif
+                case KEFIR_DRIVER_TARGET_VARIANT_SYSTEM:
+                    fprintf(out, "#define KEFIR_CONFIG_HOST_ENVIRONMENT \"%s\"\n", "freebsd-system");
+                    fprintf(out, "#define KEFIR_CONFIG_HOST_PLATFORM %s\n",
+                            STRINGIFY(KEFIR_DRIVER_TARGET_PLATFORM_FREEBSD));
+                    fprintf(out, "#define KEFIR_CONFIG_HOST_VARIANT %s\n",
+                            STRINGIFY(KEFIR_DRIVER_TARGET_VARIANT_SYSTEM));
+                    if (externals->freebsd.include_path != NULL) {
+                        fprintf(out, "#define KEFIR_CONFIG_HOST_FREEBSD_SYSTEM_INCLUDE_PATH \"%s\"\n",
+                                externals->freebsd.include_path);
+                    }
+                    if (externals->freebsd.library_path != NULL) {
+                        fprintf(out, "#define KEFIR_CONFIG_HOST_FREEBSD_SYSTEM_LIBRARY_PATH \"%s\"\n",
+                                externals->freebsd.library_path);
+                    }
+                    if (externals->freebsd.dynamic_linker != NULL) {
+                        fprintf(out, "#define KEFIR_CONFIG_HOST_FREEBSD_SYSTEM_DYNAMIC_LINKER \"%s\"\n",
+                                externals->freebsd.dynamic_linker);
+                    }
+                    break;
+            }
+            break;
 
-#ifdef KEFIR_CONFIG_HOST_LINUX_GNU_DYNAMIC_LINKER
-    fprintf(out, "#define KEFIR_CONFIG_HOST_LINUX_GNU_DYNAMIC_LINKER \"%s\"\n",
-            KEFIR_CONFIG_HOST_LINUX_GNU_DYNAMIC_LINKER);
-#endif
+        case KEFIR_DRIVER_TARGET_PLATFORM_OPENBSD:
+            switch (target->variant) {
+                case KEFIR_DRIVER_TARGET_VARIANT_NONE:
+                case KEFIR_DRIVER_TARGET_VARIANT_GNU:
+                case KEFIR_DRIVER_TARGET_VARIANT_MUSL:
+                    break;
 
-#ifdef KEFIR_CONFIG_HOST_LINUX_MUSL_INCLUDE_PATH
-    fprintf(out, "#define KEFIR_CONFIG_HOST_LINUX_MUSL_INCLUDE_PATH \"%s\"\n",
-            KEFIR_CONFIG_HOST_LINUX_MUSL_INCLUDE_PATH);
-#endif
+                case KEFIR_DRIVER_TARGET_VARIANT_SYSTEM:
+                    fprintf(out, "#define KEFIR_CONFIG_HOST_ENVIRONMENT \"%s\"\n", "openbsd-system");
+                    fprintf(out, "#define KEFIR_CONFIG_HOST_PLATFORM %s\n",
+                            STRINGIFY(KEFIR_DRIVER_TARGET_PLATFORM_OPENBSD));
+                    fprintf(out, "#define KEFIR_CONFIG_HOST_VARIANT %s\n",
+                            STRINGIFY(KEFIR_DRIVER_TARGET_VARIANT_SYSTEM));
+                    if (externals->openbsd.include_path != NULL) {
+                        fprintf(out, "#define KEFIR_CONFIG_HOST_OPENBSD_SYSTEM_INCLUDE_PATH \"%s\"\n",
+                                externals->openbsd.include_path);
+                    }
+                    if (externals->openbsd.library_path != NULL) {
+                        fprintf(out, "#define KEFIR_CONFIG_HOST_OPENBSD_SYSTEM_LIBRARY_PATH \"%s\"\n",
+                                externals->openbsd.library_path);
+                    }
+                    if (externals->openbsd.dynamic_linker != NULL) {
+                        fprintf(out, "#define KEFIR_CONFIG_HOST_OPENBSD_SYSTEM_DYNAMIC_LINKER \"%s\"\n",
+                                externals->openbsd.dynamic_linker);
+                    }
+                    break;
+            }
+            break;
 
-#ifdef KEFIR_CONFIG_HOST_LINUX_MUSL_LIBRARY_PATH
-    fprintf(out, "#define KEFIR_CONFIG_HOST_LINUX_MUSL_LIBRARY_PATH \"%s\"\n",
-            KEFIR_CONFIG_HOST_LINUX_MUSL_LIBRARY_PATH);
-#endif
+        case KEFIR_DRIVER_TARGET_PLATFORM_NETBSD:
+            switch (target->variant) {
+                case KEFIR_DRIVER_TARGET_VARIANT_NONE:
+                case KEFIR_DRIVER_TARGET_VARIANT_GNU:
+                case KEFIR_DRIVER_TARGET_VARIANT_MUSL:
+                    break;
 
-#ifdef KEFIR_CONFIG_HOST_LINUX_MUSL_DYNAMIC_LINKER
-    fprintf(out, "#define KEFIR_CONFIG_HOST_LINUX_MUSL_DYNAMIC_LINKER \"%s\"\n",
-            KEFIR_CONFIG_HOST_LINUX_MUSL_DYNAMIC_LINKER);
-#endif
-
-#ifdef KEFIR_CONFIG_HOST_FREEBSD_SYSTEM_INCLUDE_PATH
-    fprintf(out, "#define KEFIR_CONFIG_HOST_FREEBSD_SYSTEM_INCLUDE_PATH \"%s\"\n",
-            KEFIR_CONFIG_HOST_FREEBSD_SYSTEM_INCLUDE_PATH);
-#endif
-
-#ifdef KEFIR_CONFIG_HOST_FREEBSD_SYSTEM_LIBRARY_PATH
-    fprintf(out, "#define KEFIR_CONFIG_HOST_FREEBSD_SYSTEM_LIBRARY_PATH \"%s\"\n",
-            KEFIR_CONFIG_HOST_FREEBSD_SYSTEM_LIBRARY_PATH);
-#endif
-
-#ifdef KEFIR_CONFIG_HOST_FREEBSD_SYSTEM_DYNAMIC_LINKER
-    fprintf(out, "#define KEFIR_CONFIG_HOST_FREEBSD_SYSTEM_DYNAMIC_LINKER \"%s\"\n",
-            KEFIR_CONFIG_HOST_FREEBSD_SYSTEM_DYNAMIC_LINKER);
-#endif
-
-#ifdef KEFIR_CONFIG_HOST_OPENBSD_SYSTEM_INCLUDE_PATH
-    fprintf(out, "#define KEFIR_CONFIG_HOST_OPENBSD_SYSTEM_INCLUDE_PATH \"%s\"\n",
-            KEFIR_CONFIG_HOST_OPENBSD_SYSTEM_INCLUDE_PATH);
-#endif
-
-#ifdef KEFIR_CONFIG_HOST_OPENBSD_SYSTEM_LIBRARY_PATH
-    fprintf(out, "#define KEFIR_CONFIG_HOST_OPENBSD_SYSTEM_LIBRARY_PATH \"%s\"\n",
-            KEFIR_CONFIG_HOST_OPENBSD_SYSTEM_LIBRARY_PATH);
-#endif
-
-#ifdef KEFIR_CONFIG_HOST_OPENBSD_SYSTEM_DYNAMIC_LINKER
-    fprintf(out, "#define KEFIR_CONFIG_HOST_OPENBSD_SYSTEM_DYNAMIC_LINKER \"%s\"\n",
-            KEFIR_CONFIG_HOST_OPENBSD_SYSTEM_DYNAMIC_LINKER);
-#endif
-
-#ifdef KEFIR_CONFIG_HOST_NETBSD_SYSTEM_INCLUDE_PATH
-    fprintf(out, "#define KEFIR_CONFIG_HOST_NETBSD_SYSTEM_INCLUDE_PATH \"%s\"\n",
-            KEFIR_CONFIG_HOST_NETBSD_SYSTEM_INCLUDE_PATH);
-#endif
-
-#ifdef KEFIR_CONFIG_HOST_NETBSD_SYSTEM_LIBRARY_PATH
-    fprintf(out, "#define KEFIR_CONFIG_HOST_NETBSD_SYSTEM_LIBRARY_PATH \"%s\"\n",
-            KEFIR_CONFIG_HOST_NETBSD_SYSTEM_LIBRARY_PATH);
-#endif
-
-#ifdef KEFIR_CONFIG_HOST_NETBSD_SYSTEM_DYNAMIC_LINKER
-    fprintf(out, "#define KEFIR_CONFIG_HOST_NETBSD_SYSTEM_DYNAMIC_LINKER \"%s\"\n",
-            KEFIR_CONFIG_HOST_NETBSD_SYSTEM_DYNAMIC_LINKER);
-#endif
+                case KEFIR_DRIVER_TARGET_VARIANT_SYSTEM:
+                    fprintf(out, "#define KEFIR_CONFIG_HOST_ENVIRONMENT \"%s\"\n", "netbsd-system");
+                    fprintf(out, "#define KEFIR_CONFIG_HOST_PLATFORM %s\n",
+                            STRINGIFY(KEFIR_DRIVER_TARGET_PLATFORM_NETBSD));
+                    fprintf(out, "#define KEFIR_CONFIG_HOST_VARIANT %s\n",
+                            STRINGIFY(KEFIR_DRIVER_TARGET_VARIANT_SYSTEM));
+                    if (externals->netbsd.include_path != NULL) {
+                        fprintf(out, "#define KEFIR_CONFIG_HOST_NETBSD_SYSTEM_INCLUDE_PATH \"%s\"\n",
+                                externals->netbsd.include_path);
+                    }
+                    if (externals->netbsd.library_path != NULL) {
+                        fprintf(out, "#define KEFIR_CONFIG_HOST_NETBSD_SYSTEM_LIBRARY_PATH \"%s\"\n",
+                                externals->netbsd.library_path);
+                    }
+                    if (externals->netbsd.dynamic_linker != NULL) {
+                        fprintf(out, "#define KEFIR_CONFIG_HOST_NETBSD_SYSTEM_DYNAMIC_LINKER \"%s\"\n",
+                                externals->netbsd.dynamic_linker);
+                    }
+                    break;
+            }
+            break;
+    }
     return KEFIR_OK;
 }
 

@@ -54,8 +54,8 @@ int kefir_run_with_args(int argc, char *const *argv) {
         res = print_compiler_info(stdout, argv[0]);
     } else if (res == KEFIR_OK && command == KEFIR_DRIVER_COMMAND_COMPILER_ENVIRONMENT) {
         res = print_environment(stdout, &exteral_resources);
-    } else if (res == KEFIR_OK && command == KEFIR_DRIVER_COMMAND_COMPILER_HOST_ENVIRONMENT) {
-        res = print_host_environment(stdout);
+    } else if (res == KEFIR_OK && command == KEFIR_DRIVER_COMMAND_TARGET_ENVIRONMENT_HEADER) {
+        res = print_target_environment_header(stdout, &driver_config.target, &exteral_resources);
     } else {
         struct kefir_compiler_runner_configuration compiler_config;
         REQUIRE_CHAIN(&res, kefir_driver_generate_compiler_config(mem, &symbols, &driver_config, &exteral_resources,

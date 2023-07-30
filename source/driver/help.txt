@@ -7,7 +7,7 @@ OPTIONS:
     -v,--version                        Print compiler version
     --compiler-info                     Print compiler information
     --envinronment-info                 Print compiler environment information (see ENVIRONMENT VARIABLES section below)
-    --compiler-host-environment-header  Print compiler host environment header file
+    --environment-header                Print compiler environment header file (based on ENVIRONMENT VARIABLES and --target)
     -c                                  Skip the link-edit phase of the compilation, save object files
     -S                                  Skip assembling phase of the compilation, save assembly files
     -E                                  Preprocess C-language source files, print results to standard output

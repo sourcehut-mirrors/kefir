@@ -144,7 +144,7 @@ echo "$host_cc"
 
 if [ "$host_cc" = "kefir" ]; then
     echo -n "Generating $outfile... "
-    $cc $cflags --compiler-host-environment-header > "$outfile"
+    $cc $cflags --environment-header > "$outfile"
     echo "done"
     exit 0
 fi

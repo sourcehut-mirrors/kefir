@@ -456,9 +456,9 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
             // Environment info requested
             *command = KEFIR_DRIVER_COMMAND_COMPILER_ENVIRONMENT;
             return KEFIR_OK;
-        } else if (strcmp("--compiler-host-environment-header", arg) == 0) {
+        } else if (strcmp("--environment-header", arg) == 0) {
             // Environment info requested
-            *command = KEFIR_DRIVER_COMMAND_COMPILER_HOST_ENVIRONMENT;
+            *command = KEFIR_DRIVER_COMMAND_TARGET_ENVIRONMENT_HEADER;
             return KEFIR_OK;
         }
 
