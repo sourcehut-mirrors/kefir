@@ -24,6 +24,7 @@ fi
 host_cc=
 host_os=
 host_env=
+clang_candidate_gcc=
 include_path=
 library_path=
 dynamic_linker=
@@ -88,6 +89,10 @@ detect_host_env () {
     fi
 }
 
+detect_clang_candidate_gcc () {
+    $cc $cflags -v 2>&1 | sed -nr 's/Selected GCC installation:\s*(.*)/\1/p' | tr -d '\n'
+}
+
 detect_include_path () {
     case "$host_env" in
         "freebsd-system")
@@ -99,7 +104,12 @@ detect_include_path () {
             ;;
         
         *)
-            echo | $cc $cflags -E -Wp,-v - 2>&1 >/dev/null | sed -nr 's/^ (.*)$/\1/p' | paste -sd ';' -
+            if [ "$host_cc" = "clang" ]; then
+                echo -n "$clang_candidate_gcc/include;$clang_candidate_gcc/include-fixed;"
+                echo | $cc $cflags -E -Wp,-v - 2>&1 >/dev/null | grep -v clang | sed -nr 's/^ (.*)$/\1/p' | paste -sd ';' -
+            else
+                echo | $cc $cflags -E -Wp,-v - 2>&1 >/dev/null | sed -nr 's/^ (.*)$/\1/p' | paste -sd ';' -
+            fi
             ;;
     esac
 }
@@ -113,7 +123,13 @@ detect_library_path () {
         dirname $(detect_musl_libc) | tr -d '\n'
         echo -n ';'
     fi
-    $cc $cflags -print-search-dirs | sed -nr 's/libraries: =(.*)/\1/p' | sed 's/:/;/g'
+
+    if [ "$host_cc" = "clang" ]; then
+        echo -n "$clang_candidate_gcc;"
+        $cc $cflags -print-search-dirs | sed -nr 's/libraries: =(.*)/\1/p' | sed 's/:/;/g' | sed -nr 's/([^;]*clang[^;]*;?)//p'
+    else
+        $cc $cflags -print-search-dirs | sed -nr 's/libraries: =(.*)/\1/p' | sed 's/:/;/g'
+    fi
 }
 
 detect_dynamic_linker () {
@@ -154,8 +170,13 @@ host_os=`detect_host_os`
 echo "$host_os"
 
 if [ "$host_os" = "linux" ] && [ "$host_cc" = "clang" ]; then
-    echo "Clang compiler on Linux cannot be used as host environment due to header file incompatibility. Please use GCC for host environment configuration."
-    exit -1
+    clang_candidate_gcc=`detect_clang_candidate_gcc`
+    if [ "x$clang_candidate_gcc" = "x" ]; then
+        echo "Clang compiler without a candidate GCC installation on Linux cannot be used as host environment provider due to header file incompatibility. Please use GCC for host environment configuration."
+        exit -1
+    else
+        echo "Using Clang selected candidate GCC installation: $clang_candidate_gcc"
+    fi
 fi
 
 echo -n "Detecting host environment... "
