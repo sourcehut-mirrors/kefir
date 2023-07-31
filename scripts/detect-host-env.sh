@@ -1,4 +1,23 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
+#
+# SPDX-License-Identifier: GPL-3.0
+#
+# Copyright (C) 2020-2023  Jevgenijs Protopopovs
+#
+# This file is part of Kefir project.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, version 3.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
 
 set -e
 
@@ -12,14 +31,12 @@ cleanup () {
 
 trap cleanup EXIT HUP INT QUIT PIPE TERM
 
+log () {
+    echo $@ >&2
+}
+
 cc=cc
 cflags=
-outfile="$1"
-
-if [ "x$outfile" = "x" ]; then
-    echo "Usage: $0 output_file"
-    exit -1
-fi
 
 host_cc=
 host_os=
@@ -29,7 +46,19 @@ include_path=
 library_path=
 dynamic_linker=
 
+load_cc_from_env () {
+    if [ "x$CC" != "x" ]; then
+        cc="$CC"
+    fi
+
+    if [ "x$CFLAGS" != "x" ]; then
+        cflags="$CFLAGS"
+    fi
+}
+
 detect_host_compiler () {
+    log -n "Detecting host C compiler... "
+
     cat > "$tempdir/test.c" <<EOF
 #ifdef __clang__
 "clang"
@@ -42,29 +71,37 @@ EOF
 
     local res=`$cc $cflags -E "$tempdir/test.c"`
     if echo "$res" | grep clang >/dev/null; then
-        echo 'clang'
+        host_cc='clang'
     elif echo "$res" | grep __KEFIRCC__ >/dev/null; then
-        echo 'kefir'
+        host_cc='kefir'
     elif echo "$res" | grep __GNUC__ >/dev/null; then
-        echo 'gcc'
+        host_cc='gcc'
     else
-        echo 'unknown'
+        log "failed to detect host compiler"
+        exit -1
     fi
+
+    log "$host_cc"
 }
 
 detect_host_os () {
+    log -n "Detecting host OS... "
+
     local os=`uname`
     if [ "$os" = 'Linux' ]; then
-        echo 'linux'
+        host_os='linux'
     elif [ "$os" = 'FreeBSD' ]; then
-        echo 'freebsd'
+        host_os='freebsd'
     elif [ "$os" = 'OpenBSD' ]; then
-        echo 'openbsd'
+        host_os='openbsd'
     elif [ "$os" = 'NetBSD' ]; then
-        echo 'netbsd'
+        host_os='netbsd'
     else
-        echo 'unknown'
+        log "failed to detect host OS"
+        exit -1
     fi
+
+    log "$host_os"
 }
 
 detect_musl () {
@@ -72,46 +109,63 @@ detect_musl () {
 }
 
 detect_host_env () {
+    log -n "Detecting host environment... "
+
     if [ "$host_os" = "linux" ]; then
         if [ "$(detect_musl)" -eq 0 ]; then
-            echo "linux-gnu"
+            host_env="linux-gnu"
         else
-            echo "linux-musl"
+            host_env="linux-musl"
         fi
     elif [ "$host_os" = "freebsd" ]; then
-        echo "freebsd-system"
+        host_env="freebsd-system"
     elif [ "$host_os" = "openbsd" ]; then
-        echo "openbsd-system"
+        host_env="openbsd-system"
     elif [ "$host_os" = "netbsd" ]; then
-        echo "netbsd-system"
+        host_env="netbsd-system"
     else
-        echo "unknown"
+        log "failed to detect host environment"
+        exit -1
     fi
+
+    log "$host_env"
 }
 
 detect_clang_candidate_gcc () {
-    $cc $cflags -v 2>&1 | sed -nr 's/Selected GCC installation:\s*(.*)/\1/p' | tr -d '\n'
+    clang_candidate_gcc=`$cc $cflags -v 2>&1 | sed -nr 's/Selected GCC installation:\s*(.*)/\1/p' | tr -d '\n'`
+
+    if [ "x$clang_candidate_gcc" = "x" ]; then
+        log "Clang compiler without a candidate GCC installation on Linux cannot be used as host environment provider due to header file incompatibility. Please use GCC for host environment configuration."
+        exit -1
+    else
+        log "Using Clang selected candidate GCC installation: $clang_candidate_gcc"
+    fi
 }
 
 detect_include_path () {
+    log -n "Detecting include path... "
+
     case "$host_env" in
         "freebsd-system")
-            echo | $cc $cflags -E -Wp,-v - 2>&1 >/dev/null | grep -v clang | sed -nr 's/^ (.*)$/\1/p' | paste -sd ';' -
+            include_path=`echo | $cc $cflags -E -Wp,-v - 2>&1 >/dev/null | grep -v clang | sed -nr 's/^ (.*)$/\1/p' | paste -sd ';' -`
             ;;
 
         "openbsd-system")
-            echo | $cc $cflags -E -Wp,-v - 2>&1 >/dev/null | grep -v clang | sed -nr 's/^ (.*)$/\1/p' | paste -sd ';' -
+            include_path=`echo | $cc $cflags -E -Wp,-v - 2>&1 >/dev/null | grep -v clang | sed -nr 's/^ (.*)$/\1/p' | paste -sd ';' -`
             ;;
         
         *)
             if [ "$host_cc" = "clang" ]; then
-                echo -n "$clang_candidate_gcc/include;$clang_candidate_gcc/include-fixed;"
-                echo | $cc $cflags -E -Wp,-v - 2>&1 >/dev/null | grep -v clang | sed -nr 's/^ (.*)$/\1/p' | paste -sd ';' -
+                local include_path1=`echo -n "$clang_candidate_gcc/include;$clang_candidate_gcc/include-fixed"`
+                local include_path2=`echo | $cc $cflags -E -Wp,-v - 2>&1 >/dev/null | grep -v clang | sed -nr 's/^ (.*)$/\1/p' | paste -sd ';' -`
+                include_path="$include_path1;$include_path2"
             else
-                echo | $cc $cflags -E -Wp,-v - 2>&1 >/dev/null | sed -nr 's/^ (.*)$/\1/p' | paste -sd ';' -
+                include_path=`echo | $cc $cflags -E -Wp,-v - 2>&1 >/dev/null | sed -nr 's/^ (.*)$/\1/p' | paste -sd ';' -`
             fi
             ;;
     esac
+
+    log "$include_path"
 }
 
 detect_musl_libc () {
@@ -119,20 +173,28 @@ detect_musl_libc () {
 }
 
 detect_library_path () {
+    log -n "Detecting library path... "
+    
+    local library_path1=""
     if [ "$host_env" = "linux-musl" ]; then
-        dirname $(detect_musl_libc) | tr -d '\n'
-        echo -n ';'
+        library_path1=`dirname "$(detect_musl_libc)" | tr -d '\n'`
+        library_path1="$library_path1;"
     fi
 
+    local library_path2=""
     if [ "$host_cc" = "clang" ]; then
-        echo -n "$clang_candidate_gcc;"
-        $cc $cflags -print-search-dirs | sed -nr 's/libraries: =(.*)/\1/p' | sed 's/:/;/g' | sed -nr 's/([^;]*clang[^;]*;?)//p'
+        library_path2="$clang_candidate_gcc;$($cc $cflags -print-search-dirs | sed -nr 's/libraries: =(.*)/\1/p' | sed 's/:/;/g' | sed -nr 's/([^;]*clang[^;]*;?)//p')"
     else
-        $cc $cflags -print-search-dirs | sed -nr 's/libraries: =(.*)/\1/p' | sed 's/:/;/g'
+        library_path2=`$cc $cflags -print-search-dirs | sed -nr 's/libraries: =(.*)/\1/p' | sed 's/:/;/g'`
     fi
+
+    library_path="$library_path1$library_path2"
+    log "$library_path"
 }
 
 detect_dynamic_linker () {
+    log -n "Detecting dynamic linker... "
+
     cat > "$tempdir/test.c" <<EOF
 #include <stdlib.h>
 
@@ -143,116 +205,220 @@ EOF
     
     $cc $cflags -o "$tempdir/test" "$tempdir/test.c"
     objcopy -O binary --only-section=.interp "$tempdir/test" "$tempdir/interp"
-    tr -d '\0' < "$tempdir/interp"
+    dynamic_linker=`tr -d '\0' < "$tempdir/interp"`
+
+    log "$dynamic_linker"
 }
 
-if [ "x$CC" != "x" ]; then
-    cc="$CC"
-fi
+generate_header () {
+    load_cc_from_env
+    detect_host_compiler
 
-if [ "x$CFLAGS" != "x" ]; then
-    cflags="$CFLAGS"
-fi
-
-echo -n "Detecting host C compiler... "
-host_cc=`detect_host_compiler`
-echo "$host_cc"
-
-if [ "$host_cc" = "kefir" ]; then
-    echo -n "Generating $outfile... "
-    $cc $cflags --environment-header > "$outfile"
-    echo "done"
-    exit 0
-fi
-
-echo -n "Detecting host OS... "
-host_os=`detect_host_os`
-echo "$host_os"
-
-if [ "$host_os" = "linux" ] && [ "$host_cc" = "clang" ]; then
-    clang_candidate_gcc=`detect_clang_candidate_gcc`
-    if [ "x$clang_candidate_gcc" = "x" ]; then
-        echo "Clang compiler without a candidate GCC installation on Linux cannot be used as host environment provider due to header file incompatibility. Please use GCC for host environment configuration."
-        exit -1
-    else
-        echo "Using Clang selected candidate GCC installation: $clang_candidate_gcc"
+    if [ "$host_cc" = "kefir" ]; then
+        log -n "Generating header..."
+        $cc $cflags --environment-header
+        log "done"
+        exit 0
     fi
-fi
 
-echo -n "Detecting host environment... "
-host_env=`detect_host_env`
-echo "$host_env"
-if [ "$host_env" = "unknown" ]; then
-    echo "Failed to detect host environment"
-    exit -1
-fi
+    detect_host_os
 
-echo -n "Detecting include path... "
-include_path=`detect_include_path`
-echo "$include_path"
+    if [ "$host_os" = "linux" ] && [ "$host_cc" = "clang" ]; then
+        detect_clang_candidate_gcc
+    fi
 
-echo -n "Detecting library path... "
-library_path=`detect_library_path`
-echo "$library_path"
+    detect_host_env
+    detect_include_path
+    detect_library_path
+    detect_dynamic_linker
 
-echo -n "Detecting dynamic linker... "
-dynamic_linker=`detect_dynamic_linker`
-echo "$dynamic_linker"
-
-echo -n "Generating $outfile... "
-cat >"$outfile" <<EOF
-#define KEFIR_CONFIG_HOST_ENVIRONMENT "$host_env"
+    log -n "Generating header..."
+    cat <<EOF
+#define KEFIR_CONFIG_HOST_TARGET "opt-x86_64-$host_env"
 EOF
 
-case "$host_env" in
-    "linux-gnu")
-        cat >>"$outfile" <<EOF
+    case "$host_env" in
+        "linux-gnu")
+            cat <<EOF
+#define KEFIR_CONFIG_HOST_AS "as"
+#define KEFIR_CONFIG_HOST_LD "ld"
 #define KEFIR_CONFIG_HOST_PLATFORM KEFIR_DRIVER_TARGET_PLATFORM_LINUX
 #define KEFIR_CONFIG_HOST_VARIANT KEFIR_DRIVER_TARGET_VARIANT_GNU
 #define KEFIR_CONFIG_HOST_LINUX_GNU_INCLUDE_PATH "$include_path"
 #define KEFIR_CONFIG_HOST_LINUX_GNU_LIBRARY_PATH "$library_path"
 #define KEFIR_CONFIG_HOST_LINUX_GNU_DYNAMIC_LINKER "$dynamic_linker"
 EOF
-        ;;
+            ;;
 
-    "linux-musl")
-        cat >>"$outfile" <<EOF
+        "linux-musl")
+            cat <<EOF
+#define KEFIR_CONFIG_HOST_AS "as"
+#define KEFIR_CONFIG_HOST_LD "ld"
 #define KEFIR_CONFIG_HOST_PLATFORM KEFIR_DRIVER_TARGET_PLATFORM_LINUX
 #define KEFIR_CONFIG_HOST_VARIANT KEFIR_DRIVER_TARGET_VARIANT_MUSL
 #define KEFIR_CONFIG_HOST_LINUX_MUSL_INCLUDE_PATH "$include_path"
 #define KEFIR_CONFIG_HOST_LINUX_MUSL_LIBRARY_PATH "$library_path"
 #define KEFIR_CONFIG_HOST_LINUX_MUSL_DYNAMIC_LINKER "$dynamic_linker"
 EOF
-        ;;
+            ;;
 
-    "freebsd-system")
-        cat >>"$outfile" <<EOF
+        "freebsd-system")
+            cat <<EOF
+#define KEFIR_CONFIG_HOST_AS "as"
+#define KEFIR_CONFIG_HOST_LD "ld"
 #define KEFIR_CONFIG_HOST_PLATFORM KEFIR_DRIVER_TARGET_PLATFORM_FREEBSD
 #define KEFIR_CONFIG_HOST_VARIANT KEFIR_DRIVER_TARGET_VARIANT_SYSTEM
 #define KEFIR_CONFIG_HOST_FREEBSD_SYSTEM_INCLUDE_PATH "$include_path"
 #define KEFIR_CONFIG_HOST_FREEBSD_SYSTEM_LIBRARY_PATH "$library_path"
 #define KEFIR_CONFIG_HOST_FREEBSD_SYSTEM_DYNAMIC_LINKER "$dynamic_linker"
 EOF
-        ;;
+            ;;
 
-    "openbsd-system")
-        cat >>"$outfile" <<EOF
+        "openbsd-system")
+            cat <<EOF
+#define KEFIR_CONFIG_HOST_AS "gas"
+#define KEFIR_CONFIG_HOST_LD "ld"
 #define KEFIR_CONFIG_HOST_PLATFORM KEFIR_DRIVER_TARGET_PLATFORM_OPENBSD
 #define KEFIR_CONFIG_HOST_VARIANT KEFIR_DRIVER_TARGET_VARIANT_SYSTEM
 #define KEFIR_CONFIG_HOST_OPENBSD_SYSTEM_INCLUDE_PATH "$include_path"
 #define KEFIR_CONFIG_HOST_OPENBSD_SYSTEM_LIBRARY_PATH "$library_path"
 #define KEFIR_CONFIG_HOST_OPENBSD_SYSTEM_DYNAMIC_LINKER "$dynamic_linker"
 EOF
-        ;;
+            ;;
 
-    "netbsd-system")
-        cat >>"$outfile" <<EOF
+        "netbsd-system")
+            cat <<EOF
+#define KEFIR_CONFIG_HOST_AS "as"
+#define KEFIR_CONFIG_HOST_LD "ld"
 #define KEFIR_CONFIG_HOST_PLATFORM KEFIR_DRIVER_TARGET_PLATFORM_NETBSD
 #define KEFIR_CONFIG_HOST_VARIANT KEFIR_DRIVER_TARGET_VARIANT_SYSTEM
 #define KEFIR_CONFIG_HOST_NETBSD_SYSTEM_INCLUDE_PATH "$include_path"
 #define KEFIR_CONFIG_HOST_NETBSD_SYSTEM_LIBRARY_PATH "$library_path"
 #define KEFIR_CONFIG_HOST_NETBSD_SYSTEM_DYNAMIC_LINKER "$dynamic_linker"
 EOF
-        ;;
-esac
-echo "done"
+            ;;
+    esac
+
+    log "done"
+}
+
+generate_environment () {
+    load_cc_from_env
+    detect_host_compiler
+
+    if [ "$host_cc" = "kefir" ]; then
+        log -n "Generating environment..."
+        $cc $cflags --environment-info | grep -v "WORKDIR\|RTLIB\|RTINC" | sed -e "s/^/export /g"
+        log "done"
+        exit 0
+    fi
+
+    detect_host_os
+
+    if [ "$host_os" = "linux" ] && [ "$host_cc" = "clang" ]; then
+        detect_clang_candidate_gcc
+    fi
+
+    detect_host_env
+    detect_include_path
+    detect_library_path
+    detect_dynamic_linker
+
+    log -n "Generating environment..."
+    cat <<EOF
+export KEFIR_TARGET="opt-x86_64-$host_env"
+EOF
+
+    case "$host_env" in
+        "linux-gnu")
+            cat <<EOF
+export KEFIR_AS="as"
+export KEFIR_LD="ld"
+export KEFIR_GNU_INCLUDE="$include_path"
+export KEFIR_GNU_LIB="$library_path"
+export KEFIR_GNU_DYNAMIC_LINKER="$dynamic_linker"
+EOF
+            ;;
+
+        "linux-musl")
+            cat <<EOF
+export KEFIR_AS="as"
+export KEFIR_LD="ld"
+export KEFIR_MUSL_INCLUDE="$include_path"
+export KEFIR_MUSL_LIB="$library_path"
+export KEFIR_MUSL_DYNAMIC_LINKER="$dynamic_linker"
+EOF
+            ;;
+
+        "freebsd-system")
+            cat <<EOF
+export KEFIR_AS="as"
+export KEFIR_LD="ld"
+export KEFIR_FREEBSD_INCLUDE="$include_path"
+export KEFIR_FREEBSD_LIB="$library_path"
+export KEFIR_FREEBSD_DYNAMIC_LINKER="$dynamic_linker"
+EOF
+            ;;
+
+        "openbsd-system")
+            cat <<EOF
+export KEFIR_AS="gas"
+export KEFIR_LD="ld"
+export KEFIR_OPENBSD_INCLUDE="$include_path"
+export KEFIR_OPENBSD_LIB="$library_path"
+export KEFIR_OPENBSD_DYNAMIC_LINKER="$dynamic_linker"
+EOF
+            ;;
+
+        "netbsd-system")
+            cat <<EOF
+export KEFIR_AS="as"
+export KEFIR_LD="ld"
+export KEFIR_NETBSD_INCLUDE="$include_path"
+export KEFIR_NETBSD_LIB="$library_path"
+export KEFIR_NETBSD_DYNAMIC_LINKER="$dynamic_linker"
+EOF
+            ;;
+    esac
+
+    log "done"
+}
+
+for ARG in "$@"; do
+    case "$ARG" in
+        "--header")
+            generate_header
+            exit 0
+            ;;
+
+        "--environment")
+            generate_environment
+            exit 0
+            ;;
+
+        "--help")
+            echo "$0 - Kefir host environment detector. Used to detect host include, library and dynamic linker paths, suitable compilation target "\
+                 "and generate that information in C header and shell environment formats into stdout."
+            echo
+            echo "Options:"
+            echo "    --header      Generate C header file"
+            echo "    --environment Generate shell exports"
+            echo "    --help        Show this help"
+            echo
+            echo "Environment variables:"
+            echo "    CC     C compiler to use for detection"
+            echo "    CFLAGS C compilation flags to use for detection"
+            echo
+            echo "Author: Jevgenijs Protopopovs"
+            echo "License: GNU GPLv3"
+            exit 0
+            ;;
+
+        *)
+            log "Unknown option $ARG. Usage: $0 --header|--environment|--help"
+            exit -1
+            ;;
+    esac
+
+    log "Usage: $0 --header|--environment|--help"
+done

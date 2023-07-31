@@ -95,9 +95,9 @@ static kefir_result_t print_compiler_info(FILE *out, const char *exec_name) {
     fprintf(out, "    Compiler flags: %s\n", KEFIR_BUILD_CFLAGS);
 #endif
 
-    fprintf(out, "    Pre-configured host enviroment: %s\n",
-#ifdef KEFIR_CONFIG_HOST_ENVIRONMENT
-            KEFIR_CONFIG_HOST_ENVIRONMENT
+    fprintf(out, "    Pre-configured host target: %s\n",
+#ifdef KEFIR_CONFIG_HOST_TARGET
+            KEFIR_CONFIG_HOST_TARGET
 #else
             "none"
 #endif
@@ -107,23 +107,88 @@ static kefir_result_t print_compiler_info(FILE *out, const char *exec_name) {
     return KEFIR_OK;
 }
 
-static const char *str_nonnull_or(const char *str, const char *alternative) {
-    return str != NULL ? str : alternative;
-}
-
 static kefir_result_t print_toolchain_env(FILE *out, const char *name,
                                           const struct kefir_driver_external_resource_toolchain_config *config) {
-    fprintf(out, "KEFIR_%s_INCLUDE=\"%s\"\n", name, str_nonnull_or(config->include_path, ""));
-    fprintf(out, "KEFIR_%s_LIB=\"%s\"\n", name, str_nonnull_or(config->library_path, ""));
-    fprintf(out, "KEFIR_%s_DYNAMIC_LINKER=\"%s\"\n", name, str_nonnull_or(config->dynamic_linker, ""));
+    if (config->include_path != NULL) {
+        fprintf(out, "KEFIR_%s_INCLUDE=\"%s\"\n", name, config->include_path);
+    }
+    if (config->library_path != NULL) {
+        fprintf(out, "KEFIR_%s_LIB=\"%s\"\n", name, config->library_path);
+    }
+    if (config->dynamic_linker != NULL) {
+        fprintf(out, "KEFIR_%s_DYNAMIC_LINKER=\"%s\"\n", name, config->dynamic_linker);
+    }
     return KEFIR_OK;
 }
 
-static kefir_result_t print_environment(FILE *out, const struct kefir_driver_external_resources *externals) {
+static kefir_result_t print_target(FILE *out, const struct kefir_driver_target *target) {
+    switch (target->backend) {
+        case KEFIR_DRIVER_TARGET_BACKEND_NAIVE:
+            fprintf(out, "naive-");
+            break;
+
+        case KEFIR_DRIVER_TARGET_BACKEND_OPTIMIZED:
+            fprintf(out, "opt-");
+            break;
+    }
+
+    switch (target->arch) {
+        case KEFIR_DRIVER_TARGET_ARCH_X86_64:
+            fprintf(out, "x86_64-");
+            break;
+    }
+
+    switch (target->platform) {
+        case KEFIR_DRIVER_TARGET_PLATFORM_LINUX:
+            fprintf(out, "linux-");
+            break;
+
+        case KEFIR_DRIVER_TARGET_PLATFORM_FREEBSD:
+            fprintf(out, "freebsd-");
+            break;
+
+        case KEFIR_DRIVER_TARGET_PLATFORM_OPENBSD:
+            fprintf(out, "openbsd-");
+            break;
+
+        case KEFIR_DRIVER_TARGET_PLATFORM_NETBSD:
+            fprintf(out, "netbsd-");
+            break;
+    }
+
+    switch (target->variant) {
+        case KEFIR_DRIVER_TARGET_VARIANT_NONE:
+            fprintf(out, "none");
+            break;
+
+        case KEFIR_DRIVER_TARGET_VARIANT_GNU:
+            fprintf(out, "gnu");
+            break;
+
+        case KEFIR_DRIVER_TARGET_VARIANT_MUSL:
+            fprintf(out, "musl");
+            break;
+
+        case KEFIR_DRIVER_TARGET_VARIANT_SYSTEM:
+            fprintf(out, "system");
+            break;
+    }
+    return KEFIR_OK;
+}
+
+static kefir_result_t print_environment(FILE *out, const struct kefir_driver_target *target,
+                                        const struct kefir_driver_external_resources *externals) {
+    fprintf(out, "KEFIR_TARGET=\"");
+    REQUIRE_OK(print_target(out, target));
+    fprintf(out, "\"\n");
     fprintf(out, "KEFIR_AS=\"%s\"\n", externals->assembler_path);
     fprintf(out, "KEFIR_LD=\"%s\"\n", externals->linker_path);
-    fprintf(out, "KEFIR_RTINC=\"%s\"\n", str_nonnull_or(externals->runtime_include, ""));
-    fprintf(out, "KEFIR_RTLIB=\"%s\"\n", str_nonnull_or(externals->runtime_library, ""));
+    if (externals->runtime_include != NULL) {
+        fprintf(out, "KEFIR_RTINC=\"%s\"\n", externals->runtime_include);
+    }
+    if (externals->runtime_library) {
+        fprintf(out, "KEFIR_RTLIB=\"%s\"\n", externals->runtime_library);
+    }
     fprintf(out, "KEFIR_WORKDIR=\"%s\"\n", externals->work_dir);
     REQUIRE_OK(print_toolchain_env(out, "GNU", &externals->gnu));
     REQUIRE_OK(print_toolchain_env(out, "MUSL", &externals->musl));
@@ -136,15 +201,20 @@ static kefir_result_t print_environment(FILE *out, const struct kefir_driver_ext
 static kefir_result_t print_target_environment_header(FILE *out, const struct kefir_driver_target *target,
                                                       const struct kefir_driver_external_resources *externals) {
     UNUSED(out);
+    fprintf(out, "#define KEFIR_CONFIG_HOST_AS \"%s\"\n", externals->assembler_path);
+    fprintf(out, "#define KEFIR_CONFIG_HOST_LD \"%s\"\n", externals->linker_path);
     switch (target->platform) {
         case KEFIR_DRIVER_TARGET_PLATFORM_LINUX:
             switch (target->variant) {
                 case KEFIR_DRIVER_TARGET_VARIANT_NONE:
+                    fprintf(out, "#define KEFIR_CONFIG_HOST_TARGET \"opt-x86_64-%s\"\n", "linux-none");
+                    break;
+
                 case KEFIR_DRIVER_TARGET_VARIANT_SYSTEM:
                     break;
 
                 case KEFIR_DRIVER_TARGET_VARIANT_GNU:
-                    fprintf(out, "#define KEFIR_CONFIG_HOST_ENVIRONMENT \"%s\"\n", "linux-gnu");
+                    fprintf(out, "#define KEFIR_CONFIG_HOST_TARGET \"opt-x86_64-%s\"\n", "linux-gnu");
                     fprintf(out, "#define KEFIR_CONFIG_HOST_PLATFORM %s\n",
                             STRINGIFY(KEFIR_DRIVER_TARGET_PLATFORM_LINUX));
                     fprintf(out, "#define KEFIR_CONFIG_HOST_VARIANT %s\n", STRINGIFY(KEFIR_DRIVER_TARGET_VARIANT_GNU));
@@ -163,7 +233,7 @@ static kefir_result_t print_target_environment_header(FILE *out, const struct ke
                     break;
 
                 case KEFIR_DRIVER_TARGET_VARIANT_MUSL:
-                    fprintf(out, "#define KEFIR_CONFIG_HOST_ENVIRONMENT \"%s\"\n", "linux-musl");
+                    fprintf(out, "#define KEFIR_CONFIG_HOST_TARGET \"opt-x86_64-%s\"\n", "linux-musl");
                     fprintf(out, "#define KEFIR_CONFIG_HOST_PLATFORM %s\n",
                             STRINGIFY(KEFIR_DRIVER_TARGET_PLATFORM_LINUX));
                     fprintf(out, "#define KEFIR_CONFIG_HOST_VARIANT %s\n", STRINGIFY(KEFIR_DRIVER_TARGET_VARIANT_MUSL));
@@ -186,12 +256,15 @@ static kefir_result_t print_target_environment_header(FILE *out, const struct ke
         case KEFIR_DRIVER_TARGET_PLATFORM_FREEBSD:
             switch (target->variant) {
                 case KEFIR_DRIVER_TARGET_VARIANT_NONE:
+                    fprintf(out, "#define KEFIR_CONFIG_HOST_TARGET \"opt-x86_64-%s\"\n", "freebsd-none");
+                    break;
+
                 case KEFIR_DRIVER_TARGET_VARIANT_GNU:
                 case KEFIR_DRIVER_TARGET_VARIANT_MUSL:
                     break;
 
                 case KEFIR_DRIVER_TARGET_VARIANT_SYSTEM:
-                    fprintf(out, "#define KEFIR_CONFIG_HOST_ENVIRONMENT \"%s\"\n", "freebsd-system");
+                    fprintf(out, "#define KEFIR_CONFIG_HOST_TARGET \"opt-x86_64-%s\"\n", "freebsd-system");
                     fprintf(out, "#define KEFIR_CONFIG_HOST_PLATFORM %s\n",
                             STRINGIFY(KEFIR_DRIVER_TARGET_PLATFORM_FREEBSD));
                     fprintf(out, "#define KEFIR_CONFIG_HOST_VARIANT %s\n",
@@ -215,12 +288,15 @@ static kefir_result_t print_target_environment_header(FILE *out, const struct ke
         case KEFIR_DRIVER_TARGET_PLATFORM_OPENBSD:
             switch (target->variant) {
                 case KEFIR_DRIVER_TARGET_VARIANT_NONE:
+                    fprintf(out, "#define KEFIR_CONFIG_HOST_TARGET \"opt-x86_64-%s\"\n", "openbsd-none");
+                    break;
+
                 case KEFIR_DRIVER_TARGET_VARIANT_GNU:
                 case KEFIR_DRIVER_TARGET_VARIANT_MUSL:
                     break;
 
                 case KEFIR_DRIVER_TARGET_VARIANT_SYSTEM:
-                    fprintf(out, "#define KEFIR_CONFIG_HOST_ENVIRONMENT \"%s\"\n", "openbsd-system");
+                    fprintf(out, "#define KEFIR_CONFIG_HOST_TARGET \"opt-x86_64-%s\"\n", "openbsd-system");
                     fprintf(out, "#define KEFIR_CONFIG_HOST_PLATFORM %s\n",
                             STRINGIFY(KEFIR_DRIVER_TARGET_PLATFORM_OPENBSD));
                     fprintf(out, "#define KEFIR_CONFIG_HOST_VARIANT %s\n",
@@ -244,12 +320,15 @@ static kefir_result_t print_target_environment_header(FILE *out, const struct ke
         case KEFIR_DRIVER_TARGET_PLATFORM_NETBSD:
             switch (target->variant) {
                 case KEFIR_DRIVER_TARGET_VARIANT_NONE:
+                    fprintf(out, "#define KEFIR_CONFIG_HOST_TARGET \"opt-x86_64-%s\"\n", "netbsd-none");
+                    break;
+
                 case KEFIR_DRIVER_TARGET_VARIANT_GNU:
                 case KEFIR_DRIVER_TARGET_VARIANT_MUSL:
                     break;
 
                 case KEFIR_DRIVER_TARGET_VARIANT_SYSTEM:
-                    fprintf(out, "#define KEFIR_CONFIG_HOST_ENVIRONMENT \"%s\"\n", "netbsd-system");
+                    fprintf(out, "#define KEFIR_CONFIG_HOST_TARGET \"opt-x86_64-%s\"\n", "netbsd-system");
                     fprintf(out, "#define KEFIR_CONFIG_HOST_PLATFORM %s\n",
                             STRINGIFY(KEFIR_DRIVER_TARGET_PLATFORM_NETBSD));
                     fprintf(out, "#define KEFIR_CONFIG_HOST_VARIANT %s\n",

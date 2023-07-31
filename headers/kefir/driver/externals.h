@@ -31,6 +31,9 @@ typedef struct kefir_driver_external_resource_toolchain_config {
 } kefir_driver_external_resource_toolchain_config_t;
 
 typedef struct kefir_driver_external_resources {
+    // Default target
+    const char *default_target;
+
     // Tools
     const char *assembler_path;
     const char *linker_path;

@@ -23,4 +23,7 @@ BIN_DIR="$(dirname $0)"
 export LD_LIBRARY_PATH="$BIN_DIR"/../lib:"$LD_LIBRARY_PATH"
 export KEFIR_RTLIB=""$BIN_DIR"/../lib/libkefirrt.a"
 export KEFIR_RTINC=""$BIN_DIR"/../include/kefir/runtime"
+if [ -f "$BIN_DIR/../etc/kefir.local" ]; then
+    source "$BIN_DIR/../etc/kefir.local"
+fi
 exec "$BIN_DIR"/kefir-cc "$@"

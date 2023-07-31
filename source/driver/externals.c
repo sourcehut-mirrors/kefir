@@ -38,10 +38,15 @@ kefir_result_t kefir_driver_external_resources_init_from_env(struct kefir_mem *m
 
     externals->tmpfile_manager = tmpmgr;
 
+    externals->default_target = getenv("KEFIR_TARGET");
+
     externals->assembler_path = getenv("KEFIR_AS");
     if (externals->assembler_path == NULL) {
         externals->assembler_path = getenv("AS");
     }
+#ifdef KEFIR_CONFIG_HOST_AS
+    set_if_null(&externals->assembler_path, KEFIR_CONFIG_HOST_AS);
+#endif
     if (externals->assembler_path == NULL) {
         externals->assembler_path = "as";
     }
@@ -50,6 +55,9 @@ kefir_result_t kefir_driver_external_resources_init_from_env(struct kefir_mem *m
     if (externals->linker_path == NULL) {
         externals->linker_path = getenv("LD");
     }
+#ifdef KEFIR_CONFIG_HOST_LD
+    set_if_null(&externals->assembler_path, KEFIR_CONFIG_HOST_LD);
+#endif
     if (externals->linker_path == NULL) {
         externals->linker_path = "ld";
     }
@@ -73,6 +81,10 @@ kefir_result_t kefir_driver_external_resources_init_from_env(struct kefir_mem *m
     externals->netbsd.dynamic_linker = getenv("KEFIR_NETBSD_DYNAMIC_LINKER");
 
     UNUSED(set_if_null);
+
+#ifdef KEFIR_CONFIG_HOST_TARGET
+    set_if_null(&externals->default_target, KEFIR_CONFIG_HOST_TARGET);
+#endif
 
 #ifdef KEFIR_CONFIG_HOST_LINUX_GNU_INCLUDE_PATH
     set_if_null(&externals->gnu.include_path, KEFIR_CONFIG_HOST_LINUX_GNU_INCLUDE_PATH);

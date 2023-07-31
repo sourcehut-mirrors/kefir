@@ -67,7 +67,7 @@ $(KEFIR_HOST_ENV_CONFIG_HEADER):
 	@mkdir -p $(shell dirname "$@")
 	@echo "Generating $@"
 ifeq ($(DETECT_HOST_ENV),yes)
-	@CC='$(DETECT_HOST_ENV_CC)' CFLAGS='$(DETECT_HOST_ENV_CFLAGS)' $(SCRIPTS_DIR)/detect-host-env.sh "$@" && true || echo -n > "$@"
+	@CC='$(DETECT_HOST_ENV_CC)' CFLAGS='$(DETECT_HOST_ENV_CFLAGS)' $(SCRIPTS_DIR)/detect-host-env.sh --header > "$@" && true || echo -n > "$@"
 else
 	@echo -n > "$@"
 endif
