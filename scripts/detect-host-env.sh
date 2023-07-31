@@ -57,6 +57,7 @@ load_cc_from_env () {
 }
 
 detect_host_compiler () {
+    local res=""
     log -n "Detecting host C compiler... "
 
     cat > "$tempdir/test.c" <<EOF
@@ -69,7 +70,7 @@ detect_host_compiler () {
 #endif
 EOF
 
-    local res=`$cc $cflags -E "$tempdir/test.c"`
+    res=`$cc $cflags -E "$tempdir/test.c"`
     if echo "$res" | grep clang >/dev/null; then
         host_cc='clang'
     elif echo "$res" | grep __KEFIRCC__ >/dev/null; then
@@ -85,9 +86,10 @@ EOF
 }
 
 detect_host_os () {
+    local os=""
     log -n "Detecting host OS... "
 
-    local os=`uname`
+    os=`uname`
     if [ "$os" = 'Linux' ]; then
         host_os='linux'
     elif [ "$os" = 'FreeBSD' ]; then
@@ -143,8 +145,11 @@ detect_clang_candidate_gcc () {
 }
 
 detect_include_path () {
-    log -n "Detecting include path... "
+    local include_path1=""
+    local include_path2=""
 
+    log -n "Detecting include path... "
+    
     case "$host_env" in
         "freebsd-system")
             include_path=`echo | $cc $cflags -E -Wp,-v - 2>&1 >/dev/null | grep -v clang | sed -nr 's/^ (.*)$/\1/p' | paste -sd ';' -`
@@ -156,8 +161,8 @@ detect_include_path () {
         
         *)
             if [ "$host_cc" = "clang" ]; then
-                local include_path1=`echo -n "$clang_candidate_gcc/include;$clang_candidate_gcc/include-fixed"`
-                local include_path2=`echo | $cc $cflags -E -Wp,-v - 2>&1 >/dev/null | grep -v clang | sed -nr 's/^ (.*)$/\1/p' | paste -sd ';' -`
+                include_path1=`echo -n "$clang_candidate_gcc/include;$clang_candidate_gcc/include-fixed"`
+                include_path2=`echo | $cc $cflags -E -Wp,-v - 2>&1 >/dev/null | grep -v clang | sed -nr 's/^ (.*)$/\1/p' | paste -sd ';' -`
                 include_path="$include_path1;$include_path2"
             else
                 include_path=`echo | $cc $cflags -E -Wp,-v - 2>&1 >/dev/null | sed -nr 's/^ (.*)$/\1/p' | paste -sd ';' -`
@@ -173,15 +178,15 @@ detect_musl_libc () {
 }
 
 detect_library_path () {
+    local library_path1=""
+    local library_path2=""
     log -n "Detecting library path... "
     
-    local library_path1=""
     if [ "$host_env" = "linux-musl" ]; then
         library_path1=`dirname "$(detect_musl_libc)" | tr -d '\n'`
         library_path1="$library_path1;"
     fi
 
-    local library_path2=""
     if [ "$host_cc" = "clang" ]; then
         library_path2="$clang_candidate_gcc;$($cc $cflags -print-search-dirs | sed -nr 's/libraries: =(.*)/\1/p' | sed 's/:/;/g' | sed -nr 's/([^;]*clang[^;]*;?)//p')"
     else
