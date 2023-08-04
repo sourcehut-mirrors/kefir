@@ -1,46 +1,55 @@
-DESTDIR=/opt/kefir
+DESTDIR=
+prefix=/opt/kefir
+exec_prefix=$(prefix)
+bindir=$(exec_prefix)/bin
+libdir=$(exec_prefix)/lib
+datarootdir=$(prefix)/share
+mandir=$(datarootdir)/man
+man1dir=$(mandir)/man1
+sysconfdir=$(prefix)/etc
+includedir=$(prefix)/include
 
 install:
 	@echo "Creating directories..."
-	@install -d "$(DESTDIR)"/include/kefir/toolchain
-	@install -d "$(DESTDIR)"/lib
-	@install -d "$(DESTDIR)"/bin
-	@install -d "$(DESTDIR)"/etc
-	@install -d "$(DESTDIR)"/share/man/man1
+	@install -d "$(DESTDIR)$(includedir)"/kefir/toolchain
+	@install -d "$(DESTDIR)$(libdir)"
+	@install -d "$(DESTDIR)$(bindir)"
+	@install -d "$(DESTDIR)$(sysconfdir)"
+	@install -d "$(DESTDIR)$(man1dir)"
 	@echo "Installing libraries.."
 ifneq ($(wildcard $(LIBKEFIR_SO).$(LIBKEFIR_SO_VERSION)),)
-	@install -D "$(LIBKEFIR_SO).$(LIBKEFIR_SO_VERSION)" -t "$(DESTDIR)"/lib
-	@ln -sf libkefir.so.$(LIBKEFIR_SO_VERSION) "$(DESTDIR)"/lib/libkefir.so
+	@install -D "$(LIBKEFIR_SO).$(LIBKEFIR_SO_VERSION)" -t "$(DESTDIR)$(libdir)"
+	@ln -sf libkefir.so.$(LIBKEFIR_SO_VERSION) "$(DESTDIR)$(libdir)"/libkefir.so
 endif
-	@install -D "$(LIBKEFIR_A)" -t "$(DESTDIR)"/lib
-	@install -D "$(LIBKEFIRRT_A)" -t "$(DESTDIR)"/lib
+	@install -D "$(LIBKEFIR_A)" -t "$(DESTDIR)$(libdir)"
+	@install -D "$(LIBKEFIRRT_A)" -t "$(DESTDIR)$(libdir)"
 	@echo "Installing headers..."
-	@cp -r --no-dereference -p "$(HEADERS_DIR)"/kefir "$(DESTDIR)"/include/kefir/toolchain
-	@ln -sf toolchain/kefir/runtime "$(DESTDIR)"/include/kefir/runtime
+	@cp -r --no-dereference -p "$(HEADERS_DIR)"/kefir "$(DESTDIR)$(includedir)"/kefir/toolchain
+	@ln -sf toolchain/kefir/runtime "$(DESTDIR)$(includedir)"/kefir/runtime
 	@echo "Installing binaries..."
-	@install "$(BIN_DIR)"/kefir "$(DESTDIR)"/bin/kefir-cc
-	@install "$(BIN_DIR)"/kefir-cc1 "$(DESTDIR)"/bin/kefir-cc1
-	@install "$(SCRIPTS_DIR)"/kefir.sh "$(DESTDIR)"/bin/kefir
-	@install "$(SCRIPTS_DIR)"/detect-host-env.sh "$(DESTDIR)"/bin/kefir-detect-host-env
+	@install "$(BIN_DIR)"/kefir "$(DESTDIR)$(bindir)"/kefir-cc
+	@install "$(BIN_DIR)"/kefir-cc1 "$(DESTDIR)$(bindir)"/kefir-cc1
+	@install "$(SCRIPTS_DIR)"/kefir.sh "$(DESTDIR)$(bindir)"/kefir
+	@install "$(SCRIPTS_DIR)"/detect-host-env.sh "$(DESTDIR)$(bindir)"/kefir-detect-host-env
 	@echo "Installing man pages..."
-	@install "$(BIN_DIR)"/man/kefir.1.gz "$(DESTDIR)"/share/man/man1/kefir.1.gz
-	@install "$(BIN_DIR)"/man/kefir-cc1.1.gz "$(DESTDIR)"/share/man/man1/kefir-cc1.1.gz
+	@install "$(BIN_DIR)"/man/kefir.1.gz -t "$(DESTDIR)$(man1dir)"
+	@install "$(BIN_DIR)"/man/kefir-cc1.1.gz -t "$(DESTDIR)$(man1dir)"
 	@echo "Initializing local config..."
-	@touch "$(DESTDIR)"/etc/kefir.local
+	@touch "$(DESTDIR)$(sysconfdir)"/kefir.local
 
 uninstall:
 	@echo "Removing local config..."
-	@rm -rf "$(DESTDIR)"/etc/kefir.local
+	@rm -rf "$(DESTDIR)$(sysconfdir)"/kefir.local
 	@echo "Removing man pages..."
-	@rm -rf "$(DESTDIR)"/share/man/man1/kefir.1.gz "$(DESTDIR)"/share/man/man1/kefir-cc1.1.gz
+	@rm -rf "$(DESTDIR)$(man1dir)"/kefir.1.gz "$(DESTDIR)$(man1dir)"/kefir-cc1.1.gz
 	@echo "Removing binaries..."
-	@rm -rf "$(DESTDIR)"/bin/kefir "$(DESTDIR)"/bin/kefir-detect-host-env "$(DESTDIR)"/bin/kefir-cc "$(DESTDIR)"/bin/kefir-cc1
+	@rm -rf "$(DESTDIR)$(bindir)"/kefir "$(DESTDIR)$(bindir)"/kefir-detect-host-env "$(DESTDIR)$(bindir)"/kefir-cc "$(DESTDIR)$(bindir)"/kefir-cc1
 	@echo "Removing headers..."
-	@rm -rf "$(DESTDIR)"/include/kefir
+	@rm -rf "$(DESTDIR)$(includedir)"/kefir
 	@echo "Removing libraries..."
-	@rm -rf "$(DESTDIR)"/lib/libkefir.so
-	@rm -rf "$(DESTDIR)"/lib/libkefir.so.$(LIBKEFIR_SO_VERSION)
-	@rm -rf "$(DESTDIR)"/lib/libkefirrt.a
-	@rm -rf "$(DESTDIR)"/lib/libkefir.a
+	@rm -rf "$(DESTDIR)$(libdir)"/libkefir.so
+	@rm -rf "$(DESTDIR)$(libdir)"/libkefir.so.$(LIBKEFIR_SO_VERSION)
+	@rm -rf "$(DESTDIR)$(libdir)"/libkefirrt.a
+	@rm -rf "$(DESTDIR)$(libdir)"/libkefir.a
 
 .PHONY: install uninstall
