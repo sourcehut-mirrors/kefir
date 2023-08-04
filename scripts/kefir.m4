@@ -19,11 +19,16 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-BIN_DIR="$(dirname $0)"
-export LD_LIBRARY_PATH="$BIN_DIR"/../lib:"$LD_LIBRARY_PATH"
-export KEFIR_RTLIB=""$BIN_DIR"/../lib/libkefirrt.a"
-export KEFIR_RTINC=""$BIN_DIR"/../include/kefir/runtime"
-if [ -f "$BIN_DIR/../etc/kefir.local" ]; then
-    source "$BIN_DIR/../etc/kefir.local"
+SCRIPT_DIR="$(dirname $0)"
+define(bindir, $SCRIPT_DIR/../bin)
+define(libdir, $SCRIPT_DIR/../lib)
+define(includedir, $SCRIPT_DIR/../include)
+define(sysconfdir, $SCRIPT_DIR/../etc)
+
+export LD_LIBRARY_PATH="libdir:$LD_LIBRARY_PATH"
+export KEFIR_RTLIB="libdir/libkefirrt.a"
+export KEFIR_RTINC="includedir/kefir/runtime"
+if [ -f "sysconfdir/kefir.local" ]; then
+    source "sysconfdir/kefir.local"
 fi
-exec "$BIN_DIR"/kefir-cc "$@"
+exec "bindir/kefir-cc" "$@"
