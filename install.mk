@@ -29,7 +29,8 @@ endif
 	@echo "Installing binaries..."
 	@install "$(KEFIR_BIN_DIR)"/kefir "$(DESTDIR)$(bindir)"/kefir-cc
 	@install "$(KEFIR_BIN_DIR)"/kefir-cc1 "$(DESTDIR)$(bindir)"/kefir-cc1
-	@m4 -Dbindir="$(bindir)" -Dlibdir="$(libdir)" -Dsysconfdir="$(sysconfdir)" -Dincludedir="$(includedir)" "$(SCRIPTS_DIR)"/kefir.m4 > "$(DESTDIR)$(bindir)"/kefir
+	@m4 -Dbindir="$(DESTDIR)$(bindir)" -Dlibdir="$(DESTDIR)$(libdir)" -Dsysconfdir="$(DESTDIR)$(sysconfdir)" -Dincludedir="$(DESTDIR)$(includedir)" "$(SCRIPTS_DIR)"/kefir.m4 > "$(DESTDIR)$(bindir)"/kefir
+	@chmod 755 "$(DESTDIR)$(bindir)"/kefir
 	@install "$(SCRIPTS_DIR)"/detect-host-env.sh "$(DESTDIR)$(bindir)"/kefir-detect-host-env
 	@echo "Installing man pages..."
 	@install "$(KEFIR_BIN_DIR)"/man/kefir.1.gz -t "$(DESTDIR)$(man1dir)"
