@@ -34,7 +34,7 @@ static void print_byte(int value, FILE *output) {
             fprintf(output, " ");
         }
     }
-    fprintf(output, "0x%.2x", value);
+    fprintf(output, "0x%.2xu", value);
     byte_counter++;
 }
 

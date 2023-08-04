@@ -6,6 +6,7 @@ install:
 	@install -d "$(DESTDIR)"/lib
 	@install -d "$(DESTDIR)"/bin
 	@install -d "$(DESTDIR)"/etc
+	@install -d "$(DESTDIR)"/share/man/man1
 	@echo "Installing libraries.."
 ifneq ($(wildcard $(LIBKEFIR_SO).$(LIBKEFIR_SO_VERSION)),)
 	@install -D "$(LIBKEFIR_SO).$(LIBKEFIR_SO_VERSION)" -t "$(DESTDIR)"/lib
@@ -21,12 +22,17 @@ endif
 	@install "$(BIN_DIR)"/kefir-cc1 "$(DESTDIR)"/bin/kefir-cc1
 	@install "$(SCRIPTS_DIR)"/kefir.sh "$(DESTDIR)"/bin/kefir
 	@install "$(SCRIPTS_DIR)"/detect-host-env.sh "$(DESTDIR)"/bin/kefir-detect-host-env
+	@echo "Installing man pages..."
+	@install "$(BIN_DIR)"/man/kefir.1.gz "$(DESTDIR)"/share/man/man1/kefir.1.gz
+	@install "$(BIN_DIR)"/man/kefir-cc1.1.gz "$(DESTDIR)"/share/man/man1/kefir-cc1.1.gz
 	@echo "Initializing local config..."
 	@touch "$(DESTDIR)"/etc/kefir.local
 
 uninstall:
 	@echo "Removing local config..."
 	@rm -rf "$(DESTDIR)"/etc/kefir.local
+	@echo "Removing man pages..."
+	@rm -rf "$(DESTDIR)"/share/man/man1/kefir.1.gz "$(DESTDIR)"/share/man/man1/kefir-cc1.1.gz
 	@echo "Removing binaries..."
 	@rm -rf "$(DESTDIR)"/bin/kefir "$(DESTDIR)"/bin/kefir-detect-host-env "$(DESTDIR)"/bin/kefir-cc "$(DESTDIR)"/bin/kefir-cc1
 	@echo "Removing headers..."

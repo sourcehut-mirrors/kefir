@@ -28,7 +28,7 @@
 
 // Standalone compiler without driver
 
-static const char KefirHelpContent[] = {
+static unsigned const char KefirHelpContent[] = {
 #include STRINGIFY(KEFIR_CC1_HELP_INCLUDE)
 };
 

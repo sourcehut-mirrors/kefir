@@ -1,0 +1,534 @@
+.Dd August 2023
+.Dt kefir 1
+.Os
+.\"
+.\"
+.\"
+.Sh NAME
+.Nm kefir
+.Nd C17 language compiler
+.\"
+.\"
+.\"
+.Sh SYNOPSIS
+.Nm
+.Op options
+.Ar files...
+.Oo
+.Fl run
+.Op args...
+.Oc
+.\"
+.\"
+.\"
+.Sh DESCRIPTION
+.Nm
+command-line options follow
+.Xr c99 1
+compiler interface, extending it with some of supported
+.Xr gcc 1
+flags and flags for special
+.Nm
+features. Unknown command-line flags are ignored with a warning printed for each such flag passed to the compiler.
+.Nm
+compiler driver features multiple operation modes. Command-line flags are parsed in left-to-right order with later flags overriding earlier.
+Some of operation modes, once selected, prevent further parsing and immediately invoke selected mode (refer to
+.Sx OPTIONS
+section for details).
+.\"
+.\"
+.\"
+.Sh OPTIONS
+The following options terminate command-line argument parsing:
+.Bl -tag -width Ds
+.It Fl h | -help
+Print help text
+.\"
+.It Fl v | -version
+Print compiler version
+.\"
+.It Fl -compiler-info
+Print compiler information
+.\"
+.It Fl -envinronment-info
+Print compiler environment information (see
+.Sx ENVIRONMENT
+section below)
+.\"
+.It Fl -environment-header
+Print compiler environment header file (based on
+.Sx ENVIRONMENT
+section and current target)
+.El
+.Pp
+The rest of command-line options are parsed normally:
+.Bl -tag -width Ds
+.\"
+.It Fl c
+Skip the link-edit phase of the compilation, save object files
+.\"
+.It Fl S
+Skip assembling phase of the compilation, save assembly files
+.\"
+.It Fl E
+Preprocess C-language source files, print results to standard output
+.\"
+.It Fl P
+Preprocess C-language source files, save results
+.\"
+.It Fl o Ar file
+Save results to the output file
+.\"
+.It Fl -target Ar specification
+Generate code for specified target system (see
+.Sx TARGET
+section below)
+.\"
+.It Fl O Ar level
+Code optimization level (default is 0). All non-zero levels are equivalent to 1
+.\"
+.It Fl fpreprocessed
+Skip preprocessing stage
+.\"
+.It Fl D Ar name[=value]
+Define preprocessor macro
+.\"
+.It Fl U Ar name
+Undefine predefined preprocessor macro
+.\"
+.It Fl I Ar directory
+Add directory to preprocessor include path
+.\"
+.It Fl M
+Output a make rule describing the dependencies of source file (including the dependencies from system path)
+.\"
+.It Fl MM
+Output a make rule describing the dependencies of source file (excluding the dependencies from system path and their transitive includes)
+.\"
+.It Fl MT Ar target
+Override the default target name of make rule produced by dependency generation (used with
+.Fl M
+and
+.Fl MM
+options)
+.\"
+.It Fl include Ar file
+Include file during preprocessing phase
+.\"
+.It Fl s
+Strip linked executable 
+.\"
+.It Fl r
+Retain relocations in linked executable
+.\"
+.It Fl e Ar entry
+Override entry point of linked executable
+.\"
+.It Fl u Ar symbol
+Add undefined symbol to linked executable
+.\"
+.It Fl l Ar library
+Link library
+.\"
+.It Fl L Ar directory
+Add directory to linker library search path
+.\"
+.It Fl rpath Ar directory
+Add directory to runtime library search path
+.\"
+.It Fl static
+Produce a statically linked executable
+.\"
+.It Fl shared
+Produce a shared object
+.\"
+.It Fl fPIC | Fl fpic
+Produce position-independent code (supported only for opt-* targets)
+.\"
+.It Fl fno-pic
+Do not produce position-independent code [default]
+.\"
+.It Fl pie
+Produce position-independent executable (requires
+.Fl fPIC
+flag)
+.\"
+.It Fl no-pie
+Do not produce position-independent executable [default]
+.\"
+.It Fl nostartfiles
+Do not link start files
+.\"
+.It Fl nodefaultlibs
+Do not link default libraries
+.\"
+.It Fl nolibc
+Do not link libc
+.\"
+.It Fl nostdlib
+Do not link start files and default libraries
+.\"
+.It Fl nortlib
+Do not link runtime routine library
+.\"
+.It Fl nortinc
+Do not add runtime includes to include path
+.\"
+.It Fl Wp,option | Fl Xpreprocessor Ar option
+Pass "option" to preprocessing phase as command line option
+.\"
+.It Fl Wc,option
+Pass "option" to compiling phase as command line option
+.\"
+.It Fl -Wa,option | Fl Xassembler Ar option
+Pass "option" to assembler phase as command line option
+.\"
+.It Fl Wl,option | Fl Xlinker Ar option
+Pass "option" to linking phase as command line option
+.\"
+.It Fl Woption
+Pass "--option" to compiling phase as command line option
+.\"
+.It Fl W Ar option
+Pass "option" to compiling phase as command line option
+.\"
+.It Fl -restrictive-c
+Enable restrictive compiling mode with C extensions disabled
+.\"
+.It Fl -permissive-c
+Enable permissive compiling mode with C extensions enabled [default]
+.\"
+.It Fl -print-tokens
+Print tokenized source in JSON format
+.\"
+.It Fl -print-ast
+Print AST in JSON format
+.\"
+.It Fl -print-ir
+Print intermediate representation in JSON format
+.\"
+.It Fl -print-opt
+Print optimization representation in JSON format
+.\"
+.It Fl -print-runtime-code
+Print runtime code for selected target
+.\"
+.It Fl run Op file Ar args...
+Run the linked executable with the rest of command line arguments. If no input file was specified, the first argument is treated as input file.
+.\"
+.It Fl runarg Ar arg
+Pass an argument to the runned process (shall precede
+.Fl run
+flag)
+.\"
+.It Fl run-stdin Ar file
+Redirect runned process stdin from file (shall precede
+.Fl run
+flag)
+.\"
+.It Fl run-stdout Ar file
+Redirect runned process stdout to file (shall precede
+.Fl run
+flag)
+.\"
+.It Fl run-stderr Ar file
+Redirect runned process stderr to file (shall precede
+.Fl run
+flag)
+.\"
+.It Fl run-stderr2out
+Redirect runned process stderr to stdout (shall precede
+.Fl run
+flag)
+.El
+.\"
+.Ss COMPILER OPTIONS
+Extra compiler options available via -W switch:
+.Bl -tag -width Ds
+.\"
+.It Fl -pp-timestamp Ar timestamp
+Override preprocessor timestamp
+.\"
+.It Fl -json-errors
+Print errors in JSON format to stderr
+.\"
+.It Fl -tabular-errors
+Print errors in tabular format to stderr
+.\"
+.It Fl -target-profile Ar profile
+Generate code for specified target (see
+.Sx TARGET
+subsection)
+.\"
+.It Fl -source-id Ar identifier
+Force use provided source file identifier
+.\"
+.It Fl -sys-include-path Ar dir
+Add directory to include search path and mark it as a system include path (used for dependency output)
+.\"
+.It Fl -detailed-output
+Include references to source file in AST and token dumps
+.\"
+.It Fl -feature-[name]
+Enable compiler feature (see
+.Sx FEATURES
+subsection)
+.\"
+.It Fl -no-feature-[name]
+Disable compiler feature (see
+.Sx FEATURES
+subsection)
+.\"
+.It Fl -internal-[flag]
+Enable compiler internal flag (see
+.Sx INTERNALS
+subsection)
+.\"
+.It Fl -no-internal-[flag]
+Disable compiler internal flag (see
+.Sx INTERNALS
+subsection)
+.\"
+.It Fl -codegen-[option]
+Enable option for code generator (see
+.Sx CODEGEN
+subsection)
+.\"
+.It Fl -no-codegen-[option]
+Disable option for code generator (see
+.Sx CODEGEN
+subsection)
+.\"
+.It Fl -optimizer-pipeline Ar spec
+Optimizer pipeline specification (see
+.Sx OPTIMIZER
+subsection)
+.El
+.\"
+.Ss FEATURES
+Supported features (to be used with
+.Fl -Wfeature-[feature-name]
+and
+.Fl -Wno-feature-[feature-name]
+flags):
+.Bl -tag -width Ds
+.\"
+.It Ar fail-on-attributes
+Fail if __attribute__((...)) is encountered [default: off]
+.\"
+.It Ar missing-function-return-type
+Permit function definitions with missing return type [default: on]
+.\"
+.It Ar designated-init-colons
+Permit "fieldname:" syntax in designated initializers [default: on]
+.\"
+.It Ar labels-as-values
+Permit label-addressing with && operator [default: on]
+.\"
+.It Ar non-strict-qualifiers
+Disable strict qualifier checks for pointers [default: on]
+.\"
+.It Ar signed-enums
+Force all enums to have signed integral type [default: off]
+.\"
+.It Ar implicit-function-decl
+Permit implicit funciton declarations at use-site [default: on]
+.\"
+.It Ar empty-structs
+Permit empty structure/union definitions [default: on]
+.\"
+.It Ar ext-pointer-arithmetics
+Permit pointer arithmetics with function and void pointers [default: on]
+.\"
+.It Ar missing-braces-subobj
+Permit missing braces for subobject initialization with scalar [default: on]
+.\"
+.It Ar statement-expressions
+Enable statement expressions [default: on]
+.\"
+.It Ar omitted-conditional-operand
+Permit omission of the middle ternary expression operand [default: on]
+.\"
+.It Ar int-to-pointer
+Permit any integral type conversion to pointer [default: on]
+.\"
+.It Ar permissive-pointer-conv
+Permit conversions between any pointer types [default: on]
+.\"
+.It Ar named-macro-vararg
+Permit named macro variable arguments [default: on]
+.\"
+.It Ar include-next
+Permit include_next preprocessor directive [default: on]
+.\"
+.It Ar fail-on-assembly
+Disable support of inline assembly [default: off]
+.\"
+.It Ar va-args-comma-concat
+Enable special processing for ", ##__VA_ARGS" case in preprocessor [default: on]
+.El
+.\"
+.Ss INTERNALS
+Supported internal flags (to be used with
+.Fl -Winternal-[flag]
+and
+.Fl -Wno-internal-[flag]
+flags):
+.Bl -tag -width Ds
+.\"
+.It Ar flat-local-scope-layout
+Use flat layout for function local variable scope [default: off]
+.El
+.\"
+.Ss CODEGEN
+Supported code geneator options (to be used with
+.Fl -Wcodegen-[option]
+and
+.Fl -Wno-codegen-[option]
+flags):
+.Bl -tag -width Ds
+.\"
+.It Ar emulated-tls
+Use emulated TLS [disabled by default, enabled on openbsd platforms]
+.\"
+.It Ar pic
+Generate position-independent code
+.\"
+.It Ar syntax=SYNTAX
+Produce assembly output with specified syntax [x86_64-intel_noprefix, x86_64-intel_prefix, x86_64-att (default)]
+.El
+.\"
+.Ss OPTIMIZER
+Optimizer pipeline specification (supported only for opt-* targets) consists of comma separated names of optimization pipeline passes:
+.Bl -tag -width Ds
+.\"
+.It Ar noop
+No-operation pass
+.\"
+.It Ar op-simplify
+General code simplification
+.\"
+.It Ar constant-fold
+Folding constant expressions
+.\"
+.It Ar branch-removal
+Eliminating branches with constant conditions
+.\"
+.It Ar compare-branch-fuse
+Fusing comparisons with subsequent branch instructions
+.El
+.\"
+.Ss TARGET
+Target platforms are specified in format [<backend>-]<arch>-<platform>-<variant> where
+.Bl -tag -width Ds
+.\"
+.It Ar backend
+naive, opt [default]
+.\"
+.It Ar arch
+x86_64
+.\"
+.It Ar platform
+linux, freebsd, openbsd, host
+.\"
+.It Ar variant
+none, musl, gnu, system, default
+.El
+Backend is an optional part of target specification. Variant "none" avoids any implicit library linkages and include path. On linux, "default" is
+equivalent to "gnu", on other platforms -- to "system".
+.\"
+.Sh ENVIRONMENT
+Environment variables that affect
+.Nm
+operation:
+.Bl -tag -width Ds
+.\"
+.It Ev KEFIR_AS | Ev AS
+Override the default "as" assembler
+.\"
+.It Ev KEFIR_LD | Ev LD
+Override the default "ld" linker
+.\"
+.It Ev KEFIR_RTLIB
+Specify kefir runtime library location. Optional: it not specified, built-in runtime library will be used.
+.\"
+.It Ev KEFIR_RTINC
+Specify kefir runtime include location. Mandatory for all platform variants except "*-none"
+.\"
+.It Ev KEFIR_MUSL_INCLUDE
+Specify musl include paths (separated by ';'). Mandatory for "linux-musl" platform variant
+.\"
+.It Ev KEFIR_MUSL_LIB
+Specify musl library paths (separated by ';'). Mandatory for "linux-musl" platform variant
+.\"
+.It Ev KEFIR_MUSL_DYNAMIC_LINKER
+Specify dynamic linker path. Optional for "linux-musl" platform variant
+.\"
+.It Ev KEFIR_GNU_INCLUDE
+Specify GNU include paths (separated by ';'). Mandatory for "linux-gnu" platform variant
+.\"
+.It Ev KEFIR_GNU_LIB
+Specify GNU library paths (separated by ';'). Mandatory for "linux-gnu" platform variant
+.\"
+.It Ev KEFIR_GNU_DYNAMIC_LINKER
+Specify dynamic linker path. Optional for "linux-gnu" platform variant
+.\"
+.It Ev KEFIR_FREEBSD_INCLUDE
+Specify FreeBSD include paths (separated by ';'). Mandatory for "freebsd-system" platform variant
+.\"
+.It Ev KEFIR_FREEBSD_LIB
+Specify FreeBSD library paths (separated by ';'). Mandatory for "freebsd-system" platform variant
+.\"
+.It Ev KEFIR_FREEBSD_DYNAMIC_LINKER
+Specify dynamic linker path. Optional for "freebsd-system" platform variant
+.\"
+.It Ev KEFIR_OPENBSD_INCLUDE
+Specify OpenBSD include paths (separated by ';'). Mandatory for "openbsd-system" platform variant
+.\"
+.It Ev KEFIR_OPENBSD_LIB
+Specify OpenBSD library paths (separated by ';'). Mandatory for "openbsd-system" platform variant
+.\"
+.It Ev KEFIR_OPENBSD_DYNAMIC_LINKER
+Specify dynamic linker path. Optional for "openbsd-system" platform variant
+.\"
+.It Ev KEFIR_WORKDIR
+Override kefir temporary work directory
+.El
+.\"
+.Sh EXIT STATUS
+Normally
+.Nm
+exits with 0 exit code. In case of any errors in any of compilation stages, all further compilation is aborted and
+non-zero exit code retruned.
+.\"
+.Sh STANDARDS
+.Nm
+implements C17 language standard as specified in its final draft. The implementation omits
+.Em _Complex
+numbers and support for
+.Em _Atomic
+type and operations.
+.\"
+.Sh NOTES
+The
+.Nm
+compiler is licensed under the terms of GNU GPLv3 license.
+Runtime code provided along with kefir is licensed under the terms of BSD-3-Clause license.
+.\"
+.Pp
+.Nm
+is developed and maintained by
+.An Jevgenijs Protopopovs
+.\"
+.Pp
+Please report bugs found in
+.Nm
+to
+.Mt jevgenij@protopopov.lv
+.\"
+.Pp
+.Nm
+is available online at
+.Lk https://github.com/protopopov1122/kefir
+and
+.Lk https://sr.ht/\(tijprotopopov/kefir/

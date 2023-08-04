@@ -12,8 +12,8 @@ ifeq ($(SANITIZE),undefined)
 KEFIR_STANDALONE_LIBS=-fsanitize=undefined
 endif
 
-$(BIN_DIR)/cc1/help.binary.h: $(SOURCE_DIR)/cc1/help.txt
-$(BIN_DIR)/cc1/help.binary.h: BINARY_HEADER_CONTENT=$(SOURCE_DIR)/cc1/help.txt --zero
+$(BIN_DIR)/cc1/help.binary.h: $(GENERATED_HELP_DIR)/kefir-cc1.1.txt
+$(BIN_DIR)/cc1/help.binary.h: BINARY_HEADER_CONTENT=$(GENERATED_HELP_DIR)/kefir-cc1.1.txt --zero
 
 $(BIN_DIR)/cc1/main.deps: $(BIN_DIR)/cc1/help.binary.h
 	@echo '-I$(BIN_DIR)/cc1 -DKEFIR_CC1_HELP_INCLUDE=help.binary.h' > $@

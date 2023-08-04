@@ -3,6 +3,7 @@ LD=$(CC)
 AS=as
 AR=ar
 EMCC=emcc
+GZIP=gzip
 USE_SHARED=yes
 
 OPT=-O0
@@ -16,6 +17,17 @@ PLATFORM=
 
 ifeq ($(REALPATH),)
 REALPATH=realpath
+endif
+
+MAN_TO_TXT=groff -mandoc -Tutf8
+ifeq ($(PLATFORM),freebsd)
+MAN_TO_TXT=mandoc -mdoc -Tascii
+endif
+ifeq ($(PLATFORM),openbsd)
+MAN_TO_TXT=mandoc -mdoc -Tascii
+endif
+ifeq ($(PLATFORM),netbsd)
+MAN_TO_TXT=mandoc -mdoc -Tascii
 endif
 
 ifeq ($(USE_SHARED),yes)
@@ -39,6 +51,9 @@ SOURCE_DIR=$(ROOT)/source
 HEADERS_DIR=$(ROOT)/headers
 SCRIPTS_DIR=$(ROOT)/scripts
 BOOTSTRAP_DIR=$(ROOT)/bootstrap
+DOCS_DIR=$(ROOT)/docs
+DOCS_MAN_DIR=$(DOCS_DIR)/man
+GENERATED_HELP_DIR=$(BIN_DIR)/help
 
 KEFIR_HOST_ENV_CONFIG_HEADER=$(BIN_DIR)/config.h
 LIBKEFIR_SO=$(LIB_DIR)/libkefir.so
@@ -62,6 +77,7 @@ TESTS :=
 BOOTSTRAP :=
 WEB :=
 WEBAPP :=
+MAN_PAGES :=
 
 $(KEFIR_HOST_ENV_CONFIG_HEADER):
 	@mkdir -p $(shell dirname "$@")

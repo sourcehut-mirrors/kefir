@@ -5,6 +5,7 @@ include source/tests/Makefile.mk
 include source/cc1/Makefile.mk
 include source/driver/Makefile.mk
 include source/web/Makefile.mk
+include docs/man/Makefile.mk
 include install.mk
 include self.mk
 
@@ -24,8 +25,9 @@ endif
 .BOOTSTRAP: $(BOOTSTRAP)
 .WEB: $(WEB)
 .WEBAPP: $(WEBAPP)
+.MAN_PAGES: $(MAN_PAGES)
 
-all: .BINARIES
+all: .BINARIES .MAN_PAGES
 
 generate_test_artifacts: .TEST_ARTIFACTS
 
@@ -47,4 +49,4 @@ clean_bootstrap:
 	@echo "Removing $(BOOTSTRAP_DIR)"
 	@rm -rf $(BOOTSTRAP_DIR)
 
-.PHONY: all test generate_test_artifacts bootstrap web webapp clean clean_bootstrap .DEPENDENCIES .COMPILE_DEPS .TEST_ARTIFACTS .ASM_FILES .OBJECT_FILES .BINARIES .TEST_BINARIES .TEST_RESULTS .TESTS .BOOTSTRAP
+.PHONY: all test generate_test_artifacts bootstrap web webapp clean clean_bootstrap .DEPENDENCIES .COMPILE_DEPS .TEST_ARTIFACTS .ASM_FILES .OBJECT_FILES .BINARIES .TEST_BINARIES .TEST_RESULTS .TESTS .BOOTSTRAP .MAN_PAGES

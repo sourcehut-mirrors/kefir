@@ -5,8 +5,8 @@ $(BIN_HEADERS_DESTDIR)/runtime/amd64_sysv.binary.h: $(BIN_HEADERS_SRCDIR)/runtim
 $(BIN_HEADERS_DESTDIR)/runtime/amd64_sysv.binary.h: BINARY_HEADER_CONTENT=$(BIN_HEADERS_SRCDIR)/runtime/amd64_sysv.s $(BIN_HEADERS_SRCDIR)/runtime/common_amd64.inc.s --zero
 $(BIN_HEADERS_DESTDIR)/compiler/predefined_defs.binary.h: $(BIN_HEADERS_SRCDIR)/compiler/predefined_defs.h
 $(BIN_HEADERS_DESTDIR)/compiler/predefined_defs.binary.h: BINARY_HEADER_CONTENT=$(BIN_HEADERS_SRCDIR)/compiler/predefined_defs.h --zero
-$(BIN_HEADERS_DESTDIR)/driver/help.binary.h: $(BIN_HEADERS_SRCDIR)/driver/help.txt
-$(BIN_HEADERS_DESTDIR)/driver/help.binary.h: BINARY_HEADER_CONTENT=$(BIN_HEADERS_SRCDIR)/driver/help.txt --zero
+$(BIN_HEADERS_DESTDIR)/driver/help.binary.h: $(GENERATED_HELP_DIR)/kefir.1.txt
+$(BIN_HEADERS_DESTDIR)/driver/help.binary.h: BINARY_HEADER_CONTENT=$(GENERATED_HELP_DIR)/kefir.1.txt --zero
 
 $(BIN_HEADERS_DESTDIR)/compiler/profile.deps: $(BIN_HEADERS_DESTDIR)/runtime/opt_amd64_sysv.binary.h $(BIN_HEADERS_DESTDIR)/runtime/amd64_sysv.binary.h
 	@mkdir -p $(shell dirname "$@")

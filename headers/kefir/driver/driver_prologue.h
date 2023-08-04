@@ -12,7 +12,7 @@
 #error "driver_prologue.h shall not be included directly"
 #endif
 
-static const char KefirDriverHelpContent[] = {
+static const unsigned char KefirDriverHelpContent[] = {
 #include STRINGIFY(KEFIR_DRIVER_HELP_INCLUDE)
 };
 static struct kefir_tempfile_manager tmpmgr;

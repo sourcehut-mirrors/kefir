@@ -1,0 +1,247 @@
+.Dd August 2023
+.Dt kefir-cc1 1
+.Os
+.\"
+.\"
+.\"
+.Sh NAME
+.Nm kefir-cc1
+.Nd C17 language compiler
+.\"
+.\"
+.\"
+.Sh SYNOPSIS
+.Nm
+.Op options
+.Op file
+.\"
+.\"
+.\"
+.Sh DESCRIPTION
+.Nm
+is a C17 language compiler (without a driver). If no input file is provided, stdin is used.
+.\"
+.\"
+.\"
+.Sh OPTIONS
+.Bl -tag -width Ds
+.\"
+.It Fl -pp-timestamp Ar timestamp
+Override preprocessor timestamp
+.\"
+.It Fl -json-errors
+Print errors in JSON format to stderr
+.\"
+.It Fl -tabular-errors
+Print errors in tabular format to stderr
+.\"
+.It Fl -target-profile Ar profile
+Generate code for specified target (see
+.Sx TARGET
+subsection)
+.\"
+.It Fl -source-id Ar identifier
+Force use provided source file identifier
+.\"
+.It Fl -sys-include-path Ar dir
+Add directory to include search path and mark it as a system include path (used for dependency output)
+.\"
+.It Fl -detailed-output
+Include references to source file in AST and token dumps
+.\"
+.It Fl -feature-[name]
+Enable compiler feature (see
+.Sx FEATURES
+subsection)
+.\"
+.It Fl -no-feature-[name]
+Disable compiler feature (see
+.Sx FEATURES
+subsection)
+.\"
+.It Fl -internal-[flag]
+Enable compiler internal flag (see
+.Sx INTERNALS
+subsection)
+.\"
+.It Fl -no-internal-[flag]
+Disable compiler internal flag (see
+.Sx INTERNALS
+subsection)
+.\"
+.It Fl -codegen-[option]
+Enable option for code generator (see
+.Sx CODEGEN
+subsection)
+.\"
+.It Fl -no-codegen-[option]
+Disable option for code generator (see
+.Sx CODEGEN
+subsection)
+.\"
+.It Fl -optimizer-pipeline Ar spec
+Optimizer pipeline specification (see
+.Sx OPTIMIZER
+subsection)
+.El
+.\"
+.Ss FEATURES
+Supported features (to be used with
+.Fl -feature-[feature-name]
+and
+.Fl -no-feature-[feature-name]
+flags) -- disabled by default:
+.Bl -tag -width Ds
+.\"
+.It Ar fail-on-attributes
+Fail if __attribute__((...)) is encountered
+.\"
+.It Ar missing-function-return-type
+Permit function definitions with missing return type
+.\"
+.It Ar designated-init-colons
+Permit "fieldname:" syntax in designated initializers
+.\"
+.It Ar labels-as-values
+Permit label-addressing with && operator
+.\"
+.It Ar non-strict-qualifiers
+Disable strict qualifier checks for pointers
+.\"
+.It Ar signed-enums
+Force all enums to have signed integral type
+.\"
+.It Ar implicit-function-decl
+Permit implicit funciton declarations at use-site
+.\"
+.It Ar empty-structs
+Permit empty structure/union definitions
+.\"
+.It Ar ext-pointer-arithmetics
+Permit pointer arithmetics with function and void pointers
+.\"
+.It Ar missing-braces-subobj
+Permit missing braces for subobject initialization with scalar
+.\"
+.It Ar statement-expressions
+Enable statement expressions
+.\"
+.It Ar omitted-conditional-operand
+Permit omission of the middle ternary expression operand
+.\"
+.It Ar int-to-pointer
+Permit any integral type conversion to pointer
+.\"
+.It Ar permissive-pointer-conv
+Permit conversions between any pointer types
+.\"
+.It Ar named-macro-vararg
+Permit named macro variable arguments
+.\"
+.It Ar include-next
+Permit include_next preprocessor directive
+.\"
+.It Ar fail-on-assembly
+Disable support of inline assembly
+.\"
+.It Ar va-args-comma-concat
+Enable special processing for ", ##__VA_ARGS" case in preprocessor
+.El
+.\"
+.Ss INTERNALS
+Supported internal flags (to be used with
+.Fl -internal-[flag]
+and
+.Fl -no-internal-[flag]
+flags):
+.Bl -tag -width Ds
+.\"
+.It Ar flat-local-scope-layout
+Use flat layout for function local variable scope [default: off]
+.El
+.\"
+.Ss CODEGEN
+Supported code geneator options (to be used with
+.Fl -codegen-[option]
+and
+.Fl -no-codegen-[option]
+flags):
+.Bl -tag -width Ds
+.\"
+.It Ar emulated-tls
+Use emulated TLS [disabled by default, enabled on openbsd platforms]
+.\"
+.It Ar pic
+Generate position-independent code
+.\"
+.It Ar syntax=SYNTAX
+Produce assembly output with specified syntax [x86_64-intel_noprefix, x86_64-intel_prefix, x86_64-att (default)]
+.El
+.\"
+.Ss OPTIMIZER
+Optimizer pipeline specification (supported only for opt-* targets) consists of comma separated names of optimization pipeline passes:
+.Bl -tag -width Ds
+.\"
+.It Ar noop
+No-operation pass
+.\"
+.It Ar op-simplify
+General code simplification
+.\"
+.It Ar constant-fold
+Folding constant expressions
+.\"
+.It Ar branch-removal
+Eliminating branches with constant conditions
+.\"
+.It Ar compare-branch-fuse
+Fusing comparisons with subsequent branch instructions
+.El
+.\"
+.Ss TARGET
+Supported compilation targets:
+.Bl -tag -width Ds
+.\"
+.It Ar amd64-sysv-gas
+Produce GNU As-compatible assembly adhering System-V AMD64 ABI [default]
+.\"
+.It Ar opt-amd64-sysv-gas
+Produce optimized GNU As-compatible assembly adhering System-V AMD64 ABI
+.El
+.\"
+.Sh EXIT STATUS
+Normally
+.Nm
+exits with 0 exit code. In case of any errors in any of compilation stages, all further compilation is aborted and
+non-zero exit code retruned.
+.\"
+.Sh STANDARDS
+.Nm
+implements C17 language standard as specified in its final draft. The implementation omits
+.Em _Complex
+numbers and support for
+.Em _Atomic
+type and operations.
+.\"
+.Sh NOTES
+The
+.Nm
+compiler is licensed under the terms of GNU GPLv3 license.
+.\"
+.Pp
+.Nm
+is developed and maintained by
+.An Jevgenijs Protopopovs
+.\"
+.Pp
+Please report bugs found in
+.Nm
+to
+.Mt jevgenij@protopopov.lv
+.\"
+.Pp
+.Nm
+is available online at
+.Lk https://github.com/protopopov1122/kefir
+and
+.Lk https://sr.ht/\(tijprotopopov/kefir/
