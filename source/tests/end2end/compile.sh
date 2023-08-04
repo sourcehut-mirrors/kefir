@@ -18,7 +18,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 SCRIPT="$0"
-BIN_DIR="$1"
+KEFIR_BIN_DIR="$1"
 SRC_FILE="$2"
 DST_FILE="$3"
 if [[ "x$DST_FILE" == "x" ]]; then
@@ -26,8 +26,8 @@ if [[ "x$DST_FILE" == "x" ]]; then
     exit -1
 fi
 
-KEFIRCC="$BIN_DIR/kefir"
-export LD_LIBRARY_PATH="$BIN_DIR/libs"
+KEFIRCC="$KEFIR_BIN_DIR/kefir"
+export LD_LIBRARY_PATH="$KEFIR_BIN_DIR/libs"
 
 KEFIR_CFLAGS=" --target opt-x86_64-host-none -fPIC -pie -I \"$(dirname $SRC_FILE)\" -I \"$(dirname $SCRIPT)/../../../headers/kefir/runtime/common\""
 

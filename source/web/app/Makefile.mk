@@ -1,11 +1,11 @@
-WEBAPP_BIN_DIR=$(BIN_DIR)/webapp
-WEBAPP_INCLUDE_DIR=$(WEBAPP_BIN_DIR)/includes
-WEBAPP_INCLUDE_LIST=$(WEBAPP_BIN_DIR)/include.list
+WEBAPP_KEFIR_BIN_DIR=$(KEFIR_BIN_DIR)/webapp
+WEBAPP_INCLUDE_DIR=$(WEBAPP_KEFIR_BIN_DIR)/includes
+WEBAPP_INCLUDE_LIST=$(WEBAPP_KEFIR_BIN_DIR)/include.list
 WEBAPP_INCLUDE_EXTRA=
 
 WEBAPP_MUSL_VERSION=1.2.4
-WEBAPP_MUSL_ARCHIVE=$(BIN_DIR)/musl-$(WEBAPP_MUSL_VERSION).tar.gz
-WEBAPP_MUSL_BUILD=$(BIN_DIR)/musl-$(WEBAPP_MUSL_VERSION)/.build.done
+WEBAPP_MUSL_ARCHIVE=$(KEFIR_BIN_DIR)/musl-$(WEBAPP_MUSL_VERSION).tar.gz
+WEBAPP_MUSL_BUILD=$(KEFIR_BIN_DIR)/musl-$(WEBAPP_MUSL_VERSION)/.build.done
 
 $(WEBAPP_MUSL_ARCHIVE):
 	@mkdir -p $(shell dirname "$@")
@@ -35,24 +35,24 @@ $(WEBAPP_INCLUDE_LIST): $(WEBAPP_INCLUDE_DIR)
 	@echo "Generating $@"
 	@find $(WEBAPP_INCLUDE_DIR) -type f -exec $(REALPATH) --relative-to=$(WEBAPP_INCLUDE_DIR) {} \; > $@
 
-$(WEBAPP_BIN_DIR)/%: $(SOURCE_DIR)/web/app/%
+$(WEBAPP_KEFIR_BIN_DIR)/%: $(SOURCE_DIR)/web/app/%
 	@mkdir -p $(shell dirname "$@")
 	@echo "Copying $@"
 	@cp $^ $@
 
-$(WEBAPP_BIN_DIR)/kefir.js: $(KEFIR_JS)
+$(WEBAPP_KEFIR_BIN_DIR)/kefir.js: $(KEFIR_JS)
 	@mkdir -p $(shell dirname "$@")
 	@echo "Copying $@"
 	@cp $^ $@
 
-$(WEBAPP_BIN_DIR)/kefir.wasm: $(KEFIR_JS)
+$(WEBAPP_KEFIR_BIN_DIR)/kefir.wasm: $(KEFIR_JS)
 	@mkdir -p $(shell dirname "$@")
 	@echo "Copying $@"
 	@cp $(shell dirname "$^")/kefir.wasm $@
 
 WEBAPP += $(WEBAPP_INCLUDE_LIST) \
-	      $(WEBAPP_BIN_DIR)/index.html \
-	      $(WEBAPP_BIN_DIR)/playground.js \
-	      $(WEBAPP_BIN_DIR)/kefir.js \
-	      $(WEBAPP_BIN_DIR)/kefir.wasm \
-	      $(WEBAPP_BIN_DIR)/playground.css
+	      $(WEBAPP_KEFIR_BIN_DIR)/index.html \
+	      $(WEBAPP_KEFIR_BIN_DIR)/playground.js \
+	      $(WEBAPP_KEFIR_BIN_DIR)/kefir.js \
+	      $(WEBAPP_KEFIR_BIN_DIR)/kefir.wasm \
+	      $(WEBAPP_KEFIR_BIN_DIR)/playground.css

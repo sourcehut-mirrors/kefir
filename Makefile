@@ -42,8 +42,8 @@ web: .WEB
 webapp: .WEBAPP
 
 clean:
-	@echo "Removing $(BIN_DIR)"
-	@rm -rf $(BIN_DIR)
+	@echo "Removing $(KEFIR_BIN_DIR)"
+	@rm -rf $(KEFIR_BIN_DIR)
 
 clean_bootstrap:
 	@echo "Removing $(BOOTSTRAP_DIR)"

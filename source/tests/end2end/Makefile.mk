@@ -1,4 +1,4 @@
-KEFIR_END2END_BIN_PATH=$(BIN_DIR)/tests/end2end
+KEFIR_END2END_BIN_PATH=$(KEFIR_BIN_DIR)/tests/end2end
 KEFIR_END2END_TEST_LIBS=-pthread
 
 ifeq ($(PLATFORM),freebsd)
@@ -7,21 +7,21 @@ endif
 
 $(KEFIR_END2END_BIN_PATH)/%.o: CFLAGS += -Wno-int-in-bool-context
 
-$(KEFIR_END2END_BIN_PATH)/%.kefir.o: $(SOURCE_DIR)/tests/end2end/%.kefir.c $(BIN_DIR)/kefir
+$(KEFIR_END2END_BIN_PATH)/%.kefir.o: $(SOURCE_DIR)/tests/end2end/%.kefir.c $(KEFIR_BIN_DIR)/kefir
 	@mkdir -p $(shell dirname "$@")
 	@echo "Kefir-Compile $@"
 	@AS="$(AS)" \
 	 VALGRIND_TEST_OPTIONS="$(VALGRIND_TEST_OPTIONS)" \
 	 MEMCHECK="$(MEMCHECK)" \
 	 PLATFORM="$(PLATFORM)" \
-	 $(SOURCE_DIR)/tests/end2end/compile.sh $(BIN_DIR) $< $@
+	 $(SOURCE_DIR)/tests/end2end/compile.sh $(KEFIR_BIN_DIR) $< $@
 
-$(KEFIR_END2END_BIN_PATH)/%.test: KEFIR_END2END_TEST_BIN_DIR=$(KEFIR_END2END_BIN_PATH)/$(patsubst %.test,%,$(notdir $@))
-$(KEFIR_END2END_BIN_PATH)/%.test: KEFIR_END2END_TEST_SOURCE_DIR=$(KEFIR_END2END_TEST_BIN_DIR:$(BIN_DIR)/%=$(SOURCE_DIR)/%)
+$(KEFIR_END2END_BIN_PATH)/%.test: KEFIR_END2END_TEST_KEFIR_BIN_DIR=$(KEFIR_END2END_BIN_PATH)/$(patsubst %.test,%,$(notdir $@))
+$(KEFIR_END2END_BIN_PATH)/%.test: KEFIR_END2END_TEST_SOURCE_DIR=$(KEFIR_END2END_TEST_KEFIR_BIN_DIR:$(KEFIR_BIN_DIR)/%=$(SOURCE_DIR)/%)
 $(KEFIR_END2END_BIN_PATH)/%.test: KEFIR_END2END_TEST_HOST_SOURCE=$(wildcard $(KEFIR_END2END_TEST_SOURCE_DIR)/*.host.c)
 $(KEFIR_END2END_BIN_PATH)/%.test: KEFIR_END2END_TEST_KEFIR_SOURCE=$(wildcard $(KEFIR_END2END_TEST_SOURCE_DIR)/*.kefir.c)
-$(KEFIR_END2END_BIN_PATH)/%.test: KEFIR_END2END_TEST_HOST_OBJECT_FILES=$(KEFIR_END2END_TEST_HOST_SOURCE:$(SOURCE_DIR)/%.c=$(BIN_DIR)/%.o)
-$(KEFIR_END2END_BIN_PATH)/%.test: KEFIR_END2END_TEST_KEFIR_OBJECT_FILES=$(KEFIR_END2END_TEST_KEFIR_SOURCE:$(SOURCE_DIR)/%.c=$(BIN_DIR)/%.o)
+$(KEFIR_END2END_BIN_PATH)/%.test: KEFIR_END2END_TEST_HOST_OBJECT_FILES=$(KEFIR_END2END_TEST_HOST_SOURCE:$(SOURCE_DIR)/%.c=$(KEFIR_BIN_DIR)/%.o)
+$(KEFIR_END2END_BIN_PATH)/%.test: KEFIR_END2END_TEST_KEFIR_OBJECT_FILES=$(KEFIR_END2END_TEST_KEFIR_SOURCE:$(SOURCE_DIR)/%.c=$(KEFIR_BIN_DIR)/%.o)
 
 .SECONDEXPANSION:
 $(KEFIR_END2END_BIN_PATH)/%.test: $(LIBKEFIRRT_A) $$(KEFIR_END2END_TEST_HOST_OBJECT_FILES) $$(KEFIR_END2END_TEST_KEFIR_OBJECT_FILES)
@@ -38,7 +38,7 @@ else
 endif
 	@touch $@
 
-$(KEFIR_END2END_BIN_PATH)/%.asmgen.output: $(SOURCE_DIR)/tests/end2end/%.kefir.asmgen.c $(BIN_DIR)/kefir
+$(KEFIR_END2END_BIN_PATH)/%.asmgen.output: $(SOURCE_DIR)/tests/end2end/%.kefir.asmgen.c $(KEFIR_BIN_DIR)/kefir
 	@mkdir -p $(shell dirname "$@")
 	@echo "Kefir-Translate $@"
 	@ASMGEN=yes \
@@ -46,9 +46,9 @@ $(KEFIR_END2END_BIN_PATH)/%.asmgen.output: $(SOURCE_DIR)/tests/end2end/%.kefir.a
 	 VALGRIND_TEST_OPTIONS="$(VALGRIND_TEST_OPTIONS)" \
 	 MEMCHECK="$(MEMCHECK)" \
 	 PLATFORM="$(PLATFORM)" \
-	 	$(SOURCE_DIR)/tests/end2end/compile.sh $(BIN_DIR) $< $@
+	 	$(SOURCE_DIR)/tests/end2end/compile.sh $(KEFIR_BIN_DIR) $< $@
 
-$(KEFIR_END2END_BIN_PATH)/%.also.asmgen.output: $(SOURCE_DIR)/tests/end2end/%.kefir.c $(BIN_DIR)/kefir
+$(KEFIR_END2END_BIN_PATH)/%.also.asmgen.output: $(SOURCE_DIR)/tests/end2end/%.kefir.c $(KEFIR_BIN_DIR)/kefir
 	@mkdir -p $(shell dirname "$@")
 	@echo "Kefir-Translate $@"
 	@ASMGEN=yes \
@@ -56,7 +56,7 @@ $(KEFIR_END2END_BIN_PATH)/%.also.asmgen.output: $(SOURCE_DIR)/tests/end2end/%.ke
 	 VALGRIND_TEST_OPTIONS="$(VALGRIND_TEST_OPTIONS)" \
 	 MEMCHECK="$(MEMCHECK)" \
 	 PLATFORM="$(PLATFORM)" \
-	 	$(SOURCE_DIR)/tests/end2end/compile.sh $(BIN_DIR) $< $@
+	 	$(SOURCE_DIR)/tests/end2end/compile.sh $(KEFIR_BIN_DIR) $< $@
 
 $(KEFIR_END2END_BIN_PATH)/%.test.asmgen.done: $(KEFIR_END2END_BIN_PATH)/%.asmgen.output
 	@echo "Asmgen-Diff $^"
@@ -68,23 +68,23 @@ $(KEFIR_END2END_BIN_PATH)/%.test.also.asmgen.done: $(KEFIR_END2END_BIN_PATH)/%.a
 	@diff -u $(SOURCE_DIR)/tests/end2end/$*.also.asmgen.expected $<
 	@touch $@
 
-$(SOURCE_DIR)/tests/end2end/%.asmgen.expected: $(SOURCE_DIR)/tests/end2end/%.kefir.asmgen.c $(BIN_DIR)/kefir
+$(SOURCE_DIR)/tests/end2end/%.asmgen.expected: $(SOURCE_DIR)/tests/end2end/%.kefir.asmgen.c $(KEFIR_BIN_DIR)/kefir
 	@echo "Rebuilding $@"
 	@ASMGEN=yes \
 	 AS="$(AS)" \
 	 VALGRIND_TEST_OPTIONS="$(VALGRIND_TEST_OPTIONS)" \
 	 MEMCHECK="$(MEMCHECK)" \
 	 PLATFORM="$(PLATFORM)" \
-	 $(SOURCE_DIR)/tests/end2end/compile.sh $(BIN_DIR) $< $@
+	 $(SOURCE_DIR)/tests/end2end/compile.sh $(KEFIR_BIN_DIR) $< $@
 
-$(SOURCE_DIR)/tests/end2end/%.also.asmgen.expected: $(SOURCE_DIR)/tests/end2end/%.kefir.c $(BIN_DIR)/kefir
+$(SOURCE_DIR)/tests/end2end/%.also.asmgen.expected: $(SOURCE_DIR)/tests/end2end/%.kefir.c $(KEFIR_BIN_DIR)/kefir
 	@echo "Rebuilding $@"
 	@ASMGEN=yes \
 	 AS="$(AS)" \
 	 VALGRIND_TEST_OPTIONS="$(VALGRIND_TEST_OPTIONS)" \
 	 MEMCHECK="$(MEMCHECK)" \
 	 PLATFORM="$(PLATFORM)" \
-	 $(SOURCE_DIR)/tests/end2end/compile.sh $(BIN_DIR) $< $@
+	 $(SOURCE_DIR)/tests/end2end/compile.sh $(KEFIR_BIN_DIR) $< $@
 
 KEFIR_END2END_ALL_HOST_SOURCES=$(wildcard $(SOURCE_DIR)/tests/end2end/*/*.host.c)
 KEFIR_END2END_ALL_KEFIR_SOURCES=$(wildcard $(SOURCE_DIR)/tests/end2end/*/*.kefir.c)
@@ -93,20 +93,20 @@ KEFIR_END2END_ALL_ASMGEN_MARKS=$(wildcard $(SOURCE_DIR)/tests/end2end/*/*.kefir.
 
 KEFIR_END2END_ALL_RUN_TEST_SOURCES := $(KEFIR_END2END_ALL_HOST_SOURCES)
 KEFIR_END2END_ALL_RUN_TEST_SOURCES += $(KEFIR_END2END_ALL_KEFIR_SOURCES)
-KEFIR_END2END_ALL_RUN_TEST_DEPENDENCIES := $(KEFIR_END2END_ALL_RUN_TEST_SOURCES:$(SOURCE_DIR)/%.c=$(BIN_DIR)/%.d)
-KEFIR_END2END_ALL_RUN_TEST_COMPILE_DEPS := $(KEFIR_END2END_ALL_RUN_TEST_SOURCES:$(SOURCE_DIR)/%.c=$(BIN_DIR)/%.deps)
-KEFIR_END2END_ALL_RUN_TEST_OBJECTS := $(KEFIR_END2END_ALL_RUN_TEST_SOURCES:$(SOURCE_DIR)/%.c=$(BIN_DIR)/%.o)
+KEFIR_END2END_ALL_RUN_TEST_DEPENDENCIES := $(KEFIR_END2END_ALL_RUN_TEST_SOURCES:$(SOURCE_DIR)/%.c=$(KEFIR_BIN_DIR)/%.d)
+KEFIR_END2END_ALL_RUN_TEST_COMPILE_DEPS := $(KEFIR_END2END_ALL_RUN_TEST_SOURCES:$(SOURCE_DIR)/%.c=$(KEFIR_BIN_DIR)/%.deps)
+KEFIR_END2END_ALL_RUN_TEST_OBJECTS := $(KEFIR_END2END_ALL_RUN_TEST_SOURCES:$(SOURCE_DIR)/%.c=$(KEFIR_BIN_DIR)/%.o)
 KEFIR_END2END_ALL_RUN_TEST_DIRS := $(dir $(KEFIR_END2END_ALL_RUN_TEST_SOURCES))
-KEFIR_END2END_ALL_RUN_TEST_BINARIES := $(KEFIR_END2END_ALL_RUN_TEST_DIRS:$(SOURCE_DIR)/%/=$(BIN_DIR)/%.test)
-KEFIR_END2END_ALL_RUN_TESTS := $(KEFIR_END2END_ALL_RUN_TEST_DIRS:$(SOURCE_DIR)/%/=$(BIN_DIR)/%.test.done)
+KEFIR_END2END_ALL_RUN_TEST_BINARIES := $(KEFIR_END2END_ALL_RUN_TEST_DIRS:$(SOURCE_DIR)/%/=$(KEFIR_BIN_DIR)/%.test)
+KEFIR_END2END_ALL_RUN_TESTS := $(KEFIR_END2END_ALL_RUN_TEST_DIRS:$(SOURCE_DIR)/%/=$(KEFIR_BIN_DIR)/%.test.done)
 
 KEFIR_END2END_ASMGEN_TEST_EXPECTED := $(KEFIR_END2END_ALL_ASMGEN_SOURCES:$(SOURCE_DIR)/%.kefir.asmgen.c=$(SOURCE_DIR)/%.asmgen.expected)
-KEFIR_END2END_ASMGEN_TEST_RESULTS := $(KEFIR_END2END_ALL_ASMGEN_SOURCES:$(SOURCE_DIR)/%.kefir.asmgen.c=$(BIN_DIR)/%.asmgen.output)
-KEFIR_END2END_ASMGEN_TESTS := $(KEFIR_END2END_ALL_ASMGEN_SOURCES:$(SOURCE_DIR)/%.kefir.asmgen.c=$(BIN_DIR)/%.test.asmgen.done)
+KEFIR_END2END_ASMGEN_TEST_RESULTS := $(KEFIR_END2END_ALL_ASMGEN_SOURCES:$(SOURCE_DIR)/%.kefir.asmgen.c=$(KEFIR_BIN_DIR)/%.asmgen.output)
+KEFIR_END2END_ASMGEN_TESTS := $(KEFIR_END2END_ALL_ASMGEN_SOURCES:$(SOURCE_DIR)/%.kefir.asmgen.c=$(KEFIR_BIN_DIR)/%.test.asmgen.done)
 
 KEFIR_END2END_ASMGEN_TEST_EXPECTED += $(KEFIR_END2END_ALL_ASMGEN_MARKS:$(SOURCE_DIR)/%.kefir.also.asmgen=$(SOURCE_DIR)/%.also.asmgen.expected)
-KEFIR_END2END_ASMGEN_TEST_RESULTS += $(KEFIR_END2END_ALL_ASMGEN_MARKS:$(SOURCE_DIR)/%.kefir.also.asmgen=$(BIN_DIR)/%.also.asmgen.output)
-KEFIR_END2END_ASMGEN_TESTS += $(KEFIR_END2END_ALL_ASMGEN_MARKS:$(SOURCE_DIR)/%.kefir.also.asmgen=$(BIN_DIR)/%.test.also.asmgen.done)
+KEFIR_END2END_ASMGEN_TEST_RESULTS += $(KEFIR_END2END_ALL_ASMGEN_MARKS:$(SOURCE_DIR)/%.kefir.also.asmgen=$(KEFIR_BIN_DIR)/%.also.asmgen.output)
+KEFIR_END2END_ASMGEN_TESTS += $(KEFIR_END2END_ALL_ASMGEN_MARKS:$(SOURCE_DIR)/%.kefir.also.asmgen=$(KEFIR_BIN_DIR)/%.test.also.asmgen.done)
 
 COMPILE_DEPS += $(KEFIR_END2END_ALL_RUN_TEST_COMPILE_DEPS)
 DEPENDENCIES += $(KEFIR_END2END_ALL_RUN_TEST_DEPENDENCIES)

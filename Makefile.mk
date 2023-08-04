@@ -45,25 +45,25 @@ CFLAGS+=$(SANFLAGS)
 endif
 
 ROOT=.
-BIN_DIR=$(ROOT)/bin
-LIB_DIR=$(BIN_DIR)/libs
+KEFIR_BIN_DIR=$(ROOT)/bin
+LIB_DIR=$(KEFIR_BIN_DIR)/libs
 SOURCE_DIR=$(ROOT)/source
 HEADERS_DIR=$(ROOT)/headers
 SCRIPTS_DIR=$(ROOT)/scripts
 BOOTSTRAP_DIR=$(ROOT)/bootstrap
 DOCS_DIR=$(ROOT)/docs
 DOCS_MAN_DIR=$(DOCS_DIR)/man
-GENERATED_HELP_DIR=$(BIN_DIR)/help
+GENERATED_HELP_DIR=$(KEFIR_BIN_DIR)/help
 
-KEFIR_HOST_ENV_CONFIG_HEADER=$(BIN_DIR)/config.h
+KEFIR_HOST_ENV_CONFIG_HEADER=$(KEFIR_BIN_DIR)/config.h
 LIBKEFIR_SO=$(LIB_DIR)/libkefir.so
 LIBKEFIR_SO_VERSION=0.0
 LIBKEFIR_A=$(LIB_DIR)/libkefir.a
 LIBKEFIRRT_A=$(LIB_DIR)/libkefirrt.a
-KEFIR_EXE=$(BIN_DIR)/kefir
-KEFIR_CC1_EXE=$(BIN_DIR)/kefir-cc1
-KEFIR_JS=$(BIN_DIR)/kefir.js
-HEXDUMP_EXE=$(BIN_DIR)/hexdump
+KEFIR_EXE=$(KEFIR_BIN_DIR)/kefir
+KEFIR_CC1_EXE=$(KEFIR_BIN_DIR)/kefir-cc1
+KEFIR_JS=$(KEFIR_BIN_DIR)/kefir.js
+HEXDUMP_EXE=$(KEFIR_BIN_DIR)/hexdump
 
 COMPILE_DEPS :=
 DEPENDENCIES :=
@@ -88,26 +88,26 @@ else
 	@echo -n > "$@"
 endif
 
-$(BIN_DIR)/%.deps:
+$(KEFIR_BIN_DIR)/%.deps:
 	@mkdir -p $(shell dirname "$@")
 	@touch $@
 
-$(BIN_DIR)/%.d: $(SOURCE_DIR)/%.c $(BIN_DIR)/%.deps $(KEFIR_HOST_ENV_CONFIG_HEADER)
+$(KEFIR_BIN_DIR)/%.d: $(SOURCE_DIR)/%.c $(KEFIR_BIN_DIR)/%.deps $(KEFIR_HOST_ENV_CONFIG_HEADER)
 	@mkdir -p $(shell dirname "$@")
 	@echo "Generating $@"
 	@$(CC) $(INCLUDES) -include "$(KEFIR_HOST_ENV_CONFIG_HEADER)" $$(cat $(subst .d,.deps,$@)) -MM -MT '$(@:.d=.o)' $< > $@
 
-$(BIN_DIR)/%.o: $(SOURCE_DIR)/%.c $(BIN_DIR)/%.d $(BIN_DIR)/%.deps $(KEFIR_HOST_ENV_CONFIG_HEADER)
+$(KEFIR_BIN_DIR)/%.o: $(SOURCE_DIR)/%.c $(KEFIR_BIN_DIR)/%.d $(KEFIR_BIN_DIR)/%.deps $(KEFIR_HOST_ENV_CONFIG_HEADER)
 	@mkdir -p $(shell dirname "$@")
 	@echo "Building $@"
 	@$(CC) $(CFLAGS) $(INCLUDES) -include "$(KEFIR_HOST_ENV_CONFIG_HEADER)" $$(cat $(subst .o,.deps,$@)) -c $< -o $@
 
-$(BIN_DIR)/%.s.o: $(SOURCE_DIR)/%.s
+$(KEFIR_BIN_DIR)/%.s.o: $(SOURCE_DIR)/%.s
 	@mkdir -p $(shell dirname "$@")
 	@echo "Building $@"
 	@$(AS) -o $@ $<
 
-$(BIN_DIR)/%.binary.h: $(HEXDUMP_EXE)
+$(KEFIR_BIN_DIR)/%.binary.h: $(HEXDUMP_EXE)
 	@mkdir -p $(shell dirname "$@")
 	@echo "Generating $@"
 	@$(HEXDUMP_EXE) $(BINARY_HEADER_CONTENT) > $@

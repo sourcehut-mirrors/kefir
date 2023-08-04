@@ -1,8 +1,8 @@
 KEFIR_MAN_PAGES=$(DOCS_MAN_DIR)/kefir.1 \
                 $(DOCS_MAN_DIR)/kefir-cc1.1
-KEFIR_MAN_GZIPPED_PAGES=$(KEFIR_MAN_PAGES:$(DOCS_MAN_DIR)/%=$(BIN_DIR)/man/%.gz)
+KEFIR_MAN_GZIPPED_PAGES=$(KEFIR_MAN_PAGES:$(DOCS_MAN_DIR)/%=$(KEFIR_BIN_DIR)/man/%.gz)
 
-$(BIN_DIR)/man/%.gz: $(DOCS_MAN_DIR)/%
+$(KEFIR_BIN_DIR)/man/%.gz: $(DOCS_MAN_DIR)/%
 	@mkdir -p $(shell dirname "$@")
 	@echo "Gzipping $@"
 	@$(GZIP) -c "$^" > "$@"
