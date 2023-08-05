@@ -19,7 +19,7 @@ ifeq ($(REALPATH),)
 REALPATH=realpath
 endif
 
-MAN_TO_TXT=groff -mandoc -Tutf8
+MAN_TO_TXT=groff -mandoc -Tascii
 ifeq ($(PLATFORM),freebsd)
 MAN_TO_TXT=mandoc -mdoc -Tascii
 endif

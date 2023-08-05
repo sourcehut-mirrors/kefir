@@ -21,8 +21,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdbool.h>
 
 #define BYTES_PER_LINE 12
+static bool UnsignedByte = false;
 
 static void print_byte(int value, FILE *output) {
     static size_t byte_counter = 0;
@@ -34,7 +36,10 @@ static void print_byte(int value, FILE *output) {
             fprintf(output, " ");
         }
     }
-    fprintf(output, "0x%.2xu", value);
+    fprintf(output, "0x%.2x", value);
+    if (UnsignedByte) {
+        fprintf(output, "u");
+    }
     byte_counter++;
 }
 
@@ -62,6 +67,12 @@ int main(int argc, const char **argv) {
         const char *filepath = argv[i];
         if (strcmp(filepath, "--zero") == 0) {
             print_byte(0, stdout);
+            continue;
+        } else if (strcmp(filepath, "--unsigned") == 0) {
+            UnsignedByte = true;
+            continue;
+        } else if (strcmp(filepath, "--signed") == 0) {
+            UnsignedByte = false;
             continue;
         }
 
