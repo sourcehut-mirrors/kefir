@@ -20,15 +20,15 @@
 #
 
 SCRIPT_DIR="$(dirname $0)"
-define(bindir, $SCRIPT_DIR/../bin)dnl
-define(libdir, $SCRIPT_DIR/../lib)dnl
-define(includedir, $SCRIPT_DIR/../include)dnl
-define(sysconfdir, $SCRIPT_DIR/../etc)dnl
+define(bindir, ../bin)dnl
+define(libdir, ../lib)dnl
+define(includedir, ../include)dnl
+define(sysconfdir, ../etc)dnl
 
-export LD_LIBRARY_PATH="libdir:$LD_LIBRARY_PATH"
-export KEFIR_RTLIB="libdir/libkefirrt.a"
-export KEFIR_RTINC="includedir/kefir/runtime"
-if [ -f "sysconfdir/kefir.local" ]; then
-    source "sysconfdir/kefir.local"
+export LD_LIBRARY_PATH="$SCRIPT_DIR/libdir:$LD_LIBRARY_PATH"
+export KEFIR_RTLIB="$SCRIPT_DIR/libdir/libkefirrt.a"
+export KEFIR_RTINC="$SCRIPT_DIR/includedir/kefir/runtime"
+if [ -f "$SCRIPT_DIR/sysconfdir/kefir.local" ]; then
+    source "$SCRIPT_DIR/sysconfdir/kefir.local"
 fi
-exec "bindir/kefir-cc" "$@"
+exec "$SCRIPT_DIR/bindir/kefir-cc" "$@"

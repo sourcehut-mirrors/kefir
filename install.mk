@@ -29,10 +29,10 @@ endif
 	@echo "Installing binaries..."
 	@install "$(KEFIR_BIN_DIR)"/kefir "$(DESTDIR)$(bindir)"/kefir-cc
 	@install "$(KEFIR_BIN_DIR)"/kefir-cc1 "$(DESTDIR)$(bindir)"/kefir-cc1
-	@m4 -Dbindir="$(DESTDIR)$(bindir)" \
-	    -Dlibdir="$(DESTDIR)$(libdir)" \
-		-Dsysconfdir="$(DESTDIR)$(sysconfdir)" \
-		-Dincludedir="$(DESTDIR)$(includedir)" \
+	@m4 -Dbindir="$$($(REALPATH) --relative-to=$(DESTDIR)$(bindir) $(DESTDIR)$(bindir))" \
+	    -Dlibdir="$$($(REALPATH) --relative-to=$(DESTDIR)$(bindir) $(DESTDIR)$(libdir))" \
+		-Dsysconfdir="$$($(REALPATH) --relative-to=$(DESTDIR)$(bindir) $(DESTDIR)$(sysconfdir))" \
+		-Dincludedir="$$($(REALPATH) --relative-to=$(DESTDIR)$(bindir) $(DESTDIR)$(includedir))" \
 		"$(SCRIPTS_DIR)"/kefir.m4 > "$(DESTDIR)$(bindir)"/kefir
 	@chmod 755 "$(DESTDIR)$(bindir)"/kefir
 	@install "$(SCRIPTS_DIR)"/detect-host-env.sh "$(DESTDIR)$(bindir)"/kefir-detect-host-env
