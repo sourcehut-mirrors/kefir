@@ -20,10 +20,10 @@
 #
 
 SCRIPT_DIR="$(dirname $0)"
-define(bindir, $SCRIPT_DIR/../bin)
-define(libdir, $SCRIPT_DIR/../lib)
-define(includedir, $SCRIPT_DIR/../include)
-define(sysconfdir, $SCRIPT_DIR/../etc)
+define(bindir, $SCRIPT_DIR/../bin)dnl
+define(libdir, $SCRIPT_DIR/../lib)dnl
+define(includedir, $SCRIPT_DIR/../include)dnl
+define(sysconfdir, $SCRIPT_DIR/../etc)dnl
 
 export LD_LIBRARY_PATH="libdir:$LD_LIBRARY_PATH"
 export KEFIR_RTLIB="libdir/libkefirrt.a"

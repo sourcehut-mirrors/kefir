@@ -29,12 +29,17 @@ endif
 	@echo "Installing binaries..."
 	@install "$(KEFIR_BIN_DIR)"/kefir "$(DESTDIR)$(bindir)"/kefir-cc
 	@install "$(KEFIR_BIN_DIR)"/kefir-cc1 "$(DESTDIR)$(bindir)"/kefir-cc1
-	@m4 -Dbindir="$(DESTDIR)$(bindir)" -Dlibdir="$(DESTDIR)$(libdir)" -Dsysconfdir="$(DESTDIR)$(sysconfdir)" -Dincludedir="$(DESTDIR)$(includedir)" "$(SCRIPTS_DIR)"/kefir.m4 > "$(DESTDIR)$(bindir)"/kefir
+	@m4 -Dbindir="$(DESTDIR)$(bindir)" \
+	    -Dlibdir="$(DESTDIR)$(libdir)" \
+		-Dsysconfdir="$(DESTDIR)$(sysconfdir)" \
+		-Dincludedir="$(DESTDIR)$(includedir)" \
+		"$(SCRIPTS_DIR)"/kefir.m4 > "$(DESTDIR)$(bindir)"/kefir
 	@chmod 755 "$(DESTDIR)$(bindir)"/kefir
 	@install "$(SCRIPTS_DIR)"/detect-host-env.sh "$(DESTDIR)$(bindir)"/kefir-detect-host-env
 	@echo "Installing man pages..."
 	@install "$(KEFIR_BIN_DIR)"/man/kefir.1.gz -t "$(DESTDIR)$(man1dir)"
 	@install "$(KEFIR_BIN_DIR)"/man/kefir-cc1.1.gz -t "$(DESTDIR)$(man1dir)"
+	@install "$(KEFIR_BIN_DIR)"/man/kefir-detect-host-env.1.gz -t "$(DESTDIR)$(man1dir)"
 	@echo "Initializing local config..."
 	@touch "$(DESTDIR)$(sysconfdir)"/kefir.local
 
@@ -42,9 +47,14 @@ uninstall:
 	@echo "Removing local config..."
 	@rm -rf "$(DESTDIR)$(sysconfdir)"/kefir.local
 	@echo "Removing man pages..."
-	@rm -rf "$(DESTDIR)$(man1dir)"/kefir.1.gz "$(DESTDIR)$(man1dir)"/kefir-cc1.1.gz
+	@rm -rf "$(DESTDIR)$(man1dir)"/kefir.1.gz
+	@rm -rf "$(DESTDIR)$(man1dir)"/kefir-cc1.1.gz
+	@rm -rf "$(DESTDIR)$(man1dir)"/kefir-detect-host-env.1.gz
 	@echo "Removing binaries..."
-	@rm -rf "$(DESTDIR)$(bindir)"/kefir "$(DESTDIR)$(bindir)"/kefir-detect-host-env "$(DESTDIR)$(bindir)"/kefir-cc "$(DESTDIR)$(bindir)"/kefir-cc1
+	@rm -rf "$(DESTDIR)$(bindir)"/kefir
+	@rm -rf "$(DESTDIR)$(bindir)"/kefir-detect-host-env
+	@rm -rf "$(DESTDIR)$(bindir)"/kefir-cc
+	@rm -rf "$(DESTDIR)$(bindir)"/kefir-cc1
 	@echo "Removing headers..."
 	@rm -rf "$(DESTDIR)$(includedir)"/kefir
 	@echo "Removing libraries..."

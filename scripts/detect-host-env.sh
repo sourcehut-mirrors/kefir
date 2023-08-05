@@ -402,8 +402,8 @@ for ARG in "$@"; do
             ;;
 
         "--help")
-            echo "$0 - Kefir host environment detector. Used to detect host include, library and dynamic linker paths, suitable compilation target "\
-                 "and generate that information in C header and shell environment formats into stdout."
+            echo "$0 is used to detect environment (include paths, library paths, dynamic linker, suitable kefir target) on the host and" \
+                 "output it as a C header or shell environment into stdout."
             echo
             echo "Options:"
             echo "    --header      Generate C header file"
@@ -420,10 +420,10 @@ for ARG in "$@"; do
             ;;
 
         *)
-            log "Unknown option $ARG. Usage: $0 --header|--environment|--help"
+            log "Unknown option $ARG. Usage: $0 --header | --environment | --help"
             exit -1
             ;;
     esac
 
-    log "Usage: $0 --header|--environment|--help"
+    log "Usage: $0 --header | --environment | --help"
 done

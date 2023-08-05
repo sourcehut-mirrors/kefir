@@ -49,4 +49,8 @@ clean_bootstrap:
 	@echo "Removing $(BOOTSTRAP_DIR)"
 	@rm -rf $(BOOTSTRAP_DIR)
 
-.PHONY: all test generate_test_artifacts bootstrap web webapp clean clean_bootstrap .DEPENDENCIES .COMPILE_DEPS .TEST_ARTIFACTS .ASM_FILES .OBJECT_FILES .BINARIES .TEST_BINARIES .TEST_RESULTS .TESTS .BOOTSTRAP .MAN_PAGES
+help:
+	@cat $(DOCS_DIR)/Makefile.help.txt
+
+.PHONY: all test generate_test_artifacts bootstrap web webapp clean clean_bootstrap help \
+        .DEPENDENCIES .COMPILE_DEPS .TEST_ARTIFACTS .ASM_FILES .OBJECT_FILES .BINARIES .TEST_BINARIES .TEST_RESULTS .TESTS .BOOTSTRAP .MAN_PAGES

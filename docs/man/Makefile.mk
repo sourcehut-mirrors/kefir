@@ -1,5 +1,6 @@
 KEFIR_MAN_PAGES=$(DOCS_MAN_DIR)/kefir.1 \
-                $(DOCS_MAN_DIR)/kefir-cc1.1
+                $(DOCS_MAN_DIR)/kefir-cc1.1 \
+                $(DOCS_MAN_DIR)/kefir-detect-host-env.1
 KEFIR_MAN_GZIPPED_PAGES=$(KEFIR_MAN_PAGES:$(DOCS_MAN_DIR)/%=$(KEFIR_BIN_DIR)/man/%.gz)
 
 $(KEFIR_BIN_DIR)/man/%.gz: $(DOCS_MAN_DIR)/%

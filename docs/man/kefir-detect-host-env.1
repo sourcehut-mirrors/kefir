@@ -1,0 +1,77 @@
+.Dd August 2023
+.Dt kefir-detect-host-env 1
+.Os
+.\"
+.\"
+.\"
+.Sh NAME
+.Nm kefir-detect-host-env
+.Nd host environment detector
+.\"
+.\"
+.\"
+.Sh SYNOPSIS
+.Nm
+.Fl -header | -environment | -help
+.\"
+.\"
+.\"
+.Sh DESCRIPTION
+.Nm
+is used to detect environment (include paths, library paths, dynamic linker, suitable kefir target) on the host and output it as a C header or
+shell environment into stdout.
+.\"
+.\"
+.\"
+.Sh OPTIONS
+.Bl -tag -width Ds
+.\"
+.It Fl -header
+Output host environment information in C header format
+.\"
+.It Fl -environment
+Output host environment information in shell environment format
+.\"
+.It Fl -help
+Display help text
+.El
+.\"
+.\"
+.\"
+.Sh ENVIRONMENT
+Environment variables that affect
+.Nm
+operation:
+.Bl -tag -width Ds
+.\"
+.It Ev CC
+C compiler to use for detection
+.\"
+.It Ev CFLAGS
+C compiler flags to use for detection
+.El
+.\"
+.\"
+.\"
+.Sh NOTES
+The
+.Nm
+script is licensed under the terms of GNU GPLv3 license.
+.\"
+.Pp
+.Nm
+is developed and maintained by
+.An Jevgenijs Protopopovs
+.\"
+.Pp
+Please report bugs found in
+.Nm
+to
+.Mt jevgenij@protopopov.lv
+.\"
+.Pp
+.Nm
+is available online at
+.Lk https://github.com/protopopov1122/kefir
+and
+.Lk https://sr.ht/\(tijprotopopov/kefir/

@@ -1,4 +1,4 @@
-CC=gcc
+CC=cc
 LD=$(CC)
 AS=as
 AR=ar

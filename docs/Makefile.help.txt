@@ -1,0 +1,59 @@
+Build target                Description
+============================================================================================
+all                         All binaries and manual pages
+bootstrap                   Compiler bootstrap
+web                         WASM build of the compiler
+webapp                      Playground web-application
+test                        Run all tests
+generate_test_artifacts     Rebuild test artifacts
+clean                       Clean all build files (except bootstrap)
+clean_bootstrap             Clean bootstrap build
+help                        Print this help text
+
+
+
+Variable                    Description                 Default
+============================================================================================
+                                     Tools
+============================================================================================
+CC                          C compiler                  cc
+LD                          Linker                      $(CC)
+AS                          Assembler                   as
+AR                          Archiver                    ar
+EMCC                        Emscripten compiler         emcc
+GZIP                        Compressor                  gzip
+REALPATH                    Realpath coreutil           realpath
+MAN_TO_TXT                  mdoc-to-txt conversion      PLATFORM-specific
+                            command
+============================================================================================
+                                     Tool options
+============================================================================================
+CFLAGS                      C compiler flags            -std=c11 # + some warning flags
+OPT                         Additional C optimization   -O0
+                            flags
+DBG                         Additional C debug          -g3 -ggdb -DKFT_NOFORK
+                            flags
+EXTRAFLAGS                  Extra C flags               
+SANFLAGS                    Sanitizer flags             
+LDFLAGS                     Linker flags                
+============================================================================================
+                                        General
+============================================================================================
+USE_SHARED                  Produce shared objects      yes
+PLATFORM                    Target platform             
+                            (linux|freebsd|openbsd|
+                            netbsd)
+DETECT_HOST_ENV             Detect host environment     yes
+                            on build
+DETECT_HOST_ENV_CC          C compiler to detect        $(CC)
+                            host environment
+DETECT_HOST_ENV_CFLAGS      C compiler flags to detect  $(CFLAGS)
+                            host environment
+MEMCHECK                    Use Valgrind to run tests   yes
+SANITIZE                    Use sanitizer (undefined)   
+============================================================================================
+                                      Directories
+============================================================================================
+ROOT                        Root directory of the       .
+                            project
+KEFIR_BIN_DIR               Build directory             $(ROOT)/bin
