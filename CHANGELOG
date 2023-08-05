@@ -2,6 +2,15 @@
 
 This file documents notable changes to the project.
 
+## [0.3.0] - 2023-08-05
+Project release
+* Support for basic optimizations and position-independent code generation.
+* Host environment detection script to automate search for inlude directories,
+  library path, dynamic linker.
+* Support for using Web pages as host environment (via Emscripten & WebAssembly).
+* Added manual pages.
+* Updated versions of test dependencies.
+
 ## [0.2.0] - 2023-07-09
 Project release:
 * New code generator for x86_64 System V ABI systems -- improved generated code performance due to straightforward code generation technique. Implementation of optimizations and debug information generation within the scope of the new code generator is planned for the next releases. The old (threaded) code generator is still available as an option.
