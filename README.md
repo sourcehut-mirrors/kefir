@@ -230,6 +230,10 @@ simple server command-line:
 python -m  http.server 8000 -d bin/webapp
 ```
 
+A hosted version of the Web application is available at [Kefir
+playground](https://www.protopopov.lv/kefir/playground/) (please note that the
+Web page uses JavaScript and WebAssembly).
+
 ## Bootstrap
 Kefir is capable of bootstraping itself (that is, compiling it's own source
 code). At the moment, the feature is under testing, however stage 2 bootstrap is
