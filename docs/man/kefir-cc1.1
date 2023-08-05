@@ -26,60 +26,60 @@ is a C17 language compiler (without a driver). If no input file is provided, std
 .Sh OPTIONS
 .Bl -tag -width Ds
 .\"
-.It Fl -pp-timestamp Ar timestamp
+.It Fl \-pp-timestamp Ar timestamp
 Override preprocessor timestamp
 .\"
-.It Fl -json-errors
+.It Fl \-json-errors
 Print errors in JSON format to stderr
 .\"
-.It Fl -tabular-errors
+.It Fl \-tabular-errors
 Print errors in tabular format to stderr
 .\"
-.It Fl -target-profile Ar profile
+.It Fl \-target-profile Ar profile
 Generate code for specified target (see
 .Sx TARGET
 subsection)
 .\"
-.It Fl -source-id Ar identifier
+.It Fl \-source-id Ar identifier
 Force use provided source file identifier
 .\"
-.It Fl -sys-include-path Ar dir
+.It Fl \-sys-include-path Ar dir
 Add directory to include search path and mark it as a system include path (used for dependency output)
 .\"
-.It Fl -detailed-output
+.It Fl \-detailed-output
 Include references to source file in AST and token dumps
 .\"
-.It Fl -feature-[name]
+.It Fl \-feature-[name]
 Enable compiler feature (see
 .Sx FEATURES
 subsection)
 .\"
-.It Fl -no-feature-[name]
+.It Fl \-no-feature-[name]
 Disable compiler feature (see
 .Sx FEATURES
 subsection)
 .\"
-.It Fl -internal-[flag]
+.It Fl \-internal-[flag]
 Enable compiler internal flag (see
 .Sx INTERNALS
 subsection)
 .\"
-.It Fl -no-internal-[flag]
+.It Fl \-no-internal-[flag]
 Disable compiler internal flag (see
 .Sx INTERNALS
 subsection)
 .\"
-.It Fl -codegen-[option]
+.It Fl \-codegen-[option]
 Enable option for code generator (see
 .Sx CODEGEN
 subsection)
 .\"
-.It Fl -no-codegen-[option]
+.It Fl \-no-codegen-[option]
 Disable option for code generator (see
 .Sx CODEGEN
 subsection)
 .\"
-.It Fl -optimizer-pipeline Ar spec
+.It Fl \-optimizer-pipeline Ar spec
 Optimizer pipeline specification (see
 .Sx OPTIMIZER
 subsection)
@@ -87,9 +87,9 @@ subsection)
 .\"
 .Ss FEATURES
 Supported features (to be used with
-.Fl -feature-[feature-name]
+.Fl \-feature-[feature-name]
 and
-.Fl -no-feature-[feature-name]
+.Fl \-no-feature-[feature-name]
 flags) -- disabled by default:
 .Bl -tag -width Ds
 .\"
@@ -150,9 +150,9 @@ Enable special processing for ", ##__VA_ARGS" case in preprocessor
 .\"
 .Ss INTERNALS
 Supported internal flags (to be used with
-.Fl -internal-[flag]
+.Fl \-internal-[flag]
 and
-.Fl -no-internal-[flag]
+.Fl \-no-internal-[flag]
 flags):
 .Bl -tag -width Ds
 .\"
@@ -162,9 +162,9 @@ Use flat layout for function local variable scope [default: off]
 .\"
 .Ss CODEGEN
 Supported code geneator options (to be used with
-.Fl -codegen-[option]
+.Fl \-codegen-[option]
 and
-.Fl -no-codegen-[option]
+.Fl \-no-codegen-[option]
 flags):
 .Bl -tag -width Ds
 .\"
