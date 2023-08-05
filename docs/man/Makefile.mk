@@ -11,6 +11,6 @@ $(KEFIR_BIN_DIR)/man/%.gz: $(DOCS_MAN_DIR)/%
 $(GENERATED_HELP_DIR)/%.txt: $(DOCS_MAN_DIR)/%
 	@mkdir -p $(shell dirname "$@")
 	@echo "Generating $@"
-	@$(MAN_TO_TXT) "$^" | sed "s,\x1B\[[0-9;]*[a-zA-Z],,g" > "$@"
+	@$(MDOC_CONV) -Tascii "$^" | sed "s,\x1B\[[0-9;]*[a-zA-Z],,g" > "$@"
 
 MAN_PAGES += $(KEFIR_MAN_GZIPPED_PAGES)

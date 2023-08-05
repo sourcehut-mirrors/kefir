@@ -48,11 +48,17 @@ $(WEBAPP_KEFIR_BIN_DIR)/kefir.js: $(KEFIR_JS)
 $(WEBAPP_KEFIR_BIN_DIR)/kefir.wasm: $(KEFIR_JS)
 	@mkdir -p $(shell dirname "$@")
 	@echo "Copying $@"
-	@cp $(shell dirname "$^")/kefir.wasm $@
+	@cp $(shell dirname "$^")/kefir.wasm "$@"
+
+$(WEBAPP_KEFIR_BIN_DIR)/kefir.pdf: $(DOCS_MAN_DIR)/kefir.1
+	@mkdir -p $(shell dirname "$@")
+	@echo "Generating $@"
+	@$(MDOC_CONV) -Tpdf "$<" > "$@"
 
 WEBAPP += $(WEBAPP_INCLUDE_LIST) \
 	      $(WEBAPP_KEFIR_BIN_DIR)/index.html \
 	      $(WEBAPP_KEFIR_BIN_DIR)/playground.js \
 	      $(WEBAPP_KEFIR_BIN_DIR)/kefir.js \
 	      $(WEBAPP_KEFIR_BIN_DIR)/kefir.wasm \
-	      $(WEBAPP_KEFIR_BIN_DIR)/playground.css
+	      $(WEBAPP_KEFIR_BIN_DIR)/playground.css \
+		  $(WEBAPP_KEFIR_BIN_DIR)/kefir.pdf

@@ -19,15 +19,15 @@ ifeq ($(REALPATH),)
 REALPATH=realpath
 endif
 
-MAN_TO_TXT=groff -mandoc -Tascii
+MDOC_CONV=groff -mandoc
 ifeq ($(PLATFORM),freebsd)
-MAN_TO_TXT=mandoc -mdoc -Tascii
+MDOC_CONV=mandoc -mdoc
 endif
 ifeq ($(PLATFORM),openbsd)
-MAN_TO_TXT=mandoc -mdoc -Tascii
+MDOC_CONV=mandoc -mdoc
 endif
 ifeq ($(PLATFORM),netbsd)
-MAN_TO_TXT=mandoc -mdoc -Tascii
+MDOC_CONV=mandoc -mdoc
 endif
 
 ifeq ($(USE_SHARED),yes)

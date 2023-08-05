@@ -23,7 +23,7 @@ AR                          Archiver                    ar
 EMCC                        Emscripten compiler         emcc
 GZIP                        Compressor                  gzip
 REALPATH                    Realpath coreutil           realpath
-MAN_TO_TXT                  mdoc-to-txt conversion      PLATFORM-specific
+MDOC_CONV                   mdoc-to-... conversion      PLATFORM-specific
                             command
 ============================================================================================
                                      Tool options

@@ -32,28 +32,32 @@
     <div id="content">
       <header>
         <h1>Welcome to <a href="https://git.protopopov.lv/kefir">Kefir C17 compiler</a> playground!</h1>
-        <p>
-          Please note the following:
-          <ul>
-            <li>
-              The Kefir compiler is running entirely in the browser.
-              In order to implement that, this page uses JavaScript, WebAssembly and browser worker threads.
-              Upon the first request the WebAssembly binary is fetched and a worker thread is spawned.
-              No local storage or cookies are used.
-            </li>
+        <details open>
+          <summary>Please note the following</summary>
 
-            <li>
-              <a href="https://musl.libc.org/">Musl libc</a> headers are the only include files available in the compilation environment.
-              Musl header files are stored and served by the backend.
-            </li>
+          <p>
+            <ul>
+              <li>
+                The Kefir compiler is running entirely in the browser.
+                In order to implement that, this page uses JavaScript, WebAssembly and browser worker threads.
+                Upon the first request the WebAssembly binary is fetched and a worker thread is spawned.
+                No local storage or cookies are used.
+              </li>
+  
+              <li>
+                <a href="https://musl.libc.org/">Musl libc</a> headers are the only include files available in the compilation environment.
+                Musl header files are stored and served by the backend.
+              </li>
+  
+              <li>
+                This page is provided "in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+                without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE".
+              </li>
 
-            <li>
-              This page is provided "in the hope that it will be useful, but WITHOUT ANY WARRANTY;
-              without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE".
-            </li>
-          </ul>
-        </p>
-        <a href="#" onclick="onHideHeader()">Hide the notice</a>
+              <li>Kefir manual page in PDF format is available <a href="kefir.pdf">here</a>.</li>
+            </ul>
+          </p>
+        </details>
       </header>
 
       <main>
@@ -156,11 +160,6 @@
 
       function onHelp() {
         sendCommand(['--help'], '');
-      }
-
-      function onHideHeader () {
-        const headerEl = document.querySelector('header');
-        headerEl.classList.add('no-display');
       }
     </script>
   
