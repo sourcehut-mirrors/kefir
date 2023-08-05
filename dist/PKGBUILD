@@ -1,5 +1,5 @@
 pkgname='kefir'
-pkgver='0.2.0'
+pkgver='0.3.0'
 pkgrel='1'
 pkgdesc='C17 language compiler for x86_64 systems'
 arch=('x86_64')
@@ -8,7 +8,7 @@ license=('GPL3' 'BSD')
 
 depends=()
 makedepends=()
-source=('kefir::git+https://github.com/protopopov1122/kefir')
+source=('kefir::git+https://github.com/protopopov1122/kefir#tag=v0.3')
 sha512sums=('SKIP')
 options=('staticlibs')
 
