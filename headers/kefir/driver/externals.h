@@ -52,8 +52,12 @@ typedef struct kefir_driver_external_resources {
     const char *work_dir;
 
     struct {
+        const char *source_file;
         const char *assembly_file;
         const char *object_file;
+        const char *library_object_file;
+        const char *static_library;
+        const char *shared_library;
         const char *preprocessed_file;
     } extensions;
 

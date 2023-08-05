@@ -23,8 +23,41 @@
 #include "kefir/core/util.h"
 #include <string.h>
 #include <stdio.h>
+#include <ctype.h>
 
-static kefir_driver_argument_type_t detect_file_type(const char *filename) {
+static kefir_bool_t detect_shared_object_file_type(const struct kefir_driver_external_resources *externals,
+                                                   const char *filename) {
+    kefir_size_t suffix_len = strlen(externals->extensions.shared_library);
+
+    const char *full_extension = NULL;
+    const char *filename_end = filename + strlen(filename);
+    for (const char *c = filename; c < filename_end; c++) {
+        if (*c == '.') {
+            full_extension = c;
+            break;
+        }
+    }
+
+    if (full_extension == NULL) {
+        return false;
+    }
+
+    for (; *full_extension != '\0';) {
+        if (*full_extension != '.' && !isdigit(*full_extension)) {
+            return false;
+        } else if (suffix_len > 0 && strncmp(full_extension, externals->extensions.shared_library, suffix_len) == 0) {
+            full_extension += suffix_len;
+            suffix_len = 0;
+        } else {
+            full_extension++;
+        }
+    }
+
+    return true;
+}
+
+static kefir_driver_argument_type_t detect_file_type(const struct kefir_driver_external_resources *externals,
+                                                     const char *filename) {
     const char *extension = NULL;
     for (const char *c = filename + strlen(filename); c > filename; c--) {
         if (*c == '.') {
@@ -36,15 +69,17 @@ static kefir_driver_argument_type_t detect_file_type(const char *filename) {
         return KEFIR_DRIVER_ARGUMENT_INPUT_FILE_CODE;
     }
 
-    if (strcmp(extension, ".c") == 0) {
+    if (strcmp(extension, externals->extensions.source_file) == 0) {
         return KEFIR_DRIVER_ARGUMENT_INPUT_FILE_CODE;
-    } else if (strcmp(extension, ".i") == 0) {
+    } else if (strcmp(extension, externals->extensions.preprocessed_file) == 0) {
         return KEFIR_DRIVER_ARGUMENT_INPUT_FILE_PREPROCESSED;
-    } else if (strcmp(extension, ".s") == 0) {
+    } else if (strcmp(extension, externals->extensions.assembly_file) == 0) {
         return KEFIR_DRIVER_ARGUMENT_INPUT_FILE_ASSEMBLY;
-    } else if (strcmp(extension, ".o") == 0) {
+    } else if (strcmp(extension, externals->extensions.object_file) == 0 ||
+               strcmp(extension, externals->extensions.library_object_file) == 0) {
         return KEFIR_DRIVER_ARGUMENT_INPUT_FILE_OBJECT;
-    } else if (strcmp(extension, ".a") == 0) {
+    } else if (strcmp(extension, externals->extensions.static_library) == 0 ||
+               detect_shared_object_file_type(externals, filename)) {
         return KEFIR_DRIVER_ARGUMENT_INPUT_FILE_LIBRARY;
     } else {
         return KEFIR_DRIVER_ARGUMENT_INPUT_FILE_CODE;
@@ -52,11 +87,13 @@ static kefir_driver_argument_type_t detect_file_type(const char *filename) {
 }
 
 kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_string_pool *symbols,
-                                       struct kefir_driver_configuration *config, const char *const *argv,
+                                       struct kefir_driver_configuration *config,
+                                       const struct kefir_driver_external_resources *externals, const char *const *argv,
                                        kefir_size_t argc, kefir_driver_command_t *command, FILE *warning_output) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(symbols != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid symbol table"));
     REQUIRE(config != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver configuration"));
+    REQUIRE(externals != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver external resources"));
     REQUIRE(command != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to driver command"));
 
     *command = KEFIR_DRIVER_COMMAND_RUN;
@@ -108,7 +145,8 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
             if (kefir_list_length(&config->arguments) == 0) {
                 EXPECT_ARG;
                 arg = argv[++index];
-                REQUIRE_OK(kefir_driver_configuration_add_argument(mem, symbols, config, arg, detect_file_type(arg)));
+                REQUIRE_OK(kefir_driver_configuration_add_argument(mem, symbols, config, arg,
+                                                                   detect_file_type(externals, arg)));
             }
 
             for (; index + 1 < argc;) {
@@ -305,6 +343,20 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
                                                                KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_EXTRA));
             REQUIRE_OK(kefir_driver_configuration_add_argument(mem, symbols, config, directory,
                                                                KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_EXTRA));
+        } else if (strncmp("-soname", arg, 7) == 0) {
+            // Shared object name
+            const char *soname = NULL;
+            if (strlen(arg) == 7 || arg[7] != '=') {
+                EXPECT_ARG;
+                soname = argv[++index];
+            } else {
+                soname = &arg[7];
+            }
+
+            REQUIRE_OK(kefir_driver_configuration_add_argument(mem, symbols, config, "-soname",
+                                                               KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_EXTRA));
+            REQUIRE_OK(kefir_driver_configuration_add_argument(mem, symbols, config, soname,
+                                                               KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_EXTRA));
         } else if (strcmp("-static", arg) == 0) {
             // Static linking
             config->flags.static_linking = true;
@@ -474,7 +526,8 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
             }
         } else if (strcmp("-", arg) == 0) {
             // Positional argument
-            REQUIRE_OK(kefir_driver_configuration_add_argument(mem, symbols, config, arg, detect_file_type(arg)));
+            REQUIRE_OK(
+                kefir_driver_configuration_add_argument(mem, symbols, config, arg, detect_file_type(externals, arg)));
         } else if (strncmp("-", arg, 1) == 0 || strncmp("--", arg, 2) == 0) {
             // All other non-positional arguments: ignored
             if (warning_output != NULL) {
@@ -484,7 +537,8 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
 
         // Positional argument
         else {
-            REQUIRE_OK(kefir_driver_configuration_add_argument(mem, symbols, config, arg, detect_file_type(arg)));
+            REQUIRE_OK(
+                kefir_driver_configuration_add_argument(mem, symbols, config, arg, detect_file_type(externals, arg)));
         }
 
 #undef EXPECT_ARG

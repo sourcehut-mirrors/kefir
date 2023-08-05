@@ -151,8 +151,12 @@ kefir_result_t kefir_driver_external_resources_init_from_env(struct kefir_mem *m
         REQUIRE_OK(kefir_tempfile_manager_tmpdir(mem, tmpmgr, "kefir-workdir-XXXXXX", &externals->work_dir));
     }
 
+    externals->extensions.source_file = ".c";
+    externals->extensions.preprocessed_file = ".i";
     externals->extensions.assembly_file = ".s";
     externals->extensions.object_file = ".o";
-    externals->extensions.preprocessed_file = ".i";
+    externals->extensions.library_object_file = ".lo";
+    externals->extensions.static_library = ".a";
+    externals->extensions.shared_library = ".so";
     return KEFIR_OK;
 }

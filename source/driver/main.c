@@ -49,8 +49,8 @@ int main(int argc, char *const *argv) {
     if (exteral_resources.default_target != NULL) {
         REQUIRE_CHAIN(&res, kefir_driver_target_match(exteral_resources.default_target, &driver_config.target));
     }
-    REQUIRE_CHAIN(&res, kefir_driver_parse_args(mem, &symbols, &driver_config, (const char *const *) argv + 1, argc - 1,
-                                                &command, stderr));
+    REQUIRE_CHAIN(&res, kefir_driver_parse_args(mem, &symbols, &driver_config, &exteral_resources,
+                                                (const char *const *) argv + 1, argc - 1, &command, stderr));
     if (res == KEFIR_OK && command == KEFIR_DRIVER_COMMAND_HELP) {
         fprintf(stdout, "%s", KefirDriverHelpContent);
     } else if (res == KEFIR_OK && command == KEFIR_DRIVER_COMMAND_VERSION) {

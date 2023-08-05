@@ -23,6 +23,7 @@
 
 #include "kefir/core/mem.h"
 #include "kefir/driver/configuration.h"
+#include "kefir/driver/externals.h"
 #include <stdio.h>
 
 typedef enum kefir_driver_command {
@@ -35,7 +36,8 @@ typedef enum kefir_driver_command {
 } kefir_driver_command_t;
 
 kefir_result_t kefir_driver_parse_args(struct kefir_mem *, struct kefir_string_pool *,
-                                       struct kefir_driver_configuration *, const char *const *, kefir_size_t,
-                                       kefir_driver_command_t *, FILE *);
+                                       struct kefir_driver_configuration *,
+                                       const struct kefir_driver_external_resources *, const char *const *,
+                                       kefir_size_t, kefir_driver_command_t *, FILE *);
 
 #endif
