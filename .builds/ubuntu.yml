@@ -7,7 +7,7 @@ packages:
   - wget
 sources:
   - https://git.sr.ht/~jprotopopov/kefir
-  - https://github.com/protopopov1122/c-testsuite.git
+  - https://git.sr.ht/~jprotopopov/c-testsuite
 tasks:
   - test_gcc: |
       cd kefir

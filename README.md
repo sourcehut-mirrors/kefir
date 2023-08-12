@@ -301,7 +301,7 @@ Kefir relies on following tests, most of which are executed as part of CI:
 * Miscallenous tests:
     - Lua test -- kefir is used to build Lua 5.4 interpreter and then Lua basic
       test suite is executed on the resulting executable 
-    - [Test suite](https://github.com/protopopov1122/c-testsuite) which is a
+    - [Test suite](https://git.sr.ht/~jprotopopov/c-testsuite) which is a
       fork of [c-testsuite](https://github.com/c-testsuite/c-testsuite) is
       executed. Currently, the test suite reports 4 failures that happen due to
       C language extensions used in the tests. Failing test cases are skipped.
