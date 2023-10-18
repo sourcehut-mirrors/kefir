@@ -4,6 +4,8 @@ packages:
   - binutils
   - coreutils
   - bash
+secrets:
+  -  13fca65b-ffbd-4542-b2fe-6a2813e53256
 sources:
   - https://git.sr.ht/~jprotopopov/kefir
 tasks:
