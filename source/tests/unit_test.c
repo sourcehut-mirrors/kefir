@@ -48,45 +48,6 @@ static void kft_free(struct kefir_mem *mem, void *ptr) {
 struct kefir_mem kft_mem = {
     .malloc = kft_malloc, .calloc = kft_calloc, .realloc = kft_realloc, .free = kft_free, .data = NULL};
 
-#ifndef KFT_NOFORK
-kefir_result_t kft_run_test_case(const struct kft_test_case *testCase, void *testContext) {
-    printf("%s... ", testCase->description);
-    fflush(stdout);
-    kefir_result_t status = KEFIR_UNKNOWN_ERROR;
-    pid_t child_pid = fork();
-    if (child_pid < 0) {
-        perror("Failed (Internal error: fork() failed)\n");
-        exit(-1);
-    } else if (child_pid == 0) {
-        status = testCase->run(testCase, testContext);
-        exit((int) status);
-    } else {
-        int child_status;
-        pid_t waited_pid = waitpid(child_pid, &child_status, 0);
-        if (waited_pid < 0) {
-            perror("Failed (Internal error: waitpid() failed)\n");
-            exit(-1);
-        }
-        if (WIFEXITED(child_status)) {
-            if (WEXITSTATUS(child_status) == 0) {
-                printf("Ok\n");
-                status = KEFIR_OK;
-            } else {
-                status = (kefir_result_t) WEXITSTATUS(child_status);
-                printf("Failed (%d)\n", status);
-            }
-        } else if (WIFSIGNALED(child_status)) {
-            int sig = WTERMSIG(child_status);
-            printf("Terminated (signal %d)\n", sig);
-            status = KEFIR_UNKNOWN_ERROR;
-        } else {
-            printf("Unknown\n");
-            status = KEFIR_UNKNOWN_ERROR;
-        }
-    }
-    return status;
-}
-#else
 kefir_result_t kft_run_test_case(const struct kft_test_case *testCase, void *testContext) {
     printf("%s... ", testCase->description);
     kefir_result_t status = testCase->run(testCase, testContext);
@@ -97,7 +58,6 @@ kefir_result_t kft_run_test_case(const struct kft_test_case *testCase, void *tes
     }
     return status;
 }
-#endif
 
 kefir_size_t kft_run_test_suite(const struct kft_test_case **testSuite, kefir_size_t testSuiteLength,
                                 void *testContext) {
