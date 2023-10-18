@@ -27,12 +27,12 @@
 #include "kefir/codegen/system-v-amd64.h"
 #include "kefir/codegen/system-v-amd64/registers.h"
 #include "kefir/ir/function.h"
-#include "kefir/target/abi/system-v-amd64/function.h"
+#include "kefir/target/abi/amd64/function.h"
 
 typedef struct kefir_amd64_sysv_function {
     const struct kefir_ir_function *func;
-    struct kefir_abi_amd64_sysv_function_decl decl;
-    struct kefir_abi_sysv_amd64_type_layout local_layout;
+    struct kefir_abi_amd64_function_decl decl;
+    struct kefir_abi_amd64_type_layout local_layout;
     struct kefir_hashtree appendix;
 
     struct {
@@ -72,6 +72,6 @@ kefir_result_t kefir_amd64_sysv_function_prologue(struct kefir_codegen_amd64 *,
 kefir_result_t kefir_amd64_sysv_function_epilogue(struct kefir_codegen_amd64 *,
                                                   const struct kefir_amd64_sysv_function *);
 kefir_result_t kefir_amd64_sysv_function_invoke(struct kefir_codegen_amd64 *,
-                                                const struct kefir_abi_amd64_sysv_function_decl *, bool);
+                                                const struct kefir_abi_amd64_function_decl *, bool);
 
 #endif

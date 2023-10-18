@@ -41,7 +41,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         kefir_ir_module_new_function_declaration(mem, &module, "func1", func_params, false, func_returns);
     REQUIRE(decl != NULL, KEFIR_INTERNAL_ERROR);
     REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, decl->name, KEFIR_IR_IDENTIFIER_GLOBAL));
-    struct kefir_abi_amd64_sysv_function_decl sysv_decl;
+    struct kefir_abi_amd64_function_decl sysv_decl;
     REQUIRE_OK(kefir_codegen_sysv_amd64_init(mem, &codegen, stdout, NULL));
     codegen.xasmgen.settings.enable_comments = false;
     codegen.xasmgen.settings.enable_identation = false;
@@ -59,9 +59,9 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, decl->params, KEFIR_IR_TYPE_FLOAT32, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, decl->result, KEFIR_IR_TYPE_INT, 0, 0));
 
-    REQUIRE_OK(kefir_abi_amd64_sysv_function_decl_alloc(mem, decl, &sysv_decl));
+    REQUIRE_OK(kefir_abi_amd64_function_decl_alloc(mem, KEFIR_ABI_AMD64_VARIANT_SYSTEM_V, decl, &sysv_decl));
     REQUIRE_OK(kefir_amd64_sysv_function_invoke(&codegen, &sysv_decl, false));
-    REQUIRE_OK(kefir_abi_amd64_sysv_function_decl_free(mem, &sysv_decl));
+    REQUIRE_OK(kefir_abi_amd64_function_decl_free(mem, &sysv_decl));
 
     REQUIRE_OK(KEFIR_CODEGEN_CLOSE(mem, &codegen.iface));
     REQUIRE_OK(kefir_ir_module_free(mem, &module));

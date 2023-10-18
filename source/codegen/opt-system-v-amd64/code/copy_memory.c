@@ -83,19 +83,19 @@ DEFINE_TRANSLATOR(copy_memory) {
         kefir_ir_module_get_named_type(module->ir_module, instr->operation.parameters.typed_refs.type_id);
     REQUIRE(ir_type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to find IR type"));
 
-    struct kefir_abi_sysv_amd64_type_layout type_layout;
-    REQUIRE_OK(kefir_abi_sysv_amd64_type_layout(ir_type, mem, &type_layout));
+    struct kefir_abi_amd64_type_layout type_layout;
+    REQUIRE_OK(kefir_abi_amd64_type_layout(mem, KEFIR_ABI_AMD64_VARIANT_SYSTEM_V, ir_type, &type_layout));
 
-    const struct kefir_abi_sysv_amd64_typeentry_layout *typeentry_layout = NULL;
-    res = kefir_abi_sysv_amd64_type_layout_at(&type_layout, instr->operation.parameters.typed_refs.type_index,
-                                              &typeentry_layout);
+    const struct kefir_abi_amd64_typeentry_layout *typeentry_layout = NULL;
+    res = kefir_abi_amd64_type_layout_at(&type_layout, instr->operation.parameters.typed_refs.type_index,
+                                         &typeentry_layout);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_abi_sysv_amd64_type_layout_free(mem, &type_layout);
+        kefir_abi_amd64_type_layout_free(mem, &type_layout);
         return res;
     });
 
     kefir_size_t total_size = typeentry_layout->size;
-    REQUIRE_OK(kefir_abi_sysv_amd64_type_layout_free(mem, &type_layout));
+    REQUIRE_OK(kefir_abi_amd64_type_layout_free(mem, &type_layout));
 
     if (total_size > KEFIR_INT32_MAX) {
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOVABS(

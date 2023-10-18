@@ -19,7 +19,6 @@
 */
 
 #include "kefir/codegen/system-v-amd64/vararg.h"
-#include "kefir/target/abi/system-v-amd64/qwords.h"
 #include "kefir/codegen/system-v-amd64/symbolic_labels.h"
 #include "kefir/codegen/system-v-amd64/symbolic_labels.h"
 #include "kefir/target/abi/util.h"
@@ -36,6 +35,10 @@ static kefir_result_t vararg_start(struct kefir_codegen_amd64 *codegen,
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_POP(&codegen->xasmgen,
                                              kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_DATA_REG)));
 
+    struct kefir_abi_amd64_function_parameter_requirements reqs;
+    const struct kefir_abi_amd64_function_parameters *parameters;
+    REQUIRE_OK(kefir_abi_amd64_function_decl_parameters(&sysv_func->decl, &parameters));
+    REQUIRE_OK(kefir_abi_amd64_function_parameters_requirements(parameters, &reqs));
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
         &codegen->xasmgen,
         kefir_asm_amd64_xasmgen_operand_pointer(
@@ -43,9 +46,8 @@ static kefir_result_t vararg_start(struct kefir_codegen_amd64 *codegen,
             kefir_asm_amd64_xasmgen_operand_indirect(&codegen->xasmgen_helpers.operands[1],
                                                      kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_DATA_REG),
                                                      0)),
-        kefir_asm_amd64_xasmgen_operand_immu(
-            &codegen->xasmgen_helpers.operands[2],
-            KEFIR_AMD64_SYSV_ABI_QWORD * sysv_func->decl.parameters.location.integer_register)));
+        kefir_asm_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[2],
+                                             KEFIR_AMD64_ABI_QWORD * reqs.general_purpose_regs)));
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
         &codegen->xasmgen,
@@ -53,24 +55,24 @@ static kefir_result_t vararg_start(struct kefir_codegen_amd64 *codegen,
             &codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_POINTER_DWORD,
             kefir_asm_amd64_xasmgen_operand_indirect(&codegen->xasmgen_helpers.operands[1],
                                                      kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_DATA_REG),
-                                                     KEFIR_AMD64_SYSV_ABI_QWORD / 2)),
+                                                     KEFIR_AMD64_ABI_QWORD / 2)),
         kefir_asm_amd64_xasmgen_operand_immu(
             &codegen->xasmgen_helpers.operands[2],
-            KEFIR_AMD64_SYSV_ABI_QWORD * KEFIR_ABI_SYSV_AMD64_PARAMETER_INTEGER_REGISTER_COUNT +
-                2 * KEFIR_AMD64_SYSV_ABI_QWORD * sysv_func->decl.parameters.location.sse_register)));
+            KEFIR_AMD64_ABI_QWORD *
+                    kefir_abi_amd64_num_of_general_purpose_parameter_registers(KEFIR_ABI_AMD64_VARIANT_SYSTEM_V) +
+                2 * KEFIR_AMD64_ABI_QWORD * reqs.sse_regs)));
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_LEA(
         &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_DATA2_REG),
-        kefir_asm_amd64_xasmgen_operand_indirect(
-            &codegen->xasmgen_helpers.operands[0],
-            kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
-            2 * KEFIR_AMD64_SYSV_ABI_QWORD + sysv_func->decl.parameters.location.stack_offset)));
+        kefir_asm_amd64_xasmgen_operand_indirect(&codegen->xasmgen_helpers.operands[0],
+                                                 kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
+                                                 2 * KEFIR_AMD64_ABI_QWORD + reqs.stack)));
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
         &codegen->xasmgen,
         kefir_asm_amd64_xasmgen_operand_indirect(&codegen->xasmgen_helpers.operands[0],
                                                  kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_DATA_REG),
-                                                 KEFIR_AMD64_SYSV_ABI_QWORD),
+                                                 KEFIR_AMD64_ABI_QWORD),
         kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_DATA2_REG)));
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_LEA(
@@ -84,12 +86,12 @@ static kefir_result_t vararg_start(struct kefir_codegen_amd64 *codegen,
         &codegen->xasmgen,
         kefir_asm_amd64_xasmgen_operand_indirect(&codegen->xasmgen_helpers.operands[0],
                                                  kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_DATA_REG),
-                                                 2 * KEFIR_AMD64_SYSV_ABI_QWORD),
+                                                 2 * KEFIR_AMD64_ABI_QWORD),
         kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_DATA2_REG)));
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_ADD(
         &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBX),
-        kefir_asm_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[0], 2 * KEFIR_AMD64_SYSV_ABI_QWORD)));
+        kefir_asm_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[0], 2 * KEFIR_AMD64_ABI_QWORD)));
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_JMP(
         &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_indirect(
@@ -109,11 +111,11 @@ static kefir_result_t vararg_end(struct kefir_codegen_amd64 *codegen,
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_ADD(
         &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
-        kefir_asm_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_SYSV_ABI_QWORD)));
+        kefir_asm_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_ABI_QWORD)));
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_ADD(
         &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBX),
-        kefir_asm_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[0], 2 * KEFIR_AMD64_SYSV_ABI_QWORD)));
+        kefir_asm_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[0], 2 * KEFIR_AMD64_ABI_QWORD)));
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_JMP(
         &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_indirect(
@@ -243,7 +245,7 @@ static kefir_result_t vararg_get_int(struct kefir_codegen_amd64 *codegen,
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_ADD(
         &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBX),
-        kefir_asm_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[0], 2 * KEFIR_AMD64_SYSV_ABI_QWORD)));
+        kefir_asm_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[0], 2 * KEFIR_AMD64_ABI_QWORD)));
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_JMP(
         &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_indirect(
@@ -317,7 +319,7 @@ static kefir_result_t vararg_get_sse(struct kefir_codegen_amd64 *codegen,
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_ADD(
         &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBX),
-        kefir_asm_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[0], 2 * KEFIR_AMD64_SYSV_ABI_QWORD)));
+        kefir_asm_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[0], 2 * KEFIR_AMD64_ABI_QWORD)));
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_JMP(
         &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_indirect(
@@ -373,12 +375,10 @@ static kefir_result_t vararg_visit_long_double(const struct kefir_ir_type *type,
 }
 
 struct vararg_aggregate_info {
-    const struct kefir_abi_sysv_amd64_typeentry_layout *arg_layout;
-    struct kefir_abi_sysv_amd64_parameter_allocation *arg_alloc;
-
-    struct kefir_abi_sysv_amd64_type_layout layout;
-    struct kefir_vector allocation;
-    struct kefir_abi_sysv_amd64_parameter_location location;
+    const struct kefir_abi_amd64_typeentry_layout *arg_layout;
+    struct kefir_abi_amd64_type_layout layout;
+    struct kefir_abi_amd64_function_parameters parameters;
+    struct kefir_abi_amd64_function_parameter parameter;
 };
 
 static kefir_result_t vararg_load_memory_aggregate(struct kefir_codegen_amd64 *codegen,
@@ -387,8 +387,8 @@ static kefir_result_t vararg_load_memory_aggregate(struct kefir_codegen_amd64 *c
         &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_DATA2_REG),
         kefir_asm_amd64_xasmgen_operand_indirect(&codegen->xasmgen_helpers.operands[0],
                                                  kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_DATA_REG),
-                                                 KEFIR_AMD64_SYSV_ABI_QWORD)));
-    if (info->arg_layout->alignment > KEFIR_AMD64_SYSV_ABI_QWORD) {
+                                                 KEFIR_AMD64_ABI_QWORD)));
+    if (info->arg_layout->alignment > KEFIR_AMD64_ABI_QWORD) {
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_ADD(
             &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_DATA2_REG),
             kefir_asm_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[0],
@@ -406,13 +406,13 @@ static kefir_result_t vararg_load_memory_aggregate(struct kefir_codegen_amd64 *c
         &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_DATA2_REG),
         kefir_asm_amd64_xasmgen_operand_immu(
             &codegen->xasmgen_helpers.operands[0],
-            kefir_target_abi_pad_aligned(info->arg_layout->size, KEFIR_AMD64_SYSV_ABI_QWORD))));
+            kefir_target_abi_pad_aligned(info->arg_layout->size, KEFIR_AMD64_ABI_QWORD))));
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
         &codegen->xasmgen,
         kefir_asm_amd64_xasmgen_operand_indirect(&codegen->xasmgen_helpers.operands[0],
                                                  kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_DATA_REG),
-                                                 KEFIR_AMD64_SYSV_ABI_QWORD),
+                                                 KEFIR_AMD64_ABI_QWORD),
         kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_DATA2_REG)));
     return KEFIR_OK;
 }
@@ -433,7 +433,7 @@ static kefir_result_t vararg_get_memory_aggregate(struct kefir_codegen_amd64 *co
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_ADD(
         &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBX),
-        kefir_asm_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[0], 2 * KEFIR_AMD64_SYSV_ABI_QWORD)));
+        kefir_asm_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[0], 2 * KEFIR_AMD64_ABI_QWORD)));
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_JMP(
         &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_indirect(
@@ -451,15 +451,17 @@ static kefir_result_t register_aggregate_requirements(struct vararg_aggregate_in
                                                       struct aggregate_requirements *req) {
     req->integers = 0;
     req->sse = 0;
-    for (kefir_size_t i = 0; i < kefir_vector_length(&info->arg_alloc->container.qwords); i++) {
-        ASSIGN_DECL_CAST(struct kefir_abi_sysv_amd64_qword *, qword,
-                         kefir_vector_at(&info->arg_alloc->container.qwords, i));
-        switch (qword->klass) {
-            case KEFIR_AMD64_SYSV_PARAM_INTEGER:
+    kefir_size_t length;
+    REQUIRE_OK(kefir_abi_amd64_function_parameter_multireg_length(&info->parameter, &length));
+    for (kefir_size_t i = 0; i < length; i++) {
+        struct kefir_abi_amd64_function_parameter subparam;
+        REQUIRE_OK(kefir_abi_amd64_function_parameter_multireg_at(&info->parameter, i, &subparam));
+        switch (subparam.location) {
+            case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_GENERAL_PURPOSE_REGISTER:
                 req->integers++;
                 break;
 
-            case KEFIR_AMD64_SYSV_PARAM_SSE:
+            case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_SSE_REGISTER:
                 req->sse++;
                 break;
 
@@ -487,13 +489,14 @@ static kefir_result_t vararg_get_register_aggregate_intro(struct kefir_codegen_a
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_ADD(
         &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RAX),
         kefir_asm_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[0],
-                                             requirements->integers * KEFIR_AMD64_SYSV_ABI_QWORD)));
+                                             requirements->integers * KEFIR_AMD64_ABI_QWORD)));
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_CMP(
         &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RAX),
         kefir_asm_amd64_xasmgen_operand_immu(
             &codegen->xasmgen_helpers.operands[0],
-            KEFIR_ABI_SYSV_AMD64_PARAMETER_INTEGER_REGISTER_COUNT * KEFIR_AMD64_SYSV_ABI_QWORD)));
+            kefir_abi_amd64_num_of_general_purpose_parameter_registers(KEFIR_ABI_AMD64_VARIANT_SYSTEM_V) *
+                KEFIR_AMD64_ABI_QWORD)));
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_JA(
         &codegen->xasmgen,
@@ -505,19 +508,21 @@ static kefir_result_t vararg_get_register_aggregate_intro(struct kefir_codegen_a
         &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_EAX),
         kefir_asm_amd64_xasmgen_operand_indirect(&codegen->xasmgen_helpers.operands[0],
                                                  kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_DATA_REG),
-                                                 KEFIR_AMD64_SYSV_ABI_QWORD / 2)));
+                                                 KEFIR_AMD64_ABI_QWORD / 2)));
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_ADD(
         &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RAX),
         kefir_asm_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[0],
-                                             requirements->sse * 2 * KEFIR_AMD64_SYSV_ABI_QWORD)));
+                                             requirements->sse * 2 * KEFIR_AMD64_ABI_QWORD)));
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_CMP(
         &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RAX),
         kefir_asm_amd64_xasmgen_operand_immu(
             &codegen->xasmgen_helpers.operands[0],
-            KEFIR_ABI_SYSV_AMD64_PARAMETER_INTEGER_REGISTER_COUNT * KEFIR_AMD64_SYSV_ABI_QWORD +
-                2 * KEFIR_ABI_SYSV_AMD64_PARAMETER_SSE_REGISTER_COUNT * KEFIR_AMD64_SYSV_ABI_QWORD)));
+            kefir_abi_amd64_num_of_general_purpose_parameter_registers(KEFIR_ABI_AMD64_VARIANT_SYSTEM_V) *
+                    KEFIR_AMD64_ABI_QWORD +
+                2 * kefir_abi_amd64_num_of_sse_parameter_registers(KEFIR_ABI_AMD64_VARIANT_SYSTEM_V) *
+                    KEFIR_AMD64_ABI_QWORD)));
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_JA(
         &codegen->xasmgen,
@@ -526,6 +531,7 @@ static kefir_result_t vararg_get_register_aggregate_intro(struct kefir_codegen_a
             kefir_asm_amd64_xasmgen_helpers_format(&codegen->xasmgen_helpers, "%s_stack", identifier))));
     return KEFIR_OK;
 }
+
 static kefir_result_t vararg_get_register_aggregate_load(struct kefir_codegen_amd64 *codegen,
                                                          const struct kefir_amd64_sysv_function *sysv_func,
                                                          const char *identifier, struct vararg_aggregate_info *info,
@@ -546,7 +552,7 @@ static kefir_result_t vararg_get_register_aggregate_load(struct kefir_codegen_am
         &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSI),
         kefir_asm_amd64_xasmgen_operand_indirect(&codegen->xasmgen_helpers.operands[0],
                                                  kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_DATA_REG),
-                                                 2 * KEFIR_AMD64_SYSV_ABI_QWORD)));
+                                                 2 * KEFIR_AMD64_ABI_QWORD)));
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
         &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_EAX),
@@ -567,7 +573,7 @@ static kefir_result_t vararg_get_register_aggregate_load(struct kefir_codegen_am
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_ADD(
         &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RAX),
         kefir_asm_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[0],
-                                             requirements->integers * KEFIR_AMD64_SYSV_ABI_QWORD)));
+                                             requirements->integers * KEFIR_AMD64_ABI_QWORD)));
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
         &codegen->xasmgen,
@@ -584,7 +590,7 @@ static kefir_result_t vararg_get_register_aggregate_load(struct kefir_codegen_am
             &codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_POINTER_DWORD,
             kefir_asm_amd64_xasmgen_operand_indirect(&codegen->xasmgen_helpers.operands[1],
                                                      kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_DATA_REG),
-                                                     KEFIR_AMD64_SYSV_ABI_QWORD / 2))));
+                                                     KEFIR_AMD64_ABI_QWORD / 2))));
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(&codegen->xasmgen,
                                              kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RCX),
@@ -597,7 +603,7 @@ static kefir_result_t vararg_get_register_aggregate_load(struct kefir_codegen_am
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_ADD(
         &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RAX),
         kefir_asm_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[0],
-                                             requirements->sse * 2 * KEFIR_AMD64_SYSV_ABI_QWORD)));
+                                             requirements->sse * 2 * KEFIR_AMD64_ABI_QWORD)));
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
         &codegen->xasmgen,
@@ -605,47 +611,47 @@ static kefir_result_t vararg_get_register_aggregate_load(struct kefir_codegen_am
             &codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_POINTER_DWORD,
             kefir_asm_amd64_xasmgen_operand_indirect(&codegen->xasmgen_helpers.operands[1],
                                                      kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_DATA_REG),
-                                                     KEFIR_AMD64_SYSV_ABI_QWORD / 2)),
+                                                     KEFIR_AMD64_ABI_QWORD / 2)),
         kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_EAX)));
 
     kefir_size_t integer_offset = 0, sse_offset = 0;
-    for (kefir_size_t i = 0; i < kefir_vector_length(&info->arg_alloc->container.qwords); i++) {
-        ASSIGN_DECL_CAST(struct kefir_abi_sysv_amd64_qword *, qword,
-                         kefir_vector_at(&info->arg_alloc->container.qwords, i));
-        switch (qword->klass) {
-            case KEFIR_AMD64_SYSV_PARAM_INTEGER:
+    kefir_size_t length;
+    REQUIRE_OK(kefir_abi_amd64_function_parameter_multireg_length(&info->parameter, &length));
+    for (kefir_size_t i = 0; i < length; i++) {
+        struct kefir_abi_amd64_function_parameter subparam;
+        REQUIRE_OK(kefir_abi_amd64_function_parameter_multireg_at(&info->parameter, i, &subparam));
+        switch (subparam.location) {
+            case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_GENERAL_PURPOSE_REGISTER:
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
                     &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_TMP_REG),
                     kefir_asm_amd64_xasmgen_operand_indirect(
                         &codegen->xasmgen_helpers.operands[0],
                         kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RDX),
-                        integer_offset * KEFIR_AMD64_SYSV_ABI_QWORD)));
+                        integer_offset * KEFIR_AMD64_ABI_QWORD)));
 
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
                     &codegen->xasmgen,
                     kefir_asm_amd64_xasmgen_operand_indirect(
                         &codegen->xasmgen_helpers.operands[0],
-                        kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_DATA2_REG),
-                        i * KEFIR_AMD64_SYSV_ABI_QWORD),
+                        kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_DATA2_REG), i * KEFIR_AMD64_ABI_QWORD),
                     kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_TMP_REG)));
 
                 integer_offset++;
                 break;
 
-            case KEFIR_AMD64_SYSV_PARAM_SSE:
+            case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_SSE_REGISTER:
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
                     &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_TMP_REG),
                     kefir_asm_amd64_xasmgen_operand_indirect(
                         &codegen->xasmgen_helpers.operands[0],
                         kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RCX),
-                        sse_offset * 2 * KEFIR_AMD64_SYSV_ABI_QWORD)));
+                        sse_offset * 2 * KEFIR_AMD64_ABI_QWORD)));
 
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
                     &codegen->xasmgen,
                     kefir_asm_amd64_xasmgen_operand_indirect(
                         &codegen->xasmgen_helpers.operands[0],
-                        kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_DATA2_REG),
-                        i * KEFIR_AMD64_SYSV_ABI_QWORD),
+                        kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_DATA2_REG), i * KEFIR_AMD64_ABI_QWORD),
                     kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_TMP_REG)));
 
                 sse_offset++;
@@ -686,7 +692,7 @@ static kefir_result_t vararg_get_register_aggregate(struct kefir_codegen_amd64 *
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_ADD(
         &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBX),
-        kefir_asm_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[0], 2 * KEFIR_AMD64_SYSV_ABI_QWORD)));
+        kefir_asm_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[0], 2 * KEFIR_AMD64_ABI_QWORD)));
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_JMP(
         &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_indirect(
@@ -699,8 +705,8 @@ static kefir_result_t free_vararg_aggregate_info(struct kefir_mem *mem, void *pa
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid memory allocator"));
     REQUIRE(payload != NULL, KEFIR_OK);
     ASSIGN_DECL_CAST(struct vararg_aggregate_info *, info, payload);
-    REQUIRE_OK(kefir_abi_sysv_amd64_parameter_free(mem, &info->allocation));
-    REQUIRE_OK(kefir_abi_sysv_amd64_type_layout_free(mem, &info->layout));
+    REQUIRE_OK(kefir_abi_amd64_function_parameters_free(mem, &info->parameters));
+    REQUIRE_OK(kefir_abi_amd64_type_layout_free(mem, &info->layout));
     KEFIR_FREE(mem, payload);
     return KEFIR_OK;
 }
@@ -741,39 +747,41 @@ static kefir_result_t vararg_visit_aggregate(const struct kefir_ir_type *type, k
     REQUIRE(info != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate memory aggregate vararg info"));
     *info = (struct vararg_aggregate_info){0};
 
-    REQUIRE_OK(kefir_abi_sysv_amd64_type_layout(type, param->mem, &info->layout));
-    kefir_result_t res = kefir_abi_sysv_amd64_parameter_classify(param->mem, type, &info->layout, &info->allocation);
+    REQUIRE_OK(kefir_abi_amd64_type_layout(param->mem, KEFIR_ABI_AMD64_VARIANT_SYSTEM_V, type, &info->layout));
+    kefir_result_t res = kefir_abi_amd64_function_parameters_classify(param->mem, KEFIR_ABI_AMD64_VARIANT_SYSTEM_V,
+                                                                      type, &info->layout, &info->parameters);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_abi_sysv_amd64_type_layout_free(param->mem, &info->layout);
+        kefir_abi_amd64_type_layout_free(param->mem, &info->layout);
         KEFIR_FREE(param->mem, info);
         return res;
     });
 
-    res = kefir_abi_sysv_amd64_parameter_allocate(param->mem, type, &info->layout, &info->allocation, &info->location);
+    res = kefir_abi_amd64_function_parameters_allocate(param->mem, &info->parameters);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_vector_free(param->mem, &info->allocation);
-        kefir_abi_sysv_amd64_type_layout_free(param->mem, &info->layout);
+        kefir_abi_amd64_function_parameters_free(param->mem, &info->parameters);
+        kefir_abi_amd64_type_layout_free(param->mem, &info->layout);
         KEFIR_FREE(param->mem, info);
         return res;
     });
 
     info->arg_layout = NULL;
-    res = kefir_abi_sysv_amd64_type_layout_at(&info->layout, index, &info->arg_layout);
+    res = kefir_abi_amd64_type_layout_at(&info->layout, index, &info->arg_layout);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_abi_sysv_amd64_parameter_free(param->mem, &info->allocation);
-        kefir_abi_sysv_amd64_type_layout_free(param->mem, &info->layout);
+        kefir_abi_amd64_function_parameters_free(param->mem, &info->parameters);
+        kefir_abi_amd64_type_layout_free(param->mem, &info->layout);
         KEFIR_FREE(param->mem, info);
         return res;
     });
-    info->arg_alloc = (struct kefir_abi_sysv_amd64_parameter_allocation *) kefir_vector_at(&info->allocation, slot);
-    REQUIRE_ELSE(info->arg_alloc != NULL, {
-        kefir_abi_sysv_amd64_parameter_free(param->mem, &info->allocation);
-        kefir_abi_sysv_amd64_type_layout_free(param->mem, &info->layout);
+    res = kefir_ir_type_slot_of(type, index, &slot);
+    REQUIRE_CHAIN(&res, kefir_abi_amd64_function_parameters_at(&info->parameters, slot, &info->parameter));
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_abi_amd64_function_parameters_free(param->mem, &info->parameters);
+        kefir_abi_amd64_type_layout_free(param->mem, &info->layout);
         KEFIR_FREE(param->mem, info);
         return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected to have layout and allocation info for slot");
     });
     res = KEFIR_OK;
-    if (info->arg_alloc->klass == KEFIR_AMD64_SYSV_PARAM_MEMORY) {
+    if (info->parameter.location == KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_MEMORY) {
         res = vararg_visit_memory_aggregate(info, param);
     } else {
         res = vararg_visit_register_aggregate(info, param);
@@ -786,46 +794,49 @@ static kefir_result_t vararg_visit_aggregate(const struct kefir_ir_type *type, k
     return KEFIR_OK;
 }
 
-static kefir_result_t vararg_visit_builtin_impl(struct kefir_mem *mem, struct kefir_vector *allocation,
-                                                kefir_size_t slot, const struct kefir_ir_typeentry *typeentry,
+static kefir_result_t vararg_visit_builtin_impl(struct kefir_mem *mem,
+                                                const struct kefir_abi_amd64_function_parameters *parameters,
+                                                const struct kefir_ir_type *type, kefir_size_t index,
+                                                const struct kefir_ir_typeentry *typeentry,
                                                 struct kefir_codegen_amd64 *codegen,
                                                 struct kefir_amd64_sysv_function *sysv_func, const char *identifier) {
-    ASSIGN_DECL_CAST(struct kefir_abi_sysv_amd64_parameter_allocation *, alloc, kefir_vector_at(allocation, slot));
-    REQUIRE(alloc != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unable to find parameter allocation information"));
+    struct kefir_abi_amd64_function_parameter parameter;
+    kefir_size_t slot;
+    REQUIRE_OK(kefir_ir_type_slot_of(type, index, &slot));
+    REQUIRE_OK(kefir_abi_amd64_function_parameters_at(parameters, slot, &parameter));
 
     kefir_ir_builtin_type_t builtin = (kefir_ir_builtin_type_t) typeentry->param;
     REQUIRE(builtin < KEFIR_IR_TYPE_BUILTIN_COUNT, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unknown built-in type"));
     const struct kefir_codegen_amd64_sysv_builtin_type *builtin_type =
         KEFIR_CODEGEN_SYSTEM_V_AMD64_SYSV_BUILTIN_TYPES[builtin];
-    REQUIRE_OK(builtin_type->load_vararg(mem, builtin_type, typeentry, codegen, sysv_func, identifier, alloc));
+    REQUIRE_OK(builtin_type->load_vararg(mem, builtin_type, typeentry, codegen, sysv_func, identifier, &parameter));
     return KEFIR_OK;
 }
 
 static kefir_result_t vararg_visit_builtin(const struct kefir_ir_type *type, kefir_size_t index,
                                            const struct kefir_ir_typeentry *typeentry, void *payload) {
     ASSIGN_DECL_CAST(struct vararg_getter *, param, payload);
-    kefir_size_t slot;
-    REQUIRE_OK(kefir_ir_type_slot_of(type, index, &slot));
 
-    struct kefir_abi_sysv_amd64_type_layout layout;
-    struct kefir_vector allocation;
+    struct kefir_abi_amd64_type_layout layout;
+    struct kefir_abi_amd64_function_parameters parameters;
 
-    REQUIRE_OK(kefir_abi_sysv_amd64_type_layout(type, param->mem, &layout));
-    kefir_result_t res = kefir_abi_sysv_amd64_parameter_classify(param->mem, type, &layout, &allocation);
+    REQUIRE_OK(kefir_abi_amd64_type_layout(param->mem, KEFIR_ABI_AMD64_VARIANT_SYSTEM_V, type, &layout));
+    kefir_result_t res = kefir_abi_amd64_function_parameters_classify(param->mem, KEFIR_ABI_AMD64_VARIANT_SYSTEM_V,
+                                                                      type, &layout, &parameters);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_abi_sysv_amd64_type_layout_free(param->mem, &layout);
+        kefir_abi_amd64_type_layout_free(param->mem, &layout);
         return res;
     });
-    res = vararg_visit_builtin_impl(param->mem, &allocation, slot, typeentry, param->codegen, param->sysv_func,
+    res = vararg_visit_builtin_impl(param->mem, &parameters, type, index, typeentry, param->codegen, param->sysv_func,
                                     param->identifier);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_abi_sysv_amd64_parameter_free(param->mem, &allocation);
-        kefir_abi_sysv_amd64_type_layout_free(param->mem, &layout);
+        kefir_abi_amd64_function_parameters_free(param->mem, &parameters);
+        kefir_abi_amd64_type_layout_free(param->mem, &layout);
         return res;
     });
 
-    REQUIRE_OK(kefir_abi_sysv_amd64_parameter_free(param->mem, &allocation));
-    kefir_abi_sysv_amd64_type_layout_free(param->mem, &layout);
+    REQUIRE_OK(kefir_abi_amd64_function_parameters_free(param->mem, &parameters));
+    kefir_abi_amd64_type_layout_free(param->mem, &layout);
     return KEFIR_OK;
 }
 

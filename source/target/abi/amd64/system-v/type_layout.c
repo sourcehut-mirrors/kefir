@@ -22,9 +22,10 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 #include "kefir/target/abi/util.h"
-#include "kefir/target/abi/system-v-amd64/data_layout.h"
-#include "kefir/target/abi/system-v-amd64/data.h"
-#include "kefir/target/abi/system-v-amd64/qwords.h"
+#include "kefir/target/abi/amd64/type_layout.h"
+#include "kefir/target/abi/amd64/system-v/data.h"
+#include "kefir/target/abi/amd64/system-v/qwords.h"
+#include "kefir/target/abi/amd64/system-v/type_layout.h"
 #include "kefir/ir/builtins.h"
 
 static kefir_result_t kefir_amd64_sysv_scalar_type_layout(const struct kefir_ir_typeentry *typeentry,
@@ -91,7 +92,7 @@ struct compound_type_layout {
 };
 
 static kefir_result_t update_compound_type_layout(struct compound_type_layout *compound_type_layout,
-                                                  struct kefir_abi_sysv_amd64_typeentry_layout *data,
+                                                  struct kefir_abi_amd64_typeentry_layout *data,
                                                   const struct kefir_ir_typeentry *typeentry) {
     if (typeentry->alignment != 0) {
         data->aligned = typeentry->alignment >= data->alignment;
@@ -116,7 +117,7 @@ static kefir_result_t calculate_integer_layout(const struct kefir_ir_type *type,
                                                const struct kefir_ir_typeentry *typeentry, void *payload) {
     UNUSED(type);
     struct compound_type_layout *compound_type_layout = (struct compound_type_layout *) payload;
-    ASSIGN_DECL_CAST(struct kefir_abi_sysv_amd64_typeentry_layout *, data,
+    ASSIGN_DECL_CAST(struct kefir_abi_amd64_typeentry_layout *, data,
                      kefir_vector_at(compound_type_layout->vector, index));
 
     REQUIRE_OK(kefir_amd64_sysv_scalar_type_layout(typeentry, &data->size, &data->alignment));
@@ -129,7 +130,7 @@ static kefir_result_t calculate_sse_layout(const struct kefir_ir_type *type, kef
                                            const struct kefir_ir_typeentry *typeentry, void *payload) {
     UNUSED(type);
     struct compound_type_layout *compound_type_layout = (struct compound_type_layout *) payload;
-    ASSIGN_DECL_CAST(struct kefir_abi_sysv_amd64_typeentry_layout *, data,
+    ASSIGN_DECL_CAST(struct kefir_abi_amd64_typeentry_layout *, data,
                      kefir_vector_at(compound_type_layout->vector, index));
     switch (typeentry->typecode) {
         case KEFIR_IR_TYPE_FLOAT32:
@@ -157,7 +158,7 @@ static kefir_result_t calculate_sse_layout(const struct kefir_ir_type *type, kef
 static kefir_result_t calculate_struct_union_layout(const struct kefir_ir_type *type, kefir_size_t index,
                                                     const struct kefir_ir_typeentry *typeentry, void *payload) {
     struct compound_type_layout *compound_type_layout = (struct compound_type_layout *) payload;
-    ASSIGN_DECL_CAST(struct kefir_abi_sysv_amd64_typeentry_layout *, data,
+    ASSIGN_DECL_CAST(struct kefir_abi_amd64_typeentry_layout *, data,
                      kefir_vector_at(compound_type_layout->vector, index));
     struct compound_type_layout nested_compound_type_layout = {.visitor = compound_type_layout->visitor,
                                                                .vector = compound_type_layout->vector,
@@ -180,7 +181,7 @@ static kefir_result_t calculate_struct_union_layout(const struct kefir_ir_type *
 static kefir_result_t calculate_array_layout(const struct kefir_ir_type *type, kefir_size_t index,
                                              const struct kefir_ir_typeentry *typeentry, void *payload) {
     struct compound_type_layout *compound_type_layout = (struct compound_type_layout *) payload;
-    ASSIGN_DECL_CAST(struct kefir_abi_sysv_amd64_typeentry_layout *, data,
+    ASSIGN_DECL_CAST(struct kefir_abi_amd64_typeentry_layout *, data,
                      kefir_vector_at(compound_type_layout->vector, index));
     struct compound_type_layout nested_compound_type_layout = {.visitor = compound_type_layout->visitor,
                                                                .vector = compound_type_layout->vector,
@@ -201,14 +202,14 @@ static kefir_result_t calculate_builtin_layout(const struct kefir_ir_type *type,
                                                const struct kefir_ir_typeentry *typeentry, void *payload) {
     UNUSED(type);
     struct compound_type_layout *compound_type_layout = (struct compound_type_layout *) payload;
-    ASSIGN_DECL_CAST(struct kefir_abi_sysv_amd64_typeentry_layout *, data,
+    ASSIGN_DECL_CAST(struct kefir_abi_amd64_typeentry_layout *, data,
                      kefir_vector_at(compound_type_layout->vector, index));
     kefir_ir_builtin_type_t builtin = (kefir_ir_builtin_type_t) typeentry->param;
     switch (builtin) {
         case KEFIR_IR_TYPE_BUILTIN_VARARG:
             data->aligned = true;
-            data->size = 3 * KEFIR_AMD64_SYSV_ABI_QWORD;
-            data->alignment = KEFIR_AMD64_SYSV_ABI_QWORD;
+            data->size = 3 * KEFIR_AMD64_ABI_QWORD;
+            data->alignment = KEFIR_AMD64_ABI_QWORD;
             break;
 
         default:
@@ -238,15 +239,15 @@ static kefir_result_t calculate_layout(const struct kefir_ir_type *type, kefir_s
     return kefir_ir_type_visitor_list_nodes(type, &visitor, (void *) &compound_type_layout, index, count);
 }
 
-kefir_result_t kefir_abi_sysv_amd64_type_layout_of(struct kefir_mem *mem, const struct kefir_ir_type *type,
-                                                   kefir_size_t index, kefir_size_t count,
-                                                   struct kefir_vector *layout) {
+kefir_result_t kefir_abi_amd64_sysv_calculate_type_layout(struct kefir_mem *mem, const struct kefir_ir_type *type,
+                                                          kefir_size_t index, kefir_size_t count,
+                                                          struct kefir_vector *layout) {
     REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR type"));
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(layout != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid layout vector"));
 
     const kefir_size_t length = kefir_ir_type_length(type);
-    REQUIRE_OK(kefir_vector_alloc(mem, sizeof(struct kefir_abi_sysv_amd64_typeentry_layout), length, layout));
+    REQUIRE_OK(kefir_vector_alloc(mem, sizeof(struct kefir_abi_amd64_typeentry_layout), length, layout));
     kefir_result_t res = kefir_vector_extend(layout, length);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_vector_free(mem, layout);
@@ -257,69 +258,5 @@ kefir_result_t kefir_abi_sysv_amd64_type_layout_of(struct kefir_mem *mem, const 
         kefir_vector_free(mem, layout);
         return res;
     });
-    return KEFIR_OK;
-}
-
-kefir_result_t kefir_abi_sysv_amd64_type_layout(const struct kefir_ir_type *type, struct kefir_mem *mem,
-                                                struct kefir_abi_sysv_amd64_type_layout *layout) {
-    REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR type"));
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(layout != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to ABI type layout"));
-
-    REQUIRE_OK(kefir_abi_sysv_amd64_type_layout_of(mem, type, 0, kefir_ir_type_children(type), &layout->layout));
-    return KEFIR_OK;
-}
-
-kefir_result_t kefir_abi_sysv_amd64_type_layout_free(struct kefir_mem *mem,
-                                                     struct kefir_abi_sysv_amd64_type_layout *layout) {
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(layout != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid ABI type layout vector"));
-
-    REQUIRE_OK(kefir_vector_free(mem, &layout->layout));
-    return KEFIR_OK;
-}
-
-kefir_result_t kefir_abi_sysv_amd64_type_layout_at(
-    const struct kefir_abi_sysv_amd64_type_layout *layout, kefir_size_t index,
-    const struct kefir_abi_sysv_amd64_typeentry_layout **entry_layout_ptr) {
-    REQUIRE(layout != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid ABI data layout vector"));
-    REQUIRE(index < kefir_vector_length(&layout->layout),
-            KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Expected valid ABI type layout vector index"));
-    REQUIRE(entry_layout_ptr != NULL,
-            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to ABI type entry layout"));
-
-    *entry_layout_ptr = kefir_vector_at(&layout->layout, index);
-    REQUIRE(*entry_layout_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unable to fetch ABI type entry layout"));
-    return KEFIR_OK;
-}
-
-struct type_properties {
-    kefir_size_t size;
-    kefir_size_t alignment;
-    const struct kefir_vector *layout;
-};
-
-static kefir_result_t calculate_type_properties_visitor(const struct kefir_ir_type *type, kefir_size_t index,
-                                                        const struct kefir_ir_typeentry *typeentry, void *payload) {
-    UNUSED(type);
-    UNUSED(typeentry);
-
-    ASSIGN_DECL_CAST(struct type_properties *, props, payload);
-    ASSIGN_DECL_CAST(struct kefir_abi_sysv_amd64_typeentry_layout *, layout, kefir_vector_at(props->layout, index));
-    props->size = kefir_target_abi_pad_aligned(props->size, layout->alignment);
-    props->size += layout->size;
-    props->alignment = MAX(props->alignment, layout->alignment);
-    return KEFIR_OK;
-}
-
-kefir_result_t kefir_abi_sysv_amd64_calculate_type_properties(
-    const struct kefir_ir_type *type, const struct kefir_abi_sysv_amd64_type_layout *type_layout, kefir_size_t *size,
-    kefir_size_t *alignment) {
-    struct type_properties props = {.size = 0, .alignment = 0, .layout = &type_layout->layout};
-    struct kefir_ir_type_visitor visitor;
-    REQUIRE_OK(kefir_ir_type_visitor_init(&visitor, calculate_type_properties_visitor));
-    REQUIRE_OK(kefir_ir_type_visitor_list_nodes(type, &visitor, (void *) &props, 0, kefir_ir_type_children(type)));
-    *size = props.size;
-    *alignment = props.alignment;
     return KEFIR_OK;
 }

@@ -38,10 +38,10 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_inline_assembly_restore_state(
                                                 context->stack_map.preserved_reg_offset)));
     }
 
-    kefir_size_t reg_offset = context->stack_map.preserved_reg_size - KEFIR_AMD64_SYSV_ABI_QWORD;
+    kefir_size_t reg_offset = context->stack_map.preserved_reg_size - KEFIR_AMD64_ABI_QWORD;
     if (context->dirty_cc) {
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_POPFQ(&context->codegen->xasmgen));
-        reg_offset -= KEFIR_AMD64_SYSV_ABI_QWORD;
+        reg_offset -= KEFIR_AMD64_ABI_QWORD;
     }
 
     struct kefir_hashtreeset_iterator iter;
@@ -70,7 +70,7 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_inline_assembly_restore_state(
                     &context->codegen->xasmgen_helpers.operands[0],
                     kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP), reg_offset)));
         }
-        reg_offset -= KEFIR_AMD64_SYSV_ABI_QWORD;
+        reg_offset -= KEFIR_AMD64_ABI_QWORD;
     }
     if (res != KEFIR_ITERATOR_END) {
         REQUIRE_OK(res);
@@ -81,7 +81,7 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_inline_assembly_restore_state(
             &context->codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
             kefir_asm_amd64_xasmgen_operand_imm(
                 &context->codegen->xasmgen_helpers.operands[0],
-                context->stack_map.preserved_reg_size - (context->dirty_cc ? KEFIR_AMD64_SYSV_ABI_QWORD : 0))));
+                context->stack_map.preserved_reg_size - (context->dirty_cc ? KEFIR_AMD64_ABI_QWORD : 0))));
     }
     return KEFIR_OK;
 }

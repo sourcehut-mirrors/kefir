@@ -18,16 +18,18 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "kefir/target/abi/system-v-amd64/return.h"
+#include "kefir/target/abi/amd64/return.h"
+#include "kefir/core/error.h"
+#include "kefir/core/util.h"
 
-kefir_asm_amd64_xasmgen_register_t KEFIR_ABI_SYSV_AMD64_RETURN_INTEGER_REGISTERS[] = {KEFIR_AMD64_XASMGEN_REGISTER_RAX,
-                                                                                      KEFIR_AMD64_XASMGEN_REGISTER_RDX};
+const kefir_asm_amd64_xasmgen_register_t KEFIR_ABI_SYSV_AMD64_RETURN_INTEGER_REGISTERS[] = {
+    KEFIR_AMD64_XASMGEN_REGISTER_RAX, KEFIR_AMD64_XASMGEN_REGISTER_RDX};
 
-const kefir_size_t KEFIR_ABI_SYSV_AMD64_RETURN_INTEGER_REGISTER_COUNT =
+const kefir_size_t KEFIR_ABI_SYSV_AMD64_RETURN_INTEGER_REGISTERS_LENGTH =
     sizeof(KEFIR_ABI_SYSV_AMD64_RETURN_INTEGER_REGISTERS) / sizeof(KEFIR_ABI_SYSV_AMD64_RETURN_INTEGER_REGISTERS[0]);
 
-kefir_asm_amd64_xasmgen_register_t KEFIR_ABI_SYSV_AMD64_RETURN_SSE_REGISTERS[] = {KEFIR_AMD64_XASMGEN_REGISTER_XMM0,
-                                                                                  KEFIR_AMD64_XASMGEN_REGISTER_XMM1};
+const kefir_asm_amd64_xasmgen_register_t KEFIR_ABI_SYSV_AMD64_RETURN_SSE_REGISTERS[] = {
+    KEFIR_AMD64_XASMGEN_REGISTER_XMM0, KEFIR_AMD64_XASMGEN_REGISTER_XMM1};
 
-const kefir_size_t KEFIR_ABI_SYSV_AMD64_RETURN_SSE_REGISTER_COUNT =
+const kefir_size_t KEFIR_ABI_SYSV_AMD64_RETURN_SSE_REGISTERS_LENGTH =
     sizeof(KEFIR_ABI_SYSV_AMD64_RETURN_SSE_REGISTERS) / sizeof(KEFIR_ABI_SYSV_AMD64_RETURN_SSE_REGISTERS[0]);

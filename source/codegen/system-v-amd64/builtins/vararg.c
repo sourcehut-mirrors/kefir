@@ -26,26 +26,27 @@
 static kefir_result_t vararg_load_function_argument(const struct kefir_codegen_amd64_sysv_builtin_type *builtin_type,
                                                     const struct kefir_ir_typeentry *typeentry,
                                                     struct kefir_codegen_amd64 *codegen,
-                                                    struct kefir_abi_sysv_amd64_parameter_allocation *allocation) {
+                                                    const struct kefir_abi_amd64_function_parameter *parameter) {
     UNUSED(builtin_type);
     UNUSED(typeentry);
     REQUIRE(codegen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid code generator"));
-    REQUIRE(allocation != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid built-in data allocation"));
+    REQUIRE(parameter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid built-in parameter"));
 
-    if (allocation->klass == KEFIR_AMD64_SYSV_PARAM_INTEGER) {
-        REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_PUSH(
-            &codegen->xasmgen,
-            kefir_asm_amd64_xasmgen_operand_reg(
-                KEFIR_ABI_SYSV_AMD64_PARAMETER_INTEGER_REGISTERS[allocation->location.integer_register])));
+    if (parameter->location == KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_GENERAL_PURPOSE_REGISTER) {
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_PUSH(&codegen->xasmgen,
+                                                  kefir_asm_amd64_xasmgen_operand_reg(parameter->direct_reg)));
     } else {
-        REQUIRE(allocation->klass == KEFIR_AMD64_SYSV_PARAM_MEMORY,
+        REQUIRE(parameter->location == KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_MEMORY,
                 KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected va_list to be either integer or memory parameter"));
+        kefir_asm_amd64_xasmgen_register_t memory_base_reg;
+        kefir_int64_t memory_offset;
+        REQUIRE_OK(kefir_abi_amd64_function_parameter_memory_location(
+            parameter, KEFIR_ABI_AMD64_FUNCTION_PARAMETER_ADDRESS_CALLEE, &memory_base_reg, &memory_offset));
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
             &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_DATA_REG),
-            kefir_asm_amd64_xasmgen_operand_indirect(
-                &codegen->xasmgen_helpers.operands[0],
-                kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
-                allocation->location.stack_offset + 2 * KEFIR_AMD64_SYSV_ABI_QWORD)));
+            kefir_asm_amd64_xasmgen_operand_indirect(&codegen->xasmgen_helpers.operands[0],
+                                                     kefir_asm_amd64_xasmgen_operand_reg(memory_base_reg),
+                                                     memory_offset)));
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_PUSH(&codegen->xasmgen,
                                                   kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_DATA_REG)));
     }
@@ -55,47 +56,49 @@ static kefir_result_t vararg_load_function_argument(const struct kefir_codegen_a
 static kefir_result_t vararg_store_function_return(const struct kefir_codegen_amd64_sysv_builtin_type *builtin_type,
                                                    const struct kefir_ir_typeentry *typeentry,
                                                    struct kefir_codegen_amd64 *codegen,
-                                                   struct kefir_abi_sysv_amd64_parameter_allocation *allocation) {
+                                                   const struct kefir_abi_amd64_function_parameter *parameter) {
     UNUSED(builtin_type);
     UNUSED(typeentry);
     UNUSED(codegen);
-    UNUSED(allocation);
+    UNUSED(parameter);
     return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED, "Returning va_list from function is not supported");
 }
 
 static kefir_result_t vararg_store_function_argument(const struct kefir_codegen_amd64_sysv_builtin_type *builtin_type,
                                                      const struct kefir_ir_typeentry *typeentry,
                                                      struct kefir_codegen_amd64 *codegen,
-                                                     struct kefir_abi_sysv_amd64_parameter_allocation *allocation,
+                                                     const struct kefir_abi_amd64_function_parameter *parameter,
                                                      kefir_size_t argument_index) {
     UNUSED(builtin_type);
     UNUSED(typeentry);
     REQUIRE(codegen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid code generator"));
-    REQUIRE(allocation != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid built-in data allocation"));
+    REQUIRE(parameter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid built-in data allocation"));
 
-    if (allocation->klass == KEFIR_AMD64_SYSV_PARAM_INTEGER) {
+    if (parameter->location == KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_GENERAL_PURPOSE_REGISTER) {
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
-            &codegen->xasmgen,
-            kefir_asm_amd64_xasmgen_operand_reg(
-                KEFIR_ABI_SYSV_AMD64_PARAMETER_INTEGER_REGISTERS[allocation->location.integer_register]),
+            &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(parameter->direct_reg),
             kefir_asm_amd64_xasmgen_operand_indirect(&codegen->xasmgen_helpers.operands[0],
                                                      kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_DATA_REG),
-                                                     argument_index * KEFIR_AMD64_SYSV_ABI_QWORD)));
+                                                     argument_index * KEFIR_AMD64_ABI_QWORD)));
     } else {
-        REQUIRE(allocation->klass == KEFIR_AMD64_SYSV_PARAM_MEMORY,
+        REQUIRE(parameter->location == KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_MEMORY,
                 KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected va_list to be either integer or memory parameter"));
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
             &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_TMP_REG),
             kefir_asm_amd64_xasmgen_operand_indirect(&codegen->xasmgen_helpers.operands[0],
                                                      kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_DATA_REG),
-                                                     argument_index * KEFIR_AMD64_SYSV_ABI_QWORD)));
-        REQUIRE_OK(
-            KEFIR_AMD64_XASMGEN_INSTR_MOV(&codegen->xasmgen,
-                                          kefir_asm_amd64_xasmgen_operand_indirect(
-                                              &codegen->xasmgen_helpers.operands[0],
-                                              kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
-                                              allocation->location.stack_offset),
-                                          kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_TMP_REG)));
+                                                     argument_index * KEFIR_AMD64_ABI_QWORD)));
+
+        kefir_asm_amd64_xasmgen_register_t memory_base_reg;
+        kefir_int64_t memory_offset;
+        REQUIRE_OK(kefir_abi_amd64_function_parameter_memory_location(
+            parameter, KEFIR_ABI_AMD64_FUNCTION_PARAMETER_ADDRESS_CALLER, &memory_base_reg, &memory_offset));
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
+            &codegen->xasmgen,
+            kefir_asm_amd64_xasmgen_operand_indirect(&codegen->xasmgen_helpers.operands[0],
+                                                     kefir_asm_amd64_xasmgen_operand_reg(memory_base_reg),
+                                                     memory_offset),
+            kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_SYSV_ABI_TMP_REG)));
     }
     return KEFIR_OK;
 }
@@ -103,11 +106,11 @@ static kefir_result_t vararg_store_function_argument(const struct kefir_codegen_
 static kefir_result_t vararg_load_function_return(const struct kefir_codegen_amd64_sysv_builtin_type *builtin_type,
                                                   const struct kefir_ir_typeentry *typeentry,
                                                   struct kefir_codegen_amd64 *codegen,
-                                                  struct kefir_abi_sysv_amd64_parameter_allocation *allocation) {
+                                                  const struct kefir_abi_amd64_function_parameter *parameter) {
     UNUSED(builtin_type);
     UNUSED(typeentry);
     UNUSED(codegen);
-    UNUSED(allocation);
+    UNUSED(parameter);
     return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED, "Returning va_list from function is not supported");
 }
 
@@ -136,7 +139,7 @@ static kefir_result_t vararg_load_vararg_appendix(struct kefir_codegen_amd64 *co
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_ADD(
         &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBX),
-        kefir_asm_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[0], 2 * KEFIR_AMD64_SYSV_ABI_QWORD)));
+        kefir_asm_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[0], 2 * KEFIR_AMD64_ABI_QWORD)));
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_JMP(
         &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_indirect(
@@ -150,12 +153,12 @@ static kefir_result_t vararg_load_vararg(struct kefir_mem *mem,
                                          const struct kefir_ir_typeentry *typeentry,
                                          struct kefir_codegen_amd64 *codegen,
                                          struct kefir_amd64_sysv_function *sysv_func, const char *identifier,
-                                         struct kefir_abi_sysv_amd64_parameter_allocation *allocation) {
+                                         const struct kefir_abi_amd64_function_parameter *parameter) {
     UNUSED(builtin_type);
     UNUSED(typeentry);
+    UNUSED(parameter);
     REQUIRE(codegen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid code generator"));
     REQUIRE(sysv_func != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 System-V function"));
-    REQUIRE(allocation != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid built-in data allocation"));
     kefir_result_t res =
         kefir_amd64_sysv_function_insert_appendix(mem, sysv_func, vararg_load_vararg_appendix, NULL, NULL, identifier);
     REQUIRE(res == KEFIR_OK || res == KEFIR_ALREADY_EXISTS, res);

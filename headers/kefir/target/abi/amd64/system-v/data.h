@@ -18,12 +18,20 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef KEFIR_TARGET_ABI_SYSTEM_V_AMD64_BITFIELDS_H_
-#define KEFIR_TARGET_ABI_SYSTEM_V_AMD64_BITFIELDS_H_
+#ifndef KEFIR_TARGET_ABI_AMD64_SYSTEM_V_DATA_H_
+#define KEFIR_TARGET_ABI_AMD64_SYSTEM_V_DATA_H_
 
-#include "kefir/ir/bitfields.h"
+#include "kefir/target/abi/amd64/base.h"
 
-kefir_result_t kefir_abi_sysv_amd64_bitfield_allocator(struct kefir_mem *, struct kefir_ir_type *,
-                                                       struct kefir_ir_bitfield_allocator *);
+typedef enum kefir_abi_amd64_sysv_data_class {
+    KEFIR_AMD64_SYSV_PARAM_INTEGER = 0,
+    KEFIR_AMD64_SYSV_PARAM_SSE,
+    KEFIR_AMD64_SYSV_PARAM_SSEUP,
+    KEFIR_AMD64_SYSV_PARAM_X87,
+    KEFIR_AMD64_SYSV_PARAM_X87UP,
+    KEFIR_AMD64_SYSV_PARAM_COMPLEX_X87,
+    KEFIR_AMD64_SYSV_PARAM_NO_CLASS,
+    KEFIR_AMD64_SYSV_PARAM_MEMORY
+} kefir_abi_amd64_sysv_data_class_t;
 
 #endif

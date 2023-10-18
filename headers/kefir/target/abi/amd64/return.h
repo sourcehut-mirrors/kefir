@@ -18,20 +18,18 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef KEFIR_TARGET_ABI_SYSTEM_V_AMD64_DATA_H_
-#define KEFIR_TARGET_ABI_SYSTEM_V_AMD64_DATA_H_
+#ifndef KEFIR_TARGET_ABI_AMD64_RETURN_H_
+#define KEFIR_TARGET_ABI_AMD64_RETURN_H_
 
 #include "kefir/core/basic-types.h"
+#include "kefir/target/asm/amd64/xasmgen.h"
+#include "kefir/target/abi/amd64/base.h"
 
-typedef enum kefir_abi_sysv_amd64_data_class {
-    KEFIR_AMD64_SYSV_PARAM_INTEGER = 0,
-    KEFIR_AMD64_SYSV_PARAM_SSE,
-    KEFIR_AMD64_SYSV_PARAM_SSEUP,
-    KEFIR_AMD64_SYSV_PARAM_X87,
-    KEFIR_AMD64_SYSV_PARAM_X87UP,
-    KEFIR_AMD64_SYSV_PARAM_COMPLEX_X87,
-    KEFIR_AMD64_SYSV_PARAM_NO_CLASS,
-    KEFIR_AMD64_SYSV_PARAM_MEMORY
-} kefir_abi_sysv_amd64_data_class_t;
+kefir_size_t kefir_abi_amd64_num_of_general_purpose_return_registers(kefir_abi_amd64_variant_t);
+kefir_result_t kefir_abi_amd64_general_purpose_return_register(kefir_abi_amd64_variant_t, kefir_size_t,
+                                                               kefir_asm_amd64_xasmgen_register_t *);
+kefir_size_t kefir_abi_amd64_num_of_sse_return_registers(kefir_abi_amd64_variant_t);
+kefir_result_t kefir_abi_amd64_sse_return_register(kefir_abi_amd64_variant_t, kefir_size_t,
+                                                   kefir_asm_amd64_xasmgen_register_t *);
 
 #endif

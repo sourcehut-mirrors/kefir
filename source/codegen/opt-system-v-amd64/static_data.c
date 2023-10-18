@@ -21,7 +21,7 @@
 #include <string.h>
 #include "kefir/codegen/opt-system-v-amd64/static_data.h"
 #include "kefir/codegen/opt-system-v-amd64/runtime.h"
-#include "kefir/target/abi/system-v-amd64/data_layout.h"
+#include "kefir/target/abi/amd64/type_layout.h"
 #include "kefir/target/abi/util.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
@@ -31,7 +31,7 @@
 struct static_data_param {
     struct kefir_codegen_opt_amd64 *codegen;
     const struct kefir_ir_data *data;
-    struct kefir_abi_sysv_amd64_type_layout layout;
+    struct kefir_abi_amd64_type_layout layout;
     struct kefir_ir_type_visitor *visitor;
     kefir_size_t slot;
     kefir_size_t offset;
@@ -47,7 +47,7 @@ static kefir_result_t visitor_not_supported(const struct kefir_ir_type *type, ke
     return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED, "Encountered not supported type code while traversing IR type");
 }
 
-static kefir_result_t align_offset(const struct kefir_abi_sysv_amd64_typeentry_layout *layout,
+static kefir_result_t align_offset(const struct kefir_abi_amd64_typeentry_layout *layout,
                                    struct static_data_param *param) {
 
     kefir_size_t new_offset = kefir_target_abi_pad_aligned(param->offset, layout->alignment);
@@ -58,8 +58,7 @@ static kefir_result_t align_offset(const struct kefir_abi_sysv_amd64_typeentry_l
     return KEFIR_OK;
 }
 
-static kefir_result_t trailing_padding(kefir_size_t start_offset,
-                                       const struct kefir_abi_sysv_amd64_typeentry_layout *layout,
+static kefir_result_t trailing_padding(kefir_size_t start_offset, const struct kefir_abi_amd64_typeentry_layout *layout,
                                        struct static_data_param *param) {
     kefir_size_t end_offset = start_offset + layout->size;
     if (end_offset > param->offset) {
@@ -95,8 +94,8 @@ static kefir_result_t integral_static_data(const struct kefir_ir_type *type, kef
             REQUIRE(typeentry->typecode == KEFIR_IR_TYPE_LONG || typeentry->typecode == KEFIR_IR_TYPE_INT64,
                     KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to store pointer in requested location"));
 
-            const struct kefir_abi_sysv_amd64_typeentry_layout *layout = NULL;
-            REQUIRE_OK(kefir_abi_sysv_amd64_type_layout_at(&param->layout, index, &layout));
+            const struct kefir_abi_amd64_typeentry_layout *layout = NULL;
+            REQUIRE_OK(kefir_abi_amd64_type_layout_at(&param->layout, index, &layout));
             REQUIRE_OK(align_offset(layout, param));
 
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
@@ -115,8 +114,8 @@ static kefir_result_t integral_static_data(const struct kefir_ir_type *type, kef
             REQUIRE(typeentry->typecode == KEFIR_IR_TYPE_LONG || typeentry->typecode == KEFIR_IR_TYPE_INT64,
                     KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to store pointer in requested location"));
 
-            const struct kefir_abi_sysv_amd64_typeentry_layout *layout = NULL;
-            REQUIRE_OK(kefir_abi_sysv_amd64_type_layout_at(&param->layout, index, &layout));
+            const struct kefir_abi_amd64_typeentry_layout *layout = NULL;
+            REQUIRE_OK(kefir_abi_amd64_type_layout_at(&param->layout, index, &layout));
             REQUIRE_OK(align_offset(layout, param));
 
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
@@ -138,8 +137,8 @@ static kefir_result_t integral_static_data(const struct kefir_ir_type *type, kef
             return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected value of integral field");
     }
 
-    const struct kefir_abi_sysv_amd64_typeentry_layout *layout = NULL;
-    REQUIRE_OK(kefir_abi_sysv_amd64_type_layout_at(&param->layout, index, &layout));
+    const struct kefir_abi_amd64_typeentry_layout *layout = NULL;
+    REQUIRE_OK(kefir_abi_amd64_type_layout_at(&param->layout, index, &layout));
     if (typeentry->typecode != KEFIR_IR_TYPE_BITS) {
         REQUIRE_OK(align_offset(layout, param));
     }
@@ -208,8 +207,8 @@ static kefir_result_t word_static_data(const struct kefir_ir_type *type, kefir_s
     const struct kefir_ir_data_value *entry;
     REQUIRE_OK(kefir_ir_data_value_at(param->data, param->slot++, &entry));
 
-    const struct kefir_abi_sysv_amd64_typeentry_layout *layout = NULL;
-    REQUIRE_OK(kefir_abi_sysv_amd64_type_layout_at(&param->layout, index, &layout));
+    const struct kefir_abi_amd64_typeentry_layout *layout = NULL;
+    REQUIRE_OK(kefir_abi_amd64_type_layout_at(&param->layout, index, &layout));
     REQUIRE_OK(align_offset(layout, param));
     switch (entry->type) {
         case KEFIR_IR_DATA_VALUE_UNDEFINED:
@@ -282,8 +281,8 @@ static kefir_result_t float32_static_data(const struct kefir_ir_type *type, kefi
             return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected value of floating-point type field");
     }
 
-    const struct kefir_abi_sysv_amd64_typeentry_layout *layout = NULL;
-    REQUIRE_OK(kefir_abi_sysv_amd64_type_layout_at(&param->layout, index, &layout));
+    const struct kefir_abi_amd64_typeentry_layout *layout = NULL;
+    REQUIRE_OK(kefir_abi_amd64_type_layout_at(&param->layout, index, &layout));
     REQUIRE_OK(align_offset(layout, param));
     switch (typeentry->typecode) {
         case KEFIR_IR_TYPE_FLOAT32:
@@ -325,8 +324,8 @@ static kefir_result_t float64_static_data(const struct kefir_ir_type *type, kefi
             return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected value of floating-point type field");
     }
 
-    const struct kefir_abi_sysv_amd64_typeentry_layout *layout = NULL;
-    REQUIRE_OK(kefir_abi_sysv_amd64_type_layout_at(&param->layout, index, &layout));
+    const struct kefir_abi_amd64_typeentry_layout *layout = NULL;
+    REQUIRE_OK(kefir_abi_amd64_type_layout_at(&param->layout, index, &layout));
     REQUIRE_OK(align_offset(layout, param));
     switch (typeentry->typecode) {
         case KEFIR_IR_TYPE_FLOAT64:
@@ -368,8 +367,8 @@ static kefir_result_t long_double_static_data(const struct kefir_ir_type *type, 
             return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected value of long double type field");
     }
 
-    const struct kefir_abi_sysv_amd64_typeentry_layout *layout = NULL;
-    REQUIRE_OK(kefir_abi_sysv_amd64_type_layout_at(&param->layout, index, &layout));
+    const struct kefir_abi_amd64_typeentry_layout *layout = NULL;
+    REQUIRE_OK(kefir_abi_amd64_type_layout_at(&param->layout, index, &layout));
     REQUIRE_OK(align_offset(layout, param));
     switch (typeentry->typecode) {
         case KEFIR_IR_TYPE_LONG_DOUBLE:
@@ -393,8 +392,8 @@ static kefir_result_t struct_static_data(const struct kefir_ir_type *type, kefir
     REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid payload"));
 
     ASSIGN_DECL_CAST(struct static_data_param *, param, payload);
-    const struct kefir_abi_sysv_amd64_typeentry_layout *layout = NULL;
-    REQUIRE_OK(kefir_abi_sysv_amd64_type_layout_at(&param->layout, index, &layout));
+    const struct kefir_abi_amd64_typeentry_layout *layout = NULL;
+    REQUIRE_OK(kefir_abi_amd64_type_layout_at(&param->layout, index, &layout));
     param->slot++;
 
     REQUIRE_OK(align_offset(layout, param));
@@ -412,8 +411,8 @@ static kefir_result_t union_static_data(const struct kefir_ir_type *type, kefir_
     REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid payload"));
 
     ASSIGN_DECL_CAST(struct static_data_param *, param, payload);
-    const struct kefir_abi_sysv_amd64_typeentry_layout *layout = NULL;
-    REQUIRE_OK(kefir_abi_sysv_amd64_type_layout_at(&param->layout, index, &layout));
+    const struct kefir_abi_amd64_typeentry_layout *layout = NULL;
+    REQUIRE_OK(kefir_abi_amd64_type_layout_at(&param->layout, index, &layout));
     param->slot++;
 
     REQUIRE_OK(align_offset(layout, param));
@@ -452,8 +451,8 @@ static kefir_result_t array_static_data(const struct kefir_ir_type *type, kefir_
     ASSIGN_DECL_CAST(struct static_data_param *, param, payload);
     const struct kefir_ir_data_value *entry;
     REQUIRE_OK(kefir_ir_data_value_at(param->data, param->slot++, &entry));
-    const struct kefir_abi_sysv_amd64_typeentry_layout *layout = NULL;
-    REQUIRE_OK(kefir_abi_sysv_amd64_type_layout_at(&param->layout, index, &layout));
+    const struct kefir_abi_amd64_typeentry_layout *layout = NULL;
+    REQUIRE_OK(kefir_abi_amd64_type_layout_at(&param->layout, index, &layout));
 
     REQUIRE_OK(align_offset(layout, param));
     kefir_size_t start_offset = param->offset;
@@ -465,8 +464,8 @@ static kefir_result_t array_static_data(const struct kefir_ir_type *type, kefir_
         case KEFIR_IR_DATA_VALUE_UNDEFINED:
         case KEFIR_IR_DATA_VALUE_AGGREGATE: {
             kefir_size_t array_end_slot = param->slot + array_content_slots;
-            const struct kefir_abi_sysv_amd64_typeentry_layout *array_element_layout = NULL;
-            REQUIRE_OK(kefir_abi_sysv_amd64_type_layout_at(&param->layout, index + 1, &array_element_layout));
+            const struct kefir_abi_amd64_typeentry_layout *array_element_layout = NULL;
+            REQUIRE_OK(kefir_abi_amd64_type_layout_at(&param->layout, index + 1, &array_element_layout));
             for (kefir_size_t i = 0; i < (kefir_size_t) typeentry->param; i++) {
                 REQUIRE_OK(kefir_ir_data_map_skip_to(param->data, &param->data_map_iter, param->slot));
                 if (!param->data_map_iter.has_mapped_values) {
@@ -516,8 +515,8 @@ static kefir_result_t builtin_static_data(const struct kefir_ir_type *type, kefi
     REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid payload"));
 
     ASSIGN_DECL_CAST(struct static_data_param *, param, payload);
-    const struct kefir_abi_sysv_amd64_typeentry_layout *layout = NULL;
-    REQUIRE_OK(kefir_abi_sysv_amd64_type_layout_at(&param->layout, index, &layout));
+    const struct kefir_abi_amd64_typeentry_layout *layout = NULL;
+    REQUIRE_OK(kefir_abi_amd64_type_layout_at(&param->layout, index, &layout));
     param->slot++;
 
     switch ((kefir_ir_builtin_type_t) typeentry->param) {
@@ -554,13 +553,13 @@ kefir_result_t kefir_codegen_opt_amd64_sysv_static_data(struct kefir_mem *mem, s
 
     struct static_data_param param = {.codegen = codegen, .data = data, .visitor = &visitor, .slot = 0, .offset = 0};
     REQUIRE_OK(kefir_ir_data_map_iter(data, &param.data_map_iter));
-    REQUIRE_OK(kefir_abi_sysv_amd64_type_layout(data->type, mem, &param.layout));
+    REQUIRE_OK(kefir_abi_amd64_type_layout(mem, KEFIR_ABI_AMD64_VARIANT_SYSTEM_V, data->type, &param.layout));
 
     kefir_size_t total_size, total_alignment;
     kefir_result_t res =
-        kefir_abi_sysv_amd64_calculate_type_properties(data->type, &param.layout, &total_size, &total_alignment);
+        kefir_abi_amd64_calculate_type_properties(data->type, &param.layout, &total_size, &total_alignment);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_abi_sysv_amd64_type_layout_free(mem, &param.layout);
+        kefir_abi_amd64_type_layout_free(mem, &param.layout);
         return res;
     });
     if (identifier != NULL) {
@@ -573,7 +572,7 @@ kefir_result_t kefir_codegen_opt_amd64_sysv_static_data(struct kefir_mem *mem, s
     res =
         kefir_ir_type_visitor_list_nodes(data->type, &visitor, (void *) &param, 0, kefir_ir_type_children(data->type));
     REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_abi_sysv_amd64_type_layout_free(mem, &param.layout);
+        kefir_abi_amd64_type_layout_free(mem, &param.layout);
         return res;
     });
 
@@ -582,6 +581,6 @@ kefir_result_t kefir_codegen_opt_amd64_sysv_static_data(struct kefir_mem *mem, s
     }
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_NEWLINE(&codegen->xasmgen, 1));
-    REQUIRE_OK(kefir_abi_sysv_amd64_type_layout_free(mem, &param.layout));
+    REQUIRE_OK(kefir_abi_amd64_type_layout_free(mem, &param.layout));
     return KEFIR_OK;
 }

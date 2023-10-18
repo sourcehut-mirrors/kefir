@@ -28,7 +28,8 @@ KEFIR_LIB_SOURCE := $(wildcard \
 	$(SOURCE_DIR)/platform/*.c \
 	$(SOURCE_DIR)/preprocessor/*.c \
 	$(SOURCE_DIR)/target/abi/*.c \
-	$(SOURCE_DIR)/target/abi/system-v-amd64/*.c \
+	$(SOURCE_DIR)/target/abi/amd64/*.c \
+	$(SOURCE_DIR)/target/abi/amd64/system-v/*.c \
 	$(SOURCE_DIR)/target/asm/amd64/*.c \
 	$(SOURCE_DIR)/util/*.c)
 

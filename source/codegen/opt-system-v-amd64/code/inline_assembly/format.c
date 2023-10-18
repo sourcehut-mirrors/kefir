@@ -185,7 +185,7 @@ static kefir_result_t format_normal_parameter(struct kefir_mem *mem,
 
         case KEFIR_CODEGEN_OPT_SYSV_AMD64_INLINE_ASSEMBLY_PARAMETER_ALLOCATION_STACK: {
             kefir_int64_t offset =
-                context->stack_map.input_parameter_offset + entry->allocation.stack.index * KEFIR_AMD64_SYSV_ABI_QWORD;
+                context->stack_map.input_parameter_offset + entry->allocation.stack.index * KEFIR_AMD64_ABI_QWORD;
             char register_symbol[128];
             const struct kefir_asm_amd64_xasmgen_operand *operand = NULL;
             REQUIRE_OK(pointer_operand(

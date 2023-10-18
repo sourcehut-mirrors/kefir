@@ -37,7 +37,7 @@ DEFINE_TRANSLATOR(push_scope) {
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_SUB(
         &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
-        kefir_asm_amd64_xasmgen_operand_imm(&codegen->xasmgen_helpers.operands[0], 2 * KEFIR_AMD64_SYSV_ABI_QWORD)));
+        kefir_asm_amd64_xasmgen_operand_imm(&codegen->xasmgen_helpers.operands[0], 2 * KEFIR_AMD64_ABI_QWORD)));
 
     struct kefir_codegen_opt_amd64_sysv_storage_handle result_handle;
     REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_acquire(
@@ -57,8 +57,7 @@ DEFINE_TRANSLATOR(push_scope) {
         kefir_asm_amd64_xasmgen_operand_indirect(
             &codegen->xasmgen_helpers.operands[0],
             kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
-            KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_HANDLE_IS_REG_EVICTED(&result_handle) ? KEFIR_AMD64_SYSV_ABI_QWORD
-                                                                                       : 0),
+            KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_HANDLE_IS_REG_EVICTED(&result_handle) ? KEFIR_AMD64_ABI_QWORD : 0),
         kefir_asm_amd64_xasmgen_operand_reg(result_handle.location.reg)));
 
     REQUIRE_OK(
@@ -126,7 +125,7 @@ DEFINE_TRANSLATOR(pop_scope) {
         kefir_asm_amd64_xasmgen_operand_indirect(
             &codegen->xasmgen_helpers.operands[0],
             kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
-            KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_HANDLE_IS_REG_EVICTED(&arg_handle) ? KEFIR_AMD64_SYSV_ABI_QWORD : 0)));
+            KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_HANDLE_IS_REG_EVICTED(&arg_handle) ? KEFIR_AMD64_ABI_QWORD : 0)));
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
         &codegen->xasmgen,
@@ -140,7 +139,7 @@ DEFINE_TRANSLATOR(pop_scope) {
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_ADD(
         &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
-        kefir_asm_amd64_xasmgen_operand_imm(&codegen->xasmgen_helpers.operands[0], 2 * KEFIR_AMD64_SYSV_ABI_QWORD)));
+        kefir_asm_amd64_xasmgen_operand_imm(&codegen->xasmgen_helpers.operands[0], 2 * KEFIR_AMD64_ABI_QWORD)));
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen->xasmgen, KEFIR_OPT_AMD64_SYSTEM_V_FUNCTION_BLOCK_LABEL,
                                          function->ir_func->name, instr->block_id, label));

@@ -402,8 +402,7 @@ DEFINE_TRANSLATOR(long_double_conversion_to) {
 
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_ADD(
                     &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
-                    kefir_asm_amd64_xasmgen_operand_imm(&codegen->xasmgen_helpers.operands[0],
-                                                        KEFIR_AMD64_SYSV_ABI_QWORD)));
+                    kefir_asm_amd64_xasmgen_operand_imm(&codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_ABI_QWORD)));
             } else {
                 REQUIRE(arg1_allocation->result.type !=
                             KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_FLOATING_POINT_REGISTER,
@@ -442,8 +441,7 @@ DEFINE_TRANSLATOR(long_double_conversion_to) {
 
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_ADD(
                 &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
-                kefir_asm_amd64_xasmgen_operand_imm(&codegen->xasmgen_helpers.operands[0],
-                                                    KEFIR_AMD64_SYSV_ABI_QWORD)));
+                kefir_asm_amd64_xasmgen_operand_imm(&codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_ABI_QWORD)));
 
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_TEST(&codegen->xasmgen,
                                                       kefir_asm_amd64_xasmgen_operand_reg(arg_handle.location.reg),
@@ -492,7 +490,7 @@ DEFINE_TRANSLATOR(long_double_conversion_to) {
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_SUB(
                     &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
                     kefir_asm_amd64_xasmgen_operand_imm(&codegen->xasmgen_helpers.operands[0],
-                                                        KEFIR_AMD64_SYSV_ABI_QWORD / 2)));
+                                                        KEFIR_AMD64_ABI_QWORD / 2)));
 
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
                     &codegen->xasmgen,
@@ -512,13 +510,13 @@ DEFINE_TRANSLATOR(long_double_conversion_to) {
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_ADD(
                     &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
                     kefir_asm_amd64_xasmgen_operand_imm(&codegen->xasmgen_helpers.operands[0],
-                                                        KEFIR_AMD64_SYSV_ABI_QWORD / 2)));
+                                                        KEFIR_AMD64_ABI_QWORD / 2)));
             } else if (arg1_allocation->result.type ==
                        KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_FLOATING_POINT_REGISTER) {
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_SUB(
                     &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
                     kefir_asm_amd64_xasmgen_operand_imm(&codegen->xasmgen_helpers.operands[0],
-                                                        KEFIR_AMD64_SYSV_ABI_QWORD / 2)));
+                                                        KEFIR_AMD64_ABI_QWORD / 2)));
 
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOVD(
                     &codegen->xasmgen,
@@ -538,7 +536,7 @@ DEFINE_TRANSLATOR(long_double_conversion_to) {
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_ADD(
                     &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
                     kefir_asm_amd64_xasmgen_operand_imm(&codegen->xasmgen_helpers.operands[0],
-                                                        KEFIR_AMD64_SYSV_ABI_QWORD / 2)));
+                                                        KEFIR_AMD64_ABI_QWORD / 2)));
             } else {
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_FLD(
                     &codegen->xasmgen,
@@ -565,14 +563,12 @@ DEFINE_TRANSLATOR(long_double_conversion_to) {
 
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_ADD(
                     &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
-                    kefir_asm_amd64_xasmgen_operand_imm(&codegen->xasmgen_helpers.operands[0],
-                                                        KEFIR_AMD64_SYSV_ABI_QWORD)));
+                    kefir_asm_amd64_xasmgen_operand_imm(&codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_ABI_QWORD)));
             } else if (arg1_allocation->result.type ==
                        KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_FLOATING_POINT_REGISTER) {
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_SUB(
                     &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
-                    kefir_asm_amd64_xasmgen_operand_imm(&codegen->xasmgen_helpers.operands[0],
-                                                        KEFIR_AMD64_SYSV_ABI_QWORD)));
+                    kefir_asm_amd64_xasmgen_operand_imm(&codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_ABI_QWORD)));
 
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOVQ(
                     &codegen->xasmgen,
@@ -591,8 +587,7 @@ DEFINE_TRANSLATOR(long_double_conversion_to) {
 
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_ADD(
                     &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
-                    kefir_asm_amd64_xasmgen_operand_imm(&codegen->xasmgen_helpers.operands[0],
-                                                        KEFIR_AMD64_SYSV_ABI_QWORD)));
+                    kefir_asm_amd64_xasmgen_operand_imm(&codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_ABI_QWORD)));
             } else {
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_FLD(
                     &codegen->xasmgen,
@@ -730,14 +725,14 @@ DEFINE_TRANSLATOR(long_double_conversion_from) {
                                        kefir_asm_amd64_xasmgen_operand_indirect(
                                            &codegen->xasmgen_helpers.operands[1],
                                            kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
-                                           -KEFIR_AMD64_SYSV_ABI_QWORD / 2))));
+                                           -KEFIR_AMD64_ABI_QWORD / 2))));
 
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOVD(
                 &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_handle.location.reg),
                 kefir_asm_amd64_xasmgen_operand_indirect(
                     &codegen->xasmgen_helpers.operands[1],
                     kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
-                    -KEFIR_AMD64_SYSV_ABI_QWORD / 2)));
+                    -KEFIR_AMD64_ABI_QWORD / 2)));
             break;
 
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_TO_FLOAT64:
@@ -753,14 +748,13 @@ DEFINE_TRANSLATOR(long_double_conversion_from) {
                                        kefir_asm_amd64_xasmgen_operand_indirect(
                                            &codegen->xasmgen_helpers.operands[1],
                                            kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
-                                           -KEFIR_AMD64_SYSV_ABI_QWORD))));
+                                           -KEFIR_AMD64_ABI_QWORD))));
 
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOVQ(
                 &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_handle.location.reg),
                 kefir_asm_amd64_xasmgen_operand_indirect(
                     &codegen->xasmgen_helpers.operands[1],
-                    kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
-                    -KEFIR_AMD64_SYSV_ABI_QWORD)));
+                    kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP), -KEFIR_AMD64_ABI_QWORD)));
             break;
 
         default:

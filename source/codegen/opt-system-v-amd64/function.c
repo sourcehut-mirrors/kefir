@@ -30,13 +30,13 @@ static kefir_result_t init_codegen_func(struct kefir_mem *mem, const struct kefi
     REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_init(&sysv_amd64_function->storage));
     REQUIRE_OK(kefir_list_init(&sysv_amd64_function->alive_instr));
     REQUIRE_OK(kefir_codegen_opt_sysv_amd64_stack_frame_init(&sysv_amd64_function->stack_frame));
-    REQUIRE_OK(kefir_abi_amd64_sysv_function_decl_alloc(mem, function->ir_func->declaration,
-                                                        &sysv_amd64_function->declaration));
+    REQUIRE_OK(kefir_abi_amd64_function_decl_alloc(mem, KEFIR_ABI_AMD64_VARIANT_SYSTEM_V,
+                                                   function->ir_func->declaration, &sysv_amd64_function->declaration));
 
     kefir_result_t res = kefir_codegen_opt_amd64_sysv_function_parameters_init(mem, &sysv_amd64_function->declaration,
                                                                                &sysv_amd64_function->parameters);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_abi_amd64_sysv_function_decl_free(mem, &sysv_amd64_function->declaration);
+        kefir_abi_amd64_function_decl_free(mem, &sysv_amd64_function->declaration);
         kefir_list_free(mem, &sysv_amd64_function->alive_instr);
         kefir_codegen_opt_sysv_amd64_storage_free(mem, &sysv_amd64_function->storage);
         return res;
@@ -47,18 +47,19 @@ static kefir_result_t init_codegen_func(struct kefir_mem *mem, const struct kefi
         &sysv_amd64_function->register_allocator);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_codegen_opt_amd64_sysv_function_parameters_free(mem, &sysv_amd64_function->parameters);
-        kefir_abi_amd64_sysv_function_decl_free(mem, &sysv_amd64_function->declaration);
+        kefir_abi_amd64_function_decl_free(mem, &sysv_amd64_function->declaration);
         kefir_list_free(mem, &sysv_amd64_function->alive_instr);
         kefir_codegen_opt_sysv_amd64_storage_free(mem, &sysv_amd64_function->storage);
         return res;
     });
 
     if (function->ir_func->locals != NULL) {
-        res = kefir_abi_sysv_amd64_type_layout(function->ir_func->locals, mem, &sysv_amd64_function->locals_layout);
+        res = kefir_abi_amd64_type_layout(mem, KEFIR_ABI_AMD64_VARIANT_SYSTEM_V, function->ir_func->locals,
+                                          &sysv_amd64_function->locals_layout);
         REQUIRE_ELSE(res == KEFIR_OK, {
             kefir_codegen_opt_sysv_amd64_register_allocation_free(mem, &sysv_amd64_function->register_allocator);
             kefir_codegen_opt_amd64_sysv_function_parameters_free(mem, &sysv_amd64_function->parameters);
-            kefir_abi_amd64_sysv_function_decl_free(mem, &sysv_amd64_function->declaration);
+            kefir_abi_amd64_function_decl_free(mem, &sysv_amd64_function->declaration);
             kefir_list_free(mem, &sysv_amd64_function->alive_instr);
             kefir_codegen_opt_sysv_amd64_storage_free(mem, &sysv_amd64_function->storage);
             return res;
@@ -75,11 +76,11 @@ static kefir_result_t free_codegen_func(struct kefir_mem *mem, const struct kefi
     kefir_result_t res;
 
     if (function->ir_func->locals != NULL) {
-        res = kefir_abi_sysv_amd64_type_layout_free(mem, &sysv_amd64_function->locals_layout);
+        res = kefir_abi_amd64_type_layout_free(mem, &sysv_amd64_function->locals_layout);
         REQUIRE_ELSE(res == KEFIR_OK, {
             kefir_codegen_opt_sysv_amd64_register_allocation_free(mem, &sysv_amd64_function->register_allocator);
             kefir_codegen_opt_amd64_sysv_function_parameters_free(mem, &sysv_amd64_function->parameters);
-            kefir_abi_amd64_sysv_function_decl_free(mem, &sysv_amd64_function->declaration);
+            kefir_abi_amd64_function_decl_free(mem, &sysv_amd64_function->declaration);
             kefir_list_free(mem, &sysv_amd64_function->alive_instr);
             kefir_codegen_opt_sysv_amd64_storage_free(mem, &sysv_amd64_function->storage);
             return res;
@@ -89,7 +90,7 @@ static kefir_result_t free_codegen_func(struct kefir_mem *mem, const struct kefi
     res = kefir_codegen_opt_sysv_amd64_register_allocation_free(mem, &sysv_amd64_function->register_allocator);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_codegen_opt_amd64_sysv_function_parameters_free(mem, &sysv_amd64_function->parameters);
-        kefir_abi_amd64_sysv_function_decl_free(mem, &sysv_amd64_function->declaration);
+        kefir_abi_amd64_function_decl_free(mem, &sysv_amd64_function->declaration);
         kefir_list_free(mem, &sysv_amd64_function->alive_instr);
         kefir_codegen_opt_sysv_amd64_storage_free(mem, &sysv_amd64_function->storage);
         return res;
@@ -97,13 +98,13 @@ static kefir_result_t free_codegen_func(struct kefir_mem *mem, const struct kefi
 
     res = kefir_codegen_opt_amd64_sysv_function_parameters_free(mem, &sysv_amd64_function->parameters);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_abi_amd64_sysv_function_decl_free(mem, &sysv_amd64_function->declaration);
+        kefir_abi_amd64_function_decl_free(mem, &sysv_amd64_function->declaration);
         kefir_list_free(mem, &sysv_amd64_function->alive_instr);
         kefir_codegen_opt_sysv_amd64_storage_free(mem, &sysv_amd64_function->storage);
         return res;
     });
 
-    res = kefir_abi_amd64_sysv_function_decl_free(mem, &sysv_amd64_function->declaration);
+    res = kefir_abi_amd64_function_decl_free(mem, &sysv_amd64_function->declaration);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_list_free(mem, &sysv_amd64_function->alive_instr);
         kefir_codegen_opt_sysv_amd64_storage_free(mem, &sysv_amd64_function->storage);

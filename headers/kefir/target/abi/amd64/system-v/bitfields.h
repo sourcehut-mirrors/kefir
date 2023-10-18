@@ -18,15 +18,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef KEFIR_TARGET_ABI_SYSTEM_V_AMD64_RETURN_H_
-#define KEFIR_TARGET_ABI_SYSTEM_V_AMD64_RETURN_H_
+#ifndef KEFIR_TARGET_ABI_AMD64_SYSTEM_V_BITFIELDS_H_
+#define KEFIR_TARGET_ABI_AMD64_SYSTEM_V_BITFIELDS_H_
 
-#include "kefir/core/basic-types.h"
-#include "kefir/target/asm/amd64/xasmgen.h"
+#include "kefir/target/abi/amd64/bitfields.h"
 
-extern kefir_asm_amd64_xasmgen_register_t KEFIR_ABI_SYSV_AMD64_RETURN_INTEGER_REGISTERS[];
-extern const kefir_size_t KEFIR_ABI_SYSV_AMD64_RETURN_INTEGER_REGISTER_COUNT;
-extern kefir_asm_amd64_xasmgen_register_t KEFIR_ABI_SYSV_AMD64_RETURN_SSE_REGISTERS[];
-extern const kefir_size_t KEFIR_ABI_SYSV_AMD64_RETURN_SSE_REGISTER_COUNT;
+kefir_result_t kefir_abi_amd64_sysv_bitfield_allocator(struct kefir_mem *mem, const struct kefir_ir_type *type,
+                                                       struct kefir_ir_bitfield_allocator *);
 
 #endif

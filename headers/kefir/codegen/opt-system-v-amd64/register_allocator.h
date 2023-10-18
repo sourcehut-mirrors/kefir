@@ -22,7 +22,7 @@
 #define KEFIR_CODEGEN_OPT_SYSTEM_V_AMD64_REGISTER_ALLOCATOR_H_
 
 #include "kefir/codegen/opt-system-v-amd64.h"
-#include "kefir/target/abi/system-v-amd64/function.h"
+#include "kefir/target/abi/amd64/function.h"
 #include "kefir/codegen/opt-system-v-amd64/parameters.h"
 #include "kefir/codegen/opt-system-v-amd64/stack_frame.h"
 #include "kefir/optimizer/module.h"
@@ -85,7 +85,10 @@ typedef struct kefir_codegen_opt_sysv_amd64_register_allocation {
             } indirect;
         } backing_storage;
 
-        const struct kefir_abi_sysv_amd64_parameter_allocation *register_aggregate_allocation;
+        struct {
+            kefir_bool_t present;
+            struct kefir_abi_amd64_function_parameter parameter;
+        } register_aggregate;
     } result;
 
     struct {

@@ -49,7 +49,7 @@ static kefir_result_t preserve_dirty_registers(struct kefir_codegen_opt_sysv_amd
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_SUB(
                 &context->codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
                 kefir_asm_amd64_xasmgen_operand_imm(&context->codegen->xasmgen_helpers.operands[0],
-                                                    KEFIR_AMD64_SYSV_ABI_QWORD)));
+                                                    KEFIR_AMD64_ABI_QWORD)));
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOVQ(
                 &context->codegen->xasmgen,
                 kefir_asm_amd64_xasmgen_operand_indirect(
@@ -57,14 +57,14 @@ static kefir_result_t preserve_dirty_registers(struct kefir_codegen_opt_sysv_amd
                     kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP), 0),
                 kefir_asm_amd64_xasmgen_operand_reg(reg)));
         }
-        *preserved_regs_area_size += KEFIR_AMD64_SYSV_ABI_QWORD;
+        *preserved_regs_area_size += KEFIR_AMD64_ABI_QWORD;
     }
     if (res != KEFIR_ITERATOR_END) {
         REQUIRE_OK(res);
     }
     if (context->dirty_cc) {
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_PUSHFQ(&context->codegen->xasmgen));
-        *preserved_regs_area_size += KEFIR_AMD64_SYSV_ABI_QWORD;
+        *preserved_regs_area_size += KEFIR_AMD64_ABI_QWORD;
     }
     return KEFIR_OK;
 }
@@ -94,7 +94,7 @@ static kefir_result_t preserve_output_addresses(struct kefir_mem *mem,
             struct kefir_codegen_opt_amd64_sysv_storage_location target_location = {
                 .type = KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_MEMORY,
                 .memory = {.base_reg = KEFIR_AMD64_XASMGEN_REGISTER_RSP,
-                           .offset = entry->output_address.stack_index * KEFIR_AMD64_SYSV_ABI_QWORD +
+                           .offset = entry->output_address.stack_index * KEFIR_AMD64_ABI_QWORD +
                                      context->stack_map.output_parameter_offset}};
             REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_transform_insert(mem, transform, &target_location,
                                                                              &source_location));
@@ -125,7 +125,7 @@ static kefir_result_t parameter_allocation_to_location(
             location->type = KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_MEMORY;
             location->memory.base_reg = KEFIR_AMD64_XASMGEN_REGISTER_RSP;
             location->memory.offset =
-                context->stack_map.input_parameter_offset + entry->allocation.stack.index * KEFIR_AMD64_SYSV_ABI_QWORD;
+                context->stack_map.input_parameter_offset + entry->allocation.stack.index * KEFIR_AMD64_ABI_QWORD;
             break;
     }
     return KEFIR_OK;
@@ -275,7 +275,7 @@ static kefir_result_t read_inputs(struct kefir_codegen_opt_sysv_amd64_inline_ass
                                     &context->codegen->xasmgen_helpers.operands[0],
                                     kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
                                     context->stack_map.input_parameter_offset +
-                                        entry->allocation.stack.index * KEFIR_AMD64_SYSV_ABI_QWORD)));
+                                        entry->allocation.stack.index * KEFIR_AMD64_ABI_QWORD)));
 
                             REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
                                 &context->codegen->xasmgen,
@@ -291,7 +291,7 @@ static kefir_result_t read_inputs(struct kefir_codegen_opt_sysv_amd64_inline_ass
                                     &context->codegen->xasmgen_helpers.operands[0],
                                     kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
                                     context->stack_map.input_parameter_offset +
-                                        entry->allocation.stack.index * KEFIR_AMD64_SYSV_ABI_QWORD),
+                                        entry->allocation.stack.index * KEFIR_AMD64_ABI_QWORD),
                                 kefir_asm_amd64_xasmgen_operand_reg(context->stack_input_parameters.base_register)));
                         }
                     } break;
@@ -307,7 +307,7 @@ static kefir_result_t read_inputs(struct kefir_codegen_opt_sysv_amd64_inline_ass
                         kefir_asm_amd64_xasmgen_register_t reg;
                         REQUIRE_OK(kefir_codegen_opt_sysv_amd64_inline_assembly_match_register_to_size(
                             entry->allocation.reg,
-                            entry->direct_value ? MIN(entry->parameter_read_props.size, KEFIR_AMD64_SYSV_ABI_QWORD)
+                            entry->direct_value ? MIN(entry->parameter_read_props.size, KEFIR_AMD64_ABI_QWORD)
                                                 : entry->parameter_props.size,
                             &reg));
 
@@ -345,14 +345,13 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_inline_assembly_prepare_state(
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer codegen inline assembly context"));
 
     kefir_size_t preserved_regs_area_size;
-    kefir_size_t output_parameters_area_size = context->stack_output_parameters.count * KEFIR_AMD64_SYSV_ABI_QWORD;
-    kefir_size_t input_parameters_area_size = context->stack_input_parameters.count * KEFIR_AMD64_SYSV_ABI_QWORD;
+    kefir_size_t output_parameters_area_size = context->stack_output_parameters.count * KEFIR_AMD64_ABI_QWORD;
+    kefir_size_t input_parameters_area_size = context->stack_input_parameters.count * KEFIR_AMD64_ABI_QWORD;
 
     REQUIRE_OK(preserve_dirty_registers(context, &preserved_regs_area_size));
 
     context->stack_map.total_size = kefir_target_abi_pad_aligned(
-        preserved_regs_area_size + output_parameters_area_size + input_parameters_area_size,
-        2 * KEFIR_AMD64_SYSV_ABI_QWORD);
+        preserved_regs_area_size + output_parameters_area_size + input_parameters_area_size, 2 * KEFIR_AMD64_ABI_QWORD);
     context->stack_map.input_parameter_offset = 0;
     context->stack_map.output_parameter_offset = input_parameters_area_size;
     context->stack_map.preserved_reg_offset = context->stack_map.total_size - preserved_regs_area_size;

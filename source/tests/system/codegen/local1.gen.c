@@ -26,7 +26,7 @@
 #include "kefir/core/mem.h"
 #include "kefir/core/util.h"
 #include "kefir/codegen/system-v-amd64.h"
-#include "kefir/target/abi/system-v-amd64/data_layout.h"
+#include "kefir/target/abi/amd64/type_layout.h"
 #include "kefir/test/codegen.h"
 
 kefir_result_t kefir_int_test(struct kefir_mem *mem) {
@@ -59,10 +59,10 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     kefir_irbuilder_type_append(mem, fill->declaration->params, KEFIR_IR_TYPE_LONG, 0, 0);
     kefir_irbuilder_type_append_from(mem, fill->declaration->result, type1, 0);
 
-    struct kefir_abi_sysv_amd64_type_layout type_layout;
-    REQUIRE_OK(kefir_abi_sysv_amd64_type_layout(type1, mem, &type_layout));
+    struct kefir_abi_amd64_type_layout type_layout;
+    REQUIRE_OK(kefir_abi_amd64_type_layout(mem, KEFIR_ABI_AMD64_VARIANT_SYSTEM_V, type1, &type_layout));
 
-    ASSIGN_DECL_CAST(const struct kefir_abi_sysv_amd64_typeentry_layout *, entry_layout,
+    ASSIGN_DECL_CAST(const struct kefir_abi_amd64_typeentry_layout *, entry_layout,
                      kefir_vector_at(&type_layout.layout, 1));
 
     kefir_irbuilder_block_appendu32(mem, &fill->body, KEFIR_IROPCODE_GETLOCAL, type1_id, 0);  // 0:  [VAL, S*]
@@ -95,7 +95,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     kefir_irbuilder_block_appendi64(mem, &fill->body, KEFIR_IROPCODE_STORE64, 0);  // 19: [S*]
     kefir_irbuilder_block_appendi64(mem, &fill->body, KEFIR_IROPCODE_RET, 0);      // 19: [S*]
 
-    REQUIRE_OK(kefir_abi_sysv_amd64_type_layout_free(mem, &type_layout));
+    REQUIRE_OK(kefir_abi_amd64_type_layout_free(mem, &type_layout));
     KEFIR_CODEGEN_TRANSLATE(mem, &codegen.iface, &module);
     KEFIR_CODEGEN_CLOSE(mem, &codegen.iface);
     REQUIRE_OK(kefir_ir_module_free(mem, &module));

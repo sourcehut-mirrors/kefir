@@ -43,7 +43,7 @@ const struct kefir_asm_amd64_xasmgen_operand *kefir_codegen_opt_sysv_amd64_reg_a
         case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_SPILL_AREA:
             return kefir_asm_amd64_xasmgen_operand_indirect(
                 operand, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
-                stack_frame_map->offset.spill_area + reg_allocation->result.spill.index * KEFIR_AMD64_SYSV_ABI_QWORD);
+                stack_frame_map->offset.spill_area + reg_allocation->result.spill.index * KEFIR_AMD64_ABI_QWORD);
 
         case KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_INDIRECT:
             return kefir_asm_amd64_xasmgen_operand_indirect(
@@ -224,24 +224,25 @@ static kefir_result_t update_live_registers(
         REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_mark_register_used(mem, &codegen_func->storage,
                                                                            reg_allocation->result.reg));
     }
-    if (reg_allocation->result.register_aggregate_allocation != NULL) {
-        for (kefir_size_t i = 0;
-             i < kefir_vector_length(&reg_allocation->result.register_aggregate_allocation->container.qwords); i++) {
-            ASSIGN_DECL_CAST(
-                struct kefir_abi_sysv_amd64_qword *, qword,
-                kefir_vector_at(&reg_allocation->result.register_aggregate_allocation->container.qwords, i));
-            switch (qword->klass) {
-                case KEFIR_AMD64_SYSV_PARAM_INTEGER:
-                    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_mark_register_used(
-                        mem, &codegen_func->storage,
-                        KEFIR_ABI_SYSV_AMD64_PARAMETER_INTEGER_REGISTERS[qword->location]));
+    if (reg_allocation->result.register_aggregate.present) {
+        kefir_size_t length;
+        REQUIRE_OK(kefir_abi_amd64_function_parameter_multireg_length(
+            &reg_allocation->result.register_aggregate.parameter, &length));
+        for (kefir_size_t i = 0; i < length; i++) {
+            struct kefir_abi_amd64_function_parameter subparam;
+            REQUIRE_OK(kefir_abi_amd64_function_parameter_multireg_at(
+                &reg_allocation->result.register_aggregate.parameter, i, &subparam));
+            switch (subparam.location) {
+                case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_GENERAL_PURPOSE_REGISTER:
+                    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_mark_register_used(mem, &codegen_func->storage,
+                                                                                       subparam.direct_reg));
                     break;
 
-                case KEFIR_AMD64_SYSV_PARAM_SSE:
+                case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_SSE_REGISTER:
                     // Intentionally left blank
                     break;
 
-                case KEFIR_AMD64_SYSV_PARAM_NO_CLASS:
+                case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_NONE:
                     // Intentionally left blank
                     break;
 
@@ -529,17 +530,21 @@ static kefir_result_t translate_instr(struct kefir_mem *mem, struct kefir_codege
 }
 
 static kefir_result_t update_frame_temporaries(struct kefir_opt_sysv_amd64_function *codegen_func,
-                                               struct kefir_abi_amd64_sysv_function_decl *decl) {
-    if (kefir_ir_type_children(decl->decl->result) == 0) {
+                                               struct kefir_abi_amd64_function_decl *decl) {
+    const struct kefir_ir_function_decl *ir_func_decl;
+    REQUIRE_OK(kefir_abi_amd64_function_decl_ir(decl, &ir_func_decl));
+    if (kefir_ir_type_children(ir_func_decl->result) == 0) {
         return KEFIR_OK;
     }
 
-    struct kefir_ir_typeentry *typeentry = kefir_ir_type_at(decl->decl->result, 0);
+    struct kefir_ir_typeentry *typeentry = kefir_ir_type_at(ir_func_decl->result, 0);
     if (typeentry->typecode == KEFIR_IR_TYPE_STRUCT || typeentry->typecode == KEFIR_IR_TYPE_UNION ||
         typeentry->typecode == KEFIR_IR_TYPE_ARRAY || typeentry->typecode == KEFIR_IR_TYPE_BUILTIN ||
         typeentry->typecode == KEFIR_IR_TYPE_LONG_DOUBLE) {
-        const struct kefir_abi_sysv_amd64_typeentry_layout *layout = NULL;
-        REQUIRE_OK(kefir_abi_sysv_amd64_type_layout_at(&decl->returns.layout, 0, &layout));
+        const struct kefir_abi_amd64_type_layout *return_type_layout;
+        const struct kefir_abi_amd64_typeentry_layout *layout = NULL;
+        REQUIRE_OK(kefir_abi_amd64_function_decl_returns_layout(decl, &return_type_layout));
+        REQUIRE_OK(kefir_abi_amd64_type_layout_at(return_type_layout, 0, &layout));
         REQUIRE_OK(kefir_codegen_opt_sysv_amd64_stack_frame_ensure_temporary(&codegen_func->stack_frame, layout->size,
                                                                              layout->alignment));
     }
@@ -549,44 +554,48 @@ static kefir_result_t update_frame_temporaries(struct kefir_opt_sysv_amd64_funct
 static kefir_result_t update_frame_temporaries_type(struct kefir_mem *mem,
                                                     struct kefir_opt_sysv_amd64_function *codegen_func,
                                                     struct kefir_ir_type *type, kefir_size_t index) {
-    struct kefir_abi_sysv_amd64_type_layout layout;
-    struct kefir_vector allocation;
+    struct kefir_abi_amd64_type_layout layout;
+    struct kefir_abi_amd64_function_parameters allocation;
     struct kefir_ir_typeentry *typeentry = kefir_ir_type_at(type, index);
     REQUIRE(typeentry != NULL, KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Unable to fetch IR type entry at index"));
 
-    REQUIRE_OK(kefir_abi_sysv_amd64_type_layout(type, mem, &layout));
-    kefir_result_t res = kefir_abi_sysv_amd64_parameter_classify(mem, type, &layout, &allocation);
+    REQUIRE_OK(kefir_abi_amd64_type_layout(mem, KEFIR_ABI_AMD64_VARIANT_SYSTEM_V, type, &layout));
+    kefir_result_t res =
+        kefir_abi_amd64_function_parameters_classify(mem, KEFIR_ABI_AMD64_VARIANT_SYSTEM_V, type, &layout, &allocation);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        REQUIRE_OK(kefir_abi_sysv_amd64_type_layout_free(mem, &layout));
+        REQUIRE_OK(kefir_abi_amd64_type_layout_free(mem, &layout));
         return res;
     });
 
-    const struct kefir_abi_sysv_amd64_typeentry_layout *arg_layout = NULL;
-    const struct kefir_abi_sysv_amd64_parameter_allocation *arg_alloc = NULL;
-    REQUIRE_CHAIN(&res, kefir_abi_sysv_amd64_type_layout_at(&layout, index, &arg_layout));
+    const struct kefir_abi_amd64_typeentry_layout *arg_layout = NULL;
+    struct kefir_abi_amd64_function_parameter parameter;
+    REQUIRE_CHAIN(&res, kefir_abi_amd64_type_layout_at(&layout, index, &arg_layout));
     REQUIRE_ELSE(res == KEFIR_OK, {
-        REQUIRE_OK(kefir_abi_sysv_amd64_parameter_free(mem, &allocation));
-        REQUIRE_OK(kefir_abi_sysv_amd64_type_layout_free(mem, &layout));
+        REQUIRE_OK(kefir_abi_amd64_function_parameters_free(mem, &allocation));
+        REQUIRE_OK(kefir_abi_amd64_type_layout_free(mem, &layout));
         return res;
     });
-    arg_alloc = kefir_vector_at(&allocation, index);
-    REQUIRE_ELSE(arg_alloc != NULL, {
-        REQUIRE_OK(kefir_abi_sysv_amd64_parameter_free(mem, &allocation));
-        REQUIRE_OK(kefir_abi_sysv_amd64_type_layout_free(mem, &layout));
-        return KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Unable to fetch argument layout and classification");
+
+    kefir_size_t slot;
+    REQUIRE_OK(kefir_ir_type_slot_of(type, index, &slot));
+    res = kefir_abi_amd64_function_parameters_at(&allocation, slot, &parameter);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        REQUIRE_OK(kefir_abi_amd64_function_parameters_free(mem, &allocation));
+        REQUIRE_OK(kefir_abi_amd64_type_layout_free(mem, &layout));
+        return res;
     });
 
     kefir_size_t size = 0;
     kefir_size_t alignment = 0;
     if ((typeentry->typecode == KEFIR_IR_TYPE_STRUCT || typeentry->typecode == KEFIR_IR_TYPE_UNION ||
          typeentry->typecode == KEFIR_IR_TYPE_ARRAY || typeentry->typecode == KEFIR_IR_TYPE_BUILTIN) &&
-        arg_alloc->klass != KEFIR_AMD64_SYSV_PARAM_MEMORY) {
+        parameter.location != KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_MEMORY) {
         size = arg_layout->size;
         alignment = arg_layout->alignment;
     }
 
-    REQUIRE_OK(kefir_abi_sysv_amd64_parameter_free(mem, &allocation));
-    REQUIRE_OK(kefir_abi_sysv_amd64_type_layout_free(mem, &layout));
+    REQUIRE_OK(kefir_abi_amd64_function_parameters_free(mem, &allocation));
+    REQUIRE_OK(kefir_abi_amd64_type_layout_free(mem, &layout));
 
     REQUIRE_OK(kefir_codegen_opt_sysv_amd64_stack_frame_ensure_temporary(&codegen_func->stack_frame, size, alignment));
     return KEFIR_OK;
@@ -615,16 +624,17 @@ static kefir_result_t calculate_frame_temporaries(struct kefir_mem *mem, const s
             REQUIRE(ir_func_decl != NULL,
                     KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to find IR function declaration"));
 
-            struct kefir_abi_amd64_sysv_function_decl abi_func_decl;
-            REQUIRE_OK(kefir_abi_amd64_sysv_function_decl_alloc(mem, ir_func_decl, &abi_func_decl));
+            struct kefir_abi_amd64_function_decl abi_func_decl;
+            REQUIRE_OK(kefir_abi_amd64_function_decl_alloc(mem, KEFIR_ABI_AMD64_VARIANT_SYSTEM_V, ir_func_decl,
+                                                           &abi_func_decl));
 
             kefir_result_t res = update_frame_temporaries(codegen_func, &abi_func_decl);
             REQUIRE_ELSE(res == KEFIR_OK, {
-                kefir_abi_amd64_sysv_function_decl_free(mem, &abi_func_decl);
+                kefir_abi_amd64_function_decl_free(mem, &abi_func_decl);
                 return res;
             });
 
-            REQUIRE_OK(kefir_abi_amd64_sysv_function_decl_free(mem, &abi_func_decl));
+            REQUIRE_OK(kefir_abi_amd64_function_decl_free(mem, &abi_func_decl));
         } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_VARARG_GET) {
             struct kefir_ir_type *type =
                 kefir_ir_module_get_named_type(module->ir_module, instr->operation.parameters.typed_refs.type_id);
@@ -807,7 +817,11 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_translate_code(struct kefir_mem *mem
         REQUIRE_OK(kefir_codegen_opt_sysv_amd64_stack_frame_allocate_set_locals(
             &codegen_func->stack_frame, function->ir_func->locals, &codegen_func->locals_layout));
     }
-    if (codegen_func->declaration.returns.implicit_parameter) {
+    kefir_bool_t implicit_param;
+    kefir_asm_amd64_xasmgen_register_t implicit_param_reg;
+    REQUIRE_OK(kefir_abi_amd64_function_decl_returns_implicit_parameter(&codegen_func->declaration, &implicit_param,
+                                                                        &implicit_param_reg));
+    if (implicit_param) {
         REQUIRE_OK(kefir_codegen_opt_sysv_amd64_stack_frame_preserve_implicit_parameter(&codegen_func->stack_frame));
     }
     if (function->ir_func->declaration->vararg) {

@@ -24,7 +24,7 @@
 #include "kefir/core/basic-types.h"
 #include "kefir/codegen/codegen.h"
 #include "kefir/target/asm/amd64/xasmgen.h"
-#include "kefir/target/abi/system-v-amd64/platform.h"
+#include "kefir/target/abi/amd64/platform.h"
 
 typedef struct kefir_codegen_opt_amd64 {
     struct kefir_codegen codegen;

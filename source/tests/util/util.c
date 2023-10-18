@@ -19,7 +19,7 @@
 */
 
 #include "kefir/test/util.h"
-#include "kefir/target/abi/system-v-amd64/platform.h"
+#include "kefir/target/abi/amd64/platform.h"
 #include <float.h>
 
 static kefir_bool_t init_done = false;
@@ -28,7 +28,7 @@ static struct kefir_ast_translator_environment TRANSLATOR_ENV;
 
 struct kefir_ir_target_platform *kft_util_get_ir_target_platform(void) {
     if (!init_done) {
-        REQUIRE(kefir_abi_sysv_amd64_target_platform(&IR_TARGET) == KEFIR_OK, NULL);
+        REQUIRE(kefir_abi_amd64_target_platform(KEFIR_ABI_AMD64_VARIANT_SYSTEM_V, &IR_TARGET) == KEFIR_OK, NULL);
         REQUIRE(kefir_ast_translator_environment_init(&TRANSLATOR_ENV, &IR_TARGET) == KEFIR_OK, NULL);
         init_done = true;
     }
@@ -37,7 +37,7 @@ struct kefir_ir_target_platform *kft_util_get_ir_target_platform(void) {
 
 struct kefir_ast_translator_environment *kft_util_get_translator_environment(void) {
     if (!init_done) {
-        REQUIRE(kefir_abi_sysv_amd64_target_platform(&IR_TARGET) == KEFIR_OK, NULL);
+        REQUIRE(kefir_abi_amd64_target_platform(KEFIR_ABI_AMD64_VARIANT_SYSTEM_V, &IR_TARGET) == KEFIR_OK, NULL);
         REQUIRE(kefir_ast_translator_environment_init(&TRANSLATOR_ENV, &IR_TARGET) == KEFIR_OK, NULL);
         init_done = true;
     }

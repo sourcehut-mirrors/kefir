@@ -89,7 +89,7 @@ static kefir_result_t build_graph_impl(struct kefir_mem *mem, const struct kefir
         instr_allocation->klass = KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_CLASS_GENERAL_PURPOSE;
         instr_allocation->register_hint.present = false;
         instr_allocation->alias_hint.present = false;
-        instr_allocation->result.register_aggregate_allocation = NULL;
+        instr_allocation->result.register_aggregate.present = false;
 
         kefir_result_t res =
             kefir_graph_new_node(mem, &allocator->allocation, (kefir_graph_node_id_t) instr_props->instr_ref,
@@ -401,25 +401,26 @@ static kefir_result_t deallocate(struct kefir_codegen_opt_sysv_amd64_register_al
             break;
     }
 
-    if (allocation->result.register_aggregate_allocation != NULL) {
-        for (kefir_size_t i = 0;
-             i < kefir_vector_length(&allocation->result.register_aggregate_allocation->container.qwords); i++) {
-            ASSIGN_DECL_CAST(struct kefir_abi_sysv_amd64_qword *, qword,
-                             kefir_vector_at(&allocation->result.register_aggregate_allocation->container.qwords, i));
-            switch (qword->klass) {
-                case KEFIR_AMD64_SYSV_PARAM_INTEGER:
-                    REQUIRE_OK(general_purpose_index_of(
-                        KEFIR_ABI_SYSV_AMD64_PARAMETER_INTEGER_REGISTERS[qword->location], &register_index));
+    if (allocation->result.register_aggregate.present) {
+        kefir_size_t length;
+        REQUIRE_OK(kefir_abi_amd64_function_parameter_multireg_length(&allocation->result.register_aggregate.parameter,
+                                                                      &length));
+        for (kefir_size_t i = 0; i < length; i++) {
+            struct kefir_abi_amd64_function_parameter subparam;
+            REQUIRE_OK(kefir_abi_amd64_function_parameter_multireg_at(&allocation->result.register_aggregate.parameter,
+                                                                      i, &subparam));
+            switch (subparam.location) {
+                case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_GENERAL_PURPOSE_REGISTER:
+                    REQUIRE_OK(general_purpose_index_of(subparam.direct_reg, &register_index));
                     REQUIRE_OK(kefir_bitset_set(&allocator->general_purpose_regs, register_index, false));
                     break;
 
-                case KEFIR_AMD64_SYSV_PARAM_SSE:
-                    REQUIRE_OK(floating_point_index_of(KEFIR_ABI_SYSV_AMD64_PARAMETER_SSE_REGISTERS[qword->location],
-                                                       &register_index));
+                case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_SSE_REGISTER:
+                    REQUIRE_OK(floating_point_index_of(subparam.direct_reg, &register_index));
                     REQUIRE_OK(kefir_bitset_set(&allocator->floating_point_regs, register_index, false));
                     break;
 
-                case KEFIR_AMD64_SYSV_PARAM_NO_CLASS:
+                case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_NONE:
                     // Intentionally left blank
                     break;
 
@@ -781,30 +782,30 @@ static kefir_result_t do_allocation_impl(struct kefir_mem *mem, const struct kef
                 break;
 
             case KEFIR_CODEGEN_OPT_AMD64_SYSV_FUNCTION_PARAMETER_LOCATION_REGISTER_AGGREGATE: {
-                for (kefir_size_t i = 0;
-                     i < kefir_vector_length(&parameter_location->parameter_allocation->container.qwords); i++) {
-                    ASSIGN_DECL_CAST(struct kefir_abi_sysv_amd64_qword *, qword,
-                                     kefir_vector_at(&parameter_location->parameter_allocation->container.qwords, i));
-                    switch (qword->klass) {
-                        case KEFIR_AMD64_SYSV_PARAM_INTEGER:
-                            REQUIRE_OK(mark_register_allocated(
-                                allocator, stack_frame,
-                                KEFIR_ABI_SYSV_AMD64_PARAMETER_INTEGER_REGISTERS[qword->location], &reg_allocated));
+                kefir_size_t length;
+                REQUIRE_OK(kefir_abi_amd64_function_parameter_multireg_length(&parameter_location->parameter, &length));
+                for (kefir_size_t i = 0; i < length; i++) {
+                    struct kefir_abi_amd64_function_parameter subparam;
+                    REQUIRE_OK(
+                        kefir_abi_amd64_function_parameter_multireg_at(&parameter_location->parameter, i, &subparam));
+                    switch (subparam.location) {
+                        case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_GENERAL_PURPOSE_REGISTER:
+                            REQUIRE_OK(
+                                mark_register_allocated(allocator, stack_frame, subparam.direct_reg, &reg_allocated));
                             REQUIRE(reg_allocated,
                                     KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR,
                                                     "Unable to allocate register for function parameter"));
                             break;
 
-                        case KEFIR_AMD64_SYSV_PARAM_SSE:
-                            REQUIRE_OK(mark_register_allocated(
-                                allocator, stack_frame, KEFIR_ABI_SYSV_AMD64_PARAMETER_SSE_REGISTERS[qword->location],
-                                &reg_allocated));
+                        case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_SSE_REGISTER:
+                            REQUIRE_OK(
+                                mark_register_allocated(allocator, stack_frame, subparam.direct_reg, &reg_allocated));
                             REQUIRE(reg_allocated,
                                     KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR,
                                                     "Unable to allocate register for function parameter"));
                             break;
 
-                        case KEFIR_AMD64_SYSV_PARAM_NO_CLASS:
+                        case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_NONE:
                             // Intentionally left blank
                             break;
 
@@ -815,12 +816,10 @@ static kefir_result_t do_allocation_impl(struct kefir_mem *mem, const struct kef
                     }
                 }
 
-                kefir_size_t aggregate_length =
-                    kefir_vector_length(&parameter_location->parameter_allocation->container.qwords);
-                aggregate_length = MAX(aggregate_length, 1);
+                kefir_size_t aggregate_length = MAX(length, 1);
                 kefir_size_t reg_aggregate_alignment =
-                    MAX(parameter_location->register_aggregate_props.alignment, KEFIR_AMD64_SYSV_ABI_QWORD);
-                kefir_size_t qword_alignment = reg_aggregate_alignment / KEFIR_AMD64_SYSV_ABI_QWORD;
+                    MAX(parameter_location->register_aggregate_props.alignment, KEFIR_AMD64_ABI_QWORD);
+                kefir_size_t qword_alignment = reg_aggregate_alignment / KEFIR_AMD64_ABI_QWORD;
                 kefir_size_t allocated_length = aggregate_length + qword_alignment - 1;
 
                 kefir_size_t available_spill_index;
@@ -852,7 +851,8 @@ static kefir_result_t do_allocation_impl(struct kefir_mem *mem, const struct kef
                     KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_BACKING_STORAGE_SPILL_AREA;
                 allocation->result.backing_storage.spill.index = available_spill_index;
                 allocation->result.backing_storage.spill.length = aggregate_length;
-                allocation->result.register_aggregate_allocation = parameter_location->parameter_allocation;
+                allocation->result.register_aggregate.present = true;
+                allocation->result.register_aggregate.parameter = parameter_location->parameter;
             } break;
         }
 

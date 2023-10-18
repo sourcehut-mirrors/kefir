@@ -59,39 +59,40 @@ DEFINE_TRANSLATOR(get_argument) {
 
     REQUIRE(result_allocation->result.backing_storage_type ==
                     KEFIR_CODEGEN_OPT_SYSV_AMD64_REGISTER_ALLOCATION_BACKING_STORAGE_SPILL_AREA &&
-                result_allocation->result.register_aggregate_allocation != NULL,
+                result_allocation->result.register_aggregate.present,
             KEFIR_OK);
 
     kefir_size_t offset = result_allocation->result.backing_storage.spill.index;
-    for (kefir_size_t i = 0;
-         i < kefir_vector_length(&result_allocation->result.register_aggregate_allocation->container.qwords); i++) {
-        ASSIGN_DECL_CAST(
-            struct kefir_abi_sysv_amd64_qword *, qword,
-            kefir_vector_at(&result_allocation->result.register_aggregate_allocation->container.qwords, i));
-        switch (qword->klass) {
-            case KEFIR_AMD64_SYSV_PARAM_INTEGER:
+    kefir_size_t length;
+    REQUIRE_OK(kefir_abi_amd64_function_parameter_multireg_length(
+        &result_allocation->result.register_aggregate.parameter, &length));
+    for (kefir_size_t i = 0; i < length; i++) {
+        struct kefir_abi_amd64_function_parameter subparam;
+        REQUIRE_OK(kefir_abi_amd64_function_parameter_multireg_at(
+            &result_allocation->result.register_aggregate.parameter, i, &subparam));
+        switch (subparam.location) {
+            case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_GENERAL_PURPOSE_REGISTER:
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
                     &codegen->xasmgen,
                     kefir_asm_amd64_xasmgen_operand_indirect(
                         &codegen->xasmgen_helpers.operands[0],
                         kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
-                        codegen_func->stack_frame_map.offset.spill_area + (offset + i) * KEFIR_AMD64_SYSV_ABI_QWORD),
-                    kefir_asm_amd64_xasmgen_operand_reg(
-                        KEFIR_ABI_SYSV_AMD64_PARAMETER_INTEGER_REGISTERS[qword->location])));
+                        codegen_func->stack_frame_map.offset.spill_area + (offset + i) * KEFIR_AMD64_ABI_QWORD),
+                    kefir_asm_amd64_xasmgen_operand_reg(subparam.direct_reg)));
                 break;
 
-            case KEFIR_AMD64_SYSV_PARAM_SSE:
+            case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_SSE_REGISTER:
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_PEXTRQ(
                     &codegen->xasmgen,
                     kefir_asm_amd64_xasmgen_operand_indirect(
                         &codegen->xasmgen_helpers.operands[0],
                         kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
-                        codegen_func->stack_frame_map.offset.spill_area + (offset + i) * KEFIR_AMD64_SYSV_ABI_QWORD),
-                    kefir_asm_amd64_xasmgen_operand_reg(KEFIR_ABI_SYSV_AMD64_PARAMETER_SSE_REGISTERS[qword->location]),
+                        codegen_func->stack_frame_map.offset.spill_area + (offset + i) * KEFIR_AMD64_ABI_QWORD),
+                    kefir_asm_amd64_xasmgen_operand_reg(subparam.direct_reg),
                     kefir_asm_amd64_xasmgen_operand_imm(&codegen->xasmgen_helpers.operands[1], 0)));
                 break;
 
-            case KEFIR_AMD64_SYSV_PARAM_NO_CLASS:
+            case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_NONE:
                 // Intentionally left blank
                 break;
 
@@ -113,7 +114,7 @@ DEFINE_TRANSLATOR(get_argument) {
         kefir_asm_amd64_xasmgen_operand_indirect(
             &codegen->xasmgen_helpers.operands[0],
             kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
-            codegen_func->stack_frame_map.offset.spill_area + offset * KEFIR_AMD64_SYSV_ABI_QWORD)));
+            codegen_func->stack_frame_map.offset.spill_area + offset * KEFIR_AMD64_ABI_QWORD)));
 
     REQUIRE_OK(kefir_codegen_opt_amd64_sysv_storage_location_store(&codegen->xasmgen, &codegen_func->stack_frame_map,
                                                                    result_allocation, &result_handle.location));
@@ -121,22 +122,23 @@ DEFINE_TRANSLATOR(get_argument) {
     REQUIRE_OK(
         kefir_codegen_opt_amd64_sysv_storage_release(mem, &codegen->xasmgen, &codegen_func->storage, &result_handle));
 
-    for (kefir_size_t i = 0;
-         i < kefir_vector_length(&result_allocation->result.register_aggregate_allocation->container.qwords); i++) {
-        ASSIGN_DECL_CAST(
-            struct kefir_abi_sysv_amd64_qword *, qword,
-            kefir_vector_at(&result_allocation->result.register_aggregate_allocation->container.qwords, i));
-        switch (qword->klass) {
-            case KEFIR_AMD64_SYSV_PARAM_INTEGER:
-                REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_mark_register_unused(
-                    mem, &codegen_func->storage, KEFIR_ABI_SYSV_AMD64_PARAMETER_INTEGER_REGISTERS[qword->location]));
+    REQUIRE_OK(kefir_abi_amd64_function_parameter_multireg_length(
+        &result_allocation->result.register_aggregate.parameter, &length));
+    for (kefir_size_t i = 0; i < length; i++) {
+        struct kefir_abi_amd64_function_parameter subparam;
+        REQUIRE_OK(kefir_abi_amd64_function_parameter_multireg_at(
+            &result_allocation->result.register_aggregate.parameter, i, &subparam));
+        switch (subparam.location) {
+            case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_GENERAL_PURPOSE_REGISTER:
+                REQUIRE_OK(kefir_codegen_opt_sysv_amd64_storage_mark_register_unused(mem, &codegen_func->storage,
+                                                                                     subparam.direct_reg));
                 break;
 
-            case KEFIR_AMD64_SYSV_PARAM_SSE:
+            case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_SSE_REGISTER:
                 // Intentionally left blank
                 break;
 
-            case KEFIR_AMD64_SYSV_PARAM_NO_CLASS:
+            case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_NONE:
                 // Intentionally left blank
                 break;
 

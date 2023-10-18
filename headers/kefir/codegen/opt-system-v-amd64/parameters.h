@@ -21,7 +21,7 @@
 #ifndef KEFIR_CODEGEN_OPT_SYSTEM_V_AMD64_PARAMETERS_H_
 #define KEFIR_CODEGEN_OPT_SYSTEM_V_AMD64_PARAMETERS_H_
 
-#include "kefir/target/abi/system-v-amd64/function.h"
+#include "kefir/target/abi/amd64/function.h"
 #include "kefir/core/hashtree.h"
 
 typedef enum kefir_codegen_opt_amd64_sysv_function_parameter_location_type {
@@ -41,7 +41,7 @@ typedef struct kefir_codegen_opt_amd64_sysv_function_parameter_location {
             kefir_bool_t aggregate;
         } indirect;
     };
-    const struct kefir_abi_sysv_amd64_parameter_allocation *parameter_allocation;
+    struct kefir_abi_amd64_function_parameter parameter;
     struct {
         kefir_size_t size;
         kefir_size_t alignment;
@@ -49,12 +49,12 @@ typedef struct kefir_codegen_opt_amd64_sysv_function_parameter_location {
 } kefir_codegen_opt_amd64_sysv_function_parameter_location_t;
 
 typedef struct kefir_codegen_opt_amd64_sysv_function_parameters {
-    const struct kefir_abi_amd64_sysv_function_decl *function_decl;
+    const struct kefir_abi_amd64_function_decl *function_decl;
     struct kefir_hashtree parameters;
 } kefir_codegen_opt_amd64_sysv_function_parameters_t;
 
 kefir_result_t kefir_codegen_opt_amd64_sysv_function_parameters_init(
-    struct kefir_mem *, const struct kefir_abi_amd64_sysv_function_decl *,
+    struct kefir_mem *, const struct kefir_abi_amd64_function_decl *,
     struct kefir_codegen_opt_amd64_sysv_function_parameters *);
 kefir_result_t kefir_codegen_opt_amd64_sysv_function_parameters_free(
     struct kefir_mem *, struct kefir_codegen_opt_amd64_sysv_function_parameters *);

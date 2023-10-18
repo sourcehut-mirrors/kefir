@@ -18,14 +18,14 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "kefir/target/abi/system-v-amd64/bitfields.h"
-#include "kefir/target/abi/system-v-amd64/data_layout.h"
+#include "kefir/target/abi/amd64/system-v/bitfields.h"
+#include "kefir/target/abi/amd64/system-v/type_layout.h"
 #include "kefir/target/abi/util.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 
 struct bitfield_allocator_payload {
-    struct kefir_ir_type *ir_type;
+    const struct kefir_ir_type *ir_type;
     kefir_bool_t has_last_bitfield;
     struct {
         kefir_size_t head_offset;
@@ -95,7 +95,7 @@ static kefir_result_t visit_struct_layout(const struct kefir_ir_type *type, kefi
     REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid payload"));
     ASSIGN_DECL_CAST(struct struct_layout_visitor *, visitor_payload, payload);
 
-    ASSIGN_DECL_CAST(struct kefir_abi_sysv_amd64_typeentry_layout *, layout,
+    ASSIGN_DECL_CAST(struct kefir_abi_amd64_typeentry_layout *, layout,
                      kefir_vector_at(&visitor_payload->layout, index));
     REQUIRE(layout != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Failed to fetch IR type layout"));
     *visitor_payload->offset = MAX(*visitor_payload->offset, layout->relative_offset + layout->size);
@@ -111,7 +111,7 @@ static kefir_result_t struct_current_offset(struct kefir_mem *mem, const struct 
         struct kefir_ir_type_visitor visitor;
         struct struct_layout_visitor payload = {.offset = offset};
         REQUIRE_OK(kefir_ir_type_visitor_init(&visitor, &visit_struct_layout));
-        REQUIRE_OK(kefir_abi_sysv_amd64_type_layout_of(mem, type, struct_index, 1, &payload.layout));
+        REQUIRE_OK(kefir_abi_amd64_sysv_calculate_type_layout(mem, type, struct_index, 1, &payload.layout));
         kefir_result_t res =
             kefir_ir_type_visitor_list_nodes(type, &visitor, &payload, struct_index + 1, struct_typeentry->param);
         REQUIRE_ELSE(res == KEFIR_OK, {
@@ -225,7 +225,7 @@ static kefir_result_t amd64_sysv_bitfield_free(struct kefir_mem *mem, struct kef
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_abi_sysv_amd64_bitfield_allocator(struct kefir_mem *mem, struct kefir_ir_type *type,
+kefir_result_t kefir_abi_amd64_sysv_bitfield_allocator(struct kefir_mem *mem, const struct kefir_ir_type *type,
                                                        struct kefir_ir_bitfield_allocator *allocator) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR type"));
@@ -234,7 +234,7 @@ kefir_result_t kefir_abi_sysv_amd64_bitfield_allocator(struct kefir_mem *mem, st
 
     struct bitfield_allocator_payload *payload = KEFIR_MALLOC(mem, sizeof(struct bitfield_allocator_payload));
     REQUIRE(payload != NULL,
-            KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AMD64 System V bitfield allocator payload"));
+            KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AMD64 System-V bitfield allocator payload"));
 
     payload->ir_type = type;
     payload->has_last_bitfield = false;

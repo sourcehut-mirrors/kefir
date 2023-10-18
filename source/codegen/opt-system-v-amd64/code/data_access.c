@@ -42,9 +42,9 @@ DEFINE_TRANSLATOR(data_access) {
 
     switch (instr->operation.opcode) {
         case KEFIR_OPT_OPCODE_GET_LOCAL: {
-            const struct kefir_abi_sysv_amd64_typeentry_layout *entry = NULL;
-            REQUIRE_OK(kefir_abi_sysv_amd64_type_layout_at(&codegen_func->locals_layout,
-                                                           instr->operation.parameters.index, &entry));
+            const struct kefir_abi_amd64_typeentry_layout *entry = NULL;
+            REQUIRE_OK(kefir_abi_amd64_type_layout_at(&codegen_func->locals_layout, instr->operation.parameters.index,
+                                                      &entry));
 
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_LEA(
                 &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(result_handle.location.reg),

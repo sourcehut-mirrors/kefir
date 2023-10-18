@@ -71,16 +71,16 @@ static kefir_result_t evaluate_parameter_type(struct kefir_mem *mem, const struc
     REQUIRE(param_typeentry != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to obtain IR inline assembly parameter type"));
 
-    struct kefir_abi_sysv_amd64_type_layout layouts;
-    REQUIRE_OK(kefir_abi_sysv_amd64_type_layout(ir_type, mem, &layouts));
-    const struct kefir_abi_sysv_amd64_typeentry_layout *layout = NULL;
-    kefir_result_t res = kefir_abi_sysv_amd64_type_layout_at(&layouts, ir_type_idx, &layout);
+    struct kefir_abi_amd64_type_layout layouts;
+    REQUIRE_OK(kefir_abi_amd64_type_layout(mem, KEFIR_ABI_AMD64_VARIANT_SYSTEM_V, ir_type, &layouts));
+    const struct kefir_abi_amd64_typeentry_layout *layout = NULL;
+    kefir_result_t res = kefir_abi_amd64_type_layout_at(&layouts, ir_type_idx, &layout);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_abi_sysv_amd64_type_layout_free(mem, &layouts);
+        kefir_abi_amd64_type_layout_free(mem, &layouts);
         return res;
     });
     *parameter_size = layout->size;
-    REQUIRE_OK(kefir_abi_sysv_amd64_type_layout_free(mem, &layouts));
+    REQUIRE_OK(kefir_abi_amd64_type_layout_free(mem, &layouts));
 
     switch (param_typeentry->typecode) {
         case KEFIR_IR_TYPE_BOOL:
@@ -223,14 +223,14 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_inline_assembly_allocate_parameters(
 
                 case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_REGISTER:
                     REQUIRE(param_type != KEFIR_CODEGEN_OPT_SYSV_AMD64_INLINE_ASSEMBLY_PARAMETER_AGGREGATE ||
-                                param_size <= KEFIR_AMD64_SYSV_ABI_QWORD,
+                                param_size <= KEFIR_AMD64_ABI_QWORD,
                             KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unable to satisfy IR inline assembly constraints"));
                     REQUIRE_OK(allocate_register_parameter(mem, context, ir_asm_param, param_type));
                     break;
 
                 case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_REGISTER_MEMORY:
                     if ((param_type == KEFIR_CODEGEN_OPT_SYSV_AMD64_INLINE_ASSEMBLY_PARAMETER_SCALAR ||
-                         param_size <= KEFIR_AMD64_SYSV_ABI_QWORD) &&
+                         param_size <= KEFIR_AMD64_ABI_QWORD) &&
                         kefir_list_length(&context->available_registers) > 1) {
                         REQUIRE_OK(allocate_register_parameter(mem, context, ir_asm_param, param_type));
                     } else {

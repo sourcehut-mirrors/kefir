@@ -18,11 +18,13 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef KEFIR_TARGET_ABI_SYSTEM_V_AMD64_PLATFORM_H_
-#define KEFIR_TARGET_ABI_SYSTEM_V_AMD64_PLATFORM_H_
+#ifndef KEFIR_TARGET_ABI_AMD64_BITFIELDS_H_
+#define KEFIR_TARGET_ABI_AMD64_BITFIELDS_H_
 
-#include "kefir/ir/platform.h"
+#include "kefir/target/abi/amd64/base.h"
+#include "kefir/ir/bitfields.h"
 
-kefir_result_t kefir_abi_sysv_amd64_target_platform(struct kefir_ir_target_platform *);
+kefir_result_t kefir_abi_amd64_bitfield_allocator(struct kefir_mem *, kefir_abi_amd64_variant_t,
+                                                  const struct kefir_ir_type *, struct kefir_ir_bitfield_allocator *);
 
 #endif

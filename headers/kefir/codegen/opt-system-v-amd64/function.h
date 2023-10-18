@@ -26,15 +26,15 @@
 #include "kefir/codegen/opt-system-v-amd64/parameters.h"
 #include "kefir/codegen/opt-system-v-amd64/stack_frame.h"
 #include "kefir/codegen/opt-system-v-amd64/storage.h"
-#include "kefir/target/abi/system-v-amd64/function.h"
-#include "kefir/target/abi/system-v-amd64/data_layout.h"
+#include "kefir/target/abi/amd64/function.h"
+#include "kefir/target/abi/amd64/type_layout.h"
 
 typedef struct kefir_opt_sysv_amd64_function {
-    struct kefir_abi_amd64_sysv_function_decl declaration;
+    struct kefir_abi_amd64_function_decl declaration;
     struct kefir_codegen_opt_amd64_sysv_function_parameters parameters;
     struct kefir_codegen_opt_sysv_amd64_stack_frame stack_frame;
     struct kefir_codegen_opt_sysv_amd64_register_allocator register_allocator;
-    struct kefir_abi_sysv_amd64_type_layout locals_layout;
+    struct kefir_abi_amd64_type_layout locals_layout;
 
     struct kefir_codegen_opt_sysv_amd64_stack_frame_map stack_frame_map;
     struct kefir_codegen_opt_sysv_amd64_storage storage;

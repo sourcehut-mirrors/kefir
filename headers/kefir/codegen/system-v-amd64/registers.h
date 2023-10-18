@@ -21,7 +21,7 @@
 #ifndef KEFIR_CODEGEN_SYSTEM_V_AMD64_REGISTERS_H_
 #define KEFIR_CODEGEN_SYSTEM_V_AMD64_REGISTERS_H_
 
-#include "kefir/target/abi/system-v-amd64/parameters.h"
-#include "kefir/target/abi/system-v-amd64/return.h"
+#include "kefir/target/abi/amd64/parameters.h"
+#include "kefir/target/abi/amd64/return.h"
 
 #endif

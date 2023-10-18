@@ -242,7 +242,7 @@ static const struct kefir_asm_amd64_xasmgen_operand *location_operand(
     } else {
         return kefir_asm_amd64_xasmgen_operand_indirect(
             operand, kefir_asm_amd64_xasmgen_operand_reg(location->memory.base_reg),
-            location->memory.offset + num_of_temporaries * KEFIR_AMD64_SYSV_ABI_QWORD);
+            location->memory.offset + num_of_temporaries * KEFIR_AMD64_ABI_QWORD);
     }
 }
 
@@ -304,8 +304,7 @@ static kefir_result_t push_temporary(struct kefir_mem *mem, struct kefir_codegen
             } else {
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_SUB(
                     &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
-                    kefir_asm_amd64_xasmgen_operand_imm(&codegen->xasmgen_helpers.operands[0],
-                                                        KEFIR_AMD64_SYSV_ABI_QWORD)));
+                    kefir_asm_amd64_xasmgen_operand_imm(&codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_ABI_QWORD)));
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOVQ(
                     &codegen->xasmgen,
                     kefir_asm_amd64_xasmgen_operand_indirect(
@@ -318,8 +317,7 @@ static kefir_result_t push_temporary(struct kefir_mem *mem, struct kefir_codegen
         case KEFIR_CODEGEN_OPT_AMD64_SYSV_STORAGE_MEMORY: {
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_SUB(
                 &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
-                kefir_asm_amd64_xasmgen_operand_imm(&codegen->xasmgen_helpers.operands[0],
-                                                    KEFIR_AMD64_SYSV_ABI_QWORD)));
+                kefir_asm_amd64_xasmgen_operand_imm(&codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_ABI_QWORD)));
 
             struct kefir_codegen_opt_amd64_sysv_storage_handle tmp_handle;
             REQUIRE_OK(
@@ -336,8 +334,7 @@ static kefir_result_t push_temporary(struct kefir_mem *mem, struct kefir_codegen
                     &codegen->xasmgen,
                     kefir_asm_amd64_xasmgen_operand_indirect(
                         &codegen->xasmgen_helpers.operands[0],
-                        kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
-                        KEFIR_AMD64_SYSV_ABI_QWORD),
+                        kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP), KEFIR_AMD64_ABI_QWORD),
                     kefir_codegen_opt_amd64_sysv_storage_location_operand(&codegen->xasmgen_helpers.operands[1],
                                                                           &tmp_handle.location)));
             } else {
@@ -370,14 +367,14 @@ static kefir_result_t load_temporary(struct kefir_mem *mem, struct kefir_codegen
                     kefir_asm_amd64_xasmgen_operand_indirect(
                         &codegen->xasmgen_helpers.operands[0],
                         kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
-                        KEFIR_AMD64_SYSV_ABI_QWORD * (num_of_stack_temporaries - entry->temporaries.source - 1))));
+                        KEFIR_AMD64_ABI_QWORD * (num_of_stack_temporaries - entry->temporaries.source - 1))));
             } else {
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOVQ(
                     &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(entry->destination.reg),
                     kefir_asm_amd64_xasmgen_operand_indirect(
                         &codegen->xasmgen_helpers.operands[0],
                         kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
-                        KEFIR_AMD64_SYSV_ABI_QWORD * (num_of_stack_temporaries - entry->temporaries.source - 1))));
+                        KEFIR_AMD64_ABI_QWORD * (num_of_stack_temporaries - entry->temporaries.source - 1))));
             }
             break;
 
@@ -393,7 +390,7 @@ static kefir_result_t load_temporary(struct kefir_mem *mem, struct kefir_codegen
                 kefir_asm_amd64_xasmgen_operand_indirect(
                     &codegen->xasmgen_helpers.operands[1],
                     kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
-                    KEFIR_AMD64_SYSV_ABI_QWORD * (num_of_stack_temporaries - entry->temporaries.source - 1))));
+                    KEFIR_AMD64_ABI_QWORD * (num_of_stack_temporaries - entry->temporaries.source - 1))));
 
             if (entry->temporaries.destination_base_reg_preserved) {
                 struct kefir_codegen_opt_amd64_sysv_storage_handle destination_base_tmp_handle;
@@ -407,7 +404,7 @@ static kefir_result_t load_temporary(struct kefir_mem *mem, struct kefir_codegen
                     kefir_asm_amd64_xasmgen_operand_indirect(
                         &codegen->xasmgen_helpers.operands[1],
                         kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
-                        KEFIR_AMD64_SYSV_ABI_QWORD *
+                        KEFIR_AMD64_ABI_QWORD *
                             (num_of_stack_temporaries - entry->temporaries.destination_base_reg - 1))));
 
                 struct kefir_codegen_opt_amd64_sysv_storage_location dest_location = {
@@ -545,7 +542,7 @@ static kefir_result_t load_from_location(struct kefir_mem *mem, struct kefir_cod
                             kefir_asm_amd64_xasmgen_operand_indirect(
                                 &codegen->xasmgen_helpers.operands[1],
                                 kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
-                                KEFIR_AMD64_SYSV_ABI_QWORD *
+                                KEFIR_AMD64_ABI_QWORD *
                                     (num_of_stack_temporaries - entry->temporaries.destination_base_reg - 1))));
 
                         struct kefir_codegen_opt_amd64_sysv_storage_location dest_location = {
@@ -651,7 +648,7 @@ kefir_result_t kefir_codegen_opt_amd64_sysv_storage_transform_perform(
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_ADD(
             &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
             kefir_asm_amd64_xasmgen_operand_imm(&codegen->xasmgen_helpers.operands[0],
-                                                num_of_stack_temporaries * KEFIR_AMD64_SYSV_ABI_QWORD)));
+                                                num_of_stack_temporaries * KEFIR_AMD64_ABI_QWORD)));
     }
     return KEFIR_OK;
 }

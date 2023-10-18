@@ -83,14 +83,13 @@ static kefir_result_t store_register_aggregate_outputs(
 
         REQUIRE_OK(update_scratch_reg(context, entry, scratch_reg, pushed_scratch));
 
-        REQUIRE_OK(
-            KEFIR_AMD64_XASMGEN_INSTR_MOV(&context->codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(*scratch_reg),
-                                          kefir_asm_amd64_xasmgen_operand_indirect(
-                                              &context->codegen->xasmgen_helpers.operands[0],
-                                              kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
-                                              context->stack_map.output_parameter_offset +
-                                                  KEFIR_AMD64_SYSV_ABI_QWORD * entry->output_address.stack_index +
-                                                  (*pushed_scratch ? KEFIR_AMD64_SYSV_ABI_QWORD : 0))));
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
+            &context->codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(*scratch_reg),
+            kefir_asm_amd64_xasmgen_operand_indirect(
+                &context->codegen->xasmgen_helpers.operands[0],
+                kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
+                context->stack_map.output_parameter_offset + KEFIR_AMD64_ABI_QWORD * entry->output_address.stack_index +
+                    (*pushed_scratch ? KEFIR_AMD64_ABI_QWORD : 0))));
 
         kefir_asm_amd64_xasmgen_register_t reg;
         REQUIRE_OK(kefir_codegen_opt_sysv_amd64_inline_assembly_match_register_to_size(
@@ -168,8 +167,8 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_inline_assembly_store_outputs(
                                 &context->codegen->xasmgen_helpers.operands[0],
                                 kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
                                 context->stack_map.output_parameter_offset +
-                                    KEFIR_AMD64_SYSV_ABI_QWORD * entry->output_address.stack_index +
-                                    (pushed_scratch ? KEFIR_AMD64_SYSV_ABI_QWORD : 0))));
+                                    KEFIR_AMD64_ABI_QWORD * entry->output_address.stack_index +
+                                    (pushed_scratch ? KEFIR_AMD64_ABI_QWORD : 0))));
 
                         REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
                             &context->codegen->xasmgen,
@@ -192,8 +191,8 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_inline_assembly_store_outputs(
                                 &context->codegen->xasmgen_helpers.operands[0],
                                 kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
                                 context->stack_map.output_parameter_offset +
-                                    KEFIR_AMD64_SYSV_ABI_QWORD * entry->output_address.stack_index +
-                                    (pushed_scratch ? KEFIR_AMD64_SYSV_ABI_QWORD : 0))));
+                                    KEFIR_AMD64_ABI_QWORD * entry->output_address.stack_index +
+                                    (pushed_scratch ? KEFIR_AMD64_ABI_QWORD : 0))));
 
                         REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
                             &context->codegen->xasmgen,
@@ -202,8 +201,8 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_inline_assembly_store_outputs(
                                 &context->codegen->xasmgen_helpers.operands[0],
                                 kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
                                 context->stack_map.input_parameter_offset +
-                                    KEFIR_AMD64_SYSV_ABI_QWORD * entry->allocation.stack.index +
-                                    (pushed_scratch ? KEFIR_AMD64_SYSV_ABI_QWORD : 0))));
+                                    KEFIR_AMD64_ABI_QWORD * entry->allocation.stack.index +
+                                    (pushed_scratch ? KEFIR_AMD64_ABI_QWORD : 0))));
 
                         REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
                             &context->codegen->xasmgen,

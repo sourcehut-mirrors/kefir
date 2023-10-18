@@ -102,8 +102,7 @@ static kefir_result_t save_regs(struct kefir_codegen_opt_amd64 *codegen,
         } else {
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_SUB(
                 &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
-                kefir_asm_amd64_xasmgen_operand_imm(&codegen->xasmgen_helpers.operands[0],
-                                                    KEFIR_AMD64_SYSV_ABI_QWORD)));
+                kefir_asm_amd64_xasmgen_operand_imm(&codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_ABI_QWORD)));
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOVQ(
                 &codegen->xasmgen,
                 kefir_asm_amd64_xasmgen_operand_indirect(
@@ -111,10 +110,10 @@ static kefir_result_t save_regs(struct kefir_codegen_opt_amd64 *codegen,
                     kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP), 0),
                 kefir_asm_amd64_xasmgen_operand_reg(reg)));
         }
-        *offset_ptr += KEFIR_AMD64_SYSV_ABI_QWORD;
+        *offset_ptr += KEFIR_AMD64_ABI_QWORD;
     }
 
-    kefir_int64_t aligned_offset = kefir_target_abi_pad_aligned(*offset_ptr, 2 * KEFIR_AMD64_SYSV_ABI_QWORD);
+    kefir_int64_t aligned_offset = kefir_target_abi_pad_aligned(*offset_ptr, 2 * KEFIR_AMD64_ABI_QWORD);
     if (aligned_offset > *offset_ptr) {
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_SUB(
             &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
@@ -127,7 +126,7 @@ static kefir_result_t restore_regs(struct kefir_codegen_opt_amd64 *codegen,
                                    struct kefir_opt_sysv_amd64_function *codegen_func,
                                    const struct kefir_codegen_opt_sysv_amd64_register_allocation *result_allocation,
                                    kefir_int64_t offset) {
-    kefir_int64_t aligned_offset = kefir_target_abi_pad_aligned(offset, 2 * KEFIR_AMD64_SYSV_ABI_QWORD);
+    kefir_int64_t aligned_offset = kefir_target_abi_pad_aligned(offset, 2 * KEFIR_AMD64_ABI_QWORD);
     if (aligned_offset > offset) {
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_ADD(
             &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
@@ -158,8 +157,7 @@ static kefir_result_t restore_regs(struct kefir_codegen_opt_amd64 *codegen,
                     kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP), 0)));
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_ADD(
                 &codegen->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
-                kefir_asm_amd64_xasmgen_operand_imm(&codegen->xasmgen_helpers.operands[0],
-                                                    KEFIR_AMD64_SYSV_ABI_QWORD)));
+                kefir_asm_amd64_xasmgen_operand_imm(&codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_ABI_QWORD)));
         }
     }
     return KEFIR_OK;

@@ -18,23 +18,10 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef KEFIR_TARGET_ABI_SYSTEM_V_AMD64_PARAMETERS_H_
-#define KEFIR_TARGET_ABI_SYSTEM_V_AMD64_PARAMETERS_H_
+#ifndef KEFIR_TARGET_ABI_AMD64_SYSTEM_V_PARAMETERS_H_
+#define KEFIR_TARGET_ABI_AMD64_SYSTEM_V_PARAMETERS_H_
 
-#include <stdbool.h>
-#include "kefir/core/basic-types.h"
-#include "kefir/core/vector.h"
-#include "kefir/core/mem.h"
-#include "kefir/target/abi/system-v-amd64/data_layout.h"
-#include "kefir/target/abi/system-v-amd64/qwords.h"
-#include "kefir/target/asm/amd64/xasmgen.h"
-
-extern kefir_asm_amd64_xasmgen_register_t KEFIR_ABI_SYSV_AMD64_PARAMETER_INTEGER_REGISTERS[];
-extern const kefir_size_t KEFIR_ABI_SYSV_AMD64_PARAMETER_INTEGER_REGISTER_COUNT;
-extern kefir_asm_amd64_xasmgen_register_t KEFIR_ABI_SYSV_AMD64_PARAMETER_SSE_REGISTERS[];
-extern const kefir_size_t KEFIR_ABI_SYSV_AMD64_PARAMETER_SSE_REGISTER_COUNT;
-
-kefir_bool_t kefir_abi_sysv_amd64_is_parameter_register(kefir_asm_amd64_xasmgen_register_t);
+#include "kefir/target/abi/amd64/parameters.h"
 
 typedef enum kefir_abi_sysv_amd64_parameter_type {
     KEFIR_AMD64_SYSV_INPUT_PARAM_IMMEDIATE,
@@ -65,25 +52,33 @@ typedef struct kefir_abi_sysv_amd64_parameter_location_requirements {
 
 typedef struct kefir_abi_sysv_amd64_parameter_allocation {
     kefir_abi_sysv_amd64_parameter_type_t type;
-    kefir_abi_sysv_amd64_data_class_t klass;
+    kefir_abi_amd64_sysv_data_class_t klass;
     kefir_size_t index;
     union {
-        struct kefir_abi_sysv_amd64_qwords container;
-        struct kefir_abi_sysv_amd64_qword_ref container_reference;
+        struct kefir_abi_amd64_sysv_qwords container;
+        struct kefir_abi_amd64_sysv_qword_ref container_reference;
     };
     struct kefir_abi_sysv_amd64_parameter_location_requirements requirements;
     struct kefir_abi_sysv_amd64_parameter_location location;
 } kefir_abi_sysv_amd64_parameter_allocation_t;
 
-kefir_result_t kefir_abi_sysv_amd64_parameter_classify(struct kefir_mem *, const struct kefir_ir_type *,
-                                                       const struct kefir_abi_sysv_amd64_type_layout *,
-                                                       struct kefir_vector *);
+extern const kefir_asm_amd64_xasmgen_register_t KEFIR_ABI_SYSV_AMD64_PARAMETER_INTEGER_REGISTERS[];
+extern const kefir_size_t KEFIR_ABI_SYSV_AMD64_PARAMETER_INTEGER_REGISTERS_LENGTH;
+extern const kefir_asm_amd64_xasmgen_register_t KEFIR_ABI_SYSV_AMD64_PARAMETER_SSE_REGISTERS[];
+extern const kefir_size_t KEFIR_ABI_SYSV_AMD64_PARAMETER_SSE_REGISTERS_LENGTH;
 
-kefir_result_t kefir_abi_sysv_amd64_parameter_free(struct kefir_mem *, struct kefir_vector *);
+kefir_result_t kefir_abi_sysv_amd64_parameter_classify(struct kefir_mem *, const struct kefir_ir_type *,
+                                                       const struct kefir_abi_amd64_type_layout *,
+                                                       struct kefir_abi_sysv_amd64_parameter_allocation *);
 
 kefir_result_t kefir_abi_sysv_amd64_parameter_allocate(struct kefir_mem *, const struct kefir_ir_type *,
-                                                       const struct kefir_abi_sysv_amd64_type_layout *,
-                                                       struct kefir_vector *,
+                                                       const struct kefir_abi_amd64_type_layout *,
+                                                       struct kefir_abi_sysv_amd64_parameter_allocation *,
                                                        struct kefir_abi_sysv_amd64_parameter_location *);
+
+kefir_result_t kefir_abi_sysv_amd64_parameter_allocate_return(struct kefir_mem *, const struct kefir_ir_type *,
+                                                              const struct kefir_abi_amd64_type_layout *,
+                                                              struct kefir_abi_sysv_amd64_parameter_allocation *,
+                                                              struct kefir_abi_sysv_amd64_parameter_location *);
 
 #endif

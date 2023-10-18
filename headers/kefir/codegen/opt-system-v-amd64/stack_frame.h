@@ -23,7 +23,7 @@
 
 #include "kefir/core/bitset.h"
 #include "kefir/target/asm/amd64/xasmgen.h"
-#include "kefir/target/abi/system-v-amd64/data_layout.h"
+#include "kefir/target/abi/amd64/type_layout.h"
 
 extern const kefir_asm_amd64_xasmgen_register_t KefirCodegenOptSysvAmd64StackFramePreservedRegs[];
 enum { KefirCodegenOptSysvAmd64StackFrameNumOfPreservedRegs = 5 };
@@ -70,7 +70,7 @@ kefir_result_t kefir_codegen_opt_sysv_amd64_stack_frame_ensure_temporary(
     struct kefir_codegen_opt_sysv_amd64_stack_frame *, kefir_size_t, kefir_size_t);
 kefir_result_t kefir_codegen_opt_sysv_amd64_stack_frame_allocate_set_locals(
     struct kefir_codegen_opt_sysv_amd64_stack_frame *, const struct kefir_ir_type *,
-    const struct kefir_abi_sysv_amd64_type_layout *);
+    const struct kefir_abi_amd64_type_layout *);
 
 typedef struct kefir_codegen_opt_sysv_amd64_stack_frame_map {
     struct {
