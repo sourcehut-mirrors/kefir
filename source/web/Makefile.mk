@@ -15,7 +15,7 @@ $(KEFIR_EMCC_KEFIR_BIN_DIR)/%.o: KEFIR_EMCC_TARGET_DEPS=$(patsubst $(abspath $(K
 $(KEFIR_EMCC_KEFIR_BIN_DIR)/%.o: $(SOURCE_DIR)/%.c $(KEFIR_BIN_DIR)/%.d $(KEFIR_BIN_DIR)/%.deps
 	@mkdir -p $(shell dirname "$@")
 	@echo "Building $@"
-	@$(EMCC) $(CFLAGS) $(INCLUDES) $$(cat $(KEFIR_EMCC_TARGET_DEPS)) -c $< -o $@
+	@$(EMCC) $(CFLAGS) -I$(HEADERS_DIR) $$(cat $(KEFIR_EMCC_TARGET_DEPS)) -c $< -o $@
 
 $(KEFIR_JS): $(KEFIR_EMCC_OBJECT_FILES)
 	@mkdir -p $(shell dirname "$@")

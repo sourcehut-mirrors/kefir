@@ -12,7 +12,7 @@ $(KEFIR_END2END_BIN_PATH)/%.kefir.o: $(SOURCE_DIR)/tests/end2end/%.kefir.c $(KEF
 	@echo "Kefir-Compile $@"
 	@AS="$(AS)" \
 	 VALGRIND_TEST_OPTIONS="$(VALGRIND_TEST_OPTIONS)" \
-	 MEMCHECK="$(MEMCHECK)" \
+	 USE_VALGRIND="$(USE_VALGRIND)" \
 	 PLATFORM="$(PLATFORM)" \
 	 $(SOURCE_DIR)/tests/end2end/compile.sh $(KEFIR_BIN_DIR) $< $@
 
@@ -27,11 +27,11 @@ $(KEFIR_END2END_BIN_PATH)/%.test: KEFIR_END2END_TEST_KEFIR_OBJECT_FILES=$(KEFIR_
 $(KEFIR_END2END_BIN_PATH)/%.test: $(LIBKEFIRRT_A) $$(KEFIR_END2END_TEST_HOST_OBJECT_FILES) $$(KEFIR_END2END_TEST_KEFIR_OBJECT_FILES)
 	@mkdir -p $(shell dirname "$@")
 	@echo "Linking $@"
-	@$(CC) $(TEST_CFLAGS) $(SANFLAGS) $(KEFIR_END2END_TEST_HOST_OBJECT_FILES) $(KEFIR_END2END_TEST_KEFIR_OBJECT_FILES) $(LIBKEFIRRT_A) -o $@ $(KEFIR_END2END_TEST_LIBS)
+	@$(CC) $(TEST_CFLAGS) $(SANITIZER_FLAGS) $(KEFIR_END2END_TEST_HOST_OBJECT_FILES) $(KEFIR_END2END_TEST_KEFIR_OBJECT_FILES) $(LIBKEFIRRT_A) -o $@ $(KEFIR_END2END_TEST_LIBS)
 
 $(KEFIR_END2END_BIN_PATH)/%.test.done: $(KEFIR_END2END_BIN_PATH)/%.test
 	@echo "Running $<"
-ifeq ($(MEMCHECK),yes)
+ifeq ($(USE_VALGRIND),yes)
 	@valgrind $(VALGRIND_TEST_OPTIONS) $<
 else
 	$<
@@ -44,7 +44,7 @@ $(KEFIR_END2END_BIN_PATH)/%.asmgen.output: $(SOURCE_DIR)/tests/end2end/%.kefir.a
 	@ASMGEN=yes \
 	 AS="$(AS)" \
 	 VALGRIND_TEST_OPTIONS="$(VALGRIND_TEST_OPTIONS)" \
-	 MEMCHECK="$(MEMCHECK)" \
+	 USE_VALGRIND="$(USE_VALGRIND)" \
 	 PLATFORM="$(PLATFORM)" \
 	 	$(SOURCE_DIR)/tests/end2end/compile.sh $(KEFIR_BIN_DIR) $< $@
 
@@ -54,7 +54,7 @@ $(KEFIR_END2END_BIN_PATH)/%.also.asmgen.output: $(SOURCE_DIR)/tests/end2end/%.ke
 	@ASMGEN=yes \
 	 AS="$(AS)" \
 	 VALGRIND_TEST_OPTIONS="$(VALGRIND_TEST_OPTIONS)" \
-	 MEMCHECK="$(MEMCHECK)" \
+	 USE_VALGRIND="$(USE_VALGRIND)" \
 	 PLATFORM="$(PLATFORM)" \
 	 	$(SOURCE_DIR)/tests/end2end/compile.sh $(KEFIR_BIN_DIR) $< $@
 
@@ -73,7 +73,7 @@ $(SOURCE_DIR)/tests/end2end/%.asmgen.expected: $(SOURCE_DIR)/tests/end2end/%.kef
 	@ASMGEN=yes \
 	 AS="$(AS)" \
 	 VALGRIND_TEST_OPTIONS="$(VALGRIND_TEST_OPTIONS)" \
-	 MEMCHECK="$(MEMCHECK)" \
+	 USE_VALGRIND="$(USE_VALGRIND)" \
 	 PLATFORM="$(PLATFORM)" \
 	 $(SOURCE_DIR)/tests/end2end/compile.sh $(KEFIR_BIN_DIR) $< $@
 
@@ -82,7 +82,7 @@ $(SOURCE_DIR)/tests/end2end/%.also.asmgen.expected: $(SOURCE_DIR)/tests/end2end/
 	@ASMGEN=yes \
 	 AS="$(AS)" \
 	 VALGRIND_TEST_OPTIONS="$(VALGRIND_TEST_OPTIONS)" \
-	 MEMCHECK="$(MEMCHECK)" \
+	 USE_VALGRIND="$(USE_VALGRIND)" \
 	 PLATFORM="$(PLATFORM)" \
 	 $(SOURCE_DIR)/tests/end2end/compile.sh $(KEFIR_BIN_DIR) $< $@
 

@@ -15,7 +15,7 @@ KEFIR_INTEGRATION_TEST_DONE := $(KEFIR_INTEGRATION_TESTS_SOURCES:$(SOURCE_DIR)/t
 KEFIR_INTEGRATION_TEST_RESULTS := $(KEFIR_INTEGRATION_TESTS_SOURCES:$(SOURCE_DIR)/tests/integration/%.test.c=$(SOURCE_DIR)/tests/integration/%.test.result)
 
 KEFIR_INTEGRATION_TEST_LIBS=
-ifeq ($(SANITIZE),undefined)
+ifeq ($(USE_SANITIZER),yes)
 KEFIR_INTEGRATION_TEST_LIBS=-fsanitize=undefined
 endif
 
@@ -37,15 +37,15 @@ $(KEFIR_BIN_DIR)/tests/integration/%: $(KEFIR_BIN_DIR)/tests/integration/%.o $(L
 								 
 
 $(KEFIR_BIN_DIR)/tests/integration/%.done: $(KEFIR_BIN_DIR)/tests/integration/%
-	@LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(LIB_DIR) \
+	@LD_LIBRARY_PATH=$$LD_LIBRARY_PATH:$(LIB_DIR) \
 	 VALGRIND_TEST_OPTIONS="$(VALGRIND_TEST_OPTIONS)" \
-	 MEMCHECK="$(MEMCHECK)" \
+	 USE_VALGRIND="$(USE_VALGRIND)" \
 		$(SOURCE_DIR)/tests/integration/run.sh $<
 	@touch $@
 
 $(SOURCE_DIR)/tests/integration/%.test.result: $(KEFIR_BIN_DIR)/tests/integration/%.test
 	@echo "Rebuilding $@"
-	@LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(LIB_DIR) KEFIR_DISABLE_LONG_DOUBLE=1 $^ > $@
+	@LD_LIBRARY_PATH=$$LD_LIBRARY_PATH:$(LIB_DIR) KEFIR_DISABLE_LONG_DOUBLE=1 $^ > $@
 
 TEST_ARTIFACTS += $(KEFIR_INTEGRATION_TEST_RESULTS)
 COMPILE_DEPS += $(KEFIR_INTEGRATION_TEST_COMPILE_DEPS)

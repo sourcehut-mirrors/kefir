@@ -14,15 +14,15 @@ tasks:
   - test_gcc: |
       cd kefir
       make clean
-      LC_ALL=C.UTF-8 make test MEMCHECK=yes OPT=-O3 SANITIZE=undefined CC=gcc-12 -j$(nproc)
+      LC_ALL=C.UTF-8 make test USE_VALGRIND=yes PROFILE=reldebug USE_SANITIZER=yes CC=gcc-12 -j$(nproc)
   - test_clang: |
       cd kefir
       make clean
-      LC_ALL=C.UTF-8 make test MEMCHECK=yes OPT=-O3 DBG=-gdwarf-4 SANITIZE=undefined CC=clang-15 -j$(nproc)
+      LC_ALL=C.UTF-8 make test USE_VALGRIND=yes PROFILE=reldebug EXTRA_CFLAGS=-gdwarf-4 USE_SANITIZER=yes CC=clang-15 -j$(nproc)
   - build: |
       cd kefir
       make clean
-      LC_ALL=C.UTF-8 make all OPT=-O3 CC=gcc-12
+      LC_ALL=C.UTF-8 make all PROFILE=reldebug CC=gcc-12
   - lua_tests: |
       cd kefir
       export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(pwd)/bin/libs

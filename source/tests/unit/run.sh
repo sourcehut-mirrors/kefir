@@ -19,7 +19,7 @@
 
 VALGRIND="valgrind $VALGRIND_TEST_OPTIONS"
 
-if [[ "x$MEMCHECK" == "xyes" ]]; then
+if [[ "x$USE_VALGRIND" == "xyes" ]]; then
     exec $VALGRIND "$1"
 else
     exec "$1"

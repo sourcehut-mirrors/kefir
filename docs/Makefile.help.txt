@@ -12,45 +12,44 @@ help                        Print this help text
 
 
 
-Variable                    Description                 Default
+Variable                    Description                 Options (*default)
+============================================================================================
+                                   Build profile
+============================================================================================
+PROFILE                     Build profile               *debug | reldebug | release
+USE_SHARED                  Produce shared libraries    *yes | no
+USE_SANITIZER               Compile with UB sanitizer   yes | *no
+USE_VALGRIND                Run tests with Valgrind     yes | *no
+PLATFORM                    Target platform             * | freebsd | openbsd | netbsd
 ============================================================================================
                                      Tools
 ============================================================================================
-CC                          C compiler                  cc
-LD                          Linker                      $(CC)
-AS                          Assembler                   as
-AR                          Archiver                    ar
-EMCC                        Emscripten compiler         emcc
-GZIP                        Compressor                  gzip
-REALPATH                    Realpath coreutil           realpath
-MDOC_CONV                   mdoc-to-... conversion      PLATFORM-specific
+CC                          C compiler                  *cc
+LD                          Linker                      *$(CC)
+AS                          Assembler                   *as
+AR                          Archiver                    *ar
+EMCC                        Emscripten compiler         *emcc
+GZIP                        Compressor                  *gzip
+REALPATH                    Realpath coreutil           *realpath | grealpath
+MDOC_CONV                   mdoc-to-... conversion      *groff -mandoc | mandoc -mdoc
                             command
 ============================================================================================
-                                     Tool options
+                                    Tool options
 ============================================================================================
-CFLAGS                      C compiler flags            -std=c11 # + some warning flags
-OPT                         Additional C optimization   -O0
-                            flags
-DBG                         Additional C debug          -g3 -ggdb -DKFT_NOFORK
-                            flags
-EXTRAFLAGS                  Extra C flags               
-SANFLAGS                    Sanitizer flags             
+CFLAGS                      C compiler flags            *-std=c11 # + some warning flags
+PROFILE_CFLAGS              PROFILE-based flags         *-O0 -g3 -ggdb
+EXTRA_CFLAGS                Extra C flags               
+SANITIZER_FLAGS             Sanitizer flags             
 LDFLAGS                     Linker flags                
 ============================================================================================
-                                        General
+                                    Host environment
 ============================================================================================
-USE_SHARED                  Produce shared objects      yes
-PLATFORM                    Target platform             
-                            (linux|freebsd|openbsd|
-                            netbsd)
 DETECT_HOST_ENV             Detect host environment     yes
                             on build
 DETECT_HOST_ENV_CC          C compiler to detect        $(CC)
                             host environment
 DETECT_HOST_ENV_CFLAGS      C compiler flags to detect  $(CFLAGS)
                             host environment
-MEMCHECK                    Use Valgrind to run tests   yes
-SANITIZE                    Use sanitizer (undefined)   
 ============================================================================================
                                       Directories
 ============================================================================================

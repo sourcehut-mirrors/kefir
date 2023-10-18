@@ -182,18 +182,17 @@ for production purposes.**
 Kefir depends on C11 compiler (tested with `gcc` and `clang`), GNU As assembler,
 GNU Makefile as well as basic UNIX utilities for build. Development and test
 dependencies include `valgrind` (for test execution) as well. After installing
-all dependencies, kefir can be built with a single command: `make all OPT="-O2
--march=native -DNDEBUG" DBG="" -j$(nproc)`. By default, kefir builds a shared
+all dependencies, kefir can be built with a single command: `make all EXTRA_CFLAGS="-O2 -march=native -DNDEBUG" DBG="" -j$(nproc)`. By default, kefir builds a shared
 library and links executables to it. Static linkage can be used by specifying
 `USE_SHARED=no` in make command line arguments. Sample `PKGBUILD` is provided in
 `dist` directory.
 
 It is also advised to run basic test suite:
 ```bash
-LC_ALL=C.UTF-8 make test all OPT=-O3 -j$(nproc)         # Linux
-gmake test all PLATFORM=freebsd OPT=-O3 CC=clang        # FreeBSD
-gmake test all CC=clang AS=gas PLATFORM=openbsd OPT=-O3 # OpenBSD
-gmake test all CC=gcc AS=gas PLATFORM=netbsd OPT=-O3    # NetBSD
+LC_ALL=C.UTF-8 make test all PROFILE=release -j$(nproc)         # Linux
+gmake test all PLATFORM=freebsd PROFILE=release CC=clang        # FreeBSD
+gmake test all CC=clang AS=gas PLATFORM=openbsd PROFILE=release # OpenBSD
+gmake test all CC=gcc AS=gas PLATFORM=netbsd PROFILE=release    # NetBSD
 ```
 
 Optionally, Kefir can be installed via: `make install DESTDIR=...`. Short

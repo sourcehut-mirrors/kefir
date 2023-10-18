@@ -12,7 +12,7 @@ tasks:
   - test: |
       cd kefir
       export LC_ALL=C.UTF-8
-      gmake test all CC=gcc AS=gas PLATFORM=netbsd OPT=-O3
+      gmake test all CC=gcc AS=gas PLATFORM=netbsd PROFILE=reldebug
   - bootstrap: |
       cd kefir
       gmake clean clean_bootstrap

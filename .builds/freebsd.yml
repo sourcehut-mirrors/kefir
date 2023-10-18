@@ -12,11 +12,11 @@ sources:
 tasks:
   - test: |
       cd kefir
-      gmake test PLATFORM=freebsd MEMCHECK=yes OPT=-O3 SANITIZE=undefined CC=clang
+      gmake test PLATFORM=freebsd USE_VALGRIND=yes PROFILE=reldebug USE_SANITIZER=yes CC=clang
   - build: |
       cd kefir
       gmake clean clean_bootstrap
-      gmake all PLATFORM=freebsd OPT=-O3 CC=clang
+      gmake all PLATFORM=freebsd PROFILE=reldebug CC=clang
   - bootstrap: |
       cd kefir
       gmake clean clean_bootstrap

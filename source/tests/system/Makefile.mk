@@ -13,7 +13,7 @@ KEFIR_SYSTEM_TESTS_GENERATORS := $(KEFIR_SYSTEM_TESTS_TEST_SOURCES:$(SOURCE_DIR)
 KEFIR_SYSTEM_TESTS_DONE := $(KEFIR_SYSTEM_TESTS_TEST_SOURCES:$(SOURCE_DIR)/tests/system/%.gen.c=$(KEFIR_BIN_DIR)/tests/system/%.test.done)
 
 KEFIR_SYSTEM_TEST_LIBS=
-ifeq ($(SANITIZE),undefined)
+ifeq ($(USE_SANITIZER),yes)
 KEFIR_SYSTEM_TEST_LIBS=-fsanitize=undefined
 endif
 
@@ -37,13 +37,12 @@ $(KEFIR_BIN_DIR)/tests/system/%.gen: $(KEFIR_BIN_DIR)/tests/system/%.gen.o \
 $(KEFIR_BIN_DIR)/tests/system/%.test.done: $(KEFIR_BIN_DIR)/tests/system/%.gen
 	@CC="$(CC)" \
 	 AS="$(AS)" \
-	 OPT="$(OPT)" \
-	 DBG="$(DBG)" \
-	 EXTRAFLAGS="$(EXTRAFLAGS)" \
+	 PROFILE_CFLAGS="$(PROFILE_CFLAGS)" \
+	 EXTRA_CFLAGS="$(EXTRA_CFLAGS)" \
 	 TEST_CFLAGS="$(TEST_CFLAGS)" \
-	 LD_LIBRARY_PATH="$(LIB_DIR):$LD_LIBRARY_PATH" \
-	 MEMCHECK="$(MEMCHECK)" \
-	 SANITIZE="$(SANITIZE)" \
+	 LD_LIBRARY_PATH="$(LIB_DIR):$$LD_LIBRARY_PATH" \
+	 USE_VALGRIND="$(USE_VALGRIND)" \
+	 USE_SANITIZER="$(USE_SANITIZER)" \
 	 VALGRIND_TEST_OPTIONS="$(VALGRIND_TEST_OPTIONS)" \
 	 PLATFORM="$(PLATFORM)" \
 	 	"$(SOURCE_DIR)/tests/system/run.sh" $^

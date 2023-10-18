@@ -23,7 +23,7 @@ DIFF_FILE="$(mktemp)"
 VALGRIND_FILE="$(mktemp)"
 DIFF="diff -u"
 
-if [[ "x$MEMCHECK" == "xyes" ]]; then
+if [[ "x$USE_VALGRIND" == "xyes" ]]; then
     VALGRIND="valgrind $VALGRIND_TEST_OPTIONS --log-file=$VALGRIND_FILE"
 else
     VALGRIND=""
@@ -61,7 +61,7 @@ trap cleanup EXIT HUP INT QUIT PIPE TERM
 for INT_TEST in "$@"
 do
     printf "Running $INT_TEST..."
-    if [[ "x$MEMCHECK" != "x" ]]; then
+    if [[ "x$USE_VALGRIND" != "x" ]]; then
         run_valgrind_test "$INT_TEST"
     else
         run_test "$INT_TEST"

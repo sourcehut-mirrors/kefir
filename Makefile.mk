@@ -1,49 +1,63 @@
+# Build profile
+PROFILE=debug
+USE_SHARED=yes
+USE_SANITIZER=no
+USE_VALGRIND=no
+PLATFORM=
+
+# Tools
 CC=cc
 LD=$(CC)
 AS=as
 AR=ar
 EMCC=emcc
 GZIP=gzip
-USE_SHARED=yes
-
-OPT=-O0
-DBG=-g3 -ggdb -DKFT_NOFORK
-EXTRAFLAGS=
-CFLAGS=-std=c11 -Wall -Wextra -pedantic -Wno-overlength-strings -Wstrict-prototypes -Wformat=2 -Wno-format-nonliteral -Wundef -Wunreachable-code  -fno-common
-LDFLAGS=
-INCLUDES=-Iheaders
-SANFLAGS=
-PLATFORM=
-
-ifeq ($(REALPATH),)
 REALPATH=realpath
-endif
 
+# Platform-dependent tools
 MDOC_CONV=groff -mandoc
 ifeq ($(PLATFORM),freebsd)
 MDOC_CONV=mandoc -mdoc
+REALPATH=grealpath
 endif
 ifeq ($(PLATFORM),openbsd)
 MDOC_CONV=mandoc -mdoc
+REALPATH=grealpath
 endif
 ifeq ($(PLATFORM),netbsd)
 MDOC_CONV=mandoc -mdoc
+REALPATH=grealpath
 endif
 
+# Build flags
+CFLAGS=-std=c11 -Wall -Wextra -pedantic -Wno-overlength-strings -Wstrict-prototypes -Wformat=2 -Wno-format-nonliteral -Wundef -Wunreachable-code  -fno-common
+PROFILE_CFLAGS=
+EXTRA_CFLAGS=
+LDFLAGS=
+SANITIZER_FLAGS=
 ifeq ($(USE_SHARED),yes)
 CFLAGS+=-fPIC
 endif
-CFLAGS+=$(OPT) $(DBG) $(EXTRAFLAGS)
+ifeq ($(PROFILE),debug)
+PROFILE_CFLAGS=-O0 -g3 -ggdb
+endif
+ifeq ($(PROFILE),reldebug)
+PROFILE_CFLAGS=-O3 -g3 -ggdb
+endif
+ifeq ($(PROFILE),release)
+PROFILE_CFLAGS=-O3 -DNDEBUG
+endif
+ifeq ($(USE_SANITIZER),yes)
+SANITIZER_FLAGS=-fsanitize=undefined -fno-sanitize-recover=all
+endif
+CFLAGS+=$(PROFILE_CFLAGS) $(SANITIZER_FLAGS) $(EXTRA_CFLAGS)
 
+# Host environment detection
 DETECT_HOST_ENV=yes
 DETECT_HOST_ENV_CC:=$(CC)
 DETECT_HOST_ENV_CFLAGS:=$(CFLAGS)
 
-ifeq ($(SANITIZE),undefined)
-SANFLAGS=-fsanitize=undefined -fno-sanitize-recover=all
-CFLAGS+=$(SANFLAGS)
-endif
-
+# Directories
 ROOT=.
 KEFIR_BIN_DIR=$(ROOT)/bin
 LIB_DIR=$(KEFIR_BIN_DIR)/libs
@@ -55,6 +69,7 @@ DOCS_DIR=$(ROOT)/docs
 DOCS_MAN_DIR=$(DOCS_DIR)/man
 GENERATED_HELP_DIR=$(KEFIR_BIN_DIR)/help
 
+# Build artifacts
 KEFIR_HOST_ENV_CONFIG_HEADER=$(KEFIR_BIN_DIR)/config.h
 LIBKEFIR_SO=$(LIB_DIR)/libkefir.so
 LIBKEFIR_SO_VERSION=0.0
@@ -95,12 +110,12 @@ $(KEFIR_BIN_DIR)/%.deps:
 $(KEFIR_BIN_DIR)/%.d: $(SOURCE_DIR)/%.c $(KEFIR_BIN_DIR)/%.deps $(KEFIR_HOST_ENV_CONFIG_HEADER)
 	@mkdir -p $(shell dirname "$@")
 	@echo "Generating $@"
-	@$(CC) $(INCLUDES) -include "$(KEFIR_HOST_ENV_CONFIG_HEADER)" $$(cat $(subst .d,.deps,$@)) -MM -MT '$(@:.d=.o)' $< > $@
+	@$(CC) -I$(HEADERS_DIR) -include "$(KEFIR_HOST_ENV_CONFIG_HEADER)" $$(cat $(subst .d,.deps,$@)) -MM -MT '$(@:.d=.o)' $< > $@
 
 $(KEFIR_BIN_DIR)/%.o: $(SOURCE_DIR)/%.c $(KEFIR_BIN_DIR)/%.d $(KEFIR_BIN_DIR)/%.deps $(KEFIR_HOST_ENV_CONFIG_HEADER)
 	@mkdir -p $(shell dirname "$@")
 	@echo "Building $@"
-	@$(CC) $(CFLAGS) $(INCLUDES) -include "$(KEFIR_HOST_ENV_CONFIG_HEADER)" $$(cat $(subst .o,.deps,$@)) -c $< -o $@
+	@$(CC) $(CFLAGS) -I$(HEADERS_DIR) -include "$(KEFIR_HOST_ENV_CONFIG_HEADER)" $$(cat $(subst .o,.deps,$@)) -c $< -o $@
 
 $(KEFIR_BIN_DIR)/%.s.o: $(SOURCE_DIR)/%.s
 	@mkdir -p $(shell dirname "$@")

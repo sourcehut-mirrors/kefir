@@ -2,38 +2,38 @@ ROOT=
 SOURCE=
 HEADERS=
 BOOTSTRAP=
-KEFIRCC=
-KEFIR_EXTRAFLAGS=
+BOOTSTRAP_CC=
+BOOTSTRAP_EXTRA_CFLAGS=
 PLATFORM=
 KEFIR_HOST_ENV_CONFIG_HEADER=
 GENERATED_HELP_DIR=
 KEFIR_AS=$(AS)
 KEFIR_LD=ld
 
-KEFIR_FLAGS=-I $(HEADERS)
+BOOTSTRAP_CFLAGS=-I $(HEADERS)
 ifeq ($(PLATFORM),freebsd)
-KEFIR_FLAGS += --target x86_64-freebsd-system -D__GNUC__=4 -D__GNUC_MINOR__=20 -D__GNUC_STDC_INLINE__=1
+BOOTSTRAP_CFLAGS += --target x86_64-freebsd-system -D__GNUC__=4 -D__GNUC_MINOR__=20 -D__GNUC_STDC_INLINE__=1
 else ifeq ($(PLATFORM),openbsd)
-KEFIR_FLAGS += --target x86_64-openbsd-system -D__GNUC__=4 -D__GNUC_MINOR__=20 -D__GNUC_STDC_INLINE__=1 -include $(HEADERS)/bootstrap_include/openbsd.h
+BOOTSTRAP_CFLAGS += --target x86_64-openbsd-system -D__GNUC__=4 -D__GNUC_MINOR__=20 -D__GNUC_STDC_INLINE__=1 -include $(HEADERS)/bootstrap_include/openbsd.h
 else ifeq ($(PLATFORM),netbsd)
-KEFIR_FLAGS += --target x86_64-netbsd-system -D__GNUC__=4 -D__GNUC_MINOR__=20 -D__GNUC_STDC_INLINE__=1 -D__ELF__=1 -include $(HEADERS)/bootstrap_include/netbsd.h
+BOOTSTRAP_CFLAGS += --target x86_64-netbsd-system -D__GNUC__=4 -D__GNUC_MINOR__=20 -D__GNUC_STDC_INLINE__=1 -D__ELF__=1 -include $(HEADERS)/bootstrap_include/netbsd.h
 else
-KEFIR_FLAGS += --target x86_64-linux-gnu
+BOOTSTRAP_CFLAGS += --target x86_64-linux-gnu
 endif
 
 ifeq ($(USE_SHARED),yes)
-KEFIR_FLAGS += -fPIC
+BOOTSTRAP_CFLAGS += -fPIC
 endif
 
-KEFIR_FLAGS += $(KEFIR_EXTRAFLAGS)
+BOOTSTRAP_CFLAGS += $(BOOTSTRAP_EXTRA_CFLAGS)
 
 KEFIR_BUILD_SOURCE_ID := $(shell $(SOURCE)/../scripts/get-source-id.sh)
-KEFIR_BUILD_CFLAGS := $(KEFIR_FLAGS)
-KEFIR_FLAGS += '-DKEFIR_BUILD_CFLAGS="$(KEFIR_BUILD_CFLAGS)"'
-KEFIR_FLAGS += '-DKEFIR_BUILD_SOURCE_ID="$(KEFIR_BUILD_SOURCE_ID)"'
+KEFIR_BUILD_CFLAGS := $(BOOTSTRAP_CFLAGS)
+BOOTSTRAP_CFLAGS += '-DKEFIR_BUILD_CFLAGS="$(KEFIR_BUILD_CFLAGS)"'
+BOOTSTRAP_CFLAGS += '-DKEFIR_BUILD_SOURCE_ID="$(KEFIR_BUILD_SOURCE_ID)"'
 
 ifneq (,$(wildcard $(KEFIR_HOST_ENV_CONFIG_HEADER)))
-KEFIR_FLAGS += -include $(realpath $(KEFIR_HOST_ENV_CONFIG_HEADER))
+BOOTSTRAP_CFLAGS += -include $(realpath $(KEFIR_HOST_ENV_CONFIG_HEADER))
 endif
 
 KEFIR_LIB_SOURCE := $(wildcard \
@@ -84,7 +84,7 @@ KEFIR_ASM_FILES += $(KEFIR_DRIVER_ASM_FILES)
 $(BOOTSTRAP)/hexdump: $(ROOT)/util/hexdump.c
 	@mkdir -p $(shell dirname "$@")
 	@echo "Building $@"
-	@KEFIR_AS=$(KEFIR_AS) KEFIR_LD=$(KEFIR_LD) $(KEFIRCC) $(KEFIR_FLAGS) -o $@ $^
+	@KEFIR_AS=$(KEFIR_AS) KEFIR_LD=$(KEFIR_LD) $(BOOTSTRAP_CC) $(BOOTSTRAP_CFLAGS) -o $@ $^
 
 $(BOOTSTRAP)/%.binary.h: $(BOOTSTRAP)/hexdump
 	@mkdir -p $(shell dirname "$@")
@@ -98,7 +98,7 @@ $(BOOTSTRAP)/%.deps:
 $(BOOTSTRAP)/%.s: $(SOURCE)/%.c $(BOOTSTRAP)/%.deps
 	@mkdir -p $(shell dirname "$@")
 	@echo "Kefir-Compile $<"
-	@KEFIR_AS=$(KEFIR_AS) $(KEFIRCC) $(KEFIR_FLAGS) $$(cat $(subst .s,.deps,$@)) -S -o $@ $<
+	@KEFIR_AS=$(KEFIR_AS) $(BOOTSTRAP_CC) $(BOOTSTRAP_CFLAGS) $$(cat $(subst .s,.deps,$@)) -S -o $@ $<
 
 BIN_HEADERS_SRCDIR=$(SOURCE)
 BIN_HEADERS_DESTDIR=$(BOOTSTRAP)
@@ -106,16 +106,16 @@ include source/binary_headers.mk
 
 $(BOOTSTRAP)/libkefir.so: $(KEFIR_LIB_ASM_FILES)
 	@echo "Linking $@"
-	@KEFIR_LD=$(KEFIR_LD) $(KEFIRCC) $(KEFIR_FLAGS) -shared $^ -o $@
+	@KEFIR_LD=$(KEFIR_LD) $(BOOTSTRAP_CC) $(BOOTSTRAP_CFLAGS) -shared $^ -o $@
 
 ifeq ($(USE_SHARED),yes)
 $(BOOTSTRAP)/kefir: $(KEFIR_DRIVER_ASM_FILES) $(BOOTSTRAP)/libkefir.so
 	@echo "Linking $@"
-	@KEFIR_LD=$(KEFIR_LD) $(KEFIRCC) -pie $(KEFIR_FLAGS) $(KEFIR_DRIVER_ASM_FILES) -o $@ -L$(BOOTSTRAP) -lkefir
+	@KEFIR_LD=$(KEFIR_LD) $(BOOTSTRAP_CC) -pie $(BOOTSTRAP_CFLAGS) $(KEFIR_DRIVER_ASM_FILES) -o $@ -L$(BOOTSTRAP) -lkefir
 else
 $(BOOTSTRAP)/kefir: $(KEFIR_ASM_FILES)
 	@echo "Linking $@"
-	@KEFIR_LD=$(KEFIR_LD) $(KEFIRCC) $(KEFIR_FLAGS) $^ -o $@
+	@KEFIR_LD=$(KEFIR_LD) $(BOOTSTRAP_CC) $(BOOTSTRAP_CFLAGS) $^ -o $@
 endif
 
 bootstrap: $(BOOTSTRAP)/kefir

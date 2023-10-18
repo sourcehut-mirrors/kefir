@@ -27,17 +27,17 @@ LIB3_OBJ="$TMPDIR/lib3.o"
 TEST_EXE="$TMPDIR/test"
 VALGRIND_FILE="$TMPDIR/gen.log"
 VALGRIND="valgrind $VALGRIND_TEST_OPTIONS --log-file=$VALGRIND_FILE"
-COMPILE="$CC -std=c11 -Wall -Wextra -pedantic -Wno-overlength-strings $OPT $DBG $EXTRAFLAGS -I$DIR/../../../headers $TEST_CFLAGS -o $TEST_EXE -lm -pthread"
+COMPILE="$CC -std=c11 -Wall -Wextra -pedantic -Wno-overlength-strings $PROFILE_CFLAGS $EXTRA_CFLAGS -I$DIR/../../../headers $TEST_CFLAGS -o $TEST_EXE -lm -pthread"
 
 if [[ "x$PLATFORM" == "xfreebsd" ]]; then
     COMPILE="$COMPILE -lstdthreads"
 fi
 
-if [[ "x$SANITIZE" == "xundefined" ]]; then
+if [[ "x$USE_SANITIZER" == "xyes" ]]; then
     COMPILE="$COMPILE -fsanitize=undefined -fno-sanitize-recover=all"
 fi
 
-if [[ "x$MEMCHECK" != "xyes" ]]; then
+if [[ "x$USE_VALGRIND" != "xyes" ]]; then
     VALGRIND=""
 fi
 

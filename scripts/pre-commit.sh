@@ -36,7 +36,7 @@ cd "$ROOT"
 trap cleanup EXIT
 
 make clean
-make test MEMCHECK=yes OPT=-O3 SANITIZE=undefined -j$(nproc)
+make test USE_VALGRIND=yes USE_SANITIZER=yes PROFILE=reldebug EXTRA_CFLAGS="-Werror" -j$(nproc)
 for file in `git diff-index --cached --name-only HEAD | grep '\.c$\|\.h$'` ; do
     format_file "$file"
 done

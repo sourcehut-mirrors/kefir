@@ -55,7 +55,7 @@ extern _Thread_local union union1 union1_1;
 extern _Thread_local const char *pointer1_1;
 extern _Thread_local const char *strpointer1_1;
 
-extern char int8_3;
+extern char int8_3[3];
 
 #define PTRLIST                                                                                                    \
     {                                                                                                              \
@@ -116,7 +116,7 @@ int main(int argc, const char **argv) {
     ASSERT(FLOAT_EQUALS(union1_1_copy.f2, 3.14, FLOAT_EPSILON));
     ASSERT(union1_1_copy.f3 == 100500);
 
-    ASSERT(pointer1_1 == (void *) (((char *) &int8_3) + 2));
+    ASSERT(pointer1_1 == (void *) (((char *) int8_3) + 2));
     ASSERT(strcmp(strpointer1_1, ", cruel world!") == 0);
 
     const void *Pointers[] = PTRLIST;
