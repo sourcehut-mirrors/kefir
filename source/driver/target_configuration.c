@@ -28,6 +28,23 @@
 #include <string.h>
 #include <limits.h>
 
+static kefir_result_t match_backend(kefir_driver_target_backend_t backend, const char **target_profile) {
+    switch (backend) {
+        case KEFIR_DRIVER_TARGET_BACKEND_NAIVE:
+            *target_profile = "amd64-sysv-gas";
+            break;
+
+        case KEFIR_DRIVER_TARGET_BACKEND_OPTIMIZED:
+            *target_profile = "opt-amd64-sysv-gas";
+            break;
+
+        case KEFIR_DRIVER_TARGET_BACKEND_NEW:
+            *target_profile = "new-amd64-sysv-gas";
+            break;
+    }
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_driver_apply_target_profile_configuration(
     struct kefir_compiler_runner_configuration *compiler_config, const struct kefir_driver_target *target) {
     REQUIRE(target != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver target"));
@@ -36,18 +53,10 @@ kefir_result_t kefir_driver_apply_target_profile_configuration(
         if (target->platform == KEFIR_DRIVER_TARGET_PLATFORM_LINUX ||
             target->platform == KEFIR_DRIVER_TARGET_PLATFORM_FREEBSD ||
             target->platform == KEFIR_DRIVER_TARGET_PLATFORM_NETBSD) {
-            if (target->backend == KEFIR_DRIVER_TARGET_BACKEND_NAIVE) {
-                compiler_config->target_profile = "amd64-sysv-gas";
-            } else {
-                compiler_config->target_profile = "opt-amd64-sysv-gas";
-            }
+            REQUIRE_OK(match_backend(target->backend, &compiler_config->target_profile));
             compiler_config->codegen.emulated_tls = false;
         } else if (target->platform == KEFIR_DRIVER_TARGET_PLATFORM_OPENBSD) {
-            if (target->backend == KEFIR_DRIVER_TARGET_BACKEND_NAIVE) {
-                compiler_config->target_profile = "amd64-sysv-gas";
-            } else {
-                compiler_config->target_profile = "opt-amd64-sysv-gas";
-            }
+            REQUIRE_OK(match_backend(target->backend, &compiler_config->target_profile));
             compiler_config->codegen.emulated_tls = true;
         }
     }

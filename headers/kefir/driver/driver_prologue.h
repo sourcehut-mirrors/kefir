@@ -130,6 +130,10 @@ static kefir_result_t print_target(FILE *out, const struct kefir_driver_target *
         case KEFIR_DRIVER_TARGET_BACKEND_OPTIMIZED:
             fprintf(out, "opt-");
             break;
+
+        case KEFIR_DRIVER_TARGET_BACKEND_NEW:
+            fprintf(out, "new-");
+            break;
     }
 
     switch (target->arch) {

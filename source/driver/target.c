@@ -27,6 +27,7 @@
 static kefir_result_t match_backend(const char *spec, struct kefir_driver_target *target, const char **next) {
     const char spec_naive[] = "naive-";
     const char spec_optimized[] = "opt-";
+    const char spec_new[] = "new-";
 
     if (strncmp(spec_naive, spec, sizeof(spec_naive) - 1) == 0) {
         target->backend = KEFIR_DRIVER_TARGET_BACKEND_NAIVE;
@@ -34,6 +35,9 @@ static kefir_result_t match_backend(const char *spec, struct kefir_driver_target
     } else if (strncmp(spec_optimized, spec, sizeof(spec_optimized) - 1) == 0) {
         target->backend = KEFIR_DRIVER_TARGET_BACKEND_OPTIMIZED;
         *next = spec + (sizeof(spec_optimized) - 1);
+    } else if (strncmp(spec_new, spec, sizeof(spec_new) - 1) == 0) {
+        target->backend = KEFIR_DRIVER_TARGET_BACKEND_NEW;
+        *next = spec + (sizeof(spec_new) - 1);
     }
     return KEFIR_OK;
 }

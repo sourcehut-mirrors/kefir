@@ -10,6 +10,7 @@ KEFIR_LIB_SOURCE := $(wildcard \
 	$(SOURCE_DIR)/ast/type/*.c \
 	$(SOURCE_DIR)/core/*.c \
 	$(SOURCE_DIR)/codegen/*.c \
+	$(SOURCE_DIR)/codegen/amd64/*.c \
 	$(SOURCE_DIR)/codegen/opt-system-v-amd64/*.c \
 	$(SOURCE_DIR)/codegen/opt-system-v-amd64/code/*.c \
 	$(SOURCE_DIR)/codegen/opt-system-v-amd64/code/inline_assembly/*.c \

@@ -18,16 +18,20 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef KEFIR_CODEGEN_AMD64_COMMON_H_
-#define KEFIR_CODEGEN_AMD64_COMMON_H_
+#ifndef KEFIR_CODEGEN_AMD64_FUNCTION_H_
+#define KEFIR_CODEGEN_AMD64_FUNCTION_H_
 
-#define KEFIR_CODEGEN_SYNTAX_X86_64_INTEL_PREFIX "x86_64-intel_prefix"
-#define KEFIR_CODEGEN_SYNTAX_X86_64_INTEL_NOPREFIX "x86_64-intel_noprefix"
-#define KEFIR_CODEGEN_SYNTAX_X86_64_ATT "x86_64-att"
+#include "kefir/codegen/amd64/codegen.h"
+#include "kefir/optimizer/module.h"
 
-#include "kefir/codegen/codegen.h"
-#include "kefir/target/asm/amd64/xasmgen.h"
+typedef struct kefir_codegen_amd64_function {
+    struct kefir_codegen_amd64 *codegen;
+    const struct kefir_opt_module *module;
+    const struct kefir_opt_function *function;
+} kefir_codegen_amd64_function_t;
 
-kefir_result_t kefir_codegen_match_syntax(const char *, kefir_asm_amd64_xasmgen_syntax_t *);
+kefir_result_t kefir_codegen_amd64_function_generate(struct kefir_mem *, struct kefir_codegen_amd64 *,
+                                                     const struct kefir_opt_module *,
+                                                     const struct kefir_opt_function *);
 
 #endif
