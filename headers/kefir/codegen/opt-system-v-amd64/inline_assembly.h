@@ -2,7 +2,7 @@
 #define KEFIR_CODEGEN_OPT_SYSTEM_V_AMD64_INLINE_ASSEMBLY_H_
 
 #include "kefir/optimizer/code.h"
-#include "kefir/codegen/opt-system-v-amd64.h"
+#include "kefir/codegen/opt-system-v-amd64/codegen.h"
 #include "kefir/codegen/opt-system-v-amd64/function.h"
 #include "kefir/core/string_builder.h"
 

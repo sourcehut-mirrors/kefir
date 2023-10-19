@@ -13,8 +13,8 @@ KEFIR_LIB_SOURCE := $(wildcard \
 	$(SOURCE_DIR)/codegen/opt-system-v-amd64/*.c \
 	$(SOURCE_DIR)/codegen/opt-system-v-amd64/code/*.c \
 	$(SOURCE_DIR)/codegen/opt-system-v-amd64/code/inline_assembly/*.c \
-	$(SOURCE_DIR)/codegen/system-v-amd64/*.c \
-	$(SOURCE_DIR)/codegen/system-v-amd64/builtins/*.c \
+	$(SOURCE_DIR)/codegen/naive-system-v-amd64/*.c \
+	$(SOURCE_DIR)/codegen/naive-system-v-amd64/builtins/*.c \
 	$(SOURCE_DIR)/compiler/*.c \
 	$(SOURCE_DIR)/ir/*.c \
 	$(SOURCE_DIR)/lexer/*.c \

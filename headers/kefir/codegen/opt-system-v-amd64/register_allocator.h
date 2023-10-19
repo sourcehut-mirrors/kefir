@@ -21,7 +21,7 @@
 #ifndef KEFIR_CODEGEN_OPT_SYSTEM_V_AMD64_REGISTER_ALLOCATOR_H_
 #define KEFIR_CODEGEN_OPT_SYSTEM_V_AMD64_REGISTER_ALLOCATOR_H_
 
-#include "kefir/codegen/opt-system-v-amd64.h"
+#include "kefir/codegen/opt-system-v-amd64/codegen.h"
 #include "kefir/target/abi/amd64/function.h"
 #include "kefir/codegen/opt-system-v-amd64/parameters.h"
 #include "kefir/codegen/opt-system-v-amd64/stack_frame.h"

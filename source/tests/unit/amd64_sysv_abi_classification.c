@@ -25,7 +25,7 @@
 #include "kefir/ir/builder.h"
 #include "kefir/target/abi/amd64/type_layout.h"
 #include "kefir/target/abi/amd64/parameters.h"
-#include "kefir/codegen/system-v-amd64/registers.h"
+#include "kefir/codegen/naive-system-v-amd64/registers.h"
 
 #define ASSERT_PARAM_CLASSIFICATION(_parameters, _index, _location)                         \
     do {                                                                                    \

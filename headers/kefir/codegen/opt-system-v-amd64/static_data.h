@@ -24,7 +24,7 @@
 #include "kefir/core/basic-types.h"
 #include "kefir/core/vector.h"
 #include "kefir/core/mem.h"
-#include "kefir/codegen/opt-system-v-amd64.h"
+#include "kefir/codegen/opt-system-v-amd64/codegen.h"
 #include "kefir/ir/data.h"
 
 kefir_result_t kefir_codegen_opt_amd64_sysv_static_data(struct kefir_mem *, struct kefir_codegen_opt_amd64 *,

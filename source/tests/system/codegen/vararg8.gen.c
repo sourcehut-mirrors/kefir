@@ -27,10 +27,10 @@
 #include "kefir/ir/builtins.h"
 #include "kefir/core/mem.h"
 #include "kefir/core/util.h"
-#include "kefir/codegen/system-v-amd64.h"
+#include "kefir/codegen/naive-system-v-amd64/codegen.h"
 
 kefir_result_t kefir_int_test(struct kefir_mem *mem) {
-    struct kefir_codegen_amd64 codegen;
+    struct kefir_codegen_naive_amd64 codegen;
     struct kefir_ir_module module;
     REQUIRE_OK(kefir_ir_module_alloc(mem, &module));
 
@@ -49,7 +49,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE(sumldouble != NULL, KEFIR_INTERNAL_ERROR);
     REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, sumldouble_decl->name, KEFIR_IR_IDENTIFIER_GLOBAL));
 
-    REQUIRE_OK(kefir_codegen_sysv_amd64_init(mem, &codegen, stdout, NULL));
+    REQUIRE_OK(kefir_codegen_naive_sysv_amd64_init(mem, &codegen, stdout, NULL));
     codegen.xasmgen.settings.enable_comments = false;
 
     REQUIRE_OK(kefir_irbuilder_type_append(mem, ldouble_type, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0));

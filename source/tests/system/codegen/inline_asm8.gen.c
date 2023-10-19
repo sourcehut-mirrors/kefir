@@ -25,7 +25,7 @@
 #include "kefir/ir/module.h"
 #include "kefir/core/mem.h"
 #include "kefir/core/util.h"
-#include "kefir/codegen/system-v-amd64.h"
+#include "kefir/codegen/naive-system-v-amd64/codegen.h"
 #include "kefir/test/codegen.h"
 
 kefir_result_t kefir_int_test(struct kefir_mem *mem) {

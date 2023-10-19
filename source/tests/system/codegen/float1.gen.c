@@ -25,7 +25,7 @@
 #include "kefir/ir/builder.h"
 #include "kefir/core/mem.h"
 #include "kefir/core/util.h"
-#include "kefir/codegen/system-v-amd64.h"
+#include "kefir/codegen/naive-system-v-amd64/codegen.h"
 #include "kefir/target/abi/amd64/type_layout.h"
 #include "kefir/test/codegen.h"
 

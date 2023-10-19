@@ -25,15 +25,15 @@
 #include "kefir/ir/module.h"
 #include "kefir/core/mem.h"
 #include "kefir/core/util.h"
-#include "kefir/codegen/system-v-amd64.h"
-#include "kefir/codegen/system-v-amd64/abi.h"
+#include "kefir/codegen/naive-system-v-amd64/codegen.h"
+#include "kefir/codegen/naive-system-v-amd64/abi.h"
 
 kefir_result_t kefir_int_test(struct kefir_mem *mem) {
-    struct kefir_codegen_amd64 codegen;
+    struct kefir_codegen_naive_amd64 codegen;
     struct kefir_ir_module module;
-    struct kefir_codegen_amd64_sysv_module sysv_module;
+    struct kefir_codegen_naive_amd64_sysv_module sysv_module;
     REQUIRE_OK(kefir_ir_module_alloc(mem, &module));
-    REQUIRE_OK(kefir_codegen_amd64_sysv_module_alloc(mem, &sysv_module, &module));
+    REQUIRE_OK(kefir_codegen_naive_amd64_sysv_module_alloc(mem, &sysv_module, &module));
     kefir_id_t func_params, func_returns;
     struct kefir_ir_type *decl_params = kefir_ir_module_new_type(mem, &module, 10, &func_params),
                          *decl_result = kefir_ir_module_new_type(mem, &module, 0, &func_returns);
@@ -45,7 +45,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_ir_function *func = kefir_ir_module_new_function(mem, &module, decl, KEFIR_ID_NONE, 0);
     REQUIRE(func != NULL, KEFIR_INTERNAL_ERROR);
     REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, decl->name, KEFIR_IR_IDENTIFIER_GLOBAL));
-    REQUIRE_OK(kefir_codegen_sysv_amd64_init(mem, &codegen, stdout, NULL));
+    REQUIRE_OK(kefir_codegen_naive_sysv_amd64_init(mem, &codegen, stdout, NULL));
     codegen.xasmgen.settings.enable_comments = false;
     codegen.xasmgen.settings.enable_identation = false;
 
@@ -64,7 +64,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(KEFIR_CODEGEN_TRANSLATE(mem, &codegen.iface, &module));
 
     REQUIRE_OK(KEFIR_CODEGEN_CLOSE(mem, &codegen.iface));
-    REQUIRE_OK(kefir_codegen_amd64_sysv_module_free(mem, &sysv_module));
+    REQUIRE_OK(kefir_codegen_naive_amd64_sysv_module_free(mem, &sysv_module));
     REQUIRE_OK(kefir_ir_module_free(mem, &module));
     return KEFIR_OK;
 }
