@@ -250,7 +250,7 @@ static kefir_result_t translate_impl(struct kefir_mem *mem, struct kefir_codegen
         const struct kefir_opt_code_analysis *func_analysis = NULL;
         REQUIRE_OK(kefir_opt_module_get_function(module, ir_func->declaration->id, &func));
         REQUIRE_OK(kefir_opt_module_analysis_get_function(analysis, ir_func->declaration->id, &func_analysis));
-        REQUIRE_OK(kefir_codegen_amd64_function_generate(mem, codegen, module, func));
+        REQUIRE_OK(kefir_codegen_amd64_function_translate(mem, codegen, module, func, func_analysis));
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_NEWLINE(&codegen->xasmgen, 1));
     }
 

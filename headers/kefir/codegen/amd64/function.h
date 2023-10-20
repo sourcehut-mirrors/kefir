@@ -22,16 +22,22 @@
 #define KEFIR_CODEGEN_AMD64_FUNCTION_H_
 
 #include "kefir/codegen/amd64/codegen.h"
+#include "kefir/codegen/amd64/asmcmp.h"
 #include "kefir/optimizer/module.h"
 
 typedef struct kefir_codegen_amd64_function {
     struct kefir_codegen_amd64 *codegen;
     const struct kefir_opt_module *module;
     const struct kefir_opt_function *function;
+    const struct kefir_opt_code_analysis *function_analysis;
+    struct kefir_asmcmp_amd64 code;
+
+    struct kefir_hashtree labels;
 } kefir_codegen_amd64_function_t;
 
-kefir_result_t kefir_codegen_amd64_function_generate(struct kefir_mem *, struct kefir_codegen_amd64 *,
-                                                     const struct kefir_opt_module *,
-                                                     const struct kefir_opt_function *);
+kefir_result_t kefir_codegen_amd64_function_translate(struct kefir_mem *, struct kefir_codegen_amd64 *,
+                                                      const struct kefir_opt_module *,
+                                                      const struct kefir_opt_function *,
+                                                      const struct kefir_opt_code_analysis *);
 
 #endif
