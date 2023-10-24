@@ -49,6 +49,7 @@ KEFIR_LIB_SOURCE := $(wildcard \
 	$(SOURCE)/core/*.c \
 	$(SOURCE)/codegen/*.c \
 	$(SOURCE)/codegen/amd64/*.c \
+	$(SOURCE)/codegen/amd64/code/*.c \
 	$(SOURCE)/codegen/asmcmp/*.c \
 	$(SOURCE)/codegen/opt-system-v-amd64/*.c \
 	$(SOURCE)/codegen/opt-system-v-amd64/code/*.c \

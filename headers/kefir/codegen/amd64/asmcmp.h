@@ -24,7 +24,26 @@
 #include "kefir/codegen/asmcmp/context.h"
 #include "kefir/target/asm/amd64/xasmgen.h"
 
-#define KEFIR_ASMCMP_AMD64_OPCODES(_opcode, _separator) _opcode(ret, RET, arg0)
+// clang-format off
+#define KEFIR_ASMCMP_AMD64_OPCODES(_opcode, _separator) \
+    /* Virtual opcodes */ \
+    _opcode(virtual_register_link, _, virtual) _separator \
+    /* AMD64 opcodes */ \
+    /* Control flow */ \
+    _opcode(ret, RET, arg0) _separator \
+    /* Data moves */ \
+    _opcode(mov, MOV, arg2) _separator \
+    _opcode(movabs, MOVABS, arg2) _separator \
+    _opcode(movsx, MOVSX, arg2) _separator \
+    _opcode(movzx, MOVZX, arg2) _separator \
+    /* Integral arithmetics & logic */ \
+    _opcode(add, ADD, arg2) _separator \
+    _opcode(sub, SUB, arg2) _separator \
+    _opcode(imul, IMUL, arg2) _separator \
+    _opcode(and, AND, arg2) _separator \
+    _opcode(or, OR, arg2) _separator \
+    _opcode(xor, XOR, arg2)
+// clang-format on
 
 #define KEFIR_ASMCMP_AMD64_OPCODE(_opcode) KEFIR_ASMCMP_AMD64_##_opcode
 typedef enum kefir_asmcmp_amd64_opcode {
@@ -41,20 +60,28 @@ typedef struct kefir_asmcmp_amd64 {
 kefir_result_t kefir_asmcmp_amd64_init(const char *, struct kefir_asmcmp_amd64 *);
 kefir_result_t kefir_asmcmp_amd64_free(struct kefir_mem *, struct kefir_asmcmp_amd64 *);
 
+#define DEF_OPCODE_virtual(_opcode)
 #define DEF_OPCODE_arg0(_opcode)                                                                 \
     kefir_result_t kefir_asmcmp_amd64_##_opcode(struct kefir_mem *, struct kefir_asmcmp_amd64 *, \
-                                                kefir_asmcmp_instruction_index_t, kefir_asmcmp_instruction_index_t *)
-#define DEF_OPCODE_arg2(_opcode)                                                                                     \
-    kefir_result_t kefir_asmcmp_amd64_##_opcode(struct kefir_mem *, struct kefir_asmcmp_amd64 *,                     \
-                                                kefir_asmcmp_instruction_index_t, const struct kefir_asmcmp_value *, \
-                                                const struct kefir_asmcmp_value *, kefir_asmcmp_instruction_index_t *)
+                                                kefir_asmcmp_instruction_index_t, kefir_asmcmp_instruction_index_t *);
+#define DEF_OPCODE_arg2(_opcode)                                                           \
+    kefir_result_t kefir_asmcmp_amd64_##_opcode(                                           \
+        struct kefir_mem *, struct kefir_asmcmp_amd64 *, kefir_asmcmp_instruction_index_t, \
+        const struct kefir_asmcmp_value *, const struct kefir_asmcmp_value *, kefir_asmcmp_instruction_index_t *);
 #define DEF_OPCODE(_opcode, _mnemonic, _argtp) DEF_OPCODE_##_argtp(_opcode)
 
-KEFIR_ASMCMP_AMD64_OPCODES(DEF_OPCODE, ;);
+KEFIR_ASMCMP_AMD64_OPCODES(DEF_OPCODE, )
 
 #undef DEF_OPCODE_arg0
 #undef DEF_OPCODE_arg2
+#undef DEF_OPCODE_virtual
 #undef DEF_OPCODE
+
+kefir_result_t kefir_asmcmp_amd64_link_virtual_registers(struct kefir_mem *, struct kefir_asmcmp_amd64 *,
+                                                         kefir_asmcmp_instruction_index_t,
+                                                         kefir_asmcmp_virtual_register_index_t,
+                                                         kefir_asmcmp_virtual_register_index_t,
+                                                         kefir_asmcmp_instruction_index_t *);
 
 kefir_result_t kefir_asmcmp_amd64_generate_code(struct kefir_amd64_xasmgen *, const struct kefir_asmcmp_amd64 *);
 

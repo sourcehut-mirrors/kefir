@@ -46,7 +46,6 @@ kefir_result_t kefir_asmcmp_context_init(const struct kefir_asmcmp_context_class
     context->virtual_registers = NULL;
     context->virtual_register_length = 0;
     context->virtual_register_capacity = 0;
-    REQUIRE_OK(kefir_hashtreeset_init(&context->active_preallocated_registers, &kefir_hashtree_uint_ops));
     return KEFIR_OK;
 }
 
@@ -54,9 +53,10 @@ kefir_result_t kefir_asmcmp_context_free(struct kefir_mem *mem, struct kefir_asm
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
 
-    REQUIRE_OK(kefir_hashtreeset_free(mem, &context->active_preallocated_registers));
     memset(context->code_content, 0, sizeof(struct kefir_asmcmp_instruction) * context->code_length);
     KEFIR_FREE(mem, context->code_content);
+    memset(context->labels, 0, sizeof(struct kefir_asmcmp_label) * context->labels_length);
+    KEFIR_FREE(mem, context->labels);
     memset(context->virtual_registers, 0,
            sizeof(struct kefir_asmcmp_virtual_register) * context->virtual_register_length);
     KEFIR_FREE(mem, context->virtual_registers);
@@ -125,6 +125,25 @@ static kefir_result_t ensure_availability(struct kefir_mem *mem, void **array, k
     return KEFIR_OK;
 }
 
+static kefir_result_t validate_value(struct kefir_asmcmp_context *context, const struct kefir_asmcmp_value *value) {
+    switch (value->type) {
+        case KEFIR_ASMCMP_VALUE_TYPE_NONE:
+        case KEFIR_ASMCMP_VALUE_TYPE_INTEGER:
+        case KEFIR_ASMCMP_VALUE_TYPE_UINTEGER:
+            // Intentionally left blank
+            break;
+
+        case KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER: {
+            const struct kefir_asmcmp_virtual_register *vreg;
+            REQUIRE_OK(kefir_asmcmp_virtual_register_get(context, value->vreg.index, &vreg));
+        } break;
+    }
+    return KEFIR_OK;
+}
+
+static kefir_result_t attach_label_to_instr(const struct kefir_asmcmp_context *, kefir_asmcmp_instruction_index_t,
+                                            struct kefir_asmcmp_label *);
+
 kefir_result_t kefir_asmcmp_context_instr_insert_after(struct kefir_mem *mem, struct kefir_asmcmp_context *context,
                                                        kefir_asmcmp_instruction_index_t after_index,
                                                        const struct kefir_asmcmp_instruction *instr,
@@ -135,8 +154,12 @@ kefir_result_t kefir_asmcmp_context_instr_insert_after(struct kefir_mem *mem, st
             KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Provided asmgen index is out of context bounds"));
     REQUIRE(instr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen instruction"));
 
+    REQUIRE_OK(validate_value(context, &instr->args[0]));
+    REQUIRE_OK(validate_value(context, &instr->args[1]));
+    REQUIRE_OK(validate_value(context, &instr->args[2]));
+
     REQUIRE_OK(ensure_availability(mem, (void **) &context->code_content, &context->code_length,
-                                   &context->code_capacity, sizeof(struct kefir_asmcmp_instruction), 1));
+                                   &context->code_capacity, sizeof(struct kefir_asmcmp_instruction_handle), 1));
 
     const kefir_asmcmp_instruction_index_t index = context->code_length;
     struct kefir_asmcmp_instruction_handle *const handle = &context->code_content[index];
@@ -369,9 +392,9 @@ kefir_result_t kefir_asmcmp_context_detach_label(const struct kefir_asmcmp_conte
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_asmcmp_virtual_register_at(const struct kefir_asmcmp_context *context,
-                                                kefir_asmcmp_virtual_register_index_t idx,
-                                                const struct kefir_asmcmp_virtual_register **reg_alloc) {
+kefir_result_t kefir_asmcmp_virtual_register_get(const struct kefir_asmcmp_context *context,
+                                                 kefir_asmcmp_virtual_register_index_t idx,
+                                                 const struct kefir_asmcmp_virtual_register **reg_alloc) {
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
     REQUIRE(VALID_VREG_IDX(context, idx),
             KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find requested asmgen register allocation"));
@@ -382,53 +405,25 @@ kefir_result_t kefir_asmcmp_virtual_register_at(const struct kefir_asmcmp_contex
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_asmcmp_virtual_register_acquire(struct kefir_mem *mem, struct kefir_asmcmp_context *context,
-                                                     kefir_asmcmp_register_type_t type,
-                                                     kefir_asmcmp_register_t preallocated_reg,
-                                                     kefir_asmcmp_virtual_register_index_t *reg_alloc_idx) {
+kefir_result_t kefir_asmcmp_virtual_register_new(struct kefir_mem *mem, struct kefir_asmcmp_context *context,
+                                                 kefir_asmcmp_register_type_t type,
+                                                 kefir_asmcmp_register_t preallocated_reg,
+                                                 kefir_asmcmp_virtual_register_index_t *reg_alloc_idx) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
     REQUIRE(reg_alloc_idx != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to asmgen register allocation index"));
-    REQUIRE(preallocated_reg == KEFIR_ASMCMP_VIRTUAL_REGISTER ||
-                !kefir_hashtreeset_has(&context->active_preallocated_registers,
-                                       (kefir_hashtreeset_entry_t) preallocated_reg),
-            KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Llr register allocation conflict"));
 
     REQUIRE_OK(ensure_availability(mem, (void **) &context->virtual_registers, &context->virtual_register_length,
                                    &context->virtual_register_capacity, sizeof(struct kefir_asmcmp_virtual_register),
                                    1));
-    if (preallocated_reg != KEFIR_ASMCMP_VIRTUAL_REGISTER) {
-        REQUIRE_OK(kefir_hashtreeset_add(mem, &context->active_preallocated_registers,
-                                         (kefir_hashtreeset_entry_t) preallocated_reg));
-    }
 
     struct kefir_asmcmp_virtual_register *reg_alloc = &context->virtual_registers[context->virtual_register_length];
     reg_alloc->index = context->virtual_register_length;
     reg_alloc->type = type;
     reg_alloc->preallocated_reg = preallocated_reg;
-    reg_alloc->lifetime.begin = context->code_length;
-    reg_alloc->lifetime.end = KEFIR_ASMCMP_INDEX_NONE;
 
     *reg_alloc_idx = reg_alloc->index;
     context->virtual_register_length++;
-    return KEFIR_OK;
-}
-
-kefir_result_t kefir_asmcmp_virtual_register_release(struct kefir_mem *mem, struct kefir_asmcmp_context *context,
-                                                     kefir_asmcmp_virtual_register_index_t idx) {
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
-    REQUIRE(VALID_VREG_IDX(context, idx),
-            KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find requested asmgen register allocation"));
-
-    struct kefir_asmcmp_virtual_register *reg_alloc = &context->virtual_registers[idx];
-    REQUIRE(reg_alloc->lifetime.end == KEFIR_ASMCMP_INDEX_NONE,
-            KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Llr register allocation has already been released"));
-    if (reg_alloc->preallocated_reg != KEFIR_ASMCMP_VIRTUAL_REGISTER) {
-        REQUIRE_OK(kefir_hashtreeset_delete(mem, &context->active_preallocated_registers,
-                                            (kefir_hashtreeset_entry_t) reg_alloc->preallocated_reg));
-    }
-    reg_alloc->lifetime.end = context->code_length;
     return KEFIR_OK;
 }
