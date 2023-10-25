@@ -33,6 +33,7 @@ kefir_result_t kefir_asmcmp_context_init(const struct kefir_asmcmp_context_class
     REQUIRE(klass != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context class"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to asmgen context"));
 
+    REQUIRE_OK(kefir_hashtree_init(&context->label_positions, &kefir_hashtree_uint_ops));
     context->klass = klass;
     context->payload = payload;
     context->code_content = NULL;
@@ -53,6 +54,7 @@ kefir_result_t kefir_asmcmp_context_free(struct kefir_mem *mem, struct kefir_asm
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
 
+    REQUIRE_OK(kefir_hashtree_free(mem, &context->label_positions));
     memset(context->code_content, 0, sizeof(struct kefir_asmcmp_instruction) * context->code_length);
     KEFIR_FREE(mem, context->code_content);
     memset(context->labels, 0, sizeof(struct kefir_asmcmp_label) * context->labels_length);
@@ -141,8 +143,10 @@ static kefir_result_t validate_value(struct kefir_asmcmp_context *context, const
     return KEFIR_OK;
 }
 
-static kefir_result_t attach_label_to_instr(const struct kefir_asmcmp_context *, kefir_asmcmp_instruction_index_t,
-                                            struct kefir_asmcmp_label *);
+static kefir_result_t attach_label_to_instr(struct kefir_mem *, struct kefir_asmcmp_context *,
+                                            kefir_asmcmp_instruction_index_t, struct kefir_asmcmp_label *);
+
+static kefir_result_t detach_label(struct kefir_mem *, struct kefir_asmcmp_context *, struct kefir_asmcmp_label *);
 
 kefir_result_t kefir_asmcmp_context_instr_insert_after(struct kefir_mem *mem, struct kefir_asmcmp_context *context,
                                                        kefir_asmcmp_instruction_index_t after_index,
@@ -164,8 +168,6 @@ kefir_result_t kefir_asmcmp_context_instr_insert_after(struct kefir_mem *mem, st
     const kefir_asmcmp_instruction_index_t index = context->code_length;
     struct kefir_asmcmp_instruction_handle *const handle = &context->code_content[index];
     handle->index = index;
-    handle->labels.head = KEFIR_ASMCMP_INDEX_NONE;
-    handle->labels.tail = KEFIR_ASMCMP_INDEX_NONE;
     memcpy(&handle->instr, instr, sizeof(struct kefir_asmcmp_instruction));
 
     struct kefir_asmcmp_instruction_handle *const prev_handle = HANDLE_AT(context, after_index);
@@ -190,6 +192,23 @@ kefir_result_t kefir_asmcmp_context_instr_insert_after(struct kefir_mem *mem, st
     }
 
     context->code_length++;
+
+    struct kefir_hashtree_node *label_node;
+    kefir_result_t res =
+        kefir_hashtree_at(&context->label_positions, (kefir_hashtree_key_t) KEFIR_ASMCMP_INDEX_NONE, &label_node);
+    if (res != KEFIR_NOT_FOUND) {
+        REQUIRE_OK(res);
+
+        ASSIGN_DECL_CAST(kefir_asmcmp_label_index_t, label_idx, label_node->value);
+        while (label_idx != KEFIR_ASMCMP_INDEX_NONE) {
+            struct kefir_asmcmp_label *label = &context->labels[label_idx];
+            label_idx = label->siblings.next;
+
+            REQUIRE_OK(detach_label(mem, context, label));
+            REQUIRE_OK(attach_label_to_instr(mem, context, index, label));
+        }
+    }
+
     ASSIGN_PTR(index_ptr, index);
     return KEFIR_OK;
 }
@@ -201,7 +220,7 @@ kefir_result_t kefir_asmcmp_context_instr_drop(struct kefir_asmcmp_context *cont
             KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Provided asmgen instruction index is out of context bounds"));
 
     struct kefir_asmcmp_instruction_handle *const handle = &context->code_content[instr_idx];
-    REQUIRE(handle->labels.head == KEFIR_ASMCMP_INDEX_NONE && handle->labels.tail == KEFIR_ASMCMP_INDEX_NONE,
+    REQUIRE(!kefir_hashtree_has(&context->label_positions, (kefir_hashtree_key_t) instr_idx),
             KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to drop asmgen instruction with attached labels"));
 
     struct kefir_asmcmp_instruction_handle *const prev_handle = HANDLE_AT(context, handle->siblings.prev);
@@ -230,34 +249,48 @@ kefir_result_t kefir_asmcmp_context_instr_drop(struct kefir_asmcmp_context *cont
     return KEFIR_OK;
 }
 
-static kefir_result_t attach_label_to_instr(const struct kefir_asmcmp_context *context,
+static kefir_result_t attach_label_to_instr(struct kefir_mem *mem, struct kefir_asmcmp_context *context,
                                             kefir_asmcmp_instruction_index_t target_instr,
                                             struct kefir_asmcmp_label *label) {
-    REQUIRE(label->instruction_index == KEFIR_ASMCMP_INDEX_NONE && label->siblings.prev == KEFIR_ASMCMP_INDEX_NONE &&
+    REQUIRE(!label->attached, KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Expected asmgen label to be detached"));
+    REQUIRE(label->position == KEFIR_ASMCMP_INDEX_NONE && label->siblings.prev == KEFIR_ASMCMP_INDEX_NONE &&
                 label->siblings.next == KEFIR_ASMCMP_INDEX_NONE,
-            KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Expected asmgen label to be detached"));
+            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected asmcmp label state"));
 
-    struct kefir_asmcmp_instruction_handle *const handle = &context->code_content[target_instr];
-    label->siblings.prev = handle->labels.tail;
-
-    if (handle->labels.tail != KEFIR_ASMCMP_INDEX_NONE) {
-        struct kefir_asmcmp_label *const prev_label = &context->labels[handle->labels.tail];
-        REQUIRE(prev_label->siblings.next == KEFIR_ASMCMP_INDEX_NONE,
-                KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected asmgen label sibling"));
-        prev_label->siblings.next = label->label;
+    kefir_asmcmp_label_index_t prev_label_idx = KEFIR_ASMCMP_INDEX_NONE;
+    struct kefir_hashtree_node *node;
+    kefir_result_t res = kefir_hashtree_at(&context->label_positions, (kefir_hashtree_key_t) target_instr, &node);
+    if (res == KEFIR_NOT_FOUND) {
+        REQUIRE_OK(kefir_hashtree_insert(mem, &context->label_positions, (kefir_hashtree_key_t) target_instr,
+                                         (kefir_hashtree_value_t) label->label));
     } else {
-        handle->labels.head = label->label;
-        handle->labels.tail = label->label;
+        REQUIRE_OK(res);
+        prev_label_idx = (kefir_asmcmp_label_index_t) node->value;
+
+        struct kefir_asmcmp_label *const prev_label = &context->labels[prev_label_idx];
+        REQUIRE(prev_label->siblings.next == KEFIR_ASMCMP_INDEX_NONE,
+                KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected asmcmp label state"));
+        prev_label->siblings.next = label->label;
     }
-    label->instruction_index = target_instr;
+
+    label->siblings.prev = prev_label_idx;
+    label->position = target_instr;
+    label->attached = true;
     return KEFIR_OK;
 }
 
-static kefir_result_t detach_label(const struct kefir_asmcmp_context *context, struct kefir_asmcmp_label *label) {
-    REQUIRE(label->instruction_index != KEFIR_ASMCMP_INDEX_NONE,
-            KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Expected asmgen label to be attached"));
+static kefir_result_t detach_label(struct kefir_mem *mem, struct kefir_asmcmp_context *context,
+                                   struct kefir_asmcmp_label *label) {
+    REQUIRE(label->attached, KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Expected asmgen label to be attached"));
 
-    struct kefir_asmcmp_instruction_handle *const handle = &context->code_content[label->instruction_index];
+    struct kefir_hashtree_node *node;
+    kefir_result_t res = kefir_hashtree_at(&context->label_positions, (kefir_hashtree_key_t) label->position, &node);
+    if (res == KEFIR_NOT_FOUND) {
+        res = KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to find attached asmcmp label position");
+    }
+    REQUIRE_OK(res);
+
+    kefir_asmcmp_label_index_t head_label_idx = node->value;
 
     kefir_asmcmp_label_index_t prev_idx = label->siblings.prev, next_idx = label->siblings.next;
 
@@ -266,21 +299,24 @@ static kefir_result_t detach_label(const struct kefir_asmcmp_context *context, s
         prev_label->siblings.next = next_idx;
         label->siblings.prev = KEFIR_ASMCMP_INDEX_NONE;
     } else {
-        REQUIRE(handle->labels.head == label->label,
+        REQUIRE(head_label_idx == label->label,
                 KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected asmgen instruction label list"));
-        handle->labels.head = next_idx;
+
+        if (next_idx != KEFIR_ASMCMP_INDEX_NONE) {
+            node->value = (kefir_hashtree_value_t) next_idx;
+        } else {
+            REQUIRE_OK(kefir_hashtree_delete(mem, &context->label_positions, (kefir_hashtree_key_t) label->position));
+        }
     }
 
     if (next_idx != KEFIR_ASMCMP_INDEX_NONE) {
         struct kefir_asmcmp_label *const next_label = &context->labels[next_idx];
         next_label->siblings.prev = prev_idx;
         label->siblings.next = KEFIR_ASMCMP_INDEX_NONE;
-    } else {
-        REQUIRE(handle->labels.tail == label->label,
-                KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected asmgen instruction label list"));
-        handle->labels.tail = prev_idx;
     }
 
+    label->position = KEFIR_ASMCMP_INDEX_NONE;
+    label->attached = false;
     return KEFIR_OK;
 }
 
@@ -300,12 +336,13 @@ kefir_result_t kefir_asmcmp_context_new_label(struct kefir_mem *mem, struct kefi
     struct kefir_asmcmp_label *const label = &context->labels[index];
 
     label->label = index;
-    label->instruction_index = KEFIR_ASMCMP_INDEX_NONE;
+    label->attached = false;
+    label->position = KEFIR_ASMCMP_INDEX_NONE;
     label->siblings.prev = KEFIR_ASMCMP_INDEX_NONE;
     label->siblings.next = KEFIR_ASMCMP_INDEX_NONE;
 
     if (target_instr != KEFIR_ASMCMP_INDEX_NONE) {
-        REQUIRE_OK(attach_label_to_instr(context, target_instr, label));
+        REQUIRE_OK(attach_label_to_instr(mem, context, target_instr, label));
     }
 
     context->labels_length++;
@@ -323,7 +360,7 @@ kefir_result_t kefir_asmcmp_context_label_at(const struct kefir_asmcmp_context *
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to asmgen instruction index"));
 
     const struct kefir_asmcmp_label *const label = &context->labels[label_index];
-    *instr_idx_ptr = label->instruction_index;
+    *instr_idx_ptr = label->position;
     return KEFIR_OK;
 }
 
@@ -332,17 +369,14 @@ kefir_asmcmp_label_index_t kefir_asmcmp_context_instr_label_head(const struct ke
     REQUIRE(context != NULL, KEFIR_ASMCMP_INDEX_NONE);
     REQUIRE(VALID_INSTR_IDX(context, instr_index), KEFIR_ASMCMP_INDEX_NONE);
 
-    const struct kefir_asmcmp_instruction_handle *const handle = &context->code_content[instr_index];
-    return handle->labels.head;
-}
+    struct kefir_hashtree_node *node;
+    kefir_result_t res = kefir_hashtree_at(&context->label_positions, (kefir_hashtree_key_t) instr_index, &node);
+    if (res == KEFIR_NOT_FOUND) {
+        return KEFIR_ASMCMP_INDEX_NONE;
+    }
+    REQUIRE_OK(res);
 
-kefir_asmcmp_label_index_t kefir_asmcmp_context_instr_label_tail(const struct kefir_asmcmp_context *context,
-                                                                 kefir_asmcmp_instruction_index_t instr_index) {
-    REQUIRE(context != NULL, KEFIR_ASMCMP_INDEX_NONE);
-    REQUIRE(VALID_INSTR_IDX(context, instr_index), KEFIR_ASMCMP_INDEX_NONE);
-
-    const struct kefir_asmcmp_instruction_handle *const handle = &context->code_content[instr_index];
-    return handle->labels.tail;
+    return (kefir_asmcmp_label_index_t) node->value;
 }
 
 kefir_asmcmp_label_index_t kefir_asmcmp_context_instr_label_prev(const struct kefir_asmcmp_context *context,
@@ -363,32 +397,28 @@ kefir_asmcmp_label_index_t kefir_asmcmp_context_instr_label_next(const struct ke
     return label->siblings.next;
 }
 
-kefir_result_t kefir_asmcmp_context_attach_label(const struct kefir_asmcmp_context *context,
-                                                 kefir_asmcmp_instruction_index_t target_instr,
-                                                 kefir_asmcmp_label_index_t label_index) {
+kefir_result_t kefir_asmcmp_context_bind_label(struct kefir_mem *mem, struct kefir_asmcmp_context *context,
+                                               kefir_asmcmp_instruction_index_t target_instr,
+                                               kefir_asmcmp_label_index_t label_index) {
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
-    REQUIRE(VALID_INSTR_IDX(context, target_instr),
+    REQUIRE(VALID_INSTR_IDX(context, target_instr) || target_instr == KEFIR_ASMCMP_INDEX_NONE,
             KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Provided target asmgen instruction index is out of context bounds"));
     REQUIRE(VALID_LABEL_IDX(context, label_index),
             KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Provided asmgen label index is out of context bounds"));
 
     struct kefir_asmcmp_label *const label = &context->labels[label_index];
-    REQUIRE(label->instruction_index == KEFIR_ASMCMP_INDEX_NONE,
-            KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Expected asmgen label to be detached"));
-    REQUIRE_OK(attach_label_to_instr(context, target_instr, label));
+    REQUIRE_OK(attach_label_to_instr(mem, context, target_instr, label));
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_asmcmp_context_detach_label(const struct kefir_asmcmp_context *context,
+kefir_result_t kefir_asmcmp_context_unbind_label(struct kefir_mem *mem, struct kefir_asmcmp_context *context,
                                                  kefir_asmcmp_label_index_t label_index) {
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
     REQUIRE(VALID_LABEL_IDX(context, label_index),
             KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Provided asmgen label index is out of context bounds"));
 
     struct kefir_asmcmp_label *const label = &context->labels[label_index];
-    REQUIRE(label->instruction_index != KEFIR_ASMCMP_INDEX_NONE,
-            KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Expected asmgen label to be attached"));
-    REQUIRE_OK(detach_label(context, label));
+    REQUIRE_OK(detach_label(mem, context, label));
     return KEFIR_OK;
 }
 
@@ -407,7 +437,6 @@ kefir_result_t kefir_asmcmp_virtual_register_get(const struct kefir_asmcmp_conte
 
 kefir_result_t kefir_asmcmp_virtual_register_new(struct kefir_mem *mem, struct kefir_asmcmp_context *context,
                                                  kefir_asmcmp_register_type_t type,
-                                                 kefir_asmcmp_register_t preallocated_reg,
                                                  kefir_asmcmp_virtual_register_index_t *reg_alloc_idx) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
@@ -421,7 +450,6 @@ kefir_result_t kefir_asmcmp_virtual_register_new(struct kefir_mem *mem, struct k
     struct kefir_asmcmp_virtual_register *reg_alloc = &context->virtual_registers[context->virtual_register_length];
     reg_alloc->index = context->virtual_register_length;
     reg_alloc->type = type;
-    reg_alloc->preallocated_reg = preallocated_reg;
 
     *reg_alloc_idx = reg_alloc->index;
     context->virtual_register_length++;

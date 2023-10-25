@@ -12,8 +12,7 @@
         REQUIRE_OK(                                                                                                    \
             kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[1], &arg2_vreg));    \
         REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,                                     \
-                                                     KEFIR_ASMCMP_REGISTER_GENERAL_PURPOSE,                            \
-                                                     KEFIR_ASMCMP_VIRTUAL_REGISTER, &result_vreg));                    \
+                                                     KEFIR_ASMCMP_REGISTER_GENERAL_PURPOSE, &result_vreg));            \
         REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &function->code,                                     \
                                                              kefir_asmcmp_context_instr_tail(&function->code.context), \
                                                              result_vreg, arg1_vreg, &instr_index));                   \
@@ -97,8 +96,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int_xor)(struct kefir_mem *m
         REQUIRE_OK(                                                                                                 \
             kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[0], &arg_vreg));  \
         REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,                                  \
-                                                     KEFIR_ASMCMP_REGISTER_GENERAL_PURPOSE,                         \
-                                                     KEFIR_ASMCMP_VIRTUAL_REGISTER, &result_vreg));                 \
+                                                     KEFIR_ASMCMP_REGISTER_GENERAL_PURPOSE, &result_vreg));         \
         REQUIRE_OK(kefir_asmcmp_amd64_##_op(                                                                        \
             mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),                         \
             &KEFIR_ASMCMP_MAKE_VREG64(result_vreg), &KEFIR_ASMCMP_MAKE_VREG##_width(arg_vreg), &instr_index));      \

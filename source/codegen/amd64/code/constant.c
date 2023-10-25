@@ -14,7 +14,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int_const)(struct kefir_mem 
     kefir_asmcmp_virtual_register_index_t result_vreg;
 
     REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context, KEFIR_ASMCMP_REGISTER_GENERAL_PURPOSE,
-                                                 KEFIR_ASMCMP_VIRTUAL_REGISTER, &result_vreg));
+                                                 &result_vreg));
 
     if (instruction->operation.parameters.imm.integer >= KEFIR_INT32_MIN &&
         instruction->operation.parameters.imm.integer <= KEFIR_INT32_MAX) {
@@ -45,7 +45,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(uint_const)(struct kefir_mem
     kefir_asmcmp_virtual_register_index_t result_vreg;
 
     REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context, KEFIR_ASMCMP_REGISTER_GENERAL_PURPOSE,
-                                                 KEFIR_ASMCMP_VIRTUAL_REGISTER, &result_vreg));
+                                                 &result_vreg));
 
     if (instruction->operation.parameters.imm.uinteger <= (kefir_uint64_t) KEFIR_INT32_MAX) {
         REQUIRE_OK(kefir_asmcmp_amd64_mov(

@@ -26,14 +26,12 @@
 #include "kefir/codegen/asmcmp/base.h"
 #include "kefir/core/hashtreeset.h"
 
-typedef kefir_size_t kefir_asmcmp_register_t;
 typedef kefir_size_t kefir_asmcmp_virtual_register_index_t;
 typedef kefir_size_t kefir_asmcmp_instruction_opcode_t;
 typedef kefir_size_t kefir_asmcmp_instruction_index_t;
 typedef kefir_size_t kefir_asmcmp_label_index_t;
 
 #define KEFIR_ASMCMP_INSTRUCTION_NUM_OF_OPERANDS 3
-#define KEFIR_ASMCMP_VIRTUAL_REGISTER (~(kefir_asmcmp_register_t) 0ull)
 #define KEFIR_ASMCMP_INDEX_NONE (~(kefir_asmcmp_instruction_index_t) 0ull)
 
 typedef enum kefir_asmcmp_value_type {
@@ -97,17 +95,13 @@ typedef struct kefir_asmcmp_instruction_handle {
         kefir_asmcmp_instruction_index_t next;
     } siblings;
 
-    struct {
-        kefir_asmcmp_label_index_t head;
-        kefir_asmcmp_label_index_t tail;
-    } labels;
-
     struct kefir_asmcmp_instruction instr;
 } kefir_asmcmp_instruction_handle_t;
 
 typedef struct kefir_asmcmp_label {
     kefir_asmcmp_label_index_t label;
-    kefir_asmcmp_instruction_index_t instruction_index;
+    kefir_bool_t attached;
+    kefir_asmcmp_instruction_index_t position;
 
     struct {
         kefir_asmcmp_instruction_index_t prev;
@@ -118,12 +112,10 @@ typedef struct kefir_asmcmp_label {
 typedef struct kefir_asmcmp_virtual_register {
     kefir_asmcmp_virtual_register_index_t index;
     kefir_asmcmp_register_type_t type;
-    kefir_asmcmp_register_t preallocated_reg;
 } kefir_asmcmp_virtual_register_t;
 
 typedef struct kefir_asmcmp_context_class {
     kefir_result_t (*opcode_mnemonic)(kefir_asmcmp_instruction_opcode_t, const char **, void *);
-    kefir_result_t (*register_mnemonic)(kefir_asmcmp_register_t, const char **, void *);
 } kefir_asmcmp_context_class_t;
 
 typedef struct kefir_asmcmp_context {
@@ -140,6 +132,8 @@ typedef struct kefir_asmcmp_context {
     kefir_size_t labels_length;
     kefir_size_t labels_capacity;
 
+    struct kefir_hashtree label_positions;
+
     struct kefir_asmcmp_virtual_register *virtual_registers;
     kefir_size_t virtual_register_length;
     kefir_size_t virtual_register_capacity;
@@ -150,8 +144,6 @@ typedef struct kefir_asmcmp_context {
 
 #define KEFIR_ASMCMP_CONTEXT_OPCODE_MNEMONIC(_ctx, _opcode, _mnemonic) \
     ((_ctx)->klass->opcode_mnemonic((_opcode), (_mnemonic), (_ctx)->payload))
-#define KEFIR_ASMCMP_CONTEXT_REGISTER_MNEMONIC(_ctx, _register, _mnemonic) \
-    ((_ctx)->klass->register_mnemonic((_register), (_mnemonic), (_ctx)->payload))
 
 kefir_result_t kefir_asmcmp_context_init(const struct kefir_asmcmp_context_class *, void *,
                                          struct kefir_asmcmp_context *);
@@ -177,21 +169,19 @@ kefir_result_t kefir_asmcmp_context_label_at(const struct kefir_asmcmp_context *
                                              kefir_asmcmp_instruction_index_t *);
 kefir_asmcmp_label_index_t kefir_asmcmp_context_instr_label_head(const struct kefir_asmcmp_context *,
                                                                  kefir_asmcmp_instruction_index_t);
-kefir_asmcmp_label_index_t kefir_asmcmp_context_instr_label_tail(const struct kefir_asmcmp_context *,
-                                                                 kefir_asmcmp_instruction_index_t);
 kefir_asmcmp_label_index_t kefir_asmcmp_context_instr_label_prev(const struct kefir_asmcmp_context *,
                                                                  kefir_asmcmp_label_index_t);
 kefir_asmcmp_label_index_t kefir_asmcmp_context_instr_label_next(const struct kefir_asmcmp_context *,
                                                                  kefir_asmcmp_label_index_t);
-kefir_result_t kefir_asmcmp_context_attach_label(const struct kefir_asmcmp_context *, kefir_asmcmp_instruction_index_t,
+kefir_result_t kefir_asmcmp_context_bind_label(struct kefir_mem *, struct kefir_asmcmp_context *,
+                                               kefir_asmcmp_instruction_index_t, kefir_asmcmp_label_index_t);
+kefir_result_t kefir_asmcmp_context_unbind_label(struct kefir_mem *, struct kefir_asmcmp_context *,
                                                  kefir_asmcmp_label_index_t);
-kefir_result_t kefir_asmcmp_context_detach_label(const struct kefir_asmcmp_context *, kefir_asmcmp_label_index_t);
 
 kefir_result_t kefir_asmcmp_virtual_register_get(const struct kefir_asmcmp_context *,
                                                  kefir_asmcmp_virtual_register_index_t,
                                                  const struct kefir_asmcmp_virtual_register **);
 kefir_result_t kefir_asmcmp_virtual_register_new(struct kefir_mem *, struct kefir_asmcmp_context *,
-                                                 kefir_asmcmp_register_type_t, kefir_asmcmp_register_t,
-                                                 kefir_asmcmp_virtual_register_index_t *);
+                                                 kefir_asmcmp_register_type_t, kefir_asmcmp_virtual_register_index_t *);
 
 #endif

@@ -75,6 +75,7 @@ struct kefir_ir_typeentry *kefir_ir_type_at(const struct kefir_ir_type *, kefir_
 kefir_size_t kefir_ir_type_available_entries(const struct kefir_ir_type *);
 kefir_size_t kefir_ir_type_length(const struct kefir_ir_type *);
 kefir_size_t kefir_ir_type_children(const struct kefir_ir_type *);
+kefir_size_t kefir_ir_type_child_index(const struct kefir_ir_type *, kefir_size_t);
 kefir_size_t kefir_ir_type_length_of(const struct kefir_ir_type *, kefir_size_t);
 kefir_size_t kefir_ir_type_slots_of(const struct kefir_ir_type *, kefir_size_t);
 kefir_size_t kefir_ir_type_slots(const struct kefir_ir_type *);

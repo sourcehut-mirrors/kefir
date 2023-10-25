@@ -23,6 +23,7 @@
 
 #include "kefir/codegen/amd64/codegen.h"
 #include "kefir/codegen/amd64/asmcmp.h"
+#include "kefir/target/abi/amd64/function.h"
 #include "kefir/optimizer/module.h"
 
 typedef struct kefir_codegen_amd64_function {
@@ -30,6 +31,7 @@ typedef struct kefir_codegen_amd64_function {
     const struct kefir_opt_module *module;
     const struct kefir_opt_function *function;
     const struct kefir_opt_code_analysis *function_analysis;
+    struct kefir_abi_amd64_function_decl abi_function_declaration;
     struct kefir_asmcmp_amd64 code;
 
     struct kefir_hashtree instructions;
@@ -53,20 +55,25 @@ kefir_result_t kefir_codegen_amd64_function_assign_vreg(struct kefir_mem *, stru
 kefir_result_t kefir_codegen_amd64_function_vreg_of(struct kefir_codegen_amd64_function *, kefir_opt_instruction_ref_t,
                                                     kefir_asmcmp_virtual_register_index_t *);
 
+// clang-format off
 #define KEFIR_CODEGEN_AMD64_INSTRUCTIONS(_def, _separator)                                               \
-    _def(int_const, KEFIR_OPT_OPCODE_INT_CONST) _separator _def(uint_const, KEFIR_OPT_OPCODE_UINT_CONST) \
-    _separator _def(int_add, KEFIR_OPT_OPCODE_INT_ADD)                                                   \
-    _separator _def(int_sub, KEFIR_OPT_OPCODE_INT_SUB)                                                   \
-    _separator _def(int_mul, KEFIR_OPT_OPCODE_INT_MUL)                                                   \
-    _separator _def(int_and, KEFIR_OPT_OPCODE_INT_AND)                                                   \
-    _separator _def(int_or, KEFIR_OPT_OPCODE_INT_OR)                                                     \
-    _separator _def(int_xor, KEFIR_OPT_OPCODE_INT_XOR)                                                   \
-    _separator _def(int_zero_extend8, KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_8BITS)                          \
-    _separator _def(int_zero_extend16, KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_16BITS)                        \
-    _separator _def(int_zero_extend32, KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_32BITS)                        \
-    _separator _def(int_sign_extend8, KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_8BITS)                          \
-    _separator _def(int_sign_extend16, KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_16BITS)                        \
-    _separator _def(int_sign_extend32, KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_32BITS)
+    _def(get_argument, KEFIR_OPT_OPCODE_GET_ARGUMENT) _separator \
+    _def(return, KEFIR_OPT_OPCODE_RETURN) _separator \
+    _def(int_const, KEFIR_OPT_OPCODE_INT_CONST) _separator \
+    _def(uint_const, KEFIR_OPT_OPCODE_UINT_CONST) _separator \
+    _def(int_add, KEFIR_OPT_OPCODE_INT_ADD) _separator                                                   \
+    _def(int_sub, KEFIR_OPT_OPCODE_INT_SUB) _separator                                                   \
+    _def(int_mul, KEFIR_OPT_OPCODE_INT_MUL) _separator                                                   \
+    _def(int_and, KEFIR_OPT_OPCODE_INT_AND) _separator                                                   \
+    _def(int_or, KEFIR_OPT_OPCODE_INT_OR) _separator                                                     \
+    _def(int_xor, KEFIR_OPT_OPCODE_INT_XOR) _separator                                                   \
+    _def(int_zero_extend8, KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_8BITS) _separator                          \
+    _def(int_zero_extend16, KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_16BITS) _separator                        \
+    _def(int_zero_extend32, KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_32BITS) _separator                        \
+    _def(int_sign_extend8, KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_8BITS) _separator                          \
+    _def(int_sign_extend16, KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_16BITS) _separator                        \
+    _def(int_sign_extend32, KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_32BITS)
+// clang-format on
 
 #define KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(_id) kefir_codegen_amd64_translate_##_id
 

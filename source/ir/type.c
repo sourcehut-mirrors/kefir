@@ -121,6 +121,38 @@ kefir_size_t kefir_ir_type_children(const struct kefir_ir_type *type) {
     return counter;
 }
 
+struct subtree_indexer_param {
+    kefir_size_t current;
+    kefir_size_t target;
+    kefir_size_t result;
+};
+
+static kefir_result_t subtree_indexer(const struct kefir_ir_type *type, kefir_size_t index,
+                                      const struct kefir_ir_typeentry *typeentry, void *payload) {
+    UNUSED(type);
+    UNUSED(index);
+    UNUSED(typeentry);
+    ASSIGN_DECL_CAST(struct subtree_indexer_param *, param, payload);
+    REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR type visitor payload"));
+    if (param->current++ == param->target) {
+        param->result = index;
+        return KEFIR_YIELD;
+    }
+    return KEFIR_OK;
+}
+
+kefir_size_t kefir_ir_type_child_index(const struct kefir_ir_type *type, kefir_size_t index) {
+    REQUIRE(type != NULL, 0);
+
+    struct kefir_ir_type_visitor visitor;
+    kefir_ir_type_visitor_init(&visitor, subtree_indexer);
+    struct subtree_indexer_param param = {.current = 0, .target = index, .result = 0};
+    REQUIRE(
+        kefir_ir_type_visitor_list_nodes(type, &visitor, (void *) &param, 0, kefir_ir_type_length(type)) == KEFIR_YIELD,
+        0);
+    return param.result;
+}
+
 kefir_size_t kefir_ir_type_length_of(const struct kefir_ir_type *type, kefir_size_t index) {
     struct kefir_ir_typeentry *typeentry = kefir_ir_type_at(type, index);
     REQUIRE(typeentry != NULL, 0);

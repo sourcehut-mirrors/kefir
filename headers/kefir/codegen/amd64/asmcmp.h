@@ -52,13 +52,24 @@ typedef enum kefir_asmcmp_amd64_opcode {
 #undef DEF_OPCODE
 } kefir_asmcmp_amd64_opcode_t;
 
+typedef enum kefir_asmcmp_amd64_register_preallocation_type {
+    KEFIR_ASMCMP_AMD64_REGISTER_PREALLOCATION_HINT,
+    KEFIR_ASMCMP_AMD64_REGISTER_PREALLOCATION_REQUIREMENT
+} kefir_asmcmp_amd64_register_preallocation_type_t;
+
 typedef struct kefir_asmcmp_amd64 {
     struct kefir_asmcmp_context context;
     const char *function_name;
+    struct kefir_hashtree register_preallocation;
 } kefir_asmcmp_amd64_t;
 
 kefir_result_t kefir_asmcmp_amd64_init(const char *, struct kefir_asmcmp_amd64 *);
 kefir_result_t kefir_asmcmp_amd64_free(struct kefir_mem *, struct kefir_asmcmp_amd64 *);
+
+kefir_result_t kefir_asmcmp_amd64_preallocate_register(struct kefir_mem *, struct kefir_asmcmp_amd64 *,
+                                                       kefir_asmcmp_virtual_register_index_t,
+                                                       kefir_asmcmp_amd64_register_preallocation_type_t,
+                                                       kefir_asm_amd64_xasmgen_register_t);
 
 #define DEF_OPCODE_virtual(_opcode)
 #define DEF_OPCODE_arg0(_opcode)                                                                 \
