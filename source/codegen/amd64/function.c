@@ -81,10 +81,15 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
     return KEFIR_OK;
 }
 
+static kefir_result_t allocate_registers(struct kefir_mem *mem, struct kefir_codegen_amd64_function *func) {
+    REQUIRE_OK(kefir_codegen_amd64_register_allocator_run(mem, &func->code, &func->register_allocator));
+    return KEFIR_OK;
+}
+
 static kefir_result_t generate_code(struct kefir_mem *mem, struct kefir_codegen_amd64 *codegen,
                                     struct kefir_codegen_amd64_function *func) {
     UNUSED(mem);
-    REQUIRE_OK(kefir_asmcmp_amd64_generate_code(&codegen->xasmgen, &func->code));
+    REQUIRE_OK(kefir_asmcmp_amd64_generate_code(&codegen->xasmgen, &func->code, &func->register_allocator));
     return KEFIR_OK;
 }
 
@@ -95,6 +100,7 @@ static kefir_result_t kefir_codegen_amd64_function_translate_impl(struct kefir_m
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&func->codegen->xasmgen, "%s", func->function->ir_func->name));
 
     REQUIRE_OK(translate_code(mem, func));
+    REQUIRE_OK(allocate_registers(mem, func));
     REQUIRE_OK(generate_code(mem, codegen, func));
     return KEFIR_OK;
 }
@@ -112,16 +118,18 @@ kefir_result_t kefir_codegen_amd64_function_translate(struct kefir_mem *mem, str
 
     struct kefir_codegen_amd64_function func = {
         .codegen = codegen, .module = module, .function = function, .function_analysis = function_analysis};
-    REQUIRE_OK(kefir_asmcmp_amd64_init(function->ir_func->name, &func.code));
+    REQUIRE_OK(kefir_asmcmp_amd64_init(function->ir_func->name, codegen->abi_variant, &func.code));
     REQUIRE_OK(kefir_hashtree_init(&func.instructions, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&func.labels, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&func.virtual_registers, &kefir_hashtree_uint_ops));
+    REQUIRE_OK(kefir_codegen_amd64_register_allocator_init(&func.register_allocator));
     REQUIRE_OK(kefir_abi_amd64_function_decl_alloc(mem, codegen->abi_variant, function->ir_func->declaration,
                                                    &func.abi_function_declaration));
 
     kefir_result_t res = kefir_codegen_amd64_function_translate_impl(mem, codegen, &func);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_abi_amd64_function_decl_free(mem, &func.abi_function_declaration);
+        kefir_codegen_amd64_register_allocator_free(mem, &func.register_allocator);
         kefir_hashtree_free(mem, &func.instructions);
         kefir_hashtree_free(mem, &func.virtual_registers);
         kefir_hashtree_free(mem, &func.labels);
@@ -130,7 +138,15 @@ kefir_result_t kefir_codegen_amd64_function_translate(struct kefir_mem *mem, str
     });
     res = kefir_abi_amd64_function_decl_free(mem, &func.abi_function_declaration);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_abi_amd64_function_decl_free(mem, &func.abi_function_declaration);
+        kefir_codegen_amd64_register_allocator_free(mem, &func.register_allocator);
+        kefir_hashtree_free(mem, &func.instructions);
+        kefir_hashtree_free(mem, &func.virtual_registers);
+        kefir_hashtree_free(mem, &func.labels);
+        kefir_asmcmp_amd64_free(mem, &func.code);
+        return res;
+    });
+    res = kefir_codegen_amd64_register_allocator_free(mem, &func.register_allocator);
+    REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_hashtree_free(mem, &func.instructions);
         kefir_hashtree_free(mem, &func.virtual_registers);
         kefir_hashtree_free(mem, &func.labels);

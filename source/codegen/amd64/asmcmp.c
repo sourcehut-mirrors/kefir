@@ -19,6 +19,7 @@
 */
 
 #include "kefir/codegen/amd64/asmcmp.h"
+#include "kefir/codegen/amd64/register_allocator.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 #include "kefir/target/asm/amd64/xasmgen.h"
@@ -66,7 +67,8 @@ static kefir_result_t free_register_preallocation(struct kefir_mem *mem, struct 
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_asmcmp_amd64_init(const char *function_name, struct kefir_asmcmp_amd64 *target) {
+kefir_result_t kefir_asmcmp_amd64_init(const char *function_name, kefir_abi_amd64_variant_t abi_variant,
+                                       struct kefir_asmcmp_amd64 *target) {
     REQUIRE(function_name != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid function name"));
     REQUIRE(target != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to asmgen amd64 target"));
 
@@ -74,6 +76,7 @@ kefir_result_t kefir_asmcmp_amd64_init(const char *function_name, struct kefir_a
     REQUIRE_OK(kefir_hashtree_init(&target->register_preallocation, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_on_removal(&target->register_preallocation, free_register_preallocation, NULL));
     target->function_name = function_name;
+    target->abi_variant = abi_variant;
     return KEFIR_OK;
 }
 
@@ -132,6 +135,26 @@ kefir_result_t kefir_asmcmp_amd64_preallocate_register(struct kefir_mem *mem, st
         }
     }
 
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_asmcmp_amd64_get_register_preallocation(
+    const struct kefir_asmcmp_amd64 *target, kefir_asmcmp_virtual_register_index_t vreg_idx,
+    kefir_asmcmp_amd64_register_preallocation_type_t *preallocaton_type,
+    kefir_asm_amd64_xasmgen_register_t *preallocation_reg) {
+    REQUIRE(target != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen amd64 target"));
+
+    struct kefir_hashtree_node *node = NULL;
+    kefir_result_t res = kefir_hashtree_at(&target->register_preallocation, (kefir_hashtree_key_t) vreg_idx, &node);
+    if (res == KEFIR_NOT_FOUND) {
+        res = KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find requested amd64 register preallocation");
+    }
+    REQUIRE_OK(res);
+
+    ASSIGN_DECL_CAST(struct register_preallocation *, preallocation, node->value);
+
+    ASSIGN_PTR(preallocaton_type, preallocation->type);
+    ASSIGN_PTR(preallocation_reg, preallocation->reg);
     return KEFIR_OK;
 }
 
@@ -202,53 +225,66 @@ kefir_result_t kefir_asmcmp_amd64_link_virtual_registers(struct kefir_mem *mem, 
 #define FMT_BUF_LEN 255
 
 static kefir_result_t build_xasmgen_operand(struct kefir_asm_amd64_xasmgen_operand *operand,
+                                            const struct kefir_asm_amd64_xasmgen_operand **result_op,
                                             char buf[static FMT_BUF_LEN + 1], const struct kefir_asmcmp_amd64 *target,
+                                            const struct kefir_codegen_amd64_register_allocator *register_allocation,
                                             const struct kefir_asmcmp_value *value) {
+    UNUSED(buf);
     switch (value->type) {
         case KEFIR_ASMCMP_VALUE_TYPE_NONE:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected amd64 asmgen none value");
 
         case KEFIR_ASMCMP_VALUE_TYPE_INTEGER:
-            REQUIRE(kefir_asm_amd64_xasmgen_operand_imm(operand, value->int_immediate) == operand,
-                    KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Failed to initialize amd64 xasmgen operand"));
+            *result_op = kefir_asm_amd64_xasmgen_operand_imm(operand, value->int_immediate);
             break;
 
         case KEFIR_ASMCMP_VALUE_TYPE_UINTEGER:
-            REQUIRE(kefir_asm_amd64_xasmgen_operand_immu(operand, value->uint_immediate) == operand,
-                    KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Failed to initialize amd64 xasmgen operand"));
+            *result_op = kefir_asm_amd64_xasmgen_operand_immu(operand, value->uint_immediate);
             break;
 
         case KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER: {
             const struct kefir_asmcmp_virtual_register *vreg;
             REQUIRE_OK(kefir_asmcmp_virtual_register_get(&target->context, value->vreg.index, &vreg));
-            const char *variant = "";
-            switch (value->vreg.variant) {
-                case KEFIR_ASMCMP_REGISTER_VARIANT_8BIT:
-                    variant = "8";
-                    break;
+            switch (register_allocation->allocations[value->vreg.index].type) {
+                case KEFIR_CODEGEN_AMD64_REGISTER_ALLOCATION_NONE:
+                    return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unallocated amd64 virtual register");
 
-                case KEFIR_ASMCMP_REGISTER_VARIANT_16BIT:
-                    variant = "16";
-                    break;
+                case KEFIR_CODEGEN_AMD64_REGISTER_ALLOCATION_REGISTER: {
+                    kefir_asm_amd64_xasmgen_register_t reg =
+                        register_allocation->allocations[value->vreg.index].direct_reg;
+                    switch (value->vreg.variant) {
+                        case KEFIR_ASMCMP_REGISTER_VARIANT_8BIT:
+                            REQUIRE_OK(kefir_asm_amd64_xasmgen_register8(reg, &reg));
+                            break;
 
-                case KEFIR_ASMCMP_REGISTER_VARIANT_32BIT:
-                    variant = "32";
-                    break;
+                        case KEFIR_ASMCMP_REGISTER_VARIANT_16BIT:
+                            REQUIRE_OK(kefir_asm_amd64_xasmgen_register16(reg, &reg));
+                            break;
 
-                case KEFIR_ASMCMP_REGISTER_VARIANT_NONE:
-                case KEFIR_ASMCMP_REGISTER_VARIANT_64BIT:
-                    variant = "64";
-                    break;
+                        case KEFIR_ASMCMP_REGISTER_VARIANT_32BIT:
+                            REQUIRE_OK(kefir_asm_amd64_xasmgen_register32(reg, &reg));
+                            break;
+
+                        case KEFIR_ASMCMP_REGISTER_VARIANT_NONE:
+                        case KEFIR_ASMCMP_REGISTER_VARIANT_64BIT:
+                            // Intentionally left blank
+                            break;
+                    }
+
+                    *result_op = kefir_asm_amd64_xasmgen_operand_reg(reg);
+                } break;
+
+                case KEFIR_CODEGEN_AMD64_REGISTER_ALLOCATION_SPILL_AREA:
+                    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED,
+                                           "Spill area register allocation is not implemented yet");
             }
-            snprintf(buf, FMT_BUF_LEN, "vreg%s_%" KEFIR_UINT64_FMT, variant, vreg->index);
-            REQUIRE(kefir_asm_amd64_xasmgen_operand_label(operand, buf) == operand,
-                    KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Failed to initialize amd64 xasmgen operand"));
         } break;
     }
     return KEFIR_OK;
 }
 
 static kefir_result_t generate_instr(struct kefir_amd64_xasmgen *xasmgen, const struct kefir_asmcmp_amd64 *target,
+                                     const struct kefir_codegen_amd64_register_allocator *register_allocation,
                                      kefir_asmcmp_instruction_index_t index) {
     const struct kefir_asmcmp_instruction *instr;
     REQUIRE_OK(kefir_asmcmp_context_instr_at(&target->context, index, &instr));
@@ -258,6 +294,7 @@ static kefir_result_t generate_instr(struct kefir_amd64_xasmgen *xasmgen, const 
     }
 
     struct kefir_asm_amd64_xasmgen_operand operands[3];
+    const struct kefir_asm_amd64_xasmgen_operand *result_operands[3];
     char operand_bufs[3][FMT_BUF_LEN + 1];
 
     switch (instr->opcode) {
@@ -266,11 +303,13 @@ static kefir_result_t generate_instr(struct kefir_amd64_xasmgen *xasmgen, const 
     case KEFIR_ASMCMP_AMD64_OPCODE(_opcode):                       \
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_##_xasmgen(xasmgen)); \
         break;
-#define DEF_OPCODE_arg2(_opcode, _xasmgen)                                                         \
-    case KEFIR_ASMCMP_AMD64_OPCODE(_opcode):                                                       \
-        REQUIRE_OK(build_xasmgen_operand(&operands[0], operand_bufs[0], target, &instr->args[0])); \
-        REQUIRE_OK(build_xasmgen_operand(&operands[1], operand_bufs[1], target, &instr->args[1])); \
-        REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_##_xasmgen(xasmgen, &operands[0], &operands[1]));     \
+#define DEF_OPCODE_arg2(_opcode, _xasmgen)                                                                 \
+    case KEFIR_ASMCMP_AMD64_OPCODE(_opcode):                                                               \
+        REQUIRE_OK(build_xasmgen_operand(&operands[0], &result_operands[0], operand_bufs[0], target,       \
+                                         register_allocation, &instr->args[0]));                           \
+        REQUIRE_OK(build_xasmgen_operand(&operands[1], &result_operands[1], operand_bufs[1], target,       \
+                                         register_allocation, &instr->args[1]));                           \
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_##_xasmgen(xasmgen, result_operands[0], result_operands[1])); \
         break;
 #define DEF_OPCODE(_opcode, _xasmgen, _argtp) DEF_OPCODE_##_argtp(_opcode, _xasmgen)
 
@@ -289,14 +328,17 @@ static kefir_result_t generate_instr(struct kefir_amd64_xasmgen *xasmgen, const 
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_asmcmp_amd64_generate_code(struct kefir_amd64_xasmgen *xasmgen,
-                                                const struct kefir_asmcmp_amd64 *target) {
+kefir_result_t kefir_asmcmp_amd64_generate_code(
+    struct kefir_amd64_xasmgen *xasmgen, const struct kefir_asmcmp_amd64 *target,
+    const struct kefir_codegen_amd64_register_allocator *register_allocation) {
     REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 assembly generator"));
     REQUIRE(target != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmcmp amd64 target"));
+    REQUIRE(register_allocation != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 register allocation"));
 
     for (kefir_asmcmp_instruction_index_t idx = kefir_asmcmp_context_instr_head(&target->context);
          idx != KEFIR_ASMCMP_INDEX_NONE; idx = kefir_asmcmp_context_instr_next(&target->context, idx)) {
-        REQUIRE_OK(generate_instr(xasmgen, target, idx));
+        REQUIRE_OK(generate_instr(xasmgen, target, register_allocation, idx));
     }
     return KEFIR_OK;
 }

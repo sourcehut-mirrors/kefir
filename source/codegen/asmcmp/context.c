@@ -422,6 +422,15 @@ kefir_result_t kefir_asmcmp_context_unbind_label(struct kefir_mem *mem, struct k
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_asmcmp_number_of_virtual_registers(const struct kefir_asmcmp_context *context,
+                                                        kefir_size_t *length) {
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
+    REQUIRE(length != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to length"));
+
+    *length = context->virtual_register_length;
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_asmcmp_virtual_register_get(const struct kefir_asmcmp_context *context,
                                                  kefir_asmcmp_virtual_register_index_t idx,
                                                  const struct kefir_asmcmp_virtual_register **reg_alloc) {

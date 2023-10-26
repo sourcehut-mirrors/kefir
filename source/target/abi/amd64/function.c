@@ -1,6 +1,56 @@
+/*
+    SPDX-License-Identifier: GPL-3.0
+
+    Copyright (C) 2020-2023  Jevgenijs Protopopovs
+
+    This file is part of Kefir project.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, version 3.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 #include "kefir/target/abi/amd64/function.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
+
+static const kefir_asm_amd64_xasmgen_register_t SYSV_CALLEE_PRESERVED_GENERAL_PURPOSE_REGS[] = {
+    KEFIR_AMD64_XASMGEN_REGISTER_RBX, KEFIR_AMD64_XASMGEN_REGISTER_R12, KEFIR_AMD64_XASMGEN_REGISTER_R13,
+    KEFIR_AMD64_XASMGEN_REGISTER_R14, KEFIR_AMD64_XASMGEN_REGISTER_R15};
+
+static const kefir_size_t NUM_OF_SYSV_CALLEE_PRESERVED_GENERAL_PURPOSE_REGS =
+    sizeof(SYSV_CALLEE_PRESERVED_GENERAL_PURPOSE_REGS) / sizeof(SYSV_CALLEE_PRESERVED_GENERAL_PURPOSE_REGS[0]);
+
+kefir_result_t kefir_abi_amd64_get_callee_preserved_general_purpose_register(
+    kefir_abi_amd64_variant_t variant, kefir_size_t index, kefir_asm_amd64_xasmgen_register_t *reg_ptr) {
+    REQUIRE(reg_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to amd64 register"));
+
+    switch (variant) {
+        case KEFIR_ABI_AMD64_VARIANT_SYSTEM_V:
+            REQUIRE(index < NUM_OF_SYSV_CALLEE_PRESERVED_GENERAL_PURPOSE_REGS,
+                    KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Requested register index is out of bounds"));
+            *reg_ptr = SYSV_CALLEE_PRESERVED_GENERAL_PURPOSE_REGS[index];
+            break;
+    }
+    return KEFIR_OK;
+}
+
+kefir_size_t kefir_abi_amd64_num_of_callee_preserved_general_purpose_registers(kefir_abi_amd64_variant_t variant) {
+    switch (variant) {
+        case KEFIR_ABI_AMD64_VARIANT_SYSTEM_V:
+            return NUM_OF_SYSV_CALLEE_PRESERVED_GENERAL_PURPOSE_REGS;
+    }
+
+    return 0;
+}
 
 struct abi_amd64_payload {
     const struct kefir_ir_function_decl *decl;

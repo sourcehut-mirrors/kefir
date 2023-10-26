@@ -178,6 +178,7 @@ kefir_result_t kefir_asmcmp_context_bind_label(struct kefir_mem *, struct kefir_
 kefir_result_t kefir_asmcmp_context_unbind_label(struct kefir_mem *, struct kefir_asmcmp_context *,
                                                  kefir_asmcmp_label_index_t);
 
+kefir_result_t kefir_asmcmp_number_of_virtual_registers(const struct kefir_asmcmp_context *, kefir_size_t *);
 kefir_result_t kefir_asmcmp_virtual_register_get(const struct kefir_asmcmp_context *,
                                                  kefir_asmcmp_virtual_register_index_t,
                                                  const struct kefir_asmcmp_virtual_register **);

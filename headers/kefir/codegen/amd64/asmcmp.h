@@ -23,6 +23,9 @@
 
 #include "kefir/codegen/asmcmp/context.h"
 #include "kefir/target/asm/amd64/xasmgen.h"
+#include "kefir/target/abi/amd64/base.h"
+
+typedef struct kefir_codegen_amd64_register_allocator kefir_codegen_amd64_register_allocator_t;  // Forward declaration
 
 // clang-format off
 #define KEFIR_ASMCMP_AMD64_OPCODES(_opcode, _separator) \
@@ -61,15 +64,21 @@ typedef struct kefir_asmcmp_amd64 {
     struct kefir_asmcmp_context context;
     const char *function_name;
     struct kefir_hashtree register_preallocation;
+    kefir_abi_amd64_variant_t abi_variant;
 } kefir_asmcmp_amd64_t;
 
-kefir_result_t kefir_asmcmp_amd64_init(const char *, struct kefir_asmcmp_amd64 *);
+kefir_result_t kefir_asmcmp_amd64_init(const char *, kefir_abi_amd64_variant_t, struct kefir_asmcmp_amd64 *);
 kefir_result_t kefir_asmcmp_amd64_free(struct kefir_mem *, struct kefir_asmcmp_amd64 *);
 
 kefir_result_t kefir_asmcmp_amd64_preallocate_register(struct kefir_mem *, struct kefir_asmcmp_amd64 *,
                                                        kefir_asmcmp_virtual_register_index_t,
                                                        kefir_asmcmp_amd64_register_preallocation_type_t,
                                                        kefir_asm_amd64_xasmgen_register_t);
+
+kefir_result_t kefir_asmcmp_amd64_get_register_preallocation(const struct kefir_asmcmp_amd64 *,
+                                                             kefir_asmcmp_virtual_register_index_t,
+                                                             kefir_asmcmp_amd64_register_preallocation_type_t *,
+                                                             kefir_asm_amd64_xasmgen_register_t *);
 
 #define DEF_OPCODE_virtual(_opcode)
 #define DEF_OPCODE_arg0(_opcode)                                                                 \
@@ -94,6 +103,7 @@ kefir_result_t kefir_asmcmp_amd64_link_virtual_registers(struct kefir_mem *, str
                                                          kefir_asmcmp_virtual_register_index_t,
                                                          kefir_asmcmp_instruction_index_t *);
 
-kefir_result_t kefir_asmcmp_amd64_generate_code(struct kefir_amd64_xasmgen *, const struct kefir_asmcmp_amd64 *);
+kefir_result_t kefir_asmcmp_amd64_generate_code(struct kefir_amd64_xasmgen *, const struct kefir_asmcmp_amd64 *,
+                                                const struct kefir_codegen_amd64_register_allocator *);
 
 #endif
