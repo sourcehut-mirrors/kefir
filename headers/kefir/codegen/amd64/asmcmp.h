@@ -136,7 +136,8 @@ kefir_result_t kefir_asmcmp_amd64_function_epilogue(struct kefir_mem *, struct k
                                                     kefir_asmcmp_instruction_index_t,
                                                     kefir_asmcmp_instruction_index_t *);
 
-kefir_result_t kefir_asmcmp_amd64_generate_code(struct kefir_amd64_xasmgen *, const struct kefir_asmcmp_amd64 *,
+kefir_result_t kefir_asmcmp_amd64_generate_code(struct kefir_mem *, struct kefir_amd64_xasmgen *,
+                                                const struct kefir_asmcmp_amd64 *,
                                                 const struct kefir_codegen_amd64_register_allocator *,
                                                 const struct kefir_codegen_amd64_stack_frame *);
 

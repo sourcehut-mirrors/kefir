@@ -87,8 +87,7 @@ static kefir_result_t allocate_registers(struct kefir_mem *mem, struct kefir_cod
 
 static kefir_result_t generate_code(struct kefir_mem *mem, struct kefir_codegen_amd64 *codegen,
                                     struct kefir_codegen_amd64_function *func) {
-    UNUSED(mem);
-    REQUIRE_OK(kefir_asmcmp_amd64_generate_code(&codegen->xasmgen, &func->code, &func->register_allocator,
+    REQUIRE_OK(kefir_asmcmp_amd64_generate_code(mem, &codegen->xasmgen, &func->code, &func->register_allocator,
                                                 &func->stack_frame));
     return KEFIR_OK;
 }

@@ -54,7 +54,8 @@ typedef struct kefir_codegen_amd64_register_allocator {
         struct kefir_hashtreeset alive_virtual_registers;
         struct kefir_hashtreeset conflicting_requirements;
         struct kefir_bitset spill_area;
-        kefir_asm_amd64_xasmgen_register_t *register_allocation_order;
+        kefir_asm_amd64_xasmgen_register_t *gp_register_allocation_order;
+        kefir_size_t num_of_gp_registers;
     } internal;
 } kefir_codegen_amd64_register_allocator_t;
 
@@ -73,5 +74,7 @@ kefir_result_t kefir_codegen_amd64_register_allocator_is_register_used(
     const struct kefir_codegen_amd64_register_allocator *, kefir_asm_amd64_xasmgen_register_t, kefir_bool_t *);
 kefir_result_t kefir_codegen_amd64_register_allocator_num_of_spill_slots(
     const struct kefir_codegen_amd64_register_allocator *, kefir_size_t *);
+kefir_result_t kefir_codegen_amd64_register_allocator_linear_position_of(
+    const struct kefir_codegen_amd64_register_allocator *, kefir_asmcmp_instruction_index_t, kefir_size_t *);
 
 #endif
