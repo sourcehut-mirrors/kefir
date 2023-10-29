@@ -23,6 +23,7 @@
 
 #include "kefir/codegen/amd64/asmcmp.h"
 #include "kefir/core/graph.h"
+#include "kefir/core/bitset.h"
 
 typedef enum kefir_codegen_amd64_register_allocation_type {
     KEFIR_CODEGEN_AMD64_REGISTER_ALLOCATION_NONE,
@@ -45,12 +46,14 @@ typedef struct kefir_codegen_amd64_register_allocation {
 
 typedef struct kefir_codegen_amd64_register_allocator {
     struct kefir_codegen_amd64_register_allocation *allocations;
+    kefir_size_t num_of_vregs;
     struct kefir_hashtreeset used_registers;
     struct {
         struct kefir_graph liveness_graph;
         struct kefir_hashtree instruction_linear_indices;
         struct kefir_hashtreeset alive_virtual_registers;
         struct kefir_hashtreeset conflicting_requirements;
+        struct kefir_bitset spill_area;
         kefir_asm_amd64_xasmgen_register_t *register_allocation_order;
     } internal;
 } kefir_codegen_amd64_register_allocator_t;
@@ -61,5 +64,9 @@ kefir_result_t kefir_codegen_amd64_register_allocator_free(struct kefir_mem *,
 
 kefir_result_t kefir_codegen_amd64_register_allocator_run(struct kefir_mem *, struct kefir_asmcmp_amd64 *,
                                                           struct kefir_codegen_amd64_register_allocator *);
+
+kefir_result_t kefir_codegen_amd64_register_allocation_of(const struct kefir_codegen_amd64_register_allocator *,
+                                                          kefir_asmcmp_virtual_register_index_t,
+                                                          const struct kefir_codegen_amd64_register_allocation **);
 
 #endif

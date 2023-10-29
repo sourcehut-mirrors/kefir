@@ -38,7 +38,9 @@ typedef enum kefir_asmcmp_value_type {
     KEFIR_ASMCMP_VALUE_TYPE_NONE = 0,
     KEFIR_ASMCMP_VALUE_TYPE_INTEGER,
     KEFIR_ASMCMP_VALUE_TYPE_UINTEGER,
-    KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER
+    KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER,
+    KEFIR_ASMCMP_VALUE_TYPE_INDIRECT,
+    KEFIR_ASMCMP_VALUE_TYPE_LOCAL_VAR_ADDRESS
 } kefir_asmcmp_value_type_t;
 
 typedef enum kefir_asmcmp_register_type { KEFIR_ASMCMP_REGISTER_GENERAL_PURPOSE } kefir_asmcmp_register_type_t;
@@ -61,6 +63,12 @@ typedef struct kefir_asmcmp_value {
             kefir_asmcmp_virtual_register_index_t index;
             kefir_asmcmp_register_variant_t variant;
         } vreg;
+        struct {
+            kefir_asmcmp_virtual_register_index_t base;
+            kefir_int64_t offset;
+            kefir_asmcmp_register_variant_t variant;
+        } indirect;
+        kefir_size_t local_var_offset;
     };
 } kefir_asmcmp_value_t;
 
@@ -81,6 +89,11 @@ typedef struct kefir_asmcmp_value {
 #define KEFIR_ASMCMP_MAKE_VREG64(_vreg)                                            \
     ((struct kefir_asmcmp_value){.type = KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER, \
                                  .vreg = {.index = (_vreg), .variant = KEFIR_ASMCMP_REGISTER_VARIANT_64BIT}})
+#define KEFIR_ASMCMP_MAKE_INDIRECT(_vreg, _offset, _variant)               \
+    ((struct kefir_asmcmp_value){.type = KEFIR_ASMCMP_VALUE_TYPE_INDIRECT, \
+                                 .indirect = {.base = (_vreg), .offset = (_offset), .variant = (_variant)}})
+#define KEFIR_ASMCMP_MAKE_LOCAL_VAR_ADDR(_offset) \
+    ((struct kefir_asmcmp_value){.type = KEFIR_ASMCMP_VALUE_TYPE_LOCAL_VAR_ADDRESS, .local_var_offset = (_offset)})
 
 typedef struct kefir_asmcmp_instruction {
     kefir_asmcmp_instruction_opcode_t opcode;

@@ -35,10 +35,12 @@ typedef struct kefir_codegen_amd64_function {
     struct kefir_abi_amd64_function_decl abi_function_declaration;
     struct kefir_asmcmp_amd64 code;
     struct kefir_codegen_amd64_register_allocator register_allocator;
+    struct kefir_abi_amd64_type_layout locals_layout;
 
     struct kefir_hashtree instructions;
     struct kefir_hashtree labels;
     struct kefir_hashtree virtual_registers;
+    kefir_asmcmp_instruction_index_t argument_touch_instr;
 } kefir_codegen_amd64_function_t;
 
 kefir_result_t kefir_codegen_amd64_function_translate(struct kefir_mem *, struct kefir_codegen_amd64 *,
@@ -47,10 +49,6 @@ kefir_result_t kefir_codegen_amd64_function_translate(struct kefir_mem *, struct
                                                       const struct kefir_opt_code_analysis *);
 
 #ifdef KEFIR_CODEGEN_AMD64_FUNCTION_INTERNAL
-kefir_result_t kefir_codegen_amd64_function_register_instruction(struct kefir_mem *,
-                                                                 struct kefir_codegen_amd64_function *,
-                                                                 kefir_opt_instruction_ref_t,
-                                                                 kefir_asmcmp_instruction_index_t);
 kefir_result_t kefir_codegen_amd64_function_assign_vreg(struct kefir_mem *, struct kefir_codegen_amd64_function *,
                                                         kefir_opt_instruction_ref_t,
                                                         kefir_asmcmp_virtual_register_index_t);
@@ -63,6 +61,18 @@ kefir_result_t kefir_codegen_amd64_function_vreg_of(struct kefir_codegen_amd64_f
     _def(return, KEFIR_OPT_OPCODE_RETURN) _separator \
     _def(int_const, KEFIR_OPT_OPCODE_INT_CONST) _separator \
     _def(uint_const, KEFIR_OPT_OPCODE_UINT_CONST) _separator \
+    _def(get_local, KEFIR_OPT_OPCODE_GET_LOCAL) _separator \
+    _def(int8_store, KEFIR_OPT_OPCODE_INT8_STORE) _separator \
+    _def(int16_store, KEFIR_OPT_OPCODE_INT16_STORE) _separator \
+    _def(int32_store, KEFIR_OPT_OPCODE_INT32_STORE) _separator \
+    _def(int64_store, KEFIR_OPT_OPCODE_INT64_STORE) _separator \
+    _def(int8_load_signed, KEFIR_OPT_OPCODE_INT8_LOAD_SIGNED) _separator \
+    _def(int8_load_unsigned, KEFIR_OPT_OPCODE_INT8_LOAD_UNSIGNED) _separator \
+    _def(int16_load_signed, KEFIR_OPT_OPCODE_INT16_LOAD_SIGNED) _separator \
+    _def(int16_load_unsigned, KEFIR_OPT_OPCODE_INT16_LOAD_UNSIGNED) _separator \
+    _def(int32_load_signed, KEFIR_OPT_OPCODE_INT32_LOAD_SIGNED) _separator \
+    _def(int32_load_unsigned, KEFIR_OPT_OPCODE_INT32_LOAD_UNSIGNED) _separator \
+    _def(int64_load, KEFIR_OPT_OPCODE_INT64_LOAD) _separator \
     _def(int_add, KEFIR_OPT_OPCODE_INT_ADD) _separator                                                   \
     _def(int_sub, KEFIR_OPT_OPCODE_INT_SUB) _separator                                                   \
     _def(int_mul, KEFIR_OPT_OPCODE_INT_MUL) _separator                                                   \

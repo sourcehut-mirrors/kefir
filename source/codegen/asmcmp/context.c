@@ -132,12 +132,18 @@ static kefir_result_t validate_value(struct kefir_asmcmp_context *context, const
         case KEFIR_ASMCMP_VALUE_TYPE_NONE:
         case KEFIR_ASMCMP_VALUE_TYPE_INTEGER:
         case KEFIR_ASMCMP_VALUE_TYPE_UINTEGER:
+        case KEFIR_ASMCMP_VALUE_TYPE_LOCAL_VAR_ADDRESS:
             // Intentionally left blank
             break;
 
         case KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER: {
             const struct kefir_asmcmp_virtual_register *vreg;
             REQUIRE_OK(kefir_asmcmp_virtual_register_get(context, value->vreg.index, &vreg));
+        } break;
+
+        case KEFIR_ASMCMP_VALUE_TYPE_INDIRECT: {
+            const struct kefir_asmcmp_virtual_register *vreg;
+            REQUIRE_OK(kefir_asmcmp_virtual_register_get(context, value->indirect.base, &vreg));
         } break;
     }
     return KEFIR_OK;
@@ -172,7 +178,7 @@ kefir_result_t kefir_asmcmp_context_instr_insert_after(struct kefir_mem *mem, st
 
     struct kefir_asmcmp_instruction_handle *const prev_handle = HANDLE_AT(context, after_index);
     struct kefir_asmcmp_instruction_handle *const next_handle =
-        prev_handle != NULL ? HANDLE_AT(context, prev_handle->siblings.next) : NULL;
+        prev_handle != NULL ? HANDLE_AT(context, prev_handle->siblings.next) : HANDLE_AT(context, context->code.head);
 
     handle->siblings.prev = after_index;
     handle->siblings.next = next_handle != NULL ? next_handle->index : KEFIR_ASMCMP_INDEX_NONE;
