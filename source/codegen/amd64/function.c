@@ -57,6 +57,8 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
                                          (kefir_hashtree_value_t) asmlabel));
     }
 
+    REQUIRE_OK(kefir_asmcmp_amd64_function_prologue(mem, &func->code,
+                                                    kefir_asmcmp_context_instr_tail(&func->code.context), NULL));
     // Translate blocks
     for (kefir_size_t block_idx = 0; block_idx < func->function_analysis->block_linearization_length; block_idx++) {
         const struct kefir_opt_code_analysis_block_properties *block_props =
@@ -86,7 +88,8 @@ static kefir_result_t allocate_registers(struct kefir_mem *mem, struct kefir_cod
 static kefir_result_t generate_code(struct kefir_mem *mem, struct kefir_codegen_amd64 *codegen,
                                     struct kefir_codegen_amd64_function *func) {
     UNUSED(mem);
-    REQUIRE_OK(kefir_asmcmp_amd64_generate_code(&codegen->xasmgen, &func->code, &func->register_allocator));
+    REQUIRE_OK(kefir_asmcmp_amd64_generate_code(&codegen->xasmgen, &func->code, &func->register_allocator,
+                                                &func->stack_frame));
     return KEFIR_OK;
 }
 
@@ -98,6 +101,9 @@ static kefir_result_t kefir_codegen_amd64_function_translate_impl(struct kefir_m
 
     REQUIRE_OK(translate_code(mem, func));
     REQUIRE_OK(allocate_registers(mem, func));
+    REQUIRE_OK(kefir_codegen_amd64_stack_frame_calculate(codegen->abi_variant, &func->register_allocator,
+                                                         func->function->ir_func->locals, &func->locals_layout,
+                                                         &func->stack_frame));
     REQUIRE_OK(generate_code(mem, codegen, func));
     return KEFIR_OK;
 }
@@ -122,6 +128,7 @@ kefir_result_t kefir_codegen_amd64_function_translate(struct kefir_mem *mem, str
     REQUIRE_OK(kefir_hashtree_init(&func.instructions, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&func.labels, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&func.virtual_registers, &kefir_hashtree_uint_ops));
+    REQUIRE_OK(kefir_codegen_amd64_stack_frame_init(&func.stack_frame));
     REQUIRE_OK(kefir_codegen_amd64_register_allocator_init(&func.register_allocator));
     REQUIRE_OK(kefir_abi_amd64_function_decl_alloc(mem, codegen->abi_variant, function->ir_func->declaration,
                                                    &func.abi_function_declaration));

@@ -30,6 +30,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(return)(struct kefir_mem *me
     REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
 
+    kefir_asmcmp_virtual_register_index_t vreg = KEFIR_ASMCMP_INDEX_NONE;
     if (instruction->operation.parameters.refs[0] != KEFIR_ID_NONE) {
         kefir_asmcmp_virtual_register_index_t arg_vreg;
         REQUIRE_OK(
@@ -41,7 +42,6 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(return)(struct kefir_mem *me
         struct kefir_abi_amd64_function_parameter function_return;
         REQUIRE_OK(kefir_abi_amd64_function_parameters_at(function_returns, 0, &function_return));
 
-        kefir_asmcmp_virtual_register_index_t vreg;
         switch (function_return.location) {
             case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_NONE:
                 // Intentionally left blank
@@ -68,8 +68,15 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(return)(struct kefir_mem *me
         }
     }
 
+    REQUIRE_OK(kefir_asmcmp_amd64_function_epilogue(mem, &function->code,
+                                                    kefir_asmcmp_context_instr_tail(&function->code.context), NULL));
+
     REQUIRE_OK(
         kefir_asmcmp_amd64_ret(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), NULL));
 
+    if (vreg != KEFIR_ASMCMP_INDEX_NONE) {
+        REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), vreg, NULL));
+    }
     return KEFIR_OK;
 }

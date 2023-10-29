@@ -69,4 +69,9 @@ kefir_result_t kefir_codegen_amd64_register_allocation_of(const struct kefir_cod
                                                           kefir_asmcmp_virtual_register_index_t,
                                                           const struct kefir_codegen_amd64_register_allocation **);
 
+kefir_result_t kefir_codegen_amd64_register_allocator_is_register_used(
+    const struct kefir_codegen_amd64_register_allocator *, kefir_asm_amd64_xasmgen_register_t, kefir_bool_t *);
+kefir_result_t kefir_codegen_amd64_register_allocator_num_of_spill_slots(
+    const struct kefir_codegen_amd64_register_allocator *, kefir_size_t *);
+
 #endif

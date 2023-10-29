@@ -490,3 +490,22 @@ kefir_result_t kefir_codegen_amd64_register_allocation_of(
     *allocation_ptr = &allocator->allocations[vreg_idx];
     return KEFIR_OK;
 }
+
+kefir_result_t kefir_codegen_amd64_register_allocator_is_register_used(
+    const struct kefir_codegen_amd64_register_allocator *allocator, kefir_asm_amd64_xasmgen_register_t reg,
+    kefir_bool_t *flag) {
+    REQUIRE(allocator != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 register allocator"));
+    REQUIRE(flag != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
+
+    *flag = kefir_hashtreeset_has(&allocator->used_registers, (kefir_hashtreeset_entry_t) reg);
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_codegen_amd64_register_allocator_num_of_spill_slots(
+    const struct kefir_codegen_amd64_register_allocator *allocator, kefir_size_t *slots) {
+    REQUIRE(allocator != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 register allocator"));
+    REQUIRE(slots != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to number of spill slots"));
+
+    REQUIRE_OK(kefir_bitset_length(&allocator->internal.spill_area, slots));
+    return KEFIR_OK;
+}

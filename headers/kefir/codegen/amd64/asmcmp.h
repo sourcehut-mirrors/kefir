@@ -26,6 +26,7 @@
 #include "kefir/target/abi/amd64/base.h"
 
 typedef struct kefir_codegen_amd64_register_allocator kefir_codegen_amd64_register_allocator_t;  // Forward declaration
+typedef struct kefir_codegen_amd64_stack_frame kefir_codegen_amd64_stack_frame_t;                // Forward declaration
 
 // clang-format off
 #define KEFIR_ASMCMP_AMD64_OPCODES(_opcode, _separator) \
@@ -33,6 +34,8 @@ typedef struct kefir_codegen_amd64_register_allocator kefir_codegen_amd64_regist
     _opcode(virtual_register_link, _, virtual) _separator \
     _opcode(touch_virtual_register, _, virtual) _separator \
     _opcode(load_local_var_address, _, virtual) _separator \
+    _opcode(function_prologue, _, virtual) _separator \
+    _opcode(function_epilogue, _, virtual) _separator \
     /* AMD64 opcodes */ \
     /* Control flow */ \
     _opcode(ret, RET, arg0) _separator \
@@ -126,7 +129,15 @@ kefir_result_t kefir_asmcmp_amd64_touch_virtual_register(struct kefir_mem *, str
                                                          kefir_asmcmp_virtual_register_index_t,
                                                          kefir_asmcmp_instruction_index_t *);
 
+kefir_result_t kefir_asmcmp_amd64_function_prologue(struct kefir_mem *, struct kefir_asmcmp_amd64 *,
+                                                    kefir_asmcmp_instruction_index_t,
+                                                    kefir_asmcmp_instruction_index_t *);
+kefir_result_t kefir_asmcmp_amd64_function_epilogue(struct kefir_mem *, struct kefir_asmcmp_amd64 *,
+                                                    kefir_asmcmp_instruction_index_t,
+                                                    kefir_asmcmp_instruction_index_t *);
+
 kefir_result_t kefir_asmcmp_amd64_generate_code(struct kefir_amd64_xasmgen *, const struct kefir_asmcmp_amd64 *,
-                                                const struct kefir_codegen_amd64_register_allocator *);
+                                                const struct kefir_codegen_amd64_register_allocator *,
+                                                const struct kefir_codegen_amd64_stack_frame *);
 
 #endif

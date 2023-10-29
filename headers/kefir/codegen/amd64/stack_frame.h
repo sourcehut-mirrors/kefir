@@ -1,0 +1,63 @@
+/*
+    SPDX-License-Identifier: GPL-3.0
+
+    Copyright (C) 2020-2023  Jevgenijs Protopopovs
+
+    This file is part of Kefir project.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, version 3.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+#ifndef KEFIR_CODEGEN_AMD64_STACK_FRAME_H_
+#define KEFIR_CODEGEN_AMD64_STACK_FRAME_H_
+
+#include "kefir/codegen/amd64/codegen.h"
+#include "kefir/codegen/amd64/register_allocator.h"
+#include "kefir/target/abi/amd64/type_layout.h"
+#include "kefir/target/asm/amd64/xasmgen.h"
+
+typedef struct kefir_codegen_amd64_stack_frame {
+    struct {
+        kefir_size_t preserved_regs;
+        kefir_size_t local_area;
+        kefir_size_t local_area_alignment;
+        kefir_size_t spill_area;
+        kefir_size_t allocated_size;
+        kefir_size_t total_size;
+    } sizes;
+
+    struct {
+        kefir_int64_t previous_base;
+        kefir_int64_t preserved_regs;
+        kefir_int64_t local_area;
+        kefir_int64_t spill_area;
+        kefir_int64_t top_of_frame;
+    } offsets;
+} kefir_codegen_amd64_stack_frame_t;
+
+kefir_result_t kefir_codegen_amd64_stack_frame_init(struct kefir_codegen_amd64_stack_frame *);
+
+kefir_result_t kefir_codegen_amd64_stack_frame_calculate(kefir_abi_amd64_variant_t,
+                                                         const struct kefir_codegen_amd64_register_allocator *,
+                                                         const struct kefir_ir_type *,
+                                                         const struct kefir_abi_amd64_type_layout *,
+                                                         struct kefir_codegen_amd64_stack_frame *);
+
+kefir_result_t kefir_codegen_amd64_stack_frame_prologue(struct kefir_amd64_xasmgen *, kefir_abi_amd64_variant_t,
+                                                        const struct kefir_codegen_amd64_register_allocator *,
+                                                        const struct kefir_codegen_amd64_stack_frame *);
+kefir_result_t kefir_codegen_amd64_stack_frame_epilogue(struct kefir_amd64_xasmgen *, kefir_abi_amd64_variant_t,
+                                                        const struct kefir_codegen_amd64_register_allocator *,
+                                                        const struct kefir_codegen_amd64_stack_frame *);
+
+#endif
