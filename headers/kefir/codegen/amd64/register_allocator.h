@@ -22,6 +22,7 @@
 #define KEFIR_CODEGEN_AMD64_REGISTER_ALLOCATOR_H_
 
 #include "kefir/codegen/amd64/asmcmp.h"
+#include "kefir/codegen/amd64/stack_frame.h"
 #include "kefir/core/graph.h"
 #include "kefir/core/bitset.h"
 
@@ -64,16 +65,13 @@ kefir_result_t kefir_codegen_amd64_register_allocator_free(struct kefir_mem *,
                                                            struct kefir_codegen_amd64_register_allocator *);
 
 kefir_result_t kefir_codegen_amd64_register_allocator_run(struct kefir_mem *, struct kefir_asmcmp_amd64 *,
+                                                          struct kefir_codegen_amd64_stack_frame *,
                                                           struct kefir_codegen_amd64_register_allocator *);
 
 kefir_result_t kefir_codegen_amd64_register_allocation_of(const struct kefir_codegen_amd64_register_allocator *,
                                                           kefir_asmcmp_virtual_register_index_t,
                                                           const struct kefir_codegen_amd64_register_allocation **);
 
-kefir_result_t kefir_codegen_amd64_register_allocator_is_register_used(
-    const struct kefir_codegen_amd64_register_allocator *, kefir_asm_amd64_xasmgen_register_t, kefir_bool_t *);
-kefir_result_t kefir_codegen_amd64_register_allocator_num_of_spill_slots(
-    const struct kefir_codegen_amd64_register_allocator *, kefir_size_t *);
 kefir_result_t kefir_codegen_amd64_register_allocator_linear_position_of(
     const struct kefir_codegen_amd64_register_allocator *, kefir_asmcmp_instruction_index_t, kefir_size_t *);
 

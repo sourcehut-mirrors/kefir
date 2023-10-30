@@ -29,12 +29,42 @@ kefir_result_t kefir_codegen_amd64_stack_frame_init(struct kefir_codegen_amd64_s
     REQUIRE(frame != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to amd64 stack frame"));
 
     memset(frame, 0, sizeof(struct kefir_codegen_amd64_stack_frame));
+    REQUIRE_OK(kefir_hashtreeset_init(&frame->requirements.used_registers, &kefir_hashtree_uint_ops));
     return KEFIR_OK;
 }
 
-static kefir_result_t calculate_sizes(kefir_abi_amd64_variant_t abi_variant,
-                                      const struct kefir_codegen_amd64_register_allocator *register_allocator,
-                                      const struct kefir_ir_type *locals_type,
+kefir_result_t kefir_codegen_amd64_stack_frame_free(struct kefir_mem *mem,
+                                                    struct kefir_codegen_amd64_stack_frame *frame) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(frame != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 stack frame"));
+
+    REQUIRE_OK(kefir_hashtreeset_free(mem, &frame->requirements.used_registers));
+    memset(frame, 0, sizeof(struct kefir_codegen_amd64_stack_frame));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_codegen_amd64_stack_frame_ensure_spill_area(struct kefir_codegen_amd64_stack_frame *frame,
+                                                                 kefir_size_t slots) {
+    REQUIRE(frame != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 stack frame"));
+
+    frame->requirements.spill_area_slots = MAX(frame->requirements.spill_area_slots, slots);
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_codegen_amd64_stack_frame_use_register(struct kefir_mem *mem,
+                                                            struct kefir_codegen_amd64_stack_frame *frame,
+                                                            kefir_asm_amd64_xasmgen_register_t reg) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(frame != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 stack frame"));
+
+    if (!kefir_hashtreeset_has(&frame->requirements.used_registers, (kefir_hashtreeset_entry_t) reg)) {
+        REQUIRE_OK(kefir_hashtreeset_add(mem, &frame->requirements.used_registers, (kefir_hashtreeset_entry_t) reg));
+        frame->requirements.num_of_used_registers++;
+    }
+    return KEFIR_OK;
+}
+
+static kefir_result_t calculate_sizes(kefir_abi_amd64_variant_t abi_variant, const struct kefir_ir_type *locals_type,
                                       const struct kefir_abi_amd64_type_layout *locals_type_layout,
                                       struct kefir_codegen_amd64_stack_frame *frame) {
     frame->sizes.preserved_regs = 0;
@@ -42,9 +72,7 @@ static kefir_result_t calculate_sizes(kefir_abi_amd64_variant_t abi_variant,
         kefir_asm_amd64_xasmgen_register_t reg;
         REQUIRE_OK(kefir_abi_amd64_get_callee_preserved_general_purpose_register(abi_variant, i, &reg));
 
-        kefir_bool_t preserve_reg;
-        REQUIRE_OK(kefir_codegen_amd64_register_allocator_is_register_used(register_allocator, reg, &preserve_reg));
-        if (preserve_reg) {
+        if (kefir_hashtreeset_has(&frame->requirements.used_registers, (kefir_hashtreeset_entry_t) reg)) {
             frame->sizes.preserved_regs += KEFIR_AMD64_ABI_QWORD;
         }
     }
@@ -52,9 +80,7 @@ static kefir_result_t calculate_sizes(kefir_abi_amd64_variant_t abi_variant,
     REQUIRE_OK(kefir_abi_amd64_calculate_type_properties(locals_type, locals_type_layout, &frame->sizes.local_area,
                                                          &frame->sizes.local_area_alignment));
 
-    kefir_size_t spill_slots;
-    REQUIRE_OK(kefir_codegen_amd64_register_allocator_num_of_spill_slots(register_allocator, &spill_slots));
-    frame->sizes.spill_area = spill_slots * KEFIR_AMD64_ABI_QWORD;
+    frame->sizes.spill_area = frame->requirements.spill_area_slots * KEFIR_AMD64_ABI_QWORD;
 
     return KEFIR_OK;
 }
@@ -73,25 +99,22 @@ static kefir_result_t calculate_offsets(struct kefir_codegen_amd64_stack_frame *
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_codegen_amd64_stack_frame_calculate(
-    kefir_abi_amd64_variant_t abi_variant, const struct kefir_codegen_amd64_register_allocator *register_allocator,
-    const struct kefir_ir_type *locals_type, const struct kefir_abi_amd64_type_layout *locals_type_layout,
-    struct kefir_codegen_amd64_stack_frame *frame) {
-    REQUIRE(register_allocator != NULL,
-            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 register allocator"));
+kefir_result_t kefir_codegen_amd64_stack_frame_calculate(kefir_abi_amd64_variant_t abi_variant,
+                                                         const struct kefir_ir_type *locals_type,
+                                                         const struct kefir_abi_amd64_type_layout *locals_type_layout,
+                                                         struct kefir_codegen_amd64_stack_frame *frame) {
     REQUIRE(locals_type_layout != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid function locals type layout"));
     REQUIRE(frame != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 stack frame"));
 
-    REQUIRE_OK(calculate_sizes(abi_variant, register_allocator, locals_type, locals_type_layout, frame));
+    REQUIRE_OK(calculate_sizes(abi_variant, locals_type, locals_type_layout, frame));
     REQUIRE_OK(calculate_offsets(frame));
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_codegen_amd64_stack_frame_prologue(
-    struct kefir_amd64_xasmgen *xasmgen, kefir_abi_amd64_variant_t abi_variant,
-    const struct kefir_codegen_amd64_register_allocator *register_allocator,
-    const struct kefir_codegen_amd64_stack_frame *frame) {
+kefir_result_t kefir_codegen_amd64_stack_frame_prologue(struct kefir_amd64_xasmgen *xasmgen,
+                                                        kefir_abi_amd64_variant_t abi_variant,
+                                                        const struct kefir_codegen_amd64_stack_frame *frame) {
     REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 assembly generator"));
     REQUIRE(frame != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 stack frame"));
 
@@ -105,9 +128,7 @@ kefir_result_t kefir_codegen_amd64_stack_frame_prologue(
         kefir_asm_amd64_xasmgen_register_t reg;
         REQUIRE_OK(kefir_abi_amd64_get_callee_preserved_general_purpose_register(abi_variant, i, &reg));
 
-        kefir_bool_t preserve_reg;
-        REQUIRE_OK(kefir_codegen_amd64_register_allocator_is_register_used(register_allocator, reg, &preserve_reg));
-        if (preserve_reg) {
+        if (kefir_hashtreeset_has(&frame->requirements.used_registers, (kefir_hashtreeset_entry_t) reg)) {
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_PUSH(xasmgen, kefir_asm_amd64_xasmgen_operand_reg(reg)));
         }
     }
@@ -121,10 +142,9 @@ kefir_result_t kefir_codegen_amd64_stack_frame_prologue(
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_codegen_amd64_stack_frame_epilogue(
-    struct kefir_amd64_xasmgen *xasmgen, kefir_abi_amd64_variant_t abi_variant,
-    const struct kefir_codegen_amd64_register_allocator *register_allocator,
-    const struct kefir_codegen_amd64_stack_frame *frame) {
+kefir_result_t kefir_codegen_amd64_stack_frame_epilogue(struct kefir_amd64_xasmgen *xasmgen,
+                                                        kefir_abi_amd64_variant_t abi_variant,
+                                                        const struct kefir_codegen_amd64_stack_frame *frame) {
     REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 assembly generator"));
     REQUIRE(frame != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 stack frame"));
 
@@ -142,9 +162,7 @@ kefir_result_t kefir_codegen_amd64_stack_frame_epilogue(
         REQUIRE_OK(kefir_abi_amd64_get_callee_preserved_general_purpose_register(
             abi_variant, num_of_callee_preserved_gp - i - 1, &reg));
 
-        kefir_bool_t preserve_reg;
-        REQUIRE_OK(kefir_codegen_amd64_register_allocator_is_register_used(register_allocator, reg, &preserve_reg));
-        if (preserve_reg) {
+        if (kefir_hashtreeset_has(&frame->requirements.used_registers, (kefir_hashtreeset_entry_t) reg)) {
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_POP(xasmgen, kefir_asm_amd64_xasmgen_operand_reg(reg)));
         }
     }

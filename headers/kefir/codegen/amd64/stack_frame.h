@@ -22,7 +22,6 @@
 #define KEFIR_CODEGEN_AMD64_STACK_FRAME_H_
 
 #include "kefir/codegen/amd64/codegen.h"
-#include "kefir/codegen/amd64/register_allocator.h"
 #include "kefir/target/abi/amd64/type_layout.h"
 #include "kefir/target/asm/amd64/xasmgen.h"
 
@@ -43,21 +42,30 @@ typedef struct kefir_codegen_amd64_stack_frame {
         kefir_int64_t spill_area;
         kefir_int64_t top_of_frame;
     } offsets;
+
+    struct {
+        kefir_size_t spill_area_slots;
+        struct kefir_hashtreeset used_registers;
+        kefir_size_t num_of_used_registers;
+    } requirements;
 } kefir_codegen_amd64_stack_frame_t;
 
 kefir_result_t kefir_codegen_amd64_stack_frame_init(struct kefir_codegen_amd64_stack_frame *);
+kefir_result_t kefir_codegen_amd64_stack_frame_free(struct kefir_mem *, struct kefir_codegen_amd64_stack_frame *);
 
-kefir_result_t kefir_codegen_amd64_stack_frame_calculate(kefir_abi_amd64_variant_t,
-                                                         const struct kefir_codegen_amd64_register_allocator *,
-                                                         const struct kefir_ir_type *,
+kefir_result_t kefir_codegen_amd64_stack_frame_ensure_spill_area(struct kefir_codegen_amd64_stack_frame *,
+                                                                 kefir_size_t);
+kefir_result_t kefir_codegen_amd64_stack_frame_use_register(struct kefir_mem *,
+                                                            struct kefir_codegen_amd64_stack_frame *,
+                                                            kefir_asm_amd64_xasmgen_register_t);
+
+kefir_result_t kefir_codegen_amd64_stack_frame_calculate(kefir_abi_amd64_variant_t, const struct kefir_ir_type *,
                                                          const struct kefir_abi_amd64_type_layout *,
                                                          struct kefir_codegen_amd64_stack_frame *);
 
 kefir_result_t kefir_codegen_amd64_stack_frame_prologue(struct kefir_amd64_xasmgen *, kefir_abi_amd64_variant_t,
-                                                        const struct kefir_codegen_amd64_register_allocator *,
                                                         const struct kefir_codegen_amd64_stack_frame *);
 kefir_result_t kefir_codegen_amd64_stack_frame_epilogue(struct kefir_amd64_xasmgen *, kefir_abi_amd64_variant_t,
-                                                        const struct kefir_codegen_amd64_register_allocator *,
                                                         const struct kefir_codegen_amd64_stack_frame *);
 
 #endif

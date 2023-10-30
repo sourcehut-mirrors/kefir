@@ -40,11 +40,11 @@ typedef struct kefir_codegen_amd64_stack_frame kefir_codegen_amd64_stack_frame_t
     /* Control flow */ \
     _opcode(ret, RET, arg0) _separator \
     /* Data moves */ \
-    _opcode(mov, MOV, arg2) _separator \
-    _opcode(movabs, MOVABS, arg2) _separator \
-    _opcode(movsx, MOVSX, arg2) _separator \
-    _opcode(movzx, MOVZX, arg2) _separator \
-    _opcode(lea, LEA, arg2) _separator \
+    _opcode(mov, MOV, arg2w) _separator \
+    _opcode(movabs, MOVABS, arg2w) _separator \
+    _opcode(movsx, MOVSX, arg2w) _separator \
+    _opcode(movzx, MOVZX, arg2w) _separator \
+    _opcode(lea, LEA, arg2w) _separator \
     /* Integral arithmetics & logic */ \
     _opcode(add, ADD, arg2) _separator \
     _opcode(sub, SUB, arg2) _separator \
@@ -109,12 +109,14 @@ kefir_result_t kefir_asmcmp_amd64_get_register_preallocation(const struct kefir_
     kefir_result_t kefir_asmcmp_amd64_##_opcode(                                           \
         struct kefir_mem *, struct kefir_asmcmp_amd64 *, kefir_asmcmp_instruction_index_t, \
         const struct kefir_asmcmp_value *, const struct kefir_asmcmp_value *, kefir_asmcmp_instruction_index_t *);
+#define DEF_OPCODE_arg2w(_opcode) DEF_OPCODE_arg2(_opcode)
 #define DEF_OPCODE(_opcode, _mnemonic, _argtp) DEF_OPCODE_##_argtp(_opcode)
 
 KEFIR_ASMCMP_AMD64_OPCODES(DEF_OPCODE, )
 
 #undef DEF_OPCODE_arg0
 #undef DEF_OPCODE_arg2
+#undef DEF_OPCODE_arg2w
 #undef DEF_OPCODE_virtual
 #undef DEF_OPCODE
 
@@ -136,9 +138,7 @@ kefir_result_t kefir_asmcmp_amd64_function_epilogue(struct kefir_mem *, struct k
                                                     kefir_asmcmp_instruction_index_t,
                                                     kefir_asmcmp_instruction_index_t *);
 
-kefir_result_t kefir_asmcmp_amd64_generate_code(struct kefir_mem *, struct kefir_amd64_xasmgen *,
-                                                const struct kefir_asmcmp_amd64 *,
-                                                const struct kefir_codegen_amd64_register_allocator *,
+kefir_result_t kefir_asmcmp_amd64_generate_code(struct kefir_amd64_xasmgen *, const struct kefir_asmcmp_amd64 *,
                                                 const struct kefir_codegen_amd64_stack_frame *);
 
 #endif

@@ -103,7 +103,7 @@ typedef struct kefir_asmcmp_value {
     ((struct kefir_asmcmp_value){.type = KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER, \
                                  .vreg = {.index = (_vreg), .variant = KEFIR_ASMCMP_OPERAND_VARIANT_64BIT}})
 #define KEFIR_ASMCMP_MAKE_PHREG(_reg) \
-    ((struct kefir_asmcmp_value){.type = KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER, .preg = (_reg)})
+    ((struct kefir_asmcmp_value){.type = KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER, .phreg = (_reg)})
 #define KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(_vreg, _offset, _variant)                       \
     ((struct kefir_asmcmp_value){.type = KEFIR_ASMCMP_VALUE_TYPE_INDIRECT,                 \
                                  .indirect = {.type = KEFIR_ASMCMP_INDIRECT_VIRTUAL_BASIS, \
@@ -207,6 +207,8 @@ kefir_result_t kefir_asmcmp_context_instr_insert_after(struct kefir_mem *, struc
                                                        const struct kefir_asmcmp_instruction *,
                                                        kefir_asmcmp_instruction_index_t *);
 kefir_result_t kefir_asmcmp_context_instr_drop(struct kefir_asmcmp_context *, kefir_asmcmp_instruction_index_t);
+kefir_result_t kefir_asmcmp_context_instr_replace(struct kefir_asmcmp_context *, kefir_asmcmp_instruction_index_t,
+                                                  const struct kefir_asmcmp_instruction *);
 
 kefir_result_t kefir_asmcmp_context_new_label(struct kefir_mem *, struct kefir_asmcmp_context *,
                                               kefir_asmcmp_instruction_index_t, kefir_asmcmp_label_index_t *);
@@ -222,6 +224,9 @@ kefir_result_t kefir_asmcmp_context_bind_label(struct kefir_mem *, struct kefir_
                                                kefir_asmcmp_instruction_index_t, kefir_asmcmp_label_index_t);
 kefir_result_t kefir_asmcmp_context_unbind_label(struct kefir_mem *, struct kefir_asmcmp_context *,
                                                  kefir_asmcmp_label_index_t);
+kefir_result_t kefir_asmcmp_context_move_labels(struct kefir_mem *, struct kefir_asmcmp_context *,
+                                                kefir_asmcmp_virtual_register_index_t,
+                                                kefir_asmcmp_virtual_register_index_t);
 
 kefir_result_t kefir_asmcmp_number_of_virtual_registers(const struct kefir_asmcmp_context *, kefir_size_t *);
 kefir_result_t kefir_asmcmp_virtual_register_get(const struct kefir_asmcmp_context *,

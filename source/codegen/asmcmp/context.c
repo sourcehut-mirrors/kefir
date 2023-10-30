@@ -265,6 +265,19 @@ kefir_result_t kefir_asmcmp_context_instr_drop(struct kefir_asmcmp_context *cont
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_asmcmp_context_instr_replace(struct kefir_asmcmp_context *context,
+                                                  kefir_asmcmp_instruction_index_t instr_idx,
+                                                  const struct kefir_asmcmp_instruction *instr) {
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
+    REQUIRE(VALID_INSTR_IDX(context, instr_idx),
+            KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Provided asmgen instruction index is out of context bounds"));
+    REQUIRE(instr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen instruction"));
+
+    struct kefir_asmcmp_instruction_handle *const handle = &context->code_content[instr_idx];
+    handle->instr = *instr;
+    return KEFIR_OK;
+}
+
 static kefir_result_t attach_label_to_instr(struct kefir_mem *mem, struct kefir_asmcmp_context *context,
                                             kefir_asmcmp_instruction_index_t target_instr,
                                             struct kefir_asmcmp_label *label) {
@@ -435,6 +448,33 @@ kefir_result_t kefir_asmcmp_context_unbind_label(struct kefir_mem *mem, struct k
 
     struct kefir_asmcmp_label *const label = &context->labels[label_index];
     REQUIRE_OK(detach_label(mem, context, label));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_asmcmp_context_move_labels(struct kefir_mem *mem, struct kefir_asmcmp_context *context,
+                                                kefir_asmcmp_virtual_register_index_t dst_idx,
+                                                kefir_asmcmp_virtual_register_index_t src_idx) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
+    REQUIRE(VALID_INSTR_IDX(context, dst_idx),
+            KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Provided asmgen instruction index is out of context bounds"));
+    REQUIRE(VALID_INSTR_IDX(context, src_idx),
+            KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Provided asmgen instruction index is out of context bounds"));
+
+    struct kefir_hashtree_node *label_node;
+    kefir_result_t res = kefir_hashtree_at(&context->label_positions, (kefir_hashtree_key_t) src_idx, &label_node);
+    if (res != KEFIR_NOT_FOUND) {
+        REQUIRE_OK(res);
+
+        ASSIGN_DECL_CAST(kefir_asmcmp_label_index_t, label_idx, label_node->value);
+        while (label_idx != KEFIR_ASMCMP_INDEX_NONE) {
+            struct kefir_asmcmp_label *label = &context->labels[label_idx];
+            label_idx = label->siblings.next;
+
+            REQUIRE_OK(detach_label(mem, context, label));
+            REQUIRE_OK(attach_label_to_instr(mem, context, dst_idx, label));
+        }
+    }
     return KEFIR_OK;
 }
 

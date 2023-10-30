@@ -232,6 +232,7 @@ kefir_result_t kefir_asmcmp_amd64_get_register_preallocation(
             idx_ptr));                                                                                           \
         return KEFIR_OK;                                                                                         \
     }
+#define DEF_OPCODE_arg2w(_opcode) DEF_OPCODE_arg2(_opcode)
 #define DEF_OPCODE(_opcode, _xasmgen, _argtp) DEF_OPCODE_##_argtp(_opcode)
 
 KEFIR_ASMCMP_AMD64_OPCODES(DEF_OPCODE, )
@@ -239,6 +240,7 @@ KEFIR_ASMCMP_AMD64_OPCODES(DEF_OPCODE, )
 #undef DEF_OPCODE_virtual
 #undef DEF_OPCODE_arg0
 #undef DEF_OPCODE_arg2
+#undef DEF_OPCODE_arg2w
 #undef DEF_OPCODE
 
 kefir_result_t kefir_asmcmp_amd64_link_virtual_registers(struct kefir_mem *mem, struct kefir_asmcmp_amd64 *target,
