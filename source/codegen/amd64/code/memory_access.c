@@ -23,17 +23,17 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
-#define DEFINE_STORE(_width)                                                                          \
-    do {                                                                                              \
-        kefir_asmcmp_virtual_register_index_t value_vreg, target_vreg;                                \
-        REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(                                              \
-            function, instruction->operation.parameters.memory_access.value, &value_vreg));           \
-        REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(                                              \
-            function, instruction->operation.parameters.memory_access.location, &target_vreg));       \
-        REQUIRE_OK(kefir_asmcmp_amd64_mov(                                                            \
-            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),           \
-            &KEFIR_ASMCMP_MAKE_INDIRECT(target_vreg, 0, KEFIR_ASMCMP_REGISTER_VARIANT_##_width##BIT), \
-            &KEFIR_ASMCMP_MAKE_VREG##_width(value_vreg), NULL));                                      \
+#define DEFINE_STORE(_width)                                                                                 \
+    do {                                                                                                     \
+        kefir_asmcmp_virtual_register_index_t value_vreg, target_vreg;                                       \
+        REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(                                                     \
+            function, instruction->operation.parameters.memory_access.value, &value_vreg));                  \
+        REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(                                                     \
+            function, instruction->operation.parameters.memory_access.location, &target_vreg));              \
+        REQUIRE_OK(kefir_asmcmp_amd64_mov(                                                                   \
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),                  \
+            &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(target_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_##_width##BIT), \
+            &KEFIR_ASMCMP_MAKE_VREG##_width(value_vreg), NULL));                                             \
     } while (false)
 
 kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int8_store)(struct kefir_mem *mem,
@@ -84,18 +84,18 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int64_store)(struct kefir_me
     return KEFIR_OK;
 }
 
-#define DEFINE_LOAD(_suffix, _width)                                                                          \
-    do {                                                                                                      \
-        kefir_asmcmp_virtual_register_index_t value_vreg, source_vreg;                                        \
-        REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(                                                      \
-            function, instruction->operation.parameters.memory_access.location, &source_vreg));               \
-        REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,                            \
-                                                     KEFIR_ASMCMP_REGISTER_GENERAL_PURPOSE, &value_vreg));    \
-        REQUIRE_OK(kefir_asmcmp_amd64_mov##_suffix(                                                           \
-            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),                   \
-            &KEFIR_ASMCMP_MAKE_VREG64(value_vreg),                                                            \
-            &KEFIR_ASMCMP_MAKE_INDIRECT(source_vreg, 0, KEFIR_ASMCMP_REGISTER_VARIANT_##_width##BIT), NULL)); \
-        REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, value_vreg));     \
+#define DEFINE_LOAD(_suffix, _width)                                                                                 \
+    do {                                                                                                             \
+        kefir_asmcmp_virtual_register_index_t value_vreg, source_vreg;                                               \
+        REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(                                                             \
+            function, instruction->operation.parameters.memory_access.location, &source_vreg));                      \
+        REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,                                   \
+                                                     KEFIR_ASMCMP_REGISTER_GENERAL_PURPOSE, &value_vreg));           \
+        REQUIRE_OK(kefir_asmcmp_amd64_mov##_suffix(                                                                  \
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),                          \
+            &KEFIR_ASMCMP_MAKE_VREG64(value_vreg),                                                                   \
+            &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(source_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_##_width##BIT), NULL)); \
+        REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, value_vreg));            \
     } while (false)
 
 kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int8_load_signed)(struct kefir_mem *mem,

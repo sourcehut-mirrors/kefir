@@ -84,9 +84,12 @@ static kefir_result_t update_virtual_register_lifetime(struct kefir_codegen_amd6
         case KEFIR_ASMCMP_VALUE_TYPE_NONE:
         case KEFIR_ASMCMP_VALUE_TYPE_INTEGER:
         case KEFIR_ASMCMP_VALUE_TYPE_UINTEGER:
-        case KEFIR_ASMCMP_VALUE_TYPE_LOCAL_VAR_ADDRESS:
             // Intentionally left blank
             break;
+
+        case KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
+                                   "Unexpected presence of physical amd64 registers at register allocation stage");
 
         case KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER: {
             vreg = value->vreg.index;
@@ -100,17 +103,31 @@ static kefir_result_t update_virtual_register_lifetime(struct kefir_codegen_amd6
             }
         } break;
 
-        case KEFIR_ASMCMP_VALUE_TYPE_INDIRECT: {
-            vreg = value->indirect.base;
-            alloc = &allocator->allocations[vreg];
-            if (alloc->lifetime.begin == KEFIR_ASMCMP_INDEX_NONE) {
-                alloc->lifetime.begin = lifetime_index;
-                alloc->lifetime.end = lifetime_index;
-            } else {
-                alloc->lifetime.begin = MIN(alloc->lifetime.begin, lifetime_index);
-                alloc->lifetime.end = MAX(alloc->lifetime.end, lifetime_index);
+        case KEFIR_ASMCMP_VALUE_TYPE_INDIRECT:
+            switch (value->indirect.type) {
+                case KEFIR_ASMCMP_INDIRECT_VIRTUAL_BASIS: {
+                    vreg = value->indirect.base.vreg;
+                    alloc = &allocator->allocations[vreg];
+                    if (alloc->lifetime.begin == KEFIR_ASMCMP_INDEX_NONE) {
+                        alloc->lifetime.begin = lifetime_index;
+                        alloc->lifetime.end = lifetime_index;
+                    } else {
+                        alloc->lifetime.begin = MIN(alloc->lifetime.begin, lifetime_index);
+                        alloc->lifetime.end = MAX(alloc->lifetime.end, lifetime_index);
+                    }
+                } break;
+
+                case KEFIR_ASMCMP_INDIRECT_PHYSICAL_BASIS:
+                    return KEFIR_SET_ERROR(
+                        KEFIR_INVALID_STATE,
+                        "Unexpected presence of physical amd64 registers at register allocation stage");
+
+                case KEFIR_ASMCMP_INDIRECT_LOCAL_VAR_BASIS:
+                case KEFIR_ASMCMP_INDIRECT_SPILL_AREA_BASIS:
+                    // Intentionally left blank
+                    break;
             }
-        } break;
+            break;
     }
     return KEFIR_OK;
 }
@@ -165,16 +182,33 @@ static kefir_result_t build_virtual_register_liveness_graph(struct kefir_mem *me
         case KEFIR_ASMCMP_VALUE_TYPE_NONE:
         case KEFIR_ASMCMP_VALUE_TYPE_INTEGER:
         case KEFIR_ASMCMP_VALUE_TYPE_UINTEGER:
-        case KEFIR_ASMCMP_VALUE_TYPE_LOCAL_VAR_ADDRESS:
             // Intentionally left blank
             break;
+
+        case KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
+                                   "Unexpected presence of physical amd64 registers at register allocation stage");
 
         case KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER:
             UPDATE_GRAPH(value->vreg.index);
             break;
 
         case KEFIR_ASMCMP_VALUE_TYPE_INDIRECT:
-            UPDATE_GRAPH(value->indirect.base);
+            switch (value->indirect.type) {
+                case KEFIR_ASMCMP_INDIRECT_VIRTUAL_BASIS:
+                    UPDATE_GRAPH(value->indirect.base.vreg);
+                    break;
+
+                case KEFIR_ASMCMP_INDIRECT_PHYSICAL_BASIS:
+                    return KEFIR_SET_ERROR(
+                        KEFIR_INVALID_STATE,
+                        "Unexpected presence of physical amd64 registers at register allocation stage");
+
+                case KEFIR_ASMCMP_INDIRECT_LOCAL_VAR_BASIS:
+                case KEFIR_ASMCMP_INDIRECT_SPILL_AREA_BASIS:
+                    // Intentionally left blank
+                    break;
+            }
             break;
     }
 #undef UPDATE_GRAPH
@@ -422,16 +456,33 @@ static kefir_result_t allocate_register(struct kefir_mem *mem, struct kefir_asmc
         case KEFIR_ASMCMP_VALUE_TYPE_NONE:
         case KEFIR_ASMCMP_VALUE_TYPE_INTEGER:
         case KEFIR_ASMCMP_VALUE_TYPE_UINTEGER:
-        case KEFIR_ASMCMP_VALUE_TYPE_LOCAL_VAR_ADDRESS:
             // Intentionally left blank
             break;
+
+        case KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
+                                   "Unexpected presence of physical amd64 registers at register allocation stage");
 
         case KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER:
             REQUIRE_OK(allocate_register_impl(mem, target, allocator, value->vreg.index));
             break;
 
         case KEFIR_ASMCMP_VALUE_TYPE_INDIRECT:
-            REQUIRE_OK(allocate_register_impl(mem, target, allocator, value->indirect.base));
+            switch (value->indirect.type) {
+                case KEFIR_ASMCMP_INDIRECT_VIRTUAL_BASIS:
+                    REQUIRE_OK(allocate_register_impl(mem, target, allocator, value->indirect.base.vreg));
+                    break;
+
+                case KEFIR_ASMCMP_INDIRECT_PHYSICAL_BASIS:
+                    return KEFIR_SET_ERROR(
+                        KEFIR_INVALID_STATE,
+                        "Unexpected presence of physical amd64 registers at register allocation stage");
+
+                case KEFIR_ASMCMP_INDIRECT_LOCAL_VAR_BASIS:
+                case KEFIR_ASMCMP_INDIRECT_SPILL_AREA_BASIS:
+                    // Intentionally left blank
+                    break;
+            }
             break;
     }
     return KEFIR_OK;

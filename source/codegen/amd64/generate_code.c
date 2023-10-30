@@ -94,7 +94,7 @@ static kefir_result_t update_live_regs(struct kefir_mem *mem, struct generator_s
         case KEFIR_ASMCMP_VALUE_TYPE_NONE:
         case KEFIR_ASMCMP_VALUE_TYPE_INTEGER:
         case KEFIR_ASMCMP_VALUE_TYPE_UINTEGER:
-        case KEFIR_ASMCMP_VALUE_TYPE_LOCAL_VAR_ADDRESS:
+        case KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER:
             // Intentionally left blank
             break;
 
@@ -115,19 +115,29 @@ static kefir_result_t update_live_regs(struct kefir_mem *mem, struct generator_s
             break;
 
         case KEFIR_ASMCMP_VALUE_TYPE_INDIRECT:
-            REQUIRE_OK(kefir_codegen_amd64_register_allocation_of(state->register_allocator, value->indirect.base,
-                                                                  &reg_alloc));
-            REQUIRE(reg_alloc->lifetime.begin <= linear_position && reg_alloc->lifetime.end >= linear_position,
-                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected amd64 virtual register lifetime"));
-            REQUIRE_OK(
-                kefir_hashtreeset_add(mem, &state->alive.vregs, (kefir_hashtreeset_entry_t) value->indirect.base));
-            REQUIRE_OK(kefir_hashtreeset_add(mem, &state->current_instr.vregs,
-                                             (kefir_hashtreeset_entry_t) value->indirect.base));
-            if (reg_alloc->type == KEFIR_CODEGEN_AMD64_REGISTER_ALLOCATION_REGISTER) {
-                REQUIRE_OK(
-                    kefir_hashtreeset_add(mem, &state->alive.regs, (kefir_hashtreeset_entry_t) reg_alloc->direct_reg));
-                REQUIRE_OK(kefir_hashtreeset_add(mem, &state->current_instr.regs,
-                                                 (kefir_hashtreeset_entry_t) reg_alloc->direct_reg));
+            switch (value->indirect.type) {
+                case KEFIR_ASMCMP_INDIRECT_VIRTUAL_BASIS:
+                    REQUIRE_OK(kefir_codegen_amd64_register_allocation_of(state->register_allocator,
+                                                                          value->indirect.base.vreg, &reg_alloc));
+                    REQUIRE(reg_alloc->lifetime.begin <= linear_position && reg_alloc->lifetime.end >= linear_position,
+                            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected amd64 virtual register lifetime"));
+                    REQUIRE_OK(kefir_hashtreeset_add(mem, &state->alive.vregs,
+                                                     (kefir_hashtreeset_entry_t) value->indirect.base.vreg));
+                    REQUIRE_OK(kefir_hashtreeset_add(mem, &state->current_instr.vregs,
+                                                     (kefir_hashtreeset_entry_t) value->indirect.base.vreg));
+                    if (reg_alloc->type == KEFIR_CODEGEN_AMD64_REGISTER_ALLOCATION_REGISTER) {
+                        REQUIRE_OK(kefir_hashtreeset_add(mem, &state->alive.regs,
+                                                         (kefir_hashtreeset_entry_t) reg_alloc->direct_reg));
+                        REQUIRE_OK(kefir_hashtreeset_add(mem, &state->current_instr.regs,
+                                                         (kefir_hashtreeset_entry_t) reg_alloc->direct_reg));
+                    }
+                    break;
+
+                case KEFIR_ASMCMP_INDIRECT_PHYSICAL_BASIS:
+                case KEFIR_ASMCMP_INDIRECT_LOCAL_VAR_BASIS:
+                case KEFIR_ASMCMP_INDIRECT_SPILL_AREA_BASIS:
+                    // Intentionally left blank
+                    break;
             }
             break;
     }
@@ -184,10 +194,8 @@ static kefir_result_t build_operand(struct kefir_mem *mem, struct generator_stat
                 kefir_asm_amd64_xasmgen_operand_immu(&arg_state->base_operands[1], value->uint_immediate);
             break;
 
-        case KEFIR_ASMCMP_VALUE_TYPE_LOCAL_VAR_ADDRESS:
-            arg_state->operand = kefir_asm_amd64_xasmgen_operand_indirect(
-                &arg_state->base_operands[0], kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
-                state->stack_frame->offsets.local_area + value->local_var_offset);
+        case KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER:
+            arg_state->operand = kefir_asm_amd64_xasmgen_operand_reg((kefir_asm_amd64_xasmgen_register_t) value->phreg);
             break;
 
         case KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER: {
@@ -201,20 +209,20 @@ static kefir_result_t build_operand(struct kefir_mem *mem, struct generator_stat
 
                 case KEFIR_CODEGEN_AMD64_REGISTER_ALLOCATION_REGISTER:
                     switch (value->vreg.variant) {
-                        case KEFIR_ASMCMP_REGISTER_VARIANT_8BIT:
+                        case KEFIR_ASMCMP_OPERAND_VARIANT_8BIT:
                             REQUIRE_OK(kefir_asm_amd64_xasmgen_register8(reg_alloc->direct_reg, &reg));
                             break;
 
-                        case KEFIR_ASMCMP_REGISTER_VARIANT_16BIT:
+                        case KEFIR_ASMCMP_OPERAND_VARIANT_16BIT:
                             REQUIRE_OK(kefir_asm_amd64_xasmgen_register16(reg_alloc->direct_reg, &reg));
                             break;
 
-                        case KEFIR_ASMCMP_REGISTER_VARIANT_32BIT:
+                        case KEFIR_ASMCMP_OPERAND_VARIANT_32BIT:
                             REQUIRE_OK(kefir_asm_amd64_xasmgen_register32(reg_alloc->direct_reg, &reg));
                             break;
 
-                        case KEFIR_ASMCMP_REGISTER_VARIANT_NONE:
-                        case KEFIR_ASMCMP_REGISTER_VARIANT_64BIT:
+                        case KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT:
+                        case KEFIR_ASMCMP_OPERAND_VARIANT_64BIT:
                             REQUIRE_OK(kefir_asm_amd64_xasmgen_register64(reg_alloc->direct_reg, &reg));
                             break;
                     }
@@ -223,7 +231,7 @@ static kefir_result_t build_operand(struct kefir_mem *mem, struct generator_stat
 
                 case KEFIR_CODEGEN_AMD64_REGISTER_ALLOCATION_SPILL_AREA:
                     switch (value->vreg.variant) {
-                        case KEFIR_ASMCMP_REGISTER_VARIANT_8BIT:
+                        case KEFIR_ASMCMP_OPERAND_VARIANT_8BIT:
                             arg_state->operand = kefir_asm_amd64_xasmgen_operand_pointer(
                                 &arg_state->base_operands[0], KEFIR_AMD64_XASMGEN_POINTER_BYTE,
                                 kefir_asm_amd64_xasmgen_operand_indirect(
@@ -233,7 +241,7 @@ static kefir_result_t build_operand(struct kefir_mem *mem, struct generator_stat
                                         reg_alloc->spill_area_index * KEFIR_AMD64_ABI_QWORD));
                             break;
 
-                        case KEFIR_ASMCMP_REGISTER_VARIANT_16BIT:
+                        case KEFIR_ASMCMP_OPERAND_VARIANT_16BIT:
                             arg_state->operand = kefir_asm_amd64_xasmgen_operand_pointer(
                                 &arg_state->base_operands[0], KEFIR_AMD64_XASMGEN_POINTER_WORD,
                                 kefir_asm_amd64_xasmgen_operand_indirect(
@@ -243,7 +251,7 @@ static kefir_result_t build_operand(struct kefir_mem *mem, struct generator_stat
                                         reg_alloc->spill_area_index * KEFIR_AMD64_ABI_QWORD));
                             break;
 
-                        case KEFIR_ASMCMP_REGISTER_VARIANT_32BIT:
+                        case KEFIR_ASMCMP_OPERAND_VARIANT_32BIT:
                             arg_state->operand = kefir_asm_amd64_xasmgen_operand_pointer(
                                 &arg_state->base_operands[0], KEFIR_AMD64_XASMGEN_POINTER_DWORD,
                                 kefir_asm_amd64_xasmgen_operand_indirect(
@@ -253,7 +261,7 @@ static kefir_result_t build_operand(struct kefir_mem *mem, struct generator_stat
                                         reg_alloc->spill_area_index * KEFIR_AMD64_ABI_QWORD));
                             break;
 
-                        case KEFIR_ASMCMP_REGISTER_VARIANT_64BIT:
+                        case KEFIR_ASMCMP_OPERAND_VARIANT_64BIT:
                             arg_state->operand = kefir_asm_amd64_xasmgen_operand_pointer(
                                 &arg_state->base_operands[0], KEFIR_AMD64_XASMGEN_POINTER_QWORD,
                                 kefir_asm_amd64_xasmgen_operand_indirect(
@@ -263,7 +271,7 @@ static kefir_result_t build_operand(struct kefir_mem *mem, struct generator_stat
                                         reg_alloc->spill_area_index * KEFIR_AMD64_ABI_QWORD));
                             break;
 
-                        case KEFIR_ASMCMP_REGISTER_VARIANT_NONE:
+                        case KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT:
                             arg_state->operand = kefir_asm_amd64_xasmgen_operand_indirect(
                                 &arg_state->base_operands[0],
                                 kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
@@ -276,111 +284,88 @@ static kefir_result_t build_operand(struct kefir_mem *mem, struct generator_stat
         } break;
 
         case KEFIR_ASMCMP_VALUE_TYPE_INDIRECT: {
-            const struct kefir_codegen_amd64_register_allocation *reg_alloc;
-            REQUIRE_OK(kefir_codegen_amd64_register_allocation_of(state->register_allocator, value->indirect.base,
-                                                                  &reg_alloc));
+            const struct kefir_asm_amd64_xasmgen_operand *base_ptr = NULL;
 
-            switch (reg_alloc->type) {
-                case KEFIR_CODEGEN_AMD64_REGISTER_ALLOCATION_NONE:
-                    return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unallocated amd64 virtual register");
+            switch (value->indirect.type) {
+                case KEFIR_ASMCMP_INDIRECT_VIRTUAL_BASIS: {
+                    const struct kefir_codegen_amd64_register_allocation *reg_alloc;
+                    REQUIRE_OK(kefir_codegen_amd64_register_allocation_of(state->register_allocator,
+                                                                          value->indirect.base.vreg, &reg_alloc));
 
-                case KEFIR_CODEGEN_AMD64_REGISTER_ALLOCATION_REGISTER:
-                    switch (value->indirect.variant) {
-                        case KEFIR_ASMCMP_REGISTER_VARIANT_8BIT:
-                            arg_state->operand = kefir_asm_amd64_xasmgen_operand_pointer(
-                                &arg_state->base_operands[0], KEFIR_AMD64_XASMGEN_POINTER_BYTE,
-                                kefir_asm_amd64_xasmgen_operand_indirect(
-                                    &arg_state->base_operands[1],
-                                    kefir_asm_amd64_xasmgen_operand_reg(reg_alloc->direct_reg),
-                                    value->indirect.offset));
-                            break;
+                    switch (reg_alloc->type) {
+                        case KEFIR_CODEGEN_AMD64_REGISTER_ALLOCATION_NONE:
+                            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unallocated amd64 virtual register");
 
-                        case KEFIR_ASMCMP_REGISTER_VARIANT_16BIT:
-                            arg_state->operand = kefir_asm_amd64_xasmgen_operand_pointer(
-                                &arg_state->base_operands[0], KEFIR_AMD64_XASMGEN_POINTER_WORD,
-                                kefir_asm_amd64_xasmgen_operand_indirect(
-                                    &arg_state->base_operands[1],
-                                    kefir_asm_amd64_xasmgen_operand_reg(reg_alloc->direct_reg),
-                                    value->indirect.offset));
-                            break;
-
-                        case KEFIR_ASMCMP_REGISTER_VARIANT_32BIT:
-                            arg_state->operand = kefir_asm_amd64_xasmgen_operand_pointer(
-                                &arg_state->base_operands[0], KEFIR_AMD64_XASMGEN_POINTER_DWORD,
-                                kefir_asm_amd64_xasmgen_operand_indirect(
-                                    &arg_state->base_operands[1],
-                                    kefir_asm_amd64_xasmgen_operand_reg(reg_alloc->direct_reg),
-                                    value->indirect.offset));
-                            break;
-
-                        case KEFIR_ASMCMP_REGISTER_VARIANT_64BIT:
-                            arg_state->operand = kefir_asm_amd64_xasmgen_operand_pointer(
-                                &arg_state->base_operands[0], KEFIR_AMD64_XASMGEN_POINTER_QWORD,
-                                kefir_asm_amd64_xasmgen_operand_indirect(
-                                    &arg_state->base_operands[1],
-                                    kefir_asm_amd64_xasmgen_operand_reg(reg_alloc->direct_reg),
-                                    value->indirect.offset));
-                            break;
-
-                        case KEFIR_ASMCMP_REGISTER_VARIANT_NONE:
-                            arg_state->operand = kefir_asm_amd64_xasmgen_operand_indirect(
-                                &arg_state->base_operands[1],
+                        case KEFIR_CODEGEN_AMD64_REGISTER_ALLOCATION_REGISTER:
+                            base_ptr = kefir_asm_amd64_xasmgen_operand_indirect(
+                                &arg_state->base_operands[0],
                                 kefir_asm_amd64_xasmgen_operand_reg(reg_alloc->direct_reg), value->indirect.offset);
                             break;
-                    }
-                    break;
 
-                case KEFIR_CODEGEN_AMD64_REGISTER_ALLOCATION_SPILL_AREA: {
-                    kefir_asm_amd64_xasmgen_register_t reg;
-                    REQUIRE_OK(obtain_temporary_register(mem, state, &reg));
-                    REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
-                        state->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(reg),
-                        kefir_asm_amd64_xasmgen_operand_indirect(
-                            &arg_state->base_operands[0],
-                            kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
-                            state->stack_frame->offsets.spill_area +
-                                reg_alloc->spill_area_index * KEFIR_AMD64_ABI_QWORD)));
+                        case KEFIR_CODEGEN_AMD64_REGISTER_ALLOCATION_SPILL_AREA: {
+                            kefir_asm_amd64_xasmgen_register_t reg;
+                            REQUIRE_OK(obtain_temporary_register(mem, state, &reg));
+                            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(
+                                state->xasmgen, kefir_asm_amd64_xasmgen_operand_reg(reg),
+                                kefir_asm_amd64_xasmgen_operand_indirect(
+                                    &arg_state->base_operands[0],
+                                    kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
+                                    state->stack_frame->offsets.spill_area +
+                                        reg_alloc->spill_area_index * KEFIR_AMD64_ABI_QWORD)));
 
-                    switch (value->indirect.variant) {
-                        case KEFIR_ASMCMP_REGISTER_VARIANT_8BIT:
-                            arg_state->operand = kefir_asm_amd64_xasmgen_operand_pointer(
-                                &arg_state->base_operands[0], KEFIR_AMD64_XASMGEN_POINTER_BYTE,
-                                kefir_asm_amd64_xasmgen_operand_indirect(&arg_state->base_operands[1],
-                                                                         kefir_asm_amd64_xasmgen_operand_reg(reg),
-                                                                         value->indirect.offset));
-                            break;
-
-                        case KEFIR_ASMCMP_REGISTER_VARIANT_16BIT:
-                            arg_state->operand = kefir_asm_amd64_xasmgen_operand_pointer(
-                                &arg_state->base_operands[0], KEFIR_AMD64_XASMGEN_POINTER_WORD,
-                                kefir_asm_amd64_xasmgen_operand_indirect(&arg_state->base_operands[1],
-                                                                         kefir_asm_amd64_xasmgen_operand_reg(reg),
-                                                                         value->indirect.offset));
-                            break;
-
-                        case KEFIR_ASMCMP_REGISTER_VARIANT_32BIT:
-                            arg_state->operand = kefir_asm_amd64_xasmgen_operand_pointer(
-                                &arg_state->base_operands[0], KEFIR_AMD64_XASMGEN_POINTER_DWORD,
-                                kefir_asm_amd64_xasmgen_operand_indirect(&arg_state->base_operands[1],
-                                                                         kefir_asm_amd64_xasmgen_operand_reg(reg),
-                                                                         value->indirect.offset));
-                            break;
-
-                        case KEFIR_ASMCMP_REGISTER_VARIANT_64BIT:
-                            arg_state->operand = kefir_asm_amd64_xasmgen_operand_pointer(
-                                &arg_state->base_operands[0], KEFIR_AMD64_XASMGEN_POINTER_QWORD,
-                                kefir_asm_amd64_xasmgen_operand_indirect(&arg_state->base_operands[1],
-                                                                         kefir_asm_amd64_xasmgen_operand_reg(reg),
-                                                                         value->indirect.offset));
-                            break;
-
-                        case KEFIR_ASMCMP_REGISTER_VARIANT_NONE:
-                            arg_state->operand = kefir_asm_amd64_xasmgen_operand_indirect(
-                                &arg_state->base_operands[1], kefir_asm_amd64_xasmgen_operand_reg(reg),
+                            base_ptr = kefir_asm_amd64_xasmgen_operand_indirect(
+                                &arg_state->base_operands[0], kefir_asm_amd64_xasmgen_operand_reg(reg),
                                 value->indirect.offset);
-                            break;
+                        } break;
                     }
                 } break;
+
+                case KEFIR_ASMCMP_INDIRECT_PHYSICAL_BASIS:
+                    base_ptr = kefir_asm_amd64_xasmgen_operand_indirect(
+                        &arg_state->base_operands[0], kefir_asm_amd64_xasmgen_operand_reg(value->indirect.base.phreg),
+                        value->indirect.offset);
+                    break;
+
+                case KEFIR_ASMCMP_INDIRECT_LOCAL_VAR_BASIS:
+                    base_ptr = kefir_asm_amd64_xasmgen_operand_indirect(
+                        &arg_state->base_operands[0],
+                        kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
+                        state->stack_frame->offsets.local_area + value->indirect.offset);
+                    break;
+
+                case KEFIR_ASMCMP_INDIRECT_SPILL_AREA_BASIS:
+                    base_ptr = kefir_asm_amd64_xasmgen_operand_indirect(
+                        &arg_state->base_operands[0],
+                        kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
+                        state->stack_frame->offsets.spill_area +
+                            value->indirect.base.spill_index * KEFIR_AMD64_ABI_QWORD + value->indirect.offset);
+                    break;
+            }
+
+            switch (value->indirect.variant) {
+                case KEFIR_ASMCMP_OPERAND_VARIANT_8BIT:
+                    arg_state->operand = kefir_asm_amd64_xasmgen_operand_pointer(
+                        &arg_state->base_operands[1], KEFIR_AMD64_XASMGEN_POINTER_BYTE, base_ptr);
+                    break;
+
+                case KEFIR_ASMCMP_OPERAND_VARIANT_16BIT:
+                    arg_state->operand = kefir_asm_amd64_xasmgen_operand_pointer(
+                        &arg_state->base_operands[1], KEFIR_AMD64_XASMGEN_POINTER_WORD, base_ptr);
+                    break;
+
+                case KEFIR_ASMCMP_OPERAND_VARIANT_32BIT:
+                    arg_state->operand = kefir_asm_amd64_xasmgen_operand_pointer(
+                        &arg_state->base_operands[1], KEFIR_AMD64_XASMGEN_POINTER_DWORD, base_ptr);
+                    break;
+
+                case KEFIR_ASMCMP_OPERAND_VARIANT_64BIT:
+                    arg_state->operand = kefir_asm_amd64_xasmgen_operand_pointer(
+                        &arg_state->base_operands[1], KEFIR_AMD64_XASMGEN_POINTER_QWORD, base_ptr);
+                    break;
+
+                case KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT:
+                    arg_state->operand = base_ptr;
+                    break;
             }
         } break;
     }

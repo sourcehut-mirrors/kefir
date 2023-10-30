@@ -253,9 +253,9 @@ kefir_result_t kefir_asmcmp_amd64_link_virtual_registers(struct kefir_mem *mem, 
         &(const struct kefir_asmcmp_instruction){
             .opcode = KEFIR_ASMCMP_AMD64_OPCODE(virtual_register_link),
             .args[0] = {.type = KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER,
-                        .vreg = {.index = vreg1, .variant = KEFIR_ASMCMP_REGISTER_VARIANT_NONE}},
+                        .vreg = {.index = vreg1, .variant = KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT}},
             .args[1] = {.type = KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER,
-                        .vreg = {.index = vreg2, .variant = KEFIR_ASMCMP_REGISTER_VARIANT_NONE}},
+                        .vreg = {.index = vreg2, .variant = KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT}},
             .args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE},
         idx_ptr));
 
@@ -274,7 +274,7 @@ kefir_result_t kefir_asmcmp_amd64_touch_virtual_register(struct kefir_mem *mem, 
         &(const struct kefir_asmcmp_instruction){
             .opcode = KEFIR_ASMCMP_AMD64_OPCODE(touch_virtual_register),
             .args[0] = {.type = KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER,
-                        .vreg = {.index = vreg, .variant = KEFIR_ASMCMP_REGISTER_VARIANT_NONE}},
+                        .vreg = {.index = vreg, .variant = KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT}},
             .args[1].type = KEFIR_ASMCMP_VALUE_TYPE_NONE,
             .args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE},
         idx_ptr));

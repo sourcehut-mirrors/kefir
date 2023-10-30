@@ -132,7 +132,7 @@ static kefir_result_t validate_value(struct kefir_asmcmp_context *context, const
         case KEFIR_ASMCMP_VALUE_TYPE_NONE:
         case KEFIR_ASMCMP_VALUE_TYPE_INTEGER:
         case KEFIR_ASMCMP_VALUE_TYPE_UINTEGER:
-        case KEFIR_ASMCMP_VALUE_TYPE_LOCAL_VAR_ADDRESS:
+        case KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER:
             // Intentionally left blank
             break;
 
@@ -141,10 +141,20 @@ static kefir_result_t validate_value(struct kefir_asmcmp_context *context, const
             REQUIRE_OK(kefir_asmcmp_virtual_register_get(context, value->vreg.index, &vreg));
         } break;
 
-        case KEFIR_ASMCMP_VALUE_TYPE_INDIRECT: {
-            const struct kefir_asmcmp_virtual_register *vreg;
-            REQUIRE_OK(kefir_asmcmp_virtual_register_get(context, value->indirect.base, &vreg));
-        } break;
+        case KEFIR_ASMCMP_VALUE_TYPE_INDIRECT:
+            switch (value->indirect.type) {
+                case KEFIR_ASMCMP_INDIRECT_VIRTUAL_BASIS: {
+                    const struct kefir_asmcmp_virtual_register *vreg;
+                    REQUIRE_OK(kefir_asmcmp_virtual_register_get(context, value->indirect.base.vreg, &vreg));
+                } break;
+
+                case KEFIR_ASMCMP_INDIRECT_PHYSICAL_BASIS:
+                case KEFIR_ASMCMP_INDIRECT_LOCAL_VAR_BASIS:
+                case KEFIR_ASMCMP_INDIRECT_SPILL_AREA_BASIS:
+                    // Intentionally left blank
+                    break;
+            }
+            break;
     }
     return KEFIR_OK;
 }
