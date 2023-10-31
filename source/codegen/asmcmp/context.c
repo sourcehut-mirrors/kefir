@@ -34,6 +34,7 @@ kefir_result_t kefir_asmcmp_context_init(const struct kefir_asmcmp_context_class
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to asmgen context"));
 
     REQUIRE_OK(kefir_hashtree_init(&context->label_positions, &kefir_hashtree_uint_ops));
+    REQUIRE_OK(kefir_string_pool_init(&context->strings));
     context->klass = klass;
     context->payload = payload;
     context->code_content = NULL;
@@ -54,13 +55,20 @@ kefir_result_t kefir_asmcmp_context_free(struct kefir_mem *mem, struct kefir_asm
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
 
+    REQUIRE_OK(kefir_string_pool_free(mem, &context->strings));
     REQUIRE_OK(kefir_hashtree_free(mem, &context->label_positions));
-    memset(context->code_content, 0, sizeof(struct kefir_asmcmp_instruction) * context->code_length);
+    if (context->code_content != NULL) {
+        memset(context->code_content, 0, sizeof(struct kefir_asmcmp_instruction) * context->code_length);
+    }
     KEFIR_FREE(mem, context->code_content);
-    memset(context->labels, 0, sizeof(struct kefir_asmcmp_label) * context->labels_length);
+    if (context->labels != NULL) {
+        memset(context->labels, 0, sizeof(struct kefir_asmcmp_label) * context->labels_length);
+    }
     KEFIR_FREE(mem, context->labels);
-    memset(context->virtual_registers, 0,
-           sizeof(struct kefir_asmcmp_virtual_register) * context->virtual_register_length);
+    if (context->virtual_registers != NULL) {
+        memset(context->virtual_registers, 0,
+               sizeof(struct kefir_asmcmp_virtual_register) * context->virtual_register_length);
+    }
     KEFIR_FREE(mem, context->virtual_registers);
     memset(context, 0, sizeof(struct kefir_asmcmp_context));
     return KEFIR_OK;
@@ -148,12 +156,22 @@ static kefir_result_t validate_value(struct kefir_asmcmp_context *context, const
                     REQUIRE_OK(kefir_asmcmp_virtual_register_get(context, value->indirect.base.vreg, &vreg));
                 } break;
 
+                case KEFIR_ASMCMP_INDIRECT_LABEL_BASIS:
+                    REQUIRE(value->indirect.base.label != NULL,
+                            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected non-NULL label indirection basis"));
+                    break;
+
                 case KEFIR_ASMCMP_INDIRECT_PHYSICAL_BASIS:
                 case KEFIR_ASMCMP_INDIRECT_LOCAL_VAR_BASIS:
                 case KEFIR_ASMCMP_INDIRECT_SPILL_AREA_BASIS:
                     // Intentionally left blank
                     break;
             }
+            break;
+
+        case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT:
+            REQUIRE(value->rip_indirection.base != NULL,
+                    KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected non-NULL rip indirection basis"));
             break;
     }
     return KEFIR_OK;

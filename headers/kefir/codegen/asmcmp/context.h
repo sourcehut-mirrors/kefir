@@ -23,6 +23,7 @@
 
 #include "kefir/core/mem.h"
 #include "kefir/core/basic-types.h"
+#include "kefir/core/string_pool.h"
 #include "kefir/codegen/asmcmp/base.h"
 #include "kefir/core/hashtreeset.h"
 
@@ -41,7 +42,8 @@ typedef enum kefir_asmcmp_value_type {
     KEFIR_ASMCMP_VALUE_TYPE_UINTEGER,
     KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER,
     KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER,
-    KEFIR_ASMCMP_VALUE_TYPE_INDIRECT
+    KEFIR_ASMCMP_VALUE_TYPE_INDIRECT,
+    KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT
 } kefir_asmcmp_value_type_t;
 
 typedef enum kefir_asmcmp_register_type { KEFIR_ASMCMP_REGISTER_GENERAL_PURPOSE } kefir_asmcmp_register_type_t;
@@ -57,6 +59,7 @@ typedef enum kefir_asmcmp_operand_variant {
 typedef enum kefir_asmcmp_indirect_basis_type {
     KEFIR_ASMCMP_INDIRECT_PHYSICAL_BASIS,
     KEFIR_ASMCMP_INDIRECT_VIRTUAL_BASIS,
+    KEFIR_ASMCMP_INDIRECT_LABEL_BASIS,
     KEFIR_ASMCMP_INDIRECT_LOCAL_VAR_BASIS,
     KEFIR_ASMCMP_INDIRECT_SPILL_AREA_BASIS
 } kefir_asmcmp_indirect_basis_type_t;
@@ -77,11 +80,16 @@ typedef struct kefir_asmcmp_value {
             union {
                 kefir_asmcmp_physical_register_index_t phreg;
                 kefir_asmcmp_virtual_register_index_t vreg;
+                const char *label;
                 kefir_size_t spill_index;
             } base;
             kefir_int64_t offset;
             kefir_asmcmp_operand_variant_t variant;
         } indirect;
+        struct {
+            const char *base;
+            kefir_asmcmp_operand_variant_t variant;
+        } rip_indirection;
     };
 } kefir_asmcmp_value_t;
 
@@ -116,6 +124,12 @@ typedef struct kefir_asmcmp_value {
                                               .base.phreg = (_reg),                         \
                                               .offset = (_offset),                          \
                                               .variant = (_variant)}})
+#define KEFIR_ASMCMP_MAKE_INDIRECT_LABEL(_label, _offset, _variant)                      \
+    ((struct kefir_asmcmp_value){.type = KEFIR_ASMCMP_VALUE_TYPE_INDIRECT,               \
+                                 .indirect = {.type = KEFIR_ASMCMP_INDIRECT_LABEL_BASIS, \
+                                              .base.label = (_label),                    \
+                                              .offset = (_offset),                       \
+                                              .variant = (_variant)}})
 #define KEFIR_ASMCMP_MAKE_INDIRECT_LOCAL_VAR(_offset, _variant) \
     ((struct kefir_asmcmp_value){                               \
         .type = KEFIR_ASMCMP_VALUE_TYPE_INDIRECT,               \
@@ -126,6 +140,9 @@ typedef struct kefir_asmcmp_value {
                                               .base.spill_index = (_index),                   \
                                               .offset = (_offset),                            \
                                               .variant = (_variant)}})
+#define KEFIR_ASMCMP_MAKE_RIP_INDIRECT(_base, _variant)                        \
+    ((struct kefir_asmcmp_value){.type = KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT, \
+                                 .rip_indirection = {.base = (_base), .variant = (_variant)}})
 
 typedef struct kefir_asmcmp_instruction {
     kefir_asmcmp_instruction_opcode_t opcode;
@@ -182,6 +199,8 @@ typedef struct kefir_asmcmp_context {
     struct kefir_asmcmp_virtual_register *virtual_registers;
     kefir_size_t virtual_register_length;
     kefir_size_t virtual_register_capacity;
+
+    struct kefir_string_pool strings;
 
     const struct kefir_asmcmp_context_class *klass;
     void *payload;

@@ -63,7 +63,9 @@ kefir_result_t kefir_codegen_amd64_function_vreg_of(struct kefir_codegen_amd64_f
     _def(return, KEFIR_OPT_OPCODE_RETURN) _separator \
     _def(int_const, KEFIR_OPT_OPCODE_INT_CONST) _separator \
     _def(uint_const, KEFIR_OPT_OPCODE_UINT_CONST) _separator \
+    _def(string_ref, KEFIR_OPT_OPCODE_STRING_REF) _separator \
     _def(get_local, KEFIR_OPT_OPCODE_GET_LOCAL) _separator \
+    _def(get_global, KEFIR_OPT_OPCODE_GET_GLOBAL) _separator \
     _def(int8_store, KEFIR_OPT_OPCODE_INT8_STORE) _separator \
     _def(int16_store, KEFIR_OPT_OPCODE_INT16_STORE) _separator \
     _def(int32_store, KEFIR_OPT_OPCODE_INT32_STORE) _separator \

@@ -20,6 +20,7 @@
 
 #define KEFIR_CODEGEN_AMD64_FUNCTION_INTERNAL
 #include "kefir/codegen/amd64/function.h"
+#include "kefir/codegen/amd64/symbolic_labels.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
@@ -74,6 +75,40 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(uint_const)(struct kefir_mem
             kefir_asmcmp_amd64_movabs(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                       &KEFIR_ASMCMP_MAKE_VREG64(result_vreg),
                                       &KEFIR_ASMCMP_MAKE_UINT(instruction->operation.parameters.imm.uinteger), NULL));
+    }
+
+    REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));
+    return KEFIR_OK;
+}
+
+kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(string_ref)(struct kefir_mem *mem,
+                                                                struct kefir_codegen_amd64_function *function,
+                                                                const struct kefir_opt_instruction *instruction) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
+    REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
+
+    kefir_asmcmp_virtual_register_index_t result_vreg;
+
+    REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context, KEFIR_ASMCMP_REGISTER_GENERAL_PURPOSE,
+                                                 &result_vreg));
+
+    char buf[256];
+    snprintf(buf, sizeof(buf), KEFIR_AMD64_STRING_LITERAL, instruction->operation.parameters.imm.string_ref);
+    const char *string_ref = kefir_string_pool_insert(mem, &function->code.context.strings, buf, NULL);
+    REQUIRE(string_ref != NULL,
+            KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert string reference into string pool"));
+
+    if (function->codegen->config->position_independent_code) {
+        REQUIRE_OK(kefir_asmcmp_amd64_lea(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+            &KEFIR_ASMCMP_MAKE_VREG64(result_vreg),
+            &KEFIR_ASMCMP_MAKE_RIP_INDIRECT(string_ref, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT), NULL));
+    } else {
+        REQUIRE_OK(kefir_asmcmp_amd64_lea(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+            &KEFIR_ASMCMP_MAKE_VREG64(result_vreg),
+            &KEFIR_ASMCMP_MAKE_INDIRECT_LABEL(string_ref, 0, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT), NULL));
     }
 
     REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));

@@ -84,6 +84,7 @@ static kefir_result_t update_virtual_register_lifetime(struct kefir_codegen_amd6
         case KEFIR_ASMCMP_VALUE_TYPE_NONE:
         case KEFIR_ASMCMP_VALUE_TYPE_INTEGER:
         case KEFIR_ASMCMP_VALUE_TYPE_UINTEGER:
+        case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT:
             // Intentionally left blank
             break;
 
@@ -122,6 +123,7 @@ static kefir_result_t update_virtual_register_lifetime(struct kefir_codegen_amd6
                         KEFIR_INVALID_STATE,
                         "Unexpected presence of physical amd64 registers at register allocation stage");
 
+                case KEFIR_ASMCMP_INDIRECT_LABEL_BASIS:
                 case KEFIR_ASMCMP_INDIRECT_LOCAL_VAR_BASIS:
                 case KEFIR_ASMCMP_INDIRECT_SPILL_AREA_BASIS:
                     // Intentionally left blank
@@ -182,6 +184,7 @@ static kefir_result_t build_virtual_register_liveness_graph(struct kefir_mem *me
         case KEFIR_ASMCMP_VALUE_TYPE_NONE:
         case KEFIR_ASMCMP_VALUE_TYPE_INTEGER:
         case KEFIR_ASMCMP_VALUE_TYPE_UINTEGER:
+        case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT:
             // Intentionally left blank
             break;
 
@@ -204,6 +207,7 @@ static kefir_result_t build_virtual_register_liveness_graph(struct kefir_mem *me
                         KEFIR_INVALID_STATE,
                         "Unexpected presence of physical amd64 registers at register allocation stage");
 
+                case KEFIR_ASMCMP_INDIRECT_LABEL_BASIS:
                 case KEFIR_ASMCMP_INDIRECT_LOCAL_VAR_BASIS:
                 case KEFIR_ASMCMP_INDIRECT_SPILL_AREA_BASIS:
                     // Intentionally left blank
@@ -462,6 +466,7 @@ static kefir_result_t allocate_register(struct kefir_mem *mem, struct kefir_asmc
         case KEFIR_ASMCMP_VALUE_TYPE_NONE:
         case KEFIR_ASMCMP_VALUE_TYPE_INTEGER:
         case KEFIR_ASMCMP_VALUE_TYPE_UINTEGER:
+        case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT:
             // Intentionally left blank
             break;
 
@@ -484,6 +489,7 @@ static kefir_result_t allocate_register(struct kefir_mem *mem, struct kefir_asmc
                         KEFIR_INVALID_STATE,
                         "Unexpected presence of physical amd64 registers at register allocation stage");
 
+                case KEFIR_ASMCMP_INDIRECT_LABEL_BASIS:
                 case KEFIR_ASMCMP_INDIRECT_LOCAL_VAR_BASIS:
                 case KEFIR_ASMCMP_INDIRECT_SPILL_AREA_BASIS:
                     // Intentionally left blank

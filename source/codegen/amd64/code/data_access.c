@@ -20,6 +20,7 @@
 
 #define KEFIR_CODEGEN_AMD64_FUNCTION_INTERNAL
 #include "kefir/codegen/amd64/function.h"
+#include "kefir/codegen/amd64/symbolic_labels.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
@@ -42,6 +43,51 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_local)(struct kefir_mem 
     REQUIRE_OK(kefir_asmcmp_amd64_lea(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), &KEFIR_ASMCMP_MAKE_VREG64(vreg),
         &KEFIR_ASMCMP_MAKE_INDIRECT_LOCAL_VAR(entry->relative_offset, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT), NULL));
+
+    REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, vreg));
+
+    return KEFIR_OK;
+}
+
+kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_global)(struct kefir_mem *mem,
+                                                                struct kefir_codegen_amd64_function *function,
+                                                                const struct kefir_opt_instruction *instruction) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
+    REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
+
+    kefir_asmcmp_virtual_register_index_t vreg;
+
+    REQUIRE_OK(
+        kefir_asmcmp_virtual_register_new(mem, &function->code.context, KEFIR_ASMCMP_REGISTER_GENERAL_PURPOSE, &vreg));
+
+    const char *symbol =
+        kefir_ir_module_get_named_symbol(function->module->ir_module, instruction->operation.parameters.ir_ref);
+    REQUIRE(symbol != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to find named IR symbol"));
+
+    if (!function->codegen->config->position_independent_code) {
+        REQUIRE_OK(kefir_asmcmp_amd64_lea(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+            &KEFIR_ASMCMP_MAKE_VREG64(vreg),
+            &KEFIR_ASMCMP_MAKE_INDIRECT_LABEL(symbol, 0, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT), NULL));
+    } else if (!kefir_ir_module_has_external(function->module->ir_module, symbol) &&
+               !kefir_ir_module_has_global(function->module->ir_module, symbol)) {
+        REQUIRE_OK(kefir_asmcmp_amd64_lea(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+            &KEFIR_ASMCMP_MAKE_VREG64(vreg),
+            &KEFIR_ASMCMP_MAKE_RIP_INDIRECT(symbol, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT), NULL));
+    } else {
+        char buf[256];
+        snprintf(buf, sizeof(buf), KEFIR_AMD64_GOTPCREL, symbol);
+
+        symbol = kefir_string_pool_insert(mem, &function->code.context.strings, buf, NULL);
+        REQUIRE(symbol != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert symbol into string pool"));
+
+        REQUIRE_OK(
+            kefir_asmcmp_amd64_mov(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                                   &KEFIR_ASMCMP_MAKE_VREG64(vreg),
+                                   &KEFIR_ASMCMP_MAKE_RIP_INDIRECT(symbol, KEFIR_ASMCMP_OPERAND_VARIANT_64BIT), NULL));
+    }
 
     REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, vreg));
 

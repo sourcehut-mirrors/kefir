@@ -24,7 +24,7 @@
 #include "kefir/core/basic-types.h"
 
 // #define KEFIR_AMD64_PLT "%s@PLT"
-// #define KEFIR_AMD64_GOTPCREL "%s@GOTPCREL"
+#define KEFIR_AMD64_GOTPCREL "%s@GOTPCREL"
 // #define KEFIR_AMD64_THREAD_LOCAL "%s@tpoff"
 // #define KEFIR_AMD64_THREAD_LOCAL_GOT "%s@gottpoff"
 // #define KEFIR_AMD64_TLSGD "%s@tlsgd"
