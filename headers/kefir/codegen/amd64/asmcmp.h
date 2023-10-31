@@ -64,6 +64,7 @@ typedef struct kefir_codegen_amd64_stack_frame kefir_codegen_amd64_stack_frame_t
     _opcode(test, TEST, arg2) _separator \
     _opcode(cmp, CMP, arg2) _separator \
     _opcode(sete, SETE, arg1) _separator \
+    _opcode(setne, SETNE, arg1) _separator \
     _opcode(setg, SETG, arg1) _separator \
     _opcode(setl, SETL, arg1) _separator \
     _opcode(seta, SETA, arg1) _separator \

@@ -96,6 +96,7 @@ kefir_result_t kefir_codegen_amd64_function_vreg_of(struct kefir_codegen_amd64_f
     _def(int_less, KEFIR_OPT_OPCODE_INT_LESSER) _separator                                                   \
     _def(int_above, KEFIR_OPT_OPCODE_INT_ABOVE) _separator                                                   \
     _def(int_below, KEFIR_OPT_OPCODE_INT_BELOW) _separator                                                   \
+    _def(int_trunc1, KEFIR_OPT_OPCODE_INT64_TRUNCATE_1BIT) _separator                          \
     _def(int_zero_extend8, KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_8BITS) _separator                          \
     _def(int_zero_extend16, KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_16BITS) _separator                        \
     _def(int_zero_extend32, KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_32BITS) _separator                        \
