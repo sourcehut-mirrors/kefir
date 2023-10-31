@@ -383,6 +383,10 @@ static kefir_result_t devirtualize_impl(struct kefir_mem *mem, struct devirtuali
     case KEFIR_ASMCMP_AMD64_OPCODE(_opcode): \
         /* Intentionally left blank */       \
         break;
+#define CASE_IMPL_arg1(_opcode)              \
+    case KEFIR_ASMCMP_AMD64_OPCODE(_opcode): \
+        /* Intentionally left blank */       \
+        break;
 #define CASE_IMPL_arg2(_opcode)                                               \
     case KEFIR_ASMCMP_AMD64_OPCODE(_opcode):                                  \
         REQUIRE_OK(devirtualize_arg2(mem, state, idx, &devirtualized_instr)); \

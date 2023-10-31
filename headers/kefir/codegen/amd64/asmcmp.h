@@ -49,9 +49,20 @@ typedef struct kefir_codegen_amd64_stack_frame kefir_codegen_amd64_stack_frame_t
     _opcode(add, ADD, arg2) _separator \
     _opcode(sub, SUB, arg2) _separator \
     _opcode(imul, IMUL, arg2) _separator \
+    _opcode(idiv, IDIV, arg1) _separator \
+    _opcode(div, DIV, arg1) _separator \
+    _opcode(shl, SHL, arg2) _separator \
+    _opcode(shr, SHR, arg2) _separator \
+    _opcode(sar, SAR, arg2) _separator \
+    _opcode(cqo, CQO, arg0) _separator \
     _opcode(and, AND, arg2) _separator \
     _opcode(or, OR, arg2) _separator \
-    _opcode(xor, XOR, arg2)
+    _opcode(xor, XOR, arg2) _separator \
+    _opcode(not, NOT, arg1) _separator \
+    _opcode(neg, NEG, arg1) _separator \
+    /* Conditionals */ \
+    _opcode(test, TEST, arg2) _separator \
+    _opcode(sete, SETE, arg1)
 // clang-format on
 
 #define KEFIR_ASMCMP_AMD64_OPCODE(_opcode) KEFIR_ASMCMP_AMD64_##_opcode
@@ -105,6 +116,10 @@ kefir_result_t kefir_asmcmp_amd64_get_register_preallocation(const struct kefir_
 #define DEF_OPCODE_arg0(_opcode)                                                                 \
     kefir_result_t kefir_asmcmp_amd64_##_opcode(struct kefir_mem *, struct kefir_asmcmp_amd64 *, \
                                                 kefir_asmcmp_instruction_index_t, kefir_asmcmp_instruction_index_t *);
+#define DEF_OPCODE_arg1(_opcode)                                                                                     \
+    kefir_result_t kefir_asmcmp_amd64_##_opcode(struct kefir_mem *, struct kefir_asmcmp_amd64 *,                     \
+                                                kefir_asmcmp_instruction_index_t, const struct kefir_asmcmp_value *, \
+                                                kefir_asmcmp_instruction_index_t *);
 #define DEF_OPCODE_arg2(_opcode)                                                           \
     kefir_result_t kefir_asmcmp_amd64_##_opcode(                                           \
         struct kefir_mem *, struct kefir_asmcmp_amd64 *, kefir_asmcmp_instruction_index_t, \
@@ -115,6 +130,7 @@ kefir_result_t kefir_asmcmp_amd64_get_register_preallocation(const struct kefir_
 KEFIR_ASMCMP_AMD64_OPCODES(DEF_OPCODE, )
 
 #undef DEF_OPCODE_arg0
+#undef DEF_OPCODE_arg1
 #undef DEF_OPCODE_arg2
 #undef DEF_OPCODE_arg2w
 #undef DEF_OPCODE_virtual

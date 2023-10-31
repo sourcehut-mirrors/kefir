@@ -81,6 +81,16 @@ kefir_result_t kefir_codegen_amd64_function_vreg_of(struct kefir_codegen_amd64_f
     _def(int_and, KEFIR_OPT_OPCODE_INT_AND) _separator                                                   \
     _def(int_or, KEFIR_OPT_OPCODE_INT_OR) _separator                                                     \
     _def(int_xor, KEFIR_OPT_OPCODE_INT_XOR) _separator                                                   \
+    _def(int_div, KEFIR_OPT_OPCODE_INT_DIV) _separator                                                   \
+    _def(int_mod, KEFIR_OPT_OPCODE_INT_MOD) _separator                                                   \
+    _def(uint_div, KEFIR_OPT_OPCODE_UINT_DIV) _separator                                                   \
+    _def(uint_mod, KEFIR_OPT_OPCODE_UINT_MOD) _separator                                                   \
+    _def(int_shl, KEFIR_OPT_OPCODE_INT_LSHIFT) _separator                                                   \
+    _def(int_shr, KEFIR_OPT_OPCODE_INT_RSHIFT) _separator                                                   \
+    _def(int_sar, KEFIR_OPT_OPCODE_INT_ARSHIFT) _separator                                                   \
+    _def(int_not, KEFIR_OPT_OPCODE_INT_NOT) _separator                                                   \
+    _def(int_neg, KEFIR_OPT_OPCODE_INT_NEG) _separator                                                   \
+    _def(int_bnot, KEFIR_OPT_OPCODE_BOOL_NOT) _separator                                                   \
     _def(int_zero_extend8, KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_8BITS) _separator                          \
     _def(int_zero_extend16, KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_16BITS) _separator                        \
     _def(int_zero_extend32, KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_32BITS) _separator                        \

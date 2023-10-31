@@ -139,6 +139,7 @@ kefir_result_t kefir_codegen_amd64_function_translate(struct kefir_mem *mem, str
 
     kefir_abi_amd64_type_layout_free(mem, &func.locals_layout);
 on_error1:
+    kefir_abi_amd64_function_decl_free(mem, &func.abi_function_declaration);
     kefir_codegen_amd64_register_allocator_free(mem, &func.register_allocator);
     kefir_codegen_amd64_stack_frame_free(mem, &func.stack_frame);
     kefir_hashtree_free(mem, &func.instructions);

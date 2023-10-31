@@ -133,6 +133,11 @@ static kefir_result_t generate_instr(struct kefir_amd64_xasmgen *xasmgen, const 
     case KEFIR_ASMCMP_AMD64_OPCODE(_opcode):                       \
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_##_xasmgen(xasmgen)); \
         break;
+#define DEF_OPCODE_arg1(_opcode, _xasmgen)                                               \
+    case KEFIR_ASMCMP_AMD64_OPCODE(_opcode):                                             \
+        REQUIRE_OK(build_operand(stack_frame, &instr->args[0], &arg_state[0]));          \
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_##_xasmgen(xasmgen, arg_state[0].operand)); \
+        break;
 #define DEF_OPCODE_arg2(_opcode, _xasmgen)                                                                     \
     case KEFIR_ASMCMP_AMD64_OPCODE(_opcode):                                                                   \
         REQUIRE_OK(build_operand(stack_frame, &instr->args[0], &arg_state[0]));                                \
@@ -146,6 +151,7 @@ static kefir_result_t generate_instr(struct kefir_amd64_xasmgen *xasmgen, const 
 #undef DEF_OPCODE
 #undef DEF_OPCODE_virtual
 #undef DEF_OPCODE_arg0
+#undef DEF_OPCODE_arg1
 #undef DEF_OPCODE_arg2
 #undef DEF_OPCODE_arg2w
 
