@@ -21,7 +21,9 @@
 #include "kefir/codegen/asmcmp/context.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
+#include <stdarg.h>
 #include <string.h>
+#include <stdio.h>
 
 #define VALID_INSTR_IDX(_ctx, _idx) ((_idx) < (_ctx)->code_length)
 #define VALID_LABEL_IDX(_ctx, _idx) ((_idx) < (_ctx)->labels_length)
@@ -172,6 +174,10 @@ static kefir_result_t validate_value(struct kefir_asmcmp_context *context, const
         case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT:
             REQUIRE(value->rip_indirection.base != NULL,
                     KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected non-NULL rip indirection basis"));
+            break;
+
+        case KEFIR_ASMCMP_VALUE_TYPE_LABEL:
+            REQUIRE(value->label != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected non-NULL label"));
             break;
     }
     return KEFIR_OK;
@@ -536,5 +542,50 @@ kefir_result_t kefir_asmcmp_virtual_register_new(struct kefir_mem *mem, struct k
 
     *reg_alloc_idx = reg_alloc->index;
     context->virtual_register_length++;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_asmcmp_virtual_register_specify_type(const struct kefir_asmcmp_context *context,
+                                                          kefir_asmcmp_virtual_register_index_t reg_idx,
+                                                          kefir_asmcmp_register_type_t type) {
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
+    REQUIRE(VALID_VREG_IDX(context, reg_idx),
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen virtual register index"));
+
+    struct kefir_asmcmp_virtual_register *const vreg = &context->virtual_registers[reg_idx];
+    REQUIRE(vreg->type == KEFIR_ASMCMP_REGISTER_UNSPECIFIED || vreg->type == type,
+            KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Virtual register type has already been specified"));
+
+    vreg->type = type;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_asmcmp_format(struct kefir_mem *mem, struct kefir_asmcmp_context *context, const char **result,
+                                   const char *format, ...) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
+    REQUIRE(result != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to resulting string"));
+    REQUIRE(format != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid format string"));
+
+    va_list args, args2;
+    va_start(args, format);
+    va_copy(args2, args);
+
+    int length = vsnprintf(NULL, 0, format, args);
+    va_end(args);
+    REQUIRE(length >= 0, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Formatting error"));
+    ++length;
+
+    char *buf = KEFIR_MALLOC(mem, length);
+    REQUIRE(buf != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate formatting buffer"));
+
+    vsnprintf(buf, length, format, args2);
+    va_end(args2);
+    *result = kefir_string_pool_insert(mem, &context->strings, buf, NULL);
+    REQUIRE_ELSE(*result != NULL, {
+        KEFIR_FREE(mem, buf);
+        return KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert formatted string into pool");
+    });
+    KEFIR_FREE(mem, buf);
     return KEFIR_OK;
 }

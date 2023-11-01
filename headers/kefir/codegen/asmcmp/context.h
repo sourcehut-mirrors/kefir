@@ -43,10 +43,14 @@ typedef enum kefir_asmcmp_value_type {
     KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER,
     KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER,
     KEFIR_ASMCMP_VALUE_TYPE_INDIRECT,
-    KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT
+    KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT,
+    KEFIR_ASMCMP_VALUE_TYPE_LABEL
 } kefir_asmcmp_value_type_t;
 
-typedef enum kefir_asmcmp_register_type { KEFIR_ASMCMP_REGISTER_GENERAL_PURPOSE } kefir_asmcmp_register_type_t;
+typedef enum kefir_asmcmp_register_type {
+    KEFIR_ASMCMP_REGISTER_UNSPECIFIED,
+    KEFIR_ASMCMP_REGISTER_GENERAL_PURPOSE
+} kefir_asmcmp_register_type_t;
 
 typedef enum kefir_asmcmp_operand_variant {
     KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT,
@@ -90,6 +94,7 @@ typedef struct kefir_asmcmp_value {
             const char *base;
             kefir_asmcmp_operand_variant_t variant;
         } rip_indirection;
+        const char *label;
     };
 } kefir_asmcmp_value_t;
 
@@ -110,6 +115,11 @@ typedef struct kefir_asmcmp_value {
 #define KEFIR_ASMCMP_MAKE_VREG64(_vreg)                                            \
     ((struct kefir_asmcmp_value){.type = KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER, \
                                  .vreg = {.index = (_vreg), .variant = KEFIR_ASMCMP_OPERAND_VARIANT_64BIT}})
+#define KEFIR_ASMCMP_MAKE_VREG(_vreg)                                              \
+    ((struct kefir_asmcmp_value){.type = KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER, \
+                                 .vreg = {.index = (_vreg), .variant = KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT}})
+#define KEFIR_ASMCMP_MAKE_LABEL(_label) \
+    ((struct kefir_asmcmp_value){.type = KEFIR_ASMCMP_VALUE_TYPE_LABEL, .label = (_label)})
 #define KEFIR_ASMCMP_MAKE_PHREG(_reg) \
     ((struct kefir_asmcmp_value){.type = KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER, .phreg = (_reg)})
 #define KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(_vreg, _offset, _variant)                       \
@@ -253,5 +263,10 @@ kefir_result_t kefir_asmcmp_virtual_register_get(const struct kefir_asmcmp_conte
                                                  const struct kefir_asmcmp_virtual_register **);
 kefir_result_t kefir_asmcmp_virtual_register_new(struct kefir_mem *, struct kefir_asmcmp_context *,
                                                  kefir_asmcmp_register_type_t, kefir_asmcmp_virtual_register_index_t *);
+kefir_result_t kefir_asmcmp_virtual_register_specify_type(const struct kefir_asmcmp_context *,
+                                                          kefir_asmcmp_virtual_register_index_t,
+                                                          kefir_asmcmp_register_type_t);
+
+kefir_result_t kefir_asmcmp_format(struct kefir_mem *, struct kefir_asmcmp_context *, const char **, const char *, ...);
 
 #endif

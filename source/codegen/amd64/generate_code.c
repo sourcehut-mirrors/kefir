@@ -21,11 +21,10 @@
 #include "kefir/codegen/amd64/asmcmp.h"
 #include "kefir/codegen/amd64/register_allocator.h"
 #include "kefir/codegen/amd64/stack_frame.h"
+#include "kefir/codegen/amd64/symbolic_labels.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 #include "kefir/target/asm/amd64/xasmgen.h"
-
-#define LABEL_FORMAT "_kefir_func_%s_label%" KEFIR_ID_FMT
 
 struct instruction_argument_state {
     struct kefir_asm_amd64_xasmgen_operand base_operands[2];
@@ -55,6 +54,10 @@ static kefir_result_t build_operand(const struct kefir_codegen_amd64_stack_frame
 
         case KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected amd64 virtual register");
+
+        case KEFIR_ASMCMP_VALUE_TYPE_LABEL:
+            arg_state->operand = kefir_asm_amd64_xasmgen_operand_label(&arg_state->base_operands[0], value->label);
+            break;
 
         case KEFIR_ASMCMP_VALUE_TYPE_INDIRECT: {
             const struct kefir_asm_amd64_xasmgen_operand *base_ptr = NULL;
@@ -167,37 +170,40 @@ static kefir_result_t generate_instr(struct kefir_amd64_xasmgen *xasmgen, const 
     REQUIRE_OK(kefir_asmcmp_context_instr_at(&target->context, index, &instr));
     for (kefir_asmcmp_label_index_t label = kefir_asmcmp_context_instr_label_head(&target->context, index);
          label != KEFIR_ASMCMP_INDEX_NONE; label = kefir_asmcmp_context_instr_label_next(&target->context, label)) {
-        REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(xasmgen, LABEL_FORMAT, target->function_name, label));
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(xasmgen, KEFIR_AMD64_LABEL, target->function_name, label));
     }
 
     struct instruction_argument_state arg_state[3] = {0};
     switch (instr->opcode) {
 #define DEF_OPCODE_virtual(_opcode, _xasmgen)
-#define DEF_OPCODE_arg0(_opcode, _xasmgen)                         \
+#define DEF_OPCODE_0(_opcode, _xasmgen)                            \
     case KEFIR_ASMCMP_AMD64_OPCODE(_opcode):                       \
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_##_xasmgen(xasmgen)); \
         break;
-#define DEF_OPCODE_arg1(_opcode, _xasmgen)                                               \
+#define DEF_OPCODE_1(_opcode, _xasmgen)                                                  \
     case KEFIR_ASMCMP_AMD64_OPCODE(_opcode):                                             \
         REQUIRE_OK(build_operand(stack_frame, &instr->args[0], &arg_state[0]));          \
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_##_xasmgen(xasmgen, arg_state[0].operand)); \
         break;
-#define DEF_OPCODE_arg2(_opcode, _xasmgen)                                                                     \
+#define DEF_OPCODE_2(_opcode, _xasmgen)                                                                        \
     case KEFIR_ASMCMP_AMD64_OPCODE(_opcode):                                                                   \
         REQUIRE_OK(build_operand(stack_frame, &instr->args[0], &arg_state[0]));                                \
         REQUIRE_OK(build_operand(stack_frame, &instr->args[1], &arg_state[1]));                                \
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_##_xasmgen(xasmgen, arg_state[0].operand, arg_state[1].operand)); \
         break;
-#define DEF_OPCODE_arg2w(_opcode, _xasmgen) DEF_OPCODE_arg2(_opcode, _xasmgen)
-#define DEF_OPCODE(_opcode, _xasmgen, _argtp) DEF_OPCODE_##_argtp(_opcode, _xasmgen)
+#define DEF_OPCODE_helper2(_argc, _opcode, _xasmgen) DEF_OPCODE_##_argc(_opcode, _xasmgen)
+#define DEF_OPCODE_helper(_argc, _opcode, _xasmgen) DEF_OPCODE_helper2(_argc, _opcode, _xasmgen)
+#define DEF_OPCODE(_opcode, _xasmgen, _argclass) \
+    DEF_OPCODE_helper(KEFIR_ASMCMP_AMD64_ARGUMENT_COUNT_FOR(_argclass), _opcode, _xasmgen)
 
         KEFIR_ASMCMP_AMD64_OPCODES(DEF_OPCODE, ;);
 #undef DEF_OPCODE
+#undef DEF_OPCODE_helper
+#undef DEF_OPCODE_helper2
 #undef DEF_OPCODE_virtual
-#undef DEF_OPCODE_arg0
-#undef DEF_OPCODE_arg1
-#undef DEF_OPCODE_arg2
-#undef DEF_OPCODE_arg2w
+#undef DEF_OPCODE_0
+#undef DEF_OPCODE_1
+#undef DEF_OPCODE_2
 
         case KEFIR_ASMCMP_AMD64_OPCODE(virtual_register_link):
             if (!(instr->args[0].type == KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER &&

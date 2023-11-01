@@ -64,8 +64,13 @@ kefir_result_t kefir_codegen_amd64_function_vreg_of(struct kefir_codegen_amd64_f
     _def(int_const, KEFIR_OPT_OPCODE_INT_CONST) _separator \
     _def(uint_const, KEFIR_OPT_OPCODE_UINT_CONST) _separator \
     _def(string_ref, KEFIR_OPT_OPCODE_STRING_REF) _separator \
+    _def(block_label, KEFIR_OPT_OPCODE_BLOCK_LABEL) _separator \
     _def(get_local, KEFIR_OPT_OPCODE_GET_LOCAL) _separator \
     _def(get_global, KEFIR_OPT_OPCODE_GET_GLOBAL) _separator \
+    _def(phi, KEFIR_OPT_OPCODE_PHI) _separator \
+    _def(jump, KEFIR_OPT_OPCODE_JUMP) _separator \
+    _def(branch, KEFIR_OPT_OPCODE_BRANCH) _separator \
+    _def(ijump, KEFIR_OPT_OPCODE_IJUMP) _separator \
     _def(int8_store, KEFIR_OPT_OPCODE_INT8_STORE) _separator \
     _def(int16_store, KEFIR_OPT_OPCODE_INT16_STORE) _separator \
     _def(int32_store, KEFIR_OPT_OPCODE_INT32_STORE) _separator \
@@ -92,7 +97,9 @@ kefir_result_t kefir_codegen_amd64_function_vreg_of(struct kefir_codegen_amd64_f
     _def(int_sar, KEFIR_OPT_OPCODE_INT_ARSHIFT) _separator                                                   \
     _def(int_not, KEFIR_OPT_OPCODE_INT_NOT) _separator                                                   \
     _def(int_neg, KEFIR_OPT_OPCODE_INT_NEG) _separator                                                   \
-    _def(int_bnot, KEFIR_OPT_OPCODE_BOOL_NOT) _separator                                                   \
+    _def(bool_not, KEFIR_OPT_OPCODE_BOOL_NOT) _separator                                                   \
+    _def(bool_or, KEFIR_OPT_OPCODE_BOOL_OR) _separator                                                   \
+    _def(bool_and, KEFIR_OPT_OPCODE_BOOL_AND) _separator                                                   \
     _def(int_equals, KEFIR_OPT_OPCODE_INT_EQUALS) _separator                                                   \
     _def(int_greater, KEFIR_OPT_OPCODE_INT_GREATER) _separator                                                   \
     _def(int_less, KEFIR_OPT_OPCODE_INT_LESSER) _separator                                                   \

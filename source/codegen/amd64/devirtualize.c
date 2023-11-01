@@ -90,6 +90,7 @@ static kefir_result_t update_live_virtual_regs(struct kefir_mem *mem, struct dev
         case KEFIR_ASMCMP_VALUE_TYPE_UINTEGER:
         case KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER:
         case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT:
+        case KEFIR_ASMCMP_VALUE_TYPE_LABEL:
             // Intentionally left blank
             break;
 
@@ -199,7 +200,7 @@ static kefir_result_t obtain_temporary_register(struct kefir_mem *mem, struct de
             kefir_asmcmp_instruction_index_t new_position;
             REQUIRE_OK(kefir_asmcmp_amd64_mov(
                 mem, state->target, kefir_asmcmp_context_instr_prev(&state->target->context, position),
-                &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(temp_spill_slot - 1, 0, KEFIR_ASMCMP_OPERAND_VARIANT_64BIT),
+                &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(temp_spill_slot, 0, KEFIR_ASMCMP_OPERAND_VARIANT_64BIT),
                 &KEFIR_ASMCMP_MAKE_PHREG(candidate), &new_position));
             REQUIRE_OK(kefir_asmcmp_context_move_labels(mem, &state->target->context, new_position, position));
             *reg = candidate;
@@ -223,6 +224,7 @@ static kefir_result_t devirtualize_value(struct kefir_mem *mem, struct devirtual
         case KEFIR_ASMCMP_VALUE_TYPE_UINTEGER:
         case KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER:
         case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT:
+        case KEFIR_ASMCMP_VALUE_TYPE_LABEL:
             // Intentionally left blank
             break;
 
@@ -307,43 +309,84 @@ static kefir_result_t devirtualize_value(struct kefir_mem *mem, struct devirtual
     return KEFIR_OK;
 }
 
-static kefir_result_t devirtualize_arg2(struct kefir_mem *mem, struct devirtualize_state *state,
-                                        kefir_asmcmp_instruction_index_t position,
-                                        struct kefir_asmcmp_instruction *instr) {
-    UNUSED(mem);
-    UNUSED(state);
+static kefir_result_t match_physical_reg_variant(kefir_asm_amd64_xasmgen_register_t *reg,
+                                                 kefir_asmcmp_operand_variant_t variant) {
+    switch (variant) {
+        case KEFIR_ASMCMP_OPERAND_VARIANT_8BIT:
+            REQUIRE_OK(kefir_asm_amd64_xasmgen_register8(*reg, reg));
+            break;
 
-    if (instr->args[0].type == KEFIR_ASMCMP_VALUE_TYPE_INDIRECT &&
-        instr->args[1].type == KEFIR_ASMCMP_VALUE_TYPE_INDIRECT) {
-        kefir_asm_amd64_xasmgen_register_t phreg;
-        kefir_asmcmp_instruction_index_t new_position;
-        struct kefir_asmcmp_value original = instr->args[0];
-        REQUIRE_OK(obtain_temporary_register(mem, state, position, &phreg));
-        REQUIRE_OK(kefir_asmcmp_amd64_mov(mem, state->target,
-                                          kefir_asmcmp_context_instr_prev(&state->target->context, position),
-                                          &KEFIR_ASMCMP_MAKE_PHREG(phreg), &original, &new_position));
-        REQUIRE_OK(kefir_asmcmp_context_move_labels(mem, &state->target->context, new_position, position));
-        instr->args[0] = KEFIR_ASMCMP_MAKE_PHREG(phreg);
-        REQUIRE_OK(
-            kefir_asmcmp_amd64_mov(mem, state->target, position, &original, &KEFIR_ASMCMP_MAKE_PHREG(phreg), NULL));
+        case KEFIR_ASMCMP_OPERAND_VARIANT_16BIT:
+            REQUIRE_OK(kefir_asm_amd64_xasmgen_register16(*reg, reg));
+            break;
+
+        case KEFIR_ASMCMP_OPERAND_VARIANT_32BIT:
+            REQUIRE_OK(kefir_asm_amd64_xasmgen_register32(*reg, reg));
+            break;
+
+        case KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT:
+        case KEFIR_ASMCMP_OPERAND_VARIANT_64BIT:
+            REQUIRE_OK(kefir_asm_amd64_xasmgen_register64(*reg, reg));
+            break;
     }
     return KEFIR_OK;
 }
 
-static kefir_result_t devirtualize_arg2w(struct kefir_mem *mem, struct devirtualize_state *state,
-                                         kefir_asmcmp_instruction_index_t position,
-                                         struct kefir_asmcmp_instruction *instr) {
+#define DEVIRT_NONE (0ull)
+#define DEVIRT_ARG1 (1ull)
+#define DEVIRT_ARG2 (1ull << 1)
+#define DEVIRT_ARG_READ (1ull << 2)
+#define DEVIRT_ARG_WRITE (1ull << 3)
+#define DEVIRT_ARG_ALWAYS_DIRECT (1ull << 4)
+
+#define DEVIRT_HAS_FLAG(_flags, _flag) (((_flags) & (_flag)) != 0)
+
+#define DEVIRT_FLAGS_FOR_None (DEVIRT_NONE)
+#define DEVIRT_FLAGS_FOR_Virtual (DEVIRT_NONE)
+#define DEVIRT_FLAGS_FOR_Jump (DEVIRT_NONE)
+#define DEVIRT_FLAGS_FOR_RegMemW_RegMemR (DEVIRT_ARG1 | DEVIRT_ARG_WRITE)
+#define DEVIRT_FLAGS_FOR_RegMemRW_RegMemR (DEVIRT_ARG1 | DEVIRT_ARG_READ | DEVIRT_ARG_WRITE)
+#define DEVIRT_FLAGS_FOR_RegW_RegMemR (DEVIRT_ARG1 | DEVIRT_ARG_ALWAYS_DIRECT | DEVIRT_ARG_WRITE)
+#define DEVIRT_FLAGS_FOR_RegRW_RegMemR (DEVIRT_ARG1 | DEVIRT_ARG_ALWAYS_DIRECT | DEVIRT_ARG_READ | DEVIRT_ARG_WRITE)
+#define DEVIRT_FLAGS_FOR_RegW_Mem (DEVIRT_ARG1 | DEVIRT_ARG_ALWAYS_DIRECT | DEVIRT_ARG_WRITE)
+#define DEVIRT_FLAGS_FOR_RegMemRW (DEVIRT_NONE)
+#define DEVIRT_FLAGS_FOR_RegMemW (DEVIRT_NONE)
+#define DEVIRT_FLAGS_FOR_RegMemRW_RegR (DEVIRT_ARG2 | DEVIRT_ARG_ALWAYS_DIRECT | DEVIRT_ARG_READ)
+#define DEVIRT_FLAGS_FOR_RegMemR_RegR (DEVIRT_ARG2 | DEVIRT_ARG_ALWAYS_DIRECT | DEVIRT_ARG_READ)
+
+static kefir_result_t devirtualize_instr(struct kefir_mem *mem, struct devirtualize_state *state,
+                                         kefir_asmcmp_instruction_index_t instr_idx,
+                                         struct kefir_asmcmp_instruction *instr,
+                                         kefir_asmcmp_instruction_index_t *tail_instr_idx, kefir_uint64_t flags) {
     UNUSED(mem);
     UNUSED(state);
+    REQUIRE(DEVIRT_HAS_FLAG(flags, DEVIRT_ARG1) || DEVIRT_HAS_FLAG(flags, DEVIRT_ARG2), KEFIR_OK);
+    REQUIRE(!DEVIRT_HAS_FLAG(flags, DEVIRT_ARG1) || !DEVIRT_HAS_FLAG(flags, DEVIRT_ARG2),
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Invalid combination of devirtualization flags"));
 
-    if (instr->args[0].type == KEFIR_ASMCMP_VALUE_TYPE_INDIRECT &&
-        instr->args[1].type == KEFIR_ASMCMP_VALUE_TYPE_INDIRECT) {
+    const kefir_size_t primary_index = DEVIRT_HAS_FLAG(flags, DEVIRT_ARG1) ? 0 : 1;
+    const kefir_size_t secondary_index = DEVIRT_HAS_FLAG(flags, DEVIRT_ARG1) ? 1 : 0;
+
+    if (instr->args[primary_index].type == KEFIR_ASMCMP_VALUE_TYPE_INDIRECT &&
+        (DEVIRT_HAS_FLAG(flags, DEVIRT_ARG_ALWAYS_DIRECT) ||
+         instr->args[secondary_index].type == KEFIR_ASMCMP_VALUE_TYPE_INDIRECT)) {
         kefir_asm_amd64_xasmgen_register_t phreg;
-        struct kefir_asmcmp_value original = instr->args[0];
-        REQUIRE_OK(obtain_temporary_register(mem, state, position, &phreg));
-        instr->args[0] = KEFIR_ASMCMP_MAKE_PHREG(phreg);
-        REQUIRE_OK(
-            kefir_asmcmp_amd64_mov(mem, state->target, position, &original, &KEFIR_ASMCMP_MAKE_PHREG(phreg), NULL));
+        struct kefir_asmcmp_value original = instr->args[primary_index];
+        REQUIRE_OK(obtain_temporary_register(mem, state, instr_idx, &phreg));
+        REQUIRE_OK(match_physical_reg_variant(&phreg, original.indirect.variant));
+        if (DEVIRT_HAS_FLAG(flags, DEVIRT_ARG_READ)) {
+            kefir_asmcmp_instruction_index_t head_instr_idx;
+            REQUIRE_OK(kefir_asmcmp_amd64_mov(mem, state->target,
+                                              kefir_asmcmp_context_instr_prev(&state->target->context, instr_idx),
+                                              &KEFIR_ASMCMP_MAKE_PHREG(phreg), &original, &head_instr_idx));
+            REQUIRE_OK(kefir_asmcmp_context_move_labels(mem, &state->target->context, head_instr_idx, instr_idx));
+        }
+
+        instr->args[primary_index] = KEFIR_ASMCMP_MAKE_PHREG(phreg);
+        if (DEVIRT_HAS_FLAG(flags, DEVIRT_ARG_WRITE)) {
+            REQUIRE_OK(kefir_asmcmp_amd64_mov(mem, state->target, instr_idx, &original, &KEFIR_ASMCMP_MAKE_PHREG(phreg),
+                                              tail_instr_idx));
+        }
     }
     return KEFIR_OK;
 }
@@ -381,34 +424,32 @@ static kefir_result_t devirtualize_impl(struct kefir_mem *mem, struct devirtuali
         REQUIRE_OK(devirtualize_value(mem, state, idx, &devirtualized_instr.args[1]));
         REQUIRE_OK(devirtualize_value(mem, state, idx, &devirtualized_instr.args[2]));
 
+        kefir_asmcmp_instruction_index_t tail_idx = idx;
         switch (devirtualized_instr.opcode) {
-#define CASE_IMPL_virtual(_opcode)
-#define CASE_IMPL_arg0(_opcode)              \
-    case KEFIR_ASMCMP_AMD64_OPCODE(_opcode): \
-        /* Intentionally left blank */       \
+#define CASE_IMPL_Virtual(_opcode, _argclass)
+#define CASE_IMPL_Normal(_opcode, _argclass)                                                                     \
+    case KEFIR_ASMCMP_AMD64_OPCODE(_opcode):                                                                     \
+        REQUIRE_OK(                                                                                              \
+            devirtualize_instr(mem, state, idx, &devirtualized_instr, &tail_idx, DEVIRT_FLAGS_FOR_##_argclass)); \
         break;
-#define CASE_IMPL_arg1(_opcode)              \
-    case KEFIR_ASMCMP_AMD64_OPCODE(_opcode): \
-        /* Intentionally left blank */       \
-        break;
-#define CASE_IMPL_arg2(_opcode)                                               \
-    case KEFIR_ASMCMP_AMD64_OPCODE(_opcode):                                  \
-        REQUIRE_OK(devirtualize_arg2(mem, state, idx, &devirtualized_instr)); \
-        break;
-#define CASE_IMPL_arg2w(_opcode)                                               \
-    case KEFIR_ASMCMP_AMD64_OPCODE(_opcode):                                   \
-        REQUIRE_OK(devirtualize_arg2w(mem, state, idx, &devirtualized_instr)); \
-        break;
-#define CASE_IMPL(_opcode, _gen, _type) CASE_IMPL_##_type(_opcode)
+#define CASE_IMPL_None(_opcode, _argclass) CASE_IMPL_Normal(_opcode, _argclass)
+#define CASE_IMPL_Jump(_opcode, _argclass) CASE_IMPL_Normal(_opcode, _argclass)
+#define CASE_IMPL_RegMemW_RegMemR(_opcode, _argclass) CASE_IMPL_Normal(_opcode, _argclass)
+#define CASE_IMPL_RegW_RegMemR(_opcode, _argclass) CASE_IMPL_Normal(_opcode, _argclass)
+#define CASE_IMPL_RegRW_RegMemR(_opcode, _argclass) CASE_IMPL_Normal(_opcode, _argclass)
+#define CASE_IMPL_RegW_Mem(_opcode, _argclass) CASE_IMPL_Normal(_opcode, _argclass)
+#define CASE_IMPL_RegMemRW_RegMemR(_opcode, _argclass) CASE_IMPL_Normal(_opcode, _argclass)
+#define CASE_IMPL_RegMemRW(_opcode, _argclass) CASE_IMPL_Normal(_opcode, _argclass)
+#define CASE_IMPL_RegMemW(_opcode, _argclass) CASE_IMPL_Normal(_opcode, _argclass)
+#define CASE_IMPL_RegMemRW_RegR(_opcode, _argclass) CASE_IMPL_Normal(_opcode, _argclass)
+#define CASE_IMPL_RegMemR_RegR(_opcode, _argclass) CASE_IMPL_Normal(_opcode, _argclass)
+#define CASE_IMPL(_opcode, _xasmgen, _argclass) CASE_IMPL_##_argclass(_opcode, _argclass)
             KEFIR_ASMCMP_AMD64_OPCODES(CASE_IMPL, )
 #undef CASE_IMPL
-#undef CASE_IMPL_virtual
-#undef CASE_IMPL_arg0
-#undef CASE_IMPL_arg2
-#undef CASE_IMPL_arg2w
 
             case KEFIR_ASMCMP_AMD64_OPCODE(virtual_register_link):
-                REQUIRE_OK(devirtualize_arg2w(mem, state, idx, &devirtualized_instr));
+                REQUIRE_OK(devirtualize_instr(mem, state, idx, &devirtualized_instr, &tail_idx,
+                                              DEVIRT_FLAGS_FOR_RegMemW_RegMemR));
                 break;
 
             case KEFIR_ASMCMP_AMD64_OPCODE(touch_virtual_register):
@@ -427,7 +468,7 @@ static kefir_result_t devirtualize_impl(struct kefir_mem *mem, struct devirtuali
             ASSIGN_DECL_CAST(kefir_size_t, spill_index, node->value);
             if (spill_index != (kefir_size_t) -1) {
                 REQUIRE_OK(kefir_asmcmp_amd64_mov(
-                    mem, state->target, idx, &KEFIR_ASMCMP_MAKE_PHREG(reg),
+                    mem, state->target, tail_idx, &KEFIR_ASMCMP_MAKE_PHREG(reg),
                     &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(spill_index, 0, KEFIR_ASMCMP_OPERAND_VARIANT_64BIT), NULL));
                 REQUIRE_OK(kefir_bitset_set(&state->alive.spill_area, spill_index, false));
             }

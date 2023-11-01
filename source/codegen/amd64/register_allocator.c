@@ -85,6 +85,7 @@ static kefir_result_t update_virtual_register_lifetime(struct kefir_codegen_amd6
         case KEFIR_ASMCMP_VALUE_TYPE_INTEGER:
         case KEFIR_ASMCMP_VALUE_TYPE_UINTEGER:
         case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT:
+        case KEFIR_ASMCMP_VALUE_TYPE_LABEL:
             // Intentionally left blank
             break;
 
@@ -185,6 +186,7 @@ static kefir_result_t build_virtual_register_liveness_graph(struct kefir_mem *me
         case KEFIR_ASMCMP_VALUE_TYPE_INTEGER:
         case KEFIR_ASMCMP_VALUE_TYPE_UINTEGER:
         case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT:
+        case KEFIR_ASMCMP_VALUE_TYPE_LABEL:
             // Intentionally left blank
             break;
 
@@ -385,6 +387,9 @@ static kefir_result_t allocate_register_impl(struct kefir_mem *mem, struct kefir
 
     kefir_bool_t found_alive_reg;
     switch (vreg->type) {
+        case KEFIR_ASMCMP_REGISTER_UNSPECIFIED:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unspecified virtual register type");
+
         case KEFIR_ASMCMP_REGISTER_GENERAL_PURPOSE:
             if (preallocation != NULL && preallocation->type == KEFIR_ASMCMP_AMD64_REGISTER_PREALLOCATION_REQUIREMENT) {
                 REQUIRE_OK(is_register_allocated(allocator, preallocation->reg, &found_alive_reg));
@@ -467,6 +472,7 @@ static kefir_result_t allocate_register(struct kefir_mem *mem, struct kefir_asmc
         case KEFIR_ASMCMP_VALUE_TYPE_INTEGER:
         case KEFIR_ASMCMP_VALUE_TYPE_UINTEGER:
         case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT:
+        case KEFIR_ASMCMP_VALUE_TYPE_LABEL:
             // Intentionally left blank
             break;
 
