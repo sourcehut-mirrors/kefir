@@ -215,6 +215,7 @@ kefir_result_t kefir_asmcmp_amd64_get_register_preallocation(
             idx_ptr));                                                                                           \
         return KEFIR_OK;                                                                                         \
     }
+#define DEF_OPCODE_repeat(_opcode) DEF_OPCODE_0(_opcode)
 #define DEF_OPCODE_1(_opcode)                                                                                    \
     kefir_result_t kefir_asmcmp_amd64_##_opcode(                                                                 \
         struct kefir_mem *mem, struct kefir_asmcmp_amd64 *target, kefir_asmcmp_instruction_index_t after_index,  \
@@ -258,6 +259,7 @@ KEFIR_ASMCMP_AMD64_OPCODES(DEF_OPCODE, )
 
 #undef DEF_OPCODE_virtual
 #undef DEF_OPCODE_0
+#undef DEF_OPCODE_repeat
 #undef DEF_OPCODE_1
 #undef DEF_OPCODE_2
 #undef DEF_OPCODE
@@ -330,6 +332,46 @@ kefir_result_t kefir_asmcmp_amd64_function_epilogue(struct kefir_mem *mem, struc
                                                  .args[0].type = KEFIR_ASMCMP_VALUE_TYPE_NONE,
                                                  .args[1].type = KEFIR_ASMCMP_VALUE_TYPE_NONE,
                                                  .args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE},
+        idx_ptr));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_asmcmp_amd64_acquire_physical_register(struct kefir_mem *mem, struct kefir_asmcmp_amd64 *target,
+                                                            kefir_asmcmp_instruction_index_t after_index,
+                                                            kefir_asm_amd64_xasmgen_register_t reg,
+                                                            kefir_asmcmp_virtual_register_index_t vreg,
+                                                            kefir_asmcmp_instruction_index_t *idx_ptr) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(target != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen amd64 target"));
+
+    REQUIRE_OK(kefir_asmcmp_context_instr_insert_after(
+        mem, &target->context, after_index,
+        &(const struct kefir_asmcmp_instruction){
+            .opcode = KEFIR_ASMCMP_AMD64_OPCODE(acquire_physical_register),
+            .args[0] = {.type = KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER, .phreg = reg},
+            .args[1] = {.type = KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER,
+                        .vreg = {.index = vreg, .variant = KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT}},
+            .args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE},
+        idx_ptr));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_asmcmp_amd64_release_physical_register(struct kefir_mem *mem, struct kefir_asmcmp_amd64 *target,
+                                                            kefir_asmcmp_instruction_index_t after_index,
+                                                            kefir_asm_amd64_xasmgen_register_t reg,
+                                                            kefir_asmcmp_virtual_register_index_t vreg,
+                                                            kefir_asmcmp_instruction_index_t *idx_ptr) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(target != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen amd64 target"));
+
+    REQUIRE_OK(kefir_asmcmp_context_instr_insert_after(
+        mem, &target->context, after_index,
+        &(const struct kefir_asmcmp_instruction){
+            .opcode = KEFIR_ASMCMP_AMD64_OPCODE(release_physical_register),
+            .args[0] = {.type = KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER, .phreg = reg},
+            .args[1] = {.type = KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER,
+                        .vreg = {.index = vreg, .variant = KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT}},
+            .args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE},
         idx_ptr));
     return KEFIR_OK;
 }

@@ -23,8 +23,10 @@
 
 #include "kefir/codegen/amd64/asmcmp.h"
 #include "kefir/codegen/amd64/register_allocator.h"
+#include "kefir/codegen/amd64/stack_frame.h"
 
 kefir_result_t kefir_codegen_amd64_devirtualize(struct kefir_mem *, struct kefir_asmcmp_amd64 *,
-                                                struct kefir_codegen_amd64_register_allocator *);
+                                                struct kefir_codegen_amd64_register_allocator *,
+                                                struct kefir_codegen_amd64_stack_frame *);
 
 #endif

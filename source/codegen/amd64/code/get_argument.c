@@ -42,7 +42,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_argument)(struct kefir_m
     struct kefir_abi_amd64_function_parameter function_parameter;
     REQUIRE_OK(kefir_abi_amd64_function_parameters_at(function_parameters, param_type_slot, &function_parameter));
 
-    kefir_asmcmp_virtual_register_index_t arg_vreg, vreg;
+    kefir_asmcmp_virtual_register_index_t arg_vreg, vreg, vreg2;
     switch (function_parameter.location) {
         case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_NONE:
             // Intentionally left blank
@@ -113,7 +113,43 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_argument)(struct kefir_m
                 &function_parameter, KEFIR_ABI_AMD64_FUNCTION_PARAMETER_ADDRESS_CALLEE, &base_reg, &offset));
             REQUIRE_OK(kefir_asmcmp_virtual_register_new_memory_pointer(
                 mem, &function->code.context, (kefir_asmcmp_physical_register_index_t) base_reg, offset, &vreg));
-            REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, vreg));
+
+            const struct kefir_ir_typeentry *typeentry =
+                kefir_ir_type_at(function->function->ir_func->declaration->params, param_type_index);
+            REQUIRE(typeentry != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to fetch IR type entry"));
+            switch (typeentry->typecode) {
+                case KEFIR_IR_TYPE_STRUCT:
+                case KEFIR_IR_TYPE_ARRAY:
+                case KEFIR_IR_TYPE_UNION:
+                case KEFIR_IR_TYPE_LONG_DOUBLE:
+                    REQUIRE_OK(kefir_asmcmp_virtual_register_new(
+                        mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &vreg2));
+                    REQUIRE_OK(kefir_asmcmp_amd64_lea(
+                        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                        &KEFIR_ASMCMP_MAKE_VREG64(vreg2), &KEFIR_ASMCMP_MAKE_VREG(vreg), NULL));
+                    REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, vreg2));
+                    break;
+
+                case KEFIR_IR_TYPE_INT8:
+                case KEFIR_IR_TYPE_INT16:
+                case KEFIR_IR_TYPE_INT32:
+                case KEFIR_IR_TYPE_INT64:
+                case KEFIR_IR_TYPE_FLOAT32:
+                case KEFIR_IR_TYPE_FLOAT64:
+                case KEFIR_IR_TYPE_BOOL:
+                case KEFIR_IR_TYPE_CHAR:
+                case KEFIR_IR_TYPE_SHORT:
+                case KEFIR_IR_TYPE_INT:
+                case KEFIR_IR_TYPE_LONG:
+                case KEFIR_IR_TYPE_WORD:
+                case KEFIR_IR_TYPE_BITS:
+                case KEFIR_IR_TYPE_BUILTIN:
+                    REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, vreg));
+                    break;
+
+                case KEFIR_IR_TYPE_COUNT:
+                    return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected IR type code");
+            }
         } break;
 
         case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_SSE_REGISTER:

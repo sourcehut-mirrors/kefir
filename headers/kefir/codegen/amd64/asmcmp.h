@@ -29,6 +29,7 @@ typedef struct kefir_codegen_amd64_register_allocator kefir_codegen_amd64_regist
 typedef struct kefir_codegen_amd64_stack_frame kefir_codegen_amd64_stack_frame_t;                // Forward declaration
 
 #define KEFIR_ASMCMP_AMD64_ARGUMENT_COUNT_FOR_IMPL_Virtual virtual
+#define KEFIR_ASMCMP_AMD64_ARGUMENT_COUNT_FOR_IMPL_Repeat repeat
 #define KEFIR_ASMCMP_AMD64_ARGUMENT_COUNT_FOR_IMPL_None 0
 #define KEFIR_ASMCMP_AMD64_ARGUMENT_COUNT_FOR_IMPL_Jump 1
 #define KEFIR_ASMCMP_AMD64_ARGUMENT_COUNT_FOR_IMPL_RegMemW_RegMemR 2
@@ -50,6 +51,9 @@ typedef struct kefir_codegen_amd64_stack_frame kefir_codegen_amd64_stack_frame_t
     _opcode(load_local_var_address, _, Virtual) _separator \
     _opcode(function_prologue, _, Virtual) _separator \
     _opcode(function_epilogue, _, Virtual) _separator \
+    _opcode(acquire_physical_register, _, Virtual) _separator \
+    _opcode(release_physical_register, _, Virtual) _separator \
+    _opcode(noop, _, Virtual) _separator \
     /* AMD64 opcodes */ \
     /* Control flow */ \
     _opcode(ret, RET, None) _separator \
@@ -61,6 +65,7 @@ typedef struct kefir_codegen_amd64_stack_frame kefir_codegen_amd64_stack_frame_t
     _opcode(movsx, MOVSX, RegW_RegMemR) _separator \
     _opcode(movzx, MOVZX, RegW_RegMemR) _separator \
     _opcode(lea, LEA, RegW_Mem) _separator \
+    _opcode(movsb_rep, MOVSB, Repeat) _separator \
     /* Integral arithmetics & logic */ \
     _opcode(add, ADD, RegMemRW_RegMemR) _separator \
     _opcode(sub, SUB, RegMemRW_RegMemR) _separator \
@@ -138,6 +143,7 @@ kefir_result_t kefir_asmcmp_amd64_get_register_preallocation(const struct kefir_
 #define DEF_OPCODE_0(_opcode)                                                                    \
     kefir_result_t kefir_asmcmp_amd64_##_opcode(struct kefir_mem *, struct kefir_asmcmp_amd64 *, \
                                                 kefir_asmcmp_instruction_index_t, kefir_asmcmp_instruction_index_t *);
+#define DEF_OPCODE_repeat(_opcode) DEF_OPCODE_0(_opcode)
 #define DEF_OPCODE_1(_opcode)                                                                                        \
     kefir_result_t kefir_asmcmp_amd64_##_opcode(struct kefir_mem *, struct kefir_asmcmp_amd64 *,                     \
                                                 kefir_asmcmp_instruction_index_t, const struct kefir_asmcmp_value *, \
@@ -154,6 +160,7 @@ kefir_result_t kefir_asmcmp_amd64_get_register_preallocation(const struct kefir_
 KEFIR_ASMCMP_AMD64_OPCODES(DEF_OPCODE, )
 
 #undef DEF_OPCODE_0
+#undef DEF_OPCODE_repeat
 #undef DEF_OPCODE_1
 #undef DEF_OPCODE_2
 #undef DEF_OPCODE_virtual
@@ -178,6 +185,17 @@ kefir_result_t kefir_asmcmp_amd64_function_prologue(struct kefir_mem *, struct k
 kefir_result_t kefir_asmcmp_amd64_function_epilogue(struct kefir_mem *, struct kefir_asmcmp_amd64 *,
                                                     kefir_asmcmp_instruction_index_t,
                                                     kefir_asmcmp_instruction_index_t *);
+
+kefir_result_t kefir_asmcmp_amd64_acquire_physical_register(struct kefir_mem *, struct kefir_asmcmp_amd64 *,
+                                                            kefir_asmcmp_instruction_index_t,
+                                                            kefir_asm_amd64_xasmgen_register_t,
+                                                            kefir_asmcmp_virtual_register_index_t,
+                                                            kefir_asmcmp_instruction_index_t *);
+kefir_result_t kefir_asmcmp_amd64_release_physical_register(struct kefir_mem *, struct kefir_asmcmp_amd64 *,
+                                                            kefir_asmcmp_instruction_index_t,
+                                                            kefir_asm_amd64_xasmgen_register_t,
+                                                            kefir_asmcmp_virtual_register_index_t,
+                                                            kefir_asmcmp_instruction_index_t *);
 
 kefir_result_t kefir_asmcmp_amd64_generate_code(struct kefir_amd64_xasmgen *, const struct kefir_asmcmp_amd64 *,
                                                 const struct kefir_codegen_amd64_stack_frame *);

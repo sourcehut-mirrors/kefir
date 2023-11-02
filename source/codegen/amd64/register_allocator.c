@@ -86,12 +86,9 @@ static kefir_result_t update_virtual_register_lifetime(struct kefir_codegen_amd6
         case KEFIR_ASMCMP_VALUE_TYPE_UINTEGER:
         case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT:
         case KEFIR_ASMCMP_VALUE_TYPE_LABEL:
+        case KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER:
             // Intentionally left blank
             break;
-
-        case KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER:
-            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
-                                   "Unexpected presence of physical amd64 registers at register allocation stage");
 
         case KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER: {
             vreg = value->vreg.index;
@@ -187,12 +184,9 @@ static kefir_result_t build_virtual_register_liveness_graph(struct kefir_mem *me
         case KEFIR_ASMCMP_VALUE_TYPE_UINTEGER:
         case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT:
         case KEFIR_ASMCMP_VALUE_TYPE_LABEL:
+        case KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER:
             // Intentionally left blank
             break;
-
-        case KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER:
-            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
-                                   "Unexpected presence of physical amd64 registers at register allocation stage");
 
         case KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER:
             UPDATE_GRAPH(value->vreg.index);
@@ -504,6 +498,10 @@ static kefir_result_t allocate_register_impl(struct kefir_mem *mem, struct kefir
             REQUIRE_OK(allocate_spill_slot(mem, allocator, stack_frame, vreg_idx));
             break;
 
+        case KEFIR_ASMCMP_VIRTUAL_REGISTER_SPILL_SPACE_SLOT:
+            REQUIRE_OK(allocate_spill_slot(mem, allocator, stack_frame, vreg_idx));
+            break;
+
         case KEFIR_ASMCMP_VIRTUAL_REGISTER_SPILL_SPACE_ALLOCATION:
             REQUIRE_OK(allocate_spill_space(mem, allocator, stack_frame, vreg_idx,
                                             vreg->parameters.spill_space_allocation_length));
@@ -529,12 +527,9 @@ static kefir_result_t allocate_register(struct kefir_mem *mem, struct kefir_asmc
         case KEFIR_ASMCMP_VALUE_TYPE_UINTEGER:
         case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT:
         case KEFIR_ASMCMP_VALUE_TYPE_LABEL:
+        case KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER:
             // Intentionally left blank
             break;
-
-        case KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER:
-            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
-                                   "Unexpected presence of physical amd64 registers at register allocation stage");
 
         case KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER:
             REQUIRE_OK(allocate_register_impl(mem, target, stack_frame, allocator, value->vreg.index));

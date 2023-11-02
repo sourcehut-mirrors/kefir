@@ -180,6 +180,10 @@ static kefir_result_t generate_instr(struct kefir_amd64_xasmgen *xasmgen, const 
     case KEFIR_ASMCMP_AMD64_OPCODE(_opcode):                       \
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_##_xasmgen(xasmgen)); \
         break;
+#define DEF_OPCODE_repeat(_opcode, _xasmgen)                             \
+    case KEFIR_ASMCMP_AMD64_OPCODE(_opcode):                             \
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_##_xasmgen(xasmgen, true)); \
+        break;
 #define DEF_OPCODE_1(_opcode, _xasmgen)                                                  \
     case KEFIR_ASMCMP_AMD64_OPCODE(_opcode):                                             \
         REQUIRE_OK(build_operand(stack_frame, &instr->args[0], &arg_state[0]));          \
@@ -202,6 +206,7 @@ static kefir_result_t generate_instr(struct kefir_amd64_xasmgen *xasmgen, const 
 #undef DEF_OPCODE_helper2
 #undef DEF_OPCODE_virtual
 #undef DEF_OPCODE_0
+#undef DEF_OPCODE_repeat
 #undef DEF_OPCODE_1
 #undef DEF_OPCODE_2
 
@@ -216,6 +221,7 @@ static kefir_result_t generate_instr(struct kefir_amd64_xasmgen *xasmgen, const 
             break;
 
         case KEFIR_ASMCMP_AMD64_OPCODE(touch_virtual_register):
+        case KEFIR_ASMCMP_AMD64_OPCODE(noop):
             // Intentionally left blank
             break;
 
@@ -226,6 +232,11 @@ static kefir_result_t generate_instr(struct kefir_amd64_xasmgen *xasmgen, const 
         case KEFIR_ASMCMP_AMD64_OPCODE(function_epilogue):
             REQUIRE_OK(kefir_codegen_amd64_stack_frame_epilogue(xasmgen, target->abi_variant, stack_frame));
             break;
+
+        case KEFIR_ASMCMP_AMD64_OPCODE(acquire_physical_register):
+        case KEFIR_ASMCMP_AMD64_OPCODE(release_physical_register):
+            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
+                                   "Expected physical register acquire/release instructions to be devirtualized");
     }
 
     return KEFIR_OK;

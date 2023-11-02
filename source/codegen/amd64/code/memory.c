@@ -31,24 +31,72 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(copy_memory)(struct kefir_me
     REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
 
-    kefir_asmcmp_virtual_register_index_t result_vreg;
+    kefir_asmcmp_virtual_register_index_t source_vreg, target_vreg;
+    REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.typed_refs.ref[0],
+                                                    &target_vreg));
+    REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.typed_refs.ref[1],
+                                                    &source_vreg));
 
+    const struct kefir_ir_type *ir_type = kefir_ir_module_get_named_type(
+        function->module->ir_module, instruction->operation.parameters.typed_refs.type_id);
+    REQUIRE(ir_type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to find IR type"));
+
+    struct kefir_abi_amd64_type_layout type_layout;
+    REQUIRE_OK(kefir_abi_amd64_type_layout(mem, KEFIR_ABI_AMD64_VARIANT_SYSTEM_V, ir_type, &type_layout));
+
+    const struct kefir_abi_amd64_typeentry_layout *typeentry_layout = NULL;
+    kefir_result_t res = kefir_abi_amd64_type_layout_at(
+        &type_layout, instruction->operation.parameters.typed_refs.type_index, &typeentry_layout);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_abi_amd64_type_layout_free(mem, &type_layout);
+        return res;
+    });
+
+    kefir_size_t total_size = typeentry_layout->size;
+    REQUIRE_OK(kefir_abi_amd64_type_layout_free(mem, &type_layout));
+
+    kefir_asmcmp_virtual_register_index_t rdi_backup, rsi_backup, rcx_backup;
     REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
-                                                 KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));
+                                                 KEFIR_ASMCMP_VIRTUAL_REGISTER_SPILL_SPACE_SLOT, &rdi_backup));
+    REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
+                                                 KEFIR_ASMCMP_VIRTUAL_REGISTER_SPILL_SPACE_SLOT, &rsi_backup));
+    REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
+                                                 KEFIR_ASMCMP_VIRTUAL_REGISTER_SPILL_SPACE_SLOT, &rcx_backup));
 
-    if (instruction->operation.parameters.imm.integer >= KEFIR_INT32_MIN &&
-        instruction->operation.parameters.imm.integer <= KEFIR_INT32_MAX) {
-        REQUIRE_OK(kefir_asmcmp_amd64_mov(mem, &function->code,
-                                          kefir_asmcmp_context_instr_tail(&function->code.context),
-                                          &KEFIR_ASMCMP_MAKE_VREG64(result_vreg),
-                                          &KEFIR_ASMCMP_MAKE_INT(instruction->operation.parameters.imm.integer), NULL));
-    } else {
-        REQUIRE_OK(
-            kefir_asmcmp_amd64_movabs(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                                      &KEFIR_ASMCMP_MAKE_VREG64(result_vreg),
-                                      &KEFIR_ASMCMP_MAKE_INT(instruction->operation.parameters.imm.integer), NULL));
-    }
+    REQUIRE_OK(kefir_asmcmp_amd64_acquire_physical_register(mem, &function->code,
+                                                            kefir_asmcmp_context_instr_tail(&function->code.context),
+                                                            KEFIR_AMD64_XASMGEN_REGISTER_RDI, rdi_backup, NULL));
+    REQUIRE_OK(kefir_asmcmp_amd64_acquire_physical_register(mem, &function->code,
+                                                            kefir_asmcmp_context_instr_tail(&function->code.context),
+                                                            KEFIR_AMD64_XASMGEN_REGISTER_RSI, rsi_backup, NULL));
+    REQUIRE_OK(kefir_asmcmp_amd64_acquire_physical_register(mem, &function->code,
+                                                            kefir_asmcmp_context_instr_tail(&function->code.context),
+                                                            KEFIR_AMD64_XASMGEN_REGISTER_RCX, rcx_backup, NULL));
 
-    REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));
+    REQUIRE_OK(kefir_asmcmp_amd64_mov(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                                      &KEFIR_ASMCMP_MAKE_PHREG(KEFIR_AMD64_XASMGEN_REGISTER_RDI),
+                                      &KEFIR_ASMCMP_MAKE_VREG(target_vreg), NULL));
+
+    REQUIRE_OK(kefir_asmcmp_amd64_mov(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                                      &KEFIR_ASMCMP_MAKE_PHREG(KEFIR_AMD64_XASMGEN_REGISTER_RSI),
+                                      &KEFIR_ASMCMP_MAKE_VREG(source_vreg), NULL));
+
+    REQUIRE_OK(kefir_asmcmp_amd64_mov(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                                      &KEFIR_ASMCMP_MAKE_PHREG(KEFIR_AMD64_XASMGEN_REGISTER_RCX),
+                                      &KEFIR_ASMCMP_MAKE_UINT(total_size), NULL));
+
+    REQUIRE_OK(kefir_asmcmp_amd64_movsb_rep(mem, &function->code,
+                                            kefir_asmcmp_context_instr_tail(&function->code.context), NULL));
+
+    REQUIRE_OK(kefir_asmcmp_amd64_release_physical_register(mem, &function->code,
+                                                            kefir_asmcmp_context_instr_tail(&function->code.context),
+                                                            KEFIR_AMD64_XASMGEN_REGISTER_RDI, rdi_backup, NULL));
+    REQUIRE_OK(kefir_asmcmp_amd64_release_physical_register(mem, &function->code,
+                                                            kefir_asmcmp_context_instr_tail(&function->code.context),
+                                                            KEFIR_AMD64_XASMGEN_REGISTER_RSI, rsi_backup, NULL));
+    REQUIRE_OK(kefir_asmcmp_amd64_release_physical_register(mem, &function->code,
+                                                            kefir_asmcmp_context_instr_tail(&function->code.context),
+                                                            KEFIR_AMD64_XASMGEN_REGISTER_RCX, rcx_backup, NULL));
+
     return KEFIR_OK;
 }

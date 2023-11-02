@@ -82,6 +82,7 @@ kefir_result_t kefir_codegen_amd64_function_vreg_of(struct kefir_codegen_amd64_f
     _def(int32_load_signed, KEFIR_OPT_OPCODE_INT32_LOAD_SIGNED) _separator \
     _def(int32_load_unsigned, KEFIR_OPT_OPCODE_INT32_LOAD_UNSIGNED) _separator \
     _def(int64_load, KEFIR_OPT_OPCODE_INT64_LOAD) _separator \
+    _def(copy_memory, KEFIR_OPT_OPCODE_COPY_MEMORY) _separator \
     _def(int_add, KEFIR_OPT_OPCODE_INT_ADD) _separator                                                   \
     _def(int_sub, KEFIR_OPT_OPCODE_INT_SUB) _separator                                                   \
     _def(int_mul, KEFIR_OPT_OPCODE_INT_MUL) _separator                                                   \

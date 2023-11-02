@@ -551,6 +551,7 @@ kefir_result_t kefir_asmcmp_virtual_register_new(struct kefir_mem *mem, struct k
     switch (type) {
         case KEFIR_ASMCMP_VIRTUAL_REGISTER_UNSPECIFIED:
         case KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE:
+        case KEFIR_ASMCMP_VIRTUAL_REGISTER_SPILL_SPACE_SLOT:
             // Intentionally left blank
             break;
 
