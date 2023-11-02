@@ -524,14 +524,9 @@ kefir_result_t kefir_asmcmp_virtual_register_get(const struct kefir_asmcmp_conte
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_asmcmp_virtual_register_new(struct kefir_mem *mem, struct kefir_asmcmp_context *context,
-                                                 kefir_asmcmp_register_type_t type,
-                                                 kefir_asmcmp_virtual_register_index_t *reg_alloc_idx) {
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
-    REQUIRE(reg_alloc_idx != NULL,
-            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to asmgen register allocation index"));
-
+static kefir_result_t new_virtual_register(struct kefir_mem *mem, struct kefir_asmcmp_context *context,
+                                           kefir_asmcmp_virtual_register_type_t type,
+                                           kefir_asmcmp_virtual_register_index_t *reg_alloc_idx) {
     REQUIRE_OK(ensure_availability(mem, (void **) &context->virtual_registers, &context->virtual_register_length,
                                    &context->virtual_register_capacity, sizeof(struct kefir_asmcmp_virtual_register),
                                    1));
@@ -545,15 +540,80 @@ kefir_result_t kefir_asmcmp_virtual_register_new(struct kefir_mem *mem, struct k
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_asmcmp_virtual_register_new(struct kefir_mem *mem, struct kefir_asmcmp_context *context,
+                                                 kefir_asmcmp_virtual_register_type_t type,
+                                                 kefir_asmcmp_virtual_register_index_t *reg_alloc_idx) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
+    REQUIRE(reg_alloc_idx != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to asmgen register allocation index"));
+
+    switch (type) {
+        case KEFIR_ASMCMP_VIRTUAL_REGISTER_UNSPECIFIED:
+        case KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE:
+            // Intentionally left blank
+            break;
+
+        case KEFIR_ASMCMP_VIRTUAL_REGISTER_SPILL_SPACE_ALLOCATION:
+        case KEFIR_ASMCMP_VIRTUAL_REGISTER_MEMORY_POINTER:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER,
+                                   "Specialized virtual register construction functions shall be used");
+    }
+
+    REQUIRE_OK(new_virtual_register(mem, context, type, reg_alloc_idx));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_asmcmp_virtual_register_new_spill_space_allocation(
+    struct kefir_mem *mem, struct kefir_asmcmp_context *context, kefir_size_t length,
+    kefir_asmcmp_virtual_register_index_t *reg_alloc_idx) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
+    REQUIRE(reg_alloc_idx != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to asmgen register allocation index"));
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
+    REQUIRE(reg_alloc_idx != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to asmgen register allocation index"));
+
+    REQUIRE_OK(new_virtual_register(mem, context, KEFIR_ASMCMP_VIRTUAL_REGISTER_SPILL_SPACE_ALLOCATION, reg_alloc_idx));
+    struct kefir_asmcmp_virtual_register *reg_alloc = &context->virtual_registers[*reg_alloc_idx];
+    reg_alloc->parameters.spill_space_allocation_length = length;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_asmcmp_virtual_register_new_memory_pointer(struct kefir_mem *mem,
+                                                                struct kefir_asmcmp_context *context,
+                                                                kefir_asmcmp_physical_register_index_t base_reg,
+                                                                kefir_int64_t offset,
+                                                                kefir_asmcmp_virtual_register_index_t *reg_alloc_idx) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
+    REQUIRE(reg_alloc_idx != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to asmgen register allocation index"));
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
+    REQUIRE(reg_alloc_idx != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to asmgen register allocation index"));
+
+    REQUIRE_OK(new_virtual_register(mem, context, KEFIR_ASMCMP_VIRTUAL_REGISTER_MEMORY_POINTER, reg_alloc_idx));
+    struct kefir_asmcmp_virtual_register *reg_alloc = &context->virtual_registers[*reg_alloc_idx];
+    reg_alloc->parameters.memory.base_reg = base_reg;
+    reg_alloc->parameters.memory.offset = offset;
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_asmcmp_virtual_register_specify_type(const struct kefir_asmcmp_context *context,
                                                           kefir_asmcmp_virtual_register_index_t reg_idx,
-                                                          kefir_asmcmp_register_type_t type) {
+                                                          kefir_asmcmp_virtual_register_type_t type) {
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
     REQUIRE(VALID_VREG_IDX(context, reg_idx),
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen virtual register index"));
 
     struct kefir_asmcmp_virtual_register *const vreg = &context->virtual_registers[reg_idx];
-    REQUIRE(vreg->type == KEFIR_ASMCMP_REGISTER_UNSPECIFIED || vreg->type == type,
+    REQUIRE(vreg->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_UNSPECIFIED || vreg->type == type,
             KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Virtual register type has already been specified"));
 
     vreg->type = type;

@@ -49,7 +49,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(return)(struct kefir_mem *me
 
             case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_GENERAL_PURPOSE_REGISTER:
                 REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
-                                                             KEFIR_ASMCMP_REGISTER_GENERAL_PURPOSE, &vreg));
+                                                             KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &vreg));
                 REQUIRE_OK(kefir_asmcmp_amd64_register_allocation_requirement(mem, &function->code, vreg,
                                                                               function_return.direct_reg));
                 REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(

@@ -34,8 +34,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(phi)(struct kefir_mem *mem,
     kefir_asmcmp_virtual_register_index_t vreg;
     kefir_result_t res = kefir_codegen_amd64_function_vreg_of(function, instruction->id, &vreg);
     if (res == KEFIR_NOT_FOUND) {
-        REQUIRE_OK(
-            kefir_asmcmp_virtual_register_new(mem, &function->code.context, KEFIR_ASMCMP_REGISTER_UNSPECIFIED, &vreg));
+        REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
+                                                     KEFIR_ASMCMP_VIRTUAL_REGISTER_UNSPECIFIED, &vreg));
         REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, vreg));
     } else {
         REQUIRE_OK(res);

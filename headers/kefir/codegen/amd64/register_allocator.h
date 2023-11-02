@@ -27,9 +27,11 @@
 #include "kefir/core/bitset.h"
 
 typedef enum kefir_codegen_amd64_register_allocation_type {
-    KEFIR_CODEGEN_AMD64_REGISTER_ALLOCATION_NONE,
-    KEFIR_CODEGEN_AMD64_REGISTER_ALLOCATION_REGISTER,
-    KEFIR_CODEGEN_AMD64_REGISTER_ALLOCATION_SPILL_AREA
+    KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_UNALLOCATED,
+    KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_REGISTER,
+    KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_SLOT,
+    KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_SPACE,
+    KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_MEMORY_POINTER
 } kefir_codegen_amd64_register_allocation_type_t;
 
 typedef struct kefir_codegen_amd64_register_allocation {
@@ -37,7 +39,11 @@ typedef struct kefir_codegen_amd64_register_allocation {
     kefir_codegen_amd64_register_allocation_type_t type;
     union {
         kefir_asm_amd64_xasmgen_register_t direct_reg;
-        kefir_size_t spill_area_index;
+        kefir_size_t spill_area_slot;
+        struct {
+            kefir_size_t index;
+            kefir_size_t length;
+        } spill_area_space;
     };
     struct {
         kefir_size_t begin;

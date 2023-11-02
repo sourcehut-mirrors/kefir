@@ -33,8 +33,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_local)(struct kefir_mem 
 
     kefir_asmcmp_virtual_register_index_t vreg;
 
-    REQUIRE_OK(
-        kefir_asmcmp_virtual_register_new(mem, &function->code.context, KEFIR_ASMCMP_REGISTER_GENERAL_PURPOSE, &vreg));
+    REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
+                                                 KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &vreg));
 
     const struct kefir_abi_amd64_typeentry_layout *entry = NULL;
     REQUIRE_OK(
@@ -58,8 +58,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_global)(struct kefir_mem
 
     kefir_asmcmp_virtual_register_index_t vreg;
 
-    REQUIRE_OK(
-        kefir_asmcmp_virtual_register_new(mem, &function->code.context, KEFIR_ASMCMP_REGISTER_GENERAL_PURPOSE, &vreg));
+    REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
+                                                 KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &vreg));
 
     const char *symbol =
         kefir_ir_module_get_named_symbol(function->module->ir_module, instruction->operation.parameters.ir_ref);
