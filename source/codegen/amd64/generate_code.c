@@ -220,11 +220,6 @@ static kefir_result_t generate_instr(struct kefir_amd64_xasmgen *xasmgen, const 
             }
             break;
 
-        case KEFIR_ASMCMP_AMD64_OPCODE(touch_virtual_register):
-        case KEFIR_ASMCMP_AMD64_OPCODE(noop):
-            // Intentionally left blank
-            break;
-
         case KEFIR_ASMCMP_AMD64_OPCODE(function_prologue):
             REQUIRE_OK(kefir_codegen_amd64_stack_frame_prologue(xasmgen, target->abi_variant, stack_frame));
             break;
@@ -233,10 +228,9 @@ static kefir_result_t generate_instr(struct kefir_amd64_xasmgen *xasmgen, const 
             REQUIRE_OK(kefir_codegen_amd64_stack_frame_epilogue(xasmgen, target->abi_variant, stack_frame));
             break;
 
-        case KEFIR_ASMCMP_AMD64_OPCODE(acquire_physical_register):
-        case KEFIR_ASMCMP_AMD64_OPCODE(release_physical_register):
-            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
-                                   "Expected physical register acquire/release instructions to be devirtualized");
+        case KEFIR_ASMCMP_AMD64_OPCODE(touch_virtual_register):
+            // Intentionally left blank
+            break;
     }
 
     return KEFIR_OK;

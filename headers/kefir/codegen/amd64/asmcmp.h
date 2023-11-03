@@ -51,9 +51,6 @@ typedef struct kefir_codegen_amd64_stack_frame kefir_codegen_amd64_stack_frame_t
     _opcode(load_local_var_address, _, Virtual) _separator \
     _opcode(function_prologue, _, Virtual) _separator \
     _opcode(function_epilogue, _, Virtual) _separator \
-    _opcode(acquire_physical_register, _, Virtual) _separator \
-    _opcode(release_physical_register, _, Virtual) _separator \
-    _opcode(noop, _, Virtual) _separator \
     /* AMD64 opcodes */ \
     /* Control flow */ \
     _opcode(ret, RET, None) _separator \
@@ -185,17 +182,6 @@ kefir_result_t kefir_asmcmp_amd64_function_prologue(struct kefir_mem *, struct k
 kefir_result_t kefir_asmcmp_amd64_function_epilogue(struct kefir_mem *, struct kefir_asmcmp_amd64 *,
                                                     kefir_asmcmp_instruction_index_t,
                                                     kefir_asmcmp_instruction_index_t *);
-
-kefir_result_t kefir_asmcmp_amd64_acquire_physical_register(struct kefir_mem *, struct kefir_asmcmp_amd64 *,
-                                                            kefir_asmcmp_instruction_index_t,
-                                                            kefir_asm_amd64_xasmgen_register_t,
-                                                            kefir_asmcmp_virtual_register_index_t,
-                                                            kefir_asmcmp_instruction_index_t *);
-kefir_result_t kefir_asmcmp_amd64_release_physical_register(struct kefir_mem *, struct kefir_asmcmp_amd64 *,
-                                                            kefir_asmcmp_instruction_index_t,
-                                                            kefir_asm_amd64_xasmgen_register_t,
-                                                            kefir_asmcmp_virtual_register_index_t,
-                                                            kefir_asmcmp_instruction_index_t *);
 
 kefir_result_t kefir_asmcmp_amd64_generate_code(struct kefir_amd64_xasmgen *, const struct kefir_asmcmp_amd64 *,
                                                 const struct kefir_codegen_amd64_stack_frame *);
