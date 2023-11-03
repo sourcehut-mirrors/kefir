@@ -74,12 +74,24 @@ kefir_result_t kefir_codegen_amd64_register_allocator_free(struct kefir_mem *mem
     return KEFIR_OK;
 }
 
-static kefir_result_t update_virtual_register_lifetime(struct kefir_codegen_amd64_register_allocator *allocator,
+static kefir_result_t update_virtual_register_lifetime(struct kefir_asmcmp_amd64 *target,
+                                                       struct kefir_codegen_amd64_register_allocator *allocator,
                                                        const struct kefir_asmcmp_value *value,
                                                        kefir_size_t lifetime_index) {
     kefir_asmcmp_virtual_register_index_t vreg;
     struct kefir_codegen_amd64_register_allocation *alloc;
 
+#define UPDATE_LIFETIME(_vreg)                                                  \
+    do {                                                                        \
+        alloc = &allocator->allocations[(_vreg)];                               \
+        if (alloc->lifetime.begin == KEFIR_ASMCMP_INDEX_NONE) {                 \
+            alloc->lifetime.begin = lifetime_index;                             \
+            alloc->lifetime.end = lifetime_index;                               \
+        } else {                                                                \
+            alloc->lifetime.begin = MIN(alloc->lifetime.begin, lifetime_index); \
+            alloc->lifetime.end = MAX(alloc->lifetime.end, lifetime_index);     \
+        }                                                                       \
+    } while (false)
     switch (value->type) {
         case KEFIR_ASMCMP_VALUE_TYPE_NONE:
         case KEFIR_ASMCMP_VALUE_TYPE_INTEGER:
@@ -90,45 +102,31 @@ static kefir_result_t update_virtual_register_lifetime(struct kefir_codegen_amd6
             // Intentionally left blank
             break;
 
-        case KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER: {
-            vreg = value->vreg.index;
-            alloc = &allocator->allocations[vreg];
-            if (alloc->lifetime.begin == KEFIR_ASMCMP_INDEX_NONE) {
-                alloc->lifetime.begin = lifetime_index;
-                alloc->lifetime.end = lifetime_index;
-            } else {
-                alloc->lifetime.begin = MIN(alloc->lifetime.begin, lifetime_index);
-                alloc->lifetime.end = MAX(alloc->lifetime.end, lifetime_index);
-            }
-        } break;
+        case KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER:
+            UPDATE_LIFETIME(value->vreg.index);
+            break;
 
         case KEFIR_ASMCMP_VALUE_TYPE_INDIRECT:
             switch (value->indirect.type) {
-                case KEFIR_ASMCMP_INDIRECT_VIRTUAL_BASIS: {
-                    vreg = value->indirect.base.vreg;
-                    alloc = &allocator->allocations[vreg];
-                    if (alloc->lifetime.begin == KEFIR_ASMCMP_INDEX_NONE) {
-                        alloc->lifetime.begin = lifetime_index;
-                        alloc->lifetime.end = lifetime_index;
-                    } else {
-                        alloc->lifetime.begin = MIN(alloc->lifetime.begin, lifetime_index);
-                        alloc->lifetime.end = MAX(alloc->lifetime.end, lifetime_index);
-                    }
-                } break;
-
-                case KEFIR_ASMCMP_INDIRECT_PHYSICAL_BASIS:
-                    return KEFIR_SET_ERROR(
-                        KEFIR_INVALID_STATE,
-                        "Unexpected presence of physical amd64 registers at register allocation stage");
+                case KEFIR_ASMCMP_INDIRECT_VIRTUAL_BASIS:
+                    UPDATE_LIFETIME(value->indirect.base.vreg);
+                    break;
 
                 case KEFIR_ASMCMP_INDIRECT_LABEL_BASIS:
                 case KEFIR_ASMCMP_INDIRECT_LOCAL_VAR_BASIS:
                 case KEFIR_ASMCMP_INDIRECT_SPILL_AREA_BASIS:
+                case KEFIR_ASMCMP_INDIRECT_PHYSICAL_BASIS:
                     // Intentionally left blank
                     break;
             }
             break;
+
+        case KEFIR_ASMCMP_VALUE_TYPE_STASH_INDEX:
+            REQUIRE_OK(kefir_asmcmp_register_stash_vreg(&target->context, value->stash_idx, &vreg));
+            UPDATE_LIFETIME(vreg);
+            break;
     }
+#undef UPDATE_LIFETIME
     return KEFIR_OK;
 }
 
@@ -143,14 +141,14 @@ static kefir_result_t calculate_lifetimes(struct kefir_mem *mem, struct kefir_as
         REQUIRE_OK(kefir_asmcmp_context_instr_at(&target->context, instr_index, &instr));
         REQUIRE_OK(kefir_hashtree_insert(mem, &allocator->internal.instruction_linear_indices,
                                          (kefir_hashtree_key_t) instr_index, (kefir_hashtree_value_t) linear_index));
-        REQUIRE_OK(update_virtual_register_lifetime(allocator, &instr->args[0], linear_index));
-        REQUIRE_OK(update_virtual_register_lifetime(allocator, &instr->args[1], linear_index));
-        REQUIRE_OK(update_virtual_register_lifetime(allocator, &instr->args[2], linear_index));
+        REQUIRE_OK(update_virtual_register_lifetime(target, allocator, &instr->args[0], linear_index));
+        REQUIRE_OK(update_virtual_register_lifetime(target, allocator, &instr->args[1], linear_index));
+        REQUIRE_OK(update_virtual_register_lifetime(target, allocator, &instr->args[2], linear_index));
     }
     return KEFIR_OK;
 }
 
-static kefir_result_t build_virtual_register_liveness_graph(struct kefir_mem *mem,
+static kefir_result_t build_virtual_register_liveness_graph(struct kefir_mem *mem, struct kefir_asmcmp_amd64 *target,
                                                             struct kefir_codegen_amd64_register_allocator *allocator,
                                                             const struct kefir_asmcmp_value *value,
                                                             kefir_size_t lifetime_index) {
@@ -198,18 +196,20 @@ static kefir_result_t build_virtual_register_liveness_graph(struct kefir_mem *me
                     UPDATE_GRAPH(value->indirect.base.vreg);
                     break;
 
-                case KEFIR_ASMCMP_INDIRECT_PHYSICAL_BASIS:
-                    return KEFIR_SET_ERROR(
-                        KEFIR_INVALID_STATE,
-                        "Unexpected presence of physical amd64 registers at register allocation stage");
-
                 case KEFIR_ASMCMP_INDIRECT_LABEL_BASIS:
                 case KEFIR_ASMCMP_INDIRECT_LOCAL_VAR_BASIS:
                 case KEFIR_ASMCMP_INDIRECT_SPILL_AREA_BASIS:
+                case KEFIR_ASMCMP_INDIRECT_PHYSICAL_BASIS:
                     // Intentionally left blank
                     break;
             }
             break;
+
+        case KEFIR_ASMCMP_VALUE_TYPE_STASH_INDEX: {
+            kefir_asmcmp_virtual_register_index_t vreg;
+            REQUIRE_OK(kefir_asmcmp_register_stash_vreg(&target->context, value->stash_idx, &vreg));
+            UPDATE_GRAPH(vreg);
+        } break;
     }
 #undef UPDATE_GRAPH
     return KEFIR_OK;
@@ -272,9 +272,9 @@ static kefir_result_t build_internal_liveness_graph(struct kefir_mem *mem, struc
 
         const struct kefir_asmcmp_instruction *instr;
         REQUIRE_OK(kefir_asmcmp_context_instr_at(&target->context, instr_index, &instr));
-        REQUIRE_OK(build_virtual_register_liveness_graph(mem, allocator, &instr->args[0], linear_index));
-        REQUIRE_OK(build_virtual_register_liveness_graph(mem, allocator, &instr->args[1], linear_index));
-        REQUIRE_OK(build_virtual_register_liveness_graph(mem, allocator, &instr->args[2], linear_index));
+        REQUIRE_OK(build_virtual_register_liveness_graph(mem, target, allocator, &instr->args[0], linear_index));
+        REQUIRE_OK(build_virtual_register_liveness_graph(mem, target, allocator, &instr->args[1], linear_index));
+        REQUIRE_OK(build_virtual_register_liveness_graph(mem, target, allocator, &instr->args[2], linear_index));
     }
     return KEFIR_OK;
 }
@@ -541,18 +541,20 @@ static kefir_result_t allocate_register(struct kefir_mem *mem, struct kefir_asmc
                     REQUIRE_OK(allocate_register_impl(mem, target, stack_frame, allocator, value->indirect.base.vreg));
                     break;
 
-                case KEFIR_ASMCMP_INDIRECT_PHYSICAL_BASIS:
-                    return KEFIR_SET_ERROR(
-                        KEFIR_INVALID_STATE,
-                        "Unexpected presence of physical amd64 registers at register allocation stage");
-
                 case KEFIR_ASMCMP_INDIRECT_LABEL_BASIS:
                 case KEFIR_ASMCMP_INDIRECT_LOCAL_VAR_BASIS:
                 case KEFIR_ASMCMP_INDIRECT_SPILL_AREA_BASIS:
+                case KEFIR_ASMCMP_INDIRECT_PHYSICAL_BASIS:
                     // Intentionally left blank
                     break;
             }
             break;
+
+        case KEFIR_ASMCMP_VALUE_TYPE_STASH_INDEX: {
+            kefir_asmcmp_virtual_register_index_t vreg;
+            REQUIRE_OK(kefir_asmcmp_register_stash_vreg(&target->context, value->stash_idx, &vreg));
+            REQUIRE_OK(allocate_register_impl(mem, target, stack_frame, allocator, vreg));
+        } break;
     }
     return KEFIR_OK;
 }

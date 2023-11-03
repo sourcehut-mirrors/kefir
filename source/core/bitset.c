@@ -106,10 +106,15 @@ kefir_result_t kefir_bitset_find_consecutive(const struct kefir_bitset *bitset, 
     REQUIRE(result_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to index"));
 
     kefir_size_t index = begin;
-    for (;;) {
+    for (; index < bitset->length; index++) {
         REQUIRE_OK(kefir_bitset_find(bitset, value, index, &index));
         kefir_bool_t found = true;
         for (kefir_size_t i = index; i < index + length; i++) {
+            if (i >= bitset->length) {
+                found = false;
+                break;
+            }
+
             kefir_bool_t bit;
             REQUIRE_OK(kefir_bitset_get(bitset, i, &bit));
             if (bit != value) {
@@ -120,10 +125,10 @@ kefir_result_t kefir_bitset_find_consecutive(const struct kefir_bitset *bitset, 
 
         if (found) {
             *result_ptr = index;
-            break;
+            return KEFIR_OK;
         }
     }
-    return KEFIR_OK;
+    return KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find requested consequtive bit in bitset");
 }
 
 kefir_result_t kefir_bitset_length(const struct kefir_bitset *bitset, kefir_size_t *length_ptr) {

@@ -36,6 +36,7 @@ static kefir_result_t build_operand(const struct kefir_codegen_amd64_stack_frame
                                     struct instruction_argument_state *arg_state) {
     switch (value->type) {
         case KEFIR_ASMCMP_VALUE_TYPE_NONE:
+        case KEFIR_ASMCMP_VALUE_TYPE_STASH_INDEX:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected amd64 asmcmp value type");
 
         case KEFIR_ASMCMP_VALUE_TYPE_INTEGER:
@@ -229,8 +230,13 @@ static kefir_result_t generate_instr(struct kefir_amd64_xasmgen *xasmgen, const 
             break;
 
         case KEFIR_ASMCMP_AMD64_OPCODE(touch_virtual_register):
+        case KEFIR_ASMCMP_AMD64_OPCODE(noop):
             // Intentionally left blank
             break;
+
+        case KEFIR_ASMCMP_AMD64_OPCODE(stash_activate):
+        case KEFIR_ASMCMP_AMD64_OPCODE(stash_deactivate):
+            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected stash (de-)activation instruction");
     }
 
     return KEFIR_OK;

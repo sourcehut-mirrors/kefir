@@ -30,6 +30,21 @@
 #define VALID_VREG_IDX(_ctx, _idx) ((_idx) < (_ctx)->virtual_register_length)
 #define HANDLE_AT(_ctx, _idx) ((_idx) != KEFIR_ASMCMP_INDEX_NONE ? &(_ctx)->code_content[(_idx)] : NULL)
 
+static kefir_result_t free_stash(struct kefir_mem *mem, struct kefir_hashtree *tree, kefir_hashtree_key_t key,
+                                 kefir_hashtree_value_t value, void *payload) {
+    UNUSED(tree);
+    UNUSED(key);
+    UNUSED(payload);
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    ASSIGN_DECL_CAST(struct kefir_asmcmp_stash *, stash, value);
+    REQUIRE(stash != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmcmp stash"));
+
+    REQUIRE_OK(kefir_hashtree_free(mem, &stash->stashed_physical_regs));
+    memset(stash, 0, sizeof(struct kefir_asmcmp_stash));
+    KEFIR_FREE(mem, stash);
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_asmcmp_context_init(const struct kefir_asmcmp_context_class *klass, void *payload,
                                          struct kefir_asmcmp_context *context) {
     REQUIRE(klass != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context class"));
@@ -37,6 +52,8 @@ kefir_result_t kefir_asmcmp_context_init(const struct kefir_asmcmp_context_class
 
     REQUIRE_OK(kefir_hashtree_init(&context->label_positions, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_string_pool_init(&context->strings));
+    REQUIRE_OK(kefir_hashtree_init(&context->stashes, &kefir_hashtree_uint_ops));
+    REQUIRE_OK(kefir_hashtree_on_removal(&context->stashes, free_stash, NULL));
     context->klass = klass;
     context->payload = payload;
     context->code_content = NULL;
@@ -57,6 +74,7 @@ kefir_result_t kefir_asmcmp_context_free(struct kefir_mem *mem, struct kefir_asm
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
 
+    REQUIRE_OK(kefir_hashtree_free(mem, &context->stashes));
     REQUIRE_OK(kefir_string_pool_free(mem, &context->strings));
     REQUIRE_OK(kefir_hashtree_free(mem, &context->label_positions));
     if (context->code_content != NULL) {
@@ -178,6 +196,11 @@ static kefir_result_t validate_value(struct kefir_asmcmp_context *context, const
 
         case KEFIR_ASMCMP_VALUE_TYPE_LABEL:
             REQUIRE(value->label != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected non-NULL label"));
+            break;
+
+        case KEFIR_ASMCMP_VALUE_TYPE_STASH_INDEX:
+            REQUIRE(kefir_hashtree_has(&context->stashes, (kefir_hashtree_key_t) value->stash_idx),
+                    KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unknown asmcmp stash index"));
             break;
     }
     return KEFIR_OK;
@@ -618,6 +641,140 @@ kefir_result_t kefir_asmcmp_virtual_register_specify_type(const struct kefir_asm
             KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Virtual register type has already been specified"));
 
     vreg->type = type;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_asmcmp_register_stash_new(struct kefir_mem *mem, struct kefir_asmcmp_context *context,
+                                               kefir_size_t size, kefir_asmcmp_stash_index_t *stash_idx) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
+    REQUIRE(stash_idx != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to asmgen stash index"));
+
+    struct kefir_asmcmp_stash *stash = KEFIR_MALLOC(mem, sizeof(struct kefir_asmcmp_stash));
+    REQUIRE(stash != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate asmcmp stash"));
+    stash->index = context->next_stash_idx;
+    stash->liveness_instr_index = KEFIR_ASMCMP_INDEX_NONE;
+
+    kefir_result_t res = kefir_hashtree_init(&stash->stashed_physical_regs, &kefir_hashtree_uint_ops);
+    REQUIRE_CHAIN(
+        &res, kefir_asmcmp_virtual_register_new_spill_space_allocation(mem, context, size, &stash->stash_area_vreg));
+    REQUIRE_CHAIN(&res, kefir_hashtree_insert(mem, &context->stashes, (kefir_hashtree_key_t) stash->index,
+                                              (kefir_hashtree_value_t) stash));
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_FREE(mem, stash);
+        return res;
+    });
+
+    ++context->next_stash_idx;
+    *stash_idx = stash->index;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_asmcmp_register_stash_add(struct kefir_mem *mem, struct kefir_asmcmp_context *context,
+                                               kefir_asmcmp_stash_index_t stash_idx,
+                                               kefir_asmcmp_physical_register_index_t phreg,
+                                               kefir_size_t spill_area_slot) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
+
+    struct kefir_hashtree_node *node;
+    kefir_result_t res = kefir_hashtree_at(&context->stashes, (kefir_hashtree_key_t) stash_idx, &node);
+    if (res == KEFIR_NOT_FOUND) {
+        res = KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find asmcmp stash");
+    }
+    REQUIRE_OK(res);
+
+    ASSIGN_DECL_CAST(struct kefir_asmcmp_stash *, stash, node->value);
+    res = kefir_hashtree_insert(mem, &stash->stashed_physical_regs, (kefir_hashtree_key_t) phreg,
+                                (kefir_hashtree_value_t) spill_area_slot);
+    if (res == KEFIR_ALREADY_EXISTS) {
+        res = KEFIR_SET_ERROR(KEFIR_ALREADY_EXISTS, "Stash already contains specified register");
+    }
+    REQUIRE_OK(res);
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_asmcmp_register_stash_set_liveness_index(const struct kefir_asmcmp_context *context,
+                                                              kefir_asmcmp_stash_index_t stash_idx,
+                                                              kefir_asmcmp_instruction_index_t instr_idx) {
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
+    REQUIRE(VALID_INSTR_IDX(context, instr_idx) || instr_idx == KEFIR_ASMCMP_INDEX_NONE,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen instruction index"));
+
+    struct kefir_hashtree_node *node;
+    kefir_result_t res = kefir_hashtree_at(&context->stashes, (kefir_hashtree_key_t) stash_idx, &node);
+    if (res == KEFIR_NOT_FOUND) {
+        res = KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find asmcmp stash");
+    }
+    REQUIRE_OK(res);
+
+    ASSIGN_DECL_CAST(struct kefir_asmcmp_stash *, stash, node->value);
+    stash->liveness_instr_index = instr_idx;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_asmcmp_register_stash_for(const struct kefir_asmcmp_context *context,
+                                               kefir_asmcmp_stash_index_t stash_idx,
+                                               kefir_asmcmp_physical_register_index_t phreg,
+                                               kefir_size_t *spill_area_slot) {
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
+    REQUIRE(spill_area_slot != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to spill area slot"));
+
+    struct kefir_hashtree_node *node;
+    kefir_result_t res = kefir_hashtree_at(&context->stashes, (kefir_hashtree_key_t) stash_idx, &node);
+    if (res == KEFIR_NOT_FOUND) {
+        res = KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find asmcmp stash");
+    }
+    REQUIRE_OK(res);
+
+    ASSIGN_DECL_CAST(struct kefir_asmcmp_stash *, stash, node->value);
+    res = kefir_hashtree_at(&stash->stashed_physical_regs, (kefir_hashtree_key_t) phreg, &node);
+    if (res == KEFIR_NOT_FOUND) {
+        res = KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find stashed register");
+    }
+    REQUIRE_OK(res);
+
+    *spill_area_slot = node->value;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_asmcmp_register_stash_vreg(const struct kefir_asmcmp_context *context,
+                                                kefir_asmcmp_stash_index_t stash_idx,
+                                                kefir_asmcmp_virtual_register_index_t *vreg_idx) {
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
+    REQUIRE(vreg_idx != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to asmgen stash virtual register"));
+
+    struct kefir_hashtree_node *node;
+    kefir_result_t res = kefir_hashtree_at(&context->stashes, (kefir_hashtree_key_t) stash_idx, &node);
+    if (res == KEFIR_NOT_FOUND) {
+        res = KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find asmcmp stash");
+    }
+    REQUIRE_OK(res);
+
+    ASSIGN_DECL_CAST(struct kefir_asmcmp_stash *, stash, node->value);
+    *vreg_idx = stash->stash_area_vreg;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_asmcmp_register_stash_liveness_index(const struct kefir_asmcmp_context *context,
+                                                          kefir_asmcmp_stash_index_t stash_idx,
+                                                          kefir_asmcmp_instruction_index_t *instr_idx) {
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
+    REQUIRE(instr_idx != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to asmgen instruction index"));
+
+    struct kefir_hashtree_node *node;
+    kefir_result_t res = kefir_hashtree_at(&context->stashes, (kefir_hashtree_key_t) stash_idx, &node);
+    if (res == KEFIR_NOT_FOUND) {
+        res = KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find asmcmp stash");
+    }
+    REQUIRE_OK(res);
+
+    ASSIGN_DECL_CAST(struct kefir_asmcmp_stash *, stash, node->value);
+    *instr_idx = stash->liveness_instr_index;
     return KEFIR_OK;
 }
 

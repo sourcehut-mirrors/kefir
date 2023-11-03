@@ -32,6 +32,8 @@ typedef struct kefir_codegen_amd64_stack_frame kefir_codegen_amd64_stack_frame_t
 #define KEFIR_ASMCMP_AMD64_ARGUMENT_COUNT_FOR_IMPL_Repeat repeat
 #define KEFIR_ASMCMP_AMD64_ARGUMENT_COUNT_FOR_IMPL_None 0
 #define KEFIR_ASMCMP_AMD64_ARGUMENT_COUNT_FOR_IMPL_Jump 1
+#define KEFIR_ASMCMP_AMD64_ARGUMENT_COUNT_FOR_IMPL_RegR 1
+#define KEFIR_ASMCMP_AMD64_ARGUMENT_COUNT_FOR_IMPL_RegW 1
 #define KEFIR_ASMCMP_AMD64_ARGUMENT_COUNT_FOR_IMPL_RegMemW_RegMemR 2
 #define KEFIR_ASMCMP_AMD64_ARGUMENT_COUNT_FOR_IMPL_RegW_RegMemR 2
 #define KEFIR_ASMCMP_AMD64_ARGUMENT_COUNT_FOR_IMPL_RegW_Mem 2
@@ -51,18 +53,26 @@ typedef struct kefir_codegen_amd64_stack_frame kefir_codegen_amd64_stack_frame_t
     _opcode(load_local_var_address, _, Virtual) _separator \
     _opcode(function_prologue, _, Virtual) _separator \
     _opcode(function_epilogue, _, Virtual) _separator \
+    _opcode(noop, _, Virtual) _separator \
+    _opcode(stash_activate, _, Virtual) _separator \
+    _opcode(stash_deactivate, _, Virtual) _separator \
     /* AMD64 opcodes */ \
     /* Control flow */ \
+    _opcode(call, CALL, Jump) _separator \
     _opcode(ret, RET, None) _separator \
     _opcode(jmp, JMP, Jump) _separator \
     _opcode(jz, JZ, Jump) _separator \
     /* Data moves */ \
+    _opcode(push, PUSH, RegR) _separator \
+    _opcode(pop, POP, RegW) _separator \
     _opcode(mov, MOV, RegMemW_RegMemR) _separator \
     _opcode(movabs, MOVABS, RegMemW_RegMemR) _separator \
     _opcode(movsx, MOVSX, RegW_RegMemR) _separator \
     _opcode(movzx, MOVZX, RegW_RegMemR) _separator \
     _opcode(lea, LEA, RegW_Mem) _separator \
     _opcode(movsb_rep, MOVSB, Repeat) _separator \
+    /* Flags */ \
+    _opcode(cld, CLD, None) _separator \
     /* Integral arithmetics & logic */ \
     _opcode(add, ADD, RegMemRW_RegMemR) _separator \
     _opcode(sub, SUB, RegMemRW_RegMemR) _separator \
@@ -175,6 +185,13 @@ kefir_result_t kefir_asmcmp_amd64_touch_virtual_register(struct kefir_mem *, str
                                                          kefir_asmcmp_instruction_index_t,
                                                          kefir_asmcmp_virtual_register_index_t,
                                                          kefir_asmcmp_instruction_index_t *);
+
+kefir_result_t kefir_asmcmp_amd64_activate_stash(struct kefir_mem *, struct kefir_asmcmp_amd64 *,
+                                                 kefir_asmcmp_instruction_index_t, kefir_asmcmp_stash_index_t,
+                                                 kefir_asmcmp_instruction_index_t *);
+kefir_result_t kefir_asmcmp_amd64_deactivate_stash(struct kefir_mem *, struct kefir_asmcmp_amd64 *,
+                                                   kefir_asmcmp_instruction_index_t, kefir_asmcmp_stash_index_t,
+                                                   kefir_asmcmp_instruction_index_t *);
 
 kefir_result_t kefir_asmcmp_amd64_function_prologue(struct kefir_mem *, struct kefir_asmcmp_amd64 *,
                                                     kefir_asmcmp_instruction_index_t,

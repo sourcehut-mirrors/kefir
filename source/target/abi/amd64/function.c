@@ -29,6 +29,14 @@ static const kefir_asm_amd64_xasmgen_register_t SYSV_CALLEE_PRESERVED_GENERAL_PU
 static const kefir_size_t NUM_OF_SYSV_CALLEE_PRESERVED_GENERAL_PURPOSE_REGS =
     sizeof(SYSV_CALLEE_PRESERVED_GENERAL_PURPOSE_REGS) / sizeof(SYSV_CALLEE_PRESERVED_GENERAL_PURPOSE_REGS[0]);
 
+static const kefir_asm_amd64_xasmgen_register_t SYSV_CALLER_PRESERVED_GENERAL_PURPOSE_REGS[] = {
+    KEFIR_AMD64_XASMGEN_REGISTER_RAX, KEFIR_AMD64_XASMGEN_REGISTER_RCX, KEFIR_AMD64_XASMGEN_REGISTER_RDX,
+    KEFIR_AMD64_XASMGEN_REGISTER_RSI, KEFIR_AMD64_XASMGEN_REGISTER_RDI, KEFIR_AMD64_XASMGEN_REGISTER_R8,
+    KEFIR_AMD64_XASMGEN_REGISTER_R9,  KEFIR_AMD64_XASMGEN_REGISTER_R10, KEFIR_AMD64_XASMGEN_REGISTER_R11};
+
+static const kefir_size_t NUM_OF_SYSV_CALLER_PRESERVED_GENERAL_PURPOSE_REGS =
+    sizeof(SYSV_CALLER_PRESERVED_GENERAL_PURPOSE_REGS) / sizeof(SYSV_CALLER_PRESERVED_GENERAL_PURPOSE_REGS[0]);
+
 kefir_result_t kefir_abi_amd64_get_callee_preserved_general_purpose_register(
     kefir_abi_amd64_variant_t variant, kefir_size_t index, kefir_asm_amd64_xasmgen_register_t *reg_ptr) {
     REQUIRE(reg_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to amd64 register"));
@@ -47,6 +55,29 @@ kefir_size_t kefir_abi_amd64_num_of_callee_preserved_general_purpose_registers(k
     switch (variant) {
         case KEFIR_ABI_AMD64_VARIANT_SYSTEM_V:
             return NUM_OF_SYSV_CALLEE_PRESERVED_GENERAL_PURPOSE_REGS;
+    }
+
+    return 0;
+}
+
+kefir_result_t kefir_abi_amd64_get_caller_preserved_general_purpose_register(
+    kefir_abi_amd64_variant_t variant, kefir_size_t index, kefir_asm_amd64_xasmgen_register_t *reg_ptr) {
+    REQUIRE(reg_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to amd64 register"));
+
+    switch (variant) {
+        case KEFIR_ABI_AMD64_VARIANT_SYSTEM_V:
+            REQUIRE(index < NUM_OF_SYSV_CALLER_PRESERVED_GENERAL_PURPOSE_REGS,
+                    KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Requested register index is out of bounds"));
+            *reg_ptr = SYSV_CALLER_PRESERVED_GENERAL_PURPOSE_REGS[index];
+            break;
+    }
+    return KEFIR_OK;
+}
+
+kefir_size_t kefir_abi_amd64_num_of_caller_preserved_general_purpose_registers(kefir_abi_amd64_variant_t variant) {
+    switch (variant) {
+        case KEFIR_ABI_AMD64_VARIANT_SYSTEM_V:
+            return NUM_OF_SYSV_CALLER_PRESERVED_GENERAL_PURPOSE_REGS;
     }
 
     return 0;
