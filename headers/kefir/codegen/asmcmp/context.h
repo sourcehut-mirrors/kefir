@@ -78,7 +78,7 @@ typedef struct kefir_asmcmp_stash {
     kefir_asmcmp_stash_index_t index;
     kefir_asmcmp_virtual_register_index_t stash_area_vreg;
     kefir_asmcmp_instruction_index_t liveness_instr_index;
-    struct kefir_hashtree stashed_physical_regs;
+    struct kefir_hashtreeset stashed_physical_regs;
 } kefir_asmcmp_stash_t;
 
 typedef struct kefir_asmcmp_value {
@@ -314,17 +314,18 @@ kefir_result_t kefir_asmcmp_virtual_register_new_memory_pointer(struct kefir_mem
 kefir_result_t kefir_asmcmp_virtual_register_specify_type(const struct kefir_asmcmp_context *,
                                                           kefir_asmcmp_virtual_register_index_t,
                                                           kefir_asmcmp_virtual_register_type_t);
+kefir_result_t kefir_asmcmp_virtual_set_spill_space_size(const struct kefir_asmcmp_context *,
+                                                         kefir_asmcmp_virtual_register_index_t, kefir_size_t);
 
-kefir_result_t kefir_asmcmp_register_stash_new(struct kefir_mem *, struct kefir_asmcmp_context *, kefir_size_t,
+kefir_result_t kefir_asmcmp_register_stash_new(struct kefir_mem *, struct kefir_asmcmp_context *,
                                                kefir_asmcmp_stash_index_t *);
 kefir_result_t kefir_asmcmp_register_stash_add(struct kefir_mem *, struct kefir_asmcmp_context *,
-                                               kefir_asmcmp_stash_index_t, kefir_asmcmp_physical_register_index_t,
-                                               kefir_size_t);
+                                               kefir_asmcmp_stash_index_t, kefir_asmcmp_physical_register_index_t);
 kefir_result_t kefir_asmcmp_register_stash_set_liveness_index(const struct kefir_asmcmp_context *,
                                                               kefir_asmcmp_stash_index_t,
                                                               kefir_asmcmp_instruction_index_t);
-kefir_result_t kefir_asmcmp_register_stash_for(const struct kefir_asmcmp_context *, kefir_asmcmp_stash_index_t,
-                                               kefir_asmcmp_physical_register_index_t, kefir_size_t *);
+kefir_result_t kefir_asmcmp_register_stash_has(const struct kefir_asmcmp_context *, kefir_asmcmp_stash_index_t,
+                                               kefir_asmcmp_physical_register_index_t, kefir_bool_t *);
 kefir_result_t kefir_asmcmp_register_stash_vreg(const struct kefir_asmcmp_context *, kefir_asmcmp_stash_index_t,
                                                 kefir_asmcmp_virtual_register_index_t *);
 kefir_result_t kefir_asmcmp_register_stash_liveness_index(const struct kefir_asmcmp_context *,

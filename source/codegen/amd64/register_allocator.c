@@ -387,6 +387,11 @@ static kefir_result_t allocate_spill_space(struct kefir_mem *mem,
                                            struct kefir_codegen_amd64_register_allocator *allocator,
                                            struct kefir_codegen_amd64_stack_frame *stack_frame,
                                            kefir_asmcmp_virtual_register_index_t vreg_idx, kefir_size_t qwords) {
+    if (qwords == 0) {
+        REQUIRE_OK(assign_spill_space(allocator, vreg_idx, 0, 0));
+        return KEFIR_OK;
+    }
+
     kefir_size_t spill_index;
     kefir_result_t res = kefir_bitset_find_consecutive(&allocator->internal.spill_area, false, qwords, 0, &spill_index);
     if (res != KEFIR_NOT_FOUND) {
@@ -562,6 +567,55 @@ static kefir_result_t allocate_register(struct kefir_mem *mem, struct kefir_asmc
     return KEFIR_OK;
 }
 
+static kefir_result_t update_stash(struct kefir_asmcmp_amd64 *target,
+                                   struct kefir_codegen_amd64_register_allocator *allocator,
+                                   const struct kefir_asmcmp_instruction *instr) {
+    ASSIGN_DECL_CAST(kefir_asmcmp_stash_index_t, stash_idx, instr->args[0].stash_idx);
+
+    kefir_size_t qwords = 0;
+
+    kefir_asmcmp_instruction_index_t liveness_idx;
+    REQUIRE_OK(kefir_asmcmp_register_stash_liveness_index(&target->context, stash_idx, &liveness_idx));
+
+    struct kefir_hashtreeset_iterator iter;
+    kefir_result_t res = KEFIR_OK;
+    for (res = kefir_hashtreeset_iter(&allocator->internal.alive_virtual_registers, &iter); res == KEFIR_OK;
+         res = kefir_hashtreeset_next(&iter)) {
+        ASSIGN_DECL_CAST(kefir_asmcmp_virtual_register_index_t, vreg, (kefir_uptr_t) iter.entry);
+
+        const struct kefir_codegen_amd64_register_allocation *reg_alloc = &allocator->allocations[vreg];
+        if (reg_alloc->type != KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_REGISTER) {
+            continue;
+        }
+
+        kefir_bool_t contains_phreg;
+        kefir_result_t res =
+            kefir_asmcmp_register_stash_has(&target->context, stash_idx, reg_alloc->direct_reg, &contains_phreg);
+        if (res == KEFIR_NOT_FOUND) {
+            continue;
+        }
+        REQUIRE_OK(res);
+
+        if (((liveness_idx != KEFIR_ASMCMP_INDEX_NONE &&
+              !(reg_alloc->lifetime.begin <= liveness_idx && reg_alloc->lifetime.end > liveness_idx))) ||
+            !contains_phreg) {
+            continue;
+        }
+
+        qwords++;
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
+
+    kefir_asmcmp_virtual_register_index_t spill_vreg;
+    REQUIRE_OK(kefir_asmcmp_register_stash_vreg(&target->context, stash_idx, &spill_vreg));
+    REQUIRE_OK(kefir_asmcmp_virtual_set_spill_space_size(&target->context, spill_vreg, qwords));
+
+    UNUSED(qwords);
+    return KEFIR_OK;
+}
+
 static kefir_result_t allocate_registers(struct kefir_mem *mem, struct kefir_asmcmp_amd64 *target,
                                          struct kefir_codegen_amd64_stack_frame *stack_frame,
                                          struct kefir_codegen_amd64_register_allocator *allocator) {
@@ -579,6 +633,11 @@ static kefir_result_t allocate_registers(struct kefir_mem *mem, struct kefir_asm
         const struct kefir_asmcmp_instruction *instr;
         REQUIRE_OK(deactivate_dead_vregs(mem, allocator, linear_index));
         REQUIRE_OK(kefir_asmcmp_context_instr_at(&target->context, instr_index, &instr));
+
+        if (instr->opcode == KEFIR_ASMCMP_AMD64_OPCODE(stash_activate)) {
+            REQUIRE_OK(update_stash(target, allocator, instr));
+        }
+
         REQUIRE_OK(allocate_register(mem, target, stack_frame, allocator, &instr->args[0]));
         REQUIRE_OK(allocate_register(mem, target, stack_frame, allocator, &instr->args[1]));
         REQUIRE_OK(allocate_register(mem, target, stack_frame, allocator, &instr->args[2]));
