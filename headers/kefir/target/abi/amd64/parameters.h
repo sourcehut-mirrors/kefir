@@ -113,5 +113,8 @@ kefir_result_t kefir_abi_amd64_function_parameter_memory_location(const struct k
                                                                   kefir_abi_amd64_function_parameter_memory_basis_t,
                                                                   kefir_asm_amd64_xasmgen_register_t *,
                                                                   kefir_int64_t *);
+kefir_result_t kefir_abi_amd64_function_return_memory_location(const struct kefir_abi_amd64_function_parameter *,
+                                                               kefir_abi_amd64_function_parameter_memory_basis_t,
+                                                               kefir_asm_amd64_xasmgen_register_t *, kefir_int64_t *);
 
 #endif

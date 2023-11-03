@@ -94,6 +94,13 @@ static kefir_result_t build_operand(const struct kefir_codegen_amd64_stack_frame
                         stack_frame->offsets.spill_area + value->indirect.base.spill_index * KEFIR_AMD64_ABI_QWORD +
                             value->indirect.offset);
                     break;
+
+                case KEFIR_ASMCMP_INDIRECT_TEMPORARY_AREA_BASIS:
+                    base_ptr = kefir_asm_amd64_xasmgen_operand_indirect(
+                        &arg_state->base_operands[0],
+                        kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
+                        stack_frame->offsets.temporary_area + value->indirect.offset);
+                    break;
             }
 
             switch (value->indirect.variant) {

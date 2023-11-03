@@ -51,6 +51,15 @@ kefir_result_t kefir_codegen_amd64_stack_frame_ensure_spill_area(struct kefir_co
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_codegen_amd64_stack_frame_ensure_temporary_area(struct kefir_codegen_amd64_stack_frame *frame,
+                                                                     kefir_size_t size, kefir_size_t alignment) {
+    REQUIRE(frame != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 stack frame"));
+
+    frame->requirements.temporary_area_size = MAX(frame->requirements.temporary_area_size, size);
+    frame->requirements.temporary_area_alignment = MAX(frame->requirements.temporary_area_alignment, alignment);
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_codegen_amd64_stack_frame_use_register(struct kefir_mem *mem,
                                                             struct kefir_codegen_amd64_stack_frame *frame,
                                                             kefir_asm_amd64_xasmgen_register_t reg) {
@@ -81,6 +90,8 @@ static kefir_result_t calculate_sizes(kefir_abi_amd64_variant_t abi_variant, con
                                                          &frame->sizes.local_area_alignment));
 
     frame->sizes.spill_area = frame->requirements.spill_area_slots * KEFIR_AMD64_ABI_QWORD;
+    frame->sizes.temporary_area = frame->requirements.temporary_area_size;
+    frame->sizes.temporary_area_alignment = frame->requirements.temporary_area_alignment;
 
     return KEFIR_OK;
 }
@@ -93,7 +104,9 @@ static kefir_result_t calculate_offsets(struct kefir_codegen_amd64_stack_frame *
     frame->offsets.local_area = frame->offsets.preserved_regs - (kefir_int64_t) frame->sizes.local_area;
     frame->offsets.local_area = PAD_NEGATIVE(frame->offsets.local_area, frame->sizes.local_area_alignment);
     frame->offsets.spill_area = frame->offsets.local_area - (kefir_int64_t) frame->sizes.spill_area;
-    frame->offsets.top_of_frame = PAD_NEGATIVE(frame->offsets.spill_area, 2 * KEFIR_AMD64_ABI_QWORD);
+    frame->offsets.temporary_area = frame->offsets.spill_area - (kefir_int64_t) frame->sizes.temporary_area;
+    frame->offsets.temporary_area = PAD_NEGATIVE(frame->offsets.temporary_area, frame->sizes.temporary_area_alignment);
+    frame->offsets.top_of_frame = PAD_NEGATIVE(frame->offsets.temporary_area, 2 * KEFIR_AMD64_ABI_QWORD);
     frame->sizes.allocated_size = -(frame->offsets.top_of_frame - frame->offsets.preserved_regs);
     frame->sizes.total_size = -frame->offsets.top_of_frame;
     return KEFIR_OK;

@@ -515,3 +515,31 @@ kefir_result_t kefir_abi_amd64_function_parameter_memory_location(
     }
     return KEFIR_OK;
 }
+
+kefir_result_t kefir_abi_amd64_function_return_memory_location(
+    const struct kefir_abi_amd64_function_parameter *parameter, kefir_abi_amd64_function_parameter_memory_basis_t basis,
+    kefir_asm_amd64_xasmgen_register_t *reg_ptr, kefir_int64_t *offset_ptr) {
+    REQUIRE(parameter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 function parameter"));
+    REQUIRE(parameter->location == KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_MEMORY &&
+                !parameter->preliminary_classification,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 function parameter"));
+    REQUIRE(reg_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to amd64 register"));
+    REQUIRE(offset_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to offset"));
+
+    ASSIGN_DECL_CAST(struct amd64_abi_payload *, payload, parameter->payload);
+    switch (payload->variant) {
+        case KEFIR_ABI_AMD64_VARIANT_SYSTEM_V: {
+            switch (basis) {
+                case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_ADDRESS_CALLER:
+                case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_ADDRESS_CALLEE:
+                    *reg_ptr = KEFIR_AMD64_XASMGEN_REGISTER_RAX;
+                    *offset_ptr = 0;
+                    break;
+            }
+        } break;
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unknown amd64 abi variant");
+    }
+    return KEFIR_OK;
+}
