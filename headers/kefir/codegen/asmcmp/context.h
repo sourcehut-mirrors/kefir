@@ -110,6 +110,11 @@ typedef struct kefir_asmcmp_value {
         const char *label;
         kefir_asmcmp_stash_index_t stash_idx;
     };
+
+    struct {
+        kefir_bool_t present;
+        kefir_asmcmp_physical_register_index_t reg;
+    } segment;
 } kefir_asmcmp_value_t;
 
 #define KEFIR_ASMCMP_MAKE_NONE ((struct kefir_asmcmp_value){.type = KEFI_ASMCMP_VALUE_NONE})
@@ -173,6 +178,12 @@ typedef struct kefir_asmcmp_value {
                                  .rip_indirection = {.base = (_base), .variant = (_variant)}})
 #define KEFIR_ASMCMP_MAKE_STASH_INDEX(_idx) \
     ((struct kefir_asmcmp_value){.type = KEFIR_ASMCMP_VALUE_TYPE_STASH_INDEX, .stash_idx = (_idx)})
+
+#define KEFIR_ASMCMP_SET_SEGMENT(_value, _reg) \
+    do {                                       \
+        (_value)->segment.present = true;      \
+        (_value)->segment.reg = (_reg);        \
+    } while (false)
 
 typedef struct kefir_asmcmp_instruction {
     kefir_asmcmp_instruction_opcode_t opcode;

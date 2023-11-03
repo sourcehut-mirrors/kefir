@@ -27,7 +27,7 @@
 #include "kefir/target/asm/amd64/xasmgen.h"
 
 struct instruction_argument_state {
-    struct kefir_asm_amd64_xasmgen_operand base_operands[2];
+    struct kefir_asm_amd64_xasmgen_operand base_operands[3];
     const struct kefir_asm_amd64_xasmgen_operand *operand;
 };
 
@@ -168,6 +168,12 @@ static kefir_result_t build_operand(const struct kefir_codegen_amd64_stack_frame
             break;
     }
 
+    if (value->segment.present) {
+        arg_state->operand = kefir_asm_amd64_xasmgen_operand_segment(
+            &arg_state->base_operands[2], (kefir_asm_amd64_xasmgen_segment_register_t) value->segment.reg,
+            arg_state->operand);
+    }
+
     return KEFIR_OK;
 }
 
@@ -234,6 +240,12 @@ static kefir_result_t generate_instr(struct kefir_amd64_xasmgen *xasmgen, const 
 
         case KEFIR_ASMCMP_AMD64_OPCODE(function_epilogue):
             REQUIRE_OK(kefir_codegen_amd64_stack_frame_epilogue(xasmgen, target->abi_variant, stack_frame));
+            break;
+
+        case KEFIR_ASMCMP_AMD64_OPCODE(data_word):
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+                xasmgen, KEFIR_AMD64_XASMGEN_DATA_WORD, 1,
+                kefir_asm_amd64_xasmgen_operand_immu(&arg_state[0].base_operands[0], instr->args[0].uint_immediate)));
             break;
 
         case KEFIR_ASMCMP_AMD64_OPCODE(touch_virtual_register):

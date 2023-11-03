@@ -73,6 +73,9 @@ typedef struct kefir_codegen_amd64_stack_frame kefir_codegen_amd64_stack_frame_t
     _opcode(movsb_rep, MOVSB, Repeat) _separator \
     /* Flags */ \
     _opcode(cld, CLD, None) _separator \
+    /* Special */ \
+    _opcode(data16, DATA16, None) _separator \
+    _opcode(rexw, REXW, None) _separator \
     /* Integral arithmetics & logic */ \
     _opcode(add, ADD, RegMemRW_RegMemR) _separator \
     _opcode(sub, SUB, RegMemRW_RegMemR) _separator \
@@ -96,7 +99,9 @@ typedef struct kefir_codegen_amd64_stack_frame kefir_codegen_amd64_stack_frame_t
     _opcode(setg, SETG, RegMemW) _separator \
     _opcode(setl, SETL, RegMemW) _separator \
     _opcode(seta, SETA, RegMemW) _separator \
-    _opcode(setb, SETB, RegMemW)
+    _opcode(setb, SETB, RegMemW) _separator \
+    /* Data */ \
+    _opcode(data_word, _, Virtual)
 // clang-format on
 
 #define KEFIR_ASMCMP_AMD64_OPCODE(_opcode) KEFIR_ASMCMP_AMD64_##_opcode
@@ -199,6 +204,10 @@ kefir_result_t kefir_asmcmp_amd64_function_prologue(struct kefir_mem *, struct k
 kefir_result_t kefir_asmcmp_amd64_function_epilogue(struct kefir_mem *, struct kefir_asmcmp_amd64 *,
                                                     kefir_asmcmp_instruction_index_t,
                                                     kefir_asmcmp_instruction_index_t *);
+
+kefir_result_t kefir_asmcmp_amd64_data_word(struct kefir_mem *, struct kefir_asmcmp_amd64 *,
+                                            kefir_asmcmp_instruction_index_t, kefir_uint16_t,
+                                            kefir_asmcmp_instruction_index_t *);
 
 kefir_result_t kefir_asmcmp_amd64_generate_code(struct kefir_amd64_xasmgen *, const struct kefir_asmcmp_amd64 *,
                                                 const struct kefir_codegen_amd64_stack_frame *);

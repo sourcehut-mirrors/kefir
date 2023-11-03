@@ -252,11 +252,13 @@ static kefir_result_t obtain_temporary_register(struct kefir_mem *mem, struct de
 
 static kefir_result_t devirtualize_value(struct kefir_mem *mem, struct devirtualize_state *state,
                                          kefir_asmcmp_instruction_index_t position, struct kefir_asmcmp_value *value) {
-    UNUSED(mem);
     const struct kefir_codegen_amd64_register_allocation *reg_alloc;
     const struct kefir_asmcmp_virtual_register *vreg;
     kefir_asm_amd64_xasmgen_register_t phreg;
     kefir_asmcmp_instruction_index_t new_position;
+
+    kefir_bool_t has_segment_reg = value->segment.present;
+    kefir_asmcmp_physical_register_index_t segment_reg = value->segment.reg;
 
     switch (value->type) {
         case KEFIR_ASMCMP_VALUE_TYPE_NONE:
@@ -388,6 +390,10 @@ static kefir_result_t devirtualize_value(struct kefir_mem *mem, struct devirtual
                     break;
             }
             break;
+    }
+
+    if (has_segment_reg) {
+        KEFIR_ASMCMP_SET_SEGMENT(value, segment_reg);
     }
     return KEFIR_OK;
 }
@@ -668,6 +674,7 @@ static kefir_result_t devirtualize_impl(struct kefir_mem *mem, struct devirtuali
             case KEFIR_ASMCMP_AMD64_OPCODE(function_prologue):
             case KEFIR_ASMCMP_AMD64_OPCODE(function_epilogue):
             case KEFIR_ASMCMP_AMD64_OPCODE(noop):
+            case KEFIR_ASMCMP_AMD64_OPCODE(data_word):
                 // Intentionally left blank
                 break;
         }
