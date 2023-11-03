@@ -408,7 +408,8 @@ static kefir_result_t save_returns(struct kefir_mem *mem, struct kefir_codegen_a
 }
 
 static kefir_result_t invoke_impl(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
-                                  kefir_opt_instruction_ref_t instr_ref, struct kefir_opt_call_node *call_node,
+                                  const struct kefir_opt_instruction *instruction,
+                                  struct kefir_opt_call_node *call_node,
                                   struct kefir_abi_amd64_function_decl *abi_func_decl,
                                   struct kefir_hashtree *argument_placement) {
     kefir_size_t stack_increment;
@@ -424,12 +425,22 @@ static kefir_result_t invoke_impl(struct kefir_mem *mem, struct kefir_codegen_am
     REQUIRE_OK(prepare_parameters(mem, function, call_node, ir_func_decl, abi_func_decl, argument_placement));
 
     kefir_asmcmp_instruction_index_t call_idx;
-    REQUIRE_OK(kefir_asmcmp_amd64_call(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                                       &KEFIR_ASMCMP_MAKE_LABEL(ir_func_decl->name), &call_idx));
+    if (instruction->operation.opcode == KEFIR_OPT_OPCODE_INVOKE) {
+        REQUIRE_OK(kefir_asmcmp_amd64_call(mem, &function->code,
+                                           kefir_asmcmp_context_instr_tail(&function->code.context),
+                                           &KEFIR_ASMCMP_MAKE_LABEL(ir_func_decl->name), &call_idx));
+    } else {
+        kefir_asmcmp_virtual_register_index_t func_vreg;
+        REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(
+            function, instruction->operation.parameters.function_call.indirect_ref, &func_vreg));
+        REQUIRE_OK(kefir_asmcmp_amd64_call(mem, &function->code,
+                                           kefir_asmcmp_context_instr_tail(&function->code.context),
+                                           &KEFIR_ASMCMP_MAKE_VREG(func_vreg), &call_idx));
+    }
     REQUIRE_OK(kefir_asmcmp_register_stash_set_liveness_index(&function->code.context, stash_idx, call_idx));
 
     if (kefir_ir_type_length(ir_func_decl->result) > 0) {
-        REQUIRE_OK(save_returns(mem, function, instr_ref, abi_func_decl));
+        REQUIRE_OK(save_returns(mem, function, instruction->id, abi_func_decl));
     }
     REQUIRE_OK(restore_regs(mem, function, stash_idx, preserve_regs_area));
     if (stack_increment > 0) {
@@ -462,7 +473,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(invoke)(struct kefir_mem *me
     struct kefir_hashtree argument_placement;
     REQUIRE_OK(kefir_hashtree_init(&argument_placement, &kefir_hashtree_uint_ops));
 
-    kefir_result_t res = invoke_impl(mem, function, instruction->id, call_node, &abi_func_decl, &argument_placement);
+    kefir_result_t res = invoke_impl(mem, function, instruction, call_node, &abi_func_decl, &argument_placement);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_hashtree_free(mem, &argument_placement);
         kefir_abi_amd64_function_decl_free(mem, &abi_func_decl);
