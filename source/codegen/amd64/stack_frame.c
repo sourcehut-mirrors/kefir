@@ -73,6 +73,13 @@ kefir_result_t kefir_codegen_amd64_stack_frame_use_register(struct kefir_mem *me
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_codegen_amd64_stack_frame_varying_stack_pointer(struct kefir_codegen_amd64_stack_frame *frame) {
+    REQUIRE(frame != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 stack frame"));
+
+    frame->requirements.reset_stack_pointer = true;
+    return KEFIR_OK;
+}
+
 static kefir_result_t calculate_sizes(kefir_abi_amd64_variant_t abi_variant, const struct kefir_ir_type *locals_type,
                                       const struct kefir_abi_amd64_type_layout *locals_type_layout,
                                       struct kefir_codegen_amd64_stack_frame *frame) {
@@ -162,10 +169,13 @@ kefir_result_t kefir_codegen_amd64_stack_frame_epilogue(struct kefir_amd64_xasmg
     REQUIRE(frame != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 stack frame"));
 
     struct kefir_asm_amd64_xasmgen_operand operands[3];
-    if (frame->sizes.allocated_size > 0) {
-        REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_ADD(
+
+    if (frame->sizes.allocated_size > 0 || frame->requirements.reset_stack_pointer) {
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_LEA(
             xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
-            kefir_asm_amd64_xasmgen_operand_immu(&operands[0], frame->sizes.allocated_size)));
+            kefir_asm_amd64_xasmgen_operand_indirect(
+                &operands[0], kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
+                frame->offsets.preserved_regs)));
     }
 
     const kefir_size_t num_of_callee_preserved_gp =

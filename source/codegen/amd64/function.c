@@ -58,8 +58,8 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
                                          (kefir_hashtree_value_t) asmlabel));
     }
 
-    REQUIRE_OK(kefir_asmcmp_amd64_function_prologue(mem, &func->code,
-                                                    kefir_asmcmp_context_instr_tail(&func->code.context), NULL));
+    REQUIRE_OK(kefir_asmcmp_amd64_function_prologue(
+        mem, &func->code, kefir_asmcmp_context_instr_tail(&func->code.context), &func->prologue_tail));
     kefir_bool_t implicit_parameter_present;
     kefir_asm_amd64_xasmgen_register_t implicit_parameter_reg;
     REQUIRE_OK(kefir_abi_amd64_function_decl_returns_implicit_parameter(
@@ -86,7 +86,7 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
         struct kefir_hashtree_node *asmlabel_node;
         REQUIRE_OK(kefir_hashtree_at(&func->labels, (kefir_hashtree_key_t) block_props->block_id, &asmlabel_node));
         ASSIGN_DECL_CAST(kefir_asmcmp_label_index_t, asmlabel, asmlabel_node->value);
-        REQUIRE_OK(kefir_asmcmp_context_bind_label(mem, &func->code.context, KEFIR_ASMCMP_INDEX_NONE, asmlabel));
+        REQUIRE_OK(kefir_asmcmp_context_bind_label_after_tail(mem, &func->code.context, asmlabel));
 
         for (kefir_size_t instr_idx = block_props->linear_range.begin_index;
              instr_idx < block_props->linear_range.end_index; instr_idx++) {
@@ -95,6 +95,15 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
                 &func->function->code, func->function_analysis->linearization[instr_idx]->instr_ref, &instr));
             REQUIRE_OK(translate_instruction(mem, func, instr));
         }
+    }
+
+    if (func->return_address_vreg != KEFIR_ASMCMP_INDEX_NONE) {
+        REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
+            mem, &func->code, kefir_asmcmp_context_instr_tail(&func->code.context), func->return_address_vreg, NULL));
+    }
+    if (func->dynamic_scope_vreg != KEFIR_ASMCMP_INDEX_NONE) {
+        REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
+            mem, &func->code, kefir_asmcmp_context_instr_tail(&func->code.context), func->dynamic_scope_vreg, NULL));
     }
     return KEFIR_OK;
 }
@@ -130,7 +139,9 @@ kefir_result_t kefir_codegen_amd64_function_translate(struct kefir_mem *mem, str
                                                 .function = function,
                                                 .function_analysis = function_analysis,
                                                 .argument_touch_instr = KEFIR_ASMCMP_INDEX_NONE,
-                                                .return_address_vreg = KEFIR_ASMCMP_INDEX_NONE};
+                                                .prologue_tail = KEFIR_ASMCMP_INDEX_NONE,
+                                                .return_address_vreg = KEFIR_ASMCMP_INDEX_NONE,
+                                                .dynamic_scope_vreg = KEFIR_ASMCMP_INDEX_NONE};
     REQUIRE_OK(kefir_asmcmp_amd64_init(function->ir_func->name, codegen->abi_variant, &func.code));
     REQUIRE_OK(kefir_hashtree_init(&func.instructions, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&func.labels, &kefir_hashtree_uint_ops));

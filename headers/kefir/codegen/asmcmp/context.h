@@ -292,6 +292,8 @@ kefir_asmcmp_label_index_t kefir_asmcmp_context_instr_label_next(const struct ke
                                                                  kefir_asmcmp_label_index_t);
 kefir_result_t kefir_asmcmp_context_bind_label(struct kefir_mem *, struct kefir_asmcmp_context *,
                                                kefir_asmcmp_instruction_index_t, kefir_asmcmp_label_index_t);
+kefir_result_t kefir_asmcmp_context_bind_label_after_tail(struct kefir_mem *, struct kefir_asmcmp_context *,
+                                                          kefir_asmcmp_label_index_t);
 kefir_result_t kefir_asmcmp_context_unbind_label(struct kefir_mem *, struct kefir_asmcmp_context *,
                                                  kefir_asmcmp_label_index_t);
 kefir_result_t kefir_asmcmp_context_move_labels(struct kefir_mem *, struct kefir_asmcmp_context *,

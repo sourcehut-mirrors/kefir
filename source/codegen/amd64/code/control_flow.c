@@ -195,8 +195,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(branch)(struct kefir_mem *me
     }
 
     if (alternative_phi_outputs) {
-        REQUIRE_OK(
-            kefir_asmcmp_context_bind_label(mem, &function->code.context, KEFIR_ASMCMP_INDEX_NONE, branch_label_idx));
+        REQUIRE_OK(kefir_asmcmp_context_bind_label_after_tail(mem, &function->code.context, branch_label_idx));
         REQUIRE_OK(map_phi_outputs(mem, function, alternative_block, instruction));
 
         if (function->function_analysis->blocks[alternative_block->id].linear_position !=
