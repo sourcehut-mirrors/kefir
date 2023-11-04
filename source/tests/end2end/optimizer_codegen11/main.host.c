@@ -37,5 +37,16 @@ int main(void) {
     zero_struct1(&y);
     assert(memcmp(&y, &ref, sizeof(struct Struct1)) == 0);
 
+    for (long i = -1000; i < 1000; i++) {
+        struct Struct2 ref2 = {i, ~i};
+        struct Struct2 z = get_struct2(i);
+        assert(memcmp(&z, &ref2, sizeof(struct Struct2)) == 0);
+    }
+    struct Struct2 ref2;
+    memset(&ref2, 0, sizeof(struct Struct2));
+    struct Struct2 z;
+    zero_struct2(&z);
+    assert(memcmp(&z, &ref2, sizeof(struct Struct2)) == 0);
+
     return EXIT_SUCCESS;
 }

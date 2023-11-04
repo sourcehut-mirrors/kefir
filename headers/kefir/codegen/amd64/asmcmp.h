@@ -71,6 +71,7 @@ typedef struct kefir_codegen_amd64_stack_frame kefir_codegen_amd64_stack_frame_t
     _opcode(movzx, MOVZX, RegW_RegMemR) _separator \
     _opcode(lea, LEA, RegW_Mem) _separator \
     _opcode(movsb_rep, MOVSB, Repeat) _separator \
+    _opcode(stosb_rep, STOSB, Repeat) _separator \
     /* Flags */ \
     _opcode(cld, CLD, None) _separator \
     /* Special */ \

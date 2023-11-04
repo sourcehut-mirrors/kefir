@@ -33,4 +33,12 @@ struct Struct1 {
 struct Struct1 get_struct1(void);
 void zero_struct1(struct Struct1 *);
 
+struct Struct2 {
+    long a;
+    long b;
+};
+
+struct Struct2 get_struct2(long);
+void zero_struct2(struct Struct2 *);
+
 #endif

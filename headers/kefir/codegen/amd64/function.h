@@ -43,6 +43,7 @@ typedef struct kefir_codegen_amd64_function {
     struct kefir_hashtree labels;
     struct kefir_hashtree virtual_registers;
     kefir_asmcmp_instruction_index_t argument_touch_instr;
+    kefir_asmcmp_virtual_register_index_t return_address_vreg;
 } kefir_codegen_amd64_function_t;
 
 kefir_result_t kefir_codegen_amd64_function_translate(struct kefir_mem *, struct kefir_codegen_amd64 *,
@@ -84,6 +85,7 @@ kefir_result_t kefir_codegen_amd64_function_vreg_of(struct kefir_codegen_amd64_f
     _def(int32_load_unsigned, KEFIR_OPT_OPCODE_INT32_LOAD_UNSIGNED) _separator \
     _def(int64_load, KEFIR_OPT_OPCODE_INT64_LOAD) _separator \
     _def(copy_memory, KEFIR_OPT_OPCODE_COPY_MEMORY) _separator \
+    _def(zero_memory, KEFIR_OPT_OPCODE_ZERO_MEMORY) _separator \
     _def(invoke, KEFIR_OPT_OPCODE_INVOKE) _separator \
     _def(invoke, KEFIR_OPT_OPCODE_INVOKE_VIRTUAL) _separator \
     _def(int_add, KEFIR_OPT_OPCODE_INT_ADD) _separator                                                   \

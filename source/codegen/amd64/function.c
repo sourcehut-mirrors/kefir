@@ -60,6 +60,24 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
 
     REQUIRE_OK(kefir_asmcmp_amd64_function_prologue(mem, &func->code,
                                                     kefir_asmcmp_context_instr_tail(&func->code.context), NULL));
+    kefir_bool_t implicit_parameter_present;
+    kefir_asm_amd64_xasmgen_register_t implicit_parameter_reg;
+    REQUIRE_OK(kefir_abi_amd64_function_decl_returns_implicit_parameter(
+        &func->abi_function_declaration, &implicit_parameter_present, &implicit_parameter_reg));
+    if (implicit_parameter_present) {
+        kefir_asmcmp_virtual_register_index_t implicit_param_vreg, implicit_param_placement_vreg;
+        REQUIRE_OK(kefir_asmcmp_virtual_register_new(
+            mem, &func->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_SPILL_SPACE_SLOT, &implicit_param_vreg));
+        REQUIRE_OK(kefir_asmcmp_virtual_register_new(
+            mem, &func->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &implicit_param_placement_vreg));
+        REQUIRE_OK(kefir_asmcmp_amd64_register_allocation_requirement(mem, &func->code, implicit_param_placement_vreg,
+                                                                      implicit_parameter_reg));
+        REQUIRE_OK(kefir_asmcmp_amd64_mov(mem, &func->code, kefir_asmcmp_context_instr_tail(&func->code.context),
+                                          &KEFIR_ASMCMP_MAKE_VREG64(implicit_param_vreg),
+                                          &KEFIR_ASMCMP_MAKE_VREG64(implicit_param_placement_vreg), NULL));
+        func->return_address_vreg = implicit_param_vreg;
+    }
+
     // Translate blocks
     for (kefir_size_t block_idx = 0; block_idx < func->function_analysis->block_linearization_length; block_idx++) {
         const struct kefir_opt_code_analysis_block_properties *block_props =
@@ -81,29 +99,18 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
     return KEFIR_OK;
 }
 
-static kefir_result_t allocate_registers(struct kefir_mem *mem, struct kefir_codegen_amd64_function *func) {
-    REQUIRE_OK(
-        kefir_codegen_amd64_register_allocator_run(mem, &func->code, &func->stack_frame, &func->register_allocator));
-    return KEFIR_OK;
-}
-
-static kefir_result_t generate_code(struct kefir_codegen_amd64 *codegen, struct kefir_codegen_amd64_function *func) {
-    REQUIRE_OK(kefir_asmcmp_amd64_generate_code(&codegen->xasmgen, &func->code, &func->stack_frame));
-    return KEFIR_OK;
-}
-
 static kefir_result_t kefir_codegen_amd64_function_translate_impl(struct kefir_mem *mem,
                                                                   struct kefir_codegen_amd64 *codegen,
                                                                   struct kefir_codegen_amd64_function *func) {
-    UNUSED(mem);
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&func->codegen->xasmgen, "%s", func->function->ir_func->name));
 
     REQUIRE_OK(translate_code(mem, func));
-    REQUIRE_OK(allocate_registers(mem, func));
+    REQUIRE_OK(
+        kefir_codegen_amd64_register_allocator_run(mem, &func->code, &func->stack_frame, &func->register_allocator));
     REQUIRE_OK(kefir_codegen_amd64_devirtualize(mem, &func->code, &func->register_allocator, &func->stack_frame));
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_calculate(codegen->abi_variant, func->function->ir_func->locals,
                                                          &func->locals_layout, &func->stack_frame));
-    REQUIRE_OK(generate_code(codegen, func));
+    REQUIRE_OK(kefir_asmcmp_amd64_generate_code(&codegen->xasmgen, &func->code, &func->stack_frame));
     return KEFIR_OK;
 }
 
@@ -122,7 +129,8 @@ kefir_result_t kefir_codegen_amd64_function_translate(struct kefir_mem *mem, str
                                                 .module = module,
                                                 .function = function,
                                                 .function_analysis = function_analysis,
-                                                .argument_touch_instr = KEFIR_ASMCMP_INDEX_NONE};
+                                                .argument_touch_instr = KEFIR_ASMCMP_INDEX_NONE,
+                                                .return_address_vreg = KEFIR_ASMCMP_INDEX_NONE};
     REQUIRE_OK(kefir_asmcmp_amd64_init(function->ir_func->name, codegen->abi_variant, &func.code));
     REQUIRE_OK(kefir_hashtree_init(&func.instructions, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&func.labels, &kefir_hashtree_uint_ops));

@@ -27,3 +27,14 @@ struct Struct1 get_struct1(void) {
 void zero_struct1(struct Struct1 *x) {
     *x = (struct Struct1){0};
 }
+
+struct Struct2 get_struct2(long a) {
+    struct Struct2 x;
+    x.a = a;
+    x.b = ~a;
+    return x;
+}
+
+void zero_struct2(struct Struct2 *x) {
+    *x = (struct Struct2){0};
+}
