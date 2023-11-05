@@ -111,6 +111,14 @@ typedef struct kefir_codegen_amd64_stack_frame kefir_codegen_amd64_stack_frame_t
     _opcode(pxor, PXOR, XmmRW_XmmMemR) _separator \
     _opcode(addss, ADDSS, XmmdW_RegMemR) _separator \
     _opcode(addsd, ADDSD, XmmqW_RegMemR) _separator \
+    _opcode(subss, SUBSS, XmmdW_RegMemR) _separator \
+    _opcode(subsd, SUBSD, XmmqW_RegMemR) _separator \
+    _opcode(mulss, MULSS, XmmdW_RegMemR) _separator \
+    _opcode(mulsd, MULSD, XmmqW_RegMemR) _separator \
+    _opcode(divss, DIVSS, XmmdW_RegMemR) _separator \
+    _opcode(divsd, DIVSD, XmmqW_RegMemR) _separator \
+    _opcode(xorps, XORPS, XmmdW_RegMemR) _separator \
+    _opcode(xorpd, XORPD, XmmqW_RegMemR) _separator \
     /* Conditionals */ \
     _opcode(test, TEST, RegMemR_RegR) _separator \
     _opcode(cmp, CMP, RegMemR_RegR) _separator \

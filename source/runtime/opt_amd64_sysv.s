@@ -113,10 +113,6 @@ __kefirrt_opt_float32_to_uint_overflow:
     cvttss2si rax, xmm0
     btc rax, 63
     ret
-.section .rodata
-__kefirrt_opt_float32_to_uint_constant:
-    .long   1593835520
-.section .text
 
 .global __kefirrt_opt_float64_to_uint
 .hidden __kefirrt_opt_float64_to_uint
@@ -130,12 +126,6 @@ __kefirrt_opt_float64_to_uint_overflow:
     cvttsd2si rax, xmm0
     btc rax, 63
     ret
-.section .rodata
-    .align 8
-__kefirrt_opt_float64_to_uint_constant:
-    .long   0
-    .long   1138753536
-.section .text
 
 .global __kefirrt_opt_long_double_to_int
 .hidden __kefirrt_opt_long_double_to_int
@@ -179,10 +169,6 @@ __kefirrt_opt_long_double_to_uint_overflow:
     mov rax, QWORD PTR [rsp - 24]
     btc rax, 63
     ret
-.section .rodata
-__kefirrt_opt_long_double_to_uint_constant:
-    .long   1593835520
-.section .text
 
 .global __kefirrt_opt_long_double_trunc_1bit
 .hidden __kefirrt_opt_long_double_trunc_1bit
@@ -199,3 +185,35 @@ __kefirrt_opt_long_double_trunc_1bit:
     xor rax, 1
     ret
 
+
+.section .rodata
+    .align 4
+__kefirrt_opt_long_double_to_uint_constant:
+    .long   1593835520
+
+    .align 4
+__kefirrt_opt_float32_to_uint_constant:
+    .long   1593835520
+
+    .align 8
+__kefirrt_opt_float64_to_uint_constant:
+    .long   0
+    .long   1138753536
+
+    .align 16
+.global __kefir_opt_float32_neg
+.hidden __kefir_opt_float32_neg
+__kefir_opt_float32_neg:
+    .long   -2147483648
+    .long   0
+    .long   0
+    .long   0
+
+    .align 16
+.global __kefir_opt_float64_neg
+.hidden __kefir_opt_float64_neg
+__kefir_opt_float64_neg:
+    .long   0
+    .long   -2147483648
+    .long   0
+    .long   0

@@ -101,6 +101,16 @@ kefir_result_t kefir_codegen_amd64_function_format_label(struct kefir_mem *, str
     _def(float_to_uint, KEFIR_OPT_OPCODE_FLOAT64_TO_UINT) _separator \
     _def(float_to_float, KEFIR_OPT_OPCODE_FLOAT32_TO_FLOAT64) _separator \
     _def(float_to_float, KEFIR_OPT_OPCODE_FLOAT64_TO_FLOAT32) _separator \
+    _def(float32_arith_op, KEFIR_OPT_OPCODE_FLOAT32_ADD) _separator \
+    _def(float32_arith_op, KEFIR_OPT_OPCODE_FLOAT32_SUB) _separator \
+    _def(float32_arith_op, KEFIR_OPT_OPCODE_FLOAT32_MUL) _separator \
+    _def(float32_arith_op, KEFIR_OPT_OPCODE_FLOAT32_DIV) _separator \
+    _def(float64_arith_op, KEFIR_OPT_OPCODE_FLOAT64_ADD) _separator \
+    _def(float64_arith_op, KEFIR_OPT_OPCODE_FLOAT64_SUB) _separator \
+    _def(float64_arith_op, KEFIR_OPT_OPCODE_FLOAT64_MUL) _separator \
+    _def(float64_arith_op, KEFIR_OPT_OPCODE_FLOAT64_DIV) _separator \
+    _def(float_unary_op, KEFIR_OPT_OPCODE_FLOAT32_NEG) _separator \
+    _def(float_unary_op, KEFIR_OPT_OPCODE_FLOAT64_NEG) _separator \
     _def(bits_extract_signed, KEFIR_OPT_OPCODE_BITS_EXTRACT_SIGNED) _separator \
     _def(bits_extract_unsigned, KEFIR_OPT_OPCODE_BITS_EXTRACT_UNSIGNED) _separator \
     _def(bits_insert, KEFIR_OPT_OPCODE_BITS_INSERT) _separator \
