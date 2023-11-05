@@ -19,7 +19,9 @@
 */
 
 #include "kefir/codegen/amd64/stack_frame.h"
+#include "kefir/codegen/amd64/symbolic_labels.h"
 #include "kefir/target/abi/amd64/function.h"
+#include "kefir/target/abi/amd64/vararg.h"
 #include "kefir/target/abi/util.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
@@ -80,6 +82,13 @@ kefir_result_t kefir_codegen_amd64_stack_frame_varying_stack_pointer(struct kefi
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_codegen_amd64_stack_frame_vararg(struct kefir_codegen_amd64_stack_frame *frame) {
+    REQUIRE(frame != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 stack frame"));
+
+    frame->requirements.vararg = true;
+    return KEFIR_OK;
+}
+
 static kefir_result_t calculate_sizes(kefir_abi_amd64_variant_t abi_variant, const struct kefir_ir_type *locals_type,
                                       const struct kefir_abi_amd64_type_layout *locals_type_layout,
                                       struct kefir_codegen_amd64_stack_frame *frame) {
@@ -100,6 +109,11 @@ static kefir_result_t calculate_sizes(kefir_abi_amd64_variant_t abi_variant, con
     frame->sizes.temporary_area = frame->requirements.temporary_area_size;
     frame->sizes.temporary_area_alignment = frame->requirements.temporary_area_alignment;
 
+    if (frame->requirements.vararg) {
+        REQUIRE_OK(kefir_abi_amd64_vararg_save_area_requirements(abi_variant, &frame->sizes.vararg_area,
+                                                                 &frame->sizes.vararg_area_alignment));
+    }
+
     return KEFIR_OK;
 }
 
@@ -114,7 +128,9 @@ static kefir_result_t calculate_offsets(struct kefir_codegen_amd64_stack_frame *
     frame->offsets.spill_area = PAD_NEGATIVE(frame->offsets.spill_area, 2 * KEFIR_AMD64_ABI_QWORD);
     frame->offsets.temporary_area = frame->offsets.spill_area - (kefir_int64_t) frame->sizes.temporary_area;
     frame->offsets.temporary_area = PAD_NEGATIVE(frame->offsets.temporary_area, frame->sizes.temporary_area_alignment);
-    frame->offsets.top_of_frame = PAD_NEGATIVE(frame->offsets.temporary_area, 2 * KEFIR_AMD64_ABI_QWORD);
+    frame->offsets.vararg_area = frame->offsets.temporary_area - (kefir_int64_t) frame->sizes.vararg_area;
+    frame->offsets.vararg_area = PAD_NEGATIVE(frame->offsets.vararg_area, frame->sizes.vararg_area_alignment);
+    frame->offsets.top_of_frame = PAD_NEGATIVE(frame->offsets.vararg_area, 2 * KEFIR_AMD64_ABI_QWORD);
     frame->sizes.allocated_size = -(frame->offsets.top_of_frame - frame->offsets.preserved_regs);
     frame->sizes.total_size = -frame->offsets.top_of_frame;
     return KEFIR_OK;
@@ -135,6 +151,7 @@ kefir_result_t kefir_codegen_amd64_stack_frame_calculate(kefir_abi_amd64_variant
 
 kefir_result_t kefir_codegen_amd64_stack_frame_prologue(struct kefir_amd64_xasmgen *xasmgen,
                                                         kefir_abi_amd64_variant_t abi_variant,
+                                                        kefir_bool_t position_independent_code,
                                                         const struct kefir_codegen_amd64_stack_frame *frame) {
     REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 assembly generator"));
     REQUIRE(frame != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 stack frame"));
@@ -155,10 +172,33 @@ kefir_result_t kefir_codegen_amd64_stack_frame_prologue(struct kefir_amd64_xasmg
     }
 
     struct kefir_asm_amd64_xasmgen_operand operands[3];
+    struct kefir_asm_amd64_xasmgen_helpers helpers;
     if (frame->sizes.allocated_size > 0) {
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_SUB(
             xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
             kefir_asm_amd64_xasmgen_operand_immu(&operands[0], frame->sizes.allocated_size)));
+    }
+
+    if (frame->requirements.vararg) {
+        switch (abi_variant) {
+            case KEFIR_ABI_AMD64_VARIANT_SYSTEM_V:
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_LEA(
+                    xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_R10),
+                    kefir_asm_amd64_xasmgen_operand_indirect(
+                        &operands[0], kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
+                        frame->offsets.vararg_area)));
+
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_CALL(
+                    xasmgen, kefir_asm_amd64_xasmgen_operand_label(
+                                 &operands[0], position_independent_code ? kefir_asm_amd64_xasmgen_helpers_format(
+                                                                               &helpers, KEFIR_AMD64_PLT,
+                                                                               KEFIR_AMD64_SYSTEM_V_RUNTIME_VARARG_SAVE)
+                                                                         : KEFIR_AMD64_SYSTEM_V_RUNTIME_VARARG_SAVE)));
+                break;
+
+            default:
+                return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unknown amd64 abi variant");
+        }
     }
     return KEFIR_OK;
 }

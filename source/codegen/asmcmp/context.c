@@ -185,6 +185,7 @@ static kefir_result_t validate_value(struct kefir_asmcmp_context *context, const
                 case KEFIR_ASMCMP_INDIRECT_LOCAL_VAR_BASIS:
                 case KEFIR_ASMCMP_INDIRECT_SPILL_AREA_BASIS:
                 case KEFIR_ASMCMP_INDIRECT_TEMPORARY_AREA_BASIS:
+                case KEFIR_ASMCMP_INDIRECT_VARARG_SAVE_AREA_BASIS:
                     // Intentionally left blank
                     break;
             }

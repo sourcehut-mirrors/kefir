@@ -156,9 +156,11 @@ typedef struct kefir_asmcmp_amd64 {
     const char *function_name;
     struct kefir_hashtree register_preallocation;
     kefir_abi_amd64_variant_t abi_variant;
+    kefir_bool_t position_independent_code;
 } kefir_asmcmp_amd64_t;
 
-kefir_result_t kefir_asmcmp_amd64_init(const char *, kefir_abi_amd64_variant_t, struct kefir_asmcmp_amd64 *);
+kefir_result_t kefir_asmcmp_amd64_init(const char *, kefir_abi_amd64_variant_t, kefir_bool_t,
+                                       struct kefir_asmcmp_amd64 *);
 kefir_result_t kefir_asmcmp_amd64_free(struct kefir_mem *, struct kefir_asmcmp_amd64 *);
 
 typedef struct kefir_asmcmp_amd64_register_preallocation {

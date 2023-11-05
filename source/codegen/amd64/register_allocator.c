@@ -133,6 +133,7 @@ static kefir_result_t update_virtual_register_lifetime(struct kefir_asmcmp_amd64
                 case KEFIR_ASMCMP_INDIRECT_LOCAL_VAR_BASIS:
                 case KEFIR_ASMCMP_INDIRECT_SPILL_AREA_BASIS:
                 case KEFIR_ASMCMP_INDIRECT_TEMPORARY_AREA_BASIS:
+                case KEFIR_ASMCMP_INDIRECT_VARARG_SAVE_AREA_BASIS:
                 case KEFIR_ASMCMP_INDIRECT_PHYSICAL_BASIS:
                     // Intentionally left blank
                     break;
@@ -218,6 +219,7 @@ static kefir_result_t build_virtual_register_liveness_graph(struct kefir_mem *me
                 case KEFIR_ASMCMP_INDIRECT_LOCAL_VAR_BASIS:
                 case KEFIR_ASMCMP_INDIRECT_SPILL_AREA_BASIS:
                 case KEFIR_ASMCMP_INDIRECT_TEMPORARY_AREA_BASIS:
+                case KEFIR_ASMCMP_INDIRECT_VARARG_SAVE_AREA_BASIS:
                 case KEFIR_ASMCMP_INDIRECT_PHYSICAL_BASIS:
                     // Intentionally left blank
                     break;
@@ -649,6 +651,7 @@ static kefir_result_t allocate_register(struct kefir_mem *mem, struct kefir_asmc
                 case KEFIR_ASMCMP_INDIRECT_LOCAL_VAR_BASIS:
                 case KEFIR_ASMCMP_INDIRECT_SPILL_AREA_BASIS:
                 case KEFIR_ASMCMP_INDIRECT_TEMPORARY_AREA_BASIS:
+                case KEFIR_ASMCMP_INDIRECT_VARARG_SAVE_AREA_BASIS:
                 case KEFIR_ASMCMP_INDIRECT_PHYSICAL_BASIS:
                     // Intentionally left blank
                     break;

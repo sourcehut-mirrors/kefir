@@ -32,8 +32,11 @@
 .section .text
 
 .global __kefirrt_opt_save_registers
+.global __kefirrt_opt_amd64_sysv_vararg_save
 .hidden __kefirrt_opt_save_registers
+.hidden __kefirrt_opt_amd64_sysv_vararg_save
 __kefirrt_opt_save_registers:
+__kefirrt_opt_amd64_sysv_vararg_save:
     test    al, al
     je      __kefirrt_save_int_registers
     movaps  [r10 + 48], xmm0

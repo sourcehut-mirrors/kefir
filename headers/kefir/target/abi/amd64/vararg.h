@@ -18,13 +18,11 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef KEFIR_TARGET_ABI_AMD64_H_
-#define KEFIR_TARGET_ABI_AMD64_H_
+#ifndef KEFIR_TARGET_ABI_AMD64_VARARG_H_
+#define KEFIR_TARGET_ABI_AMD64_VARARG_H_
 
-#include "kefir/core/basic-types.h"
+#include "kefir/target/abi/amd64/base.h"
 
-typedef enum kefir_abi_amd64_variant { KEFIR_ABI_AMD64_VARIANT_SYSTEM_V } kefir_abi_amd64_variant_t;
-
-#define KEFIR_AMD64_ABI_QWORD 8
+kefir_result_t kefir_abi_amd64_vararg_save_area_requirements(kefir_abi_amd64_variant_t, kefir_size_t *, kefir_size_t *);
 
 #endif

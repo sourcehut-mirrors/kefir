@@ -33,6 +33,8 @@ typedef struct kefir_codegen_amd64_stack_frame {
         kefir_size_t spill_area;
         kefir_size_t temporary_area;
         kefir_size_t temporary_area_alignment;
+        kefir_size_t vararg_area;
+        kefir_size_t vararg_area_alignment;
         kefir_size_t allocated_size;
         kefir_size_t total_size;
     } sizes;
@@ -43,6 +45,7 @@ typedef struct kefir_codegen_amd64_stack_frame {
         kefir_int64_t local_area;
         kefir_int64_t spill_area;
         kefir_int64_t temporary_area;
+        kefir_int64_t vararg_area;
         kefir_int64_t top_of_frame;
     } offsets;
 
@@ -53,6 +56,7 @@ typedef struct kefir_codegen_amd64_stack_frame {
         kefir_size_t temporary_area_size;
         kefir_size_t temporary_area_alignment;
         kefir_bool_t reset_stack_pointer;
+        kefir_bool_t vararg;
     } requirements;
 } kefir_codegen_amd64_stack_frame_t;
 
@@ -67,13 +71,14 @@ kefir_result_t kefir_codegen_amd64_stack_frame_use_register(struct kefir_mem *,
                                                             struct kefir_codegen_amd64_stack_frame *,
                                                             kefir_asm_amd64_xasmgen_register_t);
 kefir_result_t kefir_codegen_amd64_stack_frame_varying_stack_pointer(struct kefir_codegen_amd64_stack_frame *);
+kefir_result_t kefir_codegen_amd64_stack_frame_vararg(struct kefir_codegen_amd64_stack_frame *);
 
 kefir_result_t kefir_codegen_amd64_stack_frame_calculate(kefir_abi_amd64_variant_t, const struct kefir_ir_type *,
                                                          const struct kefir_abi_amd64_type_layout *,
                                                          struct kefir_codegen_amd64_stack_frame *);
 
 kefir_result_t kefir_codegen_amd64_stack_frame_prologue(struct kefir_amd64_xasmgen *, kefir_abi_amd64_variant_t,
-                                                        const struct kefir_codegen_amd64_stack_frame *);
+                                                        kefir_bool_t, const struct kefir_codegen_amd64_stack_frame *);
 kefir_result_t kefir_codegen_amd64_stack_frame_epilogue(struct kefir_amd64_xasmgen *, kefir_abi_amd64_variant_t,
                                                         const struct kefir_codegen_amd64_stack_frame *);
 

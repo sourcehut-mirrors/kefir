@@ -72,7 +72,7 @@ static kefir_result_t free_register_preallocation(struct kefir_mem *mem, struct 
 }
 
 kefir_result_t kefir_asmcmp_amd64_init(const char *function_name, kefir_abi_amd64_variant_t abi_variant,
-                                       struct kefir_asmcmp_amd64 *target) {
+                                       kefir_bool_t position_independent_code, struct kefir_asmcmp_amd64 *target) {
     REQUIRE(function_name != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid function name"));
     REQUIRE(target != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to asmgen amd64 target"));
 
@@ -81,6 +81,7 @@ kefir_result_t kefir_asmcmp_amd64_init(const char *function_name, kefir_abi_amd6
     REQUIRE_OK(kefir_hashtree_on_removal(&target->register_preallocation, free_register_preallocation, NULL));
     target->function_name = function_name;
     target->abi_variant = abi_variant;
+    target->position_independent_code = position_independent_code;
     return KEFIR_OK;
 }
 

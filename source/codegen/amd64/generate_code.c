@@ -101,6 +101,13 @@ static kefir_result_t build_operand(const struct kefir_codegen_amd64_stack_frame
                         kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
                         stack_frame->offsets.temporary_area + value->indirect.offset);
                     break;
+
+                case KEFIR_ASMCMP_INDIRECT_VARARG_SAVE_AREA_BASIS:
+                    base_ptr = kefir_asm_amd64_xasmgen_operand_indirect(
+                        &arg_state->base_operands[0],
+                        kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
+                        stack_frame->offsets.vararg_area + value->indirect.offset);
+                    break;
             }
 
             switch (value->indirect.variant) {
@@ -254,7 +261,8 @@ static kefir_result_t generate_instr(struct kefir_amd64_xasmgen *xasmgen, const 
             break;
 
         case KEFIR_ASMCMP_AMD64_OPCODE(function_prologue):
-            REQUIRE_OK(kefir_codegen_amd64_stack_frame_prologue(xasmgen, target->abi_variant, stack_frame));
+            REQUIRE_OK(kefir_codegen_amd64_stack_frame_prologue(xasmgen, target->abi_variant,
+                                                                target->position_independent_code, stack_frame));
             break;
 
         case KEFIR_ASMCMP_AMD64_OPCODE(function_epilogue):
