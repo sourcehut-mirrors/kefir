@@ -78,6 +78,7 @@ typedef struct kefir_codegen_amd64_stack_frame kefir_codegen_amd64_stack_frame_t
     _opcode(movsb_rep, MOVSB, Repeat) _separator \
     _opcode(stosb_rep, STOSB, Repeat) _separator \
     _opcode(cmovl, CMOVL, RegW_RegMemR) _separator \
+    _opcode(cmovne, CMOVNE, RegW_RegMemR) _separator \
     /* Flags */ \
     _opcode(cld, CLD, None) _separator \
     /* Special */ \
@@ -119,11 +120,16 @@ typedef struct kefir_codegen_amd64_stack_frame kefir_codegen_amd64_stack_frame_t
     _opcode(divsd, DIVSD, XmmqW_RegMemR) _separator \
     _opcode(xorps, XORPS, XmmdW_RegMemR) _separator \
     _opcode(xorpd, XORPD, XmmqW_RegMemR) _separator \
+    _opcode(ucomiss, UCOMISS, XmmqW_RegMemR) _separator \
+    _opcode(ucomisd, UCOMISD, XmmqW_RegMemR) _separator \
+    _opcode(comiss, COMISS, XmmqW_RegMemR) _separator \
+    _opcode(comisd, COMISD, XmmqW_RegMemR) _separator \
     /* Conditionals */ \
     _opcode(test, TEST, RegMemR_RegR) _separator \
     _opcode(cmp, CMP, RegMemR_RegR) _separator \
     _opcode(sete, SETE, RegMemW) _separator \
     _opcode(setne, SETNE, RegMemW) _separator \
+    _opcode(setnp, SETNP, RegMemW) _separator \
     _opcode(setg, SETG, RegMemW) _separator \
     _opcode(setl, SETL, RegMemW) _separator \
     _opcode(seta, SETA, RegMemW) _separator \

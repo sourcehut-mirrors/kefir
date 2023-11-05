@@ -111,6 +111,12 @@ kefir_result_t kefir_codegen_amd64_function_format_label(struct kefir_mem *, str
     _def(float64_arith_op, KEFIR_OPT_OPCODE_FLOAT64_DIV) _separator \
     _def(float_unary_op, KEFIR_OPT_OPCODE_FLOAT32_NEG) _separator \
     _def(float_unary_op, KEFIR_OPT_OPCODE_FLOAT64_NEG) _separator \
+    _def(float_equals, KEFIR_OPT_OPCODE_FLOAT32_EQUALS) _separator \
+    _def(float_equals, KEFIR_OPT_OPCODE_FLOAT64_EQUALS) _separator \
+    _def(float_compare, KEFIR_OPT_OPCODE_FLOAT32_GREATER) _separator \
+    _def(float_compare, KEFIR_OPT_OPCODE_FLOAT64_GREATER) _separator \
+    _def(float_compare, KEFIR_OPT_OPCODE_FLOAT32_LESSER) _separator \
+    _def(float_compare, KEFIR_OPT_OPCODE_FLOAT64_LESSER) _separator \
     _def(bits_extract_signed, KEFIR_OPT_OPCODE_BITS_EXTRACT_SIGNED) _separator \
     _def(bits_extract_unsigned, KEFIR_OPT_OPCODE_BITS_EXTRACT_UNSIGNED) _separator \
     _def(bits_insert, KEFIR_OPT_OPCODE_BITS_INSERT) _separator \
