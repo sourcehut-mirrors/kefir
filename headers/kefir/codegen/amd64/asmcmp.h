@@ -67,6 +67,7 @@ typedef struct kefir_codegen_amd64_stack_frame kefir_codegen_amd64_stack_frame_t
     _opcode(jmp, JMP, Jump) _separator \
     _opcode(jz, JZ, Jump) _separator \
     _opcode(js, JS, Jump) _separator \
+    _opcode(ja, JA, Jump) _separator \
     /* Data moves */ \
     _opcode(push, PUSH, RegR) _separator \
     _opcode(pop, POP, RegW) _separator \

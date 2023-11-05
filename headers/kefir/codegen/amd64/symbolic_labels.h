@@ -47,8 +47,8 @@
 
 // #define KEFIR_OPT_AMD64_SYSTEM_V_RUNTIME_SAVE_REGISTERS "__kefirrt_opt_save_registers"
 #define KEFIR_AMD64_SYSTEM_V_RUNTIME_VARARG_SAVE "__kefirrt_opt_amd64_sysv_vararg_save"
-// #define KEFIR_OPT_AMD64_SYSTEM_V_RUNTIME_LOAD_INT_VARARG "__kefirrt_opt_load_int_vararg"
-// #define KEFIR_OPT_AMD64_SYSTEM_V_RUNTIME_LOAD_SSE_VARARG "__kefirrt_opt_load_sse_vararg"
+#define KEFIR_AMD64_SYSTEM_V_RUNTIME_LOAD_INT_VARARG "__kefirrt_opt_load_int_vararg"
+#define KEFIR_AMD64_SYSTEM_V_RUNTIME_LOAD_SSE_VARARG "__kefirrt_opt_load_sse_vararg"
 #define KEFIR_AMD64_RUNTIME_FLOAT32_TO_UINT "__kefirrt_opt_float32_to_uint"
 #define KEFIR_AMD64_RUNTIME_FLOAT64_TO_UINT "__kefirrt_opt_float64_to_uint"
 // #define KEFIR_OPT_AMD64_SYSTEM_V_RUNTIME_LONG_DOUBLE_TO_INT "__kefirrt_opt_long_double_to_int"
