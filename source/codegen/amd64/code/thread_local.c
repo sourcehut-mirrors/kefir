@@ -26,12 +26,11 @@
 #include "kefir/core/util.h"
 
 static kefir_result_t emutls_preserve_regs(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
-                                           kefir_asmcmp_virtual_register_index_t *preserve_regs_area,
                                            kefir_asmcmp_stash_index_t *stash_idx) {
     const kefir_size_t num_of_preserved_gp_regs =
         kefir_abi_amd64_num_of_caller_preserved_general_purpose_registers(function->codegen->abi_variant);
-    REQUIRE_OK(kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(
-        mem, &function->code.context, num_of_preserved_gp_regs, preserve_regs_area));
+    const kefir_size_t num_of_preserved_sse_regs =
+        kefir_abi_amd64_num_of_caller_preserved_sse_registers(function->codegen->abi_variant);
 
     REQUIRE_OK(kefir_asmcmp_register_stash_new(mem, &function->code.context, stash_idx));
 
@@ -44,6 +43,14 @@ static kefir_result_t emutls_preserve_regs(struct kefir_mem *mem, struct kefir_c
                                                    (kefir_asmcmp_physical_register_index_t) reg));
     }
 
+    for (kefir_size_t i = 0; i < num_of_preserved_sse_regs; i++) {
+        kefir_asm_amd64_xasmgen_register_t reg;
+        REQUIRE_OK(kefir_abi_amd64_get_caller_preserved_sse_register(function->codegen->abi_variant, i, &reg));
+
+        REQUIRE_OK(kefir_asmcmp_register_stash_add(mem, &function->code.context, *stash_idx,
+                                                   (kefir_asmcmp_physical_register_index_t) reg));
+    }
+
     REQUIRE_OK(kefir_asmcmp_amd64_activate_stash(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), *stash_idx, NULL));
     return KEFIR_OK;
@@ -51,9 +58,8 @@ static kefir_result_t emutls_preserve_regs(struct kefir_mem *mem, struct kefir_c
 
 static kefir_result_t emulated_tls(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
                                    const struct kefir_opt_instruction *instruction) {
-    kefir_asmcmp_virtual_register_index_t preserve_regs_area;
     kefir_asmcmp_stash_index_t stash_idx;
-    REQUIRE_OK(emutls_preserve_regs(mem, function, &preserve_regs_area, &stash_idx));
+    REQUIRE_OK(emutls_preserve_regs(mem, function, &stash_idx));
 
     const char *identifier =
         kefir_ir_module_get_named_symbol(function->module->ir_module, instruction->operation.parameters.ir_ref);
@@ -110,17 +116,14 @@ static kefir_result_t emulated_tls(struct kefir_mem *mem, struct kefir_codegen_a
 
     REQUIRE_OK(kefir_asmcmp_amd64_deactivate_stash(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), stash_idx, NULL));
-    REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
-        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), preserve_regs_area, NULL));
 
     return KEFIR_OK;
 }
 
 static kefir_result_t general_dynamic_tls(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
                                           const struct kefir_opt_instruction *instruction) {
-    kefir_asmcmp_virtual_register_index_t preserve_regs_area;
     kefir_asmcmp_stash_index_t stash_idx;
-    REQUIRE_OK(emutls_preserve_regs(mem, function, &preserve_regs_area, &stash_idx));
+    REQUIRE_OK(emutls_preserve_regs(mem, function, &stash_idx));
 
     const char *identifier =
         kefir_ir_module_get_named_symbol(function->module->ir_module, instruction->operation.parameters.ir_ref);
@@ -170,8 +173,6 @@ static kefir_result_t general_dynamic_tls(struct kefir_mem *mem, struct kefir_co
 
     REQUIRE_OK(kefir_asmcmp_amd64_deactivate_stash(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), stash_idx, NULL));
-    REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
-        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), preserve_regs_area, NULL));
 
     return KEFIR_OK;
 }

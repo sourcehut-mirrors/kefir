@@ -108,6 +108,21 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_argument)(struct kefir_m
                         break;
 
                     case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_SSE_REGISTER:
+                        REQUIRE_OK(kefir_asmcmp_virtual_register_new(
+                            mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT, &arg_vreg));
+                        REQUIRE_OK(kefir_asmcmp_amd64_register_allocation_requirement(mem, &function->code, arg_vreg,
+                                                                                      subparam.direct_reg));
+                        REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(mem, &function->code,
+                                                                             function->argument_touch_instr, arg_vreg,
+                                                                             &function->argument_touch_instr));
+
+                        REQUIRE_OK(kefir_asmcmp_amd64_movq(
+                            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                            &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(vreg, i * KEFIR_AMD64_ABI_QWORD,
+                                                                KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
+                            &KEFIR_ASMCMP_MAKE_VREG(arg_vreg), NULL));
+                        break;
+
                     case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_X87:
                     case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_X87UP:
                     case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_MULTIPLE_REGISTERS:

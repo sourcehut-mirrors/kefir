@@ -645,16 +645,26 @@ static kefir_result_t activate_stash(struct kefir_mem *mem, struct devirtualize_
                 KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Stash spill area slot is out of backing storage space"));
 
         kefir_asmcmp_instruction_index_t new_position;
-        REQUIRE_OK(kefir_asmcmp_amd64_mov(
-            mem, state->target, kefir_asmcmp_context_instr_prev(&state->target->context, instr_idx),
-            &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(stash_alloc->spill_area.index + spill_area_slot, 0,
-                                              KEFIR_ASMCMP_OPERAND_VARIANT_64BIT),
-            &KEFIR_ASMCMP_MAKE_PHREG(reg_alloc->direct_reg), &new_position));
+        kefir_size_t spill_increment = 1;
+        if (!kefir_asm_amd64_xasmgen_register_is_floating_point(reg_alloc->direct_reg)) {
+            REQUIRE_OK(kefir_asmcmp_amd64_mov(
+                mem, state->target, kefir_asmcmp_context_instr_prev(&state->target->context, instr_idx),
+                &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(stash_alloc->spill_area.index + spill_area_slot, 0,
+                                                  KEFIR_ASMCMP_OPERAND_VARIANT_64BIT),
+                &KEFIR_ASMCMP_MAKE_PHREG(reg_alloc->direct_reg), &new_position));
+        } else {
+            REQUIRE_OK(kefir_asmcmp_amd64_movdqu(
+                mem, state->target, kefir_asmcmp_context_instr_prev(&state->target->context, instr_idx),
+                &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(stash_alloc->spill_area.index + spill_area_slot, 0,
+                                                  KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
+                &KEFIR_ASMCMP_MAKE_PHREG(reg_alloc->direct_reg), &new_position));
+            spill_increment = 2;
+        }
         REQUIRE_OK(kefir_asmcmp_context_move_labels(mem, &state->target->context, new_position, instr_idx));
 
         REQUIRE_OK(kefir_hashtree_insert(mem, &state->stash.virtual_regs, (kefir_hashtree_key_t) vreg_idx,
                                          (kefir_hashtree_value_t) spill_area_slot));
-        spill_area_slot++;
+        spill_area_slot += spill_increment;
     }
 
     state->stash.active = true;

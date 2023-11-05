@@ -699,7 +699,11 @@ static kefir_result_t update_stash(struct kefir_asmcmp_amd64 *target,
             continue;
         }
 
-        qwords++;
+        if (!kefir_asm_amd64_xasmgen_register_is_floating_point(reg_alloc->direct_reg)) {
+            qwords++;
+        } else {
+            qwords += 2;
+        }
     }
     if (res != KEFIR_ITERATOR_END) {
         REQUIRE_OK(res);

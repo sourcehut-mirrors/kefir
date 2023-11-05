@@ -32,6 +32,10 @@ kefir_result_t kefir_abi_amd64_get_caller_preserved_general_purpose_register(kef
                                                                              kefir_asm_amd64_xasmgen_register_t *);
 kefir_size_t kefir_abi_amd64_num_of_caller_preserved_general_purpose_registers(kefir_abi_amd64_variant_t);
 
+kefir_result_t kefir_abi_amd64_get_caller_preserved_sse_register(kefir_abi_amd64_variant_t, kefir_size_t,
+                                                                 kefir_asm_amd64_xasmgen_register_t *);
+kefir_size_t kefir_abi_amd64_num_of_caller_preserved_sse_registers(kefir_abi_amd64_variant_t);
+
 typedef struct kefir_abi_amd64_function_decl {
     void *payload;
 } kefir_abi_amd64_function_decl_t;
