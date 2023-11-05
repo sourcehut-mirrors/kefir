@@ -63,7 +63,8 @@ typedef enum kefir_asmcmp_operand_variant {
     KEFIR_ASMCMP_OPERAND_VARIANT_8BIT,
     KEFIR_ASMCMP_OPERAND_VARIANT_16BIT,
     KEFIR_ASMCMP_OPERAND_VARIANT_32BIT,
-    KEFIR_ASMCMP_OPERAND_VARIANT_64BIT
+    KEFIR_ASMCMP_OPERAND_VARIANT_64BIT,
+    KEFIR_ASMCMP_OPERAND_VARIANT_128BIT
 } kefir_asmcmp_operand_variant_t;
 
 typedef enum kefir_asmcmp_indirect_basis_type {
@@ -135,6 +136,9 @@ typedef struct kefir_asmcmp_value {
 #define KEFIR_ASMCMP_MAKE_VREG64(_vreg)                                            \
     ((struct kefir_asmcmp_value){.type = KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER, \
                                  .vreg = {.index = (_vreg), .variant = KEFIR_ASMCMP_OPERAND_VARIANT_64BIT}})
+#define KEFIR_ASMCMP_MAKE_VREG128(_vreg)                                           \
+    ((struct kefir_asmcmp_value){.type = KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER, \
+                                 .vreg = {.index = (_vreg), .variant = KEFIR_ASMCMP_OPERAND_VARIANT_128BIT}})
 #define KEFIR_ASMCMP_MAKE_VREG(_vreg)                                              \
     ((struct kefir_asmcmp_value){.type = KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER, \
                                  .vreg = {.index = (_vreg), .variant = KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT}})

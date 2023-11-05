@@ -142,8 +142,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(pop_scope)(struct kefir_mem 
     REQUIRE_OK(kefir_asmcmp_context_new_label(mem, &function->code.context, KEFIR_ASMCMP_INDEX_NONE, &label));
 
     const char *symbolic_label;
-    REQUIRE_OK(kefir_asmcmp_format(mem, &function->code.context, &symbolic_label, KEFIR_AMD64_LABEL,
-                                   function->function->ir_func->name, label));
+    REQUIRE_OK(kefir_codegen_amd64_function_format_label(mem, function, label, &symbolic_label));
+    ;
 
     REQUIRE_OK(kefir_asmcmp_amd64_cmp(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                       &KEFIR_ASMCMP_MAKE_VREG64(function->dynamic_scope_vreg),

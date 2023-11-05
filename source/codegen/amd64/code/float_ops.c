@@ -89,10 +89,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(uint_to_float)(struct kefir_
     REQUIRE_OK(kefir_asmcmp_context_new_label(mem, &function->code.context, KEFIR_ASMCMP_INDEX_NONE, &nosign_label));
 
     const char *symbolic_sign_label, *symbolic_nosign_label;
-    REQUIRE_OK(kefir_asmcmp_format(mem, &function->code.context, &symbolic_sign_label, KEFIR_AMD64_LABEL,
-                                   function->function->ir_func->name, sign_label));
-    REQUIRE_OK(kefir_asmcmp_format(mem, &function->code.context, &symbolic_nosign_label, KEFIR_AMD64_LABEL,
-                                   function->function->ir_func->name, nosign_label));
+    REQUIRE_OK(kefir_codegen_amd64_function_format_label(mem, function, sign_label, &symbolic_sign_label));
+    REQUIRE_OK(kefir_codegen_amd64_function_format_label(mem, function, nosign_label, &symbolic_nosign_label));
 
     REQUIRE_OK(kefir_asmcmp_amd64_pxor(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                        &KEFIR_ASMCMP_MAKE_VREG(result_vreg), &KEFIR_ASMCMP_MAKE_VREG(result_vreg),

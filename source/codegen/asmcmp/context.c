@@ -831,16 +831,26 @@ kefir_result_t kefir_asmcmp_format(struct kefir_mem *mem, struct kefir_asmcmp_co
     REQUIRE(length >= 0, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Formatting error"));
     ++length;
 
-    char *buf = KEFIR_MALLOC(mem, length);
-    REQUIRE(buf != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate formatting buffer"));
+    char stack_buf[128];
+    char *buf;
+    if ((unsigned long) length < sizeof(stack_buf)) {
+        buf = stack_buf;
+    } else {
+        buf = KEFIR_MALLOC(mem, length);
+        REQUIRE(buf != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate formatting buffer"));
+    }
 
     vsnprintf(buf, length, format, args2);
     va_end(args2);
     *result = kefir_string_pool_insert(mem, &context->strings, buf, NULL);
     REQUIRE_ELSE(*result != NULL, {
-        KEFIR_FREE(mem, buf);
+        if (buf != stack_buf) {
+            KEFIR_FREE(mem, buf);
+        }
         return KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert formatted string into pool");
     });
-    KEFIR_FREE(mem, buf);
+    if (buf != stack_buf) {
+        KEFIR_FREE(mem, buf);
+    }
     return KEFIR_OK;
 }

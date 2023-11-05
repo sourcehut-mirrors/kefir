@@ -127,8 +127,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(jump)(struct kefir_mem *mem,
         ASSIGN_DECL_CAST(kefir_asmcmp_label_index_t, target_label, target_label_node->value);
 
         const char *label_symbol;
-        REQUIRE_OK(kefir_asmcmp_format(mem, &function->code.context, &label_symbol, KEFIR_AMD64_LABEL,
-                                       function->function->ir_func->name, target_label));
+        REQUIRE_OK(kefir_codegen_amd64_function_format_label(mem, function, target_label, &label_symbol));
 
         REQUIRE_OK(kefir_asmcmp_amd64_jmp(mem, &function->code,
                                           kefir_asmcmp_context_instr_tail(&function->code.context),
@@ -168,15 +167,13 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(branch)(struct kefir_mem *me
     if (alternative_phi_outputs) {
         REQUIRE_OK(
             kefir_asmcmp_context_new_label(mem, &function->code.context, KEFIR_ASMCMP_INDEX_NONE, &branch_label_idx));
-        REQUIRE_OK(kefir_asmcmp_format(mem, &function->code.context, &label, KEFIR_AMD64_LABEL,
-                                       function->function->ir_func->name, branch_label_idx));
+        REQUIRE_OK(kefir_codegen_amd64_function_format_label(mem, function, branch_label_idx, &label));
         REQUIRE_OK(kefir_asmcmp_amd64_jz(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                          &KEFIR_ASMCMP_MAKE_LABEL(label), NULL));
     } else {
         REQUIRE_OK(kefir_hashtree_at(&function->labels, (kefir_hashtree_key_t) alternative_block->id, &label_node));
         ASSIGN_DECL_CAST(kefir_asmcmp_label_index_t, target_label, label_node->value);
-        REQUIRE_OK(kefir_asmcmp_format(mem, &function->code.context, &label, KEFIR_AMD64_LABEL,
-                                       function->function->ir_func->name, target_label));
+        REQUIRE_OK(kefir_codegen_amd64_function_format_label(mem, function, target_label, &label));
         REQUIRE_OK(kefir_asmcmp_amd64_jz(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                          &KEFIR_ASMCMP_MAKE_LABEL(label), NULL));
     }
@@ -187,8 +184,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(branch)(struct kefir_mem *me
                                        function->function_analysis->blocks[source_block->id].linear_position + 1) {
         REQUIRE_OK(kefir_hashtree_at(&function->labels, (kefir_hashtree_key_t) target_block->id, &label_node));
         ASSIGN_DECL_CAST(kefir_asmcmp_label_index_t, target_label, label_node->value);
-        REQUIRE_OK(kefir_asmcmp_format(mem, &function->code.context, &label, KEFIR_AMD64_LABEL,
-                                       function->function->ir_func->name, target_label));
+        REQUIRE_OK(kefir_codegen_amd64_function_format_label(mem, function, target_label, &label));
         REQUIRE_OK(kefir_asmcmp_amd64_jmp(mem, &function->code,
                                           kefir_asmcmp_context_instr_tail(&function->code.context),
                                           &KEFIR_ASMCMP_MAKE_LABEL(label), NULL));
@@ -202,8 +198,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(branch)(struct kefir_mem *me
             function->function_analysis->blocks[source_block->id].linear_position + 1) {
             REQUIRE_OK(kefir_hashtree_at(&function->labels, (kefir_hashtree_key_t) alternative_block->id, &label_node));
             ASSIGN_DECL_CAST(kefir_asmcmp_label_index_t, target_label, label_node->value);
-            REQUIRE_OK(kefir_asmcmp_format(mem, &function->code.context, &label, KEFIR_AMD64_LABEL,
-                                           function->function->ir_func->name, target_label));
+            REQUIRE_OK(kefir_codegen_amd64_function_format_label(mem, function, target_label, &label));
             REQUIRE_OK(kefir_asmcmp_amd64_jmp(mem, &function->code,
                                               kefir_asmcmp_context_instr_tail(&function->code.context),
                                               &KEFIR_ASMCMP_MAKE_LABEL(label), NULL));

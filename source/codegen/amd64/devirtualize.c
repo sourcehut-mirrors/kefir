@@ -362,12 +362,14 @@ static kefir_result_t devirtualize_value(struct kefir_mem *mem, struct devirtual
                             REQUIRE_OK(kefir_asm_amd64_xasmgen_register64(reg_alloc->direct_reg, &phreg));
                             break;
 
+                        case KEFIR_ASMCMP_OPERAND_VARIANT_128BIT:
+                            REQUIRE(kefir_asm_amd64_xasmgen_register_is_floating_point(reg_alloc->direct_reg),
+                                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected floating-point register"));
+                            REQUIRE_OK(kefir_asm_amd64_xasmgen_register_widest(reg_alloc->direct_reg, &phreg));
+                            break;
+
                         case KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT:
-                            if (!kefir_asm_amd64_xasmgen_register_is_floating_point(reg_alloc->direct_reg)) {
-                                REQUIRE_OK(kefir_asm_amd64_xasmgen_register64(reg_alloc->direct_reg, &phreg));
-                            } else {
-                                phreg = reg_alloc->direct_reg;
-                            }
+                            REQUIRE_OK(kefir_asm_amd64_xasmgen_register_widest(reg_alloc->direct_reg, &phreg));
                             break;
                     }
 
@@ -489,10 +491,14 @@ static kefir_result_t match_physical_reg_variant(kefir_asm_amd64_xasmgen_registe
             REQUIRE_OK(kefir_asm_amd64_xasmgen_register64(*reg, reg));
             break;
 
+        case KEFIR_ASMCMP_OPERAND_VARIANT_128BIT:
+            REQUIRE(kefir_asm_amd64_xasmgen_register_is_floating_point(*reg),
+                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected floating-point register"));
+            REQUIRE_OK(kefir_asm_amd64_xasmgen_register_widest(*reg, reg));
+            break;
+
         case KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT:
-            if (!kefir_asm_amd64_xasmgen_register_is_floating_point(*reg)) {
-                REQUIRE_OK(kefir_asm_amd64_xasmgen_register64(*reg, reg));
-            }
+            REQUIRE_OK(kefir_asm_amd64_xasmgen_register_widest(*reg, reg));
             break;
     }
     return KEFIR_OK;
