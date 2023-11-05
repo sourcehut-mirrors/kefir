@@ -230,7 +230,14 @@ static kefir_result_t generate_instr(struct kefir_amd64_xasmgen *xasmgen, const 
                   instr->args[0].phreg == instr->args[1].phreg)) {
                 REQUIRE_OK(build_operand(stack_frame, &instr->args[0], &arg_state[0]));
                 REQUIRE_OK(build_operand(stack_frame, &instr->args[1], &arg_state[1]));
-                REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(xasmgen, arg_state[0].operand, arg_state[1].operand));
+                if ((arg_state[0].operand->klass == KEFIR_AMD64_XASMGEN_OPERAND_REGISTER &&
+                     kefir_asm_amd64_xasmgen_register_is_floating_point(arg_state[0].operand->reg)) ||
+                    (arg_state[1].operand->klass == KEFIR_AMD64_XASMGEN_OPERAND_REGISTER &&
+                     kefir_asm_amd64_xasmgen_register_is_floating_point(arg_state[1].operand->reg))) {
+                    REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOVQ(xasmgen, arg_state[0].operand, arg_state[1].operand));
+                } else {
+                    REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_MOV(xasmgen, arg_state[0].operand, arg_state[1].operand));
+                }
             }
             break;
 

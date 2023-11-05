@@ -43,6 +43,10 @@ typedef struct kefir_codegen_amd64_stack_frame kefir_codegen_amd64_stack_frame_t
 #define KEFIR_ASMCMP_AMD64_ARGUMENT_COUNT_FOR_IMPL_RegMemR_RegR 2
 #define KEFIR_ASMCMP_AMD64_ARGUMENT_COUNT_FOR_IMPL_RegMemRW 1
 #define KEFIR_ASMCMP_AMD64_ARGUMENT_COUNT_FOR_IMPL_RegMemW 1
+#define KEFIR_ASMCMP_AMD64_ARGUMENT_COUNT_FOR_IMPL_Any_Any 2
+#define KEFIR_ASMCMP_AMD64_ARGUMENT_COUNT_FOR_IMPL_XmmdW_RegMemR 2
+#define KEFIR_ASMCMP_AMD64_ARGUMENT_COUNT_FOR_IMPL_XmmqW_RegMemR 2
+#define KEFIR_ASMCMP_AMD64_ARGUMENT_COUNT_FOR_IMPL_XmmRW_XmmMemR 2
 #define KEFIR_ASMCMP_AMD64_ARGUMENT_COUNT_FOR(_klass) KEFIR_ASMCMP_AMD64_ARGUMENT_COUNT_FOR_IMPL_##_klass
 
 // clang-format off
@@ -62,6 +66,7 @@ typedef struct kefir_codegen_amd64_stack_frame kefir_codegen_amd64_stack_frame_t
     _opcode(ret, RET, None) _separator \
     _opcode(jmp, JMP, Jump) _separator \
     _opcode(jz, JZ, Jump) _separator \
+    _opcode(js, JS, Jump) _separator \
     /* Data moves */ \
     _opcode(push, PUSH, RegR) _separator \
     _opcode(pop, POP, RegW) _separator \
@@ -93,6 +98,19 @@ typedef struct kefir_codegen_amd64_stack_frame kefir_codegen_amd64_stack_frame_t
     _opcode(xor, XOR, RegRW_RegMemR) _separator \
     _opcode(not, NOT, RegMemRW) _separator \
     _opcode(neg, NEG, RegMemRW) _separator \
+    /* SSE */ \
+    _opcode(movd, MOVD, Any_Any) _separator \
+    _opcode(movq, MOVQ, Any_Any) _separator \
+    _opcode(movdqu, MOVDQU, XmmqW_RegMemR) _separator \
+    _opcode(cvtsi2ss, CVTSI2SS, XmmdW_RegMemR) _separator \
+    _opcode(cvtsi2sd, CVTSI2SD, XmmqW_RegMemR) _separator \
+    _opcode(cvttss2si, CVTTSS2SI, XmmdW_RegMemR) _separator \
+    _opcode(cvttsd2si, CVTTSD2SI, XmmqW_RegMemR) _separator \
+    _opcode(cvtss2sd, CVTSS2SD, XmmdW_RegMemR) _separator \
+    _opcode(cvtsd2ss, CVTSD2SS, XmmqW_RegMemR) _separator \
+    _opcode(pxor, PXOR, XmmRW_XmmMemR) _separator \
+    _opcode(addss, ADDSS, XmmdW_RegMemR) _separator \
+    _opcode(addsd, ADDSD, XmmqW_RegMemR) _separator \
     /* Conditionals */ \
     _opcode(test, TEST, RegMemR_RegR) _separator \
     _opcode(cmp, CMP, RegMemR_RegR) _separator \

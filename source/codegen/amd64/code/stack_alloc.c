@@ -26,9 +26,8 @@
 
 static kefir_result_t ensure_dynamic_scope_vreg(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function) {
     if (function->dynamic_scope_vreg == KEFIR_ASMCMP_INDEX_NONE) {
-        REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
-                                                     KEFIR_ASMCMP_VIRTUAL_REGISTER_SPILL_SPACE_SLOT,
-                                                     &function->dynamic_scope_vreg));
+        REQUIRE_OK(kefir_asmcmp_virtual_register_new_direct_spill_space_allocation(mem, &function->code.context, 1,
+                                                                                   &function->dynamic_scope_vreg));
         REQUIRE_OK(kefir_asmcmp_amd64_mov(mem, &function->code, function->prologue_tail,
                                           &KEFIR_ASMCMP_MAKE_VREG64(function->dynamic_scope_vreg),
                                           &KEFIR_ASMCMP_MAKE_UINT(0), &function->prologue_tail));

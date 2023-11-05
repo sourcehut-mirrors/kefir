@@ -52,9 +52,10 @@ typedef enum kefir_asmcmp_value_type {
 typedef enum kefir_asmcmp_virtual_register_type {
     KEFIR_ASMCMP_VIRTUAL_REGISTER_UNSPECIFIED,
     KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE,
-    KEFIR_ASMCMP_VIRTUAL_REGISTER_SPILL_SPACE_SLOT,
-    KEFIR_ASMCMP_VIRTUAL_REGISTER_MEMORY_POINTER,
-    KEFIR_ASMCMP_VIRTUAL_REGISTER_SPILL_SPACE_ALLOCATION
+    KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT,
+    KEFIR_ASMCMP_VIRTUAL_REGISTER_DIRECT_SPILL_SPACE,
+    KEFIR_ASMCMP_VIRTUAL_REGISTER_INDIRECT_SPILL_SPACE,
+    KEFIR_ASMCMP_VIRTUAL_REGISTER_EXTERNAL_MEMORY
 } kefir_asmcmp_virtual_register_type_t;
 
 typedef enum kefir_asmcmp_operand_variant {
@@ -307,9 +308,12 @@ kefir_result_t kefir_asmcmp_virtual_register_get(const struct kefir_asmcmp_conte
 kefir_result_t kefir_asmcmp_virtual_register_new(struct kefir_mem *, struct kefir_asmcmp_context *,
                                                  kefir_asmcmp_virtual_register_type_t,
                                                  kefir_asmcmp_virtual_register_index_t *);
-kefir_result_t kefir_asmcmp_virtual_register_new_spill_space_allocation(struct kefir_mem *,
-                                                                        struct kefir_asmcmp_context *, kefir_size_t,
-                                                                        kefir_asmcmp_virtual_register_index_t *);
+kefir_result_t kefir_asmcmp_virtual_register_new_direct_spill_space_allocation(struct kefir_mem *,
+                                                                               struct kefir_asmcmp_context *,
+                                                                               kefir_size_t,
+                                                                               kefir_asmcmp_virtual_register_index_t *);
+kefir_result_t kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(
+    struct kefir_mem *, struct kefir_asmcmp_context *, kefir_size_t, kefir_asmcmp_virtual_register_index_t *);
 kefir_result_t kefir_asmcmp_virtual_register_new_memory_pointer(struct kefir_mem *, struct kefir_asmcmp_context *,
                                                                 kefir_asmcmp_physical_register_index_t, kefir_int64_t,
                                                                 kefir_asmcmp_virtual_register_index_t *);

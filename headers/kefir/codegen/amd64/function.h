@@ -42,6 +42,7 @@ typedef struct kefir_codegen_amd64_function {
     struct kefir_hashtree instructions;
     struct kefir_hashtree labels;
     struct kefir_hashtree virtual_registers;
+    struct kefir_hashtree constants;
     kefir_asmcmp_instruction_index_t argument_touch_instr;
     kefir_asmcmp_instruction_index_t prologue_tail;
     kefir_asmcmp_virtual_register_index_t return_address_vreg;
@@ -66,6 +67,8 @@ kefir_result_t kefir_codegen_amd64_function_vreg_of(struct kefir_codegen_amd64_f
     _def(return, KEFIR_OPT_OPCODE_RETURN) _separator \
     _def(int_const, KEFIR_OPT_OPCODE_INT_CONST) _separator \
     _def(uint_const, KEFIR_OPT_OPCODE_UINT_CONST) _separator \
+    _def(float32_const, KEFIR_OPT_OPCODE_FLOAT32_CONST) _separator \
+    _def(float64_const, KEFIR_OPT_OPCODE_FLOAT64_CONST) _separator \
     _def(string_ref, KEFIR_OPT_OPCODE_STRING_REF) _separator \
     _def(block_label, KEFIR_OPT_OPCODE_BLOCK_LABEL) _separator \
     _def(get_local, KEFIR_OPT_OPCODE_GET_LOCAL) _separator \
@@ -86,6 +89,16 @@ kefir_result_t kefir_codegen_amd64_function_vreg_of(struct kefir_codegen_amd64_f
     _def(int32_load_signed, KEFIR_OPT_OPCODE_INT32_LOAD_SIGNED) _separator \
     _def(int32_load_unsigned, KEFIR_OPT_OPCODE_INT32_LOAD_UNSIGNED) _separator \
     _def(int64_load, KEFIR_OPT_OPCODE_INT64_LOAD) _separator \
+    _def(int_to_float32, KEFIR_OPT_OPCODE_INT_TO_FLOAT32) _separator \
+    _def(int_to_float64, KEFIR_OPT_OPCODE_INT_TO_FLOAT64) _separator \
+    _def(uint_to_float, KEFIR_OPT_OPCODE_UINT_TO_FLOAT32) _separator \
+    _def(uint_to_float, KEFIR_OPT_OPCODE_UINT_TO_FLOAT64) _separator \
+    _def(float32_to_int, KEFIR_OPT_OPCODE_FLOAT32_TO_INT) _separator \
+    _def(float64_to_int, KEFIR_OPT_OPCODE_FLOAT64_TO_INT) _separator \
+    _def(float_to_uint, KEFIR_OPT_OPCODE_FLOAT32_TO_UINT) _separator \
+    _def(float_to_uint, KEFIR_OPT_OPCODE_FLOAT64_TO_UINT) _separator \
+    _def(float_to_float, KEFIR_OPT_OPCODE_FLOAT32_TO_FLOAT64) _separator \
+    _def(float_to_float, KEFIR_OPT_OPCODE_FLOAT64_TO_FLOAT32) _separator \
     _def(bits_extract_signed, KEFIR_OPT_OPCODE_BITS_EXTRACT_SIGNED) _separator \
     _def(bits_extract_unsigned, KEFIR_OPT_OPCODE_BITS_EXTRACT_UNSIGNED) _separator \
     _def(bits_insert, KEFIR_OPT_OPCODE_BITS_INSERT) _separator \

@@ -62,11 +62,25 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_argument)(struct kefir_m
             REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, vreg));
             break;
 
+        case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_SSE_REGISTER:
+            REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
+                                                         KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT, &arg_vreg));
+            REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
+                                                         KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT, &vreg));
+            REQUIRE_OK(kefir_asmcmp_amd64_register_allocation_requirement(mem, &function->code, arg_vreg,
+                                                                          function_parameter.direct_reg));
+            REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(mem, &function->code, function->argument_touch_instr,
+                                                                 arg_vreg, &function->argument_touch_instr));
+            REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
+                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), vreg, arg_vreg, NULL));
+            REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, vreg));
+            break;
+
         case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_MULTIPLE_REGISTERS: {
             kefir_size_t qwords;
             REQUIRE_OK(kefir_abi_amd64_function_parameter_multireg_length(&function_parameter, &qwords));
-            REQUIRE_OK(
-                kefir_asmcmp_virtual_register_new_spill_space_allocation(mem, &function->code.context, qwords, &vreg));
+            REQUIRE_OK(kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(mem, &function->code.context,
+                                                                                         qwords, &vreg));
 
             for (kefir_size_t i = 0; i < qwords; i++) {
                 struct kefir_abi_amd64_function_parameter subparam;
@@ -152,7 +166,6 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_argument)(struct kefir_m
             }
         } break;
 
-        case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_SSE_REGISTER:
         case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_X87:
         case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_X87UP:
         case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_NESTED:

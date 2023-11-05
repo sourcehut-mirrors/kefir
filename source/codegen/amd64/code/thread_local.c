@@ -30,8 +30,8 @@ static kefir_result_t emutls_preserve_regs(struct kefir_mem *mem, struct kefir_c
                                            kefir_asmcmp_stash_index_t *stash_idx) {
     const kefir_size_t num_of_preserved_gp_regs =
         kefir_abi_amd64_num_of_caller_preserved_general_purpose_registers(function->codegen->abi_variant);
-    REQUIRE_OK(kefir_asmcmp_virtual_register_new_spill_space_allocation(mem, &function->code.context,
-                                                                        num_of_preserved_gp_regs, preserve_regs_area));
+    REQUIRE_OK(kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(
+        mem, &function->code.context, num_of_preserved_gp_regs, preserve_regs_area));
 
     REQUIRE_OK(kefir_asmcmp_register_stash_new(mem, &function->code.context, stash_idx));
 

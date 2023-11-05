@@ -67,7 +67,25 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int32_store)(struct kefir_me
     REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
 
-    DEFINE_STORE(32);
+    kefir_asmcmp_virtual_register_index_t value_vreg, target_vreg;
+    REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.memory_access.value,
+                                                    &value_vreg));
+    REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.memory_access.location,
+                                                    &target_vreg));
+
+    const struct kefir_asmcmp_virtual_register *value = NULL;
+    REQUIRE_OK(kefir_asmcmp_virtual_register_get(&function->code.context, value_vreg, &value));
+    if (value->type != KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT) {
+        REQUIRE_OK(kefir_asmcmp_amd64_mov(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+            &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(target_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_32BIT),
+            &KEFIR_ASMCMP_MAKE_VREG32(value_vreg), NULL));
+    } else {
+        REQUIRE_OK(kefir_asmcmp_amd64_movd(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+            &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(target_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
+            &KEFIR_ASMCMP_MAKE_VREG(value_vreg), NULL));
+    }
 
     return KEFIR_OK;
 }
@@ -79,7 +97,25 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int64_store)(struct kefir_me
     REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
 
-    DEFINE_STORE(64);
+    kefir_asmcmp_virtual_register_index_t value_vreg, target_vreg;
+    REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.memory_access.value,
+                                                    &value_vreg));
+    REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.memory_access.location,
+                                                    &target_vreg));
+
+    const struct kefir_asmcmp_virtual_register *value = NULL;
+    REQUIRE_OK(kefir_asmcmp_virtual_register_get(&function->code.context, value_vreg, &value));
+    if (value->type != KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT) {
+        REQUIRE_OK(kefir_asmcmp_amd64_mov(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+            &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(target_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_64BIT),
+            &KEFIR_ASMCMP_MAKE_VREG64(value_vreg), NULL));
+    } else {
+        REQUIRE_OK(kefir_asmcmp_amd64_movq(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+            &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(target_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
+            &KEFIR_ASMCMP_MAKE_VREG(value_vreg), NULL));
+    }
 
     return KEFIR_OK;
 }
