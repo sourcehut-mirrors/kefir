@@ -23,6 +23,7 @@
 
 #include "kefir/core/basic-types.h"
 #include "kefir/core/mem.h"
+#include "kefir/target/asm/amd64/db.h"
 #include <stdio.h>
 
 typedef enum kefir_asm_amd64_xasmgen_register {
@@ -204,129 +205,6 @@ typedef enum kefir_asm_amd64_xasmgen_syntax {
     KEFIR_AMD64_XASMGEN_SYNTAX_ATT
 } kefir_asm_amd64_xasmgen_syntax_t;
 
-// clang-format off
-#define KEFIR_AMD64_XASMGEN_OPCODE_DEFS(_opcode, _separator) \
-    _opcode(data16, "data16", 0, prefix) _separator \
-    _opcode(rexW, "rex.W", 0, prefix) _separator \
-    \
-    _opcode(push, "push", 1, normal) _separator \
-    _opcode(pop, "pop", 1, normal) _separator \
-    _opcode(pushfq, "pushfq", 0, normal) _separator \
-    _opcode(popfq, "popfq", 0, normal) _separator \
-    \
-    _opcode(jmp, "jmp", 1, branch) _separator \
-    _opcode(ja, "ja", 1, branch) _separator \
-    _opcode(jae, "jae", 1, branch) _separator \
-    _opcode(jb, "jb", 1, branch) _separator \
-    _opcode(jbe, "jbe", 1, branch) _separator \
-    _opcode(jz, "jz", 1, branch) _separator \
-    _opcode(je, "je", 1, branch) _separator \
-    _opcode(jne, "jne", 1, branch) _separator \
-    _opcode(jg, "jg", 1, branch) _separator \
-    _opcode(jge, "jge", 1, branch) _separator \
-    _opcode(jl, "jl", 1, branch) _separator \
-    _opcode(jle, "jle", 1, branch) _separator \
-    _opcode(js, "js", 1, branch) _separator \
-    _opcode(jns, "jns", 1, branch) _separator \
-    _opcode(jp, "jp", 1, branch) _separator \
-    _opcode(jnp, "jnp", 1, branch) _separator \
-    _opcode(call, "call", 1, branch) _separator \
-    _opcode(ret, "ret", 0, normal) _separator \
-    \
-    _opcode(mov, "mov", 2, normal) _separator \
-    _opcode(movsx, "movsx", 2, normal) _separator \
-    _opcode(movzx, "movzx", 2, normal) _separator \
-    _opcode(movabs, "movabs", 2, normal) _separator \
-    _opcode(lea, "lea", 2, normal) _separator \
-    \
-    _opcode(cmovl, "cmovl", 2, normal) _separator \
-    _opcode(cmovne, "cmovne", 2, normal) _separator \
-    \
-    _opcode(movsb, "movsb", 0, repeated) _separator \
-    _opcode(stosb, "stosb", 0, repeated) _separator \
-    \
-    _opcode(add, "add", 2, normal) _separator \
-    _opcode(sub, "sub", 2, normal) _separator \
-    _opcode(imul, "imul", 2, normal) _separator \
-    _opcode(idiv, "idiv", 1, normal) _separator \
-    _opcode(div, "div", 1, normal) _separator \
-    _opcode(and, "and", 2, normal) _separator \
-    _opcode(or, "or", 2, normal) _separator \
-    _opcode(xor, "xor", 2, normal) _separator \
-    _opcode(shl, "shl", 2, normal) _separator \
-    _opcode(shr, "shr", 2, normal) _separator \
-    _opcode(sar, "sar", 2, normal) _separator \
-    _opcode(not, "not", 1, normal) _separator \
-    _opcode(neg, "neg", 1, normal) _separator \
-    \
-    _opcode(cqo, "cqo", 0, normal) _separator \
-    _opcode(cvtsi2ss, "cvtsi2ss", 2, normal) _separator \
-    _opcode(cvtsi2sd, "cvtsi2sd", 2, normal) _separator \
-    _opcode(cvttss2si, "cvttss2si", 2, normal) _separator \
-    _opcode(cvttsd2si, "cvttsd2si", 2, normal) _separator \
-    _opcode(cvtsd2ss, "cvtsd2ss", 2, normal) _separator \
-    _opcode(cvtss2sd, "cvtss2sd", 2, normal) _separator \
-    \
-    _opcode(cmp, "cmp", 2, normal) _separator \
-    _opcode(cld, "cld", 0, normal) _separator \
-    _opcode(test, "test", 2, normal) _separator \
-    _opcode(sete, "sete", 1, normal) _separator \
-    _opcode(setg, "setg", 1, normal) _separator \
-    _opcode(setge, "setge", 1, normal) _separator \
-    _opcode(setl, "setl", 1, normal) _separator \
-    _opcode(setle, "setle", 1, normal) _separator \
-    _opcode(seta, "seta", 1, normal) _separator \
-    _opcode(setae, "setae", 1, normal) _separator \
-    _opcode(setb, "setb", 1, normal) _separator \
-    _opcode(setbe, "setbe", 1, normal) _separator \
-    _opcode(setne, "setne", 1, normal) _separator \
-    _opcode(setnp, "setnp", 1, normal) _separator \
-    \
-    _opcode(fstp, "fstp", 1, normal) _separator \
-    _opcode(fld, "fld", 1, normal) _separator \
-    _opcode(fldz, "fldz", 0, normal) _separator \
-    _opcode(fild, "fild", 1, normal) _separator \
-    _opcode(fstcw, "fstcw", 1, normal) _separator \
-    _opcode(fldcw, "fldcw", 1, normal) _separator \
-    _opcode(faddp, "faddp", 0, normal) _separator \
-    _opcode(fadd, "fadd", 1, normal) _separator \
-    _opcode(fsub, "fsub", 1, normal) _separator \
-    _opcode(fsubp, "fsubp", 0, normal) _separator \
-    _opcode(fmul, "fmul", 1, normal) _separator \
-    _opcode(fmulp, "fmulp", 0, normal) _separator \
-    _opcode(fdiv, "fdiv", 1, normal) _separator \
-    _opcode(fdivp, "fdivp", 0, normal) _separator \
-    _opcode(fchs, "fchs", 0, normal) _separator \
-    \
-    _opcode(fucomip, "fucomip", 0, normal) _separator \
-    _opcode(fcomip, "fcomip", 0, normal) _separator \
-    \
-    _opcode(pextrq, "pextrq", 3, normal) _separator \
-    _opcode(pinsrq, "pinsrq", 3, normal) _separator \
-    _opcode(movd, "movd", 2, normal) _separator \
-    _opcode(movq, "movq", 2, normal) _separator \
-    _opcode(movdqu, "movdqu", 2, normal) _separator \
-    _opcode(stmxcsr, "stmxcsr", 1, normal) _separator \
-    _opcode(ldmxcsr, "ldmxcsr", 1, normal) _separator \
-    \
-    _opcode(pxor, "pxor", 2, normal) _separator \
-    _opcode(xorps, "xorps", 2, normal) _separator \
-    _opcode(xorpd, "xorpd", 2, normal) _separator \
-    _opcode(addss, "addss", 2, normal) _separator \
-    _opcode(addsd, "addsd", 2, normal) _separator \
-    _opcode(subss, "subss", 2, normal) _separator \
-    _opcode(subsd, "subsd", 2, normal) _separator \
-    _opcode(mulss, "mulss", 2, normal) _separator \
-    _opcode(mulsd, "mulsd", 2, normal) _separator \
-    _opcode(divss, "divss", 2, normal) _separator \
-    _opcode(divsd, "divsd", 2, normal) _separator \
-    \
-    _opcode(ucomiss, "ucomiss", 2, normal) _separator \
-    _opcode(ucomisd, "ucomisd", 2, normal) _separator \
-    _opcode(comiss, "comiss", 2, normal) _separator \
-    _opcode(comisd, "comisd", 2, normal)
-// clang-format on
-
 typedef struct kefir_amd64_xasmgen {
     kefir_result_t (*prologue)(struct kefir_amd64_xasmgen *);
     kefir_result_t (*close)(struct kefir_mem *, struct kefir_amd64_xasmgen *);
@@ -346,35 +224,29 @@ typedef struct kefir_amd64_xasmgen {
                                      char *, kefir_size_t);
 
     struct {
-#define OPCODE_DEF(_id, _mnemonic, _argc, _class) OPCODE_DEF_##_class(_id, _argc)
-#define OPCODE_DEF_prefix(_id, _argc) OPCODE_DEF##_argc(_id)
-#define OPCODE_DEF_normal(_id, _argc) OPCODE_DEF##_argc(_id)
-#define OPCODE_DEF_branch(_id, _argc) OPCODE_DEF##_argc(_id)
-#define OPCODE_DEF_repeated(_id, _argc) OPCODE_DEF_REPEATED##_argc(_id)
-#define OPCODE_DEF_REPEATED0(_id) kefir_result_t (*_id)(struct kefir_amd64_xasmgen *, kefir_bool_t)
-#define OPCODE_DEF0(_id) kefir_result_t (*_id)(struct kefir_amd64_xasmgen *)
-#define OPCODE_DEF1(_id) \
-    kefir_result_t (*_id)(struct kefir_amd64_xasmgen *, const struct kefir_asm_amd64_xasmgen_operand *)
-#define OPCODE_DEF2(_id)                                                                                \
-    kefir_result_t (*_id)(struct kefir_amd64_xasmgen *, const struct kefir_asm_amd64_xasmgen_operand *, \
-                          const struct kefir_asm_amd64_xasmgen_operand *)
-#define OPCODE_DEF3(_id)                                                                                \
-    kefir_result_t (*_id)(struct kefir_amd64_xasmgen *, const struct kefir_asm_amd64_xasmgen_operand *, \
-                          const struct kefir_asm_amd64_xasmgen_operand *,                               \
-                          const struct kefir_asm_amd64_xasmgen_operand *)
+#define DEFINE_OPCODE0_(_opcode) kefir_result_t (*_opcode)(struct kefir_amd64_xasmgen *)
+#define DEFINE_OPCODE0_REPEATABLE(_opcode) kefir_result_t (*_opcode)(struct kefir_amd64_xasmgen *, kefir_bool_t)
+#define DEFINE_OPCODE0_PREFIX(_opcode) DEFINE_OPCODE0_(_opcode)
+#define DEFINE_OPCODE0(_opcode, _mnemonic, _variant, _flags) DEFINE_OPCODE0_##_variant(_opcode)
+#define DEFINE_OPCODE1(_opcode, _mnemonic, _variant, _flags, _op1) \
+    kefir_result_t (*_opcode)(struct kefir_amd64_xasmgen *, const struct kefir_asm_amd64_xasmgen_operand *)
+#define DEFINE_OPCODE2(_opcode, _mnemonic, _variant, _flags, _op1, _op2)                                    \
+    kefir_result_t (*_opcode)(struct kefir_amd64_xasmgen *, const struct kefir_asm_amd64_xasmgen_operand *, \
+                              const struct kefir_asm_amd64_xasmgen_operand *)
+#define DEFINE_OPCODE3(_opcode, _mnemonic, _variant, _flags, _op1, _op2, _op3)                              \
+    kefir_result_t (*_opcode)(struct kefir_amd64_xasmgen *, const struct kefir_asm_amd64_xasmgen_operand *, \
+                              const struct kefir_asm_amd64_xasmgen_operand *,                               \
+                              const struct kefir_asm_amd64_xasmgen_operand *)
 
-        KEFIR_AMD64_XASMGEN_OPCODE_DEFS(OPCODE_DEF, ;);
+        KEFIR_AMD64_INSTRUCTION_DATABASE(DEFINE_OPCODE0, DEFINE_OPCODE1, DEFINE_OPCODE2, DEFINE_OPCODE3, ;);
 
-#undef OPCODE_DEF0
-#undef OPCODE_DEF1
-#undef OPCODE_DEF2
-#undef OPCODE_DEF3
-#undef OPCODE_DEF_REPEATED0
-#undef OPCODE_DEF_prefix
-#undef OPCODE_DEF_normal
-#undef OPCODE_DEF_branch
-#undef OPCODE_DEF_repeated
-#undef OPCODE_DEF
+#undef DEFINE_OPCODE0_
+#undef DEFINE_OPCODE0_REPEATABLE
+#undef DEFINE_OPCODE0_PREFIX
+#undef DEFINE_OPCODE0
+#undef DEFINE_OPCODE1
+#undef DEFINE_OPCODE2
+#undef DEFINE_OPCODE3
     } instr;
 
     struct {

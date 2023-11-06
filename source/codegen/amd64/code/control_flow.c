@@ -74,8 +74,10 @@ static kefir_result_t map_phi_outputs(struct kefir_mem *mem, struct kefir_codege
         } else {
             REQUIRE_OK(res);
             REQUIRE_OK(kefir_asmcmp_virtual_register_get(&function->code.context, target_vreg_idx, &target_vreg));
-            REQUIRE_OK(kefir_asmcmp_virtual_register_specify_type(&function->code.context, target_vreg_idx,
-                                                                  source_vreg->type));
+            if (target_vreg->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_UNSPECIFIED) {
+                REQUIRE_OK(kefir_asmcmp_virtual_register_specify_type(&function->code.context, target_vreg_idx,
+                                                                      source_vreg->type));
+            }
         }
 
         REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &function->code,

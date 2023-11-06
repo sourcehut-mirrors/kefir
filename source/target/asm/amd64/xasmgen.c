@@ -1609,22 +1609,28 @@ static kefir_result_t format_att_mnemonic_suffix(struct kefir_amd64_xasmgen *xas
     INSTR3_ATT(_id, _mnemonic) \
     INSTR3_INTEL(_id, _mnemonic)
 
-#define OPCODE_DEF(_id, _mnemonic, _argc, _class) OPCODE_DEF_##_class(_id, _mnemonic, _argc)
-#define OPCODE_DEF_prefix(_id, _mnemonic, _argc) \
-    INSTR_PREFIX##_argc(_id, intel, _mnemonic) INSTR_PREFIX##_argc(_id, att, _mnemonic)
-#define OPCODE_DEF_normal(_id, _mnemonic, _argc) INSTR##_argc(_id, _mnemonic)
-#define OPCODE_DEF_branch(_id, _mnemonic, _argc) \
-    INSTR##_argc##_INTEL(_id, _mnemonic) INSTR##_argc##_ATT_BR(_id, _mnemonic)
-#define OPCODE_DEF_repeated(_id, _mnemonic, _argc) \
-    INSTR_REPEATED##_argc(intel_##_id, _mnemonic) INSTR_REPEATED##_argc(att_##_id, _mnemonic)
+#define DEFINE_OPCODE0_(_opcode, _mnemonic) INSTR0(_opcode, _mnemonic)
+#define DEFINE_OPCODE0_REPEATABLE(_opcode, _mnemonic) \
+    INSTR_REPEATED0(intel_##_opcode, _mnemonic) INSTR_REPEATED0(att_##_opcode, _mnemonic)
+#define DEFINE_OPCODE0_PREFIX(_opcode, _mnemonic) \
+    INSTR_PREFIX0(_opcode, intel, _mnemonic) INSTR_PREFIX0(_opcode, att, _mnemonic)
+#define DEFINE_OPCODE0(_opcode, _mnemonic, _variant, _flags) DEFINE_OPCODE0_##_variant(_opcode, _mnemonic)
+#define DEFINE_OPCODE1_(_opcode, _mnemonic) INSTR1(_opcode, _mnemonic)
+#define DEFINE_OPCODE1_BRANCH(_opcode, _mnemonic) INSTR1_INTEL(_opcode, _mnemonic) INSTR1_ATT_BR(_opcode, _mnemonic)
+#define DEFINE_OPCODE1(_opcode, _mnemonic, _variant, _flags, _op1) DEFINE_OPCODE1_##_variant(_opcode, _mnemonic)
+#define DEFINE_OPCODE2(_opcode, _mnemonic, _variant, _flags, _op1, _op2) INSTR2(_opcode, _mnemonic)
+#define DEFINE_OPCODE3(_opcode, _mnemonic, _variant, _flags, _op1, _op2, _op3) INSTR3(_opcode, _mnemonic)
+KEFIR_AMD64_INSTRUCTION_DATABASE(DEFINE_OPCODE0, DEFINE_OPCODE1, DEFINE_OPCODE2, DEFINE_OPCODE3, )
 
-KEFIR_AMD64_XASMGEN_OPCODE_DEFS(OPCODE_DEF, )
-
-#undef OPCODE_DEF_branch
-#undef OPCODE_DEF_normal
-#undef OPCODE_DEF_repeated
-#undef OPCODE_DEF_prefix
-#undef OPCODE_DEF
+#undef DEFINE_OPCODE0_
+#undef DEFINE_OPCODE0_REPEATABLE
+#undef DEFINE_OPCODE0_PREFIX
+#undef DEFINE_OPCODE0
+#undef DEFINE_OPCODE1_
+#undef DEFINE_OPCODE1_BRANCH
+#undef DEFINE_OPCODE1
+#undef DEFINE_OPCODE2
+#undef DEFINE_OPCODE3
 
 #undef INSTR0
 #undef INSTR1
@@ -1676,13 +1682,20 @@ kefir_result_t kefir_asm_amd64_xasmgen_init(struct kefir_mem *mem, struct kefir_
     xasmgen->format_operand = amd64_format_operand;
 
     if (syntax != KEFIR_AMD64_XASMGEN_SYNTAX_ATT) {
-#define OPCODE_DEF(_id, _mnemonic, _argc, _class) xasmgen->instr._id = amd64_instr_intel_##_id
-        KEFIR_AMD64_XASMGEN_OPCODE_DEFS(OPCODE_DEF, ;);
+#define OPCODE_DEF(_id) xasmgen->instr._id = amd64_instr_intel_##_id
+#define DEFINE_OPCODE0(_opcode, _mnemonic, _variant, _flags) OPCODE_DEF(_opcode)
+#define DEFINE_OPCODE1(_opcode, _mnemonic, _variant, _flags, _op1) OPCODE_DEF(_opcode)
+#define DEFINE_OPCODE2(_opcode, _mnemonic, _variant, _flags, _op1, _op2) OPCODE_DEF(_opcode)
+#define DEFINE_OPCODE3(_opcode, _mnemonic, _variant, _flags, _op1, _op2, _op3) OPCODE_DEF(_opcode)
+        KEFIR_AMD64_INSTRUCTION_DATABASE(DEFINE_OPCODE0, DEFINE_OPCODE1, DEFINE_OPCODE2, DEFINE_OPCODE3, ;);
 #undef OPCODE_DEF
     } else {
-#define OPCODE_DEF(_id, _mnemonic, _argc, _class) xasmgen->instr._id = amd64_instr_att_##_id
-        KEFIR_AMD64_XASMGEN_OPCODE_DEFS(OPCODE_DEF, ;);
+#define OPCODE_DEF(_id) xasmgen->instr._id = amd64_instr_att_##_id
+        KEFIR_AMD64_INSTRUCTION_DATABASE(DEFINE_OPCODE0, DEFINE_OPCODE1, DEFINE_OPCODE2, DEFINE_OPCODE3, ;);
 #undef OPCODE_DEF
+#undef DEFINE_OPCODE0
+#undef DEFINE_OPCODE1
+#undef DEFINE_OPCODE2
     }
     return KEFIR_OK;
 }

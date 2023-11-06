@@ -696,7 +696,7 @@ kefir_result_t kefir_asmcmp_virtual_register_specify_type(const struct kefir_asm
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen virtual register index"));
 
     struct kefir_asmcmp_virtual_register *const vreg = &context->virtual_registers[reg_idx];
-    REQUIRE(vreg->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_UNSPECIFIED || vreg->type == type,
+    REQUIRE(vreg->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_UNSPECIFIED,
             KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Virtual register type has already been specified"));
 
     vreg->type = type;
