@@ -42,6 +42,8 @@ typedef struct kefir_codegen_amd64_stack_frame {
     struct {
         kefir_int64_t previous_base;
         kefir_int64_t preserved_regs;
+        kefir_int64_t x87_control_word;
+        kefir_int64_t mxcsr;
         kefir_int64_t local_area;
         kefir_int64_t spill_area;
         kefir_int64_t temporary_area;
@@ -57,6 +59,8 @@ typedef struct kefir_codegen_amd64_stack_frame {
         kefir_size_t temporary_area_alignment;
         kefir_bool_t reset_stack_pointer;
         kefir_bool_t vararg;
+        kefir_bool_t x87_control_word_save;
+        kefir_bool_t mxcsr_save;
     } requirements;
 } kefir_codegen_amd64_stack_frame_t;
 
@@ -72,6 +76,8 @@ kefir_result_t kefir_codegen_amd64_stack_frame_use_register(struct kefir_mem *,
                                                             kefir_asm_amd64_xasmgen_register_t);
 kefir_result_t kefir_codegen_amd64_stack_frame_varying_stack_pointer(struct kefir_codegen_amd64_stack_frame *);
 kefir_result_t kefir_codegen_amd64_stack_frame_vararg(struct kefir_codegen_amd64_stack_frame *);
+kefir_result_t kefir_codegen_amd64_stack_frame_preserve_x87_control_word(struct kefir_codegen_amd64_stack_frame *);
+kefir_result_t kefir_codegen_amd64_stack_frame_preserve_mxcsr(struct kefir_codegen_amd64_stack_frame *);
 
 kefir_result_t kefir_codegen_amd64_stack_frame_calculate(kefir_abi_amd64_variant_t, const struct kefir_ir_type *,
                                                          const struct kefir_abi_amd64_type_layout *,

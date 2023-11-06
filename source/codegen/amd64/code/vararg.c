@@ -244,6 +244,8 @@ static kefir_result_t vararg_visit_sse(const struct kefir_ir_type *type, kefir_s
     ASSIGN_DECL_CAST(struct vararg_get_param *, param, payload);
     REQUIRE(param != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid vararg visitor payload"));
 
+    REQUIRE_OK(kefir_codegen_amd64_stack_frame_preserve_mxcsr(&param->function->stack_frame));
+
     kefir_asmcmp_virtual_register_index_t valist_vreg, valist_placement_vreg, result_vreg, result_placement_vreg;
     REQUIRE_OK(kefir_asmcmp_virtual_register_new(param->mem, &param->function->code.context,
                                                  KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE,
