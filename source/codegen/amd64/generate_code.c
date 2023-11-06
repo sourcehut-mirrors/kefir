@@ -248,40 +248,44 @@ static kefir_result_t generate_instr(struct kefir_amd64_xasmgen *xasmgen, const 
 
     struct instruction_argument_state arg_state[3] = {0};
     switch (instr->opcode) {
-#define DEF_OPCODE_virtual(_opcode, _xasmgen)
-#define DEF_OPCODE_0(_opcode, _xasmgen)                            \
-    case KEFIR_ASMCMP_AMD64_OPCODE(_opcode):                       \
-        REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_##_xasmgen(xasmgen)); \
+#define DEF_OPCODE0_(_opcode)                        \
+    case KEFIR_ASMCMP_AMD64_OPCODE(_opcode):         \
+        REQUIRE_OK(xasmgen->instr._opcode(xasmgen)); \
         break;
-#define DEF_OPCODE_repeat(_opcode, _xasmgen)                             \
-    case KEFIR_ASMCMP_AMD64_OPCODE(_opcode):                             \
-        REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_##_xasmgen(xasmgen, true)); \
+#define DEF_OPCODE0_REPEATABLE(_opcode)                    \
+    case KEFIR_ASMCMP_AMD64_OPCODE(_opcode):               \
+        REQUIRE_OK(xasmgen->instr._opcode(xasmgen, true)); \
         break;
-#define DEF_OPCODE_1(_opcode, _xasmgen)                                                  \
-    case KEFIR_ASMCMP_AMD64_OPCODE(_opcode):                                             \
-        REQUIRE_OK(build_operand(stack_frame, &instr->args[0], &arg_state[0]));          \
-        REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_##_xasmgen(xasmgen, arg_state[0].operand)); \
+#define DEF_OPCODE0_PREFIX(_opcode) DEF_OPCODE0_(_opcode)
+#define DEF_OPCODE0(_opcode, _mnemonic, _variant, _flag) DEF_OPCODE0_##_variant(_opcode)
+#define DEF_OPCODE1(_opcode, _mnemonic, _variant, _flag, _op1)                  \
+    case KEFIR_ASMCMP_AMD64_OPCODE(_opcode):                                    \
+        REQUIRE_OK(build_operand(stack_frame, &instr->args[0], &arg_state[0])); \
+        REQUIRE_OK(xasmgen->instr._opcode(xasmgen, arg_state[0].operand));      \
         break;
-#define DEF_OPCODE_2(_opcode, _xasmgen)                                                                        \
-    case KEFIR_ASMCMP_AMD64_OPCODE(_opcode):                                                                   \
-        REQUIRE_OK(build_operand(stack_frame, &instr->args[0], &arg_state[0]));                                \
-        REQUIRE_OK(build_operand(stack_frame, &instr->args[1], &arg_state[1]));                                \
-        REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_##_xasmgen(xasmgen, arg_state[0].operand, arg_state[1].operand)); \
+#define DEF_OPCODE2(_opcode, _mnemonic, _variant, _flag, _op1, _op2)                             \
+    case KEFIR_ASMCMP_AMD64_OPCODE(_opcode):                                                     \
+        REQUIRE_OK(build_operand(stack_frame, &instr->args[0], &arg_state[0]));                  \
+        REQUIRE_OK(build_operand(stack_frame, &instr->args[1], &arg_state[1]));                  \
+        REQUIRE_OK(xasmgen->instr._opcode(xasmgen, arg_state[0].operand, arg_state[1].operand)); \
         break;
-#define DEF_OPCODE_helper2(_argc, _opcode, _xasmgen) DEF_OPCODE_##_argc(_opcode, _xasmgen)
-#define DEF_OPCODE_helper(_argc, _opcode, _xasmgen) DEF_OPCODE_helper2(_argc, _opcode, _xasmgen)
-#define DEF_OPCODE(_opcode, _xasmgen, _argclass) \
-    DEF_OPCODE_helper(KEFIR_ASMCMP_AMD64_ARGUMENT_COUNT_FOR(_argclass), _opcode, _xasmgen)
+#define DEF_OPCODE3(_opcode, _mnemonic, _variant, _flag, _op1, _op2, _op3)                                             \
+    case KEFIR_ASMCMP_AMD64_OPCODE(_opcode):                                                                           \
+        REQUIRE_OK(build_operand(stack_frame, &instr->args[0], &arg_state[0]));                                        \
+        REQUIRE_OK(build_operand(stack_frame, &instr->args[1], &arg_state[1]));                                        \
+        REQUIRE_OK(build_operand(stack_frame, &instr->args[2], &arg_state[2]));                                        \
+        REQUIRE_OK(xasmgen->instr._opcode(xasmgen, arg_state[0].operand, arg_state[1].operand, arg_state[2].operand)); \
+        break;
 
-        KEFIR_ASMCMP_AMD64_OPCODES(DEF_OPCODE, ;);
-#undef DEF_OPCODE
-#undef DEF_OPCODE_helper
-#undef DEF_OPCODE_helper2
-#undef DEF_OPCODE_virtual
-#undef DEF_OPCODE_0
-#undef DEF_OPCODE_repeat
-#undef DEF_OPCODE_1
-#undef DEF_OPCODE_2
+        KEFIR_AMD64_INSTRUCTION_DATABASE(DEF_OPCODE0, DEF_OPCODE1, DEF_OPCODE2, DEF_OPCODE3, )
+
+#undef DEF_OPCODE0_REPEATABLE
+#undef DEF_OPCODE0_PREFIX
+#undef DEF_OPCODE0_
+#undef DEF_OPCODE0
+#undef DEF_OPCODE1
+#undef DEF_OPCODE2
+#undef DEF_OPCODE3
 
         case KEFIR_ASMCMP_AMD64_OPCODE(virtual_register_link):
             if (!(instr->args[0].type == KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER &&

@@ -23,7 +23,9 @@
 
 #include "kefir/codegen/asmcmp/context.h"
 #include "kefir/target/asm/amd64/xasmgen.h"
+#include "kefir/target/asm/amd64/db.h"
 #include "kefir/target/abi/amd64/base.h"
+#include "kefir/core/util.h"
 
 typedef struct kefir_codegen_amd64_register_allocator kefir_codegen_amd64_register_allocator_t;  // Forward declaration
 typedef struct kefir_codegen_amd64_stack_frame kefir_codegen_amd64_stack_frame_t;                // Forward declaration
@@ -52,114 +54,27 @@ typedef struct kefir_codegen_amd64_stack_frame kefir_codegen_amd64_stack_frame_t
 #define KEFIR_ASMCMP_AMD64_ARGUMENT_COUNT_FOR_IMPL_MemR 1
 #define KEFIR_ASMCMP_AMD64_ARGUMENT_COUNT_FOR(_klass) KEFIR_ASMCMP_AMD64_ARGUMENT_COUNT_FOR_IMPL_##_klass
 
+#define KEFIR_ASMCMP_AMD64_VIRTUAL_OPCODE_HELPER(_instr0, _opcode) \
+    _instr0(_opcode, #_opcode, VIRTUAL, KEFIR_AMD64_INSTRDB_NONE)
 // clang-format off
-#define KEFIR_ASMCMP_AMD64_OPCODES(_opcode, _separator) \
+#define KEFIR_ASMCMP_AMD64_VIRTUAL_OPCODES(_instr0, _separator) \
     /* Virtual opcodes */ \
-    _opcode(virtual_register_link, _, Virtual) _separator \
-    _opcode(touch_virtual_register, _, Virtual) _separator \
-    _opcode(load_local_var_address, _, Virtual) _separator \
-    _opcode(function_prologue, _, Virtual) _separator \
-    _opcode(function_epilogue, _, Virtual) _separator \
-    _opcode(noop, _, Virtual) _separator \
-    _opcode(stash_activate, _, Virtual) _separator \
-    _opcode(stash_deactivate, _, Virtual) _separator \
-    /* AMD64 opcodes */ \
-    /* Control flow */ \
-    _opcode(call, CALL, Jump) _separator \
-    _opcode(ret, RET, None) _separator \
-    _opcode(jmp, JMP, Jump) _separator \
-    _opcode(jz, JZ, Jump) _separator \
-    _opcode(js, JS, Jump) _separator \
-    _opcode(jns, JNS, Jump) _separator \
-    _opcode(ja, JA, Jump) _separator \
-    /* Data moves */ \
-    _opcode(push, PUSH, RegR) _separator \
-    _opcode(pop, POP, RegW) _separator \
-    _opcode(mov, MOV, RegMemW_RegMemR) _separator \
-    _opcode(movabs, MOVABS, RegW_RegMemR) _separator \
-    _opcode(movsx, MOVSX, RegW_RegMemR) _separator \
-    _opcode(movzx, MOVZX, RegW_RegMemR) _separator \
-    _opcode(lea, LEA, RegW_Mem) _separator \
-    _opcode(movsb_rep, MOVSB, Repeat) _separator \
-    _opcode(stosb_rep, STOSB, Repeat) _separator \
-    _opcode(cmovl, CMOVL, RegW_RegMemR) _separator \
-    _opcode(cmovne, CMOVNE, RegW_RegMemR) _separator \
-    /* Flags */ \
-    _opcode(cld, CLD, None) _separator \
-    /* Special */ \
-    _opcode(data16, DATA16, None) _separator \
-    _opcode(rexw, REXW, None) _separator \
-    /* Integral arithmetics & logic */ \
-    _opcode(add, ADD, RegMemRW_RegMemR) _separator \
-    _opcode(sub, SUB, RegMemRW_RegMemR) _separator \
-    _opcode(imul, IMUL, RegRW_RegMemR) _separator \
-    _opcode(idiv, IDIV, RegMemRW) _separator \
-    _opcode(div, DIV, RegMemRW) _separator \
-    _opcode(shl, SHL, RegMemRW_RegR) _separator \
-    _opcode(shr, SHR, RegMemRW_RegR) _separator \
-    _opcode(sar, SAR, RegMemRW_RegR) _separator \
-    _opcode(cqo, CQO, None) _separator \
-    _opcode(and, AND, RegRW_RegMemR) _separator \
-    _opcode(or, OR, RegRW_RegMemR) _separator \
-    _opcode(xor, XOR, RegRW_RegMemR) _separator \
-    _opcode(not, NOT, RegMemRW) _separator \
-    _opcode(neg, NEG, RegMemRW) _separator \
-    /* SSE */ \
-    _opcode(movd, MOVD, Any_Any) _separator \
-    _opcode(movq, MOVQ, Any_Any) _separator \
-    _opcode(movdqu, MOVDQU, XmmqW_RegMemR) _separator \
-    _opcode(cvtsi2ss, CVTSI2SS, XmmdW_RegMemR) _separator \
-    _opcode(cvtsi2sd, CVTSI2SD, XmmqW_RegMemR) _separator \
-    _opcode(cvttss2si, CVTTSS2SI, XmmdW_RegMemR) _separator \
-    _opcode(cvttsd2si, CVTTSD2SI, XmmqW_RegMemR) _separator \
-    _opcode(cvtss2sd, CVTSS2SD, XmmdW_RegMemR) _separator \
-    _opcode(cvtsd2ss, CVTSD2SS, XmmqW_RegMemR) _separator \
-    _opcode(pxor, PXOR, XmmRW_XmmMemR) _separator \
-    _opcode(addss, ADDSS, XmmdW_RegMemR) _separator \
-    _opcode(addsd, ADDSD, XmmqW_RegMemR) _separator \
-    _opcode(subss, SUBSS, XmmdW_RegMemR) _separator \
-    _opcode(subsd, SUBSD, XmmqW_RegMemR) _separator \
-    _opcode(mulss, MULSS, XmmdW_RegMemR) _separator \
-    _opcode(mulsd, MULSD, XmmqW_RegMemR) _separator \
-    _opcode(divss, DIVSS, XmmdW_RegMemR) _separator \
-    _opcode(divsd, DIVSD, XmmqW_RegMemR) _separator \
-    _opcode(xorps, XORPS, XmmdW_RegMemR) _separator \
-    _opcode(xorpd, XORPD, XmmqW_RegMemR) _separator \
-    _opcode(ucomiss, UCOMISS, XmmqW_RegMemR) _separator \
-    _opcode(ucomisd, UCOMISD, XmmqW_RegMemR) _separator \
-    _opcode(comiss, COMISS, XmmqW_RegMemR) _separator \
-    _opcode(comisd, COMISD, XmmqW_RegMemR) _separator \
-    /* Long double */ \
-    _opcode(fld, FLD, X87MemR) _separator \
-    _opcode(fild, FILD, MemR) _separator \
-    _opcode(fldz, FLDZ, None) _separator \
-    _opcode(fstp, FSTP, X87MemW) _separator \
-    _opcode(fadd, FADD, X87MemR) _separator \
-    _opcode(faddp, FADDP, None) _separator \
-    _opcode(fsubp, FSUBP, None) _separator \
-    _opcode(fmulp, FMULP, None) _separator \
-    _opcode(fdivp, FDIVP, None) _separator \
-    _opcode(fchs, FCHS, None) _separator \
-    _opcode(fucomip, FUCOMIP, None) _separator \
-    _opcode(fcomip, FCOMIP, None) _separator \
-    /* Conditionals */ \
-    _opcode(test, TEST, RegMemR_RegR) _separator \
-    _opcode(cmp, CMP, RegMemR_RegR) _separator \
-    _opcode(sete, SETE, RegMemW) _separator \
-    _opcode(setne, SETNE, RegMemW) _separator \
-    _opcode(setnp, SETNP, RegMemW) _separator \
-    _opcode(setg, SETG, RegMemW) _separator \
-    _opcode(setl, SETL, RegMemW) _separator \
-    _opcode(seta, SETA, RegMemW) _separator \
-    _opcode(setb, SETB, RegMemW) _separator \
-    /* Data */ \
-    _opcode(data_word, _, Virtual)
+    KEFIR_ASMCMP_AMD64_VIRTUAL_OPCODE_HELPER(_instr0, virtual_register_link) _separator \
+    KEFIR_ASMCMP_AMD64_VIRTUAL_OPCODE_HELPER(_instr0, touch_virtual_register) _separator \
+    KEFIR_ASMCMP_AMD64_VIRTUAL_OPCODE_HELPER(_instr0, load_local_var_address) _separator \
+    KEFIR_ASMCMP_AMD64_VIRTUAL_OPCODE_HELPER(_instr0, function_prologue) _separator \
+    KEFIR_ASMCMP_AMD64_VIRTUAL_OPCODE_HELPER(_instr0, function_epilogue) _separator \
+    KEFIR_ASMCMP_AMD64_VIRTUAL_OPCODE_HELPER(_instr0, noop) _separator \
+    KEFIR_ASMCMP_AMD64_VIRTUAL_OPCODE_HELPER(_instr0, stash_activate) _separator \
+    KEFIR_ASMCMP_AMD64_VIRTUAL_OPCODE_HELPER(_instr0, stash_deactivate) _separator \
+    KEFIR_ASMCMP_AMD64_VIRTUAL_OPCODE_HELPER(_instr0, data_word)
 // clang-format on
 
 #define KEFIR_ASMCMP_AMD64_OPCODE(_opcode) KEFIR_ASMCMP_AMD64_##_opcode
 typedef enum kefir_asmcmp_amd64_opcode {
-#define DEF_OPCODE(_opcode, _xasmgen, _argclass) KEFIR_ASMCMP_AMD64_OPCODE(_opcode)
-    KEFIR_ASMCMP_AMD64_OPCODES(DEF_OPCODE, COMMA)
+#define DEF_OPCODE(_opcode, ...) KEFIR_ASMCMP_AMD64_OPCODE(_opcode)
+    KEFIR_ASMCMP_AMD64_VIRTUAL_OPCODES(DEF_OPCODE, COMMA),
+    KEFIR_AMD64_INSTRUCTION_DATABASE(DEF_OPCODE, DEF_OPCODE, DEF_OPCODE, DEF_OPCODE, COMMA)
 #undef DEF_OPCODE
 } kefir_asmcmp_amd64_opcode_t;
 
@@ -205,34 +120,35 @@ kefir_result_t kefir_asmcmp_amd64_get_register_preallocation(const struct kefir_
                                                              kefir_asmcmp_virtual_register_index_t,
                                                              const struct kefir_asmcmp_amd64_register_preallocation **);
 
-#define DEF_OPCODE_virtual(_opcode)
-#define DEF_OPCODE_0(_opcode)                                                                    \
+#define DEF_OPCODE0_(_opcode)                                                                    \
     kefir_result_t kefir_asmcmp_amd64_##_opcode(struct kefir_mem *, struct kefir_asmcmp_amd64 *, \
                                                 kefir_asmcmp_instruction_index_t, kefir_asmcmp_instruction_index_t *);
-#define DEF_OPCODE_repeat(_opcode) DEF_OPCODE_0(_opcode)
-#define DEF_OPCODE_1(_opcode)                                                                                        \
+#define DEF_OPCODE0_PREFIX(_opcode) DEF_OPCODE0_(_opcode)
+#define DEF_OPCODE0_REPEATABLE(_opcode) DEF_OPCODE0_(_opcode##_rep)
+#define DEF_OPCODE0(_opcode, _mnemonic, _variant, _flags) DEF_OPCODE0_##_variant(_opcode)
+#define DEF_OPCODE1(_opcode, _mnemonic, _variant, _flags, _op1)                                                      \
     kefir_result_t kefir_asmcmp_amd64_##_opcode(struct kefir_mem *, struct kefir_asmcmp_amd64 *,                     \
                                                 kefir_asmcmp_instruction_index_t, const struct kefir_asmcmp_value *, \
                                                 kefir_asmcmp_instruction_index_t *);
-#define DEF_OPCODE_2(_opcode)                                                              \
+#define DEF_OPCODE2(_opcode, _mnemonic, _variant, _flags, _op1, _op2)                      \
     kefir_result_t kefir_asmcmp_amd64_##_opcode(                                           \
         struct kefir_mem *, struct kefir_asmcmp_amd64 *, kefir_asmcmp_instruction_index_t, \
         const struct kefir_asmcmp_value *, const struct kefir_asmcmp_value *, kefir_asmcmp_instruction_index_t *);
-#define DEF_OPCODE_helper2(_argc, _opcode) DEF_OPCODE_##_argc(_opcode)
-#define DEF_OPCODE_helper(_argc, _opcode) DEF_OPCODE_helper2(_argc, _opcode)
-#define DEF_OPCODE(_opcode, _xasmgen, _argclass) \
-    DEF_OPCODE_helper(KEFIR_ASMCMP_AMD64_ARGUMENT_COUNT_FOR(_argclass), _opcode)
+#define DEF_OPCODE3(_opcode, _mnemonic, _variant, _flags, _op1, _op2, _op3)                                           \
+    kefir_result_t kefir_asmcmp_amd64_##_opcode(struct kefir_mem *, struct kefir_asmcmp_amd64 *,                      \
+                                                kefir_asmcmp_instruction_index_t, const struct kefir_asmcmp_value *,  \
+                                                const struct kefir_asmcmp_value *, const struct kefir_asmcmp_value *, \
+                                                kefir_asmcmp_instruction_index_t *);
 
-KEFIR_ASMCMP_AMD64_OPCODES(DEF_OPCODE, )
+KEFIR_AMD64_INSTRUCTION_DATABASE(DEF_OPCODE0, DEF_OPCODE1, DEF_OPCODE2, DEF_OPCODE3, )
 
-#undef DEF_OPCODE_0
-#undef DEF_OPCODE_repeat
-#undef DEF_OPCODE_1
-#undef DEF_OPCODE_2
-#undef DEF_OPCODE_virtual
-#undef DEF_OPCODE
-#undef DEF_OPCODE_helper
-#undef DEF_OPCODE_helper2
+#undef DEF_OPCODE0_
+#undef DEF_OPCODE0_REPEATABLE
+#undef DEF_OPCODE0_PREFIX
+#undef DEF_OPCODE0
+#undef DEF_OPCODE1
+#undef DEF_OPCODE2
+#undef DEF_OPCODE3
 
 kefir_result_t kefir_asmcmp_amd64_link_virtual_registers(struct kefir_mem *, struct kefir_asmcmp_amd64 *,
                                                          kefir_asmcmp_instruction_index_t,

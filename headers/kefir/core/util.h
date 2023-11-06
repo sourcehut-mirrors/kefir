@@ -102,6 +102,7 @@
 
 #define _STRINGIFY(x) #x
 #define STRINGIFY(x) _STRINGIFY(x)
+#define MACRO_ARG_CONCAT(x, y) x##y
 
 const char *kefir_format(char *buf, kefir_size_t, const char *format, ...);
 

@@ -148,7 +148,7 @@ static kefir_result_t general_dynamic_tls(struct kefir_mem *mem, struct kefir_co
     REQUIRE_OK(kefir_asmcmp_amd64_data_word(mem, &function->code,
                                             kefir_asmcmp_context_instr_tail(&function->code.context), 0x6666, NULL));
     REQUIRE_OK(
-        kefir_asmcmp_amd64_rexw(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), NULL));
+        kefir_asmcmp_amd64_rexW(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), NULL));
 
     kefir_asmcmp_instruction_index_t call_idx;
     REQUIRE_OK(kefir_asmcmp_amd64_call(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
