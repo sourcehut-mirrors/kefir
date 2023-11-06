@@ -290,8 +290,11 @@ typedef enum kefir_asm_amd64_xasmgen_syntax {
     _opcode(fldcw, "fldcw", 1, normal) _separator \
     _opcode(faddp, "faddp", 0, normal) _separator \
     _opcode(fadd, "fadd", 1, normal) _separator \
+    _opcode(fsub, "fsub", 1, normal) _separator \
     _opcode(fsubp, "fsubp", 0, normal) _separator \
+    _opcode(fmul, "fmul", 1, normal) _separator \
     _opcode(fmulp, "fmulp", 0, normal) _separator \
+    _opcode(fdiv, "fdiv", 1, normal) _separator \
     _opcode(fdivp, "fdivp", 0, normal) _separator \
     _opcode(fchs, "fchs", 0, normal) _separator \
     \
@@ -518,8 +521,11 @@ const struct kefir_asm_amd64_xasmgen_operand *kefir_asm_amd64_xasmgen_operand_fp
 #define KEFIR_AMD64_XASMGEN_INSTR_FILD(_xasmgen, _op1) ((_xasmgen)->instr.fild((_xasmgen), (_op1)))
 #define KEFIR_AMD64_XASMGEN_INSTR_FADDP(_xasmgen) ((_xasmgen)->instr.faddp((_xasmgen)))
 #define KEFIR_AMD64_XASMGEN_INSTR_FADD(_xasmgen, _op1) ((_xasmgen)->instr.fadd((_xasmgen), (_op1)))
+#define KEFIR_AMD64_XASMGEN_INSTR_FSUB(_xasmgen, _op1) ((_xasmgen)->instr.fsub((_xasmgen), (_op1)))
 #define KEFIR_AMD64_XASMGEN_INSTR_FSUBP(_xasmgen) ((_xasmgen)->instr.fsubp((_xasmgen)))
+#define KEFIR_AMD64_XASMGEN_INSTR_FMUL(_xasmgen, _op1) ((_xasmgen)->instr.fmul((_xasmgen), (_op1)))
 #define KEFIR_AMD64_XASMGEN_INSTR_FMULP(_xasmgen) ((_xasmgen)->instr.fmulp((_xasmgen)))
+#define KEFIR_AMD64_XASMGEN_INSTR_FDIV(_xasmgen, _op1) ((_xasmgen)->instr.fdiv((_xasmgen), (_op1)))
 #define KEFIR_AMD64_XASMGEN_INSTR_FDIVP(_xasmgen) ((_xasmgen)->instr.fdivp((_xasmgen)))
 #define KEFIR_AMD64_XASMGEN_INSTR_FCHS(_xasmgen) ((_xasmgen)->instr.fchs((_xasmgen)))
 

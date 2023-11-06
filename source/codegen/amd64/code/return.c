@@ -206,10 +206,17 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(return)(struct kefir_mem *me
             } break;
 
             case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_X87:
-            case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_X87UP:
-                return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED,
-                                       "Non-integral function prameters have not been implemented yet");
+                if (instruction->operation.parameters.refs[0] != KEFIR_ID_NONE) {
+                    REQUIRE_OK(kefir_asmcmp_amd64_fld(
+                        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                        &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(arg_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_80BIT), NULL));
+                } else {
+                    REQUIRE_OK(kefir_asmcmp_amd64_fldz(mem, &function->code,
+                                                       kefir_asmcmp_context_instr_tail(&function->code.context), NULL));
+                }
+                break;
 
+            case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_X87UP:
             case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_NESTED:
                 return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected return location");
         }

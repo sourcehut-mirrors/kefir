@@ -36,10 +36,7 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, struct kefir_
 #undef CASE_INSTR
 
         default:
-            REQUIRE_OK(kefir_asmcmp_amd64_mov(mem, &function->code,
-                                              kefir_asmcmp_context_instr_tail(&function->code.context),
-                                              &KEFIR_ASMCMP_MAKE_INT(1), &KEFIR_ASMCMP_MAKE_INT(2), NULL));
-            break;
+            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Opcode is not implemented yet");
     }
     return KEFIR_OK;
 }
@@ -105,6 +102,8 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
         REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
             mem, &func->code, kefir_asmcmp_context_instr_tail(&func->code.context), func->dynamic_scope_vreg, NULL));
     }
+
+    REQUIRE_OK(kefir_asmcmp_amd64_noop(mem, &func->code, kefir_asmcmp_context_instr_tail(&func->code.context), NULL));
     return KEFIR_OK;
 }
 
@@ -148,6 +147,25 @@ static kefir_result_t generate_constants(struct kefir_mem *mem, struct kefir_cod
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
                     &func->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
                     kefir_asm_amd64_xasmgen_operand_immu(&func->codegen->xasmgen_helpers.operands[0], value.u64)));
+            } break;
+
+            case KEFIR_OPT_OPCODE_LONG_DOUBLE_CONST: {
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_ALIGN(&func->codegen->xasmgen, 8));
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&func->codegen->xasmgen, KEFIR_AMD64_LABEL,
+                                                     func->function->ir_func->name, constant_label));
+                volatile union {
+                    kefir_uint64_t u64[2];
+                    kefir_long_double_t long_double;
+                } value = {.u64 = {0, 0}};
+
+                value.long_double = instr->operation.parameters.imm.long_double.value;
+
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+                    &func->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
+                    kefir_asm_amd64_xasmgen_operand_immu(&func->codegen->xasmgen_helpers.operands[0], value.u64[0])));
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+                    &func->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
+                    kefir_asm_amd64_xasmgen_operand_immu(&func->codegen->xasmgen_helpers.operands[0], value.u64[1])));
             } break;
 
             default:

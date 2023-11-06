@@ -115,6 +115,7 @@ static kefir_result_t update_virtual_register_lifetime(struct kefir_asmcmp_amd64
         case KEFIR_ASMCMP_VALUE_TYPE_UINTEGER:
         case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT:
         case KEFIR_ASMCMP_VALUE_TYPE_LABEL:
+        case KEFIR_ASMCMP_VALUE_TYPE_X87:
         case KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER:
             // Intentionally left blank
             break;
@@ -201,6 +202,7 @@ static kefir_result_t build_virtual_register_liveness_graph(struct kefir_mem *me
         case KEFIR_ASMCMP_VALUE_TYPE_UINTEGER:
         case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT:
         case KEFIR_ASMCMP_VALUE_TYPE_LABEL:
+        case KEFIR_ASMCMP_VALUE_TYPE_X87:
         case KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER:
             // Intentionally left blank
             break;
@@ -633,6 +635,7 @@ static kefir_result_t allocate_register(struct kefir_mem *mem, struct kefir_asmc
         case KEFIR_ASMCMP_VALUE_TYPE_UINTEGER:
         case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT:
         case KEFIR_ASMCMP_VALUE_TYPE_LABEL:
+        case KEFIR_ASMCMP_VALUE_TYPE_X87:
         case KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER:
             // Intentionally left blank
             break;

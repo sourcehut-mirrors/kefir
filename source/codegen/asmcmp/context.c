@@ -161,6 +161,7 @@ static kefir_result_t validate_value(struct kefir_asmcmp_context *context, const
         case KEFIR_ASMCMP_VALUE_TYPE_INTEGER:
         case KEFIR_ASMCMP_VALUE_TYPE_UINTEGER:
         case KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER:
+        case KEFIR_ASMCMP_VALUE_TYPE_X87:
             // Intentionally left blank
             break;
 
@@ -347,11 +348,17 @@ static kefir_result_t attach_label_to_instr(struct kefir_mem *mem, struct kefir_
                                          (kefir_hashtree_value_t) label->label));
     } else {
         REQUIRE_OK(res);
-        prev_label_idx = (kefir_asmcmp_label_index_t) node->value;
+        // prev_label_idx = (kefir_asmcmp_label_index_t) node->value;
 
-        struct kefir_asmcmp_label *const prev_label = &context->labels[prev_label_idx];
-        REQUIRE(prev_label->siblings.next == KEFIR_ASMCMP_INDEX_NONE,
-                KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected asmcmp label state"));
+        // struct kefir_asmcmp_label *const prev_label = &context->labels[prev_label_idx];
+        // REQUIRE(prev_label->siblings.next == KEFIR_ASMCMP_INDEX_NONE,
+        //         KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected asmcmp label state"));
+        // prev_label->siblings.next = label->label;
+
+        struct kefir_asmcmp_label *prev_label = &context->labels[(kefir_asmcmp_label_index_t) node->value];
+        for (; prev_label->siblings.next != KEFIR_ASMCMP_INDEX_NONE;
+             prev_label = &context->labels[prev_label->siblings.next])
+            ;
         prev_label->siblings.next = label->label;
     }
 

@@ -46,6 +46,7 @@ typedef enum kefir_asmcmp_value_type {
     KEFIR_ASMCMP_VALUE_TYPE_INDIRECT,
     KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT,
     KEFIR_ASMCMP_VALUE_TYPE_LABEL,
+    KEFIR_ASMCMP_VALUE_TYPE_X87,
     KEFIR_ASMCMP_VALUE_TYPE_STASH_INDEX
 } kefir_asmcmp_value_type_t;
 
@@ -64,7 +65,10 @@ typedef enum kefir_asmcmp_operand_variant {
     KEFIR_ASMCMP_OPERAND_VARIANT_16BIT,
     KEFIR_ASMCMP_OPERAND_VARIANT_32BIT,
     KEFIR_ASMCMP_OPERAND_VARIANT_64BIT,
-    KEFIR_ASMCMP_OPERAND_VARIANT_128BIT
+    KEFIR_ASMCMP_OPERAND_VARIANT_80BIT,
+    KEFIR_ASMCMP_OPERAND_VARIANT_128BIT,
+    KEFIR_ASMCMP_OPERAND_VARIANT_FP_SINGLE,
+    KEFIR_ASMCMP_OPERAND_VARIANT_FP_DOUBLE
 } kefir_asmcmp_operand_variant_t;
 
 typedef enum kefir_asmcmp_indirect_basis_type {
@@ -111,6 +115,7 @@ typedef struct kefir_asmcmp_value {
             kefir_asmcmp_operand_variant_t variant;
         } rip_indirection;
         const char *label;
+        kefir_size_t x87;
         kefir_asmcmp_stash_index_t stash_idx;
     };
 
@@ -187,6 +192,7 @@ typedef struct kefir_asmcmp_value {
 #define KEFIR_ASMCMP_MAKE_RIP_INDIRECT(_base, _variant)                        \
     ((struct kefir_asmcmp_value){.type = KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT, \
                                  .rip_indirection = {.base = (_base), .variant = (_variant)}})
+#define KEFIR_ASMCMP_MAKE_X87(_idx) ((struct kefir_asmcmp_value){.type = KEFIR_ASMCMP_VALUE_TYPE_X87, .x87 = (_idx)})
 #define KEFIR_ASMCMP_MAKE_STASH_INDEX(_idx) \
     ((struct kefir_asmcmp_value){.type = KEFIR_ASMCMP_VALUE_TYPE_STASH_INDEX, .stash_idx = (_idx)})
 

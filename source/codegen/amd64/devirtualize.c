@@ -80,6 +80,7 @@ static kefir_result_t update_live_virtual_regs(struct kefir_mem *mem, struct dev
         case KEFIR_ASMCMP_VALUE_TYPE_UINTEGER:
         case KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER:
         case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT:
+        case KEFIR_ASMCMP_VALUE_TYPE_X87:
         case KEFIR_ASMCMP_VALUE_TYPE_LABEL:
             // Intentionally left blank
             break;
@@ -333,6 +334,7 @@ static kefir_result_t devirtualize_value(struct kefir_mem *mem, struct devirtual
         case KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER:
         case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT:
         case KEFIR_ASMCMP_VALUE_TYPE_LABEL:
+        case KEFIR_ASMCMP_VALUE_TYPE_X87:
         case KEFIR_ASMCMP_VALUE_TYPE_STASH_INDEX:
             // Intentionally left blank
             break;
@@ -363,6 +365,9 @@ static kefir_result_t devirtualize_value(struct kefir_mem *mem, struct devirtual
                             REQUIRE_OK(kefir_asm_amd64_xasmgen_register64(reg_alloc->direct_reg, &phreg));
                             break;
 
+                        case KEFIR_ASMCMP_OPERAND_VARIANT_80BIT:
+                            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected virtual register variant");
+
                         case KEFIR_ASMCMP_OPERAND_VARIANT_128BIT:
                             REQUIRE(kefir_asm_amd64_xasmgen_register_is_floating_point(reg_alloc->direct_reg),
                                     KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected floating-point register"));
@@ -372,6 +377,10 @@ static kefir_result_t devirtualize_value(struct kefir_mem *mem, struct devirtual
                         case KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT:
                             REQUIRE_OK(kefir_asm_amd64_xasmgen_register_widest(reg_alloc->direct_reg, &phreg));
                             break;
+
+                        case KEFIR_ASMCMP_OPERAND_VARIANT_FP_SINGLE:
+                        case KEFIR_ASMCMP_OPERAND_VARIANT_FP_DOUBLE:
+                            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected virtual register variant");
                     }
 
                     *value = KEFIR_ASMCMP_MAKE_PHREG(phreg);
@@ -493,6 +502,9 @@ static kefir_result_t match_physical_reg_variant(kefir_asm_amd64_xasmgen_registe
             REQUIRE_OK(kefir_asm_amd64_xasmgen_register64(*reg, reg));
             break;
 
+        case KEFIR_ASMCMP_OPERAND_VARIANT_80BIT:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected virtual register variant");
+
         case KEFIR_ASMCMP_OPERAND_VARIANT_128BIT:
             REQUIRE(kefir_asm_amd64_xasmgen_register_is_floating_point(*reg),
                     KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected floating-point register"));
@@ -502,6 +514,10 @@ static kefir_result_t match_physical_reg_variant(kefir_asm_amd64_xasmgen_registe
         case KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT:
             REQUIRE_OK(kefir_asm_amd64_xasmgen_register_widest(*reg, reg));
             break;
+
+        case KEFIR_ASMCMP_OPERAND_VARIANT_FP_SINGLE:
+        case KEFIR_ASMCMP_OPERAND_VARIANT_FP_DOUBLE:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected register variant");
     }
     return KEFIR_OK;
 }
@@ -522,6 +538,9 @@ static kefir_result_t match_physical_reg_variant(kefir_asm_amd64_xasmgen_registe
 #define DEVIRT_FLAGS_FOR_Jump (DEVIRT_NONE)
 #define DEVIRT_FLAGS_FOR_Repeat (DEVIRT_NONE)
 #define DEVIRT_FLAGS_FOR_Any_Any (DEVIRT_NONE)
+#define DEVIRT_FLAGS_FOR_X87MemR (DEVIRT_NONE)
+#define DEVIRT_FLAGS_FOR_X87MemW (DEVIRT_NONE)
+#define DEVIRT_FLAGS_FOR_MemR (DEVIRT_NONE)
 #define DEVIRT_FLAGS_FOR_RegR (DEVIRT_ARG1 | DEVIRT_ARG_ALWAYS_DIRECT | DEVIRT_ARG_READ)
 #define DEVIRT_FLAGS_FOR_RegW (DEVIRT_ARG1 | DEVIRT_ARG_ALWAYS_DIRECT | DEVIRT_ARG_WRITE)
 #define DEVIRT_FLAGS_FOR_RegMemW_RegMemR (DEVIRT_ARG1 | DEVIRT_ARG_WRITE)
@@ -785,6 +804,9 @@ static kefir_result_t devirtualize_impl(struct kefir_mem *mem, struct devirtuali
 #define CASE_IMPL_XmmdW_RegMemR(_opcode, _argclass) CASE_IMPL_Normal(_opcode, _argclass)
 #define CASE_IMPL_XmmqW_RegMemR(_opcode, _argclass) CASE_IMPL_Normal(_opcode, _argclass)
 #define CASE_IMPL_XmmRW_XmmMemR(_opcode, _argclass) CASE_IMPL_Normal(_opcode, _argclass)
+#define CASE_IMPL_X87MemR(_opcode, _argclass) CASE_IMPL_Normal(_opcode, _argclass)
+#define CASE_IMPL_X87MemW(_opcode, _argclass) CASE_IMPL_Normal(_opcode, _argclass)
+#define CASE_IMPL_MemR(_opcode, _argclass) CASE_IMPL_Normal(_opcode, _argclass)
 #define CASE_IMPL(_opcode, _xasmgen, _argclass) CASE_IMPL_##_argclass(_opcode, _argclass)
             KEFIR_ASMCMP_AMD64_OPCODES(CASE_IMPL, )
 #undef CASE_IMPL

@@ -71,6 +71,7 @@ kefir_result_t kefir_codegen_amd64_function_format_label(struct kefir_mem *, str
     _def(uint_const, KEFIR_OPT_OPCODE_UINT_CONST) _separator \
     _def(float32_const, KEFIR_OPT_OPCODE_FLOAT32_CONST) _separator \
     _def(float64_const, KEFIR_OPT_OPCODE_FLOAT64_CONST) _separator \
+    _def(long_double_const, KEFIR_OPT_OPCODE_LONG_DOUBLE_CONST) _separator \
     _def(string_ref, KEFIR_OPT_OPCODE_STRING_REF) _separator \
     _def(block_label, KEFIR_OPT_OPCODE_BLOCK_LABEL) _separator \
     _def(get_local, KEFIR_OPT_OPCODE_GET_LOCAL) _separator \
@@ -84,6 +85,7 @@ kefir_result_t kefir_codegen_amd64_function_format_label(struct kefir_mem *, str
     _def(int16_store, KEFIR_OPT_OPCODE_INT16_STORE) _separator \
     _def(int32_store, KEFIR_OPT_OPCODE_INT32_STORE) _separator \
     _def(int64_store, KEFIR_OPT_OPCODE_INT64_STORE) _separator \
+    _def(long_double_store, KEFIR_OPT_OPCODE_LONG_DOUBLE_STORE) _separator \
     _def(int8_load_signed, KEFIR_OPT_OPCODE_INT8_LOAD_SIGNED) _separator \
     _def(int8_load_unsigned, KEFIR_OPT_OPCODE_INT8_LOAD_UNSIGNED) _separator \
     _def(int16_load_signed, KEFIR_OPT_OPCODE_INT16_LOAD_SIGNED) _separator \
@@ -117,6 +119,23 @@ kefir_result_t kefir_codegen_amd64_function_format_label(struct kefir_mem *, str
     _def(float_compare, KEFIR_OPT_OPCODE_FLOAT64_GREATER) _separator \
     _def(float_compare, KEFIR_OPT_OPCODE_FLOAT32_LESSER) _separator \
     _def(float_compare, KEFIR_OPT_OPCODE_FLOAT64_LESSER) _separator \
+    _def(long_double_binary_op, KEFIR_OPT_OPCODE_LONG_DOUBLE_ADD) _separator \
+    _def(long_double_binary_op, KEFIR_OPT_OPCODE_LONG_DOUBLE_SUB) _separator \
+    _def(long_double_binary_op, KEFIR_OPT_OPCODE_LONG_DOUBLE_MUL) _separator \
+    _def(long_double_binary_op, KEFIR_OPT_OPCODE_LONG_DOUBLE_DIV) _separator \
+    _def(long_double_neg, KEFIR_OPT_OPCODE_LONG_DOUBLE_NEG) _separator \
+    _def(long_double_equals, KEFIR_OPT_OPCODE_LONG_DOUBLE_EQUALS) _separator \
+    _def(long_double_greater, KEFIR_OPT_OPCODE_LONG_DOUBLE_GREATER) _separator \
+    _def(long_double_less, KEFIR_OPT_OPCODE_LONG_DOUBLE_LESSER) _separator \
+    _def(int_to_long_double, KEFIR_OPT_OPCODE_INT_TO_LONG_DOUBLE) _separator \
+    _def(uint_to_long_double, KEFIR_OPT_OPCODE_UINT_TO_LONG_DOUBLE) _separator \
+    _def(float32_to_long_double, KEFIR_OPT_OPCODE_FLOAT32_TO_LONG_DOUBLE) _separator \
+    _def(float64_to_long_double, KEFIR_OPT_OPCODE_FLOAT64_TO_LONG_DOUBLE) _separator \
+    _def(long_double_to_int, KEFIR_OPT_OPCODE_LONG_DOUBLE_TO_INT) _separator \
+    _def(long_double_to_uint, KEFIR_OPT_OPCODE_LONG_DOUBLE_TO_UINT) _separator \
+    _def(long_double_trunc1, KEFIR_OPT_OPCODE_LONG_DOUBLE_TRUNCATE_1BIT) _separator \
+    _def(long_double_to_float32, KEFIR_OPT_OPCODE_LONG_DOUBLE_TO_FLOAT32) _separator \
+    _def(long_double_to_float64, KEFIR_OPT_OPCODE_LONG_DOUBLE_TO_FLOAT64) _separator \
     _def(bits_extract_signed, KEFIR_OPT_OPCODE_BITS_EXTRACT_SIGNED) _separator \
     _def(bits_extract_unsigned, KEFIR_OPT_OPCODE_BITS_EXTRACT_UNSIGNED) _separator \
     _def(bits_insert, KEFIR_OPT_OPCODE_BITS_INSERT) _separator \

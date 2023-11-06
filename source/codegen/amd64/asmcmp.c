@@ -371,6 +371,21 @@ kefir_result_t kefir_asmcmp_amd64_function_epilogue(struct kefir_mem *mem, struc
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_asmcmp_amd64_noop(struct kefir_mem *mem, struct kefir_asmcmp_amd64 *target,
+                                       kefir_asmcmp_instruction_index_t after_index,
+                                       kefir_asmcmp_instruction_index_t *idx_ptr) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(target != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen amd64 target"));
+    REQUIRE_OK(kefir_asmcmp_context_instr_insert_after(
+        mem, &target->context, after_index,
+        &(const struct kefir_asmcmp_instruction){.opcode = KEFIR_ASMCMP_AMD64_OPCODE(noop),
+                                                 .args[0].type = KEFIR_ASMCMP_VALUE_TYPE_NONE,
+                                                 .args[1].type = KEFIR_ASMCMP_VALUE_TYPE_NONE,
+                                                 .args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE},
+        idx_ptr));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_asmcmp_amd64_data_word(struct kefir_mem *mem, struct kefir_asmcmp_amd64 *target,
                                             kefir_asmcmp_instruction_index_t after_index, kefir_uint16_t value,
                                             kefir_asmcmp_instruction_index_t *idx_ptr) {

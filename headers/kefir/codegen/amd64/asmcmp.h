@@ -47,6 +47,9 @@ typedef struct kefir_codegen_amd64_stack_frame kefir_codegen_amd64_stack_frame_t
 #define KEFIR_ASMCMP_AMD64_ARGUMENT_COUNT_FOR_IMPL_XmmdW_RegMemR 2
 #define KEFIR_ASMCMP_AMD64_ARGUMENT_COUNT_FOR_IMPL_XmmqW_RegMemR 2
 #define KEFIR_ASMCMP_AMD64_ARGUMENT_COUNT_FOR_IMPL_XmmRW_XmmMemR 2
+#define KEFIR_ASMCMP_AMD64_ARGUMENT_COUNT_FOR_IMPL_X87MemR 1
+#define KEFIR_ASMCMP_AMD64_ARGUMENT_COUNT_FOR_IMPL_X87MemW 1
+#define KEFIR_ASMCMP_AMD64_ARGUMENT_COUNT_FOR_IMPL_MemR 1
 #define KEFIR_ASMCMP_AMD64_ARGUMENT_COUNT_FOR(_klass) KEFIR_ASMCMP_AMD64_ARGUMENT_COUNT_FOR_IMPL_##_klass
 
 // clang-format off
@@ -67,12 +70,13 @@ typedef struct kefir_codegen_amd64_stack_frame kefir_codegen_amd64_stack_frame_t
     _opcode(jmp, JMP, Jump) _separator \
     _opcode(jz, JZ, Jump) _separator \
     _opcode(js, JS, Jump) _separator \
+    _opcode(jns, JNS, Jump) _separator \
     _opcode(ja, JA, Jump) _separator \
     /* Data moves */ \
     _opcode(push, PUSH, RegR) _separator \
     _opcode(pop, POP, RegW) _separator \
     _opcode(mov, MOV, RegMemW_RegMemR) _separator \
-    _opcode(movabs, MOVABS, RegMemW_RegMemR) _separator \
+    _opcode(movabs, MOVABS, RegW_RegMemR) _separator \
     _opcode(movsx, MOVSX, RegW_RegMemR) _separator \
     _opcode(movzx, MOVZX, RegW_RegMemR) _separator \
     _opcode(lea, LEA, RegW_Mem) _separator \
@@ -125,6 +129,19 @@ typedef struct kefir_codegen_amd64_stack_frame kefir_codegen_amd64_stack_frame_t
     _opcode(ucomisd, UCOMISD, XmmqW_RegMemR) _separator \
     _opcode(comiss, COMISS, XmmqW_RegMemR) _separator \
     _opcode(comisd, COMISD, XmmqW_RegMemR) _separator \
+    /* Long double */ \
+    _opcode(fld, FLD, X87MemR) _separator \
+    _opcode(fild, FILD, MemR) _separator \
+    _opcode(fldz, FLDZ, None) _separator \
+    _opcode(fstp, FSTP, X87MemW) _separator \
+    _opcode(fadd, FADD, X87MemR) _separator \
+    _opcode(faddp, FADDP, None) _separator \
+    _opcode(fsubp, FSUBP, None) _separator \
+    _opcode(fmulp, FMULP, None) _separator \
+    _opcode(fdivp, FDIVP, None) _separator \
+    _opcode(fchs, FCHS, None) _separator \
+    _opcode(fucomip, FUCOMIP, None) _separator \
+    _opcode(fcomip, FCOMIP, None) _separator \
     /* Conditionals */ \
     _opcode(test, TEST, RegMemR_RegR) _separator \
     _opcode(cmp, CMP, RegMemR_RegR) _separator \
@@ -241,6 +258,9 @@ kefir_result_t kefir_asmcmp_amd64_function_prologue(struct kefir_mem *, struct k
 kefir_result_t kefir_asmcmp_amd64_function_epilogue(struct kefir_mem *, struct kefir_asmcmp_amd64 *,
                                                     kefir_asmcmp_instruction_index_t,
                                                     kefir_asmcmp_instruction_index_t *);
+
+kefir_result_t kefir_asmcmp_amd64_noop(struct kefir_mem *, struct kefir_asmcmp_amd64 *,
+                                       kefir_asmcmp_instruction_index_t, kefir_asmcmp_instruction_index_t *);
 
 kefir_result_t kefir_asmcmp_amd64_data_word(struct kefir_mem *, struct kefir_asmcmp_amd64 *,
                                             kefir_asmcmp_instruction_index_t, kefir_uint16_t,

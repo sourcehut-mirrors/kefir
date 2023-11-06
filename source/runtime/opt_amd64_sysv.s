@@ -204,6 +204,12 @@ __kefirrt_opt_float64_to_uint_constant:
     .long   1138753536
 
     .align 16
+.global __kefir_opt_uint2long_double
+.hidden __kefir_opt_uint2long_double
+__kefir_opt_uint2long_double:
+    .long 1602224128
+
+    .align 16
 .global __kefir_opt_float32_neg
 .hidden __kefir_opt_float32_neg
 __kefir_opt_float32_neg:
