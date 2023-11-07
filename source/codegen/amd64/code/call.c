@@ -318,6 +318,26 @@ static kefir_result_t prepare_parameters(struct kefir_mem *mem, struct kefir_cod
                                          (kefir_hashtree_value_t) implicit_vreg));
     }
 
+    kefir_bool_t sse_reqs_parameter;
+    kefir_asm_amd64_xasmgen_register_t sse_reqs_parameter_reg;
+    REQUIRE_OK(
+        kefir_abi_amd64_function_decl_parameters_sse_reqs(abi_func_decl, &sse_reqs_parameter, &sse_reqs_parameter_reg));
+    if (sse_reqs_parameter) {
+        struct kefir_abi_amd64_function_parameter_requirements reqs;
+        REQUIRE_OK(kefir_abi_amd64_function_parameters_requirements(parameters, &reqs));
+
+        kefir_asmcmp_virtual_register_index_t sse_reqs_vreg;
+        REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
+                                                     KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &sse_reqs_vreg));
+        REQUIRE_OK(kefir_asmcmp_amd64_register_allocation_requirement(mem, &function->code, sse_reqs_vreg,
+                                                                      sse_reqs_parameter_reg));
+        REQUIRE_OK(kefir_asmcmp_amd64_mov(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+            &KEFIR_ASMCMP_MAKE_VREG64(sse_reqs_vreg), &KEFIR_ASMCMP_MAKE_UINT(reqs.sse_regs), NULL));
+        REQUIRE_OK(kefir_hashtree_insert(mem, argument_placement, (kefir_hashtree_key_t) subarg_count,
+                                         (kefir_hashtree_value_t) sse_reqs_vreg));
+    }
+
     struct kefir_hashtree_node_iterator iter;
     for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(argument_placement, &iter); node != NULL;
          node = kefir_hashtree_next(&iter)) {

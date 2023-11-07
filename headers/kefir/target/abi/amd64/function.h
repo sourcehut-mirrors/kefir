@@ -51,6 +51,8 @@ kefir_result_t kefir_abi_amd64_function_decl_parameters(const struct kefir_abi_a
                                                         const struct kefir_abi_amd64_function_parameters **);
 kefir_result_t kefir_abi_amd64_function_decl_parameters_layout(const struct kefir_abi_amd64_function_decl *,
                                                                const struct kefir_abi_amd64_type_layout **);
+kefir_result_t kefir_abi_amd64_function_decl_parameters_sse_reqs(const struct kefir_abi_amd64_function_decl *,
+                                                                 kefir_bool_t *, kefir_asm_amd64_xasmgen_register_t *);
 kefir_result_t kefir_abi_amd64_function_decl_returns(const struct kefir_abi_amd64_function_decl *,
                                                      const struct kefir_abi_amd64_function_parameters **);
 kefir_result_t kefir_abi_amd64_function_decl_returns_layout(const struct kefir_abi_amd64_function_decl *,

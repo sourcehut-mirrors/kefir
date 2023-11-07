@@ -260,6 +260,23 @@ kefir_result_t kefir_abi_amd64_function_decl_parameters_layout(
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_abi_amd64_function_decl_parameters_sse_reqs(const struct kefir_abi_amd64_function_decl *abi_decl,
+                                                                 kefir_bool_t *sse_reqs,
+                                                                 kefir_asm_amd64_xasmgen_register_t *sse_reqs_reg) {
+    REQUIRE(abi_decl != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 function declaration"));
+    REQUIRE(sse_reqs != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
+    REQUIRE(sse_reqs_reg != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to register"));
+
+    ASSIGN_DECL_CAST(struct abi_amd64_payload *, payload, abi_decl->payload);
+    if (payload->variant == KEFIR_ABI_AMD64_VARIANT_SYSTEM_V && payload->decl->vararg) {
+        *sse_reqs = true;
+        *sse_reqs_reg = KEFIR_AMD64_XASMGEN_REGISTER_RAX;
+    } else {
+        *sse_reqs = false;
+    }
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_abi_amd64_function_decl_returns(const struct kefir_abi_amd64_function_decl *abi_decl,
                                                      const struct kefir_abi_amd64_function_parameters **params_ptr) {
     REQUIRE(abi_decl != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 function declaration"));
