@@ -37,13 +37,14 @@ __kefir_func_less_block0:
     mov %rdx, %rcx
     cmp %rcx, %rax
     jl __kefir_func_less_block2
-__kefir_func_less_block1:
-    mov $0, %rax
+    jmp __kefir_func_less_block1
+__kefir_func_less_block2:
+    mov $1, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_less_block2:
-    mov $1, %rax
+__kefir_func_less_block1:
+    mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -67,13 +68,14 @@ __kefir_func_above_block0:
     mov %rdx, %rcx
     cmp %rcx, %rax
     ja __kefir_func_above_block2
-__kefir_func_above_block1:
-    mov $0, %rax
+    jmp __kefir_func_above_block1
+__kefir_func_above_block2:
+    mov $1, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_above_block2:
-    mov $1, %rax
+__kefir_func_above_block1:
+    mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -97,13 +99,14 @@ __kefir_func_below_block0:
     mov %rdx, %rcx
     cmp %rcx, %rax
     jb __kefir_func_below_block2
-__kefir_func_below_block1:
-    mov $0, %rax
+    jmp __kefir_func_below_block1
+__kefir_func_below_block2:
+    mov $1, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_below_block2:
-    mov $1, %rax
+__kefir_func_below_block1:
+    mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -127,13 +130,14 @@ __kefir_func_equals_block0:
     mov %rdx, %rcx
     cmp %rcx, %rax
     je __kefir_func_equals_block2
-__kefir_func_equals_block1:
-    mov $0, %rax
+    jmp __kefir_func_equals_block1
+__kefir_func_equals_block2:
+    mov $1, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_equals_block2:
-    mov $1, %rax
+__kefir_func_equals_block1:
+    mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -157,13 +161,14 @@ __kefir_func_greater_block0:
     mov %rdx, %rcx
     cmp %rcx, %rax
     jg __kefir_func_greater_block2
-__kefir_func_greater_block1:
-    mov $0, %rax
+    jmp __kefir_func_greater_block1
+__kefir_func_greater_block2:
+    mov $1, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_greater_block2:
-    mov $1, %rax
+__kefir_func_greater_block1:
+    mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -187,13 +192,14 @@ __kefir_func_not_less_block0:
     mov %rdx, %rcx
     cmp %rcx, %rax
     jge __kefir_func_not_less_block2
-__kefir_func_not_less_block1:
-    mov $0, %rax
+    jmp __kefir_func_not_less_block1
+__kefir_func_not_less_block2:
+    mov $1, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_not_less_block2:
-    mov $1, %rax
+__kefir_func_not_less_block1:
+    mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -217,13 +223,14 @@ __kefir_func_not_above_block0:
     mov %rdx, %rcx
     cmp %rcx, %rax
     jbe __kefir_func_not_above_block2
-__kefir_func_not_above_block1:
-    mov $0, %rax
+    jmp __kefir_func_not_above_block1
+__kefir_func_not_above_block2:
+    mov $1, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_not_above_block2:
-    mov $1, %rax
+__kefir_func_not_above_block1:
+    mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -247,13 +254,14 @@ __kefir_func_not_below_block0:
     mov %rdx, %rcx
     cmp %rcx, %rax
     jae __kefir_func_not_below_block2
-__kefir_func_not_below_block1:
-    mov $0, %rax
+    jmp __kefir_func_not_below_block1
+__kefir_func_not_below_block2:
+    mov $1, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_not_below_block2:
-    mov $1, %rax
+__kefir_func_not_below_block1:
+    mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -277,13 +285,14 @@ __kefir_func_not_equals_block0:
     mov %rdx, %rcx
     cmp %rcx, %rax
     jne __kefir_func_not_equals_block2
-__kefir_func_not_equals_block1:
-    mov $0, %rax
+    jmp __kefir_func_not_equals_block1
+__kefir_func_not_equals_block2:
+    mov $1, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_not_equals_block2:
-    mov $1, %rax
+__kefir_func_not_equals_block1:
+    mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -307,13 +316,14 @@ __kefir_func_not_equals2_block0:
     mov %rdx, %rcx
     cmp %rcx, %rax
     jne __kefir_func_not_equals2_block2
-__kefir_func_not_equals2_block1:
-    mov $0, %rax
+    jmp __kefir_func_not_equals2_block1
+__kefir_func_not_equals2_block2:
+    mov $1, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_not_equals2_block2:
-    mov $1, %rax
+__kefir_func_not_equals2_block1:
+    mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -337,13 +347,14 @@ __kefir_func_not_greater_block0:
     mov %rdx, %rcx
     cmp %rcx, %rax
     jle __kefir_func_not_greater_block2
-__kefir_func_not_greater_block1:
-    mov $0, %rax
+    jmp __kefir_func_not_greater_block1
+__kefir_func_not_greater_block2:
+    mov $1, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_not_greater_block2:
-    mov $1, %rax
+__kefir_func_not_greater_block1:
+    mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret

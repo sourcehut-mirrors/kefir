@@ -1,1 +1,1 @@
-KEFIR_CFLAGS="$KEFIR_CFLAGS --target opt-x86_64-host-none"
+KEFIR_CFLAGS="$KEFIR_CFLAGS --target new-x86_64-host-none"

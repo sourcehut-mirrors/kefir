@@ -266,11 +266,11 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 6,
+                                    "linear_index": 11,
                                     "linear_liveness": {
                                         "alias": null,
-                                        "begin": 6,
-                                        "end": 12
+                                        "begin": 11,
+                                        "end": 17
                                     }
                                 }
                             },
@@ -281,11 +281,11 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 7,
+                                    "linear_index": 12,
                                     "linear_liveness": {
                                         "alias": null,
-                                        "begin": 7,
-                                        "end": 10
+                                        "begin": 12,
+                                        "end": 15
                                     }
                                 }
                             },
@@ -296,11 +296,11 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 8,
+                                    "linear_index": 13,
                                     "linear_liveness": {
                                         "alias": null,
-                                        "begin": 8,
-                                        "end": 10
+                                        "begin": 13,
+                                        "end": 15
                                     }
                                 }
                             },
@@ -314,11 +314,11 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 9,
+                                    "linear_index": 14,
                                     "linear_liveness": {
                                         "alias": null,
-                                        "begin": 9,
-                                        "end": 11
+                                        "begin": 14,
+                                        "end": 16
                                     }
                                 }
                             },
@@ -329,11 +329,11 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 10,
+                                    "linear_index": 15,
                                     "linear_liveness": {
                                         "alias": null,
-                                        "begin": 10,
-                                        "end": 12
+                                        "begin": 15,
+                                        "end": 17
                                     }
                                 }
                             },
@@ -347,11 +347,11 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 11,
+                                    "linear_index": 16,
                                     "linear_liveness": {
                                         "alias": null,
-                                        "begin": 11,
-                                        "end": 13
+                                        "begin": 16,
+                                        "end": 18
                                     }
                                 }
                             },
@@ -362,11 +362,11 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 12,
+                                    "linear_index": 17,
                                     "linear_liveness": {
                                         "alias": null,
-                                        "begin": 12,
-                                        "end": 14
+                                        "begin": 17,
+                                        "end": 19
                                     }
                                 }
                             },
@@ -377,11 +377,11 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 13,
+                                    "linear_index": 18,
                                     "linear_liveness": {
                                         "alias": null,
-                                        "begin": 13,
-                                        "end": 15
+                                        "begin": 18,
+                                        "end": 20
                                     }
                                 }
                             },
@@ -394,21 +394,21 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 14,
+                                    "linear_index": 19,
                                     "linear_liveness": {
                                         "alias": null,
-                                        "begin": 14,
-                                        "end": 15
+                                        "begin": 19,
+                                        "end": 20
                                     }
                                 }
                             }
                         ],
                         "properties": {
                             "reachable": true,
-                            "linear_position": 2,
+                            "linear_position": 3,
                             "linear_interval": {
-                                "begin": 6,
-                                "end": 15
+                                "begin": 11,
+                                "end": 20
                             },
                             "successors": [
                                 4,
@@ -433,11 +433,11 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 34,
+                                    "linear_index": 6,
                                     "linear_liveness": {
                                         "alias": null,
-                                        "begin": 34,
-                                        "end": 37
+                                        "begin": 6,
+                                        "end": 9
                                     }
                                 }
                             },
@@ -448,11 +448,11 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 35,
+                                    "linear_index": 7,
                                     "linear_liveness": {
                                         "alias": null,
-                                        "begin": 35,
-                                        "end": 37
+                                        "begin": 7,
+                                        "end": 9
                                     }
                                 }
                             },
@@ -466,11 +466,11 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 36,
+                                    "linear_index": 8,
                                     "linear_liveness": {
                                         "alias": null,
-                                        "begin": 36,
-                                        "end": 38
+                                        "begin": 8,
+                                        "end": 10
                                     }
                                 }
                             },
@@ -481,11 +481,11 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 37,
+                                    "linear_index": 9,
                                     "linear_liveness": {
                                         "alias": null,
-                                        "begin": 37,
-                                        "end": 39
+                                        "begin": 9,
+                                        "end": 11
                                     }
                                 }
                             },
@@ -496,21 +496,21 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 38,
+                                    "linear_index": 10,
                                     "linear_liveness": {
                                         "alias": null,
-                                        "begin": 38,
-                                        "end": 39
+                                        "begin": 10,
+                                        "end": 11
                                     }
                                 }
                             }
                         ],
                         "properties": {
                             "reachable": true,
-                            "linear_position": 5,
+                            "linear_position": 2,
                             "linear_interval": {
-                                "begin": 34,
-                                "end": 39
+                                "begin": 6,
+                                "end": 11
                             },
                             "successors": [],
                             "predecessors": [
@@ -561,11 +561,11 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 15,
+                                    "linear_index": 28,
                                     "linear_liveness": {
                                         "alias": null,
-                                        "begin": 15,
-                                        "end": 20
+                                        "begin": 28,
+                                        "end": 33
                                     }
                                 }
                             },
@@ -576,11 +576,11 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 16,
+                                    "linear_index": 29,
                                     "linear_liveness": {
                                         "alias": null,
-                                        "begin": 16,
-                                        "end": 19
+                                        "begin": 29,
+                                        "end": 32
                                     }
                                 }
                             },
@@ -591,11 +591,11 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 17,
+                                    "linear_index": 30,
                                     "linear_liveness": {
                                         "alias": null,
-                                        "begin": 17,
-                                        "end": 19
+                                        "begin": 30,
+                                        "end": 32
                                     }
                                 }
                             },
@@ -609,11 +609,11 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 18,
+                                    "linear_index": 31,
                                     "linear_liveness": {
                                         "alias": null,
-                                        "begin": 18,
-                                        "end": 20
+                                        "begin": 31,
+                                        "end": 33
                                     }
                                 }
                             },
@@ -627,11 +627,11 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 19,
+                                    "linear_index": 32,
                                     "linear_liveness": {
                                         "alias": null,
-                                        "begin": 19,
-                                        "end": 22
+                                        "begin": 32,
+                                        "end": 35
                                     }
                                 }
                             },
@@ -642,11 +642,11 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 20,
+                                    "linear_index": 33,
                                     "linear_liveness": {
                                         "alias": null,
-                                        "begin": 20,
-                                        "end": 22
+                                        "begin": 33,
+                                        "end": 35
                                     }
                                 }
                             },
@@ -660,11 +660,11 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 21,
+                                    "linear_index": 34,
                                     "linear_liveness": {
                                         "alias": null,
-                                        "begin": 21,
-                                        "end": 24
+                                        "begin": 34,
+                                        "end": 37
                                     }
                                 }
                             },
@@ -675,11 +675,11 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 22,
+                                    "linear_index": 35,
                                     "linear_liveness": {
                                         "alias": null,
-                                        "begin": 22,
-                                        "end": 24
+                                        "begin": 35,
+                                        "end": 37
                                     }
                                 }
                             },
@@ -693,11 +693,11 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 23,
+                                    "linear_index": 36,
                                     "linear_liveness": {
                                         "alias": null,
-                                        "begin": 23,
-                                        "end": 25
+                                        "begin": 36,
+                                        "end": 38
                                     }
                                 }
                             },
@@ -708,11 +708,11 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 24,
+                                    "linear_index": 37,
                                     "linear_liveness": {
                                         "alias": null,
-                                        "begin": 24,
-                                        "end": 26
+                                        "begin": 37,
+                                        "end": 39
                                     }
                                 }
                             },
@@ -723,21 +723,21 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 25,
+                                    "linear_index": 38,
                                     "linear_liveness": {
                                         "alias": null,
-                                        "begin": 25,
-                                        "end": 26
+                                        "begin": 38,
+                                        "end": 39
                                     }
                                 }
                             }
                         ],
                         "properties": {
                             "reachable": true,
-                            "linear_position": 3,
+                            "linear_position": 5,
                             "linear_interval": {
-                                "begin": 15,
-                                "end": 26
+                                "begin": 28,
+                                "end": 39
                             },
                             "successors": [],
                             "predecessors": [
@@ -760,11 +760,11 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 26,
+                                    "linear_index": 20,
                                     "linear_liveness": {
                                         "alias": null,
-                                        "begin": 26,
-                                        "end": 32
+                                        "begin": 20,
+                                        "end": 26
                                     }
                                 }
                             },
@@ -775,11 +775,11 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 27,
+                                    "linear_index": 21,
                                     "linear_liveness": {
                                         "alias": null,
-                                        "begin": 27,
-                                        "end": 30
+                                        "begin": 21,
+                                        "end": 24
                                     }
                                 }
                             },
@@ -790,11 +790,11 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 28,
+                                    "linear_index": 22,
                                     "linear_liveness": {
                                         "alias": null,
-                                        "begin": 28,
-                                        "end": 30
+                                        "begin": 22,
+                                        "end": 24
                                     }
                                 }
                             },
@@ -808,11 +808,11 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 29,
+                                    "linear_index": 23,
                                     "linear_liveness": {
                                         "alias": null,
-                                        "begin": 29,
-                                        "end": 31
+                                        "begin": 23,
+                                        "end": 25
                                     }
                                 }
                             },
@@ -823,11 +823,11 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 30,
+                                    "linear_index": 24,
                                     "linear_liveness": {
                                         "alias": null,
-                                        "begin": 30,
-                                        "end": 32
+                                        "begin": 24,
+                                        "end": 26
                                     }
                                 }
                             },
@@ -841,11 +841,11 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 31,
+                                    "linear_index": 25,
                                     "linear_liveness": {
                                         "alias": null,
-                                        "begin": 31,
-                                        "end": 33
+                                        "begin": 25,
+                                        "end": 27
                                     }
                                 }
                             },
@@ -856,11 +856,11 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 32,
+                                    "linear_index": 26,
                                     "linear_liveness": {
                                         "alias": null,
-                                        "begin": 32,
-                                        "end": 34
+                                        "begin": 26,
+                                        "end": 28
                                     }
                                 }
                             },
@@ -871,11 +871,11 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 33,
+                                    "linear_index": 27,
                                     "linear_liveness": {
                                         "alias": null,
-                                        "begin": 33,
-                                        "end": 34
+                                        "begin": 27,
+                                        "end": 28
                                     }
                                 }
                             }
@@ -884,8 +884,8 @@
                             "reachable": true,
                             "linear_position": 4,
                             "linear_interval": {
-                                "begin": 26,
-                                "end": 34
+                                "begin": 20,
+                                "end": 28
                             },
                             "successors": [],
                             "predecessors": [
@@ -1113,21 +1113,21 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 9,
+                                    "linear_index": 18,
                                     "linear_liveness": {
                                         "alias": null,
-                                        "begin": 9,
-                                        "end": 10
+                                        "begin": 18,
+                                        "end": 19
                                     }
                                 }
                             }
                         ],
                         "properties": {
                             "reachable": true,
-                            "linear_position": 2,
+                            "linear_position": 3,
                             "linear_interval": {
-                                "begin": 9,
-                                "end": 10
+                                "begin": 18,
+                                "end": 19
                             },
                             "successors": [],
                             "predecessors": [
@@ -1149,11 +1149,11 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 10,
+                                    "linear_index": 9,
                                     "linear_liveness": {
                                         "alias": null,
-                                        "begin": 10,
-                                        "end": 12
+                                        "begin": 9,
+                                        "end": 11
                                     }
                                 }
                             },
@@ -1164,11 +1164,11 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 11,
+                                    "linear_index": 10,
                                     "linear_liveness": {
                                         "alias": null,
-                                        "begin": 11,
-                                        "end": 13
+                                        "begin": 10,
+                                        "end": 12
                                     }
                                 }
                             },
@@ -1179,11 +1179,11 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 12,
+                                    "linear_index": 11,
                                     "linear_liveness": {
                                         "alias": null,
-                                        "begin": 12,
-                                        "end": 17
+                                        "begin": 11,
+                                        "end": 16
                                     }
                                 }
                             },
@@ -1191,6 +1191,21 @@
                                 "id": 12,
                                 "opcode": "int_const",
                                 "value": 1,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 12,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 12,
+                                        "end": 14
+                                    }
+                                }
+                            },
+                            {
+                                "id": 13,
+                                "opcode": "int_not",
+                                "arg": 12,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -1203,9 +1218,9 @@
                                 }
                             },
                             {
-                                "id": 13,
-                                "opcode": "int_not",
-                                "arg": 12,
+                                "id": 14,
+                                "opcode": "int64_sign_extend_32bits",
+                                "arg": 13,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -1214,21 +1229,6 @@
                                         "alias": null,
                                         "begin": 14,
                                         "end": 16
-                                    }
-                                }
-                            },
-                            {
-                                "id": 14,
-                                "opcode": "int64_sign_extend_32bits",
-                                "arg": 13,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 15,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 15,
-                                        "end": 17
                                     }
                                 }
                             },
@@ -1242,11 +1242,11 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 16,
+                                    "linear_index": 15,
                                     "linear_liveness": {
                                         "alias": null,
-                                        "begin": 16,
-                                        "end": 18
+                                        "begin": 15,
+                                        "end": 17
                                     }
                                 }
                             },
@@ -1257,11 +1257,11 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 17,
+                                    "linear_index": 16,
                                     "linear_liveness": {
                                         "alias": null,
-                                        "begin": 17,
-                                        "end": 19
+                                        "begin": 16,
+                                        "end": 18
                                     }
                                 }
                             },
@@ -1272,21 +1272,21 @@
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 18,
+                                    "linear_index": 17,
                                     "linear_liveness": {
                                         "alias": null,
-                                        "begin": 18,
-                                        "end": 19
+                                        "begin": 17,
+                                        "end": 18
                                     }
                                 }
                             }
                         ],
                         "properties": {
                             "reachable": true,
-                            "linear_position": 3,
+                            "linear_position": 2,
                             "linear_interval": {
-                                "begin": 10,
-                                "end": 19
+                                "begin": 9,
+                                "end": 18
                             },
                             "successors": [],
                             "predecessors": [

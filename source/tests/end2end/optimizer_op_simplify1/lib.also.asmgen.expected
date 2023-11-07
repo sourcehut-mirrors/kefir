@@ -33,13 +33,14 @@ __kefir_func_dnot_block0:
     sete %al
     test %rax, %rax
     jz __kefir_func_dnot_block2
-__kefir_func_dnot_block1:
-    mov $0, %rax
+    jmp __kefir_func_dnot_block1
+__kefir_func_dnot_block2:
+    mov $1, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_dnot_block2:
-    mov $1, %rax
+__kefir_func_dnot_block1:
+    mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -66,13 +67,14 @@ __kefir_func_dnotd_block0:
     sete %al
     test %rax, %rax
     jz __kefir_func_dnotd_block2
-__kefir_func_dnotd_block1:
-    mov $0, %rax
+    jmp __kefir_func_dnotd_block1
+__kefir_func_dnotd_block2:
+    mov $1, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_dnotd_block2:
-    mov $1, %rax
+__kefir_func_dnotd_block1:
+    mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -99,13 +101,14 @@ __kefir_func_dnotf_block0:
     sete %al
     test %rax, %rax
     jz __kefir_func_dnotf_block2
-__kefir_func_dnotf_block1:
-    mov $0, %rax
+    jmp __kefir_func_dnotf_block1
+__kefir_func_dnotf_block2:
+    mov $1, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_dnotf_block2:
-    mov $1, %rax
+__kefir_func_dnotf_block1:
+    mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -132,14 +135,15 @@ __kefir_func_dnotld_block0:
     sete %cl
     test %rcx, %rcx
     jz __kefir_func_dnotld_block2
-__kefir_func_dnotld_block1:
-    mov $0, %rcx
+    jmp __kefir_func_dnotld_block1
+__kefir_func_dnotld_block2:
+    mov $1, %rcx
     mov %rcx, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_dnotld_block2:
-    mov $1, %rcx
+__kefir_func_dnotld_block1:
+    mov $0, %rcx
     mov %rcx, %rax
     lea (%rbp), %rsp
     pop %rbp

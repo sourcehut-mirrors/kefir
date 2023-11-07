@@ -37,7 +37,7 @@ tasks:
       export KEFIRCC="$HOME/kefir/bin/kefir"
       export KEFIR_RTLIB="$HOME/kefir/bin/libs/libkefirrt.a"
       export KEFIR_RTINC="$HOME/kefir/headers/kefir/runtime"
-      export CFLAGS="--target x86_64-host-gnu -O1 -fPIC -pie"
+      export CFLAGS="--target new-x86_64-host-gnu -O0 -fPIC -pie"
       export LC_ALL=C.UTF-8 
       ./single-exec kefir | tee ~/c-tests.log
       [[ "x$(cat ~/c-tests.log | scripts/tapsummary | grep 'fail 0' | wc -l)" == "x1" ]] || exit 1

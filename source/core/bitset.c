@@ -66,7 +66,7 @@ kefir_result_t kefir_bitset_set(const struct kefir_bitset *bitset, kefir_size_t 
     const kefir_size_t offset = index % BITS_PER_ENTRY;
 
     const kefir_uint64_t mask = ~(1ull << offset);
-    const kefir_uint64_t update = (bit_value ? 1 : 0) << offset;
+    const kefir_uint64_t update = (bit_value ? 1ull : 0ull) << offset;
 
     kefir_uint64_t value = bitset->content[position];
     value = (value & mask) | update;

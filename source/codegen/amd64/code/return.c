@@ -133,10 +133,28 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(return)(struct kefir_mem *me
                             break;
 
                         case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_X87:
-                        case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_X87UP:
-                            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED,
-                                                   "Non-integral function prameters have not been implemented yet");
+                            REQUIRE(i + 1 < length,
+                                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
+                                                    "Expected X87 qword to be directly followed by X87UP"));
+                            REQUIRE_OK(
+                                kefir_abi_amd64_function_parameter_multireg_at(&function_return, ++i, &subparam));
+                            REQUIRE(subparam.location == KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_X87UP,
+                                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
+                                                    "Expected X87 qword to be directly followed by X87UP"));
+                            if (instruction->operation.parameters.refs[0] != KEFIR_ID_NONE) {
+                                REQUIRE_OK(kefir_asmcmp_amd64_fld(
+                                    mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                                    &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(arg_vreg, (i - 1) * KEFIR_AMD64_ABI_QWORD,
+                                                                        KEFIR_ASMCMP_OPERAND_VARIANT_80BIT),
+                                    NULL));
+                            } else {
+                                REQUIRE_OK(kefir_asmcmp_amd64_fldz(
+                                    mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                                    NULL));
+                            }
+                            break;
 
+                        case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_X87UP:
                         case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_MEMORY:
                         case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_MULTIPLE_REGISTERS:
                         case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_NESTED:

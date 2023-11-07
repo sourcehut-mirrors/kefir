@@ -81,7 +81,7 @@ typedef struct kefir_opt_code_analyze_block_scheduler {
     void *payload;
 } kefir_opt_code_analyze_block_scheduler_t;
 
-extern const struct kefir_opt_code_analyze_block_scheduler kefir_opt_code_analyze_dfs_block_scheduler;
+extern const struct kefir_opt_code_analyze_block_scheduler kefir_opt_code_analyze_bfs_block_scheduler;
 
 #ifdef KEFIR_OPTIMIZER_ANALYSIS_INTERNAL
 kefir_result_t kefir_opt_code_analyze_reachability(struct kefir_mem *, struct kefir_opt_code_analysis *);
