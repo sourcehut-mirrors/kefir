@@ -8,7 +8,7 @@ packages:
 secrets:
   -  13fca65b-ffbd-4542-b2fe-6a2813e53256
 sources:
-  - https://git.sr.ht/~jprotopopov/kefir
+  - https://git.sr.ht/~jprotopopov/kefir-private
   - https://git.sr.ht/~jprotopopov/c-testsuite
 tasks:
   - test_gcc: |
