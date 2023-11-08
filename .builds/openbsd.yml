@@ -12,11 +12,11 @@ sources:
   - https://git.sr.ht/~jprotopopov/kefir-private
 tasks:
   - test: |
-      cd kefir
+      cd kefir-private
       export LC_ALL=C.UTF-8
       gmake test all CC=clang LD=clang AS=gas PLATFORM=openbsd PROFILE=reldebug
   - bootstrap: |
-      cd kefir
+      cd kefir-private
       gmake clean clean_bootstrap
       export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/kefir/bin/libs"
       export KEFIR_RTLIB="$HOME/kefir/bin/libs/libkefirrt.a"

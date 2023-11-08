@@ -12,19 +12,19 @@ sources:
   - https://git.sr.ht/~jprotopopov/c-testsuite
 tasks:
   - test_gcc: |
-      cd kefir
+      cd kefir-private
       make clean
       LC_ALL=C.UTF-8 make test USE_VALGRIND=yes PROFILE=reldebug USE_SANITIZER=yes CC=gcc-12 -j$(nproc)
   - test_clang: |
-      cd kefir
+      cd kefir-private
       make clean
       LC_ALL=C.UTF-8 make test USE_VALGRIND=yes PROFILE=reldebug EXTRA_CFLAGS=-gdwarf-4 USE_SANITIZER=yes CC=clang-15 -j$(nproc)
   - build: |
-      cd kefir
+      cd kefir-private
       make clean
       LC_ALL=C.UTF-8 make all PROFILE=reldebug CC=gcc-12
   - lua_tests: |
-      cd kefir
+      cd kefir-private
       export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(pwd)/bin/libs
       export LC_ALL=C.UTF-8
       export KEFIR_RTLIB="$HOME/kefir/bin/libs/libkefirrt.a"
@@ -53,7 +53,7 @@ tasks:
       LC_ALL=C.UTF-8 ./kefir/source/tests/misc/run_gcc_torture_suite.sh 2>&1 | tee torture.log
       grep -v "Interrupted system call" torture.log | grep -i "fatal\|abort\|timeout\|segm" && exit 1 || true
   - bootstrap: |
-      cd kefir
+      cd kefir-private
       make clean clean_bootstrap
       export KEFIR_RTLIB="$HOME/kefir/bin/libs/libkefirrt.a"
       export KEFIR_RTINC="$HOME/kefir/headers/kefir/runtime"

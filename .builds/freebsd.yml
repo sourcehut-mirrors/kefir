@@ -11,14 +11,14 @@ sources:
   - https://git.sr.ht/~jprotopopov/kefir-private
 tasks:
   - test: |
-      cd kefir
+      cd kefir-private
       gmake test PLATFORM=freebsd USE_VALGRIND=yes PROFILE=reldebug USE_SANITIZER=yes CC=clang
   - build: |
-      cd kefir
+      cd kefir-private
       gmake clean clean_bootstrap
       gmake all PLATFORM=freebsd PROFILE=reldebug CC=clang
   - bootstrap: |
-      cd kefir
+      cd kefir-private
       gmake clean clean_bootstrap
       export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/kefir/bin/libs"
       export KEFIR_RTLIB="$HOME/kefir/bin/libs/libkefirrt.a"
