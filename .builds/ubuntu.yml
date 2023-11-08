@@ -29,7 +29,7 @@ tasks:
       export LC_ALL=C.UTF-8
       export KEFIR_RTLIB="$HOME/kefir/bin/libs/libkefirrt.a"
       export KEFIR_RTINC="$HOME/kefir/headers/kefir/runtime"
-      export KEFIR_CFLAGS="-O1 -fPIC -pie"
+      export KEFIR_CFLAGS="--target new-x86_64-linux-default -O0 -fPIC -pie"
       ./source/tests/misc/run-lua-tests.sh "$(pwd)/bin/kefir" "$(pwd)/bin/lua-test"
   - c_testsuite: |
       cd c-testsuite
@@ -37,7 +37,7 @@ tasks:
       export KEFIRCC="$HOME/kefir/bin/kefir"
       export KEFIR_RTLIB="$HOME/kefir/bin/libs/libkefirrt.a"
       export KEFIR_RTINC="$HOME/kefir/headers/kefir/runtime"
-      export CFLAGS="--target new-x86_64-host-gnu -O0 -fPIC -pie"
+      export CFLAGS="--target new-x86_64-host-default -O0 -fPIC -pie"
       export LC_ALL=C.UTF-8 
       ./single-exec kefir | tee ~/c-tests.log
       [[ "x$(cat ~/c-tests.log | scripts/tapsummary | grep 'fail 0' | wc -l)" == "x1" ]] || exit 1
@@ -57,7 +57,7 @@ tasks:
       make clean clean_bootstrap
       export KEFIR_RTLIB="$HOME/kefir/bin/libs/libkefirrt.a"
       export KEFIR_RTINC="$HOME/kefir/headers/kefir/runtime"
-      LC_ALL=C.UTF-8 make bootstrap KEFIR_EXTRAFLAGS="-O1" -j$(nproc)
+      LC_ALL=C.UTF-8 make bootstrap KEFIR_EXTRAFLAGS="-O0" -j$(nproc)
 triggers:
   - action: email
     condition: failure

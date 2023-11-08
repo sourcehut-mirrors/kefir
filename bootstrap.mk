@@ -18,7 +18,7 @@ BOOTSTRAP_CFLAGS += --target x86_64-openbsd-system -D__GNUC__=4 -D__GNUC_MINOR__
 else ifeq ($(PLATFORM),netbsd)
 BOOTSTRAP_CFLAGS += --target x86_64-netbsd-system -D__GNUC__=4 -D__GNUC_MINOR__=20 -D__GNUC_STDC_INLINE__=1 -D__ELF__=1 -include $(HEADERS)/bootstrap_include/netbsd.h
 else
-BOOTSTRAP_CFLAGS += --target x86_64-linux-gnu
+BOOTSTRAP_CFLAGS += --target new-x86_64-linux-gnu
 endif
 
 ifeq ($(USE_SHARED),yes)

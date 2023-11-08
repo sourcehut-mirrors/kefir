@@ -123,6 +123,10 @@ typedef struct kefir_asmcmp_value {
         kefir_bool_t present;
         kefir_asmcmp_physical_register_index_t reg;
     } segment;
+
+    struct {
+        kefir_bool_t write64_to_spill;
+    } internal;
 } kefir_asmcmp_value_t;
 
 #define KEFIR_ASMCMP_MAKE_NONE ((struct kefir_asmcmp_value){.type = KEFI_ASMCMP_VALUE_NONE})

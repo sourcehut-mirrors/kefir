@@ -178,16 +178,21 @@ static kefir_result_t build_virtual_register_liveness_graph(struct kefir_mem *me
         if (alloc->lifetime.begin == lifetime_index &&                                                                 \
             !kefir_hashtreeset_has(&allocator->internal.alive_virtual_registers,                                       \
                                    (kefir_hashtreeset_entry_t) (_vreg))) {                                             \
-            struct kefir_hashtreeset_iterator iter;                                                                    \
-            kefir_result_t res;                                                                                        \
-            for (res = kefir_hashtreeset_iter(&allocator->internal.alive_virtual_registers, &iter); res == KEFIR_OK;   \
-                 res = kefir_hashtreeset_next(&iter)) {                                                                \
-                ASSIGN_DECL_CAST(kefir_asmcmp_virtual_register_index_t, other_vreg, (kefir_uptr_t) iter.entry);        \
-                REQUIRE_OK(kefir_graph_new_edge(mem, &allocator->internal.liveness_graph,                              \
-                                                (kefir_graph_node_id_t) other_vreg, (kefir_graph_node_id_t) (_vreg))); \
-            }                                                                                                          \
-            if (res != KEFIR_ITERATOR_END) {                                                                           \
-                REQUIRE_OK(res);                                                                                       \
+            const struct kefir_asmcmp_amd64_register_preallocation *preallocation;                                     \
+            REQUIRE_OK(kefir_asmcmp_amd64_get_register_preallocation(target, (_vreg), &preallocation));                \
+            if (preallocation != NULL) {                                                                               \
+                struct kefir_hashtreeset_iterator iter;                                                                \
+                kefir_result_t res;                                                                                    \
+                for (res = kefir_hashtreeset_iter(&allocator->internal.alive_virtual_registers, &iter);                \
+                     res == KEFIR_OK; res = kefir_hashtreeset_next(&iter)) {                                           \
+                    ASSIGN_DECL_CAST(kefir_asmcmp_virtual_register_index_t, other_vreg, (kefir_uptr_t) iter.entry);    \
+                    REQUIRE_OK(kefir_graph_new_edge(mem, &allocator->internal.liveness_graph,                          \
+                                                    (kefir_graph_node_id_t) other_vreg,                                \
+                                                    (kefir_graph_node_id_t) (_vreg)));                                 \
+                }                                                                                                      \
+                if (res != KEFIR_ITERATOR_END) {                                                                       \
+                    REQUIRE_OK(res);                                                                                   \
+                }                                                                                                      \
             }                                                                                                          \
             REQUIRE_OK(kefir_hashtreeset_add(mem, &allocator->internal.alive_virtual_registers,                        \
                                              (kefir_hashtreeset_entry_t) (_vreg)));                                    \
@@ -394,7 +399,7 @@ static kefir_result_t allocate_spill_area(struct kefir_mem *mem,
                 REQUIRE_OK(assign_spill_area(allocator, vreg_idx, type, spill_index, qwords));
                 return KEFIR_OK;
             } else {
-                iter_index = spill_index;
+                iter_index = spill_index + 1;
             }
         } else {
             iter_index = num_of_slots;
@@ -414,7 +419,7 @@ static kefir_result_t allocate_spill_area(struct kefir_mem *mem,
                 REQUIRE_OK(assign_spill_area(allocator, vreg_idx, type, spill_index, qwords));
                 return KEFIR_OK;
             } else {
-                iter_index = spill_index;
+                iter_index = spill_index + 1;
             }
         } else {
             iter_index = num_of_slots;

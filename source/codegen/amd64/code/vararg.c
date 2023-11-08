@@ -421,8 +421,9 @@ static kefir_result_t vararg_register_aggregate_load(
     kefir_asmcmp_virtual_register_index_t tmp2_vreg, const char *symbolic_overflow_area_end_label,
     kefir_size_t integer_qwords, kefir_size_t sse_qwords) {
 
-    REQUIRE_OK(kefir_codegen_amd64_stack_frame_ensure_temporary_area(&function->stack_frame, parameter_layout->size,
-                                                                     parameter_layout->alignment));
+    REQUIRE_OK(kefir_codegen_amd64_stack_frame_ensure_temporary_area(
+        &function->stack_frame, kefir_target_abi_pad_aligned(parameter_layout->size, KEFIR_AMD64_ABI_QWORD),
+        MAX(parameter_layout->alignment, KEFIR_AMD64_ABI_QWORD)));
 
     REQUIRE_OK(kefir_asmcmp_amd64_lea(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                       &KEFIR_ASMCMP_MAKE_VREG64(result_vreg),

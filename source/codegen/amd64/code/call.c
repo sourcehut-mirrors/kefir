@@ -284,8 +284,8 @@ static kefir_result_t prepare_parameters(struct kefir_mem *mem, struct kefir_cod
                     case KEFIR_IR_TYPE_BUILTIN:
                         REQUIRE_OK(kefir_asmcmp_amd64_mov(mem, &function->code,
                                                           kefir_asmcmp_context_instr_tail(&function->code.context),
-                                                          &KEFIR_ASMCMP_MAKE_VREG64(argument_placement_vreg),
-                                                          &KEFIR_ASMCMP_MAKE_VREG64(argument_vreg), NULL));
+                                                          &KEFIR_ASMCMP_MAKE_VREG(argument_placement_vreg),
+                                                          &KEFIR_ASMCMP_MAKE_VREG(argument_vreg), NULL));
                         break;
 
                     case KEFIR_IR_TYPE_COUNT:
@@ -314,7 +314,7 @@ static kefir_result_t prepare_parameters(struct kefir_mem *mem, struct kefir_cod
             kefir_asmcmp_amd64_lea(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                    &KEFIR_ASMCMP_MAKE_VREG64(implicit_vreg),
                                    &KEFIR_ASMCMP_MAKE_INDIRECT_TEMPORARY(0, KEFIR_ASMCMP_OPERAND_VARIANT_64BIT), NULL));
-        REQUIRE_OK(kefir_hashtree_insert(mem, argument_placement, (kefir_hashtree_key_t) subarg_count,
+        REQUIRE_OK(kefir_hashtree_insert(mem, argument_placement, (kefir_hashtree_key_t) subarg_count++,
                                          (kefir_hashtree_value_t) implicit_vreg));
     }
 
@@ -334,7 +334,7 @@ static kefir_result_t prepare_parameters(struct kefir_mem *mem, struct kefir_cod
         REQUIRE_OK(kefir_asmcmp_amd64_mov(
             mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
             &KEFIR_ASMCMP_MAKE_VREG64(sse_reqs_vreg), &KEFIR_ASMCMP_MAKE_UINT(reqs.sse_regs), NULL));
-        REQUIRE_OK(kefir_hashtree_insert(mem, argument_placement, (kefir_hashtree_key_t) subarg_count,
+        REQUIRE_OK(kefir_hashtree_insert(mem, argument_placement, (kefir_hashtree_key_t) subarg_count++,
                                          (kefir_hashtree_value_t) sse_reqs_vreg));
     }
 
@@ -535,9 +535,13 @@ static kefir_result_t invoke_impl(struct kefir_mem *mem, struct kefir_codegen_am
 
     kefir_asmcmp_instruction_index_t call_idx;
     if (instruction->operation.opcode == KEFIR_OPT_OPCODE_INVOKE) {
+        const char *symbol = ir_func_decl->name;
+        if (function->codegen->config->position_independent_code) {
+            REQUIRE_OK(kefir_asmcmp_format(mem, &function->code.context, &symbol, KEFIR_AMD64_PLT, ir_func_decl->name));
+        }
         REQUIRE_OK(kefir_asmcmp_amd64_call(mem, &function->code,
                                            kefir_asmcmp_context_instr_tail(&function->code.context),
-                                           &KEFIR_ASMCMP_MAKE_LABEL(ir_func_decl->name), &call_idx));
+                                           &KEFIR_ASMCMP_MAKE_LABEL(symbol), &call_idx));
     } else {
         kefir_asmcmp_virtual_register_index_t func_vreg;
         REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(

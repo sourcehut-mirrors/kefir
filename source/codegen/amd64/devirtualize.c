@@ -214,7 +214,7 @@ static kefir_result_t allocate_spill_space(struct kefir_mem *mem, struct devirtu
                 *result = spill_index;
                 return KEFIR_OK;
             } else {
-                iter_index = spill_index;
+                iter_index = spill_index + 1;
             }
         } else {
             iter_index = num_of_slots;
@@ -386,9 +386,13 @@ static kefir_result_t devirtualize_value(struct kefir_mem *mem, struct devirtual
                     *value = KEFIR_ASMCMP_MAKE_PHREG(phreg);
                     break;
 
-                case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_DIRECT:
+                case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_DIRECT: {
+                    REQUIRE_OK(kefir_asmcmp_virtual_register_get(&state->target->context, value->vreg.index, &vreg));
+                    kefir_bool_t write64_to_spill = vreg->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE &&
+                                                    value->vreg.variant == KEFIR_ASMCMP_OPERAND_VARIANT_32BIT;
                     *value = KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(reg_alloc->spill_area.index, 0, value->vreg.variant);
-                    break;
+                    value->internal.write64_to_spill = write64_to_spill;
+                } break;
 
                 case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_INDIRECT:
                     REQUIRE_OK(obtain_temporary_register(mem, state, position, &phreg, TEMPORARY_REGISTER_GP));
@@ -602,43 +606,29 @@ static kefir_result_t devirtualize_instr_arg(struct kefir_mem *mem, struct devir
                     struct kefir_asmcmp_value original = instr->args[arg_idx];
                     instr->args[arg_idx] = KEFIR_ASMCMP_MAKE_PHREG(tmp_reg);
                     if (DEVIRT_HAS_FLAG(op_flags, KEFIR_AMD64_INSTRDB_READ)) {
-                        if (DEVIRT_HAS_FLAG(op_flags, KEFIR_AMD64_INSTRDB_XMM_REGISTER_SINGLE)) {
-                            REQUIRE_OK(kefir_asmcmp_amd64_movd(
-                                mem, state->target, kefir_asmcmp_context_instr_prev(&state->target->context, instr_idx),
-                                &KEFIR_ASMCMP_MAKE_PHREG(tmp_reg), &original, &head_instr_idx));
-                        } else if (DEVIRT_HAS_FLAG(op_flags, KEFIR_AMD64_INSTRDB_XMM_REGISTER_DOUBLE)) {
-                            REQUIRE_OK(kefir_asmcmp_amd64_movq(
-                                mem, state->target, kefir_asmcmp_context_instr_prev(&state->target->context, instr_idx),
-                                &KEFIR_ASMCMP_MAKE_PHREG(tmp_reg), &original, &head_instr_idx));
-                        } else {
-                            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to devirtualize instruction");
-                        }
+                        REQUIRE_OK(kefir_asmcmp_amd64_movq(
+                            mem, state->target, kefir_asmcmp_context_instr_prev(&state->target->context, instr_idx),
+                            &KEFIR_ASMCMP_MAKE_PHREG(tmp_reg), &original, &head_instr_idx));
                         REQUIRE_OK(
                             kefir_asmcmp_context_move_labels(mem, &state->target->context, head_instr_idx, instr_idx));
                     }
 
                     if (DEVIRT_HAS_FLAG(op_flags, KEFIR_AMD64_INSTRDB_WRITE)) {
-                        if (DEVIRT_HAS_FLAG(op_flags, KEFIR_AMD64_INSTRDB_XMM_REGISTER_SINGLE)) {
-                            REQUIRE_OK(kefir_asmcmp_amd64_movd(mem, state->target, instr_idx, &original,
-                                                               &KEFIR_ASMCMP_MAKE_PHREG(tmp_reg), tail_instr_idx));
-                        } else if (DEVIRT_HAS_FLAG(op_flags, KEFIR_AMD64_INSTRDB_XMM_REGISTER_DOUBLE)) {
-                            REQUIRE_OK(kefir_asmcmp_amd64_movq(mem, state->target, instr_idx, &original,
-                                                               &KEFIR_ASMCMP_MAKE_PHREG(tmp_reg), tail_instr_idx));
-                        } else {
-                            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to devirtualize instruction");
-                        }
+                        REQUIRE_OK(kefir_asmcmp_amd64_movq(mem, state->target, instr_idx, &original,
+                                                           &KEFIR_ASMCMP_MAKE_PHREG(tmp_reg), tail_instr_idx));
                     }
                 }
             }
             break;
 
         case KEFIR_ASMCMP_VALUE_TYPE_INDIRECT:
-            if (!DEVIRT_HAS_FLAG(op_flags, KEFIR_AMD64_INSTRDB_ANY_MEMORY) || no_memory_arg) {
+            if (!DEVIRT_HAS_FLAG(op_flags, KEFIR_AMD64_INSTRDB_ANY_MEMORY) || no_memory_arg ||
+                instr->args[arg_idx].internal.write64_to_spill) {
                 if (DEVIRT_HAS_FLAG(op_flags, KEFIR_AMD64_INSTRDB_GP_REGISTER)) {
                     REQUIRE_OK(obtain_temporary_register(mem, state, instr_idx, &tmp_reg, TEMPORARY_REGISTER_GP));
                     struct kefir_asmcmp_value original = instr->args[arg_idx];
                     kefir_asm_amd64_xasmgen_register_t tmp_reg_variant = tmp_reg;
-                    REQUIRE_OK(match_physical_reg_variant(&tmp_reg_variant, instr->args[arg_idx].indirect.variant));
+                    REQUIRE_OK(match_physical_reg_variant(&tmp_reg_variant, original.indirect.variant));
                     instr->args[arg_idx] = KEFIR_ASMCMP_MAKE_PHREG(tmp_reg_variant);
                     if (DEVIRT_HAS_FLAG(op_flags, KEFIR_AMD64_INSTRDB_READ)) {
                         REQUIRE_OK(kefir_asmcmp_amd64_mov(
@@ -649,8 +639,18 @@ static kefir_result_t devirtualize_instr_arg(struct kefir_mem *mem, struct devir
                     }
 
                     if (DEVIRT_HAS_FLAG(op_flags, KEFIR_AMD64_INSTRDB_WRITE)) {
-                        REQUIRE_OK(kefir_asmcmp_amd64_mov(mem, state->target, instr_idx, &original,
-                                                          &KEFIR_ASMCMP_MAKE_PHREG(tmp_reg_variant), tail_instr_idx));
+                        if (original.internal.write64_to_spill) {
+                            REQUIRE_OK(kefir_asmcmp_amd64_mov(
+                                mem, state->target, instr_idx,
+                                &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(original.indirect.base.spill_index,
+                                                                  original.indirect.offset,
+                                                                  KEFIR_ASMCMP_OPERAND_VARIANT_64BIT),
+                                &KEFIR_ASMCMP_MAKE_PHREG(tmp_reg), tail_instr_idx));
+                        } else {
+                            REQUIRE_OK(kefir_asmcmp_amd64_mov(mem, state->target, instr_idx, &original,
+                                                              &KEFIR_ASMCMP_MAKE_PHREG(tmp_reg_variant),
+                                                              tail_instr_idx));
+                        }
                     }
                 } else {
                     REQUIRE(DEVIRT_HAS_FLAG(op_flags, KEFIR_AMD64_INSTRDB_XMM_REGISTER_ANY),
