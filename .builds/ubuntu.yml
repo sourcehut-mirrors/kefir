@@ -49,7 +49,7 @@ tasks:
       export KEFIRCC="$HOME/kefir-private/bin/kefir"
       export KEFIR_RTLIB="$HOME/kefir-private/bin/libs/libkefirrt.a"
       export KEFIR_RTINC="$HOME/kefir-private/headers/kefir/runtime"
-      export KEFIR_EXTRAFLAGS="-O1 -fPIC -pie"
+      export KEFIR_EXTRAFLAGS="--target new-x86_64-linux-default -O0 -fPIC -pie"
       LC_ALL=C.UTF-8 ./kefir/source/tests/misc/run_gcc_torture_suite.sh 2>&1 | tee torture.log
       grep -v "Interrupted system call" torture.log | grep -i "fatal\|abort\|timeout\|segm" && exit 1 || true
   - bootstrap: |

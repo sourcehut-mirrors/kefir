@@ -246,10 +246,13 @@ static kefir_result_t vararg_visit_sse(const struct kefir_ir_type *type, kefir_s
 
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_preserve_mxcsr(&param->function->stack_frame));
 
-    kefir_asmcmp_virtual_register_index_t valist_vreg, valist_placement_vreg, result_vreg, result_placement_vreg;
+    kefir_asmcmp_virtual_register_index_t valist_vreg, valist_placement_vreg, result_vreg, result_placement_vreg,
+        tmp_placement_vreg;
     REQUIRE_OK(kefir_asmcmp_virtual_register_new(param->mem, &param->function->code.context,
                                                  KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE,
                                                  &valist_placement_vreg));
+    REQUIRE_OK(kefir_asmcmp_virtual_register_new(param->mem, &param->function->code.context,
+                                                 KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &tmp_placement_vreg));
     REQUIRE_OK(kefir_asmcmp_virtual_register_new(param->mem, &param->function->code.context,
                                                  KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT, &result_vreg));
     REQUIRE_OK(kefir_asmcmp_virtual_register_new(param->mem, &param->function->code.context,
@@ -260,11 +263,17 @@ static kefir_result_t vararg_visit_sse(const struct kefir_ir_type *type, kefir_s
     REQUIRE_OK(kefir_asmcmp_amd64_register_allocation_requirement(
         param->mem, &param->function->code, valist_placement_vreg, KEFIR_AMD64_XASMGEN_REGISTER_RDI));
     REQUIRE_OK(kefir_asmcmp_amd64_register_allocation_requirement(
+        param->mem, &param->function->code, tmp_placement_vreg, KEFIR_AMD64_XASMGEN_REGISTER_RAX));
+    REQUIRE_OK(kefir_asmcmp_amd64_register_allocation_requirement(
         param->mem, &param->function->code, result_placement_vreg, KEFIR_AMD64_XASMGEN_REGISTER_XMM0));
 
     REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
         param->mem, &param->function->code, kefir_asmcmp_context_instr_tail(&param->function->code.context),
         valist_placement_vreg, valist_vreg, NULL));
+
+    REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
+        param->mem, &param->function->code, kefir_asmcmp_context_instr_tail(&param->function->code.context),
+        tmp_placement_vreg, NULL));
 
     const char *symbolic_label = KEFIR_AMD64_SYSTEM_V_RUNTIME_LOAD_SSE_VARARG;
     if (param->function->codegen->config->position_independent_code) {

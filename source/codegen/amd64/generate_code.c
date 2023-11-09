@@ -28,7 +28,7 @@
 #include "kefir/core/string_builder.h"
 
 struct instruction_argument_state {
-    struct kefir_asm_amd64_xasmgen_operand base_operands[3];
+    struct kefir_asm_amd64_xasmgen_operand base_operands[4];
     const struct kefir_asm_amd64_xasmgen_operand *operand;
 };
 
@@ -124,42 +124,42 @@ static kefir_result_t build_operand(const struct kefir_codegen_amd64_stack_frame
             switch (value->indirect.variant) {
                 case KEFIR_ASMCMP_OPERAND_VARIANT_8BIT:
                     arg_state->operand = kefir_asm_amd64_xasmgen_operand_pointer(
-                        &arg_state->base_operands[1], KEFIR_AMD64_XASMGEN_POINTER_BYTE, base_ptr);
+                        &arg_state->base_operands[2], KEFIR_AMD64_XASMGEN_POINTER_BYTE, base_ptr);
                     break;
 
                 case KEFIR_ASMCMP_OPERAND_VARIANT_16BIT:
                     arg_state->operand = kefir_asm_amd64_xasmgen_operand_pointer(
-                        &arg_state->base_operands[1], KEFIR_AMD64_XASMGEN_POINTER_WORD, base_ptr);
+                        &arg_state->base_operands[2], KEFIR_AMD64_XASMGEN_POINTER_WORD, base_ptr);
                     break;
 
                 case KEFIR_ASMCMP_OPERAND_VARIANT_32BIT:
                     arg_state->operand = kefir_asm_amd64_xasmgen_operand_pointer(
-                        &arg_state->base_operands[1], KEFIR_AMD64_XASMGEN_POINTER_DWORD, base_ptr);
+                        &arg_state->base_operands[2], KEFIR_AMD64_XASMGEN_POINTER_DWORD, base_ptr);
                     break;
 
                 case KEFIR_ASMCMP_OPERAND_VARIANT_64BIT:
                     arg_state->operand = kefir_asm_amd64_xasmgen_operand_pointer(
-                        &arg_state->base_operands[1], KEFIR_AMD64_XASMGEN_POINTER_QWORD, base_ptr);
+                        &arg_state->base_operands[2], KEFIR_AMD64_XASMGEN_POINTER_QWORD, base_ptr);
                     break;
 
                 case KEFIR_ASMCMP_OPERAND_VARIANT_80BIT:
                     arg_state->operand = kefir_asm_amd64_xasmgen_operand_pointer(
-                        &arg_state->base_operands[1], KEFIR_AMD64_XASMGEN_POINTER_TBYTE, base_ptr);
+                        &arg_state->base_operands[2], KEFIR_AMD64_XASMGEN_POINTER_TBYTE, base_ptr);
                     break;
 
                 case KEFIR_ASMCMP_OPERAND_VARIANT_128BIT:
                     arg_state->operand = kefir_asm_amd64_xasmgen_operand_pointer(
-                        &arg_state->base_operands[1], KEFIR_AMD64_XASMGEN_POINTER_XMMWORD, base_ptr);
+                        &arg_state->base_operands[2], KEFIR_AMD64_XASMGEN_POINTER_XMMWORD, base_ptr);
                     break;
 
                 case KEFIR_ASMCMP_OPERAND_VARIANT_FP_SINGLE:
                     arg_state->operand = kefir_asm_amd64_xasmgen_operand_pointer(
-                        &arg_state->base_operands[1], KEFIR_AMD64_XASMGEN_POINTER_FP_SINGLE, base_ptr);
+                        &arg_state->base_operands[2], KEFIR_AMD64_XASMGEN_POINTER_FP_SINGLE, base_ptr);
                     break;
 
                 case KEFIR_ASMCMP_OPERAND_VARIANT_FP_DOUBLE:
                     arg_state->operand = kefir_asm_amd64_xasmgen_operand_pointer(
-                        &arg_state->base_operands[1], KEFIR_AMD64_XASMGEN_POINTER_FP_DOUBLE, base_ptr);
+                        &arg_state->base_operands[2], KEFIR_AMD64_XASMGEN_POINTER_FP_DOUBLE, base_ptr);
                     break;
 
                 case KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT:
@@ -236,7 +236,7 @@ static kefir_result_t build_operand(const struct kefir_codegen_amd64_stack_frame
 
     if (value->segment.present) {
         arg_state->operand = kefir_asm_amd64_xasmgen_operand_segment(
-            &arg_state->base_operands[2], (kefir_asm_amd64_xasmgen_segment_register_t) value->segment.reg,
+            &arg_state->base_operands[3], (kefir_asm_amd64_xasmgen_segment_register_t) value->segment.reg,
             arg_state->operand);
     }
 
