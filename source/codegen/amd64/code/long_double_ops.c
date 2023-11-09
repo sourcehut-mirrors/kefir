@@ -307,7 +307,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(uint_to_long_double)(
     REQUIRE_OK(kefir_codegen_amd64_function_format_label(mem, function, nosign_label, &symbolic_nosign_label));
 
     REQUIRE_OK(kefir_asmcmp_amd64_jns(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                                      &KEFIR_ASMCMP_MAKE_LABEL(symbolic_nosign_label), NULL));
+                                      &KEFIR_ASMCMP_MAKE_LABEL(symbolic_nosign_label, 0), NULL));
 
     if (function->codegen->config->position_independent_code) {
         REQUIRE_OK(kefir_asmcmp_amd64_fadd(mem, &function->code,
@@ -447,7 +447,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(long_double_to_int)(
                                        KEFIR_AMD64_RUNTIME_LONG_DOUBLE_TO_INT));
     }
     REQUIRE_OK(kefir_asmcmp_amd64_call(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                                       &KEFIR_ASMCMP_MAKE_LABEL(symbolic_label), NULL));
+                                       &KEFIR_ASMCMP_MAKE_LABEL(symbolic_label, 0), NULL));
 
     REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &function->code,
                                                          kefir_asmcmp_context_instr_tail(&function->code.context),
@@ -487,7 +487,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(long_double_to_uint)(
                                        KEFIR_AMD64_RUNTIME_LONG_DOUBLE_TO_UINT));
     }
     REQUIRE_OK(kefir_asmcmp_amd64_call(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                                       &KEFIR_ASMCMP_MAKE_LABEL(symbolic_label), NULL));
+                                       &KEFIR_ASMCMP_MAKE_LABEL(symbolic_label, 0), NULL));
 
     REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &function->code,
                                                          kefir_asmcmp_context_instr_tail(&function->code.context),
@@ -527,7 +527,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(long_double_trunc1)(
                                        KEFIR_AMD64_RUNTIME_LONG_DOUBLE_TRUNC_1BIT));
     }
     REQUIRE_OK(kefir_asmcmp_amd64_call(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                                       &KEFIR_ASMCMP_MAKE_LABEL(symbolic_label), NULL));
+                                       &KEFIR_ASMCMP_MAKE_LABEL(symbolic_label, 0), NULL));
 
     REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &function->code,
                                                          kefir_asmcmp_context_instr_tail(&function->code.context),

@@ -95,7 +95,7 @@ static kefir_result_t emulated_tls(struct kefir_mem *mem, struct kefir_codegen_a
 
     kefir_asmcmp_instruction_index_t call_idx;
     REQUIRE_OK(kefir_asmcmp_amd64_call(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                                       &KEFIR_ASMCMP_MAKE_LABEL(KEFIR_AMD64_EMUTLS_GET_ADDR), &call_idx));
+                                       &KEFIR_ASMCMP_MAKE_LABEL(KEFIR_AMD64_EMUTLS_GET_ADDR, 0), &call_idx));
     REQUIRE_OK(kefir_asmcmp_register_stash_set_liveness_index(&function->code.context, stash_idx, call_idx));
 
     kefir_asmcmp_virtual_register_index_t result_vreg, result_placement_vreg;
@@ -152,7 +152,7 @@ static kefir_result_t general_dynamic_tls(struct kefir_mem *mem, struct kefir_co
 
     kefir_asmcmp_instruction_index_t call_idx;
     REQUIRE_OK(kefir_asmcmp_amd64_call(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                                       &KEFIR_ASMCMP_MAKE_LABEL(KEFIR_AMD64_TLS_GET_ADDR), &call_idx));
+                                       &KEFIR_ASMCMP_MAKE_LABEL(KEFIR_AMD64_TLS_GET_ADDR, 0), &call_idx));
     REQUIRE_OK(kefir_asmcmp_register_stash_set_liveness_index(&function->code.context, stash_idx, call_idx));
 
     kefir_asmcmp_virtual_register_index_t result_vreg, result_placement_vreg;

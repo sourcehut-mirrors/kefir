@@ -45,6 +45,54 @@ static kefir_result_t free_stash(struct kefir_mem *mem, struct kefir_hashtree *t
     return KEFIR_OK;
 }
 
+static kefir_result_t free_inline_asm(struct kefir_mem *mem, struct kefir_hashtree *tree, kefir_hashtree_key_t key,
+                                      kefir_hashtree_value_t value, void *payload) {
+    UNUSED(tree);
+    UNUSED(key);
+    UNUSED(payload);
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    ASSIGN_DECL_CAST(struct kefir_asmcmp_inline_assembly *, inline_asm, value);
+    REQUIRE(inline_asm != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmcmp inline assembly"));
+
+    REQUIRE_OK(kefir_list_free(mem, &inline_asm->fragments));
+    memset(inline_asm, 0, sizeof(struct kefir_asmcmp_inline_assembly));
+    KEFIR_FREE(mem, inline_asm);
+    return KEFIR_OK;
+}
+
+static kefir_result_t kefir_asmcmp_format_impl(struct kefir_mem *mem, struct kefir_asmcmp_context *context,
+                                               const char **result, const char *format, va_list args) {
+    va_list args2;
+    va_copy(args2, args);
+
+    int length = vsnprintf(NULL, 0, format, args);
+    REQUIRE(length >= 0, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Formatting error"));
+    ++length;
+
+    char stack_buf[128];
+    char *buf;
+    if ((unsigned long) length < sizeof(stack_buf)) {
+        buf = stack_buf;
+    } else {
+        buf = KEFIR_MALLOC(mem, length);
+        REQUIRE(buf != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate formatting buffer"));
+    }
+
+    vsnprintf(buf, length, format, args2);
+    va_end(args2);
+    *result = kefir_string_pool_insert(mem, &context->strings, buf, NULL);
+    REQUIRE_ELSE(*result != NULL, {
+        if (buf != stack_buf) {
+            KEFIR_FREE(mem, buf);
+        }
+        return KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert formatted string into pool");
+    });
+    if (buf != stack_buf) {
+        KEFIR_FREE(mem, buf);
+    }
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_asmcmp_context_init(const struct kefir_asmcmp_context_class *klass, void *payload,
                                          struct kefir_asmcmp_context *context) {
     REQUIRE(klass != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context class"));
@@ -54,6 +102,8 @@ kefir_result_t kefir_asmcmp_context_init(const struct kefir_asmcmp_context_class
     REQUIRE_OK(kefir_string_pool_init(&context->strings));
     REQUIRE_OK(kefir_hashtree_init(&context->stashes, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_on_removal(&context->stashes, free_stash, NULL));
+    REQUIRE_OK(kefir_hashtree_init(&context->inline_assembly, &kefir_hashtree_uint_ops));
+    REQUIRE_OK(kefir_hashtree_on_removal(&context->inline_assembly, free_inline_asm, NULL));
     context->klass = klass;
     context->payload = payload;
     context->code_content = NULL;
@@ -67,6 +117,8 @@ kefir_result_t kefir_asmcmp_context_init(const struct kefir_asmcmp_context_class
     context->virtual_registers = NULL;
     context->virtual_register_length = 0;
     context->virtual_register_capacity = 0;
+    context->next_stash_idx = 0;
+    context->next_inline_asm_idx = 0;
     return KEFIR_OK;
 }
 
@@ -74,6 +126,7 @@ kefir_result_t kefir_asmcmp_context_free(struct kefir_mem *mem, struct kefir_asm
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
 
+    REQUIRE_OK(kefir_hashtree_free(mem, &context->inline_assembly));
     REQUIRE_OK(kefir_hashtree_free(mem, &context->stashes));
     REQUIRE_OK(kefir_string_pool_free(mem, &context->strings));
     REQUIRE_OK(kefir_hashtree_free(mem, &context->label_positions));
@@ -198,12 +251,17 @@ static kefir_result_t validate_value(struct kefir_asmcmp_context *context, const
             break;
 
         case KEFIR_ASMCMP_VALUE_TYPE_LABEL:
-            REQUIRE(value->label != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected non-NULL label"));
+            REQUIRE(value->label.symbolic != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected non-NULL label"));
             break;
 
         case KEFIR_ASMCMP_VALUE_TYPE_STASH_INDEX:
             REQUIRE(kefir_hashtree_has(&context->stashes, (kefir_hashtree_key_t) value->stash_idx),
                     KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unknown asmcmp stash index"));
+            break;
+
+        case KEFIR_ASMCMP_VALUE_TYPE_INLINE_ASSEMBLY_INDEX:
+            REQUIRE(kefir_hashtree_has(&context->inline_assembly, (kefir_hashtree_key_t) value->inline_asm_idx),
+                    KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unknown asmcmp inline assembly index"));
             break;
     }
     return KEFIR_OK;
@@ -823,6 +881,160 @@ kefir_result_t kefir_asmcmp_register_stash_liveness_index(const struct kefir_asm
     return KEFIR_OK;
 }
 
+static kefir_result_t free_inline_asm_fragment(struct kefir_mem *mem, struct kefir_list *list,
+                                               struct kefir_list_entry *entry, void *payload) {
+    UNUSED(list);
+    UNUSED(payload);
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(entry != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid list entry"));
+    ASSIGN_DECL_CAST(struct kefir_asmcmp_inline_assembly_fragment *, fragment, entry->value);
+    REQUIRE(fragment != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid inline assembly fragment"));
+
+    memset(fragment, 0, sizeof(struct kefir_asmcmp_inline_assembly_fragment));
+    KEFIR_FREE(mem, fragment);
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_asmcmp_inline_assembly_new(struct kefir_mem *mem, struct kefir_asmcmp_context *context,
+                                                const char *template,
+                                                kefir_asmcmp_inline_assembly_index_t *inline_asm_idx) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
+    REQUIRE(template != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen inline assembly template"));
+    REQUIRE(inline_asm_idx != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to asmcmp inline assembly index"));
+
+    struct kefir_asmcmp_inline_assembly *inline_asm = KEFIR_MALLOC(mem, sizeof(struct kefir_asmcmp_inline_assembly));
+    REQUIRE(inline_asm != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate asmcmp inline assembly"));
+    inline_asm->index = context->next_stash_idx;
+    inline_asm->template = kefir_string_pool_insert(mem, &context->strings, template, NULL);
+    REQUIRE_ELSE(inline_asm->template != NULL, {
+        KEFIR_FREE(mem, inline_asm);
+        return KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert inline assembly template into string pool");
+    });
+    inline_asm->template_length = strlen(inline_asm->template);
+
+    kefir_result_t res = kefir_list_init(&inline_asm->fragments);
+    REQUIRE_CHAIN(&res, kefir_list_on_remove(&inline_asm->fragments, free_inline_asm_fragment, NULL));
+    REQUIRE_CHAIN(&res, kefir_hashtree_insert(mem, &context->inline_assembly, (kefir_hashtree_key_t) inline_asm->index,
+                                              (kefir_hashtree_value_t) inline_asm));
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_FREE(mem, inline_asm);
+        return res;
+    });
+
+    ++context->next_inline_asm_idx;
+    *inline_asm_idx = inline_asm->index;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_asmcmp_inline_assembly_add_text(struct kefir_mem *mem, struct kefir_asmcmp_context *context,
+                                                     kefir_asmcmp_inline_assembly_index_t inline_asm_idx,
+                                                     const char *format, ...) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
+    REQUIRE(format != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid format string"));
+
+    struct kefir_hashtree_node *node;
+    kefir_result_t res = kefir_hashtree_at(&context->inline_assembly, (kefir_hashtree_key_t) inline_asm_idx, &node);
+    if (res == KEFIR_NOT_FOUND) {
+        res = KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find requested inline assembly");
+    }
+    REQUIRE_OK(res);
+    ASSIGN_DECL_CAST(struct kefir_asmcmp_inline_assembly *, inline_asm, node->value);
+
+    va_list args;
+    va_start(args, format);
+
+    const char *result;
+    res = kefir_asmcmp_format_impl(mem, context, &result, format, args);
+    va_end(args);
+    REQUIRE_OK(res);
+
+    struct kefir_asmcmp_inline_assembly_fragment *fragment =
+        KEFIR_MALLOC(mem, sizeof(struct kefir_asmcmp_inline_assembly_fragment));
+    REQUIRE(fragment != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate inline assembly fragment"));
+
+    fragment->type = KEFIR_ASMCMP_INLINE_ASSEMBLY_FRAGMENT_TEXT;
+    fragment->text = result;
+
+    res = kefir_list_insert_after(mem, &inline_asm->fragments, kefir_list_tail(&inline_asm->fragments), fragment);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_FREE(mem, fragment);
+        return res;
+    });
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_asmcmp_inline_assembly_add_value(struct kefir_mem *mem, struct kefir_asmcmp_context *context,
+                                                      kefir_asmcmp_inline_assembly_index_t inline_asm_idx,
+                                                      const struct kefir_asmcmp_value *value) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
+    REQUIRE(value != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmcmp value"));
+
+    struct kefir_hashtree_node *node;
+    kefir_result_t res = kefir_hashtree_at(&context->inline_assembly, (kefir_hashtree_key_t) inline_asm_idx, &node);
+    if (res == KEFIR_NOT_FOUND) {
+        res = KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find requested inline assembly");
+    }
+    REQUIRE_OK(res);
+    ASSIGN_DECL_CAST(struct kefir_asmcmp_inline_assembly *, inline_asm, node->value);
+
+    REQUIRE_OK(validate_value(context, value));
+
+    struct kefir_asmcmp_inline_assembly_fragment *fragment =
+        KEFIR_MALLOC(mem, sizeof(struct kefir_asmcmp_inline_assembly_fragment));
+    REQUIRE(fragment != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate inline assembly fragment"));
+
+    fragment->type = KEFIR_ASMCMP_INLINE_ASSEMBLY_FRAGMENT_VALUE;
+    fragment->value = *value;
+
+    res = kefir_list_insert_after(mem, &inline_asm->fragments, kefir_list_tail(&inline_asm->fragments), fragment);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_FREE(mem, fragment);
+        return res;
+    });
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_asmcmp_inline_assembly_fragment_iter(const struct kefir_asmcmp_context *context,
+                                                          kefir_asmcmp_inline_assembly_index_t inline_asm_idx,
+                                                          struct kefir_asmcmp_inline_assembly_fragment_iterator *iter) {
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
+    REQUIRE(iter != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to asmcmp fragment iterator"));
+
+    struct kefir_hashtree_node *node;
+    kefir_result_t res = kefir_hashtree_at(&context->inline_assembly, (kefir_hashtree_key_t) inline_asm_idx, &node);
+    if (res == KEFIR_NOT_FOUND) {
+        res = KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find requested inline assembly");
+    }
+    REQUIRE_OK(res);
+    ASSIGN_DECL_CAST(struct kefir_asmcmp_inline_assembly *, inline_asm, node->value);
+
+    iter->iter = kefir_list_head(&inline_asm->fragments);
+    if (iter->iter != NULL) {
+        iter->fragment = (struct kefir_asmcmp_inline_assembly_fragment *) iter->iter->value;
+    } else {
+        iter->fragment = NULL;
+    }
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_asmcmp_inline_assembly_fragment_next(struct kefir_asmcmp_inline_assembly_fragment_iterator *iter) {
+    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmcmp fragment iterator"));
+
+    kefir_list_next(&iter->iter);
+    if (iter->iter != NULL) {
+        iter->fragment = (struct kefir_asmcmp_inline_assembly_fragment *) iter->iter->value;
+    } else {
+        iter->fragment = NULL;
+    }
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_asmcmp_format(struct kefir_mem *mem, struct kefir_asmcmp_context *context, const char **result,
                                    const char *format, ...) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
@@ -830,35 +1042,11 @@ kefir_result_t kefir_asmcmp_format(struct kefir_mem *mem, struct kefir_asmcmp_co
     REQUIRE(result != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to resulting string"));
     REQUIRE(format != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid format string"));
 
-    va_list args, args2;
+    va_list args;
     va_start(args, format);
-    va_copy(args2, args);
-
-    int length = vsnprintf(NULL, 0, format, args);
+    kefir_result_t res = kefir_asmcmp_format_impl(mem, context, result, format, args);
     va_end(args);
-    REQUIRE(length >= 0, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Formatting error"));
-    ++length;
+    REQUIRE_OK(res);
 
-    char stack_buf[128];
-    char *buf;
-    if ((unsigned long) length < sizeof(stack_buf)) {
-        buf = stack_buf;
-    } else {
-        buf = KEFIR_MALLOC(mem, length);
-        REQUIRE(buf != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate formatting buffer"));
-    }
-
-    vsnprintf(buf, length, format, args2);
-    va_end(args2);
-    *result = kefir_string_pool_insert(mem, &context->strings, buf, NULL);
-    REQUIRE_ELSE(*result != NULL, {
-        if (buf != stack_buf) {
-            KEFIR_FREE(mem, buf);
-        }
-        return KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert formatted string into pool");
-    });
-    if (buf != stack_buf) {
-        KEFIR_FREE(mem, buf);
-    }
     return KEFIR_OK;
 }

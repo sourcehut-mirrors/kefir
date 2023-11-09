@@ -82,6 +82,7 @@ static kefir_result_t update_live_virtual_regs(struct kefir_mem *mem, struct dev
         case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT:
         case KEFIR_ASMCMP_VALUE_TYPE_X87:
         case KEFIR_ASMCMP_VALUE_TYPE_LABEL:
+        case KEFIR_ASMCMP_VALUE_TYPE_INLINE_ASSEMBLY_INDEX:
             // Intentionally left blank
             break;
 
@@ -336,6 +337,7 @@ static kefir_result_t devirtualize_value(struct kefir_mem *mem, struct devirtual
         case KEFIR_ASMCMP_VALUE_TYPE_LABEL:
         case KEFIR_ASMCMP_VALUE_TYPE_X87:
         case KEFIR_ASMCMP_VALUE_TYPE_STASH_INDEX:
+        case KEFIR_ASMCMP_VALUE_TYPE_INLINE_ASSEMBLY_INDEX:
             // Intentionally left blank
             break;
 
@@ -694,6 +696,7 @@ static kefir_result_t devirtualize_instr_arg(struct kefir_mem *mem, struct devir
 
         case KEFIR_ASMCMP_VALUE_TYPE_NONE:
         case KEFIR_ASMCMP_VALUE_TYPE_STASH_INDEX:
+        case KEFIR_ASMCMP_VALUE_TYPE_INLINE_ASSEMBLY_INDEX:
         case KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected instruction argument type");
     }
@@ -876,6 +879,29 @@ static kefir_result_t deactivate_stash(struct kefir_mem *mem, struct devirtualiz
     return KEFIR_OK;
 }
 
+static kefir_result_t devirtualize_inline_asm(struct kefir_mem *mem, struct devirtualize_state *state,
+                                              kefir_asmcmp_instruction_index_t instr_idx,
+                                              struct kefir_asmcmp_instruction *instr) {
+    struct kefir_asmcmp_inline_assembly_fragment_iterator iter;
+    kefir_result_t res;
+    for (res =
+             kefir_asmcmp_inline_assembly_fragment_iter(&state->target->context, instr->args[0].inline_asm_idx, &iter);
+         res == KEFIR_OK && iter.fragment != NULL; res = kefir_asmcmp_inline_assembly_fragment_next(&iter)) {
+
+        switch (iter.fragment->type) {
+            case KEFIR_ASMCMP_INLINE_ASSEMBLY_FRAGMENT_TEXT:
+                // Intentionally left blank
+                break;
+
+            case KEFIR_ASMCMP_INLINE_ASSEMBLY_FRAGMENT_VALUE:
+                REQUIRE_OK(devirtualize_value(mem, state, instr_idx, &iter.fragment->value));
+                break;
+        }
+    }
+    REQUIRE_OK(res);
+    return KEFIR_OK;
+}
+
 static kefir_result_t devirtualize_impl(struct kefir_mem *mem, struct devirtualize_state *state) {
     UNUSED(mem);
     UNUSED(state);
@@ -944,6 +970,10 @@ static kefir_result_t devirtualize_impl(struct kefir_mem *mem, struct devirtuali
 
             case KEFIR_ASMCMP_AMD64_OPCODE(stash_deactivate):
                 REQUIRE_OK(deactivate_stash(mem, state, idx, &devirtualized_instr));
+                break;
+
+            case KEFIR_ASMCMP_AMD64_OPCODE(inline_assembly):
+                REQUIRE_OK(devirtualize_inline_asm(mem, state, idx, &devirtualized_instr));
                 break;
 
             case KEFIR_ASMCMP_AMD64_OPCODE(touch_virtual_register):

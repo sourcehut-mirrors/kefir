@@ -106,7 +106,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(uint_to_float)(struct kefir_
                                        &KEFIR_ASMCMP_MAKE_VREG(arg_vreg), &KEFIR_ASMCMP_MAKE_VREG(arg_vreg), NULL));
 
     REQUIRE_OK(kefir_asmcmp_amd64_js(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                                     &KEFIR_ASMCMP_MAKE_LABEL(symbolic_sign_label), NULL));
+                                     &KEFIR_ASMCMP_MAKE_LABEL(symbolic_sign_label, 0), NULL));
 
     if (instruction->operation.opcode == KEFIR_OPT_OPCODE_UINT_TO_FLOAT32) {
         REQUIRE_OK(kefir_asmcmp_amd64_cvtsi2ss(
@@ -119,7 +119,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(uint_to_float)(struct kefir_
     }
 
     REQUIRE_OK(kefir_asmcmp_amd64_jmp(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                                      &KEFIR_ASMCMP_MAKE_LABEL(symbolic_nosign_label), NULL));
+                                      &KEFIR_ASMCMP_MAKE_LABEL(symbolic_nosign_label, 0), NULL));
 
     REQUIRE_OK(kefir_asmcmp_context_bind_label_after_tail(mem, &function->code.context, sign_label));
 
@@ -243,7 +243,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(float_to_uint)(struct kefir_
         symbolic_label = conv_procedure;
     }
     REQUIRE_OK(kefir_asmcmp_amd64_call(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                                       &KEFIR_ASMCMP_MAKE_LABEL(symbolic_label), NULL));
+                                       &KEFIR_ASMCMP_MAKE_LABEL(symbolic_label, 0), NULL));
 
     REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &function->code,
                                                          kefir_asmcmp_context_instr_tail(&function->code.context),

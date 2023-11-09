@@ -26,6 +26,7 @@
 #include "kefir/core/string_pool.h"
 #include "kefir/codegen/asmcmp/base.h"
 #include "kefir/core/hashtreeset.h"
+#include "kefir/core/list.h"
 
 typedef kefir_size_t kefir_asmcmp_virtual_register_index_t;
 typedef kefir_size_t kefir_asmcmp_physical_register_index_t;
@@ -33,6 +34,7 @@ typedef kefir_size_t kefir_asmcmp_instruction_opcode_t;
 typedef kefir_size_t kefir_asmcmp_instruction_index_t;
 typedef kefir_size_t kefir_asmcmp_label_index_t;
 typedef kefir_size_t kefir_asmcmp_stash_index_t;
+typedef kefir_size_t kefir_asmcmp_inline_assembly_index_t;
 
 #define KEFIR_ASMCMP_INSTRUCTION_NUM_OF_OPERANDS 3
 #define KEFIR_ASMCMP_INDEX_NONE (~(kefir_asmcmp_instruction_index_t) 0ull)
@@ -47,7 +49,8 @@ typedef enum kefir_asmcmp_value_type {
     KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT,
     KEFIR_ASMCMP_VALUE_TYPE_LABEL,
     KEFIR_ASMCMP_VALUE_TYPE_X87,
-    KEFIR_ASMCMP_VALUE_TYPE_STASH_INDEX
+    KEFIR_ASMCMP_VALUE_TYPE_STASH_INDEX,
+    KEFIR_ASMCMP_VALUE_TYPE_INLINE_ASSEMBLY_INDEX
 } kefir_asmcmp_value_type_t;
 
 typedef enum kefir_asmcmp_virtual_register_type {
@@ -88,6 +91,18 @@ typedef struct kefir_asmcmp_stash {
     struct kefir_hashtreeset stashed_physical_regs;
 } kefir_asmcmp_stash_t;
 
+typedef enum kefir_asmcmp_inline_assembly_fragment_type {
+    KEFIR_ASMCMP_INLINE_ASSEMBLY_FRAGMENT_TEXT,
+    KEFIR_ASMCMP_INLINE_ASSEMBLY_FRAGMENT_VALUE
+} kefir_asmcmp_inline_assembly_fragment_type_t;
+
+typedef struct kefir_asmcmp_inline_assembly {
+    kefir_asmcmp_inline_assembly_index_t index;
+    const char *template;
+    kefir_size_t template_length;
+    struct kefir_list fragments;
+} kefir_asmcmp_inline_assembly_t;
+
 typedef struct kefir_asmcmp_value {
     kefir_asmcmp_value_type_t type;
 
@@ -114,9 +129,13 @@ typedef struct kefir_asmcmp_value {
             const char *base;
             kefir_asmcmp_operand_variant_t variant;
         } rip_indirection;
-        const char *label;
+        struct {
+            const char *symbolic;
+            kefir_int64_t offset;
+        } label;
         kefir_size_t x87;
         kefir_asmcmp_stash_index_t stash_idx;
+        kefir_asmcmp_inline_assembly_index_t inline_asm_idx;
     };
 
     struct {
@@ -128,6 +147,15 @@ typedef struct kefir_asmcmp_value {
         kefir_bool_t write64_to_spill;
     } internal;
 } kefir_asmcmp_value_t;
+
+typedef struct kefir_asmcmp_inline_assembly_fragment {
+    kefir_asmcmp_inline_assembly_fragment_type_t type;
+    union {
+        const char *text;
+
+        struct kefir_asmcmp_value value;
+    };
+} kefir_asmcmp_inline_assembly_fragment_t;
 
 #define KEFIR_ASMCMP_MAKE_NONE ((struct kefir_asmcmp_value){.type = KEFI_ASMCMP_VALUE_NONE})
 #define KEFIR_ASMCMP_MAKE_INT(_value) \
@@ -152,8 +180,9 @@ typedef struct kefir_asmcmp_value {
 #define KEFIR_ASMCMP_MAKE_VREG(_vreg)                                              \
     ((struct kefir_asmcmp_value){.type = KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER, \
                                  .vreg = {.index = (_vreg), .variant = KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT}})
-#define KEFIR_ASMCMP_MAKE_LABEL(_label) \
-    ((struct kefir_asmcmp_value){.type = KEFIR_ASMCMP_VALUE_TYPE_LABEL, .label = (_label)})
+#define KEFIR_ASMCMP_MAKE_LABEL(_label, _offset)                        \
+    ((struct kefir_asmcmp_value){.type = KEFIR_ASMCMP_VALUE_TYPE_LABEL, \
+                                 .label = {.symbolic = (_label), .offset = (_offset)}})
 #define KEFIR_ASMCMP_MAKE_PHREG(_reg) \
     ((struct kefir_asmcmp_value){.type = KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER, .phreg = (_reg)})
 #define KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(_vreg, _offset, _variant)                       \
@@ -199,6 +228,8 @@ typedef struct kefir_asmcmp_value {
 #define KEFIR_ASMCMP_MAKE_X87(_idx) ((struct kefir_asmcmp_value){.type = KEFIR_ASMCMP_VALUE_TYPE_X87, .x87 = (_idx)})
 #define KEFIR_ASMCMP_MAKE_STASH_INDEX(_idx) \
     ((struct kefir_asmcmp_value){.type = KEFIR_ASMCMP_VALUE_TYPE_STASH_INDEX, .stash_idx = (_idx)})
+#define KEFIR_ASMCMP_MAKE_INLINE_ASSEMBLY(_idx) \
+    ((struct kefir_asmcmp_value){.type = KEFIR_ASMCMP_VALUE_TYPE_INLINE_ASSEMBLY_INDEX, .inline_asm_idx = (_idx)})
 
 #define KEFIR_ASMCMP_SET_SEGMENT(_value, _reg) \
     do {                                       \
@@ -271,6 +302,9 @@ typedef struct kefir_asmcmp_context {
 
     struct kefir_hashtree stashes;
     kefir_asmcmp_stash_index_t next_stash_idx;
+
+    struct kefir_hashtree inline_assembly;
+    kefir_asmcmp_inline_assembly_index_t next_inline_asm_idx;
 
     struct kefir_string_pool strings;
 
@@ -357,6 +391,24 @@ kefir_result_t kefir_asmcmp_register_stash_vreg(const struct kefir_asmcmp_contex
 kefir_result_t kefir_asmcmp_register_stash_liveness_index(const struct kefir_asmcmp_context *,
                                                           kefir_asmcmp_stash_index_t,
                                                           kefir_asmcmp_instruction_index_t *);
+
+kefir_result_t kefir_asmcmp_inline_assembly_new(struct kefir_mem *, struct kefir_asmcmp_context *, const char *,
+                                                kefir_asmcmp_inline_assembly_index_t *);
+kefir_result_t kefir_asmcmp_inline_assembly_add_text(struct kefir_mem *, struct kefir_asmcmp_context *,
+                                                     kefir_asmcmp_inline_assembly_index_t, const char *, ...);
+kefir_result_t kefir_asmcmp_inline_assembly_add_value(struct kefir_mem *, struct kefir_asmcmp_context *,
+                                                      kefir_asmcmp_inline_assembly_index_t,
+                                                      const struct kefir_asmcmp_value *);
+
+typedef struct kefir_asmcmp_inline_assembly_fragment_iterator {
+    const struct kefir_list_entry *iter;
+    struct kefir_asmcmp_inline_assembly_fragment *fragment;
+} kefir_asmcmp_inline_assembly_fragment_iterator_t;
+
+kefir_result_t kefir_asmcmp_inline_assembly_fragment_iter(const struct kefir_asmcmp_context *,
+                                                          kefir_asmcmp_inline_assembly_index_t,
+                                                          struct kefir_asmcmp_inline_assembly_fragment_iterator *);
+kefir_result_t kefir_asmcmp_inline_assembly_fragment_next(struct kefir_asmcmp_inline_assembly_fragment_iterator *);
 
 kefir_result_t kefir_asmcmp_format(struct kefir_mem *, struct kefir_asmcmp_context *, const char **, const char *, ...);
 

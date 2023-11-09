@@ -224,7 +224,7 @@ static kefir_result_t vararg_visit_integer(const struct kefir_ir_type *type, kef
 
     REQUIRE_OK(kefir_asmcmp_amd64_call(param->mem, &param->function->code,
                                        kefir_asmcmp_context_instr_tail(&param->function->code.context),
-                                       &KEFIR_ASMCMP_MAKE_LABEL(symbolic_label), NULL));
+                                       &KEFIR_ASMCMP_MAKE_LABEL(symbolic_label, 0), NULL));
 
     REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
         param->mem, &param->function->code, kefir_asmcmp_context_instr_tail(&param->function->code.context),
@@ -274,7 +274,7 @@ static kefir_result_t vararg_visit_sse(const struct kefir_ir_type *type, kefir_s
 
     REQUIRE_OK(kefir_asmcmp_amd64_call(param->mem, &param->function->code,
                                        kefir_asmcmp_context_instr_tail(&param->function->code.context),
-                                       &KEFIR_ASMCMP_MAKE_LABEL(symbolic_label), NULL));
+                                       &KEFIR_ASMCMP_MAKE_LABEL(symbolic_label, 0), NULL));
 
     REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
         param->mem, &param->function->code, kefir_asmcmp_context_instr_tail(&param->function->code.context),
@@ -385,7 +385,7 @@ static kefir_result_t vararg_register_aggregate_check(struct kefir_mem *mem,
         NULL));
 
     REQUIRE_OK(kefir_asmcmp_amd64_ja(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                                     &KEFIR_ASMCMP_MAKE_LABEL(symbolic_overflow_area_label), NULL));
+                                     &KEFIR_ASMCMP_MAKE_LABEL(symbolic_overflow_area_label, 0), NULL));
 
     REQUIRE_OK(kefir_asmcmp_amd64_mov(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
@@ -406,7 +406,7 @@ static kefir_result_t vararg_register_aggregate_check(struct kefir_mem *mem,
         NULL));
 
     REQUIRE_OK(kefir_asmcmp_amd64_ja(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                                     &KEFIR_ASMCMP_MAKE_LABEL(symbolic_overflow_area_label), NULL));
+                                     &KEFIR_ASMCMP_MAKE_LABEL(symbolic_overflow_area_label, 0), NULL));
 
     *integer_qwords = required_integers;
     *sse_qwords = required_sse;
@@ -541,7 +541,7 @@ static kefir_result_t vararg_register_aggregate_load(
     }
 
     REQUIRE_OK(kefir_asmcmp_amd64_jmp(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                                      &KEFIR_ASMCMP_MAKE_LABEL(symbolic_overflow_area_end_label), NULL));
+                                      &KEFIR_ASMCMP_MAKE_LABEL(symbolic_overflow_area_end_label, 0), NULL));
     return KEFIR_OK;
 }
 
@@ -686,7 +686,7 @@ static kefir_result_t vararg_visit_builtin(const struct kefir_ir_type *type, kef
 
             REQUIRE_OK(kefir_asmcmp_amd64_call(param->mem, &param->function->code,
                                                kefir_asmcmp_context_instr_tail(&param->function->code.context),
-                                               &KEFIR_ASMCMP_MAKE_LABEL(symbolic_label), NULL));
+                                               &KEFIR_ASMCMP_MAKE_LABEL(symbolic_label, 0), NULL));
 
             REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
                 param->mem, &param->function->code, kefir_asmcmp_context_instr_tail(&param->function->code.context),

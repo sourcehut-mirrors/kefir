@@ -67,6 +67,7 @@ typedef struct kefir_codegen_amd64_stack_frame kefir_codegen_amd64_stack_frame_t
     KEFIR_ASMCMP_AMD64_VIRTUAL_OPCODE_HELPER(_instr0, noop) _separator \
     KEFIR_ASMCMP_AMD64_VIRTUAL_OPCODE_HELPER(_instr0, stash_activate) _separator \
     KEFIR_ASMCMP_AMD64_VIRTUAL_OPCODE_HELPER(_instr0, stash_deactivate) _separator \
+    KEFIR_ASMCMP_AMD64_VIRTUAL_OPCODE_HELPER(_instr0, inline_assembly) _separator \
     KEFIR_ASMCMP_AMD64_VIRTUAL_OPCODE_HELPER(_instr0, data_word)
 // clang-format on
 
@@ -175,6 +176,11 @@ kefir_result_t kefir_asmcmp_amd64_function_epilogue(struct kefir_mem *, struct k
                                                     kefir_asmcmp_instruction_index_t,
                                                     kefir_asmcmp_instruction_index_t *);
 
+kefir_result_t kefir_asmcmp_amd64_inline_assembly(struct kefir_mem *, struct kefir_asmcmp_amd64 *,
+                                                  kefir_asmcmp_instruction_index_t,
+                                                  kefir_asmcmp_inline_assembly_index_t,
+                                                  kefir_asmcmp_instruction_index_t *);
+
 kefir_result_t kefir_asmcmp_amd64_noop(struct kefir_mem *, struct kefir_asmcmp_amd64 *,
                                        kefir_asmcmp_instruction_index_t, kefir_asmcmp_instruction_index_t *);
 
@@ -182,7 +188,8 @@ kefir_result_t kefir_asmcmp_amd64_data_word(struct kefir_mem *, struct kefir_asm
                                             kefir_asmcmp_instruction_index_t, kefir_uint16_t,
                                             kefir_asmcmp_instruction_index_t *);
 
-kefir_result_t kefir_asmcmp_amd64_generate_code(struct kefir_amd64_xasmgen *, const struct kefir_asmcmp_amd64 *,
+kefir_result_t kefir_asmcmp_amd64_generate_code(struct kefir_mem *, struct kefir_amd64_xasmgen *,
+                                                const struct kefir_asmcmp_amd64 *,
                                                 const struct kefir_codegen_amd64_stack_frame *);
 
 #endif

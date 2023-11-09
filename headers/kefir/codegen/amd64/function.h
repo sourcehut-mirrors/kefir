@@ -179,7 +179,8 @@ kefir_result_t kefir_codegen_amd64_function_format_label(struct kefir_mem *, str
     _def(vararg_start, KEFIR_OPT_OPCODE_VARARG_START) _separator \
     _def(vararg_end, KEFIR_OPT_OPCODE_VARARG_END) _separator \
     _def(vararg_copy, KEFIR_OPT_OPCODE_VARARG_COPY) _separator \
-    _def(vararg_get, KEFIR_OPT_OPCODE_VARARG_GET)
+    _def(vararg_get, KEFIR_OPT_OPCODE_VARARG_GET) _separator \
+    _def(inline_assembly, KEFIR_OPT_OPCODE_INLINE_ASSEMBLY)
 // clang-format on
 
 #define KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(_id) kefir_codegen_amd64_translate_##_id
