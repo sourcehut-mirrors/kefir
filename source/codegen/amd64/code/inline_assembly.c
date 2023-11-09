@@ -59,6 +59,7 @@ typedef struct inline_assembly_parameter_allocation_entry {
 } inline_assembly_parameter_allocation_entry_t;
 
 struct inline_assembly_context {
+    const struct kefir_opt_instruction *instruction;
     struct kefir_opt_inline_assembly_node *inline_assembly;
     const struct kefir_ir_inline_assembly *ir_inline_assembly;
     kefir_asmcmp_stash_index_t stash_idx;
@@ -66,6 +67,7 @@ struct inline_assembly_context {
     struct kefir_list available_registers;
     struct inline_assembly_parameter_allocation_entry *parameters;
     kefir_asmcmp_inline_assembly_index_t inline_asm_idx;
+    struct kefir_hashtree jump_trampolines;
 };
 
 static kefir_result_t mark_clobbers(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
@@ -596,8 +598,31 @@ static kefir_result_t match_parameter(const struct kefir_ir_inline_assembly *inl
     }
 }
 
-static kefir_result_t label_param_modifier(struct kefir_mem *mem, struct inline_assembly_context *context,
-                                           const char **input_str) {
+static kefir_result_t format_label_parameter(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
+                                             struct inline_assembly_context *context,
+                                             const struct kefir_ir_inline_assembly_jump_target *jump_target) {
+    kefir_asmcmp_label_index_t label;
+    struct kefir_hashtree_node *node;
+    kefir_result_t res = kefir_hashtree_at(&context->jump_trampolines, (kefir_hashtree_key_t) jump_target->uid, &node);
+    if (res == KEFIR_NOT_FOUND) {
+        REQUIRE_OK(kefir_asmcmp_context_new_label(mem, &function->code.context, KEFIR_ASMCMP_INDEX_NONE, &label));
+        REQUIRE_OK(kefir_hashtree_insert(mem, &context->jump_trampolines, (kefir_hashtree_key_t) jump_target->uid,
+                                         (kefir_hashtree_value_t) label));
+    } else {
+        REQUIRE_OK(res);
+        label = node->value;
+    }
+
+    const char *label_symbol;
+    REQUIRE_OK(kefir_codegen_amd64_function_format_label(mem, function, label, &label_symbol));
+
+    REQUIRE_OK(kefir_asmcmp_inline_assembly_add_value(mem, &function->code.context, context->inline_asm_idx,
+                                                      &KEFIR_ASMCMP_MAKE_LABEL(label_symbol, 0)));
+    return KEFIR_OK;
+}
+
+static kefir_result_t label_param_modifier(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
+                                           struct inline_assembly_context *context, const char **input_str) {
     UNUSED(mem);
     const char *input = *input_str;
     const struct kefir_ir_inline_assembly_parameter *asm_param;
@@ -608,7 +633,8 @@ static kefir_result_t label_param_modifier(struct kefir_mem *mem, struct inline_
                             "Inline assembly label parameter modifier cannot be applied to register parameters"));
     REQUIRE(jump_target != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected parameter matching result"));
     *input_str = input;
-    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Labels in inline assembly are not implemented yet");
+    REQUIRE_OK(format_label_parameter(mem, function, context, jump_target));
+    return KEFIR_OK;
 }
 
 static kefir_result_t pointer_operand(const struct kefir_ir_inline_assembly_parameter *asm_param,
@@ -710,7 +736,7 @@ static kefir_result_t default_param_modifier(struct kefir_mem *mem, struct kefir
     if (asm_param != NULL) {
         REQUIRE_OK(format_normal_parameter(mem, function, context, asm_param, 0));
     } else if (jump_target != NULL) {
-        return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Labels in inline assembly are not implemented yet");
+        REQUIRE_OK(format_label_parameter(mem, function, context, jump_target));
     } else {
         return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected parameter matching result");
     }
@@ -727,7 +753,7 @@ static kefir_result_t byte_param_modifier(struct kefir_mem *mem, struct kefir_co
     if (asm_param != NULL) {
         REQUIRE_OK(format_normal_parameter(mem, function, context, asm_param, 1));
     } else if (jump_target != NULL) {
-        return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Labels in inline assembly are not implemented yet");
+        REQUIRE_OK(format_label_parameter(mem, function, context, jump_target));
     } else {
         return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected parameter matching result");
     }
@@ -744,7 +770,7 @@ static kefir_result_t word_param_modifier(struct kefir_mem *mem, struct kefir_co
     if (asm_param != NULL) {
         REQUIRE_OK(format_normal_parameter(mem, function, context, asm_param, 2));
     } else if (jump_target != NULL) {
-        return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Labels in inline assembly are not implemented yet");
+        REQUIRE_OK(format_label_parameter(mem, function, context, jump_target));
     } else {
         return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected parameter matching result");
     }
@@ -761,7 +787,7 @@ static kefir_result_t dword_param_modifier(struct kefir_mem *mem, struct kefir_c
     if (asm_param != NULL) {
         REQUIRE_OK(format_normal_parameter(mem, function, context, asm_param, 4));
     } else if (jump_target != NULL) {
-        return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Labels in inline assembly are not implemented yet");
+        REQUIRE_OK(format_label_parameter(mem, function, context, jump_target));
     } else {
         return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected parameter matching result");
     }
@@ -778,7 +804,7 @@ static kefir_result_t qword_param_modifier(struct kefir_mem *mem, struct kefir_c
     if (asm_param != NULL) {
         REQUIRE_OK(format_normal_parameter(mem, function, context, asm_param, 8));
     } else if (jump_target != NULL) {
-        return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Labels in inline assembly are not implemented yet");
+        REQUIRE_OK(format_label_parameter(mem, function, context, jump_target));
     } else {
         return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected parameter matching result");
     }
@@ -819,7 +845,7 @@ static kefir_result_t inline_assembly_build(struct kefir_mem *mem, struct kefir_
 
                 case 'l': {
                     template_iter = format_specifier + 2;
-                    kefir_result_t res = label_param_modifier(mem, context, &template_iter);
+                    kefir_result_t res = label_param_modifier(mem, function, context, &template_iter);
                     if (res == KEFIR_NOT_FOUND) {
                         template_iter = format_specifier + 1;
                         res = default_param_modifier(mem, function, context, &template_iter);
@@ -1053,6 +1079,56 @@ static kefir_result_t restore_state(struct kefir_mem *mem, struct kefir_codegen_
     return KEFIR_OK;
 }
 
+static kefir_result_t jump_trampolines(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
+                                       struct inline_assembly_context *context) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(context != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer codegen inline assembly context"));
+    REQUIRE(!kefir_hashtree_empty(&context->inline_assembly->jump_targets), KEFIR_OK);
+
+    REQUIRE_OK(kefir_codegen_amd64_function_map_phi_outputs(
+        mem, function, context->inline_assembly->default_jump_target, context->instruction->block_id));
+
+    struct kefir_hashtree_node *target_label_node;
+    REQUIRE_OK(kefir_hashtree_at(
+        &function->labels, (kefir_hashtree_key_t) context->inline_assembly->default_jump_target, &target_label_node));
+    ASSIGN_DECL_CAST(kefir_asmcmp_label_index_t, target_label, target_label_node->value);
+
+    const char *label_symbol;
+    REQUIRE_OK(kefir_codegen_amd64_function_format_label(mem, function, target_label, &label_symbol));
+
+    REQUIRE_OK(kefir_asmcmp_amd64_jmp(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                                      &KEFIR_ASMCMP_MAKE_LABEL(label_symbol, 0), NULL));
+
+    struct kefir_hashtree_node_iterator iter;
+    for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&context->inline_assembly->jump_targets, &iter);
+         node != NULL; node = kefir_hashtree_next(&iter)) {
+
+        ASSIGN_DECL_CAST(kefir_opt_block_id_t, target_block, node->value);
+        kefir_result_t res = kefir_hashtree_at(&context->jump_trampolines, node->key, &target_label_node);
+        if (res == KEFIR_NOT_FOUND) {
+            continue;
+        }
+        REQUIRE_OK(res);
+        target_label = target_label_node->value;
+
+        REQUIRE_OK(kefir_asmcmp_context_bind_label_after_tail(mem, &function->code.context, target_label));
+
+        REQUIRE_OK(store_outputs(mem, function, context));
+        REQUIRE_OK(restore_state(mem, function, context));
+        REQUIRE_OK(
+            kefir_codegen_amd64_function_map_phi_outputs(mem, function, target_block, context->instruction->block_id));
+
+        REQUIRE_OK(kefir_hashtree_at(&function->labels, (kefir_hashtree_key_t) target_block, &target_label_node));
+        target_label = (kefir_asmcmp_label_index_t) target_label_node->value;
+        REQUIRE_OK(kefir_codegen_amd64_function_format_label(mem, function, target_label, &label_symbol));
+        REQUIRE_OK(kefir_asmcmp_amd64_jmp(mem, &function->code,
+                                          kefir_asmcmp_context_instr_tail(&function->code.context),
+                                          &KEFIR_ASMCMP_MAKE_LABEL(label_symbol, 0), NULL));
+    }
+    return KEFIR_OK;
+}
+
 kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(inline_assembly)(struct kefir_mem *mem,
                                                                      struct kefir_codegen_amd64_function *function,
                                                                      const struct kefir_opt_instruction *instruction) {
@@ -1060,7 +1136,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(inline_assembly)(struct kefi
     REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
 
-    struct inline_assembly_context context = {.dirty_cc = false};
+    struct inline_assembly_context context = {.instruction = instruction, .dirty_cc = false};
     REQUIRE_OK(kefir_opt_code_container_inline_assembly(
         &function->function->code, instruction->operation.parameters.inline_asm_ref, &context.inline_assembly));
     context.ir_inline_assembly =
@@ -1069,6 +1145,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(inline_assembly)(struct kefi
             KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to find IR inline assembly"));
 
     REQUIRE_OK(kefir_list_init(&context.available_registers));
+    REQUIRE_OK(kefir_hashtree_init(&context.jump_trampolines, &kefir_hashtree_uint_ops));
     context.parameters = KEFIR_MALLOC(
         mem, sizeof(struct inline_assembly_parameter_allocation_entry) * context.inline_assembly->parameter_count);
     REQUIRE(context.parameters != NULL,
@@ -1082,9 +1159,11 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(inline_assembly)(struct kefi
     REQUIRE_CHAIN(&res, inline_assembly_build(mem, function, &context));
     REQUIRE_CHAIN(&res, store_outputs(mem, function, &context));
     REQUIRE_CHAIN(&res, restore_state(mem, function, &context));
+    REQUIRE_CHAIN(&res, jump_trampolines(mem, function, &context));
 
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, context.parameters);
+        kefir_hashtree_free(mem, &context.jump_trampolines);
         kefir_list_free(mem, &context.available_registers);
         return res;
     });
@@ -1092,6 +1171,11 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(inline_assembly)(struct kefi
     memset(context.parameters, 0,
            sizeof(struct inline_assembly_parameter_allocation_entry) * context.inline_assembly->parameter_count);
     KEFIR_FREE(mem, context.parameters);
+    res = kefir_hashtree_free(mem, &context.jump_trampolines);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_list_free(mem, &context.available_registers);
+        return res;
+    });
     REQUIRE_OK(kefir_list_free(mem, &context.available_registers));
 
     return KEFIR_OK;

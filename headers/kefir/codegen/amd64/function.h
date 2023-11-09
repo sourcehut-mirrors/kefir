@@ -62,6 +62,8 @@ kefir_result_t kefir_codegen_amd64_function_vreg_of(struct kefir_codegen_amd64_f
                                                     kefir_asmcmp_virtual_register_index_t *);
 kefir_result_t kefir_codegen_amd64_function_format_label(struct kefir_mem *, struct kefir_codegen_amd64_function *,
                                                          kefir_asmcmp_label_index_t, const char **);
+kefir_result_t kefir_codegen_amd64_function_map_phi_outputs(struct kefir_mem *, struct kefir_codegen_amd64_function *,
+                                                            kefir_opt_block_id_t, kefir_opt_block_id_t);
 
 // clang-format off
 #define KEFIR_CODEGEN_AMD64_INSTRUCTIONS(_def, _separator)                                               \
