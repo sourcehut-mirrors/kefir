@@ -22,6 +22,8 @@
 
 void run_callbacks(int[callback1()], char[*], double (*)[callback2()]) {}
 
+void run_callbacks2();
+
 void run_callbacks2(arr1, arr2) short arr1[callback2()];
 long arr2[callback2()];
 {}

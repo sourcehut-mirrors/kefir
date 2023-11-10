@@ -276,3 +276,36 @@ const struct kefir_ast_type *kefir_ast_type_function(struct kefir_mem *mem, stru
     *function_type = &type->function_type;
     return type;
 }
+
+kefir_result_t kefir_ast_type_function_defintion_compatible(const struct kefir_ast_type_traits *type_traits,
+                                                            const struct kefir_ast_type *declaration_type,
+                                                            const struct kefir_ast_type *definition_type,
+                                                            kefir_bool_t *result) {
+    REQUIRE(type_traits != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type traits"));
+    REQUIRE(declaration_type != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST function declaration type"));
+    REQUIRE(definition_type != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST function definition type"));
+    REQUIRE(result != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
+
+    if (!compatible_function_types(type_traits, declaration_type, definition_type)) {
+        *result = false;
+        return KEFIR_OK;
+    }
+
+    if (declaration_type->function_type.mode == KEFIR_AST_FUNCTION_TYPE_PARAMETERS &&
+        kefir_list_length(&declaration_type->function_type.parameters) !=
+            kefir_list_length(&definition_type->function_type.parameters)) {
+        *result = false;
+        if (kefir_list_length(&declaration_type->function_type.parameters) == 1 &&
+            kefir_list_length(&definition_type->function_type.parameters) == 0) {
+            const struct kefir_ast_function_type_parameter *parameter;
+            REQUIRE_OK(kefir_ast_type_function_get_parameter(&declaration_type->function_type, 0, &parameter));
+            *result = parameter->type != NULL && parameter->type->tag == KEFIR_AST_TYPE_VOID;
+        }
+        return KEFIR_OK;
+    }
+
+    *result = true;
+    return KEFIR_OK;
+}

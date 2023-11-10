@@ -9,188 +9,154 @@
 .global clear16
 .global clear32
 .global clear64
-.extern __kefirrt_opt_save_registers
-.extern __kefirrt_opt_load_int_vararg
-.extern __kefirrt_opt_load_sse_vararg
+.extern __kefir_opt_float32_neg
+.extern __kefir_opt_float64_neg
 .extern __kefirrt_opt_float32_to_uint
 .extern __kefirrt_opt_float64_to_uint
-.extern __kefirrt_opt_long_double_to_int
 
 .section .text
 set8:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-__kefir_func_set8_block0:
-    lea -16(%rbp), %rax
+_kefir_func_set8_label0:
+    lea -8(%rbp), %rax
     movq %rdi, (%rax)
-    lea -16(%rbp), %rax
+    lea -8(%rbp), %rax
     mov %rax, %rcx
 xor %al, %al
 not %al
 movb %al, (%rcx)
-    lea -16(%rbp), %rax
-    movq (%rax), %rcx
-    mov %rcx, %rax
+    lea -8(%rbp), %rax
+    movq (%rax), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-.section .rodata
-.section .text
 
 set16:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-__kefir_func_set16_block0:
-    lea -16(%rbp), %rax
+_kefir_func_set16_label0:
+    lea -8(%rbp), %rax
     movq %rdi, (%rax)
-    lea -16(%rbp), %rax
+    lea -8(%rbp), %rax
     mov %rax, %rcx
 xor %ax, %ax
 not %ax
 movw %ax, (%rcx)
-    lea -16(%rbp), %rax
-    movq (%rax), %rcx
-    mov %rcx, %rax
+    lea -8(%rbp), %rax
+    movq (%rax), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-.section .rodata
-.section .text
 
 set32:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-__kefir_func_set32_block0:
-    lea -16(%rbp), %rax
+_kefir_func_set32_label0:
+    lea -8(%rbp), %rax
     movq %rdi, (%rax)
-    lea -16(%rbp), %rax
+    lea -8(%rbp), %rax
     mov %rax, %rcx
 xor %eax, %eax
 not %eax
 movl %eax, (%rcx)
-    lea -16(%rbp), %rax
-    movq (%rax), %rcx
-    mov %rcx, %rax
+    lea -8(%rbp), %rax
+    movq (%rax), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-.section .rodata
-.section .text
 
 set64:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-__kefir_func_set64_block0:
-    lea -16(%rbp), %rax
+_kefir_func_set64_label0:
+    lea -8(%rbp), %rax
     movq %rdi, (%rax)
-    lea -16(%rbp), %rax
+    lea -8(%rbp), %rax
     mov %rax, %rcx
 xor %rax, %rax
 not %rax
 movq %rax, (%rcx)
-    lea -16(%rbp), %rax
-    movq (%rax), %rcx
-    mov %rcx, %rax
+    lea -8(%rbp), %rax
+    movq (%rax), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-.section .rodata
-.section .text
 
 clear8:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-__kefir_func_clear8_block0:
-    lea -16(%rbp), %rax
+_kefir_func_clear8_label0:
+    lea -8(%rbp), %rax
     movq %rdi, (%rax)
-    lea -16(%rbp), %rax
-    sub $16, %rsp
-    mov %rax, (%rsp)
+    lea -8(%rbp), %rax
+    movq %rax, -16(%rbp)
 movb $0, %al
-    mov (%rsp), %rcx
-    mov %rax, (%rcx)
-    add $16, %rsp
-    lea -16(%rbp), %rax
-    movq (%rax), %rcx
-    mov %rcx, %rax
+    movq -16(%rbp), %rdi
+    mov %rax, (%rdi)
+    lea -8(%rbp), %rax
+    movq (%rax), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-.section .rodata
-.section .text
 
 clear16:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-__kefir_func_clear16_block0:
-    lea -16(%rbp), %rax
+_kefir_func_clear16_label0:
+    lea -8(%rbp), %rax
     movq %rdi, (%rax)
-    lea -16(%rbp), %rax
-    sub $16, %rsp
-    mov %rax, (%rsp)
+    lea -8(%rbp), %rax
+    movq %rax, -16(%rbp)
 movw $0, %ax
-    mov (%rsp), %rcx
-    mov %rax, (%rcx)
-    add $16, %rsp
-    lea -16(%rbp), %rax
-    movq (%rax), %rcx
-    mov %rcx, %rax
+    movq -16(%rbp), %rdi
+    mov %rax, (%rdi)
+    lea -8(%rbp), %rax
+    movq (%rax), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-.section .rodata
-.section .text
 
 clear32:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-__kefir_func_clear32_block0:
-    lea -16(%rbp), %rax
+_kefir_func_clear32_label0:
+    lea -8(%rbp), %rax
     movq %rdi, (%rax)
-    lea -16(%rbp), %rax
-    sub $16, %rsp
-    mov %rax, (%rsp)
+    lea -8(%rbp), %rax
+    movq %rax, -16(%rbp)
 movl $0, %eax
-    mov (%rsp), %rcx
-    mov %rax, (%rcx)
-    add $16, %rsp
-    lea -16(%rbp), %rax
-    movq (%rax), %rcx
-    mov %rcx, %rax
+    movq -16(%rbp), %rdi
+    mov %rax, (%rdi)
+    lea -8(%rbp), %rax
+    movq (%rax), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-.section .rodata
-.section .text
 
 clear64:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-__kefir_func_clear64_block0:
-    lea -16(%rbp), %rax
+_kefir_func_clear64_label0:
+    lea -8(%rbp), %rax
     movq %rdi, (%rax)
-    lea -16(%rbp), %rax
-    sub $16, %rsp
-    mov %rax, (%rsp)
+    lea -8(%rbp), %rax
+    movq %rax, -16(%rbp)
 movq $0, %rax
-    mov (%rsp), %rcx
-    mov %rax, (%rcx)
-    add $16, %rsp
-    lea -16(%rbp), %rax
-    movq (%rax), %rcx
-    mov %rcx, %rax
+    movq -16(%rbp), %rdi
+    mov %rax, (%rdi)
+    lea -8(%rbp), %rax
+    movq (%rax), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-.section .rodata
-.section .text
 
 

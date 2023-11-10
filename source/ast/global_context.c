@@ -1077,7 +1077,10 @@ kefir_result_t kefir_ast_global_context_define_function(struct kefir_mem *mem, s
                     ordinary_id->function.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
                                        "Cannot declare the same identifier with different storage class"));
-        REQUIRE(KEFIR_AST_TYPE_COMPATIBLE(context->type_traits, ordinary_id->function.type, function),
+        kefir_bool_t compatibility;
+        REQUIRE_OK(kefir_ast_type_function_defintion_compatible(context->type_traits, ordinary_id->function.type,
+                                                                function, &compatibility));
+        REQUIRE(compatibility,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
                                        "All declarations of the same identifier shall have compatible types"));
         REQUIRE(!ordinary_id->function.defined,

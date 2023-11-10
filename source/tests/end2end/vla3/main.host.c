@@ -24,6 +24,8 @@
 #include <math.h>
 #include "./definitions.h"
 
+void run_callbacks2(void);
+
 static unsigned call1 = 0;
 static unsigned call2 = 0;
 

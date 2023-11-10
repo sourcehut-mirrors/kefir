@@ -6,65 +6,55 @@
 .global get_local_tlocal_uninit_static
 .global get_local_uninit_static
 .global GLOBAL_UNINIT_STATIC
-.extern __kefirrt_opt_save_registers
-.extern __kefirrt_opt_load_int_vararg
-.extern __kefirrt_opt_load_sse_vararg
+.extern __kefir_opt_float32_neg
+.extern __kefir_opt_float64_neg
 .extern __kefirrt_opt_float32_to_uint
 .extern __kefirrt_opt_float64_to_uint
-.extern __kefirrt_opt_long_double_to_int
 
 .section .text
 get_global_uninit_static:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_get_global_uninit_static_block0:
+_kefir_func_get_global_uninit_static_label0:
     lea __kefirrt_module_static_uninit_vars(%rip), %rax
-    lea (%rbp), %rsp
     pop %rbp
     ret
-.section .rodata
-.section .text
 
 get_global_tlocal_uninit_static:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_get_global_tlocal_uninit_static_block0:
+_kefir_func_get_global_tlocal_uninit_static_label0:
     data16     lea __kefirrt_module_static_tlocal_uninit_vars@tlsgd(%rip), %rdi
     .word 26214
     rex.W     call __tls_get_addr@PLT
-    lea (%rbp), %rsp
+    mov %rax, %rcx
+    mov %rcx, %rax
     pop %rbp
     ret
-.section .rodata
-.section .text
 
 get_local_tlocal_uninit_static:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_get_local_tlocal_uninit_static_block0:
+_kefir_func_get_local_tlocal_uninit_static_label0:
     data16     lea __kefirrt_module_static_tlocal_uninit_vars@tlsgd(%rip), %rdi
     .word 26214
     rex.W     call __tls_get_addr@PLT
-    mov $24, %rcx
-    add %rcx, %rax
-    lea (%rbp), %rsp
+    mov %rax, %rcx
+    mov $24, %rax
+    add %rax, %rcx
+    mov %rcx, %rax
     pop %rbp
     ret
-.section .rodata
-.section .text
 
 get_local_uninit_static:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_get_local_uninit_static_block0:
+_kefir_func_get_local_uninit_static_label0:
     lea __kefirrt_module_static_uninit_vars(%rip), %rax
     mov $24, %rcx
     add %rcx, %rax
-    lea (%rbp), %rsp
     pop %rbp
     ret
-.section .rodata
-.section .text
 
 
 .section .data

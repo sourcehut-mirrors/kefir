@@ -60,4 +60,8 @@ kefir_result_t kefir_ast_type_function_ellipsis(struct kefir_ast_function_type *
 const struct kefir_ast_type *kefir_ast_type_function(struct kefir_mem *, struct kefir_ast_type_bundle *,
                                                      const struct kefir_ast_type *, struct kefir_ast_function_type **);
 
+kefir_result_t kefir_ast_type_function_defintion_compatible(const struct kefir_ast_type_traits *,
+                                                            const struct kefir_ast_type *,
+                                                            const struct kefir_ast_type *, kefir_bool_t *);
+
 #endif

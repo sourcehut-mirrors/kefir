@@ -12,41 +12,39 @@
 .global ldcuint
 .global uintcld
 .global imp_cast
-.extern __kefirrt_opt_save_registers
-.extern __kefirrt_opt_load_int_vararg
-.extern __kefirrt_opt_load_sse_vararg
+.extern __kefir_opt_float32_neg
+.extern __kefir_opt_float64_neg
 .extern __kefirrt_opt_float32_to_uint
 .extern __kefirrt_opt_float64_to_uint
-.extern __kefirrt_opt_long_double_to_int
 
 .section .text
 inc:
     push %rbp
     mov %rsp, %rbp
-    sub $80, %rsp
-__kefir_func_inc_block0:
+    sub $96, %rsp
+    fstcw -8(%rbp)
+_kefir_func_inc_label0:
     lea 16(%rbp), %rax
-    lea -80(%rbp), %rcx
+    lea -96(%rbp), %rcx
     fldt (%rax)
     fstpt (%rcx)
-    lea -80(%rbp), %rcx
+    lea -96(%rbp), %rax
+    lea -64(%rbp), %rcx
+    fldt _kefir_func_inc_label1(%rip)
+    fstpt (%rcx)
     lea -48(%rbp), %rdx
-    fldt __kefir_func_inc_const5(%rip)
-    fstpt (%rdx)
-    lea -32(%rbp), %rsi
-    fldt (%rdx)
     fldt (%rcx)
-    faddp
-    mov %rsi, %rcx
-    fstpt (%rcx)
-    mov %rcx, %rax
     fldt (%rax)
+    faddp
+    fstpt (%rdx)
+    fldt (%rdx)
+    fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
 .section .rodata
-    .align 16
-__kefir_func_inc_const5:
+    .align 8
+_kefir_func_inc_label1:
     .quad 9223372036854775808
     .quad 16383
 .section .text
@@ -54,237 +52,213 @@ __kefir_func_inc_const5:
 neg:
     push %rbp
     mov %rsp, %rbp
-    sub $64, %rsp
-__kefir_func_neg_block0:
+    sub $80, %rsp
+    fstcw -8(%rbp)
+_kefir_func_neg_label0:
     lea 16(%rbp), %rax
-    lea -64(%rbp), %rcx
+    lea -80(%rbp), %rcx
     fldt (%rax)
     fstpt (%rcx)
-    lea -64(%rbp), %rcx
-    lea -32(%rbp), %rdx
-    fldt (%rcx)
+    lea -80(%rbp), %rax
+    lea -48(%rbp), %rcx
+    fldt (%rax)
     fchs
-    mov %rdx, %rcx
     fstpt (%rcx)
-    mov %rcx, %rax
-    fldt (%rax)
+    fldt (%rcx)
+    fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-.section .rodata
-.section .text
 
 f32cld:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
-__kefir_func_f32cld_block0:
-    lea -48(%rbp), %rax
+    sub $80, %rsp
+    fstcw -8(%rbp)
+_kefir_func_f32cld_label0:
+    lea -64(%rbp), %rax
     movd %xmm0, (%rax)
-    lea -48(%rbp), %rax
-    movl (%rax), %ecx
-    mov %rcx, %rax
-    lea -32(%rbp), %rcx
-    sub $4, %rsp
-    mov %eax, (%rsp)
-    flds (%rsp)
-    add $4, %rsp
-    mov %rcx, %rax
-    fstpt (%rax)
-    fldt (%rax)
+    lea -64(%rbp), %rax
+    movl (%rax), %eax
+    lea -48(%rbp), %rcx
+    mov %rax, -80(%rbp)
+    flds -80(%rbp)
+    fstpt (%rcx)
+    fldt (%rcx)
+    fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-.section .rodata
-.section .text
 
 f64cld:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
-__kefir_func_f64cld_block0:
-    lea -48(%rbp), %rax
+    sub $80, %rsp
+    fstcw -8(%rbp)
+_kefir_func_f64cld_label0:
+    lea -64(%rbp), %rax
     movq %xmm0, (%rax)
-    lea -48(%rbp), %rax
-    movq (%rax), %rcx
-    mov %rcx, %rax
-    lea -32(%rbp), %rcx
-    push %rax
-    fldl (%rsp)
-    add $8, %rsp
-    mov %rcx, %rax
-    fstpt (%rax)
-    fldt (%rax)
+    lea -64(%rbp), %rax
+    movq (%rax), %rax
+    lea -48(%rbp), %rcx
+    mov %rax, -80(%rbp)
+    fldl -80(%rbp)
+    fstpt (%rcx)
+    fldt (%rcx)
+    fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-.section .rodata
-.section .text
 
 intcld:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
-__kefir_func_intcld_block0:
-    lea -48(%rbp), %rax
+    sub $64, %rsp
+    fstcw -8(%rbp)
+_kefir_func_intcld_label0:
+    lea -64(%rbp), %rax
     movl %edi, (%rax)
-    lea -48(%rbp), %rax
-    movsxl (%rax), %rcx
-    mov %rcx, %rax
-    lea -32(%rbp), %rcx
+    lea -64(%rbp), %rax
+    movsxl (%rax), %rax
+    lea -48(%rbp), %rcx
     push %rax
     fildq (%rsp)
     add $8, %rsp
-    mov %rcx, %rax
-    fstpt (%rax)
-    fldt (%rax)
+    fstpt (%rcx)
+    fldt (%rcx)
+    fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-.section .rodata
-.section .text
 
 ldcf32:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-    stmxcsr -8(%rbp)
-__kefir_func_ldcf32_block0:
+    fstcw -8(%rbp)
+    stmxcsr -16(%rbp)
+_kefir_func_ldcf32_label0:
     lea 16(%rbp), %rax
     lea -48(%rbp), %rcx
     fldt (%rax)
     fstpt (%rcx)
-    lea -48(%rbp), %rcx
-    mov %rcx, %rax
+    lea -48(%rbp), %rax
     fldt (%rax)
     fstps -4(%rsp)
     movd -4(%rsp), %xmm0
-    ldmxcsr -8(%rbp)
+    ldmxcsr -16(%rbp)
+    fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-.section .rodata
-.section .text
 
 ldcf64:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-    stmxcsr -8(%rbp)
-__kefir_func_ldcf64_block0:
+    fstcw -8(%rbp)
+    stmxcsr -16(%rbp)
+_kefir_func_ldcf64_label0:
     lea 16(%rbp), %rax
     lea -48(%rbp), %rcx
     fldt (%rax)
     fstpt (%rcx)
-    lea -48(%rbp), %rcx
-    mov %rcx, %rax
+    lea -48(%rbp), %rax
     fldt (%rax)
     fstpl -8(%rsp)
     movq -8(%rsp), %xmm0
-    ldmxcsr -8(%rbp)
+    ldmxcsr -16(%rbp)
+    fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-.section .rodata
-.section .text
 
 ldcint:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
-__kefir_func_ldcint_block0:
+    sub $48, %rsp
+    fstcw -8(%rbp)
+_kefir_func_ldcint_label0:
     lea 16(%rbp), %rax
-    lea -32(%rbp), %rcx
+    lea -48(%rbp), %rcx
     fldt (%rax)
     fstpt (%rcx)
-    lea -32(%rbp), %rcx
-    mov %rcx, %rax
+    lea -48(%rbp), %rax
     fldt (%rax)
     call __kefirrt_opt_long_double_to_int@PLT
     mov %rax, %rcx
     movsx %ecx, %rax
-    mov %rax, %rcx
-    mov %rcx, %rax
+    fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-.section .rodata
-.section .text
 
 ldcuint:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
-__kefir_func_ldcuint_block0:
+    sub $48, %rsp
+    fstcw -8(%rbp)
+_kefir_func_ldcuint_label0:
     lea 16(%rbp), %rax
-    lea -32(%rbp), %rcx
+    lea -48(%rbp), %rcx
     fldt (%rax)
     fstpt (%rcx)
-    lea -32(%rbp), %rcx
-    mov %rcx, %rax
+    lea -48(%rbp), %rax
     fldt (%rax)
     call __kefirrt_opt_long_double_to_uint@PLT
     mov %rax, %rcx
-    movabs $4294967295, %rdx
-    and %rdx, %rcx
+    movabs $4294967295, %rax
+    and %rax, %rcx
     mov %rcx, %rax
+    fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-.section .rodata
-.section .text
 
 uintcld:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
-__kefir_func_uintcld_block0:
-    lea -48(%rbp), %rax
+    sub $64, %rsp
+    fstcw -8(%rbp)
+_kefir_func_uintcld_label0:
+    lea -64(%rbp), %rax
     movl %edi, (%rax)
-    lea -48(%rbp), %rax
-    movl (%rax), %ecx
-    mov %rcx, %rax
-    lea -32(%rbp), %rcx
+    lea -64(%rbp), %rax
+    movl (%rax), %eax
+    lea -48(%rbp), %rcx
     push %rax
     fildq (%rsp)
     add $8, %rsp
     test %rax, %rax
-    jns __kefir_func_uintcld_block0_label0
-    fadds __kefir_func_uintcld_uint2ld(%rip)
-__kefir_func_uintcld_block0_label0:
-    mov %rcx, %rax
-    fstpt (%rax)
-    fldt (%rax)
+    jns _kefir_func_uintcld_label1
+    fadds __kefir_opt_uint2long_double(%rip)
+_kefir_func_uintcld_label1:
+    fstpt (%rcx)
+    fldt (%rcx)
+    fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-.section .rodata
-    .align 4
-__kefir_func_uintcld_uint2ld:
-    .long 1602224128
-.section .text
 
 imp_cast:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
-__kefir_func_imp_cast_block0:
-    lea -32(%rbp), %rax
+    sub $48, %rsp
+    fstcw -8(%rbp)
+_kefir_func_imp_cast_label0:
+    lea -48(%rbp), %rax
     movl %edi, (%rax)
-    lea -32(%rbp), %rax
-    movsxl (%rax), %rcx
-    mov %rcx, %rax
-    lea -16(%rbp), %rcx
+    lea -48(%rbp), %rax
+    movsxl (%rax), %rax
+    lea -32(%rbp), %rcx
     push %rax
     fildq (%rsp)
     add $8, %rsp
-    mov %rcx, %rax
-    fstpt (%rax)
-    fldt (%rax)
+    fstpt (%rcx)
+    fldt (%rcx)
+    fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-.section .rodata
-.section .text
 
 
