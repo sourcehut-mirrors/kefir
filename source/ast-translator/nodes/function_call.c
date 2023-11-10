@@ -128,9 +128,7 @@ kefir_result_t kefir_ast_translate_function_call_node(struct kefir_mem *mem,
     const char *function_name = NULL;
     if (node->function->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION &&
         node->function->properties.expression_props.identifier != NULL &&
-        node->function->properties.expression_props.scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION &&
-        node->function->properties.expression_props.scoped_id->function.storage ==
-            KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN) {
+        node->function->properties.expression_props.scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION) {
         const struct kefir_ast_scoped_identifier *scoped_id = node->function->properties.expression_props.scoped_id;
         function_name = node->function->properties.expression_props.identifier;
         if (scoped_id->function.flags.gnu_inline &&
