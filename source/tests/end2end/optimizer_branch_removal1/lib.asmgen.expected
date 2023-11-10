@@ -6,6 +6,8 @@
 .global test3
 .global test4
 .global test5
+.global test6
+.global test7
 .extern somefn
 .extern somefn2
 .extern __kefir_opt_float32_neg
@@ -57,5 +59,32 @@ test5:
 _kefir_func_test5_label0:
     call somefn@PLT
     jmp _kefir_func_test5_label0
+
+test6:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_test6_label0:
+    mov $1, %rax
+_kefir_func_test6_label1:
+    pop %rbp
+    ret
+
+test7:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_test7_label0:
+    mov $0, %rax
+_kefir_func_test7_label1:
+    mov $0, %rcx
+_kefir_func_test7_label2:
+    test %rcx, %rcx
+    setne %cl
+    movzx %cl, %rcx
+    or %rcx, %rax
+    setne %al
+    movzx %al, %rax
+_kefir_func_test7_label3:
+    pop %rbp
+    ret
 
 

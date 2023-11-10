@@ -22,7 +22,7 @@ tasks:
       export KEFIR_RTLIB="$HOME/kefir-private/bin/libs/libkefirrt.a"
       export KEFIR_RTINC="$HOME/kefir-private/headers/kefir/runtime"
       export REALPATH=grealpath
-      LC_ALL=C.UTF-8 gmake bootstrap BOOTSTRAP_EXTRA_CFLAGS="-O0" CC=clang LD=clang AS=gas PLATFORM=openbsd
+      LC_ALL=C.UTF-8 gmake bootstrap BOOTSTRAP_EXTRA_CFLAGS="-O1" CC=clang LD=clang AS=gas PLATFORM=openbsd
 triggers:
   - action: email
     condition: failure

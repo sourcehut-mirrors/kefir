@@ -215,8 +215,9 @@ static kefir_result_t find_reachable_code_phi_ref(struct kefir_mem *mem, struct 
     kefir_opt_instruction_ref_t instr_ref;
     for (res = kefir_opt_phi_node_link_iter(phi, &iter, &block_id, &instr_ref); res == KEFIR_OK;
          res = kefir_opt_phi_node_link_next(&iter, &block_id, &instr_ref)) {
-        REQUIRE_OK(mark_reachable_code_in_block(mem, analysis, block_id, queue));
-        INSERT_INTO_QUEUE(mem, queue, instr_ref);
+        if (analysis->blocks[block_id].reachable) {
+            INSERT_INTO_QUEUE(mem, queue, instr_ref);
+        }
     }
     if (res != KEFIR_ITERATOR_END) {
         REQUIRE_OK(res);
@@ -247,12 +248,8 @@ static kefir_result_t find_reachable_code_inline_asm(struct kefir_mem *mem, stru
     return KEFIR_OK;
 }
 
-#undef INSERT_INTO_QUEUE
-
-static kefir_result_t find_reachable_code_impl(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
-                                               struct kefir_list *queue) {
-    REQUIRE_OK(mark_reachable_code_in_block(mem, analysis, analysis->code->entry_point, queue));
-
+static kefir_result_t find_reachable_code_loop(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
+                                               struct kefir_list *queue, struct kefir_list *phi_queue) {
     kefir_result_t res = KEFIR_OK;
     for (struct kefir_list_entry *queue_head = kefir_list_head(queue); res == KEFIR_OK && queue_head != NULL;
          res = kefir_list_pop(mem, queue, queue_head), queue_head = kefir_list_head(queue)) {
@@ -261,11 +258,17 @@ static kefir_result_t find_reachable_code_impl(struct kefir_mem *mem, struct kef
         if (analysis->instructions[instr_ref].reachable) {
             continue;
         }
-        analysis->instructions[instr_ref].reachable = true;
-        analysis->linearization_length++;
 
+        analysis->instructions[instr_ref].reachable = true;
         struct kefir_opt_instruction *instr = NULL;
         REQUIRE_OK(kefir_opt_code_container_instr(analysis->code, instr_ref, &instr));
+
+        if (instr->operation.opcode == KEFIR_OPT_OPCODE_PHI && phi_queue != NULL) {
+            INSERT_INTO_QUEUE(mem, phi_queue, instr_ref);
+            continue;
+        }
+
+        analysis->linearization_length++;
 
         switch (instr->operation.opcode) {
 #define OPCODE_DEF(_id, _symbolic, _class)                                     \
@@ -281,10 +284,36 @@ static kefir_result_t find_reachable_code_impl(struct kefir_mem *mem, struct kef
     return KEFIR_OK;
 }
 
+#undef INSERT_INTO_QUEUE
+
+static kefir_result_t find_reachable_code_impl(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
+                                               struct kefir_list *queue, struct kefir_list *phi_queue) {
+    REQUIRE_OK(mark_reachable_code_in_block(mem, analysis, analysis->code->entry_point, queue));
+    REQUIRE_OK(find_reachable_code_loop(mem, analysis, queue, phi_queue));
+    for (const struct kefir_list_entry *iter = kefir_list_head(phi_queue); iter != NULL; kefir_list_next(&iter)) {
+        ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, instr_ref, (kefir_uptr_t) iter->value);
+        analysis->instructions[instr_ref].reachable = false;
+    }
+    REQUIRE_OK(kefir_list_move_all(queue, phi_queue));
+    REQUIRE_OK(find_reachable_code_loop(mem, analysis, queue, NULL));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_opt_code_analyze_reachability(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis) {
-    struct kefir_list instr_queue;
+    struct kefir_list instr_queue, phi_queue;
     REQUIRE_OK(kefir_list_init(&instr_queue));
-    kefir_result_t res = find_reachable_code_impl(mem, analysis, &instr_queue);
-    REQUIRE_OK(kefir_list_free(mem, &instr_queue));
+    REQUIRE_OK(kefir_list_init(&phi_queue));
+    kefir_result_t res = find_reachable_code_impl(mem, analysis, &instr_queue, &phi_queue);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_list_free(mem, &instr_queue);
+        kefir_list_free(mem, &phi_queue);
+        return res;
+    });
+    res = kefir_list_free(mem, &instr_queue);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_list_free(mem, &phi_queue);
+        return res;
+    });
+    REQUIRE_OK(kefir_list_free(mem, &phi_queue));
     return res;
 }

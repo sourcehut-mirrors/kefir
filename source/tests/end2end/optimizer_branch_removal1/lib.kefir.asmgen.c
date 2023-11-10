@@ -54,3 +54,11 @@ void test5() {
     } while (1);
     somefn2();
 }
+
+int test6() {
+    return 1 || *((volatile int *) 0);
+}
+
+int test7() {
+    return 0 || (0 && *((volatile int *) 0));
+}
