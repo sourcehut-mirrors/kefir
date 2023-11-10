@@ -221,13 +221,17 @@ kefir_result_t kefir_codegen_amd64_function_translate(struct kefir_mem *mem, str
     REQUIRE_OK(kefir_codegen_amd64_register_allocator_init(&func.register_allocator));
     REQUIRE_OK(kefir_abi_amd64_function_decl_alloc(mem, codegen->abi_variant, function->ir_func->declaration,
                                                    &func.abi_function_declaration));
-    kefir_result_t res =
-        kefir_abi_amd64_type_layout(mem, codegen->abi_variant, function->ir_func->locals, &func.locals_layout);
-    REQUIRE_ELSE(res == KEFIR_OK, { goto on_error1; });
+    kefir_result_t res = KEFIR_OK;
+    if (function->ir_func->locals != NULL) {
+        res = kefir_abi_amd64_type_layout(mem, codegen->abi_variant, function->ir_func->locals, &func.locals_layout);
+        REQUIRE_ELSE(res == KEFIR_OK, { goto on_error1; });
+    }
 
     res = kefir_codegen_amd64_function_translate_impl(mem, codegen, &func);
 
-    kefir_abi_amd64_type_layout_free(mem, &func.locals_layout);
+    if (function->ir_func->locals != NULL) {
+        kefir_abi_amd64_type_layout_free(mem, &func.locals_layout);
+    }
 on_error1:
     kefir_abi_amd64_function_decl_free(mem, &func.abi_function_declaration);
     kefir_codegen_amd64_register_allocator_free(mem, &func.register_allocator);

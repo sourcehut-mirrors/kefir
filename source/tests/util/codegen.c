@@ -11,14 +11,14 @@ static kefir_result_t translate_impl(struct kefir_mem *mem, struct kefir_codegen
 
     ASSIGN_DECL_CAST(struct kefir_test_codegen *, codegen, cg->data);
 
-    codegen->opt_codegen.config = codegen->config;
+    codegen->new_codegen.config = codegen->config;
     if (analysis == NULL) {
         struct kefir_opt_module_analysis module_analysis;
         REQUIRE_OK(kefir_opt_module_construct(mem, kft_util_get_ir_target_platform(), module));
         REQUIRE_OK(kefir_opt_module_analyze(mem, module, &module_analysis));
 
         kefir_result_t res =
-            KEFIR_CODEGEN_TRANSLATE_OPTIMIZED(mem, &codegen->opt_codegen.codegen, module, &module_analysis);
+            KEFIR_CODEGEN_TRANSLATE_OPTIMIZED(mem, &codegen->new_codegen.codegen, module, &module_analysis);
         REQUIRE_ELSE(res == KEFIR_OK, {
             kefir_opt_module_analysis_free(mem, &module_analysis);
             return res;
@@ -26,7 +26,7 @@ static kefir_result_t translate_impl(struct kefir_mem *mem, struct kefir_codegen
 
         REQUIRE_OK(kefir_opt_module_analysis_free(mem, &module_analysis));
     } else {
-        REQUIRE_OK(KEFIR_CODEGEN_TRANSLATE_OPTIMIZED(mem, &codegen->opt_codegen.codegen, module, analysis));
+        REQUIRE_OK(KEFIR_CODEGEN_TRANSLATE_OPTIMIZED(mem, &codegen->new_codegen.codegen, module, analysis));
     }
     return KEFIR_OK;
 }
@@ -36,7 +36,7 @@ static kefir_result_t close_impl(struct kefir_mem *mem, struct kefir_codegen *cg
     REQUIRE(cg != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid code generator interface"));
     REQUIRE(cg->data != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 code generator"));
     ASSIGN_DECL_CAST(struct kefir_test_codegen *, codegen, cg->data);
-    REQUIRE_OK(KEFIR_CODEGEN_CLOSE(mem, &codegen->opt_codegen.codegen));
+    REQUIRE_OK(KEFIR_CODEGEN_CLOSE(mem, &codegen->new_codegen.codegen));
     return KEFIR_OK;
 }
 
@@ -48,7 +48,7 @@ kefir_result_t kefir_test_codegen_init(struct kefir_mem *mem, struct kefir_test_
     REQUIRE(output != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid FILE"));
 
     codegen->config = &KefirCodegenDefaultConfiguration;
-    REQUIRE_OK(kefir_codegen_opt_sysv_amd64_init(mem, &codegen->opt_codegen, output, config));
+    REQUIRE_OK(kefir_codegen_amd64_init(mem, &codegen->new_codegen, output, KEFIR_ABI_AMD64_VARIANT_SYSTEM_V, config));
 
     codegen->iface.translate_optimized = translate_impl;
     codegen->iface.close = close_impl;

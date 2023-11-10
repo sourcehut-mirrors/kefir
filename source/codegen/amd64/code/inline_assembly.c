@@ -246,17 +246,17 @@ static kefir_result_t allocate_parameters(struct kefir_mem *mem, struct kefir_co
                                           struct inline_assembly_context *context) {
     REQUIRE_OK(init_available_regs(mem, function, context));
 
-    inline_assembly_parameter_type_t param_read_type = INLINE_ASSEMBLY_PARAMETER_SCALAR,
-                                     param_type = INLINE_ASSEMBLY_PARAMETER_SCALAR;
-    kefir_size_t param_read_size = 0, param_size = 0;
-    kefir_bool_t parameter_immediate = false;
-    kefir_bool_t direct_value = false;
     for (const struct kefir_list_entry *iter = kefir_list_head(&context->ir_inline_assembly->parameter_list);
          iter != NULL; kefir_list_next(&iter)) {
         ASSIGN_DECL_CAST(const struct kefir_ir_inline_assembly_parameter *, ir_asm_param, iter->value);
 
         struct inline_assembly_parameter_allocation_entry *entry = &context->parameters[ir_asm_param->parameter_id];
 
+        inline_assembly_parameter_type_t param_read_type = INLINE_ASSEMBLY_PARAMETER_SCALAR,
+                                         param_type = INLINE_ASSEMBLY_PARAMETER_SCALAR;
+        kefir_size_t param_read_size = 0, param_size = 0;
+        kefir_bool_t parameter_immediate = false;
+        kefir_bool_t direct_value = false;
         switch (ir_asm_param->klass) {
             case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_STORE:
             case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_LOAD_STORE:

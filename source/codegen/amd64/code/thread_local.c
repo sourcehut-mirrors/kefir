@@ -207,18 +207,17 @@ static kefir_result_t initial_exec_tls(struct kefir_mem *mem, struct kefir_codeg
         REQUIRE_OK(kefir_asmcmp_format(mem, &function->code.context, &gotpoff_label, KEFIR_AMD64_THREAD_LOCAL_GOT,
                                        identifier));
 
-        REQUIRE_OK(kefir_asmcmp_amd64_mov(
-            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-            &KEFIR_ASMCMP_MAKE_VREG(result_vreg),
-            &KEFIR_ASMCMP_MAKE_RIP_INDIRECT(gotpoff_label, KEFIR_ASMCMP_OPERAND_VARIANT_64BIT), NULL));
-
-        struct kefir_asmcmp_value segment_base =
-            KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(result_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT);
+        struct kefir_asmcmp_value segment_base = KEFIR_ASMCMP_MAKE_UINT(0);
         KEFIR_ASMCMP_SET_SEGMENT(&segment_base, KEFIR_AMD64_XASMGEN_SEGMENT_FS);
 
         REQUIRE_OK(kefir_asmcmp_amd64_mov(mem, &function->code,
                                           kefir_asmcmp_context_instr_tail(&function->code.context),
                                           &KEFIR_ASMCMP_MAKE_VREG(result_vreg), &segment_base, NULL));
+
+        REQUIRE_OK(kefir_asmcmp_amd64_add(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+            &KEFIR_ASMCMP_MAKE_VREG(result_vreg),
+            &KEFIR_ASMCMP_MAKE_RIP_INDIRECT(gotpoff_label, KEFIR_ASMCMP_OPERAND_VARIANT_64BIT), NULL));
     }
 
     REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));
