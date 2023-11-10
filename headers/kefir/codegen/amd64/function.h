@@ -82,6 +82,7 @@ kefir_result_t kefir_codegen_amd64_function_map_phi_outputs(struct kefir_mem *, 
     _def(phi, KEFIR_OPT_OPCODE_PHI) _separator \
     _def(jump, KEFIR_OPT_OPCODE_JUMP) _separator \
     _def(branch, KEFIR_OPT_OPCODE_BRANCH) _separator \
+    _def(compare_branch, KEFIR_OPT_OPCODE_COMPARE_BRANCH) _separator \
     _def(ijump, KEFIR_OPT_OPCODE_IJUMP) _separator \
     _def(int8_store, KEFIR_OPT_OPCODE_INT8_STORE) _separator \
     _def(int16_store, KEFIR_OPT_OPCODE_INT16_STORE) _separator \

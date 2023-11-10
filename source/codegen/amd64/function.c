@@ -35,7 +35,14 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, struct kefir_
         KEFIR_CODEGEN_AMD64_INSTRUCTIONS(CASE_INSTR, ;);
 #undef CASE_INSTR
 
-        default:
+        case KEFIR_OPT_OPCODE_INT_GREATER_OR_EQUALS:
+        case KEFIR_OPT_OPCODE_INT_LESSER_OR_EQUALS:
+        case KEFIR_OPT_OPCODE_INT_ABOVE_OR_EQUALS:
+        case KEFIR_OPT_OPCODE_INT_BELOW_OR_EQUALS:
+        case KEFIR_OPT_OPCODE_FLOAT32_GREATER_OR_EQUALS:
+        case KEFIR_OPT_OPCODE_FLOAT32_LESSER_OR_EQUALS:
+        case KEFIR_OPT_OPCODE_FLOAT64_GREATER_OR_EQUALS:
+        case KEFIR_OPT_OPCODE_FLOAT64_LESSER_OR_EQUALS:
             return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Opcode is not implemented yet");
     }
     return KEFIR_OK;

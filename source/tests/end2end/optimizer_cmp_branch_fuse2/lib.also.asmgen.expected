@@ -7,213 +7,187 @@
 .global not_equalsf
 .global greater_or_equalsf
 .global less_or_equalsf
-.extern __kefirrt_opt_save_registers
-.extern __kefirrt_opt_load_int_vararg
-.extern __kefirrt_opt_load_sse_vararg
+.extern __kefir_opt_float32_neg
+.extern __kefir_opt_float64_neg
 .extern __kefirrt_opt_float32_to_uint
 .extern __kefirrt_opt_float64_to_uint
-.extern __kefirrt_opt_long_double_to_int
 
 .section .text
 lessf:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-__kefir_func_lessf_block0:
-    lea -12(%rbp), %rax
+_kefir_func_lessf_label0:
+    lea -4(%rbp), %rax
     movd %xmm1, (%rax)
-    lea -16(%rbp), %rax
+    lea -8(%rbp), %rax
     movd %xmm0, (%rax)
-    lea -16(%rbp), %rax
-    movl (%rax), %ecx
-    mov %rcx, %rax
-    lea -12(%rbp), %rcx
-    movl (%rcx), %edx
-    mov %rdx, %rcx
-    movq %rax, %xmm0
-    movq %rcx, %xmm1
+    lea -8(%rbp), %rax
+    movl (%rax), %eax
+    lea -4(%rbp), %rcx
+    movl (%rcx), %ecx
+    movd %rax, %xmm0
+    movd %rcx, %xmm1
     ucomiss %xmm1, %xmm0
-    jb __kefir_func_lessf_block2
-    jmp __kefir_func_lessf_block1
-__kefir_func_lessf_block2:
+    jb _kefir_func_lessf_label1
+    jmp _kefir_func_lessf_label2
+_kefir_func_lessf_label1:
     mov $1, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_lessf_block1:
+_kefir_func_lessf_label2:
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-.section .rodata
-.section .text
 
 equalsf:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-__kefir_func_equalsf_block0:
-    lea -12(%rbp), %rax
+_kefir_func_equalsf_label0:
+    lea -4(%rbp), %rax
     movd %xmm1, (%rax)
-    lea -16(%rbp), %rax
+    lea -8(%rbp), %rax
     movd %xmm0, (%rax)
-    lea -16(%rbp), %rax
-    movl (%rax), %ecx
-    mov %rcx, %rax
-    lea -12(%rbp), %rcx
-    movl (%rcx), %edx
-    mov %rdx, %rcx
-    movq %rax, %xmm0
-    movq %rcx, %xmm1
+    lea -8(%rbp), %rax
+    movl (%rax), %eax
+    lea -4(%rbp), %rcx
+    movl (%rcx), %ecx
+    movd %rax, %xmm0
+    movd %rcx, %xmm1
     ucomiss %xmm1, %xmm0
-    jp __kefir_func_equalsf_block0_label0
-    je __kefir_func_equalsf_block2
-__kefir_func_equalsf_block0_label0:
-    jmp __kefir_func_equalsf_block1
-__kefir_func_equalsf_block2:
+    jp _kefir_func_equalsf_label3
+    je _kefir_func_equalsf_label1
+_kefir_func_equalsf_label3:
+    jmp _kefir_func_equalsf_label2
+_kefir_func_equalsf_label1:
     mov $1, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_equalsf_block1:
+_kefir_func_equalsf_label2:
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-.section .rodata
-.section .text
 
 greaterf:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-__kefir_func_greaterf_block0:
-    lea -12(%rbp), %rax
+_kefir_func_greaterf_label0:
+    lea -4(%rbp), %rax
     movd %xmm1, (%rax)
-    lea -16(%rbp), %rax
+    lea -8(%rbp), %rax
     movd %xmm0, (%rax)
-    lea -16(%rbp), %rax
-    movl (%rax), %ecx
-    mov %rcx, %rax
-    lea -12(%rbp), %rcx
-    movl (%rcx), %edx
-    mov %rdx, %rcx
-    movq %rax, %xmm0
-    movq %rcx, %xmm1
-    ucomiss %xmm0, %xmm1
-    jb __kefir_func_greaterf_block2
-    jmp __kefir_func_greaterf_block1
-__kefir_func_greaterf_block2:
+    lea -8(%rbp), %rax
+    movl (%rax), %eax
+    lea -4(%rbp), %rcx
+    movl (%rcx), %ecx
+    movd %rcx, %xmm0
+    movd %rax, %xmm1
+    ucomiss %xmm1, %xmm0
+    jb _kefir_func_greaterf_label1
+    jmp _kefir_func_greaterf_label2
+_kefir_func_greaterf_label1:
     mov $1, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_greaterf_block1:
+_kefir_func_greaterf_label2:
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-.section .rodata
-.section .text
 
 not_equalsf:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-__kefir_func_not_equalsf_block0:
-    lea -12(%rbp), %rax
+_kefir_func_not_equalsf_label0:
+    lea -4(%rbp), %rax
     movd %xmm1, (%rax)
-    lea -16(%rbp), %rax
+    lea -8(%rbp), %rax
     movd %xmm0, (%rax)
-    lea -16(%rbp), %rax
-    movl (%rax), %ecx
-    mov %rcx, %rax
-    lea -12(%rbp), %rcx
-    movl (%rcx), %edx
-    mov %rdx, %rcx
-    movq %rax, %xmm0
-    movq %rcx, %xmm1
+    lea -8(%rbp), %rax
+    movl (%rax), %eax
+    lea -4(%rbp), %rcx
+    movl (%rcx), %ecx
+    movd %rax, %xmm0
+    movd %rcx, %xmm1
     ucomiss %xmm1, %xmm0
-    jp __kefir_func_not_equalsf_block2
-    jne __kefir_func_not_equalsf_block2
-    jmp __kefir_func_not_equalsf_block1
-__kefir_func_not_equalsf_block2:
+    jp _kefir_func_not_equalsf_label1
+    jne _kefir_func_not_equalsf_label1
+    jmp _kefir_func_not_equalsf_label2
+_kefir_func_not_equalsf_label1:
     mov $1, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_not_equalsf_block1:
+_kefir_func_not_equalsf_label2:
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-.section .rodata
-.section .text
 
 greater_or_equalsf:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-__kefir_func_greater_or_equalsf_block0:
-    lea -12(%rbp), %rax
+_kefir_func_greater_or_equalsf_label0:
+    lea -4(%rbp), %rax
     movd %xmm1, (%rax)
-    lea -16(%rbp), %rax
+    lea -8(%rbp), %rax
     movd %xmm0, (%rax)
-    lea -16(%rbp), %rax
-    movl (%rax), %ecx
-    mov %rcx, %rax
-    lea -12(%rbp), %rcx
-    movl (%rcx), %edx
-    mov %rdx, %rcx
-    movq %rax, %xmm0
-    movq %rcx, %xmm1
-    ucomiss %xmm0, %xmm1
-    jbe __kefir_func_greater_or_equalsf_block2
-    jmp __kefir_func_greater_or_equalsf_block1
-__kefir_func_greater_or_equalsf_block2:
+    lea -8(%rbp), %rax
+    movl (%rax), %eax
+    lea -4(%rbp), %rcx
+    movl (%rcx), %ecx
+    movd %rcx, %xmm0
+    movd %rax, %xmm1
+    ucomiss %xmm1, %xmm0
+    jbe _kefir_func_greater_or_equalsf_label1
+    jmp _kefir_func_greater_or_equalsf_label2
+_kefir_func_greater_or_equalsf_label1:
     mov $1, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_greater_or_equalsf_block1:
+_kefir_func_greater_or_equalsf_label2:
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-.section .rodata
-.section .text
 
 less_or_equalsf:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-__kefir_func_less_or_equalsf_block0:
-    lea -12(%rbp), %rax
+_kefir_func_less_or_equalsf_label0:
+    lea -4(%rbp), %rax
     movd %xmm1, (%rax)
-    lea -16(%rbp), %rax
+    lea -8(%rbp), %rax
     movd %xmm0, (%rax)
-    lea -16(%rbp), %rax
-    movl (%rax), %ecx
-    mov %rcx, %rax
-    lea -12(%rbp), %rcx
-    movl (%rcx), %edx
-    mov %rdx, %rcx
-    movq %rax, %xmm0
-    movq %rcx, %xmm1
+    lea -8(%rbp), %rax
+    movl (%rax), %eax
+    lea -4(%rbp), %rcx
+    movl (%rcx), %ecx
+    movd %rax, %xmm0
+    movd %rcx, %xmm1
     ucomiss %xmm1, %xmm0
-    jbe __kefir_func_less_or_equalsf_block2
-    jmp __kefir_func_less_or_equalsf_block1
-__kefir_func_less_or_equalsf_block2:
+    jbe _kefir_func_less_or_equalsf_label1
+    jmp _kefir_func_less_or_equalsf_label2
+_kefir_func_less_or_equalsf_label1:
     mov $1, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_less_or_equalsf_block1:
+_kefir_func_less_or_equalsf_label2:
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-.section .rodata
-.section .text
 
 
