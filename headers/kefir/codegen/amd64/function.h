@@ -119,9 +119,13 @@ kefir_result_t kefir_codegen_amd64_function_map_phi_outputs(struct kefir_mem *, 
     _def(float_equals, KEFIR_OPT_OPCODE_FLOAT32_EQUALS) _separator \
     _def(float_equals, KEFIR_OPT_OPCODE_FLOAT64_EQUALS) _separator \
     _def(float_compare, KEFIR_OPT_OPCODE_FLOAT32_GREATER) _separator \
+    _def(float_compare, KEFIR_OPT_OPCODE_FLOAT32_GREATER_OR_EQUALS) _separator \
     _def(float_compare, KEFIR_OPT_OPCODE_FLOAT64_GREATER) _separator \
+    _def(float_compare, KEFIR_OPT_OPCODE_FLOAT64_GREATER_OR_EQUALS) _separator \
     _def(float_compare, KEFIR_OPT_OPCODE_FLOAT32_LESSER) _separator \
+    _def(float_compare, KEFIR_OPT_OPCODE_FLOAT32_LESSER_OR_EQUALS) _separator \
     _def(float_compare, KEFIR_OPT_OPCODE_FLOAT64_LESSER) _separator \
+    _def(float_compare, KEFIR_OPT_OPCODE_FLOAT64_LESSER_OR_EQUALS) _separator \
     _def(long_double_binary_op, KEFIR_OPT_OPCODE_LONG_DOUBLE_ADD) _separator \
     _def(long_double_binary_op, KEFIR_OPT_OPCODE_LONG_DOUBLE_SUB) _separator \
     _def(long_double_binary_op, KEFIR_OPT_OPCODE_LONG_DOUBLE_MUL) _separator \
@@ -169,9 +173,13 @@ kefir_result_t kefir_codegen_amd64_function_map_phi_outputs(struct kefir_mem *, 
     _def(bool_and, KEFIR_OPT_OPCODE_BOOL_AND) _separator                                                   \
     _def(int_equals, KEFIR_OPT_OPCODE_INT_EQUALS) _separator                                                   \
     _def(int_greater, KEFIR_OPT_OPCODE_INT_GREATER) _separator                                                   \
+    _def(int_greater_or_equals, KEFIR_OPT_OPCODE_INT_GREATER_OR_EQUALS) _separator                                                   \
     _def(int_less, KEFIR_OPT_OPCODE_INT_LESSER) _separator                                                   \
+    _def(int_less_or_equals, KEFIR_OPT_OPCODE_INT_LESSER_OR_EQUALS) _separator                                                   \
     _def(int_above, KEFIR_OPT_OPCODE_INT_ABOVE) _separator                                                   \
+    _def(int_above_or_equals, KEFIR_OPT_OPCODE_INT_ABOVE_OR_EQUALS) _separator                                                   \
     _def(int_below, KEFIR_OPT_OPCODE_INT_BELOW) _separator                                                   \
+    _def(int_below_or_equals, KEFIR_OPT_OPCODE_INT_BELOW_OR_EQUALS) _separator                                                   \
     _def(int_trunc1, KEFIR_OPT_OPCODE_INT64_TRUNCATE_1BIT) _separator                          \
     _def(int_zero_extend8, KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_8BITS) _separator                          \
     _def(int_zero_extend16, KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_16BITS) _separator                        \

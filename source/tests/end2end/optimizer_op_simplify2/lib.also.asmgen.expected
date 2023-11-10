@@ -9,236 +9,202 @@
 .global less_or_equals
 .global greater_or_equals
 .global less_or_equals2
-.extern __kefirrt_opt_save_registers
-.extern __kefirrt_opt_load_int_vararg
-.extern __kefirrt_opt_load_sse_vararg
+.extern __kefir_opt_float32_neg
+.extern __kefir_opt_float64_neg
 .extern __kefirrt_opt_float32_to_uint
 .extern __kefirrt_opt_float64_to_uint
-.extern __kefirrt_opt_long_double_to_int
 
 .section .text
 below_or_equals:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-__kefir_func_below_or_equals_block0:
-    lea -12(%rbp), %rax
+_kefir_func_below_or_equals_label0:
+    lea -4(%rbp), %rax
     movl %esi, (%rax)
-    lea -16(%rbp), %rax
+    lea -8(%rbp), %rax
     movl %edi, (%rax)
-    lea -16(%rbp), %rax
-    movl (%rax), %ecx
-    mov %rcx, %rax
-    lea -12(%rbp), %rcx
-    movl (%rcx), %edx
-    mov %rdx, %rcx
+    lea -8(%rbp), %rax
+    movl (%rax), %eax
+    lea -4(%rbp), %rcx
+    movl (%rcx), %ecx
     cmp %rcx, %rax
-    jbe __kefir_func_below_or_equals_block2
-    jmp __kefir_func_below_or_equals_block1
-__kefir_func_below_or_equals_block2:
+    jbe _kefir_func_below_or_equals_label1
+    jmp _kefir_func_below_or_equals_label2
+_kefir_func_below_or_equals_label1:
     mov $1, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_below_or_equals_block1:
+_kefir_func_below_or_equals_label2:
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-.section .rodata
-.section .text
 
 above_or_equals:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-__kefir_func_above_or_equals_block0:
-    lea -12(%rbp), %rax
+_kefir_func_above_or_equals_label0:
+    lea -4(%rbp), %rax
     movl %esi, (%rax)
-    lea -16(%rbp), %rax
+    lea -8(%rbp), %rax
     movl %edi, (%rax)
-    lea -16(%rbp), %rax
-    movl (%rax), %ecx
-    mov %rcx, %rax
-    lea -12(%rbp), %rcx
-    movl (%rcx), %edx
-    mov %rdx, %rcx
+    lea -8(%rbp), %rax
+    movl (%rax), %eax
+    lea -4(%rbp), %rcx
+    movl (%rcx), %ecx
     cmp %rcx, %rax
-    jae __kefir_func_above_or_equals_block2
-    jmp __kefir_func_above_or_equals_block1
-__kefir_func_above_or_equals_block2:
+    jae _kefir_func_above_or_equals_label1
+    jmp _kefir_func_above_or_equals_label2
+_kefir_func_above_or_equals_label1:
     mov $1, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_above_or_equals_block1:
+_kefir_func_above_or_equals_label2:
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-.section .rodata
-.section .text
 
 below_or_equals2:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-__kefir_func_below_or_equals2_block0:
-    lea -12(%rbp), %rax
+_kefir_func_below_or_equals2_label0:
+    lea -4(%rbp), %rax
     movl %esi, (%rax)
-    lea -16(%rbp), %rax
+    lea -8(%rbp), %rax
     movl %edi, (%rax)
-    lea -16(%rbp), %rax
-    movl (%rax), %ecx
-    mov %rcx, %rax
-    lea -12(%rbp), %rcx
-    movl (%rcx), %edx
-    mov %rdx, %rcx
-    xor %rdx, %rdx
+    lea -8(%rbp), %rax
+    movl (%rax), %eax
+    lea -4(%rbp), %rcx
+    movl (%rcx), %ecx
+    mov $0, %rdx
     cmp %rcx, %rax
     setbe %dl
     mov %rdx, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-.section .rodata
-.section .text
 
 above_or_equals2:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-__kefir_func_above_or_equals2_block0:
-    lea -12(%rbp), %rax
+_kefir_func_above_or_equals2_label0:
+    lea -4(%rbp), %rax
     movl %esi, (%rax)
-    lea -16(%rbp), %rax
+    lea -8(%rbp), %rax
     movl %edi, (%rax)
-    lea -16(%rbp), %rax
-    movl (%rax), %ecx
-    mov %rcx, %rax
-    lea -12(%rbp), %rcx
-    movl (%rcx), %edx
-    mov %rdx, %rcx
-    xor %rdx, %rdx
+    lea -8(%rbp), %rax
+    movl (%rax), %eax
+    lea -4(%rbp), %rcx
+    movl (%rcx), %ecx
+    mov $0, %rdx
     cmp %rcx, %rax
     setae %dl
     mov %rdx, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-.section .rodata
-.section .text
 
 greater_or_equals2:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-__kefir_func_greater_or_equals2_block0:
-    lea -12(%rbp), %rax
+_kefir_func_greater_or_equals2_label0:
+    lea -4(%rbp), %rax
     movl %esi, (%rax)
-    lea -16(%rbp), %rax
+    lea -8(%rbp), %rax
     movl %edi, (%rax)
-    lea -16(%rbp), %rax
-    movsxl (%rax), %rcx
-    mov %rcx, %rax
-    lea -12(%rbp), %rcx
-    movsxl (%rcx), %rdx
-    mov %rdx, %rcx
-    xor %rdx, %rdx
+    lea -8(%rbp), %rax
+    movsxl (%rax), %rax
+    lea -4(%rbp), %rcx
+    movsxl (%rcx), %rcx
+    mov $0, %rdx
     cmp %rcx, %rax
     setge %dl
     mov %rdx, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-.section .rodata
-.section .text
 
 less_or_equals:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-__kefir_func_less_or_equals_block0:
-    lea -12(%rbp), %rax
+_kefir_func_less_or_equals_label0:
+    lea -4(%rbp), %rax
     movl %esi, (%rax)
-    lea -16(%rbp), %rax
+    lea -8(%rbp), %rax
     movl %edi, (%rax)
-    lea -16(%rbp), %rax
-    movsxl (%rax), %rcx
-    mov %rcx, %rax
-    lea -12(%rbp), %rcx
-    movsxl (%rcx), %rdx
-    mov %rdx, %rcx
+    lea -8(%rbp), %rax
+    movsxl (%rax), %rax
+    lea -4(%rbp), %rcx
+    movsxl (%rcx), %rcx
     cmp %rcx, %rax
-    jle __kefir_func_less_or_equals_block2
-    jmp __kefir_func_less_or_equals_block1
-__kefir_func_less_or_equals_block2:
+    jle _kefir_func_less_or_equals_label1
+    jmp _kefir_func_less_or_equals_label2
+_kefir_func_less_or_equals_label1:
     mov $1, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_less_or_equals_block1:
+_kefir_func_less_or_equals_label2:
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-.section .rodata
-.section .text
 
 greater_or_equals:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-__kefir_func_greater_or_equals_block0:
-    lea -12(%rbp), %rax
+_kefir_func_greater_or_equals_label0:
+    lea -4(%rbp), %rax
     movl %esi, (%rax)
-    lea -16(%rbp), %rax
+    lea -8(%rbp), %rax
     movl %edi, (%rax)
-    lea -16(%rbp), %rax
-    movsxl (%rax), %rcx
-    mov %rcx, %rax
-    lea -12(%rbp), %rcx
-    movsxl (%rcx), %rdx
-    mov %rdx, %rcx
+    lea -8(%rbp), %rax
+    movsxl (%rax), %rax
+    lea -4(%rbp), %rcx
+    movsxl (%rcx), %rcx
     cmp %rcx, %rax
-    jge __kefir_func_greater_or_equals_block2
-    jmp __kefir_func_greater_or_equals_block1
-__kefir_func_greater_or_equals_block2:
+    jge _kefir_func_greater_or_equals_label1
+    jmp _kefir_func_greater_or_equals_label2
+_kefir_func_greater_or_equals_label1:
     mov $1, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_func_greater_or_equals_block1:
+_kefir_func_greater_or_equals_label2:
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-.section .rodata
-.section .text
 
 less_or_equals2:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-__kefir_func_less_or_equals2_block0:
-    lea -12(%rbp), %rax
+_kefir_func_less_or_equals2_label0:
+    lea -4(%rbp), %rax
     movl %esi, (%rax)
-    lea -16(%rbp), %rax
+    lea -8(%rbp), %rax
     movl %edi, (%rax)
-    lea -16(%rbp), %rax
-    movsxl (%rax), %rcx
-    mov %rcx, %rax
-    lea -12(%rbp), %rcx
-    movsxl (%rcx), %rdx
-    mov %rdx, %rcx
-    xor %rdx, %rdx
+    lea -8(%rbp), %rax
+    movsxl (%rax), %rax
+    lea -4(%rbp), %rcx
+    movsxl (%rcx), %rcx
+    mov $0, %rdx
     cmp %rcx, %rax
     setle %dl
     mov %rdx, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-.section .rodata
-.section .text
 
 

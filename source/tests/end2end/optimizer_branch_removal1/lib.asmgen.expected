@@ -8,70 +8,54 @@
 .global test5
 .extern somefn
 .extern somefn2
-.extern __kefirrt_opt_save_registers
-.extern __kefirrt_opt_load_int_vararg
-.extern __kefirrt_opt_load_sse_vararg
+.extern __kefir_opt_float32_neg
+.extern __kefir_opt_float64_neg
 .extern __kefirrt_opt_float32_to_uint
 .extern __kefirrt_opt_float64_to_uint
-.extern __kefirrt_opt_long_double_to_int
 
 .section .text
 test1:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_test1_block0:
-__kefir_func_test1_block1:
-    lea (%rbp), %rsp
+_kefir_func_test1_label0:
+_kefir_func_test1_label1:
     pop %rbp
     ret
-.section .rodata
-.section .text
 
 test2:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_test2_block0:
-__kefir_func_test2_block1:
+_kefir_func_test2_label0:
+_kefir_func_test2_label1:
     call somefn2@PLT
-__kefir_func_test2_block3:
-    lea (%rbp), %rsp
+_kefir_func_test2_label2:
     pop %rbp
     ret
-.section .rodata
-.section .text
 
 test3:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_test3_block0:
-__kefir_func_test3_block2:
+_kefir_func_test3_label0:
+_kefir_func_test3_label1:
     call somefn@PLT
-__kefir_func_test3_block3:
-    lea (%rbp), %rsp
+_kefir_func_test3_label2:
     pop %rbp
     ret
-.section .rodata
-.section .text
 
 test4:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_test4_block0:
+_kefir_func_test4_label0:
     call somefn@PLT
-__kefir_func_test4_block1:
-    lea (%rbp), %rsp
+_kefir_func_test4_label1:
     pop %rbp
     ret
-.section .rodata
-.section .text
 
 test5:
     push %rbp
     mov %rsp, %rbp
-__kefir_func_test5_block0:
+_kefir_func_test5_label0:
     call somefn@PLT
-    jmp __kefir_func_test5_block0
-.section .rodata
-.section .text
+    jmp _kefir_func_test5_label0
 
 

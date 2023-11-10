@@ -149,7 +149,14 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int_zero_extend32)(
     REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
 
-    EXTEND_OP(movzx, 32);
+    kefir_asmcmp_virtual_register_index_t result_vreg, arg_vreg;
+    REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[0], &arg_vreg));
+    REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
+                                                 KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));
+    REQUIRE_OK(kefir_asmcmp_amd64_mov(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                                      &KEFIR_ASMCMP_MAKE_VREG32(result_vreg), &KEFIR_ASMCMP_MAKE_VREG32(arg_vreg),
+                                      NULL));
+    REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));
     return KEFIR_OK;
 }
 
@@ -564,62 +571,26 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(bool_and)(struct kefir_mem *
         REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));             \
     } while (false)
 
-kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int_equals)(struct kefir_mem *mem,
-                                                                struct kefir_codegen_amd64_function *function,
-                                                                const struct kefir_opt_instruction *instruction) {
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
-    REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
+#define DEF_COMPARISON(_id, _op)                                                                                      \
+    kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int_##_id)(struct kefir_mem * mem,                            \
+                                                                   struct kefir_codegen_amd64_function * function,    \
+                                                                   const struct kefir_opt_instruction *instruction) { \
+        REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));            \
+        REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function")); \
+        REQUIRE(instruction != NULL,                                                                                  \
+                KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));                    \
+                                                                                                                      \
+        DEFINE_COMPARISON(_op);                                                                                       \
+                                                                                                                      \
+        return KEFIR_OK;                                                                                              \
+    }
 
-    DEFINE_COMPARISON(sete);
-
-    return KEFIR_OK;
-}
-
-kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int_greater)(struct kefir_mem *mem,
-                                                                 struct kefir_codegen_amd64_function *function,
-                                                                 const struct kefir_opt_instruction *instruction) {
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
-    REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
-
-    DEFINE_COMPARISON(setg);
-
-    return KEFIR_OK;
-}
-
-kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int_less)(struct kefir_mem *mem,
-                                                              struct kefir_codegen_amd64_function *function,
-                                                              const struct kefir_opt_instruction *instruction) {
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
-    REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
-
-    DEFINE_COMPARISON(setl);
-
-    return KEFIR_OK;
-}
-
-kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int_above)(struct kefir_mem *mem,
-                                                               struct kefir_codegen_amd64_function *function,
-                                                               const struct kefir_opt_instruction *instruction) {
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
-    REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
-
-    DEFINE_COMPARISON(seta);
-
-    return KEFIR_OK;
-}
-
-kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int_below)(struct kefir_mem *mem,
-                                                               struct kefir_codegen_amd64_function *function,
-                                                               const struct kefir_opt_instruction *instruction) {
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
-    REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
-
-    DEFINE_COMPARISON(setb);
-
-    return KEFIR_OK;
-}
+DEF_COMPARISON(equals, sete)
+DEF_COMPARISON(greater, setg)
+DEF_COMPARISON(greater_or_equals, setge)
+DEF_COMPARISON(less, setl)
+DEF_COMPARISON(less_or_equals, setle)
+DEF_COMPARISON(above, seta)
+DEF_COMPARISON(above_or_equals, setae)
+DEF_COMPARISON(below, setb)
+DEF_COMPARISON(below_or_equals, setbe)

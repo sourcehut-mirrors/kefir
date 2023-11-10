@@ -3,66 +3,60 @@
 
 .global greater_or_equalsf
 .global less_or_equalsf
-.extern __kefirrt_opt_save_registers
-.extern __kefirrt_opt_load_int_vararg
-.extern __kefirrt_opt_load_sse_vararg
+.extern __kefir_opt_float32_neg
+.extern __kefir_opt_float64_neg
 .extern __kefirrt_opt_float32_to_uint
 .extern __kefirrt_opt_float64_to_uint
-.extern __kefirrt_opt_long_double_to_int
 
 .section .text
 greater_or_equalsf:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-__kefir_func_greater_or_equalsf_block0:
+    stmxcsr -8(%rbp)
+_kefir_func_greater_or_equalsf_label0:
     lea -12(%rbp), %rax
     movd %xmm1, (%rax)
     lea -16(%rbp), %rax
     movd %xmm0, (%rax)
     lea -16(%rbp), %rax
-    movl (%rax), %ecx
-    mov %rcx, %rax
+    movl (%rax), %eax
     lea -12(%rbp), %rcx
-    movl (%rcx), %edx
-    mov %rdx, %rcx
-    movq %rcx, %xmm1
-    movq %rax, %xmm0
-    xor %rdx, %rdx
+    movl (%rcx), %ecx
+    mov $0, %rdx
+    movd %rax, %xmm0
+    movd %rcx, %xmm1
     comiss %xmm1, %xmm0
     setae %dl
     mov %rdx, %rax
+    ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-.section .rodata
-.section .text
 
 less_or_equalsf:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-__kefir_func_less_or_equalsf_block0:
+    stmxcsr -8(%rbp)
+_kefir_func_less_or_equalsf_label0:
     lea -12(%rbp), %rax
     movd %xmm1, (%rax)
     lea -16(%rbp), %rax
     movd %xmm0, (%rax)
     lea -16(%rbp), %rax
-    movl (%rax), %ecx
-    mov %rcx, %rax
+    movl (%rax), %eax
     lea -12(%rbp), %rcx
-    movl (%rcx), %edx
-    mov %rdx, %rcx
-    movq %rcx, %xmm1
-    movq %rax, %xmm0
-    xor %rdx, %rdx
-    comiss %xmm0, %xmm1
+    movl (%rcx), %ecx
+    mov $0, %rdx
+    movd %rcx, %xmm0
+    movd %rax, %xmm1
+    comiss %xmm1, %xmm0
     setae %dl
     mov %rdx, %rax
+    ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-.section .rodata
-.section .text
 
 

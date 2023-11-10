@@ -521,34 +521,59 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(float_compare)(struct kefir_
 
     switch (instruction->operation.opcode) {
         case KEFIR_OPT_OPCODE_FLOAT32_GREATER:
+        case KEFIR_OPT_OPCODE_FLOAT32_GREATER_OR_EQUALS:
             REQUIRE_OK(kefir_asmcmp_amd64_comiss(
                 mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                 &KEFIR_ASMCMP_MAKE_VREG(arg1_vreg), &KEFIR_ASMCMP_MAKE_VREG(arg2_vreg), NULL));
             break;
 
         case KEFIR_OPT_OPCODE_FLOAT64_GREATER:
+        case KEFIR_OPT_OPCODE_FLOAT64_GREATER_OR_EQUALS:
             REQUIRE_OK(kefir_asmcmp_amd64_comisd(
                 mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                 &KEFIR_ASMCMP_MAKE_VREG(arg1_vreg), &KEFIR_ASMCMP_MAKE_VREG(arg2_vreg), NULL));
             break;
 
         case KEFIR_OPT_OPCODE_FLOAT32_LESSER:
+        case KEFIR_OPT_OPCODE_FLOAT32_LESSER_OR_EQUALS:
             REQUIRE_OK(kefir_asmcmp_amd64_comiss(
                 mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                 &KEFIR_ASMCMP_MAKE_VREG(arg2_vreg), &KEFIR_ASMCMP_MAKE_VREG(arg1_vreg), NULL));
             break;
 
         case KEFIR_OPT_OPCODE_FLOAT64_LESSER:
+        case KEFIR_OPT_OPCODE_FLOAT64_LESSER_OR_EQUALS:
             REQUIRE_OK(kefir_asmcmp_amd64_comisd(
                 mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                 &KEFIR_ASMCMP_MAKE_VREG(arg2_vreg), &KEFIR_ASMCMP_MAKE_VREG(arg1_vreg), NULL));
             break;
+
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected instruction opcode");
     }
 
-    REQUIRE_OK(kefir_asmcmp_amd64_seta(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                                       &KEFIR_ASMCMP_MAKE_VREG8(result_vreg), NULL));
+    switch (instruction->operation.opcode) {
+        case KEFIR_OPT_OPCODE_FLOAT32_GREATER:
+        case KEFIR_OPT_OPCODE_FLOAT32_LESSER:
+        case KEFIR_OPT_OPCODE_FLOAT64_GREATER:
+        case KEFIR_OPT_OPCODE_FLOAT64_LESSER:
+            REQUIRE_OK(kefir_asmcmp_amd64_seta(mem, &function->code,
+                                               kefir_asmcmp_context_instr_tail(&function->code.context),
+                                               &KEFIR_ASMCMP_MAKE_VREG8(result_vreg), NULL));
+            break;
+
+        case KEFIR_OPT_OPCODE_FLOAT32_GREATER_OR_EQUALS:
+        case KEFIR_OPT_OPCODE_FLOAT32_LESSER_OR_EQUALS:
+        case KEFIR_OPT_OPCODE_FLOAT64_GREATER_OR_EQUALS:
+        case KEFIR_OPT_OPCODE_FLOAT64_LESSER_OR_EQUALS:
+            REQUIRE_OK(kefir_asmcmp_amd64_setae(mem, &function->code,
+                                                kefir_asmcmp_context_instr_tail(&function->code.context),
+                                                &KEFIR_ASMCMP_MAKE_VREG8(result_vreg), NULL));
+            break;
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected instruction opcode");
+    }
 
     REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));
     return KEFIR_OK;

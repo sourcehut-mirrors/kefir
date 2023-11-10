@@ -4,66 +4,52 @@
 .global ulong2uint
 .global ulong2uchar
 .global ulong2ushort
-.extern __kefirrt_opt_save_registers
-.extern __kefirrt_opt_load_int_vararg
-.extern __kefirrt_opt_load_sse_vararg
+.extern __kefir_opt_float32_neg
+.extern __kefir_opt_float64_neg
 .extern __kefirrt_opt_float32_to_uint
 .extern __kefirrt_opt_float64_to_uint
-.extern __kefirrt_opt_long_double_to_int
 
 .section .text
 ulong2uint:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-__kefir_func_ulong2uint_block0:
-    lea -16(%rbp), %rax
+_kefir_func_ulong2uint_label0:
+    lea -8(%rbp), %rax
     movq %rdi, (%rax)
-    lea -16(%rbp), %rax
-    movq (%rax), %rcx
-    mov %rcx, %rax
-    mov %eax, %ecx
-    mov %rcx, %rax
+    lea -8(%rbp), %rax
+    movq (%rax), %rax
+    mov %eax, %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
-.section .rodata
-.section .text
 
 ulong2uchar:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-__kefir_func_ulong2uchar_block0:
-    lea -16(%rbp), %rax
+_kefir_func_ulong2uchar_label0:
+    lea -8(%rbp), %rax
     movq %rdi, (%rax)
-    lea -16(%rbp), %rax
-    movq (%rax), %rcx
-    mov %rcx, %rax
-    movzx %al, %rcx
-    mov %rcx, %rax
+    lea -8(%rbp), %rax
+    movq (%rax), %rax
+    movzx %al, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-.section .rodata
-.section .text
 
 ulong2ushort:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-__kefir_func_ulong2ushort_block0:
-    lea -16(%rbp), %rax
+_kefir_func_ulong2ushort_label0:
+    lea -8(%rbp), %rax
     movq %rdi, (%rax)
-    lea -16(%rbp), %rax
-    movq (%rax), %rcx
-    mov %rcx, %rax
-    movzx %ax, %rcx
-    mov %rcx, %rax
+    lea -8(%rbp), %rax
+    movq (%rax), %rax
+    movzx %ax, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-.section .rodata
-.section .text
 
 
