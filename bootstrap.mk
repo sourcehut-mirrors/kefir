@@ -12,13 +12,13 @@ KEFIR_LD=ld
 
 BOOTSTRAP_CFLAGS=-I $(HEADERS)
 ifeq ($(PLATFORM),freebsd)
-BOOTSTRAP_CFLAGS += --target new-x86_64-freebsd-system -D__GNUC__=4 -D__GNUC_MINOR__=20 -D__GNUC_STDC_INLINE__=1
+BOOTSTRAP_CFLAGS += --target hostcpu-freebsd -D__GNUC__=4 -D__GNUC_MINOR__=20 -D__GNUC_STDC_INLINE__=1
 else ifeq ($(PLATFORM),openbsd)
-BOOTSTRAP_CFLAGS += --target new-x86_64-openbsd-system -D__GNUC__=4 -D__GNUC_MINOR__=20 -D__GNUC_STDC_INLINE__=1 -include $(HEADERS)/bootstrap_include/openbsd.h
+BOOTSTRAP_CFLAGS += --target hostcpu-openbsd -D__GNUC__=4 -D__GNUC_MINOR__=20 -D__GNUC_STDC_INLINE__=1 -include $(HEADERS)/bootstrap_include/openbsd.h
 else ifeq ($(PLATFORM),netbsd)
-BOOTSTRAP_CFLAGS += --target new-x86_64-netbsd-system -D__GNUC__=4 -D__GNUC_MINOR__=20 -D__GNUC_STDC_INLINE__=1 -D__ELF__=1 -include $(HEADERS)/bootstrap_include/netbsd.h
+BOOTSTRAP_CFLAGS += --target hostcpu-netbsd -D__GNUC__=4 -D__GNUC_MINOR__=20 -D__GNUC_STDC_INLINE__=1 -D__ELF__=1 -include $(HEADERS)/bootstrap_include/netbsd.h
 else
-BOOTSTRAP_CFLAGS += --target new-x86_64-linux-gnu
+BOOTSTRAP_CFLAGS += --target hostcpu-linux
 endif
 
 ifeq ($(USE_SHARED),yes)
@@ -51,9 +51,6 @@ KEFIR_LIB_SOURCE := $(wildcard \
 	$(SOURCE)/codegen/amd64/*.c \
 	$(SOURCE)/codegen/amd64/code/*.c \
 	$(SOURCE)/codegen/asmcmp/*.c \
-	$(SOURCE)/codegen/opt-system-v-amd64/*.c \
-	$(SOURCE)/codegen/opt-system-v-amd64/code/*.c \
-	$(SOURCE)/codegen/opt-system-v-amd64/code/inline_assembly/*.c \
 	$(SOURCE)/codegen/naive-system-v-amd64/*.c \
 	$(SOURCE)/codegen/naive-system-v-amd64/builtins/*.c \
 	$(SOURCE)/compiler/*.c \

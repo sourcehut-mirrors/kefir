@@ -148,7 +148,7 @@ Produce a statically linked executable
 Produce a shared object
 .\"
 .It Fl fPIC | Fl fpic
-Produce position-independent code (supported only for opt-* targets)
+Produce position-independent code (not supported for naive-* targets)
 .\"
 .It Fl fno-pic
 Do not produce position-independent code [default]
@@ -404,7 +404,7 @@ Produce assembly output with specified syntax [x86_64-intel_noprefix, x86_64-int
 .El
 .\"
 .Ss OPTIMIZER
-Optimizer pipeline specification (supported only for opt-* targets) consists of comma separated names of optimization pipeline passes:
+Optimizer pipeline specification (not supported for naive-* targets) consists of comma separated names of optimization pipeline passes:
 .Bl -tag -width Ds
 .\"
 .It Ar noop
@@ -424,23 +424,35 @@ Fusing comparisons with subsequent branch instructions
 .El
 .\"
 .Ss TARGET
-Target platforms are specified in format [<backend>-]<arch>-<platform>-<variant> where
+Target platforms are specified in format [<backend>-]<platform>[-<variant>] where
 .Bl -tag -width Ds
 .\"
 .It Ar backend
-naive, opt [default]
-.\"
-.It Ar arch
-x86_64
+naive |
+.Sy opt
+[default]
 .\"
 .It Ar platform
-linux, freebsd, openbsd, host
+<arch>-<os> |
+.Sy host
+[default]
+.\"
+.It Ar arch
+x86_64 |
+.Sy hostcpu
+[default]
+.\"
+.It Ar platform
+linux | freebsd | openbsd | netbsd |
+.Sy hostos
+[default]
 .\"
 .It Ar variant
-none, musl, gnu, system, default
+none | musl | gnu | system |
+.Sy default
 .El
-Backend is an optional part of target specification. Variant "none" avoids any implicit library linkages and include path. On linux, "default" is
-equivalent to "gnu", on other platforms -- to "system".
+Backend and variant are optional parts of the target specification. Variant "none" avoids any implicit library linkages and include path. On linux, "default" is
+equivalent to "gnu", on other platforms -- to "system". 
 .\"
 .Sh ENVIRONMENT
 Environment variables that affect

@@ -23,15 +23,14 @@
 #include "kefir/core/error.h"
 #include "kefir/target/abi/amd64/platform.h"
 #include "kefir/codegen/naive-system-v-amd64/codegen.h"
-#include "kefir/codegen/opt-system-v-amd64/codegen.h"
 #include "kefir/codegen/amd64/codegen.h"
 #include <float.h>
 
-const char KefirNaiveSysVAmd64RuntimeCode[] = {
+static const char KefirNaiveSysVAmd64RuntimeCode[] = {
 #include STRINGIFY(KEFIR_AMD64_SYSV_RUNTIME_INCLUDE)
 };
 
-const char KefirOptSysVAmd64RuntimeCode[] = {
+static const char KefirOptSysVAmd64RuntimeCode[] = {
 #include STRINGIFY(KEFIR_OPT_AMD64_SYSV_RUNTIME_INCLUDE)
 };
 
@@ -61,26 +60,6 @@ static kefir_result_t amd64_sysv_free_codegen(struct kefir_mem *mem, struct kefi
 
     REQUIRE_OK(KEFIR_CODEGEN_CLOSE(mem, codegen));
     KEFIR_FREE(mem, codegen->self);
-    return KEFIR_OK;
-}
-
-static kefir_result_t opt_amd64_sysv_new_codegen(struct kefir_mem *mem, FILE *output,
-                                                 const struct kefir_codegen_configuration *config,
-                                                 struct kefir_codegen **codegen_ptr) {
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(output != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid FILE"));
-    REQUIRE(codegen_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to code generator"));
-
-    struct kefir_codegen_opt_amd64 *codegen = KEFIR_MALLOC(mem, sizeof(struct kefir_codegen_opt_amd64));
-    REQUIRE(codegen != NULL,
-            KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate optimized AMD64 System-V code generator"));
-    kefir_result_t res = kefir_codegen_opt_sysv_amd64_init(mem, codegen, output, config);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, codegen);
-        return res;
-    });
-
-    *codegen_ptr = &codegen->codegen;
     return KEFIR_OK;
 }
 
@@ -156,19 +135,7 @@ static kefir_result_t kefir_compiler_amd64_sysv_profile(struct kefir_compiler_pr
     profile->new_codegen = amd64_sysv_new_codegen;
     profile->free_codegen = amd64_sysv_free_codegen;
     profile->runtime_code = KefirNaiveSysVAmd64RuntimeCode;
-    profile->runtime_include_dirname = "amd64-sysv-gas";
-    return KEFIR_OK;
-}
-
-static kefir_result_t kefir_compiler_opt_amd64_sysv_profile(struct kefir_compiler_profile *profile) {
-    REQUIRE(profile != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid compiler profile"));
-
-    REQUIRE_OK(kefir_compiler_amd64_sysv_profile(profile));
-    profile->optimizer_enabled = true;
-    profile->new_codegen = opt_amd64_sysv_new_codegen;
-    profile->free_codegen = amd64_sysv_free_codegen;
-    profile->runtime_code = KefirOptSysVAmd64RuntimeCode;
-    profile->runtime_include_dirname = NULL;
+    profile->runtime_include_dirname = "naive-amd64-sysv-gas";
     return KEFIR_OK;
 }
 
@@ -187,9 +154,8 @@ static kefir_result_t kefir_compiler_new_amd64_sysv_profile(struct kefir_compile
 const struct Profile {
     const char *identifier;
     kefir_result_t (*init)(struct kefir_compiler_profile *);
-} Profiles[] = {{"amd64-sysv-gas", kefir_compiler_amd64_sysv_profile},
-                {"opt-amd64-sysv-gas", kefir_compiler_opt_amd64_sysv_profile},
-                {"new-amd64-sysv-gas", kefir_compiler_new_amd64_sysv_profile},
+} Profiles[] = {{"naive-amd64-sysv-gas", kefir_compiler_amd64_sysv_profile},
+                {"amd64-sysv-gas", kefir_compiler_new_amd64_sysv_profile},
                 {NULL, kefir_compiler_amd64_sysv_profile}};
 const kefir_size_t ProfileCount = sizeof(Profiles) / sizeof(Profiles[0]);
 

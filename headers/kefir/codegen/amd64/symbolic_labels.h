@@ -36,16 +36,10 @@
 
 #define KEFIR_AMD64_STRING_LITERAL "__kefir_string_literal%" KEFIR_ID_FMT
 #define KEFIR_AMD64_LABEL "_kefir_func_%s_label%" KEFIR_SIZE_FMT
-// #define KEFIR_AMD64_SYSTEM_V_FUNCTION_BLOCK "__kefir_func_%s_block%" KEFIR_ID_FMT
-// #define KEFIR_OPT_AMD64_SYSTEM_V_FUNCTION_BLOCK_LABEL "__kefir_func_%s_block%" KEFIR_ID_FMT "_label%" KEFIR_ID_FMT
-// #define KEFIR_OPT_AMD64_SYSTEM_V_FUNCTION_CONSTANT_LABEL "__kefir_func_%s_const%" KEFIR_ID_FMT
-// #define KEFIR_OPT_AMD64_SYSTEM_V_INLINE_ASSEMBLY_JUMP_TRAMPOLINE_LABEL "__kefir_func_%s_inline_asm%" KEFIR_ID_FMT
-// "_trampoline%" KEFIR_ID_FMT
 #define KEFIR_AMD64_CONSTANT_FLOAT32_NEG "__kefir_opt_float32_neg"
 #define KEFIR_AMD64_CONSTANT_FLOAT64_NEG "__kefir_opt_float64_neg"
 #define KEFIR_AMD64_CONSTANT_UINT_TO_LONG_DOUBLE "__kefir_opt_uint2long_double"
 
-// #define KEFIR_OPT_AMD64_SYSTEM_V_RUNTIME_SAVE_REGISTERS "__kefirrt_opt_save_registers"
 #define KEFIR_AMD64_SYSTEM_V_RUNTIME_VARARG_SAVE "__kefirrt_opt_amd64_sysv_vararg_save"
 #define KEFIR_AMD64_SYSTEM_V_RUNTIME_LOAD_INT_VARARG "__kefirrt_opt_load_int_vararg"
 #define KEFIR_AMD64_SYSTEM_V_RUNTIME_LOAD_SSE_VARARG "__kefirrt_opt_load_sse_vararg"

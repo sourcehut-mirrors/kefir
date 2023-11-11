@@ -31,15 +31,11 @@
 static kefir_result_t match_backend(kefir_driver_target_backend_t backend, const char **target_profile) {
     switch (backend) {
         case KEFIR_DRIVER_TARGET_BACKEND_NAIVE:
+            *target_profile = "naive-amd64-sysv-gas";
+            break;
+
+        case KEFIR_DRIVER_TARGET_BACKEND_DEFAULT:
             *target_profile = "amd64-sysv-gas";
-            break;
-
-        case KEFIR_DRIVER_TARGET_BACKEND_OPTIMIZED:
-            *target_profile = "opt-amd64-sysv-gas";
-            break;
-
-        case KEFIR_DRIVER_TARGET_BACKEND_NEW:
-            *target_profile = "new-amd64-sysv-gas";
             break;
     }
     return KEFIR_OK;

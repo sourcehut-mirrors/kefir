@@ -24,7 +24,6 @@
 #include "kefir/ast-translator/environment.h"
 #include "kefir/codegen/codegen.h"
 #include "kefir/codegen/naive-system-v-amd64/codegen.h"
-#include "kefir/codegen/opt-system-v-amd64/codegen.h"
 #include "kefir/codegen/amd64/codegen.h"
 
 typedef struct kefir_test_codegen {
@@ -32,7 +31,6 @@ typedef struct kefir_test_codegen {
 
     union {
         struct kefir_codegen_amd64 new_codegen;
-        struct kefir_codegen_opt_amd64 opt_codegen;
         struct kefir_codegen_naive_amd64 naive_codegen;
     };
 

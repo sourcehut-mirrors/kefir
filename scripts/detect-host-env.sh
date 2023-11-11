@@ -239,7 +239,7 @@ generate_header () {
 
     log -n "Generating header..."
     cat <<EOF
-#define KEFIR_CONFIG_HOST_TARGET "opt-x86_64-$host_env"
+#define KEFIR_CONFIG_HOST_TARGET "x86_64-$host_env"
 EOF
 
     case "$host_env" in
@@ -331,7 +331,7 @@ generate_environment () {
 
     log -n "Generating environment..."
     cat <<EOF
-export KEFIR_TARGET="opt-x86_64-$host_env"
+export KEFIR_TARGET="x86_64-$host_env"
 EOF
 
     case "$host_env" in

@@ -179,7 +179,7 @@ Produce assembly output with specified syntax [x86_64-intel_noprefix, x86_64-int
 .El
 .\"
 .Ss OPTIMIZER
-Optimizer pipeline specification (supported only for opt-* targets) consists of comma separated names of optimization pipeline passes:
+Optimizer pipeline specification (not supported for naive-* targets) consists of comma separated names of optimization pipeline passes:
 .Bl -tag -width Ds
 .\"
 .It Ar noop
@@ -202,11 +202,11 @@ Fusing comparisons with subsequent branch instructions
 Supported compilation targets:
 .Bl -tag -width Ds
 .\"
-.It Ar amd64-sysv-gas
-Produce GNU As-compatible assembly adhering System-V AMD64 ABI [default]
+.It Ar naive-amd64-sysv-gas
+Produce unoptimized threaded code in GNU As-compatible assembly adhering System-V AMD64 ABI
 .\"
-.It Ar opt-amd64-sysv-gas
-Produce optimized GNU As-compatible assembly adhering System-V AMD64 ABI
+.It Ar amd64-sysv-gas
+Produce optimized GNU As-compatible assembly adhering System-V AMD64 ABI [default]
 .El
 .\"
 .Sh EXIT STATUS

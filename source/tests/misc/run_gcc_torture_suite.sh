@@ -27,7 +27,7 @@ if [[ "x$TORTURE" == "x" ]]; then
     exit 1
 fi
 
-KEFIRFLAGS="--restrictive-c -W --feature-missing-function-return-type -W --feature-designated-init-colons -W --feature-labels-as-values -W --feature-implicit-function-decl -W --feature-empty-structs -W --feature-ext-pointer-arithmetics -W --feature-missing-braces-subobj -W --feature-statement-expressions -W --feature-omitted-conditional-operand -W --feature-int-to-pointer -include $(dirname $0)/torture.h  --target x86_64-host-default $KEFIR_EXTRAFLAGS"
+KEFIRFLAGS="--restrictive-c -W --feature-missing-function-return-type -W --feature-designated-init-colons -W --feature-labels-as-values -W --feature-implicit-function-decl -W --feature-empty-structs -W --feature-ext-pointer-arithmetics -W --feature-missing-braces-subobj -W --feature-statement-expressions -W --feature-omitted-conditional-operand -W --feature-int-to-pointer -include $(dirname $0)/torture.h  --target host $KEFIR_EXTRAFLAGS"
 SKIP_LIST="$(dirname $0)/torture.skip"
 TIMEOUT=10
 SKIPPED_TESTS=0

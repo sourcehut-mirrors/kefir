@@ -25,32 +25,39 @@
 #include <string.h>
 
 static kefir_result_t match_backend(const char *spec, struct kefir_driver_target *target, const char **next) {
-    const char spec_naive[] = "naive-";
-    const char spec_optimized[] = "opt-";
-    const char spec_new[] = "new-";
+    static const char spec_naive[] = "naive-";
+    static const char spec_optimizing[] = "opt-";
 
-    if (strncmp(spec_naive, spec, sizeof(spec_naive) - 1) == 0) {
+    if (strncmp(spec, spec_naive, sizeof(spec_naive) - 1) == 0) {
         target->backend = KEFIR_DRIVER_TARGET_BACKEND_NAIVE;
         *next = spec + (sizeof(spec_naive) - 1);
-    } else if (strncmp(spec_optimized, spec, sizeof(spec_optimized) - 1) == 0) {
-        target->backend = KEFIR_DRIVER_TARGET_BACKEND_OPTIMIZED;
-        *next = spec + (sizeof(spec_optimized) - 1);
-    } else if (strncmp(spec_new, spec, sizeof(spec_new) - 1) == 0) {
-        target->backend = KEFIR_DRIVER_TARGET_BACKEND_NEW;
-        *next = spec + (sizeof(spec_new) - 1);
+    } else if (strncmp(spec, spec_optimizing, sizeof(spec_optimizing) - 1) == 0) {
+        target->backend = KEFIR_DRIVER_TARGET_BACKEND_DEFAULT;
+        *next = spec + (sizeof(spec_optimizing) - 1);
     }
     return KEFIR_OK;
 }
 
 static kefir_result_t match_arch(const char *spec, struct kefir_driver_target *target, const char **next) {
+    static const char spec_x86_64[] = "x86_64";
+    static const char spec_hostcpu[] = "hostcpu";
+    static const char spec_host[] = "host";
+
     const char *delim = strchr(spec, '-');
-    REQUIRE(delim != NULL, KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Architecture specification is not found"));
-    if (strncmp("x86_64", spec, delim - spec) == 0) {
+    if (delim == NULL) {
+        delim = spec + strlen(spec) - 1;
+    }
+
+    if (strncmp(spec, spec_x86_64, sizeof(spec_x86_64) - 1) == 0) {
         target->arch = KEFIR_DRIVER_TARGET_ARCH_X86_64;
+        *next = delim + 1;
+    } else if (strncmp(spec, spec_hostcpu, sizeof(spec_hostcpu) - 1) == 0) {
+        *next = delim + 1;
+    } else if (strncmp(spec, spec_host, sizeof(spec_host) - 1) == 0) {
+        // Intentionally left blank
     } else {
         return KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Architecture specification is not found");
     }
-    *next = delim + 1;
     return KEFIR_OK;
 }
 
@@ -74,17 +81,28 @@ static kefir_result_t select_host_platform(struct kefir_driver_target *target) {
 }
 
 static kefir_result_t match_platform(const char *spec, struct kefir_driver_target *target, const char **next) {
+    static const char spec_linux[] = "linux";
+    static const char spec_freebsd[] = "freebsd";
+    static const char spec_openbsd[] = "openbsd";
+    static const char spec_netbsd[] = "netbsd";
+    static const char spec_hostos[] = "hostos";
+    static const char spec_host[] = "host";
+
     const char *delim = strchr(spec, '-');
-    REQUIRE(delim != NULL, KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Platform specification is not found"));
-    if (strncmp("linux", spec, delim - spec) == 0) {
+    if (delim == NULL) {
+        delim = spec + strlen(spec) - 1;
+    }
+
+    if (strncmp(spec, spec_linux, sizeof(spec_linux) - 1) == 0) {
         target->platform = KEFIR_DRIVER_TARGET_PLATFORM_LINUX;
-    } else if (strncmp("freebsd", spec, delim - spec) == 0) {
+    } else if (strncmp(spec, spec_freebsd, sizeof(spec_freebsd) - 1) == 0) {
         target->platform = KEFIR_DRIVER_TARGET_PLATFORM_FREEBSD;
-    } else if (strncmp("openbsd", spec, delim - spec) == 0) {
+    } else if (strncmp(spec, spec_openbsd, sizeof(spec_openbsd) - 1) == 0) {
         target->platform = KEFIR_DRIVER_TARGET_PLATFORM_OPENBSD;
-    } else if (strncmp("netbsd", spec, delim - spec) == 0) {
+    } else if (strncmp(spec, spec_netbsd, sizeof(spec_netbsd) - 1) == 0) {
         target->platform = KEFIR_DRIVER_TARGET_PLATFORM_NETBSD;
-    } else if (strncmp("host", spec, delim - spec) == 0) {
+    } else if (strncmp(spec, spec_hostos, sizeof(spec_hostos) - 1) == 0 ||
+               strncmp(spec, spec_host, sizeof(spec_host) - 1) == 0) {
         REQUIRE_OK(select_host_platform(target));
     } else {
         return KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Platform specification is not found");
@@ -112,15 +130,17 @@ static kefir_result_t select_default_variant(struct kefir_driver_target *target)
 }
 
 static kefir_result_t match_variant(const char *spec, struct kefir_driver_target *target) {
-    if (strcmp("none", spec) == 0) {
+    if (strlen(spec) == 0) {
+        REQUIRE_OK(select_default_variant(target));
+    } else if (strcmp(spec, "none") == 0) {
         target->variant = KEFIR_DRIVER_TARGET_VARIANT_NONE;
-    } else if (strcmp("musl", spec) == 0) {
+    } else if (strcmp(spec, "musl") == 0) {
         target->variant = KEFIR_DRIVER_TARGET_VARIANT_MUSL;
-    } else if (strcmp("gnu", spec) == 0) {
+    } else if (strcmp(spec, "gnu") == 0) {
         target->variant = KEFIR_DRIVER_TARGET_VARIANT_GNU;
-    } else if (strcmp("system", spec) == 0) {
+    } else if (strcmp(spec, "system") == 0) {
         target->variant = KEFIR_DRIVER_TARGET_VARIANT_SYSTEM;
-    } else if (strcmp("default", spec) == 0) {
+    } else if (strcmp(spec, "default") == 0) {
         REQUIRE_OK(select_default_variant(target));
     } else {
         return KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Variant specification is not found");
@@ -142,7 +162,7 @@ kefir_result_t kefir_driver_target_match(const char *spec, struct kefir_driver_t
 kefir_result_t kefir_driver_target_default(struct kefir_driver_target *target) {
     REQUIRE(target != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to driver target"));
 
-    target->backend = KEFIR_DRIVER_TARGET_BACKEND_OPTIMIZED;
+    target->backend = KEFIR_DRIVER_TARGET_BACKEND_DEFAULT;
     target->arch = KEFIR_DRIVER_TARGET_ARCH_X86_64;
     REQUIRE_OK(select_host_platform(target));
     REQUIRE_OK(select_default_variant(target));
