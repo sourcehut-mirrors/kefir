@@ -346,6 +346,8 @@ static kefir_result_t format_operation_none(struct kefir_json_output *json, cons
 
 static kefir_result_t instr_format(struct kefir_json_output *json, const struct kefir_opt_instruction *instr,
                                    const struct kefir_opt_code_analysis *code_analysis) {
+    REQUIRE(code_analysis == NULL || code_analysis->instructions[instr->id].reachable, KEFIR_OK);
+    
     REQUIRE_OK(kefir_json_output_object_begin(json));
     REQUIRE_OK(kefir_json_output_object_key(json, "id"));
     REQUIRE_OK(kefir_json_output_uinteger(json, instr->id));
@@ -403,7 +405,9 @@ static kefir_result_t instr_format(struct kefir_json_output *json, const struct 
     return KEFIR_OK;
 }
 
-static kefir_result_t phi_format(struct kefir_json_output *json, const struct kefir_opt_phi_node *phi) {
+static kefir_result_t phi_format(struct kefir_json_output *json, const struct kefir_opt_phi_node *phi, const struct kefir_opt_code_analysis *code_analysis) {
+    REQUIRE(code_analysis == NULL || code_analysis->instructions[phi->output_ref].reachable, KEFIR_OK);
+
     REQUIRE_OK(kefir_json_output_object_begin(json));
     REQUIRE_OK(kefir_json_output_object_key(json, "id"));
     REQUIRE_OK(kefir_json_output_uinteger(json, phi->node_id));
@@ -494,6 +498,8 @@ static kefir_result_t inline_asm_format(struct kefir_json_output *json,
 static kefir_result_t code_block_format(struct kefir_json_output *json, const struct kefir_opt_code_container *code,
                                         const struct kefir_opt_code_block *block,
                                         const struct kefir_opt_code_analysis *code_analysis) {
+    REQUIRE(code_analysis == NULL || code_analysis->blocks[block->id].reachable, KEFIR_OK);
+    
     REQUIRE_OK(kefir_json_output_object_begin(json));
     REQUIRE_OK(kefir_json_output_object_key(json, "id"));
     REQUIRE_OK(kefir_json_output_uinteger(json, block->id));
@@ -507,7 +513,7 @@ static kefir_result_t code_block_format(struct kefir_json_output *json, const st
     for (res = kefir_opt_code_block_phi_head(code, block, &phi); res == KEFIR_OK && phi != NULL;
          res = kefir_opt_phi_next_sibling(code, phi, &phi)) {
 
-        REQUIRE_OK(phi_format(json, phi));
+        REQUIRE_OK(phi_format(json, phi, code_analysis));
     }
     REQUIRE_OK(res);
     REQUIRE_OK(kefir_json_output_array_end(json));

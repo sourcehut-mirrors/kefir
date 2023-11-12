@@ -19,6 +19,7 @@ less_or_equalsld:
 _kefir_func_less_or_equalsld_label0:
     lea 16(%rbp), %rax
     lea 32(%rbp), %rcx
+_kefir_func_less_or_equalsld_label1:
     lea -64(%rbp), %rdx
     fldt (%rcx)
     fstpt (%rdx)
@@ -48,6 +49,7 @@ greater_or_equalsd:
     sub $32, %rsp
     stmxcsr -8(%rbp)
 _kefir_func_greater_or_equalsd_label0:
+_kefir_func_greater_or_equalsd_label1:
     lea -16(%rbp), %rax
     movq %xmm1, (%rax)
     lea -24(%rbp), %rax
@@ -73,6 +75,7 @@ less_or_equalsd:
     sub $32, %rsp
     stmxcsr -8(%rbp)
 _kefir_func_less_or_equalsd_label0:
+_kefir_func_less_or_equalsd_label1:
     lea -16(%rbp), %rax
     movq %xmm1, (%rax)
     lea -24(%rbp), %rax
@@ -100,6 +103,7 @@ greater_or_equalsld:
 _kefir_func_greater_or_equalsld_label0:
     lea 16(%rbp), %rax
     lea 32(%rbp), %rcx
+_kefir_func_greater_or_equalsld_label1:
     lea -64(%rbp), %rdx
     fldt (%rcx)
     fstpt (%rdx)

@@ -30,6 +30,7 @@ static kefir_result_t identify_code_blocks(struct kefir_mem *mem, const struct k
                                            struct kefir_opt_constructor_state *state) {
     kefir_bool_t start_new_block = true;
     kefir_size_t i = 0;
+    REQUIRE_OK(kefir_opt_constructor_start_code_block_at(mem, state, (kefir_size_t) -1ll));
     for (; i < kefir_irblock_length(&state->function->ir_func->body); i++) {
         const struct kefir_irinstr *instr = kefir_irblock_at(&state->function->ir_func->body, i);
         REQUIRE(instr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected valid IR instruction to be returned"));
@@ -641,7 +642,7 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
 }
 
 static kefir_result_t push_function_arguments(struct kefir_mem *mem, struct kefir_opt_constructor_state *state) {
-    REQUIRE_OK(kefir_opt_constructor_update_current_code_block(mem, state));
+    REQUIRE_OK(kefir_opt_constructor_update_current_code_block(mem, state, (kefir_size_t) -1ll));
     kefir_opt_instruction_ref_t instr_ref;
     for (kefir_size_t i = 0; i < kefir_ir_type_children(state->function->ir_func->declaration->params); i++) {
         REQUIRE_OK(kefir_opt_code_builder_get_argument(mem, &state->function->code, state->current_block->block_id, i,
@@ -659,14 +660,14 @@ static kefir_result_t translate_code(struct kefir_mem *mem, const struct kefir_o
     REQUIRE_OK(push_function_arguments(mem, state));
     const struct kefir_irblock *ir_block = &state->function->ir_func->body;
     for (; state->ir_location < kefir_irblock_length(ir_block); state->ir_location++) {
-        REQUIRE_OK(kefir_opt_constructor_update_current_code_block(mem, state));
+        REQUIRE_OK(kefir_opt_constructor_update_current_code_block(mem, state, state->ir_location));
 
         const struct kefir_irinstr *instr = kefir_irblock_at(ir_block, state->ir_location);
         REQUIRE(instr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected valid IR instruction to be returned"));
         REQUIRE_OK(translate_instruction(mem, module, &state->function->code, state, instr));
     }
 
-    REQUIRE_OK(kefir_opt_constructor_update_current_code_block(mem, state));
+    REQUIRE_OK(kefir_opt_constructor_update_current_code_block(mem, state, state->ir_location));
     kefir_bool_t last_block_finalized = false;
     REQUIRE_OK(kefir_opt_code_builder_is_finalized(&state->function->code, state->current_block->block_id,
                                                    &last_block_finalized));

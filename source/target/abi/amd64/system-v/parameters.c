@@ -790,7 +790,6 @@ static kefir_result_t aggregate_allocate_return(const struct kefir_ir_type *type
                     break;
 
                 default:
-                    abort();
                     return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected QWord class");
             }
         }

@@ -18,6 +18,7 @@ lessd:
     mov %rsp, %rbp
     sub $16, %rsp
 _kefir_func_lessd_label0:
+_kefir_func_lessd_label1:
     lea -8(%rbp), %rax
     movq %xmm1, (%rax)
     lea -16(%rbp), %rax
@@ -29,14 +30,14 @@ _kefir_func_lessd_label0:
     movq %rax, %xmm0
     movq %rcx, %xmm1
     ucomisd %xmm1, %xmm0
-    jb _kefir_func_lessd_label1
-    jmp _kefir_func_lessd_label2
-_kefir_func_lessd_label1:
+    jb _kefir_func_lessd_label2
+    jmp _kefir_func_lessd_label3
+_kefir_func_lessd_label2:
     mov $1, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-_kefir_func_lessd_label2:
+_kefir_func_lessd_label3:
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
@@ -47,6 +48,7 @@ equalsd:
     mov %rsp, %rbp
     sub $16, %rsp
 _kefir_func_equalsd_label0:
+_kefir_func_equalsd_label1:
     lea -8(%rbp), %rax
     movq %xmm1, (%rax)
     lea -16(%rbp), %rax
@@ -58,16 +60,16 @@ _kefir_func_equalsd_label0:
     movq %rax, %xmm0
     movq %rcx, %xmm1
     ucomisd %xmm1, %xmm0
-    jp _kefir_func_equalsd_label3
-    je _kefir_func_equalsd_label1
-_kefir_func_equalsd_label3:
-    jmp _kefir_func_equalsd_label2
-_kefir_func_equalsd_label1:
+    jp _kefir_func_equalsd_label4
+    je _kefir_func_equalsd_label2
+_kefir_func_equalsd_label4:
+    jmp _kefir_func_equalsd_label3
+_kefir_func_equalsd_label2:
     mov $1, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-_kefir_func_equalsd_label2:
+_kefir_func_equalsd_label3:
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
@@ -78,6 +80,7 @@ greaterd:
     mov %rsp, %rbp
     sub $16, %rsp
 _kefir_func_greaterd_label0:
+_kefir_func_greaterd_label1:
     lea -8(%rbp), %rax
     movq %xmm1, (%rax)
     lea -16(%rbp), %rax
@@ -89,14 +92,14 @@ _kefir_func_greaterd_label0:
     movq %rcx, %xmm0
     movq %rax, %xmm1
     ucomisd %xmm1, %xmm0
-    jb _kefir_func_greaterd_label1
-    jmp _kefir_func_greaterd_label2
-_kefir_func_greaterd_label1:
+    jb _kefir_func_greaterd_label2
+    jmp _kefir_func_greaterd_label3
+_kefir_func_greaterd_label2:
     mov $1, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-_kefir_func_greaterd_label2:
+_kefir_func_greaterd_label3:
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
@@ -107,6 +110,7 @@ not_equalsd:
     mov %rsp, %rbp
     sub $16, %rsp
 _kefir_func_not_equalsd_label0:
+_kefir_func_not_equalsd_label1:
     lea -8(%rbp), %rax
     movq %xmm1, (%rax)
     lea -16(%rbp), %rax
@@ -118,15 +122,15 @@ _kefir_func_not_equalsd_label0:
     movq %rax, %xmm0
     movq %rcx, %xmm1
     ucomisd %xmm1, %xmm0
-    jp _kefir_func_not_equalsd_label1
-    jne _kefir_func_not_equalsd_label1
-    jmp _kefir_func_not_equalsd_label2
-_kefir_func_not_equalsd_label1:
+    jp _kefir_func_not_equalsd_label2
+    jne _kefir_func_not_equalsd_label2
+    jmp _kefir_func_not_equalsd_label3
+_kefir_func_not_equalsd_label2:
     mov $1, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-_kefir_func_not_equalsd_label2:
+_kefir_func_not_equalsd_label3:
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
@@ -137,6 +141,7 @@ greater_or_equalsd:
     mov %rsp, %rbp
     sub $16, %rsp
 _kefir_func_greater_or_equalsd_label0:
+_kefir_func_greater_or_equalsd_label1:
     lea -8(%rbp), %rax
     movq %xmm1, (%rax)
     lea -16(%rbp), %rax
@@ -148,14 +153,14 @@ _kefir_func_greater_or_equalsd_label0:
     movq %rcx, %xmm0
     movq %rax, %xmm1
     ucomisd %xmm1, %xmm0
-    jbe _kefir_func_greater_or_equalsd_label1
-    jmp _kefir_func_greater_or_equalsd_label2
-_kefir_func_greater_or_equalsd_label1:
+    jbe _kefir_func_greater_or_equalsd_label2
+    jmp _kefir_func_greater_or_equalsd_label3
+_kefir_func_greater_or_equalsd_label2:
     mov $1, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-_kefir_func_greater_or_equalsd_label2:
+_kefir_func_greater_or_equalsd_label3:
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
@@ -166,6 +171,7 @@ less_or_equalsd:
     mov %rsp, %rbp
     sub $16, %rsp
 _kefir_func_less_or_equalsd_label0:
+_kefir_func_less_or_equalsd_label1:
     lea -8(%rbp), %rax
     movq %xmm1, (%rax)
     lea -16(%rbp), %rax
@@ -177,14 +183,14 @@ _kefir_func_less_or_equalsd_label0:
     movq %rax, %xmm0
     movq %rcx, %xmm1
     ucomisd %xmm1, %xmm0
-    jbe _kefir_func_less_or_equalsd_label1
-    jmp _kefir_func_less_or_equalsd_label2
-_kefir_func_less_or_equalsd_label1:
+    jbe _kefir_func_less_or_equalsd_label2
+    jmp _kefir_func_less_or_equalsd_label3
+_kefir_func_less_or_equalsd_label2:
     mov $1, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-_kefir_func_less_or_equalsd_label2:
+_kefir_func_less_or_equalsd_label3:
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp

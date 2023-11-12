@@ -1,0 +1,328 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global factorial
+.global factorial64
+.global quad_equation
+.global factorialf32
+.global factorialf64
+.extern sqrt
+.extern __kefir_opt_float32_neg
+.extern __kefir_opt_float64_neg
+.extern __kefirrt_opt_float32_to_uint
+.extern __kefirrt_opt_float64_to_uint
+
+.section .text
+factorial:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_factorial_label0:
+_kefir_func_factorial_label1:
+    movsx %edi, %rax
+    mov $0, %rcx
+    cmp %rcx, %rax
+    jl _kefir_func_factorial_label2
+    jmp _kefir_func_factorial_label3
+_kefir_func_factorial_label2:
+    mov $0, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_factorial_label3:
+    movsx %edi, %rax
+    mov $2, %rcx
+    cmp %rcx, %rax
+    jle _kefir_func_factorial_label9
+    mov %rdi, %rcx
+    jmp _kefir_func_factorial_label5
+_kefir_func_factorial_label9:
+_kefir_func_factorial_label4:
+    movsx %edi, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_factorial_label5:
+    mov $1, %rax
+_kefir_func_factorial_label6:
+    movsx %ecx, %rdx
+    mov $1, %rsi
+    cmp %rsi, %rdx
+    jg _kefir_func_factorial_label10
+    mov %rax, %rdx
+    jmp _kefir_func_factorial_label8
+_kefir_func_factorial_label10:
+    mov %rcx, %rsi
+    mov %rax, %rdi
+_kefir_func_factorial_label7:
+    movsx %esi, %r8
+    movsx %edi, %rdi
+    imul %r8, %rdi
+    movsx %esi, %rsi
+    mov $-1, %r8
+    add %r8, %rsi
+    movsx %esi, %rsi
+    mov %rsi, %rcx
+    mov %rdi, %rax
+    jmp _kefir_func_factorial_label6
+_kefir_func_factorial_label8:
+    movsx %edx, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+factorial64:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_factorial64_label0:
+_kefir_func_factorial64_label1:
+    mov $0, %rax
+    cmp %rax, %rdi
+    jl _kefir_func_factorial64_label2
+    jmp _kefir_func_factorial64_label3
+_kefir_func_factorial64_label2:
+    mov $0, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_factorial64_label3:
+    mov $2, %rax
+    cmp %rax, %rdi
+    jle _kefir_func_factorial64_label9
+    mov %rdi, %rcx
+    jmp _kefir_func_factorial64_label5
+_kefir_func_factorial64_label9:
+_kefir_func_factorial64_label4:
+    mov %rdi, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_factorial64_label5:
+    mov $1, %rax
+_kefir_func_factorial64_label6:
+    mov $1, %rdx
+    cmp %rdx, %rcx
+    jg _kefir_func_factorial64_label10
+    mov %rax, %rdx
+    jmp _kefir_func_factorial64_label8
+_kefir_func_factorial64_label10:
+    mov %rcx, %rsi
+    mov %rax, %rdi
+_kefir_func_factorial64_label7:
+    imul %rsi, %rdi
+    mov $-1, %r8
+    add %r8, %rsi
+    mov %rsi, %rcx
+    mov %rdi, %rax
+    jmp _kefir_func_factorial64_label6
+_kefir_func_factorial64_label8:
+    mov %rdx, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+quad_equation:
+    push %rbp
+    mov %rsp, %rbp
+    sub $96, %rsp
+    stmxcsr -8(%rbp)
+_kefir_func_quad_equation_label0:
+_kefir_func_quad_equation_label1:
+    movq %xmm1, %xmm3
+    mulsd %xmm1, %xmm3
+    mov $4, %rax
+    cvtsi2sd %rax, %xmm4
+    mulsd %xmm0, %xmm4
+    mulsd %xmm2, %xmm4
+    subsd %xmm4, %xmm3
+    xorpd __kefir_opt_float64_neg(%rip), %xmm1
+    movsx %edi, %rax
+    test %rax, %rax
+    jz _kefir_func_quad_equation_label5
+    movq %xmm1, %xmm2
+    movq %xmm3, %xmm4
+    movq %xmm0, %xmm5
+    jmp _kefir_func_quad_equation_label3
+_kefir_func_quad_equation_label5:
+_kefir_func_quad_equation_label2:
+    mov $1, %rax
+    neg %rax
+    movsx %eax, %rax
+    movq %xmm0, %xmm6
+    jmp _kefir_func_quad_equation_label4
+_kefir_func_quad_equation_label3:
+    mov $1, %rcx
+    mov %rcx, %rax
+    movq %xmm2, %xmm1
+    movq %xmm4, %xmm3
+    movq %xmm5, %xmm6
+_kefir_func_quad_equation_label4:
+    cvtsi2sd %rax, %xmm2
+    movdqu %xmm1, -96(%rbp)
+    movdqu %xmm6, -80(%rbp)
+    movdqu %xmm2, -64(%rbp)
+    movq %xmm3, %xmm0
+    call sqrt@PLT
+    movq %xmm0, %xmm3
+    movq -96(%rbp), %xmm1
+    movq -80(%rbp), %xmm6
+    movq -64(%rbp), %xmm2
+    mulsd %xmm3, %xmm2
+    addsd %xmm2, %xmm1
+    mov $2, %rax
+    cvtsi2sd %rax, %xmm0
+    mulsd %xmm6, %xmm0
+    divsd %xmm0, %xmm1
+    movq %xmm1, %xmm0
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+factorialf32:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    stmxcsr -8(%rbp)
+_kefir_func_factorialf32_label0:
+_kefir_func_factorialf32_label1:
+    mov $0, %rax
+    cvtsi2ss %rax, %xmm1
+    ucomiss %xmm1, %xmm0
+    jb _kefir_func_factorialf32_label2
+    movq %xmm0, %xmm1
+    jmp _kefir_func_factorialf32_label3
+_kefir_func_factorialf32_label2:
+    movd _kefir_func_factorialf32_label9(%rip), %xmm0
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_factorialf32_label3:
+    mov $2, %rax
+    cvtsi2ss %rax, %xmm0
+    ucomiss %xmm0, %xmm1
+    jbe _kefir_func_factorialf32_label10
+    movq %xmm1, %xmm2
+    jmp _kefir_func_factorialf32_label5
+_kefir_func_factorialf32_label10:
+_kefir_func_factorialf32_label4:
+    movq %xmm1, %xmm0
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_factorialf32_label5:
+    movd _kefir_func_factorialf32_label11(%rip), %xmm0
+_kefir_func_factorialf32_label6:
+    movd _kefir_func_factorialf32_label12(%rip), %xmm1
+    ucomiss %xmm2, %xmm1
+    jb _kefir_func_factorialf32_label13
+    movq %xmm0, %xmm1
+    jmp _kefir_func_factorialf32_label8
+_kefir_func_factorialf32_label13:
+    movq %xmm2, %xmm3
+    movq %xmm0, %xmm4
+_kefir_func_factorialf32_label7:
+    mulss %xmm3, %xmm4
+    movd _kefir_func_factorialf32_label14(%rip), %xmm5
+    addss %xmm5, %xmm3
+    movq %xmm3, %xmm2
+    movq %xmm4, %xmm0
+    jmp _kefir_func_factorialf32_label6
+_kefir_func_factorialf32_label8:
+    movq %xmm1, %xmm0
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+    .align 4
+_kefir_func_factorialf32_label9:
+    .long 0
+    .align 4
+_kefir_func_factorialf32_label11:
+    .long 1065353216
+    .align 4
+_kefir_func_factorialf32_label12:
+    .long 1065353216
+    .align 4
+_kefir_func_factorialf32_label14:
+    .long 3212836864
+.section .text
+
+factorialf64:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    stmxcsr -8(%rbp)
+_kefir_func_factorialf64_label0:
+_kefir_func_factorialf64_label1:
+    mov $0, %rax
+    cvtsi2sd %rax, %xmm1
+    ucomisd %xmm1, %xmm0
+    jb _kefir_func_factorialf64_label2
+    movq %xmm0, %xmm1
+    jmp _kefir_func_factorialf64_label3
+_kefir_func_factorialf64_label2:
+    movq _kefir_func_factorialf64_label9(%rip), %xmm0
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_factorialf64_label3:
+    mov $2, %rax
+    cvtsi2sd %rax, %xmm0
+    ucomisd %xmm0, %xmm1
+    jbe _kefir_func_factorialf64_label10
+    movq %xmm1, %xmm2
+    jmp _kefir_func_factorialf64_label5
+_kefir_func_factorialf64_label10:
+_kefir_func_factorialf64_label4:
+    movq %xmm1, %xmm0
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_factorialf64_label5:
+    movd _kefir_func_factorialf64_label11(%rip), %xmm0
+    cvtss2sd %xmm0, %xmm0
+_kefir_func_factorialf64_label6:
+    movq _kefir_func_factorialf64_label12(%rip), %xmm1
+    ucomisd %xmm2, %xmm1
+    jb _kefir_func_factorialf64_label13
+    movq %xmm0, %xmm1
+    jmp _kefir_func_factorialf64_label8
+_kefir_func_factorialf64_label13:
+    movq %xmm2, %xmm3
+    movq %xmm0, %xmm4
+_kefir_func_factorialf64_label7:
+    mulsd %xmm3, %xmm4
+    movq _kefir_func_factorialf64_label14(%rip), %xmm5
+    addsd %xmm5, %xmm3
+    movq %xmm3, %xmm2
+    movq %xmm4, %xmm0
+    jmp _kefir_func_factorialf64_label6
+_kefir_func_factorialf64_label8:
+    movq %xmm1, %xmm0
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+    .align 8
+_kefir_func_factorialf64_label9:
+    .quad 0
+    .align 4
+_kefir_func_factorialf64_label11:
+    .long 1065353216
+    .align 8
+_kefir_func_factorialf64_label12:
+    .quad 4607182418800017408
+    .align 8
+_kefir_func_factorialf64_label14:
+    .quad 13830554455654793216
+.section .text
+
+

@@ -37,21 +37,6 @@ static kefir_result_t free_block(struct kefir_mem *mem, struct kefir_hashtree *t
     return KEFIR_OK;
 }
 
-static kefir_result_t free_phi_node(struct kefir_mem *mem, struct kefir_hashtree *tree, kefir_hashtree_key_t key,
-                                    kefir_hashtree_value_t value, void *payload) {
-    UNUSED(tree);
-    UNUSED(key);
-    UNUSED(payload);
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    ASSIGN_DECL_CAST(struct kefir_opt_phi_node *, phi_node, value);
-    REQUIRE(phi_node != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer phi node"));
-
-    REQUIRE_OK(kefir_hashtree_free(mem, &phi_node->links));
-    memset(phi_node, 0, sizeof(struct kefir_opt_phi_node));
-    KEFIR_FREE(mem, phi_node);
-    return KEFIR_OK;
-}
-
 static kefir_result_t free_call_node(struct kefir_mem *mem, struct kefir_hashtree *tree, kefir_hashtree_key_t key,
                                      kefir_hashtree_value_t value, void *payload) {
     UNUSED(tree);
@@ -92,14 +77,14 @@ kefir_result_t kefir_opt_code_container_init(struct kefir_opt_code_container *co
     code->capacity = 0;
     code->length = 0;
     code->next_block_id = 0;
-    code->next_phi_node_id = 0;
+    code->phi_nodes = NULL;
+    code->phi_nodes_length = 0;
+    code->phi_nodes_capacity = 0;
     code->next_call_node_id = 0;
     code->next_inline_assembly_id = 0;
     code->entry_point = KEFIR_ID_NONE;
     REQUIRE_OK(kefir_hashtree_init(&code->blocks, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_on_removal(&code->blocks, free_block, NULL));
-    REQUIRE_OK(kefir_hashtree_init(&code->phi_nodes, &kefir_hashtree_uint_ops));
-    REQUIRE_OK(kefir_hashtree_on_removal(&code->phi_nodes, free_phi_node, NULL));
     REQUIRE_OK(kefir_hashtree_init(&code->call_nodes, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_on_removal(&code->call_nodes, free_call_node, NULL));
     REQUIRE_OK(kefir_hashtree_init(&code->inline_assembly, &kefir_hashtree_uint_ops));
@@ -111,10 +96,13 @@ kefir_result_t kefir_opt_code_container_free(struct kefir_mem *mem, struct kefir
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
 
+    for (kefir_size_t i = 0; i < code->phi_nodes_length; i++) {
+        REQUIRE_OK(kefir_hashtree_free(mem, &code->phi_nodes[i].links));
+    }
     REQUIRE_OK(kefir_hashtree_free(mem, &code->blocks));
-    REQUIRE_OK(kefir_hashtree_free(mem, &code->phi_nodes));
     REQUIRE_OK(kefir_hashtree_free(mem, &code->call_nodes));
     REQUIRE_OK(kefir_hashtree_free(mem, &code->inline_assembly));
+    KEFIR_FREE(mem, code->phi_nodes);
     KEFIR_FREE(mem, code->code);
     memset(code, 0, sizeof(struct kefir_opt_code_container));
     return KEFIR_OK;
@@ -225,6 +213,7 @@ kefir_result_t kefir_opt_code_container_instr(const struct kefir_opt_code_contai
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer instruction"));
 
     struct kefir_opt_instruction *instr = &code->code[instr_id];
+    if (instr->block_id == KEFIR_ID_NONE) abort();
     REQUIRE(instr->block_id != KEFIR_ID_NONE,
             KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Requested optimizer instruction was previously dropped"));
     *instr_ptr = instr;
@@ -264,6 +253,49 @@ kefir_result_t kefir_opt_code_container_new_instruction(struct kefir_mem *mem, s
 
     code->length++;
     *instr_id = instr->id;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_code_container_drop_instr(const struct kefir_opt_code_container *code,
+                                                     kefir_opt_instruction_ref_t instr_id) {
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
+
+    struct kefir_opt_instruction *instr = NULL;
+    REQUIRE_OK(kefir_opt_code_container_instr(code, instr_id, &instr));
+    REQUIRE(instr->block_id != KEFIR_ID_NONE,
+            KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Requested optimizer instruction was previously dropped"));
+
+    struct kefir_opt_code_block *block = NULL;
+    REQUIRE_OK(kefir_opt_code_container_block(code, instr->block_id, &block));
+
+    REQUIRE(instr->control_flow.prev == KEFIR_ID_NONE && instr->control_flow.next == KEFIR_ID_NONE &&
+        block->control_flow.head != instr->id, KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Instruction shall be removed from control flow prior to dropping"));
+
+    if (block->content.head == instr->id) {
+        block->content.head = instr->siblings.next;
+    }
+
+    if (block->content.tail == instr->id) {
+        block->content.tail = instr->siblings.prev;
+    }
+
+    if (instr->siblings.prev != KEFIR_ID_NONE) {
+        struct kefir_opt_instruction *prev_instr = NULL;
+        REQUIRE_OK(kefir_opt_code_container_instr(code, instr->siblings.prev, &prev_instr));
+
+        prev_instr->siblings.next = instr->siblings.next;
+    }
+
+    if (instr->siblings.next != KEFIR_ID_NONE) {
+        struct kefir_opt_instruction *next_instr = NULL;
+        REQUIRE_OK(kefir_opt_code_container_instr(code, instr->siblings.next, &next_instr));
+
+        next_instr->siblings.prev = instr->siblings.prev;
+    }
+
+    instr->siblings.prev = KEFIR_ID_NONE;
+    instr->siblings.next = KEFIR_ID_NONE;
+    instr->block_id = KEFIR_ID_NONE;
     return KEFIR_OK;
 }
 
@@ -459,6 +491,23 @@ kefir_result_t kefir_opt_code_container_drop_control(const struct kefir_opt_code
     return KEFIR_OK;
 }
 
+static kefir_result_t ensure_phi_container_capacity(struct kefir_mem *mem, struct kefir_opt_code_container *code) {
+    if (code->phi_nodes_length == code->phi_nodes_capacity) {
+        kefir_size_t new_capacity = code->phi_nodes_capacity + 64;
+        struct kefir_opt_phi_node *new_phis = KEFIR_MALLOC(mem, sizeof(struct kefir_opt_phi_node) * new_capacity);
+        REQUIRE(new_phis != NULL,
+                KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate optimizer phi node container"));
+
+        if (code->phi_nodes != NULL) {
+            memcpy(new_phis, code->phi_nodes, sizeof(struct kefir_opt_phi_node) * code->phi_nodes_capacity);
+            KEFIR_FREE(mem, code->phi_nodes);
+        }
+        code->phi_nodes = new_phis;
+        code->phi_nodes_capacity = new_capacity;
+    }
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_opt_code_container_new_phi(struct kefir_mem *mem, struct kefir_opt_code_container *code,
                                                 kefir_opt_block_id_t block_id, kefir_opt_phi_id_t *phi_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
@@ -469,24 +518,17 @@ kefir_result_t kefir_opt_code_container_new_phi(struct kefir_mem *mem, struct ke
     struct kefir_opt_code_block *block = NULL;
     REQUIRE_OK(kefir_opt_code_container_block(code, block_id, &block));
 
-    struct kefir_opt_phi_node *phi_node = KEFIR_MALLOC(mem, sizeof(struct kefir_opt_phi_node));
-    REQUIRE(phi_node != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate optimizer phi node"));
+    REQUIRE_OK(ensure_phi_container_capacity(mem, code));
+
+    struct kefir_opt_phi_node *phi_node = &code->phi_nodes[code->phi_nodes_length];
 
     phi_node->block_id = block_id;
-    phi_node->node_id = code->next_phi_node_id;
+    phi_node->node_id = code->phi_nodes_length;
     phi_node->output_ref = KEFIR_ID_NONE;
     phi_node->number_of_links = 0u;
 
     kefir_result_t res = kefir_hashtree_init(&phi_node->links, &kefir_hashtree_uint_ops);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, phi_node);
-        return res;
-    });
-
-    res = kefir_hashtree_insert(mem, &code->phi_nodes, (kefir_hashtree_key_t) phi_node->node_id,
-                                (kefir_hashtree_value_t) phi_node);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_hashtree_free(mem, &phi_node->links);
         KEFIR_FREE(mem, phi_node);
         return res;
     });
@@ -505,7 +547,7 @@ kefir_result_t kefir_opt_code_container_new_phi(struct kefir_mem *mem, struct ke
         block->phi_nodes.head = phi_node->node_id;
     }
 
-    code->next_phi_node_id++;
+    code->phi_nodes_length++;
     *phi_ptr = phi_node->node_id;
     return KEFIR_OK;
 }
@@ -513,17 +555,10 @@ kefir_result_t kefir_opt_code_container_new_phi(struct kefir_mem *mem, struct ke
 kefir_result_t kefir_opt_code_container_phi(const struct kefir_opt_code_container *code, kefir_opt_phi_id_t phi_ref,
                                             struct kefir_opt_phi_node **phi_ptr) {
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
+    REQUIRE(phi_ref < code->phi_nodes_length, KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Cannot find requested optimizer phi node"));
     REQUIRE(phi_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer phi node"));
 
-    struct kefir_hashtree_node *node = NULL;
-    kefir_result_t res = kefir_hashtree_at(&code->phi_nodes, (kefir_hashtree_key_t) phi_ref, &node);
-    if (res == KEFIR_NOT_FOUND) {
-        res = KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Cannot find requested optimizer phi node");
-    }
-    REQUIRE_OK(res);
-
-    *phi_ptr = (struct kefir_opt_phi_node *) node->value;
-
+    *phi_ptr = &code->phi_nodes[phi_ref];
     return KEFIR_OK;
 }
 
@@ -536,8 +571,6 @@ kefir_result_t kefir_opt_code_container_phi_attach(struct kefir_mem *mem, struct
     struct kefir_opt_phi_node *phi_node = NULL;
     REQUIRE_OK(kefir_opt_code_container_phi(code, phi_ref, &phi_node));
 
-    REQUIRE(phi_node->block_id != block_id,
-            KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Optimizer phi node cannot link itself"));
     REQUIRE(!kefir_hashtree_has(&phi_node->links, (kefir_hashtree_key_t) block_id),
             KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Optimizer phi node already links provided block"));
 
@@ -1451,7 +1484,7 @@ kefir_result_t kefir_opt_code_container_replace_references(const struct kefir_op
     REQUIRE_OK(res);
 
     struct kefir_opt_inline_assembly_node *inline_asm = NULL;
-    for (res = kefir_opt_code_block_inline_assembly_head(code, block, &inline_asm); res == KEFIR_OK && call != NULL;
+    for (res = kefir_opt_code_block_inline_assembly_head(code, block, &inline_asm); res == KEFIR_OK && inline_asm != NULL;
          res = kefir_opt_inline_assembly_next_sibling(code, inline_asm, &inline_asm)) {
 
         for (kefir_size_t i = 0; i < inline_asm->parameter_count; i++) {
@@ -1464,10 +1497,6 @@ kefir_result_t kefir_opt_code_container_replace_references(const struct kefir_op
     struct kefir_opt_code_container_iterator iter;
     for (const struct kefir_opt_code_block *other_block = kefir_opt_code_container_iter(code, &iter);
          other_block != NULL; other_block = kefir_opt_code_container_next(&iter)) {
-
-        if (block->id == other_block->id) {
-            continue;
-        }
 
         struct kefir_opt_phi_node *phi = NULL;
         for (res = kefir_opt_code_block_phi_head(code, other_block, &phi); res == KEFIR_OK && phi != NULL;

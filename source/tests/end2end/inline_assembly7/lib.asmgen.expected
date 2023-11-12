@@ -16,6 +16,7 @@ make_s1:
     mov %rsp, %rbp
     sub $16, %rsp
 _kefir_func_make_s1_label0:
+_kefir_func_make_s1_label1:
     lea -8(%rbp), %rax
     movl %edi, (%rax)
     lea -4(%rbp), %rax
@@ -37,6 +38,7 @@ cast_int:
     mov %rsp, %rbp
     sub $32, %rsp
 _kefir_func_cast_int_label0:
+_kefir_func_cast_int_label1:
     lea -16(%rbp), %rax
     movq %rdi, (%rax)
     lea -8(%rbp), %rax
@@ -58,6 +60,7 @@ sum3_one:
     mov %rsp, %rbp
     sub $48, %rsp
 _kefir_func_sum3_one_label0:
+_kefir_func_sum3_one_label1:
     lea -16(%rbp), %rax
     movq %rdx, (%rax)
     lea -24(%rbp), %rax
@@ -95,6 +98,10 @@ unwrap_s1:
     sub $16, %rsp
 _kefir_func_unwrap_s1_label0:
     movq %rdi, -16(%rbp)
+    leaq -16(%rbp), %rax
+    leaq -16(%rbp), %rcx
+    mov %rcx, %rax
+_kefir_func_unwrap_s1_label1:
     lea -8(%rbp), %rax
     mov %rax, %rdi
     leaq -16(%rbp), %rax

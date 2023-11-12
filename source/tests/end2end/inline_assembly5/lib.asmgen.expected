@@ -20,6 +20,7 @@ set8:
     mov %rsp, %rbp
     sub $16, %rsp
 _kefir_func_set8_label0:
+_kefir_func_set8_label1:
     lea -8(%rbp), %rax
     movq %rdi, (%rax)
     lea -8(%rbp), %rax
@@ -38,6 +39,7 @@ set16:
     mov %rsp, %rbp
     sub $16, %rsp
 _kefir_func_set16_label0:
+_kefir_func_set16_label1:
     lea -8(%rbp), %rax
     movq %rdi, (%rax)
     lea -8(%rbp), %rax
@@ -56,6 +58,7 @@ set32:
     mov %rsp, %rbp
     sub $16, %rsp
 _kefir_func_set32_label0:
+_kefir_func_set32_label1:
     lea -8(%rbp), %rax
     movq %rdi, (%rax)
     lea -8(%rbp), %rax
@@ -74,6 +77,7 @@ set64:
     mov %rsp, %rbp
     sub $16, %rsp
 _kefir_func_set64_label0:
+_kefir_func_set64_label1:
     lea -8(%rbp), %rax
     movq %rdi, (%rax)
     lea -8(%rbp), %rax
@@ -92,6 +96,7 @@ clear8:
     mov %rsp, %rbp
     sub $16, %rsp
 _kefir_func_clear8_label0:
+_kefir_func_clear8_label1:
     lea -8(%rbp), %rax
     movq %rdi, (%rax)
     lea -8(%rbp), %rax
@@ -110,6 +115,7 @@ clear16:
     mov %rsp, %rbp
     sub $16, %rsp
 _kefir_func_clear16_label0:
+_kefir_func_clear16_label1:
     lea -8(%rbp), %rax
     movq %rdi, (%rax)
     lea -8(%rbp), %rax
@@ -128,6 +134,7 @@ clear32:
     mov %rsp, %rbp
     sub $16, %rsp
 _kefir_func_clear32_label0:
+_kefir_func_clear32_label1:
     lea -8(%rbp), %rax
     movq %rdi, (%rax)
     lea -8(%rbp), %rax
@@ -146,6 +153,7 @@ clear64:
     mov %rsp, %rbp
     sub $16, %rsp
 _kefir_func_clear64_label0:
+_kefir_func_clear64_label1:
     lea -8(%rbp), %rax
     movq %rdi, (%rax)
     lea -8(%rbp), %rax

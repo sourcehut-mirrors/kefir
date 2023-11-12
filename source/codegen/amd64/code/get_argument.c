@@ -184,7 +184,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_argument)(struct kefir_m
         case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_X87:
         case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_X87UP:
         case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_NESTED:
-            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Unexpected function parameter location");
+            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected function parameter location");
     }
 
     return KEFIR_OK;

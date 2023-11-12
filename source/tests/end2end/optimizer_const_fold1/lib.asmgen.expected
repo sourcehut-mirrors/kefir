@@ -59,6 +59,7 @@ int_or:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_or_label0:
+_kefir_func_int_or_label1:
     movabs $3741317886, %rax
     pop %rbp
     ret
@@ -67,6 +68,7 @@ int_add:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_add_label0:
+_kefir_func_int_add_label1:
     mov $14, %rax
     pop %rbp
     ret
@@ -75,6 +77,7 @@ int_and:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_and_label0:
+_kefir_func_int_and_label1:
     movabs $3400302782, %rax
     pop %rbp
     ret
@@ -83,6 +86,7 @@ int_div:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_div_label0:
+_kefir_func_int_div_label1:
     mov $-50, %rax
     pop %rbp
     ret
@@ -91,6 +95,7 @@ int_mod:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_mod_label0:
+_kefir_func_int_mod_label1:
     mov $19, %rax
     pop %rbp
     ret
@@ -99,6 +104,7 @@ int_mul:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_mul_label0:
+_kefir_func_int_mul_label1:
     mov $3000, %rax
     pop %rbp
     ret
@@ -107,6 +113,7 @@ int_neg:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_neg_label0:
+_kefir_func_int_neg_label1:
     mov $-1234, %rax
     pop %rbp
     ret
@@ -115,6 +122,7 @@ int_not:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_not_label0:
+_kefir_func_int_not_label1:
     mov $-1235, %rax
     pop %rbp
     ret
@@ -123,6 +131,7 @@ int_shl:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_shl_label0:
+_kefir_func_int_shl_label1:
     mov $4096, %rax
     pop %rbp
     ret
@@ -131,6 +140,7 @@ int_shr:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_shr_label0:
+_kefir_func_int_shr_label1:
     movabs $4611686018427387903, %rax
     pop %rbp
     ret
@@ -139,6 +149,7 @@ int_sub:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_sub_label0:
+_kefir_func_int_sub_label1:
     mov $-150, %rax
     pop %rbp
     ret
@@ -147,6 +158,7 @@ int_xor:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_xor_label0:
+_kefir_func_int_xor_label1:
     mov $341015104, %rax
     pop %rbp
     ret
@@ -155,6 +167,7 @@ bool_not:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_bool_not_label0:
+_kefir_func_bool_not_label1:
     mov $0, %rax
     pop %rbp
     ret
@@ -163,6 +176,7 @@ int_ashr:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_ashr_label0:
+_kefir_func_int_ashr_label1:
     mov $-1, %rax
     pop %rbp
     ret
@@ -171,6 +185,7 @@ int_div2:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_div2_label0:
+_kefir_func_int_div2_label1:
     mov $0, %rax
     pop %rbp
     ret
@@ -179,6 +194,7 @@ int_div3:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_div3_label0:
+_kefir_func_int_div3_label1:
     mov $25, %rax
     pop %rbp
     ret
@@ -187,6 +203,7 @@ int_less:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_less_label0:
+_kefir_func_int_less_label1:
     mov $1, %rax
     pop %rbp
     ret
@@ -195,6 +212,7 @@ int_mod2:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_mod2_label0:
+_kefir_func_int_mod2_label1:
     mov $-19, %rax
     pop %rbp
     ret
@@ -203,6 +221,7 @@ int_mod3:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_mod3_label0:
+_kefir_func_int_mod3_label1:
     mov $2147483647, %rax
     pop %rbp
     ret
@@ -211,6 +230,7 @@ int_sub2:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_sub2_label0:
+_kefir_func_int_sub2_label1:
     movabs $18446744073709551615, %rax
     pop %rbp
     ret
@@ -219,6 +239,7 @@ bool_not2:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_bool_not2_label0:
+_kefir_func_bool_not2_label1:
     mov $1, %rax
     pop %rbp
     ret
@@ -227,6 +248,7 @@ int_above:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_above_label0:
+_kefir_func_int_above_label1:
     mov $1, %rax
     pop %rbp
     ret
@@ -235,6 +257,7 @@ int_ashr2:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_ashr2_label0:
+_kefir_func_int_ashr2_label1:
     mov $-256, %rax
     pop %rbp
     ret
@@ -243,6 +266,7 @@ int_below:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_below_label0:
+_kefir_func_int_below_label1:
     mov $0, %rax
     pop %rbp
     ret
@@ -251,6 +275,7 @@ int_less2:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_less2_label0:
+_kefir_func_int_less2_label1:
     mov $0, %rax
     pop %rbp
     ret
@@ -259,6 +284,7 @@ truct1bit:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_truct1bit_label0:
+_kefir_func_truct1bit_label1:
     mov $1, %rax
     pop %rbp
     ret
@@ -267,6 +293,7 @@ int_above2:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_above2_label0:
+_kefir_func_int_above2_label1:
     mov $0, %rax
     pop %rbp
     ret
@@ -275,6 +302,7 @@ int_below2:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_below2_label0:
+_kefir_func_int_below2_label1:
     mov $1, %rax
     pop %rbp
     ret
@@ -283,6 +311,7 @@ int_equals:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_equals_label0:
+_kefir_func_int_equals_label1:
     mov $1, %rax
     pop %rbp
     ret
@@ -291,6 +320,7 @@ truct1bit2:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_truct1bit2_label0:
+_kefir_func_truct1bit2_label1:
     mov $0, %rax
     pop %rbp
     ret
@@ -299,6 +329,7 @@ int_equals2:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_equals2_label0:
+_kefir_func_int_equals2_label1:
     mov $0, %rax
     pop %rbp
     ret
@@ -307,6 +338,7 @@ int_equals3:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_equals3_label0:
+_kefir_func_int_equals3_label1:
     mov $1, %rax
     pop %rbp
     ret
@@ -315,6 +347,7 @@ int_greater:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_greater_label0:
+_kefir_func_int_greater_label1:
     mov $0, %rax
     pop %rbp
     ret
@@ -323,6 +356,7 @@ int_less_or_equals2:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_less_or_equals2_label0:
+_kefir_func_int_less_or_equals2_label1:
     mov $0, %rax
     pop %rbp
     ret
@@ -331,6 +365,7 @@ int_greater_or_equals2:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_greater_or_equals2_label0:
+_kefir_func_int_greater_or_equals2_label1:
     mov $0, %rax
     pop %rbp
     ret
@@ -339,6 +374,7 @@ sign_extend16:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_sign_extend16_label0:
+_kefir_func_sign_extend16_label1:
     mov $-28674, %rax
     pop %rbp
     ret
@@ -347,6 +383,7 @@ sign_extend32:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_sign_extend32_label0:
+_kefir_func_sign_extend32_label1:
     mov $-2, %rax
     pop %rbp
     ret
@@ -355,6 +392,7 @@ int_greater2:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_greater2_label0:
+_kefir_func_int_greater2_label1:
     mov $1, %rax
     pop %rbp
     ret
@@ -363,6 +401,7 @@ sign_extend8:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_sign_extend8_label0:
+_kefir_func_sign_extend8_label1:
     mov $-128, %rax
     pop %rbp
     ret
@@ -371,6 +410,7 @@ zero_extend8:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_zero_extend8_label0:
+_kefir_func_zero_extend8_label1:
     mov $128, %rax
     pop %rbp
     ret
@@ -379,6 +419,7 @@ int_below_or_equals:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_below_or_equals_label0:
+_kefir_func_int_below_or_equals_label1:
     mov $1, %rax
     pop %rbp
     ret
@@ -387,6 +428,7 @@ int_less_or_equals:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_less_or_equals_label0:
+_kefir_func_int_less_or_equals_label1:
     mov $1, %rax
     pop %rbp
     ret
@@ -395,6 +437,7 @@ int_greater_or_equals:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_greater_or_equals_label0:
+_kefir_func_int_greater_or_equals_label1:
     mov $1, %rax
     pop %rbp
     ret
@@ -403,6 +446,7 @@ zero_extend16:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_zero_extend16_label0:
+_kefir_func_zero_extend16_label1:
     mov $36862, %rax
     pop %rbp
     ret
@@ -411,6 +455,7 @@ zero_extend32:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_zero_extend32_label0:
+_kefir_func_zero_extend32_label1:
     movabs $4294967294, %rax
     pop %rbp
     ret
@@ -419,6 +464,7 @@ int_above_or_equals:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_above_or_equals_label0:
+_kefir_func_int_above_or_equals_label1:
     mov $1, %rax
     pop %rbp
     ret
@@ -427,6 +473,7 @@ int_below_or_equals2:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_below_or_equals2_label0:
+_kefir_func_int_below_or_equals2_label1:
     mov $0, %rax
     pop %rbp
     ret
@@ -435,6 +482,7 @@ int_above_or_equals2:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_above_or_equals2_label0:
+_kefir_func_int_above_or_equals2_label1:
     mov $0, %rax
     pop %rbp
     ret

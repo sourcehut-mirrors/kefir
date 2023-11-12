@@ -44,7 +44,7 @@ function run_test {(
     set -e
     if [[ "x$2" == "xexecute" ]]; then
       timeout $TIMEOUT $KEFIRCC $KEFIRFLAGS -o test.bin "$1"
-      ./test.bin
+      timeout $TIMEOUT ./test.bin
     else
       timeout $TIMEOUT $KEFIRCC $KEFIRFLAGS -S -o test.s "$1"
     fi

@@ -8,103 +8,15 @@
                 "blocks": [
                     {
                         "id": 0,
-                        "control_flow": 8,
+                        "control_flow": 0,
                         "phi": [],
                         "calls": [],
                         "inline_assembly": [],
                         "code": [
                             {
                                 "id": 0,
-                                "opcode": "uint_const",
-                                "value": 1,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 1,
-                                "opcode": "int64_truncate_1bit",
-                                "arg": 0,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 2,
-                                "opcode": "uint_const",
-                                "value": 1,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 3,
-                                "opcode": "int64_sign_extend_8bits",
-                                "arg": 2,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 4,
-                                "opcode": "uint_const",
-                                "value": 1,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 5,
-                                "opcode": "int64_sign_extend_16bits",
-                                "arg": 4,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 6,
-                                "opcode": "uint_const",
-                                "value": 1,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 7,
-                                "opcode": "int64_sign_extend_32bits",
-                                "arg": 6,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 8,
-                                "opcode": "return",
-                                "arg": null,
+                                "opcode": "jump",
+                                "target_block": 1,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -124,13 +36,51 @@
                                 "begin": 0,
                                 "end": 1
                             },
-                            "successors": [],
+                            "successors": [
+                                1
+                            ],
                             "predecessors": []
+                        }
+                    },
+                    {
+                        "id": 1,
+                        "control_flow": 9,
+                        "phi": [],
+                        "calls": [],
+                        "inline_assembly": [],
+                        "code": [
+                            {
+                                "id": 9,
+                                "opcode": "return",
+                                "arg": null,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 1,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 1,
+                                        "end": 2
+                                    }
+                                }
+                            }
+                        ],
+                        "properties": {
+                            "reachable": true,
+                            "linear_position": 2,
+                            "linear_interval": {
+                                "begin": 1,
+                                "end": 2
+                            },
+                            "successors": [],
+                            "predecessors": [
+                                0
+                            ]
                         }
                     }
                 ],
                 "properties": {
-                    "linear_length": 1
+                    "linear_length": 2
                 }
             }
         }

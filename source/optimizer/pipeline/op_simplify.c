@@ -270,8 +270,7 @@ static kefir_result_t op_simplify_apply(struct kefir_mem *mem, const struct kefi
          block = kefir_opt_code_container_next(&iter)) {
 
         struct kefir_opt_instruction *instr = NULL;
-        for (kefir_opt_code_block_instr_head(&func->code, block, &instr); instr != NULL;
-             kefir_opt_instruction_next_sibling(&func->code, instr, &instr)) {
+        for (kefir_opt_code_block_instr_head(&func->code, block, &instr); instr != NULL;) {
 
             const kefir_opt_instruction_ref_t instr_id = instr->id;
             kefir_opt_instruction_ref_t replacement_ref = KEFIR_ID_NONE;
@@ -307,6 +306,10 @@ static kefir_result_t op_simplify_apply(struct kefir_mem *mem, const struct kefi
                     REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr_id));
                 }
                 REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr_id, &instr));
+                REQUIRE_OK(kefir_opt_instruction_next_sibling(&func->code, instr, &instr));
+                REQUIRE_OK(kefir_opt_code_container_drop_instr(&func->code, instr_id));
+            } else {
+                REQUIRE_OK(kefir_opt_instruction_next_sibling(&func->code, instr, &instr));
             }
         }
     }

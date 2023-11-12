@@ -1107,10 +1107,11 @@ static kefir_result_t jump_trampolines(struct kefir_mem *mem, struct kefir_codeg
         ASSIGN_DECL_CAST(kefir_opt_block_id_t, target_block, node->value);
         kefir_result_t res = kefir_hashtree_at(&context->jump_trampolines, node->key, &target_label_node);
         if (res == KEFIR_NOT_FOUND) {
-            continue;
+            REQUIRE_OK(kefir_asmcmp_context_new_label(mem, &function->code.context, KEFIR_ASMCMP_INDEX_NONE, &target_label));
+        } else {
+            REQUIRE_OK(res);
+            target_label = target_label_node->value;
         }
-        REQUIRE_OK(res);
-        target_label = target_label_node->value;
 
         REQUIRE_OK(kefir_asmcmp_context_bind_label_after_tail(mem, &function->code.context, target_label));
 

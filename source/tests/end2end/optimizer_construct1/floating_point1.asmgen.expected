@@ -8,7 +8,7 @@
                 "blocks": [
                     {
                         "id": 0,
-                        "control_flow": 5,
+                        "control_flow": 4,
                         "phi": [],
                         "calls": [],
                         "inline_assembly": [],
@@ -24,7 +24,7 @@
                                     "linear_liveness": {
                                         "alias": null,
                                         "begin": 0,
-                                        "end": 12
+                                        "end": 5
                                     }
                                 }
                             },
@@ -39,7 +39,7 @@
                                     "linear_liveness": {
                                         "alias": null,
                                         "begin": 0,
-                                        "end": 10
+                                        "end": 5
                                     }
                                 }
                             },
@@ -54,7 +54,7 @@
                                     "linear_liveness": {
                                         "alias": null,
                                         "begin": 0,
-                                        "end": 8
+                                        "end": 5
                                     }
                                 }
                             },
@@ -69,14 +69,14 @@
                                     "linear_liveness": {
                                         "alias": null,
                                         "begin": 0,
-                                        "end": 6
+                                        "end": 5
                                     }
                                 }
                             },
                             {
                                 "id": 4,
-                                "opcode": "get_local",
-                                "index": 0,
+                                "opcode": "jump",
+                                "target_block": 1,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -84,153 +84,200 @@
                                     "linear_liveness": {
                                         "alias": null,
                                         "begin": 4,
-                                        "end": 6
+                                        "end": 5
                                     }
                                 }
+                            }
+                        ],
+                        "properties": {
+                            "reachable": true,
+                            "linear_position": 1,
+                            "linear_interval": {
+                                "begin": 0,
+                                "end": 5
+                            },
+                            "successors": [
+                                1
+                            ],
+                            "predecessors": []
+                        }
+                    },
+                    {
+                        "id": 1,
+                        "control_flow": 7,
+                        "phi": [
+                            {
+                                "id": 0,
+                                "links": [
+                                    {
+                                        "block_id": 0,
+                                        "instr_ref": 3
+                                    }
+                                ]
                             },
                             {
-                                "id": 5,
-                                "opcode": "int32_store",
-                                "location": 4,
-                                "value": 3,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": 7,
+                                "id": 1,
+                                "links": [
+                                    {
+                                        "block_id": 0,
+                                        "instr_ref": 2
+                                    }
+                                ]
+                            },
+                            {
+                                "id": 2,
+                                "links": [
+                                    {
+                                        "block_id": 0,
+                                        "instr_ref": 1
+                                    }
+                                ]
+                            },
+                            {
+                                "id": 3,
+                                "links": [
+                                    {
+                                        "block_id": 0,
+                                        "instr_ref": 0
+                                    }
+                                ]
+                            }
+                        ],
+                        "calls": [],
+                        "inline_assembly": [],
+                        "code": [
+                            {
+                                "id": 15,
+                                "opcode": "phi",
+                                "phi_ref": 3,
+                                "control_next": null,
                                 "properties": {
                                     "reachable": true,
                                     "linear_index": 5,
                                     "linear_liveness": {
-                                        "alias": null,
+                                        "alias": 0,
                                         "begin": 5,
-                                        "end": 6
+                                        "end": 17
                                     }
                                 }
                             },
                             {
-                                "id": 6,
-                                "opcode": "get_local",
-                                "index": 3,
+                                "id": 12,
+                                "opcode": "phi",
+                                "phi_ref": 2,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
                                     "linear_index": 6,
                                     "linear_liveness": {
-                                        "alias": null,
+                                        "alias": 1,
                                         "begin": 6,
-                                        "end": 8
-                                    }
-                                }
-                            },
-                            {
-                                "id": 7,
-                                "opcode": "int32_store",
-                                "location": 6,
-                                "value": 2,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": 9,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 7,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 7,
-                                        "end": 8
-                                    }
-                                }
-                            },
-                            {
-                                "id": 8,
-                                "opcode": "get_local",
-                                "index": 2,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 8,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 8,
-                                        "end": 10
+                                        "end": 15
                                     }
                                 }
                             },
                             {
                                 "id": 9,
-                                "opcode": "int32_store",
-                                "location": 8,
-                                "value": 1,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": 11,
+                                "opcode": "phi",
+                                "phi_ref": 1,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 7,
+                                    "linear_liveness": {
+                                        "alias": 2,
+                                        "begin": 7,
+                                        "end": 13
+                                    }
+                                }
+                            },
+                            {
+                                "id": 6,
+                                "opcode": "phi",
+                                "phi_ref": 0,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 8,
+                                    "linear_liveness": {
+                                        "alias": 3,
+                                        "begin": 8,
+                                        "end": 11
+                                    }
+                                }
+                            },
+                            {
+                                "id": 5,
+                                "opcode": "get_local",
+                                "index": 0,
+                                "control_next": null,
                                 "properties": {
                                     "reachable": true,
                                     "linear_index": 9,
                                     "linear_liveness": {
                                         "alias": null,
                                         "begin": 9,
-                                        "end": 10
+                                        "end": 11
                                     }
                                 }
                             },
                             {
-                                "id": 10,
-                                "opcode": "get_local",
-                                "index": 1,
-                                "control_next": null,
+                                "id": 7,
+                                "opcode": "int32_store",
+                                "location": 5,
+                                "value": 6,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": 10,
                                 "properties": {
                                     "reachable": true,
                                     "linear_index": 10,
                                     "linear_liveness": {
                                         "alias": null,
                                         "begin": 10,
-                                        "end": 12
+                                        "end": 11
                                     }
                                 }
                             },
                             {
-                                "id": 11,
-                                "opcode": "int32_store",
-                                "location": 10,
-                                "value": 0,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": 26,
+                                "id": 8,
+                                "opcode": "get_local",
+                                "index": 3,
+                                "control_next": null,
                                 "properties": {
                                     "reachable": true,
                                     "linear_index": 11,
                                     "linear_liveness": {
                                         "alias": null,
                                         "begin": 11,
-                                        "end": 12
+                                        "end": 13
                                     }
                                 }
                             },
                             {
-                                "id": 12,
-                                "opcode": "get_local",
-                                "index": 1,
-                                "control_next": null,
+                                "id": 10,
+                                "opcode": "int32_store",
+                                "location": 8,
+                                "value": 9,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": 13,
                                 "properties": {
                                     "reachable": true,
                                     "linear_index": 12,
                                     "linear_liveness": {
                                         "alias": null,
                                         "begin": 12,
-                                        "end": 14
+                                        "end": 13
                                     }
                                 }
                             },
                             {
-                                "id": 13,
-                                "opcode": "int32_load_unsigned",
-                                "location": 12,
-                                "flags": {
-                                    "volatile": false
-                                },
+                                "id": 11,
+                                "opcode": "get_local",
+                                "index": 2,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -238,32 +285,33 @@
                                     "linear_liveness": {
                                         "alias": null,
                                         "begin": 13,
-                                        "end": 17
+                                        "end": 15
                                     }
                                 }
                             },
                             {
-                                "id": 14,
-                                "opcode": "get_local",
-                                "index": 2,
-                                "control_next": null,
+                                "id": 13,
+                                "opcode": "int32_store",
+                                "location": 11,
+                                "value": 12,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": 16,
                                 "properties": {
                                     "reachable": true,
                                     "linear_index": 14,
                                     "linear_liveness": {
                                         "alias": null,
                                         "begin": 14,
-                                        "end": 16
+                                        "end": 15
                                     }
                                 }
                             },
                             {
-                                "id": 15,
-                                "opcode": "int32_load_unsigned",
-                                "location": 14,
-                                "flags": {
-                                    "volatile": false
-                                },
+                                "id": 14,
+                                "opcode": "get_local",
+                                "index": 1,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -277,159 +325,160 @@
                             },
                             {
                                 "id": 16,
+                                "opcode": "int32_store",
+                                "location": 14,
+                                "value": 15,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": 31,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 16,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 16,
+                                        "end": 17
+                                    }
+                                }
+                            },
+                            {
+                                "id": 17,
+                                "opcode": "get_local",
+                                "index": 1,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 17,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 17,
+                                        "end": 19
+                                    }
+                                }
+                            },
+                            {
+                                "id": 18,
+                                "opcode": "int32_load_unsigned",
+                                "location": 17,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 18,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 18,
+                                        "end": 22
+                                    }
+                                }
+                            },
+                            {
+                                "id": 19,
+                                "opcode": "get_local",
+                                "index": 2,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 19,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 19,
+                                        "end": 21
+                                    }
+                                }
+                            },
+                            {
+                                "id": 20,
+                                "opcode": "int32_load_unsigned",
+                                "location": 19,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 20,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 20,
+                                        "end": 22
+                                    }
+                                }
+                            },
+                            {
+                                "id": 21,
                                 "opcode": "float32_add",
                                 "args": [
-                                    13,
-                                    15
+                                    18,
+                                    20
                                 ],
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 16,
+                                    "linear_index": 21,
                                     "linear_liveness": {
                                         "alias": null,
-                                        "begin": 16,
-                                        "end": 18
+                                        "begin": 21,
+                                        "end": 23
                                     }
                                 }
                             },
                             {
-                                "id": 17,
+                                "id": 22,
                                 "opcode": "float32_neg",
-                                "arg": 16,
+                                "arg": 21,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 17,
+                                    "linear_index": 22,
                                     "linear_liveness": {
                                         "alias": null,
-                                        "begin": 17,
-                                        "end": 21
+                                        "begin": 22,
+                                        "end": 26
                                     }
                                 }
                             },
                             {
-                                "id": 18,
+                                "id": 23,
                                 "opcode": "get_local",
                                 "index": 3,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 18,
+                                    "linear_index": 23,
                                     "linear_liveness": {
                                         "alias": null,
-                                        "begin": 18,
-                                        "end": 20
+                                        "begin": 23,
+                                        "end": 25
                                     }
                                 }
                             },
                             {
-                                "id": 19,
+                                "id": 24,
                                 "opcode": "int32_load_unsigned",
-                                "location": 18,
+                                "location": 23,
                                 "flags": {
                                     "volatile": false
                                 },
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 19,
+                                    "linear_index": 24,
                                     "linear_liveness": {
                                         "alias": null,
-                                        "begin": 19,
-                                        "end": 21
+                                        "begin": 24,
+                                        "end": 26
                                     }
                                 }
                             },
                             {
-                                "id": 20,
+                                "id": 25,
                                 "opcode": "float32_mul",
                                 "args": [
-                                    17,
-                                    19
-                                ],
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 20,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 20,
-                                        "end": 26
-                                    }
-                                }
-                            },
-                            {
-                                "id": 21,
-                                "opcode": "get_local",
-                                "index": 0,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 21,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 21,
-                                        "end": 23
-                                    }
-                                }
-                            },
-                            {
-                                "id": 22,
-                                "opcode": "int32_load_unsigned",
-                                "location": 21,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 22,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 22,
-                                        "end": 25
-                                    }
-                                }
-                            },
-                            {
-                                "id": 23,
-                                "opcode": "float32_const",
-                                "value": 10.000000,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 23,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 23,
-                                        "end": 25
-                                    }
-                                }
-                            },
-                            {
-                                "id": 24,
-                                "opcode": "float32_sub",
-                                "args": [
                                     22,
-                                    23
-                                ],
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 24,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 24,
-                                        "end": 26
-                                    }
-                                }
-                            },
-                            {
-                                "id": 25,
-                                "opcode": "float32_div",
-                                "args": [
-                                    20,
                                     24
                                 ],
                                 "control_next": null,
@@ -439,14 +488,14 @@
                                     "linear_liveness": {
                                         "alias": null,
                                         "begin": 25,
-                                        "end": 27
+                                        "end": 31
                                     }
                                 }
                             },
                             {
                                 "id": 26,
-                                "opcode": "return",
-                                "arg": 25,
+                                "opcode": "get_local",
+                                "index": 0,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -454,2106 +503,8 @@
                                     "linear_liveness": {
                                         "alias": null,
                                         "begin": 26,
-                                        "end": 27
+                                        "end": 28
                                     }
-                                }
-                            }
-                        ],
-                        "properties": {
-                            "reachable": true,
-                            "linear_position": 1,
-                            "linear_interval": {
-                                "begin": 0,
-                                "end": 27
-                            },
-                            "successors": [],
-                            "predecessors": []
-                        }
-                    },
-                    {
-                        "id": 1,
-                        "control_flow": 27,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
-                        "code": [
-                            {
-                                "id": 27,
-                                "opcode": "return",
-                                "arg": null,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            }
-                        ],
-                        "properties": {
-                            "reachable": false,
-                            "linear_position": null,
-                            "linear_interval": null,
-                            "successors": [],
-                            "predecessors": []
-                        }
-                    }
-                ],
-                "properties": {
-                    "linear_length": 27
-                }
-            }
-        },
-        {
-            "id": 36,
-            "name": "arith2",
-            "code": {
-                "entry_point": 0,
-                "blocks": [
-                    {
-                        "id": 0,
-                        "control_flow": 5,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
-                        "code": [
-                            {
-                                "id": 0,
-                                "opcode": "get_argument",
-                                "index": 0,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 0,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 0,
-                                        "end": 12
-                                    }
-                                }
-                            },
-                            {
-                                "id": 1,
-                                "opcode": "get_argument",
-                                "index": 1,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 1,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 0,
-                                        "end": 10
-                                    }
-                                }
-                            },
-                            {
-                                "id": 2,
-                                "opcode": "get_argument",
-                                "index": 2,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 2,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 0,
-                                        "end": 8
-                                    }
-                                }
-                            },
-                            {
-                                "id": 3,
-                                "opcode": "get_argument",
-                                "index": 3,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 3,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 0,
-                                        "end": 6
-                                    }
-                                }
-                            },
-                            {
-                                "id": 4,
-                                "opcode": "get_local",
-                                "index": 0,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 4,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 4,
-                                        "end": 6
-                                    }
-                                }
-                            },
-                            {
-                                "id": 5,
-                                "opcode": "int64_store",
-                                "location": 4,
-                                "value": 3,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": 7,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 5,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 5,
-                                        "end": 6
-                                    }
-                                }
-                            },
-                            {
-                                "id": 6,
-                                "opcode": "get_local",
-                                "index": 3,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 6,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 6,
-                                        "end": 8
-                                    }
-                                }
-                            },
-                            {
-                                "id": 7,
-                                "opcode": "int64_store",
-                                "location": 6,
-                                "value": 2,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": 9,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 7,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 7,
-                                        "end": 8
-                                    }
-                                }
-                            },
-                            {
-                                "id": 8,
-                                "opcode": "get_local",
-                                "index": 2,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 8,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 8,
-                                        "end": 10
-                                    }
-                                }
-                            },
-                            {
-                                "id": 9,
-                                "opcode": "int64_store",
-                                "location": 8,
-                                "value": 1,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": 11,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 9,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 9,
-                                        "end": 10
-                                    }
-                                }
-                            },
-                            {
-                                "id": 10,
-                                "opcode": "get_local",
-                                "index": 1,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 10,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 10,
-                                        "end": 12
-                                    }
-                                }
-                            },
-                            {
-                                "id": 11,
-                                "opcode": "int64_store",
-                                "location": 10,
-                                "value": 0,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": 26,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 11,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 11,
-                                        "end": 12
-                                    }
-                                }
-                            },
-                            {
-                                "id": 12,
-                                "opcode": "get_local",
-                                "index": 1,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 12,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 12,
-                                        "end": 14
-                                    }
-                                }
-                            },
-                            {
-                                "id": 13,
-                                "opcode": "int64_load",
-                                "location": 12,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 13,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 13,
-                                        "end": 17
-                                    }
-                                }
-                            },
-                            {
-                                "id": 14,
-                                "opcode": "get_local",
-                                "index": 2,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 14,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 14,
-                                        "end": 16
-                                    }
-                                }
-                            },
-                            {
-                                "id": 15,
-                                "opcode": "int64_load",
-                                "location": 14,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 15,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 15,
-                                        "end": 17
-                                    }
-                                }
-                            },
-                            {
-                                "id": 16,
-                                "opcode": "float64_add",
-                                "args": [
-                                    13,
-                                    15
-                                ],
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 16,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 16,
-                                        "end": 18
-                                    }
-                                }
-                            },
-                            {
-                                "id": 17,
-                                "opcode": "float64_neg",
-                                "arg": 16,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 17,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 17,
-                                        "end": 21
-                                    }
-                                }
-                            },
-                            {
-                                "id": 18,
-                                "opcode": "get_local",
-                                "index": 3,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 18,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 18,
-                                        "end": 20
-                                    }
-                                }
-                            },
-                            {
-                                "id": 19,
-                                "opcode": "int64_load",
-                                "location": 18,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 19,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 19,
-                                        "end": 21
-                                    }
-                                }
-                            },
-                            {
-                                "id": 20,
-                                "opcode": "float64_mul",
-                                "args": [
-                                    17,
-                                    19
-                                ],
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 20,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 20,
-                                        "end": 26
-                                    }
-                                }
-                            },
-                            {
-                                "id": 21,
-                                "opcode": "get_local",
-                                "index": 0,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 21,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 21,
-                                        "end": 23
-                                    }
-                                }
-                            },
-                            {
-                                "id": 22,
-                                "opcode": "int64_load",
-                                "location": 21,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 22,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 22,
-                                        "end": 25
-                                    }
-                                }
-                            },
-                            {
-                                "id": 23,
-                                "opcode": "float64_const",
-                                "value": 10.000000,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 23,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 23,
-                                        "end": 25
-                                    }
-                                }
-                            },
-                            {
-                                "id": 24,
-                                "opcode": "float64_sub",
-                                "args": [
-                                    22,
-                                    23
-                                ],
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 24,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 24,
-                                        "end": 26
-                                    }
-                                }
-                            },
-                            {
-                                "id": 25,
-                                "opcode": "float64_div",
-                                "args": [
-                                    20,
-                                    24
-                                ],
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 25,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 25,
-                                        "end": 27
-                                    }
-                                }
-                            },
-                            {
-                                "id": 26,
-                                "opcode": "return",
-                                "arg": 25,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 26,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 26,
-                                        "end": 27
-                                    }
-                                }
-                            }
-                        ],
-                        "properties": {
-                            "reachable": true,
-                            "linear_position": 1,
-                            "linear_interval": {
-                                "begin": 0,
-                                "end": 27
-                            },
-                            "successors": [],
-                            "predecessors": []
-                        }
-                    },
-                    {
-                        "id": 1,
-                        "control_flow": 27,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
-                        "code": [
-                            {
-                                "id": 27,
-                                "opcode": "return",
-                                "arg": null,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            }
-                        ],
-                        "properties": {
-                            "reachable": false,
-                            "linear_position": null,
-                            "linear_interval": null,
-                            "successors": [],
-                            "predecessors": []
-                        }
-                    }
-                ],
-                "properties": {
-                    "linear_length": 27
-                }
-            }
-        },
-        {
-            "id": 37,
-            "name": "comparison1",
-            "code": {
-                "entry_point": 0,
-                "blocks": [
-                    {
-                        "id": 0,
-                        "control_flow": 3,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
-                        "code": [
-                            {
-                                "id": 0,
-                                "opcode": "get_argument",
-                                "index": 0,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 0,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 0,
-                                        "end": 6
-                                    }
-                                }
-                            },
-                            {
-                                "id": 1,
-                                "opcode": "get_argument",
-                                "index": 1,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 1,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 0,
-                                        "end": 4
-                                    }
-                                }
-                            },
-                            {
-                                "id": 2,
-                                "opcode": "get_local",
-                                "index": 1,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 2,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 2,
-                                        "end": 4
-                                    }
-                                }
-                            },
-                            {
-                                "id": 3,
-                                "opcode": "int32_store",
-                                "location": 2,
-                                "value": 1,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": 5,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 3,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 3,
-                                        "end": 4
-                                    }
-                                }
-                            },
-                            {
-                                "id": 4,
-                                "opcode": "get_local",
-                                "index": 0,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 4,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 4,
-                                        "end": 6
-                                    }
-                                }
-                            },
-                            {
-                                "id": 5,
-                                "opcode": "int32_store",
-                                "location": 4,
-                                "value": 0,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": 41,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 5,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 5,
-                                        "end": 6
-                                    }
-                                }
-                            },
-                            {
-                                "id": 6,
-                                "opcode": "get_local",
-                                "index": 0,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 7,
-                                "opcode": "int32_load_unsigned",
-                                "location": 6,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 8,
-                                "opcode": "get_local",
-                                "index": 1,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 9,
-                                "opcode": "int32_load_unsigned",
-                                "location": 8,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 10,
-                                "opcode": "float32_equals",
-                                "args": [
-                                    7,
-                                    9
-                                ],
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 11,
-                                "opcode": "get_local",
-                                "index": 0,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 12,
-                                "opcode": "int32_load_unsigned",
-                                "location": 11,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 13,
-                                "opcode": "get_local",
-                                "index": 1,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 14,
-                                "opcode": "int32_load_unsigned",
-                                "location": 13,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 15,
-                                "opcode": "float32_greater",
-                                "args": [
-                                    12,
-                                    14
-                                ],
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 16,
-                                "opcode": "get_local",
-                                "index": 0,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 17,
-                                "opcode": "int32_load_unsigned",
-                                "location": 16,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 18,
-                                "opcode": "get_local",
-                                "index": 1,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 19,
-                                "opcode": "int32_load_unsigned",
-                                "location": 18,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 20,
-                                "opcode": "float32_lesser",
-                                "args": [
-                                    17,
-                                    19
-                                ],
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 21,
-                                "opcode": "get_local",
-                                "index": 0,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 22,
-                                "opcode": "int32_load_unsigned",
-                                "location": 21,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 23,
-                                "opcode": "get_local",
-                                "index": 1,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 24,
-                                "opcode": "int32_load_unsigned",
-                                "location": 23,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 25,
-                                "opcode": "float32_equals",
-                                "args": [
-                                    22,
-                                    24
-                                ],
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 26,
-                                "opcode": "bool_not",
-                                "arg": 25,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 27,
-                                "opcode": "get_local",
-                                "index": 0,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 28,
-                                "opcode": "int32_load_unsigned",
-                                "location": 27,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 29,
-                                "opcode": "get_local",
-                                "index": 1,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 30,
-                                "opcode": "int32_load_unsigned",
-                                "location": 29,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 31,
-                                "opcode": "float32_greater",
-                                "args": [
-                                    28,
-                                    30
-                                ],
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 32,
-                                "opcode": "float32_equals",
-                                "args": [
-                                    30,
-                                    28
-                                ],
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 33,
-                                "opcode": "bool_or",
-                                "args": [
-                                    31,
-                                    32
-                                ],
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 34,
-                                "opcode": "get_local",
-                                "index": 0,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 35,
-                                "opcode": "int32_load_unsigned",
-                                "location": 34,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 36,
-                                "opcode": "get_local",
-                                "index": 1,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 37,
-                                "opcode": "int32_load_unsigned",
-                                "location": 36,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 38,
-                                "opcode": "float32_lesser",
-                                "args": [
-                                    35,
-                                    37
-                                ],
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 39,
-                                "opcode": "float32_equals",
-                                "args": [
-                                    37,
-                                    35
-                                ],
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 40,
-                                "opcode": "bool_or",
-                                "args": [
-                                    38,
-                                    39
-                                ],
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 41,
-                                "opcode": "return",
-                                "arg": null,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 6,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 6,
-                                        "end": 7
-                                    }
-                                }
-                            }
-                        ],
-                        "properties": {
-                            "reachable": true,
-                            "linear_position": 1,
-                            "linear_interval": {
-                                "begin": 0,
-                                "end": 7
-                            },
-                            "successors": [],
-                            "predecessors": []
-                        }
-                    }
-                ],
-                "properties": {
-                    "linear_length": 7
-                }
-            }
-        },
-        {
-            "id": 38,
-            "name": "comparison2",
-            "code": {
-                "entry_point": 0,
-                "blocks": [
-                    {
-                        "id": 0,
-                        "control_flow": 3,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
-                        "code": [
-                            {
-                                "id": 0,
-                                "opcode": "get_argument",
-                                "index": 0,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 0,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 0,
-                                        "end": 6
-                                    }
-                                }
-                            },
-                            {
-                                "id": 1,
-                                "opcode": "get_argument",
-                                "index": 1,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 1,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 0,
-                                        "end": 4
-                                    }
-                                }
-                            },
-                            {
-                                "id": 2,
-                                "opcode": "get_local",
-                                "index": 1,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 2,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 2,
-                                        "end": 4
-                                    }
-                                }
-                            },
-                            {
-                                "id": 3,
-                                "opcode": "int64_store",
-                                "location": 2,
-                                "value": 1,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": 5,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 3,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 3,
-                                        "end": 4
-                                    }
-                                }
-                            },
-                            {
-                                "id": 4,
-                                "opcode": "get_local",
-                                "index": 0,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 4,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 4,
-                                        "end": 6
-                                    }
-                                }
-                            },
-                            {
-                                "id": 5,
-                                "opcode": "int64_store",
-                                "location": 4,
-                                "value": 0,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": 41,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 5,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 5,
-                                        "end": 6
-                                    }
-                                }
-                            },
-                            {
-                                "id": 6,
-                                "opcode": "get_local",
-                                "index": 0,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 7,
-                                "opcode": "int64_load",
-                                "location": 6,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 8,
-                                "opcode": "get_local",
-                                "index": 1,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 9,
-                                "opcode": "int64_load",
-                                "location": 8,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 10,
-                                "opcode": "float64_equals",
-                                "args": [
-                                    7,
-                                    9
-                                ],
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 11,
-                                "opcode": "get_local",
-                                "index": 0,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 12,
-                                "opcode": "int64_load",
-                                "location": 11,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 13,
-                                "opcode": "get_local",
-                                "index": 1,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 14,
-                                "opcode": "int64_load",
-                                "location": 13,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 15,
-                                "opcode": "float64_greater",
-                                "args": [
-                                    12,
-                                    14
-                                ],
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 16,
-                                "opcode": "get_local",
-                                "index": 0,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 17,
-                                "opcode": "int64_load",
-                                "location": 16,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 18,
-                                "opcode": "get_local",
-                                "index": 1,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 19,
-                                "opcode": "int64_load",
-                                "location": 18,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 20,
-                                "opcode": "float64_lesser",
-                                "args": [
-                                    17,
-                                    19
-                                ],
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 21,
-                                "opcode": "get_local",
-                                "index": 0,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 22,
-                                "opcode": "int64_load",
-                                "location": 21,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 23,
-                                "opcode": "get_local",
-                                "index": 1,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 24,
-                                "opcode": "int64_load",
-                                "location": 23,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 25,
-                                "opcode": "float64_equals",
-                                "args": [
-                                    22,
-                                    24
-                                ],
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 26,
-                                "opcode": "bool_not",
-                                "arg": 25,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 27,
-                                "opcode": "get_local",
-                                "index": 0,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 28,
-                                "opcode": "int64_load",
-                                "location": 27,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 29,
-                                "opcode": "get_local",
-                                "index": 1,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 30,
-                                "opcode": "int64_load",
-                                "location": 29,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 31,
-                                "opcode": "float64_greater",
-                                "args": [
-                                    28,
-                                    30
-                                ],
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 32,
-                                "opcode": "float64_equals",
-                                "args": [
-                                    30,
-                                    28
-                                ],
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 33,
-                                "opcode": "bool_or",
-                                "args": [
-                                    31,
-                                    32
-                                ],
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 34,
-                                "opcode": "get_local",
-                                "index": 0,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 35,
-                                "opcode": "int64_load",
-                                "location": 34,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 36,
-                                "opcode": "get_local",
-                                "index": 1,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 37,
-                                "opcode": "int64_load",
-                                "location": 36,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 38,
-                                "opcode": "float64_lesser",
-                                "args": [
-                                    35,
-                                    37
-                                ],
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 39,
-                                "opcode": "float64_equals",
-                                "args": [
-                                    37,
-                                    35
-                                ],
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 40,
-                                "opcode": "bool_or",
-                                "args": [
-                                    38,
-                                    39
-                                ],
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 41,
-                                "opcode": "return",
-                                "arg": null,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 6,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 6,
-                                        "end": 7
-                                    }
-                                }
-                            }
-                        ],
-                        "properties": {
-                            "reachable": true,
-                            "linear_position": 1,
-                            "linear_interval": {
-                                "begin": 0,
-                                "end": 7
-                            },
-                            "successors": [],
-                            "predecessors": []
-                        }
-                    }
-                ],
-                "properties": {
-                    "linear_length": 7
-                }
-            }
-        },
-        {
-            "id": 39,
-            "name": "conversion",
-            "code": {
-                "entry_point": 0,
-                "blocks": [
-                    {
-                        "id": 0,
-                        "control_flow": 3,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
-                        "code": [
-                            {
-                                "id": 0,
-                                "opcode": "get_argument",
-                                "index": 0,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 0,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 0,
-                                        "end": 6
-                                    }
-                                }
-                            },
-                            {
-                                "id": 1,
-                                "opcode": "get_argument",
-                                "index": 1,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 1,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 0,
-                                        "end": 4
-                                    }
-                                }
-                            },
-                            {
-                                "id": 2,
-                                "opcode": "get_local",
-                                "index": 1,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 2,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 2,
-                                        "end": 4
-                                    }
-                                }
-                            },
-                            {
-                                "id": 3,
-                                "opcode": "int64_store",
-                                "location": 2,
-                                "value": 1,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": 5,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 3,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 3,
-                                        "end": 4
-                                    }
-                                }
-                            },
-                            {
-                                "id": 4,
-                                "opcode": "get_local",
-                                "index": 0,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 4,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 4,
-                                        "end": 6
-                                    }
-                                }
-                            },
-                            {
-                                "id": 5,
-                                "opcode": "int32_store",
-                                "location": 4,
-                                "value": 0,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": 34,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 5,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 5,
-                                        "end": 6
-                                    }
-                                }
-                            },
-                            {
-                                "id": 6,
-                                "opcode": "get_local",
-                                "index": 0,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 7,
-                                "opcode": "int32_load_unsigned",
-                                "location": 6,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 8,
-                                "opcode": "float32_to_float64",
-                                "arg": 7,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 9,
-                                "opcode": "get_local",
-                                "index": 1,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 10,
-                                "opcode": "int64_load",
-                                "location": 9,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 11,
-                                "opcode": "float64_to_float32",
-                                "arg": 10,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 12,
-                                "opcode": "get_local",
-                                "index": 0,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 13,
-                                "opcode": "int32_load_unsigned",
-                                "location": 12,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 14,
-                                "opcode": "float32_to_int",
-                                "arg": 13,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 15,
-                                "opcode": "get_local",
-                                "index": 1,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 16,
-                                "opcode": "int64_load",
-                                "location": 15,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 17,
-                                "opcode": "float64_to_int",
-                                "arg": 16,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 18,
-                                "opcode": "get_local",
-                                "index": 1,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 19,
-                                "opcode": "int64_load",
-                                "location": 18,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 20,
-                                "opcode": "float64_to_int",
-                                "arg": 19,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 21,
-                                "opcode": "int_to_float32",
-                                "arg": 20,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 22,
-                                "opcode": "get_local",
-                                "index": 1,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 23,
-                                "opcode": "int64_load",
-                                "location": 22,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 24,
-                                "opcode": "float64_to_uint",
-                                "arg": 23,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 25,
-                                "opcode": "uint_to_float32",
-                                "arg": 24,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 26,
-                                "opcode": "get_local",
-                                "index": 0,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
                                 }
                             },
                             {
@@ -2565,92 +516,186 @@
                                 },
                                 "control_next": null,
                                 "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
+                                    "reachable": true,
+                                    "linear_index": 27,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 27,
+                                        "end": 30
+                                    }
                                 }
                             },
                             {
                                 "id": 28,
-                                "opcode": "float32_to_int",
-                                "arg": 27,
+                                "opcode": "float32_const",
+                                "value": 10.000000,
                                 "control_next": null,
                                 "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
+                                    "reachable": true,
+                                    "linear_index": 28,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 28,
+                                        "end": 30
+                                    }
                                 }
                             },
                             {
                                 "id": 29,
-                                "opcode": "int_to_float64",
-                                "arg": 28,
+                                "opcode": "float32_sub",
+                                "args": [
+                                    27,
+                                    28
+                                ],
                                 "control_next": null,
                                 "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
+                                    "reachable": true,
+                                    "linear_index": 29,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 29,
+                                        "end": 31
+                                    }
                                 }
                             },
                             {
                                 "id": 30,
-                                "opcode": "get_local",
-                                "index": 0,
+                                "opcode": "float32_div",
+                                "args": [
+                                    25,
+                                    29
+                                ],
                                 "control_next": null,
                                 "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
+                                    "reachable": true,
+                                    "linear_index": 30,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 30,
+                                        "end": 32
+                                    }
                                 }
                             },
                             {
                                 "id": 31,
-                                "opcode": "int32_load_unsigned",
-                                "location": 30,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 32,
-                                "opcode": "float32_to_uint",
-                                "arg": 31,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 33,
-                                "opcode": "uint_to_float64",
-                                "arg": 32,
-                                "control_next": null,
-                                "properties": {
-                                    "reachable": false,
-                                    "linear_index": null,
-                                    "linear_liveness": null
-                                }
-                            },
-                            {
-                                "id": 34,
                                 "opcode": "return",
-                                "arg": null,
+                                "arg": 30,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 6,
+                                    "linear_index": 31,
                                     "linear_liveness": {
                                         "alias": null,
-                                        "begin": 6,
-                                        "end": 7
+                                        "begin": 31,
+                                        "end": 32
+                                    }
+                                }
+                            }
+                        ],
+                        "properties": {
+                            "reachable": true,
+                            "linear_position": 2,
+                            "linear_interval": {
+                                "begin": 5,
+                                "end": 32
+                            },
+                            "successors": [],
+                            "predecessors": [
+                                0
+                            ]
+                        }
+                    }
+                ],
+                "properties": {
+                    "linear_length": 32
+                }
+            }
+        },
+        {
+            "id": 36,
+            "name": "arith2",
+            "code": {
+                "entry_point": 0,
+                "blocks": [
+                    {
+                        "id": 0,
+                        "control_flow": 4,
+                        "phi": [],
+                        "calls": [],
+                        "inline_assembly": [],
+                        "code": [
+                            {
+                                "id": 0,
+                                "opcode": "get_argument",
+                                "index": 0,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 0,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 0,
+                                        "end": 5
+                                    }
+                                }
+                            },
+                            {
+                                "id": 1,
+                                "opcode": "get_argument",
+                                "index": 1,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 1,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 0,
+                                        "end": 5
+                                    }
+                                }
+                            },
+                            {
+                                "id": 2,
+                                "opcode": "get_argument",
+                                "index": 2,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 2,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 0,
+                                        "end": 5
+                                    }
+                                }
+                            },
+                            {
+                                "id": 3,
+                                "opcode": "get_argument",
+                                "index": 3,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 3,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 0,
+                                        "end": 5
+                                    }
+                                }
+                            },
+                            {
+                                "id": 4,
+                                "opcode": "jump",
+                                "target_block": 1,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 4,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 4,
+                                        "end": 5
                                     }
                                 }
                             }
@@ -2660,15 +705,1213 @@
                             "linear_position": 1,
                             "linear_interval": {
                                 "begin": 0,
-                                "end": 7
+                                "end": 5
+                            },
+                            "successors": [
+                                1
+                            ],
+                            "predecessors": []
+                        }
+                    },
+                    {
+                        "id": 1,
+                        "control_flow": 7,
+                        "phi": [
+                            {
+                                "id": 0,
+                                "links": [
+                                    {
+                                        "block_id": 0,
+                                        "instr_ref": 3
+                                    }
+                                ]
+                            },
+                            {
+                                "id": 1,
+                                "links": [
+                                    {
+                                        "block_id": 0,
+                                        "instr_ref": 2
+                                    }
+                                ]
+                            },
+                            {
+                                "id": 2,
+                                "links": [
+                                    {
+                                        "block_id": 0,
+                                        "instr_ref": 1
+                                    }
+                                ]
+                            },
+                            {
+                                "id": 3,
+                                "links": [
+                                    {
+                                        "block_id": 0,
+                                        "instr_ref": 0
+                                    }
+                                ]
+                            }
+                        ],
+                        "calls": [],
+                        "inline_assembly": [],
+                        "code": [
+                            {
+                                "id": 15,
+                                "opcode": "phi",
+                                "phi_ref": 3,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 5,
+                                    "linear_liveness": {
+                                        "alias": 0,
+                                        "begin": 5,
+                                        "end": 17
+                                    }
+                                }
+                            },
+                            {
+                                "id": 12,
+                                "opcode": "phi",
+                                "phi_ref": 2,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 6,
+                                    "linear_liveness": {
+                                        "alias": 1,
+                                        "begin": 6,
+                                        "end": 15
+                                    }
+                                }
+                            },
+                            {
+                                "id": 9,
+                                "opcode": "phi",
+                                "phi_ref": 1,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 7,
+                                    "linear_liveness": {
+                                        "alias": 2,
+                                        "begin": 7,
+                                        "end": 13
+                                    }
+                                }
+                            },
+                            {
+                                "id": 6,
+                                "opcode": "phi",
+                                "phi_ref": 0,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 8,
+                                    "linear_liveness": {
+                                        "alias": 3,
+                                        "begin": 8,
+                                        "end": 11
+                                    }
+                                }
+                            },
+                            {
+                                "id": 5,
+                                "opcode": "get_local",
+                                "index": 0,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 9,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 9,
+                                        "end": 11
+                                    }
+                                }
+                            },
+                            {
+                                "id": 7,
+                                "opcode": "int64_store",
+                                "location": 5,
+                                "value": 6,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": 10,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 10,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 10,
+                                        "end": 11
+                                    }
+                                }
+                            },
+                            {
+                                "id": 8,
+                                "opcode": "get_local",
+                                "index": 3,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 11,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 11,
+                                        "end": 13
+                                    }
+                                }
+                            },
+                            {
+                                "id": 10,
+                                "opcode": "int64_store",
+                                "location": 8,
+                                "value": 9,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": 13,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 12,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 12,
+                                        "end": 13
+                                    }
+                                }
+                            },
+                            {
+                                "id": 11,
+                                "opcode": "get_local",
+                                "index": 2,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 13,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 13,
+                                        "end": 15
+                                    }
+                                }
+                            },
+                            {
+                                "id": 13,
+                                "opcode": "int64_store",
+                                "location": 11,
+                                "value": 12,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": 16,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 14,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 14,
+                                        "end": 15
+                                    }
+                                }
+                            },
+                            {
+                                "id": 14,
+                                "opcode": "get_local",
+                                "index": 1,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 15,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 15,
+                                        "end": 17
+                                    }
+                                }
+                            },
+                            {
+                                "id": 16,
+                                "opcode": "int64_store",
+                                "location": 14,
+                                "value": 15,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": 31,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 16,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 16,
+                                        "end": 17
+                                    }
+                                }
+                            },
+                            {
+                                "id": 17,
+                                "opcode": "get_local",
+                                "index": 1,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 17,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 17,
+                                        "end": 19
+                                    }
+                                }
+                            },
+                            {
+                                "id": 18,
+                                "opcode": "int64_load",
+                                "location": 17,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 18,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 18,
+                                        "end": 22
+                                    }
+                                }
+                            },
+                            {
+                                "id": 19,
+                                "opcode": "get_local",
+                                "index": 2,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 19,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 19,
+                                        "end": 21
+                                    }
+                                }
+                            },
+                            {
+                                "id": 20,
+                                "opcode": "int64_load",
+                                "location": 19,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 20,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 20,
+                                        "end": 22
+                                    }
+                                }
+                            },
+                            {
+                                "id": 21,
+                                "opcode": "float64_add",
+                                "args": [
+                                    18,
+                                    20
+                                ],
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 21,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 21,
+                                        "end": 23
+                                    }
+                                }
+                            },
+                            {
+                                "id": 22,
+                                "opcode": "float64_neg",
+                                "arg": 21,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 22,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 22,
+                                        "end": 26
+                                    }
+                                }
+                            },
+                            {
+                                "id": 23,
+                                "opcode": "get_local",
+                                "index": 3,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 23,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 23,
+                                        "end": 25
+                                    }
+                                }
+                            },
+                            {
+                                "id": 24,
+                                "opcode": "int64_load",
+                                "location": 23,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 24,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 24,
+                                        "end": 26
+                                    }
+                                }
+                            },
+                            {
+                                "id": 25,
+                                "opcode": "float64_mul",
+                                "args": [
+                                    22,
+                                    24
+                                ],
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 25,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 25,
+                                        "end": 31
+                                    }
+                                }
+                            },
+                            {
+                                "id": 26,
+                                "opcode": "get_local",
+                                "index": 0,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 26,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 26,
+                                        "end": 28
+                                    }
+                                }
+                            },
+                            {
+                                "id": 27,
+                                "opcode": "int64_load",
+                                "location": 26,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 27,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 27,
+                                        "end": 30
+                                    }
+                                }
+                            },
+                            {
+                                "id": 28,
+                                "opcode": "float64_const",
+                                "value": 10.000000,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 28,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 28,
+                                        "end": 30
+                                    }
+                                }
+                            },
+                            {
+                                "id": 29,
+                                "opcode": "float64_sub",
+                                "args": [
+                                    27,
+                                    28
+                                ],
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 29,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 29,
+                                        "end": 31
+                                    }
+                                }
+                            },
+                            {
+                                "id": 30,
+                                "opcode": "float64_div",
+                                "args": [
+                                    25,
+                                    29
+                                ],
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 30,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 30,
+                                        "end": 32
+                                    }
+                                }
+                            },
+                            {
+                                "id": 31,
+                                "opcode": "return",
+                                "arg": 30,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 31,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 31,
+                                        "end": 32
+                                    }
+                                }
+                            }
+                        ],
+                        "properties": {
+                            "reachable": true,
+                            "linear_position": 2,
+                            "linear_interval": {
+                                "begin": 5,
+                                "end": 32
                             },
                             "successors": [],
-                            "predecessors": []
+                            "predecessors": [
+                                0
+                            ]
                         }
                     }
                 ],
                 "properties": {
-                    "linear_length": 7
+                    "linear_length": 32
+                }
+            }
+        },
+        {
+            "id": 37,
+            "name": "comparison1",
+            "code": {
+                "entry_point": 0,
+                "blocks": [
+                    {
+                        "id": 0,
+                        "control_flow": 2,
+                        "phi": [],
+                        "calls": [],
+                        "inline_assembly": [],
+                        "code": [
+                            {
+                                "id": 0,
+                                "opcode": "get_argument",
+                                "index": 0,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 0,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 0,
+                                        "end": 3
+                                    }
+                                }
+                            },
+                            {
+                                "id": 1,
+                                "opcode": "get_argument",
+                                "index": 1,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 1,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 0,
+                                        "end": 3
+                                    }
+                                }
+                            },
+                            {
+                                "id": 2,
+                                "opcode": "jump",
+                                "target_block": 1,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 2,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 2,
+                                        "end": 3
+                                    }
+                                }
+                            }
+                        ],
+                        "properties": {
+                            "reachable": true,
+                            "linear_position": 1,
+                            "linear_interval": {
+                                "begin": 0,
+                                "end": 3
+                            },
+                            "successors": [
+                                1
+                            ],
+                            "predecessors": []
+                        }
+                    },
+                    {
+                        "id": 1,
+                        "control_flow": 5,
+                        "phi": [
+                            {
+                                "id": 0,
+                                "links": [
+                                    {
+                                        "block_id": 0,
+                                        "instr_ref": 1
+                                    }
+                                ]
+                            },
+                            {
+                                "id": 1,
+                                "links": [
+                                    {
+                                        "block_id": 0,
+                                        "instr_ref": 0
+                                    }
+                                ]
+                            }
+                        ],
+                        "calls": [],
+                        "inline_assembly": [],
+                        "code": [
+                            {
+                                "id": 7,
+                                "opcode": "phi",
+                                "phi_ref": 1,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 3,
+                                    "linear_liveness": {
+                                        "alias": 0,
+                                        "begin": 3,
+                                        "end": 9
+                                    }
+                                }
+                            },
+                            {
+                                "id": 4,
+                                "opcode": "phi",
+                                "phi_ref": 0,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 4,
+                                    "linear_liveness": {
+                                        "alias": 1,
+                                        "begin": 4,
+                                        "end": 7
+                                    }
+                                }
+                            },
+                            {
+                                "id": 3,
+                                "opcode": "get_local",
+                                "index": 1,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 5,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 5,
+                                        "end": 7
+                                    }
+                                }
+                            },
+                            {
+                                "id": 5,
+                                "opcode": "int32_store",
+                                "location": 3,
+                                "value": 4,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": 8,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 6,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 6,
+                                        "end": 7
+                                    }
+                                }
+                            },
+                            {
+                                "id": 6,
+                                "opcode": "get_local",
+                                "index": 0,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 7,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 7,
+                                        "end": 9
+                                    }
+                                }
+                            },
+                            {
+                                "id": 8,
+                                "opcode": "int32_store",
+                                "location": 6,
+                                "value": 7,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": 44,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 8,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 8,
+                                        "end": 9
+                                    }
+                                }
+                            },
+                            {
+                                "id": 44,
+                                "opcode": "return",
+                                "arg": null,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 9,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 9,
+                                        "end": 10
+                                    }
+                                }
+                            }
+                        ],
+                        "properties": {
+                            "reachable": true,
+                            "linear_position": 2,
+                            "linear_interval": {
+                                "begin": 3,
+                                "end": 10
+                            },
+                            "successors": [],
+                            "predecessors": [
+                                0
+                            ]
+                        }
+                    }
+                ],
+                "properties": {
+                    "linear_length": 10
+                }
+            }
+        },
+        {
+            "id": 38,
+            "name": "comparison2",
+            "code": {
+                "entry_point": 0,
+                "blocks": [
+                    {
+                        "id": 0,
+                        "control_flow": 2,
+                        "phi": [],
+                        "calls": [],
+                        "inline_assembly": [],
+                        "code": [
+                            {
+                                "id": 0,
+                                "opcode": "get_argument",
+                                "index": 0,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 0,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 0,
+                                        "end": 3
+                                    }
+                                }
+                            },
+                            {
+                                "id": 1,
+                                "opcode": "get_argument",
+                                "index": 1,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 1,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 0,
+                                        "end": 3
+                                    }
+                                }
+                            },
+                            {
+                                "id": 2,
+                                "opcode": "jump",
+                                "target_block": 1,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 2,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 2,
+                                        "end": 3
+                                    }
+                                }
+                            }
+                        ],
+                        "properties": {
+                            "reachable": true,
+                            "linear_position": 1,
+                            "linear_interval": {
+                                "begin": 0,
+                                "end": 3
+                            },
+                            "successors": [
+                                1
+                            ],
+                            "predecessors": []
+                        }
+                    },
+                    {
+                        "id": 1,
+                        "control_flow": 5,
+                        "phi": [
+                            {
+                                "id": 0,
+                                "links": [
+                                    {
+                                        "block_id": 0,
+                                        "instr_ref": 1
+                                    }
+                                ]
+                            },
+                            {
+                                "id": 1,
+                                "links": [
+                                    {
+                                        "block_id": 0,
+                                        "instr_ref": 0
+                                    }
+                                ]
+                            }
+                        ],
+                        "calls": [],
+                        "inline_assembly": [],
+                        "code": [
+                            {
+                                "id": 7,
+                                "opcode": "phi",
+                                "phi_ref": 1,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 3,
+                                    "linear_liveness": {
+                                        "alias": 0,
+                                        "begin": 3,
+                                        "end": 9
+                                    }
+                                }
+                            },
+                            {
+                                "id": 4,
+                                "opcode": "phi",
+                                "phi_ref": 0,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 4,
+                                    "linear_liveness": {
+                                        "alias": 1,
+                                        "begin": 4,
+                                        "end": 7
+                                    }
+                                }
+                            },
+                            {
+                                "id": 3,
+                                "opcode": "get_local",
+                                "index": 1,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 5,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 5,
+                                        "end": 7
+                                    }
+                                }
+                            },
+                            {
+                                "id": 5,
+                                "opcode": "int64_store",
+                                "location": 3,
+                                "value": 4,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": 8,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 6,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 6,
+                                        "end": 7
+                                    }
+                                }
+                            },
+                            {
+                                "id": 6,
+                                "opcode": "get_local",
+                                "index": 0,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 7,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 7,
+                                        "end": 9
+                                    }
+                                }
+                            },
+                            {
+                                "id": 8,
+                                "opcode": "int64_store",
+                                "location": 6,
+                                "value": 7,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": 44,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 8,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 8,
+                                        "end": 9
+                                    }
+                                }
+                            },
+                            {
+                                "id": 44,
+                                "opcode": "return",
+                                "arg": null,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 9,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 9,
+                                        "end": 10
+                                    }
+                                }
+                            }
+                        ],
+                        "properties": {
+                            "reachable": true,
+                            "linear_position": 2,
+                            "linear_interval": {
+                                "begin": 3,
+                                "end": 10
+                            },
+                            "successors": [],
+                            "predecessors": [
+                                0
+                            ]
+                        }
+                    }
+                ],
+                "properties": {
+                    "linear_length": 10
+                }
+            }
+        },
+        {
+            "id": 39,
+            "name": "conversion",
+            "code": {
+                "entry_point": 0,
+                "blocks": [
+                    {
+                        "id": 0,
+                        "control_flow": 2,
+                        "phi": [],
+                        "calls": [],
+                        "inline_assembly": [],
+                        "code": [
+                            {
+                                "id": 0,
+                                "opcode": "get_argument",
+                                "index": 0,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 0,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 0,
+                                        "end": 3
+                                    }
+                                }
+                            },
+                            {
+                                "id": 1,
+                                "opcode": "get_argument",
+                                "index": 1,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 1,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 0,
+                                        "end": 3
+                                    }
+                                }
+                            },
+                            {
+                                "id": 2,
+                                "opcode": "jump",
+                                "target_block": 1,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 2,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 2,
+                                        "end": 3
+                                    }
+                                }
+                            }
+                        ],
+                        "properties": {
+                            "reachable": true,
+                            "linear_position": 1,
+                            "linear_interval": {
+                                "begin": 0,
+                                "end": 3
+                            },
+                            "successors": [
+                                1
+                            ],
+                            "predecessors": []
+                        }
+                    },
+                    {
+                        "id": 1,
+                        "control_flow": 5,
+                        "phi": [
+                            {
+                                "id": 0,
+                                "links": [
+                                    {
+                                        "block_id": 0,
+                                        "instr_ref": 1
+                                    }
+                                ]
+                            },
+                            {
+                                "id": 1,
+                                "links": [
+                                    {
+                                        "block_id": 0,
+                                        "instr_ref": 0
+                                    }
+                                ]
+                            }
+                        ],
+                        "calls": [],
+                        "inline_assembly": [],
+                        "code": [
+                            {
+                                "id": 7,
+                                "opcode": "phi",
+                                "phi_ref": 1,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 3,
+                                    "linear_liveness": {
+                                        "alias": 0,
+                                        "begin": 3,
+                                        "end": 9
+                                    }
+                                }
+                            },
+                            {
+                                "id": 4,
+                                "opcode": "phi",
+                                "phi_ref": 0,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 4,
+                                    "linear_liveness": {
+                                        "alias": 1,
+                                        "begin": 4,
+                                        "end": 7
+                                    }
+                                }
+                            },
+                            {
+                                "id": 3,
+                                "opcode": "get_local",
+                                "index": 1,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 5,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 5,
+                                        "end": 7
+                                    }
+                                }
+                            },
+                            {
+                                "id": 5,
+                                "opcode": "int64_store",
+                                "location": 3,
+                                "value": 4,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": 8,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 6,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 6,
+                                        "end": 7
+                                    }
+                                }
+                            },
+                            {
+                                "id": 6,
+                                "opcode": "get_local",
+                                "index": 0,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 7,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 7,
+                                        "end": 9
+                                    }
+                                }
+                            },
+                            {
+                                "id": 8,
+                                "opcode": "int32_store",
+                                "location": 6,
+                                "value": 7,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": 37,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 8,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 8,
+                                        "end": 9
+                                    }
+                                }
+                            },
+                            {
+                                "id": 37,
+                                "opcode": "return",
+                                "arg": null,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 9,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 9,
+                                        "end": 10
+                                    }
+                                }
+                            }
+                        ],
+                        "properties": {
+                            "reachable": true,
+                            "linear_position": 2,
+                            "linear_interval": {
+                                "begin": 3,
+                                "end": 10
+                            },
+                            "successors": [],
+                            "predecessors": [
+                                0
+                            ]
+                        }
+                    }
+                ],
+                "properties": {
+                    "linear_length": 10
                 }
             }
         }

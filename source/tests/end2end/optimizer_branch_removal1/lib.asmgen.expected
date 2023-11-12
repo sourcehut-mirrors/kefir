@@ -21,6 +21,7 @@ test1:
     mov %rsp, %rbp
 _kefir_func_test1_label0:
 _kefir_func_test1_label1:
+_kefir_func_test1_label2:
     pop %rbp
     ret
 
@@ -29,8 +30,9 @@ test2:
     mov %rsp, %rbp
 _kefir_func_test2_label0:
 _kefir_func_test2_label1:
-    call somefn2@PLT
 _kefir_func_test2_label2:
+    call somefn2@PLT
+_kefir_func_test2_label3:
     pop %rbp
     ret
 
@@ -39,8 +41,9 @@ test3:
     mov %rsp, %rbp
 _kefir_func_test3_label0:
 _kefir_func_test3_label1:
-    call somefn@PLT
 _kefir_func_test3_label2:
+    call somefn@PLT
+_kefir_func_test3_label3:
     pop %rbp
     ret
 
@@ -48,8 +51,9 @@ test4:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_test4_label0:
-    call somefn@PLT
 _kefir_func_test4_label1:
+    call somefn@PLT
+_kefir_func_test4_label2:
     pop %rbp
     ret
 
@@ -57,15 +61,17 @@ test5:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_test5_label0:
+_kefir_func_test5_label1:
     call somefn@PLT
-    jmp _kefir_func_test5_label0
+    jmp _kefir_func_test5_label1
 
 test6:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_test6_label0:
-    mov $1, %rax
 _kefir_func_test6_label1:
+    mov $1, %rax
+_kefir_func_test6_label2:
     pop %rbp
     ret
 
@@ -73,17 +79,18 @@ test7:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_test7_label0:
-    mov $0, %rax
 _kefir_func_test7_label1:
-    mov $0, %rcx
+    mov $0, %rax
 _kefir_func_test7_label2:
+    mov $0, %rcx
+_kefir_func_test7_label3:
     test %rcx, %rcx
     setne %cl
     movzx %cl, %rcx
     or %rcx, %rax
     setne %al
     movzx %al, %rax
-_kefir_func_test7_label3:
+_kefir_func_test7_label4:
     pop %rbp
     ret
 

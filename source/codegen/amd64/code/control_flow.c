@@ -72,8 +72,29 @@ kefir_result_t kefir_codegen_amd64_function_map_phi_outputs(struct kefir_mem *me
 
         res = kefir_codegen_amd64_function_vreg_of(function, target_ref, &target_vreg_idx);
         if (res == KEFIR_NOT_FOUND) {
-            REQUIRE_OK(
-                kefir_asmcmp_virtual_register_new(mem, &function->code.context, source_vreg->type, &target_vreg_idx));
+            switch (source_vreg->type) {
+                case KEFIR_ASMCMP_VIRTUAL_REGISTER_UNSPECIFIED:
+                case KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE:
+                case KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT:
+                    REQUIRE_OK(
+                        kefir_asmcmp_virtual_register_new(mem, &function->code.context, source_vreg->type, &target_vreg_idx));
+                    break;
+                
+                case KEFIR_ASMCMP_VIRTUAL_REGISTER_DIRECT_SPILL_SPACE:
+                    REQUIRE_OK(kefir_asmcmp_virtual_register_new_direct_spill_space_allocation(mem, &function->code.context,
+                        source_vreg->parameters.spill_space_allocation_length, &target_vreg_idx));
+                    break;
+
+                case KEFIR_ASMCMP_VIRTUAL_REGISTER_INDIRECT_SPILL_SPACE:
+                    REQUIRE_OK(kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(mem, &function->code.context,
+                        source_vreg->parameters.spill_space_allocation_length, &target_vreg_idx));
+                    break;
+
+                case KEFIR_ASMCMP_VIRTUAL_REGISTER_EXTERNAL_MEMORY:
+                    REQUIRE_OK(kefir_asmcmp_virtual_register_new_memory_pointer(mem, &function->code.context,
+                        source_vreg->parameters.memory.base_reg, source_vreg->parameters.memory.offset, &target_vreg_idx));
+                    break;
+            }
             REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, target_ref, target_vreg_idx));
         } else {
             REQUIRE_OK(res);
@@ -87,6 +108,24 @@ kefir_result_t kefir_codegen_amd64_function_map_phi_outputs(struct kefir_mem *me
         REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &function->code,
                                                              kefir_asmcmp_context_instr_tail(&function->code.context),
                                                              target_vreg_idx, source_vreg_idx, NULL));
+    }
+    REQUIRE_OK(res);
+
+    for (res = kefir_opt_code_block_phi_head(&function->function->code, target_block, &phi);
+         res == KEFIR_OK && phi != NULL; res = kefir_opt_phi_next_sibling(&function->function->code, phi, &phi)) {
+
+        if (!function->function_analysis->instructions[phi->output_ref].reachable) {
+            continue;
+        }
+
+        kefir_opt_instruction_ref_t target_ref = phi->output_ref;
+
+        kefir_asmcmp_virtual_register_index_t target_vreg_idx;
+        REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, target_ref, &target_vreg_idx));
+
+        REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(mem, &function->code,
+                                                             kefir_asmcmp_context_instr_tail(&function->code.context),
+                                                             target_vreg_idx, NULL));
     }
     REQUIRE_OK(res);
 

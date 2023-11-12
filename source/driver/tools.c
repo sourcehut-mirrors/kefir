@@ -41,7 +41,12 @@ kefir_result_t kefir_driver_run_compiler(const struct kefir_compiler_runner_conf
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid compiler runner configuration"));
     REQUIRE(process != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to process"));
 
+#ifdef KEFIR_DRIVER_DEBUG_NOFORK
+    run_compiler((void *) configuration);
+    exit(0);
+#else
     REQUIRE_OK(kefir_process_run(process, run_compiler, (void *) configuration));
+#endif
     return KEFIR_OK;
 }
 

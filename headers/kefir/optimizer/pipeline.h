@@ -55,6 +55,7 @@ DECLARE_PASS(CompareBranchFuse);
 DECLARE_PASS(OpSimplify);
 DECLARE_PASS(ConstFold);
 DECLARE_PASS(BranchRemoval);
+DECLARE_PASS(Mem2Reg);
 #undef DECLARE_PASS
 #endif
 

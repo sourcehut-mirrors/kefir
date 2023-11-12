@@ -231,8 +231,9 @@ typedef struct kefir_opt_code_container {
     struct kefir_hashtree blocks;
     kefir_opt_block_id_t next_block_id;
 
-    struct kefir_hashtree phi_nodes;
-    kefir_opt_phi_id_t next_phi_node_id;
+    struct kefir_opt_phi_node *phi_nodes;
+    kefir_size_t phi_nodes_length;
+    kefir_size_t phi_nodes_capacity;
 
     struct kefir_hashtree call_nodes;
     kefir_opt_call_id_t next_call_node_id;
@@ -260,6 +261,8 @@ kefir_result_t kefir_opt_code_container_new_instruction(struct kefir_mem *, stru
                                                         struct kefir_opt_code_block *,
                                                         const struct kefir_opt_operation *,
                                                         kefir_opt_instruction_ref_t *);
+kefir_result_t kefir_opt_code_container_drop_instr(const struct kefir_opt_code_container *,
+                                                     kefir_opt_instruction_ref_t);
 
 kefir_result_t kefir_opt_code_container_instruction_move_after(const struct kefir_opt_code_container *,
                                                                kefir_opt_instruction_ref_t,

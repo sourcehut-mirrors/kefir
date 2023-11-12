@@ -575,6 +575,7 @@ static kefir_result_t cmp_branch_fuse_apply(struct kefir_mem *mem, const struct 
             REQUIRE_OK(kefir_opt_code_container_replace_references(&func->code, replacement_ref, branch_instr_id));
             REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, branch_instr_id));
             REQUIRE_OK(kefir_opt_code_container_add_control(&func->code, block, replacement_ref));
+            REQUIRE_OK(kefir_opt_code_container_drop_instr(&func->code, branch_instr_id));
         }
     }
     return KEFIR_OK;

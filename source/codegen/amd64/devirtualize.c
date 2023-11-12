@@ -411,7 +411,7 @@ static kefir_result_t devirtualize_value(struct kefir_mem *mem, struct devirtual
                     REQUIRE_OK(kefir_asmcmp_virtual_register_get(&state->target->context, value->vreg.index, &vreg));
                     *value = KEFIR_ASMCMP_MAKE_INDIRECT_PHYSICAL(vreg->parameters.memory.base_reg,
                                                                  vreg->parameters.memory.offset,
-                                                                 KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT);
+                                                                 value->vreg.variant);
                     break;
             }
             break;
@@ -462,7 +462,7 @@ static kefir_result_t devirtualize_value(struct kefir_mem *mem, struct devirtual
 
                         case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_MEMORY_POINTER:
                             REQUIRE_OK(
-                                kefir_asmcmp_virtual_register_get(&state->target->context, value->vreg.index, &vreg));
+                                kefir_asmcmp_virtual_register_get(&state->target->context, value->indirect.base.vreg, &vreg));
                             REQUIRE_OK(obtain_temporary_register(mem, state, position, &phreg, TEMPORARY_REGISTER_GP));
                             REQUIRE_OK(kefir_asmcmp_amd64_mov(
                                 mem, state->target, kefir_asmcmp_context_instr_prev(&state->target->context, position),

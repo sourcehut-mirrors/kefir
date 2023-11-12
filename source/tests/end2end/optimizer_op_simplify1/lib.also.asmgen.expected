@@ -16,6 +16,7 @@ dnot:
     mov %rsp, %rbp
     sub $16, %rsp
 _kefir_func_dnot_label0:
+_kefir_func_dnot_label1:
     lea -4(%rbp), %rax
     movl %edi, (%rax)
     lea -4(%rbp), %rax
@@ -27,14 +28,14 @@ _kefir_func_dnot_label0:
     test %rax, %rax
     sete %cl
     test %rcx, %rcx
-    jz _kefir_func_dnot_label1
-    jmp _kefir_func_dnot_label2
-_kefir_func_dnot_label1:
+    jz _kefir_func_dnot_label2
+    jmp _kefir_func_dnot_label3
+_kefir_func_dnot_label2:
     mov $1, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-_kefir_func_dnot_label2:
+_kefir_func_dnot_label3:
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
@@ -45,6 +46,7 @@ dnotd:
     mov %rsp, %rbp
     sub $16, %rsp
 _kefir_func_dnotd_label0:
+_kefir_func_dnotd_label1:
     lea -8(%rbp), %rax
     movq %xmm0, (%rax)
     lea -8(%rbp), %rax
@@ -56,14 +58,14 @@ _kefir_func_dnotd_label0:
     test %rax, %rax
     sete %cl
     test %rcx, %rcx
-    jz _kefir_func_dnotd_label1
-    jmp _kefir_func_dnotd_label2
-_kefir_func_dnotd_label1:
+    jz _kefir_func_dnotd_label2
+    jmp _kefir_func_dnotd_label3
+_kefir_func_dnotd_label2:
     mov $1, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-_kefir_func_dnotd_label2:
+_kefir_func_dnotd_label3:
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
@@ -74,6 +76,7 @@ dnotf:
     mov %rsp, %rbp
     sub $16, %rsp
 _kefir_func_dnotf_label0:
+_kefir_func_dnotf_label1:
     lea -4(%rbp), %rax
     movd %xmm0, (%rax)
     lea -4(%rbp), %rax
@@ -85,14 +88,14 @@ _kefir_func_dnotf_label0:
     test %rax, %rax
     sete %cl
     test %rcx, %rcx
-    jz _kefir_func_dnotf_label1
-    jmp _kefir_func_dnotf_label2
-_kefir_func_dnotf_label1:
+    jz _kefir_func_dnotf_label2
+    jmp _kefir_func_dnotf_label3
+_kefir_func_dnotf_label2:
     mov $1, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-_kefir_func_dnotf_label2:
+_kefir_func_dnotf_label3:
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
@@ -105,6 +108,7 @@ dnotld:
     fstcw -8(%rbp)
 _kefir_func_dnotld_label0:
     lea 16(%rbp), %rax
+_kefir_func_dnotld_label1:
     lea -48(%rbp), %rcx
     fldt (%rax)
     fstpt (%rcx)
@@ -116,15 +120,15 @@ _kefir_func_dnotld_label0:
     test %rcx, %rcx
     sete %al
     test %rax, %rax
-    jz _kefir_func_dnotld_label1
-    jmp _kefir_func_dnotld_label2
-_kefir_func_dnotld_label1:
+    jz _kefir_func_dnotld_label2
+    jmp _kefir_func_dnotld_label3
+_kefir_func_dnotld_label2:
     mov $1, %rax
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
-_kefir_func_dnotld_label2:
+_kefir_func_dnotld_label3:
     mov $0, %rax
     fldcw -8(%rbp)
     lea (%rbp), %rsp

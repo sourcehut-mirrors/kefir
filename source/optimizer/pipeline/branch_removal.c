@@ -35,40 +35,33 @@ static kefir_result_t branch_removal_apply(struct kefir_mem *mem, const struct k
          block = kefir_opt_code_container_next(&iter)) {
 
         struct kefir_opt_instruction *instr = NULL;
+        REQUIRE_OK(kefir_opt_code_block_instr_control_tail(&func->code, block, &instr));
+        if (instr->operation.opcode != KEFIR_OPT_OPCODE_BRANCH) {
+            continue;
+        }
 
-        for (kefir_opt_code_block_instr_head(&func->code, block, &instr); instr != NULL;
-             kefir_opt_instruction_next_sibling(&func->code, instr, &instr)) {
+        const kefir_opt_block_id_t block_id = instr->block_id;
+        const kefir_opt_instruction_ref_t instr_id = instr->id;
+        kefir_opt_instruction_ref_t replacement_ref = KEFIR_ID_NONE;
 
-            const kefir_opt_block_id_t block_id = instr->block_id;
-            const kefir_opt_instruction_ref_t instr_id = instr->id;
-            kefir_opt_instruction_ref_t replacement_ref = KEFIR_ID_NONE;
-            switch (instr->operation.opcode) {
-                case KEFIR_OPT_OPCODE_BRANCH: {
-                    struct kefir_opt_instruction *arg1;
-                    REQUIRE_OK(kefir_opt_code_container_instr(&func->code,
-                                                              instr->operation.parameters.branch.condition_ref, &arg1));
-                    if (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST ||
-                        arg1->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST) {
-                        REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr_id));
-                        if (arg1->operation.parameters.imm.integer != 0) {
-                            REQUIRE_OK(kefir_opt_code_builder_finalize_jump(
-                                mem, &func->code, block_id, instr->operation.parameters.branch.target_block,
-                                &replacement_ref));
-                        } else {
-                            REQUIRE_OK(kefir_opt_code_builder_finalize_jump(
-                                mem, &func->code, block_id, instr->operation.parameters.branch.alternative_block,
-                                &replacement_ref));
-                        }
-
-                        REQUIRE_OK(kefir_opt_code_container_replace_references(&func->code, replacement_ref, instr_id));
-                        REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr_id, &instr));
-                    }
-                } break;
-
-                default:
-                    // Intentionally left blank
-                    break;
+        struct kefir_opt_instruction *arg1;
+        REQUIRE_OK(kefir_opt_code_container_instr(&func->code,
+                                                    instr->operation.parameters.branch.condition_ref, &arg1));
+        if (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST ||
+            arg1->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST) {
+            REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr_id));
+            if (arg1->operation.parameters.imm.integer != 0) {
+                REQUIRE_OK(kefir_opt_code_builder_finalize_jump(
+                    mem, &func->code, block_id, instr->operation.parameters.branch.target_block,
+                    &replacement_ref));
+            } else {
+                REQUIRE_OK(kefir_opt_code_builder_finalize_jump(
+                    mem, &func->code, block_id, instr->operation.parameters.branch.alternative_block,
+                    &replacement_ref));
             }
+
+            REQUIRE_OK(kefir_opt_code_container_replace_references(&func->code, replacement_ref, instr_id));
+            REQUIRE_OK(kefir_opt_code_container_drop_instr(&func->code, instr_id));
         }
     }
     return KEFIR_OK;

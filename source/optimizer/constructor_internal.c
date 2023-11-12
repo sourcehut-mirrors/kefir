@@ -33,7 +33,7 @@ kefir_result_t kefir_opt_constructor_start_code_block_at(struct kefir_mem *mem,
 
     kefir_opt_block_id_t code_block_id;
     REQUIRE(!kefir_hashtree_has(&state->code_blocks, (kefir_hashtree_key_t) ir_location), KEFIR_OK);
-    REQUIRE_OK(kefir_opt_code_container_new_block(mem, &state->function->code, ir_location == 0, &code_block_id));
+    REQUIRE_OK(kefir_opt_code_container_new_block(mem, &state->function->code, ir_location == (kefir_size_t) -1ll, &code_block_id));
 
     struct kefir_opt_constructor_code_block_state *block_state =
         KEFIR_MALLOC(mem, sizeof(struct kefir_opt_constructor_code_block_state));
@@ -99,12 +99,13 @@ kefir_result_t kefir_opt_constructor_find_code_block_for(const struct kefir_opt_
 }
 
 kefir_result_t kefir_opt_constructor_update_current_code_block(struct kefir_mem *mem,
-                                                               struct kefir_opt_constructor_state *state) {
+                                                               struct kefir_opt_constructor_state *state,
+                                                               kefir_size_t ir_location) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(state != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer constructor state"));
 
     struct kefir_opt_constructor_code_block_state *block_state = NULL;
-    kefir_result_t res = kefir_opt_constructor_find_code_block_for(state, state->ir_location, &block_state);
+    kefir_result_t res = kefir_opt_constructor_find_code_block_for(state, ir_location, &block_state);
     if (res != KEFIR_NOT_FOUND && block_state != state->current_block) {
         REQUIRE_OK(res);
         if (state->current_block != NULL) {
