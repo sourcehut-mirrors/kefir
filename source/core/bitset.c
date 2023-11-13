@@ -156,7 +156,7 @@ kefir_result_t kefir_bitset_resize(struct kefir_mem *mem, struct kefir_bitset *b
         REQUIRE(new_content != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate bitset content"));
 
         if (bitset->content != NULL) {
-            memcpy(new_content, bitset->content, bitset->capacity);
+            memcpy(new_content, bitset->content, bitset->capacity * sizeof(kefir_uint64_t));
         }
         KEFIR_FREE(mem, bitset->content);
         bitset->content = new_content;

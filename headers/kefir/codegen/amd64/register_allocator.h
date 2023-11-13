@@ -35,7 +35,6 @@ typedef enum kefir_codegen_amd64_register_allocation_type {
 } kefir_codegen_amd64_register_allocation_type_t;
 
 typedef struct kefir_codegen_amd64_register_allocation {
-    kefir_asmcmp_virtual_register_index_t vreg;
     kefir_codegen_amd64_register_allocation_type_t type;
     union {
         kefir_asm_amd64_xasmgen_register_t direct_reg;
