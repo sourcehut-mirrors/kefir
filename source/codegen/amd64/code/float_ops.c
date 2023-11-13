@@ -41,7 +41,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int_to_float32)(struct kefir
 
     REQUIRE_OK(
         kefir_asmcmp_amd64_cvtsi2ss(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                                    &KEFIR_ASMCMP_MAKE_VREG(result_vreg), &KEFIR_ASMCMP_MAKE_VREG(arg_vreg), NULL));
+                                    &KEFIR_ASMCMP_MAKE_VREG(result_vreg), &KEFIR_ASMCMP_MAKE_VREG64(arg_vreg), NULL));
 
     REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));
     return KEFIR_OK;
@@ -64,7 +64,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int_to_float64)(struct kefir
 
     REQUIRE_OK(
         kefir_asmcmp_amd64_cvtsi2sd(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                                    &KEFIR_ASMCMP_MAKE_VREG(result_vreg), &KEFIR_ASMCMP_MAKE_VREG(arg_vreg), NULL));
+                                    &KEFIR_ASMCMP_MAKE_VREG(result_vreg), &KEFIR_ASMCMP_MAKE_VREG64(arg_vreg), NULL));
 
     REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));
     return KEFIR_OK;

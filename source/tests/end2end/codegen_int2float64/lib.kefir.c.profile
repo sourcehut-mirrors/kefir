@@ -1,0 +1,1 @@
+KEFIR_CFLAGS="$KEFIR_CFLAGS --target host-none -Woptimizer-pipeline=mem2reg"
