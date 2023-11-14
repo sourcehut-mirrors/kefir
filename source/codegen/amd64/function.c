@@ -22,8 +22,10 @@
 #include "kefir/codegen/amd64/function.h"
 #include "kefir/codegen/amd64/symbolic_labels.h"
 #include "kefir/codegen/amd64/devirtualize.h"
+#include "kefir/codegen/asmcmp/format.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
+#include <string.h>
 
 static kefir_result_t translate_instruction(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
                                             const struct kefir_opt_instruction *instruction) {
@@ -173,6 +175,76 @@ static kefir_result_t generate_constants(struct kefir_mem *mem, struct kefir_cod
     return KEFIR_OK;
 }
 
+static kefir_result_t output_asm(struct kefir_codegen_amd64 *codegen, struct kefir_codegen_amd64_function *func,
+                                 kefir_bool_t reg_alloc) {
+    const char *comment_prefix;
+    REQUIRE_OK(kefir_asm_amd64_xasmgen_line_comment_prefix(&codegen->xasmgen, &comment_prefix));
+    FILE *output = kefir_asm_amd64_xasmgen_get_output(&codegen->xasmgen);
+
+    struct kefir_json_output json;
+    REQUIRE_OK(kefir_json_output_init(&json, output, 4));
+    REQUIRE_OK(kefir_json_set_line_prefix(&json, comment_prefix));
+    REQUIRE_OK(kefir_json_output_object_begin(&json));
+    REQUIRE_OK(kefir_json_output_object_key(&json, "function"));
+    REQUIRE_OK(kefir_asmcmp_context_format(&json, &func->code.context));
+    if (reg_alloc) {
+        REQUIRE_OK(kefir_json_output_object_key(&json, "register_allocation"));
+        REQUIRE_OK(kefir_json_output_array_begin(&json));
+        for (kefir_size_t i = 0; i < func->register_allocator.num_of_vregs; i++) {
+            const struct kefir_codegen_amd64_register_allocation *ra = &func->register_allocator.allocations[i];
+            REQUIRE_OK(kefir_json_output_object_begin(&json));
+            REQUIRE_OK(kefir_json_output_object_key(&json, "id"));
+            REQUIRE_OK(kefir_json_output_uinteger(&json, i));
+            const char *mnemonic;
+            switch (ra->type) {
+                case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_UNALLOCATED:
+                    REQUIRE_OK(kefir_json_output_object_key(&json, "type"));
+                    REQUIRE_OK(kefir_json_output_string(&json, "unallocated"));
+                    break;
+
+                case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_REGISTER:
+                    REQUIRE_OK(kefir_json_output_object_key(&json, "type"));
+                    REQUIRE_OK(kefir_json_output_string(&json, "physical_register"));
+                    mnemonic = kefir_asm_amd64_xasmgen_register_symbolic_name(ra->direct_reg);
+                    REQUIRE(mnemonic != NULL,
+                            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to determine amd64 register symbolic name"));
+                    REQUIRE_OK(kefir_json_output_object_key(&json, "reg"));
+                    REQUIRE_OK(kefir_json_output_string(&json, mnemonic));
+                    break;
+
+                case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_DIRECT:
+                    REQUIRE_OK(kefir_json_output_object_key(&json, "type"));
+                    REQUIRE_OK(kefir_json_output_string(&json, "spill_area_direct"));
+                    REQUIRE_OK(kefir_json_output_object_key(&json, "index"));
+                    REQUIRE_OK(kefir_json_output_uinteger(&json, ra->spill_area.index));
+                    REQUIRE_OK(kefir_json_output_object_key(&json, "length"));
+                    REQUIRE_OK(kefir_json_output_uinteger(&json, ra->spill_area.length));
+                    break;
+
+                case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_INDIRECT:
+                    REQUIRE_OK(kefir_json_output_object_key(&json, "type"));
+                    REQUIRE_OK(kefir_json_output_string(&json, "spill_area_indirect"));
+                    REQUIRE_OK(kefir_json_output_object_key(&json, "index"));
+                    REQUIRE_OK(kefir_json_output_uinteger(&json, ra->spill_area.index));
+                    REQUIRE_OK(kefir_json_output_object_key(&json, "length"));
+                    REQUIRE_OK(kefir_json_output_uinteger(&json, ra->spill_area.length));
+                    break;
+
+                case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_MEMORY_POINTER:
+                    REQUIRE_OK(kefir_json_output_object_key(&json, "type"));
+                    REQUIRE_OK(kefir_json_output_string(&json, "memory_pointer"));
+                    break;
+            }
+            REQUIRE_OK(kefir_json_output_object_end(&json));
+        }
+        REQUIRE_OK(kefir_json_output_array_end(&json));
+    }
+    REQUIRE_OK(kefir_json_output_object_end(&json));
+    REQUIRE_OK(kefir_json_output_finalize(&json));
+    fprintf(output, "\n");
+    return KEFIR_OK;
+}
+
 static kefir_result_t kefir_codegen_amd64_function_translate_impl(struct kefir_mem *mem,
                                                                   struct kefir_codegen_amd64 *codegen,
                                                                   struct kefir_codegen_amd64_function *func) {
@@ -182,9 +254,22 @@ static kefir_result_t kefir_codegen_amd64_function_translate_impl(struct kefir_m
         REQUIRE_OK(kefir_codegen_amd64_stack_frame_vararg(&func->stack_frame));
     }
     REQUIRE_OK(translate_code(mem, func));
+    if (codegen->config->print_details != NULL && strcmp(codegen->config->print_details, "vasm") == 0) {
+        REQUIRE_OK(output_asm(codegen, func, false));
+    }
+
     REQUIRE_OK(
         kefir_codegen_amd64_register_allocator_run(mem, &func->code, &func->stack_frame, &func->register_allocator));
+    if (codegen->config->print_details != NULL && strcmp(codegen->config->print_details, "vasm+regs") == 0) {
+        REQUIRE_OK(output_asm(codegen, func, true));
+    }
+
     REQUIRE_OK(kefir_codegen_amd64_devirtualize(mem, &func->code, &func->register_allocator, &func->stack_frame));
+
+    if (codegen->config->print_details != NULL && strcmp(codegen->config->print_details, "devasm") == 0) {
+        REQUIRE_OK(output_asm(codegen, func, false));
+    }
+
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_calculate(codegen->abi_variant, func->function->ir_func->locals,
                                                          &func->locals_layout, &func->stack_frame));
     REQUIRE_OK(kefir_asmcmp_amd64_generate_code(mem, &codegen->xasmgen, &func->code, &func->stack_frame));

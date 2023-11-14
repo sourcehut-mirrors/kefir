@@ -38,12 +38,15 @@ typedef enum kefir_json_state {
 typedef struct kefir_json_output {
     FILE *file;
     kefir_size_t indent;
+    const char *line_prefix;
     kefir_json_state_t state[KEFIR_JSON_MAX_DEPTH];
     kefir_size_t level;
 } kefir_json_output_t;
 
 kefir_result_t kefir_json_output_init(struct kefir_json_output *, FILE *, kefir_size_t);
 kefir_result_t kefir_json_output_finalize(struct kefir_json_output *);
+
+kefir_result_t kefir_json_set_line_prefix(struct kefir_json_output *, const char *);
 
 kefir_result_t kefir_json_output_object_begin(struct kefir_json_output *);
 kefir_result_t kefir_json_output_object_end(struct kefir_json_output *);

@@ -1700,6 +1700,23 @@ kefir_result_t kefir_asm_amd64_xasmgen_init(struct kefir_mem *mem, struct kefir_
     return KEFIR_OK;
 }
 
+FILE *kefir_asm_amd64_xasmgen_get_output(const struct kefir_amd64_xasmgen *xasmgen) {
+    REQUIRE(xasmgen != NULL, NULL);
+    ASSIGN_DECL_CAST(struct xasmgen_payload *, payload, xasmgen->payload);
+    REQUIRE(payload != NULL, NULL);
+
+    return payload->output;
+}
+
+kefir_result_t kefir_asm_amd64_xasmgen_line_comment_prefix(const struct kefir_amd64_xasmgen *xasmgen,
+                                                           const char **prefix_ptr) {
+    UNUSED(xasmgen);
+    REQUIRE(prefix_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to string"));
+
+    *prefix_ptr = "#";
+    return KEFIR_OK;
+}
+
 const struct kefir_asm_amd64_xasmgen_operand operand_regs[] = {
 #define REG(x) [x] = {.klass = KEFIR_AMD64_XASMGEN_OPERAND_REGISTER, .reg = x}
     REG(KEFIR_AMD64_XASMGEN_REGISTER_AL),

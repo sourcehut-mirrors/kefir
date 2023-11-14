@@ -215,7 +215,8 @@ struct kefir_cli_option KefirCompilerConfigurationOptions[] = {
 
     CODEGEN("emulated-tls", codegen.emulated_tls),
     CODEGEN("pic", codegen.position_independent_code),
-    SIMPLE(0, "codegen-syntax", true, KEFIR_CLI_OPTION_ACTION_ASSIGN_STRARG, 0, codegen.syntax)
+    SIMPLE(0, "codegen-syntax", true, KEFIR_CLI_OPTION_ACTION_ASSIGN_STRARG, 0, codegen.syntax),
+    SIMPLE(0, "codegen-details", true, KEFIR_CLI_OPTION_ACTION_ASSIGN_STRARG, 0, codegen.print_details)
 
 #undef SIMPLE
 #undef PREHOOK

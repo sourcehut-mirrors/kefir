@@ -31,6 +31,7 @@ kefir_result_t kefir_json_output_init(struct kefir_json_output *json, FILE *file
     json->file = file;
     json->level = 0;
     json->indent = indent;
+    json->line_prefix = NULL;
     memset(json->state, KEFIR_JSON_STATE_INIT, KEFIR_JSON_MAX_DEPTH * sizeof(kefir_json_state_t));
     return KEFIR_OK;
 }
@@ -44,6 +45,13 @@ kefir_result_t kefir_json_output_finalize(struct kefir_json_output *json) {
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_json_set_line_prefix(struct kefir_json_output *json, const char *prefix) {
+    REQUIRE(json != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid json output"));
+
+    json->line_prefix = prefix;
+    return KEFIR_OK;
+}
+
 static inline kefir_result_t valid_json(struct kefir_json_output *json) {
     REQUIRE(json != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid json output"));
     REQUIRE(json->file != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid json output"));
@@ -53,6 +61,9 @@ static inline kefir_result_t valid_json(struct kefir_json_output *json) {
 static inline kefir_result_t write_indent(struct kefir_json_output *json) {
     if (json->indent > 0) {
         fprintf(json->file, "\n");
+        if (json->line_prefix != NULL) {
+            fprintf(json->file, "%s", json->line_prefix);
+        }
         for (kefir_size_t i = 0; i < json->indent * json->level; i++) {
             fprintf(json->file, " ");
         }
@@ -68,7 +79,9 @@ static inline kefir_result_t write_separator(struct kefir_json_output *json) {
             break;
 
         case KEFIR_JSON_STATE_INIT:
-            // Intentionally left blank
+            if (json->line_prefix != NULL) {
+                fprintf(json->file, "%s", json->line_prefix);
+            }
             break;
 
         case KEFIR_JSON_STATE_OBJECT_FIELD:

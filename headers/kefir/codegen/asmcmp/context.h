@@ -278,6 +278,7 @@ typedef struct kefir_asmcmp_virtual_register {
 
 typedef struct kefir_asmcmp_context_class {
     kefir_result_t (*opcode_mnemonic)(kefir_asmcmp_instruction_opcode_t, const char **, void *);
+    kefir_result_t (*register_mnemonic)(kefir_asmcmp_physical_register_index_t, const char **, void *);
 } kefir_asmcmp_context_class_t;
 
 typedef struct kefir_asmcmp_context {

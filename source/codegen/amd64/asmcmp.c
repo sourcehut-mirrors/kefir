@@ -47,7 +47,19 @@ static kefir_result_t opcode_mnemonic(kefir_asmcmp_instruction_opcode_t opcode, 
     return KEFIR_OK;
 }
 
-static const struct kefir_asmcmp_context_class AMD64_KLASS = {.opcode_mnemonic = opcode_mnemonic};
+static kefir_result_t register_mnemonic(kefir_asmcmp_physical_register_index_t reg, const char **mnemonic_ptr,
+                                        void *payload) {
+    UNUSED(payload);
+    REQUIRE(mnemonic_ptr != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to opcode mnemonic"));
+
+    *mnemonic_ptr = kefir_asm_amd64_xasmgen_register_symbolic_name((kefir_asm_amd64_xasmgen_register_t) reg);
+    REQUIRE(*mnemonic_ptr != NULL, KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unknown amd64 register"));
+    return KEFIR_OK;
+}
+
+static const struct kefir_asmcmp_context_class AMD64_KLASS = {.opcode_mnemonic = opcode_mnemonic,
+                                                              .register_mnemonic = register_mnemonic};
 
 struct register_preallocation {
     kefir_asmcmp_amd64_register_preallocation_type_t type;

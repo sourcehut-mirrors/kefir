@@ -260,6 +260,9 @@ typedef struct kefir_amd64_xasmgen {
 kefir_result_t kefir_asm_amd64_xasmgen_init(struct kefir_mem *, struct kefir_amd64_xasmgen *, FILE *,
                                             kefir_asm_amd64_xasmgen_syntax_t);
 
+FILE *kefir_asm_amd64_xasmgen_get_output(const struct kefir_amd64_xasmgen *);
+kefir_result_t kefir_asm_amd64_xasmgen_line_comment_prefix(const struct kefir_amd64_xasmgen *, const char **);
+
 const struct kefir_asm_amd64_xasmgen_operand *kefir_asm_amd64_xasmgen_operand_reg(kefir_asm_amd64_xasmgen_register_t);
 const struct kefir_asm_amd64_xasmgen_operand *kefir_asm_amd64_xasmgen_operand_imm(
     struct kefir_asm_amd64_xasmgen_operand *, kefir_int64_t);

@@ -176,6 +176,10 @@ Generate position-independent code
 .\"
 .It Ar syntax=SYNTAX
 Produce assembly output with specified syntax [x86_64-intel_noprefix, x86_64-intel_prefix, x86_64-att (default)]
+.\"
+.It Ar details=DETAILS-SPEC
+Augment assembly output with internal code generator details in comments. DETAILS-SPEC can be: vasm (virtual assembly),
+vasm+regs (virtual assembly and register allocations), devasm (devirtualized assembly).
 .El
 .\"
 .Ss OPTIMIZER
