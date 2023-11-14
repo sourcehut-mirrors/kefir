@@ -26,6 +26,7 @@
 #include "kefir/core/util.h"
 #include "kefir/target/asm/amd64/xasmgen.h"
 #include "kefir/core/string_builder.h"
+#include <string.h>
 
 struct instruction_argument_state {
     struct kefir_asm_amd64_xasmgen_operand base_operands[4];
@@ -284,6 +285,71 @@ static kefir_result_t format_inline_assembly(struct kefir_mem *mem, struct kefir
     return KEFIR_OK;
 }
 
+static kefir_bool_t same_operands(const struct kefir_asmcmp_value *arg1, const struct kefir_asmcmp_value *arg2) {
+    REQUIRE(arg1->type == arg2->type, false);
+    REQUIRE((!arg1->segment.present && !arg2->segment.present) ||
+                (arg1->segment.present && arg2->segment.present && arg1->segment.reg == arg2->segment.reg),
+            false);
+
+    switch (arg1->type) {
+        case KEFIR_ASMCMP_VALUE_TYPE_NONE:
+            return true;
+
+        case KEFIR_ASMCMP_VALUE_TYPE_INTEGER:
+            return arg1->int_immediate == arg2->int_immediate;
+
+        case KEFIR_ASMCMP_VALUE_TYPE_UINTEGER:
+            return arg1->uint_immediate == arg2->uint_immediate;
+
+        case KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER:
+            return arg1->phreg == arg2->phreg;
+
+        case KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER:
+            return arg1->vreg.index == arg2->vreg.index && arg1->vreg.variant == arg2->vreg.variant;
+
+        case KEFIR_ASMCMP_VALUE_TYPE_INDIRECT:
+            REQUIRE(arg1->indirect.type == arg2->indirect.type, false);
+            REQUIRE(arg1->indirect.offset == arg2->indirect.offset, false);
+            REQUIRE(arg1->indirect.variant == arg2->indirect.variant, false);
+            switch (arg1->indirect.type) {
+                case KEFIR_ASMCMP_INDIRECT_PHYSICAL_BASIS:
+                    return arg1->indirect.base.phreg == arg2->indirect.base.phreg;
+
+                case KEFIR_ASMCMP_INDIRECT_VIRTUAL_BASIS:
+                    return arg1->indirect.base.vreg == arg2->indirect.base.vreg;
+
+                case KEFIR_ASMCMP_INDIRECT_LABEL_BASIS:
+                    return strcmp(arg1->indirect.base.label, arg2->indirect.base.label) == 0;
+
+                case KEFIR_ASMCMP_INDIRECT_SPILL_AREA_BASIS:
+                    return arg1->indirect.base.spill_index == arg2->indirect.base.spill_index;
+
+                case KEFIR_ASMCMP_INDIRECT_LOCAL_VAR_BASIS:
+                case KEFIR_ASMCMP_INDIRECT_TEMPORARY_AREA_BASIS:
+                case KEFIR_ASMCMP_INDIRECT_VARARG_SAVE_AREA_BASIS:
+                    return true;
+            }
+            break;
+
+        case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT:
+            return strcmp(arg1->rip_indirection.base, arg2->rip_indirection.base) == 0 &&
+                   arg1->rip_indirection.variant == arg2->rip_indirection.variant;
+
+        case KEFIR_ASMCMP_VALUE_TYPE_LABEL:
+            return strcmp(arg1->label.symbolic, arg2->label.symbolic) == 0 && arg1->label.offset == arg2->label.offset;
+
+        case KEFIR_ASMCMP_VALUE_TYPE_X87:
+            return arg1->x87 == arg2->x87;
+
+        case KEFIR_ASMCMP_VALUE_TYPE_STASH_INDEX:
+            return arg1->stash_idx == arg2->stash_idx;
+
+        case KEFIR_ASMCMP_VALUE_TYPE_INLINE_ASSEMBLY_INDEX:
+            return arg1->inline_asm_idx == arg2->inline_asm_idx;
+    }
+    return false;
+}
+
 static kefir_result_t generate_instr(struct kefir_mem *mem, struct kefir_amd64_xasmgen *xasmgen,
                                      const struct kefir_asmcmp_amd64 *target,
                                      const struct kefir_codegen_amd64_stack_frame *stack_frame,
@@ -337,9 +403,7 @@ static kefir_result_t generate_instr(struct kefir_mem *mem, struct kefir_amd64_x
 #undef DEF_OPCODE3
 
         case KEFIR_ASMCMP_AMD64_OPCODE(virtual_register_link):
-            if (!(instr->args[0].type == KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER &&
-                  instr->args[1].type == KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER &&
-                  instr->args[0].phreg == instr->args[1].phreg)) {
+            if (!same_operands(&instr->args[0], &instr->args[1])) {
                 REQUIRE_OK(build_operand(stack_frame, &instr->args[0], &arg_state[0]));
                 REQUIRE_OK(build_operand(stack_frame, &instr->args[1], &arg_state[1]));
                 if ((arg_state[0].operand->klass == KEFIR_AMD64_XASMGEN_OPERAND_REGISTER &&

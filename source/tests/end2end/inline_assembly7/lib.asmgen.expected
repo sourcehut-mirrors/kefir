@@ -98,9 +98,6 @@ unwrap_s1:
     sub $16, %rsp
 _kefir_func_unwrap_s1_label0:
     movq %rdi, -16(%rbp)
-    leaq -16(%rbp), %rax
-    leaq -16(%rbp), %rcx
-    mov %rcx, %rax
 _kefir_func_unwrap_s1_label1:
     lea -8(%rbp), %rax
     mov %rax, %rdi
