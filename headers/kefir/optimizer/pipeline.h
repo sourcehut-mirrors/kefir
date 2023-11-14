@@ -56,6 +56,7 @@ DECLARE_PASS(OpSimplify);
 DECLARE_PASS(ConstFold);
 DECLARE_PASS(BranchRemoval);
 DECLARE_PASS(Mem2Reg);
+DECLARE_PASS(PhiPull);
 #undef DECLARE_PASS
 #endif
 

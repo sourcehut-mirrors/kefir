@@ -1,0 +1,110 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global somefn
+.global assign_abs
+.global condition1
+.extern somevar
+.extern __kefir_opt_float32_neg
+.extern __kefir_opt_float64_neg
+.extern __kefirrt_opt_float32_to_uint
+.extern __kefirrt_opt_float64_to_uint
+
+.section .text
+somefn:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    stmxcsr -8(%rbp)
+_kefir_func_somefn_label0:
+_kefir_func_somefn_label1:
+    movq _kefir_func_somefn_label5(%rip), %xmm0
+    movq _kefir_func_somefn_label6(%rip), %xmm1
+_kefir_func_somefn_label2:
+    movsx %edi, %rax
+    mov $-1, %rcx
+    mov %rax, %rdx
+    add %rcx, %rdx
+    movsx %edx, %rcx
+    mov $0, %rdx
+    test %rax, %rax
+    sete %dl
+    test %rdx, %rdx
+    jz _kefir_func_somefn_label7
+    movq %xmm1, %xmm2
+    jmp _kefir_func_somefn_label4
+_kefir_func_somefn_label7:
+    movq %xmm0, %xmm3
+    movq %xmm1, %xmm4
+_kefir_func_somefn_label3:
+    addsd %xmm3, %xmm4
+    mov %rcx, %rdi
+    movq %xmm3, %xmm0
+    movq %xmm4, %xmm1
+    jmp _kefir_func_somefn_label2
+_kefir_func_somefn_label4:
+    movq %xmm2, %xmm0
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+    .align 8
+_kefir_func_somefn_label5:
+    .quad 4607182418800017408
+    .align 8
+_kefir_func_somefn_label6:
+    .quad 0
+.section .text
+
+assign_abs:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_assign_abs_label0:
+_kefir_func_assign_abs_label1:
+    mov $0, %rax
+    cmp %rax, %rdi
+    jle _kefir_func_assign_abs_label5
+    mov %rdi, %rax
+    jmp _kefir_func_assign_abs_label3
+_kefir_func_assign_abs_label5:
+_kefir_func_assign_abs_label2:
+    neg %rdi
+    jmp _kefir_func_assign_abs_label4
+_kefir_func_assign_abs_label3:
+    mov %rax, %rdi
+_kefir_func_assign_abs_label4:
+    movq somevar@GOTPCREL(%rip), %rax
+    movq %rdi, (%rax)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+condition1:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_condition1_label0:
+_kefir_func_condition1_label1:
+    movsx %edi, %rax
+    mov $0, %rcx
+    cmp %rcx, %rax
+    jg _kefir_func_condition1_label4
+    jmp _kefir_func_condition1_label3
+_kefir_func_condition1_label4:
+_kefir_func_condition1_label2:
+    movsx %edi, %rax
+    mov $10, %rcx
+    add %rcx, %rax
+    movsx %eax, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_condition1_label3:
+    mov $10, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+
