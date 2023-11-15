@@ -50,6 +50,7 @@ struct kefir_mem kft_mem = {
 
 kefir_result_t kft_run_test_case(const struct kft_test_case *testCase, void *testContext) {
     printf("%s... ", testCase->description);
+    fflush(stdout);
     kefir_result_t status = testCase->run(testCase, testContext);
     if (status == KEFIR_OK) {
         printf("Ok\n");

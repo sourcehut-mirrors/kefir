@@ -217,6 +217,25 @@ static kefir_result_t node_find(struct kefir_hashtree_node *root, const struct k
     }
 }
 
+static kefir_result_t node_find_lower_bound(struct kefir_hashtree_node *root, const struct kefir_hashtree *tree,
+                                            kefir_hashtree_hash_t hash, kefir_hashtree_key_t key,
+                                            struct kefir_hashtree_node **result) {
+    if (root == NULL) {
+        return *result != NULL ? KEFIR_OK : KEFIR_NOT_FOUND;
+    }
+
+    assert(NODE_BF(root) >= -1 && NODE_BF(root) <= 1);
+    if (hash < root->hash || (hash == root->hash && tree->ops->compare(key, root->key, tree->ops->data) < 0)) {
+        return node_find_lower_bound(root->left_child, tree, hash, key, result);
+    } else if (hash > root->hash || (hash == root->hash && tree->ops->compare(key, root->key, tree->ops->data) > 0)) {
+        *result = root;
+        return node_find_lower_bound(root->right_child, tree, hash, key, result);
+    } else {
+        *result = root;
+        return KEFIR_OK;
+    }
+}
+
 static struct kefir_hashtree_node *node_minimum(struct kefir_hashtree_node *root) {
     if (root == NULL || root->left_child == NULL) {
         return root;
@@ -278,6 +297,19 @@ kefir_result_t kefir_hashtree_at(const struct kefir_hashtree *tree, kefir_hashtr
     kefir_hashtree_hash_t hash = tree->ops->hash(key, tree->ops->data);
     if (node_find(tree->root, tree, hash, key, result) != KEFIR_OK) {
         return KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Could not find tree node with specified key");
+    }
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_hashtree_lower_bound(const struct kefir_hashtree *tree, kefir_hashtree_key_t key,
+                                          struct kefir_hashtree_node **result) {
+    REQUIRE(tree != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hash tree pointer"));
+    REQUIRE(result != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid result pointer"));
+    assert(NODE_BF(tree->root) >= -1 && NODE_BF(tree->root) <= 1);
+    *result = NULL;
+    kefir_hashtree_hash_t hash = tree->ops->hash(key, tree->ops->data);
+    if (node_find_lower_bound(tree->root, tree, hash, key, result) != KEFIR_OK) {
+        return KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Could not find the lower bound tree node for provided key");
     }
     return KEFIR_OK;
 }
@@ -383,11 +415,11 @@ kefir_result_t kefir_hashtree_clean(struct kefir_mem *mem, struct kefir_hashtree
     return KEFIR_OK;
 }
 
-static const struct kefir_hashtree_node *min_node(const struct kefir_hashtree_node *node) {
+static struct kefir_hashtree_node *min_node(struct kefir_hashtree_node *node) {
     if (node == NULL) {
         return NULL;
     }
-    const struct kefir_hashtree_node *child = min_node(node->left_child);
+    struct kefir_hashtree_node *child = min_node(node->left_child);
     if (child != NULL) {
         return child;
     } else {
@@ -395,35 +427,40 @@ static const struct kefir_hashtree_node *min_node(const struct kefir_hashtree_no
     }
 }
 
-const struct kefir_hashtree_node *kefir_hashtree_iter(const struct kefir_hashtree *tree,
-                                                      struct kefir_hashtree_node_iterator *iter) {
+struct kefir_hashtree_node *kefir_hashtree_next_node(const struct kefir_hashtree *tree,
+                                                     struct kefir_hashtree_node *node) {
+    REQUIRE(tree != NULL, NULL);
+    REQUIRE(node != NULL, NULL);
+
+    if (node->right_child != NULL) {
+        return min_node(node->right_child);
+    }
+
+    struct kefir_hashtree_node *next_node = node;
+    while (next_node->parent != NULL) {
+        next_node = next_node->parent;
+        if (next_node->hash > node->hash ||
+            (next_node->hash == node->hash && tree->ops->compare(next_node->key, node->key, tree->ops->data) > 0)) {
+            return next_node;
+        }
+    }
+
+    return NULL;
+}
+
+struct kefir_hashtree_node *kefir_hashtree_iter(const struct kefir_hashtree *tree,
+                                                struct kefir_hashtree_node_iterator *iter) {
     REQUIRE(tree != NULL, NULL);
     REQUIRE(iter != NULL, NULL);
     iter->node = min_node(tree->root);
-    iter->last_hash = 0;
-    if (iter->node != NULL) {
-        iter->last_hash = iter->node->hash;
-    }
+    iter->tree = tree;
     return iter->node;
 }
 
-const struct kefir_hashtree_node *kefir_hashtree_next(struct kefir_hashtree_node_iterator *iter) {
+struct kefir_hashtree_node *kefir_hashtree_next(struct kefir_hashtree_node_iterator *iter) {
     REQUIRE(iter != NULL, NULL);
     REQUIRE(iter->node != NULL, NULL);
-    if (iter->node->right_child != NULL) {
-        iter->node = min_node(iter->node->right_child);
-        iter->last_hash = iter->node->hash;
-        return iter->node;
-    }
-    while (iter->node->parent != NULL) {
-        iter->node = iter->node->parent;
-        if (iter->node->hash > iter->last_hash) {
-            iter->last_hash = iter->node->hash;
-            return iter->node;
-        }
-    }
-    iter->node = NULL;
-    iter->last_hash = 0;
+    iter->node = kefir_hashtree_next_node(iter->tree, iter->node);
     return iter->node;
 }
 
