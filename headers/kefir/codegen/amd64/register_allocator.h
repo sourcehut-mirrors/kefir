@@ -23,6 +23,7 @@
 
 #include "kefir/codegen/amd64/asmcmp.h"
 #include "kefir/codegen/amd64/stack_frame.h"
+#include "kefir/codegen/asmcmp/liveness.h"
 #include "kefir/core/graph.h"
 #include "kefir/core/bitset.h"
 
@@ -43,16 +44,13 @@ typedef struct kefir_codegen_amd64_register_allocation {
             kefir_size_t length;
         } spill_area;
     };
-    struct {
-        kefir_size_t begin;
-        kefir_size_t end;
-    } lifetime;
 } kefir_codegen_amd64_register_allocation_t;
 
 typedef struct kefir_codegen_amd64_register_allocator {
     struct kefir_codegen_amd64_register_allocation *allocations;
     kefir_size_t num_of_vregs;
     struct kefir_hashtreeset used_registers;
+    struct kefir_asmcmp_liveness_map liveness_map;
     struct {
         struct kefir_graph liveness_graph;
         struct kefir_hashtree instruction_linear_indices;

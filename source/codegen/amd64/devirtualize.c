@@ -56,7 +56,10 @@ static kefir_result_t remove_dead_virtual_regs(struct kefir_mem *mem, struct dev
         const struct kefir_codegen_amd64_register_allocation *reg_alloc;
         REQUIRE_OK(kefir_codegen_amd64_register_allocation_of(state->register_allocator, vreg_idx, &reg_alloc));
 
-        if (reg_alloc->lifetime.end <= linear_position) {
+        kefir_asmcmp_linear_reference_index_t active_lifetime_end;
+        REQUIRE_OK(kefir_asmcmp_get_active_lifetime_range_for(&state->register_allocator->liveness_map, vreg_idx,
+                                                              linear_position, NULL, &active_lifetime_end));
+        if (active_lifetime_end == KEFIR_ASMCMP_INDEX_NONE || active_lifetime_end <= linear_position) {
             REQUIRE_OK(kefir_hashtreeset_delete(mem, &state->alive.virtual_regs, iter.entry));
             res = kefir_hashtreeset_iter(&state->alive.virtual_regs, &iter);
         } else {
@@ -73,6 +76,7 @@ static kefir_result_t update_live_virtual_regs(struct kefir_mem *mem, struct dev
                                                kefir_size_t linear_position, const struct kefir_asmcmp_value *value) {
     const struct kefir_codegen_amd64_register_allocation *reg_alloc;
 
+    kefir_asmcmp_linear_reference_index_t active_lifetime_begin, active_lifetime_end;
     switch (value->type) {
         case KEFIR_ASMCMP_VALUE_TYPE_NONE:
         case KEFIR_ASMCMP_VALUE_TYPE_INTEGER:
@@ -88,24 +92,28 @@ static kefir_result_t update_live_virtual_regs(struct kefir_mem *mem, struct dev
         case KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER:
             REQUIRE_OK(
                 kefir_codegen_amd64_register_allocation_of(state->register_allocator, value->vreg.index, &reg_alloc));
-            REQUIRE(reg_alloc->lifetime.begin <= linear_position && reg_alloc->lifetime.end >= linear_position,
-                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected amd64 virtual register lifetime"));
-            REQUIRE_OK(
-                kefir_hashtreeset_add(mem, &state->alive.virtual_regs, (kefir_hashtreeset_entry_t) value->vreg.index));
-            switch (reg_alloc->type) {
-                case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_UNALLOCATED:
-                    return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unallocated amd64 virtual register allocation");
+            REQUIRE_OK(kefir_asmcmp_get_active_lifetime_range_for(&state->register_allocator->liveness_map,
+                                                                  value->vreg.index, linear_position,
+                                                                  &active_lifetime_begin, &active_lifetime_end));
+            if (active_lifetime_begin != KEFIR_ASMCMP_INDEX_NONE && active_lifetime_begin <= linear_position &&
+                active_lifetime_end >= linear_position) {
+                REQUIRE_OK(kefir_hashtreeset_add(mem, &state->alive.virtual_regs,
+                                                 (kefir_hashtreeset_entry_t) value->vreg.index));
+                switch (reg_alloc->type) {
+                    case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_UNALLOCATED:
+                        return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unallocated amd64 virtual register allocation");
 
-                case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_REGISTER:
-                    REQUIRE_OK(kefir_hashtreeset_add(mem, &state->current_instr_physical_regs,
-                                                     (kefir_hashtreeset_entry_t) reg_alloc->direct_reg));
-                    break;
+                    case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_REGISTER:
+                        REQUIRE_OK(kefir_hashtreeset_add(mem, &state->current_instr_physical_regs,
+                                                         (kefir_hashtreeset_entry_t) reg_alloc->direct_reg));
+                        break;
 
-                case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_DIRECT:
-                case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_INDIRECT:
-                case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_MEMORY_POINTER:
-                    // Intentionally left blank
-                    break;
+                    case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_DIRECT:
+                    case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_INDIRECT:
+                    case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_MEMORY_POINTER:
+                        // Intentionally left blank
+                        break;
+                }
             }
             break;
 
@@ -114,25 +122,29 @@ static kefir_result_t update_live_virtual_regs(struct kefir_mem *mem, struct dev
                 case KEFIR_ASMCMP_INDIRECT_VIRTUAL_BASIS:
                     REQUIRE_OK(kefir_codegen_amd64_register_allocation_of(state->register_allocator,
                                                                           value->indirect.base.vreg, &reg_alloc));
-                    REQUIRE(reg_alloc->lifetime.begin <= linear_position && reg_alloc->lifetime.end >= linear_position,
-                            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected amd64 virtual register lifetime"));
-                    REQUIRE_OK(kefir_hashtreeset_add(mem, &state->alive.virtual_regs,
-                                                     (kefir_hashtreeset_entry_t) value->indirect.base.vreg));
-                    switch (reg_alloc->type) {
-                        case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_UNALLOCATED:
-                            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
-                                                   "Unallocated amd64 virtual register allocation");
+                    REQUIRE_OK(kefir_asmcmp_get_active_lifetime_range_for(
+                        &state->register_allocator->liveness_map, value->indirect.base.vreg, linear_position,
+                        &active_lifetime_begin, &active_lifetime_end));
+                    if (active_lifetime_begin != KEFIR_ASMCMP_INDEX_NONE && active_lifetime_begin <= linear_position &&
+                        active_lifetime_end >= linear_position) {
+                        REQUIRE_OK(kefir_hashtreeset_add(mem, &state->alive.virtual_regs,
+                                                         (kefir_hashtreeset_entry_t) value->indirect.base.vreg));
+                        switch (reg_alloc->type) {
+                            case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_UNALLOCATED:
+                                return KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
+                                                       "Unallocated amd64 virtual register allocation");
 
-                        case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_REGISTER:
-                            REQUIRE_OK(kefir_hashtreeset_add(mem, &state->current_instr_physical_regs,
-                                                             (kefir_hashtreeset_entry_t) reg_alloc->direct_reg));
-                            break;
+                            case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_REGISTER:
+                                REQUIRE_OK(kefir_hashtreeset_add(mem, &state->current_instr_physical_regs,
+                                                                 (kefir_hashtreeset_entry_t) reg_alloc->direct_reg));
+                                break;
 
-                        case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_DIRECT:
-                        case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_INDIRECT:
-                        case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_MEMORY_POINTER:
-                            // Intentionally left blank
-                            break;
+                            case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_DIRECT:
+                            case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_INDIRECT:
+                            case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_MEMORY_POINTER:
+                                // Intentionally left blank
+                                break;
+                        }
                     }
                     break;
 
@@ -787,11 +799,17 @@ static kefir_result_t activate_stash(struct kefir_mem *mem, struct devirtualize_
             continue;
         }
         REQUIRE_OK(res);
+        kefir_asmcmp_linear_reference_index_t active_lifetime_begin, active_lifetime_end;
+        REQUIRE_OK(kefir_asmcmp_get_active_lifetime_range_for(&state->register_allocator->liveness_map, vreg_idx,
+                                                              liveness_idx, &active_lifetime_begin,
+                                                              &active_lifetime_end));
         if (((liveness_idx != KEFIR_ASMCMP_INDEX_NONE &&
-              !(reg_alloc->lifetime.begin <= liveness_idx && reg_alloc->lifetime.end > liveness_idx))) ||
+              !(active_lifetime_begin != KEFIR_ASMCMP_INDEX_NONE && active_lifetime_begin <= liveness_idx &&
+                active_lifetime_end > liveness_idx))) ||
             !contains_phreg) {
             continue;
         }
+
         REQUIRE(spill_area_slot < stash_alloc->spill_area.length,
                 KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Stash spill area slot is out of backing storage space"));
 

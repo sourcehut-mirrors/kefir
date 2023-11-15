@@ -58,6 +58,7 @@ kefir_result_t kefir_codegen_amd64_register_allocator_init(struct kefir_codegen_
     REQUIRE_OK(kefir_hashtreeset_init(&allocator->internal.conflicting_requirements, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtreeset_init(&allocator->internal.alive_virtual_registers, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_bitset_init(&allocator->internal.spill_area));
+    REQUIRE_OK(kefir_asmcmp_liveness_map_init(&allocator->liveness_map));
     allocator->allocations = NULL;
     allocator->num_of_vregs = 0;
     allocator->internal.gp_register_allocation_order = NULL;
@@ -72,6 +73,7 @@ kefir_result_t kefir_codegen_amd64_register_allocator_free(struct kefir_mem *mem
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(allocator != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 register allocator"));
 
+    REQUIRE_OK(kefir_asmcmp_liveness_map_free(mem, &allocator->liveness_map));
     REQUIRE_OK(kefir_bitset_free(mem, &allocator->internal.spill_area));
     REQUIRE_OK(kefir_hashtreeset_free(mem, &allocator->internal.alive_virtual_registers));
     REQUIRE_OK(kefir_hashtreeset_free(mem, &allocator->internal.conflicting_requirements));
@@ -96,19 +98,7 @@ static kefir_result_t update_virtual_register_lifetime(struct kefir_asmcmp_amd64
                                                        const struct kefir_asmcmp_value *value,
                                                        kefir_size_t lifetime_index) {
     kefir_asmcmp_virtual_register_index_t vreg;
-    struct kefir_codegen_amd64_register_allocation *alloc;
 
-#define UPDATE_LIFETIME(_vreg)                                                  \
-    do {                                                                        \
-        alloc = &allocator->allocations[(_vreg)];                               \
-        if (alloc->lifetime.begin == KEFIR_ASMCMP_INDEX_NONE) {                 \
-            alloc->lifetime.begin = lifetime_index;                             \
-            alloc->lifetime.end = lifetime_index;                               \
-        } else {                                                                \
-            alloc->lifetime.begin = MIN(alloc->lifetime.begin, lifetime_index); \
-            alloc->lifetime.end = MAX(alloc->lifetime.end, lifetime_index);     \
-        }                                                                       \
-    } while (false)
     switch (value->type) {
         case KEFIR_ASMCMP_VALUE_TYPE_NONE:
         case KEFIR_ASMCMP_VALUE_TYPE_INTEGER:
@@ -122,13 +112,15 @@ static kefir_result_t update_virtual_register_lifetime(struct kefir_asmcmp_amd64
             break;
 
         case KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER:
-            UPDATE_LIFETIME(value->vreg.index);
+            REQUIRE_OK(
+                kefir_asmcmp_liveness_map_mark_activity(&allocator->liveness_map, value->vreg.index, lifetime_index));
             break;
 
         case KEFIR_ASMCMP_VALUE_TYPE_INDIRECT:
             switch (value->indirect.type) {
                 case KEFIR_ASMCMP_INDIRECT_VIRTUAL_BASIS:
-                    UPDATE_LIFETIME(value->indirect.base.vreg);
+                    REQUIRE_OK(kefir_asmcmp_liveness_map_mark_activity(&allocator->liveness_map,
+                                                                       value->indirect.base.vreg, lifetime_index));
                     break;
 
                 case KEFIR_ASMCMP_INDIRECT_LABEL_BASIS:
@@ -144,10 +136,9 @@ static kefir_result_t update_virtual_register_lifetime(struct kefir_asmcmp_amd64
 
         case KEFIR_ASMCMP_VALUE_TYPE_STASH_INDEX:
             REQUIRE_OK(kefir_asmcmp_register_stash_vreg(&target->context, value->stash_idx, &vreg));
-            UPDATE_LIFETIME(vreg);
+            REQUIRE_OK(kefir_asmcmp_liveness_map_mark_activity(&allocator->liveness_map, vreg, lifetime_index));
             break;
     }
-#undef UPDATE_LIFETIME
     return KEFIR_OK;
 }
 
@@ -175,12 +166,15 @@ static kefir_result_t build_virtual_register_liveness_graph(struct kefir_mem *me
                                                             kefir_size_t lifetime_index) {
 #define UPDATE_GRAPH(_vreg)                                                                                            \
     do {                                                                                                               \
-        struct kefir_codegen_amd64_register_allocation *alloc = &allocator->allocations[(_vreg)];                      \
-        if (alloc->lifetime.begin == lifetime_index &&                                                                 \
+        kefir_asmcmp_linear_reference_index_t active_lifetime_begin;                                                   \
+        REQUIRE_OK(kefir_asmcmp_get_active_lifetime_range_for(&allocator->liveness_map, (_vreg), lifetime_index,       \
+                                                              &active_lifetime_begin, NULL));                          \
+        if (active_lifetime_begin == lifetime_index &&                                                                 \
             !kefir_hashtreeset_has(&allocator->internal.alive_virtual_registers,                                       \
                                    (kefir_hashtreeset_entry_t) (_vreg))) {                                             \
             const struct kefir_asmcmp_amd64_register_preallocation *preallocation;                                     \
             REQUIRE_OK(kefir_asmcmp_amd64_get_register_preallocation(target, (_vreg), &preallocation));                \
+                                                                                                                       \
             if (preallocation != NULL) {                                                                               \
                 struct kefir_hashtreeset_iterator iter;                                                                \
                 kefir_result_t res;                                                                                    \
@@ -195,12 +189,19 @@ static kefir_result_t build_virtual_register_liveness_graph(struct kefir_mem *me
                     REQUIRE_OK(res);                                                                                   \
                 }                                                                                                      \
             }                                                                                                          \
+                                                                                                                       \
             REQUIRE_OK(kefir_hashtreeset_add(mem, &allocator->internal.alive_virtual_registers,                        \
                                              (kefir_hashtreeset_entry_t) (_vreg)));                                    \
+        }                                                                                                              \
+        struct kefir_graph_node *node;                                                                                 \
+        kefir_result_t res = kefir_graph_node(&allocator->internal.liveness_graph, (_vreg), &node);                    \
+        if (res == KEFIR_NOT_FOUND) {                                                                                  \
             REQUIRE_OK(kefir_graph_new_node(mem, &allocator->internal.liveness_graph, (kefir_graph_node_id_t) (_vreg), \
                                             (kefir_graph_node_value_t) 0));                                            \
+        } else {                                                                                                       \
+            REQUIRE_OK(res);                                                                                           \
         }                                                                                                              \
-    } while (false)
+    } while (false);
 
     switch (value->type) {
         case KEFIR_ASMCMP_VALUE_TYPE_NONE:
@@ -254,7 +255,10 @@ static kefir_result_t deactivate_dead_vregs(struct kefir_mem *mem,
         ASSIGN_DECL_CAST(kefir_asmcmp_virtual_register_index_t, vreg, (kefir_uptr_t) iter.entry);
 
         struct kefir_codegen_amd64_register_allocation *vreg_allocation = &allocator->allocations[vreg];
-        if (vreg_allocation->lifetime.end <= linear_index) {
+        kefir_asmcmp_linear_reference_index_t active_lifetime_end;
+        REQUIRE_OK(kefir_asmcmp_get_active_lifetime_range_for(&allocator->liveness_map, vreg, linear_index, NULL,
+                                                              &active_lifetime_end));
+        if (active_lifetime_end == KEFIR_ASMCMP_INDEX_NONE || active_lifetime_end <= linear_index) {
             REQUIRE_OK(kefir_hashtreeset_delete(mem, &allocator->internal.alive_virtual_registers,
                                                 (kefir_hashtreeset_entry_t) vreg));
 
@@ -707,8 +711,12 @@ static kefir_result_t update_stash(struct kefir_asmcmp_amd64 *target,
         }
         REQUIRE_OK(res);
 
+        kefir_asmcmp_linear_reference_index_t active_lifetime_begin, active_lifetime_end;
+        REQUIRE_OK(kefir_asmcmp_get_active_lifetime_range_for(&allocator->liveness_map, vreg, liveness_idx,
+                                                              &active_lifetime_begin, &active_lifetime_end));
         if (((liveness_idx != KEFIR_ASMCMP_INDEX_NONE &&
-              !(reg_alloc->lifetime.begin <= liveness_idx && reg_alloc->lifetime.end > liveness_idx))) ||
+              !(active_lifetime_begin != KEFIR_ASMCMP_INDEX_NONE && active_lifetime_begin <= liveness_idx &&
+                active_lifetime_end > liveness_idx))) ||
             !contains_phreg) {
             continue;
         }
@@ -816,13 +824,12 @@ kefir_result_t kefir_codegen_amd64_register_allocator_run(struct kefir_mem *mem,
 
     kefir_size_t num_of_vregs;
     REQUIRE_OK(kefir_asmcmp_number_of_virtual_registers(&target->context, &num_of_vregs));
+    REQUIRE_OK(kefir_asmcmp_liveness_map_resize(mem, &allocator->liveness_map, num_of_vregs));
     allocator->allocations = KEFIR_MALLOC(mem, sizeof(struct kefir_codegen_amd64_register_allocation) * num_of_vregs);
     REQUIRE(allocator->allocations != NULL,
             KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate amd64 register allocations"));
     for (kefir_size_t i = 0; i < num_of_vregs; i++) {
         allocator->allocations[i].type = KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_UNALLOCATED;
-        allocator->allocations[i].lifetime.begin = KEFIR_ASMCMP_INDEX_NONE;
-        allocator->allocations[i].lifetime.end = KEFIR_ASMCMP_INDEX_NONE;
     }
     allocator->num_of_vregs = num_of_vregs;
 

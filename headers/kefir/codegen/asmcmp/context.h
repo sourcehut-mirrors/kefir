@@ -24,20 +24,10 @@
 #include "kefir/core/mem.h"
 #include "kefir/core/basic-types.h"
 #include "kefir/core/string_pool.h"
-#include "kefir/codegen/asmcmp/base.h"
+#include "kefir/codegen/asmcmp/type_defs.h"
+#include "kefir/codegen/asmcmp/liveness.h"
 #include "kefir/core/hashtreeset.h"
 #include "kefir/core/list.h"
-
-typedef kefir_size_t kefir_asmcmp_virtual_register_index_t;
-typedef kefir_size_t kefir_asmcmp_physical_register_index_t;
-typedef kefir_size_t kefir_asmcmp_instruction_opcode_t;
-typedef kefir_size_t kefir_asmcmp_instruction_index_t;
-typedef kefir_size_t kefir_asmcmp_label_index_t;
-typedef kefir_size_t kefir_asmcmp_stash_index_t;
-typedef kefir_size_t kefir_asmcmp_inline_assembly_index_t;
-
-#define KEFIR_ASMCMP_INSTRUCTION_NUM_OF_OPERANDS 3
-#define KEFIR_ASMCMP_INDEX_NONE (~(kefir_asmcmp_instruction_index_t) 0ull)
 
 typedef enum kefir_asmcmp_value_type {
     KEFIR_ASMCMP_VALUE_TYPE_NONE = 0,
@@ -300,6 +290,8 @@ typedef struct kefir_asmcmp_context {
     struct kefir_asmcmp_virtual_register *virtual_registers;
     kefir_size_t virtual_register_length;
     kefir_size_t virtual_register_capacity;
+
+    struct kefir_asmcmp_liveness_map vreg_liveness;
 
     struct kefir_hashtree stashes;
     kefir_asmcmp_stash_index_t next_stash_idx;
