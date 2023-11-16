@@ -291,7 +291,7 @@ typedef struct kefir_asmcmp_context {
     kefir_size_t virtual_register_length;
     kefir_size_t virtual_register_capacity;
 
-    struct kefir_asmcmp_liveness_map vreg_liveness;
+    struct kefir_asmcmp_lifetime_map vreg_liveness;
 
     struct kefir_hashtree stashes;
     kefir_asmcmp_stash_index_t next_stash_idx;
@@ -345,8 +345,7 @@ kefir_result_t kefir_asmcmp_context_bind_label_after_tail(struct kefir_mem *, st
 kefir_result_t kefir_asmcmp_context_unbind_label(struct kefir_mem *, struct kefir_asmcmp_context *,
                                                  kefir_asmcmp_label_index_t);
 kefir_result_t kefir_asmcmp_context_move_labels(struct kefir_mem *, struct kefir_asmcmp_context *,
-                                                kefir_asmcmp_virtual_register_index_t,
-                                                kefir_asmcmp_virtual_register_index_t);
+                                                kefir_asmcmp_instruction_index_t, kefir_asmcmp_instruction_index_t);
 
 kefir_result_t kefir_asmcmp_number_of_virtual_registers(const struct kefir_asmcmp_context *, kefir_size_t *);
 kefir_result_t kefir_asmcmp_virtual_register_get(const struct kefir_asmcmp_context *,

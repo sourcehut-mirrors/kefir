@@ -23,7 +23,7 @@
 #include "kefir/core/util.h"
 #include <string.h>
 
-kefir_result_t kefir_asmcmp_liveness_map_init(struct kefir_asmcmp_liveness_map *map) {
+kefir_result_t kefir_asmcmp_lifetime_map_init(struct kefir_asmcmp_lifetime_map *map) {
     REQUIRE(map != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to asmcmp liveness map"));
 
     map->length = 0;
@@ -32,7 +32,7 @@ kefir_result_t kefir_asmcmp_liveness_map_init(struct kefir_asmcmp_liveness_map *
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_asmcmp_liveness_map_free(struct kefir_mem *mem, struct kefir_asmcmp_liveness_map *map) {
+kefir_result_t kefir_asmcmp_lifetime_map_free(struct kefir_mem *mem, struct kefir_asmcmp_lifetime_map *map) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(map != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmcmp liveness map"));
 
@@ -40,14 +40,14 @@ kefir_result_t kefir_asmcmp_liveness_map_free(struct kefir_mem *mem, struct kefi
         for (kefir_size_t i = 0; i < map->length; i++) {
             REQUIRE_OK(kefir_hashtree_free(mem, &map->map[i].lifetime_ranges));
         }
-        memset(map->map, 0, sizeof(struct kefir_asmcmp_virtual_register_liveness_map) * map->length);
+        memset(map->map, 0, sizeof(struct kefir_asmcmp_virtual_register_lifetime_map) * map->length);
         KEFIR_FREE(mem, map->map);
     }
-    memset(map, 0, sizeof(struct kefir_asmcmp_liveness_map));
+    memset(map, 0, sizeof(struct kefir_asmcmp_lifetime_map));
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_asmcmp_liveness_map_resize(struct kefir_mem *mem, struct kefir_asmcmp_liveness_map *map,
+kefir_result_t kefir_asmcmp_lifetime_map_resize(struct kefir_mem *mem, struct kefir_asmcmp_lifetime_map *map,
                                                 kefir_size_t new_length) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(map != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmcmp liveness map"));
@@ -63,13 +63,13 @@ kefir_result_t kefir_asmcmp_liveness_map_resize(struct kefir_mem *mem, struct ke
 
     if (new_length > map->capacity) {
         kefir_size_t new_capacity = new_length + 128;
-        struct kefir_asmcmp_virtual_register_liveness_map *new_map =
-            KEFIR_MALLOC(mem, sizeof(struct kefir_asmcmp_virtual_register_liveness_map) * new_capacity);
+        struct kefir_asmcmp_virtual_register_lifetime_map *new_map =
+            KEFIR_MALLOC(mem, sizeof(struct kefir_asmcmp_virtual_register_lifetime_map) * new_capacity);
         REQUIRE(new_map != NULL,
                 KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate virtual register liveness map"));
         if (map->map != NULL) {
-            memcpy(new_map, map->map, sizeof(struct kefir_asmcmp_virtual_register_liveness_map) * map->length);
-            memset(map->map, 0, sizeof(struct kefir_asmcmp_virtual_register_liveness_map) * map->length);
+            memcpy(new_map, map->map, sizeof(struct kefir_asmcmp_virtual_register_lifetime_map) * map->length);
+            memset(map->map, 0, sizeof(struct kefir_asmcmp_virtual_register_lifetime_map) * map->length);
             KEFIR_FREE(mem, map->map);
         }
         map->map = new_map;
@@ -78,50 +78,50 @@ kefir_result_t kefir_asmcmp_liveness_map_resize(struct kefir_mem *mem, struct ke
 
     for (kefir_size_t i = map->length; i < new_length; i++) {
         REQUIRE_OK(kefir_hashtree_init(&map->map[i].lifetime_ranges, &kefir_hashtree_uint_ops));
-        map->map[i].global_reference_range.begin = KEFIR_ASMCMP_INDEX_NONE;
-        map->map[i].global_reference_range.end = KEFIR_ASMCMP_INDEX_NONE;
+        map->map[i].global_activity_range.begin = KEFIR_ASMCMP_INDEX_NONE;
+        map->map[i].global_activity_range.end = KEFIR_ASMCMP_INDEX_NONE;
     }
     map->length = new_length;
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_asmcmp_liveness_map_mark_activity(struct kefir_asmcmp_liveness_map *map,
+kefir_result_t kefir_asmcmp_lifetime_map_mark_activity(struct kefir_asmcmp_lifetime_map *map,
                                                        kefir_asmcmp_virtual_register_index_t vreg,
-                                                       kefir_asmcmp_linear_reference_index_t index) {
+                                                       kefir_asmcmp_lifetime_index_t index) {
     REQUIRE(map != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmcmp liveness map"));
     REQUIRE(vreg < map->length,
             KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Provided virtual register is out of liveness map bounds"));
 
-    struct kefir_asmcmp_virtual_register_liveness_map *const reg_map = &map->map[vreg];
+    struct kefir_asmcmp_virtual_register_lifetime_map *const reg_map = &map->map[vreg];
 
-    if (reg_map->global_reference_range.begin != KEFIR_ASMCMP_INDEX_NONE) {
-        reg_map->global_reference_range.begin = MIN(reg_map->global_reference_range.begin, index);
-        reg_map->global_reference_range.end = MAX(reg_map->global_reference_range.end, index);
+    if (reg_map->global_activity_range.begin != KEFIR_ASMCMP_INDEX_NONE) {
+        reg_map->global_activity_range.begin = MIN(reg_map->global_activity_range.begin, index);
+        reg_map->global_activity_range.end = MAX(reg_map->global_activity_range.end, index);
     } else {
-        reg_map->global_reference_range.begin = index;
-        reg_map->global_reference_range.end = index;
+        reg_map->global_activity_range.begin = index;
+        reg_map->global_activity_range.end = index;
     }
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_asmcmp_liveness_map_add_lifetime_range(struct kefir_mem *mem,
-                                                            struct kefir_asmcmp_liveness_map *map,
+kefir_result_t kefir_asmcmp_lifetime_map_add_lifetime_range(struct kefir_mem *mem,
+                                                            struct kefir_asmcmp_lifetime_map *map,
                                                             kefir_asmcmp_virtual_register_index_t vreg,
-                                                            kefir_asmcmp_linear_reference_index_t begin,
-                                                            kefir_asmcmp_linear_reference_index_t end) {
+                                                            kefir_asmcmp_lifetime_index_t begin,
+                                                            kefir_asmcmp_lifetime_index_t end) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(map != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmcmp liveness map"));
     REQUIRE(vreg < map->length,
             KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Provided virtual register is out of liveness map bounds"));
 
-    struct kefir_asmcmp_virtual_register_liveness_map *const reg_map = &map->map[vreg];
+    struct kefir_asmcmp_virtual_register_lifetime_map *const reg_map = &map->map[vreg];
 
     struct kefir_hashtree_node *node = NULL;
     kefir_result_t res = kefir_hashtree_lower_bound(&reg_map->lifetime_ranges, (kefir_hashtree_key_t) begin, &node);
     if (res != KEFIR_NOT_FOUND) {
         REQUIRE_OK(res);
-        ASSIGN_DECL_CAST(kefir_asmcmp_linear_reference_index_t, prev_begin, node->key);
-        ASSIGN_DECL_CAST(kefir_asmcmp_linear_reference_index_t, prev_end, node->value);
+        ASSIGN_DECL_CAST(kefir_asmcmp_lifetime_index_t, prev_begin, node->key);
+        ASSIGN_DECL_CAST(kefir_asmcmp_lifetime_index_t, prev_end, node->value);
         REQUIRE(prev_begin <= begin,
                 KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected lower bound node to be a predecessor of provided key"));
 
@@ -151,21 +151,21 @@ kefir_result_t kefir_asmcmp_liveness_map_add_lifetime_range(struct kefir_mem *me
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_asmcmp_get_active_lifetime_range_for(const struct kefir_asmcmp_liveness_map *map,
+kefir_result_t kefir_asmcmp_get_active_lifetime_range_for(const struct kefir_asmcmp_lifetime_map *map,
                                                           kefir_asmcmp_virtual_register_index_t vreg,
-                                                          kefir_asmcmp_linear_reference_index_t linear_position,
-                                                          kefir_asmcmp_linear_reference_index_t *begin_ptr,
-                                                          kefir_asmcmp_linear_reference_index_t *end_ptr) {
+                                                          kefir_asmcmp_lifetime_index_t linear_position,
+                                                          kefir_asmcmp_lifetime_index_t *begin_ptr,
+                                                          kefir_asmcmp_lifetime_index_t *end_ptr) {
     REQUIRE(map != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmcmp liveness map"));
     REQUIRE(vreg < map->length,
             KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Provided virtual register is out of liveness map bounds"));
     REQUIRE(begin_ptr != NULL || end_ptr,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to range ends"));
 
-    const struct kefir_asmcmp_virtual_register_liveness_map *const reg_map = &map->map[vreg];
+    const struct kefir_asmcmp_virtual_register_lifetime_map *const reg_map = &map->map[vreg];
 
-    kefir_asmcmp_linear_reference_index_t begin = reg_map->global_reference_range.begin;
-    kefir_asmcmp_linear_reference_index_t end = reg_map->global_reference_range.end;
+    kefir_asmcmp_lifetime_index_t begin = reg_map->global_activity_range.begin;
+    kefir_asmcmp_lifetime_index_t end = reg_map->global_activity_range.end;
 
     if (!kefir_hashtree_empty(&reg_map->lifetime_ranges)) {
         struct kefir_hashtree_node *node = NULL;
@@ -173,7 +173,7 @@ kefir_result_t kefir_asmcmp_get_active_lifetime_range_for(const struct kefir_asm
             kefir_hashtree_lower_bound(&reg_map->lifetime_ranges, (kefir_hashtree_key_t) linear_position, &node);
         if (res != KEFIR_NOT_FOUND) {
             REQUIRE_OK(res);
-            if (begin >= node->key && begin <= node->value) {
+            if (linear_position >= node->key && linear_position <= node->value) {
                 begin = MAX(begin, node->key);
                 end = MIN(end, node->value);
             } else {

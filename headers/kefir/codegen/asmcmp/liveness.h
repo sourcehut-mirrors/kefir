@@ -24,37 +24,37 @@
 #include "kefir/codegen/asmcmp/type_defs.h"
 #include "kefir/core/hashtree.h"
 
-typedef struct kefir_asmcmp_virtual_register_liveness_map {
+typedef struct kefir_asmcmp_virtual_register_lifetime_map {
     struct kefir_hashtree lifetime_ranges;
 
     struct {
-        kefir_asmcmp_linear_reference_index_t begin;
-        kefir_asmcmp_linear_reference_index_t end;
-    } global_reference_range;
-} kefir_asmcmp_virtual_register_liveness_map_t;
+        kefir_asmcmp_lifetime_index_t begin;
+        kefir_asmcmp_lifetime_index_t end;
+    } global_activity_range;
+} kefir_asmcmp_virtual_register_lifetime_map_t;
 
-typedef struct kefir_asmcmp_liveness_map {
-    struct kefir_asmcmp_virtual_register_liveness_map *map;
+typedef struct kefir_asmcmp_lifetime_map {
+    struct kefir_asmcmp_virtual_register_lifetime_map *map;
     kefir_size_t length;
     kefir_size_t capacity;
-} kefir_asmcmp_liveness_map_t;
+} kefir_asmcmp_lifetime_map_t;
 
-kefir_result_t kefir_asmcmp_liveness_map_init(struct kefir_asmcmp_liveness_map *);
-kefir_result_t kefir_asmcmp_liveness_map_free(struct kefir_mem *, struct kefir_asmcmp_liveness_map *);
+kefir_result_t kefir_asmcmp_lifetime_map_init(struct kefir_asmcmp_lifetime_map *);
+kefir_result_t kefir_asmcmp_lifetime_map_free(struct kefir_mem *, struct kefir_asmcmp_lifetime_map *);
 
-kefir_result_t kefir_asmcmp_liveness_map_resize(struct kefir_mem *, struct kefir_asmcmp_liveness_map *, kefir_size_t);
-kefir_result_t kefir_asmcmp_liveness_map_mark_activity(struct kefir_asmcmp_liveness_map *,
+kefir_result_t kefir_asmcmp_lifetime_map_resize(struct kefir_mem *, struct kefir_asmcmp_lifetime_map *, kefir_size_t);
+kefir_result_t kefir_asmcmp_lifetime_map_mark_activity(struct kefir_asmcmp_lifetime_map *,
                                                        kefir_asmcmp_virtual_register_index_t,
-                                                       kefir_asmcmp_linear_reference_index_t);
-kefir_result_t kefir_asmcmp_liveness_map_add_lifetime_range(struct kefir_mem *, struct kefir_asmcmp_liveness_map *,
+                                                       kefir_asmcmp_lifetime_index_t);
+kefir_result_t kefir_asmcmp_lifetime_map_add_lifetime_range(struct kefir_mem *, struct kefir_asmcmp_lifetime_map *,
                                                             kefir_asmcmp_virtual_register_index_t,
-                                                            kefir_asmcmp_linear_reference_index_t,
-                                                            kefir_asmcmp_linear_reference_index_t);
+                                                            kefir_asmcmp_lifetime_index_t,
+                                                            kefir_asmcmp_lifetime_index_t);
 
-kefir_result_t kefir_asmcmp_get_active_lifetime_range_for(const struct kefir_asmcmp_liveness_map *,
+kefir_result_t kefir_asmcmp_get_active_lifetime_range_for(const struct kefir_asmcmp_lifetime_map *,
                                                           kefir_asmcmp_virtual_register_index_t,
-                                                          kefir_asmcmp_linear_reference_index_t,
-                                                          kefir_asmcmp_linear_reference_index_t *,
-                                                          kefir_asmcmp_linear_reference_index_t *);
+                                                          kefir_asmcmp_lifetime_index_t,
+                                                          kefir_asmcmp_lifetime_index_t *,
+                                                          kefir_asmcmp_lifetime_index_t *);
 
 #endif

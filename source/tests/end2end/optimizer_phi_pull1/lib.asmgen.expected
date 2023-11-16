@@ -34,13 +34,13 @@ _kefir_func_somefn_label2:
     movq %xmm1, %xmm2
     jmp _kefir_func_somefn_label4
 _kefir_func_somefn_label7:
-    movq %xmm0, %xmm3
-    movq %xmm1, %xmm4
+    movq %xmm0, %xmm2
+    movq %xmm1, %xmm3
 _kefir_func_somefn_label3:
-    addsd %xmm3, %xmm4
+    addsd %xmm2, %xmm3
     mov %rcx, %rdi
-    movq %xmm3, %xmm0
-    movq %xmm4, %xmm1
+    movq %xmm2, %xmm0
+    movq %xmm3, %xmm1
     jmp _kefir_func_somefn_label2
 _kefir_func_somefn_label4:
     movq %xmm2, %xmm0

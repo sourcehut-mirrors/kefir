@@ -91,6 +91,58 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
                 &func->function->code, func->function_analysis->linearization[instr_idx]->instr_ref, &instr));
             REQUIRE_OK(translate_instruction(mem, func, instr));
         }
+
+        kefir_asmcmp_instruction_index_t block_begin_idx;
+        REQUIRE_OK(kefir_asmcmp_context_label_at(&func->code.context, asmlabel, &block_begin_idx));
+        if (block_begin_idx != KEFIR_ASMCMP_INDEX_NONE) {
+            block_begin_idx = kefir_asmcmp_context_instr_prev(&func->code.context, block_begin_idx);
+        } else {
+            block_begin_idx = kefir_asmcmp_context_instr_tail(&func->code.context);
+        }
+
+        struct kefir_hashtreeset lifetime_vregs;
+        REQUIRE_OK(kefir_hashtreeset_init(&lifetime_vregs, &kefir_hashtree_uint_ops));
+
+        kefir_result_t res = KEFIR_OK;
+        for (kefir_size_t instr_idx = block_props->linear_range.begin_index;
+             res == KEFIR_OK && instr_idx < block_props->linear_range.end_index; instr_idx++) {
+            kefir_asmcmp_virtual_register_index_t vreg;
+            res = kefir_codegen_amd64_function_vreg_of(
+                func, func->function_analysis->linearization[instr_idx]->instr_ref, &vreg);
+            if (res == KEFIR_NOT_FOUND) {
+                res = KEFIR_OK;
+                continue;
+            }
+            if (kefir_hashtreeset_has(&lifetime_vregs, (kefir_hashtreeset_entry_t) vreg)) {
+                continue;
+            }
+            REQUIRE_CHAIN(&res, kefir_asmcmp_amd64_vreg_lifetime_range_begin(mem, &func->code, block_begin_idx, vreg,
+                                                                             &block_begin_idx));
+            REQUIRE_CHAIN(&res, kefir_hashtreeset_add(mem, &lifetime_vregs, (kefir_hashtreeset_entry_t) vreg));
+        }
+
+        for (kefir_size_t instr_idx = block_props->linear_range.begin_index;
+             res == KEFIR_OK && instr_idx < block_props->linear_range.end_index; instr_idx++) {
+            kefir_asmcmp_virtual_register_index_t vreg;
+            kefir_result_t res = kefir_codegen_amd64_function_vreg_of(
+                func, func->function_analysis->linearization[instr_idx]->instr_ref, &vreg);
+            if (res == KEFIR_NOT_FOUND) {
+                res = KEFIR_OK;
+                continue;
+            }
+            if (!kefir_hashtreeset_has(&lifetime_vregs, (kefir_hashtreeset_entry_t) vreg)) {
+                continue;
+            }
+            REQUIRE_CHAIN(&res,
+                          kefir_asmcmp_amd64_vreg_lifetime_range_end(
+                              mem, &func->code, kefir_asmcmp_context_instr_tail(&func->code.context), vreg, NULL));
+            REQUIRE_CHAIN(&res, kefir_hashtreeset_delete(mem, &lifetime_vregs, (kefir_hashtreeset_entry_t) vreg));
+        }
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            kefir_hashtreeset_free(mem, &lifetime_vregs);
+            return res;
+        });
+        REQUIRE_OK(kefir_hashtreeset_free(mem, &lifetime_vregs));
     }
 
     if (func->return_address_vreg != KEFIR_ASMCMP_INDEX_NONE) {

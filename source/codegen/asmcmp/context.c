@@ -104,7 +104,7 @@ kefir_result_t kefir_asmcmp_context_init(const struct kefir_asmcmp_context_class
     REQUIRE_OK(kefir_hashtree_on_removal(&context->stashes, free_stash, NULL));
     REQUIRE_OK(kefir_hashtree_init(&context->inline_assembly, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_on_removal(&context->inline_assembly, free_inline_asm, NULL));
-    REQUIRE_OK(kefir_asmcmp_liveness_map_init(&context->vreg_liveness));
+    REQUIRE_OK(kefir_asmcmp_lifetime_map_init(&context->vreg_liveness));
     context->klass = klass;
     context->payload = payload;
     context->code_content = NULL;
@@ -127,7 +127,7 @@ kefir_result_t kefir_asmcmp_context_free(struct kefir_mem *mem, struct kefir_asm
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
 
-    REQUIRE_OK(kefir_asmcmp_liveness_map_free(mem, &context->vreg_liveness));
+    REQUIRE_OK(kefir_asmcmp_lifetime_map_free(mem, &context->vreg_liveness));
     REQUIRE_OK(kefir_hashtree_free(mem, &context->inline_assembly));
     REQUIRE_OK(kefir_hashtree_free(mem, &context->stashes));
     REQUIRE_OK(kefir_string_pool_free(mem, &context->strings));
@@ -576,8 +576,8 @@ kefir_result_t kefir_asmcmp_context_unbind_label(struct kefir_mem *mem, struct k
 }
 
 kefir_result_t kefir_asmcmp_context_move_labels(struct kefir_mem *mem, struct kefir_asmcmp_context *context,
-                                                kefir_asmcmp_virtual_register_index_t dst_idx,
-                                                kefir_asmcmp_virtual_register_index_t src_idx) {
+                                                kefir_asmcmp_instruction_index_t dst_idx,
+                                                kefir_asmcmp_instruction_index_t src_idx) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
     REQUIRE(VALID_INSTR_IDX(context, dst_idx),
@@ -638,7 +638,7 @@ static kefir_result_t new_virtual_register(struct kefir_mem *mem, struct kefir_a
     *reg_alloc_idx = reg_alloc->index;
     context->virtual_register_length++;
 
-    REQUIRE_OK(kefir_asmcmp_liveness_map_resize(mem, &context->vreg_liveness, context->virtual_register_length));
+    REQUIRE_OK(kefir_asmcmp_lifetime_map_resize(mem, &context->vreg_liveness, context->virtual_register_length));
     return KEFIR_OK;
 }
 

@@ -11,7 +11,7 @@ typedef kefir_size_t kefir_asmcmp_instruction_index_t;
 typedef kefir_size_t kefir_asmcmp_label_index_t;
 typedef kefir_size_t kefir_asmcmp_stash_index_t;
 typedef kefir_size_t kefir_asmcmp_inline_assembly_index_t;
-typedef kefir_size_t kefir_asmcmp_linear_reference_index_t;
+typedef kefir_size_t kefir_asmcmp_lifetime_index_t;
 
 #define KEFIR_ASMCMP_INSTRUCTION_NUM_OF_OPERANDS 3
 #define KEFIR_ASMCMP_INDEX_NONE (~(kefir_asmcmp_instruction_index_t) 0ull)

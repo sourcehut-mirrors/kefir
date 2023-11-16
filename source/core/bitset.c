@@ -1,3 +1,23 @@
+/*
+    SPDX-License-Identifier: GPL-3.0
+
+    Copyright (C) 2020-2023  Jevgenijs Protopopovs
+
+    This file is part of Kefir project.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, version 3.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 #include "kefir/core/bitset.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
@@ -129,6 +149,15 @@ kefir_result_t kefir_bitset_find_consecutive(const struct kefir_bitset *bitset, 
         }
     }
     return KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find requested consequtive bit in bitset");
+}
+
+kefir_result_t kefir_bitset_clear(const struct kefir_bitset *bitset) {
+    REQUIRE(bitset != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid bitset"));
+
+    if (bitset->content != NULL) {
+        memset(bitset->content, 0, sizeof(kefir_uint64_t) * bitset->capacity);
+    }
+    return KEFIR_OK;
 }
 
 kefir_result_t kefir_bitset_length(const struct kefir_bitset *bitset, kefir_size_t *length_ptr) {

@@ -437,6 +437,8 @@ static kefir_result_t generate_instr(struct kefir_mem *mem, struct kefir_amd64_x
             break;
 
         case KEFIR_ASMCMP_AMD64_OPCODE(touch_virtual_register):
+        case KEFIR_ASMCMP_AMD64_OPCODE(vreg_lifetime_range_begin):
+        case KEFIR_ASMCMP_AMD64_OPCODE(vreg_lifetime_range_end):
         case KEFIR_ASMCMP_AMD64_OPCODE(noop):
             // Intentionally left blank
             break;

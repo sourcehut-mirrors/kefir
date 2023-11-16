@@ -50,12 +50,14 @@ typedef struct kefir_codegen_amd64_register_allocator {
     struct kefir_codegen_amd64_register_allocation *allocations;
     kefir_size_t num_of_vregs;
     struct kefir_hashtreeset used_registers;
-    struct kefir_asmcmp_liveness_map liveness_map;
+    struct kefir_asmcmp_lifetime_map liveness_map;
     struct {
         struct kefir_graph liveness_graph;
         struct kefir_hashtree instruction_linear_indices;
         struct kefir_hashtreeset alive_virtual_registers;
-        struct kefir_hashtreeset conflicting_requirements;
+        struct kefir_hashtreeset conflicts;
+        struct kefir_hashtreeset register_conflicts;
+        struct kefir_hashtree lifetime_ranges;
         struct kefir_bitset spill_area;
         kefir_asm_amd64_xasmgen_register_t *gp_register_allocation_order;
         kefir_size_t num_of_gp_registers;

@@ -56,7 +56,7 @@ static kefir_result_t remove_dead_virtual_regs(struct kefir_mem *mem, struct dev
         const struct kefir_codegen_amd64_register_allocation *reg_alloc;
         REQUIRE_OK(kefir_codegen_amd64_register_allocation_of(state->register_allocator, vreg_idx, &reg_alloc));
 
-        kefir_asmcmp_linear_reference_index_t active_lifetime_end;
+        kefir_asmcmp_lifetime_index_t active_lifetime_end;
         REQUIRE_OK(kefir_asmcmp_get_active_lifetime_range_for(&state->register_allocator->liveness_map, vreg_idx,
                                                               linear_position, NULL, &active_lifetime_end));
         if (active_lifetime_end == KEFIR_ASMCMP_INDEX_NONE || active_lifetime_end <= linear_position) {
@@ -76,7 +76,7 @@ static kefir_result_t update_live_virtual_regs(struct kefir_mem *mem, struct dev
                                                kefir_size_t linear_position, const struct kefir_asmcmp_value *value) {
     const struct kefir_codegen_amd64_register_allocation *reg_alloc;
 
-    kefir_asmcmp_linear_reference_index_t active_lifetime_begin, active_lifetime_end;
+    kefir_asmcmp_lifetime_index_t active_lifetime_begin, active_lifetime_end;
     switch (value->type) {
         case KEFIR_ASMCMP_VALUE_TYPE_NONE:
         case KEFIR_ASMCMP_VALUE_TYPE_INTEGER:
@@ -770,9 +770,16 @@ static kefir_result_t activate_stash(struct kefir_mem *mem, struct devirtualize_
 
     kefir_asmcmp_stash_index_t stash_idx = instr->args[0].stash_idx;
     kefir_asmcmp_virtual_register_index_t stash_vreg;
-    kefir_asmcmp_instruction_index_t liveness_idx;
+    kefir_asmcmp_instruction_index_t liveness_instr_idx;
     REQUIRE_OK(kefir_asmcmp_register_stash_vreg(&state->target->context, stash_idx, &stash_vreg));
-    REQUIRE_OK(kefir_asmcmp_register_stash_liveness_index(&state->target->context, stash_idx, &liveness_idx));
+    REQUIRE_OK(kefir_asmcmp_register_stash_liveness_index(&state->target->context, stash_idx, &liveness_instr_idx));
+    kefir_asmcmp_lifetime_index_t liveness_idx = 0;
+    if (liveness_instr_idx != KEFIR_ASMCMP_INDEX_NONE) {
+        struct kefir_hashtree_node *linear_idx_node;
+        REQUIRE_OK(kefir_hashtree_at(&state->register_allocator->internal.instruction_linear_indices,
+                                     (kefir_hashtree_key_t) liveness_instr_idx, &linear_idx_node));
+        liveness_idx = linear_idx_node->value;
+    }
 
     const struct kefir_codegen_amd64_register_allocation *stash_alloc;
     REQUIRE_OK(kefir_codegen_amd64_register_allocation_of(state->register_allocator, stash_vreg, &stash_alloc));
@@ -799,11 +806,11 @@ static kefir_result_t activate_stash(struct kefir_mem *mem, struct devirtualize_
             continue;
         }
         REQUIRE_OK(res);
-        kefir_asmcmp_linear_reference_index_t active_lifetime_begin, active_lifetime_end;
+        kefir_asmcmp_lifetime_index_t active_lifetime_begin, active_lifetime_end;
         REQUIRE_OK(kefir_asmcmp_get_active_lifetime_range_for(&state->register_allocator->liveness_map, vreg_idx,
                                                               liveness_idx, &active_lifetime_begin,
                                                               &active_lifetime_end));
-        if (((liveness_idx != KEFIR_ASMCMP_INDEX_NONE &&
+        if (((liveness_instr_idx != KEFIR_ASMCMP_INDEX_NONE &&
               !(active_lifetime_begin != KEFIR_ASMCMP_INDEX_NONE && active_lifetime_begin <= liveness_idx &&
                 active_lifetime_end > liveness_idx))) ||
             !contains_phreg) {
@@ -1028,6 +1035,8 @@ static kefir_result_t devirtualize_impl(struct kefir_mem *mem, struct devirtuali
                 REQUIRE_OK(devirtualize_inline_asm(mem, state, idx, &devirtualized_instr));
                 break;
 
+            case KEFIR_ASMCMP_AMD64_OPCODE(vreg_lifetime_range_begin):
+            case KEFIR_ASMCMP_AMD64_OPCODE(vreg_lifetime_range_end):
             case KEFIR_ASMCMP_AMD64_OPCODE(touch_virtual_register):
             case KEFIR_ASMCMP_AMD64_OPCODE(function_prologue):
             case KEFIR_ASMCMP_AMD64_OPCODE(function_epilogue):

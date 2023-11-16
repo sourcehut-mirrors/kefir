@@ -93,9 +93,6 @@ if [ -f "$SCRIPTDIR/lua-$LUA_VERSION-tests.patch" ]; then
 	patch < "$SCRIPTDIR/lua-$LUA_VERSION-tests.patch"
 fi
 
-# Temporarily update stack size
-ulimit -s $((8192 * 8))
-
 echo "Running Lua basic test suite..."
 "../$LUA_DIR/bin/lua" -e"_U=true" all.lua
 

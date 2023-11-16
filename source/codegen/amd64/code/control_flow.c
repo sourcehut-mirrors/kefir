@@ -76,23 +76,26 @@ kefir_result_t kefir_codegen_amd64_function_map_phi_outputs(struct kefir_mem *me
                 case KEFIR_ASMCMP_VIRTUAL_REGISTER_UNSPECIFIED:
                 case KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE:
                 case KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT:
-                    REQUIRE_OK(
-                        kefir_asmcmp_virtual_register_new(mem, &function->code.context, source_vreg->type, &target_vreg_idx));
+                    REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context, source_vreg->type,
+                                                                 &target_vreg_idx));
                     break;
-                
+
                 case KEFIR_ASMCMP_VIRTUAL_REGISTER_DIRECT_SPILL_SPACE:
-                    REQUIRE_OK(kefir_asmcmp_virtual_register_new_direct_spill_space_allocation(mem, &function->code.context,
-                        source_vreg->parameters.spill_space_allocation_length, &target_vreg_idx));
+                    REQUIRE_OK(kefir_asmcmp_virtual_register_new_direct_spill_space_allocation(
+                        mem, &function->code.context, source_vreg->parameters.spill_space_allocation_length,
+                        &target_vreg_idx));
                     break;
 
                 case KEFIR_ASMCMP_VIRTUAL_REGISTER_INDIRECT_SPILL_SPACE:
-                    REQUIRE_OK(kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(mem, &function->code.context,
-                        source_vreg->parameters.spill_space_allocation_length, &target_vreg_idx));
+                    REQUIRE_OK(kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(
+                        mem, &function->code.context, source_vreg->parameters.spill_space_allocation_length,
+                        &target_vreg_idx));
                     break;
 
                 case KEFIR_ASMCMP_VIRTUAL_REGISTER_EXTERNAL_MEMORY:
-                    REQUIRE_OK(kefir_asmcmp_virtual_register_new_memory_pointer(mem, &function->code.context,
-                        source_vreg->parameters.memory.base_reg, source_vreg->parameters.memory.offset, &target_vreg_idx));
+                    REQUIRE_OK(kefir_asmcmp_virtual_register_new_memory_pointer(
+                        mem, &function->code.context, source_vreg->parameters.memory.base_reg,
+                        source_vreg->parameters.memory.offset, &target_vreg_idx));
                     break;
             }
             REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, target_ref, target_vreg_idx));
@@ -105,6 +108,10 @@ kefir_result_t kefir_codegen_amd64_function_map_phi_outputs(struct kefir_mem *me
             }
         }
 
+        if (source_block_ref != target_block_ref) {
+            REQUIRE_OK(kefir_asmcmp_amd64_vreg_lifetime_range_begin(
+                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), target_vreg_idx, NULL));
+        }
         REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &function->code,
                                                              kefir_asmcmp_context_instr_tail(&function->code.context),
                                                              target_vreg_idx, source_vreg_idx, NULL));
@@ -123,9 +130,12 @@ kefir_result_t kefir_codegen_amd64_function_map_phi_outputs(struct kefir_mem *me
         kefir_asmcmp_virtual_register_index_t target_vreg_idx;
         REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, target_ref, &target_vreg_idx));
 
-        REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(mem, &function->code,
-                                                             kefir_asmcmp_context_instr_tail(&function->code.context),
-                                                             target_vreg_idx, NULL));
+        REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), target_vreg_idx, NULL));
+        if (target_block_ref != source_block_ref) {
+            REQUIRE_OK(kefir_asmcmp_amd64_vreg_lifetime_range_end(
+                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), target_vreg_idx, NULL));
+        }
     }
     REQUIRE_OK(res);
 
