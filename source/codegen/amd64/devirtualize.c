@@ -1006,9 +1006,18 @@ static kefir_result_t devirtualize_impl(struct kefir_mem *mem, struct devirtuali
                                       reg_alloc1->spill_area.length != reg_alloc2->spill_area.length;
                             break;
 
-                        case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_MEMORY_POINTER:
-                            // Intentionally left blank
-                            break;
+                        case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_MEMORY_POINTER: {
+                            const struct kefir_asmcmp_virtual_register *vreg1, *vreg2;
+                            REQUIRE_OK(kefir_asmcmp_virtual_register_get(&state->target->context,
+                                                                         instr->args[0].vreg.index, &vreg1));
+                            REQUIRE_OK(kefir_asmcmp_virtual_register_get(&state->target->context,
+                                                                         instr->args[0].vreg.index, &vreg2));
+                            if (vreg1->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_EXTERNAL_MEMORY &&
+                                vreg2->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_EXTERNAL_MEMORY) {
+                                do_link = vreg1->parameters.memory.base_reg != vreg2->parameters.memory.base_reg ||
+                                          vreg1->parameters.memory.offset != vreg2->parameters.memory.offset;
+                            }
+                        } break;
                     }
                 }
                 if (do_link) {
