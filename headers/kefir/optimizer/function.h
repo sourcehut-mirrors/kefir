@@ -30,6 +30,10 @@ typedef struct kefir_opt_module kefir_opt_module_t;  // Forward declaration
 typedef struct kefir_opt_function {
     const struct kefir_ir_function *ir_func;
     struct kefir_opt_code_container code;
+    struct {
+        const struct kefir_ir_type *type;
+        kefir_id_t type_id;
+    } locals;
 } kefir_opt_function_t;
 
 kefir_result_t kefir_opt_function_init(const struct kefir_opt_module *, const struct kefir_ir_function *,

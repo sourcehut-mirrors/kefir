@@ -34,6 +34,11 @@ static kefir_result_t kefir_amd64_sysv_scalar_type_layout(const struct kefir_ir_
     REQUIRE(alignment_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid alignment pointer"));
 
     switch (typeentry->typecode) {
+        case KEFIR_IR_TYPE_NONE:
+            *size_ptr = 0;
+            *alignment_ptr = 0;
+            break;
+
         case KEFIR_IR_TYPE_BOOL:
         case KEFIR_IR_TYPE_CHAR:
         case KEFIR_IR_TYPE_INT8:
@@ -236,6 +241,7 @@ static kefir_result_t calculate_layout(const struct kefir_ir_type *type, kefir_s
     visitor.visit[KEFIR_IR_TYPE_UNION] = calculate_struct_union_layout;
     visitor.visit[KEFIR_IR_TYPE_ARRAY] = calculate_array_layout;
     visitor.visit[KEFIR_IR_TYPE_BUILTIN] = calculate_builtin_layout;
+    visitor.visit[KEFIR_IR_TYPE_NONE] = calculate_integer_layout;
     return kefir_ir_type_visitor_list_nodes(type, &visitor, (void *) &compound_type_layout, index, count);
 }
 

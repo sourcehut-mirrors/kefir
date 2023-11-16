@@ -176,6 +176,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_argument)(struct kefir_m
                     REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, vreg));
                     break;
 
+                case KEFIR_IR_TYPE_NONE:
                 case KEFIR_IR_TYPE_COUNT:
                     return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected IR type code");
             }

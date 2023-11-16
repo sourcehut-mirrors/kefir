@@ -208,6 +208,7 @@ static kefir_result_t process_parameter_type(struct kefir_mem *mem, const struct
 
         case KEFIR_IR_TYPE_BITS:
         case KEFIR_IR_TYPE_BUILTIN:
+        case KEFIR_IR_TYPE_NONE:
         case KEFIR_IR_TYPE_COUNT:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected IR inline assembly parameter type");
     }
@@ -572,6 +573,7 @@ static kefir_result_t load_inputs(struct kefir_codegen_naive_amd64 *codegen,
 
             case KEFIR_IR_TYPE_BITS:
             case KEFIR_IR_TYPE_BUILTIN:
+            case KEFIR_IR_TYPE_NONE:
             case KEFIR_IR_TYPE_COUNT:
                 return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected IR inline assembly parameter type");
         }
@@ -746,6 +748,7 @@ static kefir_result_t store_outputs(struct kefir_codegen_naive_amd64 *codegen,
 
             case KEFIR_IR_TYPE_BITS:
             case KEFIR_IR_TYPE_BUILTIN:
+            case KEFIR_IR_TYPE_NONE:
             case KEFIR_IR_TYPE_COUNT:
                 return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected IR inline assembly parameter type");
         }

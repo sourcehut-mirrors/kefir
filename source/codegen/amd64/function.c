@@ -322,7 +322,7 @@ static kefir_result_t kefir_codegen_amd64_function_translate_impl(struct kefir_m
         REQUIRE_OK(output_asm(codegen, func, false));
     }
 
-    REQUIRE_OK(kefir_codegen_amd64_stack_frame_calculate(codegen->abi_variant, func->function->ir_func->locals,
+    REQUIRE_OK(kefir_codegen_amd64_stack_frame_calculate(codegen->abi_variant, func->function->locals.type,
                                                          &func->locals_layout, &func->stack_frame));
     REQUIRE_OK(kefir_asmcmp_amd64_generate_code(mem, &codegen->xasmgen, &func->code, &func->stack_frame));
     REQUIRE_OK(generate_constants(mem, func));
@@ -359,14 +359,14 @@ kefir_result_t kefir_codegen_amd64_function_translate(struct kefir_mem *mem, str
     REQUIRE_OK(kefir_abi_amd64_function_decl_alloc(mem, codegen->abi_variant, function->ir_func->declaration,
                                                    &func.abi_function_declaration));
     kefir_result_t res = KEFIR_OK;
-    if (function->ir_func->locals != NULL) {
-        res = kefir_abi_amd64_type_layout(mem, codegen->abi_variant, function->ir_func->locals, &func.locals_layout);
+    if (function->locals.type != NULL) {
+        res = kefir_abi_amd64_type_layout(mem, codegen->abi_variant, function->locals.type, &func.locals_layout);
         REQUIRE_ELSE(res == KEFIR_OK, { goto on_error1; });
     }
 
     res = kefir_codegen_amd64_function_translate_impl(mem, codegen, &func);
 
-    if (function->ir_func->locals != NULL) {
+    if (function->locals.type != NULL) {
         kefir_abi_amd64_type_layout_free(mem, &func.locals_layout);
     }
 on_error1:

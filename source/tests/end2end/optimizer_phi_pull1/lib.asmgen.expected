@@ -14,7 +14,7 @@
 somefn:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
+    sub $16, %rsp
     stmxcsr -8(%rbp)
 _kefir_func_somefn_label0:
 _kefir_func_somefn_label1:
@@ -60,7 +60,6 @@ _kefir_func_somefn_label6:
 assign_abs:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
 _kefir_func_assign_abs_label0:
 _kefir_func_assign_abs_label1:
     mov $0, %rax
@@ -77,14 +76,12 @@ _kefir_func_assign_abs_label3:
 _kefir_func_assign_abs_label4:
     movq somevar@GOTPCREL(%rip), %rax
     movq %rdi, (%rax)
-    lea (%rbp), %rsp
     pop %rbp
     ret
 
 condition1:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
 _kefir_func_condition1_label0:
 _kefir_func_condition1_label1:
     movsx %edi, %rax
@@ -98,12 +95,10 @@ _kefir_func_condition1_label2:
     mov $10, %rcx
     add %rcx, %rax
     movsx %eax, %rax
-    lea (%rbp), %rsp
     pop %rbp
     ret
 _kefir_func_condition1_label3:
     mov $10, %rax
-    lea (%rbp), %rsp
     pop %rbp
     ret
 

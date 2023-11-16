@@ -288,6 +288,7 @@ static kefir_result_t prepare_parameters(struct kefir_mem *mem, struct kefir_cod
                                                           &KEFIR_ASMCMP_MAKE_VREG(argument_vreg), NULL));
                         break;
 
+                    case KEFIR_IR_TYPE_NONE:
                     case KEFIR_IR_TYPE_COUNT:
                         return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected IR type code");
                 }

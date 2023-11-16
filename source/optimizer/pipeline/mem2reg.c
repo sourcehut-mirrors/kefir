@@ -46,6 +46,8 @@ struct mem2reg_state {
     struct kefir_hashtree local_regs;
     struct kefir_list block_queue;
     struct kefir_hashtreeset visited_blocks;
+
+    struct kefir_ir_type *new_locals;
 };
 
 static kefir_result_t mark_local_addressed(struct mem2reg_state *state, struct kefir_hashtreeset *visited,
@@ -107,7 +109,7 @@ static kefir_result_t extract_local_inputs(kefir_opt_instruction_ref_t instr_ref
 }
 
 static kefir_result_t mark_scalar_candidate(struct mem2reg_state *state, kefir_size_t local_id) {
-    const struct kefir_ir_typeentry *local_typeentry = kefir_ir_type_at(state->func->ir_func->locals, local_id);
+    const struct kefir_ir_typeentry *local_typeentry = kefir_ir_type_at(state->func->locals.type, local_id);
     REQUIRE(local_typeentry != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to fetch local variable type"));
 
     switch (local_typeentry->typecode) {
@@ -133,6 +135,7 @@ static kefir_result_t mark_scalar_candidate(struct mem2reg_state *state, kefir_s
         case KEFIR_IR_TYPE_LONG_DOUBLE:
         case KEFIR_IR_TYPE_BITS:
         case KEFIR_IR_TYPE_BUILTIN:
+        case KEFIR_IR_TYPE_NONE:
         case KEFIR_IR_TYPE_COUNT:
             // Intentionally left blank
             break;
@@ -297,7 +300,7 @@ static kefir_result_t reg_state_for(struct mem2reg_state *state, kefir_size_t lo
 static kefir_result_t assign_empty_value(struct mem2reg_state *state, kefir_size_t local_id,
                                          kefir_opt_block_id_t source_block_ref,
                                          kefir_opt_instruction_ref_t *instr_ref) {
-    const struct kefir_ir_typeentry *local_typeentry = kefir_ir_type_at(state->func->ir_func->locals, local_id);
+    const struct kefir_ir_typeentry *local_typeentry = kefir_ir_type_at(state->func->locals.type, local_id);
     REQUIRE(local_typeentry != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to fetch local variable type"));
 
     switch (local_typeentry->typecode) {
@@ -334,6 +337,7 @@ static kefir_result_t assign_empty_value(struct mem2reg_state *state, kefir_size
         case KEFIR_IR_TYPE_LONG_DOUBLE:
         case KEFIR_IR_TYPE_BITS:
         case KEFIR_IR_TYPE_BUILTIN:
+        case KEFIR_IR_TYPE_NONE:
         case KEFIR_IR_TYPE_COUNT:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected local IR type");
     }
@@ -370,7 +374,7 @@ static kefir_result_t mem2reg_pull(struct mem2reg_state *state) {
                         REQUIRE_OK(reg_state_for(state, local_id, &reg_state));
 
                         const struct kefir_ir_typeentry *local_typeentry =
-                            kefir_ir_type_at(state->func->ir_func->locals, local_id);
+                            kefir_ir_type_at(state->func->locals.type, local_id);
                         REQUIRE(local_typeentry != NULL,
                                 KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to fetch local variable type"));
 
@@ -630,6 +634,46 @@ static kefir_result_t mem2reg_propagate(struct mem2reg_state *state) {
     return KEFIR_OK;
 }
 
+static kefir_result_t locals_replace_visit(const struct kefir_ir_type *type, kefir_size_t index,
+                                           const struct kefir_ir_typeentry *typeentry, void *payload) {
+    UNUSED(typeentry);
+    REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR type"));
+    ASSIGN_DECL_CAST(struct mem2reg_state *, state, payload);
+    REQUIRE(state != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid mem2reg state"));
+
+    if (!kefir_hashtreeset_has(&state->addressed_locals, (kefir_hashtreeset_entry_t) index) &&
+        kefir_hashtreeset_has(&state->scalar_local_candidates, (kefir_hashtreeset_entry_t) index)) {
+        kefir_size_t length = kefir_ir_type_length_of(type, index);
+        if (length == 1) {
+            REQUIRE_OK(kefir_ir_type_append(state->new_locals, KEFIR_IR_TYPE_NONE, 0, 0));
+        } else if (length > 1) {
+            REQUIRE_OK(kefir_ir_type_append(state->new_locals, KEFIR_IR_TYPE_UNION, 0, length - 1));
+            for (kefir_size_t i = 0; i < length - 1; i++) {
+                REQUIRE_OK(kefir_ir_type_append(state->new_locals, KEFIR_IR_TYPE_NONE, 0, 0));
+            }
+        }
+    } else {
+        REQUIRE_OK(kefir_ir_type_append_from(state->new_locals, type, index));
+    }
+    return KEFIR_OK;
+}
+
+static kefir_result_t mem2reg_replace_locals(struct mem2reg_state *state) {
+    kefir_id_t new_locals_id;
+    state->new_locals = kefir_ir_module_new_type(state->mem, state->module->ir_module,
+                                                 kefir_ir_type_length(state->func->locals.type), &new_locals_id);
+    REQUIRE(state->new_locals != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR type"));
+
+    struct kefir_ir_type_visitor visitor;
+    REQUIRE_OK(kefir_ir_type_visitor_init(&visitor, locals_replace_visit));
+    REQUIRE_OK(kefir_ir_type_visitor_list_nodes(state->func->locals.type, &visitor, state, 0,
+                                                kefir_ir_type_length(state->func->locals.type)));
+
+    state->func->locals.type = state->new_locals;
+    state->func->locals.type_id = new_locals_id;
+    return KEFIR_OK;
+}
+
 static kefir_result_t free_mem2reg_reg_state(struct kefir_mem *mem, struct kefir_hashtree *tree,
                                              kefir_hashtree_key_t key, kefir_hashtree_value_t value, void *payload) {
     UNUSED(tree);
@@ -682,9 +726,7 @@ static kefir_result_t mem2reg_apply(struct kefir_mem *mem, const struct kefir_op
     kefir_result_t res = mem2reg_scan(&state);
     REQUIRE_CHAIN(&res, mem2reg_pull(&state));
     REQUIRE_CHAIN(&res, mem2reg_propagate(&state));
-    // REQUIRE_CHAIN(&res, mem2reg_instantiate_empty_values(&state));
-    // REQUIRE_CHAIN(&res, mem2reg_propagate(&state, mem2reg_instantiate_block_inputs));
-    // REQUIRE_CHAIN(&res, mem2reg_propagate(&state, mem2reg_attach_block_outputs));
+    REQUIRE_CHAIN(&res, mem2reg_replace_locals(&state));
     if (res == KEFIR_YIELD) {
         res = KEFIR_OK;
     }

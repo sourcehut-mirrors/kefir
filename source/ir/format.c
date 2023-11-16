@@ -305,6 +305,9 @@ static const char *typecode_to_string(kefir_ir_typecode_t typecode) {
         case KEFIR_IR_TYPE_BUILTIN:
             return "builtin";
 
+        case KEFIR_IR_TYPE_NONE:
+            return "none";
+
         default:
             return NULL;
     }

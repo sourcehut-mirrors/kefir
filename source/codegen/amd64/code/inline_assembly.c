@@ -235,6 +235,7 @@ static kefir_result_t evaluate_parameter_type(struct kefir_mem *mem, const struc
 
         case KEFIR_IR_TYPE_BITS:
         case KEFIR_IR_TYPE_BUILTIN:
+        case KEFIR_IR_TYPE_NONE:
         case KEFIR_IR_TYPE_COUNT:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected IR inline assembly parameter type");
     }
@@ -529,6 +530,7 @@ static kefir_result_t read_inputs(struct kefir_mem *mem, struct kefir_codegen_am
 
             case KEFIR_IR_TYPE_BITS:
             case KEFIR_IR_TYPE_BUILTIN:
+            case KEFIR_IR_TYPE_NONE:
             case KEFIR_IR_TYPE_COUNT:
                 return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected IR inline assembly parameter type");
         }
@@ -1053,6 +1055,7 @@ static kefir_result_t store_outputs(struct kefir_mem *mem, struct kefir_codegen_
 
             case KEFIR_IR_TYPE_BITS:
             case KEFIR_IR_TYPE_BUILTIN:
+            case KEFIR_IR_TYPE_NONE:
             case KEFIR_IR_TYPE_COUNT:
                 return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected IR inline assembly parameter type");
         }
@@ -1107,7 +1110,8 @@ static kefir_result_t jump_trampolines(struct kefir_mem *mem, struct kefir_codeg
         ASSIGN_DECL_CAST(kefir_opt_block_id_t, target_block, node->value);
         kefir_result_t res = kefir_hashtree_at(&context->jump_trampolines, node->key, &target_label_node);
         if (res == KEFIR_NOT_FOUND) {
-            REQUIRE_OK(kefir_asmcmp_context_new_label(mem, &function->code.context, KEFIR_ASMCMP_INDEX_NONE, &target_label));
+            REQUIRE_OK(
+                kefir_asmcmp_context_new_label(mem, &function->code.context, KEFIR_ASMCMP_INDEX_NONE, &target_label));
         } else {
             REQUIRE_OK(res);
             target_label = target_label_node->value;

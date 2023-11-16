@@ -14,17 +14,15 @@
 test1:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
 _kefir_func_test1_label0:
 _kefir_func_test1_label1:
-    lea (%rbp), %rsp
     pop %rbp
     ret
 
 test2:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
+    sub $16, %rsp
 _kefir_func_test2_label0:
 _kefir_func_test2_label1:
     lea -8(%rbp), %rcx
@@ -110,7 +108,7 @@ _kefir_func_test3_label4:
 test4:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
+    sub $16, %rsp
     stmxcsr -8(%rbp)
 _kefir_func_test4_label0:
 _kefir_func_test4_label1:

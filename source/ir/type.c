@@ -302,8 +302,6 @@ kefir_result_t kefir_ir_type_visitor_list_nodes(const struct kefir_ir_type *type
         INVOKE(visitor->prehook);
         switch (typeentry->typecode) {
             case KEFIR_IR_TYPE_STRUCT:
-                REQUIRE(typeentry->param > 0,
-                        KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected IR type struct to have non-zero member count"));
                 INVOKE(visitor->visit[KEFIR_IR_TYPE_STRUCT]);
                 break;
 
