@@ -68,6 +68,9 @@ declare_opcode jmp
 declare_opcode ijmp
 declare_opcode branch
 declare_opcode pushi
+declare_opcode placehi64
+declare_opcode placehf32
+declare_opcode placehf64
 declare_opcode pop
 declare_opcode pick
 declare_opcode xchg
@@ -199,6 +202,21 @@ define_opcode branch
 
 define_opcode pushi
     mov DATA_REG, [INSTR_ARG_PTR]
+    push DATA_REG
+    end_opcode
+
+define_opcode placehi64
+    xor DATA_REG, DATA_REG
+    push DATA_REG
+    end_opcode
+
+define_opcode placehf32
+    xor DATA_REG, DATA_REG
+    push DATA_REG
+    end_opcode
+
+define_opcode placehf64
+    xor DATA_REG, DATA_REG
     push DATA_REG
     end_opcode
 

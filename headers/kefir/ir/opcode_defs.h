@@ -41,6 +41,10 @@
     OPCODE(POP,         "pop",         0x14, none) SEPARATOR \
     OPCODE(PICK,        "pick",        0x15, u64) SEPARATOR \
     OPCODE(XCHG,        "xchg",        0x16, u64) SEPARATOR \
+    /* Placeholders */ \
+    OPCODE(PLACEHI64,   "placehi64",   0x17, none) SEPARATOR \
+    OPCODE(PLACEHF32,   "placehf32",   0x18, none) SEPARATOR \
+    OPCODE(PLACEHF64,   "placehf64",   0x19, none) SEPARATOR \
     /* Integer arithmetics & bitwise */ \
     OPCODE(IADD,        "iadd",        0x20, none) SEPARATOR \
     OPCODE(IADD1,       "iadd1",       0x21, i64) SEPARATOR \

@@ -8,6 +8,9 @@
 .extern __kefirrt_ijmp_impl
 .extern __kefirrt_branch_impl
 .extern __kefirrt_pushi_impl
+.extern __kefirrt_placehi64_impl
+.extern __kefirrt_placehf32_impl
+.extern __kefirrt_placehf64_impl
 .extern __kefirrt_pop_impl
 .extern __kefirrt_pick_impl
 .extern __kefirrt_xchg_impl

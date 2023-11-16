@@ -100,8 +100,6 @@ static kefir_result_t translate_init_declarator(struct kefir_mem *mem, const str
         struct kefir_ast_init_declarator *init_decl = NULL;
         REQUIRE_MATCH_OK(&res, kefir_ast_downcast_init_declarator(node, &init_decl, false),
                          KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected node to be init declarator"));
-        REQUIRE(init_decl->initializer != NULL, KEFIR_OK);
-
         kefir_ast_scoped_identifier_storage_t storage = node->properties.declaration_props.storage;
         REQUIRE(storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO ||
                     storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER,
@@ -110,8 +108,13 @@ static kefir_result_t translate_init_declarator(struct kefir_mem *mem, const str
         REQUIRE_OK(kefir_ast_translator_object_lvalue(mem, context, builder,
                                                       node->properties.declaration_props.identifier,
                                                       node->properties.declaration_props.scoped_id));
-        REQUIRE_OK(
-            kefir_ast_translate_initializer(mem, context, builder, node->properties.type, init_decl->initializer));
+        if (init_decl->initializer != NULL) {
+            REQUIRE_OK(
+                kefir_ast_translate_initializer(mem, context, builder, node->properties.type, init_decl->initializer));
+        } else {
+            REQUIRE_OK(kefir_ast_translate_default_initializer(mem, context, builder, node->properties.type,
+                                                               &node->source_location));
+        }
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_POP, 0));
     }
     return KEFIR_OK;

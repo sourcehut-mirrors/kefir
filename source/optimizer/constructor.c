@@ -264,6 +264,21 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
         } break;
 
+        case KEFIR_IROPCODE_PLACEHI64:
+            REQUIRE_OK(kefir_opt_code_builder_int_placeholder(mem, code, current_block_id, &instr_ref));
+            REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
+            break;
+
+        case KEFIR_IROPCODE_PLACEHF32:
+            REQUIRE_OK(kefir_opt_code_builder_float32_placeholder(mem, code, current_block_id, &instr_ref));
+            REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
+            break;
+
+        case KEFIR_IROPCODE_PLACEHF64:
+            REQUIRE_OK(kefir_opt_code_builder_float64_placeholder(mem, code, current_block_id, &instr_ref));
+            REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
+            break;
+
         case KEFIR_IROPCODE_LDINITH: {
             REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
             REQUIRE(state->ir_location + 1 < kefir_irblock_length(&state->function->ir_func->body) &&

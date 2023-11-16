@@ -18,10 +18,33 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef DEFINITIONS_H_
-#define DEFINITIONS_H_
+int test1(void) {
+    int a;
+    return a;
+}
 
-extern float test32(long);
-extern double test64(long);
+long test2(long a) {
+    long x;
+    long y = a > 0 ? (x = a) : -1;
+    if (y != -1) {
+        return x;
+    } else {
+        return a;
+    }
+}
 
-#endif
+float test3(float x) {
+    float y;
+    if (x > 0.0f) {
+        y = x;
+    }
+    return y;
+}
+
+double test4(double x) {
+    double y;
+    if (x > 0.0) {
+        y = x;
+    }
+    return y;
+}

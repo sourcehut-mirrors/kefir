@@ -42,6 +42,8 @@ _kefir_func_cast_int_label1:
     lea -16(%rbp), %rax
     movq %rdi, (%rax)
     lea -8(%rbp), %rax
+    movl %ecx, (%rax)
+    lea -8(%rbp), %rax
     lea -16(%rbp), %rcx
     movq (%rcx), %rcx
     movq %rax, -32(%rbp)
@@ -67,6 +69,8 @@ _kefir_func_sum3_one_label1:
     movq %rsi, (%rax)
     lea -32(%rbp), %rax
     movq %rdi, (%rax)
+    lea -8(%rbp), %rax
+    movq %rcx, (%rax)
     lea -8(%rbp), %rax
     lea -16(%rbp), %rcx
     lea -32(%rbp), %rdx
@@ -105,6 +109,8 @@ _kefir_func_unwrap_s1_label1:
     mov %rax, %rsi
     mov $4, %rcx
     rep movsb
+    lea -4(%rbp), %rax
+    movl %ecx, (%rax)
     lea -4(%rbp), %rax
     lea -8(%rbp), %rcx
     movq %rax, -16(%rbp)

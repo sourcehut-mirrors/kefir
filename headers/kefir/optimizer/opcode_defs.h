@@ -45,6 +45,10 @@
     OPCODE(LONG_DOUBLE_CONST, "long_double_const", immediate) SEPARATOR \
     OPCODE(STRING_REF, "string_ref", immediate) SEPARATOR \
     OPCODE(BLOCK_LABEL, "block_label", immediate) SEPARATOR \
+    /* Placeholders */ \
+    OPCODE(INT_PLACEHOLDER, "int_placeholder", none) SEPARATOR \
+    OPCODE(FLOAT32_PLACEHOLDER, "float32_placeholder", none) SEPARATOR \
+    OPCODE(FLOAT64_PLACEHOLDER, "float64_placeholder", none) SEPARATOR \
     /* Integral arithmetics & binary operations */ \
     OPCODE(INT_ADD, "int_add", ref2) SEPARATOR \
     OPCODE(INT_SUB, "int_sub", ref2) SEPARATOR \

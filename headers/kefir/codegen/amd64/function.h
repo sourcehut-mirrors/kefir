@@ -76,6 +76,9 @@ kefir_result_t kefir_codegen_amd64_function_map_phi_outputs(struct kefir_mem *, 
     _def(long_double_const, KEFIR_OPT_OPCODE_LONG_DOUBLE_CONST) _separator \
     _def(string_ref, KEFIR_OPT_OPCODE_STRING_REF) _separator \
     _def(block_label, KEFIR_OPT_OPCODE_BLOCK_LABEL) _separator \
+    _def(int_placeholder, KEFIR_OPT_OPCODE_INT_PLACEHOLDER) _separator \
+    _def(float_placeholder, KEFIR_OPT_OPCODE_FLOAT32_PLACEHOLDER) _separator \
+    _def(float_placeholder, KEFIR_OPT_OPCODE_FLOAT64_PLACEHOLDER) _separator \
     _def(get_local, KEFIR_OPT_OPCODE_GET_LOCAL) _separator \
     _def(get_global, KEFIR_OPT_OPCODE_GET_GLOBAL) _separator \
     _def(thread_local, KEFIR_OPT_OPCODE_GET_THREAD_LOCAL) _separator \

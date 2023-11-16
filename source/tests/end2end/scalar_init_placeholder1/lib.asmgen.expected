@@ -1,0 +1,142 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global test1
+.global test2
+.global test3
+.global test4
+.extern __kefir_opt_float32_neg
+.extern __kefir_opt_float64_neg
+.extern __kefirrt_opt_float32_to_uint
+.extern __kefirrt_opt_float64_to_uint
+
+.section .text
+test1:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_test1_label0:
+_kefir_func_test1_label1:
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+test2:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+_kefir_func_test2_label0:
+_kefir_func_test2_label1:
+    lea -8(%rbp), %rcx
+    mov $0, %rdx
+    mov $0, %rsi
+    cmp %rdx, %rdi
+    setg %sil
+    test %rsi, %rsi
+    jz _kefir_func_test2_label7
+    mov %rcx, %rdx
+    mov %rdi, %rsi
+    jmp _kefir_func_test2_label3
+_kefir_func_test2_label7:
+_kefir_func_test2_label2:
+    mov $-1, %rdx
+    mov %rdx, %r8
+    jmp _kefir_func_test2_label4
+_kefir_func_test2_label3:
+    mov %rsi, %r8
+    mov %rdx, %rcx
+    mov %rsi, %rdi
+    mov %rsi, %rax
+_kefir_func_test2_label4:
+    movq %r8, (%rcx)
+    lea -8(%rbp), %rcx
+    movq (%rcx), %rcx
+    mov $-1, %rdx
+    mov $0, %rsi
+    cmp %rdx, %rcx
+    sete %sil
+    mov $0, %rcx
+    test %rsi, %rsi
+    sete %cl
+    mov $0, %rdx
+    test %rcx, %rcx
+    sete %dl
+    test %rdx, %rdx
+    jz _kefir_func_test2_label8
+    jmp _kefir_func_test2_label6
+_kefir_func_test2_label8:
+_kefir_func_test2_label5:
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_test2_label6:
+    mov %rdi, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+test3:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    stmxcsr -8(%rbp)
+_kefir_func_test3_label0:
+_kefir_func_test3_label1:
+    movd _kefir_func_test3_label4(%rip), %xmm2
+    mov $0, %rax
+    comiss %xmm2, %xmm0
+    seta %al
+    mov $0, %rcx
+    test %rax, %rax
+    sete %cl
+    test %rcx, %rcx
+    jz _kefir_func_test3_label5
+    jmp _kefir_func_test3_label3
+_kefir_func_test3_label5:
+_kefir_func_test3_label2:
+    movq %xmm0, %xmm1
+_kefir_func_test3_label3:
+    movq %xmm1, %xmm0
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+    .align 4
+_kefir_func_test3_label4:
+    .long 0
+.section .text
+
+test4:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    stmxcsr -8(%rbp)
+_kefir_func_test4_label0:
+_kefir_func_test4_label1:
+    movq _kefir_func_test4_label4(%rip), %xmm2
+    mov $0, %rax
+    comisd %xmm2, %xmm0
+    seta %al
+    mov $0, %rcx
+    test %rax, %rax
+    sete %cl
+    test %rcx, %rcx
+    jz _kefir_func_test4_label5
+    jmp _kefir_func_test4_label3
+_kefir_func_test4_label5:
+_kefir_func_test4_label2:
+    movq %xmm0, %xmm1
+_kefir_func_test4_label3:
+    movq %xmm1, %xmm0
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+    .align 8
+_kefir_func_test4_label4:
+    .quad 0
+.section .text
+
+

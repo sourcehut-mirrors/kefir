@@ -44,6 +44,10 @@ static kefir_result_t int_unary_const_fold(struct kefir_mem *mem, struct kefir_o
     } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST) {
         arg.uinteger = arg1->operation.parameters.imm.uinteger;
         unsigned_arg = true;
+    } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT_PLACEHOLDER) {
+        REQUIRE_OK(kefir_opt_code_builder_int_placeholder(mem, &func->code, block_id, replacement_ref));
+        REQUIRE_OK(kefir_opt_code_container_instruction_move_after(&func->code, instr_id, *replacement_ref));
+        return KEFIR_OK;
     } else {
         return KEFIR_OK;
     }
@@ -121,6 +125,10 @@ static kefir_result_t int_binary_const_fold(struct kefir_mem *mem, struct kefir_
     } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST) {
         left.uinteger = arg1->operation.parameters.imm.uinteger;
         unsigned_arg = true;
+    } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT_PLACEHOLDER) {
+        REQUIRE_OK(kefir_opt_code_builder_int_placeholder(mem, &func->code, block_id, replacement_ref));
+        REQUIRE_OK(kefir_opt_code_container_instruction_move_after(&func->code, instr_id, *replacement_ref));
+        return KEFIR_OK;
     } else {
         return KEFIR_OK;
     }
@@ -129,6 +137,8 @@ static kefir_result_t int_binary_const_fold(struct kefir_mem *mem, struct kefir_
     } else if (arg2->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST) {
         right.uinteger = arg2->operation.parameters.imm.uinteger;
         unsigned_arg = true;
+    } else if (arg2->operation.opcode == KEFIR_OPT_OPCODE_INT_PLACEHOLDER) {
+        right.integer = 0;
     } else {
         return KEFIR_OK;
     }

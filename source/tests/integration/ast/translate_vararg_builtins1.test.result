@@ -95,6 +95,57 @@
                     "arg": 8
                 },
                 {
+                    "opcode": "pop"
+                },
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 4,
+                        "index": 0
+                    }
+                },
+                {
+                    "opcode": "iadd1",
+                    "arg": 32
+                },
+                {
+                    "opcode": "pop"
+                },
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 4,
+                        "index": 0
+                    }
+                },
+                {
+                    "opcode": "pick",
+                    "arg": 0
+                },
+                {
+                    "opcode": "placehf32"
+                },
+                {
+                    "opcode": "store32",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "pop"
+                },
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 4,
+                        "index": 0
+                    }
+                },
+                {
+                    "opcode": "iadd1",
+                    "arg": 8
+                },
+                {
                     "opcode": "startvarg"
                 },
                 {

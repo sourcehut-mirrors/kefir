@@ -29,4 +29,8 @@ kefir_result_t kefir_ast_translate_initializer(struct kefir_mem *, struct kefir_
                                                struct kefir_irbuilder_block *, const struct kefir_ast_type *,
                                                const struct kefir_ast_initializer *);
 
+kefir_result_t kefir_ast_translate_default_initializer(struct kefir_mem *, struct kefir_ast_translator_context *,
+                                                       struct kefir_irbuilder_block *, const struct kefir_ast_type *,
+                                                       const struct kefir_source_location *);
+
 #endif
