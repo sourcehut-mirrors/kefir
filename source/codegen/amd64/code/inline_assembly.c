@@ -1165,6 +1165,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(inline_assembly)(struct kefi
     REQUIRE_CHAIN(&res, store_outputs(mem, function, &context));
     REQUIRE_CHAIN(&res, restore_state(mem, function, &context));
     REQUIRE_CHAIN(&res, jump_trampolines(mem, function, &context));
+    REQUIRE_CHAIN(&res, kefir_codegen_amd64_stack_frame_require_frame_pointer(&function->stack_frame));
 
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, context.parameters);

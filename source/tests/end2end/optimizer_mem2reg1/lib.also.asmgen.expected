@@ -14,8 +14,6 @@
 
 .section .text
 factorial:
-    push %rbp
-    mov %rsp, %rbp
 _kefir_func_factorial_label0:
 _kefir_func_factorial_label1:
     movsx %edi, %rax
@@ -25,7 +23,6 @@ _kefir_func_factorial_label1:
     jmp _kefir_func_factorial_label3
 _kefir_func_factorial_label2:
     mov $0, %rax
-    pop %rbp
     ret
 _kefir_func_factorial_label3:
     movsx %edi, %rax
@@ -37,7 +34,6 @@ _kefir_func_factorial_label3:
 _kefir_func_factorial_label9:
 _kefir_func_factorial_label4:
     movsx %edi, %rax
-    pop %rbp
     ret
 _kefir_func_factorial_label5:
     mov $1, %rcx
@@ -65,12 +61,9 @@ _kefir_func_factorial_label7:
     jmp _kefir_func_factorial_label6
 _kefir_func_factorial_label8:
     movsx %edx, %rax
-    pop %rbp
     ret
 
 factorial64:
-    push %rbp
-    mov %rsp, %rbp
 _kefir_func_factorial64_label0:
 _kefir_func_factorial64_label1:
     mov $0, %rax
@@ -79,7 +72,6 @@ _kefir_func_factorial64_label1:
     jmp _kefir_func_factorial64_label3
 _kefir_func_factorial64_label2:
     mov $0, %rax
-    pop %rbp
     ret
 _kefir_func_factorial64_label3:
     mov $2, %rax
@@ -90,7 +82,6 @@ _kefir_func_factorial64_label3:
 _kefir_func_factorial64_label9:
 _kefir_func_factorial64_label4:
     mov %rdi, %rax
-    pop %rbp
     ret
 _kefir_func_factorial64_label5:
     mov $1, %rcx
@@ -112,7 +103,6 @@ _kefir_func_factorial64_label7:
     jmp _kefir_func_factorial64_label6
 _kefir_func_factorial64_label8:
     mov %rdx, %rax
-    pop %rbp
     ret
 
 quad_equation:

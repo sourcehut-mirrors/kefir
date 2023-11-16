@@ -207,6 +207,10 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
             config->flags.position_independent_code = true;
         } else if (strcmp("-fno-pic", arg) == 0) {
             config->flags.position_independent_code = false;
+        } else if (strcmp("-fno-omit-frame-pointer", arg) == 0) {
+            config->flags.omit_frame_pointer = KEFIR_DRIVER_FRAME_POINTER_OMISSION_DISABLE;
+        } else if (strcmp("-fomit-frame-pointer", arg) == 0) {
+            config->flags.omit_frame_pointer = KEFIR_DRIVER_FRAME_POINTER_OMISSION_ENABLE;
         }
 
         // Preprocessor flags

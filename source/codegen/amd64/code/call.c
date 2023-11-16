@@ -199,6 +199,7 @@ static kefir_result_t prepare_parameters(struct kefir_mem *mem, struct kefir_cod
                 REQUIRE_OK(kefir_asmcmp_virtual_register_new_memory_pointer(
                     mem, &function->code.context, (kefir_asmcmp_physical_register_index_t) base_reg, offset,
                     &argument_placement_vreg));
+                REQUIRE_OK(kefir_codegen_amd64_stack_frame_require_frame_pointer(&function->stack_frame));
 
                 const struct kefir_ir_typeentry *typeentry =
                     kefir_ir_type_at(ir_func_decl->params, parameter_type_index);
@@ -533,6 +534,8 @@ static kefir_result_t invoke_impl(struct kefir_mem *mem, struct kefir_codegen_am
         kefir_ir_module_get_declaration(function->module->ir_module, call_node->function_declaration_id);
     REQUIRE(ir_func_decl != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to retrieve IR function declaration"));
     REQUIRE_OK(prepare_parameters(mem, function, call_node, ir_func_decl, abi_func_decl, argument_placement));
+
+    REQUIRE_OK(kefir_codegen_amd64_stack_frame_require_frame_pointer(&function->stack_frame));
 
     kefir_asmcmp_instruction_index_t call_idx;
     if (instruction->operation.opcode == KEFIR_OPT_OPCODE_INVOKE) {

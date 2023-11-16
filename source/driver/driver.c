@@ -192,6 +192,19 @@ kefir_result_t kefir_driver_generate_compiler_config(struct kefir_mem *mem, stru
         REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__pic__", "2"));
         REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__PIC__", "2"));
     }
+    switch (config->flags.omit_frame_pointer) {
+        case KEFIR_DRIVER_FRAME_POINTER_OMISSION_ENABLE:
+            compiler_config->codegen.omit_frame_pointer = true;
+            break;
+
+        case KEFIR_DRIVER_FRAME_POINTER_OMISSION_DISABLE:
+            compiler_config->codegen.omit_frame_pointer = false;
+            break;
+
+        case KEFIR_DRIVER_FRAME_POINTER_OMISSION_UNSPECIFIED:
+            // Intentionally left blank
+            break;
+    }
 
     struct kefir_list_entry *include_insert_iter = NULL;
     for (const struct kefir_list_entry *iter = kefir_list_head(&config->include_directories); iter != NULL;
@@ -257,6 +270,9 @@ kefir_result_t kefir_driver_generate_compiler_config(struct kefir_mem *mem, stru
         default:
             if (config->compiler.optimization_level > 0) {
                 compiler_config->optimizer_pipeline_spec = KEFIR_OPTIMIZER_PIPELINE_FULL_SPEC;
+                if (config->flags.omit_frame_pointer == KEFIR_DRIVER_FRAME_POINTER_OMISSION_UNSPECIFIED) {
+                    compiler_config->codegen.omit_frame_pointer = true;
+                }
             }
             break;
     }

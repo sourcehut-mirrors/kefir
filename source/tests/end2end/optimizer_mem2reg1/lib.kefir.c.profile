@@ -1,1 +1,1 @@
-KEFIR_CFLAGS="$KEFIR_CFLAGS --target host-none -Woptimizer-pipeline=mem2reg,op-simplify,compare-branch-fuse"
+KEFIR_CFLAGS="$KEFIR_CFLAGS --target host-none -Woptimizer-pipeline=mem2reg,op-simplify,compare-branch-fuse -fomit-frame-pointer"

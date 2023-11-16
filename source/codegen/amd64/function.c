@@ -305,6 +305,9 @@ static kefir_result_t kefir_codegen_amd64_function_translate_impl(struct kefir_m
     if (func->function->ir_func->declaration->vararg) {
         REQUIRE_OK(kefir_codegen_amd64_stack_frame_vararg(&func->stack_frame));
     }
+    if (!codegen->config->omit_frame_pointer) {
+        REQUIRE_OK(kefir_codegen_amd64_stack_frame_require_frame_pointer(&func->stack_frame));
+    }
     REQUIRE_OK(translate_code(mem, func));
     if (codegen->config->print_details != NULL && strcmp(codegen->config->print_details, "vasm") == 0) {
         REQUIRE_OK(output_asm(codegen, func, false));

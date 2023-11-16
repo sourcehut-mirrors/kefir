@@ -142,6 +142,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_argument)(struct kefir_m
                 &function_parameter, KEFIR_ABI_AMD64_FUNCTION_PARAMETER_ADDRESS_CALLEE, &base_reg, &offset));
             REQUIRE_OK(kefir_asmcmp_virtual_register_new_memory_pointer(
                 mem, &function->code.context, (kefir_asmcmp_physical_register_index_t) base_reg, offset, &vreg));
+            REQUIRE_OK(kefir_codegen_amd64_stack_frame_require_frame_pointer(&function->stack_frame));
 
             const struct kefir_ir_typeentry *typeentry =
                 kefir_ir_type_at(function->function->ir_func->declaration->params, param_type_index);

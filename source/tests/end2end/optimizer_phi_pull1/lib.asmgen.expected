@@ -58,8 +58,6 @@ _kefir_func_somefn_label6:
 .section .text
 
 assign_abs:
-    push %rbp
-    mov %rsp, %rbp
 _kefir_func_assign_abs_label0:
 _kefir_func_assign_abs_label1:
     mov $0, %rax
@@ -76,12 +74,9 @@ _kefir_func_assign_abs_label3:
 _kefir_func_assign_abs_label4:
     movq somevar@GOTPCREL(%rip), %rax
     movq %rdi, (%rax)
-    pop %rbp
     ret
 
 condition1:
-    push %rbp
-    mov %rsp, %rbp
 _kefir_func_condition1_label0:
 _kefir_func_condition1_label1:
     movsx %edi, %rax
@@ -95,11 +90,9 @@ _kefir_func_condition1_label2:
     mov $10, %rcx
     add %rcx, %rax
     movsx %eax, %rax
-    pop %rbp
     ret
 _kefir_func_condition1_label3:
     mov $10, %rax
-    pop %rbp
     ret
 
 

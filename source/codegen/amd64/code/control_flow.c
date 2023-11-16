@@ -96,6 +96,7 @@ kefir_result_t kefir_codegen_amd64_function_map_phi_outputs(struct kefir_mem *me
                     REQUIRE_OK(kefir_asmcmp_virtual_register_new_memory_pointer(
                         mem, &function->code.context, source_vreg->parameters.memory.base_reg,
                         source_vreg->parameters.memory.offset, &target_vreg_idx));
+                    REQUIRE_OK(kefir_codegen_amd64_stack_frame_require_frame_pointer(&function->stack_frame));
                     break;
             }
             REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, target_ref, target_vreg_idx));

@@ -97,6 +97,12 @@ typedef struct kefir_driver_definition {
     const char *value;
 } kefir_driver_definition_t;
 
+typedef enum kefir_driver_frame_pointer_omission {
+    KEFIR_DRIVER_FRAME_POINTER_OMISSION_ENABLE,
+    KEFIR_DRIVER_FRAME_POINTER_OMISSION_DISABLE,
+    KEFIR_DRIVER_FRAME_POINTER_OMISSION_UNSPECIFIED
+} kefir_driver_frame_pointer_omission_t;
+
 typedef struct kefir_driver_configuration {
     kefir_driver_stage_t stage;
     const char *output_file;
@@ -120,6 +126,7 @@ typedef struct kefir_driver_configuration {
         kefir_bool_t shared_linking;
         kefir_bool_t position_independent_code;
         kefir_bool_t position_independent_executable;
+        kefir_driver_frame_pointer_omission_t omit_frame_pointer;
         kefir_bool_t link_start_files;
         kefir_bool_t link_default_libs;
         kefir_bool_t link_libc;
