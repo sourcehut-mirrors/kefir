@@ -1012,7 +1012,8 @@ static kefir_result_t devirtualize_impl(struct kefir_mem *mem, struct devirtuali
                                                                          instr->args[0].vreg.index, &vreg1));
                             REQUIRE_OK(kefir_asmcmp_virtual_register_get(&state->target->context,
                                                                          instr->args[0].vreg.index, &vreg2));
-                            if (vreg1->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_EXTERNAL_MEMORY &&
+                            if (reg_alloc2->type == KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_MEMORY_POINTER &&
+                                vreg1->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_EXTERNAL_MEMORY &&
                                 vreg2->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_EXTERNAL_MEMORY) {
                                 do_link = vreg1->parameters.memory.base_reg != vreg2->parameters.memory.base_reg ||
                                           vreg1->parameters.memory.offset != vreg2->parameters.memory.offset;
