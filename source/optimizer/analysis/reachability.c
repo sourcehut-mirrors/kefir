@@ -133,6 +133,14 @@ static kefir_result_t find_reachable_code_ref1(struct kefir_mem *mem, struct kef
     return KEFIR_OK;
 }
 
+static kefir_result_t find_reachable_code_ref1_imm(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
+                                                   struct kefir_list *queue,
+                                                   const struct kefir_opt_instruction *instr) {
+    UNUSED(analysis);
+    INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.ref_imm.refs[0]);
+    return KEFIR_OK;
+}
+
 static kefir_result_t find_reachable_code_ref2(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
                                                struct kefir_list *queue, const struct kefir_opt_instruction *instr) {
     UNUSED(analysis);

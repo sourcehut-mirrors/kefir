@@ -53,8 +53,7 @@ _kefir_func_factorial_label7:
     mov %rcx, %rsi
     imul %rax, %rsi
     movsx %edx, %rax
-    mov $-1, %rcx
-    add %rcx, %rax
+    add $-1, %rax
     movsx %eax, %rcx
     mov %rcx, %rax
     mov %rsi, %rcx
@@ -96,8 +95,7 @@ _kefir_func_factorial64_label10:
     mov %rcx, %rsi
 _kefir_func_factorial64_label7:
     imul %rdx, %rsi
-    mov $-1, %rax
-    add %rax, %rdx
+    add $-1, %rdx
     mov %rdx, %rax
     mov %rsi, %rcx
     jmp _kefir_func_factorial64_label6

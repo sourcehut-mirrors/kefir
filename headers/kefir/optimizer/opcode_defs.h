@@ -51,15 +51,21 @@
     OPCODE(FLOAT64_PLACEHOLDER, "float64_placeholder", none) SEPARATOR \
     /* Integral arithmetics & binary operations */ \
     OPCODE(INT_ADD, "int_add", ref2) SEPARATOR \
+    OPCODE(INT_ADD_CONST, "int_add_const", ref1_imm) SEPARATOR \
     OPCODE(INT_SUB, "int_sub", ref2) SEPARATOR \
+    OPCODE(INT_SUB_CONST, "int_sub_const", ref1_imm) SEPARATOR \
     OPCODE(INT_MUL, "int_mul", ref2) SEPARATOR \
+    OPCODE(INT_MUL_CONST, "int_mul_const", ref1_imm) SEPARATOR \
     OPCODE(INT_DIV, "int_div", ref2) SEPARATOR \
     OPCODE(INT_MOD, "int_mod", ref2) SEPARATOR \
     OPCODE(UINT_DIV, "uint_div", ref2) SEPARATOR \
     OPCODE(UINT_MOD, "uint_mod", ref2) SEPARATOR \
     OPCODE(INT_AND, "int_and", ref2) SEPARATOR \
+    OPCODE(INT_AND_CONST, "int_and_const", ref1_imm) SEPARATOR \
     OPCODE(INT_OR, "int_or", ref2) SEPARATOR \
+    OPCODE(INT_OR_CONST, "int_or_const", ref1_imm) SEPARATOR \
     OPCODE(INT_XOR, "int_xor", ref2) SEPARATOR \
+    OPCODE(INT_XOR_CONST, "int_xor_const", ref1_imm) SEPARATOR \
     OPCODE(INT_LSHIFT, "int_lshift", ref2) SEPARATOR \
     OPCODE(INT_RSHIFT, "int_rshift", ref2) SEPARATOR \
     OPCODE(INT_ARSHIFT, "int_arshift", ref2) SEPARATOR \

@@ -60,7 +60,9 @@ int_or:
     mov %rsp, %rbp
 _kefir_func_int_or_label0:
 _kefir_func_int_or_label1:
-    movabs $3741317886, %rax
+    movabs $3405691582, %rax
+    movabs $3735929086, %rcx
+    or %rcx, %rax
     pop %rbp
     ret
 
@@ -69,7 +71,14 @@ int_add:
     mov %rsp, %rbp
 _kefir_func_int_add_label0:
 _kefir_func_int_add_label1:
-    mov $14, %rax
+    mov $2, %rax
+    add $3, %rax
+    movsx %eax, %rax
+    mov $4, %rcx
+    add $5, %rcx
+    movsx %ecx, %rcx
+    add %rcx, %rax
+    movsx %eax, %rax
     pop %rbp
     ret
 
@@ -78,7 +87,9 @@ int_and:
     mov %rsp, %rbp
 _kefir_func_int_and_label0:
 _kefir_func_int_and_label1:
-    movabs $3400302782, %rax
+    movabs $3405691582, %rax
+    movabs $3735929086, %rcx
+    and %rcx, %rax
     pop %rbp
     ret
 
@@ -87,7 +98,14 @@ int_div:
     mov %rsp, %rbp
 _kefir_func_int_div_label0:
 _kefir_func_int_div_label1:
-    mov $-50, %rax
+    mov $100, %rax
+    mov $0, %rcx
+    sub $2, %rcx
+    movsx %ecx, %rcx
+    cqo
+    idiv %rcx
+    mov %rax, %rcx
+    movsx %ecx, %rax
     pop %rbp
     ret
 
@@ -105,7 +123,14 @@ int_mul:
     mov %rsp, %rbp
 _kefir_func_int_mul_label0:
 _kefir_func_int_mul_label1:
-    mov $3000, %rax
+    mov $100, %rax
+    imul $2, %rax, %rax
+    movsx %eax, %rax
+    mov $5, %rcx
+    imul $3, %rcx, %rcx
+    movsx %ecx, %rcx
+    imul %rcx, %rax
+    movsx %eax, %rax
     pop %rbp
     ret
 
@@ -150,7 +175,16 @@ int_sub:
     mov %rsp, %rbp
 _kefir_func_int_sub_label0:
 _kefir_func_int_sub_label1:
-    mov $-150, %rax
+    mov $0, %rax
+    sub $100, %rax
+    movsx %eax, %rax
+    sub $55, %rax
+    movsx %eax, %rax
+    mov $1, %rcx
+    sub $6, %rcx
+    movsx %ecx, %rcx
+    sub %rcx, %rax
+    movsx %eax, %rax
     pop %rbp
     ret
 
@@ -159,7 +193,9 @@ int_xor:
     mov %rsp, %rbp
 _kefir_func_int_xor_label0:
 _kefir_func_int_xor_label1:
-    mov $341015104, %rax
+    movabs $3405691582, %rax
+    movabs $3735929086, %rcx
+    xor %rcx, %rax
     pop %rbp
     ret
 
@@ -186,7 +222,16 @@ int_div2:
     mov %rsp, %rbp
 _kefir_func_int_div2_label0:
 _kefir_func_int_div2_label1:
-    mov $0, %rax
+    mov $100, %rax
+    mov $0, %rcx
+    sub $2, %rcx
+    movsx %ecx, %rcx
+    mov %ecx, %ecx
+    mov $0, %rdx
+    div %rcx
+    mov %rax, %rcx
+    mov %ecx, %eax
+    movsx %eax, %rax
     pop %rbp
     ret
 
@@ -231,7 +276,9 @@ int_sub2:
     mov %rsp, %rbp
 _kefir_func_int_sub2_label0:
 _kefir_func_int_sub2_label1:
-    movabs $18446744073709551615, %rax
+    mov $0, %rax
+    sub $1, %rax
+    movsx %eax, %rax
     pop %rbp
     ret
 
@@ -312,7 +359,20 @@ int_equals:
     mov %rsp, %rbp
 _kefir_func_int_equals_label0:
 _kefir_func_int_equals_label1:
-    mov $1, %rax
+    mov $2, %rax
+    imul $2, %rax, %rax
+    movsx %eax, %rax
+    add $2, %rax
+    movsx %eax, %rax
+    mov $3, %rcx
+    add $2, %rcx
+    movsx %ecx, %rcx
+    add $1, %rcx
+    movsx %ecx, %rcx
+    mov $0, %rdx
+    cmp %rcx, %rax
+    sete %dl
+    mov %rdx, %rax
     pop %rbp
     ret
 
@@ -330,7 +390,20 @@ int_equals2:
     mov %rsp, %rbp
 _kefir_func_int_equals2_label0:
 _kefir_func_int_equals2_label1:
-    mov $0, %rax
+    mov $2, %rax
+    imul $2, %rax, %rax
+    movsx %eax, %rax
+    add $2, %rax
+    movsx %eax, %rax
+    mov $4, %rcx
+    add $2, %rcx
+    movsx %ecx, %rcx
+    add $1, %rcx
+    movsx %ecx, %rcx
+    mov $0, %rdx
+    cmp %rcx, %rax
+    sete %dl
+    mov %rdx, %rax
     pop %rbp
     ret
 
@@ -339,7 +412,20 @@ int_equals3:
     mov %rsp, %rbp
 _kefir_func_int_equals3_label0:
 _kefir_func_int_equals3_label1:
-    mov $1, %rax
+    mov $2, %rax
+    imul $2, %rax, %rax
+    movsx %eax, %rax
+    add $2, %rax
+    movsx %eax, %rax
+    mov $3, %rcx
+    add $2, %rcx
+    movsx %ecx, %rcx
+    add $1, %rcx
+    movsx %ecx, %rcx
+    mov $0, %rdx
+    cmp %rcx, %rax
+    sete %dl
+    mov %rdx, %rax
     pop %rbp
     ret
 
@@ -357,7 +443,14 @@ int_less_or_equals2:
     mov %rsp, %rbp
 _kefir_func_int_less_or_equals2_label0:
 _kefir_func_int_less_or_equals2_label1:
-    mov $0, %rax
+    mov $1000, %rax
+    mov $1, %rcx
+    add $99, %rcx
+    movsx %ecx, %rcx
+    mov $0, %rdx
+    cmp %rcx, %rax
+    setle %dl
+    mov %rdx, %rax
     pop %rbp
     ret
 
@@ -366,7 +459,14 @@ int_greater_or_equals2:
     mov %rsp, %rbp
 _kefir_func_int_greater_or_equals2_label0:
 _kefir_func_int_greater_or_equals2_label1:
-    mov $0, %rax
+    mov $-1, %rax
+    mov $1, %rcx
+    add $99, %rcx
+    movsx %ecx, %rcx
+    mov $0, %rdx
+    cmp %rcx, %rax
+    setge %dl
+    mov %rdx, %rax
     pop %rbp
     ret
 
@@ -375,7 +475,10 @@ sign_extend16:
     mov %rsp, %rbp
 _kefir_func_sign_extend16_label0:
 _kefir_func_sign_extend16_label1:
-    mov $-28674, %rax
+    mov $65535, %rax
+    add $36863, %rax
+    movsx %eax, %rax
+    movsx %ax, %rax
     pop %rbp
     ret
 
@@ -384,7 +487,10 @@ sign_extend32:
     mov %rsp, %rbp
 _kefir_func_sign_extend32_label0:
 _kefir_func_sign_extend32_label1:
-    mov $-2, %rax
+    movabs $281474976710655, %rax
+    movabs $687194767359, %rcx
+    add %rcx, %rax
+    movsx %eax, %rax
     pop %rbp
     ret
 
@@ -402,7 +508,10 @@ sign_extend8:
     mov %rsp, %rbp
 _kefir_func_sign_extend8_label0:
 _kefir_func_sign_extend8_label1:
-    mov $-128, %rax
+    mov $256, %rax
+    add $128, %rax
+    movsx %eax, %rax
+    movsx %al, %rax
     pop %rbp
     ret
 
@@ -411,7 +520,10 @@ zero_extend8:
     mov %rsp, %rbp
 _kefir_func_zero_extend8_label0:
 _kefir_func_zero_extend8_label1:
-    mov $128, %rax
+    mov $256, %rax
+    add $128, %rax
+    movsx %eax, %rax
+    movzx %al, %rax
     pop %rbp
     ret
 
@@ -420,7 +532,16 @@ int_below_or_equals:
     mov %rsp, %rbp
 _kefir_func_int_below_or_equals_label0:
 _kefir_func_int_below_or_equals_label1:
-    mov $1, %rax
+    mov $-3, %rax
+    mov $0, %rcx
+    mov $4, %rdx
+    sub $1, %rdx
+    movsx %edx, %rdx
+    sub %rdx, %rcx
+    mov $0, %rdx
+    cmp %rcx, %rax
+    setbe %dl
+    mov %rdx, %rax
     pop %rbp
     ret
 
@@ -429,7 +550,14 @@ int_less_or_equals:
     mov %rsp, %rbp
 _kefir_func_int_less_or_equals_label0:
 _kefir_func_int_less_or_equals_label1:
-    mov $1, %rax
+    mov $100, %rax
+    mov $1, %rcx
+    add $99, %rcx
+    movsx %ecx, %rcx
+    mov $0, %rdx
+    cmp %rcx, %rax
+    setle %dl
+    mov %rdx, %rax
     pop %rbp
     ret
 
@@ -438,7 +566,14 @@ int_greater_or_equals:
     mov %rsp, %rbp
 _kefir_func_int_greater_or_equals_label0:
 _kefir_func_int_greater_or_equals_label1:
-    mov $1, %rax
+    mov $100, %rax
+    mov $1, %rcx
+    add $99, %rcx
+    movsx %ecx, %rcx
+    mov $0, %rdx
+    cmp %rcx, %rax
+    setge %dl
+    mov %rdx, %rax
     pop %rbp
     ret
 
@@ -447,7 +582,10 @@ zero_extend16:
     mov %rsp, %rbp
 _kefir_func_zero_extend16_label0:
 _kefir_func_zero_extend16_label1:
-    mov $36862, %rax
+    mov $65535, %rax
+    add $36863, %rax
+    movsx %eax, %rax
+    movzx %ax, %rax
     pop %rbp
     ret
 
@@ -456,7 +594,10 @@ zero_extend32:
     mov %rsp, %rbp
 _kefir_func_zero_extend32_label0:
 _kefir_func_zero_extend32_label1:
-    movabs $4294967294, %rax
+    movabs $281474976710655, %rax
+    movabs $687194767359, %rcx
+    add %rcx, %rax
+    mov %eax, %eax
     pop %rbp
     ret
 
@@ -465,7 +606,17 @@ int_above_or_equals:
     mov %rsp, %rbp
 _kefir_func_int_above_or_equals_label0:
 _kefir_func_int_above_or_equals_label1:
-    mov $1, %rax
+    mov $-3, %rax
+    mov $-1, %rcx
+    mov $2, %rdx
+    add $1, %rdx
+    movsx %edx, %rdx
+    imul %rdx, %rcx
+    movsx %ecx, %rcx
+    mov $0, %rdx
+    cmp %rcx, %rax
+    setge %dl
+    mov %rdx, %rax
     pop %rbp
     ret
 
@@ -474,7 +625,16 @@ int_below_or_equals2:
     mov %rsp, %rbp
 _kefir_func_int_below_or_equals2_label0:
 _kefir_func_int_below_or_equals2_label1:
-    mov $0, %rax
+    mov $-1, %rax
+    mov $0, %rcx
+    mov $4, %rdx
+    sub $1, %rdx
+    movsx %edx, %rdx
+    sub %rdx, %rcx
+    mov $0, %rdx
+    cmp %rcx, %rax
+    setbe %dl
+    mov %rdx, %rax
     pop %rbp
     ret
 
@@ -483,7 +643,17 @@ int_above_or_equals2:
     mov %rsp, %rbp
 _kefir_func_int_above_or_equals2_label0:
 _kefir_func_int_above_or_equals2_label1:
-    mov $0, %rax
+    mov $-10, %rax
+    mov $-1, %rcx
+    mov $2, %rdx
+    add $1, %rdx
+    movsx %edx, %rdx
+    imul %rdx, %rcx
+    movsx %ecx, %rcx
+    mov $0, %rdx
+    cmp %rcx, %rax
+    setge %dl
+    mov %rdx, %rax
     pop %rbp
     ret
 

@@ -232,6 +232,20 @@ BINARY_OP(float64_to_long_double);
 
 #undef BINARY_OP
 
+#define BINARY_INT_CONST_OP(_id)                                                                                  \
+    kefir_result_t kefir_opt_code_builder_##_id(struct kefir_mem *, struct kefir_opt_code_container *,            \
+                                                kefir_opt_block_id_t, kefir_opt_instruction_ref_t, kefir_int64_t, \
+                                                kefir_opt_instruction_ref_t *)
+
+BINARY_INT_CONST_OP(int_add_const);
+BINARY_INT_CONST_OP(int_sub_const);
+BINARY_INT_CONST_OP(int_mul_const);
+BINARY_INT_CONST_OP(int_and_const);
+BINARY_INT_CONST_OP(int_or_const);
+BINARY_INT_CONST_OP(int_xor_const);
+
+#undef BINARY_INT_CONST_OP
+
 #define LOAD_OP(_id)                                                                                              \
     kefir_result_t kefir_opt_code_builder_##_id(                                                                  \
         struct kefir_mem *, struct kefir_opt_code_container *, kefir_opt_block_id_t, kefir_opt_instruction_ref_t, \

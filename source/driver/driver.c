@@ -35,7 +35,7 @@
 #include <libgen.h>
 
 #define KEFIR_OPTIMIZER_PIPELINE_FULL_SPEC \
-    "phi-pull,mem2reg,phi-pull,op-simplify,constant-fold,branch-removal,compare-branch-fuse"
+    "phi-pull,mem2reg,phi-pull,constant-fold,op-simplify,branch-removal,compare-branch-fuse"
 
 static kefir_result_t driver_generate_asm_config(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                                  struct kefir_driver_configuration *config,

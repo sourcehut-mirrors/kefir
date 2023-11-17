@@ -72,6 +72,12 @@ typedef union kefir_opt_operation_parameters {
     kefir_opt_inline_assembly_id_t inline_asm_ref;
     kefir_size_t index;
     kefir_id_t ir_ref;
+    struct {
+        kefir_opt_instruction_ref_t refs[1];
+        union {
+            kefir_int64_t integer;
+        };
+    } ref_imm;
 
     struct {
         kefir_opt_block_id_t target_block;
