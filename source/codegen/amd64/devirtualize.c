@@ -233,11 +233,12 @@ static kefir_result_t allocate_spill_space(struct kefir_mem *mem, struct devirtu
         }
     }
 
+    const kefir_size_t orig_num_of_slots = num_of_slots;
     num_of_slots = kefir_target_abi_pad_aligned(num_of_slots + qwords, qword_alignment);
     REQUIRE_OK(kefir_bitset_resize(mem, &state->alive.spill_area, num_of_slots));
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_ensure_spill_area(state->stack_frame, num_of_slots));
 
-    for (iter_index = 0; iter_index < num_of_slots;) {
+    for (iter_index = orig_num_of_slots; iter_index < num_of_slots;) {
         kefir_result_t res =
             kefir_bitset_find_consecutive(&state->alive.spill_area, false, qwords, iter_index, &spill_index);
         if (res != KEFIR_NOT_FOUND) {
@@ -246,7 +247,7 @@ static kefir_result_t allocate_spill_space(struct kefir_mem *mem, struct devirtu
                 *result = spill_index;
                 return KEFIR_OK;
             } else {
-                iter_index = spill_index;
+                iter_index = spill_index + 1;
             }
         } else {
             iter_index = num_of_slots;
