@@ -282,11 +282,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(compare_branch)(struct kefir
     kefir_asmcmp_virtual_register_index_t arg1_vreg_idx, arg2_vreg_idx;
     REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(
         function, instruction->operation.parameters.branch.comparison.refs[0], &arg1_vreg_idx));
-    REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(
-        function, instruction->operation.parameters.branch.comparison.refs[1], &arg2_vreg_idx));
 
     switch (instruction->operation.parameters.branch.comparison.type) {
-
         case KEFIR_OPT_COMPARE_BRANCH_INT_EQUALS:
         case KEFIR_OPT_COMPARE_BRANCH_INT_NOT_EQUALS:
         case KEFIR_OPT_COMPARE_BRANCH_INT_GREATER:
@@ -297,6 +294,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(compare_branch)(struct kefir
         case KEFIR_OPT_COMPARE_BRANCH_INT_ABOVE_OR_EQUALS:
         case KEFIR_OPT_COMPARE_BRANCH_INT_BELOW:
         case KEFIR_OPT_COMPARE_BRANCH_INT_BELOW_OR_EQUALS:
+            REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(
+                function, instruction->operation.parameters.branch.comparison.refs[1], &arg2_vreg_idx));
             REQUIRE_OK(kefir_asmcmp_amd64_cmp(
                 mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                 &KEFIR_ASMCMP_MAKE_VREG(arg1_vreg_idx), &KEFIR_ASMCMP_MAKE_VREG(arg2_vreg_idx), NULL));
@@ -306,6 +305,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(compare_branch)(struct kefir
         case KEFIR_OPT_COMPARE_BRANCH_FLOAT32_NOT_EQUALS:
         case KEFIR_OPT_COMPARE_BRANCH_FLOAT32_GREATER:
         case KEFIR_OPT_COMPARE_BRANCH_FLOAT32_GREATER_OR_EQUALS:
+            REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(
+                function, instruction->operation.parameters.branch.comparison.refs[1], &arg2_vreg_idx));
             REQUIRE_OK(kefir_asmcmp_amd64_ucomiss(
                 mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                 &KEFIR_ASMCMP_MAKE_VREG(arg1_vreg_idx), &KEFIR_ASMCMP_MAKE_VREG(arg2_vreg_idx), NULL));
@@ -313,6 +314,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(compare_branch)(struct kefir
 
         case KEFIR_OPT_COMPARE_BRANCH_FLOAT32_LESS:
         case KEFIR_OPT_COMPARE_BRANCH_FLOAT32_LESS_OR_EQUALS:
+            REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(
+                function, instruction->operation.parameters.branch.comparison.refs[1], &arg2_vreg_idx));
             REQUIRE_OK(kefir_asmcmp_amd64_ucomiss(
                 mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                 &KEFIR_ASMCMP_MAKE_VREG(arg2_vreg_idx), &KEFIR_ASMCMP_MAKE_VREG(arg1_vreg_idx), NULL));
@@ -322,6 +325,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(compare_branch)(struct kefir
         case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_NOT_EQUALS:
         case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_GREATER:
         case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_GREATER_OR_EQUALS:
+            REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(
+                function, instruction->operation.parameters.branch.comparison.refs[1], &arg2_vreg_idx));
             REQUIRE_OK(kefir_asmcmp_amd64_ucomisd(
                 mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                 &KEFIR_ASMCMP_MAKE_VREG(arg1_vreg_idx), &KEFIR_ASMCMP_MAKE_VREG(arg2_vreg_idx), NULL));
@@ -329,9 +334,40 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(compare_branch)(struct kefir
 
         case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_LESS:
         case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_LESS_OR_EQUALS:
+            REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(
+                function, instruction->operation.parameters.branch.comparison.refs[1], &arg2_vreg_idx));
             REQUIRE_OK(kefir_asmcmp_amd64_ucomisd(
                 mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                 &KEFIR_ASMCMP_MAKE_VREG(arg2_vreg_idx), &KEFIR_ASMCMP_MAKE_VREG(arg1_vreg_idx), NULL));
+            break;
+
+        case KEFIR_OPT_COMPARE_BRANCH_INT_EQUALS_CONST:
+        case KEFIR_OPT_COMPARE_BRANCH_INT_NOT_EQUALS_CONST:
+        case KEFIR_OPT_COMPARE_BRANCH_INT_GREATER_CONST:
+        case KEFIR_OPT_COMPARE_BRANCH_INT_GREATER_OR_EQUALS_CONST:
+        case KEFIR_OPT_COMPARE_BRANCH_INT_LESS_CONST:
+        case KEFIR_OPT_COMPARE_BRANCH_INT_LESS_OR_EQUALS_CONST:
+        case KEFIR_OPT_COMPARE_BRANCH_INT_ABOVE_CONST:
+        case KEFIR_OPT_COMPARE_BRANCH_INT_ABOVE_OR_EQUALS_CONST:
+        case KEFIR_OPT_COMPARE_BRANCH_INT_BELOW_CONST:
+        case KEFIR_OPT_COMPARE_BRANCH_INT_BELOW_OR_EQUALS_CONST:
+            if (instruction->operation.parameters.branch.comparison.integer >= KEFIR_INT32_MIN &&
+                instruction->operation.parameters.branch.comparison.integer <= KEFIR_INT32_MAX) {
+                REQUIRE_OK(kefir_asmcmp_amd64_cmp(
+                    mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                    &KEFIR_ASMCMP_MAKE_VREG64(arg1_vreg_idx),
+                    &KEFIR_ASMCMP_MAKE_INT(instruction->operation.parameters.branch.comparison.integer), NULL));
+            } else {
+                REQUIRE_OK(kefir_asmcmp_virtual_register_new(
+                    mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &arg2_vreg_idx));
+                REQUIRE_OK(kefir_asmcmp_amd64_movabs(
+                    mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                    &KEFIR_ASMCMP_MAKE_VREG(arg2_vreg_idx),
+                    &KEFIR_ASMCMP_MAKE_INT(instruction->operation.parameters.branch.comparison.integer), NULL));
+                REQUIRE_OK(kefir_asmcmp_amd64_cmp(
+                    mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                    &KEFIR_ASMCMP_MAKE_VREG(arg1_vreg_idx), &KEFIR_ASMCMP_MAKE_VREG(arg2_vreg_idx), NULL));
+            }
             break;
     }
 
@@ -352,60 +388,70 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(compare_branch)(struct kefir
 
     switch (instruction->operation.parameters.branch.comparison.type) {
         case KEFIR_OPT_COMPARE_BRANCH_INT_EQUALS:
+        case KEFIR_OPT_COMPARE_BRANCH_INT_EQUALS_CONST:
             REQUIRE_OK(kefir_asmcmp_amd64_jne(mem, &function->code,
                                               kefir_asmcmp_context_instr_tail(&function->code.context),
                                               &KEFIR_ASMCMP_MAKE_LABEL(label, 0), NULL));
             break;
 
         case KEFIR_OPT_COMPARE_BRANCH_INT_NOT_EQUALS:
+        case KEFIR_OPT_COMPARE_BRANCH_INT_NOT_EQUALS_CONST:
             REQUIRE_OK(kefir_asmcmp_amd64_je(mem, &function->code,
                                              kefir_asmcmp_context_instr_tail(&function->code.context),
                                              &KEFIR_ASMCMP_MAKE_LABEL(label, 0), NULL));
             break;
 
         case KEFIR_OPT_COMPARE_BRANCH_INT_GREATER:
+        case KEFIR_OPT_COMPARE_BRANCH_INT_GREATER_CONST:
             REQUIRE_OK(kefir_asmcmp_amd64_jle(mem, &function->code,
                                               kefir_asmcmp_context_instr_tail(&function->code.context),
                                               &KEFIR_ASMCMP_MAKE_LABEL(label, 0), NULL));
             break;
 
         case KEFIR_OPT_COMPARE_BRANCH_INT_GREATER_OR_EQUALS:
+        case KEFIR_OPT_COMPARE_BRANCH_INT_GREATER_OR_EQUALS_CONST:
             REQUIRE_OK(kefir_asmcmp_amd64_jl(mem, &function->code,
                                              kefir_asmcmp_context_instr_tail(&function->code.context),
                                              &KEFIR_ASMCMP_MAKE_LABEL(label, 0), NULL));
             break;
 
         case KEFIR_OPT_COMPARE_BRANCH_INT_LESS:
+        case KEFIR_OPT_COMPARE_BRANCH_INT_LESS_CONST:
             REQUIRE_OK(kefir_asmcmp_amd64_jge(mem, &function->code,
                                               kefir_asmcmp_context_instr_tail(&function->code.context),
                                               &KEFIR_ASMCMP_MAKE_LABEL(label, 0), NULL));
             break;
 
         case KEFIR_OPT_COMPARE_BRANCH_INT_LESS_OR_EQUALS:
+        case KEFIR_OPT_COMPARE_BRANCH_INT_LESS_OR_EQUALS_CONST:
             REQUIRE_OK(kefir_asmcmp_amd64_jg(mem, &function->code,
                                              kefir_asmcmp_context_instr_tail(&function->code.context),
                                              &KEFIR_ASMCMP_MAKE_LABEL(label, 0), NULL));
             break;
 
         case KEFIR_OPT_COMPARE_BRANCH_INT_ABOVE:
+        case KEFIR_OPT_COMPARE_BRANCH_INT_ABOVE_CONST:
             REQUIRE_OK(kefir_asmcmp_amd64_jbe(mem, &function->code,
                                               kefir_asmcmp_context_instr_tail(&function->code.context),
                                               &KEFIR_ASMCMP_MAKE_LABEL(label, 0), NULL));
             break;
 
         case KEFIR_OPT_COMPARE_BRANCH_INT_ABOVE_OR_EQUALS:
+        case KEFIR_OPT_COMPARE_BRANCH_INT_ABOVE_OR_EQUALS_CONST:
             REQUIRE_OK(kefir_asmcmp_amd64_jb(mem, &function->code,
                                              kefir_asmcmp_context_instr_tail(&function->code.context),
                                              &KEFIR_ASMCMP_MAKE_LABEL(label, 0), NULL));
             break;
 
         case KEFIR_OPT_COMPARE_BRANCH_INT_BELOW:
+        case KEFIR_OPT_COMPARE_BRANCH_INT_BELOW_CONST:
             REQUIRE_OK(kefir_asmcmp_amd64_jae(mem, &function->code,
                                               kefir_asmcmp_context_instr_tail(&function->code.context),
                                               &KEFIR_ASMCMP_MAKE_LABEL(label, 0), NULL));
             break;
 
         case KEFIR_OPT_COMPARE_BRANCH_INT_BELOW_OR_EQUALS:
+        case KEFIR_OPT_COMPARE_BRANCH_INT_BELOW_OR_EQUALS_CONST:
             REQUIRE_OK(kefir_asmcmp_amd64_ja(mem, &function->code,
                                              kefir_asmcmp_context_instr_tail(&function->code.context),
                                              &KEFIR_ASMCMP_MAKE_LABEL(label, 0), NULL));

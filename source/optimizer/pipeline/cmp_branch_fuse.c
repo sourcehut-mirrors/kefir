@@ -56,10 +56,28 @@ static kefir_result_t cmp_branch_fuse_apply(struct kefir_mem *mem, const struct 
                     branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
                 break;
 
+            case KEFIR_OPT_OPCODE_INT_EQUALS_CONST:
+                REQUIRE_OK(kefir_opt_code_builder_compare_branch_int_const(
+                    mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_INT_EQUALS_CONST,
+                    condition_instr->operation.parameters.ref_imm.refs[0],
+                    condition_instr->operation.parameters.ref_imm.integer,
+                    branch_instr->operation.parameters.branch.target_block,
+                    branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
+                break;
+
             case KEFIR_OPT_OPCODE_INT_GREATER:
                 REQUIRE_OK(kefir_opt_code_builder_compare_branch(
                     mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_INT_GREATER,
                     condition_instr->operation.parameters.refs[0], condition_instr->operation.parameters.refs[1],
+                    branch_instr->operation.parameters.branch.target_block,
+                    branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
+                break;
+
+            case KEFIR_OPT_OPCODE_INT_GREATER_CONST:
+                REQUIRE_OK(kefir_opt_code_builder_compare_branch_int_const(
+                    mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_INT_GREATER_CONST,
+                    condition_instr->operation.parameters.ref_imm.refs[0],
+                    condition_instr->operation.parameters.ref_imm.integer,
                     branch_instr->operation.parameters.branch.target_block,
                     branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
                 break;
@@ -72,10 +90,28 @@ static kefir_result_t cmp_branch_fuse_apply(struct kefir_mem *mem, const struct 
                     branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
                 break;
 
+            case KEFIR_OPT_OPCODE_INT_GREATER_OR_EQUALS_CONST:
+                REQUIRE_OK(kefir_opt_code_builder_compare_branch_int_const(
+                    mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_INT_GREATER_OR_EQUALS_CONST,
+                    condition_instr->operation.parameters.ref_imm.refs[0],
+                    condition_instr->operation.parameters.ref_imm.integer,
+                    branch_instr->operation.parameters.branch.target_block,
+                    branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
+                break;
+
             case KEFIR_OPT_OPCODE_INT_LESSER:
                 REQUIRE_OK(kefir_opt_code_builder_compare_branch(
                     mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_INT_LESS,
                     condition_instr->operation.parameters.refs[0], condition_instr->operation.parameters.refs[1],
+                    branch_instr->operation.parameters.branch.target_block,
+                    branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
+                break;
+
+            case KEFIR_OPT_OPCODE_INT_LESSER_CONST:
+                REQUIRE_OK(kefir_opt_code_builder_compare_branch_int_const(
+                    mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_INT_LESS_CONST,
+                    condition_instr->operation.parameters.ref_imm.refs[0],
+                    condition_instr->operation.parameters.ref_imm.integer,
                     branch_instr->operation.parameters.branch.target_block,
                     branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
                 break;
@@ -88,10 +124,28 @@ static kefir_result_t cmp_branch_fuse_apply(struct kefir_mem *mem, const struct 
                     branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
                 break;
 
+            case KEFIR_OPT_OPCODE_INT_LESSER_OR_EQUALS_CONST:
+                REQUIRE_OK(kefir_opt_code_builder_compare_branch_int_const(
+                    mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_INT_LESS_OR_EQUALS_CONST,
+                    condition_instr->operation.parameters.ref_imm.refs[0],
+                    condition_instr->operation.parameters.ref_imm.integer,
+                    branch_instr->operation.parameters.branch.target_block,
+                    branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
+                break;
+
             case KEFIR_OPT_OPCODE_INT_ABOVE:
                 REQUIRE_OK(kefir_opt_code_builder_compare_branch(
                     mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_INT_ABOVE,
                     condition_instr->operation.parameters.refs[0], condition_instr->operation.parameters.refs[1],
+                    branch_instr->operation.parameters.branch.target_block,
+                    branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
+                break;
+
+            case KEFIR_OPT_OPCODE_INT_ABOVE_CONST:
+                REQUIRE_OK(kefir_opt_code_builder_compare_branch_int_const(
+                    mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_INT_ABOVE_CONST,
+                    condition_instr->operation.parameters.ref_imm.refs[0],
+                    condition_instr->operation.parameters.ref_imm.integer,
                     branch_instr->operation.parameters.branch.target_block,
                     branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
                 break;
@@ -104,6 +158,15 @@ static kefir_result_t cmp_branch_fuse_apply(struct kefir_mem *mem, const struct 
                     branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
                 break;
 
+            case KEFIR_OPT_OPCODE_INT_ABOVE_OR_EQUALS_CONST:
+                REQUIRE_OK(kefir_opt_code_builder_compare_branch_int_const(
+                    mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_INT_ABOVE_OR_EQUALS_CONST,
+                    condition_instr->operation.parameters.ref_imm.refs[0],
+                    condition_instr->operation.parameters.ref_imm.integer,
+                    branch_instr->operation.parameters.branch.target_block,
+                    branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
+                break;
+
             case KEFIR_OPT_OPCODE_INT_BELOW:
                 REQUIRE_OK(kefir_opt_code_builder_compare_branch(
                     mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_INT_BELOW,
@@ -112,10 +175,28 @@ static kefir_result_t cmp_branch_fuse_apply(struct kefir_mem *mem, const struct 
                     branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
                 break;
 
+            case KEFIR_OPT_OPCODE_INT_BELOW_CONST:
+                REQUIRE_OK(kefir_opt_code_builder_compare_branch_int_const(
+                    mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_INT_BELOW_CONST,
+                    condition_instr->operation.parameters.ref_imm.refs[0],
+                    condition_instr->operation.parameters.ref_imm.integer,
+                    branch_instr->operation.parameters.branch.target_block,
+                    branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
+                break;
+
             case KEFIR_OPT_OPCODE_INT_BELOW_OR_EQUALS:
                 REQUIRE_OK(kefir_opt_code_builder_compare_branch(
                     mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_INT_BELOW_OR_EQUALS,
                     condition_instr->operation.parameters.refs[0], condition_instr->operation.parameters.refs[1],
+                    branch_instr->operation.parameters.branch.target_block,
+                    branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
+                break;
+
+            case KEFIR_OPT_OPCODE_INT_BELOW_OR_EQUALS_CONST:
+                REQUIRE_OK(kefir_opt_code_builder_compare_branch_int_const(
+                    mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_INT_BELOW_OR_EQUALS_CONST,
+                    condition_instr->operation.parameters.ref_imm.refs[0],
+                    condition_instr->operation.parameters.ref_imm.integer,
                     branch_instr->operation.parameters.branch.target_block,
                     branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
                 break;
@@ -215,11 +296,29 @@ static kefir_result_t cmp_branch_fuse_apply(struct kefir_mem *mem, const struct 
                             branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
                         break;
 
+                    case KEFIR_OPT_OPCODE_INT_EQUALS_CONST:
+                        REQUIRE_OK(kefir_opt_code_builder_compare_branch_int_const(
+                            mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_INT_NOT_EQUALS_CONST,
+                            negated_condition_instr->operation.parameters.ref_imm.refs[0],
+                            negated_condition_instr->operation.parameters.ref_imm.integer,
+                            branch_instr->operation.parameters.branch.target_block,
+                            branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
+                        break;
+
                     case KEFIR_OPT_OPCODE_INT_GREATER:
                         REQUIRE_OK(kefir_opt_code_builder_compare_branch(
                             mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_INT_LESS_OR_EQUALS,
                             negated_condition_instr->operation.parameters.refs[0],
                             negated_condition_instr->operation.parameters.refs[1],
+                            branch_instr->operation.parameters.branch.target_block,
+                            branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
+                        break;
+
+                    case KEFIR_OPT_OPCODE_INT_GREATER_CONST:
+                        REQUIRE_OK(kefir_opt_code_builder_compare_branch_int_const(
+                            mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_INT_LESS_OR_EQUALS_CONST,
+                            negated_condition_instr->operation.parameters.ref_imm.refs[0],
+                            negated_condition_instr->operation.parameters.ref_imm.integer,
                             branch_instr->operation.parameters.branch.target_block,
                             branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
                         break;
@@ -233,11 +332,29 @@ static kefir_result_t cmp_branch_fuse_apply(struct kefir_mem *mem, const struct 
                             branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
                         break;
 
+                    case KEFIR_OPT_OPCODE_INT_GREATER_OR_EQUALS_CONST:
+                        REQUIRE_OK(kefir_opt_code_builder_compare_branch_int_const(
+                            mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_INT_LESS_CONST,
+                            negated_condition_instr->operation.parameters.ref_imm.refs[0],
+                            negated_condition_instr->operation.parameters.ref_imm.integer,
+                            branch_instr->operation.parameters.branch.target_block,
+                            branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
+                        break;
+
                     case KEFIR_OPT_OPCODE_INT_LESSER:
                         REQUIRE_OK(kefir_opt_code_builder_compare_branch(
                             mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_INT_GREATER_OR_EQUALS,
                             negated_condition_instr->operation.parameters.refs[0],
                             negated_condition_instr->operation.parameters.refs[1],
+                            branch_instr->operation.parameters.branch.target_block,
+                            branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
+                        break;
+
+                    case KEFIR_OPT_OPCODE_INT_LESSER_CONST:
+                        REQUIRE_OK(kefir_opt_code_builder_compare_branch_int_const(
+                            mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_INT_GREATER_OR_EQUALS_CONST,
+                            negated_condition_instr->operation.parameters.ref_imm.refs[0],
+                            negated_condition_instr->operation.parameters.ref_imm.integer,
                             branch_instr->operation.parameters.branch.target_block,
                             branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
                         break;
@@ -251,11 +368,29 @@ static kefir_result_t cmp_branch_fuse_apply(struct kefir_mem *mem, const struct 
                             branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
                         break;
 
+                    case KEFIR_OPT_OPCODE_INT_LESSER_OR_EQUALS_CONST:
+                        REQUIRE_OK(kefir_opt_code_builder_compare_branch_int_const(
+                            mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_INT_GREATER_CONST,
+                            negated_condition_instr->operation.parameters.ref_imm.refs[0],
+                            negated_condition_instr->operation.parameters.ref_imm.integer,
+                            branch_instr->operation.parameters.branch.target_block,
+                            branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
+                        break;
+
                     case KEFIR_OPT_OPCODE_INT_ABOVE:
                         REQUIRE_OK(kefir_opt_code_builder_compare_branch(
                             mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_INT_BELOW_OR_EQUALS,
                             negated_condition_instr->operation.parameters.refs[0],
                             negated_condition_instr->operation.parameters.refs[1],
+                            branch_instr->operation.parameters.branch.target_block,
+                            branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
+                        break;
+
+                    case KEFIR_OPT_OPCODE_INT_ABOVE_CONST:
+                        REQUIRE_OK(kefir_opt_code_builder_compare_branch_int_const(
+                            mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_INT_BELOW_OR_EQUALS_CONST,
+                            negated_condition_instr->operation.parameters.ref_imm.refs[0],
+                            negated_condition_instr->operation.parameters.ref_imm.integer,
                             branch_instr->operation.parameters.branch.target_block,
                             branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
                         break;
@@ -269,6 +404,15 @@ static kefir_result_t cmp_branch_fuse_apply(struct kefir_mem *mem, const struct 
                             branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
                         break;
 
+                    case KEFIR_OPT_OPCODE_INT_ABOVE_OR_EQUALS_CONST:
+                        REQUIRE_OK(kefir_opt_code_builder_compare_branch_int_const(
+                            mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_INT_BELOW_CONST,
+                            negated_condition_instr->operation.parameters.ref_imm.refs[0],
+                            negated_condition_instr->operation.parameters.ref_imm.integer,
+                            branch_instr->operation.parameters.branch.target_block,
+                            branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
+                        break;
+
                     case KEFIR_OPT_OPCODE_INT_BELOW:
                         REQUIRE_OK(kefir_opt_code_builder_compare_branch(
                             mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_INT_ABOVE_OR_EQUALS,
@@ -278,11 +422,29 @@ static kefir_result_t cmp_branch_fuse_apply(struct kefir_mem *mem, const struct 
                             branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
                         break;
 
+                    case KEFIR_OPT_OPCODE_INT_BELOW_CONST:
+                        REQUIRE_OK(kefir_opt_code_builder_compare_branch_int_const(
+                            mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_INT_ABOVE_OR_EQUALS_CONST,
+                            negated_condition_instr->operation.parameters.ref_imm.refs[0],
+                            negated_condition_instr->operation.parameters.ref_imm.integer,
+                            branch_instr->operation.parameters.branch.target_block,
+                            branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
+                        break;
+
                     case KEFIR_OPT_OPCODE_INT_BELOW_OR_EQUALS:
                         REQUIRE_OK(kefir_opt_code_builder_compare_branch(
                             mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_INT_ABOVE,
                             negated_condition_instr->operation.parameters.refs[0],
                             negated_condition_instr->operation.parameters.refs[1],
+                            branch_instr->operation.parameters.branch.target_block,
+                            branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
+                        break;
+
+                    case KEFIR_OPT_OPCODE_INT_BELOW_OR_EQUALS_CONST:
+                        REQUIRE_OK(kefir_opt_code_builder_compare_branch_int_const(
+                            mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_INT_ABOVE_CONST,
+                            negated_condition_instr->operation.parameters.ref_imm.refs[0],
+                            negated_condition_instr->operation.parameters.ref_imm.integer,
                             branch_instr->operation.parameters.branch.target_block,
                             branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
                         break;
@@ -392,11 +554,29 @@ static kefir_result_t cmp_branch_fuse_apply(struct kefir_mem *mem, const struct 
                                     branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
                                 break;
 
+                            case KEFIR_OPT_OPCODE_INT_EQUALS_CONST:
+                                REQUIRE_OK(kefir_opt_code_builder_compare_branch_int_const(
+                                    mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_INT_EQUALS_CONST,
+                                    negated_condition_instr->operation.parameters.ref_imm.refs[0],
+                                    negated_condition_instr->operation.parameters.ref_imm.integer,
+                                    branch_instr->operation.parameters.branch.target_block,
+                                    branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
+                                break;
+
                             case KEFIR_OPT_OPCODE_INT_GREATER:
                                 REQUIRE_OK(kefir_opt_code_builder_compare_branch(
                                     mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_INT_GREATER,
                                     negated_condition_instr->operation.parameters.refs[0],
                                     negated_condition_instr->operation.parameters.refs[1],
+                                    branch_instr->operation.parameters.branch.target_block,
+                                    branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
+                                break;
+
+                            case KEFIR_OPT_OPCODE_INT_GREATER_CONST:
+                                REQUIRE_OK(kefir_opt_code_builder_compare_branch_int_const(
+                                    mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_INT_GREATER_CONST,
+                                    negated_condition_instr->operation.parameters.ref_imm.refs[0],
+                                    negated_condition_instr->operation.parameters.ref_imm.integer,
                                     branch_instr->operation.parameters.branch.target_block,
                                     branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
                                 break;
@@ -410,11 +590,29 @@ static kefir_result_t cmp_branch_fuse_apply(struct kefir_mem *mem, const struct 
                                     branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
                                 break;
 
+                            case KEFIR_OPT_OPCODE_INT_GREATER_OR_EQUALS_CONST:
+                                REQUIRE_OK(kefir_opt_code_builder_compare_branch_int_const(
+                                    mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_INT_GREATER_OR_EQUALS_CONST,
+                                    negated_condition_instr->operation.parameters.ref_imm.refs[0],
+                                    negated_condition_instr->operation.parameters.ref_imm.integer,
+                                    branch_instr->operation.parameters.branch.target_block,
+                                    branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
+                                break;
+
                             case KEFIR_OPT_OPCODE_INT_LESSER:
                                 REQUIRE_OK(kefir_opt_code_builder_compare_branch(
                                     mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_INT_LESS,
                                     negated_condition_instr->operation.parameters.refs[0],
                                     negated_condition_instr->operation.parameters.refs[1],
+                                    branch_instr->operation.parameters.branch.target_block,
+                                    branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
+                                break;
+
+                            case KEFIR_OPT_OPCODE_INT_LESSER_CONST:
+                                REQUIRE_OK(kefir_opt_code_builder_compare_branch_int_const(
+                                    mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_INT_LESS_CONST,
+                                    negated_condition_instr->operation.parameters.ref_imm.refs[0],
+                                    negated_condition_instr->operation.parameters.ref_imm.integer,
                                     branch_instr->operation.parameters.branch.target_block,
                                     branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
                                 break;
@@ -428,11 +626,29 @@ static kefir_result_t cmp_branch_fuse_apply(struct kefir_mem *mem, const struct 
                                     branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
                                 break;
 
+                            case KEFIR_OPT_OPCODE_INT_LESSER_OR_EQUALS_CONST:
+                                REQUIRE_OK(kefir_opt_code_builder_compare_branch_int_const(
+                                    mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_INT_LESS_OR_EQUALS_CONST,
+                                    negated_condition_instr->operation.parameters.ref_imm.refs[0],
+                                    negated_condition_instr->operation.parameters.ref_imm.integer,
+                                    branch_instr->operation.parameters.branch.target_block,
+                                    branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
+                                break;
+
                             case KEFIR_OPT_OPCODE_INT_ABOVE:
                                 REQUIRE_OK(kefir_opt_code_builder_compare_branch(
                                     mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_INT_ABOVE,
                                     negated_condition_instr->operation.parameters.refs[0],
                                     negated_condition_instr->operation.parameters.refs[1],
+                                    branch_instr->operation.parameters.branch.target_block,
+                                    branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
+                                break;
+
+                            case KEFIR_OPT_OPCODE_INT_ABOVE_CONST:
+                                REQUIRE_OK(kefir_opt_code_builder_compare_branch_int_const(
+                                    mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_INT_ABOVE_CONST,
+                                    negated_condition_instr->operation.parameters.ref_imm.refs[0],
+                                    negated_condition_instr->operation.parameters.ref_imm.integer,
                                     branch_instr->operation.parameters.branch.target_block,
                                     branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
                                 break;
@@ -446,6 +662,15 @@ static kefir_result_t cmp_branch_fuse_apply(struct kefir_mem *mem, const struct 
                                     branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
                                 break;
 
+                            case KEFIR_OPT_OPCODE_INT_ABOVE_OR_EQUALS_CONST:
+                                REQUIRE_OK(kefir_opt_code_builder_compare_branch_int_const(
+                                    mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_INT_ABOVE_OR_EQUALS_CONST,
+                                    negated_condition_instr->operation.parameters.ref_imm.refs[0],
+                                    negated_condition_instr->operation.parameters.ref_imm.integer,
+                                    branch_instr->operation.parameters.branch.target_block,
+                                    branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
+                                break;
+
                             case KEFIR_OPT_OPCODE_INT_BELOW:
                                 REQUIRE_OK(kefir_opt_code_builder_compare_branch(
                                     mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_INT_BELOW,
@@ -455,11 +680,29 @@ static kefir_result_t cmp_branch_fuse_apply(struct kefir_mem *mem, const struct 
                                     branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
                                 break;
 
+                            case KEFIR_OPT_OPCODE_INT_BELOW_CONST:
+                                REQUIRE_OK(kefir_opt_code_builder_compare_branch_int_const(
+                                    mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_INT_BELOW_CONST,
+                                    negated_condition_instr->operation.parameters.ref_imm.refs[0],
+                                    negated_condition_instr->operation.parameters.ref_imm.integer,
+                                    branch_instr->operation.parameters.branch.target_block,
+                                    branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
+                                break;
+
                             case KEFIR_OPT_OPCODE_INT_BELOW_OR_EQUALS:
                                 REQUIRE_OK(kefir_opt_code_builder_compare_branch(
                                     mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_INT_BELOW_OR_EQUALS,
                                     negated_condition_instr->operation.parameters.refs[0],
                                     negated_condition_instr->operation.parameters.refs[1],
+                                    branch_instr->operation.parameters.branch.target_block,
+                                    branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
+                                break;
+
+                            case KEFIR_OPT_OPCODE_INT_BELOW_OR_EQUALS_CONST:
+                                REQUIRE_OK(kefir_opt_code_builder_compare_branch_int_const(
+                                    mem, &func->code, block->id, KEFIR_OPT_COMPARE_BRANCH_INT_BELOW_OR_EQUALS_CONST,
+                                    negated_condition_instr->operation.parameters.ref_imm.refs[0],
+                                    negated_condition_instr->operation.parameters.ref_imm.integer,
                                     branch_instr->operation.parameters.branch.target_block,
                                     branch_instr->operation.parameters.branch.alternative_block, &replacement_ref));
                                 break;

@@ -59,8 +59,7 @@ _kefir_func_somefn_label6:
 assign_abs:
 _kefir_func_assign_abs_label0:
 _kefir_func_assign_abs_label1:
-    mov $0, %rax
-    cmp %rax, %rdi
+    cmp $0, %rdi
     jle _kefir_func_assign_abs_label5
     mov %rdi, %rax
     jmp _kefir_func_assign_abs_label3
@@ -79,8 +78,7 @@ condition1:
 _kefir_func_condition1_label0:
 _kefir_func_condition1_label1:
     movsx %edi, %rax
-    mov $0, %rcx
-    cmp %rcx, %rax
+    cmp $0, %rax
     jg _kefir_func_condition1_label4
     jmp _kefir_func_condition1_label3
 _kefir_func_condition1_label4:

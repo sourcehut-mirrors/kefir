@@ -716,3 +716,58 @@ DEF_COMPARISON(above, seta)
 DEF_COMPARISON(above_or_equals, setae)
 DEF_COMPARISON(below, setb)
 DEF_COMPARISON(below_or_equals, setbe)
+
+#define DEF_COMPARISON_CONST(_id, _op)                                                                                \
+    kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(_id)(struct kefir_mem * mem,                                  \
+                                                             struct kefir_codegen_amd64_function * function,          \
+                                                             const struct kefir_opt_instruction *instruction) {       \
+        REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));            \
+        REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function")); \
+        REQUIRE(instruction != NULL,                                                                                  \
+                KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));                    \
+                                                                                                                      \
+        kefir_asmcmp_virtual_register_index_t result_vreg, arg1_vreg, tmp_vreg;                                       \
+        REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.ref_imm.refs[0],  \
+                                                        &arg1_vreg));                                                 \
+                                                                                                                      \
+        REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,                                    \
+                                                     KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));   \
+                                                                                                                      \
+        REQUIRE_OK(kefir_asmcmp_amd64_mov(mem, &function->code,                                                       \
+                                          kefir_asmcmp_context_instr_tail(&function->code.context),                   \
+                                          &KEFIR_ASMCMP_MAKE_VREG64(result_vreg), &KEFIR_ASMCMP_MAKE_INT(0), NULL));  \
+        if (instruction->operation.parameters.ref_imm.integer >= KEFIR_INT32_MIN &&                                   \
+            instruction->operation.parameters.ref_imm.integer <= KEFIR_INT32_MAX) {                                   \
+            REQUIRE_OK(kefir_asmcmp_amd64_cmp(                                                                        \
+                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),                       \
+                &KEFIR_ASMCMP_MAKE_VREG64(arg1_vreg),                                                                 \
+                &KEFIR_ASMCMP_MAKE_INT(instruction->operation.parameters.ref_imm.integer), NULL));                    \
+        } else {                                                                                                      \
+            REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,                                \
+                                                         KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &tmp_vreg));  \
+            REQUIRE_OK(kefir_asmcmp_amd64_movabs(                                                                     \
+                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),                       \
+                &KEFIR_ASMCMP_MAKE_VREG64(tmp_vreg),                                                                  \
+                &KEFIR_ASMCMP_MAKE_INT(instruction->operation.parameters.ref_imm.integer), NULL));                    \
+            REQUIRE_OK(kefir_asmcmp_amd64_cmp(                                                                        \
+                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),                       \
+                &KEFIR_ASMCMP_MAKE_VREG64(arg1_vreg), &KEFIR_ASMCMP_MAKE_VREG64(tmp_vreg), NULL));                    \
+        }                                                                                                             \
+        REQUIRE_OK(kefir_asmcmp_amd64_##_op(mem, &function->code,                                                     \
+                                            kefir_asmcmp_context_instr_tail(&function->code.context),                 \
+                                            &KEFIR_ASMCMP_MAKE_VREG8(result_vreg), NULL));                            \
+                                                                                                                      \
+        REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));            \
+                                                                                                                      \
+        return KEFIR_OK;                                                                                              \
+    }
+
+DEF_COMPARISON_CONST(int_equals_const, sete)
+DEF_COMPARISON_CONST(int_greater_const, setg)
+DEF_COMPARISON_CONST(int_greater_or_equals_const, setge)
+DEF_COMPARISON_CONST(int_less_const, setl)
+DEF_COMPARISON_CONST(int_less_or_equals_const, setle)
+DEF_COMPARISON_CONST(int_above_const, seta)
+DEF_COMPARISON_CONST(int_above_or_equals_const, setae)
+DEF_COMPARISON_CONST(int_below_const, setb)
+DEF_COMPARISON_CONST(int_below_or_equals_const, setbe)

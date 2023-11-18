@@ -213,6 +213,36 @@ kefir_result_t kefir_opt_code_builder_compare_branch(struct kefir_mem *mem, stru
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
 
+    switch (comparison_type) {
+        case KEFIR_OPT_COMPARE_BRANCH_INT_EQUALS:
+        case KEFIR_OPT_COMPARE_BRANCH_INT_NOT_EQUALS:
+        case KEFIR_OPT_COMPARE_BRANCH_INT_GREATER:
+        case KEFIR_OPT_COMPARE_BRANCH_INT_GREATER_OR_EQUALS:
+        case KEFIR_OPT_COMPARE_BRANCH_INT_LESS:
+        case KEFIR_OPT_COMPARE_BRANCH_INT_LESS_OR_EQUALS:
+        case KEFIR_OPT_COMPARE_BRANCH_INT_ABOVE:
+        case KEFIR_OPT_COMPARE_BRANCH_INT_ABOVE_OR_EQUALS:
+        case KEFIR_OPT_COMPARE_BRANCH_INT_BELOW:
+        case KEFIR_OPT_COMPARE_BRANCH_INT_BELOW_OR_EQUALS:
+        case KEFIR_OPT_COMPARE_BRANCH_FLOAT32_EQUALS:
+        case KEFIR_OPT_COMPARE_BRANCH_FLOAT32_NOT_EQUALS:
+        case KEFIR_OPT_COMPARE_BRANCH_FLOAT32_GREATER:
+        case KEFIR_OPT_COMPARE_BRANCH_FLOAT32_GREATER_OR_EQUALS:
+        case KEFIR_OPT_COMPARE_BRANCH_FLOAT32_LESS:
+        case KEFIR_OPT_COMPARE_BRANCH_FLOAT32_LESS_OR_EQUALS:
+        case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_EQUALS:
+        case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_NOT_EQUALS:
+        case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_GREATER:
+        case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_GREATER_OR_EQUALS:
+        case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_LESS:
+        case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_LESS_OR_EQUALS:
+            // Intentionally left blank
+            break;
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected comparison type");
+    }
+
     REQUIRE_OK(instr_exists(code, block_id, ref1, false));
     REQUIRE_OK(instr_exists(code, block_id, ref2, false));
     REQUIRE_OK(block_exists(code, target_block));
@@ -224,6 +254,46 @@ kefir_result_t kefir_opt_code_builder_compare_branch(struct kefir_mem *mem, stru
             .parameters.branch = {.target_block = target_block,
                                   .alternative_block = alternative_block,
                                   .comparison = {.type = comparison_type, .refs = {ref1, ref2}}}},
+        false, instr_id_ptr));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_code_builder_compare_branch_int_const(
+    struct kefir_mem *mem, struct kefir_opt_code_container *code, kefir_opt_block_id_t block_id,
+    kefir_opt_compare_branch_type_t comparison_type, kefir_opt_instruction_ref_t ref1, kefir_int64_t imm,
+    kefir_opt_block_id_t target_block, kefir_opt_block_id_t alternative_block,
+    kefir_opt_instruction_ref_t *instr_id_ptr) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
+
+    switch (comparison_type) {
+        case KEFIR_OPT_COMPARE_BRANCH_INT_EQUALS_CONST:
+        case KEFIR_OPT_COMPARE_BRANCH_INT_NOT_EQUALS_CONST:
+        case KEFIR_OPT_COMPARE_BRANCH_INT_GREATER_CONST:
+        case KEFIR_OPT_COMPARE_BRANCH_INT_GREATER_OR_EQUALS_CONST:
+        case KEFIR_OPT_COMPARE_BRANCH_INT_LESS_CONST:
+        case KEFIR_OPT_COMPARE_BRANCH_INT_LESS_OR_EQUALS_CONST:
+        case KEFIR_OPT_COMPARE_BRANCH_INT_ABOVE_CONST:
+        case KEFIR_OPT_COMPARE_BRANCH_INT_ABOVE_OR_EQUALS_CONST:
+        case KEFIR_OPT_COMPARE_BRANCH_INT_BELOW_CONST:
+        case KEFIR_OPT_COMPARE_BRANCH_INT_BELOW_OR_EQUALS_CONST:
+            // Intentionally left blank
+            break;
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected comparison type");
+    }
+
+    REQUIRE_OK(instr_exists(code, block_id, ref1, false));
+    REQUIRE_OK(block_exists(code, target_block));
+    REQUIRE_OK(block_exists(code, alternative_block));
+    REQUIRE_OK(kefir_opt_code_builder_add_instruction(
+        mem, code, block_id,
+        &(struct kefir_opt_operation){
+            .opcode = KEFIR_OPT_OPCODE_COMPARE_BRANCH,
+            .parameters.branch = {.target_block = target_block,
+                                  .alternative_block = alternative_block,
+                                  .comparison = {.type = comparison_type, .refs = {ref1}, .integer = imm}}},
         false, instr_id_ptr));
     return KEFIR_OK;
 }
@@ -767,6 +837,16 @@ BINARY_INT_CONST_OP(int_mul_const, KEFIR_OPT_OPCODE_INT_MUL_CONST)
 BINARY_INT_CONST_OP(int_and_const, KEFIR_OPT_OPCODE_INT_AND_CONST)
 BINARY_INT_CONST_OP(int_or_const, KEFIR_OPT_OPCODE_INT_OR_CONST)
 BINARY_INT_CONST_OP(int_xor_const, KEFIR_OPT_OPCODE_INT_XOR_CONST)
+
+BINARY_INT_CONST_OP(int_equals_const, KEFIR_OPT_OPCODE_INT_EQUALS_CONST)
+BINARY_INT_CONST_OP(int_greater_const, KEFIR_OPT_OPCODE_INT_GREATER_CONST)
+BINARY_INT_CONST_OP(int_greater_or_equals_const, KEFIR_OPT_OPCODE_INT_GREATER_OR_EQUALS_CONST)
+BINARY_INT_CONST_OP(int_lesser_const, KEFIR_OPT_OPCODE_INT_LESSER_CONST)
+BINARY_INT_CONST_OP(int_lesser_or_equals_const, KEFIR_OPT_OPCODE_INT_LESSER_OR_EQUALS_CONST)
+BINARY_INT_CONST_OP(int_above_const, KEFIR_OPT_OPCODE_INT_ABOVE_CONST)
+BINARY_INT_CONST_OP(int_above_or_equals_const, KEFIR_OPT_OPCODE_INT_ABOVE_OR_EQUALS_CONST)
+BINARY_INT_CONST_OP(int_below_const, KEFIR_OPT_OPCODE_INT_BELOW_CONST)
+BINARY_INT_CONST_OP(int_below_or_equals_const, KEFIR_OPT_OPCODE_INT_BELOW_OR_EQUALS_CONST)
 
 #undef BINARY_INT_CONST_OP
 

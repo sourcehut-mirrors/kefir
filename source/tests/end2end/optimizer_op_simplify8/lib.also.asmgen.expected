@@ -1,0 +1,118 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global int_equals_const
+.global int_less_or_equal_const
+.global int_less_const
+.global int_below_or_equal_const
+.global int_greater_or_equal_const
+.global int_greater_const
+.global int_above_const
+.global int_below_const
+.global int_above_or_equal_const
+.extern __kefir_opt_float32_neg
+.extern __kefir_opt_float64_neg
+.extern __kefirrt_opt_float32_to_uint
+.extern __kefirrt_opt_float64_to_uint
+
+.section .text
+int_equals_const:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_int_equals_const_label0:
+_kefir_func_int_equals_const_label1:
+    mov $0, %rax
+    cmp $123, %rdi
+    sete %al
+    pop %rbp
+    ret
+
+int_less_or_equal_const:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_int_less_or_equal_const_label0:
+_kefir_func_int_less_or_equal_const_label1:
+    mov $0, %rax
+    cmp $543, %rdi
+    setle %al
+    pop %rbp
+    ret
+
+int_less_const:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_int_less_const_label0:
+_kefir_func_int_less_const_label1:
+    mov $0, %rax
+    cmp $90, %rdi
+    setl %al
+    pop %rbp
+    ret
+
+int_below_or_equal_const:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_int_below_or_equal_const_label0:
+_kefir_func_int_below_or_equal_const_label1:
+    mov $0, %rax
+    cmp $1, %rdi
+    setbe %al
+    pop %rbp
+    ret
+
+int_greater_or_equal_const:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_int_greater_or_equal_const_label0:
+_kefir_func_int_greater_or_equal_const_label1:
+    mov $0, %rax
+    cmp $-50, %rdi
+    setge %al
+    pop %rbp
+    ret
+
+int_greater_const:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_int_greater_const_label0:
+_kefir_func_int_greater_const_label1:
+    mov $0, %rax
+    cmp $150, %rdi
+    setg %al
+    pop %rbp
+    ret
+
+int_above_const:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_int_above_const_label0:
+_kefir_func_int_above_const_label1:
+    mov $0, %rax
+    cmp $100, %rdi
+    seta %al
+    pop %rbp
+    ret
+
+int_below_const:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_int_below_const_label0:
+_kefir_func_int_below_const_label1:
+    mov $0, %rax
+    cmp $90, %rdi
+    setb %al
+    pop %rbp
+    ret
+
+int_above_or_equal_const:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_int_above_or_equal_const_label0:
+_kefir_func_int_above_or_equal_const_label1:
+    mov $0, %rax
+    cmp $190, %rdi
+    setae %al
+    pop %rbp
+    ret
+
+

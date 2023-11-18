@@ -52,6 +52,12 @@ kefir_result_t kefir_opt_code_builder_compare_branch(struct kefir_mem *, struct 
                                                      kefir_opt_block_id_t, kefir_opt_block_id_t,
                                                      kefir_opt_instruction_ref_t *);
 
+kefir_result_t kefir_opt_code_builder_compare_branch_int_const(struct kefir_mem *, struct kefir_opt_code_container *,
+                                                               kefir_opt_block_id_t, kefir_opt_compare_branch_type_t,
+                                                               kefir_opt_instruction_ref_t, kefir_int64_t,
+                                                               kefir_opt_block_id_t, kefir_opt_block_id_t,
+                                                               kefir_opt_instruction_ref_t *);
+
 kefir_result_t kefir_opt_code_builder_get_argument(struct kefir_mem *, struct kefir_opt_code_container *,
                                                    kefir_opt_block_id_t, kefir_size_t, kefir_opt_instruction_ref_t *);
 kefir_result_t kefir_opt_code_builder_phi(struct kefir_mem *, struct kefir_opt_code_container *, kefir_opt_block_id_t,
@@ -243,6 +249,16 @@ BINARY_INT_CONST_OP(int_mul_const);
 BINARY_INT_CONST_OP(int_and_const);
 BINARY_INT_CONST_OP(int_or_const);
 BINARY_INT_CONST_OP(int_xor_const);
+
+BINARY_INT_CONST_OP(int_equals_const);
+BINARY_INT_CONST_OP(int_greater_const);
+BINARY_INT_CONST_OP(int_greater_or_equals_const);
+BINARY_INT_CONST_OP(int_lesser_const);
+BINARY_INT_CONST_OP(int_lesser_or_equals_const);
+BINARY_INT_CONST_OP(int_above_const);
+BINARY_INT_CONST_OP(int_above_or_equals_const);
+BINARY_INT_CONST_OP(int_below_const);
+BINARY_INT_CONST_OP(int_below_or_equals_const);
 
 #undef BINARY_INT_CONST_OP
 

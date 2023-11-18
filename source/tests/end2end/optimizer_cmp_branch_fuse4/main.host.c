@@ -1,0 +1,45 @@
+/*
+    SPDX-License-Identifier: GPL-3.0
+
+    Copyright (C) 2020-2023  Jevgenijs Protopopovs
+
+    This file is part of Kefir project.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, version 3.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <assert.h>
+#include "./definitions.h"
+
+void fn1(void) {}
+
+int main(void) {
+    for (long x = -1000; x <= 1000; x++) {
+        assert(int_equals_const(x) == (x == 100));
+        assert(int_not_equal_const(x) == (x != -160));
+        assert(int_greater_const(x) == (x > 876));
+        assert(int_greater_or_equal_const(x) == (x >= 150));
+        assert(int_less_const(x) == (x < -5));
+        assert(int_less_or_equal_const(x) == (x <= 998));
+    }
+
+    for (unsigned long x = 0; x <= 2000; x++) {
+        assert(int_above_const(x) == (x > 642u));
+        assert(int_above_or_equal_const(x) == (x >= 10u));
+        assert(int_below_const(x) == (x < 76u));
+        assert(int_below_or_equal_const(x) == (x <= 793u));
+    }
+    return EXIT_SUCCESS;
+}

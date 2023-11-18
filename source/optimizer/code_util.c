@@ -83,7 +83,45 @@ static kefir_result_t extract_inputs_cmp_branch(const struct kefir_opt_code_cont
                                                 void *payload) {
     UNUSED(code);
     INPUT_CALLBACK(instr->operation.parameters.branch.comparison.refs[0], callback, payload);
-    INPUT_CALLBACK(instr->operation.parameters.branch.comparison.refs[1], callback, payload);
+    switch (instr->operation.parameters.branch.comparison.type) {
+        case KEFIR_OPT_COMPARE_BRANCH_INT_EQUALS:
+        case KEFIR_OPT_COMPARE_BRANCH_INT_NOT_EQUALS:
+        case KEFIR_OPT_COMPARE_BRANCH_INT_GREATER:
+        case KEFIR_OPT_COMPARE_BRANCH_INT_GREATER_OR_EQUALS:
+        case KEFIR_OPT_COMPARE_BRANCH_INT_LESS:
+        case KEFIR_OPT_COMPARE_BRANCH_INT_LESS_OR_EQUALS:
+        case KEFIR_OPT_COMPARE_BRANCH_INT_ABOVE:
+        case KEFIR_OPT_COMPARE_BRANCH_INT_ABOVE_OR_EQUALS:
+        case KEFIR_OPT_COMPARE_BRANCH_INT_BELOW:
+        case KEFIR_OPT_COMPARE_BRANCH_INT_BELOW_OR_EQUALS:
+        case KEFIR_OPT_COMPARE_BRANCH_FLOAT32_EQUALS:
+        case KEFIR_OPT_COMPARE_BRANCH_FLOAT32_NOT_EQUALS:
+        case KEFIR_OPT_COMPARE_BRANCH_FLOAT32_GREATER:
+        case KEFIR_OPT_COMPARE_BRANCH_FLOAT32_GREATER_OR_EQUALS:
+        case KEFIR_OPT_COMPARE_BRANCH_FLOAT32_LESS:
+        case KEFIR_OPT_COMPARE_BRANCH_FLOAT32_LESS_OR_EQUALS:
+        case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_EQUALS:
+        case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_NOT_EQUALS:
+        case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_GREATER:
+        case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_GREATER_OR_EQUALS:
+        case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_LESS:
+        case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_LESS_OR_EQUALS:
+            INPUT_CALLBACK(instr->operation.parameters.branch.comparison.refs[1], callback, payload);
+            break;
+
+        case KEFIR_OPT_COMPARE_BRANCH_INT_EQUALS_CONST:
+        case KEFIR_OPT_COMPARE_BRANCH_INT_NOT_EQUALS_CONST:
+        case KEFIR_OPT_COMPARE_BRANCH_INT_GREATER_CONST:
+        case KEFIR_OPT_COMPARE_BRANCH_INT_GREATER_OR_EQUALS_CONST:
+        case KEFIR_OPT_COMPARE_BRANCH_INT_LESS_CONST:
+        case KEFIR_OPT_COMPARE_BRANCH_INT_LESS_OR_EQUALS_CONST:
+        case KEFIR_OPT_COMPARE_BRANCH_INT_ABOVE_CONST:
+        case KEFIR_OPT_COMPARE_BRANCH_INT_ABOVE_OR_EQUALS_CONST:
+        case KEFIR_OPT_COMPARE_BRANCH_INT_BELOW_CONST:
+        case KEFIR_OPT_COMPARE_BRANCH_INT_BELOW_OR_EQUALS_CONST:
+            // Intentionally left blank
+            break;
+    }
     return KEFIR_OK;
 }
 

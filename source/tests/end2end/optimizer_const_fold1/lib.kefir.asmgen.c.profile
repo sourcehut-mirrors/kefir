@@ -1,1 +1,1 @@
-KEFIR_CFLAGS="$KEFIR_CFLAGS --target host-none -Woptimizer-pipeline=op-simplify,constant-fold,compare-branch-fuse"
+KEFIR_CFLAGS="$KEFIR_CFLAGS --target host-none -Woptimizer-pipeline=constant-fold,op-simplify,compare-branch-fuse"
