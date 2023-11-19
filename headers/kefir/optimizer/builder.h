@@ -250,6 +250,10 @@ BINARY_INT_CONST_OP(int_and_const);
 BINARY_INT_CONST_OP(int_or_const);
 BINARY_INT_CONST_OP(int_xor_const);
 
+BINARY_INT_CONST_OP(int_lshift_const);
+BINARY_INT_CONST_OP(int_rshift_const);
+BINARY_INT_CONST_OP(int_arshift_const);
+
 BINARY_INT_CONST_OP(int_equals_const);
 BINARY_INT_CONST_OP(int_greater_const);
 BINARY_INT_CONST_OP(int_greater_or_equals_const);

@@ -1,0 +1,43 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global int_sar_const
+.global int_shl_const
+.global int_shr_const
+.extern __kefir_opt_float32_neg
+.extern __kefir_opt_float64_neg
+.extern __kefirrt_opt_float32_to_uint
+.extern __kefirrt_opt_float64_to_uint
+
+.section .text
+int_sar_const:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_int_sar_const_label0:
+_kefir_func_int_sar_const_label1:
+    sar $4, %rdi
+    mov %rdi, %rax
+    pop %rbp
+    ret
+
+int_shl_const:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_int_shl_const_label0:
+_kefir_func_int_shl_const_label1:
+    shl $6, %rdi
+    mov %rdi, %rax
+    pop %rbp
+    ret
+
+int_shr_const:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_int_shr_const_label0:
+_kefir_func_int_shr_const_label1:
+    shr $4, %rdi
+    mov %rdi, %rax
+    pop %rbp
+    ret
+
+
