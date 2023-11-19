@@ -932,7 +932,7 @@ static kefir_result_t devirtualize_impl(struct kefir_mem *mem, struct devirtuali
     for (kefir_asmcmp_instruction_index_t idx = kefir_asmcmp_context_instr_head(&state->target->context);
          idx != KEFIR_ASMCMP_INDEX_NONE; idx = kefir_asmcmp_context_instr_next(&state->target->context, idx)) {
 
-        const struct kefir_asmcmp_instruction *instr;
+        struct kefir_asmcmp_instruction *instr;
         REQUIRE_OK(kefir_asmcmp_context_instr_at(&state->target->context, idx, &instr));
 
         kefir_size_t instr_linear_position;

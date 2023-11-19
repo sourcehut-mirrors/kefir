@@ -354,7 +354,7 @@ static kefir_result_t generate_instr(struct kefir_mem *mem, struct kefir_amd64_x
                                      const struct kefir_asmcmp_amd64 *target,
                                      const struct kefir_codegen_amd64_stack_frame *stack_frame,
                                      kefir_asmcmp_instruction_index_t index) {
-    const struct kefir_asmcmp_instruction *instr;
+    struct kefir_asmcmp_instruction *instr;
     REQUIRE_OK(kefir_asmcmp_context_instr_at(&target->context, index, &instr));
     for (kefir_asmcmp_label_index_t label = kefir_asmcmp_context_instr_label_head(&target->context, index);
          label != KEFIR_ASMCMP_INDEX_NONE; label = kefir_asmcmp_context_instr_label_next(&target->context, label)) {

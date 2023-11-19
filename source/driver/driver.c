@@ -37,6 +37,8 @@
 #define KEFIR_OPTIMIZER_PIPELINE_FULL_SPEC \
     "phi-pull,mem2reg,phi-pull,constant-fold,op-simplify,branch-removal,compare-branch-fuse"
 
+#define KEFIR_CODEGEN_AMD64_PIPELINE_FULL_SPEC "amd64-peephole"
+
 static kefir_result_t driver_generate_asm_config(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                                  struct kefir_driver_configuration *config,
                                                  const struct kefir_driver_external_resources *externals,
@@ -272,6 +274,10 @@ kefir_result_t kefir_driver_generate_compiler_config(struct kefir_mem *mem, stru
                 compiler_config->optimizer_pipeline_spec = KEFIR_OPTIMIZER_PIPELINE_FULL_SPEC;
                 if (config->flags.omit_frame_pointer == KEFIR_DRIVER_FRAME_POINTER_OMISSION_UNSPECIFIED) {
                     compiler_config->codegen.omit_frame_pointer = true;
+                }
+
+                if (config->target.arch == KEFIR_DRIVER_TARGET_ARCH_X86_64) {
+                    compiler_config->codegen.pipeline_spec = KEFIR_CODEGEN_AMD64_PIPELINE_FULL_SPEC;
                 }
             }
             break;

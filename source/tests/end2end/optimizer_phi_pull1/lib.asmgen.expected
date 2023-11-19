@@ -25,7 +25,7 @@ _kefir_func_somefn_label2:
     mov %rax, %rcx
     add $-1, %rcx
     movsx %ecx, %rcx
-    mov $0, %rdx
+    xor %rdx, %rdx
     test %rax, %rax
     sete %dl
     test %rdx, %rdx

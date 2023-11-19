@@ -230,7 +230,7 @@ kefir_result_t kefir_asmcmp_context_format(struct kefir_json_output *json, const
     REQUIRE_OK(kefir_json_output_array_begin(json));
     for (kefir_asmcmp_instruction_index_t instr_idx = kefir_asmcmp_context_instr_head(context);
          instr_idx != KEFIR_ASMCMP_INDEX_NONE; instr_idx = kefir_asmcmp_context_instr_next(context, instr_idx)) {
-        const struct kefir_asmcmp_instruction *instr;
+        struct kefir_asmcmp_instruction *instr;
         REQUIRE_OK(kefir_asmcmp_context_instr_at(context, instr_idx, &instr));
 
         REQUIRE_OK(kefir_json_output_object_begin(json));

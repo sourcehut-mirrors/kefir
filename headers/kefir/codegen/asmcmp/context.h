@@ -313,7 +313,7 @@ kefir_result_t kefir_asmcmp_context_init(const struct kefir_asmcmp_context_class
 kefir_result_t kefir_asmcmp_context_free(struct kefir_mem *, struct kefir_asmcmp_context *);
 
 kefir_result_t kefir_asmcmp_context_instr_at(const struct kefir_asmcmp_context *, kefir_asmcmp_instruction_index_t,
-                                             const struct kefir_asmcmp_instruction **);
+                                             struct kefir_asmcmp_instruction **);
 kefir_asmcmp_instruction_index_t kefir_asmcmp_context_instr_prev(const struct kefir_asmcmp_context *,
                                                                  kefir_asmcmp_instruction_index_t);
 kefir_asmcmp_instruction_index_t kefir_asmcmp_context_instr_next(const struct kefir_asmcmp_context *,

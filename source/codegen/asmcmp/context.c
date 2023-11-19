@@ -151,7 +151,7 @@ kefir_result_t kefir_asmcmp_context_free(struct kefir_mem *mem, struct kefir_asm
 
 kefir_result_t kefir_asmcmp_context_instr_at(const struct kefir_asmcmp_context *context,
                                              kefir_asmcmp_instruction_index_t index,
-                                             const struct kefir_asmcmp_instruction **instr_ptr) {
+                                             struct kefir_asmcmp_instruction **instr_ptr) {
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
     REQUIRE(VALID_INSTR_IDX(context, index),
             KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Provided asmgen instruction index is out of context bounds"));

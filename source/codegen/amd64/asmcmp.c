@@ -58,8 +58,8 @@ static kefir_result_t register_mnemonic(kefir_asmcmp_physical_register_index_t r
     return KEFIR_OK;
 }
 
-static const struct kefir_asmcmp_context_class AMD64_KLASS = {.opcode_mnemonic = opcode_mnemonic,
-                                                              .register_mnemonic = register_mnemonic};
+const struct kefir_asmcmp_context_class KEFIR_ASMCMP_AMD64_KLASS = {.opcode_mnemonic = opcode_mnemonic,
+                                                                    .register_mnemonic = register_mnemonic};
 
 struct register_preallocation {
     kefir_asmcmp_amd64_register_preallocation_type_t type;
@@ -89,7 +89,7 @@ kefir_result_t kefir_asmcmp_amd64_init(const char *function_name, kefir_abi_amd6
     REQUIRE(function_name != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid function name"));
     REQUIRE(target != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to asmgen amd64 target"));
 
-    REQUIRE_OK(kefir_asmcmp_context_init(&AMD64_KLASS, target, &target->context));
+    REQUIRE_OK(kefir_asmcmp_context_init(&KEFIR_ASMCMP_AMD64_KLASS, target, &target->context));
     REQUIRE_OK(kefir_hashtree_init(&target->register_preallocation, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_on_removal(&target->register_preallocation, free_register_preallocation, NULL));
     target->function_name = function_name;

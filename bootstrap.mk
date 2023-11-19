@@ -50,6 +50,7 @@ KEFIR_LIB_SOURCE := $(wildcard \
 	$(SOURCE)/codegen/*.c \
 	$(SOURCE)/codegen/amd64/*.c \
 	$(SOURCE)/codegen/amd64/code/*.c \
+	$(SOURCE)/codegen/amd64/pipeline/*.c \
 	$(SOURCE)/codegen/asmcmp/*.c \
 	$(SOURCE)/codegen/asmcmp/pipeline/*.c \
 	$(SOURCE)/codegen/naive-system-v-amd64/*.c \

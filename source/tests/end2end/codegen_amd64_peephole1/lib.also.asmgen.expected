@@ -1,0 +1,38 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global test
+.global get_zero
+.global some_math
+.extern __kefir_opt_float32_neg
+.extern __kefir_opt_float64_neg
+.extern __kefirrt_opt_float32_to_uint
+.extern __kefirrt_opt_float64_to_uint
+
+.section .text
+test:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_test_label0:
+_kefir_func_test_label1:
+    lea -8(%rbp), %rax
+    movq %rdi, (%rax)
+    movq -8(%rbp), %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+get_zero:
+_kefir_func_get_zero_label0:
+_kefir_func_get_zero_label1:
+    xor %rax, %rax
+    ret
+
+some_math:
+_kefir_func_some_math_label0:
+_kefir_func_some_math_label1:
+    mov %rdi, %rax
+    ret
+
+

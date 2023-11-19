@@ -157,7 +157,7 @@ static kefir_result_t calculate_lifetimes(struct kefir_mem *mem, struct kefir_as
          instr_index != KEFIR_ASMCMP_INDEX_NONE;
          instr_index = kefir_asmcmp_context_instr_next(&target->context, instr_index), ++linear_index) {
 
-        const struct kefir_asmcmp_instruction *instr;
+        struct kefir_asmcmp_instruction *instr;
         REQUIRE_OK(kefir_asmcmp_context_instr_at(&target->context, instr_index, &instr));
         REQUIRE_OK(kefir_hashtree_insert(mem, &allocator->internal.instruction_linear_indices,
                                          (kefir_hashtree_key_t) instr_index, (kefir_hashtree_value_t) linear_index));
@@ -324,7 +324,7 @@ static kefir_result_t build_internal_liveness_graph(struct kefir_mem *mem, struc
 
         REQUIRE_OK(deactivate_dead_vregs(mem, allocator, linear_index));
 
-        const struct kefir_asmcmp_instruction *instr;
+        struct kefir_asmcmp_instruction *instr;
         REQUIRE_OK(kefir_asmcmp_context_instr_at(&target->context, instr_index, &instr));
         REQUIRE_OK(build_virtual_register_liveness_graph(mem, target, allocator, &instr->args[0], linear_index));
         REQUIRE_OK(build_virtual_register_liveness_graph(mem, target, allocator, &instr->args[1], linear_index));
@@ -821,7 +821,7 @@ static kefir_result_t allocate_registers(struct kefir_mem *mem, struct kefir_asm
                                      (kefir_hashtree_key_t) instr_index, &linear_idx_node));
         const kefir_size_t linear_index = linear_idx_node->value;
 
-        const struct kefir_asmcmp_instruction *instr;
+        struct kefir_asmcmp_instruction *instr;
         REQUIRE_OK(kefir_asmcmp_context_instr_at(&target->context, instr_index, &instr));
 
         REQUIRE_OK(deactivate_dead_vregs(mem, allocator, linear_index));
