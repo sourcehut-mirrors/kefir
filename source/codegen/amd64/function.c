@@ -309,6 +309,8 @@ static kefir_result_t kefir_codegen_amd64_function_translate_impl(struct kefir_m
         REQUIRE_OK(kefir_codegen_amd64_stack_frame_require_frame_pointer(&func->stack_frame));
     }
     REQUIRE_OK(translate_code(mem, func));
+    REQUIRE_OK(
+        kefir_asmcmp_pipeline_apply(mem, &codegen->pipeline, KEFIR_ASMCMP_PIPELINE_PASS_VIRTUAL, &func->code.context));
     if (codegen->config->print_details != NULL && strcmp(codegen->config->print_details, "vasm") == 0) {
         REQUIRE_OK(output_asm(codegen, func, false));
     }
@@ -320,6 +322,8 @@ static kefir_result_t kefir_codegen_amd64_function_translate_impl(struct kefir_m
     }
 
     REQUIRE_OK(kefir_codegen_amd64_devirtualize(mem, &func->code, &func->register_allocator, &func->stack_frame));
+    REQUIRE_OK(kefir_asmcmp_pipeline_apply(mem, &codegen->pipeline, KEFIR_ASMCMP_PIPELINE_PASS_DEVIRTUAL,
+                                           &func->code.context));
 
     if (codegen->config->print_details != NULL && strcmp(codegen->config->print_details, "devasm") == 0) {
         REQUIRE_OK(output_asm(codegen, func, false));

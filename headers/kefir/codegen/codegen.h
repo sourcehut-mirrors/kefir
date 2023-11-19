@@ -33,6 +33,7 @@ typedef struct kefir_codegen_configuration {
     kefir_bool_t omit_frame_pointer;
     const char *syntax;
     const char *print_details;
+    const char *pipeline_spec;
 } kefir_codegen_configuration_t;
 
 typedef struct kefir_codegen {

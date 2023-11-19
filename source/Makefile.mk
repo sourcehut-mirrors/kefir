@@ -13,6 +13,7 @@ KEFIR_LIB_SOURCE := $(wildcard \
 	$(SOURCE_DIR)/codegen/amd64/*.c \
 	$(SOURCE_DIR)/codegen/amd64/code/*.c \
 	$(SOURCE_DIR)/codegen/asmcmp/*.c \
+	$(SOURCE_DIR)/codegen/asmcmp/pipeline/*.c \
 	$(SOURCE_DIR)/codegen/naive-system-v-amd64/*.c \
 	$(SOURCE_DIR)/codegen/naive-system-v-amd64/builtins/*.c \
 	$(SOURCE_DIR)/compiler/*.c \

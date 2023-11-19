@@ -98,6 +98,7 @@ typedef struct kefir_compiler_runner_configuration {
         kefir_bool_t omit_frame_pointer;
         const char *syntax;
         const char *print_details;
+        const char *pipeline_spec;
     } codegen;
 } kefir_compiler_runner_configuration_t;
 

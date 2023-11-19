@@ -417,10 +417,18 @@ Produce assembly output with specified syntax [x86_64-intel_noprefix, x86_64-int
 .It Ar details=DETAILS-SPEC
 Augment assembly output with internal code generator details in comments. DETAILS-SPEC can be: vasm (virtual assembly),
 vasm+regs (virtual assembly and register allocations), devasm (devirtualized assembly).
+.\"
+.It Ar pipeline=PIPELINE-SPEC
+Code generator transformation pipeline specification (not supported for native-* targets) consists of comma separated names of pipeline passes:
+.Bl -tag -width Ds
+.\"
+.It Ar noop
+No-operation pass
+.El
 .El
 .\"
 .Ss OPTIMIZER
-Optimizer pipeline specification (not supported for naive-* targets) consists of comma separated names of optimization pipeline passes:
+Optimizer pipeline specification (not supported for naive-* targets) consists of comma separated names of pipeline passes:
 .Bl -tag -width Ds
 .\"
 .It Ar noop

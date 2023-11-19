@@ -28,7 +28,8 @@ const struct kefir_codegen_configuration KefirCodegenDefaultConfiguration = {
     .position_independent_code = false,
     .omit_frame_pointer = false,
     .syntax = KEFIR_CODEGEN_SYNTAX_X86_64_INTEL_PREFIX,
-    .print_details = NULL};
+    .print_details = NULL,
+    .pipeline_spec = NULL};
 
 kefir_result_t kefir_codegen_translate_ir(struct kefir_mem *mem, struct kefir_codegen *codegen,
                                           struct kefir_ir_module *ir_module) {
