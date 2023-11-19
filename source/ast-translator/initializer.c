@@ -202,8 +202,8 @@ static kefir_result_t traverse_string_literal(const struct kefir_ast_designator 
     REQUIRE_OK(kefir_ast_translate_expression(param->mem, expression, param->builder, param->context));
 
     REQUIRE_OK(kefir_ast_translator_store_value(
-        param->mem, KEFIR_AST_TYPE_SAME(type_layout->type, array_type) ? type_layout->type : array_type, param->context,
-        param->builder, &expression->source_location));
+        param->mem, KEFIR_AST_TYPE_SAME(type_layout->type, array_type) ? type_layout->qualified_type : array_type,
+        param->context, param->builder, &expression->source_location));
     return KEFIR_OK;
 }
 
@@ -291,15 +291,17 @@ kefir_result_t kefir_ast_translate_default_initializer(struct kefir_mem *mem,
 
     // Perform default initialization only for integers and floating-point scalars. Other types
     // stay uninitialized
-    if (KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(type)) {
+    const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(type);
+    REQUIRE(unqualified_type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to retrieve unqualified AST type"));
+    if (KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(unqualified_type)) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 0));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PLACEHI64, 0));
         REQUIRE_OK(kefir_ast_translator_store_value(mem, type, context, builder, source_location));
-    } else if (type->tag == KEFIR_AST_TYPE_SCALAR_FLOAT) {
+    } else if (unqualified_type->tag == KEFIR_AST_TYPE_SCALAR_FLOAT) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 0));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PLACEHF32, 0));
         REQUIRE_OK(kefir_ast_translator_store_value(mem, type, context, builder, source_location));
-    } else if (type->tag == KEFIR_AST_TYPE_SCALAR_DOUBLE) {
+    } else if (unqualified_type->tag == KEFIR_AST_TYPE_SCALAR_DOUBLE) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 0));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PLACEHF64, 0));
         REQUIRE_OK(kefir_ast_translator_store_value(mem, type, context, builder, source_location));

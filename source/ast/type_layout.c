@@ -54,12 +54,12 @@ struct kefir_ast_type_layout *kefir_ast_new_type_layout(struct kefir_mem *mem, c
     struct kefir_ast_type_layout *layout = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_type_layout));
     REQUIRE(layout != NULL, NULL);
     layout->parent = NULL;
-    layout->type = type;
+    layout->type = type != NULL ? kefir_ast_unqualified_type(type) : NULL;
+    layout->qualified_type = type;
     layout->alignment = alignment;
     layout->value = value;
     layout->properties.valid = false;
     layout->bitfield = false;
-    layout->type_qualification = (struct kefir_ast_type_qualification){0};
     if (type == NULL) {
         kefir_result_t res = kefir_list_init(&layout->custom_layout.sublayouts);
         REQUIRE_ELSE(res == KEFIR_OK, {
@@ -137,6 +137,21 @@ kefir_result_t kefir_ast_type_layout_free(struct kefir_mem *mem, struct kefir_as
         }
     }
     KEFIR_FREE(mem, type_layout);
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_ast_type_layout_set_qualification(struct kefir_mem *mem, struct kefir_ast_type_bundle *type_bundle,
+                                                       struct kefir_ast_type_layout *layout,
+                                                       struct kefir_ast_type_qualification qualification) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(type_bundle != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type bundle"));
+    REQUIRE(layout != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type layout"));
+    REQUIRE(layout->type != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "AST type layout does not contain valid unqualified type"));
+
+    layout->qualified_type = kefir_ast_type_qualified(mem, type_bundle, layout->type, qualification);
+    REQUIRE(layout->qualified_type != NULL,
+            KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate qualified AST type"));
     return KEFIR_OK;
 }
 

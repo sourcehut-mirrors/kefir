@@ -56,10 +56,10 @@ typedef struct kefir_ast_custom_type_layout {
 typedef struct kefir_ast_type_layout {
     const struct kefir_ast_type_layout *parent;
     const struct kefir_ast_type *type;
+    const struct kefir_ast_type *qualified_type;
     kefir_size_t alignment;
     kefir_uptr_t value;
     kefir_bool_t bitfield;
-    struct kefir_ast_type_qualification type_qualification;
 
     struct {
         kefir_size_t offset;
@@ -87,6 +87,10 @@ struct kefir_ast_type_layout *kefir_ast_new_type_layout(struct kefir_mem *, cons
                                                         kefir_uptr_t);
 
 kefir_result_t kefir_ast_type_layout_free(struct kefir_mem *, struct kefir_ast_type_layout *);
+
+kefir_result_t kefir_ast_type_layout_set_qualification(struct kefir_mem *, struct kefir_ast_type_bundle *,
+                                                       struct kefir_ast_type_layout *,
+                                                       struct kefir_ast_type_qualification);
 
 kefir_result_t kefir_ast_type_layout_insert_structure_member(struct kefir_mem *, struct kefir_ast_type_layout *,
                                                              const char *, struct kefir_ast_type_layout *);

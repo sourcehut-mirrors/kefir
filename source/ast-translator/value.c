@@ -28,9 +28,9 @@
 #include "kefir/core/error.h"
 #include "kefir/core/source_error.h"
 
-static kefir_uint64_t retrieve_memflags(const struct kefir_ast_type_qualification *qualification) {
+static kefir_uint64_t retrieve_memflags(const struct kefir_ast_type *type) {
     kefir_uint64_t mem_flags = KEFIR_IR_MEMORY_FLAG_NONE;
-    if (qualification->volatile_type) {
+    if (type != NULL && type->tag == KEFIR_AST_TYPE_QUALIFIED && type->qualified_type.qualification.volatile_type) {
         mem_flags |= KEFIR_IR_MEMORY_FLAG_VOLATILE;
     }
     return mem_flags;
@@ -39,7 +39,7 @@ static kefir_uint64_t retrieve_memflags(const struct kefir_ast_type_qualificatio
 static kefir_result_t load_bitfield(struct kefir_irbuilder_block *builder, struct kefir_ast_type_layout *layout,
                                     const struct kefir_ir_type *ir_type,
                                     const struct kefir_ir_typeentry **typeentry_ptr) {
-    kefir_uint64_t mem_flags = retrieve_memflags(&layout->type_qualification);
+    const kefir_uint64_t mem_flags = retrieve_memflags(layout->qualified_type);
     struct kefir_ir_typeentry *typeentry = kefir_ir_type_at(ir_type, layout->value);
     REQUIRE(typeentry->typecode == KEFIR_IR_TYPE_BITS,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected a bit-field"));
@@ -124,7 +124,7 @@ static kefir_result_t resolve_bitfield(struct kefir_mem *mem, struct kefir_ast_t
 
 static kefir_result_t store_bitfield(struct kefir_irbuilder_block *builder, const struct kefir_ir_type *ir_type,
                                      struct kefir_ast_type_layout *member_layout) {
-    kefir_uint64_t mem_flags = retrieve_memflags(&member_layout->type_qualification);
+    const kefir_uint64_t mem_flags = retrieve_memflags(member_layout->qualified_type);
     const struct kefir_ir_typeentry *typeentry = NULL;
 
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PICK, 1));
@@ -192,7 +192,7 @@ kefir_result_t kefir_ast_translator_store_layout_value(struct kefir_mem *mem,
     if (layout->bitfield) {
         REQUIRE_OK(store_bitfield(builder, ir_type, layout));
     } else {
-        REQUIRE_OK(kefir_ast_translator_store_value(mem, layout->type, context, builder, source_location));
+        REQUIRE_OK(kefir_ast_translator_store_value(mem, layout->qualified_type, context, builder, source_location));
     }
     return KEFIR_OK;
 }
@@ -238,9 +238,7 @@ kefir_result_t kefir_ast_translator_load_value(const struct kefir_ast_type *type
     REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type"));
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR block builder"));
 
-    kefir_uint64_t mem_flags = type->tag == KEFIR_AST_TYPE_QUALIFIED
-                                   ? retrieve_memflags(&type->qualified_type.qualification)
-                                   : KEFIR_IR_MEMORY_FLAG_NONE;
+    const kefir_uint64_t mem_flags = retrieve_memflags(type);
     const struct kefir_ast_type *normalizer = kefir_ast_translator_normalize_type(type);
 
     switch (normalizer->tag) {
@@ -321,9 +319,7 @@ kefir_result_t kefir_ast_translator_store_value(struct kefir_mem *mem, const str
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR block builder"));
 
     const struct kefir_ast_type *normalizer = kefir_ast_translator_normalize_type(type);
-    kefir_uint64_t mem_flags = type->tag == KEFIR_AST_TYPE_QUALIFIED
-                                   ? retrieve_memflags(&type->qualified_type.qualification)
-                                   : KEFIR_IR_MEMORY_FLAG_NONE;
+    const kefir_uint64_t mem_flags = retrieve_memflags(type);
 
     switch (normalizer->tag) {
         case KEFIR_AST_TYPE_VOID:

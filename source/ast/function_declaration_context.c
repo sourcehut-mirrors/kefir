@@ -268,7 +268,7 @@ static kefir_result_t context_define_identifier(
     }
 
     const struct kefir_ast_type *adjusted_type =
-        kefir_ast_type_conv_adjust_function_parameter(mem, context->type_bundle, unqualified_type);
+        kefir_ast_type_conv_adjust_function_parameter(mem, context->type_bundle, type);
     REQUIRE(
         !KEFIR_AST_TYPE_IS_INCOMPLETE(adjusted_type),
         KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location, "Identifier with no linkage shall have complete type"));

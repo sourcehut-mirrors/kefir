@@ -880,7 +880,9 @@ DEFINE_CASE(ast_node_analysis_init_declarators11, "AST node analysis - declarati
                                                         (struct kefir_ast_type_qualification){.constant = true})),
         &func_type2);
     ASSERT_OK(kefir_ast_type_function_parameter(
-        &kft_mem, context->type_bundle, func_type2, type1,
+        &kft_mem, context->type_bundle, func_type2,
+        kefir_ast_type_qualified(&kft_mem, context->type_bundle, type1,
+                                 (struct kefir_ast_type_qualification){.constant = true}),
         &(kefir_ast_scoped_identifier_storage_t){KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO}));
     ASSERT_OK(kefir_ast_type_function_parameter(
         &kft_mem, context->type_bundle, func_type2, kefir_ast_type_pointer(&kft_mem, context->type_bundle, type1),
