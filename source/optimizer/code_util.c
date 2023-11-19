@@ -183,6 +183,17 @@ static kefir_result_t extract_inputs_ref3(const struct kefir_opt_code_container 
     return KEFIR_OK;
 }
 
+static kefir_result_t extract_inputs_local_var(const struct kefir_opt_code_container *code,
+                                               const struct kefir_opt_instruction *instr,
+                                               kefir_result_t (*callback)(kefir_opt_instruction_ref_t, void *),
+                                               void *payload) {
+    UNUSED(code);
+    UNUSED(instr);
+    UNUSED(callback);
+    UNUSED(payload);
+    return KEFIR_OK;
+}
+
 static kefir_result_t extract_inputs_immediate(const struct kefir_opt_code_container *code,
                                                const struct kefir_opt_instruction *instr,
                                                kefir_result_t (*callback)(kefir_opt_instruction_ref_t, void *),

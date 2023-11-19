@@ -537,15 +537,16 @@ kefir_result_t kefir_opt_code_builder_get_thread_local(struct kefir_mem *mem, st
 }
 
 kefir_result_t kefir_opt_code_builder_get_local(struct kefir_mem *mem, struct kefir_opt_code_container *code,
-                                                kefir_opt_block_id_t block_id, kefir_size_t index,
+                                                kefir_opt_block_id_t block_id, kefir_size_t index, kefir_int64_t offset,
                                                 kefir_opt_instruction_ref_t *instr_id_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
 
     REQUIRE_OK(kefir_opt_code_builder_add_instruction(
         mem, code, block_id,
-        &(struct kefir_opt_operation){.opcode = KEFIR_OPT_OPCODE_GET_LOCAL, .parameters.index = index}, false,
-        instr_id_ptr));
+        &(struct kefir_opt_operation){.opcode = KEFIR_OPT_OPCODE_GET_LOCAL,
+                                      .parameters.local_var = {.index = index, .offset = offset}},
+        false, instr_id_ptr));
     return KEFIR_OK;
 }
 

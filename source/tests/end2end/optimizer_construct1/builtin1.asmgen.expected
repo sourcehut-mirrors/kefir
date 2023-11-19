@@ -93,6 +93,7 @@
                                 "id": 2,
                                 "opcode": "get_local",
                                 "index": 0,
+                                "offset": 0,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -127,6 +128,7 @@
                                 "id": 7,
                                 "opcode": "get_local",
                                 "index": 1,
+                                "offset": 0,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -157,6 +159,7 @@
                                 "id": 9,
                                 "opcode": "get_local",
                                 "index": 2,
+                                "offset": 0,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -172,6 +175,7 @@
                                 "id": 10,
                                 "opcode": "get_local",
                                 "index": 1,
+                                "offset": 0,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -205,6 +209,7 @@
                                 "id": 12,
                                 "opcode": "get_local",
                                 "index": 2,
+                                "offset": 0,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -239,6 +244,7 @@
                                 "id": 14,
                                 "opcode": "get_local",
                                 "index": 1,
+                                "offset": 0,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -353,6 +359,7 @@
                                 "id": 1,
                                 "opcode": "get_local",
                                 "index": 0,
+                                "offset": 0,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,

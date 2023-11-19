@@ -107,7 +107,7 @@
     /* Data access */ \
     OPCODE(GET_GLOBAL, "get_global", ir_ref) SEPARATOR \
     OPCODE(GET_THREAD_LOCAL, "get_thread_local", ir_ref) SEPARATOR \
-    OPCODE(GET_LOCAL, "get_local", index) SEPARATOR \
+    OPCODE(GET_LOCAL, "get_local", local_var) SEPARATOR \
     OPCODE(INT8_LOAD_SIGNED, "int8_load_signed", load_mem) SEPARATOR \
     OPCODE(INT8_LOAD_UNSIGNED, "int8_load_unsigned", load_mem) SEPARATOR \
     OPCODE(INT16_LOAD_SIGNED, "int16_load_signed", load_mem) SEPARATOR \

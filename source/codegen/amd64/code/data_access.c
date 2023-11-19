@@ -40,12 +40,15 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_local)(struct kefir_mem 
                                                  KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &vreg));
 
     const struct kefir_abi_amd64_typeentry_layout *entry = NULL;
-    REQUIRE_OK(
-        kefir_abi_amd64_type_layout_at(&function->locals_layout, instruction->operation.parameters.index, &entry));
+    REQUIRE_OK(kefir_abi_amd64_type_layout_at(&function->locals_layout,
+                                              instruction->operation.parameters.local_var.index, &entry));
 
-    REQUIRE_OK(kefir_asmcmp_amd64_lea(
-        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), &KEFIR_ASMCMP_MAKE_VREG64(vreg),
-        &KEFIR_ASMCMP_MAKE_INDIRECT_LOCAL_VAR(entry->relative_offset, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT), NULL));
+    REQUIRE_OK(kefir_asmcmp_amd64_lea(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                                      &KEFIR_ASMCMP_MAKE_VREG64(vreg),
+                                      &KEFIR_ASMCMP_MAKE_INDIRECT_LOCAL_VAR(
+                                          entry->relative_offset + instruction->operation.parameters.local_var.offset,
+                                          KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
+                                      NULL));
 
     REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, vreg));
 

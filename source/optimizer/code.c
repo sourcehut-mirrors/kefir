@@ -1513,6 +1513,15 @@ static kefir_result_t replace_references_index(struct kefir_opt_instruction *ins
     return KEFIR_OK;
 }
 
+static kefir_result_t replace_references_local_var(struct kefir_opt_instruction *instr,
+                                                   kefir_opt_instruction_ref_t to_ref,
+                                                   kefir_opt_instruction_ref_t from_ref) {
+    UNUSED(instr);
+    UNUSED(to_ref);
+    UNUSED(from_ref);
+    return KEFIR_OK;
+}
+
 static kefir_result_t replace_references_phi_ref(struct kefir_opt_instruction *instr,
                                                  kefir_opt_instruction_ref_t to_ref,
                                                  kefir_opt_instruction_ref_t from_ref) {

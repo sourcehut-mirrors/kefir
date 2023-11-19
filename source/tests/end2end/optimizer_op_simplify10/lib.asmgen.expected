@@ -1,0 +1,54 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global test
+.extern __kefir_opt_float32_neg
+.extern __kefir_opt_float64_neg
+.extern __kefirrt_opt_float32_to_uint
+.extern __kefirrt_opt_float64_to_uint
+
+.section .text
+test:
+    push %rbp
+    mov %rsp, %rbp
+    sub $112, %rsp
+_kefir_func_test_label0:
+_kefir_func_test_label1:
+    mov $1, %rax
+    lea -80(%rbp), %rcx
+    movq %rax, (%rcx)
+    mov $3, %rax
+    lea -64(%rbp), %rcx
+    movq %rax, (%rcx)
+    mov $100, %rax
+    lea -40(%rbp), %rcx
+    movq %rax, (%rcx)
+    mov $-1000, %rax
+    lea -8(%rbp), %rcx
+    movq %rax, (%rcx)
+    lea -112(%rbp), %rax
+    mov $-314159, %rcx
+    movl %ecx, (%rax)
+    lea -104(%rbp), %rdx
+    mov %rdx, %rdi
+    mov $0, %rax
+    mov $24, %rcx
+    rep stosb
+    mov $1, %rax
+    movl %eax, (%rdx)
+    lea -96(%rbp), %rax
+    mov $2, %rcx
+    movq %rcx, (%rax)
+    lea -88(%rbp), %rax
+    movd _kefir_func_test_label2(%rip), %xmm0
+    movd %xmm0, (%rax)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+    .align 4
+_kefir_func_test_label2:
+    .long 1077936128
+.section .text
+
+

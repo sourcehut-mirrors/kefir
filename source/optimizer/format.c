@@ -375,6 +375,15 @@ static kefir_result_t format_operation_index(struct kefir_json_output *json, con
     return KEFIR_OK;
 }
 
+static kefir_result_t format_operation_local_var(struct kefir_json_output *json,
+                                                 const struct kefir_opt_operation *oper) {
+    REQUIRE_OK(kefir_json_output_object_key(json, "index"));
+    REQUIRE_OK(kefir_json_output_uinteger(json, oper->parameters.local_var.index));
+    REQUIRE_OK(kefir_json_output_object_key(json, "offset"));
+    REQUIRE_OK(kefir_json_output_integer(json, oper->parameters.local_var.offset));
+    return KEFIR_OK;
+}
+
 static kefir_result_t format_operation_phi_ref(struct kefir_json_output *json, const struct kefir_opt_operation *oper) {
     REQUIRE_OK(kefir_json_output_object_key(json, "phi_ref"));
     REQUIRE_OK(id_format(json, oper->parameters.phi_ref));
