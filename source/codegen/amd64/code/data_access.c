@@ -75,13 +75,13 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_global)(struct kefir_mem
         REQUIRE_OK(kefir_asmcmp_amd64_lea(
             mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
             &KEFIR_ASMCMP_MAKE_VREG64(vreg),
-            &KEFIR_ASMCMP_MAKE_INDIRECT_LABEL(symbol, 0, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT), NULL));
+            &KEFIR_ASMCMP_MAKE_INDIRECT_EXTERNAL_LABEL(symbol, 0, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT), NULL));
     } else if (!kefir_ir_module_has_external(function->module->ir_module, symbol) &&
                !kefir_ir_module_has_global(function->module->ir_module, symbol)) {
         REQUIRE_OK(kefir_asmcmp_amd64_lea(
             mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
             &KEFIR_ASMCMP_MAKE_VREG64(vreg),
-            &KEFIR_ASMCMP_MAKE_RIP_INDIRECT(symbol, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT), NULL));
+            &KEFIR_ASMCMP_MAKE_RIP_INDIRECT_EXTERNAL(symbol, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT), NULL));
     } else {
         char buf[256];
         snprintf(buf, sizeof(buf), KEFIR_AMD64_GOTPCREL, symbol);
@@ -89,10 +89,10 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_global)(struct kefir_mem
         symbol = kefir_string_pool_insert(mem, &function->code.context.strings, buf, NULL);
         REQUIRE(symbol != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert symbol into string pool"));
 
-        REQUIRE_OK(
-            kefir_asmcmp_amd64_mov(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                                   &KEFIR_ASMCMP_MAKE_VREG64(vreg),
-                                   &KEFIR_ASMCMP_MAKE_RIP_INDIRECT(symbol, KEFIR_ASMCMP_OPERAND_VARIANT_64BIT), NULL));
+        REQUIRE_OK(kefir_asmcmp_amd64_mov(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+            &KEFIR_ASMCMP_MAKE_VREG64(vreg),
+            &KEFIR_ASMCMP_MAKE_RIP_INDIRECT_EXTERNAL(symbol, KEFIR_ASMCMP_OPERAND_VARIANT_64BIT), NULL));
     }
 
     REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, vreg));

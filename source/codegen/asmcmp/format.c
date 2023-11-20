@@ -132,11 +132,18 @@ static kefir_result_t value_format(struct kefir_json_output *json, const struct 
                     REQUIRE_OK(kefir_json_output_uinteger(json, value->indirect.base.vreg));
                     break;
 
-                case KEFIR_ASMCMP_INDIRECT_LABEL_BASIS:
+                case KEFIR_ASMCMP_INDIRECT_INTERNAL_LABEL_BASIS:
                     REQUIRE_OK(kefir_json_output_object_key(json, "basis"));
-                    REQUIRE_OK(kefir_json_output_string(json, "label"));
+                    REQUIRE_OK(kefir_json_output_string(json, "internal_label"));
                     REQUIRE_OK(kefir_json_output_object_key(json, "label"));
-                    REQUIRE_OK(kefir_json_output_string(json, value->indirect.base.label));
+                    REQUIRE_OK(kefir_json_output_uinteger(json, value->indirect.base.internal_label));
+                    break;
+
+                case KEFIR_ASMCMP_INDIRECT_EXTERNAL_LABEL_BASIS:
+                    REQUIRE_OK(kefir_json_output_object_key(json, "basis"));
+                    REQUIRE_OK(kefir_json_output_string(json, "external_label"));
+                    REQUIRE_OK(kefir_json_output_object_key(json, "label"));
+                    REQUIRE_OK(kefir_json_output_string(json, value->indirect.base.external_label));
                     break;
 
                 case KEFIR_ASMCMP_INDIRECT_LOCAL_VAR_BASIS:
@@ -168,25 +175,45 @@ static kefir_result_t value_format(struct kefir_json_output *json, const struct 
             REQUIRE_OK(kefir_json_output_object_end(json));
             break;
 
-        case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT:
+        case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT_INTERNAL:
             REQUIRE_OK(kefir_json_output_object_begin(json));
             REQUIRE_OK(kefir_json_output_object_key(json, "type"));
-            REQUIRE_OK(kefir_json_output_string(json, "rip_indirect"));
+            REQUIRE_OK(kefir_json_output_string(json, "rip_indirect_internal"));
             REQUIRE_OK(kefir_json_output_object_key(json, "base"));
-            REQUIRE_OK(kefir_json_output_string(json, value->rip_indirection.base));
+            REQUIRE_OK(kefir_json_output_uinteger(json, value->rip_indirection.internal));
             REQUIRE_OK(kefir_json_output_object_key(json, "variant"));
             REQUIRE_OK(variant_format(json, value->rip_indirection.variant));
             REQUIRE_OK(kefir_json_output_object_end(json));
             break;
 
-        case KEFIR_ASMCMP_VALUE_TYPE_LABEL:
+        case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT_EXTERNAL:
             REQUIRE_OK(kefir_json_output_object_begin(json));
             REQUIRE_OK(kefir_json_output_object_key(json, "type"));
-            REQUIRE_OK(kefir_json_output_string(json, "label"));
+            REQUIRE_OK(kefir_json_output_string(json, "rip_indirect_external"));
+            REQUIRE_OK(kefir_json_output_object_key(json, "base"));
+            REQUIRE_OK(kefir_json_output_string(json, value->rip_indirection.external));
+            REQUIRE_OK(kefir_json_output_object_key(json, "variant"));
+            REQUIRE_OK(variant_format(json, value->rip_indirection.variant));
+            REQUIRE_OK(kefir_json_output_object_end(json));
+            break;
+
+        case KEFIR_ASMCMP_VALUE_TYPE_INTERNAL_LABEL:
+            REQUIRE_OK(kefir_json_output_object_begin(json));
+            REQUIRE_OK(kefir_json_output_object_key(json, "type"));
+            REQUIRE_OK(kefir_json_output_string(json, "internal_label"));
             REQUIRE_OK(kefir_json_output_object_key(json, "label"));
-            REQUIRE_OK(kefir_json_output_string(json, value->label.symbolic));
+            REQUIRE_OK(kefir_json_output_uinteger(json, value->internal_label));
+            REQUIRE_OK(kefir_json_output_object_end(json));
+            break;
+
+        case KEFIR_ASMCMP_VALUE_TYPE_EXTERNAL_LABEL:
+            REQUIRE_OK(kefir_json_output_object_begin(json));
+            REQUIRE_OK(kefir_json_output_object_key(json, "type"));
+            REQUIRE_OK(kefir_json_output_string(json, "external_label"));
+            REQUIRE_OK(kefir_json_output_object_key(json, "label"));
+            REQUIRE_OK(kefir_json_output_string(json, value->external_label.symbolic));
             REQUIRE_OK(kefir_json_output_object_key(json, "offset"));
-            REQUIRE_OK(kefir_json_output_integer(json, value->label.offset));
+            REQUIRE_OK(kefir_json_output_integer(json, value->external_label.offset));
             REQUIRE_OK(kefir_json_output_object_end(json));
             break;
 

@@ -545,7 +545,7 @@ static kefir_result_t invoke_impl(struct kefir_mem *mem, struct kefir_codegen_am
         }
         REQUIRE_OK(kefir_asmcmp_amd64_call(mem, &function->code,
                                            kefir_asmcmp_context_instr_tail(&function->code.context),
-                                           &KEFIR_ASMCMP_MAKE_LABEL(symbol, 0), &call_idx));
+                                           &KEFIR_ASMCMP_MAKE_EXTERNAL_LABEL(symbol, 0), &call_idx));
     } else {
         kefir_asmcmp_virtual_register_index_t func_vreg;
         REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(

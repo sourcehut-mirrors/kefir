@@ -111,8 +111,10 @@ static kefir_result_t update_virtual_register_lifetime(struct kefir_asmcmp_amd64
         case KEFIR_ASMCMP_VALUE_TYPE_NONE:
         case KEFIR_ASMCMP_VALUE_TYPE_INTEGER:
         case KEFIR_ASMCMP_VALUE_TYPE_UINTEGER:
-        case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT:
-        case KEFIR_ASMCMP_VALUE_TYPE_LABEL:
+        case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT_INTERNAL:
+        case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT_EXTERNAL:
+        case KEFIR_ASMCMP_VALUE_TYPE_INTERNAL_LABEL:
+        case KEFIR_ASMCMP_VALUE_TYPE_EXTERNAL_LABEL:
         case KEFIR_ASMCMP_VALUE_TYPE_X87:
         case KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER:
         case KEFIR_ASMCMP_VALUE_TYPE_INLINE_ASSEMBLY_INDEX:
@@ -131,7 +133,8 @@ static kefir_result_t update_virtual_register_lifetime(struct kefir_asmcmp_amd64
                                                                        value->indirect.base.vreg, lifetime_index));
                     break;
 
-                case KEFIR_ASMCMP_INDIRECT_LABEL_BASIS:
+                case KEFIR_ASMCMP_INDIRECT_INTERNAL_LABEL_BASIS:
+                case KEFIR_ASMCMP_INDIRECT_EXTERNAL_LABEL_BASIS:
                 case KEFIR_ASMCMP_INDIRECT_LOCAL_VAR_BASIS:
                 case KEFIR_ASMCMP_INDIRECT_SPILL_AREA_BASIS:
                 case KEFIR_ASMCMP_INDIRECT_TEMPORARY_AREA_BASIS:
@@ -248,8 +251,10 @@ static kefir_result_t build_virtual_register_liveness_graph(struct kefir_mem *me
         case KEFIR_ASMCMP_VALUE_TYPE_NONE:
         case KEFIR_ASMCMP_VALUE_TYPE_INTEGER:
         case KEFIR_ASMCMP_VALUE_TYPE_UINTEGER:
-        case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT:
-        case KEFIR_ASMCMP_VALUE_TYPE_LABEL:
+        case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT_INTERNAL:
+        case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT_EXTERNAL:
+        case KEFIR_ASMCMP_VALUE_TYPE_INTERNAL_LABEL:
+        case KEFIR_ASMCMP_VALUE_TYPE_EXTERNAL_LABEL:
         case KEFIR_ASMCMP_VALUE_TYPE_X87:
         case KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER:
         case KEFIR_ASMCMP_VALUE_TYPE_INLINE_ASSEMBLY_INDEX:
@@ -266,7 +271,8 @@ static kefir_result_t build_virtual_register_liveness_graph(struct kefir_mem *me
                     REQUIRE_OK(update_liveness_graph(mem, allocator, value->indirect.base.vreg, lifetime_index));
                     break;
 
-                case KEFIR_ASMCMP_INDIRECT_LABEL_BASIS:
+                case KEFIR_ASMCMP_INDIRECT_INTERNAL_LABEL_BASIS:
+                case KEFIR_ASMCMP_INDIRECT_EXTERNAL_LABEL_BASIS:
                 case KEFIR_ASMCMP_INDIRECT_LOCAL_VAR_BASIS:
                 case KEFIR_ASMCMP_INDIRECT_SPILL_AREA_BASIS:
                 case KEFIR_ASMCMP_INDIRECT_TEMPORARY_AREA_BASIS:
@@ -705,8 +711,10 @@ static kefir_result_t allocate_register(struct kefir_mem *mem, struct kefir_asmc
         case KEFIR_ASMCMP_VALUE_TYPE_NONE:
         case KEFIR_ASMCMP_VALUE_TYPE_INTEGER:
         case KEFIR_ASMCMP_VALUE_TYPE_UINTEGER:
-        case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT:
-        case KEFIR_ASMCMP_VALUE_TYPE_LABEL:
+        case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT_INTERNAL:
+        case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT_EXTERNAL:
+        case KEFIR_ASMCMP_VALUE_TYPE_INTERNAL_LABEL:
+        case KEFIR_ASMCMP_VALUE_TYPE_EXTERNAL_LABEL:
         case KEFIR_ASMCMP_VALUE_TYPE_X87:
         case KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER:
         case KEFIR_ASMCMP_VALUE_TYPE_INLINE_ASSEMBLY_INDEX:
@@ -723,7 +731,8 @@ static kefir_result_t allocate_register(struct kefir_mem *mem, struct kefir_asmc
                     REQUIRE_OK(allocate_register_impl(mem, target, stack_frame, allocator, value->indirect.base.vreg));
                     break;
 
-                case KEFIR_ASMCMP_INDIRECT_LABEL_BASIS:
+                case KEFIR_ASMCMP_INDIRECT_INTERNAL_LABEL_BASIS:
+                case KEFIR_ASMCMP_INDIRECT_EXTERNAL_LABEL_BASIS:
                 case KEFIR_ASMCMP_INDIRECT_LOCAL_VAR_BASIS:
                 case KEFIR_ASMCMP_INDIRECT_SPILL_AREA_BASIS:
                 case KEFIR_ASMCMP_INDIRECT_TEMPORARY_AREA_BASIS:

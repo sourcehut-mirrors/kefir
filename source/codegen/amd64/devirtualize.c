@@ -82,9 +82,11 @@ static kefir_result_t update_live_virtual_regs(struct kefir_mem *mem, struct dev
         case KEFIR_ASMCMP_VALUE_TYPE_INTEGER:
         case KEFIR_ASMCMP_VALUE_TYPE_UINTEGER:
         case KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER:
-        case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT:
+        case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT_INTERNAL:
+        case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT_EXTERNAL:
         case KEFIR_ASMCMP_VALUE_TYPE_X87:
-        case KEFIR_ASMCMP_VALUE_TYPE_LABEL:
+        case KEFIR_ASMCMP_VALUE_TYPE_INTERNAL_LABEL:
+        case KEFIR_ASMCMP_VALUE_TYPE_EXTERNAL_LABEL:
         case KEFIR_ASMCMP_VALUE_TYPE_INLINE_ASSEMBLY_INDEX:
             // Intentionally left blank
             break;
@@ -149,7 +151,8 @@ static kefir_result_t update_live_virtual_regs(struct kefir_mem *mem, struct dev
                     break;
 
                 case KEFIR_ASMCMP_INDIRECT_PHYSICAL_BASIS:
-                case KEFIR_ASMCMP_INDIRECT_LABEL_BASIS:
+                case KEFIR_ASMCMP_INDIRECT_INTERNAL_LABEL_BASIS:
+                case KEFIR_ASMCMP_INDIRECT_EXTERNAL_LABEL_BASIS:
                 case KEFIR_ASMCMP_INDIRECT_LOCAL_VAR_BASIS:
                 case KEFIR_ASMCMP_INDIRECT_SPILL_AREA_BASIS:
                 case KEFIR_ASMCMP_INDIRECT_TEMPORARY_AREA_BASIS:
@@ -345,8 +348,10 @@ static kefir_result_t devirtualize_value(struct kefir_mem *mem, struct devirtual
         case KEFIR_ASMCMP_VALUE_TYPE_INTEGER:
         case KEFIR_ASMCMP_VALUE_TYPE_UINTEGER:
         case KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER:
-        case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT:
-        case KEFIR_ASMCMP_VALUE_TYPE_LABEL:
+        case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT_INTERNAL:
+        case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT_EXTERNAL:
+        case KEFIR_ASMCMP_VALUE_TYPE_INTERNAL_LABEL:
+        case KEFIR_ASMCMP_VALUE_TYPE_EXTERNAL_LABEL:
         case KEFIR_ASMCMP_VALUE_TYPE_X87:
         case KEFIR_ASMCMP_VALUE_TYPE_STASH_INDEX:
         case KEFIR_ASMCMP_VALUE_TYPE_INLINE_ASSEMBLY_INDEX:
@@ -431,7 +436,8 @@ static kefir_result_t devirtualize_value(struct kefir_mem *mem, struct devirtual
         case KEFIR_ASMCMP_VALUE_TYPE_INDIRECT:
             switch (value->indirect.type) {
                 case KEFIR_ASMCMP_INDIRECT_PHYSICAL_BASIS:
-                case KEFIR_ASMCMP_INDIRECT_LABEL_BASIS:
+                case KEFIR_ASMCMP_INDIRECT_INTERNAL_LABEL_BASIS:
+                case KEFIR_ASMCMP_INDIRECT_EXTERNAL_LABEL_BASIS:
                 case KEFIR_ASMCMP_INDIRECT_LOCAL_VAR_BASIS:
                 case KEFIR_ASMCMP_INDIRECT_SPILL_AREA_BASIS:
                 case KEFIR_ASMCMP_INDIRECT_TEMPORARY_AREA_BASIS:
@@ -557,12 +563,14 @@ static kefir_result_t devirtualize_instr_arg(struct kefir_mem *mem, struct devir
                     KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to devirtualize instruction"));
             break;
 
-        case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT:
+        case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT_INTERNAL:
+        case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT_EXTERNAL:
             REQUIRE(DEVIRT_HAS_FLAG(op_flags, KEFIR_AMD64_INSTRDB_ANY_MEMORY) && !no_memory_arg,
                     KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to devirtualize instruction"));
             break;
 
-        case KEFIR_ASMCMP_VALUE_TYPE_LABEL:
+        case KEFIR_ASMCMP_VALUE_TYPE_INTERNAL_LABEL:
+        case KEFIR_ASMCMP_VALUE_TYPE_EXTERNAL_LABEL:
             REQUIRE(DEVIRT_HAS_FLAG(op_flags, KEFIR_AMD64_INSTRDB_LABEL),
                     KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to devirtualize instruction"));
             break;
@@ -737,7 +745,8 @@ static kefir_result_t devirtualize_instr2(struct kefir_mem *mem, struct devirtua
     REQUIRE_OK(devirtualize_instr_arg(mem, state, instr_idx, instr, 0, tail_instr_idx, instr_flags, op1_flags,
                                       !DEVIRT_HAS_FLAG(instr_flags, KEFIR_AMD64_INSTRDB_BOTH_MEMORY) &&
                                           (instr->args[1].type == KEFIR_ASMCMP_VALUE_TYPE_INDIRECT ||
-                                           instr->args[1].type == KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT)));
+                                           instr->args[1].type == KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT_INTERNAL ||
+                                           instr->args[1].type == KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT_EXTERNAL)));
     REQUIRE_OK(devirtualize_instr_arg(mem, state, instr_idx, instr, 1, tail_instr_idx, instr_flags, op2_flags, false));
 
     return KEFIR_OK;
@@ -756,7 +765,8 @@ static kefir_result_t devirtualize_instr3(struct kefir_mem *mem, struct devirtua
     REQUIRE_OK(devirtualize_instr_arg(mem, state, instr_idx, instr, 0, tail_instr_idx, instr_flags, op1_flags,
                                       !DEVIRT_HAS_FLAG(instr_flags, KEFIR_AMD64_INSTRDB_BOTH_MEMORY) &&
                                           (instr->args[1].type == KEFIR_ASMCMP_VALUE_TYPE_INDIRECT ||
-                                           instr->args[1].type == KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT)));
+                                           instr->args[1].type == KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT_INTERNAL ||
+                                           instr->args[1].type == KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT_EXTERNAL)));
     REQUIRE_OK(devirtualize_instr_arg(mem, state, instr_idx, instr, 1, tail_instr_idx, instr_flags, op2_flags, false));
     REQUIRE_OK(devirtualize_instr_arg(mem, state, instr_idx, instr, 2, tail_instr_idx, instr_flags, op3_flags, false));
 

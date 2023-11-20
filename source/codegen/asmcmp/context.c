@@ -232,8 +232,13 @@ static kefir_result_t validate_value(struct kefir_asmcmp_context *context, const
                     REQUIRE_OK(kefir_asmcmp_virtual_register_get(context, value->indirect.base.vreg, &vreg));
                 } break;
 
-                case KEFIR_ASMCMP_INDIRECT_LABEL_BASIS:
-                    REQUIRE(value->indirect.base.label != NULL,
+                case KEFIR_ASMCMP_INDIRECT_INTERNAL_LABEL_BASIS:
+                    REQUIRE(VALID_LABEL_IDX(context, value->indirect.base.internal_label),
+                            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid internal label"));
+                    break;
+
+                case KEFIR_ASMCMP_INDIRECT_EXTERNAL_LABEL_BASIS:
+                    REQUIRE(value->indirect.base.external_label != NULL,
                             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected non-NULL label indirection basis"));
                     break;
 
@@ -247,13 +252,24 @@ static kefir_result_t validate_value(struct kefir_asmcmp_context *context, const
             }
             break;
 
-        case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT:
-            REQUIRE(value->rip_indirection.base != NULL,
+        case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT_INTERNAL:
+            REQUIRE(VALID_LABEL_IDX(context, value->rip_indirection.internal),
+                    KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid internal label index"));
+            break;
+
+        case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT_EXTERNAL:
+            REQUIRE(value->rip_indirection.external != NULL,
                     KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected non-NULL rip indirection basis"));
             break;
 
-        case KEFIR_ASMCMP_VALUE_TYPE_LABEL:
-            REQUIRE(value->label.symbolic != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected non-NULL label"));
+        case KEFIR_ASMCMP_VALUE_TYPE_INTERNAL_LABEL:
+            REQUIRE(VALID_LABEL_IDX(context, value->internal_label),
+                    KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid internal label index"));
+            break;
+
+        case KEFIR_ASMCMP_VALUE_TYPE_EXTERNAL_LABEL:
+            REQUIRE(value->external_label.symbolic != NULL,
+                    KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected non-NULL label"));
             break;
 
         case KEFIR_ASMCMP_VALUE_TYPE_STASH_INDEX:

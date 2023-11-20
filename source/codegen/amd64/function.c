@@ -421,15 +421,3 @@ kefir_result_t kefir_codegen_amd64_function_vreg_of(struct kefir_codegen_amd64_f
     *vreg = node->value;
     return KEFIR_OK;
 }
-
-kefir_result_t kefir_codegen_amd64_function_format_label(struct kefir_mem *mem,
-                                                         struct kefir_codegen_amd64_function *function,
-                                                         kefir_asmcmp_label_index_t label, const char **result) {
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
-    REQUIRE(result != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to formatted label"));
-
-    REQUIRE_OK(kefir_asmcmp_format(mem, &function->code.context, result, KEFIR_AMD64_LABEL,
-                                   function->function->ir_func->name, label));
-    return KEFIR_OK;
-}

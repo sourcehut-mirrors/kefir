@@ -182,12 +182,9 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(jump)(struct kefir_mem *mem,
         REQUIRE_OK(kefir_hashtree_at(&function->labels, (kefir_hashtree_key_t) target_block->id, &target_label_node));
         ASSIGN_DECL_CAST(kefir_asmcmp_label_index_t, target_label, target_label_node->value);
 
-        const char *label_symbol;
-        REQUIRE_OK(kefir_codegen_amd64_function_format_label(mem, function, target_label, &label_symbol));
-
         REQUIRE_OK(kefir_asmcmp_amd64_jmp(mem, &function->code,
                                           kefir_asmcmp_context_instr_tail(&function->code.context),
-                                          &KEFIR_ASMCMP_MAKE_LABEL(label_symbol, 0), NULL));
+                                          &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(target_label), NULL));
     }
 
     return KEFIR_OK;
@@ -216,22 +213,19 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(branch)(struct kefir_mem *me
                                        &KEFIR_ASMCMP_MAKE_VREG(condition_vreg_idx), NULL));
 
     struct kefir_hashtree_node *label_node;
-    const char *label;
     kefir_bool_t alternative_phi_outputs;
     kefir_asmcmp_label_index_t branch_label_idx;
     REQUIRE_OK(has_phi_outputs(function, alternative_block, &alternative_phi_outputs));
     if (alternative_phi_outputs) {
         REQUIRE_OK(
             kefir_asmcmp_context_new_label(mem, &function->code.context, KEFIR_ASMCMP_INDEX_NONE, &branch_label_idx));
-        REQUIRE_OK(kefir_codegen_amd64_function_format_label(mem, function, branch_label_idx, &label));
         REQUIRE_OK(kefir_asmcmp_amd64_jz(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                                         &KEFIR_ASMCMP_MAKE_LABEL(label, 0), NULL));
+                                         &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(branch_label_idx), NULL));
     } else {
         REQUIRE_OK(kefir_hashtree_at(&function->labels, (kefir_hashtree_key_t) alternative_block->id, &label_node));
         ASSIGN_DECL_CAST(kefir_asmcmp_label_index_t, target_label, label_node->value);
-        REQUIRE_OK(kefir_codegen_amd64_function_format_label(mem, function, target_label, &label));
         REQUIRE_OK(kefir_asmcmp_amd64_jz(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                                         &KEFIR_ASMCMP_MAKE_LABEL(label, 0), NULL));
+                                         &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(target_label), NULL));
     }
 
     REQUIRE_OK(kefir_codegen_amd64_function_map_phi_outputs(mem, function, target_block->id, instruction->block_id));
@@ -240,10 +234,9 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(branch)(struct kefir_mem *me
                                        function->function_analysis->blocks[source_block->id].linear_position + 1) {
         REQUIRE_OK(kefir_hashtree_at(&function->labels, (kefir_hashtree_key_t) target_block->id, &label_node));
         ASSIGN_DECL_CAST(kefir_asmcmp_label_index_t, target_label, label_node->value);
-        REQUIRE_OK(kefir_codegen_amd64_function_format_label(mem, function, target_label, &label));
         REQUIRE_OK(kefir_asmcmp_amd64_jmp(mem, &function->code,
                                           kefir_asmcmp_context_instr_tail(&function->code.context),
-                                          &KEFIR_ASMCMP_MAKE_LABEL(label, 0), NULL));
+                                          &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(target_label), NULL));
     }
 
     if (alternative_phi_outputs) {
@@ -255,10 +248,9 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(branch)(struct kefir_mem *me
             function->function_analysis->blocks[source_block->id].linear_position + 1) {
             REQUIRE_OK(kefir_hashtree_at(&function->labels, (kefir_hashtree_key_t) alternative_block->id, &label_node));
             ASSIGN_DECL_CAST(kefir_asmcmp_label_index_t, target_label, label_node->value);
-            REQUIRE_OK(kefir_codegen_amd64_function_format_label(mem, function, target_label, &label));
             REQUIRE_OK(kefir_asmcmp_amd64_jmp(mem, &function->code,
                                               kefir_asmcmp_context_instr_tail(&function->code.context),
-                                              &KEFIR_ASMCMP_MAKE_LABEL(label, 0), NULL));
+                                              &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(target_label), NULL));
         }
     }
 
@@ -372,18 +364,17 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(compare_branch)(struct kefir
     }
 
     struct kefir_hashtree_node *label_node;
-    const char *label;
+
     kefir_bool_t alternative_phi_outputs;
     kefir_asmcmp_label_index_t branch_label_idx;
     REQUIRE_OK(has_phi_outputs(function, alternative_block, &alternative_phi_outputs));
     if (alternative_phi_outputs) {
         REQUIRE_OK(
             kefir_asmcmp_context_new_label(mem, &function->code.context, KEFIR_ASMCMP_INDEX_NONE, &branch_label_idx));
-        REQUIRE_OK(kefir_codegen_amd64_function_format_label(mem, function, branch_label_idx, &label));
     } else {
         REQUIRE_OK(kefir_hashtree_at(&function->labels, (kefir_hashtree_key_t) alternative_block->id, &label_node));
         ASSIGN_DECL_CAST(kefir_asmcmp_label_index_t, target_label, label_node->value);
-        REQUIRE_OK(kefir_codegen_amd64_function_format_label(mem, function, target_label, &label));
+        branch_label_idx = target_label;
     }
 
     switch (instruction->operation.parameters.branch.comparison.type) {
@@ -391,95 +382,93 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(compare_branch)(struct kefir
         case KEFIR_OPT_COMPARE_BRANCH_INT_EQUALS_CONST:
             REQUIRE_OK(kefir_asmcmp_amd64_jne(mem, &function->code,
                                               kefir_asmcmp_context_instr_tail(&function->code.context),
-                                              &KEFIR_ASMCMP_MAKE_LABEL(label, 0), NULL));
+                                              &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(branch_label_idx), NULL));
             break;
 
         case KEFIR_OPT_COMPARE_BRANCH_INT_NOT_EQUALS:
         case KEFIR_OPT_COMPARE_BRANCH_INT_NOT_EQUALS_CONST:
             REQUIRE_OK(kefir_asmcmp_amd64_je(mem, &function->code,
                                              kefir_asmcmp_context_instr_tail(&function->code.context),
-                                             &KEFIR_ASMCMP_MAKE_LABEL(label, 0), NULL));
+                                             &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(branch_label_idx), NULL));
             break;
 
         case KEFIR_OPT_COMPARE_BRANCH_INT_GREATER:
         case KEFIR_OPT_COMPARE_BRANCH_INT_GREATER_CONST:
             REQUIRE_OK(kefir_asmcmp_amd64_jle(mem, &function->code,
                                               kefir_asmcmp_context_instr_tail(&function->code.context),
-                                              &KEFIR_ASMCMP_MAKE_LABEL(label, 0), NULL));
+                                              &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(branch_label_idx), NULL));
             break;
 
         case KEFIR_OPT_COMPARE_BRANCH_INT_GREATER_OR_EQUALS:
         case KEFIR_OPT_COMPARE_BRANCH_INT_GREATER_OR_EQUALS_CONST:
             REQUIRE_OK(kefir_asmcmp_amd64_jl(mem, &function->code,
                                              kefir_asmcmp_context_instr_tail(&function->code.context),
-                                             &KEFIR_ASMCMP_MAKE_LABEL(label, 0), NULL));
+                                             &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(branch_label_idx), NULL));
             break;
 
         case KEFIR_OPT_COMPARE_BRANCH_INT_LESS:
         case KEFIR_OPT_COMPARE_BRANCH_INT_LESS_CONST:
             REQUIRE_OK(kefir_asmcmp_amd64_jge(mem, &function->code,
                                               kefir_asmcmp_context_instr_tail(&function->code.context),
-                                              &KEFIR_ASMCMP_MAKE_LABEL(label, 0), NULL));
+                                              &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(branch_label_idx), NULL));
             break;
 
         case KEFIR_OPT_COMPARE_BRANCH_INT_LESS_OR_EQUALS:
         case KEFIR_OPT_COMPARE_BRANCH_INT_LESS_OR_EQUALS_CONST:
             REQUIRE_OK(kefir_asmcmp_amd64_jg(mem, &function->code,
                                              kefir_asmcmp_context_instr_tail(&function->code.context),
-                                             &KEFIR_ASMCMP_MAKE_LABEL(label, 0), NULL));
+                                             &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(branch_label_idx), NULL));
             break;
 
         case KEFIR_OPT_COMPARE_BRANCH_INT_ABOVE:
         case KEFIR_OPT_COMPARE_BRANCH_INT_ABOVE_CONST:
             REQUIRE_OK(kefir_asmcmp_amd64_jbe(mem, &function->code,
                                               kefir_asmcmp_context_instr_tail(&function->code.context),
-                                              &KEFIR_ASMCMP_MAKE_LABEL(label, 0), NULL));
+                                              &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(branch_label_idx), NULL));
             break;
 
         case KEFIR_OPT_COMPARE_BRANCH_INT_ABOVE_OR_EQUALS:
         case KEFIR_OPT_COMPARE_BRANCH_INT_ABOVE_OR_EQUALS_CONST:
             REQUIRE_OK(kefir_asmcmp_amd64_jb(mem, &function->code,
                                              kefir_asmcmp_context_instr_tail(&function->code.context),
-                                             &KEFIR_ASMCMP_MAKE_LABEL(label, 0), NULL));
+                                             &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(branch_label_idx), NULL));
             break;
 
         case KEFIR_OPT_COMPARE_BRANCH_INT_BELOW:
         case KEFIR_OPT_COMPARE_BRANCH_INT_BELOW_CONST:
             REQUIRE_OK(kefir_asmcmp_amd64_jae(mem, &function->code,
                                               kefir_asmcmp_context_instr_tail(&function->code.context),
-                                              &KEFIR_ASMCMP_MAKE_LABEL(label, 0), NULL));
+                                              &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(branch_label_idx), NULL));
             break;
 
         case KEFIR_OPT_COMPARE_BRANCH_INT_BELOW_OR_EQUALS:
         case KEFIR_OPT_COMPARE_BRANCH_INT_BELOW_OR_EQUALS_CONST:
             REQUIRE_OK(kefir_asmcmp_amd64_ja(mem, &function->code,
                                              kefir_asmcmp_context_instr_tail(&function->code.context),
-                                             &KEFIR_ASMCMP_MAKE_LABEL(label, 0), NULL));
+                                             &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(branch_label_idx), NULL));
             break;
 
         case KEFIR_OPT_COMPARE_BRANCH_FLOAT32_EQUALS:
         case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_EQUALS:
             REQUIRE_OK(kefir_asmcmp_amd64_jp(mem, &function->code,
                                              kefir_asmcmp_context_instr_tail(&function->code.context),
-                                             &KEFIR_ASMCMP_MAKE_LABEL(label, 0), NULL));
+                                             &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(branch_label_idx), NULL));
             REQUIRE_OK(kefir_asmcmp_amd64_jne(mem, &function->code,
                                               kefir_asmcmp_context_instr_tail(&function->code.context),
-                                              &KEFIR_ASMCMP_MAKE_LABEL(label, 0), NULL));
+                                              &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(branch_label_idx), NULL));
             break;
 
         case KEFIR_OPT_COMPARE_BRANCH_FLOAT32_NOT_EQUALS:
         case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_NOT_EQUALS: {
             kefir_asmcmp_label_index_t p_label;
-            const char *symbolic_p_label;
             REQUIRE_OK(kefir_asmcmp_context_new_label(mem, &function->code.context, KEFIR_ASMCMP_INDEX_NONE, &p_label));
-            REQUIRE_OK(kefir_codegen_amd64_function_format_label(mem, function, p_label, &symbolic_p_label));
 
             REQUIRE_OK(kefir_asmcmp_amd64_jp(mem, &function->code,
                                              kefir_asmcmp_context_instr_tail(&function->code.context),
-                                             &KEFIR_ASMCMP_MAKE_LABEL(symbolic_p_label, 0), NULL));
+                                             &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(p_label), NULL));
             REQUIRE_OK(kefir_asmcmp_amd64_je(mem, &function->code,
                                              kefir_asmcmp_context_instr_tail(&function->code.context),
-                                             &KEFIR_ASMCMP_MAKE_LABEL(label, 0), NULL));
+                                             &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(branch_label_idx), NULL));
 
             REQUIRE_OK(kefir_asmcmp_context_bind_label_after_tail(mem, &function->code.context, p_label));
         } break;
@@ -490,7 +479,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(compare_branch)(struct kefir
         case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_LESS:
             REQUIRE_OK(kefir_asmcmp_amd64_jbe(mem, &function->code,
                                               kefir_asmcmp_context_instr_tail(&function->code.context),
-                                              &KEFIR_ASMCMP_MAKE_LABEL(label, 0), NULL));
+                                              &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(branch_label_idx), NULL));
             break;
 
         case KEFIR_OPT_COMPARE_BRANCH_FLOAT32_GREATER_OR_EQUALS:
@@ -499,12 +488,12 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(compare_branch)(struct kefir
         case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_LESS_OR_EQUALS:
             REQUIRE_OK(kefir_asmcmp_amd64_jb(mem, &function->code,
                                              kefir_asmcmp_context_instr_tail(&function->code.context),
-                                             &KEFIR_ASMCMP_MAKE_LABEL(label, 0), NULL));
+                                             &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(branch_label_idx), NULL));
             break;
 
             REQUIRE_OK(kefir_asmcmp_amd64_jbe(mem, &function->code,
                                               kefir_asmcmp_context_instr_tail(&function->code.context),
-                                              &KEFIR_ASMCMP_MAKE_LABEL(label, 0), NULL));
+                                              &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(branch_label_idx), NULL));
             break;
     }
 
@@ -514,10 +503,9 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(compare_branch)(struct kefir
                                        function->function_analysis->blocks[source_block->id].linear_position + 1) {
         REQUIRE_OK(kefir_hashtree_at(&function->labels, (kefir_hashtree_key_t) target_block->id, &label_node));
         ASSIGN_DECL_CAST(kefir_asmcmp_label_index_t, target_label, label_node->value);
-        REQUIRE_OK(kefir_codegen_amd64_function_format_label(mem, function, target_label, &label));
         REQUIRE_OK(kefir_asmcmp_amd64_jmp(mem, &function->code,
                                           kefir_asmcmp_context_instr_tail(&function->code.context),
-                                          &KEFIR_ASMCMP_MAKE_LABEL(label, 0), NULL));
+                                          &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(target_label), NULL));
     }
 
     if (alternative_phi_outputs) {
@@ -529,10 +517,9 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(compare_branch)(struct kefir
             function->function_analysis->blocks[source_block->id].linear_position + 1) {
             REQUIRE_OK(kefir_hashtree_at(&function->labels, (kefir_hashtree_key_t) alternative_block->id, &label_node));
             ASSIGN_DECL_CAST(kefir_asmcmp_label_index_t, target_label, label_node->value);
-            REQUIRE_OK(kefir_codegen_amd64_function_format_label(mem, function, target_label, &label));
             REQUIRE_OK(kefir_asmcmp_amd64_jmp(mem, &function->code,
                                               kefir_asmcmp_context_instr_tail(&function->code.context),
-                                              &KEFIR_ASMCMP_MAKE_LABEL(label, 0), NULL));
+                                              &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(target_label), NULL));
         }
     }
 

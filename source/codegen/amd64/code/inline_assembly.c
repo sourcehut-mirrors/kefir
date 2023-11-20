@@ -615,11 +615,8 @@ static kefir_result_t format_label_parameter(struct kefir_mem *mem, struct kefir
         label = node->value;
     }
 
-    const char *label_symbol;
-    REQUIRE_OK(kefir_codegen_amd64_function_format_label(mem, function, label, &label_symbol));
-
     REQUIRE_OK(kefir_asmcmp_inline_assembly_add_value(mem, &function->code.context, context->inline_asm_idx,
-                                                      &KEFIR_ASMCMP_MAKE_LABEL(label_symbol, 0)));
+                                                      &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(label)));
     return KEFIR_OK;
 }
 
@@ -678,7 +675,8 @@ static kefir_result_t format_normal_parameter(struct kefir_mem *mem, struct kefi
                 if (asm_param->immediate_identifier_base != NULL) {
                     REQUIRE_OK(kefir_asmcmp_inline_assembly_add_value(
                         mem, &function->code.context, context->inline_asm_idx,
-                        &KEFIR_ASMCMP_MAKE_LABEL(asm_param->immediate_identifier_base, asm_param->immediate_value)));
+                        &KEFIR_ASMCMP_MAKE_EXTERNAL_LABEL(asm_param->immediate_identifier_base,
+                                                          asm_param->immediate_value)));
                 } else {
                     REQUIRE_OK(
                         kefir_asmcmp_inline_assembly_add_value(mem, &function->code.context, context->inline_asm_idx,
@@ -692,7 +690,7 @@ static kefir_result_t format_normal_parameter(struct kefir_mem *mem, struct kefi
                                                asm_param->immediate_literal_base));
                 REQUIRE_OK(kefir_asmcmp_inline_assembly_add_value(
                     mem, &function->code.context, context->inline_asm_idx,
-                    &KEFIR_ASMCMP_MAKE_LABEL(symbol, asm_param->immediate_value)));
+                    &KEFIR_ASMCMP_MAKE_EXTERNAL_LABEL(symbol, asm_param->immediate_value)));
             } break;
         }
         return KEFIR_OK;
@@ -1097,11 +1095,8 @@ static kefir_result_t jump_trampolines(struct kefir_mem *mem, struct kefir_codeg
         &function->labels, (kefir_hashtree_key_t) context->inline_assembly->default_jump_target, &target_label_node));
     ASSIGN_DECL_CAST(kefir_asmcmp_label_index_t, target_label, target_label_node->value);
 
-    const char *label_symbol;
-    REQUIRE_OK(kefir_codegen_amd64_function_format_label(mem, function, target_label, &label_symbol));
-
     REQUIRE_OK(kefir_asmcmp_amd64_jmp(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                                      &KEFIR_ASMCMP_MAKE_LABEL(label_symbol, 0), NULL));
+                                      &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(target_label), NULL));
 
     struct kefir_hashtree_node_iterator iter;
     for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&context->inline_assembly->jump_targets, &iter);
@@ -1126,10 +1121,9 @@ static kefir_result_t jump_trampolines(struct kefir_mem *mem, struct kefir_codeg
 
         REQUIRE_OK(kefir_hashtree_at(&function->labels, (kefir_hashtree_key_t) target_block, &target_label_node));
         target_label = (kefir_asmcmp_label_index_t) target_label_node->value;
-        REQUIRE_OK(kefir_codegen_amd64_function_format_label(mem, function, target_label, &label_symbol));
         REQUIRE_OK(kefir_asmcmp_amd64_jmp(mem, &function->code,
                                           kefir_asmcmp_context_instr_tail(&function->code.context),
-                                          &KEFIR_ASMCMP_MAKE_LABEL(label_symbol, 0), NULL));
+                                          &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(target_label), NULL));
     }
     return KEFIR_OK;
 }
