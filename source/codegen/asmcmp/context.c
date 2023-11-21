@@ -1063,3 +1063,48 @@ kefir_result_t kefir_asmcmp_format(struct kefir_mem *mem, struct kefir_asmcmp_co
 
     return KEFIR_OK;
 }
+
+static kefir_result_t replace_labels(struct kefir_asmcmp_value *value, kefir_asmcmp_label_index_t dst_label,
+                                     kefir_asmcmp_label_index_t src_label) {
+    switch (value->type) {
+        case KEFIR_ASMCMP_VALUE_TYPE_INTERNAL_LABEL:
+            if (value->internal_label == src_label) {
+                value->internal_label = dst_label;
+            }
+            break;
+
+        case KEFIR_ASMCMP_VALUE_TYPE_INDIRECT:
+            if (value->indirect.type == KEFIR_ASMCMP_INDIRECT_INTERNAL_LABEL_BASIS &&
+                value->indirect.base.internal_label == src_label) {
+                value->indirect.base.internal_label = dst_label;
+            }
+            break;
+
+        case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT_INTERNAL:
+            if (value->rip_indirection.internal == src_label) {
+                value->rip_indirection.internal = dst_label;
+            }
+            break;
+
+        default:
+            // Intentionally left blank
+            break;
+    }
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_asmcmp_replace_labels(const struct kefir_asmcmp_context *context,
+                                           kefir_asmcmp_label_index_t dst_label, kefir_asmcmp_label_index_t src_label) {
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
+    REQUIRE(VALID_LABEL_IDX(context, dst_label),
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmcmp label"));
+    REQUIRE(VALID_LABEL_IDX(context, src_label),
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmcmp label"));
+
+    for (kefir_asmcmp_instruction_index_t i = 0; i < context->code_length; i++) {
+        REQUIRE_OK(replace_labels(&context->code_content[i].instr.args[0], dst_label, src_label));
+        REQUIRE_OK(replace_labels(&context->code_content[i].instr.args[1], dst_label, src_label));
+        REQUIRE_OK(replace_labels(&context->code_content[i].instr.args[2], dst_label, src_label));
+    }
+    return KEFIR_OK;
+}

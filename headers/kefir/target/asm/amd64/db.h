@@ -96,6 +96,8 @@
         KEFIR_AMD64_INSTRDB_BRANCH_TAGET) _separator \
     _instr1(jz, "jz", BRANCH, KEFIR_AMD64_INSTRDB_NONE, \
         KEFIR_AMD64_INSTRDB_BRANCH_TAGET) _separator \
+    _instr1(jnz, "jnz", BRANCH, KEFIR_AMD64_INSTRDB_NONE, \
+        KEFIR_AMD64_INSTRDB_BRANCH_TAGET) _separator \
     _instr1(je, "je", BRANCH, KEFIR_AMD64_INSTRDB_NONE, \
         KEFIR_AMD64_INSTRDB_BRANCH_TAGET) _separator \
     _instr1(jne, "jne", BRANCH, KEFIR_AMD64_INSTRDB_NONE, \

@@ -73,9 +73,11 @@ static kefir_result_t amd64_peephole_apply(struct kefir_mem *mem, struct kefir_a
                     instr->args[1].indirect.variant == KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT) {
                     ASSIGN_DECL_CAST(kefir_asm_amd64_xasmgen_register_t, reg, instr->args[0].phreg);
 
-                    struct kefir_asmcmp_instruction *next_instr;
-                    REQUIRE_OK(kefir_asmcmp_context_instr_at(context, next_instr_index, &next_instr));
-                    if (next_instr->opcode == KEFIR_ASMCMP_AMD64_OPCODE(mov) &&
+                    struct kefir_asmcmp_instruction *next_instr = NULL;
+                    if (next_instr_index != KEFIR_ASMCMP_INDEX_NONE) {
+                        REQUIRE_OK(kefir_asmcmp_context_instr_at(context, next_instr_index, &next_instr));
+                    }
+                    if (next_instr != NULL && next_instr->opcode == KEFIR_ASMCMP_AMD64_OPCODE(mov) &&
                         next_instr->args[0].type == KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER &&
                         next_instr->args[0].phreg == reg &&
                         next_instr->args[1].type == KEFIR_ASMCMP_VALUE_TYPE_INDIRECT &&
@@ -93,6 +95,139 @@ static kefir_result_t amd64_peephole_apply(struct kefir_mem *mem, struct kefir_a
                     }
                 }
                 break;
+
+            case KEFIR_ASMCMP_AMD64_OPCODE(jmp): {
+                struct kefir_asmcmp_instruction *next_instr = NULL;
+                if (next_instr_index != KEFIR_ASMCMP_INDEX_NONE) {
+                    REQUIRE_OK(kefir_asmcmp_context_instr_at(context, next_instr_index, &next_instr));
+                }
+                if (next_instr != NULL && next_instr->opcode == KEFIR_ASMCMP_AMD64_OPCODE(jmp) &&
+                    next_instr->args[0].type == KEFIR_ASMCMP_VALUE_TYPE_INTERNAL_LABEL) {
+                    kefir_asmcmp_label_index_t label = next_instr->args[0].internal_label;
+
+                    kefir_bool_t drop_instr = true;
+                    for (kefir_asmcmp_label_index_t instr_label =
+                             kefir_asmcmp_context_instr_label_head(context, next_instr_index);
+                         instr_label != KEFIR_ASMCMP_INDEX_NONE;) {
+
+                        if (instr_label == label) {
+                            drop_instr = false;
+                            instr_label = kefir_asmcmp_context_instr_label_next(context, instr_label);
+                            continue;
+                        }
+
+                        REQUIRE_OK(kefir_asmcmp_replace_labels(context, label, instr_label));
+                        kefir_asmcmp_label_index_t next_label =
+                            kefir_asmcmp_context_instr_label_next(context, instr_label);
+                        REQUIRE_OK(kefir_asmcmp_context_unbind_label(mem, context, instr_label));
+                        instr_label = next_label;
+                    }
+
+                    if (drop_instr) {
+                        REQUIRE_OK(kefir_asmcmp_context_instr_drop(context, next_instr_index));
+                        next_instr_index = instr_index;
+                    }
+                }
+            } break;
+
+            case KEFIR_ASMCMP_AMD64_OPCODE(jz):
+            case KEFIR_ASMCMP_AMD64_OPCODE(jnz):
+            case KEFIR_ASMCMP_AMD64_OPCODE(je):
+            case KEFIR_ASMCMP_AMD64_OPCODE(jne):
+            case KEFIR_ASMCMP_AMD64_OPCODE(jg):
+            case KEFIR_ASMCMP_AMD64_OPCODE(jge):
+            case KEFIR_ASMCMP_AMD64_OPCODE(jl):
+            case KEFIR_ASMCMP_AMD64_OPCODE(jle):
+            case KEFIR_ASMCMP_AMD64_OPCODE(ja):
+            case KEFIR_ASMCMP_AMD64_OPCODE(jae):
+            case KEFIR_ASMCMP_AMD64_OPCODE(jb):
+            case KEFIR_ASMCMP_AMD64_OPCODE(jbe):
+            case KEFIR_ASMCMP_AMD64_OPCODE(js):
+            case KEFIR_ASMCMP_AMD64_OPCODE(jns): {
+                struct kefir_asmcmp_instruction *next_instr = NULL;
+                kefir_asmcmp_instruction_index_t following_instr_index = KEFIR_ASMCMP_INDEX_NONE,
+                                                 condition_target_instr_index;
+                if (next_instr_index != KEFIR_ASMCMP_INDEX_NONE) {
+                    REQUIRE_OK(kefir_asmcmp_context_instr_at(context, next_instr_index, &next_instr));
+                    following_instr_index = kefir_asmcmp_context_instr_next(context, next_instr_index);
+                }
+
+                if (next_instr != NULL && following_instr_index != KEFIR_ASMCMP_INDEX_NONE &&
+                    instr->args[0].type == KEFIR_ASMCMP_VALUE_TYPE_INTERNAL_LABEL &&
+                    next_instr->opcode == KEFIR_ASMCMP_AMD64_OPCODE(jmp) &&
+                    next_instr->args[0].type == KEFIR_ASMCMP_VALUE_TYPE_INTERNAL_LABEL) {
+                    REQUIRE_OK(kefir_asmcmp_context_label_at(context, instr->args[0].internal_label,
+                                                             &condition_target_instr_index));
+
+                    if (condition_target_instr_index == following_instr_index &&
+                        kefir_asmcmp_context_instr_label_head(context, next_instr_index) == KEFIR_ASMCMP_INDEX_NONE) {
+
+                        switch (instr->opcode) {
+                            case KEFIR_ASMCMP_AMD64_OPCODE(jz):
+                                instr->opcode = KEFIR_ASMCMP_AMD64_OPCODE(jnz);
+                                break;
+
+                            case KEFIR_ASMCMP_AMD64_OPCODE(jnz):
+                                instr->opcode = KEFIR_ASMCMP_AMD64_OPCODE(jz);
+                                break;
+
+                            case KEFIR_ASMCMP_AMD64_OPCODE(je):
+                                instr->opcode = KEFIR_ASMCMP_AMD64_OPCODE(jne);
+                                break;
+
+                            case KEFIR_ASMCMP_AMD64_OPCODE(jne):
+                                instr->opcode = KEFIR_ASMCMP_AMD64_OPCODE(je);
+                                break;
+
+                            case KEFIR_ASMCMP_AMD64_OPCODE(jg):
+                                instr->opcode = KEFIR_ASMCMP_AMD64_OPCODE(jle);
+                                break;
+
+                            case KEFIR_ASMCMP_AMD64_OPCODE(jge):
+                                instr->opcode = KEFIR_ASMCMP_AMD64_OPCODE(jl);
+                                break;
+
+                            case KEFIR_ASMCMP_AMD64_OPCODE(jl):
+                                instr->opcode = KEFIR_ASMCMP_AMD64_OPCODE(jge);
+                                break;
+
+                            case KEFIR_ASMCMP_AMD64_OPCODE(jle):
+                                instr->opcode = KEFIR_ASMCMP_AMD64_OPCODE(jg);
+                                break;
+
+                            case KEFIR_ASMCMP_AMD64_OPCODE(ja):
+                                instr->opcode = KEFIR_ASMCMP_AMD64_OPCODE(jbe);
+                                break;
+
+                            case KEFIR_ASMCMP_AMD64_OPCODE(jae):
+                                instr->opcode = KEFIR_ASMCMP_AMD64_OPCODE(jb);
+                                break;
+
+                            case KEFIR_ASMCMP_AMD64_OPCODE(jb):
+                                instr->opcode = KEFIR_ASMCMP_AMD64_OPCODE(jae);
+                                break;
+
+                            case KEFIR_ASMCMP_AMD64_OPCODE(jbe):
+                                instr->opcode = KEFIR_ASMCMP_AMD64_OPCODE(ja);
+                                break;
+
+                            case KEFIR_ASMCMP_AMD64_OPCODE(js):
+                                instr->opcode = KEFIR_ASMCMP_AMD64_OPCODE(jns);
+                                break;
+
+                            case KEFIR_ASMCMP_AMD64_OPCODE(jns):
+                                instr->opcode = KEFIR_ASMCMP_AMD64_OPCODE(js);
+                                break;
+
+                            default:
+                                return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected instruction opcode");
+                        }
+                        instr->args[0].internal_label = next_instr->args[0].internal_label;
+                        REQUIRE_OK(kefir_asmcmp_context_instr_drop(context, next_instr_index));
+                        next_instr_index = instr_index;
+                    }
+                }
+            } break;
 
             default:
                 break;

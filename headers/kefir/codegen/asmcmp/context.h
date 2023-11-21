@@ -423,4 +423,7 @@ kefir_result_t kefir_asmcmp_inline_assembly_fragment_next(struct kefir_asmcmp_in
 
 kefir_result_t kefir_asmcmp_format(struct kefir_mem *, struct kefir_asmcmp_context *, const char **, const char *, ...);
 
+kefir_result_t kefir_asmcmp_replace_labels(const struct kefir_asmcmp_context *, kefir_asmcmp_label_index_t,
+                                           kefir_asmcmp_label_index_t);
+
 #endif
