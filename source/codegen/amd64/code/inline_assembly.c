@@ -94,6 +94,7 @@ static kefir_result_t mark_clobbers(struct kefir_mem *mem, struct kefir_codegen_
         REQUIRE_OK(kefir_asm_amd64_xasmgen_register_widest(dirty_reg, &dirty_reg));
 
         REQUIRE_OK(kefir_asmcmp_register_stash_add(mem, &function->code.context, context->stash_idx, dirty_reg));
+        REQUIRE_OK(kefir_codegen_amd64_stack_frame_use_register(mem, &function->stack_frame, dirty_reg));
     }
 
     return KEFIR_OK;
@@ -145,6 +146,7 @@ static kefir_result_t obtain_available_register(struct kefir_mem *mem, struct ke
     *reg = (kefir_asm_amd64_xasmgen_register_t) ((kefir_uptr_t) kefir_list_head(&context->available_registers)->value);
     REQUIRE_OK(kefir_list_pop(mem, &context->available_registers, kefir_list_head(&context->available_registers)));
     REQUIRE_OK(kefir_asmcmp_register_stash_add(mem, &function->code.context, context->stash_idx, *reg));
+    REQUIRE_OK(kefir_codegen_amd64_stack_frame_use_register(mem, &function->stack_frame, *reg));
     return KEFIR_OK;
 }
 
