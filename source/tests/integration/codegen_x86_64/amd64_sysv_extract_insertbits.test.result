@@ -1,297 +1,452 @@
 .intel_syntax prefix
 .section .note.GNU-stack,"",%progbits
 
+.extern __kefir_opt_float32_neg
+.extern __kefir_opt_float64_neg
+.extern __kefirrt_opt_float32_to_uint
+.extern __kefirrt_opt_float64_to_uint
+
 .section .text
-
-.extern __kefirrt_nop_impl
-.extern __kefirrt_jmp_impl
-.extern __kefirrt_ijmp_impl
-.extern __kefirrt_branch_impl
-.extern __kefirrt_pushi_impl
-.extern __kefirrt_placehi64_impl
-.extern __kefirrt_placehf32_impl
-.extern __kefirrt_placehf64_impl
-.extern __kefirrt_pop_impl
-.extern __kefirrt_pick_impl
-.extern __kefirrt_xchg_impl
-.extern __kefirrt_iadd_impl
-.extern __kefirrt_iadd1_impl
-.extern __kefirrt_isub_impl
-.extern __kefirrt_imul_impl
-.extern __kefirrt_idiv_impl
-.extern __kefirrt_imod_impl
-.extern __kefirrt_udiv_impl
-.extern __kefirrt_umod_impl
-.extern __kefirrt_ineg_impl
-.extern __kefirrt_inot_impl
-.extern __kefirrt_iand_impl
-.extern __kefirrt_ior_impl
-.extern __kefirrt_ixor_impl
-.extern __kefirrt_ishr_impl
-.extern __kefirrt_isar_impl
-.extern __kefirrt_ishl_impl
-.extern __kefirrt_iequals_impl
-.extern __kefirrt_igreater_impl
-.extern __kefirrt_ilesser_impl
-.extern __kefirrt_iabove_impl
-.extern __kefirrt_ibelow_impl
-.extern __kefirrt_band_impl
-.extern __kefirrt_bor_impl
-.extern __kefirrt_bnot_impl
-.extern __kefirrt_trunc1_impl
-.extern __kefirrt_extend8_impl
-.extern __kefirrt_extend16_impl
-.extern __kefirrt_extend32_impl
-.extern __kefirrt_iaddx_impl
-.extern __kefirrt_load8u_impl
-.extern __kefirrt_load8i_impl
-.extern __kefirrt_load16u_impl
-.extern __kefirrt_load16i_impl
-.extern __kefirrt_load32u_impl
-.extern __kefirrt_load32i_impl
-.extern __kefirrt_load64_impl
-.extern __kefirrt_store8_impl
-.extern __kefirrt_store16_impl
-.extern __kefirrt_store32_impl
-.extern __kefirrt_store64_impl
-.extern __kefirrt_storeld_impl
-.extern __kefirrt_bzero_impl
-.extern __kefirrt_bcopy_impl
-.extern __kefirrt_extubits_impl
-.extern __kefirrt_extsbits_impl
-.extern __kefirrt_insertbits_impl
-.extern __kefirrt_getlocal_impl
-.extern __kefirrt_f32add_impl
-.extern __kefirrt_f32sub_impl
-.extern __kefirrt_f32mul_impl
-.extern __kefirrt_f32div_impl
-.extern __kefirrt_f32neg_impl
-.extern __kefirrt_f64add_impl
-.extern __kefirrt_f64sub_impl
-.extern __kefirrt_f64mul_impl
-.extern __kefirrt_f64div_impl
-.extern __kefirrt_f64neg_impl
-.extern __kefirrt_ldadd_impl
-.extern __kefirrt_ldsub_impl
-.extern __kefirrt_ldmul_impl
-.extern __kefirrt_lddiv_impl
-.extern __kefirrt_ldneg_impl
-.extern __kefirrt_f32equals_impl
-.extern __kefirrt_f32greater_impl
-.extern __kefirrt_f32lesser_impl
-.extern __kefirrt_f64equals_impl
-.extern __kefirrt_f64greater_impl
-.extern __kefirrt_f64lesser_impl
-.extern __kefirrt_ldequals_impl
-.extern __kefirrt_ldgreater_impl
-.extern __kefirrt_ldlesser_impl
-.extern __kefirrt_ldtrunc1_impl
-.extern __kefirrt_f32cint_impl
-.extern __kefirrt_f64cint_impl
-.extern __kefirrt_f32cuint_impl
-.extern __kefirrt_f64cuint_impl
-.extern __kefirrt_intcf32_impl
-.extern __kefirrt_intcf64_impl
-.extern __kefirrt_uintcf32_impl
-.extern __kefirrt_uintcf64_impl
-.extern __kefirrt_f32cf64_impl
-.extern __kefirrt_f64cf32_impl
-.extern __kefirrt_alloca_impl
-.extern __kefirrt_intcld_impl
-.extern __kefirrt_uintcld_impl
-.extern __kefirrt_ldcint_impl
-.extern __kefirrt_ldcuint_impl
-.extern __kefirrt_f32cld_impl
-.extern __kefirrt_f64cld_impl
-.extern __kefirrt_ldcf32_impl
-.extern __kefirrt_ldcf64_impl
-.extern __kefirrt_pushscope_impl
-.extern __kefirrt_popscope_impl
-.extern __kefirrt_ldinith_impl
-.extern __kefirrt_ldinitl_impl
-.extern __kefirrt_preserve_state
-.extern __kefirrt_restore_state
-.extern __kefirrt_save_registers
-.extern __kefirrt_load_integer_vararg
-.extern __kefirrt_load_sse_vararg
-.extern __kefirrt_copy_vararg
-
-
-
 insert:
-call __kefirrt_preserve_state
-sub %rsp, 16
-call __kefirrt_generic_prologue
-lea %rbx, [__insert_body]
-jmp [%rbx]
-.section .rodata
-__insert_body:
-.quad __kefirrt_insertbits_impl
-.long 0, 0
-.quad __kefirrt_insertbits_impl
-.long 0, 1
-.quad __kefirrt_insertbits_impl
-.long 0, 2
-.quad __kefirrt_insertbits_impl
-.long 0, 3
-.quad __kefirrt_insertbits_impl
-.long 0, 4
-.quad __kefirrt_insertbits_impl
-.long 0, 5
-.quad __kefirrt_insertbits_impl
-.long 0, 6
-.quad __kefirrt_insertbits_impl
-.long 0, 7
-.quad __kefirrt_insertbits_impl
-.long 0, 8
-.quad __kefirrt_insertbits_impl
-.long 0, 9
-.quad __kefirrt_insertbits_impl
-.long 0, 10
-.quad __kefirrt_insertbits_impl
-.long 1, 0
-.quad __kefirrt_insertbits_impl
-.long 2, 1
-.quad __kefirrt_insertbits_impl
-.long 4, 2
-.quad __kefirrt_insertbits_impl
-.long 8, 3
-.quad __kefirrt_insertbits_impl
-.long 16, 4
-.quad __kefirrt_insertbits_impl
-.long 32, 5
-.quad __kefirrt_insertbits_impl
-.long 1, 6
-.quad __kefirrt_insertbits_impl
-.long 2, 7
-.quad __kefirrt_insertbits_impl
-.long 4, 8
-.quad __kefirrt_insertbits_impl
-.long 8, 9
-.quad __kefirrt_insertbits_impl
-.long 16, 10
-.quad __insert_epilogue, 0
-.section .text
-__insert_epilogue:
-mov %rsp, %r14
-add %rsp, 16
-jmp __kefirrt_restore_state
+    push %rbp
+    mov %rbp, %rsp
+_kefir_func_insert_label0:
+_kefir_func_insert_label1:
+    mov %rax, 0
+    mov %rcx, 0
+    movabs %rdx, 18446744073709551615
+    and %rdx, %rax
+    shl %rcx, 64
+    shr %rcx, 64
+    or %rcx, %rdx
+    mov %rax, 0
+    mov QWORD PTR [%rax], %rcx
+    mov %rax, 0
+    mov %rcx, 0
+    movabs %rdx, 18446744073709551614
+    and %rdx, %rax
+    shl %rcx, 63
+    shr %rcx, 63
+    or %rcx, %rdx
+    mov %rax, 0
+    mov QWORD PTR [%rax], %rcx
+    mov %rax, 0
+    mov %rcx, 0
+    movabs %rdx, 18446744073709551612
+    and %rdx, %rax
+    shl %rcx, 62
+    shr %rcx, 62
+    or %rcx, %rdx
+    mov %rax, 0
+    mov QWORD PTR [%rax], %rcx
+    mov %rax, 0
+    mov %rcx, 0
+    movabs %rdx, 18446744073709551608
+    and %rdx, %rax
+    shl %rcx, 61
+    shr %rcx, 61
+    or %rcx, %rdx
+    mov %rax, 0
+    mov QWORD PTR [%rax], %rcx
+    mov %rax, 0
+    mov %rcx, 0
+    movabs %rdx, 18446744073709551600
+    and %rdx, %rax
+    shl %rcx, 60
+    shr %rcx, 60
+    or %rcx, %rdx
+    mov %rax, 0
+    mov QWORD PTR [%rax], %rcx
+    mov %rax, 0
+    mov %rcx, 0
+    movabs %rdx, 18446744073709551584
+    and %rdx, %rax
+    shl %rcx, 59
+    shr %rcx, 59
+    or %rcx, %rdx
+    mov %rax, 0
+    mov QWORD PTR [%rax], %rcx
+    mov %rax, 0
+    mov %rcx, 0
+    movabs %rdx, 18446744073709551552
+    and %rdx, %rax
+    shl %rcx, 58
+    shr %rcx, 58
+    or %rcx, %rdx
+    mov %rax, 0
+    mov QWORD PTR [%rax], %rcx
+    mov %rax, 0
+    mov %rcx, 0
+    movabs %rdx, 18446744073709551488
+    and %rdx, %rax
+    shl %rcx, 57
+    shr %rcx, 57
+    or %rcx, %rdx
+    mov %rax, 0
+    mov QWORD PTR [%rax], %rcx
+    mov %rax, 0
+    mov %rcx, 0
+    movabs %rdx, 18446744073709551360
+    and %rdx, %rax
+    shl %rcx, 56
+    shr %rcx, 56
+    or %rcx, %rdx
+    mov %rax, 0
+    mov QWORD PTR [%rax], %rcx
+    mov %rax, 0
+    mov %rcx, 0
+    movabs %rdx, 18446744073709551104
+    and %rdx, %rax
+    shl %rcx, 55
+    shr %rcx, 55
+    or %rcx, %rdx
+    mov %rax, 0
+    mov QWORD PTR [%rax], %rcx
+    mov %rax, 0
+    mov %rcx, 0
+    movabs %rdx, 18446744073709550592
+    and %rdx, %rax
+    shl %rcx, 54
+    shr %rcx, 54
+    or %rcx, %rdx
+    mov %rax, 0
+    mov QWORD PTR [%rax], %rcx
+    mov %rax, 0
+    mov %rcx, 0
+    movabs %rdx, 18446744073709551615
+    and %rdx, %rax
+    shl %rcx, 64
+    shr %rcx, 63
+    or %rcx, %rdx
+    mov %rax, 0
+    mov QWORD PTR [%rax], %rcx
+    mov %rax, 0
+    mov %rcx, 0
+    movabs %rdx, 18446744073709551611
+    and %rdx, %rax
+    shl %rcx, 63
+    shr %rcx, 61
+    or %rcx, %rdx
+    mov %rax, 0
+    mov QWORD PTR [%rax], %rcx
+    mov %rax, 0
+    mov %rcx, 0
+    movabs %rdx, 18446744073709551567
+    and %rdx, %rax
+    shl %rcx, 62
+    shr %rcx, 58
+    or %rcx, %rdx
+    mov %rax, 0
+    mov QWORD PTR [%rax], %rcx
+    mov %rax, 0
+    mov %rcx, 0
+    movabs %rdx, 18446744073709549823
+    and %rdx, %rax
+    shl %rcx, 61
+    shr %rcx, 53
+    or %rcx, %rdx
+    mov %rax, 0
+    mov QWORD PTR [%rax], %rcx
+    mov %rax, 0
+    mov %rcx, 0
+    movabs %rdx, 18446744073708568575
+    and %rdx, %rax
+    shl %rcx, 60
+    shr %rcx, 44
+    or %rcx, %rdx
+    mov %rax, 0
+    mov QWORD PTR [%rax], %rcx
+    mov %rax, 0
+    mov %rcx, 0
+    movabs %rdx, 18446743940565565439
+    and %rdx, %rax
+    shl %rcx, 59
+    shr %rcx, 27
+    or %rcx, %rdx
+    mov %rax, 0
+    mov QWORD PTR [%rax], %rcx
+    mov %rax, 0
+    mov %rcx, 0
+    movabs %rdx, 18446744073709551489
+    and %rdx, %rax
+    shl %rcx, 58
+    shr %rcx, 57
+    or %rcx, %rdx
+    mov %rax, 0
+    mov QWORD PTR [%rax], %rcx
+    mov %rax, 0
+    mov %rcx, 0
+    movabs %rdx, 18446744073709551107
+    and %rdx, %rax
+    shl %rcx, 57
+    shr %rcx, 55
+    or %rcx, %rdx
+    mov %rax, 0
+    mov QWORD PTR [%rax], %rcx
+    mov %rax, 0
+    mov %rcx, 0
+    movabs %rdx, 18446744073709547535
+    and %rdx, %rax
+    shl %rcx, 56
+    shr %rcx, 52
+    or %rcx, %rdx
+    mov %rax, 0
+    mov QWORD PTR [%rax], %rcx
+    mov %rax, 0
+    mov %rcx, 0
+    movabs %rdx, 18446744073709420799
+    and %rdx, %rax
+    shl %rcx, 55
+    shr %rcx, 47
+    or %rcx, %rdx
+    mov %rax, 0
+    mov QWORD PTR [%rax], %rcx
+    mov %rax, 0
+    mov %rcx, 0
+    movabs %rdx, 18446744073642508287
+    and %rdx, %rax
+    shl %rcx, 54
+    shr %rcx, 38
+    or %rcx, %rdx
+    mov %rax, 0
+    mov QWORD PTR [%rax], %rcx
+    pop %rbp
+    ret
 
 extracts:
-call __kefirrt_preserve_state
-sub %rsp, 16
-call __kefirrt_generic_prologue
-lea %rbx, [__extracts_body]
-jmp [%rbx]
-.section .rodata
-__extracts_body:
-.quad __kefirrt_extsbits_impl
-.long 0, 0
-.quad __kefirrt_extsbits_impl
-.long 0, 1
-.quad __kefirrt_extsbits_impl
-.long 0, 2
-.quad __kefirrt_extsbits_impl
-.long 0, 3
-.quad __kefirrt_extsbits_impl
-.long 0, 4
-.quad __kefirrt_extsbits_impl
-.long 0, 5
-.quad __kefirrt_extsbits_impl
-.long 0, 6
-.quad __kefirrt_extsbits_impl
-.long 0, 7
-.quad __kefirrt_extsbits_impl
-.long 0, 8
-.quad __kefirrt_extsbits_impl
-.long 0, 9
-.quad __kefirrt_extsbits_impl
-.long 0, 10
-.quad __kefirrt_extsbits_impl
-.long 1, 0
-.quad __kefirrt_extsbits_impl
-.long 2, 1
-.quad __kefirrt_extsbits_impl
-.long 4, 2
-.quad __kefirrt_extsbits_impl
-.long 8, 3
-.quad __kefirrt_extsbits_impl
-.long 16, 4
-.quad __kefirrt_extsbits_impl
-.long 32, 5
-.quad __kefirrt_extsbits_impl
-.long 1, 6
-.quad __kefirrt_extsbits_impl
-.long 2, 7
-.quad __kefirrt_extsbits_impl
-.long 4, 8
-.quad __kefirrt_extsbits_impl
-.long 8, 9
-.quad __kefirrt_extsbits_impl
-.long 16, 10
-.quad __extracts_epilogue, 0
-.section .text
-__extracts_epilogue:
-mov %rsp, %r14
-add %rsp, 16
-jmp __kefirrt_restore_state
+    push %rbp
+    mov %rbp, %rsp
+_kefir_func_extracts_label0:
+_kefir_func_extracts_label1:
+    mov %rax, 0
+    shl %rax, 64
+    sar %rax, 64
+    mov %rcx, 0
+    mov QWORD PTR [%rcx], %rax
+    mov %rax, 0
+    shl %rax, 63
+    sar %rax, 63
+    mov %rcx, 0
+    mov QWORD PTR [%rcx], %rax
+    mov %rax, 0
+    shl %rax, 62
+    sar %rax, 62
+    mov %rcx, 0
+    mov QWORD PTR [%rcx], %rax
+    mov %rax, 0
+    shl %rax, 61
+    sar %rax, 61
+    mov %rcx, 0
+    mov QWORD PTR [%rcx], %rax
+    mov %rax, 0
+    shl %rax, 60
+    sar %rax, 60
+    mov %rcx, 0
+    mov QWORD PTR [%rcx], %rax
+    mov %rax, 0
+    shl %rax, 59
+    sar %rax, 59
+    mov %rcx, 0
+    mov QWORD PTR [%rcx], %rax
+    mov %rax, 0
+    shl %rax, 58
+    sar %rax, 58
+    mov %rcx, 0
+    mov QWORD PTR [%rcx], %rax
+    mov %rax, 0
+    shl %rax, 57
+    sar %rax, 57
+    mov %rcx, 0
+    mov QWORD PTR [%rcx], %rax
+    mov %rax, 0
+    shl %rax, 56
+    sar %rax, 56
+    mov %rcx, 0
+    mov QWORD PTR [%rcx], %rax
+    mov %rax, 0
+    shl %rax, 55
+    sar %rax, 55
+    mov %rcx, 0
+    mov QWORD PTR [%rcx], %rax
+    mov %rax, 0
+    shl %rax, 54
+    sar %rax, 54
+    mov %rcx, 0
+    mov QWORD PTR [%rcx], %rax
+    mov %rax, 0
+    shl %rax, 63
+    sar %rax, 64
+    mov %rcx, 0
+    mov QWORD PTR [%rcx], %rax
+    mov %rax, 0
+    shl %rax, 61
+    sar %rax, 63
+    mov %rcx, 0
+    mov QWORD PTR [%rcx], %rax
+    mov %rax, 0
+    shl %rax, 58
+    sar %rax, 62
+    mov %rcx, 0
+    mov QWORD PTR [%rcx], %rax
+    mov %rax, 0
+    shl %rax, 53
+    sar %rax, 61
+    mov %rcx, 0
+    mov QWORD PTR [%rcx], %rax
+    mov %rax, 0
+    shl %rax, 44
+    sar %rax, 60
+    mov %rcx, 0
+    mov QWORD PTR [%rcx], %rax
+    mov %rax, 0
+    shl %rax, 27
+    sar %rax, 59
+    mov %rcx, 0
+    mov QWORD PTR [%rcx], %rax
+    mov %rax, 0
+    shl %rax, 57
+    sar %rax, 58
+    mov %rcx, 0
+    mov QWORD PTR [%rcx], %rax
+    mov %rax, 0
+    shl %rax, 55
+    sar %rax, 57
+    mov %rcx, 0
+    mov QWORD PTR [%rcx], %rax
+    mov %rax, 0
+    shl %rax, 52
+    sar %rax, 56
+    mov %rcx, 0
+    mov QWORD PTR [%rcx], %rax
+    mov %rax, 0
+    shl %rax, 47
+    sar %rax, 55
+    mov %rcx, 0
+    mov QWORD PTR [%rcx], %rax
+    mov %rax, 0
+    shl %rax, 38
+    sar %rax, 54
+    mov %rcx, 0
+    mov QWORD PTR [%rcx], %rax
+    pop %rbp
+    ret
 
 extractu:
-call __kefirrt_preserve_state
-sub %rsp, 16
-call __kefirrt_generic_prologue
-lea %rbx, [__extractu_body]
-jmp [%rbx]
-.section .rodata
-__extractu_body:
-.quad __kefirrt_extubits_impl
-.long 0, 0
-.quad __kefirrt_extubits_impl
-.long 0, 1
-.quad __kefirrt_extubits_impl
-.long 0, 2
-.quad __kefirrt_extubits_impl
-.long 0, 3
-.quad __kefirrt_extubits_impl
-.long 0, 4
-.quad __kefirrt_extubits_impl
-.long 0, 5
-.quad __kefirrt_extubits_impl
-.long 0, 6
-.quad __kefirrt_extubits_impl
-.long 0, 7
-.quad __kefirrt_extubits_impl
-.long 0, 8
-.quad __kefirrt_extubits_impl
-.long 0, 9
-.quad __kefirrt_extubits_impl
-.long 0, 10
-.quad __kefirrt_extubits_impl
-.long 1, 0
-.quad __kefirrt_extubits_impl
-.long 2, 1
-.quad __kefirrt_extubits_impl
-.long 4, 2
-.quad __kefirrt_extubits_impl
-.long 8, 3
-.quad __kefirrt_extubits_impl
-.long 16, 4
-.quad __kefirrt_extubits_impl
-.long 32, 5
-.quad __kefirrt_extubits_impl
-.long 1, 6
-.quad __kefirrt_extubits_impl
-.long 2, 7
-.quad __kefirrt_extubits_impl
-.long 4, 8
-.quad __kefirrt_extubits_impl
-.long 8, 9
-.quad __kefirrt_extubits_impl
-.long 16, 10
-.quad __extractu_epilogue, 0
-.section .text
-__extractu_epilogue:
-mov %rsp, %r14
-add %rsp, 16
-jmp __kefirrt_restore_state
+    push %rbp
+    mov %rbp, %rsp
+_kefir_func_extractu_label0:
+_kefir_func_extractu_label1:
+    mov %rax, 0
+    shl %rax, 64
+    shr %rax, 64
+    mov %rcx, 0
+    mov QWORD PTR [%rcx], %rax
+    mov %rax, 0
+    shl %rax, 63
+    shr %rax, 63
+    mov %rcx, 0
+    mov QWORD PTR [%rcx], %rax
+    mov %rax, 0
+    shl %rax, 62
+    shr %rax, 62
+    mov %rcx, 0
+    mov QWORD PTR [%rcx], %rax
+    mov %rax, 0
+    shl %rax, 61
+    shr %rax, 61
+    mov %rcx, 0
+    mov QWORD PTR [%rcx], %rax
+    mov %rax, 0
+    shl %rax, 60
+    shr %rax, 60
+    mov %rcx, 0
+    mov QWORD PTR [%rcx], %rax
+    mov %rax, 0
+    shl %rax, 59
+    shr %rax, 59
+    mov %rcx, 0
+    mov QWORD PTR [%rcx], %rax
+    mov %rax, 0
+    shl %rax, 58
+    shr %rax, 58
+    mov %rcx, 0
+    mov QWORD PTR [%rcx], %rax
+    mov %rax, 0
+    shl %rax, 57
+    shr %rax, 57
+    mov %rcx, 0
+    mov QWORD PTR [%rcx], %rax
+    mov %rax, 0
+    shl %rax, 56
+    shr %rax, 56
+    mov %rcx, 0
+    mov QWORD PTR [%rcx], %rax
+    mov %rax, 0
+    shl %rax, 55
+    shr %rax, 55
+    mov %rcx, 0
+    mov QWORD PTR [%rcx], %rax
+    mov %rax, 0
+    shl %rax, 54
+    shr %rax, 54
+    mov %rcx, 0
+    mov QWORD PTR [%rcx], %rax
+    mov %rax, 0
+    shl %rax, 63
+    shr %rax, 64
+    mov %rcx, 0
+    mov QWORD PTR [%rcx], %rax
+    mov %rax, 0
+    shl %rax, 61
+    shr %rax, 63
+    mov %rcx, 0
+    mov QWORD PTR [%rcx], %rax
+    mov %rax, 0
+    shl %rax, 58
+    shr %rax, 62
+    mov %rcx, 0
+    mov QWORD PTR [%rcx], %rax
+    mov %rax, 0
+    shl %rax, 53
+    shr %rax, 61
+    mov %rcx, 0
+    mov QWORD PTR [%rcx], %rax
+    mov %rax, 0
+    shl %rax, 44
+    shr %rax, 60
+    mov %rcx, 0
+    mov QWORD PTR [%rcx], %rax
+    mov %rax, 0
+    shl %rax, 27
+    shr %rax, 59
+    mov %rcx, 0
+    mov QWORD PTR [%rcx], %rax
+    mov %rax, 0
+    shl %rax, 57
+    shr %rax, 58
+    mov %rcx, 0
+    mov QWORD PTR [%rcx], %rax
+    mov %rax, 0
+    shl %rax, 55
+    shr %rax, 57
+    mov %rcx, 0
+    mov QWORD PTR [%rcx], %rax
+    mov %rax, 0
+    shl %rax, 52
+    shr %rax, 56
+    mov %rcx, 0
+    mov QWORD PTR [%rcx], %rax
+    mov %rax, 0
+    shl %rax, 47
+    shr %rax, 55
+    mov %rcx, 0
+    mov QWORD PTR [%rcx], %rax
+    mov %rax, 0
+    shl %rax, 38
+    shr %rax, 54
+    mov %rcx, 0
+    mov QWORD PTR [%rcx], %rax
+    pop %rbp
+    ret
+
 

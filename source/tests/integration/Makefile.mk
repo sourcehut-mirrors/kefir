@@ -27,11 +27,13 @@ endif
 
 $(KEFIR_BIN_DIR)/tests/integration/%: $(KEFIR_BIN_DIR)/tests/integration/%.o $(LIBKEFIR_DEPENDENCY) \
                                      $(KEFIR_BIN_DIR)/tests/int_test.o \
+									 $(KEFIR_BIN_DIR)/tests/util/codegen.o \
 									 $(KEFIR_BIN_DIR)/tests/util/util.o
 	@mkdir -p $(@D)
 	@echo "Linking $@"
 	@$(CC) -o $@ $(KEFIR_BIN_DIR)/tests/int_test.o \
 	                             $(KEFIR_BIN_DIR)/tests/util/util.o \
+	                             $(KEFIR_BIN_DIR)/tests/util/codegen.o \
 								 $< \
 								 $(KEFIR_INTEGRATION_TEST_LIBS)
 								 

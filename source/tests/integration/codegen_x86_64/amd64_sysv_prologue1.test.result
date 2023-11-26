@@ -1,10 +1,30 @@
-call __kefirrt_preserve_state
-sub %rsp, 32
-call __kefirrt_generic_prologue
-push %rdi
-push %rsi
-mov [%r14 + 16], %rdx
-pextrq %r12, %xmm0, 0
-mov [%r14 + 24], %r12
-lea %r12, [%r14 + 16]
-push %r12
+.intel_syntax prefix
+.section .note.GNU-stack,"",%progbits
+
+.global func1
+.extern __kefir_opt_float32_neg
+.extern __kefir_opt_float64_neg
+.extern __kefirrt_opt_float32_to_uint
+.extern __kefirrt_opt_float64_to_uint
+
+.section .text
+func1:
+    push %rbp
+    mov %rbp, %rsp
+    sub %rsp, 16
+_kefir_func_func1_label0:
+    mov QWORD PTR [%rbp - 16], %rdx
+    movq [%rbp - 8], %xmm0
+_kefir_func_func1_label1:
+    mov %rax, 0
+    lea %rdx, QWORD PTR [%rbp - 16]
+    mov QWORD PTR [%rax], %rdx
+    mov %rax, 0
+    mov QWORD PTR [%rax], %rsi
+    mov %rax, 0
+    mov QWORD PTR [%rax], %rdi
+    lea %rsp, [%rbp]
+    pop %rbp
+    ret
+
+

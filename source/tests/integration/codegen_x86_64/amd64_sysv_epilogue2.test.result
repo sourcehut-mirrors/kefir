@@ -1,4 +1,20 @@
-pop %rax
-mov %rsp, %r14
-add %rsp, 16
-jmp __kefirrt_restore_state
+.intel_syntax prefix
+.section .note.GNU-stack,"",%progbits
+
+.global func1
+.extern __kefir_opt_float32_neg
+.extern __kefir_opt_float64_neg
+.extern __kefirrt_opt_float32_to_uint
+.extern __kefirrt_opt_float64_to_uint
+
+.section .text
+func1:
+    push %rbp
+    mov %rbp, %rsp
+_kefir_func_func1_label0:
+_kefir_func_func1_label1:
+    xor %rax, %rax
+    pop %rbp
+    ret
+
+

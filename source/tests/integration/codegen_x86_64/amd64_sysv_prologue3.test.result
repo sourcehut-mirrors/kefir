@@ -1,33 +1,59 @@
-call __kefirrt_preserve_state
-sub %rsp, 16
-call __kefirrt_generic_prologue
-pextrq %r12, %xmm0, 0
-push %r12
-push %rdi
-pextrq %r12, %xmm1, 0
-push %r12
-push %rsi
-push %rdx
-pextrq %r12, %xmm2, 0
-push %r12
-pextrq %r12, %xmm3, 0
-push %r12
-pextrq %r12, %xmm4, 0
-push %r12
-push %rcx
-push %r8
-push %r9
-pextrq %r12, %xmm5, 0
-push %r12
-pextrq %r12, %xmm6, 0
-push %r12
-pextrq %r12, %xmm7, 0
-push %r12
-mov %r12, [%rbp + 16]
-mov %eax, -1
-and %r12, %rax
-push %r12
-mov %r12, [%rbp + 24]
-mov %eax, -1
-and %r12, %rax
-push %r12
+.intel_syntax prefix
+.section .note.GNU-stack,"",%progbits
+
+.global func1
+.extern __kefir_opt_float32_neg
+.extern __kefir_opt_float64_neg
+.extern __kefirrt_opt_float32_to_uint
+.extern __kefirrt_opt_float64_to_uint
+
+.section .text
+func1:
+    push %rbp
+    mov %rbp, %rsp
+    sub %rsp, 16
+_kefir_func_func1_label0:
+_kefir_func_func1_label1:
+    mov %rax, 0
+    mov QWORD PTR [%rbp - 16], %rcx
+    mov %rcx, QWORD PTR [%rbp + 24]
+    mov QWORD PTR [%rax], %rcx
+    mov %rcx, QWORD PTR [%rbp - 16]
+    mov %rax, 0
+    mov QWORD PTR [%rbp - 16], %rcx
+    mov %rcx, QWORD PTR [%rbp + 16]
+    mov QWORD PTR [%rax], %rcx
+    mov %rcx, QWORD PTR [%rbp - 16]
+    mov %rax, 0
+    movq [%rax], %xmm7
+    mov %rax, 0
+    movq [%rax], %xmm6
+    mov %rax, 0
+    movq [%rax], %xmm5
+    mov %rax, 0
+    mov QWORD PTR [%rax], %r9
+    mov %rax, 0
+    mov QWORD PTR [%rax], %r8
+    mov %rax, 0
+    mov QWORD PTR [%rax], %rcx
+    mov %rax, 0
+    movq [%rax], %xmm4
+    mov %rax, 0
+    movq [%rax], %xmm3
+    mov %rax, 0
+    movq [%rax], %xmm2
+    mov %rax, 0
+    mov QWORD PTR [%rax], %rdx
+    mov %rax, 0
+    mov QWORD PTR [%rax], %rsi
+    mov %rax, 0
+    movq [%rax], %xmm1
+    mov %rax, 0
+    mov QWORD PTR [%rax], %rdi
+    mov %rax, 0
+    movq [%rax], %xmm0
+    lea %rsp, [%rbp]
+    pop %rbp
+    ret
+
+

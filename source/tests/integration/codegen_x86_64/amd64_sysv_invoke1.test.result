@@ -1,22 +1,58 @@
-mov %r12, %rsp
-sub %rsp, 32
-and %rsp, -16
-mov %rdi, [%r12 + 80]
-mov %rsi, [%r12 + 72]
-mov %rdx, [%r12 + 64]
-mov %rcx, [%r12 + 56]
-mov %r8, [%r12 + 48]
-mov %r9, [%r12 + 40]
-mov %r11, [%r12 + 32]
-mov [%rsp], %r11
-mov %r11, [%r12 + 24]
-mov [%rsp + 8], %r11
-mov %r11, [%r12 + 16]
-mov [%rsp + 16], %r11
-mov %r11, [%r12 + 8]
-mov [%rsp + 24], %r11
-pinsrq %xmm0, [%r12], 0
-call func1
-mov %rsp, %r12
-add %rsp, 88
-push %rax
+.intel_syntax prefix
+.section .note.GNU-stack,"",%progbits
+
+.global func1
+.global func2
+.extern __kefir_opt_float32_neg
+.extern __kefir_opt_float64_neg
+.extern __kefirrt_opt_float32_to_uint
+.extern __kefirrt_opt_float64_to_uint
+
+.section .text
+func1:
+    push %rbp
+    mov %rbp, %rsp
+    push %rbx
+    push %r12
+    push %r13
+    sub %rsp, 8
+_kefir_func_func1_label0:
+_kefir_func_func1_label1:
+    mov %rax, 1
+    mov %rcx, 2
+    mov %rdx, 3
+    mov %r8, 4
+    mov %r9, 5
+    mov %r10, 6
+    mov %r11, 7
+    mov %rbx, 8
+    mov %r12, 9
+    mov %r13, 10
+    movd %xmm0, [_kefir_func_func1_label2]
+    sub %rsp, 32
+    mov %rdi, %rax
+    mov %rsi, %rcx
+    mov %rcx, %r8
+    mov %r8, %r9
+    mov %r9, %r10
+    mov [%rsp], %r11
+    mov [%rsp + 8], %rbx
+    mov [%rsp + 16], %r12
+    mov [%rsp + 24], %r13
+    call func2
+    mov %rcx, %rax
+    add %rsp, 32
+    mov %rax, %rcx
+    lea %rsp, [%rbp - 24]
+    pop %r13
+    pop %r12
+    pop %rbx
+    pop %rbp
+    ret
+.section .rodata
+    .align 4
+_kefir_func_func1_label2:
+    .long 1078523331
+.section .text
+
+
