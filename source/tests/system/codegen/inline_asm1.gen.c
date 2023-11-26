@@ -25,39 +25,41 @@
 #include "kefir/ir/module.h"
 #include "kefir/core/mem.h"
 #include "kefir/core/util.h"
-#include "kefir/codegen/naive-system-v-amd64/codegen.h"
+#include "kefir/test/codegen.h"
 
 kefir_result_t kefir_int_test(struct kefir_mem *mem) {
-    struct kefir_codegen_naive_amd64 codegen;
-    kefir_codegen_naive_sysv_amd64_init(mem, &codegen, stdout, NULL);
+    struct kefir_test_codegen codegen;
+    kefir_test_codegen_init(mem, &codegen, stdout, NULL);
 
     struct kefir_ir_module module;
     REQUIRE_OK(kefir_ir_module_alloc(mem, &module));
 
 #ifdef __x86_64__
 
-    kefir_id_t func_params, func_returns;
+    kefir_id_t func_params, func_returns, func_locals;
     struct kefir_ir_type *decl_params = kefir_ir_module_new_type(mem, &module, 1, &func_params),
-                         *decl_result = kefir_ir_module_new_type(mem, &module, 1, &func_returns);
+                         *decl_result = kefir_ir_module_new_type(mem, &module, 1, &func_returns),
+                         *locals = kefir_ir_module_new_type(mem, &module, 1, &func_locals);
     REQUIRE(decl_params != NULL, KEFIR_INTERNAL_ERROR);
     REQUIRE(decl_result != NULL, KEFIR_INTERNAL_ERROR);
+    REQUIRE(locals != NULL, KEFIR_INTERNAL_ERROR);
     struct kefir_ir_function_decl *decl =
         kefir_ir_module_new_function_declaration(mem, &module, "dup1", func_params, false, func_returns);
     REQUIRE(decl != NULL, KEFIR_INTERNAL_ERROR);
-    struct kefir_ir_function *func = kefir_ir_module_new_function(mem, &module, decl, KEFIR_ID_NONE, 1024);
+    struct kefir_ir_function *func = kefir_ir_module_new_function(mem, &module, decl, func_locals, 1024);
     REQUIRE(func != NULL, KEFIR_INTERNAL_ERROR);
 
     REQUIRE_OK(kefir_irbuilder_type_append(mem, decl_params, KEFIR_IR_TYPE_LONG, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, decl_result, KEFIR_IR_TYPE_LONG, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, locals, KEFIR_IR_TYPE_LONG, 0, 0));
     REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, func->name, KEFIR_IR_IDENTIFIER_GLOBAL));
 
     kefir_id_t id1, id2, id3;
-    struct kefir_ir_inline_assembly *inline_asm1 = kefir_ir_module_new_inline_assembly(
-        mem, &module, "mov %rbx, [%rsp + 8]\nadd %rbx, 1\nmov [%rsp + 8], %rbx", &id1);
+    struct kefir_ir_inline_assembly *inline_asm1 = kefir_ir_module_new_inline_assembly(mem, &module, "add %0, 1", &id1);
     struct kefir_ir_inline_assembly *inline_asm2 =
         kefir_ir_module_new_inline_assembly(mem, &module, "xor %rax, %rax\npush %rax", &id2);
     struct kefir_ir_inline_assembly *inline_asm3 =
-        kefir_ir_module_new_inline_assembly(mem, &module, "pop %rax\nadd %rax, %rax\npush %rax", &id3);
+        kefir_ir_module_new_inline_assembly(mem, &module, "add %0, %0", &id3);
 
     REQUIRE(inline_asm1 != NULL, KEFIR_INTERNAL_ERROR);
     REQUIRE(inline_asm2 != NULL, KEFIR_INTERNAL_ERROR);
@@ -66,9 +68,23 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_ir_inline_assembly_add_clobber(mem, &module.symbols, inline_asm1, "bl"));
     REQUIRE_OK(kefir_ir_inline_assembly_add_clobber(mem, &module.symbols, inline_asm1, "memory"));
     REQUIRE_OK(kefir_ir_inline_assembly_add_clobber(mem, &module.symbols, inline_asm1, "xmm1"));
+    REQUIRE_OK(kefir_ir_inline_assembly_add_parameter(
+        mem, &module.symbols, inline_asm1, "0", KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_LOAD_STORE,
+        KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_REGISTER, decl_params, func_params, 0, 0, NULL));
+    REQUIRE_OK(kefir_ir_inline_assembly_add_parameter(
+        mem, &module.symbols, inline_asm3, "0", KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_LOAD_STORE,
+        KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_REGISTER, decl_params, func_params, 0, 0, NULL));
 
+    REQUIRE_OK(kefir_irbuilder_block_appendu32(mem, &func->body, KEFIR_IROPCODE_GETLOCAL, func_locals, 0));
+    REQUIRE_OK(kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IROPCODE_XCHG, 1));
+    REQUIRE_OK(kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IROPCODE_STORE64, 0));
+    REQUIRE_OK(kefir_irbuilder_block_appendu32(mem, &func->body, KEFIR_IROPCODE_GETLOCAL, func_locals, 0));
     REQUIRE_OK(kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IROPCODE_INLINEASM, id3));
+    REQUIRE_OK(kefir_irbuilder_block_appendu32(mem, &func->body, KEFIR_IROPCODE_GETLOCAL, func_locals, 0));
     REQUIRE_OK(kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IROPCODE_INLINEASM, id1));
+    REQUIRE_OK(kefir_irbuilder_block_appendu32(mem, &func->body, KEFIR_IROPCODE_GETLOCAL, func_locals, 0));
+    REQUIRE_OK(kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IROPCODE_LOAD64, 0));
+    REQUIRE_OK(kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IROPCODE_RET, 0));
 #endif
 
     KEFIR_CODEGEN_TRANSLATE(mem, &codegen.iface, &module);
