@@ -37,6 +37,7 @@ static kefir_result_t list_entry_free(struct kefir_mem *mem, struct kefir_list *
 kefir_result_t kefir_driver_assembler_configuration_init(struct kefir_driver_assembler_configuration *config) {
     REQUIRE(config != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver assembler configuration"));
 
+    config->verbose = false;
     REQUIRE_OK(kefir_list_init(&config->arguments));
     REQUIRE_OK(kefir_list_on_remove(&config->arguments, list_entry_free, NULL));
     return KEFIR_OK;
@@ -87,6 +88,7 @@ kefir_result_t kefir_driver_linker_configuration_init(struct kefir_driver_linker
     config->flags.link_default_libs = true;
     config->flags.link_libc = true;
     config->flags.link_rtlib = true;
+    config->flags.verbose = false;
 
     config->rtlib_location = NULL;
     return KEFIR_OK;
@@ -135,6 +137,7 @@ kefir_result_t kefir_driver_configuration_init(struct kefir_driver_configuration
     config->flags.restrictive_mode = false;
     config->flags.static_linking = false;
     config->flags.shared_linking = false;
+    config->flags.export_dynamic = false;
     config->flags.position_independent_code = false;
     config->flags.position_independent_executable = false;
     config->flags.omit_frame_pointer = KEFIR_DRIVER_FRAME_POINTER_OMISSION_UNSPECIFIED;
@@ -143,6 +146,7 @@ kefir_result_t kefir_driver_configuration_init(struct kefir_driver_configuration
     config->flags.link_libc = true;
     config->flags.link_rtlib = true;
     config->flags.include_rtinc = true;
+    config->flags.verbose = false;
 
     config->dependency_output.output_system_deps = true;
     config->dependency_output.target_name = NULL;

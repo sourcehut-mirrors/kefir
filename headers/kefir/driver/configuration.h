@@ -26,6 +26,7 @@
 #include "kefir/driver/target.h"
 
 typedef struct kefir_driver_assembler_configuration {
+    kefir_bool_t verbose;
     struct kefir_list arguments;
 } kefir_driver_assembler_configuration_t;
 
@@ -43,10 +44,12 @@ typedef struct kefir_driver_linker_configuration {
         kefir_bool_t static_linking;
         kefir_bool_t shared_linking;
         kefir_bool_t pie_linking;
+        kefir_bool_t export_dynamic;
         kefir_bool_t link_start_files;
         kefir_bool_t link_default_libs;
         kefir_bool_t link_libc;
         kefir_bool_t link_rtlib;
+        kefir_bool_t verbose;
     } flags;
 
     const char *rtlib_location;
@@ -124,6 +127,7 @@ typedef struct kefir_driver_configuration {
         kefir_bool_t restrictive_mode;
         kefir_bool_t static_linking;
         kefir_bool_t shared_linking;
+        kefir_bool_t export_dynamic;
         kefir_bool_t position_independent_code;
         kefir_bool_t position_independent_executable;
         kefir_driver_frame_pointer_omission_t omit_frame_pointer;
@@ -132,6 +136,7 @@ typedef struct kefir_driver_configuration {
         kefir_bool_t link_libc;
         kefir_bool_t include_rtinc;
         kefir_bool_t link_rtlib;
+        kefir_bool_t verbose;
     } flags;
 
     struct {

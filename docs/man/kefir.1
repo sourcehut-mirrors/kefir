@@ -59,6 +59,9 @@ section below)
 Print compiler environment header file (based on
 .Sx ENVIRONMENT
 section and current target)
+.\"
+.It Fl verbose
+Report commands executed by the driver verbosely
 .El
 .Pp
 The rest of command-line options are parsed normally:
@@ -139,6 +142,11 @@ Add directory to runtime library search path
 .It Fl soname Ar name
 Pass
 .Fl soname
+option to the linker
+.\"
+.It Fl rdynamic
+Pass
+.Fl \-export-dynamic
 option to the linker
 .\"
 .It Fl static

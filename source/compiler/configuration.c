@@ -47,6 +47,7 @@ kefir_result_t kefir_compiler_runner_configuration_init(struct kefir_compiler_ru
         .error_report_type = KEFIR_COMPILER_RUNNER_ERROR_REPORT_TABULAR,
         .skip_preprocessor = false,
         .default_pp_timestamp = true,
+        .verbose = false,
         .features = {false},
         .codegen = {.emulated_tls = false,
                     .position_independent_code = false,

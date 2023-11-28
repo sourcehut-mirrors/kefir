@@ -61,6 +61,7 @@ typedef struct kefir_compiler_runner_configuration {
     time_t pp_timestamp;
     kefir_bool_t default_pp_timestamp;
     const char *optimizer_pipeline_spec;
+    kefir_bool_t verbose;
 
     struct {
         const char *target_name;

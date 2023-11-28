@@ -86,6 +86,8 @@ static kefir_driver_argument_type_t detect_file_type(const struct kefir_driver_e
     }
 }
 
+#define STRNCMP(_cmp1, _cmp2) (strncmp((_cmp1), (_cmp2), sizeof(_cmp1) - 1))
+
 kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                        struct kefir_driver_configuration *config,
                                        const struct kefir_driver_external_resources *externals, const char *const *argv,
@@ -161,7 +163,7 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
         }
 
         // Generic flags
-        else if (strncmp("-o", arg, 2) == 0) {
+        else if (STRNCMP("-o", arg) == 0) {
             // Set output file name
             const char *output_filename = NULL;
             if (strlen(arg) == 2) {
@@ -193,7 +195,7 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
         }
 
         // Compiler flags
-        else if (strncmp("-O", arg, 2) == 0) {
+        else if (STRNCMP("-O", arg) == 0) {
             kefir_uint_t level;
             if (strlen(arg) == 2) {
                 EXPECT_ARG;
@@ -216,7 +218,7 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
         // Preprocessor flags
         else if (strcmp("-fpreprocessed", arg) == 0) {
             config->flags.skip_preprocessor = true;
-        } else if (strncmp("-D", arg, 2) == 0) {
+        } else if (STRNCMP("-D", arg) == 0) {
             // Define macro
             const char *definition = NULL;
             if (strlen(arg) == 2) {
@@ -240,7 +242,7 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
             REQUIRE(strlen(name) > 0, KEFIR_SET_ERROR(KEFIR_UI_ERROR, "Macro name cannot be empty"));
 
             REQUIRE_OK(kefir_driver_configuration_add_define(mem, symbols, config, name, value));
-        } else if (strncmp("-U", arg, 2) == 0) {
+        } else if (STRNCMP("-U", arg) == 0) {
             // Define macro
             const char *name = NULL;
             if (strlen(arg) == 2) {
@@ -250,7 +252,7 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
                 name = &arg[2];
             }
             REQUIRE_OK(kefir_driver_configuration_add_undefine(mem, symbols, config, name));
-        } else if (strncmp("-I", arg, 2) == 0) {
+        } else if (STRNCMP("-I", arg) == 0) {
             // Add directory to include search path
             const char *directory = NULL;
             if (strlen(arg) == 2) {
@@ -287,7 +289,7 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
             // Retain relocations
             REQUIRE_OK(kefir_driver_configuration_add_argument(mem, symbols, config, "",
                                                                KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_RETAIN_RELOC));
-        } else if (strncmp("-e", arg, 2) == 0) {
+        } else if (STRNCMP("-e", arg) == 0) {
             // Set entry point
             const char *entry_point = NULL;
             if (strlen(arg) > 2) {
@@ -298,7 +300,7 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
             }
             REQUIRE_OK(kefir_driver_configuration_add_argument(mem, symbols, config, entry_point,
                                                                KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_ENTRY_POINT));
-        } else if (strncmp("-u", arg, 2) == 0) {
+        } else if (STRNCMP("-u", arg) == 0) {
             // Undefined symbol
             const char *symbol = NULL;
             if (strlen(arg) > 2) {
@@ -309,7 +311,7 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
             }
             REQUIRE_OK(kefir_driver_configuration_add_argument(mem, symbols, config, symbol,
                                                                KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_UNDEFINED_SYMBOL));
-        } else if (strncmp("-l", arg, 2) == 0) {
+        } else if (STRNCMP("-l", arg) == 0) {
             // Link library
             const char *library = NULL;
             if (strlen(arg) == 2) {
@@ -321,7 +323,7 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
 
             REQUIRE_OK(kefir_driver_configuration_add_argument(mem, symbols, config, library,
                                                                KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_LINK_LIBRARY));
-        } else if (strncmp("-L", arg, 2) == 0) {
+        } else if (STRNCMP("-L", arg) == 0) {
             // Library search path
             const char *directory = NULL;
             if (strlen(arg) == 2) {
@@ -333,7 +335,7 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
 
             REQUIRE_OK(kefir_driver_configuration_add_argument(mem, symbols, config, directory,
                                                                KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_LINK_PATH));
-        } else if (strncmp("-rpath", arg, 6) == 0) {
+        } else if (STRNCMP("-rpath", arg) == 0) {
             // Library search path
             const char *directory = NULL;
             if (strlen(arg) == 6 || arg[6] != '=') {
@@ -347,7 +349,7 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
                                                                KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_EXTRA));
             REQUIRE_OK(kefir_driver_configuration_add_argument(mem, symbols, config, directory,
                                                                KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_EXTRA));
-        } else if (strncmp("-soname", arg, 7) == 0) {
+        } else if (STRNCMP("-soname", arg) == 0) {
             // Shared object name
             const char *soname = NULL;
             if (strlen(arg) == 7 || arg[7] != '=') {
@@ -361,6 +363,9 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
                                                                KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_EXTRA));
             REQUIRE_OK(kefir_driver_configuration_add_argument(mem, symbols, config, soname,
                                                                KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_EXTRA));
+        } else if (strcmp("-rdynamic", arg) == 0) {
+            // Export dynamic
+            config->flags.export_dynamic = true;
         } else if (strcmp("-static", arg) == 0) {
             // Static linking
             config->flags.static_linking = true;
@@ -439,7 +444,7 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
         }
 
         // Extra tool options
-        else if (strncmp("-Wa,", arg, 4) == 0) {
+        else if (STRNCMP("-Wa,", arg) == 0) {
             // Assembler options
             REQUIRE_OK(kefir_driver_configuration_add_assembler_argument(mem, symbols, config, arg + 4));
         } else if (strcmp("-Xassembler", arg) == 0) {
@@ -447,7 +452,7 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
             EXPECT_ARG;
             const char *flag = argv[++index];
             REQUIRE_OK(kefir_driver_configuration_add_assembler_argument(mem, symbols, config, flag));
-        } else if (strncmp("-Wl,", arg, 4) == 0) {
+        } else if (STRNCMP("-Wl,", arg) == 0) {
             // Linker options
             REQUIRE_OK(kefir_driver_configuration_add_argument(mem, symbols, config, arg + 4,
                                                                KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_EXTRA));
@@ -457,7 +462,7 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
             const char *flag = argv[++index];
             REQUIRE_OK(kefir_driver_configuration_add_argument(mem, symbols, config, flag,
                                                                KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_EXTRA));
-        } else if (strncmp("-Wp,", arg, 4) == 0 || strncmp("-Wc,", arg, 4) == 0) {
+        } else if (STRNCMP("-Wp,", arg) == 0 || STRNCMP("-Wc,", arg) == 0) {
             // Preprocessor and compiler options
             REQUIRE_OK(kefir_driver_configuration_add_compiler_argument(mem, symbols, config, arg + 4));
         } else if (strcmp("-Xpreprocessor", arg) == 0) {
@@ -465,7 +470,7 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
             EXPECT_ARG;
             const char *flag = argv[++index];
             REQUIRE_OK(kefir_driver_configuration_add_compiler_argument(mem, symbols, config, flag));
-        } else if (strncmp("-W", arg, 2) == 0) {
+        } else if (STRNCMP("-W", arg) == 0) {
             // Tool options
             kefir_bool_t next_arg = false;
             if (strlen(arg) == 2) {
@@ -475,13 +480,13 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
             } else {
                 arg = &arg[2];
             }
-            if (strncmp("a,", arg, 2) == 0) {
+            if (STRNCMP("a,", arg) == 0) {
                 // Assembler options
                 REQUIRE_OK(kefir_driver_configuration_add_assembler_argument(mem, symbols, config, arg + 2));
-            } else if (strncmp("l,", arg, 2) == 0) {
+            } else if (STRNCMP("l,", arg) == 0) {
                 // Linker options
                 REQUIRE_OK(kefir_driver_configuration_add_assembler_argument(mem, symbols, config, arg + 2));
-            } else if (strncmp("p,", arg, 2) == 0 || strncmp("c,", arg, 2) == 0) {
+            } else if (STRNCMP("p,", arg) == 0 || STRNCMP("c,", arg) == 0) {
                 // Compiler and linker options
                 REQUIRE_OK(kefir_driver_configuration_add_compiler_argument(mem, symbols, config, arg + 2));
             } else {
@@ -516,10 +521,13 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
             // Environment info requested
             *command = KEFIR_DRIVER_COMMAND_TARGET_ENVIRONMENT_HEADER;
             return KEFIR_OK;
+        } else if (strcmp("-verbose", arg) == 0) {
+            // Verbose driver output
+            config->flags.verbose = true;
         }
 
         // Ignored unsupported flags
-        else if (strncmp("-x", arg, 2) == 0) {
+        else if (STRNCMP("-x", arg) == 0) {
             // Language: ignored
             if (warning_output != NULL) {
                 fprintf(warning_output, "Warning: Unsupported command line option '%s'\n", arg);
@@ -532,7 +540,7 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
             // Positional argument
             REQUIRE_OK(
                 kefir_driver_configuration_add_argument(mem, symbols, config, arg, detect_file_type(externals, arg)));
-        } else if (strncmp("-", arg, 1) == 0 || strncmp("--", arg, 2) == 0) {
+        } else if (STRNCMP("-", arg) == 0 || STRNCMP("--", arg) == 0) {
             // All other non-positional arguments: ignored
             if (warning_output != NULL) {
                 fprintf(warning_output, "Warning: Unsupported command line option '%s'\n", arg);
@@ -549,3 +557,4 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
     }
     return KEFIR_OK;
 }
+#undef STRNCMP

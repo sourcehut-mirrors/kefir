@@ -240,6 +240,11 @@ kefir_result_t kefir_driver_apply_target_linker_initial_configuration(
         }
     }
 
+    if (linker_config->flags.export_dynamic) {
+        position_independent = true;
+        REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "--export-dynamic"));
+    }
+
     if (target->platform == KEFIR_DRIVER_TARGET_PLATFORM_LINUX) {
         if (target->variant == KEFIR_DRIVER_TARGET_VARIANT_GNU) {
             REQUIRE(externals->gnu.library_path != NULL,

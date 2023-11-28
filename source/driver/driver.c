@@ -51,6 +51,7 @@ static kefir_result_t driver_generate_asm_config(struct kefir_mem *mem, struct k
         ASSIGN_DECL_CAST(const char *, argument, iter->value);
         REQUIRE_OK(kefir_driver_assembler_configuration_add_argument(mem, assembler_config, argument));
     }
+    assembler_config->verbose = config->flags.verbose;
     return KEFIR_OK;
 }
 
@@ -60,11 +61,13 @@ static kefir_result_t driver_generate_linker_config(struct kefir_mem *mem, struc
                                                     struct kefir_driver_linker_configuration *linker_config) {
     linker_config->flags.static_linking = config->flags.static_linking;
     linker_config->flags.shared_linking = config->flags.shared_linking;
+    linker_config->flags.export_dynamic = config->flags.export_dynamic;
     linker_config->flags.pie_linking = config->flags.position_independent_executable;
     linker_config->flags.link_start_files = config->flags.link_start_files;
     linker_config->flags.link_default_libs = config->flags.link_default_libs;
     linker_config->flags.link_libc = config->flags.link_libc;
     linker_config->flags.link_rtlib = config->flags.link_rtlib;
+    linker_config->flags.verbose = config->flags.verbose;
     REQUIRE_OK(kefir_driver_apply_target_linker_initial_configuration(mem, symbols, externals, linker_config,
                                                                       &config->target));
     return KEFIR_OK;
@@ -121,6 +124,7 @@ kefir_result_t kefir_driver_generate_compiler_config(struct kefir_mem *mem, stru
                                                      struct kefir_compiler_runner_configuration *compiler_config) {
     REQUIRE_OK(kefir_compiler_runner_configuration_init(compiler_config));
 
+    compiler_config->verbose = config->flags.verbose;
     if (config->stage == KEFIR_DRIVER_STAGE_PRINT_RUNTIME_CODE) {
         REQUIRE_OK(kefir_driver_apply_target_profile_configuration(compiler_config, &config->target));
     } else {

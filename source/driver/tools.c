@@ -27,6 +27,191 @@
 #include "kefir/compiler/compiler.h"
 #include <stdio.h>
 
+static kefir_result_t output_compiler_config(FILE *output,
+                                             const struct kefir_compiler_runner_configuration *configuration) {
+    fprintf(output, "+ (kefir-cc1)");
+    switch (configuration->action) {
+        case KEFIR_COMPILER_RUNNER_ACTION_PREPROCESS:
+            fprintf(output, " --preprocess");
+            break;
+
+        case KEFIR_COMPILER_RUNNER_ACTION_DUMP_DEPENDENCIES:
+            fprintf(output, " --dump-dependencies");
+            if (configuration->dependency_output.output_system_deps) {
+                fprintf(output, " --system-dependencies");
+            } else {
+                fprintf(output, " --no-system-dependencies");
+            }
+            if (configuration->dependency_output.target_name != NULL) {
+                fprintf(output, " --dependency-target %s", configuration->dependency_output.target_name);
+            }
+            break;
+
+        case KEFIR_COMPILER_RUNNER_ACTION_DUMP_TOKENS:
+            fprintf(output, " --dump-tokens");
+            break;
+
+        case KEFIR_COMPILER_RUNNER_ACTION_DUMP_AST:
+            fprintf(output, " --dump-ast");
+            break;
+
+        case KEFIR_COMPILER_RUNNER_ACTION_DUMP_IR:
+            fprintf(output, " --dump-ir");
+            break;
+
+        case KEFIR_COMPILER_RUNNER_ACTION_DUMP_OPT:
+            fprintf(output, " --dump-opt");
+            break;
+
+        case KEFIR_COMPILER_RUNNER_ACTION_DUMP_ASSEMBLY:
+            // Intentionally left blank
+            break;
+
+        case KEFIR_COMPILER_RUNNER_ACTION_DUMP_RUNTIME_CODE:
+            fprintf(output, " --dump-runtime-code");
+            break;
+    }
+
+    if (configuration->input_filepath != NULL) {
+        fprintf(output, " %s", configuration->input_filepath);
+    }
+    if (configuration->output_filepath != NULL) {
+        fprintf(output, " -o %s", configuration->output_filepath);
+    }
+    if (configuration->target_profile != NULL) {
+        fprintf(output, " --target-profile %s", configuration->target_profile);
+    }
+    if (configuration->source_id != NULL) {
+        fprintf(output, " --source-id %s", configuration->source_id);
+    }
+
+    switch (configuration->error_report_type) {
+        case KEFIR_COMPILER_RUNNER_ERROR_REPORT_TABULAR:
+            fprintf(output, " --tabular-errors");
+            break;
+
+        case KEFIR_COMPILER_RUNNER_ERROR_REPORT_JSON:
+            fprintf(output, " --json-errors");
+            break;
+    }
+
+    if (configuration->detailed_output) {
+        fprintf(output, " --detailed-output");
+    }
+    if (configuration->skip_preprocessor) {
+        fprintf(output, " --skip-preprocessor");
+    }
+
+    for (const struct kefir_list_entry *iter = kefir_list_head(&configuration->include_path); iter != NULL;
+         kefir_list_next(&iter)) {
+        ASSIGN_DECL_CAST(const char *, str, iter->value);
+        fprintf(output, " --include-dir %s", str);
+    }
+
+    struct kefir_hashtreeset_iterator iter;
+    kefir_result_t res;
+    for (res = kefir_hashtreeset_iter(&configuration->system_include_directories, &iter); res == KEFIR_OK;
+         res = kefir_hashtreeset_next(&iter)) {
+        ASSIGN_DECL_CAST(const char *, str, iter.entry);
+        fprintf(output, " --system-include-dir %s", str);
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
+
+    for (const struct kefir_list_entry *iter = kefir_list_head(&configuration->include_files); iter != NULL;
+         kefir_list_next(&iter)) {
+        ASSIGN_DECL_CAST(const char *, str, iter->value);
+        fprintf(output, " --include %s", str);
+    }
+
+    struct kefir_hashtree_node_iterator iter2;
+    for (struct kefir_hashtree_node *node = kefir_hashtree_iter(&configuration->defines, &iter2); node != NULL;
+         node = kefir_hashtree_next(&iter2)) {
+        ASSIGN_DECL_CAST(const char *, str, node->key);
+        ASSIGN_DECL_CAST(const char *, str2, node->value);
+        fprintf(output, " --define %s=%s", str, str2);
+    }
+
+    for (const struct kefir_list_entry *iter = kefir_list_head(&configuration->undefines); iter != NULL;
+         kefir_list_next(&iter)) {
+        ASSIGN_DECL_CAST(const char *, str, iter->value);
+        fprintf(output, " --undefine %s", str);
+    }
+
+    if (!configuration->default_pp_timestamp) {
+        fprintf(output, " --pp-timestamp %ld", (long) configuration->pp_timestamp);
+    }
+
+    if (configuration->optimizer_pipeline_spec != NULL) {
+        fprintf(output, " --optimizer-pipeline %s", configuration->optimizer_pipeline_spec);
+    }
+
+#define FEATURE(_id, _name)                         \
+    if (configuration->features._id) {              \
+        fprintf(output, " --feature-%s", _name);    \
+    } else {                                        \
+        fprintf(output, " --no-feature-%s", _name); \
+    }
+
+    FEATURE(fail_on_attributes, "fail-on-attributes")
+    FEATURE(missing_function_return_type, "missing-function-return-type")
+    FEATURE(designated_initializer_colons, "designated-init-colons")
+    FEATURE(labels_as_values, "labels-as-values")
+    FEATURE(non_strict_qualifiers, "non-strict-qualifiers")
+    FEATURE(signed_enum_type, "signed-enums")
+    FEATURE(implicit_function_declaration, "implicit-function-decl")
+    FEATURE(empty_structs, "empty-structs")
+    FEATURE(ext_pointer_arithmetics, "ext-pointer-arithmetics")
+    FEATURE(missing_braces_subobject, "missing-braces-subobj")
+    FEATURE(statement_expressions, "statement-expressions")
+    FEATURE(omitted_conditional_operand, "omitted-conditional-operand")
+    FEATURE(int_to_pointer, "int-to-pointer")
+    FEATURE(permissive_pointer_conv, "permissive-pointer-conv")
+    FEATURE(named_macro_vararg, "named-macro-vararg")
+    FEATURE(include_next, "include-next")
+    FEATURE(fail_on_assembly, "fail-on-assembly")
+    FEATURE(va_args_concat, "va-args-comma-concat")
+#undef FEATURE
+
+#define INTERNAL(_id, _name)                         \
+    if (configuration->internals._id) {              \
+        fprintf(output, " --internal-%s", _name);    \
+    } else {                                         \
+        fprintf(output, " --no-internal-%s", _name); \
+    }
+
+    INTERNAL(flat_local_scope_layout, "flat-local-scope-layout")
+
+#undef INTERNAL
+
+#define CODEGEN(_id, _name)                         \
+    if (configuration->codegen._id) {               \
+        fprintf(output, " --codegen-%s", _name);    \
+    } else {                                        \
+        fprintf(output, " --no-codegen-%s", _name); \
+    }
+
+    CODEGEN(emulated_tls, "emulated-tls")
+    CODEGEN(position_independent_code, "pic")
+    CODEGEN(omit_frame_pointer, "omit-frame-pointer")
+
+#undef CODEGEN
+
+    if (configuration->codegen.syntax != NULL) {
+        fprintf(output, " --codegen-syntax %s", configuration->codegen.syntax);
+    }
+    if (configuration->codegen.print_details != NULL) {
+        fprintf(output, " --codegen-details %s", configuration->codegen.print_details);
+    }
+    if (configuration->codegen.pipeline_spec != NULL) {
+        fprintf(output, " --codegen-pipeline %s", configuration->codegen.pipeline_spec);
+    }
+
+    fprintf(output, "\n");
+    return KEFIR_OK;
+}
+
 static int run_compiler(void *payload) {
     ASSIGN_DECL_CAST(const struct kefir_compiler_runner_configuration *, configuration, payload);
     kefir_result_t res = kefir_run_compiler(kefir_system_memalloc(), configuration);
@@ -40,6 +225,10 @@ kefir_result_t kefir_driver_run_compiler(const struct kefir_compiler_runner_conf
     REQUIRE(configuration != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid compiler runner configuration"));
     REQUIRE(process != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to process"));
+
+    if (configuration->verbose) {
+        REQUIRE_OK(output_compiler_config(stderr, configuration));
+    }
 
 #ifdef KEFIR_DRIVER_DEBUG_NOFORK
     run_compiler((void *) configuration);
@@ -56,6 +245,15 @@ static kefir_result_t copy_string_list_to_array(struct kefir_mem *mem, const str
         ASSIGN_DECL_CAST(const char *, str, iter->value);
         REQUIRE_OK(kefir_string_array_append(mem, array, str));
     }
+    return KEFIR_OK;
+}
+
+static kefir_result_t output_argv(FILE *output, const struct kefir_string_array *argv) {
+    fprintf(output, "+");
+    for (kefir_size_t i = 0; i < argv->length; i++) {
+        fprintf(output, " %s", argv->array[i]);
+    }
+    fprintf(output, "\n");
     return KEFIR_OK;
 }
 
@@ -78,6 +276,10 @@ kefir_result_t kefir_driver_run_assembler(struct kefir_mem *mem, const char *out
     REQUIRE_CHAIN(&res, kefir_string_array_append(mem, &argv, output_file));
 
     REQUIRE_CHAIN(&res, copy_string_list_to_array(mem, &config->arguments, &argv));
+
+    if (config->verbose) {
+        REQUIRE_OK(output_argv(stderr, &argv));
+    }
 
     REQUIRE_CHAIN(&res, kefir_process_execute(process, resources->assembler_path, argv.array));
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -108,6 +310,10 @@ kefir_result_t kefir_driver_run_linker(struct kefir_mem *mem, const char *output
     REQUIRE_CHAIN(&res, kefir_string_array_append(mem, &argv, "-o"));
     REQUIRE_CHAIN(&res, kefir_string_array_append(mem, &argv, output));
     REQUIRE_CHAIN(&res, copy_string_list_to_array(mem, &config->arguments, &argv));
+
+    if (config->flags.verbose) {
+        REQUIRE_OK(output_argv(stderr, &argv));
+    }
 
     REQUIRE_CHAIN(&res, kefir_process_execute(process, resources->linker_path, argv.array));
     REQUIRE_ELSE(res == KEFIR_OK, {
