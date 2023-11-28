@@ -8,35 +8,35 @@ packages:
 secrets:
   -  13fca65b-ffbd-4542-b2fe-6a2813e53256
 sources:
-  - https://git.sr.ht/~jprotopopov/kefir-private
+  - https://git.sr.ht/~jprotopopov/kefir
   - https://git.sr.ht/~jprotopopov/c-testsuite
 tasks:
   - test_gcc: |
-      cd kefir-private
+      cd kefir
       make clean
       LC_ALL=C.UTF-8 make test USE_VALGRIND=yes PROFILE=reldebug USE_SANITIZER=yes CC=gcc-12 -j$(nproc)
   - test_clang: |
-      cd kefir-private
+      cd kefir
       make clean
       LC_ALL=C.UTF-8 make test USE_VALGRIND=yes PROFILE=reldebug EXTRA_CFLAGS=-gdwarf-4 USE_SANITIZER=yes CC=clang-15 -j$(nproc)
   - build: |
-      cd kefir-private
+      cd kefir
       make clean
       LC_ALL=C.UTF-8 make all PROFILE=reldebug CC=gcc-12
   - lua_tests: |
-      cd kefir-private
+      cd kefir
       export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(pwd)/bin/libs
       export LC_ALL=C.UTF-8
-      export KEFIR_RTLIB="$HOME/kefir-private/bin/libs/libkefirrt.a"
-      export KEFIR_RTINC="$HOME/kefir-private/headers/kefir/runtime"
+      export KEFIR_RTLIB="$HOME/kefir/bin/libs/libkefirrt.a"
+      export KEFIR_RTINC="$HOME/kefir/headers/kefir/runtime"
       export KEFIR_CFLAGS="-O1 -fPIC -pie"
       ./source/tests/misc/run-lua-tests.sh "$(pwd)/bin/kefir" "$(pwd)/bin/lua-test"
   - c_testsuite: |
       cd c-testsuite
-      export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/kefir-private/bin/libs
-      export KEFIRCC="$HOME/kefir-private/bin/kefir"
-      export KEFIR_RTLIB="$HOME/kefir-private/bin/libs/libkefirrt.a"
-      export KEFIR_RTINC="$HOME/kefir-private/headers/kefir/runtime"
+      export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/kefir/bin/libs
+      export KEFIRCC="$HOME/kefir/bin/kefir"
+      export KEFIR_RTLIB="$HOME/kefir/bin/libs/libkefirrt.a"
+      export KEFIR_RTINC="$HOME/kefir/headers/kefir/runtime"
       export CFLAGS="-O1 -fPIC -pie"
       export LC_ALL=C.UTF-8 
       ./single-exec kefir | tee ~/c-tests.log
@@ -45,18 +45,18 @@ tasks:
       wget ftp://ftp.gnu.org/gnu/gcc/gcc-13.1.0/gcc-13.1.0.tar.xz
       tar xvf gcc-13.1.0.tar.xz
       export TORTURE=$PWD/gcc-13.1.0/gcc/testsuite/gcc.c-torture
-      export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/kefir-private/bin/libs
-      export KEFIRCC="$HOME/kefir-private/bin/kefir"
-      export KEFIR_RTLIB="$HOME/kefir-private/bin/libs/libkefirrt.a"
-      export KEFIR_RTINC="$HOME/kefir-private/headers/kefir/runtime"
+      export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/kefir/bin/libs
+      export KEFIRCC="$HOME/kefir/bin/kefir"
+      export KEFIR_RTLIB="$HOME/kefir/bin/libs/libkefirrt.a"
+      export KEFIR_RTINC="$HOME/kefir/headers/kefir/runtime"
       export KEFIR_EXTRAFLAGS="-O1 -fPIC -pie"
       LC_ALL=C.UTF-8 ./kefir/source/tests/misc/run_gcc_torture_suite.sh 2>&1 | tee torture.log
       grep -v "Interrupted system call" torture.log | grep -i "fatal\|abort\|timeout\|segm" && exit 1 || true
   - bootstrap: |
-      cd kefir-private
+      cd kefir
       make clean clean_bootstrap
-      export KEFIR_RTLIB="$HOME/kefir-private/bin/libs/libkefirrt.a"
-      export KEFIR_RTINC="$HOME/kefir-private/headers/kefir/runtime"
+      export KEFIR_RTLIB="$HOME/kefir/bin/libs/libkefirrt.a"
+      export KEFIR_RTINC="$HOME/kefir/headers/kefir/runtime"
       LC_ALL=C.UTF-8 make bootstrap BOOTSTRAP_EXTRA_CFLAGS="-O1" -j$(nproc)
 triggers:
   - action: email

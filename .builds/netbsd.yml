@@ -7,18 +7,18 @@ packages:
 secrets:
   -  13fca65b-ffbd-4542-b2fe-6a2813e53256
 sources:
-  - https://git.sr.ht/~jprotopopov/kefir-private
+  - https://git.sr.ht/~jprotopopov/kefir
 tasks:
   - test: |
-      cd kefir-private
+      cd kefir
       export LC_ALL=C.UTF-8
       gmake test all CC=gcc AS=gas PLATFORM=netbsd PROFILE=reldebug
   - bootstrap: |
-      cd kefir-private
+      cd kefir
       gmake clean clean_bootstrap
-      export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/kefir-private/bin/libs"
-      export KEFIR_RTLIB="$HOME/kefir-private/bin/libs/libkefirrt.a"
-      export KEFIR_RTINC="$HOME/kefir-private/headers/kefir/runtime"
+      export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/kefir/bin/libs"
+      export KEFIR_RTLIB="$HOME/kefir/bin/libs/libkefirrt.a"
+      export KEFIR_RTINC="$HOME/kefir/headers/kefir/runtime"
       export REALPATH=grealpath
       LC_ALL=C.UTF-8 gmake bootstrap BOOTSTRAP_EXTRA_CFLAGS="-O1" PLATFORM=netbsd
 triggers:

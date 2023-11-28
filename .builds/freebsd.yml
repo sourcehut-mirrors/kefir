@@ -8,21 +8,21 @@ packages:
 secrets:
   -  13fca65b-ffbd-4542-b2fe-6a2813e53256
 sources:
-  - https://git.sr.ht/~jprotopopov/kefir-private
+  - https://git.sr.ht/~jprotopopov/kefir
 tasks:
   - test: |
-      cd kefir-private
+      cd kefir
       gmake test PLATFORM=freebsd USE_VALGRIND=yes PROFILE=reldebug USE_SANITIZER=yes CC=clang
   - build: |
-      cd kefir-private
+      cd kefir
       gmake clean clean_bootstrap
       gmake all PLATFORM=freebsd PROFILE=reldebug CC=clang
   - bootstrap: |
-      cd kefir-private
+      cd kefir
       gmake clean clean_bootstrap
-      export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/kefir-private/bin/libs"
-      export KEFIR_RTLIB="$HOME/kefir-private/bin/libs/libkefirrt.a"
-      export KEFIR_RTINC="$HOME/kefir-private/headers/kefir/runtime"
+      export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/kefir/bin/libs"
+      export KEFIR_RTLIB="$HOME/kefir/bin/libs/libkefirrt.a"
+      export KEFIR_RTINC="$HOME/kefir/headers/kefir/runtime"
       export REALPATH=grealpath
       LC_ALL=C.UTF-8 gmake bootstrap BOOTSTRAP_EXTRA_CFLAGS="-O1" CC=clang PLATFORM=freebsd
 triggers:
