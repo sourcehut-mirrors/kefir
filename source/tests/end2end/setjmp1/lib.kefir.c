@@ -19,7 +19,10 @@
 */
 
 #include "./definitions.h"
-#include <setjmp.h>
+
+typedef char jmp_buf[128];
+extern int setjmp(jmp_buf);
+extern void longjmp(jmp_buf, int);
 
 long add_n_times(long x, long c) {
     long result = 0;

@@ -24,7 +24,7 @@
 #include "kefir/ir/type.h"
 #include "kefir/ir/builder.h"
 #include "kefir/target/abi/amd64/type_layout.h"
-#include "kefir/codegen/naive-system-v-amd64/registers.h"
+#include "kefir/target/abi/amd64/parameters.h"
 
 #define ASSERT_DATA_ALLOC(vector, index, _size, _alignment, offset)                                             \
     do {                                                                                                        \
