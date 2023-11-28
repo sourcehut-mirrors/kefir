@@ -2,6 +2,12 @@
 
 This file documents notable changes to the project.
 
+## [0.3.1] - 2023-11-28
+Project release:
+* Rewrite and clean up of x86_64 code generator. Removal of naive code generator.
+* New optimization passes.
+* Minor fixes and improvements.
+
 ## [0.3.0] - 2023-08-05
 Project release
 * Support for basic optimizations and position-independent code generation.
