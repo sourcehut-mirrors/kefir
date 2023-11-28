@@ -23,10 +23,7 @@
 
 #include "kefir/core/basic-types.h"
 
-typedef enum kefir_driver_target_backend {
-    KEFIR_DRIVER_TARGET_BACKEND_NAIVE,
-    KEFIR_DRIVER_TARGET_BACKEND_DEFAULT
-} kefir_driver_target_backend_t;
+typedef enum kefir_driver_target_backend { KEFIR_DRIVER_TARGET_BACKEND_DEFAULT } kefir_driver_target_backend_t;
 
 typedef enum kefir_driver_target_arch { KEFIR_DRIVER_TARGET_ARCH_X86_64 } kefir_driver_target_arch_t;
 

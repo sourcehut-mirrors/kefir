@@ -326,12 +326,10 @@ representation (IR) layer was introduced. It defines architecture-agnostic
 64-bit stack machine bytecode, providing generic calling convention and
 abstracting out type layout information. Compiler is structured into separate
 modules with respect to IR: code generation and AST analysis and translation.
-Two code generators are available: naive (old) code generator that produces
-straightforward threaded code, and (not yet) optimizing code generator. The
-latter includes separate optimizer representation which is derived from the IR.
-IR layer provides several interfaces for AST analyzer to retrieve necessary
-target type layout information (for instance, for constant expression analysis).
-AST analysis and translation are separate stages to improve code structure and
+The IR code is then converted into optimizer SSA-like representation. IR layer
+provides several interfaces for AST analyzer to retrieve necessary target type
+layout information (for instance, for constant expression analysis). AST
+analysis and translation are separate stages to improve code structure and
 reusability. Parser uses recursive descent approach with back-tracking. Lexer
 was implemented before preprocessor and can be used independently of it
 (preprocessing stage can be completely omitted), thus both lexer and

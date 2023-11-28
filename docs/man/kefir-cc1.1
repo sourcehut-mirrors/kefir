@@ -197,7 +197,7 @@ No-operation pass
 .El
 .\"
 .Ss OPTIMIZER
-Optimizer pipeline specification (not supported for naive-* targets) consists of comma separated names of optimization pipeline passes:
+Optimizer pipeline specification consists of comma separated names of optimization pipeline passes:
 .Bl -tag -width Ds
 .\"
 .It Ar noop
@@ -225,9 +225,6 @@ Fusing comparisons with subsequent branch instructions
 .Ss TARGET
 Supported compilation targets:
 .Bl -tag -width Ds
-.\"
-.It Ar naive-amd64-sysv-gas
-Produce unoptimized threaded code in GNU As-compatible assembly adhering System-V AMD64 ABI
 .\"
 .It Ar amd64-sysv-gas
 Produce optimized GNU As-compatible assembly adhering System-V AMD64 ABI [default]

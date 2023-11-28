@@ -123,10 +123,6 @@ static kefir_result_t print_toolchain_env(FILE *out, const char *name,
 
 static kefir_result_t print_target(FILE *out, const struct kefir_driver_target *target) {
     switch (target->backend) {
-        case KEFIR_DRIVER_TARGET_BACKEND_NAIVE:
-            fprintf(out, "naive-");
-            break;
-
         case KEFIR_DRIVER_TARGET_BACKEND_DEFAULT:
             break;
     }

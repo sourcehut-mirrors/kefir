@@ -25,13 +25,9 @@
 #include <string.h>
 
 static kefir_result_t match_backend(const char *spec, struct kefir_driver_target *target, const char **next) {
-    static const char spec_naive[] = "naive-";
     static const char spec_optimizing[] = "opt-";
 
-    if (strncmp(spec, spec_naive, sizeof(spec_naive) - 1) == 0) {
-        target->backend = KEFIR_DRIVER_TARGET_BACKEND_NAIVE;
-        *next = spec + (sizeof(spec_naive) - 1);
-    } else if (strncmp(spec, spec_optimizing, sizeof(spec_optimizing) - 1) == 0) {
+    if (strncmp(spec, spec_optimizing, sizeof(spec_optimizing) - 1) == 0) {
         target->backend = KEFIR_DRIVER_TARGET_BACKEND_DEFAULT;
         *next = spec + (sizeof(spec_optimizing) - 1);
     }

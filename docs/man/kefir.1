@@ -148,7 +148,7 @@ Produce a statically linked executable
 Produce a shared object
 .\"
 .It Fl fPIC | Fl fpic
-Produce position-independent code (not supported for naive-* targets)
+Produce position-independent code
 .\"
 .It Fl fno-pic
 Do not produce position-independent code [default]
@@ -428,7 +428,7 @@ No-operation pass
 .El
 .\"
 .Ss OPTIMIZER
-Optimizer pipeline specification (not supported for naive-* targets) consists of comma separated names of pipeline passes:
+Optimizer pipeline specification consists of comma separated names of pipeline passes:
 .Bl -tag -width Ds
 .\"
 .It Ar noop
@@ -458,7 +458,6 @@ Target platforms are specified in format [<backend>-]<platform>[-<variant>] wher
 .Bl -tag -width Ds
 .\"
 .It Ar backend
-naive |
 .Sy opt
 [default]
 .\"
