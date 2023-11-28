@@ -33,7 +33,7 @@
 #include "kefir/ast/analyzer/analyzer.h"
 #include "kefir/ast-translator/context.h"
 #include "kefir/ast-translator/scope/translator.h"
-#include "kefir/codegen/naive-system-v-amd64/codegen.h"
+#include "kefir/test/codegen.h"
 #include "kefir/ast-translator/value.h"
 #include "codegen.h"
 
@@ -90,6 +90,7 @@ static kefir_result_t translate_function(struct kefir_mem *mem, struct function 
     } else {
         REQUIRE_OK(kefir_ast_translate_statement(mem, func->body, &builder, &local_translator_context));
     }
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(&builder, KEFIR_IROPCODE_RET, 0));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_FREE(&builder));
 
     REQUIRE_OK(kefir_ast_translator_local_scope_layout_free(mem, &local_scope));

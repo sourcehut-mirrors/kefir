@@ -21,12 +21,14 @@
 #ifndef CODEGEN_H_
 #define CODEGEN_H_
 
+#include "kefir/test/codegen.h"
+
 #define GENCODE(fn)                                                                                \
     do {                                                                                           \
-        struct kefir_codegen_naive_amd64 codegen;                                                  \
+        struct kefir_test_codegen codegen;                                                         \
         struct kefir_ir_target_platform ir_target;                                                 \
         REQUIRE_OK(kefir_abi_amd64_target_platform(KEFIR_ABI_AMD64_VARIANT_SYSTEM_V, &ir_target)); \
-        REQUIRE_OK(kefir_codegen_naive_sysv_amd64_init(mem, &codegen, stdout, NULL));              \
+        REQUIRE_OK(kefir_test_codegen_init(mem, &codegen, stdout, NULL));                          \
         struct kefir_ir_module module;                                                             \
         REQUIRE_OK(kefir_ir_module_alloc(mem, &module));                                           \
         REQUIRE_OK((fn) (mem, &module, &ir_target));                                               \
