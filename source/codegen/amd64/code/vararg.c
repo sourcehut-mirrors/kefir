@@ -574,7 +574,7 @@ static kefir_result_t vararg_visit_register_aggregate(struct kefir_mem *mem,
                                                  KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));
     REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[0], &valist_vreg));
 
-    kefir_size_t required_integers, required_sse;
+    kefir_size_t required_integers = 0, required_sse = 0;
     REQUIRE_OK(vararg_register_aggregate_check(mem, function, parameter, valist_vreg, tmp_vreg, overflow_area_label,
                                                &required_integers, &required_sse));
     REQUIRE_OK(vararg_register_aggregate_load(mem, function, parameter, parameter_layout, valist_vreg, result_vreg,

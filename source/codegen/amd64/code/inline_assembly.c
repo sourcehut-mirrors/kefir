@@ -155,7 +155,7 @@ static kefir_result_t allocate_register_parameter(struct kefir_mem *mem, struct 
                                                   const struct kefir_ir_inline_assembly_parameter *ir_asm_param,
                                                   inline_assembly_parameter_type_t param_type) {
     struct inline_assembly_parameter_allocation_entry *entry = &context->parameters[ir_asm_param->parameter_id];
-    kefir_asm_amd64_xasmgen_register_t reg;
+    kefir_asm_amd64_xasmgen_register_t reg = 0;
     REQUIRE_OK(obtain_available_register(mem, function, context, &reg));
     REQUIRE_OK(kefir_asmcmp_virtual_register_new(
         mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &entry->allocation_vreg));
@@ -175,7 +175,7 @@ static kefir_result_t allocate_memory_parameter(struct kefir_mem *mem, struct ke
     struct inline_assembly_parameter_allocation_entry *entry = &context->parameters[ir_asm_param->parameter_id];
     if (param_type == INLINE_ASSEMBLY_PARAMETER_AGGREGATE ||
         ir_asm_param->klass != KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ) {
-        kefir_asm_amd64_xasmgen_register_t reg;
+        kefir_asm_amd64_xasmgen_register_t reg = 0;
         REQUIRE_OK(obtain_available_register(mem, function, context, &reg));
         REQUIRE_OK(kefir_asmcmp_virtual_register_new(
             mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &entry->allocation_vreg));
