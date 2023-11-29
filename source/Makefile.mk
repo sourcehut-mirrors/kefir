@@ -37,14 +37,10 @@ KEFIR_LIB_COMPILE_DEPS := $(KEFIR_LIB_SOURCE:$(SOURCE_DIR)/%.c=$(KEFIR_BIN_DIR)/
 KEFIR_LIB_DEPENDENCIES := $(KEFIR_LIB_SOURCE:$(SOURCE_DIR)/%.c=$(KEFIR_BIN_DIR)/%.d)
 KEFIR_LIB_OBJECT_FILES := $(KEFIR_LIB_SOURCE:$(SOURCE_DIR)/%.c=$(KEFIR_BIN_DIR)/%.o)
 
-KEFIR_RUNTIME_SOURCE := $(SOURCE_DIR)/runtime/amd64_sysv.s \
-                        $(SOURCE_DIR)/runtime/opt_amd64_sysv.s \
-						$(SOURCE_DIR)/runtime/common_amd64.s
+KEFIR_RUNTIME_SOURCE := $(SOURCE_DIR)/runtime/amd64.s
 KEFIR_RUNTIME_OBJECT_FILES := $(KEFIR_RUNTIME_SOURCE:$(SOURCE_DIR)/%.s=$(KEFIR_BIN_DIR)/%.s.o)
 
 KEFIR_BUILD_SOURCE_ID := $(shell $(ROOT)/scripts/get-source-id.sh)
-
-$(KEFIR_BIN_DIR)/runtime/common_amd64.s.o: $(SOURCE_DIR)/runtime/common_amd64.inc.s
 
 BIN_HEADERS_SRCDIR=$(SOURCE_DIR)
 BIN_HEADERS_DESTDIR=$(KEFIR_BIN_DIR)
