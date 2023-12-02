@@ -127,12 +127,7 @@
             "identifier": 17,
             "type": [
                 {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "long_double"
-                        }
-                    ]
+                    "type": "long_double"
                 }
             ]
         },

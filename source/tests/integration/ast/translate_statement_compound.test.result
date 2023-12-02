@@ -47,31 +47,16 @@
             "identifier": 8,
             "type": [
                 {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "union",
-                            "fields": [
-                                {
-                                    "type": "struct",
-                                    "fields": [
-                                        {
-                                            "type": "int"
-                                        },
-                                        {
-                                            "type": "long"
-                                        },
-                                        {
-                                            "type": "float"
-                                        },
-                                        {
-                                            "type": "long_double"
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    ]
+                    "type": "int"
+                },
+                {
+                    "type": "long"
+                },
+                {
+                    "type": "float"
+                },
+                {
+                    "type": "long_double"
                 }
             ]
         },
@@ -103,32 +88,7 @@
             "identifier": 13,
             "type": [
                 {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "union",
-                            "fields": [
-                                {
-                                    "type": "struct",
-                                    "fields": [
-                                        {
-                                            "type": "union",
-                                            "fields": [
-                                                {
-                                                    "type": "struct",
-                                                    "fields": [
-                                                        {
-                                                            "type": "float"
-                                                        }
-                                                    ]
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    ]
+                    "type": "float"
                 }
             ]
         },
@@ -206,12 +166,8 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 8,
-                        "index": 0
+                        "index": 1
                     }
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 8
                 },
                 {
                     "opcode": "pick",
@@ -234,12 +190,8 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 8,
-                        "index": 0
+                        "index": 2
                     }
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 16
                 },
                 {
                     "opcode": "pick",
@@ -261,12 +213,8 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 8,
-                        "index": 0
+                        "index": 3
                     }
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 32
                 },
                 {
                     "opcode": "ldinith",
@@ -296,12 +244,8 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 8,
-                        "index": 0
+                        "index": 1
                     }
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 8
                 },
                 {
                     "opcode": "load64",
@@ -319,12 +263,8 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 8,
-                        "index": 0
+                        "index": 2
                     }
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 16
                 },
                 {
                     "opcode": "xchg",
@@ -351,12 +291,8 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 8,
-                        "index": 0
+                        "index": 2
                     }
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 16
                 },
                 {
                     "opcode": "load32u",
@@ -422,12 +358,8 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 8,
-                        "index": 0
+                        "index": 2
                     }
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 16
                 },
                 {
                     "opcode": "load32u",
@@ -439,12 +371,8 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 8,
-                        "index": 0
+                        "index": 1
                     }
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 8
                 },
                 {
                     "opcode": "pick",

@@ -128,12 +128,7 @@ static kefir_result_t dump_action_impl(struct kefir_mem *mem, const struct kefir
     compiler.ast_global_context.configuration.analysis.permissive_pointer_conv =
         options->features.permissive_pointer_conv;
 
-    kefir_bool_t flat_local_scope_layout =
-        options->internals.flat_local_scope_layout || compiler.profile->optimizer_enabled;
-    compiler.ast_global_context.configuration.internals.flat_local_temporaries = flat_local_scope_layout;
-
     compiler.translator_configuration.empty_structs = options->features.empty_structs;
-    compiler.translator_configuration.flat_local_scope_layout = flat_local_scope_layout;
 
     compiler.codegen_configuration.emulated_tls = options->codegen.emulated_tls;
     compiler.codegen_configuration.position_independent_code = options->codegen.position_independent_code;

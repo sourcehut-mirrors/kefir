@@ -305,77 +305,6 @@ static kefir_result_t local_scope_empty(struct kefir_mem *mem, const struct kefi
     return KEFIR_OK;
 }
 
-static kefir_result_t traverse_local_scope(struct kefir_mem *mem, const struct kefir_ast_context *context,
-                                           const struct kefir_tree_node *root, struct kefir_irbuilder_type *builder,
-                                           const struct kefir_ast_translator_environment *env,
-                                           struct kefir_ast_type_bundle *type_bundle,
-                                           const struct kefir_ast_type_traits *type_traits,
-                                           struct kefir_ir_module *module,
-                                           struct kefir_ast_translator_local_scope_layout *local_layout,
-                                           struct kefir_ast_type_layout **scope_type_layout) {
-    ASSIGN_DECL_CAST(struct kefir_ast_identifier_flat_scope *, scope, root->value);
-    kefir_bool_t empty_scope = true;
-    REQUIRE_OK(local_scope_empty(mem, root, &empty_scope));
-    const kefir_size_t begin = kefir_ir_type_length(builder->type);
-    if (!empty_scope) {
-        *scope_type_layout = kefir_ast_new_type_layout(mem, NULL, 0, begin);
-        REQUIRE_OK(KEFIR_IRBUILDER_TYPE_APPEND(builder, KEFIR_IR_TYPE_STRUCT, 0, 0));
-    }
-    struct kefir_ast_identifier_flat_scope_iterator iter;
-    kefir_result_t res;
-    for (res = kefir_ast_identifier_flat_scope_iter(scope, &iter); res == KEFIR_OK;
-         res = kefir_ast_identifier_flat_scope_next(scope, &iter)) {
-        struct kefir_ir_typeentry *typeentry = NULL;
-        if (!empty_scope) {
-            typeentry = kefir_ir_type_at(builder->type, begin);
-        }
-        REQUIRE_OK(translate_local_scoped_identifier(mem, context, builder, iter.identifier, iter.value, env,
-                                                     type_bundle, type_traits, module, local_layout, *scope_type_layout,
-                                                     typeentry));
-    }
-    REQUIRE(res == KEFIR_ITERATOR_END, res);
-
-    kefir_bool_t empty_children = true;
-    for (struct kefir_tree_node *child = kefir_tree_first_child(root); child != NULL && empty_children;
-         child = kefir_tree_next_sibling(child)) {
-        REQUIRE_OK(local_scope_empty(mem, child, &empty_children));
-    }
-    if (!empty_children) {
-        const kefir_size_t children_begin = kefir_ir_type_length(builder->type);
-        struct kefir_ast_type_layout *sublocal_scopes_type_layout =
-            kefir_ast_new_type_layout(mem, NULL, 0, children_begin);
-        struct kefir_ir_typeentry *typeentry = kefir_ir_type_at(builder->type, begin);
-        typeentry->param++;
-        REQUIRE_OK(KEFIR_IRBUILDER_TYPE_APPEND(builder, KEFIR_IR_TYPE_UNION, 0, 0));
-        for (struct kefir_tree_node *child = kefir_tree_first_child(root); child != NULL;
-             child = kefir_tree_next_sibling(child)) {
-            struct kefir_ast_type_layout *sublocal_type_layout = NULL;
-            struct kefir_ir_typeentry *child_typeentry = kefir_ir_type_at(builder->type, children_begin);
-            child_typeentry->param++;
-            REQUIRE_OK(traverse_local_scope(mem, context, child, builder, env, type_bundle, type_traits, module,
-                                            local_layout, &sublocal_type_layout));
-            if (sublocal_type_layout != NULL) {
-                REQUIRE_OK(kefir_list_insert_after(
-                    mem, &sublocal_scopes_type_layout->custom_layout.sublayouts,
-                    kefir_list_tail(&sublocal_scopes_type_layout->custom_layout.sublayouts), sublocal_type_layout));
-                sublocal_type_layout->parent = sublocal_scopes_type_layout;
-            }
-        }
-        REQUIRE_OK(kefir_list_insert_after(mem, &(*scope_type_layout)->custom_layout.sublayouts,
-                                           kefir_list_tail(&(*scope_type_layout)->custom_layout.sublayouts),
-                                           sublocal_scopes_type_layout));
-        sublocal_scopes_type_layout->parent = *scope_type_layout;
-    } else {
-        for (struct kefir_tree_node *child = kefir_tree_first_child(root); child != NULL;
-             child = kefir_tree_next_sibling(child)) {
-            struct kefir_ast_type_layout *sublocal_type_layout = NULL;
-            REQUIRE_OK(traverse_local_scope(mem, context, child, builder, env, type_bundle, type_traits, module,
-                                            local_layout, &sublocal_type_layout));
-        }
-    }
-    return KEFIR_OK;
-}
-
 static kefir_result_t traverse_local_scope_flat(
     struct kefir_mem *mem, const struct kefir_ast_context *context, const struct kefir_tree_node *root,
     struct kefir_irbuilder_type *builder, const struct kefir_ast_translator_environment *env,
@@ -435,15 +364,9 @@ kefir_result_t kefir_ast_translator_build_local_scope_layout(struct kefir_mem *m
     if (!kefir_ast_identifier_block_scope_empty(&context->ordinary_scope)) {
         struct kefir_irbuilder_type builder;
         REQUIRE_OK(kefir_irbuilder_type_init(mem, &builder, layout->local_layout));
-        if (env->configuration->flat_local_scope_layout) {
-            REQUIRE_OK(traverse_local_scope_flat(mem, &context->context, &context->ordinary_scope.root, &builder, env,
-                                                 context->context.type_bundle, context->context.type_traits, module,
-                                                 layout, &layout->local_type_layout));
-        } else {
-            REQUIRE_OK(traverse_local_scope(mem, &context->context, &context->ordinary_scope.root, &builder, env,
-                                            context->context.type_bundle, context->context.type_traits, module, layout,
-                                            &layout->local_type_layout));
-        }
+        REQUIRE_OK(traverse_local_scope_flat(mem, &context->context, &context->ordinary_scope.root, &builder, env,
+                                             context->context.type_bundle, context->context.type_traits, module, layout,
+                                             &layout->local_type_layout));
         REQUIRE_OK(KEFIR_IRBUILDER_TYPE_FREE(&builder));
 
         if (layout->local_type_layout != NULL) {

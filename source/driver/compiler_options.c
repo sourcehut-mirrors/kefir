@@ -211,8 +211,6 @@ struct kefir_cli_option KefirCompilerConfigurationOptions[] = {
     FEATURE("fail-on-assembly", features.fail_on_assembly),
     FEATURE("va-args-comma-concat", features.va_args_concat),
 
-    INTERNAL("flat-local-scope-layout", internals.flat_local_scope_layout),
-
     CODEGEN("emulated-tls", codegen.emulated_tls),
     CODEGEN("pic", codegen.position_independent_code),
     CODEGEN("omit-frame-pointer", codegen.omit_frame_pointer),

@@ -36,12 +36,7 @@
             "identifier": 4,
             "type": [
                 {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "bool"
-                        }
-                    ]
+                    "type": "bool"
                 }
             ]
         },

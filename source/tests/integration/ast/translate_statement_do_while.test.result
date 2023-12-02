@@ -35,22 +35,7 @@
             "identifier": 5,
             "type": [
                 {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "union",
-                            "fields": [
-                                {
-                                    "type": "struct",
-                                    "fields": [
-                                        {
-                                            "type": "bool"
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    ]
+                    "type": "bool"
                 }
             ]
         },
@@ -110,32 +95,7 @@
             "identifier": 16,
             "type": [
                 {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "union",
-                            "fields": [
-                                {
-                                    "type": "struct",
-                                    "fields": [
-                                        {
-                                            "type": "union",
-                                            "fields": [
-                                                {
-                                                    "type": "struct",
-                                                    "fields": [
-                                                        {
-                                                            "type": "long_double"
-                                                        }
-                                                    ]
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    ]
+                    "type": "long_double"
                 }
             ]
         },

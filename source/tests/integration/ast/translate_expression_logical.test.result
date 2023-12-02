@@ -58,12 +58,7 @@
             "identifier": 13,
             "type": [
                 {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "long_double"
-                        }
-                    ]
+                    "type": "long_double"
                 }
             ]
         },
@@ -79,15 +74,10 @@
             "identifier": 16,
             "type": [
                 {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "long_double"
-                        },
-                        {
-                            "type": "long_double"
-                        }
-                    ]
+                    "type": "long_double"
+                },
+                {
+                    "type": "long_double"
                 }
             ]
         },
@@ -139,12 +129,7 @@
             "identifier": 28,
             "type": [
                 {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "long_double"
-                        }
-                    ]
+                    "type": "long_double"
                 }
             ]
         },
@@ -160,15 +145,10 @@
             "identifier": 31,
             "type": [
                 {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "long_double"
-                        },
-                        {
-                            "type": "long_double"
-                        }
-                    ]
+                    "type": "long_double"
+                },
+                {
+                    "type": "long_double"
                 }
             ]
         },
@@ -424,18 +404,14 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 12
+                    "arg": 11
                 },
                 {
                     "opcode": "getlocal",
                     "arg": {
                         "type": 31,
-                        "index": 0
+                        "index": 1
                     }
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 16
                 },
                 {
                     "opcode": "ldinith",
@@ -636,18 +612,14 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 13
+                    "arg": 12
                 },
                 {
                     "opcode": "getlocal",
                     "arg": {
                         "type": 16,
-                        "index": 0
+                        "index": 1
                     }
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 16
                 },
                 {
                     "opcode": "ldinith",

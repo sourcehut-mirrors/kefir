@@ -34,43 +34,38 @@
                     "type": "struct",
                     "fields": [
                         {
-                            "type": "struct",
-                            "fields": [
-                                {
-                                    "type": "bool"
-                                },
-                                {
-                                    "type": "double"
-                                },
-                                {
-                                    "type": "array",
-                                    "length": 5,
-                                    "element_type": {
-                                        "type": "char"
-                                    }
-                                },
-                                {
-                                    "type": "word"
-                                }
-                            ]
+                            "type": "bool"
                         },
                         {
-                            "type": "union",
-                            "fields": [
-                                {
-                                    "type": "long"
-                                },
-                                {
-                                    "type": "char"
-                                },
-                                {
-                                    "type": "array",
-                                    "length": 4,
-                                    "element_type": {
-                                        "type": "int"
-                                    }
-                                }
-                            ]
+                            "type": "double"
+                        },
+                        {
+                            "type": "array",
+                            "length": 5,
+                            "element_type": {
+                                "type": "char"
+                            }
+                        },
+                        {
+                            "type": "word"
+                        }
+                    ]
+                },
+                {
+                    "type": "union",
+                    "fields": [
+                        {
+                            "type": "long"
+                        },
+                        {
+                            "type": "char"
+                        },
+                        {
+                            "type": "array",
+                            "length": 4,
+                            "element_type": {
+                                "type": "int"
+                            }
                         }
                     ]
                 }
@@ -268,12 +263,8 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 4,
-                        "index": 0
+                        "index": 6
                     }
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 32
                 },
                 {
                     "opcode": "pick",

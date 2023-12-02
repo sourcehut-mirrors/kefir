@@ -172,12 +172,7 @@
             "identifier": 18,
             "type": [
                 {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "long"
-                        }
-                    ]
+                    "type": "long"
                 }
             ]
         },

@@ -63,15 +63,10 @@
             "identifier": 8,
             "type": [
                 {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "int"
-                        },
-                        {
-                            "type": "int"
-                        }
-                    ]
+                    "type": "int"
+                },
+                {
+                    "type": "int"
                 }
             ]
         },
@@ -154,12 +149,8 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 8,
-                        "index": 0
+                        "index": 1
                     }
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 4
                 },
                 {
                     "opcode": "pick",
@@ -203,7 +194,7 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 38
+                    "arg": 36
                 },
                 {
                     "opcode": "getlocal",
@@ -222,12 +213,8 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 8,
-                        "index": 0
+                        "index": 1
                     }
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 4
                 },
                 {
                     "opcode": "pick",
@@ -310,18 +297,14 @@
                 },
                 {
                     "opcode": "jmp",
-                    "arg": 9
+                    "arg": 8
                 },
                 {
                     "opcode": "getlocal",
                     "arg": {
                         "type": 8,
-                        "index": 0
+                        "index": 1
                     }
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 4
                 },
                 {
                     "opcode": "load32i",

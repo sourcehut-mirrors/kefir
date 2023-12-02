@@ -39,16 +39,11 @@
             "identifier": 4,
             "type": [
                 {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "array",
-                            "length": 12,
-                            "element_type": {
-                                "type": "char"
-                            }
-                        }
-                    ]
+                    "type": "array",
+                    "length": 12,
+                    "element_type": {
+                        "type": "char"
+                    }
                 }
             ]
         },

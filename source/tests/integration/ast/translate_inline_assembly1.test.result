@@ -35,15 +35,10 @@
             "identifier": 5,
             "type": [
                 {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "long_double"
-                        },
-                        {
-                            "type": "long_double"
-                        }
-                    ]
+                    "type": "long_double"
+                },
+                {
+                    "type": "long_double"
                 }
             ]
         },
@@ -91,18 +86,13 @@
             "identifier": 12,
             "type": [
                 {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "char"
-                        },
-                        {
-                            "type": "char"
-                        },
-                        {
-                            "type": "long_double"
-                        }
-                    ]
+                    "type": "char"
+                },
+                {
+                    "type": "char"
+                },
+                {
+                    "type": "long_double"
                 }
             ]
         },
@@ -208,12 +198,8 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 5,
-                        "index": 0
+                        "index": 1
                     }
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 16
                 },
                 {
                     "opcode": "ldinith",
@@ -251,12 +237,8 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 12,
-                        "index": 0
+                        "index": 1
                     }
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 1
                 },
                 {
                     "opcode": "getglobal",
@@ -274,12 +256,8 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 12,
-                        "index": 0
+                        "index": 2
                     }
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 16
                 },
                 {
                     "opcode": "ldinith",

@@ -30,22 +30,17 @@
                     "type": "struct",
                     "fields": [
                         {
-                            "type": "struct",
-                            "fields": [
-                                {
-                                    "type": "int"
-                                },
-                                {
-                                    "type": "double"
-                                },
-                                {
-                                    "type": "array",
-                                    "length": 16,
-                                    "element_type": {
-                                        "type": "char"
-                                    }
-                                }
-                            ]
+                            "type": "int"
+                        },
+                        {
+                            "type": "double"
+                        },
+                        {
+                            "type": "array",
+                            "length": 16,
+                            "element_type": {
+                                "type": "char"
+                            }
                         }
                     ]
                 }

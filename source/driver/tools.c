@@ -174,17 +174,6 @@ static kefir_result_t output_compiler_config(FILE *output,
     FEATURE(va_args_concat, "va-args-comma-concat")
 #undef FEATURE
 
-#define INTERNAL(_id, _name)                         \
-    if (configuration->internals._id) {              \
-        fprintf(output, " --internal-%s", _name);    \
-    } else {                                         \
-        fprintf(output, " --no-internal-%s", _name); \
-    }
-
-    INTERNAL(flat_local_scope_layout, "flat-local-scope-layout")
-
-#undef INTERNAL
-
 #define CODEGEN(_id, _name)                         \
     if (configuration->codegen._id) {               \
         fprintf(output, " --codegen-%s", _name);    \

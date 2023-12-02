@@ -63,12 +63,7 @@
             "identifier": 8,
             "type": [
                 {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "int"
-                        }
-                    ]
+                    "type": "int"
                 }
             ]
         },

@@ -22,11 +22,28 @@
             "identifier": 4,
             "type": [
                 {
+                    "type": "long"
+                },
+                {
                     "type": "struct",
                     "fields": [
                         {
+                            "type": "bool"
+                        },
+                        {
                             "type": "long"
                         },
+                        {
+                            "type": "float"
+                        },
+                        {
+                            "type": "int"
+                        }
+                    ]
+                },
+                {
+                    "type": "struct",
+                    "fields": [
                         {
                             "type": "struct",
                             "fields": [
@@ -45,29 +62,7 @@
                             ]
                         },
                         {
-                            "type": "struct",
-                            "fields": [
-                                {
-                                    "type": "struct",
-                                    "fields": [
-                                        {
-                                            "type": "bool"
-                                        },
-                                        {
-                                            "type": "long"
-                                        },
-                                        {
-                                            "type": "float"
-                                        },
-                                        {
-                                            "type": "int"
-                                        }
-                                    ]
-                                },
-                                {
-                                    "type": "int"
-                                }
-                            ]
+                            "type": "int"
                         }
                     ]
                 }
@@ -227,12 +222,8 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 4,
-                        "index": 0
+                        "index": 1
                     }
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 8
                 },
                 {
                     "opcode": "pick",
@@ -324,12 +315,8 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 4,
-                        "index": 0
+                        "index": 6
                     }
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 32
                 },
                 {
                     "opcode": "pick",

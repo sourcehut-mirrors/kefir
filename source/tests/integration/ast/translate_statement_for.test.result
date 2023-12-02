@@ -63,32 +63,7 @@
             "identifier": 12,
             "type": [
                 {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "union",
-                            "fields": [
-                                {
-                                    "type": "struct",
-                                    "fields": [
-                                        {
-                                            "type": "union",
-                                            "fields": [
-                                                {
-                                                    "type": "struct",
-                                                    "fields": [
-                                                        {
-                                                            "type": "int"
-                                                        }
-                                                    ]
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    ]
+                    "type": "int"
                 }
             ]
         },
@@ -120,22 +95,7 @@
             "identifier": 18,
             "type": [
                 {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "union",
-                            "fields": [
-                                {
-                                    "type": "struct",
-                                    "fields": [
-                                        {
-                                            "type": "int"
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    ]
+                    "type": "int"
                 }
             ]
         },
@@ -175,35 +135,10 @@
             "identifier": 25,
             "type": [
                 {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "union",
-                            "fields": [
-                                {
-                                    "type": "struct",
-                                    "fields": [
-                                        {
-                                            "type": "union",
-                                            "fields": [
-                                                {
-                                                    "type": "struct",
-                                                    "fields": [
-                                                        {
-                                                            "type": "long_double"
-                                                        },
-                                                        {
-                                                            "type": "long_double"
-                                                        }
-                                                    ]
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    ]
+                    "type": "long_double"
+                },
+                {
+                    "type": "long_double"
                 }
             ]
         },
@@ -617,12 +552,8 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 25,
-                        "index": 0
+                        "index": 1
                     }
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 16
                 },
                 {
                     "opcode": "ldinith",
@@ -640,7 +571,7 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 13
+                    "arg": 12
                 },
                 {
                     "opcode": "invoke",

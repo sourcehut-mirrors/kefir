@@ -35,22 +35,7 @@
             "identifier": 5,
             "type": [
                 {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "union",
-                            "fields": [
-                                {
-                                    "type": "struct",
-                                    "fields": [
-                                        {
-                                            "type": "short"
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    ]
+                    "type": "short"
                 }
             ]
         },

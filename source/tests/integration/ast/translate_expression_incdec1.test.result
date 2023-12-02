@@ -22,27 +22,22 @@
             "identifier": 4,
             "type": [
                 {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "int"
-                        },
-                        {
-                            "type": "word"
-                        },
-                        {
-                            "type": "word"
-                        },
-                        {
-                            "type": "float"
-                        },
-                        {
-                            "type": "short"
-                        },
-                        {
-                            "type": "double"
-                        }
-                    ]
+                    "type": "int"
+                },
+                {
+                    "type": "word"
+                },
+                {
+                    "type": "word"
+                },
+                {
+                    "type": "float"
+                },
+                {
+                    "type": "short"
+                },
+                {
+                    "type": "double"
                 }
             ]
         },
@@ -326,12 +321,8 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 4,
-                        "index": 0
+                        "index": 4
                     }
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 28
                 },
                 {
                     "opcode": "pick",
@@ -424,12 +415,8 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 4,
-                        "index": 0
+                        "index": 4
                     }
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 28
                 },
                 {
                     "opcode": "pick",
@@ -477,12 +464,8 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 4,
-                        "index": 0
+                        "index": 5
                     }
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 32
                 },
                 {
                     "opcode": "pick",
@@ -526,12 +509,8 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 4,
-                        "index": 0
+                        "index": 1
                     }
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 8
                 },
                 {
                     "opcode": "pick",
@@ -576,12 +555,8 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 4,
-                        "index": 0
+                        "index": 2
                     }
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 16
                 },
                 {
                     "opcode": "pick",
@@ -626,12 +601,8 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 4,
-                        "index": 0
+                        "index": 5
                     }
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 32
                 },
                 {
                     "opcode": "pick",
@@ -675,12 +646,8 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 4,
-                        "index": 0
+                        "index": 1
                     }
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 8
                 },
                 {
                     "opcode": "pick",
@@ -725,12 +692,8 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 4,
-                        "index": 0
+                        "index": 2
                     }
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 16
                 },
                 {
                     "opcode": "pick",
@@ -775,12 +738,8 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 4,
-                        "index": 0
+                        "index": 3
                     }
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 24
                 },
                 {
                     "opcode": "pick",
@@ -824,12 +783,8 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 4,
-                        "index": 0
+                        "index": 3
                     }
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 24
                 },
                 {
                     "opcode": "pick",

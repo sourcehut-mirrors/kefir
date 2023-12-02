@@ -72,12 +72,7 @@
             "identifier": 9,
             "type": [
                 {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "word"
-                        }
-                    ]
+                    "type": "word"
                 }
             ]
         },

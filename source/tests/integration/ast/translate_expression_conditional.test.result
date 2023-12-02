@@ -22,12 +22,7 @@
             "identifier": 4,
             "type": [
                 {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "int"
-                        }
-                    ]
+                    "type": "int"
                 }
             ]
         },

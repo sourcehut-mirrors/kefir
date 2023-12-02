@@ -25,41 +25,8 @@
                     "type": "struct",
                     "fields": [
                         {
-                            "type": "struct",
+                            "type": "union",
                             "fields": [
-                                {
-                                    "type": "union",
-                                    "fields": [
-                                        {
-                                            "type": "struct",
-                                            "fields": [
-                                                {
-                                                    "type": "array",
-                                                    "length": 10,
-                                                    "element_type": {
-                                                        "type": "char"
-                                                    }
-                                                },
-                                                {
-                                                    "type": "word"
-                                                },
-                                                {
-                                                    "type": "long"
-                                                }
-                                            ]
-                                        },
-                                        {
-                                            "type": "array",
-                                            "length": 3,
-                                            "element_type": {
-                                                "type": "int"
-                                            }
-                                        }
-                                    ]
-                                },
-                                {
-                                    "type": "float"
-                                },
                                 {
                                     "type": "struct",
                                     "fields": [
@@ -77,6 +44,34 @@
                                             "type": "long"
                                         }
                                     ]
+                                },
+                                {
+                                    "type": "array",
+                                    "length": 3,
+                                    "element_type": {
+                                        "type": "int"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "type": "float"
+                        },
+                        {
+                            "type": "struct",
+                            "fields": [
+                                {
+                                    "type": "array",
+                                    "length": 10,
+                                    "element_type": {
+                                        "type": "char"
+                                    }
+                                },
+                                {
+                                    "type": "word"
+                                },
+                                {
+                                    "type": "long"
                                 }
                             ]
                         }

@@ -66,15 +66,10 @@
             "identifier": 8,
             "type": [
                 {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "word"
-                        },
-                        {
-                            "type": "int"
-                        }
-                    ]
+                    "type": "word"
+                },
+                {
+                    "type": "int"
                 }
             ]
         },
@@ -140,12 +135,8 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 8,
-                        "index": 0
+                        "index": 1
                     }
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 8
                 },
                 {
                     "opcode": "xchg",
@@ -191,12 +182,8 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 8,
-                        "index": 0
+                        "index": 1
                     }
-                },
-                {
-                    "opcode": "iadd1",
-                    "arg": 8
                 },
                 {
                     "opcode": "load32i",
