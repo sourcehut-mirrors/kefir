@@ -56,7 +56,7 @@ kefir_result_t kefir_driver_external_resources_init_from_env(struct kefir_mem *m
         externals->linker_path = getenv("LD");
     }
 #ifdef KEFIR_CONFIG_HOST_LD
-    set_if_null(&externals->assembler_path, KEFIR_CONFIG_HOST_LD);
+    set_if_null(&externals->linker_path, KEFIR_CONFIG_HOST_LD);
 #endif
     if (externals->linker_path == NULL) {
         externals->linker_path = "ld";
