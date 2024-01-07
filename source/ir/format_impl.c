@@ -28,8 +28,8 @@ kefir_result_t kefir_ir_format_instr(struct kefir_json_output *json, const struc
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid IR module"));
     REQUIRE(instr != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid IR instruction"));
     switch (instr->opcode) {
-#define KEFIR_IR_OPCODES_SYMBOL(_id, _mnemonic, _code, _type) \
-    case KEFIR_IROPCODE_##_id:                                \
+#define KEFIR_IR_OPCODES_SYMBOL(_id, _mnemonic, _type) \
+    case KEFIR_IROPCODE_##_id:                         \
         return kefir_ir_format_instr_##_type(json, module, instr);
         KEFIR_IR_OPCODE_DEFS(KEFIR_IR_OPCODES_SYMBOL, )
 #undef KEFIR_IR_OPCODES_SYMBOL
