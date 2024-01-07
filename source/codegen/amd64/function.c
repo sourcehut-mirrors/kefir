@@ -209,7 +209,7 @@ static kefir_result_t generate_constants(struct kefir_mem *mem, struct kefir_cod
                     kefir_long_double_t long_double;
                 } value = {.u64 = {0, 0}};
 
-                value.long_double = instr->operation.parameters.imm.long_double.value;
+                value.long_double = instr->operation.parameters.imm.long_double;
 
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
                     &func->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,

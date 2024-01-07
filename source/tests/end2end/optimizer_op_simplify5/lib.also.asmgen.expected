@@ -14,22 +14,26 @@
 less_or_equalsld:
     push %rbp
     mov %rsp, %rbp
-    sub $80, %rsp
+    sub $96, %rsp
     fstcw -8(%rbp)
 _kefir_func_less_or_equalsld_label0:
     lea 16(%rbp), %rax
     lea 32(%rbp), %rcx
 _kefir_func_less_or_equalsld_label1:
-    lea -64(%rbp), %rdx
+    lea -48(%rbp), %rdx
     fldt (%rcx)
     fstpt (%rdx)
-    lea -80(%rbp), %rcx
+    lea -64(%rbp), %rcx
     fldt (%rax)
     fstpt (%rcx)
-    lea -80(%rbp), %rax
-    lea -64(%rbp), %rcx
-    fldt (%rcx)
+    lea -64(%rbp), %rax
     fldt (%rax)
+    fstpt -96(%rbp)
+    lea -48(%rbp), %rax
+    fldt (%rax)
+    fstpt -80(%rbp)
+    fldt -80(%rbp)
+    fldt -96(%rbp)
     mov $0, %rax
     fcomip
     fstp %st(0)
@@ -98,22 +102,26 @@ _kefir_func_less_or_equalsd_label1:
 greater_or_equalsld:
     push %rbp
     mov %rsp, %rbp
-    sub $80, %rsp
+    sub $96, %rsp
     fstcw -8(%rbp)
 _kefir_func_greater_or_equalsld_label0:
     lea 16(%rbp), %rax
     lea 32(%rbp), %rcx
 _kefir_func_greater_or_equalsld_label1:
-    lea -64(%rbp), %rdx
+    lea -48(%rbp), %rdx
     fldt (%rcx)
     fstpt (%rdx)
-    lea -80(%rbp), %rcx
-    fldt (%rax)
-    fstpt (%rcx)
-    lea -80(%rbp), %rax
     lea -64(%rbp), %rcx
     fldt (%rax)
-    fldt (%rcx)
+    fstpt (%rcx)
+    lea -64(%rbp), %rax
+    fldt (%rax)
+    fstpt -96(%rbp)
+    lea -48(%rbp), %rax
+    fldt (%rax)
+    fstpt -80(%rbp)
+    fldt -96(%rbp)
+    fldt -80(%rbp)
     mov $0, %rax
     fcomip
     fstp %st(0)

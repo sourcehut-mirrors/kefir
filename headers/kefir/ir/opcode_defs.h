@@ -87,6 +87,7 @@
     OPCODE(LOAD32U,     "load32u",      memflags) SEPARATOR \
     OPCODE(LOAD32I,     "load32i",      memflags) SEPARATOR \
     OPCODE(LOAD64,      "load64",       memflags) SEPARATOR \
+    OPCODE(LOADLD,      "loadld",       memflags) SEPARATOR \
     OPCODE(STORE8,      "store8",       memflags) SEPARATOR \
     OPCODE(STORE16,     "store16",      memflags) SEPARATOR \
     OPCODE(STORE32,     "store32",      memflags) SEPARATOR \
@@ -109,6 +110,7 @@
     /* Floating-point basics */ \
     OPCODE(PUSHF32,      "pushf32",     f32) SEPARATOR \
     OPCODE(PUSHF64,      "pushf64",     f64) SEPARATOR \
+    OPCODE(PUSHLD,       "pushld",      ldouble) SEPARATOR \
     OPCODE(F32ADD,       "f32add",      none) SEPARATOR \
     OPCODE(F32SUB,       "f32sub",      none) SEPARATOR \
     OPCODE(F32MUL,       "f32mul",      none) SEPARATOR \
@@ -124,8 +126,6 @@
     OPCODE(LDMUL,        "ldmul",       none) SEPARATOR \
     OPCODE(LDDIV,        "lddiv",       none) SEPARATOR \
     OPCODE(LDNEG,        "ldneg",       none) SEPARATOR \
-    OPCODE(LDINITH,      "ldinith",     u64) SEPARATOR \
-    OPCODE(LDINITL,      "ldinitl",     u64) SEPARATOR \
     /* Floating-point comparison */ \
     OPCODE(F32EQUALS,    "f32equals",   none) SEPARATOR \
     OPCODE(F32GREATER,   "f32greater",  none) SEPARATOR \

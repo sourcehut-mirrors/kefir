@@ -232,10 +232,10 @@ static kefir_result_t visit_compound_literal(const struct kefir_ast_visitor *vis
     ASSIGN_DECL_CAST(struct visitor_param *, param, payload);
 
     param->pointer->type = KEFIR_AST_CONSTANT_EXPRESSION_POINTER_IDENTIFER;
-    param->pointer->base.literal = node->base.properties.expression_props.temp_identifier.identifier;
+    param->pointer->base.literal = node->base.properties.expression_props.temporary_identifier.identifier;
     param->pointer->offset = 0;
     param->pointer->pointer_node = KEFIR_AST_NODE_BASE(node);
-    param->pointer->scoped_id = node->base.properties.expression_props.temp_identifier.scoped_id;
+    param->pointer->scoped_id = node->base.properties.expression_props.temporary_identifier.scoped_id;
     return KEFIR_OK;
 }
 

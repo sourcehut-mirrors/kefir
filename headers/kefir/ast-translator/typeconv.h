@@ -28,13 +28,7 @@ kefir_result_t kefir_ast_translate_typeconv_normalize(struct kefir_irbuilder_blo
                                                       const struct kefir_ast_type_traits *,
                                                       const struct kefir_ast_type *);
 
-typedef struct kefir_ast_translate_typeconv_callbacks {
-    kefir_result_t (*allocate_long_double)(void *);
-    void *payload;
-} kefir_ast_translate_typeconv_callbacks_t;
-
 kefir_result_t kefir_ast_translate_typeconv(struct kefir_irbuilder_block *, const struct kefir_ast_type_traits *,
-                                            const struct kefir_ast_type *, const struct kefir_ast_type *,
-                                            const struct kefir_ast_translate_typeconv_callbacks *);
+                                            const struct kefir_ast_type *, const struct kefir_ast_type *);
 
 #endif

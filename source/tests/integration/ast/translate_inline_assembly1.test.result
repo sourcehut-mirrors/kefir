@@ -36,9 +36,6 @@
             "type": [
                 {
                     "type": "long_double"
-                },
-                {
-                    "type": "long_double"
                 }
             ]
         },
@@ -90,9 +87,6 @@
                 },
                 {
                     "type": "char"
-                },
-                {
-                    "type": "long_double"
                 }
             ]
         },
@@ -195,19 +189,8 @@
                     }
                 },
                 {
-                    "opcode": "getlocal",
-                    "arg": {
-                        "type": 5,
-                        "index": 1
-                    }
-                },
-                {
-                    "opcode": "ldinith",
-                    "arg": 0
-                },
-                {
-                    "opcode": "ldinitl",
-                    "arg": 4616358503040784794
+                    "opcode": "pushld",
+                    "arg": 4.150000
                 },
                 {
                     "opcode": "inlineasm",
@@ -253,19 +236,8 @@
                     }
                 },
                 {
-                    "opcode": "getlocal",
-                    "arg": {
-                        "type": 12,
-                        "index": 2
-                    }
-                },
-                {
-                    "opcode": "ldinith",
-                    "arg": 0
-                },
-                {
-                    "opcode": "ldinitl",
-                    "arg": 4616358503040784794
+                    "opcode": "pushld",
+                    "arg": 4.150000
                 },
                 {
                     "opcode": "inlineasm",

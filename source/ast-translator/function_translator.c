@@ -290,21 +290,6 @@ static kefir_result_t translate_variably_modified(const struct kefir_ast_node_ba
     return KEFIR_OK;
 }
 
-struct typeconv_callback_param {
-    struct kefir_mem *mem;
-    struct kefir_ast_translator_context *context;
-    struct kefir_irbuilder_block *builder;
-    const struct kefir_ast_temporary_identifier *temporary;
-};
-
-static kefir_result_t allocate_long_double_callback(void *payload) {
-    REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid typeconv callback payload"));
-    ASSIGN_DECL_CAST(struct typeconv_callback_param *, param, payload);
-
-    REQUIRE_OK(kefir_ast_translator_fetch_temporary(param->mem, param->context, param->builder, param->temporary));
-    return KEFIR_OK;
-}
-
 kefir_result_t kefir_ast_translator_function_context_translate(
     struct kefir_mem *mem, struct kefir_ast_translator_function_context *function_context) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
@@ -314,14 +299,6 @@ kefir_result_t kefir_ast_translator_function_context_translate(
     struct kefir_ast_function_definition *function = function_context->function_definition;
     struct kefir_irbuilder_block *builder = &function_context->builder;
     struct kefir_ast_translator_context *context = &function_context->local_translator_context;
-
-    struct typeconv_callback_param cb_param = {
-        .mem = mem,
-        .context = context,
-        .builder = builder,
-        .temporary = &function->base.properties.function_definition.temp_identifier};
-    struct kefir_ast_translate_typeconv_callbacks callbacks = {.allocate_long_double = allocate_long_double_callback,
-                                                               .payload = &cb_param};
 
     struct kefir_ast_local_context *local_context =
         function->base.properties.function_definition.scoped_id->function.local_context;
@@ -377,7 +354,7 @@ kefir_result_t kefir_ast_translator_function_context_translate(
                     mem, context->ast_context->type_bundle, context->ast_context->type_traits, scoped_id->object.type);
             if (KEFIR_AST_TYPE_IS_SCALAR_TYPE(default_promotion)) {
                 REQUIRE_OK(kefir_ast_translate_typeconv(builder, context->ast_context->type_traits, default_promotion,
-                                                        scoped_id->object.type, &callbacks));
+                                                        scoped_id->object.type));
             }
 
             REQUIRE_OK(kefir_ast_translator_store_value(mem, scoped_id->object.type, context, builder,

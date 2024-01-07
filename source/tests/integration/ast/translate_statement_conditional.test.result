@@ -69,17 +69,7 @@
         },
         {
             "identifier": 14,
-            "type": [
-                {
-                    "type": "long_double"
-                },
-                {
-                    "type": "long_double"
-                },
-                {
-                    "type": "long_double"
-                }
-            ]
+            "type": []
         },
         {
             "identifier": 15,
@@ -438,19 +428,8 @@
             "locals": 14,
             "body": [
                 {
-                    "opcode": "getlocal",
-                    "arg": {
-                        "type": 14,
-                        "index": 0
-                    }
-                },
-                {
-                    "opcode": "ldinith",
-                    "arg": 0
-                },
-                {
-                    "opcode": "ldinitl",
-                    "arg": 13849415305714239485
+                    "opcode": "pushld",
+                    "arg": -19.007200
                 },
                 {
                     "opcode": "ldtrunc1"
@@ -460,44 +439,22 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 11
+                    "arg": 7
                 },
                 {
-                    "opcode": "getlocal",
-                    "arg": {
-                        "type": 14,
-                        "index": 1
-                    }
-                },
-                {
-                    "opcode": "ldinith",
-                    "arg": 0
-                },
-                {
-                    "opcode": "ldinitl",
-                    "arg": 4607182418800017408
+                    "opcode": "pushld",
+                    "arg": 1.000000
                 },
                 {
                     "opcode": "pop"
                 },
                 {
                     "opcode": "jmp",
-                    "arg": 15
+                    "arg": 9
                 },
                 {
-                    "opcode": "getlocal",
-                    "arg": {
-                        "type": 14,
-                        "index": 2
-                    }
-                },
-                {
-                    "opcode": "ldinith",
-                    "arg": 0
-                },
-                {
-                    "opcode": "ldinitl",
-                    "arg": 13830554455654793216
+                    "opcode": "pushld",
+                    "arg": -1.000000
                 },
                 {
                     "opcode": "pop"

@@ -55,12 +55,6 @@ kefir_result_t kefir_ast_analyze_unary_operation_node(struct kefir_mem *mem, con
             }
             base->properties.expression_props.constant_expression =
                 node->arg->properties.expression_props.constant_expression;
-
-            if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(type1)) {
-                REQUIRE_OK(context->allocate_temporary_value(mem, context, kefir_ast_type_long_double(), NULL,
-                                                             &base->source_location,
-                                                             &base->properties.expression_props.temp_identifier));
-            }
         } break;
 
         case KEFIR_AST_OPERATION_INVERT: {
@@ -114,19 +108,6 @@ kefir_result_t kefir_ast_analyze_unary_operation_node(struct kefir_mem *mem, con
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->arg->source_location,
                                            "Increment/decrement operator operand shall be a scalar lvalue"));
             base->properties.type = target_type;
-
-            if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(target_type)) {
-                REQUIRE_OK(context->allocate_temporary_value(mem, context, kefir_ast_type_long_double(), NULL,
-                                                             &base->source_location,
-                                                             &base->properties.expression_props.temp_identifier));
-
-                if (node->type == KEFIR_AST_OPERATION_POSTFIX_DECREMENT ||
-                    node->type == KEFIR_AST_OPERATION_POSTFIX_INCREMENT) {
-                    REQUIRE_OK(context->allocate_temporary_value(mem, context, kefir_ast_type_long_double(), NULL,
-                                                                 &base->source_location,
-                                                                 &base->properties.expression_props.temp2_identifier));
-                }
-            }
         } break;
 
         case KEFIR_AST_OPERATION_ADDRESS: {

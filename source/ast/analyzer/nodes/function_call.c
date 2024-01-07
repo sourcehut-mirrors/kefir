@@ -82,7 +82,6 @@ kefir_result_t kefir_ast_analyze_function_call_node(struct kefir_mem *mem, const
     const struct kefir_ast_type *function_type = func_type->referenced_type;
 
     if (function_type->function_type.mode == KEFIR_AST_FUNCTION_TYPE_PARAMETERS) {
-        kefir_size_t number_of_long_double_params = 0;
         const struct kefir_list_entry *arg_value_iter = kefir_list_head(&node->arguments);
         const struct kefir_list_entry *arg_type_iter = kefir_list_head(&function_type->function_type.parameters);
         for (; arg_value_iter != NULL && arg_type_iter != NULL;
@@ -96,10 +95,6 @@ kefir_result_t kefir_ast_analyze_function_call_node(struct kefir_mem *mem, const
                              KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &arg->source_location,
                                                     "Expression value shall be assignable to function parameter type"));
             REQUIRE_OK(res);
-
-            if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(param_type)) {
-                number_of_long_double_params++;
-            }
         }
 
         if (arg_type_iter != NULL) {
@@ -112,20 +107,6 @@ kefir_result_t kefir_ast_analyze_function_call_node(struct kefir_mem *mem, const
             REQUIRE(function_type->function_type.ellipsis,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->base.source_location,
                                            "Function call parameter count does not match prototype"));
-        }
-
-        if (number_of_long_double_params > 0) {
-            struct kefir_ast_constant_expression *cexpr =
-                kefir_ast_constant_expression_integer(mem, number_of_long_double_params);
-            REQUIRE(cexpr != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate constant expression"));
-            const struct kefir_ast_type *array_type =
-                kefir_ast_type_array(mem, context->type_bundle, kefir_ast_type_long_double(), cexpr, NULL);
-            REQUIRE_ELSE(array_type != NULL, {
-                kefir_ast_constant_expression_free(mem, cexpr);
-                return KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate AST array type");
-            });
-            REQUIRE_OK(context->allocate_temporary_value(mem, context, array_type, NULL, &base->source_location,
-                                                         &base->properties.expression_props.temp_identifier));
         }
     }
 
@@ -141,7 +122,7 @@ kefir_result_t kefir_ast_analyze_function_call_node(struct kefir_mem *mem, const
 
     if (KEFIR_AST_TYPE_IS_AGGREGATE_TYPE(return_type) || KEFIR_AST_TYPE_IS_LONG_DOUBLE(return_type)) {
         REQUIRE_OK(context->allocate_temporary_value(mem, context, return_type, NULL, &base->source_location,
-                                                     &base->properties.expression_props.temp_identifier));
+                                                     &base->properties.expression_props.temporary_identifier));
     }
     return KEFIR_OK;
 }

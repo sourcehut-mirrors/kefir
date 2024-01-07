@@ -69,11 +69,7 @@ static kefir_result_t cast_to_float64(struct kefir_irbuilder_block *builder,
 
 static kefir_result_t cast_to_long_double(struct kefir_irbuilder_block *builder,
                                           const struct kefir_ast_type_traits *type_traits,
-                                          const struct kefir_ast_type *origin,
-                                          const struct kefir_ast_translate_typeconv_callbacks *callbacks) {
-    REQUIRE(callbacks != NULL && callbacks->allocate_long_double != NULL,
-            KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unable cast to long double without allocation callback present"));
-    REQUIRE_OK(callbacks->allocate_long_double(callbacks->payload));
+                                          const struct kefir_ast_type *origin) {
     if (KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(origin)) {
         kefir_bool_t origin_sign;
         REQUIRE_OK(kefir_ast_type_is_signed(type_traits, origin, &origin_sign));
@@ -99,7 +95,8 @@ static kefir_result_t cast_to_integer(const struct kefir_ast_type_traits *type_t
     kefir_bool_t target_sign;
     REQUIRE_OK(kefir_ast_type_is_signed(type_traits, target, &target_sign));
 
-    if (KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(origin) || origin->tag == KEFIR_AST_TYPE_SCALAR_POINTER || target->tag == KEFIR_AST_TYPE_SCALAR_BOOL) {
+    if (KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(origin) || origin->tag == KEFIR_AST_TYPE_SCALAR_POINTER ||
+        target->tag == KEFIR_AST_TYPE_SCALAR_BOOL) {
         // Do nothing
     } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_FLOAT) {
         if (target_sign) {
@@ -211,8 +208,7 @@ kefir_result_t kefir_ast_translate_typeconv_normalize(struct kefir_irbuilder_blo
 kefir_result_t kefir_ast_translate_typeconv(struct kefir_irbuilder_block *builder,
                                             const struct kefir_ast_type_traits *type_traits,
                                             const struct kefir_ast_type *origin,
-                                            const struct kefir_ast_type *destination,
-                                            const struct kefir_ast_translate_typeconv_callbacks *callbacks) {
+                                            const struct kefir_ast_type *destination) {
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR block builder"));
     REQUIRE(type_traits != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid origin AST type traits"));
     REQUIRE(origin != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid origin AST type"));
@@ -247,7 +243,7 @@ kefir_result_t kefir_ast_translate_typeconv(struct kefir_irbuilder_block *builde
             break;
 
         case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
-            REQUIRE_OK(cast_to_long_double(builder, type_traits, normalized_origin, callbacks));
+            REQUIRE_OK(cast_to_long_double(builder, type_traits, normalized_origin));
             break;
 
         default:

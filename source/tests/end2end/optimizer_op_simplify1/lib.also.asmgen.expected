@@ -104,7 +104,7 @@ _kefir_func_dnotf_label3:
 dnotld:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
+    sub $64, %rsp
     fstcw -8(%rbp)
 _kefir_func_dnotld_label0:
     lea 16(%rbp), %rax
@@ -114,6 +114,8 @@ _kefir_func_dnotld_label1:
     fstpt (%rcx)
     lea -48(%rbp), %rax
     fldt (%rax)
+    fstpt -64(%rbp)
+    fldt -64(%rbp)
     call __kefirrt_opt_long_double_trunc_1bit@PLT
     mov %rax, %rcx
     mov $0, %rax

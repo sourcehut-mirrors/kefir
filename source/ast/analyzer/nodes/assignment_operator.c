@@ -28,6 +28,7 @@
 static kefir_result_t validate_simple_assignment(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                                  const struct kefir_ast_assignment_operator *node,
                                                  struct kefir_ast_node_base *base) {
+    UNUSED(base);
     const struct kefir_ast_type *value_type =
         KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(mem, context->type_bundle, node->value->properties.type);
     const struct kefir_ast_type *target_type =
@@ -48,8 +49,6 @@ static kefir_result_t validate_simple_assignment(struct kefir_mem *mem, const st
             kefir_ast_constant_expression_free(mem, cexpr);
             return KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate AST array type");
         });
-        REQUIRE_OK(context->allocate_temporary_value(mem, context, array_type, NULL, &base->source_location,
-                                                     &base->properties.expression_props.temp_identifier));
     }
     return KEFIR_OK;
 }
@@ -57,6 +56,7 @@ static kefir_result_t validate_simple_assignment(struct kefir_mem *mem, const st
 static kefir_result_t validate_compound_assignment(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                                    struct kefir_ast_node_base *base,
                                                    const struct kefir_ast_assignment_operator *node) {
+    UNUSED(base);
     const struct kefir_ast_type *target_type =
         KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(mem, context->type_bundle, node->target->properties.type);
     const struct kefir_ast_type *value_type =
@@ -70,11 +70,6 @@ static kefir_result_t validate_compound_assignment(struct kefir_mem *mem, const 
             REQUIRE(KEFIR_AST_TYPE_IS_ARITHMETIC_TYPE(value_type),
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->value->source_location,
                                            "Expected assignment value operand to have arithmetic type"));
-            if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(target_type) || KEFIR_AST_TYPE_IS_LONG_DOUBLE(value_type)) {
-                REQUIRE_OK(context->allocate_temporary_value(mem, context, kefir_ast_type_long_double(), NULL,
-                                                             &base->source_location,
-                                                             &base->properties.expression_props.temp_identifier));
-            }
             break;
 
         case KEFIR_AST_ASSIGNMENT_MODULO:
@@ -107,11 +102,6 @@ static kefir_result_t validate_compound_assignment(struct kefir_mem *mem, const 
                 REQUIRE(KEFIR_AST_TYPE_IS_ARITHMETIC_TYPE(value_type),
                         KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->value->source_location,
                                                "Expected assignment value operand to have arithmetic type"));
-                if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(target_type) || KEFIR_AST_TYPE_IS_LONG_DOUBLE(value_type)) {
-                    REQUIRE_OK(context->allocate_temporary_value(mem, context, kefir_ast_type_long_double(), NULL,
-                                                                 &base->source_location,
-                                                                 &base->properties.expression_props.temp_identifier));
-                }
             }
             break;
 

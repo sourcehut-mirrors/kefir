@@ -77,11 +77,7 @@
         },
         {
             "identifier": 13,
-            "type": [
-                {
-                    "type": "long_double"
-                }
-            ]
+            "type": []
         },
         {
             "identifier": 14,
@@ -315,19 +311,8 @@
             "locals": 13,
             "body": [
                 {
-                    "opcode": "getlocal",
-                    "arg": {
-                        "type": 13,
-                        "index": 0
-                    }
-                },
-                {
-                    "opcode": "ldinith",
-                    "arg": 0
-                },
-                {
-                    "opcode": "ldinitl",
-                    "arg": 4652018594228536869
+                    "opcode": "pushld",
+                    "arg": 1001.283000
                 },
                 {
                     "opcode": "ldtrunc1"
@@ -337,7 +322,7 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 9
+                    "arg": 7
                 },
                 {
                     "opcode": "pushu",

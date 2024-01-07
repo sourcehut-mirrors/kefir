@@ -86,6 +86,13 @@ kefir_result_t kefir_irblock_appendf32(struct kefir_irblock *bcblock, kefir_irop
     return kefir_vector_append(&bcblock->content, &instr);
 }
 
+kefir_result_t kefir_irblock_append_ldouble(struct kefir_irblock *bcblock, kefir_iropcode_t opcode,
+                                            kefir_long_double_t ldouble) {
+    REQUIRE(bcblock != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR block"));
+    struct kefir_irinstr instr = {.opcode = opcode, .arg = {.long_double = ldouble}};
+    return kefir_vector_append(&bcblock->content, &instr);
+}
+
 kefir_result_t kefir_irblock_copy(struct kefir_irblock *dst, const struct kefir_irblock *src) {
     REQUIRE(dst != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected non-NULL destination IR block pointer"));
     REQUIRE(src != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected non-NULL source IR block pointer"));

@@ -56,11 +56,7 @@
         },
         {
             "identifier": 13,
-            "type": [
-                {
-                    "type": "long_double"
-                }
-            ]
+            "type": []
         },
         {
             "identifier": 14,
@@ -72,14 +68,7 @@
         },
         {
             "identifier": 16,
-            "type": [
-                {
-                    "type": "long_double"
-                },
-                {
-                    "type": "long_double"
-                }
-            ]
+            "type": []
         },
         {
             "identifier": 17,
@@ -127,11 +116,7 @@
         },
         {
             "identifier": 28,
-            "type": [
-                {
-                    "type": "long_double"
-                }
-            ]
+            "type": []
         },
         {
             "identifier": 29,
@@ -143,14 +128,7 @@
         },
         {
             "identifier": 31,
-            "type": [
-                {
-                    "type": "long_double"
-                },
-                {
-                    "type": "long_double"
-                }
-            ]
+            "type": []
         },
         {
             "identifier": 32,
@@ -338,19 +316,8 @@
             "locals": 28,
             "body": [
                 {
-                    "opcode": "getlocal",
-                    "arg": {
-                        "type": 28,
-                        "index": 0
-                    }
-                },
-                {
-                    "opcode": "ldinith",
-                    "arg": 0
-                },
-                {
-                    "opcode": "ldinitl",
-                    "arg": 13830554455654793216
+                    "opcode": "pushld",
+                    "arg": -1.000000
                 },
                 {
                     "opcode": "ldtrunc1"
@@ -361,7 +328,7 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 9
+                    "arg": 7
                 },
                 {
                     "opcode": "pushi",
@@ -381,19 +348,8 @@
             "locals": 31,
             "body": [
                 {
-                    "opcode": "getlocal",
-                    "arg": {
-                        "type": 31,
-                        "index": 0
-                    }
-                },
-                {
-                    "opcode": "ldinith",
-                    "arg": 0
-                },
-                {
-                    "opcode": "ldinitl",
-                    "arg": 4761044086503243776
+                    "opcode": "pushld",
+                    "arg": 20000000000.000000
                 },
                 {
                     "opcode": "ldtrunc1"
@@ -404,22 +360,11 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 11
+                    "arg": 7
                 },
                 {
-                    "opcode": "getlocal",
-                    "arg": {
-                        "type": 31,
-                        "index": 1
-                    }
-                },
-                {
-                    "opcode": "ldinith",
-                    "arg": 0
-                },
-                {
-                    "opcode": "ldinitl",
-                    "arg": 4314929448377758107
+                    "opcode": "pushld",
+                    "arg": 0.000000
                 },
                 {
                     "opcode": "ldtrunc1"
@@ -540,19 +485,8 @@
             "locals": 13,
             "body": [
                 {
-                    "opcode": "getlocal",
-                    "arg": {
-                        "type": 13,
-                        "index": 0
-                    }
-                },
-                {
-                    "opcode": "ldinith",
-                    "arg": 0
-                },
-                {
-                    "opcode": "ldinitl",
-                    "arg": 4607182418800017408
+                    "opcode": "pushld",
+                    "arg": 1.000000
                 },
                 {
                     "opcode": "ldtrunc1"
@@ -566,7 +500,7 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 10
+                    "arg": 8
                 },
                 {
                     "opcode": "pushi",
@@ -586,19 +520,8 @@
             "locals": 16,
             "body": [
                 {
-                    "opcode": "getlocal",
-                    "arg": {
-                        "type": 16,
-                        "index": 0
-                    }
-                },
-                {
-                    "opcode": "ldinith",
-                    "arg": 0
-                },
-                {
-                    "opcode": "ldinitl",
-                    "arg": 4611686018427387904
+                    "opcode": "pushld",
+                    "arg": 2.000000
                 },
                 {
                     "opcode": "ldtrunc1"
@@ -612,22 +535,11 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 12
+                    "arg": 8
                 },
                 {
-                    "opcode": "getlocal",
-                    "arg": {
-                        "type": 16,
-                        "index": 1
-                    }
-                },
-                {
-                    "opcode": "ldinith",
-                    "arg": 0
-                },
-                {
-                    "opcode": "ldinitl",
-                    "arg": 4613937818241073152
+                    "opcode": "pushld",
+                    "arg": 3.000000
                 },
                 {
                     "opcode": "ldtrunc1"

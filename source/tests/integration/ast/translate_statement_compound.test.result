@@ -54,9 +54,6 @@
                 },
                 {
                     "type": "float"
-                },
-                {
-                    "type": "long_double"
                 }
             ]
         },
@@ -210,19 +207,8 @@
                     "opcode": "pop"
                 },
                 {
-                    "opcode": "getlocal",
-                    "arg": {
-                        "type": 8,
-                        "index": 3
-                    }
-                },
-                {
-                    "opcode": "ldinith",
-                    "arg": 0
-                },
-                {
-                    "opcode": "ldinitl",
-                    "arg": 4565482689130268511
+                    "opcode": "pushld",
+                    "arg": 0.001700
                 },
                 {
                     "opcode": "pop"

@@ -32,11 +32,7 @@
         },
         {
             "identifier": 7,
-            "type": [
-                {
-                    "type": "long_double"
-                }
-            ]
+            "type": []
         },
         {
             "identifier": 8,
@@ -60,11 +56,7 @@
         },
         {
             "identifier": 13,
-            "type": [
-                {
-                    "type": "long_double"
-                }
-            ]
+            "type": []
         },
         {
             "identifier": 14,
@@ -170,19 +162,8 @@
                     "opcode": "pop"
                 },
                 {
-                    "opcode": "getlocal",
-                    "arg": {
-                        "type": 7,
-                        "index": 0
-                    }
-                },
-                {
-                    "opcode": "ldinith",
-                    "arg": 0
-                },
-                {
-                    "opcode": "ldinitl",
-                    "arg": 4756540486875873280
+                    "opcode": "pushld",
+                    "arg": 10000000000.000000
                 },
                 {
                     "opcode": "pop"
@@ -245,19 +226,8 @@
                     "opcode": "pop"
                 },
                 {
-                    "opcode": "getlocal",
-                    "arg": {
-                        "type": 13,
-                        "index": 0
-                    }
-                },
-                {
-                    "opcode": "ldinith",
-                    "arg": 0
-                },
-                {
-                    "opcode": "ldinitl",
-                    "arg": 4548617153841697158
+                    "opcode": "pushld",
+                    "arg": 0.000122
                 }
             ]
         },

@@ -40,9 +40,12 @@ kefir_result_t kefir_irbuilder_block_appendi32(struct kefir_mem *, struct kefir_
                                                kefir_int32_t, kefir_int32_t);
 kefir_result_t kefir_irbuilder_block_appendu32(struct kefir_mem *, struct kefir_irblock *, kefir_iropcode_t,
                                                kefir_uint32_t, kefir_uint32_t);
-kefir_result_t kefir_irbuilder_block_appendf64(struct kefir_mem *, struct kefir_irblock *, kefir_iropcode_t, double);
-kefir_result_t kefir_irbuilder_block_appendf32(struct kefir_mem *, struct kefir_irblock *, kefir_iropcode_t, float,
-                                               float);
+kefir_result_t kefir_irbuilder_block_appendf64(struct kefir_mem *, struct kefir_irblock *, kefir_iropcode_t,
+                                               kefir_float64_t);
+kefir_result_t kefir_irbuilder_block_appendf32(struct kefir_mem *, struct kefir_irblock *, kefir_iropcode_t,
+                                               kefir_float32_t, kefir_float32_t);
+kefir_result_t kefir_irbuilder_block_append_long_double(struct kefir_mem *, struct kefir_irblock *, kefir_iropcode_t,
+                                                        kefir_long_double_t);
 
 typedef struct kefir_irbuilder_block {
     struct kefir_irblock *block;
@@ -54,6 +57,7 @@ typedef struct kefir_irbuilder_block {
     kefir_result_t (*appendu32)(struct kefir_irbuilder_block *, kefir_iropcode_t, kefir_uint32_t, kefir_uint32_t);
     kefir_result_t (*appendf64)(struct kefir_irbuilder_block *, kefir_iropcode_t, kefir_float64_t);
     kefir_result_t (*appendf32)(struct kefir_irbuilder_block *, kefir_iropcode_t, kefir_float32_t, kefir_float32_t);
+    kefir_result_t (*append_long_double)(struct kefir_irbuilder_block *, kefir_iropcode_t, kefir_long_double_t);
     kefir_result_t (*free)(struct kefir_irbuilder_block *);
 } kefir_irbuilder_block_t;
 
@@ -68,6 +72,8 @@ kefir_result_t kefir_irbuilder_block_init(struct kefir_mem *, struct kefir_irbui
 #define KEFIR_IRBUILDER_BLOCK_APPENDF64(builder, opcode, arg) ((builder)->appendf64((builder), (opcode), (arg)))
 #define KEFIR_IRBUILDER_BLOCK_APPENDF32(builder, opcode, arg1, arg2) \
     ((builder)->appendf32((builder), (opcode), (arg1), (arg2)))
+#define KEFIR_IRBUILDER_BLOCK_APPEND_LONG_DOUBLE(builder, opcode, arg) \
+    ((builder)->append_long_double((builder), (opcode), (arg)))
 #define KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder) (kefir_irblock_length((builder)->block))
 #define KEFIR_IRBUILDER_BLOCK_INSTR_AT(builder, index) (kefir_irblock_at((builder)->block, (index)))
 #define KEFIR_IRBUILDER_BLOCK_FREE(builder) ((builder)->free((builder)))

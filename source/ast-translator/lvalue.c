@@ -231,7 +231,7 @@ kefir_result_t kefir_ast_translate_compound_literal_lvalue(struct kefir_mem *mem
     REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST compound literal node"));
 
     REQUIRE_OK(kefir_ast_translator_fetch_temporary(mem, context, builder,
-                                                    &node->base.properties.expression_props.temp_identifier));
+                                                    &node->base.properties.expression_props.temporary_identifier));
     REQUIRE_OK(kefir_ast_translate_initializer(mem, context, builder, node->base.properties.type, node->initializer));
     return KEFIR_OK;
 }

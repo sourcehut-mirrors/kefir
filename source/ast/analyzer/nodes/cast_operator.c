@@ -52,11 +52,6 @@ kefir_result_t kefir_ast_analyze_cast_operator_node(struct kefir_mem *mem, const
         REQUIRE(expr_type->tag != KEFIR_AST_TYPE_SCALAR_POINTER,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &cast->expr->source_location,
                                        "Pointer cannot be cast to floating-point value"));
-        if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(cast_type)) {
-            REQUIRE_OK(context->allocate_temporary_value(mem, context, kefir_ast_type_long_double(), NULL,
-                                                         &base->source_location,
-                                                         &base->properties.expression_props.temp_identifier));
-        }
     }
     if (KEFIR_AST_TYPE_IS_FLOATING_POINT(expr_type)) {
         REQUIRE(cast_type->tag != KEFIR_AST_TYPE_SCALAR_POINTER,

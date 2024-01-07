@@ -100,30 +100,6 @@ static kefir_result_t initialize_aggregate_with_scalar(struct kefir_mem *mem,
     return KEFIR_OK;
 }
 
-struct allocate_long_double_param {
-    struct kefir_mem *mem;
-    struct kefir_ast_translator_context *context;
-    struct kefir_irbuilder_block *builder;
-    kefir_bool_t allocated;
-};
-
-static kefir_result_t allocate_long_double(void *payload) {
-    REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid typeconv callback payload"));
-    ASSIGN_DECL_CAST(struct allocate_long_double_param *, param, payload);
-
-    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(param->builder, KEFIR_IROPCODE_PUSHSCOPE, 0));
-    REQUIRE_OK(
-        kefir_ast_translate_sizeof(param->mem, param->context, param->builder, kefir_ast_type_long_double(), NULL));
-    REQUIRE_OK(
-        kefir_ast_translate_alignof(param->mem, param->context, param->builder, kefir_ast_type_long_double(), NULL));
-    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(param->builder, KEFIR_IROPCODE_ALLOCA, 1));
-    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(param->builder, KEFIR_IROPCODE_PICK, 2));
-    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(param->builder, KEFIR_IROPCODE_PICK, 4));
-    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(param->builder, KEFIR_IROPCODE_XCHG, 2));
-    param->allocated = true;
-    return KEFIR_OK;
-}
-
 static kefir_result_t traverse_scalar(const struct kefir_ast_designator *designator,
                                       struct kefir_ast_node_base *expression, void *payload) {
     REQUIRE(expression != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid AST expression node"));
@@ -154,24 +130,14 @@ static kefir_result_t traverse_scalar(const struct kefir_ast_designator *designa
     } else {
         REQUIRE_OK(kefir_ast_translate_expression(param->mem, expression, param->builder, param->context));
 
-        struct allocate_long_double_param cb_param = {
-            .mem = param->mem, .context = param->context, .builder = param->builder, .allocated = false};
-        struct kefir_ast_translate_typeconv_callbacks callbacks = {.allocate_long_double = allocate_long_double,
-                                                                   .payload = &cb_param};
-
         if (KEFIR_AST_TYPE_IS_SCALAR_TYPE(expr_type)) {
             REQUIRE_OK(kefir_ast_translate_typeconv(param->builder, param->context->ast_context->type_traits, expr_type,
-                                                    type_layout->type, &callbacks));
+                                                    type_layout->type));
         }
 
         REQUIRE_OK(kefir_ast_translator_store_layout_value(param->mem, param->context, param->builder,
                                                            param->translator_type->object.ir_type, type_layout,
                                                            param->source_location));
-        if (cb_param.allocated) {
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(param->builder, KEFIR_IROPCODE_POPSCOPE, 0));
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(param->builder, KEFIR_IROPCODE_POP, 0));
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(param->builder, KEFIR_IROPCODE_POP, 0));
-        }
     }
     return KEFIR_OK;
 }

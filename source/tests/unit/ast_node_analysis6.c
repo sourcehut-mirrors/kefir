@@ -1087,18 +1087,19 @@ END_CASE
 #undef ASSERT_COMPOUND_LITERAL
 #undef ASSERT_COMPOUND_LITERAL_NOK
 
-#define ASSERT_COMPOUND_LITERAL_TEMP(_mem, _context, _type_name, _init, _storage)                                   \
-    do {                                                                                                            \
-        struct kefir_ast_compound_literal *compound = kefir_ast_new_compound_literal((_mem), (_type_name));         \
-        ASSERT(compound != NULL);                                                                                   \
-        _init ASSERT_OK(kefir_ast_analyze_node((_mem), (_context), KEFIR_AST_NODE_BASE(compound)));                 \
-        ASSERT(compound->base.properties.expression_props.temp_identifier.identifier != NULL);                      \
-        ASSERT(compound->base.properties.expression_props.temp_identifier.scoped_id != NULL);                       \
-        ASSERT(compound->base.properties.expression_props.temp_identifier.scoped_id != NULL);                       \
-        ASSERT(compound->base.properties.expression_props.temp_identifier.scoped_id->klass ==                       \
-               KEFIR_AST_SCOPE_IDENTIFIER_OBJECT);                                                                  \
-        ASSERT(compound->base.properties.expression_props.temp_identifier.scoped_id->object.storage == (_storage)); \
-        ASSERT_OK(KEFIR_AST_NODE_FREE((_mem), KEFIR_AST_NODE_BASE(compound)));                                      \
+#define ASSERT_COMPOUND_LITERAL_TEMP(_mem, _context, _type_name, _init, _storage)                           \
+    do {                                                                                                    \
+        struct kefir_ast_compound_literal *compound = kefir_ast_new_compound_literal((_mem), (_type_name)); \
+        ASSERT(compound != NULL);                                                                           \
+        _init ASSERT_OK(kefir_ast_analyze_node((_mem), (_context), KEFIR_AST_NODE_BASE(compound)));         \
+        ASSERT(compound->base.properties.expression_props.temporary_identifier.identifier != NULL);         \
+        ASSERT(compound->base.properties.expression_props.temporary_identifier.scoped_id != NULL);          \
+        ASSERT(compound->base.properties.expression_props.temporary_identifier.scoped_id != NULL);          \
+        ASSERT(compound->base.properties.expression_props.temporary_identifier.scoped_id->klass ==          \
+               KEFIR_AST_SCOPE_IDENTIFIER_OBJECT);                                                          \
+        ASSERT(compound->base.properties.expression_props.temporary_identifier.scoped_id->object.storage == \
+               (_storage));                                                                                 \
+        ASSERT_OK(KEFIR_AST_NODE_FREE((_mem), KEFIR_AST_NODE_BASE(compound)));                              \
     } while (0)
 
 DEFINE_CASE(ast_node_analysis_compound_literal4, "AST node analysis - compound literals temporaries") {

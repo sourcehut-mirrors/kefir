@@ -27,21 +27,6 @@
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 
-struct typeconv_callback_param {
-    struct kefir_mem *mem;
-    struct kefir_ast_translator_context *context;
-    struct kefir_irbuilder_block *builder;
-    const struct kefir_ast_temporary_identifier *temporary;
-};
-
-static kefir_result_t allocate_long_double_callback(void *payload) {
-    REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid typeconv callback payload"));
-    ASSIGN_DECL_CAST(struct typeconv_callback_param *, param, payload);
-
-    REQUIRE_OK(kefir_ast_translator_fetch_temporary(param->mem, param->context, param->builder, param->temporary));
-    return KEFIR_OK;
-}
-
 kefir_result_t kefir_ast_translate_cast_operator_node(struct kefir_mem *mem,
                                                       struct kefir_ast_translator_context *context,
                                                       struct kefir_irbuilder_block *builder,
@@ -63,13 +48,7 @@ kefir_result_t kefir_ast_translate_cast_operator_node(struct kefir_mem *mem,
 
     REQUIRE_OK(kefir_ast_translate_expression(mem, node->expr, builder, context));
 
-    struct typeconv_callback_param cb_param = {.mem = mem,
-                                               .context = context,
-                                               .builder = builder,
-                                               .temporary = &node->base.properties.expression_props.temp_identifier};
-    struct kefir_ast_translate_typeconv_callbacks callbacks = {.allocate_long_double = allocate_long_double_callback,
-                                                               .payload = &cb_param};
-    REQUIRE_OK(kefir_ast_translate_typeconv(builder, context->ast_context->type_traits, expr_type, arg_normalized_type,
-                                            &callbacks));
+    REQUIRE_OK(
+        kefir_ast_translate_typeconv(builder, context->ast_context->type_traits, expr_type, arg_normalized_type));
     return KEFIR_OK;
 }

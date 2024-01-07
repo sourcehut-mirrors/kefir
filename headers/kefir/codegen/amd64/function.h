@@ -97,6 +97,7 @@ kefir_result_t kefir_codegen_amd64_function_map_phi_outputs(struct kefir_mem *, 
     _def(int32_load_signed, KEFIR_OPT_OPCODE_INT32_LOAD_SIGNED) _separator \
     _def(int32_load_unsigned, KEFIR_OPT_OPCODE_INT32_LOAD_UNSIGNED) _separator \
     _def(int64_load, KEFIR_OPT_OPCODE_INT64_LOAD) _separator \
+    _def(long_double_load, KEFIR_OPT_OPCODE_LONG_DOUBLE_LOAD) _separator \
     _def(int_to_float32, KEFIR_OPT_OPCODE_INT_TO_FLOAT32) _separator \
     _def(int_to_float64, KEFIR_OPT_OPCODE_INT_TO_FLOAT64) _separator \
     _def(uint_to_float, KEFIR_OPT_OPCODE_UINT_TO_FLOAT32) _separator \
