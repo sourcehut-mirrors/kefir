@@ -86,8 +86,8 @@ _kefir_func_f32cld_label1:
     movl (%rax), %eax
     mov %rax, -80(%rbp)
     flds -80(%rbp)
-    fstpt -72(%rbp)
-    fldt -72(%rbp)
+    fstpt -64(%rbp)
+    fldt -64(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -106,8 +106,8 @@ _kefir_func_f64cld_label1:
     movq (%rax), %rax
     mov %rax, -80(%rbp)
     fldl -80(%rbp)
-    fstpt -72(%rbp)
-    fldt -72(%rbp)
+    fstpt -64(%rbp)
+    fldt -64(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

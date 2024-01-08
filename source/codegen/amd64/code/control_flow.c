@@ -82,14 +82,14 @@ kefir_result_t kefir_codegen_amd64_function_map_phi_outputs(struct kefir_mem *me
 
                 case KEFIR_ASMCMP_VIRTUAL_REGISTER_DIRECT_SPILL_SPACE:
                     REQUIRE_OK(kefir_asmcmp_virtual_register_new_direct_spill_space_allocation(
-                        mem, &function->code.context, source_vreg->parameters.spill_space_allocation_length,
-                        &target_vreg_idx));
+                        mem, &function->code.context, source_vreg->parameters.spill_space_allocation.length,
+                        source_vreg->parameters.spill_space_allocation.alignment, &target_vreg_idx));
                     break;
 
                 case KEFIR_ASMCMP_VIRTUAL_REGISTER_INDIRECT_SPILL_SPACE:
                     REQUIRE_OK(kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(
-                        mem, &function->code.context, source_vreg->parameters.spill_space_allocation_length,
-                        &target_vreg_idx));
+                        mem, &function->code.context, source_vreg->parameters.spill_space_allocation.length,
+                        source_vreg->parameters.spill_space_allocation.alignment, &target_vreg_idx));
                     break;
 
                 case KEFIR_ASMCMP_VIRTUAL_REGISTER_EXTERNAL_MEMORY:

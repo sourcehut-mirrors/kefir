@@ -184,7 +184,7 @@ static kefir_result_t allocate_memory_parameter(struct kefir_mem *mem, struct ke
         entry->type = param_type;
         entry->allocation_type = INLINE_ASSEMBLY_PARAMETER_ALLOCATION_REGISTER_INDIRECT;
     } else {
-        REQUIRE_OK(kefir_asmcmp_virtual_register_new_direct_spill_space_allocation(mem, &function->code.context, 1,
+        REQUIRE_OK(kefir_asmcmp_virtual_register_new_direct_spill_space_allocation(mem, &function->code.context, 1, 1,
                                                                                    &entry->allocation_vreg));
 
         entry->type = param_type;
@@ -322,7 +322,7 @@ static kefir_result_t allocate_parameters(struct kefir_mem *mem, struct kefir_co
              ir_asm_param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ_STORE) &&
             entry->allocation_type != INLINE_ASSEMBLY_PARAMETER_ALLOCATION_REGISTER_INDIRECT) {
             REQUIRE_OK(kefir_asmcmp_virtual_register_new_direct_spill_space_allocation(mem, &function->code.context, 1,
-                                                                                       &entry->output_address_vreg));
+                                                                                       1, &entry->output_address_vreg));
         } else {
             entry->output_address_vreg = KEFIR_ASMCMP_INDEX_NONE;
         }

@@ -62,7 +62,7 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
         &func->abi_function_declaration, &implicit_parameter_present, &implicit_parameter_reg));
     if (implicit_parameter_present) {
         kefir_asmcmp_virtual_register_index_t implicit_param_vreg, implicit_param_placement_vreg;
-        REQUIRE_OK(kefir_asmcmp_virtual_register_new_direct_spill_space_allocation(mem, &func->code.context, 1,
+        REQUIRE_OK(kefir_asmcmp_virtual_register_new_direct_spill_space_allocation(mem, &func->code.context, 1, 1,
                                                                                    &implicit_param_vreg));
         REQUIRE_OK(kefir_asmcmp_virtual_register_new(
             mem, &func->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &implicit_param_placement_vreg));

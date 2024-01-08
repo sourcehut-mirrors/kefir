@@ -277,7 +277,10 @@ typedef struct kefir_asmcmp_virtual_register {
     kefir_asmcmp_virtual_register_index_t index;
     kefir_asmcmp_virtual_register_type_t type;
     union {
-        kefir_size_t spill_space_allocation_length;
+        struct {
+            kefir_size_t length;
+            kefir_size_t alignment;
+        } spill_space_allocation;
         struct {
             kefir_asmcmp_physical_register_index_t base_reg;
             kefir_int64_t offset;
@@ -375,10 +378,11 @@ kefir_result_t kefir_asmcmp_virtual_register_new(struct kefir_mem *, struct kefi
                                                  kefir_asmcmp_virtual_register_index_t *);
 kefir_result_t kefir_asmcmp_virtual_register_new_direct_spill_space_allocation(struct kefir_mem *,
                                                                                struct kefir_asmcmp_context *,
-                                                                               kefir_size_t,
+                                                                               kefir_size_t, kefir_size_t,
                                                                                kefir_asmcmp_virtual_register_index_t *);
 kefir_result_t kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(
-    struct kefir_mem *, struct kefir_asmcmp_context *, kefir_size_t, kefir_asmcmp_virtual_register_index_t *);
+    struct kefir_mem *, struct kefir_asmcmp_context *, kefir_size_t, kefir_size_t,
+    kefir_asmcmp_virtual_register_index_t *);
 kefir_result_t kefir_asmcmp_virtual_register_new_memory_pointer(struct kefir_mem *, struct kefir_asmcmp_context *,
                                                                 kefir_asmcmp_physical_register_index_t, kefir_int64_t,
                                                                 kefir_asmcmp_virtual_register_index_t *);
@@ -386,7 +390,8 @@ kefir_result_t kefir_asmcmp_virtual_register_specify_type(const struct kefir_asm
                                                           kefir_asmcmp_virtual_register_index_t,
                                                           kefir_asmcmp_virtual_register_type_t);
 kefir_result_t kefir_asmcmp_virtual_set_spill_space_size(const struct kefir_asmcmp_context *,
-                                                         kefir_asmcmp_virtual_register_index_t, kefir_size_t);
+                                                         kefir_asmcmp_virtual_register_index_t, kefir_size_t,
+                                                         kefir_size_t);
 
 kefir_result_t kefir_asmcmp_register_stash_new(struct kefir_mem *, struct kefir_asmcmp_context *,
                                                kefir_asmcmp_stash_index_t *);

@@ -80,7 +80,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_argument)(struct kefir_m
             kefir_size_t qwords;
             REQUIRE_OK(kefir_abi_amd64_function_parameter_multireg_length(&function_parameter, &qwords));
             REQUIRE_OK(kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(mem, &function->code.context,
-                                                                                         qwords, &vreg));
+                                                                                         qwords, 1, &vreg));
 
             for (kefir_size_t i = 0; i < qwords; i++) {
                 struct kefir_abi_amd64_function_parameter subparam;

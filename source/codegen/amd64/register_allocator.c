@@ -690,7 +690,8 @@ static kefir_result_t allocate_register_impl(struct kefir_mem *mem, struct kefir
         case KEFIR_ASMCMP_VIRTUAL_REGISTER_INDIRECT_SPILL_SPACE:
             REQUIRE_OK(allocate_spill_area(mem, allocator, stack_frame, vreg_idx,
                                            KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_INDIRECT,
-                                           vreg->parameters.spill_space_allocation_length, 1));
+                                           vreg->parameters.spill_space_allocation.length,
+                                           vreg->parameters.spill_space_allocation.alignment));
             break;
 
         case KEFIR_ASMCMP_VIRTUAL_REGISTER_EXTERNAL_MEMORY: {
@@ -810,7 +811,7 @@ static kefir_result_t update_stash(struct kefir_asmcmp_amd64 *target,
 
     kefir_asmcmp_virtual_register_index_t spill_vreg;
     REQUIRE_OK(kefir_asmcmp_register_stash_vreg(&target->context, stash_idx, &spill_vreg));
-    REQUIRE_OK(kefir_asmcmp_virtual_set_spill_space_size(&target->context, spill_vreg, qwords));
+    REQUIRE_OK(kefir_asmcmp_virtual_set_spill_space_size(&target->context, spill_vreg, qwords, 1));
 
     UNUSED(qwords);
     return KEFIR_OK;
