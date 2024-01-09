@@ -46,6 +46,12 @@ SCALAR_TYPE(double);
 SCALAR_TYPE(long_double);
 #undef SCALAR_TYPE
 
+#define COMPLEX_TYPE(id) const struct kefir_ast_type *kefir_ast_type_complex_##id(void)
+COMPLEX_TYPE(float);
+COMPLEX_TYPE(double);
+COMPLEX_TYPE(long_double);
+#undef COMPLEX_TYPE
+
 const struct kefir_ast_type *kefir_ast_type_va_list(void);
 
 #define KEFIR_AST_TYPE_IS_CHARACTER(base)                                                             \
@@ -64,12 +70,17 @@ const struct kefir_ast_type *kefir_ast_type_va_list(void);
      KEFIR_INTERNAL_AST_TYPE_IS_UNSIGNED_INTEGER(base))
 #define KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(base) \
     (KEFIR_AST_TYPE_IS_NONENUM_INTEGRAL_TYPE(base) || (base)->tag == KEFIR_AST_TYPE_ENUMERATION)
-#define KEFIR_AST_TYPE_IS_FLOATING_POINT(base)                                                    \
+#define KEFIR_AST_TYPE_IS_REAL_FLOATING_POINT(base)                                               \
     ((base)->tag == KEFIR_AST_TYPE_SCALAR_FLOAT || (base)->tag == KEFIR_AST_TYPE_SCALAR_DOUBLE || \
      (base)->tag == KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE)
 #define KEFIR_AST_TYPE_IS_LONG_DOUBLE(base) ((base)->tag == KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE)
 #define KEFIR_AST_TYPE_IS_REAL_TYPE(base) \
-    (KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(base) || KEFIR_AST_TYPE_IS_FLOATING_POINT(base))
+    (KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(base) || KEFIR_AST_TYPE_IS_REAL_FLOATING_POINT(base))
+#define KEFIR_AST_TYPE_IS_COMPLEX_TYPE(base)                                                        \
+    ((base)->tag == KEFIR_AST_TYPE_COMPLEX_FLOAT || (base)->tag == KEFIR_AST_TYPE_COMPLEX_DOUBLE || \
+     (base)->tag == KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE)
+#define KEFIR_AST_TYPE_IS_FLOATING_POINT(base) \
+    (KEFIR_AST_TYPE_IS_REAL_FLOATING_POINT(base) || KEFIR_AST_TYPE_IS_COMPLEX_TYPE(base))
 #define KEFIR_AST_TYPE_IS_ARITHMETIC_TYPE(base) \
     (KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(base) || KEFIR_AST_TYPE_IS_FLOATING_POINT(base))
 #define KEFIR_AST_TYPE_IS_SCALAR_TYPE(base) \
@@ -79,6 +90,8 @@ const struct kefir_ast_type *kefir_ast_type_va_list(void);
 
 const struct kefir_ast_type *kefir_ast_type_flip_integer_singedness(const struct kefir_ast_type_traits *,
                                                                     const struct kefir_ast_type *);
+const struct kefir_ast_type *kefir_ast_type_corresponding_real_type(const struct kefir_ast_type *);
+const struct kefir_ast_type *kefir_ast_type_corresponding_complex_type(const struct kefir_ast_type *);
 
 kefir_result_t kefir_ast_type_is_signed(const struct kefir_ast_type_traits *, const struct kefir_ast_type *,
                                         kefir_bool_t *);

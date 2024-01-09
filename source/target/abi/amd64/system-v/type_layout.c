@@ -160,6 +160,35 @@ static kefir_result_t calculate_sse_layout(const struct kefir_ir_type *type, kef
     return update_compound_type_layout(compound_type_layout, data, typeentry);
 }
 
+static kefir_result_t calculate_complex_layout(const struct kefir_ir_type *type, kefir_size_t index,
+                                               const struct kefir_ir_typeentry *typeentry, void *payload) {
+    UNUSED(type);
+    struct compound_type_layout *compound_type_layout = (struct compound_type_layout *) payload;
+    ASSIGN_DECL_CAST(struct kefir_abi_amd64_typeentry_layout *, data,
+                     kefir_vector_at(compound_type_layout->vector, index));
+    switch (typeentry->typecode) {
+        case KEFIR_IR_TYPE_COMPLEX_FLOAT32:
+            data->size = 8;
+            data->alignment = 4;
+            break;
+
+        case KEFIR_IR_TYPE_COMPLEX_FLOAT64:
+            data->size = 16;
+            data->alignment = 8;
+            break;
+
+        case KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE:
+            data->size = 32;
+            data->alignment = 16;
+            break;
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpectedly encountered non-complex type");
+    }
+    data->aligned = true;
+    return update_compound_type_layout(compound_type_layout, data, typeentry);
+}
+
 static kefir_result_t calculate_struct_union_layout(const struct kefir_ir_type *type, kefir_size_t index,
                                                     const struct kefir_ir_typeentry *typeentry, void *payload) {
     struct compound_type_layout *compound_type_layout = (struct compound_type_layout *) payload;
@@ -236,6 +265,7 @@ static kefir_result_t calculate_layout(const struct kefir_ir_type *type, kefir_s
     REQUIRE_OK(kefir_ir_type_visitor_init(&visitor, visitor_not_supported));
     KEFIR_IR_TYPE_VISITOR_INIT_INTEGERS(&visitor, calculate_integer_layout);
     KEFIR_IR_TYPE_VISITOR_INIT_FIXED_FP(&visitor, calculate_sse_layout);
+    KEFIR_IR_TYPE_VISITOR_INIT_COMPLEX(&visitor, calculate_complex_layout);
     visitor.visit[KEFIR_IR_TYPE_LONG_DOUBLE] = calculate_sse_layout;
     visitor.visit[KEFIR_IR_TYPE_STRUCT] = calculate_struct_union_layout;
     visitor.visit[KEFIR_IR_TYPE_UNION] = calculate_struct_union_layout;

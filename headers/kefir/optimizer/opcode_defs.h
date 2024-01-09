@@ -182,7 +182,17 @@
     OPCODE(INT_TO_LONG_DOUBLE, "int_to_long_double", ref1) SEPARATOR \
     OPCODE(UINT_TO_LONG_DOUBLE, "uint_to_long_double", ref1) SEPARATOR \
     OPCODE(FLOAT32_TO_LONG_DOUBLE, "float32_to_long_double", ref1) SEPARATOR \
-    OPCODE(FLOAT64_TO_LONG_DOUBLE, "float64_to_long_double", ref1)
+    OPCODE(FLOAT64_TO_LONG_DOUBLE, "float64_to_long_double", ref1) SEPARATOR \
+    /* Complex numbers */ \
+    OPCODE(COMPLEX_FLOAT32_FROM, "complex_float32_from", ref2) SEPARATOR \
+    OPCODE(COMPLEX_FLOAT32_REAL, "complex_float32_real", ref1) SEPARATOR \
+    OPCODE(COMPLEX_FLOAT32_IMAGINARY, "complex_float32_imaginary", ref1) SEPARATOR \
+    OPCODE(COMPLEX_FLOAT64_FROM, "complex_float64_from", ref2) SEPARATOR \
+    OPCODE(COMPLEX_FLOAT64_REAL, "complex_float64_real", ref1) SEPARATOR \
+    OPCODE(COMPLEX_FLOAT64_IMAGINARY, "complex_float64_imaginary", ref1) SEPARATOR \
+    OPCODE(COMPLEX_LONG_DOUBLE_FROM, "complex_long_double_from", ref2) SEPARATOR \
+    OPCODE(COMPLEX_LONG_DOUBLE_REAL, "complex_long_double_real", ref1) SEPARATOR \
+    OPCODE(COMPLEX_LONG_DOUBLE_IMAGINARY, "complex_long_double_imaginary", ref1)
 // clang-format on
 
 #endif

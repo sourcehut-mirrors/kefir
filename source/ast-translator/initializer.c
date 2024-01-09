@@ -131,7 +131,8 @@ static kefir_result_t traverse_scalar(const struct kefir_ast_designator *designa
         REQUIRE_OK(kefir_ast_translate_expression(param->mem, expression, param->builder, param->context));
 
         if (KEFIR_AST_TYPE_IS_SCALAR_TYPE(expr_type)) {
-            REQUIRE_OK(kefir_ast_translate_typeconv(param->builder, param->context->ast_context->type_traits, expr_type,
+            REQUIRE_OK(kefir_ast_translate_typeconv(param->mem, param->context->module, param->builder,
+                                                    param->context->ast_context->type_traits, expr_type,
                                                     type_layout->type));
         }
 

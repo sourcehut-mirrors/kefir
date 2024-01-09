@@ -80,6 +80,9 @@ kefir_result_t kefir_ast_type_completion(struct kefir_mem *mem, const struct kef
         case KEFIR_AST_TYPE_SCALAR_FLOAT:
         case KEFIR_AST_TYPE_SCALAR_DOUBLE:
         case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
+        case KEFIR_AST_TYPE_COMPLEX_FLOAT:
+        case KEFIR_AST_TYPE_COMPLEX_DOUBLE:
+        case KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE:
         case KEFIR_AST_TYPE_ENUMERATION:
         case KEFIR_AST_TYPE_FUNCTION:
         case KEFIR_AST_TYPE_VA_LIST:

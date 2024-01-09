@@ -317,6 +317,15 @@ static const char *typecode_to_string(kefir_ir_typecode_t typecode) {
         case KEFIR_IR_TYPE_BITS:
             return "bits";
 
+        case KEFIR_IR_TYPE_COMPLEX_FLOAT32:
+            return "complex_float32";
+
+        case KEFIR_IR_TYPE_COMPLEX_FLOAT64:
+            return "complex_float64";
+
+        case KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE:
+            return "complex_long_double";
+
         case KEFIR_IR_TYPE_BUILTIN:
             return "builtin";
 
@@ -356,6 +365,9 @@ static kefir_result_t format_type_default(const struct kefir_ir_type *type, kefi
         case KEFIR_IR_TYPE_FLOAT64:
         case KEFIR_IR_TYPE_LONG_DOUBLE:
         case KEFIR_IR_TYPE_WORD:
+        case KEFIR_IR_TYPE_COMPLEX_FLOAT32:
+        case KEFIR_IR_TYPE_COMPLEX_FLOAT64:
+        case KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE:
             break;
 
         case KEFIR_IR_TYPE_BITS: {

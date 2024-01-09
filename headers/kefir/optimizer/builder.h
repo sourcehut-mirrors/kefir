@@ -180,6 +180,13 @@ UNARY_OP(uint_to_long_double);
 UNARY_OP(float32_to_long_double);
 UNARY_OP(float64_to_long_double);
 
+UNARY_OP(complex_float32_real);
+UNARY_OP(complex_float32_imaginary);
+UNARY_OP(complex_float64_real);
+UNARY_OP(complex_float64_imaginary);
+UNARY_OP(complex_long_double_real);
+UNARY_OP(complex_long_double_imaginary);
+
 #undef UNARY_OP
 
 #define BINARY_OP(_id)                                                                                 \
@@ -241,6 +248,10 @@ BINARY_OP(long_double_add);
 BINARY_OP(long_double_sub);
 BINARY_OP(long_double_mul);
 BINARY_OP(long_double_div);
+
+BINARY_OP(complex_float32_from);
+BINARY_OP(complex_float64_from);
+BINARY_OP(complex_long_double_from);
 
 #undef BINARY_OP
 

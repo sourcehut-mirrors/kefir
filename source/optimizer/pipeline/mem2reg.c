@@ -135,6 +135,9 @@ static kefir_result_t mark_scalar_candidate(struct mem2reg_state *state, kefir_s
         case KEFIR_IR_TYPE_LONG_DOUBLE:
         case KEFIR_IR_TYPE_BITS:
         case KEFIR_IR_TYPE_BUILTIN:
+        case KEFIR_IR_TYPE_COMPLEX_FLOAT32:
+        case KEFIR_IR_TYPE_COMPLEX_FLOAT64:
+        case KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE:
         case KEFIR_IR_TYPE_NONE:
         case KEFIR_IR_TYPE_COUNT:
             // Intentionally left blank
@@ -340,6 +343,9 @@ static kefir_result_t assign_empty_value(struct mem2reg_state *state, kefir_size
         case KEFIR_IR_TYPE_UNION:
         case KEFIR_IR_TYPE_LONG_DOUBLE:
         case KEFIR_IR_TYPE_BITS:
+        case KEFIR_IR_TYPE_COMPLEX_FLOAT32:
+        case KEFIR_IR_TYPE_COMPLEX_FLOAT64:
+        case KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE:
         case KEFIR_IR_TYPE_BUILTIN:
         case KEFIR_IR_TYPE_NONE:
         case KEFIR_IR_TYPE_COUNT:

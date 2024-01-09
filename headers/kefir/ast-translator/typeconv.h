@@ -23,6 +23,7 @@
 
 #include "kefir/ast/type.h"
 #include "kefir/ir/builder.h"
+#include "kefir/ir/module.h"
 
 kefir_result_t kefir_ast_translate_typeconv_to_bool(struct kefir_irbuilder_block *, const struct kefir_ast_type *);
 
@@ -30,7 +31,8 @@ kefir_result_t kefir_ast_translate_typeconv_normalize(struct kefir_irbuilder_blo
                                                       const struct kefir_ast_type_traits *,
                                                       const struct kefir_ast_type *);
 
-kefir_result_t kefir_ast_translate_typeconv(struct kefir_irbuilder_block *, const struct kefir_ast_type_traits *,
+kefir_result_t kefir_ast_translate_typeconv(struct kefir_mem *, struct kefir_ir_module *,
+                                            struct kefir_irbuilder_block *, const struct kefir_ast_type_traits *,
                                             const struct kefir_ast_type *, const struct kefir_ast_type *);
 
 #endif

@@ -106,6 +106,24 @@ SCALAR_TYPE(long_double, KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE, 7)
 
 #undef SCALAR_TYPE
 
+#define COMPLEX_TYPE(id, _tag, _rank)                                                                        \
+    static const struct kefir_ast_type DEFAULT_COMPLEX_##id = {.tag = (_tag),                                \
+                                                               .basic = true,                                \
+                                                               .ops = {.same = same_basic_type,              \
+                                                                       .compatible = compatible_basic_types, \
+                                                                       .composite = composite_basic_types,   \
+                                                                       .free = free_nothing}};               \
+                                                                                                             \
+    const struct kefir_ast_type *kefir_ast_type_complex_##id(void) {                                         \
+        return &DEFAULT_COMPLEX_##id;                                                                        \
+    }
+
+COMPLEX_TYPE(float, KEFIR_AST_TYPE_COMPLEX_FLOAT, 5)
+COMPLEX_TYPE(double, KEFIR_AST_TYPE_COMPLEX_DOUBLE, 6)
+COMPLEX_TYPE(long_double, KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE, 7)
+
+#undef COMPLEX_TYPE
+
 static const struct kefir_ast_type VA_LIST = {.tag = KEFIR_AST_TYPE_VA_LIST,
                                               .basic = false,
                                               .ops = {.same = same_basic_type,
@@ -165,6 +183,46 @@ const struct kefir_ast_type *kefir_ast_type_flip_integer_singedness(const struct
 
         default:
             return NULL;
+    }
+}
+
+const struct kefir_ast_type *kefir_ast_type_corresponding_real_type(const struct kefir_ast_type *type) {
+    switch (type->tag) {
+        case KEFIR_AST_TYPE_COMPLEX_FLOAT:
+            return kefir_ast_type_float();
+
+        case KEFIR_AST_TYPE_COMPLEX_DOUBLE:
+            return kefir_ast_type_double();
+
+        case KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE:
+            return kefir_ast_type_long_double();
+
+        default:
+            if (KEFIR_AST_TYPE_IS_REAL_TYPE(type)) {
+                return type;
+            } else {
+                return NULL;
+            }
+    }
+}
+
+const struct kefir_ast_type *kefir_ast_type_corresponding_complex_type(const struct kefir_ast_type *type) {
+    switch (type->tag) {
+        case KEFIR_AST_TYPE_SCALAR_FLOAT:
+            return kefir_ast_type_complex_float();
+
+        case KEFIR_AST_TYPE_SCALAR_DOUBLE:
+            return kefir_ast_type_complex_double();
+
+        case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
+            return kefir_ast_type_complex_long_double();
+
+        default:
+            if (KEFIR_AST_TYPE_IS_COMPLEX_TYPE(type)) {
+                return type;
+            } else {
+                return NULL;
+            }
     }
 }
 

@@ -47,7 +47,7 @@ kefir_result_t kefir_ast_translate_return_statement_node(struct kefir_mem *mem,
 
         REQUIRE_OK(kefir_ast_translate_expression(mem, node->expression, builder, context));
         if (KEFIR_AST_TYPE_IS_SCALAR_TYPE(node->expression->properties.type)) {
-            REQUIRE_OK(kefir_ast_translate_typeconv(builder, context->ast_context->type_traits,
+            REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
                                                     node->expression->properties.type,
                                                     node->base.properties.statement_props.return_type));
         }

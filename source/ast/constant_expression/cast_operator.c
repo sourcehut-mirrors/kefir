@@ -129,7 +129,7 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *mem, c
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_NONE:
                 return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Non-evaluated constant expression");
         }
-    } else if (KEFIR_AST_TYPE_IS_FLOATING_POINT(unqualified)) {
+    } else if (KEFIR_AST_TYPE_IS_REAL_FLOATING_POINT(unqualified)) {
         value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT;
         switch (source->klass) {
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER:

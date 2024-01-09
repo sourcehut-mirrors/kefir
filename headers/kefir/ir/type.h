@@ -37,6 +37,9 @@ typedef enum kefir_ir_typecode {
     KEFIR_IR_TYPE_INT64,
     KEFIR_IR_TYPE_FLOAT32,
     KEFIR_IR_TYPE_FLOAT64,
+    // Fixed complex numbers
+    KEFIR_IR_TYPE_COMPLEX_FLOAT32,
+    KEFIR_IR_TYPE_COMPLEX_FLOAT64,
     // Platform-dependent scalars
     KEFIR_IR_TYPE_BOOL,
     KEFIR_IR_TYPE_CHAR,
@@ -46,6 +49,8 @@ typedef enum kefir_ir_typecode {
     KEFIR_IR_TYPE_WORD,
     KEFIR_IR_TYPE_LONG_DOUBLE,
     KEFIR_IR_TYPE_BITS,
+    // Platform-dependent complex numbers
+    KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE,
     // Built-ins
     KEFIR_IR_TYPE_BUILTIN,
     // > 64-bit scalars are not supported yet
@@ -129,6 +134,16 @@ kefir_result_t kefir_ir_type_visitor_list_nodes(const struct kefir_ir_type *, co
         KEFIR_IR_TYPE_VISITOR_INIT_INTEGERS((visitor), (callback)); \
         KEFIR_IR_TYPE_VISITOR_INIT_FIXED_FP((visitor), (callback)); \
         (visitor)->visit[KEFIR_IR_TYPE_LONG_DOUBLE] = (callback);   \
+    } while (0)
+#define KEFIR_IR_TYPE_VISITOR_INIT_FIXED_COMPLEX(visitor, callback)   \
+    do {                                                              \
+        (visitor)->visit[KEFIR_IR_TYPE_COMPLEX_FLOAT32] = (callback); \
+        (visitor)->visit[KEFIR_IR_TYPE_COMPLEX_FLOAT64] = (callback); \
+    } while (0)
+#define KEFIR_IR_TYPE_VISITOR_INIT_COMPLEX(visitor, callback)             \
+    do {                                                                  \
+        KEFIR_IR_TYPE_VISITOR_INIT_FIXED_COMPLEX(visitor, callback);      \
+        (visitor)->visit[KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE] = (callback); \
     } while (0)
 
 #endif

@@ -52,11 +52,11 @@ static kefir_result_t binary_prologue(struct kefir_mem *mem, struct kefir_ast_tr
             KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected conversion to long double"));
 
     REQUIRE_OK(kefir_ast_translate_expression(mem, node->arg1, builder, context));
-    REQUIRE_OK(kefir_ast_translate_typeconv(builder, context->ast_context->type_traits, arg1_normalized_type,
-                                            result_normalized_type));
+    REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
+                                            arg1_normalized_type, result_normalized_type));
     REQUIRE_OK(kefir_ast_translate_expression(mem, node->arg2, builder, context));
-    REQUIRE_OK(kefir_ast_translate_typeconv(builder, context->ast_context->type_traits, arg2_normalized_type,
-                                            result_normalized_type));
+    REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
+                                            arg2_normalized_type, result_normalized_type));
     return KEFIR_OK;
 }
 
@@ -479,11 +479,11 @@ static kefir_result_t translate_relational_equality(struct kefir_mem *mem, struc
             KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected conversion to long double"));
         REQUIRE_OK(kefir_ast_translate_expression(mem, node->arg1, builder, context));
 
-        REQUIRE_OK(kefir_ast_translate_typeconv(builder, context->ast_context->type_traits, arg1_normalized_type,
-                                                common_type));
+        REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
+                                                arg1_normalized_type, common_type));
         REQUIRE_OK(kefir_ast_translate_expression(mem, node->arg2, builder, context));
-        REQUIRE_OK(kefir_ast_translate_typeconv(builder, context->ast_context->type_traits, arg2_normalized_type,
-                                                common_type));
+        REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
+                                                arg2_normalized_type, common_type));
     } else {
         REQUIRE_OK(kefir_ast_translate_expression(mem, node->arg1, builder, context));
         REQUIRE_OK(kefir_ast_translate_expression(mem, node->arg2, builder, context));

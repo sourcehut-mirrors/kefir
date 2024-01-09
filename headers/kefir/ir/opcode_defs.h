@@ -155,6 +155,16 @@
     OPCODE(F64CLD,       "f64cld",      none) SEPARATOR \
     OPCODE(LDCF32,       "ldcf32",      none) SEPARATOR \
     OPCODE(LDCF64,       "ldcf64",      none) SEPARATOR \
+    /* Complex numbers */ \
+    OPCODE(CMPF32,       "cmpf32",      none) SEPARATOR \
+    OPCODE(CMPF32R,      "cmpf32r",     none) SEPARATOR \
+    OPCODE(CMPF32I,      "cmpf32i",     none) SEPARATOR \
+    OPCODE(CMPF64,       "cmpf64",      none) SEPARATOR \
+    OPCODE(CMPF64R,      "cmpf64r",     none) SEPARATOR \
+    OPCODE(CMPF64I,      "cmpf64i",     none) SEPARATOR \
+    OPCODE(CMPLD,        "cmpld",       none) SEPARATOR \
+    OPCODE(CMPLDR,       "cmpldr",      none) SEPARATOR \
+    OPCODE(CMPLDI,       "cmpldi",      none) SEPARATOR \
     /* Miscallenous */ \
     OPCODE(INLINEASM,    "inlineasm",   u64)
 // clang-format on

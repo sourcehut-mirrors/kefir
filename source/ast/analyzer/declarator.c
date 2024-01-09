@@ -33,6 +33,8 @@
 
 enum signedness { SIGNEDNESS_DEFAULT, SIGNEDNESS_SIGNED, SIGNEDNESS_UNSIGNED };
 
+enum real_class { REAL_SCALAR, REAL_COMPLEX, REAL_COMPLEX_LONG };
+
 static kefir_result_t analyze_declaration_specifiers_impl(struct kefir_mem *, const struct kefir_ast_context *,
                                                           const struct kefir_ast_declarator_specifier_list *,
                                                           const struct kefir_ast_type **,
@@ -333,7 +335,8 @@ enum type_specifier_sequence_state {
 } type_specifier_sequence_state_t;
 
 static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast_context *context,
-                                   enum signedness *signedness, enum type_specifier_sequence_state *seq_state,
+                                   enum signedness *signedness, enum real_class *real_class,
+                                   enum type_specifier_sequence_state *seq_state,
                                    const struct kefir_ast_type **base_type, kefir_size_t *alignment,
                                    const struct kefir_ast_declarator_specifier *decl_specifier, kefir_uint64_t flags) {
     const struct kefir_ast_type_specifier *specifier = &decl_specifier->type_specifier;
@@ -341,6 +344,9 @@ static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast
         case KEFIR_AST_TYPE_SPECIFIER_VOID:
             REQUIRE(*base_type == NULL, KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
                                                                "Void type specifier cannot be combined with others"));
+            REQUIRE(*real_class == REAL_SCALAR,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                                           "Void type specifier cannot be combined with complex type specifier"));
             *base_type = kefir_ast_type_void();
             *seq_state = TYPE_SPECIFIER_SEQUENCE_SPECIFIERS;
             break;
@@ -348,6 +354,9 @@ static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast
         case KEFIR_AST_TYPE_SPECIFIER_CHAR:
             REQUIRE(*base_type == NULL, KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
                                                                "Char type specifier cannot be combined with others"));
+            REQUIRE(*real_class == REAL_SCALAR,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                                           "Char type specifier cannot be combined with complex type specifier"));
             *base_type = kefir_ast_type_char();
             *seq_state = TYPE_SPECIFIER_SEQUENCE_SPECIFIERS;
             break;
@@ -359,6 +368,9 @@ static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast
             REQUIRE(*seq_state != TYPE_SPECIFIER_SEQUENCE_TYPEDEF,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
                                            "Cannot combine type specifiers with referenced type definition"));
+            REQUIRE(*real_class == REAL_SCALAR,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                                           "Short type specifier cannot be combined with complex type specifier"));
             *base_type = kefir_ast_type_signed_short();
             break;
 
@@ -366,6 +378,9 @@ static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast
             REQUIRE(*seq_state != TYPE_SPECIFIER_SEQUENCE_TYPEDEF,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
                                            "Cannot combine type specifiers with referenced type definition"));
+            REQUIRE(*real_class == REAL_SCALAR,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                                           "Int type specifier cannot be combined with complex type specifier"));
             if (*base_type == NULL) {
                 *base_type = kefir_ast_type_signed_int();
             } else {
@@ -383,8 +398,22 @@ static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
                                            "Cannot combine type specifiers with referenced type definition"));
             if (*base_type != NULL && (*base_type)->tag == KEFIR_AST_TYPE_SCALAR_SIGNED_LONG) {
+                REQUIRE(*real_class == REAL_SCALAR,
+                        KEFIR_SET_SOURCE_ERROR(
+                            KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                            "Long type specifier cannot be combined with complex type specifier in this context"));
                 *base_type = kefir_ast_type_signed_long_long();
+            } else if (*base_type != NULL && (*base_type)->tag == KEFIR_AST_TYPE_SCALAR_DOUBLE) {
+                *base_type = kefir_ast_type_long_double();
+            } else if (*base_type != NULL && (*base_type)->tag == KEFIR_AST_TYPE_COMPLEX_DOUBLE) {
+                *base_type = kefir_ast_type_complex_long_double();
+            } else if (*base_type == NULL && *real_class == REAL_COMPLEX) {
+                *real_class = REAL_COMPLEX_LONG;
             } else {
+                REQUIRE(*real_class == REAL_SCALAR,
+                        KEFIR_SET_SOURCE_ERROR(
+                            KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                            "Long type specifier cannot be combined with complex type specifier in this context"));
                 REQUIRE((*base_type) == NULL || (*base_type)->tag == KEFIR_AST_TYPE_SCALAR_SIGNED_INT,
                         KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
                                                "Long type specifier can only be combined with int or long"));
@@ -399,7 +428,15 @@ static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast
             REQUIRE(*seq_state != TYPE_SPECIFIER_SEQUENCE_TYPEDEF,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
                                            "Cannot combine type specifiers with referenced type definition"));
-            *base_type = kefir_ast_type_float();
+            if (*real_class == REAL_SCALAR) {
+                *base_type = kefir_ast_type_float();
+            } else {
+                REQUIRE(*real_class == REAL_COMPLEX,
+                        KEFIR_SET_SOURCE_ERROR(
+                            KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                            "Long and complex type specifiers cannot be combined with float type specifier"));
+                *base_type = kefir_ast_type_complex_float();
+            }
             *seq_state = TYPE_SPECIFIER_SEQUENCE_SPECIFIERS;
             break;
 
@@ -408,7 +445,19 @@ static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
                                            "Cannot combine type specifiers with referenced type definition"));
             if ((*base_type) == NULL) {
-                *base_type = kefir_ast_type_double();
+                switch (*real_class) {
+                    case REAL_SCALAR:
+                        *base_type = kefir_ast_type_double();
+                        break;
+
+                    case REAL_COMPLEX:
+                        *base_type = kefir_ast_type_complex_double();
+                        break;
+
+                    case REAL_COMPLEX_LONG:
+                        *base_type = kefir_ast_type_complex_long_double();
+                        break;
+                }
             } else {
                 REQUIRE((*base_type)->tag == KEFIR_AST_TYPE_SCALAR_SIGNED_LONG,
                         KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
@@ -422,6 +471,9 @@ static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast
             REQUIRE(*seq_state != TYPE_SPECIFIER_SEQUENCE_TYPEDEF,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
                                            "Cannot combine type specifiers with referenced type definition"));
+            REQUIRE(*real_class == REAL_SCALAR,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                                           "Signed type specifier cannot be combined with complex type specifier"));
             REQUIRE(
                 *signedness == SIGNEDNESS_DEFAULT,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
@@ -434,6 +486,9 @@ static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast
             REQUIRE(*seq_state != TYPE_SPECIFIER_SEQUENCE_TYPEDEF,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
                                            "Cannot combine type specifiers with referenced type definition"));
+            REQUIRE(*real_class == REAL_SCALAR,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                                           "Unsigned type specifier cannot be combined with complex type specifier"));
             REQUIRE(
                 *signedness == SIGNEDNESS_DEFAULT,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
@@ -446,6 +501,9 @@ static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast
             REQUIRE(*seq_state != TYPE_SPECIFIER_SEQUENCE_TYPEDEF,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
                                            "Cannot combine type specifiers with referenced type definition"));
+            REQUIRE(*real_class == REAL_SCALAR,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                                           "Bool type specifier cannot be combined with complex type specifier"));
             REQUIRE(*base_type == NULL,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
                                            "Boolean type specifier cannot be combined with others"));
@@ -454,7 +512,33 @@ static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast
             break;
 
         case KEFIR_AST_TYPE_SPECIFIER_COMPLEX:
-            return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED, "Complex floating-point type specifier is not supported yet");
+            REQUIRE(*seq_state != TYPE_SPECIFIER_SEQUENCE_TYPEDEF,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                                           "Cannot combine type specifiers with referenced type definition"));
+            REQUIRE(
+                *signedness == SIGNEDNESS_DEFAULT,
+                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                                       "Complex type specifier cannot be combined with other signedness specifiers"));
+            REQUIRE(*real_class == REAL_SCALAR,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                                           "Duplicate complex type specifier"));
+
+            if (*base_type == NULL) {
+                *real_class = REAL_COMPLEX;
+            } else if ((*base_type)->tag == KEFIR_AST_TYPE_SCALAR_SIGNED_LONG) {
+                *real_class = REAL_COMPLEX_LONG;
+                *base_type = NULL;
+            } else {
+                REQUIRE(
+                    KEFIR_AST_TYPE_IS_REAL_FLOATING_POINT(*base_type),
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                                           "Complex type specified cannot be combined with non-floating-point type"));
+                *real_class = REAL_COMPLEX;
+                *base_type = kefir_ast_type_corresponding_complex_type(*base_type);
+                REQUIRE(*base_type != NULL,
+                        KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to obtain corresponding complex type"));
+            }
+            break;
 
         case KEFIR_AST_TYPE_SPECIFIER_ATOMIC:
             return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED, "Atomic type specifier is not supported yet");
@@ -464,6 +548,10 @@ static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast
             REQUIRE(*seq_state == TYPE_SPECIFIER_SEQUENCE_EMPTY,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
                                            "Cannot combine struct/union type specifier with others"));
+            REQUIRE(
+                *real_class == REAL_SCALAR,
+                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                                       "Struct/union type specifier cannot be combined with complex type specifier"));
             REQUIRE_OK(
                 resolve_struct_type(mem, context, decl_specifier, base_type, flags, &decl_specifier->source_location));
             *seq_state = TYPE_SPECIFIER_SEQUENCE_SPECIFIERS;
@@ -473,6 +561,9 @@ static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast
             REQUIRE(*seq_state == TYPE_SPECIFIER_SEQUENCE_EMPTY,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
                                            "Cannot combine enum type specifier with others"));
+            REQUIRE(*real_class == REAL_SCALAR,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                                           "Enum type specifier cannot be combined with complex type specifier"));
             REQUIRE_OK(resolve_enum_type(mem, context, decl_specifier, base_type, flags));
             *seq_state = TYPE_SPECIFIER_SEQUENCE_SPECIFIERS;
             break;
@@ -481,6 +572,10 @@ static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast
             REQUIRE(*seq_state == TYPE_SPECIFIER_SEQUENCE_EMPTY,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
                                            "Cannot combine referenced type definition with others"));
+            REQUIRE(
+                *real_class == REAL_SCALAR,
+                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                                       "Referenced type definition cannot be combined with complex type specifier"));
             REQUIRE_OK(resolve_typedef(mem, context, specifier->value.type_name, &decl_specifier->source_location,
                                        base_type, alignment));
             *seq_state = TYPE_SPECIFIER_SEQUENCE_TYPEDEF;
@@ -493,6 +588,9 @@ static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast
             REQUIRE(*base_type == NULL,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
                                            "va_list type specifier cannot be combined with others"));
+            REQUIRE(*real_class == REAL_SCALAR,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                                           "va_list type specifier cannot be combined with complex type specifier"));
             *base_type = kefir_ast_type_va_list();
             *seq_state = TYPE_SPECIFIER_SEQUENCE_SPECIFIERS;
             break;
@@ -542,6 +640,9 @@ static kefir_result_t apply_type_signedness(struct kefir_mem *mem, struct kefir_
                 case KEFIR_AST_TYPE_SCALAR_FLOAT:
                 case KEFIR_AST_TYPE_SCALAR_DOUBLE:
                 case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
+                case KEFIR_AST_TYPE_COMPLEX_FLOAT:
+                case KEFIR_AST_TYPE_COMPLEX_DOUBLE:
+                case KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE:
                 case KEFIR_AST_TYPE_SCALAR_POINTER:
                 case KEFIR_AST_TYPE_ENUMERATION:
                 case KEFIR_AST_TYPE_STRUCTURE:
@@ -592,6 +693,9 @@ static kefir_result_t apply_type_signedness(struct kefir_mem *mem, struct kefir_
                 case KEFIR_AST_TYPE_SCALAR_FLOAT:
                 case KEFIR_AST_TYPE_SCALAR_DOUBLE:
                 case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
+                case KEFIR_AST_TYPE_COMPLEX_FLOAT:
+                case KEFIR_AST_TYPE_COMPLEX_DOUBLE:
+                case KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE:
                 case KEFIR_AST_TYPE_SCALAR_POINTER:
                 case KEFIR_AST_TYPE_ENUMERATION:
                 case KEFIR_AST_TYPE_STRUCTURE:
@@ -1069,6 +1173,7 @@ static kefir_result_t analyze_declaration_specifiers_impl(
     kefir_uint64_t flags, const struct kefir_source_location *source_location) {
     enum signedness signedness = SIGNEDNESS_DEFAULT;
     enum type_specifier_sequence_state seq_state = TYPE_SPECIFIER_SEQUENCE_EMPTY;
+    enum real_class real_class = REAL_SCALAR;
     const struct kefir_ast_type *base_type = NULL;
     struct kefir_ast_type_qualification qualification = {false};
     kefir_ast_scoped_identifier_storage_t storage_class = KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN;
@@ -1082,7 +1187,7 @@ static kefir_result_t analyze_declaration_specifiers_impl(
          iter != NULL; kefir_ast_declarator_specifier_list_next(&iter, &declatator_specifier)) {
         switch (declatator_specifier->klass) {
             case KEFIR_AST_TYPE_SPECIFIER:
-                REQUIRE_OK(resolve_type(mem, context, &signedness, &seq_state, &base_type, alignment,
+                REQUIRE_OK(resolve_type(mem, context, &signedness, &real_class, &seq_state, &base_type, alignment,
                                         declatator_specifier, flags));
                 break;
 

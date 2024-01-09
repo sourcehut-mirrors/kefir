@@ -107,6 +107,35 @@ static kefir_result_t translate_scalar_type(struct kefir_mem *mem, const struct 
     return KEFIR_OK;
 }
 
+static kefir_result_t translate_complex_type(struct kefir_mem *mem, const struct kefir_ast_type *type,
+                                             kefir_size_t alignment, struct kefir_irbuilder_type *builder,
+                                             struct kefir_ast_type_layout **layout_ptr) {
+    kefir_size_t type_index = kefir_ir_type_length(builder->type);
+
+    switch (type->tag) {
+        case KEFIR_AST_TYPE_COMPLEX_FLOAT:
+            REQUIRE_OK(KEFIR_IRBUILDER_TYPE_APPEND(builder, KEFIR_IR_TYPE_COMPLEX_FLOAT32, 0, 0));
+            break;
+
+        case KEFIR_AST_TYPE_COMPLEX_DOUBLE:
+            REQUIRE_OK(KEFIR_IRBUILDER_TYPE_APPEND(builder, KEFIR_IR_TYPE_COMPLEX_FLOAT64, 0, 0));
+            break;
+
+        case KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE:
+            REQUIRE_OK(KEFIR_IRBUILDER_TYPE_APPEND(builder, KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE, 0, 0));
+            break;
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Not a complex type");
+    }
+
+    if (layout_ptr != NULL) {
+        *layout_ptr = kefir_ast_new_type_layout(mem, type, alignment, type_index);
+        REQUIRE(*layout_ptr != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST type layout"));
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t translate_array_type(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                            const struct kefir_ast_type *type, kefir_size_t alignment,
                                            const struct kefir_ast_translator_environment *env,
@@ -388,6 +417,12 @@ kefir_result_t kefir_ast_translate_object_type(struct kefir_mem *mem, const stru
         case KEFIR_AST_TYPE_SCALAR_POINTER:
         case KEFIR_AST_TYPE_VA_LIST:
             REQUIRE_OK(translate_scalar_type(mem, type, alignment, builder, layout_ptr));
+            break;
+
+        case KEFIR_AST_TYPE_COMPLEX_FLOAT:
+        case KEFIR_AST_TYPE_COMPLEX_DOUBLE:
+        case KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE:
+            REQUIRE_OK(translate_complex_type(mem, type, alignment, builder, layout_ptr));
             break;
 
         case KEFIR_AST_TYPE_ENUMERATION:

@@ -210,6 +210,15 @@ kefir_result_t kefir_codegen_amd64_function_map_phi_outputs(struct kefir_mem *, 
     _def(vararg_end, KEFIR_OPT_OPCODE_VARARG_END) _separator \
     _def(vararg_copy, KEFIR_OPT_OPCODE_VARARG_COPY) _separator \
     _def(vararg_get, KEFIR_OPT_OPCODE_VARARG_GET) _separator \
+    _def(complex_float32_from, KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_FROM) _separator \
+    _def(complex_float32_real, KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_REAL) _separator \
+    _def(complex_float32_imaginary, KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_IMAGINARY) _separator \
+    _def(complex_float64_from, KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_FROM) _separator \
+    _def(complex_float64_real, KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_REAL) _separator \
+    _def(complex_float64_imaginary, KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_IMAGINARY) _separator \
+    _def(complex_long_double_from, KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_FROM) _separator \
+    _def(complex_long_double_real, KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_REAL) _separator \
+    _def(complex_long_double_imaginary, KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_IMAGINARY) _separator \
     _def(inline_assembly, KEFIR_OPT_OPCODE_INLINE_ASSEMBLY)
 // clang-format on
 

@@ -72,15 +72,40 @@ const struct kefir_ast_type *kefir_ast_type_common_arithmetic(const struct kefir
         type2 = kefir_ast_enumeration_underlying_type(&type2->enumeration_type);
     }
 
+    kefir_bool_t complex_type = false;
+    if (KEFIR_AST_TYPE_IS_COMPLEX_TYPE(type1)) {
+        complex_type = true;
+        type1 = kefir_ast_type_corresponding_real_type(type1);
+        REQUIRE(type1 != NULL, NULL);
+    }
+    if (KEFIR_AST_TYPE_IS_COMPLEX_TYPE(type2)) {
+        complex_type = true;
+        type2 = kefir_ast_type_corresponding_real_type(type2);
+        REQUIRE(type2 != NULL, NULL);
+    }
+
     if (ANY_OF(type1, type2, kefir_ast_type_long_double())) {
-        return kefir_ast_type_long_double();
+        if (complex_type) {
+            return kefir_ast_type_complex_long_double();
+        } else {
+            return kefir_ast_type_long_double();
+        }
     }
     if (ANY_OF(type1, type2, kefir_ast_type_double())) {
-        return kefir_ast_type_double();
+        if (complex_type) {
+            return kefir_ast_type_complex_double();
+        } else {
+            return kefir_ast_type_double();
+        }
     }
     if (ANY_OF(type1, type2, kefir_ast_type_float())) {
-        return kefir_ast_type_float();
+        if (complex_type) {
+            return kefir_ast_type_complex_float();
+        } else {
+            return kefir_ast_type_float();
+        }
     }
+    REQUIRE(!complex_type, NULL);
     type1 = kefir_ast_type_int_promotion(type_traits, type1, bitfield1);
     type2 = kefir_ast_type_int_promotion(type_traits, type2, bitfield2);
     REQUIRE(type1 != NULL, NULL);

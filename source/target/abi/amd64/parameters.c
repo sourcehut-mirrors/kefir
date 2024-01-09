@@ -282,6 +282,10 @@ static kefir_result_t amd64_sysv_parameter_at(struct amd64_abi_payload *payload,
             parameter->location = KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_X87UP;
             break;
 
+        case KEFIR_AMD64_SYSV_PARAM_COMPLEX_X87:
+            parameter->location = KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_COMPLEX_X87;
+            break;
+
         case KEFIR_AMD64_SYSV_PARAM_MEMORY:
             parameter->location = KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_MEMORY;
             if (!payload->preliminary_classification) {
@@ -319,6 +323,10 @@ static kefir_result_t amd64_sysv_parameter_at(struct amd64_abi_payload *payload,
 
                     case KEFIR_AMD64_SYSV_PARAM_X87UP:
                         parameter->nested.location = KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_X87UP;
+                        break;
+
+                    case KEFIR_AMD64_SYSV_PARAM_COMPLEX_X87:
+                        parameter->nested.location = KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_COMPLEX_X87;
                         break;
 
                     case KEFIR_AMD64_SYSV_PARAM_NO_CLASS:
@@ -467,6 +475,10 @@ kefir_result_t kefir_abi_amd64_function_parameter_multireg_at(
 
                 case KEFIR_AMD64_SYSV_PARAM_X87UP:
                     param_ptr->location = KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_X87UP;
+                    break;
+
+                case KEFIR_AMD64_SYSV_PARAM_COMPLEX_X87:
+                    param_ptr->location = KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_COMPLEX_X87;
                     break;
 
                 case KEFIR_AMD64_SYSV_PARAM_NO_CLASS:

@@ -235,6 +235,11 @@ static kefir_result_t evaluate_parameter_type(struct kefir_mem *mem, const struc
             *param_type = INLINE_ASSEMBLY_PARAMETER_AGGREGATE;
             break;
 
+        case KEFIR_IR_TYPE_COMPLEX_FLOAT32:
+        case KEFIR_IR_TYPE_COMPLEX_FLOAT64:
+        case KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE:
+            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Complex numbers are not implemented yet");
+
         case KEFIR_IR_TYPE_BITS:
         case KEFIR_IR_TYPE_BUILTIN:
         case KEFIR_IR_TYPE_NONE:
@@ -529,6 +534,11 @@ static kefir_result_t read_inputs(struct kefir_mem *mem, struct kefir_codegen_am
                                                "On-stack aggregate parameters of IR inline assembly are not supported");
                 }
                 break;
+
+            case KEFIR_IR_TYPE_COMPLEX_FLOAT32:
+            case KEFIR_IR_TYPE_COMPLEX_FLOAT64:
+            case KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE:
+                return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Complex numbers are not implemented yet");
 
             case KEFIR_IR_TYPE_BITS:
             case KEFIR_IR_TYPE_BUILTIN:
@@ -1052,6 +1062,11 @@ static kefir_result_t store_outputs(struct kefir_mem *mem, struct kefir_codegen_
                             "On-stack aggregate parameters of IR inline assembly are not supported yet");
                 }
                 break;
+
+            case KEFIR_IR_TYPE_COMPLEX_FLOAT32:
+            case KEFIR_IR_TYPE_COMPLEX_FLOAT64:
+            case KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE:
+                return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Complex numbers are not implemented yet");
 
             case KEFIR_IR_TYPE_BITS:
             case KEFIR_IR_TYPE_BUILTIN:

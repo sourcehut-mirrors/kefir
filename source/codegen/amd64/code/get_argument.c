@@ -125,6 +125,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_argument)(struct kefir_m
 
                     case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_X87:
                     case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_X87UP:
+                    case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_COMPLEX_X87:
                     case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_MULTIPLE_REGISTERS:
                     case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_MEMORY:
                     case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_NESTED:
@@ -152,6 +153,9 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_argument)(struct kefir_m
                 case KEFIR_IR_TYPE_ARRAY:
                 case KEFIR_IR_TYPE_UNION:
                 case KEFIR_IR_TYPE_LONG_DOUBLE:
+                case KEFIR_IR_TYPE_COMPLEX_FLOAT32:
+                case KEFIR_IR_TYPE_COMPLEX_FLOAT64:
+                case KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE:
                     REQUIRE_OK(kefir_asmcmp_virtual_register_new(
                         mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &vreg2));
                     REQUIRE_OK(kefir_asmcmp_amd64_lea(
@@ -185,6 +189,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_argument)(struct kefir_m
 
         case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_X87:
         case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_X87UP:
+        case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_COMPLEX_X87:
         case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_NESTED:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected function parameter location");
     }

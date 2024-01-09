@@ -516,6 +516,13 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             UNARY_OP(float32_to_long_double, KEFIR_IROPCODE_F32CLD)
             UNARY_OP(float64_to_long_double, KEFIR_IROPCODE_F64CLD)
 
+            UNARY_OP(complex_float32_real, KEFIR_IROPCODE_CMPF32R)
+            UNARY_OP(complex_float32_imaginary, KEFIR_IROPCODE_CMPF32I)
+            UNARY_OP(complex_float64_real, KEFIR_IROPCODE_CMPF64R)
+            UNARY_OP(complex_float64_imaginary, KEFIR_IROPCODE_CMPF64I)
+            UNARY_OP(complex_long_double_real, KEFIR_IROPCODE_CMPLDR)
+            UNARY_OP(complex_long_double_imaginary, KEFIR_IROPCODE_CMPLDI)
+
 #undef UNARY_OP
 
 #define BINARY_OP(_id, _opcode)                                                                                    \
@@ -570,6 +577,10 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             BINARY_OP(long_double_sub, KEFIR_IROPCODE_LDSUB)
             BINARY_OP(long_double_mul, KEFIR_IROPCODE_LDMUL)
             BINARY_OP(long_double_div, KEFIR_IROPCODE_LDDIV)
+
+            BINARY_OP(complex_float32_from, KEFIR_IROPCODE_CMPF32)
+            BINARY_OP(complex_float64_from, KEFIR_IROPCODE_CMPF64)
+            BINARY_OP(complex_long_double_from, KEFIR_IROPCODE_CMPLD)
 
 #undef BINARY_OP
 
