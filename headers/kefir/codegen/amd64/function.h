@@ -142,7 +142,6 @@ kefir_result_t kefir_codegen_amd64_function_map_phi_outputs(struct kefir_mem *, 
     _def(float64_to_long_double, KEFIR_OPT_OPCODE_FLOAT64_TO_LONG_DOUBLE) _separator \
     _def(long_double_to_int, KEFIR_OPT_OPCODE_LONG_DOUBLE_TO_INT) _separator \
     _def(long_double_to_uint, KEFIR_OPT_OPCODE_LONG_DOUBLE_TO_UINT) _separator \
-    _def(long_double_trunc1, KEFIR_OPT_OPCODE_LONG_DOUBLE_TRUNCATE_1BIT) _separator \
     _def(long_double_to_float32, KEFIR_OPT_OPCODE_LONG_DOUBLE_TO_FLOAT32) _separator \
     _def(long_double_to_float64, KEFIR_OPT_OPCODE_LONG_DOUBLE_TO_FLOAT64) _separator \
     _def(bits_extract_signed, KEFIR_OPT_OPCODE_BITS_EXTRACT_SIGNED) _separator \

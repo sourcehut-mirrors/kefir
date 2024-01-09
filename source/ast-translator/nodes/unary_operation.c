@@ -28,6 +28,7 @@
 #include "kefir/ast-translator/flow_control.h"
 #include "kefir/ast-translator/type.h"
 #include "kefir/ast-translator/temporaries.h"
+#include "kefir/ast/type_conv.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 #include "kefir/core/source_error.h"
@@ -126,10 +127,11 @@ static kefir_result_t translate_logical_not_inversion(struct kefir_mem *mem,
                                                       struct kefir_ast_translator_context *context,
                                                       struct kefir_irbuilder_block *builder,
                                                       const struct kefir_ast_unary_operation *node) {
-    const struct kefir_ast_type *normalized_type = kefir_ast_translator_normalize_type(node->arg->properties.type);
+    const struct kefir_ast_type *normalized_type =
+        KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(mem, context->ast_context->type_bundle, node->arg->properties.type);
     REQUIRE_OK(kefir_ast_translate_expression(mem, node->arg, builder, context));
-    if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(normalized_type)) {
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_LDTRUNC1, 0));
+    if (KEFIR_AST_TYPE_IS_FLOATING_POINT(normalized_type)) {
+        REQUIRE_OK(kefir_ast_translate_typeconv_to_bool(builder, normalized_type));
     }
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_BNOT, 0));
     return KEFIR_OK;

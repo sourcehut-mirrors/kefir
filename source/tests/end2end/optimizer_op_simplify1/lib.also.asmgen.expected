@@ -44,21 +44,20 @@ _kefir_func_dnot_label3:
 dnotd:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
+    sub $32, %rsp
 _kefir_func_dnotd_label0:
 _kefir_func_dnotd_label1:
     lea -8(%rbp), %rax
     movq %xmm0, (%rax)
     lea -8(%rbp), %rax
     movq (%rax), %rax
-    test %rax, %rax
-    setne %al
-    movzx %al, %rax
-    mov $0, %rcx
-    test %rax, %rax
-    sete %cl
-    test %rcx, %rcx
-    jz _kefir_func_dnotd_label2
+    movq _kefir_func_dnotd_label4(%rip), %xmm0
+    movdqu %xmm1, -32(%rbp)
+    movq %rax, %xmm1
+    ucomisd %xmm0, %xmm1
+    movdqu -32(%rbp), %xmm1
+    jp _kefir_func_dnotd_label2
+    jne _kefir_func_dnotd_label2
     jmp _kefir_func_dnotd_label3
 _kefir_func_dnotd_label2:
     mov $1, %rax
@@ -70,25 +69,29 @@ _kefir_func_dnotd_label3:
     lea (%rbp), %rsp
     pop %rbp
     ret
+.section .rodata
+    .align 8
+_kefir_func_dnotd_label4:
+    .quad 0
+.section .text
 
 dnotf:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
+    sub $32, %rsp
 _kefir_func_dnotf_label0:
 _kefir_func_dnotf_label1:
     lea -4(%rbp), %rax
     movd %xmm0, (%rax)
     lea -4(%rbp), %rax
     movl (%rax), %eax
-    test %rax, %rax
-    setne %al
-    movzx %al, %rax
-    mov $0, %rcx
-    test %rax, %rax
-    sete %cl
-    test %rcx, %rcx
-    jz _kefir_func_dnotf_label2
+    movd _kefir_func_dnotf_label4(%rip), %xmm0
+    movdqu %xmm1, -32(%rbp)
+    movd %rax, %xmm1
+    ucomiss %xmm0, %xmm1
+    movdqu -32(%rbp), %xmm1
+    jp _kefir_func_dnotf_label2
+    jne _kefir_func_dnotf_label2
     jmp _kefir_func_dnotf_label3
 _kefir_func_dnotf_label2:
     mov $1, %rax
@@ -100,11 +103,16 @@ _kefir_func_dnotf_label3:
     lea (%rbp), %rsp
     pop %rbp
     ret
+.section .rodata
+    .align 4
+_kefir_func_dnotf_label4:
+    .long 0
+.section .text
 
 dnotld:
     push %rbp
     mov %rsp, %rbp
-    sub $64, %rsp
+    sub $80, %rsp
     fstcw -8(%rbp)
 _kefir_func_dnotld_label0:
     lea 16(%rbp), %rax
@@ -114,13 +122,17 @@ _kefir_func_dnotld_label1:
     fstpt (%rcx)
     lea -48(%rbp), %rax
     fldt (%rax)
+    fstpt -80(%rbp)
+    fldt _kefir_func_dnotld_label4(%rip)
     fstpt -64(%rbp)
     fldt -64(%rbp)
-    call __kefirrt_opt_long_double_trunc_1bit@PLT
-    mov %rax, %rcx
+    fldt -80(%rbp)
     mov $0, %rax
-    test %rcx, %rcx
-    sete %al
+    mov $0, %rcx
+    fucomip
+    fstp %st(0)
+    setnp %al
+    cmovne %rcx, %rax
     test %rax, %rax
     jz _kefir_func_dnotld_label2
     jmp _kefir_func_dnotld_label3
@@ -136,5 +148,11 @@ _kefir_func_dnotld_label3:
     lea (%rbp), %rsp
     pop %rbp
     ret
+.section .rodata
+    .align 8
+_kefir_func_dnotld_label4:
+    .quad 0
+    .quad 0
+.section .text
 
 

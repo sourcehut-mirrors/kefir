@@ -262,7 +262,7 @@
                     },
                     {
                         "id": 1,
-                        "control_flow": 4,
+                        "control_flow": 6,
                         "phi": [],
                         "calls": [],
                         "inline_assembly": [],
@@ -278,14 +278,14 @@
                                     "linear_liveness": {
                                         "alias": null,
                                         "begin": 1,
-                                        "end": 3
+                                        "end": 4
                                     }
                                 }
                             },
                             {
                                 "id": 2,
-                                "opcode": "long_double_truncate_1bit",
-                                "arg": 1,
+                                "opcode": "long_double_const",
+                                "value": 0.000000,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -299,8 +299,11 @@
                             },
                             {
                                 "id": 3,
-                                "opcode": "bool_not",
-                                "arg": 2,
+                                "opcode": "long_double_equals",
+                                "args": [
+                                    1,
+                                    2
+                                ],
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -314,10 +317,8 @@
                             },
                             {
                                 "id": 4,
-                                "opcode": "branch",
-                                "target_block": 2,
-                                "alternative_block": 2,
-                                "condition": 3,
+                                "opcode": "bool_not",
+                                "arg": 3,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -325,7 +326,39 @@
                                     "linear_liveness": {
                                         "alias": null,
                                         "begin": 4,
-                                        "end": 5
+                                        "end": 6
+                                    }
+                                }
+                            },
+                            {
+                                "id": 5,
+                                "opcode": "bool_not",
+                                "arg": 4,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 5,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 5,
+                                        "end": 7
+                                    }
+                                }
+                            },
+                            {
+                                "id": 6,
+                                "opcode": "branch",
+                                "target_block": 2,
+                                "alternative_block": 2,
+                                "condition": 5,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 6,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 6,
+                                        "end": 7
                                     }
                                 }
                             }
@@ -335,7 +368,7 @@
                             "linear_position": 2,
                             "linear_interval": {
                                 "begin": 1,
-                                "end": 5
+                                "end": 7
                             },
                             "successors": [
                                 2,
@@ -348,23 +381,23 @@
                     },
                     {
                         "id": 2,
-                        "control_flow": 12,
+                        "control_flow": 14,
                         "phi": [],
                         "calls": [],
                         "inline_assembly": [],
                         "code": [
                             {
-                                "id": 12,
+                                "id": 14,
                                 "opcode": "return",
                                 "arg": null,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
-                                    "linear_index": 5,
+                                    "linear_index": 7,
                                     "linear_liveness": {
                                         "alias": null,
-                                        "begin": 5,
-                                        "end": 6
+                                        "begin": 7,
+                                        "end": 8
                                     }
                                 }
                             }
@@ -373,8 +406,8 @@
                             "reachable": true,
                             "linear_position": 3,
                             "linear_interval": {
-                                "begin": 5,
-                                "end": 6
+                                "begin": 7,
+                                "end": 8
                             },
                             "successors": [],
                             "predecessors": [
@@ -385,7 +418,7 @@
                     }
                 ],
                 "properties": {
-                    "linear_length": 6
+                    "linear_length": 8
                 }
             }
         },

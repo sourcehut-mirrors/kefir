@@ -61,7 +61,6 @@ static kefir_result_t simplify_boot_not(struct kefir_mem *mem, struct kefir_opt_
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_GREATER:
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_LESSER:
         case KEFIR_OPT_OPCODE_INT64_TRUNCATE_1BIT:
-        case KEFIR_OPT_OPCODE_LONG_DOUBLE_TRUNCATE_1BIT:
             *replacement_ref = arg->id;
             break;
 
@@ -74,11 +73,14 @@ static kefir_result_t simplify_boot_not(struct kefir_mem *mem, struct kefir_opt_
         case KEFIR_OPT_OPCODE_INT_TO_LONG_DOUBLE:
         case KEFIR_OPT_OPCODE_UINT_TO_LONG_DOUBLE:
         case KEFIR_OPT_OPCODE_FLOAT32_TO_LONG_DOUBLE:
-        case KEFIR_OPT_OPCODE_FLOAT64_TO_LONG_DOUBLE:
-            REQUIRE_OK(
-                kefir_opt_code_builder_long_double_truncate_1bit(mem, &func->code, block_id, arg->id, replacement_ref));
+        case KEFIR_OPT_OPCODE_FLOAT64_TO_LONG_DOUBLE: {
+            kefir_opt_instruction_ref_t zero_ref, equality_ref;
+            REQUIRE_OK(kefir_opt_code_builder_long_double_constant(mem, &func->code, block_id, 0.0L, &zero_ref));
+            REQUIRE_OK(kefir_opt_code_builder_long_double_equals(mem, &func->code, block_id, arg->id, zero_ref,
+                                                                 &equality_ref));
+            REQUIRE_OK(kefir_opt_code_builder_bool_not(mem, &func->code, block_id, equality_ref, replacement_ref));
             REQUIRE_OK(kefir_opt_code_container_instruction_move_after(&func->code, instr_id, *replacement_ref));
-            break;
+        } break;
 
         default:
             REQUIRE_OK(

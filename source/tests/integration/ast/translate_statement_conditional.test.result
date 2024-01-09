@@ -432,14 +432,21 @@
                     "arg": -19.007200
                 },
                 {
-                    "opcode": "ldtrunc1"
+                    "opcode": "pushld",
+                    "arg": 0.000000
+                },
+                {
+                    "opcode": "ldequals"
+                },
+                {
+                    "opcode": "bnot"
                 },
                 {
                     "opcode": "bnot"
                 },
                 {
                     "opcode": "branch",
-                    "arg": 7
+                    "arg": 9
                 },
                 {
                     "opcode": "pushld",
@@ -450,7 +457,7 @@
                 },
                 {
                     "opcode": "jmp",
-                    "arg": 9
+                    "arg": 11
                 },
                 {
                     "opcode": "pushld",

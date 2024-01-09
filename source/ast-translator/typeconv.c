@@ -121,14 +121,6 @@ static kefir_result_t cast_to_integer(const struct kefir_ast_type_traits *type_t
     }
 
     switch (target->tag) {
-        case KEFIR_AST_TYPE_SCALAR_BOOL:
-            if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(origin)) {
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_LDTRUNC1, 0));
-            } else {
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_TRUNCATE1, 0));
-            }
-            break;
-
         case KEFIR_AST_TYPE_SCALAR_CHAR:
             if (type_traits->character_type_signedness) {
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_EXTEND8, 0));
@@ -178,6 +170,34 @@ static kefir_result_t cast_to_integer(const struct kefir_ast_type_traits *type_t
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_ast_translate_typeconv_to_bool(struct kefir_irbuilder_block *builder,
+                                                    const struct kefir_ast_type *origin) {
+    REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR block builder"));
+    REQUIRE(origin != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid origin AST type"));
+
+    origin = kefir_ast_translator_normalize_type(origin);
+
+    if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(origin)) {
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPEND_LONG_DOUBLE(builder, KEFIR_IROPCODE_PUSHLD, 0.0L));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_LDEQUALS, 0));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_BNOT, 0));
+    } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DOUBLE) {
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDF64(builder, KEFIR_IROPCODE_PUSHF64, 0.0));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_F64EQUALS, 0));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_BNOT, 0));
+    } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_FLOAT) {
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDF32(builder, KEFIR_IROPCODE_PUSHF32, 0.0f, 0.0f));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_F32EQUALS, 0));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_BNOT, 0));
+    } else {
+        REQUIRE(KEFIR_AST_TYPE_IS_SCALAR_TYPE(origin),
+                KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unable to cast non-scalar type to bool"));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_TRUNCATE1, 0));
+    }
+
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_ast_translate_typeconv_normalize(struct kefir_irbuilder_block *builder,
                                                       const struct kefir_ast_type_traits *type_traits,
                                                       const struct kefir_ast_type *origin) {
@@ -195,6 +215,10 @@ kefir_result_t kefir_ast_translate_typeconv_normalize(struct kefir_irbuilder_blo
         case KEFIR_AST_TYPE_SCALAR_DOUBLE:
         case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
             // Intentionally left blank
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_BOOL:
+            REQUIRE_OK(kefir_ast_translate_typeconv_to_bool(builder, normalized_origin));
             break;
 
         default:
@@ -232,6 +256,10 @@ kefir_result_t kefir_ast_translate_typeconv(struct kefir_irbuilder_block *builde
             REQUIRE(KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(normalized_origin) ||
                         normalized_origin->tag == KEFIR_AST_TYPE_SCALAR_POINTER,
                     KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected origin type to be integral or pointer"));
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_BOOL:
+            REQUIRE_OK(kefir_ast_translate_typeconv_to_bool(builder, normalized_origin));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_FLOAT:

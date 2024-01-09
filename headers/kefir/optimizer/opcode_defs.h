@@ -175,7 +175,6 @@
     OPCODE(UINT_TO_FLOAT64, "uint_to_float64", ref1) SEPARATOR \
     OPCODE(FLOAT32_TO_FLOAT64, "float32_to_float64", ref1) SEPARATOR \
     OPCODE(FLOAT64_TO_FLOAT32, "float64_to_float32", ref1) SEPARATOR \
-    OPCODE(LONG_DOUBLE_TRUNCATE_1BIT, "long_double_truncate_1bit", ref1) SEPARATOR \
     OPCODE(LONG_DOUBLE_TO_INT, "long_double_to_int", ref1) SEPARATOR \
     OPCODE(LONG_DOUBLE_TO_UINT, "long_double_to_uint", ref1) SEPARATOR \
     OPCODE(LONG_DOUBLE_TO_FLOAT32, "long_double_to_float32", ref1) SEPARATOR \

@@ -535,14 +535,21 @@
                     "arg": 0.000000
                 },
                 {
-                    "opcode": "ldtrunc1"
+                    "opcode": "pushld",
+                    "arg": 0.000000
+                },
+                {
+                    "opcode": "ldequals"
+                },
+                {
+                    "opcode": "bnot"
                 },
                 {
                     "opcode": "bnot"
                 },
                 {
                     "opcode": "branch",
-                    "arg": 8
+                    "arg": 10
                 },
                 {
                     "opcode": "invoke",

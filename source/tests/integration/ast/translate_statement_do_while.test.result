@@ -298,7 +298,14 @@
                     "arg": -10000000000000.000000
                 },
                 {
-                    "opcode": "ldtrunc1"
+                    "opcode": "pushld",
+                    "arg": 0.000000
+                },
+                {
+                    "opcode": "ldequals"
+                },
+                {
+                    "opcode": "bnot"
                 },
                 {
                     "opcode": "branch",

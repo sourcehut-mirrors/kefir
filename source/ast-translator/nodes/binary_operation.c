@@ -535,11 +535,7 @@ static kefir_result_t truncate_value(struct kefir_mem *mem, struct kefir_ast_tra
                                      struct kefir_irbuilder_block *builder, const struct kefir_ast_type *type) {
     const struct kefir_ast_type *normalized_type =
         KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(mem, context->ast_context->type_bundle, type);
-    if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(normalized_type)) {
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_LDTRUNC1, 0));
-    } else {
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_TRUNCATE1, 0));
-    }
+    REQUIRE_OK(kefir_ast_translate_typeconv_to_bool(builder, normalized_type));
     return KEFIR_OK;
 }
 

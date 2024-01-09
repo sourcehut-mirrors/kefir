@@ -47,6 +47,5 @@
 #define KEFIR_AMD64_RUNTIME_FLOAT64_TO_UINT "__kefirrt_opt_float64_to_uint"
 #define KEFIR_AMD64_RUNTIME_LONG_DOUBLE_TO_INT "__kefirrt_opt_long_double_to_int"
 #define KEFIR_AMD64_RUNTIME_LONG_DOUBLE_TO_UINT "__kefirrt_opt_long_double_to_uint"
-#define KEFIR_AMD64_RUNTIME_LONG_DOUBLE_TRUNC_1BIT "__kefirrt_opt_long_double_trunc_1bit"
 
 #endif

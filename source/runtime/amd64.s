@@ -170,21 +170,6 @@ __kefirrt_opt_long_double_to_uint_overflow:
     btc rax, 63
     ret
 
-.global __kefirrt_opt_long_double_trunc_1bit
-.hidden __kefirrt_opt_long_double_trunc_1bit
-__kefirrt_opt_long_double_trunc_1bit:
-    xor rax, rax
-    fldz
-    fstp st(2)
-    fucomip st(0), st(1)
-    fstp st(0)
-    setnp ah
-    sete al
-    and al, ah
-    xor ah, ah
-    xor rax, 1
-    ret
-
 .global __kefirrt_trap
 .hidden __kefirrt_trap
 __kefirrt_trap:

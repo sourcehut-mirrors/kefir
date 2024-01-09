@@ -776,6 +776,16 @@
                     "arg": 1.760000
                 },
                 {
+                    "opcode": "pushf32",
+                    "arg": 0.000000
+                },
+                {
+                    "opcode": "f32equals"
+                },
+                {
+                    "opcode": "bnot"
+                },
+                {
                     "opcode": "bnot"
                 },
                 {
@@ -783,11 +793,31 @@
                     "arg": 1.234560
                 },
                 {
+                    "opcode": "pushf64",
+                    "arg": 0.000000
+                },
+                {
+                    "opcode": "f64equals"
+                },
+                {
+                    "opcode": "bnot"
+                },
+                {
                     "opcode": "bnot"
                 },
                 {
                     "opcode": "pushf64",
                     "arg": 98765.432100
+                },
+                {
+                    "opcode": "pushf64",
+                    "arg": 0.000000
+                },
+                {
+                    "opcode": "f64equals"
+                },
+                {
+                    "opcode": "bnot"
                 },
                 {
                     "opcode": "bnot"
@@ -819,7 +849,14 @@
                     "arg": 98765.432100
                 },
                 {
-                    "opcode": "ldtrunc1"
+                    "opcode": "pushld",
+                    "arg": 0.000000
+                },
+                {
+                    "opcode": "ldequals"
+                },
+                {
+                    "opcode": "bnot"
                 },
                 {
                     "opcode": "bnot"

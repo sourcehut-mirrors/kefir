@@ -136,7 +136,6 @@
     OPCODE(LDEQUALS,     "ldequals",    none) SEPARATOR \
     OPCODE(LDGREATER,    "ldgreater",   none) SEPARATOR \
     OPCODE(LDLESSER,     "ldlesser",    none) SEPARATOR \
-    OPCODE(LDTRUNC1,     "ldtrunc1",    none) SEPARATOR \
     /* Floating-point conversions */ \
     OPCODE(F32CINT,      "f32cint",     none) SEPARATOR \
     OPCODE(F64CINT,      "f64cint",     none) SEPARATOR \

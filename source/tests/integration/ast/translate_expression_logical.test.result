@@ -256,7 +256,14 @@
                     "arg": 0.400000
                 },
                 {
-                    "opcode": "trunc1"
+                    "opcode": "pushf32",
+                    "arg": 0.000000
+                },
+                {
+                    "opcode": "f32equals"
+                },
+                {
+                    "opcode": "bnot"
                 },
                 {
                     "opcode": "pick",
@@ -264,7 +271,7 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 7
+                    "arg": 9
                 },
                 {
                     "opcode": "pushi",
@@ -320,7 +327,14 @@
                     "arg": -1.000000
                 },
                 {
-                    "opcode": "ldtrunc1"
+                    "opcode": "pushld",
+                    "arg": 0.000000
+                },
+                {
+                    "opcode": "ldequals"
+                },
+                {
+                    "opcode": "bnot"
                 },
                 {
                     "opcode": "pick",
@@ -328,7 +342,7 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 7
+                    "arg": 9
                 },
                 {
                     "opcode": "pushi",
@@ -352,7 +366,14 @@
                     "arg": 20000000000.000000
                 },
                 {
-                    "opcode": "ldtrunc1"
+                    "opcode": "pushld",
+                    "arg": 0.000000
+                },
+                {
+                    "opcode": "ldequals"
+                },
+                {
+                    "opcode": "bnot"
                 },
                 {
                     "opcode": "pick",
@@ -360,14 +381,21 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 7
+                    "arg": 11
                 },
                 {
                     "opcode": "pushld",
                     "arg": 0.000000
                 },
                 {
-                    "opcode": "ldtrunc1"
+                    "opcode": "pushld",
+                    "arg": 0.000000
+                },
+                {
+                    "opcode": "ldequals"
+                },
+                {
+                    "opcode": "bnot"
                 },
                 {
                     "opcode": "bor"
@@ -419,7 +447,14 @@
                     "arg": 0.067000
                 },
                 {
-                    "opcode": "trunc1"
+                    "opcode": "pushf32",
+                    "arg": 0.000000
+                },
+                {
+                    "opcode": "f32equals"
+                },
+                {
+                    "opcode": "bnot"
                 },
                 {
                     "opcode": "pick",
@@ -430,7 +465,7 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 8
+                    "arg": 10
                 },
                 {
                     "opcode": "pushi",
@@ -489,7 +524,14 @@
                     "arg": 1.000000
                 },
                 {
-                    "opcode": "ldtrunc1"
+                    "opcode": "pushld",
+                    "arg": 0.000000
+                },
+                {
+                    "opcode": "ldequals"
+                },
+                {
+                    "opcode": "bnot"
                 },
                 {
                     "opcode": "pick",
@@ -500,7 +542,7 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 8
+                    "arg": 10
                 },
                 {
                     "opcode": "pushi",
@@ -524,7 +566,14 @@
                     "arg": 2.000000
                 },
                 {
-                    "opcode": "ldtrunc1"
+                    "opcode": "pushld",
+                    "arg": 0.000000
+                },
+                {
+                    "opcode": "ldequals"
+                },
+                {
+                    "opcode": "bnot"
                 },
                 {
                     "opcode": "pick",
@@ -535,14 +584,21 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 8
+                    "arg": 12
                 },
                 {
                     "opcode": "pushld",
                     "arg": 3.000000
                 },
                 {
-                    "opcode": "ldtrunc1"
+                    "opcode": "pushld",
+                    "arg": 0.000000
+                },
+                {
+                    "opcode": "ldequals"
+                },
+                {
+                    "opcode": "bnot"
                 },
                 {
                     "opcode": "band"
