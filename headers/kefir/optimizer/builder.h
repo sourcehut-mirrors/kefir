@@ -191,6 +191,10 @@ UNARY_OP(complex_float32_truncate_1bit);
 UNARY_OP(complex_float64_truncate_1bit);
 UNARY_OP(complex_long_double_truncate_1bit);
 
+UNARY_OP(complex_float32_neg);
+UNARY_OP(complex_float64_neg);
+UNARY_OP(complex_long_double_neg);
+
 #undef UNARY_OP
 
 #define BINARY_OP(_id)                                                                                 \
@@ -260,6 +264,19 @@ BINARY_OP(complex_long_double_from);
 BINARY_OP(complex_float32_equals);
 BINARY_OP(complex_float64_equals);
 BINARY_OP(complex_long_double_equals);
+
+BINARY_OP(complex_float32_add);
+BINARY_OP(complex_float64_add);
+BINARY_OP(complex_long_double_add);
+BINARY_OP(complex_float32_sub);
+BINARY_OP(complex_float64_sub);
+BINARY_OP(complex_long_double_sub);
+BINARY_OP(complex_float32_mul);
+BINARY_OP(complex_float64_mul);
+BINARY_OP(complex_long_double_mul);
+BINARY_OP(complex_float32_div);
+BINARY_OP(complex_float64_div);
+BINARY_OP(complex_long_double_div);
 
 #undef BINARY_OP
 

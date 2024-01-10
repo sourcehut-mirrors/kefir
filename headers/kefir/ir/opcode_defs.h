@@ -171,6 +171,21 @@
     OPCODE(CMPF32TRUNC1, "cmpf32trunc1",none) SEPARATOR \
     OPCODE(CMPF64TRUNC1, "cmpf64trunc1",none) SEPARATOR \
     OPCODE(CMPLDTRUNC1,  "cmpldtrunc1", none) SEPARATOR \
+    OPCODE(CMPF32ADD,    "cmpf32add",   none) SEPARATOR \
+    OPCODE(CMPF64ADD,    "cmpf64add",   none) SEPARATOR \
+    OPCODE(CMPLDADD,     "cmpldadd",   none) SEPARATOR \
+    OPCODE(CMPF32SUB,    "cmpf32sub",   none) SEPARATOR \
+    OPCODE(CMPF64SUB,    "cmpf64sub",   none) SEPARATOR \
+    OPCODE(CMPLDSUB,     "cmpldsub",   none) SEPARATOR \
+    OPCODE(CMPF32MUL,    "cmpf32mul",   none) SEPARATOR \
+    OPCODE(CMPF64MUL,    "cmpf64mul",   none) SEPARATOR \
+    OPCODE(CMPLDMUL,     "cmpldmul",   none) SEPARATOR \
+    OPCODE(CMPF32DIV,    "cmpf32div",   none) SEPARATOR \
+    OPCODE(CMPF64DIV,    "cmpf64div",   none) SEPARATOR \
+    OPCODE(CMPLDDIV,     "cmplddiv",   none) SEPARATOR \
+    OPCODE(CMPF32NEG,    "cmpf32neg",   none) SEPARATOR \
+    OPCODE(CMPF64NEG,    "cmpf64neg",   none) SEPARATOR \
+    OPCODE(CMPLDNEG,     "cmpldneg",   none) SEPARATOR \
     /* Miscallenous */ \
     OPCODE(INLINEASM,    "inlineasm",   u64)
 // clang-format on

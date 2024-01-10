@@ -198,7 +198,22 @@
     OPCODE(COMPLEX_LONG_DOUBLE_EQUALS, "complex_long_double_equals", ref2) SEPARATOR \
     OPCODE(COMPLEX_FLOAT32_TRUNCATE_1BIT, "complex_float32_truncate_1bit", ref1) SEPARATOR \
     OPCODE(COMPLEX_FLOAT64_TRUNCATE_1BIT, "complex_float64_truncate_1bit", ref1) SEPARATOR \
-    OPCODE(COMPLEX_LONG_DOUBLE_TRUNCATE_1BIT, "complex_long_double_truncate_1bit", ref1)
+    OPCODE(COMPLEX_LONG_DOUBLE_TRUNCATE_1BIT, "complex_long_double_truncate_1bit", ref1) SEPARATOR \
+    OPCODE(COMPLEX_FLOAT32_ADD, "complex_float32_add", ref2) SEPARATOR \
+    OPCODE(COMPLEX_FLOAT64_ADD, "complex_float64_add", ref2) SEPARATOR \
+    OPCODE(COMPLEX_LONG_DOUBLE_ADD, "complex_long_double_add", ref2) SEPARATOR \
+    OPCODE(COMPLEX_FLOAT32_SUB, "complex_float32_sub", ref2) SEPARATOR \
+    OPCODE(COMPLEX_FLOAT64_SUB, "complex_float64_sub", ref2) SEPARATOR \
+    OPCODE(COMPLEX_LONG_DOUBLE_SUB, "complex_long_double_sub", ref2) SEPARATOR \
+    OPCODE(COMPLEX_FLOAT32_MUL, "complex_float32_mul", ref2) SEPARATOR \
+    OPCODE(COMPLEX_FLOAT64_MUL, "complex_float64_mul", ref2) SEPARATOR \
+    OPCODE(COMPLEX_LONG_DOUBLE_MUL, "complex_long_double_mul", ref2) SEPARATOR \
+    OPCODE(COMPLEX_FLOAT32_DIV, "complex_float32_div", ref2) SEPARATOR \
+    OPCODE(COMPLEX_FLOAT64_DIV, "complex_float64_div", ref2) SEPARATOR \
+    OPCODE(COMPLEX_LONG_DOUBLE_DIV, "complex_long_double_div", ref2) SEPARATOR \
+    OPCODE(COMPLEX_FLOAT32_NEG, "complex_float32_neg", ref1) SEPARATOR \
+    OPCODE(COMPLEX_FLOAT64_NEG, "complex_float64_neg", ref1) SEPARATOR \
+    OPCODE(COMPLEX_LONG_DOUBLE_NEG, "complex_long_double_neg", ref1)
 // clang-format on
 
 #endif

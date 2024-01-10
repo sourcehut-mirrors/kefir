@@ -50,6 +50,48 @@ static kefir_result_t translate_arithmetic_unary(struct kefir_mem *mem, struct k
     const struct kefir_ast_type *normalized_type = kefir_ast_translator_normalize_type(node->arg->properties.type);
     REQUIRE_OK(kefir_ast_translate_expression(mem, node->arg, builder, context));
     switch (normalized_type->tag) {
+        case KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE:
+            switch (node->type) {
+                case KEFIR_AST_OPERATION_PLUS:
+                    break;
+
+                case KEFIR_AST_OPERATION_NEGATE:
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_CMPLDNEG, 0));
+                    break;
+
+                default:
+                    return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected unary operator");
+            }
+            break;
+
+        case KEFIR_AST_TYPE_COMPLEX_DOUBLE:
+            switch (node->type) {
+                case KEFIR_AST_OPERATION_PLUS:
+                    break;
+
+                case KEFIR_AST_OPERATION_NEGATE:
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_CMPF64NEG, 0));
+                    break;
+
+                default:
+                    return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected unary operator");
+            }
+            break;
+
+        case KEFIR_AST_TYPE_COMPLEX_FLOAT:
+            switch (node->type) {
+                case KEFIR_AST_OPERATION_PLUS:
+                    break;
+
+                case KEFIR_AST_OPERATION_NEGATE:
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_CMPF32NEG, 0));
+                    break;
+
+                default:
+                    return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected unary operator");
+            }
+            break;
+
         case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
             switch (node->type) {
                 case KEFIR_AST_OPERATION_PLUS:

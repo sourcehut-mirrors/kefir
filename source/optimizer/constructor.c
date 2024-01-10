@@ -527,6 +527,10 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             UNARY_OP(complex_float64_truncate_1bit, KEFIR_IROPCODE_CMPF64TRUNC1)
             UNARY_OP(complex_long_double_truncate_1bit, KEFIR_IROPCODE_CMPLDTRUNC1)
 
+            UNARY_OP(complex_float32_neg, KEFIR_IROPCODE_CMPF32NEG)
+            UNARY_OP(complex_float64_neg, KEFIR_IROPCODE_CMPF64NEG)
+            UNARY_OP(complex_long_double_neg, KEFIR_IROPCODE_CMPLDNEG)
+
 #undef UNARY_OP
 
 #define BINARY_OP(_id, _opcode)                                                                                    \
@@ -589,6 +593,19 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             BINARY_OP(complex_float32_equals, KEFIR_IROPCODE_CMPF32EQUALS)
             BINARY_OP(complex_float64_equals, KEFIR_IROPCODE_CMPF64EQUALS)
             BINARY_OP(complex_long_double_equals, KEFIR_IROPCODE_CMPLDEQUALS)
+
+            BINARY_OP(complex_float32_add, KEFIR_IROPCODE_CMPF32ADD)
+            BINARY_OP(complex_float64_add, KEFIR_IROPCODE_CMPF64ADD)
+            BINARY_OP(complex_long_double_add, KEFIR_IROPCODE_CMPLDADD)
+            BINARY_OP(complex_float32_sub, KEFIR_IROPCODE_CMPF32SUB)
+            BINARY_OP(complex_float64_sub, KEFIR_IROPCODE_CMPF64SUB)
+            BINARY_OP(complex_long_double_sub, KEFIR_IROPCODE_CMPLDSUB)
+            BINARY_OP(complex_float32_mul, KEFIR_IROPCODE_CMPF32MUL)
+            BINARY_OP(complex_float64_mul, KEFIR_IROPCODE_CMPF64MUL)
+            BINARY_OP(complex_long_double_mul, KEFIR_IROPCODE_CMPLDMUL)
+            BINARY_OP(complex_float32_div, KEFIR_IROPCODE_CMPF32DIV)
+            BINARY_OP(complex_float64_div, KEFIR_IROPCODE_CMPF64DIV)
+            BINARY_OP(complex_long_double_div, KEFIR_IROPCODE_CMPLDDIV)
 
 #undef BINARY_OP
 
