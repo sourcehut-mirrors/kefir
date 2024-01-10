@@ -752,6 +752,10 @@ UNARY_OP(complex_float64_imaginary, KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_IMAGINARY)
 UNARY_OP(complex_long_double_real, KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_REAL)
 UNARY_OP(complex_long_double_imaginary, KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_IMAGINARY)
 
+UNARY_OP(complex_float32_truncate_1bit, KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_TRUNCATE_1BIT)
+UNARY_OP(complex_float64_truncate_1bit, KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_TRUNCATE_1BIT)
+UNARY_OP(complex_long_double_truncate_1bit, KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_TRUNCATE_1BIT)
+
 #undef UNARY_OP
 
 #define BINARY_OP(_id, _opcode)                                                                                       \
@@ -827,6 +831,10 @@ BINARY_OP(long_double_div, KEFIR_OPT_OPCODE_LONG_DOUBLE_DIV)
 BINARY_OP(complex_float32_from, KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_FROM)
 BINARY_OP(complex_float64_from, KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_FROM)
 BINARY_OP(complex_long_double_from, KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_FROM)
+
+BINARY_OP(complex_float32_equals, KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_EQUALS)
+BINARY_OP(complex_float64_equals, KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_EQUALS)
+BINARY_OP(complex_long_double_equals, KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_EQUALS)
 
 #undef BINARY_OP
 

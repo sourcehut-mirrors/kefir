@@ -357,6 +357,12 @@ kefir_result_t kefir_ast_translate_typeconv_to_bool(struct kefir_irbuilder_block
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDF32(builder, KEFIR_IROPCODE_PUSHF32, 0.0f, 0.0f));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_F32EQUALS, 0));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_BNOT, 0));
+    } else if (origin->tag == KEFIR_AST_TYPE_COMPLEX_FLOAT) {
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_CMPF32TRUNC1, 0));
+    } else if (origin->tag == KEFIR_AST_TYPE_COMPLEX_DOUBLE) {
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_CMPF64TRUNC1, 0));
+    } else if (origin->tag == KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE) {
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_CMPLDTRUNC1, 0));
     } else {
         REQUIRE(KEFIR_AST_TYPE_IS_SCALAR_TYPE(origin),
                 KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unable to cast non-scalar type to bool"));

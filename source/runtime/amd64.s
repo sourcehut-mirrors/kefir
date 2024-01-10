@@ -170,6 +170,50 @@ __kefirrt_opt_long_double_to_uint_overflow:
     btc rax, 63
     ret
 
+.global __kefirrt_opt_complex_long_double_equals
+.hidden __kefirrt_opt_complex_long_double_equals
+__kefirrt_opt_complex_long_double_equals:
+    push rcx
+    push rdx
+    fxch    st(3)
+    fucompi st, st(1)
+    fstp    st(0)
+    setnp   al
+    sete    cl
+    and     cl, al
+    fucompi st, st(1)
+    fstp    st(0)
+    setnp   al
+    sete    dl
+    and     dl, al
+    and     dl, cl
+    movzx   eax, dl
+    pop rdx
+    pop rcx
+    ret
+
+.global __kefirrt_opt_complex_long_double_truncate_1bit
+.hidden __kefirrt_opt_complex_long_double_truncate_1bit
+__kefirrt_opt_complex_long_double_truncate_1bit:
+    push rcx
+    push rdx
+    fldz
+    fucomi  st, st(2)
+    fstp    st(2)
+    setp    al
+    setne   cl
+    or      cl, al
+    fxch    st(1)
+    fucompi st, st(1)
+    fstp    st(0)
+    setp    dl
+    setne   al
+    or      al, dl
+    or      al, cl
+    pop rdx
+    pop rcx
+    ret
+
 .global __kefirrt_trap
 .hidden __kefirrt_trap
 __kefirrt_trap:

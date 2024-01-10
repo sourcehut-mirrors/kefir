@@ -340,6 +340,18 @@ static kefir_result_t translate_bitwise(struct kefir_mem *mem, struct kefir_ast_
 static kefir_result_t translate_relational_equals(const struct kefir_ast_type *common_type,
                                                   struct kefir_irbuilder_block *builder) {
     switch (common_type->tag) {
+        case KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_CMPLDEQUALS, 0));
+            break;
+
+        case KEFIR_AST_TYPE_COMPLEX_DOUBLE:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_CMPF64EQUALS, 0));
+            break;
+
+        case KEFIR_AST_TYPE_COMPLEX_FLOAT:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_CMPF32EQUALS, 0));
+            break;
+
         case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_LDEQUALS, 0));
             break;
@@ -362,6 +374,18 @@ static kefir_result_t translate_relational_equals(const struct kefir_ast_type *c
 static kefir_result_t translate_relational_not_equals(const struct kefir_ast_type *common_type,
                                                       struct kefir_irbuilder_block *builder) {
     switch (common_type->tag) {
+        case KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_CMPLDEQUALS, 0));
+            break;
+
+        case KEFIR_AST_TYPE_COMPLEX_DOUBLE:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_CMPF64EQUALS, 0));
+            break;
+
+        case KEFIR_AST_TYPE_COMPLEX_FLOAT:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_CMPF32EQUALS, 0));
+            break;
+
         case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_LDEQUALS, 0));
             break;

@@ -192,7 +192,13 @@
     OPCODE(COMPLEX_FLOAT64_IMAGINARY, "complex_float64_imaginary", ref1) SEPARATOR \
     OPCODE(COMPLEX_LONG_DOUBLE_FROM, "complex_long_double_from", ref2) SEPARATOR \
     OPCODE(COMPLEX_LONG_DOUBLE_REAL, "complex_long_double_real", ref1) SEPARATOR \
-    OPCODE(COMPLEX_LONG_DOUBLE_IMAGINARY, "complex_long_double_imaginary", ref1)
+    OPCODE(COMPLEX_LONG_DOUBLE_IMAGINARY, "complex_long_double_imaginary", ref1) SEPARATOR \
+    OPCODE(COMPLEX_FLOAT32_EQUALS, "complex_float32_equals", ref2) SEPARATOR \
+    OPCODE(COMPLEX_FLOAT64_EQUALS, "complex_float64_equals", ref2) SEPARATOR \
+    OPCODE(COMPLEX_LONG_DOUBLE_EQUALS, "complex_long_double_equals", ref2) SEPARATOR \
+    OPCODE(COMPLEX_FLOAT32_TRUNCATE_1BIT, "complex_float32_truncate_1bit", ref1) SEPARATOR \
+    OPCODE(COMPLEX_FLOAT64_TRUNCATE_1BIT, "complex_float64_truncate_1bit", ref1) SEPARATOR \
+    OPCODE(COMPLEX_LONG_DOUBLE_TRUNCATE_1BIT, "complex_long_double_truncate_1bit", ref1)
 // clang-format on
 
 #endif

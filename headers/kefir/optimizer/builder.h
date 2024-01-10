@@ -187,6 +187,10 @@ UNARY_OP(complex_float64_imaginary);
 UNARY_OP(complex_long_double_real);
 UNARY_OP(complex_long_double_imaginary);
 
+UNARY_OP(complex_float32_truncate_1bit);
+UNARY_OP(complex_float64_truncate_1bit);
+UNARY_OP(complex_long_double_truncate_1bit);
+
 #undef UNARY_OP
 
 #define BINARY_OP(_id)                                                                                 \
@@ -252,6 +256,10 @@ BINARY_OP(long_double_div);
 BINARY_OP(complex_float32_from);
 BINARY_OP(complex_float64_from);
 BINARY_OP(complex_long_double_from);
+
+BINARY_OP(complex_float32_equals);
+BINARY_OP(complex_float64_equals);
+BINARY_OP(complex_long_double_equals);
 
 #undef BINARY_OP
 
