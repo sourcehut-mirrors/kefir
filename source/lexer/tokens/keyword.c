@@ -77,6 +77,7 @@ static const struct KeywordEntry {
     {U"_Atomic", KEFIR_KEYWORD_ATOMIC},
     {U"_Bool", KEFIR_KEYWORD_BOOL},
     {U"_Complex", KEFIR_KEYWORD_COMPLEX},
+    {U"__complex__", KEFIR_KEYWORD_COMPLEX},
     {U"_Generic", KEFIR_KEYWORD_GENERIC},
     {U"_Imaginary", KEFIR_KEYWORD_IMAGINARY},
     {U"_Noreturn", KEFIR_KEYWORD_NORETURN},
