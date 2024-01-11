@@ -41,4 +41,20 @@ _Complex float cmpf32neg(_Complex float);
 _Complex double cmpf64neg(_Complex double);
 _Complex long double cmpldneg(_Complex long double);
 
+void cmpf32add_assign(_Complex float *, _Complex float);
+void cmpf64add_assign(_Complex double *, _Complex double);
+void cmpldadd_assign(_Complex long double *, _Complex long double);
+
+void cmpf32sub_assign(_Complex float *, _Complex float);
+void cmpf64sub_assign(_Complex double *, _Complex double);
+void cmpldsub_assign(_Complex long double *, _Complex long double);
+
+void cmpf32mul_assign(_Complex float *, _Complex float);
+void cmpf64mul_assign(_Complex double *, _Complex double);
+void cmpldmul_assign(_Complex long double *, _Complex long double);
+
+void cmpf32div_assign(_Complex float *, _Complex float);
+void cmpf64div_assign(_Complex double *, _Complex double);
+void cmplddiv_assign(_Complex long double *, _Complex long double);
+
 #endif

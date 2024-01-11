@@ -79,3 +79,51 @@ _Complex double cmpf64neg(_Complex double a) {
 _Complex long double cmpldneg(_Complex long double a) {
     return -a;
 }
+
+void cmpf32add_assign(_Complex float *ptr, _Complex float x) {
+    *ptr += x;
+}
+
+void cmpf64add_assign(_Complex double *ptr, _Complex double x) {
+    *ptr += x;
+}
+
+void cmpldadd_assign(_Complex long double *ptr, _Complex long double x) {
+    *ptr += x;
+}
+
+void cmpf32sub_assign(_Complex float *ptr, _Complex float x) {
+    *ptr -= x;
+}
+
+void cmpf64sub_assign(_Complex double *ptr, _Complex double x) {
+    *ptr -= x;
+}
+
+void cmpldsub_assign(_Complex long double *ptr, _Complex long double x) {
+    *ptr -= x;
+}
+
+void cmpf32mul_assign(_Complex float *ptr, _Complex float x) {
+    *ptr *= x;
+}
+
+void cmpf64mul_assign(_Complex double *ptr, _Complex double x) {
+    *ptr *= x;
+}
+
+void cmpldmul_assign(_Complex long double *ptr, _Complex long double x) {
+    *ptr *= x;
+}
+
+void cmpf32div_assign(_Complex float *ptr, _Complex float x) {
+    *ptr /= x;
+}
+
+void cmpf64div_assign(_Complex double *ptr, _Complex double x) {
+    *ptr /= x;
+}
+
+void cmplddiv_assign(_Complex long double *ptr, _Complex long double x) {
+    *ptr /= x;
+}

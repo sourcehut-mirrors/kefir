@@ -113,6 +113,66 @@ int main(void) {
             _Complex long double ldneg = -ldx;
             assert(fabsl(creall(ldnegres) - creall(ldneg)) < EPSILON_LD);
             assert(fabsl(cimagl(ldnegres) - cimagl(ldneg)) < EPSILON_LD);
+
+            _Complex float f32add_assign = f32x;
+            cmpf32add_assign(&f32add_assign, f32y);
+            assert(fabs(crealf(f32add_assign) - crealf(f32x + f32y)) < EPSILON_F);
+            assert(fabs(cimagf(f32add_assign) - cimagf(f32x + f32y)) < EPSILON_F);
+
+            _Complex double f64add_assign = f64x;
+            cmpf64add_assign(&f64add_assign, f64y);
+            assert(fabs(creal(f64add_assign) - creal(f64x + f64y)) < EPSILON_D);
+            assert(fabs(cimag(f64add_assign) - cimag(f64x + f64y)) < EPSILON_D);
+
+            _Complex long double ldadd_assign = ldx;
+            cmpldadd_assign(&ldadd_assign, ldy);
+            assert(fabsl(creall(ldadd_assign) - creall(ldx + ldy)) < EPSILON_LD);
+            assert(fabsl(cimagl(ldadd_assign) - cimagl(ldx + ldy)) < EPSILON_LD);
+
+            _Complex float f32sub_assign = f32x;
+            cmpf32sub_assign(&f32sub_assign, f32y);
+            assert(fabs(crealf(f32sub_assign) - crealf(f32x - f32y)) < EPSILON_F);
+            assert(fabs(cimagf(f32sub_assign) - cimagf(f32x - f32y)) < EPSILON_F);
+
+            _Complex double f64sub_assign = f64x;
+            cmpf64sub_assign(&f64sub_assign, f64y);
+            assert(fabs(creal(f64sub_assign) - creal(f64x - f64y)) < EPSILON_D);
+            assert(fabs(cimag(f64sub_assign) - cimag(f64x - f64y)) < EPSILON_D);
+
+            _Complex long double ldsub_assign = ldx;
+            cmpldsub_assign(&ldsub_assign, ldy);
+            assert(fabsl(creall(ldsub_assign) - creall(ldx - ldy)) < EPSILON_LD);
+            assert(fabsl(cimagl(ldsub_assign) - cimagl(ldx - ldy)) < EPSILON_LD);
+
+            _Complex float f32mul_assign = f32x;
+            cmpf32mul_assign(&f32mul_assign, f32y);
+            assert(fabs(crealf(f32mul_assign) - crealf(f32x * f32y)) < EPSILON_F);
+            assert(fabs(cimagf(f32mul_assign) - cimagf(f32x * f32y)) < EPSILON_F);
+
+            _Complex double f64mul_assign = f64x;
+            cmpf64mul_assign(&f64mul_assign, f64y);
+            assert(fabs(creal(f64mul_assign) - creal(f64x * f64y)) < EPSILON_D);
+            assert(fabs(cimag(f64mul_assign) - cimag(f64x * f64y)) < EPSILON_D);
+
+            _Complex long double ldmul_assign = ldx;
+            cmpldmul_assign(&ldmul_assign, ldy);
+            assert(fabsl(creall(ldmul_assign) - creall(ldx * ldy)) < EPSILON_LD);
+            assert(fabsl(cimagl(ldmul_assign) - cimagl(ldx * ldy)) < EPSILON_LD);
+
+            _Complex float f32div_assign = f32x;
+            cmpf32div_assign(&f32div_assign, f32y);
+            assert(fabs(crealf(f32div_assign) - crealf(f32x / f32y)) < EPSILON_F);
+            assert(fabs(cimagf(f32div_assign) - cimagf(f32x / f32y)) < EPSILON_F);
+
+            _Complex double f64div_assign = f64x;
+            cmpf64div_assign(&f64div_assign, f64y);
+            assert(fabs(creal(f64div_assign) - creal(f64x / f64y)) < EPSILON_D);
+            assert(fabs(cimag(f64div_assign) - cimag(f64x / f64y)) < EPSILON_D);
+
+            _Complex long double lddiv_assign = ldx;
+            cmplddiv_assign(&lddiv_assign, ldy);
+            assert(fabsl(creall(lddiv_assign) - creall(ldx / ldy)) < EPSILON_LD);
+            assert(fabsl(cimagl(lddiv_assign) - cimagl(ldx / ldy)) < EPSILON_LD);
         }
     }
     return EXIT_SUCCESS;
