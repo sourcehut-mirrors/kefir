@@ -225,19 +225,19 @@ static kefir_result_t evaluate_parameter_type(struct kefir_mem *mem, const struc
         case KEFIR_IR_TYPE_LONG:
         case KEFIR_IR_TYPE_WORD:
         case KEFIR_IR_TYPE_FLOAT64:
+        case KEFIR_IR_TYPE_COMPLEX_FLOAT32:
             *param_type = INLINE_ASSEMBLY_PARAMETER_SCALAR;
             break;
 
         case KEFIR_IR_TYPE_LONG_DOUBLE:
+        case KEFIR_IR_TYPE_COMPLEX_FLOAT64:
+        case KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE:
         case KEFIR_IR_TYPE_STRUCT:
         case KEFIR_IR_TYPE_ARRAY:
         case KEFIR_IR_TYPE_UNION:
             *param_type = INLINE_ASSEMBLY_PARAMETER_AGGREGATE;
             break;
 
-        case KEFIR_IR_TYPE_COMPLEX_FLOAT32:
-        case KEFIR_IR_TYPE_COMPLEX_FLOAT64:
-        case KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE:
             return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Complex numbers are not implemented yet");
 
         case KEFIR_IR_TYPE_BITS:
@@ -471,6 +471,7 @@ static kefir_result_t read_inputs(struct kefir_mem *mem, struct kefir_codegen_am
             case KEFIR_IR_TYPE_WORD:
             case KEFIR_IR_TYPE_FLOAT32:
             case KEFIR_IR_TYPE_FLOAT64:
+            case KEFIR_IR_TYPE_COMPLEX_FLOAT32:
                 switch (entry->allocation_type) {
                     case INLINE_ASSEMBLY_PARAMETER_ALLOCATION_REGISTER:
                         if (!entry->direct_value) {
@@ -508,6 +509,8 @@ static kefir_result_t read_inputs(struct kefir_mem *mem, struct kefir_codegen_am
             case KEFIR_IR_TYPE_STRUCT:
             case KEFIR_IR_TYPE_ARRAY:
             case KEFIR_IR_TYPE_UNION:
+            case KEFIR_IR_TYPE_COMPLEX_FLOAT64:
+            case KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE:
                 switch (entry->allocation_type) {
                     case INLINE_ASSEMBLY_PARAMETER_ALLOCATION_REGISTER: {
                         REQUIRE_OK(match_vreg_to_size(entry->allocation_vreg,
@@ -534,11 +537,6 @@ static kefir_result_t read_inputs(struct kefir_mem *mem, struct kefir_codegen_am
                                                "On-stack aggregate parameters of IR inline assembly are not supported");
                 }
                 break;
-
-            case KEFIR_IR_TYPE_COMPLEX_FLOAT32:
-            case KEFIR_IR_TYPE_COMPLEX_FLOAT64:
-            case KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE:
-                return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Complex numbers are not implemented yet");
 
             case KEFIR_IR_TYPE_BITS:
             case KEFIR_IR_TYPE_BUILTIN:
@@ -1016,6 +1014,7 @@ static kefir_result_t store_outputs(struct kefir_mem *mem, struct kefir_codegen_
             case KEFIR_IR_TYPE_WORD:
             case KEFIR_IR_TYPE_FLOAT32:
             case KEFIR_IR_TYPE_FLOAT64:
+            case KEFIR_IR_TYPE_COMPLEX_FLOAT32:
                 switch (entry->allocation_type) {
                     case INLINE_ASSEMBLY_PARAMETER_ALLOCATION_REGISTER: {
                         struct kefir_asmcmp_value value;
@@ -1050,6 +1049,8 @@ static kefir_result_t store_outputs(struct kefir_mem *mem, struct kefir_codegen_
             case KEFIR_IR_TYPE_STRUCT:
             case KEFIR_IR_TYPE_ARRAY:
             case KEFIR_IR_TYPE_UNION:
+            case KEFIR_IR_TYPE_COMPLEX_FLOAT64:
+            case KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE:
                 switch (entry->allocation_type) {
                     case INLINE_ASSEMBLY_PARAMETER_ALLOCATION_REGISTER:
                     case INLINE_ASSEMBLY_PARAMETER_ALLOCATION_REGISTER_INDIRECT:
@@ -1062,11 +1063,6 @@ static kefir_result_t store_outputs(struct kefir_mem *mem, struct kefir_codegen_
                             "On-stack aggregate parameters of IR inline assembly are not supported yet");
                 }
                 break;
-
-            case KEFIR_IR_TYPE_COMPLEX_FLOAT32:
-            case KEFIR_IR_TYPE_COMPLEX_FLOAT64:
-            case KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE:
-                return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Complex numbers are not implemented yet");
 
             case KEFIR_IR_TYPE_BITS:
             case KEFIR_IR_TYPE_BUILTIN:
