@@ -88,6 +88,18 @@ kefir_result_t kefir_ast_analyze_constant_node(struct kefir_mem *mem, const stru
         case KEFIR_AST_LONG_DOUBLE_CONSTANT:
             base->properties.type = kefir_ast_type_long_double();
             break;
+
+        case KEFIR_AST_COMPLEX_FLOAT_CONSTANT:
+            base->properties.type = kefir_ast_type_complex_float();
+            break;
+
+        case KEFIR_AST_COMPLEX_DOUBLE_CONSTANT:
+            base->properties.type = kefir_ast_type_complex_double();
+            break;
+
+        case KEFIR_AST_COMPLEX_LONG_DOUBLE_CONSTANT:
+            base->properties.type = kefir_ast_type_complex_long_double();
+            break;
     }
     return KEFIR_OK;
 }

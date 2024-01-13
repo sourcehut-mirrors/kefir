@@ -110,6 +110,9 @@ typedef enum kefir_constant_token_type {
     KEFIR_CONSTANT_TOKEN_FLOAT,
     KEFIR_CONSTANT_TOKEN_DOUBLE,
     KEFIR_CONSTANT_TOKEN_LONG_DOUBLE,
+    KEFIR_CONSTANT_TOKEN_COMPLEX_FLOAT,
+    KEFIR_CONSTANT_TOKEN_COMPLEX_DOUBLE,
+    KEFIR_CONSTANT_TOKEN_COMPLEX_LONG_DOUBLE,
     KEFIR_CONSTANT_TOKEN_CHAR,
     KEFIR_CONSTANT_TOKEN_WIDE_CHAR,
     KEFIR_CONSTANT_TOKEN_UNICODE16_CHAR,
@@ -132,6 +135,18 @@ typedef struct kefir_constant_token {
         kefir_float32_t float32;
         kefir_float64_t float64;
         kefir_long_double_t long_double;
+        struct {
+            kefir_float32_t real;
+            kefir_float32_t imaginary;
+        } complex_float32;
+        struct {
+            kefir_float64_t real;
+            kefir_float64_t imaginary;
+        } complex_float64;
+        struct {
+            kefir_long_double_t real;
+            kefir_long_double_t imaginary;
+        } complex_long_double;
         kefir_int_t character;
         kefir_wchar_t wide_char;
         kefir_char16_t unicode16_char;
@@ -281,6 +296,10 @@ kefir_result_t kefir_token_new_constant_unicode32_char(kefir_char32_t, struct ke
 kefir_result_t kefir_token_new_constant_float(kefir_float32_t, struct kefir_token *);
 kefir_result_t kefir_token_new_constant_double(kefir_float64_t, struct kefir_token *);
 kefir_result_t kefir_token_new_constant_long_double(kefir_long_double_t, struct kefir_token *);
+kefir_result_t kefir_token_new_constant_complex_float(kefir_float32_t, kefir_float32_t, struct kefir_token *);
+kefir_result_t kefir_token_new_constant_complex_double(kefir_float64_t, kefir_float64_t, struct kefir_token *);
+kefir_result_t kefir_token_new_constant_complex_long_double(kefir_long_double_t, kefir_long_double_t,
+                                                            struct kefir_token *);
 kefir_result_t kefir_token_new_string_literal_multibyte(struct kefir_mem *, const char *, kefir_size_t,
                                                         struct kefir_token *);
 kefir_result_t kefir_token_new_string_literal_unicode8(struct kefir_mem *, const char *, kefir_size_t,

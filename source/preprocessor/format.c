@@ -226,6 +226,9 @@ static kefir_result_t format_constant(FILE *out, const struct kefir_token *token
         case KEFIR_CONSTANT_TOKEN_FLOAT:
         case KEFIR_CONSTANT_TOKEN_DOUBLE:
         case KEFIR_CONSTANT_TOKEN_LONG_DOUBLE:
+        case KEFIR_CONSTANT_TOKEN_COMPLEX_FLOAT:
+        case KEFIR_CONSTANT_TOKEN_COMPLEX_DOUBLE:
+        case KEFIR_CONSTANT_TOKEN_COMPLEX_LONG_DOUBLE:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected constant as preprocessor token");
 
         case KEFIR_CONSTANT_TOKEN_CHAR:

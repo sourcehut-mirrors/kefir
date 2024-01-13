@@ -101,6 +101,30 @@ kefir_result_t kefir_ast_translate_constant_node(struct kefir_mem *mem, struct k
                 KEFIR_IRBUILDER_BLOCK_APPEND_LONG_DOUBLE(builder, KEFIR_IROPCODE_PUSHLD, node->value.long_double));
             break;
 
+        case KEFIR_AST_COMPLEX_FLOAT_CONSTANT:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDF32(builder, KEFIR_IROPCODE_PUSHF32,
+                                                       node->value.complex_float32.real, 0.0f));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDF32(builder, KEFIR_IROPCODE_PUSHF32,
+                                                       node->value.complex_float32.imaginary, 0.0f));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_CMPF32, 0));
+            break;
+
+        case KEFIR_AST_COMPLEX_DOUBLE_CONSTANT:
+            REQUIRE_OK(
+                KEFIR_IRBUILDER_BLOCK_APPENDF64(builder, KEFIR_IROPCODE_PUSHF64, node->value.complex_float64.real));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDF64(builder, KEFIR_IROPCODE_PUSHF64,
+                                                       node->value.complex_float64.imaginary));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_CMPF64, 0));
+            break;
+
+        case KEFIR_AST_COMPLEX_LONG_DOUBLE_CONSTANT:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPEND_LONG_DOUBLE(builder, KEFIR_IROPCODE_PUSHLD,
+                                                                node->value.complex_long_double.real));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPEND_LONG_DOUBLE(builder, KEFIR_IROPCODE_PUSHLD,
+                                                                node->value.complex_long_double.imaginary));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_CMPLD, 0));
+            break;
+
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected AST constant type");
     }

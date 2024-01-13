@@ -256,6 +256,43 @@ kefir_result_t kefir_token_new_constant_long_double(kefir_long_double_t value, s
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_token_new_constant_complex_float(kefir_float32_t real_value, kefir_float32_t imaginary_value,
+                                                      struct kefir_token *token) {
+    REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
+    REQUIRE_OK(kefir_token_macro_expansions_init(&token->macro_expansions));
+    REQUIRE_OK(kefir_source_location_empty(&token->source_location));
+    token->klass = KEFIR_TOKEN_CONSTANT;
+    token->constant.type = KEFIR_CONSTANT_TOKEN_COMPLEX_FLOAT;
+    token->constant.complex_float32.real = real_value;
+    token->constant.complex_float32.imaginary = imaginary_value;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_token_new_constant_complex_double(kefir_float64_t real_value, kefir_float64_t imaginary_value,
+                                                       struct kefir_token *token) {
+    REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
+    REQUIRE_OK(kefir_token_macro_expansions_init(&token->macro_expansions));
+    REQUIRE_OK(kefir_source_location_empty(&token->source_location));
+    token->klass = KEFIR_TOKEN_CONSTANT;
+    token->constant.type = KEFIR_CONSTANT_TOKEN_COMPLEX_DOUBLE;
+    token->constant.complex_float64.real = real_value;
+    token->constant.complex_float64.imaginary = imaginary_value;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_token_new_constant_complex_long_double(kefir_long_double_t real_value,
+                                                            kefir_long_double_t imaginary_value,
+                                                            struct kefir_token *token) {
+    REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
+    REQUIRE_OK(kefir_token_macro_expansions_init(&token->macro_expansions));
+    REQUIRE_OK(kefir_source_location_empty(&token->source_location));
+    token->klass = KEFIR_TOKEN_CONSTANT;
+    token->constant.type = KEFIR_CONSTANT_TOKEN_COMPLEX_LONG_DOUBLE;
+    token->constant.complex_long_double.real = real_value;
+    token->constant.complex_long_double.imaginary = imaginary_value;
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_token_new_string_literal_multibyte(struct kefir_mem *mem, const char *content, kefir_size_t length,
                                                         struct kefir_token *token) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));

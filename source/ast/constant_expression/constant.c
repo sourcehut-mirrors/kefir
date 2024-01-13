@@ -108,6 +108,12 @@ kefir_result_t kefir_ast_evaluate_scalar_node(struct kefir_mem *mem, const struc
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT;
             value->floating_point = node->value.long_double;
             break;
+
+        case KEFIR_AST_COMPLEX_FLOAT_CONSTANT:
+        case KEFIR_AST_COMPLEX_DOUBLE_CONSTANT:
+        case KEFIR_AST_COMPLEX_LONG_DOUBLE_CONSTANT:
+            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED,
+                                   "Complex numbers in constant evaluation context are not implemented yet");
     }
     return KEFIR_OK;
 }

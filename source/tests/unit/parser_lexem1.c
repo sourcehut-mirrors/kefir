@@ -172,6 +172,38 @@ DEFINE_CASE(parser_lexem_construction_constants, "Parser - constant tokens") {
         ASSERT(token.constant.type == KEFIR_CONSTANT_TOKEN_DOUBLE);
         ASSERT(DOUBLE_EQUALS(token.constant.float64, ((kefir_float64_t) i) / 10, DOUBLE_EPSILON));
         ASSERT_OK(kefir_token_free(&kft_mem, &token));
+
+        ASSERT_OK(kefir_token_new_constant_long_double(((kefir_long_double_t) i) / 10, &token));
+        ASSERT(token.klass == KEFIR_TOKEN_CONSTANT);
+        ASSERT(token.constant.type == KEFIR_CONSTANT_TOKEN_LONG_DOUBLE);
+        ASSERT(LONG_DOUBLE_EQUALS(token.constant.long_double, ((kefir_long_double_t) i) / 10, LONG_DOUBLE_EPSILON));
+        ASSERT_OK(kefir_token_free(&kft_mem, &token));
+
+        for (double j = -10.0; j < 10.0; j += 0.1) {
+            ASSERT_OK(kefir_token_new_constant_complex_float(((kefir_float32_t) i) / 10, (kefir_float32_t) j, &token));
+            ASSERT(token.klass == KEFIR_TOKEN_CONSTANT);
+            ASSERT(token.constant.type == KEFIR_CONSTANT_TOKEN_COMPLEX_FLOAT);
+            ASSERT(FLOAT_EQUALS(token.constant.complex_float32.real, ((kefir_float32_t) i) / 10, FLOAT_EPSILON));
+            ASSERT(FLOAT_EQUALS(token.constant.complex_float32.imaginary, (kefir_float32_t) j, FLOAT_EPSILON));
+            ASSERT_OK(kefir_token_free(&kft_mem, &token));
+
+            ASSERT_OK(kefir_token_new_constant_complex_double(((kefir_float64_t) i) / 10, (kefir_float64_t) j, &token));
+            ASSERT(token.klass == KEFIR_TOKEN_CONSTANT);
+            ASSERT(token.constant.type == KEFIR_CONSTANT_TOKEN_COMPLEX_DOUBLE);
+            ASSERT(DOUBLE_EQUALS(token.constant.complex_float64.real, ((kefir_float64_t) i) / 10, DOUBLE_EPSILON));
+            ASSERT(DOUBLE_EQUALS(token.constant.complex_float64.imaginary, (kefir_float64_t) j, DOUBLE_EPSILON));
+            ASSERT_OK(kefir_token_free(&kft_mem, &token));
+
+            ASSERT_OK(kefir_token_new_constant_complex_long_double(((kefir_long_double_t) i) / 10,
+                                                                   (kefir_long_double_t) j, &token));
+            ASSERT(token.klass == KEFIR_TOKEN_CONSTANT);
+            ASSERT(token.constant.type == KEFIR_CONSTANT_TOKEN_COMPLEX_LONG_DOUBLE);
+            ASSERT(LONG_DOUBLE_EQUALS(token.constant.complex_long_double.real, ((kefir_long_double_t) i) / 10,
+                                      LONG_DOUBLE_EPSILON));
+            ASSERT(LONG_DOUBLE_EQUALS(token.constant.complex_long_double.imaginary, (kefir_long_double_t) j,
+                                      LONG_DOUBLE_EPSILON));
+            ASSERT_OK(kefir_token_free(&kft_mem, &token));
+        }
     }
 
 #undef ASSERT_CONSTANT

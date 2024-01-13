@@ -142,6 +142,37 @@ DEFINE_CASE(ast_nodes_constants, "AST nodes - constants") {
         ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(floatc)));
         ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(doublec)));
         ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(ldoublec)));
+
+        for (kefir_float32_t j = -10.0f; j < 10.0f; j += 0.1f) {
+            struct kefir_ast_constant *floatc = kefir_ast_new_constant_complex_float(&kft_mem, i, j);
+            struct kefir_ast_constant *doublec =
+                kefir_ast_new_constant_complex_double(&kft_mem, (kefir_float64_t) i, (kefir_float64_t) j);
+            struct kefir_ast_constant *ldoublec =
+                kefir_ast_new_constant_complex_long_double(&kft_mem, (kefir_long_double_t) i, (kefir_long_double_t) j);
+            ASSERT(floatc != NULL);
+            ASSERT(doublec != NULL);
+            ASSERT(ldoublec != NULL);
+            ASSERT(floatc->base.klass->type == KEFIR_AST_CONSTANT);
+            ASSERT(doublec->base.klass->type == KEFIR_AST_CONSTANT);
+            ASSERT(ldoublec->base.klass->type == KEFIR_AST_CONSTANT);
+            ASSERT(floatc->base.self == floatc);
+            ASSERT(doublec->base.self == doublec);
+            ASSERT(ldoublec->base.self == ldoublec);
+            ASSERT(floatc->type == KEFIR_AST_COMPLEX_FLOAT_CONSTANT);
+            ASSERT(doublec->type == KEFIR_AST_COMPLEX_DOUBLE_CONSTANT);
+            ASSERT(ldoublec->type == KEFIR_AST_COMPLEX_LONG_DOUBLE_CONSTANT);
+            ASSERT(FLOAT_EQUALS(floatc->value.complex_float32.real, i, FLOAT_EPSILON));
+            ASSERT(FLOAT_EQUALS(floatc->value.complex_float32.imaginary, j, FLOAT_EPSILON));
+            ASSERT(DOUBLE_EQUALS(doublec->value.complex_float64.real, (kefir_float64_t) i, DOUBLE_EPSILON));
+            ASSERT(DOUBLE_EQUALS(doublec->value.complex_float64.imaginary, (kefir_float64_t) j, DOUBLE_EPSILON));
+            ASSERT(LONG_DOUBLE_EQUALS(ldoublec->value.complex_long_double.real, (kefir_long_double_t) i,
+                                      LONG_DOUBLE_EPSILON));
+            ASSERT(LONG_DOUBLE_EQUALS(ldoublec->value.complex_long_double.imaginary, (kefir_long_double_t) j,
+                                      LONG_DOUBLE_EPSILON));
+            ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(floatc)));
+            ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(doublec)));
+            ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(ldoublec)));
+        }
     }
 }
 END_CASE
