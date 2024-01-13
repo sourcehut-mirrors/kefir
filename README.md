@@ -101,9 +101,6 @@ extending the compiler, including:
 
 ### Exceptions
 Following exceptions were made in C17 implementation:
-* Absence of `_Complex` floating-point number support. This feature is not being
-used particularly frequently, but, at the same time, it complicates target code
-generator.
 * Absence of atomics. C17 standard defines them as optional feature, which I
 decided to omit in initial implementation. Support of atomics would complicate
 both IR and target code generation.
@@ -162,13 +159,11 @@ similarly, though, thus basic use cases shall be compatible). Additionally,
 
 ### Standard library
 Kefir can be used along with [musl libc](https://musl.libc.org) standard
-library, with the exception for `<complex.h>` and `<tgmath.h>` headers which are
-not available due to lacking support of `_Complex` types. Kefir also supports
-`glibc`, as well as `libc` implementations provided with FreeBSD, OpenBSD and
-NetBSD, however the support is limited due to presence of non-standard C
-language extensions in header files which might cause compilation failures
-(additional macros/patched stdlib headers might need to be defined for
-successful compilation).
+library. Kefir also supports `glibc`, as well as `libc` implementations provided
+with FreeBSD, OpenBSD and NetBSD, however the support is limited due to presence
+of non-standard C language extensions in header files which might cause
+compilation failures (additional macros/patched stdlib headers might need to be
+defined for successful compilation).
 
 **Attention:** code produced by Kefir shall be linked with a runtime library
 `libkefirrt.a`. The library is linked automatically if environment is configured
