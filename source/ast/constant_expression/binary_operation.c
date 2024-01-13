@@ -34,11 +34,41 @@ static kefir_ast_constant_expression_float_t as_float(const struct kefir_ast_con
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT:
             return value->floating_point;
 
+        case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT:
+            return value->complex_floating_point.real;
+
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS:
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_NONE:
             return 0.0f;
     }
     return 0.0f;
+}
+
+struct complex_float {
+    kefir_ast_constant_expression_float_t real;
+    kefir_ast_constant_expression_float_t imaginary;
+};
+
+static struct complex_float as_complex_float(const struct kefir_ast_constant_expression_value *value) {
+    switch (value->klass) {
+        case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER:
+            return (struct complex_float){.real = (kefir_ast_constant_expression_float_t) value->integer,
+                                          .imaginary = 0.0};
+
+        case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT:
+            return (struct complex_float){.real = (kefir_ast_constant_expression_float_t) value->floating_point,
+                                          .imaginary = 0.0};
+
+        case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT:
+            return (struct complex_float){
+                .real = (kefir_ast_constant_expression_float_t) value->complex_floating_point.real,
+                .imaginary = (kefir_ast_constant_expression_float_t) value->complex_floating_point.imaginary};
+
+        case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS:
+        case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_NONE:
+            return (struct complex_float){0.0, 0.0};
+    }
+    return (struct complex_float){0.0, 0.0};
 }
 
 static kefir_result_t evaluate_pointer_offset(struct kefir_mem *mem, const struct kefir_ast_context *context,
@@ -153,6 +183,12 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
             } else if (arg2_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS) {
                 REQUIRE_OK(evaluate_pointer_offset(mem, context, KEFIR_AST_NODE_BASE(node), &arg2_value.pointer,
                                                    arg1_value.integer, value));
+            } else if (ANY_OF(&arg1_value, &arg2_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT)) {
+                value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT;
+                struct complex_float f1 = as_complex_float(&arg1_value);
+                struct complex_float f2 = as_complex_float(&arg2_value);
+                value->complex_floating_point.real = f1.real + f2.real;
+                value->complex_floating_point.imaginary = f1.imaginary + f2.imaginary;
             } else if (ANY_OF(&arg1_value, &arg2_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT)) {
                 value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT;
                 value->floating_point = as_float(&arg1_value) + as_float(&arg2_value);
@@ -175,6 +211,12 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                     REQUIRE_OK(evaluate_pointer_offset(mem, context, KEFIR_AST_NODE_BASE(node), &arg1_value.pointer,
                                                        -arg2_value.integer, value));
                 }
+            } else if (ANY_OF(&arg1_value, &arg2_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT)) {
+                value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT;
+                struct complex_float f1 = as_complex_float(&arg1_value);
+                struct complex_float f2 = as_complex_float(&arg2_value);
+                value->complex_floating_point.real = f1.real - f2.real;
+                value->complex_floating_point.imaginary = f1.imaginary - f2.imaginary;
             } else if (ANY_OF(&arg1_value, &arg2_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT)) {
                 value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT;
                 value->floating_point = as_float(&arg1_value) - as_float(&arg2_value);
@@ -185,7 +227,13 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
             break;
 
         case KEFIR_AST_OPERATION_MULTIPLY:
-            if (ANY_OF(&arg1_value, &arg2_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT)) {
+            if (ANY_OF(&arg1_value, &arg2_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT)) {
+                value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT;
+                struct complex_float f1 = as_complex_float(&arg1_value);
+                struct complex_float f2 = as_complex_float(&arg2_value);
+                value->complex_floating_point.real = f1.real * f2.real - f1.imaginary * f2.imaginary;
+                value->complex_floating_point.imaginary = f1.real * f2.imaginary + f2.real * f1.imaginary;
+            } else if (ANY_OF(&arg1_value, &arg2_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT)) {
                 value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT;
                 value->floating_point = as_float(&arg1_value) * as_float(&arg2_value);
             } else {
@@ -195,7 +243,14 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
             break;
 
         case KEFIR_AST_OPERATION_DIVIDE:
-            if (ANY_OF(&arg1_value, &arg2_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT)) {
+            if (ANY_OF(&arg1_value, &arg2_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT)) {
+                value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT;
+                struct complex_float f1 = as_complex_float(&arg1_value);
+                struct complex_float f2 = as_complex_float(&arg2_value);
+                kefir_ast_constant_expression_float_t u = f1.real, x = f2.real, v = f1.imaginary, y = f2.imaginary;
+                value->complex_floating_point.real = (u * x + v * y) / (x * x + y * y);
+                value->complex_floating_point.imaginary = (v * x - u * y) / (x * x + y * y);
+            } else if (ANY_OF(&arg1_value, &arg2_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT)) {
                 value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT;
                 value->floating_point = as_float(&arg1_value) / as_float(&arg2_value);
             } else if (common_type_signed_integer) {
@@ -245,6 +300,10 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
             if (ANY_OF(&arg1_value, &arg2_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS)) {
                 return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED,
                                        "Constant expressions with address comparisons are not supported");
+            } else if (ANY_OF(&arg1_value, &arg2_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT)) {
+                return KEFIR_SET_SOURCE_ERROR(
+                    KEFIR_ANALYSIS_ERROR, &node->base.source_location,
+                    "Constant expressions with complex floating point comparisons are invalid");
             } else if (ANY_OF(&arg1_value, &arg2_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT)) {
                 value->integer = as_float(&arg1_value) < as_float(&arg2_value);
             } else if (common_type_signed_integer) {
@@ -259,6 +318,10 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
             if (ANY_OF(&arg1_value, &arg2_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS)) {
                 return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED,
                                        "Constant expressions with address comparisons are not supported");
+            } else if (ANY_OF(&arg1_value, &arg2_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT)) {
+                return KEFIR_SET_SOURCE_ERROR(
+                    KEFIR_ANALYSIS_ERROR, &node->base.source_location,
+                    "Constant expressions with complex floating point comparisons are invalid");
             } else if (ANY_OF(&arg1_value, &arg2_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT)) {
                 value->integer = as_float(&arg1_value) <= as_float(&arg2_value);
             } else if (common_type_signed_integer) {
@@ -273,6 +336,10 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
             if (ANY_OF(&arg1_value, &arg2_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS)) {
                 return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED,
                                        "Constant expressions with address comparisons are not supported");
+            } else if (ANY_OF(&arg1_value, &arg2_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT)) {
+                return KEFIR_SET_SOURCE_ERROR(
+                    KEFIR_ANALYSIS_ERROR, &node->base.source_location,
+                    "Constant expressions with complex floating point comparisons are invalid");
             } else if (ANY_OF(&arg1_value, &arg2_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT)) {
                 value->integer = as_float(&arg1_value) > as_float(&arg2_value);
             } else if (common_type_signed_integer) {
@@ -287,6 +354,10 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
             if (ANY_OF(&arg1_value, &arg2_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS)) {
                 return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED,
                                        "Constant expressions with address comparisons are not supported");
+            } else if (ANY_OF(&arg1_value, &arg2_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT)) {
+                return KEFIR_SET_SOURCE_ERROR(
+                    KEFIR_ANALYSIS_ERROR, &node->base.source_location,
+                    "Constant expressions with complex floating point comparisons are invalid");
             } else if (ANY_OF(&arg1_value, &arg2_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT)) {
                 value->integer = as_float(&arg1_value) >= as_float(&arg2_value);
             } else if (common_type_signed_integer) {
@@ -301,6 +372,10 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
             if (ANY_OF(&arg1_value, &arg2_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS)) {
                 return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED,
                                        "Constant expressions with address comparisons are not supported");
+            } else if (ANY_OF(&arg1_value, &arg2_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT)) {
+                struct complex_float f1 = as_complex_float(&arg1_value);
+                struct complex_float f2 = as_complex_float(&arg2_value);
+                value->integer = f1.real == f2.real && f1.imaginary == f2.imaginary;
             } else if (ANY_OF(&arg1_value, &arg2_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT)) {
                 value->integer = as_float(&arg1_value) == as_float(&arg2_value);
             } else {
@@ -313,6 +388,10 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
             if (ANY_OF(&arg1_value, &arg2_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS)) {
                 return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED,
                                        "Constant expressions with address comparisons are not supported");
+            } else if (ANY_OF(&arg1_value, &arg2_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT)) {
+                struct complex_float f1 = as_complex_float(&arg1_value);
+                struct complex_float f2 = as_complex_float(&arg2_value);
+                value->integer = f1.real != f2.real || f1.imaginary != f2.imaginary;
             } else if (ANY_OF(&arg1_value, &arg2_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT)) {
                 value->integer = as_float(&arg1_value) != as_float(&arg2_value);
             } else {
@@ -344,6 +423,9 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
             kefir_bool_t arg2_bool = false;
             if (arg1_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT) {
                 arg1_bool = (kefir_bool_t) arg1_value.floating_point;
+            } else if (arg1_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT) {
+                arg1_bool = (kefir_bool_t) arg1_value.complex_floating_point.real ||
+                            (kefir_bool_t) arg1_value.complex_floating_point.imaginary;
             } else {
                 arg1_bool = (kefir_bool_t) arg1_value.integer;
             }
@@ -356,6 +438,9 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
 
                 if (arg2_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT) {
                     arg2_bool = (kefir_bool_t) arg2_value.floating_point;
+                } else if (arg2_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT) {
+                    arg2_bool = (kefir_bool_t) arg2_value.complex_floating_point.real ||
+                                (kefir_bool_t) arg2_value.complex_floating_point.imaginary;
                 } else {
                     arg2_bool = (kefir_bool_t) arg2_value.integer;
                 }
@@ -373,6 +458,9 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
             kefir_bool_t arg2_bool = false;
             if (arg1_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT) {
                 arg1_bool = (kefir_bool_t) arg1_value.floating_point;
+            } else if (arg1_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT) {
+                arg1_bool = (kefir_bool_t) arg1_value.complex_floating_point.real ||
+                            (kefir_bool_t) arg1_value.complex_floating_point.imaginary;
             } else {
                 arg1_bool = (kefir_bool_t) arg1_value.integer;
             }
@@ -385,6 +473,9 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
 
                 if (arg2_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT) {
                     arg2_bool = (kefir_bool_t) arg2_value.floating_point;
+                } else if (arg2_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT) {
+                    arg2_bool = (kefir_bool_t) arg2_value.complex_floating_point.real ||
+                                (kefir_bool_t) arg2_value.complex_floating_point.imaginary;
                 } else {
                     arg2_bool = (kefir_bool_t) arg2_value.integer;
                 }

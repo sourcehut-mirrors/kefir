@@ -89,6 +89,10 @@ kefir_result_t kefir_ast_evaluate_unary_operation_node(struct kefir_mem *mem, co
             if (arg_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER) {
                 value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
                 value->integer = arg_value.integer;
+            } else if (arg_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT) {
+                value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT;
+                value->complex_floating_point.real = arg_value.complex_floating_point.real;
+                value->complex_floating_point.imaginary = arg_value.complex_floating_point.imaginary;
             } else if (arg_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT) {
                 value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT;
                 value->floating_point = arg_value.floating_point;
@@ -103,6 +107,10 @@ kefir_result_t kefir_ast_evaluate_unary_operation_node(struct kefir_mem *mem, co
             if (arg_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER) {
                 value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
                 value->integer = -arg_value.integer;
+            } else if (arg_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT) {
+                value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT;
+                value->complex_floating_point.real = -arg_value.complex_floating_point.real;
+                value->complex_floating_point.imaginary = -arg_value.complex_floating_point.imaginary;
             } else if (arg_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT) {
                 value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT;
                 value->floating_point = -arg_value.floating_point;
@@ -128,6 +136,9 @@ kefir_result_t kefir_ast_evaluate_unary_operation_node(struct kefir_mem *mem, co
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
             if (arg_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER) {
                 value->integer = !arg_value.integer;
+            } else if (arg_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT) {
+                value->integer = !((kefir_bool_t) arg_value.complex_floating_point.real ||
+                                   (kefir_bool_t) arg_value.complex_floating_point.imaginary);
             } else if (arg_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT) {
                 value->integer = !arg_value.floating_point;
             } else {

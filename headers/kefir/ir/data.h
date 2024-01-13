@@ -53,6 +53,9 @@ typedef enum kefir_ir_data_value_type {
     KEFIR_IR_DATA_VALUE_FLOAT32,
     KEFIR_IR_DATA_VALUE_FLOAT64,
     KEFIR_IR_DATA_VALUE_LONG_DOUBLE,
+    KEFIR_IR_DATA_VALUE_COMPLEX_FLOAT32,
+    KEFIR_IR_DATA_VALUE_COMPLEX_FLOAT64,
+    KEFIR_IR_DATA_VALUE_COMPLEX_LONG_DOUBLE,
     KEFIR_IR_DATA_VALUE_STRING,
     KEFIR_IR_DATA_VALUE_POINTER,
     KEFIR_IR_DATA_VALUE_STRING_POINTER,
@@ -68,6 +71,18 @@ typedef struct kefir_ir_data_value {
         kefir_float32_t float32;
         kefir_float64_t float64;
         kefir_long_double_t long_double;
+        struct {
+            kefir_float32_t real;
+            kefir_float32_t imaginary;
+        } complex_float32;
+        struct {
+            kefir_float64_t real;
+            kefir_float64_t imaginary;
+        } complex_float64;
+        struct {
+            kefir_long_double_t real;
+            kefir_long_double_t imaginary;
+        } complex_long_double;
         struct {
             const char *reference;
             kefir_int64_t offset;
@@ -99,6 +114,15 @@ kefir_result_t kefir_ir_data_set_float64(struct kefir_mem *, struct kefir_ir_dat
 
 kefir_result_t kefir_ir_data_set_long_double(struct kefir_mem *, struct kefir_ir_data *, kefir_size_t,
                                              kefir_long_double_t);
+
+kefir_result_t kefir_ir_data_set_complex_float32(struct kefir_mem *, struct kefir_ir_data *, kefir_size_t,
+                                                 kefir_float32_t, kefir_float32_t);
+
+kefir_result_t kefir_ir_data_set_complex_float64(struct kefir_mem *, struct kefir_ir_data *, kefir_size_t,
+                                                 kefir_float64_t, kefir_float64_t);
+
+kefir_result_t kefir_ir_data_set_complex_long_double(struct kefir_mem *, struct kefir_ir_data *, kefir_size_t,
+                                                     kefir_long_double_t, kefir_long_double_t);
 
 kefir_result_t kefir_ir_data_set_string(struct kefir_mem *, struct kefir_ir_data *, kefir_size_t,
                                         kefir_ir_string_literal_type_t, const void *, kefir_size_t);

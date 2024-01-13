@@ -383,6 +383,145 @@ static kefir_result_t long_double_static_data(const struct kefir_ir_type *type, 
     return KEFIR_OK;
 }
 
+static kefir_result_t complex_float32_static_data(const struct kefir_ir_type *type, kefir_size_t index,
+                                                  const struct kefir_ir_typeentry *typeentry, void *payload) {
+    UNUSED(type);
+    REQUIRE(typeentry != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid IR type entry"));
+    REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid payload"));
+
+    ASSIGN_DECL_CAST(struct static_data_param *, param, payload);
+    const struct kefir_ir_data_value *entry;
+    REQUIRE_OK(kefir_ir_data_value_at(param->data, param->slot++, &entry));
+
+    union {
+        kefir_float32_t fp32[2];
+        kefir_uint32_t uint32[2];
+    } value = {.fp32 = {0.0f}};
+    switch (entry->type) {
+        case KEFIR_IR_DATA_VALUE_UNDEFINED:
+            break;
+
+        case KEFIR_IR_DATA_VALUE_COMPLEX_FLOAT32:
+            value.fp32[0] = entry->value.complex_float32.real;
+            value.fp32[1] = entry->value.complex_float32.imaginary;
+            break;
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected value of complex floating-point type field");
+    }
+
+    const struct kefir_abi_amd64_typeentry_layout *layout = NULL;
+    REQUIRE_OK(kefir_abi_amd64_type_layout_at(&param->layout, index, &layout));
+    REQUIRE_OK(align_offset(layout, param));
+    switch (typeentry->typecode) {
+        case KEFIR_IR_TYPE_COMPLEX_FLOAT32:
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+                &param->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 2,
+                kefir_asm_amd64_xasmgen_operand_immu(&param->codegen->xasmgen_helpers.operands[0], value.uint32[0]),
+                kefir_asm_amd64_xasmgen_operand_immu(&param->codegen->xasmgen_helpers.operands[1], value.uint32[1])));
+            break;
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpectedly encountered non-float32 type");
+    }
+    param->offset += layout->size;
+    return KEFIR_OK;
+}
+
+static kefir_result_t complex_float64_static_data(const struct kefir_ir_type *type, kefir_size_t index,
+                                                  const struct kefir_ir_typeentry *typeentry, void *payload) {
+    UNUSED(type);
+    REQUIRE(typeentry != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid IR type entry"));
+    REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid payload"));
+
+    ASSIGN_DECL_CAST(struct static_data_param *, param, payload);
+    const struct kefir_ir_data_value *entry;
+    REQUIRE_OK(kefir_ir_data_value_at(param->data, param->slot++, &entry));
+
+    union {
+        kefir_float64_t fp64[2];
+        kefir_uint64_t uint64[2];
+    } value = {.fp64 = {0.0}};
+    switch (entry->type) {
+        case KEFIR_IR_DATA_VALUE_UNDEFINED:
+            break;
+
+        case KEFIR_IR_DATA_VALUE_COMPLEX_FLOAT64:
+            value.fp64[0] = entry->value.complex_float64.real;
+            value.fp64[1] = entry->value.complex_float64.imaginary;
+            break;
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected value of complex floating-point type field");
+    }
+
+    const struct kefir_abi_amd64_typeentry_layout *layout = NULL;
+    REQUIRE_OK(kefir_abi_amd64_type_layout_at(&param->layout, index, &layout));
+    REQUIRE_OK(align_offset(layout, param));
+    switch (typeentry->typecode) {
+        case KEFIR_IR_TYPE_COMPLEX_FLOAT64:
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+                &param->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 2,
+                kefir_asm_amd64_xasmgen_operand_immu(&param->codegen->xasmgen_helpers.operands[0], value.uint64[0]),
+                kefir_asm_amd64_xasmgen_operand_immu(&param->codegen->xasmgen_helpers.operands[1], value.uint64[1])));
+            break;
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpectedly encountered non-float32 type");
+    }
+    param->offset += layout->size;
+    return KEFIR_OK;
+}
+
+static kefir_result_t complex_long_double_static_data(const struct kefir_ir_type *type, kefir_size_t index,
+                                                      const struct kefir_ir_typeentry *typeentry, void *payload) {
+    UNUSED(type);
+    REQUIRE(typeentry != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid IR type entry"));
+    REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid payload"));
+
+    ASSIGN_DECL_CAST(struct static_data_param *, param, payload);
+    const struct kefir_ir_data_value *entry;
+    REQUIRE_OK(kefir_ir_data_value_at(param->data, param->slot++, &entry));
+
+    union {
+        kefir_long_double_t ldouble[2];
+        kefir_uint64_t uint64[4];
+    } value = {.ldouble = {0.0L}};
+    switch (entry->type) {
+        case KEFIR_IR_DATA_VALUE_UNDEFINED:
+            break;
+
+        case KEFIR_IR_DATA_VALUE_COMPLEX_LONG_DOUBLE:
+            value.ldouble[0] = entry->value.complex_long_double.real;
+            value.ldouble[1] = entry->value.complex_long_double.imaginary;
+            break;
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected value of complex floating-point type field");
+    }
+
+    const struct kefir_abi_amd64_typeentry_layout *layout = NULL;
+    REQUIRE_OK(kefir_abi_amd64_type_layout_at(&param->layout, index, &layout));
+    REQUIRE_OK(align_offset(layout, param));
+    switch (typeentry->typecode) {
+        case KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE:
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+                &param->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 2,
+                kefir_asm_amd64_xasmgen_operand_immu(&param->codegen->xasmgen_helpers.operands[0], value.uint64[0]),
+                kefir_asm_amd64_xasmgen_operand_immu(&param->codegen->xasmgen_helpers.operands[1], value.uint64[1])));
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+                &param->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 2,
+                kefir_asm_amd64_xasmgen_operand_immu(&param->codegen->xasmgen_helpers.operands[0], value.uint64[2]),
+                kefir_asm_amd64_xasmgen_operand_immu(&param->codegen->xasmgen_helpers.operands[1], value.uint64[3])));
+            break;
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpectedly encountered non-float32 type");
+    }
+    param->offset += layout->size;
+    return KEFIR_OK;
+}
+
 static kefir_result_t struct_static_data(const struct kefir_ir_type *type, kefir_size_t index,
                                          const struct kefir_ir_typeentry *typeentry, void *payload) {
     REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid IR type"));
@@ -544,6 +683,9 @@ kefir_result_t kefir_codegen_amd64_static_data(struct kefir_mem *mem, struct kef
     visitor.visit[KEFIR_IR_TYPE_FLOAT32] = float32_static_data;
     visitor.visit[KEFIR_IR_TYPE_FLOAT64] = float64_static_data;
     visitor.visit[KEFIR_IR_TYPE_LONG_DOUBLE] = long_double_static_data;
+    visitor.visit[KEFIR_IR_TYPE_COMPLEX_FLOAT32] = complex_float32_static_data;
+    visitor.visit[KEFIR_IR_TYPE_COMPLEX_FLOAT64] = complex_float64_static_data;
+    visitor.visit[KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE] = complex_long_double_static_data;
     visitor.visit[KEFIR_IR_TYPE_ARRAY] = array_static_data;
     visitor.visit[KEFIR_IR_TYPE_STRUCT] = struct_static_data;
     visitor.visit[KEFIR_IR_TYPE_UNION] = union_static_data;

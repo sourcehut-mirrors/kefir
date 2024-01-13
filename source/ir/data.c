@@ -181,6 +181,52 @@ kefir_result_t kefir_ir_data_set_long_double(struct kefir_mem *mem, struct kefir
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_ir_data_set_complex_float32(struct kefir_mem *mem, struct kefir_ir_data *data, kefir_size_t index,
+                                                 kefir_float32_t real, kefir_float32_t imaginary) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(data != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR data pointer"));
+    REQUIRE(!data->finalized, KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Cannot modify finalized data"));
+
+    struct kefir_ir_data_value *entry;
+    REQUIRE_OK(value_entry_at(mem, data, index, &entry));
+
+    entry->type = KEFIR_IR_DATA_VALUE_COMPLEX_FLOAT32;
+    entry->value.complex_float32.real = real;
+    entry->value.complex_float32.imaginary = imaginary;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_ir_data_set_complex_float64(struct kefir_mem *mem, struct kefir_ir_data *data, kefir_size_t index,
+                                                 kefir_float64_t real, kefir_float64_t imaginary) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(data != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR data pointer"));
+    REQUIRE(!data->finalized, KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Cannot modify finalized data"));
+
+    struct kefir_ir_data_value *entry;
+    REQUIRE_OK(value_entry_at(mem, data, index, &entry));
+
+    entry->type = KEFIR_IR_DATA_VALUE_COMPLEX_FLOAT64;
+    entry->value.complex_float64.real = real;
+    entry->value.complex_float64.imaginary = imaginary;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_ir_data_set_complex_long_double(struct kefir_mem *mem, struct kefir_ir_data *data,
+                                                     kefir_size_t index, kefir_long_double_t real,
+                                                     kefir_long_double_t imaginary) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(data != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR data pointer"));
+    REQUIRE(!data->finalized, KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Cannot modify finalized data"));
+
+    struct kefir_ir_data_value *entry;
+    REQUIRE_OK(value_entry_at(mem, data, index, &entry));
+
+    entry->type = KEFIR_IR_DATA_VALUE_COMPLEX_LONG_DOUBLE;
+    entry->value.complex_long_double.real = real;
+    entry->value.complex_long_double.imaginary = imaginary;
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_ir_data_set_string(struct kefir_mem *mem, struct kefir_ir_data *data, kefir_size_t index,
                                         kefir_ir_string_literal_type_t type, const void *value, kefir_size_t length) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
@@ -406,6 +452,7 @@ kefir_result_t kefir_ir_data_finalize(struct kefir_ir_data *data) {
 
     REQUIRE_OK(kefir_ir_type_visitor_init(&visitor, finalize_unsupported));
     KEFIR_IR_TYPE_VISITOR_INIT_SCALARS(&visitor, finalize_scalar);
+    KEFIR_IR_TYPE_VISITOR_INIT_COMPLEX(&visitor, finalize_scalar);
     visitor.visit[KEFIR_IR_TYPE_STRUCT] = finalize_struct_union;
     visitor.visit[KEFIR_IR_TYPE_UNION] = finalize_struct_union;
     visitor.visit[KEFIR_IR_TYPE_ARRAY] = finalize_array;

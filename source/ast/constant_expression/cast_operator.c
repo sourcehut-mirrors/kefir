@@ -120,6 +120,17 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *mem, c
                 }
                 break;
 
+            case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT:
+                if (unqualified->tag == KEFIR_AST_TYPE_SCALAR_BOOL) {
+                    value->integer = (bool) source->complex_floating_point.real;
+                } else {
+                    REQUIRE_OK(
+                        cast_integral_type(mem, context, unqualified, value,
+                                           (kefir_ast_constant_expression_int_t) source->complex_floating_point.real,
+                                           &node->source_location));
+                }
+                break;
+
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS:
                 value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS;
                 value->pointer = source->pointer;
@@ -140,6 +151,35 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *mem, c
                 value->floating_point = source->floating_point;
                 break;
 
+            case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT:
+                value->floating_point = source->complex_floating_point.real;
+                break;
+
+            case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS:
+                return KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->source_location,
+                                              "Address to floating point cast is not a constant expression");
+
+            case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_NONE:
+                return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Non-evaluated constant expression");
+        }
+    } else if (KEFIR_AST_TYPE_IS_COMPLEX_TYPE(unqualified)) {
+        value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT;
+        switch (source->klass) {
+            case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER:
+                value->complex_floating_point.real = (kefir_ast_constant_expression_float_t) source->integer;
+                value->complex_floating_point.imaginary = 0.0;
+                break;
+
+            case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT:
+                value->complex_floating_point.real = source->floating_point;
+                value->complex_floating_point.imaginary = 0.0;
+                break;
+
+            case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT:
+                value->complex_floating_point.real = source->complex_floating_point.real;
+                value->complex_floating_point.imaginary = source->complex_floating_point.imaginary;
+                break;
+
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS:
                 return KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->source_location,
                                               "Address to floating point cast is not a constant expression");
@@ -148,10 +188,6 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *mem, c
                 return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Non-evaluated constant expression");
         }
     } else if (unqualified->tag == KEFIR_AST_TYPE_SCALAR_POINTER) {
-        REQUIRE(source->klass != KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT,
-                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->source_location,
-                                       "Cannot cast floating point to address"));
-
         value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS;
         switch (source->klass) {
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER:
@@ -162,6 +198,7 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *mem, c
                 break;
 
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT:
+            case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT:
                 return KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->source_location,
                                               "Unable to cast floating point to address");
 

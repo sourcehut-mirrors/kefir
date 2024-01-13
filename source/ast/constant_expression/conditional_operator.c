@@ -52,6 +52,11 @@ kefir_result_t kefir_ast_evaluate_conditional_operator_node(struct kefir_mem *me
             condition = (kefir_bool_t) cond_value.floating_point;
             break;
 
+        case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT:
+            condition = (kefir_bool_t) cond_value.complex_floating_point.real ||
+                        (kefir_bool_t) cond_value.complex_floating_point.imaginary;
+            break;
+
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS:
             switch (cond_value.pointer.type) {
                 case KEFIR_AST_CONSTANT_EXPRESSION_POINTER_IDENTIFER:

@@ -242,6 +242,75 @@ static kefir_result_t visit_value(const struct kefir_ast_designator *designator,
                     REQUIRE_OK(kefir_ir_data_set_long_double(param->mem, param->data, slot, value.floating_point));
                     break;
 
+                case KEFIR_IR_TYPE_COMPLEX_FLOAT32:
+                    REQUIRE_OK(
+                        kefir_ir_data_set_complex_float32(param->mem, param->data, slot, value.floating_point, 0.0f));
+                    break;
+
+                case KEFIR_IR_TYPE_COMPLEX_FLOAT64:
+                    REQUIRE_OK(
+                        kefir_ir_data_set_complex_float64(param->mem, param->data, slot, value.floating_point, 0.0));
+                    break;
+
+                case KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE:
+                    REQUIRE_OK(kefir_ir_data_set_complex_long_double(param->mem, param->data, slot,
+                                                                     value.floating_point, 0.0L));
+                    break;
+
+                default:
+                    return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected target IR type entry code");
+            }
+            break;
+
+        case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT:
+            switch (target_typeentry->typecode) {
+                case KEFIR_IR_TYPE_INT8:
+                case KEFIR_IR_TYPE_INT16:
+                case KEFIR_IR_TYPE_INT32:
+                case KEFIR_IR_TYPE_INT64:
+                case KEFIR_IR_TYPE_BOOL:
+                case KEFIR_IR_TYPE_CHAR:
+                case KEFIR_IR_TYPE_SHORT:
+                case KEFIR_IR_TYPE_INT:
+                case KEFIR_IR_TYPE_LONG:
+                case KEFIR_IR_TYPE_WORD:
+                    REQUIRE_OK(kefir_ir_data_set_integer(param->mem, param->data, slot,
+                                                         (kefir_int64_t) value.complex_floating_point.real));
+                    break;
+
+                case KEFIR_IR_TYPE_FLOAT32:
+                    REQUIRE_OK(
+                        kefir_ir_data_set_float32(param->mem, param->data, slot, value.complex_floating_point.real));
+                    break;
+
+                case KEFIR_IR_TYPE_FLOAT64:
+                    REQUIRE_OK(
+                        kefir_ir_data_set_float64(param->mem, param->data, slot, value.complex_floating_point.real));
+                    break;
+
+                case KEFIR_IR_TYPE_LONG_DOUBLE:
+                    REQUIRE_OK(kefir_ir_data_set_long_double(param->mem, param->data, slot,
+                                                             value.complex_floating_point.real));
+                    break;
+
+                case KEFIR_IR_TYPE_COMPLEX_FLOAT32:
+                    REQUIRE_OK(kefir_ir_data_set_complex_float32(param->mem, param->data, slot,
+                                                                 value.complex_floating_point.real,
+                                                                 value.complex_floating_point.imaginary));
+                    break;
+
+                case KEFIR_IR_TYPE_COMPLEX_FLOAT64:
+                    REQUIRE_OK(kefir_ir_data_set_complex_float64(param->mem, param->data, slot,
+                                                                 value.complex_floating_point.real,
+                                                                 value.complex_floating_point.imaginary));
+                    break;
+
+                case KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE:
+                    REQUIRE_OK(kefir_ir_data_set_complex_long_double(param->mem, param->data, slot,
+                                                                     value.complex_floating_point.real,
+                                                                     value.complex_floating_point.imaginary));
+                    break;
+
                 default:
                     return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected target IR type entry code");
             }

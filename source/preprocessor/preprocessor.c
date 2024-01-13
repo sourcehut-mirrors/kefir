@@ -431,6 +431,10 @@ static kefir_result_t evaluate_pp_tokens(struct kefir_mem *mem, struct kefir_pre
             *result = expr_value.floating_point != 0;
             break;
 
+        case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT:
+            *result = expr_value.complex_floating_point.real != 0 || expr_value.complex_floating_point.imaginary != 0;
+            break;
+
         default:
             return KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, source_location, "Unexpected constant expression type");
     }

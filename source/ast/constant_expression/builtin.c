@@ -206,6 +206,7 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
                 REQUIRE_OK(res);
                 value->integer = (node_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER ||
                                   node_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT ||
+                                  node_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT ||
                                   (node_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS &&
                                    node_value.pointer.type != KEFIR_AST_CONSTANT_EXPRESSION_POINTER_IDENTIFER))
                                      ? 1

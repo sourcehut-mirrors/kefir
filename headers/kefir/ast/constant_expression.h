@@ -29,6 +29,7 @@ typedef enum kefir_ast_constant_expression_class {
     KEFIR_AST_CONSTANT_EXPRESSION_CLASS_NONE,
     KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER,
     KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT,
+    KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT,
     KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS
 } kefir_ast_constant_expression_class_t;
 
@@ -71,6 +72,10 @@ typedef struct kefir_ast_constant_expression_value {
         kefir_ast_constant_expression_uint_t uinteger;
     };
     kefir_ast_constant_expression_float_t floating_point;
+    struct {
+        kefir_ast_constant_expression_float_t real;
+        kefir_ast_constant_expression_float_t imaginary;
+    } complex_floating_point;
     struct kefir_ast_constant_expression_pointer pointer;
 } kefir_ast_constant_expression_value_t;
 
