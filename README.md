@@ -336,6 +336,12 @@ was implemented before preprocessor and can be used independently of it
 preprocessor modules share the same lexing facilities. Driver links kefir as a
 library and uses `fork` syscalls in order to isolate each file processing.
 
+## Source code hosting
+The primary code repository is hosted at
+[Sourcehut](https://sr.ht/~jprotopopov/kefir), with secondary mirrors at
+[Codeberg](https://codeberg.org/jprotopopov/kefir) and [author's personal
+website](https://git.protopopov.lv/kefir).
+
 ## Author and license
 Author: Jevgenijs Protopopovs
 
