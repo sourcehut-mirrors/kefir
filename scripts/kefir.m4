@@ -29,6 +29,6 @@ export LD_LIBRARY_PATH="$SCRIPT_DIR/libdir:$LD_LIBRARY_PATH"
 export KEFIR_RTLIB="$SCRIPT_DIR/libdir/libkefirrt.a"
 export KEFIR_RTINC="$SCRIPT_DIR/includedir/kefir/runtime"
 if [ -f "$SCRIPT_DIR/sysconfdir/kefir.local" ]; then
-    source "$SCRIPT_DIR/sysconfdir/kefir.local"
+    . "$SCRIPT_DIR/sysconfdir/kefir.local"
 fi
 exec "$SCRIPT_DIR/bindir/kefir-cc" "$@"
