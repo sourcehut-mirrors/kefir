@@ -1,7 +1,7 @@
 /*
     SPDX-License-Identifier: GPL-3.0
 
-    Copyright (C) 2020-2023  Jevgenijs Protopopovs
+    Copyright (C) 2020-2024  Jevgenijs Protopopovs
 
     This file is part of Kefir project.
 
@@ -33,7 +33,8 @@ kefir_result_t kefir_opt_constructor_start_code_block_at(struct kefir_mem *mem,
 
     kefir_opt_block_id_t code_block_id;
     REQUIRE(!kefir_hashtree_has(&state->code_blocks, (kefir_hashtree_key_t) ir_location), KEFIR_OK);
-    REQUIRE_OK(kefir_opt_code_container_new_block(mem, &state->function->code, ir_location == (kefir_size_t) -1ll, &code_block_id));
+    REQUIRE_OK(kefir_opt_code_container_new_block(mem, &state->function->code, ir_location == (kefir_size_t) -1ll,
+                                                  &code_block_id));
 
     struct kefir_opt_constructor_code_block_state *block_state =
         KEFIR_MALLOC(mem, sizeof(struct kefir_opt_constructor_code_block_state));

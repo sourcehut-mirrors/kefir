@@ -1,7 +1,7 @@
 /*
     SPDX-License-Identifier: GPL-3.0
 
-    Copyright (C) 2020-2023  Jevgenijs Protopopovs
+    Copyright (C) 2020-2024  Jevgenijs Protopopovs
 
     This file is part of Kefir project.
 
@@ -21,18 +21,20 @@
 #include "./definitions.h"
 
 int factorial(int x) {
-	if (x < 0) return 0;
-	if (x <= 2) return x;
+    if (x < 0)
+        return 0;
+    if (x <= 2)
+        return x;
 
-	int result = 1;
-	for (; x > 1; --x) {
-		result *= x;
-	}
-	return result;
+    int result = 1;
+    for (; x > 1; --x) {
+        result *= x;
+    }
+    return result;
 }
 
 long factorial64(long x) {
-	if (x < 0) {
+    if (x < 0) {
         return 0;
     } else if (x <= 2) {
         return x;
@@ -46,7 +48,7 @@ long factorial64(long x) {
 }
 
 float factorialf32(float x) {
-	if (x < 0) {
+    if (x < 0) {
         return 0.0f;
     } else if (x <= 2) {
         return x;
@@ -60,7 +62,7 @@ float factorialf32(float x) {
 }
 
 double factorialf64(double x) {
-	if (x < 0) {
+    if (x < 0) {
         return 0.0;
     } else if (x <= 2) {
         return x;

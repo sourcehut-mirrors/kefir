@@ -1,7 +1,7 @@
 /*
     SPDX-License-Identifier: GPL-3.0
 
-    Copyright (C) 2020-2023  Jevgenijs Protopopovs
+    Copyright (C) 2020-2024  Jevgenijs Protopopovs
 
     This file is part of Kefir project.
 
@@ -231,8 +231,7 @@ static kefir_result_t resolve_struct_type(struct kefir_mem *mem, const struct ke
 
 static kefir_result_t resolve_enum_type(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                         const struct kefir_ast_declarator_specifier *decl_specifier,
-                                        const struct kefir_ast_type **base_type,
-                                        kefir_uint64_t flags) {
+                                        const struct kefir_ast_type **base_type, kefir_uint64_t flags) {
     if ((flags & KEFIR_AST_DECLARATION_ANALYSIS_FUNCTION_DEFINITION_CONTEXT) != 0) {
         context = &context->global_context->context;
     }

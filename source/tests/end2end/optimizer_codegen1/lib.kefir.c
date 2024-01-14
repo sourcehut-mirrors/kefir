@@ -1,7 +1,7 @@
 /*
     SPDX-License-Identifier: GPL-3.0
 
-    Copyright (C) 2020-2023  Jevgenijs Protopopovs
+    Copyright (C) 2020-2024  Jevgenijs Protopopovs
 
     This file is part of Kefir project.
 
@@ -20,11 +20,15 @@
 
 #include "./definitions.h"
 
-#define DEFINE_UN_FN(_id, _type, _op) \
-    _type op_##_id##_##_type(_type x) { return OP_##_op(x); }
+#define DEFINE_UN_FN(_id, _type, _op)   \
+    _type op_##_id##_##_type(_type x) { \
+        return OP_##_op(x);             \
+    }
 
-#define DEFINE_BIN_FN(_id, _type, _op) \
-    _type op_##_id##_##_type(_type x, _type y) { return OP_##_op(x, y); }
+#define DEFINE_BIN_FN(_id, _type, _op)           \
+    _type op_##_id##_##_type(_type x, _type y) { \
+        return OP_##_op(x, y);                   \
+    }
 
 #define DEFINE_UN_FNS(_id, _op)    \
     DEFINE_UN_FN(_id, char, _op)   \

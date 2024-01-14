@@ -1,7 +1,7 @@
 /*
     SPDX-License-Identifier: GPL-3.0
 
-    Copyright (C) 2020-2023  Jevgenijs Protopopovs
+    Copyright (C) 2020-2024  Jevgenijs Protopopovs
 
     This file is part of Kefir project.
 
@@ -21,14 +21,16 @@
 #ifndef DEFINITIONS_H_
 #define DEFINITIONS_H_
 
-enum Enum2 {
-    THREE = 3,
-    FOUR
-} getthree(void);
+enum Enum2 { THREE = 3, FOUR } getthree(void);
 
 enum Enum2 getfour(void);
 
-#define DEFSTRUCT(_name) struct _name { int x; char y; long z; }
+#define DEFSTRUCT(_name) \
+    struct _name {       \
+        int x;           \
+        char y;          \
+        long z;          \
+    }
 
 int getsz(void);
 

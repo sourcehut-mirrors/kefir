@@ -1,7 +1,7 @@
 /*
     SPDX-License-Identifier: GPL-3.0
 
-    Copyright (C) 2020-2023  Jevgenijs Protopopovs
+    Copyright (C) 2020-2024  Jevgenijs Protopopovs
 
     This file is part of Kefir project.
 
@@ -45,19 +45,18 @@ static kefir_result_t branch_removal_apply(struct kefir_mem *mem, const struct k
         kefir_opt_instruction_ref_t replacement_ref = KEFIR_ID_NONE;
 
         struct kefir_opt_instruction *arg1;
-        REQUIRE_OK(kefir_opt_code_container_instr(&func->code,
-                                                    instr->operation.parameters.branch.condition_ref, &arg1));
+        REQUIRE_OK(
+            kefir_opt_code_container_instr(&func->code, instr->operation.parameters.branch.condition_ref, &arg1));
         if (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST ||
             arg1->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST) {
             REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr_id));
             if (arg1->operation.parameters.imm.integer != 0) {
                 REQUIRE_OK(kefir_opt_code_builder_finalize_jump(
-                    mem, &func->code, block_id, instr->operation.parameters.branch.target_block,
-                    &replacement_ref));
+                    mem, &func->code, block_id, instr->operation.parameters.branch.target_block, &replacement_ref));
             } else {
-                REQUIRE_OK(kefir_opt_code_builder_finalize_jump(
-                    mem, &func->code, block_id, instr->operation.parameters.branch.alternative_block,
-                    &replacement_ref));
+                REQUIRE_OK(kefir_opt_code_builder_finalize_jump(mem, &func->code, block_id,
+                                                                instr->operation.parameters.branch.alternative_block,
+                                                                &replacement_ref));
             }
 
             REQUIRE_OK(kefir_opt_code_container_replace_references(&func->code, replacement_ref, instr_id));

@@ -1,7 +1,7 @@
 /*
     SPDX-License-Identifier: GPL-3.0
 
-    Copyright (C) 2020-2023  Jevgenijs Protopopovs
+    Copyright (C) 2020-2024  Jevgenijs Protopopovs
 
     This file is part of Kefir project.
 
@@ -50,6 +50,6 @@ int main(void) {
     assert(fabs(quad_equation(1, 1, -12, 0) - (-4.0)) < EPSILON_D);
     assert(fabs(quad_equation(1, 1, -12, 1) - (3.0)) < EPSILON_D);
     assert(fabs(quad_equation(3, 25, -18, 0) - (-9.0)) < EPSILON_D);
-    assert(fabs(quad_equation(3, 25, -18, 1) - (2.0/3.0)) < EPSILON_D);
+    assert(fabs(quad_equation(3, 25, -18, 1) - (2.0 / 3.0)) < EPSILON_D);
     return EXIT_SUCCESS;
 }

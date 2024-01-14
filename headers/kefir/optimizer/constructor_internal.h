@@ -1,7 +1,7 @@
 /*
     SPDX-License-Identifier: GPL-3.0
 
-    Copyright (C) 2020-2023  Jevgenijs Protopopovs
+    Copyright (C) 2020-2024  Jevgenijs Protopopovs
 
     This file is part of Kefir project.
 
@@ -56,8 +56,7 @@ kefir_result_t kefir_opt_constructor_mark_code_block_for_indirect_jump(struct ke
                                                                        kefir_size_t);
 kefir_result_t kefir_opt_constructor_find_code_block_for(const struct kefir_opt_constructor_state *, kefir_size_t,
                                                          struct kefir_opt_constructor_code_block_state **);
-kefir_result_t kefir_opt_constructor_update_current_code_block(struct kefir_mem *,
-                                                               struct kefir_opt_constructor_state *,
+kefir_result_t kefir_opt_constructor_update_current_code_block(struct kefir_mem *, struct kefir_opt_constructor_state *,
                                                                kefir_size_t);
 
 kefir_result_t kefir_opt_constructor_stack_push(struct kefir_mem *, struct kefir_opt_constructor_state *,

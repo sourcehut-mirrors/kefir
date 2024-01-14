@@ -1,7 +1,7 @@
 /*
     SPDX-License-Identifier: GPL-3.0
 
-    Copyright (C) 2020-2023  Jevgenijs Protopopovs
+    Copyright (C) 2020-2024  Jevgenijs Protopopovs
 
     This file is part of Kefir project.
 
@@ -30,7 +30,7 @@ struct Struct1 getstruct1(long seed) {
 }
 
 struct Struct2 getstruct2(int seed) {
-    return (struct Struct2) {.arr = { seed, seed / 2, ~seed }};
+    return (struct Struct2){.arr = {seed, seed / 2, ~seed}};
 }
 
 int main(void) {

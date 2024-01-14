@@ -1,7 +1,7 @@
 /*
     SPDX-License-Identifier: GPL-3.0
 
-    Copyright (C) 2020-2023  Jevgenijs Protopopovs
+    Copyright (C) 2020-2024  Jevgenijs Protopopovs
 
     This file is part of Kefir project.
 
@@ -20,14 +20,22 @@
 
 #include "./definitions.h"
 
-#define PREINC(_field) \
-    void preinc_##_field(struct Structure *s) { ++s->_field; }
-#define POSTINC(_field) \
-    void postinc_##_field(struct Structure *s) { s->_field++; }
-#define PREDEC(_field) \
-    void predec_##_field(struct Structure *s) { --s->_field; }
-#define POSTDEC(_field) \
-    void postdec_##_field(struct Structure *s) { s->_field--; }
+#define PREINC(_field)                          \
+    void preinc_##_field(struct Structure *s) { \
+        ++s->_field;                            \
+    }
+#define POSTINC(_field)                          \
+    void postinc_##_field(struct Structure *s) { \
+        s->_field++;                             \
+    }
+#define PREDEC(_field)                          \
+    void predec_##_field(struct Structure *s) { \
+        --s->_field;                            \
+    }
+#define POSTDEC(_field)                          \
+    void postdec_##_field(struct Structure *s) { \
+        s->_field--;                             \
+    }
 
 #define DEF_FIELD(_field) \
     PREINC(_field)        \

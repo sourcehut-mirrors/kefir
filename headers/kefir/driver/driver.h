@@ -1,7 +1,7 @@
 /*
     SPDX-License-Identifier: GPL-3.0
 
-    Copyright (C) 2020-2023  Jevgenijs Protopopovs
+    Copyright (C) 2020-2024  Jevgenijs Protopopovs
 
     This file is part of Kefir project.
 
@@ -29,10 +29,10 @@
 #include "kefir/driver/tools.h"
 
 kefir_result_t kefir_driver_generate_compiler_config(struct kefir_mem *, struct kefir_string_pool *,
-                                                      struct kefir_driver_configuration *,
-                                                      const struct kefir_driver_external_resources *,
-                                                      struct kefir_compiler_runner_configuration *);
-                                                      
+                                                     struct kefir_driver_configuration *,
+                                                     const struct kefir_driver_external_resources *,
+                                                     struct kefir_compiler_runner_configuration *);
+
 kefir_result_t kefir_driver_run(struct kefir_mem *, struct kefir_string_pool *, struct kefir_driver_configuration *,
                                 const struct kefir_driver_external_resources *);
 

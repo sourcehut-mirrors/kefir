@@ -1,7 +1,7 @@
 /*
     SPDX-License-Identifier: GPL-3.0
 
-    Copyright (C) 2020-2023  Jevgenijs Protopopovs
+    Copyright (C) 2020-2024  Jevgenijs Protopopovs
 
     This file is part of Kefir project.
 
@@ -20,10 +20,7 @@
 
 #include "./definitions.h"
 
-enum Enum1 {
-    ONE = 1,
-    TWO
-} getone(void) {
+enum Enum1 { ONE = 1, TWO } getone(void) {
     return ONE;
 }
 

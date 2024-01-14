@@ -1,7 +1,7 @@
 /*
     SPDX-License-Identifier: GPL-3.0
 
-    Copyright (C) 2020-2023  Jevgenijs Protopopovs
+    Copyright (C) 2020-2024  Jevgenijs Protopopovs
 
     This file is part of Kefir project.
 
@@ -84,7 +84,9 @@ const struct kefir_ast_type *kefir_ast_type_void(void) {
                                                                       .free = free_nothing},                \
                                                               .basic_type = {.rank = (_rank)}};             \
                                                                                                             \
-    const struct kefir_ast_type *kefir_ast_type_##id(void) { return &DEFAULT_SCALAR_##id; }
+    const struct kefir_ast_type *kefir_ast_type_##id(void) {                                                \
+        return &DEFAULT_SCALAR_##id;                                                                        \
+    }
 
 SCALAR_TYPE(boolean, KEFIR_AST_TYPE_SCALAR_BOOL, 0)
 SCALAR_TYPE(char, KEFIR_AST_TYPE_SCALAR_CHAR, 1)
