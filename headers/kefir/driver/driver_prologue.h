@@ -67,7 +67,7 @@ static kefir_result_t init_tmpmgr(void) {
 static kefir_result_t print_compiler_info(FILE *out, const char *exec_name) {
 
     fprintf(out, "Executable: %s\n", exec_name);
-    fprintf(out, "Version: %u.%u.%u\n", KEFIR_VERSION_MAJOR, KEFIR_VERSION_MINOR, KEFIR_VERSION_PATCH);
+    fprintf(out, "Version: %s\n", KEFIR_VERSION_FULL);
     fprintf(out, "Host: %s\n",
 #if defined(KEFIR_LINUX_HOST_PLATFORM)
             "linux"
@@ -111,6 +111,11 @@ static kefir_result_t print_compiler_info(FILE *out, const char *exec_name) {
     fprintf(out, "    Source-ID: %s\n", KEFIR_BUILD_SOURCE_ID);
 #endif
 
+#ifdef KEFIR_BUILD_TIMESTAMP
+    const time_t build_time = KEFIR_BUILD_TIMESTAMP;
+    fprintf(out, "    Build time (UTC): %s", asctime(gmtime(&build_time)));
+#endif
+
 #ifdef KEFIR_BUILD_CFLAGS
     fprintf(out, "    Compiler flags: %s\n", KEFIR_BUILD_CFLAGS);
 #endif
@@ -123,7 +128,7 @@ static kefir_result_t print_compiler_info(FILE *out, const char *exec_name) {
 #endif
     );
 
-    fprintf(out, "URLs (primary): %s\n", "https://sr.ht/~jprotopopov/kefir");
+    fprintf(out, "URLs  (primary): %s\n", "https://sr.ht/~jprotopopov/kefir");
     fprintf(out, "     (mirror 1): %s\n", "https://git.protopopov.lv/kefir");
     fprintf(out, "     (mirror 2): %s\n", "https://codeberg.org/jprotopopov/kefir");
     return KEFIR_OK;

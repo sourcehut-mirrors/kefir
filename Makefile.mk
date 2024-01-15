@@ -1,5 +1,5 @@
 # Build profile
-PROFILE=debug
+PROFILE=release
 USE_SHARED=yes
 USE_SANITIZER=no
 USE_VALGRIND=no
@@ -30,7 +30,7 @@ REALPATH=grealpath
 endif
 
 # Build flags
-CFLAGS=-std=c11 -Wall -Wextra -pedantic -Wno-overlength-strings -Wstrict-prototypes -Wformat=2 -Wno-format-nonliteral -Wundef -Wunreachable-code  -fno-common
+CFLAGS=-std=c11 -fno-common
 PROFILE_CFLAGS=
 EXTRA_CFLAGS=
 LDFLAGS=
@@ -38,14 +38,18 @@ SANITIZER_FLAGS=
 ifeq ($(USE_SHARED),yes)
 CFLAGS+=-fPIC
 endif
+WARNING_CFLAGS=-Wall -Wextra -pedantic -Wno-overlength-strings -Wstrict-prototypes -Wformat=2 -Wno-format-nonliteral -Wundef -Wunreachable-code 
 ifeq ($(PROFILE),debug)
-PROFILE_CFLAGS=-O0 -g3 -ggdb
+PROFILE_CFLAGS=-O0 -g3 -ggdb $(WARNING_CFLAGS)
 endif
 ifeq ($(PROFILE),reldebug)
-PROFILE_CFLAGS=-O3 -g3 -ggdb
+PROFILE_CFLAGS=-O3 -g3 -ggdb $(WARNING_CFLAGS)
+endif
+ifeq ($(PROFILE),devrelease)
+PROFILE_CFLAGS=-O3 -DNDEBUG
 endif
 ifeq ($(PROFILE),release)
-PROFILE_CFLAGS=-O3 -DNDEBUG
+PROFILE_CFLAGS=-O3 -DNDEBUG -DKEFIR_BUILD_RELEASE
 endif
 ifeq ($(USE_SANITIZER),yes)
 SANITIZER_FLAGS=-fsanitize=undefined -fno-sanitize-recover=all

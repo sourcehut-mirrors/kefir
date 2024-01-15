@@ -53,7 +53,7 @@ int main(int argc, char *const *argv) {
                 break;
 
             case KEFIR_CLI_COMMAND_VERSION:
-                fprintf(stdout, "%u.%u.%u\n", KEFIR_VERSION_MAJOR, KEFIR_VERSION_MINOR, KEFIR_VERSION_PATCH);
+                fprintf(stdout, "%s\n", KEFIR_VERSION_FULL);
                 break;
         }
     }

@@ -14,7 +14,7 @@ options=('staticlibs')
 
 build () {
     cd kefir
-    make all PROFILE=release EXTRA_CFLAGS="-march=native"
+    make all EXTRA_CFLAGS="-march=native"
 }
 
 package () {

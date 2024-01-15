@@ -54,7 +54,7 @@ int main(int argc, char *const *argv) {
     if (res == KEFIR_OK && command == KEFIR_DRIVER_COMMAND_HELP) {
         fprintf(stdout, "%s", KefirDriverHelpContent);
     } else if (res == KEFIR_OK && command == KEFIR_DRIVER_COMMAND_VERSION) {
-        fprintf(stdout, "%u.%u.%u\n", KEFIR_VERSION_MAJOR, KEFIR_VERSION_MINOR, KEFIR_VERSION_PATCH);
+        fprintf(stdout, "%s\n", KEFIR_VERSION_FULL);
     } else if (res == KEFIR_OK && command == KEFIR_DRIVER_COMMAND_COMPILER_INFO) {
         res = print_compiler_info(stdout, argv[0]);
     } else if (res == KEFIR_OK && command == KEFIR_DRIVER_COMMAND_COMPILER_ENVIRONMENT) {

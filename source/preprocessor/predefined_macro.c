@@ -145,9 +145,25 @@ MACRO(time) {
 MACRO_END
 
 MACRO(kefircc_version) {
-    char version_buf[64];
-    int len = snprintf(version_buf, sizeof(version_buf) - 1, "%u.%u.%u", KEFIR_VERSION_MAJOR, KEFIR_VERSION_MINOR,
-                       KEFIR_VERSION_PATCH);
+    char version_buf[256];
+    int len = snprintf(version_buf, sizeof(version_buf) - 1, "%s", KEFIR_VERSION_SHORT);
+    REQUIRE(len > 0, KEFIR_SET_OS_ERROR("Failed to format compiler version"));
+
+    struct kefir_token token;
+    REQUIRE_OK(kefir_token_new_string_literal_raw_from_escaped_multibyte(mem, KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE,
+                                                                         version_buf, len, &token));
+    token.source_location = *source_location;
+    kefir_result_t res = kefir_token_buffer_emplace(mem, buffer, &token);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_token_free(mem, &token);
+        return res;
+    });
+}
+MACRO_END
+
+MACRO(kefircc_full_version) {
+    char version_buf[256];
+    int len = snprintf(version_buf, sizeof(version_buf) - 1, "%s", KEFIR_VERSION_FULL);
     REQUIRE(len > 0, KEFIR_SET_OS_ERROR("Failed to format compiler version"));
 
     struct kefir_token token;
@@ -405,6 +421,9 @@ kefir_result_t kefir_preprocessor_predefined_macro_scope_init(struct kefir_mem *
 
     REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.kefircc_version,
                                                 "__KEFIRCC_VERSION__", macro_kefircc_version_apply));
+
+    REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.kefircc_full_version,
+                                                "__KEFIRCC_FULL_VERSION__", macro_kefircc_full_version_apply));
 
     if (preprocessor->context->environment.data_model != NULL) {
         switch (preprocessor->context->environment.data_model->model) {

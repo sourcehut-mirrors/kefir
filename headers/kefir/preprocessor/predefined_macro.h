@@ -52,6 +52,7 @@ typedef struct kefir_preprocessor_predefined_macro_scope {
         struct kefir_preprocessor_macro stdc_no_vla;
         struct kefir_preprocessor_macro kefircc;
         struct kefir_preprocessor_macro kefircc_version;
+        struct kefir_preprocessor_macro kefircc_full_version;
         struct kefir_preprocessor_macro counter;
 
         // Extension macros
