@@ -1,1 +1,0 @@
-KEFIR_CFLAGS="$KEFIR_CFLAGS -Winternal-flat-local-scope-layout"
