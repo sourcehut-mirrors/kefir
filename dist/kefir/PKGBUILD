@@ -1,6 +1,7 @@
+# Maintainer: Jevgenijs Protopopovs <jevgenij@protopopov.lv>
 pkgname='kefir'
 pkgver='0.3.1'
-pkgrel='2'
+pkgrel='1'
 pkgdesc='C17 language compiler for x86_64 systems'
 arch=('x86_64')
 url='https://kefir.protopopov.lv'
