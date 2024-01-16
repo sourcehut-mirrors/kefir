@@ -13,6 +13,8 @@ default, the compiler outputs GNU As-compatible assembly (Intel syntax
 with/without prefixes and ATT syntax are supported). Position-independent code
 generation is supported. Kefir features `cc`-compatible command line interface.
 
+[Kefir website](https://kefir.protopopov.lv) also provides some additional information.
+
 ### Project name
 Kefir compiler is named after [fermented milk
 drink](https://en.wikipedia.org/wiki/Kefir), no other connotations are meant or
@@ -230,7 +232,7 @@ python -m  http.server 8000 -d bin/webapp
 ```
 
 A hosted version of the Web application is available at [Kefir
-playground](https://www.protopopov.lv/kefir/playground/) (please note that the
+playground](https://kefir.protopopov.lv/playground/) (please note that the
 Web page uses JavaScript and WebAssembly).
 
 ## Bootstrap
