@@ -187,7 +187,7 @@ dependencies include `valgrind` (for test execution) as well. After installing
 all dependencies, kefir can be built with a single command: `make all EXTRA_CFLAGS="-march=native" -j$(nproc)`. By default, kefir builds a shared
 library and links executables to it. Static linkage can be used by specifying
 `USE_SHARED=no` in make command line arguments. Sample `PKGBUILD` is provided in
-`dist` directory.
+`dist/kefir` directory.
 
 It is also advised to run basic test suite:
 ```bash
