@@ -186,10 +186,10 @@ library and links executables to it. Static linkage can be used by specifying
 
 It is also advised to run basic test suite:
 ```bash
-LC_ALL=C.UTF-8 make test all -j$(nproc)         # Linux
-gmake test all PLATFORM=freebsd CC=clang        # FreeBSD
-gmake test all CC=clang AS=gas PLATFORM=openbsd # OpenBSD
-gmake test all CC=gcc AS=gas PLATFORM=netbsd    # NetBSD
+LC_ALL=C.UTF-8 make test all   # Linux
+gmake test all CC=clang        # FreeBSD
+gmake test all CC=clang AS=gas # OpenBSD
+gmake test all CC=gcc AS=gas   # NetBSD
 ```
 
 Optionally, Kefir can be installed via: `make install DESTDIR=...`. Short

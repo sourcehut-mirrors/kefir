@@ -16,11 +16,11 @@ Variable                    Description                 Options (*default)
 ============================================================================================
                                    Build profile
 ============================================================================================
-PROFILE                     Build profile               *debug | reldebug | release
+PROFILE                     Build profile               debug | reldebug | devrelease | *release
 USE_SHARED                  Produce shared libraries    *yes | no
 USE_SANITIZER               Compile with UB sanitizer   yes | *no
 USE_VALGRIND                Run tests with Valgrind     yes | *no
-PLATFORM                    Target platform             * | freebsd | openbsd | netbsd
+PLATFORM                    Host platform               linux | freebsd | openbsd | netbsd | (*autodetect)
 ============================================================================================
                                      Tools
 ============================================================================================
@@ -36,8 +36,9 @@ MDOC_CONV                   mdoc-to-... conversion      *groff -mandoc | mandoc 
 ============================================================================================
                                     Tool options
 ============================================================================================
-CFLAGS                      C compiler flags            *-std=c11 # + some warning flags
-PROFILE_CFLAGS              PROFILE-based flags         *-O0 -g3 -ggdb
+CFLAGS                      C compiler flags            *-std=c11
+WARNING_CFLAGS              C compiler warnings         
+PROFILE_CFLAGS              PROFILE-based flags
 EXTRA_CFLAGS                Extra C flags               
 SANITIZER_FLAGS             Sanitizer flags             
 LDFLAGS                     Linker flags                

@@ -3,7 +3,7 @@ PROFILE=release
 USE_SHARED=yes
 USE_SANITIZER=no
 USE_VALGRIND=no
-PLATFORM=
+PLATFORM := $(shell uname | tr '[:upper:]' '[:lower:]')
 
 # Tools
 CC=cc

@@ -12,11 +12,11 @@ sources:
 tasks:
   - test: |
       cd kefir
-      gmake test PLATFORM=freebsd USE_VALGRIND=yes PROFILE=reldebug USE_SANITIZER=yes CC=clang
+      gmake test USE_VALGRIND=yes PROFILE=reldebug USE_SANITIZER=yes CC=clang
   - build: |
       cd kefir
       gmake clean clean_bootstrap
-      gmake all PLATFORM=freebsd PROFILE=reldebug CC=clang
+      gmake all PROFILE=reldebug CC=clang
   - bootstrap: |
       cd kefir
       gmake clean clean_bootstrap
@@ -24,7 +24,7 @@ tasks:
       export KEFIR_RTLIB="$HOME/kefir/bin/libs/libkefirrt.a"
       export KEFIR_RTINC="$HOME/kefir/headers/kefir/runtime"
       export REALPATH=grealpath
-      LC_ALL=C.UTF-8 gmake bootstrap BOOTSTRAP_EXTRA_CFLAGS="-O1" CC=clang PLATFORM=freebsd
+      LC_ALL=C.UTF-8 gmake bootstrap BOOTSTRAP_EXTRA_CFLAGS="-O1" CC=clang
 triggers:
   - action: email
     condition: failure
