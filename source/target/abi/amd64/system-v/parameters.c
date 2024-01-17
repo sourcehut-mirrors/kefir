@@ -178,10 +178,10 @@ static kefir_result_t assign_nested_complex(const struct kefir_ir_type *type, ke
         case KEFIR_IR_TYPE_COMPLEX_FLOAT32:
         case KEFIR_IR_TYPE_COMPLEX_FLOAT64:
             REQUIRE_OK(kefir_abi_amd64_sysv_qwords_next(&info->top_allocation->container, KEFIR_AMD64_SYSV_PARAM_SSE,
-                                                        layout->size, layout->alignment,
+                                                        KEFIR_AMD64_ABI_QWORD / 2, KEFIR_AMD64_ABI_QWORD / 2,
                                                         &allocation->container_reference));
             REQUIRE_OK(kefir_abi_amd64_sysv_qwords_next(&info->top_allocation->container, KEFIR_AMD64_SYSV_PARAM_SSE,
-                                                        layout->size, layout->alignment,
+                                                        layout->size / 2, layout->alignment,
                                                         &allocation->container_reference));
             break;
 
@@ -445,18 +445,20 @@ static kefir_result_t assign_immediate_complex_fixed(const struct kefir_ir_type 
     switch (typeentry->typecode) {
         case KEFIR_IR_TYPE_COMPLEX_FLOAT32:
             REQUIRE_OK(kefir_abi_amd64_sysv_qwords_alloc(&allocation->container, info->mem, 1));
-            REQUIRE_OK(
-                kefir_abi_amd64_sysv_qwords_next(&allocation->container, KEFIR_AMD64_SYSV_PARAM_SSE, 4, 4, &qword_ref));
-            REQUIRE_OK(
-                kefir_abi_amd64_sysv_qwords_next(&allocation->container, KEFIR_AMD64_SYSV_PARAM_SSE, 4, 4, &qword_ref));
+            REQUIRE_OK(kefir_abi_amd64_sysv_qwords_next(&allocation->container, KEFIR_AMD64_SYSV_PARAM_SSE,
+                                                        KEFIR_AMD64_ABI_QWORD / 2, KEFIR_AMD64_ABI_QWORD / 2,
+                                                        &qword_ref));
+            REQUIRE_OK(kefir_abi_amd64_sysv_qwords_next(&allocation->container, KEFIR_AMD64_SYSV_PARAM_SSE,
+                                                        KEFIR_AMD64_ABI_QWORD / 2, KEFIR_AMD64_ABI_QWORD / 2,
+                                                        &qword_ref));
             break;
 
         case KEFIR_IR_TYPE_COMPLEX_FLOAT64:
             REQUIRE_OK(kefir_abi_amd64_sysv_qwords_alloc(&allocation->container, info->mem, 2));
-            REQUIRE_OK(
-                kefir_abi_amd64_sysv_qwords_next(&allocation->container, KEFIR_AMD64_SYSV_PARAM_SSE, 8, 8, &qword_ref));
-            REQUIRE_OK(
-                kefir_abi_amd64_sysv_qwords_next(&allocation->container, KEFIR_AMD64_SYSV_PARAM_SSE, 8, 8, &qword_ref));
+            REQUIRE_OK(kefir_abi_amd64_sysv_qwords_next(&allocation->container, KEFIR_AMD64_SYSV_PARAM_SSE,
+                                                        KEFIR_AMD64_ABI_QWORD, KEFIR_AMD64_ABI_QWORD, &qword_ref));
+            REQUIRE_OK(kefir_abi_amd64_sysv_qwords_next(&allocation->container, KEFIR_AMD64_SYSV_PARAM_SSE,
+                                                        KEFIR_AMD64_ABI_QWORD, KEFIR_AMD64_ABI_QWORD, &qword_ref));
             break;
 
         default:
