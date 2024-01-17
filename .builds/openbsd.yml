@@ -1,10 +1,9 @@
-image: openbsd/7.2
+image: openbsd/7.3
 packages:
   - gmake
   - llvm
   - binutils
   - coreutils
-  - gas
   - bash
 secrets:
   -  13fca65b-ffbd-4542-b2fe-6a2813e53256
