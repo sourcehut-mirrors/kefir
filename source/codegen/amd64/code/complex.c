@@ -21,6 +21,7 @@
 #define KEFIR_CODEGEN_AMD64_FUNCTION_INTERNAL
 #include "kefir/codegen/amd64/function.h"
 #include "kefir/codegen/amd64/symbolic_labels.h"
+#include "kefir/target/abi/amd64/type_layout.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
@@ -134,8 +135,9 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(complex_long_double_real)(
     kefir_asmcmp_virtual_register_index_t result_vreg, arg1_vreg;
 
     REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[0], &arg1_vreg));
-    REQUIRE_OK(kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(mem, &function->code.context, 2, 2,
-                                                                                 &result_vreg));
+    REQUIRE_OK(kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(
+        mem, &function->code.context, kefir_abi_amd64_long_double_qword_size(function->codegen->abi_variant),
+        kefir_abi_amd64_long_double_qword_alignment(function->codegen->abi_variant), &result_vreg));
 
     REQUIRE_OK(kefir_asmcmp_amd64_fld(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
@@ -160,8 +162,9 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(complex_long_double_imaginar
     kefir_asmcmp_virtual_register_index_t result_vreg, arg1_vreg;
 
     REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[0], &arg1_vreg));
-    REQUIRE_OK(kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(mem, &function->code.context, 2, 2,
-                                                                                 &result_vreg));
+    REQUIRE_OK(kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(
+        mem, &function->code.context, kefir_abi_amd64_long_double_qword_size(function->codegen->abi_variant),
+        kefir_abi_amd64_long_double_qword_alignment(function->codegen->abi_variant), &result_vreg));
 
     REQUIRE_OK(kefir_asmcmp_amd64_fld(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
@@ -188,8 +191,9 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(complex_float32_from)(
 
     REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[0], &arg1_vreg));
     REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[1], &arg2_vreg));
-    REQUIRE_OK(kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(mem, &function->code.context, 1, 1,
-                                                                                 &result_vreg));
+    REQUIRE_OK(kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(
+        mem, &function->code.context, kefir_abi_amd64_complex_float_qword_size(function->codegen->abi_variant),
+        kefir_abi_amd64_complex_float_qword_alignment(function->codegen->abi_variant), &result_vreg));
 
     REQUIRE_OK(kefir_asmcmp_amd64_movd(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
@@ -217,8 +221,9 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(complex_float64_from)(
 
     REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[0], &arg1_vreg));
     REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[1], &arg2_vreg));
-    REQUIRE_OK(kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(mem, &function->code.context, 2, 1,
-                                                                                 &result_vreg));
+    REQUIRE_OK(kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(
+        mem, &function->code.context, kefir_abi_amd64_complex_double_qword_size(function->codegen->abi_variant),
+        kefir_abi_amd64_complex_double_qword_alignment(function->codegen->abi_variant), &result_vreg));
 
     REQUIRE_OK(kefir_asmcmp_amd64_movq(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
@@ -246,8 +251,9 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(complex_long_double_from)(
 
     REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[0], &arg1_vreg));
     REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[1], &arg2_vreg));
-    REQUIRE_OK(kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(mem, &function->code.context, 4, 2,
-                                                                                 &result_vreg));
+    REQUIRE_OK(kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(
+        mem, &function->code.context, kefir_abi_amd64_complex_long_double_qword_size(function->codegen->abi_variant),
+        kefir_abi_amd64_complex_long_double_qword_alignment(function->codegen->abi_variant), &result_vreg));
 
     REQUIRE_OK(kefir_asmcmp_amd64_fld(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
@@ -608,8 +614,9 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(complex_float32_add_sub)(
 
     REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[0], &arg1_vreg));
     REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[1], &arg2_vreg));
-    REQUIRE_OK(kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(mem, &function->code.context, 1, 1,
-                                                                                 &result_vreg));
+    REQUIRE_OK(kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(
+        mem, &function->code.context, kefir_abi_amd64_complex_float_qword_size(function->codegen->abi_variant),
+        kefir_abi_amd64_complex_float_qword_alignment(function->codegen->abi_variant), &result_vreg));
     REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
                                                  KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT, &result_real_vreg));
     REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
@@ -682,8 +689,9 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(complex_float64_add_sub)(
 
     REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[0], &arg1_vreg));
     REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[1], &arg2_vreg));
-    REQUIRE_OK(kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(mem, &function->code.context, 2, 1,
-                                                                                 &result_vreg));
+    REQUIRE_OK(kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(
+        mem, &function->code.context, kefir_abi_amd64_complex_double_qword_size(function->codegen->abi_variant),
+        kefir_abi_amd64_complex_double_qword_alignment(function->codegen->abi_variant), &result_vreg));
     REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
                                                  KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT, &result_real_vreg));
     REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
@@ -756,8 +764,9 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(complex_long_double_add_sub)
 
     REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[0], &arg1_vreg));
     REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[1], &arg2_vreg));
-    REQUIRE_OK(kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(mem, &function->code.context, 4, 2,
-                                                                                 &result_vreg));
+    REQUIRE_OK(kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(
+        mem, &function->code.context, kefir_abi_amd64_complex_long_double_qword_size(function->codegen->abi_variant),
+        kefir_abi_amd64_complex_long_double_qword_alignment(function->codegen->abi_variant), &result_vreg));
 
     REQUIRE_OK(kefir_asmcmp_amd64_fld(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
@@ -842,8 +851,9 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(complex_float32_mul_div)(
 
     REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[0], &arg1_vreg));
     REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[1], &arg2_vreg));
-    REQUIRE_OK(kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(mem, &function->code.context, 1, 1,
-                                                                                 &result_vreg));
+    REQUIRE_OK(kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(
+        mem, &function->code.context, kefir_abi_amd64_complex_float_qword_size(function->codegen->abi_variant),
+        kefir_abi_amd64_complex_float_qword_alignment(function->codegen->abi_variant), &result_vreg));
     REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
                                                  KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT, &result_placement_vreg));
     REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
@@ -903,8 +913,9 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(complex_float64_mul_div)(
 
     REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[0], &arg1_vreg));
     REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[1], &arg2_vreg));
-    REQUIRE_OK(kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(mem, &function->code.context, 2, 1,
-                                                                                 &result_vreg));
+    REQUIRE_OK(kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(
+        mem, &function->code.context, kefir_abi_amd64_complex_double_qword_size(function->codegen->abi_variant),
+        kefir_abi_amd64_complex_double_qword_alignment(function->codegen->abi_variant), &result_vreg));
     REQUIRE_OK(kefir_asmcmp_virtual_register_new(
         mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT, &result_real_placement_vreg));
     REQUIRE_OK(kefir_asmcmp_virtual_register_new(
@@ -989,8 +1000,9 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(complex_long_double_mul_div)
 
     REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[0], &arg1_vreg));
     REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[1], &arg2_vreg));
-    REQUIRE_OK(kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(mem, &function->code.context, 4, 2,
-                                                                                 &result_vreg));
+    REQUIRE_OK(kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(
+        mem, &function->code.context, kefir_abi_amd64_complex_long_double_qword_size(function->codegen->abi_variant),
+        kefir_abi_amd64_complex_long_double_qword_alignment(function->codegen->abi_variant), &result_vreg));
 
     REQUIRE_OK(kefir_asmcmp_amd64_fld(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
@@ -1044,8 +1056,9 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(complex_float32_neg)(
     kefir_asmcmp_virtual_register_index_t result_vreg, arg1_vreg, tmp_vreg;
 
     REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[0], &arg1_vreg));
-    REQUIRE_OK(kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(mem, &function->code.context, 1, 1,
-                                                                                 &result_vreg));
+    REQUIRE_OK(kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(
+        mem, &function->code.context, kefir_abi_amd64_complex_float_qword_size(function->codegen->abi_variant),
+        kefir_abi_amd64_complex_float_qword_alignment(function->codegen->abi_variant), &result_vreg));
     REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
                                                  KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT, &tmp_vreg));
 
@@ -1082,8 +1095,9 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(complex_float64_neg)(
     kefir_asmcmp_virtual_register_index_t result_vreg, arg1_vreg, tmp_vreg;
 
     REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[0], &arg1_vreg));
-    REQUIRE_OK(kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(mem, &function->code.context, 2, 1,
-                                                                                 &result_vreg));
+    REQUIRE_OK(kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(
+        mem, &function->code.context, kefir_abi_amd64_complex_double_qword_size(function->codegen->abi_variant),
+        kefir_abi_amd64_complex_double_qword_alignment(function->codegen->abi_variant), &result_vreg));
     REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
                                                  KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT, &tmp_vreg));
 
@@ -1138,8 +1152,9 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(complex_long_double_neg)(
     kefir_asmcmp_virtual_register_index_t result_vreg, arg1_vreg;
 
     REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[0], &arg1_vreg));
-    REQUIRE_OK(kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(mem, &function->code.context, 4, 2,
-                                                                                 &result_vreg));
+    REQUIRE_OK(kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(
+        mem, &function->code.context, kefir_abi_amd64_complex_long_double_qword_size(function->codegen->abi_variant),
+        kefir_abi_amd64_complex_long_double_qword_alignment(function->codegen->abi_variant), &result_vreg));
 
     REQUIRE_OK(kefir_asmcmp_amd64_fld(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),

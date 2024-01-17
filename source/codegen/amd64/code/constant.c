@@ -21,6 +21,7 @@
 #define KEFIR_CODEGEN_AMD64_FUNCTION_INTERNAL
 #include "kefir/codegen/amd64/function.h"
 #include "kefir/codegen/amd64/symbolic_labels.h"
+#include "kefir/target/abi/amd64/type_layout.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
@@ -223,8 +224,9 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(long_double_const)(
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
 
     kefir_asmcmp_virtual_register_index_t result_vreg;
-    REQUIRE_OK(kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(mem, &function->code.context, 2, 2,
-                                                                                 &result_vreg));
+    REQUIRE_OK(kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(
+        mem, &function->code.context, kefir_abi_amd64_long_double_qword_size(function->codegen->abi_variant),
+        kefir_abi_amd64_long_double_qword_alignment(function->codegen->abi_variant), &result_vreg));
 
     kefir_asmcmp_label_index_t label;
     REQUIRE_OK(kefir_asmcmp_context_new_label(mem, &function->code.context, KEFIR_ASMCMP_INDEX_NONE, &label));

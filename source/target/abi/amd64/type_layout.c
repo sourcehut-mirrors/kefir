@@ -94,3 +94,53 @@ kefir_result_t kefir_abi_amd64_calculate_type_properties(const struct kefir_ir_t
     *alignment = props.alignment;
     return KEFIR_OK;
 }
+
+kefir_size_t kefir_abi_amd64_complex_float_qword_size(kefir_abi_amd64_variant_t variant) {
+    UNUSED(variant);
+    return 1;
+}
+
+kefir_size_t kefir_abi_amd64_complex_float_qword_alignment(kefir_abi_amd64_variant_t variant) {
+    UNUSED(variant);
+    return 1;
+}
+
+kefir_size_t kefir_abi_amd64_complex_double_qword_size(kefir_abi_amd64_variant_t variant) {
+    UNUSED(variant);
+    return 2;
+}
+
+kefir_size_t kefir_abi_amd64_complex_double_qword_alignment(kefir_abi_amd64_variant_t variant) {
+    UNUSED(variant);
+    return 1;
+}
+
+kefir_size_t kefir_abi_amd64_complex_long_double_qword_size(kefir_abi_amd64_variant_t variant) {
+    UNUSED(variant);
+    return 4;
+}
+
+kefir_size_t kefir_abi_amd64_complex_long_double_qword_alignment(kefir_abi_amd64_variant_t variant) {
+    UNUSED(variant);
+    return 2;
+}
+
+kefir_size_t kefir_abi_amd64_float_qword_size(kefir_abi_amd64_variant_t variant) {
+    UNUSED(variant);
+    return 1;
+}
+
+kefir_size_t kefir_abi_amd64_float_qword_alignment(kefir_abi_amd64_variant_t variant) {
+    UNUSED(variant);
+    return 1;
+}
+
+kefir_size_t kefir_abi_amd64_long_double_qword_size(kefir_abi_amd64_variant_t variant) {
+    UNUSED(variant);
+    return 2;
+}
+
+kefir_size_t kefir_abi_amd64_long_double_qword_alignment(kefir_abi_amd64_variant_t variant) {
+    UNUSED(variant);
+    return 2;
+}

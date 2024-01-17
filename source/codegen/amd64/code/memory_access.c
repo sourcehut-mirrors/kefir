@@ -20,6 +20,7 @@
 
 #define KEFIR_CODEGEN_AMD64_FUNCTION_INTERNAL
 #include "kefir/codegen/amd64/function.h"
+#include "kefir/target/abi/amd64/type_layout.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
@@ -260,8 +261,9 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(long_double_load)(struct kef
     kefir_asmcmp_virtual_register_index_t value_vreg, source_vreg;
     REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.memory_access.location,
                                                     &source_vreg));
-    REQUIRE_OK(kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(mem, &function->code.context, 2, 2,
-                                                                                 &value_vreg));
+    REQUIRE_OK(kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(
+        mem, &function->code.context, kefir_abi_amd64_long_double_qword_size(function->codegen->abi_variant),
+        kefir_abi_amd64_long_double_qword_alignment(function->codegen->abi_variant), &value_vreg));
 
     REQUIRE_OK(kefir_asmcmp_amd64_fld(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
