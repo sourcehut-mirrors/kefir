@@ -5,6 +5,7 @@ packages:
   - binutils
   - valgrind
   - coreutils
+  - wget
 secrets:
   -  13fca65b-ffbd-4542-b2fe-6a2813e53256
 sources:
@@ -17,6 +18,17 @@ tasks:
       cd kefir
       gmake clean clean_bootstrap
       gmake all PROFILE=reldebug CC=clang
+  - gcc_torture: |
+      wget ftp://ftp.gnu.org/gnu/gcc/gcc-13.1.0/gcc-13.1.0.tar.xz
+      tar xvf gcc-13.1.0.tar.xz
+      export TORTURE=$PWD/gcc-13.1.0/gcc/testsuite/gcc.c-torture
+      export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/kefir/bin/libs
+      export KEFIRCC="$HOME/kefir/bin/kefir"
+      export KEFIR_RTLIB="$HOME/kefir/bin/libs/libkefirrt.a"
+      export KEFIR_RTINC="$HOME/kefir/headers/kefir/runtime"
+      export KEFIR_EXTRAFLAGS="-O1 -fPIC -pie"
+      LC_ALL=C.UTF-8 ./kefir/source/tests/misc/run_gcc_torture_suite.sh 2>&1 | tee torture.log
+      grep -v "Interrupted system call" torture.log | grep -i "fatal\|abort\|timeout\|segm" && exit 1 || true
   - bootstrap: |
       cd kefir
       gmake clean clean_bootstrap
