@@ -543,6 +543,23 @@ static kefir_result_t kefir_ir_format_function(struct kefir_json_output *json, c
     }
     REQUIRE_OK(kefir_json_output_array_end(json));
 
+    struct kefir_hashtree_node_iterator iter;
+    REQUIRE_OK(kefir_json_output_object_key(json, "public_labels"));
+    REQUIRE_OK(kefir_json_output_array_begin(json));
+    for (struct kefir_hashtree_node *node = kefir_hashtree_iter(&func->body.public_labels, &iter); node != NULL;
+         node = kefir_hashtree_next(&iter)) {
+        ASSIGN_DECL_CAST(const char *, label, node->key);
+        ASSIGN_DECL_CAST(kefir_size_t, location, node->value);
+
+        REQUIRE_OK(kefir_json_output_object_begin(json));
+        REQUIRE_OK(kefir_json_output_object_key(json, "label"));
+        REQUIRE_OK(kefir_json_output_string(json, label));
+        REQUIRE_OK(kefir_json_output_object_key(json, "location"));
+        REQUIRE_OK(kefir_json_output_uinteger(json, location));
+        REQUIRE_OK(kefir_json_output_object_end(json));
+    }
+    REQUIRE_OK(kefir_json_output_array_end(json));
+
     REQUIRE_OK(kefir_json_output_object_end(json));
     return KEFIR_OK;
 }

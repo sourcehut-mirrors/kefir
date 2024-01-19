@@ -168,7 +168,8 @@
                 {
                     "opcode": "pop"
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 1,
@@ -260,7 +261,8 @@
                 {
                     "opcode": "pop"
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 2,
@@ -420,7 +422,8 @@
                 {
                     "opcode": "pop"
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 3,
@@ -466,7 +469,8 @@
                 {
                     "opcode": "pop"
                 }
-            ]
+            ],
+            "public_labels": []
         }
     ],
     "inline_assembly": [],

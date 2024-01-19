@@ -81,7 +81,8 @@
                     "opcode": "jmp",
                     "arg": 0
                 }
-            ]
+            ],
+            "public_labels": []
         }
     ],
     "inline_assembly": [

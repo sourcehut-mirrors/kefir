@@ -29,6 +29,7 @@
                                 }
                             }
                         ],
+                        "public_labels": [],
                         "properties": {
                             "reachable": true,
                             "linear_position": 1,
@@ -165,6 +166,7 @@
                                 }
                             }
                         ],
+                        "public_labels": [],
                         "properties": {
                             "reachable": true,
                             "linear_position": 2,
@@ -255,6 +257,7 @@
                                 }
                             }
                         ],
+                        "public_labels": [],
                         "properties": {
                             "reachable": true,
                             "linear_position": 4,
@@ -342,6 +345,7 @@
                                 }
                             }
                         ],
+                        "public_labels": [],
                         "properties": {
                             "reachable": true,
                             "linear_position": 3,
@@ -397,6 +401,7 @@
                                 }
                             }
                         ],
+                        "public_labels": [],
                         "properties": {
                             "reachable": true,
                             "linear_position": 6,
@@ -556,6 +561,7 @@
                                 }
                             }
                         ],
+                        "public_labels": [],
                         "properties": {
                             "reachable": true,
                             "linear_position": 5,
@@ -594,6 +600,7 @@
                                 }
                             }
                         ],
+                        "public_labels": [],
                         "properties": {
                             "reachable": true,
                             "linear_position": 9,
@@ -632,6 +639,7 @@
                                 }
                             }
                         ],
+                        "public_labels": [],
                         "properties": {
                             "reachable": true,
                             "linear_position": 8,
@@ -670,6 +678,7 @@
                                 }
                             }
                         ],
+                        "public_labels": [],
                         "properties": {
                             "reachable": true,
                             "linear_position": 7,
@@ -708,6 +717,7 @@
                                 }
                             }
                         ],
+                        "public_labels": [],
                         "properties": {
                             "reachable": true,
                             "linear_position": 10,

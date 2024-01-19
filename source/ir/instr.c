@@ -23,11 +23,12 @@
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 
-kefir_result_t kefir_irblock_init(struct kefir_irblock *bcblock, void *area, kefir_size_t capacity) {
+static kefir_result_t kefir_irblock_init(struct kefir_irblock *bcblock, void *area, kefir_size_t capacity) {
     REQUIRE(bcblock != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR block pointer"));
     REQUIRE(
         (area != NULL && capacity != 0) || (area == NULL && capacity == 0),
         KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected non-NULL content pointer for non-zero capacity IR block"));
+    REQUIRE_OK(kefir_hashtree_init(&bcblock->public_labels, &kefir_hashtree_str_ops));
     REQUIRE_OK(kefir_vector_init(&bcblock->content, sizeof(struct kefir_irinstr), area, capacity));
     return KEFIR_OK;
 }
@@ -45,6 +46,34 @@ kefir_size_t kefir_irblock_length(const struct kefir_irblock *bcblock) {
 struct kefir_irinstr *kefir_irblock_at(const struct kefir_irblock *bcblock, kefir_size_t idx) {
     REQUIRE(bcblock != NULL, NULL);
     return (struct kefir_irinstr *) kefir_vector_at(&bcblock->content, idx);
+}
+
+kefir_result_t kefir_irblock_public_labels_iter(const struct kefir_irblock *block,
+                                                struct kefir_hashtree_node_iterator *iter,
+                                                const char **public_label_ptr, kefir_size_t *location_ptr) {
+    REQUIRE(block != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR block"));
+    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to iterator"));
+
+    if (kefir_hashtree_iter(&block->public_labels, iter) != NULL) {
+        ASSIGN_PTR(public_label_ptr, (const char *) iter->node->key);
+        ASSIGN_PTR(location_ptr, (kefir_size_t) iter->node->value);
+        return KEFIR_OK;
+    } else {
+        return KEFIR_ITERATOR_END;
+    }
+}
+
+kefir_result_t kefir_irblock_public_labels_next(struct kefir_hashtree_node_iterator *iter,
+                                                const char **public_label_ptr, kefir_size_t *location_ptr) {
+    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to iterator"));
+
+    if (kefir_hashtree_next(iter) != NULL) {
+        ASSIGN_PTR(public_label_ptr, (const char *) iter->node->key);
+        ASSIGN_PTR(location_ptr, (kefir_size_t) iter->node->value);
+        return KEFIR_OK;
+    } else {
+        return KEFIR_ITERATOR_END;
+    }
 }
 
 kefir_result_t kefir_irblock_appendi64(struct kefir_irblock *bcblock, kefir_iropcode_t opcode, kefir_int64_t arg) {
@@ -99,6 +128,29 @@ kefir_result_t kefir_irblock_copy(struct kefir_irblock *dst, const struct kefir_
     return kefir_vector_copy(&dst->content, src->content.content, src->content.length);
 }
 
+kefir_result_t kefir_irblock_add_public_label(struct kefir_mem *mem, struct kefir_irblock *block,
+                                              struct kefir_string_pool *strings, const char *identifier,
+                                              kefir_size_t position) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(block != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR block"));
+    REQUIRE(identifier != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid named label identifier"));
+    REQUIRE(position <= kefir_vector_length(&block->content),
+            KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Specified named label position exceeds code block"));
+
+    if (strings != NULL) {
+        identifier = kefir_string_pool_insert(mem, strings, identifier, NULL);
+        REQUIRE(identifier != NULL,
+                KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert symbol into string pool"));
+    }
+    kefir_result_t res = kefir_hashtree_insert(mem, &block->public_labels, (kefir_hashtree_key_t) identifier,
+                                               (kefir_hashtree_value_t) position);
+    if (res == KEFIR_ALREADY_EXISTS) {
+        res = KEFIR_SET_ERROR(KEFIR_ALREADY_EXISTS, "Named label with the same identifier already exists");
+    }
+    REQUIRE_OK(res);
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_irblock_alloc(struct kefir_mem *mem, kefir_size_t capacity, struct kefir_irblock *block) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(block != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR block pointer"));
@@ -127,6 +179,7 @@ kefir_result_t kefir_irblock_realloc(struct kefir_mem *mem, kefir_size_t capacit
 kefir_result_t kefir_irblock_free(struct kefir_mem *mem, struct kefir_irblock *block) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(block != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected non-NULL IR block pointer"));
+    REQUIRE_OK(kefir_hashtree_free(mem, &block->public_labels));
     REQUIRE_OK(kefir_vector_free(mem, &block->content));
     return KEFIR_OK;
 }

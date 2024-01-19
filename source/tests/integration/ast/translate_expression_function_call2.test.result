@@ -311,7 +311,8 @@
                 {
                     "opcode": "extend32"
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 3,
@@ -332,7 +333,8 @@
                 {
                     "opcode": "extend32"
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 5,
@@ -360,7 +362,8 @@
                 {
                     "opcode": "extend32"
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 7,
@@ -399,7 +402,8 @@
                 {
                     "opcode": "extend32"
                 }
-            ]
+            ],
+            "public_labels": []
         }
     ],
     "inline_assembly": [],

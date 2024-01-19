@@ -289,6 +289,7 @@ struct kefir_ast_scoped_identifier *kefir_ast_context_allocate_scoped_label(
     scoped_id->payload.ptr = scoped_id->payload.content;
     scoped_id->payload.cleanup = &scoped_id->cleanup;
     scoped_id->label.point = kefir_ast_flow_control_point_alloc(mem, parent);
+    scoped_id->label.public_label = NULL;
     REQUIRE_ELSE(scoped_id->label.point != NULL, {
         KEFIR_FREE(mem, scoped_id);
         return NULL;

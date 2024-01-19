@@ -326,7 +326,8 @@
                 {
                     "opcode": "ret"
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 42,
@@ -348,7 +349,8 @@
                 {
                     "opcode": "ret"
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 43,
@@ -370,7 +372,8 @@
                 {
                     "opcode": "ret"
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 44,
@@ -392,7 +395,8 @@
                 {
                     "opcode": "ret"
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 45,
@@ -456,7 +460,8 @@
                 {
                     "opcode": "pop"
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 46,
@@ -520,7 +525,8 @@
                 {
                     "opcode": "pop"
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 47,
@@ -584,7 +590,8 @@
                 {
                     "opcode": "pop"
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 48,
@@ -648,7 +655,8 @@
                 {
                     "opcode": "pop"
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 49,
@@ -1118,7 +1126,8 @@
                 {
                     "opcode": "pop"
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 50,
@@ -1320,7 +1329,8 @@
                 {
                     "opcode": "ret"
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 51,
@@ -1555,7 +1565,8 @@
                 {
                     "opcode": "popscope"
                 }
-            ]
+            ],
+            "public_labels": []
         }
     ],
     "inline_assembly": [],

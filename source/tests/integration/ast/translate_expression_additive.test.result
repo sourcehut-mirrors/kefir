@@ -270,7 +270,8 @@
                 {
                     "opcode": "iadd"
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 6,
@@ -337,7 +338,8 @@
                     "opcode": "iaddx",
                     "arg": 8
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 2,
@@ -392,7 +394,8 @@
                     "opcode": "iaddx",
                     "arg": 8
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 3,
@@ -460,7 +463,8 @@
                 {
                     "opcode": "isub"
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 5,
@@ -539,7 +543,8 @@
                 {
                     "opcode": "idiv"
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 4,
@@ -638,7 +643,8 @@
                 {
                     "opcode": "f64sub"
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 1,
@@ -723,7 +729,8 @@
                 {
                     "opcode": "f64add"
                 }
-            ]
+            ],
+            "public_labels": []
         }
     ],
     "inline_assembly": [],

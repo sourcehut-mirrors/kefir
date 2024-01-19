@@ -350,7 +350,7 @@ END_CASE
         ASSERT(addr->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);                                  \
         ASSERT(KEFIR_AST_TYPE_SAME(kefir_ast_type_lvalue_conversion(addr->base.properties.type),                       \
                                    (kefir_ast_type_pointer((_mem), (_context)->type_bundle, kefir_ast_type_void())))); \
-        ASSERT(!addr->base.properties.expression_props.constant_expression);                                           \
+        ASSERT(addr->base.properties.expression_props.constant_expression);                                            \
         ASSERT(!addr->base.properties.expression_props.lvalue);                                                        \
         ASSERT(addr->base.properties.expression_props.scoped_id->label.point == (_point));                             \
         KEFIR_AST_NODE_FREE((_mem), KEFIR_AST_NODE_BASE(addr));                                                        \

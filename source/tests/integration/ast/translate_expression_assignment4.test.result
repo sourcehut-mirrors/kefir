@@ -283,7 +283,8 @@
                         "volatile": false
                     }
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 11,
@@ -335,7 +336,8 @@
                         "volatile": false
                     }
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 0,
@@ -387,7 +389,8 @@
                         "volatile": false
                     }
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 3,
@@ -439,7 +442,8 @@
                         "volatile": false
                     }
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 5,
@@ -491,7 +495,8 @@
                         "volatile": false
                     }
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 8,
@@ -543,7 +548,8 @@
                         "volatile": false
                     }
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 9,
@@ -595,7 +601,8 @@
                         "volatile": false
                     }
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 2,
@@ -647,7 +654,8 @@
                         "volatile": false
                     }
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 4,
@@ -699,7 +707,8 @@
                         "volatile": false
                     }
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 1,
@@ -751,7 +760,8 @@
                         "volatile": false
                     }
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 6,
@@ -803,7 +813,8 @@
                         "volatile": false
                     }
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 10,
@@ -858,7 +869,8 @@
                         "volatile": false
                     }
                 }
-            ]
+            ],
+            "public_labels": []
         }
     ],
     "inline_assembly": [],

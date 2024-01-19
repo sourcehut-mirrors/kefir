@@ -144,7 +144,8 @@
                 {
                     "opcode": "ior"
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 2,
@@ -187,7 +188,8 @@
                 {
                     "opcode": "iand"
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 4,
@@ -230,7 +232,8 @@
                 {
                     "opcode": "ixor"
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 0,
@@ -282,7 +285,8 @@
                 {
                     "opcode": "ishl"
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 1,
@@ -334,7 +338,8 @@
                 {
                     "opcode": "isar"
                 }
-            ]
+            ],
+            "public_labels": []
         }
     ],
     "inline_assembly": [],

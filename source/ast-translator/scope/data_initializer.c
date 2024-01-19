@@ -72,11 +72,15 @@ static kefir_result_t translate_pointer_to_identifier(struct kefir_mem *mem,
             case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN:
                 return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected storage class of addressed variable");
         }
+    } else if (value->pointer.scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_LABEL) {
+        const char *literal = kefir_ir_module_symbol(mem, module, value->pointer.base.literal, NULL);
+        REQUIRE(literal != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate IR symbol"));
+        REQUIRE_OK(kefir_ir_data_set_pointer(mem, data, base_slot, literal, value->pointer.offset));
     } else {
         REQUIRE(value->pointer.scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION,
                 KEFIR_SET_SOURCE_ERROR(
                     KEFIR_ANALYSIS_ERROR, NULL,
-                    "Global variables can be initialized by pointer either to an object or to a function"));
+                    "Global variables can be initialized by pointer either to an object, a label or a function"));
         const char *literal = kefir_ir_module_symbol(mem, module, value->pointer.base.literal, NULL);
         REQUIRE(literal != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate IR symbol"));
         REQUIRE_OK(kefir_ir_data_set_pointer(mem, data, base_slot, literal, value->pointer.offset));

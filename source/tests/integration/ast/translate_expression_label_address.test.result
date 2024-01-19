@@ -69,6 +69,20 @@
                 {
                     "opcode": "pop"
                 }
+            ],
+            "public_labels": [
+                {
+                    "label": "_kefir_local_public_label_(null)_A",
+                    "location": 0
+                },
+                {
+                    "label": "_kefir_local_public_label_(null)_B",
+                    "location": 2
+                },
+                {
+                    "label": "_kefir_local_public_label_(null)_C",
+                    "location": 4
+                }
             ]
         }
     ],

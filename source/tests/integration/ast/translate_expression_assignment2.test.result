@@ -302,7 +302,8 @@
                         "index": 0
                     }
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 0,
@@ -352,7 +353,8 @@
                         "index": 0
                     }
                 }
-            ]
+            ],
+            "public_labels": []
         }
     ],
     "inline_assembly": [],

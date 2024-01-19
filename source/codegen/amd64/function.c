@@ -23,6 +23,7 @@
 #include "kefir/codegen/amd64/symbolic_labels.h"
 #include "kefir/codegen/amd64/devirtualize.h"
 #include "kefir/codegen/asmcmp/format.h"
+#include "kefir/optimizer/code.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 #include <string.h>
@@ -52,6 +53,20 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
         REQUIRE_OK(kefir_asmcmp_context_new_label(mem, &func->code.context, KEFIR_ASMCMP_INDEX_NONE, &asmlabel));
         REQUIRE_OK(kefir_hashtree_insert(mem, &func->labels, (kefir_hashtree_key_t) block_props->block_id,
                                          (kefir_hashtree_value_t) asmlabel));
+
+        struct kefir_opt_code_block *block;
+        REQUIRE_OK(kefir_opt_code_container_block(&func->function->code, block_props->block_id, &block));
+
+        kefir_result_t res;
+        struct kefir_hashtreeset_iterator iter;
+        const char *public_label;
+        for (res = kefir_opt_code_container_block_public_labels_iter(block, &iter, &public_label); res == KEFIR_OK;
+             res = kefir_opt_code_container_block_public_labels_next(&iter, &public_label)) {
+            REQUIRE_OK(kefir_asmcmp_context_label_add_public_name(mem, &func->code.context, asmlabel, public_label));
+        }
+        if (res != KEFIR_ITERATOR_END) {
+            REQUIRE_OK(res);
+        }
     }
 
     REQUIRE_OK(kefir_asmcmp_amd64_function_prologue(

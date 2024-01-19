@@ -325,7 +325,8 @@
                         "index": 0
                     }
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 4,
@@ -336,7 +337,8 @@
                     "opcode": "pushi",
                     "arg": 0
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 2,
@@ -367,7 +369,8 @@
                     "opcode": "iadd1",
                     "arg": 8
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 3,
@@ -397,7 +400,8 @@
                     "opcode": "iadd1",
                     "arg": 8
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 1,
@@ -438,7 +442,8 @@
                     "opcode": "iaddx",
                     "arg": 4
                 }
-            ]
+            ],
+            "public_labels": []
         }
     ],
     "inline_assembly": [],

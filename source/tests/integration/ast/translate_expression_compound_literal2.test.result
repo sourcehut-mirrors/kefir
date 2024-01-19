@@ -242,7 +242,8 @@
                         "index": 0
                     }
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 1,
@@ -368,7 +369,8 @@
                         "volatile": false
                     }
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 2,
@@ -393,7 +395,8 @@
                         "index": 0
                     }
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 3,
@@ -433,7 +436,8 @@
                         "index": 0
                     }
                 }
-            ]
+            ],
+            "public_labels": []
         }
     ],
     "inline_assembly": [],

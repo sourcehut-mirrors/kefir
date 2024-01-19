@@ -47,6 +47,7 @@ static kefir_result_t visit_non_constant_expression(const struct kefir_ast_visit
 VISITOR(scalar, struct kefir_ast_constant)
 VISITOR(identifier, struct kefir_ast_identifier)
 VISITOR(string_literal, struct kefir_ast_string_literal)
+VISITOR(label_address, struct kefir_ast_label_address)
 VISITOR(generic_selection, struct kefir_ast_generic_selection)
 VISITOR(unary_operation, struct kefir_ast_unary_operation)
 VISITOR(binary_operation, struct kefir_ast_binary_operation)
@@ -78,6 +79,7 @@ kefir_result_t kefir_ast_constant_expression_value_evaluate(struct kefir_mem *me
     visitor.constant = evaluate_scalar;
     visitor.identifier = evaluate_identifier;
     visitor.string_literal = evaluate_string_literal;
+    visitor.label_address = evaluate_label_address;
     visitor.generic_selection = evaluate_generic_selection;
     visitor.unary_operation = evaluate_unary_operation;
     visitor.binary_operation = evaluate_binary_operation;

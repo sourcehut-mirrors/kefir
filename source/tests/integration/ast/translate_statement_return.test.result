@@ -190,7 +190,8 @@
                 {
                     "opcode": "ret"
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 1,
@@ -214,7 +215,8 @@
                 {
                     "opcode": "ret"
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 2,
@@ -241,7 +243,8 @@
                 {
                     "opcode": "ret"
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 3,
@@ -295,7 +298,8 @@
                 {
                     "opcode": "ret"
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 4,
@@ -348,7 +352,8 @@
                     "opcode": "branch",
                     "arg": 0
                 }
-            ]
+            ],
+            "public_labels": []
         }
     ],
     "inline_assembly": [],

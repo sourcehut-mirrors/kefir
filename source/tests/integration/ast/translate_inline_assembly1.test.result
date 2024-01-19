@@ -196,7 +196,8 @@
                     "opcode": "inlineasm",
                     "arg": 2
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 1,
@@ -247,7 +248,8 @@
                     "opcode": "inlineasm",
                     "arg": 4
                 }
-            ]
+            ],
+            "public_labels": []
         }
     ],
     "inline_assembly": [

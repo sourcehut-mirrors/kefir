@@ -32,6 +32,7 @@ static kefir_result_t free_block(struct kefir_mem *mem, struct kefir_hashtree *t
     ASSIGN_DECL_CAST(struct kefir_opt_code_block *, block, value);
     REQUIRE(block != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code block"));
 
+    kefir_hashtreeset_free(mem, &block->public_labels);
     memset(block, 0, sizeof(struct kefir_opt_code_block));
     KEFIR_FREE(mem, block);
     return KEFIR_OK;
@@ -140,6 +141,7 @@ kefir_result_t kefir_opt_code_container_new_block(struct kefir_mem *mem, struct 
     block->call_nodes.tail = KEFIR_ID_NONE;
     block->inline_assembly_nodes.head = KEFIR_ID_NONE;
     block->inline_assembly_nodes.tail = KEFIR_ID_NONE;
+    REQUIRE_OK(kefir_hashtreeset_init(&block->public_labels, &kefir_hashtree_str_ops));
 
     kefir_result_t res =
         kefir_hashtree_insert(mem, &code->blocks, (kefir_hashtree_key_t) block->id, (kefir_hashtree_value_t) block);
@@ -182,6 +184,43 @@ kefir_result_t kefir_opt_code_container_block_count(const struct kefir_opt_code_
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer code container length"));
 
     *length_ptr = code->next_block_id;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_code_container_add_block_public_label(struct kefir_mem *mem,
+                                                               struct kefir_opt_code_container *code,
+                                                               kefir_opt_block_id_t block_id,
+                                                               const char *alternative_label) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
+    REQUIRE(alternative_label != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid alternative optimizer code block label"));
+
+    struct kefir_opt_code_block *block;
+    REQUIRE_OK(kefir_opt_code_container_block(code, block_id, &block));
+    REQUIRE_OK(kefir_hashtreeset_add(mem, &block->public_labels, (kefir_hashtreeset_entry_t) alternative_label));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_code_container_block_public_labels_iter(const struct kefir_opt_code_block *block,
+                                                                 struct kefir_hashtreeset_iterator *iter,
+                                                                 const char **public_label) {
+    REQUIRE(block != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code block"));
+    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to iterator"));
+    REQUIRE(public_label != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to public label"));
+
+    REQUIRE_OK(kefir_hashtreeset_iter(&block->public_labels, iter));
+    *public_label = (const char *) iter->entry;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_code_container_block_public_labels_next(struct kefir_hashtreeset_iterator *iter,
+                                                                 const char **public_label) {
+    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to iterator"));
+    REQUIRE(public_label != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to public label"));
+
+    REQUIRE_OK(kefir_hashtreeset_next(iter));
+    *public_label = (const char *) iter->entry;
     return KEFIR_OK;
 }
 

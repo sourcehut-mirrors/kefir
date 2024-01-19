@@ -82,6 +82,10 @@ typedef struct kefir_ast_context {
     kefir_result_t (*reference_label)(struct kefir_mem *, const struct kefir_ast_context *, const char *,
                                       struct kefir_ast_flow_control_structure *, const struct kefir_source_location *,
                                       const struct kefir_ast_scoped_identifier **);
+    kefir_result_t (*reference_public_label)(struct kefir_mem *, const struct kefir_ast_context *, const char *,
+                                             struct kefir_ast_flow_control_structure *,
+                                             const struct kefir_source_location *,
+                                             const struct kefir_ast_scoped_identifier **);
     kefir_result_t (*push_block)(struct kefir_mem *, const struct kefir_ast_context *);
     kefir_result_t (*pop_block)(struct kefir_mem *, const struct kefir_ast_context *);
     kefir_result_t (*current_flow_control_point)(struct kefir_mem *, const struct kefir_ast_context *,

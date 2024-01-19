@@ -25,6 +25,8 @@
 #include "kefir/ir/opcodes.h"
 #include "kefir/core/vector.h"
 #include "kefir/core/mem.h"
+#include "kefir/core/hashtree.h"
+#include "kefir/core/string_pool.h"
 
 #define KEFIR_IR_MEMORY_FLAG_NONE 0
 #define KEFIR_IR_MEMORY_FLAG_VOLATILE 1
@@ -44,12 +46,15 @@ typedef struct kefir_irinstr {
 
 typedef struct kefir_irblock {
     struct kefir_vector content;
+    struct kefir_hashtree public_labels;
 } kefir_irblock_t;
 
-kefir_result_t kefir_irblock_init(struct kefir_irblock *, void *, kefir_size_t);
 kefir_size_t kefir_irblock_available(const struct kefir_irblock *);
 kefir_size_t kefir_irblock_length(const struct kefir_irblock *);
 struct kefir_irinstr *kefir_irblock_at(const struct kefir_irblock *, kefir_size_t);
+kefir_result_t kefir_irblock_public_labels_iter(const struct kefir_irblock *, struct kefir_hashtree_node_iterator *,
+                                                const char **, kefir_size_t *);
+kefir_result_t kefir_irblock_public_labels_next(struct kefir_hashtree_node_iterator *, const char **, kefir_size_t *);
 kefir_result_t kefir_irblock_appendi64(struct kefir_irblock *, kefir_iropcode_t, kefir_int64_t);
 kefir_result_t kefir_irblock_appendu64(struct kefir_irblock *, kefir_iropcode_t, kefir_uint64_t);
 kefir_result_t kefir_irblock_appendi32(struct kefir_irblock *, kefir_iropcode_t, kefir_int32_t, kefir_int32_t);
@@ -57,6 +62,8 @@ kefir_result_t kefir_irblock_appendu32(struct kefir_irblock *, kefir_iropcode_t,
 kefir_result_t kefir_irblock_appendf64(struct kefir_irblock *, kefir_iropcode_t, kefir_float64_t);
 kefir_result_t kefir_irblock_appendf32(struct kefir_irblock *, kefir_iropcode_t, kefir_float32_t, kefir_float32_t);
 kefir_result_t kefir_irblock_append_ldouble(struct kefir_irblock *, kefir_iropcode_t, kefir_long_double_t);
+kefir_result_t kefir_irblock_add_public_label(struct kefir_mem *, struct kefir_irblock *, struct kefir_string_pool *,
+                                              const char *, kefir_size_t);
 kefir_result_t kefir_irblock_copy(struct kefir_irblock *, const struct kefir_irblock *);
 kefir_result_t kefir_irblock_alloc(struct kefir_mem *, kefir_size_t, struct kefir_irblock *);
 kefir_result_t kefir_irblock_realloc(struct kefir_mem *, kefir_size_t, struct kefir_irblock *);

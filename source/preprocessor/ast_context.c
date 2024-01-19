@@ -99,6 +99,19 @@ static kefir_result_t pp_reference_label(struct kefir_mem *mem, const struct kef
     return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Preprocessor AST context does not implement labels");
 }
 
+static kefir_result_t pp_reference_public_label(struct kefir_mem *mem, const struct kefir_ast_context *context,
+                                                const char *identifier, struct kefir_ast_flow_control_structure *parent,
+                                                const struct kefir_source_location *source_location,
+                                                const struct kefir_ast_scoped_identifier **scoped_id) {
+    UNUSED(mem);
+    UNUSED(context);
+    UNUSED(identifier);
+    UNUSED(parent);
+    UNUSED(source_location);
+    UNUSED(scoped_id);
+    return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Preprocessor AST context does not implement labels");
+}
+
 static kefir_result_t pp_push_block(struct kefir_mem *mem, const struct kefir_ast_context *context) {
     UNUSED(mem);
     UNUSED(context);
@@ -141,6 +154,7 @@ kefir_result_t kefir_preprocessor_ast_context_init(struct kefir_mem *mem,
     context->context.define_constant = pp_define_constant;
     context->context.define_identifier = pp_define_identifier;
     context->context.reference_label = pp_reference_label;
+    context->context.reference_public_label = pp_reference_public_label;
     context->context.push_block = pp_push_block;
     context->context.pop_block = pp_pop_block;
     context->context.current_flow_control_point = context_current_flow_control_point;

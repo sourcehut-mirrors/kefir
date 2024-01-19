@@ -137,6 +137,9 @@ kefir_result_t kefir_asmcmp_context_free(struct kefir_mem *mem, struct kefir_asm
     }
     KEFIR_FREE(mem, context->code_content);
     if (context->labels != NULL) {
+        for (kefir_size_t i = 0; i < context->labels_length; i++) {
+            REQUIRE_OK(kefir_hashtreeset_free(mem, &context->labels[i].public_labels));
+        }
         memset(context->labels, 0, sizeof(struct kefir_asmcmp_label) * context->labels_length);
     }
     KEFIR_FREE(mem, context->labels);
@@ -498,6 +501,7 @@ kefir_result_t kefir_asmcmp_context_new_label(struct kefir_mem *mem, struct kefi
     label->position = KEFIR_ASMCMP_INDEX_NONE;
     label->siblings.prev = KEFIR_ASMCMP_INDEX_NONE;
     label->siblings.next = KEFIR_ASMCMP_INDEX_NONE;
+    REQUIRE_OK(kefir_hashtreeset_init(&label->public_labels, &kefir_hashtree_str_ops));
 
     if (target_instr != KEFIR_ASMCMP_INDEX_NONE) {
         REQUIRE_OK(attach_label_to_instr(mem, context, target_instr, label));
@@ -615,6 +619,20 @@ kefir_result_t kefir_asmcmp_context_move_labels(struct kefir_mem *mem, struct ke
             REQUIRE_OK(attach_label_to_instr(mem, context, dst_idx, label));
         }
     }
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_asmcmp_context_label_add_public_name(struct kefir_mem *mem, struct kefir_asmcmp_context *context,
+                                                          kefir_asmcmp_label_index_t label_index,
+                                                          const char *public_label) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
+    REQUIRE(VALID_LABEL_IDX(context, label_index),
+            KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Provided asmgen label index is out of context bounds"));
+    REQUIRE(public_label != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid symbolic label"));
+
+    struct kefir_asmcmp_label *label = &context->labels[label_index];
+    REQUIRE_OK(kefir_hashtreeset_add(mem, &label->public_labels, (kefir_hashtreeset_entry_t) public_label));
     return KEFIR_OK;
 }
 

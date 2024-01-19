@@ -36,13 +36,14 @@ kefir_result_t kefir_ast_analyze_label_address_node(struct kefir_mem *mem, const
                                    "Label addressing is not allowed in current context"));
 
     const struct kefir_ast_scoped_identifier *scoped_id = NULL;
-    REQUIRE_OK(context->reference_label(mem, context, node->label, NULL, &base->source_location, &scoped_id));
+    REQUIRE_OK(context->reference_public_label(mem, context, node->label, NULL, &base->source_location, &scoped_id));
     REQUIRE(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_LABEL,
             KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->base.source_location,
                                    "Addressed identifier should reference a label"));
 
     base->properties.category = KEFIR_AST_NODE_CATEGORY_EXPRESSION;
     base->properties.type = kefir_ast_type_pointer(mem, context->type_bundle, kefir_ast_type_void());
+    base->properties.expression_props.constant_expression = true;
     base->properties.expression_props.scoped_id = scoped_id;
     return KEFIR_OK;
 }

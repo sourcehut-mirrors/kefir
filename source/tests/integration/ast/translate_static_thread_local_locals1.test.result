@@ -232,7 +232,8 @@
                 {
                     "opcode": "ret"
                 }
-            ]
+            ],
+            "public_labels": []
         }
     ],
     "inline_assembly": [],

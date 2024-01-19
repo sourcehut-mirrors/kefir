@@ -117,7 +117,8 @@
                     "opcode": "pushi",
                     "arg": 1
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 1,
@@ -147,7 +148,8 @@
                         "index": 0
                     }
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 2,
@@ -193,7 +195,8 @@
                     "opcode": "pushf32",
                     "arg": 4.510000
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 3,
@@ -219,7 +222,8 @@
                     "opcode": "pushi",
                     "arg": 10
                 }
-            ]
+            ],
+            "public_labels": []
         }
     ],
     "inline_assembly": [],

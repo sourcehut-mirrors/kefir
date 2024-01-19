@@ -104,7 +104,8 @@
                     "opcode": "pushstring",
                     "arg": 0
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 1,
@@ -115,7 +116,8 @@
                     "opcode": "pushstring",
                     "arg": 1
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 2,
@@ -126,7 +128,8 @@
                     "opcode": "pushstring",
                     "arg": 2
                 }
-            ]
+            ],
+            "public_labels": []
         }
     ],
     "inline_assembly": [],

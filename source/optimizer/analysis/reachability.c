@@ -334,6 +334,15 @@ static kefir_result_t find_reachable_code_loop(struct kefir_mem *mem, struct kef
 static kefir_result_t find_reachable_code_impl(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
                                                struct kefir_list *queue, struct kefir_list *phi_queue) {
     REQUIRE_OK(mark_reachable_code_in_block(mem, analysis, analysis->code->entry_point, queue));
+    kefir_size_t total_block_count;
+    REQUIRE_OK(kefir_opt_code_container_block_count(analysis->code, &total_block_count));
+    for (kefir_opt_block_id_t block_id = 0; block_id < total_block_count; block_id++) {
+        struct kefir_opt_code_block *block;
+        REQUIRE_OK(kefir_opt_code_container_block(analysis->code, block_id, &block));
+        if (!kefir_hashtreeset_empty(&block->public_labels)) {
+            REQUIRE_OK(mark_reachable_code_in_block(mem, analysis, block_id, queue));
+        }
+    }
     REQUIRE_OK(find_reachable_code_loop(mem, analysis, queue, phi_queue));
     for (const struct kefir_list_entry *iter = kefir_list_head(phi_queue); iter != NULL; kefir_list_next(&iter)) {
         ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, instr_ref, (kefir_uptr_t) iter->value);

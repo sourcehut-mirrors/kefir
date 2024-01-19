@@ -24,6 +24,7 @@
 #include "kefir/optimizer/opcode_defs.h"
 #include "kefir/core/basic-types.h"
 #include "kefir/core/hashtree.h"
+#include "kefir/core/hashtreeset.h"
 
 typedef enum kefir_opt_opcode {
 #define KEFIR_OPT_OPCODE(_id, _name, _class) KEFIR_OPT_OPCODE_##_id
@@ -192,6 +193,8 @@ typedef struct kefir_opt_code_block {
         kefir_opt_inline_assembly_id_t head;
         kefir_opt_inline_assembly_id_t tail;
     } inline_assembly_nodes;
+
+    struct kefir_hashtreeset public_labels;
 } kefir_opt_code_block_t;
 
 typedef struct kefir_opt_phi_node {
@@ -274,6 +277,12 @@ kefir_result_t kefir_opt_code_container_new_block(struct kefir_mem *, struct kef
 kefir_result_t kefir_opt_code_container_block(const struct kefir_opt_code_container *, kefir_opt_block_id_t,
                                               struct kefir_opt_code_block **);
 kefir_result_t kefir_opt_code_container_block_count(const struct kefir_opt_code_container *, kefir_size_t *);
+
+kefir_result_t kefir_opt_code_container_add_block_public_label(struct kefir_mem *, struct kefir_opt_code_container *,
+                                                               kefir_opt_block_id_t, const char *);
+kefir_result_t kefir_opt_code_container_block_public_labels_iter(const struct kefir_opt_code_block *,
+                                                                 struct kefir_hashtreeset_iterator *, const char **);
+kefir_result_t kefir_opt_code_container_block_public_labels_next(struct kefir_hashtreeset_iterator *, const char **);
 
 kefir_result_t kefir_opt_code_container_instr(const struct kefir_opt_code_container *, kefir_opt_instruction_ref_t,
                                               struct kefir_opt_instruction **);

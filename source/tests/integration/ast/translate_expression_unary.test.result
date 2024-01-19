@@ -323,7 +323,8 @@
                 {
                     "opcode": "iand"
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 1,
@@ -383,7 +384,8 @@
                 {
                     "opcode": "iand"
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 2,
@@ -436,7 +438,8 @@
                 {
                     "opcode": "iand"
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 7,
@@ -519,7 +522,8 @@
                     "opcode": "pushu",
                     "arg": 8
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 5,
@@ -602,7 +606,8 @@
                     "opcode": "pushu",
                     "arg": 8
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 6,
@@ -665,7 +670,8 @@
                     "opcode": "pushu",
                     "arg": 8
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 8,
@@ -750,7 +756,8 @@
                     "opcode": "pushi",
                     "arg": 8
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 3,
@@ -837,7 +844,8 @@
                 {
                     "opcode": "bnot"
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 4,
@@ -861,7 +869,8 @@
                 {
                     "opcode": "bnot"
                 }
-            ]
+            ],
+            "public_labels": []
         }
     ],
     "inline_assembly": [],

@@ -473,7 +473,8 @@
                         "volatile": false
                     }
                 }
-            ]
+            ],
+            "public_labels": []
         }
     ],
     "inline_assembly": [],

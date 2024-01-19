@@ -248,6 +248,20 @@ static kefir_result_t context_reference_label(struct kefir_mem *mem, const struc
                                   "Labels cannot be defined or referenced in a global context");
 }
 
+static kefir_result_t context_reference_public_label(struct kefir_mem *mem, const struct kefir_ast_context *context,
+                                                     const char *label, struct kefir_ast_flow_control_structure *parent,
+                                                     const struct kefir_source_location *location,
+                                                     const struct kefir_ast_scoped_identifier **scoped_id) {
+    UNUSED(mem);
+    UNUSED(context);
+    UNUSED(label);
+    UNUSED(parent);
+    UNUSED(scoped_id);
+
+    return KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
+                                  "Labels cannot be defined or referenced in a global context");
+}
+
 static kefir_result_t context_push_block(struct kefir_mem *mem, const struct kefir_ast_context *context) {
     UNUSED(mem);
     UNUSED(context);
@@ -326,6 +340,7 @@ kefir_result_t kefir_ast_global_context_init(struct kefir_mem *mem, const struct
     context->context.define_constant = context_define_constant;
     context->context.define_identifier = context_define_identifier;
     context->context.reference_label = context_reference_label;
+    context->context.reference_public_label = context_reference_public_label;
     context->context.push_block = context_push_block;
     context->context.pop_block = context_pop_block;
     context->context.current_flow_control_point = context_current_flow_control_point;

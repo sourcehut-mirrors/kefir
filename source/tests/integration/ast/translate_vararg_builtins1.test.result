@@ -197,7 +197,8 @@
                 {
                     "opcode": "pop"
                 }
-            ]
+            ],
+            "public_labels": []
         }
     ],
     "inline_assembly": [],

@@ -382,7 +382,8 @@
                         "index": 0
                     }
                 }
-            ]
+            ],
+            "public_labels": []
         }
     ],
     "inline_assembly": [],

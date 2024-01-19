@@ -259,6 +259,16 @@
                 {
                     "opcode": "pop"
                 }
+            ],
+            "public_labels": [
+                {
+                    "label": "_kefir_local_public_label_goto1_begin",
+                    "location": 6
+                },
+                {
+                    "label": "_kefir_local_public_label_goto1_end",
+                    "location": 26
+                }
             ]
         },
         {
@@ -301,6 +311,20 @@
                 },
                 {
                     "opcode": "ijmp"
+                }
+            ],
+            "public_labels": [
+                {
+                    "label": "_kefir_local_public_label_goto2_begin",
+                    "location": 0
+                },
+                {
+                    "label": "_kefir_local_public_label_goto2_loop",
+                    "location": 5
+                },
+                {
+                    "label": "_kefir_local_public_label_goto2_end",
+                    "location": 8
                 }
             ]
         }

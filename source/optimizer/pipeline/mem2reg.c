@@ -179,6 +179,10 @@ static kefir_result_t mem2reg_scan(struct mem2reg_state *state) {
 
         struct kefir_opt_instruction *instr = NULL, *addr_instr = NULL;
 
+        if (!kefir_hashtreeset_empty(&block->public_labels)) {
+            return KEFIR_YIELD;
+        }
+
         for (kefir_opt_code_block_instr_head(&state->func->code, block, &instr); instr != NULL;
              kefir_opt_instruction_next_sibling(&state->func->code, instr, &instr)) {
 

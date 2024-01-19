@@ -231,7 +231,8 @@
                     "opcode": "branch",
                     "arg": 5
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 3,
@@ -279,7 +280,8 @@
                     "opcode": "branch",
                     "arg": 0
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 4,
@@ -311,7 +313,8 @@
                     "opcode": "branch",
                     "arg": 0
                 }
-            ]
+            ],
+            "public_labels": []
         }
     ],
     "inline_assembly": [],

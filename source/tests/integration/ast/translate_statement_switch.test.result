@@ -314,7 +314,8 @@
                     "opcode": "jmp",
                     "arg": 57
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 1,
@@ -543,7 +544,8 @@
                     "opcode": "jmp",
                     "arg": 54
                 }
-            ]
+            ],
+            "public_labels": []
         }
     ],
     "inline_assembly": [],

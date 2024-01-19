@@ -792,7 +792,8 @@
                         "data": "func1"
                     }
                 }
-            ]
+            ],
+            "public_labels": []
         }
     ],
     "inline_assembly": [],

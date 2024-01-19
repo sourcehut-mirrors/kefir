@@ -227,7 +227,8 @@
                 {
                     "opcode": "f64div"
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 2,
@@ -295,7 +296,8 @@
                 {
                     "opcode": "umod"
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 0,
@@ -451,7 +453,8 @@
                 {
                     "opcode": "f64mul"
                 }
-            ]
+            ],
+            "public_labels": []
         }
     ],
     "inline_assembly": [],

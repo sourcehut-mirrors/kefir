@@ -450,7 +450,8 @@
                 {
                     "opcode": "pop"
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 6,
@@ -472,7 +473,8 @@
                 {
                     "opcode": "ret"
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 5,
@@ -536,7 +538,8 @@
                 {
                     "opcode": "pop"
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 8,
@@ -565,7 +568,8 @@
                 {
                     "opcode": "ret"
                 }
-            ]
+            ],
+            "public_labels": []
         }
     ],
     "inline_assembly": [],

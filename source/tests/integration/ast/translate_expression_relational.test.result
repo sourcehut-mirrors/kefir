@@ -304,7 +304,8 @@
                 {
                     "opcode": "f64lesser"
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 5,
@@ -581,7 +582,8 @@
                 {
                     "opcode": "bor"
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 2,
@@ -678,7 +680,8 @@
                 {
                     "opcode": "bnot"
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 3,
@@ -778,7 +781,8 @@
                 {
                     "opcode": "bnot"
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 1,
@@ -869,7 +873,8 @@
                 {
                     "opcode": "iequals"
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 6,
@@ -984,7 +989,8 @@
                 {
                     "opcode": "f64greater"
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 8,
@@ -1287,7 +1293,8 @@
                 {
                     "opcode": "bor"
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 0,
@@ -1373,7 +1380,8 @@
                 {
                     "opcode": "f64equals"
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 7,
@@ -1650,7 +1658,8 @@
                 {
                     "opcode": "bor"
                 }
-            ]
+            ],
+            "public_labels": []
         }
     ],
     "inline_assembly": [],

@@ -86,6 +86,7 @@ typedef struct kefir_ast_scoped_identifier {
 
         struct {
             struct kefir_ast_flow_control_point *point;
+            const char *public_label;
         } label;
     };
     struct kefir_source_location source_location;

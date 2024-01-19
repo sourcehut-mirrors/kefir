@@ -638,7 +638,19 @@ static kefir_result_t code_block_format(struct kefir_json_output *json, const st
         REQUIRE_OK(instr_format(json, instr, code_analysis));
     }
     REQUIRE_OK(res);
+    REQUIRE_OK(kefir_json_output_array_end(json));
 
+    REQUIRE_OK(kefir_json_output_object_key(json, "public_labels"));
+    REQUIRE_OK(kefir_json_output_array_begin(json));
+    struct kefir_hashtreeset_iterator iter;
+    for (res = kefir_hashtreeset_iter(&block->public_labels, &iter); res == KEFIR_OK;
+         res = kefir_hashtreeset_next(&iter)) {
+        ASSIGN_DECL_CAST(const char *, alternative_label, iter.entry);
+        REQUIRE_OK(kefir_json_output_string(json, alternative_label));
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
     REQUIRE_OK(kefir_json_output_array_end(json));
 
     REQUIRE_OK(kefir_json_output_object_key(json, "properties"));

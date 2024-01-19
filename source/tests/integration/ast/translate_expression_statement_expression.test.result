@@ -92,7 +92,8 @@
             "identifier": 0,
             "name": "statement_expr1",
             "locals": 4,
-            "body": []
+            "body": [],
+            "public_labels": []
         },
         {
             "identifier": 1,
@@ -106,7 +107,8 @@
                 {
                     "opcode": "pop"
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 2,
@@ -134,7 +136,8 @@
                 {
                     "opcode": "pop"
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 3,
@@ -166,7 +169,8 @@
                     "opcode": "pushi",
                     "arg": 72
                 }
-            ]
+            ],
+            "public_labels": []
         }
     ],
     "inline_assembly": [],

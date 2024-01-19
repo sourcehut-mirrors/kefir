@@ -88,7 +88,8 @@
                 {
                     "opcode": "f64add"
                 }
-            ]
+            ],
+            "public_labels": []
         }
     ],
     "inline_assembly": [],

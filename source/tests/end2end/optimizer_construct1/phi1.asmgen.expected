@@ -89,6 +89,7 @@
                                 }
                             }
                         ],
+                        "public_labels": [],
                         "properties": {
                             "reachable": true,
                             "linear_position": 1,
@@ -428,6 +429,7 @@
                                 }
                             }
                         ],
+                        "public_labels": [],
                         "properties": {
                             "reachable": true,
                             "linear_position": 2,
@@ -513,6 +515,7 @@
                                 }
                             }
                         ],
+                        "public_labels": [],
                         "properties": {
                             "reachable": true,
                             "linear_position": 4,
@@ -645,6 +648,7 @@
                                 }
                             }
                         ],
+                        "public_labels": [],
                         "properties": {
                             "reachable": true,
                             "linear_position": 3,
@@ -727,6 +731,7 @@
                                 }
                             }
                         ],
+                        "public_labels": [],
                         "properties": {
                             "reachable": true,
                             "linear_position": 6,
@@ -855,6 +860,7 @@
                                 }
                             }
                         ],
+                        "public_labels": [],
                         "properties": {
                             "reachable": true,
                             "linear_position": 5,
@@ -984,6 +990,7 @@
                                 }
                             }
                         ],
+                        "public_labels": [],
                         "properties": {
                             "reachable": true,
                             "linear_position": 8,
@@ -1139,6 +1146,7 @@
                                 }
                             }
                         ],
+                        "public_labels": [],
                         "properties": {
                             "reachable": true,
                             "linear_position": 7,
@@ -1204,6 +1212,7 @@
                                 }
                             }
                         ],
+                        "public_labels": [],
                         "properties": {
                             "reachable": true,
                             "linear_position": 1,
@@ -1466,6 +1475,7 @@
                                 }
                             }
                         ],
+                        "public_labels": [],
                         "properties": {
                             "reachable": true,
                             "linear_position": 2,
@@ -1520,6 +1530,9 @@
                                 }
                             }
                         ],
+                        "public_labels": [
+                            "_kefir_local_public_label_test2_label1"
+                        ],
                         "properties": {
                             "reachable": true,
                             "linear_position": 7,
@@ -1572,6 +1585,9 @@
                                     }
                                 }
                             }
+                        ],
+                        "public_labels": [
+                            "_kefir_local_public_label_test2_label2"
                         ],
                         "properties": {
                             "reachable": true,
@@ -1656,6 +1672,7 @@
                                 }
                             }
                         ],
+                        "public_labels": [],
                         "properties": {
                             "reachable": true,
                             "linear_position": 4,
@@ -1769,6 +1786,7 @@
                                 }
                             }
                         ],
+                        "public_labels": [],
                         "properties": {
                             "reachable": true,
                             "linear_position": 3,
@@ -1841,6 +1859,7 @@
                                 }
                             }
                         ],
+                        "public_labels": [],
                         "properties": {
                             "reachable": true,
                             "linear_position": 6,
@@ -1914,6 +1933,7 @@
                                 }
                             }
                         ],
+                        "public_labels": [],
                         "properties": {
                             "reachable": true,
                             "linear_position": 5,

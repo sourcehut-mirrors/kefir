@@ -92,7 +92,8 @@
                 {
                     "opcode": "iadd"
                 }
-            ]
+            ],
+            "public_labels": []
         }
     ],
     "inline_assembly": [],

@@ -401,7 +401,8 @@
                 {
                     "opcode": "extend32"
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 6,
@@ -435,7 +436,8 @@
                 {
                     "opcode": "extend32"
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 8,
@@ -452,7 +454,8 @@
                 {
                     "opcode": "extend32"
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 10,
@@ -469,7 +472,8 @@
                 {
                     "opcode": "extend32"
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 12,
@@ -490,7 +494,8 @@
                 {
                     "opcode": "extend32"
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 14,
@@ -525,7 +530,8 @@
                 {
                     "opcode": "extend32"
                 }
-            ]
+            ],
+            "public_labels": []
         }
     ],
     "inline_assembly": [],

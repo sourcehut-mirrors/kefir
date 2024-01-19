@@ -147,7 +147,8 @@
                     "opcode": "pushu",
                     "arg": 1
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 1,
@@ -172,7 +173,8 @@
                     "opcode": "pushf32",
                     "arg": 210000.000000
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 2,
@@ -197,7 +199,8 @@
                     "opcode": "pushi",
                     "arg": 66536
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 3,
@@ -229,7 +232,8 @@
                     "opcode": "pushld",
                     "arg": 0.000122
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 4,
@@ -254,7 +258,8 @@
                     "opcode": "pushi",
                     "arg": 16
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 5,
@@ -282,7 +287,8 @@
                 {
                     "opcode": "pop"
                 }
-            ]
+            ],
+            "public_labels": []
         }
     ],
     "inline_assembly": [],

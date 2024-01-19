@@ -390,6 +390,17 @@ static kefir_result_t generate_instr(struct kefir_mem *mem, struct kefir_amd64_x
     for (kefir_asmcmp_label_index_t label = kefir_asmcmp_context_instr_label_head(&target->context, index);
          label != KEFIR_ASMCMP_INDEX_NONE; label = kefir_asmcmp_context_instr_label_next(&target->context, label)) {
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(xasmgen, KEFIR_AMD64_LABEL, target->function_name, label));
+
+        kefir_result_t res;
+        struct kefir_hashtreeset_iterator iter;
+        for (res = kefir_hashtreeset_iter(&target->context.labels[label].public_labels, &iter); res == KEFIR_OK;
+             res = kefir_hashtreeset_next(&iter)) {
+            ASSIGN_DECL_CAST(const char *, symbolic_label, iter.entry);
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(xasmgen, "%s", symbolic_label));
+        }
+        if (res != KEFIR_ITERATOR_END) {
+            REQUIRE_OK(res);
+        }
     }
 
     struct instruction_argument_state arg_state[3] = {0};

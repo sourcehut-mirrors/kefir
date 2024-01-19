@@ -81,6 +81,25 @@ static kefir_result_t identify_code_blocks(struct kefir_mem *mem, const struct k
     if (start_new_block) {
         REQUIRE_OK(kefir_opt_constructor_start_code_block_at(mem, state, i));
     }
+
+    struct kefir_hashtree_node_iterator iter;
+    kefir_result_t res;
+    const char *public_label;
+    kefir_size_t public_label_location;
+    for (res = kefir_irblock_public_labels_iter(&state->function->ir_func->body, &iter, &public_label,
+                                                &public_label_location);
+         res == KEFIR_OK; res = kefir_irblock_public_labels_next(&iter, &public_label, &public_label_location)) {
+        REQUIRE_OK(kefir_opt_constructor_start_code_block_at(mem, state, public_label_location));
+        REQUIRE_OK(kefir_opt_constructor_mark_code_block_for_indirect_jump(mem, state, public_label_location));
+
+        struct kefir_opt_constructor_code_block_state *block_state;
+        REQUIRE_OK(kefir_opt_constructor_find_code_block_for(state, public_label_location, &block_state));
+        REQUIRE_OK(kefir_opt_code_container_add_block_public_label(mem, &state->function->code, block_state->block_id,
+                                                                   public_label));
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
     return KEFIR_OK;
 }
 

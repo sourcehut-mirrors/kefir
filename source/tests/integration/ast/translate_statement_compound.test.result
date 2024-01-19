@@ -128,7 +128,8 @@
             "identifier": 0,
             "name": "compound1",
             "locals": 5,
-            "body": []
+            "body": [],
+            "public_labels": []
         },
         {
             "identifier": 1,
@@ -404,7 +405,8 @@
                 {
                     "opcode": "pop"
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 2,
@@ -534,7 +536,8 @@
                 {
                     "opcode": "pop"
                 }
-            ]
+            ],
+            "public_labels": []
         }
     ],
     "inline_assembly": [],

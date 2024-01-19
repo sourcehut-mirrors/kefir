@@ -243,7 +243,8 @@
                     "opcode": "jmp",
                     "arg": 0
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 3,
@@ -353,7 +354,8 @@
                     "opcode": "jmp",
                     "arg": 5
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 5,
@@ -516,7 +518,8 @@
                     "opcode": "jmp",
                     "arg": 12
                 }
-            ]
+            ],
+            "public_labels": []
         },
         {
             "identifier": 8,
@@ -562,7 +565,8 @@
                     "opcode": "jmp",
                     "arg": 2
                 }
-            ]
+            ],
+            "public_labels": []
         }
     ],
     "inline_assembly": [],

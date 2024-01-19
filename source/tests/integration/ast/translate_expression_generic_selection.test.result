@@ -72,7 +72,8 @@
                     "opcode": "pushi",
                     "arg": 7
                 }
-            ]
+            ],
+            "public_labels": []
         }
     ],
     "inline_assembly": [],

@@ -156,7 +156,8 @@
                     "opcode": "pushi",
                     "arg": 10
                 }
-            ]
+            ],
+            "public_labels": []
         }
     ],
     "inline_assembly": [],
