@@ -6,10 +6,13 @@ packages:
   - valgrind
   - coreutils
   - wget
+  - python3
+  - py39-sqlite3
 secrets:
   -  13fca65b-ffbd-4542-b2fe-6a2813e53256
 sources:
   - https://git.sr.ht/~jprotopopov/kefir
+  - https://git.sr.ht/~jprotopopov/c-testsuite
 tasks:
   - test: |
       cd kefir
