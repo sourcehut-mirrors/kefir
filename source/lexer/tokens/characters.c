@@ -149,6 +149,12 @@ static kefir_result_t next_hexadecimal_escape_sequence(struct kefir_lexer_source
     return KEFIR_OK;
 }
 
+static kefir_result_t next_unknown_sequence(struct kefir_lexer_source_cursor *cursor, kefir_char32_t *target) {
+    *target = kefir_lexer_source_cursor_at(cursor, 1);
+    REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 2));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_lexer_cursor_next_escape_sequence(struct kefir_lexer_source_cursor *cursor,
                                                        kefir_char32_t *target) {
     REQUIRE(cursor != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid lexer source cursor"));
@@ -162,6 +168,8 @@ kefir_result_t kefir_lexer_cursor_next_escape_sequence(struct kefir_lexer_source
     REQUIRE(res == KEFIR_NO_MATCH, res);
     res = next_hexadecimal_escape_sequence(cursor, target);
     REQUIRE(res == KEFIR_NO_MATCH, res);
-    REQUIRE_OK(kefir_lexer_cursor_next_universal_character(cursor, target));
+    res = kefir_lexer_cursor_next_universal_character(cursor, target);
+    REQUIRE(res == KEFIR_NO_MATCH, res);
+    REQUIRE_OK(next_unknown_sequence(cursor, target));
     return KEFIR_OK;
 }
