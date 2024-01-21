@@ -26,6 +26,10 @@ ifeq ($(USE_SHARED),yes)
 else
 	@$(LD) $(LDFLAGS) -static -o $@ $(KEFIR_STANDALONE_OBJECT_FILES) $(LIBKEFIR_A) $(KEFIR_STANDALONE_LIBS)
 endif
+ifneq (,$(findstring release,$(PROFILE)))
+	@echo "Stripping $@"
+	@$(STRIP) $@
+endif
 
 COMPILE_DEPS += $(KEFIR_STANDALONE_COMPILE_DEPS)
 DEPENDENCIES += $(KEFIR_STANDALONE_DEPENDENCIES)

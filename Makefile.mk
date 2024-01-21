@@ -10,6 +10,7 @@ CC=cc
 LD=$(CC)
 AS=as
 AR=ar
+STRIP=strip
 EMCC=emcc
 GZIP=gzip
 REALPATH=realpath

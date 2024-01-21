@@ -17,6 +17,10 @@ ifeq ($(USE_SHARED),yes)
 else
 	@$(LD) $(LDFLAGS) -static -o $@ $(KEFIR_DRIVER_OBJECT_FILES) $(LIBKEFIR_A) $(KEFIR_DRIVER_LIBS)
 endif
+ifneq (,$(findstring release,$(PROFILE)))
+	@echo "Stripping $@"
+	@$(STRIP) $@
+endif
 
 COMPILE_DEPS += $(KEFIR_DRIVER_COMPILE_DEPS)
 DEPENDENCIES += $(KEFIR_DRIVER_DEPENDENCIES)
