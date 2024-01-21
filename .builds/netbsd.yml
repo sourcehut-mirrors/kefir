@@ -5,15 +5,41 @@ packages:
   - coreutils
   - bash
   - wget
+  - python311
 secrets:
   -  13fca65b-ffbd-4542-b2fe-6a2813e53256
 sources:
   - https://git.sr.ht/~jprotopopov/kefir
+  - https://git.sr.ht/~jprotopopov/c-testsuite
 tasks:
   - test: |
       cd kefir
       export LC_ALL=C.UTF-8
       gmake test all CC=gcc AS=gas PROFILE=reldebug
+  - lua_tests: |
+      cd kefir
+      export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(pwd)/bin/libs
+      export LC_ALL=C.UTF-8
+      export KEFIR_RTLIB="$HOME/kefir/bin/libs/libkefirrt.a"
+      export KEFIR_RTINC="$HOME/kefir/headers/kefir/runtime"
+      export KEFIR_CFLAGS="-O1 -fPIC -pie -D__GNUC__=4 -D__GNUC_MINOR__=20 -D__GNUC_STDC_INLINE__=1 -D__ELF__=1 -include $HOME/kefir/headers/bootstrap_include/netbsd.h"
+      sed -i "s/tar xvf/tar xvfz/g" ./source/tests/misc/run-lua-tests.sh
+      sed -i "s/realpath/grealpath/g" ./source/tests/misc/run-lua-tests.sh
+      ./source/tests/misc/run-lua-tests.sh "$(pwd)/bin/kefir" "$(pwd)/bin/lua-test"
+  - c_testsuite: |
+      cd c-testsuite
+      export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/kefir/bin/libs
+      export KEFIRCC="$HOME/kefir/bin/kefir"
+      export KEFIR_RTLIB="$HOME/kefir/bin/libs/libkefirrt.a"
+      export KEFIR_RTINC="$HOME/kefir/headers/kefir/runtime"
+      export CFLAGS="-O1 -fPIC -pie -D__GNUC__=4 -D__GNUC_MINOR__=20 -D__GNUC_STDC_INLINE__=1"
+      export LC_ALL=C.UTF-8 
+      sed -i "s/env python3/env python3.11/g" scripts/htmlescape
+      sed -i "s/env python3/env python3.11/g" scripts/lib-exec/mkset
+      sed -i "s/env python3/env python3.11/g" scripts/lib-exec/setlookup
+      sed -i "s/env python3/env python3.11/g" scripts/tapsummary
+      ./single-exec kefir | tee ~/c-tests.log
+      [[ "x$(cat ~/c-tests.log | scripts/tapsummary | grep 'fail 0' | wc -l | tr -d ' ')" == "x1" ]] || exit 1
   - gcc_torture: |
       wget ftp://ftp.gnu.org/gnu/gcc/gcc-13.1.0/gcc-13.1.0.tar.xz
       xz -d gcc-13.1.0.tar.xz
