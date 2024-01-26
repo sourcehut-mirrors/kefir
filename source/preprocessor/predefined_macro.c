@@ -194,8 +194,8 @@ MACRO_PP_NUMBER_FMT(stdc_iso_10646, 64, "%" KEFIR_ULONG_FMT "L",
 MACRO_PP_NUMBER_FMT(stdc_lib_ext1, 64, "%" KEFIR_ULONG_FMT "L",
                     macro_payload->scope->preprocessor->context->environment.stdc_lib_ext1)
 MACRO_PP_NUMBER_FMT(produce_one, 64, "%" KEFIR_INT_FMT, 1)
-MACRO_PP_NUMBER_FMT(big_endian, 64, "%" KEFIR_INT_FMT, 1234)
-MACRO_PP_NUMBER_FMT(little_endian, 64, "%" KEFIR_INT_FMT, 4321)
+MACRO_PP_NUMBER_FMT(big_endian, 64, "%" KEFIR_INT_FMT, 4321)
+MACRO_PP_NUMBER_FMT(little_endian, 64, "%" KEFIR_INT_FMT, 1234)
 MACRO_PP_NUMBER_FMT(pdp_endian, 64, "%" KEFIR_INT_FMT, 3412)
 MACRO_PP_NUMBER_FMT(char_bit, 64, "%" KEFIR_UINT64_FMT,
                     (kefir_uint64_t) preprocessor->context->environment.data_model->char_bit)
@@ -214,6 +214,8 @@ MACRO_PP_NUMBER_FMT(long_long_max, 64, "%" KEFIR_UINT64_FMT,
                     (kefir_uint64_t) (1ul
                                       << (preprocessor->context->environment.data_model->int_width.long_long_int - 1)) -
                         1)
+MACRO_PP_NUMBER_FMT(schar_width, 64, "%" KEFIR_UINT64_FMT,
+                    (kefir_uint64_t) preprocessor->context->environment.data_model->char_bit)
 MACRO_PP_NUMBER_FMT(shrt_width, 64, "%" KEFIR_UINT64_FMT,
                     (kefir_uint64_t) preprocessor->context->environment.data_model->int_width.short_int)
 MACRO_PP_NUMBER_FMT(int_width, 64, "%" KEFIR_UINT64_FMT,
@@ -222,6 +224,27 @@ MACRO_PP_NUMBER_FMT(long_width, 64, "%" KEFIR_UINT64_FMT,
                     (kefir_uint64_t) preprocessor->context->environment.data_model->int_width.long_int)
 MACRO_PP_NUMBER_FMT(long_long_width, 64, "%" KEFIR_UINT64_FMT,
                     (kefir_uint64_t) preprocessor->context->environment.data_model->int_width.long_long_int)
+MACRO_PP_NUMBER_FMT(short_sizeof, 64, "%" KEFIR_UINT64_FMT,
+                    (kefir_uint64_t) preprocessor->context->environment.data_model->int_width.short_int /
+                        preprocessor->context->environment.data_model->char_bit)
+MACRO_PP_NUMBER_FMT(int_sizeof, 64, "%" KEFIR_UINT64_FMT,
+                    (kefir_uint64_t) preprocessor->context->environment.data_model->int_width.integer /
+                        preprocessor->context->environment.data_model->char_bit)
+MACRO_PP_NUMBER_FMT(long_sizeof, 64, "%" KEFIR_UINT64_FMT,
+                    (kefir_uint64_t) preprocessor->context->environment.data_model->int_width.long_int /
+                        preprocessor->context->environment.data_model->char_bit)
+MACRO_PP_NUMBER_FMT(long_long_sizeof, 64, "%" KEFIR_UINT64_FMT,
+                    (kefir_uint64_t) preprocessor->context->environment.data_model->int_width.long_long_int /
+                        preprocessor->context->environment.data_model->char_bit)
+MACRO_PP_NUMBER_FMT(float_sizeof, 64, "%" KEFIR_UINT64_FMT,
+                    (kefir_uint64_t) preprocessor->context->environment.data_model->floating_point.float_bits /
+                        preprocessor->context->environment.data_model->char_bit)
+MACRO_PP_NUMBER_FMT(double_sizeof, 64, "%" KEFIR_UINT64_FMT,
+                    (kefir_uint64_t) preprocessor->context->environment.data_model->floating_point.double_bits /
+                        preprocessor->context->environment.data_model->char_bit)
+MACRO_PP_NUMBER_FMT(long_double_sizeof, 64, "%" KEFIR_UINT64_FMT,
+                    (kefir_uint64_t) preprocessor->context->environment.data_model->floating_point.long_double_bits /
+                        preprocessor->context->environment.data_model->char_bit)
 MACRO_PP_NUMBER_FMT(flt_radix, 64, "%" KEFIR_INT64_FMT,
                     preprocessor->context->environment.data_model->floating_point.float_radix)
 MACRO_PP_NUMBER_FMT(flt_mant_dig, 64, "%" KEFIR_INT64_FMT,
@@ -481,11 +504,19 @@ kefir_result_t kefir_preprocessor_predefined_macro_scope_init(struct kefir_mem *
                 break;
         }
 
+        if (!preprocessor->context->ast_context->type_traits->character_type_signedness) {
+            REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.char_unsigned,
+                                                        "__CHAR_UNSIGNED__", macro_produce_one_apply));
+        }
+
         REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.char_bit, "__CHAR_BIT__",
                                                     macro_char_bit_apply));
 
         REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.limits.schar_max,
                                                     "__SCHAR_MAX__", macro_schar_max_apply));
+
+        REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.limits.schar_width,
+                                                    "__SCHAR_WIDTH__", macro_schar_width_apply));
 
         REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.limits.shrt_max,
                                                     "__SHRT_MAX__", macro_shrt_max_apply));
@@ -510,6 +541,27 @@ kefir_result_t kefir_preprocessor_predefined_macro_scope_init(struct kefir_mem *
 
         REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.limits.long_long_width,
                                                     "__LONG_LONG_WIDTH__", macro_long_long_width_apply));
+
+        REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.sizes.short_sizeof,
+                                                    "__SIZEOF_SHORT__", macro_short_sizeof_apply));
+
+        REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.sizes.int_sizeof,
+                                                    "__SIZEOF_INT__", macro_int_sizeof_apply));
+
+        REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.sizes.long_sizeof,
+                                                    "__SIZEOF_LONG__", macro_long_sizeof_apply));
+
+        REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.sizes.long_long_sizeof,
+                                                    "__SIZEOF_LONG_LONG__", macro_long_long_sizeof_apply));
+
+        REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.sizes.float_sizeof,
+                                                    "__SIZEOF_FLOAT__", macro_float_sizeof_apply));
+
+        REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.sizes.double_sizeof,
+                                                    "__SIZEOF_DOUBLE__", macro_double_sizeof_apply));
+
+        REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.sizes.long_double_sizeof,
+                                                    "__SIZEOF_LONG_DOUBLE__", macro_long_double_sizeof_apply));
 
         REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.floating_point.flt_radix,
                                                     "__FLT_RADIX__", macro_flt_radix_apply));

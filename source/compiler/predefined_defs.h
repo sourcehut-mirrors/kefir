@@ -58,6 +58,36 @@
 #define __UINTPTR_TYPE__ long unsigned int
 #endif
 
+#define __FLOAT_WORD_ORDER__ __BYTE_ORDER__
+#define __label__ void *
+
+// Type width
+#ifdef __LP64__
+#define __PTRDIFF_WIDTH__ __LONG_WIDTH__
+#define __SIZE_WIDTH__ __LONG_WIDTH__
+#define __WCHAR_WIDTH__ __INT_WIDTH__
+#define __WINT_WIDTH__ __INT_WIDTH__
+#define __INT_LEAST8_WIDTH__ __SCHAR_WIDTH__
+#define __INT_LEAST16_WIDTH__ __SHRT_WIDTH__
+#define __INT_LEAST32_WIDTH__ __INT_WIDTH__
+#define __INT_LEAST64_WIDTH__ __LONG_WIDTH__
+#define __INT_FAST8_WIDTH__ __SCHAR_WIDTH__
+#define __INT_FAST16_WIDTH__ __SHRT_WIDTH__
+#define __INT_FAST32_WIDTH__ __INT_WIDTH__
+#define __INT_FAST64_WIDTH__ __LONG_WIDTH__
+#define __INTPTR_WIDTH__ __LONG_WIDTH__
+#define __INTMAX_WIDTH__ __LONG_WIDTH__
+#endif
+
+// Type size
+#ifdef __LP64__
+#define __SIZEOF_POINTER__ __SIZEOF_LONG__
+#define __SIZEOF_SIZE_T__ __SIZEOF_LONG__
+#define __SIZEOF_PTRDIFF_T__ __SIZEOF_LONG__
+#define __SIZEOF_WCHAR_T__ __SIZEOF_INT__
+#define __SIZEOF_WINT_T__ __SIZEOF_INT__
+#endif
+
 // Runtime functions
 extern _Noreturn void __kefirrt_trap(void);
 extern void *__kefirrt_return_address(int);
