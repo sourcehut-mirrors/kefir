@@ -25,7 +25,7 @@ endif
 	@install -D "$(LIBKEFIRRT_A)" -t "$(DESTDIR)$(libdir)"
 	@echo "Installing headers..."
 	@cp -r --no-dereference -p "$(HEADERS_DIR)"/kefir "$(DESTDIR)$(includedir)"/kefir/toolchain
-	@ln -sf toolchain/kefir/runtime "$(DESTDIR)$(includedir)"/kefir/runtime
+	@ln -sfn toolchain/kefir/runtime "$(DESTDIR)$(includedir)"/kefir/runtime
 	@echo "Installing binaries..."
 	@install "$(KEFIR_BIN_DIR)"/kefir "$(DESTDIR)$(bindir)"/kefir-cc
 	@install "$(KEFIR_BIN_DIR)"/kefir-cc1 "$(DESTDIR)$(bindir)"/kefir-cc1
