@@ -49,11 +49,17 @@ kefir_result_t kefir_ast_analyze_array_subscript_node(struct kefir_mem *mem, con
         KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(mem, context->type_bundle, node->subscript->properties.type);
     const struct kefir_ast_type *type = NULL;
     if (array_type->tag == KEFIR_AST_TYPE_SCALAR_POINTER) {
+        REQUIRE(!node->array->properties.expression_props.atomic,
+                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->array->source_location,
+                                       "Array subscript cannot operate on atomic type"));
         REQUIRE(KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(subcript_type),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->subscript->source_location,
                                        "Expected one of subscript operands to have integral type"));
         type = array_type->referenced_type;
     } else {
+        REQUIRE(!node->subscript->properties.expression_props.atomic,
+                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->subscript->source_location,
+                                       "Array subscript cannot operate on atomic type"));
         REQUIRE(subcript_type->tag == KEFIR_AST_TYPE_SCALAR_POINTER,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->subscript->source_location,
                                        "Expected one of subscript operands to have pointer type"));

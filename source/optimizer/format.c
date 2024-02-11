@@ -387,6 +387,42 @@ static kefir_result_t format_operation_inline_asm(struct kefir_json_output *json
     return KEFIR_OK;
 }
 
+static kefir_result_t format_operation_atomic_op(struct kefir_json_output *json,
+                                                 const struct kefir_opt_operation *oper) {
+    switch (oper->opcode) {
+        case KEFIR_OPT_OPCODE_ATOMIC_LOAD8:
+        case KEFIR_OPT_OPCODE_ATOMIC_LOAD16:
+        case KEFIR_OPT_OPCODE_ATOMIC_LOAD32:
+        case KEFIR_OPT_OPCODE_ATOMIC_LOAD64:
+            REQUIRE_OK(kefir_json_output_object_key(json, "location"));
+            REQUIRE_OK(id_format(json, oper->parameters.atomic_op.ref[0]));
+            break;
+
+        case KEFIR_OPT_OPCODE_ATOMIC_STORE8:
+        case KEFIR_OPT_OPCODE_ATOMIC_STORE16:
+        case KEFIR_OPT_OPCODE_ATOMIC_STORE32:
+        case KEFIR_OPT_OPCODE_ATOMIC_STORE64:
+            REQUIRE_OK(kefir_json_output_object_key(json, "location"));
+            REQUIRE_OK(id_format(json, oper->parameters.atomic_op.ref[0]));
+            REQUIRE_OK(kefir_json_output_object_key(json, "value"));
+            REQUIRE_OK(id_format(json, oper->parameters.atomic_op.ref[1]));
+            break;
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected optimizer operation code");
+    }
+    REQUIRE_OK(kefir_json_output_object_key(json, "atomic_model"));
+    switch (oper->parameters.atomic_op.model) {
+        case KEFIR_OPT_ATOMIC_MODEL_SEQ_CST:
+            REQUIRE_OK(kefir_json_output_string(json, "seq_cst"));
+            break;
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected atomic model");
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t format_operation_immediate(struct kefir_json_output *json,
                                                  const struct kefir_opt_operation *oper) {
     REQUIRE_OK(kefir_json_output_object_key(json, "value"));

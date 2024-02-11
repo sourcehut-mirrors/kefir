@@ -1,0 +1,126 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global b
+.global u8
+.global f32
+.global f64
+.global u16
+.global u32
+.global u64
+.global set_b
+.global set_u8
+.global set_f32
+.global set_f64
+.global set_u16
+.global set_u32
+.global set_u64
+.extern __kefir_opt_float32_neg
+.extern __kefir_opt_float64_neg
+.extern __kefirrt_opt_float32_to_uint
+.extern __kefirrt_opt_float64_to_uint
+
+.section .text
+set_b:
+_kefir_func_set_b_label0:
+_kefir_func_set_b_label1:
+    movzx %dil, %rax
+    movq b@GOTPCREL(%rip), %rcx
+    mov %rcx, %rdi
+    mov %rax, %rsi
+    mov $5, %rdx
+    call __atomic_store_1@PLT
+    ret
+
+set_u8:
+_kefir_func_set_u8_label0:
+_kefir_func_set_u8_label1:
+    movzx %dil, %rax
+    movq u8@GOTPCREL(%rip), %rcx
+    mov %rcx, %rdi
+    mov %rax, %rsi
+    mov $5, %rdx
+    call __atomic_store_1@PLT
+    ret
+
+set_f32:
+_kefir_func_set_f32_label0:
+_kefir_func_set_f32_label1:
+    movq f32@GOTPCREL(%rip), %rax
+    mov %rax, %rdi
+    movq %xmm0, %rsi
+    mov $5, %rdx
+    call __atomic_store_4@PLT
+    ret
+
+set_f64:
+_kefir_func_set_f64_label0:
+_kefir_func_set_f64_label1:
+    movq f64@GOTPCREL(%rip), %rax
+    mov %rax, %rdi
+    movq %xmm0, %rsi
+    mov $5, %rdx
+    call __atomic_store_8@PLT
+    ret
+
+set_u16:
+_kefir_func_set_u16_label0:
+_kefir_func_set_u16_label1:
+    movzx %di, %rax
+    movq u16@GOTPCREL(%rip), %rcx
+    mov %rcx, %rdi
+    mov %rax, %rsi
+    mov $5, %rdx
+    call __atomic_store_2@PLT
+    ret
+
+set_u32:
+_kefir_func_set_u32_label0:
+_kefir_func_set_u32_label1:
+    mov %edi, %eax
+    movq u32@GOTPCREL(%rip), %rcx
+    mov %rcx, %rdi
+    mov %rax, %rsi
+    mov $5, %rdx
+    call __atomic_store_4@PLT
+    ret
+
+set_u64:
+_kefir_func_set_u64_label0:
+    mov %rdi, %rax
+_kefir_func_set_u64_label1:
+    movq u64@GOTPCREL(%rip), %rcx
+    mov %rcx, %rdi
+    mov %rax, %rsi
+    mov $5, %rdx
+    call __atomic_store_8@PLT
+    ret
+
+
+.section .bss
+b:
+    .byte 0
+
+u8:
+    .byte 0
+
+    .align 4
+f32:
+    .long 0
+
+    .align 8
+f64:
+    .quad 0
+
+    .align 2
+u16:
+    .word 0
+
+    .align 4
+u32:
+    .long 0
+
+    .align 8
+u64:
+    .quad 0
+

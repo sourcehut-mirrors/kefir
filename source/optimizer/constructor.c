@@ -628,6 +628,53 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
 
 #undef BINARY_OP
 
+#define ATOMIC_LOAD_OP(_id, _opcode)                                                                          \
+    case _opcode: {                                                                                           \
+        kefir_opt_atomic_model_t model;                                                                       \
+        switch (instr->arg.i64) {                                                                             \
+            case KEFIR_IR_ATOMIC_MODEL_SEQ_CST:                                                               \
+                model = KEFIR_OPT_ATOMIC_MODEL_SEQ_CST;                                                       \
+                break;                                                                                        \
+        }                                                                                                     \
+        REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));                                 \
+        REQUIRE_OK(kefir_opt_code_builder_##_id(mem, code, current_block_id, instr_ref2, model, &instr_ref)); \
+        REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));                    \
+        REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));                                  \
+    } break;
+
+            ATOMIC_LOAD_OP(atomic_load8, KEFIR_IROPCODE_ATOMIC_LOAD8)
+            ATOMIC_LOAD_OP(atomic_load16, KEFIR_IROPCODE_ATOMIC_LOAD16)
+            ATOMIC_LOAD_OP(atomic_load32, KEFIR_IROPCODE_ATOMIC_LOAD32)
+            ATOMIC_LOAD_OP(atomic_load64, KEFIR_IROPCODE_ATOMIC_LOAD64)
+
+#undef ATOMIC_LOAD_OP
+
+#define ATOMIC_STORE_OP(_id, _opcode)                                                                              \
+    case _opcode: {                                                                                                \
+        kefir_opt_atomic_model_t model;                                                                            \
+        switch (instr->arg.i64) {                                                                                  \
+            case KEFIR_IR_ATOMIC_MODEL_SEQ_CST:                                                                    \
+                model = KEFIR_OPT_ATOMIC_MODEL_SEQ_CST;                                                            \
+                break;                                                                                             \
+                                                                                                                   \
+            default:                                                                                               \
+                return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unknown IR atomic model flag");                       \
+        }                                                                                                          \
+        REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref3));                                      \
+        REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));                                      \
+        REQUIRE_OK(                                                                                                \
+            kefir_opt_code_builder_##_id(mem, code, current_block_id, instr_ref2, instr_ref3, model, &instr_ref)); \
+        REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));                         \
+        REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));                                       \
+    } break;
+
+            ATOMIC_STORE_OP(atomic_store8, KEFIR_IROPCODE_ATOMIC_STORE8)
+            ATOMIC_STORE_OP(atomic_store16, KEFIR_IROPCODE_ATOMIC_STORE16)
+            ATOMIC_STORE_OP(atomic_store32, KEFIR_IROPCODE_ATOMIC_STORE32)
+            ATOMIC_STORE_OP(atomic_store64, KEFIR_IROPCODE_ATOMIC_STORE64)
+
+#undef ATOMIC_STORE_OP
+
 #define LOAD_OP(_id, _opcode)                                                                                \
     case _opcode: {                                                                                          \
         REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));                                \

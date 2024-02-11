@@ -240,6 +240,14 @@ kefir_result_t kefir_codegen_amd64_function_map_phi_outputs(struct kefir_mem *, 
     _def(complex_float32_neg, KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_NEG) _separator \
     _def(complex_float64_neg, KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_NEG) _separator \
     _def(complex_long_double_neg, KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_NEG) _separator \
+    _def(atomic_load, KEFIR_OPT_OPCODE_ATOMIC_LOAD8) _separator \
+    _def(atomic_load, KEFIR_OPT_OPCODE_ATOMIC_LOAD16) _separator \
+    _def(atomic_load, KEFIR_OPT_OPCODE_ATOMIC_LOAD32) _separator \
+    _def(atomic_load, KEFIR_OPT_OPCODE_ATOMIC_LOAD64) _separator \
+    _def(atomic_store, KEFIR_OPT_OPCODE_ATOMIC_STORE8) _separator \
+    _def(atomic_store, KEFIR_OPT_OPCODE_ATOMIC_STORE16) _separator \
+    _def(atomic_store, KEFIR_OPT_OPCODE_ATOMIC_STORE32) _separator \
+    _def(atomic_store, KEFIR_OPT_OPCODE_ATOMIC_STORE64) _separator \
     _def(inline_assembly, KEFIR_OPT_OPCODE_INLINE_ASSEMBLY)
 // clang-format on
 

@@ -39,8 +39,17 @@ kefir_result_t kefir_ast_translator_store_lvalue(struct kefir_mem *, struct kefi
 kefir_result_t kefir_ast_translator_load_value(const struct kefir_ast_type *, const struct kefir_ast_type_traits *,
                                                struct kefir_irbuilder_block *);
 
+kefir_result_t kefir_ast_translator_atomic_load_value(const struct kefir_ast_type *,
+                                                      const struct kefir_ast_type_traits *,
+                                                      struct kefir_irbuilder_block *);
+
 kefir_result_t kefir_ast_translator_store_value(struct kefir_mem *, const struct kefir_ast_type *,
                                                 struct kefir_ast_translator_context *, struct kefir_irbuilder_block *,
                                                 const struct kefir_source_location *);
+
+kefir_result_t kefir_ast_translator_atomic_store_value(struct kefir_mem *, const struct kefir_ast_type *,
+                                                       struct kefir_ast_translator_context *,
+                                                       struct kefir_irbuilder_block *,
+                                                       const struct kefir_source_location *);
 
 #endif

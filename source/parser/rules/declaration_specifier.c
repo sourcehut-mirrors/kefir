@@ -453,6 +453,10 @@ static kefir_result_t scan_type_specifier(struct kefir_mem *mem, struct kefir_pa
             KEFIR_AST_NODE_FREE(mem, type_name);
             return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST declarator specifier");
         });
+        REQUIRE(
+            PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_RIGHT_PARENTHESE),
+            KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0), "Expected right parenthese"));
+        REQUIRE_OK(PARSER_SHIFT(parser));
     } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_STRUCT)) {
         REQUIRE_OK(kefir_parser_try_invoke(mem, parser, scan_struct_specifier, &specifier));
     } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_UNION)) {

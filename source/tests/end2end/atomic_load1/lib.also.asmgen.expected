@@ -1,0 +1,128 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global b
+.global u8
+.global f32
+.global f64
+.global u16
+.global u32
+.global u64
+.global get_b
+.global get_u8
+.global get_f32
+.global get_f64
+.global get_u16
+.global get_u32
+.global get_u64
+.extern __kefir_opt_float32_neg
+.extern __kefir_opt_float64_neg
+.extern __kefirrt_opt_float32_to_uint
+.extern __kefirrt_opt_float64_to_uint
+
+.section .text
+get_b:
+_kefir_func_get_b_label0:
+_kefir_func_get_b_label1:
+    movq b@GOTPCREL(%rip), %rax
+    mov %rax, %rdi
+    mov $5, %rsi
+    call __atomic_load_1@PLT
+    mov %rax, %rcx
+    mov %rcx, %rax
+    ret
+
+get_u8:
+_kefir_func_get_u8_label0:
+_kefir_func_get_u8_label1:
+    movq u8@GOTPCREL(%rip), %rax
+    mov %rax, %rdi
+    mov $5, %rsi
+    call __atomic_load_1@PLT
+    mov %rax, %rcx
+    mov %rcx, %rax
+    ret
+
+get_f32:
+_kefir_func_get_f32_label0:
+_kefir_func_get_f32_label1:
+    movq f32@GOTPCREL(%rip), %rax
+    mov %rax, %rdi
+    mov $5, %rsi
+    call __atomic_load_4@PLT
+    mov %rax, %rcx
+    movq %rcx, %xmm0
+    ret
+
+get_f64:
+_kefir_func_get_f64_label0:
+_kefir_func_get_f64_label1:
+    movq f64@GOTPCREL(%rip), %rax
+    mov %rax, %rdi
+    mov $5, %rsi
+    call __atomic_load_8@PLT
+    mov %rax, %rcx
+    movq %rcx, %xmm0
+    ret
+
+get_u16:
+_kefir_func_get_u16_label0:
+_kefir_func_get_u16_label1:
+    movq u16@GOTPCREL(%rip), %rax
+    mov %rax, %rdi
+    mov $5, %rsi
+    call __atomic_load_2@PLT
+    mov %rax, %rcx
+    mov %rcx, %rax
+    ret
+
+get_u32:
+_kefir_func_get_u32_label0:
+_kefir_func_get_u32_label1:
+    movq u32@GOTPCREL(%rip), %rax
+    mov %rax, %rdi
+    mov $5, %rsi
+    call __atomic_load_4@PLT
+    mov %rax, %rcx
+    mov %rcx, %rax
+    ret
+
+get_u64:
+_kefir_func_get_u64_label0:
+_kefir_func_get_u64_label1:
+    movq u64@GOTPCREL(%rip), %rax
+    mov %rax, %rdi
+    mov $5, %rsi
+    call __atomic_load_8@PLT
+    mov %rax, %rcx
+    mov %rcx, %rax
+    ret
+
+
+.section .bss
+b:
+    .byte 0
+
+u8:
+    .byte 0
+
+    .align 4
+f32:
+    .long 0
+
+    .align 8
+f64:
+    .quad 0
+
+    .align 2
+u16:
+    .word 0
+
+    .align 4
+u32:
+    .long 0
+
+    .align 8
+u64:
+    .quad 0
+

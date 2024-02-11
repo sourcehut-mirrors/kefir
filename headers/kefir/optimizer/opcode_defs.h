@@ -213,7 +213,16 @@
     OPCODE(COMPLEX_LONG_DOUBLE_DIV, "complex_long_double_div", ref2) SEPARATOR \
     OPCODE(COMPLEX_FLOAT32_NEG, "complex_float32_neg", ref1) SEPARATOR \
     OPCODE(COMPLEX_FLOAT64_NEG, "complex_float64_neg", ref1) SEPARATOR \
-    OPCODE(COMPLEX_LONG_DOUBLE_NEG, "complex_long_double_neg", ref1)
+    OPCODE(COMPLEX_LONG_DOUBLE_NEG, "complex_long_double_neg", ref1) SEPARATOR \
+    /* Atomics */ \
+    OPCODE(ATOMIC_LOAD8, "atomic_load8", atomic_op) SEPARATOR \
+    OPCODE(ATOMIC_LOAD16, "atomic_load16", atomic_op) SEPARATOR \
+    OPCODE(ATOMIC_LOAD32, "atomic_load32", atomic_op) SEPARATOR \
+    OPCODE(ATOMIC_LOAD64, "atomic_load64", atomic_op) SEPARATOR \
+    OPCODE(ATOMIC_STORE8, "atomic_store8", atomic_op) SEPARATOR \
+    OPCODE(ATOMIC_STORE16, "atomic_store16", atomic_op) SEPARATOR \
+    OPCODE(ATOMIC_STORE32, "atomic_store32", atomic_op) SEPARATOR \
+    OPCODE(ATOMIC_STORE64, "atomic_store64", atomic_op)
 // clang-format on
 
 #endif

@@ -56,5 +56,7 @@ kefir_result_t kefir_ir_format_instr_string(struct kefir_json_output *, const st
                                             const struct kefir_irinstr *);
 kefir_result_t kefir_ir_format_instr_memflags(struct kefir_json_output *, const struct kefir_ir_module *,
                                               const struct kefir_irinstr *);
+kefir_result_t kefir_ir_format_instr_atomic_model(struct kefir_json_output *, const struct kefir_ir_module *,
+                                                  const struct kefir_irinstr *);
 
 #endif

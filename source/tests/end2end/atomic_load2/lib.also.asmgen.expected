@@ -1,0 +1,80 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global load_b
+.global load_u8
+.global load_f32
+.global load_f64
+.global load_u16
+.global load_u32
+.global load_u64
+.extern __kefir_opt_float32_neg
+.extern __kefir_opt_float64_neg
+.extern __kefirrt_opt_float32_to_uint
+.extern __kefirrt_opt_float64_to_uint
+
+.section .text
+load_b:
+_kefir_func_load_b_label0:
+_kefir_func_load_b_label1:
+    mov $5, %rsi
+    call __atomic_load_1@PLT
+    mov %rax, %rcx
+    mov %rcx, %rax
+    ret
+
+load_u8:
+_kefir_func_load_u8_label0:
+_kefir_func_load_u8_label1:
+    mov $5, %rsi
+    call __atomic_load_1@PLT
+    mov %rax, %rcx
+    mov %rcx, %rax
+    ret
+
+load_f32:
+_kefir_func_load_f32_label0:
+_kefir_func_load_f32_label1:
+    mov $5, %rsi
+    call __atomic_load_4@PLT
+    mov %rax, %rcx
+    movq %rcx, %xmm0
+    ret
+
+load_f64:
+_kefir_func_load_f64_label0:
+_kefir_func_load_f64_label1:
+    mov $5, %rsi
+    call __atomic_load_8@PLT
+    mov %rax, %rcx
+    movq %rcx, %xmm0
+    ret
+
+load_u16:
+_kefir_func_load_u16_label0:
+_kefir_func_load_u16_label1:
+    mov $5, %rsi
+    call __atomic_load_2@PLT
+    mov %rax, %rcx
+    mov %rcx, %rax
+    ret
+
+load_u32:
+_kefir_func_load_u32_label0:
+_kefir_func_load_u32_label1:
+    mov $5, %rsi
+    call __atomic_load_4@PLT
+    mov %rax, %rcx
+    mov %rcx, %rax
+    ret
+
+load_u64:
+_kefir_func_load_u64_label0:
+_kefir_func_load_u64_label1:
+    mov $5, %rsi
+    call __atomic_load_8@PLT
+    mov %rax, %rcx
+    mov %rcx, %rax
+    ret
+
+

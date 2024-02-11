@@ -30,11 +30,17 @@
 #include "kefir/core/source_error.h"
 
 static kefir_result_t translate_object_identifier(struct kefir_mem *mem, struct kefir_ast_translator_context *context,
-                                                  struct kefir_irbuilder_block *builder, const char *identifier,
+                                                  struct kefir_irbuilder_block *builder,
+                                                  const struct kefir_ast_identifier *node,
                                                   const struct kefir_ast_scoped_identifier *scoped_identifier) {
-    REQUIRE_OK(kefir_ast_translator_object_lvalue(mem, context, builder, identifier, scoped_identifier));
-    REQUIRE_OK(
-        kefir_ast_translator_load_value(scoped_identifier->object.type, context->ast_context->type_traits, builder));
+    REQUIRE_OK(kefir_ast_translator_object_lvalue(mem, context, builder, node->identifier, scoped_identifier));
+    if (node->base.properties.expression_props.atomic) {
+        REQUIRE_OK(kefir_ast_translator_atomic_load_value(scoped_identifier->object.type,
+                                                          context->ast_context->type_traits, builder));
+    } else {
+        REQUIRE_OK(kefir_ast_translator_load_value(scoped_identifier->object.type, context->ast_context->type_traits,
+                                                   builder));
+    }
     return KEFIR_OK;
 }
 
@@ -74,7 +80,7 @@ kefir_result_t kefir_ast_translate_identifier_node(struct kefir_mem *mem, struct
     const struct kefir_ast_scoped_identifier *scoped_identifier = node->base.properties.expression_props.scoped_id;
     switch (scoped_identifier->klass) {
         case KEFIR_AST_SCOPE_IDENTIFIER_OBJECT:
-            REQUIRE_OK(translate_object_identifier(mem, context, builder, node->identifier, scoped_identifier));
+            REQUIRE_OK(translate_object_identifier(mem, context, builder, node, scoped_identifier));
             break;
 
         case KEFIR_AST_SCOPE_IDENTIFIER_ENUM_CONSTANT:

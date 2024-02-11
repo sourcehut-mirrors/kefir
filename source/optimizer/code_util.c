@@ -172,6 +172,16 @@ static kefir_result_t extract_inputs_ref2(const struct kefir_opt_code_container 
     return KEFIR_OK;
 }
 
+static kefir_result_t extract_inputs_atomic_op(const struct kefir_opt_code_container *code,
+                                               const struct kefir_opt_instruction *instr,
+                                               kefir_result_t (*callback)(kefir_opt_instruction_ref_t, void *),
+                                               void *payload) {
+    UNUSED(code);
+    INPUT_CALLBACK(instr->operation.parameters.atomic_op.ref[0], callback, payload);
+    INPUT_CALLBACK(instr->operation.parameters.atomic_op.ref[1], callback, payload);
+    return KEFIR_OK;
+}
+
 static kefir_result_t extract_inputs_local_var(const struct kefir_opt_code_container *code,
                                                const struct kefir_opt_instruction *instr,
                                                kefir_result_t (*callback)(kefir_opt_instruction_ref_t, void *),

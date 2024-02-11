@@ -31,6 +31,8 @@
 #define KEFIR_IR_MEMORY_FLAG_NONE 0
 #define KEFIR_IR_MEMORY_FLAG_VOLATILE 1
 
+#define KEFIR_IR_ATOMIC_MODEL_SEQ_CST 1
+
 typedef struct kefir_irinstr {
     kefir_iropcode_t opcode;
     union {

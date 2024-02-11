@@ -187,6 +187,15 @@ static kefir_result_t find_reachable_code_ref2(struct kefir_mem *mem, struct kef
     return KEFIR_OK;
 }
 
+static kefir_result_t find_reachable_code_atomic_op(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
+                                                    struct kefir_list *queue,
+                                                    const struct kefir_opt_instruction *instr) {
+    UNUSED(analysis);
+    INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.atomic_op.ref[0]);
+    INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.atomic_op.ref[1]);
+    return KEFIR_OK;
+}
+
 static kefir_result_t find_reachable_code_immediate(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
                                                     struct kefir_list *queue,
                                                     const struct kefir_opt_instruction *instr) {

@@ -134,6 +134,9 @@ kefir_result_t kefir_ast_analyze_unary_operation_node(struct kefir_mem *mem, con
                                            "Indirection operator operand shall be a pointer"));
             type = type->referenced_type;
             base->properties.type = type;
+            base->properties.expression_props.atomic =
+                node->arg->properties.type->tag == KEFIR_AST_TYPE_QUALIFIED &&
+                node->arg->properties.type->qualified_type.qualification.atomic_type;
             if (type->tag != KEFIR_AST_TYPE_FUNCTION) {
                 base->properties.expression_props.lvalue = true;
             }
