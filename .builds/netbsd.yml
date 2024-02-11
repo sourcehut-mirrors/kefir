@@ -6,6 +6,7 @@ packages:
   - bash
   - wget
   - python311
+  - libatomic
 secrets:
   -  13fca65b-ffbd-4542-b2fe-6a2813e53256
 sources:
@@ -15,10 +16,13 @@ tasks:
   - test: |
       cd kefir
       export LC_ALL=C.UTF-8
+      export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/pkg/lib
+      export LIBRARY_PATH=$LIBRARY_PATH:/usr/pkg/lib
       gmake test all CC=gcc AS=gas PROFILE=reldebug
   - lua_tests: |
       cd kefir
-      export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(pwd)/bin/libs
+      export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/pkg/lib:$(pwd)/bin/libs
+      export LIBRARY_PATH=$LIBRARY_PATH:/usr/pkg/lib
       export LC_ALL=C.UTF-8
       export KEFIR_RTLIB="$HOME/kefir/bin/libs/libkefirrt.a"
       export KEFIR_RTINC="$HOME/kefir/headers/kefir/runtime"
@@ -28,7 +32,8 @@ tasks:
       ./source/tests/misc/run-lua-tests.sh "$(pwd)/bin/kefir" "$(pwd)/bin/lua-test"
   - c_testsuite: |
       cd c-testsuite
-      export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/kefir/bin/libs
+      export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/pkg/lib:$HOME/kefir/bin/libs
+      export LIBRARY_PATH=$LIBRARY_PATH:/usr/pkg/lib
       export KEFIRCC="$HOME/kefir/bin/kefir"
       export KEFIR_RTLIB="$HOME/kefir/bin/libs/libkefirrt.a"
       export KEFIR_RTINC="$HOME/kefir/headers/kefir/runtime"
@@ -45,7 +50,8 @@ tasks:
       xz -d gcc-13.1.0.tar.xz
       tar xvf gcc-13.1.0.tar
       export TORTURE=$PWD/gcc-13.1.0/gcc/testsuite/gcc.c-torture
-      export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/kefir/bin/libs
+      export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/pkg/lib:$HOME/kefir/bin/libs
+      export LIBRARY_PATH=$LIBRARY_PATH:/usr/pkg/lib
       export KEFIRCC="$HOME/kefir/bin/kefir"
       export KEFIR_RTLIB="$HOME/kefir/bin/libs/libkefirrt.a"
       export KEFIR_RTINC="$HOME/kefir/headers/kefir/runtime"
@@ -55,7 +61,8 @@ tasks:
   - bootstrap: |
       cd kefir
       gmake clean clean_bootstrap
-      export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/kefir/bin/libs"
+      export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/pkg/lib:$HOME/kefir/bin/libs"
+      export LIBRARY_PATH=$LIBRARY_PATH:/usr/pkg/lib
       export KEFIR_RTLIB="$HOME/kefir/bin/libs/libkefirrt.a"
       export KEFIR_RTINC="$HOME/kefir/headers/kefir/runtime"
       export REALPATH=grealpath

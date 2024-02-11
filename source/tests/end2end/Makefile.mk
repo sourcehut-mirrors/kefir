@@ -11,7 +11,7 @@ ifeq ($(PLATFORM),openbsd)
 KEFIR_END2END_TEST_LIBS+=-lcompiler_rt
 endif
 ifeq ($(PLATFORM),netbsd)
-KEFIR_END2END_TEST_LIBS+=-lcompiler_rt
+KEFIR_END2END_TEST_LIBS+=-latomic
 endif
 
 $(KEFIR_END2END_BIN_PATH)/%.o: CFLAGS += -Wno-int-in-bool-context
