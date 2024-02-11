@@ -46,9 +46,9 @@ kefir_result_t kefir_ast_translate_return_statement_node(struct kefir_mem *mem,
                 KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to perform lvalue conversions"));
 
         REQUIRE_OK(kefir_ast_translate_expression(mem, node->expression, builder, context));
-        if (KEFIR_AST_TYPE_IS_SCALAR_TYPE(node->expression->properties.type)) {
+        if (KEFIR_AST_TYPE_IS_SCALAR_TYPE(return_normalized_type)) {
             REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
-                                                    node->expression->properties.type,
+                                                    return_normalized_type,
                                                     node->base.properties.statement_props.return_type));
         }
     }
