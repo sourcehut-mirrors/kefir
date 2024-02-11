@@ -36,6 +36,7 @@ static kefir_bool_t same_qualified_type(const struct kefir_ast_type *type1, cons
     return type1->qualified_type.qualification.constant == type2->qualified_type.qualification.constant &&
            type1->qualified_type.qualification.restricted == type2->qualified_type.qualification.restricted &&
            type1->qualified_type.qualification.volatile_type == type2->qualified_type.qualification.volatile_type &&
+           type1->qualified_type.qualification.atomic_type == type2->qualified_type.qualification.atomic_type &&
            KEFIR_AST_TYPE_SAME(type1->qualified_type.type, type2->qualified_type.type);
 }
 
@@ -51,6 +52,7 @@ static kefir_bool_t compatbile_qualified_types(const struct kefir_ast_type_trait
     return type1->qualified_type.qualification.constant == type2->qualified_type.qualification.constant &&
            type1->qualified_type.qualification.restricted == type2->qualified_type.qualification.restricted &&
            type1->qualified_type.qualification.volatile_type == type2->qualified_type.qualification.volatile_type &&
+           type1->qualified_type.qualification.atomic_type == type2->qualified_type.qualification.atomic_type &&
            KEFIR_AST_TYPE_COMPATIBLE(type_traits, type1->qualified_type.type, type2->qualified_type.type);
 }
 
@@ -92,6 +94,7 @@ const struct kefir_ast_type *kefir_ast_type_qualified(struct kefir_mem *mem, str
         qualification.restricted = qualification.restricted || base_type->qualified_type.qualification.restricted;
         qualification.volatile_type =
             qualification.volatile_type || base_type->qualified_type.qualification.volatile_type;
+        qualification.atomic_type = qualification.atomic_type || base_type->qualified_type.qualification.atomic_type;
         base_type = base_type->qualified_type.type;
     }
     type->tag = KEFIR_AST_TYPE_QUALIFIED;
@@ -136,6 +139,7 @@ kefir_result_t kefir_ast_type_retrieve_qualifications(struct kefir_ast_type_qual
         qualifications->constant = false;
         qualifications->restricted = false;
         qualifications->volatile_type = false;
+        qualifications->atomic_type = false;
     }
     return KEFIR_OK;
 }
@@ -152,5 +156,6 @@ kefir_result_t kefir_ast_type_merge_qualifications(struct kefir_ast_type_qualifi
     dst->constant = src1->constant || src2->constant;
     dst->restricted = src1->restricted || src2->restricted;
     dst->volatile_type = src1->volatile_type || src2->volatile_type;
+    dst->atomic_type = src1->atomic_type || src2->atomic_type;
     return KEFIR_OK;
 }

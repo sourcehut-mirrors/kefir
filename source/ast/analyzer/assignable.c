@@ -59,7 +59,8 @@ kefir_result_t kefir_ast_type_assignable(struct kefir_mem *mem, const struct kef
         REQUIRE(context->configuration->analysis.non_strict_qualifiers ||
                     ((!value_qualification.constant || target_qualification.constant) &&
                      (!value_qualification.restricted || target_qualification.restricted) &&
-                     (!value_qualification.volatile_type || target_qualification.volatile_type)),
+                     (!value_qualification.volatile_type || target_qualification.volatile_type) &&
+                     (!value_qualification.atomic_type || target_qualification.atomic_type)),
                 KEFIR_SET_ERROR(KEFIR_NO_MATCH,
                                 "Left assignable operand shall point to the type with all qualifications from right"));
     } else if (target_type->tag == KEFIR_AST_TYPE_VA_LIST) {

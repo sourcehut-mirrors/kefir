@@ -132,6 +132,29 @@ DEFINE_CASE(ast_declarator_analysis1, "AST declarator analysis - declarator type
     ASSERT_IDENTIFIER_TYPE(&kft_mem, context, kefir_ast_type_va_list(), KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN,
                            KEFIR_AST_FUNCTION_SPECIFIER_NONE, 0, 1, kefir_ast_type_specifier_va_list(&kft_mem));
 
+    struct kefir_ast_type_name *type_name1 =
+        kefir_ast_new_type_name(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL));
+    ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &type_name1->type_decl.specifiers,
+                                                         kefir_ast_type_specifier_int(&kft_mem)));
+    ASSERT_IDENTIFIER_TYPE(
+        &kft_mem, context,
+        kefir_ast_type_qualified(&kft_mem, local_context.context.type_bundle, kefir_ast_type_signed_int(),
+                                 (struct kefir_ast_type_qualification){.atomic_type = true}),
+        KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN, KEFIR_AST_FUNCTION_SPECIFIER_NONE, 0, 1,
+        kefir_ast_type_specifier_atomic(&kft_mem, KEFIR_AST_NODE_BASE(type_name1)));
+
+    struct kefir_ast_type_name *type_name2 = kefir_ast_new_type_name(
+        &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)));
+    ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &type_name2->type_decl.specifiers,
+                                                         kefir_ast_type_specifier_float(&kft_mem)));
+    ASSERT_IDENTIFIER_TYPE(&kft_mem, context,
+                           kefir_ast_type_qualified(&kft_mem, local_context.context.type_bundle,
+                                                    kefir_ast_type_pointer(&kft_mem, local_context.context.type_bundle,
+                                                                           kefir_ast_type_float()),
+                                                    (struct kefir_ast_type_qualification){.atomic_type = true}),
+                           KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN, KEFIR_AST_FUNCTION_SPECIFIER_NONE, 0, 1,
+                           kefir_ast_type_specifier_atomic(&kft_mem, KEFIR_AST_NODE_BASE(type_name2)));
+
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &local_context));
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &global_context));
 }
@@ -204,6 +227,28 @@ DEFINE_CASE(ast_declarator_analysis2, "AST declarator analysis - declarator type
                            kefir_ast_type_qualifier_restrict(&kft_mem), kefir_ast_type_specifier_long(&kft_mem),
                            kefir_ast_type_qualifier_const(&kft_mem), kefir_ast_type_specifier_unsigned(&kft_mem),
                            kefir_ast_type_qualifier_volatile(&kft_mem));
+
+    ASSERT_IDENTIFIER_TYPE(&kft_mem, context,
+                           kefir_ast_type_qualified(&kft_mem, context->type_bundle, kefir_ast_type_unsigned_long(),
+                                                    (struct kefir_ast_type_qualification){.atomic_type = true}),
+                           KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN, KEFIR_AST_FUNCTION_SPECIFIER_NONE, 0, 3,
+                           kefir_ast_type_qualifier_atomic(&kft_mem), kefir_ast_type_specifier_long(&kft_mem),
+                           kefir_ast_type_specifier_unsigned(&kft_mem));
+
+    ASSERT_IDENTIFIER_TYPE(&kft_mem, context,
+                           kefir_ast_type_qualified(&kft_mem, context->type_bundle, kefir_ast_type_float(),
+                                                    (struct kefir_ast_type_qualification){.atomic_type = true}),
+                           KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN, KEFIR_AST_FUNCTION_SPECIFIER_NONE, 0, 3,
+                           kefir_ast_type_qualifier_atomic(&kft_mem), kefir_ast_type_qualifier_atomic(&kft_mem),
+                           kefir_ast_type_specifier_float(&kft_mem));
+
+    ASSERT_IDENTIFIER_TYPE(
+        &kft_mem, context,
+        kefir_ast_type_qualified(&kft_mem, context->type_bundle, kefir_ast_type_signed_int(),
+                                 (struct kefir_ast_type_qualification){.atomic_type = true, .volatile_type = true}),
+        KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN, KEFIR_AST_FUNCTION_SPECIFIER_NONE, 0, 3,
+        kefir_ast_type_qualifier_volatile(&kft_mem), kefir_ast_type_qualifier_atomic(&kft_mem),
+        kefir_ast_type_specifier_int(&kft_mem));
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &local_context));
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &global_context));

@@ -61,6 +61,7 @@ typedef struct kefir_ast_type_qualification {
     kefir_bool_t constant;
     kefir_bool_t restricted;
     kefir_bool_t volatile_type;
+    kefir_bool_t atomic_type;
 } kefir_ast_type_qualification_t;
 
 typedef struct kefir_ast_bitfield_properties {

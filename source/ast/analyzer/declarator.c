@@ -336,7 +336,7 @@ enum type_specifier_sequence_state {
 
 static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                    enum signedness *signedness, enum real_class *real_class,
-                                   enum type_specifier_sequence_state *seq_state,
+                                   enum type_specifier_sequence_state *seq_state, kefir_bool_t *atomic_type,
                                    const struct kefir_ast_type **base_type, kefir_size_t *alignment,
                                    const struct kefir_ast_declarator_specifier *decl_specifier, kefir_uint64_t flags) {
     const struct kefir_ast_type_specifier *specifier = &decl_specifier->type_specifier;
@@ -532,7 +532,7 @@ static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast
                 REQUIRE(
                     KEFIR_AST_TYPE_IS_REAL_FLOATING_POINT(*base_type),
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
-                                           "Complex type specified cannot be combined with non-floating-point type"));
+                                           "Complex type specifier cannot be combined with non-floating-point type"));
                 *real_class = REAL_COMPLEX;
                 *base_type = kefir_ast_type_corresponding_complex_type(*base_type);
                 REQUIRE(*base_type != NULL,
@@ -540,8 +540,23 @@ static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast
             }
             break;
 
-        case KEFIR_AST_TYPE_SPECIFIER_ATOMIC:
-            return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED, "Atomic type specifier is not supported yet");
+        case KEFIR_AST_TYPE_SPECIFIER_ATOMIC: {
+            REQUIRE(*seq_state == TYPE_SPECIFIER_SEQUENCE_EMPTY,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                                           "Atomic type specifier cannot be combined with other type specifiers"));
+            struct kefir_ast_node_base *atomic_type_node = decl_specifier->type_specifier.value.atomic_type;
+            REQUIRE_OK(kefir_ast_analyze_node(mem, context, atomic_type_node));
+            REQUIRE(
+                atomic_type_node->properties.category == KEFIR_AST_NODE_CATEGORY_TYPE,
+                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &atomic_type_node->source_location, "Expected type name"));
+            const struct kefir_ast_type *type = atomic_type_node->properties.type;
+            REQUIRE(type->tag != KEFIR_AST_TYPE_QUALIFIED,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &atomic_type_node->source_location,
+                                           "Expected unqualified non-atomic type name"));
+            *base_type = type;
+            *atomic_type = true;
+            *seq_state = TYPE_SPECIFIER_SEQUENCE_TYPEDEF;
+        } break;
 
         case KEFIR_AST_TYPE_SPECIFIER_STRUCT:
         case KEFIR_AST_TYPE_SPECIFIER_UNION:
@@ -728,7 +743,8 @@ static kefir_result_t resolve_qualification(kefir_ast_type_qualifier_type_t qual
             break;
 
         case KEFIR_AST_TYPE_QUALIFIER_ATOMIC:
-            return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED, "Atomic types are not supported yet");
+            qualifiers->atomic_type = true;
+            break;
 
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected type qualifier");
@@ -1187,8 +1203,8 @@ static kefir_result_t analyze_declaration_specifiers_impl(
          iter != NULL; kefir_ast_declarator_specifier_list_next(&iter, &declatator_specifier)) {
         switch (declatator_specifier->klass) {
             case KEFIR_AST_TYPE_SPECIFIER:
-                REQUIRE_OK(resolve_type(mem, context, &signedness, &real_class, &seq_state, &base_type, alignment,
-                                        declatator_specifier, flags));
+                REQUIRE_OK(resolve_type(mem, context, &signedness, &real_class, &seq_state, &qualification.atomic_type,
+                                        &base_type, alignment, declatator_specifier, flags));
                 break;
 
             case KEFIR_AST_TYPE_QUALIFIER:
@@ -1223,6 +1239,12 @@ static kefir_result_t analyze_declaration_specifiers_impl(
     REQUIRE_OK(apply_type_signedness(mem, context->type_bundle, signedness,
                                      kefir_ast_declarator_specifier_list_source_location(specifiers), &base_type));
     if (!KEFIR_AST_TYPE_IS_ZERO_QUALIFICATION(&qualification)) {
+        if (qualification.atomic_type) {
+            REQUIRE(base_type->tag != KEFIR_AST_TYPE_FUNCTION && base_type->tag != KEFIR_AST_TYPE_ARRAY,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, source_location,
+                                           "Function and array types cannot be atomic"));
+        }
+
         base_type = kefir_ast_type_qualified(mem, context->type_bundle, base_type, qualification);
     }
 

@@ -43,7 +43,8 @@ kefir_result_t kefir_ast_type_merge_qualifications(struct kefir_ast_type_qualifi
                                                    const struct kefir_ast_type_qualification *,
                                                    const struct kefir_ast_type_qualification *);
 
-#define KEFIR_AST_TYPE_IS_ZERO_QUALIFICATION(qualification) \
-    (!(qualification)->constant && !(qualification)->restricted && !(qualification)->volatile_type)
+#define KEFIR_AST_TYPE_IS_ZERO_QUALIFICATION(qualification)                                           \
+    (!(qualification)->constant && !(qualification)->restricted && !(qualification)->volatile_type && \
+     !(qualification)->atomic_type)
 
 #endif
