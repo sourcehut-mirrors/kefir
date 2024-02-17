@@ -191,10 +191,12 @@
     OPCODE(ATOMIC_LOAD16,  "atomic_load16", memory_order) SEPARATOR \
     OPCODE(ATOMIC_LOAD32,  "atomic_load32", memory_order) SEPARATOR \
     OPCODE(ATOMIC_LOAD64,  "atomic_load64", memory_order) SEPARATOR \
+    OPCODE(ATOMIC_LOAD_LONG_DOUBLE,  "atomic_load_long_double", memory_order) SEPARATOR \
     OPCODE(ATOMIC_STORE8,  "atomic_store8",  memory_order) SEPARATOR \
     OPCODE(ATOMIC_STORE16, "atomic_store16", memory_order) SEPARATOR \
     OPCODE(ATOMIC_STORE32, "atomic_store32", memory_order) SEPARATOR \
     OPCODE(ATOMIC_STORE64, "atomic_store64", memory_order) SEPARATOR \
+    OPCODE(ATOMIC_STORE_LONG_DOUBLE, "atomic_store_long_double", memory_order) SEPARATOR \
     OPCODE(ATOMIC_BCOPY_FROM, "atomic_bcopy_from", atomic_typeref) SEPARATOR \
     OPCODE(ATOMIC_BCOPY_TO, "atomic_bcopy_to", atomic_typeref) SEPARATOR \
     /* Miscallenous */ \

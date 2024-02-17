@@ -394,6 +394,7 @@ static kefir_result_t format_operation_atomic_op(struct kefir_json_output *json,
         case KEFIR_OPT_OPCODE_ATOMIC_LOAD16:
         case KEFIR_OPT_OPCODE_ATOMIC_LOAD32:
         case KEFIR_OPT_OPCODE_ATOMIC_LOAD64:
+        case KEFIR_OPT_OPCODE_ATOMIC_LOAD_LONG_DOUBLE:
             REQUIRE_OK(kefir_json_output_object_key(json, "location"));
             REQUIRE_OK(id_format(json, oper->parameters.atomic_op.ref[0]));
             break;
@@ -402,6 +403,7 @@ static kefir_result_t format_operation_atomic_op(struct kefir_json_output *json,
         case KEFIR_OPT_OPCODE_ATOMIC_STORE16:
         case KEFIR_OPT_OPCODE_ATOMIC_STORE32:
         case KEFIR_OPT_OPCODE_ATOMIC_STORE64:
+        case KEFIR_OPT_OPCODE_ATOMIC_STORE_LONG_DOUBLE:
             REQUIRE_OK(kefir_json_output_object_key(json, "location"));
             REQUIRE_OK(id_format(json, oper->parameters.atomic_op.ref[0]));
             REQUIRE_OK(kefir_json_output_object_key(json, "value"));

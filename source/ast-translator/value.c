@@ -399,7 +399,9 @@ kefir_result_t kefir_ast_translator_atomic_load_value(const struct kefir_ast_typ
             break;
 
         case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
-            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Atomic long double support is not implemented yet");
+            REQUIRE_OK(
+                KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_ATOMIC_LOAD_LONG_DOUBLE, atomic_memory_order));
+            break;
 
         case KEFIR_AST_TYPE_ENUMERATION:
             return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected enumeration type");
@@ -492,7 +494,9 @@ static kefir_result_t atomic_store_value(struct kefir_mem *mem, const struct kef
             break;
 
         case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
-            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Atomic long double support is not implemented yet");
+            REQUIRE_OK(
+                KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_ATOMIC_STORE_LONG_DOUBLE, atomic_memory_order));
+            break;
 
         case KEFIR_AST_TYPE_ENUMERATION:
             return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected enumeration type");

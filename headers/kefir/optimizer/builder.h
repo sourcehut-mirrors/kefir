@@ -325,6 +325,7 @@ ATOMIC_LOAD_OP(atomic_load8);
 ATOMIC_LOAD_OP(atomic_load16);
 ATOMIC_LOAD_OP(atomic_load32);
 ATOMIC_LOAD_OP(atomic_load64);
+ATOMIC_LOAD_OP(atomic_load_long_double);
 
 #undef ATOMIC_LOAD_OP
 
@@ -336,6 +337,7 @@ ATOMIC_STORE_OP(atomic_store8);
 ATOMIC_STORE_OP(atomic_store16);
 ATOMIC_STORE_OP(atomic_store32);
 ATOMIC_STORE_OP(atomic_store64);
+ATOMIC_STORE_OP(atomic_store_long_double);
 
 #undef ATOMIC_STORE_OP
 

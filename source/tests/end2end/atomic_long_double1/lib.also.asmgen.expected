@@ -1,0 +1,53 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global get_ld1
+.global set_ld1
+.extern ld1
+.extern __kefir_opt_float32_neg
+.extern __kefir_opt_float64_neg
+.extern __kefirrt_opt_float32_to_uint
+.extern __kefirrt_opt_float64_to_uint
+
+.section .text
+get_ld1:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+_kefir_func_get_ld1_label0:
+_kefir_func_get_ld1_label1:
+    movq ld1@GOTPCREL(%rip), %rax
+    lea -32(%rbp), %rdx
+    mov %rax, %rsi
+    mov $16, %rdi
+    mov $5, %rcx
+    call __atomic_load@PLT
+    fldt -32(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+set_ld1:
+    push %rbp
+    mov %rsp, %rbp
+    sub $48, %rsp
+_kefir_func_set_ld1_label0:
+    lea 16(%rbp), %rax
+_kefir_func_set_ld1_label1:
+    lea -32(%rbp), %rcx
+    fldt (%rax)
+    fstpt (%rcx)
+    lea -32(%rbp), %rax
+    fldt (%rax)
+    fstpt -48(%rbp)
+    movq ld1@GOTPCREL(%rip), %rax
+    mov %rax, %rsi
+    lea -48(%rbp), %rdx
+    mov $16, %rdi
+    mov $5, %rcx
+    call __atomic_store@PLT
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+

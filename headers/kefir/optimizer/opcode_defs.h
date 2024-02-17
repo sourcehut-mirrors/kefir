@@ -219,10 +219,12 @@
     OPCODE(ATOMIC_LOAD16, "atomic_load16", atomic_op) SEPARATOR \
     OPCODE(ATOMIC_LOAD32, "atomic_load32", atomic_op) SEPARATOR \
     OPCODE(ATOMIC_LOAD64, "atomic_load64", atomic_op) SEPARATOR \
+    OPCODE(ATOMIC_LOAD_LONG_DOUBLE, "atomic_load_long_double", atomic_op) SEPARATOR \
     OPCODE(ATOMIC_STORE8, "atomic_store8", atomic_op) SEPARATOR \
     OPCODE(ATOMIC_STORE16, "atomic_store16", atomic_op) SEPARATOR \
     OPCODE(ATOMIC_STORE32, "atomic_store32", atomic_op) SEPARATOR \
     OPCODE(ATOMIC_STORE64, "atomic_store64", atomic_op) SEPARATOR \
+    OPCODE(ATOMIC_STORE_LONG_DOUBLE, "atomic_store_long_double", atomic_op) SEPARATOR \
     OPCODE(ATOMIC_COPY_MEMORY_FROM, "atomic_copy_memory_from", atomic_op) SEPARATOR \
     OPCODE(ATOMIC_COPY_MEMORY_TO, "atomic_copy_memory_to", atomic_op)
 // clang-format on

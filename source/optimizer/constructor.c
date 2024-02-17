@@ -646,6 +646,7 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             ATOMIC_LOAD_OP(atomic_load16, KEFIR_IROPCODE_ATOMIC_LOAD16)
             ATOMIC_LOAD_OP(atomic_load32, KEFIR_IROPCODE_ATOMIC_LOAD32)
             ATOMIC_LOAD_OP(atomic_load64, KEFIR_IROPCODE_ATOMIC_LOAD64)
+            ATOMIC_LOAD_OP(atomic_load_long_double, KEFIR_IROPCODE_ATOMIC_LOAD_LONG_DOUBLE)
 
 #undef ATOMIC_LOAD_OP
 
@@ -672,6 +673,7 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             ATOMIC_STORE_OP(atomic_store16, KEFIR_IROPCODE_ATOMIC_STORE16)
             ATOMIC_STORE_OP(atomic_store32, KEFIR_IROPCODE_ATOMIC_STORE32)
             ATOMIC_STORE_OP(atomic_store64, KEFIR_IROPCODE_ATOMIC_STORE64)
+            ATOMIC_STORE_OP(atomic_store_long_double, KEFIR_IROPCODE_ATOMIC_STORE_LONG_DOUBLE)
 
 #undef ATOMIC_STORE_OP
 
