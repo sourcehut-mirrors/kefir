@@ -77,7 +77,7 @@ typedef struct kefir_opt_memory_access_flags {
     kefir_bool_t volatile_access;
 } kefir_opt_memory_access_flags_t;
 
-typedef enum kefir_opt_atomic_model { KEFIR_OPT_ATOMIC_MODEL_SEQ_CST } kefir_opt_atomic_model_t;
+typedef enum kefir_opt_memory_order { KEFIR_OPT_MEMORY_ORDER_SEQ_CST } kefir_opt_memory_order_t;
 
 typedef union kefir_opt_operation_parameters {
     kefir_opt_instruction_ref_t refs[3];
@@ -153,7 +153,9 @@ typedef union kefir_opt_operation_parameters {
 
     struct {
         kefir_opt_instruction_ref_t ref[2];
-        kefir_opt_atomic_model_t model;
+        kefir_opt_memory_order_t model;
+        kefir_id_t type_id;
+        kefir_size_t type_index;
     } atomic_op;
 } kefir_opt_operation_parameters_t;
 

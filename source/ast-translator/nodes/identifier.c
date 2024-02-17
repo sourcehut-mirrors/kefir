@@ -23,6 +23,8 @@
 #include "kefir/ast-translator/translator.h"
 #include "kefir/ast-translator/value.h"
 #include "kefir/ast-translator/lvalue.h"
+#include "kefir/ast-translator/type.h"
+#include "kefir/ast-translator/temporaries.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 #include "kefir/ir/module.h"
@@ -35,8 +37,14 @@ static kefir_result_t translate_object_identifier(struct kefir_mem *mem, struct 
                                                   const struct kefir_ast_scoped_identifier *scoped_identifier) {
     REQUIRE_OK(kefir_ast_translator_object_lvalue(mem, context, builder, node->identifier, scoped_identifier));
     if (node->base.properties.expression_props.atomic) {
-        REQUIRE_OK(kefir_ast_translator_atomic_load_value(scoped_identifier->object.type,
-                                                          context->ast_context->type_traits, builder));
+        kefir_bool_t atomic_aggregate;
+        REQUIRE_OK(kefir_ast_translator_atomic_load_value(
+            scoped_identifier->object.type, context->ast_context->type_traits, builder, &atomic_aggregate));
+        if (atomic_aggregate) {
+            REQUIRE_OK(kefir_ast_translator_load_atomic_aggregate_value(
+                mem, node->base.properties.type, context, builder,
+                &node->base.properties.expression_props.temporary_identifier, &node->base.source_location));
+        }
     } else {
         REQUIRE_OK(kefir_ast_translator_load_value(scoped_identifier->object.type, context->ast_context->type_traits,
                                                    builder));

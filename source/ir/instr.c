@@ -88,6 +88,13 @@ kefir_result_t kefir_irblock_appendu64(struct kefir_irblock *bcblock, kefir_irop
     return kefir_vector_append(&bcblock->content, &instr);
 }
 
+kefir_result_t kefir_irblock_appendu32_4(struct kefir_irblock *bcblock, kefir_iropcode_t opcode, kefir_uint32_t arg,
+                                         kefir_uint32_t arg2, kefir_uint32_t arg3, kefir_uint32_t arg4) {
+    REQUIRE(bcblock != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR block"));
+    struct kefir_irinstr instr = {.opcode = opcode, .arg.u32 = {arg, arg2, arg3, arg4}};
+    return kefir_vector_append(&bcblock->content, &instr);
+}
+
 kefir_result_t kefir_irblock_appendi32(struct kefir_irblock *bcblock, kefir_iropcode_t opcode, kefir_int32_t arg1,
                                        kefir_int32_t arg2) {
     REQUIRE(bcblock != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR block"));

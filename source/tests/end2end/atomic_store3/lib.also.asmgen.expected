@@ -1,0 +1,139 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global set_a1
+.global set_i8
+.global set_f32
+.global set_f64
+.global set_i16
+.global set_i32
+.global set_i64
+.global set_arr1_el
+.global set_arr2_el
+.extern __kefir_opt_float32_neg
+.extern __kefir_opt_float64_neg
+.extern __kefirrt_opt_float32_to_uint
+.extern __kefirrt_opt_float64_to_uint
+
+.section .text
+set_a1:
+    push %rbp
+    mov %rsp, %rbp
+    sub $128, %rsp
+_kefir_func_set_a1_label0:
+    lea 16(%rbp), %rax
+    mov %rdi, %rdx
+_kefir_func_set_a1_label1:
+    lea -128(%rbp), %rcx
+    mov %rcx, %rdi
+    mov %rax, %rsi
+    mov $64, %rcx
+    rep movsb
+    lea -128(%rbp), %rax
+    add $32, %rdx
+    mov %rdx, %rsi
+    mov %rax, %rdx
+    mov $64, %rdi
+    mov $5, %rcx
+    call __atomic_store@PLT
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+set_i8:
+_kefir_func_set_i8_label0:
+_kefir_func_set_i8_label1:
+    movsx %sil, %rax
+    mov %rax, %rsi
+    mov $5, %rdx
+    call __atomic_store_1@PLT
+    ret
+
+set_f32:
+_kefir_func_set_f32_label0:
+_kefir_func_set_f32_label1:
+    add $16, %rdi
+    movq %xmm0, %rsi
+    mov $5, %rdx
+    call __atomic_store_4@PLT
+    ret
+
+set_f64:
+_kefir_func_set_f64_label0:
+_kefir_func_set_f64_label1:
+    add $24, %rdi
+    movq %xmm0, %rsi
+    mov $5, %rdx
+    call __atomic_store_8@PLT
+    ret
+
+set_i16:
+_kefir_func_set_i16_label0:
+_kefir_func_set_i16_label1:
+    movsx %si, %rax
+    add $2, %rdi
+    mov %rax, %rsi
+    mov $5, %rdx
+    call __atomic_store_2@PLT
+    ret
+
+set_i32:
+_kefir_func_set_i32_label0:
+_kefir_func_set_i32_label1:
+    movsx %esi, %rax
+    add $4, %rdi
+    mov %rax, %rsi
+    mov $5, %rdx
+    call __atomic_store_4@PLT
+    ret
+
+set_i64:
+_kefir_func_set_i64_label0:
+_kefir_func_set_i64_label1:
+    add $8, %rdi
+    mov $5, %rdx
+    call __atomic_store_8@PLT
+    ret
+
+set_arr1_el:
+_kefir_func_set_arr1_el_label0:
+_kefir_func_set_arr1_el_label1:
+    add $96, %rdi
+    movsx %esi, %rax
+    imul $8, %rax, %rax
+    add %rdi, %rax
+    mov %rax, %rdi
+    mov %rdx, %rsi
+    mov $5, %rdx
+    call __atomic_store_8@PLT
+    ret
+
+set_arr2_el:
+    push %rbp
+    mov %rsp, %rbp
+    sub $128, %rsp
+_kefir_func_set_arr2_el_label0:
+    lea 16(%rbp), %rax
+    mov %rsi, %rdx
+    mov %rdi, %r8
+_kefir_func_set_arr2_el_label1:
+    lea -128(%rbp), %rcx
+    mov %rcx, %rdi
+    mov %rax, %rsi
+    mov $64, %rcx
+    rep movsb
+    lea -128(%rbp), %rax
+    add $160, %r8
+    movsx %edx, %rcx
+    imul $64, %rcx, %rcx
+    add %r8, %rcx
+    mov %rcx, %rsi
+    mov %rax, %rdx
+    mov $64, %rdi
+    mov $5, %rcx
+    call __atomic_store@PLT
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+

@@ -585,6 +585,62 @@ kefir_result_t kefir_opt_code_builder_copy_memory(struct kefir_mem *mem, struct 
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_opt_code_builder_atomic_copy_memory_from(
+    struct kefir_mem *mem, struct kefir_opt_code_container *code, kefir_opt_block_id_t block_id,
+    kefir_opt_instruction_ref_t location_ref, kefir_opt_instruction_ref_t source_ref,
+    kefir_opt_memory_order_t memory_model, kefir_id_t type_id, kefir_size_t type_index,
+    kefir_opt_instruction_ref_t *instr_id_ptr) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
+
+    REQUIRE_OK(instr_exists(code, block_id, location_ref, false));
+    REQUIRE_OK(instr_exists(code, block_id, source_ref, false));
+    switch (memory_model) {
+        case KEFIR_OPT_MEMORY_ORDER_SEQ_CST:
+            break;
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected atomic model");
+    }
+    REQUIRE_OK(kefir_opt_code_builder_add_instruction(
+        mem, code, block_id,
+        &(struct kefir_opt_operation){.opcode = KEFIR_OPT_OPCODE_ATOMIC_COPY_MEMORY_FROM,
+                                      .parameters.atomic_op = {.ref = {location_ref, source_ref},
+                                                               .model = memory_model,
+                                                               .type_id = type_id,
+                                                               .type_index = type_index}},
+        false, instr_id_ptr));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_code_builder_atomic_copy_memory_to(
+    struct kefir_mem *mem, struct kefir_opt_code_container *code, kefir_opt_block_id_t block_id,
+    kefir_opt_instruction_ref_t location_ref, kefir_opt_instruction_ref_t source_ref,
+    kefir_opt_memory_order_t memory_model, kefir_id_t type_id, kefir_size_t type_index,
+    kefir_opt_instruction_ref_t *instr_id_ptr) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
+
+    REQUIRE_OK(instr_exists(code, block_id, location_ref, false));
+    REQUIRE_OK(instr_exists(code, block_id, source_ref, false));
+    switch (memory_model) {
+        case KEFIR_OPT_MEMORY_ORDER_SEQ_CST:
+            break;
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected atomic model");
+    }
+    REQUIRE_OK(kefir_opt_code_builder_add_instruction(
+        mem, code, block_id,
+        &(struct kefir_opt_operation){.opcode = KEFIR_OPT_OPCODE_ATOMIC_COPY_MEMORY_TO,
+                                      .parameters.atomic_op = {.ref = {location_ref, source_ref},
+                                                               .model = memory_model,
+                                                               .type_id = type_id,
+                                                               .type_index = type_index}},
+        false, instr_id_ptr));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_opt_code_builder_bits_extract_signed(struct kefir_mem *mem, struct kefir_opt_code_container *code,
                                                           kefir_opt_block_id_t block_id,
                                                           kefir_opt_instruction_ref_t base_ref, kefir_size_t offset,
@@ -953,13 +1009,13 @@ STORE_OP(long_double_store, KEFIR_OPT_OPCODE_LONG_DOUBLE_STORE)
 #define ATOMIC_LOAD_OP(_id, _opcode)                                                                                   \
     kefir_result_t kefir_opt_code_builder_##_id(struct kefir_mem *mem, struct kefir_opt_code_container *code,          \
                                                 kefir_opt_block_id_t block_id, kefir_opt_instruction_ref_t location,   \
-                                                kefir_opt_atomic_model_t model,                                        \
+                                                kefir_opt_memory_order_t model,                                        \
                                                 kefir_opt_instruction_ref_t *instr_id_ptr) {                           \
         REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));             \
         REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));    \
         REQUIRE_OK(instr_exists(code, block_id, location, false));                                                     \
         switch (model) {                                                                                               \
-            case KEFIR_OPT_ATOMIC_MODEL_SEQ_CST:                                                                       \
+            case KEFIR_OPT_MEMORY_ORDER_SEQ_CST:                                                                       \
                 break;                                                                                                 \
                                                                                                                        \
             default:                                                                                                   \
@@ -983,14 +1039,14 @@ ATOMIC_LOAD_OP(atomic_load64, KEFIR_OPT_OPCODE_ATOMIC_LOAD64)
 #define ATOMIC_STORE_OP(_id, _opcode)                                                                                \
     kefir_result_t kefir_opt_code_builder_##_id(struct kefir_mem *mem, struct kefir_opt_code_container *code,        \
                                                 kefir_opt_block_id_t block_id, kefir_opt_instruction_ref_t location, \
-                                                kefir_opt_instruction_ref_t value, kefir_opt_atomic_model_t model,   \
+                                                kefir_opt_instruction_ref_t value, kefir_opt_memory_order_t model,   \
                                                 kefir_opt_instruction_ref_t *instr_id_ptr) {                         \
         REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));           \
         REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));  \
         REQUIRE_OK(instr_exists(code, block_id, location, false));                                                   \
         REQUIRE_OK(instr_exists(code, block_id, value, false));                                                      \
         switch (model) {                                                                                             \
-            case KEFIR_OPT_ATOMIC_MODEL_SEQ_CST:                                                                     \
+            case KEFIR_OPT_MEMORY_ORDER_SEQ_CST:                                                                     \
                 break;                                                                                               \
                                                                                                                      \
             default:                                                                                                 \

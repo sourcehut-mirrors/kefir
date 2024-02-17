@@ -408,12 +408,24 @@ static kefir_result_t format_operation_atomic_op(struct kefir_json_output *json,
             REQUIRE_OK(id_format(json, oper->parameters.atomic_op.ref[1]));
             break;
 
+        case KEFIR_OPT_OPCODE_ATOMIC_COPY_MEMORY_FROM:
+        case KEFIR_OPT_OPCODE_ATOMIC_COPY_MEMORY_TO:
+            REQUIRE_OK(kefir_json_output_object_key(json, "location"));
+            REQUIRE_OK(id_format(json, oper->parameters.atomic_op.ref[0]));
+            REQUIRE_OK(kefir_json_output_object_key(json, "source"));
+            REQUIRE_OK(id_format(json, oper->parameters.atomic_op.ref[1]));
+            REQUIRE_OK(kefir_json_output_object_key(json, "type_id"));
+            REQUIRE_OK(id_format(json, oper->parameters.atomic_op.type_id));
+            REQUIRE_OK(kefir_json_output_object_key(json, "type_index"));
+            REQUIRE_OK(id_format(json, oper->parameters.atomic_op.type_index));
+            break;
+
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected optimizer operation code");
     }
     REQUIRE_OK(kefir_json_output_object_key(json, "atomic_model"));
     switch (oper->parameters.atomic_op.model) {
-        case KEFIR_OPT_ATOMIC_MODEL_SEQ_CST:
+        case KEFIR_OPT_MEMORY_ORDER_SEQ_CST:
             REQUIRE_OK(kefir_json_output_string(json, "seq_cst"));
             break;
 

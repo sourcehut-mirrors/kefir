@@ -135,12 +135,17 @@ kefir_result_t kefir_ast_analyze_unary_operation_node(struct kefir_mem *mem, con
             type = type->referenced_type;
             base->properties.type = type;
             base->properties.expression_props.atomic =
-                node->arg->properties.type->tag == KEFIR_AST_TYPE_QUALIFIED &&
-                node->arg->properties.type->qualified_type.qualification.atomic_type;
+                type->tag == KEFIR_AST_TYPE_QUALIFIED && type->qualified_type.qualification.atomic_type;
             if (type->tag != KEFIR_AST_TYPE_FUNCTION) {
                 base->properties.expression_props.lvalue = true;
             }
             base->properties.expression_props.addressable = true;
+
+            if (base->properties.expression_props.atomic &&
+                KEFIR_AST_TYPE_IS_AGGREGATE_TYPE(kefir_ast_unqualified_type(type))) {
+                REQUIRE_OK(context->allocate_temporary_value(mem, context, type, NULL, &base->source_location,
+                                                             &base->properties.expression_props.temporary_identifier));
+            }
         } break;
 
         case KEFIR_AST_OPERATION_SIZEOF: {

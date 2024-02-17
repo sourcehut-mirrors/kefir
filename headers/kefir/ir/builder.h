@@ -55,6 +55,8 @@ typedef struct kefir_irbuilder_block {
     kefir_result_t (*appendu64)(struct kefir_irbuilder_block *, kefir_iropcode_t, kefir_uint64_t);
     kefir_result_t (*appendi32)(struct kefir_irbuilder_block *, kefir_iropcode_t, kefir_int32_t, kefir_int32_t);
     kefir_result_t (*appendu32)(struct kefir_irbuilder_block *, kefir_iropcode_t, kefir_uint32_t, kefir_uint32_t);
+    kefir_result_t (*appendu32_4)(struct kefir_irbuilder_block *, kefir_iropcode_t, kefir_uint64_t, kefir_uint64_t,
+                                  kefir_uint64_t, kefir_uint64_t);
     kefir_result_t (*appendf64)(struct kefir_irbuilder_block *, kefir_iropcode_t, kefir_float64_t);
     kefir_result_t (*appendf32)(struct kefir_irbuilder_block *, kefir_iropcode_t, kefir_float32_t, kefir_float32_t);
     kefir_result_t (*append_long_double)(struct kefir_irbuilder_block *, kefir_iropcode_t, kefir_long_double_t);
@@ -69,6 +71,8 @@ kefir_result_t kefir_irbuilder_block_init(struct kefir_mem *, struct kefir_irbui
     ((builder)->appendi32((builder), (opcode), (arg1), (arg2)))
 #define KEFIR_IRBUILDER_BLOCK_APPENDU32(builder, opcode, arg1, arg2) \
     ((builder)->appendu32((builder), (opcode), (arg1), (arg2)))
+#define KEFIR_IRBUILDER_BLOCK_APPENDU32_4(builder, opcode, arg, arg2, arg3, arg4) \
+    ((builder)->appendu32_4((builder), (opcode), (arg), (arg2), (arg3), (arg4)))
 #define KEFIR_IRBUILDER_BLOCK_APPENDF64(builder, opcode, arg) ((builder)->appendf64((builder), (opcode), (arg)))
 #define KEFIR_IRBUILDER_BLOCK_APPENDF32(builder, opcode, arg1, arg2) \
     ((builder)->appendf32((builder), (opcode), (arg1), (arg2)))

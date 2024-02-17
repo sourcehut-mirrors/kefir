@@ -26,7 +26,8 @@
 #include "kefir/ast-translator/context.h"
 
 kefir_result_t kefir_ast_translator_resolve_lvalue(struct kefir_mem *, struct kefir_ast_translator_context *,
-                                                   struct kefir_irbuilder_block *, const struct kefir_ast_node_base *);
+                                                   struct kefir_irbuilder_block *, const struct kefir_ast_node_base *,
+                                                   kefir_bool_t *);
 
 kefir_result_t kefir_ast_translator_store_layout_value(struct kefir_mem *, struct kefir_ast_translator_context *,
                                                        struct kefir_irbuilder_block *, const struct kefir_ir_type *,
@@ -41,15 +42,16 @@ kefir_result_t kefir_ast_translator_load_value(const struct kefir_ast_type *, co
 
 kefir_result_t kefir_ast_translator_atomic_load_value(const struct kefir_ast_type *,
                                                       const struct kefir_ast_type_traits *,
-                                                      struct kefir_irbuilder_block *);
+                                                      struct kefir_irbuilder_block *, kefir_bool_t *);
+
+kefir_result_t kefir_ast_translator_load_atomic_aggregate_value(struct kefir_mem *, const struct kefir_ast_type *,
+                                                                struct kefir_ast_translator_context *,
+                                                                struct kefir_irbuilder_block *,
+                                                                const struct kefir_ast_temporary_identifier *,
+                                                                const struct kefir_source_location *);
 
 kefir_result_t kefir_ast_translator_store_value(struct kefir_mem *, const struct kefir_ast_type *,
                                                 struct kefir_ast_translator_context *, struct kefir_irbuilder_block *,
                                                 const struct kefir_source_location *);
-
-kefir_result_t kefir_ast_translator_atomic_store_value(struct kefir_mem *, const struct kefir_ast_type *,
-                                                       struct kefir_ast_translator_context *,
-                                                       struct kefir_irbuilder_block *,
-                                                       const struct kefir_source_location *);
 
 #endif

@@ -35,7 +35,15 @@ kefir_result_t kefir_ast_translate_struct_member_node(struct kefir_mem *mem,
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR block builder"));
     REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST struct member node"));
 
+    kefir_bool_t atomic_aggregate_member;
     REQUIRE_OK(kefir_ast_translate_struct_member_lvalue(mem, context, builder, node));
-    REQUIRE_OK(kefir_ast_translator_resolve_lvalue(mem, context, builder, KEFIR_AST_NODE_BASE(node)));
+    REQUIRE_OK(kefir_ast_translator_resolve_lvalue(mem, context, builder, KEFIR_AST_NODE_BASE(node),
+                                                   &atomic_aggregate_member));
+
+    if (atomic_aggregate_member) {
+        REQUIRE_OK(kefir_ast_translator_load_atomic_aggregate_value(
+            mem, node->base.properties.type, context, builder,
+            &node->base.properties.expression_props.temporary_identifier, &node->base.source_location));
+    }
     return KEFIR_OK;
 }

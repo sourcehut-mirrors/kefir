@@ -202,6 +202,16 @@ static kefir_result_t compact_function(struct kefir_mem *mem, struct kefir_ir_mo
                 instr->arg.u32[0] = (kefir_uint32_t) type_id;
             } break;
 
+            case KEFIR_IROPCODE_ATOMIC_BCOPY_FROM:
+            case KEFIR_IROPCODE_ATOMIC_BCOPY_TO: {
+                kefir_id_t type_id = (kefir_id_t) instr->arg.u32[1];
+                struct kefir_hashtree_node *node = NULL;
+                REQUIRE_OK(kefir_hashtree_at(&module->named_types, type_id, &node));
+                ASSIGN_DECL_CAST(struct kefir_ir_type *, type, node->value);
+                REQUIRE_OK(compact_type(mem, params, (const struct kefir_ir_type **) &type, &type_id));
+                instr->arg.u32[1] = (kefir_uint32_t) type_id;
+            } break;
+
             case KEFIR_IROPCODE_INVOKE:
             case KEFIR_IROPCODE_INVOKEV: {
                 kefir_id_t id = (kefir_id_t) instr->arg.u64;

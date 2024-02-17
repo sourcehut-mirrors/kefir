@@ -31,17 +31,17 @@
 #define KEFIR_IR_MEMORY_FLAG_NONE 0
 #define KEFIR_IR_MEMORY_FLAG_VOLATILE 1
 
-#define KEFIR_IR_ATOMIC_MODEL_SEQ_CST 1
+#define KEFIR_IR_MEMORY_ORDER_SEQ_CST 1
 
 typedef struct kefir_irinstr {
     kefir_iropcode_t opcode;
     union {
         kefir_int64_t i64;
         kefir_uint64_t u64;
-        kefir_int32_t i32[2];
-        kefir_uint32_t u32[2];
+        kefir_int32_t i32[4];
+        kefir_uint32_t u32[4];
         kefir_float64_t f64;
-        kefir_float32_t f32[2];
+        kefir_float32_t f32[4];
         kefir_long_double_t long_double;
     } arg;
 } kefir_irinstr_t;
@@ -61,6 +61,8 @@ kefir_result_t kefir_irblock_appendi64(struct kefir_irblock *, kefir_iropcode_t,
 kefir_result_t kefir_irblock_appendu64(struct kefir_irblock *, kefir_iropcode_t, kefir_uint64_t);
 kefir_result_t kefir_irblock_appendi32(struct kefir_irblock *, kefir_iropcode_t, kefir_int32_t, kefir_int32_t);
 kefir_result_t kefir_irblock_appendu32(struct kefir_irblock *, kefir_iropcode_t, kefir_uint32_t, kefir_uint32_t);
+kefir_result_t kefir_irblock_appendu32_4(struct kefir_irblock *, kefir_iropcode_t, kefir_uint32_t, kefir_uint32_t,
+                                         kefir_uint32_t, kefir_uint32_t);
 kefir_result_t kefir_irblock_appendf64(struct kefir_irblock *, kefir_iropcode_t, kefir_float64_t);
 kefir_result_t kefir_irblock_appendf32(struct kefir_irblock *, kefir_iropcode_t, kefir_float32_t, kefir_float32_t);
 kefir_result_t kefir_irblock_append_ldouble(struct kefir_irblock *, kefir_iropcode_t, kefir_long_double_t);

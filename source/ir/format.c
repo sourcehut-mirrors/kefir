@@ -259,7 +259,7 @@ kefir_result_t kefir_ir_format_instr_memflags(struct kefir_json_output *json, co
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_ir_format_instr_atomic_model(struct kefir_json_output *json, const struct kefir_ir_module *module,
+kefir_result_t kefir_ir_format_instr_memory_order(struct kefir_json_output *json, const struct kefir_ir_module *module,
                                                   const struct kefir_irinstr *instr) {
     UNUSED(module);
     REQUIRE(json != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid json output"));
@@ -269,12 +269,38 @@ kefir_result_t kefir_ir_format_instr_atomic_model(struct kefir_json_output *json
     REQUIRE_OK(kefir_json_output_object_key(json, "opcode"));
     REQUIRE_OK(kefir_json_output_string(json, kefir_iropcode_mnemonic(instr->opcode)));
 
-    REQUIRE_OK(kefir_json_output_object_key(json, "atomic_model"));
+    REQUIRE_OK(kefir_json_output_object_key(json, "memory_order"));
     switch (instr->arg.i64) {
-        case KEFIR_IR_ATOMIC_MODEL_SEQ_CST:
+        case KEFIR_IR_MEMORY_ORDER_SEQ_CST:
             REQUIRE_OK(kefir_json_output_string(json, "seq_cst"));
             break;
     }
+
+    REQUIRE_OK(kefir_json_output_object_end(json));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_ir_format_instr_atomic_typeref(struct kefir_json_output *json,
+                                                    const struct kefir_ir_module *module,
+                                                    const struct kefir_irinstr *instr) {
+    UNUSED(module);
+    REQUIRE(json != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid json output"));
+    REQUIRE(instr != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid IR instruction"));
+
+    REQUIRE_OK(kefir_json_output_object_begin(json));
+    REQUIRE_OK(kefir_json_output_object_key(json, "opcode"));
+    REQUIRE_OK(kefir_json_output_string(json, kefir_iropcode_mnemonic(instr->opcode)));
+
+    REQUIRE_OK(kefir_json_output_object_key(json, "memory_order"));
+    switch (instr->arg.u32[0]) {
+        case KEFIR_IR_MEMORY_ORDER_SEQ_CST:
+            REQUIRE_OK(kefir_json_output_string(json, "seq_cst"));
+            break;
+    }
+    REQUIRE_OK(kefir_json_output_object_key(json, "type"));
+    REQUIRE_OK(kefir_json_output_uinteger(json, instr->arg.u32[1]));
+    REQUIRE_OK(kefir_json_output_object_key(json, "index"));
+    REQUIRE_OK(kefir_json_output_uinteger(json, instr->arg.u32[2]));
 
     REQUIRE_OK(kefir_json_output_object_end(json));
     return KEFIR_OK;

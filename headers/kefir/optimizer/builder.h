@@ -134,6 +134,15 @@ kefir_result_t kefir_opt_code_builder_stack_alloc(struct kefir_mem *, struct kef
 kefir_result_t kefir_opt_code_builder_scope_push(struct kefir_mem *, struct kefir_opt_code_container *,
                                                  kefir_opt_block_id_t, kefir_opt_instruction_ref_t *);
 
+kefir_result_t kefir_opt_code_builder_atomic_copy_memory_from(struct kefir_mem *, struct kefir_opt_code_container *,
+                                                              kefir_opt_block_id_t, kefir_opt_instruction_ref_t,
+                                                              kefir_opt_instruction_ref_t, kefir_opt_memory_order_t,
+                                                              kefir_id_t, kefir_size_t, kefir_opt_instruction_ref_t *);
+kefir_result_t kefir_opt_code_builder_atomic_copy_memory_to(struct kefir_mem *, struct kefir_opt_code_container *,
+                                                            kefir_opt_block_id_t, kefir_opt_instruction_ref_t,
+                                                            kefir_opt_instruction_ref_t, kefir_opt_memory_order_t,
+                                                            kefir_id_t, kefir_size_t, kefir_opt_instruction_ref_t *);
+
 #define UNARY_OP(_id)                                                                                  \
     kefir_result_t kefir_opt_code_builder_##_id(struct kefir_mem *, struct kefir_opt_code_container *, \
                                                 kefir_opt_block_id_t, kefir_opt_instruction_ref_t,     \
@@ -311,7 +320,7 @@ BINARY_INT_CONST_OP(int_below_or_equals_const);
 #define ATOMIC_LOAD_OP(_id)                                                                            \
     kefir_result_t kefir_opt_code_builder_##_id(struct kefir_mem *, struct kefir_opt_code_container *, \
                                                 kefir_opt_block_id_t, kefir_opt_instruction_ref_t,     \
-                                                kefir_opt_atomic_model_t, kefir_opt_instruction_ref_t *)
+                                                kefir_opt_memory_order_t, kefir_opt_instruction_ref_t *)
 ATOMIC_LOAD_OP(atomic_load8);
 ATOMIC_LOAD_OP(atomic_load16);
 ATOMIC_LOAD_OP(atomic_load32);
@@ -322,7 +331,7 @@ ATOMIC_LOAD_OP(atomic_load64);
 #define ATOMIC_STORE_OP(_id)                                                                                      \
     kefir_result_t kefir_opt_code_builder_##_id(                                                                  \
         struct kefir_mem *, struct kefir_opt_code_container *, kefir_opt_block_id_t, kefir_opt_instruction_ref_t, \
-        kefir_opt_instruction_ref_t, kefir_opt_atomic_model_t, kefir_opt_instruction_ref_t *)
+        kefir_opt_instruction_ref_t, kefir_opt_memory_order_t, kefir_opt_instruction_ref_t *)
 ATOMIC_STORE_OP(atomic_store8);
 ATOMIC_STORE_OP(atomic_store16);
 ATOMIC_STORE_OP(atomic_store32);

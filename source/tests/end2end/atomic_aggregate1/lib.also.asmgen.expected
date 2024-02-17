@@ -1,0 +1,55 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global load_buffer
+.global store_buffer
+.extern buf
+.extern __kefir_opt_float32_neg
+.extern __kefir_opt_float64_neg
+.extern __kefirrt_opt_float32_to_uint
+.extern __kefirrt_opt_float64_to_uint
+
+.section .text
+load_buffer:
+    push %rbp
+    mov %rsp, %rbp
+    sub $80, %rsp
+    movq %rdi, -80(%rbp)
+_kefir_func_load_buffer_label0:
+_kefir_func_load_buffer_label1:
+    movq buf@GOTPCREL(%rip), %rax
+    lea -64(%rbp), %r8
+    movq %r8, -72(%rbp)
+    mov %r8, %rdx
+    mov %rax, %rsi
+    mov $64, %rdi
+    mov $5, %rcx
+    call __atomic_load@PLT
+    movq -72(%rbp), %r8
+    movq -80(%rbp), %rax
+    mov %rax, %rdi
+    mov %r8, %rsi
+    mov $64, %rcx
+    cld
+    rep movsb
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+store_buffer:
+    push %rbp
+    mov %rsp, %rbp
+    sub $64, %rsp
+_kefir_func_store_buffer_label0:
+_kefir_func_store_buffer_label1:
+    movq buf@GOTPCREL(%rip), %rax
+    mov %rax, %rsi
+    mov %rdi, %rdx
+    mov $64, %rdi
+    mov $5, %rcx
+    call __atomic_store@PLT
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+

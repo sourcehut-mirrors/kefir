@@ -82,6 +82,18 @@ kefir_result_t kefir_irbuilder_block_appendu64(struct kefir_mem *mem, struct kef
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_irbuilder_block_appendu32_4(struct kefir_mem *mem, struct kefir_irblock *block,
+                                                 kefir_iropcode_t opcode, kefir_uint64_t arg, kefir_uint64_t arg2,
+                                                 kefir_uint64_t arg3, kefir_uint64_t arg4) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(block != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Epected valid IR block"));
+    if (kefir_irblock_available(block) == 0) {
+        REQUIRE_OK(kefir_irblock_realloc(mem, GROW(kefir_irblock_length(block)), block));
+    }
+    REQUIRE_OK(kefir_irblock_appendu32_4(block, opcode, arg, arg2, arg3, arg4));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_irbuilder_block_appendi32(struct kefir_mem *mem, struct kefir_irblock *block,
                                                kefir_iropcode_t opcode, kefir_int32_t arg1, kefir_int32_t arg2) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
@@ -161,6 +173,13 @@ static kefir_result_t block_builder_appendu32(struct kefir_irbuilder_block *buil
     return kefir_irbuilder_block_appendu32(builder->payload, builder->block, opcode, arg1, arg2);
 }
 
+static kefir_result_t block_builder_appendu32_4(struct kefir_irbuilder_block *builder, kefir_iropcode_t opcode,
+                                                kefir_uint64_t arg, kefir_uint64_t arg2, kefir_uint64_t arg3,
+                                                kefir_uint64_t arg4) {
+    REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR block builder"));
+    return kefir_irbuilder_block_appendu32_4(builder->payload, builder->block, opcode, arg, arg2, arg3, arg4);
+}
+
 static kefir_result_t block_builder_appendf64(struct kefir_irbuilder_block *builder, kefir_iropcode_t opcode,
                                               kefir_float64_t arg) {
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR block builder"));
@@ -193,6 +212,7 @@ kefir_result_t kefir_irbuilder_block_init(struct kefir_mem *mem, struct kefir_ir
     builder->payload = mem;
     builder->appendi64 = block_builder_appendi64;
     builder->appendu64 = block_builder_appendu64;
+    builder->appendu32_4 = block_builder_appendu32_4;
     builder->appendi32 = block_builder_appendi32;
     builder->appendu32 = block_builder_appendu32;
     builder->appendf64 = block_builder_appendf64;

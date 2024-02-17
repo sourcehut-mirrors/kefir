@@ -248,6 +248,8 @@ kefir_result_t kefir_codegen_amd64_function_map_phi_outputs(struct kefir_mem *, 
     _def(atomic_store, KEFIR_OPT_OPCODE_ATOMIC_STORE16) _separator \
     _def(atomic_store, KEFIR_OPT_OPCODE_ATOMIC_STORE32) _separator \
     _def(atomic_store, KEFIR_OPT_OPCODE_ATOMIC_STORE64) _separator \
+    _def(atomic_copy_memory, KEFIR_OPT_OPCODE_ATOMIC_COPY_MEMORY_FROM) _separator \
+    _def(atomic_copy_memory, KEFIR_OPT_OPCODE_ATOMIC_COPY_MEMORY_TO) _separator \
     _def(inline_assembly, KEFIR_OPT_OPCODE_INLINE_ASSEMBLY)
 // clang-format on
 

@@ -106,11 +106,14 @@ static kefir_result_t translate_multiplication(struct kefir_mem *mem, struct kef
     REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
                                             value_normalized_type, common_type));
 
+    kefir_bool_t atomic_aggregate_target_value;
     REQUIRE_OK(kefir_ast_translate_lvalue(mem, context, builder, node->target));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 0));
-    REQUIRE_OK(kefir_ast_translator_resolve_lvalue(mem, context, builder, node->target));
+    REQUIRE_OK(
+        kefir_ast_translator_resolve_lvalue(mem, context, builder, node->target, &atomic_aggregate_target_value));
     REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
                                             target_normalized_type, common_type));
+    REQUIRE(!atomic_aggregate_target_value, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected atomic aggregate value"));
 
     REQUIRE_OK(reorder_assignment_arguments(builder));
     switch (common_type->tag) {
@@ -170,11 +173,14 @@ static kefir_result_t translate_divide(struct kefir_mem *mem, struct kefir_ast_t
     REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
                                             value_normalized_type, common_type));
 
+    kefir_bool_t atomic_aggregate_target_value;
     REQUIRE_OK(kefir_ast_translate_lvalue(mem, context, builder, node->target));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 0));
-    REQUIRE_OK(kefir_ast_translator_resolve_lvalue(mem, context, builder, node->target));
+    REQUIRE_OK(
+        kefir_ast_translator_resolve_lvalue(mem, context, builder, node->target, &atomic_aggregate_target_value));
     REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
                                             target_normalized_type, common_type));
+    REQUIRE(!atomic_aggregate_target_value, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected atomic aggregate value"));
 
     REQUIRE_OK(reorder_assignment_arguments(builder));
     switch (common_type->tag) {
@@ -242,11 +248,14 @@ static kefir_result_t translate_modulo_bitwise(struct kefir_mem *mem, struct kef
     REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
                                             value_normalized_type, common_type));
 
+    kefir_bool_t atomic_aggregate_target_value;
     REQUIRE_OK(kefir_ast_translate_lvalue(mem, context, builder, node->target));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 0));
-    REQUIRE_OK(kefir_ast_translator_resolve_lvalue(mem, context, builder, node->target));
+    REQUIRE_OK(
+        kefir_ast_translator_resolve_lvalue(mem, context, builder, node->target, &atomic_aggregate_target_value));
     REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
                                             target_normalized_type, common_type));
+    REQUIRE(!atomic_aggregate_target_value, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected atomic aggregate value"));
 
     REQUIRE_OK(reorder_assignment_arguments(builder));
     switch (node->operation) {
@@ -314,6 +323,7 @@ static kefir_result_t translate_add(struct kefir_mem *mem, struct kefir_ast_tran
     const struct kefir_ast_type *result_normalized_type =
         kefir_ast_translator_normalize_type(node->base.properties.type);
 
+    kefir_bool_t atomic_aggregate_target_value;
     if (KEFIR_AST_TYPE_IS_ARITHMETIC_TYPE(target_normalized_type) &&
         KEFIR_AST_TYPE_IS_ARITHMETIC_TYPE(value_normalized_type)) {
         const struct kefir_ast_type *common_type = kefir_ast_type_common_arithmetic(
@@ -327,9 +337,12 @@ static kefir_result_t translate_add(struct kefir_mem *mem, struct kefir_ast_tran
 
         REQUIRE_OK(kefir_ast_translate_lvalue(mem, context, builder, node->target));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 0));
-        REQUIRE_OK(kefir_ast_translator_resolve_lvalue(mem, context, builder, node->target));
+        REQUIRE_OK(
+            kefir_ast_translator_resolve_lvalue(mem, context, builder, node->target, &atomic_aggregate_target_value));
         REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
                                                 target_normalized_type, common_type));
+        REQUIRE(!atomic_aggregate_target_value,
+                KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected atomic aggregate value"));
 
         REQUIRE_OK(reorder_assignment_arguments(builder));
         switch (common_type->tag) {
@@ -379,7 +392,10 @@ static kefir_result_t translate_add(struct kefir_mem *mem, struct kefir_ast_tran
 
         REQUIRE_CHAIN(&res, kefir_ast_translate_lvalue(mem, context, builder, node->target));
         REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 0));
-        REQUIRE_CHAIN(&res, kefir_ast_translator_resolve_lvalue(mem, context, builder, node->target));
+        REQUIRE_CHAIN(&res, kefir_ast_translator_resolve_lvalue(mem, context, builder, node->target,
+                                                                &atomic_aggregate_target_value));
+        REQUIRE_CHAIN_SET(&res, !atomic_aggregate_target_value,
+                          KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected atomic aggregate value"));
 
         REQUIRE_CHAIN(&res, reorder_assignment_arguments(builder));
         REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IADDX,
@@ -410,6 +426,7 @@ static kefir_result_t translate_subtract(struct kefir_mem *mem, struct kefir_ast
     const struct kefir_ast_type *result_normalized_type =
         kefir_ast_translator_normalize_type(node->base.properties.type);
 
+    kefir_bool_t atomic_aggregate_target_value;
     if (KEFIR_AST_TYPE_IS_ARITHMETIC_TYPE(target_normalized_type) &&
         KEFIR_AST_TYPE_IS_ARITHMETIC_TYPE(value_normalized_type)) {
         const struct kefir_ast_type *common_type = kefir_ast_type_common_arithmetic(
@@ -423,9 +440,12 @@ static kefir_result_t translate_subtract(struct kefir_mem *mem, struct kefir_ast
 
         REQUIRE_OK(kefir_ast_translate_lvalue(mem, context, builder, node->target));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 0));
-        REQUIRE_OK(kefir_ast_translator_resolve_lvalue(mem, context, builder, node->target));
+        REQUIRE_OK(
+            kefir_ast_translator_resolve_lvalue(mem, context, builder, node->target, &atomic_aggregate_target_value));
         REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
                                                 target_normalized_type, common_type));
+        REQUIRE(!atomic_aggregate_target_value,
+                KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected atomic aggregate value"));
 
         REQUIRE_OK(reorder_assignment_arguments(builder));
         switch (common_type->tag) {
@@ -476,7 +496,10 @@ static kefir_result_t translate_subtract(struct kefir_mem *mem, struct kefir_ast
 
         REQUIRE_CHAIN(&res, kefir_ast_translate_lvalue(mem, context, builder, node->target));
         REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 0));
-        REQUIRE_CHAIN(&res, kefir_ast_translator_resolve_lvalue(mem, context, builder, node->target));
+        REQUIRE_CHAIN(&res, kefir_ast_translator_resolve_lvalue(mem, context, builder, node->target,
+                                                                &atomic_aggregate_target_value));
+        REQUIRE_CHAIN_SET(&res, !atomic_aggregate_target_value,
+                          KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected atomic aggregate value"));
 
         REQUIRE_CHAIN(&res, reorder_assignment_arguments(builder));
         REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IADDX,

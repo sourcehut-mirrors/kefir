@@ -630,10 +630,10 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
 
 #define ATOMIC_LOAD_OP(_id, _opcode)                                                                          \
     case _opcode: {                                                                                           \
-        kefir_opt_atomic_model_t model;                                                                       \
+        kefir_opt_memory_order_t model;                                                                       \
         switch (instr->arg.i64) {                                                                             \
-            case KEFIR_IR_ATOMIC_MODEL_SEQ_CST:                                                               \
-                model = KEFIR_OPT_ATOMIC_MODEL_SEQ_CST;                                                       \
+            case KEFIR_IR_MEMORY_ORDER_SEQ_CST:                                                               \
+                model = KEFIR_OPT_MEMORY_ORDER_SEQ_CST;                                                       \
                 break;                                                                                        \
         }                                                                                                     \
         REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));                                 \
@@ -651,10 +651,10 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
 
 #define ATOMIC_STORE_OP(_id, _opcode)                                                                              \
     case _opcode: {                                                                                                \
-        kefir_opt_atomic_model_t model;                                                                            \
+        kefir_opt_memory_order_t model;                                                                            \
         switch (instr->arg.i64) {                                                                                  \
-            case KEFIR_IR_ATOMIC_MODEL_SEQ_CST:                                                                    \
-                model = KEFIR_OPT_ATOMIC_MODEL_SEQ_CST;                                                            \
+            case KEFIR_IR_MEMORY_ORDER_SEQ_CST:                                                                    \
+                model = KEFIR_OPT_MEMORY_ORDER_SEQ_CST;                                                            \
                 break;                                                                                             \
                                                                                                                    \
             default:                                                                                               \
@@ -674,6 +674,42 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             ATOMIC_STORE_OP(atomic_store64, KEFIR_IROPCODE_ATOMIC_STORE64)
 
 #undef ATOMIC_STORE_OP
+
+        case KEFIR_IROPCODE_ATOMIC_BCOPY_FROM: {
+            REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
+            REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref3));
+            kefir_opt_memory_order_t model;
+            switch (instr->arg.u32[0]) {
+                case KEFIR_IR_MEMORY_ORDER_SEQ_CST:
+                    model = KEFIR_OPT_MEMORY_ORDER_SEQ_CST;
+                    break;
+
+                default:
+                    return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unknown IR atomic model flag");
+            }
+            REQUIRE_OK(kefir_opt_code_builder_atomic_copy_memory_from(mem, code, current_block_id, instr_ref3,
+                                                                      instr_ref2, model, instr->arg.u32[1],
+                                                                      instr->arg.u32[2], &instr_ref));
+            REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));
+        } break;
+
+        case KEFIR_IROPCODE_ATOMIC_BCOPY_TO: {
+            REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
+            REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref3));
+            kefir_opt_memory_order_t model;
+            switch (instr->arg.u32[0]) {
+                case KEFIR_IR_MEMORY_ORDER_SEQ_CST:
+                    model = KEFIR_OPT_MEMORY_ORDER_SEQ_CST;
+                    break;
+
+                default:
+                    return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unknown IR atomic model flag");
+            }
+            REQUIRE_OK(kefir_opt_code_builder_atomic_copy_memory_to(mem, code, current_block_id, instr_ref3, instr_ref2,
+                                                                    model, instr->arg.u32[1], instr->arg.u32[2],
+                                                                    &instr_ref));
+            REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));
+        } break;
 
 #define LOAD_OP(_id, _opcode)                                                                                \
     case _opcode: {                                                                                          \

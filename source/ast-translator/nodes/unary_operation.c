@@ -210,8 +210,14 @@ static kefir_result_t translate_indirection(struct kefir_mem *mem, struct kefir_
     REQUIRE_OK(kefir_ast_translate_expression(mem, node->arg, builder, context));
     if (normalized_type->tag != KEFIR_AST_TYPE_VOID) {
         if (node->base.properties.expression_props.atomic) {
-            REQUIRE_OK(kefir_ast_translator_atomic_load_value(node->base.properties.type,
-                                                              context->ast_context->type_traits, builder));
+            kefir_bool_t atomic_aggregate;
+            REQUIRE_OK(kefir_ast_translator_atomic_load_value(
+                node->base.properties.type, context->ast_context->type_traits, builder, &atomic_aggregate));
+            if (atomic_aggregate) {
+                REQUIRE_OK(kefir_ast_translator_load_atomic_aggregate_value(
+                    mem, node->base.properties.type, context, builder,
+                    &node->base.properties.expression_props.temporary_identifier, &node->base.source_location));
+            }
         } else {
             REQUIRE_OK(kefir_ast_translator_load_value(node->base.properties.type, context->ast_context->type_traits,
                                                        builder));
@@ -278,9 +284,12 @@ static kefir_result_t translate_preincdec(struct kefir_mem *mem, struct kefir_as
                                           struct kefir_irbuilder_block *builder,
                                           const struct kefir_ast_unary_operation *node) {
     const struct kefir_ast_type *normalized_type = kefir_ast_translator_normalize_type(node->base.properties.type);
+    kefir_bool_t atomic_aggregate_target_value;
+
     REQUIRE_OK(kefir_ast_translate_lvalue(mem, context, builder, node->arg));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 0));
-    REQUIRE_OK(kefir_ast_translator_resolve_lvalue(mem, context, builder, node->arg));
+    REQUIRE_OK(kefir_ast_translator_resolve_lvalue(mem, context, builder, node->arg, &atomic_aggregate_target_value));
+    REQUIRE(!atomic_aggregate_target_value, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected atomic aggregate value"));
 
     REQUIRE_OK(incdec_impl(mem, context, builder, node, normalized_type));
 
@@ -294,10 +303,12 @@ static kefir_result_t translate_postincdec(struct kefir_mem *mem, struct kefir_a
                                            struct kefir_irbuilder_block *builder,
                                            const struct kefir_ast_unary_operation *node) {
     const struct kefir_ast_type *normalized_type = kefir_ast_translator_normalize_type(node->base.properties.type);
+    kefir_bool_t atomic_aggregate_target_value;
 
     REQUIRE_OK(kefir_ast_translate_lvalue(mem, context, builder, node->arg));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 0));
-    REQUIRE_OK(kefir_ast_translator_resolve_lvalue(mem, context, builder, node->arg));
+    REQUIRE_OK(kefir_ast_translator_resolve_lvalue(mem, context, builder, node->arg, &atomic_aggregate_target_value));
+    REQUIRE(!atomic_aggregate_target_value, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected atomic aggregate value"));
 
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_XCHG, 1));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 1));

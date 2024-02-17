@@ -222,7 +222,9 @@
     OPCODE(ATOMIC_STORE8, "atomic_store8", atomic_op) SEPARATOR \
     OPCODE(ATOMIC_STORE16, "atomic_store16", atomic_op) SEPARATOR \
     OPCODE(ATOMIC_STORE32, "atomic_store32", atomic_op) SEPARATOR \
-    OPCODE(ATOMIC_STORE64, "atomic_store64", atomic_op)
+    OPCODE(ATOMIC_STORE64, "atomic_store64", atomic_op) SEPARATOR \
+    OPCODE(ATOMIC_COPY_MEMORY_FROM, "atomic_copy_memory_from", atomic_op) SEPARATOR \
+    OPCODE(ATOMIC_COPY_MEMORY_TO, "atomic_copy_memory_to", atomic_op)
 // clang-format on
 
 #endif
