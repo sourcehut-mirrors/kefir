@@ -422,6 +422,19 @@ static kefir_result_t format_operation_atomic_op(struct kefir_json_output *json,
             REQUIRE_OK(id_format(json, oper->parameters.atomic_op.type_index));
             break;
 
+        case KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG8:
+        case KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG16:
+        case KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG32:
+        case KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG64:
+        case KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG_LONG_DOUBLE:
+            REQUIRE_OK(kefir_json_output_object_key(json, "location"));
+            REQUIRE_OK(id_format(json, oper->parameters.atomic_op.ref[0]));
+            REQUIRE_OK(kefir_json_output_object_key(json, "compare_value"));
+            REQUIRE_OK(id_format(json, oper->parameters.atomic_op.ref[1]));
+            REQUIRE_OK(kefir_json_output_object_key(json, "new_value"));
+            REQUIRE_OK(id_format(json, oper->parameters.atomic_op.ref[2]));
+            break;
+
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected optimizer operation code");
     }

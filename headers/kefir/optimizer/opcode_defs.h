@@ -226,7 +226,12 @@
     OPCODE(ATOMIC_STORE64, "atomic_store64", atomic_op) SEPARATOR \
     OPCODE(ATOMIC_STORE_LONG_DOUBLE, "atomic_store_long_double", atomic_op) SEPARATOR \
     OPCODE(ATOMIC_COPY_MEMORY_FROM, "atomic_copy_memory_from", atomic_op) SEPARATOR \
-    OPCODE(ATOMIC_COPY_MEMORY_TO, "atomic_copy_memory_to", atomic_op)
+    OPCODE(ATOMIC_COPY_MEMORY_TO, "atomic_copy_memory_to", atomic_op) SEPARATOR \
+    OPCODE(ATOMIC_CMPXCHG8, "atomic_cmpxchg8", atomic_op) SEPARATOR \
+    OPCODE(ATOMIC_CMPXCHG16, "atomic_cmpxchg16", atomic_op) SEPARATOR \
+    OPCODE(ATOMIC_CMPXCHG32, "atomic_cmpxchg32", atomic_op) SEPARATOR \
+    OPCODE(ATOMIC_CMPXCHG64, "atomic_cmpxchg64", atomic_op) SEPARATOR \
+    OPCODE(ATOMIC_CMPXCHG_LONG_DOUBLE, "atomic_cmpxchg_long_double", atomic_op)
 // clang-format on
 
 #endif

@@ -1,0 +1,800 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global postdec_i8
+.global postdec_ld
+.global postinc_i8
+.global postinc_ld
+.global postdec_f32
+.global postdec_f64
+.global postdec_i16
+.global postdec_i32
+.global postdec_i64
+.global postdec_ptr
+.global postinc_f32
+.global postinc_f64
+.global postinc_i16
+.global postinc_i32
+.global postinc_i64
+.global postinc_ptr
+.extern i8
+.extern ld
+.extern f32
+.extern f64
+.extern i16
+.extern i32
+.extern i64
+.extern ptr
+.extern __kefir_opt_float32_neg
+.extern __kefir_opt_float64_neg
+.extern __kefirrt_opt_float32_to_uint
+.extern __kefirrt_opt_float64_to_uint
+
+.section .text
+postdec_i8:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+_kefir_func_postdec_i8_label0:
+_kefir_func_postdec_i8_label1:
+    movq i8@GOTPCREL(%rip), %rax
+    mov %rax, %r9
+_kefir_func_postdec_i8_label2:
+    movq %r9, -32(%rbp)
+    mov %r9, %rdi
+    mov $5, %rsi
+    call __atomic_load_1@PLT
+    mov %rax, %rcx
+    movq -32(%rbp), %r9
+    movsx %cl, %r10
+    mov %r10, %rax
+    add $-1, %rax
+    movsx %al, %rax
+    movq %r9, -24(%rbp)
+    movq %r10, -16(%rbp)
+    mov %r9, %rdi
+    mov %rax, %rdx
+    mov $5, %rcx
+    mov $5, %r8
+    mov %r10, -32(%rbp)
+    lea -32(%rbp), %rsi
+    call __atomic_compare_exchange_1@PLT
+    mov %rax, %rcx
+    movq -24(%rbp), %r9
+    movq -16(%rbp), %r10
+    test %rcx, %rcx
+    jz _kefir_func_postdec_i8_label5
+    jmp _kefir_func_postdec_i8_label4
+_kefir_func_postdec_i8_label5:
+    mov %r9, %rax
+_kefir_func_postdec_i8_label3:
+    mov %rax, %r9
+    jmp _kefir_func_postdec_i8_label2
+_kefir_func_postdec_i8_label4:
+    mov %r10, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+postdec_ld:
+    push %rbp
+    mov %rsp, %rbp
+    sub $96, %rsp
+    fstcw -8(%rbp)
+_kefir_func_postdec_ld_label0:
+_kefir_func_postdec_ld_label1:
+    movq ld@GOTPCREL(%rip), %rax
+    mov %rax, %r10
+_kefir_func_postdec_ld_label2:
+    movq %r10, -80(%rbp)
+    lea -96(%rbp), %rdx
+    mov %r10, %rsi
+    mov $16, %rdi
+    mov $5, %rcx
+    call __atomic_load@PLT
+    movq -80(%rbp), %r10
+    fldt _kefir_func_postdec_ld_label5(%rip)
+    fstpt -64(%rbp)
+    fldt -64(%rbp)
+    fldt -96(%rbp)
+    faddp
+    fstpt -80(%rbp)
+    movq %r10, -48(%rbp)
+    mov %r10, %rsi
+    mov $5, %r8
+    mov $5, %r9
+    mov $16, %rdi
+    fldt -96(%rbp)
+    movq $0, -56(%rbp)
+    fstpt -64(%rbp)
+    lea -64(%rbp), %rdx
+    fldt -80(%rbp)
+    movq $0, -72(%rbp)
+    fstpt -80(%rbp)
+    lea -80(%rbp), %rcx
+    call __atomic_compare_exchange@PLT
+    mov %rax, %rcx
+    movq -48(%rbp), %r10
+    test %rcx, %rcx
+    jz _kefir_func_postdec_ld_label6
+    jmp _kefir_func_postdec_ld_label4
+_kefir_func_postdec_ld_label6:
+    mov %r10, %rax
+_kefir_func_postdec_ld_label3:
+    mov %rax, %r10
+    jmp _kefir_func_postdec_ld_label2
+_kefir_func_postdec_ld_label4:
+    fldt -96(%rbp)
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+    .align 8
+_kefir_func_postdec_ld_label5:
+    .quad 9223372036854775808
+    .quad 49151
+.section .text
+
+postinc_i8:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+_kefir_func_postinc_i8_label0:
+_kefir_func_postinc_i8_label1:
+    movq i8@GOTPCREL(%rip), %rax
+    mov %rax, %r9
+_kefir_func_postinc_i8_label2:
+    movq %r9, -32(%rbp)
+    mov %r9, %rdi
+    mov $5, %rsi
+    call __atomic_load_1@PLT
+    mov %rax, %rcx
+    movq -32(%rbp), %r9
+    movsx %cl, %r10
+    mov %r10, %rax
+    add $1, %rax
+    movsx %al, %rax
+    movq %r9, -24(%rbp)
+    movq %r10, -16(%rbp)
+    mov %r9, %rdi
+    mov %rax, %rdx
+    mov $5, %rcx
+    mov $5, %r8
+    mov %r10, -32(%rbp)
+    lea -32(%rbp), %rsi
+    call __atomic_compare_exchange_1@PLT
+    mov %rax, %rcx
+    movq -24(%rbp), %r9
+    movq -16(%rbp), %r10
+    test %rcx, %rcx
+    jz _kefir_func_postinc_i8_label5
+    jmp _kefir_func_postinc_i8_label4
+_kefir_func_postinc_i8_label5:
+    mov %r9, %rax
+_kefir_func_postinc_i8_label3:
+    mov %rax, %r9
+    jmp _kefir_func_postinc_i8_label2
+_kefir_func_postinc_i8_label4:
+    mov %r10, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+postinc_ld:
+    push %rbp
+    mov %rsp, %rbp
+    sub $96, %rsp
+    fstcw -8(%rbp)
+_kefir_func_postinc_ld_label0:
+_kefir_func_postinc_ld_label1:
+    movq ld@GOTPCREL(%rip), %rax
+    mov %rax, %r10
+_kefir_func_postinc_ld_label2:
+    movq %r10, -80(%rbp)
+    lea -96(%rbp), %rdx
+    mov %r10, %rsi
+    mov $16, %rdi
+    mov $5, %rcx
+    call __atomic_load@PLT
+    movq -80(%rbp), %r10
+    fldt _kefir_func_postinc_ld_label5(%rip)
+    fstpt -64(%rbp)
+    fldt -64(%rbp)
+    fldt -96(%rbp)
+    faddp
+    fstpt -80(%rbp)
+    movq %r10, -48(%rbp)
+    mov %r10, %rsi
+    mov $5, %r8
+    mov $5, %r9
+    mov $16, %rdi
+    fldt -96(%rbp)
+    movq $0, -56(%rbp)
+    fstpt -64(%rbp)
+    lea -64(%rbp), %rdx
+    fldt -80(%rbp)
+    movq $0, -72(%rbp)
+    fstpt -80(%rbp)
+    lea -80(%rbp), %rcx
+    call __atomic_compare_exchange@PLT
+    mov %rax, %rcx
+    movq -48(%rbp), %r10
+    test %rcx, %rcx
+    jz _kefir_func_postinc_ld_label6
+    jmp _kefir_func_postinc_ld_label4
+_kefir_func_postinc_ld_label6:
+    mov %r10, %rax
+_kefir_func_postinc_ld_label3:
+    mov %rax, %r10
+    jmp _kefir_func_postinc_ld_label2
+_kefir_func_postinc_ld_label4:
+    fldt -96(%rbp)
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+    .align 8
+_kefir_func_postinc_ld_label5:
+    .quad 9223372036854775808
+    .quad 16383
+.section .text
+
+postdec_f32:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    stmxcsr -8(%rbp)
+_kefir_func_postdec_f32_label0:
+_kefir_func_postdec_f32_label1:
+    movq f32@GOTPCREL(%rip), %rax
+    mov %rax, %r9
+_kefir_func_postdec_f32_label2:
+    movq %r9, -32(%rbp)
+    mov %r9, %rdi
+    mov $5, %rsi
+    call __atomic_load_4@PLT
+    mov %rax, %r10
+    movq -32(%rbp), %r9
+    movd _kefir_func_postdec_f32_label5(%rip), %xmm0
+    movq %r10, %xmm1
+    addss %xmm0, %xmm1
+    movq %r9, -24(%rbp)
+    movq %r10, -16(%rbp)
+    mov %r9, %rdi
+    movq %xmm1, %rdx
+    mov $5, %rcx
+    mov $5, %r8
+    mov %r10, -32(%rbp)
+    lea -32(%rbp), %rsi
+    call __atomic_compare_exchange_4@PLT
+    mov %rax, %rcx
+    movq -24(%rbp), %r9
+    movq -16(%rbp), %r10
+    test %rcx, %rcx
+    jz _kefir_func_postdec_f32_label6
+    jmp _kefir_func_postdec_f32_label4
+_kefir_func_postdec_f32_label6:
+    mov %r9, %rax
+_kefir_func_postdec_f32_label3:
+    mov %rax, %r9
+    jmp _kefir_func_postdec_f32_label2
+_kefir_func_postdec_f32_label4:
+    movq %r10, %xmm0
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+    .align 4
+_kefir_func_postdec_f32_label5:
+    .long 3212836864
+.section .text
+
+postdec_f64:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    stmxcsr -8(%rbp)
+_kefir_func_postdec_f64_label0:
+_kefir_func_postdec_f64_label1:
+    movq f64@GOTPCREL(%rip), %rax
+    mov %rax, %r9
+_kefir_func_postdec_f64_label2:
+    movq %r9, -32(%rbp)
+    mov %r9, %rdi
+    mov $5, %rsi
+    call __atomic_load_8@PLT
+    mov %rax, %r10
+    movq -32(%rbp), %r9
+    movq _kefir_func_postdec_f64_label5(%rip), %xmm0
+    movq %r10, %xmm1
+    addsd %xmm0, %xmm1
+    movq %r9, -24(%rbp)
+    movq %r10, -16(%rbp)
+    mov %r9, %rdi
+    movq %xmm1, %rdx
+    mov $5, %rcx
+    mov $5, %r8
+    mov %r10, -32(%rbp)
+    lea -32(%rbp), %rsi
+    call __atomic_compare_exchange_8@PLT
+    mov %rax, %rcx
+    movq -24(%rbp), %r9
+    movq -16(%rbp), %r10
+    test %rcx, %rcx
+    jz _kefir_func_postdec_f64_label6
+    jmp _kefir_func_postdec_f64_label4
+_kefir_func_postdec_f64_label6:
+    mov %r9, %rax
+_kefir_func_postdec_f64_label3:
+    mov %rax, %r9
+    jmp _kefir_func_postdec_f64_label2
+_kefir_func_postdec_f64_label4:
+    movq %r10, %xmm0
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+    .align 8
+_kefir_func_postdec_f64_label5:
+    .quad 13830554455654793216
+.section .text
+
+postdec_i16:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+_kefir_func_postdec_i16_label0:
+_kefir_func_postdec_i16_label1:
+    movq i16@GOTPCREL(%rip), %rax
+    mov %rax, %r9
+_kefir_func_postdec_i16_label2:
+    movq %r9, -32(%rbp)
+    mov %r9, %rdi
+    mov $5, %rsi
+    call __atomic_load_2@PLT
+    mov %rax, %rcx
+    movq -32(%rbp), %r9
+    movsx %cx, %r10
+    mov %r10, %rax
+    add $-1, %rax
+    movsx %ax, %rax
+    movq %r9, -24(%rbp)
+    movq %r10, -16(%rbp)
+    mov %r9, %rdi
+    mov %rax, %rdx
+    mov $5, %rcx
+    mov $5, %r8
+    mov %r10, -32(%rbp)
+    lea -32(%rbp), %rsi
+    call __atomic_compare_exchange_2@PLT
+    mov %rax, %rcx
+    movq -24(%rbp), %r9
+    movq -16(%rbp), %r10
+    test %rcx, %rcx
+    jz _kefir_func_postdec_i16_label5
+    jmp _kefir_func_postdec_i16_label4
+_kefir_func_postdec_i16_label5:
+    mov %r9, %rax
+_kefir_func_postdec_i16_label3:
+    mov %rax, %r9
+    jmp _kefir_func_postdec_i16_label2
+_kefir_func_postdec_i16_label4:
+    mov %r10, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+postdec_i32:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+_kefir_func_postdec_i32_label0:
+_kefir_func_postdec_i32_label1:
+    movq i32@GOTPCREL(%rip), %rax
+    mov %rax, %r9
+_kefir_func_postdec_i32_label2:
+    movq %r9, -32(%rbp)
+    mov %r9, %rdi
+    mov $5, %rsi
+    call __atomic_load_4@PLT
+    mov %rax, %rcx
+    movq -32(%rbp), %r9
+    movsx %ecx, %r10
+    mov %r10, %rax
+    add $-1, %rax
+    movsx %eax, %rax
+    movq %r9, -24(%rbp)
+    movq %r10, -16(%rbp)
+    mov %r9, %rdi
+    mov %rax, %rdx
+    mov $5, %rcx
+    mov $5, %r8
+    mov %r10, -32(%rbp)
+    lea -32(%rbp), %rsi
+    call __atomic_compare_exchange_4@PLT
+    mov %rax, %rcx
+    movq -24(%rbp), %r9
+    movq -16(%rbp), %r10
+    test %rcx, %rcx
+    jz _kefir_func_postdec_i32_label5
+    jmp _kefir_func_postdec_i32_label4
+_kefir_func_postdec_i32_label5:
+    mov %r9, %rax
+_kefir_func_postdec_i32_label3:
+    mov %rax, %r9
+    jmp _kefir_func_postdec_i32_label2
+_kefir_func_postdec_i32_label4:
+    mov %r10, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+postdec_i64:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+_kefir_func_postdec_i64_label0:
+_kefir_func_postdec_i64_label1:
+    movq i64@GOTPCREL(%rip), %rax
+    mov %rax, %r9
+_kefir_func_postdec_i64_label2:
+    movq %r9, -32(%rbp)
+    mov %r9, %rdi
+    mov $5, %rsi
+    call __atomic_load_8@PLT
+    mov %rax, %r10
+    movq -32(%rbp), %r9
+    mov %r10, %rax
+    add $-1, %rax
+    movq %r9, -24(%rbp)
+    movq %r10, -16(%rbp)
+    mov %r9, %rdi
+    mov %rax, %rdx
+    mov $5, %rcx
+    mov $5, %r8
+    mov %r10, -32(%rbp)
+    lea -32(%rbp), %rsi
+    call __atomic_compare_exchange_8@PLT
+    mov %rax, %rcx
+    movq -24(%rbp), %r9
+    movq -16(%rbp), %r10
+    test %rcx, %rcx
+    jz _kefir_func_postdec_i64_label5
+    jmp _kefir_func_postdec_i64_label4
+_kefir_func_postdec_i64_label5:
+    mov %r9, %rax
+_kefir_func_postdec_i64_label3:
+    mov %rax, %r9
+    jmp _kefir_func_postdec_i64_label2
+_kefir_func_postdec_i64_label4:
+    mov %r10, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+postdec_ptr:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+_kefir_func_postdec_ptr_label0:
+_kefir_func_postdec_ptr_label1:
+    movq ptr@GOTPCREL(%rip), %rax
+    mov %rax, %r9
+_kefir_func_postdec_ptr_label2:
+    movq %r9, -32(%rbp)
+    mov %r9, %rdi
+    mov $5, %rsi
+    call __atomic_load_8@PLT
+    mov %rax, %r10
+    movq -32(%rbp), %r9
+    mov %r10, %rax
+    add $-8, %rax
+    movq %r9, -24(%rbp)
+    movq %r10, -16(%rbp)
+    mov %r9, %rdi
+    mov %rax, %rdx
+    mov $5, %rcx
+    mov $5, %r8
+    mov %r10, -32(%rbp)
+    lea -32(%rbp), %rsi
+    call __atomic_compare_exchange_8@PLT
+    mov %rax, %rcx
+    movq -24(%rbp), %r9
+    movq -16(%rbp), %r10
+    test %rcx, %rcx
+    jz _kefir_func_postdec_ptr_label5
+    jmp _kefir_func_postdec_ptr_label4
+_kefir_func_postdec_ptr_label5:
+    mov %r9, %rax
+_kefir_func_postdec_ptr_label3:
+    mov %rax, %r9
+    jmp _kefir_func_postdec_ptr_label2
+_kefir_func_postdec_ptr_label4:
+    mov %r10, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+postinc_f32:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    stmxcsr -8(%rbp)
+_kefir_func_postinc_f32_label0:
+_kefir_func_postinc_f32_label1:
+    movq f32@GOTPCREL(%rip), %rax
+    mov %rax, %r9
+_kefir_func_postinc_f32_label2:
+    movq %r9, -32(%rbp)
+    mov %r9, %rdi
+    mov $5, %rsi
+    call __atomic_load_4@PLT
+    mov %rax, %r10
+    movq -32(%rbp), %r9
+    movd _kefir_func_postinc_f32_label5(%rip), %xmm0
+    movq %r10, %xmm1
+    addss %xmm0, %xmm1
+    movq %r9, -24(%rbp)
+    movq %r10, -16(%rbp)
+    mov %r9, %rdi
+    movq %xmm1, %rdx
+    mov $5, %rcx
+    mov $5, %r8
+    mov %r10, -32(%rbp)
+    lea -32(%rbp), %rsi
+    call __atomic_compare_exchange_4@PLT
+    mov %rax, %rcx
+    movq -24(%rbp), %r9
+    movq -16(%rbp), %r10
+    test %rcx, %rcx
+    jz _kefir_func_postinc_f32_label6
+    jmp _kefir_func_postinc_f32_label4
+_kefir_func_postinc_f32_label6:
+    mov %r9, %rax
+_kefir_func_postinc_f32_label3:
+    mov %rax, %r9
+    jmp _kefir_func_postinc_f32_label2
+_kefir_func_postinc_f32_label4:
+    movq %r10, %xmm0
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+    .align 4
+_kefir_func_postinc_f32_label5:
+    .long 1065353216
+.section .text
+
+postinc_f64:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    stmxcsr -8(%rbp)
+_kefir_func_postinc_f64_label0:
+_kefir_func_postinc_f64_label1:
+    movq f64@GOTPCREL(%rip), %rax
+    mov %rax, %r9
+_kefir_func_postinc_f64_label2:
+    movq %r9, -32(%rbp)
+    mov %r9, %rdi
+    mov $5, %rsi
+    call __atomic_load_8@PLT
+    mov %rax, %r10
+    movq -32(%rbp), %r9
+    movq _kefir_func_postinc_f64_label5(%rip), %xmm0
+    movq %r10, %xmm1
+    addsd %xmm0, %xmm1
+    movq %r9, -24(%rbp)
+    movq %r10, -16(%rbp)
+    mov %r9, %rdi
+    movq %xmm1, %rdx
+    mov $5, %rcx
+    mov $5, %r8
+    mov %r10, -32(%rbp)
+    lea -32(%rbp), %rsi
+    call __atomic_compare_exchange_8@PLT
+    mov %rax, %rcx
+    movq -24(%rbp), %r9
+    movq -16(%rbp), %r10
+    test %rcx, %rcx
+    jz _kefir_func_postinc_f64_label6
+    jmp _kefir_func_postinc_f64_label4
+_kefir_func_postinc_f64_label6:
+    mov %r9, %rax
+_kefir_func_postinc_f64_label3:
+    mov %rax, %r9
+    jmp _kefir_func_postinc_f64_label2
+_kefir_func_postinc_f64_label4:
+    movq %r10, %xmm0
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+.section .rodata
+    .align 8
+_kefir_func_postinc_f64_label5:
+    .quad 4607182418800017408
+.section .text
+
+postinc_i16:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+_kefir_func_postinc_i16_label0:
+_kefir_func_postinc_i16_label1:
+    movq i16@GOTPCREL(%rip), %rax
+    mov %rax, %r9
+_kefir_func_postinc_i16_label2:
+    movq %r9, -32(%rbp)
+    mov %r9, %rdi
+    mov $5, %rsi
+    call __atomic_load_2@PLT
+    mov %rax, %rcx
+    movq -32(%rbp), %r9
+    movsx %cx, %r10
+    mov %r10, %rax
+    add $1, %rax
+    movsx %ax, %rax
+    movq %r9, -24(%rbp)
+    movq %r10, -16(%rbp)
+    mov %r9, %rdi
+    mov %rax, %rdx
+    mov $5, %rcx
+    mov $5, %r8
+    mov %r10, -32(%rbp)
+    lea -32(%rbp), %rsi
+    call __atomic_compare_exchange_2@PLT
+    mov %rax, %rcx
+    movq -24(%rbp), %r9
+    movq -16(%rbp), %r10
+    test %rcx, %rcx
+    jz _kefir_func_postinc_i16_label5
+    jmp _kefir_func_postinc_i16_label4
+_kefir_func_postinc_i16_label5:
+    mov %r9, %rax
+_kefir_func_postinc_i16_label3:
+    mov %rax, %r9
+    jmp _kefir_func_postinc_i16_label2
+_kefir_func_postinc_i16_label4:
+    mov %r10, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+postinc_i32:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+_kefir_func_postinc_i32_label0:
+_kefir_func_postinc_i32_label1:
+    movq i32@GOTPCREL(%rip), %rax
+    mov %rax, %r9
+_kefir_func_postinc_i32_label2:
+    movq %r9, -32(%rbp)
+    mov %r9, %rdi
+    mov $5, %rsi
+    call __atomic_load_4@PLT
+    mov %rax, %rcx
+    movq -32(%rbp), %r9
+    movsx %ecx, %r10
+    mov %r10, %rax
+    add $1, %rax
+    movsx %eax, %rax
+    movq %r9, -24(%rbp)
+    movq %r10, -16(%rbp)
+    mov %r9, %rdi
+    mov %rax, %rdx
+    mov $5, %rcx
+    mov $5, %r8
+    mov %r10, -32(%rbp)
+    lea -32(%rbp), %rsi
+    call __atomic_compare_exchange_4@PLT
+    mov %rax, %rcx
+    movq -24(%rbp), %r9
+    movq -16(%rbp), %r10
+    test %rcx, %rcx
+    jz _kefir_func_postinc_i32_label5
+    jmp _kefir_func_postinc_i32_label4
+_kefir_func_postinc_i32_label5:
+    mov %r9, %rax
+_kefir_func_postinc_i32_label3:
+    mov %rax, %r9
+    jmp _kefir_func_postinc_i32_label2
+_kefir_func_postinc_i32_label4:
+    mov %r10, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+postinc_i64:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+_kefir_func_postinc_i64_label0:
+_kefir_func_postinc_i64_label1:
+    movq i64@GOTPCREL(%rip), %rax
+    mov %rax, %r9
+_kefir_func_postinc_i64_label2:
+    movq %r9, -32(%rbp)
+    mov %r9, %rdi
+    mov $5, %rsi
+    call __atomic_load_8@PLT
+    mov %rax, %r10
+    movq -32(%rbp), %r9
+    mov %r10, %rax
+    add $1, %rax
+    movq %r9, -24(%rbp)
+    movq %r10, -16(%rbp)
+    mov %r9, %rdi
+    mov %rax, %rdx
+    mov $5, %rcx
+    mov $5, %r8
+    mov %r10, -32(%rbp)
+    lea -32(%rbp), %rsi
+    call __atomic_compare_exchange_8@PLT
+    mov %rax, %rcx
+    movq -24(%rbp), %r9
+    movq -16(%rbp), %r10
+    test %rcx, %rcx
+    jz _kefir_func_postinc_i64_label5
+    jmp _kefir_func_postinc_i64_label4
+_kefir_func_postinc_i64_label5:
+    mov %r9, %rax
+_kefir_func_postinc_i64_label3:
+    mov %rax, %r9
+    jmp _kefir_func_postinc_i64_label2
+_kefir_func_postinc_i64_label4:
+    mov %r10, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+postinc_ptr:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+_kefir_func_postinc_ptr_label0:
+_kefir_func_postinc_ptr_label1:
+    movq ptr@GOTPCREL(%rip), %rax
+    mov %rax, %r9
+_kefir_func_postinc_ptr_label2:
+    movq %r9, -32(%rbp)
+    mov %r9, %rdi
+    mov $5, %rsi
+    call __atomic_load_8@PLT
+    mov %rax, %r10
+    movq -32(%rbp), %r9
+    mov %r10, %rax
+    add $8, %rax
+    movq %r9, -24(%rbp)
+    movq %r10, -16(%rbp)
+    mov %r9, %rdi
+    mov %rax, %rdx
+    mov $5, %rcx
+    mov $5, %r8
+    mov %r10, -32(%rbp)
+    lea -32(%rbp), %rsi
+    call __atomic_compare_exchange_8@PLT
+    mov %rax, %rcx
+    movq -24(%rbp), %r9
+    movq -16(%rbp), %r10
+    test %rcx, %rcx
+    jz _kefir_func_postinc_ptr_label5
+    jmp _kefir_func_postinc_ptr_label4
+_kefir_func_postinc_ptr_label5:
+    mov %r9, %rax
+_kefir_func_postinc_ptr_label3:
+    mov %rax, %r9
+    jmp _kefir_func_postinc_ptr_label2
+_kefir_func_postinc_ptr_label4:
+    mov %r10, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+

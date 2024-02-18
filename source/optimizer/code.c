@@ -1516,6 +1516,7 @@ static kefir_result_t replace_references_atomic_op(struct kefir_opt_instruction 
                                                    kefir_opt_instruction_ref_t from_ref) {
     REPLACE_REF(&instr->operation.parameters.atomic_op.ref[0], to_ref, from_ref);
     REPLACE_REF(&instr->operation.parameters.atomic_op.ref[1], to_ref, from_ref);
+    REPLACE_REF(&instr->operation.parameters.atomic_op.ref[2], to_ref, from_ref);
     return KEFIR_OK;
 }
 

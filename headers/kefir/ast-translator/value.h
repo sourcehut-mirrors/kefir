@@ -54,4 +54,9 @@ kefir_result_t kefir_ast_translator_store_value(struct kefir_mem *, const struct
                                                 struct kefir_ast_translator_context *, struct kefir_irbuilder_block *,
                                                 const struct kefir_source_location *);
 
+kefir_result_t kefir_ast_translator_atomic_compare_exchange_value(struct kefir_mem *, const struct kefir_ast_type *,
+                                                                  struct kefir_ast_translator_context *,
+                                                                  struct kefir_irbuilder_block *,
+                                                                  const struct kefir_source_location *);
+
 #endif

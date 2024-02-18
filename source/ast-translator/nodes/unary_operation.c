@@ -287,15 +287,49 @@ static kefir_result_t translate_preincdec(struct kefir_mem *mem, struct kefir_as
     kefir_bool_t atomic_aggregate_target_value;
 
     REQUIRE_OK(kefir_ast_translate_lvalue(mem, context, builder, node->arg));
-    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 0));
-    REQUIRE_OK(kefir_ast_translator_resolve_lvalue(mem, context, builder, node->arg, &atomic_aggregate_target_value));
-    REQUIRE(!atomic_aggregate_target_value, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected atomic aggregate value"));
+    if (!node->arg->properties.expression_props.atomic) {
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 0));
+        REQUIRE_OK(
+            kefir_ast_translator_resolve_lvalue(mem, context, builder, node->arg, &atomic_aggregate_target_value));
+        REQUIRE(!atomic_aggregate_target_value,
+                KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected atomic aggregate value"));
 
-    REQUIRE_OK(incdec_impl(mem, context, builder, node, normalized_type));
+        REQUIRE_OK(incdec_impl(mem, context, builder, node, normalized_type));
 
-    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_XCHG, 1));
-    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 1));
-    REQUIRE_OK(kefir_ast_translator_store_lvalue(mem, context, builder, node->arg));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_XCHG, 1));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 1));
+        REQUIRE_OK(kefir_ast_translator_store_lvalue(mem, context, builder, node->arg));
+    } else {
+        kefir_size_t successBranch, failTarget = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PLACEHI64, 0));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_XCHG, 1));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 0));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 0));
+        REQUIRE_OK(
+            kefir_ast_translator_resolve_lvalue(mem, context, builder, node->arg, &atomic_aggregate_target_value));
+        REQUIRE(!atomic_aggregate_target_value,
+                KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected atomic aggregate value"));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 0));
+
+        REQUIRE_OK(incdec_impl(mem, context, builder, node, normalized_type));
+
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 0));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_XCHG, 5));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_POP, 0));
+
+        REQUIRE_OK(kefir_ast_translator_atomic_compare_exchange_value(mem, node->arg->properties.type, context, builder,
+                                                                      &node->base.source_location));
+
+        successBranch = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_BRANCH, 0));
+
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_XCHG, 1));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_POP, 0));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_JMP, failTarget));
+
+        KEFIR_IRBUILDER_BLOCK_INSTR_AT(builder, successBranch)->arg.i64 = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_POP, 0));
+    }
     return KEFIR_OK;
 }
 
@@ -306,15 +340,49 @@ static kefir_result_t translate_postincdec(struct kefir_mem *mem, struct kefir_a
     kefir_bool_t atomic_aggregate_target_value;
 
     REQUIRE_OK(kefir_ast_translate_lvalue(mem, context, builder, node->arg));
-    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 0));
-    REQUIRE_OK(kefir_ast_translator_resolve_lvalue(mem, context, builder, node->arg, &atomic_aggregate_target_value));
-    REQUIRE(!atomic_aggregate_target_value, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected atomic aggregate value"));
+    if (!node->arg->properties.expression_props.atomic) {
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 0));
+        REQUIRE_OK(
+            kefir_ast_translator_resolve_lvalue(mem, context, builder, node->arg, &atomic_aggregate_target_value));
+        REQUIRE(!atomic_aggregate_target_value,
+                KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected atomic aggregate value"));
 
-    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_XCHG, 1));
-    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 1));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_XCHG, 1));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 1));
 
-    REQUIRE_OK(incdec_impl(mem, context, builder, node, normalized_type));
-    REQUIRE_OK(kefir_ast_translator_store_lvalue(mem, context, builder, node->arg));
+        REQUIRE_OK(incdec_impl(mem, context, builder, node, normalized_type));
+        REQUIRE_OK(kefir_ast_translator_store_lvalue(mem, context, builder, node->arg));
+    } else {
+        kefir_size_t successBranch, failTarget = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PLACEHI64, 0));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_XCHG, 1));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 0));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 0));
+        REQUIRE_OK(
+            kefir_ast_translator_resolve_lvalue(mem, context, builder, node->arg, &atomic_aggregate_target_value));
+        REQUIRE(!atomic_aggregate_target_value,
+                KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected atomic aggregate value"));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 0));
+
+        REQUIRE_OK(incdec_impl(mem, context, builder, node, normalized_type));
+
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 1));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_XCHG, 5));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_POP, 0));
+
+        REQUIRE_OK(kefir_ast_translator_atomic_compare_exchange_value(mem, node->arg->properties.type, context, builder,
+                                                                      &node->base.source_location));
+
+        successBranch = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_BRANCH, 0));
+
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_XCHG, 1));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_POP, 0));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_JMP, failTarget));
+
+        KEFIR_IRBUILDER_BLOCK_INSTR_AT(builder, successBranch)->arg.i64 = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_POP, 0));
+    }
     return KEFIR_OK;
 }
 

@@ -341,6 +341,20 @@ ATOMIC_STORE_OP(atomic_store_long_double);
 
 #undef ATOMIC_STORE_OP
 
+#define ATOMIC_CMPXCHG_OP(_id)                                                                            \
+    kefir_result_t kefir_opt_code_builder_##_id(struct kefir_mem *, struct kefir_opt_code_container *,    \
+                                                kefir_opt_block_id_t, kefir_opt_instruction_ref_t,        \
+                                                kefir_opt_instruction_ref_t, kefir_opt_instruction_ref_t, \
+                                                kefir_opt_memory_order_t, kefir_opt_instruction_ref_t *)
+
+ATOMIC_CMPXCHG_OP(atomic_compare_exchange8);
+ATOMIC_CMPXCHG_OP(atomic_compare_exchange16);
+ATOMIC_CMPXCHG_OP(atomic_compare_exchange32);
+ATOMIC_CMPXCHG_OP(atomic_compare_exchange64);
+ATOMIC_CMPXCHG_OP(atomic_compare_exchange_long_double);
+
+#undef ATOMIC_CMPXCHG_OP
+
 #define LOAD_OP(_id)                                                                                              \
     kefir_result_t kefir_opt_code_builder_##_id(                                                                  \
         struct kefir_mem *, struct kefir_opt_code_container *, kefir_opt_block_id_t, kefir_opt_instruction_ref_t, \

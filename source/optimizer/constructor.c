@@ -666,7 +666,6 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
         REQUIRE_OK(                                                                                                \
             kefir_opt_code_builder_##_id(mem, code, current_block_id, instr_ref2, instr_ref3, model, &instr_ref)); \
         REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));                         \
-        REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));                                       \
     } break;
 
             ATOMIC_STORE_OP(atomic_store8, KEFIR_IROPCODE_ATOMIC_STORE8)
@@ -676,6 +675,34 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             ATOMIC_STORE_OP(atomic_store_long_double, KEFIR_IROPCODE_ATOMIC_STORE_LONG_DOUBLE)
 
 #undef ATOMIC_STORE_OP
+
+#define ATOMIC_CMPXCHG_OP(_id, _opcode)                                                                          \
+    case _opcode: {                                                                                              \
+        kefir_opt_memory_order_t model;                                                                          \
+        switch (instr->arg.i64) {                                                                                \
+            case KEFIR_IR_MEMORY_ORDER_SEQ_CST:                                                                  \
+                model = KEFIR_OPT_MEMORY_ORDER_SEQ_CST;                                                          \
+                break;                                                                                           \
+                                                                                                                 \
+            default:                                                                                             \
+                return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unknown IR atomic model flag");                     \
+        }                                                                                                        \
+        REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref4));                                    \
+        REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref3));                                    \
+        REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));                                    \
+        REQUIRE_OK(kefir_opt_code_builder_##_id(mem, code, current_block_id, instr_ref2, instr_ref3, instr_ref4, \
+                                                model, &instr_ref));                                             \
+        REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));                       \
+        REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));                                     \
+    } break;
+
+            ATOMIC_CMPXCHG_OP(atomic_compare_exchange8, KEFIR_IROPCODE_ATOMIC_CMPXCHG8)
+            ATOMIC_CMPXCHG_OP(atomic_compare_exchange16, KEFIR_IROPCODE_ATOMIC_CMPXCHG16)
+            ATOMIC_CMPXCHG_OP(atomic_compare_exchange32, KEFIR_IROPCODE_ATOMIC_CMPXCHG32)
+            ATOMIC_CMPXCHG_OP(atomic_compare_exchange64, KEFIR_IROPCODE_ATOMIC_CMPXCHG64)
+            ATOMIC_CMPXCHG_OP(atomic_compare_exchange_long_double, KEFIR_IROPCODE_ATOMIC_CMPXCHG_LONG_DOUBLE)
+
+#undef ATOMIC_CMPXCHG_OP
 
         case KEFIR_IROPCODE_ATOMIC_BCOPY_FROM: {
             REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));

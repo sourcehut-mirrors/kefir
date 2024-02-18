@@ -152,7 +152,7 @@ typedef union kefir_opt_operation_parameters {
     } function_call;
 
     struct {
-        kefir_opt_instruction_ref_t ref[2];
+        kefir_opt_instruction_ref_t ref[3];
         kefir_opt_memory_order_t model;
         kefir_id_t type_id;
         kefir_size_t type_index;

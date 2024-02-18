@@ -199,6 +199,11 @@
     OPCODE(ATOMIC_STORE_LONG_DOUBLE, "atomic_store_long_double", memory_order) SEPARATOR \
     OPCODE(ATOMIC_BCOPY_FROM, "atomic_bcopy_from", atomic_typeref) SEPARATOR \
     OPCODE(ATOMIC_BCOPY_TO, "atomic_bcopy_to", atomic_typeref) SEPARATOR \
+    OPCODE(ATOMIC_CMPXCHG8, "atomic_cmpxchg8", memory_order) SEPARATOR \
+    OPCODE(ATOMIC_CMPXCHG16, "atomic_cmpxchg16", memory_order) SEPARATOR \
+    OPCODE(ATOMIC_CMPXCHG32, "atomic_cmpxchg32", memory_order) SEPARATOR \
+    OPCODE(ATOMIC_CMPXCHG64, "atomic_cmpxchg64", memory_order) SEPARATOR \
+    OPCODE(ATOMIC_CMPXCHG_LONG_DOUBLE, "atomic_cmpxchg_long_double", memory_order) SEPARATOR \
     /* Miscallenous */ \
     OPCODE(INLINEASM,    "inlineasm",   u64)
 // clang-format on

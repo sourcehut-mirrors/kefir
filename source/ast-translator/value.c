@@ -621,3 +621,77 @@ kefir_result_t kefir_ast_translator_store_value(struct kefir_mem *mem, const str
     }
     return KEFIR_OK;
 }
+
+kefir_result_t kefir_ast_translator_atomic_compare_exchange_value(struct kefir_mem *mem,
+                                                                  const struct kefir_ast_type *type,
+                                                                  struct kefir_ast_translator_context *context,
+                                                                  struct kefir_irbuilder_block *builder,
+                                                                  const struct kefir_source_location *source_location) {
+    UNUSED(source_location);
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type"));
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST translator context"));
+    REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR block builder"));
+
+    const struct kefir_ast_type *normalizer = kefir_ast_translator_normalize_type(type);
+    const kefir_int64_t atomic_memory_order = KEFIR_IR_MEMORY_ORDER_SEQ_CST;
+
+    switch (normalizer->tag) {
+        case KEFIR_AST_TYPE_VOID:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Cannot store value with void type");
+
+        case KEFIR_AST_TYPE_SCALAR_BOOL:
+        case KEFIR_AST_TYPE_SCALAR_CHAR:
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_ATOMIC_CMPXCHG8, atomic_memory_order));
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_ATOMIC_CMPXCHG16, atomic_memory_order));
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_INT:
+        case KEFIR_AST_TYPE_SCALAR_FLOAT:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_ATOMIC_CMPXCHG32, atomic_memory_order));
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG:
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
+        case KEFIR_AST_TYPE_SCALAR_DOUBLE:
+        case KEFIR_AST_TYPE_SCALAR_POINTER:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_ATOMIC_CMPXCHG64, atomic_memory_order));
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_ATOMIC_CMPXCHG_LONG_DOUBLE,
+                                                       atomic_memory_order));
+            break;
+
+        case KEFIR_AST_TYPE_ENUMERATION:
+            return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected enumeration type");
+
+        case KEFIR_AST_TYPE_STRUCTURE:
+        case KEFIR_AST_TYPE_UNION:
+        case KEFIR_AST_TYPE_ARRAY:
+        case KEFIR_AST_TYPE_COMPLEX_FLOAT:
+        case KEFIR_AST_TYPE_COMPLEX_DOUBLE:
+        case KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unexpected compare-and-exchange value type");
+
+        case KEFIR_AST_TYPE_FUNCTION:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Cannot store value with function type");
+
+        case KEFIR_AST_TYPE_QUALIFIED:
+            return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected qualified type");
+
+        case KEFIR_AST_TYPE_VA_LIST:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_VARARG_COPY, 0));
+            break;
+    }
+    return KEFIR_OK;
+}

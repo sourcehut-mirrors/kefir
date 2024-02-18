@@ -179,6 +179,7 @@ static kefir_result_t extract_inputs_atomic_op(const struct kefir_opt_code_conta
     UNUSED(code);
     INPUT_CALLBACK(instr->operation.parameters.atomic_op.ref[0], callback, payload);
     INPUT_CALLBACK(instr->operation.parameters.atomic_op.ref[1], callback, payload);
+    INPUT_CALLBACK(instr->operation.parameters.atomic_op.ref[2], callback, payload);
     return KEFIR_OK;
 }
 
