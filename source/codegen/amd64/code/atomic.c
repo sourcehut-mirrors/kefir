@@ -734,9 +734,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_compare_exchange_long
     REQUIRE_OK(kefir_asmcmp_amd64_mov(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
         &KEFIR_ASMCMP_MAKE_VREG(size_placement_vreg),
-        &KEFIR_ASMCMP_MAKE_INT(kefir_abi_amd64_long_double_qword_size(function->codegen->abi_variant) *
-                               KEFIR_AMD64_ABI_QWORD),
-        NULL));
+        &KEFIR_ASMCMP_MAKE_INT(kefir_abi_amd64_long_double_actual_size(function->codegen->abi_variant)), NULL));
 
     REQUIRE_OK(kefir_asmcmp_amd64_fld(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),

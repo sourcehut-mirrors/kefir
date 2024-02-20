@@ -144,3 +144,8 @@ kefir_size_t kefir_abi_amd64_long_double_qword_alignment(kefir_abi_amd64_variant
     UNUSED(variant);
     return 2;
 }
+
+kefir_size_t kefir_abi_amd64_long_double_actual_size(kefir_abi_amd64_variant_t variant) {
+    UNUSED(variant);
+    return 10;
+}

@@ -61,5 +61,6 @@ kefir_size_t kefir_abi_amd64_float_qword_size(kefir_abi_amd64_variant_t);
 kefir_size_t kefir_abi_amd64_float_qword_alignment(kefir_abi_amd64_variant_t);
 kefir_size_t kefir_abi_amd64_long_double_qword_size(kefir_abi_amd64_variant_t);
 kefir_size_t kefir_abi_amd64_long_double_qword_alignment(kefir_abi_amd64_variant_t);
+kefir_size_t kefir_abi_amd64_long_double_actual_size(kefir_abi_amd64_variant_t);
 
 #endif

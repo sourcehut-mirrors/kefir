@@ -103,7 +103,7 @@ _kefir_func_postdec_ld_label2:
     mov %r10, %rsi
     mov $5, %r8
     mov $5, %r9
-    mov $16, %rdi
+    mov $10, %rdi
     fldt -96(%rbp)
     movq $0, -56(%rbp)
     fstpt -64(%rbp)
@@ -208,7 +208,7 @@ _kefir_func_postinc_ld_label2:
     mov %r10, %rsi
     mov $5, %r8
     mov $5, %r9
-    mov $16, %rdi
+    mov $10, %rdi
     fldt -96(%rbp)
     movq $0, -56(%rbp)
     fstpt -64(%rbp)
