@@ -36,12 +36,18 @@ int main(void) {
     _Atomic float f32;
     _Atomic double f64;
     _Atomic long double ld;
+    _Atomic(int *) ptr;
 
     for (long i = -4096; i < 4096; i++) {
 #define TEST(_op, _sz, _type, _oper)                                                  \
     _sz = (_type) i;                                                                  \
     assert(_op##_##_sz(&_sz, (_type) ~i) == (_type) (((_type) i) _oper((_type) ~i))); \
     assert(_sz == (_type) (((_type) i) _oper((_type) ~i)))
+#define TEST_INT(_op, _oper)      \
+    TEST(_op, i8, char, _oper);   \
+    TEST(_op, i16, short, _oper); \
+    TEST(_op, i32, int, _oper);   \
+    TEST(_op, i64, long, _oper)
 #define TEST_FP(_op, _sz, _type, _oper, _eps)                                                               \
     _sz = (_type) i;                                                                                        \
     assert(fabs(_op##_##_sz(&_sz, (_type) ~i) - (_type) (((_type) i) _oper((_type) ~i))) < EPSILON_##_eps); \
@@ -52,15 +58,35 @@ int main(void) {
            EPSILON_LD);                                                                                         \
     assert(fabsl(ld - (long double) (((long double) i) _oper((long double) ~i))) < EPSILON_LD)
 #define TEST_ALL_SIZES(_op, _oper)       \
-    TEST(_op, i8, char, _oper);          \
-    TEST(_op, i16, short, _oper);        \
-    TEST(_op, i32, int, _oper);          \
-    TEST(_op, i64, long, _oper);         \
+    TEST_INT(_op, _oper);                \
     TEST_FP(_op, f32, float, _oper, F);  \
     TEST_FP(_op, f64, double, _oper, D); \
     TEST_LD(_op, _oper)
 
         TEST_ALL_SIZES(multiply, *);
+        if (((char) ~i) != 0) {
+            TEST_ALL_SIZES(divide, /);
+            TEST_INT(modulo, %);
+        }
+        TEST_ALL_SIZES(add, +);
+        TEST_ALL_SIZES(subtract, -);
+        if ((~i) >= 0 && (~i) < 8) {
+            if ((char) i >= 0) {
+                TEST_INT(shl, <<);
+            }
+            TEST_INT(shr, >>);
+        }
+        TEST_INT(iand, &);
+        TEST_INT(ior, |);
+        TEST_INT(ixor, ^);
+
+        ptr = (int *) i;
+        assert(add_ptr(&ptr, ~i) == ((int *) i) + (~i));
+        assert(ptr == ((int *) i) + (~i));
+
+        ptr = (int *) i;
+        assert(subtract_ptr(&ptr, ~i) == ((int *) i) - (~i));
+        assert(ptr == ((int *) i) - (~i));
     }
     return EXIT_SUCCESS;
 }

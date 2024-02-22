@@ -460,9 +460,6 @@
                     "arg": 7
                 },
                 {
-                    "opcode": "ineg"
-                },
-                {
                     "opcode": "getglobal",
                     "arg": {
                         "data": "ptr"
@@ -485,6 +482,9 @@
                 {
                     "opcode": "xchg",
                     "arg": 2
+                },
+                {
+                    "opcode": "ineg"
                 },
                 {
                     "opcode": "iaddx",
@@ -570,9 +570,6 @@
                     "arg": -1
                 },
                 {
-                    "opcode": "ineg"
-                },
-                {
                     "opcode": "getglobal",
                     "arg": {
                         "data": "ptr2"
@@ -595,6 +592,9 @@
                 {
                     "opcode": "xchg",
                     "arg": 2
+                },
+                {
+                    "opcode": "ineg"
                 },
                 {
                     "opcode": "iaddx",

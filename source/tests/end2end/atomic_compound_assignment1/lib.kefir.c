@@ -25,13 +25,33 @@
         return (*a) _oper## = b;                   \
     }
 
+#define DEF_INT(_op, _oper)     \
+    DEF(_op, i8, char, _oper)   \
+    DEF(_op, i16, short, _oper) \
+    DEF(_op, i32, int, _oper)   \
+    DEF(_op, i64, long, _oper)
+
 #define DEF_ALL_SIZES(_op, _oper) \
-    DEF(_op, i8, char, _oper)     \
-    DEF(_op, i16, short, _oper)   \
-    DEF(_op, i32, int, _oper)     \
-    DEF(_op, i64, long, _oper)    \
+    DEF_INT(_op, _oper)           \
     DEF(_op, f32, float, _oper)   \
     DEF(_op, f64, double, _oper)  \
     DEF(_op, ld, long double, _oper)
 
 DEF_ALL_SIZES(multiply, *)
+DEF_ALL_SIZES(divide, /)
+DEF_ALL_SIZES(add, +)
+DEF_ALL_SIZES(subtract, -)
+DEF_INT(modulo, %)
+DEF_INT(shl, <<)
+DEF_INT(shr, >>)
+DEF_INT(iand, &)
+DEF_INT(ior, |)
+DEF_INT(ixor, ^)
+
+int *add_ptr(_Atomic(int *) *ptr, long value) {
+    return (*ptr) += value;
+}
+
+int *subtract_ptr(_Atomic(int *) *ptr, long value) {
+    return (*ptr) -= value;
+}
