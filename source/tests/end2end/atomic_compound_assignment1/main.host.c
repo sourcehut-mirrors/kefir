@@ -38,6 +38,8 @@ int main(void) {
     _Atomic long double ld;
     _Atomic(int *) ptr;
 
+    int arr[256];
+
     for (long i = -4096; i < 4096; i++) {
 #define TEST(_op, _sz, _type, _oper)                                                  \
     _sz = (_type) i;                                                                  \
@@ -80,13 +82,13 @@ int main(void) {
         TEST_INT(ior, |);
         TEST_INT(ixor, ^);
 
-        ptr = (int *) i;
-        assert(add_ptr(&ptr, ~i) == ((int *) i) + (~i));
-        assert(ptr == ((int *) i) + (~i));
+        ptr = (int *) arr;
+        assert(add_ptr(&ptr, (unsigned char) i) == ((int *) arr) + ((unsigned char) i));
+        assert(ptr == ((int *) arr) + ((unsigned char) i));
 
-        ptr = (int *) i;
-        assert(subtract_ptr(&ptr, ~i) == ((int *) i) - (~i));
-        assert(ptr == ((int *) i) - (~i));
+        ptr = (int *) &arr[256];
+        assert(subtract_ptr(&ptr, (unsigned char) i) == ((int *) &arr[256]) - ((unsigned char) i));
+        assert(ptr == ((int *) &arr[256]) - ((unsigned char) i));
     }
     return EXIT_SUCCESS;
 }
