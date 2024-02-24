@@ -99,6 +99,21 @@ struct compound_type_layout {
 static kefir_result_t update_compound_type_layout(struct compound_type_layout *compound_type_layout,
                                                   struct kefir_abi_amd64_typeentry_layout *data,
                                                   const struct kefir_ir_typeentry *typeentry) {
+    if (typeentry->atomic) {
+        if (data->size <= 2) {
+            // Intentionally left blank
+        } else if (data->size <= 4) {
+            data->size = 4;
+            data->alignment = MAX(data->alignment, 4);
+        } else if (data->size <= 8) {
+            data->size = 8;
+            data->alignment = MAX(data->alignment, 8);
+        } else if (data->size <= 16) {
+            data->size = 16;
+            data->alignment = MAX(data->alignment, 16);
+        }
+    }
+
     if (typeentry->alignment != 0) {
         data->aligned = typeentry->alignment >= data->alignment;
         data->alignment = typeentry->alignment;

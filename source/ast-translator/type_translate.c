@@ -445,6 +445,12 @@ kefir_result_t kefir_ast_translate_object_type(struct kefir_mem *mem, const stru
         case KEFIR_AST_TYPE_QUALIFIED:
             REQUIRE_OK(kefir_ast_translate_object_type(mem, context, type->qualified_type.type, alignment, env, builder,
                                                        layout_ptr, source_location));
+            if (type->qualified_type.qualification.atomic_type) {
+                struct kefir_ir_typeentry *typeentry =
+                    kefir_ir_type_at(builder->type, kefir_ir_type_length(builder->type) - 1);
+                REQUIRE(typeentry != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to retrive IR type entry"));
+                typeentry->atomic = true;
+            }
             if (layout_ptr != NULL && *layout_ptr != NULL) {
                 REQUIRE_OK(kefir_ast_type_layout_set_qualification(mem, context->type_bundle, *layout_ptr,
                                                                    type->qualified_type.qualification));

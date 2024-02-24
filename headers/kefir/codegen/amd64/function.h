@@ -245,6 +245,9 @@ kefir_result_t kefir_codegen_amd64_function_map_phi_outputs(struct kefir_mem *, 
     _def(atomic_load, KEFIR_OPT_OPCODE_ATOMIC_LOAD32) _separator \
     _def(atomic_load, KEFIR_OPT_OPCODE_ATOMIC_LOAD64) _separator \
     _def(atomic_load_long_double, KEFIR_OPT_OPCODE_ATOMIC_LOAD_LONG_DOUBLE) _separator \
+    _def(atomic_load_complex, KEFIR_OPT_OPCODE_ATOMIC_LOAD_COMPLEX_FLOAT32) _separator \
+    _def(atomic_load_complex, KEFIR_OPT_OPCODE_ATOMIC_LOAD_COMPLEX_FLOAT64) _separator \
+    _def(atomic_load_complex, KEFIR_OPT_OPCODE_ATOMIC_LOAD_COMPLEX_LONG_DOUBLE) _separator \
     _def(atomic_store, KEFIR_OPT_OPCODE_ATOMIC_STORE8) _separator \
     _def(atomic_store, KEFIR_OPT_OPCODE_ATOMIC_STORE16) _separator \
     _def(atomic_store, KEFIR_OPT_OPCODE_ATOMIC_STORE32) _separator \
@@ -257,6 +260,8 @@ kefir_result_t kefir_codegen_amd64_function_map_phi_outputs(struct kefir_mem *, 
     _def(atomic_compare_exchange, KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG32) _separator \
     _def(atomic_compare_exchange, KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG64) _separator \
     _def(atomic_compare_exchange_long_double, KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG_LONG_DOUBLE) _separator \
+    _def(atomic_compare_exchange_complex_long_double, KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG_COMPLEX_LONG_DOUBLE) _separator \
+    _def(atomic_compare_exchange_memory, KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG_MEMORY) _separator \
     _def(inline_assembly, KEFIR_OPT_OPCODE_INLINE_ASSEMBLY)
 // clang-format on
 

@@ -66,7 +66,8 @@ kefir_result_t kefir_ir_type_append_entry(struct kefir_ir_type *type, const stru
 
 kefir_result_t kefir_ir_type_append(struct kefir_ir_type *type, kefir_ir_typecode_t typecode, kefir_uint32_t alignment,
                                     kefir_int64_t param) {
-    struct kefir_ir_typeentry typeentry = {.typecode = typecode, .alignment = alignment, .param = param};
+    struct kefir_ir_typeentry typeentry = {
+        .typecode = typecode, .alignment = alignment, .atomic = false, .param = param};
     return kefir_ir_type_append_entry(type, &typeentry);
 }
 

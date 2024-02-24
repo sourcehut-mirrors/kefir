@@ -61,6 +61,7 @@ typedef enum kefir_ir_typecode {
 typedef struct kefir_ir_typeentry {
     kefir_ir_typecode_t typecode;
     kefir_uint32_t alignment : 8;
+    kefir_bool_t atomic;
     kefir_int64_t param;
 } kefir_ir_typeentry_t;
 

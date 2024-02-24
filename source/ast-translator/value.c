@@ -407,8 +407,20 @@ kefir_result_t kefir_ast_translator_atomic_load_value(const struct kefir_ast_typ
             return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected enumeration type");
 
         case KEFIR_AST_TYPE_COMPLEX_FLOAT:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_ATOMIC_LOAD_COMPLEX_FLOAT32,
+                                                       atomic_memory_order));
+            break;
+
         case KEFIR_AST_TYPE_COMPLEX_DOUBLE:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_ATOMIC_LOAD_COMPLEX_FLOAT64,
+                                                       atomic_memory_order));
+            break;
+
         case KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_ATOMIC_LOAD_COMPLEX_LONG_DOUBLE,
+                                                       atomic_memory_order));
+            break;
+
         case KEFIR_AST_TYPE_STRUCTURE:
         case KEFIR_AST_TYPE_UNION:
         case KEFIR_AST_TYPE_ARRAY:
@@ -675,13 +687,29 @@ kefir_result_t kefir_ast_translator_atomic_compare_exchange_value(struct kefir_m
         case KEFIR_AST_TYPE_ENUMERATION:
             return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected enumeration type");
 
+        case KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_ATOMIC_CMPXCHG_COMPLEX_LONG_DOUBLE,
+                                                       atomic_memory_order));
+            break;
+
         case KEFIR_AST_TYPE_STRUCTURE:
         case KEFIR_AST_TYPE_UNION:
         case KEFIR_AST_TYPE_ARRAY:
         case KEFIR_AST_TYPE_COMPLEX_FLOAT:
-        case KEFIR_AST_TYPE_COMPLEX_DOUBLE:
-        case KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE:
-            return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unexpected compare-and-exchange value type");
+        case KEFIR_AST_TYPE_COMPLEX_DOUBLE: {
+            struct kefir_ast_translator_type *translator_type = NULL;
+            REQUIRE_OK(kefir_ast_translator_type_new(mem, context->ast_context, context->environment, context->module,
+                                                     type, 0, &translator_type, source_location));
+
+            kefir_result_t res = KEFIR_IRBUILDER_BLOCK_APPENDU32_4(
+                builder, KEFIR_IROPCODE_ATOMIC_CMPXCHG_MEMORY, atomic_memory_order, translator_type->object.ir_type_id,
+                translator_type->object.layout->value, 0);
+            REQUIRE_ELSE(res == KEFIR_OK, {
+                kefir_ast_translator_type_free(mem, translator_type);
+                return res;
+            });
+            REQUIRE_OK(kefir_ast_translator_type_free(mem, translator_type));
+        } break;
 
         case KEFIR_AST_TYPE_FUNCTION:
             return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Cannot store value with function type");

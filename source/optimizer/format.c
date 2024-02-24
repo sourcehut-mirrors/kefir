@@ -395,6 +395,9 @@ static kefir_result_t format_operation_atomic_op(struct kefir_json_output *json,
         case KEFIR_OPT_OPCODE_ATOMIC_LOAD32:
         case KEFIR_OPT_OPCODE_ATOMIC_LOAD64:
         case KEFIR_OPT_OPCODE_ATOMIC_LOAD_LONG_DOUBLE:
+        case KEFIR_OPT_OPCODE_ATOMIC_LOAD_COMPLEX_FLOAT32:
+        case KEFIR_OPT_OPCODE_ATOMIC_LOAD_COMPLEX_FLOAT64:
+        case KEFIR_OPT_OPCODE_ATOMIC_LOAD_COMPLEX_LONG_DOUBLE:
             REQUIRE_OK(kefir_json_output_object_key(json, "location"));
             REQUIRE_OK(id_format(json, oper->parameters.atomic_op.ref[0]));
             break;
@@ -427,12 +430,26 @@ static kefir_result_t format_operation_atomic_op(struct kefir_json_output *json,
         case KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG32:
         case KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG64:
         case KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG_LONG_DOUBLE:
+        case KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG_COMPLEX_LONG_DOUBLE:
             REQUIRE_OK(kefir_json_output_object_key(json, "location"));
             REQUIRE_OK(id_format(json, oper->parameters.atomic_op.ref[0]));
             REQUIRE_OK(kefir_json_output_object_key(json, "compare_value"));
             REQUIRE_OK(id_format(json, oper->parameters.atomic_op.ref[1]));
             REQUIRE_OK(kefir_json_output_object_key(json, "new_value"));
             REQUIRE_OK(id_format(json, oper->parameters.atomic_op.ref[2]));
+            break;
+
+        case KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG_MEMORY:
+            REQUIRE_OK(kefir_json_output_object_key(json, "location"));
+            REQUIRE_OK(id_format(json, oper->parameters.atomic_op.ref[0]));
+            REQUIRE_OK(kefir_json_output_object_key(json, "compare_value"));
+            REQUIRE_OK(id_format(json, oper->parameters.atomic_op.ref[1]));
+            REQUIRE_OK(kefir_json_output_object_key(json, "new_value"));
+            REQUIRE_OK(id_format(json, oper->parameters.atomic_op.ref[2]));
+            REQUIRE_OK(kefir_json_output_object_key(json, "type_id"));
+            REQUIRE_OK(id_format(json, oper->parameters.atomic_op.type_id));
+            REQUIRE_OK(kefir_json_output_object_key(json, "type_index"));
+            REQUIRE_OK(id_format(json, oper->parameters.atomic_op.type_index));
             break;
 
         default:

@@ -203,7 +203,8 @@ static kefir_result_t compact_function(struct kefir_mem *mem, struct kefir_ir_mo
             } break;
 
             case KEFIR_IROPCODE_ATOMIC_BCOPY_FROM:
-            case KEFIR_IROPCODE_ATOMIC_BCOPY_TO: {
+            case KEFIR_IROPCODE_ATOMIC_BCOPY_TO:
+            case KEFIR_IROPCODE_ATOMIC_CMPXCHG_MEMORY: {
                 kefir_id_t type_id = (kefir_id_t) instr->arg.u32[1];
                 struct kefir_hashtree_node *node = NULL;
                 REQUIRE_OK(kefir_hashtree_at(&module->named_types, type_id, &node));

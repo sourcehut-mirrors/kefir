@@ -51,8 +51,9 @@ kefir_result_t kefir_ast_try_analyze_identifier(struct kefir_mem *mem, const str
             base->properties.expression_props.alignment =
                 scoped_id->object.alignment != NULL ? scoped_id->object.alignment->value : 0;
 
-            if (base->properties.expression_props.atomic &&
-                KEFIR_AST_TYPE_IS_AGGREGATE_TYPE(kefir_ast_unqualified_type(scoped_id->object.type))) {
+            const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(scoped_id->object.type);
+            if (base->properties.expression_props.atomic && (KEFIR_AST_TYPE_IS_AGGREGATE_TYPE(unqualified_type) ||
+                                                             KEFIR_AST_TYPE_IS_COMPLEX_TYPE(unqualified_type))) {
                 REQUIRE_OK(context->allocate_temporary_value(mem, context, scoped_id->object.type, NULL,
                                                              &base->source_location,
                                                              &base->properties.expression_props.temporary_identifier));

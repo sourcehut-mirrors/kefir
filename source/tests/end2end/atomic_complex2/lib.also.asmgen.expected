@@ -1,0 +1,419 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global str1_a
+.global str1_b
+.global str1_c
+.global ld_load
+.global f32_load
+.global f64_load
+.global ld_store
+.global f32_store
+.global f64_store
+.global str1_set_a
+.global str1_set_b
+.global str1_set_c
+.global ld_load_index
+.global f32_load_index
+.global ld_store_index
+.global f32_store_index
+.global f64_load_index
+.global f64_store_index
+.extern __kefir_opt_float32_neg
+.extern __kefir_opt_float64_neg
+.extern __kefirrt_opt_float32_to_uint
+.extern __kefirrt_opt_float64_to_uint
+
+.section .text
+str1_a:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_str1_a_label0:
+_kefir_func_str1_a_label1:
+    mov %rdi, %rsi
+    lea -16(%rbp), %rdx
+    mov $8, %rdi
+    mov $5, %rcx
+    call __atomic_load@PLT
+    movq -16(%rbp), %xmm0
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+str1_b:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+_kefir_func_str1_b_label0:
+_kefir_func_str1_b_label1:
+    add $16, %rdi
+    mov %rdi, %rsi
+    lea -32(%rbp), %rdx
+    mov $16, %rdi
+    mov $5, %rcx
+    call __atomic_load@PLT
+    movq -32(%rbp), %xmm0
+    movq -24(%rbp), %xmm1
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+str1_c:
+    push %rbp
+    mov %rsp, %rbp
+    sub $64, %rsp
+_kefir_func_str1_c_label0:
+_kefir_func_str1_c_label1:
+    add $32, %rdi
+    mov %rdi, %rsi
+    lea -64(%rbp), %rdx
+    mov $32, %rdi
+    mov $5, %rcx
+    call __atomic_load@PLT
+    fldt -48(%rbp)
+    fldt -64(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+ld_load:
+    push %rbp
+    mov %rsp, %rbp
+    sub $64, %rsp
+_kefir_func_ld_load_label0:
+_kefir_func_ld_load_label1:
+    mov %rdi, %rsi
+    lea -64(%rbp), %rdx
+    mov $32, %rdi
+    mov $5, %rcx
+    call __atomic_load@PLT
+    fldt -48(%rbp)
+    fldt -64(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+f32_load:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_f32_load_label0:
+_kefir_func_f32_load_label1:
+    mov %rdi, %rsi
+    lea -16(%rbp), %rdx
+    mov $8, %rdi
+    mov $5, %rcx
+    call __atomic_load@PLT
+    movq -16(%rbp), %xmm0
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+f64_load:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+_kefir_func_f64_load_label0:
+_kefir_func_f64_load_label1:
+    mov %rdi, %rsi
+    lea -32(%rbp), %rdx
+    mov $16, %rdi
+    mov $5, %rcx
+    call __atomic_load@PLT
+    movq -32(%rbp), %xmm0
+    movq -24(%rbp), %xmm1
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+ld_store:
+    push %rbp
+    mov %rsp, %rbp
+    sub $64, %rsp
+_kefir_func_ld_store_label0:
+    lea 16(%rbp), %rax
+    mov %rdi, %rdx
+_kefir_func_ld_store_label1:
+    lea -64(%rbp), %rcx
+    mov %rcx, %rdi
+    mov %rax, %rsi
+    mov $32, %rcx
+    rep movsb
+    lea -64(%rbp), %rax
+    mov %rdx, %rsi
+    mov %rax, %rdx
+    mov $32, %rdi
+    mov $5, %rcx
+    call __atomic_store@PLT
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+f32_store:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+_kefir_func_f32_store_label0:
+    movq %xmm0, -32(%rbp)
+    mov %rdi, %rax
+_kefir_func_f32_store_label1:
+    lea -16(%rbp), %rcx
+    mov %rcx, %rdi
+    leaq -32(%rbp), %rcx
+    mov %rcx, %rsi
+    mov $8, %rcx
+    rep movsb
+    lea -16(%rbp), %rcx
+    mov %rax, %rsi
+    mov %rcx, %rdx
+    mov $8, %rdi
+    mov $5, %rcx
+    call __atomic_store@PLT
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+f64_store:
+    push %rbp
+    mov %rsp, %rbp
+    sub $48, %rsp
+_kefir_func_f64_store_label0:
+    movq %xmm0, -48(%rbp)
+    movq %xmm1, -40(%rbp)
+    mov %rdi, %rax
+_kefir_func_f64_store_label1:
+    lea -32(%rbp), %rcx
+    mov %rcx, %rdi
+    leaq -48(%rbp), %rcx
+    mov %rcx, %rsi
+    mov $16, %rcx
+    rep movsb
+    lea -32(%rbp), %rcx
+    mov %rax, %rsi
+    mov %rcx, %rdx
+    mov $16, %rdi
+    mov $5, %rcx
+    call __atomic_store@PLT
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+str1_set_a:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+_kefir_func_str1_set_a_label0:
+    movq %xmm0, -32(%rbp)
+    mov %rdi, %rax
+_kefir_func_str1_set_a_label1:
+    lea -16(%rbp), %rcx
+    mov %rcx, %rdi
+    leaq -32(%rbp), %rcx
+    mov %rcx, %rsi
+    mov $8, %rcx
+    rep movsb
+    lea -16(%rbp), %rcx
+    mov %rax, %rsi
+    mov %rcx, %rdx
+    mov $8, %rdi
+    mov $5, %rcx
+    call __atomic_store@PLT
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+str1_set_b:
+    push %rbp
+    mov %rsp, %rbp
+    sub $48, %rsp
+_kefir_func_str1_set_b_label0:
+    movq %xmm0, -48(%rbp)
+    movq %xmm1, -40(%rbp)
+    mov %rdi, %rax
+_kefir_func_str1_set_b_label1:
+    lea -32(%rbp), %rcx
+    mov %rcx, %rdi
+    leaq -48(%rbp), %rcx
+    mov %rcx, %rsi
+    mov $16, %rcx
+    rep movsb
+    lea -32(%rbp), %rcx
+    add $16, %rax
+    mov %rax, %rsi
+    mov %rcx, %rdx
+    mov $16, %rdi
+    mov $5, %rcx
+    call __atomic_store@PLT
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+str1_set_c:
+    push %rbp
+    mov %rsp, %rbp
+    sub $64, %rsp
+_kefir_func_str1_set_c_label0:
+    lea 16(%rbp), %rax
+    mov %rdi, %rdx
+_kefir_func_str1_set_c_label1:
+    lea -64(%rbp), %rcx
+    mov %rcx, %rdi
+    mov %rax, %rsi
+    mov $32, %rcx
+    rep movsb
+    lea -64(%rbp), %rax
+    add $32, %rdx
+    mov %rdx, %rsi
+    mov %rax, %rdx
+    mov $32, %rdi
+    mov $5, %rcx
+    call __atomic_store@PLT
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+ld_load_index:
+    push %rbp
+    mov %rsp, %rbp
+    sub $64, %rsp
+_kefir_func_ld_load_index_label0:
+_kefir_func_ld_load_index_label1:
+    mov %esi, %eax
+    imul $32, %rax, %rax
+    add %rdi, %rax
+    mov %rax, %rsi
+    lea -64(%rbp), %rdx
+    mov $32, %rdi
+    mov $5, %rcx
+    call __atomic_load@PLT
+    fldt -48(%rbp)
+    fldt -64(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+f32_load_index:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_f32_load_index_label0:
+_kefir_func_f32_load_index_label1:
+    mov %esi, %eax
+    imul $8, %rax, %rax
+    add %rdi, %rax
+    mov %rax, %rsi
+    lea -16(%rbp), %rdx
+    mov $8, %rdi
+    mov $5, %rcx
+    call __atomic_load@PLT
+    movq -16(%rbp), %xmm0
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+ld_store_index:
+    push %rbp
+    mov %rsp, %rbp
+    sub $64, %rsp
+_kefir_func_ld_store_index_label0:
+    lea 16(%rbp), %rax
+    mov %rsi, %rdx
+    mov %rdi, %r8
+_kefir_func_ld_store_index_label1:
+    lea -64(%rbp), %rcx
+    mov %rcx, %rdi
+    mov %rax, %rsi
+    mov $32, %rcx
+    rep movsb
+    lea -64(%rbp), %rax
+    mov %edx, %ecx
+    imul $32, %rcx, %rcx
+    add %r8, %rcx
+    mov %rcx, %rsi
+    mov %rax, %rdx
+    mov $32, %rdi
+    mov $5, %rcx
+    call __atomic_store@PLT
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+f32_store_index:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+_kefir_func_f32_store_index_label0:
+    movq %xmm0, -32(%rbp)
+    mov %rsi, %rax
+    mov %rdi, %rdx
+_kefir_func_f32_store_index_label1:
+    lea -16(%rbp), %rcx
+    mov %rcx, %rdi
+    leaq -32(%rbp), %rcx
+    mov %rcx, %rsi
+    mov $8, %rcx
+    rep movsb
+    lea -16(%rbp), %rcx
+    mov %eax, %eax
+    imul $8, %rax, %rax
+    add %rdx, %rax
+    mov %rax, %rsi
+    mov %rcx, %rdx
+    mov $8, %rdi
+    mov $5, %rcx
+    call __atomic_store@PLT
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+f64_load_index:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+_kefir_func_f64_load_index_label0:
+_kefir_func_f64_load_index_label1:
+    mov %esi, %eax
+    imul $16, %rax, %rax
+    add %rdi, %rax
+    mov %rax, %rsi
+    lea -32(%rbp), %rdx
+    mov $16, %rdi
+    mov $5, %rcx
+    call __atomic_load@PLT
+    movq -32(%rbp), %xmm0
+    movq -24(%rbp), %xmm1
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+f64_store_index:
+    push %rbp
+    mov %rsp, %rbp
+    sub $48, %rsp
+_kefir_func_f64_store_index_label0:
+    movq %xmm0, -48(%rbp)
+    movq %xmm1, -40(%rbp)
+    mov %rsi, %rax
+    mov %rdi, %rdx
+_kefir_func_f64_store_index_label1:
+    lea -32(%rbp), %rcx
+    mov %rcx, %rdi
+    leaq -48(%rbp), %rcx
+    mov %rcx, %rsi
+    mov $16, %rcx
+    rep movsb
+    lea -32(%rbp), %rcx
+    mov %eax, %eax
+    imul $16, %rax, %rax
+    add %rdx, %rax
+    mov %rax, %rsi
+    mov %rcx, %rdx
+    mov $16, %rdi
+    mov $5, %rcx
+    call __atomic_store@PLT
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+

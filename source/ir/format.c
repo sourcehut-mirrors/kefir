@@ -508,6 +508,10 @@ static kefir_result_t format_type_posthook(const struct kefir_ir_type *type, kef
         REQUIRE_OK(kefir_json_output_object_key(param->json, "alignment"));
         REQUIRE_OK(kefir_json_output_uinteger(param->json, typeentry->alignment));
     }
+    if (typeentry->atomic) {
+        REQUIRE_OK(kefir_json_output_object_key(param->json, "atomic"));
+        REQUIRE_OK(kefir_json_output_boolean(param->json, true));
+    }
     REQUIRE_OK(kefir_json_output_object_end(param->json));
     return KEFIR_OK;
 }

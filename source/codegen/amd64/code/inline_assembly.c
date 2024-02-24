@@ -238,8 +238,6 @@ static kefir_result_t evaluate_parameter_type(struct kefir_mem *mem, const struc
             *param_type = INLINE_ASSEMBLY_PARAMETER_AGGREGATE;
             break;
 
-            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Complex numbers are not implemented yet");
-
         case KEFIR_IR_TYPE_BITS:
         case KEFIR_IR_TYPE_BUILTIN:
         case KEFIR_IR_TYPE_NONE:

@@ -647,6 +647,9 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             ATOMIC_LOAD_OP(atomic_load32, KEFIR_IROPCODE_ATOMIC_LOAD32)
             ATOMIC_LOAD_OP(atomic_load64, KEFIR_IROPCODE_ATOMIC_LOAD64)
             ATOMIC_LOAD_OP(atomic_load_long_double, KEFIR_IROPCODE_ATOMIC_LOAD_LONG_DOUBLE)
+            ATOMIC_LOAD_OP(atomic_load_complex_float32, KEFIR_IROPCODE_ATOMIC_LOAD_COMPLEX_FLOAT32)
+            ATOMIC_LOAD_OP(atomic_load_complex_float64, KEFIR_IROPCODE_ATOMIC_LOAD_COMPLEX_FLOAT64)
+            ATOMIC_LOAD_OP(atomic_load_complex_long_double, KEFIR_IROPCODE_ATOMIC_LOAD_COMPLEX_LONG_DOUBLE)
 
 #undef ATOMIC_LOAD_OP
 
@@ -704,6 +707,31 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
 
 #undef ATOMIC_CMPXCHG_OP
 
+        case KEFIR_IROPCODE_ATOMIC_CMPXCHG_COMPLEX_LONG_DOUBLE: {
+            kefir_opt_memory_order_t model;
+            switch (instr->arg.i64) {
+                case KEFIR_IR_MEMORY_ORDER_SEQ_CST:
+                    model = KEFIR_OPT_MEMORY_ORDER_SEQ_CST;
+                    break;
+
+                default:
+                    return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unknown IR atomic model flag");
+            }
+            REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref4));
+            REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref3));
+            REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
+            struct kefir_opt_instruction *expected_value_instr;
+            REQUIRE_OK(kefir_opt_code_container_instr(&state->function->code, instr_ref3, &expected_value_instr));
+            REQUIRE(expected_value_instr->operation.opcode == KEFIR_OPT_OPCODE_ATOMIC_LOAD_COMPLEX_LONG_DOUBLE &&
+                        expected_value_instr->operation.parameters.atomic_op.ref[0] == instr_ref2,
+                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Atomic compare-exchange operation for complex long double "
+                                                         "shall be preceeded by atomic load from the same location"));
+            REQUIRE_OK(kefir_opt_code_builder_atomic_compare_exchange_complex_long_double(
+                mem, code, current_block_id, instr_ref2, instr_ref3, instr_ref4, model, &instr_ref));
+            REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));
+            REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
+        } break;
+
         case KEFIR_IROPCODE_ATOMIC_BCOPY_FROM: {
             REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
             REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref3));
@@ -738,6 +766,26 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
                                                                     model, instr->arg.u32[1], instr->arg.u32[2],
                                                                     &instr_ref));
             REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));
+        } break;
+
+        case KEFIR_IROPCODE_ATOMIC_CMPXCHG_MEMORY: {
+            REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref4));
+            REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref3));
+            REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
+            kefir_opt_memory_order_t model;
+            switch (instr->arg.u32[0]) {
+                case KEFIR_IR_MEMORY_ORDER_SEQ_CST:
+                    model = KEFIR_OPT_MEMORY_ORDER_SEQ_CST;
+                    break;
+
+                default:
+                    return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unknown IR atomic model flag");
+            }
+            REQUIRE_OK(kefir_opt_code_builder_atomic_compare_exchange_memory(
+                mem, code, current_block_id, instr_ref2, instr_ref3, instr_ref4, model, instr->arg.u32[1],
+                instr->arg.u32[2], &instr_ref));
+            REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));
+            REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
         } break;
 
 #define LOAD_OP(_id, _opcode)                                                                                \

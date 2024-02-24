@@ -192,6 +192,9 @@
     OPCODE(ATOMIC_LOAD32,  "atomic_load32", memory_order) SEPARATOR \
     OPCODE(ATOMIC_LOAD64,  "atomic_load64", memory_order) SEPARATOR \
     OPCODE(ATOMIC_LOAD_LONG_DOUBLE,  "atomic_load_long_double", memory_order) SEPARATOR \
+    OPCODE(ATOMIC_LOAD_COMPLEX_FLOAT32,  "atomic_load_complex_float32", memory_order) SEPARATOR \
+    OPCODE(ATOMIC_LOAD_COMPLEX_FLOAT64,  "atomic_load_complex_float64", memory_order) SEPARATOR \
+    OPCODE(ATOMIC_LOAD_COMPLEX_LONG_DOUBLE,  "atomic_load_complex_long_double", memory_order) SEPARATOR \
     OPCODE(ATOMIC_STORE8,  "atomic_store8",  memory_order) SEPARATOR \
     OPCODE(ATOMIC_STORE16, "atomic_store16", memory_order) SEPARATOR \
     OPCODE(ATOMIC_STORE32, "atomic_store32", memory_order) SEPARATOR \
@@ -204,6 +207,8 @@
     OPCODE(ATOMIC_CMPXCHG32, "atomic_cmpxchg32", memory_order) SEPARATOR \
     OPCODE(ATOMIC_CMPXCHG64, "atomic_cmpxchg64", memory_order) SEPARATOR \
     OPCODE(ATOMIC_CMPXCHG_LONG_DOUBLE, "atomic_cmpxchg_long_double", memory_order) SEPARATOR \
+    OPCODE(ATOMIC_CMPXCHG_COMPLEX_LONG_DOUBLE, "atomic_cmpxchg_complex_long_double", memory_order) SEPARATOR \
+    OPCODE(ATOMIC_CMPXCHG_MEMORY, "atomic_cmpxchg_memory", atomic_typeref) SEPARATOR \
     /* Miscallenous */ \
     OPCODE(INLINEASM,    "inlineasm",   u64)
 // clang-format on
