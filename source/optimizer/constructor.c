@@ -809,6 +809,9 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             LOAD_OP(int32_load_unsigned, KEFIR_IROPCODE_LOAD32U)
             LOAD_OP(int64_load, KEFIR_IROPCODE_LOAD64)
             LOAD_OP(long_double_load, KEFIR_IROPCODE_LOADLD)
+            LOAD_OP(complex_float32_load, KEFIR_IROPCODE_LOAD_CMPF32)
+            LOAD_OP(complex_float64_load, KEFIR_IROPCODE_LOAD_CMPF64)
+            LOAD_OP(complex_long_double_load, KEFIR_IROPCODE_LOAD_CMPLD)
 
 #undef LOAD_OP
 
@@ -828,6 +831,9 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             STORE_OP(int32_store, KEFIR_IROPCODE_STORE32)
             STORE_OP(int64_store, KEFIR_IROPCODE_STORE64)
             STORE_OP(long_double_store, KEFIR_IROPCODE_STORELD)
+            STORE_OP(complex_float32_store, KEFIR_IROPCODE_STORE_CMPF32)
+            STORE_OP(complex_float64_store, KEFIR_IROPCODE_STORE_CMPF64)
+            STORE_OP(complex_long_double_store, KEFIR_IROPCODE_STORE_CMPLD)
 
 #undef STORE_OP
     }

@@ -377,6 +377,10 @@ LOAD_OP(int32_load_unsigned);
 LOAD_OP(int64_load);
 LOAD_OP(long_double_load);
 
+LOAD_OP(complex_float32_load);
+LOAD_OP(complex_float64_load);
+LOAD_OP(complex_long_double_load);
+
 #undef LOAD_OP
 
 #define STORE_OP(_id)                                                                                             \
@@ -389,6 +393,10 @@ STORE_OP(int16_store);
 STORE_OP(int32_store);
 STORE_OP(int64_store);
 STORE_OP(long_double_store);
+
+STORE_OP(complex_float32_store);
+STORE_OP(complex_float64_store);
+STORE_OP(complex_long_double_store);
 
 #undef STORE_OP
 

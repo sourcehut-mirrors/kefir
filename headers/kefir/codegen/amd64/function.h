@@ -240,6 +240,12 @@ kefir_result_t kefir_codegen_amd64_function_map_phi_outputs(struct kefir_mem *, 
     _def(complex_float32_neg, KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_NEG) _separator \
     _def(complex_float64_neg, KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_NEG) _separator \
     _def(complex_long_double_neg, KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_NEG) _separator \
+    _def(complex_float32_load, KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_LOAD) _separator \
+    _def(complex_float64_load, KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_LOAD) _separator \
+    _def(complex_long_double_load, KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_LOAD) _separator \
+    _def(complex_float32_store, KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_STORE) _separator \
+    _def(complex_float64_store, KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_STORE) _separator \
+    _def(complex_long_double_store, KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_STORE) _separator \
     _def(atomic_load, KEFIR_OPT_OPCODE_ATOMIC_LOAD8) _separator \
     _def(atomic_load, KEFIR_OPT_OPCODE_ATOMIC_LOAD16) _separator \
     _def(atomic_load, KEFIR_OPT_OPCODE_ATOMIC_LOAD32) _separator \

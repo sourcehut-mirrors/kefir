@@ -214,6 +214,12 @@
     OPCODE(COMPLEX_FLOAT32_NEG, "complex_float32_neg", ref1) SEPARATOR \
     OPCODE(COMPLEX_FLOAT64_NEG, "complex_float64_neg", ref1) SEPARATOR \
     OPCODE(COMPLEX_LONG_DOUBLE_NEG, "complex_long_double_neg", ref1) SEPARATOR \
+    OPCODE(COMPLEX_FLOAT32_LOAD, "complex_float32_load", load_mem) SEPARATOR \
+    OPCODE(COMPLEX_FLOAT64_LOAD, "complex_float64_load", load_mem) SEPARATOR \
+    OPCODE(COMPLEX_LONG_DOUBLE_LOAD, "complex_long_double_load", load_mem) SEPARATOR \
+    OPCODE(COMPLEX_FLOAT32_STORE, "complex_float32_store", store_mem) SEPARATOR \
+    OPCODE(COMPLEX_FLOAT64_STORE, "complex_float64_store", store_mem) SEPARATOR \
+    OPCODE(COMPLEX_LONG_DOUBLE_STORE, "complex_long_double_store", store_mem) SEPARATOR \
     /* Atomics */ \
     OPCODE(ATOMIC_LOAD8, "atomic_load8", atomic_op) SEPARATOR \
     OPCODE(ATOMIC_LOAD16, "atomic_load16", atomic_op) SEPARATOR \

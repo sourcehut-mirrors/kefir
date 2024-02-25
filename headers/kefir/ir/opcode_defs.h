@@ -186,6 +186,12 @@
     OPCODE(CMPF32NEG,    "cmpf32neg",   none) SEPARATOR \
     OPCODE(CMPF64NEG,    "cmpf64neg",   none) SEPARATOR \
     OPCODE(CMPLDNEG,     "cmpldneg",   none) SEPARATOR \
+    OPCODE(LOAD_CMPF32,     "load_cmpf32",   memflags) SEPARATOR \
+    OPCODE(LOAD_CMPF64,     "load_cmpf64",   memflags) SEPARATOR \
+    OPCODE(LOAD_CMPLD,     "load_cmpld",   memflags) SEPARATOR \
+    OPCODE(STORE_CMPF32,     "store_cmpf32",   memflags) SEPARATOR \
+    OPCODE(STORE_CMPF64,     "store_cmpf64",   memflags) SEPARATOR \
+    OPCODE(STORE_CMPLD,     "store_cmpld",   memflags) SEPARATOR \
     /* Atomics */ \
     OPCODE(ATOMIC_LOAD8,   "atomic_load8",  memory_order) SEPARATOR \
     OPCODE(ATOMIC_LOAD16,  "atomic_load16", memory_order) SEPARATOR \

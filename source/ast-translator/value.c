@@ -312,12 +312,21 @@ kefir_result_t kefir_ast_translator_load_value(const struct kefir_ast_type *type
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_LOADLD, mem_flags));
             break;
 
+        case KEFIR_AST_TYPE_COMPLEX_FLOAT:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_LOAD_CMPF32, mem_flags));
+            break;
+
+        case KEFIR_AST_TYPE_COMPLEX_DOUBLE:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_LOAD_CMPF64, mem_flags));
+            break;
+
+        case KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_LOAD_CMPLD, mem_flags));
+            break;
+
         case KEFIR_AST_TYPE_ENUMERATION:
             return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected enumeration type");
 
-        case KEFIR_AST_TYPE_COMPLEX_FLOAT:
-        case KEFIR_AST_TYPE_COMPLEX_DOUBLE:
-        case KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE:
         case KEFIR_AST_TYPE_STRUCTURE:
         case KEFIR_AST_TYPE_UNION:
         case KEFIR_AST_TYPE_ARRAY:
@@ -598,15 +607,24 @@ kefir_result_t kefir_ast_translator_store_value(struct kefir_mem *mem, const str
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_STORELD, mem_flags));
             break;
 
+        case KEFIR_AST_TYPE_COMPLEX_FLOAT:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_STORE_CMPF32, mem_flags));
+            break;
+
+        case KEFIR_AST_TYPE_COMPLEX_DOUBLE:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_STORE_CMPF64, mem_flags));
+            break;
+
+        case KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_STORE_CMPLD, mem_flags));
+            break;
+
         case KEFIR_AST_TYPE_ENUMERATION:
             return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected enumeration type");
 
         case KEFIR_AST_TYPE_STRUCTURE:
         case KEFIR_AST_TYPE_UNION:
-        case KEFIR_AST_TYPE_ARRAY:
-        case KEFIR_AST_TYPE_COMPLEX_FLOAT:
-        case KEFIR_AST_TYPE_COMPLEX_DOUBLE:
-        case KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE: {
+        case KEFIR_AST_TYPE_ARRAY: {
             struct kefir_ast_translator_type *translator_type = NULL;
             REQUIRE_OK(kefir_ast_translator_type_new(mem, context->ast_context, context->environment, context->module,
                                                      type, 0, &translator_type, source_location));
