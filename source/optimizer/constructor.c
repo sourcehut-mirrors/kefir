@@ -495,6 +495,23 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             REQUIRE_OK(construct_inline_asm(mem, module, code, state, instr));
             break;
 
+        case KEFIR_IROPCODE_FENV_SAVE:
+            REQUIRE_OK(kefir_opt_code_builder_fenv_save(mem, code, current_block_id, &instr_ref));
+            REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
+            REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));
+            break;
+
+        case KEFIR_IROPCODE_FENV_CLEAR:
+            REQUIRE_OK(kefir_opt_code_builder_fenv_clear(mem, code, current_block_id, &instr_ref));
+            REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));
+            break;
+
+        case KEFIR_IROPCODE_FENV_UPDATE:
+            REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
+            REQUIRE_OK(kefir_opt_code_builder_fenv_update(mem, code, current_block_id, instr_ref2, &instr_ref));
+            REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));
+            break;
+
 #define UNARY_OP(_id, _opcode)                                                                         \
     case _opcode:                                                                                      \
         REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));                          \

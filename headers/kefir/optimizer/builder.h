@@ -147,6 +147,14 @@ kefir_result_t kefir_opt_code_builder_atomic_compare_exchange_memory(
     kefir_opt_instruction_ref_t, kefir_opt_instruction_ref_t, kefir_opt_memory_order_t, kefir_id_t, kefir_size_t,
     kefir_opt_instruction_ref_t *);
 
+kefir_result_t kefir_opt_code_builder_fenv_save(struct kefir_mem *, struct kefir_opt_code_container *,
+                                                kefir_opt_block_id_t, kefir_opt_instruction_ref_t *);
+kefir_result_t kefir_opt_code_builder_fenv_clear(struct kefir_mem *, struct kefir_opt_code_container *,
+                                                 kefir_opt_block_id_t, kefir_opt_instruction_ref_t *);
+kefir_result_t kefir_opt_code_builder_fenv_update(struct kefir_mem *, struct kefir_opt_code_container *,
+                                                  kefir_opt_block_id_t, kefir_opt_instruction_ref_t,
+                                                  kefir_opt_instruction_ref_t *);
+
 #define UNARY_OP(_id)                                                                                  \
     kefir_result_t kefir_opt_code_builder_##_id(struct kefir_mem *, struct kefir_opt_code_container *, \
                                                 kefir_opt_block_id_t, kefir_opt_instruction_ref_t,     \

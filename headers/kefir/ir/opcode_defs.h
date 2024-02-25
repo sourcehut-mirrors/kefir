@@ -155,6 +155,10 @@
     OPCODE(F64CLD,       "f64cld",      none) SEPARATOR \
     OPCODE(LDCF32,       "ldcf32",      none) SEPARATOR \
     OPCODE(LDCF64,       "ldcf64",      none) SEPARATOR \
+    /* Floating-point environment */ \
+    OPCODE(FENV_SAVE,     "fenv_save",   none) SEPARATOR \
+    OPCODE(FENV_CLEAR,    "fenv_clear",  none) SEPARATOR \
+    OPCODE(FENV_UPDATE,   "fenv_update", none) SEPARATOR \
     /* Complex numbers */ \
     OPCODE(CMPF32,       "cmpf32",      none) SEPARATOR \
     OPCODE(CMPF32R,      "cmpf32r",     none) SEPARATOR \

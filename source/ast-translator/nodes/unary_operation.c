@@ -309,6 +309,15 @@ static kefir_result_t translate_preincdec(struct kefir_mem *mem, struct kefir_as
     kefir_bool_t atomic_aggregate_target_value;
 
     REQUIRE_OK(kefir_ast_translate_lvalue(mem, context, builder, node->arg));
+
+    kefir_bool_t preserve_fenv = false;
+    if (node->arg->properties.expression_props.atomic && KEFIR_AST_TYPE_IS_FLOATING_POINT(normalized_type)) {
+        preserve_fenv = true;
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_FENV_SAVE, 0));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_XCHG, 1));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_FENV_CLEAR, 0));
+    }
+
     if (!node->arg->properties.expression_props.atomic) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 0));
         REQUIRE_OK(
@@ -347,10 +356,18 @@ static kefir_result_t translate_preincdec(struct kefir_mem *mem, struct kefir_as
 
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_XCHG, 1));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_POP, 0));
+        if (preserve_fenv) {
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_FENV_CLEAR, 0));
+        }
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_JMP, failTarget));
 
         KEFIR_IRBUILDER_BLOCK_INSTR_AT(builder, successBranch)->arg.i64 = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_POP, 0));
+
+        if (preserve_fenv) {
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_XCHG, 1));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_FENV_UPDATE, 0));
+        }
     }
     return KEFIR_OK;
 }
@@ -362,6 +379,15 @@ static kefir_result_t translate_postincdec(struct kefir_mem *mem, struct kefir_a
     kefir_bool_t atomic_aggregate_target_value;
 
     REQUIRE_OK(kefir_ast_translate_lvalue(mem, context, builder, node->arg));
+
+    kefir_bool_t preserve_fenv = false;
+    if (node->arg->properties.expression_props.atomic && KEFIR_AST_TYPE_IS_FLOATING_POINT(normalized_type)) {
+        preserve_fenv = true;
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_FENV_SAVE, 0));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_XCHG, 1));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_FENV_CLEAR, 0));
+    }
+
     if (!node->arg->properties.expression_props.atomic) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 0));
         REQUIRE_OK(
@@ -400,10 +426,18 @@ static kefir_result_t translate_postincdec(struct kefir_mem *mem, struct kefir_a
 
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_XCHG, 1));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_POP, 0));
+        if (preserve_fenv) {
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_FENV_CLEAR, 0));
+        }
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_JMP, failTarget));
 
         KEFIR_IRBUILDER_BLOCK_INSTR_AT(builder, successBranch)->arg.i64 = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_POP, 0));
+
+        if (preserve_fenv) {
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_XCHG, 1));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_FENV_UPDATE, 0));
+        }
     }
     return KEFIR_OK;
 }

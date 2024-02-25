@@ -168,6 +168,15 @@ static kefir_result_t translate_binary_op(struct kefir_mem *mem, struct kefir_as
                                                 value_normalized_type, common_type));
     }
 
+    kefir_bool_t preserve_fenv = false;
+    if (node->target->properties.expression_props.atomic && common_type != NULL &&
+        KEFIR_AST_TYPE_IS_FLOATING_POINT(common_type)) {
+        preserve_fenv = true;
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_FENV_SAVE, 0));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_XCHG, 1));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_FENV_CLEAR, 0));
+    }
+
     kefir_bool_t atomic_aggregate_target_value;
     REQUIRE_OK(kefir_ast_translate_lvalue(mem, context, builder, node->target));
     if (!node->target->properties.expression_props.atomic) {
@@ -221,12 +230,20 @@ static kefir_result_t translate_binary_op(struct kefir_mem *mem, struct kefir_as
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_BRANCH, 0));
         ;
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_POP, 0));
+        if (preserve_fenv) {
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_FENV_CLEAR, 0));
+        }
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_JMP, failBranchTarget));
 
         KEFIR_IRBUILDER_BLOCK_INSTR_AT(builder, successBranch)->arg.i64 = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_XCHG, 2));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_POP, 0));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_POP, 0));
+
+        if (preserve_fenv) {
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_XCHG, 1));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_FENV_UPDATE, 0));
+        }
     }
     return KEFIR_OK;
 }

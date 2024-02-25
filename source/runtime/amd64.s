@@ -416,6 +416,25 @@ __kefirrt_opt_complex_long_double_div4:
     fmulp st(1), st
     jmp __kefirrt_opt_complex_long_double_div3
 
+.global __kefirrt_fenv_update
+.hidden __kefirrt_fenv_update
+__kefirrt_fenv_update:
+# Test exceptions
+	push rax
+	stmxcsr [rsp]
+	pop rsi
+	fnstsw ax
+	or eax, esi
+	and eax, 0x3f
+# Set environment
+	fldenv [rdi]
+	ldmxcsr [rdi + 28]
+# Raise exceptions
+	stmxcsr [rsp - 8]
+	or [rsp - 8], eax
+	ldmxcsr [rsp - 8]
+    ret
+
 .global __kefirrt_trap
 .hidden __kefirrt_trap
 __kefirrt_trap:

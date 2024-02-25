@@ -18,65 +18,95 @@
 add_f32:
     push %rbp
     mov %rsp, %rbp
-    sub $64, %rsp
+    sub $128, %rsp
     stmxcsr -8(%rbp)
 _kefir_func_add_f32_label0:
-    movq %xmm0, -64(%rbp)
+    movq %xmm0, -128(%rbp)
 _kefir_func_add_f32_label1:
     lea -24(%rbp), %rax
-    movq -64(%rbp), %xmm0
+    movq -128(%rbp), %xmm0
     movq %xmm0, (%rax)
     lea -24(%rbp), %rax
     movq (%rax), %xmm0
-    movq %xmm0, -64(%rbp)
+    movq %xmm0, -128(%rbp)
+    fnstenv -120(%rbp)
+    stmxcsr -92(%rbp)
+    fnclex
     mov %rdi, %r10
 _kefir_func_add_f32_label2:
-    movq %r10, -48(%rbp)
+    movq %r10, -80(%rbp)
     mov %r10, %rsi
-    lea -56(%rbp), %rdx
+    lea -88(%rbp), %rdx
     mov $8, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    movq -48(%rbp), %r10
-    movd -56(%rbp), %xmm0
-    movd -52(%rbp), %xmm1
-    addss -64(%rbp), %xmm0
-    addss -60(%rbp), %xmm1
-    movd %xmm0, -48(%rbp)
-    movd %xmm1, -44(%rbp)
-    movq %r10, -40(%rbp)
+    movq -80(%rbp), %r10
+    movd -88(%rbp), %xmm0
+    movd -84(%rbp), %xmm1
+    addss -128(%rbp), %xmm0
+    addss -124(%rbp), %xmm1
+    movd %xmm0, -80(%rbp)
+    movd %xmm1, -76(%rbp)
+    movq %r10, -72(%rbp)
     mov $8, %rcx
-    leaq -56(%rbp), %rax
+    leaq -88(%rbp), %rax
     mov %rax, %rsi
-    leaq -56(%rbp), %rax
+    leaq -88(%rbp), %rax
     mov %rax, %rdi
     rep movsb
     mov %r10, %rsi
     mov $5, %r8
     mov $5, %r9
     mov $8, %rdi
-    lea -56(%rbp), %rdx
-    leaq -48(%rbp), %rax
+    lea -88(%rbp), %rdx
+    leaq -80(%rbp), %rax
     mov %rax, %rcx
     call __atomic_compare_exchange@PLT
     mov %rax, %rcx
-    movq -40(%rbp), %r10
+    movq -72(%rbp), %r10
     test %rcx, %rcx
     jz _kefir_func_add_f32_label5
-    movq -48(%rbp), %rax
+    movq -80(%rbp), %rax
+    movq %rax, -88(%rbp)
+    movq -120(%rbp), %rax
+    movq %rax, -64(%rbp)
+    movq -112(%rbp), %rax
     movq %rax, -56(%rbp)
+    movq -104(%rbp), %rax
+    movq %rax, -48(%rbp)
+    movq -96(%rbp), %rax
+    movq %rax, -40(%rbp)
     jmp _kefir_func_add_f32_label4
 _kefir_func_add_f32_label5:
     mov %r10, %rax
-    movq -64(%rbp), %rcx
+    movq -128(%rbp), %rcx
+    movq %rcx, -88(%rbp)
+    movq -120(%rbp), %rcx
+    movq %rcx, -80(%rbp)
+    movq -112(%rbp), %rcx
+    movq %rcx, -72(%rbp)
+    movq -104(%rbp), %rcx
+    movq %rcx, -64(%rbp)
+    movq -96(%rbp), %rcx
     movq %rcx, -56(%rbp)
 _kefir_func_add_f32_label3:
+    fnclex
     mov %rax, %r10
+    movq -88(%rbp), %rax
+    movq %rax, -128(%rbp)
+    movq -80(%rbp), %rax
+    movq %rax, -120(%rbp)
+    movq -72(%rbp), %rax
+    movq %rax, -112(%rbp)
+    movq -64(%rbp), %rax
+    movq %rax, -104(%rbp)
     movq -56(%rbp), %rax
-    movq %rax, -64(%rbp)
+    movq %rax, -96(%rbp)
     jmp _kefir_func_add_f32_label2
 _kefir_func_add_f32_label4:
-    movq -56(%rbp), %xmm0
+    lea -64(%rbp), %rdi
+    call __kefirrt_fenv_update@PLT
+    movq -88(%rbp), %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -85,77 +115,107 @@ _kefir_func_add_f32_label4:
 add_f64:
     push %rbp
     mov %rsp, %rbp
-    sub $112, %rsp
+    sub $176, %rsp
     stmxcsr -8(%rbp)
 _kefir_func_add_f64_label0:
-    movq %xmm0, -112(%rbp)
-    movq %xmm1, -104(%rbp)
+    movq %xmm0, -176(%rbp)
+    movq %xmm1, -168(%rbp)
 _kefir_func_add_f64_label1:
     lea -48(%rbp), %rax
-    movq -112(%rbp), %xmm0
+    movq -176(%rbp), %xmm0
     movq %xmm0, (%rax)
-    movq -104(%rbp), %xmm0
+    movq -168(%rbp), %xmm0
     movq %xmm0, 8(%rax)
     lea -48(%rbp), %rax
     movq (%rax), %xmm0
-    movq %xmm0, -112(%rbp)
+    movq %xmm0, -176(%rbp)
     movq 8(%rax), %xmm0
-    movq %xmm0, -104(%rbp)
+    movq %xmm0, -168(%rbp)
+    fnstenv -160(%rbp)
+    stmxcsr -132(%rbp)
+    fnclex
     mov %rdi, %r10
 _kefir_func_add_f64_label2:
-    movq %r10, -80(%rbp)
+    movq %r10, -112(%rbp)
     mov %r10, %rsi
-    lea -96(%rbp), %rdx
+    lea -128(%rbp), %rdx
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    movq -80(%rbp), %r10
-    movq -96(%rbp), %xmm0
-    movq -88(%rbp), %xmm1
-    addsd -112(%rbp), %xmm0
-    addsd -104(%rbp), %xmm1
-    movq %xmm0, -72(%rbp)
-    movq %xmm1, -64(%rbp)
-    movq %r10, -80(%rbp)
+    movq -112(%rbp), %r10
+    movq -128(%rbp), %xmm0
+    movq -120(%rbp), %xmm1
+    addsd -176(%rbp), %xmm0
+    addsd -168(%rbp), %xmm1
+    movq %xmm0, -104(%rbp)
+    movq %xmm1, -96(%rbp)
+    movq %r10, -112(%rbp)
     mov $16, %rcx
-    leaq -96(%rbp), %rax
+    leaq -128(%rbp), %rax
     mov %rax, %rsi
-    leaq -96(%rbp), %rax
+    leaq -128(%rbp), %rax
     mov %rax, %rdi
     rep movsb
     mov %r10, %rsi
     mov $5, %r8
     mov $5, %r9
     mov $16, %rdi
-    lea -96(%rbp), %rdx
-    leaq -72(%rbp), %rax
+    lea -128(%rbp), %rdx
+    leaq -104(%rbp), %rax
     mov %rax, %rcx
     call __atomic_compare_exchange@PLT
     mov %rax, %rcx
-    movq -80(%rbp), %r10
+    movq -112(%rbp), %r10
     test %rcx, %rcx
     jz _kefir_func_add_f64_label5
-    movq -72(%rbp), %rax
-    movq %rax, -96(%rbp)
-    movq -64(%rbp), %rax
+    movq -104(%rbp), %rax
+    movq %rax, -128(%rbp)
+    movq -96(%rbp), %rax
+    movq %rax, -120(%rbp)
+    movq -160(%rbp), %rax
     movq %rax, -88(%rbp)
+    movq -152(%rbp), %rax
+    movq %rax, -80(%rbp)
+    movq -144(%rbp), %rax
+    movq %rax, -72(%rbp)
+    movq -136(%rbp), %rax
+    movq %rax, -64(%rbp)
     jmp _kefir_func_add_f64_label4
 _kefir_func_add_f64_label5:
     mov %r10, %rax
-    movq -112(%rbp), %rcx
+    movq -176(%rbp), %rcx
+    movq %rcx, -128(%rbp)
+    movq -168(%rbp), %rcx
+    movq %rcx, -120(%rbp)
+    movq -160(%rbp), %rcx
+    movq %rcx, -112(%rbp)
+    movq -152(%rbp), %rcx
+    movq %rcx, -104(%rbp)
+    movq -144(%rbp), %rcx
     movq %rcx, -96(%rbp)
-    movq -104(%rbp), %rcx
+    movq -136(%rbp), %rcx
     movq %rcx, -88(%rbp)
 _kefir_func_add_f64_label3:
+    fnclex
     mov %rax, %r10
+    movq -128(%rbp), %rax
+    movq %rax, -176(%rbp)
+    movq -120(%rbp), %rax
+    movq %rax, -168(%rbp)
+    movq -112(%rbp), %rax
+    movq %rax, -160(%rbp)
+    movq -104(%rbp), %rax
+    movq %rax, -152(%rbp)
     movq -96(%rbp), %rax
-    movq %rax, -112(%rbp)
+    movq %rax, -144(%rbp)
     movq -88(%rbp), %rax
-    movq %rax, -104(%rbp)
+    movq %rax, -136(%rbp)
     jmp _kefir_func_add_f64_label2
 _kefir_func_add_f64_label4:
-    movq -96(%rbp), %xmm0
-    movq -88(%rbp), %xmm1
+    lea -88(%rbp), %rdi
+    call __kefirrt_fenv_update@PLT
+    movq -128(%rbp), %xmm0
+    movq -120(%rbp), %xmm1
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -164,63 +224,93 @@ _kefir_func_add_f64_label4:
 divide_f32:
     push %rbp
     mov %rsp, %rbp
-    sub $64, %rsp
+    sub $128, %rsp
     stmxcsr -8(%rbp)
 _kefir_func_divide_f32_label0:
-    movq %xmm0, -64(%rbp)
+    movq %xmm0, -128(%rbp)
 _kefir_func_divide_f32_label1:
     lea -24(%rbp), %rax
-    movq -64(%rbp), %xmm0
+    movq -128(%rbp), %xmm0
     movq %xmm0, (%rax)
     lea -24(%rbp), %rax
     movq (%rax), %xmm0
-    movq %xmm0, -64(%rbp)
+    movq %xmm0, -128(%rbp)
+    fnstenv -120(%rbp)
+    stmxcsr -92(%rbp)
+    fnclex
     mov %rdi, %r10
 _kefir_func_divide_f32_label2:
-    movq %r10, -48(%rbp)
+    movq %r10, -80(%rbp)
     mov %r10, %rsi
-    lea -56(%rbp), %rdx
+    lea -88(%rbp), %rdx
     mov $8, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    movq -48(%rbp), %r10
-    movq -56(%rbp), %xmm0
-    movq -64(%rbp), %xmm1
+    movq -80(%rbp), %r10
+    movq -88(%rbp), %xmm0
+    movq -128(%rbp), %xmm1
     call __kefirrt_opt_complex_float32_div@PLT
-    movq %xmm0, -48(%rbp)
-    movq %r10, -40(%rbp)
+    movq %xmm0, -80(%rbp)
+    movq %r10, -72(%rbp)
     mov $8, %rcx
-    leaq -56(%rbp), %rax
+    leaq -88(%rbp), %rax
     mov %rax, %rsi
-    leaq -56(%rbp), %rax
+    leaq -88(%rbp), %rax
     mov %rax, %rdi
     rep movsb
     mov %r10, %rsi
     mov $5, %r8
     mov $5, %r9
     mov $8, %rdi
-    lea -56(%rbp), %rdx
-    leaq -48(%rbp), %rax
+    lea -88(%rbp), %rdx
+    leaq -80(%rbp), %rax
     mov %rax, %rcx
     call __atomic_compare_exchange@PLT
     mov %rax, %rcx
-    movq -40(%rbp), %r10
+    movq -72(%rbp), %r10
     test %rcx, %rcx
     jz _kefir_func_divide_f32_label5
-    movq -48(%rbp), %rax
+    movq -80(%rbp), %rax
+    movq %rax, -88(%rbp)
+    movq -120(%rbp), %rax
+    movq %rax, -64(%rbp)
+    movq -112(%rbp), %rax
     movq %rax, -56(%rbp)
+    movq -104(%rbp), %rax
+    movq %rax, -48(%rbp)
+    movq -96(%rbp), %rax
+    movq %rax, -40(%rbp)
     jmp _kefir_func_divide_f32_label4
 _kefir_func_divide_f32_label5:
     mov %r10, %rax
-    movq -64(%rbp), %rcx
+    movq -128(%rbp), %rcx
+    movq %rcx, -88(%rbp)
+    movq -120(%rbp), %rcx
+    movq %rcx, -80(%rbp)
+    movq -112(%rbp), %rcx
+    movq %rcx, -72(%rbp)
+    movq -104(%rbp), %rcx
+    movq %rcx, -64(%rbp)
+    movq -96(%rbp), %rcx
     movq %rcx, -56(%rbp)
 _kefir_func_divide_f32_label3:
+    fnclex
     mov %rax, %r10
+    movq -88(%rbp), %rax
+    movq %rax, -128(%rbp)
+    movq -80(%rbp), %rax
+    movq %rax, -120(%rbp)
+    movq -72(%rbp), %rax
+    movq %rax, -112(%rbp)
+    movq -64(%rbp), %rax
+    movq %rax, -104(%rbp)
     movq -56(%rbp), %rax
-    movq %rax, -64(%rbp)
+    movq %rax, -96(%rbp)
     jmp _kefir_func_divide_f32_label2
 _kefir_func_divide_f32_label4:
-    movq -56(%rbp), %xmm0
+    lea -64(%rbp), %rdi
+    call __kefirrt_fenv_update@PLT
+    movq -88(%rbp), %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -229,78 +319,108 @@ _kefir_func_divide_f32_label4:
 divide_f64:
     push %rbp
     mov %rsp, %rbp
-    sub $112, %rsp
+    sub $176, %rsp
     stmxcsr -8(%rbp)
 _kefir_func_divide_f64_label0:
-    movq %xmm0, -112(%rbp)
-    movq %xmm1, -104(%rbp)
+    movq %xmm0, -176(%rbp)
+    movq %xmm1, -168(%rbp)
 _kefir_func_divide_f64_label1:
     lea -48(%rbp), %rax
-    movq -112(%rbp), %xmm0
+    movq -176(%rbp), %xmm0
     movq %xmm0, (%rax)
-    movq -104(%rbp), %xmm0
+    movq -168(%rbp), %xmm0
     movq %xmm0, 8(%rax)
     lea -48(%rbp), %rax
     movq (%rax), %xmm0
-    movq %xmm0, -112(%rbp)
+    movq %xmm0, -176(%rbp)
     movq 8(%rax), %xmm0
-    movq %xmm0, -104(%rbp)
+    movq %xmm0, -168(%rbp)
+    fnstenv -160(%rbp)
+    stmxcsr -132(%rbp)
+    fnclex
     mov %rdi, %r10
 _kefir_func_divide_f64_label2:
-    movq %r10, -80(%rbp)
+    movq %r10, -112(%rbp)
     mov %r10, %rsi
-    lea -96(%rbp), %rdx
+    lea -128(%rbp), %rdx
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    movq -80(%rbp), %r10
-    movq -96(%rbp), %xmm0
-    movq -88(%rbp), %xmm1
-    movq -112(%rbp), %xmm2
-    movq -104(%rbp), %xmm3
+    movq -112(%rbp), %r10
+    movq -128(%rbp), %xmm0
+    movq -120(%rbp), %xmm1
+    movq -176(%rbp), %xmm2
+    movq -168(%rbp), %xmm3
     call __kefirrt_opt_complex_float64_div@PLT
-    movq %xmm0, -72(%rbp)
-    movq %xmm1, -64(%rbp)
-    movq %r10, -80(%rbp)
+    movq %xmm0, -104(%rbp)
+    movq %xmm1, -96(%rbp)
+    movq %r10, -112(%rbp)
     mov $16, %rcx
-    leaq -96(%rbp), %rax
+    leaq -128(%rbp), %rax
     mov %rax, %rsi
-    leaq -96(%rbp), %rax
+    leaq -128(%rbp), %rax
     mov %rax, %rdi
     rep movsb
     mov %r10, %rsi
     mov $5, %r8
     mov $5, %r9
     mov $16, %rdi
-    lea -96(%rbp), %rdx
-    leaq -72(%rbp), %rax
+    lea -128(%rbp), %rdx
+    leaq -104(%rbp), %rax
     mov %rax, %rcx
     call __atomic_compare_exchange@PLT
     mov %rax, %rcx
-    movq -80(%rbp), %r10
+    movq -112(%rbp), %r10
     test %rcx, %rcx
     jz _kefir_func_divide_f64_label5
-    movq -72(%rbp), %rax
-    movq %rax, -96(%rbp)
-    movq -64(%rbp), %rax
+    movq -104(%rbp), %rax
+    movq %rax, -128(%rbp)
+    movq -96(%rbp), %rax
+    movq %rax, -120(%rbp)
+    movq -160(%rbp), %rax
     movq %rax, -88(%rbp)
+    movq -152(%rbp), %rax
+    movq %rax, -80(%rbp)
+    movq -144(%rbp), %rax
+    movq %rax, -72(%rbp)
+    movq -136(%rbp), %rax
+    movq %rax, -64(%rbp)
     jmp _kefir_func_divide_f64_label4
 _kefir_func_divide_f64_label5:
     mov %r10, %rax
-    movq -112(%rbp), %rcx
+    movq -176(%rbp), %rcx
+    movq %rcx, -128(%rbp)
+    movq -168(%rbp), %rcx
+    movq %rcx, -120(%rbp)
+    movq -160(%rbp), %rcx
+    movq %rcx, -112(%rbp)
+    movq -152(%rbp), %rcx
+    movq %rcx, -104(%rbp)
+    movq -144(%rbp), %rcx
     movq %rcx, -96(%rbp)
-    movq -104(%rbp), %rcx
+    movq -136(%rbp), %rcx
     movq %rcx, -88(%rbp)
 _kefir_func_divide_f64_label3:
+    fnclex
     mov %rax, %r10
+    movq -128(%rbp), %rax
+    movq %rax, -176(%rbp)
+    movq -120(%rbp), %rax
+    movq %rax, -168(%rbp)
+    movq -112(%rbp), %rax
+    movq %rax, -160(%rbp)
+    movq -104(%rbp), %rax
+    movq %rax, -152(%rbp)
     movq -96(%rbp), %rax
-    movq %rax, -112(%rbp)
+    movq %rax, -144(%rbp)
     movq -88(%rbp), %rax
-    movq %rax, -104(%rbp)
+    movq %rax, -136(%rbp)
     jmp _kefir_func_divide_f64_label2
 _kefir_func_divide_f64_label4:
-    movq -96(%rbp), %xmm0
-    movq -88(%rbp), %xmm1
+    lea -88(%rbp), %rdi
+    call __kefirrt_fenv_update@PLT
+    movq -128(%rbp), %xmm0
+    movq -120(%rbp), %xmm1
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -309,63 +429,93 @@ _kefir_func_divide_f64_label4:
 multiply_f32:
     push %rbp
     mov %rsp, %rbp
-    sub $64, %rsp
+    sub $128, %rsp
     stmxcsr -8(%rbp)
 _kefir_func_multiply_f32_label0:
-    movq %xmm0, -64(%rbp)
+    movq %xmm0, -128(%rbp)
 _kefir_func_multiply_f32_label1:
     lea -24(%rbp), %rax
-    movq -64(%rbp), %xmm0
+    movq -128(%rbp), %xmm0
     movq %xmm0, (%rax)
     lea -24(%rbp), %rax
     movq (%rax), %xmm0
-    movq %xmm0, -64(%rbp)
+    movq %xmm0, -128(%rbp)
+    fnstenv -120(%rbp)
+    stmxcsr -92(%rbp)
+    fnclex
     mov %rdi, %r10
 _kefir_func_multiply_f32_label2:
-    movq %r10, -48(%rbp)
+    movq %r10, -80(%rbp)
     mov %r10, %rsi
-    lea -56(%rbp), %rdx
+    lea -88(%rbp), %rdx
     mov $8, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    movq -48(%rbp), %r10
-    movq -56(%rbp), %xmm0
-    movq -64(%rbp), %xmm1
+    movq -80(%rbp), %r10
+    movq -88(%rbp), %xmm0
+    movq -128(%rbp), %xmm1
     call __kefirrt_opt_complex_float32_mul@PLT
-    movq %xmm0, -48(%rbp)
-    movq %r10, -40(%rbp)
+    movq %xmm0, -80(%rbp)
+    movq %r10, -72(%rbp)
     mov $8, %rcx
-    leaq -56(%rbp), %rax
+    leaq -88(%rbp), %rax
     mov %rax, %rsi
-    leaq -56(%rbp), %rax
+    leaq -88(%rbp), %rax
     mov %rax, %rdi
     rep movsb
     mov %r10, %rsi
     mov $5, %r8
     mov $5, %r9
     mov $8, %rdi
-    lea -56(%rbp), %rdx
-    leaq -48(%rbp), %rax
+    lea -88(%rbp), %rdx
+    leaq -80(%rbp), %rax
     mov %rax, %rcx
     call __atomic_compare_exchange@PLT
     mov %rax, %rcx
-    movq -40(%rbp), %r10
+    movq -72(%rbp), %r10
     test %rcx, %rcx
     jz _kefir_func_multiply_f32_label5
-    movq -48(%rbp), %rax
+    movq -80(%rbp), %rax
+    movq %rax, -88(%rbp)
+    movq -120(%rbp), %rax
+    movq %rax, -64(%rbp)
+    movq -112(%rbp), %rax
     movq %rax, -56(%rbp)
+    movq -104(%rbp), %rax
+    movq %rax, -48(%rbp)
+    movq -96(%rbp), %rax
+    movq %rax, -40(%rbp)
     jmp _kefir_func_multiply_f32_label4
 _kefir_func_multiply_f32_label5:
     mov %r10, %rax
-    movq -64(%rbp), %rcx
+    movq -128(%rbp), %rcx
+    movq %rcx, -88(%rbp)
+    movq -120(%rbp), %rcx
+    movq %rcx, -80(%rbp)
+    movq -112(%rbp), %rcx
+    movq %rcx, -72(%rbp)
+    movq -104(%rbp), %rcx
+    movq %rcx, -64(%rbp)
+    movq -96(%rbp), %rcx
     movq %rcx, -56(%rbp)
 _kefir_func_multiply_f32_label3:
+    fnclex
     mov %rax, %r10
+    movq -88(%rbp), %rax
+    movq %rax, -128(%rbp)
+    movq -80(%rbp), %rax
+    movq %rax, -120(%rbp)
+    movq -72(%rbp), %rax
+    movq %rax, -112(%rbp)
+    movq -64(%rbp), %rax
+    movq %rax, -104(%rbp)
     movq -56(%rbp), %rax
-    movq %rax, -64(%rbp)
+    movq %rax, -96(%rbp)
     jmp _kefir_func_multiply_f32_label2
 _kefir_func_multiply_f32_label4:
-    movq -56(%rbp), %xmm0
+    lea -64(%rbp), %rdi
+    call __kefirrt_fenv_update@PLT
+    movq -88(%rbp), %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -374,78 +524,108 @@ _kefir_func_multiply_f32_label4:
 multiply_f64:
     push %rbp
     mov %rsp, %rbp
-    sub $112, %rsp
+    sub $176, %rsp
     stmxcsr -8(%rbp)
 _kefir_func_multiply_f64_label0:
-    movq %xmm0, -112(%rbp)
-    movq %xmm1, -104(%rbp)
+    movq %xmm0, -176(%rbp)
+    movq %xmm1, -168(%rbp)
 _kefir_func_multiply_f64_label1:
     lea -48(%rbp), %rax
-    movq -112(%rbp), %xmm0
+    movq -176(%rbp), %xmm0
     movq %xmm0, (%rax)
-    movq -104(%rbp), %xmm0
+    movq -168(%rbp), %xmm0
     movq %xmm0, 8(%rax)
     lea -48(%rbp), %rax
     movq (%rax), %xmm0
-    movq %xmm0, -112(%rbp)
+    movq %xmm0, -176(%rbp)
     movq 8(%rax), %xmm0
-    movq %xmm0, -104(%rbp)
+    movq %xmm0, -168(%rbp)
+    fnstenv -160(%rbp)
+    stmxcsr -132(%rbp)
+    fnclex
     mov %rdi, %r10
 _kefir_func_multiply_f64_label2:
-    movq %r10, -80(%rbp)
+    movq %r10, -112(%rbp)
     mov %r10, %rsi
-    lea -96(%rbp), %rdx
+    lea -128(%rbp), %rdx
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    movq -80(%rbp), %r10
-    movq -96(%rbp), %xmm0
-    movq -88(%rbp), %xmm1
-    movq -112(%rbp), %xmm2
-    movq -104(%rbp), %xmm3
+    movq -112(%rbp), %r10
+    movq -128(%rbp), %xmm0
+    movq -120(%rbp), %xmm1
+    movq -176(%rbp), %xmm2
+    movq -168(%rbp), %xmm3
     call __kefirrt_opt_complex_float64_mul@PLT
-    movq %xmm0, -72(%rbp)
-    movq %xmm1, -64(%rbp)
-    movq %r10, -80(%rbp)
+    movq %xmm0, -104(%rbp)
+    movq %xmm1, -96(%rbp)
+    movq %r10, -112(%rbp)
     mov $16, %rcx
-    leaq -96(%rbp), %rax
+    leaq -128(%rbp), %rax
     mov %rax, %rsi
-    leaq -96(%rbp), %rax
+    leaq -128(%rbp), %rax
     mov %rax, %rdi
     rep movsb
     mov %r10, %rsi
     mov $5, %r8
     mov $5, %r9
     mov $16, %rdi
-    lea -96(%rbp), %rdx
-    leaq -72(%rbp), %rax
+    lea -128(%rbp), %rdx
+    leaq -104(%rbp), %rax
     mov %rax, %rcx
     call __atomic_compare_exchange@PLT
     mov %rax, %rcx
-    movq -80(%rbp), %r10
+    movq -112(%rbp), %r10
     test %rcx, %rcx
     jz _kefir_func_multiply_f64_label5
-    movq -72(%rbp), %rax
-    movq %rax, -96(%rbp)
-    movq -64(%rbp), %rax
+    movq -104(%rbp), %rax
+    movq %rax, -128(%rbp)
+    movq -96(%rbp), %rax
+    movq %rax, -120(%rbp)
+    movq -160(%rbp), %rax
     movq %rax, -88(%rbp)
+    movq -152(%rbp), %rax
+    movq %rax, -80(%rbp)
+    movq -144(%rbp), %rax
+    movq %rax, -72(%rbp)
+    movq -136(%rbp), %rax
+    movq %rax, -64(%rbp)
     jmp _kefir_func_multiply_f64_label4
 _kefir_func_multiply_f64_label5:
     mov %r10, %rax
-    movq -112(%rbp), %rcx
+    movq -176(%rbp), %rcx
+    movq %rcx, -128(%rbp)
+    movq -168(%rbp), %rcx
+    movq %rcx, -120(%rbp)
+    movq -160(%rbp), %rcx
+    movq %rcx, -112(%rbp)
+    movq -152(%rbp), %rcx
+    movq %rcx, -104(%rbp)
+    movq -144(%rbp), %rcx
     movq %rcx, -96(%rbp)
-    movq -104(%rbp), %rcx
+    movq -136(%rbp), %rcx
     movq %rcx, -88(%rbp)
 _kefir_func_multiply_f64_label3:
+    fnclex
     mov %rax, %r10
+    movq -128(%rbp), %rax
+    movq %rax, -176(%rbp)
+    movq -120(%rbp), %rax
+    movq %rax, -168(%rbp)
+    movq -112(%rbp), %rax
+    movq %rax, -160(%rbp)
+    movq -104(%rbp), %rax
+    movq %rax, -152(%rbp)
     movq -96(%rbp), %rax
-    movq %rax, -112(%rbp)
+    movq %rax, -144(%rbp)
     movq -88(%rbp), %rax
-    movq %rax, -104(%rbp)
+    movq %rax, -136(%rbp)
     jmp _kefir_func_multiply_f64_label2
 _kefir_func_multiply_f64_label4:
-    movq -96(%rbp), %xmm0
-    movq -88(%rbp), %xmm1
+    lea -88(%rbp), %rdi
+    call __kefirrt_fenv_update@PLT
+    movq -128(%rbp), %xmm0
+    movq -120(%rbp), %xmm1
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -454,65 +634,95 @@ _kefir_func_multiply_f64_label4:
 subtract_f32:
     push %rbp
     mov %rsp, %rbp
-    sub $64, %rsp
+    sub $128, %rsp
     stmxcsr -8(%rbp)
 _kefir_func_subtract_f32_label0:
-    movq %xmm0, -64(%rbp)
+    movq %xmm0, -128(%rbp)
 _kefir_func_subtract_f32_label1:
     lea -24(%rbp), %rax
-    movq -64(%rbp), %xmm0
+    movq -128(%rbp), %xmm0
     movq %xmm0, (%rax)
     lea -24(%rbp), %rax
     movq (%rax), %xmm0
-    movq %xmm0, -64(%rbp)
+    movq %xmm0, -128(%rbp)
+    fnstenv -120(%rbp)
+    stmxcsr -92(%rbp)
+    fnclex
     mov %rdi, %r10
 _kefir_func_subtract_f32_label2:
-    movq %r10, -48(%rbp)
+    movq %r10, -80(%rbp)
     mov %r10, %rsi
-    lea -56(%rbp), %rdx
+    lea -88(%rbp), %rdx
     mov $8, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    movq -48(%rbp), %r10
-    movd -56(%rbp), %xmm0
-    movd -52(%rbp), %xmm1
-    subss -64(%rbp), %xmm0
-    subss -60(%rbp), %xmm1
-    movd %xmm0, -48(%rbp)
-    movd %xmm1, -44(%rbp)
-    movq %r10, -40(%rbp)
+    movq -80(%rbp), %r10
+    movd -88(%rbp), %xmm0
+    movd -84(%rbp), %xmm1
+    subss -128(%rbp), %xmm0
+    subss -124(%rbp), %xmm1
+    movd %xmm0, -80(%rbp)
+    movd %xmm1, -76(%rbp)
+    movq %r10, -72(%rbp)
     mov $8, %rcx
-    leaq -56(%rbp), %rax
+    leaq -88(%rbp), %rax
     mov %rax, %rsi
-    leaq -56(%rbp), %rax
+    leaq -88(%rbp), %rax
     mov %rax, %rdi
     rep movsb
     mov %r10, %rsi
     mov $5, %r8
     mov $5, %r9
     mov $8, %rdi
-    lea -56(%rbp), %rdx
-    leaq -48(%rbp), %rax
+    lea -88(%rbp), %rdx
+    leaq -80(%rbp), %rax
     mov %rax, %rcx
     call __atomic_compare_exchange@PLT
     mov %rax, %rcx
-    movq -40(%rbp), %r10
+    movq -72(%rbp), %r10
     test %rcx, %rcx
     jz _kefir_func_subtract_f32_label5
-    movq -48(%rbp), %rax
+    movq -80(%rbp), %rax
+    movq %rax, -88(%rbp)
+    movq -120(%rbp), %rax
+    movq %rax, -64(%rbp)
+    movq -112(%rbp), %rax
     movq %rax, -56(%rbp)
+    movq -104(%rbp), %rax
+    movq %rax, -48(%rbp)
+    movq -96(%rbp), %rax
+    movq %rax, -40(%rbp)
     jmp _kefir_func_subtract_f32_label4
 _kefir_func_subtract_f32_label5:
     mov %r10, %rax
-    movq -64(%rbp), %rcx
+    movq -128(%rbp), %rcx
+    movq %rcx, -88(%rbp)
+    movq -120(%rbp), %rcx
+    movq %rcx, -80(%rbp)
+    movq -112(%rbp), %rcx
+    movq %rcx, -72(%rbp)
+    movq -104(%rbp), %rcx
+    movq %rcx, -64(%rbp)
+    movq -96(%rbp), %rcx
     movq %rcx, -56(%rbp)
 _kefir_func_subtract_f32_label3:
+    fnclex
     mov %rax, %r10
+    movq -88(%rbp), %rax
+    movq %rax, -128(%rbp)
+    movq -80(%rbp), %rax
+    movq %rax, -120(%rbp)
+    movq -72(%rbp), %rax
+    movq %rax, -112(%rbp)
+    movq -64(%rbp), %rax
+    movq %rax, -104(%rbp)
     movq -56(%rbp), %rax
-    movq %rax, -64(%rbp)
+    movq %rax, -96(%rbp)
     jmp _kefir_func_subtract_f32_label2
 _kefir_func_subtract_f32_label4:
-    movq -56(%rbp), %xmm0
+    lea -64(%rbp), %rdi
+    call __kefirrt_fenv_update@PLT
+    movq -88(%rbp), %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -521,77 +731,107 @@ _kefir_func_subtract_f32_label4:
 subtract_f64:
     push %rbp
     mov %rsp, %rbp
-    sub $112, %rsp
+    sub $176, %rsp
     stmxcsr -8(%rbp)
 _kefir_func_subtract_f64_label0:
-    movq %xmm0, -112(%rbp)
-    movq %xmm1, -104(%rbp)
+    movq %xmm0, -176(%rbp)
+    movq %xmm1, -168(%rbp)
 _kefir_func_subtract_f64_label1:
     lea -48(%rbp), %rax
-    movq -112(%rbp), %xmm0
+    movq -176(%rbp), %xmm0
     movq %xmm0, (%rax)
-    movq -104(%rbp), %xmm0
+    movq -168(%rbp), %xmm0
     movq %xmm0, 8(%rax)
     lea -48(%rbp), %rax
     movq (%rax), %xmm0
-    movq %xmm0, -112(%rbp)
+    movq %xmm0, -176(%rbp)
     movq 8(%rax), %xmm0
-    movq %xmm0, -104(%rbp)
+    movq %xmm0, -168(%rbp)
+    fnstenv -160(%rbp)
+    stmxcsr -132(%rbp)
+    fnclex
     mov %rdi, %r10
 _kefir_func_subtract_f64_label2:
-    movq %r10, -80(%rbp)
+    movq %r10, -112(%rbp)
     mov %r10, %rsi
-    lea -96(%rbp), %rdx
+    lea -128(%rbp), %rdx
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    movq -80(%rbp), %r10
-    movq -96(%rbp), %xmm0
-    movq -88(%rbp), %xmm1
-    subsd -112(%rbp), %xmm0
-    subsd -104(%rbp), %xmm1
-    movq %xmm0, -72(%rbp)
-    movq %xmm1, -64(%rbp)
-    movq %r10, -80(%rbp)
+    movq -112(%rbp), %r10
+    movq -128(%rbp), %xmm0
+    movq -120(%rbp), %xmm1
+    subsd -176(%rbp), %xmm0
+    subsd -168(%rbp), %xmm1
+    movq %xmm0, -104(%rbp)
+    movq %xmm1, -96(%rbp)
+    movq %r10, -112(%rbp)
     mov $16, %rcx
-    leaq -96(%rbp), %rax
+    leaq -128(%rbp), %rax
     mov %rax, %rsi
-    leaq -96(%rbp), %rax
+    leaq -128(%rbp), %rax
     mov %rax, %rdi
     rep movsb
     mov %r10, %rsi
     mov $5, %r8
     mov $5, %r9
     mov $16, %rdi
-    lea -96(%rbp), %rdx
-    leaq -72(%rbp), %rax
+    lea -128(%rbp), %rdx
+    leaq -104(%rbp), %rax
     mov %rax, %rcx
     call __atomic_compare_exchange@PLT
     mov %rax, %rcx
-    movq -80(%rbp), %r10
+    movq -112(%rbp), %r10
     test %rcx, %rcx
     jz _kefir_func_subtract_f64_label5
-    movq -72(%rbp), %rax
-    movq %rax, -96(%rbp)
-    movq -64(%rbp), %rax
+    movq -104(%rbp), %rax
+    movq %rax, -128(%rbp)
+    movq -96(%rbp), %rax
+    movq %rax, -120(%rbp)
+    movq -160(%rbp), %rax
     movq %rax, -88(%rbp)
+    movq -152(%rbp), %rax
+    movq %rax, -80(%rbp)
+    movq -144(%rbp), %rax
+    movq %rax, -72(%rbp)
+    movq -136(%rbp), %rax
+    movq %rax, -64(%rbp)
     jmp _kefir_func_subtract_f64_label4
 _kefir_func_subtract_f64_label5:
     mov %r10, %rax
-    movq -112(%rbp), %rcx
+    movq -176(%rbp), %rcx
+    movq %rcx, -128(%rbp)
+    movq -168(%rbp), %rcx
+    movq %rcx, -120(%rbp)
+    movq -160(%rbp), %rcx
+    movq %rcx, -112(%rbp)
+    movq -152(%rbp), %rcx
+    movq %rcx, -104(%rbp)
+    movq -144(%rbp), %rcx
     movq %rcx, -96(%rbp)
-    movq -104(%rbp), %rcx
+    movq -136(%rbp), %rcx
     movq %rcx, -88(%rbp)
 _kefir_func_subtract_f64_label3:
+    fnclex
     mov %rax, %r10
+    movq -128(%rbp), %rax
+    movq %rax, -176(%rbp)
+    movq -120(%rbp), %rax
+    movq %rax, -168(%rbp)
+    movq -112(%rbp), %rax
+    movq %rax, -160(%rbp)
+    movq -104(%rbp), %rax
+    movq %rax, -152(%rbp)
     movq -96(%rbp), %rax
-    movq %rax, -112(%rbp)
+    movq %rax, -144(%rbp)
     movq -88(%rbp), %rax
-    movq %rax, -104(%rbp)
+    movq %rax, -136(%rbp)
     jmp _kefir_func_subtract_f64_label2
 _kefir_func_subtract_f64_label4:
-    movq -96(%rbp), %xmm0
-    movq -88(%rbp), %xmm1
+    lea -88(%rbp), %rdi
+    call __kefirrt_fenv_update@PLT
+    movq -128(%rbp), %xmm0
+    movq -120(%rbp), %xmm1
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

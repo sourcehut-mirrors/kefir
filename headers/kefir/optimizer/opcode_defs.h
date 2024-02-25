@@ -183,6 +183,10 @@
     OPCODE(UINT_TO_LONG_DOUBLE, "uint_to_long_double", ref1) SEPARATOR \
     OPCODE(FLOAT32_TO_LONG_DOUBLE, "float32_to_long_double", ref1) SEPARATOR \
     OPCODE(FLOAT64_TO_LONG_DOUBLE, "float64_to_long_double", ref1) SEPARATOR \
+    /* Floating-point environment */ \
+    OPCODE(FENV_SAVE, "fenv_save", none) SEPARATOR \
+    OPCODE(FENV_CLEAR, "fenv_clear", none) SEPARATOR \
+    OPCODE(FENV_UPDATE, "fenv_update", ref1) SEPARATOR \
     /* Complex numbers */ \
     OPCODE(COMPLEX_FLOAT32_FROM, "complex_float32_from", ref2) SEPARATOR \
     OPCODE(COMPLEX_FLOAT32_REAL, "complex_float32_real", ref1) SEPARATOR \

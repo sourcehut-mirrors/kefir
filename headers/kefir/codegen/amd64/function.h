@@ -210,6 +210,9 @@ kefir_result_t kefir_codegen_amd64_function_map_phi_outputs(struct kefir_mem *, 
     _def(vararg_end, KEFIR_OPT_OPCODE_VARARG_END) _separator \
     _def(vararg_copy, KEFIR_OPT_OPCODE_VARARG_COPY) _separator \
     _def(vararg_get, KEFIR_OPT_OPCODE_VARARG_GET) _separator \
+    _def(fenv_save, KEFIR_OPT_OPCODE_FENV_SAVE) _separator \
+    _def(fenv_clear, KEFIR_OPT_OPCODE_FENV_CLEAR) _separator \
+    _def(fenv_update, KEFIR_OPT_OPCODE_FENV_UPDATE) _separator \
     _def(complex_float32_from, KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_FROM) _separator \
     _def(complex_float32_real, KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_REAL) _separator \
     _def(complex_float32_imaginary, KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_IMAGINARY) _separator \

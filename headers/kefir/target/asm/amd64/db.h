@@ -365,6 +365,10 @@
         KEFIR_AMD64_INSTRDB_WRITE | KEFIR_AMD64_INSTRDB_MEMORY16) _separator \
     _instr1(fldcw, "fldcw", , KEFIR_AMD64_INSTRDB_NONE, \
         KEFIR_AMD64_INSTRDB_READ | KEFIR_AMD64_INSTRDB_MEMORY16) _separator \
+    /* fenv */ \
+    _instr1(fnstenv, "fnstenv", , KEFIR_AMD64_INSTRDB_NONE, \
+        KEFIR_AMD64_INSTRDB_WRITE | KEFIR_AMD64_INSTRDB_GP_MEMORY) _separator \
+    _instr0(fnclex, "fnclex", , KEFIR_AMD64_INSTRDB_NONE) _separator \
     /* Prefixes */ \
     _instr0(data16, "data16", PREFIX, KEFIR_AMD64_INSTRDB_NONE) _separator \
     _instr0(rexW, "rex.W", PREFIX, KEFIR_AMD64_INSTRDB_NONE)
