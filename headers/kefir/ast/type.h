@@ -119,6 +119,8 @@ kefir_bool_t kefir_ast_function_specifier_is_inline(kefir_ast_function_specifier
 #define KEFIR_AST_TYPE_IS_VL_ARRAY(type)                                                           \
     ((type)->tag == KEFIR_AST_TYPE_ARRAY && ((type)->array_type.boundary == KEFIR_AST_ARRAY_VLA || \
                                              (type)->array_type.boundary == KEFIR_AST_ARRAY_VLA_STATIC))
+#define KEFIR_AST_TYPE_IS_ATOMIC(type) \
+    ((type)->tag == KEFIR_AST_TYPE_QUALIFIED && (type)->qualified_type.qualification.atomic_type)
 #define KEFIR_AST_TYPE_HASH(type) ((kefir_ast_type_hash_t) type)
 
 extern const struct kefir_ast_bitfield_properties KEFIR_AST_BITFIELD_PROPERTIES_NONE;

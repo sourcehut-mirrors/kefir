@@ -73,8 +73,7 @@ kefir_result_t kefir_ast_analyze_array_subscript_node(struct kefir_mem *mem, con
     base->properties.type = type;
     base->properties.expression_props.lvalue = true;
     base->properties.expression_props.addressable = true;
-    base->properties.expression_props.atomic =
-        type->tag == KEFIR_AST_TYPE_QUALIFIED && type->qualified_type.qualification.atomic_type;
+    base->properties.expression_props.atomic = KEFIR_AST_TYPE_IS_ATOMIC(type);
     const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(type);
     if (base->properties.expression_props.atomic &&
         (KEFIR_AST_TYPE_IS_AGGREGATE_TYPE(unqualified_type) || KEFIR_AST_TYPE_IS_COMPLEX_TYPE(unqualified_type))) {

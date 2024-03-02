@@ -42,8 +42,7 @@ kefir_result_t kefir_ast_try_analyze_identifier(struct kefir_mem *mem, const str
             base->properties.expression_props.lvalue = scoped_id->object.type->tag != KEFIR_AST_TYPE_ARRAY;
             base->properties.expression_props.addressable =
                 scoped_id->object.storage != KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER;
-            base->properties.expression_props.atomic = scoped_id->object.type->tag == KEFIR_AST_TYPE_QUALIFIED &&
-                                                       scoped_id->object.type->qualified_type.qualification.atomic_type;
+            base->properties.expression_props.atomic = KEFIR_AST_TYPE_IS_ATOMIC(scoped_id->object.type);
             base->properties.expression_props.constant_expression =
                 scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT && scoped_id->type->tag == KEFIR_AST_TYPE_ARRAY &&
                 (scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN ||

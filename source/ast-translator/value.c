@@ -252,7 +252,7 @@ kefir_result_t kefir_ast_translator_load_value(const struct kefir_ast_type *type
     REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type"));
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR block builder"));
 
-    REQUIRE(type->tag != KEFIR_AST_TYPE_QUALIFIED || !type->qualified_type.qualification.atomic_type,
+    REQUIRE(!KEFIR_AST_TYPE_IS_ATOMIC(type),
             KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Atomic value loads shall use specialized function"));
 
     const kefir_uint64_t mem_flags = retrieve_memflags(type);
@@ -564,7 +564,7 @@ kefir_result_t kefir_ast_translator_store_value(struct kefir_mem *mem, const str
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST translator context"));
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR block builder"));
 
-    if (type->tag == KEFIR_AST_TYPE_QUALIFIED && type->qualified_type.qualification.atomic_type) {
+    if (KEFIR_AST_TYPE_IS_ATOMIC(type)) {
         REQUIRE_OK(atomic_store_value(mem, type, context, builder, source_location));
         return KEFIR_OK;
     }

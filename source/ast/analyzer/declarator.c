@@ -93,6 +93,10 @@ static kefir_result_t process_struct_declaration_entry(struct kefir_mem *mem, co
                 return res;
             });
         } else {
+            REQUIRE(!KEFIR_AST_TYPE_IS_ATOMIC(field_type),
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &entry_declarator->declarator->source_location,
+                                           "Structure/union bit-field cannot have atomic type"));
+
             struct kefir_ast_constant_expression_value value;
             REQUIRE_OK(kefir_ast_analyze_node(mem, context, entry_declarator->bitwidth));
             REQUIRE_OK(kefir_ast_constant_expression_value_evaluate(mem, context, entry_declarator->bitwidth, &value));
