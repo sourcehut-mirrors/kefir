@@ -653,6 +653,26 @@ struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_typedef(struct k
     return specifier;
 }
 
+struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_typeof(struct kefir_mem *mem, kefir_bool_t qualified,
+                                                                       struct kefir_ast_node_base *node) {
+    REQUIRE(mem != NULL, NULL);
+    REQUIRE(node != NULL, NULL);
+
+    struct kefir_ast_declarator_specifier *specifier = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_declarator_specifier));
+    REQUIRE(specifier != NULL, NULL);
+
+    specifier->klass = KEFIR_AST_TYPE_SPECIFIER;
+    specifier->type_specifier.specifier = KEFIR_AST_TYPE_SPECIFIER_TYPEOF;
+    specifier->type_specifier.value.type_of.qualified = qualified;
+    specifier->type_specifier.value.type_of.node = node;
+    kefir_result_t res = kefir_source_location_empty(&specifier->source_location);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_FREE(mem, specifier);
+        return NULL;
+    });
+    return specifier;
+}
+
 #define STORAGE_CLASS_SPECIFIER(_id, _spec)                                                                 \
     struct kefir_ast_declarator_specifier *kefir_ast_storage_class_specifier_##_id(struct kefir_mem *mem) { \
         REQUIRE(mem != NULL, NULL);                                                                         \
@@ -824,6 +844,12 @@ struct kefir_ast_declarator_specifier *kefir_ast_declarator_specifier_clone(
                     clone = kefir_ast_type_specifier_va_list(mem);
                     break;
 
+                case KEFIR_AST_TYPE_SPECIFIER_TYPEOF:
+                    clone = kefir_ast_type_specifier_typeof(
+                        mem, specifier->type_specifier.value.type_of.qualified,
+                        KEFIR_AST_NODE_CLONE(mem, specifier->type_specifier.value.type_of.node));
+                    break;
+
                 default:
                     // Intentionally left blank
                     break;
@@ -935,6 +961,11 @@ kefir_result_t kefir_ast_declarator_specifier_free(struct kefir_mem *mem,
                 case KEFIR_AST_TYPE_SPECIFIER_ENUM:
                     REQUIRE_OK(kefir_ast_enum_specifier_free(mem, specifier->type_specifier.value.enumeration));
                     specifier->type_specifier.value.enumeration = NULL;
+                    break;
+
+                case KEFIR_AST_TYPE_SPECIFIER_TYPEOF:
+                    REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, specifier->type_specifier.value.type_of.node));
+                    specifier->type_specifier.value.type_of.node = NULL;
                     break;
 
                 default:

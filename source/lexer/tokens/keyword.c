@@ -88,6 +88,8 @@ static const struct KeywordEntry {
     {U"asm", KEFIR_KEYWORD_ASM},
     {U"__asm__", KEFIR_KEYWORD_ASM},
     {U"__asm", KEFIR_KEYWORD_ASM},
+    {U"__typeof__", KEFIR_KEYWORD_TYPEOF},
+    {U"__typeof_unqual__", KEFIR_KEYWORD_TYPEOF_UNQUAL},
 };
 static const kefir_size_t KEYWORDS_LENGTH = sizeof(KEYWORDS) / sizeof(KEYWORDS[0]);
 

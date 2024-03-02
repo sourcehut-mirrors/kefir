@@ -131,6 +131,10 @@ typedef struct kefir_ast_type_specifier {
         struct kefir_ast_structure_specifier *structure;
         struct kefir_ast_enum_specifier *enumeration;
         const char *type_name;
+        struct {
+            kefir_bool_t qualified;
+            struct kefir_ast_node_base *node;
+        } type_of;
     } value;
 } kefir_ast_type_specifier_t;
 
@@ -169,6 +173,8 @@ struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_typedef(struct k
                                                                         const char *);
 
 struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_va_list(struct kefir_mem *);
+struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_typeof(struct kefir_mem *, kefir_bool_t,
+                                                                       struct kefir_ast_node_base *);
 
 struct kefir_ast_declarator_specifier *kefir_ast_storage_class_specifier_typedef(struct kefir_mem *);
 struct kefir_ast_declarator_specifier *kefir_ast_storage_class_specifier_extern(struct kefir_mem *);

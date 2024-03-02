@@ -614,6 +614,28 @@ static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast
             *seq_state = TYPE_SPECIFIER_SEQUENCE_SPECIFIERS;
             break;
 
+        case KEFIR_AST_TYPE_SPECIFIER_TYPEOF: {
+            REQUIRE(*seq_state == TYPE_SPECIFIER_SEQUENCE_EMPTY,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                                           "Cannot combine referenced typeof specifier with others"));
+            REQUIRE(*real_class == REAL_SCALAR,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                                           "Typeof cannot be combined with complex type specifier"));
+
+            struct kefir_ast_node_base *node = specifier->value.type_of.node;
+            REQUIRE_OK(kefir_ast_analyze_node(mem, context, node));
+            REQUIRE(node->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION ||
+                        node->properties.category == KEFIR_AST_NODE_CATEGORY_TYPE,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->source_location,
+                                           "Expected an expresison or a type name"));
+            const struct kefir_ast_type *type = node->properties.type;
+            if (!specifier->value.type_of.qualified) {
+                type = kefir_ast_unqualified_type(type);
+            }
+            *base_type = type;
+            *seq_state = TYPE_SPECIFIER_SEQUENCE_TYPEDEF;
+        } break;
+
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected type specifier");
     }
@@ -954,7 +976,8 @@ static kefir_result_t resolve_array_declarator(struct kefir_mem *mem, const stru
                 kefir_ast_constant_expression_value_evaluate(mem, context, declarator->array.length, &value);
             if (res == KEFIR_NOT_CONSTANT) {
                 kefir_clear_error();
-                REQUIRE(KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(declarator->array.length->properties.type),
+                REQUIRE(KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(
+                            kefir_ast_unqualified_type(declarator->array.length->properties.type)),
                         KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &declarator->array.length->source_location,
                                                "Variable-length array declaration length shall have integral type"));
                 if (declarator->array.static_array) {

@@ -463,6 +463,33 @@ static kefir_result_t scan_type_specifier(struct kefir_mem *mem, struct kefir_pa
         REQUIRE_OK(kefir_parser_try_invoke(mem, parser, scan_struct_specifier, &specifier));
     } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_ENUM)) {
         REQUIRE_OK(kefir_parser_try_invoke(mem, parser, scan_enum_specifier, &specifier));
+    } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_TYPEOF) ||
+               PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_TYPEOF_UNQUAL)) {
+        REQUIRE(
+            PARSER_TOKEN_IS_PUNCTUATOR(parser, 1, KEFIR_PUNCTUATOR_LEFT_PARENTHESE),
+            KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 1), "Expected right parenthese"));
+        const kefir_bool_t qualified = PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_TYPEOF);
+        REQUIRE_OK(PARSER_SHIFT(parser));
+        REQUIRE_OK(PARSER_SHIFT(parser));
+        struct kefir_ast_node_base *node = NULL;
+        kefir_result_t res = KEFIR_PARSER_RULE_APPLY(mem, parser, type_name, &node);
+        if (res == KEFIR_NO_MATCH) {
+            res = KEFIR_PARSER_RULE_APPLY(mem, parser, expression, &node);
+        }
+        if (res == KEFIR_NO_MATCH) {
+            res = KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0),
+                                         "Expected an expression of type name");
+        }
+        REQUIRE_OK(res);
+        specifier = kefir_ast_type_specifier_typeof(mem, qualified, node);
+        REQUIRE_ELSE(specifier != NULL, {
+            KEFIR_AST_NODE_FREE(mem, node);
+            return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST declarator specifier");
+        });
+        REQUIRE(
+            PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_RIGHT_PARENTHESE),
+            KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0), "Expected right parenthese"));
+        REQUIRE_OK(PARSER_SHIFT(parser));
     } else if (PARSER_TOKEN_IS_IDENTIFIER(parser, 0) &&
                strcmp(PARSER_CURSOR(parser, 0)->identifier, KEFIR_PARSER_BUILTIN_VA_LIST) == 0) {
         REQUIRE_OK(PARSER_SHIFT(parser));

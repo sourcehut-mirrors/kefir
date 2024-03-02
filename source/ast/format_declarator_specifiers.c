@@ -199,6 +199,15 @@ kefir_result_t kefir_ast_format_declarator_specifier(struct kefir_json_output *j
                     REQUIRE_OK(kefir_json_output_string(json, "va_list"));
                     break;
 
+                case KEFIR_AST_TYPE_SPECIFIER_TYPEOF:
+                    REQUIRE_OK(kefir_json_output_string(json, "typeof"));
+                    REQUIRE_OK(kefir_json_output_object_key(json, "qualified"));
+                    REQUIRE_OK(kefir_json_output_boolean(json, specifier->type_specifier.value.type_of.qualified));
+                    REQUIRE_OK(kefir_json_output_object_key(json, "node"));
+                    REQUIRE_OK(
+                        kefir_ast_format(json, specifier->type_specifier.value.type_of.node, display_source_location));
+                    break;
+
                 default:
                     return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected type specifier");
             }
