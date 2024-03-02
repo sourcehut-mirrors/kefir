@@ -56,6 +56,9 @@
 #define __UINT_FAST64_TYPE__ long unsigned int
 #define __INTPTR_TYPE__ long int
 #define __UINTPTR_TYPE__ long unsigned int
+#define __CHAR8_TYPE__ unsigned char
+#define __CHAR16_TYPE__ unsigned short int
+#define __CHAR32_TYPE__ unsigned int
 #endif
 
 #define __FLOAT_WORD_ORDER__ __BYTE_ORDER__
@@ -87,6 +90,14 @@
 #define __SIZEOF_WCHAR_T__ __SIZEOF_INT__
 #define __SIZEOF_WINT_T__ __SIZEOF_INT__
 #endif
+
+// Atomics
+#define __ATOMIC_RELAXED 0
+#define __ATOMIC_CONSUME 1
+#define __ATOMIC_ACQUIRE 2
+#define __ATOMIC_RELEASE 3
+#define __ATOMIC_ACQ_REL 4
+#define __ATOMIC_SEQ_CST 5
 
 // Runtime functions
 extern _Noreturn void __kefirrt_trap(void);
