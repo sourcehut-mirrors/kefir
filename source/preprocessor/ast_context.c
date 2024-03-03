@@ -125,6 +125,23 @@ static kefir_result_t pp_pop_block(struct kefir_mem *mem, const struct kefir_ast
     return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Preprocessor AST context does not implement blocks");
 }
 
+static kefir_result_t pp_push_external_ordinary_scope(struct kefir_mem *mem,
+                                                      struct kefir_ast_identifier_flat_scope *scope,
+                                                      const struct kefir_ast_context *context) {
+    UNUSED(mem);
+    UNUSED(scope);
+    UNUSED(context);
+
+    return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Preprocessor AST context does not implement blocks");
+}
+
+static kefir_result_t pp_pop_external_oridnary_scope(struct kefir_mem *mem, const struct kefir_ast_context *context) {
+    UNUSED(mem);
+    UNUSED(context);
+
+    return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Preprocessor AST context does not implement blocks");
+}
+
 static kefir_result_t context_current_flow_control_point(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                                          struct kefir_ast_flow_control_point **point) {
     UNUSED(mem);
@@ -157,6 +174,8 @@ kefir_result_t kefir_preprocessor_ast_context_init(struct kefir_mem *mem,
     context->context.reference_public_label = pp_reference_public_label;
     context->context.push_block = pp_push_block;
     context->context.pop_block = pp_pop_block;
+    context->context.push_external_ordinary_scope = pp_push_external_ordinary_scope;
+    context->context.pop_external_oridnary_scope = pp_pop_external_oridnary_scope;
     context->context.current_flow_control_point = context_current_flow_control_point;
 
     context->context.symbols = symbols;

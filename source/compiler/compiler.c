@@ -77,7 +77,7 @@ static kefir_result_t load_predefined_defs(struct kefir_mem *mem, struct kefir_c
     });
 
     struct kefir_ast_translation_unit *defs_unit = NULL;
-    res = kefir_compiler_parse(mem, context, &buffer, &defs_unit);
+    REQUIRE_OK(kefir_compiler_parse(mem, context, &buffer, &defs_unit));
 
     res = kefir_token_buffer_free(mem, &buffer);
     REQUIRE_ELSE(res == KEFIR_OK, {

@@ -29,6 +29,8 @@
 #include "kefir/ast/flow_control.h"
 #include "kefir/ast/type/struct.h"
 
+typedef struct kefir_ast_identifier_flat_scope kefir_ast_identifier_flat_scope_t;
+
 typedef struct kefir_ast_context_configuration {
     struct {
         kefir_bool_t permissive_pointer_conv;
@@ -88,6 +90,9 @@ typedef struct kefir_ast_context {
                                              const struct kefir_ast_scoped_identifier **);
     kefir_result_t (*push_block)(struct kefir_mem *, const struct kefir_ast_context *);
     kefir_result_t (*pop_block)(struct kefir_mem *, const struct kefir_ast_context *);
+    kefir_result_t (*push_external_ordinary_scope)(struct kefir_mem *, struct kefir_ast_identifier_flat_scope *,
+                                                   const struct kefir_ast_context *);
+    kefir_result_t (*pop_external_oridnary_scope)(struct kefir_mem *, const struct kefir_ast_context *);
     kefir_result_t (*current_flow_control_point)(struct kefir_mem *, const struct kefir_ast_context *,
                                                  struct kefir_ast_flow_control_point **);
 

@@ -276,6 +276,24 @@ static kefir_result_t context_pop_block(struct kefir_mem *mem, const struct kefi
     return KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Blocks cannot be popped in a global context");
 }
 
+static kefir_result_t context_push_external_ordinary_scope(struct kefir_mem *mem,
+                                                           struct kefir_ast_identifier_flat_scope *scope,
+                                                           const struct kefir_ast_context *context) {
+    UNUSED(mem);
+    UNUSED(scope);
+    UNUSED(context);
+
+    return KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Blocks cannot be pushed in a global context");
+}
+
+static kefir_result_t context_pop_external_oridnary_scope(struct kefir_mem *mem,
+                                                          const struct kefir_ast_context *context) {
+    UNUSED(mem);
+    UNUSED(context);
+
+    return KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Blocks cannot be popped in a global context");
+}
+
 static kefir_result_t free_func_decl_context(struct kefir_mem *mem, struct kefir_list *list,
                                              struct kefir_list_entry *entry, void *payload) {
     UNUSED(list);
@@ -343,6 +361,8 @@ kefir_result_t kefir_ast_global_context_init(struct kefir_mem *mem, const struct
     context->context.reference_public_label = context_reference_public_label;
     context->context.push_block = context_push_block;
     context->context.pop_block = context_pop_block;
+    context->context.push_external_ordinary_scope = context_push_external_ordinary_scope;
+    context->context.pop_external_oridnary_scope = context_pop_external_oridnary_scope;
     context->context.current_flow_control_point = context_current_flow_control_point;
     context->context.symbols = &context->symbols;
     context->context.type_bundle = &context->type_bundle;
@@ -487,7 +507,7 @@ kefir_result_t kefir_ast_global_context_declare_external(struct kefir_mem *mem,
     } else {
         REQUIRE(res == KEFIR_NOT_FOUND, res);
         ordinary_id = kefir_ast_context_allocate_scoped_object_identifier(
-            mem, type, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN, alignment,
+            mem, type, NULL, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN, alignment,
             KEFIR_AST_SCOPED_IDENTIFIER_EXTERNAL_LINKAGE, true, NULL, attributes != NULL ? attributes->asm_label : NULL,
             location);
         res = kefir_ast_identifier_flat_scope_insert(mem, &context->object_identifiers, identifier, ordinary_id);
@@ -548,7 +568,7 @@ kefir_result_t kefir_ast_global_context_declare_external_thread_local(
     } else {
         REQUIRE(res == KEFIR_NOT_FOUND, res);
         ordinary_id = kefir_ast_context_allocate_scoped_object_identifier(
-            mem, type, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN_THREAD_LOCAL, alignment,
+            mem, type, NULL, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN_THREAD_LOCAL, alignment,
             KEFIR_AST_SCOPED_IDENTIFIER_EXTERNAL_LINKAGE, true, NULL, attributes != NULL ? attributes->asm_label : NULL,
             location);
         res = kefir_ast_identifier_flat_scope_insert(mem, &context->object_identifiers, identifier, ordinary_id);
@@ -600,6 +620,7 @@ kefir_result_t kefir_ast_global_context_define_external(struct kefir_mem *mem, s
         ordinary_id->object.type =
             KEFIR_AST_TYPE_COMPOSITE(mem, &context->type_bundle, context->type_traits, ordinary_id->object.type, type);
         ordinary_id->object.external = false;
+        ordinary_id->definition_scope = &context->object_identifiers;
         if (attributes != NULL) {
             if (ordinary_id->object.asm_label == NULL) {
                 ordinary_id->object.asm_label = attributes->asm_label;
@@ -613,7 +634,7 @@ kefir_result_t kefir_ast_global_context_define_external(struct kefir_mem *mem, s
     } else {
         REQUIRE(res == KEFIR_NOT_FOUND, res);
         ordinary_id = kefir_ast_context_allocate_scoped_object_identifier(
-            mem, type, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN, alignment,
+            mem, type, &context->object_identifiers, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN, alignment,
             KEFIR_AST_SCOPED_IDENTIFIER_EXTERNAL_LINKAGE, false, initializer,
             attributes != NULL ? attributes->asm_label : NULL, location);
         res = kefir_ast_identifier_flat_scope_insert(mem, &context->object_identifiers, identifier, ordinary_id);
@@ -681,6 +702,7 @@ kefir_result_t kefir_ast_global_context_define_external_thread_local(
         ordinary_id->object.type =
             KEFIR_AST_TYPE_COMPOSITE(mem, &context->type_bundle, context->type_traits, ordinary_id->object.type, type);
         ordinary_id->object.external = false;
+        ordinary_id->definition_scope = &context->object_identifiers;
         if (attributes != NULL) {
             if (ordinary_id->object.asm_label == NULL) {
                 ordinary_id->object.asm_label = attributes->asm_label;
@@ -694,7 +716,7 @@ kefir_result_t kefir_ast_global_context_define_external_thread_local(
     } else {
         REQUIRE(res == KEFIR_NOT_FOUND, res);
         ordinary_id = kefir_ast_context_allocate_scoped_object_identifier(
-            mem, type, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN_THREAD_LOCAL, alignment,
+            mem, type, &context->object_identifiers, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN_THREAD_LOCAL, alignment,
             KEFIR_AST_SCOPED_IDENTIFIER_EXTERNAL_LINKAGE, false, initializer,
             attributes != NULL ? attributes->asm_label : NULL, location);
         res = kefir_ast_identifier_flat_scope_insert(mem, &context->object_identifiers, identifier, ordinary_id);
@@ -765,6 +787,7 @@ kefir_result_t kefir_ast_global_context_define_static(struct kefir_mem *mem, str
         REQUIRE_OK(kefir_ast_context_merge_alignment(mem, &ordinary_id->object.alignment, alignment));
         ordinary_id->object.type =
             KEFIR_AST_TYPE_COMPOSITE(mem, &context->type_bundle, context->type_traits, ordinary_id->object.type, type);
+        ordinary_id->definition_scope = &context->object_identifiers;
     } else {
         REQUIRE(res == KEFIR_NOT_FOUND, res);
         if (initializer == NULL) {
@@ -773,7 +796,7 @@ kefir_result_t kefir_ast_global_context_define_static(struct kefir_mem *mem, str
                                            "Tentative definition with internal linkage shall have complete type"));
         }
         ordinary_id = kefir_ast_context_allocate_scoped_object_identifier(
-            mem, type, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC, alignment,
+            mem, type, &context->object_identifiers, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC, alignment,
             KEFIR_AST_SCOPED_IDENTIFIER_INTERNAL_LINKAGE, false, initializer, NULL, location);
         res = kefir_ast_identifier_flat_scope_insert(mem, &context->object_identifiers, identifier, ordinary_id);
         REQUIRE_ELSE(res == KEFIR_OK, {
@@ -841,6 +864,7 @@ kefir_result_t kefir_ast_global_context_define_static_thread_local(
         REQUIRE_OK(kefir_ast_context_merge_alignment(mem, &ordinary_id->object.alignment, alignment));
         ordinary_id->object.type =
             KEFIR_AST_TYPE_COMPOSITE(mem, &context->type_bundle, context->type_traits, ordinary_id->object.type, type);
+        ordinary_id->definition_scope = &context->object_identifiers;
     } else {
         REQUIRE(res == KEFIR_NOT_FOUND, res);
         if (initializer == NULL) {
@@ -849,7 +873,7 @@ kefir_result_t kefir_ast_global_context_define_static_thread_local(
                                            "Tentative definition with internal linkage shall have complete type"));
         }
         ordinary_id = kefir_ast_context_allocate_scoped_object_identifier(
-            mem, type, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC_THREAD_LOCAL, alignment,
+            mem, type, &context->object_identifiers, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC_THREAD_LOCAL, alignment,
             KEFIR_AST_SCOPED_IDENTIFIER_INTERNAL_LINKAGE, false, initializer, NULL, location);
         res = kefir_ast_identifier_flat_scope_insert(mem, &context->object_identifiers, identifier, ordinary_id);
         REQUIRE_ELSE(res == KEFIR_OK, {

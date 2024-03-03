@@ -90,7 +90,8 @@ static kefir_result_t scoped_context_define_identifier(struct kefir_mem *mem,
         } else {
             REQUIRE(res == KEFIR_NOT_FOUND, res);
             scoped_id = kefir_ast_context_allocate_scoped_object_identifier(
-                mem, type, storage_class, NULL, KEFIR_AST_SCOPED_IDENTIFIER_NONE_LINKAGE, false, NULL, NULL, location);
+                mem, type, &context->ordinary_scope, storage_class, NULL, KEFIR_AST_SCOPED_IDENTIFIER_NONE_LINKAGE,
+                false, NULL, NULL, location);
             REQUIRE(scoped_id != NULL,
                     KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocted AST scoped identifier"));
 
@@ -341,6 +342,24 @@ static kefir_result_t context_pop_block(struct kefir_mem *mem, const struct kefi
     return KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Blocks cannot be popped in a function declaration context");
 }
 
+static kefir_result_t context_push_external_ordinary_scope(struct kefir_mem *mem,
+                                                           struct kefir_ast_identifier_flat_scope *scope,
+                                                           const struct kefir_ast_context *context) {
+    UNUSED(mem);
+    UNUSED(scope);
+    UNUSED(context);
+
+    return KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Blocks cannot be pushed in a function declaration context");
+}
+
+static kefir_result_t context_pop_external_oridnary_scope(struct kefir_mem *mem,
+                                                          const struct kefir_ast_context *context) {
+    UNUSED(mem);
+    UNUSED(context);
+
+    return KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Blocks cannot be popped in a function declaration context");
+}
+
 static kefir_result_t context_current_flow_control_point(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                                          struct kefir_ast_flow_control_point **point) {
     UNUSED(mem);
@@ -377,6 +396,8 @@ kefir_result_t kefir_ast_function_declaration_context_init(struct kefir_mem *mem
     context->context.reference_label = context_reference_label;
     context->context.reference_public_label = context_reference_public_label;
     context->context.push_block = context_push_block;
+    context->context.push_external_ordinary_scope = context_push_external_ordinary_scope;
+    context->context.pop_external_oridnary_scope = context_pop_external_oridnary_scope;
     context->context.pop_block = context_pop_block;
     context->context.current_flow_control_point = context_current_flow_control_point;
     context->context.symbols = parent->symbols;

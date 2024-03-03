@@ -66,14 +66,15 @@ kefir_result_t kefir_ast_context_free_scoped_identifier(struct kefir_mem *mem,
 }
 
 struct kefir_ast_scoped_identifier *kefir_ast_context_allocate_scoped_object_identifier(
-    struct kefir_mem *mem, const struct kefir_ast_type *type, kefir_ast_scoped_identifier_storage_t storage,
-    struct kefir_ast_alignment *alignment, kefir_ast_scoped_identifier_linkage_t linkage, kefir_bool_t external,
-    struct kefir_ast_initializer *initializer, const char *asm_label,
-    const struct kefir_source_location *source_location) {
+    struct kefir_mem *mem, const struct kefir_ast_type *type, struct kefir_ast_identifier_flat_scope *definition_scope,
+    kefir_ast_scoped_identifier_storage_t storage, struct kefir_ast_alignment *alignment,
+    kefir_ast_scoped_identifier_linkage_t linkage, kefir_bool_t external, struct kefir_ast_initializer *initializer,
+    const char *asm_label, const struct kefir_source_location *source_location) {
     struct kefir_ast_scoped_identifier *scoped_id = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_scoped_identifier));
     scoped_id->klass = KEFIR_AST_SCOPE_IDENTIFIER_OBJECT;
     scoped_id->cleanup.callback = NULL;
     scoped_id->cleanup.payload = NULL;
+    scoped_id->definition_scope = definition_scope;
     scoped_id->object.type = type;
     scoped_id->object.storage = storage;
     scoped_id->object.external = external;

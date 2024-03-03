@@ -331,8 +331,15 @@ static kefir_result_t translate_local_static(struct kefir_mem *mem, const struct
                 ASSIGN_DECL_CAST(struct kefir_ast_translator_scoped_identifier_object *, identifier_data,
                                  scoped_identifier->value->payload.ptr);
                 if (scoped_identifier->value->object.initializer != NULL) {
+                    if (scoped_identifier->value->definition_scope != NULL) {
+                        REQUIRE_OK(context->push_external_ordinary_scope(
+                            mem, scoped_identifier->value->definition_scope, context));
+                    }
                     REQUIRE_OK(initialize_data(mem, context, module, identifier_data->type, identifier_data->layout,
                                                scoped_identifier->value->object.initializer, static_data));
+                    if (scoped_identifier->value->definition_scope != NULL) {
+                        REQUIRE_OK(context->pop_external_oridnary_scope(mem, context));
+                    }
                 }
             } break;
 
@@ -364,9 +371,16 @@ static kefir_result_t translate_local_static_thread_locals(
             case KEFIR_AST_SCOPE_IDENTIFIER_OBJECT: {
                 ASSIGN_DECL_CAST(struct kefir_ast_translator_scoped_identifier_object *, identifier_data,
                                  scoped_identifier->value->payload.ptr);
+                if (scoped_identifier->value->definition_scope != NULL) {
+                    REQUIRE_OK(context->push_external_ordinary_scope(mem, scoped_identifier->value->definition_scope,
+                                                                     context));
+                }
                 if (scoped_identifier->value->object.initializer != NULL) {
                     REQUIRE_OK(initialize_data(mem, context, module, identifier_data->type, identifier_data->layout,
                                                scoped_identifier->value->object.initializer, static_tlocal_data));
+                }
+                if (scoped_identifier->value->definition_scope != NULL) {
+                    REQUIRE_OK(context->pop_external_oridnary_scope(mem, context));
                 }
             } break;
 
