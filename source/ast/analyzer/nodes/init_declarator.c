@@ -25,6 +25,7 @@
 #include "kefir/ast/type_conv.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
+#include "kefir/core/source_error.h"
 
 kefir_result_t kefir_ast_analyze_init_declarator_node(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                                       const struct kefir_ast_init_declarator *node,
@@ -46,6 +47,11 @@ kefir_result_t kefir_ast_analyze_init_declarator_node(struct kefir_mem *mem, con
                                                         KEFIR_AST_DECLARATION_ANALYSIS_NORMAL, &attributes));
     base->properties.declaration_props.function = function;
     base->properties.declaration_props.alignment = aligment;
+
+    REQUIRE(
+        !KEFIR_AST_TYPE_IS_AUTO(type) || node->initializer != NULL,
+        KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &base->source_location,
+                               "Auto type specifier shall be used only for declarations with a single initializer"));
 
     if (identifier != NULL) {
         identifier = kefir_string_pool_insert(mem, context->symbols, identifier, NULL);

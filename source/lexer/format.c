@@ -216,6 +216,10 @@ static kefir_result_t format_keyword(struct kefir_json_output *json, kefir_keywo
         case KEFIR_KEYWORD_TYPEOF_UNQUAL:
             REQUIRE_OK(kefir_json_output_string(json, "typeof_unqual"));
             break;
+
+        case KEFIR_KEYWORD_AUTO_TYPE:
+            REQUIRE_OK(kefir_json_output_string(json, "auto_type"));
+            break;
     }
     return KEFIR_OK;
 }

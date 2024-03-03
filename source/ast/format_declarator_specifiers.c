@@ -208,6 +208,10 @@ kefir_result_t kefir_ast_format_declarator_specifier(struct kefir_json_output *j
                         kefir_ast_format(json, specifier->type_specifier.value.type_of.node, display_source_location));
                     break;
 
+                case KEFIR_AST_TYPE_SPECIFIER_AUTO_TYPE:
+                    REQUIRE_OK(kefir_json_output_string(json, "auto_type"));
+                    break;
+
                 default:
                     return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected type specifier");
             }

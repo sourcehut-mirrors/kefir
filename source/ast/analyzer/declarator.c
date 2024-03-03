@@ -636,6 +636,18 @@ static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast
             *seq_state = TYPE_SPECIFIER_SEQUENCE_TYPEDEF;
         } break;
 
+        case KEFIR_AST_TYPE_SPECIFIER_AUTO_TYPE:
+            REQUIRE(*seq_state == TYPE_SPECIFIER_SEQUENCE_EMPTY,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                                           "Cannot combine referenced typeof specifier with others"));
+            REQUIRE(*real_class == REAL_SCALAR,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                                           "Typeof cannot be combined with complex type specifier"));
+
+            *base_type = kefir_ast_type_auto();
+            *seq_state = TYPE_SPECIFIER_SEQUENCE_TYPEDEF;
+            break;
+
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected type specifier");
     }
@@ -692,6 +704,7 @@ static kefir_result_t apply_type_signedness(struct kefir_mem *mem, struct kefir_
                 case KEFIR_AST_TYPE_FUNCTION:
                 case KEFIR_AST_TYPE_QUALIFIED:
                 case KEFIR_AST_TYPE_VA_LIST:
+                case KEFIR_AST_TYPE_AUTO:
                     return KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, source_location,
                                                   "Signed type specifier cannot be applied to the type");
             }
@@ -745,6 +758,7 @@ static kefir_result_t apply_type_signedness(struct kefir_mem *mem, struct kefir_
                 case KEFIR_AST_TYPE_FUNCTION:
                 case KEFIR_AST_TYPE_QUALIFIED:
                 case KEFIR_AST_TYPE_VA_LIST:
+                case KEFIR_AST_TYPE_AUTO:
                     return KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, source_location,
                                                   "Unsigned type specifier cannot be applied to the type");
             }
@@ -1152,6 +1166,9 @@ static kefir_result_t analyze_declaration_declarator_impl(
     struct kefir_ast_declarator_attributes *attributes) {
     ASSIGN_PTR(identifier, NULL);
     REQUIRE(declarator != NULL, KEFIR_OK);
+    REQUIRE(declarator->klass == KEFIR_AST_DECLARATOR_IDENTIFIER || !KEFIR_AST_TYPE_IS_AUTO(*base_type),
+            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &declarator->source_location,
+                                   "Auto type specifier shall be used only with identifier declarators"));
     switch (declarator->klass) {
         case KEFIR_AST_DECLARATOR_IDENTIFIER:
             ASSIGN_PTR(identifier, declarator->identifier.identifier);

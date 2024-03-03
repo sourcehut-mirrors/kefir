@@ -75,6 +75,17 @@ const struct kefir_ast_type *kefir_ast_type_void(void) {
     return &SCALAR_VOID;
 }
 
+static const struct kefir_ast_type AUTO_TYPE = {.tag = KEFIR_AST_TYPE_AUTO,
+                                                .basic = false,
+                                                .ops = {.same = same_basic_type,
+                                                        .compatible = compatible_basic_types,
+                                                        .composite = composite_basic_types,
+                                                        .free = free_nothing}};
+
+const struct kefir_ast_type *kefir_ast_type_auto(void) {
+    return &AUTO_TYPE;
+}
+
 #define SCALAR_TYPE(id, _tag, _rank)                                                                        \
     static const struct kefir_ast_type DEFAULT_SCALAR_##id = {.tag = (_tag),                                \
                                                               .basic = true,                                \

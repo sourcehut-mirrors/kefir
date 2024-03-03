@@ -214,7 +214,8 @@ kefir_result_t kefir_ast_analyze_type(struct kefir_mem *mem, const struct kefir_
         case KEFIR_AST_TYPE_COMPLEX_DOUBLE:
         case KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE:
         case KEFIR_AST_TYPE_VA_LIST:
-            // No analysis needed for arithmetic types and va list
+        case KEFIR_AST_TYPE_AUTO:
+            // No analysis needed for arithmetic types, auto type and va list
             break;
 
         case KEFIR_AST_TYPE_SCALAR_POINTER:

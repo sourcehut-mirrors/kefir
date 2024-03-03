@@ -167,6 +167,9 @@ kefir_result_t kefir_ast_type_completion(struct kefir_mem *mem, const struct kef
                                             type->qualified_type.qualification);
             REQUIRE(*dst != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate AST type"));
         } break;
+
+        case KEFIR_AST_TYPE_AUTO:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected auto type");
     }
 
     return KEFIR_OK;

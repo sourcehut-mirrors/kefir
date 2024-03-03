@@ -111,7 +111,7 @@ kefir_bool_t kefir_ast_function_specifier_is_inline(kefir_ast_function_specifier
     ((type1)->ops.composite((mem), (type_bundle), (type_traits), (type1), (type2)))
 #define KEFIR_AST_TYPE_FREE(mem, type) ((type)->ops.free((mem), (type)))
 #define KEFIR_AST_TYPE_IS_INCOMPLETE_IMPL(type)                                                           \
-    ((type)->tag == KEFIR_AST_TYPE_VOID ||                                                                \
+    ((type)->tag == KEFIR_AST_TYPE_VOID || (type)->tag == KEFIR_AST_TYPE_AUTO ||                          \
      ((type)->tag == KEFIR_AST_TYPE_ARRAY && (type)->array_type.boundary == KEFIR_AST_ARRAY_UNBOUNDED) || \
      (((type)->tag == KEFIR_AST_TYPE_STRUCTURE || (type->tag) == KEFIR_AST_TYPE_UNION) &&                 \
       !(type)->structure_type.complete))
@@ -121,6 +121,7 @@ kefir_bool_t kefir_ast_function_specifier_is_inline(kefir_ast_function_specifier
                                              (type)->array_type.boundary == KEFIR_AST_ARRAY_VLA_STATIC))
 #define KEFIR_AST_TYPE_IS_ATOMIC(type) \
     ((type)->tag == KEFIR_AST_TYPE_QUALIFIED && (type)->qualified_type.qualification.atomic_type)
+#define KEFIR_AST_TYPE_IS_AUTO(type) ((type)->tag == KEFIR_AST_TYPE_AUTO)
 #define KEFIR_AST_TYPE_HASH(type) ((kefir_ast_type_hash_t) type)
 
 extern const struct kefir_ast_bitfield_properties KEFIR_AST_BITFIELD_PROPERTIES_NONE;

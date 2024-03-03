@@ -490,6 +490,9 @@ static kefir_result_t scan_type_specifier(struct kefir_mem *mem, struct kefir_pa
             PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_RIGHT_PARENTHESE),
             KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0), "Expected right parenthese"));
         REQUIRE_OK(PARSER_SHIFT(parser));
+    } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_AUTO_TYPE)) {
+        REQUIRE_OK(PARSER_SHIFT(parser));
+        specifier = kefir_ast_type_specifier_auto_type(mem);
     } else if (PARSER_TOKEN_IS_IDENTIFIER(parser, 0) &&
                strcmp(PARSER_CURSOR(parser, 0)->identifier, KEFIR_PARSER_BUILTIN_VA_LIST) == 0) {
         REQUIRE_OK(PARSER_SHIFT(parser));

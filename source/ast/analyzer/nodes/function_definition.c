@@ -94,6 +94,9 @@ static kefir_result_t analyze_function_parameter_identifiers_impl(
                 mem, &local_context->context, &decl_list->specifiers, decl->declarator, &identifier, &original_type,
                 &storage, &function_specifier, &alignment, KEFIR_AST_DECLARATION_ANALYSIS_NORMAL, NULL,
                 &decl->base.source_location));
+            REQUIRE(!KEFIR_AST_TYPE_IS_AUTO(original_type),
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl->base.source_location,
+                                           "Unexpected auto type specifier"));
 
             if (identifier != NULL) {
                 identifier = kefir_string_pool_insert(mem, context->symbols, identifier, NULL);
@@ -213,6 +216,9 @@ kefir_result_t kefir_ast_analyze_function_definition_node(struct kefir_mem *mem,
                                                       &base->properties.function_definition.function, &alignment,
                                                       KEFIR_AST_DECLARATION_ANALYSIS_FUNCTION_DEFINITION_CONTEXT,
                                                       &attributes, &node->base.source_location));
+    REQUIRE_CHAIN_SET(
+        &res, !KEFIR_AST_TYPE_IS_AUTO(type),
+        KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->base.source_location, "Unexpected auto type specifier"));
     REQUIRE_CHAIN(
         &res, kefir_ast_analyze_type(mem, context, context->type_analysis_context, type, &node->base.source_location));
 

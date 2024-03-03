@@ -46,6 +46,11 @@ kefir_result_t kefir_ast_analyze_declaration_node(struct kefir_mem *mem, const s
                                                         &function, &alignment, KEFIR_AST_DECLARATION_ANALYSIS_NORMAL,
                                                         &node->base.source_location));
 
+    REQUIRE(
+        !KEFIR_AST_TYPE_IS_AUTO(base_type) || kefir_list_length(&node->init_declarators) == 1,
+        KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &base->source_location,
+                               "Auto type specifier shall be used only for declarations with a single initializer"));
+
     for (const struct kefir_list_entry *iter = kefir_list_head(&node->init_declarators); iter != NULL;
          kefir_list_next(&iter)) {
         ASSIGN_DECL_CAST(struct kefir_ast_node_base *, subnode, iter->value);

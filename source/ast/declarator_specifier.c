@@ -673,6 +673,22 @@ struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_typeof(struct ke
     return specifier;
 }
 
+struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_auto_type(struct kefir_mem *mem) {
+    REQUIRE(mem != NULL, NULL);
+
+    struct kefir_ast_declarator_specifier *specifier = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_declarator_specifier));
+    REQUIRE(specifier != NULL, NULL);
+
+    specifier->klass = KEFIR_AST_TYPE_SPECIFIER;
+    specifier->type_specifier.specifier = KEFIR_AST_TYPE_SPECIFIER_AUTO_TYPE;
+    kefir_result_t res = kefir_source_location_empty(&specifier->source_location);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_FREE(mem, specifier);
+        return NULL;
+    });
+    return specifier;
+}
+
 #define STORAGE_CLASS_SPECIFIER(_id, _spec)                                                                 \
     struct kefir_ast_declarator_specifier *kefir_ast_storage_class_specifier_##_id(struct kefir_mem *mem) { \
         REQUIRE(mem != NULL, NULL);                                                                         \
@@ -848,6 +864,10 @@ struct kefir_ast_declarator_specifier *kefir_ast_declarator_specifier_clone(
                     clone = kefir_ast_type_specifier_typeof(
                         mem, specifier->type_specifier.value.type_of.qualified,
                         KEFIR_AST_NODE_CLONE(mem, specifier->type_specifier.value.type_of.node));
+                    break;
+
+                case KEFIR_AST_TYPE_SPECIFIER_AUTO_TYPE:
+                    clone = kefir_ast_type_specifier_auto_type(mem);
                     break;
 
                 default:

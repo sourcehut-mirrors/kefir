@@ -283,6 +283,33 @@ static kefir_result_t analyze_array(struct kefir_mem *mem, const struct kefir_as
     return KEFIR_OK;
 }
 
+static kefir_result_t analyze_auto_type(struct kefir_mem *mem, const struct kefir_ast_context *context,
+                                        const struct kefir_ast_type *type,
+                                        const struct kefir_ast_initializer *initializer,
+                                        struct kefir_ast_initializer_properties *properties) {
+    UNUSED(mem);
+    UNUSED(context);
+    UNUSED(type);
+
+    REQUIRE(initializer->type == KEFIR_AST_INITIALIZER_EXPRESSION,
+            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &initializer->source_location,
+                                   "Declaration with auto type shall be initialized with an expression"));
+
+    struct kefir_ast_node_base *expr = initializer->expression;
+    const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(expr->properties.type);
+    REQUIRE(unqualified_type->tag != KEFIR_AST_TYPE_VOID,
+            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &initializer->source_location,
+                                   "Declaration with auto type shall be initialized with a void type expression"));
+
+    if (properties != NULL) {
+        properties->type = unqualified_type;
+        if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(unqualified_type)) {
+            properties->contains_long_double = true;
+        }
+    }
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_ast_analyze_initializer(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                              const struct kefir_ast_type *type,
                                              const struct kefir_ast_initializer *initializer,
@@ -305,6 +332,8 @@ kefir_result_t kefir_ast_analyze_initializer(struct kefir_mem *mem, const struct
         REQUIRE_OK(analyze_array(mem, context, type, initializer, properties));
     } else if (type->tag == KEFIR_AST_TYPE_STRUCTURE || type->tag == KEFIR_AST_TYPE_UNION) {
         REQUIRE_OK(analyze_struct_union(mem, context, type, initializer, properties));
+    } else if (KEFIR_AST_TYPE_IS_AUTO(type)) {
+        REQUIRE_OK(analyze_auto_type(mem, context, type, initializer, properties));
     } else {
         return KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &initializer->source_location,
                                       "Cannot initialize incomplete object type");
