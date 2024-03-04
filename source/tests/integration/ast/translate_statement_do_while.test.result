@@ -181,7 +181,11 @@
                     }
                 },
                 {
-                    "opcode": "trunc1"
+                    "opcode": "pushu",
+                    "arg": 1
+                },
+                {
+                    "opcode": "iand"
                 },
                 {
                     "opcode": "getlocal",

@@ -1,0 +1,127 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global test_atomic_compare_exchange8
+.global test_atomic_compare_exchange16
+.global test_atomic_compare_exchange32
+.global test_atomic_compare_exchange64
+.extern __atomic_compare_exchange
+.extern __kefir_opt_float32_neg
+.extern __kefir_opt_float64_neg
+.extern __kefirrt_opt_float32_to_uint
+.extern __kefirrt_opt_float64_to_uint
+
+.section .text
+test_atomic_compare_exchange8:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_test_atomic_compare_exchange8_label0:
+    mov %rsi, %rax
+    mov %rdi, %rcx
+_kefir_func_test_atomic_compare_exchange8_label1:
+    lea -1(%rbp), %rsi
+    movb %dl, (%rsi)
+    mov $1, %rdx
+    lea -1(%rbp), %r8
+    mov $5, %r9
+    mov $5, %r10
+    mov %rdx, %rdi
+    mov %rcx, %rsi
+    mov %rax, %rdx
+    mov %r8, %rcx
+    mov %r9, %r8
+    mov %r10, %r9
+    call __atomic_compare_exchange@PLT
+    mov %rax, %rcx
+    and $1, %rcx
+    mov %rcx, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+test_atomic_compare_exchange16:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_test_atomic_compare_exchange16_label0:
+    mov %rsi, %rax
+    mov %rdi, %rcx
+_kefir_func_test_atomic_compare_exchange16_label1:
+    lea -2(%rbp), %rsi
+    movw %dx, (%rsi)
+    mov $2, %rdx
+    lea -2(%rbp), %r8
+    mov $5, %r9
+    mov $5, %r10
+    mov %rdx, %rdi
+    mov %rcx, %rsi
+    mov %rax, %rdx
+    mov %r8, %rcx
+    mov %r9, %r8
+    mov %r10, %r9
+    call __atomic_compare_exchange@PLT
+    mov %rax, %rcx
+    and $1, %rcx
+    mov %rcx, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+test_atomic_compare_exchange32:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_test_atomic_compare_exchange32_label0:
+    mov %rsi, %rax
+    mov %rdi, %rcx
+_kefir_func_test_atomic_compare_exchange32_label1:
+    lea -4(%rbp), %rsi
+    movl %edx, (%rsi)
+    mov $4, %rdx
+    lea -4(%rbp), %r8
+    mov $5, %r9
+    mov $5, %r10
+    mov %rdx, %rdi
+    mov %rcx, %rsi
+    mov %rax, %rdx
+    mov %r8, %rcx
+    mov %r9, %r8
+    mov %r10, %r9
+    call __atomic_compare_exchange@PLT
+    mov %rax, %rcx
+    and $1, %rcx
+    mov %rcx, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+test_atomic_compare_exchange64:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_test_atomic_compare_exchange64_label0:
+    mov %rsi, %rax
+    mov %rdi, %rcx
+_kefir_func_test_atomic_compare_exchange64_label1:
+    lea -8(%rbp), %rsi
+    movq %rdx, (%rsi)
+    mov $8, %rdx
+    lea -8(%rbp), %r8
+    mov $5, %r9
+    mov $5, %r10
+    mov %rdx, %rdi
+    mov %rcx, %rsi
+    mov %rax, %rdx
+    mov %r8, %rcx
+    mov %r9, %r8
+    mov %r10, %r9
+    call __atomic_compare_exchange@PLT
+    mov %rax, %rcx
+    and $1, %rcx
+    mov %rcx, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+

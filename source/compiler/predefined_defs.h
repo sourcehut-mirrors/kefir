@@ -21,6 +21,7 @@
 // Keywords
 #define __FUNCTION__ __func__
 #define __thread _Thread_local
+#define __extension__
 
 // Type definitions
 #ifdef __LP64__
@@ -98,6 +99,59 @@
 #define __ATOMIC_RELEASE 3
 #define __ATOMIC_ACQ_REL 4
 #define __ATOMIC_SEQ_CST 5
+
+#define __atomic_store(_ptr, _val, _memorder)                           \
+    ({                                                                  \
+        extern void __atomic_store(__SIZE_TYPE__, void *, void *, int); \
+        __atomic_store(sizeof(*(_ptr)), (_ptr), (_val), (_memorder));   \
+    })
+
+#define __atomic_load(_ptr, _mem, _memorder)                           \
+    ({                                                                 \
+        extern void __atomic_load(__SIZE_TYPE__, void *, void *, int); \
+        __atomic_load(sizeof(*(_ptr)), (_ptr), (_mem), (_memorder));   \
+    })
+
+#define __atomic_exchange(_ptr, _val, _ret, _memorder)                             \
+    ({                                                                             \
+        extern void __atomic_exchange(__SIZE_TYPE__, void *, void *, void *, int); \
+        __atomic_exchange(sizeof(*(_ptr)), (_ptr), (_val), (_ret), (_memorder));   \
+    })
+
+#define __atomic_compare_exchange(_ptr, _expected, _desired, _weak, _success_memorder, _failure_memorder) \
+    ({                                                                                                    \
+        extern _Bool __atomic_compare_exchange(__SIZE_TYPE__, void *, void *, void *, int, int);          \
+        __atomic_compare_exchange(sizeof(*(_ptr)), (_ptr), (_expected), (_desired), (_success_memorder),  \
+                                  (_failure_memorder));                                                   \
+    })
+
+#define __kefir_atomic_fetch_op(_op, _ptr, _val, _memorder)                                                     \
+    ({                                                                                                          \
+        typedef __typeof__((void) 0, *(_ptr)) result_t;                                                         \
+        extern result_t __atomic_fetch_##_op##_1(void *, result_t, int);                                        \
+        extern result_t __atomic_fetch_##_op##_2(void *, result_t, int);                                        \
+        extern result_t __atomic_fetch_##_op##_4(void *, result_t, int);                                        \
+        extern result_t __atomic_fetch_##_op##_8(void *, result_t, int);                                        \
+        extern result_t __atomic_fetch_##_op##_16(void *, result_t, int);                                       \
+        __builtin_choose_expr(                                                                                  \
+            sizeof(result_t) == 1, __atomic_fetch_##_op##_1((_ptr), (_val), (_memorder)),                       \
+            __builtin_choose_expr(                                                                              \
+                sizeof(result_t) == 2, __atomic_fetch_##_op##_2((_ptr), (_val), (_memorder)),                   \
+                __builtin_choose_expr(                                                                          \
+                    sizeof(result_t) <= 4, __atomic_fetch_##_op##_4((_ptr), (_val), (_memorder)),               \
+                    __builtin_choose_expr(                                                                      \
+                        sizeof(result_t) <= 8, __atomic_fetch_##_op##_8((_ptr), (_val), (_memorder)),           \
+                        __builtin_choose_expr(                                                                  \
+                            sizeof(result_t) <= 16, __atomic_fetch_##_op##_16((_ptr), (_val), (_memorder)), ({  \
+                                _Static_assert(0, "Atomic fetch operation of specified size is not supported"); \
+                            }))))));                                                                            \
+    })
+
+#define __atomic_fetch_add(_ptr, _val, _memorder) __kefir_atomic_fetch_op(add, (_ptr), (_val), (_memorder))
+#define __atomic_fetch_sub(_ptr, _val, _memorder) __kefir_atomic_fetch_op(sub, (_ptr), (_val), (_memorder))
+#define __atomic_fetch_or(_ptr, _val, _memorder) __kefir_atomic_fetch_op(or, (_ptr), (_val), (_memorder))
+#define __atomic_fetch_xor(_ptr, _val, _memorder) __kefir_atomic_fetch_op(xor, (_ptr), (_val), (_memorder))
+#define __atomic_fetch_and(_ptr, _val, _memorder) __kefir_atomic_fetch_op(and, (_ptr), (_val), (_memorder))
 
 // Runtime functions
 extern _Noreturn void __kefirrt_trap(void);

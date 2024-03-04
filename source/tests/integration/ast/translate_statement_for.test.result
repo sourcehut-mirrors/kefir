@@ -442,7 +442,7 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 35
+                    "arg": 36
                 },
                 {
                     "opcode": "invoke",
@@ -452,26 +452,30 @@
                     }
                 },
                 {
-                    "opcode": "trunc1"
+                    "opcode": "pushu",
+                    "arg": 1
+                },
+                {
+                    "opcode": "iand"
                 },
                 {
                     "opcode": "bnot"
                 },
                 {
                     "opcode": "branch",
-                    "arg": 24
-                },
-                {
-                    "opcode": "jmp",
                     "arg": 25
                 },
                 {
                     "opcode": "jmp",
-                    "arg": 25
+                    "arg": 26
                 },
                 {
                     "opcode": "jmp",
-                    "arg": 35
+                    "arg": 26
+                },
+                {
+                    "opcode": "jmp",
+                    "arg": 36
                 },
                 {
                     "opcode": "getlocal",

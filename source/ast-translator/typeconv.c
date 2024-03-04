@@ -395,7 +395,8 @@ kefir_result_t kefir_ast_translate_typeconv_normalize(struct kefir_irbuilder_blo
             break;
 
         case KEFIR_AST_TYPE_SCALAR_BOOL:
-            REQUIRE_OK(kefir_ast_translate_typeconv_to_bool(builder, normalized_origin));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PUSHU64, 1));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IAND, 0));
             break;
 
         default:
