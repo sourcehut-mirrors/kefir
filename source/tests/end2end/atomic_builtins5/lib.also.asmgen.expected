@@ -1,0 +1,345 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global test_fetch_add_short
+.global test_fetch_and_short
+.global test_fetch_sub_short
+.global test_fetch_xor_short
+.global test_fetch_or_int
+.global test_fetch_add_char
+.global test_fetch_add_long
+.global test_fetch_and_char
+.global test_fetch_and_long
+.global test_fetch_or_short
+.global test_fetch_sub_char
+.global test_fetch_sub_long
+.global test_fetch_xor_char
+.global test_fetch_xor_long
+.global test_fetch_add_int
+.global test_fetch_and_int
+.global test_fetch_or_char
+.global test_fetch_or_long
+.global test_fetch_sub_int
+.global test_fetch_xor_int
+.extern __atomic_fetch_add_1
+.extern __atomic_fetch_add_2
+.extern __atomic_fetch_add_4
+.extern __atomic_fetch_add_8
+.extern __atomic_fetch_and_1
+.extern __atomic_fetch_and_2
+.extern __atomic_fetch_and_4
+.extern __atomic_fetch_and_8
+.extern __atomic_fetch_sub_1
+.extern __atomic_fetch_sub_2
+.extern __atomic_fetch_sub_4
+.extern __atomic_fetch_sub_8
+.extern __atomic_fetch_xor_1
+.extern __atomic_fetch_xor_2
+.extern __atomic_fetch_xor_4
+.extern __atomic_fetch_xor_8
+.extern __atomic_fetch_or_1
+.extern __atomic_fetch_or_2
+.extern __atomic_fetch_or_4
+.extern __atomic_fetch_or_8
+.extern __kefir_opt_float32_neg
+.extern __kefir_opt_float64_neg
+.extern __kefirrt_opt_float32_to_uint
+.extern __kefirrt_opt_float64_to_uint
+
+.section .text
+test_fetch_add_short:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_test_fetch_add_short_label0:
+_kefir_func_test_fetch_add_short_label1:
+    movq __atomic_fetch_add_2@GOTPCREL(%rip), %rax
+    movsx %si, %rcx
+    mov $5, %rdx
+    mov %rcx, %rsi
+    call *%rax
+    mov %rax, %rcx
+    movsx %cx, %rax
+    pop %rbp
+    ret
+
+test_fetch_and_short:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_test_fetch_and_short_label0:
+_kefir_func_test_fetch_and_short_label1:
+    movq __atomic_fetch_and_2@GOTPCREL(%rip), %rax
+    movsx %si, %rcx
+    mov $5, %rdx
+    mov %rcx, %rsi
+    call *%rax
+    mov %rax, %rcx
+    movsx %cx, %rax
+    pop %rbp
+    ret
+
+test_fetch_sub_short:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_test_fetch_sub_short_label0:
+_kefir_func_test_fetch_sub_short_label1:
+    movq __atomic_fetch_sub_2@GOTPCREL(%rip), %rax
+    movsx %si, %rcx
+    mov $5, %rdx
+    mov %rcx, %rsi
+    call *%rax
+    mov %rax, %rcx
+    movsx %cx, %rax
+    pop %rbp
+    ret
+
+test_fetch_xor_short:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_test_fetch_xor_short_label0:
+_kefir_func_test_fetch_xor_short_label1:
+    movq __atomic_fetch_xor_2@GOTPCREL(%rip), %rax
+    movsx %si, %rcx
+    mov $5, %rdx
+    mov %rcx, %rsi
+    call *%rax
+    mov %rax, %rcx
+    movsx %cx, %rax
+    pop %rbp
+    ret
+
+test_fetch_or_int:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_test_fetch_or_int_label0:
+_kefir_func_test_fetch_or_int_label1:
+    movq __atomic_fetch_or_4@GOTPCREL(%rip), %rax
+    movsx %esi, %rcx
+    mov $5, %rdx
+    mov %rcx, %rsi
+    call *%rax
+    mov %rax, %rcx
+    movsx %ecx, %rax
+    pop %rbp
+    ret
+
+test_fetch_add_char:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_test_fetch_add_char_label0:
+_kefir_func_test_fetch_add_char_label1:
+    movq __atomic_fetch_add_1@GOTPCREL(%rip), %rax
+    movsx %sil, %rcx
+    mov $5, %rdx
+    mov %rcx, %rsi
+    call *%rax
+    mov %rax, %rcx
+    movsx %cl, %rax
+    pop %rbp
+    ret
+
+test_fetch_add_long:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_test_fetch_add_long_label0:
+_kefir_func_test_fetch_add_long_label1:
+    movq __atomic_fetch_add_8@GOTPCREL(%rip), %rax
+    mov $5, %rcx
+    mov %rcx, %rdx
+    call *%rax
+    mov %rax, %rcx
+    mov %rcx, %rax
+    pop %rbp
+    ret
+
+test_fetch_and_char:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_test_fetch_and_char_label0:
+_kefir_func_test_fetch_and_char_label1:
+    movq __atomic_fetch_and_1@GOTPCREL(%rip), %rax
+    movsx %sil, %rcx
+    mov $5, %rdx
+    mov %rcx, %rsi
+    call *%rax
+    mov %rax, %rcx
+    movsx %cl, %rax
+    pop %rbp
+    ret
+
+test_fetch_and_long:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_test_fetch_and_long_label0:
+_kefir_func_test_fetch_and_long_label1:
+    movq __atomic_fetch_and_8@GOTPCREL(%rip), %rax
+    mov $5, %rcx
+    mov %rcx, %rdx
+    call *%rax
+    mov %rax, %rcx
+    mov %rcx, %rax
+    pop %rbp
+    ret
+
+test_fetch_or_short:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_test_fetch_or_short_label0:
+_kefir_func_test_fetch_or_short_label1:
+    movq __atomic_fetch_or_2@GOTPCREL(%rip), %rax
+    movsx %si, %rcx
+    mov $5, %rdx
+    mov %rcx, %rsi
+    call *%rax
+    mov %rax, %rcx
+    movsx %cx, %rax
+    pop %rbp
+    ret
+
+test_fetch_sub_char:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_test_fetch_sub_char_label0:
+_kefir_func_test_fetch_sub_char_label1:
+    movq __atomic_fetch_sub_1@GOTPCREL(%rip), %rax
+    movsx %sil, %rcx
+    mov $5, %rdx
+    mov %rcx, %rsi
+    call *%rax
+    mov %rax, %rcx
+    movsx %cl, %rax
+    pop %rbp
+    ret
+
+test_fetch_sub_long:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_test_fetch_sub_long_label0:
+_kefir_func_test_fetch_sub_long_label1:
+    movq __atomic_fetch_sub_8@GOTPCREL(%rip), %rax
+    mov $5, %rcx
+    mov %rcx, %rdx
+    call *%rax
+    mov %rax, %rcx
+    mov %rcx, %rax
+    pop %rbp
+    ret
+
+test_fetch_xor_char:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_test_fetch_xor_char_label0:
+_kefir_func_test_fetch_xor_char_label1:
+    movq __atomic_fetch_xor_1@GOTPCREL(%rip), %rax
+    movsx %sil, %rcx
+    mov $5, %rdx
+    mov %rcx, %rsi
+    call *%rax
+    mov %rax, %rcx
+    movsx %cl, %rax
+    pop %rbp
+    ret
+
+test_fetch_xor_long:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_test_fetch_xor_long_label0:
+_kefir_func_test_fetch_xor_long_label1:
+    movq __atomic_fetch_xor_8@GOTPCREL(%rip), %rax
+    mov $5, %rcx
+    mov %rcx, %rdx
+    call *%rax
+    mov %rax, %rcx
+    mov %rcx, %rax
+    pop %rbp
+    ret
+
+test_fetch_add_int:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_test_fetch_add_int_label0:
+_kefir_func_test_fetch_add_int_label1:
+    movq __atomic_fetch_add_4@GOTPCREL(%rip), %rax
+    movsx %esi, %rcx
+    mov $5, %rdx
+    mov %rcx, %rsi
+    call *%rax
+    mov %rax, %rcx
+    movsx %ecx, %rax
+    pop %rbp
+    ret
+
+test_fetch_and_int:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_test_fetch_and_int_label0:
+_kefir_func_test_fetch_and_int_label1:
+    movq __atomic_fetch_and_4@GOTPCREL(%rip), %rax
+    movsx %esi, %rcx
+    mov $5, %rdx
+    mov %rcx, %rsi
+    call *%rax
+    mov %rax, %rcx
+    movsx %ecx, %rax
+    pop %rbp
+    ret
+
+test_fetch_or_char:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_test_fetch_or_char_label0:
+_kefir_func_test_fetch_or_char_label1:
+    movq __atomic_fetch_or_1@GOTPCREL(%rip), %rax
+    movsx %sil, %rcx
+    mov $5, %rdx
+    mov %rcx, %rsi
+    call *%rax
+    mov %rax, %rcx
+    movsx %cl, %rax
+    pop %rbp
+    ret
+
+test_fetch_or_long:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_test_fetch_or_long_label0:
+_kefir_func_test_fetch_or_long_label1:
+    movq __atomic_fetch_or_8@GOTPCREL(%rip), %rax
+    mov $5, %rcx
+    mov %rcx, %rdx
+    call *%rax
+    mov %rax, %rcx
+    mov %rcx, %rax
+    pop %rbp
+    ret
+
+test_fetch_sub_int:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_test_fetch_sub_int_label0:
+_kefir_func_test_fetch_sub_int_label1:
+    movq __atomic_fetch_sub_4@GOTPCREL(%rip), %rax
+    movsx %esi, %rcx
+    mov $5, %rdx
+    mov %rcx, %rsi
+    call *%rax
+    mov %rax, %rcx
+    movsx %ecx, %rax
+    pop %rbp
+    ret
+
+test_fetch_xor_int:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_test_fetch_xor_int_label0:
+_kefir_func_test_fetch_xor_int_label1:
+    movq __atomic_fetch_xor_4@GOTPCREL(%rip), %rax
+    movsx %esi, %rcx
+    mov $5, %rdx
+    mov %rcx, %rsi
+    call *%rax
+    mov %rax, %rcx
+    movsx %ecx, %rax
+    pop %rbp
+    ret
+
+

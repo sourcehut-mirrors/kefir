@@ -125,26 +125,23 @@
                                   (_failure_memorder));                                                   \
     })
 
-#define __kefir_atomic_fetch_op(_op, _ptr, _val, _memorder)                                                     \
-    ({                                                                                                          \
-        typedef __typeof__((void) 0, *(_ptr)) result_t;                                                         \
-        extern result_t __atomic_fetch_##_op##_1(void *, result_t, int);                                        \
-        extern result_t __atomic_fetch_##_op##_2(void *, result_t, int);                                        \
-        extern result_t __atomic_fetch_##_op##_4(void *, result_t, int);                                        \
-        extern result_t __atomic_fetch_##_op##_8(void *, result_t, int);                                        \
-        extern result_t __atomic_fetch_##_op##_16(void *, result_t, int);                                       \
-        __builtin_choose_expr(                                                                                  \
-            sizeof(result_t) == 1, __atomic_fetch_##_op##_1((_ptr), (_val), (_memorder)),                       \
-            __builtin_choose_expr(                                                                              \
-                sizeof(result_t) == 2, __atomic_fetch_##_op##_2((_ptr), (_val), (_memorder)),                   \
-                __builtin_choose_expr(                                                                          \
-                    sizeof(result_t) <= 4, __atomic_fetch_##_op##_4((_ptr), (_val), (_memorder)),               \
-                    __builtin_choose_expr(                                                                      \
-                        sizeof(result_t) <= 8, __atomic_fetch_##_op##_8((_ptr), (_val), (_memorder)),           \
-                        __builtin_choose_expr(                                                                  \
-                            sizeof(result_t) <= 16, __atomic_fetch_##_op##_16((_ptr), (_val), (_memorder)), ({  \
-                                _Static_assert(0, "Atomic fetch operation of specified size is not supported"); \
-                            }))))));                                                                            \
+#define __kefir_atomic_fetch_op(_op, _ptr, _val, _memorder)                                                        \
+    ({                                                                                                             \
+        typedef __typeof__((void) 0, *(_ptr)) result_t;                                                            \
+        typedef result_t (*fn_t)(void *, result_t, int);                                                           \
+        extern __UINT8_TYPE__ __atomic_fetch_##_op##_1(void *, __UINT8_TYPE__, int);                               \
+        extern __UINT16_TYPE__ __atomic_fetch_##_op##_2(void *, __UINT16_TYPE__, int);                             \
+        extern __UINT32_TYPE__ __atomic_fetch_##_op##_4(void *, __UINT32_TYPE__, int);                             \
+        extern __UINT64_TYPE__ __atomic_fetch_##_op##_8(void *, __UINT64_TYPE__, int);                             \
+        __builtin_choose_expr(                                                                                     \
+            sizeof(result_t) == 1, ((fn_t) __atomic_fetch_##_op##_1)((_ptr), (_val), (_memorder)),                 \
+            __builtin_choose_expr(                                                                                 \
+                sizeof(result_t) == 2, ((fn_t) __atomic_fetch_##_op##_2)((_ptr), (_val), (_memorder)),             \
+                __builtin_choose_expr(                                                                             \
+                    sizeof(result_t) <= 4, ((fn_t) __atomic_fetch_##_op##_4)((_ptr), (_val), (_memorder)),         \
+                    __builtin_choose_expr(                                                                         \
+                        sizeof(result_t) <= 8, ((fn_t) __atomic_fetch_##_op##_8)((_ptr), (_val), (_memorder)),     \
+                        ({ _Static_assert(0, "Atomic fetch operation of specified size is not supported"); }))))); \
     })
 
 #define __atomic_fetch_add(_ptr, _val, _memorder) __kefir_atomic_fetch_op(add, (_ptr), (_val), (_memorder))
