@@ -15,6 +15,13 @@ generation is supported. Kefir features `cc`-compatible command line interface.
 
 [Kefir website](https://kefir.protopopov.lv) also provides some additional information.
 
+**Note to users of Kefir:** if you encounter any behavior that does not comply
+with C language standard or significantly diverges from other compilers, please
+do no hestitate to reach me out via [email](mailto:jevgenij@protopopov.lv)
+directly or through the [mailing
+list](https://lists.sr.ht/~jprotopopov/public-inbox). Code snippets for easier
+reproduction are especially welcome.
+
 ### Project name
 Kefir compiler is named after [fermented milk
 drink](https://en.wikipedia.org/wiki/Kefir), no other connotations are meant or
