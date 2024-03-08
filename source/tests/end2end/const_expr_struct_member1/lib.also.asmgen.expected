@@ -1,0 +1,56 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global arr1_1
+.global arr1_2
+.global arr2_1
+.global arr2_2
+.global arr3_1
+.global arr3_2
+.global get_structure2
+.extern structure1
+.extern __kefir_opt_float32_neg
+.extern __kefir_opt_float64_neg
+.extern __kefirrt_opt_float32_to_uint
+.extern __kefirrt_opt_float64_to_uint
+
+.section .text
+get_structure2:
+_kefir_func_get_structure2_label0:
+_kefir_func_get_structure2_label1:
+    lea __kefirrt_module_static_uninit_vars(%rip), %rax
+    ret
+
+
+.section .data
+    .align 8
+arr1_1:
+    .quad structure1
+
+    .align 8
+arr1_2:
+    .quad __kefirrt_module_static_uninit_vars
+
+    .align 8
+arr2_1:
+    .quad structure1 + 40
+
+    .align 8
+arr2_2:
+    .quad __kefirrt_module_static_uninit_vars + 40
+
+    .align 8
+arr3_1:
+    .quad structure1 + 80
+
+    .align 8
+arr3_2:
+    .quad __kefirrt_module_static_uninit_vars + 80
+
+.section .bss
+    .align 8
+__kefirrt_module_static_uninit_vars:
+    .zero 40
+    .zero 40
+    .zero 64
+

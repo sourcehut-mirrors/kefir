@@ -495,7 +495,7 @@ END_CASE
 #undef ASSERT_ARRAY_SUBSCRIPT
 #undef ASSERT_ARRAY_SUBSCRIPT2
 
-#define ASSERT_STRUCT_MEMBER(_mem, _context, _identifier, _field, _type)                                          \
+#define ASSERT_STRUCT_MEMBER(_mem, _context, _identifier, _field, _type, _constant)                               \
     do {                                                                                                          \
         struct kefir_ast_struct_member *member = kefir_ast_new_struct_member(                                     \
             (_mem), (_context)->symbols,                                                                          \
@@ -503,7 +503,7 @@ END_CASE
         ASSERT_OK(kefir_ast_analyze_node((_mem), (_context), KEFIR_AST_NODE_BASE(member)));                       \
         ASSERT(member->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);                           \
         ASSERT(KEFIR_AST_TYPE_SAME(member->base.properties.type, (_type)));                                       \
-        ASSERT(!member->base.properties.expression_props.constant_expression);                                    \
+        ASSERT(member->base.properties.expression_props.constant_expression == (_constant));                      \
         ASSERT(member->base.properties.expression_props.lvalue);                                                  \
         KEFIR_AST_NODE_FREE((_mem), KEFIR_AST_NODE_BASE(member));                                                 \
     } while (0)
@@ -535,12 +535,13 @@ DEFINE_CASE(ast_node_analysis_struct_members1, "AST node analysis - struct membe
     ASSERT_OK(kefir_ast_global_context_define_external(&kft_mem, &global_context, "var1", struct1_type, NULL, NULL,
                                                        NULL, NULL, NULL));
 
-    ASSERT_STRUCT_MEMBER(&kft_mem, context, "var1", "field1", kefir_ast_type_unsigned_char());
+    ASSERT_STRUCT_MEMBER(&kft_mem, context, "var1", "field1", kefir_ast_type_unsigned_char(), false);
     ASSERT_STRUCT_MEMBER(&kft_mem, context, "var1", "field2",
-                         kefir_ast_type_pointer(&kft_mem, context->type_bundle, kefir_ast_type_unsigned_long()));
-    ASSERT_STRUCT_MEMBER(&kft_mem, context, "var1", "field3", kefir_ast_type_signed_int());
+                         kefir_ast_type_pointer(&kft_mem, context->type_bundle, kefir_ast_type_unsigned_long()), false);
+    ASSERT_STRUCT_MEMBER(&kft_mem, context, "var1", "field3", kefir_ast_type_signed_int(), false);
     ASSERT_STRUCT_MEMBER(&kft_mem, context, "var1", "field4",
-                         kefir_ast_type_unbounded_array(&kft_mem, context->type_bundle, kefir_ast_type_float(), NULL));
+                         kefir_ast_type_unbounded_array(&kft_mem, context->type_bundle, kefir_ast_type_float(), NULL),
+                         true);
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &local_context));
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &global_context));
@@ -573,10 +574,10 @@ DEFINE_CASE(ast_node_analysis_struct_members2, "AST node analysis - struct membe
 
     ASSERT_OK(kefir_ast_global_context_define_external(&kft_mem, &global_context, "var2", struct3_type, NULL, NULL,
                                                        NULL, NULL, NULL));
-    ASSERT_STRUCT_MEMBER(&kft_mem, context, "var2", "test", kefir_ast_type_boolean());
-    ASSERT_STRUCT_MEMBER(&kft_mem, context, "var2", "test2", struct2_type);
-    ASSERT_STRUCT_MEMBER(&kft_mem, context, "var2", "field1", kefir_ast_type_float());
-    ASSERT_STRUCT_MEMBER(&kft_mem, context, "var2", "field2", kefir_ast_type_unsigned_int());
+    ASSERT_STRUCT_MEMBER(&kft_mem, context, "var2", "test", kefir_ast_type_boolean(), false);
+    ASSERT_STRUCT_MEMBER(&kft_mem, context, "var2", "test2", struct2_type, false);
+    ASSERT_STRUCT_MEMBER(&kft_mem, context, "var2", "field1", kefir_ast_type_float(), false);
+    ASSERT_STRUCT_MEMBER(&kft_mem, context, "var2", "field2", kefir_ast_type_unsigned_int(), false);
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &local_context));
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &global_context));
@@ -585,7 +586,7 @@ END_CASE
 
 #undef ASSERT_STRUCT_MEMBER
 
-#define ASSERT_INDIRECT_STRUCT_MEMBER(_mem, _context, _identifier, _field, _type)                                 \
+#define ASSERT_INDIRECT_STRUCT_MEMBER(_mem, _context, _identifier, _field, _type, _constant)                      \
     do {                                                                                                          \
         struct kefir_ast_struct_member *member = kefir_ast_new_struct_indirect_member(                            \
             (_mem), (_context)->symbols,                                                                          \
@@ -593,7 +594,7 @@ END_CASE
         ASSERT_OK(kefir_ast_analyze_node((_mem), (_context), KEFIR_AST_NODE_BASE(member)));                       \
         ASSERT(member->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);                           \
         ASSERT(KEFIR_AST_TYPE_SAME(member->base.properties.type, (_type)));                                       \
-        ASSERT(!member->base.properties.expression_props.constant_expression);                                    \
+        ASSERT(member->base.properties.expression_props.constant_expression == (_constant));                      \
         ASSERT(member->base.properties.expression_props.lvalue);                                                  \
         KEFIR_AST_NODE_FREE((_mem), KEFIR_AST_NODE_BASE(member));                                                 \
     } while (0)
@@ -626,14 +627,14 @@ DEFINE_CASE(ast_node_analysis_indirect_struct_members1, "AST node analysis - ind
         &kft_mem, &global_context, "var1", kefir_ast_type_pointer(&kft_mem, context->type_bundle, struct1_type), NULL,
         NULL, NULL, NULL, NULL));
 
-    ASSERT_INDIRECT_STRUCT_MEMBER(&kft_mem, context, "var1", "field1", kefir_ast_type_unsigned_char());
+    ASSERT_INDIRECT_STRUCT_MEMBER(&kft_mem, context, "var1", "field1", kefir_ast_type_unsigned_char(), false);
     ASSERT_INDIRECT_STRUCT_MEMBER(
         &kft_mem, context, "var1", "field2",
-        kefir_ast_type_pointer(&kft_mem, context->type_bundle, kefir_ast_type_unsigned_long()));
-    ASSERT_INDIRECT_STRUCT_MEMBER(&kft_mem, context, "var1", "field3", kefir_ast_type_signed_int());
+        kefir_ast_type_pointer(&kft_mem, context->type_bundle, kefir_ast_type_unsigned_long()), false);
+    ASSERT_INDIRECT_STRUCT_MEMBER(&kft_mem, context, "var1", "field3", kefir_ast_type_signed_int(), false);
     ASSERT_INDIRECT_STRUCT_MEMBER(
         &kft_mem, context, "var1", "field4",
-        kefir_ast_type_unbounded_array(&kft_mem, context->type_bundle, kefir_ast_type_float(), NULL));
+        kefir_ast_type_unbounded_array(&kft_mem, context->type_bundle, kefir_ast_type_float(), NULL), true);
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &local_context));
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &global_context));
@@ -667,10 +668,10 @@ DEFINE_CASE(ast_node_analysis_indirect_struct_members2, "AST node analysis - ind
     ASSERT_OK(kefir_ast_global_context_define_external(
         &kft_mem, &global_context, "var2", kefir_ast_type_pointer(&kft_mem, context->type_bundle, struct3_type), NULL,
         NULL, NULL, NULL, NULL));
-    ASSERT_INDIRECT_STRUCT_MEMBER(&kft_mem, context, "var2", "test", kefir_ast_type_boolean());
-    ASSERT_INDIRECT_STRUCT_MEMBER(&kft_mem, context, "var2", "test2", struct2_type);
-    ASSERT_INDIRECT_STRUCT_MEMBER(&kft_mem, context, "var2", "field1", kefir_ast_type_float());
-    ASSERT_INDIRECT_STRUCT_MEMBER(&kft_mem, context, "var2", "field2", kefir_ast_type_unsigned_int());
+    ASSERT_INDIRECT_STRUCT_MEMBER(&kft_mem, context, "var2", "test", kefir_ast_type_boolean(), false);
+    ASSERT_INDIRECT_STRUCT_MEMBER(&kft_mem, context, "var2", "test2", struct2_type, false);
+    ASSERT_INDIRECT_STRUCT_MEMBER(&kft_mem, context, "var2", "field1", kefir_ast_type_float(), false);
+    ASSERT_INDIRECT_STRUCT_MEMBER(&kft_mem, context, "var2", "field2", kefir_ast_type_unsigned_int(), false);
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &local_context));
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &global_context));

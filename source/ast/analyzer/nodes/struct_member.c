@@ -91,5 +91,18 @@ kefir_result_t kefir_ast_analyze_struct_member_node(struct kefir_mem *mem, const
     if (field->bitfield) {
         base->properties.expression_props.bitfield_props.width = field->bitwidth->value.integer;
     }
+
+    const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(type);
+
+    if (unqualified_type->tag == KEFIR_AST_TYPE_ARRAY) {
+        base->properties.expression_props.constant_expression =
+            node->structure->properties.expression_props.constant_expression ||
+            (node->structure->klass->type == KEFIR_AST_IDENTIFIER &&
+             node->structure->properties.expression_props.scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT &&
+             (node->structure->properties.expression_props.scoped_id->object.storage ==
+                  KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN ||
+              node->structure->properties.expression_props.scoped_id->object.storage ==
+                  KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC));
+    }
     return KEFIR_OK;
 }

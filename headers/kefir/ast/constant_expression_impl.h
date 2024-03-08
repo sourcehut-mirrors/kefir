@@ -30,6 +30,7 @@
 
 EVAL(scalar, struct kefir_ast_constant);
 EVAL(identifier, struct kefir_ast_identifier);
+EVAL(struct_member, struct kefir_ast_struct_member);
 EVAL(string_literal, struct kefir_ast_string_literal);
 EVAL(label_address, struct kefir_ast_label_address);
 EVAL(generic_selection, struct kefir_ast_generic_selection);
