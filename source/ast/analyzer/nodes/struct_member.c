@@ -109,5 +109,6 @@ kefir_result_t kefir_ast_analyze_struct_member_node(struct kefir_mem *mem, const
                   KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN ||
               node->structure->properties.expression_props.scoped_id->object.storage ==
                   KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC));
+    }
     return KEFIR_OK;
 }
