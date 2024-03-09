@@ -110,7 +110,9 @@ extending the compiler, including:
 Some implementation details that user needs to take into account:
 * Atomic implementation fully relies on software atomic library (`libatomic` for
   GCC, `libcompiler_rt` for Clang), thus any program that employs atomic
-  operations need to link a `libatomic`-compatible library.
+  operations need to link a `libatomic`-compatible library. Furthermore, if
+  `<stdatomic.h>` header from Clang includes is used, `-D__GNUC__=4 -D__GNUC_MINOR__=20`
+  command line arguments shall be added to Kefir invocation.
 
 ### Exceptions
 Following exceptions were made in C17 implementation:
