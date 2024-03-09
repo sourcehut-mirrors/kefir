@@ -60,5 +60,36 @@ int main(void) {
         assert(test_atomic_compare_exchange64(&lng, &expected_lng, (long) ~x));
         assert(lng == (long) ~x && expected_lng == (long) x);
     }
+
+    for (long x = -4096; x < 4096; x++) {
+        _Atomic char chr = x;
+        _Atomic short shrt = x;
+        _Atomic int integer = x;
+        _Atomic long lng = x;
+
+        char expected_chr = x + 1;
+        assert(!test2_atomic_compare_exchange8(&chr, &expected_chr, (char) ~x));
+        assert(chr == (char) x && expected_chr == (char) x);
+        assert(test2_atomic_compare_exchange8(&chr, &expected_chr, (char) ~x));
+        assert(chr == (char) ~x && expected_chr == (char) x);
+
+        short expected_shrt = x + 1;
+        assert(!test2_atomic_compare_exchange16(&shrt, &expected_shrt, (short) ~x));
+        assert(shrt == (short) x && expected_shrt == (short) x);
+        assert(test2_atomic_compare_exchange16(&shrt, &expected_shrt, (short) ~x));
+        assert(shrt == (short) ~x && expected_shrt == (short) x);
+
+        int expected_int = x + 1;
+        assert(!test2_atomic_compare_exchange32(&integer, &expected_int, (int) ~x));
+        assert(integer == (int) x && expected_int == (int) x);
+        assert(test2_atomic_compare_exchange32(&integer, &expected_int, (int) ~x));
+        assert(integer == (int) ~x && expected_int == (int) x);
+
+        long expected_lng = x + 1;
+        assert(!test2_atomic_compare_exchange64(&lng, &expected_lng, (long) ~x));
+        assert(lng == (long) x && expected_lng == (long) x);
+        assert(test2_atomic_compare_exchange64(&lng, &expected_lng, (long) ~x));
+        assert(lng == (long) ~x && expected_lng == (long) x);
+    }
     return EXIT_SUCCESS;
 }

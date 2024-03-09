@@ -178,7 +178,7 @@ static kefir_result_t scan_function_macro_arguments(struct kefir_mem *mem,
         REQUIRE_OK(function_macro_arguments_push(mem, args));
     }
     REQUIRE(kefir_list_length(args) == argc + (vararg ? 1 : 0),
-            KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, NULL, "Argument count mismatch"));
+            KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &token->source_location, "Argument count mismatch"));
 
     for (const struct kefir_list_entry *iter = kefir_list_head(args); iter != NULL; kefir_list_next(&iter)) {
         ASSIGN_DECL_CAST(struct kefir_token_buffer *, arg_buffer, iter->value);

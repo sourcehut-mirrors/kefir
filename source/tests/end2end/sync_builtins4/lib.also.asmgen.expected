@@ -1,0 +1,73 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global clear
+.global test_and_set
+.global test_sync_synchronize
+.extern __atomic_exchange
+.extern __atomic_store
+.extern __kefir_atomic_seq_cst_fence
+.extern __kefir_opt_float32_neg
+.extern __kefir_opt_float64_neg
+.extern __kefirrt_opt_float32_to_uint
+.extern __kefirrt_opt_float64_to_uint
+
+.section .text
+clear:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_clear_label0:
+    mov %rdi, %rax
+_kefir_func_clear_label1:
+    lea -4(%rbp), %rcx
+    xor %rdx, %rdx
+    movl %edx, (%rcx)
+    mov $1, %rcx
+    lea -4(%rbp), %rdx
+    mov $3, %r8
+    mov %rcx, %rdi
+    mov %rax, %rsi
+    mov %r8, %rcx
+    call __atomic_store@PLT
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+test_and_set:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_test_and_set_label0:
+    mov %rdi, %rax
+_kefir_func_test_and_set_label1:
+    lea -4(%rbp), %rcx
+    mov $1, %rdx
+    movl %edx, (%rcx)
+    lea -8(%rbp), %rcx
+    movb %dl, (%rcx)
+    mov $1, %rcx
+    lea -4(%rbp), %rdx
+    lea -8(%rbp), %r8
+    mov $2, %r9
+    mov %rcx, %rdi
+    mov %rax, %rsi
+    mov %r8, %rcx
+    mov %r9, %r8
+    call __atomic_exchange@PLT
+    lea -8(%rbp), %rax
+    movzxb (%rax), %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+test_sync_synchronize:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_test_sync_synchronize_label0:
+_kefir_func_test_sync_synchronize_label1:
+    call __kefir_atomic_seq_cst_fence@PLT
+    pop %rbp
+    ret
+
+

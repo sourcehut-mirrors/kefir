@@ -1,0 +1,262 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global test_sync_bool_compare_and_swap16
+.global test_sync_bool_compare_and_swap32
+.global test_sync_bool_compare_and_swap64
+.global test_sync_bool_compare_and_swap8
+.global test_sync_val_compare_and_swap8
+.global test_sync_val_compare_and_swap16
+.global test_sync_val_compare_and_swap32
+.global test_sync_val_compare_and_swap64
+.extern __atomic_compare_exchange
+.extern __kefir_opt_float32_neg
+.extern __kefir_opt_float64_neg
+.extern __kefirrt_opt_float32_to_uint
+.extern __kefirrt_opt_float64_to_uint
+
+.section .text
+test_sync_bool_compare_and_swap16:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_test_sync_bool_compare_and_swap16_label0:
+    mov %rdi, %rax
+_kefir_func_test_sync_bool_compare_and_swap16_label1:
+    lea -4(%rbp), %rcx
+    movsx %si, %rsi
+    movw %si, (%rcx)
+    lea -2(%rbp), %rcx
+    movsx %dx, %rdx
+    movw %dx, (%rcx)
+    mov $2, %rcx
+    lea -4(%rbp), %rdx
+    lea -2(%rbp), %r8
+    mov $5, %r9
+    mov $5, %r10
+    mov %rcx, %rdi
+    mov %rax, %rsi
+    mov %r8, %rcx
+    mov %r9, %r8
+    mov %r10, %r9
+    call __atomic_compare_exchange@PLT
+    mov %rax, %rcx
+    and $1, %rcx
+    mov %rcx, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+test_sync_bool_compare_and_swap32:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_test_sync_bool_compare_and_swap32_label0:
+    mov %rdi, %rax
+_kefir_func_test_sync_bool_compare_and_swap32_label1:
+    lea -8(%rbp), %rcx
+    movsx %esi, %rsi
+    movl %esi, (%rcx)
+    lea -4(%rbp), %rcx
+    movsx %edx, %rdx
+    movl %edx, (%rcx)
+    mov $4, %rcx
+    lea -8(%rbp), %rdx
+    lea -4(%rbp), %r8
+    mov $5, %r9
+    mov $5, %r10
+    mov %rcx, %rdi
+    mov %rax, %rsi
+    mov %r8, %rcx
+    mov %r9, %r8
+    mov %r10, %r9
+    call __atomic_compare_exchange@PLT
+    mov %rax, %rcx
+    and $1, %rcx
+    mov %rcx, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+test_sync_bool_compare_and_swap64:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_test_sync_bool_compare_and_swap64_label0:
+    mov %rdi, %rax
+_kefir_func_test_sync_bool_compare_and_swap64_label1:
+    lea -16(%rbp), %rcx
+    movq %rsi, (%rcx)
+    lea -8(%rbp), %rcx
+    movq %rdx, (%rcx)
+    mov $8, %rcx
+    lea -16(%rbp), %rdx
+    lea -8(%rbp), %r8
+    mov $5, %r9
+    mov $5, %r10
+    mov %rcx, %rdi
+    mov %rax, %rsi
+    mov %r8, %rcx
+    mov %r9, %r8
+    mov %r10, %r9
+    call __atomic_compare_exchange@PLT
+    mov %rax, %rcx
+    and $1, %rcx
+    mov %rcx, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+test_sync_bool_compare_and_swap8:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_test_sync_bool_compare_and_swap8_label0:
+    mov %rdi, %rax
+_kefir_func_test_sync_bool_compare_and_swap8_label1:
+    lea -2(%rbp), %rcx
+    movsx %sil, %rsi
+    movb %sil, (%rcx)
+    lea -1(%rbp), %rcx
+    movsx %dl, %rdx
+    movb %dl, (%rcx)
+    mov $1, %rcx
+    lea -2(%rbp), %rdx
+    lea -1(%rbp), %r8
+    mov $5, %r9
+    mov $5, %r10
+    mov %rcx, %rdi
+    mov %rax, %rsi
+    mov %r8, %rcx
+    mov %r9, %r8
+    mov %r10, %r9
+    call __atomic_compare_exchange@PLT
+    mov %rax, %rcx
+    and $1, %rcx
+    mov %rcx, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+test_sync_val_compare_and_swap8:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_test_sync_val_compare_and_swap8_label0:
+    mov %rdi, %rax
+_kefir_func_test_sync_val_compare_and_swap8_label1:
+    lea -2(%rbp), %rcx
+    movsx %sil, %rsi
+    movb %sil, (%rcx)
+    lea -1(%rbp), %rcx
+    movsx %dl, %rdx
+    movb %dl, (%rcx)
+    mov $1, %rcx
+    lea -2(%rbp), %rdx
+    lea -1(%rbp), %r8
+    mov $5, %r9
+    mov $5, %r10
+    mov %rcx, %rdi
+    mov %rax, %rsi
+    mov %r8, %rcx
+    mov %r9, %r8
+    mov %r10, %r9
+    call __atomic_compare_exchange@PLT
+    mov %rax, %rcx
+    lea -2(%rbp), %rax
+    movsxb (%rax), %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+test_sync_val_compare_and_swap16:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_test_sync_val_compare_and_swap16_label0:
+    mov %rdi, %rax
+_kefir_func_test_sync_val_compare_and_swap16_label1:
+    lea -4(%rbp), %rcx
+    movsx %si, %rsi
+    movw %si, (%rcx)
+    lea -2(%rbp), %rcx
+    movsx %dx, %rdx
+    movw %dx, (%rcx)
+    mov $2, %rcx
+    lea -4(%rbp), %rdx
+    lea -2(%rbp), %r8
+    mov $5, %r9
+    mov $5, %r10
+    mov %rcx, %rdi
+    mov %rax, %rsi
+    mov %r8, %rcx
+    mov %r9, %r8
+    mov %r10, %r9
+    call __atomic_compare_exchange@PLT
+    mov %rax, %rcx
+    lea -4(%rbp), %rax
+    movsxw (%rax), %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+test_sync_val_compare_and_swap32:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_test_sync_val_compare_and_swap32_label0:
+    mov %rdi, %rax
+_kefir_func_test_sync_val_compare_and_swap32_label1:
+    lea -8(%rbp), %rcx
+    movsx %esi, %rsi
+    movl %esi, (%rcx)
+    lea -4(%rbp), %rcx
+    movsx %edx, %rdx
+    movl %edx, (%rcx)
+    mov $4, %rcx
+    lea -8(%rbp), %rdx
+    lea -4(%rbp), %r8
+    mov $5, %r9
+    mov $5, %r10
+    mov %rcx, %rdi
+    mov %rax, %rsi
+    mov %r8, %rcx
+    mov %r9, %r8
+    mov %r10, %r9
+    call __atomic_compare_exchange@PLT
+    mov %rax, %rcx
+    lea -8(%rbp), %rax
+    movsxl (%rax), %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+test_sync_val_compare_and_swap64:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_test_sync_val_compare_and_swap64_label0:
+    mov %rdi, %rax
+_kefir_func_test_sync_val_compare_and_swap64_label1:
+    lea -16(%rbp), %rcx
+    movq %rsi, (%rcx)
+    lea -8(%rbp), %rcx
+    movq %rdx, (%rcx)
+    mov $8, %rcx
+    lea -16(%rbp), %rdx
+    lea -8(%rbp), %r8
+    mov $5, %r9
+    mov $5, %r10
+    mov %rcx, %rdi
+    mov %rax, %rsi
+    mov %r8, %rcx
+    mov %r9, %r8
+    mov %r10, %r9
+    call __atomic_compare_exchange@PLT
+    mov %rax, %rcx
+    movq -16(%rbp), %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+

@@ -222,6 +222,51 @@
 #define __GCC_ATOMIC_TEST_AND_SET_TRUEVAL 1
 #endif
 
+// Sync builtins
+#define __sync_fetch_and_add(_ptr, _value, ...) __atomic_fetch_add((_ptr), (_value), __ATOMIC_SEQ_CST)
+#define __sync_fetch_and_sub(_ptr, _value, ...) __atomic_fetch_sub((_ptr), (_value), __ATOMIC_SEQ_CST)
+#define __sync_fetch_and_or(_ptr, _value, ...) __atomic_fetch_or((_ptr), (_value), __ATOMIC_SEQ_CST)
+#define __sync_fetch_and_and(_ptr, _value, ...) __atomic_fetch_and((_ptr), (_value), __ATOMIC_SEQ_CST)
+#define __sync_fetch_and_xor(_ptr, _value, ...) __atomic_fetch_xor((_ptr), (_value), __ATOMIC_SEQ_CST)
+#define __sync_fetch_and_nand(_ptr, _value, ...) __atomic_fetch_nand((_ptr), (_value), __ATOMIC_SEQ_CST)
+
+#define __kefir_sync_op_and_fetch(_op, _ptr, _value) ({ \
+        typedef __typeof_unqual__((void)0, *(_ptr)) __value_t; \
+        __value_t __prev_value = __atomic_load_n((_ptr), __ATOMIC_ACQUIRE), __new_value; \
+        do { \
+            __new_value = __prev_value _op (__value_t) (_value); \
+        } while (!__atomic_compare_exchange_n((_ptr), &__prev_value, __new_value, 0, __ATOMIC_SEQ_CST, __ATOMIC_ACQUIRE)); \
+        __new_value; \
+    })
+#define __sync_add_and_fetch(_ptr, _value, ...) __kefir_sync_op_and_fetch(+, (_ptr), (_value))
+#define __sync_sub_and_fetch(_ptr, _value, ...) __kefir_sync_op_and_fetch(-, (_ptr), (_value))
+#define __sync_or_and_fetch(_ptr, _value, ...) __kefir_sync_op_and_fetch(|, (_ptr), (_value))
+#define __sync_and_and_fetch(_ptr, _value, ...) __kefir_sync_op_and_fetch(&, (_ptr), (_value))
+#define __sync_xor_and_fetch(_ptr, _value, ...) __kefir_sync_op_and_fetch(^, (_ptr), (_value))
+#define __sync_nand_and_fetch(_ptr, _value, ...) ({ \
+        typedef __typeof_unqual__((void)0, *(_ptr)) __value_t; \
+        __value_t __prev_value = __atomic_load_n((_ptr), __ATOMIC_ACQUIRE), __new_value; \
+        do { \
+            __new_value = ~(__prev_value & (__value_t) (_value)); \
+        } while (!__atomic_compare_exchange_n((_ptr), &__prev_value, __new_value, 0, __ATOMIC_SEQ_CST, __ATOMIC_ACQUIRE)); \
+        __new_value; \
+    })
+
+#define __sync_bool_compare_and_swap(_ptr, _oldval, _newval, ...) ({ \
+        __typeof__((void) 0, (_oldval)) __copy_oldval = (_oldval); \
+        __atomic_compare_exchange_n((_ptr), &(__copy_oldval), (_newval), 0, __ATOMIC_SEQ_CST, __ATOMIC_SEQ_CST); \
+    })
+#define __sync_val_compare_and_swap(_ptr, _oldval, _newval, ...) ({ \
+        __typeof__((void) 0, (_oldval)) __copy_oldval = (_oldval); \
+        (void) __atomic_compare_exchange_n((_ptr), &__copy_oldval, (_newval), 0, __ATOMIC_SEQ_CST, __ATOMIC_SEQ_CST); \
+        __copy_oldval; \
+    })
+
+#define __sync_synchronize(...) __atomic_thread_fence(__ATOMIC_SEQ_CST)
+
+#define __sync_lock_test_and_set(_ptr, _value, ...) __atomic_exchange_n((_ptr), (_value), __ATOMIC_ACQUIRE)
+#define __sync_lock_release(_ptr, ...) __atomic_store_n((_ptr), 0, __ATOMIC_RELEASE)
+
 // Runtime functions
 extern _Noreturn void __kefirrt_trap(void);
 extern void *__kefirrt_return_address(int);
