@@ -106,11 +106,14 @@ extending the compiler, including:
 * Extending the number of supported platforms.
 * Reimplementing parser and lexer for better performance.
 
+### Implementation quirks
+Some implementation details that user needs to take into account:
+* Atomic implementation fully relies on software atomic library (`libatomic` for
+  GCC, `libcompiler_rt` for Clang), thus any program that employs atomic
+  operations need to link a `libatomic`-compatible library.
+
 ### Exceptions
 Following exceptions were made in C17 implementation:
-* Absence of atomics. C17 standard defines them as optional feature, which I
-decided to omit in initial implementation. Support of atomics would complicate
-both IR and target code generation.
 * Unicode and wide strings are supported under the assumption that source and
 target character sets are the same. No re-encoding is performed.
 * No `STDC` pragmas are implemented in preprocessor. Respective standard library
@@ -118,9 +121,9 @@ parts are out-of-scope, thus implementing these pragmas have no value at the
 moment.
 
 ### Built-ins
-At the moment, Kefir implements following builtins for compatibility with GCC:
-`__builtin_va_list`, `__builtin_va_start`, `__builtin_va_end`,
-`__builtin_va_copy`, `__builtin_va_arg`, `__builtin_alloca`,
+At the moment, Kefir implements following builtins for compatibility with GCC
+(incomplete list): `__builtin_va_list`, `__builtin_va_start`,
+`__builtin_va_end`, `__builtin_va_copy`, `__builtin_va_arg`, `__builtin_alloca`,
 `__builtin_alloca_with_align`, `__builtin_alloca_with_align_and_max`,
 `__builtin_offsetof`. `__builtin_types_compatible_p`, `__builtin_choose_expr`,
 `__builtin_constant_p`, `__builtin_classify_type`, `__builtin_trap`,
@@ -130,8 +133,8 @@ At the moment, Kefir implements following builtins for compatibility with GCC:
 `__builtin_clrsb[l,ll]`, `__builtin_popcount[l,ll]`, `__builtin_parity[l,ll]`,
 `__builtin_bswap16`, `__builtin_bswap32`, `__builtin_bswap64`,
 `__builtin_huge_valf`, `__builtin_huge_val`, `__builtin_huge_vall`,
-`__builtin_inff`, `__builtin_inf`, `__builtin_infl`, and provides compatiblity
-stubs for some others.
+`__builtin_inff`, `__builtin_inf`, `__builtin_infl`, some of `__atomic` and
+`__sync` builtins, and provides compatiblity stubs for some others.
 
 Kefir supports `__attribute__(...)` syntax on parser level, however attributes
 are ignored in most cases except `aligned`/`__aligned__` and `__gnu_inline__`
