@@ -150,6 +150,49 @@
 #define __atomic_fetch_xor(_ptr, _val, _memorder) __kefir_atomic_fetch_op(xor, (_ptr), (_val), (_memorder))
 #define __atomic_fetch_and(_ptr, _val, _memorder) __kefir_atomic_fetch_op(and, (_ptr), (_val), (_memorder))
 
+#define __atomic_thread_fence(_memorder)                \
+    ({                                                  \
+        extern void __kefir_atomic_seq_cst_fence(void); \
+        __kefir_atomic_seq_cst_fence();                 \
+    })
+#define __atomic_signal_fence(_memorder)                \
+    ({                                                  \
+        extern void __kefir_atomic_seq_cst_fence(void); \
+        __kefir_atomic_seq_cst_fence();                 \
+    })
+#define __atomic_is_lock_free(_size, _ptr)                                        \
+    ({                                                                            \
+        extern _Bool __atomic_is_lock_free(__SIZE_TYPE__, volatile void *);       \
+        __atomic_is_lock_free((__SIZE_TYPE__) (_size), (volatile void *) (_ptr)); \
+    })
+#define __atomic_test_and_set(_ptr, _memorder)                             \
+    ({                                                                     \
+        extern _Bool __kefir_atomic_seq_cst_test_and_set(volatile void *); \
+        __kefir_atomic_seq_cst_test_and_set((volatile void *) (_ptr));     \
+    })
+#define __atomic_clear(_ptr, _memorder)                            \
+    ({                                                             \
+        extern void __kefir_atomic_seq_cst_clear(volatile void *); \
+        __kefir_atomic_seq_cst_clear((volatile void *) (_ptr));    \
+    })
+
+#define __KEFIR_ATOMIC_ALWAYS_LOCK_FREE 2
+#ifdef __LP64__
+#define __GCC_ATOMIC_BOOL_LOCK_FREE __KEFIR_ATOMIC_ALWAYS_LOCK_FREE
+#define __GCC_ATOMIC_CHAR_LOCK_FREE __KEFIR_ATOMIC_ALWAYS_LOCK_FREE
+#define __GCC_ATOMIC_CHAR8_T_LOCK_FREE __KEFIR_ATOMIC_ALWAYS_LOCK_FREE
+#define __GCC_ATOMIC_CHAR16_T_LOCK_FREE __KEFIR_ATOMIC_ALWAYS_LOCK_FREE
+#define __GCC_ATOMIC_CHAR32_T_LOCK_FREE __KEFIR_ATOMIC_ALWAYS_LOCK_FREE
+#define __GCC_ATOMIC_WCHAR_T_LOCK_FREE __KEFIR_ATOMIC_ALWAYS_LOCK_FREE
+#define __GCC_ATOMIC_SHORT_LOCK_FREE __KEFIR_ATOMIC_ALWAYS_LOCK_FREE
+#define __GCC_ATOMIC_INT_LOCK_FREE __KEFIR_ATOMIC_ALWAYS_LOCK_FREE
+#define __GCC_ATOMIC_LONG_LOCK_FREE __KEFIR_ATOMIC_ALWAYS_LOCK_FREE
+#define __GCC_ATOMIC_LLONG_LOCK_FREE __KEFIR_ATOMIC_ALWAYS_LOCK_FREE
+#define __GCC_ATOMIC_POINTER_LOCK_FREE __KEFIR_ATOMIC_ALWAYS_LOCK_FREE
+
+#define __GCC_ATOMIC_TEST_AND_SET_TRUEVAL 1
+#endif
+
 // Runtime functions
 extern _Noreturn void __kefirrt_trap(void);
 extern void *__kefirrt_return_address(int);
