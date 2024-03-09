@@ -42,5 +42,24 @@ int main(void) {
         assert(test_atomic_exchange64(&lng, (long) ~x) == (long) x);
         assert(lng == (long) ~x);
     }
+
+    for (long x = -4096; x < 4096; x++) {
+        _Atomic char chr = x;
+        _Atomic short shrt = x;
+        _Atomic int integer = x;
+        _Atomic long lng = x;
+
+        assert(test2_atomic_exchange8(&chr, (char) ~x) == (char) x);
+        assert(chr == (char) ~x);
+
+        assert(test2_atomic_exchange16(&shrt, (short) ~x) == (short) x);
+        assert(shrt == (short) ~x);
+
+        assert(test2_atomic_exchange32(&integer, (int) ~x) == (int) x);
+        assert(integer == (int) ~x);
+
+        assert(test2_atomic_exchange64(&lng, (long) ~x) == (long) x);
+        assert(lng == (long) ~x);
+    }
     return EXIT_SUCCESS;
 }

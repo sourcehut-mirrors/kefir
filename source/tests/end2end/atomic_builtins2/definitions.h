@@ -28,4 +28,11 @@ long test_atomic_load64(_Atomic long *);
 long double test_atomic_load128(_Atomic long double *);
 _Complex long double test_atomic_load256(_Atomic _Complex long double *);
 
+char test2_atomic_load8(_Atomic char *);
+short test2_atomic_load16(_Atomic short *);
+int test2_atomic_load32(_Atomic int *);
+long test2_atomic_load64(_Atomic long *);
+long double test2_atomic_load128(_Atomic long double *);
+_Complex long double test2_atomic_load256(_Atomic _Complex long double *);
+
 #endif

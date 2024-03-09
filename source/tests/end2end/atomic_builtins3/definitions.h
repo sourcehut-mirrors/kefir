@@ -26,4 +26,9 @@ short test_atomic_exchange16(_Atomic short *, short);
 int test_atomic_exchange32(_Atomic int *, int);
 long test_atomic_exchange64(_Atomic long *, long);
 
+char test2_atomic_exchange8(_Atomic char *, char);
+short test2_atomic_exchange16(_Atomic short *, short);
+int test2_atomic_exchange32(_Atomic int *, int);
+long test2_atomic_exchange64(_Atomic long *, long);
+
 #endif

@@ -35,3 +35,19 @@ _Bool test_atomic_compare_exchange32(_Atomic int *ptr, int *expected, int desire
 _Bool test_atomic_compare_exchange64(_Atomic long *ptr, long *expected, long desired) {
     return __atomic_compare_exchange(ptr, expected, &desired, 0, __ATOMIC_SEQ_CST, __ATOMIC_SEQ_CST);
 }
+
+_Bool test2_atomic_compare_exchange8(_Atomic char *ptr, char *expected, char desired) {
+    return __atomic_compare_exchange_n(ptr, expected, desired, 0, __ATOMIC_SEQ_CST, __ATOMIC_SEQ_CST);
+}
+
+_Bool test2_atomic_compare_exchange16(_Atomic short *ptr, short *expected, short desired) {
+    return __atomic_compare_exchange_n(ptr, expected, desired, 0, __ATOMIC_SEQ_CST, __ATOMIC_SEQ_CST);
+}
+
+_Bool test2_atomic_compare_exchange32(_Atomic int *ptr, int *expected, int desired) {
+    return __atomic_compare_exchange_n(ptr, expected, desired, 0, __ATOMIC_SEQ_CST, __ATOMIC_SEQ_CST);
+}
+
+_Bool test2_atomic_compare_exchange64(_Atomic long *ptr, long *expected, long desired) {
+    return __atomic_compare_exchange_n(ptr, expected, desired, 0, __ATOMIC_SEQ_CST, __ATOMIC_SEQ_CST);
+}

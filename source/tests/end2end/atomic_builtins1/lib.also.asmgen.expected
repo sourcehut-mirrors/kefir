@@ -3,10 +3,16 @@
 
 .global test_atomic_store128
 .global test_atomic_store256
+.global test2_atomic_store128
+.global test2_atomic_store256
+.global test2_atomic_store16
+.global test2_atomic_store32
+.global test2_atomic_store64
 .global test_atomic_store8
 .global test_atomic_store16
 .global test_atomic_store32
 .global test_atomic_store64
+.global test2_atomic_store8
 .extern __atomic_store
 .extern __kefir_opt_float32_neg
 .extern __kefir_opt_float64_neg
@@ -58,6 +64,132 @@ _kefir_func_test_atomic_store256_label1:
     mov %r8, %rcx
     call __atomic_store@PLT
     ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+test2_atomic_store128:
+    push %rbp
+    mov %rsp, %rbp
+    sub $64, %rsp
+_kefir_func_test2_atomic_store128_label0:
+    lea 16(%rbp), %rax
+    mov %rdi, %rcx
+_kefir_func_test2_atomic_store128_label1:
+    lea -48(%rbp), %rdx
+    fldt (%rax)
+    fstpt (%rdx)
+    lea -16(%rbp), %rax
+    lea -48(%rbp), %rdx
+    fldt (%rdx)
+    fstpt -64(%rbp)
+    fldt -64(%rbp)
+    fstpt (%rax)
+    mov $16, %rax
+    lea -16(%rbp), %rdx
+    mov $5, %r8
+    mov %rax, %rdi
+    mov %rcx, %rsi
+    mov %r8, %rcx
+    call __atomic_store@PLT
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+test2_atomic_store256:
+    push %rbp
+    mov %rsp, %rbp
+    sub $144, %rsp
+    stmxcsr -8(%rbp)
+_kefir_func_test2_atomic_store256_label0:
+    lea 16(%rbp), %rax
+    mov %rdi, %rcx
+_kefir_func_test2_atomic_store256_label1:
+    lea -112(%rbp), %rdx
+    fldt (%rax)
+    fstpt (%rdx)
+    fldt 16(%rax)
+    fstpt 16(%rdx)
+    lea -80(%rbp), %rax
+    lea -112(%rbp), %rdx
+    fldt (%rdx)
+    fstpt -144(%rbp)
+    fldt 16(%rdx)
+    fstpt -128(%rbp)
+    fldt -144(%rbp)
+    fstpt (%rax)
+    fldt -128(%rbp)
+    fstpt 16(%rax)
+    mov $32, %rax
+    lea -80(%rbp), %rdx
+    mov $5, %r8
+    mov %rax, %rdi
+    mov %rcx, %rsi
+    mov %r8, %rcx
+    call __atomic_store@PLT
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+test2_atomic_store16:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_test2_atomic_store16_label0:
+    mov %rdi, %rax
+_kefir_func_test2_atomic_store16_label1:
+    lea -2(%rbp), %rcx
+    movsx %si, %rdx
+    movw %dx, (%rcx)
+    mov $2, %rcx
+    lea -2(%rbp), %rdx
+    mov $5, %r8
+    mov %rcx, %rdi
+    mov %rax, %rsi
+    mov %r8, %rcx
+    call __atomic_store@PLT
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+test2_atomic_store32:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_test2_atomic_store32_label0:
+    mov %rdi, %rax
+_kefir_func_test2_atomic_store32_label1:
+    lea -4(%rbp), %rcx
+    movsx %esi, %rdx
+    movl %edx, (%rcx)
+    mov $4, %rcx
+    lea -4(%rbp), %rdx
+    mov $5, %r8
+    mov %rcx, %rdi
+    mov %rax, %rsi
+    mov %r8, %rcx
+    call __atomic_store@PLT
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+test2_atomic_store64:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_test2_atomic_store64_label0:
+    mov %rdi, %rax
+_kefir_func_test2_atomic_store64_label1:
+    lea -8(%rbp), %rcx
+    movq %rsi, (%rcx)
+    mov $8, %rcx
+    lea -8(%rbp), %rdx
+    mov $5, %r8
+    mov %rcx, %rdi
+    mov %rax, %rsi
+    mov %r8, %rcx
+    call __atomic_store@PLT
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -133,6 +265,27 @@ _kefir_func_test_atomic_store64_label1:
     movq %rsi, (%rcx)
     mov $8, %rcx
     lea -8(%rbp), %rdx
+    mov $5, %r8
+    mov %rcx, %rdi
+    mov %rax, %rsi
+    mov %r8, %rcx
+    call __atomic_store@PLT
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+test2_atomic_store8:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_test2_atomic_store8_label0:
+    mov %rdi, %rax
+_kefir_func_test2_atomic_store8_label1:
+    lea -1(%rbp), %rcx
+    movsx %sil, %rdx
+    movb %dl, (%rcx)
+    mov $1, %rcx
+    lea -1(%rbp), %rdx
     mov $5, %r8
     mov %rcx, %rdi
     mov %rax, %rsi

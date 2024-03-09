@@ -50,5 +50,26 @@ int main(void) {
         assert(fabsl(creall(cldbl) - creall(cldbl_res)) < EPSILON_LD);
         assert(fabsl(cimagl(cldbl) - cimagl(cldbl_res)) < EPSILON_LD);
     }
+
+    for (long x = -4096; x < 4096; x++) {
+        _Atomic char chr = x;
+        _Atomic short shrt = x;
+        _Atomic int integer = x;
+        _Atomic long lng = x;
+        _Atomic long double ldbl = x;
+        _Atomic _Complex long double cldbl = x + I;
+
+        assert(test2_atomic_load8(&chr) == (char) x);
+        assert(test2_atomic_load16(&shrt) == (short) x);
+        assert(test2_atomic_load32(&integer) == (int) x);
+        assert(test2_atomic_load64(&lng) == (long) x);
+
+        long double ldbl_res = test2_atomic_load128(&ldbl);
+        assert(fabsl(ldbl - ldbl_res) < EPSILON_LD);
+
+        _Complex long double cldbl_res = test2_atomic_load256(&cldbl);
+        assert(fabsl(creall(cldbl) - creall(cldbl_res)) < EPSILON_LD);
+        assert(fabsl(cimagl(cldbl) - cimagl(cldbl_res)) < EPSILON_LD);
+    }
     return EXIT_SUCCESS;
 }

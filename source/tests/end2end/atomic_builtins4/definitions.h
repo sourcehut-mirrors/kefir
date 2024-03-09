@@ -26,4 +26,9 @@ _Bool test_atomic_compare_exchange16(_Atomic short *, short *, short);
 _Bool test_atomic_compare_exchange32(_Atomic int *, int *, int);
 _Bool test_atomic_compare_exchange64(_Atomic long *, long *, long);
 
+_Bool test2_atomic_compare_exchange8(_Atomic char *, char *, char);
+_Bool test2_atomic_compare_exchange16(_Atomic short *, short *, short);
+_Bool test2_atomic_compare_exchange32(_Atomic int *, int *, int);
+_Bool test2_atomic_compare_exchange64(_Atomic long *, long *, long);
+
 #endif

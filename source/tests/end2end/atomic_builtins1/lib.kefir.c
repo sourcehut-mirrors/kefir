@@ -43,3 +43,27 @@ void test_atomic_store128(_Atomic long double *ptr, long double val) {
 void test_atomic_store256(_Atomic _Complex long double *ptr, _Complex long double val) {
     __atomic_store(ptr, &val, __ATOMIC_SEQ_CST);
 }
+
+void test2_atomic_store8(_Atomic char *ptr, char val) {
+    __atomic_store_n(ptr, val, __ATOMIC_SEQ_CST);
+}
+
+void test2_atomic_store16(_Atomic short *ptr, short val) {
+    __atomic_store_n(ptr, val, __ATOMIC_SEQ_CST);
+}
+
+void test2_atomic_store32(_Atomic int *ptr, int val) {
+    __atomic_store_n(ptr, val, __ATOMIC_SEQ_CST);
+}
+
+void test2_atomic_store64(_Atomic long *ptr, long val) {
+    __atomic_store_n(ptr, val, __ATOMIC_SEQ_CST);
+}
+
+void test2_atomic_store128(_Atomic long double *ptr, long double val) {
+    __atomic_store_n(ptr, val, __ATOMIC_SEQ_CST);
+}
+
+void test2_atomic_store256(_Atomic _Complex long double *ptr, _Complex long double val) {
+    __atomic_store_n(ptr, val, __ATOMIC_SEQ_CST);
+}

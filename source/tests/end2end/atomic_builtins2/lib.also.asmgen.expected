@@ -1,12 +1,18 @@
 .att_syntax
 .section .note.GNU-stack,"",%progbits
 
+.global test2_atomic_load8
+.global test2_atomic_load128
+.global test2_atomic_load256
 .global test_atomic_load8
 .global test_atomic_load16
 .global test_atomic_load32
 .global test_atomic_load64
 .global test_atomic_load128
 .global test_atomic_load256
+.global test2_atomic_load16
+.global test2_atomic_load32
+.global test2_atomic_load64
 .extern __atomic_load
 .extern __kefir_opt_float32_neg
 .extern __kefir_opt_float64_neg
@@ -14,6 +20,77 @@
 .extern __kefirrt_opt_float64_to_uint
 
 .section .text
+test2_atomic_load8:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_test2_atomic_load8_label0:
+    mov %rdi, %rax
+_kefir_func_test2_atomic_load8_label1:
+    lea -1(%rbp), %rcx
+    movb %dl, (%rcx)
+    mov $1, %rcx
+    lea -1(%rbp), %rdx
+    mov $5, %r8
+    mov %rcx, %rdi
+    mov %rax, %rsi
+    mov %r8, %rcx
+    call __atomic_load@PLT
+    lea -1(%rbp), %rax
+    movsxb (%rax), %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+test2_atomic_load128:
+    push %rbp
+    mov %rsp, %rbp
+    sub $48, %rsp
+_kefir_func_test2_atomic_load128_label0:
+    mov %rdi, %rax
+_kefir_func_test2_atomic_load128_label1:
+    mov $16, %rcx
+    lea -16(%rbp), %rdx
+    mov $5, %r8
+    mov %rcx, %rdi
+    mov %rax, %rsi
+    mov %r8, %rcx
+    call __atomic_load@PLT
+    lea -16(%rbp), %rax
+    fldt (%rax)
+    fstpt -48(%rbp)
+    fldt -48(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+test2_atomic_load256:
+    push %rbp
+    mov %rsp, %rbp
+    sub $144, %rsp
+    stmxcsr -8(%rbp)
+_kefir_func_test2_atomic_load256_label0:
+    mov %rdi, %rax
+_kefir_func_test2_atomic_load256_label1:
+    mov $32, %rcx
+    lea -112(%rbp), %rdx
+    mov $5, %r8
+    mov %rcx, %rdi
+    mov %rax, %rsi
+    mov %r8, %rcx
+    call __atomic_load@PLT
+    lea -112(%rbp), %rax
+    fldt (%rax)
+    fstpt -144(%rbp)
+    fldt 16(%rax)
+    fstpt -128(%rbp)
+    fldt -128(%rbp)
+    fldt -144(%rbp)
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
 test_atomic_load8:
     push %rbp
     mov %rsp, %rbp
@@ -146,6 +223,71 @@ _kefir_func_test_atomic_load256_label1:
     fldt -128(%rbp)
     fldt -144(%rbp)
     ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+test2_atomic_load16:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_test2_atomic_load16_label0:
+    mov %rdi, %rax
+_kefir_func_test2_atomic_load16_label1:
+    lea -2(%rbp), %rcx
+    movw %dx, (%rcx)
+    mov $2, %rcx
+    lea -2(%rbp), %rdx
+    mov $5, %r8
+    mov %rcx, %rdi
+    mov %rax, %rsi
+    mov %r8, %rcx
+    call __atomic_load@PLT
+    lea -2(%rbp), %rax
+    movsxw (%rax), %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+test2_atomic_load32:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_test2_atomic_load32_label0:
+    mov %rdi, %rax
+_kefir_func_test2_atomic_load32_label1:
+    lea -4(%rbp), %rcx
+    movl %edx, (%rcx)
+    mov $4, %rcx
+    lea -4(%rbp), %rdx
+    mov $5, %r8
+    mov %rcx, %rdi
+    mov %rax, %rsi
+    mov %r8, %rcx
+    call __atomic_load@PLT
+    lea -4(%rbp), %rax
+    movsxl (%rax), %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+test2_atomic_load64:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_test2_atomic_load64_label0:
+    mov %rdi, %rax
+_kefir_func_test2_atomic_load64_label1:
+    lea -8(%rbp), %rcx
+    movq %rdx, (%rcx)
+    mov $8, %rcx
+    lea -8(%rbp), %rdx
+    mov $5, %r8
+    mov %rcx, %rdi
+    mov %rax, %rsi
+    mov %r8, %rcx
+    call __atomic_load@PLT
+    movq -8(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret

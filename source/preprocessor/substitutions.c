@@ -150,12 +150,12 @@ static kefir_result_t scan_function_macro_arguments(struct kefir_mem *mem,
         } else if (token->klass == KEFIR_TOKEN_PUNCTUATOR && token->punctuator == KEFIR_PUNCTUATOR_COMMA &&
                    nested_parens == 0) {
             if (remaining_args == 0) {
-                REQUIRE(vararg, KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, NULL, "Unexpected comma"));
+                REQUIRE(vararg, KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &token->source_location, "Unexpected comma"));
                 REQUIRE_OK(function_macro_argument_buffer_append(mem, seq, args));
             } else {
                 remaining_args--;
                 REQUIRE(remaining_args > 0 || vararg,
-                        KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, NULL, "Unexpected comma"));
+                        KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &token->source_location, "Unexpected comma"));
                 if (kefir_list_length(args) == 0) {
                     REQUIRE_OK(function_macro_arguments_push(mem, args));
                 }

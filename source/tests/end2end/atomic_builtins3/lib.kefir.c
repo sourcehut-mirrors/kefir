@@ -43,3 +43,19 @@ long test_atomic_exchange64(_Atomic long *ptr, long value) {
     __atomic_exchange(ptr, &value, &prev, __ATOMIC_SEQ_CST);
     return prev;
 }
+
+char test2_atomic_exchange8(_Atomic char *ptr, char value) {
+    return __atomic_exchange_n(ptr, value, __ATOMIC_SEQ_CST);
+}
+
+short test2_atomic_exchange16(_Atomic short *ptr, short value) {
+    return __atomic_exchange_n(ptr, value, __ATOMIC_SEQ_CST);
+}
+
+int test2_atomic_exchange32(_Atomic int *ptr, int value) {
+    return __atomic_exchange_n(ptr, value, __ATOMIC_SEQ_CST);
+}
+
+long test2_atomic_exchange64(_Atomic long *ptr, long value) {
+    return __atomic_exchange_n(ptr, value, __ATOMIC_SEQ_CST);
+}

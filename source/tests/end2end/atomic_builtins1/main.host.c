@@ -57,5 +57,33 @@ int main(void) {
         assert(fabsl(creall(cldbl) - (long double) x) < EPSILON_LD);
         assert(fabsl(cimagl(cldbl) - (long double) 1) < EPSILON_LD);
     }
+
+    for (long x = -4096; x < 4096; x++) {
+        _Atomic char chr;
+        _Atomic short shrt;
+        _Atomic int integer;
+        _Atomic long lng;
+        _Atomic long double ldbl;
+        _Atomic _Complex long double cldbl;
+
+        test2_atomic_store8(&chr, (char) x);
+        assert(chr == (char) x);
+
+        test2_atomic_store16(&shrt, (short) x);
+        assert(shrt == (short) x);
+
+        test2_atomic_store32(&integer, (int) x);
+        assert(integer == (int) x);
+
+        test2_atomic_store64(&lng, (long) x);
+        assert(lng == (long) x);
+
+        test2_atomic_store128(&ldbl, (long double) x);
+        assert(fabsl(ldbl - (long double) x) < EPSILON_LD);
+
+        test2_atomic_store256(&cldbl, (_Complex long double) x + I);
+        assert(fabsl(creall(cldbl) - (long double) x) < EPSILON_LD);
+        assert(fabsl(cimagl(cldbl) - (long double) 1) < EPSILON_LD);
+    }
     return EXIT_SUCCESS;
 }

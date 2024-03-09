@@ -55,3 +55,27 @@ _Complex long double test_atomic_load256(_Atomic _Complex long double *ptr) {
     __atomic_load(ptr, &value, __ATOMIC_SEQ_CST);
     return value;
 }
+
+char test2_atomic_load8(_Atomic char *ptr) {
+    return __atomic_load_n(ptr, __ATOMIC_SEQ_CST);
+}
+
+short test2_atomic_load16(_Atomic short *ptr) {
+    return __atomic_load_n(ptr, __ATOMIC_SEQ_CST);
+}
+
+int test2_atomic_load32(_Atomic int *ptr) {
+    return __atomic_load_n(ptr, __ATOMIC_SEQ_CST);
+}
+
+long test2_atomic_load64(_Atomic long *ptr) {
+    return __atomic_load_n(ptr, __ATOMIC_SEQ_CST);
+}
+
+long double test2_atomic_load128(_Atomic long double *ptr) {
+    return __atomic_load_n(ptr, __ATOMIC_SEQ_CST);
+}
+
+_Complex long double test2_atomic_load256(_Atomic _Complex long double *ptr) {
+    return __atomic_load_n(ptr, __ATOMIC_SEQ_CST);
+}

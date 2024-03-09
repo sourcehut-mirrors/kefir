@@ -28,4 +28,11 @@ void test_atomic_store64(_Atomic long *, long);
 void test_atomic_store128(_Atomic long double *, long double);
 void test_atomic_store256(_Atomic _Complex long double *, _Complex long double);
 
+void test2_atomic_store8(_Atomic char *, char);
+void test2_atomic_store16(_Atomic short *, short);
+void test2_atomic_store32(_Atomic int *, int);
+void test2_atomic_store64(_Atomic long *, long);
+void test2_atomic_store128(_Atomic long double *, long double);
+void test2_atomic_store256(_Atomic _Complex long double *, _Complex long double);
+
 #endif
