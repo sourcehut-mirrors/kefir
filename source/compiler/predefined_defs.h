@@ -92,6 +92,9 @@
 #define __SIZEOF_WINT_T__ __SIZEOF_INT__
 #endif
 
+// Builtins
+#define __has_include_next(...) 0
+
 // Atomics
 #define __ATOMIC_RELAXED 0
 #define __ATOMIC_CONSUME 1
@@ -224,8 +227,78 @@
 #define __GCC_ATOMIC_LLONG_LOCK_FREE __KEFIR_ATOMIC_ALWAYS_LOCK_FREE
 #define __GCC_ATOMIC_POINTER_LOCK_FREE __KEFIR_ATOMIC_ALWAYS_LOCK_FREE
 
+#define __CLANG_ATOMIC_BOOL_LOCK_FREE __KEFIR_ATOMIC_ALWAYS_LOCK_FREE
+#define __CLANG_ATOMIC_CHAR_LOCK_FREE __KEFIR_ATOMIC_ALWAYS_LOCK_FREE
+#define __CLANG_ATOMIC_CHAR8_T_LOCK_FREE __KEFIR_ATOMIC_ALWAYS_LOCK_FREE
+#define __CLANG_ATOMIC_CHAR16_T_LOCK_FREE __KEFIR_ATOMIC_ALWAYS_LOCK_FREE
+#define __CLANG_ATOMIC_CHAR32_T_LOCK_FREE __KEFIR_ATOMIC_ALWAYS_LOCK_FREE
+#define __CLANG_ATOMIC_WCHAR_T_LOCK_FREE __KEFIR_ATOMIC_ALWAYS_LOCK_FREE
+#define __CLANG_ATOMIC_SHORT_LOCK_FREE __KEFIR_ATOMIC_ALWAYS_LOCK_FREE
+#define __CLANG_ATOMIC_INT_LOCK_FREE __KEFIR_ATOMIC_ALWAYS_LOCK_FREE
+#define __CLANG_ATOMIC_LONG_LOCK_FREE __KEFIR_ATOMIC_ALWAYS_LOCK_FREE
+#define __CLANG_ATOMIC_LLONG_LOCK_FREE __KEFIR_ATOMIC_ALWAYS_LOCK_FREE
+#define __CLANG_ATOMIC_POINTER_LOCK_FREE __KEFIR_ATOMIC_ALWAYS_LOCK_FREE
+
 #define __GCC_ATOMIC_TEST_AND_SET_TRUEVAL 1
 #endif
+
+// Clang atomic builtins
+#define __c11_atomic_init(_ptr, _desired) __atomic_store_n((_ptr), (_desired), __ATOMIC_SEQ_CST)
+
+#define __KEFIR_C11_ATOMIC_MEMORDER1(...)                                                         \
+    ({                                                                                            \
+        int __memorder[] = {0, __VA_ARGS__};                                                      \
+        __builtin_choose_expr(sizeof(__memorder) == sizeof(int), __ATOMIC_SEQ_CST, ({             \
+                                  _Static_assert(sizeof(__memorder) == sizeof(int) * 2,           \
+                                                 "Expected one optional memory order parameter"); \
+                                  __memorder[1];                                                  \
+                              }));                                                                \
+    })
+#define __KEFIR_C11_ATOMIC_MEMORDER2(...)                                                          \
+    ({                                                                                             \
+        int __memorder[] = {0, __VA_ARGS__};                                                       \
+        __builtin_choose_expr(sizeof(__memorder) == sizeof(int), __ATOMIC_SEQ_CST, ({              \
+                                  _Static_assert(sizeof(__memorder) == sizeof(int) * 3,            \
+                                                 "Expected two optional memory order parameters"); \
+                                  __memorder[1];                                                   \
+                              }));                                                                 \
+    })
+#define __KEFIR_C11_ATOMIC_MEMORDER3(...)                                                          \
+    ({                                                                                             \
+        int __memorder[] = {0, __VA_ARGS__};                                                       \
+        __builtin_choose_expr(sizeof(__memorder) == sizeof(int), __ATOMIC_SEQ_CST, ({              \
+                                  _Static_assert(sizeof(__memorder) == sizeof(int) * 3,            \
+                                                 "Expected two optional memory order parameters"); \
+                                  __memorder[2];                                                   \
+                              }));                                                                 \
+    })
+
+#define __c11_atomic_load(_ptr, ...) __atomic_load_n((_ptr), __KEFIR_C11_ATOMIC_MEMORDER1(__VA_ARGS__))
+#define __c11_atomic_store(_ptr, _value, ...) \
+    __atomic_store_n((_ptr), (_value), __KEFIR_C11_ATOMIC_MEMORDER1(__VA_ARGS__))
+#define __c11_atomic_exchange(_ptr, _value, ...) \
+    __atomic_exchange_n((_ptr), (_value), __KEFIR_C11_ATOMIC_MEMORDER1(__VA_ARGS__))
+#define __c11_atomic_compare_exchange_strong(_ptr, _expected, _desired, ...)                                   \
+    __atomic_compare_exchange_n((_ptr), (_expected), (_desired), 0, __KEFIR_C11_ATOMIC_MEMORDER2(__VA_ARGS__), \
+                                __KEFIR_C11_ATOMIC_MEMORDER3(__VA_ARGS__))
+#define __c11_atomic_compare_exchange_weak(_ptr, _expected, _desired, ...)                                     \
+    __atomic_compare_exchange_n((_ptr), (_expected), (_desired), 0, __KEFIR_C11_ATOMIC_MEMORDER2(__VA_ARGS__), \
+                                __KEFIR_C11_ATOMIC_MEMORDER3(__VA_ARGS__))
+
+#define __c11_atomic_fetch_add(_ptr, _value, ...) \
+    __atomic_fetch_add((_ptr), (_value), __KEFIR_C11_ATOMIC_MEMORDER1(__VA_ARGS__))
+#define __c11_atomic_fetch_sub(_ptr, _value, ...) \
+    __atomic_fetch_sub((_ptr), (_value), __KEFIR_C11_ATOMIC_MEMORDER1(__VA_ARGS__))
+#define __c11_atomic_fetch_or(_ptr, _value, ...) \
+    __atomic_fetch_or((_ptr), (_value), __KEFIR_C11_ATOMIC_MEMORDER1(__VA_ARGS__))
+#define __c11_atomic_fetch_xor(_ptr, _value, ...) \
+    __atomic_fetch_xor((_ptr), (_value), __KEFIR_C11_ATOMIC_MEMORDER1(__VA_ARGS__))
+#define __c11_atomic_fetch_and(_ptr, _value, ...) \
+    __atomic_fetch_and((_ptr), (_value), __KEFIR_C11_ATOMIC_MEMORDER1(__VA_ARGS__))
+
+#define __c11_atomic_is_lock_free(_sz) __atomic_is_lock_free((_sz), (const volatile void *) 0)
+#define __c11_atomic_thread_fence(_order) __atomic_thread_fence((_order))
+#define __c11_atomic_signal_fence(_order) __atomic_signal_fence((_order))
 
 // Sync builtins
 #define __sync_fetch_and_add(_ptr, _value, ...) __atomic_fetch_add((_ptr), (_value), __ATOMIC_SEQ_CST)

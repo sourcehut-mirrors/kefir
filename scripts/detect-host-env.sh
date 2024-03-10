@@ -156,7 +156,7 @@ detect_include_path () {
             ;;
 
         "openbsd-system")
-            include_path=`echo | $cc $cflags -E -Wp,-v - 2>&1 >/dev/null | grep -v clang | sed -nr 's/^ (.*)$/\1/p' | paste -sd ';' -`
+            include_path=`echo | $cc $cflags -E -Wp,-v - 2>&1 >/dev/null | sed -nr 's/^ (.*)$/\1/p' | paste -sd ';' -`
             ;;
         
         *)
