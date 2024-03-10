@@ -1,0 +1,1 @@
+KEFIR_CFLAGS="${KEFIR_CFLAGS/host-none/host} -O1 -D__GNUC__=4 -D__GNUC_MINOR__=20 -D__GNUC_STDC_INLINE__=1"
