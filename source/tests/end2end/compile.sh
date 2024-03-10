@@ -28,6 +28,8 @@ fi
 
 KEFIRCC="$KEFIR_BIN_DIR/kefir"
 export LD_LIBRARY_PATH="$KEFIR_BIN_DIR/libs"
+export KEFIR_RTINC="$(dirname $SCRIPT)/../../../headers/kefir/runtime"
+export KEFIR_RTLIB="$KEFIR_BIN_DIR/libs/libkefirrt.a"
 
 KEFIR_CFLAGS=" --target host-none -fPIC -pie -I \"$(dirname $SRC_FILE)\" -I \"$(dirname $SCRIPT)/../../../headers/kefir/runtime/common\""
 
