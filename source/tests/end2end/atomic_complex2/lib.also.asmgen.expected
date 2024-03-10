@@ -136,6 +136,8 @@ _kefir_func_ld_store_label0:
     lea 16(%rbp), %rax
 _kefir_func_ld_store_label1:
     lea -80(%rbp), %rcx
+    movq $0, 8(%rcx)
+    movq $0, 24(%rcx)
     fldt (%rax)
     fstpt (%rcx)
     fldt 16(%rax)
@@ -276,6 +278,8 @@ _kefir_func_str1_set_c_label0:
     lea 16(%rbp), %rax
 _kefir_func_str1_set_c_label1:
     lea -80(%rbp), %rcx
+    movq $0, 8(%rcx)
+    movq $0, 24(%rcx)
     fldt (%rax)
     fstpt (%rcx)
     fldt 16(%rax)
@@ -345,6 +349,8 @@ _kefir_func_ld_store_index_label0:
     lea 16(%rbp), %rax
 _kefir_func_ld_store_index_label1:
     lea -80(%rbp), %rcx
+    movq $0, 8(%rcx)
+    movq $0, 24(%rcx)
     fldt (%rax)
     fstpt (%rcx)
     fldt 16(%rax)

@@ -35,6 +35,7 @@ _kefir_func_set_ld1_label0:
     lea 16(%rbp), %rax
 _kefir_func_set_ld1_label1:
     lea -32(%rbp), %rcx
+    movq $0, 8(%rcx)
     fldt (%rax)
     fstpt (%rcx)
     lea -32(%rbp), %rax

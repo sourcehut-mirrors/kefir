@@ -19,9 +19,11 @@ _kefir_func_sum_progression_label0:
     lea 32(%rbp), %rcx
 _kefir_func_sum_progression_label1:
     lea -80(%rbp), %rdx
+    movq $0, 8(%rdx)
     fldt (%rcx)
     fstpt (%rdx)
     lea -96(%rbp), %rcx
+    movq $0, 8(%rcx)
     fldt (%rax)
     fstpt (%rcx)
     lea -96(%rbp), %rax

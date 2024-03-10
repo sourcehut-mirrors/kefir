@@ -27,6 +27,7 @@ _kefir_func_inc_label0:
     lea 16(%rbp), %rax
 _kefir_func_inc_label1:
     lea -64(%rbp), %rcx
+    movq $0, 8(%rcx)
     fldt (%rax)
     fstpt (%rcx)
     lea -64(%rbp), %rax
@@ -59,6 +60,7 @@ _kefir_func_neg_label0:
     lea 16(%rbp), %rax
 _kefir_func_neg_label1:
     lea -64(%rbp), %rcx
+    movq $0, 8(%rcx)
     fldt (%rax)
     fstpt (%rcx)
     lea -64(%rbp), %rax
@@ -144,6 +146,7 @@ _kefir_func_ldcf32_label0:
     lea 16(%rbp), %rax
 _kefir_func_ldcf32_label1:
     lea -48(%rbp), %rcx
+    movq $0, 8(%rcx)
     fldt (%rax)
     fstpt (%rcx)
     lea -48(%rbp), %rax
@@ -168,6 +171,7 @@ _kefir_func_ldcf64_label0:
     lea 16(%rbp), %rax
 _kefir_func_ldcf64_label1:
     lea -48(%rbp), %rcx
+    movq $0, 8(%rcx)
     fldt (%rax)
     fstpt (%rcx)
     lea -48(%rbp), %rax
@@ -191,6 +195,7 @@ _kefir_func_ldcint_label0:
     lea 16(%rbp), %rax
 _kefir_func_ldcint_label1:
     lea -48(%rbp), %rcx
+    movq $0, 8(%rcx)
     fldt (%rax)
     fstpt (%rcx)
     lea -48(%rbp), %rax
@@ -214,6 +219,7 @@ _kefir_func_ldcuint_label0:
     lea 16(%rbp), %rax
 _kefir_func_ldcuint_label1:
     lea -48(%rbp), %rcx
+    movq $0, 8(%rcx)
     fldt (%rax)
     fstpt (%rcx)
     lea -48(%rbp), %rax

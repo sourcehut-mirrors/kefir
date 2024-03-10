@@ -118,6 +118,7 @@ _kefir_func_dnotld_label0:
     lea 16(%rbp), %rax
 _kefir_func_dnotld_label1:
     lea -48(%rbp), %rcx
+    movq $0, 8(%rcx)
     fldt (%rax)
     fstpt (%rcx)
     lea -48(%rbp), %rax

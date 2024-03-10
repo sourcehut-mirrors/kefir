@@ -1,0 +1,193 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global ld1
+.global cld1
+.global add_ld1
+.global add_cld1
+.extern __atomic_load
+.extern __atomic_compare_exchange
+.extern __kefir_opt_float32_neg
+.extern __kefir_opt_float64_neg
+.extern __kefirrt_opt_float32_to_uint
+.extern __kefirrt_opt_float64_to_uint
+
+.section .text
+add_ld1:
+    push %rbp
+    mov %rsp, %rbp
+    sub $128, %rsp
+    fstcw -8(%rbp)
+_kefir_func_add_ld1_label0:
+    lea 16(%rbp), %rax
+_kefir_func_add_ld1_label1:
+    lea -96(%rbp), %rcx
+    movq $0, 8(%rcx)
+    fldt (%rax)
+    fstpt (%rcx)
+    lea -80(%rbp), %rax
+    mov $16, %rcx
+    movq ld1@GOTPCREL(%rip), %rdx
+    lea -48(%rbp), %r8
+    mov $2, %r9
+    movq %rax, -128(%rbp)
+    mov %rcx, %rdi
+    mov %rdx, %rsi
+    mov %r8, %rdx
+    mov %r9, %rcx
+    call __atomic_load@PLT
+    movq -128(%rbp), %rax
+    lea -48(%rbp), %rcx
+    fldt (%rcx)
+    fstpt -112(%rbp)
+    movq $0, 8(%rax)
+    fldt -112(%rbp)
+    fstpt (%rax)
+_kefir_func_add_ld1_label2:
+    lea -32(%rbp), %rax
+    lea -80(%rbp), %rcx
+    fldt (%rcx)
+    fstpt -128(%rbp)
+    lea -96(%rbp), %rcx
+    fldt (%rcx)
+    fstpt -112(%rbp)
+    fldt -112(%rbp)
+    fldt -128(%rbp)
+    faddp
+    fstpt -128(%rbp)
+    movq $0, 8(%rax)
+    fldt -128(%rbp)
+    fstpt (%rax)
+    mov $16, %rax
+    movq ld1@GOTPCREL(%rip), %rcx
+    lea -80(%rbp), %rdx
+    lea -32(%rbp), %r8
+    mov $5, %r9
+    mov $2, %r10
+    mov %rax, %rdi
+    mov %rcx, %rsi
+    mov %r8, %rcx
+    mov %r9, %r8
+    mov %r10, %r9
+    call __atomic_compare_exchange@PLT
+    mov %rax, %rcx
+    and $1, %rcx
+    test %rcx, %rcx
+    setne %al
+    movzx %al, %rax
+    test %rax, %rax
+    jz _kefir_func_add_ld1_label3
+    jmp _kefir_func_add_ld1_label4
+_kefir_func_add_ld1_label3:
+    jmp _kefir_func_add_ld1_label2
+_kefir_func_add_ld1_label4:
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+add_cld1:
+    push %rbp
+    mov %rsp, %rbp
+    sub $480, %rsp
+    fstcw -8(%rbp)
+    stmxcsr -16(%rbp)
+_kefir_func_add_cld1_label0:
+    lea 16(%rbp), %rax
+_kefir_func_add_cld1_label1:
+    lea -400(%rbp), %rcx
+    movq $0, 8(%rcx)
+    movq $0, 24(%rcx)
+    fldt (%rax)
+    fstpt (%rcx)
+    fldt 16(%rax)
+    fstpt 16(%rcx)
+    lea -368(%rbp), %rax
+    mov $32, %rcx
+    movq cld1@GOTPCREL(%rip), %rdx
+    lea -336(%rbp), %r8
+    mov $2, %r9
+    movq %rax, -480(%rbp)
+    mov %rcx, %rdi
+    mov %rdx, %rsi
+    mov %r8, %rdx
+    mov %r9, %rcx
+    call __atomic_load@PLT
+    movq -480(%rbp), %rax
+    lea -336(%rbp), %rcx
+    fldt (%rcx)
+    fstpt -464(%rbp)
+    fldt 16(%rcx)
+    fstpt -448(%rbp)
+    movq $0, 8(%rax)
+    movq $0, 24(%rax)
+    fldt -464(%rbp)
+    fstpt (%rax)
+    fldt -448(%rbp)
+    fstpt 16(%rax)
+_kefir_func_add_cld1_label2:
+    lea -144(%rbp), %rax
+    lea -368(%rbp), %rcx
+    fldt (%rcx)
+    fstpt -480(%rbp)
+    fldt 16(%rcx)
+    fstpt -464(%rbp)
+    lea -400(%rbp), %rcx
+    fldt (%rcx)
+    fstpt -432(%rbp)
+    fldt 16(%rcx)
+    fstpt -416(%rbp)
+    fldt -432(%rbp)
+    fldt -480(%rbp)
+    faddp
+    fldt -416(%rbp)
+    fldt -464(%rbp)
+    faddp
+    fstpt -464(%rbp)
+    fstpt -480(%rbp)
+    movq $0, 8(%rax)
+    movq $0, 24(%rax)
+    fldt -480(%rbp)
+    fstpt (%rax)
+    fldt -464(%rbp)
+    fstpt 16(%rax)
+    mov $32, %rax
+    movq cld1@GOTPCREL(%rip), %rcx
+    lea -368(%rbp), %rdx
+    lea -144(%rbp), %r8
+    mov $5, %r9
+    mov $2, %r10
+    mov %rax, %rdi
+    mov %rcx, %rsi
+    mov %r8, %rcx
+    mov %r9, %r8
+    mov %r10, %r9
+    call __atomic_compare_exchange@PLT
+    mov %rax, %rcx
+    and $1, %rcx
+    test %rcx, %rcx
+    setne %al
+    movzx %al, %rax
+    test %rax, %rax
+    jz _kefir_func_add_cld1_label3
+    jmp _kefir_func_add_cld1_label4
+_kefir_func_add_cld1_label3:
+    jmp _kefir_func_add_cld1_label2
+_kefir_func_add_cld1_label4:
+    ldmxcsr -16(%rbp)
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+
+.section .data
+    .align 16
+ld1:
+    .quad 0, 0
+
+    .align 16
+cld1:
+    .quad 0, 0
+    .quad 0, 0
+

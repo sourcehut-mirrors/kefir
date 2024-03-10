@@ -29,6 +29,7 @@ _kefir_func_test_atomic_store128_label0:
     mov %rdi, %rcx
 _kefir_func_test_atomic_store128_label1:
     lea -32(%rbp), %rdx
+    movq $0, 8(%rdx)
     fldt (%rax)
     fstpt (%rdx)
     mov $16, %rax
@@ -52,6 +53,8 @@ _kefir_func_test_atomic_store256_label0:
     mov %rdi, %rcx
 _kefir_func_test_atomic_store256_label1:
     lea -80(%rbp), %rdx
+    movq $0, 8(%rdx)
+    movq $0, 24(%rdx)
     fldt (%rax)
     fstpt (%rdx)
     fldt 16(%rax)
@@ -77,12 +80,14 @@ _kefir_func_test2_atomic_store128_label0:
     mov %rdi, %rcx
 _kefir_func_test2_atomic_store128_label1:
     lea -48(%rbp), %rdx
+    movq $0, 8(%rdx)
     fldt (%rax)
     fstpt (%rdx)
     lea -16(%rbp), %rax
     lea -48(%rbp), %rdx
     fldt (%rdx)
     fstpt -64(%rbp)
+    movq $0, 8(%rax)
     fldt -64(%rbp)
     fstpt (%rax)
     mov $16, %rax
@@ -106,6 +111,8 @@ _kefir_func_test2_atomic_store256_label0:
     mov %rdi, %rcx
 _kefir_func_test2_atomic_store256_label1:
     lea -112(%rbp), %rdx
+    movq $0, 8(%rdx)
+    movq $0, 24(%rdx)
     fldt (%rax)
     fstpt (%rdx)
     fldt 16(%rax)
@@ -116,6 +123,8 @@ _kefir_func_test2_atomic_store256_label1:
     fstpt -144(%rbp)
     fldt 16(%rdx)
     fstpt -128(%rbp)
+    movq $0, 8(%rax)
+    movq $0, 24(%rax)
     fldt -144(%rbp)
     fstpt (%rax)
     fldt -128(%rbp)

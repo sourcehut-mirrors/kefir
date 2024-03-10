@@ -124,6 +124,7 @@ _kefir_func_add_ld_label0:
     lea 16(%rbp), %rax
 _kefir_func_add_ld_label1:
     lea -64(%rbp), %rcx
+    movq $0, 8(%rcx)
     fldt (%rax)
     fstpt (%rcx)
     lea -64(%rbp), %rax
@@ -1696,6 +1697,7 @@ _kefir_func_divide_ld_label0:
     lea 16(%rbp), %rax
 _kefir_func_divide_ld_label1:
     lea -64(%rbp), %rcx
+    movq $0, 8(%rcx)
     fldt (%rax)
     fstpt (%rcx)
     lea -64(%rbp), %rax
@@ -2390,6 +2392,7 @@ _kefir_func_multiply_ld_label0:
     lea 16(%rbp), %rax
 _kefir_func_multiply_ld_label1:
     lea -64(%rbp), %rcx
+    movq $0, 8(%rcx)
     fldt (%rax)
     fstpt (%rcx)
     lea -64(%rbp), %rax
@@ -2544,6 +2547,7 @@ _kefir_func_subtract_ld_label0:
     lea 16(%rbp), %rax
 _kefir_func_subtract_ld_label1:
     lea -64(%rbp), %rcx
+    movq $0, 8(%rcx)
     fldt (%rax)
     fstpt (%rcx)
     lea -64(%rbp), %rax

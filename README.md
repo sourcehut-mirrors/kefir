@@ -117,12 +117,6 @@ extending the compiler, including:
 
 ### Implementation quirks
 Some implementation details that user needs to take into account:
-* Atomic implementation fully relies on software atomic library (`libatomic` for
-  GCC, `libcompiler_rt` for Clang), thus any program that employs atomic
-  operations need to link a `libatomic`-compatible library. Furthermore, if
-  `<stdatomic.h>` header from Clang includes is used (the default on FreeBSD and
-  OpenBSD), `-D__GNUC__=4 -D__GNUC_MINOR__=20` command line arguments shall be
-  added to Kefir invocation.
 * **Attention:** code produced by Kefir shall be linked with a runtime library
   `libkefirrt.a`. The library is linked automatically if environment is
   configured correctly. Kefir can also link built-in versions of runtime,
@@ -130,6 +124,18 @@ Some implementation details that user needs to take into account:
   Kefir might provide own versions of some header files as well -- if
   environment is configured correctly, they are also added to include path
   automatically.
+* Atomic implementation fully relies on software atomic library (`libatomic` for
+  GCC, `libcompiler_rt` for Clang), thus any program that employs atomic
+  operations need to link a `libatomic`-compatible library. Furthermore, if
+  `<stdatomic.h>` header from Clang includes is used (the default on FreeBSD and
+  OpenBSD), `-D__GNUC__=4 -D__GNUC_MINOR__=20` command line arguments shall be
+  added to Kefir invocation.
+* Atomic operations on long double variables (both scalar and complex) might
+  result in undefined behavior due to uninitialized padding contained at the
+  last 48 bits of long double storage unit. Kefir implements padding zeroing
+  upon long double storage to mitigate this issue, however linking object files
+  produced by Kefir and other compilers might provoke the undefined behavior and
+  needs to be done with care.
 * Unicode and wide strings are supported under the assumption that source and
   target character sets are the same. No re-encoding is performed.
 * No `STDC` pragmas are implemented in preprocessor. Kefir does not perform
