@@ -28,8 +28,6 @@ _kefir_func_get_b_label1:
     mov %rax, %rdi
     mov $5, %rsi
     call __atomic_load_1@PLT
-    mov %rax, %rcx
-    mov %rcx, %rax
     ret
 
 get_u8:
@@ -39,8 +37,6 @@ _kefir_func_get_u8_label1:
     mov %rax, %rdi
     mov $5, %rsi
     call __atomic_load_1@PLT
-    mov %rax, %rcx
-    mov %rcx, %rax
     ret
 
 get_f32:
@@ -50,8 +46,7 @@ _kefir_func_get_f32_label1:
     mov %rax, %rdi
     mov $5, %rsi
     call __atomic_load_4@PLT
-    mov %rax, %rcx
-    movq %rcx, %xmm0
+    movq %rax, %xmm0
     ret
 
 get_f64:
@@ -61,8 +56,7 @@ _kefir_func_get_f64_label1:
     mov %rax, %rdi
     mov $5, %rsi
     call __atomic_load_8@PLT
-    mov %rax, %rcx
-    movq %rcx, %xmm0
+    movq %rax, %xmm0
     ret
 
 get_u16:
@@ -72,8 +66,6 @@ _kefir_func_get_u16_label1:
     mov %rax, %rdi
     mov $5, %rsi
     call __atomic_load_2@PLT
-    mov %rax, %rcx
-    mov %rcx, %rax
     ret
 
 get_u32:
@@ -83,8 +75,6 @@ _kefir_func_get_u32_label1:
     mov %rax, %rdi
     mov $5, %rsi
     call __atomic_load_4@PLT
-    mov %rax, %rcx
-    mov %rcx, %rax
     ret
 
 get_u64:
@@ -94,8 +84,6 @@ _kefir_func_get_u64_label1:
     mov %rax, %rdi
     mov $5, %rsi
     call __atomic_load_8@PLT
-    mov %rax, %rcx
-    mov %rcx, %rax
     ret
 
 

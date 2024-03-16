@@ -203,8 +203,7 @@ _kefir_func_ldcint_label1:
     fstpt -64(%rbp)
     fldt -64(%rbp)
     call __kefirrt_opt_long_double_to_int@PLT
-    mov %rax, %rcx
-    movsx %ecx, %rax
+    movsx %eax, %rax
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -227,10 +226,8 @@ _kefir_func_ldcuint_label1:
     fstpt -64(%rbp)
     fldt -64(%rbp)
     call __kefirrt_opt_long_double_to_uint@PLT
-    mov %rax, %rcx
-    movabs $4294967295, %rax
-    and %rax, %rcx
-    mov %rcx, %rax
+    movabs $4294967295, %rcx
+    and %rcx, %rax
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

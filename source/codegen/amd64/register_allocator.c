@@ -218,7 +218,7 @@ static kefir_result_t update_liveness_graph(struct kefir_mem *mem,
         REQUIRE_OK(res);
     }
     if (active_lifetime_begin != KEFIR_ASMCMP_INDEX_NONE &&
-        (active_lifetime_begin == lifetime_index ||
+        (lifetime_index == active_lifetime_begin ||
          (lifetime_index > active_lifetime_begin && lifetime_index < active_lifetime_end))) {
         struct kefir_hashtreeset_iterator iter;
         for (res = kefir_hashtreeset_iter(&allocator->internal.alive_virtual_registers, &iter); res == KEFIR_OK;

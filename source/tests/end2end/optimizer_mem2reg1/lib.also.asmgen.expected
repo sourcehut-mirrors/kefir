@@ -139,11 +139,10 @@ _kefir_func_quad_equation_label4:
     movdqu %xmm4, -32(%rbp)
     movq %xmm3, %xmm0
     call sqrt@PLT
-    movq %xmm0, %xmm3
     movq -64(%rbp), %xmm1
     movq -48(%rbp), %xmm2
     movq -32(%rbp), %xmm4
-    mulsd %xmm3, %xmm4
+    mulsd %xmm0, %xmm4
     addsd %xmm4, %xmm1
     mov $2, %rax
     cvtsi2sd %rax, %xmm0

@@ -21,13 +21,11 @@ _kefir_func_func1_label1:
     mov %rdi, %rax
     mov %rsi, %rcx
     call func2
-    mov %rcx, %rax
     movd %xmm0, [_kefir_func_func1_label3]
     mov %rax, 2
     movd %xmm1, [_kefir_func_func1_label4]
     mov %rdi, %rax
     call func3
-    movq %xmm1, %xmm0
     pop %rbp
     ret
 .section .rodata

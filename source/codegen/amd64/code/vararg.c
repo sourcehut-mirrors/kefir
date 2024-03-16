@@ -226,6 +226,9 @@ static kefir_result_t vararg_visit_integer(const struct kefir_ir_type *type, kef
                                        kefir_asmcmp_context_instr_tail(&param->function->code.context),
                                        &KEFIR_ASMCMP_MAKE_EXTERNAL_LABEL(symbolic_label, 0), NULL));
 
+    REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
+        param->mem, &param->function->code, kefir_asmcmp_context_instr_tail(&param->function->code.context),
+        result_placement_vreg, NULL));
     REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
         param->mem, &param->function->code, kefir_asmcmp_context_instr_tail(&param->function->code.context),
         result_vreg, result_placement_vreg, NULL));
@@ -285,6 +288,9 @@ static kefir_result_t vararg_visit_sse(const struct kefir_ir_type *type, kefir_s
                                        kefir_asmcmp_context_instr_tail(&param->function->code.context),
                                        &KEFIR_ASMCMP_MAKE_EXTERNAL_LABEL(symbolic_label, 0), NULL));
 
+    REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
+        param->mem, &param->function->code, kefir_asmcmp_context_instr_tail(&param->function->code.context),
+        result_placement_vreg, NULL));
     REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
         param->mem, &param->function->code, kefir_asmcmp_context_instr_tail(&param->function->code.context),
         result_vreg, result_placement_vreg, NULL));
@@ -691,6 +697,9 @@ static kefir_result_t vararg_visit_builtin(const struct kefir_ir_type *type, kef
                                                kefir_asmcmp_context_instr_tail(&param->function->code.context),
                                                &KEFIR_ASMCMP_MAKE_EXTERNAL_LABEL(symbolic_label, 0), NULL));
 
+            REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
+                param->mem, &param->function->code, kefir_asmcmp_context_instr_tail(&param->function->code.context),
+                result_placement_vreg, NULL));
             REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
                 param->mem, &param->function->code, kefir_asmcmp_context_instr_tail(&param->function->code.context),
                 result_vreg, result_placement_vreg, NULL));

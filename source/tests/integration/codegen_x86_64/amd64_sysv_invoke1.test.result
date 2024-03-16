@@ -40,9 +40,7 @@ _kefir_func_func1_label1:
     mov [%rsp + 16], %r12
     mov [%rsp + 24], %r13
     call func2
-    mov %rcx, %rax
     add %rsp, 32
-    mov %rax, %rcx
     lea %rsp, [%rbp - 24]
     pop %r13
     pop %r12

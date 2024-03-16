@@ -62,9 +62,8 @@ _kefir_func_add_f32_label2:
     leaq -80(%rbp), %rax
     mov %rax, %rcx
     call __atomic_compare_exchange@PLT
-    mov %rax, %rcx
     movq -72(%rbp), %r10
-    test %rcx, %rcx
+    test %rax, %rax
     jz _kefir_func_add_f32_label5
     movq -80(%rbp), %rax
     movq %rax, -88(%rbp)
@@ -164,9 +163,8 @@ _kefir_func_add_f64_label2:
     leaq -104(%rbp), %rax
     mov %rax, %rcx
     call __atomic_compare_exchange@PLT
-    mov %rax, %rcx
     movq -112(%rbp), %r10
-    test %rcx, %rcx
+    test %rax, %rax
     jz _kefir_func_add_f64_label5
     movq -104(%rbp), %rax
     movq %rax, -128(%rbp)
@@ -266,9 +264,8 @@ _kefir_func_divide_f32_label2:
     leaq -80(%rbp), %rax
     mov %rax, %rcx
     call __atomic_compare_exchange@PLT
-    mov %rax, %rcx
     movq -72(%rbp), %r10
-    test %rcx, %rcx
+    test %rax, %rax
     jz _kefir_func_divide_f32_label5
     movq -80(%rbp), %rax
     movq %rax, -88(%rbp)
@@ -369,9 +366,8 @@ _kefir_func_divide_f64_label2:
     leaq -104(%rbp), %rax
     mov %rax, %rcx
     call __atomic_compare_exchange@PLT
-    mov %rax, %rcx
     movq -112(%rbp), %r10
-    test %rcx, %rcx
+    test %rax, %rax
     jz _kefir_func_divide_f64_label5
     movq -104(%rbp), %rax
     movq %rax, -128(%rbp)
@@ -471,9 +467,8 @@ _kefir_func_multiply_f32_label2:
     leaq -80(%rbp), %rax
     mov %rax, %rcx
     call __atomic_compare_exchange@PLT
-    mov %rax, %rcx
     movq -72(%rbp), %r10
-    test %rcx, %rcx
+    test %rax, %rax
     jz _kefir_func_multiply_f32_label5
     movq -80(%rbp), %rax
     movq %rax, -88(%rbp)
@@ -574,9 +569,8 @@ _kefir_func_multiply_f64_label2:
     leaq -104(%rbp), %rax
     mov %rax, %rcx
     call __atomic_compare_exchange@PLT
-    mov %rax, %rcx
     movq -112(%rbp), %r10
-    test %rcx, %rcx
+    test %rax, %rax
     jz _kefir_func_multiply_f64_label5
     movq -104(%rbp), %rax
     movq %rax, -128(%rbp)
@@ -678,9 +672,8 @@ _kefir_func_subtract_f32_label2:
     leaq -80(%rbp), %rax
     mov %rax, %rcx
     call __atomic_compare_exchange@PLT
-    mov %rax, %rcx
     movq -72(%rbp), %r10
-    test %rcx, %rcx
+    test %rax, %rax
     jz _kefir_func_subtract_f32_label5
     movq -80(%rbp), %rax
     movq %rax, -88(%rbp)
@@ -780,9 +773,8 @@ _kefir_func_subtract_f64_label2:
     leaq -104(%rbp), %rax
     mov %rax, %rcx
     call __atomic_compare_exchange@PLT
-    mov %rax, %rcx
     movq -112(%rbp), %r10
-    test %rcx, %rcx
+    test %rax, %rax
     jz _kefir_func_subtract_f64_label5
     movq -104(%rbp), %rax
     movq %rax, -128(%rbp)

@@ -155,6 +155,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_load)(struct kefir_me
     REQUIRE_OK(
         kefir_asmcmp_amd64_register_allocation_requirement(mem, &function->code, result_placement_vreg, result_phreg));
 
+    REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
+        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), result_placement_vreg, NULL));
     REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &function->code,
                                                          kefir_asmcmp_context_instr_tail(&function->code.context),
                                                          result_vreg, result_placement_vreg, NULL));
@@ -742,6 +744,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_compare_exchange)(
                                        &KEFIR_ASMCMP_MAKE_EXTERNAL_LABEL(atomic_cmpxchg_fn_label, 0), &call_idx));
     REQUIRE_OK(kefir_asmcmp_register_stash_set_liveness_index(&function->code.context, stash_idx, call_idx));
 
+    REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
+        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), result_placement_vreg, NULL));
     REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &function->code,
                                                          kefir_asmcmp_context_instr_tail(&function->code.context),
                                                          result_vreg, result_placement_vreg, NULL));
@@ -898,6 +902,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_compare_exchange_long
                                        &KEFIR_ASMCMP_MAKE_EXTERNAL_LABEL(atomic_cmpxchg_fn_label, 0), &call_idx));
     REQUIRE_OK(kefir_asmcmp_register_stash_set_liveness_index(&function->code.context, stash_idx, call_idx));
 
+    REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
+        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), result_placement_vreg, NULL));
     REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &function->code,
                                                          kefir_asmcmp_context_instr_tail(&function->code.context),
                                                          result_vreg, result_placement_vreg, NULL));
@@ -1050,6 +1056,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_compare_exchange_comp
                                        &KEFIR_ASMCMP_MAKE_EXTERNAL_LABEL(atomic_cmpxchg_fn_label, 0), &call_idx));
     REQUIRE_OK(kefir_asmcmp_register_stash_set_liveness_index(&function->code.context, stash_idx, call_idx));
 
+    REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
+        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), result_placement_vreg, NULL));
     REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &function->code,
                                                          kefir_asmcmp_context_instr_tail(&function->code.context),
                                                          result_vreg, result_placement_vreg, NULL));
@@ -1200,6 +1208,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_compare_exchange_memo
                                        &KEFIR_ASMCMP_MAKE_EXTERNAL_LABEL(atomic_cmpxchg_fn_label, 0), &call_idx));
     REQUIRE_OK(kefir_asmcmp_register_stash_set_liveness_index(&function->code.context, stash_idx, call_idx));
 
+    REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
+        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), result_placement_vreg, NULL));
     REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &function->code,
                                                          kefir_asmcmp_context_instr_tail(&function->code.context),
                                                          result_vreg, result_placement_vreg, NULL));

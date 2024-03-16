@@ -63,9 +63,8 @@ _kefir_func_f32_predec_label2:
     leaq -72(%rbp), %rax
     mov %rax, %rcx
     call __atomic_compare_exchange@PLT
-    mov %rax, %rcx
     movq -64(%rbp), %r10
-    test %rcx, %rcx
+    test %rax, %rax
     jz _kefir_func_f32_predec_label7
     movq -72(%rbp), %rax
     movq %rax, -80(%rbp)
@@ -165,9 +164,8 @@ _kefir_func_f32_preinc_label2:
     leaq -72(%rbp), %rax
     mov %rax, %rcx
     call __atomic_compare_exchange@PLT
-    mov %rax, %rcx
     movq -64(%rbp), %r10
-    test %rcx, %rcx
+    test %rax, %rax
     jz _kefir_func_f32_preinc_label7
     movq -72(%rbp), %rax
     movq %rax, -80(%rbp)
@@ -267,9 +265,8 @@ _kefir_func_f64_predec_label2:
     leaq -112(%rbp), %rax
     mov %rax, %rcx
     call __atomic_compare_exchange@PLT
-    mov %rax, %rcx
     movq -96(%rbp), %r10
-    test %rcx, %rcx
+    test %rax, %rax
     jz _kefir_func_f64_predec_label7
     movq -112(%rbp), %rax
     movq %rax, -128(%rbp)
@@ -372,9 +369,8 @@ _kefir_func_f64_preinc_label2:
     leaq -112(%rbp), %rax
     mov %rax, %rcx
     call __atomic_compare_exchange@PLT
-    mov %rax, %rcx
     movq -96(%rbp), %r10
-    test %rcx, %rcx
+    test %rax, %rax
     jz _kefir_func_f64_preinc_label7
     movq -112(%rbp), %rax
     movq %rax, -128(%rbp)
@@ -477,9 +473,8 @@ _kefir_func_f32_postdec_label2:
     leaq -88(%rbp), %rax
     mov %rax, %rcx
     call __atomic_compare_exchange@PLT
-    mov %rax, %rcx
     movq -72(%rbp), %r10
-    test %rcx, %rcx
+    test %rax, %rax
     jz _kefir_func_f32_postdec_label7
     movq -128(%rbp), %rax
     movq %rax, -64(%rbp)
@@ -577,9 +572,8 @@ _kefir_func_f32_postinc_label2:
     leaq -88(%rbp), %rax
     mov %rax, %rcx
     call __atomic_compare_exchange@PLT
-    mov %rax, %rcx
     movq -72(%rbp), %r10
-    test %rcx, %rcx
+    test %rax, %rax
     jz _kefir_func_f32_postinc_label7
     movq -128(%rbp), %rax
     movq %rax, -64(%rbp)
@@ -677,9 +671,8 @@ _kefir_func_f64_postdec_label2:
     leaq -96(%rbp), %rax
     mov %rax, %rcx
     call __atomic_compare_exchange@PLT
-    mov %rax, %rcx
     movq -80(%rbp), %r10
-    test %rcx, %rcx
+    test %rax, %rax
     jz _kefir_func_f64_postdec_label7
     movq -144(%rbp), %rax
     movq %rax, -96(%rbp)
@@ -778,9 +771,8 @@ _kefir_func_f64_postinc_label2:
     leaq -96(%rbp), %rax
     mov %rax, %rcx
     call __atomic_compare_exchange@PLT
-    mov %rax, %rcx
     movq -80(%rbp), %r10
-    test %rcx, %rcx
+    test %rax, %rax
     jz _kefir_func_f64_postinc_label7
     movq -144(%rbp), %rax
     movq %rax, -96(%rbp)

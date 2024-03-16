@@ -86,14 +86,13 @@ _kefir_func_test_fetch_add_short_label2:
     mov %r9, %r8
     mov %r12, %r9
     call __atomic_compare_exchange@PLT
-    mov %rax, %rcx
     movq -48(%rbp), %r10
     movq -40(%rbp), %r11
-    and $1, %rcx
-    xor %rax, %rax
-    test %rcx, %rcx
-    sete %al
+    and $1, %rax
+    xor %rcx, %rcx
     test %rax, %rax
+    sete %cl
+    test %rcx, %rcx
     jz _kefir_func_test_fetch_add_short_label4
     jmp _kefir_func_test_fetch_add_short_label2
 _kefir_func_test_fetch_add_short_label4:
@@ -162,14 +161,13 @@ _kefir_func_test_fetch_and_short_label2:
     mov %r9, %r8
     mov %r12, %r9
     call __atomic_compare_exchange@PLT
-    mov %rax, %rcx
     movq -48(%rbp), %r10
     movq -40(%rbp), %r11
-    and $1, %rcx
-    xor %rax, %rax
-    test %rcx, %rcx
-    sete %al
+    and $1, %rax
+    xor %rcx, %rcx
     test %rax, %rax
+    sete %cl
+    test %rcx, %rcx
     jz _kefir_func_test_fetch_and_short_label4
     jmp _kefir_func_test_fetch_and_short_label2
 _kefir_func_test_fetch_and_short_label4:
@@ -238,14 +236,13 @@ _kefir_func_test_fetch_sub_short_label2:
     mov %r9, %r8
     mov %r12, %r9
     call __atomic_compare_exchange@PLT
-    mov %rax, %rcx
     movq -48(%rbp), %r10
     movq -40(%rbp), %r11
-    and $1, %rcx
-    xor %rax, %rax
-    test %rcx, %rcx
-    sete %al
+    and $1, %rax
+    xor %rcx, %rcx
     test %rax, %rax
+    sete %cl
+    test %rcx, %rcx
     jz _kefir_func_test_fetch_sub_short_label4
     jmp _kefir_func_test_fetch_sub_short_label2
 _kefir_func_test_fetch_sub_short_label4:
@@ -314,14 +311,13 @@ _kefir_func_test_fetch_xor_short_label2:
     mov %r9, %r8
     mov %r12, %r9
     call __atomic_compare_exchange@PLT
-    mov %rax, %rcx
     movq -48(%rbp), %r10
     movq -40(%rbp), %r11
-    and $1, %rcx
-    xor %rax, %rax
-    test %rcx, %rcx
-    sete %al
+    and $1, %rax
+    xor %rcx, %rcx
     test %rax, %rax
+    sete %cl
+    test %rcx, %rcx
     jz _kefir_func_test_fetch_xor_short_label4
     jmp _kefir_func_test_fetch_xor_short_label2
 _kefir_func_test_fetch_xor_short_label4:
@@ -387,14 +383,13 @@ _kefir_func_test_fetch_or_int_label2:
     mov %r9, %r8
     mov %r12, %r9
     call __atomic_compare_exchange@PLT
-    mov %rax, %rcx
     movq -64(%rbp), %r10
     movq -56(%rbp), %r11
-    and $1, %rcx
-    xor %rax, %rax
-    test %rcx, %rcx
-    sete %al
+    and $1, %rax
+    xor %rcx, %rcx
     test %rax, %rax
+    sete %cl
+    test %rcx, %rcx
     jz _kefir_func_test_fetch_or_int_label4
     jmp _kefir_func_test_fetch_or_int_label2
 _kefir_func_test_fetch_or_int_label4:
@@ -463,14 +458,13 @@ _kefir_func_test_fetch_add_char_label2:
     mov %r9, %r8
     mov %r12, %r9
     call __atomic_compare_exchange@PLT
-    mov %rax, %rcx
     movq -48(%rbp), %r10
     movq -40(%rbp), %r11
-    and $1, %rcx
-    xor %rax, %rax
-    test %rcx, %rcx
-    sete %al
+    and $1, %rax
+    xor %rcx, %rcx
     test %rax, %rax
+    sete %cl
+    test %rcx, %rcx
     jz _kefir_func_test_fetch_add_char_label4
     jmp _kefir_func_test_fetch_add_char_label2
 _kefir_func_test_fetch_add_char_label4:
@@ -532,14 +526,13 @@ _kefir_func_test_fetch_add_long_label2:
     mov %r9, %r8
     mov %r12, %r9
     call __atomic_compare_exchange@PLT
-    mov %rax, %rcx
     movq -64(%rbp), %r10
     movq -56(%rbp), %r11
-    and $1, %rcx
-    xor %rax, %rax
-    test %rcx, %rcx
-    sete %al
+    and $1, %rax
+    xor %rcx, %rcx
     test %rax, %rax
+    sete %cl
+    test %rcx, %rcx
     jz _kefir_func_test_fetch_add_long_label4
     jmp _kefir_func_test_fetch_add_long_label2
 _kefir_func_test_fetch_add_long_label4:
@@ -608,14 +601,13 @@ _kefir_func_test_fetch_and_char_label2:
     mov %r9, %r8
     mov %r12, %r9
     call __atomic_compare_exchange@PLT
-    mov %rax, %rcx
     movq -48(%rbp), %r10
     movq -40(%rbp), %r11
-    and $1, %rcx
-    xor %rax, %rax
-    test %rcx, %rcx
-    sete %al
+    and $1, %rax
+    xor %rcx, %rcx
     test %rax, %rax
+    sete %cl
+    test %rcx, %rcx
     jz _kefir_func_test_fetch_and_char_label4
     jmp _kefir_func_test_fetch_and_char_label2
 _kefir_func_test_fetch_and_char_label4:
@@ -677,14 +669,13 @@ _kefir_func_test_fetch_and_long_label2:
     mov %r9, %r8
     mov %r12, %r9
     call __atomic_compare_exchange@PLT
-    mov %rax, %rcx
     movq -64(%rbp), %r10
     movq -56(%rbp), %r11
-    and $1, %rcx
-    xor %rax, %rax
-    test %rcx, %rcx
-    sete %al
+    and $1, %rax
+    xor %rcx, %rcx
     test %rax, %rax
+    sete %cl
+    test %rcx, %rcx
     jz _kefir_func_test_fetch_and_long_label4
     jmp _kefir_func_test_fetch_and_long_label2
 _kefir_func_test_fetch_and_long_label4:
@@ -753,14 +744,13 @@ _kefir_func_test_fetch_or_short_label2:
     mov %r9, %r8
     mov %r12, %r9
     call __atomic_compare_exchange@PLT
-    mov %rax, %rcx
     movq -48(%rbp), %r10
     movq -40(%rbp), %r11
-    and $1, %rcx
-    xor %rax, %rax
-    test %rcx, %rcx
-    sete %al
+    and $1, %rax
+    xor %rcx, %rcx
     test %rax, %rax
+    sete %cl
+    test %rcx, %rcx
     jz _kefir_func_test_fetch_or_short_label4
     jmp _kefir_func_test_fetch_or_short_label2
 _kefir_func_test_fetch_or_short_label4:
@@ -829,14 +819,13 @@ _kefir_func_test_fetch_sub_char_label2:
     mov %r9, %r8
     mov %r12, %r9
     call __atomic_compare_exchange@PLT
-    mov %rax, %rcx
     movq -48(%rbp), %r10
     movq -40(%rbp), %r11
-    and $1, %rcx
-    xor %rax, %rax
-    test %rcx, %rcx
-    sete %al
+    and $1, %rax
+    xor %rcx, %rcx
     test %rax, %rax
+    sete %cl
+    test %rcx, %rcx
     jz _kefir_func_test_fetch_sub_char_label4
     jmp _kefir_func_test_fetch_sub_char_label2
 _kefir_func_test_fetch_sub_char_label4:
@@ -898,14 +887,13 @@ _kefir_func_test_fetch_sub_long_label2:
     mov %r9, %r8
     mov %r12, %r9
     call __atomic_compare_exchange@PLT
-    mov %rax, %rcx
     movq -64(%rbp), %r10
     movq -56(%rbp), %r11
-    and $1, %rcx
-    xor %rax, %rax
-    test %rcx, %rcx
-    sete %al
+    and $1, %rax
+    xor %rcx, %rcx
     test %rax, %rax
+    sete %cl
+    test %rcx, %rcx
     jz _kefir_func_test_fetch_sub_long_label4
     jmp _kefir_func_test_fetch_sub_long_label2
 _kefir_func_test_fetch_sub_long_label4:
@@ -974,14 +962,13 @@ _kefir_func_test_fetch_xor_char_label2:
     mov %r9, %r8
     mov %r12, %r9
     call __atomic_compare_exchange@PLT
-    mov %rax, %rcx
     movq -48(%rbp), %r10
     movq -40(%rbp), %r11
-    and $1, %rcx
-    xor %rax, %rax
-    test %rcx, %rcx
-    sete %al
+    and $1, %rax
+    xor %rcx, %rcx
     test %rax, %rax
+    sete %cl
+    test %rcx, %rcx
     jz _kefir_func_test_fetch_xor_char_label4
     jmp _kefir_func_test_fetch_xor_char_label2
 _kefir_func_test_fetch_xor_char_label4:
@@ -1043,14 +1030,13 @@ _kefir_func_test_fetch_xor_long_label2:
     mov %r9, %r8
     mov %r12, %r9
     call __atomic_compare_exchange@PLT
-    mov %rax, %rcx
     movq -64(%rbp), %r10
     movq -56(%rbp), %r11
-    and $1, %rcx
-    xor %rax, %rax
-    test %rcx, %rcx
-    sete %al
+    and $1, %rax
+    xor %rcx, %rcx
     test %rax, %rax
+    sete %cl
+    test %rcx, %rcx
     jz _kefir_func_test_fetch_xor_long_label4
     jmp _kefir_func_test_fetch_xor_long_label2
 _kefir_func_test_fetch_xor_long_label4:
@@ -1116,14 +1102,13 @@ _kefir_func_test_fetch_add_int_label2:
     mov %r9, %r8
     mov %r12, %r9
     call __atomic_compare_exchange@PLT
-    mov %rax, %rcx
     movq -64(%rbp), %r10
     movq -56(%rbp), %r11
-    and $1, %rcx
-    xor %rax, %rax
-    test %rcx, %rcx
-    sete %al
+    and $1, %rax
+    xor %rcx, %rcx
     test %rax, %rax
+    sete %cl
+    test %rcx, %rcx
     jz _kefir_func_test_fetch_add_int_label4
     jmp _kefir_func_test_fetch_add_int_label2
 _kefir_func_test_fetch_add_int_label4:
@@ -1189,14 +1174,13 @@ _kefir_func_test_fetch_and_int_label2:
     mov %r9, %r8
     mov %r12, %r9
     call __atomic_compare_exchange@PLT
-    mov %rax, %rcx
     movq -64(%rbp), %r10
     movq -56(%rbp), %r11
-    and $1, %rcx
-    xor %rax, %rax
-    test %rcx, %rcx
-    sete %al
+    and $1, %rax
+    xor %rcx, %rcx
     test %rax, %rax
+    sete %cl
+    test %rcx, %rcx
     jz _kefir_func_test_fetch_and_int_label4
     jmp _kefir_func_test_fetch_and_int_label2
 _kefir_func_test_fetch_and_int_label4:
@@ -1265,14 +1249,13 @@ _kefir_func_test_fetch_or_char_label2:
     mov %r9, %r8
     mov %r12, %r9
     call __atomic_compare_exchange@PLT
-    mov %rax, %rcx
     movq -48(%rbp), %r10
     movq -40(%rbp), %r11
-    and $1, %rcx
-    xor %rax, %rax
-    test %rcx, %rcx
-    sete %al
+    and $1, %rax
+    xor %rcx, %rcx
     test %rax, %rax
+    sete %cl
+    test %rcx, %rcx
     jz _kefir_func_test_fetch_or_char_label4
     jmp _kefir_func_test_fetch_or_char_label2
 _kefir_func_test_fetch_or_char_label4:
@@ -1334,14 +1317,13 @@ _kefir_func_test_fetch_or_long_label2:
     mov %r9, %r8
     mov %r12, %r9
     call __atomic_compare_exchange@PLT
-    mov %rax, %rcx
     movq -64(%rbp), %r10
     movq -56(%rbp), %r11
-    and $1, %rcx
-    xor %rax, %rax
-    test %rcx, %rcx
-    sete %al
+    and $1, %rax
+    xor %rcx, %rcx
     test %rax, %rax
+    sete %cl
+    test %rcx, %rcx
     jz _kefir_func_test_fetch_or_long_label4
     jmp _kefir_func_test_fetch_or_long_label2
 _kefir_func_test_fetch_or_long_label4:
@@ -1407,14 +1389,13 @@ _kefir_func_test_fetch_sub_int_label2:
     mov %r9, %r8
     mov %r12, %r9
     call __atomic_compare_exchange@PLT
-    mov %rax, %rcx
     movq -64(%rbp), %r10
     movq -56(%rbp), %r11
-    and $1, %rcx
-    xor %rax, %rax
-    test %rcx, %rcx
-    sete %al
+    and $1, %rax
+    xor %rcx, %rcx
     test %rax, %rax
+    sete %cl
+    test %rcx, %rcx
     jz _kefir_func_test_fetch_sub_int_label4
     jmp _kefir_func_test_fetch_sub_int_label2
 _kefir_func_test_fetch_sub_int_label4:
@@ -1480,14 +1461,13 @@ _kefir_func_test_fetch_xor_int_label2:
     mov %r9, %r8
     mov %r12, %r9
     call __atomic_compare_exchange@PLT
-    mov %rax, %rcx
     movq -64(%rbp), %r10
     movq -56(%rbp), %r11
-    and $1, %rcx
-    xor %rax, %rax
-    test %rcx, %rcx
-    sete %al
+    and $1, %rax
+    xor %rcx, %rcx
     test %rax, %rax
+    sete %cl
+    test %rcx, %rcx
     jz _kefir_func_test_fetch_xor_int_label4
     jmp _kefir_func_test_fetch_xor_int_label2
 _kefir_func_test_fetch_xor_int_label4:
