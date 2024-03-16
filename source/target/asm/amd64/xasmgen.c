@@ -1382,6 +1382,8 @@ static kefir_result_t format_mnemonic(struct kefir_amd64_xasmgen *xasmgen, const
         fprintf(payload->output, "fsubp");
     } else if (strcmp(mnemonic, "fdivrp") == 0) {
         fprintf(payload->output, "fdivp");
+    } else if (strcmp(mnemonic, "movsl") == 0) {
+        fprintf(payload->output, "movsd");
     } else {
         fprintf(payload->output, "%s", mnemonic);
     }

@@ -17,46 +17,48 @@ _kefir_func_func1_label1:
     mov %rax, 0
     mov %rcx, 1
     rep stosb
-    mov %rdi, %rdx
-    mov %rsi, %rdx
-    mov %rcx, 1
-    rep movsb
+    mov %al, BYTE PTR [%rdx]
+    mov BYTE PTR [%rdx], %al
     mov %rdx, 0
     mov %rdi, %rdx
     mov %rax, 0
     mov %rcx, 4
     rep stosb
-    mov %rdi, %rdx
-    mov %rsi, %rdx
-    mov %rcx, 4
-    rep movsb
+    mov %eax, DWORD PTR [%rdx]
+    mov DWORD PTR [%rdx], %eax
     mov %rdx, 0
     mov %rdi, %rdx
     mov %rax, 0
     mov %rcx, 8
     rep stosb
-    mov %rdi, %rdx
-    mov %rsi, %rdx
-    mov %rcx, 8
-    rep movsb
+    mov %rax, QWORD PTR [%rdx]
+    mov QWORD PTR [%rdx], %rax
     mov %rdx, 0
     mov %rdi, %rdx
     mov %rax, 0
     mov %rcx, 40
     rep stosb
-    mov %rdi, %rdx
-    mov %rsi, %rdx
-    mov %rcx, 40
-    rep movsb
+    mov %rax, QWORD PTR [%rdx]
+    mov QWORD PTR [%rdx], %rax
+    mov %rax, QWORD PTR [%rdx + 8]
+    mov QWORD PTR [%rdx + 8], %rax
+    mov %rax, QWORD PTR [%rdx + 16]
+    mov QWORD PTR [%rdx + 16], %rax
+    mov %rax, QWORD PTR [%rdx + 24]
+    mov QWORD PTR [%rdx + 24], %rax
+    mov %rax, QWORD PTR [%rdx + 32]
+    mov QWORD PTR [%rdx + 32], %rax
     mov %rdx, 0
     mov %rdi, %rdx
     mov %rax, 0
     mov %rcx, 24
     rep stosb
-    mov %rdi, %rdx
-    mov %rsi, %rdx
-    mov %rcx, 24
-    rep movsb
+    mov %rax, QWORD PTR [%rdx]
+    mov QWORD PTR [%rdx], %rax
+    mov %rax, QWORD PTR [%rdx + 8]
+    mov QWORD PTR [%rdx + 8], %rax
+    mov %rax, QWORD PTR [%rdx + 16]
+    mov QWORD PTR [%rdx + 16], %rax
     pop %rbp
     ret
 

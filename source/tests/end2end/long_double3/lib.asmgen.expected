@@ -216,12 +216,10 @@ _kefir_func_sum_progression_label1:
     fstpt -304(%rbp)
     lea -304(%rbp), %rax
     add $160, %rsp
-    lea -48(%rbp), %rdx
-    mov %rdx, %rdi
-    mov %rax, %rsi
-    mov $16, %rcx
-    rep movsb
-    fldt (%rdx)
+    lea -48(%rbp), %rcx
+    movdqu (%rax), %xmm0
+    movdqu %xmm0, (%rcx)
+    fldt (%rcx)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

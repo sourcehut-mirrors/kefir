@@ -154,6 +154,9 @@
         KEFIR_AMD64_INSTRDB_WRITE | KEFIR_AMD64_INSTRDB_GP_REGISTER, \
         KEFIR_AMD64_INSTRDB_GP_REGISTER_MEMORY | KEFIR_AMD64_INSTRDB_LABEL) _separator \
     _instr0(movsb, "movsb", REPEATABLE, KEFIR_AMD64_INSTRDB_NONE) _separator \
+    _instr0(movsw, "movsw", REPEATABLE, KEFIR_AMD64_INSTRDB_NONE) _separator \
+    _instr0(movsl, "movsl", REPEATABLE, KEFIR_AMD64_INSTRDB_NONE) _separator \
+    _instr0(movsq, "movsq", REPEATABLE, KEFIR_AMD64_INSTRDB_NONE) _separator \
     _instr0(stosb, "stosb", REPEATABLE, KEFIR_AMD64_INSTRDB_NONE) _separator \
     /* Flags */ \
     _instr0(pushfq, "pushfq", , KEFIR_AMD64_INSTRDB_NONE) _separator \

@@ -22,16 +22,19 @@ set_a1:
     sub $128, %rsp
 _kefir_func_set_a1_label0:
     lea 16(%rbp), %rax
-    mov %rdi, %rdx
 _kefir_func_set_a1_label1:
     lea -128(%rbp), %rcx
-    mov %rcx, %rdi
-    mov %rax, %rsi
-    mov $64, %rcx
-    rep movsb
+    movdqu (%rax), %xmm0
+    movdqu %xmm0, (%rcx)
+    movdqu 16(%rax), %xmm0
+    movdqu %xmm0, 16(%rcx)
+    movdqu 32(%rax), %xmm0
+    movdqu %xmm0, 32(%rcx)
+    movdqu 48(%rax), %xmm0
+    movdqu %xmm0, 48(%rcx)
     lea -128(%rbp), %rax
-    add $32, %rdx
-    mov %rdx, %rsi
+    add $32, %rdi
+    mov %rdi, %rsi
     mov %rax, %rdx
     mov $64, %rdi
     mov $5, %rcx
@@ -114,19 +117,21 @@ set_arr2_el:
     sub $128, %rsp
 _kefir_func_set_arr2_el_label0:
     lea 16(%rbp), %rax
-    mov %rsi, %rdx
-    mov %rdi, %r8
 _kefir_func_set_arr2_el_label1:
     lea -128(%rbp), %rcx
-    mov %rcx, %rdi
-    mov %rax, %rsi
-    mov $64, %rcx
-    rep movsb
+    movdqu (%rax), %xmm0
+    movdqu %xmm0, (%rcx)
+    movdqu 16(%rax), %xmm0
+    movdqu %xmm0, 16(%rcx)
+    movdqu 32(%rax), %xmm0
+    movdqu %xmm0, 32(%rcx)
+    movdqu 48(%rax), %xmm0
+    movdqu %xmm0, 48(%rcx)
     lea -128(%rbp), %rax
-    add $160, %r8
-    movsx %edx, %rcx
+    add $160, %rdi
+    movsx %esi, %rcx
     imul $64, %rcx, %rcx
-    add %r8, %rcx
+    add %rdi, %rcx
     mov %rcx, %rsi
     mov %rax, %rdx
     mov $64, %rdi

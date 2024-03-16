@@ -27,11 +27,14 @@ _kefir_func_load_buffer_label1:
     call __atomic_load@PLT
     movq -72(%rbp), %r8
     movq -80(%rbp), %rax
-    mov %rax, %rdi
-    mov %r8, %rsi
-    mov $64, %rcx
-    cld
-    rep movsb
+    movdqu (%r8), %xmm0
+    movdqu %xmm0, (%rax)
+    movdqu 16(%r8), %xmm0
+    movdqu %xmm0, 16(%rax)
+    movdqu 32(%r8), %xmm0
+    movdqu %xmm0, 32(%rax)
+    movdqu 48(%r8), %xmm0
+    movdqu %xmm0, 48(%rax)
     lea (%rbp), %rsp
     pop %rbp
     ret

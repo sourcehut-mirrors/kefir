@@ -104,11 +104,8 @@ _kefir_func_unwrap_s1_label0:
     movq %rdi, -16(%rbp)
 _kefir_func_unwrap_s1_label1:
     lea -8(%rbp), %rax
-    mov %rax, %rdi
-    leaq -16(%rbp), %rax
-    mov %rax, %rsi
-    mov $4, %rcx
-    rep movsb
+    movl -16(%rbp), %ecx
+    movl %ecx, (%rax)
     lea -4(%rbp), %rax
     movl %ecx, (%rax)
     lea -4(%rbp), %rax

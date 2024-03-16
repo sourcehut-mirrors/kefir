@@ -929,8 +929,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_compare_exchange_comp
 
     kefir_asmcmp_virtual_register_index_t size_placement_vreg, ptr_vreg, ptr_placement_vreg, expected_value_vreg,
         expected_value_location_vreg, expected_value_placement_vreg, desired_value_vreg, desired_value_placement_vreg,
-        success_memorder_placement_vreg, fail_memorder_placement_vreg, result_vreg, result_placement_vreg,
-        copy_source_placement_vreg, copy_destination_placement_vreg, copy_size_placement_vreg;
+        success_memorder_placement_vreg, fail_memorder_placement_vreg, result_vreg, result_placement_vreg;
     kefir_asm_amd64_xasmgen_register_t size_phreg, ptr_phreg, expected_value_phreg, desired_value_phreg,
         success_memorder_phreg, fail_memorder_phreg, result_phreg;
 
@@ -967,12 +966,6 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_compare_exchange_comp
                                                  KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));
     REQUIRE_OK(kefir_asmcmp_virtual_register_new(
         mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_placement_vreg));
-    REQUIRE_OK(kefir_asmcmp_virtual_register_new(
-        mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &copy_source_placement_vreg));
-    REQUIRE_OK(kefir_asmcmp_virtual_register_new(
-        mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &copy_destination_placement_vreg));
-    REQUIRE_OK(kefir_asmcmp_virtual_register_new(
-        mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &copy_size_placement_vreg));
 
     REQUIRE_OK(
         kefir_asmcmp_amd64_register_allocation_requirement(mem, &function->code, size_placement_vreg, size_phreg));
@@ -987,12 +980,6 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_compare_exchange_comp
                                                                   fail_memorder_phreg));
     REQUIRE_OK(
         kefir_asmcmp_amd64_register_allocation_requirement(mem, &function->code, result_placement_vreg, result_phreg));
-    REQUIRE_OK(kefir_asmcmp_amd64_register_allocation_requirement(mem, &function->code, copy_source_placement_vreg,
-                                                                  KEFIR_AMD64_XASMGEN_REGISTER_RSI));
-    REQUIRE_OK(kefir_asmcmp_amd64_register_allocation_requirement(mem, &function->code, copy_destination_placement_vreg,
-                                                                  KEFIR_AMD64_XASMGEN_REGISTER_RDI));
-    REQUIRE_OK(kefir_asmcmp_amd64_register_allocation_requirement(mem, &function->code, copy_size_placement_vreg,
-                                                                  KEFIR_AMD64_XASMGEN_REGISTER_RCX));
     REQUIRE_OK(
         kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.atomic_op.ref[0], &ptr_vreg));
     REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.atomic_op.ref[1],
@@ -1000,18 +987,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_compare_exchange_comp
     REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.atomic_op.ref[2],
                                                     &desired_value_vreg));
 
-    REQUIRE_OK(kefir_asmcmp_amd64_mov(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                                      &KEFIR_ASMCMP_MAKE_VREG(copy_size_placement_vreg),
-                                      &KEFIR_ASMCMP_MAKE_INT(total_size), NULL));
-    REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &function->code,
-                                                         kefir_asmcmp_context_instr_tail(&function->code.context),
-                                                         copy_source_placement_vreg, expected_value_vreg, NULL));
-    REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
-        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), copy_destination_placement_vreg,
-        expected_value_location_vreg, NULL));
-
-    REQUIRE_OK(kefir_asmcmp_amd64_movsb_rep(mem, &function->code,
-                                            kefir_asmcmp_context_instr_tail(&function->code.context), NULL));
+    REQUIRE_OK(
+        kefir_codegen_amd64_copy_memory(mem, function, expected_value_location_vreg, expected_value_vreg, total_size));
 
     REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &function->code,
                                                          kefir_asmcmp_context_instr_tail(&function->code.context),
@@ -1081,8 +1058,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_compare_exchange_memo
 
     kefir_asmcmp_virtual_register_index_t size_placement_vreg, ptr_vreg, ptr_placement_vreg, expected_value_vreg,
         expected_value_location_vreg, expected_value_placement_vreg, desired_value_vreg, desired_value_placement_vreg,
-        success_memorder_placement_vreg, fail_memorder_placement_vreg, result_vreg, result_placement_vreg,
-        copy_source_placement_vreg, copy_destination_placement_vreg, copy_size_placement_vreg;
+        success_memorder_placement_vreg, fail_memorder_placement_vreg, result_vreg, result_placement_vreg;
     kefir_asm_amd64_xasmgen_register_t size_phreg, ptr_phreg, expected_value_phreg, desired_value_phreg,
         success_memorder_phreg, fail_memorder_phreg, result_phreg;
 
@@ -1119,12 +1095,6 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_compare_exchange_memo
                                                  KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));
     REQUIRE_OK(kefir_asmcmp_virtual_register_new(
         mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_placement_vreg));
-    REQUIRE_OK(kefir_asmcmp_virtual_register_new(
-        mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &copy_source_placement_vreg));
-    REQUIRE_OK(kefir_asmcmp_virtual_register_new(
-        mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &copy_destination_placement_vreg));
-    REQUIRE_OK(kefir_asmcmp_virtual_register_new(
-        mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &copy_size_placement_vreg));
 
     REQUIRE_OK(
         kefir_asmcmp_amd64_register_allocation_requirement(mem, &function->code, size_placement_vreg, size_phreg));
@@ -1139,12 +1109,6 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_compare_exchange_memo
                                                                   fail_memorder_phreg));
     REQUIRE_OK(
         kefir_asmcmp_amd64_register_allocation_requirement(mem, &function->code, result_placement_vreg, result_phreg));
-    REQUIRE_OK(kefir_asmcmp_amd64_register_allocation_requirement(mem, &function->code, copy_source_placement_vreg,
-                                                                  KEFIR_AMD64_XASMGEN_REGISTER_RSI));
-    REQUIRE_OK(kefir_asmcmp_amd64_register_allocation_requirement(mem, &function->code, copy_destination_placement_vreg,
-                                                                  KEFIR_AMD64_XASMGEN_REGISTER_RDI));
-    REQUIRE_OK(kefir_asmcmp_amd64_register_allocation_requirement(mem, &function->code, copy_size_placement_vreg,
-                                                                  KEFIR_AMD64_XASMGEN_REGISTER_RCX));
     REQUIRE_OK(
         kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.atomic_op.ref[0], &ptr_vreg));
     REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.atomic_op.ref[1],
@@ -1152,18 +1116,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_compare_exchange_memo
     REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.atomic_op.ref[2],
                                                     &desired_value_vreg));
 
-    REQUIRE_OK(kefir_asmcmp_amd64_mov(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                                      &KEFIR_ASMCMP_MAKE_VREG(copy_size_placement_vreg),
-                                      &KEFIR_ASMCMP_MAKE_INT(total_size), NULL));
-    REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &function->code,
-                                                         kefir_asmcmp_context_instr_tail(&function->code.context),
-                                                         copy_source_placement_vreg, expected_value_vreg, NULL));
-    REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
-        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), copy_destination_placement_vreg,
-        expected_value_location_vreg, NULL));
-
-    REQUIRE_OK(kefir_asmcmp_amd64_movsb_rep(mem, &function->code,
-                                            kefir_asmcmp_context_instr_tail(&function->code.context), NULL));
+    REQUIRE_OK(
+        kefir_codegen_amd64_copy_memory(mem, function, expected_value_location_vreg, expected_value_vreg, total_size));
 
     REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &function->code,
                                                          kefir_asmcmp_context_instr_tail(&function->code.context),
