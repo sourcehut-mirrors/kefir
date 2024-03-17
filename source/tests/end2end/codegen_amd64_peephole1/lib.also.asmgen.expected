@@ -16,8 +16,7 @@ test:
     sub $16, %rsp
 _kefir_func_test_label0:
 _kefir_func_test_label1:
-    lea -8(%rbp), %rax
-    movq %rdi, (%rax)
+    movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp

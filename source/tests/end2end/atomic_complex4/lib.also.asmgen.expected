@@ -22,10 +22,8 @@ f32_predec:
     stmxcsr -8(%rbp)
 _kefir_func_f32_predec_label0:
 _kefir_func_f32_predec_label1:
-    lea -24(%rbp), %rax
-    movq %rdi, (%rax)
-    lea -24(%rbp), %rax
-    movq (%rax), %rax
+    movq %rdi, -24(%rbp)
+    movq -24(%rbp), %rax
     fnstenv -128(%rbp)
     stmxcsr -100(%rbp)
     fnclex
@@ -119,10 +117,8 @@ f32_preinc:
     stmxcsr -8(%rbp)
 _kefir_func_f32_preinc_label0:
 _kefir_func_f32_preinc_label1:
-    lea -24(%rbp), %rax
-    movq %rdi, (%rax)
-    lea -24(%rbp), %rax
-    movq (%rax), %rax
+    movq %rdi, -24(%rbp)
+    movq -24(%rbp), %rax
     fnstenv -128(%rbp)
     stmxcsr -100(%rbp)
     fnclex
@@ -216,10 +212,8 @@ f64_predec:
     stmxcsr -8(%rbp)
 _kefir_func_f64_predec_label0:
 _kefir_func_f64_predec_label1:
-    lea -48(%rbp), %rax
-    movq %rdi, (%rax)
-    lea -48(%rbp), %rax
-    movq (%rax), %rax
+    movq %rdi, -48(%rbp)
+    movq -48(%rbp), %rax
     fnstenv -144(%rbp)
     stmxcsr -116(%rbp)
     fnclex
@@ -316,10 +310,8 @@ f64_preinc:
     stmxcsr -8(%rbp)
 _kefir_func_f64_preinc_label0:
 _kefir_func_f64_preinc_label1:
-    lea -48(%rbp), %rax
-    movq %rdi, (%rax)
-    lea -48(%rbp), %rax
-    movq (%rax), %rax
+    movq %rdi, -48(%rbp)
+    movq -48(%rbp), %rax
     fnstenv -144(%rbp)
     stmxcsr -116(%rbp)
     fnclex
@@ -416,10 +408,8 @@ f32_postdec:
     stmxcsr -8(%rbp)
 _kefir_func_f32_postdec_label0:
 _kefir_func_f32_postdec_label1:
-    lea -24(%rbp), %rax
-    movq %rdi, (%rax)
-    lea -24(%rbp), %rax
-    movq (%rax), %rax
+    movq %rdi, -24(%rbp)
+    movq -24(%rbp), %rax
     fnstenv -128(%rbp)
     stmxcsr -100(%rbp)
     fnclex
@@ -511,10 +501,8 @@ f32_postinc:
     stmxcsr -8(%rbp)
 _kefir_func_f32_postinc_label0:
 _kefir_func_f32_postinc_label1:
-    lea -24(%rbp), %rax
-    movq %rdi, (%rax)
-    lea -24(%rbp), %rax
-    movq (%rax), %rax
+    movq %rdi, -24(%rbp)
+    movq -24(%rbp), %rax
     fnstenv -128(%rbp)
     stmxcsr -100(%rbp)
     fnclex
@@ -606,10 +594,8 @@ f64_postdec:
     stmxcsr -8(%rbp)
 _kefir_func_f64_postdec_label0:
 _kefir_func_f64_postdec_label1:
-    lea -48(%rbp), %rax
-    movq %rdi, (%rax)
-    lea -48(%rbp), %rax
-    movq (%rax), %rax
+    movq %rdi, -48(%rbp)
+    movq -48(%rbp), %rax
     fnstenv -144(%rbp)
     stmxcsr -116(%rbp)
     fnclex
@@ -702,10 +688,8 @@ f64_postinc:
     stmxcsr -8(%rbp)
 _kefir_func_f64_postinc_label0:
 _kefir_func_f64_postinc_label1:
-    lea -48(%rbp), %rax
-    movq %rdi, (%rax)
-    lea -48(%rbp), %rax
-    movq (%rax), %rax
+    movq %rdi, -48(%rbp)
+    movq -48(%rbp), %rax
     fnstenv -144(%rbp)
     stmxcsr -116(%rbp)
     fnclex

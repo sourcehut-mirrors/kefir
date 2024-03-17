@@ -18,37 +18,30 @@ _kefir_func_sum_progression_label0:
     lea 16(%rbp), %rax
     lea 32(%rbp), %rcx
 _kefir_func_sum_progression_label1:
-    lea -80(%rbp), %rdx
-    movq $0, 8(%rdx)
+    movq $0, -72(%rbp)
     fldt (%rcx)
-    fstpt (%rdx)
-    lea -96(%rbp), %rcx
-    movq $0, 8(%rcx)
+    fstpt -80(%rbp)
+    movq $0, -88(%rbp)
     fldt (%rax)
-    fstpt (%rcx)
-    lea -96(%rbp), %rax
-    fldt (%rax)
+    fstpt -96(%rbp)
+    fldt -96(%rbp)
     fstpt -288(%rbp)
-    lea -96(%rbp), %rax
-    fldt (%rax)
+    fldt -96(%rbp)
     fstpt -272(%rbp)
-    lea -80(%rbp), %rax
-    fldt (%rax)
+    fldt -80(%rbp)
     fstpt -256(%rbp)
     fldt -256(%rbp)
     fldt -272(%rbp)
     faddp
     fstpt -272(%rbp)
-    lea -96(%rbp), %rax
-    fldt (%rax)
+    fldt -96(%rbp)
     fstpt -256(%rbp)
     mov $2, %rax
     push %rax
     fildq (%rsp)
     add $8, %rsp
     fstpt -240(%rbp)
-    lea -80(%rbp), %rax
-    fldt (%rax)
+    fldt -80(%rbp)
     fstpt -224(%rbp)
     fldt -224(%rbp)
     fldt -240(%rbp)
@@ -58,16 +51,14 @@ _kefir_func_sum_progression_label1:
     fldt -256(%rbp)
     faddp
     fstpt -256(%rbp)
-    lea -96(%rbp), %rax
-    fldt (%rax)
+    fldt -96(%rbp)
     fstpt -240(%rbp)
     mov $3, %rax
     push %rax
     fildq (%rsp)
     add $8, %rsp
     fstpt -224(%rbp)
-    lea -80(%rbp), %rax
-    fldt (%rax)
+    fldt -80(%rbp)
     fstpt -208(%rbp)
     fldt -208(%rbp)
     fldt -224(%rbp)
@@ -77,16 +68,14 @@ _kefir_func_sum_progression_label1:
     fldt -240(%rbp)
     faddp
     fstpt -240(%rbp)
-    lea -96(%rbp), %rax
-    fldt (%rax)
+    fldt -96(%rbp)
     fstpt -224(%rbp)
     mov $4, %rax
     push %rax
     fildq (%rsp)
     add $8, %rsp
     fstpt -208(%rbp)
-    lea -80(%rbp), %rax
-    fldt (%rax)
+    fldt -80(%rbp)
     fstpt -192(%rbp)
     fldt -192(%rbp)
     fldt -208(%rbp)
@@ -96,16 +85,14 @@ _kefir_func_sum_progression_label1:
     fldt -224(%rbp)
     faddp
     fstpt -224(%rbp)
-    lea -96(%rbp), %rax
-    fldt (%rax)
+    fldt -96(%rbp)
     fstpt -208(%rbp)
     mov $5, %rax
     push %rax
     fildq (%rsp)
     add $8, %rsp
     fstpt -192(%rbp)
-    lea -80(%rbp), %rax
-    fldt (%rax)
+    fldt -80(%rbp)
     fstpt -176(%rbp)
     fldt -176(%rbp)
     fldt -192(%rbp)
@@ -115,16 +102,14 @@ _kefir_func_sum_progression_label1:
     fldt -208(%rbp)
     faddp
     fstpt -208(%rbp)
-    lea -96(%rbp), %rax
-    fldt (%rax)
+    fldt -96(%rbp)
     fstpt -192(%rbp)
     mov $6, %rax
     push %rax
     fildq (%rsp)
     add $8, %rsp
     fstpt -176(%rbp)
-    lea -80(%rbp), %rax
-    fldt (%rax)
+    fldt -80(%rbp)
     fstpt -160(%rbp)
     fldt -160(%rbp)
     fldt -176(%rbp)
@@ -134,16 +119,14 @@ _kefir_func_sum_progression_label1:
     fldt -192(%rbp)
     faddp
     fstpt -192(%rbp)
-    lea -96(%rbp), %rax
-    fldt (%rax)
+    fldt -96(%rbp)
     fstpt -176(%rbp)
     mov $7, %rax
     push %rax
     fildq (%rsp)
     add $8, %rsp
     fstpt -160(%rbp)
-    lea -80(%rbp), %rax
-    fldt (%rax)
+    fldt -80(%rbp)
     fstpt -144(%rbp)
     fldt -144(%rbp)
     fldt -160(%rbp)
@@ -153,16 +136,14 @@ _kefir_func_sum_progression_label1:
     fldt -176(%rbp)
     faddp
     fstpt -176(%rbp)
-    lea -96(%rbp), %rax
-    fldt (%rax)
+    fldt -96(%rbp)
     fstpt -160(%rbp)
     mov $8, %rax
     push %rax
     fildq (%rsp)
     add $8, %rsp
     fstpt -144(%rbp)
-    lea -80(%rbp), %rax
-    fldt (%rax)
+    fldt -80(%rbp)
     fstpt -128(%rbp)
     fldt -128(%rbp)
     fldt -144(%rbp)
@@ -172,16 +153,14 @@ _kefir_func_sum_progression_label1:
     fldt -160(%rbp)
     faddp
     fstpt -160(%rbp)
-    lea -96(%rbp), %rax
-    fldt (%rax)
+    fldt -96(%rbp)
     fstpt -144(%rbp)
     mov $9, %rax
     push %rax
     fildq (%rsp)
     add $8, %rsp
     fstpt -128(%rbp)
-    lea -80(%rbp), %rax
-    fldt (%rax)
+    fldt -80(%rbp)
     fstpt -112(%rbp)
     fldt -112(%rbp)
     fldt -128(%rbp)

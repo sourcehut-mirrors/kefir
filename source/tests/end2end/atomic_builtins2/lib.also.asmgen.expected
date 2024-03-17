@@ -27,8 +27,7 @@ test2_atomic_load8:
 _kefir_func_test2_atomic_load8_label0:
     mov %rdi, %rax
 _kefir_func_test2_atomic_load8_label1:
-    lea -1(%rbp), %rcx
-    movb %dl, (%rcx)
+    movb %cl, -1(%rbp)
     mov $1, %rcx
     lea -1(%rbp), %rdx
     mov $5, %r8
@@ -36,8 +35,7 @@ _kefir_func_test2_atomic_load8_label1:
     mov %rax, %rsi
     mov %r8, %rcx
     call __atomic_load@PLT
-    lea -1(%rbp), %rax
-    movsxb (%rax), %rax
+    movsxb -1(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -56,8 +54,7 @@ _kefir_func_test2_atomic_load128_label1:
     mov %rax, %rsi
     mov %r8, %rcx
     call __atomic_load@PLT
-    lea -16(%rbp), %rax
-    fldt (%rax)
+    fldt -16(%rbp)
     fstpt -48(%rbp)
     fldt -48(%rbp)
     lea (%rbp), %rsp
@@ -98,8 +95,7 @@ test_atomic_load8:
 _kefir_func_test_atomic_load8_label0:
     mov %rdi, %rax
 _kefir_func_test_atomic_load8_label1:
-    lea -1(%rbp), %rcx
-    movb %dl, (%rcx)
+    movb %cl, -1(%rbp)
     mov $1, %rcx
     lea -1(%rbp), %rdx
     mov $5, %r8
@@ -107,8 +103,7 @@ _kefir_func_test_atomic_load8_label1:
     mov %rax, %rsi
     mov %r8, %rcx
     call __atomic_load@PLT
-    lea -1(%rbp), %rax
-    movsxb (%rax), %rax
+    movsxb -1(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -120,8 +115,7 @@ test_atomic_load16:
 _kefir_func_test_atomic_load16_label0:
     mov %rdi, %rax
 _kefir_func_test_atomic_load16_label1:
-    lea -2(%rbp), %rcx
-    movw %dx, (%rcx)
+    movw %cx, -2(%rbp)
     mov $2, %rcx
     lea -2(%rbp), %rdx
     mov $5, %r8
@@ -129,8 +123,7 @@ _kefir_func_test_atomic_load16_label1:
     mov %rax, %rsi
     mov %r8, %rcx
     call __atomic_load@PLT
-    lea -2(%rbp), %rax
-    movsxw (%rax), %rax
+    movsxw -2(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -142,8 +135,7 @@ test_atomic_load32:
 _kefir_func_test_atomic_load32_label0:
     mov %rdi, %rax
 _kefir_func_test_atomic_load32_label1:
-    lea -4(%rbp), %rcx
-    movl %edx, (%rcx)
+    movl %ecx, -4(%rbp)
     mov $4, %rcx
     lea -4(%rbp), %rdx
     mov $5, %r8
@@ -151,8 +143,7 @@ _kefir_func_test_atomic_load32_label1:
     mov %rax, %rsi
     mov %r8, %rcx
     call __atomic_load@PLT
-    lea -4(%rbp), %rax
-    movsxl (%rax), %rax
+    movsxl -4(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -164,8 +155,7 @@ test_atomic_load64:
 _kefir_func_test_atomic_load64_label0:
     mov %rdi, %rax
 _kefir_func_test_atomic_load64_label1:
-    lea -8(%rbp), %rcx
-    movq %rdx, (%rcx)
+    movq %rcx, -8(%rbp)
     mov $8, %rcx
     lea -8(%rbp), %rdx
     mov $5, %r8
@@ -192,8 +182,7 @@ _kefir_func_test_atomic_load128_label1:
     mov %rax, %rsi
     mov %r8, %rcx
     call __atomic_load@PLT
-    lea -32(%rbp), %rax
-    fldt (%rax)
+    fldt -32(%rbp)
     fstpt -48(%rbp)
     fldt -48(%rbp)
     lea (%rbp), %rsp
@@ -234,8 +223,7 @@ test2_atomic_load16:
 _kefir_func_test2_atomic_load16_label0:
     mov %rdi, %rax
 _kefir_func_test2_atomic_load16_label1:
-    lea -2(%rbp), %rcx
-    movw %dx, (%rcx)
+    movw %cx, -2(%rbp)
     mov $2, %rcx
     lea -2(%rbp), %rdx
     mov $5, %r8
@@ -243,8 +231,7 @@ _kefir_func_test2_atomic_load16_label1:
     mov %rax, %rsi
     mov %r8, %rcx
     call __atomic_load@PLT
-    lea -2(%rbp), %rax
-    movsxw (%rax), %rax
+    movsxw -2(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -256,8 +243,7 @@ test2_atomic_load32:
 _kefir_func_test2_atomic_load32_label0:
     mov %rdi, %rax
 _kefir_func_test2_atomic_load32_label1:
-    lea -4(%rbp), %rcx
-    movl %edx, (%rcx)
+    movl %ecx, -4(%rbp)
     mov $4, %rcx
     lea -4(%rbp), %rdx
     mov $5, %r8
@@ -265,8 +251,7 @@ _kefir_func_test2_atomic_load32_label1:
     mov %rax, %rsi
     mov %r8, %rcx
     call __atomic_load@PLT
-    lea -4(%rbp), %rax
-    movsxl (%rax), %rax
+    movsxl -4(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -278,8 +263,7 @@ test2_atomic_load64:
 _kefir_func_test2_atomic_load64_label0:
     mov %rdi, %rax
 _kefir_func_test2_atomic_load64_label1:
-    lea -8(%rbp), %rcx
-    movq %rdx, (%rcx)
+    movq %rcx, -8(%rbp)
     mov $8, %rcx
     lea -8(%rbp), %rdx
     mov $5, %r8

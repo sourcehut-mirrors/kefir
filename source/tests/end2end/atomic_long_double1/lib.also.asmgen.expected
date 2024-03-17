@@ -34,12 +34,10 @@ set_ld1:
 _kefir_func_set_ld1_label0:
     lea 16(%rbp), %rax
 _kefir_func_set_ld1_label1:
-    lea -32(%rbp), %rcx
-    movq $0, 8(%rcx)
+    movq $0, -24(%rbp)
     fldt (%rax)
-    fstpt (%rcx)
-    lea -32(%rbp), %rax
-    fldt (%rax)
+    fstpt -32(%rbp)
+    fldt -32(%rbp)
     fstpt -48(%rbp)
     movq ld1@GOTPCREL(%rip), %rax
     mov %rax, %rsi

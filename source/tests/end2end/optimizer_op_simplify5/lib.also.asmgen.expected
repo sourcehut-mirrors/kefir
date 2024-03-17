@@ -20,19 +20,15 @@ _kefir_func_less_or_equalsld_label0:
     lea 16(%rbp), %rax
     lea 32(%rbp), %rcx
 _kefir_func_less_or_equalsld_label1:
-    lea -48(%rbp), %rdx
-    movq $0, 8(%rdx)
+    movq $0, -40(%rbp)
     fldt (%rcx)
-    fstpt (%rdx)
-    lea -64(%rbp), %rcx
-    movq $0, 8(%rcx)
+    fstpt -48(%rbp)
+    movq $0, -56(%rbp)
     fldt (%rax)
-    fstpt (%rcx)
-    lea -64(%rbp), %rax
-    fldt (%rax)
+    fstpt -64(%rbp)
+    fldt -64(%rbp)
     fstpt -96(%rbp)
-    lea -48(%rbp), %rax
-    fldt (%rax)
+    fldt -48(%rbp)
     fstpt -80(%rbp)
     fldt -80(%rbp)
     fldt -96(%rbp)
@@ -56,14 +52,10 @@ greater_or_equalsd:
     stmxcsr -8(%rbp)
 _kefir_func_greater_or_equalsd_label0:
 _kefir_func_greater_or_equalsd_label1:
-    lea -16(%rbp), %rax
-    movq %xmm1, (%rax)
-    lea -24(%rbp), %rax
-    movq %xmm0, (%rax)
-    lea -24(%rbp), %rax
-    movq (%rax), %rax
-    lea -16(%rbp), %rcx
-    movq (%rcx), %rcx
+    movq %xmm1, -16(%rbp)
+    movq %xmm0, -24(%rbp)
+    movq -24(%rbp), %rax
+    movq -16(%rbp), %rcx
     mov $0, %rdx
     movq %rax, %xmm0
     movq %rcx, %xmm1
@@ -82,14 +74,10 @@ less_or_equalsd:
     stmxcsr -8(%rbp)
 _kefir_func_less_or_equalsd_label0:
 _kefir_func_less_or_equalsd_label1:
-    lea -16(%rbp), %rax
-    movq %xmm1, (%rax)
-    lea -24(%rbp), %rax
-    movq %xmm0, (%rax)
-    lea -24(%rbp), %rax
-    movq (%rax), %rax
-    lea -16(%rbp), %rcx
-    movq (%rcx), %rcx
+    movq %xmm1, -16(%rbp)
+    movq %xmm0, -24(%rbp)
+    movq -24(%rbp), %rax
+    movq -16(%rbp), %rcx
     mov $0, %rdx
     movq %rcx, %xmm0
     movq %rax, %xmm1
@@ -110,19 +98,15 @@ _kefir_func_greater_or_equalsld_label0:
     lea 16(%rbp), %rax
     lea 32(%rbp), %rcx
 _kefir_func_greater_or_equalsld_label1:
-    lea -48(%rbp), %rdx
-    movq $0, 8(%rdx)
+    movq $0, -40(%rbp)
     fldt (%rcx)
-    fstpt (%rdx)
-    lea -64(%rbp), %rcx
-    movq $0, 8(%rcx)
+    fstpt -48(%rbp)
+    movq $0, -56(%rbp)
     fldt (%rax)
-    fstpt (%rcx)
-    lea -64(%rbp), %rax
-    fldt (%rax)
+    fstpt -64(%rbp)
+    fldt -64(%rbp)
     fstpt -96(%rbp)
-    lea -48(%rbp), %rax
-    fldt (%rax)
+    fldt -48(%rbp)
     fstpt -80(%rbp)
     fldt -96(%rbp)
     fldt -80(%rbp)

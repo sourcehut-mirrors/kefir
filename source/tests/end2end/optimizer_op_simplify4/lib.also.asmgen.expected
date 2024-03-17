@@ -16,14 +16,10 @@ greater_or_equalsf:
     stmxcsr -8(%rbp)
 _kefir_func_greater_or_equalsf_label0:
 _kefir_func_greater_or_equalsf_label1:
-    lea -12(%rbp), %rax
-    movd %xmm1, (%rax)
-    lea -16(%rbp), %rax
-    movd %xmm0, (%rax)
-    lea -16(%rbp), %rax
-    movl (%rax), %eax
-    lea -12(%rbp), %rcx
-    movl (%rcx), %ecx
+    movd %xmm1, -12(%rbp)
+    movd %xmm0, -16(%rbp)
+    movl -16(%rbp), %eax
+    movl -12(%rbp), %ecx
     mov $0, %rdx
     movd %rax, %xmm0
     movd %rcx, %xmm1
@@ -42,14 +38,10 @@ less_or_equalsf:
     stmxcsr -8(%rbp)
 _kefir_func_less_or_equalsf_label0:
 _kefir_func_less_or_equalsf_label1:
-    lea -12(%rbp), %rax
-    movd %xmm1, (%rax)
-    lea -16(%rbp), %rax
-    movd %xmm0, (%rax)
-    lea -16(%rbp), %rax
-    movl (%rax), %eax
-    lea -12(%rbp), %rcx
-    movl (%rcx), %ecx
+    movd %xmm1, -12(%rbp)
+    movd %xmm0, -16(%rbp)
+    movl -16(%rbp), %eax
+    movl -12(%rbp), %ecx
     mov $0, %rdx
     movd %rcx, %xmm0
     movd %rax, %xmm1

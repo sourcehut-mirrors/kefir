@@ -19,14 +19,10 @@ lessd:
     sub $16, %rsp
 _kefir_func_lessd_label0:
 _kefir_func_lessd_label1:
-    lea -8(%rbp), %rax
-    movq %xmm1, (%rax)
-    lea -16(%rbp), %rax
-    movq %xmm0, (%rax)
-    lea -16(%rbp), %rax
-    movq (%rax), %rax
-    lea -8(%rbp), %rcx
-    movq (%rcx), %rcx
+    movq %xmm1, -8(%rbp)
+    movq %xmm0, -16(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rcx
     movq %rax, %xmm0
     movq %rcx, %xmm1
     ucomisd %xmm1, %xmm0
@@ -49,14 +45,10 @@ equalsd:
     sub $16, %rsp
 _kefir_func_equalsd_label0:
 _kefir_func_equalsd_label1:
-    lea -8(%rbp), %rax
-    movq %xmm1, (%rax)
-    lea -16(%rbp), %rax
-    movq %xmm0, (%rax)
-    lea -16(%rbp), %rax
-    movq (%rax), %rax
-    lea -8(%rbp), %rcx
-    movq (%rcx), %rcx
+    movq %xmm1, -8(%rbp)
+    movq %xmm0, -16(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rcx
     movq %rax, %xmm0
     movq %rcx, %xmm1
     ucomisd %xmm1, %xmm0
@@ -81,14 +73,10 @@ greaterd:
     sub $16, %rsp
 _kefir_func_greaterd_label0:
 _kefir_func_greaterd_label1:
-    lea -8(%rbp), %rax
-    movq %xmm1, (%rax)
-    lea -16(%rbp), %rax
-    movq %xmm0, (%rax)
-    lea -16(%rbp), %rax
-    movq (%rax), %rax
-    lea -8(%rbp), %rcx
-    movq (%rcx), %rcx
+    movq %xmm1, -8(%rbp)
+    movq %xmm0, -16(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rcx
     movq %rcx, %xmm0
     movq %rax, %xmm1
     ucomisd %xmm1, %xmm0
@@ -111,14 +99,10 @@ not_equalsd:
     sub $16, %rsp
 _kefir_func_not_equalsd_label0:
 _kefir_func_not_equalsd_label1:
-    lea -8(%rbp), %rax
-    movq %xmm1, (%rax)
-    lea -16(%rbp), %rax
-    movq %xmm0, (%rax)
-    lea -16(%rbp), %rax
-    movq (%rax), %rax
-    lea -8(%rbp), %rcx
-    movq (%rcx), %rcx
+    movq %xmm1, -8(%rbp)
+    movq %xmm0, -16(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rcx
     movq %rax, %xmm0
     movq %rcx, %xmm1
     ucomisd %xmm1, %xmm0
@@ -142,14 +126,10 @@ greater_or_equalsd:
     sub $16, %rsp
 _kefir_func_greater_or_equalsd_label0:
 _kefir_func_greater_or_equalsd_label1:
-    lea -8(%rbp), %rax
-    movq %xmm1, (%rax)
-    lea -16(%rbp), %rax
-    movq %xmm0, (%rax)
-    lea -16(%rbp), %rax
-    movq (%rax), %rax
-    lea -8(%rbp), %rcx
-    movq (%rcx), %rcx
+    movq %xmm1, -8(%rbp)
+    movq %xmm0, -16(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rcx
     movq %rcx, %xmm0
     movq %rax, %xmm1
     ucomisd %xmm1, %xmm0
@@ -172,14 +152,10 @@ less_or_equalsd:
     sub $16, %rsp
 _kefir_func_less_or_equalsd_label0:
 _kefir_func_less_or_equalsd_label1:
-    lea -8(%rbp), %rax
-    movq %xmm1, (%rax)
-    lea -16(%rbp), %rax
-    movq %xmm0, (%rax)
-    lea -16(%rbp), %rax
-    movq (%rax), %rax
-    lea -8(%rbp), %rcx
-    movq (%rcx), %rcx
+    movq %xmm1, -8(%rbp)
+    movq %xmm0, -16(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rcx
     movq %rax, %xmm0
     movq %rcx, %xmm1
     ucomisd %xmm1, %xmm0

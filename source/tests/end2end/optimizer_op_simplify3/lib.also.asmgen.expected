@@ -16,10 +16,8 @@ ulong2uint:
     sub $16, %rsp
 _kefir_func_ulong2uint_label0:
 _kefir_func_ulong2uint_label1:
-    lea -8(%rbp), %rax
-    movq %rdi, (%rax)
-    lea -8(%rbp), %rax
-    movq (%rax), %rax
+    movq %rdi, -8(%rbp)
+    movq -8(%rbp), %rax
     mov %eax, %eax
     lea (%rbp), %rsp
     pop %rbp
@@ -31,10 +29,8 @@ ulong2uchar:
     sub $16, %rsp
 _kefir_func_ulong2uchar_label0:
 _kefir_func_ulong2uchar_label1:
-    lea -8(%rbp), %rax
-    movq %rdi, (%rax)
-    lea -8(%rbp), %rax
-    movq (%rax), %rax
+    movq %rdi, -8(%rbp)
+    movq -8(%rbp), %rax
     movzx %al, %rax
     lea (%rbp), %rsp
     pop %rbp
@@ -46,10 +42,8 @@ ulong2ushort:
     sub $16, %rsp
 _kefir_func_ulong2ushort_label0:
 _kefir_func_ulong2ushort_label1:
-    lea -8(%rbp), %rax
-    movq %rdi, (%rax)
-    lea -8(%rbp), %rax
-    movq (%rax), %rax
+    movq %rdi, -8(%rbp)
+    movq -8(%rbp), %rax
     movzx %ax, %rax
     lea (%rbp), %rsp
     pop %rbp

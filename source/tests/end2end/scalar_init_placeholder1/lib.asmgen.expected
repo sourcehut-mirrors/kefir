@@ -47,8 +47,7 @@ _kefir_func_test2_label3:
     mov %rsi, %rax
 _kefir_func_test2_label4:
     movq %r8, (%rcx)
-    lea -8(%rbp), %rcx
-    movq (%rcx), %rcx
+    movq -8(%rbp), %rcx
     mov $-1, %rdx
     mov $0, %rsi
     cmp %rdx, %rcx

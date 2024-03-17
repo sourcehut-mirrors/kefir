@@ -21,15 +21,13 @@ set8:
     sub $16, %rsp
 _kefir_func_set8_label0:
 _kefir_func_set8_label1:
-    lea -8(%rbp), %rax
-    movq %rdi, (%rax)
+    movq %rdi, -8(%rbp)
     lea -8(%rbp), %rax
     mov %rax, %rcx
 xor %al, %al
 not %al
 movb %al, (%rcx)
-    lea -8(%rbp), %rax
-    movq (%rax), %rax
+    movq -8(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -40,15 +38,13 @@ set16:
     sub $16, %rsp
 _kefir_func_set16_label0:
 _kefir_func_set16_label1:
-    lea -8(%rbp), %rax
-    movq %rdi, (%rax)
+    movq %rdi, -8(%rbp)
     lea -8(%rbp), %rax
     mov %rax, %rcx
 xor %ax, %ax
 not %ax
 movw %ax, (%rcx)
-    lea -8(%rbp), %rax
-    movq (%rax), %rax
+    movq -8(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -59,15 +55,13 @@ set32:
     sub $16, %rsp
 _kefir_func_set32_label0:
 _kefir_func_set32_label1:
-    lea -8(%rbp), %rax
-    movq %rdi, (%rax)
+    movq %rdi, -8(%rbp)
     lea -8(%rbp), %rax
     mov %rax, %rcx
 xor %eax, %eax
 not %eax
 movl %eax, (%rcx)
-    lea -8(%rbp), %rax
-    movq (%rax), %rax
+    movq -8(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -78,15 +72,13 @@ set64:
     sub $16, %rsp
 _kefir_func_set64_label0:
 _kefir_func_set64_label1:
-    lea -8(%rbp), %rax
-    movq %rdi, (%rax)
+    movq %rdi, -8(%rbp)
     lea -8(%rbp), %rax
     mov %rax, %rcx
 xor %rax, %rax
 not %rax
 movq %rax, (%rcx)
-    lea -8(%rbp), %rax
-    movq (%rax), %rax
+    movq -8(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -97,15 +89,13 @@ clear8:
     sub $16, %rsp
 _kefir_func_clear8_label0:
 _kefir_func_clear8_label1:
-    lea -8(%rbp), %rax
-    movq %rdi, (%rax)
+    movq %rdi, -8(%rbp)
     lea -8(%rbp), %rax
     movq %rax, -16(%rbp)
 movb $0, %al
     movq -16(%rbp), %rdi
     mov %rax, (%rdi)
-    lea -8(%rbp), %rax
-    movq (%rax), %rax
+    movq -8(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -116,15 +106,13 @@ clear16:
     sub $16, %rsp
 _kefir_func_clear16_label0:
 _kefir_func_clear16_label1:
-    lea -8(%rbp), %rax
-    movq %rdi, (%rax)
+    movq %rdi, -8(%rbp)
     lea -8(%rbp), %rax
     movq %rax, -16(%rbp)
 movw $0, %ax
     movq -16(%rbp), %rdi
     mov %rax, (%rdi)
-    lea -8(%rbp), %rax
-    movq (%rax), %rax
+    movq -8(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -135,15 +123,13 @@ clear32:
     sub $16, %rsp
 _kefir_func_clear32_label0:
 _kefir_func_clear32_label1:
-    lea -8(%rbp), %rax
-    movq %rdi, (%rax)
+    movq %rdi, -8(%rbp)
     lea -8(%rbp), %rax
     movq %rax, -16(%rbp)
 movl $0, %eax
     movq -16(%rbp), %rdi
     mov %rax, (%rdi)
-    lea -8(%rbp), %rax
-    movq (%rax), %rax
+    movq -8(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -154,15 +140,13 @@ clear64:
     sub $16, %rsp
 _kefir_func_clear64_label0:
 _kefir_func_clear64_label1:
-    lea -8(%rbp), %rax
-    movq %rdi, (%rax)
+    movq %rdi, -8(%rbp)
     lea -8(%rbp), %rax
     movq %rax, -16(%rbp)
 movq $0, %rax
     movq -16(%rbp), %rdi
     mov %rax, (%rdi)
-    lea -8(%rbp), %rax
-    movq (%rax), %rax
+    movq -8(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret

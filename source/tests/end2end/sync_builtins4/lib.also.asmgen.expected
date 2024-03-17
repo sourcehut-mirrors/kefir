@@ -20,9 +20,8 @@ clear:
 _kefir_func_clear_label0:
     mov %rdi, %rax
 _kefir_func_clear_label1:
-    lea -4(%rbp), %rcx
-    xor %rdx, %rdx
-    movl %edx, (%rcx)
+    xor %rcx, %rcx
+    movl %ecx, -4(%rbp)
     mov $1, %rcx
     lea -4(%rbp), %rdx
     mov $3, %r8
@@ -41,11 +40,9 @@ test_and_set:
 _kefir_func_test_and_set_label0:
     mov %rdi, %rax
 _kefir_func_test_and_set_label1:
-    lea -4(%rbp), %rcx
-    mov $1, %rdx
-    movl %edx, (%rcx)
-    lea -8(%rbp), %rcx
-    movb %dl, (%rcx)
+    mov $1, %rcx
+    movl %ecx, -4(%rbp)
+    movb %cl, -8(%rbp)
     mov $1, %rcx
     lea -4(%rbp), %rdx
     lea -8(%rbp), %r8
@@ -55,8 +52,7 @@ _kefir_func_test_and_set_label1:
     mov %r8, %rcx
     mov %r9, %r8
     call __atomic_exchange@PLT
-    lea -8(%rbp), %rax
-    movzxb (%rax), %rax
+    movzxb -8(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret

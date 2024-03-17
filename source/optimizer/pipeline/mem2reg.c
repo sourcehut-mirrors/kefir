@@ -235,7 +235,7 @@ static kefir_result_t mem2reg_scan(struct mem2reg_state *state) {
                     REQUIRE_OK(
                         add_block_predecessor(state, block->id, instr->operation.parameters.branch.target_block));
                     REQUIRE_OK(
-                        kefir_opt_instruction_extract_inputs(&state->func->code, instr, extract_local_inputs, state));
+                        kefir_opt_instruction_extract_inputs(&state->func->code, instr, true, extract_local_inputs, state));
                     break;
 
                 case KEFIR_OPT_OPCODE_BRANCH:
@@ -245,7 +245,7 @@ static kefir_result_t mem2reg_scan(struct mem2reg_state *state) {
                     REQUIRE_OK(
                         add_block_predecessor(state, block->id, instr->operation.parameters.branch.alternative_block));
                     REQUIRE_OK(
-                        kefir_opt_instruction_extract_inputs(&state->func->code, instr, extract_local_inputs, state));
+                        kefir_opt_instruction_extract_inputs(&state->func->code, instr, true, extract_local_inputs, state));
                     break;
 
                 case KEFIR_OPT_OPCODE_INLINE_ASSEMBLY: {
@@ -266,7 +266,7 @@ static kefir_result_t mem2reg_scan(struct mem2reg_state *state) {
                         }
                     }
                     REQUIRE_OK(
-                        kefir_opt_instruction_extract_inputs(&state->func->code, instr, extract_local_inputs, state));
+                        kefir_opt_instruction_extract_inputs(&state->func->code, instr, true, extract_local_inputs, state));
                 } break;
 
                 case KEFIR_OPT_OPCODE_IJUMP:
@@ -274,7 +274,7 @@ static kefir_result_t mem2reg_scan(struct mem2reg_state *state) {
 
                 default:
                     REQUIRE_OK(
-                        kefir_opt_instruction_extract_inputs(&state->func->code, instr, extract_local_inputs, state));
+                        kefir_opt_instruction_extract_inputs(&state->func->code, instr, true, extract_local_inputs, state));
                     break;
             }
         }

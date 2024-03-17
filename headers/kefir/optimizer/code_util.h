@@ -25,6 +25,7 @@
 
 kefir_result_t kefir_opt_instruction_extract_inputs(const struct kefir_opt_code_container *,
                                                     const struct kefir_opt_instruction *,
+                                                    kefir_bool_t,
                                                     kefir_result_t (*)(kefir_opt_instruction_ref_t, void *), void *);
 
 #endif

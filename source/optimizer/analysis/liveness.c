@@ -135,7 +135,7 @@ static kefir_result_t build_block_intervals(struct kefir_mem *mem, struct kefir_
         struct mark_instr_inputs_param inputs_param = {
             .mem = mem, .intervals = intervals, .block_props = block_props, .live = live, .range_end = instr_idx};
         REQUIRE_OK(
-            kefir_opt_instruction_extract_inputs(intervals->analysis->code, instr, mark_instr_inputs, &inputs_param));
+            kefir_opt_instruction_extract_inputs(intervals->analysis->code, instr, true, mark_instr_inputs, &inputs_param));
     }
 
     // Remove phi nodes from live set

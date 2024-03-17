@@ -23,12 +23,10 @@ test_sync_bool_compare_and_swap16:
 _kefir_func_test_sync_bool_compare_and_swap16_label0:
     mov %rdi, %rax
 _kefir_func_test_sync_bool_compare_and_swap16_label1:
-    lea -4(%rbp), %rcx
-    movsx %si, %rsi
-    movw %si, (%rcx)
-    lea -2(%rbp), %rcx
-    movsx %dx, %rdx
-    movw %dx, (%rcx)
+    movsx %si, %rcx
+    movw %cx, -4(%rbp)
+    movsx %dx, %rcx
+    movw %cx, -2(%rbp)
     mov $2, %rcx
     lea -4(%rbp), %rdx
     lea -2(%rbp), %r8
@@ -52,12 +50,10 @@ test_sync_bool_compare_and_swap32:
 _kefir_func_test_sync_bool_compare_and_swap32_label0:
     mov %rdi, %rax
 _kefir_func_test_sync_bool_compare_and_swap32_label1:
-    lea -8(%rbp), %rcx
-    movsx %esi, %rsi
-    movl %esi, (%rcx)
-    lea -4(%rbp), %rcx
-    movsx %edx, %rdx
-    movl %edx, (%rcx)
+    movsx %esi, %rcx
+    movl %ecx, -8(%rbp)
+    movsx %edx, %rcx
+    movl %ecx, -4(%rbp)
     mov $4, %rcx
     lea -8(%rbp), %rdx
     lea -4(%rbp), %r8
@@ -81,10 +77,8 @@ test_sync_bool_compare_and_swap64:
 _kefir_func_test_sync_bool_compare_and_swap64_label0:
     mov %rdi, %rax
 _kefir_func_test_sync_bool_compare_and_swap64_label1:
-    lea -16(%rbp), %rcx
-    movq %rsi, (%rcx)
-    lea -8(%rbp), %rcx
-    movq %rdx, (%rcx)
+    movq %rsi, -16(%rbp)
+    movq %rdx, -8(%rbp)
     mov $8, %rcx
     lea -16(%rbp), %rdx
     lea -8(%rbp), %r8
@@ -108,12 +102,10 @@ test_sync_bool_compare_and_swap8:
 _kefir_func_test_sync_bool_compare_and_swap8_label0:
     mov %rdi, %rax
 _kefir_func_test_sync_bool_compare_and_swap8_label1:
-    lea -2(%rbp), %rcx
-    movsx %sil, %rsi
-    movb %sil, (%rcx)
-    lea -1(%rbp), %rcx
-    movsx %dl, %rdx
-    movb %dl, (%rcx)
+    movsx %sil, %rcx
+    movb %cl, -2(%rbp)
+    movsx %dl, %rcx
+    movb %cl, -1(%rbp)
     mov $1, %rcx
     lea -2(%rbp), %rdx
     lea -1(%rbp), %r8
@@ -137,12 +129,10 @@ test_sync_val_compare_and_swap8:
 _kefir_func_test_sync_val_compare_and_swap8_label0:
     mov %rdi, %rax
 _kefir_func_test_sync_val_compare_and_swap8_label1:
-    lea -2(%rbp), %rcx
-    movsx %sil, %rsi
-    movb %sil, (%rcx)
-    lea -1(%rbp), %rcx
-    movsx %dl, %rdx
-    movb %dl, (%rcx)
+    movsx %sil, %rcx
+    movb %cl, -2(%rbp)
+    movsx %dl, %rcx
+    movb %cl, -1(%rbp)
     mov $1, %rcx
     lea -2(%rbp), %rdx
     lea -1(%rbp), %r8
@@ -154,8 +144,7 @@ _kefir_func_test_sync_val_compare_and_swap8_label1:
     mov %r9, %r8
     mov %r10, %r9
     call __atomic_compare_exchange@PLT
-    lea -2(%rbp), %rax
-    movsxb (%rax), %rax
+    movsxb -2(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -167,12 +156,10 @@ test_sync_val_compare_and_swap16:
 _kefir_func_test_sync_val_compare_and_swap16_label0:
     mov %rdi, %rax
 _kefir_func_test_sync_val_compare_and_swap16_label1:
-    lea -4(%rbp), %rcx
-    movsx %si, %rsi
-    movw %si, (%rcx)
-    lea -2(%rbp), %rcx
-    movsx %dx, %rdx
-    movw %dx, (%rcx)
+    movsx %si, %rcx
+    movw %cx, -4(%rbp)
+    movsx %dx, %rcx
+    movw %cx, -2(%rbp)
     mov $2, %rcx
     lea -4(%rbp), %rdx
     lea -2(%rbp), %r8
@@ -184,8 +171,7 @@ _kefir_func_test_sync_val_compare_and_swap16_label1:
     mov %r9, %r8
     mov %r10, %r9
     call __atomic_compare_exchange@PLT
-    lea -4(%rbp), %rax
-    movsxw (%rax), %rax
+    movsxw -4(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -197,12 +183,10 @@ test_sync_val_compare_and_swap32:
 _kefir_func_test_sync_val_compare_and_swap32_label0:
     mov %rdi, %rax
 _kefir_func_test_sync_val_compare_and_swap32_label1:
-    lea -8(%rbp), %rcx
-    movsx %esi, %rsi
-    movl %esi, (%rcx)
-    lea -4(%rbp), %rcx
-    movsx %edx, %rdx
-    movl %edx, (%rcx)
+    movsx %esi, %rcx
+    movl %ecx, -8(%rbp)
+    movsx %edx, %rcx
+    movl %ecx, -4(%rbp)
     mov $4, %rcx
     lea -8(%rbp), %rdx
     lea -4(%rbp), %r8
@@ -214,8 +198,7 @@ _kefir_func_test_sync_val_compare_and_swap32_label1:
     mov %r9, %r8
     mov %r10, %r9
     call __atomic_compare_exchange@PLT
-    lea -8(%rbp), %rax
-    movsxl (%rax), %rax
+    movsxl -8(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -227,10 +210,8 @@ test_sync_val_compare_and_swap64:
 _kefir_func_test_sync_val_compare_and_swap64_label0:
     mov %rdi, %rax
 _kefir_func_test_sync_val_compare_and_swap64_label1:
-    lea -16(%rbp), %rcx
-    movq %rsi, (%rcx)
-    lea -8(%rbp), %rcx
-    movq %rdx, (%rcx)
+    movq %rsi, -16(%rbp)
+    movq %rdx, -8(%rbp)
     mov $8, %rcx
     lea -16(%rbp), %rdx
     lea -8(%rbp), %r8

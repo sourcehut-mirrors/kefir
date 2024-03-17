@@ -24,8 +24,7 @@ _kefir_func_test_atomic_compare_exchange8_label0:
     mov %rsi, %rax
     mov %rdi, %rcx
 _kefir_func_test_atomic_compare_exchange8_label1:
-    lea -1(%rbp), %rsi
-    movb %dl, (%rsi)
+    movb %dl, -1(%rbp)
     mov $1, %rdx
     lea -1(%rbp), %r8
     mov $5, %r9
@@ -50,9 +49,8 @@ _kefir_func_test2_atomic_compare_exchange16_label0:
     mov %rsi, %rax
     mov %rdi, %rcx
 _kefir_func_test2_atomic_compare_exchange16_label1:
-    lea -2(%rbp), %rsi
     movsx %dx, %rdx
-    movw %dx, (%rsi)
+    movw %dx, -2(%rbp)
     mov $2, %rdx
     lea -2(%rbp), %r8
     mov $5, %r9
@@ -77,9 +75,8 @@ _kefir_func_test2_atomic_compare_exchange32_label0:
     mov %rsi, %rax
     mov %rdi, %rcx
 _kefir_func_test2_atomic_compare_exchange32_label1:
-    lea -4(%rbp), %rsi
     movsx %edx, %rdx
-    movl %edx, (%rsi)
+    movl %edx, -4(%rbp)
     mov $4, %rdx
     lea -4(%rbp), %r8
     mov $5, %r9
@@ -104,8 +101,7 @@ _kefir_func_test2_atomic_compare_exchange64_label0:
     mov %rsi, %rax
     mov %rdi, %rcx
 _kefir_func_test2_atomic_compare_exchange64_label1:
-    lea -8(%rbp), %rsi
-    movq %rdx, (%rsi)
+    movq %rdx, -8(%rbp)
     mov $8, %rdx
     lea -8(%rbp), %r8
     mov $5, %r9
@@ -130,9 +126,8 @@ _kefir_func_test2_atomic_compare_exchange8_label0:
     mov %rsi, %rax
     mov %rdi, %rcx
 _kefir_func_test2_atomic_compare_exchange8_label1:
-    lea -1(%rbp), %rsi
     movsx %dl, %rdx
-    movb %dl, (%rsi)
+    movb %dl, -1(%rbp)
     mov $1, %rdx
     lea -1(%rbp), %r8
     mov $5, %r9
@@ -157,8 +152,7 @@ _kefir_func_test_atomic_compare_exchange16_label0:
     mov %rsi, %rax
     mov %rdi, %rcx
 _kefir_func_test_atomic_compare_exchange16_label1:
-    lea -2(%rbp), %rsi
-    movw %dx, (%rsi)
+    movw %dx, -2(%rbp)
     mov $2, %rdx
     lea -2(%rbp), %r8
     mov $5, %r9
@@ -183,8 +177,7 @@ _kefir_func_test_atomic_compare_exchange32_label0:
     mov %rsi, %rax
     mov %rdi, %rcx
 _kefir_func_test_atomic_compare_exchange32_label1:
-    lea -4(%rbp), %rsi
-    movl %edx, (%rsi)
+    movl %edx, -4(%rbp)
     mov $4, %rdx
     lea -4(%rbp), %r8
     mov $5, %r9
@@ -209,8 +202,7 @@ _kefir_func_test_atomic_compare_exchange64_label0:
     mov %rsi, %rax
     mov %rdi, %rcx
 _kefir_func_test_atomic_compare_exchange64_label1:
-    lea -8(%rbp), %rsi
-    movq %rdx, (%rsi)
+    movq %rdx, -8(%rbp)
     mov $8, %rdx
     lea -8(%rbp), %r8
     mov $5, %r9

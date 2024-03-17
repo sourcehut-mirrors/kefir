@@ -39,6 +39,7 @@ typedef struct kefir_codegen_amd64_function {
     struct kefir_abi_amd64_type_layout locals_layout;
     struct kefir_codegen_amd64_stack_frame stack_frame;
 
+    struct kefir_hashtreeset translated_instructions;
     struct kefir_hashtree instructions;
     struct kefir_hashtree labels;
     struct kefir_hashtree virtual_registers;
@@ -274,12 +275,37 @@ kefir_result_t kefir_codegen_amd64_function_map_phi_outputs(struct kefir_mem *, 
     _def(inline_assembly, KEFIR_OPT_OPCODE_INLINE_ASSEMBLY)
 // clang-format on
 
+// clang-format off
+#define KEFIR_CODEGEN_AMD64_INSTRUCTION_FUSION(_def, _separator)                                               \
+    _def(scalar_load_store, KEFIR_OPT_OPCODE_INT8_LOAD_SIGNED) _separator \
+    _def(scalar_load_store, KEFIR_OPT_OPCODE_INT8_LOAD_UNSIGNED) _separator \
+    _def(scalar_load_store, KEFIR_OPT_OPCODE_INT16_LOAD_SIGNED) _separator \
+    _def(scalar_load_store, KEFIR_OPT_OPCODE_INT16_LOAD_UNSIGNED) _separator \
+    _def(scalar_load_store, KEFIR_OPT_OPCODE_INT32_LOAD_SIGNED) _separator \
+    _def(scalar_load_store, KEFIR_OPT_OPCODE_INT32_LOAD_UNSIGNED) _separator \
+    _def(scalar_load_store, KEFIR_OPT_OPCODE_INT64_LOAD) _separator \
+    _def(scalar_load_store, KEFIR_OPT_OPCODE_LONG_DOUBLE_LOAD) _separator \
+    _def(scalar_load_store, KEFIR_OPT_OPCODE_INT8_STORE) _separator \
+    _def(scalar_load_store, KEFIR_OPT_OPCODE_INT16_STORE) _separator \
+    _def(scalar_load_store, KEFIR_OPT_OPCODE_INT32_STORE) _separator \
+    _def(scalar_load_store, KEFIR_OPT_OPCODE_INT64_STORE) _separator \
+    _def(scalar_load_store, KEFIR_OPT_OPCODE_LONG_DOUBLE_STORE)
+// clang-format on
+
 #define KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(_id) kefir_codegen_amd64_translate_##_id
+#define KEFIR_CODEGEN_AMD64_INSTRUCTION_FUSION_IMPL(_id) kefir_codegen_amd64_fusion_##_id
 
 #define DECL_INSTR(_id, _opcode)                              \
     kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(_id)( \
         struct kefir_mem *, struct kefir_codegen_amd64_function *, const struct kefir_opt_instruction *)
 KEFIR_CODEGEN_AMD64_INSTRUCTIONS(DECL_INSTR, ;);
+#undef DECL_INSTR
+
+#define DECL_INSTR(_id, _opcode)                              \
+    kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_FUSION_IMPL(_id)( \
+        struct kefir_mem *, struct kefir_codegen_amd64_function *, const struct kefir_opt_instruction *, \
+        kefir_result_t (*)(kefir_opt_instruction_ref_t, void *), void *)
+KEFIR_CODEGEN_AMD64_INSTRUCTION_FUSION(DECL_INSTR, ;);
 #undef DECL_INSTR
 
 kefir_result_t kefir_codegen_amd64_copy_memory(struct kefir_mem *, struct kefir_codegen_amd64_function *,

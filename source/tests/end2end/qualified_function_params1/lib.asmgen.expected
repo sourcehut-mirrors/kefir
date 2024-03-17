@@ -19,12 +19,9 @@ test1:
     sub $32, %rsp
 _kefir_func_test1_label0:
 _kefir_func_test1_label1:
-    lea -8(%rbp), %rax
-    movq %rsi, (%rax)
-    lea -16(%rbp), %rax
-    movq %xmm0, (%rax)
-    lea -24(%rbp), %rax
-    movl %edi, (%rax)
+    movq %rsi, -8(%rbp)
+    movq %xmm0, -16(%rbp)
+    movl %edi, -24(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -35,8 +32,7 @@ test2:
     sub $16, %rsp
 _kefir_func_test2_label0:
 _kefir_func_test2_label1:
-    lea -8(%rbp), %rax
-    movq %rsi, (%rax)
+    movq %rsi, -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -47,11 +43,10 @@ test3:
     sub $16, %rsp
 _kefir_func_test3_label0:
 _kefir_func_test3_label1:
-    lea -4(%rbp), %rax
-    movq %rcx, -16(%rbp)
-    movl 16(%rbp), %ecx
-    movl %ecx, (%rax)
-    movq -16(%rbp), %rcx
+    movq %rax, -16(%rbp)
+    movl 16(%rbp), %eax
+    movl %eax, -4(%rbp)
+    movq -16(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -62,16 +57,12 @@ test4:
     sub $16, %rsp
 _kefir_func_test4_label0:
 _kefir_func_test4_label1:
-    lea -16(%rbp), %rax
-    mov $1, %rcx
-    movq %rcx, (%rax)
-    lea -8(%rbp), %rax
-    mov $0, %rcx
-    movq %rcx, (%rax)
-    lea -16(%rbp), %rax
-    movq (%rax), %rax
-    lea -8(%rbp), %rcx
-    movq %rax, (%rcx)
+    mov $1, %rax
+    movq %rax, -16(%rbp)
+    mov $0, %rax
+    movq %rax, -8(%rbp)
+    movq -16(%rbp), %rax
+    movq %rax, -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -83,10 +74,8 @@ test5:
     stmxcsr -8(%rbp)
 _kefir_func_test5_label0:
 _kefir_func_test5_label1:
-    lea -16(%rbp), %rax
-    movq %xmm0, (%rax)
-    lea -16(%rbp), %rax
-    movq (%rax), %rax
+    movq %xmm0, -16(%rbp)
+    movq -16(%rbp), %rax
     movq %rax, %xmm0
     addsd %xmm1, %xmm0
     movq X@GOTPCREL(%rip), %rax
