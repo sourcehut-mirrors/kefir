@@ -105,9 +105,9 @@
     OPCODE(INT64_SIGN_EXTEND_16BITS, "int64_sign_extend_16bits", ref1) SEPARATOR \
     OPCODE(INT64_SIGN_EXTEND_32BITS, "int64_sign_extend_32bits", ref1) SEPARATOR \
     /* Data access */ \
-    OPCODE(GET_GLOBAL, "get_global", ir_ref) SEPARATOR \
-    OPCODE(GET_THREAD_LOCAL, "get_thread_local", ir_ref) SEPARATOR \
-    OPCODE(GET_LOCAL, "get_local", local_var) SEPARATOR \
+    OPCODE(GET_GLOBAL, "get_global", variable) SEPARATOR \
+    OPCODE(GET_THREAD_LOCAL, "get_thread_local", variable) SEPARATOR \
+    OPCODE(GET_LOCAL, "get_local", variable) SEPARATOR \
     OPCODE(INT8_LOAD_SIGNED, "int8_load_signed", load_mem) SEPARATOR \
     OPCODE(INT8_LOAD_UNSIGNED, "int8_load_unsigned", load_mem) SEPARATOR \
     OPCODE(INT16_LOAD_SIGNED, "int16_load_signed", load_mem) SEPARATOR \

@@ -103,7 +103,8 @@
                             {
                                 "id": 3,
                                 "opcode": "get_global",
-                                "ir_ref": 33,
+                                "global_ref": 33,
+                                "offset": 0,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -194,7 +195,8 @@
                             {
                                 "id": 10,
                                 "opcode": "get_global",
-                                "ir_ref": 35,
+                                "global_ref": 35,
+                                "offset": 0,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -302,7 +304,8 @@
                             {
                                 "id": 7,
                                 "opcode": "get_global",
-                                "ir_ref": 33,
+                                "global_ref": 33,
+                                "offset": 0,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -455,7 +458,8 @@
                             {
                                 "id": 14,
                                 "opcode": "get_global",
-                                "ir_ref": 33,
+                                "global_ref": 33,
+                                "offset": 0,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -470,7 +474,8 @@
                             {
                                 "id": 15,
                                 "opcode": "get_global",
-                                "ir_ref": 35,
+                                "global_ref": 35,
+                                "offset": 0,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -485,7 +490,8 @@
                             {
                                 "id": 16,
                                 "opcode": "get_global",
-                                "ir_ref": 33,
+                                "global_ref": 33,
+                                "offset": 0,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,

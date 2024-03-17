@@ -139,7 +139,7 @@
                             {
                                 "id": 1,
                                 "opcode": "get_local",
-                                "index": 0,
+                                "local_index": 0,
                                 "offset": 0,
                                 "control_next": null,
                                 "properties": {

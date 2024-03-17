@@ -655,7 +655,8 @@
                             {
                                 "id": 36,
                                 "opcode": "get_global",
-                                "ir_ref": 1,
+                                "global_ref": 1,
+                                "offset": 0,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -701,7 +702,8 @@
                             {
                                 "id": 39,
                                 "opcode": "get_global",
-                                "ir_ref": 2,
+                                "global_ref": 2,
+                                "offset": 0,
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,

@@ -93,7 +93,7 @@
                             {
                                 "id": 2,
                                 "opcode": "get_local",
-                                "index": 0,
+                                "local_index": 0,
                                 "offset": 0,
                                 "control_next": null,
                                 "properties": {
@@ -128,7 +128,7 @@
                             {
                                 "id": 7,
                                 "opcode": "get_local",
-                                "index": 1,
+                                "local_index": 1,
                                 "offset": 0,
                                 "control_next": null,
                                 "properties": {
@@ -159,7 +159,7 @@
                             {
                                 "id": 9,
                                 "opcode": "get_local",
-                                "index": 2,
+                                "local_index": 2,
                                 "offset": 0,
                                 "control_next": null,
                                 "properties": {
@@ -175,7 +175,7 @@
                             {
                                 "id": 10,
                                 "opcode": "get_local",
-                                "index": 1,
+                                "local_index": 1,
                                 "offset": 0,
                                 "control_next": null,
                                 "properties": {
@@ -209,7 +209,7 @@
                             {
                                 "id": 12,
                                 "opcode": "get_local",
-                                "index": 2,
+                                "local_index": 2,
                                 "offset": 0,
                                 "control_next": null,
                                 "properties": {
@@ -244,7 +244,7 @@
                             {
                                 "id": 14,
                                 "opcode": "get_local",
-                                "index": 1,
+                                "local_index": 1,
                                 "offset": 0,
                                 "control_next": null,
                                 "properties": {
@@ -361,7 +361,7 @@
                             {
                                 "id": 1,
                                 "opcode": "get_local",
-                                "index": 0,
+                                "local_index": 0,
                                 "offset": 0,
                                 "control_next": null,
                                 "properties": {

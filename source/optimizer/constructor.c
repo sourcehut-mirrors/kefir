@@ -318,13 +318,13 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             break;
 
         case KEFIR_IROPCODE_GETGLOBAL:
-            REQUIRE_OK(kefir_opt_code_builder_get_global(mem, code, current_block_id, instr->arg.u64, &instr_ref));
+            REQUIRE_OK(kefir_opt_code_builder_get_global(mem, code, current_block_id, instr->arg.u64, 0, &instr_ref));
             REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
             break;
 
         case KEFIR_IROPCODE_GETTHRLOCAL:
             REQUIRE_OK(
-                kefir_opt_code_builder_get_thread_local(mem, code, current_block_id, instr->arg.u64, &instr_ref));
+                kefir_opt_code_builder_get_thread_local(mem, code, current_block_id, instr->arg.u64, 0, &instr_ref));
             REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
             break;
 

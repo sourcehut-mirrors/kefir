@@ -164,10 +164,10 @@ static kefir_result_t phi_pull_impl(struct phi_pull_state *state) {
 
                 case KEFIR_OPT_OPCODE_GET_LOCAL:
                     COMPARE_INSTR(other_instr->operation.opcode != KEFIR_OPT_OPCODE_GET_LOCAL ||
-                                  instr->operation.parameters.local_var.index !=
-                                      other_instr->operation.parameters.local_var.index ||
-                                  instr->operation.parameters.local_var.offset !=
-                                      other_instr->operation.parameters.local_var.offset);
+                                  instr->operation.parameters.variable.local_index !=
+                                      other_instr->operation.parameters.variable.local_index ||
+                                  instr->operation.parameters.variable.offset !=
+                                      other_instr->operation.parameters.variable.offset);
                     break;
 
                 case KEFIR_OPT_OPCODE_GET_THREAD_LOCAL:

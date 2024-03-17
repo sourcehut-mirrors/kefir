@@ -353,24 +353,31 @@ static kefir_result_t format_operation_call_ref(struct kefir_json_output *json,
     return KEFIR_OK;
 }
 
-static kefir_result_t format_operation_ir_ref(struct kefir_json_output *json, const struct kefir_opt_operation *oper) {
-    REQUIRE_OK(kefir_json_output_object_key(json, "ir_ref"));
-    REQUIRE_OK(id_format(json, oper->parameters.ir_ref));
-    return KEFIR_OK;
-}
-
 static kefir_result_t format_operation_index(struct kefir_json_output *json, const struct kefir_opt_operation *oper) {
     REQUIRE_OK(kefir_json_output_object_key(json, "index"));
     REQUIRE_OK(kefir_json_output_uinteger(json, oper->parameters.index));
     return KEFIR_OK;
 }
 
-static kefir_result_t format_operation_local_var(struct kefir_json_output *json,
+static kefir_result_t format_operation_variable(struct kefir_json_output *json,
                                                  const struct kefir_opt_operation *oper) {
-    REQUIRE_OK(kefir_json_output_object_key(json, "index"));
-    REQUIRE_OK(kefir_json_output_uinteger(json, oper->parameters.local_var.index));
+    switch (oper->opcode) {
+        case KEFIR_OPT_OPCODE_GET_GLOBAL:
+        case KEFIR_OPT_OPCODE_GET_THREAD_LOCAL:
+            REQUIRE_OK(kefir_json_output_object_key(json, "global_ref"));
+            REQUIRE_OK(id_format(json, oper->parameters.variable.global_ref));
+            break;
+
+        case KEFIR_OPT_OPCODE_GET_LOCAL:
+            REQUIRE_OK(kefir_json_output_object_key(json, "local_index"));
+            REQUIRE_OK(kefir_json_output_uinteger(json, oper->parameters.variable.local_index));
+            break;
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected optimizer instruction opcode");
+    }
     REQUIRE_OK(kefir_json_output_object_key(json, "offset"));
-    REQUIRE_OK(kefir_json_output_integer(json, oper->parameters.local_var.offset));
+    REQUIRE_OK(kefir_json_output_integer(json, oper->parameters.variable.offset));
     return KEFIR_OK;
 }
 

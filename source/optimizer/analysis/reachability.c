@@ -218,7 +218,7 @@ static kefir_result_t find_reachable_code_index(struct kefir_mem *mem, struct ke
     return KEFIR_OK;
 }
 
-static kefir_result_t find_reachable_code_local_var(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
+static kefir_result_t find_reachable_code_variable(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
                                                     struct kefir_list *queue,
                                                     const struct kefir_opt_instruction *instr) {
     UNUSED(mem);
@@ -230,15 +230,6 @@ static kefir_result_t find_reachable_code_local_var(struct kefir_mem *mem, struc
 
 static kefir_result_t find_reachable_code_none(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
                                                struct kefir_list *queue, const struct kefir_opt_instruction *instr) {
-    UNUSED(mem);
-    UNUSED(analysis);
-    UNUSED(queue);
-    UNUSED(instr);
-    return KEFIR_OK;
-}
-
-static kefir_result_t find_reachable_code_ir_ref(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
-                                                 struct kefir_list *queue, const struct kefir_opt_instruction *instr) {
     UNUSED(mem);
     UNUSED(analysis);
     UNUSED(queue);

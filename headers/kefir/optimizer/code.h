@@ -92,9 +92,12 @@ typedef union kefir_opt_operation_parameters {
         };
     } ref_imm;
     struct {
-        kefir_size_t index;
+        union {
+            kefir_id_t global_ref;
+            kefir_size_t local_index;
+        };
         kefir_int64_t offset;
-    } local_var;
+    } variable;
 
     struct {
         kefir_opt_block_id_t target_block;
