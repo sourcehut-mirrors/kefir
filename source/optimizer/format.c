@@ -62,96 +62,6 @@ static kefir_result_t format_operation_cmp_branch(struct kefir_json_output *json
     REQUIRE_OK(kefir_json_output_object_key(json, "type"));
     kefir_bool_t both_refs = true;
     switch (oper->parameters.branch.comparison.type) {
-        case KEFIR_OPT_COMPARE_BRANCH_INT_EQUALS:
-            REQUIRE_OK(kefir_json_output_string(json, "int_equals"));
-            break;
-
-        case KEFIR_OPT_COMPARE_BRANCH_INT_EQUALS_CONST:
-            REQUIRE_OK(kefir_json_output_string(json, "int_equals_const"));
-            both_refs = false;
-            break;
-
-        case KEFIR_OPT_COMPARE_BRANCH_INT_NOT_EQUALS:
-            REQUIRE_OK(kefir_json_output_string(json, "int_not_equals"));
-            break;
-
-        case KEFIR_OPT_COMPARE_BRANCH_INT_NOT_EQUALS_CONST:
-            REQUIRE_OK(kefir_json_output_string(json, "int_not_equals_const"));
-            both_refs = false;
-            break;
-
-        case KEFIR_OPT_COMPARE_BRANCH_INT_GREATER:
-            REQUIRE_OK(kefir_json_output_string(json, "int_greater"));
-            break;
-
-        case KEFIR_OPT_COMPARE_BRANCH_INT_GREATER_CONST:
-            REQUIRE_OK(kefir_json_output_string(json, "int_greater_const"));
-            both_refs = false;
-            break;
-
-        case KEFIR_OPT_COMPARE_BRANCH_INT_GREATER_OR_EQUALS:
-            REQUIRE_OK(kefir_json_output_string(json, "int_greater_or_equals"));
-            break;
-
-        case KEFIR_OPT_COMPARE_BRANCH_INT_GREATER_OR_EQUALS_CONST:
-            REQUIRE_OK(kefir_json_output_string(json, "int_greater_or_equals_const"));
-            both_refs = false;
-            break;
-
-        case KEFIR_OPT_COMPARE_BRANCH_INT_LESS:
-            REQUIRE_OK(kefir_json_output_string(json, "int_less"));
-            break;
-
-        case KEFIR_OPT_COMPARE_BRANCH_INT_LESS_CONST:
-            REQUIRE_OK(kefir_json_output_string(json, "int_less_const"));
-            both_refs = false;
-            break;
-
-        case KEFIR_OPT_COMPARE_BRANCH_INT_LESS_OR_EQUALS:
-            REQUIRE_OK(kefir_json_output_string(json, "int_less_or_equals"));
-            break;
-
-        case KEFIR_OPT_COMPARE_BRANCH_INT_LESS_OR_EQUALS_CONST:
-            REQUIRE_OK(kefir_json_output_string(json, "int_less_or_equals_const"));
-            both_refs = false;
-            break;
-
-        case KEFIR_OPT_COMPARE_BRANCH_INT_ABOVE:
-            REQUIRE_OK(kefir_json_output_string(json, "int_above"));
-            break;
-
-        case KEFIR_OPT_COMPARE_BRANCH_INT_ABOVE_CONST:
-            REQUIRE_OK(kefir_json_output_string(json, "int_above_const"));
-            both_refs = false;
-            break;
-
-        case KEFIR_OPT_COMPARE_BRANCH_INT_ABOVE_OR_EQUALS:
-            REQUIRE_OK(kefir_json_output_string(json, "int_above_or_equals"));
-            break;
-
-        case KEFIR_OPT_COMPARE_BRANCH_INT_ABOVE_OR_EQUALS_CONST:
-            REQUIRE_OK(kefir_json_output_string(json, "int_above_or_equals_const"));
-            both_refs = false;
-            break;
-
-        case KEFIR_OPT_COMPARE_BRANCH_INT_BELOW:
-            REQUIRE_OK(kefir_json_output_string(json, "int_below"));
-            break;
-
-        case KEFIR_OPT_COMPARE_BRANCH_INT_BELOW_CONST:
-            REQUIRE_OK(kefir_json_output_string(json, "int_below_const"));
-            both_refs = false;
-            break;
-
-        case KEFIR_OPT_COMPARE_BRANCH_INT_BELOW_OR_EQUALS:
-            REQUIRE_OK(kefir_json_output_string(json, "int_below_or_equals"));
-            break;
-
-        case KEFIR_OPT_COMPARE_BRANCH_INT_BELOW_OR_EQUALS_CONST:
-            REQUIRE_OK(kefir_json_output_string(json, "int_below_or_equals_const"));
-            both_refs = false;
-            break;
-
         case KEFIR_OPT_COMPARE_BRANCH_FLOAT32_EQUALS:
             REQUIRE_OK(kefir_json_output_string(json, "float32_equals"));
             break;
@@ -360,7 +270,7 @@ static kefir_result_t format_operation_index(struct kefir_json_output *json, con
 }
 
 static kefir_result_t format_operation_variable(struct kefir_json_output *json,
-                                                 const struct kefir_opt_operation *oper) {
+                                                const struct kefir_opt_operation *oper) {
     switch (oper->opcode) {
         case KEFIR_OPT_OPCODE_GET_GLOBAL:
         case KEFIR_OPT_OPCODE_GET_THREAD_LOCAL:

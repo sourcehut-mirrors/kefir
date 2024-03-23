@@ -56,8 +56,7 @@ int_less_const:
     mov %rsp, %rbp
 _kefir_func_int_less_const_label0:
 _kefir_func_int_less_const_label1:
-    mov $-5, %rax
-    cmp %rax, %rdi
+    cmp $-5, %rdi
     jl _kefir_func_int_less_const_label2
     jmp _kefir_func_int_less_const_label3
 _kefir_func_int_less_const_label2:
@@ -125,8 +124,7 @@ int_not_equal_const:
     mov %rsp, %rbp
 _kefir_func_int_not_equal_const_label0:
 _kefir_func_int_not_equal_const_label1:
-    mov $-160, %rax
-    cmp %rax, %rdi
+    cmp $-160, %rdi
     jne _kefir_func_int_not_equal_const_label2
     jmp _kefir_func_int_not_equal_const_label3
 _kefir_func_int_not_equal_const_label2:
