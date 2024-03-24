@@ -72,7 +72,6 @@ kefir_result_t kefir_opt_code_builder_is_finalized(const struct kefir_opt_code_c
             case KEFIR_OPT_OPCODE_JUMP:
             case KEFIR_OPT_OPCODE_IJUMP:
             case KEFIR_OPT_OPCODE_BRANCH:
-            case KEFIR_OPT_OPCODE_COMPARE_BRANCH:
             case KEFIR_OPT_OPCODE_RETURN:
                 *finalized_ptr = true;
                 break;
@@ -200,45 +199,6 @@ kefir_result_t kefir_opt_code_builder_finalize_return(struct kefir_mem *mem, str
         mem, code, block_id,
         &(struct kefir_opt_operation){.opcode = KEFIR_OPT_OPCODE_RETURN, .parameters.refs[0] = arg_instr_id}, true,
         instr_id_ptr));
-    return KEFIR_OK;
-}
-
-kefir_result_t kefir_opt_code_builder_compare_branch(struct kefir_mem *mem, struct kefir_opt_code_container *code,
-                                                     kefir_opt_block_id_t block_id,
-                                                     kefir_opt_compare_branch_type_t comparison_type,
-                                                     kefir_opt_instruction_ref_t ref1, kefir_opt_instruction_ref_t ref2,
-                                                     kefir_opt_block_id_t target_block,
-                                                     kefir_opt_block_id_t alternative_block,
-                                                     kefir_opt_instruction_ref_t *instr_id_ptr) {
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
-
-    switch (comparison_type) {
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_EQUALS:
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_NOT_EQUALS:
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_GREATER:
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_GREATER_OR_EQUALS:
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_LESS:
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_LESS_OR_EQUALS:
-            // Intentionally left blank
-            break;
-
-        default:
-            return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected comparison type");
-    }
-
-    REQUIRE_OK(instr_exists(code, block_id, ref1, false));
-    REQUIRE_OK(instr_exists(code, block_id, ref2, false));
-    REQUIRE_OK(block_exists(code, target_block));
-    REQUIRE_OK(block_exists(code, alternative_block));
-    REQUIRE_OK(kefir_opt_code_builder_add_instruction(
-        mem, code, block_id,
-        &(struct kefir_opt_operation){
-            .opcode = KEFIR_OPT_OPCODE_COMPARE_BRANCH,
-            .parameters.branch = {.target_block = target_block,
-                                  .alternative_block = alternative_block,
-                                  .comparison = {.type = comparison_type, .refs = {ref1, ref2}}}},
-        false, instr_id_ptr));
     return KEFIR_OK;
 }
 

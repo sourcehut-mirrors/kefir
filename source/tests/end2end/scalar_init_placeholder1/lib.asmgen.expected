@@ -91,14 +91,8 @@ test4:
 _kefir_func_test4_label0:
 _kefir_func_test4_label1:
     movq _kefir_func_test4_label4(%rip), %xmm2
-    mov $0, %rax
-    comisd %xmm2, %xmm0
-    seta %al
-    mov $0, %rcx
-    test %rax, %rax
-    sete %cl
-    test %rcx, %rcx
-    jz _kefir_func_test4_label5
+    ucomisd %xmm2, %xmm0
+    ja _kefir_func_test4_label5
     jmp _kefir_func_test4_label3
 _kefir_func_test4_label5:
 _kefir_func_test4_label2:

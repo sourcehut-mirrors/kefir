@@ -97,27 +97,6 @@ static kefir_result_t find_reachable_code_branch(struct kefir_mem *mem, struct k
     return KEFIR_OK;
 }
 
-static kefir_result_t find_reachable_code_cmp_branch(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
-                                                     struct kefir_list *queue,
-                                                     const struct kefir_opt_instruction *instr) {
-    UNUSED(analysis);
-    INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.branch.comparison.refs[0]);
-    switch (instr->operation.parameters.branch.comparison.type) {
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_EQUALS:
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_NOT_EQUALS:
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_GREATER:
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_GREATER_OR_EQUALS:
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_LESS:
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_LESS_OR_EQUALS:
-            INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.branch.comparison.refs[1]);
-            break;
-    }
-    REQUIRE_OK(mark_reachable_code_in_block(mem, analysis, instr->operation.parameters.branch.target_block, queue));
-    REQUIRE_OK(
-        mark_reachable_code_in_block(mem, analysis, instr->operation.parameters.branch.alternative_block, queue));
-    return KEFIR_OK;
-}
-
 static kefir_result_t find_reachable_code_typed_ref1(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
                                                      struct kefir_list *queue,
                                                      const struct kefir_opt_instruction *instr) {

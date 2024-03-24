@@ -34,8 +34,7 @@
 #include <limits.h>
 #include <libgen.h>
 
-#define KEFIR_OPTIMIZER_PIPELINE_FULL_SPEC \
-    "phi-pull,mem2reg,phi-pull,constant-fold,op-simplify,branch-removal,compare-branch-fuse"
+#define KEFIR_OPTIMIZER_PIPELINE_FULL_SPEC "phi-pull,mem2reg,phi-pull,constant-fold,op-simplify,branch-removal"
 
 #define KEFIR_CODEGEN_AMD64_PIPELINE_FULL_SPEC "amd64-peephole"
 

@@ -47,7 +47,6 @@ static kefir_result_t update_queue(struct phi_pull_state *state, struct kefir_op
             break;
 
         case KEFIR_OPT_OPCODE_BRANCH:
-        case KEFIR_OPT_OPCODE_COMPARE_BRANCH:
             target_block_id = tail_instr->operation.parameters.branch.target_block;
             alternative_block_id = tail_instr->operation.parameters.branch.alternative_block;
             REQUIRE_OK(kefir_list_insert_after(state->mem, &state->block_queue, kefir_list_tail(&state->block_queue),

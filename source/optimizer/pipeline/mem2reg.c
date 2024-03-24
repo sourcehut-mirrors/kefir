@@ -57,8 +57,9 @@ static kefir_result_t mark_local_addressed(struct mem2reg_state *state, struct k
     if (instr->operation.opcode == KEFIR_OPT_OPCODE_GET_LOCAL) {
         REQUIRE_OK(kefir_hashtreeset_add(state->mem, &state->addressed_locals,
                                          (kefir_hashtreeset_entry_t) instr->operation.parameters.variable.local_index));
-        REQUIRE_OK(kefir_hashtreeset_delete(state->mem, &state->scalar_local_candidates,
-                                            (kefir_hashtreeset_entry_t) instr->operation.parameters.variable.local_index));
+        REQUIRE_OK(
+            kefir_hashtreeset_delete(state->mem, &state->scalar_local_candidates,
+                                     (kefir_hashtreeset_entry_t) instr->operation.parameters.variable.local_index));
         return KEFIR_OK;
     } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_PHI) {
         kefir_result_t res;
@@ -234,18 +235,17 @@ static kefir_result_t mem2reg_scan(struct mem2reg_state *state) {
                 case KEFIR_OPT_OPCODE_JUMP:
                     REQUIRE_OK(
                         add_block_predecessor(state, block->id, instr->operation.parameters.branch.target_block));
-                    REQUIRE_OK(
-                        kefir_opt_instruction_extract_inputs(&state->func->code, instr, true, extract_local_inputs, state));
+                    REQUIRE_OK(kefir_opt_instruction_extract_inputs(&state->func->code, instr, true,
+                                                                    extract_local_inputs, state));
                     break;
 
                 case KEFIR_OPT_OPCODE_BRANCH:
-                case KEFIR_OPT_OPCODE_COMPARE_BRANCH:
                     REQUIRE_OK(
                         add_block_predecessor(state, block->id, instr->operation.parameters.branch.target_block));
                     REQUIRE_OK(
                         add_block_predecessor(state, block->id, instr->operation.parameters.branch.alternative_block));
-                    REQUIRE_OK(
-                        kefir_opt_instruction_extract_inputs(&state->func->code, instr, true, extract_local_inputs, state));
+                    REQUIRE_OK(kefir_opt_instruction_extract_inputs(&state->func->code, instr, true,
+                                                                    extract_local_inputs, state));
                     break;
 
                 case KEFIR_OPT_OPCODE_INLINE_ASSEMBLY: {
@@ -265,16 +265,16 @@ static kefir_result_t mem2reg_scan(struct mem2reg_state *state) {
                             REQUIRE_OK(add_block_predecessor(state, block->id, target_block));
                         }
                     }
-                    REQUIRE_OK(
-                        kefir_opt_instruction_extract_inputs(&state->func->code, instr, true, extract_local_inputs, state));
+                    REQUIRE_OK(kefir_opt_instruction_extract_inputs(&state->func->code, instr, true,
+                                                                    extract_local_inputs, state));
                 } break;
 
                 case KEFIR_OPT_OPCODE_IJUMP:
                     return KEFIR_YIELD;
 
                 default:
-                    REQUIRE_OK(
-                        kefir_opt_instruction_extract_inputs(&state->func->code, instr, true, extract_local_inputs, state));
+                    REQUIRE_OK(kefir_opt_instruction_extract_inputs(&state->func->code, instr, true,
+                                                                    extract_local_inputs, state));
                     break;
             }
         }

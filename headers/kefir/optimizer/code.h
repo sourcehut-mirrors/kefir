@@ -38,15 +38,6 @@ typedef kefir_id_t kefir_opt_phi_id_t;
 typedef kefir_id_t kefir_opt_call_id_t;
 typedef kefir_id_t kefir_opt_inline_assembly_id_t;
 
-typedef enum kefir_opt_compare_branch_type {
-    KEFIR_OPT_COMPARE_BRANCH_FLOAT64_EQUALS,
-    KEFIR_OPT_COMPARE_BRANCH_FLOAT64_NOT_EQUALS,
-    KEFIR_OPT_COMPARE_BRANCH_FLOAT64_GREATER,
-    KEFIR_OPT_COMPARE_BRANCH_FLOAT64_GREATER_OR_EQUALS,
-    KEFIR_OPT_COMPARE_BRANCH_FLOAT64_LESS,
-    KEFIR_OPT_COMPARE_BRANCH_FLOAT64_LESS_OR_EQUALS
-} kefir_opt_compare_branch_type_t;
-
 typedef struct kefir_opt_memory_access_flags {
     kefir_bool_t volatile_access;
 } kefir_opt_memory_access_flags_t;
@@ -76,16 +67,7 @@ typedef union kefir_opt_operation_parameters {
     struct {
         kefir_opt_block_id_t target_block;
         kefir_opt_block_id_t alternative_block;
-        union {
-            kefir_opt_instruction_ref_t condition_ref;
-            struct {
-                kefir_opt_compare_branch_type_t type;
-                kefir_opt_instruction_ref_t refs[2];
-                union {
-                    kefir_int64_t integer;
-                };
-            } comparison;
-        };
+        kefir_opt_instruction_ref_t condition_ref;
     } branch;
 
     union {

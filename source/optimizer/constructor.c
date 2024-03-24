@@ -928,7 +928,6 @@ static kefir_result_t link_blocks_match(struct kefir_mem *mem, struct kefir_opt_
             break;
 
         case KEFIR_OPT_OPCODE_BRANCH:
-        case KEFIR_OPT_OPCODE_COMPARE_BRANCH:
             REQUIRE_OK(link_blocks_impl(mem, state, block->id, instr->operation.parameters.branch.target_block));
             REQUIRE_OK(link_blocks_impl(mem, state, block->id, instr->operation.parameters.branch.alternative_block));
             break;

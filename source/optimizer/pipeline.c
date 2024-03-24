@@ -39,7 +39,6 @@ kefir_result_t kefir_optimizer_pass_resolve(const char *name, const struct kefir
     } while (0)
 
     PASS(Noop);
-    PASS(CompareBranchFuse);
     PASS(OpSimplify);
     PASS(ConstFold);
     PASS(BranchRemoval);

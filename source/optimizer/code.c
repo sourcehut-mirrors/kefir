@@ -1407,23 +1407,6 @@ static kefir_result_t replace_references_branch(struct kefir_opt_instruction *in
     return KEFIR_OK;
 }
 
-static kefir_result_t replace_references_cmp_branch(struct kefir_opt_instruction *instr,
-                                                    kefir_opt_instruction_ref_t to_ref,
-                                                    kefir_opt_instruction_ref_t from_ref) {
-    REPLACE_REF(&instr->operation.parameters.branch.comparison.refs[0], to_ref, from_ref);
-    switch (instr->operation.parameters.branch.comparison.type) {
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_EQUALS:
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_NOT_EQUALS:
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_GREATER:
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_GREATER_OR_EQUALS:
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_LESS:
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_LESS_OR_EQUALS:
-            REPLACE_REF(&instr->operation.parameters.branch.comparison.refs[1], to_ref, from_ref);
-            break;
-    }
-    return KEFIR_OK;
-}
-
 static kefir_result_t replace_references_ref1(struct kefir_opt_instruction *instr, kefir_opt_instruction_ref_t to_ref,
                                               kefir_opt_instruction_ref_t from_ref) {
     REPLACE_REF(&instr->operation.parameters.refs[0], to_ref, from_ref);

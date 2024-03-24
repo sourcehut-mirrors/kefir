@@ -82,26 +82,6 @@ static kefir_result_t extract_inputs_branch(const struct kefir_opt_code_containe
     return KEFIR_OK;
 }
 
-static kefir_result_t extract_inputs_cmp_branch(const struct kefir_opt_code_container *code,
-                                                const struct kefir_opt_instruction *instr, kefir_bool_t block_local,
-                                                kefir_result_t (*callback)(kefir_opt_instruction_ref_t, void *),
-                                                void *payload) {
-    UNUSED(code);
-    UNUSED(block_local);
-    INPUT_CALLBACK(instr->operation.parameters.branch.comparison.refs[0], callback, payload);
-    switch (instr->operation.parameters.branch.comparison.type) {
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_EQUALS:
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_NOT_EQUALS:
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_GREATER:
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_GREATER_OR_EQUALS:
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_LESS:
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_LESS_OR_EQUALS:
-            INPUT_CALLBACK(instr->operation.parameters.branch.comparison.refs[1], callback, payload);
-            break;
-    }
-    return KEFIR_OK;
-}
-
 static kefir_result_t extract_inputs_typed_ref1(const struct kefir_opt_code_container *code,
                                                 const struct kefir_opt_instruction *instr, kefir_bool_t block_local,
                                                 kefir_result_t (*callback)(kefir_opt_instruction_ref_t, void *),

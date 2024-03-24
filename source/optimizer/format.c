@@ -53,55 +53,6 @@ static kefir_result_t format_operation_branch(struct kefir_json_output *json, co
     return KEFIR_OK;
 }
 
-static kefir_result_t format_operation_cmp_branch(struct kefir_json_output *json,
-                                                  const struct kefir_opt_operation *oper) {
-    REQUIRE_OK(kefir_json_output_object_key(json, "target_block"));
-    REQUIRE_OK(id_format(json, oper->parameters.branch.target_block));
-    REQUIRE_OK(kefir_json_output_object_key(json, "alternative_block"));
-    REQUIRE_OK(id_format(json, oper->parameters.branch.alternative_block));
-    REQUIRE_OK(kefir_json_output_object_key(json, "type"));
-    kefir_bool_t both_refs = true;
-    switch (oper->parameters.branch.comparison.type) {
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_EQUALS:
-            REQUIRE_OK(kefir_json_output_string(json, "float64_equals"));
-            break;
-
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_NOT_EQUALS:
-            REQUIRE_OK(kefir_json_output_string(json, "float64_not_equals"));
-            break;
-
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_GREATER:
-            REQUIRE_OK(kefir_json_output_string(json, "float64_greater"));
-            break;
-
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_GREATER_OR_EQUALS:
-            REQUIRE_OK(kefir_json_output_string(json, "float64_greater_or_equals"));
-            break;
-
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_LESS:
-            REQUIRE_OK(kefir_json_output_string(json, "float64_less"));
-            break;
-
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_LESS_OR_EQUALS:
-            REQUIRE_OK(kefir_json_output_string(json, "float64_less_or_equals"));
-            break;
-
-        default:
-            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected optimizer branch comparison type");
-    }
-
-    REQUIRE_OK(kefir_json_output_object_key(json, "ref1"));
-    REQUIRE_OK(id_format(json, oper->parameters.branch.comparison.refs[0]));
-    if (both_refs) {
-        REQUIRE_OK(kefir_json_output_object_key(json, "ref2"));
-        REQUIRE_OK(id_format(json, oper->parameters.branch.comparison.refs[1]));
-    } else {
-        REQUIRE_OK(kefir_json_output_object_key(json, "imm"));
-        REQUIRE_OK(kefir_json_output_integer(json, oper->parameters.branch.comparison.integer));
-    }
-    return KEFIR_OK;
-}
-
 static kefir_result_t format_operation_ref1(struct kefir_json_output *json, const struct kefir_opt_operation *oper) {
     REQUIRE_OK(kefir_json_output_object_key(json, "arg"));
     REQUIRE_OK(id_format(json, oper->parameters.refs[0]));

@@ -42,26 +42,26 @@ _kefir_func_dnot_label3:
 dnotd:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
+    sub $16, %rsp
+    stmxcsr -8(%rbp)
 _kefir_func_dnotd_label0:
 _kefir_func_dnotd_label1:
-    movq %xmm0, -8(%rbp)
-    movq -8(%rbp), %rax
-    movq _kefir_func_dnotd_label4(%rip), %xmm0
-    movdqu %xmm1, -32(%rbp)
-    movq %rax, %xmm1
-    ucomisd %xmm0, %xmm1
-    movdqu -32(%rbp), %xmm1
+    movq %xmm0, -16(%rbp)
+    movq -16(%rbp), %rax
+    movq %rax, %xmm0
+    ucomisd (_kefir_func_dnotd_label4), %xmm0
     jp _kefir_func_dnotd_label2
     jne _kefir_func_dnotd_label2
     jmp _kefir_func_dnotd_label3
 _kefir_func_dnotd_label2:
     mov $1, %rax
+    ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
 _kefir_func_dnotd_label3:
     mov $0, %rax
+    ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
