@@ -90,12 +90,6 @@ static kefir_result_t extract_inputs_cmp_branch(const struct kefir_opt_code_cont
     UNUSED(block_local);
     INPUT_CALLBACK(instr->operation.parameters.branch.comparison.refs[0], callback, payload);
     switch (instr->operation.parameters.branch.comparison.type) {
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT32_EQUALS:
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT32_NOT_EQUALS:
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT32_GREATER:
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT32_GREATER_OR_EQUALS:
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT32_LESS:
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT32_LESS_OR_EQUALS:
         case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_EQUALS:
         case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_NOT_EQUALS:
         case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_GREATER:

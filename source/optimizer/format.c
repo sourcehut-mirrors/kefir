@@ -62,30 +62,6 @@ static kefir_result_t format_operation_cmp_branch(struct kefir_json_output *json
     REQUIRE_OK(kefir_json_output_object_key(json, "type"));
     kefir_bool_t both_refs = true;
     switch (oper->parameters.branch.comparison.type) {
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT32_EQUALS:
-            REQUIRE_OK(kefir_json_output_string(json, "float32_equals"));
-            break;
-
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT32_NOT_EQUALS:
-            REQUIRE_OK(kefir_json_output_string(json, "float32_not_equals"));
-            break;
-
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT32_GREATER:
-            REQUIRE_OK(kefir_json_output_string(json, "float32_greater"));
-            break;
-
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT32_GREATER_OR_EQUALS:
-            REQUIRE_OK(kefir_json_output_string(json, "float32_greater_or_equals"));
-            break;
-
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT32_LESS:
-            REQUIRE_OK(kefir_json_output_string(json, "float32_less"));
-            break;
-
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT32_LESS_OR_EQUALS:
-            REQUIRE_OK(kefir_json_output_string(json, "float32_less_or_equals"));
-            break;
-
         case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_EQUALS:
             REQUIRE_OK(kefir_json_output_string(json, "float64_equals"));
             break;

@@ -26,36 +26,47 @@
 
 enum fused_branch_op_type {
     NON_FUSED_BRANCH,
-    FUSED_BRANCH_EQUAL,
-    FUSED_BRANCH_EQUAL_CONST,
-    FUSED_BRANCH_NOT_EQUAL,
-    FUSED_BRANCH_NOT_EQUAL_CONST,
-    FUSED_BRANCH_LESSER_OR_EQUAL,
-    FUSED_BRANCH_LESSER_OR_EQUAL_CONST,
-    FUSED_BRANCH_LESSER,
-    FUSED_BRANCH_LESSER_CONST,
-    FUSED_BRANCH_GREATER_OR_EQUAL,
-    FUSED_BRANCH_GREATER_OR_EQUAL_CONST,
-    FUSED_BRANCH_GREATER,
-    FUSED_BRANCH_GREATER_CONST,
-    FUSED_BRANCH_BELOW_OR_EQUAL,
-    FUSED_BRANCH_BELOW_OR_EQUAL_CONST,
-    FUSED_BRANCH_BELOW,
-    FUSED_BRANCH_BELOW_CONST,
-    FUSED_BRANCH_ABOVE_OR_EQUAL,
-    FUSED_BRANCH_ABOVE_OR_EQUAL_CONST,
-    FUSED_BRANCH_ABOVE,
-    FUSED_BRANCH_ABOVE_CONST
+    FUSED_BRANCH_INT_EQUAL,
+    FUSED_BRANCH_INT_EQUAL_CONST,
+    FUSED_BRANCH_INT_NOT_EQUAL,
+    FUSED_BRANCH_INT_NOT_EQUAL_CONST,
+    FUSED_BRANCH_INT_LESSER_OR_EQUAL,
+    FUSED_BRANCH_INT_LESSER_OR_EQUAL_CONST,
+    FUSED_BRANCH_INT_LESSER,
+    FUSED_BRANCH_INT_LESSER_CONST,
+    FUSED_BRANCH_INT_GREATER_OR_EQUAL,
+    FUSED_BRANCH_INT_GREATER_OR_EQUAL_CONST,
+    FUSED_BRANCH_INT_GREATER,
+    FUSED_BRANCH_INT_GREATER_CONST,
+    FUSED_BRANCH_INT_BELOW_OR_EQUAL,
+    FUSED_BRANCH_INT_BELOW_OR_EQUAL_CONST,
+    FUSED_BRANCH_INT_BELOW,
+    FUSED_BRANCH_INT_BELOW_CONST,
+    FUSED_BRANCH_INT_ABOVE_OR_EQUAL,
+    FUSED_BRANCH_INT_ABOVE_OR_EQUAL_CONST,
+    FUSED_BRANCH_INT_ABOVE,
+    FUSED_BRANCH_INT_ABOVE_CONST,
+    FUSED_BRANCH_FLOAT32_EQUAL,
+    FUSED_BRANCH_FLOAT32_EQUAL_CONST,
+    FUSED_BRANCH_FLOAT32_NOT_EQUAL,
+    FUSED_BRANCH_FLOAT32_NOT_EQUAL_CONST,
+    FUSED_BRANCH_FLOAT32_GREATER,
+    FUSED_BRANCH_FLOAT32_GREATER_CONST,
+    FUSED_BRANCH_FLOAT32_GREATER_OR_EQUAL,
+    FUSED_BRANCH_FLOAT32_GREATER_OR_EQUAL_CONST,
+    FUSED_BRANCH_FLOAT32_LESSER,
+    FUSED_BRANCH_FLOAT32_LESSER_CONST,
+    FUSED_BRANCH_FLOAT32_LESSER_OR_EQUAL,
+    FUSED_BRANCH_FLOAT32_LESSER_OR_EQUAL_CONST
 };
 
 struct fused_branch_op {
     enum fused_branch_op_type type;
+    kefir_opt_instruction_ref_t refs[2];
     union {
-        kefir_opt_instruction_ref_t refs[2];
-        struct {
-            kefir_opt_instruction_ref_t ref;
-            kefir_int64_t value;
-        };
+        kefir_int64_t int_value;
+        kefir_float32_t float32_value;
+        kefir_float64_t float64_value;
     };
 };
 
@@ -73,103 +84,150 @@ static kefir_result_t is_fused_branch(struct kefir_codegen_amd64_function *funct
                                                   &arg2_instr));                                                     \
         if (arg_instr->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST) {                                             \
             fused_op->type = (_const_opcode);                                                                        \
-            fused_op->ref = arg2_instr->id;                                                                          \
-            fused_op->value = arg_instr->operation.parameters.imm.integer;                                           \
+            fused_op->refs[0] = arg2_instr->id;                                                                      \
+            fused_op->refs[1] = arg_instr->id;                                                                       \
+            fused_op->int_value = arg_instr->operation.parameters.imm.integer;                                       \
         } else if (arg_instr->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST) {                                     \
             fused_op->type = (_const_opcode);                                                                        \
-            fused_op->ref = arg2_instr->id;                                                                          \
-            fused_op->value = arg_instr->operation.parameters.imm.uinteger;                                          \
+            fused_op->refs[0] = arg2_instr->id;                                                                      \
+            fused_op->refs[1] = arg_instr->id;                                                                       \
+            fused_op->int_value = arg_instr->operation.parameters.imm.uinteger;                                      \
         } else if (arg2_instr->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST) {                                     \
             fused_op->type = (_const_opcode);                                                                        \
-            fused_op->ref = arg_instr->id;                                                                           \
-            fused_op->value = arg2_instr->operation.parameters.imm.integer;                                          \
+            fused_op->refs[0] = arg_instr->id;                                                                       \
+            fused_op->refs[1] = arg2_instr->id;                                                                      \
+            fused_op->int_value = arg2_instr->operation.parameters.imm.integer;                                      \
         } else if (arg2_instr->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST) {                                    \
             fused_op->type = (_const_opcode);                                                                        \
-            fused_op->ref = arg_instr->id;                                                                           \
-            fused_op->value = arg2_instr->operation.parameters.imm.uinteger;                                         \
+            fused_op->refs[0] = arg_instr->id;                                                                       \
+            fused_op->refs[1] = arg2_instr->id;                                                                      \
+            fused_op->int_value = arg2_instr->operation.parameters.imm.uinteger;                                     \
         } else {                                                                                                     \
             fused_op->type = (_opcode);                                                                              \
             fused_op->refs[0] = arg_instr->id;                                                                       \
             fused_op->refs[1] = arg2_instr->id;                                                                      \
         }                                                                                                            \
     } while (0)
-#define CONST_OP(_instr, _opcode)                                         \
-    do {                                                                  \
-        fused_op->type = (_opcode);                                       \
-        fused_op->ref = (_instr)->operation.parameters.ref_imm.refs[0];   \
-        fused_op->value = (_instr)->operation.parameters.ref_imm.integer; \
+#define CONST_OP(_instr, _opcode)                                             \
+    do {                                                                      \
+        fused_op->type = (_opcode);                                           \
+        fused_op->refs[0] = (_instr)->operation.parameters.ref_imm.refs[0];   \
+        fused_op->refs[1] = KEFIR_ID_NONE;                                    \
+        fused_op->int_value = (_instr)->operation.parameters.ref_imm.integer; \
+    } while (0)
+#define F32OP(_instr, _opcode, _const_opcode)                                                                        \
+    do {                                                                                                             \
+        REQUIRE_OK(kefir_opt_code_container_instr(&function->function->code, (_instr)->operation.parameters.refs[0], \
+                                                  &arg_instr));                                                      \
+        REQUIRE_OK(kefir_opt_code_container_instr(&function->function->code, (_instr)->operation.parameters.refs[1], \
+                                                  &arg2_instr));                                                     \
+        if (arg_instr->operation.opcode == KEFIR_OPT_OPCODE_FLOAT32_CONST) {                                         \
+            fused_op->type = (_const_opcode);                                                                        \
+            fused_op->refs[0] = arg2_instr->id;                                                                      \
+            fused_op->refs[1] = arg_instr->id;                                                                       \
+            fused_op->float32_value = arg_instr->operation.parameters.imm.float32;                                   \
+        } else if (arg2_instr->operation.opcode == KEFIR_OPT_OPCODE_FLOAT32_CONST) {                                 \
+            fused_op->type = (_const_opcode);                                                                        \
+            fused_op->refs[0] = arg_instr->id;                                                                       \
+            fused_op->refs[1] = arg2_instr->id;                                                                      \
+            fused_op->float32_value = arg2_instr->operation.parameters.imm.float32;                                  \
+        } else {                                                                                                     \
+            fused_op->type = (_opcode);                                                                              \
+            fused_op->refs[0] = arg_instr->id;                                                                       \
+            fused_op->refs[1] = arg2_instr->id;                                                                      \
+        }                                                                                                            \
     } while (0)
     switch (condition_instr->operation.opcode) {
         case KEFIR_OPT_OPCODE_INT_EQUALS:
-            OP(condition_instr, FUSED_BRANCH_EQUAL, FUSED_BRANCH_EQUAL_CONST);
+            OP(condition_instr, FUSED_BRANCH_INT_EQUAL, FUSED_BRANCH_INT_EQUAL_CONST);
             break;
 
         case KEFIR_OPT_OPCODE_INT_EQUALS_CONST:
-            CONST_OP(condition_instr, FUSED_BRANCH_EQUAL_CONST);
+            CONST_OP(condition_instr, FUSED_BRANCH_INT_EQUAL_CONST);
             break;
 
         case KEFIR_OPT_OPCODE_INT_LESSER_OR_EQUALS:
-            OP(condition_instr, FUSED_BRANCH_LESSER_OR_EQUAL, FUSED_BRANCH_LESSER_OR_EQUAL_CONST);
+            OP(condition_instr, FUSED_BRANCH_INT_LESSER_OR_EQUAL, FUSED_BRANCH_INT_LESSER_OR_EQUAL_CONST);
             break;
 
         case KEFIR_OPT_OPCODE_INT_LESSER_OR_EQUALS_CONST:
-            CONST_OP(condition_instr, FUSED_BRANCH_LESSER_OR_EQUAL_CONST);
+            CONST_OP(condition_instr, FUSED_BRANCH_INT_LESSER_OR_EQUAL_CONST);
             break;
 
         case KEFIR_OPT_OPCODE_INT_LESSER:
-            OP(condition_instr, FUSED_BRANCH_LESSER, FUSED_BRANCH_LESSER_CONST);
+            OP(condition_instr, FUSED_BRANCH_INT_LESSER, FUSED_BRANCH_INT_LESSER_CONST);
             break;
 
         case KEFIR_OPT_OPCODE_INT_LESSER_CONST:
-            CONST_OP(condition_instr, FUSED_BRANCH_LESSER_CONST);
+            CONST_OP(condition_instr, FUSED_BRANCH_INT_LESSER_CONST);
             break;
 
         case KEFIR_OPT_OPCODE_INT_GREATER_OR_EQUALS:
-            OP(condition_instr, FUSED_BRANCH_GREATER_OR_EQUAL, FUSED_BRANCH_GREATER_OR_EQUAL_CONST);
+            OP(condition_instr, FUSED_BRANCH_INT_GREATER_OR_EQUAL, FUSED_BRANCH_INT_GREATER_OR_EQUAL_CONST);
             break;
 
         case KEFIR_OPT_OPCODE_INT_GREATER_OR_EQUALS_CONST:
-            CONST_OP(condition_instr, FUSED_BRANCH_GREATER_OR_EQUAL_CONST);
+            CONST_OP(condition_instr, FUSED_BRANCH_INT_GREATER_OR_EQUAL_CONST);
             break;
 
         case KEFIR_OPT_OPCODE_INT_GREATER:
-            OP(condition_instr, FUSED_BRANCH_GREATER, FUSED_BRANCH_GREATER_CONST);
+            OP(condition_instr, FUSED_BRANCH_INT_GREATER, FUSED_BRANCH_INT_GREATER_CONST);
             break;
 
         case KEFIR_OPT_OPCODE_INT_GREATER_CONST:
-            CONST_OP(condition_instr, FUSED_BRANCH_GREATER_CONST);
+            CONST_OP(condition_instr, FUSED_BRANCH_INT_GREATER_CONST);
             break;
 
         case KEFIR_OPT_OPCODE_INT_BELOW_OR_EQUALS:
-            OP(condition_instr, FUSED_BRANCH_BELOW_OR_EQUAL, FUSED_BRANCH_BELOW_OR_EQUAL_CONST);
+            OP(condition_instr, FUSED_BRANCH_INT_BELOW_OR_EQUAL, FUSED_BRANCH_INT_BELOW_OR_EQUAL_CONST);
             break;
 
         case KEFIR_OPT_OPCODE_INT_BELOW_OR_EQUALS_CONST:
-            CONST_OP(condition_instr, FUSED_BRANCH_BELOW_OR_EQUAL_CONST);
+            CONST_OP(condition_instr, FUSED_BRANCH_INT_BELOW_OR_EQUAL_CONST);
             break;
 
         case KEFIR_OPT_OPCODE_INT_BELOW:
-            OP(condition_instr, FUSED_BRANCH_BELOW, FUSED_BRANCH_BELOW_CONST);
+            OP(condition_instr, FUSED_BRANCH_INT_BELOW, FUSED_BRANCH_INT_BELOW_CONST);
             break;
 
         case KEFIR_OPT_OPCODE_INT_BELOW_CONST:
-            CONST_OP(condition_instr, FUSED_BRANCH_BELOW_CONST);
+            CONST_OP(condition_instr, FUSED_BRANCH_INT_BELOW_CONST);
             break;
 
         case KEFIR_OPT_OPCODE_INT_ABOVE_OR_EQUALS:
-            OP(condition_instr, FUSED_BRANCH_ABOVE_OR_EQUAL, FUSED_BRANCH_ABOVE_OR_EQUAL_CONST);
+            OP(condition_instr, FUSED_BRANCH_INT_ABOVE_OR_EQUAL, FUSED_BRANCH_INT_ABOVE_OR_EQUAL_CONST);
             break;
 
         case KEFIR_OPT_OPCODE_INT_ABOVE_OR_EQUALS_CONST:
-            CONST_OP(condition_instr, FUSED_BRANCH_ABOVE_OR_EQUAL_CONST);
+            CONST_OP(condition_instr, FUSED_BRANCH_INT_ABOVE_OR_EQUAL_CONST);
             break;
 
         case KEFIR_OPT_OPCODE_INT_ABOVE:
-            OP(condition_instr, FUSED_BRANCH_ABOVE, FUSED_BRANCH_ABOVE_CONST);
+            OP(condition_instr, FUSED_BRANCH_INT_ABOVE, FUSED_BRANCH_INT_ABOVE_CONST);
             break;
 
         case KEFIR_OPT_OPCODE_INT_ABOVE_CONST:
-            CONST_OP(condition_instr, FUSED_BRANCH_ABOVE_CONST);
+            CONST_OP(condition_instr, FUSED_BRANCH_INT_ABOVE_CONST);
+            break;
+
+        case KEFIR_OPT_OPCODE_FLOAT32_EQUALS:
+            F32OP(condition_instr, FUSED_BRANCH_FLOAT32_EQUAL, FUSED_BRANCH_FLOAT32_EQUAL_CONST);
+            break;
+
+        case KEFIR_OPT_OPCODE_FLOAT32_GREATER:
+            F32OP(condition_instr, FUSED_BRANCH_FLOAT32_GREATER, FUSED_BRANCH_FLOAT32_GREATER_CONST);
+            break;
+
+        case KEFIR_OPT_OPCODE_FLOAT32_GREATER_OR_EQUALS:
+            F32OP(condition_instr, FUSED_BRANCH_FLOAT32_GREATER_OR_EQUAL, FUSED_BRANCH_FLOAT32_GREATER_OR_EQUAL_CONST);
+            break;
+
+        case KEFIR_OPT_OPCODE_FLOAT32_LESSER:
+            F32OP(condition_instr, FUSED_BRANCH_FLOAT32_LESSER, FUSED_BRANCH_FLOAT32_LESSER_CONST);
+            break;
+
+        case KEFIR_OPT_OPCODE_FLOAT32_LESSER_OR_EQUALS:
+            F32OP(condition_instr, FUSED_BRANCH_FLOAT32_LESSER_OR_EQUAL, FUSED_BRANCH_FLOAT32_LESSER_OR_EQUAL_CONST);
             break;
 
         case KEFIR_OPT_OPCODE_BOOL_NOT:
@@ -177,75 +235,97 @@ static kefir_result_t is_fused_branch(struct kefir_codegen_amd64_function *funct
                 &function->function->code, condition_instr->operation.parameters.refs[0], &condition_instr2));
             switch (condition_instr2->operation.opcode) {
                 case KEFIR_OPT_OPCODE_INT_EQUALS:
-                    OP(condition_instr2, FUSED_BRANCH_NOT_EQUAL, FUSED_BRANCH_NOT_EQUAL_CONST);
+                    OP(condition_instr2, FUSED_BRANCH_INT_NOT_EQUAL, FUSED_BRANCH_INT_NOT_EQUAL_CONST);
                     break;
 
                 case KEFIR_OPT_OPCODE_INT_EQUALS_CONST:
-                    CONST_OP(condition_instr2, FUSED_BRANCH_NOT_EQUAL_CONST);
+                    CONST_OP(condition_instr2, FUSED_BRANCH_INT_NOT_EQUAL_CONST);
                     break;
 
                 case KEFIR_OPT_OPCODE_INT_GREATER:
-                    OP(condition_instr2, FUSED_BRANCH_LESSER_OR_EQUAL, FUSED_BRANCH_LESSER_OR_EQUAL_CONST);
+                    OP(condition_instr2, FUSED_BRANCH_INT_LESSER_OR_EQUAL, FUSED_BRANCH_INT_LESSER_OR_EQUAL_CONST);
                     break;
 
                 case KEFIR_OPT_OPCODE_INT_GREATER_CONST:
-                    CONST_OP(condition_instr2, FUSED_BRANCH_LESSER_OR_EQUAL_CONST);
+                    CONST_OP(condition_instr2, FUSED_BRANCH_INT_LESSER_OR_EQUAL_CONST);
                     break;
 
                 case KEFIR_OPT_OPCODE_INT_GREATER_OR_EQUALS:
-                    OP(condition_instr2, FUSED_BRANCH_LESSER, FUSED_BRANCH_LESSER_CONST);
+                    OP(condition_instr2, FUSED_BRANCH_INT_LESSER, FUSED_BRANCH_INT_LESSER_CONST);
                     break;
 
                 case KEFIR_OPT_OPCODE_INT_GREATER_OR_EQUALS_CONST:
-                    CONST_OP(condition_instr2, FUSED_BRANCH_LESSER_CONST);
+                    CONST_OP(condition_instr2, FUSED_BRANCH_INT_LESSER_CONST);
                     break;
 
                 case KEFIR_OPT_OPCODE_INT_LESSER:
-                    OP(condition_instr2, FUSED_BRANCH_GREATER_OR_EQUAL, FUSED_BRANCH_GREATER_OR_EQUAL_CONST);
+                    OP(condition_instr2, FUSED_BRANCH_INT_GREATER_OR_EQUAL, FUSED_BRANCH_INT_GREATER_OR_EQUAL_CONST);
                     break;
 
                 case KEFIR_OPT_OPCODE_INT_LESSER_CONST:
-                    CONST_OP(condition_instr2, FUSED_BRANCH_GREATER_OR_EQUAL_CONST);
+                    CONST_OP(condition_instr2, FUSED_BRANCH_INT_GREATER_OR_EQUAL_CONST);
                     break;
 
                 case KEFIR_OPT_OPCODE_INT_LESSER_OR_EQUALS:
-                    OP(condition_instr2, FUSED_BRANCH_GREATER, FUSED_BRANCH_GREATER_CONST);
+                    OP(condition_instr2, FUSED_BRANCH_INT_GREATER, FUSED_BRANCH_INT_GREATER_CONST);
                     break;
 
                 case KEFIR_OPT_OPCODE_INT_LESSER_OR_EQUALS_CONST:
-                    CONST_OP(condition_instr2, FUSED_BRANCH_GREATER_CONST);
+                    CONST_OP(condition_instr2, FUSED_BRANCH_INT_GREATER_CONST);
                     break;
 
                 case KEFIR_OPT_OPCODE_INT_ABOVE:
-                    OP(condition_instr2, FUSED_BRANCH_BELOW_OR_EQUAL, FUSED_BRANCH_BELOW_OR_EQUAL_CONST);
+                    OP(condition_instr2, FUSED_BRANCH_INT_BELOW_OR_EQUAL, FUSED_BRANCH_INT_BELOW_OR_EQUAL_CONST);
                     break;
 
                 case KEFIR_OPT_OPCODE_INT_ABOVE_CONST:
-                    CONST_OP(condition_instr2, FUSED_BRANCH_BELOW_OR_EQUAL_CONST);
+                    CONST_OP(condition_instr2, FUSED_BRANCH_INT_BELOW_OR_EQUAL_CONST);
                     break;
 
                 case KEFIR_OPT_OPCODE_INT_ABOVE_OR_EQUALS:
-                    OP(condition_instr2, FUSED_BRANCH_BELOW, FUSED_BRANCH_BELOW_CONST);
+                    OP(condition_instr2, FUSED_BRANCH_INT_BELOW, FUSED_BRANCH_INT_BELOW_CONST);
                     break;
 
                 case KEFIR_OPT_OPCODE_INT_ABOVE_OR_EQUALS_CONST:
-                    CONST_OP(condition_instr2, FUSED_BRANCH_BELOW_CONST);
+                    CONST_OP(condition_instr2, FUSED_BRANCH_INT_BELOW_CONST);
                     break;
 
                 case KEFIR_OPT_OPCODE_INT_BELOW:
-                    OP(condition_instr2, FUSED_BRANCH_ABOVE_OR_EQUAL, FUSED_BRANCH_ABOVE_OR_EQUAL_CONST);
+                    OP(condition_instr2, FUSED_BRANCH_INT_ABOVE_OR_EQUAL, FUSED_BRANCH_INT_ABOVE_OR_EQUAL_CONST);
                     break;
 
                 case KEFIR_OPT_OPCODE_INT_BELOW_CONST:
-                    CONST_OP(condition_instr2, FUSED_BRANCH_ABOVE_OR_EQUAL_CONST);
+                    CONST_OP(condition_instr2, FUSED_BRANCH_INT_ABOVE_OR_EQUAL_CONST);
                     break;
 
                 case KEFIR_OPT_OPCODE_INT_BELOW_OR_EQUALS:
-                    OP(condition_instr2, FUSED_BRANCH_ABOVE, FUSED_BRANCH_ABOVE_CONST);
+                    OP(condition_instr2, FUSED_BRANCH_INT_ABOVE, FUSED_BRANCH_INT_ABOVE_CONST);
                     break;
 
                 case KEFIR_OPT_OPCODE_INT_BELOW_OR_EQUALS_CONST:
-                    CONST_OP(condition_instr2, FUSED_BRANCH_ABOVE_CONST);
+                    CONST_OP(condition_instr2, FUSED_BRANCH_INT_ABOVE_CONST);
+                    break;
+
+                case KEFIR_OPT_OPCODE_FLOAT32_EQUALS:
+                    F32OP(condition_instr2, FUSED_BRANCH_FLOAT32_NOT_EQUAL, FUSED_BRANCH_FLOAT32_NOT_EQUAL_CONST);
+                    break;
+
+                case KEFIR_OPT_OPCODE_FLOAT32_LESSER_OR_EQUALS:
+                    F32OP(condition_instr2, FUSED_BRANCH_FLOAT32_GREATER, FUSED_BRANCH_FLOAT32_GREATER_CONST);
+                    break;
+
+                case KEFIR_OPT_OPCODE_FLOAT32_LESSER:
+                    F32OP(condition_instr2, FUSED_BRANCH_FLOAT32_GREATER_OR_EQUAL,
+                          FUSED_BRANCH_FLOAT32_GREATER_OR_EQUAL_CONST);
+                    break;
+
+                case KEFIR_OPT_OPCODE_FLOAT32_GREATER_OR_EQUALS:
+                    F32OP(condition_instr2, FUSED_BRANCH_FLOAT32_LESSER, FUSED_BRANCH_FLOAT32_LESSER_CONST);
+                    break;
+
+                case KEFIR_OPT_OPCODE_FLOAT32_GREATER:
+                    F32OP(condition_instr2, FUSED_BRANCH_FLOAT32_LESSER_OR_EQUAL,
+                          FUSED_BRANCH_FLOAT32_LESSER_OR_EQUAL_CONST);
                     break;
 
                 case KEFIR_OPT_OPCODE_BOOL_NOT:
@@ -253,75 +333,101 @@ static kefir_result_t is_fused_branch(struct kefir_codegen_amd64_function *funct
                         &function->function->code, condition_instr2->operation.parameters.refs[0], &condition_instr3));
                     switch (condition_instr3->operation.opcode) {
                         case KEFIR_OPT_OPCODE_INT_EQUALS:
-                            OP(condition_instr3, FUSED_BRANCH_EQUAL, FUSED_BRANCH_EQUAL_CONST);
+                            OP(condition_instr3, FUSED_BRANCH_INT_EQUAL, FUSED_BRANCH_INT_EQUAL_CONST);
                             break;
 
                         case KEFIR_OPT_OPCODE_INT_EQUALS_CONST:
-                            CONST_OP(condition_instr3, FUSED_BRANCH_EQUAL_CONST);
+                            CONST_OP(condition_instr3, FUSED_BRANCH_INT_EQUAL_CONST);
                             break;
 
                         case KEFIR_OPT_OPCODE_INT_LESSER_OR_EQUALS:
-                            OP(condition_instr3, FUSED_BRANCH_LESSER_OR_EQUAL, FUSED_BRANCH_LESSER_OR_EQUAL_CONST);
+                            OP(condition_instr3, FUSED_BRANCH_INT_LESSER_OR_EQUAL,
+                               FUSED_BRANCH_INT_LESSER_OR_EQUAL_CONST);
                             break;
 
                         case KEFIR_OPT_OPCODE_INT_LESSER_OR_EQUALS_CONST:
-                            CONST_OP(condition_instr3, FUSED_BRANCH_LESSER_OR_EQUAL_CONST);
+                            CONST_OP(condition_instr3, FUSED_BRANCH_INT_LESSER_OR_EQUAL_CONST);
                             break;
 
                         case KEFIR_OPT_OPCODE_INT_LESSER:
-                            OP(condition_instr3, FUSED_BRANCH_LESSER, FUSED_BRANCH_LESSER_CONST);
+                            OP(condition_instr3, FUSED_BRANCH_INT_LESSER, FUSED_BRANCH_INT_LESSER_CONST);
                             break;
 
                         case KEFIR_OPT_OPCODE_INT_LESSER_CONST:
-                            CONST_OP(condition_instr3, FUSED_BRANCH_LESSER_CONST);
+                            CONST_OP(condition_instr3, FUSED_BRANCH_INT_LESSER_CONST);
                             break;
 
                         case KEFIR_OPT_OPCODE_INT_GREATER_OR_EQUALS:
-                            OP(condition_instr3, FUSED_BRANCH_GREATER_OR_EQUAL, FUSED_BRANCH_GREATER_OR_EQUAL_CONST);
+                            OP(condition_instr3, FUSED_BRANCH_INT_GREATER_OR_EQUAL,
+                               FUSED_BRANCH_INT_GREATER_OR_EQUAL_CONST);
                             break;
 
                         case KEFIR_OPT_OPCODE_INT_GREATER_OR_EQUALS_CONST:
-                            CONST_OP(condition_instr3, FUSED_BRANCH_GREATER_OR_EQUAL_CONST);
+                            CONST_OP(condition_instr3, FUSED_BRANCH_INT_GREATER_OR_EQUAL_CONST);
                             break;
 
                         case KEFIR_OPT_OPCODE_INT_GREATER:
-                            OP(condition_instr3, FUSED_BRANCH_GREATER, FUSED_BRANCH_GREATER_CONST);
+                            OP(condition_instr3, FUSED_BRANCH_INT_GREATER, FUSED_BRANCH_INT_GREATER_CONST);
                             break;
 
                         case KEFIR_OPT_OPCODE_INT_GREATER_CONST:
-                            CONST_OP(condition_instr3, FUSED_BRANCH_GREATER_CONST);
+                            CONST_OP(condition_instr3, FUSED_BRANCH_INT_GREATER_CONST);
                             break;
 
                         case KEFIR_OPT_OPCODE_INT_BELOW_OR_EQUALS:
-                            OP(condition_instr3, FUSED_BRANCH_BELOW_OR_EQUAL, FUSED_BRANCH_BELOW_OR_EQUAL_CONST);
+                            OP(condition_instr3, FUSED_BRANCH_INT_BELOW_OR_EQUAL,
+                               FUSED_BRANCH_INT_BELOW_OR_EQUAL_CONST);
                             break;
 
                         case KEFIR_OPT_OPCODE_INT_BELOW_OR_EQUALS_CONST:
-                            CONST_OP(condition_instr3, FUSED_BRANCH_BELOW_OR_EQUAL_CONST);
+                            CONST_OP(condition_instr3, FUSED_BRANCH_INT_BELOW_OR_EQUAL_CONST);
                             break;
 
                         case KEFIR_OPT_OPCODE_INT_BELOW:
-                            OP(condition_instr3, FUSED_BRANCH_BELOW, FUSED_BRANCH_BELOW_CONST);
+                            OP(condition_instr3, FUSED_BRANCH_INT_BELOW, FUSED_BRANCH_INT_BELOW_CONST);
                             break;
 
                         case KEFIR_OPT_OPCODE_INT_BELOW_CONST:
-                            CONST_OP(condition_instr3, FUSED_BRANCH_BELOW_CONST);
+                            CONST_OP(condition_instr3, FUSED_BRANCH_INT_BELOW_CONST);
                             break;
 
                         case KEFIR_OPT_OPCODE_INT_ABOVE_OR_EQUALS:
-                            OP(condition_instr3, FUSED_BRANCH_ABOVE_OR_EQUAL, FUSED_BRANCH_ABOVE_OR_EQUAL_CONST);
+                            OP(condition_instr3, FUSED_BRANCH_INT_ABOVE_OR_EQUAL,
+                               FUSED_BRANCH_INT_ABOVE_OR_EQUAL_CONST);
                             break;
 
                         case KEFIR_OPT_OPCODE_INT_ABOVE_OR_EQUALS_CONST:
-                            CONST_OP(condition_instr3, FUSED_BRANCH_ABOVE_OR_EQUAL_CONST);
+                            CONST_OP(condition_instr3, FUSED_BRANCH_INT_ABOVE_OR_EQUAL_CONST);
                             break;
 
                         case KEFIR_OPT_OPCODE_INT_ABOVE:
-                            OP(condition_instr3, FUSED_BRANCH_ABOVE, FUSED_BRANCH_ABOVE_CONST);
+                            OP(condition_instr3, FUSED_BRANCH_INT_ABOVE, FUSED_BRANCH_INT_ABOVE_CONST);
                             break;
 
                         case KEFIR_OPT_OPCODE_INT_ABOVE_CONST:
-                            CONST_OP(condition_instr3, FUSED_BRANCH_ABOVE_CONST);
+                            CONST_OP(condition_instr3, FUSED_BRANCH_INT_ABOVE_CONST);
+                            break;
+
+                        case KEFIR_OPT_OPCODE_FLOAT32_EQUALS:
+                            F32OP(condition_instr3, FUSED_BRANCH_FLOAT32_EQUAL, FUSED_BRANCH_FLOAT32_EQUAL_CONST);
+                            break;
+
+                        case KEFIR_OPT_OPCODE_FLOAT32_GREATER:
+                            F32OP(condition_instr3, FUSED_BRANCH_FLOAT32_GREATER, FUSED_BRANCH_FLOAT32_GREATER_CONST);
+                            break;
+
+                        case KEFIR_OPT_OPCODE_FLOAT32_GREATER_OR_EQUALS:
+                            F32OP(condition_instr3, FUSED_BRANCH_FLOAT32_GREATER_OR_EQUAL,
+                                  FUSED_BRANCH_FLOAT32_GREATER_OR_EQUAL_CONST);
+                            break;
+
+                        case KEFIR_OPT_OPCODE_FLOAT32_LESSER:
+                            F32OP(condition_instr3, FUSED_BRANCH_FLOAT32_LESSER, FUSED_BRANCH_FLOAT32_LESSER_CONST);
+                            break;
+
+                        case KEFIR_OPT_OPCODE_FLOAT32_LESSER_OR_EQUALS:
+                            F32OP(condition_instr3, FUSED_BRANCH_FLOAT32_LESSER_OR_EQUAL,
+                                  FUSED_BRANCH_FLOAT32_LESSER_OR_EQUAL_CONST);
                             break;
 
                         default:
@@ -362,31 +468,43 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_FUSION_IMPL(branch)(
             REQUIRE_OK(callback(instruction->operation.parameters.branch.condition_ref, payload));
             break;
 
-        case FUSED_BRANCH_EQUAL:
-        case FUSED_BRANCH_NOT_EQUAL:
-        case FUSED_BRANCH_GREATER:
-        case FUSED_BRANCH_GREATER_OR_EQUAL:
-        case FUSED_BRANCH_LESSER:
-        case FUSED_BRANCH_LESSER_OR_EQUAL:
-        case FUSED_BRANCH_ABOVE:
-        case FUSED_BRANCH_ABOVE_OR_EQUAL:
-        case FUSED_BRANCH_BELOW:
-        case FUSED_BRANCH_BELOW_OR_EQUAL:
+        case FUSED_BRANCH_INT_EQUAL:
+        case FUSED_BRANCH_INT_NOT_EQUAL:
+        case FUSED_BRANCH_INT_GREATER:
+        case FUSED_BRANCH_INT_GREATER_OR_EQUAL:
+        case FUSED_BRANCH_INT_LESSER:
+        case FUSED_BRANCH_INT_LESSER_OR_EQUAL:
+        case FUSED_BRANCH_INT_ABOVE:
+        case FUSED_BRANCH_INT_ABOVE_OR_EQUAL:
+        case FUSED_BRANCH_INT_BELOW:
+        case FUSED_BRANCH_INT_BELOW_OR_EQUAL:
+        case FUSED_BRANCH_FLOAT32_EQUAL:
+        case FUSED_BRANCH_FLOAT32_NOT_EQUAL:
+        case FUSED_BRANCH_FLOAT32_GREATER:
+        case FUSED_BRANCH_FLOAT32_GREATER_OR_EQUAL:
+        case FUSED_BRANCH_FLOAT32_LESSER:
+        case FUSED_BRANCH_FLOAT32_LESSER_OR_EQUAL:
             REQUIRE_OK(callback(fused_op.refs[0], payload));
             REQUIRE_OK(callback(fused_op.refs[1], payload));
             break;
 
-        case FUSED_BRANCH_EQUAL_CONST:
-        case FUSED_BRANCH_NOT_EQUAL_CONST:
-        case FUSED_BRANCH_GREATER_CONST:
-        case FUSED_BRANCH_GREATER_OR_EQUAL_CONST:
-        case FUSED_BRANCH_LESSER_CONST:
-        case FUSED_BRANCH_LESSER_OR_EQUAL_CONST:
-        case FUSED_BRANCH_ABOVE_CONST:
-        case FUSED_BRANCH_ABOVE_OR_EQUAL_CONST:
-        case FUSED_BRANCH_BELOW_CONST:
-        case FUSED_BRANCH_BELOW_OR_EQUAL_CONST:
-            REQUIRE_OK(callback(fused_op.ref, payload));
+        case FUSED_BRANCH_INT_EQUAL_CONST:
+        case FUSED_BRANCH_INT_NOT_EQUAL_CONST:
+        case FUSED_BRANCH_INT_GREATER_CONST:
+        case FUSED_BRANCH_INT_GREATER_OR_EQUAL_CONST:
+        case FUSED_BRANCH_INT_LESSER_CONST:
+        case FUSED_BRANCH_INT_LESSER_OR_EQUAL_CONST:
+        case FUSED_BRANCH_INT_ABOVE_CONST:
+        case FUSED_BRANCH_INT_ABOVE_OR_EQUAL_CONST:
+        case FUSED_BRANCH_INT_BELOW_CONST:
+        case FUSED_BRANCH_INT_BELOW_OR_EQUAL_CONST:
+        case FUSED_BRANCH_FLOAT32_EQUAL_CONST:
+        case FUSED_BRANCH_FLOAT32_NOT_EQUAL_CONST:
+        case FUSED_BRANCH_FLOAT32_GREATER_CONST:
+        case FUSED_BRANCH_FLOAT32_GREATER_OR_EQUAL_CONST:
+        case FUSED_BRANCH_FLOAT32_LESSER_CONST:
+        case FUSED_BRANCH_FLOAT32_LESSER_OR_EQUAL_CONST:
+            REQUIRE_OK(callback(fused_op.refs[0], payload));
             break;
     }
     return KEFIR_OK;
@@ -572,47 +690,79 @@ static kefir_result_t fused_branch_impl(struct kefir_mem *mem, struct kefir_code
     REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, fused_op->refs[0], &arg1_vreg_idx));
 
     switch (fused_op->type) {
-        case FUSED_BRANCH_EQUAL:
-        case FUSED_BRANCH_NOT_EQUAL:
-        case FUSED_BRANCH_GREATER:
-        case FUSED_BRANCH_GREATER_OR_EQUAL:
-        case FUSED_BRANCH_LESSER:
-        case FUSED_BRANCH_LESSER_OR_EQUAL:
-        case FUSED_BRANCH_ABOVE:
-        case FUSED_BRANCH_ABOVE_OR_EQUAL:
-        case FUSED_BRANCH_BELOW:
-        case FUSED_BRANCH_BELOW_OR_EQUAL:
+        case FUSED_BRANCH_INT_EQUAL:
+        case FUSED_BRANCH_INT_NOT_EQUAL:
+        case FUSED_BRANCH_INT_GREATER:
+        case FUSED_BRANCH_INT_GREATER_OR_EQUAL:
+        case FUSED_BRANCH_INT_LESSER:
+        case FUSED_BRANCH_INT_LESSER_OR_EQUAL:
+        case FUSED_BRANCH_INT_ABOVE:
+        case FUSED_BRANCH_INT_ABOVE_OR_EQUAL:
+        case FUSED_BRANCH_INT_BELOW:
+        case FUSED_BRANCH_INT_BELOW_OR_EQUAL:
             REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, fused_op->refs[1], &arg2_vreg_idx));
             REQUIRE_OK(kefir_asmcmp_amd64_cmp(
                 mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                 &KEFIR_ASMCMP_MAKE_VREG(arg1_vreg_idx), &KEFIR_ASMCMP_MAKE_VREG(arg2_vreg_idx), NULL));
             break;
 
-        case FUSED_BRANCH_EQUAL_CONST:
-        case FUSED_BRANCH_NOT_EQUAL_CONST:
-        case FUSED_BRANCH_GREATER_CONST:
-        case FUSED_BRANCH_GREATER_OR_EQUAL_CONST:
-        case FUSED_BRANCH_LESSER_CONST:
-        case FUSED_BRANCH_LESSER_OR_EQUAL_CONST:
-        case FUSED_BRANCH_ABOVE_CONST:
-        case FUSED_BRANCH_ABOVE_OR_EQUAL_CONST:
-        case FUSED_BRANCH_BELOW_CONST:
-        case FUSED_BRANCH_BELOW_OR_EQUAL_CONST:
-            if (fused_op->value >= KEFIR_INT32_MIN && fused_op->value <= KEFIR_INT32_MAX) {
+        case FUSED_BRANCH_INT_EQUAL_CONST:
+        case FUSED_BRANCH_INT_NOT_EQUAL_CONST:
+        case FUSED_BRANCH_INT_GREATER_CONST:
+        case FUSED_BRANCH_INT_GREATER_OR_EQUAL_CONST:
+        case FUSED_BRANCH_INT_LESSER_CONST:
+        case FUSED_BRANCH_INT_LESSER_OR_EQUAL_CONST:
+        case FUSED_BRANCH_INT_ABOVE_CONST:
+        case FUSED_BRANCH_INT_ABOVE_OR_EQUAL_CONST:
+        case FUSED_BRANCH_INT_BELOW_CONST:
+        case FUSED_BRANCH_INT_BELOW_OR_EQUAL_CONST:
+            if (fused_op->int_value >= KEFIR_INT32_MIN && fused_op->int_value <= KEFIR_INT32_MAX) {
                 REQUIRE_OK(kefir_asmcmp_amd64_cmp(
                     mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                    &KEFIR_ASMCMP_MAKE_VREG64(arg1_vreg_idx), &KEFIR_ASMCMP_MAKE_INT(fused_op->value), NULL));
+                    &KEFIR_ASMCMP_MAKE_VREG64(arg1_vreg_idx), &KEFIR_ASMCMP_MAKE_INT(fused_op->int_value), NULL));
             } else {
                 REQUIRE_OK(kefir_asmcmp_virtual_register_new(
                     mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &arg2_vreg_idx));
                 REQUIRE_OK(kefir_asmcmp_amd64_movabs(
                     mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                    &KEFIR_ASMCMP_MAKE_VREG(arg2_vreg_idx), &KEFIR_ASMCMP_MAKE_INT(fused_op->value), NULL));
+                    &KEFIR_ASMCMP_MAKE_VREG(arg2_vreg_idx), &KEFIR_ASMCMP_MAKE_INT(fused_op->int_value), NULL));
                 REQUIRE_OK(kefir_asmcmp_amd64_cmp(
                     mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                     &KEFIR_ASMCMP_MAKE_VREG(arg1_vreg_idx), &KEFIR_ASMCMP_MAKE_VREG(arg2_vreg_idx), NULL));
             }
             break;
+
+        case FUSED_BRANCH_FLOAT32_EQUAL:
+        case FUSED_BRANCH_FLOAT32_NOT_EQUAL:
+        case FUSED_BRANCH_FLOAT32_GREATER:
+        case FUSED_BRANCH_FLOAT32_GREATER_OR_EQUAL:
+        case FUSED_BRANCH_FLOAT32_LESSER:
+        case FUSED_BRANCH_FLOAT32_LESSER_OR_EQUAL:
+            REQUIRE_OK(kefir_codegen_amd64_stack_frame_preserve_mxcsr(&function->stack_frame));
+            REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, fused_op->refs[1], &arg2_vreg_idx));
+            REQUIRE_OK(kefir_asmcmp_amd64_ucomiss(
+                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                &KEFIR_ASMCMP_MAKE_VREG(arg1_vreg_idx), &KEFIR_ASMCMP_MAKE_VREG(arg2_vreg_idx), NULL));
+            break;
+
+        case FUSED_BRANCH_FLOAT32_EQUAL_CONST:
+        case FUSED_BRANCH_FLOAT32_NOT_EQUAL_CONST:
+        case FUSED_BRANCH_FLOAT32_GREATER_CONST:
+        case FUSED_BRANCH_FLOAT32_GREATER_OR_EQUAL_CONST:
+        case FUSED_BRANCH_FLOAT32_LESSER_CONST:
+        case FUSED_BRANCH_FLOAT32_LESSER_OR_EQUAL_CONST: {
+            REQUIRE_OK(kefir_codegen_amd64_stack_frame_preserve_mxcsr(&function->stack_frame));
+            kefir_asmcmp_label_index_t label;
+            REQUIRE_OK(kefir_asmcmp_context_new_label(mem, &function->code.context, KEFIR_ASMCMP_INDEX_NONE, &label));
+
+            REQUIRE_OK(kefir_hashtree_insert(mem, &function->constants, (kefir_hashtree_key_t) label,
+                                             (kefir_hashtree_value_t) fused_op->refs[1]));
+
+            REQUIRE_OK(kefir_asmcmp_amd64_ucomiss(
+                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                &KEFIR_ASMCMP_MAKE_VREG(arg1_vreg_idx),
+                &KEFIR_ASMCMP_MAKE_INDIRECT_INTERNAL_LABEL(label, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT), NULL));
+        } break;
 
         case NON_FUSED_BRANCH:
             return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected fused branch type");
@@ -633,71 +783,124 @@ static kefir_result_t fused_branch_impl(struct kefir_mem *mem, struct kefir_code
     }
 
     switch (fused_op->type) {
-        case FUSED_BRANCH_EQUAL:
-        case FUSED_BRANCH_EQUAL_CONST:
+        case FUSED_BRANCH_INT_EQUAL:
+        case FUSED_BRANCH_INT_EQUAL_CONST:
             REQUIRE_OK(kefir_asmcmp_amd64_jne(mem, &function->code,
                                               kefir_asmcmp_context_instr_tail(&function->code.context),
                                               &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(branch_label_idx), NULL));
             break;
 
-        case FUSED_BRANCH_NOT_EQUAL:
-        case FUSED_BRANCH_NOT_EQUAL_CONST:
+        case FUSED_BRANCH_INT_NOT_EQUAL:
+        case FUSED_BRANCH_INT_NOT_EQUAL_CONST:
             REQUIRE_OK(kefir_asmcmp_amd64_je(mem, &function->code,
                                              kefir_asmcmp_context_instr_tail(&function->code.context),
                                              &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(branch_label_idx), NULL));
             break;
 
-        case FUSED_BRANCH_GREATER:
-        case FUSED_BRANCH_GREATER_CONST:
+        case FUSED_BRANCH_INT_GREATER:
+        case FUSED_BRANCH_INT_GREATER_CONST:
             REQUIRE_OK(kefir_asmcmp_amd64_jle(mem, &function->code,
                                               kefir_asmcmp_context_instr_tail(&function->code.context),
                                               &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(branch_label_idx), NULL));
             break;
 
-        case FUSED_BRANCH_GREATER_OR_EQUAL:
-        case FUSED_BRANCH_GREATER_OR_EQUAL_CONST:
+        case FUSED_BRANCH_INT_GREATER_OR_EQUAL:
+        case FUSED_BRANCH_INT_GREATER_OR_EQUAL_CONST:
             REQUIRE_OK(kefir_asmcmp_amd64_jl(mem, &function->code,
                                              kefir_asmcmp_context_instr_tail(&function->code.context),
                                              &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(branch_label_idx), NULL));
             break;
 
-        case FUSED_BRANCH_LESSER:
-        case FUSED_BRANCH_LESSER_CONST:
+        case FUSED_BRANCH_INT_LESSER:
+        case FUSED_BRANCH_INT_LESSER_CONST:
             REQUIRE_OK(kefir_asmcmp_amd64_jge(mem, &function->code,
                                               kefir_asmcmp_context_instr_tail(&function->code.context),
                                               &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(branch_label_idx), NULL));
             break;
 
-        case FUSED_BRANCH_LESSER_OR_EQUAL:
-        case FUSED_BRANCH_LESSER_OR_EQUAL_CONST:
+        case FUSED_BRANCH_INT_LESSER_OR_EQUAL:
+        case FUSED_BRANCH_INT_LESSER_OR_EQUAL_CONST:
             REQUIRE_OK(kefir_asmcmp_amd64_jg(mem, &function->code,
                                              kefir_asmcmp_context_instr_tail(&function->code.context),
                                              &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(branch_label_idx), NULL));
             break;
 
-        case FUSED_BRANCH_ABOVE:
-        case FUSED_BRANCH_ABOVE_CONST:
+        case FUSED_BRANCH_INT_ABOVE:
+        case FUSED_BRANCH_INT_ABOVE_CONST:
             REQUIRE_OK(kefir_asmcmp_amd64_jbe(mem, &function->code,
                                               kefir_asmcmp_context_instr_tail(&function->code.context),
                                               &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(branch_label_idx), NULL));
             break;
 
-        case FUSED_BRANCH_ABOVE_OR_EQUAL:
-        case FUSED_BRANCH_ABOVE_OR_EQUAL_CONST:
+        case FUSED_BRANCH_INT_ABOVE_OR_EQUAL:
+        case FUSED_BRANCH_INT_ABOVE_OR_EQUAL_CONST:
             REQUIRE_OK(kefir_asmcmp_amd64_jb(mem, &function->code,
                                              kefir_asmcmp_context_instr_tail(&function->code.context),
                                              &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(branch_label_idx), NULL));
             break;
 
-        case FUSED_BRANCH_BELOW:
-        case FUSED_BRANCH_BELOW_CONST:
+        case FUSED_BRANCH_INT_BELOW:
+        case FUSED_BRANCH_INT_BELOW_CONST:
             REQUIRE_OK(kefir_asmcmp_amd64_jae(mem, &function->code,
                                               kefir_asmcmp_context_instr_tail(&function->code.context),
                                               &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(branch_label_idx), NULL));
             break;
 
-        case FUSED_BRANCH_BELOW_OR_EQUAL:
-        case FUSED_BRANCH_BELOW_OR_EQUAL_CONST:
+        case FUSED_BRANCH_INT_BELOW_OR_EQUAL:
+        case FUSED_BRANCH_INT_BELOW_OR_EQUAL_CONST:
+            REQUIRE_OK(kefir_asmcmp_amd64_ja(mem, &function->code,
+                                             kefir_asmcmp_context_instr_tail(&function->code.context),
+                                             &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(branch_label_idx), NULL));
+            break;
+
+        case FUSED_BRANCH_FLOAT32_EQUAL:
+        case FUSED_BRANCH_FLOAT32_EQUAL_CONST:
+            REQUIRE_OK(kefir_asmcmp_amd64_jp(mem, &function->code,
+                                             kefir_asmcmp_context_instr_tail(&function->code.context),
+                                             &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(branch_label_idx), NULL));
+            REQUIRE_OK(kefir_asmcmp_amd64_jne(mem, &function->code,
+                                              kefir_asmcmp_context_instr_tail(&function->code.context),
+                                              &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(branch_label_idx), NULL));
+            break;
+
+        case FUSED_BRANCH_FLOAT32_NOT_EQUAL:
+        case FUSED_BRANCH_FLOAT32_NOT_EQUAL_CONST: {
+            kefir_asmcmp_label_index_t p_label;
+            REQUIRE_OK(kefir_asmcmp_context_new_label(mem, &function->code.context, KEFIR_ASMCMP_INDEX_NONE, &p_label));
+
+            REQUIRE_OK(kefir_asmcmp_amd64_jp(mem, &function->code,
+                                             kefir_asmcmp_context_instr_tail(&function->code.context),
+                                             &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(p_label), NULL));
+            REQUIRE_OK(kefir_asmcmp_amd64_je(mem, &function->code,
+                                             kefir_asmcmp_context_instr_tail(&function->code.context),
+                                             &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(branch_label_idx), NULL));
+
+            REQUIRE_OK(kefir_asmcmp_context_bind_label_after_tail(mem, &function->code.context, p_label));
+        } break;
+
+        case FUSED_BRANCH_FLOAT32_GREATER:
+        case FUSED_BRANCH_FLOAT32_GREATER_CONST:
+            REQUIRE_OK(kefir_asmcmp_amd64_jbe(mem, &function->code,
+                                              kefir_asmcmp_context_instr_tail(&function->code.context),
+                                              &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(branch_label_idx), NULL));
+            break;
+
+        case FUSED_BRANCH_FLOAT32_GREATER_OR_EQUAL:
+        case FUSED_BRANCH_FLOAT32_GREATER_OR_EQUAL_CONST:
+            REQUIRE_OK(kefir_asmcmp_amd64_jb(mem, &function->code,
+                                             kefir_asmcmp_context_instr_tail(&function->code.context),
+                                             &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(branch_label_idx), NULL));
+            break;
+
+        case FUSED_BRANCH_FLOAT32_LESSER:
+        case FUSED_BRANCH_FLOAT32_LESSER_CONST:
+            REQUIRE_OK(kefir_asmcmp_amd64_jae(mem, &function->code,
+                                              kefir_asmcmp_context_instr_tail(&function->code.context),
+                                              &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(branch_label_idx), NULL));
+            break;
+
+        case FUSED_BRANCH_FLOAT32_LESSER_OR_EQUAL:
+        case FUSED_BRANCH_FLOAT32_LESSER_OR_EQUAL_CONST:
             REQUIRE_OK(kefir_asmcmp_amd64_ja(mem, &function->code,
                                              kefir_asmcmp_context_instr_tail(&function->code.context),
                                              &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(branch_label_idx), NULL));
@@ -829,26 +1032,6 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(compare_branch)(struct kefir
         function, instruction->operation.parameters.branch.comparison.refs[0], &arg1_vreg_idx));
 
     switch (instruction->operation.parameters.branch.comparison.type) {
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT32_EQUALS:
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT32_NOT_EQUALS:
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT32_GREATER:
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT32_GREATER_OR_EQUALS:
-            REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(
-                function, instruction->operation.parameters.branch.comparison.refs[1], &arg2_vreg_idx));
-            REQUIRE_OK(kefir_asmcmp_amd64_ucomiss(
-                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                &KEFIR_ASMCMP_MAKE_VREG(arg1_vreg_idx), &KEFIR_ASMCMP_MAKE_VREG(arg2_vreg_idx), NULL));
-            break;
-
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT32_LESS:
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT32_LESS_OR_EQUALS:
-            REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(
-                function, instruction->operation.parameters.branch.comparison.refs[1], &arg2_vreg_idx));
-            REQUIRE_OK(kefir_asmcmp_amd64_ucomiss(
-                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                &KEFIR_ASMCMP_MAKE_VREG(arg2_vreg_idx), &KEFIR_ASMCMP_MAKE_VREG(arg1_vreg_idx), NULL));
-            break;
-
         case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_EQUALS:
         case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_NOT_EQUALS:
         case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_GREATER:
@@ -885,7 +1068,6 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(compare_branch)(struct kefir
     }
 
     switch (instruction->operation.parameters.branch.comparison.type) {
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT32_EQUALS:
         case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_EQUALS:
             REQUIRE_OK(kefir_asmcmp_amd64_jp(mem, &function->code,
                                              kefir_asmcmp_context_instr_tail(&function->code.context),
@@ -895,7 +1077,6 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(compare_branch)(struct kefir
                                               &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(branch_label_idx), NULL));
             break;
 
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT32_NOT_EQUALS:
         case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_NOT_EQUALS: {
             kefir_asmcmp_label_index_t p_label;
             REQUIRE_OK(kefir_asmcmp_context_new_label(mem, &function->code.context, KEFIR_ASMCMP_INDEX_NONE, &p_label));
@@ -910,27 +1091,18 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(compare_branch)(struct kefir
             REQUIRE_OK(kefir_asmcmp_context_bind_label_after_tail(mem, &function->code.context, p_label));
         } break;
 
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT32_GREATER:
         case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_GREATER:
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT32_LESS:
         case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_LESS:
             REQUIRE_OK(kefir_asmcmp_amd64_jbe(mem, &function->code,
                                               kefir_asmcmp_context_instr_tail(&function->code.context),
                                               &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(branch_label_idx), NULL));
             break;
 
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT32_GREATER_OR_EQUALS:
         case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_GREATER_OR_EQUALS:
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT32_LESS_OR_EQUALS:
         case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_LESS_OR_EQUALS:
             REQUIRE_OK(kefir_asmcmp_amd64_jb(mem, &function->code,
                                              kefir_asmcmp_context_instr_tail(&function->code.context),
                                              &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(branch_label_idx), NULL));
-            break;
-
-            REQUIRE_OK(kefir_asmcmp_amd64_jbe(mem, &function->code,
-                                              kefir_asmcmp_context_instr_tail(&function->code.context),
-                                              &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(branch_label_idx), NULL));
             break;
     }
 

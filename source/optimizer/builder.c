@@ -214,12 +214,6 @@ kefir_result_t kefir_opt_code_builder_compare_branch(struct kefir_mem *mem, stru
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
 
     switch (comparison_type) {
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT32_EQUALS:
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT32_NOT_EQUALS:
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT32_GREATER:
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT32_GREATER_OR_EQUALS:
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT32_LESS:
-        case KEFIR_OPT_COMPARE_BRANCH_FLOAT32_LESS_OR_EQUALS:
         case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_EQUALS:
         case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_NOT_EQUALS:
         case KEFIR_OPT_COMPARE_BRANCH_FLOAT64_GREATER:

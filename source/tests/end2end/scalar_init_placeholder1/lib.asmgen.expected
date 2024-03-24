@@ -65,15 +65,8 @@ test3:
     stmxcsr -8(%rbp)
 _kefir_func_test3_label0:
 _kefir_func_test3_label1:
-    movd _kefir_func_test3_label4(%rip), %xmm2
-    mov $0, %rax
-    comiss %xmm2, %xmm0
-    seta %al
-    mov $0, %rcx
-    test %rax, %rax
-    sete %cl
-    test %rcx, %rcx
-    jz _kefir_func_test3_label5
+    ucomiss (_kefir_func_test3_label4), %xmm0
+    ja _kefir_func_test3_label5
     jmp _kefir_func_test3_label3
 _kefir_func_test3_label5:
 _kefir_func_test3_label2:
