@@ -245,6 +245,8 @@ kefir_result_t kefir_opt_code_container_instr(const struct kefir_opt_code_contai
                                               kefir_opt_instruction_ref_t instr_id,
                                               struct kefir_opt_instruction **instr_ptr) {
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
+    if (!(instr_id != KEFIR_ID_NONE && instr_id < code->length))
+        abort();
     REQUIRE(instr_id != KEFIR_ID_NONE && instr_id < code->length,
             KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS,
                             "Requested optimizer instruction identifier is out of bounds of the code container"));

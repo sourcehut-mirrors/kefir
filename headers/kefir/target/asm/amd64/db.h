@@ -175,6 +175,8 @@
         KEFIR_AMD64_INSTRDB_SETCC_TARGET) _separator \
     _instr1(setnp, "setnp", , KEFIR_AMD64_INSTRDB_NONE, \
         KEFIR_AMD64_INSTRDB_SETCC_TARGET) _separator \
+    _instr1(setp, "setp", , KEFIR_AMD64_INSTRDB_NONE, \
+        KEFIR_AMD64_INSTRDB_SETCC_TARGET) _separator \
     _instr1(setg, "setg", , KEFIR_AMD64_INSTRDB_NONE, \
         KEFIR_AMD64_INSTRDB_SETCC_TARGET) _separator \
     _instr1(setge, "setge", , KEFIR_AMD64_INSTRDB_NONE, \

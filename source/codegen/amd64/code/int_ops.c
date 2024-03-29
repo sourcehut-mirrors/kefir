@@ -37,27 +37,27 @@ kefir_result_t kefir_codegen_amd64_match_comparison_op(const struct kefir_opt_co
     struct kefir_opt_instruction *instr, *condition_instr2, *condition_instr3, *arg_instr, *arg2_instr;
     REQUIRE_OK(kefir_opt_code_container_instr(code, instr_ref, &instr));
     switch (instr->operation.opcode) {
-#define OP(_instr, _opcode, _const_opcode)                                                                     \
+#define OP(_instr, _opcode, _const_opcode1, _const_opcode2)                                                    \
     do {                                                                                                       \
         REQUIRE_OK(kefir_opt_code_container_instr(code, (_instr)->operation.parameters.refs[0], &arg_instr));  \
         REQUIRE_OK(kefir_opt_code_container_instr(code, (_instr)->operation.parameters.refs[1], &arg2_instr)); \
         if (arg_instr->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST) {                                       \
-            match_op->type = (_const_opcode);                                                                  \
+            match_op->type = (_const_opcode2);                                                                 \
             match_op->refs[0] = arg2_instr->id;                                                                \
             match_op->refs[1] = arg_instr->id;                                                                 \
             match_op->int_value = arg_instr->operation.parameters.imm.integer;                                 \
         } else if (arg_instr->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST) {                               \
-            match_op->type = (_const_opcode);                                                                  \
+            match_op->type = (_const_opcode2);                                                                 \
             match_op->refs[0] = arg2_instr->id;                                                                \
             match_op->refs[1] = arg_instr->id;                                                                 \
             match_op->int_value = arg_instr->operation.parameters.imm.uinteger;                                \
         } else if (arg2_instr->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST) {                               \
-            match_op->type = (_const_opcode);                                                                  \
+            match_op->type = (_const_opcode1);                                                                 \
             match_op->refs[0] = arg_instr->id;                                                                 \
             match_op->refs[1] = arg2_instr->id;                                                                \
             match_op->int_value = arg2_instr->operation.parameters.imm.integer;                                \
         } else if (arg2_instr->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST) {                              \
-            match_op->type = (_const_opcode);                                                                  \
+            match_op->type = (_const_opcode1);                                                                 \
             match_op->refs[0] = arg_instr->id;                                                                 \
             match_op->refs[1] = arg2_instr->id;                                                                \
             match_op->int_value = arg2_instr->operation.parameters.imm.uinteger;                               \
@@ -74,17 +74,17 @@ kefir_result_t kefir_codegen_amd64_match_comparison_op(const struct kefir_opt_co
         match_op->refs[1] = KEFIR_ID_NONE;                                    \
         match_op->int_value = (_instr)->operation.parameters.ref_imm.integer; \
     } while (0)
-#define F32OP(_instr, _opcode, _const_opcode)                                                                  \
+#define F32OP(_instr, _opcode, _const_opcode1, _const_opcode2)                                                 \
     do {                                                                                                       \
         REQUIRE_OK(kefir_opt_code_container_instr(code, (_instr)->operation.parameters.refs[0], &arg_instr));  \
         REQUIRE_OK(kefir_opt_code_container_instr(code, (_instr)->operation.parameters.refs[1], &arg2_instr)); \
         if (arg_instr->operation.opcode == KEFIR_OPT_OPCODE_FLOAT32_CONST) {                                   \
-            match_op->type = (_const_opcode);                                                                  \
+            match_op->type = (_const_opcode2);                                                                 \
             match_op->refs[0] = arg2_instr->id;                                                                \
             match_op->refs[1] = arg_instr->id;                                                                 \
             match_op->float32_value = arg_instr->operation.parameters.imm.float32;                             \
         } else if (arg2_instr->operation.opcode == KEFIR_OPT_OPCODE_FLOAT32_CONST) {                           \
-            match_op->type = (_const_opcode);                                                                  \
+            match_op->type = (_const_opcode1);                                                                 \
             match_op->refs[0] = arg_instr->id;                                                                 \
             match_op->refs[1] = arg2_instr->id;                                                                \
             match_op->float32_value = arg2_instr->operation.parameters.imm.float32;                            \
@@ -94,17 +94,17 @@ kefir_result_t kefir_codegen_amd64_match_comparison_op(const struct kefir_opt_co
             match_op->refs[1] = arg2_instr->id;                                                                \
         }                                                                                                      \
     } while (0)
-#define F64OP(_instr, _opcode, _const_opcode)                                                                  \
+#define F64OP(_instr, _opcode, _const_opcode1, _const_opcode2)                                                 \
     do {                                                                                                       \
         REQUIRE_OK(kefir_opt_code_container_instr(code, (_instr)->operation.parameters.refs[0], &arg_instr));  \
         REQUIRE_OK(kefir_opt_code_container_instr(code, (_instr)->operation.parameters.refs[1], &arg2_instr)); \
         if (arg_instr->operation.opcode == KEFIR_OPT_OPCODE_FLOAT64_CONST) {                                   \
-            match_op->type = (_const_opcode);                                                                  \
+            match_op->type = (_const_opcode2);                                                                 \
             match_op->refs[0] = arg2_instr->id;                                                                \
             match_op->refs[1] = arg_instr->id;                                                                 \
             match_op->float64_value = arg_instr->operation.parameters.imm.float64;                             \
         } else if (arg2_instr->operation.opcode == KEFIR_OPT_OPCODE_FLOAT64_CONST) {                           \
-            match_op->type = (_const_opcode);                                                                  \
+            match_op->type = (_const_opcode1);                                                                 \
             match_op->refs[0] = arg_instr->id;                                                                 \
             match_op->refs[1] = arg2_instr->id;                                                                \
             match_op->float64_value = arg2_instr->operation.parameters.imm.float64;                            \
@@ -116,7 +116,8 @@ kefir_result_t kefir_codegen_amd64_match_comparison_op(const struct kefir_opt_co
     } while (0)
 
         case KEFIR_OPT_OPCODE_INT_EQUALS:
-            OP(instr, KEFIR_CODEGEN_AMD64_COMPARISON_INT_EQUAL, KEFIR_CODEGEN_AMD64_COMPARISON_INT_EQUAL_CONST);
+            OP(instr, KEFIR_CODEGEN_AMD64_COMPARISON_INT_EQUAL, KEFIR_CODEGEN_AMD64_COMPARISON_INT_EQUAL_CONST,
+               KEFIR_CODEGEN_AMD64_COMPARISON_INT_EQUAL_CONST);
             break;
 
         case KEFIR_OPT_OPCODE_INT_EQUALS_CONST:
@@ -125,7 +126,8 @@ kefir_result_t kefir_codegen_amd64_match_comparison_op(const struct kefir_opt_co
 
         case KEFIR_OPT_OPCODE_INT_LESSER_OR_EQUALS:
             OP(instr, KEFIR_CODEGEN_AMD64_COMPARISON_INT_LESSER_OR_EQUAL,
-               KEFIR_CODEGEN_AMD64_COMPARISON_INT_LESSER_OR_EQUAL_CONST);
+               KEFIR_CODEGEN_AMD64_COMPARISON_INT_LESSER_OR_EQUAL_CONST,
+               KEFIR_CODEGEN_AMD64_COMPARISON_INT_GREATER_CONST);
             break;
 
         case KEFIR_OPT_OPCODE_INT_LESSER_OR_EQUALS_CONST:
@@ -133,7 +135,8 @@ kefir_result_t kefir_codegen_amd64_match_comparison_op(const struct kefir_opt_co
             break;
 
         case KEFIR_OPT_OPCODE_INT_LESSER:
-            OP(instr, KEFIR_CODEGEN_AMD64_COMPARISON_INT_LESSER, KEFIR_CODEGEN_AMD64_COMPARISON_INT_LESSER_CONST);
+            OP(instr, KEFIR_CODEGEN_AMD64_COMPARISON_INT_LESSER, KEFIR_CODEGEN_AMD64_COMPARISON_INT_LESSER_CONST,
+               KEFIR_CODEGEN_AMD64_COMPARISON_INT_GREATER_OR_EQUAL_CONST);
             break;
 
         case KEFIR_OPT_OPCODE_INT_LESSER_CONST:
@@ -142,7 +145,8 @@ kefir_result_t kefir_codegen_amd64_match_comparison_op(const struct kefir_opt_co
 
         case KEFIR_OPT_OPCODE_INT_GREATER_OR_EQUALS:
             OP(instr, KEFIR_CODEGEN_AMD64_COMPARISON_INT_GREATER_OR_EQUAL,
-               KEFIR_CODEGEN_AMD64_COMPARISON_INT_GREATER_OR_EQUAL_CONST);
+               KEFIR_CODEGEN_AMD64_COMPARISON_INT_GREATER_OR_EQUAL_CONST,
+               KEFIR_CODEGEN_AMD64_COMPARISON_INT_LESSER_CONST);
             break;
 
         case KEFIR_OPT_OPCODE_INT_GREATER_OR_EQUALS_CONST:
@@ -150,7 +154,8 @@ kefir_result_t kefir_codegen_amd64_match_comparison_op(const struct kefir_opt_co
             break;
 
         case KEFIR_OPT_OPCODE_INT_GREATER:
-            OP(instr, KEFIR_CODEGEN_AMD64_COMPARISON_INT_GREATER, KEFIR_CODEGEN_AMD64_COMPARISON_INT_GREATER_CONST);
+            OP(instr, KEFIR_CODEGEN_AMD64_COMPARISON_INT_GREATER, KEFIR_CODEGEN_AMD64_COMPARISON_INT_GREATER_CONST,
+               KEFIR_CODEGEN_AMD64_COMPARISON_INT_LESSER_OR_EQUAL_CONST);
             break;
 
         case KEFIR_OPT_OPCODE_INT_GREATER_CONST:
@@ -159,7 +164,7 @@ kefir_result_t kefir_codegen_amd64_match_comparison_op(const struct kefir_opt_co
 
         case KEFIR_OPT_OPCODE_INT_BELOW_OR_EQUALS:
             OP(instr, KEFIR_CODEGEN_AMD64_COMPARISON_INT_BELOW_OR_EQUAL,
-               KEFIR_CODEGEN_AMD64_COMPARISON_INT_BELOW_OR_EQUAL_CONST);
+               KEFIR_CODEGEN_AMD64_COMPARISON_INT_BELOW_OR_EQUAL_CONST, KEFIR_CODEGEN_AMD64_COMPARISON_INT_ABOVE_CONST);
             break;
 
         case KEFIR_OPT_OPCODE_INT_BELOW_OR_EQUALS_CONST:
@@ -167,7 +172,8 @@ kefir_result_t kefir_codegen_amd64_match_comparison_op(const struct kefir_opt_co
             break;
 
         case KEFIR_OPT_OPCODE_INT_BELOW:
-            OP(instr, KEFIR_CODEGEN_AMD64_COMPARISON_INT_BELOW, KEFIR_CODEGEN_AMD64_COMPARISON_INT_BELOW_CONST);
+            OP(instr, KEFIR_CODEGEN_AMD64_COMPARISON_INT_BELOW, KEFIR_CODEGEN_AMD64_COMPARISON_INT_BELOW_CONST,
+               KEFIR_CODEGEN_AMD64_COMPARISON_INT_ABOVE_OR_EQUAL_CONST);
             break;
 
         case KEFIR_OPT_OPCODE_INT_BELOW_CONST:
@@ -176,7 +182,7 @@ kefir_result_t kefir_codegen_amd64_match_comparison_op(const struct kefir_opt_co
 
         case KEFIR_OPT_OPCODE_INT_ABOVE_OR_EQUALS:
             OP(instr, KEFIR_CODEGEN_AMD64_COMPARISON_INT_ABOVE_OR_EQUAL,
-               KEFIR_CODEGEN_AMD64_COMPARISON_INT_ABOVE_OR_EQUAL_CONST);
+               KEFIR_CODEGEN_AMD64_COMPARISON_INT_ABOVE_OR_EQUAL_CONST, KEFIR_CODEGEN_AMD64_COMPARISON_INT_BELOW_CONST);
             break;
 
         case KEFIR_OPT_OPCODE_INT_ABOVE_OR_EQUALS_CONST:
@@ -184,7 +190,8 @@ kefir_result_t kefir_codegen_amd64_match_comparison_op(const struct kefir_opt_co
             break;
 
         case KEFIR_OPT_OPCODE_INT_ABOVE:
-            OP(instr, KEFIR_CODEGEN_AMD64_COMPARISON_INT_ABOVE, KEFIR_CODEGEN_AMD64_COMPARISON_INT_ABOVE_CONST);
+            OP(instr, KEFIR_CODEGEN_AMD64_COMPARISON_INT_ABOVE, KEFIR_CODEGEN_AMD64_COMPARISON_INT_ABOVE_CONST,
+               KEFIR_CODEGEN_AMD64_COMPARISON_INT_BELOW_OR_EQUAL_CONST);
             break;
 
         case KEFIR_OPT_OPCODE_INT_ABOVE_CONST:
@@ -193,52 +200,62 @@ kefir_result_t kefir_codegen_amd64_match_comparison_op(const struct kefir_opt_co
 
         case KEFIR_OPT_OPCODE_FLOAT32_EQUALS:
             F32OP(instr, KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_EQUAL,
+                  KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_EQUAL_CONST,
                   KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_EQUAL_CONST);
             break;
 
         case KEFIR_OPT_OPCODE_FLOAT32_GREATER:
             F32OP(instr, KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_GREATER,
-                  KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_GREATER_CONST);
+                  KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_GREATER_CONST,
+                  KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_LESSER_OR_EQUAL_CONST);
             break;
 
         case KEFIR_OPT_OPCODE_FLOAT32_GREATER_OR_EQUALS:
             F32OP(instr, KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_GREATER_OR_EQUAL,
-                  KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_GREATER_OR_EQUAL_CONST);
+                  KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_GREATER_OR_EQUAL_CONST,
+                  KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_LESSER_CONST);
             break;
 
         case KEFIR_OPT_OPCODE_FLOAT32_LESSER:
             F32OP(instr, KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_LESSER,
-                  KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_LESSER_CONST);
+                  KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_LESSER_CONST,
+                  KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_GREATER_OR_EQUAL_CONST);
             break;
 
         case KEFIR_OPT_OPCODE_FLOAT32_LESSER_OR_EQUALS:
             F32OP(instr, KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_LESSER_OR_EQUAL,
-                  KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_LESSER_OR_EQUAL_CONST);
+                  KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_LESSER_OR_EQUAL_CONST,
+                  KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_GREATER_CONST);
             break;
 
         case KEFIR_OPT_OPCODE_FLOAT64_EQUALS:
             F64OP(instr, KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_EQUAL,
+                  KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_EQUAL_CONST,
                   KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_EQUAL_CONST);
             break;
 
         case KEFIR_OPT_OPCODE_FLOAT64_GREATER:
             F64OP(instr, KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_GREATER,
-                  KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_GREATER_CONST);
+                  KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_GREATER_CONST,
+                  KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_LESSER_OR_EQUAL_CONST);
             break;
 
         case KEFIR_OPT_OPCODE_FLOAT64_GREATER_OR_EQUALS:
             F64OP(instr, KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_GREATER_OR_EQUAL,
-                  KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_GREATER_OR_EQUAL_CONST);
+                  KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_GREATER_OR_EQUAL_CONST,
+                  KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_LESSER_CONST);
             break;
 
         case KEFIR_OPT_OPCODE_FLOAT64_LESSER:
             F64OP(instr, KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_LESSER,
-                  KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_LESSER_CONST);
+                  KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_LESSER_CONST,
+                  KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_GREATER_OR_EQUAL_CONST);
             break;
 
         case KEFIR_OPT_OPCODE_FLOAT64_LESSER_OR_EQUALS:
             F64OP(instr, KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_LESSER_OR_EQUAL,
-                  KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_LESSER_OR_EQUAL_CONST);
+                  KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_LESSER_OR_EQUAL_CONST,
+                  KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_GREATER_CONST);
             break;
 
         case KEFIR_OPT_OPCODE_BOOL_NOT:
@@ -246,6 +263,7 @@ kefir_result_t kefir_codegen_amd64_match_comparison_op(const struct kefir_opt_co
             switch (condition_instr2->operation.opcode) {
                 case KEFIR_OPT_OPCODE_INT_EQUALS:
                     OP(condition_instr2, KEFIR_CODEGEN_AMD64_COMPARISON_INT_NOT_EQUAL,
+                       KEFIR_CODEGEN_AMD64_COMPARISON_INT_NOT_EQUAL_CONST,
                        KEFIR_CODEGEN_AMD64_COMPARISON_INT_NOT_EQUAL_CONST);
                     break;
 
@@ -255,7 +273,8 @@ kefir_result_t kefir_codegen_amd64_match_comparison_op(const struct kefir_opt_co
 
                 case KEFIR_OPT_OPCODE_INT_GREATER:
                     OP(condition_instr2, KEFIR_CODEGEN_AMD64_COMPARISON_INT_LESSER_OR_EQUAL,
-                       KEFIR_CODEGEN_AMD64_COMPARISON_INT_LESSER_OR_EQUAL_CONST);
+                       KEFIR_CODEGEN_AMD64_COMPARISON_INT_LESSER_OR_EQUAL_CONST,
+                       KEFIR_CODEGEN_AMD64_COMPARISON_INT_GREATER_CONST);
                     break;
 
                 case KEFIR_OPT_OPCODE_INT_GREATER_CONST:
@@ -264,7 +283,8 @@ kefir_result_t kefir_codegen_amd64_match_comparison_op(const struct kefir_opt_co
 
                 case KEFIR_OPT_OPCODE_INT_GREATER_OR_EQUALS:
                     OP(condition_instr2, KEFIR_CODEGEN_AMD64_COMPARISON_INT_LESSER,
-                       KEFIR_CODEGEN_AMD64_COMPARISON_INT_LESSER_CONST);
+                       KEFIR_CODEGEN_AMD64_COMPARISON_INT_LESSER_CONST,
+                       KEFIR_CODEGEN_AMD64_COMPARISON_INT_GREATER_OR_EQUAL_CONST);
                     break;
 
                 case KEFIR_OPT_OPCODE_INT_GREATER_OR_EQUALS_CONST:
@@ -273,7 +293,8 @@ kefir_result_t kefir_codegen_amd64_match_comparison_op(const struct kefir_opt_co
 
                 case KEFIR_OPT_OPCODE_INT_LESSER:
                     OP(condition_instr2, KEFIR_CODEGEN_AMD64_COMPARISON_INT_GREATER_OR_EQUAL,
-                       KEFIR_CODEGEN_AMD64_COMPARISON_INT_GREATER_OR_EQUAL_CONST);
+                       KEFIR_CODEGEN_AMD64_COMPARISON_INT_GREATER_OR_EQUAL_CONST,
+                       KEFIR_CODEGEN_AMD64_COMPARISON_INT_LESSER_CONST);
                     break;
 
                 case KEFIR_OPT_OPCODE_INT_LESSER_CONST:
@@ -282,7 +303,8 @@ kefir_result_t kefir_codegen_amd64_match_comparison_op(const struct kefir_opt_co
 
                 case KEFIR_OPT_OPCODE_INT_LESSER_OR_EQUALS:
                     OP(condition_instr2, KEFIR_CODEGEN_AMD64_COMPARISON_INT_GREATER,
-                       KEFIR_CODEGEN_AMD64_COMPARISON_INT_GREATER_CONST);
+                       KEFIR_CODEGEN_AMD64_COMPARISON_INT_GREATER_CONST,
+                       KEFIR_CODEGEN_AMD64_COMPARISON_INT_LESSER_OR_EQUAL_CONST);
                     break;
 
                 case KEFIR_OPT_OPCODE_INT_LESSER_OR_EQUALS_CONST:
@@ -291,7 +313,8 @@ kefir_result_t kefir_codegen_amd64_match_comparison_op(const struct kefir_opt_co
 
                 case KEFIR_OPT_OPCODE_INT_ABOVE:
                     OP(condition_instr2, KEFIR_CODEGEN_AMD64_COMPARISON_INT_BELOW_OR_EQUAL,
-                       KEFIR_CODEGEN_AMD64_COMPARISON_INT_BELOW_OR_EQUAL_CONST);
+                       KEFIR_CODEGEN_AMD64_COMPARISON_INT_BELOW_OR_EQUAL_CONST,
+                       KEFIR_CODEGEN_AMD64_COMPARISON_INT_ABOVE_CONST);
                     break;
 
                 case KEFIR_OPT_OPCODE_INT_ABOVE_CONST:
@@ -300,7 +323,8 @@ kefir_result_t kefir_codegen_amd64_match_comparison_op(const struct kefir_opt_co
 
                 case KEFIR_OPT_OPCODE_INT_ABOVE_OR_EQUALS:
                     OP(condition_instr2, KEFIR_CODEGEN_AMD64_COMPARISON_INT_BELOW,
-                       KEFIR_CODEGEN_AMD64_COMPARISON_INT_BELOW_CONST);
+                       KEFIR_CODEGEN_AMD64_COMPARISON_INT_BELOW_CONST,
+                       KEFIR_CODEGEN_AMD64_COMPARISON_INT_ABOVE_OR_EQUAL_CONST);
                     break;
 
                 case KEFIR_OPT_OPCODE_INT_ABOVE_OR_EQUALS_CONST:
@@ -309,7 +333,8 @@ kefir_result_t kefir_codegen_amd64_match_comparison_op(const struct kefir_opt_co
 
                 case KEFIR_OPT_OPCODE_INT_BELOW:
                     OP(condition_instr2, KEFIR_CODEGEN_AMD64_COMPARISON_INT_ABOVE_OR_EQUAL,
-                       KEFIR_CODEGEN_AMD64_COMPARISON_INT_ABOVE_OR_EQUAL_CONST);
+                       KEFIR_CODEGEN_AMD64_COMPARISON_INT_ABOVE_OR_EQUAL_CONST,
+                       KEFIR_CODEGEN_AMD64_COMPARISON_INT_BELOW_CONST);
                     break;
 
                 case KEFIR_OPT_OPCODE_INT_BELOW_CONST:
@@ -318,7 +343,8 @@ kefir_result_t kefir_codegen_amd64_match_comparison_op(const struct kefir_opt_co
 
                 case KEFIR_OPT_OPCODE_INT_BELOW_OR_EQUALS:
                     OP(condition_instr2, KEFIR_CODEGEN_AMD64_COMPARISON_INT_ABOVE,
-                       KEFIR_CODEGEN_AMD64_COMPARISON_INT_ABOVE_CONST);
+                       KEFIR_CODEGEN_AMD64_COMPARISON_INT_ABOVE_CONST,
+                       KEFIR_CODEGEN_AMD64_COMPARISON_INT_BELOW_OR_EQUAL_CONST);
                     break;
 
                 case KEFIR_OPT_OPCODE_INT_BELOW_OR_EQUALS_CONST:
@@ -327,52 +353,62 @@ kefir_result_t kefir_codegen_amd64_match_comparison_op(const struct kefir_opt_co
 
                 case KEFIR_OPT_OPCODE_FLOAT32_EQUALS:
                     F32OP(condition_instr2, KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_NOT_EQUAL,
+                          KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_NOT_EQUAL_CONST,
                           KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_NOT_EQUAL_CONST);
                     break;
 
                 case KEFIR_OPT_OPCODE_FLOAT32_LESSER_OR_EQUALS:
                     F32OP(condition_instr2, KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_GREATER,
-                          KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_GREATER_CONST);
+                          KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_GREATER_CONST,
+                          KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_LESSER_OR_EQUAL_CONST);
                     break;
 
                 case KEFIR_OPT_OPCODE_FLOAT32_LESSER:
                     F32OP(condition_instr2, KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_GREATER_OR_EQUAL,
-                          KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_GREATER_OR_EQUAL_CONST);
+                          KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_GREATER_OR_EQUAL_CONST,
+                          KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_LESSER_CONST);
                     break;
 
                 case KEFIR_OPT_OPCODE_FLOAT32_GREATER_OR_EQUALS:
                     F32OP(condition_instr2, KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_LESSER,
-                          KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_LESSER_CONST);
+                          KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_LESSER_CONST,
+                          KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_GREATER_OR_EQUAL_CONST);
                     break;
 
                 case KEFIR_OPT_OPCODE_FLOAT32_GREATER:
                     F32OP(condition_instr2, KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_LESSER_OR_EQUAL,
-                          KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_LESSER_OR_EQUAL_CONST);
+                          KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_LESSER_OR_EQUAL_CONST,
+                          KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_GREATER_CONST);
                     break;
 
                 case KEFIR_OPT_OPCODE_FLOAT64_EQUALS:
                     F32OP(condition_instr2, KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_NOT_EQUAL,
+                          KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_NOT_EQUAL_CONST,
                           KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_NOT_EQUAL_CONST);
                     break;
 
                 case KEFIR_OPT_OPCODE_FLOAT64_LESSER_OR_EQUALS:
                     F32OP(condition_instr2, KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_GREATER,
-                          KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_GREATER_CONST);
+                          KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_GREATER_CONST,
+                          KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_LESSER_OR_EQUAL_CONST);
                     break;
 
                 case KEFIR_OPT_OPCODE_FLOAT64_LESSER:
                     F32OP(condition_instr2, KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_GREATER_OR_EQUAL,
-                          KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_GREATER_OR_EQUAL_CONST);
+                          KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_GREATER_OR_EQUAL_CONST,
+                          KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_LESSER_CONST);
                     break;
 
                 case KEFIR_OPT_OPCODE_FLOAT64_GREATER_OR_EQUALS:
                     F32OP(condition_instr2, KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_LESSER,
-                          KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_LESSER_CONST);
+                          KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_LESSER_CONST,
+                          KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_GREATER_OR_EQUAL_CONST);
                     break;
 
                 case KEFIR_OPT_OPCODE_FLOAT64_GREATER:
                     F32OP(condition_instr2, KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_LESSER_OR_EQUAL,
-                          KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_LESSER_OR_EQUAL_CONST);
+                          KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_LESSER_OR_EQUAL_CONST,
+                          KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_GREATER_CONST);
                     break;
 
                 case KEFIR_OPT_OPCODE_BOOL_NOT:
@@ -381,6 +417,7 @@ kefir_result_t kefir_codegen_amd64_match_comparison_op(const struct kefir_opt_co
                     switch (condition_instr3->operation.opcode) {
                         case KEFIR_OPT_OPCODE_INT_EQUALS:
                             OP(condition_instr3, KEFIR_CODEGEN_AMD64_COMPARISON_INT_EQUAL,
+                               KEFIR_CODEGEN_AMD64_COMPARISON_INT_EQUAL_CONST,
                                KEFIR_CODEGEN_AMD64_COMPARISON_INT_EQUAL_CONST);
                             break;
 
@@ -390,7 +427,8 @@ kefir_result_t kefir_codegen_amd64_match_comparison_op(const struct kefir_opt_co
 
                         case KEFIR_OPT_OPCODE_INT_LESSER_OR_EQUALS:
                             OP(condition_instr3, KEFIR_CODEGEN_AMD64_COMPARISON_INT_LESSER_OR_EQUAL,
-                               KEFIR_CODEGEN_AMD64_COMPARISON_INT_LESSER_OR_EQUAL_CONST);
+                               KEFIR_CODEGEN_AMD64_COMPARISON_INT_LESSER_OR_EQUAL_CONST,
+                               KEFIR_CODEGEN_AMD64_COMPARISON_INT_GREATER_CONST);
                             break;
 
                         case KEFIR_OPT_OPCODE_INT_LESSER_OR_EQUALS_CONST:
@@ -399,7 +437,8 @@ kefir_result_t kefir_codegen_amd64_match_comparison_op(const struct kefir_opt_co
 
                         case KEFIR_OPT_OPCODE_INT_LESSER:
                             OP(condition_instr3, KEFIR_CODEGEN_AMD64_COMPARISON_INT_LESSER,
-                               KEFIR_CODEGEN_AMD64_COMPARISON_INT_LESSER_CONST);
+                               KEFIR_CODEGEN_AMD64_COMPARISON_INT_LESSER_CONST,
+                               KEFIR_CODEGEN_AMD64_COMPARISON_INT_GREATER_OR_EQUAL_CONST);
                             break;
 
                         case KEFIR_OPT_OPCODE_INT_LESSER_CONST:
@@ -408,7 +447,8 @@ kefir_result_t kefir_codegen_amd64_match_comparison_op(const struct kefir_opt_co
 
                         case KEFIR_OPT_OPCODE_INT_GREATER_OR_EQUALS:
                             OP(condition_instr3, KEFIR_CODEGEN_AMD64_COMPARISON_INT_GREATER_OR_EQUAL,
-                               KEFIR_CODEGEN_AMD64_COMPARISON_INT_GREATER_OR_EQUAL_CONST);
+                               KEFIR_CODEGEN_AMD64_COMPARISON_INT_GREATER_OR_EQUAL_CONST,
+                               KEFIR_CODEGEN_AMD64_COMPARISON_INT_LESSER_CONST);
                             break;
 
                         case KEFIR_OPT_OPCODE_INT_GREATER_OR_EQUALS_CONST:
@@ -417,7 +457,8 @@ kefir_result_t kefir_codegen_amd64_match_comparison_op(const struct kefir_opt_co
 
                         case KEFIR_OPT_OPCODE_INT_GREATER:
                             OP(condition_instr3, KEFIR_CODEGEN_AMD64_COMPARISON_INT_GREATER,
-                               KEFIR_CODEGEN_AMD64_COMPARISON_INT_GREATER_CONST);
+                               KEFIR_CODEGEN_AMD64_COMPARISON_INT_GREATER_CONST,
+                               KEFIR_CODEGEN_AMD64_COMPARISON_INT_LESSER_OR_EQUAL_CONST);
                             break;
 
                         case KEFIR_OPT_OPCODE_INT_GREATER_CONST:
@@ -426,7 +467,8 @@ kefir_result_t kefir_codegen_amd64_match_comparison_op(const struct kefir_opt_co
 
                         case KEFIR_OPT_OPCODE_INT_BELOW_OR_EQUALS:
                             OP(condition_instr3, KEFIR_CODEGEN_AMD64_COMPARISON_INT_BELOW_OR_EQUAL,
-                               KEFIR_CODEGEN_AMD64_COMPARISON_INT_BELOW_OR_EQUAL_CONST);
+                               KEFIR_CODEGEN_AMD64_COMPARISON_INT_BELOW_OR_EQUAL_CONST,
+                               KEFIR_CODEGEN_AMD64_COMPARISON_INT_ABOVE_CONST);
                             break;
 
                         case KEFIR_OPT_OPCODE_INT_BELOW_OR_EQUALS_CONST:
@@ -435,7 +477,8 @@ kefir_result_t kefir_codegen_amd64_match_comparison_op(const struct kefir_opt_co
 
                         case KEFIR_OPT_OPCODE_INT_BELOW:
                             OP(condition_instr3, KEFIR_CODEGEN_AMD64_COMPARISON_INT_BELOW,
-                               KEFIR_CODEGEN_AMD64_COMPARISON_INT_BELOW_CONST);
+                               KEFIR_CODEGEN_AMD64_COMPARISON_INT_BELOW_CONST,
+                               KEFIR_CODEGEN_AMD64_COMPARISON_INT_ABOVE_OR_EQUAL_CONST);
                             break;
 
                         case KEFIR_OPT_OPCODE_INT_BELOW_CONST:
@@ -444,7 +487,8 @@ kefir_result_t kefir_codegen_amd64_match_comparison_op(const struct kefir_opt_co
 
                         case KEFIR_OPT_OPCODE_INT_ABOVE_OR_EQUALS:
                             OP(condition_instr3, KEFIR_CODEGEN_AMD64_COMPARISON_INT_ABOVE_OR_EQUAL,
-                               KEFIR_CODEGEN_AMD64_COMPARISON_INT_ABOVE_OR_EQUAL_CONST);
+                               KEFIR_CODEGEN_AMD64_COMPARISON_INT_ABOVE_OR_EQUAL_CONST,
+                               KEFIR_CODEGEN_AMD64_COMPARISON_INT_BELOW_CONST);
                             break;
 
                         case KEFIR_OPT_OPCODE_INT_ABOVE_OR_EQUALS_CONST:
@@ -453,7 +497,8 @@ kefir_result_t kefir_codegen_amd64_match_comparison_op(const struct kefir_opt_co
 
                         case KEFIR_OPT_OPCODE_INT_ABOVE:
                             OP(condition_instr3, KEFIR_CODEGEN_AMD64_COMPARISON_INT_ABOVE,
-                               KEFIR_CODEGEN_AMD64_COMPARISON_INT_ABOVE_CONST);
+                               KEFIR_CODEGEN_AMD64_COMPARISON_INT_ABOVE_CONST,
+                               KEFIR_CODEGEN_AMD64_COMPARISON_INT_BELOW_OR_EQUAL_CONST);
                             break;
 
                         case KEFIR_OPT_OPCODE_INT_ABOVE_CONST:
@@ -462,52 +507,62 @@ kefir_result_t kefir_codegen_amd64_match_comparison_op(const struct kefir_opt_co
 
                         case KEFIR_OPT_OPCODE_FLOAT32_EQUALS:
                             F32OP(condition_instr3, KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_EQUAL,
+                                  KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_EQUAL_CONST,
                                   KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_EQUAL_CONST);
                             break;
 
                         case KEFIR_OPT_OPCODE_FLOAT32_GREATER:
                             F32OP(condition_instr3, KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_GREATER,
-                                  KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_GREATER_CONST);
+                                  KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_GREATER_CONST,
+                                  KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_LESSER_OR_EQUAL_CONST);
                             break;
 
                         case KEFIR_OPT_OPCODE_FLOAT32_GREATER_OR_EQUALS:
                             F32OP(condition_instr3, KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_GREATER_OR_EQUAL,
-                                  KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_GREATER_OR_EQUAL_CONST);
+                                  KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_GREATER_OR_EQUAL_CONST,
+                                  KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_LESSER_CONST);
                             break;
 
                         case KEFIR_OPT_OPCODE_FLOAT32_LESSER:
                             F32OP(condition_instr3, KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_LESSER,
-                                  KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_LESSER_CONST);
+                                  KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_LESSER_CONST,
+                                  KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_GREATER_OR_EQUAL_CONST);
                             break;
 
                         case KEFIR_OPT_OPCODE_FLOAT32_LESSER_OR_EQUALS:
                             F32OP(condition_instr3, KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_LESSER_OR_EQUAL,
-                                  KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_LESSER_OR_EQUAL_CONST);
+                                  KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_LESSER_OR_EQUAL_CONST,
+                                  KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_GREATER_CONST);
                             break;
 
                         case KEFIR_OPT_OPCODE_FLOAT64_EQUALS:
                             F64OP(condition_instr3, KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_EQUAL,
+                                  KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_EQUAL_CONST,
                                   KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_EQUAL_CONST);
                             break;
 
                         case KEFIR_OPT_OPCODE_FLOAT64_GREATER:
                             F64OP(condition_instr3, KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_GREATER,
-                                  KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_GREATER_CONST);
+                                  KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_GREATER_CONST,
+                                  KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_LESSER_OR_EQUAL_CONST);
                             break;
 
                         case KEFIR_OPT_OPCODE_FLOAT64_GREATER_OR_EQUALS:
                             F64OP(condition_instr3, KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_GREATER_OR_EQUAL,
-                                  KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_GREATER_OR_EQUAL_CONST);
+                                  KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_GREATER_OR_EQUAL_CONST,
+                                  KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_LESSER_CONST);
                             break;
 
                         case KEFIR_OPT_OPCODE_FLOAT64_LESSER:
                             F64OP(condition_instr3, KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_LESSER,
-                                  KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_LESSER_CONST);
+                                  KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_LESSER_CONST,
+                                  KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_GREATER_OR_EQUAL_CONST);
                             break;
 
                         case KEFIR_OPT_OPCODE_FLOAT64_LESSER_OR_EQUALS:
                             F64OP(condition_instr3, KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_LESSER_OR_EQUAL,
-                                  KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_LESSER_OR_EQUAL_CONST);
+                                  KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_LESSER_OR_EQUAL_CONST,
+                                  KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_GREATER_CONST);
                             break;
 
                         default:
@@ -1237,105 +1292,175 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(bool_and)(struct kefir_mem *
     return KEFIR_OK;
 }
 
-#define DEFINE_COMPARISON(_op)                                                                                         \
-    do {                                                                                                               \
-        kefir_asmcmp_virtual_register_index_t result_vreg, arg1_vreg, arg2_vreg;                                       \
-        REQUIRE_OK(                                                                                                    \
-            kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[0], &arg1_vreg));    \
-        REQUIRE_OK(                                                                                                    \
-            kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[1], &arg2_vreg));    \
-                                                                                                                       \
-        REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,                                     \
-                                                     KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));    \
-                                                                                                                       \
-        REQUIRE_OK(kefir_asmcmp_amd64_mov(mem, &function->code,                                                        \
-                                          kefir_asmcmp_context_instr_tail(&function->code.context),                    \
-                                          &KEFIR_ASMCMP_MAKE_VREG64(result_vreg), &KEFIR_ASMCMP_MAKE_INT(0), NULL));   \
-        REQUIRE_OK(                                                                                                    \
-            kefir_asmcmp_amd64_cmp(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),     \
-                                   &KEFIR_ASMCMP_MAKE_VREG64(arg1_vreg), &KEFIR_ASMCMP_MAKE_VREG64(arg2_vreg), NULL)); \
-        REQUIRE_OK(kefir_asmcmp_amd64_##_op(mem, &function->code,                                                      \
-                                            kefir_asmcmp_context_instr_tail(&function->code.context),                  \
-                                            &KEFIR_ASMCMP_MAKE_VREG8(result_vreg), NULL));                             \
-                                                                                                                       \
-        REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));             \
-    } while (false)
+kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_FUSION_IMPL(int_comparison)(
+    struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
+    const struct kefir_opt_instruction *instruction, kefir_result_t (*callback)(kefir_opt_instruction_ref_t, void *),
+    void *payload) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
+    REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
+    REQUIRE(callback != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen instruction fusion callback"));
 
-#define DEF_COMPARISON(_id, _op)                                                                                      \
-    kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int_##_id)(struct kefir_mem * mem,                            \
-                                                                   struct kefir_codegen_amd64_function * function,    \
-                                                                   const struct kefir_opt_instruction *instruction) { \
-        REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));            \
-        REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function")); \
-        REQUIRE(instruction != NULL,                                                                                  \
-                KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));                    \
-                                                                                                                      \
-        DEFINE_COMPARISON(_op);                                                                                       \
-                                                                                                                      \
-        return KEFIR_OK;                                                                                              \
+    struct kefir_codegen_amd64_comparison_match_op fused_comparison_op;
+    REQUIRE_OK(
+        kefir_codegen_amd64_match_comparison_op(&function->function->code, instruction->id, &fused_comparison_op));
+    switch (fused_comparison_op.type) {
+        case KEFIR_CODEGEN_AMD64_COMPARISON_NONE:
+        case KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_EQUAL:
+        case KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_EQUAL_CONST:
+        case KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_NOT_EQUAL:
+        case KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_NOT_EQUAL_CONST:
+        case KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_GREATER:
+        case KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_GREATER_CONST:
+        case KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_GREATER_OR_EQUAL:
+        case KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_GREATER_OR_EQUAL_CONST:
+        case KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_LESSER:
+        case KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_LESSER_CONST:
+        case KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_LESSER_OR_EQUAL:
+        case KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_LESSER_OR_EQUAL_CONST:
+        case KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_EQUAL:
+        case KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_EQUAL_CONST:
+        case KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_NOT_EQUAL:
+        case KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_NOT_EQUAL_CONST:
+        case KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_GREATER:
+        case KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_GREATER_CONST:
+        case KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_GREATER_OR_EQUAL:
+        case KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_GREATER_OR_EQUAL_CONST:
+        case KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_LESSER:
+        case KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_LESSER_CONST:
+        case KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_LESSER_OR_EQUAL:
+        case KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_LESSER_OR_EQUAL_CONST:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected amd64 codegen comparison operation");
+
+        case KEFIR_CODEGEN_AMD64_COMPARISON_INT_EQUAL:
+        case KEFIR_CODEGEN_AMD64_COMPARISON_INT_NOT_EQUAL:
+        case KEFIR_CODEGEN_AMD64_COMPARISON_INT_GREATER:
+        case KEFIR_CODEGEN_AMD64_COMPARISON_INT_GREATER_OR_EQUAL:
+        case KEFIR_CODEGEN_AMD64_COMPARISON_INT_LESSER:
+        case KEFIR_CODEGEN_AMD64_COMPARISON_INT_LESSER_OR_EQUAL:
+        case KEFIR_CODEGEN_AMD64_COMPARISON_INT_ABOVE:
+        case KEFIR_CODEGEN_AMD64_COMPARISON_INT_ABOVE_OR_EQUAL:
+        case KEFIR_CODEGEN_AMD64_COMPARISON_INT_BELOW:
+        case KEFIR_CODEGEN_AMD64_COMPARISON_INT_BELOW_OR_EQUAL:
+            REQUIRE_OK(callback(fused_comparison_op.refs[0], payload));
+            REQUIRE_OK(callback(fused_comparison_op.refs[1], payload));
+            break;
+
+        case KEFIR_CODEGEN_AMD64_COMPARISON_INT_EQUAL_CONST:
+        case KEFIR_CODEGEN_AMD64_COMPARISON_INT_NOT_EQUAL_CONST:
+        case KEFIR_CODEGEN_AMD64_COMPARISON_INT_GREATER_CONST:
+        case KEFIR_CODEGEN_AMD64_COMPARISON_INT_GREATER_OR_EQUAL_CONST:
+        case KEFIR_CODEGEN_AMD64_COMPARISON_INT_LESSER_CONST:
+        case KEFIR_CODEGEN_AMD64_COMPARISON_INT_LESSER_OR_EQUAL_CONST:
+        case KEFIR_CODEGEN_AMD64_COMPARISON_INT_ABOVE_CONST:
+        case KEFIR_CODEGEN_AMD64_COMPARISON_INT_ABOVE_OR_EQUAL_CONST:
+        case KEFIR_CODEGEN_AMD64_COMPARISON_INT_BELOW_CONST:
+        case KEFIR_CODEGEN_AMD64_COMPARISON_INT_BELOW_OR_EQUAL_CONST:
+            REQUIRE_OK(callback(fused_comparison_op.refs[0], payload));
+            break;
+    }
+    return KEFIR_OK;
+}
+
+kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int_comparison)(struct kefir_mem *mem,
+                                                                    struct kefir_codegen_amd64_function *function,
+                                                                    const struct kefir_opt_instruction *instruction) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
+    REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
+
+    struct kefir_codegen_amd64_comparison_match_op match_op;
+    REQUIRE_OK(kefir_codegen_amd64_match_comparison_op(&function->function->code, instruction->id, &match_op));
+
+    switch (match_op.type) {
+#define DEFINE_COMPARISON(_type, _op)                                                                                  \
+    case (_type):                                                                                                      \
+        do {                                                                                                           \
+            kefir_asmcmp_virtual_register_index_t result_vreg, arg1_vreg, arg2_vreg;                                   \
+            REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, match_op.refs[0], &arg1_vreg));                  \
+            REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, match_op.refs[1], &arg2_vreg));                  \
+                                                                                                                       \
+            REQUIRE_OK(kefir_asmcmp_virtual_register_new(                                                              \
+                mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));           \
+                                                                                                                       \
+            REQUIRE_OK(                                                                                                \
+                kefir_asmcmp_amd64_mov(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), \
+                                       &KEFIR_ASMCMP_MAKE_VREG64(result_vreg), &KEFIR_ASMCMP_MAKE_INT(0), NULL));      \
+            REQUIRE_OK(kefir_asmcmp_amd64_cmp(                                                                         \
+                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),                        \
+                &KEFIR_ASMCMP_MAKE_VREG64(arg1_vreg), &KEFIR_ASMCMP_MAKE_VREG64(arg2_vreg), NULL));                    \
+            REQUIRE_OK(kefir_asmcmp_amd64_##_op(mem, &function->code,                                                  \
+                                                kefir_asmcmp_context_instr_tail(&function->code.context),              \
+                                                &KEFIR_ASMCMP_MAKE_VREG8(result_vreg), NULL));                         \
+                                                                                                                       \
+            REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));         \
+        } while (false);                                                                                               \
+        break
+
+        DEFINE_COMPARISON(KEFIR_CODEGEN_AMD64_COMPARISON_INT_EQUAL, sete);
+        DEFINE_COMPARISON(KEFIR_CODEGEN_AMD64_COMPARISON_INT_NOT_EQUAL, setne);
+        DEFINE_COMPARISON(KEFIR_CODEGEN_AMD64_COMPARISON_INT_GREATER, setg);
+        DEFINE_COMPARISON(KEFIR_CODEGEN_AMD64_COMPARISON_INT_GREATER_OR_EQUAL, setge);
+        DEFINE_COMPARISON(KEFIR_CODEGEN_AMD64_COMPARISON_INT_LESSER, setl);
+        DEFINE_COMPARISON(KEFIR_CODEGEN_AMD64_COMPARISON_INT_LESSER_OR_EQUAL, setle);
+        DEFINE_COMPARISON(KEFIR_CODEGEN_AMD64_COMPARISON_INT_ABOVE, seta);
+        DEFINE_COMPARISON(KEFIR_CODEGEN_AMD64_COMPARISON_INT_ABOVE_OR_EQUAL, setae);
+        DEFINE_COMPARISON(KEFIR_CODEGEN_AMD64_COMPARISON_INT_BELOW, setb);
+        DEFINE_COMPARISON(KEFIR_CODEGEN_AMD64_COMPARISON_INT_BELOW_OR_EQUAL, setbe);
+
+#undef DEFINE_COMPARISON
+
+#define DEFINE_COMPARISON(_type, _op)                                                                                  \
+    case (_type):                                                                                                      \
+        do {                                                                                                           \
+            kefir_asmcmp_virtual_register_index_t result_vreg, arg1_vreg, tmp_vreg;                                    \
+            REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, match_op.refs[0], &arg1_vreg));                  \
+                                                                                                                       \
+            REQUIRE_OK(kefir_asmcmp_virtual_register_new(                                                              \
+                mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));           \
+                                                                                                                       \
+            REQUIRE_OK(                                                                                                \
+                kefir_asmcmp_amd64_mov(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), \
+                                       &KEFIR_ASMCMP_MAKE_VREG64(result_vreg), &KEFIR_ASMCMP_MAKE_INT(0), NULL));      \
+            if (match_op.int_value >= KEFIR_INT32_MIN && match_op.int_value <= KEFIR_INT32_MAX) {                      \
+                REQUIRE_OK(kefir_asmcmp_amd64_cmp(                                                                     \
+                    mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),                    \
+                    &KEFIR_ASMCMP_MAKE_VREG64(arg1_vreg), &KEFIR_ASMCMP_MAKE_INT(match_op.int_value), NULL));          \
+            } else {                                                                                                   \
+                REQUIRE_OK(kefir_asmcmp_virtual_register_new(                                                          \
+                    mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &tmp_vreg));          \
+                REQUIRE_OK(kefir_asmcmp_amd64_movabs(                                                                  \
+                    mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),                    \
+                    &KEFIR_ASMCMP_MAKE_VREG64(tmp_vreg), &KEFIR_ASMCMP_MAKE_INT(match_op.int_value), NULL));           \
+                REQUIRE_OK(kefir_asmcmp_amd64_cmp(                                                                     \
+                    mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),                    \
+                    &KEFIR_ASMCMP_MAKE_VREG64(arg1_vreg), &KEFIR_ASMCMP_MAKE_VREG64(tmp_vreg), NULL));                 \
+            }                                                                                                          \
+            REQUIRE_OK(kefir_asmcmp_amd64_##_op(mem, &function->code,                                                  \
+                                                kefir_asmcmp_context_instr_tail(&function->code.context),              \
+                                                &KEFIR_ASMCMP_MAKE_VREG8(result_vreg), NULL));                         \
+                                                                                                                       \
+            REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));         \
+        } while (0);                                                                                                   \
+        break
+
+        DEFINE_COMPARISON(KEFIR_CODEGEN_AMD64_COMPARISON_INT_EQUAL_CONST, sete);
+        DEFINE_COMPARISON(KEFIR_CODEGEN_AMD64_COMPARISON_INT_NOT_EQUAL_CONST, setne);
+        DEFINE_COMPARISON(KEFIR_CODEGEN_AMD64_COMPARISON_INT_GREATER_CONST, setg);
+        DEFINE_COMPARISON(KEFIR_CODEGEN_AMD64_COMPARISON_INT_GREATER_OR_EQUAL_CONST, setge);
+        DEFINE_COMPARISON(KEFIR_CODEGEN_AMD64_COMPARISON_INT_LESSER_CONST, setl);
+        DEFINE_COMPARISON(KEFIR_CODEGEN_AMD64_COMPARISON_INT_LESSER_OR_EQUAL_CONST, setle);
+        DEFINE_COMPARISON(KEFIR_CODEGEN_AMD64_COMPARISON_INT_ABOVE_CONST, seta);
+        DEFINE_COMPARISON(KEFIR_CODEGEN_AMD64_COMPARISON_INT_ABOVE_OR_EQUAL_CONST, setae);
+        DEFINE_COMPARISON(KEFIR_CODEGEN_AMD64_COMPARISON_INT_BELOW_CONST, setb);
+        DEFINE_COMPARISON(KEFIR_CODEGEN_AMD64_COMPARISON_INT_BELOW_OR_EQUAL_CONST, setbe);
+
+#undef DEFINE_COMPARISON
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected comparison operator type");
     }
 
-DEF_COMPARISON(equals, sete)
-DEF_COMPARISON(greater, setg)
-DEF_COMPARISON(greater_or_equals, setge)
-DEF_COMPARISON(less, setl)
-DEF_COMPARISON(less_or_equals, setle)
-DEF_COMPARISON(above, seta)
-DEF_COMPARISON(above_or_equals, setae)
-DEF_COMPARISON(below, setb)
-DEF_COMPARISON(below_or_equals, setbe)
-
-#define DEF_COMPARISON_CONST(_id, _op)                                                                                \
-    kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(_id)(struct kefir_mem * mem,                                  \
-                                                             struct kefir_codegen_amd64_function * function,          \
-                                                             const struct kefir_opt_instruction *instruction) {       \
-        REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));            \
-        REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function")); \
-        REQUIRE(instruction != NULL,                                                                                  \
-                KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));                    \
-                                                                                                                      \
-        kefir_asmcmp_virtual_register_index_t result_vreg, arg1_vreg, tmp_vreg;                                       \
-        REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.ref_imm.refs[0],  \
-                                                        &arg1_vreg));                                                 \
-                                                                                                                      \
-        REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,                                    \
-                                                     KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));   \
-                                                                                                                      \
-        REQUIRE_OK(kefir_asmcmp_amd64_mov(mem, &function->code,                                                       \
-                                          kefir_asmcmp_context_instr_tail(&function->code.context),                   \
-                                          &KEFIR_ASMCMP_MAKE_VREG64(result_vreg), &KEFIR_ASMCMP_MAKE_INT(0), NULL));  \
-        if (instruction->operation.parameters.ref_imm.integer >= KEFIR_INT32_MIN &&                                   \
-            instruction->operation.parameters.ref_imm.integer <= KEFIR_INT32_MAX) {                                   \
-            REQUIRE_OK(kefir_asmcmp_amd64_cmp(                                                                        \
-                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),                       \
-                &KEFIR_ASMCMP_MAKE_VREG64(arg1_vreg),                                                                 \
-                &KEFIR_ASMCMP_MAKE_INT(instruction->operation.parameters.ref_imm.integer), NULL));                    \
-        } else {                                                                                                      \
-            REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,                                \
-                                                         KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &tmp_vreg));  \
-            REQUIRE_OK(kefir_asmcmp_amd64_movabs(                                                                     \
-                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),                       \
-                &KEFIR_ASMCMP_MAKE_VREG64(tmp_vreg),                                                                  \
-                &KEFIR_ASMCMP_MAKE_INT(instruction->operation.parameters.ref_imm.integer), NULL));                    \
-            REQUIRE_OK(kefir_asmcmp_amd64_cmp(                                                                        \
-                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),                       \
-                &KEFIR_ASMCMP_MAKE_VREG64(arg1_vreg), &KEFIR_ASMCMP_MAKE_VREG64(tmp_vreg), NULL));                    \
-        }                                                                                                             \
-        REQUIRE_OK(kefir_asmcmp_amd64_##_op(mem, &function->code,                                                     \
-                                            kefir_asmcmp_context_instr_tail(&function->code.context),                 \
-                                            &KEFIR_ASMCMP_MAKE_VREG8(result_vreg), NULL));                            \
-                                                                                                                      \
-        REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));            \
-                                                                                                                      \
-        return KEFIR_OK;                                                                                              \
-    }
-
-DEF_COMPARISON_CONST(int_equals_const, sete)
-DEF_COMPARISON_CONST(int_greater_const, setg)
-DEF_COMPARISON_CONST(int_greater_or_equals_const, setge)
-DEF_COMPARISON_CONST(int_less_const, setl)
-DEF_COMPARISON_CONST(int_less_or_equals_const, setle)
-DEF_COMPARISON_CONST(int_above_const, seta)
-DEF_COMPARISON_CONST(int_above_or_equals_const, setae)
-DEF_COMPARISON_CONST(int_below_const, setb)
-DEF_COMPARISON_CONST(int_below_or_equals_const, setbe)
+    return KEFIR_OK;
+}
