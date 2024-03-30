@@ -139,14 +139,10 @@
     /* Floating-point comparison */ \
     OPCODE(FLOAT32_EQUALS, "float32_equals", ref2) SEPARATOR \
     OPCODE(FLOAT32_GREATER, "float32_greater", ref2) SEPARATOR \
-    OPCODE(FLOAT32_GREATER_OR_EQUALS, "float32_greater_or_equals", ref2) SEPARATOR \
     OPCODE(FLOAT32_LESSER, "float32_lesser", ref2) SEPARATOR \
-    OPCODE(FLOAT32_LESSER_OR_EQUALS, "float32_lesser_or_equals", ref2) SEPARATOR \
     OPCODE(FLOAT64_EQUALS, "float64_equals", ref2) SEPARATOR \
     OPCODE(FLOAT64_GREATER, "float64_greater", ref2) SEPARATOR \
-    OPCODE(FLOAT64_GREATER_OR_EQUALS, "float64_greater_or_equals", ref2) SEPARATOR \
     OPCODE(FLOAT64_LESSER, "float64_lesser", ref2) SEPARATOR \
-    OPCODE(FLOAT64_LESSER_OR_EQUALS, "float64_lesser_or_equals", ref2) SEPARATOR \
     OPCODE(LONG_DOUBLE_EQUALS, "long_double_equals", ref2) SEPARATOR \
     OPCODE(LONG_DOUBLE_GREATER, "long_double_greater", ref2) SEPARATOR \
     OPCODE(LONG_DOUBLE_LESSER, "long_double_lesser", ref2) SEPARATOR \

@@ -518,28 +518,27 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_FUSION_IMPL(float_comparison)(
     return KEFIR_OK;
 }
 
-kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(float_compare)(struct kefir_mem *mem,
-                                                                   struct kefir_codegen_amd64_function *function,
-                                                                   const struct kefir_opt_instruction *instruction) {
+kefir_result_t kefir_codegen_amd64_util_translate_float_comparison(
+    struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
+    const struct kefir_opt_instruction *instruction, const struct kefir_codegen_amd64_comparison_match_op *match_op) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
+    REQUIRE(match_op != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 codegen comparison match"));
 
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_preserve_mxcsr(&function->stack_frame));
 
-    struct kefir_codegen_amd64_comparison_match_op match_op;
-    REQUIRE_OK(kefir_codegen_amd64_match_comparison_op(&function->function->code, instruction->id, &match_op));
-
     kefir_asmcmp_virtual_register_index_t result_vreg, arg1_vreg, arg2_vreg, tmp_vreg;
 
-    REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, match_op.refs[0], &arg1_vreg));
+    REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, match_op->refs[0], &arg1_vreg));
     REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
                                                  KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));
 
     REQUIRE_OK(kefir_asmcmp_amd64_mov(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                       &KEFIR_ASMCMP_MAKE_VREG64(result_vreg), &KEFIR_ASMCMP_MAKE_UINT(0), NULL));
 
-    switch (match_op.type) {
+    switch (match_op->type) {
         case KEFIR_CODEGEN_AMD64_COMPARISON_NONE:
         case KEFIR_CODEGEN_AMD64_COMPARISON_INT_EQUAL:
         case KEFIR_CODEGEN_AMD64_COMPARISON_INT_EQUAL_CONST:
@@ -575,7 +574,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(float_compare)(struct kefir_
         case KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_GREATER_OR_EQUAL:
         case KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_LESSER:
         case KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_LESSER_OR_EQUAL:
-            REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, match_op.refs[1], &arg2_vreg));
+            REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, match_op->refs[1], &arg2_vreg));
             break;
 
         case KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_EQUAL_CONST:
@@ -588,7 +587,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(float_compare)(struct kefir_
             REQUIRE_OK(kefir_asmcmp_context_new_label(mem, &function->code.context, KEFIR_ASMCMP_INDEX_NONE, &label));
 
             REQUIRE_OK(kefir_hashtree_insert(mem, &function->constants, (kefir_hashtree_key_t) label,
-                                             (kefir_hashtree_value_t) match_op.refs[1]));
+                                             (kefir_hashtree_value_t) match_op->refs[1]));
 
             REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
                                                          KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT, &arg2_vreg));
@@ -616,7 +615,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(float_compare)(struct kefir_
             REQUIRE_OK(kefir_asmcmp_context_new_label(mem, &function->code.context, KEFIR_ASMCMP_INDEX_NONE, &label));
 
             REQUIRE_OK(kefir_hashtree_insert(mem, &function->constants, (kefir_hashtree_key_t) label,
-                                             (kefir_hashtree_value_t) match_op.refs[1]));
+                                             (kefir_hashtree_value_t) match_op->refs[1]));
 
             REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
                                                          KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT, &arg2_vreg));
@@ -635,7 +634,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(float_compare)(struct kefir_
         } break;
     }
 
-    switch (match_op.type) {
+    switch (match_op->type) {
         case KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_EQUAL:
         case KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_EQUAL_CONST:
             REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
@@ -728,7 +727,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(float_compare)(struct kefir_
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected amd64 codegen comparison type");
     }
 
-    switch (match_op.type) {
+    switch (match_op->type) {
         case KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_EQUAL:
         case KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_EQUAL_CONST:
         case KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_EQUAL:
@@ -786,5 +785,19 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(float_compare)(struct kefir_
     }
 
     REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));
+    return KEFIR_OK;
+}
+
+kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(float_compare)(struct kefir_mem *mem,
+                                                                   struct kefir_codegen_amd64_function *function,
+                                                                   const struct kefir_opt_instruction *instruction) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
+    REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
+
+    struct kefir_codegen_amd64_comparison_match_op match_op;
+    REQUIRE_OK(kefir_codegen_amd64_match_comparison_op(&function->function->code, instruction->id, &match_op));
+    REQUIRE_OK(kefir_codegen_amd64_util_translate_float_comparison(mem, function, instruction, &match_op));
+
     return KEFIR_OK;
 }

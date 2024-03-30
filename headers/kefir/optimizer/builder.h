@@ -251,14 +251,10 @@ BINARY_OP(float64_div);
 
 BINARY_OP(float32_equals);
 BINARY_OP(float32_greater);
-BINARY_OP(float32_greater_or_equals);
 BINARY_OP(float32_lesser);
-BINARY_OP(float32_lesser_or_equals);
 BINARY_OP(float64_equals);
 BINARY_OP(float64_greater);
-BINARY_OP(float64_greater_or_equals);
 BINARY_OP(float64_lesser);
-BINARY_OP(float64_lesser_or_equals);
 BINARY_OP(long_double_equals);
 BINARY_OP(long_double_greater);
 BINARY_OP(long_double_lesser);

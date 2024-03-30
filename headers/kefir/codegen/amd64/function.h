@@ -121,13 +121,9 @@ kefir_result_t kefir_codegen_amd64_function_map_phi_outputs(struct kefir_mem *, 
     _def(float_compare, KEFIR_OPT_OPCODE_FLOAT32_EQUALS) _separator \
     _def(float_compare, KEFIR_OPT_OPCODE_FLOAT64_EQUALS) _separator \
     _def(float_compare, KEFIR_OPT_OPCODE_FLOAT32_GREATER) _separator \
-    _def(float_compare, KEFIR_OPT_OPCODE_FLOAT32_GREATER_OR_EQUALS) _separator \
     _def(float_compare, KEFIR_OPT_OPCODE_FLOAT64_GREATER) _separator \
-    _def(float_compare, KEFIR_OPT_OPCODE_FLOAT64_GREATER_OR_EQUALS) _separator \
     _def(float_compare, KEFIR_OPT_OPCODE_FLOAT32_LESSER) _separator \
-    _def(float_compare, KEFIR_OPT_OPCODE_FLOAT32_LESSER_OR_EQUALS) _separator \
     _def(float_compare, KEFIR_OPT_OPCODE_FLOAT64_LESSER) _separator \
-    _def(float_compare, KEFIR_OPT_OPCODE_FLOAT64_LESSER_OR_EQUALS) _separator \
     _def(long_double_binary_op, KEFIR_OPT_OPCODE_LONG_DOUBLE_ADD) _separator \
     _def(long_double_binary_op, KEFIR_OPT_OPCODE_LONG_DOUBLE_SUB) _separator \
     _def(long_double_binary_op, KEFIR_OPT_OPCODE_LONG_DOUBLE_MUL) _separator \
@@ -284,14 +280,10 @@ kefir_result_t kefir_codegen_amd64_function_map_phi_outputs(struct kefir_mem *, 
     _def(int_comparison, KEFIR_OPT_OPCODE_INT_BELOW) _separator \
     _def(float_comparison, KEFIR_OPT_OPCODE_FLOAT32_EQUALS) _separator \
     _def(float_comparison, KEFIR_OPT_OPCODE_FLOAT32_GREATER) _separator \
-    _def(float_comparison, KEFIR_OPT_OPCODE_FLOAT32_GREATER_OR_EQUALS) _separator \
     _def(float_comparison, KEFIR_OPT_OPCODE_FLOAT32_LESSER) _separator \
-    _def(float_comparison, KEFIR_OPT_OPCODE_FLOAT32_LESSER_OR_EQUALS) _separator \
     _def(float_comparison, KEFIR_OPT_OPCODE_FLOAT64_EQUALS) _separator \
     _def(float_comparison, KEFIR_OPT_OPCODE_FLOAT64_GREATER) _separator \
-    _def(float_comparison, KEFIR_OPT_OPCODE_FLOAT64_GREATER_OR_EQUALS) _separator \
     _def(float_comparison, KEFIR_OPT_OPCODE_FLOAT64_LESSER) _separator \
-    _def(float_comparison, KEFIR_OPT_OPCODE_FLOAT64_LESSER_OR_EQUALS) _separator \
     _def(branch, KEFIR_OPT_OPCODE_BRANCH)
 // clang-format on
 
@@ -376,6 +368,10 @@ typedef struct kefir_codegen_amd64_comparison_match_op {
 kefir_result_t kefir_codegen_amd64_match_comparison_op(const struct kefir_opt_code_container *,
                                                        kefir_opt_instruction_ref_t,
                                                        struct kefir_codegen_amd64_comparison_match_op *);
+
+kefir_result_t kefir_codegen_amd64_util_translate_float_comparison(
+    struct kefir_mem *, struct kefir_codegen_amd64_function *, const struct kefir_opt_instruction *,
+    const struct kefir_codegen_amd64_comparison_match_op *);
 
 #endif
 
