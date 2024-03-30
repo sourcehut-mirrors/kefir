@@ -208,32 +208,16 @@ static kefir_result_t int_binary_const_fold(struct kefir_mem *mem, struct kefir_
             result.integer = left.integer > right.integer;
             break;
 
-        case KEFIR_OPT_OPCODE_INT_GREATER_OR_EQUALS:
-            result.integer = left.integer >= right.integer;
-            break;
-
         case KEFIR_OPT_OPCODE_INT_LESSER:
             result.integer = left.integer < right.integer;
-            break;
-
-        case KEFIR_OPT_OPCODE_INT_LESSER_OR_EQUALS:
-            result.integer = left.integer <= right.integer;
             break;
 
         case KEFIR_OPT_OPCODE_INT_ABOVE:
             result.integer = left.uinteger > right.uinteger;
             break;
 
-        case KEFIR_OPT_OPCODE_INT_ABOVE_OR_EQUALS:
-            result.integer = left.uinteger >= right.uinteger;
-            break;
-
         case KEFIR_OPT_OPCODE_INT_BELOW:
             result.integer = left.uinteger < right.uinteger;
-            break;
-
-        case KEFIR_OPT_OPCODE_INT_BELOW_OR_EQUALS:
-            result.integer = left.uinteger <= right.uinteger;
             break;
 
         case KEFIR_OPT_OPCODE_BOOL_OR:
@@ -291,13 +275,9 @@ static kefir_result_t const_fold_apply(struct kefir_mem *mem, const struct kefir
                 case KEFIR_OPT_OPCODE_INT_ARSHIFT:
                 case KEFIR_OPT_OPCODE_INT_EQUALS:
                 case KEFIR_OPT_OPCODE_INT_GREATER:
-                case KEFIR_OPT_OPCODE_INT_GREATER_OR_EQUALS:
                 case KEFIR_OPT_OPCODE_INT_LESSER:
-                case KEFIR_OPT_OPCODE_INT_LESSER_OR_EQUALS:
                 case KEFIR_OPT_OPCODE_INT_ABOVE:
-                case KEFIR_OPT_OPCODE_INT_ABOVE_OR_EQUALS:
                 case KEFIR_OPT_OPCODE_INT_BELOW:
-                case KEFIR_OPT_OPCODE_INT_BELOW_OR_EQUALS:
                     REQUIRE_OK(int_binary_const_fold(mem, func, instr, &replacement_ref));
                     break;
 

@@ -330,7 +330,7 @@ static kefir_result_t context_reference_public_label(struct kefir_mem *mem, cons
     REQUIRE(label != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Labels are not permittedalid AST type"));
 
     ASSIGN_DECL_CAST(struct kefir_ast_local_context *, local_ctx, context->payload);
-    struct kefir_ast_scoped_identifier *scoped_id;
+    struct kefir_ast_scoped_identifier *scoped_id = NULL;
     if (parent != NULL) {
         REQUIRE_OK(kefir_ast_local_context_define_label(mem, local_ctx, label, parent, location, &scoped_id));
     } else {

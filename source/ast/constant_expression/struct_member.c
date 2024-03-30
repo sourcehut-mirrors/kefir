@@ -73,7 +73,7 @@ kefir_result_t kefir_ast_evaluate_struct_member_node(struct kefir_mem *mem, cons
             KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
                                    "Expected constant expression AST node"));
 
-    kefir_size_t member_offset;
+    kefir_size_t member_offset = 0;
     REQUIRE_OK(calculate_member_offset(mem, context, node, &member_offset));
 
     if (node->structure->properties.expression_props.constant_expression) {

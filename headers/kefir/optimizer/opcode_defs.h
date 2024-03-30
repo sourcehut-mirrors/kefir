@@ -75,23 +75,10 @@
     OPCODE(INT_NEG, "int_neg", ref1) SEPARATOR \
     /* Logical & comparison operations */ \
     OPCODE(INT_EQUALS, "int_equals", ref2) SEPARATOR \
-    OPCODE(INT_EQUALS_CONST, "int_equals_const", ref1_imm) SEPARATOR \
     OPCODE(INT_GREATER, "int_greater", ref2) SEPARATOR \
-    OPCODE(INT_GREATER_CONST, "int_greater_const", ref1_imm) SEPARATOR \
-    OPCODE(INT_GREATER_OR_EQUALS, "int_greater_or_equals", ref2) SEPARATOR \
-    OPCODE(INT_GREATER_OR_EQUALS_CONST, "int_greater_or_equals_const", ref1_imm) SEPARATOR \
     OPCODE(INT_LESSER, "int_lesser", ref2) SEPARATOR \
-    OPCODE(INT_LESSER_CONST, "int_lesser_const", ref1_imm) SEPARATOR \
-    OPCODE(INT_LESSER_OR_EQUALS, "int_lesser_or_equals", ref2) SEPARATOR \
-    OPCODE(INT_LESSER_OR_EQUALS_CONST, "int_lesser_or_equals_const", ref1_imm) SEPARATOR \
     OPCODE(INT_ABOVE, "int_above", ref2) SEPARATOR \
-    OPCODE(INT_ABOVE_CONST, "int_above_const", ref1_imm) SEPARATOR \
-    OPCODE(INT_ABOVE_OR_EQUALS, "int_above_or_equals", ref2) SEPARATOR \
-    OPCODE(INT_ABOVE_OR_EQUALS_CONST, "int_above_or_equals_const", ref1_imm) SEPARATOR \
     OPCODE(INT_BELOW, "int_below", ref2) SEPARATOR \
-    OPCODE(INT_BELOW_CONST, "int_below_const", ref1_imm) SEPARATOR \
-    OPCODE(INT_BELOW_OR_EQUALS, "int_below_or_equals", ref2) SEPARATOR \
-    OPCODE(INT_BELOW_OR_EQUALS_CONST, "int_below_or_equals_const", ref1_imm) SEPARATOR \
     OPCODE(BOOL_AND, "bool_and", ref2) SEPARATOR \
     OPCODE(BOOL_OR, "bool_or", ref2) SEPARATOR \
     OPCODE(BOOL_NOT, "bool_not", ref1) SEPARATOR \

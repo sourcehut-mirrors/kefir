@@ -74,15 +74,6 @@ static kefir_result_t format_operation_ref1_imm(struct kefir_json_output *json,
         case KEFIR_OPT_OPCODE_INT_LSHIFT_CONST:
         case KEFIR_OPT_OPCODE_INT_RSHIFT_CONST:
         case KEFIR_OPT_OPCODE_INT_ARSHIFT_CONST:
-        case KEFIR_OPT_OPCODE_INT_EQUALS_CONST:
-        case KEFIR_OPT_OPCODE_INT_GREATER_CONST:
-        case KEFIR_OPT_OPCODE_INT_GREATER_OR_EQUALS_CONST:
-        case KEFIR_OPT_OPCODE_INT_LESSER_CONST:
-        case KEFIR_OPT_OPCODE_INT_LESSER_OR_EQUALS_CONST:
-        case KEFIR_OPT_OPCODE_INT_ABOVE_CONST:
-        case KEFIR_OPT_OPCODE_INT_ABOVE_OR_EQUALS_CONST:
-        case KEFIR_OPT_OPCODE_INT_BELOW_CONST:
-        case KEFIR_OPT_OPCODE_INT_BELOW_OR_EQUALS_CONST:
             REQUIRE_OK(kefir_json_output_integer(json, oper->parameters.ref_imm.integer));
             break;
 

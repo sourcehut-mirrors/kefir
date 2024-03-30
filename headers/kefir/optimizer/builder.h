@@ -307,16 +307,6 @@ BINARY_INT_CONST_OP(int_lshift_const);
 BINARY_INT_CONST_OP(int_rshift_const);
 BINARY_INT_CONST_OP(int_arshift_const);
 
-BINARY_INT_CONST_OP(int_equals_const);
-BINARY_INT_CONST_OP(int_greater_const);
-BINARY_INT_CONST_OP(int_greater_or_equals_const);
-BINARY_INT_CONST_OP(int_lesser_const);
-BINARY_INT_CONST_OP(int_lesser_or_equals_const);
-BINARY_INT_CONST_OP(int_above_const);
-BINARY_INT_CONST_OP(int_above_or_equals_const);
-BINARY_INT_CONST_OP(int_below_const);
-BINARY_INT_CONST_OP(int_below_or_equals_const);
-
 #undef BINARY_INT_CONST_OP
 
 #define ATOMIC_LOAD_OP(_id)                                                                            \

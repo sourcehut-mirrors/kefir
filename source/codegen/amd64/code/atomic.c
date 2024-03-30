@@ -379,7 +379,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_copy_memory)(
     kefir_asmcmp_stash_index_t stash_idx;
     REQUIRE_OK(preserve_regs(mem, function, &stash_idx));
 
-    kefir_size_t total_size;
+    kefir_size_t total_size = 0;
     REQUIRE_OK(size_of_memory_operand(mem, function, instruction, &total_size, NULL));
 
     kefir_asmcmp_virtual_register_index_t size_placement_vreg, target_ptr_vreg, target_ptr_placement_vreg,
@@ -1053,7 +1053,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_compare_exchange_memo
     kefir_asmcmp_stash_index_t stash_idx;
     REQUIRE_OK(preserve_regs(mem, function, &stash_idx));
 
-    kefir_size_t total_size, total_alignment;
+    kefir_size_t total_size = 0, total_alignment = 0;
     REQUIRE_OK(size_of_memory_operand(mem, function, instruction, &total_size, &total_alignment));
 
     kefir_asmcmp_virtual_register_index_t size_placement_vreg, ptr_vreg, ptr_placement_vreg, expected_value_vreg,
