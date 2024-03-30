@@ -19,13 +19,13 @@ compare1:
 _kefir_func_compare1_label0:
 _kefir_func_compare1_label1:
     xor %rax, %rax
-    movd (_kefir_func_compare1_label2), %xmm1
+    movd _kefir_func_compare1_label2(%rip), %xmm1
     xor %rcx, %rcx
     ucomiss %xmm1, %xmm0
     setnp %al
     cmovne %rcx, %rax
     xor %rcx, %rcx
-    movd (_kefir_func_compare1_label3), %xmm1
+    movd _kefir_func_compare1_label3(%rip), %xmm1
     xor %rdx, %rdx
     ucomiss %xmm1, %xmm0
     setnp %cl
@@ -36,25 +36,25 @@ _kefir_func_compare1_label1:
     add %rdx, %rax
     movsx %eax, %rax
     xor %rcx, %rcx
-    movd (_kefir_func_compare1_label4), %xmm1
+    movd _kefir_func_compare1_label4(%rip), %xmm1
     comiss %xmm1, %xmm0
     seta %cl
     add %rcx, %rax
     movsx %eax, %rax
     xor %rcx, %rcx
-    movd (_kefir_func_compare1_label5), %xmm1
+    movd _kefir_func_compare1_label5(%rip), %xmm1
     comiss %xmm1, %xmm0
     setae %cl
     add %rcx, %rax
     movsx %eax, %rax
     xor %rcx, %rcx
-    movd (_kefir_func_compare1_label6), %xmm1
+    movd _kefir_func_compare1_label6(%rip), %xmm1
     comiss %xmm0, %xmm1
     seta %cl
     add %rcx, %rax
     movsx %eax, %rax
     xor %rcx, %rcx
-    movd (_kefir_func_compare1_label7), %xmm1
+    movd _kefir_func_compare1_label7(%rip), %xmm1
     comiss %xmm0, %xmm1
     setae %cl
     add %rcx, %rax
@@ -92,13 +92,13 @@ compare2:
 _kefir_func_compare2_label0:
 _kefir_func_compare2_label1:
     xor %rax, %rax
-    movd (_kefir_func_compare2_label2), %xmm1
+    movd _kefir_func_compare2_label2(%rip), %xmm1
     xor %rcx, %rcx
     ucomiss %xmm1, %xmm0
     setnp %al
     cmovne %rcx, %rax
     xor %rcx, %rcx
-    movd (_kefir_func_compare2_label3), %xmm1
+    movd _kefir_func_compare2_label3(%rip), %xmm1
     xor %rdx, %rdx
     ucomiss %xmm1, %xmm0
     setnp %cl
@@ -109,26 +109,26 @@ _kefir_func_compare2_label1:
     add %rdx, %rax
     movsx %eax, %rax
     xor %rcx, %rcx
-    movd (_kefir_func_compare2_label4), %xmm1
+    movd _kefir_func_compare2_label4(%rip), %xmm1
     comiss %xmm0, %xmm1
     setae %cl
     add %rcx, %rax
     movsx %eax, %rax
     xor %rcx, %rcx
-    movd (_kefir_func_compare2_label5), %xmm1
+    movd _kefir_func_compare2_label5(%rip), %xmm1
     comiss %xmm0, %xmm1
     seta %cl
     add %rcx, %rax
     movsx %eax, %rax
     xor %rcx, %rcx
-    movd (_kefir_func_compare2_label6), %xmm1
+    movd _kefir_func_compare2_label6(%rip), %xmm1
     comiss %xmm1, %xmm0
     setae %cl
     add %rcx, %rax
     movsx %eax, %rax
     cvtss2sd %xmm0, %xmm0
     xor %rcx, %rcx
-    movq (_kefir_func_compare2_label7), %xmm1
+    movq _kefir_func_compare2_label7(%rip), %xmm1
     comisd %xmm1, %xmm0
     seta %cl
     add %rcx, %rax
@@ -166,13 +166,13 @@ compare3:
 _kefir_func_compare3_label0:
 _kefir_func_compare3_label1:
     xor %rax, %rax
-    movq (_kefir_func_compare3_label2), %xmm1
+    movq _kefir_func_compare3_label2(%rip), %xmm1
     xor %rcx, %rcx
     ucomisd %xmm1, %xmm0
     setnp %al
     cmovne %rcx, %rax
     xor %rcx, %rcx
-    movq (_kefir_func_compare3_label3), %xmm1
+    movq _kefir_func_compare3_label3(%rip), %xmm1
     xor %rdx, %rdx
     ucomisd %xmm1, %xmm0
     setnp %cl
@@ -183,25 +183,25 @@ _kefir_func_compare3_label1:
     add %rdx, %rax
     movsx %eax, %rax
     xor %rcx, %rcx
-    movq (_kefir_func_compare3_label4), %xmm1
+    movq _kefir_func_compare3_label4(%rip), %xmm1
     comisd %xmm1, %xmm0
     seta %cl
     add %rcx, %rax
     movsx %eax, %rax
     xor %rcx, %rcx
-    movq (_kefir_func_compare3_label5), %xmm1
+    movq _kefir_func_compare3_label5(%rip), %xmm1
     comisd %xmm1, %xmm0
     setae %cl
     add %rcx, %rax
     movsx %eax, %rax
     xor %rcx, %rcx
-    movq (_kefir_func_compare3_label6), %xmm1
+    movq _kefir_func_compare3_label6(%rip), %xmm1
     comisd %xmm0, %xmm1
     seta %cl
     add %rcx, %rax
     movsx %eax, %rax
     xor %rcx, %rcx
-    movq (_kefir_func_compare3_label7), %xmm1
+    movq _kefir_func_compare3_label7(%rip), %xmm1
     comisd %xmm0, %xmm1
     setae %cl
     add %rcx, %rax
@@ -239,13 +239,13 @@ compare4:
 _kefir_func_compare4_label0:
 _kefir_func_compare4_label1:
     xor %rax, %rax
-    movq (_kefir_func_compare4_label2), %xmm1
+    movq _kefir_func_compare4_label2(%rip), %xmm1
     xor %rcx, %rcx
     ucomisd %xmm1, %xmm0
     setnp %al
     cmovne %rcx, %rax
     xor %rcx, %rcx
-    movq (_kefir_func_compare4_label3), %xmm1
+    movq _kefir_func_compare4_label3(%rip), %xmm1
     xor %rdx, %rdx
     ucomisd %xmm1, %xmm0
     setnp %cl
@@ -256,25 +256,25 @@ _kefir_func_compare4_label1:
     add %rdx, %rax
     movsx %eax, %rax
     xor %rcx, %rcx
-    movq (_kefir_func_compare4_label4), %xmm1
+    movq _kefir_func_compare4_label4(%rip), %xmm1
     comisd %xmm0, %xmm1
     setae %cl
     add %rcx, %rax
     movsx %eax, %rax
     xor %rcx, %rcx
-    movq (_kefir_func_compare4_label5), %xmm1
+    movq _kefir_func_compare4_label5(%rip), %xmm1
     comisd %xmm0, %xmm1
     seta %cl
     add %rcx, %rax
     movsx %eax, %rax
     xor %rcx, %rcx
-    movq (_kefir_func_compare4_label6), %xmm1
+    movq _kefir_func_compare4_label6(%rip), %xmm1
     comisd %xmm1, %xmm0
     setae %cl
     add %rcx, %rax
     movsx %eax, %rax
     xor %rcx, %rcx
-    movq (_kefir_func_compare4_label7), %xmm1
+    movq _kefir_func_compare4_label7(%rip), %xmm1
     comisd %xmm1, %xmm0
     seta %cl
     add %rcx, %rax

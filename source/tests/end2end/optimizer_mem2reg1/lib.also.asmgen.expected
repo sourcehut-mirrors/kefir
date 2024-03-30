@@ -188,7 +188,7 @@ _kefir_func_factorialf32_label4:
 _kefir_func_factorialf32_label5:
     movd _kefir_func_factorialf32_label11(%rip), %xmm0
 _kefir_func_factorialf32_label6:
-    ucomiss (_kefir_func_factorialf32_label12), %xmm1
+    ucomiss _kefir_func_factorialf32_label12(%rip), %xmm1
     ja _kefir_func_factorialf32_label13
     movq %xmm0, %xmm2
     jmp _kefir_func_factorialf32_label8

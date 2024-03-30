@@ -361,10 +361,17 @@ static kefir_result_t fused_comparison_match_impl(
             REQUIRE_OK(kefir_hashtree_insert(mem, &function->constants, (kefir_hashtree_key_t) label,
                                              (kefir_hashtree_value_t) fused_comparison_op->refs[1]));
 
-            REQUIRE_OK(kefir_asmcmp_amd64_ucomiss(
-                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                &KEFIR_ASMCMP_MAKE_VREG(arg1_vreg_idx),
-                &KEFIR_ASMCMP_MAKE_INDIRECT_INTERNAL_LABEL(label, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT), NULL));
+            if (function->codegen->config->position_independent_code) {
+                REQUIRE_OK(kefir_asmcmp_amd64_ucomiss(
+                    mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                    &KEFIR_ASMCMP_MAKE_VREG(arg1_vreg_idx),
+                    &KEFIR_ASMCMP_MAKE_RIP_INDIRECT_INTERNAL(label, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT), NULL));
+            } else {
+                REQUIRE_OK(kefir_asmcmp_amd64_ucomiss(
+                    mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                    &KEFIR_ASMCMP_MAKE_VREG(arg1_vreg_idx),
+                    &KEFIR_ASMCMP_MAKE_INDIRECT_INTERNAL_LABEL(label, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT), NULL));
+            }
         } break;
 
         case KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_EQUAL_CONST:
@@ -380,10 +387,17 @@ static kefir_result_t fused_comparison_match_impl(
             REQUIRE_OK(kefir_hashtree_insert(mem, &function->constants, (kefir_hashtree_key_t) label,
                                              (kefir_hashtree_value_t) fused_comparison_op->refs[1]));
 
-            REQUIRE_OK(kefir_asmcmp_amd64_ucomisd(
-                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                &KEFIR_ASMCMP_MAKE_VREG(arg1_vreg_idx),
-                &KEFIR_ASMCMP_MAKE_INDIRECT_INTERNAL_LABEL(label, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT), NULL));
+            if (function->codegen->config->position_independent_code) {
+                REQUIRE_OK(kefir_asmcmp_amd64_ucomisd(
+                    mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                    &KEFIR_ASMCMP_MAKE_VREG(arg1_vreg_idx),
+                    &KEFIR_ASMCMP_MAKE_RIP_INDIRECT_INTERNAL(label, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT), NULL));
+            } else {
+                REQUIRE_OK(kefir_asmcmp_amd64_ucomisd(
+                    mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                    &KEFIR_ASMCMP_MAKE_VREG(arg1_vreg_idx),
+                    &KEFIR_ASMCMP_MAKE_INDIRECT_INTERNAL_LABEL(label, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT), NULL));
+            }
         } break;
 
         case KEFIR_CODEGEN_AMD64_COMPARISON_NONE:

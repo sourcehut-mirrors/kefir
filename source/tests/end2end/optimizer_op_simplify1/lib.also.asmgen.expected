@@ -49,7 +49,7 @@ _kefir_func_dnotd_label1:
     movq %xmm0, -16(%rbp)
     movq -16(%rbp), %rax
     movq %rax, %xmm0
-    ucomisd (_kefir_func_dnotd_label4), %xmm0
+    ucomisd _kefir_func_dnotd_label4(%rip), %xmm0
     jp _kefir_func_dnotd_label2
     jne _kefir_func_dnotd_label2
     jmp _kefir_func_dnotd_label3
@@ -81,7 +81,7 @@ _kefir_func_dnotf_label1:
     movd %xmm0, -12(%rbp)
     movl -12(%rbp), %eax
     movd %rax, %xmm0
-    ucomiss (_kefir_func_dnotf_label4), %xmm0
+    ucomiss _kefir_func_dnotf_label4(%rip), %xmm0
     jp _kefir_func_dnotf_label2
     jne _kefir_func_dnotf_label2
     jmp _kefir_func_dnotf_label3
