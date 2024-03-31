@@ -891,10 +891,6 @@ BINARY_OP(complex_long_double_div, KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_DIV)
         return KEFIR_OK;                                                                                            \
     }
 
-BINARY_INT_CONST_OP(int_and_const, KEFIR_OPT_OPCODE_INT_AND_CONST)
-BINARY_INT_CONST_OP(int_or_const, KEFIR_OPT_OPCODE_INT_OR_CONST)
-BINARY_INT_CONST_OP(int_xor_const, KEFIR_OPT_OPCODE_INT_XOR_CONST)
-
 BINARY_INT_CONST_OP(int_lshift_const, KEFIR_OPT_OPCODE_INT_LSHIFT_CONST)
 BINARY_INT_CONST_OP(int_rshift_const, KEFIR_OPT_OPCODE_INT_RSHIFT_CONST)
 BINARY_INT_CONST_OP(int_arshift_const, KEFIR_OPT_OPCODE_INT_ARSHIFT_CONST)
