@@ -128,7 +128,8 @@ kefir_result_t kefir_codegen_amd64_function_map_phi_outputs(struct kefir_mem *me
     for (res = kefir_opt_code_block_phi_head(&function->function->code, target_block, &phi);
          res == KEFIR_OK && phi != NULL; res = kefir_opt_phi_next_sibling(&function->function->code, phi, &phi)) {
 
-        if (!function->function_analysis->instructions[phi->output_ref].reachable) {
+        if (!function->function_analysis->instructions[phi->output_ref].reachable ||
+            !kefir_hashtreeset_has(&function->translated_instructions, (kefir_hashtreeset_entry_t) phi->output_ref)) {
             continue;
         }
 
@@ -194,7 +195,8 @@ kefir_result_t kefir_codegen_amd64_function_map_phi_outputs(struct kefir_mem *me
     for (res = kefir_opt_code_block_phi_head(&function->function->code, target_block, &phi);
          res == KEFIR_OK && phi != NULL; res = kefir_opt_phi_next_sibling(&function->function->code, phi, &phi)) {
 
-        if (!function->function_analysis->instructions[phi->output_ref].reachable) {
+        if (!function->function_analysis->instructions[phi->output_ref].reachable ||
+            !kefir_hashtreeset_has(&function->translated_instructions, (kefir_hashtreeset_entry_t) phi->output_ref)) {
             continue;
         }
 
@@ -223,7 +225,8 @@ static kefir_result_t has_phi_outputs(struct kefir_codegen_amd64_function *funct
     for (res = kefir_opt_code_block_phi_head(&function->function->code, target_block, &phi);
          res == KEFIR_OK && phi != NULL; res = kefir_opt_phi_next_sibling(&function->function->code, phi, &phi)) {
 
-        if (!function->function_analysis->instructions[phi->output_ref].reachable) {
+        if (!function->function_analysis->instructions[phi->output_ref].reachable ||
+            !kefir_hashtreeset_has(&function->translated_instructions, (kefir_hashtreeset_entry_t) phi->output_ref)) {
             continue;
         }
 
