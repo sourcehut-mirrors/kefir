@@ -150,10 +150,8 @@ kefir_result_t kefir_codegen_amd64_function_map_phi_outputs(struct kefir_mem *, 
     _def(pop_scope, KEFIR_OPT_OPCODE_SCOPE_POP) _separator \
     _def(invoke, KEFIR_OPT_OPCODE_INVOKE) _separator \
     _def(invoke, KEFIR_OPT_OPCODE_INVOKE_VIRTUAL) _separator \
-    _def(int_add, KEFIR_OPT_OPCODE_INT_ADD) _separator                                                   \
-    _def(int_add_const, KEFIR_OPT_OPCODE_INT_ADD_CONST) _separator                                                   \
-    _def(int_sub, KEFIR_OPT_OPCODE_INT_SUB) _separator                                                   \
-    _def(int_sub_const, KEFIR_OPT_OPCODE_INT_SUB_CONST) _separator                                                   \
+    _def(int_arithmetics, KEFIR_OPT_OPCODE_INT_ADD) _separator                                                   \
+    _def(int_arithmetics, KEFIR_OPT_OPCODE_INT_SUB) _separator                                                   \
     _def(int_mul, KEFIR_OPT_OPCODE_INT_MUL) _separator                                                   \
     _def(int_mul_const, KEFIR_OPT_OPCODE_INT_MUL_CONST) _separator                                                   \
     _def(int_and, KEFIR_OPT_OPCODE_INT_AND) _separator                                                   \
@@ -284,6 +282,8 @@ kefir_result_t kefir_codegen_amd64_function_map_phi_outputs(struct kefir_mem *, 
     _def(float_comparison, KEFIR_OPT_OPCODE_FLOAT64_EQUALS) _separator \
     _def(float_comparison, KEFIR_OPT_OPCODE_FLOAT64_GREATER) _separator \
     _def(float_comparison, KEFIR_OPT_OPCODE_FLOAT64_LESSER) _separator \
+    _def(int_arithmetics, KEFIR_OPT_OPCODE_INT_ADD) _separator \
+    _def(int_arithmetics, KEFIR_OPT_OPCODE_INT_SUB) _separator \
     _def(branch, KEFIR_OPT_OPCODE_BRANCH)
 // clang-format on
 

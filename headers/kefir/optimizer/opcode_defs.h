@@ -50,9 +50,7 @@
     OPCODE(FLOAT64_PLACEHOLDER, "float64_placeholder", none) SEPARATOR \
     /* Integral arithmetics & binary operations */ \
     OPCODE(INT_ADD, "int_add", ref2) SEPARATOR \
-    OPCODE(INT_ADD_CONST, "int_add_const", ref1_imm) SEPARATOR \
     OPCODE(INT_SUB, "int_sub", ref2) SEPARATOR \
-    OPCODE(INT_SUB_CONST, "int_sub_const", ref1_imm) SEPARATOR \
     OPCODE(INT_MUL, "int_mul", ref2) SEPARATOR \
     OPCODE(INT_MUL_CONST, "int_mul_const", ref1_imm) SEPARATOR \
     OPCODE(INT_DIV, "int_div", ref2) SEPARATOR \

@@ -43,8 +43,7 @@ _kefir_func_get_local_tlocal_uninit_static_label1:
     .word 26214
     rex.W     call __tls_get_addr@PLT
     mov %rax, %rcx
-    mov $24, %rax
-    add %rax, %rcx
+    add $24, %rcx
     mov %rcx, %rax
     pop %rbp
     ret
@@ -55,8 +54,7 @@ get_local_uninit_static:
 _kefir_func_get_local_uninit_static_label0:
 _kefir_func_get_local_uninit_static_label1:
     lea __kefirrt_module_static_uninit_vars(%rip), %rax
-    mov $24, %rcx
-    add %rcx, %rax
+    add $24, %rax
     pop %rbp
     ret
 

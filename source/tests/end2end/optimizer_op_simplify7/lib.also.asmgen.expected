@@ -36,7 +36,7 @@ int_add:
     mov %rsp, %rbp
 _kefir_func_int_add_label0:
 _kefir_func_int_add_label1:
-    add $-345, %rdi
+    sub $345, %rdi
     mov %rdi, %rax
     pop %rbp
     ret
@@ -65,7 +65,7 @@ int_sub:
     mov %rsp, %rbp
 _kefir_func_int_sub_label0:
 _kefir_func_int_sub_label1:
-    add $-11, %rdi
+    sub $11, %rdi
     mov %rdi, %rax
     pop %rbp
     ret
@@ -105,7 +105,7 @@ uint_add:
     mov %rsp, %rbp
 _kefir_func_uint_add_label0:
 _kefir_func_uint_add_label1:
-    add $-345, %rdi
+    sub $345, %rdi
     mov %rdi, %rax
     pop %rbp
     ret
@@ -134,7 +134,7 @@ uint_sub:
     mov %rsp, %rbp
 _kefir_func_uint_sub_label0:
 _kefir_func_uint_sub_label1:
-    add $-11, %rdi
+    sub $11, %rdi
     mov %rdi, %rax
     pop %rbp
     ret

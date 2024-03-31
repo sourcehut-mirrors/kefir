@@ -619,47 +619,176 @@ kefir_result_t kefir_codegen_amd64_match_comparison_op(const struct kefir_opt_co
         REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));             \
     } while (0)
 
-kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int_add)(struct kefir_mem *mem,
-                                                             struct kefir_codegen_amd64_function *function,
-                                                             const struct kefir_opt_instruction *instruction) {
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
-    REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
+enum int_arithmetics_op_type {
+    INT_ARITHMETICS_ADD,
+    INT_ARITHMETICS_ADD_CONST,
+    INT_ARITHMETICS_SUB,
+    INT_ARITHMETICS_SUB_CONST
+};
 
-    DEFINE_BINARY_OP(add);
+struct int_arithmetics_op {
+    enum int_arithmetics_op_type type;
+    kefir_opt_instruction_ref_t refs[2];
+    union {
+        kefir_int64_t int_value;
+    };
+};
+
+static kefir_result_t match_int_arithmetics(struct kefir_codegen_amd64_function *function,
+                                            const struct kefir_opt_instruction *instruction,
+                                            struct int_arithmetics_op *op) {
+    struct kefir_opt_instruction *arg1, *arg2;
+    switch (instruction->operation.opcode) {
+#define OP(_opcode, _opcode_const, _direct, _reverse)                                                          \
+    do {                                                                                                       \
+        REQUIRE_OK(kefir_opt_code_container_instr(&function->function->code,                                   \
+                                                  instruction->operation.parameters.refs[0], &arg1));          \
+        REQUIRE_OK(kefir_opt_code_container_instr(&function->function->code,                                   \
+                                                  instruction->operation.parameters.refs[1], &arg2));          \
+        if (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST &&                                            \
+            arg1->operation.parameters.imm.integer >= KEFIR_INT32_MIN &&                                       \
+            arg1->operation.parameters.imm.integer <= KEFIR_INT32_MAX && (_reverse)) {                         \
+            op->type = (_opcode_const);                                                                        \
+            op->refs[0] = arg2->id;                                                                            \
+            op->refs[1] = arg1->id;                                                                            \
+            op->int_value = arg1->operation.parameters.imm.integer;                                            \
+        } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST &&                                    \
+                   (kefir_int64_t) arg1->operation.parameters.imm.uinteger >= KEFIR_INT32_MIN &&               \
+                   (kefir_int64_t) arg1->operation.parameters.imm.uinteger <= KEFIR_INT32_MAX && (_reverse)) { \
+            op->type = (_opcode_const);                                                                        \
+            op->refs[0] = arg2->id;                                                                            \
+            op->refs[1] = arg1->id;                                                                            \
+            op->int_value = (kefir_int64_t) arg1->operation.parameters.imm.uinteger;                           \
+        } else if (arg2->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST &&                                     \
+                   arg2->operation.parameters.imm.integer >= KEFIR_INT32_MIN &&                                \
+                   arg2->operation.parameters.imm.integer <= KEFIR_INT32_MAX && (_direct)) {                   \
+            op->type = (_opcode_const);                                                                        \
+            op->refs[0] = arg1->id;                                                                            \
+            op->refs[1] = arg2->id;                                                                            \
+            op->int_value = arg2->operation.parameters.imm.integer;                                            \
+        } else if (arg2->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST &&                                    \
+                   (kefir_int64_t) arg2->operation.parameters.imm.uinteger >= KEFIR_INT32_MIN &&               \
+                   (kefir_int64_t) arg2->operation.parameters.imm.uinteger <= KEFIR_INT32_MAX && (_direct)) {  \
+            op->type = (_opcode_const);                                                                        \
+            op->refs[0] = arg1->id;                                                                            \
+            op->refs[1] = arg2->id;                                                                            \
+            op->int_value = (kefir_int64_t) arg2->operation.parameters.imm.uinteger;                           \
+        } else {                                                                                               \
+            op->type = (_opcode);                                                                              \
+            op->refs[0] = arg1->id;                                                                            \
+            op->refs[1] = arg2->id;                                                                            \
+        }                                                                                                      \
+    } while (0)
+
+        case KEFIR_OPT_OPCODE_INT_ADD:
+            OP(INT_ARITHMETICS_ADD, INT_ARITHMETICS_ADD_CONST, true, true);
+            break;
+
+        case KEFIR_OPT_OPCODE_INT_SUB:
+            OP(INT_ARITHMETICS_SUB, INT_ARITHMETICS_SUB_CONST, true, false);
+            break;
+
+#undef OP
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected amd64 codegen integer arithmetics operation type");
+    }
+
     return KEFIR_OK;
 }
 
-kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int_add_const)(struct kefir_mem *mem,
-                                                                   struct kefir_codegen_amd64_function *function,
-                                                                   const struct kefir_opt_instruction *instruction) {
+kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_FUSION_IMPL(int_arithmetics)(
+    struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
+    const struct kefir_opt_instruction *instruction, kefir_result_t (*callback)(kefir_opt_instruction_ref_t, void *),
+    void *payload) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
+    REQUIRE(callback != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen instruction fusion callback"));
 
-    BINARY_CONST_OP(add);
+    struct int_arithmetics_op op = {0};
+    REQUIRE_OK(match_int_arithmetics(function, instruction, &op));
+    switch (op.type) {
+        case INT_ARITHMETICS_ADD:
+        case INT_ARITHMETICS_SUB:
+            REQUIRE_OK(callback(op.refs[0], payload));
+            REQUIRE_OK(callback(op.refs[1], payload));
+            break;
+
+        case INT_ARITHMETICS_ADD_CONST:
+        case INT_ARITHMETICS_SUB_CONST:
+            REQUIRE_OK(callback(op.refs[0], payload));
+            break;
+    }
+
     return KEFIR_OK;
 }
 
-kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int_sub)(struct kefir_mem *mem,
-                                                             struct kefir_codegen_amd64_function *function,
-                                                             const struct kefir_opt_instruction *instruction) {
+kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int_arithmetics)(struct kefir_mem *mem,
+                                                                     struct kefir_codegen_amd64_function *function,
+                                                                     const struct kefir_opt_instruction *instruction) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
 
-    DEFINE_BINARY_OP(sub);
-    return KEFIR_OK;
-}
+    struct int_arithmetics_op op = {0};
+    REQUIRE_OK(match_int_arithmetics(function, instruction, &op));
+    switch (op.type) {
+#define OP(_operation)                                                                                                 \
+    do {                                                                                                               \
+        kefir_asmcmp_virtual_register_index_t result_vreg, arg1_vreg, arg2_vreg;                                       \
+        REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, op.refs[0], &arg1_vreg));                            \
+        REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, op.refs[1], &arg2_vreg));                            \
+        REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,                                     \
+                                                     KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));    \
+        REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &function->code,                                     \
+                                                             kefir_asmcmp_context_instr_tail(&function->code.context), \
+                                                             result_vreg, arg1_vreg, NULL));                           \
+        REQUIRE_OK(kefir_asmcmp_amd64_##_operation(                                                                    \
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),                            \
+            &KEFIR_ASMCMP_MAKE_VREG64(result_vreg), &KEFIR_ASMCMP_MAKE_VREG64(arg2_vreg), NULL));                      \
+        REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));             \
+    } while (0)
+#define CONST_OP(_operation, _skip_on_zero)                                                                            \
+    do {                                                                                                               \
+        kefir_asmcmp_virtual_register_index_t result_vreg, arg1_vreg;                                                  \
+        REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, op.refs[0], &arg1_vreg));                            \
+        REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,                                     \
+                                                     KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));    \
+        REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &function->code,                                     \
+                                                             kefir_asmcmp_context_instr_tail(&function->code.context), \
+                                                             result_vreg, arg1_vreg, NULL));                           \
+        if (!(_skip_on_zero) || op.int_value != 0) {                                                                   \
+            REQUIRE(                                                                                                   \
+                op.int_value >= KEFIR_INT32_MIN && op.int_value <= KEFIR_INT32_MAX,                                    \
+                KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected amd64 codegen integer arithmetics constant value"));  \
+            REQUIRE_OK(kefir_asmcmp_amd64_##_operation(                                                                \
+                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),                        \
+                &KEFIR_ASMCMP_MAKE_VREG64(result_vreg), &KEFIR_ASMCMP_MAKE_INT(op.int_value), NULL));                  \
+        }                                                                                                              \
+        REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));             \
+    } while (0)
 
-kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int_sub_const)(struct kefir_mem *mem,
-                                                                   struct kefir_codegen_amd64_function *function,
-                                                                   const struct kefir_opt_instruction *instruction) {
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
-    REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
+        case INT_ARITHMETICS_ADD:
+            OP(add);
+            break;
 
-    BINARY_CONST_OP(sub);
+        case INT_ARITHMETICS_SUB:
+            OP(sub);
+            break;
+
+        case INT_ARITHMETICS_ADD_CONST:
+            CONST_OP(add, true);
+            break;
+
+        case INT_ARITHMETICS_SUB_CONST:
+            CONST_OP(sub, true);
+            break;
+
+#undef OP
+#undef CONST_OP
+    }
     return KEFIR_OK;
 }
 
