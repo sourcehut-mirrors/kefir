@@ -60,11 +60,8 @@
     OPCODE(INT_OR, "int_or", ref2) SEPARATOR \
     OPCODE(INT_XOR, "int_xor", ref2) SEPARATOR \
     OPCODE(INT_LSHIFT, "int_lshift", ref2) SEPARATOR \
-    OPCODE(INT_LSHIFT_CONST, "int_lshift_const", ref1_imm) SEPARATOR \
     OPCODE(INT_RSHIFT, "int_rshift", ref2) SEPARATOR \
-    OPCODE(INT_RSHIFT_CONST, "int_rshift_const", ref1_imm) SEPARATOR \
     OPCODE(INT_ARSHIFT, "int_arshift", ref2) SEPARATOR \
-    OPCODE(INT_ARSHIFT_CONST, "int_arshift_const", ref1_imm) SEPARATOR \
     OPCODE(INT_NOT, "int_not", ref1) SEPARATOR \
     OPCODE(INT_NEG, "int_neg", ref1) SEPARATOR \
     /* Logical & comparison operations */ \

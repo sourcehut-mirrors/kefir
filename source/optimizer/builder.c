@@ -876,27 +876,6 @@ BINARY_OP(complex_long_double_div, KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_DIV)
 
 #undef BINARY_OP
 
-#define BINARY_INT_CONST_OP(_id, _opcode)                                                                           \
-    kefir_result_t kefir_opt_code_builder_##_id(struct kefir_mem *mem, struct kefir_opt_code_container *code,       \
-                                                kefir_opt_block_id_t block_id, kefir_opt_instruction_ref_t ref1,    \
-                                                kefir_int64_t imm, kefir_opt_instruction_ref_t *instr_id_ptr) {     \
-        REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));          \
-        REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container")); \
-        REQUIRE_OK(instr_exists(code, block_id, ref1, false));                                                      \
-        REQUIRE_OK(kefir_opt_code_builder_add_instruction(                                                          \
-            mem, code, block_id,                                                                                    \
-            &(struct kefir_opt_operation){.opcode = (_opcode),                                                      \
-                                          .parameters.ref_imm = {.refs = {ref1}, .integer = imm}},                  \
-            false, instr_id_ptr));                                                                                  \
-        return KEFIR_OK;                                                                                            \
-    }
-
-BINARY_INT_CONST_OP(int_lshift_const, KEFIR_OPT_OPCODE_INT_LSHIFT_CONST)
-BINARY_INT_CONST_OP(int_rshift_const, KEFIR_OPT_OPCODE_INT_RSHIFT_CONST)
-BINARY_INT_CONST_OP(int_arshift_const, KEFIR_OPT_OPCODE_INT_ARSHIFT_CONST)
-
-#undef BINARY_INT_CONST_OP
-
 #define LOAD_OP(_id, _opcode)                                                                                        \
     kefir_result_t kefir_opt_code_builder_##_id(struct kefir_mem *mem, struct kefir_opt_code_container *code,        \
                                                 kefir_opt_block_id_t block_id, kefir_opt_instruction_ref_t location, \

@@ -287,17 +287,6 @@ BINARY_OP(complex_long_double_div);
 
 #undef BINARY_OP
 
-#define BINARY_INT_CONST_OP(_id)                                                                                  \
-    kefir_result_t kefir_opt_code_builder_##_id(struct kefir_mem *, struct kefir_opt_code_container *,            \
-                                                kefir_opt_block_id_t, kefir_opt_instruction_ref_t, kefir_int64_t, \
-                                                kefir_opt_instruction_ref_t *)
-
-BINARY_INT_CONST_OP(int_lshift_const);
-BINARY_INT_CONST_OP(int_rshift_const);
-BINARY_INT_CONST_OP(int_arshift_const);
-
-#undef BINARY_INT_CONST_OP
-
 #define ATOMIC_LOAD_OP(_id)                                                                            \
     kefir_result_t kefir_opt_code_builder_##_id(struct kefir_mem *, struct kefir_opt_code_container *, \
                                                 kefir_opt_block_id_t, kefir_opt_instruction_ref_t,     \

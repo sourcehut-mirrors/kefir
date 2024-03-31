@@ -59,24 +59,6 @@ static kefir_result_t format_operation_ref1(struct kefir_json_output *json, cons
     return KEFIR_OK;
 }
 
-static kefir_result_t format_operation_ref1_imm(struct kefir_json_output *json,
-                                                const struct kefir_opt_operation *oper) {
-    REQUIRE_OK(kefir_json_output_object_key(json, "arg"));
-    REQUIRE_OK(id_format(json, oper->parameters.ref_imm.refs[0]));
-    REQUIRE_OK(kefir_json_output_object_key(json, "value"));
-    switch (oper->opcode) {
-        case KEFIR_OPT_OPCODE_INT_LSHIFT_CONST:
-        case KEFIR_OPT_OPCODE_INT_RSHIFT_CONST:
-        case KEFIR_OPT_OPCODE_INT_ARSHIFT_CONST:
-            REQUIRE_OK(kefir_json_output_integer(json, oper->parameters.ref_imm.integer));
-            break;
-
-        default:
-            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected optimizer operation code");
-    }
-    return KEFIR_OK;
-}
-
 static kefir_result_t format_operation_ref2(struct kefir_json_output *json, const struct kefir_opt_operation *oper) {
     REQUIRE_OK(kefir_json_output_object_key(json, "args"));
     REQUIRE_OK(kefir_json_output_array_begin(json));
