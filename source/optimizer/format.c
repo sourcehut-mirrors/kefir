@@ -65,7 +65,6 @@ static kefir_result_t format_operation_ref1_imm(struct kefir_json_output *json,
     REQUIRE_OK(id_format(json, oper->parameters.ref_imm.refs[0]));
     REQUIRE_OK(kefir_json_output_object_key(json, "value"));
     switch (oper->opcode) {
-        case KEFIR_OPT_OPCODE_INT_MUL_CONST:
         case KEFIR_OPT_OPCODE_INT_AND_CONST:
         case KEFIR_OPT_OPCODE_INT_OR_CONST:
         case KEFIR_OPT_OPCODE_INT_XOR_CONST:

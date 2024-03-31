@@ -168,7 +168,6 @@ _kefir_func_generate_buf_0_label3:
     movzx %al, %rax
     lea -1(%rbp), %rdx
     movzx %sil, %rdi
-    mov %rdi, %rdi
     add %rdx, %rdi
     movb %al, (%rdi)
     movzx %sil, %rax
@@ -216,7 +215,6 @@ _kefir_func_generate_buf_1_label3:
     movzx %al, %rax
     lea -2(%rbp), %rdx
     movzx %sil, %rdi
-    mov %rdi, %rdi
     add %rdx, %rdi
     movb %al, (%rdi)
     movzx %sil, %rax
@@ -264,7 +262,6 @@ _kefir_func_generate_buf_2_label3:
     movzx %al, %rax
     lea -3(%rbp), %rdx
     movzx %sil, %rdi
-    mov %rdi, %rdi
     add %rdx, %rdi
     movb %al, (%rdi)
     movzx %sil, %rax
@@ -312,7 +309,6 @@ _kefir_func_generate_buf_3_label3:
     movzx %al, %rax
     lea -4(%rbp), %rdx
     movzx %sil, %rdi
-    mov %rdi, %rdi
     add %rdx, %rdi
     movb %al, (%rdi)
     movzx %sil, %rax
@@ -360,7 +356,6 @@ _kefir_func_generate_buf_4_label3:
     movzx %al, %rax
     lea -5(%rbp), %rdx
     movzx %sil, %rdi
-    mov %rdi, %rdi
     add %rdx, %rdi
     movb %al, (%rdi)
     movzx %sil, %rax
@@ -408,7 +403,6 @@ _kefir_func_generate_buf_5_label3:
     movzx %al, %rax
     lea -6(%rbp), %rdx
     movzx %sil, %rdi
-    mov %rdi, %rdi
     add %rdx, %rdi
     movb %al, (%rdi)
     movzx %sil, %rax
@@ -456,7 +450,6 @@ _kefir_func_generate_buf_6_label3:
     movzx %al, %rax
     lea -7(%rbp), %rdx
     movzx %sil, %rdi
-    mov %rdi, %rdi
     add %rdx, %rdi
     movb %al, (%rdi)
     movzx %sil, %rax
@@ -504,7 +497,6 @@ _kefir_func_generate_buf_7_label3:
     movzx %al, %rax
     lea -8(%rbp), %rdx
     movzx %sil, %rdi
-    mov %rdi, %rdi
     add %rdx, %rdi
     movb %al, (%rdi)
     movzx %sil, %rax
@@ -552,7 +544,6 @@ _kefir_func_generate_buf_8_label3:
     movzx %al, %rax
     lea -9(%rbp), %rdx
     movzx %sil, %rdi
-    mov %rdi, %rdi
     add %rdx, %rdi
     movb %al, (%rdi)
     movzx %sil, %rax
@@ -602,7 +593,6 @@ _kefir_func_generate_buf_9_label3:
     movzx %al, %rax
     lea -10(%rbp), %rdx
     movzx %sil, %rdi
-    mov %rdi, %rdi
     add %rdx, %rdi
     movb %al, (%rdi)
     movzx %sil, %rax
@@ -652,7 +642,6 @@ _kefir_func_generate_buf_10_label3:
     movzx %al, %rax
     lea -11(%rbp), %rdx
     movzx %sil, %rdi
-    mov %rdi, %rdi
     add %rdx, %rdi
     movb %al, (%rdi)
     movzx %sil, %rax
@@ -702,7 +691,6 @@ _kefir_func_generate_buf_11_label3:
     movzx %al, %rax
     lea -12(%rbp), %rdx
     movzx %sil, %rdi
-    mov %rdi, %rdi
     add %rdx, %rdi
     movb %al, (%rdi)
     movzx %sil, %rax
@@ -752,7 +740,6 @@ _kefir_func_generate_buf_12_label3:
     movzx %al, %rax
     lea -13(%rbp), %rdx
     movzx %sil, %rdi
-    mov %rdi, %rdi
     add %rdx, %rdi
     movb %al, (%rdi)
     movzx %sil, %rax
@@ -802,7 +789,6 @@ _kefir_func_generate_buf_13_label3:
     movzx %al, %rax
     lea -14(%rbp), %rdx
     movzx %sil, %rdi
-    mov %rdi, %rdi
     add %rdx, %rdi
     movb %al, (%rdi)
     movzx %sil, %rax
@@ -852,7 +838,6 @@ _kefir_func_generate_buf_14_label3:
     movzx %al, %rax
     lea -15(%rbp), %rdx
     movzx %sil, %rdi
-    mov %rdi, %rdi
     add %rdx, %rdi
     movb %al, (%rdi)
     movzx %sil, %rax
@@ -902,7 +887,6 @@ _kefir_func_generate_buf_15_label3:
     movzx %al, %rax
     lea -16(%rbp), %rdx
     movzx %sil, %rdi
-    mov %rdi, %rdi
     add %rdx, %rdi
     movb %al, (%rdi)
     movzx %sil, %rax
@@ -952,7 +936,6 @@ _kefir_func_generate_buf_16_label3:
     movzx %al, %rax
     lea -17(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -1007,7 +990,6 @@ _kefir_func_generate_buf_17_label3:
     movzx %al, %rax
     lea -18(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -1062,7 +1044,6 @@ _kefir_func_generate_buf_18_label3:
     movzx %al, %rax
     lea -19(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -1119,7 +1100,6 @@ _kefir_func_generate_buf_19_label3:
     movzx %al, %rax
     lea -20(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -1174,7 +1154,6 @@ _kefir_func_generate_buf_20_label3:
     movzx %al, %rax
     lea -21(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -1231,7 +1210,6 @@ _kefir_func_generate_buf_21_label3:
     movzx %al, %rax
     lea -22(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -1288,7 +1266,6 @@ _kefir_func_generate_buf_22_label3:
     movzx %al, %rax
     lea -23(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -1347,7 +1324,6 @@ _kefir_func_generate_buf_23_label3:
     movzx %al, %rax
     lea -24(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -1402,7 +1378,6 @@ _kefir_func_generate_buf_24_label3:
     movzx %al, %rax
     lea -25(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -1459,7 +1434,6 @@ _kefir_func_generate_buf_25_label3:
     movzx %al, %rax
     lea -26(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -1516,7 +1490,6 @@ _kefir_func_generate_buf_26_label3:
     movzx %al, %rax
     lea -27(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -1575,7 +1548,6 @@ _kefir_func_generate_buf_27_label3:
     movzx %al, %rax
     lea -28(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -1632,7 +1604,6 @@ _kefir_func_generate_buf_28_label3:
     movzx %al, %rax
     lea -29(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -1691,7 +1662,6 @@ _kefir_func_generate_buf_29_label3:
     movzx %al, %rax
     lea -30(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -1750,7 +1720,6 @@ _kefir_func_generate_buf_30_label3:
     movzx %al, %rax
     lea -31(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -1811,7 +1780,6 @@ _kefir_func_generate_buf_31_label3:
     movzx %al, %rax
     lea -32(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -1864,7 +1832,6 @@ _kefir_func_generate_buf_32_label3:
     movzx %al, %rax
     lea -33(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -1923,7 +1890,6 @@ _kefir_func_generate_buf_33_label3:
     movzx %al, %rax
     lea -34(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -1982,7 +1948,6 @@ _kefir_func_generate_buf_34_label3:
     movzx %al, %rax
     lea -35(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -2043,7 +2008,6 @@ _kefir_func_generate_buf_35_label3:
     movzx %al, %rax
     lea -36(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -2102,7 +2066,6 @@ _kefir_func_generate_buf_36_label3:
     movzx %al, %rax
     lea -37(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -2163,7 +2126,6 @@ _kefir_func_generate_buf_37_label3:
     movzx %al, %rax
     lea -38(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -2224,7 +2186,6 @@ _kefir_func_generate_buf_38_label3:
     movzx %al, %rax
     lea -39(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -2287,7 +2248,6 @@ _kefir_func_generate_buf_39_label3:
     movzx %al, %rax
     lea -40(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -2346,7 +2306,6 @@ _kefir_func_generate_buf_40_label3:
     movzx %al, %rax
     lea -41(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -2407,7 +2366,6 @@ _kefir_func_generate_buf_41_label3:
     movzx %al, %rax
     lea -42(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -2468,7 +2426,6 @@ _kefir_func_generate_buf_42_label3:
     movzx %al, %rax
     lea -43(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -2531,7 +2488,6 @@ _kefir_func_generate_buf_43_label3:
     movzx %al, %rax
     lea -44(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -2592,7 +2548,6 @@ _kefir_func_generate_buf_44_label3:
     movzx %al, %rax
     lea -45(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -2655,7 +2610,6 @@ _kefir_func_generate_buf_45_label3:
     movzx %al, %rax
     lea -46(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -2718,7 +2672,6 @@ _kefir_func_generate_buf_46_label3:
     movzx %al, %rax
     lea -47(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -2783,7 +2736,6 @@ _kefir_func_generate_buf_47_label3:
     movzx %al, %rax
     lea -48(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -2838,7 +2790,6 @@ _kefir_func_generate_buf_48_label3:
     movzx %al, %rax
     lea -49(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -2901,7 +2852,6 @@ _kefir_func_generate_buf_49_label3:
     movzx %al, %rax
     lea -50(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -2964,7 +2914,6 @@ _kefir_func_generate_buf_50_label3:
     movzx %al, %rax
     lea -51(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -3029,7 +2978,6 @@ _kefir_func_generate_buf_51_label3:
     movzx %al, %rax
     lea -52(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -3092,7 +3040,6 @@ _kefir_func_generate_buf_52_label3:
     movzx %al, %rax
     lea -53(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -3157,7 +3104,6 @@ _kefir_func_generate_buf_53_label3:
     movzx %al, %rax
     lea -54(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -3222,7 +3168,6 @@ _kefir_func_generate_buf_54_label3:
     movzx %al, %rax
     lea -55(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -3289,7 +3234,6 @@ _kefir_func_generate_buf_55_label3:
     movzx %al, %rax
     lea -56(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -3352,7 +3296,6 @@ _kefir_func_generate_buf_56_label3:
     movzx %al, %rax
     lea -57(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -3417,7 +3360,6 @@ _kefir_func_generate_buf_57_label3:
     movzx %al, %rax
     lea -58(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -3482,7 +3424,6 @@ _kefir_func_generate_buf_58_label3:
     movzx %al, %rax
     lea -59(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -3549,7 +3490,6 @@ _kefir_func_generate_buf_59_label3:
     movzx %al, %rax
     lea -60(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -3614,7 +3554,6 @@ _kefir_func_generate_buf_60_label3:
     movzx %al, %rax
     lea -61(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -3681,7 +3620,6 @@ _kefir_func_generate_buf_61_label3:
     movzx %al, %rax
     lea -62(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -3748,7 +3686,6 @@ _kefir_func_generate_buf_62_label3:
     movzx %al, %rax
     lea -63(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -3817,7 +3754,6 @@ _kefir_func_generate_buf_63_label3:
     movzx %al, %rax
     lea -64(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -3874,7 +3810,6 @@ _kefir_func_generate_buf_64_label3:
     movzx %al, %rax
     lea -65(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -3930,7 +3865,6 @@ _kefir_func_generate_buf_65_label3:
     movzx %al, %rax
     lea -66(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -3986,7 +3920,6 @@ _kefir_func_generate_buf_66_label3:
     movzx %al, %rax
     lea -67(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -4042,7 +3975,6 @@ _kefir_func_generate_buf_67_label3:
     movzx %al, %rax
     lea -68(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -4098,7 +4030,6 @@ _kefir_func_generate_buf_68_label3:
     movzx %al, %rax
     lea -69(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -4154,7 +4085,6 @@ _kefir_func_generate_buf_69_label3:
     movzx %al, %rax
     lea -70(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -4210,7 +4140,6 @@ _kefir_func_generate_buf_70_label3:
     movzx %al, %rax
     lea -71(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -4266,7 +4195,6 @@ _kefir_func_generate_buf_71_label3:
     movzx %al, %rax
     lea -72(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -4320,7 +4248,6 @@ _kefir_func_generate_buf_72_label3:
     movzx %al, %rax
     lea -73(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -4376,7 +4303,6 @@ _kefir_func_generate_buf_73_label3:
     movzx %al, %rax
     lea -74(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -4432,7 +4358,6 @@ _kefir_func_generate_buf_74_label3:
     movzx %al, %rax
     lea -75(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -4488,7 +4413,6 @@ _kefir_func_generate_buf_75_label3:
     movzx %al, %rax
     lea -76(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -4544,7 +4468,6 @@ _kefir_func_generate_buf_76_label3:
     movzx %al, %rax
     lea -77(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -4600,7 +4523,6 @@ _kefir_func_generate_buf_77_label3:
     movzx %al, %rax
     lea -78(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -4656,7 +4578,6 @@ _kefir_func_generate_buf_78_label3:
     movzx %al, %rax
     lea -79(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -4712,7 +4633,6 @@ _kefir_func_generate_buf_79_label3:
     movzx %al, %rax
     lea -80(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -4766,7 +4686,6 @@ _kefir_func_generate_buf_80_label3:
     movzx %al, %rax
     lea -81(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -4822,7 +4741,6 @@ _kefir_func_generate_buf_81_label3:
     movzx %al, %rax
     lea -82(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -4878,7 +4796,6 @@ _kefir_func_generate_buf_82_label3:
     movzx %al, %rax
     lea -83(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -4934,7 +4851,6 @@ _kefir_func_generate_buf_83_label3:
     movzx %al, %rax
     lea -84(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -4990,7 +4906,6 @@ _kefir_func_generate_buf_84_label3:
     movzx %al, %rax
     lea -85(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -5046,7 +4961,6 @@ _kefir_func_generate_buf_85_label3:
     movzx %al, %rax
     lea -86(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -5102,7 +5016,6 @@ _kefir_func_generate_buf_86_label3:
     movzx %al, %rax
     lea -87(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -5158,7 +5071,6 @@ _kefir_func_generate_buf_87_label3:
     movzx %al, %rax
     lea -88(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -5212,7 +5124,6 @@ _kefir_func_generate_buf_88_label3:
     movzx %al, %rax
     lea -89(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -5268,7 +5179,6 @@ _kefir_func_generate_buf_89_label3:
     movzx %al, %rax
     lea -90(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -5324,7 +5234,6 @@ _kefir_func_generate_buf_90_label3:
     movzx %al, %rax
     lea -91(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -5380,7 +5289,6 @@ _kefir_func_generate_buf_91_label3:
     movzx %al, %rax
     lea -92(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -5436,7 +5344,6 @@ _kefir_func_generate_buf_92_label3:
     movzx %al, %rax
     lea -93(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -5492,7 +5399,6 @@ _kefir_func_generate_buf_93_label3:
     movzx %al, %rax
     lea -94(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -5548,7 +5454,6 @@ _kefir_func_generate_buf_94_label3:
     movzx %al, %rax
     lea -95(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -5604,7 +5509,6 @@ _kefir_func_generate_buf_95_label3:
     movzx %al, %rax
     lea -96(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -5658,7 +5562,6 @@ _kefir_func_generate_buf_96_label3:
     movzx %al, %rax
     lea -97(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -5714,7 +5617,6 @@ _kefir_func_generate_buf_97_label3:
     movzx %al, %rax
     lea -98(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -5770,7 +5672,6 @@ _kefir_func_generate_buf_98_label3:
     movzx %al, %rax
     lea -99(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -5826,7 +5727,6 @@ _kefir_func_generate_buf_99_label3:
     movzx %al, %rax
     lea -100(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -5882,7 +5782,6 @@ _kefir_func_generate_buf_100_label3:
     movzx %al, %rax
     lea -101(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -5938,7 +5837,6 @@ _kefir_func_generate_buf_101_label3:
     movzx %al, %rax
     lea -102(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -5994,7 +5892,6 @@ _kefir_func_generate_buf_102_label3:
     movzx %al, %rax
     lea -103(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -6050,7 +5947,6 @@ _kefir_func_generate_buf_103_label3:
     movzx %al, %rax
     lea -104(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -6104,7 +6000,6 @@ _kefir_func_generate_buf_104_label3:
     movzx %al, %rax
     lea -105(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -6160,7 +6055,6 @@ _kefir_func_generate_buf_105_label3:
     movzx %al, %rax
     lea -106(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -6216,7 +6110,6 @@ _kefir_func_generate_buf_106_label3:
     movzx %al, %rax
     lea -107(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -6272,7 +6165,6 @@ _kefir_func_generate_buf_107_label3:
     movzx %al, %rax
     lea -108(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -6328,7 +6220,6 @@ _kefir_func_generate_buf_108_label3:
     movzx %al, %rax
     lea -109(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -6384,7 +6275,6 @@ _kefir_func_generate_buf_109_label3:
     movzx %al, %rax
     lea -110(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -6440,7 +6330,6 @@ _kefir_func_generate_buf_110_label3:
     movzx %al, %rax
     lea -111(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -6496,7 +6385,6 @@ _kefir_func_generate_buf_111_label3:
     movzx %al, %rax
     lea -112(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -6550,7 +6438,6 @@ _kefir_func_generate_buf_112_label3:
     movzx %al, %rax
     lea -113(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -6606,7 +6493,6 @@ _kefir_func_generate_buf_113_label3:
     movzx %al, %rax
     lea -114(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -6662,7 +6548,6 @@ _kefir_func_generate_buf_114_label3:
     movzx %al, %rax
     lea -115(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -6718,7 +6603,6 @@ _kefir_func_generate_buf_115_label3:
     movzx %al, %rax
     lea -116(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -6774,7 +6658,6 @@ _kefir_func_generate_buf_116_label3:
     movzx %al, %rax
     lea -117(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -6830,7 +6713,6 @@ _kefir_func_generate_buf_117_label3:
     movzx %al, %rax
     lea -118(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -6886,7 +6768,6 @@ _kefir_func_generate_buf_118_label3:
     movzx %al, %rax
     lea -119(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -6942,7 +6823,6 @@ _kefir_func_generate_buf_119_label3:
     movzx %al, %rax
     lea -120(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -6996,7 +6876,6 @@ _kefir_func_generate_buf_120_label3:
     movzx %al, %rax
     lea -121(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -7052,7 +6931,6 @@ _kefir_func_generate_buf_121_label3:
     movzx %al, %rax
     lea -122(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -7108,7 +6986,6 @@ _kefir_func_generate_buf_122_label3:
     movzx %al, %rax
     lea -123(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -7164,7 +7041,6 @@ _kefir_func_generate_buf_123_label3:
     movzx %al, %rax
     lea -124(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -7220,7 +7096,6 @@ _kefir_func_generate_buf_124_label3:
     movzx %al, %rax
     lea -125(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -7276,7 +7151,6 @@ _kefir_func_generate_buf_125_label3:
     movzx %al, %rax
     lea -126(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -7332,7 +7206,6 @@ _kefir_func_generate_buf_126_label3:
     movzx %al, %rax
     lea -127(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax
@@ -7388,7 +7261,6 @@ _kefir_func_generate_buf_127_label3:
     movzx %al, %rax
     lea -128(%rbp), %rsi
     movzx %dl, %rdi
-    mov %rdi, %rdi
     add %rsi, %rdi
     movb %al, (%rdi)
     movzx %dl, %rax

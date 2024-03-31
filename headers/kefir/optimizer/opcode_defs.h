@@ -52,7 +52,6 @@
     OPCODE(INT_ADD, "int_add", ref2) SEPARATOR \
     OPCODE(INT_SUB, "int_sub", ref2) SEPARATOR \
     OPCODE(INT_MUL, "int_mul", ref2) SEPARATOR \
-    OPCODE(INT_MUL_CONST, "int_mul_const", ref1_imm) SEPARATOR \
     OPCODE(INT_DIV, "int_div", ref2) SEPARATOR \
     OPCODE(INT_MOD, "int_mod", ref2) SEPARATOR \
     OPCODE(UINT_DIV, "uint_div", ref2) SEPARATOR \

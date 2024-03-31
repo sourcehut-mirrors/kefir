@@ -152,8 +152,7 @@ kefir_result_t kefir_codegen_amd64_function_map_phi_outputs(struct kefir_mem *, 
     _def(invoke, KEFIR_OPT_OPCODE_INVOKE_VIRTUAL) _separator \
     _def(int_arithmetics, KEFIR_OPT_OPCODE_INT_ADD) _separator                                                   \
     _def(int_arithmetics, KEFIR_OPT_OPCODE_INT_SUB) _separator                                                   \
-    _def(int_mul, KEFIR_OPT_OPCODE_INT_MUL) _separator                                                   \
-    _def(int_mul_const, KEFIR_OPT_OPCODE_INT_MUL_CONST) _separator                                                   \
+    _def(int_arithmetics, KEFIR_OPT_OPCODE_INT_MUL) _separator                                                   \
     _def(int_and, KEFIR_OPT_OPCODE_INT_AND) _separator                                                   \
     _def(int_and_const, KEFIR_OPT_OPCODE_INT_AND_CONST) _separator                                                   \
     _def(int_or, KEFIR_OPT_OPCODE_INT_OR) _separator                                                     \
@@ -284,6 +283,7 @@ kefir_result_t kefir_codegen_amd64_function_map_phi_outputs(struct kefir_mem *, 
     _def(float_comparison, KEFIR_OPT_OPCODE_FLOAT64_LESSER) _separator \
     _def(int_arithmetics, KEFIR_OPT_OPCODE_INT_ADD) _separator \
     _def(int_arithmetics, KEFIR_OPT_OPCODE_INT_SUB) _separator \
+    _def(int_arithmetics, KEFIR_OPT_OPCODE_INT_MUL) _separator \
     _def(branch, KEFIR_OPT_OPCODE_BRANCH)
 // clang-format on
 

@@ -47,8 +47,6 @@ _kefir_func_eval2_label1:
     movsxl -32(%rbp), %rax
     lea -24(%rbp), %rcx
     mov $0, %rdx
-    mov $8, %rsi
-    imul %rsi, %rdx
     add %rcx, %rdx
     movq -48(%rbp), %rcx
     sub $16, %rsp
@@ -57,9 +55,8 @@ _kefir_func_eval2_label1:
     movq %rsp, -48(%rbp)
     movq %rcx, (%rdx)
     lea -16(%rbp), %rcx
-    mov $8, %rdx
-    movsxl -32(%rbp), %rsi
-    imul %rsi, %rdx
+    movsxl -32(%rbp), %rdx
+    imul $8, %rdx, %rdx
     lea -16(%rbp), %rsi
     add $8, %rsi
     movq %rdx, (%rsi)
@@ -77,8 +74,6 @@ _kefir_func_eval2_label1:
     movq (%rcx), %rcx
     lea -24(%rbp), %rdx
     mov $0, %rsi
-    mov $8, %rdi
-    imul %rdi, %rsi
     add %rdx, %rsi
     movq (%rsi), %rdx
     cmpq $0, -48(%rbp)

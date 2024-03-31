@@ -292,7 +292,6 @@ BINARY_OP(complex_long_double_div);
                                                 kefir_opt_block_id_t, kefir_opt_instruction_ref_t, kefir_int64_t, \
                                                 kefir_opt_instruction_ref_t *)
 
-BINARY_INT_CONST_OP(int_mul_const);
 BINARY_INT_CONST_OP(int_and_const);
 BINARY_INT_CONST_OP(int_or_const);
 BINARY_INT_CONST_OP(int_xor_const);

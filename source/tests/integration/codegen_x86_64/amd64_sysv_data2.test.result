@@ -18,9 +18,8 @@ _kefir_func_func1_label1:
     lea %rcx, QWORD PTR [%rbp - 16]
     mov %rax, %rcx
     add %rax, 8
-    mov %rcx, 5
-    mov %rdx, 8
-    imul %rcx, %rdx
+    mov %rcx, 8
+    imul %rcx, %rcx, 5
     add %rcx, %rax
     mov %rax, 0
     mov QWORD PTR [%rax], %rcx
