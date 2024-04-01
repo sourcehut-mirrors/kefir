@@ -459,7 +459,7 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "iand"
+                    "opcode": "iand64"
                 },
                 {
                     "opcode": "bnot"

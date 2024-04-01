@@ -168,7 +168,7 @@
                             },
                             {
                                 "id": 3,
-                                "opcode": "int_and",
+                                "opcode": "int32_and",
                                 "args": [
                                     1,
                                     2
@@ -336,7 +336,7 @@
                             },
                             {
                                 "id": 18,
-                                "opcode": "int_xor",
+                                "opcode": "int32_xor",
                                 "args": [
                                     13,
                                     17
@@ -571,7 +571,7 @@
                             },
                             {
                                 "id": 33,
-                                "opcode": "int_and",
+                                "opcode": "int64_and",
                                 "args": [
                                     31,
                                     32
@@ -622,7 +622,7 @@
                             },
                             {
                                 "id": 36,
-                                "opcode": "int_and",
+                                "opcode": "int64_and",
                                 "args": [
                                     34,
                                     35
@@ -1001,7 +1001,7 @@
                             },
                             {
                                 "id": 6,
-                                "opcode": "int_or",
+                                "opcode": "int32_or",
                                 "args": [
                                     1,
                                     5
@@ -1219,7 +1219,7 @@
                             },
                             {
                                 "id": 16,
-                                "opcode": "int_xor",
+                                "opcode": "int32_xor",
                                 "args": [
                                     12,
                                     15

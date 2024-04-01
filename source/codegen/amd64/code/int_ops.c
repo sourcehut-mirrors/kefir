@@ -589,12 +589,30 @@ enum int_arithmetics_op_type {
     INT_ARITHMETICS_SUB64_CONST,
     INT_ARITHMETICS_MUL,
     INT_ARITHMETICS_MUL_CONST,
-    INT_ARITHMETICS_AND,
-    INT_ARITHMETICS_AND_CONST,
-    INT_ARITHMETICS_OR,
-    INT_ARITHMETICS_OR_CONST,
-    INT_ARITHMETICS_XOR,
-    INT_ARITHMETICS_XOR_CONST,
+    INT_ARITHMETICS_AND8,
+    INT_ARITHMETICS_AND8_CONST,
+    INT_ARITHMETICS_AND16,
+    INT_ARITHMETICS_AND16_CONST,
+    INT_ARITHMETICS_AND32,
+    INT_ARITHMETICS_AND32_CONST,
+    INT_ARITHMETICS_AND64,
+    INT_ARITHMETICS_AND64_CONST,
+    INT_ARITHMETICS_OR8,
+    INT_ARITHMETICS_OR8_CONST,
+    INT_ARITHMETICS_OR16,
+    INT_ARITHMETICS_OR16_CONST,
+    INT_ARITHMETICS_OR32,
+    INT_ARITHMETICS_OR32_CONST,
+    INT_ARITHMETICS_OR64,
+    INT_ARITHMETICS_OR64_CONST,
+    INT_ARITHMETICS_XOR8,
+    INT_ARITHMETICS_XOR8_CONST,
+    INT_ARITHMETICS_XOR16,
+    INT_ARITHMETICS_XOR16_CONST,
+    INT_ARITHMETICS_XOR32,
+    INT_ARITHMETICS_XOR32_CONST,
+    INT_ARITHMETICS_XOR64,
+    INT_ARITHMETICS_XOR64_CONST,
     INT_ARITHMETICS_SHL,
     INT_ARITHMETICS_SHL_CONST,
     INT_ARITHMETICS_SHR,
@@ -693,16 +711,52 @@ static kefir_result_t match_int_arithmetics(struct kefir_codegen_amd64_function 
             OP(INT_ARITHMETICS_MUL, INT_ARITHMETICS_MUL_CONST, true, true, KEFIR_INT32_MIN, KEFIR_INT32_MAX);
             break;
 
-        case KEFIR_OPT_OPCODE_INT_AND:
-            OP(INT_ARITHMETICS_AND, INT_ARITHMETICS_AND_CONST, true, true, KEFIR_INT32_MIN, KEFIR_INT32_MAX);
+        case KEFIR_OPT_OPCODE_INT8_AND:
+            OP(INT_ARITHMETICS_AND8, INT_ARITHMETICS_AND8_CONST, true, true, KEFIR_INT8_MIN, KEFIR_INT8_MAX);
             break;
 
-        case KEFIR_OPT_OPCODE_INT_OR:
-            OP(INT_ARITHMETICS_OR, INT_ARITHMETICS_OR_CONST, true, true, KEFIR_INT32_MIN, KEFIR_INT32_MAX);
+        case KEFIR_OPT_OPCODE_INT16_AND:
+            OP(INT_ARITHMETICS_AND16, INT_ARITHMETICS_AND16_CONST, true, true, KEFIR_INT16_MIN, KEFIR_INT16_MAX);
             break;
 
-        case KEFIR_OPT_OPCODE_INT_XOR:
-            OP(INT_ARITHMETICS_XOR, INT_ARITHMETICS_XOR_CONST, true, true, KEFIR_INT32_MIN, KEFIR_INT32_MAX);
+        case KEFIR_OPT_OPCODE_INT32_AND:
+            OP(INT_ARITHMETICS_AND32, INT_ARITHMETICS_AND32_CONST, true, true, KEFIR_INT32_MIN, KEFIR_INT32_MAX);
+            break;
+
+        case KEFIR_OPT_OPCODE_INT64_AND:
+            OP(INT_ARITHMETICS_AND64, INT_ARITHMETICS_AND64_CONST, true, true, KEFIR_INT32_MIN, KEFIR_INT32_MAX);
+            break;
+
+        case KEFIR_OPT_OPCODE_INT8_OR:
+            OP(INT_ARITHMETICS_OR8, INT_ARITHMETICS_OR8_CONST, true, true, KEFIR_INT8_MIN, KEFIR_INT8_MAX);
+            break;
+
+        case KEFIR_OPT_OPCODE_INT16_OR:
+            OP(INT_ARITHMETICS_OR16, INT_ARITHMETICS_OR16_CONST, true, true, KEFIR_INT16_MIN, KEFIR_INT16_MAX);
+            break;
+
+        case KEFIR_OPT_OPCODE_INT32_OR:
+            OP(INT_ARITHMETICS_OR32, INT_ARITHMETICS_OR32_CONST, true, true, KEFIR_INT32_MIN, KEFIR_INT32_MAX);
+            break;
+
+        case KEFIR_OPT_OPCODE_INT64_OR:
+            OP(INT_ARITHMETICS_OR64, INT_ARITHMETICS_OR64_CONST, true, true, KEFIR_INT32_MIN, KEFIR_INT32_MAX);
+            break;
+
+        case KEFIR_OPT_OPCODE_INT8_XOR:
+            OP(INT_ARITHMETICS_XOR8, INT_ARITHMETICS_XOR8_CONST, true, true, KEFIR_INT8_MIN, KEFIR_INT8_MAX);
+            break;
+
+        case KEFIR_OPT_OPCODE_INT16_XOR:
+            OP(INT_ARITHMETICS_XOR16, INT_ARITHMETICS_XOR16_CONST, true, true, KEFIR_INT16_MIN, KEFIR_INT16_MAX);
+            break;
+
+        case KEFIR_OPT_OPCODE_INT32_XOR:
+            OP(INT_ARITHMETICS_XOR32, INT_ARITHMETICS_XOR32_CONST, true, true, KEFIR_INT32_MIN, KEFIR_INT32_MAX);
+            break;
+
+        case KEFIR_OPT_OPCODE_INT64_XOR:
+            OP(INT_ARITHMETICS_XOR64, INT_ARITHMETICS_XOR64_CONST, true, true, KEFIR_INT32_MIN, KEFIR_INT32_MAX);
             break;
 
         case KEFIR_OPT_OPCODE_INT_LSHIFT:
@@ -748,9 +802,18 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_FUSION_IMPL(int_arithmetics)(
         case INT_ARITHMETICS_SUB32:
         case INT_ARITHMETICS_SUB64:
         case INT_ARITHMETICS_MUL:
-        case INT_ARITHMETICS_AND:
-        case INT_ARITHMETICS_OR:
-        case INT_ARITHMETICS_XOR:
+        case INT_ARITHMETICS_AND8:
+        case INT_ARITHMETICS_AND16:
+        case INT_ARITHMETICS_AND32:
+        case INT_ARITHMETICS_AND64:
+        case INT_ARITHMETICS_OR8:
+        case INT_ARITHMETICS_OR16:
+        case INT_ARITHMETICS_OR32:
+        case INT_ARITHMETICS_OR64:
+        case INT_ARITHMETICS_XOR8:
+        case INT_ARITHMETICS_XOR16:
+        case INT_ARITHMETICS_XOR32:
+        case INT_ARITHMETICS_XOR64:
         case INT_ARITHMETICS_SHL:
         case INT_ARITHMETICS_SHR:
         case INT_ARITHMETICS_SAR:
@@ -766,8 +829,14 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_FUSION_IMPL(int_arithmetics)(
         case INT_ARITHMETICS_SUB16_CONST:
         case INT_ARITHMETICS_SUB32_CONST:
         case INT_ARITHMETICS_SUB64_CONST:
-        case INT_ARITHMETICS_OR_CONST:
-        case INT_ARITHMETICS_XOR_CONST:
+        case INT_ARITHMETICS_OR8_CONST:
+        case INT_ARITHMETICS_OR16_CONST:
+        case INT_ARITHMETICS_OR32_CONST:
+        case INT_ARITHMETICS_OR64_CONST:
+        case INT_ARITHMETICS_XOR8_CONST:
+        case INT_ARITHMETICS_XOR16_CONST:
+        case INT_ARITHMETICS_XOR32_CONST:
+        case INT_ARITHMETICS_XOR64_CONST:
         case INT_ARITHMETICS_SHL_CONST:
         case INT_ARITHMETICS_SHR_CONST:
         case INT_ARITHMETICS_SAR_CONST:
@@ -775,7 +844,10 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_FUSION_IMPL(int_arithmetics)(
             break;
 
         case INT_ARITHMETICS_MUL_CONST:
-        case INT_ARITHMETICS_AND_CONST:
+        case INT_ARITHMETICS_AND8_CONST:
+        case INT_ARITHMETICS_AND16_CONST:
+        case INT_ARITHMETICS_AND32_CONST:
+        case INT_ARITHMETICS_AND64_CONST:
             if (op.int_value != 0) {
                 REQUIRE_OK(callback(op.refs[0], payload));
             }
@@ -913,15 +985,51 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int_arithmetics)(struct kefi
             OP(imul, 64);
             break;
 
-        case INT_ARITHMETICS_AND:
+        case INT_ARITHMETICS_AND8:
+            OP(and, 8);
+            break;
+
+        case INT_ARITHMETICS_AND16:
+            OP(and, 16);
+            break;
+
+        case INT_ARITHMETICS_AND32:
+            OP(and, 32);
+            break;
+
+        case INT_ARITHMETICS_AND64:
             OP(and, 64);
             break;
 
-        case INT_ARITHMETICS_OR:
+        case INT_ARITHMETICS_OR8:
+            OP(or, 8);
+            break;
+
+        case INT_ARITHMETICS_OR16:
+            OP(or, 16);
+            break;
+
+        case INT_ARITHMETICS_OR32:
+            OP(or, 32);
+            break;
+
+        case INT_ARITHMETICS_OR64:
             OP(or, 64);
             break;
 
-        case INT_ARITHMETICS_XOR:
+        case INT_ARITHMETICS_XOR8:
+            OP(xor, 8);
+            break;
+
+        case INT_ARITHMETICS_XOR16:
+            OP(xor, 16);
+            break;
+
+        case INT_ARITHMETICS_XOR32:
+            OP(xor, 32);
+            break;
+
+        case INT_ARITHMETICS_XOR64:
             OP(xor, 64);
             break;
 
@@ -969,11 +1077,35 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int_arithmetics)(struct kefi
             CONST_OP(sub, 64, true);
             break;
 
-        case INT_ARITHMETICS_OR_CONST:
+        case INT_ARITHMETICS_OR8_CONST:
+            CONST_OP(or, 8, true);
+            break;
+
+        case INT_ARITHMETICS_OR16_CONST:
+            CONST_OP(or, 16, true);
+            break;
+
+        case INT_ARITHMETICS_OR32_CONST:
+            CONST_OP(or, 32, true);
+            break;
+
+        case INT_ARITHMETICS_OR64_CONST:
             CONST_OP(or, 64, true);
             break;
 
-        case INT_ARITHMETICS_XOR_CONST:
+        case INT_ARITHMETICS_XOR8_CONST:
+            CONST_OP(xor, 8, true);
+            break;
+
+        case INT_ARITHMETICS_XOR16_CONST:
+            CONST_OP(xor, 16, true);
+            break;
+
+        case INT_ARITHMETICS_XOR32_CONST:
+            CONST_OP(xor, 32, true);
+            break;
+
+        case INT_ARITHMETICS_XOR64_CONST:
             CONST_OP(xor, 64, true);
             break;
 
@@ -1012,7 +1144,67 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int_arithmetics)(struct kefi
             REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));
         } break;
 
-        case INT_ARITHMETICS_AND_CONST: {
+        case INT_ARITHMETICS_AND8_CONST: {
+            kefir_asmcmp_virtual_register_index_t result_vreg, arg1_vreg;
+            REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
+                                                         KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));
+            if (op.int_value == 0) {
+                REQUIRE_OK(kefir_asmcmp_amd64_mov(
+                    mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                    &KEFIR_ASMCMP_MAKE_VREG8(result_vreg), &KEFIR_ASMCMP_MAKE_INT(0), NULL));
+            } else {
+                REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, op.refs[0], &arg1_vreg));
+                REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
+                    mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), result_vreg,
+                    arg1_vreg, NULL));
+                REQUIRE_OK(kefir_asmcmp_amd64_and(
+                    mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                    &KEFIR_ASMCMP_MAKE_VREG8(result_vreg), &KEFIR_ASMCMP_MAKE_INT(op.int_value), NULL));
+            }
+            REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));
+        } break;
+
+        case INT_ARITHMETICS_AND16_CONST: {
+            kefir_asmcmp_virtual_register_index_t result_vreg, arg1_vreg;
+            REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
+                                                         KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));
+            if (op.int_value == 0) {
+                REQUIRE_OK(kefir_asmcmp_amd64_mov(
+                    mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                    &KEFIR_ASMCMP_MAKE_VREG16(result_vreg), &KEFIR_ASMCMP_MAKE_INT(0), NULL));
+            } else {
+                REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, op.refs[0], &arg1_vreg));
+                REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
+                    mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), result_vreg,
+                    arg1_vreg, NULL));
+                REQUIRE_OK(kefir_asmcmp_amd64_and(
+                    mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                    &KEFIR_ASMCMP_MAKE_VREG16(result_vreg), &KEFIR_ASMCMP_MAKE_INT(op.int_value), NULL));
+            }
+            REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));
+        } break;
+
+        case INT_ARITHMETICS_AND32_CONST: {
+            kefir_asmcmp_virtual_register_index_t result_vreg, arg1_vreg;
+            REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
+                                                         KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));
+            if (op.int_value == 0) {
+                REQUIRE_OK(kefir_asmcmp_amd64_mov(
+                    mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                    &KEFIR_ASMCMP_MAKE_VREG32(result_vreg), &KEFIR_ASMCMP_MAKE_INT(0), NULL));
+            } else {
+                REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, op.refs[0], &arg1_vreg));
+                REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
+                    mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), result_vreg,
+                    arg1_vreg, NULL));
+                REQUIRE_OK(kefir_asmcmp_amd64_and(
+                    mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                    &KEFIR_ASMCMP_MAKE_VREG32(result_vreg), &KEFIR_ASMCMP_MAKE_INT(op.int_value), NULL));
+            }
+            REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));
+        } break;
+
+        case INT_ARITHMETICS_AND64_CONST: {
             kefir_asmcmp_virtual_register_index_t result_vreg, arg1_vreg;
             REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
                                                          KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));

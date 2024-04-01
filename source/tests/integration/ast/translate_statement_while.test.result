@@ -139,7 +139,7 @@
                     "arg": 4294967295
                 },
                 {
-                    "opcode": "iand"
+                    "opcode": "iand64"
                 },
                 {
                     "opcode": "store32",
@@ -242,7 +242,7 @@
                     "arg": 4294967295
                 },
                 {
-                    "opcode": "iand"
+                    "opcode": "iand64"
                 },
                 {
                     "opcode": "store32",

@@ -62,9 +62,18 @@
     OPCODE(INT_MOD, "int_mod", ref2) SEPARATOR \
     OPCODE(UINT_DIV, "uint_div", ref2) SEPARATOR \
     OPCODE(UINT_MOD, "uint_mod", ref2) SEPARATOR \
-    OPCODE(INT_AND, "int_and", ref2) SEPARATOR \
-    OPCODE(INT_OR, "int_or", ref2) SEPARATOR \
-    OPCODE(INT_XOR, "int_xor", ref2) SEPARATOR \
+    OPCODE(INT8_AND, "int8_and", ref2) SEPARATOR \
+    OPCODE(INT16_AND, "int16_and", ref2) SEPARATOR \
+    OPCODE(INT32_AND, "int32_and", ref2) SEPARATOR \
+    OPCODE(INT64_AND, "int64_and", ref2) SEPARATOR \
+    OPCODE(INT8_OR, "int8_or", ref2) SEPARATOR \
+    OPCODE(INT16_OR, "int16_or", ref2) SEPARATOR \
+    OPCODE(INT32_OR, "int32_or", ref2) SEPARATOR \
+    OPCODE(INT64_OR, "int64_or", ref2) SEPARATOR \
+    OPCODE(INT8_XOR, "int8_xor", ref2) SEPARATOR \
+    OPCODE(INT16_XOR, "int16_xor", ref2) SEPARATOR \
+    OPCODE(INT32_XOR, "int32_xor", ref2) SEPARATOR \
+    OPCODE(INT64_XOR, "int64_xor", ref2) SEPARATOR \
     OPCODE(INT_LSHIFT, "int_lshift", ref2) SEPARATOR \
     OPCODE(INT_RSHIFT, "int_rshift", ref2) SEPARATOR \
     OPCODE(INT_ARSHIFT, "int_arshift", ref2) SEPARATOR \

@@ -182,15 +182,24 @@ static kefir_result_t int_binary_const_fold(struct kefir_mem *mem, struct kefir_
             result.uinteger = left.uinteger % right.uinteger;
             break;
 
-        case KEFIR_OPT_OPCODE_INT_AND:
+        case KEFIR_OPT_OPCODE_INT8_AND:
+        case KEFIR_OPT_OPCODE_INT16_AND:
+        case KEFIR_OPT_OPCODE_INT32_AND:
+        case KEFIR_OPT_OPCODE_INT64_AND:
             result.uinteger = left.uinteger & right.uinteger;
             break;
 
-        case KEFIR_OPT_OPCODE_INT_OR:
+        case KEFIR_OPT_OPCODE_INT8_OR:
+        case KEFIR_OPT_OPCODE_INT16_OR:
+        case KEFIR_OPT_OPCODE_INT32_OR:
+        case KEFIR_OPT_OPCODE_INT64_OR:
             result.uinteger = left.uinteger | right.uinteger;
             break;
 
-        case KEFIR_OPT_OPCODE_INT_XOR:
+        case KEFIR_OPT_OPCODE_INT8_XOR:
+        case KEFIR_OPT_OPCODE_INT16_XOR:
+        case KEFIR_OPT_OPCODE_INT32_XOR:
+        case KEFIR_OPT_OPCODE_INT64_XOR:
             result.uinteger = left.uinteger ^ right.uinteger;
             break;
 
@@ -279,9 +288,18 @@ static kefir_result_t const_fold_apply(struct kefir_mem *mem, const struct kefir
                 case KEFIR_OPT_OPCODE_INT_MOD:
                 case KEFIR_OPT_OPCODE_UINT_DIV:
                 case KEFIR_OPT_OPCODE_UINT_MOD:
-                case KEFIR_OPT_OPCODE_INT_AND:
-                case KEFIR_OPT_OPCODE_INT_OR:
-                case KEFIR_OPT_OPCODE_INT_XOR:
+                case KEFIR_OPT_OPCODE_INT8_AND:
+                case KEFIR_OPT_OPCODE_INT16_AND:
+                case KEFIR_OPT_OPCODE_INT32_AND:
+                case KEFIR_OPT_OPCODE_INT64_AND:
+                case KEFIR_OPT_OPCODE_INT8_OR:
+                case KEFIR_OPT_OPCODE_INT16_OR:
+                case KEFIR_OPT_OPCODE_INT32_OR:
+                case KEFIR_OPT_OPCODE_INT64_OR:
+                case KEFIR_OPT_OPCODE_INT8_XOR:
+                case KEFIR_OPT_OPCODE_INT16_XOR:
+                case KEFIR_OPT_OPCODE_INT32_XOR:
+                case KEFIR_OPT_OPCODE_INT64_XOR:
                 case KEFIR_OPT_OPCODE_INT_LSHIFT:
                 case KEFIR_OPT_OPCODE_INT_RSHIFT:
                 case KEFIR_OPT_OPCODE_INT_ARSHIFT:

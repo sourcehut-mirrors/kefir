@@ -115,7 +115,7 @@
                             },
                             {
                                 "id": 5,
-                                "opcode": "int_or",
+                                "opcode": "int32_or",
                                 "args": [
                                     3,
                                     4
@@ -280,7 +280,7 @@
                             },
                             {
                                 "id": 15,
-                                "opcode": "int_and",
+                                "opcode": "int32_and",
                                 "args": [
                                     6,
                                     14

@@ -117,7 +117,7 @@
                     "arg": 39
                 },
                 {
-                    "opcode": "ior"
+                    "opcode": "ior32"
                 },
                 {
                     "opcode": "extend32"
@@ -131,7 +131,7 @@
                     "arg": 12
                 },
                 {
-                    "opcode": "ior"
+                    "opcode": "ior64"
                 },
                 {
                     "opcode": "pushi",
@@ -142,7 +142,7 @@
                     "arg": 1001
                 },
                 {
-                    "opcode": "ior"
+                    "opcode": "ior64"
                 }
             ],
             "public_labels": []
@@ -161,7 +161,7 @@
                     "arg": 93
                 },
                 {
-                    "opcode": "iand"
+                    "opcode": "iand32"
                 },
                 {
                     "opcode": "extend32"
@@ -175,7 +175,7 @@
                     "arg": 4294962926
                 },
                 {
-                    "opcode": "iand"
+                    "opcode": "iand64"
                 },
                 {
                     "opcode": "pushi",
@@ -186,7 +186,7 @@
                     "arg": 71
                 },
                 {
-                    "opcode": "iand"
+                    "opcode": "iand64"
                 }
             ],
             "public_labels": []
@@ -205,7 +205,7 @@
                     "arg": 48
                 },
                 {
-                    "opcode": "ixor"
+                    "opcode": "ixor32"
                 },
                 {
                     "opcode": "extend32"
@@ -219,7 +219,7 @@
                     "arg": 304
                 },
                 {
-                    "opcode": "ixor"
+                    "opcode": "ixor64"
                 },
                 {
                     "opcode": "pushi",
@@ -230,7 +230,7 @@
                     "arg": 101
                 },
                 {
-                    "opcode": "ixor"
+                    "opcode": "ixor64"
                 }
             ],
             "public_labels": []

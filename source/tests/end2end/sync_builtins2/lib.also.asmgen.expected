@@ -128,7 +128,7 @@ _kefir_func_test_fetch_and_short_label2:
     movsx %eax, %rax
     movsx %r10w, %rcx
     movsx %ecx, %rcx
-    and %rcx, %rax
+    and %ecx, %eax
     movsx %eax, %rax
     movsx %ax, %rbx
     movsx %bx, %rax
@@ -264,7 +264,7 @@ _kefir_func_test_fetch_xor_short_label2:
     movsx %eax, %rax
     movsx %r10w, %rcx
     movsx %ecx, %rcx
-    xor %rcx, %rax
+    xor %ecx, %eax
     movsx %eax, %rax
     movsx %ax, %rbx
     movsx %bx, %rax
@@ -330,7 +330,7 @@ _kefir_func_test_fetch_or_int_label1:
 _kefir_func_test_fetch_or_int_label2:
     movsxl -28(%rbp), %rax
     movsx %r10d, %rcx
-    or %rcx, %rax
+    or %ecx, %eax
     movsx %eax, %rbx
     movsx %ebx, %rax
     movl %eax, -20(%rbp)
@@ -528,7 +528,7 @@ _kefir_func_test_fetch_and_char_label2:
     movsx %eax, %rax
     movsx %r10b, %rcx
     movsx %ecx, %rcx
-    and %rcx, %rax
+    and %ecx, %eax
     movsx %eax, %rax
     movsx %al, %rbx
     movsx %bl, %rax
@@ -659,7 +659,7 @@ _kefir_func_test_fetch_or_short_label2:
     movsx %eax, %rax
     movsx %r10w, %rcx
     movsx %ecx, %rcx
-    or %rcx, %rax
+    or %ecx, %eax
     movsx %eax, %rax
     movsx %ax, %rbx
     movsx %bx, %rax
@@ -858,7 +858,7 @@ _kefir_func_test_fetch_xor_char_label2:
     movsx %eax, %rax
     movsx %r10b, %rcx
     movsx %ecx, %rcx
-    xor %rcx, %rax
+    xor %ecx, %eax
     movsx %eax, %rax
     movsx %al, %rbx
     movsx %bl, %rax
@@ -1052,7 +1052,7 @@ _kefir_func_test_fetch_and_int_label1:
 _kefir_func_test_fetch_and_int_label2:
     movsxl -28(%rbp), %rax
     movsx %r10d, %rcx
-    and %rcx, %rax
+    and %ecx, %eax
     movsx %eax, %rbx
     movsx %ebx, %rax
     movl %eax, -20(%rbp)
@@ -1119,7 +1119,7 @@ _kefir_func_test_fetch_or_char_label2:
     movsx %eax, %rax
     movsx %r10b, %rcx
     movsx %ecx, %rcx
-    or %rcx, %rax
+    or %ecx, %eax
     movsx %eax, %rax
     movsx %al, %rbx
     movsx %bl, %rax
@@ -1313,7 +1313,7 @@ _kefir_func_test_fetch_xor_int_label1:
 _kefir_func_test_fetch_xor_int_label2:
     movsxl -28(%rbp), %rax
     movsx %r10d, %rcx
-    xor %rcx, %rax
+    xor %ecx, %eax
     movsx %eax, %rbx
     movsx %ebx, %rax
     movl %eax, -20(%rbp)

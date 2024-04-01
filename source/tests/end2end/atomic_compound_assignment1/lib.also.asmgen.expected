@@ -232,7 +232,7 @@ _kefir_func_ior_i8_label2:
     movsx %al, %rax
     movsx %eax, %rax
     mov %rax, %rcx
-    or %r10, %rcx
+    or %r10d, %ecx
     movsx %cl, %r11
     movq %r9, -32(%rbp)
     movq %r10, -24(%rbp)
@@ -746,7 +746,7 @@ _kefir_func_iand_i8_label2:
     movsx %al, %rax
     movsx %eax, %rax
     mov %rax, %rcx
-    and %r10, %rcx
+    and %r10d, %ecx
     movsx %cl, %r11
     movq %r9, -32(%rbp)
     movq %r10, -24(%rbp)
@@ -798,7 +798,7 @@ _kefir_func_ior_i16_label2:
     movsx %ax, %rax
     movsx %eax, %rax
     mov %rax, %rcx
-    or %r10, %rcx
+    or %r10d, %ecx
     movsx %cx, %r11
     movq %r9, -32(%rbp)
     movq %r10, -24(%rbp)
@@ -848,7 +848,7 @@ _kefir_func_ior_i32_label2:
     movq -40(%rbp), %r10
     movsx %eax, %rax
     mov %rax, %r11
-    or %r10, %r11
+    or %r10d, %r11d
     movq %r9, -32(%rbp)
     movq %r10, -24(%rbp)
     movq %r11, -16(%rbp)
@@ -946,7 +946,7 @@ _kefir_func_ixor_i8_label2:
     movsx %al, %rax
     movsx %eax, %rax
     mov %rax, %rcx
-    xor %r10, %rcx
+    xor %r10d, %ecx
     movsx %cl, %r11
     movq %r9, -32(%rbp)
     movq %r10, -24(%rbp)
@@ -1300,7 +1300,7 @@ _kefir_func_iand_i16_label2:
     movsx %ax, %rax
     movsx %eax, %rax
     mov %rax, %rcx
-    and %r10, %rcx
+    and %r10d, %ecx
     movsx %cx, %r11
     movq %r9, -32(%rbp)
     movq %r10, -24(%rbp)
@@ -1350,7 +1350,7 @@ _kefir_func_iand_i32_label2:
     movq -40(%rbp), %r10
     movsx %eax, %rax
     mov %rax, %r11
-    and %r10, %r11
+    and %r10d, %r11d
     movq %r9, -32(%rbp)
     movq %r10, -24(%rbp)
     movq %r11, -16(%rbp)
@@ -1448,7 +1448,7 @@ _kefir_func_ixor_i16_label2:
     movsx %ax, %rax
     movsx %eax, %rax
     mov %rax, %rcx
-    xor %r10, %rcx
+    xor %r10d, %ecx
     movsx %cx, %r11
     movq %r9, -32(%rbp)
     movq %r10, -24(%rbp)
@@ -1498,7 +1498,7 @@ _kefir_func_ixor_i32_label2:
     movq -40(%rbp), %r10
     movsx %eax, %rax
     mov %rax, %r11
-    xor %r10, %r11
+    xor %r10d, %r11d
     movq %r9, -32(%rbp)
     movq %r10, -24(%rbp)
     movq %r11, -16(%rbp)

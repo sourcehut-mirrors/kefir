@@ -61,9 +61,18 @@
     OPCODE(UMOD,        "umod",         none) SEPARATOR \
     OPCODE(INEG,        "ineg",         none) SEPARATOR \
     OPCODE(INOT,        "inot",         none) SEPARATOR \
-    OPCODE(IAND,        "iand",         none) SEPARATOR \
-    OPCODE(IOR,         "ior",          none) SEPARATOR \
-    OPCODE(IXOR,        "ixor",         none) SEPARATOR \
+    OPCODE(IAND8,       "iand8",        none) SEPARATOR \
+    OPCODE(IAND16,      "iand16",       none) SEPARATOR \
+    OPCODE(IAND32,      "iand32",       none) SEPARATOR \
+    OPCODE(IAND64,      "iand64",       none) SEPARATOR \
+    OPCODE(IOR8,        "ior8",         none) SEPARATOR \
+    OPCODE(IOR16,       "ior16",        none) SEPARATOR \
+    OPCODE(IOR32,       "ior32",        none) SEPARATOR \
+    OPCODE(IOR64,       "ior64",        none) SEPARATOR \
+    OPCODE(IXOR8,       "ixor8",        none) SEPARATOR \
+    OPCODE(IXOR16,      "ixor16",       none) SEPARATOR \
+    OPCODE(IXOR32,      "ixor32",       none) SEPARATOR \
+    OPCODE(IXOR64,      "ixor64",       none) SEPARATOR \
     OPCODE(ILSHIFT,     "ishl",         none) SEPARATOR \
     OPCODE(IRSHIFT,     "ishr",         none) SEPARATOR \
     OPCODE(IARSHIFT,    "isar",         none) SEPARATOR \

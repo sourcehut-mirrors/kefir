@@ -138,7 +138,7 @@
                     "arg": 4294967295
                 },
                 {
-                    "opcode": "iand"
+                    "opcode": "iand64"
                 },
                 {
                     "opcode": "pushi",
@@ -149,7 +149,7 @@
                     "arg": 65535
                 },
                 {
-                    "opcode": "iand"
+                    "opcode": "iand64"
                 },
                 {
                     "opcode": "pushf32",

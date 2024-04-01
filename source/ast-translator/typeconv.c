@@ -294,13 +294,13 @@ static kefir_result_t cast_to_integer(const struct kefir_ast_type_traits *type_t
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_EXTEND8, 0));
             } else {
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PUSHU64, 0xff));
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IAND, 0));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IAND64, 0));
             }
             break;
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PUSHU64, 0xffULL));
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IAND, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IAND64, 0));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
@@ -309,7 +309,7 @@ static kefir_result_t cast_to_integer(const struct kefir_ast_type_traits *type_t
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PUSHU64, 0xffffULL));
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IAND, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IAND64, 0));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT:
@@ -318,7 +318,7 @@ static kefir_result_t cast_to_integer(const struct kefir_ast_type_traits *type_t
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PUSHU64, 0xffffffffULL));
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IAND, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IAND64, 0));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_SIGNED_INT:
@@ -396,7 +396,7 @@ kefir_result_t kefir_ast_translate_typeconv_normalize(struct kefir_irbuilder_blo
 
         case KEFIR_AST_TYPE_SCALAR_BOOL:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PUSHU64, 1));
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IAND, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IAND64, 0));
             break;
 
         default:

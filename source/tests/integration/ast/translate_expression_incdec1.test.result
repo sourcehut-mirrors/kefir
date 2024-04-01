@@ -358,7 +358,7 @@
                     "arg": 65535
                 },
                 {
-                    "opcode": "iand"
+                    "opcode": "iand64"
                 },
                 {
                     "opcode": "store16",
@@ -460,7 +460,7 @@
                     "arg": 65535
                 },
                 {
-                    "opcode": "iand"
+                    "opcode": "iand64"
                 },
                 {
                     "opcode": "store16",

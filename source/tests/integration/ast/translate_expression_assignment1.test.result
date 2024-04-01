@@ -442,7 +442,7 @@
                     "arg": 4294967295
                 },
                 {
-                    "opcode": "iand"
+                    "opcode": "iand64"
                 },
                 {
                     "opcode": "getglobal",
@@ -508,7 +508,7 @@
                     "arg": 4294967295
                 },
                 {
-                    "opcode": "iand"
+                    "opcode": "iand64"
                 },
                 {
                     "opcode": "getglobal",
@@ -656,7 +656,7 @@
                     "arg": 255
                 },
                 {
-                    "opcode": "iand"
+                    "opcode": "iand64"
                 },
                 {
                     "opcode": "getglobal",
@@ -859,7 +859,7 @@
                     "arg": 65535
                 },
                 {
-                    "opcode": "iand"
+                    "opcode": "iand64"
                 },
                 {
                     "opcode": "getglobal",

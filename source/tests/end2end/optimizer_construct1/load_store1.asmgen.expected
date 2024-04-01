@@ -254,7 +254,7 @@
                             },
                             {
                                 "id": 3,
-                                "opcode": "int_and",
+                                "opcode": "int64_and",
                                 "args": [
                                     1,
                                     2
@@ -337,7 +337,7 @@
                             },
                             {
                                 "id": 8,
-                                "opcode": "int_and",
+                                "opcode": "int64_and",
                                 "args": [
                                     6,
                                     7
@@ -420,7 +420,7 @@
                             },
                             {
                                 "id": 13,
-                                "opcode": "int_and",
+                                "opcode": "int64_and",
                                 "args": [
                                     11,
                                     12

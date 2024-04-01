@@ -350,7 +350,7 @@
                     "arg": 65535
                 },
                 {
-                    "opcode": "iand"
+                    "opcode": "iand64"
                 },
                 {
                     "opcode": "xchg",
@@ -452,7 +452,7 @@
                     "arg": 65535
                 },
                 {
-                    "opcode": "iand"
+                    "opcode": "iand64"
                 },
                 {
                     "opcode": "xchg",

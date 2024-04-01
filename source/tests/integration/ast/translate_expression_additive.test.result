@@ -243,7 +243,7 @@
                     "arg": 4294967295
                 },
                 {
-                    "opcode": "iand"
+                    "opcode": "iand64"
                 },
                 {
                     "opcode": "pushu",
@@ -257,7 +257,7 @@
                     "arg": 4294967295
                 },
                 {
-                    "opcode": "iand"
+                    "opcode": "iand64"
                 },
                 {
                     "opcode": "pushi",
@@ -477,7 +477,7 @@
                     "arg": 4294967295
                 },
                 {
-                    "opcode": "iand"
+                    "opcode": "iand64"
                 },
                 {
                     "opcode": "isub32"
@@ -487,7 +487,7 @@
                     "arg": 4294967295
                 },
                 {
-                    "opcode": "iand"
+                    "opcode": "iand64"
                 },
                 {
                     "opcode": "pushi",

@@ -321,7 +321,7 @@
                     "arg": 4294967295
                 },
                 {
-                    "opcode": "iand"
+                    "opcode": "iand64"
                 }
             ],
             "public_labels": []
@@ -382,7 +382,7 @@
                     "arg": 4294967295
                 },
                 {
-                    "opcode": "iand"
+                    "opcode": "iand64"
                 }
             ],
             "public_labels": []
@@ -436,7 +436,7 @@
                     "arg": 4294967295
                 },
                 {
-                    "opcode": "iand"
+                    "opcode": "iand64"
                 }
             ],
             "public_labels": []

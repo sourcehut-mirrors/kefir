@@ -267,7 +267,7 @@
                     "arg": 2
                 },
                 {
-                    "opcode": "iand"
+                    "opcode": "iand64"
                 },
                 {
                     "opcode": "xchg",
@@ -320,7 +320,7 @@
                     "arg": 2
                 },
                 {
-                    "opcode": "ixor"
+                    "opcode": "ixor64"
                 },
                 {
                     "opcode": "xchg",
@@ -532,7 +532,7 @@
                     "arg": 2
                 },
                 {
-                    "opcode": "ior"
+                    "opcode": "ior32"
                 },
                 {
                     "opcode": "xchg",
@@ -585,7 +585,7 @@
                     "arg": 2
                 },
                 {
-                    "opcode": "ior"
+                    "opcode": "ior64"
                 },
                 {
                     "opcode": "xchg",
@@ -797,7 +797,7 @@
                     "arg": 2
                 },
                 {
-                    "opcode": "iand"
+                    "opcode": "iand32"
                 },
                 {
                     "opcode": "xchg",
@@ -850,7 +850,7 @@
                     "arg": 2
                 },
                 {
-                    "opcode": "ixor"
+                    "opcode": "ixor64"
                 },
                 {
                     "opcode": "extend32"
