@@ -196,7 +196,7 @@ _kefir_func_test_fetch_sub_short_label2:
     movsx %eax, %rax
     movsx %r10w, %rcx
     movsx %ecx, %rcx
-    sub %rcx, %rax
+    sub %ecx, %eax
     movsx %eax, %rax
     movsx %ax, %rbx
     movsx %bx, %rax
@@ -727,7 +727,7 @@ _kefir_func_test_fetch_sub_char_label2:
     movsx %eax, %rax
     movsx %r10b, %rcx
     movsx %ecx, %rcx
-    sub %rcx, %rax
+    sub %ecx, %eax
     movsx %eax, %rax
     movsx %al, %rbx
     movsx %bl, %rax
@@ -1248,7 +1248,7 @@ _kefir_func_test_fetch_sub_int_label1:
 _kefir_func_test_fetch_sub_int_label2:
     movsxl -28(%rbp), %rax
     movsx %r10d, %rcx
-    sub %rcx, %rax
+    sub %ecx, %eax
     movsx %eax, %rbx
     movsx %ebx, %rax
     movl %eax, -20(%rbp)

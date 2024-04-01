@@ -209,9 +209,32 @@ static kefir_result_t translate_subtraction(struct kefir_mem *mem, struct kefir_
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_F32SUB, 0));
                 break;
 
-            default:
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_ISUB, 0));
+            case KEFIR_AST_TYPE_SCALAR_BOOL:
+            case KEFIR_AST_TYPE_SCALAR_CHAR:
+            case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
+            case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_ISUB8, 0));
                 break;
+
+            case KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT:
+            case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_ISUB16, 0));
+                break;
+
+            case KEFIR_AST_TYPE_SCALAR_SIGNED_INT:
+            case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_ISUB32, 0));
+                break;
+
+            case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG:
+            case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
+            case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
+            case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_ISUB64, 0));
+                break;
+
+            default:
+                return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of an integral type");
         }
         REQUIRE_OK(binary_epilogue(context, builder, node));
     } else if (arg2_normalized_type->tag == KEFIR_AST_TYPE_SCALAR_POINTER) {
@@ -234,7 +257,7 @@ static kefir_result_t translate_subtraction(struct kefir_mem *mem, struct kefir_
         });
         REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_FREE_TYPE(mem, &context->environment->target_env, opaque_type));
 
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_ISUB, 0));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_ISUB64, 0));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PUSHU64, type_info.size));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_IDIV, 0));
     } else {

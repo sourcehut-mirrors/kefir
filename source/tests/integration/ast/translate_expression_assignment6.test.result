@@ -316,7 +316,7 @@
                     "arg": 2
                 },
                 {
-                    "opcode": "isub"
+                    "opcode": "isub64"
                 },
                 {
                     "opcode": "xchg",
@@ -431,7 +431,7 @@
                     "arg": 2
                 },
                 {
-                    "opcode": "isub"
+                    "opcode": "isub32"
                 },
                 {
                     "opcode": "xchg",
@@ -484,9 +484,6 @@
                     "arg": 2
                 },
                 {
-                    "opcode": "ineg"
-                },
-                {
                     "opcode": "pushu",
                     "arg": 1
                 },
@@ -494,7 +491,7 @@
                     "opcode": "imul"
                 },
                 {
-                    "opcode": "iadd64"
+                    "opcode": "isub64"
                 },
                 {
                     "opcode": "xchg",
@@ -600,9 +597,6 @@
                     "arg": 2
                 },
                 {
-                    "opcode": "ineg"
-                },
-                {
                     "opcode": "pushu",
                     "arg": 64
                 },
@@ -610,7 +604,7 @@
                     "opcode": "imul"
                 },
                 {
-                    "opcode": "iadd64"
+                    "opcode": "isub64"
                 },
                 {
                     "opcode": "xchg",

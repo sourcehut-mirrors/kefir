@@ -559,7 +559,7 @@
                             },
                             {
                                 "id": 30,
-                                "opcode": "int_sub",
+                                "opcode": "int32_sub",
                                 "args": [
                                     28,
                                     29

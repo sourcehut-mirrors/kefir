@@ -804,7 +804,7 @@
                             },
                             {
                                 "id": 27,
-                                "opcode": "int_sub",
+                                "opcode": "int32_sub",
                                 "args": [
                                     22,
                                     26
@@ -968,7 +968,7 @@
                             },
                             {
                                 "id": 4,
-                                "opcode": "int_sub",
+                                "opcode": "int32_sub",
                                 "args": [
                                     2,
                                     3

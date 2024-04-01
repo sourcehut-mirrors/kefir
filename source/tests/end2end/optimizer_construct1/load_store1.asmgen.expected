@@ -1621,7 +1621,7 @@
                             },
                             {
                                 "id": 18,
-                                "opcode": "int_sub",
+                                "opcode": "int64_sub",
                                 "args": [
                                     13,
                                     17

@@ -579,8 +579,14 @@ enum int_arithmetics_op_type {
     INT_ARITHMETICS_ADD32_CONST,
     INT_ARITHMETICS_ADD64,
     INT_ARITHMETICS_ADD64_CONST,
-    INT_ARITHMETICS_SUB,
-    INT_ARITHMETICS_SUB_CONST,
+    INT_ARITHMETICS_SUB8,
+    INT_ARITHMETICS_SUB8_CONST,
+    INT_ARITHMETICS_SUB16,
+    INT_ARITHMETICS_SUB16_CONST,
+    INT_ARITHMETICS_SUB32,
+    INT_ARITHMETICS_SUB32_CONST,
+    INT_ARITHMETICS_SUB64,
+    INT_ARITHMETICS_SUB64_CONST,
     INT_ARITHMETICS_MUL,
     INT_ARITHMETICS_MUL_CONST,
     INT_ARITHMETICS_AND,
@@ -667,8 +673,20 @@ static kefir_result_t match_int_arithmetics(struct kefir_codegen_amd64_function 
             OP(INT_ARITHMETICS_ADD64, INT_ARITHMETICS_ADD64_CONST, true, true, KEFIR_INT32_MIN, KEFIR_INT32_MAX);
             break;
 
-        case KEFIR_OPT_OPCODE_INT_SUB:
-            OP(INT_ARITHMETICS_SUB, INT_ARITHMETICS_SUB_CONST, true, false, KEFIR_INT32_MIN, KEFIR_INT32_MAX);
+        case KEFIR_OPT_OPCODE_INT8_SUB:
+            OP(INT_ARITHMETICS_SUB8, INT_ARITHMETICS_SUB8_CONST, true, false, KEFIR_INT8_MIN, KEFIR_INT8_MAX);
+            break;
+
+        case KEFIR_OPT_OPCODE_INT16_SUB:
+            OP(INT_ARITHMETICS_SUB16, INT_ARITHMETICS_SUB16_CONST, true, false, KEFIR_INT16_MIN, KEFIR_INT16_MAX);
+            break;
+
+        case KEFIR_OPT_OPCODE_INT32_SUB:
+            OP(INT_ARITHMETICS_SUB32, INT_ARITHMETICS_SUB32_CONST, true, false, KEFIR_INT32_MIN, KEFIR_INT32_MAX);
+            break;
+
+        case KEFIR_OPT_OPCODE_INT64_SUB:
+            OP(INT_ARITHMETICS_SUB64, INT_ARITHMETICS_SUB64_CONST, true, false, KEFIR_INT32_MIN, KEFIR_INT32_MAX);
             break;
 
         case KEFIR_OPT_OPCODE_INT_MUL:
@@ -725,7 +743,10 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_FUSION_IMPL(int_arithmetics)(
         case INT_ARITHMETICS_ADD16:
         case INT_ARITHMETICS_ADD32:
         case INT_ARITHMETICS_ADD64:
-        case INT_ARITHMETICS_SUB:
+        case INT_ARITHMETICS_SUB8:
+        case INT_ARITHMETICS_SUB16:
+        case INT_ARITHMETICS_SUB32:
+        case INT_ARITHMETICS_SUB64:
         case INT_ARITHMETICS_MUL:
         case INT_ARITHMETICS_AND:
         case INT_ARITHMETICS_OR:
@@ -741,7 +762,10 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_FUSION_IMPL(int_arithmetics)(
         case INT_ARITHMETICS_ADD16_CONST:
         case INT_ARITHMETICS_ADD32_CONST:
         case INT_ARITHMETICS_ADD64_CONST:
-        case INT_ARITHMETICS_SUB_CONST:
+        case INT_ARITHMETICS_SUB8_CONST:
+        case INT_ARITHMETICS_SUB16_CONST:
+        case INT_ARITHMETICS_SUB32_CONST:
+        case INT_ARITHMETICS_SUB64_CONST:
         case INT_ARITHMETICS_OR_CONST:
         case INT_ARITHMETICS_XOR_CONST:
         case INT_ARITHMETICS_SHL_CONST:
@@ -869,7 +893,19 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int_arithmetics)(struct kefi
             OP(add, 64);
             break;
 
-        case INT_ARITHMETICS_SUB:
+        case INT_ARITHMETICS_SUB8:
+            OP(sub, 8);
+            break;
+
+        case INT_ARITHMETICS_SUB16:
+            OP(sub, 16);
+            break;
+
+        case INT_ARITHMETICS_SUB32:
+            OP(sub, 32);
+            break;
+
+        case INT_ARITHMETICS_SUB64:
             OP(sub, 64);
             break;
 
@@ -917,7 +953,19 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int_arithmetics)(struct kefi
             CONST_OP(add, 64, true);
             break;
 
-        case INT_ARITHMETICS_SUB_CONST:
+        case INT_ARITHMETICS_SUB8_CONST:
+            CONST_OP(sub, 8, true);
+            break;
+
+        case INT_ARITHMETICS_SUB16_CONST:
+            CONST_OP(sub, 16, true);
+            break;
+
+        case INT_ARITHMETICS_SUB32_CONST:
+            CONST_OP(sub, 32, true);
+            break;
+
+        case INT_ARITHMETICS_SUB64_CONST:
             CONST_OP(sub, 64, true);
             break;
 

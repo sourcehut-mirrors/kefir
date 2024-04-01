@@ -25,7 +25,7 @@ _kefir_func_eval1_label1:
     movsx %eax, %rax
     movl %eax, -12(%rbp)
     movsxl -12(%rbp), %rax
-    sub $1, %rax
+    sub $1, %eax
     movsx %eax, %rax
     movl %eax, -4(%rbp)
     movsxl -8(%rbp), %rax

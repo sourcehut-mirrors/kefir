@@ -50,7 +50,10 @@
     OPCODE(IADD16,      "iadd16",       none) SEPARATOR \
     OPCODE(IADD32,      "iadd32",       none) SEPARATOR \
     OPCODE(IADD64,      "iadd64",       none) SEPARATOR \
-    OPCODE(ISUB,        "isub",         none) SEPARATOR \
+    OPCODE(ISUB8,       "isub8",        none) SEPARATOR \
+    OPCODE(ISUB16,      "isub16",       none) SEPARATOR \
+    OPCODE(ISUB32,      "isub32",       none) SEPARATOR \
+    OPCODE(ISUB64,      "isub64",       none) SEPARATOR \
     OPCODE(IMUL,        "imul",         none) SEPARATOR \
     OPCODE(IDIV,        "idiv",         none) SEPARATOR \
     OPCODE(IMOD,        "imod",         none) SEPARATOR \
