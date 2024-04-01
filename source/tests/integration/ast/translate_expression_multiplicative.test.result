@@ -313,7 +313,7 @@
                     "arg": -150
                 },
                 {
-                    "opcode": "imul"
+                    "opcode": "imul32"
                 },
                 {
                     "opcode": "extend32"
@@ -327,7 +327,7 @@
                     "arg": 239
                 },
                 {
-                    "opcode": "imul"
+                    "opcode": "imul32"
                 },
                 {
                     "opcode": "pushu",
@@ -345,7 +345,7 @@
                     "arg": 1000
                 },
                 {
-                    "opcode": "imul"
+                    "opcode": "imul64"
                 },
                 {
                     "opcode": "pushi",

@@ -1164,7 +1164,7 @@
                             },
                             {
                                 "id": 19,
-                                "opcode": "int_mul",
+                                "opcode": "int64_mul",
                                 "args": [
                                     16,
                                     18
@@ -1654,7 +1654,7 @@
                             },
                             {
                                 "id": 20,
-                                "opcode": "int_mul",
+                                "opcode": "int64_mul",
                                 "args": [
                                     18,
                                     19

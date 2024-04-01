@@ -246,7 +246,7 @@ static kefir_result_t incdec_impl(struct kefir_mem *mem, struct kefir_ast_transl
             REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PUSHI64, diff));
             REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PUSHU64,
                                                                 translator_type->object.layout->properties.size));
-            REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IMUL, 0));
+            REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IMUL64, 0));
             REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IADD64, 0));
 
             REQUIRE_ELSE(res == KEFIR_OK, {

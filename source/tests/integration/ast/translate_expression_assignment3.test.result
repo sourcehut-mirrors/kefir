@@ -656,7 +656,7 @@
                     "arg": 2
                 },
                 {
-                    "opcode": "imul"
+                    "opcode": "imul64"
                 },
                 {
                     "opcode": "xchg",
@@ -765,7 +765,7 @@
                     "arg": 2
                 },
                 {
-                    "opcode": "imul"
+                    "opcode": "imul32"
                 },
                 {
                     "opcode": "xchg",

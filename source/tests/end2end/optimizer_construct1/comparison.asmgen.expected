@@ -592,7 +592,7 @@
                             },
                             {
                                 "id": 32,
-                                "opcode": "int_mul",
+                                "opcode": "int32_mul",
                                 "args": [
                                     27,
                                     31

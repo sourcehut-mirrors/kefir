@@ -49,7 +49,7 @@
                     "arg": 2
                 },
                 {
-                    "opcode": "imul"
+                    "opcode": "imul64"
                 },
                 {
                     "opcode": "iadd64"
@@ -90,7 +90,7 @@
                     "arg": 3
                 },
                 {
-                    "opcode": "imul"
+                    "opcode": "imul64"
                 },
                 {
                     "opcode": "iadd64"

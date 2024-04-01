@@ -1424,7 +1424,7 @@
                     "arg": 8
                 },
                 {
-                    "opcode": "imul"
+                    "opcode": "imul64"
                 },
                 {
                     "opcode": "iadd64"
@@ -1470,7 +1470,7 @@
                     }
                 },
                 {
-                    "opcode": "imul"
+                    "opcode": "imul64"
                 },
                 {
                     "opcode": "getlocal",
@@ -1559,7 +1559,7 @@
                     "arg": 8
                 },
                 {
-                    "opcode": "imul"
+                    "opcode": "imul64"
                 },
                 {
                     "opcode": "iadd64"
@@ -1602,7 +1602,7 @@
                     "arg": 8
                 },
                 {
-                    "opcode": "imul"
+                    "opcode": "imul64"
                 },
                 {
                     "opcode": "iadd64"
@@ -1644,7 +1644,7 @@
                     "arg": 8
                 },
                 {
-                    "opcode": "imul"
+                    "opcode": "imul64"
                 },
                 {
                     "opcode": "iadd64"

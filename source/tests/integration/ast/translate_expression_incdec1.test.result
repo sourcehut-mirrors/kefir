@@ -556,7 +556,7 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "imul"
+                    "opcode": "imul64"
                 },
                 {
                     "opcode": "iadd64"
@@ -609,7 +609,7 @@
                     "arg": 32
                 },
                 {
-                    "opcode": "imul"
+                    "opcode": "imul64"
                 },
                 {
                     "opcode": "iadd64"
@@ -708,7 +708,7 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "imul"
+                    "opcode": "imul64"
                 },
                 {
                     "opcode": "iadd64"
@@ -761,7 +761,7 @@
                     "arg": 32
                 },
                 {
-                    "opcode": "imul"
+                    "opcode": "imul64"
                 },
                 {
                     "opcode": "iadd64"

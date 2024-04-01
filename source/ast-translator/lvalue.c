@@ -170,7 +170,7 @@ kefir_result_t kefir_ast_translate_array_subscript_lvalue(struct kefir_mem *mem,
     }
     REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PUSHU64,
                                                         translator_type->object.layout->properties.size));
-    REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IMUL, 0));
+    REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IMUL64, 0));
     REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IADD64, 0));
 
     REQUIRE_ELSE(res == KEFIR_OK, {

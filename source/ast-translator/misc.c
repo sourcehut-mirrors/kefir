@@ -58,7 +58,7 @@ kefir_result_t kefir_ast_translate_sizeof(struct kefir_mem *mem, struct kefir_as
                                               "Unable to determine size of VLA with unspecified variable modifier"));
         REQUIRE_OK(kefir_ast_translate_sizeof(mem, context, builder, type->array_type.element_type, source_location));
         REQUIRE_OK(kefir_ast_translate_expression(mem, vlen, builder, context));
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IMUL, 0));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IMUL64, 0));
     } else {
         REQUIRE_OK(kefir_ast_type_completion(mem, context->ast_context, &type, type));
         REQUIRE_OK(sizeof_nonvla_type(mem, context, builder, type, source_location));
@@ -175,7 +175,7 @@ kefir_result_t kefir_ast_translator_resolve_vla_element(struct kefir_mem *mem,
                                                scoped_id_layout->layout->value));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PUSHU64, vla_id));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PUSHU64, vla_element_layout->properties.size));
-    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IMUL, 0));
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IMUL64, 0));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IADD64, 0));
     return KEFIR_OK;
 }

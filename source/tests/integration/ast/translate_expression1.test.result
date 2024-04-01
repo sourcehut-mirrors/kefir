@@ -48,7 +48,7 @@
                     "arg": 3
                 },
                 {
-                    "opcode": "imul"
+                    "opcode": "imul64"
                 },
                 {
                     "opcode": "pushi",
@@ -76,7 +76,7 @@
                     "arg": 3
                 },
                 {
-                    "opcode": "imul"
+                    "opcode": "imul64"
                 },
                 {
                     "opcode": "intcf64"

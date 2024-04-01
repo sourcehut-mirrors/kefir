@@ -372,7 +372,7 @@
                             },
                             {
                                 "id": 17,
-                                "opcode": "int_mul",
+                                "opcode": "int32_mul",
                                 "args": [
                                     15,
                                     16

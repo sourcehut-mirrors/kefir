@@ -2272,7 +2272,7 @@ _kefir_func_multiply_i8_label2:
     movsx %al, %rax
     movsx %eax, %rax
     mov %rax, %rcx
-    imul %r10, %rcx
+    imul %r10d, %ecx
     movsx %cl, %r11
     movq %r9, -32(%rbp)
     movq %r10, -24(%rbp)
@@ -2732,7 +2732,7 @@ _kefir_func_multiply_i16_label2:
     movsx %ax, %rax
     movsx %eax, %rax
     mov %rax, %rcx
-    imul %r10, %rcx
+    imul %r10d, %ecx
     movsx %cx, %r11
     movq %r9, -32(%rbp)
     movq %r10, -24(%rbp)
@@ -2782,7 +2782,7 @@ _kefir_func_multiply_i32_label2:
     movq -40(%rbp), %r10
     movsx %eax, %rax
     mov %rax, %r11
-    imul %r10, %r11
+    imul %r10d, %r11d
     movq %r9, -32(%rbp)
     movq %r10, -24(%rbp)
     movq %r11, -16(%rbp)

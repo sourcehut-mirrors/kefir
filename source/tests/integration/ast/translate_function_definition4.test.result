@@ -235,7 +235,7 @@
                     "arg": 2
                 },
                 {
-                    "opcode": "imul"
+                    "opcode": "imul32"
                 },
                 {
                     "opcode": "xchg",

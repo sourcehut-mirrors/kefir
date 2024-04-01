@@ -54,7 +54,10 @@
     OPCODE(ISUB16,      "isub16",       none) SEPARATOR \
     OPCODE(ISUB32,      "isub32",       none) SEPARATOR \
     OPCODE(ISUB64,      "isub64",       none) SEPARATOR \
-    OPCODE(IMUL,        "imul",         none) SEPARATOR \
+    OPCODE(IMUL8,       "imul8",        none) SEPARATOR \
+    OPCODE(IMUL16,      "imul16",       none) SEPARATOR \
+    OPCODE(IMUL32,      "imul32",       none) SEPARATOR \
+    OPCODE(IMUL64,      "imul64",       none) SEPARATOR \
     OPCODE(IDIV,        "idiv",         none) SEPARATOR \
     OPCODE(IMOD,        "imod",         none) SEPARATOR \
     OPCODE(UDIV,        "udiv",         none) SEPARATOR \

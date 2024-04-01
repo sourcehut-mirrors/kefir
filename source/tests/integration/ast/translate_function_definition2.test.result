@@ -196,7 +196,7 @@
                     "arg": 4
                 },
                 {
-                    "opcode": "imul"
+                    "opcode": "imul64"
                 },
                 {
                     "opcode": "iadd64"
