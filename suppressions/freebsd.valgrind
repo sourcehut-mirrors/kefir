@@ -48,3 +48,14 @@
    fun:mbrtoc32_l
    ...
 }
+{
+   iconv leak
+   Memcheck:Leak
+   match-leak-kinds: all
+   obj:/usr/local/libexec/valgrind/vgpreload_memcheck-amd64-freebsd.so
+   obj:/usr/lib/i18n/libiconv_std.so.5
+   obj:/lib/libc.so.7
+   obj:/lib/libc.so.7
+   obj:/home/build/kefir/bin/libs/libkefir.so.0.0
+   ...
+}
