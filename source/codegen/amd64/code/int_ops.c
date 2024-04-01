@@ -571,8 +571,14 @@ kefir_result_t kefir_codegen_amd64_match_comparison_op(const struct kefir_opt_co
 }
 
 enum int_arithmetics_op_type {
-    INT_ARITHMETICS_ADD,
-    INT_ARITHMETICS_ADD_CONST,
+    INT_ARITHMETICS_ADD8,
+    INT_ARITHMETICS_ADD8_CONST,
+    INT_ARITHMETICS_ADD16,
+    INT_ARITHMETICS_ADD16_CONST,
+    INT_ARITHMETICS_ADD32,
+    INT_ARITHMETICS_ADD32_CONST,
+    INT_ARITHMETICS_ADD64,
+    INT_ARITHMETICS_ADD64_CONST,
     INT_ARITHMETICS_SUB,
     INT_ARITHMETICS_SUB_CONST,
     INT_ARITHMETICS_MUL,
@@ -604,81 +610,93 @@ static kefir_result_t match_int_arithmetics(struct kefir_codegen_amd64_function 
                                             struct int_arithmetics_op *op) {
     struct kefir_opt_instruction *arg1, *arg2;
     switch (instruction->operation.opcode) {
-#define OP(_opcode, _opcode_const, _direct, _reverse)                                                          \
-    do {                                                                                                       \
-        REQUIRE_OK(kefir_opt_code_container_instr(&function->function->code,                                   \
-                                                  instruction->operation.parameters.refs[0], &arg1));          \
-        REQUIRE_OK(kefir_opt_code_container_instr(&function->function->code,                                   \
-                                                  instruction->operation.parameters.refs[1], &arg2));          \
-        if (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST &&                                            \
-            arg1->operation.parameters.imm.integer >= KEFIR_INT32_MIN &&                                       \
-            arg1->operation.parameters.imm.integer <= KEFIR_INT32_MAX && (_reverse)) {                         \
-            op->type = (_opcode_const);                                                                        \
-            op->refs[0] = arg2->id;                                                                            \
-            op->refs[1] = arg1->id;                                                                            \
-            op->int_value = arg1->operation.parameters.imm.integer;                                            \
-        } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST &&                                    \
-                   (kefir_int64_t) arg1->operation.parameters.imm.uinteger >= KEFIR_INT32_MIN &&               \
-                   (kefir_int64_t) arg1->operation.parameters.imm.uinteger <= KEFIR_INT32_MAX && (_reverse)) { \
-            op->type = (_opcode_const);                                                                        \
-            op->refs[0] = arg2->id;                                                                            \
-            op->refs[1] = arg1->id;                                                                            \
-            op->int_value = (kefir_int64_t) arg1->operation.parameters.imm.uinteger;                           \
-        } else if (arg2->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST &&                                     \
-                   arg2->operation.parameters.imm.integer >= KEFIR_INT32_MIN &&                                \
-                   arg2->operation.parameters.imm.integer <= KEFIR_INT32_MAX && (_direct)) {                   \
-            op->type = (_opcode_const);                                                                        \
-            op->refs[0] = arg1->id;                                                                            \
-            op->refs[1] = arg2->id;                                                                            \
-            op->int_value = arg2->operation.parameters.imm.integer;                                            \
-        } else if (arg2->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST &&                                    \
-                   (kefir_int64_t) arg2->operation.parameters.imm.uinteger >= KEFIR_INT32_MIN &&               \
-                   (kefir_int64_t) arg2->operation.parameters.imm.uinteger <= KEFIR_INT32_MAX && (_direct)) {  \
-            op->type = (_opcode_const);                                                                        \
-            op->refs[0] = arg1->id;                                                                            \
-            op->refs[1] = arg2->id;                                                                            \
-            op->int_value = (kefir_int64_t) arg2->operation.parameters.imm.uinteger;                           \
-        } else {                                                                                               \
-            op->type = (_opcode);                                                                              \
-            op->refs[0] = arg1->id;                                                                            \
-            op->refs[1] = arg2->id;                                                                            \
-        }                                                                                                      \
+#define OP(_opcode, _opcode_const, _direct, _reverse, _const_min, _const_max)                               \
+    do {                                                                                                    \
+        REQUIRE_OK(kefir_opt_code_container_instr(&function->function->code,                                \
+                                                  instruction->operation.parameters.refs[0], &arg1));       \
+        REQUIRE_OK(kefir_opt_code_container_instr(&function->function->code,                                \
+                                                  instruction->operation.parameters.refs[1], &arg2));       \
+        if (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST &&                                         \
+            arg1->operation.parameters.imm.integer >= (_const_min) &&                                       \
+            arg1->operation.parameters.imm.integer <= (_const_max) && (_reverse)) {                         \
+            op->type = (_opcode_const);                                                                     \
+            op->refs[0] = arg2->id;                                                                         \
+            op->refs[1] = arg1->id;                                                                         \
+            op->int_value = arg1->operation.parameters.imm.integer;                                         \
+        } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST &&                                 \
+                   (kefir_int64_t) arg1->operation.parameters.imm.uinteger >= (_const_min) &&               \
+                   (kefir_int64_t) arg1->operation.parameters.imm.uinteger <= (_const_max) && (_reverse)) { \
+            op->type = (_opcode_const);                                                                     \
+            op->refs[0] = arg2->id;                                                                         \
+            op->refs[1] = arg1->id;                                                                         \
+            op->int_value = (kefir_int64_t) arg1->operation.parameters.imm.uinteger;                        \
+        } else if (arg2->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST &&                                  \
+                   arg2->operation.parameters.imm.integer >= (_const_min) &&                                \
+                   arg2->operation.parameters.imm.integer <= (_const_max) && (_direct)) {                   \
+            op->type = (_opcode_const);                                                                     \
+            op->refs[0] = arg1->id;                                                                         \
+            op->refs[1] = arg2->id;                                                                         \
+            op->int_value = arg2->operation.parameters.imm.integer;                                         \
+        } else if (arg2->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST &&                                 \
+                   (kefir_int64_t) arg2->operation.parameters.imm.uinteger >= (_const_min) &&               \
+                   (kefir_int64_t) arg2->operation.parameters.imm.uinteger <= (_const_max) && (_direct)) {  \
+            op->type = (_opcode_const);                                                                     \
+            op->refs[0] = arg1->id;                                                                         \
+            op->refs[1] = arg2->id;                                                                         \
+            op->int_value = (kefir_int64_t) arg2->operation.parameters.imm.uinteger;                        \
+        } else {                                                                                            \
+            op->type = (_opcode);                                                                           \
+            op->refs[0] = arg1->id;                                                                         \
+            op->refs[1] = arg2->id;                                                                         \
+        }                                                                                                   \
     } while (0)
 
-        case KEFIR_OPT_OPCODE_INT_ADD:
-            OP(INT_ARITHMETICS_ADD, INT_ARITHMETICS_ADD_CONST, true, true);
+        case KEFIR_OPT_OPCODE_INT8_ADD:
+            OP(INT_ARITHMETICS_ADD8, INT_ARITHMETICS_ADD8_CONST, true, true, KEFIR_INT8_MIN, KEFIR_INT8_MAX);
+            break;
+
+        case KEFIR_OPT_OPCODE_INT16_ADD:
+            OP(INT_ARITHMETICS_ADD16, INT_ARITHMETICS_ADD16_CONST, true, true, KEFIR_INT16_MIN, KEFIR_INT16_MAX);
+            break;
+
+        case KEFIR_OPT_OPCODE_INT32_ADD:
+            OP(INT_ARITHMETICS_ADD32, INT_ARITHMETICS_ADD32_CONST, true, true, KEFIR_INT32_MIN, KEFIR_INT32_MAX);
+            break;
+
+        case KEFIR_OPT_OPCODE_INT64_ADD:
+            OP(INT_ARITHMETICS_ADD64, INT_ARITHMETICS_ADD64_CONST, true, true, KEFIR_INT32_MIN, KEFIR_INT32_MAX);
             break;
 
         case KEFIR_OPT_OPCODE_INT_SUB:
-            OP(INT_ARITHMETICS_SUB, INT_ARITHMETICS_SUB_CONST, true, false);
+            OP(INT_ARITHMETICS_SUB, INT_ARITHMETICS_SUB_CONST, true, false, KEFIR_INT32_MIN, KEFIR_INT32_MAX);
             break;
 
         case KEFIR_OPT_OPCODE_INT_MUL:
-            OP(INT_ARITHMETICS_MUL, INT_ARITHMETICS_MUL_CONST, true, true);
+            OP(INT_ARITHMETICS_MUL, INT_ARITHMETICS_MUL_CONST, true, true, KEFIR_INT32_MIN, KEFIR_INT32_MAX);
             break;
 
         case KEFIR_OPT_OPCODE_INT_AND:
-            OP(INT_ARITHMETICS_AND, INT_ARITHMETICS_AND_CONST, true, true);
+            OP(INT_ARITHMETICS_AND, INT_ARITHMETICS_AND_CONST, true, true, KEFIR_INT32_MIN, KEFIR_INT32_MAX);
             break;
 
         case KEFIR_OPT_OPCODE_INT_OR:
-            OP(INT_ARITHMETICS_OR, INT_ARITHMETICS_OR_CONST, true, true);
+            OP(INT_ARITHMETICS_OR, INT_ARITHMETICS_OR_CONST, true, true, KEFIR_INT32_MIN, KEFIR_INT32_MAX);
             break;
 
         case KEFIR_OPT_OPCODE_INT_XOR:
-            OP(INT_ARITHMETICS_XOR, INT_ARITHMETICS_XOR_CONST, true, true);
+            OP(INT_ARITHMETICS_XOR, INT_ARITHMETICS_XOR_CONST, true, true, KEFIR_INT32_MIN, KEFIR_INT32_MAX);
             break;
 
         case KEFIR_OPT_OPCODE_INT_LSHIFT:
-            OP(INT_ARITHMETICS_SHL, INT_ARITHMETICS_SHL_CONST, true, false);
+            OP(INT_ARITHMETICS_SHL, INT_ARITHMETICS_SHL_CONST, true, false, KEFIR_INT32_MIN, KEFIR_INT32_MAX);
             break;
 
         case KEFIR_OPT_OPCODE_INT_RSHIFT:
-            OP(INT_ARITHMETICS_SHR, INT_ARITHMETICS_SHR_CONST, true, false);
+            OP(INT_ARITHMETICS_SHR, INT_ARITHMETICS_SHR_CONST, true, false, KEFIR_INT32_MIN, KEFIR_INT32_MAX);
             break;
 
         case KEFIR_OPT_OPCODE_INT_ARSHIFT:
-            OP(INT_ARITHMETICS_SAR, INT_ARITHMETICS_SAR_CONST, true, false);
+            OP(INT_ARITHMETICS_SAR, INT_ARITHMETICS_SAR_CONST, true, false, KEFIR_INT32_MIN, KEFIR_INT32_MAX);
             break;
 
 #undef OP
@@ -703,7 +721,10 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_FUSION_IMPL(int_arithmetics)(
     struct int_arithmetics_op op = {0};
     REQUIRE_OK(match_int_arithmetics(function, instruction, &op));
     switch (op.type) {
-        case INT_ARITHMETICS_ADD:
+        case INT_ARITHMETICS_ADD8:
+        case INT_ARITHMETICS_ADD16:
+        case INT_ARITHMETICS_ADD32:
+        case INT_ARITHMETICS_ADD64:
         case INT_ARITHMETICS_SUB:
         case INT_ARITHMETICS_MUL:
         case INT_ARITHMETICS_AND:
@@ -716,7 +737,10 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_FUSION_IMPL(int_arithmetics)(
             REQUIRE_OK(callback(op.refs[1], payload));
             break;
 
-        case INT_ARITHMETICS_ADD_CONST:
+        case INT_ARITHMETICS_ADD8_CONST:
+        case INT_ARITHMETICS_ADD16_CONST:
+        case INT_ARITHMETICS_ADD32_CONST:
+        case INT_ARITHMETICS_ADD64_CONST:
         case INT_ARITHMETICS_SUB_CONST:
         case INT_ARITHMETICS_OR_CONST:
         case INT_ARITHMETICS_XOR_CONST:
@@ -747,7 +771,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int_arithmetics)(struct kefi
     struct int_arithmetics_op op = {0};
     REQUIRE_OK(match_int_arithmetics(function, instruction, &op));
     switch (op.type) {
-#define OP(_operation)                                                                                                 \
+#define OP(_operation, _variant)                                                                                       \
     do {                                                                                                               \
         kefir_asmcmp_virtual_register_index_t result_vreg, arg1_vreg, arg2_vreg;                                       \
         REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, op.refs[0], &arg1_vreg));                            \
@@ -759,10 +783,10 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int_arithmetics)(struct kefi
                                                              result_vreg, arg1_vreg, NULL));                           \
         REQUIRE_OK(kefir_asmcmp_amd64_##_operation(                                                                    \
             mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),                            \
-            &KEFIR_ASMCMP_MAKE_VREG64(result_vreg), &KEFIR_ASMCMP_MAKE_VREG64(arg2_vreg), NULL));                      \
+            &KEFIR_ASMCMP_MAKE_VREG##_variant(result_vreg), &KEFIR_ASMCMP_MAKE_VREG##_variant(arg2_vreg), NULL));      \
         REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));             \
     } while (0)
-#define CONST_OP(_operation, _skip_on_zero)                                                                            \
+#define CONST_OP(_operation, _variant, _skip_on_zero)                                                                  \
     do {                                                                                                               \
         kefir_asmcmp_virtual_register_index_t result_vreg, arg1_vreg;                                                  \
         REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, op.refs[0], &arg1_vreg));                            \
@@ -777,7 +801,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int_arithmetics)(struct kefi
                 KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected amd64 codegen integer arithmetics constant value"));  \
             REQUIRE_OK(kefir_asmcmp_amd64_##_operation(                                                                \
                 mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),                        \
-                &KEFIR_ASMCMP_MAKE_VREG64(result_vreg), &KEFIR_ASMCMP_MAKE_INT(op.int_value), NULL));                  \
+                &KEFIR_ASMCMP_MAKE_VREG##_variant(result_vreg), &KEFIR_ASMCMP_MAKE_INT(op.int_value), NULL));          \
         }                                                                                                              \
         REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));             \
     } while (0)
@@ -829,28 +853,40 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int_arithmetics)(struct kefi
         REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));             \
     } while (0)
 
-        case INT_ARITHMETICS_ADD:
-            OP(add);
+        case INT_ARITHMETICS_ADD8:
+            OP(add, 8);
+            break;
+
+        case INT_ARITHMETICS_ADD16:
+            OP(add, 16);
+            break;
+
+        case INT_ARITHMETICS_ADD32:
+            OP(add, 32);
+            break;
+
+        case INT_ARITHMETICS_ADD64:
+            OP(add, 64);
             break;
 
         case INT_ARITHMETICS_SUB:
-            OP(sub);
+            OP(sub, 64);
             break;
 
         case INT_ARITHMETICS_MUL:
-            OP(imul);
+            OP(imul, 64);
             break;
 
         case INT_ARITHMETICS_AND:
-            OP(and);
+            OP(and, 64);
             break;
 
         case INT_ARITHMETICS_OR:
-            OP(or);
+            OP(or, 64);
             break;
 
         case INT_ARITHMETICS_XOR:
-            OP(xor);
+            OP(xor, 64);
             break;
 
         case INT_ARITHMETICS_SHL:
@@ -865,20 +901,32 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int_arithmetics)(struct kefi
             SHIFT_OP(sar);
             break;
 
-        case INT_ARITHMETICS_ADD_CONST:
-            CONST_OP(add, true);
+        case INT_ARITHMETICS_ADD8_CONST:
+            CONST_OP(add, 8, true);
+            break;
+
+        case INT_ARITHMETICS_ADD16_CONST:
+            CONST_OP(add, 16, true);
+            break;
+
+        case INT_ARITHMETICS_ADD32_CONST:
+            CONST_OP(add, 32, true);
+            break;
+
+        case INT_ARITHMETICS_ADD64_CONST:
+            CONST_OP(add, 64, true);
             break;
 
         case INT_ARITHMETICS_SUB_CONST:
-            CONST_OP(sub, true);
+            CONST_OP(sub, 64, true);
             break;
 
         case INT_ARITHMETICS_OR_CONST:
-            CONST_OP(or, true);
+            CONST_OP(or, 64, true);
             break;
 
         case INT_ARITHMETICS_XOR_CONST:
-            CONST_OP(xor, true);
+            CONST_OP(xor, 64, true);
             break;
 
         case INT_ARITHMETICS_SHL_CONST:

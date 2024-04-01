@@ -297,8 +297,11 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "iadd1",
+                    "opcode": "pushu",
                     "arg": 24
+                },
+                {
+                    "opcode": "iadd64"
                 },
                 {
                     "opcode": "pick",
@@ -327,8 +330,11 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "iadd1",
+                    "opcode": "pushu",
                     "arg": 72
+                },
+                {
+                    "opcode": "iadd64"
                 },
                 {
                     "opcode": "pick",
@@ -357,8 +363,11 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "iadd1",
+                    "opcode": "pushu",
                     "arg": 168
+                },
+                {
+                    "opcode": "iadd64"
                 },
                 {
                     "opcode": "pick",

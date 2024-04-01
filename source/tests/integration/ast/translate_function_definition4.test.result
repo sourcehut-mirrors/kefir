@@ -194,7 +194,7 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 36
+                    "arg": 37
                 },
                 {
                     "opcode": "getlocal",
@@ -272,8 +272,11 @@
                     }
                 },
                 {
-                    "opcode": "iadd1",
+                    "opcode": "pushi",
                     "arg": -1
+                },
+                {
+                    "opcode": "iadd32"
                 },
                 {
                     "opcode": "extend32"

@@ -45,8 +45,11 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "iadd1",
+                    "opcode": "pushi",
                     "arg": 1
+                },
+                {
+                    "opcode": "iadd64"
                 },
                 {
                     "opcode": "pushi",

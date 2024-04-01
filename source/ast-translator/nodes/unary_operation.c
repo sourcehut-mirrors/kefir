@@ -189,8 +189,9 @@ static kefir_result_t translate_sizeof(struct kefir_mem *mem, struct kefir_ast_t
                          node->arg->properties.expression_props.scoped_id->payload.ptr);
         REQUIRE_OK(
             kefir_ast_translator_resolve_local_type_layout(builder, identifier_data->type_id, identifier_data->layout));
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IADD1,
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PUSHU64,
                                                    identifier_data->layout->vl_array.array_size_relative_offset));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IADD64, 0));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_LOAD64, KEFIR_IR_MEMORY_FLAG_NONE));
     } else {
         const struct kefir_ast_type *type = node->arg->properties.type;
@@ -243,8 +244,10 @@ static kefir_result_t incdec_impl(struct kefir_mem *mem, struct kefir_ast_transl
 
             kefir_result_t res = KEFIR_OK;
             REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PUSHI64, diff));
-            REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IADDX,
+            REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PUSHU64,
                                                                 translator_type->object.layout->properties.size));
+            REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IMUL, 0));
+            REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IADD64, 0));
 
             REQUIRE_ELSE(res == KEFIR_OK, {
                 kefir_ast_translator_type_free(mem, translator_type);
@@ -291,11 +294,44 @@ static kefir_result_t incdec_impl(struct kefir_mem *mem, struct kefir_ast_transl
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_CMPLDADD, 0));
             break;
 
-        default:
+        case KEFIR_AST_TYPE_SCALAR_BOOL:
+        case KEFIR_AST_TYPE_SCALAR_CHAR:
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
             REQUIRE(KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(normalized_type),
                     KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of an integral type"));
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_IADD1, diff));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PUSHI64, diff));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_IADD8, 0));
             break;
+
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT:
+            REQUIRE(KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(normalized_type),
+                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of an integral type"));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PUSHI64, diff));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_IADD16, 0));
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_INT:
+            REQUIRE(KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(normalized_type),
+                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of an integral type"));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PUSHI64, diff));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_IADD32, 0));
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG:
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
+            REQUIRE(KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(normalized_type),
+                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of an integral type"));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PUSHI64, diff));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_IADD64, 0));
+            break;
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of an integral type");
     }
 
     REQUIRE_OK(kefir_ast_translate_typeconv_normalize(builder, context->ast_context->type_traits, normalized_type));

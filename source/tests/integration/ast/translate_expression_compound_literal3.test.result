@@ -247,8 +247,11 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "iadd1",
+                    "opcode": "pushu",
                     "arg": 24
+                },
+                {
+                    "opcode": "iadd64"
                 },
                 {
                     "opcode": "pushi",
@@ -265,8 +268,11 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "iadd1",
+                    "opcode": "pushu",
                     "arg": 4
+                },
+                {
+                    "opcode": "iadd64"
                 },
                 {
                     "opcode": "pushi",
@@ -283,8 +289,11 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "iadd1",
+                    "opcode": "pushu",
                     "arg": 8
+                },
+                {
+                    "opcode": "iadd64"
                 },
                 {
                     "opcode": "pushi",
@@ -301,8 +310,11 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "iadd1",
+                    "opcode": "pushu",
                     "arg": 32
+                },
+                {
+                    "opcode": "iadd64"
                 },
                 {
                     "opcode": "pushi",
@@ -322,8 +334,11 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "iadd1",
+                    "opcode": "pushu",
                     "arg": 40
+                },
+                {
+                    "opcode": "iadd64"
                 },
                 {
                     "opcode": "pick",
@@ -358,8 +373,11 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "iadd1",
+                    "opcode": "pushu",
                     "arg": 8
+                },
+                {
+                    "opcode": "iadd64"
                 },
                 {
                     "opcode": "pushi",
@@ -379,8 +397,11 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "iadd1",
+                    "opcode": "pushu",
                     "arg": 9
+                },
+                {
+                    "opcode": "iadd64"
                 },
                 {
                     "opcode": "pushi",
@@ -403,8 +424,11 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "iadd1",
+                    "opcode": "pushu",
                     "arg": 56
+                },
+                {
+                    "opcode": "iadd64"
                 },
                 {
                     "opcode": "pushi",
@@ -421,8 +445,11 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "iadd1",
+                    "opcode": "pushu",
                     "arg": 64
+                },
+                {
+                    "opcode": "iadd64"
                 },
                 {
                     "opcode": "pushi",
@@ -439,8 +466,11 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "iadd1",
+                    "opcode": "pushu",
                     "arg": 24
+                },
+                {
+                    "opcode": "iadd64"
                 },
                 {
                     "opcode": "pushi",
@@ -457,8 +487,11 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "iadd1",
+                    "opcode": "pushu",
                     "arg": 32
+                },
+                {
+                    "opcode": "iadd64"
                 },
                 {
                     "opcode": "pushi",

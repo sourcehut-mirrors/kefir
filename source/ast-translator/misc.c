@@ -127,7 +127,9 @@ kefir_result_t kefir_ast_translator_resolve_type_layout(struct kefir_irbuilder_b
     }
 
     if (layout->properties.relative_offset != 0) {
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IADD1, layout->properties.relative_offset));
+        REQUIRE_OK(
+            KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PUSHU64, layout->properties.relative_offset));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IADD64, 0));
     }
     return KEFIR_OK;
 }
@@ -143,7 +145,8 @@ kefir_result_t kefir_ast_translator_resolve_local_type_layout(struct kefir_irbui
         REQUIRE_OK(kefir_ast_translator_resolve_local_type_layout(builder, type_id, layout->parent));
         if (layout->properties.relative_offset != 0) {
             REQUIRE_OK(
-                KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IADD1, layout->properties.relative_offset));
+                KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PUSHU64, layout->properties.relative_offset));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IADD64, 0));
         }
     }
     return KEFIR_OK;
@@ -171,6 +174,8 @@ kefir_result_t kefir_ast_translator_resolve_vla_element(struct kefir_mem *mem,
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32(builder, KEFIR_IROPCODE_GETLOCAL, scoped_id_layout->type_id,
                                                scoped_id_layout->layout->value));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PUSHU64, vla_id));
-    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IADDX, vla_element_layout->properties.size));
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PUSHU64, vla_element_layout->properties.size));
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IMUL, 0));
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IADD64, 0));
     return KEFIR_OK;
 }

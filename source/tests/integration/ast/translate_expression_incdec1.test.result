@@ -298,8 +298,11 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "iadd1",
+                    "opcode": "pushi",
                     "arg": -1
+                },
+                {
+                    "opcode": "iadd32"
                 },
                 {
                     "opcode": "extend32"
@@ -344,8 +347,11 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "iadd1",
+                    "opcode": "pushi",
                     "arg": -1
+                },
+                {
+                    "opcode": "iadd16"
                 },
                 {
                     "opcode": "pushu",
@@ -394,8 +400,11 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "iadd1",
+                    "opcode": "pushi",
                     "arg": 1
+                },
+                {
+                    "opcode": "iadd32"
                 },
                 {
                     "opcode": "extend32"
@@ -440,8 +449,11 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "iadd1",
+                    "opcode": "pushi",
                     "arg": 1
+                },
+                {
+                    "opcode": "iadd16"
                 },
                 {
                     "opcode": "pushu",
@@ -540,8 +552,14 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "iaddx",
+                    "opcode": "pushu",
                     "arg": 1
+                },
+                {
+                    "opcode": "imul"
+                },
+                {
+                    "opcode": "iadd64"
                 },
                 {
                     "opcode": "store64",
@@ -587,8 +605,14 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "iaddx",
+                    "opcode": "pushu",
                     "arg": 32
+                },
+                {
+                    "opcode": "imul"
+                },
+                {
+                    "opcode": "iadd64"
                 },
                 {
                     "opcode": "store64",
@@ -680,8 +704,14 @@
                     "arg": -1
                 },
                 {
-                    "opcode": "iaddx",
+                    "opcode": "pushu",
                     "arg": 1
+                },
+                {
+                    "opcode": "imul"
+                },
+                {
+                    "opcode": "iadd64"
                 },
                 {
                     "opcode": "store64",
@@ -727,8 +757,14 @@
                     "arg": -1
                 },
                 {
-                    "opcode": "iaddx",
+                    "opcode": "pushu",
                     "arg": 32
+                },
+                {
+                    "opcode": "imul"
+                },
+                {
+                    "opcode": "iadd64"
                 },
                 {
                     "opcode": "store64",

@@ -108,8 +108,11 @@
                     }
                 },
                 {
-                    "opcode": "iadd1",
+                    "opcode": "pushu",
                     "arg": 8
+                },
+                {
+                    "opcode": "iadd64"
                 },
                 {
                     "opcode": "load64",

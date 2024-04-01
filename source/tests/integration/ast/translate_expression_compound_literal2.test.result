@@ -290,8 +290,11 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "iadd1",
+                    "opcode": "pushu",
                     "arg": 1
+                },
+                {
+                    "opcode": "iadd64"
                 },
                 {
                     "opcode": "pushi",
@@ -311,10 +314,13 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "iadd1",
+                    "opcode": "pushu",
                     "arg": 2
                 },
                 {
+                    "opcode": "iadd64"
+                },
+                {
                     "opcode": "pushi",
                     "arg": 108
                 },
@@ -332,10 +338,13 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "iadd1",
+                    "opcode": "pushu",
                     "arg": 3
                 },
                 {
+                    "opcode": "iadd64"
+                },
+                {
                     "opcode": "pushi",
                     "arg": 108
                 },
@@ -353,8 +362,11 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "iadd1",
+                    "opcode": "pushu",
                     "arg": 1
+                },
+                {
+                    "opcode": "iadd64"
                 },
                 {
                     "opcode": "pushi",

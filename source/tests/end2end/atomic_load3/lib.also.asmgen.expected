@@ -102,8 +102,7 @@ _kefir_func_get_arr1_el_label1:
     add $96, %rdi
     movsx %esi, %rax
     imul $8, %rax, %rax
-    add %rdi, %rax
-    mov %rax, %rdi
+    add %rax, %rdi
     mov $5, %rsi
     call __atomic_load_8@PLT
     ret
@@ -118,11 +117,10 @@ _kefir_func_get_arr2_el_label1:
     add $160, %rsi
     movsx %edx, %rax
     imul $64, %rax, %rax
-    add %rsi, %rax
+    add %rax, %rsi
     lea -64(%rbp), %r8
     movq %r8, -72(%rbp)
     mov %r8, %rdx
-    mov %rax, %rsi
     mov $64, %rdi
     mov $5, %rcx
     call __atomic_load@PLT

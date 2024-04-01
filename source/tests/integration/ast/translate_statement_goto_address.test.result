@@ -145,8 +145,11 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "iadd1",
+                    "opcode": "pushi",
                     "arg": 1
+                },
+                {
+                    "opcode": "iadd16"
                 },
                 {
                     "opcode": "extend16"
@@ -188,11 +191,11 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 24
+                    "arg": 25
                 },
                 {
                     "opcode": "pushlabel",
-                    "arg": 26
+                    "arg": 27
                 },
                 {
                     "opcode": "ijmp"
@@ -267,7 +270,7 @@
                 },
                 {
                     "label": "_kefir_local_public_label_goto1_end",
-                    "location": 26
+                    "location": 27
                 }
             ]
         },

@@ -17,11 +17,11 @@ _kefir_func_eval1_label0:
 _kefir_func_eval1_label1:
     movl %edi, -12(%rbp)
     movsxl -12(%rbp), %rax
-    add $1, %rax
+    add $1, %eax
     movsx %eax, %rax
     movl %eax, -8(%rbp)
     movsxl -12(%rbp), %rax
-    add $1, %rax
+    add $1, %eax
     movsx %eax, %rax
     movl %eax, -12(%rbp)
     movsxl -12(%rbp), %rax
@@ -30,7 +30,7 @@ _kefir_func_eval1_label1:
     movl %eax, -4(%rbp)
     movsxl -8(%rbp), %rax
     movsxl -4(%rbp), %rcx
-    add %rcx, %rax
+    add %ecx, %eax
     movsx %eax, %rax
     lea (%rbp), %rsp
     pop %rbp
@@ -47,13 +47,13 @@ _kefir_func_eval2_label1:
     movsxl -32(%rbp), %rax
     lea -24(%rbp), %rcx
     mov $0, %rdx
-    add %rcx, %rdx
-    movq -48(%rbp), %rcx
+    add %rdx, %rcx
+    movq -48(%rbp), %rdx
     sub $16, %rsp
     movq -48(%rbp), %rsi
     movq %rsi, (%rsp)
     movq %rsp, -48(%rbp)
-    movq %rcx, (%rdx)
+    movq %rdx, (%rcx)
     lea -16(%rbp), %rcx
     movsxl -32(%rbp), %rdx
     imul $8, %rdx, %rdx
@@ -74,8 +74,8 @@ _kefir_func_eval2_label1:
     movq (%rcx), %rcx
     lea -24(%rbp), %rdx
     mov $0, %rsi
-    add %rdx, %rsi
-    movq (%rsi), %rdx
+    add %rsi, %rdx
+    movq (%rdx), %rdx
     cmpq $0, -48(%rbp)
     jz _kefir_func_eval2_label2
     movq -48(%rbp), %rsp
@@ -83,7 +83,7 @@ _kefir_func_eval2_label1:
     movq %rdx, -48(%rbp)
     add $16, %rsp
 _kefir_func_eval2_label2:
-    add %rcx, %rax
+    add %ecx, %eax
     movsx %eax, %rax
     lea (%rbp), %rsp
     pop %rbp

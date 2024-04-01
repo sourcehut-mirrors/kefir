@@ -487,8 +487,14 @@
                     "opcode": "ineg"
                 },
                 {
-                    "opcode": "iaddx",
+                    "opcode": "pushu",
                     "arg": 1
+                },
+                {
+                    "opcode": "imul"
+                },
+                {
+                    "opcode": "iadd64"
                 },
                 {
                     "opcode": "xchg",
@@ -597,8 +603,14 @@
                     "opcode": "ineg"
                 },
                 {
-                    "opcode": "iaddx",
+                    "opcode": "pushu",
                     "arg": 64
+                },
+                {
+                    "opcode": "imul"
+                },
+                {
+                    "opcode": "iadd64"
                 },
                 {
                     "opcode": "xchg",

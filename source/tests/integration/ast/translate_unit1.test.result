@@ -431,7 +431,7 @@
                     "arg": 2
                 },
                 {
-                    "opcode": "iadd"
+                    "opcode": "iadd64"
                 },
                 {
                     "opcode": "xchg",

@@ -49,7 +49,10 @@
     OPCODE(FLOAT32_PLACEHOLDER, "float32_placeholder", none) SEPARATOR \
     OPCODE(FLOAT64_PLACEHOLDER, "float64_placeholder", none) SEPARATOR \
     /* Integral arithmetics & binary operations */ \
-    OPCODE(INT_ADD, "int_add", ref2) SEPARATOR \
+    OPCODE(INT8_ADD, "int8_add", ref2) SEPARATOR \
+    OPCODE(INT16_ADD, "int16_add", ref2) SEPARATOR \
+    OPCODE(INT32_ADD, "int32_add", ref2) SEPARATOR \
+    OPCODE(INT64_ADD, "int64_add", ref2) SEPARATOR \
     OPCODE(INT_SUB, "int_sub", ref2) SEPARATOR \
     OPCODE(INT_MUL, "int_mul", ref2) SEPARATOR \
     OPCODE(INT_DIV, "int_div", ref2) SEPARATOR \

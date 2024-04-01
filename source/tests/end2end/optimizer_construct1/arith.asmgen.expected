@@ -456,7 +456,7 @@
                             },
                             {
                                 "id": 9,
-                                "opcode": "int_add",
+                                "opcode": "int32_add",
                                 "args": [
                                     7,
                                     8

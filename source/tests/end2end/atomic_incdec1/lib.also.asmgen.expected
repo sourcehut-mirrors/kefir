@@ -47,7 +47,7 @@ _kefir_func_predec_i8_label2:
     movq -32(%rbp), %r9
     movsx %al, %rax
     mov %rax, %rcx
-    add $-1, %rcx
+    add $-1, %cl
     movsx %cl, %r10
     movq %r9, -24(%rbp)
     movq %r10, -16(%rbp)
@@ -183,7 +183,7 @@ _kefir_func_preinc_i8_label2:
     movq -32(%rbp), %r9
     movsx %al, %rax
     mov %rax, %rcx
-    add $1, %rcx
+    add $1, %cl
     movsx %cl, %r10
     movq %r9, -24(%rbp)
     movq %r10, -16(%rbp)
@@ -481,7 +481,7 @@ _kefir_func_predec_i16_label2:
     movq -32(%rbp), %r9
     movsx %ax, %rax
     mov %rax, %rcx
-    add $-1, %rcx
+    add $-1, %cx
     movsx %cx, %r10
     movq %r9, -24(%rbp)
     movq %r10, -16(%rbp)
@@ -524,7 +524,7 @@ _kefir_func_predec_i32_label2:
     movq -32(%rbp), %r9
     movsx %eax, %rax
     mov %rax, %rcx
-    add $-1, %rcx
+    add $-1, %ecx
     movsx %ecx, %r10
     movq %r9, -24(%rbp)
     movq %r10, -16(%rbp)
@@ -811,7 +811,7 @@ _kefir_func_preinc_i16_label2:
     movq -32(%rbp), %r9
     movsx %ax, %rax
     mov %rax, %rcx
-    add $1, %rcx
+    add $1, %cx
     movsx %cx, %r10
     movq %r9, -24(%rbp)
     movq %r10, -16(%rbp)
@@ -854,7 +854,7 @@ _kefir_func_preinc_i32_label2:
     movq -32(%rbp), %r9
     movsx %eax, %rax
     mov %rax, %rcx
-    add $1, %rcx
+    add $1, %ecx
     movsx %ecx, %r10
     movq %r9, -24(%rbp)
     movq %r10, -16(%rbp)

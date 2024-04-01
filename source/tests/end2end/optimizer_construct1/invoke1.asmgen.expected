@@ -405,7 +405,7 @@
                             },
                             {
                                 "id": 19,
-                                "opcode": "int_add",
+                                "opcode": "int32_add",
                                 "args": [
                                     14,
                                     18

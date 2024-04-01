@@ -170,8 +170,14 @@
                     }
                 },
                 {
-                    "opcode": "iaddx",
+                    "opcode": "pushu",
                     "arg": 1
+                },
+                {
+                    "opcode": "imul"
+                },
+                {
+                    "opcode": "iadd64"
                 },
                 {
                     "opcode": "load8i",
@@ -197,7 +203,7 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 29
+                    "arg": 32
                 },
                 {
                     "opcode": "getlocal",
@@ -225,8 +231,11 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "iadd1",
+                    "opcode": "pushi",
                     "arg": 1
+                },
+                {
+                    "opcode": "iadd32"
                 },
                 {
                     "opcode": "pushu",

@@ -61,8 +61,11 @@
                     }
                 },
                 {
-                    "opcode": "iadd1",
+                    "opcode": "pushi",
                     "arg": 1
+                },
+                {
+                    "opcode": "iadd64"
                 },
                 {
                     "opcode": "pushi",
@@ -73,8 +76,14 @@
                     "arg": 10
                 },
                 {
-                    "opcode": "iaddx",
+                    "opcode": "pushu",
                     "arg": 4
+                },
+                {
+                    "opcode": "imul"
+                },
+                {
+                    "opcode": "iadd64"
                 },
                 {
                     "opcode": "load64",

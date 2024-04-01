@@ -315,8 +315,11 @@
                     }
                 },
                 {
-                    "opcode": "iadd1",
+                    "opcode": "pushu",
                     "arg": 8
+                },
+                {
+                    "opcode": "iadd64"
                 },
                 {
                     "opcode": "getlocal",
@@ -352,8 +355,11 @@
                     }
                 },
                 {
-                    "opcode": "iadd1",
+                    "opcode": "pushu",
                     "arg": 8
+                },
+                {
+                    "opcode": "iadd64"
                 },
                 {
                     "opcode": "getglobal",
@@ -362,12 +368,18 @@
                     }
                 },
                 {
-                    "opcode": "iadd1",
+                    "opcode": "pushu",
                     "arg": 8
                 },
                 {
-                    "opcode": "iadd1",
+                    "opcode": "iadd64"
+                },
+                {
+                    "opcode": "pushu",
                     "arg": 8
+                },
+                {
+                    "opcode": "iadd64"
                 }
             ],
             "public_labels": []
@@ -397,8 +409,11 @@
                     }
                 },
                 {
-                    "opcode": "iadd1",
+                    "opcode": "pushu",
                     "arg": 8
+                },
+                {
+                    "opcode": "iadd64"
                 }
             ],
             "public_labels": []
@@ -419,8 +434,14 @@
                     "arg": 2
                 },
                 {
-                    "opcode": "iaddx",
+                    "opcode": "pushu",
                     "arg": 1
+                },
+                {
+                    "opcode": "imul"
+                },
+                {
+                    "opcode": "iadd64"
                 },
                 {
                     "opcode": "getglobal",
@@ -439,8 +460,14 @@
                     "arg": 100
                 },
                 {
-                    "opcode": "iaddx",
+                    "opcode": "pushu",
                     "arg": 4
+                },
+                {
+                    "opcode": "imul"
+                },
+                {
+                    "opcode": "iadd64"
                 }
             ],
             "public_labels": []

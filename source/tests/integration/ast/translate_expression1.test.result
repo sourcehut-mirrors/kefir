@@ -58,7 +58,7 @@
                     "opcode": "ineg"
                 },
                 {
-                    "opcode": "iadd"
+                    "opcode": "iadd64"
                 },
                 {
                     "opcode": "pushi",

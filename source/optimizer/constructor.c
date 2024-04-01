@@ -469,22 +469,6 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             }
         } break;
 
-        case KEFIR_IROPCODE_IADD1:
-            REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
-            REQUIRE_OK(kefir_opt_code_builder_int_constant(mem, code, current_block_id, instr->arg.i64, &instr_ref3));
-            REQUIRE_OK(kefir_opt_code_builder_int_add(mem, code, current_block_id, instr_ref2, instr_ref3, &instr_ref));
-            REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
-            break;
-
-        case KEFIR_IROPCODE_IADDX:
-            REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
-            REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref3));
-            REQUIRE_OK(kefir_opt_code_builder_int_constant(mem, code, current_block_id, instr->arg.i64, &instr_ref4));
-            REQUIRE_OK(kefir_opt_code_builder_int_mul(mem, code, current_block_id, instr_ref2, instr_ref4, &instr_ref));
-            REQUIRE_OK(kefir_opt_code_builder_int_add(mem, code, current_block_id, instr_ref, instr_ref3, &instr_ref2));
-            REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref2));
-            break;
-
         case KEFIR_IROPCODE_RESERVED:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected IR opcode");
 
@@ -577,7 +561,10 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
         REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));                                       \
         break;
 
-            BINARY_OP(int_add, KEFIR_IROPCODE_IADD)
+            BINARY_OP(int8_add, KEFIR_IROPCODE_IADD8)
+            BINARY_OP(int16_add, KEFIR_IROPCODE_IADD16)
+            BINARY_OP(int32_add, KEFIR_IROPCODE_IADD32)
+            BINARY_OP(int64_add, KEFIR_IROPCODE_IADD64)
             BINARY_OP(int_sub, KEFIR_IROPCODE_ISUB)
             BINARY_OP(int_mul, KEFIR_IROPCODE_IMUL)
             BINARY_OP(int_div, KEFIR_IROPCODE_IDIV)

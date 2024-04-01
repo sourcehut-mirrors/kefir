@@ -204,7 +204,7 @@
                     }
                 },
                 {
-                    "opcode": "iadd"
+                    "opcode": "iadd32"
                 },
                 {
                     "opcode": "extend32"

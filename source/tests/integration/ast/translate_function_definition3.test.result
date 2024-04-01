@@ -233,8 +233,11 @@
                     }
                 },
                 {
-                    "opcode": "iadd1",
+                    "opcode": "pushu",
                     "arg": 8
+                },
+                {
+                    "opcode": "iadd64"
                 },
                 {
                     "opcode": "load64",
@@ -259,8 +262,11 @@
                     }
                 },
                 {
-                    "opcode": "iadd1",
+                    "opcode": "pushu",
                     "arg": 16
+                },
+                {
+                    "opcode": "iadd64"
                 },
                 {
                     "opcode": "xchg",

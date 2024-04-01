@@ -50,7 +50,7 @@ _kefir_func_factorial_label7:
     mov %rcx, %rsi
     imul %rax, %rsi
     movsx %edx, %rax
-    add $-1, %rax
+    add $-1, %eax
     movsx %eax, %rcx
     mov %rcx, %rax
     mov %rsi, %rcx

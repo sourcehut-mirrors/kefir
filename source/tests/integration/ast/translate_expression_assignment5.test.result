@@ -316,7 +316,7 @@
                     "arg": 2
                 },
                 {
-                    "opcode": "iadd"
+                    "opcode": "iadd64"
                 },
                 {
                     "opcode": "xchg",
@@ -369,7 +369,7 @@
                     "arg": 2
                 },
                 {
-                    "opcode": "iadd"
+                    "opcode": "iadd32"
                 },
                 {
                     "opcode": "xchg",
@@ -484,8 +484,14 @@
                     "arg": 2
                 },
                 {
-                    "opcode": "iaddx",
+                    "opcode": "pushu",
                     "arg": 1
+                },
+                {
+                    "opcode": "imul"
+                },
+                {
+                    "opcode": "iadd64"
                 },
                 {
                     "opcode": "xchg",
@@ -591,8 +597,14 @@
                     "arg": 2
                 },
                 {
-                    "opcode": "iaddx",
+                    "opcode": "pushu",
                     "arg": 64
+                },
+                {
+                    "opcode": "imul"
+                },
+                {
+                    "opcode": "iadd64"
                 },
                 {
                     "opcode": "xchg",

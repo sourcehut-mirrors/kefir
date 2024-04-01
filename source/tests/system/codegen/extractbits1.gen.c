@@ -63,13 +63,13 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     kefir_irbuilder_block_appendu32(mem, &func->body, KEFIR_IROPCODE_EXTUBITS, 24, 4);
     kefir_irbuilder_block_appendi64(mem, &func->body, KEFIR_IROPCODE_PICK, 7);
     kefir_irbuilder_block_appendu32(mem, &func->body, KEFIR_IROPCODE_EXTUBITS, 28, 4);
-    kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IROPCODE_IADD, 0);
-    kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IROPCODE_IADD, 0);
-    kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IROPCODE_IADD, 0);
-    kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IROPCODE_IADD, 0);
-    kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IROPCODE_IADD, 0);
-    kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IROPCODE_IADD, 0);
-    kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IROPCODE_IADD, 0);
+    kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IROPCODE_IADD64, 0);
+    kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IROPCODE_IADD64, 0);
+    kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IROPCODE_IADD64, 0);
+    kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IROPCODE_IADD64, 0);
+    kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IROPCODE_IADD64, 0);
+    kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IROPCODE_IADD64, 0);
+    kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IROPCODE_IADD64, 0);
     kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IROPCODE_RET, 0);
 
     KEFIR_CODEGEN_TRANSLATE(mem, &codegen.iface, &module);

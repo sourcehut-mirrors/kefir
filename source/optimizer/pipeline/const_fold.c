@@ -144,7 +144,10 @@ static kefir_result_t int_binary_const_fold(struct kefir_mem *mem, struct kefir_
     }
 
     switch (instr->operation.opcode) {
-        case KEFIR_OPT_OPCODE_INT_ADD:
+        case KEFIR_OPT_OPCODE_INT8_ADD:
+        case KEFIR_OPT_OPCODE_INT16_ADD:
+        case KEFIR_OPT_OPCODE_INT32_ADD:
+        case KEFIR_OPT_OPCODE_INT64_ADD:
             result.uinteger = left.uinteger + right.uinteger;
             break;
 
@@ -260,7 +263,10 @@ static kefir_result_t const_fold_apply(struct kefir_mem *mem, const struct kefir
             const kefir_opt_instruction_ref_t instr_id = instr->id;
             kefir_opt_instruction_ref_t replacement_ref = KEFIR_ID_NONE;
             switch (instr->operation.opcode) {
-                case KEFIR_OPT_OPCODE_INT_ADD:
+                case KEFIR_OPT_OPCODE_INT8_ADD:
+                case KEFIR_OPT_OPCODE_INT16_ADD:
+                case KEFIR_OPT_OPCODE_INT32_ADD:
+                case KEFIR_OPT_OPCODE_INT64_ADD:
                 case KEFIR_OPT_OPCODE_INT_SUB:
                 case KEFIR_OPT_OPCODE_INT_MUL:
                 case KEFIR_OPT_OPCODE_INT_DIV:

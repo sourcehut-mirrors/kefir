@@ -49,7 +49,8 @@ static kefir_result_t load_bitfield(struct kefir_irbuilder_block *builder, struc
     kefir_size_t byte_offset = layout->bitfield_props.offset / 8;
     kefir_size_t bit_offset = layout->bitfield_props.offset % 8;
 
-    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IADD1, byte_offset));
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PUSHU64, byte_offset));
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IADD64, 0));
 
     kefir_size_t bits = bit_offset + layout->bitfield_props.width;
     if (bits <= 8) {
@@ -139,7 +140,8 @@ static kefir_result_t store_bitfield(struct kefir_irbuilder_block *builder, cons
                                                member_layout->bitfield_props.width));
 
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_XCHG, 1));
-    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IADD1, byte_offset));
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PUSHU64, byte_offset));
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IADD64, 0));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_XCHG, 1));
 
     kefir_size_t bits = bit_offset + member_layout->bitfield_props.width;

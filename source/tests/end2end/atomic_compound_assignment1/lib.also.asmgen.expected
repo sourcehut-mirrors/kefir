@@ -82,7 +82,7 @@ _kefir_func_add_i8_label2:
     movsx %al, %rax
     movsx %eax, %rax
     mov %rax, %rcx
-    add %r10, %rcx
+    add %r10d, %ecx
     movsx %cl, %r11
     movq %r9, -32(%rbp)
     movq %r10, -24(%rbp)
@@ -550,7 +550,7 @@ _kefir_func_add_i16_label2:
     movsx %ax, %rax
     movsx %eax, %rax
     mov %rax, %rcx
-    add %r10, %rcx
+    add %r10d, %ecx
     movsx %cx, %r11
     movq %r9, -32(%rbp)
     movq %r10, -24(%rbp)
@@ -600,7 +600,7 @@ _kefir_func_add_i32_label2:
     movq -40(%rbp), %r10
     movsx %eax, %rax
     mov %rax, %r11
-    add %r10, %r11
+    add %r10d, %r11d
     movq %r9, -32(%rbp)
     movq %r10, -24(%rbp)
     movq %r11, -16(%rbp)
@@ -694,8 +694,8 @@ _kefir_func_add_ptr_label2:
     movq -48(%rbp), %r9
     movq -40(%rbp), %r10
     imul $4, %r10, %rcx
-    mov %rcx, %r11
-    add %rax, %r11
+    mov %rax, %r11
+    add %rcx, %r11
     movq %r9, -32(%rbp)
     movq %r10, -24(%rbp)
     movq %r11, -16(%rbp)
@@ -3186,8 +3186,8 @@ _kefir_func_subtract_ptr_label2:
     mov %r10, %rcx
     neg %rcx
     imul $4, %rcx, %rcx
-    mov %rcx, %r11
-    add %rax, %r11
+    mov %rax, %r11
+    add %rcx, %r11
     movq %r9, -32(%rbp)
     movq %r10, -24(%rbp)
     movq %r11, -16(%rbp)

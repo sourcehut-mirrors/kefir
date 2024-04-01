@@ -241,7 +241,7 @@
                     }
                 },
                 {
-                    "opcode": "iadd"
+                    "opcode": "iadd64"
                 },
                 {
                     "opcode": "intcf32"

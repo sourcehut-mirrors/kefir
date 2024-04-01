@@ -47,7 +47,7 @@ _kefir_func_postdec_i8_label2:
     movq -32(%rbp), %r9
     movsx %al, %r10
     mov %r10, %rax
-    add $-1, %rax
+    add $-1, %al
     movsx %al, %rax
     movq %r9, -24(%rbp)
     movq %r10, -16(%rbp)
@@ -179,7 +179,7 @@ _kefir_func_postinc_i8_label2:
     movq -32(%rbp), %r9
     movsx %al, %r10
     mov %r10, %rax
-    add $1, %rax
+    add $1, %al
     movsx %al, %rax
     movq %r9, -24(%rbp)
     movq %r10, -16(%rbp)
@@ -475,7 +475,7 @@ _kefir_func_postdec_i16_label2:
     movq -32(%rbp), %r9
     movsx %ax, %r10
     mov %r10, %rax
-    add $-1, %rax
+    add $-1, %ax
     movsx %ax, %rax
     movq %r9, -24(%rbp)
     movq %r10, -16(%rbp)
@@ -518,7 +518,7 @@ _kefir_func_postdec_i32_label2:
     movq -32(%rbp), %r9
     movsx %eax, %r10
     mov %r10, %rax
-    add $-1, %rax
+    add $-1, %eax
     movsx %eax, %rax
     movq %r9, -24(%rbp)
     movq %r10, -16(%rbp)
@@ -809,7 +809,7 @@ _kefir_func_postinc_i16_label2:
     movq -32(%rbp), %r9
     movsx %ax, %r10
     mov %r10, %rax
-    add $1, %rax
+    add $1, %ax
     movsx %ax, %rax
     movq %r9, -24(%rbp)
     movq %r10, -16(%rbp)
@@ -852,7 +852,7 @@ _kefir_func_postinc_i32_label2:
     movq -32(%rbp), %r9
     movsx %eax, %r10
     mov %r10, %rax
-    add $1, %rax
+    add $1, %eax
     movsx %eax, %rax
     movq %r9, -24(%rbp)
     movq %r10, -16(%rbp)

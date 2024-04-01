@@ -213,7 +213,10 @@ UNARY_OP(complex_long_double_neg);
                                                 kefir_opt_block_id_t, kefir_opt_instruction_ref_t,     \
                                                 kefir_opt_instruction_ref_t, kefir_opt_instruction_ref_t *)
 
-BINARY_OP(int_add);
+BINARY_OP(int8_add);
+BINARY_OP(int16_add);
+BINARY_OP(int32_add);
+BINARY_OP(int64_add);
 BINARY_OP(int_sub);
 BINARY_OP(int_mul);
 BINARY_OP(int_div);

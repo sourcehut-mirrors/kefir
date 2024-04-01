@@ -804,7 +804,10 @@ UNARY_OP(complex_long_double_neg, KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_NEG)
         return KEFIR_OK;                                                                                              \
     }
 
-BINARY_OP(int_add, KEFIR_OPT_OPCODE_INT_ADD)
+BINARY_OP(int8_add, KEFIR_OPT_OPCODE_INT8_ADD)
+BINARY_OP(int16_add, KEFIR_OPT_OPCODE_INT16_ADD)
+BINARY_OP(int32_add, KEFIR_OPT_OPCODE_INT32_ADD)
+BINARY_OP(int64_add, KEFIR_OPT_OPCODE_INT64_ADD)
 BINARY_OP(int_sub, KEFIR_OPT_OPCODE_INT_SUB)
 BINARY_OP(int_mul, KEFIR_OPT_OPCODE_INT_MUL)
 BINARY_OP(int_div, KEFIR_OPT_OPCODE_INT_DIV)

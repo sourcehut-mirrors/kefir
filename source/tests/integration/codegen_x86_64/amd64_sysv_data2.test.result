@@ -20,9 +20,9 @@ _kefir_func_func1_label1:
     add %rax, 8
     mov %rcx, 8
     imul %rcx, %rcx, 5
-    add %rcx, %rax
-    mov %rax, 0
-    mov QWORD PTR [%rax], %rcx
+    add %rax, %rcx
+    mov %rcx, 0
+    mov QWORD PTR [%rcx], %rax
     lea %rsp, [%rbp]
     pop %rbp
     ret

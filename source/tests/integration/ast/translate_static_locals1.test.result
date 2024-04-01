@@ -190,7 +190,7 @@
                     "arg": 2
                 },
                 {
-                    "opcode": "iadd"
+                    "opcode": "iadd32"
                 },
                 {
                     "opcode": "xchg",

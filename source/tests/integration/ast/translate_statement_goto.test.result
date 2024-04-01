@@ -145,8 +145,11 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "iadd1",
+                    "opcode": "pushi",
                     "arg": 1
+                },
+                {
+                    "opcode": "iadd16"
                 },
                 {
                     "opcode": "extend16"
@@ -188,11 +191,11 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 23
+                    "arg": 24
                 },
                 {
                     "opcode": "jmp",
-                    "arg": 24
+                    "arg": 25
                 },
                 {
                     "opcode": "jmp",

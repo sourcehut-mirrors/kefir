@@ -68,28 +68,32 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     kefir_irbuilder_block_appendi64(mem, &fill->body, KEFIR_IROPCODE_XCHG, 1);                // 1:  [S*, VAL]
     kefir_irbuilder_block_appendi64(mem, &fill->body, KEFIR_IROPCODE_PICK, 0);                // 1:  [S*, VAL, VAL]
     kefir_irbuilder_block_appendi64(mem, &fill->body, KEFIR_IROPCODE_PICK, 2);                // 2:  [S*, VAL, VAL, S*]
-    kefir_irbuilder_block_appendu64(mem, &fill->body, KEFIR_IROPCODE_IADD1,
-                                    entry_layout->relative_offset);               // 3:  [S*, VAL, VAL, U8*]
+    kefir_irbuilder_block_appendu64(mem, &fill->body, KEFIR_IROPCODE_PUSHU64, entry_layout->relative_offset);
+    kefir_irbuilder_block_appendu64(mem, &fill->body, KEFIR_IROPCODE_IADD64,
+                                    0);                                           // 3:  [S*, VAL, VAL, U8*]
     kefir_irbuilder_block_appendi64(mem, &fill->body, KEFIR_IROPCODE_XCHG, 1);    // 4:  [S*, VAL, U8*, VAL]
     kefir_irbuilder_block_appendi64(mem, &fill->body, KEFIR_IROPCODE_STORE8, 0);  // 5:  [S*, VAL]
     kefir_irbuilder_block_appendi64(mem, &fill->body, KEFIR_IROPCODE_PICK, 0);    // 6:  [S*, VAL, VAL]
     kefir_irbuilder_block_appendi64(mem, &fill->body, KEFIR_IROPCODE_PICK, 2);    // 7:  [S*, VAL, VAL, S*]
     entry_layout = kefir_vector_at(&type_layout.layout, 2);
-    kefir_irbuilder_block_appendu64(mem, &fill->body, KEFIR_IROPCODE_IADD1,
-                                    entry_layout->relative_offset);                // 8:  [S*, VAL, VAL, U16*]
+    kefir_irbuilder_block_appendu64(mem, &fill->body, KEFIR_IROPCODE_PUSHU64, entry_layout->relative_offset);
+    kefir_irbuilder_block_appendu64(mem, &fill->body, KEFIR_IROPCODE_IADD64,
+                                    0);                                            // 8:  [S*, VAL, VAL, U16*]
     kefir_irbuilder_block_appendi64(mem, &fill->body, KEFIR_IROPCODE_XCHG, 1);     // 9:  [S*, VAL, U16*, VAL]
     kefir_irbuilder_block_appendi64(mem, &fill->body, KEFIR_IROPCODE_STORE16, 0);  // 10:  [S*, VAL]
     kefir_irbuilder_block_appendi64(mem, &fill->body, KEFIR_IROPCODE_PICK, 0);     // 11:  [S*, VAL, VAL]
     kefir_irbuilder_block_appendi64(mem, &fill->body, KEFIR_IROPCODE_PICK, 2);     // 12: [S*, VAL, VAL, S*]
     entry_layout = kefir_vector_at(&type_layout.layout, 3);
-    kefir_irbuilder_block_appendu64(mem, &fill->body, KEFIR_IROPCODE_IADD1,
-                                    entry_layout->relative_offset);                // 13: [S*, VAL, VAL, U32*]
+    kefir_irbuilder_block_appendu64(mem, &fill->body, KEFIR_IROPCODE_PUSHU64, entry_layout->relative_offset);
+    kefir_irbuilder_block_appendu64(mem, &fill->body, KEFIR_IROPCODE_IADD64,
+                                    0);                                            // 13: [S*, VAL, VAL, U32*]
     kefir_irbuilder_block_appendi64(mem, &fill->body, KEFIR_IROPCODE_XCHG, 1);     // 14: [S*, VAL, U32*, VAL]
     kefir_irbuilder_block_appendi64(mem, &fill->body, KEFIR_IROPCODE_STORE32, 0);  // 15: [S*, VAL]
     kefir_irbuilder_block_appendi64(mem, &fill->body, KEFIR_IROPCODE_PICK, 1);     // 16: [S*, VAL, S*]
     entry_layout = kefir_vector_at(&type_layout.layout, 4);
-    kefir_irbuilder_block_appendu64(mem, &fill->body, KEFIR_IROPCODE_IADD1,
-                                    entry_layout->relative_offset);                // 17: [S*, VAL, U64*]
+    kefir_irbuilder_block_appendu64(mem, &fill->body, KEFIR_IROPCODE_PUSHU64, entry_layout->relative_offset);
+    kefir_irbuilder_block_appendu64(mem, &fill->body, KEFIR_IROPCODE_IADD64,
+                                    0);                                            // 17: [S*, VAL, U64*]
     kefir_irbuilder_block_appendi64(mem, &fill->body, KEFIR_IROPCODE_XCHG, 1);     // 18: [S*, U64*, VAL]
     kefir_irbuilder_block_appendi64(mem, &fill->body, KEFIR_IROPCODE_STORE64, 0);  // 19: [S*]
     kefir_irbuilder_block_appendi64(mem, &fill->body, KEFIR_IROPCODE_RET, 0);      // 19: [S*]

@@ -215,7 +215,7 @@
                     "arg": 89
                 },
                 {
-                    "opcode": "iadd"
+                    "opcode": "iadd32"
                 },
                 {
                     "opcode": "extend32"
@@ -229,7 +229,7 @@
                     "arg": -99
                 },
                 {
-                    "opcode": "iadd"
+                    "opcode": "iadd32"
                 },
                 {
                     "opcode": "extend32"
@@ -250,7 +250,7 @@
                     "arg": 1001
                 },
                 {
-                    "opcode": "iadd"
+                    "opcode": "iadd32"
                 },
                 {
                     "opcode": "pushu",
@@ -268,7 +268,7 @@
                     "arg": 200600
                 },
                 {
-                    "opcode": "iadd"
+                    "opcode": "iadd64"
                 }
             ],
             "public_labels": []
@@ -290,8 +290,14 @@
                     "opcode": "ineg"
                 },
                 {
-                    "opcode": "iaddx",
+                    "opcode": "pushu",
                     "arg": 1
+                },
+                {
+                    "opcode": "imul"
+                },
+                {
+                    "opcode": "iadd64"
                 },
                 {
                     "opcode": "pushi",
@@ -305,8 +311,14 @@
                     "opcode": "ineg"
                 },
                 {
-                    "opcode": "iaddx",
+                    "opcode": "pushu",
                     "arg": 2
+                },
+                {
+                    "opcode": "imul"
+                },
+                {
+                    "opcode": "iadd64"
                 },
                 {
                     "opcode": "pushi",
@@ -320,8 +332,14 @@
                     "opcode": "ineg"
                 },
                 {
-                    "opcode": "iaddx",
+                    "opcode": "pushu",
                     "arg": 4
+                },
+                {
+                    "opcode": "imul"
+                },
+                {
+                    "opcode": "iadd64"
                 },
                 {
                     "opcode": "pushi",
@@ -335,8 +353,14 @@
                     "opcode": "ineg"
                 },
                 {
-                    "opcode": "iaddx",
+                    "opcode": "pushu",
                     "arg": 8
+                },
+                {
+                    "opcode": "imul"
+                },
+                {
+                    "opcode": "iadd64"
                 }
             ],
             "public_labels": []
@@ -355,8 +379,14 @@
                     "arg": 67
                 },
                 {
-                    "opcode": "iaddx",
+                    "opcode": "pushu",
                     "arg": 2
+                },
+                {
+                    "opcode": "imul"
+                },
+                {
+                    "opcode": "iadd64"
                 },
                 {
                     "opcode": "pushi",
@@ -367,8 +397,14 @@
                     "arg": -5
                 },
                 {
-                    "opcode": "iaddx",
+                    "opcode": "pushu",
                     "arg": 8
+                },
+                {
+                    "opcode": "imul"
+                },
+                {
+                    "opcode": "iadd64"
                 },
                 {
                     "opcode": "pushi",
@@ -379,8 +415,14 @@
                     "arg": 100
                 },
                 {
-                    "opcode": "iaddx",
+                    "opcode": "pushu",
                     "arg": 4
+                },
+                {
+                    "opcode": "imul"
+                },
+                {
+                    "opcode": "iadd64"
                 },
                 {
                     "opcode": "pushi",
@@ -391,8 +433,14 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "iaddx",
+                    "opcode": "pushu",
                     "arg": 8
+                },
+                {
+                    "opcode": "imul"
+                },
+                {
+                    "opcode": "iadd64"
                 }
             ],
             "public_labels": []

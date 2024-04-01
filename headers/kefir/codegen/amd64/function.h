@@ -150,7 +150,10 @@ kefir_result_t kefir_codegen_amd64_function_map_phi_outputs(struct kefir_mem *, 
     _def(pop_scope, KEFIR_OPT_OPCODE_SCOPE_POP) _separator \
     _def(invoke, KEFIR_OPT_OPCODE_INVOKE) _separator \
     _def(invoke, KEFIR_OPT_OPCODE_INVOKE_VIRTUAL) _separator \
-    _def(int_arithmetics, KEFIR_OPT_OPCODE_INT_ADD) _separator                                                   \
+    _def(int_arithmetics, KEFIR_OPT_OPCODE_INT8_ADD) _separator                                                   \
+    _def(int_arithmetics, KEFIR_OPT_OPCODE_INT16_ADD) _separator                                                   \
+    _def(int_arithmetics, KEFIR_OPT_OPCODE_INT32_ADD) _separator                                                   \
+    _def(int_arithmetics, KEFIR_OPT_OPCODE_INT64_ADD) _separator                                                   \
     _def(int_arithmetics, KEFIR_OPT_OPCODE_INT_SUB) _separator                                                   \
     _def(int_arithmetics, KEFIR_OPT_OPCODE_INT_MUL) _separator                                                   \
     _def(int_arithmetics, KEFIR_OPT_OPCODE_INT_AND) _separator                                                   \
@@ -275,7 +278,10 @@ kefir_result_t kefir_codegen_amd64_function_map_phi_outputs(struct kefir_mem *, 
     _def(float_comparison, KEFIR_OPT_OPCODE_FLOAT64_EQUALS) _separator \
     _def(float_comparison, KEFIR_OPT_OPCODE_FLOAT64_GREATER) _separator \
     _def(float_comparison, KEFIR_OPT_OPCODE_FLOAT64_LESSER) _separator \
-    _def(int_arithmetics, KEFIR_OPT_OPCODE_INT_ADD) _separator \
+    _def(int_arithmetics, KEFIR_OPT_OPCODE_INT8_ADD) _separator \
+    _def(int_arithmetics, KEFIR_OPT_OPCODE_INT16_ADD) _separator \
+    _def(int_arithmetics, KEFIR_OPT_OPCODE_INT32_ADD) _separator \
+    _def(int_arithmetics, KEFIR_OPT_OPCODE_INT64_ADD) _separator \
     _def(int_arithmetics, KEFIR_OPT_OPCODE_INT_SUB) _separator \
     _def(int_arithmetics, KEFIR_OPT_OPCODE_INT_MUL) _separator \
     _def(int_arithmetics, KEFIR_OPT_OPCODE_INT_AND) _separator \

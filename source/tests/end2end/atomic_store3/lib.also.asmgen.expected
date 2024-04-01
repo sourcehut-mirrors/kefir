@@ -104,8 +104,7 @@ _kefir_func_set_arr1_el_label1:
     add $96, %rdi
     movsx %esi, %rax
     imul $8, %rax, %rax
-    add %rdi, %rax
-    mov %rax, %rdi
+    add %rax, %rdi
     mov %rdx, %rsi
     mov $5, %rdx
     call __atomic_store_8@PLT
@@ -131,8 +130,8 @@ _kefir_func_set_arr2_el_label1:
     add $160, %rdi
     movsx %esi, %rcx
     imul $64, %rcx, %rcx
-    add %rdi, %rcx
-    mov %rcx, %rsi
+    add %rcx, %rdi
+    mov %rdi, %rsi
     mov %rax, %rdx
     mov $64, %rdi
     mov $5, %rcx

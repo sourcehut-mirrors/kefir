@@ -112,7 +112,8 @@ kefir_result_t kefir_ast_translator_object_lvalue(struct kefir_mem *mem, struct 
                 REQUIRE_OK(kefir_ast_translator_resolve_local_type_layout(builder, identifier_data->type_id,
                                                                           identifier_data->layout));
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(
-                    builder, KEFIR_IROPCODE_IADD1, identifier_data->layout->vl_array.array_ptr_relative_offset));
+                    builder, KEFIR_IROPCODE_PUSHU64, identifier_data->layout->vl_array.array_ptr_relative_offset));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IADD64, 0));
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_LOAD64, KEFIR_IR_MEMORY_FLAG_NONE));
             } else {
                 REQUIRE_OK(kefir_ast_translator_resolve_local_type_layout(builder, identifier_data->type_id,
@@ -167,8 +168,10 @@ kefir_result_t kefir_ast_translate_array_subscript_lvalue(struct kefir_mem *mem,
         REQUIRE_CHAIN(&res, kefir_ast_translate_expression(mem, node->subscript, builder, context));
         REQUIRE_CHAIN(&res, kefir_ast_translate_expression(mem, node->array, builder, context));
     }
-    REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IADDX,
+    REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PUSHU64,
                                                         translator_type->object.layout->properties.size));
+    REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IMUL, 0));
+    REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IADD64, 0));
 
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_ast_translator_type_free(mem, translator_type);

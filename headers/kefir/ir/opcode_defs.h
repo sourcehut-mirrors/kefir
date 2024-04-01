@@ -46,9 +46,10 @@
     OPCODE(PLACEHF32,   "placehf32",    none) SEPARATOR \
     OPCODE(PLACEHF64,   "placehf64",    none) SEPARATOR \
     /* Integer arithmetics & bitwise */ \
-    OPCODE(IADD,        "iadd",         none) SEPARATOR \
-    OPCODE(IADD1,       "iadd1",        i64) SEPARATOR \
-    OPCODE(IADDX,       "iaddx",        u64) SEPARATOR \
+    OPCODE(IADD8,       "iadd8",        none) SEPARATOR \
+    OPCODE(IADD16,      "iadd16",       none) SEPARATOR \
+    OPCODE(IADD32,      "iadd32",       none) SEPARATOR \
+    OPCODE(IADD64,      "iadd64",       none) SEPARATOR \
     OPCODE(ISUB,        "isub",         none) SEPARATOR \
     OPCODE(IMUL,        "imul",         none) SEPARATOR \
     OPCODE(IDIV,        "idiv",         none) SEPARATOR \

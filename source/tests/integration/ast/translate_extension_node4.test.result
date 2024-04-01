@@ -52,7 +52,7 @@
                     "opcode": "imul"
                 },
                 {
-                    "opcode": "iadd"
+                    "opcode": "iadd64"
                 },
                 {
                     "opcode": "getglobal",
@@ -65,8 +65,11 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "iadd1",
+                    "opcode": "pushi",
                     "arg": 1
+                },
+                {
+                    "opcode": "iadd64"
                 },
                 {
                     "opcode": "store64",
@@ -90,7 +93,7 @@
                     "opcode": "imul"
                 },
                 {
-                    "opcode": "iadd"
+                    "opcode": "iadd64"
                 }
             ],
             "public_labels": []
