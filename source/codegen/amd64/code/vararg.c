@@ -714,8 +714,8 @@ static kefir_result_t vararg_visit_builtin(const struct kefir_ir_type *type, kef
 
 static kefir_result_t vararg_get_impl(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
                                       const struct kefir_opt_instruction *instruction) {
-    const kefir_id_t type_id = (kefir_id_t) instruction->operation.parameters.typed_refs.type_id;
-    const kefir_size_t type_index = (kefir_size_t) instruction->operation.parameters.typed_refs.type_index;
+    const kefir_id_t type_id = (kefir_id_t) instruction->operation.parameters.type.type_id;
+    const kefir_size_t type_index = (kefir_size_t) instruction->operation.parameters.type.type_index;
     struct kefir_ir_type *type = kefir_ir_module_get_named_type(function->module->ir_module, type_id);
     REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unknown named IR type"));
 

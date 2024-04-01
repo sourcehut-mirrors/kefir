@@ -35,8 +35,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(bits_extract_signed)(
 
     REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
                                                  KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));
-    REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.bitfield.base_ref,
-                                                    &base_vreg));
+    REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(
+        function, instruction->operation.parameters.refs[KEFIR_OPT_BITFIELD_BASE_REF], &base_vreg));
 
     REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), result_vreg, base_vreg, NULL));
@@ -67,8 +67,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(bits_extract_unsigned)(
 
     REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
                                                  KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));
-    REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.bitfield.base_ref,
-                                                    &base_vreg));
+    REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(
+        function, instruction->operation.parameters.refs[KEFIR_OPT_BITFIELD_BASE_REF], &base_vreg));
 
     REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), result_vreg, base_vreg, NULL));
@@ -101,10 +101,10 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(bits_insert)(struct kefir_me
                                                  KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));
     REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
                                                  KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &tmp_vreg));
-    REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.bitfield.base_ref,
-                                                    &base_vreg));
-    REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.bitfield.value_ref,
-                                                    &value_vreg));
+    REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(
+        function, instruction->operation.parameters.refs[KEFIR_OPT_BITFIELD_BASE_REF], &base_vreg));
+    REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(
+        function, instruction->operation.parameters.refs[KEFIR_OPT_BITFIELD_VALUE_REF], &value_vreg));
 
     REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), result_vreg, value_vreg, NULL));

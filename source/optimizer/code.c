@@ -1423,55 +1423,55 @@ static kefir_result_t replace_references_ref2(struct kefir_opt_instruction *inst
 static kefir_result_t replace_references_load_mem(struct kefir_opt_instruction *instr,
                                                   kefir_opt_instruction_ref_t to_ref,
                                                   kefir_opt_instruction_ref_t from_ref) {
-    REPLACE_REF(&instr->operation.parameters.memory_access.location, to_ref, from_ref);
+    REPLACE_REF(&instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF], to_ref, from_ref);
     return KEFIR_OK;
 }
 
 static kefir_result_t replace_references_store_mem(struct kefir_opt_instruction *instr,
                                                    kefir_opt_instruction_ref_t to_ref,
                                                    kefir_opt_instruction_ref_t from_ref) {
-    REPLACE_REF(&instr->operation.parameters.memory_access.location, to_ref, from_ref);
-    REPLACE_REF(&instr->operation.parameters.memory_access.value, to_ref, from_ref);
+    REPLACE_REF(&instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF], to_ref, from_ref);
+    REPLACE_REF(&instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_VALUE_REF], to_ref, from_ref);
     return KEFIR_OK;
 }
 
 static kefir_result_t replace_references_bitfield(struct kefir_opt_instruction *instr,
                                                   kefir_opt_instruction_ref_t to_ref,
                                                   kefir_opt_instruction_ref_t from_ref) {
-    REPLACE_REF(&instr->operation.parameters.bitfield.base_ref, to_ref, from_ref);
-    REPLACE_REF(&instr->operation.parameters.bitfield.value_ref, to_ref, from_ref);
+    REPLACE_REF(&instr->operation.parameters.refs[KEFIR_OPT_BITFIELD_BASE_REF], to_ref, from_ref);
+    REPLACE_REF(&instr->operation.parameters.refs[KEFIR_OPT_BITFIELD_VALUE_REF], to_ref, from_ref);
     return KEFIR_OK;
 }
 
 static kefir_result_t replace_references_typed_ref1(struct kefir_opt_instruction *instr,
                                                     kefir_opt_instruction_ref_t to_ref,
                                                     kefir_opt_instruction_ref_t from_ref) {
-    REPLACE_REF(&instr->operation.parameters.typed_refs.ref[0], to_ref, from_ref);
+    REPLACE_REF(&instr->operation.parameters.refs[0], to_ref, from_ref);
     return KEFIR_OK;
 }
 
 static kefir_result_t replace_references_typed_ref2(struct kefir_opt_instruction *instr,
                                                     kefir_opt_instruction_ref_t to_ref,
                                                     kefir_opt_instruction_ref_t from_ref) {
-    REPLACE_REF(&instr->operation.parameters.typed_refs.ref[0], to_ref, from_ref);
-    REPLACE_REF(&instr->operation.parameters.typed_refs.ref[1], to_ref, from_ref);
+    REPLACE_REF(&instr->operation.parameters.refs[0], to_ref, from_ref);
+    REPLACE_REF(&instr->operation.parameters.refs[1], to_ref, from_ref);
     return KEFIR_OK;
 }
 
 static kefir_result_t replace_references_atomic_op(struct kefir_opt_instruction *instr,
                                                    kefir_opt_instruction_ref_t to_ref,
                                                    kefir_opt_instruction_ref_t from_ref) {
-    REPLACE_REF(&instr->operation.parameters.atomic_op.ref[0], to_ref, from_ref);
-    REPLACE_REF(&instr->operation.parameters.atomic_op.ref[1], to_ref, from_ref);
-    REPLACE_REF(&instr->operation.parameters.atomic_op.ref[2], to_ref, from_ref);
+    REPLACE_REF(&instr->operation.parameters.refs[0], to_ref, from_ref);
+    REPLACE_REF(&instr->operation.parameters.refs[1], to_ref, from_ref);
+    REPLACE_REF(&instr->operation.parameters.refs[2], to_ref, from_ref);
     return KEFIR_OK;
 }
 
 static kefir_result_t replace_references_stack_alloc(struct kefir_opt_instruction *instr,
                                                      kefir_opt_instruction_ref_t to_ref,
                                                      kefir_opt_instruction_ref_t from_ref) {
-    REPLACE_REF(&instr->operation.parameters.stack_allocation.size_ref, to_ref, from_ref);
-    REPLACE_REF(&instr->operation.parameters.stack_allocation.alignment_ref, to_ref, from_ref);
+    REPLACE_REF(&instr->operation.parameters.refs[KEFIR_OPT_STACK_ALLOCATION_SIZE_REF], to_ref, from_ref);
+    REPLACE_REF(&instr->operation.parameters.refs[KEFIR_OPT_STACK_ALLOCATION_ALIGNMENT_REF], to_ref, from_ref);
     return KEFIR_OK;
 }
 

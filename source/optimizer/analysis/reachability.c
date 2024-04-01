@@ -54,8 +54,8 @@ static kefir_result_t find_reachable_code_store_mem(struct kefir_mem *mem, struc
                                                     struct kefir_list *queue,
                                                     const struct kefir_opt_instruction *instr) {
     UNUSED(analysis);
-    INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.memory_access.location);
-    INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.memory_access.value);
+    INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF]);
+    INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_VALUE_REF]);
     return KEFIR_OK;
 }
 
@@ -63,7 +63,7 @@ static kefir_result_t find_reachable_code_load_mem(struct kefir_mem *mem, struct
                                                    struct kefir_list *queue,
                                                    const struct kefir_opt_instruction *instr) {
     UNUSED(analysis);
-    INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.memory_access.location);
+    INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF]);
     return KEFIR_OK;
 }
 
@@ -71,8 +71,8 @@ static kefir_result_t find_reachable_code_stack_alloc(struct kefir_mem *mem, str
                                                       struct kefir_list *queue,
                                                       const struct kefir_opt_instruction *instr) {
     UNUSED(analysis);
-    INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.stack_allocation.alignment_ref);
-    INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.stack_allocation.size_ref);
+    INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.refs[KEFIR_OPT_STACK_ALLOCATION_ALIGNMENT_REF]);
+    INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.refs[KEFIR_OPT_STACK_ALLOCATION_SIZE_REF]);
     return KEFIR_OK;
 }
 
@@ -80,8 +80,8 @@ static kefir_result_t find_reachable_code_bitfield(struct kefir_mem *mem, struct
                                                    struct kefir_list *queue,
                                                    const struct kefir_opt_instruction *instr) {
     UNUSED(analysis);
-    INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.bitfield.base_ref);
-    INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.bitfield.value_ref);
+    INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.refs[KEFIR_OPT_BITFIELD_BASE_REF]);
+    INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.refs[KEFIR_OPT_BITFIELD_VALUE_REF]);
     return KEFIR_OK;
 }
 
@@ -101,7 +101,7 @@ static kefir_result_t find_reachable_code_typed_ref1(struct kefir_mem *mem, stru
                                                      struct kefir_list *queue,
                                                      const struct kefir_opt_instruction *instr) {
     UNUSED(analysis);
-    INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.typed_refs.ref[0]);
+    INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.refs[0]);
     return KEFIR_OK;
 }
 
@@ -109,8 +109,8 @@ static kefir_result_t find_reachable_code_typed_ref2(struct kefir_mem *mem, stru
                                                      struct kefir_list *queue,
                                                      const struct kefir_opt_instruction *instr) {
     UNUSED(analysis);
-    INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.typed_refs.ref[0]);
-    INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.typed_refs.ref[1]);
+    INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.refs[0]);
+    INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.refs[1]);
     return KEFIR_OK;
 }
 
@@ -133,9 +133,9 @@ static kefir_result_t find_reachable_code_atomic_op(struct kefir_mem *mem, struc
                                                     struct kefir_list *queue,
                                                     const struct kefir_opt_instruction *instr) {
     UNUSED(analysis);
-    INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.atomic_op.ref[0]);
-    INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.atomic_op.ref[1]);
-    INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.atomic_op.ref[2]);
+    INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.refs[0]);
+    INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.refs[1]);
+    INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.refs[2]);
     return KEFIR_OK;
 }
 

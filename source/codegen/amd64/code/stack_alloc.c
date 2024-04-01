@@ -51,9 +51,9 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(stack_alloc)(struct kefir_me
     REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
                                                  KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &tmp_vreg));
     REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(
-        function, instruction->operation.parameters.stack_allocation.size_ref, &size_vreg));
+        function, instruction->operation.parameters.refs[KEFIR_OPT_STACK_ALLOCATION_SIZE_REF], &size_vreg));
     REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(
-        function, instruction->operation.parameters.stack_allocation.alignment_ref, &alignment_vreg));
+        function, instruction->operation.parameters.refs[KEFIR_OPT_STACK_ALLOCATION_ALIGNMENT_REF], &alignment_vreg));
 
     REQUIRE_OK(ensure_dynamic_scope_vreg(mem, function));
 

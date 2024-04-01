@@ -44,83 +44,77 @@ typedef struct kefir_opt_memory_access_flags {
 
 typedef enum kefir_opt_memory_order { KEFIR_OPT_MEMORY_ORDER_SEQ_CST } kefir_opt_memory_order_t;
 
-typedef union kefir_opt_operation_parameters {
+typedef enum kefir_opt_operation_reference_index {
+    KEFIR_OPT_BITFIELD_BASE_REF = 0,
+    KEFIR_OPT_BITFIELD_VALUE_REF = 1,
+    KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF = 0,
+    KEFIR_OPT_MEMORY_ACCESS_VALUE_REF = 1,
+    KEFIR_OPT_STACK_ALLOCATION_SIZE_REF = 0,
+    KEFIR_OPT_STACK_ALLOCATION_ALIGNMENT_REF = 1
+} kefir_opt_operation_reference_index_t;
+
+typedef struct kefir_opt_operation_parameters {
     kefir_opt_instruction_ref_t refs[3];
-    kefir_opt_phi_id_t phi_ref;
-    kefir_opt_inline_assembly_id_t inline_asm_ref;
-    kefir_size_t index;
-    kefir_id_t ir_ref;
     struct {
-        kefir_opt_instruction_ref_t refs[1];
+        kefir_id_t type_id;
+        kefir_size_t type_index;
+    } type;
+    union {
+        kefir_opt_phi_id_t phi_ref;
+        kefir_opt_inline_assembly_id_t inline_asm_ref;
+        kefir_size_t index;
+        kefir_id_t ir_ref;
+        struct {
+            union {
+                kefir_id_t global_ref;
+                kefir_size_t local_index;
+            };
+            kefir_int64_t offset;
+        } variable;
+
+        struct {
+            kefir_opt_block_id_t target_block;
+            kefir_opt_block_id_t alternative_block;
+            kefir_opt_instruction_ref_t condition_ref;
+        } branch;
+
         union {
             kefir_int64_t integer;
-        };
-    } ref_imm;
-    struct {
-        union {
-            kefir_id_t global_ref;
-            kefir_size_t local_index;
-        };
-        kefir_int64_t offset;
-    } variable;
+            kefir_uint64_t uinteger;
+            kefir_float32_t float32;
+            kefir_float64_t float64;
+            kefir_long_double_t long_double;
+            kefir_id_t string_ref;
+            kefir_opt_block_id_t block_ref;
+        } imm;
 
-    struct {
-        kefir_opt_block_id_t target_block;
-        kefir_opt_block_id_t alternative_block;
-        kefir_opt_instruction_ref_t condition_ref;
-    } branch;
+        struct {
+            struct kefir_opt_memory_access_flags flags;
+        } memory_access;
 
-    union {
-        kefir_int64_t integer;
-        kefir_uint64_t uinteger;
-        kefir_float32_t float32;
-        kefir_float64_t float64;
-        kefir_long_double_t long_double;
-        kefir_id_t string_ref;
-        kefir_opt_block_id_t block_ref;
-    } imm;
+        struct {
+            kefir_size_t offset;
+            kefir_size_t length;
+        } bitfield;
 
-    struct {
-        kefir_opt_instruction_ref_t location;
-        kefir_opt_instruction_ref_t value;
-        struct kefir_opt_memory_access_flags flags;
-    } memory_access;
+        struct {
+            kefir_bool_t within_scope;
+        } stack_allocation;
 
-    struct {
-        kefir_size_t offset;
-        kefir_size_t length;
-        kefir_opt_instruction_ref_t base_ref;
-        kefir_opt_instruction_ref_t value_ref;
-    } bitfield;
+        struct {
+            kefir_opt_call_id_t call_ref;
+            kefir_opt_instruction_ref_t indirect_ref;
+        } function_call;
 
-    struct {
-        kefir_opt_instruction_ref_t ref[2];
-        kefir_id_t type_id;
-        kefir_size_t type_index;
-    } typed_refs;
-
-    struct {
-        kefir_opt_instruction_ref_t size_ref;
-        kefir_opt_instruction_ref_t alignment_ref;
-        kefir_bool_t within_scope;
-    } stack_allocation;
-
-    struct {
-        kefir_opt_call_id_t call_ref;
-        kefir_opt_instruction_ref_t indirect_ref;
-    } function_call;
-
-    struct {
-        kefir_opt_instruction_ref_t ref[3];
-        kefir_opt_memory_order_t model;
-        kefir_id_t type_id;
-        kefir_size_t type_index;
-    } atomic_op;
+        struct {
+            kefir_opt_memory_order_t model;
+        } atomic_op;
+    };
 } kefir_opt_operation_parameters_t;
 
 typedef struct kefir_opt_operation {
     kefir_opt_opcode_t opcode;
-    union kefir_opt_operation_parameters parameters;
+    struct kefir_opt_operation_parameters parameters;
 } kefir_opt_operation_t;
 
 typedef struct kefir_opt_instruction_link {

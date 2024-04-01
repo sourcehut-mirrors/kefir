@@ -740,7 +740,7 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             struct kefir_opt_instruction *expected_value_instr;
             REQUIRE_OK(kefir_opt_code_container_instr(&state->function->code, instr_ref3, &expected_value_instr));
             REQUIRE(expected_value_instr->operation.opcode == KEFIR_OPT_OPCODE_ATOMIC_LOAD_COMPLEX_LONG_DOUBLE &&
-                        expected_value_instr->operation.parameters.atomic_op.ref[0] == instr_ref2,
+                        expected_value_instr->operation.parameters.refs[0] == instr_ref2,
                     KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Atomic compare-exchange operation for complex long double "
                                                          "shall be preceeded by atomic load from the same location"));
             REQUIRE_OK(kefir_opt_code_builder_atomic_compare_exchange_complex_long_double(

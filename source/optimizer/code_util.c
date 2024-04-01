@@ -35,8 +35,8 @@ static kefir_result_t extract_inputs_store_mem(const struct kefir_opt_code_conta
                                                void *payload) {
     UNUSED(code);
     UNUSED(block_local);
-    INPUT_CALLBACK(instr->operation.parameters.memory_access.location, callback, payload);
-    INPUT_CALLBACK(instr->operation.parameters.memory_access.value, callback, payload);
+    INPUT_CALLBACK(instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF], callback, payload);
+    INPUT_CALLBACK(instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_VALUE_REF], callback, payload);
     return KEFIR_OK;
 }
 
@@ -46,7 +46,7 @@ static kefir_result_t extract_inputs_load_mem(const struct kefir_opt_code_contai
                                               void *payload) {
     UNUSED(code);
     UNUSED(block_local);
-    INPUT_CALLBACK(instr->operation.parameters.memory_access.location, callback, payload);
+    INPUT_CALLBACK(instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF], callback, payload);
     return KEFIR_OK;
 }
 
@@ -56,8 +56,8 @@ static kefir_result_t extract_inputs_stack_alloc(const struct kefir_opt_code_con
                                                  void *payload) {
     UNUSED(code);
     UNUSED(block_local);
-    INPUT_CALLBACK(instr->operation.parameters.stack_allocation.alignment_ref, callback, payload);
-    INPUT_CALLBACK(instr->operation.parameters.stack_allocation.size_ref, callback, payload);
+    INPUT_CALLBACK(instr->operation.parameters.refs[KEFIR_OPT_STACK_ALLOCATION_ALIGNMENT_REF], callback, payload);
+    INPUT_CALLBACK(instr->operation.parameters.refs[KEFIR_OPT_STACK_ALLOCATION_SIZE_REF], callback, payload);
     return KEFIR_OK;
 }
 
@@ -67,8 +67,8 @@ static kefir_result_t extract_inputs_bitfield(const struct kefir_opt_code_contai
                                               void *payload) {
     UNUSED(code);
     UNUSED(block_local);
-    INPUT_CALLBACK(instr->operation.parameters.bitfield.base_ref, callback, payload);
-    INPUT_CALLBACK(instr->operation.parameters.bitfield.value_ref, callback, payload);
+    INPUT_CALLBACK(instr->operation.parameters.refs[KEFIR_OPT_BITFIELD_BASE_REF], callback, payload);
+    INPUT_CALLBACK(instr->operation.parameters.refs[KEFIR_OPT_BITFIELD_VALUE_REF], callback, payload);
     return KEFIR_OK;
 }
 
@@ -88,7 +88,7 @@ static kefir_result_t extract_inputs_typed_ref1(const struct kefir_opt_code_cont
                                                 void *payload) {
     UNUSED(code);
     UNUSED(block_local);
-    INPUT_CALLBACK(instr->operation.parameters.typed_refs.ref[0], callback, payload);
+    INPUT_CALLBACK(instr->operation.parameters.refs[0], callback, payload);
     return KEFIR_OK;
 }
 
@@ -98,8 +98,8 @@ static kefir_result_t extract_inputs_typed_ref2(const struct kefir_opt_code_cont
                                                 void *payload) {
     UNUSED(code);
     UNUSED(block_local);
-    INPUT_CALLBACK(instr->operation.parameters.typed_refs.ref[0], callback, payload);
-    INPUT_CALLBACK(instr->operation.parameters.typed_refs.ref[1], callback, payload);
+    INPUT_CALLBACK(instr->operation.parameters.refs[0], callback, payload);
+    INPUT_CALLBACK(instr->operation.parameters.refs[1], callback, payload);
     return KEFIR_OK;
 }
 
@@ -130,9 +130,9 @@ static kefir_result_t extract_inputs_atomic_op(const struct kefir_opt_code_conta
                                                void *payload) {
     UNUSED(code);
     UNUSED(block_local);
-    INPUT_CALLBACK(instr->operation.parameters.atomic_op.ref[0], callback, payload);
-    INPUT_CALLBACK(instr->operation.parameters.atomic_op.ref[1], callback, payload);
-    INPUT_CALLBACK(instr->operation.parameters.atomic_op.ref[2], callback, payload);
+    INPUT_CALLBACK(instr->operation.parameters.refs[0], callback, payload);
+    INPUT_CALLBACK(instr->operation.parameters.refs[1], callback, payload);
+    INPUT_CALLBACK(instr->operation.parameters.refs[2], callback, payload);
     return KEFIR_OK;
 }
 

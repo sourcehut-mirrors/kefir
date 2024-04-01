@@ -466,9 +466,8 @@ kefir_result_t kefir_opt_code_builder_zero_memory(struct kefir_mem *mem, struct 
     REQUIRE_OK(kefir_opt_code_builder_add_instruction(
         mem, code, block_id,
         &(struct kefir_opt_operation){.opcode = KEFIR_OPT_OPCODE_ZERO_MEMORY,
-                                      .parameters.typed_refs = {.ref = {location_ref, KEFIR_ID_NONE},
-                                                                .type_id = type_id,
-                                                                .type_index = type_index}},
+                                      .parameters = {.refs = {location_ref, KEFIR_ID_NONE},
+                                                     .type = {.type_id = type_id, .type_index = type_index}}},
         false, instr_id_ptr));
     return KEFIR_OK;
 }
@@ -487,7 +486,7 @@ kefir_result_t kefir_opt_code_builder_copy_memory(struct kefir_mem *mem, struct 
         mem, code, block_id,
         &(struct kefir_opt_operation){
             .opcode = KEFIR_OPT_OPCODE_COPY_MEMORY,
-            .parameters.typed_refs = {.ref = {location_ref, source_ref}, .type_id = type_id, .type_index = type_index}},
+            .parameters = {.refs = {location_ref, source_ref}, .type = {.type_id = type_id, .type_index = type_index}}},
         false, instr_id_ptr));
     return KEFIR_OK;
 }
@@ -512,10 +511,10 @@ kefir_result_t kefir_opt_code_builder_atomic_copy_memory_from(
     REQUIRE_OK(kefir_opt_code_builder_add_instruction(
         mem, code, block_id,
         &(struct kefir_opt_operation){.opcode = KEFIR_OPT_OPCODE_ATOMIC_COPY_MEMORY_FROM,
-                                      .parameters.atomic_op = {.ref = {location_ref, source_ref, KEFIR_ID_NONE},
-                                                               .model = memory_model,
-                                                               .type_id = type_id,
-                                                               .type_index = type_index}},
+                                      .parameters = {.refs = {location_ref, source_ref, KEFIR_ID_NONE},
+                                                     .atomic_op = {.model = memory_model},
+                                                     .type.type_id = type_id,
+                                                     .type.type_index = type_index}},
         false, instr_id_ptr));
     return KEFIR_OK;
 }
@@ -540,10 +539,10 @@ kefir_result_t kefir_opt_code_builder_atomic_copy_memory_to(
     REQUIRE_OK(kefir_opt_code_builder_add_instruction(
         mem, code, block_id,
         &(struct kefir_opt_operation){.opcode = KEFIR_OPT_OPCODE_ATOMIC_COPY_MEMORY_TO,
-                                      .parameters.atomic_op = {.ref = {location_ref, source_ref, KEFIR_ID_NONE},
-                                                               .model = memory_model,
-                                                               .type_id = type_id,
-                                                               .type_index = type_index}},
+                                      .parameters = {.refs = {location_ref, source_ref, KEFIR_ID_NONE},
+                                                     .atomic_op = {.model = memory_model},
+                                                     .type.type_id = type_id,
+                                                     .type.type_index = type_index}},
         false, instr_id_ptr));
     return KEFIR_OK;
 }
@@ -569,10 +568,10 @@ kefir_result_t kefir_opt_code_builder_atomic_compare_exchange_memory(
     REQUIRE_OK(kefir_opt_code_builder_add_instruction(
         mem, code, block_id,
         &(struct kefir_opt_operation){.opcode = KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG_MEMORY,
-                                      .parameters.atomic_op = {.ref = {location_ref, expected_ref, desired_ref},
-                                                               .model = memory_model,
-                                                               .type_id = type_id,
-                                                               .type_index = type_index}},
+                                      .parameters = {.refs = {location_ref, expected_ref, desired_ref},
+                                                     .atomic_op = {.model = memory_model},
+                                                     .type.type_id = type_id,
+                                                     .type.type_index = type_index}},
         false, instr_id_ptr));
     return KEFIR_OK;
 }
@@ -626,10 +625,9 @@ kefir_result_t kefir_opt_code_builder_bits_extract_signed(struct kefir_mem *mem,
     REQUIRE_OK(kefir_opt_code_builder_add_instruction(
         mem, code, block_id,
         &(struct kefir_opt_operation){.opcode = KEFIR_OPT_OPCODE_BITS_EXTRACT_SIGNED,
-                                      .parameters.bitfield = {.base_ref = base_ref,
-                                                              .value_ref = KEFIR_ID_NONE,
-                                                              .offset = offset,
-                                                              .length = length}},
+                                      .parameters = {.refs[KEFIR_OPT_BITFIELD_BASE_REF] = base_ref,
+                                                     .refs[KEFIR_OPT_BITFIELD_VALUE_REF] = KEFIR_ID_NONE,
+                                                     .bitfield = {.offset = offset, .length = length}}},
         false, instr_id_ptr));
     return KEFIR_OK;
 }
@@ -647,10 +645,9 @@ kefir_result_t kefir_opt_code_builder_bits_extract_unsigned(struct kefir_mem *me
     REQUIRE_OK(kefir_opt_code_builder_add_instruction(
         mem, code, block_id,
         &(struct kefir_opt_operation){.opcode = KEFIR_OPT_OPCODE_BITS_EXTRACT_UNSIGNED,
-                                      .parameters.bitfield = {.base_ref = base_ref,
-                                                              .value_ref = KEFIR_ID_NONE,
-                                                              .offset = offset,
-                                                              .length = length}},
+                                      .parameters = {.refs[KEFIR_OPT_BITFIELD_BASE_REF] = base_ref,
+                                                     .refs[KEFIR_OPT_BITFIELD_VALUE_REF] = KEFIR_ID_NONE,
+                                                     .bitfield = {.offset = offset, .length = length}}},
         false, instr_id_ptr));
     return KEFIR_OK;
 }
@@ -666,9 +663,10 @@ kefir_result_t kefir_opt_code_builder_bits_insert(struct kefir_mem *mem, struct 
     REQUIRE_OK(instr_exists(code, block_id, value_ref, false));
     REQUIRE_OK(kefir_opt_code_builder_add_instruction(
         mem, code, block_id,
-        &(struct kefir_opt_operation){
-            .opcode = KEFIR_OPT_OPCODE_BITS_INSERT,
-            .parameters.bitfield = {.base_ref = base_ref, .value_ref = value_ref, .offset = offset, .length = length}},
+        &(struct kefir_opt_operation){.opcode = KEFIR_OPT_OPCODE_BITS_INSERT,
+                                      .parameters = {.refs[KEFIR_OPT_BITFIELD_BASE_REF] = base_ref,
+                                                     .refs[KEFIR_OPT_BITFIELD_VALUE_REF] = value_ref,
+                                                     .bitfield = {.offset = offset, .length = length}}},
         false, instr_id_ptr));
     return KEFIR_OK;
 }
@@ -685,7 +683,7 @@ kefir_result_t kefir_opt_code_builder_vararg_get(struct kefir_mem *mem, struct k
         mem, code, block_id,
         &(struct kefir_opt_operation){
             .opcode = KEFIR_OPT_OPCODE_VARARG_GET,
-            .parameters.typed_refs = {.ref = {source_ref}, .type_id = type_id, .type_index = type_index}},
+            .parameters = {.refs = {source_ref}, .type = {.type_id = type_id, .type_index = type_index}}},
         false, instr_id_ptr));
     return KEFIR_OK;
 }
@@ -702,9 +700,9 @@ kefir_result_t kefir_opt_code_builder_stack_alloc(struct kefir_mem *mem, struct 
     REQUIRE_OK(kefir_opt_code_builder_add_instruction(
         mem, code, block_id,
         &(struct kefir_opt_operation){.opcode = KEFIR_OPT_OPCODE_STACK_ALLOC,
-                                      .parameters.stack_allocation = {.size_ref = size_ref,
-                                                                      .alignment_ref = alignment_ref,
-                                                                      .within_scope = within_scope}},
+                                      .parameters = {.refs[KEFIR_OPT_STACK_ALLOCATION_SIZE_REF] = size_ref,
+                                                     .refs[KEFIR_OPT_STACK_ALLOCATION_ALIGNMENT_REF] = alignment_ref,
+                                                     .stack_allocation.within_scope = within_scope}},
         false, instr_id_ptr));
     return KEFIR_OK;
 }
@@ -889,7 +887,8 @@ BINARY_OP(complex_long_double_div, KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_DIV)
         REQUIRE_OK(kefir_opt_code_builder_add_instruction(                                                           \
             mem, code, block_id,                                                                                     \
             &(struct kefir_opt_operation){.opcode = (_opcode),                                                       \
-                                          .parameters.memory_access = {.location = location, .flags = *flags}},      \
+                                          .parameters = {.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF] = location,     \
+                                                         .memory_access.flags = *flags}},                            \
             false, instr_id_ptr));                                                                                   \
         return KEFIR_OK;                                                                                             \
     }
@@ -921,9 +920,10 @@ LOAD_OP(complex_long_double_load, KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_LOAD)
         REQUIRE_OK(instr_exists(code, block_id, value, false));                                                     \
         REQUIRE_OK(kefir_opt_code_builder_add_instruction(                                                          \
             mem, code, block_id,                                                                                    \
-            &(struct kefir_opt_operation){                                                                          \
-                .opcode = (_opcode),                                                                                \
-                .parameters.memory_access = {.location = location, .value = value, .flags = *flags}},               \
+            &(struct kefir_opt_operation){.opcode = (_opcode),                                                      \
+                                          .parameters = {.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF] = location,    \
+                                                         .refs[KEFIR_OPT_MEMORY_ACCESS_VALUE_REF] = value,          \
+                                                         .memory_access.flags = *flags}},                           \
             false, instr_id_ptr));                                                                                  \
         return KEFIR_OK;                                                                                            \
     }
@@ -958,7 +958,7 @@ STORE_OP(complex_long_double_store, KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_STORE)
             mem, code, block_id,                                                                                     \
             &(struct kefir_opt_operation){                                                                           \
                 .opcode = (_opcode),                                                                                 \
-                .parameters.atomic_op = {.ref = {location, KEFIR_ID_NONE, KEFIR_ID_NONE}, .model = model}},          \
+                .parameters = {.refs = {location, KEFIR_ID_NONE, KEFIR_ID_NONE}, .atomic_op.model = model}},         \
             false, instr_id_ptr));                                                                                   \
         return KEFIR_OK;                                                                                             \
     }
@@ -994,7 +994,7 @@ ATOMIC_LOAD_OP(atomic_load_complex_long_double, KEFIR_OPT_OPCODE_ATOMIC_LOAD_COM
             mem, code, block_id,                                                                                     \
             &(struct kefir_opt_operation){                                                                           \
                 .opcode = (_opcode),                                                                                 \
-                .parameters.atomic_op = {.ref = {location, value, KEFIR_ID_NONE}, .model = model}},                  \
+                .parameters = {.refs = {location, value, KEFIR_ID_NONE}, .atomic_op.model = model}},                 \
             false, instr_id_ptr));                                                                                   \
         return KEFIR_OK;                                                                                             \
     }
@@ -1029,7 +1029,7 @@ ATOMIC_STORE_OP(atomic_store_long_double, KEFIR_OPT_OPCODE_ATOMIC_STORE_LONG_DOU
             mem, code, block_id,                                                                                       \
             &(struct kefir_opt_operation){                                                                             \
                 .opcode = (_opcode),                                                                                   \
-                .parameters.atomic_op = {.ref = {location, compare_value, new_value}, .model = model}},                \
+                .parameters = {.refs = {location, compare_value, new_value}, .atomic_op.model = model}},               \
             false, instr_id_ptr));                                                                                     \
         return KEFIR_OK;                                                                                               \
     }

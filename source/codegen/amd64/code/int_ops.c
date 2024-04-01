@@ -570,55 +570,6 @@ kefir_result_t kefir_codegen_amd64_match_comparison_op(const struct kefir_opt_co
     return KEFIR_OK;
 }
 
-#define DEFINE_BINARY_OP(_operation)                                                                                   \
-    do {                                                                                                               \
-        kefir_asmcmp_virtual_register_index_t result_vreg, arg1_vreg, arg2_vreg;                                       \
-        REQUIRE_OK(                                                                                                    \
-            kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[0], &arg1_vreg));    \
-        REQUIRE_OK(                                                                                                    \
-            kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[1], &arg2_vreg));    \
-        REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,                                     \
-                                                     KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));    \
-        REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &function->code,                                     \
-                                                             kefir_asmcmp_context_instr_tail(&function->code.context), \
-                                                             result_vreg, arg1_vreg, NULL));                           \
-        REQUIRE_OK(kefir_asmcmp_amd64_##_operation(                                                                    \
-            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),                            \
-            &KEFIR_ASMCMP_MAKE_VREG64(result_vreg), &KEFIR_ASMCMP_MAKE_VREG64(arg2_vreg), NULL));                      \
-        REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));             \
-    } while (0)
-
-#define BINARY_CONST_OP(_operation)                                                                                    \
-    do {                                                                                                               \
-        kefir_asmcmp_virtual_register_index_t result_vreg, arg1_vreg, tmp_vreg;                                        \
-        REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.ref_imm.refs[0],   \
-                                                        &arg1_vreg));                                                  \
-        REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,                                     \
-                                                     KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));    \
-        REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &function->code,                                     \
-                                                             kefir_asmcmp_context_instr_tail(&function->code.context), \
-                                                             result_vreg, arg1_vreg, NULL));                           \
-                                                                                                                       \
-        if (instruction->operation.parameters.ref_imm.integer >= KEFIR_INT32_MIN &&                                    \
-            instruction->operation.parameters.ref_imm.integer <= INT32_MAX) {                                          \
-            REQUIRE_OK(kefir_asmcmp_amd64_##_operation(                                                                \
-                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),                        \
-                &KEFIR_ASMCMP_MAKE_VREG64(result_vreg),                                                                \
-                &KEFIR_ASMCMP_MAKE_INT(instruction->operation.parameters.ref_imm.integer), NULL));                     \
-        } else {                                                                                                       \
-            REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,                                 \
-                                                         KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &tmp_vreg));   \
-            REQUIRE_OK(kefir_asmcmp_amd64_movabs(                                                                      \
-                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),                        \
-                &KEFIR_ASMCMP_MAKE_VREG64(tmp_vreg),                                                                   \
-                &KEFIR_ASMCMP_MAKE_INT(instruction->operation.parameters.ref_imm.integer), NULL));                     \
-            REQUIRE_OK(kefir_asmcmp_amd64_##_operation(                                                                \
-                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),                        \
-                &KEFIR_ASMCMP_MAKE_VREG64(result_vreg), &KEFIR_ASMCMP_MAKE_VREG64(tmp_vreg), NULL));                   \
-        }                                                                                                              \
-        REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));             \
-    } while (0)
-
 enum int_arithmetics_op_type {
     INT_ARITHMETICS_ADD,
     INT_ARITHMETICS_ADD_CONST,
@@ -830,13 +781,11 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int_arithmetics)(struct kefi
         }                                                                                                              \
         REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));             \
     } while (0)
-#define SHIFT_OP(_op)                                                                                              \
+#define SHIFT_OP(_op)                                                                                                  \
     do {                                                                                                               \
         kefir_asmcmp_virtual_register_index_t result_vreg, arg1_vreg, arg2_vreg, arg2_placement_vreg;                  \
-        REQUIRE_OK(                                                                                                    \
-            kefir_codegen_amd64_function_vreg_of(function, op.refs[0], &arg1_vreg));    \
-        REQUIRE_OK(                                                                                                    \
-            kefir_codegen_amd64_function_vreg_of(function, op.refs[1], &arg2_vreg));    \
+        REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, op.refs[0], &arg1_vreg));                            \
+        REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, op.refs[1], &arg2_vreg));                            \
                                                                                                                        \
         REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,                                     \
                                                      KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));    \
@@ -859,11 +808,10 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int_arithmetics)(struct kefi
                                                                                                                        \
         REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));             \
     } while (false)
-#define CONST_SHIFT_OP(_op)                                                                            \
+#define CONST_SHIFT_OP(_op)                                                                                            \
     do {                                                                                                               \
         kefir_asmcmp_virtual_register_index_t result_vreg, arg1_vreg;                                                  \
-        REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, op.refs[0],   \
-                                                        &arg1_vreg));                                                  \
+        REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, op.refs[0], &arg1_vreg));                            \
                                                                                                                        \
         REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,                                     \
                                                      KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));    \
@@ -872,12 +820,11 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int_arithmetics)(struct kefi
                                                              kefir_asmcmp_context_instr_tail(&function->code.context), \
                                                              result_vreg, arg1_vreg, NULL));                           \
                                                                                                                        \
-        if (op.int_value != 0) { \
-            REQUIRE_OK(kefir_asmcmp_amd64_##_op(                                                                           \
-                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),                            \
-                &KEFIR_ASMCMP_MAKE_VREG64(result_vreg),                                                                    \
-                &KEFIR_ASMCMP_MAKE_UINT(op.int_value & 0xffu), NULL));                \
-        } \
+        if (op.int_value != 0) {                                                                                       \
+            REQUIRE_OK(kefir_asmcmp_amd64_##_op(                                                                       \
+                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),                        \
+                &KEFIR_ASMCMP_MAKE_VREG64(result_vreg), &KEFIR_ASMCMP_MAKE_UINT(op.int_value & 0xffu), NULL));         \
+        }                                                                                                              \
                                                                                                                        \
         REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));             \
     } while (0)
@@ -979,13 +926,12 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int_arithmetics)(struct kefi
                     &KEFIR_ASMCMP_MAKE_VREG64(result_vreg), &KEFIR_ASMCMP_MAKE_INT(0), NULL));
             } else {
                 REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, op.refs[0], &arg1_vreg));
-                REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &function->code,                                     
-                                                             kefir_asmcmp_context_instr_tail(&function->code.context), 
-                                                             result_vreg, arg1_vreg, NULL));
+                REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
+                    mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), result_vreg,
+                    arg1_vreg, NULL));
                 REQUIRE_OK(kefir_asmcmp_amd64_and(
                     mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                    &KEFIR_ASMCMP_MAKE_VREG64(result_vreg),
-                    &KEFIR_ASMCMP_MAKE_INT(op.int_value), NULL));
+                    &KEFIR_ASMCMP_MAKE_VREG64(result_vreg), &KEFIR_ASMCMP_MAKE_INT(op.int_value), NULL));
             }
             REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));
         } break;
