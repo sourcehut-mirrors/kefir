@@ -87,7 +87,7 @@
                     "arg": -150
                 },
                 {
-                    "opcode": "idiv"
+                    "opcode": "idiv32"
                 },
                 {
                     "opcode": "extend32"
@@ -101,7 +101,7 @@
                     "arg": 239
                 },
                 {
-                    "opcode": "udiv"
+                    "opcode": "udiv32"
                 },
                 {
                     "opcode": "pushu",
@@ -119,7 +119,7 @@
                     "arg": 1000
                 },
                 {
-                    "opcode": "udiv"
+                    "opcode": "udiv64"
                 },
                 {
                     "opcode": "pushi",
@@ -244,7 +244,7 @@
                     "arg": 98
                 },
                 {
-                    "opcode": "imod"
+                    "opcode": "imod32"
                 },
                 {
                     "opcode": "extend32"
@@ -258,7 +258,7 @@
                     "arg": 37
                 },
                 {
-                    "opcode": "imod"
+                    "opcode": "imod32"
                 },
                 {
                     "opcode": "extend32"
@@ -272,7 +272,7 @@
                     "arg": 1024
                 },
                 {
-                    "opcode": "imod"
+                    "opcode": "imod64"
                 },
                 {
                     "opcode": "pushu",
@@ -283,7 +283,7 @@
                     "arg": 10
                 },
                 {
-                    "opcode": "umod"
+                    "opcode": "umod64"
                 },
                 {
                     "opcode": "pushu",
@@ -294,7 +294,7 @@
                     "arg": 6000
                 },
                 {
-                    "opcode": "umod"
+                    "opcode": "umod64"
                 }
             ],
             "public_labels": []

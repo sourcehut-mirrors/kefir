@@ -174,10 +174,22 @@ kefir_result_t kefir_codegen_amd64_function_map_phi_outputs(struct kefir_mem *, 
     _def(int_arithmetics, KEFIR_OPT_OPCODE_INT16_XOR) _separator                                                   \
     _def(int_arithmetics, KEFIR_OPT_OPCODE_INT32_XOR) _separator                                                   \
     _def(int_arithmetics, KEFIR_OPT_OPCODE_INT64_XOR) _separator                                                   \
-    _def(int_div, KEFIR_OPT_OPCODE_INT_DIV) _separator                                                   \
-    _def(int_mod, KEFIR_OPT_OPCODE_INT_MOD) _separator                                                   \
-    _def(uint_div, KEFIR_OPT_OPCODE_UINT_DIV) _separator                                                   \
-    _def(uint_mod, KEFIR_OPT_OPCODE_UINT_MOD) _separator                                                   \
+    _def(int_div, KEFIR_OPT_OPCODE_INT8_DIV) _separator                                                   \
+    _def(int_div, KEFIR_OPT_OPCODE_INT16_DIV) _separator                                                   \
+    _def(int_div, KEFIR_OPT_OPCODE_INT32_DIV) _separator                                                   \
+    _def(int_div, KEFIR_OPT_OPCODE_INT64_DIV) _separator                                                   \
+    _def(int_mod, KEFIR_OPT_OPCODE_INT8_MOD) _separator                                                   \
+    _def(int_mod, KEFIR_OPT_OPCODE_INT16_MOD) _separator                                                   \
+    _def(int_mod, KEFIR_OPT_OPCODE_INT32_MOD) _separator                                                   \
+    _def(int_mod, KEFIR_OPT_OPCODE_INT64_MOD) _separator                                                   \
+    _def(uint_div, KEFIR_OPT_OPCODE_UINT8_DIV) _separator                                                   \
+    _def(uint_div, KEFIR_OPT_OPCODE_UINT16_DIV) _separator                                                   \
+    _def(uint_div, KEFIR_OPT_OPCODE_UINT32_DIV) _separator                                                   \
+    _def(uint_div, KEFIR_OPT_OPCODE_UINT64_DIV) _separator                                                   \
+    _def(uint_mod, KEFIR_OPT_OPCODE_UINT8_MOD) _separator                                                   \
+    _def(uint_mod, KEFIR_OPT_OPCODE_UINT16_MOD) _separator                                                   \
+    _def(uint_mod, KEFIR_OPT_OPCODE_UINT32_MOD) _separator                                                   \
+    _def(uint_mod, KEFIR_OPT_OPCODE_UINT64_MOD) _separator                                                   \
     _def(int_arithmetics, KEFIR_OPT_OPCODE_INT_LSHIFT) _separator                                                   \
     _def(int_arithmetics, KEFIR_OPT_OPCODE_INT_RSHIFT) _separator                                                   \
     _def(int_arithmetics, KEFIR_OPT_OPCODE_INT_ARSHIFT) _separator                                                   \

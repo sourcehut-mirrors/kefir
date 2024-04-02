@@ -61,10 +61,22 @@
     OPCODE(INT16_MUL, "int16_mul", ref2) SEPARATOR \
     OPCODE(INT32_MUL, "int32_mul", ref2) SEPARATOR \
     OPCODE(INT64_MUL, "int64_mul", ref2) SEPARATOR \
-    OPCODE(INT_DIV, "int_div", ref2) SEPARATOR \
-    OPCODE(INT_MOD, "int_mod", ref2) SEPARATOR \
-    OPCODE(UINT_DIV, "uint_div", ref2) SEPARATOR \
-    OPCODE(UINT_MOD, "uint_mod", ref2) SEPARATOR \
+    OPCODE(INT8_DIV, "int8_div", ref2) SEPARATOR \
+    OPCODE(INT16_DIV, "int16_div", ref2) SEPARATOR \
+    OPCODE(INT32_DIV, "int32_div", ref2) SEPARATOR \
+    OPCODE(INT64_DIV, "int64_div", ref2) SEPARATOR \
+    OPCODE(INT8_MOD, "int8_mod", ref2) SEPARATOR \
+    OPCODE(INT16_MOD, "int16_mod", ref2) SEPARATOR \
+    OPCODE(INT32_MOD, "int32_mod", ref2) SEPARATOR \
+    OPCODE(INT64_MOD, "int64_mod", ref2) SEPARATOR \
+    OPCODE(UINT8_DIV, "uint8_div", ref2) SEPARATOR \
+    OPCODE(UINT16_DIV, "uint16_div", ref2) SEPARATOR \
+    OPCODE(UINT32_DIV, "uint32_div", ref2) SEPARATOR \
+    OPCODE(UINT64_DIV, "uint64_div", ref2) SEPARATOR \
+    OPCODE(UINT8_MOD, "uint8_mod", ref2) SEPARATOR \
+    OPCODE(UINT16_MOD, "uint16_mod", ref2) SEPARATOR \
+    OPCODE(UINT32_MOD, "uint32_mod", ref2) SEPARATOR \
+    OPCODE(UINT64_MOD, "uint64_mod", ref2) SEPARATOR \
     OPCODE(INT8_AND, "int8_and", ref2) SEPARATOR \
     OPCODE(INT16_AND, "int16_and", ref2) SEPARATOR \
     OPCODE(INT32_AND, "int32_and", ref2) SEPARATOR \

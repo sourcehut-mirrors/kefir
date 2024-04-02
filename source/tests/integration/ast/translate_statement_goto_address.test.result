@@ -240,7 +240,7 @@
                     "arg": 2
                 },
                 {
-                    "opcode": "imod"
+                    "opcode": "imod32"
                 },
                 {
                     "opcode": "extend16"

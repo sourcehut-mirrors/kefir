@@ -589,7 +589,7 @@
                             },
                             {
                                 "id": 34,
-                                "opcode": "uint_mod",
+                                "opcode": "uint32_mod",
                                 "args": [
                                     30,
                                     33
@@ -655,7 +655,7 @@
                             },
                             {
                                 "id": 38,
-                                "opcode": "uint_div",
+                                "opcode": "uint64_div",
                                 "args": [
                                     36,
                                     37
@@ -771,7 +771,7 @@
                             },
                             {
                                 "id": 25,
-                                "opcode": "int_mod",
+                                "opcode": "int32_mod",
                                 "args": [
                                     23,
                                     24

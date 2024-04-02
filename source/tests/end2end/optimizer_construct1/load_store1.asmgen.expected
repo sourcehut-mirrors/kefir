@@ -1216,7 +1216,7 @@
                             },
                             {
                                 "id": 22,
-                                "opcode": "int_div",
+                                "opcode": "int64_div",
                                 "args": [
                                     19,
                                     21

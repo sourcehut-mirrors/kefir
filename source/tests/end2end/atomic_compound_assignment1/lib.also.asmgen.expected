@@ -1596,8 +1596,8 @@ _kefir_func_divide_i8_label2:
     movsx %al, %rax
     movsx %eax, %rsi
     mov %rsi, %rax
-    cqo
-    idiv %r10
+    cdq
+    idiv %r10d
     mov %rax, %rcx
     movsx %cl, %r11
     movq %r9, -32(%rbp)
@@ -1747,10 +1747,9 @@ _kefir_func_modulo_i8_label2:
     movq -40(%rbp), %r10
     movsx %al, %rax
     movsx %eax, %rsi
-    mov %rsi, %rax
-    cqo
-    idiv %r10
-    mov %rdx, %rax
+    movsx %sil, %ax
+    idiv %r10b
+    mov %ah, %al
     movsx %al, %r11
     movq %r9, -32(%rbp)
     movq %r10, -24(%rbp)
@@ -1962,8 +1961,8 @@ _kefir_func_divide_i16_label2:
     movsx %ax, %rax
     movsx %eax, %rsi
     mov %rsi, %rax
-    cqo
-    idiv %r10
+    cdq
+    idiv %r10d
     mov %rax, %rcx
     movsx %cx, %r11
     movq %r9, -32(%rbp)
@@ -2014,8 +2013,8 @@ _kefir_func_divide_i32_label2:
     movq -40(%rbp), %r10
     movsx %eax, %rsi
     mov %rsi, %rax
-    cqo
-    idiv %r10
+    cdq
+    idiv %r10d
     mov %rax, %r11
     movq %r9, -32(%rbp)
     movq %r10, -24(%rbp)
@@ -2117,8 +2116,8 @@ _kefir_func_modulo_i16_label2:
     movsx %ax, %rax
     movsx %eax, %rsi
     mov %rsi, %rax
-    cqo
-    idiv %r10
+    cwd
+    idiv %r10w
     mov %rdx, %rax
     movsx %ax, %r11
     movq %r9, -32(%rbp)
@@ -2169,8 +2168,8 @@ _kefir_func_modulo_i32_label2:
     movq -40(%rbp), %r10
     movsx %eax, %rsi
     mov %rsi, %rax
-    cqo
-    idiv %r10
+    cdq
+    idiv %r10d
     mov %rdx, %r11
     movq %r9, -32(%rbp)
     movq %r10, -24(%rbp)

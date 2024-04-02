@@ -58,10 +58,22 @@
     OPCODE(IMUL16,      "imul16",       none) SEPARATOR \
     OPCODE(IMUL32,      "imul32",       none) SEPARATOR \
     OPCODE(IMUL64,      "imul64",       none) SEPARATOR \
-    OPCODE(IDIV,        "idiv",         none) SEPARATOR \
-    OPCODE(IMOD,        "imod",         none) SEPARATOR \
-    OPCODE(UDIV,        "udiv",         none) SEPARATOR \
-    OPCODE(UMOD,        "umod",         none) SEPARATOR \
+    OPCODE(IDIV8,       "idiv8",        none) SEPARATOR \
+    OPCODE(IDIV16,      "idiv16",       none) SEPARATOR \
+    OPCODE(IDIV32,      "idiv32",       none) SEPARATOR \
+    OPCODE(IDIV64,      "idiv64",       none) SEPARATOR \
+    OPCODE(IMOD8,       "imod8",        none) SEPARATOR \
+    OPCODE(IMOD16,      "imod16",       none) SEPARATOR \
+    OPCODE(IMOD32,      "imod32",       none) SEPARATOR \
+    OPCODE(IMOD64,      "imod64",       none) SEPARATOR \
+    OPCODE(UDIV8,       "udiv8",        none) SEPARATOR \
+    OPCODE(UDIV16,      "udiv16",       none) SEPARATOR \
+    OPCODE(UDIV32,      "udiv32",       none) SEPARATOR \
+    OPCODE(UDIV64,      "udiv64",       none) SEPARATOR \
+    OPCODE(UMOD8,       "umod8",        none) SEPARATOR \
+    OPCODE(UMOD16,      "umod16",       none) SEPARATOR \
+    OPCODE(UMOD32,      "umod32",       none) SEPARATOR \
+    OPCODE(UMOD64,      "umod64",       none) SEPARATOR \
     OPCODE(INEG,        "ineg",         none) SEPARATOR \
     OPCODE(INOT,        "inot",         none) SEPARATOR \
     OPCODE(IAND8,       "iand8",        none) SEPARATOR \

@@ -323,7 +323,7 @@
                     "arg": 2
                 },
                 {
-                    "opcode": "idiv"
+                    "opcode": "idiv32"
                 },
                 {
                     "opcode": "xchg",
@@ -432,7 +432,7 @@
                     "arg": 2
                 },
                 {
-                    "opcode": "udiv"
+                    "opcode": "udiv64"
                 },
                 {
                     "opcode": "xchg",

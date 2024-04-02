@@ -373,7 +373,7 @@
                     "arg": 2
                 },
                 {
-                    "opcode": "imod"
+                    "opcode": "imod32"
                 },
                 {
                     "opcode": "xchg",
@@ -744,7 +744,7 @@
                     "arg": 2
                 },
                 {
-                    "opcode": "imod"
+                    "opcode": "imod64"
                 },
                 {
                     "opcode": "xchg",

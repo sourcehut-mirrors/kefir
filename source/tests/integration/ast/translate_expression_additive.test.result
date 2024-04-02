@@ -535,7 +535,7 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "idiv"
+                    "opcode": "idiv64"
                 },
                 {
                     "opcode": "pushi",
@@ -553,7 +553,7 @@
                     "arg": 2
                 },
                 {
-                    "opcode": "idiv"
+                    "opcode": "idiv64"
                 },
                 {
                     "opcode": "pushi",
@@ -571,7 +571,7 @@
                     "arg": 4
                 },
                 {
-                    "opcode": "idiv"
+                    "opcode": "idiv64"
                 },
                 {
                     "opcode": "pushi",
@@ -589,7 +589,7 @@
                     "arg": 8
                 },
                 {
-                    "opcode": "idiv"
+                    "opcode": "idiv64"
                 }
             ],
             "public_labels": []

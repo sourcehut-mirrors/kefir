@@ -304,16 +304,51 @@ static kefir_result_t generate_division_op(const struct generate_op_parameters *
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IROPCODE_F32DIV, 0));
             break;
 
-        default: {
-            kefir_bool_t signed_integer = false;
-            REQUIRE_OK(kefir_ast_type_is_signed(params->context->ast_context->type_traits, params->common_type,
-                                                &signed_integer));
-            if (signed_integer) {
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IROPCODE_IDIV, 0));
+        case KEFIR_AST_TYPE_SCALAR_BOOL:
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IROPCODE_UDIV8, 0));
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IROPCODE_IDIV8, 0));
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_CHAR:
+            if (params->context->ast_context->type_traits->character_type_signedness) {
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IROPCODE_IDIV8, 0));
             } else {
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IROPCODE_UDIV, 0));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IROPCODE_UDIV8, 0));
             }
-        } break;
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IROPCODE_UDIV16, 0));
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IROPCODE_IDIV16, 0));
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IROPCODE_UDIV32, 0));
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_INT:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IROPCODE_IDIV32, 0));
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IROPCODE_UDIV64, 0));
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG:
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IROPCODE_IDIV64, 0));
+            break;
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of an integral type");
     }
     return KEFIR_OK;
 }
@@ -331,14 +366,52 @@ static kefir_result_t generate_modulo(const struct generate_op_parameters *param
     REQUIRE(!KEFIR_AST_TYPE_IS_LONG_DOUBLE(params->result_normalized_type),
             KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected value of long double type"));
 
-    kefir_bool_t signedness;
-    REQUIRE_OK(kefir_ast_type_is_signed(params->context->ast_context->type_traits, params->value_normalized_type,
-                                        &signedness));
+    switch (params->value_normalized_type->tag) {
+        case KEFIR_AST_TYPE_SCALAR_BOOL:
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IROPCODE_UMOD8, 0));
+            break;
 
-    if (signedness) {
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IROPCODE_IMOD, 0));
-    } else {
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IROPCODE_UMOD, 0));
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IROPCODE_IMOD8, 0));
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_CHAR:
+            if (params->context->ast_context->type_traits->character_type_signedness) {
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IROPCODE_IMOD8, 0));
+            } else {
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IROPCODE_UMOD8, 0));
+            }
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IROPCODE_UMOD16, 0));
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IROPCODE_IMOD16, 0));
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IROPCODE_UMOD32, 0));
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_INT:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IROPCODE_IMOD32, 0));
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IROPCODE_UMOD64, 0));
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG:
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IROPCODE_IMOD64, 0));
+            break;
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of an integral type");
     }
     return KEFIR_OK;
 }
