@@ -88,9 +88,18 @@
     OPCODE(IXOR16,      "ixor16",       none) SEPARATOR \
     OPCODE(IXOR32,      "ixor32",       none) SEPARATOR \
     OPCODE(IXOR64,      "ixor64",       none) SEPARATOR \
-    OPCODE(ILSHIFT,     "ishl",         none) SEPARATOR \
-    OPCODE(IRSHIFT,     "ishr",         none) SEPARATOR \
-    OPCODE(IARSHIFT,    "isar",         none) SEPARATOR \
+    OPCODE(ILSHIFT8,    "ishl8",        none) SEPARATOR \
+    OPCODE(ILSHIFT16,   "ishl16",       none) SEPARATOR \
+    OPCODE(ILSHIFT32,   "ishl32",       none) SEPARATOR \
+    OPCODE(ILSHIFT64,   "ishl64",       none) SEPARATOR \
+    OPCODE(IRSHIFT8,    "ishr8",        none) SEPARATOR \
+    OPCODE(IRSHIFT16,   "ishr16",       none) SEPARATOR \
+    OPCODE(IRSHIFT32,   "ishr32",       none) SEPARATOR \
+    OPCODE(IRSHIFT64,   "ishr64",       none) SEPARATOR \
+    OPCODE(IARSHIFT8,   "isar8",        none) SEPARATOR \
+    OPCODE(IARSHIFT16,  "isar16",       none) SEPARATOR \
+    OPCODE(IARSHIFT32,  "isar32",       none) SEPARATOR \
+    OPCODE(IARSHIFT64,  "isar64",       none) SEPARATOR \
     /* Logics & coditions */ \
     OPCODE(IEQUALS,     "iequals",      none) SEPARATOR \
     OPCODE(IGREATER,    "igreater",     none) SEPARATOR \

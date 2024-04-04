@@ -619,12 +619,30 @@ enum int_arithmetics_op_type {
     INT_ARITHMETICS_XOR32_CONST,
     INT_ARITHMETICS_XOR64,
     INT_ARITHMETICS_XOR64_CONST,
-    INT_ARITHMETICS_SHL,
-    INT_ARITHMETICS_SHL_CONST,
-    INT_ARITHMETICS_SHR,
-    INT_ARITHMETICS_SHR_CONST,
-    INT_ARITHMETICS_SAR,
-    INT_ARITHMETICS_SAR_CONST
+    INT_ARITHMETICS_SHL8,
+    INT_ARITHMETICS_SHL8_CONST,
+    INT_ARITHMETICS_SHL16,
+    INT_ARITHMETICS_SHL16_CONST,
+    INT_ARITHMETICS_SHL32,
+    INT_ARITHMETICS_SHL32_CONST,
+    INT_ARITHMETICS_SHL64,
+    INT_ARITHMETICS_SHL64_CONST,
+    INT_ARITHMETICS_SHR8,
+    INT_ARITHMETICS_SHR8_CONST,
+    INT_ARITHMETICS_SHR16,
+    INT_ARITHMETICS_SHR16_CONST,
+    INT_ARITHMETICS_SHR32,
+    INT_ARITHMETICS_SHR32_CONST,
+    INT_ARITHMETICS_SHR64,
+    INT_ARITHMETICS_SHR64_CONST,
+    INT_ARITHMETICS_SAR8,
+    INT_ARITHMETICS_SAR8_CONST,
+    INT_ARITHMETICS_SAR16,
+    INT_ARITHMETICS_SAR16_CONST,
+    INT_ARITHMETICS_SAR32,
+    INT_ARITHMETICS_SAR32_CONST,
+    INT_ARITHMETICS_SAR64,
+    INT_ARITHMETICS_SAR64_CONST
 };
 
 struct int_arithmetics_op {
@@ -777,16 +795,52 @@ static kefir_result_t match_int_arithmetics(struct kefir_codegen_amd64_function 
             OP(INT_ARITHMETICS_XOR64, INT_ARITHMETICS_XOR64_CONST, true, true, KEFIR_INT32_MIN, KEFIR_INT32_MAX);
             break;
 
-        case KEFIR_OPT_OPCODE_INT_LSHIFT:
-            OP(INT_ARITHMETICS_SHL, INT_ARITHMETICS_SHL_CONST, true, false, KEFIR_INT32_MIN, KEFIR_INT32_MAX);
+        case KEFIR_OPT_OPCODE_INT8_LSHIFT:
+            OP(INT_ARITHMETICS_SHL8, INT_ARITHMETICS_SHL8_CONST, true, false, KEFIR_INT8_MIN, KEFIR_INT8_MAX);
             break;
 
-        case KEFIR_OPT_OPCODE_INT_RSHIFT:
-            OP(INT_ARITHMETICS_SHR, INT_ARITHMETICS_SHR_CONST, true, false, KEFIR_INT32_MIN, KEFIR_INT32_MAX);
+        case KEFIR_OPT_OPCODE_INT16_LSHIFT:
+            OP(INT_ARITHMETICS_SHL16, INT_ARITHMETICS_SHL16_CONST, true, false, KEFIR_INT8_MIN, KEFIR_INT8_MAX);
             break;
 
-        case KEFIR_OPT_OPCODE_INT_ARSHIFT:
-            OP(INT_ARITHMETICS_SAR, INT_ARITHMETICS_SAR_CONST, true, false, KEFIR_INT32_MIN, KEFIR_INT32_MAX);
+        case KEFIR_OPT_OPCODE_INT32_LSHIFT:
+            OP(INT_ARITHMETICS_SHL32, INT_ARITHMETICS_SHL32_CONST, true, false, KEFIR_INT8_MIN, KEFIR_INT8_MAX);
+            break;
+
+        case KEFIR_OPT_OPCODE_INT64_LSHIFT:
+            OP(INT_ARITHMETICS_SHL64, INT_ARITHMETICS_SHL64_CONST, true, false, KEFIR_INT8_MIN, KEFIR_INT8_MAX);
+            break;
+
+        case KEFIR_OPT_OPCODE_INT8_RSHIFT:
+            OP(INT_ARITHMETICS_SHR8, INT_ARITHMETICS_SHR8_CONST, true, false, KEFIR_INT8_MIN, KEFIR_INT8_MAX);
+            break;
+
+        case KEFIR_OPT_OPCODE_INT16_RSHIFT:
+            OP(INT_ARITHMETICS_SHR16, INT_ARITHMETICS_SHR16_CONST, true, false, KEFIR_INT8_MIN, KEFIR_INT8_MAX);
+            break;
+
+        case KEFIR_OPT_OPCODE_INT32_RSHIFT:
+            OP(INT_ARITHMETICS_SHR32, INT_ARITHMETICS_SHR32_CONST, true, false, KEFIR_INT8_MIN, KEFIR_INT8_MAX);
+            break;
+
+        case KEFIR_OPT_OPCODE_INT64_RSHIFT:
+            OP(INT_ARITHMETICS_SHR64, INT_ARITHMETICS_SHR64_CONST, true, false, KEFIR_INT8_MIN, KEFIR_INT8_MAX);
+            break;
+
+        case KEFIR_OPT_OPCODE_INT8_ARSHIFT:
+            OP(INT_ARITHMETICS_SAR8, INT_ARITHMETICS_SAR8_CONST, true, false, KEFIR_INT8_MIN, KEFIR_INT8_MAX);
+            break;
+
+        case KEFIR_OPT_OPCODE_INT16_ARSHIFT:
+            OP(INT_ARITHMETICS_SAR16, INT_ARITHMETICS_SAR16_CONST, true, false, KEFIR_INT8_MIN, KEFIR_INT8_MAX);
+            break;
+
+        case KEFIR_OPT_OPCODE_INT32_ARSHIFT:
+            OP(INT_ARITHMETICS_SAR32, INT_ARITHMETICS_SAR32_CONST, true, false, KEFIR_INT8_MIN, KEFIR_INT8_MAX);
+            break;
+
+        case KEFIR_OPT_OPCODE_INT64_ARSHIFT:
+            OP(INT_ARITHMETICS_SAR64, INT_ARITHMETICS_SAR64_CONST, true, false, KEFIR_INT8_MIN, KEFIR_INT8_MAX);
             break;
 
 #undef OP
@@ -835,9 +889,18 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_FUSION_IMPL(int_arithmetics)(
         case INT_ARITHMETICS_XOR16:
         case INT_ARITHMETICS_XOR32:
         case INT_ARITHMETICS_XOR64:
-        case INT_ARITHMETICS_SHL:
-        case INT_ARITHMETICS_SHR:
-        case INT_ARITHMETICS_SAR:
+        case INT_ARITHMETICS_SHL8:
+        case INT_ARITHMETICS_SHL16:
+        case INT_ARITHMETICS_SHL32:
+        case INT_ARITHMETICS_SHL64:
+        case INT_ARITHMETICS_SHR8:
+        case INT_ARITHMETICS_SHR16:
+        case INT_ARITHMETICS_SHR32:
+        case INT_ARITHMETICS_SHR64:
+        case INT_ARITHMETICS_SAR8:
+        case INT_ARITHMETICS_SAR16:
+        case INT_ARITHMETICS_SAR32:
+        case INT_ARITHMETICS_SAR64:
             REQUIRE_OK(callback(op.refs[0], payload));
             REQUIRE_OK(callback(op.refs[1], payload));
             break;
@@ -858,9 +921,18 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_FUSION_IMPL(int_arithmetics)(
         case INT_ARITHMETICS_XOR16_CONST:
         case INT_ARITHMETICS_XOR32_CONST:
         case INT_ARITHMETICS_XOR64_CONST:
-        case INT_ARITHMETICS_SHL_CONST:
-        case INT_ARITHMETICS_SHR_CONST:
-        case INT_ARITHMETICS_SAR_CONST:
+        case INT_ARITHMETICS_SHL8_CONST:
+        case INT_ARITHMETICS_SHL16_CONST:
+        case INT_ARITHMETICS_SHL32_CONST:
+        case INT_ARITHMETICS_SHL64_CONST:
+        case INT_ARITHMETICS_SHR8_CONST:
+        case INT_ARITHMETICS_SHR16_CONST:
+        case INT_ARITHMETICS_SHR32_CONST:
+        case INT_ARITHMETICS_SHR64_CONST:
+        case INT_ARITHMETICS_SAR8_CONST:
+        case INT_ARITHMETICS_SAR16_CONST:
+        case INT_ARITHMETICS_SAR32_CONST:
+        case INT_ARITHMETICS_SAR64_CONST:
             REQUIRE_OK(callback(op.refs[0], payload));
             break;
 
@@ -925,7 +997,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int_arithmetics)(struct kefi
         }                                                                                                              \
         REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));             \
     } while (0)
-#define SHIFT_OP(_op)                                                                                                  \
+#define SHIFT_OP(_op, _variant)                                                                                        \
     do {                                                                                                               \
         kefir_asmcmp_virtual_register_index_t result_vreg, arg1_vreg, arg2_vreg, arg2_placement_vreg;                  \
         REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, op.refs[0], &arg1_vreg));                            \
@@ -948,11 +1020,11 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int_arithmetics)(struct kefi
                                                                                                                        \
         REQUIRE_OK(kefir_asmcmp_amd64_##_op(                                                                           \
             mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),                            \
-            &KEFIR_ASMCMP_MAKE_VREG64(result_vreg), &KEFIR_ASMCMP_MAKE_VREG8(arg2_placement_vreg), NULL));             \
+            &KEFIR_ASMCMP_MAKE_VREG##_variant(result_vreg), &KEFIR_ASMCMP_MAKE_VREG8(arg2_placement_vreg), NULL));     \
                                                                                                                        \
         REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));             \
     } while (false)
-#define CONST_SHIFT_OP(_op)                                                                                            \
+#define CONST_SHIFT_OP(_op, _variant)                                                                                  \
     do {                                                                                                               \
         kefir_asmcmp_virtual_register_index_t result_vreg, arg1_vreg;                                                  \
         REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, op.refs[0], &arg1_vreg));                            \
@@ -967,7 +1039,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int_arithmetics)(struct kefi
         if (op.int_value != 0) {                                                                                       \
             REQUIRE_OK(kefir_asmcmp_amd64_##_op(                                                                       \
                 mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),                        \
-                &KEFIR_ASMCMP_MAKE_VREG64(result_vreg), &KEFIR_ASMCMP_MAKE_UINT(op.int_value & 0xffu), NULL));         \
+                &KEFIR_ASMCMP_MAKE_VREG##_variant(result_vreg), &KEFIR_ASMCMP_MAKE_UINT(op.int_value & 0xffu), NULL)); \
         }                                                                                                              \
                                                                                                                        \
         REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));             \
@@ -1069,16 +1141,52 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int_arithmetics)(struct kefi
             OP(xor, 64);
             break;
 
-        case INT_ARITHMETICS_SHL:
-            SHIFT_OP(shl);
+        case INT_ARITHMETICS_SHL8:
+            SHIFT_OP(shl, 8);
             break;
 
-        case INT_ARITHMETICS_SHR:
-            SHIFT_OP(shr);
+        case INT_ARITHMETICS_SHL16:
+            SHIFT_OP(shl, 16);
             break;
 
-        case INT_ARITHMETICS_SAR:
-            SHIFT_OP(sar);
+        case INT_ARITHMETICS_SHL32:
+            SHIFT_OP(shl, 32);
+            break;
+
+        case INT_ARITHMETICS_SHL64:
+            SHIFT_OP(shl, 64);
+            break;
+
+        case INT_ARITHMETICS_SHR8:
+            SHIFT_OP(shr, 8);
+            break;
+
+        case INT_ARITHMETICS_SHR16:
+            SHIFT_OP(shr, 16);
+            break;
+
+        case INT_ARITHMETICS_SHR32:
+            SHIFT_OP(shr, 32);
+            break;
+
+        case INT_ARITHMETICS_SHR64:
+            SHIFT_OP(shr, 64);
+            break;
+
+        case INT_ARITHMETICS_SAR8:
+            SHIFT_OP(sar, 8);
+            break;
+
+        case INT_ARITHMETICS_SAR16:
+            SHIFT_OP(sar, 16);
+            break;
+
+        case INT_ARITHMETICS_SAR32:
+            SHIFT_OP(sar, 32);
+            break;
+
+        case INT_ARITHMETICS_SAR64:
+            SHIFT_OP(sar, 64);
             break;
 
         case INT_ARITHMETICS_ADD8_CONST:
@@ -1145,16 +1253,52 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int_arithmetics)(struct kefi
             CONST_OP(xor, 64, true);
             break;
 
-        case INT_ARITHMETICS_SHL_CONST:
-            CONST_SHIFT_OP(shl);
+        case INT_ARITHMETICS_SHL8_CONST:
+            CONST_SHIFT_OP(shl, 8);
             break;
 
-        case INT_ARITHMETICS_SHR_CONST:
-            CONST_SHIFT_OP(shr);
+        case INT_ARITHMETICS_SHL16_CONST:
+            CONST_SHIFT_OP(shl, 16);
             break;
 
-        case INT_ARITHMETICS_SAR_CONST:
-            CONST_SHIFT_OP(sar);
+        case INT_ARITHMETICS_SHL32_CONST:
+            CONST_SHIFT_OP(shl, 32);
+            break;
+
+        case INT_ARITHMETICS_SHL64_CONST:
+            CONST_SHIFT_OP(shl, 64);
+            break;
+
+        case INT_ARITHMETICS_SHR8_CONST:
+            CONST_SHIFT_OP(shr, 8);
+            break;
+
+        case INT_ARITHMETICS_SHR16_CONST:
+            CONST_SHIFT_OP(shr, 16);
+            break;
+
+        case INT_ARITHMETICS_SHR32_CONST:
+            CONST_SHIFT_OP(shr, 32);
+            break;
+
+        case INT_ARITHMETICS_SHR64_CONST:
+            CONST_SHIFT_OP(shr, 64);
+            break;
+
+        case INT_ARITHMETICS_SAR8_CONST:
+            CONST_SHIFT_OP(sar, 8);
+            break;
+
+        case INT_ARITHMETICS_SAR16_CONST:
+            CONST_SHIFT_OP(sar, 16);
+            break;
+
+        case INT_ARITHMETICS_SAR32_CONST:
+            CONST_SHIFT_OP(sar, 32);
+            break;
+
+        case INT_ARITHMETICS_SAR64_CONST:
+            CONST_SHIFT_OP(sar, 64);
             break;
 
         case INT_ARITHMETICS_MUL8_CONST: {

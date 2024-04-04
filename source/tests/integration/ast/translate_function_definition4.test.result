@@ -194,7 +194,7 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 37
+                    "arg": 38
                 },
                 {
                     "opcode": "getlocal",
@@ -250,6 +250,9 @@
                     "memory_flags": {
                         "volatile": false
                     }
+                },
+                {
+                    "opcode": "extend32"
                 },
                 {
                     "opcode": "pop"

@@ -285,6 +285,9 @@
                     "memory_flags": {
                         "volatile": false
                     }
+                },
+                {
+                    "opcode": "extend32"
                 }
             ],
             "public_labels": []
@@ -338,6 +341,9 @@
                     "memory_flags": {
                         "volatile": false
                     }
+                },
+                {
+                    "opcode": "extend32"
                 }
             ],
             "public_labels": []
@@ -780,6 +786,9 @@
                     "memory_flags": {
                         "volatile": false
                     }
+                },
+                {
+                    "opcode": "extend32"
                 }
             ],
             "public_labels": []

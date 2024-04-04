@@ -303,7 +303,7 @@
                             },
                             {
                                 "id": 16,
-                                "opcode": "int_lshift",
+                                "opcode": "int32_lshift",
                                 "args": [
                                     14,
                                     15

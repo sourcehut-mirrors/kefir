@@ -218,15 +218,24 @@ static kefir_result_t int_binary_const_fold(struct kefir_mem *mem, struct kefir_
             result.uinteger = left.uinteger ^ right.uinteger;
             break;
 
-        case KEFIR_OPT_OPCODE_INT_LSHIFT:
+        case KEFIR_OPT_OPCODE_INT8_LSHIFT:
+        case KEFIR_OPT_OPCODE_INT16_LSHIFT:
+        case KEFIR_OPT_OPCODE_INT32_LSHIFT:
+        case KEFIR_OPT_OPCODE_INT64_LSHIFT:
             result.uinteger = left.uinteger << right.uinteger;
             break;
 
-        case KEFIR_OPT_OPCODE_INT_RSHIFT:
+        case KEFIR_OPT_OPCODE_INT8_RSHIFT:
+        case KEFIR_OPT_OPCODE_INT16_RSHIFT:
+        case KEFIR_OPT_OPCODE_INT32_RSHIFT:
+        case KEFIR_OPT_OPCODE_INT64_RSHIFT:
             result.uinteger = left.uinteger >> right.uinteger;
             break;
 
-        case KEFIR_OPT_OPCODE_INT_ARSHIFT:
+        case KEFIR_OPT_OPCODE_INT8_ARSHIFT:
+        case KEFIR_OPT_OPCODE_INT16_ARSHIFT:
+        case KEFIR_OPT_OPCODE_INT32_ARSHIFT:
+        case KEFIR_OPT_OPCODE_INT64_ARSHIFT:
             result.integer = left.integer >> right.integer;
             break;
 
@@ -330,9 +339,18 @@ static kefir_result_t const_fold_apply(struct kefir_mem *mem, const struct kefir
                 case KEFIR_OPT_OPCODE_INT16_XOR:
                 case KEFIR_OPT_OPCODE_INT32_XOR:
                 case KEFIR_OPT_OPCODE_INT64_XOR:
-                case KEFIR_OPT_OPCODE_INT_LSHIFT:
-                case KEFIR_OPT_OPCODE_INT_RSHIFT:
-                case KEFIR_OPT_OPCODE_INT_ARSHIFT:
+                case KEFIR_OPT_OPCODE_INT8_LSHIFT:
+                case KEFIR_OPT_OPCODE_INT16_LSHIFT:
+                case KEFIR_OPT_OPCODE_INT32_LSHIFT:
+                case KEFIR_OPT_OPCODE_INT64_LSHIFT:
+                case KEFIR_OPT_OPCODE_INT8_RSHIFT:
+                case KEFIR_OPT_OPCODE_INT16_RSHIFT:
+                case KEFIR_OPT_OPCODE_INT32_RSHIFT:
+                case KEFIR_OPT_OPCODE_INT64_RSHIFT:
+                case KEFIR_OPT_OPCODE_INT8_ARSHIFT:
+                case KEFIR_OPT_OPCODE_INT16_ARSHIFT:
+                case KEFIR_OPT_OPCODE_INT32_ARSHIFT:
+                case KEFIR_OPT_OPCODE_INT64_ARSHIFT:
                 case KEFIR_OPT_OPCODE_INT_EQUALS:
                 case KEFIR_OPT_OPCODE_INT_GREATER:
                 case KEFIR_OPT_OPCODE_INT_LESSER:

@@ -388,6 +388,9 @@
                     "memory_flags": {
                         "volatile": false
                     }
+                },
+                {
+                    "opcode": "extend32"
                 }
             ],
             "public_labels": []
@@ -426,7 +429,7 @@
                     "arg": 2
                 },
                 {
-                    "opcode": "ishl"
+                    "opcode": "ishl64"
                 },
                 {
                     "opcode": "xchg",
@@ -479,7 +482,7 @@
                     "arg": 2
                 },
                 {
-                    "opcode": "isar"
+                    "opcode": "ishr64"
                 },
                 {
                     "opcode": "xchg",
@@ -547,6 +550,9 @@
                     "memory_flags": {
                         "volatile": false
                     }
+                },
+                {
+                    "opcode": "extend32"
                 }
             ],
             "public_labels": []
@@ -638,7 +644,7 @@
                     "arg": 2
                 },
                 {
-                    "opcode": "ishl"
+                    "opcode": "ishl32"
                 },
                 {
                     "opcode": "xchg",
@@ -653,6 +659,9 @@
                     "memory_flags": {
                         "volatile": false
                     }
+                },
+                {
+                    "opcode": "extend32"
                 }
             ],
             "public_labels": []
@@ -691,7 +700,7 @@
                     "arg": 2
                 },
                 {
-                    "opcode": "isar"
+                    "opcode": "isar32"
                 },
                 {
                     "opcode": "xchg",
@@ -706,6 +715,9 @@
                     "memory_flags": {
                         "volatile": false
                     }
+                },
+                {
+                    "opcode": "extend32"
                 }
             ],
             "public_labels": []
@@ -744,7 +756,7 @@
                     "arg": 2
                 },
                 {
-                    "opcode": "imod64"
+                    "opcode": "umod64"
                 },
                 {
                     "opcode": "xchg",
@@ -812,6 +824,9 @@
                     "memory_flags": {
                         "volatile": false
                     }
+                },
+                {
+                    "opcode": "extend32"
                 }
             ],
             "public_labels": []
@@ -868,6 +883,9 @@
                     "memory_flags": {
                         "volatile": false
                     }
+                },
+                {
+                    "opcode": "extend32"
                 }
             ],
             "public_labels": []

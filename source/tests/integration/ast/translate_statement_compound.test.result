@@ -339,6 +339,9 @@
                     }
                 },
                 {
+                    "opcode": "extend32"
+                },
+                {
                     "opcode": "pop"
                 },
                 {

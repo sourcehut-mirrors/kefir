@@ -252,7 +252,7 @@
                     "opcode": "extend32"
                 },
                 {
-                    "opcode": "ishl"
+                    "opcode": "ishl32"
                 },
                 {
                     "opcode": "extend32"
@@ -269,7 +269,7 @@
                     "opcode": "extend32"
                 },
                 {
-                    "opcode": "ishl"
+                    "opcode": "ishl32"
                 },
                 {
                     "opcode": "extend32"
@@ -283,7 +283,7 @@
                     "arg": 53
                 },
                 {
-                    "opcode": "ishl"
+                    "opcode": "ishl64"
                 }
             ],
             "public_labels": []
@@ -305,7 +305,7 @@
                     "opcode": "extend32"
                 },
                 {
-                    "opcode": "isar"
+                    "opcode": "isar32"
                 },
                 {
                     "opcode": "extend32"
@@ -322,7 +322,7 @@
                     "opcode": "extend32"
                 },
                 {
-                    "opcode": "isar"
+                    "opcode": "isar32"
                 },
                 {
                     "opcode": "extend32"
@@ -336,7 +336,7 @@
                     "arg": 48
                 },
                 {
-                    "opcode": "isar"
+                    "opcode": "isar64"
                 }
             ],
             "public_labels": []

@@ -69,7 +69,7 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "ishl"
+                    "opcode": "ishl64"
                 },
                 {
                     "opcode": "pushi",

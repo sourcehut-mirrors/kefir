@@ -254,6 +254,9 @@
                     }
                 },
                 {
+                    "opcode": "extend16"
+                },
+                {
                     "opcode": "pop"
                 }
             ],
