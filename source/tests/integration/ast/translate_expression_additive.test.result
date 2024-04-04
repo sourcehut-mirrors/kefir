@@ -287,9 +287,6 @@
                     "arg": 16
                 },
                 {
-                    "opcode": "ineg"
-                },
-                {
                     "opcode": "pushu",
                     "arg": 1
                 },
@@ -297,7 +294,7 @@
                     "opcode": "imul64"
                 },
                 {
-                    "opcode": "iadd64"
+                    "opcode": "isub64"
                 },
                 {
                     "opcode": "pushi",
@@ -308,9 +305,6 @@
                     "arg": 9
                 },
                 {
-                    "opcode": "ineg"
-                },
-                {
                     "opcode": "pushu",
                     "arg": 2
                 },
@@ -318,7 +312,7 @@
                     "opcode": "imul64"
                 },
                 {
-                    "opcode": "iadd64"
+                    "opcode": "isub64"
                 },
                 {
                     "opcode": "pushi",
@@ -329,9 +323,6 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "ineg"
-                },
-                {
                     "opcode": "pushu",
                     "arg": 4
                 },
@@ -339,7 +330,7 @@
                     "opcode": "imul64"
                 },
                 {
-                    "opcode": "iadd64"
+                    "opcode": "isub64"
                 },
                 {
                     "opcode": "pushi",
@@ -350,9 +341,6 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "ineg"
-                },
-                {
                     "opcode": "pushu",
                     "arg": 8
                 },
@@ -360,7 +348,7 @@
                     "opcode": "imul64"
                 },
                 {
-                    "opcode": "iadd64"
+                    "opcode": "isub64"
                 }
             ],
             "public_labels": []

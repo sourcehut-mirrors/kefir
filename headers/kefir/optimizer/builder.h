@@ -150,8 +150,14 @@ kefir_result_t kefir_opt_code_builder_fenv_update(struct kefir_mem *, struct kef
                                                 kefir_opt_block_id_t, kefir_opt_instruction_ref_t,     \
                                                 kefir_opt_instruction_ref_t *)
 
-UNARY_OP(int_not);
-UNARY_OP(int_neg);
+UNARY_OP(int8_not);
+UNARY_OP(int16_not);
+UNARY_OP(int32_not);
+UNARY_OP(int64_not);
+UNARY_OP(int8_neg);
+UNARY_OP(int16_neg);
+UNARY_OP(int32_neg);
+UNARY_OP(int64_neg);
 UNARY_OP(bool_not);
 
 UNARY_OP(int64_truncate_1bit);

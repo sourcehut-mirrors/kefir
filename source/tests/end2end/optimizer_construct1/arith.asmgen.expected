@@ -1144,7 +1144,7 @@
                             },
                             {
                                 "id": 11,
-                                "opcode": "int_neg",
+                                "opcode": "int32_neg",
                                 "arg": 10,
                                 "control_next": null,
                                 "properties": {
@@ -1189,7 +1189,7 @@
                             },
                             {
                                 "id": 14,
-                                "opcode": "int_not",
+                                "opcode": "int32_not",
                                 "arg": 13,
                                 "control_next": null,
                                 "properties": {

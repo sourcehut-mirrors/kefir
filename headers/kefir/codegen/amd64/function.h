@@ -202,8 +202,14 @@ kefir_result_t kefir_codegen_amd64_function_map_phi_outputs(struct kefir_mem *, 
     _def(int_arithmetics, KEFIR_OPT_OPCODE_INT16_ARSHIFT) _separator                                                   \
     _def(int_arithmetics, KEFIR_OPT_OPCODE_INT32_ARSHIFT) _separator                                                   \
     _def(int_arithmetics, KEFIR_OPT_OPCODE_INT64_ARSHIFT) _separator                                                   \
-    _def(int_not, KEFIR_OPT_OPCODE_INT_NOT) _separator                                                   \
-    _def(int_neg, KEFIR_OPT_OPCODE_INT_NEG) _separator                                                   \
+    _def(int_arithmetics, KEFIR_OPT_OPCODE_INT8_NOT) _separator                                                   \
+    _def(int_arithmetics, KEFIR_OPT_OPCODE_INT16_NOT) _separator                                                   \
+    _def(int_arithmetics, KEFIR_OPT_OPCODE_INT32_NOT) _separator                                                   \
+    _def(int_arithmetics, KEFIR_OPT_OPCODE_INT64_NOT) _separator                                                   \
+    _def(int_arithmetics, KEFIR_OPT_OPCODE_INT8_NEG) _separator                                                   \
+    _def(int_arithmetics, KEFIR_OPT_OPCODE_INT16_NEG) _separator                                                   \
+    _def(int_arithmetics, KEFIR_OPT_OPCODE_INT32_NEG) _separator                                                   \
+    _def(int_arithmetics, KEFIR_OPT_OPCODE_INT64_NEG) _separator                                                   \
     _def(bool_not, KEFIR_OPT_OPCODE_BOOL_NOT) _separator                                                   \
     _def(bool_or, KEFIR_OPT_OPCODE_BOOL_OR) _separator                                                   \
     _def(bool_and, KEFIR_OPT_OPCODE_BOOL_AND) _separator                                                   \
@@ -350,6 +356,14 @@ kefir_result_t kefir_codegen_amd64_function_map_phi_outputs(struct kefir_mem *, 
     _def(int_arithmetics, KEFIR_OPT_OPCODE_INT16_ARSHIFT) _separator \
     _def(int_arithmetics, KEFIR_OPT_OPCODE_INT32_ARSHIFT) _separator \
     _def(int_arithmetics, KEFIR_OPT_OPCODE_INT64_ARSHIFT) _separator \
+    _def(int_arithmetics, KEFIR_OPT_OPCODE_INT8_NOT) _separator \
+    _def(int_arithmetics, KEFIR_OPT_OPCODE_INT16_NOT) _separator \
+    _def(int_arithmetics, KEFIR_OPT_OPCODE_INT32_NOT) _separator \
+    _def(int_arithmetics, KEFIR_OPT_OPCODE_INT64_NOT) _separator \
+    _def(int_arithmetics, KEFIR_OPT_OPCODE_INT8_NEG) _separator \
+    _def(int_arithmetics, KEFIR_OPT_OPCODE_INT16_NEG) _separator \
+    _def(int_arithmetics, KEFIR_OPT_OPCODE_INT32_NEG) _separator \
+    _def(int_arithmetics, KEFIR_OPT_OPCODE_INT64_NEG) _separator \
     _def(branch, KEFIR_OPT_OPCODE_BRANCH)
 // clang-format on
 

@@ -101,8 +101,14 @@
     OPCODE(INT16_ARSHIFT, "int16_arshift", ref2) SEPARATOR \
     OPCODE(INT32_ARSHIFT, "int32_arshift", ref2) SEPARATOR \
     OPCODE(INT64_ARSHIFT, "int64_arshift", ref2) SEPARATOR \
-    OPCODE(INT_NOT, "int_not", ref1) SEPARATOR \
-    OPCODE(INT_NEG, "int_neg", ref1) SEPARATOR \
+    OPCODE(INT8_NOT, "int8_not", ref1) SEPARATOR \
+    OPCODE(INT16_NOT, "int16_not", ref1) SEPARATOR \
+    OPCODE(INT32_NOT, "int32_not", ref1) SEPARATOR \
+    OPCODE(INT64_NOT, "int64_not", ref1) SEPARATOR \
+    OPCODE(INT8_NEG, "int8_neg", ref1) SEPARATOR \
+    OPCODE(INT16_NEG, "int16_neg", ref1) SEPARATOR \
+    OPCODE(INT32_NEG, "int32_neg", ref1) SEPARATOR \
+    OPCODE(INT64_NEG, "int64_neg", ref1) SEPARATOR \
     /* Logical & comparison operations */ \
     OPCODE(INT_EQUALS, "int_equals", ref2) SEPARATOR \
     OPCODE(INT_GREATER, "int_greater", ref2) SEPARATOR \

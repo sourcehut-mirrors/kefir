@@ -732,8 +732,14 @@ kefir_result_t kefir_opt_code_builder_scope_push(struct kefir_mem *mem, struct k
         return KEFIR_OK;                                                                                               \
     }
 
-UNARY_OP(int_not, KEFIR_OPT_OPCODE_INT_NOT)
-UNARY_OP(int_neg, KEFIR_OPT_OPCODE_INT_NEG)
+UNARY_OP(int8_not, KEFIR_OPT_OPCODE_INT8_NOT)
+UNARY_OP(int16_not, KEFIR_OPT_OPCODE_INT16_NOT)
+UNARY_OP(int32_not, KEFIR_OPT_OPCODE_INT32_NOT)
+UNARY_OP(int64_not, KEFIR_OPT_OPCODE_INT64_NOT)
+UNARY_OP(int8_neg, KEFIR_OPT_OPCODE_INT8_NEG)
+UNARY_OP(int16_neg, KEFIR_OPT_OPCODE_INT16_NEG)
+UNARY_OP(int32_neg, KEFIR_OPT_OPCODE_INT32_NEG)
+UNARY_OP(int64_neg, KEFIR_OPT_OPCODE_INT64_NEG)
 UNARY_OP(bool_not, KEFIR_OPT_OPCODE_BOOL_NOT)
 
 UNARY_OP(int64_truncate_1bit, KEFIR_OPT_OPCODE_INT64_TRUNCATE_1BIT)

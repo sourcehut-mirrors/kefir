@@ -122,7 +122,7 @@ _kefir_func_quad_equation_label1:
 _kefir_func_quad_equation_label5:
 _kefir_func_quad_equation_label2:
     mov $1, %rax
-    neg %rax
+    neg %eax
     movsx %eax, %rax
     movq %xmm0, %xmm2
     jmp _kefir_func_quad_equation_label4

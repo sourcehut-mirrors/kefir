@@ -143,7 +143,34 @@ static kefir_result_t translate_arithmetic_unary(struct kefir_mem *mem, struct k
                     break;
 
                 case KEFIR_AST_OPERATION_NEGATE:
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_INEG, 0));
+                    switch (normalized_type->tag) {
+                        case KEFIR_AST_TYPE_SCALAR_BOOL:
+                        case KEFIR_AST_TYPE_SCALAR_CHAR:
+                        case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
+                        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
+                            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_INEG8, 0));
+                            break;
+
+                        case KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT:
+                        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
+                            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_INEG16, 0));
+                            break;
+
+                        case KEFIR_AST_TYPE_SCALAR_SIGNED_INT:
+                        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
+                            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_INEG32, 0));
+                            break;
+
+                        case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG:
+                        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
+                        case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
+                        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
+                            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_INEG64, 0));
+                            break;
+
+                        default:
+                            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of an integral type");
+                    }
                     break;
 
                 default:
@@ -159,8 +186,36 @@ static kefir_result_t translate_arithmetic_unary(struct kefir_mem *mem, struct k
 static kefir_result_t translate_unary_inversion(struct kefir_mem *mem, struct kefir_ast_translator_context *context,
                                                 struct kefir_irbuilder_block *builder,
                                                 const struct kefir_ast_unary_operation *node) {
+    const struct kefir_ast_type *normalized_type = kefir_ast_translator_normalize_type(node->arg->properties.type);
     REQUIRE_OK(kefir_ast_translate_expression(mem, node->arg, builder, context));
-    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_INOT, 0));
+    switch (normalized_type->tag) {
+        case KEFIR_AST_TYPE_SCALAR_BOOL:
+        case KEFIR_AST_TYPE_SCALAR_CHAR:
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_INOT8, 0));
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT:
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_INOT16, 0));
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_INT:
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_INOT32, 0));
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG:
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_INOT64, 0));
+            break;
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of an integral type");
+    }
     REQUIRE_OK(unary_epilogue(context, builder, node));
     return KEFIR_OK;
 }

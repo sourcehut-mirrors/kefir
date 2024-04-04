@@ -503,8 +503,14 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
         REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));                           \
         break;
 
-            UNARY_OP(int_not, KEFIR_IROPCODE_INOT)
-            UNARY_OP(int_neg, KEFIR_IROPCODE_INEG)
+            UNARY_OP(int8_not, KEFIR_IROPCODE_INOT8)
+            UNARY_OP(int16_not, KEFIR_IROPCODE_INOT16)
+            UNARY_OP(int32_not, KEFIR_IROPCODE_INOT32)
+            UNARY_OP(int64_not, KEFIR_IROPCODE_INOT64)
+            UNARY_OP(int8_neg, KEFIR_IROPCODE_INEG8)
+            UNARY_OP(int16_neg, KEFIR_IROPCODE_INEG16)
+            UNARY_OP(int32_neg, KEFIR_IROPCODE_INEG32)
+            UNARY_OP(int64_neg, KEFIR_IROPCODE_INEG64)
             UNARY_OP(bool_not, KEFIR_IROPCODE_BNOT)
 
             UNARY_OP(int64_truncate_1bit, KEFIR_IROPCODE_TRUNCATE1)

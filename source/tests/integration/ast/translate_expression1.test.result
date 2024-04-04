@@ -41,7 +41,7 @@
                     "arg": 2
                 },
                 {
-                    "opcode": "inot"
+                    "opcode": "inot64"
                 },
                 {
                     "opcode": "pushi",
@@ -55,7 +55,7 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "ineg"
+                    "opcode": "ineg64"
                 },
                 {
                     "opcode": "iadd64"
