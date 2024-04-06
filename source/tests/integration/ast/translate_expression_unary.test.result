@@ -769,14 +769,14 @@
                     "arg": -1
                 },
                 {
-                    "opcode": "bnot"
+                    "opcode": "bnot32"
                 },
                 {
                     "opcode": "pushu",
                     "arg": 0
                 },
                 {
-                    "opcode": "bnot"
+                    "opcode": "bnot32"
                 },
                 {
                     "opcode": "pushf32",
@@ -790,10 +790,10 @@
                     "opcode": "f32equals"
                 },
                 {
-                    "opcode": "bnot"
+                    "opcode": "bnot8"
                 },
                 {
-                    "opcode": "bnot"
+                    "opcode": "bnot8"
                 },
                 {
                     "opcode": "pushf64",
@@ -807,10 +807,10 @@
                     "opcode": "f64equals"
                 },
                 {
-                    "opcode": "bnot"
+                    "opcode": "bnot8"
                 },
                 {
-                    "opcode": "bnot"
+                    "opcode": "bnot8"
                 },
                 {
                     "opcode": "pushf64",
@@ -824,10 +824,10 @@
                     "opcode": "f64equals"
                 },
                 {
-                    "opcode": "bnot"
+                    "opcode": "bnot8"
                 },
                 {
-                    "opcode": "bnot"
+                    "opcode": "bnot8"
                 },
                 {
                     "opcode": "getglobal",
@@ -842,7 +842,7 @@
                     }
                 },
                 {
-                    "opcode": "bnot"
+                    "opcode": "bnot32"
                 }
             ],
             "public_labels": []
@@ -864,10 +864,10 @@
                     "opcode": "ldequals"
                 },
                 {
-                    "opcode": "bnot"
+                    "opcode": "bnot8"
                 },
                 {
-                    "opcode": "bnot"
+                    "opcode": "bnot8"
                 }
             ],
             "public_labels": []

@@ -112,24 +112,33 @@
     OPCODE(ILESSER8,     "ilesser8",      none) SEPARATOR \
     OPCODE(IABOVE8,      "iabove8",       none) SEPARATOR \
     OPCODE(IBELOW8,      "ibelow8",       none) SEPARATOR \
-    OPCODE(IEQUALS16,     "iequals16",      none) SEPARATOR \
-    OPCODE(IGREATER16,    "igreater16",     none) SEPARATOR \
-    OPCODE(ILESSER16,     "ilesser16",      none) SEPARATOR \
-    OPCODE(IABOVE16,      "iabove16",       none) SEPARATOR \
-    OPCODE(IBELOW16,      "ibelow16",       none) SEPARATOR \
-    OPCODE(IEQUALS32,     "iequals32",      none) SEPARATOR \
-    OPCODE(IGREATER32,    "igreater32",     none) SEPARATOR \
-    OPCODE(ILESSER32,     "ilesser32",      none) SEPARATOR \
-    OPCODE(IABOVE32,      "iabove32",       none) SEPARATOR \
-    OPCODE(IBELOW32,      "ibelow32",       none) SEPARATOR \
-    OPCODE(IEQUALS64,     "iequals64",      none) SEPARATOR \
-    OPCODE(IGREATER64,    "igreater64",     none) SEPARATOR \
-    OPCODE(ILESSER64,     "ilesser64",      none) SEPARATOR \
-    OPCODE(IABOVE64,      "iabove64",       none) SEPARATOR \
-    OPCODE(IBELOW64,      "ibelow64",       none) SEPARATOR \
-    OPCODE(BAND,        "band",         none) SEPARATOR \
-    OPCODE(BOR,         "bor",          none) SEPARATOR \
-    OPCODE(BNOT,        "bnot",         none) SEPARATOR \
+    OPCODE(IEQUALS16,    "iequals16",     none) SEPARATOR \
+    OPCODE(IGREATER16,   "igreater16",    none) SEPARATOR \
+    OPCODE(ILESSER16,    "ilesser16",     none) SEPARATOR \
+    OPCODE(IABOVE16,     "iabove16",      none) SEPARATOR \
+    OPCODE(IBELOW16,     "ibelow16",      none) SEPARATOR \
+    OPCODE(IEQUALS32,    "iequals32",     none) SEPARATOR \
+    OPCODE(IGREATER32,   "igreater32",    none) SEPARATOR \
+    OPCODE(ILESSER32,    "ilesser32",     none) SEPARATOR \
+    OPCODE(IABOVE32,     "iabove32",      none) SEPARATOR \
+    OPCODE(IBELOW32,     "ibelow32",      none) SEPARATOR \
+    OPCODE(IEQUALS64,    "iequals64",     none) SEPARATOR \
+    OPCODE(IGREATER64,   "igreater64",    none) SEPARATOR \
+    OPCODE(ILESSER64,    "ilesser64",     none) SEPARATOR \
+    OPCODE(IABOVE64,     "iabove64",      none) SEPARATOR \
+    OPCODE(IBELOW64,     "ibelow64",      none) SEPARATOR \
+    OPCODE(BAND8,        "band8",         none) SEPARATOR \
+    OPCODE(BAND16,       "band16",        none) SEPARATOR \
+    OPCODE(BAND32,       "band32",        none) SEPARATOR \
+    OPCODE(BAND64,       "band64",        none) SEPARATOR \
+    OPCODE(BOR8,         "bor8",          none) SEPARATOR \
+    OPCODE(BOR16,        "bor16",         none) SEPARATOR \
+    OPCODE(BOR32,        "bor32",         none) SEPARATOR \
+    OPCODE(BOR64,        "bor64",         none) SEPARATOR \
+    OPCODE(BNOT8,        "bnot8",         none) SEPARATOR \
+    OPCODE(BNOT16,       "bnot16",        none) SEPARATOR \
+    OPCODE(BNOT32,       "bnot32",        none) SEPARATOR \
+    OPCODE(BNOT64,       "bnot64",        none) SEPARATOR \
     /* Type conversions */ \
     OPCODE(TRUNCATE1,   "trunc1",       none) SEPARATOR \
     OPCODE(EXTEND8,     "extend8",      none) SEPARATOR \

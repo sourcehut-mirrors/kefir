@@ -26,7 +26,7 @@ _kefir_func_somefn_label2:
     add $-1, %ecx
     movsx %ecx, %rcx
     xor %rdx, %rdx
-    test %rax, %rax
+    test %eax, %eax
     sete %dl
     test %rdx, %rdx
     jz _kefir_func_somefn_label7

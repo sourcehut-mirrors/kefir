@@ -21,7 +21,7 @@ _kefir_func_compare1_label1:
     cmp $10, %rdi
     sete %cl
     xor %rdx, %rdx
-    test %rcx, %rcx
+    test %cl, %cl
     sete %dl
     add %edx, %eax
     movsx %eax, %rax
@@ -57,7 +57,7 @@ _kefir_func_compare2_label1:
     cmp $10, %rdi
     sete %cl
     xor %rdx, %rdx
-    test %rcx, %rcx
+    test %cl, %cl
     sete %dl
     add %edx, %eax
     movsx %eax, %rax
@@ -95,7 +95,7 @@ _kefir_func_compare3_label1:
     cmp %rdx, %rdi
     sete %cl
     xor %rdx, %rdx
-    test %rcx, %rcx
+    test %cl, %cl
     sete %dl
     add %edx, %eax
     movsx %eax, %rax
@@ -137,7 +137,7 @@ _kefir_func_compare4_label1:
     cmp %rdx, %rdi
     sete %cl
     xor %rdx, %rdx
-    test %rcx, %rcx
+    test %cl, %cl
     sete %dl
     add %edx, %eax
     movsx %eax, %rax

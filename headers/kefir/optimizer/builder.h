@@ -158,7 +158,10 @@ UNARY_OP(int8_neg);
 UNARY_OP(int16_neg);
 UNARY_OP(int32_neg);
 UNARY_OP(int64_neg);
-UNARY_OP(bool_not);
+UNARY_OP(int8_bool_not);
+UNARY_OP(int16_bool_not);
+UNARY_OP(int32_bool_not);
+UNARY_OP(int64_bool_not);
 
 UNARY_OP(int64_truncate_1bit);
 UNARY_OP(int64_zero_extend_8bits);
@@ -291,8 +294,14 @@ BINARY_OP(int8_below);
 BINARY_OP(int16_below);
 BINARY_OP(int32_below);
 BINARY_OP(int64_below);
-BINARY_OP(bool_and);
-BINARY_OP(bool_or);
+BINARY_OP(int8_bool_and);
+BINARY_OP(int16_bool_and);
+BINARY_OP(int32_bool_and);
+BINARY_OP(int64_bool_and);
+BINARY_OP(int8_bool_or);
+BINARY_OP(int16_bool_or);
+BINARY_OP(int32_bool_or);
+BINARY_OP(int64_bool_or);
 
 BINARY_OP(vararg_copy);
 

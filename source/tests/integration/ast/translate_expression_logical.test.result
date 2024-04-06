@@ -232,17 +232,14 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 7
+                    "arg": 6
                 },
                 {
                     "opcode": "pushu",
                     "arg": 0
                 },
                 {
-                    "opcode": "trunc1"
-                },
-                {
-                    "opcode": "bor"
+                    "opcode": "bor8"
                 }
             ],
             "public_labels": []
@@ -264,7 +261,7 @@
                     "opcode": "f32equals"
                 },
                 {
-                    "opcode": "bnot"
+                    "opcode": "bnot8"
                 },
                 {
                     "opcode": "pick",
@@ -272,17 +269,14 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 9
+                    "arg": 8
                 },
                 {
                     "opcode": "pushi",
                     "arg": 55
                 },
                 {
-                    "opcode": "trunc1"
-                },
-                {
-                    "opcode": "bor"
+                    "opcode": "bor32"
                 }
             ],
             "public_labels": []
@@ -305,17 +299,14 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 7
+                    "arg": 6
                 },
                 {
                     "opcode": "pushi",
                     "arg": 0
                 },
                 {
-                    "opcode": "trunc1"
-                },
-                {
-                    "opcode": "bor"
+                    "opcode": "bor64"
                 }
             ],
             "public_labels": []
@@ -337,7 +328,7 @@
                     "opcode": "ldequals"
                 },
                 {
-                    "opcode": "bnot"
+                    "opcode": "bnot8"
                 },
                 {
                     "opcode": "pick",
@@ -345,17 +336,14 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 9
+                    "arg": 8
                 },
                 {
                     "opcode": "pushi",
                     "arg": 200
                 },
                 {
-                    "opcode": "trunc1"
-                },
-                {
-                    "opcode": "bor"
+                    "opcode": "bor32"
                 }
             ],
             "public_labels": []
@@ -377,7 +365,7 @@
                     "opcode": "ldequals"
                 },
                 {
-                    "opcode": "bnot"
+                    "opcode": "bnot8"
                 },
                 {
                     "opcode": "pick",
@@ -399,10 +387,10 @@
                     "opcode": "ldequals"
                 },
                 {
-                    "opcode": "bnot"
+                    "opcode": "bnot8"
                 },
                 {
-                    "opcode": "bor"
+                    "opcode": "bor64"
                 }
             ],
             "public_labels": []
@@ -417,28 +405,22 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "trunc1"
-                },
-                {
                     "opcode": "pick",
                     "arg": 0
                 },
                 {
-                    "opcode": "bnot"
+                    "opcode": "bnot8"
                 },
                 {
                     "opcode": "branch",
-                    "arg": 8
+                    "arg": 6
                 },
                 {
                     "opcode": "pushu",
                     "arg": 0
                 },
                 {
-                    "opcode": "trunc1"
-                },
-                {
-                    "opcode": "band"
+                    "opcode": "band8"
                 }
             ],
             "public_labels": []
@@ -460,28 +442,25 @@
                     "opcode": "f32equals"
                 },
                 {
-                    "opcode": "bnot"
+                    "opcode": "bnot8"
                 },
                 {
                     "opcode": "pick",
                     "arg": 0
                 },
                 {
-                    "opcode": "bnot"
+                    "opcode": "bnot8"
                 },
                 {
                     "opcode": "branch",
-                    "arg": 10
+                    "arg": 9
                 },
                 {
                     "opcode": "pushi",
                     "arg": 67
                 },
                 {
-                    "opcode": "trunc1"
-                },
-                {
-                    "opcode": "band"
+                    "opcode": "band32"
                 }
             ],
             "public_labels": []
@@ -496,28 +475,22 @@
                     "arg": 4096
                 },
                 {
-                    "opcode": "trunc1"
-                },
-                {
                     "opcode": "pick",
                     "arg": 0
                 },
                 {
-                    "opcode": "bnot"
+                    "opcode": "bnot64"
                 },
                 {
                     "opcode": "branch",
-                    "arg": 8
+                    "arg": 6
                 },
                 {
                     "opcode": "pushi",
                     "arg": 1
                 },
                 {
-                    "opcode": "trunc1"
-                },
-                {
-                    "opcode": "band"
+                    "opcode": "band64"
                 }
             ],
             "public_labels": []
@@ -539,28 +512,25 @@
                     "opcode": "ldequals"
                 },
                 {
-                    "opcode": "bnot"
+                    "opcode": "bnot8"
                 },
                 {
                     "opcode": "pick",
                     "arg": 0
                 },
                 {
-                    "opcode": "bnot"
+                    "opcode": "bnot8"
                 },
                 {
                     "opcode": "branch",
-                    "arg": 10
+                    "arg": 9
                 },
                 {
                     "opcode": "pushi",
                     "arg": 100
                 },
                 {
-                    "opcode": "trunc1"
-                },
-                {
-                    "opcode": "band"
+                    "opcode": "band32"
                 }
             ],
             "public_labels": []
@@ -582,14 +552,14 @@
                     "opcode": "ldequals"
                 },
                 {
-                    "opcode": "bnot"
+                    "opcode": "bnot8"
                 },
                 {
                     "opcode": "pick",
                     "arg": 0
                 },
                 {
-                    "opcode": "bnot"
+                    "opcode": "bnot8"
                 },
                 {
                     "opcode": "branch",
@@ -607,10 +577,10 @@
                     "opcode": "ldequals"
                 },
                 {
-                    "opcode": "bnot"
+                    "opcode": "bnot8"
                 },
                 {
-                    "opcode": "band"
+                    "opcode": "band8"
                 }
             ],
             "public_labels": []

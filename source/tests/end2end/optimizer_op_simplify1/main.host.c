@@ -26,6 +26,7 @@
 int main(void) {
     for (int i = -100; i <= 100; i++) {
         assert(dnot(i) == (!!(i) ? 1 : 0));
+        printf("%f %d %d\n", (float) i, dnotf((float) i), (!!((float) i) ? 1 : 0));
         assert(dnotf((float) i) == (!!((float) i) ? 1 : 0));
         assert(dnotd((double) i) == (!!((double) i) ? 1 : 0));
         assert(dnotld((long double) i) == (!!((long double) i) ? 1 : 0));

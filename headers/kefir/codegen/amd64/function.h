@@ -210,9 +210,18 @@ kefir_result_t kefir_codegen_amd64_function_map_phi_outputs(struct kefir_mem *, 
     _def(int_arithmetics, KEFIR_OPT_OPCODE_INT16_NEG) _separator                                                   \
     _def(int_arithmetics, KEFIR_OPT_OPCODE_INT32_NEG) _separator                                                   \
     _def(int_arithmetics, KEFIR_OPT_OPCODE_INT64_NEG) _separator                                                   \
-    _def(bool_not, KEFIR_OPT_OPCODE_BOOL_NOT) _separator                                                   \
-    _def(bool_or, KEFIR_OPT_OPCODE_BOOL_OR) _separator                                                   \
-    _def(bool_and, KEFIR_OPT_OPCODE_BOOL_AND) _separator                                                   \
+    _def(int_bool_not, KEFIR_OPT_OPCODE_INT8_BOOL_NOT) _separator                                                   \
+    _def(int_bool_not, KEFIR_OPT_OPCODE_INT16_BOOL_NOT) _separator                                                   \
+    _def(int_bool_not, KEFIR_OPT_OPCODE_INT32_BOOL_NOT) _separator                                                   \
+    _def(int_bool_not, KEFIR_OPT_OPCODE_INT64_BOOL_NOT) _separator                                                   \
+    _def(int_bool_or, KEFIR_OPT_OPCODE_INT8_BOOL_OR) _separator                                                   \
+    _def(int_bool_or, KEFIR_OPT_OPCODE_INT16_BOOL_OR) _separator                                                   \
+    _def(int_bool_or, KEFIR_OPT_OPCODE_INT32_BOOL_OR) _separator                                                   \
+    _def(int_bool_or, KEFIR_OPT_OPCODE_INT64_BOOL_OR) _separator                                                   \
+    _def(int_bool_and, KEFIR_OPT_OPCODE_INT8_BOOL_AND) _separator                                                   \
+    _def(int_bool_and, KEFIR_OPT_OPCODE_INT16_BOOL_AND) _separator                                                   \
+    _def(int_bool_and, KEFIR_OPT_OPCODE_INT32_BOOL_AND) _separator                                                   \
+    _def(int_bool_and, KEFIR_OPT_OPCODE_INT64_BOOL_AND) _separator                                                   \
     _def(int_comparison, KEFIR_OPT_OPCODE_INT8_EQUALS) _separator                                                   \
     _def(int_comparison, KEFIR_OPT_OPCODE_INT16_EQUALS) _separator                                                   \
     _def(int_comparison, KEFIR_OPT_OPCODE_INT32_EQUALS) _separator                                                   \
@@ -323,7 +332,10 @@ kefir_result_t kefir_codegen_amd64_function_map_phi_outputs(struct kefir_mem *, 
     _def(scalar_load_store, KEFIR_OPT_OPCODE_INT32_STORE) _separator \
     _def(scalar_load_store, KEFIR_OPT_OPCODE_INT64_STORE) _separator \
     _def(scalar_load_store, KEFIR_OPT_OPCODE_LONG_DOUBLE_STORE) _separator \
-    _def(bool_or, KEFIR_OPT_OPCODE_BOOL_OR) _separator \
+    _def(int_bool_or, KEFIR_OPT_OPCODE_INT8_BOOL_OR) _separator \
+    _def(int_bool_or, KEFIR_OPT_OPCODE_INT16_BOOL_OR) _separator \
+    _def(int_bool_or, KEFIR_OPT_OPCODE_INT32_BOOL_OR) _separator \
+    _def(int_bool_or, KEFIR_OPT_OPCODE_INT64_BOOL_OR) _separator \
     _def(int_comparison, KEFIR_OPT_OPCODE_INT8_EQUALS) _separator \
     _def(int_comparison, KEFIR_OPT_OPCODE_INT16_EQUALS) _separator \
     _def(int_comparison, KEFIR_OPT_OPCODE_INT32_EQUALS) _separator \

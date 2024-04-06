@@ -109,7 +109,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     kefir_irbuilder_type_append(mem, trunc1_func->declaration->result, KEFIR_IR_TYPE_INT, 0, 0);
     kefir_irbuilder_block_append_long_double(mem, &trunc1_func->body, KEFIR_IROPCODE_PUSHLD, 0.0L);
     kefir_irbuilder_block_appendi64(mem, &trunc1_func->body, KEFIR_IROPCODE_LDEQUALS, 0);
-    kefir_irbuilder_block_appendi64(mem, &trunc1_func->body, KEFIR_IROPCODE_BNOT, 0);
+    kefir_irbuilder_block_appendi64(mem, &trunc1_func->body, KEFIR_IROPCODE_BNOT64, 0);
     kefir_irbuilder_block_appendi64(mem, &trunc1_func->body, KEFIR_IROPCODE_RET, 0);
 
     KEFIR_CODEGEN_TRANSLATE(mem, &codegen.iface, &module);

@@ -130,9 +130,18 @@
     OPCODE(INT16_BELOW, "int16_below", ref2) SEPARATOR \
     OPCODE(INT32_BELOW, "int32_below", ref2) SEPARATOR \
     OPCODE(INT64_BELOW, "int64_below", ref2) SEPARATOR \
-    OPCODE(BOOL_AND, "bool_and", ref2) SEPARATOR \
-    OPCODE(BOOL_OR, "bool_or", ref2) SEPARATOR \
-    OPCODE(BOOL_NOT, "bool_not", ref1) SEPARATOR \
+    OPCODE(INT8_BOOL_NOT, "int8_bool_not", ref1) SEPARATOR \
+    OPCODE(INT16_BOOL_NOT, "int16_bool_not", ref1) SEPARATOR \
+    OPCODE(INT32_BOOL_NOT, "int32_bool_not", ref1) SEPARATOR \
+    OPCODE(INT64_BOOL_NOT, "int64_bool_not", ref1) SEPARATOR \
+    OPCODE(INT8_BOOL_OR, "int8_bool_or", ref2) SEPARATOR \
+    OPCODE(INT16_BOOL_OR, "int16_bool_or", ref2) SEPARATOR \
+    OPCODE(INT32_BOOL_OR, "int32_bool_or", ref2) SEPARATOR \
+    OPCODE(INT64_BOOL_OR, "int64_bool_or", ref2) SEPARATOR \
+    OPCODE(INT8_BOOL_AND, "int8_bool_and", ref2) SEPARATOR \
+    OPCODE(INT16_BOOL_AND, "int16_bool_and", ref2) SEPARATOR \
+    OPCODE(INT32_BOOL_AND, "int32_bool_and", ref2) SEPARATOR \
+    OPCODE(INT64_BOOL_AND, "int64_bool_and", ref2) SEPARATOR \
     /* Type conversions */ \
     OPCODE(INT64_TRUNCATE_1BIT, "int64_truncate_1bit", ref1) SEPARATOR \
     OPCODE(INT64_ZERO_EXTEND_8BITS, "int64_zero_extend_8bits", ref1) SEPARATOR \

@@ -90,8 +90,7 @@ test4:
     stmxcsr -8(%rbp)
 _kefir_func_test4_label0:
 _kefir_func_test4_label1:
-    movq _kefir_func_test4_label4(%rip), %xmm2
-    ucomisd %xmm2, %xmm0
+    ucomisd _kefir_func_test4_label4(%rip), %xmm0
     ja _kefir_func_test4_label5
     jmp _kefir_func_test4_label3
 _kefir_func_test4_label5:

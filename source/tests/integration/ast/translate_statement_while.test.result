@@ -196,10 +196,10 @@
                     "opcode": "iequals32"
                 },
                 {
-                    "opcode": "bnot"
+                    "opcode": "bnot8"
                 },
                 {
-                    "opcode": "bnot"
+                    "opcode": "bnot32"
                 },
                 {
                     "opcode": "branch",
@@ -270,7 +270,7 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "bnot"
+                    "opcode": "bnot8"
                 },
                 {
                     "opcode": "branch",
@@ -295,7 +295,7 @@
                     }
                 },
                 {
-                    "opcode": "bnot"
+                    "opcode": "bnot8"
                 },
                 {
                     "opcode": "branch",
@@ -333,14 +333,11 @@
                     "opcode": "ldequals"
                 },
                 {
-                    "opcode": "bnot"
-                },
-                {
-                    "opcode": "bnot"
+                    "opcode": "bnot8"
                 },
                 {
                     "opcode": "branch",
-                    "arg": 9
+                    "arg": 8
                 },
                 {
                     "opcode": "pushu",

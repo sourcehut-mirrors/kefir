@@ -104,7 +104,7 @@
                     "opcode": "iequals64"
                 },
                 {
-                    "opcode": "bnot"
+                    "opcode": "bnot8"
                 },
                 {
                     "opcode": "branch",
@@ -129,7 +129,7 @@
                     "opcode": "iequals64"
                 },
                 {
-                    "opcode": "bnot"
+                    "opcode": "bnot8"
                 },
                 {
                     "opcode": "branch",
@@ -154,7 +154,7 @@
                     "opcode": "iequals64"
                 },
                 {
-                    "opcode": "bnot"
+                    "opcode": "bnot8"
                 },
                 {
                     "opcode": "branch",
@@ -346,7 +346,7 @@
                     "opcode": "iequals64"
                 },
                 {
-                    "opcode": "bnot"
+                    "opcode": "bnot8"
                 },
                 {
                     "opcode": "branch",
@@ -425,7 +425,7 @@
                     "opcode": "iequals64"
                 },
                 {
-                    "opcode": "bnot"
+                    "opcode": "bnot8"
                 },
                 {
                     "opcode": "branch",
@@ -450,7 +450,7 @@
                     "opcode": "iequals64"
                 },
                 {
-                    "opcode": "bnot"
+                    "opcode": "bnot8"
                 },
                 {
                     "opcode": "branch",

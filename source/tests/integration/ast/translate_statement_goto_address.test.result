@@ -187,7 +187,7 @@
                     "opcode": "iequals32"
                 },
                 {
-                    "opcode": "bnot"
+                    "opcode": "bnot32"
                 },
                 {
                     "opcode": "branch",
@@ -294,7 +294,7 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "bnot"
+                    "opcode": "bnot32"
                 },
                 {
                     "opcode": "branch",

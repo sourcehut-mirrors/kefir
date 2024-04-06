@@ -296,7 +296,7 @@
                     "opcode": "ilesser32"
                 },
                 {
-                    "opcode": "bnot"
+                    "opcode": "bnot32"
                 },
                 {
                     "opcode": "branch",
@@ -441,7 +441,7 @@
                     "opcode": "ilesser32"
                 },
                 {
-                    "opcode": "bnot"
+                    "opcode": "bnot32"
                 },
                 {
                     "opcode": "branch",
@@ -462,7 +462,7 @@
                     "opcode": "iand64"
                 },
                 {
-                    "opcode": "bnot"
+                    "opcode": "bnot8"
                 },
                 {
                     "opcode": "branch",
@@ -555,10 +555,10 @@
                     "opcode": "ldequals"
                 },
                 {
-                    "opcode": "bnot"
+                    "opcode": "bnot8"
                 },
                 {
-                    "opcode": "bnot"
+                    "opcode": "bnot64"
                 },
                 {
                     "opcode": "branch",

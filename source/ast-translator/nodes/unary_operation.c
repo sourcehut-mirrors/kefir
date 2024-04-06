@@ -224,13 +224,43 @@ static kefir_result_t translate_logical_not_inversion(struct kefir_mem *mem,
                                                       struct kefir_ast_translator_context *context,
                                                       struct kefir_irbuilder_block *builder,
                                                       const struct kefir_ast_unary_operation *node) {
-    const struct kefir_ast_type *normalized_type =
-        KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(mem, context->ast_context->type_bundle, node->arg->properties.type);
+    const struct kefir_ast_type *normalized_type = kefir_ast_translator_normalize_type(
+        KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(mem, context->ast_context->type_bundle, node->arg->properties.type));
     REQUIRE_OK(kefir_ast_translate_expression(mem, node->arg, builder, context));
     if (KEFIR_AST_TYPE_IS_FLOATING_POINT(normalized_type)) {
         REQUIRE_OK(kefir_ast_translate_typeconv_to_bool(builder, normalized_type));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_BNOT8, 0));
+    } else {
+        switch (normalized_type->tag) {
+            case KEFIR_AST_TYPE_SCALAR_BOOL:
+            case KEFIR_AST_TYPE_SCALAR_CHAR:
+            case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
+            case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_BNOT8, 0));
+                break;
+
+            case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
+            case KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT:
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_BNOT16, 0));
+                break;
+
+            case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
+            case KEFIR_AST_TYPE_SCALAR_SIGNED_INT:
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_BNOT32, 0));
+                break;
+
+            case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
+            case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG:
+            case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
+            case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
+            case KEFIR_AST_TYPE_SCALAR_POINTER:
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_BNOT64, 0));
+                break;
+
+            default:
+                return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected condition type");
+        }
     }
-    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_BNOT, 0));
     return KEFIR_OK;
 }
 

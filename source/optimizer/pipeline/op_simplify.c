@@ -31,13 +31,26 @@ static kefir_result_t simplify_boot_not(struct kefir_mem *mem, struct kefir_opt_
 
     struct kefir_opt_instruction *arg;
     REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr->operation.parameters.refs[0], &arg));
-    REQUIRE(arg->operation.opcode == KEFIR_OPT_OPCODE_BOOL_NOT, KEFIR_OK);
+    REQUIRE(arg->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_NOT ||
+                arg->operation.opcode == KEFIR_OPT_OPCODE_INT16_BOOL_NOT ||
+                arg->operation.opcode == KEFIR_OPT_OPCODE_INT32_BOOL_NOT ||
+                arg->operation.opcode == KEFIR_OPT_OPCODE_INT64_BOOL_NOT,
+            KEFIR_OK);
 
     REQUIRE_OK(kefir_opt_code_container_instr(&func->code, arg->operation.parameters.refs[0], &arg));
     switch (arg->operation.opcode) {
-        case KEFIR_OPT_OPCODE_BOOL_NOT:
-        case KEFIR_OPT_OPCODE_BOOL_AND:
-        case KEFIR_OPT_OPCODE_BOOL_OR:
+        case KEFIR_OPT_OPCODE_INT8_BOOL_NOT:
+        case KEFIR_OPT_OPCODE_INT16_BOOL_NOT:
+        case KEFIR_OPT_OPCODE_INT32_BOOL_NOT:
+        case KEFIR_OPT_OPCODE_INT64_BOOL_NOT:
+        case KEFIR_OPT_OPCODE_INT8_BOOL_AND:
+        case KEFIR_OPT_OPCODE_INT16_BOOL_AND:
+        case KEFIR_OPT_OPCODE_INT32_BOOL_AND:
+        case KEFIR_OPT_OPCODE_INT64_BOOL_AND:
+        case KEFIR_OPT_OPCODE_INT8_BOOL_OR:
+        case KEFIR_OPT_OPCODE_INT16_BOOL_OR:
+        case KEFIR_OPT_OPCODE_INT32_BOOL_OR:
+        case KEFIR_OPT_OPCODE_INT64_BOOL_OR:
         case KEFIR_OPT_OPCODE_INT8_EQUALS:
         case KEFIR_OPT_OPCODE_INT16_EQUALS:
         case KEFIR_OPT_OPCODE_INT32_EQUALS:
@@ -85,7 +98,8 @@ static kefir_result_t simplify_boot_not(struct kefir_mem *mem, struct kefir_opt_
             REQUIRE_OK(kefir_opt_code_builder_long_double_constant(mem, &func->code, block_id, 0.0L, &zero_ref));
             REQUIRE_OK(kefir_opt_code_builder_long_double_equals(mem, &func->code, block_id, arg->id, zero_ref,
                                                                  &equality_ref));
-            REQUIRE_OK(kefir_opt_code_builder_bool_not(mem, &func->code, block_id, equality_ref, replacement_ref));
+            REQUIRE_OK(
+                kefir_opt_code_builder_int64_bool_not(mem, &func->code, block_id, equality_ref, replacement_ref));
             REQUIRE_OK(kefir_opt_code_container_instruction_move_after(&func->code, instr_id, *replacement_ref));
         } break;
 
@@ -120,7 +134,7 @@ static kefir_result_t simplify_boot_or(struct kefir_mem *mem, struct kefir_opt_f
         REQUIRE_OK(kefir_opt_code_builder_long_double_lesser(mem, &func->code, block_id,
                                                              arg1->operation.parameters.refs[0],
                                                              arg1->operation.parameters.refs[1], &cmp_ref));
-        REQUIRE_OK(kefir_opt_code_builder_bool_not(mem, &func->code, block_id, cmp_ref, replacement_ref));
+        REQUIRE_OK(kefir_opt_code_builder_int64_bool_not(mem, &func->code, block_id, cmp_ref, replacement_ref));
         REQUIRE_OK(kefir_opt_code_container_instruction_move_after(&func->code, instr_id, cmp_ref));
         REQUIRE_OK(kefir_opt_code_container_instruction_move_after(&func->code, cmp_ref, *replacement_ref));
     } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_LONG_DOUBLE_LESSER) {
@@ -135,7 +149,7 @@ static kefir_result_t simplify_boot_or(struct kefir_mem *mem, struct kefir_opt_f
         REQUIRE_OK(kefir_opt_code_builder_long_double_greater(mem, &func->code, block_id,
                                                               arg1->operation.parameters.refs[0],
                                                               arg1->operation.parameters.refs[1], &cmp_ref));
-        REQUIRE_OK(kefir_opt_code_builder_bool_not(mem, &func->code, block_id, cmp_ref, replacement_ref));
+        REQUIRE_OK(kefir_opt_code_builder_int64_bool_not(mem, &func->code, block_id, cmp_ref, replacement_ref));
         REQUIRE_OK(kefir_opt_code_container_instruction_move_after(&func->code, instr_id, cmp_ref));
         REQUIRE_OK(kefir_opt_code_container_instruction_move_after(&func->code, cmp_ref, *replacement_ref));
     }
@@ -1364,11 +1378,17 @@ static kefir_result_t op_simplify_apply(struct kefir_mem *mem, const struct kefi
             const kefir_opt_instruction_ref_t instr_id = instr->id;
             kefir_opt_instruction_ref_t replacement_ref = KEFIR_ID_NONE;
             switch (instr->operation.opcode) {
-                case KEFIR_OPT_OPCODE_BOOL_NOT:
+                case KEFIR_OPT_OPCODE_INT8_BOOL_NOT:
+                case KEFIR_OPT_OPCODE_INT16_BOOL_NOT:
+                case KEFIR_OPT_OPCODE_INT32_BOOL_NOT:
+                case KEFIR_OPT_OPCODE_INT64_BOOL_NOT:
                     REQUIRE_OK(simplify_boot_not(mem, func, instr, &replacement_ref));
                     break;
 
-                case KEFIR_OPT_OPCODE_BOOL_OR:
+                case KEFIR_OPT_OPCODE_INT8_BOOL_OR:
+                case KEFIR_OPT_OPCODE_INT16_BOOL_OR:
+                case KEFIR_OPT_OPCODE_INT32_BOOL_OR:
+                case KEFIR_OPT_OPCODE_INT64_BOOL_OR:
                     REQUIRE_OK(simplify_boot_or(mem, func, instr, &replacement_ref));
                     break;
 

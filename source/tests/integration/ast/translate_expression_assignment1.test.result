@@ -582,7 +582,7 @@
                     "opcode": "f32equals"
                 },
                 {
-                    "opcode": "bnot"
+                    "opcode": "bnot8"
                 },
                 {
                     "opcode": "getglobal",

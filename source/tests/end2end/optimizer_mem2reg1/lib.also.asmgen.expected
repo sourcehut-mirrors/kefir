@@ -258,8 +258,7 @@ _kefir_func_factorialf64_label5:
     movd _kefir_func_factorialf64_label11(%rip), %xmm0
     cvtss2sd %xmm0, %xmm0
 _kefir_func_factorialf64_label6:
-    movq _kefir_func_factorialf64_label12(%rip), %xmm2
-    ucomisd %xmm2, %xmm1
+    ucomisd _kefir_func_factorialf64_label12(%rip), %xmm1
     ja _kefir_func_factorialf64_label13
     movq %xmm0, %xmm2
     jmp _kefir_func_factorialf64_label8

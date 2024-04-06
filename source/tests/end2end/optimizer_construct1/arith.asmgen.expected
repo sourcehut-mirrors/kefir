@@ -201,7 +201,7 @@
                             },
                             {
                                 "id": 5,
-                                "opcode": "bool_not",
+                                "opcode": "int32_bool_not",
                                 "arg": 4,
                                 "control_next": null,
                                 "properties": {
@@ -369,7 +369,7 @@
                             },
                             {
                                 "id": 20,
-                                "opcode": "bool_not",
+                                "opcode": "int32_bool_not",
                                 "arg": 19,
                                 "control_next": null,
                                 "properties": {
@@ -1034,7 +1034,7 @@
                             },
                             {
                                 "id": 8,
-                                "opcode": "bool_not",
+                                "opcode": "int32_bool_not",
                                 "arg": 7,
                                 "control_next": null,
                                 "properties": {

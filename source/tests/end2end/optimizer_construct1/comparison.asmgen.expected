@@ -214,7 +214,7 @@
                             },
                             {
                                 "id": 11,
-                                "opcode": "bool_or",
+                                "opcode": "int64_bool_or",
                                 "args": [
                                     9,
                                     10
@@ -265,7 +265,7 @@
                             },
                             {
                                 "id": 14,
-                                "opcode": "bool_not",
+                                "opcode": "int8_bool_not",
                                 "arg": 13,
                                 "control_next": null,
                                 "properties": {
@@ -313,7 +313,7 @@
                             },
                             {
                                 "id": 17,
-                                "opcode": "bool_not",
+                                "opcode": "int32_bool_not",
                                 "arg": 16,
                                 "control_next": null,
                                 "properties": {
@@ -456,7 +456,7 @@
                             },
                             {
                                 "id": 22,
-                                "opcode": "bool_not",
+                                "opcode": "int32_bool_not",
                                 "arg": 21,
                                 "control_next": null,
                                 "properties": {
@@ -676,7 +676,7 @@
                             },
                             {
                                 "id": 37,
-                                "opcode": "bool_or",
+                                "opcode": "int64_bool_or",
                                 "args": [
                                     35,
                                     36
@@ -694,7 +694,7 @@
                             },
                             {
                                 "id": 38,
-                                "opcode": "bool_not",
+                                "opcode": "int32_bool_not",
                                 "arg": 37,
                                 "control_next": null,
                                 "properties": {

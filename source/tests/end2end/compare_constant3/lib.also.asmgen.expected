@@ -31,7 +31,7 @@ _kefir_func_compare1_label1:
     setnp %cl
     cmovne %rdx, %rcx
     xor %rdx, %rdx
-    test %rcx, %rcx
+    test %cl, %cl
     sete %dl
     add %edx, %eax
     movsx %eax, %rax
@@ -104,7 +104,7 @@ _kefir_func_compare2_label1:
     setnp %cl
     cmovne %rdx, %rcx
     xor %rdx, %rdx
-    test %rcx, %rcx
+    test %cl, %cl
     sete %dl
     add %edx, %eax
     movsx %eax, %rax
@@ -178,7 +178,7 @@ _kefir_func_compare3_label1:
     setnp %cl
     cmovne %rdx, %rcx
     xor %rdx, %rdx
-    test %rcx, %rcx
+    test %cl, %cl
     sete %dl
     add %edx, %eax
     movsx %eax, %rax
@@ -251,7 +251,7 @@ _kefir_func_compare4_label1:
     setnp %cl
     cmovne %rdx, %rcx
     xor %rdx, %rdx
-    test %rcx, %rcx
+    test %cl, %cl
     sete %dl
     add %edx, %eax
     movsx %eax, %rax

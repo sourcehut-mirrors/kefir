@@ -84,10 +84,7 @@ _kefir_func_test7_label1:
 _kefir_func_test7_label2:
     mov $0, %rcx
 _kefir_func_test7_label3:
-    test %rcx, %rcx
-    setne %cl
-    movzx %cl, %rcx
-    or %rcx, %rax
+    or %ecx, %eax
     setne %al
     movzx %al, %rax
 _kefir_func_test7_label4:

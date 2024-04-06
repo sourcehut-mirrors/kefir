@@ -190,7 +190,7 @@
                     "opcode": "igreater32"
                 },
                 {
-                    "opcode": "bnot"
+                    "opcode": "bnot32"
                 },
                 {
                     "opcode": "branch",

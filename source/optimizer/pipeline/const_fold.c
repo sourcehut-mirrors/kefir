@@ -71,7 +71,10 @@ static kefir_result_t int_unary_const_fold(struct kefir_mem *mem, struct kefir_o
             result.uinteger = ~arg.uinteger;
             break;
 
-        case KEFIR_OPT_OPCODE_BOOL_NOT:
+        case KEFIR_OPT_OPCODE_INT8_BOOL_NOT:
+        case KEFIR_OPT_OPCODE_INT16_BOOL_NOT:
+        case KEFIR_OPT_OPCODE_INT32_BOOL_NOT:
+        case KEFIR_OPT_OPCODE_INT64_BOOL_NOT:
             result.uinteger = arg.uinteger == 0;
             break;
 
@@ -280,11 +283,17 @@ static kefir_result_t int_binary_const_fold(struct kefir_mem *mem, struct kefir_
             result.integer = left.uinteger < right.uinteger;
             break;
 
-        case KEFIR_OPT_OPCODE_BOOL_OR:
+        case KEFIR_OPT_OPCODE_INT8_BOOL_OR:
+        case KEFIR_OPT_OPCODE_INT16_BOOL_OR:
+        case KEFIR_OPT_OPCODE_INT32_BOOL_OR:
+        case KEFIR_OPT_OPCODE_INT64_BOOL_OR:
             result.integer = left.uinteger != 0 || right.uinteger != 0;
             break;
 
-        case KEFIR_OPT_OPCODE_BOOL_AND:
+        case KEFIR_OPT_OPCODE_INT8_BOOL_AND:
+        case KEFIR_OPT_OPCODE_INT16_BOOL_AND:
+        case KEFIR_OPT_OPCODE_INT32_BOOL_AND:
+        case KEFIR_OPT_OPCODE_INT64_BOOL_AND:
             result.integer = left.uinteger != 0 && right.uinteger != 0;
             break;
 
@@ -403,7 +412,10 @@ static kefir_result_t const_fold_apply(struct kefir_mem *mem, const struct kefir
                 case KEFIR_OPT_OPCODE_INT16_NOT:
                 case KEFIR_OPT_OPCODE_INT32_NOT:
                 case KEFIR_OPT_OPCODE_INT64_NOT:
-                case KEFIR_OPT_OPCODE_BOOL_NOT:
+                case KEFIR_OPT_OPCODE_INT8_BOOL_NOT:
+                case KEFIR_OPT_OPCODE_INT16_BOOL_NOT:
+                case KEFIR_OPT_OPCODE_INT32_BOOL_NOT:
+                case KEFIR_OPT_OPCODE_INT64_BOOL_NOT:
                 case KEFIR_OPT_OPCODE_INT64_TRUNCATE_1BIT:
                 case KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_8BITS:
                 case KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_16BITS:
