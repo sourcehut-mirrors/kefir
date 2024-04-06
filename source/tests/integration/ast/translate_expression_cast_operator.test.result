@@ -83,7 +83,7 @@
                     "arg": -150
                 },
                 {
-                    "opcode": "trunc1"
+                    "opcode": "tobool64"
                 },
                 {
                     "opcode": "pushi",

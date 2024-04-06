@@ -143,7 +143,10 @@
     OPCODE(INT32_BOOL_AND, "int32_bool_and", ref2) SEPARATOR \
     OPCODE(INT64_BOOL_AND, "int64_bool_and", ref2) SEPARATOR \
     /* Type conversions */ \
-    OPCODE(INT64_TRUNCATE_1BIT, "int64_truncate_1bit", ref1) SEPARATOR \
+    OPCODE(INT8_TO_BOOL, "int8_to_bool", ref1) SEPARATOR \
+    OPCODE(INT16_TO_BOOL, "int16_to_bool", ref1) SEPARATOR \
+    OPCODE(INT32_TO_BOOL, "int32_to_bool", ref1) SEPARATOR \
+    OPCODE(INT64_TO_BOOL, "int64_to_bool", ref1) SEPARATOR \
     OPCODE(INT64_ZERO_EXTEND_8BITS, "int64_zero_extend_8bits", ref1) SEPARATOR \
     OPCODE(INT64_ZERO_EXTEND_16BITS, "int64_zero_extend_16bits", ref1) SEPARATOR \
     OPCODE(INT64_ZERO_EXTEND_32BITS, "int64_zero_extend_32bits", ref1) SEPARATOR \

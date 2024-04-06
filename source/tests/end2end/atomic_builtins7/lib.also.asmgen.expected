@@ -331,7 +331,7 @@ _kefir_func_test_is_lock_free_label18:
     movzx %al, %rcx
     mov %rcx, %rax
 _kefir_func_test_is_lock_free_label19:
-    test %rax, %rax
+    test %eax, %eax
     setne %al
     movzx %al, %rax
     lea (%rbp), %rsp

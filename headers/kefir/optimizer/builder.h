@@ -163,7 +163,10 @@ UNARY_OP(int16_bool_not);
 UNARY_OP(int32_bool_not);
 UNARY_OP(int64_bool_not);
 
-UNARY_OP(int64_truncate_1bit);
+UNARY_OP(int8_to_bool);
+UNARY_OP(int16_to_bool);
+UNARY_OP(int32_to_bool);
+UNARY_OP(int64_to_bool);
 UNARY_OP(int64_zero_extend_8bits);
 UNARY_OP(int64_zero_extend_16bits);
 UNARY_OP(int64_zero_extend_32bits);

@@ -242,7 +242,10 @@ kefir_result_t kefir_codegen_amd64_function_map_phi_outputs(struct kefir_mem *, 
     _def(int_comparison, KEFIR_OPT_OPCODE_INT16_BELOW) _separator                                                   \
     _def(int_comparison, KEFIR_OPT_OPCODE_INT32_BELOW) _separator                                                   \
     _def(int_comparison, KEFIR_OPT_OPCODE_INT64_BELOW) _separator                                                   \
-    _def(int_trunc1, KEFIR_OPT_OPCODE_INT64_TRUNCATE_1BIT) _separator                          \
+    _def(int_to_bool, KEFIR_OPT_OPCODE_INT8_TO_BOOL) _separator                          \
+    _def(int_to_bool, KEFIR_OPT_OPCODE_INT16_TO_BOOL) _separator                          \
+    _def(int_to_bool, KEFIR_OPT_OPCODE_INT32_TO_BOOL) _separator                          \
+    _def(int_to_bool, KEFIR_OPT_OPCODE_INT64_TO_BOOL) _separator                          \
     _def(int_zero_extend8, KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_8BITS) _separator                          \
     _def(int_zero_extend16, KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_16BITS) _separator                        \
     _def(int_zero_extend32, KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_32BITS) _separator                        \

@@ -224,7 +224,7 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "trunc1"
+                    "opcode": "tobool8"
                 },
                 {
                     "opcode": "pick",
@@ -291,7 +291,7 @@
                     "arg": 8192
                 },
                 {
-                    "opcode": "trunc1"
+                    "opcode": "tobool64"
                 },
                 {
                     "opcode": "pick",

@@ -19,7 +19,7 @@ _kefir_func_dnot_label0:
 _kefir_func_dnot_label1:
     movl %edi, -4(%rbp)
     movsxl -4(%rbp), %rax
-    test %rax, %rax
+    test %eax, %eax
     setne %al
     movzx %al, %rax
     mov $0, %rcx

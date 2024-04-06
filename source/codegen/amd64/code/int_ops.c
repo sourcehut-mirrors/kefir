@@ -1663,9 +1663,9 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int_sign_extend32)(
     return KEFIR_OK;
 }
 
-kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int_trunc1)(struct kefir_mem *mem,
-                                                                struct kefir_codegen_amd64_function *function,
-                                                                const struct kefir_opt_instruction *instruction) {
+kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int_to_bool)(struct kefir_mem *mem,
+                                                                 struct kefir_codegen_amd64_function *function,
+                                                                 const struct kefir_opt_instruction *instruction) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
@@ -1674,8 +1674,34 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int_trunc1)(struct kefir_mem
     REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[0], &arg_vreg));
     REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
                                                  KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));
-    REQUIRE_OK(kefir_asmcmp_amd64_test(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                                       &KEFIR_ASMCMP_MAKE_VREG(arg_vreg), &KEFIR_ASMCMP_MAKE_VREG(arg_vreg), NULL));
+    switch (instruction->operation.opcode) {
+        case KEFIR_OPT_OPCODE_INT8_TO_BOOL:
+            REQUIRE_OK(
+                kefir_asmcmp_amd64_test(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                                        &KEFIR_ASMCMP_MAKE_VREG8(arg_vreg), &KEFIR_ASMCMP_MAKE_VREG8(arg_vreg), NULL));
+            break;
+
+        case KEFIR_OPT_OPCODE_INT16_TO_BOOL:
+            REQUIRE_OK(kefir_asmcmp_amd64_test(
+                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                &KEFIR_ASMCMP_MAKE_VREG16(arg_vreg), &KEFIR_ASMCMP_MAKE_VREG16(arg_vreg), NULL));
+            break;
+
+        case KEFIR_OPT_OPCODE_INT32_TO_BOOL:
+            REQUIRE_OK(kefir_asmcmp_amd64_test(
+                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                &KEFIR_ASMCMP_MAKE_VREG32(arg_vreg), &KEFIR_ASMCMP_MAKE_VREG32(arg_vreg), NULL));
+            break;
+
+        case KEFIR_OPT_OPCODE_INT64_TO_BOOL:
+            REQUIRE_OK(kefir_asmcmp_amd64_test(
+                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                &KEFIR_ASMCMP_MAKE_VREG64(arg_vreg), &KEFIR_ASMCMP_MAKE_VREG64(arg_vreg), NULL));
+            break;
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected optimizer instuction opcode");
+    }
     REQUIRE_OK(kefir_asmcmp_amd64_setne(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                         &KEFIR_ASMCMP_MAKE_VREG8(result_vreg), NULL));
     REQUIRE_OK(kefir_asmcmp_amd64_movzx(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),

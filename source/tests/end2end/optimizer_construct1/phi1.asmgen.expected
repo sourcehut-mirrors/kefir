@@ -469,7 +469,7 @@
                             },
                             {
                                 "id": 27,
-                                "opcode": "int64_truncate_1bit",
+                                "opcode": "int32_to_bool",
                                 "arg": 26,
                                 "control_next": null,
                                 "properties": {
@@ -672,7 +672,7 @@
                             },
                             {
                                 "id": 43,
-                                "opcode": "int64_truncate_1bit",
+                                "opcode": "int32_to_bool",
                                 "arg": 42,
                                 "control_next": null,
                                 "properties": {

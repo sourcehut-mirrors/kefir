@@ -140,7 +140,10 @@
     OPCODE(BNOT32,       "bnot32",        none) SEPARATOR \
     OPCODE(BNOT64,       "bnot64",        none) SEPARATOR \
     /* Type conversions */ \
-    OPCODE(TRUNCATE1,   "trunc1",       none) SEPARATOR \
+    OPCODE(TOBOOL8,     "tobool8",      none) SEPARATOR \
+    OPCODE(TOBOOL16,    "tobool16",     none) SEPARATOR \
+    OPCODE(TOBOOL32,    "tobool32",     none) SEPARATOR \
+    OPCODE(TOBOOL64,    "tobool64",     none) SEPARATOR \
     OPCODE(EXTEND8,     "extend8",      none) SEPARATOR \
     OPCODE(EXTEND16,    "extend16",     none) SEPARATOR \
     OPCODE(EXTEND32,    "extend32",     none) SEPARATOR \

@@ -29,15 +29,15 @@ static kefir_result_t simplify_boot_not(struct kefir_mem *mem, struct kefir_opt_
     const kefir_opt_block_id_t block_id = instr->block_id;
     const kefir_opt_instruction_ref_t instr_id = instr->id;
 
-    struct kefir_opt_instruction *arg;
-    REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr->operation.parameters.refs[0], &arg));
-    REQUIRE(arg->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_NOT ||
-                arg->operation.opcode == KEFIR_OPT_OPCODE_INT16_BOOL_NOT ||
-                arg->operation.opcode == KEFIR_OPT_OPCODE_INT32_BOOL_NOT ||
-                arg->operation.opcode == KEFIR_OPT_OPCODE_INT64_BOOL_NOT,
+    struct kefir_opt_instruction *arg0, *arg;
+    REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr->operation.parameters.refs[0], &arg0));
+    REQUIRE(arg0->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_NOT ||
+                arg0->operation.opcode == KEFIR_OPT_OPCODE_INT16_BOOL_NOT ||
+                arg0->operation.opcode == KEFIR_OPT_OPCODE_INT32_BOOL_NOT ||
+                arg0->operation.opcode == KEFIR_OPT_OPCODE_INT64_BOOL_NOT,
             KEFIR_OK);
 
-    REQUIRE_OK(kefir_opt_code_container_instr(&func->code, arg->operation.parameters.refs[0], &arg));
+    REQUIRE_OK(kefir_opt_code_container_instr(&func->code, arg0->operation.parameters.refs[0], &arg));
     switch (arg->operation.opcode) {
         case KEFIR_OPT_OPCODE_INT8_BOOL_NOT:
         case KEFIR_OPT_OPCODE_INT16_BOOL_NOT:
@@ -80,7 +80,10 @@ static kefir_result_t simplify_boot_not(struct kefir_mem *mem, struct kefir_opt_
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_EQUALS:
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_GREATER:
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_LESSER:
-        case KEFIR_OPT_OPCODE_INT64_TRUNCATE_1BIT:
+        case KEFIR_OPT_OPCODE_INT8_TO_BOOL:
+        case KEFIR_OPT_OPCODE_INT16_TO_BOOL:
+        case KEFIR_OPT_OPCODE_INT32_TO_BOOL:
+        case KEFIR_OPT_OPCODE_INT64_TO_BOOL:
             *replacement_ref = arg->id;
             break;
 
@@ -104,9 +107,39 @@ static kefir_result_t simplify_boot_not(struct kefir_mem *mem, struct kefir_opt_
         } break;
 
         default:
-            REQUIRE_OK(
-                kefir_opt_code_builder_int64_truncate_1bit(mem, &func->code, block_id, arg->id, replacement_ref));
-            REQUIRE_OK(kefir_opt_code_container_instruction_move_after(&func->code, instr_id, *replacement_ref));
+            switch (arg0->operation.opcode) {
+                case KEFIR_OPT_OPCODE_INT8_BOOL_NOT:
+                    REQUIRE_OK(
+                        kefir_opt_code_builder_int8_to_bool(mem, &func->code, block_id, arg->id, replacement_ref));
+                    REQUIRE_OK(
+                        kefir_opt_code_container_instruction_move_after(&func->code, instr_id, *replacement_ref));
+                    break;
+
+                case KEFIR_OPT_OPCODE_INT16_BOOL_NOT:
+                    REQUIRE_OK(
+                        kefir_opt_code_builder_int16_to_bool(mem, &func->code, block_id, arg->id, replacement_ref));
+                    REQUIRE_OK(
+                        kefir_opt_code_container_instruction_move_after(&func->code, instr_id, *replacement_ref));
+                    break;
+
+                case KEFIR_OPT_OPCODE_INT32_BOOL_NOT:
+                    REQUIRE_OK(
+                        kefir_opt_code_builder_int32_to_bool(mem, &func->code, block_id, arg->id, replacement_ref));
+                    REQUIRE_OK(
+                        kefir_opt_code_container_instruction_move_after(&func->code, instr_id, *replacement_ref));
+                    break;
+
+                case KEFIR_OPT_OPCODE_INT64_BOOL_NOT:
+                    REQUIRE_OK(
+                        kefir_opt_code_builder_int64_to_bool(mem, &func->code, block_id, arg->id, replacement_ref));
+                    REQUIRE_OK(
+                        kefir_opt_code_container_instruction_move_after(&func->code, instr_id, *replacement_ref));
+                    break;
+
+                default:
+                    // Intentionally left blank
+                    break;
+            }
             break;
     }
     return KEFIR_OK;

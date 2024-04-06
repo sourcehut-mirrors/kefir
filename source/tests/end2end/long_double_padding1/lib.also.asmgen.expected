@@ -62,7 +62,7 @@ _kefir_func_add_ld1_label2:
     mov %r10, %r9
     call __atomic_compare_exchange@PLT
     and $1, %rax
-    test %rax, %rax
+    test %al, %al
     setne %al
     movzx %al, %rax
     test %rax, %rax
@@ -154,7 +154,7 @@ _kefir_func_add_cld1_label2:
     mov %r10, %r9
     call __atomic_compare_exchange@PLT
     and $1, %rax
-    test %rax, %rax
+    test %al, %al
     setne %al
     movzx %al, %rax
     test %rax, %rax

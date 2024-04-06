@@ -53,8 +53,20 @@ static kefir_result_t int_unary_const_fold(struct kefir_mem *mem, struct kefir_o
     }
 
     switch (instr->operation.opcode) {
-        case KEFIR_OPT_OPCODE_INT64_TRUNCATE_1BIT:
-            result.uinteger = arg.uinteger != 0 ? 1 : 0;
+        case KEFIR_OPT_OPCODE_INT8_TO_BOOL:
+            result.uinteger = ((kefir_uint8_t) arg.uinteger) != 0 ? 1 : 0;
+            break;
+
+        case KEFIR_OPT_OPCODE_INT16_TO_BOOL:
+            result.uinteger = ((kefir_uint16_t) arg.uinteger) != 0 ? 1 : 0;
+            break;
+
+        case KEFIR_OPT_OPCODE_INT32_TO_BOOL:
+            result.uinteger = ((kefir_uint32_t) arg.uinteger) != 0 ? 1 : 0;
+            break;
+
+        case KEFIR_OPT_OPCODE_INT64_TO_BOOL:
+            result.uinteger = ((kefir_uint64_t) arg.uinteger) != 0 ? 1 : 0;
             break;
 
         case KEFIR_OPT_OPCODE_INT8_NEG:
@@ -72,10 +84,19 @@ static kefir_result_t int_unary_const_fold(struct kefir_mem *mem, struct kefir_o
             break;
 
         case KEFIR_OPT_OPCODE_INT8_BOOL_NOT:
+            result.uinteger = ((kefir_uint8_t) arg.uinteger) == 0;
+            break;
+
         case KEFIR_OPT_OPCODE_INT16_BOOL_NOT:
+            result.uinteger = ((kefir_uint16_t) arg.uinteger) == 0;
+            break;
+
         case KEFIR_OPT_OPCODE_INT32_BOOL_NOT:
+            result.uinteger = ((kefir_uint32_t) arg.uinteger) == 0;
+            break;
+
         case KEFIR_OPT_OPCODE_INT64_BOOL_NOT:
-            result.uinteger = arg.uinteger == 0;
+            result.uinteger = ((kefir_uint64_t) arg.uinteger) == 0;
             break;
 
         case KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_8BITS:
@@ -174,36 +195,87 @@ static kefir_result_t int_binary_const_fold(struct kefir_mem *mem, struct kefir_
             result.uinteger = left.uinteger * right.uinteger;
             break;
 
+#define DIV_MOD_PRECONDITIONS(_type, _min) \
+    ((((_type) right.integer) != 0) && (((_type) left.integer) != (_min) || ((_type) right.integer) != -1))
         case KEFIR_OPT_OPCODE_INT8_DIV:
+            REQUIRE(DIV_MOD_PRECONDITIONS(kefir_int8_t, KEFIR_INT8_MIN), KEFIR_OK);
+            result.integer = ((kefir_int8_t) left.integer) / ((kefir_int8_t) right.integer);
+            break;
+
         case KEFIR_OPT_OPCODE_INT16_DIV:
+            REQUIRE(DIV_MOD_PRECONDITIONS(kefir_int16_t, KEFIR_INT16_MIN), KEFIR_OK);
+            result.integer = ((kefir_int16_t) left.integer) / ((kefir_int16_t) right.integer);
+            break;
+
         case KEFIR_OPT_OPCODE_INT32_DIV:
+            REQUIRE(DIV_MOD_PRECONDITIONS(kefir_int32_t, KEFIR_INT32_MIN), KEFIR_OK);
+            result.integer = ((kefir_int32_t) left.integer) / ((kefir_int32_t) right.integer);
+            break;
+
         case KEFIR_OPT_OPCODE_INT64_DIV:
-            REQUIRE(right.integer != 0, KEFIR_OK);
-            result.integer = left.integer / right.integer;
+            REQUIRE(DIV_MOD_PRECONDITIONS(kefir_int64_t, KEFIR_INT64_MIN), KEFIR_OK);
+            result.integer = ((kefir_int64_t) left.integer) / ((kefir_int64_t) right.integer);
             break;
 
         case KEFIR_OPT_OPCODE_INT8_MOD:
-        case KEFIR_OPT_OPCODE_INT16_MOD:
-        case KEFIR_OPT_OPCODE_INT32_MOD:
-        case KEFIR_OPT_OPCODE_INT64_MOD:
-            REQUIRE(right.integer != 0, KEFIR_OK);
-            result.integer = left.integer % right.integer;
+            REQUIRE(DIV_MOD_PRECONDITIONS(kefir_int8_t, KEFIR_INT8_MIN), KEFIR_OK);
+            result.integer = ((kefir_int8_t) left.integer) % ((kefir_int8_t) right.integer);
             break;
 
+        case KEFIR_OPT_OPCODE_INT16_MOD:
+            REQUIRE(DIV_MOD_PRECONDITIONS(kefir_int16_t, KEFIR_INT16_MIN), KEFIR_OK);
+            result.integer = ((kefir_int16_t) left.integer) % ((kefir_int16_t) right.integer);
+            break;
+
+        case KEFIR_OPT_OPCODE_INT32_MOD:
+            REQUIRE(DIV_MOD_PRECONDITIONS(kefir_int32_t, KEFIR_INT32_MIN), KEFIR_OK);
+            result.integer = ((kefir_int32_t) left.integer) % ((kefir_int32_t) right.integer);
+            break;
+
+        case KEFIR_OPT_OPCODE_INT64_MOD:
+            REQUIRE(DIV_MOD_PRECONDITIONS(kefir_int64_t, KEFIR_INT64_MIN), KEFIR_OK);
+            result.integer = ((kefir_int64_t) left.integer) % ((kefir_int64_t) right.integer);
+            break;
+#undef DIV_MOD_PRECONDITIONS
+
         case KEFIR_OPT_OPCODE_UINT8_DIV:
+            REQUIRE(((kefir_uint8_t) right.uinteger) != 0, KEFIR_OK);
+            result.uinteger = ((kefir_uint8_t) left.uinteger) / ((kefir_uint8_t) right.uinteger);
+            break;
+
         case KEFIR_OPT_OPCODE_UINT16_DIV:
+            REQUIRE(((kefir_uint16_t) right.uinteger) != 0, KEFIR_OK);
+            result.uinteger = ((kefir_uint16_t) left.uinteger) / ((kefir_uint16_t) right.uinteger);
+            break;
+
         case KEFIR_OPT_OPCODE_UINT32_DIV:
+            REQUIRE(((kefir_uint32_t) right.uinteger) != 0, KEFIR_OK);
+            result.uinteger = ((kefir_uint32_t) left.uinteger) / ((kefir_uint32_t) right.uinteger);
+            break;
+
         case KEFIR_OPT_OPCODE_UINT64_DIV:
-            REQUIRE(right.integer != 0, KEFIR_OK);
-            result.uinteger = left.uinteger / right.uinteger;
+            REQUIRE(((kefir_uint64_t) right.uinteger) != 0, KEFIR_OK);
+            result.uinteger = ((kefir_uint64_t) left.uinteger) / ((kefir_uint64_t) right.uinteger);
             break;
 
         case KEFIR_OPT_OPCODE_UINT8_MOD:
+            REQUIRE((kefir_uint8_t) right.integer != 0, KEFIR_OK);
+            result.uinteger = ((kefir_uint8_t) left.uinteger) % ((kefir_uint8_t) right.uinteger);
+            break;
+
         case KEFIR_OPT_OPCODE_UINT16_MOD:
+            REQUIRE((kefir_uint16_t) right.integer != 0, KEFIR_OK);
+            result.uinteger = ((kefir_uint16_t) left.uinteger) % ((kefir_uint16_t) right.uinteger);
+            break;
+
         case KEFIR_OPT_OPCODE_UINT32_MOD:
+            REQUIRE((kefir_uint32_t) right.integer != 0, KEFIR_OK);
+            result.uinteger = ((kefir_uint32_t) left.uinteger) % ((kefir_uint32_t) right.uinteger);
+            break;
+
         case KEFIR_OPT_OPCODE_UINT64_MOD:
-            REQUIRE(right.integer != 0, KEFIR_OK);
-            result.uinteger = left.uinteger % right.uinteger;
+            REQUIRE((kefir_uint64_t) right.integer != 0, KEFIR_OK);
+            result.uinteger = ((kefir_uint64_t) left.uinteger) % ((kefir_uint64_t) right.uinteger);
             break;
 
         case KEFIR_OPT_OPCODE_INT8_AND:
@@ -249,52 +321,115 @@ static kefir_result_t int_binary_const_fold(struct kefir_mem *mem, struct kefir_
             break;
 
         case KEFIR_OPT_OPCODE_INT8_EQUALS:
+            result.integer = ((kefir_uint8_t) left.integer) == ((kefir_uint8_t) right.integer);
+            break;
+
         case KEFIR_OPT_OPCODE_INT16_EQUALS:
+            result.integer = ((kefir_uint16_t) left.integer) == ((kefir_uint16_t) right.integer);
+            break;
+
         case KEFIR_OPT_OPCODE_INT32_EQUALS:
+            result.integer = ((kefir_uint32_t) left.integer) == ((kefir_uint32_t) right.integer);
+            break;
+
         case KEFIR_OPT_OPCODE_INT64_EQUALS:
-            result.integer = left.integer == right.integer;
+            result.integer = ((kefir_uint64_t) left.integer) == ((kefir_uint64_t) right.integer);
             break;
 
         case KEFIR_OPT_OPCODE_INT8_GREATER:
+            result.integer = ((kefir_int8_t) left.integer) > ((kefir_int8_t) right.integer);
+            break;
+
         case KEFIR_OPT_OPCODE_INT16_GREATER:
+            result.integer = ((kefir_int16_t) left.integer) > ((kefir_int16_t) right.integer);
+            break;
+
         case KEFIR_OPT_OPCODE_INT32_GREATER:
+            result.integer = ((kefir_int32_t) left.integer) > ((kefir_int32_t) right.integer);
+            break;
+
         case KEFIR_OPT_OPCODE_INT64_GREATER:
-            result.integer = left.integer > right.integer;
+            result.integer = ((kefir_int64_t) left.integer) > ((kefir_int64_t) right.integer);
             break;
 
         case KEFIR_OPT_OPCODE_INT8_LESSER:
+            result.integer = ((kefir_int8_t) left.integer) < ((kefir_int8_t) right.integer);
+            break;
+
         case KEFIR_OPT_OPCODE_INT16_LESSER:
+            result.integer = ((kefir_int16_t) left.integer) < ((kefir_int16_t) right.integer);
+            break;
+
         case KEFIR_OPT_OPCODE_INT32_LESSER:
+            result.integer = ((kefir_int32_t) left.integer) < ((kefir_int32_t) right.integer);
+            break;
+
         case KEFIR_OPT_OPCODE_INT64_LESSER:
-            result.integer = left.integer < right.integer;
+            result.integer = ((kefir_int64_t) left.integer) < ((kefir_int64_t) right.integer);
             break;
 
         case KEFIR_OPT_OPCODE_INT8_ABOVE:
+            result.integer = ((kefir_uint8_t) left.uinteger) > ((kefir_uint8_t) right.uinteger);
+            break;
+
         case KEFIR_OPT_OPCODE_INT16_ABOVE:
+            result.integer = ((kefir_uint16_t) left.uinteger) > ((kefir_uint16_t) right.uinteger);
+            break;
+
         case KEFIR_OPT_OPCODE_INT32_ABOVE:
+            result.integer = ((kefir_uint32_t) left.uinteger) > ((kefir_uint32_t) right.uinteger);
+            break;
+
         case KEFIR_OPT_OPCODE_INT64_ABOVE:
-            result.integer = left.uinteger > right.uinteger;
+            result.integer = ((kefir_uint64_t) left.uinteger) > ((kefir_uint64_t) right.uinteger);
             break;
 
         case KEFIR_OPT_OPCODE_INT8_BELOW:
+            result.integer = ((kefir_uint8_t) left.uinteger) < ((kefir_uint8_t) right.uinteger);
+            break;
+
         case KEFIR_OPT_OPCODE_INT16_BELOW:
+            result.integer = ((kefir_uint16_t) left.uinteger) < ((kefir_uint16_t) right.uinteger);
+            break;
+
         case KEFIR_OPT_OPCODE_INT32_BELOW:
+            result.integer = ((kefir_uint32_t) left.uinteger) < ((kefir_uint32_t) right.uinteger);
+            break;
+
         case KEFIR_OPT_OPCODE_INT64_BELOW:
-            result.integer = left.uinteger < right.uinteger;
+            result.integer = ((kefir_uint64_t) left.uinteger) < ((kefir_uint64_t) right.uinteger);
             break;
 
         case KEFIR_OPT_OPCODE_INT8_BOOL_OR:
+            result.integer = ((kefir_uint8_t) left.uinteger) != 0 || ((kefir_uint8_t) right.uinteger != 0);
+            break;
+
         case KEFIR_OPT_OPCODE_INT16_BOOL_OR:
+            result.integer = ((kefir_uint16_t) left.uinteger) != 0 || ((kefir_uint16_t) right.uinteger != 0);
+            break;
+
         case KEFIR_OPT_OPCODE_INT32_BOOL_OR:
+            result.integer = ((kefir_uint32_t) left.uinteger) != 0 || ((kefir_uint32_t) right.uinteger != 0);
+            break;
+
         case KEFIR_OPT_OPCODE_INT64_BOOL_OR:
-            result.integer = left.uinteger != 0 || right.uinteger != 0;
+            result.integer = ((kefir_uint64_t) left.uinteger) != 0 || ((kefir_uint64_t) right.uinteger != 0);
             break;
 
         case KEFIR_OPT_OPCODE_INT8_BOOL_AND:
+            result.integer = ((kefir_uint8_t) left.uinteger) != 0 && ((kefir_uint8_t) right.uinteger != 0);
+            break;
+
         case KEFIR_OPT_OPCODE_INT16_BOOL_AND:
+            result.integer = ((kefir_uint16_t) left.uinteger) != 0 && ((kefir_uint16_t) right.uinteger != 0);
+            break;
+
         case KEFIR_OPT_OPCODE_INT32_BOOL_AND:
+            result.integer = ((kefir_uint32_t) left.uinteger) != 0 && ((kefir_uint32_t) right.uinteger != 0);
+            break;
+
         case KEFIR_OPT_OPCODE_INT64_BOOL_AND:
-            result.integer = left.uinteger != 0 && right.uinteger != 0;
+            result.integer = ((kefir_uint64_t) left.uinteger) != 0 && ((kefir_uint64_t) right.uinteger != 0);
             break;
 
         default:
@@ -416,7 +551,10 @@ static kefir_result_t const_fold_apply(struct kefir_mem *mem, const struct kefir
                 case KEFIR_OPT_OPCODE_INT16_BOOL_NOT:
                 case KEFIR_OPT_OPCODE_INT32_BOOL_NOT:
                 case KEFIR_OPT_OPCODE_INT64_BOOL_NOT:
-                case KEFIR_OPT_OPCODE_INT64_TRUNCATE_1BIT:
+                case KEFIR_OPT_OPCODE_INT8_TO_BOOL:
+                case KEFIR_OPT_OPCODE_INT16_TO_BOOL:
+                case KEFIR_OPT_OPCODE_INT32_TO_BOOL:
+                case KEFIR_OPT_OPCODE_INT64_TO_BOOL:
                 case KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_8BITS:
                 case KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_16BITS:
                 case KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_32BITS:
