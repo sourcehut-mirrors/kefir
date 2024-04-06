@@ -25,7 +25,7 @@ _kefir_func_below_or_equals_label1:
     movl %edi, -8(%rbp)
     movl -8(%rbp), %eax
     movl -4(%rbp), %ecx
-    cmp %rcx, %rax
+    cmp %ecx, %eax
     jbe _kefir_func_below_or_equals_label2
     jmp _kefir_func_below_or_equals_label3
 _kefir_func_below_or_equals_label2:
@@ -49,7 +49,7 @@ _kefir_func_above_or_equals_label1:
     movl %edi, -8(%rbp)
     movl -8(%rbp), %eax
     movl -4(%rbp), %ecx
-    cmp %rcx, %rax
+    cmp %ecx, %eax
     jae _kefir_func_above_or_equals_label2
     jmp _kefir_func_above_or_equals_label3
 _kefir_func_above_or_equals_label2:
@@ -74,7 +74,7 @@ _kefir_func_below_or_equals2_label1:
     movl -8(%rbp), %eax
     movl -4(%rbp), %ecx
     mov $0, %rdx
-    cmp %rcx, %rax
+    cmp %ecx, %eax
     setbe %dl
     mov %rdx, %rax
     lea (%rbp), %rsp
@@ -92,7 +92,7 @@ _kefir_func_above_or_equals2_label1:
     movl -8(%rbp), %eax
     movl -4(%rbp), %ecx
     mov $0, %rdx
-    cmp %rcx, %rax
+    cmp %ecx, %eax
     setae %dl
     mov %rdx, %rax
     lea (%rbp), %rsp
@@ -110,7 +110,7 @@ _kefir_func_greater_or_equals2_label1:
     movsxl -8(%rbp), %rax
     movsxl -4(%rbp), %rcx
     mov $0, %rdx
-    cmp %rcx, %rax
+    cmp %ecx, %eax
     setge %dl
     mov %rdx, %rax
     lea (%rbp), %rsp
@@ -127,7 +127,7 @@ _kefir_func_less_or_equals_label1:
     movl %edi, -8(%rbp)
     movsxl -8(%rbp), %rax
     movsxl -4(%rbp), %rcx
-    cmp %rcx, %rax
+    cmp %ecx, %eax
     jle _kefir_func_less_or_equals_label2
     jmp _kefir_func_less_or_equals_label3
 _kefir_func_less_or_equals_label2:
@@ -151,7 +151,7 @@ _kefir_func_greater_or_equals_label1:
     movl %edi, -8(%rbp)
     movsxl -8(%rbp), %rax
     movsxl -4(%rbp), %rcx
-    cmp %rcx, %rax
+    cmp %ecx, %eax
     jge _kefir_func_greater_or_equals_label2
     jmp _kefir_func_greater_or_equals_label3
 _kefir_func_greater_or_equals_label2:
@@ -176,7 +176,7 @@ _kefir_func_less_or_equals2_label1:
     movsxl -8(%rbp), %rax
     movsxl -4(%rbp), %rcx
     mov $0, %rdx
-    cmp %rcx, %rax
+    cmp %ecx, %eax
     setle %dl
     mov %rdx, %rax
     lea (%rbp), %rsp

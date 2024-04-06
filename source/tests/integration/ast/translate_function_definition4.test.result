@@ -187,7 +187,7 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "igreater"
+                    "opcode": "igreater32"
                 },
                 {
                     "opcode": "bnot"

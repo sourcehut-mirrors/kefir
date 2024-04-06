@@ -184,7 +184,7 @@
                     "arg": 1000
                 },
                 {
-                    "opcode": "iequals"
+                    "opcode": "iequals32"
                 },
                 {
                     "opcode": "bnot"

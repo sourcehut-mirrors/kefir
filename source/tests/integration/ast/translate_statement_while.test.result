@@ -193,7 +193,7 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "iequals"
+                    "opcode": "iequals32"
                 },
                 {
                     "opcode": "bnot"

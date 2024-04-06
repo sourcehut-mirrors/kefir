@@ -22,6 +22,7 @@
 #include "kefir/ast-translator/translator.h"
 #include "kefir/ast-translator/flow_control.h"
 #include "kefir/ast-translator/util.h"
+#include "kefir/ast/type_conv.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 
@@ -48,7 +49,34 @@ kefir_result_t kefir_ast_translate_switch_statement_node(struct kefir_mem *mem,
 
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 0));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PUSHI64, value));
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_IEQUALS, 0));
+        switch (flow_control_stmt->value.switchStatement.controlling_expression_type->tag) {
+            case KEFIR_AST_TYPE_SCALAR_BOOL:
+            case KEFIR_AST_TYPE_SCALAR_CHAR:
+            case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
+            case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_IEQUALS8, 0));
+                break;
+
+            case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
+            case KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT:
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_IEQUALS16, 0));
+                break;
+
+            case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
+            case KEFIR_AST_TYPE_SCALAR_SIGNED_INT:
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_IEQUALS32, 0));
+                break;
+
+            case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
+            case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG:
+            case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
+            case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_IEQUALS64, 0));
+                break;
+
+            default:
+                return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of an integral type");
+        }
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_BNOT, 0));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_BRANCH,
                                                    KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder) + 3));

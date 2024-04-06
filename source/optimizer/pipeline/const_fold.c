@@ -245,23 +245,38 @@ static kefir_result_t int_binary_const_fold(struct kefir_mem *mem, struct kefir_
             result.integer = left.integer >> right.integer;
             break;
 
-        case KEFIR_OPT_OPCODE_INT_EQUALS:
+        case KEFIR_OPT_OPCODE_INT8_EQUALS:
+        case KEFIR_OPT_OPCODE_INT16_EQUALS:
+        case KEFIR_OPT_OPCODE_INT32_EQUALS:
+        case KEFIR_OPT_OPCODE_INT64_EQUALS:
             result.integer = left.integer == right.integer;
             break;
 
-        case KEFIR_OPT_OPCODE_INT_GREATER:
+        case KEFIR_OPT_OPCODE_INT8_GREATER:
+        case KEFIR_OPT_OPCODE_INT16_GREATER:
+        case KEFIR_OPT_OPCODE_INT32_GREATER:
+        case KEFIR_OPT_OPCODE_INT64_GREATER:
             result.integer = left.integer > right.integer;
             break;
 
-        case KEFIR_OPT_OPCODE_INT_LESSER:
+        case KEFIR_OPT_OPCODE_INT8_LESSER:
+        case KEFIR_OPT_OPCODE_INT16_LESSER:
+        case KEFIR_OPT_OPCODE_INT32_LESSER:
+        case KEFIR_OPT_OPCODE_INT64_LESSER:
             result.integer = left.integer < right.integer;
             break;
 
-        case KEFIR_OPT_OPCODE_INT_ABOVE:
+        case KEFIR_OPT_OPCODE_INT8_ABOVE:
+        case KEFIR_OPT_OPCODE_INT16_ABOVE:
+        case KEFIR_OPT_OPCODE_INT32_ABOVE:
+        case KEFIR_OPT_OPCODE_INT64_ABOVE:
             result.integer = left.uinteger > right.uinteger;
             break;
 
-        case KEFIR_OPT_OPCODE_INT_BELOW:
+        case KEFIR_OPT_OPCODE_INT8_BELOW:
+        case KEFIR_OPT_OPCODE_INT16_BELOW:
+        case KEFIR_OPT_OPCODE_INT32_BELOW:
+        case KEFIR_OPT_OPCODE_INT64_BELOW:
             result.integer = left.uinteger < right.uinteger;
             break;
 
@@ -357,11 +372,26 @@ static kefir_result_t const_fold_apply(struct kefir_mem *mem, const struct kefir
                 case KEFIR_OPT_OPCODE_INT16_ARSHIFT:
                 case KEFIR_OPT_OPCODE_INT32_ARSHIFT:
                 case KEFIR_OPT_OPCODE_INT64_ARSHIFT:
-                case KEFIR_OPT_OPCODE_INT_EQUALS:
-                case KEFIR_OPT_OPCODE_INT_GREATER:
-                case KEFIR_OPT_OPCODE_INT_LESSER:
-                case KEFIR_OPT_OPCODE_INT_ABOVE:
-                case KEFIR_OPT_OPCODE_INT_BELOW:
+                case KEFIR_OPT_OPCODE_INT8_EQUALS:
+                case KEFIR_OPT_OPCODE_INT16_EQUALS:
+                case KEFIR_OPT_OPCODE_INT32_EQUALS:
+                case KEFIR_OPT_OPCODE_INT64_EQUALS:
+                case KEFIR_OPT_OPCODE_INT8_GREATER:
+                case KEFIR_OPT_OPCODE_INT16_GREATER:
+                case KEFIR_OPT_OPCODE_INT32_GREATER:
+                case KEFIR_OPT_OPCODE_INT64_GREATER:
+                case KEFIR_OPT_OPCODE_INT8_LESSER:
+                case KEFIR_OPT_OPCODE_INT16_LESSER:
+                case KEFIR_OPT_OPCODE_INT32_LESSER:
+                case KEFIR_OPT_OPCODE_INT64_LESSER:
+                case KEFIR_OPT_OPCODE_INT8_ABOVE:
+                case KEFIR_OPT_OPCODE_INT16_ABOVE:
+                case KEFIR_OPT_OPCODE_INT32_ABOVE:
+                case KEFIR_OPT_OPCODE_INT64_ABOVE:
+                case KEFIR_OPT_OPCODE_INT8_BELOW:
+                case KEFIR_OPT_OPCODE_INT16_BELOW:
+                case KEFIR_OPT_OPCODE_INT32_BELOW:
+                case KEFIR_OPT_OPCODE_INT64_BELOW:
                     REQUIRE_OK(int_binary_const_fold(mem, func, instr, &replacement_ref));
                     break;
 

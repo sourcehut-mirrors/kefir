@@ -17,7 +17,7 @@ factorial:
 _kefir_func_factorial_label0:
 _kefir_func_factorial_label1:
     movsx %edi, %rax
-    cmp $0, %rax
+    cmp $0, %eax
     jl _kefir_func_factorial_label2
     jmp _kefir_func_factorial_label3
 _kefir_func_factorial_label2:
@@ -25,7 +25,7 @@ _kefir_func_factorial_label2:
     ret
 _kefir_func_factorial_label3:
     movsx %edi, %rax
-    cmp $2, %rax
+    cmp $2, %eax
     jle _kefir_func_factorial_label9
     mov %rdi, %rax
     jmp _kefir_func_factorial_label5
@@ -37,7 +37,7 @@ _kefir_func_factorial_label5:
     mov $1, %rcx
 _kefir_func_factorial_label6:
     movsx %eax, %rdx
-    cmp $1, %rdx
+    cmp $1, %edx
     jg _kefir_func_factorial_label10
     mov %rcx, %rdx
     jmp _kefir_func_factorial_label8

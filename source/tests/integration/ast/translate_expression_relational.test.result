@@ -205,7 +205,7 @@
                     "arg": 90
                 },
                 {
-                    "opcode": "ibelow"
+                    "opcode": "ibelow64"
                 },
                 {
                     "opcode": "pushi",
@@ -216,7 +216,7 @@
                     "arg": 90
                 },
                 {
-                    "opcode": "ilesser"
+                    "opcode": "ilesser32"
                 },
                 {
                     "opcode": "pushi",
@@ -227,7 +227,7 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "ibelow"
+                    "opcode": "ibelow64"
                 },
                 {
                     "opcode": "pushi",
@@ -238,7 +238,7 @@
                     "arg": 955
                 },
                 {
-                    "opcode": "ilesser"
+                    "opcode": "ilesser32"
                 },
                 {
                     "opcode": "pushf32",
@@ -329,14 +329,14 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "ibelow"
+                    "opcode": "ibelow64"
                 },
                 {
                     "opcode": "xchg",
                     "arg": 2
                 },
                 {
-                    "opcode": "iequals"
+                    "opcode": "iequals64"
                 },
                 {
                     "opcode": "bor"
@@ -358,14 +358,14 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "ilesser"
+                    "opcode": "ilesser32"
                 },
                 {
                     "opcode": "xchg",
                     "arg": 2
                 },
                 {
-                    "opcode": "iequals"
+                    "opcode": "iequals32"
                 },
                 {
                     "opcode": "bor"
@@ -387,14 +387,14 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "ibelow"
+                    "opcode": "ibelow64"
                 },
                 {
                     "opcode": "xchg",
                     "arg": 2
                 },
                 {
-                    "opcode": "iequals"
+                    "opcode": "iequals64"
                 },
                 {
                     "opcode": "bor"
@@ -416,14 +416,14 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "ilesser"
+                    "opcode": "ilesser32"
                 },
                 {
                     "opcode": "xchg",
                     "arg": 2
                 },
                 {
-                    "opcode": "iequals"
+                    "opcode": "iequals32"
                 },
                 {
                     "opcode": "bor"
@@ -599,7 +599,7 @@
                     "arg": 7
                 },
                 {
-                    "opcode": "iequals"
+                    "opcode": "iequals32"
                 },
                 {
                     "opcode": "bnot"
@@ -613,7 +613,7 @@
                     "arg": 100000
                 },
                 {
-                    "opcode": "iequals"
+                    "opcode": "iequals64"
                 },
                 {
                     "opcode": "bnot"
@@ -713,7 +713,7 @@
                     }
                 },
                 {
-                    "opcode": "iequals"
+                    "opcode": "iequals64"
                 },
                 {
                     "opcode": "bnot"
@@ -744,7 +744,7 @@
                     }
                 },
                 {
-                    "opcode": "iequals"
+                    "opcode": "iequals64"
                 },
                 {
                     "opcode": "bnot"
@@ -776,7 +776,7 @@
                     }
                 },
                 {
-                    "opcode": "iequals"
+                    "opcode": "iequals64"
                 },
                 {
                     "opcode": "bnot"
@@ -814,7 +814,7 @@
                     }
                 },
                 {
-                    "opcode": "iequals"
+                    "opcode": "iequals64"
                 },
                 {
                     "opcode": "getglobal",
@@ -842,7 +842,7 @@
                     }
                 },
                 {
-                    "opcode": "iequals"
+                    "opcode": "iequals64"
                 },
                 {
                     "opcode": "getlocal",
@@ -871,7 +871,7 @@
                     }
                 },
                 {
-                    "opcode": "iequals"
+                    "opcode": "iequals64"
                 }
             ],
             "public_labels": []
@@ -890,7 +890,7 @@
                     "arg": 121
                 },
                 {
-                    "opcode": "iabove"
+                    "opcode": "iabove64"
                 },
                 {
                     "opcode": "pushi",
@@ -901,7 +901,7 @@
                     "arg": 80
                 },
                 {
-                    "opcode": "igreater"
+                    "opcode": "igreater32"
                 },
                 {
                     "opcode": "pushi",
@@ -912,7 +912,7 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "iabove"
+                    "opcode": "iabove64"
                 },
                 {
                     "opcode": "pushi",
@@ -923,7 +923,7 @@
                     "arg": 900
                 },
                 {
-                    "opcode": "igreater"
+                    "opcode": "igreater32"
                 },
                 {
                     "opcode": "pushf32",
@@ -1022,7 +1022,7 @@
                     }
                 },
                 {
-                    "opcode": "ibelow"
+                    "opcode": "ibelow64"
                 },
                 {
                     "opcode": "getlocal",
@@ -1051,7 +1051,7 @@
                     }
                 },
                 {
-                    "opcode": "ibelow"
+                    "opcode": "ibelow64"
                 },
                 {
                     "opcode": "getglobal",
@@ -1086,14 +1086,14 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "ibelow"
+                    "opcode": "ibelow64"
                 },
                 {
                     "opcode": "xchg",
                     "arg": 2
                 },
                 {
-                    "opcode": "iequals"
+                    "opcode": "iequals64"
                 },
                 {
                     "opcode": "bor"
@@ -1133,14 +1133,14 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "ibelow"
+                    "opcode": "ibelow64"
                 },
                 {
                     "opcode": "xchg",
                     "arg": 2
                 },
                 {
-                    "opcode": "iequals"
+                    "opcode": "iequals64"
                 },
                 {
                     "opcode": "bor"
@@ -1170,7 +1170,7 @@
                     }
                 },
                 {
-                    "opcode": "iabove"
+                    "opcode": "iabove64"
                 },
                 {
                     "opcode": "getlocal",
@@ -1199,7 +1199,7 @@
                     }
                 },
                 {
-                    "opcode": "iabove"
+                    "opcode": "iabove64"
                 },
                 {
                     "opcode": "getglobal",
@@ -1234,14 +1234,14 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "iabove"
+                    "opcode": "iabove64"
                 },
                 {
                     "opcode": "xchg",
                     "arg": 2
                 },
                 {
-                    "opcode": "iequals"
+                    "opcode": "iequals64"
                 },
                 {
                     "opcode": "bor"
@@ -1281,14 +1281,14 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "iabove"
+                    "opcode": "iabove64"
                 },
                 {
                     "opcode": "xchg",
                     "arg": 2
                 },
                 {
-                    "opcode": "iequals"
+                    "opcode": "iequals64"
                 },
                 {
                     "opcode": "bor"
@@ -1317,7 +1317,7 @@
                     "arg": 67
                 },
                 {
-                    "opcode": "iequals"
+                    "opcode": "iequals32"
                 },
                 {
                     "opcode": "pushi",
@@ -1328,7 +1328,7 @@
                     "arg": 1010
                 },
                 {
-                    "opcode": "iequals"
+                    "opcode": "iequals64"
                 },
                 {
                     "opcode": "pushf32",
@@ -1405,14 +1405,14 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "iabove"
+                    "opcode": "iabove64"
                 },
                 {
                     "opcode": "xchg",
                     "arg": 2
                 },
                 {
-                    "opcode": "iequals"
+                    "opcode": "iequals64"
                 },
                 {
                     "opcode": "bor"
@@ -1434,14 +1434,14 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "igreater"
+                    "opcode": "igreater32"
                 },
                 {
                     "opcode": "xchg",
                     "arg": 2
                 },
                 {
-                    "opcode": "iequals"
+                    "opcode": "iequals32"
                 },
                 {
                     "opcode": "bor"
@@ -1463,14 +1463,14 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "iabove"
+                    "opcode": "iabove64"
                 },
                 {
                     "opcode": "xchg",
                     "arg": 2
                 },
                 {
-                    "opcode": "iequals"
+                    "opcode": "iequals64"
                 },
                 {
                     "opcode": "bor"
@@ -1492,14 +1492,14 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "igreater"
+                    "opcode": "igreater32"
                 },
                 {
                     "opcode": "xchg",
                     "arg": 2
                 },
                 {
-                    "opcode": "iequals"
+                    "opcode": "iequals32"
                 },
                 {
                     "opcode": "bor"

@@ -38,11 +38,26 @@ static kefir_result_t simplify_boot_not(struct kefir_mem *mem, struct kefir_opt_
         case KEFIR_OPT_OPCODE_BOOL_NOT:
         case KEFIR_OPT_OPCODE_BOOL_AND:
         case KEFIR_OPT_OPCODE_BOOL_OR:
-        case KEFIR_OPT_OPCODE_INT_EQUALS:
-        case KEFIR_OPT_OPCODE_INT_GREATER:
-        case KEFIR_OPT_OPCODE_INT_LESSER:
-        case KEFIR_OPT_OPCODE_INT_ABOVE:
-        case KEFIR_OPT_OPCODE_INT_BELOW:
+        case KEFIR_OPT_OPCODE_INT8_EQUALS:
+        case KEFIR_OPT_OPCODE_INT16_EQUALS:
+        case KEFIR_OPT_OPCODE_INT32_EQUALS:
+        case KEFIR_OPT_OPCODE_INT64_EQUALS:
+        case KEFIR_OPT_OPCODE_INT8_GREATER:
+        case KEFIR_OPT_OPCODE_INT16_GREATER:
+        case KEFIR_OPT_OPCODE_INT32_GREATER:
+        case KEFIR_OPT_OPCODE_INT64_GREATER:
+        case KEFIR_OPT_OPCODE_INT8_LESSER:
+        case KEFIR_OPT_OPCODE_INT16_LESSER:
+        case KEFIR_OPT_OPCODE_INT32_LESSER:
+        case KEFIR_OPT_OPCODE_INT64_LESSER:
+        case KEFIR_OPT_OPCODE_INT8_ABOVE:
+        case KEFIR_OPT_OPCODE_INT16_ABOVE:
+        case KEFIR_OPT_OPCODE_INT32_ABOVE:
+        case KEFIR_OPT_OPCODE_INT64_ABOVE:
+        case KEFIR_OPT_OPCODE_INT8_BELOW:
+        case KEFIR_OPT_OPCODE_INT16_BELOW:
+        case KEFIR_OPT_OPCODE_INT32_BELOW:
+        case KEFIR_OPT_OPCODE_INT64_BELOW:
         case KEFIR_OPT_OPCODE_FLOAT32_EQUALS:
         case KEFIR_OPT_OPCODE_FLOAT32_GREATER:
         case KEFIR_OPT_OPCODE_FLOAT32_LESSER:
@@ -839,7 +854,7 @@ static kefir_result_t simplify_int_add(struct kefir_mem *mem, struct kefir_opt_f
 static kefir_result_t simplify_int_sub(struct kefir_mem *mem, struct kefir_opt_function *func,
                                        struct kefir_opt_instruction *instr,
                                        kefir_opt_instruction_ref_t *replacement_ref) {
-    kefir_opt_opcode_t original_opcode = instr->operation.opcode, counterpart_opcode;
+    kefir_opt_opcode_t original_opcode = instr->operation.opcode, counterpart_opcode = 0;
     REQUIRE_OK(int_addition_counterpart(original_opcode, &counterpart_opcode));
     const kefir_opt_block_id_t block_id = instr->block_id;
     const kefir_opt_instruction_ref_t instr_id = instr->id;

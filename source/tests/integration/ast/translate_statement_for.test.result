@@ -293,7 +293,7 @@
                     "arg": 10
                 },
                 {
-                    "opcode": "ilesser"
+                    "opcode": "ilesser32"
                 },
                 {
                     "opcode": "bnot"
@@ -438,7 +438,7 @@
                     "arg": 10
                 },
                 {
-                    "opcode": "ilesser"
+                    "opcode": "ilesser32"
                 },
                 {
                     "opcode": "bnot"

@@ -78,7 +78,7 @@ condition1:
 _kefir_func_condition1_label0:
 _kefir_func_condition1_label1:
     movsx %edi, %rax
-    cmp $0, %rax
+    cmp $0, %eax
     jle _kefir_func_condition1_label3
 _kefir_func_condition1_label4:
 _kefir_func_condition1_label2:
