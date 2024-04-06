@@ -28,7 +28,7 @@ _kefir_func_somefn_label2:
     xor %rdx, %rdx
     test %eax, %eax
     sete %dl
-    test %rdx, %rdx
+    test %dl, %dl
     jz _kefir_func_somefn_label7
     movq %xmm1, %xmm2
     jmp _kefir_func_somefn_label4

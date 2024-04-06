@@ -402,6 +402,7 @@
                                 "target_block": 2,
                                 "alternative_block": 3,
                                 "condition": 19,
+                                "condition_variant": "8bit",
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -488,6 +489,7 @@
                                 "target_block": 4,
                                 "alternative_block": 5,
                                 "condition": 27,
+                                "condition_variant": "8bit",
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -803,6 +805,7 @@
                                 "target_block": 6,
                                 "alternative_block": 7,
                                 "condition": 31,
+                                "condition_variant": "8bit",
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -1373,6 +1376,7 @@
                                 "target_block": 4,
                                 "alternative_block": 5,
                                 "condition": 13,
+                                "condition_variant": "8bit",
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -1570,6 +1574,7 @@
                                 "target_block": 6,
                                 "alternative_block": 7,
                                 "condition": 20,
+                                "condition_variant": "8bit",
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,

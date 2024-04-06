@@ -231,7 +231,7 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "branch",
+                    "opcode": "branch8",
                     "arg": 6
                 },
                 {
@@ -268,7 +268,7 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "branch",
+                    "opcode": "branch8",
                     "arg": 8
                 },
                 {
@@ -298,7 +298,7 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "branch",
+                    "opcode": "branch8",
                     "arg": 6
                 },
                 {
@@ -335,7 +335,7 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "branch",
+                    "opcode": "branch8",
                     "arg": 8
                 },
                 {
@@ -372,7 +372,7 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "branch",
+                    "opcode": "branch8",
                     "arg": 11
                 },
                 {
@@ -412,7 +412,7 @@
                     "opcode": "bnot8"
                 },
                 {
-                    "opcode": "branch",
+                    "opcode": "branch8",
                     "arg": 6
                 },
                 {
@@ -452,7 +452,7 @@
                     "opcode": "bnot8"
                 },
                 {
-                    "opcode": "branch",
+                    "opcode": "branch8",
                     "arg": 9
                 },
                 {
@@ -482,7 +482,7 @@
                     "opcode": "bnot64"
                 },
                 {
-                    "opcode": "branch",
+                    "opcode": "branch8",
                     "arg": 6
                 },
                 {
@@ -522,7 +522,7 @@
                     "opcode": "bnot8"
                 },
                 {
-                    "opcode": "branch",
+                    "opcode": "branch8",
                     "arg": 9
                 },
                 {
@@ -562,7 +562,7 @@
                     "opcode": "bnot8"
                 },
                 {
-                    "opcode": "branch",
+                    "opcode": "branch8",
                     "arg": 12
                 },
                 {

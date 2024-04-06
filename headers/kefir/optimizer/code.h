@@ -53,6 +53,13 @@ typedef enum kefir_opt_operation_reference_index {
     KEFIR_OPT_STACK_ALLOCATION_ALIGNMENT_REF = 1
 } kefir_opt_operation_reference_index_t;
 
+typedef enum kefir_opt_branch_condition_variant {
+    KEFIR_OPT_BRANCH_CONDITION_8BIT,
+    KEFIR_OPT_BRANCH_CONDITION_16BIT,
+    KEFIR_OPT_BRANCH_CONDITION_32BIT,
+    KEFIR_OPT_BRANCH_CONDITION_64BIT
+} kefir_opt_branch_condition_variant_t;
+
 typedef struct kefir_opt_operation_parameters {
     kefir_opt_instruction_ref_t refs[3];
     struct {
@@ -75,6 +82,7 @@ typedef struct kefir_opt_operation_parameters {
         struct {
             kefir_opt_block_id_t target_block;
             kefir_opt_block_id_t alternative_block;
+            kefir_opt_branch_condition_variant_t condition_variant;
             kefir_opt_instruction_ref_t condition_ref;
         } branch;
 

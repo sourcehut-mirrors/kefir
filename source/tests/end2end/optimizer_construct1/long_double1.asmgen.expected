@@ -356,6 +356,7 @@
                                 "target_block": 2,
                                 "alternative_block": 2,
                                 "condition": 5,
+                                "condition_variant": "8bit",
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,

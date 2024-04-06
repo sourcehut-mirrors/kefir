@@ -113,7 +113,7 @@ _kefir_func_quad_equation_label1:
     subsd %xmm4, %xmm3
     xorpd __kefir_opt_float64_neg(%rip), %xmm1
     movsx %edi, %rax
-    test %rax, %rax
+    test %eax, %eax
     jz _kefir_func_quad_equation_label5
     movq %xmm1, %xmm2
     movq %xmm3, %xmm4

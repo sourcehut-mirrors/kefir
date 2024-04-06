@@ -828,9 +828,31 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(branch)(struct kefir_mem *me
     REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.branch.condition_ref,
                                                     &condition_vreg_idx));
 
-    REQUIRE_OK(kefir_asmcmp_amd64_test(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                                       &KEFIR_ASMCMP_MAKE_VREG(condition_vreg_idx),
-                                       &KEFIR_ASMCMP_MAKE_VREG(condition_vreg_idx), NULL));
+    switch (instruction->operation.parameters.branch.condition_variant) {
+        case KEFIR_OPT_BRANCH_CONDITION_8BIT:
+            REQUIRE_OK(kefir_asmcmp_amd64_test(
+                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                &KEFIR_ASMCMP_MAKE_VREG8(condition_vreg_idx), &KEFIR_ASMCMP_MAKE_VREG8(condition_vreg_idx), NULL));
+            break;
+
+        case KEFIR_OPT_BRANCH_CONDITION_16BIT:
+            REQUIRE_OK(kefir_asmcmp_amd64_test(
+                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                &KEFIR_ASMCMP_MAKE_VREG16(condition_vreg_idx), &KEFIR_ASMCMP_MAKE_VREG16(condition_vreg_idx), NULL));
+            break;
+
+        case KEFIR_OPT_BRANCH_CONDITION_32BIT:
+            REQUIRE_OK(kefir_asmcmp_amd64_test(
+                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                &KEFIR_ASMCMP_MAKE_VREG32(condition_vreg_idx), &KEFIR_ASMCMP_MAKE_VREG32(condition_vreg_idx), NULL));
+            break;
+
+        case KEFIR_OPT_BRANCH_CONDITION_64BIT:
+            REQUIRE_OK(kefir_asmcmp_amd64_test(
+                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                &KEFIR_ASMCMP_MAKE_VREG64(condition_vreg_idx), &KEFIR_ASMCMP_MAKE_VREG64(condition_vreg_idx), NULL));
+            break;
+    }
 
     struct kefir_hashtree_node *label_node;
     kefir_bool_t alternative_phi_outputs;

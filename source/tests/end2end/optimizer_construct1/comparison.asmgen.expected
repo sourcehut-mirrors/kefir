@@ -332,6 +332,7 @@
                                 "target_block": 2,
                                 "alternative_block": 3,
                                 "condition": 17,
+                                "condition_variant": "8bit",
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -475,6 +476,7 @@
                                 "target_block": 4,
                                 "alternative_block": 5,
                                 "condition": 22,
+                                "condition_variant": "8bit",
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,
@@ -746,6 +748,7 @@
                                 "target_block": 3,
                                 "alternative_block": 6,
                                 "condition": 40,
+                                "condition_variant": "32bit",
                                 "control_next": null,
                                 "properties": {
                                     "reachable": true,

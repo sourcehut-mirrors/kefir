@@ -39,9 +39,9 @@ kefir_result_t kefir_opt_code_builder_finalize_indirect_jump(struct kefir_mem *,
                                                              kefir_opt_block_id_t, kefir_opt_instruction_ref_t,
                                                              kefir_opt_instruction_ref_t *);
 kefir_result_t kefir_opt_code_builder_finalize_branch(struct kefir_mem *, struct kefir_opt_code_container *,
-                                                      kefir_opt_block_id_t, kefir_opt_instruction_ref_t,
-                                                      kefir_opt_block_id_t, kefir_opt_block_id_t,
-                                                      kefir_opt_instruction_ref_t *);
+                                                      kefir_opt_block_id_t, kefir_opt_branch_condition_variant_t,
+                                                      kefir_opt_instruction_ref_t, kefir_opt_block_id_t,
+                                                      kefir_opt_block_id_t, kefir_opt_instruction_ref_t *);
 kefir_result_t kefir_opt_code_builder_finalize_return(struct kefir_mem *, struct kefir_opt_code_container *,
                                                       kefir_opt_block_id_t, kefir_opt_instruction_ref_t,
                                                       kefir_opt_instruction_ref_t *);

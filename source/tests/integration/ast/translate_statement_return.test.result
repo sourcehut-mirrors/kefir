@@ -314,7 +314,7 @@
                     "opcode": "bnot8"
                 },
                 {
-                    "opcode": "branch",
+                    "opcode": "branch8",
                     "arg": 8
                 },
                 {
@@ -349,7 +349,7 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "branch",
+                    "opcode": "branch8",
                     "arg": 0
                 }
             ],

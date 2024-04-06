@@ -23,7 +23,7 @@ _kefir_func_test1_label2:
     xor %rax, %rax
     test %rdi, %rdi
     sete %al
-    test %rax, %rax
+    test %al, %al
     jnz _kefir_func_test1_label4
 _kefir_func_test1_label5:
     mov %rdi, %rax

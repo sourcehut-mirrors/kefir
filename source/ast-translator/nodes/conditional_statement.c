@@ -37,8 +37,9 @@ kefir_result_t kefir_ast_translate_conditional_statement_node(struct kefir_mem *
     REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST conditional statement node"));
 
     REQUIRE_OK(kefir_ast_translate_expression(mem, node->condition, builder, context));
-    const struct kefir_ast_type *condition_type = kefir_ast_translator_normalize_type(
-        KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(mem, context->ast_context->type_bundle, node->condition->properties.type));
+    const struct kefir_ast_type *condition_type =
+        kefir_ast_translator_normalize_type(kefir_ast_translator_normalize_type(KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(
+            mem, context->ast_context->type_bundle, node->condition->properties.type)));
     if (KEFIR_AST_TYPE_IS_FLOATING_POINT(condition_type)) {
         REQUIRE_OK(kefir_ast_translate_typeconv_to_bool(builder, condition_type));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_BNOT64, 0));
@@ -73,7 +74,7 @@ kefir_result_t kefir_ast_translate_conditional_statement_node(struct kefir_mem *
                 return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected condition type");
         }
     }
-    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_BRANCH, 0));
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_BRANCH8, 0));
     REQUIRE_OK(kefir_ast_translator_flow_control_point_reference(
         mem, node->base.properties.statement_props.flow_control_statement->value.conditional.thenBranchEnd,
         builder->block, KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder) - 1));

@@ -1019,7 +1019,7 @@ static kefir_result_t translate_logical_and(struct kefir_mem *mem, struct kefir_
             break;
     }
     kefir_size_t jmpIndex = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
-    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_BRANCH, 0));
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_BRANCH8, 0));
     REQUIRE_OK(kefir_ast_translate_expression(mem, node->arg2, builder, context));
     switch (normalized_type2->tag) {
         case KEFIR_AST_TYPE_SCALAR_BOOL:
@@ -1067,7 +1067,7 @@ static kefir_result_t translate_logical_or(struct kefir_mem *mem, struct kefir_a
     REQUIRE_OK(truncate_value(mem, context, builder, node->arg1->properties.type));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 0));
     kefir_size_t jmpIndex = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
-    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_BRANCH, 0));
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_BRANCH8, 0));
     REQUIRE_OK(kefir_ast_translate_expression(mem, node->arg2, builder, context));
     switch (normalized_type2->tag) {
         case KEFIR_AST_TYPE_SCALAR_BOOL:

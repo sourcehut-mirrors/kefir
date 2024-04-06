@@ -107,7 +107,7 @@
                     "opcode": "bnot8"
                 },
                 {
-                    "opcode": "branch",
+                    "opcode": "branch8",
                     "arg": 9
                 },
                 {
@@ -132,7 +132,7 @@
                     "opcode": "bnot8"
                 },
                 {
-                    "opcode": "branch",
+                    "opcode": "branch8",
                     "arg": 16
                 },
                 {
@@ -157,7 +157,7 @@
                     "opcode": "bnot8"
                 },
                 {
-                    "opcode": "branch",
+                    "opcode": "branch8",
                     "arg": 23
                 },
                 {
@@ -349,7 +349,7 @@
                     "opcode": "bnot8"
                 },
                 {
-                    "opcode": "branch",
+                    "opcode": "branch8",
                     "arg": 9
                 },
                 {
@@ -428,7 +428,7 @@
                     "opcode": "bnot8"
                 },
                 {
-                    "opcode": "branch",
+                    "opcode": "branch8",
                     "arg": 28
                 },
                 {
@@ -453,7 +453,7 @@
                     "opcode": "bnot8"
                 },
                 {
-                    "opcode": "branch",
+                    "opcode": "branch8",
                     "arg": 35
                 },
                 {

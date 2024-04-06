@@ -190,7 +190,7 @@
                     "opcode": "bnot32"
                 },
                 {
-                    "opcode": "branch",
+                    "opcode": "branch8",
                     "arg": 25
                 },
                 {
@@ -297,7 +297,7 @@
                     "opcode": "bnot32"
                 },
                 {
-                    "opcode": "branch",
+                    "opcode": "branch8",
                     "arg": 8
                 },
                 {

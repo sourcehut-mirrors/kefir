@@ -46,12 +46,40 @@ kefir_result_t kefir_ast_translate_do_while_statement_node(struct kefir_mem *mem
 
     REQUIRE_OK(kefir_ast_translate_expression(mem, node->controlling_expr, builder, context));
 
-    const struct kefir_ast_type *controlling_expr_type = KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(
-        mem, context->ast_context->type_bundle, node->controlling_expr->properties.type);
-    if (KEFIR_AST_TYPE_IS_FLOATING_POINT(controlling_expr_type)) {
-        REQUIRE_OK(kefir_ast_translate_typeconv_to_bool(builder, controlling_expr_type));
+    const struct kefir_ast_type *controlling_expr_type =
+        kefir_ast_translator_normalize_type(KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(
+            mem, context->ast_context->type_bundle, node->controlling_expr->properties.type));
+    switch (controlling_expr_type->tag) {
+        case KEFIR_AST_TYPE_SCALAR_BOOL:
+        case KEFIR_AST_TYPE_SCALAR_CHAR:
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_BRANCH8, beginning));
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_BRANCH16, beginning));
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_INT:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_BRANCH32, beginning));
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG:
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
+        case KEFIR_AST_TYPE_SCALAR_POINTER:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_BRANCH64, beginning));
+            break;
+
+        default:
+            REQUIRE_OK(kefir_ast_translate_typeconv_to_bool(builder, controlling_expr_type));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_BRANCH8, beginning));
+            break;
     }
-    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_BRANCH, beginning));
 
     REQUIRE_OK(kefir_ast_translator_flow_control_point_resolve(mem, flow_control_stmt->value.loop.end,
                                                                KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder)));

@@ -102,7 +102,7 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "branch",
+                    "opcode": "branch8",
                     "arg": 4
                 },
                 {
@@ -130,8 +130,18 @@
                     "arg": 7.450000
                 },
                 {
-                    "opcode": "branch",
-                    "arg": 4
+                    "opcode": "pushf32",
+                    "arg": 0.000000
+                },
+                {
+                    "opcode": "f32equals"
+                },
+                {
+                    "opcode": "bnot8"
+                },
+                {
+                    "opcode": "branch8",
+                    "arg": 7
                 },
                 {
                     "opcode": "pushi",
@@ -139,7 +149,7 @@
                 },
                 {
                     "opcode": "jmp",
-                    "arg": 5
+                    "arg": 8
                 },
                 {
                     "opcode": "getlocal",
@@ -164,7 +174,7 @@
                     }
                 },
                 {
-                    "opcode": "branch",
+                    "opcode": "branch64",
                     "arg": 4
                 },
                 {
@@ -180,7 +190,7 @@
                     "arg": 97
                 },
                 {
-                    "opcode": "branch",
+                    "opcode": "branch32",
                     "arg": 8
                 },
                 {
@@ -212,7 +222,7 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "branch",
+                    "opcode": "branch32",
                     "arg": 5
                 },
                 {

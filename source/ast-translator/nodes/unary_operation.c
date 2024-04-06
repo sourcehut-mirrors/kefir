@@ -473,7 +473,7 @@ static kefir_result_t translate_preincdec(struct kefir_mem *mem, struct kefir_as
                                                                       &node->base.source_location));
 
         successBranch = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_BRANCH, 0));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_BRANCH8, 0));
 
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_XCHG, 1));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_POP, 0));
@@ -543,7 +543,7 @@ static kefir_result_t translate_postincdec(struct kefir_mem *mem, struct kefir_a
                                                                       &node->base.source_location));
 
         successBranch = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_BRANCH, 0));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_BRANCH8, 0));
 
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_XCHG, 1));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_POP, 0));

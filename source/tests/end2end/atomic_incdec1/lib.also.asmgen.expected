@@ -60,7 +60,7 @@ _kefir_func_predec_i8_label2:
     call __atomic_compare_exchange_1@PLT
     movq -24(%rbp), %r9
     movq -16(%rbp), %r10
-    test %rax, %rax
+    test %al, %al
     jz _kefir_func_predec_i8_label5
     jmp _kefir_func_predec_i8_label4
 _kefir_func_predec_i8_label5:
@@ -115,7 +115,7 @@ _kefir_func_predec_ld_label2:
     lea -64(%rbp), %rcx
     call __atomic_compare_exchange@PLT
     movq -48(%rbp), %r10
-    test %rax, %rax
+    test %al, %al
     jz _kefir_func_predec_ld_label6
     movq -80(%rbp), %rax
     movq %rax, -96(%rbp)
@@ -196,7 +196,7 @@ _kefir_func_preinc_i8_label2:
     call __atomic_compare_exchange_1@PLT
     movq -24(%rbp), %r9
     movq -16(%rbp), %r10
-    test %rax, %rax
+    test %al, %al
     jz _kefir_func_preinc_i8_label5
     jmp _kefir_func_preinc_i8_label4
 _kefir_func_preinc_i8_label5:
@@ -251,7 +251,7 @@ _kefir_func_preinc_ld_label2:
     lea -64(%rbp), %rcx
     call __atomic_compare_exchange@PLT
     movq -48(%rbp), %r10
-    test %rax, %rax
+    test %al, %al
     jz _kefir_func_preinc_ld_label6
     movq -80(%rbp), %rax
     movq %rax, -96(%rbp)
@@ -335,7 +335,7 @@ _kefir_func_predec_f32_label2:
     call __atomic_compare_exchange_4@PLT
     movq -40(%rbp), %r9
     movq -32(%rbp), %xmm1
-    test %rax, %rax
+    test %al, %al
     jz _kefir_func_predec_f32_label6
     movq -80(%rbp), %rax
     movq %rax, -48(%rbp)
@@ -416,7 +416,7 @@ _kefir_func_predec_f64_label2:
     call __atomic_compare_exchange_8@PLT
     movq -40(%rbp), %r9
     movq -32(%rbp), %xmm1
-    test %rax, %rax
+    test %al, %al
     jz _kefir_func_predec_f64_label6
     movq -80(%rbp), %rax
     movq %rax, -48(%rbp)
@@ -494,7 +494,7 @@ _kefir_func_predec_i16_label2:
     call __atomic_compare_exchange_2@PLT
     movq -24(%rbp), %r9
     movq -16(%rbp), %r10
-    test %rax, %rax
+    test %al, %al
     jz _kefir_func_predec_i16_label5
     jmp _kefir_func_predec_i16_label4
 _kefir_func_predec_i16_label5:
@@ -537,7 +537,7 @@ _kefir_func_predec_i32_label2:
     call __atomic_compare_exchange_4@PLT
     movq -24(%rbp), %r9
     movq -16(%rbp), %r10
-    test %rax, %rax
+    test %al, %al
     jz _kefir_func_predec_i32_label5
     jmp _kefir_func_predec_i32_label4
 _kefir_func_predec_i32_label5:
@@ -578,7 +578,7 @@ _kefir_func_predec_i64_label2:
     call __atomic_compare_exchange_8@PLT
     movq -24(%rbp), %r9
     movq -16(%rbp), %r10
-    test %rax, %rax
+    test %al, %al
     jz _kefir_func_predec_i64_label5
     jmp _kefir_func_predec_i64_label4
 _kefir_func_predec_i64_label5:
@@ -619,7 +619,7 @@ _kefir_func_predec_ptr_label2:
     call __atomic_compare_exchange_8@PLT
     movq -24(%rbp), %r9
     movq -16(%rbp), %r10
-    test %rax, %rax
+    test %al, %al
     jz _kefir_func_predec_ptr_label5
     jmp _kefir_func_predec_ptr_label4
 _kefir_func_predec_ptr_label5:
@@ -665,7 +665,7 @@ _kefir_func_preinc_f32_label2:
     call __atomic_compare_exchange_4@PLT
     movq -40(%rbp), %r9
     movq -32(%rbp), %xmm1
-    test %rax, %rax
+    test %al, %al
     jz _kefir_func_preinc_f32_label6
     movq -80(%rbp), %rax
     movq %rax, -48(%rbp)
@@ -746,7 +746,7 @@ _kefir_func_preinc_f64_label2:
     call __atomic_compare_exchange_8@PLT
     movq -40(%rbp), %r9
     movq -32(%rbp), %xmm1
-    test %rax, %rax
+    test %al, %al
     jz _kefir_func_preinc_f64_label6
     movq -80(%rbp), %rax
     movq %rax, -48(%rbp)
@@ -824,7 +824,7 @@ _kefir_func_preinc_i16_label2:
     call __atomic_compare_exchange_2@PLT
     movq -24(%rbp), %r9
     movq -16(%rbp), %r10
-    test %rax, %rax
+    test %al, %al
     jz _kefir_func_preinc_i16_label5
     jmp _kefir_func_preinc_i16_label4
 _kefir_func_preinc_i16_label5:
@@ -867,7 +867,7 @@ _kefir_func_preinc_i32_label2:
     call __atomic_compare_exchange_4@PLT
     movq -24(%rbp), %r9
     movq -16(%rbp), %r10
-    test %rax, %rax
+    test %al, %al
     jz _kefir_func_preinc_i32_label5
     jmp _kefir_func_preinc_i32_label4
 _kefir_func_preinc_i32_label5:
@@ -908,7 +908,7 @@ _kefir_func_preinc_i64_label2:
     call __atomic_compare_exchange_8@PLT
     movq -24(%rbp), %r9
     movq -16(%rbp), %r10
-    test %rax, %rax
+    test %al, %al
     jz _kefir_func_preinc_i64_label5
     jmp _kefir_func_preinc_i64_label4
 _kefir_func_preinc_i64_label5:
@@ -949,7 +949,7 @@ _kefir_func_preinc_ptr_label2:
     call __atomic_compare_exchange_8@PLT
     movq -24(%rbp), %r9
     movq -16(%rbp), %r10
-    test %rax, %rax
+    test %al, %al
     jz _kefir_func_preinc_ptr_label5
     jmp _kefir_func_preinc_ptr_label4
 _kefir_func_preinc_ptr_label5:

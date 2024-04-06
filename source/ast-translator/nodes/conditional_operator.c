@@ -20,8 +20,55 @@
 
 #include "kefir/ast-translator/translator_impl.h"
 #include "kefir/ast-translator/translator.h"
+#include "kefir/ast-translator/typeconv.h"
+#include "kefir/ast-translator/util.h"
+#include "kefir/ast/type_conv.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
+
+static kefir_result_t generate_branch(struct kefir_mem *mem, struct kefir_ast_translator_context *context,
+                                      struct kefir_irbuilder_block *builder, const struct kefir_ast_type *type,
+                                      kefir_size_t *index) {
+    type = kefir_ast_translator_normalize_type(
+        KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(mem, context->ast_context->type_bundle, type));
+    switch (type->tag) {
+        case KEFIR_AST_TYPE_SCALAR_BOOL:
+        case KEFIR_AST_TYPE_SCALAR_CHAR:
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
+            *index = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_BRANCH8, 0));
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT:
+            *index = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_BRANCH16, 0));
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_INT:
+            *index = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_BRANCH32, 0));
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG:
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
+        case KEFIR_AST_TYPE_SCALAR_POINTER:
+            *index = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_BRANCH64, 0));
+            break;
+
+        default:
+            REQUIRE_OK(kefir_ast_translate_typeconv_to_bool(builder, type));
+            *index = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_BRANCH8, 0));
+            break;
+    }
+    return KEFIR_OK;
+}
 
 kefir_result_t kefir_ast_translate_conditional_operator_node(struct kefir_mem *mem,
                                                              struct kefir_ast_translator_context *context,
@@ -34,8 +81,8 @@ kefir_result_t kefir_ast_translate_conditional_operator_node(struct kefir_mem *m
 
     if (node->expr1 != NULL) {
         REQUIRE_OK(kefir_ast_translate_expression(mem, node->condition, builder, context));
-        kefir_size_t jmp1Index = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_BRANCH, 0));
+        kefir_size_t jmp1Index;
+        REQUIRE_OK(generate_branch(mem, context, builder, node->condition->properties.type, &jmp1Index));
         REQUIRE_OK(kefir_ast_translate_expression(mem, node->expr2, builder, context));
         kefir_size_t jmp2Index = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_JMP, 0));
@@ -45,8 +92,8 @@ kefir_result_t kefir_ast_translate_conditional_operator_node(struct kefir_mem *m
     } else {
         REQUIRE_OK(kefir_ast_translate_expression(mem, node->condition, builder, context));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 0));
-        kefir_size_t jmp1Index = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_BRANCH, 0));
+        kefir_size_t jmp1Index;
+        REQUIRE_OK(generate_branch(mem, context, builder, node->condition->properties.type, &jmp1Index));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_POP, 0));
         REQUIRE_OK(kefir_ast_translate_expression(mem, node->expr2, builder, context));
         KEFIR_IRBUILDER_BLOCK_INSTR_AT(builder, jmp1Index)->arg.i64 = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);

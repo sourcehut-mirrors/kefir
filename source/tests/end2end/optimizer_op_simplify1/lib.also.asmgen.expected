@@ -25,7 +25,7 @@ _kefir_func_dnot_label1:
     mov $0, %rcx
     test %eax, %eax
     sete %cl
-    test %rcx, %rcx
+    test %cl, %cl
     jz _kefir_func_dnot_label2
     jmp _kefir_func_dnot_label3
 _kefir_func_dnot_label2:
@@ -126,7 +126,7 @@ _kefir_func_dnotld_label1:
     fstp %st(0)
     setnp %al
     cmovne %rcx, %rax
-    test %rax, %rax
+    test %al, %al
     jz _kefir_func_dnotld_label2
     jmp _kefir_func_dnotld_label3
 _kefir_func_dnotld_label2:

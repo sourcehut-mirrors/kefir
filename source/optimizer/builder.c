@@ -167,6 +167,7 @@ kefir_result_t kefir_opt_code_builder_finalize_indirect_jump(struct kefir_mem *m
 
 kefir_result_t kefir_opt_code_builder_finalize_branch(struct kefir_mem *mem, struct kefir_opt_code_container *code,
                                                       kefir_opt_block_id_t block_id,
+                                                      kefir_opt_branch_condition_variant_t condition_variant,
                                                       kefir_opt_instruction_ref_t condition,
                                                       kefir_opt_block_id_t target_block,
                                                       kefir_opt_block_id_t alternative_block,
@@ -182,6 +183,7 @@ kefir_result_t kefir_opt_code_builder_finalize_branch(struct kefir_mem *mem, str
         &(struct kefir_opt_operation){.opcode = KEFIR_OPT_OPCODE_BRANCH,
                                       .parameters.branch = {.target_block = target_block,
                                                             .alternative_block = alternative_block,
+                                                            .condition_variant = condition_variant,
                                                             .condition_ref = condition}},
         true, instr_id_ptr));
     return KEFIR_OK;

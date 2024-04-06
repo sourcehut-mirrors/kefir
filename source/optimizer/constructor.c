@@ -47,7 +47,10 @@ static kefir_result_t identify_code_blocks(struct kefir_mem *mem, const struct k
                 break;
 
             case KEFIR_IROPCODE_JMP:
-            case KEFIR_IROPCODE_BRANCH:
+            case KEFIR_IROPCODE_BRANCH8:
+            case KEFIR_IROPCODE_BRANCH16:
+            case KEFIR_IROPCODE_BRANCH32:
+            case KEFIR_IROPCODE_BRANCH64:
                 REQUIRE_OK(kefir_opt_constructor_start_code_block_at(mem, state, instr->arg.u64));
                 // Fallthrough
 
@@ -225,14 +228,44 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
                 kefir_opt_code_builder_finalize_jump(mem, code, current_block_id, jump_target_block->block_id, NULL));
         } break;
 
-        case KEFIR_IROPCODE_BRANCH: {
+        case KEFIR_IROPCODE_BRANCH8: {
             struct kefir_opt_constructor_code_block_state *jump_target_block = NULL, *alternative_block = NULL;
             REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref));
             REQUIRE_OK(kefir_opt_constructor_find_code_block_for(state, instr->arg.u64, &jump_target_block));
             REQUIRE_OK(kefir_opt_constructor_find_code_block_for(state, state->ir_location + 1, &alternative_block));
-            REQUIRE_OK(kefir_opt_code_builder_finalize_branch(mem, code, current_block_id, instr_ref,
-                                                              jump_target_block->block_id, alternative_block->block_id,
-                                                              NULL));
+            REQUIRE_OK(kefir_opt_code_builder_finalize_branch(
+                mem, code, current_block_id, KEFIR_OPT_BRANCH_CONDITION_8BIT, instr_ref, jump_target_block->block_id,
+                alternative_block->block_id, NULL));
+        } break;
+
+        case KEFIR_IROPCODE_BRANCH16: {
+            struct kefir_opt_constructor_code_block_state *jump_target_block = NULL, *alternative_block = NULL;
+            REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref));
+            REQUIRE_OK(kefir_opt_constructor_find_code_block_for(state, instr->arg.u64, &jump_target_block));
+            REQUIRE_OK(kefir_opt_constructor_find_code_block_for(state, state->ir_location + 1, &alternative_block));
+            REQUIRE_OK(kefir_opt_code_builder_finalize_branch(
+                mem, code, current_block_id, KEFIR_OPT_BRANCH_CONDITION_16BIT, instr_ref, jump_target_block->block_id,
+                alternative_block->block_id, NULL));
+        } break;
+
+        case KEFIR_IROPCODE_BRANCH32: {
+            struct kefir_opt_constructor_code_block_state *jump_target_block = NULL, *alternative_block = NULL;
+            REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref));
+            REQUIRE_OK(kefir_opt_constructor_find_code_block_for(state, instr->arg.u64, &jump_target_block));
+            REQUIRE_OK(kefir_opt_constructor_find_code_block_for(state, state->ir_location + 1, &alternative_block));
+            REQUIRE_OK(kefir_opt_code_builder_finalize_branch(
+                mem, code, current_block_id, KEFIR_OPT_BRANCH_CONDITION_32BIT, instr_ref, jump_target_block->block_id,
+                alternative_block->block_id, NULL));
+        } break;
+
+        case KEFIR_IROPCODE_BRANCH64: {
+            struct kefir_opt_constructor_code_block_state *jump_target_block = NULL, *alternative_block = NULL;
+            REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref));
+            REQUIRE_OK(kefir_opt_constructor_find_code_block_for(state, instr->arg.u64, &jump_target_block));
+            REQUIRE_OK(kefir_opt_constructor_find_code_block_for(state, state->ir_location + 1, &alternative_block));
+            REQUIRE_OK(kefir_opt_code_builder_finalize_branch(
+                mem, code, current_block_id, KEFIR_OPT_BRANCH_CONDITION_64BIT, instr_ref, jump_target_block->block_id,
+                alternative_block->block_id, NULL));
         } break;
 
         case KEFIR_IROPCODE_IJMP:
