@@ -1,0 +1,46 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global test1
+.extern callback1
+.extern __kefir_opt_float32_neg
+.extern __kefir_opt_float64_neg
+.extern __kefirrt_opt_float32_to_uint
+.extern __kefirrt_opt_float64_to_uint
+
+.section .text
+test1:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_test1_label0:
+    mov 32(%rbp), %rax
+_kefir_func_test1_label1:
+    mov %rax, %rcx
+    mov %rax, %rdx
+_kefir_func_test1_label2:
+    movq %rcx, -16(%rbp)
+    movq %rdx, -8(%rbp)
+    mov %rcx, %rdi
+    call callback1@PLT
+    movq -16(%rbp), %rcx
+    movq -8(%rbp), %rdx
+    cmp $100, %rax
+    jl _kefir_func_test1_label5
+    mov %rax, %rsi
+    mov %rdx, %rdi
+    jmp _kefir_func_test1_label4
+_kefir_func_test1_label5:
+    mov %rdx, %rsi
+_kefir_func_test1_label3:
+    mov %rax, %rcx
+    mov %rsi, %rdx
+    jmp _kefir_func_test1_label2
+_kefir_func_test1_label4:
+    add %rdi, %rsi
+    mov %rsi, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+

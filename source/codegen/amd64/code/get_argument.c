@@ -168,8 +168,6 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_argument)(struct kefir_m
                 case KEFIR_IR_TYPE_INT16:
                 case KEFIR_IR_TYPE_INT32:
                 case KEFIR_IR_TYPE_INT64:
-                case KEFIR_IR_TYPE_FLOAT32:
-                case KEFIR_IR_TYPE_FLOAT64:
                 case KEFIR_IR_TYPE_BOOL:
                 case KEFIR_IR_TYPE_CHAR:
                 case KEFIR_IR_TYPE_SHORT:
@@ -178,7 +176,22 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_argument)(struct kefir_m
                 case KEFIR_IR_TYPE_WORD:
                 case KEFIR_IR_TYPE_BITS:
                 case KEFIR_IR_TYPE_BUILTIN:
-                    REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, vreg));
+                    REQUIRE_OK(kefir_asmcmp_virtual_register_new(
+                        mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &vreg2));
+                    REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
+                        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), vreg2, vreg,
+                        NULL));
+                    REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, vreg2));
+                    break;
+
+                case KEFIR_IR_TYPE_FLOAT32:
+                case KEFIR_IR_TYPE_FLOAT64:
+                    REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
+                                                                 KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT, &vreg2));
+                    REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
+                        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), vreg2, vreg,
+                        NULL));
+                    REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, vreg2));
                     break;
 
                 case KEFIR_IR_TYPE_NONE:

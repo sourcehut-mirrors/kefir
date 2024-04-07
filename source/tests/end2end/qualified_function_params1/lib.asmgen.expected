@@ -42,11 +42,9 @@ test3:
     mov %rsp, %rbp
     sub $16, %rsp
 _kefir_func_test3_label0:
+    mov 16(%rbp), %rax
 _kefir_func_test3_label1:
-    movq %rax, -16(%rbp)
-    movl 16(%rbp), %eax
     movl %eax, -4(%rbp)
-    movq -16(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
