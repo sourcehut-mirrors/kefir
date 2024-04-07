@@ -155,49 +155,56 @@
             "name": "add_integral",
             "parameters": 5,
             "vararg": false,
-            "returns": 6
+            "returns": 6,
+            "returns_twice": false
         },
         {
             "identifier": 1,
             "name": "add_floating_point",
             "parameters": 7,
             "vararg": false,
-            "returns": 8
+            "returns": 8,
+            "returns_twice": false
         },
         {
             "identifier": 2,
             "name": "add_pointer_int",
             "parameters": 9,
             "vararg": false,
-            "returns": 10
+            "returns": 10,
+            "returns_twice": false
         },
         {
             "identifier": 3,
             "name": "sub_integral",
             "parameters": 15,
             "vararg": false,
-            "returns": 16
+            "returns": 16,
+            "returns_twice": false
         },
         {
             "identifier": 4,
             "name": "sub_floating_point",
             "parameters": 17,
             "vararg": false,
-            "returns": 18
+            "returns": 18,
+            "returns_twice": false
         },
         {
             "identifier": 5,
             "name": "sub_pointers",
             "parameters": 19,
             "vararg": false,
-            "returns": 20
+            "returns": 20,
+            "returns_twice": false
         },
         {
             "identifier": 6,
             "name": "sub_pointer_integer",
             "parameters": 21,
             "vararg": false,
-            "returns": 22
+            "returns": 22,
+            "returns_twice": false
         }
     ],
     "functions": [

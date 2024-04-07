@@ -322,70 +322,80 @@
             "name": "add_value",
             "parameters": 6,
             "vararg": false,
-            "returns": 7
+            "returns": 7,
+            "returns_twice": false
         },
         {
             "identifier": 1,
             "name": "get_value",
             "parameters": 8,
             "vararg": false,
-            "returns": 9
+            "returns": 9,
+            "returns_twice": false
         },
         {
             "identifier": 2,
             "name": "set_value",
             "parameters": 10,
             "vararg": false,
-            "returns": 11
+            "returns": 11,
+            "returns_twice": false
         },
         {
             "identifier": 3,
             "name": "value_callback",
             "parameters": 12,
             "vararg": false,
-            "returns": 13
+            "returns": 13,
+            "returns_twice": false
         },
         {
             "identifier": 4,
             "name": "invoke_callback",
             "parameters": 14,
             "vararg": false,
-            "returns": 15
+            "returns": 15,
+            "returns_twice": false
         },
         {
             "identifier": 5,
             "name": "set_value",
             "parameters": 16,
             "vararg": false,
-            "returns": 17
+            "returns": 17,
+            "returns_twice": false
         },
         {
             "identifier": 6,
             "name": "get_value",
             "parameters": 19,
             "vararg": false,
-            "returns": 20
+            "returns": 20,
+            "returns_twice": false
         },
         {
             "identifier": 7,
             "name": "add_value",
             "parameters": 22,
             "vararg": false,
-            "returns": 23
+            "returns": 23,
+            "returns_twice": false
         },
         {
             "identifier": 8,
             "name": "invoke_callback",
             "parameters": 25,
             "vararg": false,
-            "returns": 26
+            "returns": 26,
+            "returns_twice": false
         },
         {
             "identifier": 9,
             "name": "value_callback",
             "parameters": 28,
             "vararg": false,
-            "returns": 29
+            "returns": 29,
+            "returns_twice": false
         }
     ],
     "functions": [

@@ -131,63 +131,72 @@
             "name": "equality_arithemtical",
             "parameters": 6,
             "vararg": false,
-            "returns": 7
+            "returns": 7,
+            "returns_twice": false
         },
         {
             "identifier": 1,
             "name": "equality_pointer",
             "parameters": 8,
             "vararg": false,
-            "returns": 9
+            "returns": 9,
+            "returns_twice": false
         },
         {
             "identifier": 2,
             "name": "non_equality_arithemtical",
             "parameters": 10,
             "vararg": false,
-            "returns": 11
+            "returns": 11,
+            "returns_twice": false
         },
         {
             "identifier": 3,
             "name": "non_equality_pointer",
             "parameters": 12,
             "vararg": false,
-            "returns": 13
+            "returns": 13,
+            "returns_twice": false
         },
         {
             "identifier": 4,
             "name": "less_than",
             "parameters": 14,
             "vararg": false,
-            "returns": 15
+            "returns": 15,
+            "returns_twice": false
         },
         {
             "identifier": 5,
             "name": "less_equals",
             "parameters": 16,
             "vararg": false,
-            "returns": 17
+            "returns": 17,
+            "returns_twice": false
         },
         {
             "identifier": 6,
             "name": "greater_than",
             "parameters": 18,
             "vararg": false,
-            "returns": 19
+            "returns": 19,
+            "returns_twice": false
         },
         {
             "identifier": 7,
             "name": "greater_equal",
             "parameters": 20,
             "vararg": false,
-            "returns": 21
+            "returns": 21,
+            "returns_twice": false
         },
         {
             "identifier": 8,
             "name": "ptr_relational",
             "parameters": 22,
             "vararg": false,
-            "returns": 23
+            "returns": 23,
+            "returns_twice": false
         }
     ],
     "functions": [

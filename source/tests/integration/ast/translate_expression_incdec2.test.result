@@ -186,84 +186,96 @@
             "name": "increment_int1",
             "parameters": 5,
             "vararg": false,
-            "returns": 6
+            "returns": 6,
+            "returns_twice": false
         },
         {
             "identifier": 1,
             "name": "increment_int2",
             "parameters": 7,
             "vararg": false,
-            "returns": 8
+            "returns": 8,
+            "returns_twice": false
         },
         {
             "identifier": 2,
             "name": "decrement_int1",
             "parameters": 9,
             "vararg": false,
-            "returns": 10
+            "returns": 10,
+            "returns_twice": false
         },
         {
             "identifier": 3,
             "name": "decrement_int2",
             "parameters": 11,
             "vararg": false,
-            "returns": 12
+            "returns": 12,
+            "returns_twice": false
         },
         {
             "identifier": 4,
             "name": "increment_float",
             "parameters": 13,
             "vararg": false,
-            "returns": 14
+            "returns": 14,
+            "returns_twice": false
         },
         {
             "identifier": 5,
             "name": "increment_double",
             "parameters": 15,
             "vararg": false,
-            "returns": 16
+            "returns": 16,
+            "returns_twice": false
         },
         {
             "identifier": 6,
             "name": "decrement_float",
             "parameters": 17,
             "vararg": false,
-            "returns": 18
+            "returns": 18,
+            "returns_twice": false
         },
         {
             "identifier": 7,
             "name": "decrement_double",
             "parameters": 19,
             "vararg": false,
-            "returns": 20
+            "returns": 20,
+            "returns_twice": false
         },
         {
             "identifier": 8,
             "name": "increment_pointer1",
             "parameters": 21,
             "vararg": false,
-            "returns": 22
+            "returns": 22,
+            "returns_twice": false
         },
         {
             "identifier": 9,
             "name": "increment_pointer2",
             "parameters": 24,
             "vararg": false,
-            "returns": 25
+            "returns": 25,
+            "returns_twice": false
         },
         {
             "identifier": 10,
             "name": "decrement_pointer1",
             "parameters": 27,
             "vararg": false,
-            "returns": 28
+            "returns": 28,
+            "returns_twice": false
         },
         {
             "identifier": 11,
             "name": "decrement_pointer2",
             "parameters": 30,
             "vararg": false,
-            "returns": 31
+            "returns": 31,
+            "returns_twice": false
         }
     ],
     "functions": [

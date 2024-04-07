@@ -106,21 +106,24 @@
             "name": "compound1",
             "parameters": 6,
             "vararg": false,
-            "returns": 7
+            "returns": 7,
+            "returns_twice": false
         },
         {
             "identifier": 1,
             "name": "compound2",
             "parameters": 9,
             "vararg": false,
-            "returns": 10
+            "returns": 10,
+            "returns_twice": false
         },
         {
             "identifier": 2,
             "name": "compound3",
             "parameters": 14,
             "vararg": false,
-            "returns": 15
+            "returns": 15,
+            "returns_twice": false
         }
     ],
     "functions": [

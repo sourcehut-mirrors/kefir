@@ -150,35 +150,40 @@
             "name": "return0",
             "parameters": 6,
             "vararg": false,
-            "returns": 7
+            "returns": 7,
+            "returns_twice": false
         },
         {
             "identifier": 1,
             "name": "return1",
             "parameters": 9,
             "vararg": false,
-            "returns": 10
+            "returns": 10,
+            "returns_twice": false
         },
         {
             "identifier": 2,
             "name": "return2",
             "parameters": 12,
             "vararg": false,
-            "returns": 13
+            "returns": 13,
+            "returns_twice": false
         },
         {
             "identifier": 3,
             "name": "return3",
             "parameters": 15,
             "vararg": false,
-            "returns": 16
+            "returns": 16,
+            "returns_twice": false
         },
         {
             "identifier": 4,
             "name": "return4",
             "parameters": 20,
             "vararg": false,
-            "returns": 21
+            "returns": 21,
+            "returns_twice": false
         }
     ],
     "functions": [

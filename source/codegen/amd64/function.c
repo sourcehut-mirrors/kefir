@@ -31,7 +31,8 @@
 
 static kefir_result_t translate_instruction(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
                                             const struct kefir_opt_instruction *instruction) {
-    REQUIRE(kefir_hashtreeset_has(&function->translated_instructions, (kefir_hashtreeset_entry_t) instruction->id), KEFIR_OK);
+    REQUIRE(kefir_hashtreeset_has(&function->translated_instructions, (kefir_hashtreeset_entry_t) instruction->id),
+            KEFIR_OK);
     switch (instruction->operation.opcode) {
 #define CASE_INSTR(_id, _opcode)                                                           \
     case _opcode:                                                                          \
@@ -50,8 +51,7 @@ struct translate_instruction_collector_param {
 };
 
 static kefir_result_t translate_instruction_collector_callback(kefir_opt_instruction_ref_t instr_ref, void *payload) {
-    ASSIGN_DECL_CAST(struct translate_instruction_collector_param *, param,
-        payload);
+    ASSIGN_DECL_CAST(struct translate_instruction_collector_param *, param, payload);
     REQUIRE(param != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid collector callback parameter"));
 
     struct kefir_opt_instruction *instr;
@@ -63,7 +63,9 @@ static kefir_result_t translate_instruction_collector_callback(kefir_opt_instruc
     return KEFIR_OK;
 }
 
-static kefir_result_t collect_translated_instructions_impl(struct kefir_mem *mem, struct kefir_codegen_amd64_function *func, struct kefir_list *queue) {
+static kefir_result_t collect_translated_instructions_impl(struct kefir_mem *mem,
+                                                           struct kefir_codegen_amd64_function *func,
+                                                           struct kefir_list *queue) {
     for (kefir_size_t block_idx = 0; block_idx < func->function_analysis->block_linearization_length; block_idx++) {
         const struct kefir_opt_code_analysis_block_properties *block_props =
             func->function_analysis->block_linearization[block_idx];
@@ -79,29 +81,27 @@ static kefir_result_t collect_translated_instructions_impl(struct kefir_mem *mem
         }
     }
 
-    struct translate_instruction_collector_param param = {
-        .mem = mem,
-        .func = func,
-        .queue = queue
-    };
+    struct translate_instruction_collector_param param = {.mem = mem, .func = func, .queue = queue};
     for (struct kefir_list_entry *head = kefir_list_head(queue); head != NULL; head = kefir_list_head(queue)) {
-        ASSIGN_DECL_CAST(struct kefir_opt_instruction *, instr,
-            head->value);
+        ASSIGN_DECL_CAST(struct kefir_opt_instruction *, instr, head->value);
         REQUIRE_OK(kefir_list_pop(mem, queue, head));
 
         if (!kefir_hashtreeset_has(&func->translated_instructions, (kefir_hashtreeset_entry_t) instr->id)) {
-            REQUIRE_OK(kefir_hashtreeset_add(mem, &func->translated_instructions, (kefir_hashtreeset_entry_t) instr->id));
+            REQUIRE_OK(
+                kefir_hashtreeset_add(mem, &func->translated_instructions, (kefir_hashtreeset_entry_t) instr->id));
 
             switch (instr->operation.opcode) {
-#define CASE_INSTR(_id, _opcode)                                                           \
-            case _opcode:                                                                          \
-                REQUIRE_OK(KEFIR_CODEGEN_AMD64_INSTRUCTION_FUSION_IMPL(_id)(mem, func, instr, translate_instruction_collector_callback, &param)); \
-                break
+#define CASE_INSTR(_id, _opcode)                                                  \
+    case _opcode:                                                                 \
+        REQUIRE_OK(KEFIR_CODEGEN_AMD64_INSTRUCTION_FUSION_IMPL(_id)(              \
+            mem, func, instr, translate_instruction_collector_callback, &param)); \
+        break
                 KEFIR_CODEGEN_AMD64_INSTRUCTION_FUSION(CASE_INSTR, ;);
 #undef CASE_INSTR
 
                 default:
-                    REQUIRE_OK(kefir_opt_instruction_extract_inputs(&func->function->code, instr, false, translate_instruction_collector_callback, &param));
+                    REQUIRE_OK(kefir_opt_instruction_extract_inputs(&func->function->code, instr, false,
+                                                                    translate_instruction_collector_callback, &param));
                     break;
             }
         }
@@ -109,7 +109,8 @@ static kefir_result_t collect_translated_instructions_impl(struct kefir_mem *mem
     return KEFIR_OK;
 }
 
-static kefir_result_t collect_translated_instructions(struct kefir_mem *mem, struct kefir_codegen_amd64_function *func) {
+static kefir_result_t collect_translated_instructions(struct kefir_mem *mem,
+                                                      struct kefir_codegen_amd64_function *func) {
     struct kefir_list queue;
     REQUIRE_OK(kefir_list_init(&queue));
     kefir_result_t res = collect_translated_instructions_impl(mem, func, &queue);
@@ -245,6 +246,12 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
     if (func->dynamic_scope_vreg != KEFIR_ASMCMP_INDEX_NONE) {
         REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
             mem, &func->code, kefir_asmcmp_context_instr_tail(&func->code.context), func->dynamic_scope_vreg, NULL));
+    }
+    for (const struct kefir_list_entry *iter = kefir_list_head(&func->keep_alive_virtual_regs); iter != NULL;
+         kefir_list_next(&iter)) {
+        ASSIGN_DECL_CAST(kefir_asmcmp_virtual_register_index_t, vreg, (kefir_uptr_t) iter->value);
+        REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
+            mem, &func->code, kefir_asmcmp_context_instr_tail(&func->code.context), vreg, NULL));
     }
 
     REQUIRE_OK(kefir_asmcmp_amd64_noop(mem, &func->code, kefir_asmcmp_context_instr_tail(&func->code.context), NULL));
@@ -455,6 +462,7 @@ kefir_result_t kefir_codegen_amd64_function_translate(struct kefir_mem *mem, str
     REQUIRE_OK(kefir_hashtree_init(&func.virtual_registers, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&func.constants, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtreeset_init(&func.translated_instructions, &kefir_hashtree_uint_ops));
+    REQUIRE_OK(kefir_list_init(&func.keep_alive_virtual_regs));
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_init(&func.stack_frame));
     REQUIRE_OK(kefir_codegen_amd64_register_allocator_init(&func.register_allocator));
     REQUIRE_OK(kefir_abi_amd64_function_decl_alloc(mem, codegen->abi_variant, function->ir_func->declaration,
@@ -474,6 +482,7 @@ on_error1:
     kefir_abi_amd64_function_decl_free(mem, &func.abi_function_declaration);
     kefir_codegen_amd64_register_allocator_free(mem, &func.register_allocator);
     kefir_codegen_amd64_stack_frame_free(mem, &func.stack_frame);
+    kefir_list_free(mem, &func.keep_alive_virtual_regs);
     kefir_hashtreeset_free(mem, &func.translated_instructions);
     kefir_hashtree_free(mem, &func.constants);
     kefir_hashtree_free(mem, &func.instructions);

@@ -88,28 +88,32 @@
             "name": "conditional1",
             "parameters": 6,
             "vararg": false,
-            "returns": 7
+            "returns": 7,
+            "returns_twice": false
         },
         {
             "identifier": 1,
             "name": "conditional2",
             "parameters": 9,
             "vararg": false,
-            "returns": 10
+            "returns": 10,
+            "returns_twice": false
         },
         {
             "identifier": 2,
             "name": "conditional3",
             "parameters": 12,
             "vararg": false,
-            "returns": 13
+            "returns": 13,
+            "returns_twice": false
         },
         {
             "identifier": 3,
             "name": "conditional4",
             "parameters": 15,
             "vararg": false,
-            "returns": 16
+            "returns": 16,
+            "returns_twice": false
         }
     ],
     "functions": [

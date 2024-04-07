@@ -240,91 +240,104 @@
             "name": "sum",
             "parameters": 5,
             "vararg": false,
-            "returns": 6
+            "returns": 6,
+            "returns_twice": false
         },
         {
             "identifier": 1,
             "name": "sum2",
             "parameters": 7,
             "vararg": false,
-            "returns": 8
+            "returns": 8,
+            "returns_twice": false
         },
         {
             "identifier": 2,
             "name": "sum3",
             "parameters": 9,
             "vararg": true,
-            "returns": 10
+            "returns": 10,
+            "returns_twice": false
         },
         {
             "identifier": 3,
             "name": "call1",
             "parameters": 11,
             "vararg": false,
-            "returns": 12
+            "returns": 12,
+            "returns_twice": false
         },
         {
             "identifier": 4,
             "name": "sum",
             "parameters": 13,
             "vararg": false,
-            "returns": 14
+            "returns": 14,
+            "returns_twice": false
         },
         {
             "identifier": 5,
             "name": "call2",
             "parameters": 15,
             "vararg": false,
-            "returns": 16
+            "returns": 16,
+            "returns_twice": false
         },
         {
             "identifier": 6,
             "name": "sum",
             "parameters": 17,
             "vararg": false,
-            "returns": 18
+            "returns": 18,
+            "returns_twice": false
         },
         {
             "identifier": 7,
             "name": "call3",
             "parameters": 19,
             "vararg": false,
-            "returns": 20
+            "returns": 20,
+            "returns_twice": false
         },
         {
             "identifier": 8,
             "name": "sum2",
             "parameters": 21,
             "vararg": true,
-            "returns": 22
+            "returns": 22,
+            "returns_twice": false
         },
         {
             "identifier": 9,
             "name": "call4",
             "parameters": 23,
             "vararg": false,
-            "returns": 24
+            "returns": 24,
+            "returns_twice": false
         },
         {
             "identifier": 10,
             "name": "sum2",
             "parameters": 25,
             "vararg": false,
-            "returns": 26
+            "returns": 26,
+            "returns_twice": false
         },
         {
             "identifier": 11,
             "name": "call5",
             "parameters": 27,
             "vararg": false,
-            "returns": 28
+            "returns": 28,
+            "returns_twice": false
         },
         {
             "identifier": 12,
             "name": "sum3",
             "parameters": 29,
             "vararg": true,
-            "returns": 30
+            "returns": 30,
+            "returns_twice": false
         }
     ],
     "functions": [

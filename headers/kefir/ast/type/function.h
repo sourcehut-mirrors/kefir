@@ -44,6 +44,9 @@ typedef struct kefir_ast_function_type {
     kefir_ast_function_type_mode_t mode;
     struct kefir_list parameters;
     kefir_bool_t ellipsis;
+    struct {
+        kefir_bool_t returns_twice;
+    } attributes;
 } kefir_ast_function_type_t;
 
 kefir_size_t kefir_ast_type_function_parameter_count(const struct kefir_ast_function_type *);

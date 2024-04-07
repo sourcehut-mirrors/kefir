@@ -99,42 +99,48 @@
             "name": "comma1",
             "parameters": 5,
             "vararg": false,
-            "returns": 6
+            "returns": 6,
+            "returns_twice": false
         },
         {
             "identifier": 1,
             "name": "comma2",
             "parameters": 8,
             "vararg": false,
-            "returns": 9
+            "returns": 9,
+            "returns_twice": false
         },
         {
             "identifier": 2,
             "name": "comma3",
             "parameters": 11,
             "vararg": false,
-            "returns": 12
+            "returns": 12,
+            "returns_twice": false
         },
         {
             "identifier": 3,
             "name": "comma4",
             "parameters": 14,
             "vararg": false,
-            "returns": 15
+            "returns": 15,
+            "returns_twice": false
         },
         {
             "identifier": 4,
             "name": "comma5",
             "parameters": 17,
             "vararg": false,
-            "returns": 18
+            "returns": 18,
+            "returns_twice": false
         },
         {
             "identifier": 5,
             "name": "comma6",
             "parameters": 20,
             "vararg": false,
-            "returns": 21
+            "returns": 21,
+            "returns_twice": false
         }
     ],
     "functions": [

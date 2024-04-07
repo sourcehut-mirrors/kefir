@@ -220,63 +220,72 @@
             "name": "plus",
             "parameters": 9,
             "vararg": false,
-            "returns": 10
+            "returns": 10,
+            "returns_twice": false
         },
         {
             "identifier": 1,
             "name": "minus",
             "parameters": 11,
             "vararg": false,
-            "returns": 12
+            "returns": 12,
+            "returns_twice": false
         },
         {
             "identifier": 2,
             "name": "invert",
             "parameters": 13,
             "vararg": false,
-            "returns": 14
+            "returns": 14,
+            "returns_twice": false
         },
         {
             "identifier": 3,
             "name": "logical_negate",
             "parameters": 15,
             "vararg": false,
-            "returns": 16
+            "returns": 16,
+            "returns_twice": false
         },
         {
             "identifier": 4,
             "name": "logical_negate2",
             "parameters": 18,
             "vararg": false,
-            "returns": 19
+            "returns": 19,
+            "returns_twice": false
         },
         {
             "identifier": 5,
             "name": "sizeof1",
             "parameters": 20,
             "vararg": false,
-            "returns": 21
+            "returns": 21,
+            "returns_twice": false
         },
         {
             "identifier": 6,
             "name": "sizeof2",
             "parameters": 22,
             "vararg": false,
-            "returns": 23
+            "returns": 23,
+            "returns_twice": false
         },
         {
             "identifier": 7,
             "name": "alignof",
             "parameters": 24,
             "vararg": false,
-            "returns": 25
+            "returns": 25,
+            "returns_twice": false
         },
         {
             "identifier": 8,
             "name": "indirection",
             "parameters": 26,
             "vararg": false,
-            "returns": 27
+            "returns": 27,
+            "returns_twice": false
         }
     ],
     "functions": [

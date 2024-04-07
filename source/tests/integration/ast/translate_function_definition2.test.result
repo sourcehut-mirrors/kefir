@@ -115,14 +115,16 @@
             "name": "intat",
             "parameters": 4,
             "vararg": false,
-            "returns": 5
+            "returns": 5,
+            "returns_twice": false
         },
         {
             "identifier": 1,
             "name": "intat",
             "parameters": 6,
             "vararg": false,
-            "returns": 7
+            "returns": 7,
+            "returns_twice": false
         }
     ],
     "functions": [

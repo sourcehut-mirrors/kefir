@@ -127,14 +127,16 @@
             "name": "sum",
             "parameters": 5,
             "vararg": false,
-            "returns": 6
+            "returns": 6,
+            "returns_twice": false
         },
         {
             "identifier": 1,
             "name": "sum",
             "parameters": 7,
             "vararg": false,
-            "returns": 8
+            "returns": 8,
+            "returns_twice": false
         }
     ],
     "functions": [

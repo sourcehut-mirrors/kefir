@@ -232,77 +232,88 @@
             "name": "getA",
             "parameters": 90,
             "vararg": false,
-            "returns": 91
+            "returns": 91,
+            "returns_twice": false
         },
         {
             "identifier": 42,
             "name": "getB",
             "parameters": 90,
             "vararg": false,
-            "returns": 94
+            "returns": 94,
+            "returns_twice": false
         },
         {
             "identifier": 43,
             "name": "getC",
             "parameters": 90,
             "vararg": false,
-            "returns": 97
+            "returns": 97,
+            "returns_twice": false
         },
         {
             "identifier": 44,
             "name": "getD",
             "parameters": 90,
             "vararg": false,
-            "returns": 100
+            "returns": 100,
+            "returns_twice": false
         },
         {
             "identifier": 45,
             "name": "setA",
             "parameters": 91,
             "vararg": false,
-            "returns": 90
+            "returns": 90,
+            "returns_twice": false
         },
         {
             "identifier": 46,
             "name": "setB",
             "parameters": 94,
             "vararg": false,
-            "returns": 90
+            "returns": 90,
+            "returns_twice": false
         },
         {
             "identifier": 47,
             "name": "setC",
             "parameters": 97,
             "vararg": false,
-            "returns": 90
+            "returns": 90,
+            "returns_twice": false
         },
         {
             "identifier": 48,
             "name": "setD",
             "parameters": 100,
             "vararg": false,
-            "returns": 90
+            "returns": 90,
+            "returns_twice": false
         },
         {
             "identifier": 49,
             "name": "setS",
             "parameters": 114,
             "vararg": false,
-            "returns": 90
+            "returns": 90,
+            "returns_twice": false
         },
         {
             "identifier": 50,
             "name": "sumS",
             "parameters": 126,
             "vararg": false,
-            "returns": 100
+            "returns": 100,
+            "returns_twice": false
         },
         {
             "identifier": 51,
             "name": "vla_test",
             "parameters": 97,
             "vararg": false,
-            "returns": 90
+            "returns": 90,
+            "returns_twice": false
         }
     ],
     "functions": [

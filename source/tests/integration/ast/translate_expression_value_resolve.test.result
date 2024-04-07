@@ -542,14 +542,16 @@
             "name": "func1",
             "parameters": 26,
             "vararg": false,
-            "returns": 27
+            "returns": 27,
+            "returns_twice": false
         },
         {
             "identifier": 1,
             "name": "func1",
             "parameters": 28,
             "vararg": false,
-            "returns": 29
+            "returns": 29,
+            "returns_twice": false
         }
     ],
     "functions": [

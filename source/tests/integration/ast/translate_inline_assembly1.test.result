@@ -147,14 +147,16 @@
             "name": "inline_asm1",
             "parameters": 6,
             "vararg": false,
-            "returns": 7
+            "returns": 7,
+            "returns_twice": false
         },
         {
             "identifier": 1,
             "name": "inline_asm2",
             "parameters": 13,
             "vararg": false,
-            "returns": 14
+            "returns": 14,
+            "returns_twice": false
         }
     ],
     "functions": [

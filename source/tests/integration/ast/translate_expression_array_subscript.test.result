@@ -88,7 +88,8 @@
             "name": "func1",
             "parameters": 6,
             "vararg": false,
-            "returns": 7
+            "returns": 7,
+            "returns_twice": false
         }
     ],
     "functions": [

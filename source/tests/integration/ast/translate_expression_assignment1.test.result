@@ -296,63 +296,72 @@
             "name": "assign_bool",
             "parameters": 21,
             "vararg": false,
-            "returns": 22
+            "returns": 22,
+            "returns_twice": false
         },
         {
             "identifier": 1,
             "name": "assign_char",
             "parameters": 23,
             "vararg": false,
-            "returns": 24
+            "returns": 24,
+            "returns_twice": false
         },
         {
             "identifier": 2,
             "name": "assign_short",
             "parameters": 25,
             "vararg": false,
-            "returns": 26
+            "returns": 26,
+            "returns_twice": false
         },
         {
             "identifier": 3,
             "name": "assign_int",
             "parameters": 27,
             "vararg": false,
-            "returns": 28
+            "returns": 28,
+            "returns_twice": false
         },
         {
             "identifier": 4,
             "name": "assign_long",
             "parameters": 29,
             "vararg": false,
-            "returns": 30
+            "returns": 30,
+            "returns_twice": false
         },
         {
             "identifier": 5,
             "name": "assign_long_long",
             "parameters": 31,
             "vararg": false,
-            "returns": 32
+            "returns": 32,
+            "returns_twice": false
         },
         {
             "identifier": 6,
             "name": "assign_float_double",
             "parameters": 33,
             "vararg": false,
-            "returns": 34
+            "returns": 34,
+            "returns_twice": false
         },
         {
             "identifier": 7,
             "name": "enum",
             "parameters": 35,
             "vararg": false,
-            "returns": 36
+            "returns": 36,
+            "returns_twice": false
         },
         {
             "identifier": 8,
             "name": "pointer",
             "parameters": 37,
             "vararg": false,
-            "returns": 38
+            "returns": 38,
+            "returns_twice": false
         }
     ],
     "functions": [

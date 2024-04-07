@@ -1081,6 +1081,31 @@ static kefir_result_t resolve_function_declarator(struct kefir_mem *mem, const s
 
     REQUIRE_CHAIN(&res, kefir_ast_type_function_ellipsis(func_type, declarator->function.ellipsis));
 
+    if (declarator->function.declarator != NULL &&
+        declarator->function.declarator->klass == KEFIR_AST_DECLARATOR_IDENTIFIER) {
+        const char *func_identifier = declarator->function.declarator->identifier.identifier;
+        if (func_identifier != NULL &&
+            (strcmp(func_identifier, "setjmp") == 0 || strcmp(func_identifier, "sigsetjmp") == 0 ||
+             strcmp(func_identifier, "savectx") == 0 || strcmp(func_identifier, "vfork") == 0 ||
+             strcmp(func_identifier, "getcontext") == 0)) {
+            func_type->attributes.returns_twice = true;
+        }
+    }
+
+    for (const struct kefir_list_entry *iter = kefir_list_head(&declarator->attributes.attributes); iter != NULL;
+         kefir_list_next(&iter)) {
+        ASSIGN_DECL_CAST(struct kefir_ast_attribute_list *, attr_list, iter->value);
+
+        for (const struct kefir_list_entry *iter2 = kefir_list_head(&attr_list->list); iter2 != NULL;
+             kefir_list_next(&iter2)) {
+            ASSIGN_DECL_CAST(struct kefir_ast_attribute *, attribute, iter2->value);
+
+            if (strcmp(attribute->name, "returns_twice") == 0 || strcmp(attribute->name, "__returns_twice__") == 0) {
+                func_type->attributes.returns_twice = true;
+            }
+        }
+    }
+
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_ast_function_declaration_context_free(mem, decl_context);
         KEFIR_FREE(mem, decl_context);
@@ -1152,8 +1177,14 @@ static kefir_result_t analyze_declaration_declarator_attributes(struct kefir_mem
             if (strcmp(attribute->name, "aligned") == 0 || strcmp(attribute->name, "__aligned__") == 0) {
                 REQUIRE_OK(analyze_declaration_declarator_alignment_attribute(
                     mem, context, attribute, base_type, alignment, flags, attributes, &declarator->source_location));
-            } else if (strcmp(attribute->name, "__gnu_inline__") == 0 && attributes != NULL) {
+            } else if ((strcmp(attribute->name, "gnu_inline") == 0 || strcmp(attribute->name, "__gnu_inline__") == 0) &&
+                       attributes != NULL) {
                 attributes->gnu_inline = true;
+            } else if ((strcmp(attribute->name, "returns_twice") == 0 ||
+                        strcmp(attribute->name, "__returns_twice__") == 0)) {
+                REQUIRE(declarator->klass == KEFIR_AST_DECLARATOR_FUNCTION,
+                        KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &declarator->source_location,
+                                               "Attribute returns_twice can only be used on function declarators"));
             }
         }
     }

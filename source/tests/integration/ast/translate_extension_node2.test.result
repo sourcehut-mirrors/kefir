@@ -36,7 +36,8 @@
             "name": "func1",
             "parameters": 0,
             "vararg": false,
-            "returns": 1
+            "returns": 1,
+            "returns_twice": false
         }
     ],
     "functions": [

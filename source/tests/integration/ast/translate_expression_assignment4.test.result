@@ -152,84 +152,96 @@
             "name": "assign_modulo_int",
             "parameters": 7,
             "vararg": false,
-            "returns": 8
+            "returns": 8,
+            "returns_twice": false
         },
         {
             "identifier": 1,
             "name": "assign_modulo_ullong",
             "parameters": 9,
             "vararg": false,
-            "returns": 10
+            "returns": 10,
+            "returns_twice": false
         },
         {
             "identifier": 2,
             "name": "assign_shl_int",
             "parameters": 11,
             "vararg": false,
-            "returns": 12
+            "returns": 12,
+            "returns_twice": false
         },
         {
             "identifier": 3,
             "name": "assign_shl_ullong",
             "parameters": 13,
             "vararg": false,
-            "returns": 14
+            "returns": 14,
+            "returns_twice": false
         },
         {
             "identifier": 4,
             "name": "assign_shr_int",
             "parameters": 15,
             "vararg": false,
-            "returns": 16
+            "returns": 16,
+            "returns_twice": false
         },
         {
             "identifier": 5,
             "name": "assign_shr_ullong",
             "parameters": 17,
             "vararg": false,
-            "returns": 18
+            "returns": 18,
+            "returns_twice": false
         },
         {
             "identifier": 6,
             "name": "assign_bitwise_and_int",
             "parameters": 19,
             "vararg": false,
-            "returns": 20
+            "returns": 20,
+            "returns_twice": false
         },
         {
             "identifier": 7,
             "name": "assign_biwise_and_ullong",
             "parameters": 21,
             "vararg": false,
-            "returns": 22
+            "returns": 22,
+            "returns_twice": false
         },
         {
             "identifier": 8,
             "name": "assign_bitwise_or_int",
             "parameters": 23,
             "vararg": false,
-            "returns": 24
+            "returns": 24,
+            "returns_twice": false
         },
         {
             "identifier": 9,
             "name": "assign_biwise_or_ullong",
             "parameters": 25,
             "vararg": false,
-            "returns": 26
+            "returns": 26,
+            "returns_twice": false
         },
         {
             "identifier": 10,
             "name": "assign_bitwise_xor_int",
             "parameters": 27,
             "vararg": false,
-            "returns": 28
+            "returns": 28,
+            "returns_twice": false
         },
         {
             "identifier": 11,
             "name": "assign_biwise_xor_ullong",
             "parameters": 29,
             "vararg": false,
-            "returns": 30
+            "returns": 30,
+            "returns_twice": false
         }
     ],
     "functions": [

@@ -76,14 +76,16 @@
             "name": "goto1",
             "parameters": 6,
             "vararg": false,
-            "returns": 7
+            "returns": 7,
+            "returns_twice": false
         },
         {
             "identifier": 1,
             "name": "goto2",
             "parameters": 10,
             "vararg": false,
-            "returns": 11
+            "returns": 11,
+            "returns_twice": false
         }
     ],
     "functions": [

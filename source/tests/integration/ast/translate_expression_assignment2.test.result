@@ -243,14 +243,16 @@
             "name": "assign_struct",
             "parameters": 7,
             "vararg": false,
-            "returns": 8
+            "returns": 8,
+            "returns_twice": false
         },
         {
             "identifier": 1,
             "name": "assign_union",
             "parameters": 11,
             "vararg": false,
-            "returns": 12
+            "returns": 12,
+            "returns_twice": false
         }
     ],
     "functions": [

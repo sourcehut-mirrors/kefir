@@ -96,21 +96,24 @@
             "name": "while1",
             "parameters": 6,
             "vararg": false,
-            "returns": 7
+            "returns": 7,
+            "returns_twice": false
         },
         {
             "identifier": 1,
             "name": "while2",
             "parameters": 11,
             "vararg": false,
-            "returns": 12
+            "returns": 12,
+            "returns_twice": false
         },
         {
             "identifier": 2,
             "name": "while3",
             "parameters": 14,
             "vararg": false,
-            "returns": 15
+            "returns": 15,
+            "returns_twice": false
         }
     ],
     "functions": [

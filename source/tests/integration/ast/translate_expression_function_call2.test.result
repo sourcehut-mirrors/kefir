@@ -220,63 +220,72 @@
             "name": "sum",
             "parameters": 5,
             "vararg": true,
-            "returns": 6
+            "returns": 6,
+            "returns_twice": false
         },
         {
             "identifier": 1,
             "name": "call1",
             "parameters": 7,
             "vararg": false,
-            "returns": 8
+            "returns": 8,
+            "returns_twice": false
         },
         {
             "identifier": 2,
             "name": "sum",
             "parameters": 9,
             "vararg": true,
-            "returns": 10
+            "returns": 10,
+            "returns_twice": false
         },
         {
             "identifier": 3,
             "name": "call2",
             "parameters": 11,
             "vararg": false,
-            "returns": 12
+            "returns": 12,
+            "returns_twice": false
         },
         {
             "identifier": 4,
             "name": "sum",
             "parameters": 13,
             "vararg": true,
-            "returns": 14
+            "returns": 14,
+            "returns_twice": false
         },
         {
             "identifier": 5,
             "name": "call3",
             "parameters": 15,
             "vararg": false,
-            "returns": 16
+            "returns": 16,
+            "returns_twice": false
         },
         {
             "identifier": 6,
             "name": "sum",
             "parameters": 17,
             "vararg": true,
-            "returns": 18
+            "returns": 18,
+            "returns_twice": false
         },
         {
             "identifier": 7,
             "name": "call4",
             "parameters": 19,
             "vararg": false,
-            "returns": 20
+            "returns": 20,
+            "returns_twice": false
         },
         {
             "identifier": 8,
             "name": "sum",
             "parameters": 21,
             "vararg": true,
-            "returns": 22
+            "returns": 22,
+            "returns_twice": false
         }
     ],
     "functions": [

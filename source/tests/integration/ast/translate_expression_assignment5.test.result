@@ -180,49 +180,56 @@
             "name": "assign_add_int",
             "parameters": 11,
             "vararg": false,
-            "returns": 12
+            "returns": 12,
+            "returns_twice": false
         },
         {
             "identifier": 1,
             "name": "assign_add_ullong",
             "parameters": 13,
             "vararg": false,
-            "returns": 14
+            "returns": 14,
+            "returns_twice": false
         },
         {
             "identifier": 2,
             "name": "assign_add_float",
             "parameters": 15,
             "vararg": false,
-            "returns": 16
+            "returns": 16,
+            "returns_twice": false
         },
         {
             "identifier": 3,
             "name": "assign_add_double",
             "parameters": 17,
             "vararg": false,
-            "returns": 18
+            "returns": 18,
+            "returns_twice": false
         },
         {
             "identifier": 4,
             "name": "assign_add_double_int",
             "parameters": 19,
             "vararg": false,
-            "returns": 20
+            "returns": 20,
+            "returns_twice": false
         },
         {
             "identifier": 5,
             "name": "assign_add_ptr_int",
             "parameters": 21,
             "vararg": false,
-            "returns": 22
+            "returns": 22,
+            "returns_twice": false
         },
         {
             "identifier": 6,
             "name": "assign_add_ptr2_int",
             "parameters": 24,
             "vararg": false,
-            "returns": 25
+            "returns": 25,
+            "returns_twice": false
         }
     ],
     "functions": [

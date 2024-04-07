@@ -161,21 +161,24 @@
             "name": "compound_literal1",
             "parameters": 5,
             "vararg": false,
-            "returns": 6
+            "returns": 6,
+            "returns_twice": false
         },
         {
             "identifier": 1,
             "name": "compound_literal2",
             "parameters": 8,
             "vararg": false,
-            "returns": 9
+            "returns": 9,
+            "returns_twice": false
         },
         {
             "identifier": 2,
             "name": "compound_literal3",
             "parameters": 11,
             "vararg": false,
-            "returns": 12
+            "returns": 12,
+            "returns_twice": false
         }
     ],
     "functions": [

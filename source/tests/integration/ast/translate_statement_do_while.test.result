@@ -112,35 +112,40 @@
             "name": "do_while1",
             "parameters": 6,
             "vararg": false,
-            "returns": 7
+            "returns": 7,
+            "returns_twice": false
         },
         {
             "identifier": 1,
             "name": "eval",
             "parameters": 8,
             "vararg": false,
-            "returns": 9
+            "returns": 9,
+            "returns_twice": false
         },
         {
             "identifier": 2,
             "name": "eval",
             "parameters": 11,
             "vararg": false,
-            "returns": 12
+            "returns": 12,
+            "returns_twice": false
         },
         {
             "identifier": 3,
             "name": "do_while2",
             "parameters": 14,
             "vararg": false,
-            "returns": 15
+            "returns": 15,
+            "returns_twice": false
         },
         {
             "identifier": 4,
             "name": "do_while3",
             "parameters": 17,
             "vararg": false,
-            "returns": 18
+            "returns": 18,
+            "returns_twice": false
         }
     ],
     "functions": [

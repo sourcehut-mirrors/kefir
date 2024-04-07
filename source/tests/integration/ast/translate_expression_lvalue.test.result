@@ -247,35 +247,40 @@
             "name": "identifier",
             "parameters": 8,
             "vararg": false,
-            "returns": 9
+            "returns": 9,
+            "returns_twice": false
         },
         {
             "identifier": 1,
             "name": "array_subscript",
             "parameters": 10,
             "vararg": false,
-            "returns": 11
+            "returns": 11,
+            "returns_twice": false
         },
         {
             "identifier": 2,
             "name": "struct_field",
             "parameters": 14,
             "vararg": false,
-            "returns": 15
+            "returns": 15,
+            "returns_twice": false
         },
         {
             "identifier": 3,
             "name": "struct_field_indirect",
             "parameters": 18,
             "vararg": false,
-            "returns": 19
+            "returns": 19,
+            "returns_twice": false
         },
         {
             "identifier": 4,
             "name": "indirection",
             "parameters": 22,
             "vararg": false,
-            "returns": 23
+            "returns": 23,
+            "returns_twice": false
         }
     ],
     "functions": [

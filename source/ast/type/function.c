@@ -120,6 +120,7 @@ static kefir_bool_t same_function_type(const struct kefir_ast_type *type1, const
                 false);
     }
     REQUIRE(type1->function_type.ellipsis == type2->function_type.ellipsis, false);
+    REQUIRE(type1->function_type.attributes.returns_twice == type2->function_type.attributes.returns_twice, false);
     return true;
 }
 
@@ -144,6 +145,7 @@ static kefir_bool_t compatible_function_types(const struct kefir_ast_type_traits
     REQUIRE(KEFIR_AST_TYPE_COMPATIBLE(type_traits, kefir_ast_unqualified_type(type1->function_type.return_type),
                                       kefir_ast_unqualified_type(type2->function_type.return_type)),
             false);
+    REQUIRE(type1->function_type.attributes.returns_twice == type2->function_type.attributes.returns_twice, false);
     if (type1->function_type.mode == KEFIR_AST_FUNCTION_TYPE_PARAMETERS &&
         type2->function_type.mode == KEFIR_AST_FUNCTION_TYPE_PARAMETERS) {
         REQUIRE(
@@ -206,6 +208,7 @@ const struct kefir_ast_type *composite_function_types(struct kefir_mem *mem, str
                     NULL);
         }
         composite_function->ellipsis = type1->function_type.ellipsis;
+        composite_function->attributes.returns_twice = type1->function_type.attributes.returns_twice;
         return composite_type;
     } else if (type1->function_type.mode == KEFIR_AST_FUNCTION_TYPE_PARAMETERS) {
         return type1;
@@ -262,6 +265,7 @@ const struct kefir_ast_type *kefir_ast_type_function(struct kefir_mem *mem, stru
     type->function_type.return_type = return_type;
     type->function_type.mode = KEFIR_AST_FUNCTION_TYPE_PARAM_EMPTY;
     type->function_type.ellipsis = false;
+    type->function_type.attributes.returns_twice = false;
     kefir_result_t res = kefir_list_init(&type->function_type.parameters);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, type);

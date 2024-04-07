@@ -189,7 +189,8 @@
             "name": "compound_literal1",
             "parameters": 5,
             "vararg": false,
-            "returns": 6
+            "returns": 6,
+            "returns_twice": false
         }
     ],
     "functions": [

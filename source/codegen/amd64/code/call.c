@@ -45,6 +45,7 @@ static kefir_result_t prepare_stack(struct kefir_mem *mem, struct kefir_codegen_
 }
 
 static kefir_result_t preserve_regs(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
+                                    struct kefir_abi_amd64_function_decl *abi_func_decl,
                                     kefir_asmcmp_stash_index_t *stash_idx) {
     const kefir_size_t num_of_preserved_gp_regs =
         kefir_abi_amd64_num_of_caller_preserved_general_purpose_registers(function->codegen->abi_variant);
@@ -72,6 +73,16 @@ static kefir_result_t preserve_regs(struct kefir_mem *mem, struct kefir_codegen_
 
     REQUIRE_OK(kefir_asmcmp_amd64_activate_stash(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), *stash_idx, NULL));
+
+    const struct kefir_ir_function_decl *ir_func_decl;
+    REQUIRE_OK(kefir_abi_amd64_function_decl_ir(abi_func_decl, &ir_func_decl));
+    if (ir_func_decl->returns_twice) {
+        kefir_asmcmp_virtual_register_index_t stash_area_vreg;
+        REQUIRE_OK(kefir_asmcmp_register_stash_vreg(&function->code.context, *stash_idx, &stash_area_vreg));
+        REQUIRE_OK(kefir_list_insert_after(mem, &function->keep_alive_virtual_regs,
+                                           kefir_list_tail(&function->keep_alive_virtual_regs),
+                                           (void *) (kefir_uptr_t) stash_area_vreg));
+    }
 
     return KEFIR_OK;
 }
@@ -649,7 +660,7 @@ static kefir_result_t invoke_impl(struct kefir_mem *mem, struct kefir_codegen_am
     REQUIRE_OK(prepare_stack(mem, function, abi_func_decl, &stack_increment));
 
     kefir_asmcmp_stash_index_t stash_idx;
-    REQUIRE_OK(preserve_regs(mem, function, &stash_idx));
+    REQUIRE_OK(preserve_regs(mem, function, abi_func_decl, &stash_idx));
 
     const struct kefir_ir_function_decl *ir_func_decl =
         kefir_ir_module_get_declaration(function->module->ir_module, call_node->function_declaration_id);
