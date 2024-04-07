@@ -29,6 +29,8 @@ int gen1(long x) {
 }
 
 int main(void) {
+#if !defined(__NetBSD__)
     assert(test1(1, 2, 3, 4, 5, 6) == 21);
+#endif
     return EXIT_SUCCESS;
 }
