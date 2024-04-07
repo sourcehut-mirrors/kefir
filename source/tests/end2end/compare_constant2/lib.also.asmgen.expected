@@ -24,27 +24,22 @@ _kefir_func_compare1_label1:
     test %cl, %cl
     sete %dl
     add %edx, %eax
-    movsx %eax, %rax
     xor %rcx, %rcx
     cmp $2, %rdi
     setl %cl
     add %ecx, %eax
-    movsx %eax, %rax
     xor %rcx, %rcx
     cmp $3, %rdi
     setle %cl
     add %ecx, %eax
-    movsx %eax, %rax
     xor %rcx, %rcx
     cmp $4, %rdi
     setg %cl
     add %ecx, %eax
-    movsx %eax, %rax
     xor %rcx, %rcx
     cmp $5, %rdi
     setge %cl
     add %ecx, %eax
-    movsx %eax, %rax
     ret
 
 compare2:
@@ -60,27 +55,22 @@ _kefir_func_compare2_label1:
     test %cl, %cl
     sete %dl
     add %edx, %eax
-    movsx %eax, %rax
     xor %rcx, %rcx
     cmp $2, %rdi
     setb %cl
     add %ecx, %eax
-    movsx %eax, %rax
     xor %rcx, %rcx
     cmp $3, %rdi
     setbe %cl
     add %ecx, %eax
-    movsx %eax, %rax
     xor %rcx, %rcx
     cmp $4, %rdi
     seta %cl
     add %ecx, %eax
-    movsx %eax, %rax
     xor %rcx, %rcx
     cmp $5, %rdi
     setae %cl
     add %ecx, %eax
-    movsx %eax, %rax
     ret
 
 compare3:
@@ -98,31 +88,26 @@ _kefir_func_compare3_label1:
     test %cl, %cl
     sete %dl
     add %edx, %eax
-    movsx %eax, %rax
     xor %rcx, %rcx
     movabs $72057594037927934, %rdx
     cmp %rdx, %rdi
     setl %cl
     add %ecx, %eax
-    movsx %eax, %rax
     xor %rcx, %rcx
     movabs $72057594037927933, %rdx
     cmp %rdx, %rdi
     setle %cl
     add %ecx, %eax
-    movsx %eax, %rax
     xor %rcx, %rcx
     movabs $72057594037927932, %rdx
     cmp %rdx, %rdi
     setg %cl
     add %ecx, %eax
-    movsx %eax, %rax
     xor %rcx, %rcx
     movabs $72057594037927931, %rdx
     cmp %rdx, %rdi
     setge %cl
     add %ecx, %eax
-    movsx %eax, %rax
     ret
 
 compare4:
@@ -140,31 +125,26 @@ _kefir_func_compare4_label1:
     test %cl, %cl
     sete %dl
     add %edx, %eax
-    movsx %eax, %rax
     xor %rcx, %rcx
     movabs $72057594037927934, %rdx
     cmp %rdx, %rdi
     setb %cl
     add %ecx, %eax
-    movsx %eax, %rax
     xor %rcx, %rcx
     movabs $72057594037927933, %rdx
     cmp %rdx, %rdi
     setbe %cl
     add %ecx, %eax
-    movsx %eax, %rax
     xor %rcx, %rcx
     movabs $72057594037927932, %rdx
     cmp %rdx, %rdi
     seta %cl
     add %ecx, %eax
-    movsx %eax, %rax
     xor %rcx, %rcx
     movabs $72057594037927931, %rdx
     cmp %rdx, %rdi
     setae %cl
     add %ecx, %eax
-    movsx %eax, %rax
     ret
 
 

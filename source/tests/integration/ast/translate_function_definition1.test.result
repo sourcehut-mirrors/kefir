@@ -207,9 +207,6 @@
                     "opcode": "iadd32"
                 },
                 {
-                    "opcode": "extend32"
-                },
-                {
                     "opcode": "ret"
                 }
             ],

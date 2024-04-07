@@ -96,9 +96,6 @@
                     }
                 },
                 {
-                    "opcode": "extend32"
-                },
-                {
                     "opcode": "pushi",
                     "arg": 1
                 },

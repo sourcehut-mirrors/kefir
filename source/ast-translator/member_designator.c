@@ -1,5 +1,6 @@
 #include "kefir/ast-translator/translator.h"
 #include "kefir/ast-translator/layout.h"
+#include "kefir/ast-translator/typeconv.h"
 #include "kefir/ast/type_layout.h"
 #include "kefir/core/error.h"
 #include "kefir/core/source_error.h"
@@ -77,6 +78,9 @@ static kefir_result_t visit_array_subscript(const struct kefir_ast_visitor *visi
     struct kefir_ast_type_layout *sublayout = param->type_layout->array_layout.element_type;
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(param->builder, KEFIR_IROPCODE_PUSHU64, sublayout->properties.size));
     REQUIRE_OK(kefir_ast_translate_expression(param->mem, subscript->subscript, param->builder, param->context));
+    REQUIRE_OK(kefir_ast_translate_typeconv(
+        param->mem, param->context->module, param->builder, param->context->ast_context->type_traits,
+        subscript->subscript->properties.type, param->context->ast_context->type_traits->size_type));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(param->builder, KEFIR_IROPCODE_IMUL64, 0));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(param->builder, KEFIR_IROPCODE_IADD64, 0));
     param->type_layout = sublayout;

@@ -1145,19 +1145,19 @@ DEFINE_CASE(ast_node_analysis_unary_operation_sizeof, "AST node analysis - unary
         NULL, NULL, NULL, NULL, NULL));
 
     ASSERT_UNARY_OPERATION(&kft_mem, context, KEFIR_AST_OPERATION_SIZEOF, kefir_ast_new_constant_bool(&kft_mem, false),
-                           kefir_ast_type_signed_int(), true, false, false);
+                           type_traits->size_type, true, false, false);
     ASSERT_UNARY_OPERATION(&kft_mem, context, KEFIR_AST_OPERATION_SIZEOF,
-                           kefir_ast_new_identifier(&kft_mem, context->symbols, "x"), kefir_ast_type_signed_int(), true,
+                           kefir_ast_new_identifier(&kft_mem, context->symbols, "x"), type_traits->size_type, true,
                            false, false);
     ASSERT_UNARY_OPERATION(&kft_mem, context, KEFIR_AST_OPERATION_SIZEOF,
-                           KEFIR_AST_MAKE_STRING_LITERAL_MULTIBYTE(&kft_mem, "Hello, world!"),
-                           kefir_ast_type_signed_int(), true, false, false);
+                           KEFIR_AST_MAKE_STRING_LITERAL_MULTIBYTE(&kft_mem, "Hello, world!"), type_traits->size_type,
+                           true, false, false);
     ASSERT_UNARY_OPERATION(&kft_mem, context, KEFIR_AST_OPERATION_SIZEOF,
-                           kefir_ast_new_identifier(&kft_mem, context->symbols, "y"), kefir_ast_type_signed_int(), true,
+                           kefir_ast_new_identifier(&kft_mem, context->symbols, "y"), type_traits->size_type, true,
                            false, false);
     ASSERT_UNARY_OPERATION(&kft_mem, context, KEFIR_AST_OPERATION_SIZEOF,
-                           kefir_ast_new_identifier(&kft_mem, context->symbols, "z"), kefir_ast_type_signed_int(),
-                           false, false, false);
+                           kefir_ast_new_identifier(&kft_mem, context->symbols, "z"), type_traits->size_type, false,
+                           false, false);
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &local_context));
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &global_context));
@@ -1200,20 +1200,20 @@ DEFINE_CASE(ast_node_analysis_unary_operation_alignof, "AST node analysis - unar
     ASSERT_OK(append_specifiers(&kft_mem, &type_name7->type_decl.specifiers, 2, kefir_ast_type_specifier_char(&kft_mem),
                                 kefir_ast_type_qualifier_const(&kft_mem)));
 
-    ASSERT_UNARY_OPERATION(&kft_mem, context, KEFIR_AST_OPERATION_ALIGNOF, type_name1, kefir_ast_type_signed_int(),
-                           true, false, false);
-    ASSERT_UNARY_OPERATION(&kft_mem, context, KEFIR_AST_OPERATION_ALIGNOF, type_name2, kefir_ast_type_signed_int(),
-                           true, false, false);
-    ASSERT_UNARY_OPERATION(&kft_mem, context, KEFIR_AST_OPERATION_ALIGNOF, type_name3, kefir_ast_type_signed_int(),
-                           true, false, false);
-    ASSERT_UNARY_OPERATION(&kft_mem, context, KEFIR_AST_OPERATION_ALIGNOF, type_name4, kefir_ast_type_signed_int(),
-                           true, false, false);
-    ASSERT_UNARY_OPERATION(&kft_mem, context, KEFIR_AST_OPERATION_ALIGNOF, type_name5, kefir_ast_type_signed_int(),
-                           true, false, false);
-    ASSERT_UNARY_OPERATION(&kft_mem, context, KEFIR_AST_OPERATION_ALIGNOF, type_name6, kefir_ast_type_signed_int(),
-                           true, false, false);
-    ASSERT_UNARY_OPERATION(&kft_mem, context, KEFIR_AST_OPERATION_ALIGNOF, type_name7, kefir_ast_type_signed_int(),
-                           true, false, false);
+    ASSERT_UNARY_OPERATION(&kft_mem, context, KEFIR_AST_OPERATION_ALIGNOF, type_name1, type_traits->size_type, true,
+                           false, false);
+    ASSERT_UNARY_OPERATION(&kft_mem, context, KEFIR_AST_OPERATION_ALIGNOF, type_name2, type_traits->size_type, true,
+                           false, false);
+    ASSERT_UNARY_OPERATION(&kft_mem, context, KEFIR_AST_OPERATION_ALIGNOF, type_name3, type_traits->size_type, true,
+                           false, false);
+    ASSERT_UNARY_OPERATION(&kft_mem, context, KEFIR_AST_OPERATION_ALIGNOF, type_name4, type_traits->size_type, true,
+                           false, false);
+    ASSERT_UNARY_OPERATION(&kft_mem, context, KEFIR_AST_OPERATION_ALIGNOF, type_name5, type_traits->size_type, true,
+                           false, false);
+    ASSERT_UNARY_OPERATION(&kft_mem, context, KEFIR_AST_OPERATION_ALIGNOF, type_name6, type_traits->size_type, true,
+                           false, false);
+    ASSERT_UNARY_OPERATION(&kft_mem, context, KEFIR_AST_OPERATION_ALIGNOF, type_name7, type_traits->size_type, true,
+                           false, false);
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &local_context));
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &global_context));

@@ -297,9 +297,6 @@
                     "opcode": "iadd32"
                 },
                 {
-                    "opcode": "extend32"
-                },
-                {
                     "opcode": "xchg",
                     "arg": 1
                 },
@@ -344,13 +341,6 @@
                 },
                 {
                     "opcode": "iadd16"
-                },
-                {
-                    "opcode": "pushu",
-                    "arg": 65535
-                },
-                {
-                    "opcode": "iand64"
                 },
                 {
                     "opcode": "xchg",
@@ -399,9 +389,6 @@
                     "opcode": "iadd32"
                 },
                 {
-                    "opcode": "extend32"
-                },
-                {
                     "opcode": "xchg",
                     "arg": 1
                 },
@@ -446,13 +433,6 @@
                 },
                 {
                     "opcode": "iadd16"
-                },
-                {
-                    "opcode": "pushu",
-                    "arg": 65535
-                },
-                {
-                    "opcode": "iand64"
                 },
                 {
                     "opcode": "xchg",

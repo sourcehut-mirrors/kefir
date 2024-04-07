@@ -397,9 +397,6 @@
                         "identifier": 5,
                         "name": "sum"
                     }
-                },
-                {
-                    "opcode": "extend32"
                 }
             ],
             "public_labels": []
@@ -417,14 +414,15 @@
                     "opcode": "f32cint"
                 },
                 {
-                    "opcode": "extend32"
-                },
-                {
                     "opcode": "pushu",
                     "arg": 1
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "pushu",
+                    "arg": 255
+                },
+                {
+                    "opcode": "iand64"
                 },
                 {
                     "opcode": "invoke",
@@ -432,9 +430,6 @@
                         "identifier": 7,
                         "name": "sum"
                     }
-                },
-                {
-                    "opcode": "extend32"
                 }
             ],
             "public_labels": []
@@ -450,9 +445,6 @@
                         "identifier": 9,
                         "name": "test"
                     }
-                },
-                {
-                    "opcode": "extend32"
                 }
             ],
             "public_labels": []
@@ -468,9 +460,6 @@
                         "identifier": 11,
                         "name": "test2"
                     }
-                },
-                {
-                    "opcode": "extend32"
                 }
             ],
             "public_labels": []
@@ -490,9 +479,6 @@
                         "identifier": 13,
                         "name": "test3"
                     }
-                },
-                {
-                    "opcode": "extend32"
                 }
             ],
             "public_labels": []
@@ -526,9 +512,6 @@
                         "identifier": 15,
                         "name": "test3"
                     }
-                },
-                {
-                    "opcode": "extend32"
                 }
             ],
             "public_labels": []

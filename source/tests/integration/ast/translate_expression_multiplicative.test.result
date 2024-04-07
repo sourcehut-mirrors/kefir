@@ -90,9 +90,6 @@
                     "opcode": "idiv32"
                 },
                 {
-                    "opcode": "extend32"
-                },
-                {
                     "opcode": "pushu",
                     "arg": 156
                 },
@@ -104,15 +101,11 @@
                     "opcode": "udiv32"
                 },
                 {
-                    "opcode": "pushu",
-                    "arg": 4294967295
-                },
-                {
-                    "opcode": "iand64"
-                },
-                {
                     "opcode": "pushi",
                     "arg": -76
+                },
+                {
+                    "opcode": "extend32"
                 },
                 {
                     "opcode": "pushu",
@@ -142,6 +135,9 @@
                 {
                     "opcode": "pushi",
                     "arg": 65
+                },
+                {
+                    "opcode": "extend32"
                 },
                 {
                     "opcode": "intcf32"
@@ -181,6 +177,9 @@
                 {
                     "opcode": "pushi",
                     "arg": -7
+                },
+                {
+                    "opcode": "extend32"
                 },
                 {
                     "opcode": "intcf64"
@@ -247,9 +246,6 @@
                     "opcode": "imod32"
                 },
                 {
-                    "opcode": "extend32"
-                },
-                {
                     "opcode": "pushi",
                     "arg": 1005
                 },
@@ -261,11 +257,11 @@
                     "opcode": "imod32"
                 },
                 {
-                    "opcode": "extend32"
-                },
-                {
                     "opcode": "pushi",
                     "arg": -255
+                },
+                {
+                    "opcode": "extend32"
                 },
                 {
                     "opcode": "pushi",
@@ -281,6 +277,9 @@
                 {
                     "opcode": "pushi",
                     "arg": 10
+                },
+                {
+                    "opcode": "extend32"
                 },
                 {
                     "opcode": "umod64"
@@ -316,9 +315,6 @@
                     "opcode": "imul32"
                 },
                 {
-                    "opcode": "extend32"
-                },
-                {
                     "opcode": "pushu",
                     "arg": 156
                 },
@@ -330,15 +326,11 @@
                     "opcode": "imul32"
                 },
                 {
-                    "opcode": "pushu",
-                    "arg": 4294967295
-                },
-                {
-                    "opcode": "iand64"
-                },
-                {
                     "opcode": "pushi",
                     "arg": -76
+                },
+                {
+                    "opcode": "extend32"
                 },
                 {
                     "opcode": "pushu",
@@ -368,6 +360,9 @@
                 {
                     "opcode": "pushi",
                     "arg": 65
+                },
+                {
+                    "opcode": "extend32"
                 },
                 {
                     "opcode": "intcf32"
@@ -407,6 +402,9 @@
                 {
                     "opcode": "pushi",
                     "arg": -7
+                },
+                {
+                    "opcode": "extend32"
                 },
                 {
                     "opcode": "intcf64"

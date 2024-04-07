@@ -135,13 +135,6 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "pushu",
-                    "arg": 4294967295
-                },
-                {
-                    "opcode": "iand64"
-                },
-                {
                     "opcode": "store32",
                     "memory_flags": {
                         "volatile": false
@@ -171,6 +164,13 @@
                 },
                 {
                     "opcode": "pushu",
+                    "arg": 4294967295
+                },
+                {
+                    "opcode": "iand64"
+                },
+                {
+                    "opcode": "pushu",
                     "arg": 1
                 },
                 {
@@ -186,7 +186,7 @@
                     }
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "extend8"
                 },
                 {
                     "opcode": "pushi",
@@ -203,7 +203,7 @@
                 },
                 {
                     "opcode": "branch8",
-                    "arg": 32
+                    "arg": 30
                 },
                 {
                     "opcode": "getlocal",
@@ -238,13 +238,6 @@
                     "opcode": "iadd32"
                 },
                 {
-                    "opcode": "pushu",
-                    "arg": 4294967295
-                },
-                {
-                    "opcode": "iand64"
-                },
-                {
                     "opcode": "store32",
                     "memory_flags": {
                         "volatile": false
@@ -255,7 +248,7 @@
                 },
                 {
                     "opcode": "jmp",
-                    "arg": 7
+                    "arg": 5
                 }
             ],
             "public_labels": []

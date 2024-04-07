@@ -76,6 +76,9 @@
                     "arg": 3
                 },
                 {
+                    "opcode": "extend32"
+                },
+                {
                     "opcode": "imul64"
                 },
                 {

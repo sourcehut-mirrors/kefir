@@ -192,6 +192,9 @@
                     }
                 },
                 {
+                    "opcode": "extend32"
+                },
+                {
                     "opcode": "pushu",
                     "arg": 4
                 },

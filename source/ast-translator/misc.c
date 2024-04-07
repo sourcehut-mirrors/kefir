@@ -20,6 +20,7 @@
 
 #include "kefir/ast-translator/misc.h"
 #include "kefir/ast-translator/translator.h"
+#include "kefir/ast-translator/typeconv.h"
 #include "kefir/ast/runtime.h"
 #include "kefir/ast/type_completion.h"
 #include "kefir/core/util.h"
@@ -58,6 +59,8 @@ kefir_result_t kefir_ast_translate_sizeof(struct kefir_mem *mem, struct kefir_as
                                               "Unable to determine size of VLA with unspecified variable modifier"));
         REQUIRE_OK(kefir_ast_translate_sizeof(mem, context, builder, type->array_type.element_type, source_location));
         REQUIRE_OK(kefir_ast_translate_expression(mem, vlen, builder, context));
+        REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
+                                                vlen->properties.type, context->ast_context->type_traits->size_type));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IMUL64, 0));
     } else {
         REQUIRE_OK(kefir_ast_type_completion(mem, context->ast_context, &type, type));

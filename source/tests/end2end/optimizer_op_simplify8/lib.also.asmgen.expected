@@ -24,6 +24,7 @@ _kefir_func_int_equals_const_label1:
     mov $0, %rax
     cmp $123, %rdi
     sete %al
+    movsx %eax, %rax
     pop %rbp
     ret
 
@@ -35,6 +36,7 @@ _kefir_func_int_less_or_equal_const_label1:
     mov $0, %rax
     cmp $543, %rdi
     setle %al
+    movsx %eax, %rax
     pop %rbp
     ret
 
@@ -46,6 +48,7 @@ _kefir_func_int_less_const_label1:
     mov $0, %rax
     cmp $90, %rdi
     setl %al
+    movsx %eax, %rax
     pop %rbp
     ret
 
@@ -57,6 +60,7 @@ _kefir_func_int_below_or_equal_const_label1:
     mov $0, %rax
     cmp $1, %rdi
     setbe %al
+    movsx %eax, %rax
     pop %rbp
     ret
 
@@ -68,6 +72,7 @@ _kefir_func_int_greater_or_equal_const_label1:
     mov $0, %rax
     cmp $-50, %rdi
     setge %al
+    movsx %eax, %rax
     pop %rbp
     ret
 
@@ -79,6 +84,7 @@ _kefir_func_int_greater_const_label1:
     mov $0, %rax
     cmp $150, %rdi
     setg %al
+    movsx %eax, %rax
     pop %rbp
     ret
 
@@ -90,6 +96,7 @@ _kefir_func_int_above_const_label1:
     mov $0, %rax
     cmp $100, %rdi
     seta %al
+    movsx %eax, %rax
     pop %rbp
     ret
 
@@ -101,6 +108,7 @@ _kefir_func_int_below_const_label1:
     mov $0, %rax
     cmp $90, %rdi
     setb %al
+    movsx %eax, %rax
     pop %rbp
     ret
 
@@ -112,6 +120,7 @@ _kefir_func_int_above_or_equal_const_label1:
     mov $0, %rax
     cmp $190, %rdi
     setae %al
+    movsx %eax, %rax
     pop %rbp
     ret
 

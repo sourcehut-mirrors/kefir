@@ -300,7 +300,7 @@
                 },
                 {
                     "opcode": "branch8",
-                    "arg": 23
+                    "arg": 22
                 },
                 {
                     "opcode": "invoke",
@@ -340,9 +340,6 @@
                 },
                 {
                     "opcode": "iadd32"
-                },
-                {
-                    "opcode": "extend32"
                 },
                 {
                     "opcode": "store32",
@@ -445,7 +442,7 @@
                 },
                 {
                     "opcode": "branch8",
-                    "arg": 37
+                    "arg": 34
                 },
                 {
                     "opcode": "invoke",
@@ -455,30 +452,23 @@
                     }
                 },
                 {
-                    "opcode": "pushu",
-                    "arg": 1
-                },
-                {
-                    "opcode": "iand64"
-                },
-                {
                     "opcode": "bnot8"
                 },
                 {
                     "opcode": "branch8",
-                    "arg": 25
+                    "arg": 23
                 },
                 {
                     "opcode": "jmp",
-                    "arg": 26
+                    "arg": 24
                 },
                 {
                     "opcode": "jmp",
-                    "arg": 26
+                    "arg": 24
                 },
                 {
                     "opcode": "jmp",
-                    "arg": 37
+                    "arg": 34
                 },
                 {
                     "opcode": "getlocal",
@@ -511,9 +501,6 @@
                 },
                 {
                     "opcode": "iadd32"
-                },
-                {
-                    "opcode": "extend32"
                 },
                 {
                     "opcode": "store32",

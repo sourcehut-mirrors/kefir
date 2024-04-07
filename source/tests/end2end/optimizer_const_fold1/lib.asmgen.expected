@@ -150,7 +150,7 @@ int_sub:
     mov %rsp, %rbp
 _kefir_func_int_sub_label0:
 _kefir_func_int_sub_label1:
-    mov $-150, %rax
+    movabs $4294967146, %rax
     pop %rbp
     ret
 
@@ -383,7 +383,7 @@ sign_extend16:
     mov %rsp, %rbp
 _kefir_func_sign_extend16_label0:
 _kefir_func_sign_extend16_label1:
-    mov $-28674, %rax
+    mov $102398, %rax
     pop %rbp
     ret
 
@@ -392,7 +392,7 @@ sign_extend32:
     mov %rsp, %rbp
 _kefir_func_sign_extend32_label0:
 _kefir_func_sign_extend32_label1:
-    mov $-2, %rax
+    movabs $282162171478014, %rax
     pop %rbp
     ret
 
@@ -410,7 +410,7 @@ sign_extend8:
     mov %rsp, %rbp
 _kefir_func_sign_extend8_label0:
 _kefir_func_sign_extend8_label1:
-    mov $-128, %rax
+    mov $384, %rax
     pop %rbp
     ret
 
@@ -419,7 +419,7 @@ zero_extend8:
     mov %rsp, %rbp
 _kefir_func_zero_extend8_label0:
 _kefir_func_zero_extend8_label1:
-    mov $128, %rax
+    mov $384, %rax
     pop %rbp
     ret
 
@@ -467,7 +467,7 @@ zero_extend16:
     mov %rsp, %rbp
 _kefir_func_zero_extend16_label0:
 _kefir_func_zero_extend16_label1:
-    mov $36862, %rax
+    mov $102398, %rax
     pop %rbp
     ret
 
@@ -476,7 +476,7 @@ zero_extend32:
     mov %rsp, %rbp
 _kefir_func_zero_extend32_label0:
 _kefir_func_zero_extend32_label1:
-    movabs $4294967294, %rax
+    movabs $282162171478014, %rax
     pop %rbp
     ret
 

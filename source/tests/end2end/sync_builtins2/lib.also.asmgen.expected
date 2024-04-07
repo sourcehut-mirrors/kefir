@@ -57,12 +57,11 @@ _kefir_func_test_fetch_add_short_label1:
     mov %r8, %r11
 _kefir_func_test_fetch_add_short_label2:
     movsxw -22(%rbp), %rax
-    movsx %eax, %rax
+    movsx %ax, %rax
     movsx %r10w, %rcx
-    movsx %ecx, %rcx
-    add %ecx, %eax
-    movsx %eax, %rax
-    movsx %ax, %rbx
+    movsx %cx, %rcx
+    mov %rax, %rbx
+    add %ecx, %ebx
     movsx %bx, %rax
     movw %ax, -18(%rbp)
     mov $2, %rax
@@ -81,7 +80,6 @@ _kefir_func_test_fetch_add_short_label2:
     call __atomic_compare_exchange@PLT
     movq -48(%rbp), %r10
     movq -40(%rbp), %r11
-    and $1, %rax
     xor %rcx, %rcx
     test %al, %al
     sete %cl
@@ -125,12 +123,11 @@ _kefir_func_test_fetch_and_short_label1:
     mov %r8, %r11
 _kefir_func_test_fetch_and_short_label2:
     movsxw -22(%rbp), %rax
-    movsx %eax, %rax
+    movsx %ax, %rax
     movsx %r10w, %rcx
-    movsx %ecx, %rcx
-    and %ecx, %eax
-    movsx %eax, %rax
-    movsx %ax, %rbx
+    movsx %cx, %rcx
+    mov %rax, %rbx
+    and %ecx, %ebx
     movsx %bx, %rax
     movw %ax, -18(%rbp)
     mov $2, %rax
@@ -149,7 +146,6 @@ _kefir_func_test_fetch_and_short_label2:
     call __atomic_compare_exchange@PLT
     movq -48(%rbp), %r10
     movq -40(%rbp), %r11
-    and $1, %rax
     xor %rcx, %rcx
     test %al, %al
     sete %cl
@@ -193,12 +189,11 @@ _kefir_func_test_fetch_sub_short_label1:
     mov %r8, %r11
 _kefir_func_test_fetch_sub_short_label2:
     movsxw -22(%rbp), %rax
-    movsx %eax, %rax
+    movsx %ax, %rax
     movsx %r10w, %rcx
-    movsx %ecx, %rcx
-    sub %ecx, %eax
-    movsx %eax, %rax
-    movsx %ax, %rbx
+    movsx %cx, %rcx
+    mov %rax, %rbx
+    sub %ecx, %ebx
     movsx %bx, %rax
     movw %ax, -18(%rbp)
     mov $2, %rax
@@ -217,7 +212,6 @@ _kefir_func_test_fetch_sub_short_label2:
     call __atomic_compare_exchange@PLT
     movq -48(%rbp), %r10
     movq -40(%rbp), %r11
-    and $1, %rax
     xor %rcx, %rcx
     test %al, %al
     sete %cl
@@ -261,12 +255,11 @@ _kefir_func_test_fetch_xor_short_label1:
     mov %r8, %r11
 _kefir_func_test_fetch_xor_short_label2:
     movsxw -22(%rbp), %rax
-    movsx %eax, %rax
+    movsx %ax, %rax
     movsx %r10w, %rcx
-    movsx %ecx, %rcx
-    xor %ecx, %eax
-    movsx %eax, %rax
-    movsx %ax, %rbx
+    movsx %cx, %rcx
+    mov %rax, %rbx
+    xor %ecx, %ebx
     movsx %bx, %rax
     movw %ax, -18(%rbp)
     mov $2, %rax
@@ -285,7 +278,6 @@ _kefir_func_test_fetch_xor_short_label2:
     call __atomic_compare_exchange@PLT
     movq -48(%rbp), %r10
     movq -40(%rbp), %r11
-    and $1, %rax
     xor %rcx, %rcx
     test %al, %al
     sete %cl
@@ -330,8 +322,8 @@ _kefir_func_test_fetch_or_int_label1:
 _kefir_func_test_fetch_or_int_label2:
     movsxl -28(%rbp), %rax
     movsx %r10d, %rcx
-    or %ecx, %eax
-    movsx %eax, %rbx
+    mov %rax, %rbx
+    or %ecx, %ebx
     movsx %ebx, %rax
     movl %eax, -20(%rbp)
     mov $4, %rax
@@ -350,7 +342,6 @@ _kefir_func_test_fetch_or_int_label2:
     call __atomic_compare_exchange@PLT
     movq -48(%rbp), %r10
     movq -40(%rbp), %r11
-    and $1, %rax
     xor %rcx, %rcx
     test %al, %al
     sete %cl
@@ -394,12 +385,11 @@ _kefir_func_test_fetch_add_char_label1:
     mov %r8, %r11
 _kefir_func_test_fetch_add_char_label2:
     movsxb -19(%rbp), %rax
-    movsx %eax, %rax
+    movsx %al, %rax
     movsx %r10b, %rcx
-    movsx %ecx, %rcx
-    add %ecx, %eax
-    movsx %eax, %rax
-    movsx %al, %rbx
+    movsx %cl, %rcx
+    mov %rax, %rbx
+    add %ecx, %ebx
     movsx %bl, %rax
     movb %al, -17(%rbp)
     mov $1, %rax
@@ -418,7 +408,6 @@ _kefir_func_test_fetch_add_char_label2:
     call __atomic_compare_exchange@PLT
     movq -48(%rbp), %r10
     movq -40(%rbp), %r11
-    and $1, %rax
     xor %rcx, %rcx
     test %al, %al
     sete %cl
@@ -481,7 +470,6 @@ _kefir_func_test_fetch_add_long_label2:
     call __atomic_compare_exchange@PLT
     movq -64(%rbp), %r10
     movq -56(%rbp), %r11
-    and $1, %rax
     xor %rcx, %rcx
     test %al, %al
     sete %cl
@@ -525,12 +513,11 @@ _kefir_func_test_fetch_and_char_label1:
     mov %r8, %r11
 _kefir_func_test_fetch_and_char_label2:
     movsxb -19(%rbp), %rax
-    movsx %eax, %rax
+    movsx %al, %rax
     movsx %r10b, %rcx
-    movsx %ecx, %rcx
-    and %ecx, %eax
-    movsx %eax, %rax
-    movsx %al, %rbx
+    movsx %cl, %rcx
+    mov %rax, %rbx
+    and %ecx, %ebx
     movsx %bl, %rax
     movb %al, -17(%rbp)
     mov $1, %rax
@@ -549,7 +536,6 @@ _kefir_func_test_fetch_and_char_label2:
     call __atomic_compare_exchange@PLT
     movq -48(%rbp), %r10
     movq -40(%rbp), %r11
-    and $1, %rax
     xor %rcx, %rcx
     test %al, %al
     sete %cl
@@ -612,7 +598,6 @@ _kefir_func_test_fetch_and_long_label2:
     call __atomic_compare_exchange@PLT
     movq -64(%rbp), %r10
     movq -56(%rbp), %r11
-    and $1, %rax
     xor %rcx, %rcx
     test %al, %al
     sete %cl
@@ -656,12 +641,11 @@ _kefir_func_test_fetch_or_short_label1:
     mov %r8, %r11
 _kefir_func_test_fetch_or_short_label2:
     movsxw -22(%rbp), %rax
-    movsx %eax, %rax
+    movsx %ax, %rax
     movsx %r10w, %rcx
-    movsx %ecx, %rcx
-    or %ecx, %eax
-    movsx %eax, %rax
-    movsx %ax, %rbx
+    movsx %cx, %rcx
+    mov %rax, %rbx
+    or %ecx, %ebx
     movsx %bx, %rax
     movw %ax, -18(%rbp)
     mov $2, %rax
@@ -680,7 +664,6 @@ _kefir_func_test_fetch_or_short_label2:
     call __atomic_compare_exchange@PLT
     movq -48(%rbp), %r10
     movq -40(%rbp), %r11
-    and $1, %rax
     xor %rcx, %rcx
     test %al, %al
     sete %cl
@@ -724,12 +707,11 @@ _kefir_func_test_fetch_sub_char_label1:
     mov %r8, %r11
 _kefir_func_test_fetch_sub_char_label2:
     movsxb -19(%rbp), %rax
-    movsx %eax, %rax
+    movsx %al, %rax
     movsx %r10b, %rcx
-    movsx %ecx, %rcx
-    sub %ecx, %eax
-    movsx %eax, %rax
-    movsx %al, %rbx
+    movsx %cl, %rcx
+    mov %rax, %rbx
+    sub %ecx, %ebx
     movsx %bl, %rax
     movb %al, -17(%rbp)
     mov $1, %rax
@@ -748,7 +730,6 @@ _kefir_func_test_fetch_sub_char_label2:
     call __atomic_compare_exchange@PLT
     movq -48(%rbp), %r10
     movq -40(%rbp), %r11
-    and $1, %rax
     xor %rcx, %rcx
     test %al, %al
     sete %cl
@@ -811,7 +792,6 @@ _kefir_func_test_fetch_sub_long_label2:
     call __atomic_compare_exchange@PLT
     movq -64(%rbp), %r10
     movq -56(%rbp), %r11
-    and $1, %rax
     xor %rcx, %rcx
     test %al, %al
     sete %cl
@@ -855,12 +835,11 @@ _kefir_func_test_fetch_xor_char_label1:
     mov %r8, %r11
 _kefir_func_test_fetch_xor_char_label2:
     movsxb -19(%rbp), %rax
-    movsx %eax, %rax
+    movsx %al, %rax
     movsx %r10b, %rcx
-    movsx %ecx, %rcx
-    xor %ecx, %eax
-    movsx %eax, %rax
-    movsx %al, %rbx
+    movsx %cl, %rcx
+    mov %rax, %rbx
+    xor %ecx, %ebx
     movsx %bl, %rax
     movb %al, -17(%rbp)
     mov $1, %rax
@@ -879,7 +858,6 @@ _kefir_func_test_fetch_xor_char_label2:
     call __atomic_compare_exchange@PLT
     movq -48(%rbp), %r10
     movq -40(%rbp), %r11
-    and $1, %rax
     xor %rcx, %rcx
     test %al, %al
     sete %cl
@@ -942,7 +920,6 @@ _kefir_func_test_fetch_xor_long_label2:
     call __atomic_compare_exchange@PLT
     movq -64(%rbp), %r10
     movq -56(%rbp), %r11
-    and $1, %rax
     xor %rcx, %rcx
     test %al, %al
     sete %cl
@@ -987,8 +964,8 @@ _kefir_func_test_fetch_add_int_label1:
 _kefir_func_test_fetch_add_int_label2:
     movsxl -28(%rbp), %rax
     movsx %r10d, %rcx
-    add %ecx, %eax
-    movsx %eax, %rbx
+    mov %rax, %rbx
+    add %ecx, %ebx
     movsx %ebx, %rax
     movl %eax, -20(%rbp)
     mov $4, %rax
@@ -1007,7 +984,6 @@ _kefir_func_test_fetch_add_int_label2:
     call __atomic_compare_exchange@PLT
     movq -48(%rbp), %r10
     movq -40(%rbp), %r11
-    and $1, %rax
     xor %rcx, %rcx
     test %al, %al
     sete %cl
@@ -1052,8 +1028,8 @@ _kefir_func_test_fetch_and_int_label1:
 _kefir_func_test_fetch_and_int_label2:
     movsxl -28(%rbp), %rax
     movsx %r10d, %rcx
-    and %ecx, %eax
-    movsx %eax, %rbx
+    mov %rax, %rbx
+    and %ecx, %ebx
     movsx %ebx, %rax
     movl %eax, -20(%rbp)
     mov $4, %rax
@@ -1072,7 +1048,6 @@ _kefir_func_test_fetch_and_int_label2:
     call __atomic_compare_exchange@PLT
     movq -48(%rbp), %r10
     movq -40(%rbp), %r11
-    and $1, %rax
     xor %rcx, %rcx
     test %al, %al
     sete %cl
@@ -1116,12 +1091,11 @@ _kefir_func_test_fetch_or_char_label1:
     mov %r8, %r11
 _kefir_func_test_fetch_or_char_label2:
     movsxb -19(%rbp), %rax
-    movsx %eax, %rax
+    movsx %al, %rax
     movsx %r10b, %rcx
-    movsx %ecx, %rcx
-    or %ecx, %eax
-    movsx %eax, %rax
-    movsx %al, %rbx
+    movsx %cl, %rcx
+    mov %rax, %rbx
+    or %ecx, %ebx
     movsx %bl, %rax
     movb %al, -17(%rbp)
     mov $1, %rax
@@ -1140,7 +1114,6 @@ _kefir_func_test_fetch_or_char_label2:
     call __atomic_compare_exchange@PLT
     movq -48(%rbp), %r10
     movq -40(%rbp), %r11
-    and $1, %rax
     xor %rcx, %rcx
     test %al, %al
     sete %cl
@@ -1203,7 +1176,6 @@ _kefir_func_test_fetch_or_long_label2:
     call __atomic_compare_exchange@PLT
     movq -64(%rbp), %r10
     movq -56(%rbp), %r11
-    and $1, %rax
     xor %rcx, %rcx
     test %al, %al
     sete %cl
@@ -1248,8 +1220,8 @@ _kefir_func_test_fetch_sub_int_label1:
 _kefir_func_test_fetch_sub_int_label2:
     movsxl -28(%rbp), %rax
     movsx %r10d, %rcx
-    sub %ecx, %eax
-    movsx %eax, %rbx
+    mov %rax, %rbx
+    sub %ecx, %ebx
     movsx %ebx, %rax
     movl %eax, -20(%rbp)
     mov $4, %rax
@@ -1268,7 +1240,6 @@ _kefir_func_test_fetch_sub_int_label2:
     call __atomic_compare_exchange@PLT
     movq -48(%rbp), %r10
     movq -40(%rbp), %r11
-    and $1, %rax
     xor %rcx, %rcx
     test %al, %al
     sete %cl
@@ -1313,8 +1284,8 @@ _kefir_func_test_fetch_xor_int_label1:
 _kefir_func_test_fetch_xor_int_label2:
     movsxl -28(%rbp), %rax
     movsx %r10d, %rcx
-    xor %ecx, %eax
-    movsx %eax, %rbx
+    mov %rax, %rbx
+    xor %ecx, %ebx
     movsx %ebx, %rax
     movl %eax, -20(%rbp)
     mov $4, %rax
@@ -1333,7 +1304,6 @@ _kefir_func_test_fetch_xor_int_label2:
     call __atomic_compare_exchange@PLT
     movq -48(%rbp), %r10
     movq -40(%rbp), %r11
-    and $1, %rax
     xor %rcx, %rcx
     test %al, %al
     sete %cl

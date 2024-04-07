@@ -101,6 +101,7 @@ _kefir_func_get_arr1_el_label0:
 _kefir_func_get_arr1_el_label1:
     add $96, %rdi
     movsx %esi, %rax
+    movsx %eax, %rax
     imul $8, %rax, %rax
     add %rax, %rdi
     mov $5, %rsi
@@ -116,6 +117,7 @@ _kefir_func_get_arr2_el_label0:
 _kefir_func_get_arr2_el_label1:
     add $160, %rsi
     movsx %edx, %rax
+    movsx %eax, %rax
     imul $64, %rax, %rax
     add %rax, %rsi
     lea -64(%rbp), %r8

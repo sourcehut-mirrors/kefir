@@ -203,6 +203,9 @@
                     "arg": 10
                 },
                 {
+                    "opcode": "extend32"
+                },
+                {
                     "opcode": "ret"
                 },
                 {
@@ -226,6 +229,9 @@
                 {
                     "opcode": "pushi",
                     "arg": 10
+                },
+                {
+                    "opcode": "extend32"
                 },
                 {
                     "opcode": "intcf32"
@@ -315,7 +321,7 @@
                 },
                 {
                     "opcode": "branch8",
-                    "arg": 8
+                    "arg": 7
                 },
                 {
                     "opcode": "pushf32",
@@ -325,21 +331,15 @@
                     "opcode": "f32cint"
                 },
                 {
-                    "opcode": "extend8"
-                },
-                {
                     "opcode": "ret"
                 },
                 {
                     "opcode": "jmp",
-                    "arg": 11
+                    "arg": 9
                 },
                 {
                     "opcode": "pushi",
                     "arg": 10
-                },
-                {
-                    "opcode": "extend8"
                 },
                 {
                     "opcode": "ret"

@@ -37,6 +37,7 @@ _kefir_func_sum_progression_label1:
     fldt -96(%rbp)
     fstpt -256(%rbp)
     mov $2, %rax
+    movsx %eax, %rax
     push %rax
     fildq (%rsp)
     add $8, %rsp
@@ -54,6 +55,7 @@ _kefir_func_sum_progression_label1:
     fldt -96(%rbp)
     fstpt -240(%rbp)
     mov $3, %rax
+    movsx %eax, %rax
     push %rax
     fildq (%rsp)
     add $8, %rsp
@@ -71,6 +73,7 @@ _kefir_func_sum_progression_label1:
     fldt -96(%rbp)
     fstpt -224(%rbp)
     mov $4, %rax
+    movsx %eax, %rax
     push %rax
     fildq (%rsp)
     add $8, %rsp
@@ -88,6 +91,7 @@ _kefir_func_sum_progression_label1:
     fldt -96(%rbp)
     fstpt -208(%rbp)
     mov $5, %rax
+    movsx %eax, %rax
     push %rax
     fildq (%rsp)
     add $8, %rsp
@@ -105,6 +109,7 @@ _kefir_func_sum_progression_label1:
     fldt -96(%rbp)
     fstpt -192(%rbp)
     mov $6, %rax
+    movsx %eax, %rax
     push %rax
     fildq (%rsp)
     add $8, %rsp
@@ -122,6 +127,7 @@ _kefir_func_sum_progression_label1:
     fldt -96(%rbp)
     fstpt -176(%rbp)
     mov $7, %rax
+    movsx %eax, %rax
     push %rax
     fildq (%rsp)
     add $8, %rsp
@@ -139,6 +145,7 @@ _kefir_func_sum_progression_label1:
     fldt -96(%rbp)
     fstpt -160(%rbp)
     mov $8, %rax
+    movsx %eax, %rax
     push %rax
     fildq (%rsp)
     add $8, %rsp
@@ -156,6 +163,7 @@ _kefir_func_sum_progression_label1:
     fldt -96(%rbp)
     fstpt -144(%rbp)
     mov $9, %rax
+    movsx %eax, %rax
     push %rax
     fildq (%rsp)
     add $8, %rsp

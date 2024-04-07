@@ -82,7 +82,6 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                 return res;
             });
 
-            const struct kefir_ast_type *layout_type = type_layout->type;
             kefir_size_t type_layout_idx = type_layout->value;
 
             res = kefir_ast_type_layout_free(mem, type_layout);
@@ -94,10 +93,6 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
 
             REQUIRE_OK(
                 KEFIR_IRBUILDER_BLOCK_APPENDU32(builder, KEFIR_IROPCODE_VARARG_GET, va_type_id, type_layout_idx));
-            if (KEFIR_AST_TYPE_IS_SCALAR_TYPE(layout_type)) {
-                REQUIRE_OK(
-                    kefir_ast_translate_typeconv_normalize(builder, context->ast_context->type_traits, layout_type));
-            }
         } break;
 
         case KEFIR_AST_BUILTIN_VA_COPY: {
@@ -113,6 +108,9 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
         case KEFIR_AST_BUILTIN_ALLOCA: {
             ASSIGN_DECL_CAST(struct kefir_ast_node_base *, size, iter->value);
             REQUIRE_OK(kefir_ast_translate_expression(mem, size, builder, context));
+            REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
+                                                    size->properties.type,
+                                                    context->ast_context->type_traits->size_type));
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PUSHI64, 0));
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_ALLOCA, 1));
         } break;
@@ -121,9 +119,15 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
         case KEFIR_AST_BUILTIN_ALLOCA_WITH_ALIGN_AND_MAX: {
             ASSIGN_DECL_CAST(struct kefir_ast_node_base *, size, iter->value);
             REQUIRE_OK(kefir_ast_translate_expression(mem, size, builder, context));
+            REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
+                                                    size->properties.type,
+                                                    context->ast_context->type_traits->size_type));
             kefir_list_next(&iter);
             ASSIGN_DECL_CAST(struct kefir_ast_node_base *, alignment, iter->value);
             REQUIRE_OK(kefir_ast_translate_expression(mem, alignment, builder, context));
+            REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
+                                                    size->properties.type,
+                                                    context->ast_context->type_traits->size_type));
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_ALLOCA, 1));
         } break;
 

@@ -33,22 +33,13 @@
 #include "kefir/core/error.h"
 #include "kefir/core/source_error.h"
 
-static kefir_result_t unary_epilogue(struct kefir_ast_translator_context *context,
-                                     struct kefir_irbuilder_block *builder,
-                                     const struct kefir_ast_unary_operation *node) {
-    const struct kefir_ast_type *result_normalized_type =
-        kefir_ast_translator_normalize_type(node->base.properties.type);
-
-    REQUIRE_OK(
-        kefir_ast_translate_typeconv_normalize(builder, context->ast_context->type_traits, result_normalized_type));
-    return KEFIR_OK;
-}
-
 static kefir_result_t translate_arithmetic_unary(struct kefir_mem *mem, struct kefir_ast_translator_context *context,
                                                  struct kefir_irbuilder_block *builder,
                                                  const struct kefir_ast_unary_operation *node) {
-    const struct kefir_ast_type *normalized_type = kefir_ast_translator_normalize_type(node->arg->properties.type);
+    const struct kefir_ast_type *normalized_type = kefir_ast_translator_normalize_type(node->base.properties.type);
     REQUIRE_OK(kefir_ast_translate_expression(mem, node->arg, builder, context));
+    REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
+                                            node->arg->properties.type, node->base.properties.type));
     switch (normalized_type->tag) {
         case KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE:
             switch (node->type) {
@@ -179,7 +170,6 @@ static kefir_result_t translate_arithmetic_unary(struct kefir_mem *mem, struct k
             break;
     }
 
-    REQUIRE_OK(unary_epilogue(context, builder, node));
     return KEFIR_OK;
 }
 
@@ -188,6 +178,8 @@ static kefir_result_t translate_unary_inversion(struct kefir_mem *mem, struct ke
                                                 const struct kefir_ast_unary_operation *node) {
     const struct kefir_ast_type *normalized_type = kefir_ast_translator_normalize_type(node->arg->properties.type);
     REQUIRE_OK(kefir_ast_translate_expression(mem, node->arg, builder, context));
+    REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
+                                            node->arg->properties.type, node->base.properties.type));
     switch (normalized_type->tag) {
         case KEFIR_AST_TYPE_SCALAR_BOOL:
         case KEFIR_AST_TYPE_SCALAR_CHAR:
@@ -216,7 +208,6 @@ static kefir_result_t translate_unary_inversion(struct kefir_mem *mem, struct ke
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of an integral type");
     }
-    REQUIRE_OK(unary_epilogue(context, builder, node));
     return KEFIR_OK;
 }
 
@@ -418,8 +409,6 @@ static kefir_result_t incdec_impl(struct kefir_mem *mem, struct kefir_ast_transl
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of an integral type");
     }
-
-    REQUIRE_OK(kefir_ast_translate_typeconv_normalize(builder, context->ast_context->type_traits, normalized_type));
     return KEFIR_OK;
 }
 

@@ -120,11 +120,15 @@
                     "opcode": "ior32"
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "pushu",
+                    "arg": 666
                 },
                 {
                     "opcode": "pushu",
-                    "arg": 666
+                    "arg": 4294967295
+                },
+                {
+                    "opcode": "iand64"
                 },
                 {
                     "opcode": "pushi",
@@ -140,6 +144,9 @@
                 {
                     "opcode": "pushi",
                     "arg": 1001
+                },
+                {
+                    "opcode": "extend32"
                 },
                 {
                     "opcode": "ior64"
@@ -164,11 +171,15 @@
                     "opcode": "iand32"
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "pushu",
+                    "arg": 87094
                 },
                 {
                     "opcode": "pushu",
-                    "arg": 87094
+                    "arg": 4294967295
+                },
+                {
+                    "opcode": "iand64"
                 },
                 {
                     "opcode": "pushi",
@@ -184,6 +195,9 @@
                 {
                     "opcode": "pushi",
                     "arg": 71
+                },
+                {
+                    "opcode": "extend32"
                 },
                 {
                     "opcode": "iand64"
@@ -208,11 +222,15 @@
                     "opcode": "ixor32"
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "pushu",
+                    "arg": 312
                 },
                 {
                     "opcode": "pushu",
-                    "arg": 312
+                    "arg": 4294967295
+                },
+                {
+                    "opcode": "iand64"
                 },
                 {
                     "opcode": "pushi",
@@ -228,6 +246,9 @@
                 {
                     "opcode": "pushi",
                     "arg": 101
+                },
+                {
+                    "opcode": "extend32"
                 },
                 {
                     "opcode": "ixor64"
@@ -249,13 +270,7 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "extend32"
-                },
-                {
                     "opcode": "ishl32"
-                },
-                {
-                    "opcode": "extend32"
                 },
                 {
                     "opcode": "pushi",
@@ -266,13 +281,7 @@
                     "arg": 6
                 },
                 {
-                    "opcode": "extend32"
-                },
-                {
                     "opcode": "ishl32"
-                },
-                {
-                    "opcode": "extend32"
                 },
                 {
                     "opcode": "pushi",
@@ -281,6 +290,9 @@
                 {
                     "opcode": "pushi",
                     "arg": 53
+                },
+                {
+                    "opcode": "extend32"
                 },
                 {
                     "opcode": "ishl64"
@@ -302,13 +314,7 @@
                     "arg": 8
                 },
                 {
-                    "opcode": "extend32"
-                },
-                {
                     "opcode": "isar32"
-                },
-                {
-                    "opcode": "extend32"
                 },
                 {
                     "opcode": "pushi",
@@ -319,13 +325,7 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "extend32"
-                },
-                {
                     "opcode": "isar32"
-                },
-                {
-                    "opcode": "extend32"
                 },
                 {
                     "opcode": "pushi",
@@ -334,6 +334,9 @@
                 {
                     "opcode": "pushi",
                     "arg": 48
+                },
+                {
+                    "opcode": "extend32"
                 },
                 {
                     "opcode": "isar64"

@@ -60,17 +60,6 @@ static kefir_result_t binary_prologue(struct kefir_mem *mem, struct kefir_ast_tr
     return KEFIR_OK;
 }
 
-static kefir_result_t binary_epilogue(struct kefir_ast_translator_context *context,
-                                      struct kefir_irbuilder_block *builder,
-                                      const struct kefir_ast_binary_operation *node) {
-    const struct kefir_ast_type *result_normalized_type =
-        kefir_ast_translator_normalize_type(node->base.properties.type);
-
-    REQUIRE_OK(
-        kefir_ast_translate_typeconv_normalize(builder, context->ast_context->type_traits, result_normalized_type));
-    return KEFIR_OK;
-}
-
 static kefir_result_t translate_addition(struct kefir_mem *mem, struct kefir_ast_translator_context *context,
                                          struct kefir_irbuilder_block *builder,
                                          const struct kefir_ast_binary_operation *node) {
@@ -136,7 +125,6 @@ static kefir_result_t translate_addition(struct kefir_mem *mem, struct kefir_ast
             default:
                 return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of an integral type");
         }
-        REQUIRE_OK(binary_epilogue(context, builder, node));
     } else {
         const struct kefir_ast_type *referenced_type = result_normalized_type->referenced_type;
         if (context->ast_context->configuration->analysis.ext_pointer_arithmetics &&
@@ -153,9 +141,15 @@ static kefir_result_t translate_addition(struct kefir_mem *mem, struct kefir_ast
         if (arg1_normalized_type->tag == KEFIR_AST_TYPE_SCALAR_POINTER) {
             REQUIRE_CHAIN(&res, kefir_ast_translate_expression(mem, node->arg1, builder, context));
             REQUIRE_CHAIN(&res, kefir_ast_translate_expression(mem, node->arg2, builder, context));
+            REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
+                                                    node->arg2->properties.type,
+                                                    context->ast_context->type_traits->size_type));
         } else {
             REQUIRE_CHAIN(&res, kefir_ast_translate_expression(mem, node->arg2, builder, context));
             REQUIRE_CHAIN(&res, kefir_ast_translate_expression(mem, node->arg1, builder, context));
+            REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
+                                                    node->arg1->properties.type,
+                                                    context->ast_context->type_traits->size_type));
         }
         REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PUSHU64,
                                                             translator_type->object.layout->properties.size));
@@ -236,7 +230,6 @@ static kefir_result_t translate_subtraction(struct kefir_mem *mem, struct kefir_
             default:
                 return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of an integral type");
         }
-        REQUIRE_OK(binary_epilogue(context, builder, node));
     } else if (arg2_normalized_type->tag == KEFIR_AST_TYPE_SCALAR_POINTER) {
         const struct kefir_ast_type *referenced_type = arg1_normalized_type->referenced_type;
         if (context->ast_context->configuration->analysis.ext_pointer_arithmetics &&
@@ -273,6 +266,9 @@ static kefir_result_t translate_subtraction(struct kefir_mem *mem, struct kefir_
                                                  referenced_type, 0, &translator_type, &node->base.source_location));
 
         kefir_result_t res = KEFIR_OK;
+        REQUIRE_CHAIN(&res,
+                      kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
+                                                   arg2_normalized_type, context->ast_context->type_traits->size_type));
         REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PUSHU64,
                                                             translator_type->object.layout->properties.size));
         REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IMUL64, 0));
@@ -346,7 +342,6 @@ static kefir_result_t translate_multiplication(struct kefir_mem *mem, struct kef
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of an integral type");
     }
-    REQUIRE_OK(binary_epilogue(context, builder, node));
     return KEFIR_OK;
 }
 
@@ -428,7 +423,6 @@ static kefir_result_t translate_division(struct kefir_mem *mem, struct kefir_ast
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of an integral type");
     }
-    REQUIRE_OK(binary_epilogue(context, builder, node));
     return KEFIR_OK;
 }
 
@@ -486,7 +480,6 @@ static kefir_result_t translate_modulo(struct kefir_mem *mem, struct kefir_ast_t
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of an integral type");
     }
-    REQUIRE_OK(binary_epilogue(context, builder, node));
     return KEFIR_OK;
 }
 
@@ -677,7 +670,6 @@ static kefir_result_t translate_bitwise(struct kefir_mem *mem, struct kefir_ast_
         default:
             return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected bitwise operation");
     }
-    REQUIRE_OK(binary_epilogue(context, builder, node));
     return KEFIR_OK;
 }
 

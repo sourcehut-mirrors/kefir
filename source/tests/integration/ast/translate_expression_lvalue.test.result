@@ -434,6 +434,9 @@
                     "arg": 2
                 },
                 {
+                    "opcode": "extend32"
+                },
+                {
                     "opcode": "pushu",
                     "arg": 1
                 },
@@ -458,6 +461,9 @@
                 {
                     "opcode": "pushi",
                     "arg": 100
+                },
+                {
+                    "opcode": "extend32"
                 },
                 {
                     "opcode": "pushu",

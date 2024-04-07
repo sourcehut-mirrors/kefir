@@ -253,6 +253,9 @@
                     }
                 },
                 {
+                    "opcode": "extend32"
+                },
+                {
                     "opcode": "intcf64"
                 },
                 {
@@ -270,9 +273,6 @@
                     "opcode": "f64cint"
                 },
                 {
-                    "opcode": "extend32"
-                },
-                {
                     "opcode": "xchg",
                     "arg": 1
                 },
@@ -285,9 +285,6 @@
                     "memory_flags": {
                         "volatile": false
                     }
-                },
-                {
-                    "opcode": "extend32"
                 }
             ],
             "public_labels": []
@@ -341,9 +338,6 @@
                     "memory_flags": {
                         "volatile": false
                     }
-                },
-                {
-                    "opcode": "extend32"
                 }
             ],
             "public_labels": []
@@ -414,6 +408,9 @@
                     "arg": 1006
                 },
                 {
+                    "opcode": "extend32"
+                },
+                {
                     "opcode": "getglobal",
                     "arg": {
                         "data": "ullong"
@@ -465,6 +462,9 @@
                 {
                     "opcode": "pushi",
                     "arg": -5
+                },
+                {
+                    "opcode": "extend32"
                 },
                 {
                     "opcode": "intcf32"
@@ -638,6 +638,9 @@
                     "arg": 100
                 },
                 {
+                    "opcode": "extend32"
+                },
+                {
                     "opcode": "getglobal",
                     "arg": {
                         "data": "ullong"
@@ -689,6 +692,9 @@
                 {
                     "opcode": "pushi",
                     "arg": 42
+                },
+                {
+                    "opcode": "extend32"
                 },
                 {
                     "opcode": "intcf32"
@@ -786,9 +792,6 @@
                     "memory_flags": {
                         "volatile": false
                     }
-                },
-                {
-                    "opcode": "extend32"
                 }
             ],
             "public_labels": []

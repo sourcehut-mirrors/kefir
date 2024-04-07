@@ -167,7 +167,7 @@ kefir_result_t kefir_ast_analyze_unary_operation_node(struct kefir_mem *mem, con
                                                         context->configuration->analysis.ext_pointer_arithmetics),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->arg->source_location,
                                        "Sizeof operator cannot be applied to incomplete type"));
-            base->properties.type = kefir_ast_type_signed_int();
+            base->properties.type = context->type_traits->size_type;
             base->properties.expression_props.constant_expression = !KEFIR_AST_TYPE_IS_VL_ARRAY(type);
         } break;
 
@@ -185,7 +185,7 @@ kefir_result_t kefir_ast_analyze_unary_operation_node(struct kefir_mem *mem, con
             REQUIRE(!KEFIR_AST_TYPE_IS_INCOMPLETE(type),
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->arg->source_location,
                                            "Alignof operator cannot be applied to incomplete type"));
-            base->properties.type = kefir_ast_type_signed_int();
+            base->properties.type = context->type_traits->size_type;
             base->properties.expression_props.constant_expression = true;
         } break;
 

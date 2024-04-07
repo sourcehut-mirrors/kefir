@@ -57,7 +57,6 @@ _kefir_func_test_fetch_add_short_label1:
     mov $5, %rdx
     mov %rcx, %rsi
     call *%rax
-    movsx %ax, %rax
     pop %rbp
     ret
 
@@ -71,7 +70,6 @@ _kefir_func_test_fetch_and_short_label1:
     mov $5, %rdx
     mov %rcx, %rsi
     call *%rax
-    movsx %ax, %rax
     pop %rbp
     ret
 
@@ -85,7 +83,6 @@ _kefir_func_test_fetch_sub_short_label1:
     mov $5, %rdx
     mov %rcx, %rsi
     call *%rax
-    movsx %ax, %rax
     pop %rbp
     ret
 
@@ -99,7 +96,6 @@ _kefir_func_test_fetch_xor_short_label1:
     mov $5, %rdx
     mov %rcx, %rsi
     call *%rax
-    movsx %ax, %rax
     pop %rbp
     ret
 
@@ -113,7 +109,6 @@ _kefir_func_test_fetch_or_int_label1:
     mov $5, %rdx
     mov %rcx, %rsi
     call *%rax
-    movsx %eax, %rax
     pop %rbp
     ret
 
@@ -127,7 +122,6 @@ _kefir_func_test_fetch_add_char_label1:
     mov $5, %rdx
     mov %rcx, %rsi
     call *%rax
-    movsx %al, %rax
     pop %rbp
     ret
 
@@ -153,7 +147,6 @@ _kefir_func_test_fetch_and_char_label1:
     mov $5, %rdx
     mov %rcx, %rsi
     call *%rax
-    movsx %al, %rax
     pop %rbp
     ret
 
@@ -179,7 +172,6 @@ _kefir_func_test_fetch_or_short_label1:
     mov $5, %rdx
     mov %rcx, %rsi
     call *%rax
-    movsx %ax, %rax
     pop %rbp
     ret
 
@@ -193,7 +185,6 @@ _kefir_func_test_fetch_sub_char_label1:
     mov $5, %rdx
     mov %rcx, %rsi
     call *%rax
-    movsx %al, %rax
     pop %rbp
     ret
 
@@ -219,7 +210,6 @@ _kefir_func_test_fetch_xor_char_label1:
     mov $5, %rdx
     mov %rcx, %rsi
     call *%rax
-    movsx %al, %rax
     pop %rbp
     ret
 
@@ -245,7 +235,6 @@ _kefir_func_test_fetch_add_int_label1:
     mov $5, %rdx
     mov %rcx, %rsi
     call *%rax
-    movsx %eax, %rax
     pop %rbp
     ret
 
@@ -259,7 +248,6 @@ _kefir_func_test_fetch_and_int_label1:
     mov $5, %rdx
     mov %rcx, %rsi
     call *%rax
-    movsx %eax, %rax
     pop %rbp
     ret
 
@@ -273,7 +261,6 @@ _kefir_func_test_fetch_or_char_label1:
     mov $5, %rdx
     mov %rcx, %rsi
     call *%rax
-    movsx %al, %rax
     pop %rbp
     ret
 
@@ -299,7 +286,6 @@ _kefir_func_test_fetch_sub_int_label1:
     mov $5, %rdx
     mov %rcx, %rsi
     call *%rax
-    movsx %eax, %rax
     pop %rbp
     ret
 
@@ -313,7 +299,6 @@ _kefir_func_test_fetch_xor_int_label1:
     mov $5, %rdx
     mov %rcx, %rsi
     call *%rax
-    movsx %eax, %rax
     pop %rbp
     ret
 

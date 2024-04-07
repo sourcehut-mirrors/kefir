@@ -25,6 +25,7 @@
 #include "kefir/ast-translator/initializer.h"
 #include "kefir/ast-translator/misc.h"
 #include "kefir/ast-translator/type.h"
+#include "kefir/ast-translator/typeconv.h"
 #include "kefir/ast/type_completion.h"
 #include "kefir/ast/runtime.h"
 #include "kefir/ast/type_conv.h"
@@ -164,9 +165,15 @@ kefir_result_t kefir_ast_translate_array_subscript_lvalue(struct kefir_mem *mem,
     if (array_type->tag == KEFIR_AST_TYPE_SCALAR_POINTER) {
         REQUIRE_CHAIN(&res, kefir_ast_translate_expression(mem, node->array, builder, context));
         REQUIRE_CHAIN(&res, kefir_ast_translate_expression(mem, node->subscript, builder, context));
+        REQUIRE_CHAIN(&res, kefir_ast_translate_typeconv(
+                                mem, context->module, builder, context->ast_context->type_traits,
+                                node->subscript->properties.type, context->ast_context->type_traits->size_type));
     } else {
         REQUIRE_CHAIN(&res, kefir_ast_translate_expression(mem, node->subscript, builder, context));
         REQUIRE_CHAIN(&res, kefir_ast_translate_expression(mem, node->array, builder, context));
+        REQUIRE_CHAIN(&res, kefir_ast_translate_typeconv(
+                                mem, context->module, builder, context->ast_context->type_traits,
+                                node->array->properties.type, context->ast_context->type_traits->size_type));
     }
     REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PUSHU64,
                                                         translator_type->object.layout->properties.size));

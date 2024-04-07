@@ -258,6 +258,9 @@
                     "arg": 1
                 },
                 {
+                    "opcode": "extend32"
+                },
+                {
                     "opcode": "store64",
                     "memory_flags": {
                         "volatile": false
@@ -321,6 +324,9 @@
                     "arg": 4
                 },
                 {
+                    "opcode": "extend32"
+                },
+                {
                     "opcode": "intcf32"
                 },
                 {
@@ -360,9 +366,6 @@
                     "arg": 65
                 },
                 {
-                    "opcode": "extend8"
-                },
-                {
                     "opcode": "store8",
                     "memory_flags": {
                         "volatile": false
@@ -384,9 +387,6 @@
                     "arg": 66
                 },
                 {
-                    "opcode": "extend8"
-                },
-                {
                     "opcode": "store8",
                     "memory_flags": {
                         "volatile": false
@@ -406,9 +406,6 @@
                 {
                     "opcode": "pushi",
                     "arg": 66
-                },
-                {
-                    "opcode": "extend8"
                 },
                 {
                     "opcode": "store8",
@@ -456,6 +453,9 @@
                     "arg": 6
                 },
                 {
+                    "opcode": "extend32"
+                },
+                {
                     "opcode": "store64",
                     "memory_flags": {
                         "volatile": false
@@ -477,6 +477,9 @@
                     "arg": 8
                 },
                 {
+                    "opcode": "extend32"
+                },
+                {
                     "opcode": "store64",
                     "memory_flags": {
                         "volatile": false
@@ -496,6 +499,9 @@
                 {
                     "opcode": "pushi",
                     "arg": 9
+                },
+                {
+                    "opcode": "extend32"
                 },
                 {
                     "opcode": "intcf32"

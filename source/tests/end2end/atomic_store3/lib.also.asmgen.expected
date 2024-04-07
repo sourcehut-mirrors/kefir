@@ -103,6 +103,7 @@ _kefir_func_set_arr1_el_label0:
 _kefir_func_set_arr1_el_label1:
     add $96, %rdi
     movsx %esi, %rax
+    movsx %eax, %rax
     imul $8, %rax, %rax
     add %rax, %rdi
     mov %rdx, %rsi
@@ -129,6 +130,7 @@ _kefir_func_set_arr2_el_label1:
     lea -128(%rbp), %rax
     add $160, %rdi
     movsx %esi, %rcx
+    movsx %ecx, %rcx
     imul $64, %rcx, %rcx
     add %rcx, %rdi
     mov %rdi, %rsi

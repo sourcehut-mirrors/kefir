@@ -94,14 +94,15 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "pushu",
+                    "arg": 255
+                },
+                {
+                    "opcode": "iand64"
                 },
                 {
                     "opcode": "pushu",
                     "arg": 100
-                },
-                {
-                    "opcode": "extend16"
                 },
                 {
                     "opcode": "pushf32",
@@ -134,22 +135,8 @@
                     "arg": 1234
                 },
                 {
-                    "opcode": "pushu",
-                    "arg": 4294967295
-                },
-                {
-                    "opcode": "iand64"
-                },
-                {
                     "opcode": "pushi",
                     "arg": 101
-                },
-                {
-                    "opcode": "pushu",
-                    "arg": 65535
-                },
-                {
-                    "opcode": "iand64"
                 },
                 {
                     "opcode": "pushf32",
@@ -182,6 +169,9 @@
                     "arg": -67
                 },
                 {
+                    "opcode": "extend32"
+                },
+                {
                     "opcode": "intcf32"
                 },
                 {
@@ -205,6 +195,9 @@
                 {
                     "opcode": "pushi",
                     "arg": -100500
+                },
+                {
+                    "opcode": "extend32"
                 },
                 {
                     "opcode": "intcf64"

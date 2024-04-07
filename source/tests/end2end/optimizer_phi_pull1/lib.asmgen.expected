@@ -24,7 +24,6 @@ _kefir_func_somefn_label2:
     movsx %edi, %rax
     mov %rax, %rcx
     add $-1, %ecx
-    movsx %ecx, %rcx
     xor %rdx, %rdx
     test %eax, %eax
     sete %dl
@@ -84,7 +83,6 @@ _kefir_func_condition1_label4:
 _kefir_func_condition1_label2:
     movsx %edi, %rax
     add $10, %eax
-    movsx %eax, %rax
     ret
 _kefir_func_condition1_label3:
     mov $10, %rax

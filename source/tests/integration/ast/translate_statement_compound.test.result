@@ -176,6 +176,9 @@
                     "arg": 2
                 },
                 {
+                    "opcode": "extend32"
+                },
+                {
                     "opcode": "store64",
                     "memory_flags": {
                         "volatile": false
@@ -226,6 +229,9 @@
                     "memory_flags": {
                         "volatile": false
                     }
+                },
+                {
+                    "opcode": "extend32"
                 },
                 {
                     "opcode": "getlocal",
@@ -305,6 +311,9 @@
                     }
                 },
                 {
+                    "opcode": "extend32"
+                },
+                {
                     "opcode": "intcf32"
                 },
                 {
@@ -322,9 +331,6 @@
                     "opcode": "f32cint"
                 },
                 {
-                    "opcode": "extend32"
-                },
-                {
                     "opcode": "xchg",
                     "arg": 1
                 },
@@ -337,9 +343,6 @@
                     "memory_flags": {
                         "volatile": false
                     }
-                },
-                {
-                    "opcode": "extend32"
                 },
                 {
                     "opcode": "pop"
@@ -508,9 +511,6 @@
                 },
                 {
                     "opcode": "f32cint"
-                },
-                {
-                    "opcode": "extend32"
                 },
                 {
                     "opcode": "getglobal",

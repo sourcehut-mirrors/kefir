@@ -305,9 +305,6 @@
                     "opcode": "iadd32"
                 },
                 {
-                    "opcode": "extend32"
-                },
-                {
                     "opcode": "store32",
                     "memory_flags": {
                         "volatile": false
@@ -352,13 +349,6 @@
                 },
                 {
                     "opcode": "iadd16"
-                },
-                {
-                    "opcode": "pushu",
-                    "arg": 65535
-                },
-                {
-                    "opcode": "iand64"
                 },
                 {
                     "opcode": "store16",
@@ -407,9 +397,6 @@
                     "opcode": "iadd32"
                 },
                 {
-                    "opcode": "extend32"
-                },
-                {
                     "opcode": "store32",
                     "memory_flags": {
                         "volatile": false
@@ -454,13 +441,6 @@
                 },
                 {
                     "opcode": "iadd16"
-                },
-                {
-                    "opcode": "pushu",
-                    "arg": 65535
-                },
-                {
-                    "opcode": "iand64"
                 },
                 {
                     "opcode": "store16",

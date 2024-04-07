@@ -296,6 +296,9 @@
                     "arg": 56
                 },
                 {
+                    "opcode": "extend32"
+                },
+                {
                     "opcode": "getglobal",
                     "arg": {
                         "data": "ullong"
@@ -388,9 +391,6 @@
                     "memory_flags": {
                         "volatile": false
                     }
-                },
-                {
-                    "opcode": "extend32"
                 }
             ],
             "public_labels": []
@@ -550,9 +550,6 @@
                     "memory_flags": {
                         "volatile": false
                     }
-                },
-                {
-                    "opcode": "extend32"
                 }
             ],
             "public_labels": []
@@ -565,6 +562,13 @@
                 {
                     "opcode": "pushu",
                     "arg": 1
+                },
+                {
+                    "opcode": "pushu",
+                    "arg": 4294967295
+                },
+                {
+                    "opcode": "iand64"
                 },
                 {
                     "opcode": "getglobal",
@@ -659,9 +663,6 @@
                     "memory_flags": {
                         "volatile": false
                     }
-                },
-                {
-                    "opcode": "extend32"
                 }
             ],
             "public_labels": []
@@ -715,9 +716,6 @@
                     "memory_flags": {
                         "volatile": false
                     }
-                },
-                {
-                    "opcode": "extend32"
                 }
             ],
             "public_labels": []
@@ -824,9 +822,6 @@
                     "memory_flags": {
                         "volatile": false
                     }
-                },
-                {
-                    "opcode": "extend32"
                 }
             ],
             "public_labels": []
@@ -857,6 +852,9 @@
                     }
                 },
                 {
+                    "opcode": "extend32"
+                },
+                {
                     "opcode": "xchg",
                     "arg": 1
                 },
@@ -866,9 +864,6 @@
                 },
                 {
                     "opcode": "ixor64"
-                },
-                {
-                    "opcode": "extend32"
                 },
                 {
                     "opcode": "xchg",
@@ -883,9 +878,6 @@
                     "memory_flags": {
                         "volatile": false
                     }
-                },
-                {
-                    "opcode": "extend32"
                 }
             ],
             "public_labels": []

@@ -308,6 +308,7 @@ ld_load_index:
 _kefir_func_ld_load_index_label0:
 _kefir_func_ld_load_index_label1:
     mov %esi, %eax
+    mov %eax, %eax
     imul $32, %rax, %rax
     add %rax, %rdi
     mov %rdi, %rsi
@@ -328,6 +329,7 @@ f32_load_index:
 _kefir_func_f32_load_index_label0:
 _kefir_func_f32_load_index_label1:
     mov %esi, %eax
+    mov %eax, %eax
     imul $8, %rax, %rax
     add %rax, %rdi
     mov %rdi, %rsi
@@ -361,6 +363,7 @@ _kefir_func_ld_store_index_label1:
     fldt 16(%rax)
     fstpt -96(%rbp)
     mov %esi, %eax
+    mov %eax, %eax
     imul $32, %rax, %rax
     add %rax, %rdi
     mov %rdi, %rsi
@@ -389,6 +392,7 @@ _kefir_func_f32_store_index_label1:
     movq (%rax), %xmm0
     movq %xmm0, -32(%rbp)
     mov %esi, %eax
+    mov %eax, %eax
     imul $8, %rax, %rax
     add %rax, %rdi
     mov %rdi, %rsi
@@ -409,6 +413,7 @@ f64_load_index:
 _kefir_func_f64_load_index_label0:
 _kefir_func_f64_load_index_label1:
     mov %esi, %eax
+    mov %eax, %eax
     imul $16, %rax, %rax
     add %rax, %rdi
     mov %rdi, %rsi
@@ -442,6 +447,7 @@ _kefir_func_f64_store_index_label1:
     movq 8(%rax), %xmm0
     movq %xmm0, -56(%rbp)
     mov %esi, %eax
+    mov %eax, %eax
     imul $16, %rax, %rax
     add %rax, %rdi
     mov %rdi, %rsi

@@ -179,6 +179,9 @@
                     "arg": 1
                 },
                 {
+                    "opcode": "extend32"
+                },
+                {
                     "opcode": "intcf32"
                 },
                 {
@@ -263,9 +266,6 @@
                 {
                     "opcode": "pushi",
                     "arg": 100
-                },
-                {
-                    "opcode": "extend8"
                 },
                 {
                     "opcode": "store8",

@@ -84,10 +84,18 @@ kefir_result_t kefir_ast_translate_conditional_operator_node(struct kefir_mem *m
         kefir_size_t jmp1Index;
         REQUIRE_OK(generate_branch(mem, context, builder, node->condition->properties.type, &jmp1Index));
         REQUIRE_OK(kefir_ast_translate_expression(mem, node->expr2, builder, context));
+        if (KEFIR_AST_TYPE_IS_SCALAR_TYPE(node->expr2->properties.type)) {
+            REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
+                                                    node->expr2->properties.type, node->base.properties.type));
+        }
         kefir_size_t jmp2Index = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_JMP, 0));
         KEFIR_IRBUILDER_BLOCK_INSTR_AT(builder, jmp1Index)->arg.i64 = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
         REQUIRE_OK(kefir_ast_translate_expression(mem, node->expr1, builder, context));
+        if (KEFIR_AST_TYPE_IS_SCALAR_TYPE(node->expr1->properties.type)) {
+            REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
+                                                    node->expr1->properties.type, node->base.properties.type));
+        }
         KEFIR_IRBUILDER_BLOCK_INSTR_AT(builder, jmp2Index)->arg.i64 = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
     } else {
         REQUIRE_OK(kefir_ast_translate_expression(mem, node->condition, builder, context));
@@ -96,7 +104,18 @@ kefir_result_t kefir_ast_translate_conditional_operator_node(struct kefir_mem *m
         REQUIRE_OK(generate_branch(mem, context, builder, node->condition->properties.type, &jmp1Index));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_POP, 0));
         REQUIRE_OK(kefir_ast_translate_expression(mem, node->expr2, builder, context));
+        if (KEFIR_AST_TYPE_IS_SCALAR_TYPE(node->expr2->properties.type)) {
+            REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
+                                                    node->expr2->properties.type, node->base.properties.type));
+        }
+        kefir_size_t jmp2Index = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_JMP, 0));
         KEFIR_IRBUILDER_BLOCK_INSTR_AT(builder, jmp1Index)->arg.i64 = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
+        if (KEFIR_AST_TYPE_IS_SCALAR_TYPE(node->condition->properties.type)) {
+            REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
+                                                    node->condition->properties.type, node->base.properties.type));
+        }
+        KEFIR_IRBUILDER_BLOCK_INSTR_AT(builder, jmp2Index)->arg.i64 = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
     }
 
     return KEFIR_OK;

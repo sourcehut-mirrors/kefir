@@ -438,13 +438,6 @@
                     "arg": 131071
                 },
                 {
-                    "opcode": "pushu",
-                    "arg": 4294967295
-                },
-                {
-                    "opcode": "iand64"
-                },
-                {
                     "opcode": "getglobal",
                     "arg": {
                         "data": "uint"
@@ -502,13 +495,6 @@
                 },
                 {
                     "opcode": "f64cuint"
-                },
-                {
-                    "opcode": "pushu",
-                    "arg": 4294967295
-                },
-                {
-                    "opcode": "iand64"
                 },
                 {
                     "opcode": "getglobal",
@@ -621,9 +607,6 @@
                     "arg": 65
                 },
                 {
-                    "opcode": "extend8"
-                },
-                {
                     "opcode": "getglobal",
                     "arg": {
                         "data": "char"
@@ -652,13 +635,6 @@
                     "arg": 66
                 },
                 {
-                    "opcode": "pushu",
-                    "arg": 255
-                },
-                {
-                    "opcode": "iand64"
-                },
-                {
                     "opcode": "getglobal",
                     "arg": {
                         "data": "uchar"
@@ -685,9 +661,6 @@
                 {
                     "opcode": "pushi",
                     "arg": 67
-                },
-                {
-                    "opcode": "extend8"
                 },
                 {
                     "opcode": "getglobal",
@@ -719,9 +692,6 @@
                 },
                 {
                     "opcode": "f64cint"
-                },
-                {
-                    "opcode": "extend8"
                 },
                 {
                     "opcode": "getglobal",
@@ -786,6 +756,9 @@
                 {
                     "opcode": "pushi",
                     "arg": -1
+                },
+                {
+                    "opcode": "extend32"
                 },
                 {
                     "opcode": "getglobal",
@@ -855,13 +828,6 @@
                     "arg": 254
                 },
                 {
-                    "opcode": "pushu",
-                    "arg": 65535
-                },
-                {
-                    "opcode": "iand64"
-                },
-                {
                     "opcode": "getglobal",
                     "arg": {
                         "data": "ushort"
@@ -888,9 +854,6 @@
                 {
                     "opcode": "pushi",
                     "arg": -74
-                },
-                {
-                    "opcode": "extend16"
                 },
                 {
                     "opcode": "getglobal",
@@ -955,6 +918,9 @@
                 {
                     "opcode": "pushi",
                     "arg": -65196362
+                },
+                {
+                    "opcode": "extend32"
                 },
                 {
                     "opcode": "getglobal",
@@ -1050,6 +1016,9 @@
                 {
                     "opcode": "pushi",
                     "arg": 65
+                },
+                {
+                    "opcode": "extend32"
                 },
                 {
                     "opcode": "intcf32"

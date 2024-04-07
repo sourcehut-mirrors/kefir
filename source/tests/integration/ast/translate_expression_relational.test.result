@@ -205,6 +205,9 @@
                     "arg": 90
                 },
                 {
+                    "opcode": "extend32"
+                },
+                {
                     "opcode": "ibelow64"
                 },
                 {
@@ -221,6 +224,9 @@
                 {
                     "opcode": "pushi",
                     "arg": 835
+                },
+                {
+                    "opcode": "extend32"
                 },
                 {
                     "opcode": "pushu",
@@ -288,6 +294,9 @@
                     "arg": 1
                 },
                 {
+                    "opcode": "extend32"
+                },
+                {
                     "opcode": "intcf64"
                 },
                 {
@@ -319,6 +328,9 @@
                 {
                     "opcode": "pushi",
                     "arg": 90
+                },
+                {
+                    "opcode": "extend32"
                 },
                 {
                     "opcode": "pick",
@@ -373,6 +385,9 @@
                 {
                     "opcode": "pushi",
                     "arg": 835
+                },
+                {
+                    "opcode": "extend32"
                 },
                 {
                     "opcode": "pushu",
@@ -528,6 +543,9 @@
                 {
                     "opcode": "pushi",
                     "arg": 1
+                },
+                {
+                    "opcode": "extend32"
                 },
                 {
                     "opcode": "intcf64"
@@ -607,6 +625,9 @@
                 {
                     "opcode": "pushi",
                     "arg": -100
+                },
+                {
+                    "opcode": "extend32"
                 },
                 {
                     "opcode": "pushu",
@@ -890,6 +911,9 @@
                     "arg": 121
                 },
                 {
+                    "opcode": "extend32"
+                },
+                {
                     "opcode": "iabove64"
                 },
                 {
@@ -906,6 +930,9 @@
                 {
                     "opcode": "pushi",
                     "arg": 945
+                },
+                {
+                    "opcode": "extend32"
                 },
                 {
                     "opcode": "pushu",
@@ -971,6 +998,9 @@
                 {
                     "opcode": "pushi",
                     "arg": 5
+                },
+                {
+                    "opcode": "extend32"
                 },
                 {
                     "opcode": "intcf64"
@@ -1307,13 +1337,6 @@
                 },
                 {
                     "opcode": "pushu",
-                    "arg": 4294967295
-                },
-                {
-                    "opcode": "iand64"
-                },
-                {
-                    "opcode": "pushu",
                     "arg": 67
                 },
                 {
@@ -1322,6 +1345,9 @@
                 {
                     "opcode": "pushi",
                     "arg": 1000
+                },
+                {
+                    "opcode": "extend32"
                 },
                 {
                     "opcode": "pushu",
@@ -1397,6 +1423,9 @@
                     "arg": 121
                 },
                 {
+                    "opcode": "extend32"
+                },
+                {
                     "opcode": "pick",
                     "arg": 1
                 },
@@ -1449,6 +1478,9 @@
                 {
                     "opcode": "pushi",
                     "arg": 945
+                },
+                {
+                    "opcode": "extend32"
                 },
                 {
                     "opcode": "pushu",
@@ -1604,6 +1636,9 @@
                 {
                     "opcode": "pushi",
                     "arg": 5
+                },
+                {
+                    "opcode": "extend32"
                 },
                 {
                     "opcode": "intcf64"

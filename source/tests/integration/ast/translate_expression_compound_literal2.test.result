@@ -277,9 +277,6 @@
                     "arg": 72
                 },
                 {
-                    "opcode": "extend8"
-                },
-                {
                     "opcode": "store8",
                     "memory_flags": {
                         "volatile": false
@@ -299,9 +296,6 @@
                 {
                     "opcode": "pushi",
                     "arg": 101
-                },
-                {
-                    "opcode": "extend8"
                 },
                 {
                     "opcode": "store8",
@@ -325,9 +319,6 @@
                     "arg": 108
                 },
                 {
-                    "opcode": "extend8"
-                },
-                {
                     "opcode": "store8",
                     "memory_flags": {
                         "volatile": false
@@ -349,9 +340,6 @@
                     "arg": 108
                 },
                 {
-                    "opcode": "extend8"
-                },
-                {
                     "opcode": "store8",
                     "memory_flags": {
                         "volatile": false
@@ -371,9 +359,6 @@
                 {
                     "opcode": "pushi",
                     "arg": 111
-                },
-                {
-                    "opcode": "extend8"
                 },
                 {
                     "opcode": "store8",

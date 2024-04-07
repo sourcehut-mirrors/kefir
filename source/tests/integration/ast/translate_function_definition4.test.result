@@ -194,7 +194,7 @@
                 },
                 {
                     "opcode": "branch8",
-                    "arg": 38
+                    "arg": 36
                 },
                 {
                     "opcode": "getlocal",
@@ -252,9 +252,6 @@
                     }
                 },
                 {
-                    "opcode": "extend32"
-                },
-                {
                     "opcode": "pop"
                 },
                 {
@@ -280,9 +277,6 @@
                 },
                 {
                     "opcode": "iadd32"
-                },
-                {
-                    "opcode": "extend32"
                 },
                 {
                     "opcode": "xchg",

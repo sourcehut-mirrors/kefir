@@ -49,7 +49,6 @@ test_and_set:
 _kefir_func_test_and_set_label0:
 _kefir_func_test_and_set_label1:
     call __kefir_atomic_seq_cst_test_and_set@PLT
-    and $1, %rax
     pop %rbp
     ret
 
@@ -64,8 +63,7 @@ _kefir_func_test_is_lock_free_label1:
     mov %rax, %rdi
     mov %rcx, %rsi
     call __atomic_is_lock_free@PLT
-    and $1, %rax
-    movsx %eax, %rax
+    movzx %al, %rax
     xor %rcx, %rcx
     cmp $2, %eax
     sete %cl
@@ -82,8 +80,7 @@ _kefir_func_test_is_lock_free_label2:
     mov %rdx, %rsi
     call __atomic_is_lock_free@PLT
     movq -16(%rbp), %rcx
-    and $1, %rax
-    movsx %eax, %rax
+    movzx %al, %rax
     xor %rdx, %rdx
     cmp $2, %eax
     sete %dl
@@ -112,8 +109,7 @@ _kefir_func_test_is_lock_free_label4:
     mov %rdx, %rsi
     call __atomic_is_lock_free@PLT
     movq -16(%rbp), %rcx
-    and $1, %rax
-    movsx %eax, %rax
+    movzx %al, %rax
     xor %rdx, %rdx
     cmp $2, %eax
     sete %dl
@@ -141,8 +137,7 @@ _kefir_func_test_is_lock_free_label6:
     mov %rdx, %rsi
     call __atomic_is_lock_free@PLT
     movq -16(%rbp), %rcx
-    and $1, %rax
-    movsx %eax, %rax
+    movzx %al, %rax
     xor %rdx, %rdx
     cmp $2, %eax
     sete %dl
@@ -171,8 +166,7 @@ _kefir_func_test_is_lock_free_label8:
     mov %rdx, %rsi
     call __atomic_is_lock_free@PLT
     movq -16(%rbp), %rcx
-    and $1, %rax
-    movsx %eax, %rax
+    movzx %al, %rax
     xor %rdx, %rdx
     cmp $2, %eax
     sete %dl
@@ -200,8 +194,7 @@ _kefir_func_test_is_lock_free_label10:
     mov %rdx, %rsi
     call __atomic_is_lock_free@PLT
     movq -16(%rbp), %rcx
-    and $1, %rax
-    movsx %eax, %rax
+    movzx %al, %rax
     xor %rdx, %rdx
     cmp $2, %eax
     sete %dl
@@ -230,8 +223,7 @@ _kefir_func_test_is_lock_free_label12:
     mov %rdx, %rsi
     call __atomic_is_lock_free@PLT
     movq -16(%rbp), %rcx
-    and $1, %rax
-    movsx %eax, %rax
+    movzx %al, %rax
     xor %rdx, %rdx
     cmp $2, %eax
     sete %dl
@@ -259,8 +251,7 @@ _kefir_func_test_is_lock_free_label14:
     mov %rdx, %rsi
     call __atomic_is_lock_free@PLT
     movq -16(%rbp), %rcx
-    and $1, %rax
-    movsx %eax, %rax
+    movzx %al, %rax
     xor %rdx, %rdx
     cmp $2, %eax
     sete %dl
@@ -289,8 +280,7 @@ _kefir_func_test_is_lock_free_label16:
     mov %rdx, %rsi
     call __atomic_is_lock_free@PLT
     movq -16(%rbp), %rcx
-    and $1, %rax
-    movsx %eax, %rax
+    movzx %al, %rax
     xor %rdx, %rdx
     cmp $2, %eax
     sete %dl
@@ -318,8 +308,7 @@ _kefir_func_test_is_lock_free_label18:
     mov %rdx, %rsi
     call __atomic_is_lock_free@PLT
     movq -16(%rbp), %rcx
-    and $1, %rax
-    movsx %eax, %rax
+    movzx %al, %rax
     xor %rdx, %rdx
     cmp $2, %eax
     sete %dl

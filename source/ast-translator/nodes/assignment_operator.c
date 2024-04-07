@@ -268,9 +268,6 @@ static kefir_result_t translate_binary_op(struct kefir_mem *mem, struct kefir_as
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_FENV_UPDATE, 0));
         }
     }
-
-    REQUIRE_OK(
-        kefir_ast_translate_typeconv_normalize(builder, context->ast_context->type_traits, result_normalized_type));
     return KEFIR_OK;
 }
 
@@ -731,6 +728,10 @@ static kefir_result_t generate_add(const struct generate_op_parameters *params) 
             params->target_normalized_type->referenced_type, 0, &translator_type, &params->node->base.source_location));
 
         kefir_result_t res = KEFIR_OK;
+        REQUIRE_CHAIN(
+            &res, kefir_ast_translate_typeconv(params->mem, params->context->module, params->builder,
+                                               params->context->ast_context->type_traits, params->value_normalized_type,
+                                               params->context->ast_context->type_traits->size_type));
         REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(params->builder, KEFIR_IROPCODE_PUSHU64,
                                                             translator_type->object.layout->properties.size));
         REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(params->builder, KEFIR_IROPCODE_IMUL64, 0));
@@ -819,6 +820,10 @@ static kefir_result_t generate_sub(const struct generate_op_parameters *params) 
             params->target_normalized_type->referenced_type, 0, &translator_type, &params->node->base.source_location));
 
         kefir_result_t res = KEFIR_OK;
+        REQUIRE_CHAIN(
+            &res, kefir_ast_translate_typeconv(params->mem, params->context->module, params->builder,
+                                               params->context->ast_context->type_traits, params->value_normalized_type,
+                                               params->context->ast_context->type_traits->size_type));
         REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(params->builder, KEFIR_IROPCODE_PUSHU64,
                                                             translator_type->object.layout->properties.size));
         REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(params->builder, KEFIR_IROPCODE_IMUL64, 0));

@@ -175,15 +175,21 @@
                 },
                 {
                     "opcode": "branch64",
-                    "arg": 4
+                    "arg": 6
                 },
                 {
                     "opcode": "pushi",
                     "arg": 0
                 },
                 {
+                    "opcode": "extend32"
+                },
+                {
+                    "opcode": "intcf64"
+                },
+                {
                     "opcode": "jmp",
-                    "arg": 9
+                    "arg": 12
                 },
                 {
                     "opcode": "pushi",
@@ -191,7 +197,7 @@
                 },
                 {
                     "opcode": "branch32",
-                    "arg": 8
+                    "arg": 10
                 },
                 {
                     "opcode": "pushf64",
@@ -199,11 +205,14 @@
                 },
                 {
                     "opcode": "jmp",
-                    "arg": 9
+                    "arg": 12
                 },
                 {
                     "opcode": "pushf32",
                     "arg": 4.510000
+                },
+                {
+                    "opcode": "f32cf64"
                 }
             ],
             "public_labels": []
@@ -223,7 +232,7 @@
                 },
                 {
                     "opcode": "branch32",
-                    "arg": 5
+                    "arg": 6
                 },
                 {
                     "opcode": "pop"
@@ -231,6 +240,10 @@
                 {
                     "opcode": "pushi",
                     "arg": 10
+                },
+                {
+                    "opcode": "jmp",
+                    "arg": 6
                 }
             ],
             "public_labels": []

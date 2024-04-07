@@ -38,7 +38,6 @@ _kefir_func_test_sync_bool_compare_and_swap16_label1:
     mov %r9, %r8
     mov %r10, %r9
     call __atomic_compare_exchange@PLT
-    and $1, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -65,7 +64,6 @@ _kefir_func_test_sync_bool_compare_and_swap32_label1:
     mov %r9, %r8
     mov %r10, %r9
     call __atomic_compare_exchange@PLT
-    and $1, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -90,7 +88,6 @@ _kefir_func_test_sync_bool_compare_and_swap64_label1:
     mov %r9, %r8
     mov %r10, %r9
     call __atomic_compare_exchange@PLT
-    and $1, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -117,7 +114,6 @@ _kefir_func_test_sync_bool_compare_and_swap8_label1:
     mov %r9, %r8
     mov %r10, %r9
     call __atomic_compare_exchange@PLT
-    and $1, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret

@@ -108,6 +108,9 @@
                     "arg": 5
                 },
                 {
+                    "opcode": "extend32"
+                },
+                {
                     "opcode": "pushu",
                     "arg": 8
                 },
@@ -126,6 +129,9 @@
                 {
                     "opcode": "pushi",
                     "arg": 10
+                },
+                {
+                    "opcode": "extend32"
                 },
                 {
                     "opcode": "pushu",
@@ -154,6 +160,9 @@
                     "arg": 11
                 },
                 {
+                    "opcode": "extend32"
+                },
+                {
                     "opcode": "pushu",
                     "arg": 8
                 },
@@ -172,6 +181,9 @@
                 {
                     "opcode": "pushi",
                     "arg": 12
+                },
+                {
+                    "opcode": "extend32"
                 },
                 {
                     "opcode": "pushu",

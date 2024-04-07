@@ -307,9 +307,6 @@
                         "identifier": 2,
                         "name": "sum"
                     }
-                },
-                {
-                    "opcode": "extend32"
                 }
             ],
             "public_labels": []
@@ -329,9 +326,6 @@
                         "identifier": 4,
                         "name": "sum"
                     }
-                },
-                {
-                    "opcode": "extend32"
                 }
             ],
             "public_labels": []
@@ -358,9 +352,6 @@
                         "identifier": 6,
                         "name": "sum"
                     }
-                },
-                {
-                    "opcode": "extend32"
                 }
             ],
             "public_labels": []
@@ -398,9 +389,6 @@
                         "identifier": 8,
                         "name": "sum"
                     }
-                },
-                {
-                    "opcode": "extend32"
                 }
             ],
             "public_labels": []

@@ -116,6 +116,7 @@ _kefir_func_intcld_label0:
 _kefir_func_intcld_label1:
     movl %edi, -48(%rbp)
     movsxl -48(%rbp), %rax
+    movsx %eax, %rax
     push %rax
     fildq (%rsp)
     add $8, %rsp
@@ -187,7 +188,6 @@ _kefir_func_ldcint_label1:
     fstpt -64(%rbp)
     fldt -64(%rbp)
     call __kefirrt_opt_long_double_to_int@PLT
-    movsx %eax, %rax
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -208,8 +208,6 @@ _kefir_func_ldcuint_label1:
     fstpt -64(%rbp)
     fldt -64(%rbp)
     call __kefirrt_opt_long_double_to_uint@PLT
-    movabs $4294967295, %rcx
-    and %rcx, %rax
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -224,6 +222,8 @@ _kefir_func_uintcld_label0:
 _kefir_func_uintcld_label1:
     movl %edi, -48(%rbp)
     movl -48(%rbp), %eax
+    movabs $4294967295, %rcx
+    and %rcx, %rax
     push %rax
     fildq (%rsp)
     add $8, %rsp
@@ -247,6 +247,7 @@ _kefir_func_imp_cast_label0:
 _kefir_func_imp_cast_label1:
     movl %edi, -48(%rbp)
     movsxl -48(%rbp), %rax
+    movsx %eax, %rax
     push %rax
     fildq (%rsp)
     add $8, %rsp

@@ -108,9 +108,6 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "extend16"
-                },
-                {
                     "opcode": "store16",
                     "memory_flags": {
                         "volatile": false
@@ -152,9 +149,6 @@
                     "opcode": "iadd16"
                 },
                 {
-                    "opcode": "extend16"
-                },
-                {
                     "opcode": "store16",
                     "memory_flags": {
                         "volatile": false
@@ -177,7 +171,7 @@
                     }
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "extend16"
                 },
                 {
                     "opcode": "pushi",
@@ -191,18 +185,18 @@
                 },
                 {
                     "opcode": "branch8",
-                    "arg": 25
+                    "arg": 23
                 },
                 {
                     "opcode": "pushlabel",
-                    "arg": 27
+                    "arg": 25
                 },
                 {
                     "opcode": "ijmp"
                 },
                 {
                     "opcode": "pushlabel",
-                    "arg": 6
+                    "arg": 5
                 },
                 {
                     "opcode": "ijmp"
@@ -229,7 +223,7 @@
                     }
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "extend16"
                 },
                 {
                     "opcode": "xchg",
@@ -241,9 +235,6 @@
                 },
                 {
                     "opcode": "imod32"
-                },
-                {
-                    "opcode": "extend16"
                 },
                 {
                     "opcode": "xchg",
@@ -260,20 +251,17 @@
                     }
                 },
                 {
-                    "opcode": "extend16"
-                },
-                {
                     "opcode": "pop"
                 }
             ],
             "public_labels": [
                 {
                     "label": "_kefir_local_public_label_goto1_begin",
-                    "location": 6
+                    "location": 5
                 },
                 {
                     "label": "_kefir_local_public_label_goto1_end",
-                    "location": 27
+                    "location": 25
                 }
             ]
         },

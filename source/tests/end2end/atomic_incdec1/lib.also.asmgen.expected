@@ -46,9 +46,8 @@ _kefir_func_predec_i8_label2:
     call __atomic_load_1@PLT
     movq -32(%rbp), %r9
     movsx %al, %rax
-    mov %rax, %rcx
-    add $-1, %cl
-    movsx %cl, %r10
+    mov %rax, %r10
+    add $-1, %r10b
     movq %r9, -24(%rbp)
     movq %r10, -16(%rbp)
     mov %r9, %rdi
@@ -182,9 +181,8 @@ _kefir_func_preinc_i8_label2:
     call __atomic_load_1@PLT
     movq -32(%rbp), %r9
     movsx %al, %rax
-    mov %rax, %rcx
-    add $1, %cl
-    movsx %cl, %r10
+    mov %rax, %r10
+    add $1, %r10b
     movq %r9, -24(%rbp)
     movq %r10, -16(%rbp)
     mov %r9, %rdi
@@ -480,9 +478,8 @@ _kefir_func_predec_i16_label2:
     call __atomic_load_2@PLT
     movq -32(%rbp), %r9
     movsx %ax, %rax
-    mov %rax, %rcx
-    add $-1, %cx
-    movsx %cx, %r10
+    mov %rax, %r10
+    add $-1, %r10w
     movq %r9, -24(%rbp)
     movq %r10, -16(%rbp)
     mov %r9, %rdi
@@ -523,9 +520,8 @@ _kefir_func_predec_i32_label2:
     call __atomic_load_4@PLT
     movq -32(%rbp), %r9
     movsx %eax, %rax
-    mov %rax, %rcx
-    add $-1, %ecx
-    movsx %ecx, %r10
+    mov %rax, %r10
+    add $-1, %r10d
     movq %r9, -24(%rbp)
     movq %r10, -16(%rbp)
     mov %r9, %rdi
@@ -810,9 +806,8 @@ _kefir_func_preinc_i16_label2:
     call __atomic_load_2@PLT
     movq -32(%rbp), %r9
     movsx %ax, %rax
-    mov %rax, %rcx
-    add $1, %cx
-    movsx %cx, %r10
+    mov %rax, %r10
+    add $1, %r10w
     movq %r9, -24(%rbp)
     movq %r10, -16(%rbp)
     mov %r9, %rdi
@@ -853,9 +848,8 @@ _kefir_func_preinc_i32_label2:
     call __atomic_load_4@PLT
     movq -32(%rbp), %r9
     movsx %eax, %rax
-    mov %rax, %rcx
-    add $1, %ecx
-    movsx %ecx, %r10
+    mov %rax, %r10
+    add $1, %r10d
     movq %r9, -24(%rbp)
     movq %r10, -16(%rbp)
     mov %r9, %rdi

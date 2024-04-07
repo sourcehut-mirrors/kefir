@@ -181,13 +181,6 @@
                     }
                 },
                 {
-                    "opcode": "pushu",
-                    "arg": 1
-                },
-                {
-                    "opcode": "iand64"
-                },
-                {
                     "opcode": "getlocal",
                     "arg": {
                         "type": 5,

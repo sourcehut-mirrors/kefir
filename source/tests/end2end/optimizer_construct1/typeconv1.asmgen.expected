@@ -45,13 +45,13 @@
                     },
                     {
                         "id": 1,
-                        "control_flow": 9,
+                        "control_flow": 6,
                         "phi": [],
                         "calls": [],
                         "inline_assembly": [],
                         "code": [
                             {
-                                "id": 9,
+                                "id": 6,
                                 "opcode": "return",
                                 "arg": null,
                                 "control_next": null,
