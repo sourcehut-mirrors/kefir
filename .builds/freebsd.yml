@@ -21,12 +21,8 @@ tasks:
       gmake all PROFILE=reldebug CC=clang
   - lua_tests: |
       cd kefir
-      export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(pwd)/bin/libs
       export LC_ALL=C.UTF-8
-      export KEFIR_RTLIB="$HOME/kefir/bin/libs/libkefirrt.a"
-      export KEFIR_RTINC="$HOME/kefir/headers/kefir/runtime"
-      export KEFIR_CFLAGS="-O1 -fPIC -pie -D__GNUC__=4 -D__GNUC_MINOR__=20 -D__GNUC_STDC_INLINE__=1"
-      ./source/tests/misc/run-lua-tests.sh "$(pwd)/bin/kefir" "$(pwd)/bin/lua-test"
+      gmake bin/tests/external/lua.test.done KEFIR_EXTERNAL_TEST_LUA_CFLAGS="-O1 -fPIC -pie -D__GNUC__=4 -D__GNUC_MINOR__=20 -D__GNUC_STDC_INLINE__=1"
   - c_testsuite: |
       cd c-testsuite
       export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/kefir/bin/libs

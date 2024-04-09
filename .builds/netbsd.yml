@@ -19,15 +19,9 @@ tasks:
       gmake test all CC=gcc AS=gas PROFILE=reldebug
   - lua_tests: |
       cd kefir
-      export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/pkg/lib:$(pwd)/bin/libs
       export LIBRARY_PATH=$LIBRARY_PATH:/usr/pkg/lib
       export LC_ALL=C.UTF-8
-      export KEFIR_RTLIB="$HOME/kefir/bin/libs/libkefirrt.a"
-      export KEFIR_RTINC="$HOME/kefir/headers/kefir/runtime"
-      export KEFIR_CFLAGS="-O1 -fPIC -pie -D__GNUC__=4 -D__GNUC_MINOR__=20 -D__GNUC_STDC_INLINE__=1 -D__ELF__=1 -include $HOME/kefir/headers/bootstrap_include/netbsd.h"
-      sed -i "s/tar xvf/tar xvfz/g" ./source/tests/misc/run-lua-tests.sh
-      sed -i "s/realpath/grealpath/g" ./source/tests/misc/run-lua-tests.sh
-      ./source/tests/misc/run-lua-tests.sh "$(pwd)/bin/kefir" "$(pwd)/bin/lua-test"
+      gmake bin/tests/external/lua.test.done REALPATH=grealpath KEFIR_EXTERNAL_TEST_LUA_CFLAGS="-O1 -fPIC -pie -D__GNUC__=4 -D__GNUC_MINOR__=20 -D__GNUC_STDC_INLINE__=1 -D__ELF__=1 -include $HOME/kefir/headers/bootstrap_include/netbsd.h"
   - c_testsuite: |
       cd c-testsuite
       export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/pkg/lib:$HOME/kefir/bin/libs
