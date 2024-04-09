@@ -18,18 +18,30 @@ $(KEFIR_EXTERNAL_TEST_LUA_DIR)/$(KEFIR_EXTERNAL_TEST_LUA_ARCHIVE):
 	@mkdir -p $(shell dirname $@)
 	@echo "Downloading $(KEFIR_EXTERNAL_TEST_LUA_URL)..."
 	@wget -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_LUA_URL)"
+ifneq (,$(findstring $(PLATFORM),openbsd:netbsd))
+	@cksum -a sha256 "$@.tmp" | awk -f "$(SOURCE_DIR)/tests/external/lua/checksum.bsd.awk" \
+		-v filename="$(KEFIR_EXTERNAL_TEST_LUA_ARCHIVE)" \
+		-v expected_checksum="$(KEFIR_EXTERNAL_TEST_LUA_ARCHIVE_SHA256)"
+else
 	@sha256sum "$@.tmp" | awk -f "$(SOURCE_DIR)/tests/external/lua/checksum.awk" \
 		-v filename="$(KEFIR_EXTERNAL_TEST_LUA_ARCHIVE)" \
 		-v expected_checksum="$(KEFIR_EXTERNAL_TEST_LUA_ARCHIVE_SHA256)"
+endif
 	@mv "$@.tmp" "$@"
 
 $(KEFIR_EXTERNAL_TEST_LUA_DIR)/$(KEFIR_EXTERNAL_TEST_LUA_TESTS_ARCHIVE):
 	@mkdir -p $(shell dirname $@)
 	@echo "Downloading $(KEFIR_EXTERNAL_TEST_LUA_TESTS_URL)..."
 	@wget -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_LUA_TESTS_URL)"
+ifneq (,$(findstring $(PLATFORM),openbsd:netbsd))
+	@cksum -a sha256 "$@.tmp" | awk -f "$(SOURCE_DIR)/tests/external/lua/checksum.bsd.awk" \
+		-v filename="$(KEFIR_EXTERNAL_TEST_LUA_TESTS_ARCHIVE)" \
+		-v expected_checksum="$(KEFIR_EXTERNAL_TEST_LUA_TESTS_ARCHIVE_SHA256)"
+else
 	@sha256sum "$@.tmp" | awk -f "$(SOURCE_DIR)/tests/external/lua/checksum.awk" \
 		-v filename="$(KEFIR_EXTERNAL_TEST_LUA_TESTS_ARCHIVE)" \
 		-v expected_checksum="$(KEFIR_EXTERNAL_TEST_LUA_TESTS_ARCHIVE_SHA256)"
+endif
 	@mv "$@.tmp" "$@"
 
 $(KEFIR_EXTERAL_TEST_LUA_EXE): $(KEFIR_EXTERNAL_TEST_LUA_DIR)/$(KEFIR_EXTERNAL_TEST_LUA_ARCHIVE) $(KEFIR_EXE) $(LIBKEFIRRT_A)
