@@ -4,7 +4,7 @@ set -e
 
 sha256_checksum () {
 	local checksum=`sha256sum "$1" | cut -d' ' -f1`
-    if [ "$checksum" == "$2" ]; then
+    if [ "$checksum" = "$2" ]; then
         echo "$(basename $1) sha256 check: ok"
         exit 0
     else
@@ -16,7 +16,7 @@ sha256_checksum () {
 
 cksum_sha256_checksum () {
 	local checksum=`cksum -a sha256  "$1" | cut -d' ' -f4`
-    if [ "$checksum" == "$2" ]; then
+    if [ "$checksum" = "$2" ]; then
         echo "$(basename $1) sha256 check: ok"
         exit 0
     else
