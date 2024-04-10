@@ -27,14 +27,13 @@ $(KEFIR_EXTERNAL_TEST_GCC_DIR)/.done: $(KEFIR_EXTERNAL_TEST_GCC_ARCHIVE)
 
 $(KEFIR_EXTERNAL_TEST_GCC_TORTURE_DIR)/torture.log: $(KEFIR_EXTERNAL_TEST_GCC_DIR)/.done $(KEFIR_EXE) $(LIBKEFIRRT_A)
 	@echo "Running GCC $(KEFIR_EXTERNAL_TEST_GCC_TORTURE_VERSION) torture test suite..."
-	@set -o pipefail; \
-		TORTURE="$(KEFIR_EXTERNAL_TEST_GCC_DIR)/gcc/testsuite/gcc.c-torture" \
+	@TORTURE="$(KEFIR_EXTERNAL_TEST_GCC_DIR)/gcc/testsuite/gcc.c-torture" \
 		KEFIRCC="$(realpath $(KEFIR_EXE))" \
 		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
 		KEFIR_RTLIB="$(realpath $(LIBKEFIRRT_A))" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR)/runtime)" \
 		KEFIR_EXTRAFLAGS="$(KEFIR_EXTERNAL_TEST_GCC_TORTURE_CFLAGS)" \
-		"$(SOURCE_DIR)/tests/external/gcc-torture/run_gcc_torture_suite.sh" 2>&1 | tee "$@.tmp"
+		bash -c 'set -o pipefail; "$(SOURCE_DIR)/tests/external/gcc-torture/run_gcc_torture_suite.sh" 2>&1 | tee "$@.tmp"'
 	@mv "$@.tmp" "$@"
 
 $(KEFIR_EXTERNAL_TESTS_DIR)/gcc-torture.test.done: $(KEFIR_EXTERNAL_TEST_GCC_TORTURE_DIR)/torture.log

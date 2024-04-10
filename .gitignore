@@ -60,3 +60,7 @@ compile_commands.json
 *.core
 bootstrap/
 callgrind.out.*
+
+# GCC Torture
+test.s
+test.bin
