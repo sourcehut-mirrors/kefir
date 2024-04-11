@@ -9,7 +9,6 @@ packages:
   - python
 sources:
   - https://git.sr.ht/~jprotopopov/kefir
-  - https://git.sr.ht/~jprotopopov/c-testsuite
 tasks:
   - test: |
       cd kefir

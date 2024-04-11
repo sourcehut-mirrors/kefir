@@ -10,7 +10,6 @@ packages:
   - py39-sqlite3
 sources:
   - https://git.sr.ht/~jprotopopov/kefir
-  - https://git.sr.ht/~jprotopopov/c-testsuite
 tasks:
   - test: |
       cd kefir
