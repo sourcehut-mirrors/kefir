@@ -372,6 +372,10 @@ kefir_result_t kefir_asmcmp_context_move_labels(struct kefir_mem *, struct kefir
                                                 kefir_asmcmp_instruction_index_t, kefir_asmcmp_instruction_index_t);
 kefir_result_t kefir_asmcmp_context_label_add_public_name(struct kefir_mem *, struct kefir_asmcmp_context *,
                                                           kefir_asmcmp_label_index_t, const char *);
+kefir_result_t kefir_asmcmp_context_label_head(const struct kefir_asmcmp_context *, kefir_asmcmp_label_index_t *);
+kefir_result_t kefir_asmcmp_context_label_next(const struct kefir_asmcmp_context *, kefir_asmcmp_label_index_t, kefir_asmcmp_label_index_t *);
+kefir_result_t kefir_asmcmp_context_label_prev(const struct kefir_asmcmp_context *, kefir_asmcmp_label_index_t, kefir_asmcmp_label_index_t *);
+kefir_result_t kefir_asmcmp_context_get_label(const struct kefir_asmcmp_context *, kefir_asmcmp_label_index_t, const struct kefir_asmcmp_label **);
 
 kefir_result_t kefir_asmcmp_number_of_virtual_registers(const struct kefir_asmcmp_context *, kefir_size_t *);
 kefir_result_t kefir_asmcmp_virtual_register_get(const struct kefir_asmcmp_context *,

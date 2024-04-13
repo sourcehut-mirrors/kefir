@@ -22,8 +22,6 @@
 
 .section .text
 get_b:
-_kefir_func_get_b_label0:
-_kefir_func_get_b_label1:
     movq b@GOTPCREL(%rip), %rax
     mov %rax, %rdi
     mov $5, %rsi
@@ -31,8 +29,6 @@ _kefir_func_get_b_label1:
     ret
 
 get_u8:
-_kefir_func_get_u8_label0:
-_kefir_func_get_u8_label1:
     movq u8@GOTPCREL(%rip), %rax
     mov %rax, %rdi
     mov $5, %rsi
@@ -40,8 +36,6 @@ _kefir_func_get_u8_label1:
     ret
 
 get_f32:
-_kefir_func_get_f32_label0:
-_kefir_func_get_f32_label1:
     movq f32@GOTPCREL(%rip), %rax
     mov %rax, %rdi
     mov $5, %rsi
@@ -50,8 +44,6 @@ _kefir_func_get_f32_label1:
     ret
 
 get_f64:
-_kefir_func_get_f64_label0:
-_kefir_func_get_f64_label1:
     movq f64@GOTPCREL(%rip), %rax
     mov %rax, %rdi
     mov $5, %rsi
@@ -60,8 +52,6 @@ _kefir_func_get_f64_label1:
     ret
 
 get_u16:
-_kefir_func_get_u16_label0:
-_kefir_func_get_u16_label1:
     movq u16@GOTPCREL(%rip), %rax
     mov %rax, %rdi
     mov $5, %rsi
@@ -69,8 +59,6 @@ _kefir_func_get_u16_label1:
     ret
 
 get_u32:
-_kefir_func_get_u32_label0:
-_kefir_func_get_u32_label1:
     movq u32@GOTPCREL(%rip), %rax
     mov %rax, %rdi
     mov $5, %rsi
@@ -78,8 +66,6 @@ _kefir_func_get_u32_label1:
     ret
 
 get_u64:
-_kefir_func_get_u64_label0:
-_kefir_func_get_u64_label1:
     movq u64@GOTPCREL(%rip), %rax
     mov %rax, %rdi
     mov $5, %rsi

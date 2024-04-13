@@ -20,9 +20,7 @@ test_sync_bool_compare_and_swap16:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_test_sync_bool_compare_and_swap16_label0:
     mov %rdi, %rax
-_kefir_func_test_sync_bool_compare_and_swap16_label1:
     movsx %si, %rcx
     movw %cx, -4(%rbp)
     movsx %dx, %rcx
@@ -46,9 +44,7 @@ test_sync_bool_compare_and_swap32:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_test_sync_bool_compare_and_swap32_label0:
     mov %rdi, %rax
-_kefir_func_test_sync_bool_compare_and_swap32_label1:
     movsx %esi, %rcx
     movl %ecx, -8(%rbp)
     movsx %edx, %rcx
@@ -72,9 +68,7 @@ test_sync_bool_compare_and_swap64:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_test_sync_bool_compare_and_swap64_label0:
     mov %rdi, %rax
-_kefir_func_test_sync_bool_compare_and_swap64_label1:
     movq %rsi, -16(%rbp)
     movq %rdx, -8(%rbp)
     mov $8, %rcx
@@ -96,9 +90,7 @@ test_sync_bool_compare_and_swap8:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_test_sync_bool_compare_and_swap8_label0:
     mov %rdi, %rax
-_kefir_func_test_sync_bool_compare_and_swap8_label1:
     movsx %sil, %rcx
     movb %cl, -2(%rbp)
     movsx %dl, %rcx
@@ -122,9 +114,7 @@ test_sync_val_compare_and_swap8:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_test_sync_val_compare_and_swap8_label0:
     mov %rdi, %rax
-_kefir_func_test_sync_val_compare_and_swap8_label1:
     movsx %sil, %rcx
     movb %cl, -2(%rbp)
     movsx %dl, %rcx
@@ -149,9 +139,7 @@ test_sync_val_compare_and_swap16:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_test_sync_val_compare_and_swap16_label0:
     mov %rdi, %rax
-_kefir_func_test_sync_val_compare_and_swap16_label1:
     movsx %si, %rcx
     movw %cx, -4(%rbp)
     movsx %dx, %rcx
@@ -176,9 +164,7 @@ test_sync_val_compare_and_swap32:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_test_sync_val_compare_and_swap32_label0:
     mov %rdi, %rax
-_kefir_func_test_sync_val_compare_and_swap32_label1:
     movsx %esi, %rcx
     movl %ecx, -8(%rbp)
     movsx %edx, %rcx
@@ -203,9 +189,7 @@ test_sync_val_compare_and_swap64:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_test_sync_val_compare_and_swap64_label0:
     mov %rdi, %rax
-_kefir_func_test_sync_val_compare_and_swap64_label1:
     movq %rsi, -16(%rbp)
     movq %rdx, -8(%rbp)
     mov $8, %rcx

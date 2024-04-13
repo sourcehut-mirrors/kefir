@@ -20,85 +20,61 @@
 
 .section .text
 test1:
-_kefir_func_test1_label1:
-_kefir_func_test1_label0:
     add $3, %rdi
     mov %rdi, %rax
     ret
 
 test2:
-_kefir_func_test2_label1:
-_kefir_func_test2_label0:
     add $7, %rdi
     mov %rdi, %rax
     ret
 
 test3:
-_kefir_func_test3_label1:
-_kefir_func_test3_label0:
     sub $-5, %rdi
     mov %rdi, %rax
     ret
 
 test4:
-_kefir_func_test4_label1:
-_kefir_func_test4_label0:
     mov $18, %rax
     sub %rdi, %rax
     ret
 
 test5:
-_kefir_func_test5_label1:
-_kefir_func_test5_label0:
     sub $-7, %rdi
     mov %rdi, %rax
     ret
 
 test6:
-_kefir_func_test6_label1:
-_kefir_func_test6_label0:
     mov $42, %rax
     sub %rdi, %rax
     ret
 
 test7:
-_kefir_func_test7_label1:
-_kefir_func_test7_label0:
     sub $101, %rdi
     mov %rdi, %rax
     ret
 
 test8:
-_kefir_func_test8_label1:
-_kefir_func_test8_label0:
     mov $121, %rax
     sub %rdi, %rax
     ret
 
 test9:
-_kefir_func_test9_label1:
-_kefir_func_test9_label0:
     sub $55, %rdi
     mov %rdi, %rax
     ret
 
 test10:
-_kefir_func_test10_label1:
-_kefir_func_test10_label0:
     mov $250, %rax
     sub %rdi, %rax
     ret
 
 test11:
-_kefir_func_test11_label1:
-_kefir_func_test11_label0:
     mov $95, %rax
     sub %rdi, %rax
     ret
 
 test12:
-_kefir_func_test12_label1:
-_kefir_func_test12_label0:
     add $325, %rdi
     mov %rdi, %rax
     ret

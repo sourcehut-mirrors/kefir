@@ -16,8 +16,6 @@
 
 .section .text
 get_structure2:
-_kefir_func_get_structure2_label0:
-_kefir_func_get_structure2_label1:
     lea __kefirrt_module_static_uninit_vars(%rip), %rax
     ret
 

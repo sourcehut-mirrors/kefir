@@ -36,6 +36,7 @@ $(KEFIR_EXTERNAL_TEST_C_TESTSUITE_DIR)/c-tests.log: $(KEFIR_EXTERAL_TEST_C_TESTS
 
 $(KEFIR_EXTERNAL_TESTS_DIR)/c-testsuite.test.done: $(KEFIR_EXTERNAL_TEST_C_TESTSUITE_DIR)/c-tests.log
 	@echo "Checking c-testsuite $(KEFIR_EXTERNAL_TEST_C_TESTSUITE_ARCHIVE_SHA256) results..."
-	@[[ "x$$(cat $(KEFIR_EXTERNAL_TEST_C_TESTSUITE_DIR)/c-tests.log | $(KEFIR_EXTERAL_TEST_C_TESTSUITE)/scripts/tapsummary | sed -nr 's/fail\s*([0-9]+)/\1/p')" == "x0" ]] || echo FAIL
+	@cat $(KEFIR_EXTERNAL_TEST_C_TESTSUITE_DIR)/c-tests.log | $(KEFIR_EXTERAL_TEST_C_TESTSUITE)/scripts/tapsummary
+	@[[ "x$$(cat $(KEFIR_EXTERNAL_TEST_C_TESTSUITE_DIR)/c-tests.log | $(KEFIR_EXTERAL_TEST_C_TESTSUITE)/scripts/tapsummary | sed -nr 's/fail\s*([0-9]+)/\1/p')" == "x0" ]] || exit 1
 	@touch "$@"
 	@echo "c-testsuite $(KEFIR_EXTERNAL_TEST_C_TESTSUITE_ARCHIVE_SHA256) successfully finished"

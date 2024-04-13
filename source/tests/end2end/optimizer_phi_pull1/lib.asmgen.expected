@@ -16,15 +16,13 @@ somefn:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-_kefir_func_somefn_label1:
-_kefir_func_somefn_label0:
     movq _kefir_func_somefn_label5(%rip), %xmm0
     movq _kefir_func_somefn_label6(%rip), %xmm1
 _kefir_func_somefn_label2:
     movsx %edi, %rax
     mov %rax, %rcx
     add $-1, %ecx
-    xor %rdx, %rdx
+    xor %edx, %edx
     test %eax, %eax
     sete %dl
     test %dl, %dl
@@ -34,7 +32,6 @@ _kefir_func_somefn_label2:
 _kefir_func_somefn_label7:
     movq %xmm0, %xmm2
     movq %xmm1, %xmm3
-_kefir_func_somefn_label3:
     addsd %xmm2, %xmm3
     mov %rcx, %rdi
     movq %xmm2, %xmm0
@@ -56,13 +53,10 @@ _kefir_func_somefn_label6:
 .section .text
 
 assign_abs:
-_kefir_func_assign_abs_label1:
-_kefir_func_assign_abs_label0:
     cmp $0, %rdi
     jle _kefir_func_assign_abs_label5
     mov %rdi, %rax
     jmp _kefir_func_assign_abs_label3
-_kefir_func_assign_abs_label2:
 _kefir_func_assign_abs_label5:
     neg %rdi
     jmp _kefir_func_assign_abs_label4
@@ -74,12 +68,9 @@ _kefir_func_assign_abs_label4:
     ret
 
 condition1:
-_kefir_func_condition1_label1:
-_kefir_func_condition1_label0:
     movsx %edi, %rax
     cmp $0, %eax
     jle _kefir_func_condition1_label3
-_kefir_func_condition1_label2:
 _kefir_func_condition1_label4:
     movsx %edi, %rax
     add $10, %eax

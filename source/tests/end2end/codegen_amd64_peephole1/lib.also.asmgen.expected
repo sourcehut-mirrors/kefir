@@ -14,8 +14,6 @@ test:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_test_label1:
-_kefir_func_test_label0:
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
     lea (%rbp), %rsp
@@ -23,14 +21,10 @@ _kefir_func_test_label0:
     ret
 
 get_zero:
-_kefir_func_get_zero_label0:
-_kefir_func_get_zero_label1:
-    xor %rax, %rax
+    xor %eax, %eax
     ret
 
 some_math:
-_kefir_func_some_math_label1:
-_kefir_func_some_math_label0:
     mov %rdi, %rax
     ret
 

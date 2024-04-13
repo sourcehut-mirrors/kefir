@@ -30,9 +30,7 @@ add_ld:
     mov %rsp, %rbp
     sub $160, %rsp
     fstcw -8(%rbp)
-_kefir_func_add_ld_label0:
     mov %rdi, %rax
-_kefir_func_add_ld_label1:
     movq ld_1@GOTPCREL(%rip), %rcx
     movq %rax, -128(%rbp)
     mov %rcx, %rsi
@@ -66,9 +64,7 @@ div_ld:
     mov %rsp, %rbp
     sub $160, %rsp
     fstcw -8(%rbp)
-_kefir_func_div_ld_label0:
     mov %rdi, %rax
-_kefir_func_div_ld_label1:
     movq ld_1@GOTPCREL(%rip), %rcx
     movq %rax, -128(%rbp)
     mov %rcx, %rsi
@@ -101,9 +97,7 @@ mul_ld:
     mov %rsp, %rbp
     sub $160, %rsp
     fstcw -8(%rbp)
-_kefir_func_mul_ld_label0:
     mov %rdi, %rax
-_kefir_func_mul_ld_label1:
     movq ld_1@GOTPCREL(%rip), %rcx
     movq %rax, -128(%rbp)
     mov %rcx, %rsi
@@ -136,8 +130,6 @@ neg_ld:
     mov %rsp, %rbp
     sub $112, %rsp
     stmxcsr -8(%rbp)
-_kefir_func_neg_ld_label0:
-_kefir_func_neg_ld_label1:
     movq ld_1@GOTPCREL(%rip), %rax
     mov %rax, %rsi
     lea -112(%rbp), %rdx
@@ -162,9 +154,7 @@ sub_ld:
     mov %rsp, %rbp
     sub $160, %rsp
     fstcw -8(%rbp)
-_kefir_func_sub_ld_label0:
     mov %rdi, %rax
-_kefir_func_sub_ld_label1:
     movq ld_1@GOTPCREL(%rip), %rcx
     movq %rax, -128(%rbp)
     mov %rcx, %rsi
@@ -198,9 +188,7 @@ add_f32:
     mov %rsp, %rbp
     sub $48, %rsp
     stmxcsr -8(%rbp)
-_kefir_func_add_f32_label0:
     mov %rdi, %rax
-_kefir_func_add_f32_label1:
     movq f32_1@GOTPCREL(%rip), %rcx
     movq %rax, -40(%rbp)
     mov %rcx, %rsi
@@ -231,9 +219,7 @@ add_f64:
     mov %rsp, %rbp
     sub $96, %rsp
     stmxcsr -8(%rbp)
-_kefir_func_add_f64_label0:
     mov %rdi, %rax
-_kefir_func_add_f64_label1:
     movq f64_1@GOTPCREL(%rip), %rcx
     movq %rax, -80(%rbp)
     mov %rcx, %rsi
@@ -265,9 +251,7 @@ div_f32:
     mov %rsp, %rbp
     sub $48, %rsp
     stmxcsr -8(%rbp)
-_kefir_func_div_f32_label0:
     mov %rdi, %rax
-_kefir_func_div_f32_label1:
     movq f32_1@GOTPCREL(%rip), %rcx
     movq %rax, -40(%rbp)
     mov %rcx, %rsi
@@ -296,9 +280,7 @@ div_f64:
     mov %rsp, %rbp
     sub $96, %rsp
     stmxcsr -8(%rbp)
-_kefir_func_div_f64_label0:
     mov %rdi, %rax
-_kefir_func_div_f64_label1:
     movq f64_1@GOTPCREL(%rip), %rcx
     movq %rax, -80(%rbp)
     mov %rcx, %rsi
@@ -331,9 +313,7 @@ mul_f32:
     mov %rsp, %rbp
     sub $48, %rsp
     stmxcsr -8(%rbp)
-_kefir_func_mul_f32_label0:
     mov %rdi, %rax
-_kefir_func_mul_f32_label1:
     movq f32_1@GOTPCREL(%rip), %rcx
     movq %rax, -40(%rbp)
     mov %rcx, %rsi
@@ -362,9 +342,7 @@ mul_f64:
     mov %rsp, %rbp
     sub $96, %rsp
     stmxcsr -8(%rbp)
-_kefir_func_mul_f64_label0:
     mov %rdi, %rax
-_kefir_func_mul_f64_label1:
     movq f64_1@GOTPCREL(%rip), %rcx
     movq %rax, -80(%rbp)
     mov %rcx, %rsi
@@ -397,8 +375,6 @@ neg_f32:
     mov %rsp, %rbp
     sub $32, %rsp
     stmxcsr -8(%rbp)
-_kefir_func_neg_f32_label0:
-_kefir_func_neg_f32_label1:
     movq f32_1@GOTPCREL(%rip), %rax
     mov %rax, %rsi
     lea -32(%rbp), %rdx
@@ -419,8 +395,6 @@ neg_f64:
     mov %rsp, %rbp
     sub $64, %rsp
     stmxcsr -8(%rbp)
-_kefir_func_neg_f64_label0:
-_kefir_func_neg_f64_label1:
     movq f64_1@GOTPCREL(%rip), %rax
     mov %rax, %rsi
     lea -64(%rbp), %rdx
@@ -445,9 +419,7 @@ sub_f32:
     mov %rsp, %rbp
     sub $48, %rsp
     stmxcsr -8(%rbp)
-_kefir_func_sub_f32_label0:
     mov %rdi, %rax
-_kefir_func_sub_f32_label1:
     movq f32_1@GOTPCREL(%rip), %rcx
     movq %rax, -40(%rbp)
     mov %rcx, %rsi
@@ -478,9 +450,7 @@ sub_f64:
     mov %rsp, %rbp
     sub $96, %rsp
     stmxcsr -8(%rbp)
-_kefir_func_sub_f64_label0:
     mov %rdi, %rax
-_kefir_func_sub_f64_label1:
     movq f64_1@GOTPCREL(%rip), %rcx
     movq %rax, -80(%rbp)
     mov %rcx, %rsi

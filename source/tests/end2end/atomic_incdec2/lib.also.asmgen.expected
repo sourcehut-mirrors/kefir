@@ -35,8 +35,6 @@ postdec_i8:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-_kefir_func_postdec_i8_label0:
-_kefir_func_postdec_i8_label1:
     movq i8@GOTPCREL(%rip), %rax
     mov %rax, %r9
 _kefir_func_postdec_i8_label2:
@@ -63,7 +61,6 @@ _kefir_func_postdec_i8_label2:
     jnz _kefir_func_postdec_i8_label4
 _kefir_func_postdec_i8_label5:
     mov %r9, %rax
-_kefir_func_postdec_i8_label3:
     mov %rax, %r9
     jmp _kefir_func_postdec_i8_label2
 _kefir_func_postdec_i8_label4:
@@ -77,8 +74,6 @@ postdec_ld:
     mov %rsp, %rbp
     sub $128, %rsp
     fstcw -8(%rbp)
-_kefir_func_postdec_ld_label0:
-_kefir_func_postdec_ld_label1:
     movq ld@GOTPCREL(%rip), %rax
     fnstenv -128(%rbp)
     stmxcsr -100(%rbp)
@@ -134,7 +129,6 @@ _kefir_func_postdec_ld_label6:
     movq %rcx, -80(%rbp)
     movq -104(%rbp), %rcx
     movq %rcx, -72(%rbp)
-_kefir_func_postdec_ld_label3:
     fnclex
     mov %rax, %r10
     movq -96(%rbp), %rax
@@ -165,8 +159,6 @@ postinc_i8:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-_kefir_func_postinc_i8_label0:
-_kefir_func_postinc_i8_label1:
     movq i8@GOTPCREL(%rip), %rax
     mov %rax, %r9
 _kefir_func_postinc_i8_label2:
@@ -193,7 +185,6 @@ _kefir_func_postinc_i8_label2:
     jnz _kefir_func_postinc_i8_label4
 _kefir_func_postinc_i8_label5:
     mov %r9, %rax
-_kefir_func_postinc_i8_label3:
     mov %rax, %r9
     jmp _kefir_func_postinc_i8_label2
 _kefir_func_postinc_i8_label4:
@@ -207,8 +198,6 @@ postinc_ld:
     mov %rsp, %rbp
     sub $128, %rsp
     fstcw -8(%rbp)
-_kefir_func_postinc_ld_label0:
-_kefir_func_postinc_ld_label1:
     movq ld@GOTPCREL(%rip), %rax
     fnstenv -128(%rbp)
     stmxcsr -100(%rbp)
@@ -264,7 +253,6 @@ _kefir_func_postinc_ld_label6:
     movq %rcx, -80(%rbp)
     movq -104(%rbp), %rcx
     movq %rcx, -72(%rbp)
-_kefir_func_postinc_ld_label3:
     fnclex
     mov %rax, %r10
     movq -96(%rbp), %rax
@@ -296,8 +284,6 @@ postdec_f32:
     mov %rsp, %rbp
     sub $96, %rsp
     stmxcsr -8(%rbp)
-_kefir_func_postdec_f32_label0:
-_kefir_func_postdec_f32_label1:
     movq f32@GOTPCREL(%rip), %rax
     fnstenv -96(%rbp)
     stmxcsr -68(%rbp)
@@ -345,7 +331,6 @@ _kefir_func_postdec_f32_label6:
     movq %rcx, -48(%rbp)
     movq -72(%rbp), %rcx
     movq %rcx, -40(%rbp)
-_kefir_func_postdec_f32_label3:
     fnclex
     mov %rax, %r9
     movq -64(%rbp), %rax
@@ -378,8 +363,6 @@ postdec_f64:
     mov %rsp, %rbp
     sub $96, %rsp
     stmxcsr -8(%rbp)
-_kefir_func_postdec_f64_label0:
-_kefir_func_postdec_f64_label1:
     movq f64@GOTPCREL(%rip), %rax
     fnstenv -96(%rbp)
     stmxcsr -68(%rbp)
@@ -427,7 +410,6 @@ _kefir_func_postdec_f64_label6:
     movq %rcx, -48(%rbp)
     movq -72(%rbp), %rcx
     movq %rcx, -40(%rbp)
-_kefir_func_postdec_f64_label3:
     fnclex
     mov %rax, %r9
     movq -64(%rbp), %rax
@@ -459,8 +441,6 @@ postdec_i16:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-_kefir_func_postdec_i16_label0:
-_kefir_func_postdec_i16_label1:
     movq i16@GOTPCREL(%rip), %rax
     mov %rax, %r9
 _kefir_func_postdec_i16_label2:
@@ -487,7 +467,6 @@ _kefir_func_postdec_i16_label2:
     jnz _kefir_func_postdec_i16_label4
 _kefir_func_postdec_i16_label5:
     mov %r9, %rax
-_kefir_func_postdec_i16_label3:
     mov %rax, %r9
     jmp _kefir_func_postdec_i16_label2
 _kefir_func_postdec_i16_label4:
@@ -500,8 +479,6 @@ postdec_i32:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-_kefir_func_postdec_i32_label0:
-_kefir_func_postdec_i32_label1:
     movq i32@GOTPCREL(%rip), %rax
     mov %rax, %r9
 _kefir_func_postdec_i32_label2:
@@ -528,7 +505,6 @@ _kefir_func_postdec_i32_label2:
     jnz _kefir_func_postdec_i32_label4
 _kefir_func_postdec_i32_label5:
     mov %r9, %rax
-_kefir_func_postdec_i32_label3:
     mov %rax, %r9
     jmp _kefir_func_postdec_i32_label2
 _kefir_func_postdec_i32_label4:
@@ -541,8 +517,6 @@ postdec_i64:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-_kefir_func_postdec_i64_label0:
-_kefir_func_postdec_i64_label1:
     movq i64@GOTPCREL(%rip), %rax
     mov %rax, %r9
 _kefir_func_postdec_i64_label2:
@@ -569,7 +543,6 @@ _kefir_func_postdec_i64_label2:
     jnz _kefir_func_postdec_i64_label4
 _kefir_func_postdec_i64_label5:
     mov %r9, %rax
-_kefir_func_postdec_i64_label3:
     mov %rax, %r9
     jmp _kefir_func_postdec_i64_label2
 _kefir_func_postdec_i64_label4:
@@ -582,8 +555,6 @@ postdec_ptr:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-_kefir_func_postdec_ptr_label0:
-_kefir_func_postdec_ptr_label1:
     movq ptr@GOTPCREL(%rip), %rax
     mov %rax, %r9
 _kefir_func_postdec_ptr_label2:
@@ -610,7 +581,6 @@ _kefir_func_postdec_ptr_label2:
     jnz _kefir_func_postdec_ptr_label4
 _kefir_func_postdec_ptr_label5:
     mov %r9, %rax
-_kefir_func_postdec_ptr_label3:
     mov %rax, %r9
     jmp _kefir_func_postdec_ptr_label2
 _kefir_func_postdec_ptr_label4:
@@ -624,8 +594,6 @@ postinc_f32:
     mov %rsp, %rbp
     sub $96, %rsp
     stmxcsr -8(%rbp)
-_kefir_func_postinc_f32_label0:
-_kefir_func_postinc_f32_label1:
     movq f32@GOTPCREL(%rip), %rax
     fnstenv -96(%rbp)
     stmxcsr -68(%rbp)
@@ -673,7 +641,6 @@ _kefir_func_postinc_f32_label6:
     movq %rcx, -48(%rbp)
     movq -72(%rbp), %rcx
     movq %rcx, -40(%rbp)
-_kefir_func_postinc_f32_label3:
     fnclex
     mov %rax, %r9
     movq -64(%rbp), %rax
@@ -706,8 +673,6 @@ postinc_f64:
     mov %rsp, %rbp
     sub $96, %rsp
     stmxcsr -8(%rbp)
-_kefir_func_postinc_f64_label0:
-_kefir_func_postinc_f64_label1:
     movq f64@GOTPCREL(%rip), %rax
     fnstenv -96(%rbp)
     stmxcsr -68(%rbp)
@@ -755,7 +720,6 @@ _kefir_func_postinc_f64_label6:
     movq %rcx, -48(%rbp)
     movq -72(%rbp), %rcx
     movq %rcx, -40(%rbp)
-_kefir_func_postinc_f64_label3:
     fnclex
     mov %rax, %r9
     movq -64(%rbp), %rax
@@ -787,8 +751,6 @@ postinc_i16:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-_kefir_func_postinc_i16_label0:
-_kefir_func_postinc_i16_label1:
     movq i16@GOTPCREL(%rip), %rax
     mov %rax, %r9
 _kefir_func_postinc_i16_label2:
@@ -815,7 +777,6 @@ _kefir_func_postinc_i16_label2:
     jnz _kefir_func_postinc_i16_label4
 _kefir_func_postinc_i16_label5:
     mov %r9, %rax
-_kefir_func_postinc_i16_label3:
     mov %rax, %r9
     jmp _kefir_func_postinc_i16_label2
 _kefir_func_postinc_i16_label4:
@@ -828,8 +789,6 @@ postinc_i32:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-_kefir_func_postinc_i32_label0:
-_kefir_func_postinc_i32_label1:
     movq i32@GOTPCREL(%rip), %rax
     mov %rax, %r9
 _kefir_func_postinc_i32_label2:
@@ -856,7 +815,6 @@ _kefir_func_postinc_i32_label2:
     jnz _kefir_func_postinc_i32_label4
 _kefir_func_postinc_i32_label5:
     mov %r9, %rax
-_kefir_func_postinc_i32_label3:
     mov %rax, %r9
     jmp _kefir_func_postinc_i32_label2
 _kefir_func_postinc_i32_label4:
@@ -869,8 +827,6 @@ postinc_i64:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-_kefir_func_postinc_i64_label0:
-_kefir_func_postinc_i64_label1:
     movq i64@GOTPCREL(%rip), %rax
     mov %rax, %r9
 _kefir_func_postinc_i64_label2:
@@ -897,7 +853,6 @@ _kefir_func_postinc_i64_label2:
     jnz _kefir_func_postinc_i64_label4
 _kefir_func_postinc_i64_label5:
     mov %r9, %rax
-_kefir_func_postinc_i64_label3:
     mov %rax, %r9
     jmp _kefir_func_postinc_i64_label2
 _kefir_func_postinc_i64_label4:
@@ -910,8 +865,6 @@ postinc_ptr:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-_kefir_func_postinc_ptr_label0:
-_kefir_func_postinc_ptr_label1:
     movq ptr@GOTPCREL(%rip), %rax
     mov %rax, %r9
 _kefir_func_postinc_ptr_label2:
@@ -938,7 +891,6 @@ _kefir_func_postinc_ptr_label2:
     jnz _kefir_func_postinc_ptr_label4
 _kefir_func_postinc_ptr_label5:
     mov %r9, %rax
-_kefir_func_postinc_ptr_label3:
     mov %rax, %r9
     jmp _kefir_func_postinc_ptr_label2
 _kefir_func_postinc_ptr_label4:

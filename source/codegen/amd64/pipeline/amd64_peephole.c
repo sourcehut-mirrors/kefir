@@ -50,7 +50,12 @@ static kefir_result_t amd64_peephole_apply(struct kefir_mem *mem, struct kefir_a
                     (IS_INT(&instr->args[1], 0) || IS_UINT(&instr->args[1], 0)) &&
                     !instr->args[1].segment.present) {
                     instr->opcode = KEFIR_ASMCMP_AMD64_OPCODE(xor);
-                    instr->args[1] = KEFIR_ASMCMP_MAKE_PHREG(instr->args[0].phreg);
+                    kefir_asm_amd64_xasmgen_register_t phreg = instr->args[0].phreg;
+                    if (kefir_asm_amd64_xasmgen_register_is_wide(phreg, 64)) {
+                        REQUIRE_OK(kefir_asm_amd64_xasmgen_register32(phreg, &phreg));
+                        instr->args[0].phreg = phreg;
+                    }
+                    instr->args[1] = KEFIR_ASMCMP_MAKE_PHREG(phreg);
                 }
                 break;
 

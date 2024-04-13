@@ -14,8 +14,6 @@ get_ld1:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-_kefir_func_get_ld1_label0:
-_kefir_func_get_ld1_label1:
     movq ld1@GOTPCREL(%rip), %rax
     lea -32(%rbp), %rdx
     mov %rax, %rsi
@@ -31,9 +29,7 @@ set_ld1:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-_kefir_func_set_ld1_label0:
     lea 16(%rbp), %rax
-_kefir_func_set_ld1_label1:
     movq $0, -24(%rbp)
     fldt (%rax)
     fstpt -32(%rbp)

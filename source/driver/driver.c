@@ -36,7 +36,7 @@
 
 #define KEFIR_OPTIMIZER_PIPELINE_FULL_SPEC "phi-pull,mem2reg,phi-pull,constant-fold,op-simplify,branch-removal"
 
-#define KEFIR_CODEGEN_AMD64_PIPELINE_FULL_SPEC "amd64-drop-virtual,amd64-peephole"
+#define KEFIR_CODEGEN_AMD64_PIPELINE_FULL_SPEC "amd64-drop-virtual,amd64-propagate-jump,amd64-eliminate-label,amd64-peephole"
 
 static kefir_result_t driver_generate_asm_config(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                                  struct kefir_driver_configuration *config,

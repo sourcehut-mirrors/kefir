@@ -20,9 +20,7 @@ add_f32:
     mov %rsp, %rbp
     sub $128, %rsp
     stmxcsr -8(%rbp)
-_kefir_func_add_f32_label0:
     movq %xmm0, -128(%rbp)
-_kefir_func_add_f32_label1:
     lea -24(%rbp), %rax
     movq -128(%rbp), %xmm0
     movq %xmm0, (%rax)
@@ -84,7 +82,6 @@ _kefir_func_add_f32_label5:
     movq %rcx, -64(%rbp)
     movq -96(%rbp), %rcx
     movq %rcx, -56(%rbp)
-_kefir_func_add_f32_label3:
     fnclex
     mov %rax, %r10
     movq -88(%rbp), %rax
@@ -112,10 +109,8 @@ add_f64:
     mov %rsp, %rbp
     sub $160, %rsp
     stmxcsr -8(%rbp)
-_kefir_func_add_f64_label0:
     movq %xmm0, -160(%rbp)
     movq %xmm1, -152(%rbp)
-_kefir_func_add_f64_label1:
     lea -48(%rbp), %rax
     movq -160(%rbp), %xmm0
     movq %xmm0, (%rax)
@@ -185,7 +180,6 @@ _kefir_func_add_f64_label5:
     movq %rcx, -80(%rbp)
     movq -120(%rbp), %rcx
     movq %rcx, -72(%rbp)
-_kefir_func_add_f64_label3:
     fnclex
     mov %rax, %r10
     movq -112(%rbp), %rax
@@ -216,9 +210,7 @@ divide_f32:
     mov %rsp, %rbp
     sub $128, %rsp
     stmxcsr -8(%rbp)
-_kefir_func_divide_f32_label0:
     movq %xmm0, -128(%rbp)
-_kefir_func_divide_f32_label1:
     lea -24(%rbp), %rax
     movq -128(%rbp), %xmm0
     movq %xmm0, (%rax)
@@ -278,7 +270,6 @@ _kefir_func_divide_f32_label5:
     movq %rcx, -64(%rbp)
     movq -96(%rbp), %rcx
     movq %rcx, -56(%rbp)
-_kefir_func_divide_f32_label3:
     fnclex
     mov %rax, %r10
     movq -88(%rbp), %rax
@@ -306,10 +297,8 @@ divide_f64:
     mov %rsp, %rbp
     sub $160, %rsp
     stmxcsr -8(%rbp)
-_kefir_func_divide_f64_label0:
     movq %xmm0, -160(%rbp)
     movq %xmm1, -152(%rbp)
-_kefir_func_divide_f64_label1:
     lea -48(%rbp), %rax
     movq -160(%rbp), %xmm0
     movq %xmm0, (%rax)
@@ -380,7 +369,6 @@ _kefir_func_divide_f64_label5:
     movq %rcx, -80(%rbp)
     movq -120(%rbp), %rcx
     movq %rcx, -72(%rbp)
-_kefir_func_divide_f64_label3:
     fnclex
     mov %rax, %r10
     movq -112(%rbp), %rax
@@ -411,9 +399,7 @@ multiply_f32:
     mov %rsp, %rbp
     sub $128, %rsp
     stmxcsr -8(%rbp)
-_kefir_func_multiply_f32_label0:
     movq %xmm0, -128(%rbp)
-_kefir_func_multiply_f32_label1:
     lea -24(%rbp), %rax
     movq -128(%rbp), %xmm0
     movq %xmm0, (%rax)
@@ -473,7 +459,6 @@ _kefir_func_multiply_f32_label5:
     movq %rcx, -64(%rbp)
     movq -96(%rbp), %rcx
     movq %rcx, -56(%rbp)
-_kefir_func_multiply_f32_label3:
     fnclex
     mov %rax, %r10
     movq -88(%rbp), %rax
@@ -501,10 +486,8 @@ multiply_f64:
     mov %rsp, %rbp
     sub $160, %rsp
     stmxcsr -8(%rbp)
-_kefir_func_multiply_f64_label0:
     movq %xmm0, -160(%rbp)
     movq %xmm1, -152(%rbp)
-_kefir_func_multiply_f64_label1:
     lea -48(%rbp), %rax
     movq -160(%rbp), %xmm0
     movq %xmm0, (%rax)
@@ -575,7 +558,6 @@ _kefir_func_multiply_f64_label5:
     movq %rcx, -80(%rbp)
     movq -120(%rbp), %rcx
     movq %rcx, -72(%rbp)
-_kefir_func_multiply_f64_label3:
     fnclex
     mov %rax, %r10
     movq -112(%rbp), %rax
@@ -606,9 +588,7 @@ subtract_f32:
     mov %rsp, %rbp
     sub $128, %rsp
     stmxcsr -8(%rbp)
-_kefir_func_subtract_f32_label0:
     movq %xmm0, -128(%rbp)
-_kefir_func_subtract_f32_label1:
     lea -24(%rbp), %rax
     movq -128(%rbp), %xmm0
     movq %xmm0, (%rax)
@@ -670,7 +650,6 @@ _kefir_func_subtract_f32_label5:
     movq %rcx, -64(%rbp)
     movq -96(%rbp), %rcx
     movq %rcx, -56(%rbp)
-_kefir_func_subtract_f32_label3:
     fnclex
     mov %rax, %r10
     movq -88(%rbp), %rax
@@ -698,10 +677,8 @@ subtract_f64:
     mov %rsp, %rbp
     sub $160, %rsp
     stmxcsr -8(%rbp)
-_kefir_func_subtract_f64_label0:
     movq %xmm0, -160(%rbp)
     movq %xmm1, -152(%rbp)
-_kefir_func_subtract_f64_label1:
     lea -48(%rbp), %rax
     movq -160(%rbp), %xmm0
     movq %xmm0, (%rax)
@@ -771,7 +748,6 @@ _kefir_func_subtract_f64_label5:
     movq %rcx, -80(%rbp)
     movq -120(%rbp), %rcx
     movq %rcx, -72(%rbp)
-_kefir_func_subtract_f64_label3:
     fnclex
     mov %rax, %r10
     movq -112(%rbp), %rax

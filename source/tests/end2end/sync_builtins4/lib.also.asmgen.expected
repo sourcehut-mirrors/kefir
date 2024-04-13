@@ -17,10 +17,8 @@ clear:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_clear_label0:
     mov %rdi, %rax
-_kefir_func_clear_label1:
-    xor %rcx, %rcx
+    xor %ecx, %ecx
     movl %ecx, -4(%rbp)
     mov $1, %rcx
     lea -4(%rbp), %rdx
@@ -37,9 +35,7 @@ test_and_set:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_test_and_set_label0:
     mov %rdi, %rax
-_kefir_func_test_and_set_label1:
     mov $1, %rcx
     movl %ecx, -4(%rbp)
     movb %cl, -8(%rbp)
@@ -60,8 +56,6 @@ _kefir_func_test_and_set_label1:
 test_sync_synchronize:
     push %rbp
     mov %rsp, %rbp
-_kefir_func_test_sync_synchronize_label0:
-_kefir_func_test_sync_synchronize_label1:
     call __kefir_atomic_seq_cst_fence@PLT
     pop %rbp
     ret

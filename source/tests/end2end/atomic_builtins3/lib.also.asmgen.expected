@@ -20,9 +20,7 @@ test2_atomic_exchange16:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_test2_atomic_exchange16_label0:
     mov %rdi, %rax
-_kefir_func_test2_atomic_exchange16_label1:
     movsx %si, %rcx
     movw %cx, -2(%rbp)
     movw %cx, -4(%rbp)
@@ -44,9 +42,7 @@ test2_atomic_exchange32:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_test2_atomic_exchange32_label0:
     mov %rdi, %rax
-_kefir_func_test2_atomic_exchange32_label1:
     movsx %esi, %rcx
     movl %ecx, -4(%rbp)
     movl %ecx, -8(%rbp)
@@ -68,9 +64,7 @@ test2_atomic_exchange64:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_test2_atomic_exchange64_label0:
     mov %rdi, %rax
-_kefir_func_test2_atomic_exchange64_label1:
     movq %rsi, -8(%rbp)
     movq %rcx, -16(%rbp)
     mov $8, %rcx
@@ -91,9 +85,7 @@ test_atomic_exchange8:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_test_atomic_exchange8_label0:
     mov %rdi, %rax
-_kefir_func_test_atomic_exchange8_label1:
     movb %sil, -1(%rbp)
     movb %cl, -2(%rbp)
     mov $1, %rcx
@@ -114,9 +106,7 @@ test2_atomic_exchange8:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_test2_atomic_exchange8_label0:
     mov %rdi, %rax
-_kefir_func_test2_atomic_exchange8_label1:
     movsx %sil, %rcx
     movb %cl, -1(%rbp)
     movb %cl, -2(%rbp)
@@ -138,9 +128,7 @@ test_atomic_exchange16:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_test_atomic_exchange16_label0:
     mov %rdi, %rax
-_kefir_func_test_atomic_exchange16_label1:
     movw %si, -2(%rbp)
     movw %cx, -4(%rbp)
     mov $2, %rcx
@@ -161,9 +149,7 @@ test_atomic_exchange32:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_test_atomic_exchange32_label0:
     mov %rdi, %rax
-_kefir_func_test_atomic_exchange32_label1:
     movl %esi, -4(%rbp)
     movl %ecx, -8(%rbp)
     mov $4, %rcx
@@ -184,9 +170,7 @@ test_atomic_exchange64:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_test_atomic_exchange64_label0:
     mov %rdi, %rax
-_kefir_func_test_atomic_exchange64_label1:
     movq %rsi, -8(%rbp)
     movq %rcx, -16(%rbp)
     mov $8, %rcx

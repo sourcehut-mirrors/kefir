@@ -13,9 +13,7 @@ test1:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_test1_label0:
     mov 32(%rbp), %rax
-_kefir_func_test1_label1:
     mov %rax, %rcx
     mov %rax, %rdx
 _kefir_func_test1_label2:
@@ -32,7 +30,6 @@ _kefir_func_test1_label2:
     jmp _kefir_func_test1_label4
 _kefir_func_test1_label5:
     mov %rdx, %rsi
-_kefir_func_test1_label3:
     mov %rax, %rcx
     mov %rsi, %rdx
     jmp _kefir_func_test1_label2

@@ -24,10 +24,8 @@ test_atomic_store128:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-_kefir_func_test_atomic_store128_label0:
     lea 16(%rbp), %rax
     mov %rdi, %rcx
-_kefir_func_test_atomic_store128_label1:
     movq $0, -24(%rbp)
     fldt (%rax)
     fstpt -32(%rbp)
@@ -47,10 +45,8 @@ test_atomic_store256:
     mov %rsp, %rbp
     sub $80, %rsp
     stmxcsr -8(%rbp)
-_kefir_func_test_atomic_store256_label0:
     lea 16(%rbp), %rax
     mov %rdi, %rcx
-_kefir_func_test_atomic_store256_label1:
     lea -80(%rbp), %rdx
     movq $0, 8(%rdx)
     movq $0, 24(%rdx)
@@ -74,10 +70,8 @@ test2_atomic_store128:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
-_kefir_func_test2_atomic_store128_label0:
     lea 16(%rbp), %rax
     mov %rdi, %rcx
-_kefir_func_test2_atomic_store128_label1:
     movq $0, -40(%rbp)
     fldt (%rax)
     fstpt -48(%rbp)
@@ -102,10 +96,8 @@ test2_atomic_store256:
     mov %rsp, %rbp
     sub $144, %rsp
     stmxcsr -8(%rbp)
-_kefir_func_test2_atomic_store256_label0:
     lea 16(%rbp), %rax
     mov %rdi, %rcx
-_kefir_func_test2_atomic_store256_label1:
     lea -112(%rbp), %rdx
     movq $0, 8(%rdx)
     movq $0, 24(%rdx)
@@ -141,9 +133,7 @@ test2_atomic_store16:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_test2_atomic_store16_label0:
     mov %rdi, %rax
-_kefir_func_test2_atomic_store16_label1:
     movsx %si, %rcx
     movw %cx, -2(%rbp)
     mov $2, %rcx
@@ -161,9 +151,7 @@ test2_atomic_store32:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_test2_atomic_store32_label0:
     mov %rdi, %rax
-_kefir_func_test2_atomic_store32_label1:
     movsx %esi, %rcx
     movl %ecx, -4(%rbp)
     mov $4, %rcx
@@ -181,9 +169,7 @@ test2_atomic_store64:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_test2_atomic_store64_label0:
     mov %rdi, %rax
-_kefir_func_test2_atomic_store64_label1:
     movq %rsi, -8(%rbp)
     mov $8, %rcx
     lea -8(%rbp), %rdx
@@ -200,9 +186,7 @@ test_atomic_store8:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_test_atomic_store8_label0:
     mov %rdi, %rax
-_kefir_func_test_atomic_store8_label1:
     movb %sil, -1(%rbp)
     mov $1, %rcx
     lea -1(%rbp), %rdx
@@ -219,9 +203,7 @@ test_atomic_store16:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_test_atomic_store16_label0:
     mov %rdi, %rax
-_kefir_func_test_atomic_store16_label1:
     movw %si, -2(%rbp)
     mov $2, %rcx
     lea -2(%rbp), %rdx
@@ -238,9 +220,7 @@ test_atomic_store32:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_test_atomic_store32_label0:
     mov %rdi, %rax
-_kefir_func_test_atomic_store32_label1:
     movl %esi, -4(%rbp)
     mov $4, %rcx
     lea -4(%rbp), %rdx
@@ -257,9 +237,7 @@ test_atomic_store64:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_test_atomic_store64_label0:
     mov %rdi, %rax
-_kefir_func_test_atomic_store64_label1:
     movq %rsi, -8(%rbp)
     mov $8, %rcx
     lea -8(%rbp), %rdx
@@ -276,9 +254,7 @@ test2_atomic_store8:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_test2_atomic_store8_label0:
     mov %rdi, %rax
-_kefir_func_test2_atomic_store8_label1:
     movsx %sil, %rcx
     movb %cl, -1(%rbp)
     mov $1, %rcx

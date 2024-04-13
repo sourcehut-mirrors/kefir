@@ -29,8 +29,6 @@ str1_a:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_str1_a_label1:
-_kefir_func_str1_a_label0:
     mov %rdi, %rsi
     lea -16(%rbp), %rdx
     mov $8, %rdi
@@ -45,8 +43,6 @@ str1_b:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-_kefir_func_str1_b_label1:
-_kefir_func_str1_b_label0:
     add $16, %rdi
     mov %rdi, %rsi
     lea -32(%rbp), %rdx
@@ -63,8 +59,6 @@ str1_c:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
-_kefir_func_str1_c_label1:
-_kefir_func_str1_c_label0:
     add $32, %rdi
     mov %rdi, %rsi
     lea -64(%rbp), %rdx
@@ -81,8 +75,6 @@ ld_load:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
-_kefir_func_ld_load_label1:
-_kefir_func_ld_load_label0:
     mov %rdi, %rsi
     lea -64(%rbp), %rdx
     mov $32, %rdi
@@ -98,8 +90,6 @@ f32_load:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_f32_load_label1:
-_kefir_func_f32_load_label0:
     mov %rdi, %rsi
     lea -16(%rbp), %rdx
     mov $8, %rdi
@@ -114,8 +104,6 @@ f64_load:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-_kefir_func_f64_load_label1:
-_kefir_func_f64_load_label0:
     mov %rdi, %rsi
     lea -32(%rbp), %rdx
     mov $16, %rdi
@@ -132,9 +120,7 @@ ld_store:
     mov %rsp, %rbp
     sub $112, %rsp
     stmxcsr -8(%rbp)
-_kefir_func_ld_store_label0:
     lea 16(%rbp), %rax
-_kefir_func_ld_store_label1:
     lea -80(%rbp), %rcx
     movq $0, 8(%rcx)
     movq $0, 24(%rcx)
@@ -163,9 +149,7 @@ f32_store:
     mov %rsp, %rbp
     sub $32, %rsp
     stmxcsr -8(%rbp)
-_kefir_func_f32_store_label0:
     movq %xmm0, -32(%rbp)
-_kefir_func_f32_store_label1:
     lea -24(%rbp), %rax
     movq -32(%rbp), %xmm0
     movq %xmm0, (%rax)
@@ -188,10 +172,8 @@ f64_store:
     mov %rsp, %rbp
     sub $64, %rsp
     stmxcsr -8(%rbp)
-_kefir_func_f64_store_label0:
     movq %xmm0, -64(%rbp)
     movq %xmm1, -56(%rbp)
-_kefir_func_f64_store_label1:
     lea -48(%rbp), %rax
     movq -64(%rbp), %xmm0
     movq %xmm0, (%rax)
@@ -218,9 +200,7 @@ str1_set_a:
     mov %rsp, %rbp
     sub $32, %rsp
     stmxcsr -8(%rbp)
-_kefir_func_str1_set_a_label0:
     movq %xmm0, -32(%rbp)
-_kefir_func_str1_set_a_label1:
     lea -24(%rbp), %rax
     movq -32(%rbp), %xmm0
     movq %xmm0, (%rax)
@@ -243,10 +223,8 @@ str1_set_b:
     mov %rsp, %rbp
     sub $64, %rsp
     stmxcsr -8(%rbp)
-_kefir_func_str1_set_b_label0:
     movq %xmm0, -64(%rbp)
     movq %xmm1, -56(%rbp)
-_kefir_func_str1_set_b_label1:
     lea -48(%rbp), %rax
     movq -64(%rbp), %xmm0
     movq %xmm0, (%rax)
@@ -274,9 +252,7 @@ str1_set_c:
     mov %rsp, %rbp
     sub $112, %rsp
     stmxcsr -8(%rbp)
-_kefir_func_str1_set_c_label0:
     lea 16(%rbp), %rax
-_kefir_func_str1_set_c_label1:
     lea -80(%rbp), %rcx
     movq $0, 8(%rcx)
     movq $0, 24(%rcx)
@@ -305,8 +281,6 @@ ld_load_index:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
-_kefir_func_ld_load_index_label1:
-_kefir_func_ld_load_index_label0:
     mov %esi, %eax
     mov %eax, %eax
     imul $32, %rax, %rax
@@ -326,8 +300,6 @@ f32_load_index:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_f32_load_index_label1:
-_kefir_func_f32_load_index_label0:
     mov %esi, %eax
     mov %eax, %eax
     imul $8, %rax, %rax
@@ -347,9 +319,7 @@ ld_store_index:
     mov %rsp, %rbp
     sub $112, %rsp
     stmxcsr -8(%rbp)
-_kefir_func_ld_store_index_label0:
     lea 16(%rbp), %rax
-_kefir_func_ld_store_index_label1:
     lea -80(%rbp), %rcx
     movq $0, 8(%rcx)
     movq $0, 24(%rcx)
@@ -382,9 +352,7 @@ f32_store_index:
     mov %rsp, %rbp
     sub $32, %rsp
     stmxcsr -8(%rbp)
-_kefir_func_f32_store_index_label0:
     movq %xmm0, -32(%rbp)
-_kefir_func_f32_store_index_label1:
     lea -24(%rbp), %rax
     movq -32(%rbp), %xmm0
     movq %xmm0, (%rax)
@@ -410,8 +378,6 @@ f64_load_index:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-_kefir_func_f64_load_index_label1:
-_kefir_func_f64_load_index_label0:
     mov %esi, %eax
     mov %eax, %eax
     imul $16, %rax, %rax
@@ -432,10 +398,8 @@ f64_store_index:
     mov %rsp, %rbp
     sub $64, %rsp
     stmxcsr -8(%rbp)
-_kefir_func_f64_store_index_label0:
     movq %xmm0, -64(%rbp)
     movq %xmm1, -56(%rbp)
-_kefir_func_f64_store_index_label1:
     lea -48(%rbp), %rax
     movq -64(%rbp), %xmm0
     movq %xmm0, (%rax)
