@@ -24,7 +24,7 @@ tasks:
   - c_testsuite: |
       cd kefir
       mkdir -p "$HOME/bin"
-      ln -s "$(which python3.11)" "$HOME/bin/python5"
+      ln -s "$(which python3.11)" "$HOME/bin/python3"
       export PATH="$HOME/bin:$PATH"
       export LC_ALL=C.UTF-8 
       gmake bin/tests/external/c-testsuite.test.done KEFIR_EXTERNAL_TEST_C_TESTSUITE_CFLAGS="-O1 -fPIC -pie -D__GNUC__=4 -D__GNUC_MINOR__=20 -D__GNUC_STDC_INLINE__=1"
