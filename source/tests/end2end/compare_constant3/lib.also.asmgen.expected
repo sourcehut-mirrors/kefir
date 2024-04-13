@@ -16,8 +16,8 @@ compare1:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-_kefir_func_compare1_label0:
 _kefir_func_compare1_label1:
+_kefir_func_compare1_label0:
     xor %rax, %rax
     movd _kefir_func_compare1_label2(%rip), %xmm1
     xor %rcx, %rcx
@@ -84,8 +84,8 @@ compare2:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-_kefir_func_compare2_label0:
 _kefir_func_compare2_label1:
+_kefir_func_compare2_label0:
     xor %rax, %rax
     movd _kefir_func_compare2_label2(%rip), %xmm1
     xor %rcx, %rcx
@@ -153,8 +153,8 @@ compare3:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-_kefir_func_compare3_label0:
 _kefir_func_compare3_label1:
+_kefir_func_compare3_label0:
     xor %rax, %rax
     movq _kefir_func_compare3_label2(%rip), %xmm1
     xor %rcx, %rcx
@@ -221,8 +221,8 @@ compare4:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-_kefir_func_compare4_label0:
 _kefir_func_compare4_label1:
+_kefir_func_compare4_label0:
     xor %rax, %rax
     movq _kefir_func_compare4_label2(%rip), %xmm1
     xor %rcx, %rcx

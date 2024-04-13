@@ -60,8 +60,7 @@ _kefir_func_predec_i8_label2:
     movq -24(%rbp), %r9
     movq -16(%rbp), %r10
     test %al, %al
-    jz _kefir_func_predec_i8_label5
-    jmp _kefir_func_predec_i8_label4
+    jnz _kefir_func_predec_i8_label4
 _kefir_func_predec_i8_label5:
     mov %r9, %rax
 _kefir_func_predec_i8_label3:
@@ -195,8 +194,7 @@ _kefir_func_preinc_i8_label2:
     movq -24(%rbp), %r9
     movq -16(%rbp), %r10
     test %al, %al
-    jz _kefir_func_preinc_i8_label5
-    jmp _kefir_func_preinc_i8_label4
+    jnz _kefir_func_preinc_i8_label4
 _kefir_func_preinc_i8_label5:
     mov %r9, %rax
 _kefir_func_preinc_i8_label3:
@@ -492,8 +490,7 @@ _kefir_func_predec_i16_label2:
     movq -24(%rbp), %r9
     movq -16(%rbp), %r10
     test %al, %al
-    jz _kefir_func_predec_i16_label5
-    jmp _kefir_func_predec_i16_label4
+    jnz _kefir_func_predec_i16_label4
 _kefir_func_predec_i16_label5:
     mov %r9, %rax
 _kefir_func_predec_i16_label3:
@@ -534,8 +531,7 @@ _kefir_func_predec_i32_label2:
     movq -24(%rbp), %r9
     movq -16(%rbp), %r10
     test %al, %al
-    jz _kefir_func_predec_i32_label5
-    jmp _kefir_func_predec_i32_label4
+    jnz _kefir_func_predec_i32_label4
 _kefir_func_predec_i32_label5:
     mov %r9, %rax
 _kefir_func_predec_i32_label3:
@@ -575,8 +571,7 @@ _kefir_func_predec_i64_label2:
     movq -24(%rbp), %r9
     movq -16(%rbp), %r10
     test %al, %al
-    jz _kefir_func_predec_i64_label5
-    jmp _kefir_func_predec_i64_label4
+    jnz _kefir_func_predec_i64_label4
 _kefir_func_predec_i64_label5:
     mov %r9, %rax
 _kefir_func_predec_i64_label3:
@@ -616,8 +611,7 @@ _kefir_func_predec_ptr_label2:
     movq -24(%rbp), %r9
     movq -16(%rbp), %r10
     test %al, %al
-    jz _kefir_func_predec_ptr_label5
-    jmp _kefir_func_predec_ptr_label4
+    jnz _kefir_func_predec_ptr_label4
 _kefir_func_predec_ptr_label5:
     mov %r9, %rax
 _kefir_func_predec_ptr_label3:
@@ -820,8 +814,7 @@ _kefir_func_preinc_i16_label2:
     movq -24(%rbp), %r9
     movq -16(%rbp), %r10
     test %al, %al
-    jz _kefir_func_preinc_i16_label5
-    jmp _kefir_func_preinc_i16_label4
+    jnz _kefir_func_preinc_i16_label4
 _kefir_func_preinc_i16_label5:
     mov %r9, %rax
 _kefir_func_preinc_i16_label3:
@@ -862,8 +855,7 @@ _kefir_func_preinc_i32_label2:
     movq -24(%rbp), %r9
     movq -16(%rbp), %r10
     test %al, %al
-    jz _kefir_func_preinc_i32_label5
-    jmp _kefir_func_preinc_i32_label4
+    jnz _kefir_func_preinc_i32_label4
 _kefir_func_preinc_i32_label5:
     mov %r9, %rax
 _kefir_func_preinc_i32_label3:
@@ -903,8 +895,7 @@ _kefir_func_preinc_i64_label2:
     movq -24(%rbp), %r9
     movq -16(%rbp), %r10
     test %al, %al
-    jz _kefir_func_preinc_i64_label5
-    jmp _kefir_func_preinc_i64_label4
+    jnz _kefir_func_preinc_i64_label4
 _kefir_func_preinc_i64_label5:
     mov %r9, %rax
 _kefir_func_preinc_i64_label3:
@@ -944,8 +935,7 @@ _kefir_func_preinc_ptr_label2:
     movq -24(%rbp), %r9
     movq -16(%rbp), %r10
     test %al, %al
-    jz _kefir_func_preinc_ptr_label5
-    jmp _kefir_func_preinc_ptr_label4
+    jnz _kefir_func_preinc_ptr_label4
 _kefir_func_preinc_ptr_label5:
     mov %r9, %rax
 _kefir_func_preinc_ptr_label3:

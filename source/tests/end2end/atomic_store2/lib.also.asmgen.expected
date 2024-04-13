@@ -15,8 +15,8 @@
 
 .section .text
 store_b:
-_kefir_func_store_b_label0:
 _kefir_func_store_b_label1:
+_kefir_func_store_b_label0:
     movzx %sil, %rax
     mov %rax, %rsi
     mov $5, %rdx
@@ -24,8 +24,8 @@ _kefir_func_store_b_label1:
     ret
 
 store_u8:
-_kefir_func_store_u8_label0:
 _kefir_func_store_u8_label1:
+_kefir_func_store_u8_label0:
     movzx %sil, %rax
     mov %rax, %rsi
     mov $5, %rdx
@@ -33,24 +33,24 @@ _kefir_func_store_u8_label1:
     ret
 
 store_f32:
-_kefir_func_store_f32_label0:
 _kefir_func_store_f32_label1:
+_kefir_func_store_f32_label0:
     movq %xmm0, %rsi
     mov $5, %rdx
     call __atomic_store_4@PLT
     ret
 
 store_f64:
-_kefir_func_store_f64_label0:
 _kefir_func_store_f64_label1:
+_kefir_func_store_f64_label0:
     movq %xmm0, %rsi
     mov $5, %rdx
     call __atomic_store_8@PLT
     ret
 
 store_u16:
-_kefir_func_store_u16_label0:
 _kefir_func_store_u16_label1:
+_kefir_func_store_u16_label0:
     movzx %si, %rax
     mov %rax, %rsi
     mov $5, %rdx
@@ -58,8 +58,8 @@ _kefir_func_store_u16_label1:
     ret
 
 store_u32:
-_kefir_func_store_u32_label0:
 _kefir_func_store_u32_label1:
+_kefir_func_store_u32_label0:
     mov %esi, %eax
     mov %rax, %rsi
     mov $5, %rdx
@@ -67,8 +67,8 @@ _kefir_func_store_u32_label1:
     ret
 
 store_u64:
-_kefir_func_store_u64_label0:
 _kefir_func_store_u64_label1:
+_kefir_func_store_u64_label0:
     mov $5, %rdx
     call __atomic_store_8@PLT
     ret

@@ -54,7 +54,8 @@ kefir_result_t kefir_asmcmp_pipeline_apply(struct kefir_mem *, const struct kefi
 // clang-format off
 #define KEFIR_CODEGEN_ASMCMP_PIPELINE_PASSES(_pass, _separator) \
     _pass(Noop) _separator \
-    _pass(Amd64Peephole)
+    _pass(Amd64Peephole) _separator \
+    _pass(Amd64DropVirtual)
 // clang-format on
 
 #define DECL_PASS(_id) extern const struct kefir_asmcmp_pipeline_pass KefirAsmcmp##_id##Pass

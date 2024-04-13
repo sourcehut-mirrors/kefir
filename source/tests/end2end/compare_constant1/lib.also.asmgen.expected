@@ -12,8 +12,8 @@
 
 .section .text
 compare1:
-_kefir_func_compare1_label0:
 _kefir_func_compare1_label1:
+_kefir_func_compare1_label0:
     xor %rax, %rax
     cmp $1, %rdi
     sete %al
@@ -43,8 +43,8 @@ _kefir_func_compare1_label1:
     ret
 
 compare2:
-_kefir_func_compare2_label0:
 _kefir_func_compare2_label1:
+_kefir_func_compare2_label0:
     xor %rax, %rax
     cmp $1, %rdi
     sete %al
@@ -74,8 +74,8 @@ _kefir_func_compare2_label1:
     ret
 
 compare3:
-_kefir_func_compare3_label0:
 _kefir_func_compare3_label1:
+_kefir_func_compare3_label0:
     xor %rax, %rax
     movabs $72057594037927935, %rcx
     cmp %rcx, %rdi
@@ -111,8 +111,8 @@ _kefir_func_compare3_label1:
     ret
 
 compare4:
-_kefir_func_compare4_label0:
 _kefir_func_compare4_label1:
+_kefir_func_compare4_label0:
     xor %rax, %rax
     movabs $72057594037927935, %rcx
     cmp %rcx, %rdi

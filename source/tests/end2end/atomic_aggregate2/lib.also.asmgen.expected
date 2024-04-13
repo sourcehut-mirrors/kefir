@@ -14,8 +14,8 @@ load_buffer:
     mov %rsp, %rbp
     sub $80, %rsp
     movq %rdi, -80(%rbp)
-_kefir_func_load_buffer_label0:
 _kefir_func_load_buffer_label1:
+_kefir_func_load_buffer_label0:
     lea -64(%rbp), %r8
     movq %r8, -72(%rbp)
     mov %r8, %rdx

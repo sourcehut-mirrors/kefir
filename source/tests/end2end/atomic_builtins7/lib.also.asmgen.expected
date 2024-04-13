@@ -19,8 +19,8 @@
 clear:
     push %rbp
     mov %rsp, %rbp
-_kefir_func_clear_label0:
 _kefir_func_clear_label1:
+_kefir_func_clear_label0:
     call __kefir_atomic_seq_cst_clear@PLT
     pop %rbp
     ret
@@ -46,8 +46,8 @@ _kefir_func_test_atomic_thread_fence_label1:
 test_and_set:
     push %rbp
     mov %rsp, %rbp
-_kefir_func_test_and_set_label0:
 _kefir_func_test_and_set_label1:
+_kefir_func_test_and_set_label0:
     call __kefir_atomic_seq_cst_test_and_set@PLT
     pop %rbp
     ret
@@ -71,8 +71,8 @@ _kefir_func_test_is_lock_free_label1:
     je _kefir_func_test_is_lock_free_label20
     mov %rcx, %rax
     jmp _kefir_func_test_is_lock_free_label3
-_kefir_func_test_is_lock_free_label20:
 _kefir_func_test_is_lock_free_label2:
+_kefir_func_test_is_lock_free_label20:
     mov $1, %rax
     xor %rdx, %rdx
     movq %rcx, -16(%rbp)
@@ -128,8 +128,8 @@ _kefir_func_test_is_lock_free_label5:
     jz _kefir_func_test_is_lock_free_label22
     mov %rcx, %rax
     jmp _kefir_func_test_is_lock_free_label7
-_kefir_func_test_is_lock_free_label22:
 _kefir_func_test_is_lock_free_label6:
+_kefir_func_test_is_lock_free_label22:
     mov $4, %rax
     xor %rdx, %rdx
     movq %rcx, -16(%rbp)
@@ -185,8 +185,8 @@ _kefir_func_test_is_lock_free_label9:
     jz _kefir_func_test_is_lock_free_label24
     mov %rcx, %rax
     jmp _kefir_func_test_is_lock_free_label11
-_kefir_func_test_is_lock_free_label24:
 _kefir_func_test_is_lock_free_label10:
+_kefir_func_test_is_lock_free_label24:
     mov $2, %rax
     xor %rdx, %rdx
     movq %rcx, -16(%rbp)
@@ -242,8 +242,8 @@ _kefir_func_test_is_lock_free_label13:
     jz _kefir_func_test_is_lock_free_label26
     mov %rcx, %rax
     jmp _kefir_func_test_is_lock_free_label15
-_kefir_func_test_is_lock_free_label26:
 _kefir_func_test_is_lock_free_label14:
+_kefir_func_test_is_lock_free_label26:
     mov $8, %rax
     xor %rdx, %rdx
     movq %rcx, -16(%rbp)
@@ -299,8 +299,8 @@ _kefir_func_test_is_lock_free_label17:
     jz _kefir_func_test_is_lock_free_label28
     mov %rcx, %rax
     jmp _kefir_func_test_is_lock_free_label19
-_kefir_func_test_is_lock_free_label28:
 _kefir_func_test_is_lock_free_label18:
+_kefir_func_test_is_lock_free_label28:
     mov $8, %rax
     xor %rdx, %rdx
     movq %rcx, -16(%rbp)

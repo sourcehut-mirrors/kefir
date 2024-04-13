@@ -65,8 +65,7 @@ _kefir_func_add_ld1_label2:
     setne %al
     movzx %al, %rax
     test %al, %al
-    jz _kefir_func_add_ld1_label3
-    jmp _kefir_func_add_ld1_label4
+    jnz _kefir_func_add_ld1_label4
 _kefir_func_add_ld1_label3:
     jmp _kefir_func_add_ld1_label2
 _kefir_func_add_ld1_label4:
@@ -156,8 +155,7 @@ _kefir_func_add_cld1_label2:
     setne %al
     movzx %al, %rax
     test %al, %al
-    jz _kefir_func_add_cld1_label3
-    jmp _kefir_func_add_cld1_label4
+    jnz _kefir_func_add_cld1_label4
 _kefir_func_add_cld1_label3:
     jmp _kefir_func_add_cld1_label2
 _kefir_func_add_cld1_label4:

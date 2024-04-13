@@ -17,9 +17,9 @@
 
 .section .text
 test1:
-_kefir_func_test1_label0:
-_kefir_func_test1_label1:
 _kefir_func_test1_label2:
+_kefir_func_test1_label1:
+_kefir_func_test1_label0:
     xor %rax, %rax
     test %rdi, %rdi
     sete %al
@@ -34,9 +34,9 @@ _kefir_func_test1_label4:
     ret
 
 test2:
-_kefir_func_test2_label0:
-_kefir_func_test2_label1:
 _kefir_func_test2_label2:
+_kefir_func_test2_label1:
+_kefir_func_test2_label0:
     cmp $0, %rdi
     jle _kefir_func_test2_label4
 _kefir_func_test2_label5:
@@ -48,9 +48,9 @@ _kefir_func_test2_label4:
     ret
 
 test3:
-_kefir_func_test3_label0:
-_kefir_func_test3_label1:
 _kefir_func_test3_label2:
+_kefir_func_test3_label1:
+_kefir_func_test3_label0:
     cmp $0, %rdi
     jl _kefir_func_test3_label4
 _kefir_func_test3_label5:
@@ -62,9 +62,9 @@ _kefir_func_test3_label4:
     ret
 
 test4:
-_kefir_func_test4_label0:
-_kefir_func_test4_label1:
 _kefir_func_test4_label2:
+_kefir_func_test4_label1:
+_kefir_func_test4_label0:
     cmp $0, %rdi
     jge _kefir_func_test4_label4
 _kefir_func_test4_label5:
@@ -76,9 +76,9 @@ _kefir_func_test4_label4:
     ret
 
 test5:
-_kefir_func_test5_label0:
-_kefir_func_test5_label1:
 _kefir_func_test5_label2:
+_kefir_func_test5_label1:
+_kefir_func_test5_label0:
     cmp $0, %rdi
     jg _kefir_func_test5_label4
 _kefir_func_test5_label5:
@@ -90,9 +90,9 @@ _kefir_func_test5_label4:
     ret
 
 test6:
-_kefir_func_test6_label0:
-_kefir_func_test6_label1:
 _kefir_func_test6_label2:
+_kefir_func_test6_label1:
+_kefir_func_test6_label0:
     cmp $0, %rdi
     jbe _kefir_func_test6_label4
 _kefir_func_test6_label5:
@@ -104,9 +104,9 @@ _kefir_func_test6_label4:
     ret
 
 test7:
-_kefir_func_test7_label0:
-_kefir_func_test7_label1:
 _kefir_func_test7_label2:
+_kefir_func_test7_label1:
+_kefir_func_test7_label0:
     cmp $0, %rdi
     jb _kefir_func_test7_label4
 _kefir_func_test7_label5:
@@ -118,9 +118,9 @@ _kefir_func_test7_label4:
     ret
 
 test8:
-_kefir_func_test8_label0:
-_kefir_func_test8_label1:
 _kefir_func_test8_label2:
+_kefir_func_test8_label1:
+_kefir_func_test8_label0:
     cmp $0, %rdi
     jae _kefir_func_test8_label4
 _kefir_func_test8_label5:
@@ -132,9 +132,9 @@ _kefir_func_test8_label4:
     ret
 
 test9:
-_kefir_func_test9_label0:
-_kefir_func_test9_label1:
 _kefir_func_test9_label2:
+_kefir_func_test9_label1:
+_kefir_func_test9_label0:
     cmp $0, %rdi
     ja _kefir_func_test9_label4
 _kefir_func_test9_label5:

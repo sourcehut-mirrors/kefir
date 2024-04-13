@@ -29,8 +29,8 @@ str1_a:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_str1_a_label0:
 _kefir_func_str1_a_label1:
+_kefir_func_str1_a_label0:
     mov %rdi, %rsi
     lea -16(%rbp), %rdx
     mov $8, %rdi
@@ -45,8 +45,8 @@ str1_b:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-_kefir_func_str1_b_label0:
 _kefir_func_str1_b_label1:
+_kefir_func_str1_b_label0:
     add $16, %rdi
     mov %rdi, %rsi
     lea -32(%rbp), %rdx
@@ -63,8 +63,8 @@ str1_c:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
-_kefir_func_str1_c_label0:
 _kefir_func_str1_c_label1:
+_kefir_func_str1_c_label0:
     add $32, %rdi
     mov %rdi, %rsi
     lea -64(%rbp), %rdx
@@ -81,8 +81,8 @@ ld_load:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
-_kefir_func_ld_load_label0:
 _kefir_func_ld_load_label1:
+_kefir_func_ld_load_label0:
     mov %rdi, %rsi
     lea -64(%rbp), %rdx
     mov $32, %rdi
@@ -98,8 +98,8 @@ f32_load:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_f32_load_label0:
 _kefir_func_f32_load_label1:
+_kefir_func_f32_load_label0:
     mov %rdi, %rsi
     lea -16(%rbp), %rdx
     mov $8, %rdi
@@ -114,8 +114,8 @@ f64_load:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-_kefir_func_f64_load_label0:
 _kefir_func_f64_load_label1:
+_kefir_func_f64_load_label0:
     mov %rdi, %rsi
     lea -32(%rbp), %rdx
     mov $16, %rdi
@@ -305,8 +305,8 @@ ld_load_index:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
-_kefir_func_ld_load_index_label0:
 _kefir_func_ld_load_index_label1:
+_kefir_func_ld_load_index_label0:
     mov %esi, %eax
     mov %eax, %eax
     imul $32, %rax, %rax
@@ -326,8 +326,8 @@ f32_load_index:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_f32_load_index_label0:
 _kefir_func_f32_load_index_label1:
+_kefir_func_f32_load_index_label0:
     mov %esi, %eax
     mov %eax, %eax
     imul $8, %rax, %rax
@@ -410,8 +410,8 @@ f64_load_index:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-_kefir_func_f64_load_index_label0:
 _kefir_func_f64_load_index_label1:
+_kefir_func_f64_load_index_label0:
     mov %esi, %eax
     mov %eax, %eax
     imul $16, %rax, %rax

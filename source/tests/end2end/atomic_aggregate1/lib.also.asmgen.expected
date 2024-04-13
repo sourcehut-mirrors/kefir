@@ -43,8 +43,8 @@ store_buffer:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
-_kefir_func_store_buffer_label0:
 _kefir_func_store_buffer_label1:
+_kefir_func_store_buffer_label0:
     movq buf@GOTPCREL(%rip), %rax
     mov %rax, %rsi
     mov %rdi, %rdx

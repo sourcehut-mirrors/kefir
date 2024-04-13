@@ -21,8 +21,8 @@ get_a1:
     mov %rsp, %rbp
     sub $80, %rsp
     movq %rdi, -80(%rbp)
-_kefir_func_get_a1_label0:
 _kefir_func_get_a1_label1:
+_kefir_func_get_a1_label0:
     add $32, %rsi
     lea -64(%rbp), %r8
     movq %r8, -72(%rbp)
@@ -45,16 +45,16 @@ _kefir_func_get_a1_label1:
     ret
 
 get_i8:
-_kefir_func_get_i8_label0:
 _kefir_func_get_i8_label1:
+_kefir_func_get_i8_label0:
     mov $5, %rsi
     call __atomic_load_1@PLT
     movsx %al, %rax
     ret
 
 get_f32:
-_kefir_func_get_f32_label0:
 _kefir_func_get_f32_label1:
+_kefir_func_get_f32_label0:
     add $16, %rdi
     mov $5, %rsi
     call __atomic_load_4@PLT
@@ -62,8 +62,8 @@ _kefir_func_get_f32_label1:
     ret
 
 get_f64:
-_kefir_func_get_f64_label0:
 _kefir_func_get_f64_label1:
+_kefir_func_get_f64_label0:
     add $24, %rdi
     mov $5, %rsi
     call __atomic_load_8@PLT
@@ -71,8 +71,8 @@ _kefir_func_get_f64_label1:
     ret
 
 get_i16:
-_kefir_func_get_i16_label0:
 _kefir_func_get_i16_label1:
+_kefir_func_get_i16_label0:
     add $2, %rdi
     mov $5, %rsi
     call __atomic_load_2@PLT
@@ -80,8 +80,8 @@ _kefir_func_get_i16_label1:
     ret
 
 get_i32:
-_kefir_func_get_i32_label0:
 _kefir_func_get_i32_label1:
+_kefir_func_get_i32_label0:
     add $4, %rdi
     mov $5, %rsi
     call __atomic_load_4@PLT
@@ -89,16 +89,16 @@ _kefir_func_get_i32_label1:
     ret
 
 get_i64:
-_kefir_func_get_i64_label0:
 _kefir_func_get_i64_label1:
+_kefir_func_get_i64_label0:
     add $8, %rdi
     mov $5, %rsi
     call __atomic_load_8@PLT
     ret
 
 get_arr1_el:
-_kefir_func_get_arr1_el_label0:
 _kefir_func_get_arr1_el_label1:
+_kefir_func_get_arr1_el_label0:
     add $96, %rdi
     movsx %esi, %rax
     movsx %eax, %rax
@@ -113,8 +113,8 @@ get_arr2_el:
     mov %rsp, %rbp
     sub $80, %rsp
     movq %rdi, -80(%rbp)
-_kefir_func_get_arr2_el_label0:
 _kefir_func_get_arr2_el_label1:
+_kefir_func_get_arr2_el_label0:
     add $160, %rsi
     movsx %edx, %rax
     movsx %eax, %rax

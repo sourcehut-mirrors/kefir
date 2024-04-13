@@ -892,8 +892,8 @@ generate_buf_16:
     mov %rsp, %rbp
     sub $32, %rsp
     movq %rdi, -32(%rbp)
-_kefir_func_generate_buf_16_label0:
 _kefir_func_generate_buf_16_label1:
+_kefir_func_generate_buf_16_label0:
     lea -17(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -945,8 +945,8 @@ generate_buf_17:
     mov %rsp, %rbp
     sub $32, %rsp
     movq %rdi, -32(%rbp)
-_kefir_func_generate_buf_17_label0:
 _kefir_func_generate_buf_17_label1:
+_kefir_func_generate_buf_17_label0:
     lea -18(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -998,8 +998,8 @@ generate_buf_18:
     mov %rsp, %rbp
     sub $32, %rsp
     movq %rdi, -32(%rbp)
-_kefir_func_generate_buf_18_label0:
 _kefir_func_generate_buf_18_label1:
+_kefir_func_generate_buf_18_label0:
     lea -19(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -1053,8 +1053,8 @@ generate_buf_19:
     mov %rsp, %rbp
     sub $32, %rsp
     movq %rdi, -32(%rbp)
-_kefir_func_generate_buf_19_label0:
 _kefir_func_generate_buf_19_label1:
+_kefir_func_generate_buf_19_label0:
     lea -20(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -1106,8 +1106,8 @@ generate_buf_20:
     mov %rsp, %rbp
     sub $32, %rsp
     movq %rdi, -32(%rbp)
-_kefir_func_generate_buf_20_label0:
 _kefir_func_generate_buf_20_label1:
+_kefir_func_generate_buf_20_label0:
     lea -21(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -1161,8 +1161,8 @@ generate_buf_21:
     mov %rsp, %rbp
     sub $32, %rsp
     movq %rdi, -32(%rbp)
-_kefir_func_generate_buf_21_label0:
 _kefir_func_generate_buf_21_label1:
+_kefir_func_generate_buf_21_label0:
     lea -22(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -1216,8 +1216,8 @@ generate_buf_22:
     mov %rsp, %rbp
     sub $32, %rsp
     movq %rdi, -32(%rbp)
-_kefir_func_generate_buf_22_label0:
 _kefir_func_generate_buf_22_label1:
+_kefir_func_generate_buf_22_label0:
     lea -23(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -1273,8 +1273,8 @@ generate_buf_23:
     mov %rsp, %rbp
     sub $32, %rsp
     movq %rdi, -32(%rbp)
-_kefir_func_generate_buf_23_label0:
 _kefir_func_generate_buf_23_label1:
+_kefir_func_generate_buf_23_label0:
     lea -24(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -1326,8 +1326,8 @@ generate_buf_24:
     mov %rsp, %rbp
     sub $48, %rsp
     movq %rdi, -48(%rbp)
-_kefir_func_generate_buf_24_label0:
 _kefir_func_generate_buf_24_label1:
+_kefir_func_generate_buf_24_label0:
     lea -25(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -1381,8 +1381,8 @@ generate_buf_25:
     mov %rsp, %rbp
     sub $48, %rsp
     movq %rdi, -48(%rbp)
-_kefir_func_generate_buf_25_label0:
 _kefir_func_generate_buf_25_label1:
+_kefir_func_generate_buf_25_label0:
     lea -26(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -1436,8 +1436,8 @@ generate_buf_26:
     mov %rsp, %rbp
     sub $48, %rsp
     movq %rdi, -48(%rbp)
-_kefir_func_generate_buf_26_label0:
 _kefir_func_generate_buf_26_label1:
+_kefir_func_generate_buf_26_label0:
     lea -27(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -1493,8 +1493,8 @@ generate_buf_27:
     mov %rsp, %rbp
     sub $48, %rsp
     movq %rdi, -48(%rbp)
-_kefir_func_generate_buf_27_label0:
 _kefir_func_generate_buf_27_label1:
+_kefir_func_generate_buf_27_label0:
     lea -28(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -1548,8 +1548,8 @@ generate_buf_28:
     mov %rsp, %rbp
     sub $48, %rsp
     movq %rdi, -48(%rbp)
-_kefir_func_generate_buf_28_label0:
 _kefir_func_generate_buf_28_label1:
+_kefir_func_generate_buf_28_label0:
     lea -29(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -1605,8 +1605,8 @@ generate_buf_29:
     mov %rsp, %rbp
     sub $48, %rsp
     movq %rdi, -48(%rbp)
-_kefir_func_generate_buf_29_label0:
 _kefir_func_generate_buf_29_label1:
+_kefir_func_generate_buf_29_label0:
     lea -30(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -1662,8 +1662,8 @@ generate_buf_30:
     mov %rsp, %rbp
     sub $48, %rsp
     movq %rdi, -48(%rbp)
-_kefir_func_generate_buf_30_label0:
 _kefir_func_generate_buf_30_label1:
+_kefir_func_generate_buf_30_label0:
     lea -31(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -1721,8 +1721,8 @@ generate_buf_31:
     mov %rsp, %rbp
     sub $48, %rsp
     movq %rdi, -48(%rbp)
-_kefir_func_generate_buf_31_label0:
 _kefir_func_generate_buf_31_label1:
+_kefir_func_generate_buf_31_label0:
     lea -32(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -1772,8 +1772,8 @@ generate_buf_32:
     mov %rsp, %rbp
     sub $48, %rsp
     movq %rdi, -48(%rbp)
-_kefir_func_generate_buf_32_label0:
 _kefir_func_generate_buf_32_label1:
+_kefir_func_generate_buf_32_label0:
     lea -33(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -1829,8 +1829,8 @@ generate_buf_33:
     mov %rsp, %rbp
     sub $48, %rsp
     movq %rdi, -48(%rbp)
-_kefir_func_generate_buf_33_label0:
 _kefir_func_generate_buf_33_label1:
+_kefir_func_generate_buf_33_label0:
     lea -34(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -1886,8 +1886,8 @@ generate_buf_34:
     mov %rsp, %rbp
     sub $48, %rsp
     movq %rdi, -48(%rbp)
-_kefir_func_generate_buf_34_label0:
 _kefir_func_generate_buf_34_label1:
+_kefir_func_generate_buf_34_label0:
     lea -35(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -1945,8 +1945,8 @@ generate_buf_35:
     mov %rsp, %rbp
     sub $48, %rsp
     movq %rdi, -48(%rbp)
-_kefir_func_generate_buf_35_label0:
 _kefir_func_generate_buf_35_label1:
+_kefir_func_generate_buf_35_label0:
     lea -36(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -2002,8 +2002,8 @@ generate_buf_36:
     mov %rsp, %rbp
     sub $48, %rsp
     movq %rdi, -48(%rbp)
-_kefir_func_generate_buf_36_label0:
 _kefir_func_generate_buf_36_label1:
+_kefir_func_generate_buf_36_label0:
     lea -37(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -2061,8 +2061,8 @@ generate_buf_37:
     mov %rsp, %rbp
     sub $48, %rsp
     movq %rdi, -48(%rbp)
-_kefir_func_generate_buf_37_label0:
 _kefir_func_generate_buf_37_label1:
+_kefir_func_generate_buf_37_label0:
     lea -38(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -2120,8 +2120,8 @@ generate_buf_38:
     mov %rsp, %rbp
     sub $48, %rsp
     movq %rdi, -48(%rbp)
-_kefir_func_generate_buf_38_label0:
 _kefir_func_generate_buf_38_label1:
+_kefir_func_generate_buf_38_label0:
     lea -39(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -2181,8 +2181,8 @@ generate_buf_39:
     mov %rsp, %rbp
     sub $48, %rsp
     movq %rdi, -48(%rbp)
-_kefir_func_generate_buf_39_label0:
 _kefir_func_generate_buf_39_label1:
+_kefir_func_generate_buf_39_label0:
     lea -40(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -2238,8 +2238,8 @@ generate_buf_40:
     mov %rsp, %rbp
     sub $64, %rsp
     movq %rdi, -64(%rbp)
-_kefir_func_generate_buf_40_label0:
 _kefir_func_generate_buf_40_label1:
+_kefir_func_generate_buf_40_label0:
     lea -41(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -2297,8 +2297,8 @@ generate_buf_41:
     mov %rsp, %rbp
     sub $64, %rsp
     movq %rdi, -64(%rbp)
-_kefir_func_generate_buf_41_label0:
 _kefir_func_generate_buf_41_label1:
+_kefir_func_generate_buf_41_label0:
     lea -42(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -2356,8 +2356,8 @@ generate_buf_42:
     mov %rsp, %rbp
     sub $64, %rsp
     movq %rdi, -64(%rbp)
-_kefir_func_generate_buf_42_label0:
 _kefir_func_generate_buf_42_label1:
+_kefir_func_generate_buf_42_label0:
     lea -43(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -2417,8 +2417,8 @@ generate_buf_43:
     mov %rsp, %rbp
     sub $64, %rsp
     movq %rdi, -64(%rbp)
-_kefir_func_generate_buf_43_label0:
 _kefir_func_generate_buf_43_label1:
+_kefir_func_generate_buf_43_label0:
     lea -44(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -2476,8 +2476,8 @@ generate_buf_44:
     mov %rsp, %rbp
     sub $64, %rsp
     movq %rdi, -64(%rbp)
-_kefir_func_generate_buf_44_label0:
 _kefir_func_generate_buf_44_label1:
+_kefir_func_generate_buf_44_label0:
     lea -45(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -2537,8 +2537,8 @@ generate_buf_45:
     mov %rsp, %rbp
     sub $64, %rsp
     movq %rdi, -64(%rbp)
-_kefir_func_generate_buf_45_label0:
 _kefir_func_generate_buf_45_label1:
+_kefir_func_generate_buf_45_label0:
     lea -46(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -2598,8 +2598,8 @@ generate_buf_46:
     mov %rsp, %rbp
     sub $64, %rsp
     movq %rdi, -64(%rbp)
-_kefir_func_generate_buf_46_label0:
 _kefir_func_generate_buf_46_label1:
+_kefir_func_generate_buf_46_label0:
     lea -47(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -2661,8 +2661,8 @@ generate_buf_47:
     mov %rsp, %rbp
     sub $64, %rsp
     movq %rdi, -64(%rbp)
-_kefir_func_generate_buf_47_label0:
 _kefir_func_generate_buf_47_label1:
+_kefir_func_generate_buf_47_label0:
     lea -48(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -2714,8 +2714,8 @@ generate_buf_48:
     mov %rsp, %rbp
     sub $64, %rsp
     movq %rdi, -64(%rbp)
-_kefir_func_generate_buf_48_label0:
 _kefir_func_generate_buf_48_label1:
+_kefir_func_generate_buf_48_label0:
     lea -49(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -2775,8 +2775,8 @@ generate_buf_49:
     mov %rsp, %rbp
     sub $64, %rsp
     movq %rdi, -64(%rbp)
-_kefir_func_generate_buf_49_label0:
 _kefir_func_generate_buf_49_label1:
+_kefir_func_generate_buf_49_label0:
     lea -50(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -2836,8 +2836,8 @@ generate_buf_50:
     mov %rsp, %rbp
     sub $64, %rsp
     movq %rdi, -64(%rbp)
-_kefir_func_generate_buf_50_label0:
 _kefir_func_generate_buf_50_label1:
+_kefir_func_generate_buf_50_label0:
     lea -51(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -2899,8 +2899,8 @@ generate_buf_51:
     mov %rsp, %rbp
     sub $64, %rsp
     movq %rdi, -64(%rbp)
-_kefir_func_generate_buf_51_label0:
 _kefir_func_generate_buf_51_label1:
+_kefir_func_generate_buf_51_label0:
     lea -52(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -2960,8 +2960,8 @@ generate_buf_52:
     mov %rsp, %rbp
     sub $64, %rsp
     movq %rdi, -64(%rbp)
-_kefir_func_generate_buf_52_label0:
 _kefir_func_generate_buf_52_label1:
+_kefir_func_generate_buf_52_label0:
     lea -53(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -3023,8 +3023,8 @@ generate_buf_53:
     mov %rsp, %rbp
     sub $64, %rsp
     movq %rdi, -64(%rbp)
-_kefir_func_generate_buf_53_label0:
 _kefir_func_generate_buf_53_label1:
+_kefir_func_generate_buf_53_label0:
     lea -54(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -3086,8 +3086,8 @@ generate_buf_54:
     mov %rsp, %rbp
     sub $64, %rsp
     movq %rdi, -64(%rbp)
-_kefir_func_generate_buf_54_label0:
 _kefir_func_generate_buf_54_label1:
+_kefir_func_generate_buf_54_label0:
     lea -55(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -3151,8 +3151,8 @@ generate_buf_55:
     mov %rsp, %rbp
     sub $64, %rsp
     movq %rdi, -64(%rbp)
-_kefir_func_generate_buf_55_label0:
 _kefir_func_generate_buf_55_label1:
+_kefir_func_generate_buf_55_label0:
     lea -56(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -3212,8 +3212,8 @@ generate_buf_56:
     mov %rsp, %rbp
     sub $80, %rsp
     movq %rdi, -80(%rbp)
-_kefir_func_generate_buf_56_label0:
 _kefir_func_generate_buf_56_label1:
+_kefir_func_generate_buf_56_label0:
     lea -57(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -3275,8 +3275,8 @@ generate_buf_57:
     mov %rsp, %rbp
     sub $80, %rsp
     movq %rdi, -80(%rbp)
-_kefir_func_generate_buf_57_label0:
 _kefir_func_generate_buf_57_label1:
+_kefir_func_generate_buf_57_label0:
     lea -58(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -3338,8 +3338,8 @@ generate_buf_58:
     mov %rsp, %rbp
     sub $80, %rsp
     movq %rdi, -80(%rbp)
-_kefir_func_generate_buf_58_label0:
 _kefir_func_generate_buf_58_label1:
+_kefir_func_generate_buf_58_label0:
     lea -59(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -3403,8 +3403,8 @@ generate_buf_59:
     mov %rsp, %rbp
     sub $80, %rsp
     movq %rdi, -80(%rbp)
-_kefir_func_generate_buf_59_label0:
 _kefir_func_generate_buf_59_label1:
+_kefir_func_generate_buf_59_label0:
     lea -60(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -3466,8 +3466,8 @@ generate_buf_60:
     mov %rsp, %rbp
     sub $80, %rsp
     movq %rdi, -80(%rbp)
-_kefir_func_generate_buf_60_label0:
 _kefir_func_generate_buf_60_label1:
+_kefir_func_generate_buf_60_label0:
     lea -61(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -3531,8 +3531,8 @@ generate_buf_61:
     mov %rsp, %rbp
     sub $80, %rsp
     movq %rdi, -80(%rbp)
-_kefir_func_generate_buf_61_label0:
 _kefir_func_generate_buf_61_label1:
+_kefir_func_generate_buf_61_label0:
     lea -62(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -3596,8 +3596,8 @@ generate_buf_62:
     mov %rsp, %rbp
     sub $80, %rsp
     movq %rdi, -80(%rbp)
-_kefir_func_generate_buf_62_label0:
 _kefir_func_generate_buf_62_label1:
+_kefir_func_generate_buf_62_label0:
     lea -63(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -3663,8 +3663,8 @@ generate_buf_63:
     mov %rsp, %rbp
     sub $80, %rsp
     movq %rdi, -80(%rbp)
-_kefir_func_generate_buf_63_label0:
 _kefir_func_generate_buf_63_label1:
+_kefir_func_generate_buf_63_label0:
     lea -64(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -3718,8 +3718,8 @@ generate_buf_64:
     mov %rsp, %rbp
     sub $80, %rsp
     movq %rdi, -80(%rbp)
-_kefir_func_generate_buf_64_label0:
 _kefir_func_generate_buf_64_label1:
+_kefir_func_generate_buf_64_label0:
     lea -65(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -3772,8 +3772,8 @@ generate_buf_65:
     mov %rsp, %rbp
     sub $80, %rsp
     movq %rdi, -80(%rbp)
-_kefir_func_generate_buf_65_label0:
 _kefir_func_generate_buf_65_label1:
+_kefir_func_generate_buf_65_label0:
     lea -66(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -3826,8 +3826,8 @@ generate_buf_66:
     mov %rsp, %rbp
     sub $80, %rsp
     movq %rdi, -80(%rbp)
-_kefir_func_generate_buf_66_label0:
 _kefir_func_generate_buf_66_label1:
+_kefir_func_generate_buf_66_label0:
     lea -67(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -3880,8 +3880,8 @@ generate_buf_67:
     mov %rsp, %rbp
     sub $80, %rsp
     movq %rdi, -80(%rbp)
-_kefir_func_generate_buf_67_label0:
 _kefir_func_generate_buf_67_label1:
+_kefir_func_generate_buf_67_label0:
     lea -68(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -3934,8 +3934,8 @@ generate_buf_68:
     mov %rsp, %rbp
     sub $80, %rsp
     movq %rdi, -80(%rbp)
-_kefir_func_generate_buf_68_label0:
 _kefir_func_generate_buf_68_label1:
+_kefir_func_generate_buf_68_label0:
     lea -69(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -3988,8 +3988,8 @@ generate_buf_69:
     mov %rsp, %rbp
     sub $80, %rsp
     movq %rdi, -80(%rbp)
-_kefir_func_generate_buf_69_label0:
 _kefir_func_generate_buf_69_label1:
+_kefir_func_generate_buf_69_label0:
     lea -70(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -4042,8 +4042,8 @@ generate_buf_70:
     mov %rsp, %rbp
     sub $80, %rsp
     movq %rdi, -80(%rbp)
-_kefir_func_generate_buf_70_label0:
 _kefir_func_generate_buf_70_label1:
+_kefir_func_generate_buf_70_label0:
     lea -71(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -4096,8 +4096,8 @@ generate_buf_71:
     mov %rsp, %rbp
     sub $80, %rsp
     movq %rdi, -80(%rbp)
-_kefir_func_generate_buf_71_label0:
 _kefir_func_generate_buf_71_label1:
+_kefir_func_generate_buf_71_label0:
     lea -72(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -4148,8 +4148,8 @@ generate_buf_72:
     mov %rsp, %rbp
     sub $96, %rsp
     movq %rdi, -96(%rbp)
-_kefir_func_generate_buf_72_label0:
 _kefir_func_generate_buf_72_label1:
+_kefir_func_generate_buf_72_label0:
     lea -73(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -4202,8 +4202,8 @@ generate_buf_73:
     mov %rsp, %rbp
     sub $96, %rsp
     movq %rdi, -96(%rbp)
-_kefir_func_generate_buf_73_label0:
 _kefir_func_generate_buf_73_label1:
+_kefir_func_generate_buf_73_label0:
     lea -74(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -4256,8 +4256,8 @@ generate_buf_74:
     mov %rsp, %rbp
     sub $96, %rsp
     movq %rdi, -96(%rbp)
-_kefir_func_generate_buf_74_label0:
 _kefir_func_generate_buf_74_label1:
+_kefir_func_generate_buf_74_label0:
     lea -75(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -4310,8 +4310,8 @@ generate_buf_75:
     mov %rsp, %rbp
     sub $96, %rsp
     movq %rdi, -96(%rbp)
-_kefir_func_generate_buf_75_label0:
 _kefir_func_generate_buf_75_label1:
+_kefir_func_generate_buf_75_label0:
     lea -76(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -4364,8 +4364,8 @@ generate_buf_76:
     mov %rsp, %rbp
     sub $96, %rsp
     movq %rdi, -96(%rbp)
-_kefir_func_generate_buf_76_label0:
 _kefir_func_generate_buf_76_label1:
+_kefir_func_generate_buf_76_label0:
     lea -77(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -4418,8 +4418,8 @@ generate_buf_77:
     mov %rsp, %rbp
     sub $96, %rsp
     movq %rdi, -96(%rbp)
-_kefir_func_generate_buf_77_label0:
 _kefir_func_generate_buf_77_label1:
+_kefir_func_generate_buf_77_label0:
     lea -78(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -4472,8 +4472,8 @@ generate_buf_78:
     mov %rsp, %rbp
     sub $96, %rsp
     movq %rdi, -96(%rbp)
-_kefir_func_generate_buf_78_label0:
 _kefir_func_generate_buf_78_label1:
+_kefir_func_generate_buf_78_label0:
     lea -79(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -4526,8 +4526,8 @@ generate_buf_79:
     mov %rsp, %rbp
     sub $96, %rsp
     movq %rdi, -96(%rbp)
-_kefir_func_generate_buf_79_label0:
 _kefir_func_generate_buf_79_label1:
+_kefir_func_generate_buf_79_label0:
     lea -80(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -4578,8 +4578,8 @@ generate_buf_80:
     mov %rsp, %rbp
     sub $96, %rsp
     movq %rdi, -96(%rbp)
-_kefir_func_generate_buf_80_label0:
 _kefir_func_generate_buf_80_label1:
+_kefir_func_generate_buf_80_label0:
     lea -81(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -4632,8 +4632,8 @@ generate_buf_81:
     mov %rsp, %rbp
     sub $96, %rsp
     movq %rdi, -96(%rbp)
-_kefir_func_generate_buf_81_label0:
 _kefir_func_generate_buf_81_label1:
+_kefir_func_generate_buf_81_label0:
     lea -82(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -4686,8 +4686,8 @@ generate_buf_82:
     mov %rsp, %rbp
     sub $96, %rsp
     movq %rdi, -96(%rbp)
-_kefir_func_generate_buf_82_label0:
 _kefir_func_generate_buf_82_label1:
+_kefir_func_generate_buf_82_label0:
     lea -83(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -4740,8 +4740,8 @@ generate_buf_83:
     mov %rsp, %rbp
     sub $96, %rsp
     movq %rdi, -96(%rbp)
-_kefir_func_generate_buf_83_label0:
 _kefir_func_generate_buf_83_label1:
+_kefir_func_generate_buf_83_label0:
     lea -84(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -4794,8 +4794,8 @@ generate_buf_84:
     mov %rsp, %rbp
     sub $96, %rsp
     movq %rdi, -96(%rbp)
-_kefir_func_generate_buf_84_label0:
 _kefir_func_generate_buf_84_label1:
+_kefir_func_generate_buf_84_label0:
     lea -85(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -4848,8 +4848,8 @@ generate_buf_85:
     mov %rsp, %rbp
     sub $96, %rsp
     movq %rdi, -96(%rbp)
-_kefir_func_generate_buf_85_label0:
 _kefir_func_generate_buf_85_label1:
+_kefir_func_generate_buf_85_label0:
     lea -86(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -4902,8 +4902,8 @@ generate_buf_86:
     mov %rsp, %rbp
     sub $96, %rsp
     movq %rdi, -96(%rbp)
-_kefir_func_generate_buf_86_label0:
 _kefir_func_generate_buf_86_label1:
+_kefir_func_generate_buf_86_label0:
     lea -87(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -4956,8 +4956,8 @@ generate_buf_87:
     mov %rsp, %rbp
     sub $96, %rsp
     movq %rdi, -96(%rbp)
-_kefir_func_generate_buf_87_label0:
 _kefir_func_generate_buf_87_label1:
+_kefir_func_generate_buf_87_label0:
     lea -88(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -5008,8 +5008,8 @@ generate_buf_88:
     mov %rsp, %rbp
     sub $112, %rsp
     movq %rdi, -112(%rbp)
-_kefir_func_generate_buf_88_label0:
 _kefir_func_generate_buf_88_label1:
+_kefir_func_generate_buf_88_label0:
     lea -89(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -5062,8 +5062,8 @@ generate_buf_89:
     mov %rsp, %rbp
     sub $112, %rsp
     movq %rdi, -112(%rbp)
-_kefir_func_generate_buf_89_label0:
 _kefir_func_generate_buf_89_label1:
+_kefir_func_generate_buf_89_label0:
     lea -90(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -5116,8 +5116,8 @@ generate_buf_90:
     mov %rsp, %rbp
     sub $112, %rsp
     movq %rdi, -112(%rbp)
-_kefir_func_generate_buf_90_label0:
 _kefir_func_generate_buf_90_label1:
+_kefir_func_generate_buf_90_label0:
     lea -91(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -5170,8 +5170,8 @@ generate_buf_91:
     mov %rsp, %rbp
     sub $112, %rsp
     movq %rdi, -112(%rbp)
-_kefir_func_generate_buf_91_label0:
 _kefir_func_generate_buf_91_label1:
+_kefir_func_generate_buf_91_label0:
     lea -92(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -5224,8 +5224,8 @@ generate_buf_92:
     mov %rsp, %rbp
     sub $112, %rsp
     movq %rdi, -112(%rbp)
-_kefir_func_generate_buf_92_label0:
 _kefir_func_generate_buf_92_label1:
+_kefir_func_generate_buf_92_label0:
     lea -93(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -5278,8 +5278,8 @@ generate_buf_93:
     mov %rsp, %rbp
     sub $112, %rsp
     movq %rdi, -112(%rbp)
-_kefir_func_generate_buf_93_label0:
 _kefir_func_generate_buf_93_label1:
+_kefir_func_generate_buf_93_label0:
     lea -94(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -5332,8 +5332,8 @@ generate_buf_94:
     mov %rsp, %rbp
     sub $112, %rsp
     movq %rdi, -112(%rbp)
-_kefir_func_generate_buf_94_label0:
 _kefir_func_generate_buf_94_label1:
+_kefir_func_generate_buf_94_label0:
     lea -95(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -5386,8 +5386,8 @@ generate_buf_95:
     mov %rsp, %rbp
     sub $112, %rsp
     movq %rdi, -112(%rbp)
-_kefir_func_generate_buf_95_label0:
 _kefir_func_generate_buf_95_label1:
+_kefir_func_generate_buf_95_label0:
     lea -96(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -5438,8 +5438,8 @@ generate_buf_96:
     mov %rsp, %rbp
     sub $112, %rsp
     movq %rdi, -112(%rbp)
-_kefir_func_generate_buf_96_label0:
 _kefir_func_generate_buf_96_label1:
+_kefir_func_generate_buf_96_label0:
     lea -97(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -5492,8 +5492,8 @@ generate_buf_97:
     mov %rsp, %rbp
     sub $112, %rsp
     movq %rdi, -112(%rbp)
-_kefir_func_generate_buf_97_label0:
 _kefir_func_generate_buf_97_label1:
+_kefir_func_generate_buf_97_label0:
     lea -98(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -5546,8 +5546,8 @@ generate_buf_98:
     mov %rsp, %rbp
     sub $112, %rsp
     movq %rdi, -112(%rbp)
-_kefir_func_generate_buf_98_label0:
 _kefir_func_generate_buf_98_label1:
+_kefir_func_generate_buf_98_label0:
     lea -99(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -5600,8 +5600,8 @@ generate_buf_99:
     mov %rsp, %rbp
     sub $112, %rsp
     movq %rdi, -112(%rbp)
-_kefir_func_generate_buf_99_label0:
 _kefir_func_generate_buf_99_label1:
+_kefir_func_generate_buf_99_label0:
     lea -100(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -5654,8 +5654,8 @@ generate_buf_100:
     mov %rsp, %rbp
     sub $112, %rsp
     movq %rdi, -112(%rbp)
-_kefir_func_generate_buf_100_label0:
 _kefir_func_generate_buf_100_label1:
+_kefir_func_generate_buf_100_label0:
     lea -101(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -5708,8 +5708,8 @@ generate_buf_101:
     mov %rsp, %rbp
     sub $112, %rsp
     movq %rdi, -112(%rbp)
-_kefir_func_generate_buf_101_label0:
 _kefir_func_generate_buf_101_label1:
+_kefir_func_generate_buf_101_label0:
     lea -102(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -5762,8 +5762,8 @@ generate_buf_102:
     mov %rsp, %rbp
     sub $112, %rsp
     movq %rdi, -112(%rbp)
-_kefir_func_generate_buf_102_label0:
 _kefir_func_generate_buf_102_label1:
+_kefir_func_generate_buf_102_label0:
     lea -103(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -5816,8 +5816,8 @@ generate_buf_103:
     mov %rsp, %rbp
     sub $112, %rsp
     movq %rdi, -112(%rbp)
-_kefir_func_generate_buf_103_label0:
 _kefir_func_generate_buf_103_label1:
+_kefir_func_generate_buf_103_label0:
     lea -104(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -5868,8 +5868,8 @@ generate_buf_104:
     mov %rsp, %rbp
     sub $128, %rsp
     movq %rdi, -128(%rbp)
-_kefir_func_generate_buf_104_label0:
 _kefir_func_generate_buf_104_label1:
+_kefir_func_generate_buf_104_label0:
     lea -105(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -5922,8 +5922,8 @@ generate_buf_105:
     mov %rsp, %rbp
     sub $128, %rsp
     movq %rdi, -128(%rbp)
-_kefir_func_generate_buf_105_label0:
 _kefir_func_generate_buf_105_label1:
+_kefir_func_generate_buf_105_label0:
     lea -106(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -5976,8 +5976,8 @@ generate_buf_106:
     mov %rsp, %rbp
     sub $128, %rsp
     movq %rdi, -128(%rbp)
-_kefir_func_generate_buf_106_label0:
 _kefir_func_generate_buf_106_label1:
+_kefir_func_generate_buf_106_label0:
     lea -107(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -6030,8 +6030,8 @@ generate_buf_107:
     mov %rsp, %rbp
     sub $128, %rsp
     movq %rdi, -128(%rbp)
-_kefir_func_generate_buf_107_label0:
 _kefir_func_generate_buf_107_label1:
+_kefir_func_generate_buf_107_label0:
     lea -108(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -6084,8 +6084,8 @@ generate_buf_108:
     mov %rsp, %rbp
     sub $128, %rsp
     movq %rdi, -128(%rbp)
-_kefir_func_generate_buf_108_label0:
 _kefir_func_generate_buf_108_label1:
+_kefir_func_generate_buf_108_label0:
     lea -109(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -6138,8 +6138,8 @@ generate_buf_109:
     mov %rsp, %rbp
     sub $128, %rsp
     movq %rdi, -128(%rbp)
-_kefir_func_generate_buf_109_label0:
 _kefir_func_generate_buf_109_label1:
+_kefir_func_generate_buf_109_label0:
     lea -110(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -6192,8 +6192,8 @@ generate_buf_110:
     mov %rsp, %rbp
     sub $128, %rsp
     movq %rdi, -128(%rbp)
-_kefir_func_generate_buf_110_label0:
 _kefir_func_generate_buf_110_label1:
+_kefir_func_generate_buf_110_label0:
     lea -111(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -6246,8 +6246,8 @@ generate_buf_111:
     mov %rsp, %rbp
     sub $128, %rsp
     movq %rdi, -128(%rbp)
-_kefir_func_generate_buf_111_label0:
 _kefir_func_generate_buf_111_label1:
+_kefir_func_generate_buf_111_label0:
     lea -112(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -6298,8 +6298,8 @@ generate_buf_112:
     mov %rsp, %rbp
     sub $128, %rsp
     movq %rdi, -128(%rbp)
-_kefir_func_generate_buf_112_label0:
 _kefir_func_generate_buf_112_label1:
+_kefir_func_generate_buf_112_label0:
     lea -113(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -6352,8 +6352,8 @@ generate_buf_113:
     mov %rsp, %rbp
     sub $128, %rsp
     movq %rdi, -128(%rbp)
-_kefir_func_generate_buf_113_label0:
 _kefir_func_generate_buf_113_label1:
+_kefir_func_generate_buf_113_label0:
     lea -114(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -6406,8 +6406,8 @@ generate_buf_114:
     mov %rsp, %rbp
     sub $128, %rsp
     movq %rdi, -128(%rbp)
-_kefir_func_generate_buf_114_label0:
 _kefir_func_generate_buf_114_label1:
+_kefir_func_generate_buf_114_label0:
     lea -115(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -6460,8 +6460,8 @@ generate_buf_115:
     mov %rsp, %rbp
     sub $128, %rsp
     movq %rdi, -128(%rbp)
-_kefir_func_generate_buf_115_label0:
 _kefir_func_generate_buf_115_label1:
+_kefir_func_generate_buf_115_label0:
     lea -116(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -6514,8 +6514,8 @@ generate_buf_116:
     mov %rsp, %rbp
     sub $128, %rsp
     movq %rdi, -128(%rbp)
-_kefir_func_generate_buf_116_label0:
 _kefir_func_generate_buf_116_label1:
+_kefir_func_generate_buf_116_label0:
     lea -117(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -6568,8 +6568,8 @@ generate_buf_117:
     mov %rsp, %rbp
     sub $128, %rsp
     movq %rdi, -128(%rbp)
-_kefir_func_generate_buf_117_label0:
 _kefir_func_generate_buf_117_label1:
+_kefir_func_generate_buf_117_label0:
     lea -118(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -6622,8 +6622,8 @@ generate_buf_118:
     mov %rsp, %rbp
     sub $128, %rsp
     movq %rdi, -128(%rbp)
-_kefir_func_generate_buf_118_label0:
 _kefir_func_generate_buf_118_label1:
+_kefir_func_generate_buf_118_label0:
     lea -119(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -6676,8 +6676,8 @@ generate_buf_119:
     mov %rsp, %rbp
     sub $128, %rsp
     movq %rdi, -128(%rbp)
-_kefir_func_generate_buf_119_label0:
 _kefir_func_generate_buf_119_label1:
+_kefir_func_generate_buf_119_label0:
     lea -120(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -6728,8 +6728,8 @@ generate_buf_120:
     mov %rsp, %rbp
     sub $144, %rsp
     movq %rdi, -144(%rbp)
-_kefir_func_generate_buf_120_label0:
 _kefir_func_generate_buf_120_label1:
+_kefir_func_generate_buf_120_label0:
     lea -121(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -6782,8 +6782,8 @@ generate_buf_121:
     mov %rsp, %rbp
     sub $144, %rsp
     movq %rdi, -144(%rbp)
-_kefir_func_generate_buf_121_label0:
 _kefir_func_generate_buf_121_label1:
+_kefir_func_generate_buf_121_label0:
     lea -122(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -6836,8 +6836,8 @@ generate_buf_122:
     mov %rsp, %rbp
     sub $144, %rsp
     movq %rdi, -144(%rbp)
-_kefir_func_generate_buf_122_label0:
 _kefir_func_generate_buf_122_label1:
+_kefir_func_generate_buf_122_label0:
     lea -123(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -6890,8 +6890,8 @@ generate_buf_123:
     mov %rsp, %rbp
     sub $144, %rsp
     movq %rdi, -144(%rbp)
-_kefir_func_generate_buf_123_label0:
 _kefir_func_generate_buf_123_label1:
+_kefir_func_generate_buf_123_label0:
     lea -124(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -6944,8 +6944,8 @@ generate_buf_124:
     mov %rsp, %rbp
     sub $144, %rsp
     movq %rdi, -144(%rbp)
-_kefir_func_generate_buf_124_label0:
 _kefir_func_generate_buf_124_label1:
+_kefir_func_generate_buf_124_label0:
     lea -125(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -6998,8 +6998,8 @@ generate_buf_125:
     mov %rsp, %rbp
     sub $144, %rsp
     movq %rdi, -144(%rbp)
-_kefir_func_generate_buf_125_label0:
 _kefir_func_generate_buf_125_label1:
+_kefir_func_generate_buf_125_label0:
     lea -126(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -7052,8 +7052,8 @@ generate_buf_126:
     mov %rsp, %rbp
     sub $144, %rsp
     movq %rdi, -144(%rbp)
-_kefir_func_generate_buf_126_label0:
 _kefir_func_generate_buf_126_label1:
+_kefir_func_generate_buf_126_label0:
     lea -127(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax
@@ -7106,8 +7106,8 @@ generate_buf_127:
     mov %rsp, %rbp
     sub $144, %rsp
     movq %rdi, -144(%rbp)
-_kefir_func_generate_buf_127_label0:
 _kefir_func_generate_buf_127_label1:
+_kefir_func_generate_buf_127_label0:
     lea -128(%rbp), %rax
     mov %rax, %rdi
     xor %rax, %rax

@@ -44,8 +44,8 @@ _kefir_func_set_a1_label1:
     ret
 
 set_i8:
-_kefir_func_set_i8_label0:
 _kefir_func_set_i8_label1:
+_kefir_func_set_i8_label0:
     movsx %sil, %rax
     mov %rax, %rsi
     mov $5, %rdx
@@ -53,8 +53,8 @@ _kefir_func_set_i8_label1:
     ret
 
 set_f32:
-_kefir_func_set_f32_label0:
 _kefir_func_set_f32_label1:
+_kefir_func_set_f32_label0:
     add $16, %rdi
     movq %xmm0, %rsi
     mov $5, %rdx
@@ -62,8 +62,8 @@ _kefir_func_set_f32_label1:
     ret
 
 set_f64:
-_kefir_func_set_f64_label0:
 _kefir_func_set_f64_label1:
+_kefir_func_set_f64_label0:
     add $24, %rdi
     movq %xmm0, %rsi
     mov $5, %rdx
@@ -71,8 +71,8 @@ _kefir_func_set_f64_label1:
     ret
 
 set_i16:
-_kefir_func_set_i16_label0:
 _kefir_func_set_i16_label1:
+_kefir_func_set_i16_label0:
     movsx %si, %rax
     add $2, %rdi
     mov %rax, %rsi
@@ -81,8 +81,8 @@ _kefir_func_set_i16_label1:
     ret
 
 set_i32:
-_kefir_func_set_i32_label0:
 _kefir_func_set_i32_label1:
+_kefir_func_set_i32_label0:
     movsx %esi, %rax
     add $4, %rdi
     mov %rax, %rsi
@@ -91,16 +91,16 @@ _kefir_func_set_i32_label1:
     ret
 
 set_i64:
-_kefir_func_set_i64_label0:
 _kefir_func_set_i64_label1:
+_kefir_func_set_i64_label0:
     add $8, %rdi
     mov $5, %rdx
     call __atomic_store_8@PLT
     ret
 
 set_arr1_el:
-_kefir_func_set_arr1_el_label0:
 _kefir_func_set_arr1_el_label1:
+_kefir_func_set_arr1_el_label0:
     add $96, %rdi
     movsx %esi, %rax
     movsx %eax, %rax
