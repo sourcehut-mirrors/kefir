@@ -55,7 +55,6 @@ test_fetch_add_short:
     mov %r8, %r11
 _kefir_func_test_fetch_add_short_label2:
     movsxw -22(%rbp), %rax
-    movsx %ax, %rax
     movsx %r10w, %rcx
     movsx %cx, %rcx
     mov %rax, %rbx
@@ -117,7 +116,6 @@ test_fetch_and_short:
     mov %r8, %r11
 _kefir_func_test_fetch_and_short_label2:
     movsxw -22(%rbp), %rax
-    movsx %ax, %rax
     movsx %r10w, %rcx
     movsx %cx, %rcx
     mov %rax, %rbx
@@ -179,7 +177,6 @@ test_fetch_sub_short:
     mov %r8, %r11
 _kefir_func_test_fetch_sub_short_label2:
     movsxw -22(%rbp), %rax
-    movsx %ax, %rax
     movsx %r10w, %rcx
     movsx %cx, %rcx
     mov %rax, %rbx
@@ -241,7 +238,6 @@ test_fetch_xor_short:
     mov %r8, %r11
 _kefir_func_test_fetch_xor_short_label2:
     movsxw -22(%rbp), %rax
-    movsx %ax, %rax
     movsx %r10w, %rcx
     movsx %cx, %rcx
     mov %rax, %rbx
@@ -363,7 +359,6 @@ test_fetch_add_char:
     mov %r8, %r11
 _kefir_func_test_fetch_add_char_label2:
     movsxb -19(%rbp), %rax
-    movsx %al, %rax
     movsx %r10b, %rcx
     movsx %cl, %rcx
     mov %rax, %rbx
@@ -483,7 +478,6 @@ test_fetch_and_char:
     mov %r8, %r11
 _kefir_func_test_fetch_and_char_label2:
     movsxb -19(%rbp), %rax
-    movsx %al, %rax
     movsx %r10b, %rcx
     movsx %cl, %rcx
     mov %rax, %rbx
@@ -603,7 +597,6 @@ test_fetch_or_short:
     mov %r8, %r11
 _kefir_func_test_fetch_or_short_label2:
     movsxw -22(%rbp), %rax
-    movsx %ax, %rax
     movsx %r10w, %rcx
     movsx %cx, %rcx
     mov %rax, %rbx
@@ -665,7 +658,6 @@ test_fetch_sub_char:
     mov %r8, %r11
 _kefir_func_test_fetch_sub_char_label2:
     movsxb -19(%rbp), %rax
-    movsx %al, %rax
     movsx %r10b, %rcx
     movsx %cl, %rcx
     mov %rax, %rbx
@@ -785,7 +777,6 @@ test_fetch_xor_char:
     mov %r8, %r11
 _kefir_func_test_fetch_xor_char_label2:
     movsxb -19(%rbp), %rax
-    movsx %al, %rax
     movsx %r10b, %rcx
     movsx %cl, %rcx
     mov %rax, %rbx
@@ -1025,7 +1016,6 @@ test_fetch_or_char:
     mov %r8, %r11
 _kefir_func_test_fetch_or_char_label2:
     movsxb -19(%rbp), %rax
-    movsx %al, %rax
     movsx %r10b, %rcx
     movsx %cl, %rcx
     mov %rax, %rbx
