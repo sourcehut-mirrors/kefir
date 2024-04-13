@@ -322,6 +322,17 @@ subsection)
 Optimizer pipeline specification (see
 .Sx OPTIMIZER
 subsection)
+.\"
+.It Fl \-precise-bitfield-load-store
+Load and store bitfields at byte boundaries [default: on].
+Provides extra correctness for structures allocated close to a boundary
+with unmapped memory pages at the expense of less efficient bitfield handling.
+Does not change bitfield layout.
+.\"
+.It Fl \-no-precise-bitfield-load-store
+Load and store bitfields at machine word boundaries [default: off].
+May cause failures for structures allocated close to boundaries with unmapped
+memory pages. Does not change bitfield layout.
 .El
 .\"
 .Ss FEATURES

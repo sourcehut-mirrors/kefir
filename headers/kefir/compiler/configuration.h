@@ -87,6 +87,7 @@ typedef struct kefir_compiler_runner_configuration {
         kefir_bool_t include_next;
         kefir_bool_t fail_on_assembly;
         kefir_bool_t va_args_concat;
+        kefir_bool_t precise_bitfield_load_store;
     } features;
 
     struct {

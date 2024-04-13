@@ -613,10 +613,41 @@
                     "opcode": "iadd64"
                 },
                 {
-                    "opcode": "load64",
+                    "opcode": "pick",
+                    "arg": 0
+                },
+                {
+                    "opcode": "pushu",
+                    "arg": 4
+                },
+                {
+                    "opcode": "iadd64"
+                },
+                {
+                    "opcode": "load8u",
                     "memory_flags": {
                         "volatile": false
                     }
+                },
+                {
+                    "opcode": "pushu",
+                    "arg": 32
+                },
+                {
+                    "opcode": "ishl64"
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "load32u",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "ior64"
                 },
                 {
                     "opcode": "extubits",

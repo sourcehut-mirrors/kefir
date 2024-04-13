@@ -1,0 +1,225 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global get_a
+.global get_b
+.global get_c
+.global get_d
+.global get_e
+.global get_f
+.global get_g
+.global get_h
+.global set_a
+.global set_b
+.global set_c
+.global set_d
+.global set_e
+.global set_f
+.global set_g
+.global set_h
+.extern s
+.extern __kefir_opt_float32_neg
+.extern __kefir_opt_float64_neg
+.extern __kefirrt_opt_float32_to_uint
+.extern __kefirrt_opt_float64_to_uint
+
+.section .text
+get_a:
+    movq s@GOTPCREL(%rip), %rax
+    movzxb (%rax), %rax
+    shl $57, %rax
+    sar $57, %rax
+    ret
+
+get_b:
+    movq s@GOTPCREL(%rip), %rax
+    add $1, %rax
+    movzxw (%rax), %rax
+    shl $49, %rax
+    sar $49, %rax
+    ret
+
+get_c:
+    movq s@GOTPCREL(%rip), %rax
+    add $3, %rax
+    movl (%rax), %eax
+    shl $41, %rax
+    sar $41, %rax
+    ret
+
+get_d:
+    movq s@GOTPCREL(%rip), %rax
+    add $8, %rax
+    movl (%rax), %eax
+    shl $33, %rax
+    sar $33, %rax
+    ret
+
+get_e:
+    movq s@GOTPCREL(%rip), %rax
+    add $16, %rax
+    movq (%rax), %rax
+    shl $25, %rax
+    sar $25, %rax
+    ret
+
+get_f:
+    movq s@GOTPCREL(%rip), %rax
+    add $24, %rax
+    movq (%rax), %rax
+    shl $17, %rax
+    sar $17, %rax
+    ret
+
+get_g:
+    movq s@GOTPCREL(%rip), %rax
+    add $32, %rax
+    movq (%rax), %rax
+    shl $9, %rax
+    sar $9, %rax
+    ret
+
+get_h:
+    movq s@GOTPCREL(%rip), %rax
+    add $40, %rax
+    movq (%rax), %rax
+    shl $1, %rax
+    sar $1, %rax
+    ret
+
+set_a:
+    movq s@GOTPCREL(%rip), %rax
+    movzxb (%rax), %rax
+    movabs $18446744073709551488, %rcx
+    and %rax, %rcx
+    shl $57, %rdi
+    shr $57, %rdi
+    or %rcx, %rdi
+    movq s@GOTPCREL(%rip), %rax
+    movb %dil, (%rax)
+    ret
+
+set_b:
+    movq s@GOTPCREL(%rip), %rax
+    add $1, %rax
+    movzxw (%rax), %rax
+    movabs $18446744073709518848, %rcx
+    and %rax, %rcx
+    shl $49, %rdi
+    shr $49, %rdi
+    or %rcx, %rdi
+    movq s@GOTPCREL(%rip), %rax
+    add $1, %rax
+    movw %di, (%rax)
+    ret
+
+set_c:
+    movq s@GOTPCREL(%rip), %rax
+    add $3, %rax
+    movl (%rax), %eax
+    movabs $18446744073701163008, %rcx
+    and %rax, %rcx
+    shl $41, %rdi
+    shr $41, %rdi
+    or %rcx, %rdi
+    movq s@GOTPCREL(%rip), %rax
+    add $3, %rax
+    movq s@GOTPCREL(%rip), %rcx
+    add $5, %rcx
+    mov %rdi, %rdx
+    shr $16, %rdx
+    movb %dl, (%rcx)
+    movw %di, (%rax)
+    ret
+
+set_d:
+    movq s@GOTPCREL(%rip), %rax
+    add $8, %rax
+    movl (%rax), %eax
+    movabs $18446744071562067968, %rcx
+    and %rax, %rcx
+    shl $33, %rdi
+    shr $33, %rdi
+    or %rcx, %rdi
+    movq s@GOTPCREL(%rip), %rax
+    add $8, %rax
+    movl %edi, (%rax)
+    ret
+
+set_e:
+    movq s@GOTPCREL(%rip), %rax
+    add $16, %rax
+    movq (%rax), %rax
+    movabs $18446743523953737728, %rcx
+    and %rax, %rcx
+    shl $25, %rdi
+    shr $25, %rdi
+    or %rcx, %rdi
+    movq s@GOTPCREL(%rip), %rax
+    add $16, %rax
+    movq s@GOTPCREL(%rip), %rcx
+    add $20, %rcx
+    mov %rdi, %rdx
+    shr $32, %rdx
+    movb %dl, (%rcx)
+    movl %edi, (%rax)
+    ret
+
+set_f:
+    movq s@GOTPCREL(%rip), %rax
+    add $24, %rax
+    movq (%rax), %rax
+    movabs $18446603336221196288, %rcx
+    and %rax, %rcx
+    shl $17, %rdi
+    shr $17, %rdi
+    or %rcx, %rdi
+    movq s@GOTPCREL(%rip), %rax
+    add $24, %rax
+    movq s@GOTPCREL(%rip), %rcx
+    add $28, %rcx
+    mov %rdi, %rdx
+    shr $32, %rdx
+    movw %dx, (%rcx)
+    movl %edi, (%rax)
+    ret
+
+set_g:
+    movq s@GOTPCREL(%rip), %rax
+    add $32, %rax
+    movq (%rax), %rax
+    movabs $18410715276690587648, %rcx
+    and %rax, %rcx
+    shl $9, %rdi
+    shr $9, %rdi
+    or %rcx, %rdi
+    movq s@GOTPCREL(%rip), %rax
+    add $32, %rax
+    movq s@GOTPCREL(%rip), %rcx
+    add $38, %rcx
+    mov %rdi, %rdx
+    shr $48, %rdx
+    movb %dl, (%rcx)
+    movq s@GOTPCREL(%rip), %rcx
+    add $36, %rcx
+    mov %rdi, %rdx
+    shr $32, %rdx
+    movw %dx, (%rcx)
+    movl %edi, (%rax)
+    ret
+
+set_h:
+    movq s@GOTPCREL(%rip), %rax
+    add $40, %rax
+    movq (%rax), %rax
+    movabs $9223372036854775808, %rcx
+    and %rax, %rcx
+    shl $1, %rdi
+    shr $1, %rdi
+    or %rcx, %rdi
+    movq s@GOTPCREL(%rip), %rax
+    add $40, %rax
+    movq %rdi, (%rax)
+    ret
+
+

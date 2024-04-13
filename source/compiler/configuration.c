@@ -48,7 +48,7 @@ kefir_result_t kefir_compiler_runner_configuration_init(struct kefir_compiler_ru
         .skip_preprocessor = false,
         .default_pp_timestamp = true,
         .verbose = false,
-        .features = {false},
+        .features = {false, .precise_bitfield_load_store = true},
         .codegen = {.emulated_tls = false,
                     .position_independent_code = false,
                     .omit_frame_pointer = false,

@@ -28,6 +28,7 @@
 
 typedef struct kefir_ast_translator_configuration {
     kefir_bool_t empty_structs;
+    kefir_bool_t precise_bitfield_load_store;
 } kefir_ast_translator_configuration_t;
 
 typedef struct kefir_ast_translator_environment_type {
