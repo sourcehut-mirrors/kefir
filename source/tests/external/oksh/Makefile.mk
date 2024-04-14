@@ -1,0 +1,50 @@
+
+KEFIR_EXTERNAL_TEST_OKSH_DIR := $(KEFIR_EXTERNAL_TESTS_DIR)/oksh
+
+KEFIR_EXTERNAL_TEST_OKSH_VERSION := 7.5
+KEFIR_EXTERNAL_TEST_OKSH_ARCHIVE_FILENAME := oksh-$(KEFIR_EXTERNAL_TEST_OKSH_VERSION).tar.gz
+KEFIR_EXTERNAL_TEST_OKSH_ARCHIVE := $(KEFIR_EXTERNAL_TEST_OKSH_DIR)/oksh-$(KEFIR_EXTERNAL_TEST_OKSH_VERSION).tar.gz
+KEFIR_EXTERNAL_TEST_OKSH_SOURCE_DIR := $(KEFIR_EXTERNAL_TEST_OKSH_DIR)/oksh-$(KEFIR_EXTERNAL_TEST_OKSH_VERSION)
+KEFIR_EXTERNAL_TEST_OKSH_URL := https://github.com/ibara/oksh/releases/download/oksh-$(KEFIR_EXTERNAL_TEST_OKSH_VERSION)/$(KEFIR_EXTERNAL_TEST_OKSH_ARCHIVE_FILENAME)
+
+KEFIR_EXTERNAL_TEST_OKSH_ARCHIVE_SHA256 := 40b895c3f8e9311bfe2b230e9b3786712550ef488ced33bfd7cd3f89fceeed5d
+
+$(KEFIR_EXTERNAL_TEST_OKSH_ARCHIVE):
+	@mkdir -p $(dir $@)
+	@echo "Downloading $(KEFIR_EXTERNAL_TEST_OKSH_URL)"
+	@wget -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_OKSH_URL)"
+	@$(SOURCE_DIR)/tests/external/util/checksum_sha256.sh "$@.tmp" "$(KEFIR_EXTERNAL_TEST_OKSH_ARCHIVE_SHA256)"
+	@mv "$@.tmp" "$@"
+
+$(KEFIR_EXTERNAL_TEST_OKSH_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_OKSH_ARCHIVE)
+	@echo "Extracting $(KEFIR_EXTERNAL_TEST_OKSH_ARCHIVE_FILENAME)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_OKSH_DIR)" && tar xvfz "$(KEFIR_EXTERNAL_TEST_OKSH_ARCHIVE_FILENAME)"
+	@touch "$@"
+
+$(KEFIR_EXTERNAL_TEST_OKSH_SOURCE_DIR)/pconfig.h: $(KEFIR_EXTERNAL_TEST_OKSH_SOURCE_DIR)/.extracted $(KEFIR_EXE) $(LIBKEFIRRT_A)
+	@echo "Configuring oksh $(KEFIR_EXTERNAL_TEST_OKSH_VERSION)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_OKSH_SOURCE_DIR)" && \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
+		KEFIR_RTLIB="$(realpath $(LIBKEFIRRT_A))" \
+		CC="$(realpath $(KEFIR_EXE))" \
+		CFLAGS="-O1 -fPIC -pie" \
+		./configure
+
+$(KEFIR_EXTERNAL_TEST_OKSH_SOURCE_DIR)/oksh: $(KEFIR_EXTERNAL_TEST_OKSH_SOURCE_DIR)/pconfig.h
+	@echo "Building oksh $(KEFIR_EXTERNAL_TEST_OKSH_VERSION)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_OKSH_SOURCE_DIR)" && \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
+		KEFIR_RTLIB="$(realpath $(LIBKEFIRRT_A))" \
+		$(MAKE) all
+
+$(KEFIR_EXTERNAL_TEST_OKSH_DIR)/test.log: $(KEFIR_EXTERNAL_TEST_OKSH_SOURCE_DIR)/oksh $(SOURCE_DIR)/tests/external/oksh/test.sh
+	@echo "Validating oksh $(KEFIR_EXTERNAL_TEST_OKSH_VERSION)..."
+	@"$(KEFIR_EXTERNAL_TEST_OKSH_SOURCE_DIR)/oksh" "$(SOURCE_DIR)/tests/external/oksh/test.sh" > "$@.tmp"
+	@diff "$@.tmp" "$(SOURCE_DIR)/tests/external/oksh/test.log.expected"
+	@mv "$@.tmp" "$@"
+
+$(KEFIR_EXTERNAL_TESTS_DIR)/oksh.test.done: $(KEFIR_EXTERNAL_TEST_OKSH_DIR)/test.log
+	@touch "$@"
+	@echo "Oksh $(KEFIR_EXTERNAL_TEST_OKSH_VERSION) validation successfully finished"
