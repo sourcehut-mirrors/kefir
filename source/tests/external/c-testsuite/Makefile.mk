@@ -39,3 +39,5 @@ $(KEFIR_EXTERNAL_TESTS_DIR)/c-testsuite.test.done: $(KEFIR_EXTERNAL_TEST_C_TESTS
 	@$(SOURCE_DIR)/tests/external/c-testsuite/validate.sh "$(KEFIR_EXTERNAL_TEST_C_TESTSUITE_DIR)/c-tests.log" "$(KEFIR_EXTERAL_TEST_C_TESTSUITE)"
 	@touch "$@"
 	@echo "c-testsuite $(KEFIR_EXTERNAL_TEST_C_TESTSUITE_ARCHIVE_SHA256) successfully finished"
+
+EXTERNAL_TESTS_BASE_SUITE += $(KEFIR_EXTERNAL_TESTS_DIR)/c-testsuite.test.done

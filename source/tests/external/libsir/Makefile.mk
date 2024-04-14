@@ -35,3 +35,5 @@ $(KEFIR_EXTERNAL_TESTS_DIR)/libsir.test.done: $(KEFIR_EXTERNAL_TEST_LIBSIR_SOURC
 	@cd "$(KEFIR_EXTERNAL_TEST_LIBSIR_SOURCE_DIR)" && ./build/bin/sirtests
 	@touch "$@"
 	@echo "libsir $(KEFIR_EXTERNAL_TEST_LIBSIR_VERSION) tests successfully finished"
+
+EXTERNAL_TESTS_FAST_SUITE += $(KEFIR_EXTERNAL_TESTS_DIR)/libsir.test.done

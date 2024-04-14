@@ -44,3 +44,5 @@ $(KEFIR_EXTERNAL_TESTS_DIR)/gcc-torture.test.done: $(KEFIR_EXTERNAL_TEST_GCC_TOR
 	@"$(SOURCE_DIR)/tests/external/gcc-torture/validate.sh" "$(KEFIR_EXTERNAL_TEST_GCC_TORTURE_DIR)/torture.log" "$(KEFIR_EXTERNAL_TEST_GCC_TORTURE_MAX_FAILED)"
 	@touch "$@"
 	@echo "GCC $(KEFIR_EXTERNAL_TEST_GCC_TORTURE_VERSION) torture test suite successfully finished"
+
+EXTERNAL_TESTS_BASE_SUITE += $(KEFIR_EXTERNAL_TESTS_DIR)/gcc-torture.test.done

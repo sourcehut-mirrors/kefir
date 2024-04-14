@@ -53,3 +53,5 @@ $(KEFIR_EXTERNAL_TESTS_DIR)/lua.test.done: $(KEFIR_EXTERAL_TEST_LUA_EXE) $(KEFIR
 	@cd "$(shell dirname $(KEFIR_EXTERAL_TEST_LUA_TEST_SUITE))" && "$(shell $(REALPATH) $(KEFIR_EXTERAL_TEST_LUA_EXE))" -e"_U=true" all.lua
 	@touch "$@"
 	@echo "Lua $(KEFIR_EXTERNAL_TEST_LUA_VERSION) test suite successfully finished"
+
+EXTERNAL_TESTS_BASE_SUITE += $(KEFIR_EXTERNAL_TESTS_DIR)/lua.test.done

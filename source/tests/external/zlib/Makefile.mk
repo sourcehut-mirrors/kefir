@@ -58,3 +58,5 @@ $(KEFIR_EXTERNAL_TESTS_DIR)/zlib.test.done: $(KEFIR_EXTERNAL_TEST_ZLIB_SOURCE_DI
 	@cd "$(KEFIR_EXTERNAL_TEST_ZLIB_SOURCE_DIR)" && ./example64
 	@touch "$@"
 	@echo "Zlib $(KEFIR_EXTERNAL_TEST_ZLIB_VERSION) test successfully finished"
+
+EXTERNAL_TESTS_FAST_SUITE += $(KEFIR_EXTERNAL_TESTS_DIR)/zlib.test.done

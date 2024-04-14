@@ -48,3 +48,5 @@ $(KEFIR_EXTERNAL_TEST_OKSH_DIR)/test.log: $(KEFIR_EXTERNAL_TEST_OKSH_SOURCE_DIR)
 $(KEFIR_EXTERNAL_TESTS_DIR)/oksh.test.done: $(KEFIR_EXTERNAL_TEST_OKSH_DIR)/test.log
 	@touch "$@"
 	@echo "Oksh $(KEFIR_EXTERNAL_TEST_OKSH_VERSION) validation successfully finished"
+
+EXTERNAL_TESTS_FAST_SUITE += $(KEFIR_EXTERNAL_TESTS_DIR)/oksh.test.done
