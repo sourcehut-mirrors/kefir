@@ -47,6 +47,7 @@ kefir_result_t kefir_ast_translate_while_statement_node(struct kefir_mem *mem,
             mem, context->ast_context->type_bundle, node->controlling_expr->properties.type));
     if (KEFIR_AST_TYPE_IS_FLOATING_POINT(controlling_expr_type)) {
         REQUIRE_OK(kefir_ast_translate_typeconv_to_bool(builder, controlling_expr_type));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_BNOT8, 0));
     } else {
         switch (controlling_expr_type->tag) {
             case KEFIR_AST_TYPE_SCALAR_BOOL:

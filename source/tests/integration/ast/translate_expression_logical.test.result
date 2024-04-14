@@ -415,6 +415,9 @@
                     "arg": 0
                 },
                 {
+                    "opcode": "tobool8"
+                },
+                {
                     "opcode": "pick",
                     "arg": 0
                 },
@@ -423,7 +426,7 @@
                 },
                 {
                     "opcode": "branch8",
-                    "arg": 6
+                    "arg": 7
                 },
                 {
                     "opcode": "pushu",
@@ -485,15 +488,18 @@
                     "arg": 4096
                 },
                 {
+                    "opcode": "tobool64"
+                },
+                {
                     "opcode": "pick",
                     "arg": 0
                 },
                 {
-                    "opcode": "bnot64"
+                    "opcode": "bnot8"
                 },
                 {
                     "opcode": "branch8",
-                    "arg": 6
+                    "arg": 7
                 },
                 {
                     "opcode": "pushi",

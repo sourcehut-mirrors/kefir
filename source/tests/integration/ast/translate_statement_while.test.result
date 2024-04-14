@@ -332,8 +332,11 @@
                     "opcode": "bnot8"
                 },
                 {
+                    "opcode": "bnot8"
+                },
+                {
                     "opcode": "branch8",
-                    "arg": 8
+                    "arg": 9
                 },
                 {
                     "opcode": "pushu",
