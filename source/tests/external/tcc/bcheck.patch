@@ -1,0 +1,13 @@
+--- lib/bcheck.c	2017-12-17 09:27:05.000000000 +0100
++++ lib/bcheck.c	2024-04-14 10:19:15.454676727 +0200
+@@ -47,8 +47,8 @@
+ /* #define BOUND_STATIC */
+ 
+ /* use malloc hooks. Currently the code cannot be reliable if no hooks */
+-#define CONFIG_TCC_MALLOC_HOOKS
+-#define HAVE_MEMALIGN
++// #define CONFIG_TCC_MALLOC_HOOKS
++// #define HAVE_MEMALIGN
+ 
+ #if defined(__FreeBSD__) \
+  || defined(__FreeBSD_kernel__) \
