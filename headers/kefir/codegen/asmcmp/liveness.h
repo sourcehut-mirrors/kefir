@@ -51,6 +51,10 @@ kefir_result_t kefir_asmcmp_lifetime_map_add_lifetime_range(struct kefir_mem *, 
                                                             kefir_asmcmp_lifetime_index_t,
                                                             kefir_asmcmp_lifetime_index_t);
 
+kefir_result_t kefir_asmcmp_lifetime_global_activity_for(const struct kefir_asmcmp_lifetime_map *,
+                                                         kefir_asmcmp_virtual_register_index_t,
+                                                         kefir_asmcmp_lifetime_index_t *,
+                                                         kefir_asmcmp_lifetime_index_t *);
 kefir_result_t kefir_asmcmp_get_active_lifetime_range_for(const struct kefir_asmcmp_lifetime_map *,
                                                           kefir_asmcmp_virtual_register_index_t,
                                                           kefir_asmcmp_lifetime_index_t,

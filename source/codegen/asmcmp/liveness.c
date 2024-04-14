@@ -151,6 +151,22 @@ kefir_result_t kefir_asmcmp_lifetime_map_add_lifetime_range(struct kefir_mem *me
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_asmcmp_lifetime_global_activity_for(const struct kefir_asmcmp_lifetime_map *map,
+                                                         kefir_asmcmp_virtual_register_index_t vreg,
+                                                         kefir_asmcmp_lifetime_index_t *begin_ptr,
+                                                         kefir_asmcmp_lifetime_index_t *end_ptr) {
+    REQUIRE(map != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmcmp liveness map"));
+    REQUIRE(vreg < map->length,
+            KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Provided virtual register is out of liveness map bounds"));
+    REQUIRE(begin_ptr != NULL || end_ptr != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to range ends"));
+
+    const struct kefir_asmcmp_virtual_register_lifetime_map *const reg_map = &map->map[vreg];
+
+    ASSIGN_PTR(begin_ptr, reg_map->global_activity_range.begin);
+    ASSIGN_PTR(end_ptr, reg_map->global_activity_range.end);
+    return KEFIR_OK;
+}
 kefir_result_t kefir_asmcmp_get_active_lifetime_range_for(const struct kefir_asmcmp_lifetime_map *map,
                                                           kefir_asmcmp_virtual_register_index_t vreg,
                                                           kefir_asmcmp_lifetime_index_t linear_position,
@@ -159,7 +175,7 @@ kefir_result_t kefir_asmcmp_get_active_lifetime_range_for(const struct kefir_asm
     REQUIRE(map != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmcmp liveness map"));
     REQUIRE(vreg < map->length,
             KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Provided virtual register is out of liveness map bounds"));
-    REQUIRE(begin_ptr != NULL || end_ptr,
+    REQUIRE(begin_ptr != NULL || end_ptr != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to range ends"));
 
     const struct kefir_asmcmp_virtual_register_lifetime_map *const reg_map = &map->map[vreg];

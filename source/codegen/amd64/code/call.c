@@ -79,9 +79,16 @@ static kefir_result_t preserve_regs(struct kefir_mem *mem, struct kefir_codegen_
     if (ir_func_decl->returns_twice) {
         kefir_asmcmp_virtual_register_index_t stash_area_vreg;
         REQUIRE_OK(kefir_asmcmp_register_stash_vreg(&function->code.context, *stash_idx, &stash_area_vreg));
-        REQUIRE_OK(kefir_list_insert_after(mem, &function->keep_alive_virtual_regs,
-                                           kefir_list_tail(&function->keep_alive_virtual_regs),
-                                           (void *) (kefir_uptr_t) stash_area_vreg));
+
+        REQUIRE_OK(kefir_asmcmp_amd64_preserve_virtual_register(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), stash_area_vreg, NULL));
+
+        kefir_size_t num_of_vregs;
+        REQUIRE_OK(kefir_asmcmp_number_of_virtual_registers(&function->code.context, &num_of_vregs));
+        for (kefir_asmcmp_virtual_register_index_t vreg = 0; vreg < num_of_vregs; vreg++) {
+            REQUIRE_OK(kefir_asmcmp_amd64_preserve_virtual_register(
+                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), vreg, NULL));
+        }
     }
 
     return KEFIR_OK;

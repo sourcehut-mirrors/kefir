@@ -59,6 +59,8 @@ kefir_result_t kefir_codegen_amd64_register_allocator_init(struct kefir_codegen_
     REQUIRE_OK(kefir_hashtreeset_init(&allocator->internal.register_conflicts, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtreeset_init(&allocator->internal.register_hints, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtreeset_init(&allocator->internal.alive_virtual_registers, &kefir_hashtree_uint_ops));
+    REQUIRE_OK(kefir_hashtree_init(&allocator->internal.preserved_vreg_candidates, &kefir_hashtree_uint_ops));
+    REQUIRE_OK(kefir_hashtreeset_init(&allocator->internal.active_preserved_vregs, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&allocator->internal.lifetime_ranges, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_bitset_init(&allocator->internal.spill_area));
     REQUIRE_OK(kefir_bitset_init(&allocator->internal.spill_area_hints));
@@ -85,6 +87,8 @@ kefir_result_t kefir_codegen_amd64_register_allocator_free(struct kefir_mem *mem
     REQUIRE_OK(kefir_hashtreeset_free(mem, &allocator->internal.conflicts));
     REQUIRE_OK(kefir_hashtreeset_free(mem, &allocator->internal.register_conflicts));
     REQUIRE_OK(kefir_hashtreeset_free(mem, &allocator->internal.register_hints));
+    REQUIRE_OK(kefir_hashtree_free(mem, &allocator->internal.preserved_vreg_candidates));
+    REQUIRE_OK(kefir_hashtreeset_free(mem, &allocator->internal.active_preserved_vregs));
     REQUIRE_OK(kefir_hashtree_free(mem, &allocator->internal.instruction_linear_indices));
     REQUIRE_OK(kefir_hashtreeset_free(mem, &allocator->used_registers));
     REQUIRE_OK(kefir_graph_free(mem, &allocator->internal.liveness_graph));
@@ -101,7 +105,7 @@ kefir_result_t kefir_codegen_amd64_register_allocator_free(struct kefir_mem *mem
     return KEFIR_OK;
 }
 
-static kefir_result_t update_virtual_register_lifetime(struct kefir_asmcmp_amd64 *target,
+static kefir_result_t update_virtual_register_lifetime(struct kefir_mem *mem, struct kefir_asmcmp_amd64 *target,
                                                        struct kefir_codegen_amd64_register_allocator *allocator,
                                                        const struct kefir_asmcmp_value *value,
                                                        kefir_size_t lifetime_index) {
@@ -124,6 +128,11 @@ static kefir_result_t update_virtual_register_lifetime(struct kefir_asmcmp_amd64
         case KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER:
             REQUIRE_OK(
                 kefir_asmcmp_lifetime_map_mark_activity(&allocator->liveness_map, value->vreg.index, lifetime_index));
+            if (kefir_hashtree_has(&allocator->internal.preserved_vreg_candidates,
+                                   (kefir_hashtree_key_t) value->vreg.index)) {
+                REQUIRE_OK(kefir_hashtreeset_add(mem, &allocator->internal.active_preserved_vregs,
+                                                 (kefir_hashtreeset_entry_t) value->vreg.index));
+            }
             break;
 
         case KEFIR_ASMCMP_VALUE_TYPE_INDIRECT:
@@ -131,6 +140,11 @@ static kefir_result_t update_virtual_register_lifetime(struct kefir_asmcmp_amd64
                 case KEFIR_ASMCMP_INDIRECT_VIRTUAL_BASIS:
                     REQUIRE_OK(kefir_asmcmp_lifetime_map_mark_activity(&allocator->liveness_map,
                                                                        value->indirect.base.vreg, lifetime_index));
+                    if (kefir_hashtree_has(&allocator->internal.preserved_vreg_candidates,
+                                           (kefir_hashtree_key_t) value->indirect.base.vreg)) {
+                        REQUIRE_OK(kefir_hashtreeset_add(mem, &allocator->internal.active_preserved_vregs,
+                                                         (kefir_hashtreeset_entry_t) value->indirect.base.vreg));
+                    }
                     break;
 
                 case KEFIR_ASMCMP_INDIRECT_INTERNAL_LABEL_BASIS:
@@ -148,6 +162,10 @@ static kefir_result_t update_virtual_register_lifetime(struct kefir_asmcmp_amd64
         case KEFIR_ASMCMP_VALUE_TYPE_STASH_INDEX:
             REQUIRE_OK(kefir_asmcmp_register_stash_vreg(&target->context, value->stash_idx, &vreg));
             REQUIRE_OK(kefir_asmcmp_lifetime_map_mark_activity(&allocator->liveness_map, vreg, lifetime_index));
+            if (kefir_hashtree_has(&allocator->internal.preserved_vreg_candidates, (kefir_hashtree_key_t) vreg)) {
+                REQUIRE_OK(kefir_hashtreeset_add(mem, &allocator->internal.active_preserved_vregs,
+                                                 (kefir_hashtreeset_entry_t) vreg));
+            }
             break;
     }
     return KEFIR_OK;
@@ -192,12 +210,49 @@ static kefir_result_t calculate_lifetimes(struct kefir_mem *mem, struct kefir_as
                 REQUIRE_OK(kefir_hashtree_delete(mem, &allocator->internal.lifetime_ranges, node->key));
                 break;
 
+            case KEFIR_ASMCMP_AMD64_OPCODE(preserve_virtual_register): {
+                struct kefir_hashtree_node *node;
+                res = kefir_hashtree_at(&allocator->internal.preserved_vreg_candidates,
+                                        (kefir_hashtree_key_t) instr->args[0].vreg.index, &node);
+                if (res == KEFIR_NOT_FOUND) {
+                    REQUIRE_OK(kefir_hashtree_insert(mem, &allocator->internal.preserved_vreg_candidates,
+                                                     (kefir_hashtree_key_t) instr->args[0].vreg.index,
+                                                     (kefir_hashtree_value_t) linear_index));
+                } else {
+                    node->value = MIN(node->value, linear_index);
+                }
+            } break;
+
             default:
-                REQUIRE_OK(update_virtual_register_lifetime(target, allocator, &instr->args[0], linear_index));
-                REQUIRE_OK(update_virtual_register_lifetime(target, allocator, &instr->args[1], linear_index));
-                REQUIRE_OK(update_virtual_register_lifetime(target, allocator, &instr->args[2], linear_index));
+                REQUIRE_OK(update_virtual_register_lifetime(mem, target, allocator, &instr->args[0], linear_index));
+                REQUIRE_OK(update_virtual_register_lifetime(mem, target, allocator, &instr->args[1], linear_index));
+                REQUIRE_OK(update_virtual_register_lifetime(mem, target, allocator, &instr->args[2], linear_index));
                 break;
         }
+    }
+
+    kefir_result_t res;
+    struct kefir_hashtreeset_iterator iter;
+    for (res = kefir_hashtreeset_iter(&allocator->internal.active_preserved_vregs, &iter); res == KEFIR_OK;
+         res = kefir_hashtreeset_next(&iter)) {
+        ASSIGN_DECL_CAST(kefir_asmcmp_virtual_register_index_t, vreg, iter.entry);
+
+        struct kefir_hashtree_node *node;
+        REQUIRE_OK(
+            kefir_hashtree_at(&allocator->internal.preserved_vreg_candidates, (kefir_hashtree_key_t) vreg, &node));
+        ASSIGN_DECL_CAST(kefir_asmcmp_instruction_index_t, preserve_index, node->value);
+
+        kefir_asmcmp_instruction_index_t global_activity_begin, global_activity_end;
+        REQUIRE_OK(kefir_asmcmp_lifetime_global_activity_for(&allocator->liveness_map, vreg, &global_activity_begin,
+                                                             &global_activity_end));
+        if (preserve_index >= global_activity_begin && preserve_index <= global_activity_end) {
+            REQUIRE_OK(kefir_asmcmp_lifetime_map_mark_activity(&allocator->liveness_map, vreg, linear_index));
+            REQUIRE_OK(
+                kefir_asmcmp_lifetime_map_add_lifetime_range(mem, &allocator->liveness_map, vreg, 0, linear_index));
+        }
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
     }
     return KEFIR_OK;
 }

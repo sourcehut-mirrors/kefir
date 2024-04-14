@@ -247,12 +247,6 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
         REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
             mem, &func->code, kefir_asmcmp_context_instr_tail(&func->code.context), func->dynamic_scope_vreg, NULL));
     }
-    for (const struct kefir_list_entry *iter = kefir_list_head(&func->keep_alive_virtual_regs); iter != NULL;
-         kefir_list_next(&iter)) {
-        ASSIGN_DECL_CAST(kefir_asmcmp_virtual_register_index_t, vreg, (kefir_uptr_t) iter->value);
-        REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
-            mem, &func->code, kefir_asmcmp_context_instr_tail(&func->code.context), vreg, NULL));
-    }
 
     REQUIRE_OK(kefir_asmcmp_amd64_noop(mem, &func->code, kefir_asmcmp_context_instr_tail(&func->code.context), NULL));
     return KEFIR_OK;
@@ -462,7 +456,6 @@ kefir_result_t kefir_codegen_amd64_function_translate(struct kefir_mem *mem, str
     REQUIRE_OK(kefir_hashtree_init(&func.virtual_registers, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&func.constants, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtreeset_init(&func.translated_instructions, &kefir_hashtree_uint_ops));
-    REQUIRE_OK(kefir_list_init(&func.keep_alive_virtual_regs));
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_init(&func.stack_frame));
     REQUIRE_OK(kefir_codegen_amd64_register_allocator_init(&func.register_allocator));
     REQUIRE_OK(kefir_abi_amd64_function_decl_alloc(mem, codegen->abi_variant, function->ir_func->declaration,
@@ -482,7 +475,6 @@ on_error1:
     kefir_abi_amd64_function_decl_free(mem, &func.abi_function_declaration);
     kefir_codegen_amd64_register_allocator_free(mem, &func.register_allocator);
     kefir_codegen_amd64_stack_frame_free(mem, &func.stack_frame);
-    kefir_list_free(mem, &func.keep_alive_virtual_regs);
     kefir_hashtreeset_free(mem, &func.translated_instructions);
     kefir_hashtree_free(mem, &func.constants);
     kefir_hashtree_free(mem, &func.instructions);

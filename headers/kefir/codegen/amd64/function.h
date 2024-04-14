@@ -44,7 +44,6 @@ typedef struct kefir_codegen_amd64_function {
     struct kefir_hashtree labels;
     struct kefir_hashtree virtual_registers;
     struct kefir_hashtree constants;
-    struct kefir_list keep_alive_virtual_regs;
     kefir_asmcmp_instruction_index_t argument_touch_instr;
     kefir_asmcmp_instruction_index_t prologue_tail;
     kefir_asmcmp_virtual_register_index_t return_address_vreg;

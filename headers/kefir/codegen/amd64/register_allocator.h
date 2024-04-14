@@ -58,6 +58,8 @@ typedef struct kefir_codegen_amd64_register_allocator {
         struct kefir_hashtreeset conflicts;
         struct kefir_hashtreeset register_conflicts;
         struct kefir_hashtreeset register_hints;
+        struct kefir_hashtree preserved_vreg_candidates;
+        struct kefir_hashtreeset active_preserved_vregs;
         struct kefir_hashtree lifetime_ranges;
         struct kefir_bitset spill_area;
         struct kefir_bitset spill_area_hints;

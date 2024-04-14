@@ -1085,7 +1085,8 @@ static kefir_result_t resolve_function_declarator(struct kefir_mem *mem, const s
         declarator->function.declarator->klass == KEFIR_AST_DECLARATOR_IDENTIFIER) {
         const char *func_identifier = declarator->function.declarator->identifier.identifier;
         if (func_identifier != NULL &&
-            (strcmp(func_identifier, "setjmp") == 0 || strcmp(func_identifier, "_setjmp") == 0 || strcmp(func_identifier, "sigsetjmp") == 0 ||
+            (strcmp(func_identifier, "setjmp") == 0 || strcmp(func_identifier, "_setjmp") == 0 ||
+             strcmp(func_identifier, "sigsetjmp") == 0 || strcmp(func_identifier, "__sigsetjmp") == 0 ||
              strcmp(func_identifier, "savectx") == 0 || strcmp(func_identifier, "vfork") == 0 ||
              strcmp(func_identifier, "getcontext") == 0)) {
             func_type->attributes.returns_twice = true;
