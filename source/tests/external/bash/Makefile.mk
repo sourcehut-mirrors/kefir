@@ -39,13 +39,16 @@ $(KEFIR_EXTERNAL_TEST_BASH_SOURCE_DIR)/bash: $(KEFIR_EXTERNAL_TEST_BASH_SOURCE_D
 		KEFIR_RTLIB="$(realpath $(LIBKEFIRRT_A))" \
 		$(MAKE) all
 
-$(KEFIR_EXTERNAL_TESTS_DIR)/bash.test.done: $(KEFIR_EXTERNAL_TEST_BASH_SOURCE_DIR)/bash
+$(KEFIR_EXTERNAL_TEST_BASH_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_BASH_SOURCE_DIR)/bash
 	@echo "Testing bash $(KEFIR_EXTERNAL_TEST_BASH_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_BASH_SOURCE_DIR)" && \
 		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		KEFIR_RTLIB="$(realpath $(LIBKEFIRRT_A))" \
-		$(MAKE) test
+		$(MAKE) test 2>&1 | tee "$(shell realpath "$@.tmp")"
+	@mv "$@.tmp" "$@"
+
+$(KEFIR_EXTERNAL_TESTS_DIR)/bash.test.done: $(KEFIR_EXTERNAL_TEST_BASH_DIR)/tests.log
 	@touch "$@"
 	@echo "Bash $(KEFIR_EXTERNAL_TEST_BASH_VERSION) validation successfully finished"
 
