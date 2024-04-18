@@ -54,7 +54,7 @@ static kefir_result_t translate_instruction_collector_callback(kefir_opt_instruc
     ASSIGN_DECL_CAST(struct translate_instruction_collector_param *, param, payload);
     REQUIRE(param != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid collector callback parameter"));
 
-    struct kefir_opt_instruction *instr;
+    const struct kefir_opt_instruction *instr;
     REQUIRE_OK(kefir_opt_code_container_instr(&param->func->function->code, instr_ref, &instr));
 
     if (param->func->function_analysis->blocks[instr->block_id].reachable) {
@@ -70,14 +70,16 @@ static kefir_result_t collect_translated_instructions_impl(struct kefir_mem *mem
         const struct kefir_opt_code_analysis_block_properties *block_props =
             func->function_analysis->block_linearization[block_idx];
 
-        struct kefir_opt_code_block *block;
+        const struct kefir_opt_code_block *block;
         REQUIRE_OK(kefir_opt_code_container_block(&func->function->code, block_props->block_id, &block));
 
-        struct kefir_opt_instruction *instr;
-        REQUIRE_OK(kefir_opt_code_block_instr_control_head(&func->function->code, block, &instr));
-        for (; instr != NULL;) {
+        kefir_opt_instruction_ref_t instr_ref;
+        const struct kefir_opt_instruction *instr;
+        REQUIRE_OK(kefir_opt_code_block_instr_control_head(&func->function->code, block, &instr_ref));
+        for (; instr_ref != KEFIR_ID_NONE;) {
+            REQUIRE_OK(kefir_opt_code_container_instr(&func->function->code, instr_ref, &instr));
             REQUIRE_OK(kefir_list_insert_after(mem, queue, kefir_list_tail(queue), (void *) instr));
-            REQUIRE_OK(kefir_opt_instruction_next_control(&func->function->code, instr, &instr));
+            REQUIRE_OK(kefir_opt_instruction_next_control(&func->function->code, instr_ref, &instr_ref));
         }
     }
 
@@ -133,15 +135,11 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
         REQUIRE_OK(kefir_hashtree_insert(mem, &func->labels, (kefir_hashtree_key_t) block_props->block_id,
                                          (kefir_hashtree_value_t) asmlabel));
 
-        struct kefir_opt_code_block *block;
-        REQUIRE_OK(kefir_opt_code_container_block(&func->function->code, block_props->block_id, &block));
-
         kefir_result_t res;
-        struct kefir_hashtreeset_iterator iter;
-        const char *public_label;
-        for (res = kefir_opt_code_container_block_public_labels_iter(block, &iter, &public_label); res == KEFIR_OK;
-             res = kefir_opt_code_container_block_public_labels_next(&iter, &public_label)) {
-            REQUIRE_OK(kefir_asmcmp_context_label_add_public_name(mem, &func->code.context, asmlabel, public_label));
+        struct kefir_opt_code_block_public_label_iterator iter;
+        for (res = kefir_opt_code_container_block_public_labels_iter(&func->function->code, block_props->block_id, &iter); res == KEFIR_OK;
+             res = kefir_opt_code_container_block_public_labels_next(&iter)) {
+            REQUIRE_OK(kefir_asmcmp_context_label_add_public_name(mem, &func->code.context, asmlabel, iter.public_label));
         }
         if (res != KEFIR_ITERATOR_END) {
             REQUIRE_OK(res);
@@ -180,7 +178,7 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
 
         for (kefir_size_t instr_idx = block_props->linear_range.begin_index;
              instr_idx < block_props->linear_range.end_index; instr_idx++) {
-            struct kefir_opt_instruction *instr = NULL;
+            const struct kefir_opt_instruction *instr = NULL;
             REQUIRE_OK(kefir_opt_code_container_instr(
                 &func->function->code, func->function_analysis->linearization[instr_idx]->instr_ref, &instr));
             REQUIRE_OK(translate_instruction(mem, func, instr));
@@ -263,7 +261,7 @@ static kefir_result_t generate_constants(struct kefir_mem *mem, struct kefir_cod
         ASSIGN_DECL_CAST(kefir_asmcmp_label_index_t, constant_label, node->key);
         ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, instr_ref, node->value);
 
-        struct kefir_opt_instruction *instr;
+        const struct kefir_opt_instruction *instr;
         REQUIRE_OK(kefir_opt_code_container_instr(&func->function->code, instr_ref, &instr));
         switch (instr->operation.opcode) {
             case KEFIR_OPT_OPCODE_FLOAT32_CONST: {

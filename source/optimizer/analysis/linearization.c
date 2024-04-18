@@ -41,18 +41,19 @@ static kefir_result_t linearize_impl(struct kefir_mem *mem, struct kefir_opt_cod
         analysis->blocks[block_id].linear_position = ++block_index;
         analysis->blocks[block_id].linear_range.begin_index = linear_index;
 
-        struct kefir_opt_code_block *block = NULL;
+        const struct kefir_opt_code_block *block = NULL;
         REQUIRE_OK(kefir_opt_code_container_block(analysis->code, block_id, &block));
-        struct kefir_opt_instruction *instr = NULL;
-        for (res = kefir_opt_code_block_instr_head(analysis->code, block, &instr); res == KEFIR_OK && instr != NULL;
-             res = kefir_opt_instruction_next_sibling(analysis->code, instr, &instr)) {
+        
+        kefir_opt_instruction_ref_t instr_ref;
+        for (res = kefir_opt_code_block_instr_head(analysis->code, block, &instr_ref); res == KEFIR_OK && instr_ref != KEFIR_ID_NONE;
+             res = kefir_opt_instruction_next_sibling(analysis->code, instr_ref, &instr_ref)) {
 
-            if (!analysis->instructions[instr->id].reachable) {
+            if (!analysis->instructions[instr_ref].reachable) {
                 continue;
             }
 
-            analysis->linearization[linear_index] = &analysis->instructions[instr->id];
-            analysis->instructions[instr->id].linear_position = linear_index++;
+            analysis->linearization[linear_index] = &analysis->instructions[instr_ref];
+            analysis->instructions[instr_ref].linear_position = linear_index++;
         }
         REQUIRE_OK(res);
 

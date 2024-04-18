@@ -506,10 +506,12 @@ static kefir_result_t code_block_format(struct kefir_json_output *json, const st
     REQUIRE_OK(kefir_json_output_object_key(json, "phi"));
     REQUIRE_OK(kefir_json_output_array_begin(json));
     kefir_result_t res;
-    struct kefir_opt_phi_node *phi = NULL;
-    for (res = kefir_opt_code_block_phi_head(code, block, &phi); res == KEFIR_OK && phi != NULL;
-         res = kefir_opt_phi_next_sibling(code, phi, &phi)) {
+    kefir_opt_phi_id_t phi_ref;
+    const struct kefir_opt_phi_node *phi = NULL;
+    for (res = kefir_opt_code_block_phi_head(code, block, &phi_ref); res == KEFIR_OK && phi_ref != KEFIR_ID_NONE;
+         res = kefir_opt_phi_next_sibling(code, phi_ref, &phi_ref)) {
 
+        REQUIRE_OK(kefir_opt_code_container_phi(code, phi_ref, &phi));
         REQUIRE_OK(phi_format(json, phi, code_analysis));
     }
     REQUIRE_OK(res);
@@ -517,10 +519,12 @@ static kefir_result_t code_block_format(struct kefir_json_output *json, const st
 
     REQUIRE_OK(kefir_json_output_object_key(json, "calls"));
     REQUIRE_OK(kefir_json_output_array_begin(json));
-    struct kefir_opt_call_node *call = NULL;
-    for (res = kefir_opt_code_block_call_head(code, block, &call); res == KEFIR_OK && call != NULL;
-         res = kefir_opt_call_next_sibling(code, call, &call)) {
+    kefir_opt_call_id_t call_ref;
+    const struct kefir_opt_call_node *call = NULL;
+    for (res = kefir_opt_code_block_call_head(code, block, &call_ref); res == KEFIR_OK && call_ref != KEFIR_ID_NONE;
+         res = kefir_opt_call_next_sibling(code, call_ref, &call_ref)) {
 
+        REQUIRE_OK(kefir_opt_code_container_call(code, call_ref, &call));
         REQUIRE_OK(call_format(json, call));
     }
     REQUIRE_OK(res);
@@ -528,11 +532,14 @@ static kefir_result_t code_block_format(struct kefir_json_output *json, const st
 
     REQUIRE_OK(kefir_json_output_object_key(json, "inline_assembly"));
     REQUIRE_OK(kefir_json_output_array_begin(json));
-    struct kefir_opt_inline_assembly_node *inline_asm = NULL;
-    for (res = kefir_opt_code_block_inline_assembly_head(code, block, &inline_asm);
-         res == KEFIR_OK && inline_asm != NULL;
-         res = kefir_opt_inline_assembly_next_sibling(code, inline_asm, &inline_asm)) {
 
+    kefir_opt_inline_assembly_id_t inline_asm_id;
+    const struct kefir_opt_inline_assembly_node *inline_asm = NULL;
+    for (res = kefir_opt_code_block_inline_assembly_head(code, block, &inline_asm_id);
+         res == KEFIR_OK && inline_asm_id != KEFIR_ID_NONE;
+         res = kefir_opt_inline_assembly_next_sibling(code, inline_asm_id, &inline_asm_id)) {
+
+        REQUIRE_OK(kefir_opt_code_container_inline_assembly(code, inline_asm_id, &inline_asm));
         REQUIRE_OK(inline_asm_format(json, inline_asm));
     }
     REQUIRE_OK(res);
@@ -540,10 +547,13 @@ static kefir_result_t code_block_format(struct kefir_json_output *json, const st
 
     REQUIRE_OK(kefir_json_output_object_key(json, "code"));
     REQUIRE_OK(kefir_json_output_array_begin(json));
-    struct kefir_opt_instruction *instr = NULL;
-    for (res = kefir_opt_code_block_instr_head(code, block, &instr); res == KEFIR_OK && instr != NULL;
-         res = kefir_opt_instruction_next_sibling(code, instr, &instr)) {
 
+    kefir_opt_instruction_ref_t instr_ref;
+    const struct kefir_opt_instruction *instr = NULL;
+    for (res = kefir_opt_code_block_instr_head(code, block, &instr_ref); res == KEFIR_OK && instr_ref != KEFIR_ID_NONE;
+         res = kefir_opt_instruction_next_sibling(code, instr_ref, &instr_ref)) {
+
+        REQUIRE_OK(kefir_opt_code_container_instr(code, instr_ref, &instr));
         REQUIRE_OK(instr_format(json, instr, code_analysis));
     }
     REQUIRE_OK(res);

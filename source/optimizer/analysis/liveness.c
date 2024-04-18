@@ -31,7 +31,7 @@ static kefir_result_t add_liveness_range(struct kefir_opt_code_liveness_interval
     REQUIRE(instr_props->reachable,
             KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unable to add liveness range to an unreachable instruction"));
 
-    struct kefir_opt_instruction *instr = NULL;
+    const struct kefir_opt_instruction *instr = NULL;
     REQUIRE_OK(kefir_opt_code_container_instr(intervals->analysis->code, instr_props->instr_ref, &instr));
     if (instr->operation.opcode != KEFIR_OPT_OPCODE_GET_ARGUMENT) {
         from = MAX(instr_props->linear_position, from);
@@ -84,13 +84,16 @@ static kefir_result_t build_block_intervals(struct kefir_mem *mem, struct kefir_
          kefir_list_next(&iter)) {
         ASSIGN_DECL_CAST(kefir_opt_block_id_t, successor_block_id, (kefir_uptr_t) iter->value);
 
-        struct kefir_opt_code_block *successor_block = NULL;
+        const struct kefir_opt_code_block *successor_block = NULL;
         REQUIRE_OK(kefir_opt_code_container_block(intervals->analysis->code, successor_block_id, &successor_block));
 
-        struct kefir_opt_phi_node *successor_phi = NULL;
-        for (res = kefir_opt_code_block_phi_head(intervals->analysis->code, successor_block, &successor_phi);
-             res == KEFIR_OK && successor_phi != NULL;
-             res = kefir_opt_phi_next_sibling(intervals->analysis->code, successor_phi, &successor_phi)) {
+        kefir_opt_phi_id_t successor_phi_ref;
+        const struct kefir_opt_phi_node *successor_phi = NULL;
+        for (res = kefir_opt_code_block_phi_head(intervals->analysis->code, successor_block, &successor_phi_ref);
+             res == KEFIR_OK && successor_phi_ref != KEFIR_ID_NONE;
+             res = kefir_opt_phi_next_sibling(intervals->analysis->code, successor_phi_ref, &successor_phi_ref)) {
+            REQUIRE_OK(kefir_opt_code_container_phi(intervals->analysis->code, successor_phi_ref, &successor_phi));
+            
             kefir_opt_instruction_ref_t link_ref;
             REQUIRE_OK(kefir_opt_code_container_phi_link_for(intervals->analysis->code, successor_phi->node_id,
                                                              block_props->block_id, &link_ref));
@@ -125,7 +128,7 @@ static kefir_result_t build_block_intervals(struct kefir_mem *mem, struct kefir_
         struct kefir_opt_code_analysis_instruction_properties *instr_props =
             intervals->analysis->linearization[instr_idx - 1];
 
-        struct kefir_opt_instruction *instr = NULL;
+        const struct kefir_opt_instruction *instr = NULL;
         REQUIRE_OK(kefir_opt_code_container_instr(intervals->analysis->code, instr_props->instr_ref, &instr));
 
         REQUIRE_OK(add_liveness_range(intervals, instr_props->instr_ref, instr_props->linear_position,
@@ -139,11 +142,13 @@ static kefir_result_t build_block_intervals(struct kefir_mem *mem, struct kefir_
     }
 
     // Remove phi nodes from live set
-    struct kefir_opt_code_block *block = NULL;
+    const struct kefir_opt_code_block *block = NULL;
     REQUIRE_OK(kefir_opt_code_container_block(intervals->analysis->code, block_props->block_id, &block));
-    struct kefir_opt_phi_node *phi = NULL;
-    for (res = kefir_opt_code_block_phi_head(intervals->analysis->code, block, &phi); res == KEFIR_OK && phi != NULL;
-         res = kefir_opt_phi_next_sibling(intervals->analysis->code, phi, &phi)) {
+    kefir_opt_phi_id_t phi_ref;
+    const struct kefir_opt_phi_node *phi = NULL;
+    for (res = kefir_opt_code_block_phi_head(intervals->analysis->code, block, &phi_ref); res == KEFIR_OK && phi_ref != KEFIR_ID_NONE;
+         res = kefir_opt_phi_next_sibling(intervals->analysis->code, phi_ref, &phi_ref)) {
+        REQUIRE_OK(kefir_opt_code_container_phi(intervals->analysis->code, phi_ref, &phi));
         REQUIRE_OK(kefir_hashtreeset_delete(mem, live, (kefir_hashtreeset_entry_t) phi->output_ref));
     }
     REQUIRE_OK(res);

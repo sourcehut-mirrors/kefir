@@ -38,13 +38,13 @@ static kefir_result_t mark_reachable_code_in_block(struct kefir_mem *mem, struct
     analysis->blocks[block_id].reachable = true;
     analysis->block_linearization_length++;
 
-    struct kefir_opt_code_block *block = NULL;
+    const struct kefir_opt_code_block *block = NULL;
     REQUIRE_OK(kefir_opt_code_container_block(analysis->code, block_id, &block));
-    struct kefir_opt_instruction *instr = NULL;
+    kefir_opt_instruction_ref_t instr_ref;
     kefir_result_t res;
-    for (res = kefir_opt_code_block_instr_control_head(analysis->code, block, &instr); res == KEFIR_OK && instr != NULL;
-         res = kefir_opt_instruction_next_control(analysis->code, instr, &instr)) {
-        INSERT_INTO_QUEUE(mem, queue, instr->id);
+    for (res = kefir_opt_code_block_instr_control_head(analysis->code, block, &instr_ref); res == KEFIR_OK && instr_ref != KEFIR_ID_NONE;
+         res = kefir_opt_instruction_next_control(analysis->code, instr_ref, &instr_ref)) {
+        INSERT_INTO_QUEUE(mem, queue, instr_ref);
     }
     REQUIRE_OK(res);
     return KEFIR_OK;
@@ -182,7 +182,7 @@ static kefir_result_t find_reachable_code_none(struct kefir_mem *mem, struct kef
 static kefir_result_t find_reachable_code_call_ref(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
                                                    struct kefir_list *queue,
                                                    const struct kefir_opt_instruction *instr) {
-    struct kefir_opt_call_node *call = NULL;
+    const struct kefir_opt_call_node *call = NULL;
     REQUIRE_OK(
         kefir_opt_code_container_call(analysis->code, instr->operation.parameters.function_call.call_ref, &call));
     INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.function_call.indirect_ref);
@@ -194,7 +194,7 @@ static kefir_result_t find_reachable_code_call_ref(struct kefir_mem *mem, struct
 
 static kefir_result_t find_reachable_code_phi_ref(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
                                                   struct kefir_list *queue, const struct kefir_opt_instruction *instr) {
-    struct kefir_opt_phi_node *phi = NULL;
+    const struct kefir_opt_phi_node *phi = NULL;
     REQUIRE_OK(kefir_opt_code_container_phi(analysis->code, instr->operation.parameters.phi_ref, &phi));
 
     kefir_result_t res;
@@ -216,7 +216,7 @@ static kefir_result_t find_reachable_code_phi_ref(struct kefir_mem *mem, struct 
 static kefir_result_t find_reachable_code_inline_asm(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
                                                      struct kefir_list *queue,
                                                      const struct kefir_opt_instruction *instr) {
-    struct kefir_opt_inline_assembly_node *inline_asm = NULL;
+    const struct kefir_opt_inline_assembly_node *inline_asm = NULL;
     REQUIRE_OK(kefir_opt_code_container_inline_assembly(analysis->code, instr->operation.parameters.inline_asm_ref,
                                                         &inline_asm));
     for (kefir_size_t i = 0; i < inline_asm->parameter_count; i++) {
@@ -248,7 +248,7 @@ static kefir_result_t find_reachable_code_loop(struct kefir_mem *mem, struct kef
         }
 
         analysis->instructions[instr_ref].reachable = true;
-        struct kefir_opt_instruction *instr = NULL;
+        const struct kefir_opt_instruction *instr = NULL;
         REQUIRE_OK(kefir_opt_code_container_instr(analysis->code, instr_ref, &instr));
 
         if (instr->operation.opcode == KEFIR_OPT_OPCODE_PHI && phi_queue != NULL) {
@@ -280,7 +280,7 @@ static kefir_result_t find_reachable_code_impl(struct kefir_mem *mem, struct kef
     kefir_size_t total_block_count;
     REQUIRE_OK(kefir_opt_code_container_block_count(analysis->code, &total_block_count));
     for (kefir_opt_block_id_t block_id = 0; block_id < total_block_count; block_id++) {
-        struct kefir_opt_code_block *block;
+        const struct kefir_opt_code_block *block;
         REQUIRE_OK(kefir_opt_code_container_block(analysis->code, block_id, &block));
         if (!kefir_hashtreeset_empty(&block->public_labels)) {
             REQUIRE_OK(mark_reachable_code_in_block(mem, analysis, block_id, queue));

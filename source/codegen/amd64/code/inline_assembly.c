@@ -60,7 +60,7 @@ typedef struct inline_assembly_parameter_allocation_entry {
 
 struct inline_assembly_context {
     const struct kefir_opt_instruction *instruction;
-    struct kefir_opt_inline_assembly_node *inline_assembly;
+    const struct kefir_opt_inline_assembly_node *inline_assembly;
     const struct kefir_ir_inline_assembly *ir_inline_assembly;
     kefir_asmcmp_stash_index_t stash_idx;
     kefir_bool_t dirty_cc;
@@ -350,8 +350,8 @@ static kefir_result_t preserve_output_addresses(struct kefir_mem *mem, struct ke
 
         struct inline_assembly_parameter_allocation_entry *entry = &context->parameters[ir_asm_param->parameter_id];
         if (entry->output_address_vreg != KEFIR_ASMCMP_INDEX_NONE) {
-            struct kefir_opt_inline_assembly_parameter *asm_param = NULL;
-            REQUIRE_OK(kefir_opt_code_container_inline_assembly_parameter(
+            const struct kefir_opt_inline_assembly_parameter *asm_param = NULL;
+            REQUIRE_OK(kefir_opt_code_container_inline_assembly_get_parameter(
                 &function->function->code, context->inline_assembly->node_id, ir_asm_param->parameter_id, &asm_param));
 
             kefir_asmcmp_virtual_register_index_t vreg;
@@ -370,8 +370,8 @@ static kefir_result_t load_inputs(struct kefir_mem *mem, struct kefir_codegen_am
     for (const struct kefir_list_entry *iter = kefir_list_head(&context->ir_inline_assembly->parameter_list);
          iter != NULL; kefir_list_next(&iter)) {
         ASSIGN_DECL_CAST(const struct kefir_ir_inline_assembly_parameter *, ir_asm_param, iter->value);
-        struct kefir_opt_inline_assembly_parameter *asm_param = NULL;
-        REQUIRE_OK(kefir_opt_code_container_inline_assembly_parameter(
+        const struct kefir_opt_inline_assembly_parameter *asm_param = NULL;
+        REQUIRE_OK(kefir_opt_code_container_inline_assembly_get_parameter(
             &function->function->code, context->inline_assembly->node_id, ir_asm_param->parameter_id, &asm_param));
         struct inline_assembly_parameter_allocation_entry *entry = &context->parameters[ir_asm_param->parameter_id];
 
@@ -428,8 +428,8 @@ static kefir_result_t read_inputs(struct kefir_mem *mem, struct kefir_codegen_am
     for (const struct kefir_list_entry *iter = kefir_list_head(&context->ir_inline_assembly->parameter_list);
          iter != NULL; kefir_list_next(&iter)) {
         ASSIGN_DECL_CAST(const struct kefir_ir_inline_assembly_parameter *, ir_asm_param, iter->value);
-        struct kefir_opt_inline_assembly_parameter *asm_param = NULL;
-        REQUIRE_OK(kefir_opt_code_container_inline_assembly_parameter(
+        const struct kefir_opt_inline_assembly_parameter *asm_param = NULL;
+        REQUIRE_OK(kefir_opt_code_container_inline_assembly_get_parameter(
             &function->function->code, context->inline_assembly->node_id, ir_asm_param->parameter_id, &asm_param));
         struct inline_assembly_parameter_allocation_entry *entry = &context->parameters[ir_asm_param->parameter_id];
 

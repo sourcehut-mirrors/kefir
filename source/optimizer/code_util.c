@@ -189,7 +189,7 @@ static kefir_result_t extract_inputs_call_ref(const struct kefir_opt_code_contai
                                               kefir_result_t (*callback)(kefir_opt_instruction_ref_t, void *),
                                               void *payload) {
     UNUSED(block_local);
-    struct kefir_opt_call_node *call = NULL;
+    const struct kefir_opt_call_node *call = NULL;
     REQUIRE_OK(kefir_opt_code_container_call(code, instr->operation.parameters.function_call.call_ref, &call));
     INPUT_CALLBACK(instr->operation.parameters.function_call.indirect_ref, callback, payload);
     for (kefir_size_t i = 0; i < call->argument_count; i++) {
@@ -203,7 +203,7 @@ static kefir_result_t extract_inputs_phi_ref(const struct kefir_opt_code_contain
                                              kefir_result_t (*callback)(kefir_opt_instruction_ref_t, void *),
                                              void *payload) {
     if (!block_local) {
-        struct kefir_opt_phi_node *phi_node;
+        const struct kefir_opt_phi_node *phi_node;
         REQUIRE_OK(kefir_opt_code_container_phi(code, instr->operation.parameters.phi_ref, &phi_node));
         struct kefir_opt_phi_node_link_iterator iter;
         kefir_opt_block_id_t block_id;
@@ -225,7 +225,7 @@ static kefir_result_t extract_inputs_inline_asm(const struct kefir_opt_code_cont
                                                 kefir_result_t (*callback)(kefir_opt_instruction_ref_t, void *),
                                                 void *payload) {
     UNUSED(block_local);
-    struct kefir_opt_inline_assembly_node *inline_asm = NULL;
+    const struct kefir_opt_inline_assembly_node *inline_asm = NULL;
     REQUIRE_OK(kefir_opt_code_container_inline_assembly(code, instr->operation.parameters.inline_asm_ref, &inline_asm));
     for (kefir_size_t i = 0; i < inline_asm->parameter_count; i++) {
         INPUT_CALLBACK(inline_asm->parameters[i].read_ref, callback, payload);

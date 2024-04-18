@@ -180,14 +180,16 @@ kefir_result_t kefir_codegen_amd64_function_map_phi_outputs(struct kefir_mem *me
                                                             struct kefir_codegen_amd64_function *function,
                                                             kefir_opt_block_id_t target_block_ref,
                                                             kefir_opt_block_id_t source_block_ref) {
-    struct kefir_opt_code_block *target_block;
+    const struct kefir_opt_code_block *target_block;
     REQUIRE_OK(kefir_opt_code_container_block(&function->function->code, target_block_ref, &target_block));
 
     kefir_result_t res;
-    struct kefir_opt_phi_node *phi = NULL;
-    for (res = kefir_opt_code_block_phi_head(&function->function->code, target_block, &phi);
-         res == KEFIR_OK && phi != NULL; res = kefir_opt_phi_next_sibling(&function->function->code, phi, &phi)) {
+    kefir_opt_phi_id_t phi_ref;
+    const struct kefir_opt_phi_node *phi = NULL;
+    for (res = kefir_opt_code_block_phi_head(&function->function->code, target_block, &phi_ref);
+         res == KEFIR_OK && phi_ref != KEFIR_ID_NONE; res = kefir_opt_phi_next_sibling(&function->function->code, phi_ref, &phi_ref)) {
 
+        REQUIRE_OK(kefir_opt_code_container_phi(&function->function->code, phi_ref, &phi));
         if (!function->function_analysis->instructions[phi->output_ref].reachable ||
             !kefir_hashtreeset_has(&function->translated_instructions, (kefir_hashtreeset_entry_t) phi->output_ref)) {
             continue;
@@ -252,9 +254,10 @@ kefir_result_t kefir_codegen_amd64_function_map_phi_outputs(struct kefir_mem *me
     }
     REQUIRE_OK(res);
 
-    for (res = kefir_opt_code_block_phi_head(&function->function->code, target_block, &phi);
-         res == KEFIR_OK && phi != NULL; res = kefir_opt_phi_next_sibling(&function->function->code, phi, &phi)) {
+    for (res = kefir_opt_code_block_phi_head(&function->function->code, target_block, &phi_ref);
+         res == KEFIR_OK && phi_ref != KEFIR_ID_NONE; res = kefir_opt_phi_next_sibling(&function->function->code, phi_ref, &phi_ref)) {
 
+        REQUIRE_OK(kefir_opt_code_container_phi(&function->function->code, phi_ref, &phi));
         if (!function->function_analysis->instructions[phi->output_ref].reachable ||
             !kefir_hashtreeset_has(&function->translated_instructions, (kefir_hashtreeset_entry_t) phi->output_ref)) {
             continue;
@@ -278,13 +281,15 @@ kefir_result_t kefir_codegen_amd64_function_map_phi_outputs(struct kefir_mem *me
 }
 
 static kefir_result_t has_phi_outputs(struct kefir_codegen_amd64_function *function,
-                                      struct kefir_opt_code_block *target_block, kefir_bool_t *has_outputs) {
-    struct kefir_opt_phi_node *phi = NULL;
+                                      const struct kefir_opt_code_block *target_block, kefir_bool_t *has_outputs) {
+    kefir_opt_phi_id_t phi_ref;
+    const struct kefir_opt_phi_node *phi = NULL;
     kefir_result_t res;
     *has_outputs = false;
-    for (res = kefir_opt_code_block_phi_head(&function->function->code, target_block, &phi);
-         res == KEFIR_OK && phi != NULL; res = kefir_opt_phi_next_sibling(&function->function->code, phi, &phi)) {
+    for (res = kefir_opt_code_block_phi_head(&function->function->code, target_block, &phi_ref);
+         res == KEFIR_OK && phi_ref != KEFIR_ID_NONE; res = kefir_opt_phi_next_sibling(&function->function->code, phi_ref, &phi_ref)) {
 
+        REQUIRE_OK(kefir_opt_code_container_phi(&function->function->code, phi_ref, &phi));
         if (!function->function_analysis->instructions[phi->output_ref].reachable ||
             !kefir_hashtreeset_has(&function->translated_instructions, (kefir_hashtreeset_entry_t) phi->output_ref)) {
             continue;
@@ -304,7 +309,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(jump)(struct kefir_mem *mem,
     REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
 
-    struct kefir_opt_code_block *target_block, *source_block;
+    const struct kefir_opt_code_block *target_block, *source_block;
     REQUIRE_OK(kefir_opt_code_container_block(&function->function->code,
                                               instruction->operation.parameters.branch.target_block, &target_block));
     REQUIRE_OK(kefir_opt_code_container_block(&function->function->code, instruction->block_id, &source_block));
@@ -329,7 +334,7 @@ static kefir_result_t fused_comparison_match_impl(
     struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
     const struct kefir_opt_instruction *instruction,
     const struct kefir_codegen_amd64_comparison_match_op *fused_comparison_op) {
-    struct kefir_opt_code_block *target_block, *alternative_block, *source_block;
+    const struct kefir_opt_code_block *target_block, *alternative_block, *source_block;
     REQUIRE_OK(kefir_opt_code_container_block(&function->function->code,
                                               instruction->operation.parameters.branch.target_block, &target_block));
     REQUIRE_OK(kefir_opt_code_container_block(
@@ -817,7 +822,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(branch)(struct kefir_mem *me
         return KEFIR_OK;
     }
 
-    struct kefir_opt_code_block *target_block, *alternative_block, *source_block;
+    const struct kefir_opt_code_block *target_block, *alternative_block, *source_block;
     REQUIRE_OK(kefir_opt_code_container_block(&function->function->code,
                                               instruction->operation.parameters.branch.target_block, &target_block));
     REQUIRE_OK(kefir_opt_code_container_block(

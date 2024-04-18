@@ -34,9 +34,11 @@ struct phi_pull_state {
     struct kefir_hashtreeset visited_blocks;
 };
 
-static kefir_result_t update_queue(struct phi_pull_state *state, struct kefir_opt_code_block *block) {
-    struct kefir_opt_instruction *tail_instr;
-    REQUIRE_OK(kefir_opt_code_block_instr_control_tail(&state->func->code, block, &tail_instr));
+static kefir_result_t update_queue(struct phi_pull_state *state, const struct kefir_opt_code_block *block) {
+    kefir_opt_instruction_ref_t tail_instr_ref;
+    const struct kefir_opt_instruction *tail_instr;
+    REQUIRE_OK(kefir_opt_code_block_instr_control_tail(&state->func->code, block, &tail_instr_ref));
+    REQUIRE_OK(kefir_opt_code_container_instr(&state->func->code, tail_instr_ref, &tail_instr));
 
     kefir_opt_block_id_t target_block_id, alternative_block_id;
     switch (tail_instr->operation.opcode) {
@@ -56,7 +58,7 @@ static kefir_result_t update_queue(struct phi_pull_state *state, struct kefir_op
             break;
 
         case KEFIR_OPT_OPCODE_INLINE_ASSEMBLY: {
-            struct kefir_opt_inline_assembly_node *inline_asm;
+            const struct kefir_opt_inline_assembly_node *inline_asm;
             REQUIRE_OK(kefir_opt_code_container_inline_assembly(
                 &state->func->code, tail_instr->operation.parameters.inline_asm_ref, &inline_asm));
 
@@ -102,16 +104,17 @@ static kefir_result_t phi_pull_impl(struct phi_pull_state *state) {
         }
         REQUIRE_OK(kefir_hashtreeset_add(state->mem, &state->visited_blocks, (kefir_hashtreeset_entry_t) block_id));
 
-        struct kefir_opt_code_block *block;
+        const struct kefir_opt_code_block *block;
         REQUIRE_OK(kefir_opt_code_container_block(&state->func->code, block_id, &block));
         REQUIRE_OK(update_queue(state, block));
 
-        struct kefir_opt_phi_node *phi_node;
+        kefir_opt_phi_id_t phi_ref;
+        const struct kefir_opt_phi_node *phi_node;
         kefir_result_t res;
-        for (res = kefir_opt_code_block_phi_head(&state->func->code, block, &phi_node);
-             res == KEFIR_OK && phi_node != NULL;
-             res = kefir_opt_phi_next_sibling(&state->func->code, phi_node, &phi_node)) {
+        for (res = kefir_opt_code_block_phi_head(&state->func->code, block, &phi_ref);
+             res == KEFIR_OK && phi_ref != KEFIR_ID_NONE;) {
 
+            REQUIRE_OK(kefir_opt_code_container_phi(&state->func->code, phi_ref, &phi_node));
             struct kefir_hashtree_node_iterator iter;
             const struct kefir_hashtree_node *node = kefir_hashtree_iter(&phi_node->links, &iter);
             if (node == NULL) {
@@ -119,7 +122,7 @@ static kefir_result_t phi_pull_impl(struct phi_pull_state *state) {
             }
 
             ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, instr_ref, node->value);
-            struct kefir_opt_instruction *instr;
+            const struct kefir_opt_instruction *instr;
             REQUIRE_OK(kefir_opt_code_container_instr(&state->func->code, instr_ref, &instr));
 
             kefir_bool_t pull = true;
@@ -128,7 +131,7 @@ static kefir_result_t phi_pull_impl(struct phi_pull_state *state) {
     do {                                                                                                   \
         for (node = kefir_hashtree_next(&iter); node != NULL; node = kefir_hashtree_next(&iter)) {         \
             ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, other_instr_ref, node->value);                   \
-            struct kefir_opt_instruction *other_instr;                                                     \
+            const struct kefir_opt_instruction *other_instr;                                                     \
             REQUIRE_OK(kefir_opt_code_container_instr(&state->func->code, other_instr_ref, &other_instr)); \
             if (_cond) {                                                                                   \
                 pull = false;                                                                              \
@@ -187,14 +190,19 @@ static kefir_result_t phi_pull_impl(struct phi_pull_state *state) {
             if (pull) {
                 kefir_opt_instruction_ref_t replacement_ref;
                 const struct kefir_opt_operation op = instr->operation;
-                REQUIRE_OK(kefir_opt_code_container_new_instruction(state->mem, &state->func->code, block, &op,
+                REQUIRE_OK(kefir_opt_code_container_new_instruction(state->mem, &state->func->code, block_id, &op,
                                                                     &replacement_ref));
                 REQUIRE_OK(kefir_opt_code_container_instruction_move_after(&state->func->code, phi_node->output_ref,
                                                                            replacement_ref));
                 REQUIRE_OK(kefir_opt_code_container_replace_references(&state->func->code, replacement_ref,
                                                                        phi_node->output_ref));
                 REQUIRE_OK(kefir_opt_code_container_drop_instr(&state->func->code, phi_node->output_ref));
-                REQUIRE_OK(kefir_opt_code_container_drop_phi(&state->func->code, phi_node->node_id));
+
+                kefir_opt_phi_id_t prev_phi_ref = phi_ref;
+                REQUIRE_OK(kefir_opt_phi_next_sibling(&state->func->code, phi_ref, &phi_ref));
+                REQUIRE_OK(kefir_opt_code_container_drop_phi(&state->func->code, prev_phi_ref));
+            } else {
+                REQUIRE_OK(kefir_opt_phi_next_sibling(&state->func->code, phi_ref, &phi_ref));
             }
         }
         REQUIRE_OK(res);

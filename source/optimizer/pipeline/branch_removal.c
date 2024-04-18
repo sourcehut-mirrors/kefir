@@ -34,17 +34,18 @@ static kefir_result_t branch_removal_apply(struct kefir_mem *mem, const struct k
     for (struct kefir_opt_code_block *block = kefir_opt_code_container_iter(&func->code, &iter); block != NULL;
          block = kefir_opt_code_container_next(&iter)) {
 
-        struct kefir_opt_instruction *instr = NULL;
-        REQUIRE_OK(kefir_opt_code_block_instr_control_tail(&func->code, block, &instr));
+        kefir_opt_instruction_ref_t instr_id;
+        const struct kefir_opt_instruction *instr = NULL;
+        REQUIRE_OK(kefir_opt_code_block_instr_control_tail(&func->code, block, &instr_id));
+        REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr_id, &instr));
         if (instr->operation.opcode != KEFIR_OPT_OPCODE_BRANCH) {
             continue;
         }
 
         const kefir_opt_block_id_t block_id = instr->block_id;
-        const kefir_opt_instruction_ref_t instr_id = instr->id;
         kefir_opt_instruction_ref_t replacement_ref = KEFIR_ID_NONE;
 
-        struct kefir_opt_instruction *arg1;
+        const struct kefir_opt_instruction *arg1;
         REQUIRE_OK(
             kefir_opt_code_container_instr(&func->code, instr->operation.parameters.branch.condition_ref, &arg1));
         if (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST ||

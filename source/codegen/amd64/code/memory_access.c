@@ -26,7 +26,7 @@
 
 static kefir_result_t is_local_var(struct kefir_codegen_amd64_function *function, kefir_opt_instruction_ref_t instr_ref,
                                    kefir_bool_t *res, kefir_size_t *local_index, kefir_int64_t *offset) {
-    struct kefir_opt_instruction *location_instr;
+    const struct kefir_opt_instruction *location_instr;
     REQUIRE_OK(kefir_opt_code_container_instr(&function->function->code, instr_ref, &location_instr));
     if (location_instr->operation.opcode == KEFIR_OPT_OPCODE_GET_LOCAL &&
         location_instr->operation.parameters.variable.offset >= KEFIR_INT16_MIN &&

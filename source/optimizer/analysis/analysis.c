@@ -41,11 +41,13 @@ static kefir_result_t block_schedule_bfs_impl(struct kefir_mem *mem, const struc
         REQUIRE_OK(callback(block_id, payload));
         marks[block_id] = true;
 
-        struct kefir_opt_code_block *block = NULL;
+        const struct kefir_opt_code_block *block = NULL;
         REQUIRE_OK(kefir_opt_code_container_block(code, block_id, &block));
 
-        struct kefir_opt_instruction *instr = NULL;
-        REQUIRE_OK(kefir_opt_code_block_instr_control_tail(code, block, &instr));
+        kefir_opt_instruction_ref_t instr_ref;
+        const struct kefir_opt_instruction *instr = NULL;
+        REQUIRE_OK(kefir_opt_code_block_instr_control_tail(code, block, &instr_ref));
+        REQUIRE_OK(kefir_opt_code_container_instr(code, instr_ref, &instr));
 
         switch (instr->operation.opcode) {
             case KEFIR_OPT_OPCODE_JUMP:
@@ -69,7 +71,7 @@ static kefir_result_t block_schedule_bfs_impl(struct kefir_mem *mem, const struc
                 break;
 
             case KEFIR_OPT_OPCODE_INLINE_ASSEMBLY: {
-                struct kefir_opt_inline_assembly_node *inline_asm = NULL;
+                const struct kefir_opt_inline_assembly_node *inline_asm = NULL;
                 REQUIRE_OK(kefir_opt_code_container_inline_assembly(code, instr->operation.parameters.inline_asm_ref,
                                                                     &inline_asm));
                 if (!kefir_hashtree_empty(&inline_asm->jump_targets)) {
@@ -144,8 +146,10 @@ static kefir_result_t find_successors(struct kefir_mem *mem, struct kefir_opt_co
          block = kefir_opt_code_container_next(&iter)) {
         struct kefir_list *successors = &analysis->blocks[block->id].successors;
 
-        struct kefir_opt_instruction *tail_instr = NULL;
-        REQUIRE_OK(kefir_opt_code_block_instr_control_tail(analysis->code, block, &tail_instr));
+        kefir_opt_instruction_ref_t tail_instr_ref;
+        const struct kefir_opt_instruction *tail_instr = NULL;
+        REQUIRE_OK(kefir_opt_code_block_instr_control_tail(analysis->code, block, &tail_instr_ref));
+        REQUIRE_OK(kefir_opt_code_container_instr(analysis->code, tail_instr_ref, &tail_instr));
         switch (tail_instr->operation.opcode) {
             case KEFIR_OPT_OPCODE_JUMP:
                 REQUIRE_OK(kefir_list_insert_after(
@@ -172,7 +176,7 @@ static kefir_result_t find_successors(struct kefir_mem *mem, struct kefir_opt_co
                 break;
 
             case KEFIR_OPT_OPCODE_INLINE_ASSEMBLY: {
-                struct kefir_opt_inline_assembly_node *inline_asm = NULL;
+                const struct kefir_opt_inline_assembly_node *inline_asm = NULL;
                 REQUIRE_OK(kefir_opt_code_container_inline_assembly(
                     analysis->code, tail_instr->operation.parameters.inline_asm_ref, &inline_asm));
                 if (!kefir_hashtree_empty(&inline_asm->jump_targets)) {

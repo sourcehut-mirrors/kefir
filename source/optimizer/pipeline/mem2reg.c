@@ -52,7 +52,7 @@ struct mem2reg_state {
 
 static kefir_result_t mark_local_addressed(struct mem2reg_state *state, struct kefir_hashtreeset *visited,
                                            kefir_opt_instruction_ref_t instr_ref) {
-    struct kefir_opt_instruction *instr;
+    const struct kefir_opt_instruction *instr;
     REQUIRE_OK(kefir_opt_code_container_instr(&state->func->code, instr_ref, &instr));
     if (instr->operation.opcode == KEFIR_OPT_OPCODE_GET_LOCAL) {
         REQUIRE_OK(kefir_hashtreeset_add(state->mem, &state->addressed_locals,
@@ -63,7 +63,7 @@ static kefir_result_t mark_local_addressed(struct mem2reg_state *state, struct k
         return KEFIR_OK;
     } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_PHI) {
         kefir_result_t res;
-        struct kefir_opt_phi_node *phi_node;
+        const struct kefir_opt_phi_node *phi_node;
         struct kefir_opt_phi_node_link_iterator iter;
 
         REQUIRE_OK(kefir_opt_code_container_phi(&state->func->code, instr->operation.parameters.phi_ref, &phi_node));
@@ -178,14 +178,17 @@ static kefir_result_t mem2reg_scan(struct mem2reg_state *state) {
     for (struct kefir_opt_code_block *block = kefir_opt_code_container_iter(&state->func->code, &iter); block != NULL;
          block = kefir_opt_code_container_next(&iter)) {
 
-        struct kefir_opt_instruction *instr = NULL, *addr_instr = NULL;
+        const struct kefir_opt_instruction *instr = NULL, *addr_instr = NULL;
 
         if (!kefir_hashtreeset_empty(&block->public_labels)) {
             return KEFIR_YIELD;
         }
 
-        for (kefir_opt_code_block_instr_head(&state->func->code, block, &instr); instr != NULL;
-             kefir_opt_instruction_next_sibling(&state->func->code, instr, &instr)) {
+        kefir_opt_instruction_ref_t instr_ref;
+        for (kefir_opt_code_block_instr_head(&state->func->code, block, &instr_ref); instr_ref != KEFIR_ID_NONE;
+             kefir_opt_instruction_next_sibling(&state->func->code, instr_ref, &instr_ref)) {
+
+            REQUIRE_OK(kefir_opt_code_container_instr(&state->func->code, instr_ref, &instr));
 
             switch (instr->operation.opcode) {
                 case KEFIR_OPT_OPCODE_PHI:
@@ -252,7 +255,7 @@ static kefir_result_t mem2reg_scan(struct mem2reg_state *state) {
                     break;
 
                 case KEFIR_OPT_OPCODE_INLINE_ASSEMBLY: {
-                    struct kefir_opt_inline_assembly_node *inline_asm;
+                    const struct kefir_opt_inline_assembly_node *inline_asm;
                     REQUIRE_OK(kefir_opt_code_container_inline_assembly(
                         &state->func->code, instr->operation.parameters.inline_asm_ref, &inline_asm));
 
@@ -366,12 +369,13 @@ static kefir_result_t mem2reg_pull(struct mem2reg_state *state) {
     for (struct kefir_opt_code_block *block = kefir_opt_code_container_iter(&state->func->code, &iter); block != NULL;
          block = kefir_opt_code_container_next(&iter)) {
 
-        struct kefir_opt_instruction *instr = NULL, *addr_instr = NULL;
+        kefir_opt_instruction_ref_t instr_id;
+        const struct kefir_opt_instruction *instr = NULL, *addr_instr = NULL;
 
-        for (kefir_opt_code_block_instr_head(&state->func->code, block, &instr); instr != NULL;) {
+        for (kefir_opt_code_block_instr_head(&state->func->code, block, &instr_id); instr_id != KEFIR_ID_NONE;) {
 
+            REQUIRE_OK(kefir_opt_code_container_instr(&state->func->code, instr_id, &instr));
             const kefir_opt_block_id_t block_id = instr->block_id;
-            const kefir_opt_instruction_ref_t instr_id = instr->id;
             kefir_opt_instruction_ref_t replacement_ref = KEFIR_ID_NONE;
             switch (instr->operation.opcode) {
                 case KEFIR_OPT_OPCODE_INT8_LOAD_SIGNED:
@@ -498,11 +502,11 @@ static kefir_result_t mem2reg_pull(struct mem2reg_state *state) {
 
                         REQUIRE_OK(
                             kefir_opt_code_container_replace_references(&state->func->code, replacement_ref, instr_id));
-                        REQUIRE_OK(kefir_opt_code_container_instr(&state->func->code, instr_id, &instr));
-                        REQUIRE_OK(kefir_opt_instruction_next_sibling(&state->func->code, instr, &instr));
-                        REQUIRE_OK(kefir_opt_code_container_drop_instr(&state->func->code, instr_id));
+                        kefir_opt_instruction_ref_t prev_instr_id = instr_id;
+                        REQUIRE_OK(kefir_opt_instruction_next_sibling(&state->func->code, instr_id, &instr_id));
+                        REQUIRE_OK(kefir_opt_code_container_drop_instr(&state->func->code, prev_instr_id));
                     } else {
-                        REQUIRE_OK(kefir_opt_instruction_next_sibling(&state->func->code, instr, &instr));
+                        REQUIRE_OK(kefir_opt_instruction_next_sibling(&state->func->code, instr_id, &instr_id));
                     }
                     break;
 
@@ -534,17 +538,17 @@ static kefir_result_t mem2reg_pull(struct mem2reg_state *state) {
                             node->value = replacement_ref;
                         }
 
-                        REQUIRE_OK(kefir_opt_code_container_drop_control(&state->func->code, instr_id));
-                        REQUIRE_OK(kefir_opt_code_container_instr(&state->func->code, instr_id, &instr));
-                        REQUIRE_OK(kefir_opt_instruction_next_sibling(&state->func->code, instr, &instr));
-                        REQUIRE_OK(kefir_opt_code_container_drop_instr(&state->func->code, instr_id));
+                        kefir_opt_instruction_ref_t prev_instr_id = instr_id;
+                        REQUIRE_OK(kefir_opt_code_container_drop_control(&state->func->code, instr_id));;
+                        REQUIRE_OK(kefir_opt_instruction_next_sibling(&state->func->code, instr_id, &instr_id));
+                        REQUIRE_OK(kefir_opt_code_container_drop_instr(&state->func->code, prev_instr_id));
                     } else {
-                        REQUIRE_OK(kefir_opt_instruction_next_sibling(&state->func->code, instr, &instr));
+                        REQUIRE_OK(kefir_opt_instruction_next_sibling(&state->func->code, instr_id, &instr_id));
                     }
                     break;
 
                 default:
-                    REQUIRE_OK(kefir_opt_instruction_next_sibling(&state->func->code, instr, &instr));
+                    REQUIRE_OK(kefir_opt_instruction_next_sibling(&state->func->code, instr_id, &instr_id));
                     break;
             }
         }

@@ -34,7 +34,7 @@ kefir_result_t kefir_codegen_amd64_match_comparison_op(const struct kefir_opt_co
 
     match_op->type = KEFIR_CODEGEN_AMD64_COMPARISON_NONE;
 
-    struct kefir_opt_instruction *instr, *condition_instr2, *condition_instr3, *arg_instr, *arg2_instr;
+    const struct kefir_opt_instruction *instr, *condition_instr2, *condition_instr3, *arg_instr, *arg2_instr;
     REQUIRE_OK(kefir_opt_code_container_instr(code, instr_ref, &instr));
     switch (instr->operation.opcode) {
 #define OP(_instr, _opcode, _const_opcode1, _const_opcode2)                                                    \
@@ -651,7 +651,7 @@ struct int_arithmetics_op {
 static kefir_result_t match_int_arithmetics(struct kefir_codegen_amd64_function *function,
                                             const struct kefir_opt_instruction *instruction,
                                             struct int_arithmetics_op *op) {
-    struct kefir_opt_instruction *arg1, *arg2;
+    const struct kefir_opt_instruction *arg1, *arg2;
     switch (instruction->operation.opcode) {
 #define OP(_opcode, _opcode_const, _direct, _reverse, _const_min, _const_max)                               \
     do {                                                                                                    \

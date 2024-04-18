@@ -103,7 +103,7 @@ static kefir_result_t restore_regs(struct kefir_mem *mem, struct kefir_codegen_a
 }
 
 static kefir_result_t prepare_parameters(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
-                                         struct kefir_opt_call_node *call_node,
+                                         const struct kefir_opt_call_node *call_node,
                                          const struct kefir_ir_function_decl *ir_func_decl,
                                          struct kefir_abi_amd64_function_decl *abi_func_decl,
                                          struct kefir_hashtree *argument_placement) {
@@ -660,7 +660,7 @@ static kefir_result_t save_returns(struct kefir_mem *mem, struct kefir_codegen_a
 
 static kefir_result_t invoke_impl(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
                                   const struct kefir_opt_instruction *instruction,
-                                  struct kefir_opt_call_node *call_node,
+                                  const struct kefir_opt_call_node *call_node,
                                   struct kefir_abi_amd64_function_decl *abi_func_decl,
                                   struct kefir_hashtree *argument_placement) {
     kefir_size_t stack_increment;
@@ -715,7 +715,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(invoke)(struct kefir_mem *me
     REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
 
-    struct kefir_opt_call_node *call_node = NULL;
+    const struct kefir_opt_call_node *call_node = NULL;
     REQUIRE_OK(kefir_opt_code_container_call(&function->function->code,
                                              instruction->operation.parameters.function_call.call_ref, &call_node));
 
