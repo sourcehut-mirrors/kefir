@@ -635,7 +635,7 @@ static kefir_result_t const_fold_apply(struct kefir_mem *mem, const struct kefir
 
             if (replacement_ref != KEFIR_ID_NONE) {
                 REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr_id, &instr));
-                REQUIRE_OK(kefir_opt_code_container_replace_references(&func->code, replacement_ref, instr->id));
+                REQUIRE_OK(kefir_opt_code_container_replace_references(mem, &func->code, replacement_ref, instr->id));
                 if (instr->control_flow.prev != KEFIR_ID_NONE || instr->control_flow.next != KEFIR_ID_NONE) {
                     const struct kefir_opt_instruction *replacement_instr = NULL;
                     REQUIRE_OK(kefir_opt_code_container_instr(&func->code, replacement_ref, &replacement_instr));

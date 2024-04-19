@@ -500,8 +500,8 @@ static kefir_result_t mem2reg_pull(struct mem2reg_state *state) {
                                 break;
                         }
 
-                        REQUIRE_OK(
-                            kefir_opt_code_container_replace_references(&state->func->code, replacement_ref, instr_id));
+                        REQUIRE_OK(kefir_opt_code_container_replace_references(state->mem, &state->func->code,
+                                                                               replacement_ref, instr_id));
                         kefir_opt_instruction_ref_t prev_instr_id = instr_id;
                         REQUIRE_OK(kefir_opt_instruction_next_sibling(&state->func->code, instr_id, &instr_id));
                         REQUIRE_OK(kefir_opt_code_container_drop_instr(&state->func->code, prev_instr_id));
@@ -539,7 +539,8 @@ static kefir_result_t mem2reg_pull(struct mem2reg_state *state) {
                         }
 
                         kefir_opt_instruction_ref_t prev_instr_id = instr_id;
-                        REQUIRE_OK(kefir_opt_code_container_drop_control(&state->func->code, instr_id));;
+                        REQUIRE_OK(kefir_opt_code_container_drop_control(&state->func->code, instr_id));
+                        ;
                         REQUIRE_OK(kefir_opt_instruction_next_sibling(&state->func->code, instr_id, &instr_id));
                         REQUIRE_OK(kefir_opt_code_container_drop_instr(&state->func->code, prev_instr_id));
                     } else {

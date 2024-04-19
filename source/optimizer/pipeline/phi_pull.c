@@ -131,7 +131,7 @@ static kefir_result_t phi_pull_impl(struct phi_pull_state *state) {
     do {                                                                                                   \
         for (node = kefir_hashtree_next(&iter); node != NULL; node = kefir_hashtree_next(&iter)) {         \
             ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, other_instr_ref, node->value);                   \
-            const struct kefir_opt_instruction *other_instr;                                                     \
+            const struct kefir_opt_instruction *other_instr;                                               \
             REQUIRE_OK(kefir_opt_code_container_instr(&state->func->code, other_instr_ref, &other_instr)); \
             if (_cond) {                                                                                   \
                 pull = false;                                                                              \
@@ -194,7 +194,7 @@ static kefir_result_t phi_pull_impl(struct phi_pull_state *state) {
                                                                     &replacement_ref));
                 REQUIRE_OK(kefir_opt_code_container_instruction_move_after(&state->func->code, phi_node->output_ref,
                                                                            replacement_ref));
-                REQUIRE_OK(kefir_opt_code_container_replace_references(&state->func->code, replacement_ref,
+                REQUIRE_OK(kefir_opt_code_container_replace_references(state->mem, &state->func->code, replacement_ref,
                                                                        phi_node->output_ref));
                 REQUIRE_OK(kefir_opt_code_container_drop_instr(&state->func->code, phi_node->output_ref));
 

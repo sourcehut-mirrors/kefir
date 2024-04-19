@@ -150,10 +150,8 @@ static kefir_result_t construct_inline_asm(struct kefir_mem *mem, const struct k
          kefir_list_next(&iter), param_idx++) {
         ASSIGN_DECL_CAST(const struct kefir_ir_inline_assembly_parameter *, ir_asm_param, iter->value);
 
-        struct kefir_opt_inline_assembly_parameter inline_asm_param = {
-            .load_store_ref = KEFIR_ID_NONE,
-            .read_ref = KEFIR_ID_NONE
-        };
+        struct kefir_opt_inline_assembly_parameter inline_asm_param = {.load_store_ref = KEFIR_ID_NONE,
+                                                                       .read_ref = KEFIR_ID_NONE};
         kefir_opt_instruction_ref_t param_ref;
         switch (ir_asm_param->klass) {
             case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_LOAD:
@@ -162,7 +160,7 @@ static kefir_result_t construct_inline_asm(struct kefir_mem *mem, const struct k
                 REQUIRE_OK(kefir_opt_constructor_stack_at(mem, state, ir_asm_param->load_store_index, &param_ref));
                 inline_asm_param.load_store_ref = param_ref;
                 REQUIRE_OK(kefir_opt_code_container_inline_assembly_set_parameter(
-                    code, inline_asm_ref, ir_asm_param->parameter_id, &inline_asm_param));
+                    mem, code, inline_asm_ref, ir_asm_param->parameter_id, &inline_asm_param));
                 break;
 
             case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ_STORE:
@@ -171,14 +169,14 @@ static kefir_result_t construct_inline_asm(struct kefir_mem *mem, const struct k
                 REQUIRE_OK(kefir_opt_constructor_stack_at(mem, state, ir_asm_param->read_index, &param_ref));
                 inline_asm_param.read_ref = param_ref;
                 REQUIRE_OK(kefir_opt_code_container_inline_assembly_set_parameter(
-                    code, inline_asm_ref, ir_asm_param->parameter_id, &inline_asm_param));
+                    mem, code, inline_asm_ref, ir_asm_param->parameter_id, &inline_asm_param));
                 break;
 
             case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ:
                 REQUIRE_OK(kefir_opt_constructor_stack_at(mem, state, ir_asm_param->read_index, &param_ref));
                 inline_asm_param.read_ref = param_ref;
                 REQUIRE_OK(kefir_opt_code_container_inline_assembly_set_parameter(
-                    code, inline_asm_ref, ir_asm_param->parameter_id, &inline_asm_param));
+                    mem, code, inline_asm_ref, ir_asm_param->parameter_id, &inline_asm_param));
                 break;
 
             case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_IMMEDIATE:
