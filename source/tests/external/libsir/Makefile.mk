@@ -27,7 +27,8 @@ $(KEFIR_EXTERNAL_TEST_LIBSIR_SOURCE_DIR)/build/bin/sirtests: $(KEFIR_EXTERNAL_TE
 		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		KEFIR_RTLIB="$(realpath $(LIBKEFIRRT_A))" \
-		$(MAKE) SIR_NO_PLUGINS=1 CC="$(realpath $(KEFIR_EXE))" CFLAGS="-O1 -fPIC -pie" LDFLAGS="-latomic"
+		CC="$(realpath $(KEFIR_EXE))"  LDFLAGS="-latomic" \
+		$(MAKE)
 
 $(KEFIR_EXTERNAL_TESTS_DIR)/libsir.test.done: $(KEFIR_EXTERNAL_TEST_LIBSIR_SOURCE_DIR)/build/bin/sirtests
 	@echo "Testing libsir $(KEFIR_EXTERNAL_TEST_LIBSIR_VERSION)..."
