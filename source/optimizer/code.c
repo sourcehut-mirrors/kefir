@@ -338,7 +338,7 @@ static kefir_result_t update_used_instructions(struct kefir_mem *mem, const stru
                                                kefir_opt_instruction_ref_t user) {
     struct update_uses_param param = {.mem = mem, .code = code, .user_ref = user};
 
-    struct kefir_opt_instruction *instr;
+    struct kefir_opt_instruction *instr = NULL;
     REQUIRE_OK(code_container_instr_mutable(code, user, &instr));
     REQUIRE_OK(kefir_opt_instruction_extract_inputs(code, instr, true, update_uses_callback, &param));
     return KEFIR_OK;
@@ -1399,7 +1399,7 @@ kefir_result_t kefir_opt_phi_prev_sibling(const struct kefir_opt_code_container 
     REQUIRE(phi_id_ptr != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer phi node identifier"));
 
-    struct kefir_opt_phi_node *phi;
+    struct kefir_opt_phi_node *phi = NULL;
     REQUIRE_OK(code_container_phi_mutable(code, phi_id, &phi));
     *phi_id_ptr = phi->siblings.prev;
     return KEFIR_OK;
@@ -1413,7 +1413,7 @@ kefir_result_t kefir_opt_phi_next_sibling(const struct kefir_opt_code_container 
     REQUIRE(phi_id_ptr != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer phi node identifier"));
 
-    struct kefir_opt_phi_node *phi;
+    struct kefir_opt_phi_node *phi = NULL;
     REQUIRE_OK(code_container_phi_mutable(code, phi_id, &phi));
     *phi_id_ptr = phi->siblings.next;
 
