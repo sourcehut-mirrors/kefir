@@ -107,6 +107,7 @@ static kefir_result_t dump_action_impl(struct kefir_mem *mem, const struct kefir
     compiler.preprocessor_configuration.named_macro_vararg = options->features.named_macro_vararg;
     compiler.preprocessor_configuration.include_next = options->features.include_next;
     compiler.preprocessor_configuration.va_args_concat = options->features.va_args_concat;
+    compiler.preprocessor_context.environment.stdc_no_atomics = !options->features.declare_atomic_support;
 
     compiler.parser_configuration.fail_on_attributes = options->features.fail_on_attributes;
     compiler.parser_configuration.implicit_function_definition_int = options->features.missing_function_return_type;

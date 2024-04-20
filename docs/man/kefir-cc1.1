@@ -94,6 +94,12 @@ Does not change bitfield layout.
 Load and store bitfields at machine word boundaries [default: off].
 May cause failures for structures allocated close to boundaries with unmapped
 memory pages. Does not change bitfield layout.
+.\"
+.It Fl \-declare-atomic-support
+Declare support of atomics (requires explicit linking of software atomic library such as libatomic or libcompiler_rt). Default for Glibc and BSD targets.
+.\"
+.It Fl \-no-declare-atomic-support
+Declare the absence of atomic support via defining __STDC_NO_ATOMICS__ macro. Default for musl target.
 .El
 .\"
 .Ss FEATURES

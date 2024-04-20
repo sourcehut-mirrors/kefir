@@ -215,6 +215,10 @@ struct kefir_cli_option KefirCompilerConfigurationOptions[] = {
            features.precise_bitfield_load_store),
     SIMPLE(0, "no-precise-bitfield-load-store", false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, false,
            features.precise_bitfield_load_store),
+    SIMPLE(0, "declare-atomic-support", true, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, false,
+           features.declare_atomic_support),
+    SIMPLE(0, "no-declare-atomic-support", false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, false,
+           features.declare_atomic_support),
 
     CODEGEN("emulated-tls", codegen.emulated_tls),
     CODEGEN("pic", codegen.position_independent_code),

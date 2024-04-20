@@ -156,6 +156,7 @@ kefir_result_t kefir_driver_apply_target_compiler_configuration(
                     KEFIR_SET_ERROR(KEFIR_UI_ERROR, "Musl library path shall be passed as KEFIR_MUSL_INCLUDE "
                                                     "environment variable for selected target"));
 
+            compiler_config->features.declare_atomic_support = false;
             REQUIRE_OK(add_include_paths(mem, symbols, compiler_config, externals->musl.include_path));
         }
     } else if (target->platform == KEFIR_DRIVER_TARGET_PLATFORM_FREEBSD) {
