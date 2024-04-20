@@ -1,0 +1,56 @@
+
+KEFIR_EXTERNAL_TEST_TCL_DIR := $(KEFIR_EXTERNAL_TESTS_DIR)/tcl
+
+KEFIR_EXTERNAL_TEST_TCL_VERSION := 8.6.14
+KEFIR_EXTERNAL_TEST_TCL_ARCHIVE_FILENAME := tcl$(KEFIR_EXTERNAL_TEST_TCL_VERSION)-src.tar.gz
+KEFIR_EXTERNAL_TEST_TCL_ARCHIVE := $(KEFIR_EXTERNAL_TEST_TCL_DIR)/$(KEFIR_EXTERNAL_TEST_TCL_ARCHIVE_FILENAME)
+KEFIR_EXTERNAL_TEST_TCL_SOURCE_DIR := $(KEFIR_EXTERNAL_TEST_TCL_DIR)/tcl$(KEFIR_EXTERNAL_TEST_TCL_VERSION)
+KEFIR_EXTERNAL_TEST_TCL_URL := http://prdownloads.sourceforge.net/tcl/$(KEFIR_EXTERNAL_TEST_TCL_ARCHIVE_FILENAME)
+
+KEFIR_EXTERNAL_TEST_TCL_ARCHIVE_SHA256 := 5880225babf7954c58d4fb0f5cf6279104ce1cd6aa9b71e9a6322540e1c4de66
+
+$(KEFIR_EXTERNAL_TEST_TCL_ARCHIVE):
+	@mkdir -p $(dir $@)
+	@echo "Downloading $(KEFIR_EXTERNAL_TEST_TCL_URL)"
+	@wget -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_TCL_URL)"
+	@$(SOURCE_DIR)/tests/external/util/checksum_sha256.sh "$@.tmp" "$(KEFIR_EXTERNAL_TEST_TCL_ARCHIVE_SHA256)"
+	@mv "$@.tmp" "$@"
+
+$(KEFIR_EXTERNAL_TEST_TCL_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_TCL_ARCHIVE)
+	@echo "Extracting $(KEFIR_EXTERNAL_TEST_TCL_ARCHIVE_FILENAME)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_TCL_DIR)" && tar xvfz "$(KEFIR_EXTERNAL_TEST_TCL_ARCHIVE_FILENAME)"
+	@touch "$@"
+
+$(KEFIR_EXTERNAL_TEST_TCL_SOURCE_DIR)/unix/Makefile: $(KEFIR_EXTERNAL_TEST_TCL_SOURCE_DIR)/.extracted $(KEFIR_EXE) $(LIBKEFIRRT_A)
+	@echo "Configuring tcl $(KEFIR_EXTERNAL_TEST_TCL_VERSION)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_TCL_SOURCE_DIR)/unix" && \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
+		KEFIR_RTLIB="$(realpath $(LIBKEFIRRT_A))" \
+		CC="$(realpath $(KEFIR_EXE))" \
+		CFLAGS="-O1 -fPIC -pie" \
+		./configure
+
+$(KEFIR_EXTERNAL_TEST_TCL_SOURCE_DIR)/unix/tclsh: $(KEFIR_EXTERNAL_TEST_TCL_SOURCE_DIR)/unix/Makefile
+	@echo "Building tcl $(KEFIR_EXTERNAL_TEST_TCL_VERSION)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_TCL_SOURCE_DIR)/unix" && \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
+		KEFIR_RTLIB="$(realpath $(LIBKEFIRRT_A))" \
+		$(MAKE) all
+
+$(KEFIR_EXTERNAL_TEST_TCL_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_TCL_SOURCE_DIR)/unix/tclsh
+	@echo "Testing tcl $(KEFIR_EXTERNAL_TEST_TCL_VERSION)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_TCL_SOURCE_DIR)/unix" && \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
+		KEFIR_RTLIB="$(realpath $(LIBKEFIRRT_A))" \
+		$(MAKE) test 2>&1 | tee "$(shell realpath "$@.tmp")"
+	@mv "$@.tmp" "$@"
+
+$(KEFIR_EXTERNAL_TESTS_DIR)/tcl.test.done: $(KEFIR_EXTERNAL_TEST_TCL_DIR)/tests.log
+	@$(SOURCE_DIR)/tests/external/tcl/validate.sh "$(KEFIR_EXTERNAL_TEST_TCL_DIR)/tests.log"
+	@touch "$@"
+	@echo "Tcl $(KEFIR_EXTERNAL_TEST_TCL_VERSION) test suite successfully finished"
+
+EXTERNAL_TESTS_SLOW_SUITE += $(KEFIR_EXTERNAL_TESTS_DIR)/tcl.test.done
