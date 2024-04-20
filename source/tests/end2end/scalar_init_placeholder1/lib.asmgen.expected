@@ -28,21 +28,20 @@ _kefir_func_test2_label1:
     lea -8(%rbp), %rcx
     cmp $0, %rdi
     jle _kefir_func_test2_label7
-    mov %rcx, %rdx
-    mov %rdi, %rsi
     jmp _kefir_func_test2_label3
 _kefir_func_test2_label7:
 _kefir_func_test2_label2:
     mov $-1, %rdx
-    mov %rdx, %r8
+    mov %rcx, %rsi
+    mov %rdi, %r8
     jmp _kefir_func_test2_label4
 _kefir_func_test2_label3:
-    mov %rsi, %r8
-    mov %rdx, %rcx
-    mov %rsi, %rdi
-    mov %rsi, %rax
+    mov %rdi, %rdx
+    mov %rcx, %rsi
+    mov %rdi, %r8
+    mov %rdi, %rax
 _kefir_func_test2_label4:
-    movq %r8, (%rcx)
+    movq %rdx, (%rsi)
     movq -8(%rbp), %rcx
     cmp $-1, %rcx
     jne _kefir_func_test2_label8
@@ -53,7 +52,7 @@ _kefir_func_test2_label5:
     pop %rbp
     ret
 _kefir_func_test2_label6:
-    mov %rdi, %rax
+    mov %r8, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret

@@ -54,17 +54,16 @@ _kefir_func_somefn_label6:
 
 assign_abs:
     cmp $0, %rdi
-    jle _kefir_func_assign_abs_label5
-    mov %rdi, %rax
-    jmp _kefir_func_assign_abs_label3
+    jg _kefir_func_assign_abs_label3
 _kefir_func_assign_abs_label5:
-    neg %rdi
+    mov %rdi, %rax
+    neg %rax
     jmp _kefir_func_assign_abs_label4
 _kefir_func_assign_abs_label3:
-    mov %rax, %rdi
+    mov %rdi, %rax
 _kefir_func_assign_abs_label4:
-    movq somevar@GOTPCREL(%rip), %rax
-    movq %rdi, (%rax)
+    movq somevar@GOTPCREL(%rip), %rcx
+    movq %rax, (%rcx)
     ret
 
 condition1:

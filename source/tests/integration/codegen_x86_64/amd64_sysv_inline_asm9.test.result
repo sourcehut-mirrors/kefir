@@ -28,21 +28,18 @@ jmp _kefir_func_fn1_label8
     mov [%rdx], %rax
     mov %rdx, QWORD PTR [%rbp - 8]
     mov [%rdx], %rcx
-    mov %rdx, %r8
     jmp _kefir_func_fn1_label2
 _kefir_func_fn1_label6:
     mov %rdx, QWORD PTR [%rbp - 16]
     mov [%rdx], %rax
     mov %rdx, QWORD PTR [%rbp - 8]
     mov [%rdx], %rcx
-    mov %rdx, %r8
     jmp _kefir_func_fn1_label5
 _kefir_func_fn1_label7:
     mov %rdx, QWORD PTR [%rbp - 16]
     mov [%rdx], %rax
     mov %rdx, QWORD PTR [%rbp - 8]
     mov [%rdx], %rcx
-    mov %rdx, %r8
     jmp _kefir_func_fn1_label4
 _kefir_func_fn1_label8:
     mov %rdx, QWORD PTR [%rbp - 16]
@@ -51,7 +48,7 @@ _kefir_func_fn1_label8:
     mov [%rax], %rcx
     jmp _kefir_func_fn1_label3
 _kefir_func_fn1_label2:
-    mov %rax, %rdx
+    mov %rax, %r8
     lea %rsp, [%rbp]
     pop %rbp
     ret
@@ -61,12 +58,12 @@ _kefir_func_fn1_label3:
     pop %rbp
     ret
 _kefir_func_fn1_label4:
-    mov %rax, %rdx
+    mov %rax, %r8
     lea %rsp, [%rbp]
     pop %rbp
     ret
 _kefir_func_fn1_label5:
-    mov %rax, %rdx
+    mov %rax, %r8
     lea %rsp, [%rbp]
     pop %rbp
     ret

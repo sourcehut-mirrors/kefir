@@ -25,17 +25,16 @@ _kefir_func_test1_label2:
     movq -8(%rbp), %rdx
     cmp $100, %rax
     jl _kefir_func_test1_label5
-    mov %rax, %rsi
-    mov %rdx, %rdi
+    mov %rdx, %rsi
     jmp _kefir_func_test1_label4
 _kefir_func_test1_label5:
     mov %rdx, %rsi
-    mov %rax, %rcx
+    mov %rax, %rdi
+    mov %rdi, %rcx
     mov %rsi, %rdx
     jmp _kefir_func_test1_label2
 _kefir_func_test1_label4:
-    add %rdi, %rsi
-    mov %rsi, %rax
+    add %rsi, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret

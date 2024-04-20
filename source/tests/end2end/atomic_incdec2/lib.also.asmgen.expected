@@ -122,22 +122,22 @@ _kefir_func_postdec_ld_label2:
 _kefir_func_postdec_ld_label6:
     mov %r10, %rax
     movq -128(%rbp), %rcx
-    movq %rcx, -96(%rbp)
-    movq -120(%rbp), %rcx
-    movq %rcx, -88(%rbp)
-    movq -112(%rbp), %rcx
     movq %rcx, -80(%rbp)
-    movq -104(%rbp), %rcx
+    movq -120(%rbp), %rcx
     movq %rcx, -72(%rbp)
+    movq -112(%rbp), %rcx
+    movq %rcx, -64(%rbp)
+    movq -104(%rbp), %rcx
+    movq %rcx, -56(%rbp)
     fnclex
     mov %rax, %r10
-    movq -96(%rbp), %rax
-    movq %rax, -128(%rbp)
-    movq -88(%rbp), %rax
-    movq %rax, -120(%rbp)
     movq -80(%rbp), %rax
-    movq %rax, -112(%rbp)
+    movq %rax, -128(%rbp)
     movq -72(%rbp), %rax
+    movq %rax, -120(%rbp)
+    movq -64(%rbp), %rax
+    movq %rax, -112(%rbp)
+    movq -56(%rbp), %rax
     movq %rax, -104(%rbp)
     jmp _kefir_func_postdec_ld_label2
 _kefir_func_postdec_ld_label4:
@@ -246,22 +246,22 @@ _kefir_func_postinc_ld_label2:
 _kefir_func_postinc_ld_label6:
     mov %r10, %rax
     movq -128(%rbp), %rcx
-    movq %rcx, -96(%rbp)
-    movq -120(%rbp), %rcx
-    movq %rcx, -88(%rbp)
-    movq -112(%rbp), %rcx
     movq %rcx, -80(%rbp)
-    movq -104(%rbp), %rcx
+    movq -120(%rbp), %rcx
     movq %rcx, -72(%rbp)
+    movq -112(%rbp), %rcx
+    movq %rcx, -64(%rbp)
+    movq -104(%rbp), %rcx
+    movq %rcx, -56(%rbp)
     fnclex
     mov %rax, %r10
-    movq -96(%rbp), %rax
-    movq %rax, -128(%rbp)
-    movq -88(%rbp), %rax
-    movq %rax, -120(%rbp)
     movq -80(%rbp), %rax
-    movq %rax, -112(%rbp)
+    movq %rax, -128(%rbp)
     movq -72(%rbp), %rax
+    movq %rax, -120(%rbp)
+    movq -64(%rbp), %rax
+    movq %rax, -112(%rbp)
+    movq -56(%rbp), %rax
     movq %rax, -104(%rbp)
     jmp _kefir_func_postinc_ld_label2
 _kefir_func_postinc_ld_label4:

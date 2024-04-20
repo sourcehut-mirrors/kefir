@@ -24,16 +24,16 @@ test_atomic_store128:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    lea 16(%rbp), %rax
-    mov %rdi, %rcx
+    mov %rdi, %rax
+    lea 16(%rbp), %rcx
     movq $0, -24(%rbp)
-    fldt (%rax)
+    fldt (%rcx)
     fstpt -32(%rbp)
-    mov $16, %rax
+    mov $16, %rcx
     lea -32(%rbp), %rdx
     mov $5, %r8
-    mov %rax, %rdi
-    mov %rcx, %rsi
+    mov %rcx, %rdi
+    mov %rax, %rsi
     mov %r8, %rcx
     call __atomic_store@PLT
     lea (%rbp), %rsp
@@ -45,20 +45,20 @@ test_atomic_store256:
     mov %rsp, %rbp
     sub $80, %rsp
     stmxcsr -8(%rbp)
-    lea 16(%rbp), %rax
-    mov %rdi, %rcx
+    mov %rdi, %rax
+    lea 16(%rbp), %rcx
     lea -80(%rbp), %rdx
     movq $0, 8(%rdx)
     movq $0, 24(%rdx)
-    fldt (%rax)
+    fldt (%rcx)
     fstpt (%rdx)
-    fldt 16(%rax)
+    fldt 16(%rcx)
     fstpt 16(%rdx)
-    mov $32, %rax
+    mov $32, %rcx
     lea -80(%rbp), %rdx
     mov $5, %r8
-    mov %rax, %rdi
-    mov %rcx, %rsi
+    mov %rcx, %rdi
+    mov %rax, %rsi
     mov %r8, %rcx
     call __atomic_store@PLT
     ldmxcsr -8(%rbp)
@@ -70,21 +70,21 @@ test2_atomic_store128:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
-    lea 16(%rbp), %rax
-    mov %rdi, %rcx
+    mov %rdi, %rax
+    lea 16(%rbp), %rcx
     movq $0, -40(%rbp)
-    fldt (%rax)
+    fldt (%rcx)
     fstpt -48(%rbp)
     fldt -48(%rbp)
     fstpt -64(%rbp)
     movq $0, -8(%rbp)
     fldt -64(%rbp)
     fstpt -16(%rbp)
-    mov $16, %rax
+    mov $16, %rcx
     lea -16(%rbp), %rdx
     mov $5, %r8
-    mov %rax, %rdi
-    mov %rcx, %rsi
+    mov %rcx, %rdi
+    mov %rax, %rsi
     mov %r8, %rcx
     call __atomic_store@PLT
     lea (%rbp), %rsp
@@ -96,32 +96,32 @@ test2_atomic_store256:
     mov %rsp, %rbp
     sub $144, %rsp
     stmxcsr -8(%rbp)
-    lea 16(%rbp), %rax
-    mov %rdi, %rcx
+    mov %rdi, %rax
+    lea 16(%rbp), %rcx
     lea -112(%rbp), %rdx
     movq $0, 8(%rdx)
     movq $0, 24(%rdx)
-    fldt (%rax)
+    fldt (%rcx)
     fstpt (%rdx)
-    fldt 16(%rax)
+    fldt 16(%rcx)
     fstpt 16(%rdx)
-    lea -80(%rbp), %rax
+    lea -80(%rbp), %rcx
     lea -112(%rbp), %rdx
     fldt (%rdx)
     fstpt -144(%rbp)
     fldt 16(%rdx)
     fstpt -128(%rbp)
-    movq $0, 8(%rax)
-    movq $0, 24(%rax)
+    movq $0, 8(%rcx)
+    movq $0, 24(%rcx)
     fldt -144(%rbp)
-    fstpt (%rax)
+    fstpt (%rcx)
     fldt -128(%rbp)
-    fstpt 16(%rax)
-    mov $32, %rax
+    fstpt 16(%rcx)
+    mov $32, %rcx
     lea -80(%rbp), %rdx
     mov $5, %r8
-    mov %rax, %rdi
-    mov %rcx, %rsi
+    mov %rcx, %rdi
+    mov %rax, %rsi
     mov %r8, %rcx
     call __atomic_store@PLT
     ldmxcsr -8(%rbp)
