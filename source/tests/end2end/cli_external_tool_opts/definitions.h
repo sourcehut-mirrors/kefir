@@ -21,9 +21,9 @@
 #ifndef DEFINITIONS_H_
 #define DEFINITIONS_H_
 
-int getx(void);
-int gety(void);
-int getz(void);
-int getw(void);
+int my_get_x(void);
+int my_get_y(void);
+int my_get_z(void);
+int my_get_w(void);
 
 #endif

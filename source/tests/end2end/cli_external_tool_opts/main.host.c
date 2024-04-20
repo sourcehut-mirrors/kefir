@@ -24,9 +24,9 @@
 #include "./definitions.h"
 
 int main(void) {
-    assert(getx() == 42);
-    assert(gety() == 69);
-    assert(getz() == 314159);
-    assert(getw() == 271828);
+    assert(my_get_x() == 42);
+    assert(my_get_y() == 69);
+    assert(my_get_z() == 314159);
+    assert(my_get_w() == 271828);
     return EXIT_SUCCESS;
 }

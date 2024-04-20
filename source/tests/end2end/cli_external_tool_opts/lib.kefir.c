@@ -20,18 +20,18 @@
 
 #include "./definitions.h"
 
-int getx(void) {
+int my_get_x(void) {
     return X;
 }
 
-int gety(void) {
+int my_get_y(void) {
     return Y;
 }
 
-int getz(void) {
+int my_get_z(void) {
     return Z;
 }
 
-int getw(void) {
+int my_get_w(void) {
     return W;
 }
