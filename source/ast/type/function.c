@@ -303,7 +303,7 @@ kefir_result_t kefir_ast_type_function_defintion_compatible(const struct kefir_a
         *result = false;
         if (kefir_list_length(&declaration_type->function_type.parameters) == 1 &&
             kefir_list_length(&definition_type->function_type.parameters) == 0) {
-            const struct kefir_ast_function_type_parameter *parameter;
+            const struct kefir_ast_function_type_parameter *parameter = NULL;
             REQUIRE_OK(kefir_ast_type_function_get_parameter(&declaration_type->function_type, 0, &parameter));
             *result = parameter->type != NULL && parameter->type->tag == KEFIR_AST_TYPE_VOID;
         }

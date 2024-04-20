@@ -137,9 +137,11 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
 
         kefir_result_t res;
         struct kefir_opt_code_block_public_label_iterator iter;
-        for (res = kefir_opt_code_container_block_public_labels_iter(&func->function->code, block_props->block_id, &iter); res == KEFIR_OK;
-             res = kefir_opt_code_container_block_public_labels_next(&iter)) {
-            REQUIRE_OK(kefir_asmcmp_context_label_add_public_name(mem, &func->code.context, asmlabel, iter.public_label));
+        for (res =
+                 kefir_opt_code_container_block_public_labels_iter(&func->function->code, block_props->block_id, &iter);
+             res == KEFIR_OK; res = kefir_opt_code_container_block_public_labels_next(&iter)) {
+            REQUIRE_OK(
+                kefir_asmcmp_context_label_add_public_name(mem, &func->code.context, asmlabel, iter.public_label));
         }
         if (res != KEFIR_ITERATOR_END) {
             REQUIRE_OK(res);
@@ -198,7 +200,7 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
         kefir_result_t res = KEFIR_OK;
         for (kefir_size_t instr_idx = block_props->linear_range.begin_index;
              res == KEFIR_OK && instr_idx < block_props->linear_range.end_index; instr_idx++) {
-            kefir_asmcmp_virtual_register_index_t vreg;
+            kefir_asmcmp_virtual_register_index_t vreg = 0;
             res = kefir_codegen_amd64_function_vreg_of(
                 func, func->function_analysis->linearization[instr_idx]->instr_ref, &vreg);
             if (res == KEFIR_NOT_FOUND) {
@@ -215,7 +217,7 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
 
         for (kefir_size_t instr_idx = block_props->linear_range.begin_index;
              res == KEFIR_OK && instr_idx < block_props->linear_range.end_index; instr_idx++) {
-            kefir_asmcmp_virtual_register_index_t vreg;
+            kefir_asmcmp_virtual_register_index_t vreg = 0;
             kefir_result_t res = kefir_codegen_amd64_function_vreg_of(
                 func, func->function_analysis->linearization[instr_idx]->instr_ref, &vreg);
             if (res == KEFIR_NOT_FOUND) {
