@@ -36,7 +36,8 @@
 
 #define KEFIR_OPTIMIZER_PIPELINE_FULL_SPEC "phi-pull,mem2reg,phi-pull,constant-fold,op-simplify,branch-removal"
 
-#define KEFIR_CODEGEN_AMD64_PIPELINE_FULL_SPEC "amd64-drop-virtual,amd64-propagate-jump,amd64-eliminate-label,amd64-peephole"
+#define KEFIR_CODEGEN_AMD64_PIPELINE_FULL_SPEC \
+    "amd64-drop-virtual,amd64-propagate-jump,amd64-eliminate-label,amd64-peephole"
 
 static kefir_result_t driver_generate_asm_config(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                                  struct kefir_driver_configuration *config,
@@ -243,6 +244,26 @@ kefir_result_t kefir_driver_generate_compiler_config(struct kefir_mem *mem, stru
                                                               (const char *) node->value));
     }
 
+    switch (config->compiler.optimization_level) {
+        case 0:
+            compiler_config->optimizer_pipeline_spec = NULL;
+            compiler_config->codegen.pipeline_spec = NULL;
+            break;
+
+        default:
+            if (config->compiler.optimization_level > 0) {
+                compiler_config->optimizer_pipeline_spec = KEFIR_OPTIMIZER_PIPELINE_FULL_SPEC;
+                if (config->flags.omit_frame_pointer == KEFIR_DRIVER_FRAME_POINTER_OMISSION_UNSPECIFIED) {
+                    compiler_config->codegen.omit_frame_pointer = true;
+                }
+
+                if (config->target.arch == KEFIR_DRIVER_TARGET_ARCH_X86_64) {
+                    compiler_config->codegen.pipeline_spec = KEFIR_CODEGEN_AMD64_PIPELINE_FULL_SPEC;
+                }
+            }
+            break;
+    }
+
     struct kefir_string_array extra_args_buf;
     REQUIRE_OK(kefir_string_array_init(mem, &extra_args_buf));
     kefir_result_t res = KEFIR_OK;
@@ -264,25 +285,6 @@ kefir_result_t kefir_driver_generate_compiler_config(struct kefir_mem *mem, stru
         return res;
     });
     REQUIRE_OK(kefir_string_array_free(mem, &extra_args_buf));
-
-    switch (config->compiler.optimization_level) {
-        case 0:
-            compiler_config->optimizer_pipeline_spec = NULL;
-            break;
-
-        default:
-            if (config->compiler.optimization_level > 0) {
-                compiler_config->optimizer_pipeline_spec = KEFIR_OPTIMIZER_PIPELINE_FULL_SPEC;
-                if (config->flags.omit_frame_pointer == KEFIR_DRIVER_FRAME_POINTER_OMISSION_UNSPECIFIED) {
-                    compiler_config->codegen.omit_frame_pointer = true;
-                }
-
-                if (config->target.arch == KEFIR_DRIVER_TARGET_ARCH_X86_64) {
-                    compiler_config->codegen.pipeline_spec = KEFIR_CODEGEN_AMD64_PIPELINE_FULL_SPEC;
-                }
-            }
-            break;
-    }
     return KEFIR_OK;
 }
 
