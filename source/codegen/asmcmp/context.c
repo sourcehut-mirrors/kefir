@@ -193,13 +193,13 @@ kefir_asmcmp_instruction_index_t kefir_asmcmp_context_instr_tail(const struct ke
     return context->code.tail;
 }
 
-#define MIN_CAPACITY_INCREASE 64
+#define MIN_CAPACITY_INCREASE(_current) (((_current) * 9 / 8) + 512)
 static kefir_result_t ensure_availability(struct kefir_mem *mem, void **array, kefir_size_t *length,
                                           kefir_size_t *capacity, kefir_size_t elt_size,
                                           kefir_size_t required_elements) {
     REQUIRE(*capacity - *length < required_elements, KEFIR_OK);
 
-    const kefir_size_t new_capacity = *capacity + MAX(MIN_CAPACITY_INCREASE, required_elements);
+    const kefir_size_t new_capacity = *capacity + MAX(MIN_CAPACITY_INCREASE(*capacity), required_elements);
     void *const new_array = KEFIR_MALLOC(mem, elt_size * new_capacity);
     REQUIRE(new_array != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate asmgen array"));
 
@@ -637,9 +637,11 @@ kefir_result_t kefir_asmcmp_context_label_add_public_name(struct kefir_mem *mem,
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_asmcmp_context_label_head(const struct kefir_asmcmp_context *context, kefir_asmcmp_label_index_t *label_index_ptr) {
+kefir_result_t kefir_asmcmp_context_label_head(const struct kefir_asmcmp_context *context,
+                                               kefir_asmcmp_label_index_t *label_index_ptr) {
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
-    REQUIRE(label_index_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to asmcmp label index"));
+    REQUIRE(label_index_ptr != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to asmcmp label index"));
 
     if (context->labels_length > 0) {
         *label_index_ptr = 0;
@@ -649,11 +651,14 @@ kefir_result_t kefir_asmcmp_context_label_head(const struct kefir_asmcmp_context
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_asmcmp_context_label_next(const struct kefir_asmcmp_context *context, kefir_asmcmp_label_index_t label_index, kefir_asmcmp_label_index_t *label_index_ptr) {
+kefir_result_t kefir_asmcmp_context_label_next(const struct kefir_asmcmp_context *context,
+                                               kefir_asmcmp_label_index_t label_index,
+                                               kefir_asmcmp_label_index_t *label_index_ptr) {
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
     REQUIRE(VALID_LABEL_IDX(context, label_index),
             KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Provided asmgen label index is out of context bounds"));
-    REQUIRE(label_index_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to asmcmp label index"));
+    REQUIRE(label_index_ptr != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to asmcmp label index"));
 
     if (label_index + 1 < context->labels_length) {
         *label_index_ptr = label_index + 1;
@@ -663,11 +668,14 @@ kefir_result_t kefir_asmcmp_context_label_next(const struct kefir_asmcmp_context
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_asmcmp_context_label_prev(const struct kefir_asmcmp_context *context, kefir_asmcmp_label_index_t label_index, kefir_asmcmp_label_index_t *label_index_ptr) {
+kefir_result_t kefir_asmcmp_context_label_prev(const struct kefir_asmcmp_context *context,
+                                               kefir_asmcmp_label_index_t label_index,
+                                               kefir_asmcmp_label_index_t *label_index_ptr) {
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
     REQUIRE(VALID_LABEL_IDX(context, label_index),
             KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Provided asmgen label index is out of context bounds"));
-    REQUIRE(label_index_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to asmcmp label index"));
+    REQUIRE(label_index_ptr != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to asmcmp label index"));
 
     if (label_index > 0) {
         *label_index_ptr = label_index - 1;
@@ -677,7 +685,9 @@ kefir_result_t kefir_asmcmp_context_label_prev(const struct kefir_asmcmp_context
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_asmcmp_context_get_label(const struct kefir_asmcmp_context *context, kefir_asmcmp_label_index_t label_index, const struct kefir_asmcmp_label **label_ptr) {
+kefir_result_t kefir_asmcmp_context_get_label(const struct kefir_asmcmp_context *context,
+                                              kefir_asmcmp_label_index_t label_index,
+                                              const struct kefir_asmcmp_label **label_ptr) {
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
     REQUIRE(VALID_LABEL_IDX(context, label_index),
             KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Provided asmgen label index is out of context bounds"));

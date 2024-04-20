@@ -275,7 +275,7 @@ kefir_result_t kefir_opt_code_container_block_public_labels_next(
 
 static kefir_result_t ensure_code_container_capacity(struct kefir_mem *mem, struct kefir_opt_code_container *code) {
     if (code->length == code->capacity) {
-        kefir_size_t new_capacity = code->capacity + 64;
+        kefir_size_t new_capacity = (code->capacity * 9 / 8) + 512;
         struct kefir_opt_instruction *new_code = KEFIR_MALLOC(mem, sizeof(struct kefir_opt_instruction) * new_capacity);
         REQUIRE(new_code != NULL,
                 KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate optimizer code container"));
@@ -637,7 +637,7 @@ kefir_result_t kefir_opt_code_container_drop_control(const struct kefir_opt_code
 
 static kefir_result_t ensure_phi_container_capacity(struct kefir_mem *mem, struct kefir_opt_code_container *code) {
     if (code->phi_nodes_length == code->phi_nodes_capacity) {
-        kefir_size_t new_capacity = code->phi_nodes_capacity + 64;
+        kefir_size_t new_capacity = code->phi_nodes_capacity * 9 / 8 + 512;
         struct kefir_opt_phi_node *new_phis = KEFIR_MALLOC(mem, sizeof(struct kefir_opt_phi_node) * new_capacity);
         REQUIRE(new_phis != NULL,
                 KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate optimizer phi node container"));

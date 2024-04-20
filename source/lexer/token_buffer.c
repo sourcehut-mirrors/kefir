@@ -23,12 +23,12 @@
 #include "kefir/core/error.h"
 #include <string.h>
 
-#define INIT_CAPACITY 256
-#define CAPACITY_INCREASE 256
+#define INIT_CAPACITY 512
+#define CAPACITY_INCREASE(_current) ((_current) * 9 / 8 + INIT_CAPACITY)
 
 static kefir_result_t ensure_size(struct kefir_mem *mem, struct kefir_token_buffer *buffer) {
     if (buffer->length + 1 >= buffer->capacity) {
-        kefir_size_t newCapacity = buffer->capacity == 0 ? INIT_CAPACITY : buffer->capacity + CAPACITY_INCREASE;
+        kefir_size_t newCapacity = buffer->capacity == 0 ? INIT_CAPACITY : CAPACITY_INCREASE(buffer->capacity);
         struct kefir_token *newBuffer = KEFIR_MALLOC(mem, sizeof(struct kefir_token) * newCapacity);
         REQUIRE(newBuffer != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to reallocate token buffer"));
         if (buffer->tokens != NULL) {
