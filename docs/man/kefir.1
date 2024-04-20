@@ -193,16 +193,25 @@ Do not link runtime routine library
 .It Fl nortinc
 Do not add runtime includes to include path
 .\"
-.It Fl Wp,option | Fl Xpreprocessor Ar option
+.It Fl Wp,option
+Pass "option" to preprocessing phase as command line option. If option contains commas, it is split into multiple options
+.\"
+.It Fl Xpreprocessor Ar option
 Pass "option" to preprocessing phase as command line option
 .\"
 .It Fl Wc,option
-Pass "option" to compiling phase as command line option
+Pass "option" to compiling phase as command line option. If option contains commas, it is split into multiple options
 .\"
-.It Fl Wa,option | Fl Xassembler Ar option
-Pass "option" to assembler phase as command line option
+.It Fl Wa,option
+Pass "option" to assembler phase as command line option. If option contains commas, it is split into multiple options
 .\"
-.It Fl Wl,option | Fl Xlinker Ar option
+.It Fl Xassembler Ar option
+Pass "option" to assembler phase as command line option.
+.\"
+.It Fl Wl,option
+Pass "option" to linking phase as command line option. If option contains commas, it is split into multiple options
+.\"
+.It Fl Xlinker Ar option
 Pass "option" to linking phase as command line option
 .\"
 .It Fl Woption

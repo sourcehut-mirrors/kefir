@@ -444,9 +444,30 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
         }
 
         // Extra tool options
+#define SPLIT_OPTIONS(_init, _callback) \
+        do { \
+            const char *options = (_init); \
+            for (const char *next_comma = strchr(options, ','); next_comma != NULL; next_comma = strchr(options, ',')) { \
+                const kefir_size_t option_length = next_comma - options; \
+                char *copy = KEFIR_MALLOC(mem, sizeof(char) * (option_length + 1)); \
+                REQUIRE(copy != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate external tool option copy")); \
+                strncpy(copy, options, option_length); \
+                copy[option_length] = '\0'; \
+                kefir_result_t res = _callback(mem, symbols, config, copy); \
+                KEFIR_FREE(mem, copy); \
+                REQUIRE_OK(res); \
+                options = next_comma + 1; \
+            } \
+            if (*options != '\0') { \
+                REQUIRE_OK(_callback(mem, symbols, config, options)); \
+            } \
+        } while (0)
+#define ADD_LINKER_ARG(_mem, _symbols, _config, _option) \
+    kefir_driver_configuration_add_argument((_mem), (_symbols), (_config), (_option), KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_EXTRA)
+
         else if (STRNCMP("-Wa,", arg) == 0) {
             // Assembler options
-            REQUIRE_OK(kefir_driver_configuration_add_assembler_argument(mem, symbols, config, arg + 4));
+            SPLIT_OPTIONS(arg + 4, kefir_driver_configuration_add_assembler_argument);
         } else if (strcmp("-Xassembler", arg) == 0) {
             // Assembler options
             EXPECT_ARG;
@@ -454,8 +475,7 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
             REQUIRE_OK(kefir_driver_configuration_add_assembler_argument(mem, symbols, config, flag));
         } else if (STRNCMP("-Wl,", arg) == 0) {
             // Linker options
-            REQUIRE_OK(kefir_driver_configuration_add_argument(mem, symbols, config, arg + 4,
-                                                               KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_EXTRA));
+            SPLIT_OPTIONS(arg + 4, ADD_LINKER_ARG);
         } else if (strcmp("-Xlinker", arg) == 0) {
             // Linker options
             EXPECT_ARG;
@@ -464,7 +484,7 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
                                                                KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_EXTRA));
         } else if (STRNCMP("-Wp,", arg) == 0 || STRNCMP("-Wc,", arg) == 0) {
             // Preprocessor and compiler options
-            REQUIRE_OK(kefir_driver_configuration_add_compiler_argument(mem, symbols, config, arg + 4));
+            SPLIT_OPTIONS(arg + 4, kefir_driver_configuration_add_compiler_argument);
         } else if (strcmp("-Xpreprocessor", arg) == 0) {
             // Preprocessor: ignored
             EXPECT_ARG;
@@ -482,13 +502,13 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
             }
             if (STRNCMP("a,", arg) == 0) {
                 // Assembler options
-                REQUIRE_OK(kefir_driver_configuration_add_assembler_argument(mem, symbols, config, arg + 2));
+                SPLIT_OPTIONS(arg + 2, kefir_driver_configuration_add_assembler_argument);
             } else if (STRNCMP("l,", arg) == 0) {
                 // Linker options
-                REQUIRE_OK(kefir_driver_configuration_add_assembler_argument(mem, symbols, config, arg + 2));
+                SPLIT_OPTIONS(arg + 2, ADD_LINKER_ARG);
             } else if (STRNCMP("p,", arg) == 0 || STRNCMP("c,", arg) == 0) {
                 // Compiler and linker options
-                REQUIRE_OK(kefir_driver_configuration_add_compiler_argument(mem, symbols, config, arg + 2));
+                SPLIT_OPTIONS(arg + 2, kefir_driver_configuration_add_compiler_argument);
             } else {
                 // Other options
                 char buffer[512];
@@ -499,6 +519,8 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
                 REQUIRE_OK(kefir_driver_configuration_add_compiler_argument(mem, symbols, config, arg));
             }
         }
+#undef ADD_LINKER_ARG
+#undef SPLIT_OPTIONS
 
         // Other flags
         else if (strcmp("-h", arg) == 0 || strcmp("--help", arg) == 0) {
