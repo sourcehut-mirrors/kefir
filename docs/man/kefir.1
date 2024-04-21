@@ -193,6 +193,12 @@ Do not link runtime routine library
 .It Fl nortinc
 Do not add runtime includes to include path
 .\"
+.It Fl \-soft-atomics
+Enables atomic support via software library. Implies \-\-Wdeclare-atomic-support option and links appropriate atomic primitives library (libatomic/libcompiler_rt). Unavailable for musl target.
+.\"
+.It Fl \-soft-atomics
+Disables atomic support via software library. Implies \-\-Wno-declare-atomic-support option.
+.\"
 .It Fl Wp,option
 Pass "option" to preprocessing phase as command line option. If option contains commas, it is split into multiple options
 .\"
@@ -441,7 +447,7 @@ Augment assembly output with internal code generator details in comments. DETAIL
 vasm+regs (virtual assembly and register allocations), devasm (devirtualized assembly).
 .\"
 .It Ar pipeline=PIPELINE-SPEC
-Code generator transformation pipeline specification (not supported for native-* targets) consists of comma separated names of pipeline passes:
+Code generator transformation pipeline specification consists of comma separated names of pipeline passes:
 .Bl -tag -width Ds
 .\"
 .It Ar noop

@@ -144,13 +144,11 @@ kefir_result_t kefir_driver_apply_target_compiler_configuration(
         REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__linux__", "1"));
 
         if (target->variant == KEFIR_DRIVER_TARGET_VARIANT_GNU) {
-            if (compiler_config != NULL) {
-                REQUIRE(externals->gnu.include_path != NULL,
-                        KEFIR_SET_ERROR(KEFIR_UI_ERROR, "GNU include path shall be passed as KEFIR_GNU_INCLUDE "
-                                                        "environment variable for selected target"));
+            REQUIRE(externals->gnu.include_path != NULL,
+                    KEFIR_SET_ERROR(KEFIR_UI_ERROR, "GNU include path shall be passed as KEFIR_GNU_INCLUDE "
+                                                    "environment variable for selected target"));
 
-                REQUIRE_OK(add_include_paths(mem, symbols, compiler_config, externals->gnu.include_path));
-            }
+            REQUIRE_OK(add_include_paths(mem, symbols, compiler_config, externals->gnu.include_path));
         } else if (target->variant == KEFIR_DRIVER_TARGET_VARIANT_MUSL) {
             REQUIRE(externals->musl.include_path != NULL,
                     KEFIR_SET_ERROR(KEFIR_UI_ERROR, "Musl library path shall be passed as KEFIR_MUSL_INCLUDE "
@@ -292,6 +290,8 @@ kefir_result_t kefir_driver_apply_target_linker_initial_configuration(
                 REQUIRE_OK(
                     kefir_driver_linker_configuration_add_argument(mem, linker_config, externals->musl.dynamic_linker));
             }
+
+            linker_config->flags.link_atomics = false;
         }
     } else if (target->platform == KEFIR_DRIVER_TARGET_PLATFORM_FREEBSD &&
                target->variant == KEFIR_DRIVER_TARGET_VARIANT_SYSTEM) {
@@ -405,6 +405,13 @@ kefir_result_t kefir_driver_apply_target_linker_final_configuration(
                     REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-lc"));
                     REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-lm"));
                 }
+                if (linker_config->flags.link_atomics) {
+                    REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "--push-state"));
+                    REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "--as-needed"));
+                    REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-latomic"));
+                    REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "--no-as-needed"));
+                    REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "--pop-state"));
+                }
                 REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-ldl"));
                 REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-lgcc"));
                 REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-lgcc_eh"));
@@ -445,6 +452,14 @@ kefir_result_t kefir_driver_apply_target_linker_final_configuration(
         REQUIRE_OK(add_library_paths(mem, linker_config, externals->freebsd.library_path));
 
         if (linker_config->flags.link_default_libs) {
+            if (linker_config->flags.link_atomics) {
+                REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "--push-state"));
+                REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "--as-needed"));
+                REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-lcompiler_rt"));
+                REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "--no-as-needed"));
+                REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "--pop-state"));
+            }
+
             if (linker_config->flags.link_libc) {
                 REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-lc"));
                 REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-lm"));
@@ -470,8 +485,11 @@ kefir_result_t kefir_driver_apply_target_linker_final_configuration(
         REQUIRE_OK(add_library_paths(mem, linker_config, externals->openbsd.library_path));
 
         if (linker_config->flags.link_default_libs) {
-            if (linker_config->flags.link_libc) {
+            if (linker_config->flags.link_atomics || linker_config->flags.link_libc) {
                 REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-lcompiler_rt"));
+            }
+
+            if (linker_config->flags.link_libc) {
                 REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-lc"));
                 REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-lm"));
             }
@@ -498,6 +516,14 @@ kefir_result_t kefir_driver_apply_target_linker_final_configuration(
             if (linker_config->flags.link_libc) {
                 REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-lc"));
                 REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-lm"));
+            }
+
+            if (linker_config->flags.link_atomics) {
+                REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "--push-state"));
+                REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "--as-needed"));
+                REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-latomic"));
+                REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "--no-as-needed"));
+                REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "--pop-state"));
             }
         }
 

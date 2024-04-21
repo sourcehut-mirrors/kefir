@@ -48,6 +48,7 @@ typedef struct kefir_driver_linker_configuration {
         kefir_bool_t link_start_files;
         kefir_bool_t link_default_libs;
         kefir_bool_t link_libc;
+        kefir_bool_t link_atomics;
         kefir_bool_t link_rtlib;
         kefir_bool_t verbose;
     } flags;
@@ -136,6 +137,7 @@ typedef struct kefir_driver_configuration {
         kefir_bool_t link_libc;
         kefir_bool_t include_rtinc;
         kefir_bool_t link_rtlib;
+        kefir_bool_t soft_atomics;
         kefir_bool_t verbose;
     } flags;
 

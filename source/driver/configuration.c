@@ -87,6 +87,7 @@ kefir_result_t kefir_driver_linker_configuration_init(struct kefir_driver_linker
     config->flags.link_start_files = true;
     config->flags.link_default_libs = true;
     config->flags.link_libc = true;
+    config->flags.link_atomics = true;
     config->flags.link_rtlib = true;
     config->flags.verbose = false;
 
@@ -146,6 +147,7 @@ kefir_result_t kefir_driver_configuration_init(struct kefir_driver_configuration
     config->flags.link_libc = true;
     config->flags.link_rtlib = true;
     config->flags.include_rtinc = true;
+    config->flags.soft_atomics = true;
     config->flags.verbose = false;
 
     config->dependency_output.output_system_deps = true;

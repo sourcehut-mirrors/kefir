@@ -399,6 +399,12 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
         } else if (strcmp("-nortinc", arg) == 0) {
             // Do not include runtime headers
             config->flags.include_rtinc = false;
+        } else if (strcmp("--soft-atomics", arg) == 0) {
+            // Enable software atomics support
+            config->flags.soft_atomics = true;
+        } else if (strcmp("--no-soft-atomics", arg) == 0) {
+            // Disable software atomics support
+            config->flags.soft_atomics = false;
         }
 
         // Run options
@@ -444,26 +450,28 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
         }
 
         // Extra tool options
-#define SPLIT_OPTIONS(_init, _callback) \
-        do { \
-            const char *options = (_init); \
-            for (const char *next_comma = strchr(options, ','); next_comma != NULL; next_comma = strchr(options, ',')) { \
-                const kefir_size_t option_length = next_comma - options; \
-                char *copy = KEFIR_MALLOC(mem, sizeof(char) * (option_length + 1)); \
-                REQUIRE(copy != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate external tool option copy")); \
-                strncpy(copy, options, option_length); \
-                copy[option_length] = '\0'; \
-                kefir_result_t res = _callback(mem, symbols, config, copy); \
-                KEFIR_FREE(mem, copy); \
-                REQUIRE_OK(res); \
-                options = next_comma + 1; \
-            } \
-            if (*options != '\0') { \
-                REQUIRE_OK(_callback(mem, symbols, config, options)); \
-            } \
-        } while (0)
-#define ADD_LINKER_ARG(_mem, _symbols, _config, _option) \
-    kefir_driver_configuration_add_argument((_mem), (_symbols), (_config), (_option), KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_EXTRA)
+#define SPLIT_OPTIONS(_init, _callback)                                                                              \
+    do {                                                                                                             \
+        const char *options = (_init);                                                                               \
+        for (const char *next_comma = strchr(options, ','); next_comma != NULL; next_comma = strchr(options, ',')) { \
+            const kefir_size_t option_length = next_comma - options;                                                 \
+            char *copy = KEFIR_MALLOC(mem, sizeof(char) * (option_length + 1));                                      \
+            REQUIRE(copy != NULL,                                                                                    \
+                    KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate external tool option copy"));        \
+            strncpy(copy, options, option_length);                                                                   \
+            copy[option_length] = '\0';                                                                              \
+            kefir_result_t res = _callback(mem, symbols, config, copy);                                              \
+            KEFIR_FREE(mem, copy);                                                                                   \
+            REQUIRE_OK(res);                                                                                         \
+            options = next_comma + 1;                                                                                \
+        }                                                                                                            \
+        if (*options != '\0') {                                                                                      \
+            REQUIRE_OK(_callback(mem, symbols, config, options));                                                    \
+        }                                                                                                            \
+    } while (0)
+#define ADD_LINKER_ARG(_mem, _symbols, _config, _option)                              \
+    kefir_driver_configuration_add_argument((_mem), (_symbols), (_config), (_option), \
+                                            KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_EXTRA)
 
         else if (STRNCMP("-Wa,", arg) == 0) {
             // Assembler options

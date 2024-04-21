@@ -66,6 +66,7 @@ static kefir_result_t driver_generate_linker_config(struct kefir_mem *mem, struc
     linker_config->flags.link_start_files = config->flags.link_start_files;
     linker_config->flags.link_default_libs = config->flags.link_default_libs;
     linker_config->flags.link_libc = config->flags.link_libc;
+    linker_config->flags.link_atomics = config->flags.soft_atomics;
     linker_config->flags.link_rtlib = config->flags.link_rtlib;
     linker_config->flags.verbose = config->flags.verbose;
     REQUIRE_OK(kefir_driver_apply_target_linker_initial_configuration(mem, symbols, externals, linker_config,
@@ -244,6 +245,9 @@ kefir_result_t kefir_driver_generate_compiler_config(struct kefir_mem *mem, stru
                                                               (const char *) node->value));
     }
 
+    if (compiler_config->features.declare_atomic_support) {
+        compiler_config->features.declare_atomic_support = config->flags.soft_atomics;
+    }
     switch (config->compiler.optimization_level) {
         case 0:
             compiler_config->optimizer_pipeline_spec = NULL;

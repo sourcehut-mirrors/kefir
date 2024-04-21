@@ -130,7 +130,11 @@ static kefir_result_t output_compiler_config(FILE *output,
          node = kefir_hashtree_next(&iter2)) {
         ASSIGN_DECL_CAST(const char *, str, node->key);
         ASSIGN_DECL_CAST(const char *, str2, node->value);
-        fprintf(output, " --define %s=%s", str, str2);
+        if (str2 != NULL) {
+            fprintf(output, " --define %s=%s", str, str2);
+        } else {
+            fprintf(output, " --define %s", str);
+        }
     }
 
     for (const struct kefir_list_entry *iter = kefir_list_head(&configuration->undefines); iter != NULL;
@@ -145,6 +149,12 @@ static kefir_result_t output_compiler_config(FILE *output,
 
     if (configuration->optimizer_pipeline_spec != NULL) {
         fprintf(output, " --optimizer-pipeline %s", configuration->optimizer_pipeline_spec);
+    }
+
+    if (configuration->features.declare_atomic_support) {
+        fprintf(output, " --declare-atomic-support");
+    } else {
+        fprintf(output, " --no-declare-atomic-support");
     }
 
 #define FEATURE(_id, _name)                         \
