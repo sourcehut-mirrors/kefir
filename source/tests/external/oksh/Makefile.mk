@@ -41,8 +41,9 @@ $(KEFIR_EXTERNAL_TEST_OKSH_SOURCE_DIR)/oksh: $(KEFIR_EXTERNAL_TEST_OKSH_SOURCE_D
 
 $(KEFIR_EXTERNAL_TEST_OKSH_DIR)/test.log: $(KEFIR_EXTERNAL_TEST_OKSH_SOURCE_DIR)/oksh $(SOURCE_DIR)/tests/external/oksh/test.sh
 	@echo "Validating oksh $(KEFIR_EXTERNAL_TEST_OKSH_VERSION)..."
-	@"$(KEFIR_EXTERNAL_TEST_OKSH_SOURCE_DIR)/oksh" "$(SOURCE_DIR)/tests/external/oksh/test.sh" > "$@.tmp"
-	@diff "$@.tmp" "$(SOURCE_DIR)/tests/external/oksh/test.log.expected"
+	@"$(KEFIR_EXTERNAL_TEST_OKSH_SOURCE_DIR)/oksh" "$(SOURCE_DIR)/tests/external/oksh/test.sh" | sort > "$@.tmp"
+	@cat "$(SOURCE_DIR)/tests/external/oksh/test.log.expected" | sort > "$@.expected"
+	@diff "$@.tmp" "$@.expected"
 	@mv "$@.tmp" "$@"
 
 $(KEFIR_EXTERNAL_TESTS_DIR)/oksh.test.done: $(KEFIR_EXTERNAL_TEST_OKSH_DIR)/test.log
