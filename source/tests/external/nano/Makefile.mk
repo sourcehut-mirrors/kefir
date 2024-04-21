@@ -21,21 +21,21 @@ $(KEFIR_EXTERNAL_TEST_NANO_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_NANO_AR
 	@cd "$(KEFIR_EXTERNAL_TEST_NANO_DIR)" && tar xvfz "$(KEFIR_EXTERNAL_TEST_NANO_ARCHIVE_FILENAME)"
 	@touch "$@"
 
-$(KEFIR_EXTERNAL_TEST_NANO_SOURCE_DIR)/config.log: $(KEFIR_EXTERNAL_TEST_NANO_SOURCE_DIR)/.extracted $(KEFIR_EXE) $(LIBKEFIRRT_A)
+$(KEFIR_EXTERNAL_TEST_NANO_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_NANO_SOURCE_DIR)/.extracted $(KEFIR_EXE) $(LIBKEFIRRT_A)
 	@echo "Configuring nano $(KEFIR_EXTERNAL_TEST_NANO_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_NANO_SOURCE_DIR)" && \
 		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
-		KEFIR_RNANOC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		KEFIR_RTLIB="$(realpath $(LIBKEFIRRT_A))" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		CFLAGS="-O1 -fPIC -pie" \
 		./configure
 
-$(KEFIR_EXTERNAL_TEST_NANO_SOURCE_DIR)/src/nano: $(KEFIR_EXTERNAL_TEST_NANO_SOURCE_DIR)/config.log
+$(KEFIR_EXTERNAL_TEST_NANO_SOURCE_DIR)/src/nano: $(KEFIR_EXTERNAL_TEST_NANO_SOURCE_DIR)/Makefile
 	@echo "Building nano $(KEFIR_EXTERNAL_TEST_NANO_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_NANO_SOURCE_DIR)" && \
 		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
-		KEFIR_RNANOC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		KEFIR_RTLIB="$(realpath $(LIBKEFIRRT_A))" \
 		$(MAKE)
 
