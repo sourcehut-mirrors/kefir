@@ -2,6 +2,7 @@ image: ubuntu/jammy
 packages:
   - build-essential
   - gcc-12
+  - yacc
   - wget
 sources:
   - https://git.sr.ht/~jprotopopov/kefir
@@ -12,10 +13,10 @@ tasks:
       LC_ALL=C.UTF-8 make all PROFILE=reldebug CC=gcc-12 -j$(nproc)
   - external_tests_fast: |
       cd kefir
-      make .EXTERNAL_TESTS_FAST_SUITE -j$(nproc)
+      LC_ALL=C.UTF-8 make .EXTERNAL_TESTS_FAST_SUITE -j$(nproc)
   - external_tests_slow: |
       cd kefir
-      make .EXTERNAL_TESTS_SLOW_SUITE -j$(nproc)
+      LC_ALL=C.UTF-8 make .EXTERNAL_TESTS_SLOW_SUITE -j$(nproc)
 triggers:
   - action: email
     condition: failure
