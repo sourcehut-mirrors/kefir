@@ -3,14 +3,19 @@ WEBAPP_INCLUDE_DIR=$(WEBAPP_KEFIR_BIN_DIR)/includes
 WEBAPP_INCLUDE_LIST=$(WEBAPP_KEFIR_BIN_DIR)/include.list
 WEBAPP_INCLUDE_EXTRA=
 
-WEBAPP_MUSL_VERSION=1.2.4
-WEBAPP_MUSL_ARCHIVE=$(KEFIR_BIN_DIR)/musl-$(WEBAPP_MUSL_VERSION).tar.gz
+WEBAPP_MUSL_VERSION=1.2.5
+WEBAPP_MUSL_ARCHIVE_FILENAME=musl-$(WEBAPP_MUSL_VERSION).tar.gz
+WEBAPP_MUSL_ARCHIVE=$(KEFIR_BIN_DIR)/$(WEBAPP_MUSL_ARCHIVE_FILENAME)
+WEBAPP_MUSL_URL=https://musl.libc.org/releases/$(WEBAPP_MUSL_ARCHIVE_FILENAME)
 WEBAPP_MUSL_BUILD=$(KEFIR_BIN_DIR)/musl-$(WEBAPP_MUSL_VERSION)/.build.done
+WEBAPP_MUSL_SHA256=a9a118bbe84d8764da0ea0d28b3ab3fae8477fc7e4085d90102b8596fc7c75e4
 
 $(WEBAPP_MUSL_ARCHIVE):
 	@mkdir -p $(shell dirname "$@")
 	@echo "Downloading $@"
-	@wget -O $@ "https://musl.libc.org/releases/musl-$(WEBAPP_MUSL_VERSION).tar.gz"
+	@wget -O "$@.tmp" "https://musl.libc.org/releases/musl-$(WEBAPP_MUSL_VERSION).tar.gz"
+	@$(SCRIPTS_DIR)/checksum_sha256.sh "$@.tmp" "$(WEBAPP_MUSL_SHA256)"
+	@mv "$@.tmp" "$@"
 
 $(WEBAPP_MUSL_BUILD): $(WEBAPP_MUSL_ARCHIVE)
 	@echo "Building $(shell dirname $(WEBAPP_MUSL_BUILD))"

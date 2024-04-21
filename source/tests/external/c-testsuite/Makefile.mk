@@ -15,7 +15,7 @@ $(KEFIR_EXTERNAL_TEST_C_TESTSUITE_ARCHIVE):
 	@mkdir -p $(dir $@)
 	@echo "Downloading $(KEFIR_EXTERNAL_TEST_C_TESTSUITE_URL)..."
 	@wget -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_C_TESTSUITE_URL)"
-	@$(SOURCE_DIR)/tests/external/util/checksum_sha256.sh "$@.tmp" "$(KEFIR_EXTERNAL_TEST_C_TESTSUITE_ARCHIVE_SHA256)"
+	@$(SCRIPTS_DIR)/checksum_sha256.sh "$@.tmp" "$(KEFIR_EXTERNAL_TEST_C_TESTSUITE_ARCHIVE_SHA256)"
 	@mv "$@.tmp" "$@"
 
 $(KEFIR_EXTERAL_TEST_C_TESTSUITE)/.extracted: $(KEFIR_EXTERNAL_TEST_C_TESTSUITE_ARCHIVE)

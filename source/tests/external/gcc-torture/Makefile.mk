@@ -16,7 +16,7 @@ $(KEFIR_EXTERNAL_TEST_GCC_ARCHIVE):
 	@mkdir -p "$(dir $@)"
 	@echo "Downloading $(KEFIR_EXTERNAL_TEST_GCC_ARCHIVE_FILENAME)..."
 	@wget -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_GCC_URL)"
-	@$(SOURCE_DIR)/tests/external/util/checksum_sha256.sh "$@.tmp" "$(KEFIR_EXTERNAL_TEST_GCC_ARCHIVE_SHA256)"
+	@$(SCRIPTS_DIR)/checksum_sha256.sh "$@.tmp" "$(KEFIR_EXTERNAL_TEST_GCC_ARCHIVE_SHA256)"
 	@mv "$@.tmp" "$@"
 
 $(KEFIR_EXTERNAL_TEST_GCC_DIR)/.done: $(KEFIR_EXTERNAL_TEST_GCC_ARCHIVE)
