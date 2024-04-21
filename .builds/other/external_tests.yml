@@ -3,6 +3,7 @@ packages:
   - build-essential
   - gcc-12
   - yacc
+  - libncurses-dev
   - wget
 sources:
   - https://git.sr.ht/~jprotopopov/kefir
