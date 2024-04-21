@@ -4,6 +4,9 @@ packages:
   - gcc-12
   - yacc
   - libncurses-dev
+  - zlib1g-dev
+  - gettext
+  - file
   - wget
 sources:
   - https://git.sr.ht/~jprotopopov/kefir
@@ -12,12 +15,43 @@ tasks:
       cd kefir
       make clean
       LC_ALL=C.UTF-8 make all PROFILE=reldebug CC=gcc-12 -j$(nproc)
-  - external_tests_fast: |
+  - test_bash: |
       cd kefir
-      LC_ALL=C.UTF-8 make .EXTERNAL_TESTS_FAST_SUITE -j$(nproc)
-  - external_tests_slow: |
+      LC_ALL=C.UTF-8 make bin/tests/external/bash.test.done -j$(nproc)
+  - test_c_testsuite: |
       cd kefir
-      LC_ALL=C.UTF-8 make .EXTERNAL_TESTS_SLOW_SUITE -j$(nproc)
+      LC_ALL=C.UTF-8 make bin/tests/external/c-testsuite.test.done -j$(nproc)
+  - test_gcc_torture: |
+      cd kefir
+      LC_ALL=C.UTF-8 make bin/tests/external/gcc-torture.test.done -j$(nproc)
+  - test_git: |
+      cd kefir
+      LC_ALL=C.UTF-8 make bin/tests/external/git.test.done -j$(nproc)
+  - test_libsir: |
+      cd kefir
+      LC_ALL=C.UTF-8 make bin/tests/external/libsir.test.done -j$(nproc)
+  - test_lua: |
+      cd kefir
+      LC_ALL=C.UTF-8 make bin/tests/external/lua.test.done -j$(nproc)
+  - test_oksh: |
+      cd kefir
+      LC_ALL=C.UTF-8 make bin/tests/external/oksh.test.done -j$(nproc)
+  - test_sqlite: |
+      cd kefir
+      LC_ALL=C.UTF-8 make bin/tests/external/sqlite.test.done -j$(nproc)
+  - test_tcc: |
+      cd kefir
+      LC_ALL=C.UTF-8 make bin/tests/external/tcc.test.done -j$(nproc)
+  # Disabled due to OOM
+  # - test_tcl: |
+  #     cd kefir
+  #     LC_ALL=C.UTF-8 make bin/tests/external/tcl.test.done -j$(nproc)
+  - test_tin: |
+      cd kefir
+      LC_ALL=C.UTF-8 make bin/tests/external/tin.test.done -j$(nproc)
+  - test_zlib: |
+      cd kefir
+      LC_ALL=C.UTF-8 make bin/tests/external/zlib.test.done -j$(nproc)
 triggers:
   - action: email
     condition: failure
