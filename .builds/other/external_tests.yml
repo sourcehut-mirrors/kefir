@@ -33,6 +33,9 @@ tasks:
   - test_lua: |
       cd kefir
       LC_ALL=C.UTF-8 make bin/tests/external/lua.test.done -j$(nproc)
+  - test_nano: |
+      cd kefir
+      LC_ALL=C.UTF-8 make bin/tests/external/nano.test.done -j$(nproc)
   - test_oksh: |
       cd kefir
       LC_ALL=C.UTF-8 make bin/tests/external/oksh.test.done -j$(nproc)
