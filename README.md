@@ -17,7 +17,7 @@ generation is supported. Kefir features `cc`-compatible command line interface.
 
 [Kefir website](https://kefir.protopopov.lv) also provides some additional information.
 
-**Note to users of Kefir:** if you encounter any behavior that does not comply
+**Note to the users of Kefir:** if you encounter any behavior that does not comply
 with C language standard or significantly diverges from other compilers, please
 do no hestitate to reach me out via [email](mailto:jevgenij@protopopov.lv)
 directly or through the [mailing
@@ -112,7 +112,7 @@ extending the compiler, including:
   extensions and built-ins.
 * Bugfixes, improvements in error reporting.
 * Extending the number of supported platforms.
-* Reimplementing parser and lexer for better performance.
+* Reimplementing parser, lexer and register allocator for better performance.
 * Refactoring and cleaning up analysis and translation stage implementation.
 
 ### Implementation quirks
@@ -126,10 +126,11 @@ Some implementation details that user needs to take into account:
   automatically.
 * Atomic implementation fully relies on software atomic library (`libatomic` for
   GCC, `libcompiler_rt` for Clang), thus any program that employs atomic
-  operations need to link a `libatomic`-compatible library. Furthermore, if
-  `<stdatomic.h>` header from Clang includes is used (the default on FreeBSD and
-  OpenBSD), `-D__GNUC__=4 -D__GNUC_MINOR__=20` command line arguments shall be
-  added to Kefir invocation.
+  operations need to link a `libatomic`-compatible library. It happens by
+  default for Glibc and *BSD targets. Furthermore, if `<stdatomic.h>` header
+  from Clang includes is used (the default on FreeBSD and OpenBSD),
+  `-D__GNUC__=4 -D__GNUC_MINOR__=20` command line arguments shall be added to
+  Kefir invocation.
 * Atomic operations on long double variables (both scalar and complex) might
   result in undefined behavior due to uninitialized padding contained at the
   last 48 bits of long double storage unit. Kefir implements padding zeroing
@@ -307,7 +308,7 @@ Kefir relies on following tests, most of which are executed as part of CI:
   technique as described above.
 * GCC Torture Suite -- `compile` & `execute` parts of GCC torture test suite are
   executed with kefir compiler, with some permissive options enabled. At the
-  moment, out of 3445 tests, 584 fail and 29 are skipped due to being irrelevant
+  moment, out of 3445 tests, 537 fail and 29 are skipped due to being irrelevant
   (e.g. SIMD or profiling test cases; there is no exhaustive skip list yet). All
   failures happen on compilation stage, no abortions occur at runtime. The work
   with torture test suite will be continued in order to reduce the number of
@@ -316,14 +317,18 @@ Kefir relies on following tests, most of which are executed as part of CI:
 * Miscallenous tests:
     - Lua test -- kefir is used to build Lua 5.4 interpreter and then Lua basic
       test suite is executed on the resulting executable 
-    - [Test suite](https://git.sr.ht/~jprotopopov/c-testsuite) which is a
-      fork of [c-testsuite](https://github.com/c-testsuite/c-testsuite) is
-      executed. Currently, the test suite reports 4 failures that happen due to
-      C language extensions used in the tests. Failing test cases are skipped.
-
-Manual (and thus less frequent tests):
-- SQLite3, Git, Bash, TCC, Nano, Zlib (static) -- software is compiled by kefir, and
-  a manual smoke test is performed with resulting executable.
+    - [Test suite](https://git.sr.ht/~jprotopopov/c-testsuite) which is a fork
+      of [c-testsuite](https://github.com/c-testsuite/c-testsuite) is executed.
+      Currently, the test suite reports 3 failures that happen due to C language
+      extensions used in the tests. Failing test cases are skipped.
+      
+Furthermore, Kefir also provides an [external](source/tests/external) test suite
+comprised of open source software that is known to work with Kefir. This suite
+are not included in the CI, however, it is regularly executed manually.
+Currently, the external test suite includes: bash 5.2.21, git 2.44.0, libsir
+2.2.4, nano 7.2, oksh 7.5, sqlite 3.45.3, tcc 0.9.27, tcl 8.6.14, tin 2.6.3,
+zlib 1.3.1. The external test suite is used to verify Kefir compatbility with
+real world software.
 
 Own test suite is deterministic (that is, tests do not fail spuriously), however
 there might arise problems when executed in unusual environments (e.g. with
