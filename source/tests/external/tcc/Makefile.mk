@@ -30,7 +30,7 @@ $(KEFIR_EXTERNAL_TEST_TCC_SOURCE_DIR)/config.h: $(KEFIR_EXTERNAL_TEST_TCC_SOURCE
 	@rm -f "$@"
 	@cd "$(KEFIR_EXTERNAL_TEST_TCC_SOURCE_DIR)" && \
 		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
-		KEFIR_RTCCC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		KEFIR_RTLIB="$(realpath $(LIBKEFIRRT_A))" \
 		./configure --cc="$(realpath $(KEFIR_EXE))" --extra-cflags="-O1 -fPIC -pie"
 
@@ -38,7 +38,7 @@ $(KEFIR_EXTERNAL_TEST_TCC_SOURCE_DIR)/tcc: $(KEFIR_EXTERNAL_TEST_TCC_SOURCE_DIR)
 	@echo "Building tcc $(KEFIR_EXTERNAL_TEST_TCC_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_TCC_SOURCE_DIR)" && \
 		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
-		KEFIR_RTCCC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		KEFIR_RTLIB="$(realpath $(LIBKEFIRRT_A))" \
 		$(MAKE) all
 
