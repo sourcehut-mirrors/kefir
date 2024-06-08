@@ -146,11 +146,6 @@ kefir_result_t kefir_driver_external_resources_init_from_env(struct kefir_mem *m
     set_if_null(&externals->netbsd.dynamic_linker, KEFIR_CONFIG_HOST_NETBSD_SYSTEM_DYNAMIC_LINKER);
 #endif
 
-    externals->work_dir = getenv("KEFIR_WORKDIR");
-    if (externals->work_dir == NULL) {
-        REQUIRE_OK(kefir_tempfile_manager_tmpdir(mem, tmpmgr, "kefir-workdir-XXXXXX", &externals->work_dir));
-    }
-
     externals->extensions.source_file = ".c";
     externals->extensions.preprocessed_file = ".i";
     externals->extensions.assembly_file = ".s";

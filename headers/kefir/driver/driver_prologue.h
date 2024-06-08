@@ -211,7 +211,6 @@ static kefir_result_t print_environment(FILE *out, const struct kefir_driver_tar
     if (externals->runtime_library) {
         fprintf(out, "KEFIR_RTLIB=\"%s\"\n", externals->runtime_library);
     }
-    fprintf(out, "KEFIR_WORKDIR=\"%s\"\n", externals->work_dir);
     REQUIRE_OK(print_toolchain_env(out, "GNU", &externals->gnu));
     REQUIRE_OK(print_toolchain_env(out, "MUSL", &externals->musl));
     REQUIRE_OK(print_toolchain_env(out, "FREEBSD", &externals->freebsd));

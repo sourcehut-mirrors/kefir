@@ -415,11 +415,8 @@ static kefir_result_t driver_assemble(struct kefir_mem *mem, const struct kefir_
 static kefir_result_t generate_object_name(struct kefir_mem *mem,
                                            const struct kefir_driver_external_resources *externals,
                                            const char **output_filename) {
-    char object_filename_template[PATH_MAX + 1];
-    snprintf(object_filename_template, sizeof(object_filename_template) - 1, "%s/object-file-XXXXXXX",
-             externals->work_dir);
     REQUIRE_OK(
-        kefir_tempfile_manager_create_file(mem, externals->tmpfile_manager, object_filename_template, output_filename));
+        kefir_tempfile_manager_create_file(mem, externals->tmpfile_manager, "object-file", output_filename));
     return KEFIR_OK;
 }
 
@@ -630,14 +627,10 @@ static kefir_result_t driver_assemble_runtime(struct kefir_mem *mem,
                                               struct kefir_compiler_runner_configuration *compiler_config,
                                               struct kefir_driver_assembler_configuration *assembler_config,
                                               const char **runtime_code_object_ptr) {
-    char runtime_assembly_filename_template[PATH_MAX + 1], runtime_object_filename_template[PATH_MAX + 1];
-    snprintf(runtime_assembly_filename_template, PATH_MAX, "%s/libkefirrt.s.XXXXXX", externals->work_dir);
-    snprintf(runtime_object_filename_template, PATH_MAX, "%s/libkefirrt.p.XXXXXX", externals->work_dir);
-
     const char *runtime_assembly_filename, *runtime_object_filename;
-    REQUIRE_OK(kefir_tempfile_manager_create_file(mem, externals->tmpfile_manager, runtime_assembly_filename_template,
+    REQUIRE_OK(kefir_tempfile_manager_create_file(mem, externals->tmpfile_manager, "libkefirrt.s",
                                                   &runtime_assembly_filename));
-    REQUIRE_OK(kefir_tempfile_manager_create_file(mem, externals->tmpfile_manager, runtime_object_filename_template,
+    REQUIRE_OK(kefir_tempfile_manager_create_file(mem, externals->tmpfile_manager, "libkefirrt.o",
                                                   &runtime_object_filename));
 
     struct kefir_compiler_runner_configuration patched_compiler_config = *compiler_config;
@@ -746,12 +739,9 @@ static kefir_result_t driver_run_impl(struct kefir_mem *mem, struct kefir_string
 
         REQUIRE_OK(driver_run_linker(mem, symbols, config, externals, linker_config));
     } else if (config->stage == KEFIR_DRIVER_STAGE_RUN) {
-        char output_file[PATH_MAX + 1];
         if (config->output_file == NULL) {
-            snprintf(output_file, PATH_MAX, "%s/exe.XXXXXX", externals->work_dir);
-
             REQUIRE_OK(
-                kefir_tempfile_manager_create_file(mem, externals->tmpfile_manager, output_file, &config->output_file));
+                kefir_tempfile_manager_create_file(mem, externals->tmpfile_manager, "exe", &config->output_file));
         }
 
         REQUIRE_OK(driver_run_linker(mem, symbols, config, externals, linker_config));

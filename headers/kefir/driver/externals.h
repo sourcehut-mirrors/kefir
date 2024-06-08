@@ -48,9 +48,6 @@ typedef struct kefir_driver_external_resources {
     struct kefir_driver_external_resource_toolchain_config openbsd;
     struct kefir_driver_external_resource_toolchain_config netbsd;
 
-    // Directories
-    const char *work_dir;
-
     struct {
         const char *source_file;
         const char *assembly_file;
