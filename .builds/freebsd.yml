@@ -7,7 +7,7 @@ packages:
   - coreutils
   - wget
   - python3
-  - py39-sqlite3
+  - py311-sqlite3
 sources:
   - https://git.sr.ht/~jprotopopov/kefir
 tasks:
