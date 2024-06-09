@@ -156,6 +156,7 @@ kefir_result_t kefir_tempfile_manager_create_file(struct kefir_mem *mem, struct 
         return KEFIR_SET_ERROR(KEFIR_UNKNOWN_ERROR, "Failed to prepare temporary file name template");
     });
 
+#ifndef KEFIR_NETBSD_HOST_PLATFORM
     const int fd = mkstemp(filepath);
     REQUIRE_ELSE(fd >= 0, {
         const kefir_result_t res = KEFIR_SET_OS_ERROR("Failed to generate temporary file name");
@@ -168,6 +169,14 @@ kefir_result_t kefir_tempfile_manager_create_file(struct kefir_mem *mem, struct 
         KEFIR_FREE(mem, filepath);
         return res;
     });
+#else
+    char *filepath_res = mktemp(filepath);
+    REQUIRE_ELSE(filepath_res != NULL, {
+        const kefir_result_t res = KEFIR_SET_OS_ERROR("Failed to generate temporary file name");
+        KEFIR_FREE(mem, filepath);
+        return res;
+    });
+#endif
 
     const kefir_result_t res =
         kefir_hashtree_insert(mem, &mgr->tracked_files, (kefir_hashtree_key_t) filepath, (kefir_hashtree_value_t) 0);
