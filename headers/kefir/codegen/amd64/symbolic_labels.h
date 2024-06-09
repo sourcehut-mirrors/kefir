@@ -23,16 +23,10 @@
 
 #include "kefir/core/basic-types.h"
 
-#define KEFIR_AMD64_PLT "%s@PLT"
-#define KEFIR_AMD64_GOTPCREL "%s@GOTPCREL"
-#define KEFIR_AMD64_THREAD_LOCAL "%s@tpoff"
-#define KEFIR_AMD64_THREAD_LOCAL_GOT "%s@gottpoff"
-#define KEFIR_AMD64_TLSGD "%s@tlsgd"
-#define KEFIR_AMD64_TLS_GET_ADDR "__tls_get_addr@PLT"
+#define KEFIR_AMD64_TLS_GET_ADDR "__tls_get_addr"
 #define KEFIR_AMD64_EMUTLS_V "__emutls_v.%s"
 #define KEFIR_AMD64_EMUTLS_T "__emutls_t.%s"
-#define KEFIR_AMD64_EMUTLS_GOT "__emutls_v.%s@GOTPCREL"
-#define KEFIR_AMD64_EMUTLS_GET_ADDR "__emutls_get_address@PLT"
+#define KEFIR_AMD64_EMUTLS_GET_ADDR "__emutls_get_address"
 
 #define KEFIR_AMD64_STRING_LITERAL "__kefir_string_literal%" KEFIR_ID_FMT
 #define KEFIR_AMD64_LABEL "_kefir_func_%s_label%" KEFIR_SIZE_FMT

@@ -148,7 +148,7 @@ static kefir_result_t translate_emulated_tls(struct kefir_mem *mem, struct kefir
             kefir_asm_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[1], total_alignment),
             kefir_asm_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[2], 0),
             data->defined ? kefir_asm_amd64_xasmgen_operand_label(
-                                &codegen->xasmgen_helpers.operands[3],
+                                &codegen->xasmgen_helpers.operands[3], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
                                 kefir_asm_amd64_xasmgen_helpers_format(&codegen->xasmgen_helpers, KEFIR_AMD64_EMUTLS_T,
                                                                        identifier))
                           : kefir_asm_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[3], 0)));

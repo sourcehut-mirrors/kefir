@@ -63,6 +63,35 @@ static kefir_result_t variant_format(struct kefir_json_output *json, kefir_asmcm
     return KEFIR_OK;
 }
 
+static kefir_result_t label_type_format(struct kefir_json_output *json, kefir_asmcmp_external_label_relocation_t type) {
+    switch (type) {
+        case KEFIR_ASMCMP_EXTERNAL_LABEL_ABSOLUTE:
+            REQUIRE_OK(kefir_json_output_string(json, "absolute"));
+            break;
+
+        case KEFIR_ASMCMP_EXTERNAL_LABEL_PLT:
+            REQUIRE_OK(kefir_json_output_string(json, "plt"));
+            break;
+
+        case KEFIR_ASMCMP_EXTERNAL_LABEL_GOTPCREL:
+            REQUIRE_OK(kefir_json_output_string(json, "gotpcrel"));
+            break;
+
+        case KEFIR_ASMCMP_EXTERNAL_LABEL_TPOFF:
+            REQUIRE_OK(kefir_json_output_string(json, "tpoff"));
+            break;
+
+        case KEFIR_ASMCMP_EXTERNAL_LABEL_GOTTPOFF:
+            REQUIRE_OK(kefir_json_output_string(json, "gottpoff"));
+            break;
+
+        case KEFIR_ASMCMP_EXTERNAL_LABEL_TLSGD:
+            REQUIRE_OK(kefir_json_output_string(json, "tlsgd"));
+            break;
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t value_format(struct kefir_json_output *json, const struct kefir_asmcmp_context *context,
                                    const struct kefir_asmcmp_value *value) {
     switch (value->type) {
@@ -142,6 +171,8 @@ static kefir_result_t value_format(struct kefir_json_output *json, const struct 
                 case KEFIR_ASMCMP_INDIRECT_EXTERNAL_LABEL_BASIS:
                     REQUIRE_OK(kefir_json_output_object_key(json, "basis"));
                     REQUIRE_OK(kefir_json_output_string(json, "external_label"));
+                    REQUIRE_OK(kefir_json_output_object_key(json, "type"));
+                    REQUIRE_OK(label_type_format(json, value->indirect.base.external_type));
                     REQUIRE_OK(kefir_json_output_object_key(json, "label"));
                     REQUIRE_OK(kefir_json_output_string(json, value->indirect.base.external_label));
                     break;
@@ -179,6 +210,8 @@ static kefir_result_t value_format(struct kefir_json_output *json, const struct 
             REQUIRE_OK(kefir_json_output_object_begin(json));
             REQUIRE_OK(kefir_json_output_object_key(json, "type"));
             REQUIRE_OK(kefir_json_output_string(json, "rip_indirect_internal"));
+            REQUIRE_OK(kefir_json_output_object_key(json, "type"));
+            REQUIRE_OK(label_type_format(json, value->rip_indirection.position));
             REQUIRE_OK(kefir_json_output_object_key(json, "base"));
             REQUIRE_OK(kefir_json_output_uinteger(json, value->rip_indirection.internal));
             REQUIRE_OK(kefir_json_output_object_key(json, "variant"));
@@ -190,6 +223,8 @@ static kefir_result_t value_format(struct kefir_json_output *json, const struct 
             REQUIRE_OK(kefir_json_output_object_begin(json));
             REQUIRE_OK(kefir_json_output_object_key(json, "type"));
             REQUIRE_OK(kefir_json_output_string(json, "rip_indirect_external"));
+            REQUIRE_OK(kefir_json_output_object_key(json, "type"));
+            REQUIRE_OK(label_type_format(json, value->rip_indirection.position));
             REQUIRE_OK(kefir_json_output_object_key(json, "base"));
             REQUIRE_OK(kefir_json_output_string(json, value->rip_indirection.external));
             REQUIRE_OK(kefir_json_output_object_key(json, "variant"));
@@ -210,6 +245,8 @@ static kefir_result_t value_format(struct kefir_json_output *json, const struct 
             REQUIRE_OK(kefir_json_output_object_begin(json));
             REQUIRE_OK(kefir_json_output_object_key(json, "type"));
             REQUIRE_OK(kefir_json_output_string(json, "external_label"));
+            REQUIRE_OK(kefir_json_output_object_key(json, "type"));
+            REQUIRE_OK(label_type_format(json, value->external_label.position));
             REQUIRE_OK(kefir_json_output_object_key(json, "label"));
             REQUIRE_OK(kefir_json_output_string(json, value->external_label.symbolic));
             REQUIRE_OK(kefir_json_output_object_key(json, "offset"));

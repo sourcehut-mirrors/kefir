@@ -104,12 +104,16 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(string_ref)(struct kefir_mem
         REQUIRE_OK(kefir_asmcmp_amd64_lea(
             mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
             &KEFIR_ASMCMP_MAKE_VREG64(result_vreg),
-            &KEFIR_ASMCMP_MAKE_RIP_INDIRECT_EXTERNAL(string_ref, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT), NULL));
+            &KEFIR_ASMCMP_MAKE_RIP_INDIRECT_EXTERNAL(KEFIR_ASMCMP_EXTERNAL_LABEL_ABSOLUTE, string_ref,
+                                                     KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
+            NULL));
     } else {
         REQUIRE_OK(kefir_asmcmp_amd64_lea(
             mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
             &KEFIR_ASMCMP_MAKE_VREG64(result_vreg),
-            &KEFIR_ASMCMP_MAKE_INDIRECT_EXTERNAL_LABEL(string_ref, 0, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT), NULL));
+            &KEFIR_ASMCMP_MAKE_INDIRECT_EXTERNAL_LABEL(KEFIR_ASMCMP_EXTERNAL_LABEL_ABSOLUTE, string_ref, 0,
+                                                       KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
+            NULL));
     }
 
     REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));

@@ -683,7 +683,8 @@ static kefir_result_t format_normal_parameter(struct kefir_mem *mem, struct kefi
                 if (asm_param->immediate_identifier_base != NULL) {
                     REQUIRE_OK(kefir_asmcmp_inline_assembly_add_value(
                         mem, &function->code.context, context->inline_asm_idx,
-                        &KEFIR_ASMCMP_MAKE_EXTERNAL_LABEL(asm_param->immediate_identifier_base,
+                        &KEFIR_ASMCMP_MAKE_EXTERNAL_LABEL(KEFIR_ASMCMP_EXTERNAL_LABEL_ABSOLUTE,
+                                                          asm_param->immediate_identifier_base,
                                                           asm_param->immediate_value)));
                 } else {
                     REQUIRE_OK(
@@ -698,7 +699,8 @@ static kefir_result_t format_normal_parameter(struct kefir_mem *mem, struct kefi
                                                asm_param->immediate_literal_base));
                 REQUIRE_OK(kefir_asmcmp_inline_assembly_add_value(
                     mem, &function->code.context, context->inline_asm_idx,
-                    &KEFIR_ASMCMP_MAKE_EXTERNAL_LABEL(symbol, asm_param->immediate_value)));
+                    &KEFIR_ASMCMP_MAKE_EXTERNAL_LABEL(KEFIR_ASMCMP_EXTERNAL_LABEL_ABSOLUTE, symbol,
+                                                      asm_param->immediate_value)));
             } break;
         }
         return KEFIR_OK;

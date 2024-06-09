@@ -192,7 +192,6 @@ kefir_result_t kefir_codegen_amd64_stack_frame_prologue(struct kefir_amd64_xasmg
     REQUIRE(frame != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 stack frame"));
 
     struct kefir_asm_amd64_xasmgen_operand operands[3];
-    struct kefir_asm_amd64_xasmgen_helpers helpers;
 
     const kefir_bool_t set_frame_pointer =
         frame->sizes.allocated_size > 0 || frame->requirements.frame_pointer || frame->requirements.reset_stack_pointer;
@@ -243,11 +242,11 @@ kefir_result_t kefir_codegen_amd64_stack_frame_prologue(struct kefir_amd64_xasmg
                         frame->offsets.vararg_area)));
 
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_CALL(
-                    xasmgen, kefir_asm_amd64_xasmgen_operand_label(
-                                 &operands[0], position_independent_code ? kefir_asm_amd64_xasmgen_helpers_format(
-                                                                               &helpers, KEFIR_AMD64_PLT,
-                                                                               KEFIR_AMD64_SYSTEM_V_RUNTIME_VARARG_SAVE)
-                                                                         : KEFIR_AMD64_SYSTEM_V_RUNTIME_VARARG_SAVE)));
+                    xasmgen, kefir_asm_amd64_xasmgen_operand_label(&operands[0],
+                                                                   position_independent_code
+                                                                       ? KEFIR_AMD64_XASMGEN_SYMBOL_RELATIVE_PLT
+                                                                       : KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
+                                                                   KEFIR_AMD64_SYSTEM_V_RUNTIME_VARARG_SAVE)));
                 break;
 
             default:

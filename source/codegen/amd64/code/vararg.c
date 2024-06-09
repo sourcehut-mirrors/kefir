@@ -216,15 +216,12 @@ static kefir_result_t vararg_visit_integer(const struct kefir_ir_type *type, kef
         param->mem, &param->function->code, kefir_asmcmp_context_instr_tail(&param->function->code.context),
         valist_placement_vreg, valist_vreg, NULL));
 
-    const char *symbolic_label = KEFIR_AMD64_SYSTEM_V_RUNTIME_LOAD_INT_VARARG;
-    if (param->function->codegen->config->position_independent_code) {
-        REQUIRE_OK(kefir_asmcmp_format(param->mem, &param->function->code.context, &symbolic_label, KEFIR_AMD64_PLT,
-                                       KEFIR_AMD64_SYSTEM_V_RUNTIME_LOAD_INT_VARARG));
-    }
-
-    REQUIRE_OK(kefir_asmcmp_amd64_call(param->mem, &param->function->code,
-                                       kefir_asmcmp_context_instr_tail(&param->function->code.context),
-                                       &KEFIR_ASMCMP_MAKE_EXTERNAL_LABEL(symbolic_label, 0), NULL));
+    kefir_asmcmp_external_label_relocation_t fn_location = param->function->codegen->config->position_independent_code
+                                                               ? KEFIR_ASMCMP_EXTERNAL_LABEL_PLT
+                                                               : KEFIR_ASMCMP_EXTERNAL_LABEL_ABSOLUTE;
+    REQUIRE_OK(kefir_asmcmp_amd64_call(
+        param->mem, &param->function->code, kefir_asmcmp_context_instr_tail(&param->function->code.context),
+        &KEFIR_ASMCMP_MAKE_EXTERNAL_LABEL(fn_location, KEFIR_AMD64_SYSTEM_V_RUNTIME_LOAD_INT_VARARG, 0), NULL));
 
     REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
         param->mem, &param->function->code, kefir_asmcmp_context_instr_tail(&param->function->code.context),
@@ -278,15 +275,12 @@ static kefir_result_t vararg_visit_sse(const struct kefir_ir_type *type, kefir_s
         param->mem, &param->function->code, kefir_asmcmp_context_instr_tail(&param->function->code.context),
         tmp_placement_vreg, NULL));
 
-    const char *symbolic_label = KEFIR_AMD64_SYSTEM_V_RUNTIME_LOAD_SSE_VARARG;
-    if (param->function->codegen->config->position_independent_code) {
-        REQUIRE_OK(kefir_asmcmp_format(param->mem, &param->function->code.context, &symbolic_label, KEFIR_AMD64_PLT,
-                                       KEFIR_AMD64_SYSTEM_V_RUNTIME_LOAD_SSE_VARARG));
-    }
-
-    REQUIRE_OK(kefir_asmcmp_amd64_call(param->mem, &param->function->code,
-                                       kefir_asmcmp_context_instr_tail(&param->function->code.context),
-                                       &KEFIR_ASMCMP_MAKE_EXTERNAL_LABEL(symbolic_label, 0), NULL));
+    kefir_asmcmp_external_label_relocation_t fn_location = param->function->codegen->config->position_independent_code
+                                                               ? KEFIR_ASMCMP_EXTERNAL_LABEL_PLT
+                                                               : KEFIR_ASMCMP_EXTERNAL_LABEL_ABSOLUTE;
+    REQUIRE_OK(kefir_asmcmp_amd64_call(
+        param->mem, &param->function->code, kefir_asmcmp_context_instr_tail(&param->function->code.context),
+        &KEFIR_ASMCMP_MAKE_EXTERNAL_LABEL(fn_location, KEFIR_AMD64_SYSTEM_V_RUNTIME_LOAD_SSE_VARARG, 0), NULL));
 
     REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
         param->mem, &param->function->code, kefir_asmcmp_context_instr_tail(&param->function->code.context),
@@ -687,15 +681,12 @@ static kefir_result_t vararg_visit_builtin(const struct kefir_ir_type *type, kef
                 param->mem, &param->function->code, kefir_asmcmp_context_instr_tail(&param->function->code.context),
                 valist_placement_vreg, valist_vreg, NULL));
 
-            const char *symbolic_label = KEFIR_AMD64_SYSTEM_V_RUNTIME_LOAD_INT_VARARG;
-            if (param->function->codegen->config->position_independent_code) {
-                REQUIRE_OK(kefir_asmcmp_format(param->mem, &param->function->code.context, &symbolic_label,
-                                               KEFIR_AMD64_PLT, KEFIR_AMD64_SYSTEM_V_RUNTIME_LOAD_INT_VARARG));
-            }
-
-            REQUIRE_OK(kefir_asmcmp_amd64_call(param->mem, &param->function->code,
-                                               kefir_asmcmp_context_instr_tail(&param->function->code.context),
-                                               &KEFIR_ASMCMP_MAKE_EXTERNAL_LABEL(symbolic_label, 0), NULL));
+            kefir_asmcmp_external_label_relocation_t fn_location =
+                param->function->codegen->config->position_independent_code ? KEFIR_ASMCMP_EXTERNAL_LABEL_PLT
+                                                                            : KEFIR_ASMCMP_EXTERNAL_LABEL_ABSOLUTE;
+            REQUIRE_OK(kefir_asmcmp_amd64_call(
+                param->mem, &param->function->code, kefir_asmcmp_context_instr_tail(&param->function->code.context),
+                &KEFIR_ASMCMP_MAKE_EXTERNAL_LABEL(fn_location, KEFIR_AMD64_SYSTEM_V_RUNTIME_LOAD_INT_VARARG, 0), NULL));
 
             REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
                 param->mem, &param->function->code, kefir_asmcmp_context_instr_tail(&param->function->code.context),

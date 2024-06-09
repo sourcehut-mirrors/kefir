@@ -678,13 +678,12 @@ static kefir_result_t invoke_impl(struct kefir_mem *mem, struct kefir_codegen_am
 
     kefir_asmcmp_instruction_index_t call_idx;
     if (instruction->operation.opcode == KEFIR_OPT_OPCODE_INVOKE) {
-        const char *symbol = ir_func_decl->name;
-        if (function->codegen->config->position_independent_code) {
-            REQUIRE_OK(kefir_asmcmp_format(mem, &function->code.context, &symbol, KEFIR_AMD64_PLT, ir_func_decl->name));
-        }
-        REQUIRE_OK(kefir_asmcmp_amd64_call(mem, &function->code,
-                                           kefir_asmcmp_context_instr_tail(&function->code.context),
-                                           &KEFIR_ASMCMP_MAKE_EXTERNAL_LABEL(symbol, 0), &call_idx));
+        kefir_asmcmp_external_label_relocation_t fn_location = function->codegen->config->position_independent_code
+                                                                   ? KEFIR_ASMCMP_EXTERNAL_LABEL_PLT
+                                                                   : KEFIR_ASMCMP_EXTERNAL_LABEL_ABSOLUTE;
+        REQUIRE_OK(
+            kefir_asmcmp_amd64_call(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                                    &KEFIR_ASMCMP_MAKE_EXTERNAL_LABEL(fn_location, ir_func_decl->name, 0), &call_idx));
     } else {
         kefir_asmcmp_virtual_register_index_t func_vreg;
         REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(

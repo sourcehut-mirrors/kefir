@@ -103,6 +103,7 @@ static kefir_result_t integral_static_data(const struct kefir_ir_type *type, kef
                 kefir_asm_amd64_xasmgen_operand_offset(
                     &param->codegen->xasmgen_helpers.operands[0],
                     kefir_asm_amd64_xasmgen_operand_label(&param->codegen->xasmgen_helpers.operands[1],
+                                                          KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
                                                           entry->value.pointer.reference),
                     entry->value.pointer.offset)));
 
@@ -123,7 +124,7 @@ static kefir_result_t integral_static_data(const struct kefir_ir_type *type, kef
                 kefir_asm_amd64_xasmgen_operand_offset(
                     &param->codegen->xasmgen_helpers.operands[0],
                     kefir_asm_amd64_xasmgen_operand_label(
-                        &param->codegen->xasmgen_helpers.operands[1],
+                        &param->codegen->xasmgen_helpers.operands[1], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
                         kefir_asm_amd64_xasmgen_helpers_format(&param->codegen->xasmgen_helpers,
                                                                KEFIR_AMD64_STRING_LITERAL, entry->value.string_ptr.id)),
                     entry->value.string_ptr.offset)));
@@ -229,6 +230,7 @@ static kefir_result_t word_static_data(const struct kefir_ir_type *type, kefir_s
                 kefir_asm_amd64_xasmgen_operand_offset(
                     &param->codegen->xasmgen_helpers.operands[0],
                     kefir_asm_amd64_xasmgen_operand_label(&param->codegen->xasmgen_helpers.operands[1],
+                                                          KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
                                                           entry->value.pointer.reference),
                     entry->value.pointer.offset)));
             break;
@@ -239,7 +241,7 @@ static kefir_result_t word_static_data(const struct kefir_ir_type *type, kefir_s
                 kefir_asm_amd64_xasmgen_operand_offset(
                     &param->codegen->xasmgen_helpers.operands[0],
                     kefir_asm_amd64_xasmgen_operand_label(
-                        &param->codegen->xasmgen_helpers.operands[1],
+                        &param->codegen->xasmgen_helpers.operands[1], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
                         kefir_asm_amd64_xasmgen_helpers_format(&param->codegen->xasmgen_helpers,
                                                                KEFIR_AMD64_STRING_LITERAL, entry->value.string_ptr.id)),
                     entry->value.pointer.offset)));

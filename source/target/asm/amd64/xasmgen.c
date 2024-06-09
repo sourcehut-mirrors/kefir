@@ -969,7 +969,8 @@ static kefir_result_t amd64_string_literal(void (*print)(void *, const char *, .
     return KEFIR_OK;
 }
 
-static kefir_result_t amd64_symbol_arg(void (*print)(void *, const char *, ...), void *printarg, const char *symbol) {
+static kefir_result_t amd64_symbol_arg(void (*print)(void *, const char *, ...), void *printarg,
+                                       kefir_asm_amd64_xasmgen_symbol_relocation_t type, const char *symbol) {
     const char *EscapedSymbols[] = {// TODO Expand number of escaped symbols
                                     "mod"};
     for (kefir_size_t i = 0; i < sizeof(EscapedSymbols) / sizeof(EscapedSymbols[0]); i++) {
@@ -980,6 +981,31 @@ static kefir_result_t amd64_symbol_arg(void (*print)(void *, const char *, ...),
     }
 
     print(printarg, "%s", symbol);
+    switch (type) {
+        case KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE:
+            // Intentionally left blank
+            break;
+
+        case KEFIR_AMD64_XASMGEN_SYMBOL_RELATIVE_PLT:
+            print(printarg, "@PLT");
+            break;
+
+        case KEFIR_AMD64_XASMGEN_SYMBOL_RELATIVE_GOTPCREL:
+            print(printarg, "@GOTPCREL");
+            break;
+
+        case KEFIR_AMD64_XASMGEN_SYMBOL_RELATIVE_TPOFF:
+            print(printarg, "@tpoff");
+            break;
+
+        case KEFIR_AMD64_XASMGEN_SYMBOL_RELATIVE_GOTTPOFF:
+            print(printarg, "@gottpoff");
+            break;
+
+        case KEFIR_AMD64_XASMGEN_SYMBOL_RELATIVE_TLSGD:
+            print(printarg, "@tlsgd");
+            break;
+    }
     return KEFIR_OK;
 }
 
@@ -1042,7 +1068,7 @@ static kefir_result_t amd64_format_operand_intel(void (*print)(void *, const cha
             break;
 
         case KEFIR_AMD64_XASMGEN_OPERAND_LABEL:
-            REQUIRE_OK(amd64_symbol_arg(print, printarg, op->label));
+            REQUIRE_OK(amd64_symbol_arg(print, printarg, op->label.type, op->label.symbol));
             break;
 
         case KEFIR_AMD64_XASMGEN_OPERAND_INDIRECTION:
@@ -1084,7 +1110,7 @@ static kefir_result_t amd64_format_operand_intel(void (*print)(void *, const cha
             break;
 
         case KEFIR_AMD64_XASMGEN_OPERAND_RIP_INDIRECTION:
-            REQUIRE_OK(amd64_symbol_arg(print, printarg, op->label));
+            REQUIRE_OK(amd64_symbol_arg(print, printarg, op->label.type, op->label.symbol));
             if (prefix) {
                 print(printarg, "[%%rip]");
             } else {
@@ -1126,7 +1152,7 @@ static kefir_result_t amd64_format_operand_att(void (*print)(void *, const char 
             break;
 
         case KEFIR_AMD64_XASMGEN_OPERAND_LABEL:
-            REQUIRE_OK(amd64_symbol_arg(print, printarg, op->label));
+            REQUIRE_OK(amd64_symbol_arg(print, printarg, op->label.type, op->label.symbol));
             break;
 
         case KEFIR_AMD64_XASMGEN_OPERAND_INDIRECTION:
@@ -1161,7 +1187,7 @@ static kefir_result_t amd64_format_operand_att(void (*print)(void *, const char 
             break;
 
         case KEFIR_AMD64_XASMGEN_OPERAND_RIP_INDIRECTION:
-            REQUIRE_OK(amd64_symbol_arg(print, printarg, op->label));
+            REQUIRE_OK(amd64_symbol_arg(print, printarg, op->label.type, op->label.symbol));
             print(printarg, "(%%rip)");
             break;
 
@@ -1822,10 +1848,11 @@ const struct kefir_asm_amd64_xasmgen_operand *kefir_asm_amd64_xasmgen_operand_im
 }
 
 const struct kefir_asm_amd64_xasmgen_operand *kefir_asm_amd64_xasmgen_operand_label(
-    struct kefir_asm_amd64_xasmgen_operand *op, const char *label) {
+    struct kefir_asm_amd64_xasmgen_operand *op, kefir_asm_amd64_xasmgen_symbol_relocation_t type, const char *label) {
     REQUIRE(op != NULL, NULL);
     op->klass = KEFIR_AMD64_XASMGEN_OPERAND_LABEL;
-    op->label = label;
+    op->label.symbol = label;
+    op->label.type = type;
     return op;
 }
 
@@ -1874,11 +1901,13 @@ const struct kefir_asm_amd64_xasmgen_operand *kefir_asm_amd64_xasmgen_operand_po
 }
 
 const struct kefir_asm_amd64_xasmgen_operand *kefir_asm_amd64_xasmgen_operand_rip_indirection(
-    struct kefir_asm_amd64_xasmgen_operand *op, const char *identifier) {
+    struct kefir_asm_amd64_xasmgen_operand *op, kefir_asm_amd64_xasmgen_symbol_relocation_t type,
+    const char *identifier) {
     REQUIRE(op != NULL, NULL);
     REQUIRE(identifier != NULL, NULL);
     op->klass = KEFIR_AMD64_XASMGEN_OPERAND_RIP_INDIRECTION;
-    op->label = identifier;
+    op->label.symbol = identifier;
+    op->label.type = type;
     return op;
 }
 
