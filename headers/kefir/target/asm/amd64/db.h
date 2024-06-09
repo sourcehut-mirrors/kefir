@@ -366,8 +366,10 @@
     _instr0(fmulp, "fmulp", , KEFIR_AMD64_INSTRDB_NONE) _separator \
     _instr0(fdivp, "fdivp", , KEFIR_AMD64_INSTRDB_NONE) _separator \
     _instr0(fchs, "fchs", , KEFIR_AMD64_INSTRDB_NONE) _separator \
-    _instr0(fucomip, "fucomip", , KEFIR_AMD64_INSTRDB_NONE) _separator \
-    _instr0(fcomip, "fcomip", , KEFIR_AMD64_INSTRDB_NONE) _separator \
+    _instr1(fucomip, "fucomip", , KEFIR_AMD64_INSTRDB_NONE, \
+        KEFIR_AMD64_INSTRDB_FPU_STACK) _separator \
+    _instr1(fcomip, "fcomip", , KEFIR_AMD64_INSTRDB_NONE, \
+        KEFIR_AMD64_INSTRDB_FPU_STACK) _separator \
     _instr1(fstcw, "fstcw", , KEFIR_AMD64_INSTRDB_NONE, \
         KEFIR_AMD64_INSTRDB_WRITE | KEFIR_AMD64_INSTRDB_MEMORY16) _separator \
     _instr1(fldcw, "fldcw", , KEFIR_AMD64_INSTRDB_NONE, \

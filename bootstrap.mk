@@ -113,16 +113,16 @@ include source/binary_headers.mk
 
 $(BOOTSTRAP)/libkefir.so: $(KEFIR_LIB_ASM_FILES)
 	@echo "Linking $@"
-	@KEFIR_LD=$(KEFIR_LD) $(BOOTSTRAP_CC) $(BOOTSTRAP_CFLAGS) -shared $^ -o $@
+	@KEFIR_AS=$(KEFIR_AS) KEFIR_LD=$(KEFIR_LD) $(BOOTSTRAP_CC) $(BOOTSTRAP_CFLAGS) -shared $^ -o $@
 
 ifeq ($(USE_SHARED),yes)
 $(BOOTSTRAP)/kefir: $(KEFIR_DRIVER_ASM_FILES) $(BOOTSTRAP)/libkefir.so
 	@echo "Linking $@"
-	@KEFIR_LD=$(KEFIR_LD) $(BOOTSTRAP_CC) -pie $(BOOTSTRAP_CFLAGS) $(KEFIR_DRIVER_ASM_FILES) -o $@ -L$(BOOTSTRAP) -lkefir
+	@KEFIR_AS=$(KEFIR_AS) KEFIR_LD=$(KEFIR_LD) $(BOOTSTRAP_CC) -pie $(BOOTSTRAP_CFLAGS) $(KEFIR_DRIVER_ASM_FILES) -o $@ -L$(BOOTSTRAP) -lkefir
 else
 $(BOOTSTRAP)/kefir: $(KEFIR_ASM_FILES)
 	@echo "Linking $@"
-	@KEFIR_LD=$(KEFIR_LD) $(BOOTSTRAP_CC) $(BOOTSTRAP_CFLAGS) $^ -o $@
+	@KEFIR_AS=$(KEFIR_AS) KEFIR_LD=$(KEFIR_LD) $(BOOTSTRAP_CC) $(BOOTSTRAP_CFLAGS) $^ -o $@
 endif
 
 bootstrap: $(BOOTSTRAP)/kefir

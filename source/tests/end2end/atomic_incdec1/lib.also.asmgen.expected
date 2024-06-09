@@ -25,10 +25,22 @@
 .extern i32
 .extern i64
 .extern ptr
-.extern __kefir_opt_float32_neg
-.extern __kefir_opt_float64_neg
+.extern __kefirrt_opt_amd64_sysv_vararg_save
+.extern __kefirrt_opt_load_int_vararg
+.extern __kefirrt_opt_load_sse_vararg
 .extern __kefirrt_opt_float32_to_uint
 .extern __kefirrt_opt_float64_to_uint
+.extern __kefirrt_opt_long_double_to_int
+.extern __kefirrt_opt_long_double_to_uint
+.extern __kefirrt_opt_complex_long_double_equals
+.extern __kefirrt_opt_complex_long_double_truncate_1bit
+.extern __kefirrt_opt_complex_float32_mul
+.extern __kefirrt_opt_complex_float32_div
+.extern __kefirrt_opt_complex_float64_mul
+.extern __kefirrt_opt_complex_float64_div
+.extern __kefirrt_opt_complex_long_double_mul
+.extern __kefirrt_opt_complex_long_double_div
+.extern __kefirrt_fenv_update
 
 .section .text
 predec_i8:
@@ -308,7 +320,7 @@ _kefir_func_predec_f32_label2:
     lea -48(%rbp), %rsi
     call __atomic_compare_exchange_4@PLT
     movq -40(%rbp), %r9
-    movq -32(%rbp), %xmm1
+    movdqu -32(%rbp), %xmm1
     test %al, %al
     jz _kefir_func_predec_f32_label6
     movq -80(%rbp), %rax
@@ -345,7 +357,7 @@ _kefir_func_predec_f32_label4:
     movdqu %xmm1, -80(%rbp)
     lea -48(%rbp), %rdi
     call __kefirrt_fenv_update@PLT
-    movq -80(%rbp), %xmm1
+    movdqu -80(%rbp), %xmm1
     movq %xmm1, %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
@@ -386,7 +398,7 @@ _kefir_func_predec_f64_label2:
     lea -48(%rbp), %rsi
     call __atomic_compare_exchange_8@PLT
     movq -40(%rbp), %r9
-    movq -32(%rbp), %xmm1
+    movdqu -32(%rbp), %xmm1
     test %al, %al
     jz _kefir_func_predec_f64_label6
     movq -80(%rbp), %rax
@@ -423,7 +435,7 @@ _kefir_func_predec_f64_label4:
     movdqu %xmm1, -80(%rbp)
     lea -48(%rbp), %rdi
     call __kefirrt_fenv_update@PLT
-    movq -80(%rbp), %xmm1
+    movdqu -80(%rbp), %xmm1
     movq %xmm1, %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
@@ -614,7 +626,7 @@ _kefir_func_preinc_f32_label2:
     lea -48(%rbp), %rsi
     call __atomic_compare_exchange_4@PLT
     movq -40(%rbp), %r9
-    movq -32(%rbp), %xmm1
+    movdqu -32(%rbp), %xmm1
     test %al, %al
     jz _kefir_func_preinc_f32_label6
     movq -80(%rbp), %rax
@@ -651,7 +663,7 @@ _kefir_func_preinc_f32_label4:
     movdqu %xmm1, -80(%rbp)
     lea -48(%rbp), %rdi
     call __kefirrt_fenv_update@PLT
-    movq -80(%rbp), %xmm1
+    movdqu -80(%rbp), %xmm1
     movq %xmm1, %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
@@ -692,7 +704,7 @@ _kefir_func_preinc_f64_label2:
     lea -48(%rbp), %rsi
     call __atomic_compare_exchange_8@PLT
     movq -40(%rbp), %r9
-    movq -32(%rbp), %xmm1
+    movdqu -32(%rbp), %xmm1
     test %al, %al
     jz _kefir_func_preinc_f64_label6
     movq -80(%rbp), %rax
@@ -729,7 +741,7 @@ _kefir_func_preinc_f64_label4:
     movdqu %xmm1, -80(%rbp)
     lea -48(%rbp), %rdi
     call __kefirrt_fenv_update@PLT
-    movq -80(%rbp), %xmm1
+    movdqu -80(%rbp), %xmm1
     movq %xmm1, %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp

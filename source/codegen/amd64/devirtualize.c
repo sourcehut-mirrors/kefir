@@ -895,12 +895,21 @@ static kefir_result_t deactivate_stash(struct kefir_mem *mem, struct devirtualiz
         ASSIGN_DECL_CAST(kefir_size_t, spill_area_slot, node->value);
 
         kefir_asmcmp_instruction_index_t new_position;
-        REQUIRE_OK(kefir_asmcmp_amd64_mov(
-            mem, state->target, kefir_asmcmp_context_instr_prev(&state->target->context, instr_idx),
-            &KEFIR_ASMCMP_MAKE_PHREG(reg_alloc->direct_reg),
-            &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(stash_alloc->spill_area.index + spill_area_slot, 0,
-                                              KEFIR_ASMCMP_OPERAND_VARIANT_64BIT),
-            &new_position));
+        if (kefir_asm_amd64_xasmgen_register_is_floating_point(reg_alloc->direct_reg)) {
+            REQUIRE_OK(kefir_asmcmp_amd64_movdqu(
+                mem, state->target, kefir_asmcmp_context_instr_prev(&state->target->context, instr_idx),
+                &KEFIR_ASMCMP_MAKE_PHREG(reg_alloc->direct_reg),
+                &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(stash_alloc->spill_area.index + spill_area_slot, 0,
+                                                KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
+                &new_position));
+        } else {
+            REQUIRE_OK(kefir_asmcmp_amd64_mov(
+                mem, state->target, kefir_asmcmp_context_instr_prev(&state->target->context, instr_idx),
+                &KEFIR_ASMCMP_MAKE_PHREG(reg_alloc->direct_reg),
+                &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(stash_alloc->spill_area.index + spill_area_slot, 0,
+                                                KEFIR_ASMCMP_OPERAND_VARIANT_64BIT),
+                &new_position));
+        }
         REQUIRE_OK(kefir_asmcmp_context_move_labels(mem, &state->target->context, new_position, instr_idx));
     }
 

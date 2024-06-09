@@ -13,10 +13,22 @@
 .global uint_mul
 .global uint_sub
 .global uint_xor
-.extern __kefir_opt_float32_neg
-.extern __kefir_opt_float64_neg
+.extern __kefirrt_opt_amd64_sysv_vararg_save
+.extern __kefirrt_opt_load_int_vararg
+.extern __kefirrt_opt_load_sse_vararg
 .extern __kefirrt_opt_float32_to_uint
 .extern __kefirrt_opt_float64_to_uint
+.extern __kefirrt_opt_long_double_to_int
+.extern __kefirrt_opt_long_double_to_uint
+.extern __kefirrt_opt_complex_long_double_equals
+.extern __kefirrt_opt_complex_long_double_truncate_1bit
+.extern __kefirrt_opt_complex_float32_mul
+.extern __kefirrt_opt_complex_float32_div
+.extern __kefirrt_opt_complex_float64_mul
+.extern __kefirrt_opt_complex_float64_div
+.extern __kefirrt_opt_complex_long_double_mul
+.extern __kefirrt_opt_complex_long_double_div
+.extern __kefirrt_fenv_update
 
 .section .text
 int_or:
