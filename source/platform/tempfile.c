@@ -91,10 +91,7 @@ kefir_result_t kefir_tempfile_manager_free(struct kefir_mem *mem, struct kefir_t
     return KEFIR_OK;
 }
 
-static kefir_result_t init_tempfile_manager(struct kefir_mem *mem, struct kefir_tempfile_manager *mgr) {
-    REQUIRE(mgr->basedir == NULL, KEFIR_OK);
-    static const char TEMPLATE[] = "%s/kefir-%ld-XXXXXX";
-
+static const char *get_tmp_directory(void) {
     const char *tmp_directory = getenv("KEFIR_TMPDIR");
     if (tmp_directory == NULL) {
         tmp_directory = getenv("TMPDIR");
@@ -106,7 +103,14 @@ static kefir_result_t init_tempfile_manager(struct kefir_mem *mem, struct kefir_
         tmp_directory = "/tmp";
 #endif
     }
+    return tmp_directory;
+}
 
+static kefir_result_t init_tempfile_manager(struct kefir_mem *mem, struct kefir_tempfile_manager *mgr) {
+    REQUIRE(mgr->basedir == NULL, KEFIR_OK);
+    static const char TEMPLATE[] = "%s/kefir-%ld-XXXXXX";
+
+    const char * const tmp_directory = get_tmp_directory();
     const long pid = (long) getpid();
     const int basedir_length = snprintf(NULL, 0, TEMPLATE, tmp_directory, pid);
     REQUIRE(basedir_length > 0, KEFIR_SET_ERROR(KEFIR_UNKNOWN_ERROR, "Failed to initialize temporary file manager base directory name"));
@@ -142,6 +146,7 @@ kefir_result_t kefir_tempfile_manager_create_file(struct kefir_mem *mem, struct 
     REQUIRE(result != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to generated tempfile name"));
 
+#ifndef KEFIR_NETBSD_HOST_PLATFORM
     REQUIRE_OK(init_tempfile_manager(mem, mgr));
     static const char FILEPATH_TEMPLATE[] = "%s/%s.%" KEFIR_SIZE_FMT ".XXXXXX";
 
@@ -155,8 +160,24 @@ kefir_result_t kefir_tempfile_manager_create_file(struct kefir_mem *mem, struct 
         KEFIR_FREE(mem, filepath);
         return KEFIR_SET_ERROR(KEFIR_UNKNOWN_ERROR, "Failed to prepare temporary file name template");
     });
+#else
+    REQUIRE_OK(init_tempfile_manager(mem, mgr));
+    static const char FILEPATH_TEMPLATE[] = "%s/kefir-%ld-%s.%" KEFIR_SIZE_FMT ".XXXXXX";
 
-#ifndef KEFIR_NETBSD_HOST_PLATFORM
+    const char * const tmp_directory = get_tmp_directory();
+    const kefir_size_t file_index = mgr->file_index++;
+    const long pid = (long) getpid();
+    const int filepath_length = snprintf(NULL, 0, FILEPATH_TEMPLATE, tmp_directory, pid, filename, file_index);
+    REQUIRE(filepath_length > 0, KEFIR_SET_ERROR(KEFIR_UNKNOWN_ERROR, "Failed to prepare temporary file name template"));
+    char * const filepath = KEFIR_MALLOC(mem, filepath_length + 2);
+    REQUIRE(filepath != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate tempfile name"));
+
+    REQUIRE_ELSE(snprintf(filepath, filepath_length + 1, FILEPATH_TEMPLATE, tmp_directory, pid, filename, file_index) == filepath_length, {
+        KEFIR_FREE(mem, filepath);
+        return KEFIR_SET_ERROR(KEFIR_UNKNOWN_ERROR, "Failed to prepare temporary file name template");
+    });
+#endif
+
     const int fd = mkstemp(filepath);
     REQUIRE_ELSE(fd >= 0, {
         const kefir_result_t res = KEFIR_SET_OS_ERROR("Failed to generate temporary file name");
@@ -169,14 +190,6 @@ kefir_result_t kefir_tempfile_manager_create_file(struct kefir_mem *mem, struct 
         KEFIR_FREE(mem, filepath);
         return res;
     });
-#else
-    char *filepath_res = mktemp(filepath);
-    REQUIRE_ELSE(filepath_res != NULL, {
-        const kefir_result_t res = KEFIR_SET_OS_ERROR("Failed to generate temporary file name");
-        KEFIR_FREE(mem, filepath);
-        return res;
-    });
-#endif
 
     const kefir_result_t res =
         kefir_hashtree_insert(mem, &mgr->tracked_files, (kefir_hashtree_key_t) filepath, (kefir_hashtree_value_t) 0);
