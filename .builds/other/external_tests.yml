@@ -52,6 +52,9 @@ tasks:
   - test_tin: |
       cd kefir
       LC_ALL=C.UTF-8 make bin/tests/external/tin.test.done -j$(nproc)
+  - test_yasm: |
+      cd kefir
+      LC_ALL=C.UTF-8 make bin/tests/external/yasm.test.done -j$(nproc)
   - test_zlib: |
       cd kefir
       LC_ALL=C.UTF-8 make bin/tests/external/zlib.test.done -j$(nproc)
