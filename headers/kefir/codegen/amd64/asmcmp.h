@@ -94,6 +94,7 @@ typedef struct kefir_asmcmp_amd64 {
     struct kefir_hashtree register_preallocation;
     kefir_abi_amd64_variant_t abi_variant;
     kefir_bool_t position_independent_code;
+    struct kefir_hashtreeset externals;
 } kefir_asmcmp_amd64_t;
 
 kefir_result_t kefir_asmcmp_amd64_init(const char *, kefir_abi_amd64_variant_t, kefir_bool_t,

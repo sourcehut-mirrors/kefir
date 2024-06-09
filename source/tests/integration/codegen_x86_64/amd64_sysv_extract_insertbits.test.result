@@ -17,6 +17,11 @@
 .extern __kefirrt_opt_complex_long_double_mul
 .extern __kefirrt_opt_complex_long_double_div
 .extern __kefirrt_fenv_update
+.extern __kefir_opt_float32_neg
+.extern __kefir_opt_float64_neg
+.extern __kefir_opt_uint2long_double
+.extern __kefir_opt_complex_float32_neg
+.extern __kefir_opt_complex_float64_neg
 
 .section .text
 insert:

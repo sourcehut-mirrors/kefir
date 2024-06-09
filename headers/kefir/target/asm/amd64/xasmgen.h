@@ -215,7 +215,8 @@ typedef enum kefir_asm_amd64_xasmgen_data_type {
 typedef enum kefir_asm_amd64_xasmgen_syntax {
     KEFIR_AMD64_XASMGEN_SYNTAX_INTEL_NOPREFIX,
     KEFIR_AMD64_XASMGEN_SYNTAX_INTEL_PREFIX,
-    KEFIR_AMD64_XASMGEN_SYNTAX_ATT
+    KEFIR_AMD64_XASMGEN_SYNTAX_ATT,
+    KEFIR_AMD64_XASMGEN_SYNTAX_YASM
 } kefir_asm_amd64_xasmgen_syntax_t;
 
 typedef struct kefir_amd64_xasmgen {
@@ -417,8 +418,8 @@ const struct kefir_asm_amd64_xasmgen_operand *kefir_asm_amd64_xasmgen_operand_fp
 #define KEFIR_AMD64_XASMGEN_INSTR_FDIVP(_xasmgen) ((_xasmgen)->instr.fdivp((_xasmgen)))
 #define KEFIR_AMD64_XASMGEN_INSTR_FCHS(_xasmgen) ((_xasmgen)->instr.fchs((_xasmgen)))
 
-#define KEFIR_AMD64_XASMGEN_INSTR_FUCOMIP(_xasmgen) ((_xasmgen)->instr.fucomip((_xasmgen)))
-#define KEFIR_AMD64_XASMGEN_INSTR_FCOMIP(_xasmgen) ((_xasmgen)->instr.fcomip((_xasmgen)))
+#define KEFIR_AMD64_XASMGEN_INSTR_FUCOMIP(_xasmgen, _op1) ((_xasmgen)->instr.fucomip((_xasmgen), (_op1)))
+#define KEFIR_AMD64_XASMGEN_INSTR_FCOMIP(_xasmgen, _op1) ((_xasmgen)->instr.fcomip((_xasmgen), (_op1)))
 
 #define KEFIR_AMD64_XASMGEN_INSTR_PEXTRQ(_xasmgen, _op1, _op2, _op3) \
     ((_xasmgen)->instr.pextrq((_xasmgen), (_op1), (_op2), (_op3)))

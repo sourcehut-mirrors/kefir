@@ -22,6 +22,11 @@
 .extern __kefirrt_opt_complex_long_double_mul
 .extern __kefirrt_opt_complex_long_double_div
 .extern __kefirrt_fenv_update
+.extern __kefir_opt_float32_neg
+.extern __kefir_opt_float64_neg
+.extern __kefir_opt_uint2long_double
+.extern __kefir_opt_complex_float32_neg
+.extern __kefir_opt_complex_float64_neg
 
 .section .text
 get_global_uninit_static:
@@ -34,6 +39,7 @@ _kefir_func_get_global_uninit_static_label1:
     ret
 
 get_global_tlocal_uninit_static:
+.extern __tls_get_addr
     push %rbp
     mov %rsp, %rbp
 _kefir_func_get_global_tlocal_uninit_static_label0:
@@ -47,6 +53,7 @@ _kefir_func_get_global_tlocal_uninit_static_label1:
     ret
 
 get_local_tlocal_uninit_static:
+.extern __tls_get_addr
     push %rbp
     mov %rsp, %rbp
 _kefir_func_get_local_tlocal_uninit_static_label0:

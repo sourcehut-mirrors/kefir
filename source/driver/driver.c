@@ -52,6 +52,7 @@ static kefir_result_t driver_generate_asm_config(struct kefir_mem *mem, struct k
         REQUIRE_OK(kefir_driver_assembler_configuration_add_argument(mem, assembler_config, argument));
     }
     assembler_config->verbose = config->flags.verbose;
+    assembler_config->target = config->assembler.target;
     return KEFIR_OK;
 }
 
@@ -268,6 +269,24 @@ kefir_result_t kefir_driver_generate_compiler_config(struct kefir_mem *mem, stru
             break;
     }
 
+    switch (config->assembler.target) {
+        case KEFIR_DRIVER_ASSEMBLER_GAS_ATT:
+            compiler_config->codegen.syntax = "x86_64-att";
+            break;
+
+        case KEFIR_DRIVER_ASSEMBLER_GAS_INTEL:
+            compiler_config->codegen.syntax = "x86_64-intel_noprefix";
+            break;
+
+        case KEFIR_DRIVER_ASSEMBLER_GAS_INTEL_PREFIX:
+            compiler_config->codegen.syntax = "x86_64-intel_prefix";
+            break;
+
+        case KEFIR_DRIVER_ASSEMBLER_YASM:
+            compiler_config->codegen.syntax = "x86_64-yasm";
+            break;
+    }
+
     struct kefir_string_array extra_args_buf;
     REQUIRE_OK(kefir_string_array_init(mem, &extra_args_buf));
     kefir_result_t res = KEFIR_OK;
@@ -415,8 +434,7 @@ static kefir_result_t driver_assemble(struct kefir_mem *mem, const struct kefir_
 static kefir_result_t generate_object_name(struct kefir_mem *mem,
                                            const struct kefir_driver_external_resources *externals,
                                            const char **output_filename) {
-    REQUIRE_OK(
-        kefir_tempfile_manager_create_file(mem, externals->tmpfile_manager, "object-file", output_filename));
+    REQUIRE_OK(kefir_tempfile_manager_create_file(mem, externals->tmpfile_manager, "object-file", output_filename));
     return KEFIR_OK;
 }
 
@@ -630,8 +648,8 @@ static kefir_result_t driver_assemble_runtime(struct kefir_mem *mem,
     const char *runtime_assembly_filename, *runtime_object_filename;
     REQUIRE_OK(kefir_tempfile_manager_create_file(mem, externals->tmpfile_manager, "libkefirrt.s",
                                                   &runtime_assembly_filename));
-    REQUIRE_OK(kefir_tempfile_manager_create_file(mem, externals->tmpfile_manager, "libkefirrt.o",
-                                                  &runtime_object_filename));
+    REQUIRE_OK(
+        kefir_tempfile_manager_create_file(mem, externals->tmpfile_manager, "libkefirrt.o", &runtime_object_filename));
 
     struct kefir_compiler_runner_configuration patched_compiler_config = *compiler_config;
     patched_compiler_config.action = KEFIR_COMPILER_RUNNER_ACTION_DUMP_RUNTIME_CODE;

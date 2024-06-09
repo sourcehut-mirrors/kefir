@@ -24,6 +24,7 @@
 #define KEFIR_CODEGEN_SYNTAX_X86_64_INTEL_PREFIX "x86_64-intel_prefix"
 #define KEFIR_CODEGEN_SYNTAX_X86_64_INTEL_NOPREFIX "x86_64-intel_noprefix"
 #define KEFIR_CODEGEN_SYNTAX_X86_64_ATT "x86_64-att"
+#define KEFIR_CODEGEN_SYNTAX_X86_64_YASM "x86_64-yasm"
 
 #include "kefir/codegen/codegen.h"
 #include "kefir/target/asm/amd64/xasmgen.h"

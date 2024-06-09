@@ -274,6 +274,20 @@ kefir_result_t kefir_driver_run_assembler(struct kefir_mem *mem, const char *out
     REQUIRE_CHAIN(&res, kefir_string_array_append(mem, &argv, "-o"));
     REQUIRE_CHAIN(&res, kefir_string_array_append(mem, &argv, output_file));
 
+    switch (config->target) {
+        case KEFIR_DRIVER_ASSEMBLER_GAS_INTEL:
+        case KEFIR_DRIVER_ASSEMBLER_GAS_INTEL_PREFIX:
+        case KEFIR_DRIVER_ASSEMBLER_GAS_ATT:
+            // Intentionally left blank
+            break;
+
+        case KEFIR_DRIVER_ASSEMBLER_YASM:
+            REQUIRE_CHAIN(&res, kefir_string_array_append(mem, &argv, "-f"));
+            REQUIRE_CHAIN(&res, kefir_string_array_append(mem, &argv, "elf64"));
+            REQUIRE_CHAIN(&res, kefir_string_array_append(mem, &argv, "-"));
+            break;
+    }
+
     REQUIRE_CHAIN(&res, copy_string_list_to_array(mem, &config->arguments, &argv));
 
     if (config->verbose) {

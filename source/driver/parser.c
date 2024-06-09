@@ -280,6 +280,30 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
             config->dependency_output.target_name = target_name;
         }
 
+        // Assembler options
+        else if (STRNCMP("-masm", arg) == 0) {
+            // Assembler
+            const char *assembler = NULL;
+            if (strlen(arg) == 5 || arg[5] != '=') {
+                EXPECT_ARG;
+                assembler = argv[++index];
+            } else {
+                assembler = &arg[6];
+            }
+
+            if (strcmp(assembler, "x86_64-gas-att") == 0 || strcmp(assembler, "att") == 0) {
+                config->assembler.target = KEFIR_DRIVER_ASSEMBLER_GAS_ATT;
+            } else if (strcmp(assembler, "x86_64-gas-intel") == 0 || strcmp(assembler, "intel") == 0) {
+                config->assembler.target = KEFIR_DRIVER_ASSEMBLER_GAS_INTEL;
+            } else if (strcmp(assembler, "x86_64-gas-intel_prefix") == 0) {
+                config->assembler.target = KEFIR_DRIVER_ASSEMBLER_GAS_INTEL_PREFIX;
+            } else if (strcmp(assembler, "x86_64-yasm") == 0) {
+                config->assembler.target = KEFIR_DRIVER_ASSEMBLER_YASM;
+            } else {
+                return KEFIR_SET_ERRORF(KEFIR_UI_ERROR, "Unknown assembler \"%s\"", assembler);
+            }
+        }
+
         // Linker flags
         else if (strcmp("-s", arg) == 0) {
             // Strip linked executable

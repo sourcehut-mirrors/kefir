@@ -35,6 +35,7 @@ typedef struct kefir_driver_external_resources {
     const char *default_target;
 
     // Tools
+    kefir_bool_t assembler_path_explicit;
     const char *assembler_path;
     const char *linker_path;
 

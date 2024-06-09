@@ -170,6 +170,8 @@ static kefir_result_t general_dynamic_tls(struct kefir_mem *mem, struct kefir_co
         kefir_asmcmp_amd64_rexW(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), NULL));
 
     kefir_asmcmp_instruction_index_t call_idx;
+    REQUIRE_OK(
+        kefir_hashtreeset_add(mem, &function->code.externals, (kefir_hashtreeset_entry_t) KEFIR_AMD64_TLS_GET_ADDR));
     REQUIRE_OK(kefir_asmcmp_amd64_call(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
         &KEFIR_ASMCMP_MAKE_EXTERNAL_LABEL(KEFIR_ASMCMP_EXTERNAL_LABEL_PLT, KEFIR_AMD64_TLS_GET_ADDR, 0), &call_idx));

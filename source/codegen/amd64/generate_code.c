@@ -540,6 +540,17 @@ kefir_result_t kefir_asmcmp_amd64_generate_code(struct kefir_mem *mem, struct ke
     REQUIRE(target != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmcmp amd64 target"));
     REQUIRE(stack_frame != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 stack frame"));
 
+    struct kefir_hashtreeset_iterator external_iter;
+    kefir_result_t res;
+    for (res = kefir_hashtreeset_iter(&target->externals, &external_iter); res == KEFIR_OK;
+         res = kefir_hashtreeset_next(&external_iter)) {
+        ASSIGN_DECL_CAST(const char *, external, external_iter.entry);
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_EXTERNAL(xasmgen, "%s", external));
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
+
     for (kefir_asmcmp_instruction_index_t idx = kefir_asmcmp_context_instr_head(&target->context);
          idx != KEFIR_ASMCMP_INDEX_NONE; idx = kefir_asmcmp_context_instr_next(&target->context, idx)) {
         REQUIRE_OK(generate_instr(mem, xasmgen, target, stack_frame, idx));

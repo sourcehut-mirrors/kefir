@@ -166,6 +166,10 @@ Produce position-independent executable (requires
 .Fl fPIC
 flag)
 .\"
+.It Fl masm=ASSEMBLER
+Produce code for the following assembler: [x86_64-gas-intel, x86_64-gas-intel_prefix, x86_64-gas-att (default), x86_64-yasm, intel (alias for x86_64-gas-intel), att (alias for x86_64-gas-att)].
+Also affects assembler flags. Note that KEFIR_AS or AS envinronment variable shall be point to the respective assembler executable.
+.\"
 .It Fl no-pie
 Do not produce position-independent executable [default]
 .\"
@@ -440,7 +444,7 @@ Omit frame pointer in leaf function that do not need it
 Always use frame pointer in all functions
 .\"
 .It Ar syntax=SYNTAX
-Produce assembly output with specified syntax [x86_64-intel_noprefix, x86_64-intel_prefix, x86_64-att (default)]
+Produce assembly output with specified syntax [x86_64-intel_noprefix, x86_64-intel_prefix, x86_64-att (default), x86_64-yasm].
 .\"
 .It Ar details=DETAILS-SPEC
 Augment assembly output with internal code generator details in comments. DETAILS-SPEC can be: vasm (virtual assembly),

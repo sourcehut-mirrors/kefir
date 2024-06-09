@@ -25,7 +25,15 @@
 #include "kefir/core/string_pool.h"
 #include "kefir/driver/target.h"
 
+typedef enum kefir_driver_assembler_target {
+    KEFIR_DRIVER_ASSEMBLER_GAS_INTEL,
+    KEFIR_DRIVER_ASSEMBLER_GAS_INTEL_PREFIX,
+    KEFIR_DRIVER_ASSEMBLER_GAS_ATT,
+    KEFIR_DRIVER_ASSEMBLER_YASM
+} kefir_driver_assembler_target_t;
+
 typedef struct kefir_driver_assembler_configuration {
+    kefir_driver_assembler_target_t target;
     kefir_bool_t verbose;
     struct kefir_list arguments;
 } kefir_driver_assembler_configuration_t;
@@ -122,6 +130,10 @@ typedef struct kefir_driver_configuration {
     struct {
         kefir_int_t optimization_level;
     } compiler;
+
+    struct {
+        kefir_driver_assembler_target_t target;
+    } assembler;
 
     struct {
         kefir_bool_t skip_preprocessor;

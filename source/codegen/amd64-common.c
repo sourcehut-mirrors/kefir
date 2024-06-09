@@ -33,6 +33,8 @@ kefir_result_t kefir_codegen_match_syntax(const char *syntax_descr, kefir_asm_am
         *syntax = KEFIR_AMD64_XASMGEN_SYNTAX_INTEL_NOPREFIX;
     } else if (strcmp(syntax_descr, KEFIR_CODEGEN_SYNTAX_X86_64_ATT) == 0) {
         *syntax = KEFIR_AMD64_XASMGEN_SYNTAX_ATT;
+    } else if (strcmp(syntax_descr, KEFIR_CODEGEN_SYNTAX_X86_64_YASM) == 0) {
+        *syntax = KEFIR_AMD64_XASMGEN_SYNTAX_YASM;
     } else {
         return KEFIR_SET_ERRORF(KEFIR_INVALID_PARAMETER, "Unknown amd64 assembly syntax descriptor '%s'", syntax_descr);
     }

@@ -92,6 +92,7 @@ kefir_result_t kefir_asmcmp_amd64_init(const char *function_name, kefir_abi_amd6
     REQUIRE_OK(kefir_asmcmp_context_init(&KEFIR_ASMCMP_AMD64_KLASS, target, &target->context));
     REQUIRE_OK(kefir_hashtree_init(&target->register_preallocation, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_on_removal(&target->register_preallocation, free_register_preallocation, NULL));
+    REQUIRE_OK(kefir_hashtreeset_init(&target->externals, &kefir_hashtree_str_ops));
     target->function_name = function_name;
     target->abi_variant = abi_variant;
     target->position_independent_code = position_independent_code;
@@ -102,6 +103,7 @@ kefir_result_t kefir_asmcmp_amd64_free(struct kefir_mem *mem, struct kefir_asmcm
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(target != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen amd64 target"));
 
+    REQUIRE_OK(kefir_hashtreeset_free(mem, &target->externals));
     REQUIRE_OK(kefir_hashtree_free(mem, &target->register_preallocation));
     REQUIRE_OK(kefir_asmcmp_context_free(mem, &target->context));
     return KEFIR_OK;

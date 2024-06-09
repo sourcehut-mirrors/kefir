@@ -40,9 +40,13 @@ kefir_result_t kefir_driver_external_resources_init_from_env(struct kefir_mem *m
 
     externals->default_target = getenv("KEFIR_TARGET");
 
+    externals->assembler_path_explicit = false;
     externals->assembler_path = getenv("KEFIR_AS");
     if (externals->assembler_path == NULL) {
         externals->assembler_path = getenv("AS");
+    }
+    if (externals->assembler_path != NULL) {
+        externals->assembler_path_explicit = true;
     }
 #ifdef KEFIR_CONFIG_HOST_AS
     set_if_null(&externals->assembler_path, KEFIR_CONFIG_HOST_AS);
