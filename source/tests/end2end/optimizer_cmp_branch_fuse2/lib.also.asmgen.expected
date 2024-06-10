@@ -41,8 +41,8 @@ _kefir_func_lessf_label1:
     movd %xmm0, -16(%rbp)
     movl -16(%rbp), %eax
     movl -12(%rbp), %ecx
-    movd %rax, %xmm0
-    movd %rcx, %xmm1
+    movd %eax, %xmm0
+    movd %ecx, %xmm1
     ucomiss %xmm1, %xmm0
     jb _kefir_func_lessf_label2
     jmp _kefir_func_lessf_label3
@@ -70,8 +70,8 @@ _kefir_func_equalsf_label1:
     movd %xmm0, -16(%rbp)
     movl -16(%rbp), %eax
     movl -12(%rbp), %ecx
-    movd %rax, %xmm0
-    movd %rcx, %xmm1
+    movd %eax, %xmm0
+    movd %ecx, %xmm1
     ucomiss %xmm1, %xmm0
     jp _kefir_func_equalsf_label4
     je _kefir_func_equalsf_label2
@@ -101,8 +101,8 @@ _kefir_func_greaterf_label1:
     movd %xmm0, -16(%rbp)
     movl -16(%rbp), %eax
     movl -12(%rbp), %ecx
-    movd %rax, %xmm0
-    movd %rcx, %xmm1
+    movd %eax, %xmm0
+    movd %ecx, %xmm1
     ucomiss %xmm1, %xmm0
     ja _kefir_func_greaterf_label2
     jmp _kefir_func_greaterf_label3
@@ -130,8 +130,8 @@ _kefir_func_not_equalsf_label1:
     movd %xmm0, -16(%rbp)
     movl -16(%rbp), %eax
     movl -12(%rbp), %ecx
-    movd %rax, %xmm0
-    movd %rcx, %xmm1
+    movd %eax, %xmm0
+    movd %ecx, %xmm1
     ucomiss %xmm1, %xmm0
     jp _kefir_func_not_equalsf_label2
     jne _kefir_func_not_equalsf_label2
@@ -160,8 +160,8 @@ _kefir_func_greater_or_equalsf_label1:
     movd %xmm0, -16(%rbp)
     movl -16(%rbp), %eax
     movl -12(%rbp), %ecx
-    movd %rax, %xmm0
-    movd %rcx, %xmm1
+    movd %eax, %xmm0
+    movd %ecx, %xmm1
     ucomiss %xmm1, %xmm0
     jae _kefir_func_greater_or_equalsf_label2
     jmp _kefir_func_greater_or_equalsf_label3
@@ -189,8 +189,8 @@ _kefir_func_less_or_equalsf_label1:
     movd %xmm0, -16(%rbp)
     movl -16(%rbp), %eax
     movl -12(%rbp), %ecx
-    movd %rax, %xmm0
-    movd %rcx, %xmm1
+    movd %eax, %xmm0
+    movd %ecx, %xmm1
     ucomiss %xmm1, %xmm0
     jbe _kefir_func_less_or_equalsf_label2
     jmp _kefir_func_less_or_equalsf_label3

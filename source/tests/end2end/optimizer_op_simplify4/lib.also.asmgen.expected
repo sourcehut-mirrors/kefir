@@ -38,8 +38,8 @@ _kefir_func_greater_or_equalsf_label1:
     movl -16(%rbp), %eax
     movl -12(%rbp), %ecx
     mov $0, %rdx
-    movd %rax, %xmm0
-    movd %rcx, %xmm1
+    movd %eax, %xmm0
+    movd %ecx, %xmm1
     comiss %xmm1, %xmm0
     setae %dl
     mov %rdx, %rax
@@ -60,8 +60,8 @@ _kefir_func_less_or_equalsf_label1:
     movl -16(%rbp), %eax
     movl -12(%rbp), %ecx
     mov $0, %rdx
-    movd %rcx, %xmm0
-    movd %rax, %xmm1
+    movd %ecx, %xmm0
+    movd %eax, %xmm1
     comiss %xmm1, %xmm0
     setae %dl
     mov %rdx, %rax

@@ -97,7 +97,7 @@ _kefir_func_dnotf_label0:
 _kefir_func_dnotf_label1:
     movd %xmm0, -12(%rbp)
     movl -12(%rbp), %eax
-    movd %rax, %xmm0
+    movd %eax, %xmm0
     ucomiss _kefir_func_dnotf_label4(%rip), %xmm0
     jp _kefir_func_dnotf_label2
     jne _kefir_func_dnotf_label2
