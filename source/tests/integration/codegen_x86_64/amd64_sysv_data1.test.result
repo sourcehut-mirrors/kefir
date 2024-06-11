@@ -95,25 +95,25 @@ pointer1_1:
 
 .section .bss
 int8_2:
-    .byte 0
+    .skip 1
 
     .align 2
 int16_2:
-    .word 0
+    .skip 2
 
     .align 4
 int32_2:
-    .long 0
+    .skip 4
 
     .align 8
 int64_2:
-    .quad 0
+    .skip 8
 
     .align 4
 float32_2:
-    .long 0
+    .skip 4
 
     .align 8
 float64_2:
-    .quad 0
+    .skip 8
 

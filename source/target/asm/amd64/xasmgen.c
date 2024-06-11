@@ -939,7 +939,9 @@ static kefir_result_t amd64_yasm_external(struct kefir_amd64_xasmgen *xasmgen, c
     return KEFIR_OK;
 }
 
-static kefir_result_t amd64_section(struct kefir_amd64_xasmgen *xasmgen, const char *identifier) {
+static kefir_result_t amd64_section(struct kefir_amd64_xasmgen *xasmgen, const char *identifier,
+                                    kefir_uint64_t section_attr) {
+    UNUSED(section_attr);
     REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 assembly generator"));
     ASSIGN_DECL_CAST(struct xasmgen_payload *, payload, xasmgen->payload);
 
@@ -947,11 +949,12 @@ static kefir_result_t amd64_section(struct kefir_amd64_xasmgen *xasmgen, const c
     return KEFIR_OK;
 }
 
-static kefir_result_t amd64_yasm_section(struct kefir_amd64_xasmgen *xasmgen, const char *identifier) {
+static kefir_result_t amd64_yasm_section(struct kefir_amd64_xasmgen *xasmgen, const char *identifier,
+                                         kefir_uint64_t section_attr) {
     REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 assembly generator"));
     ASSIGN_DECL_CAST(struct xasmgen_payload *, payload, xasmgen->payload);
 
-    if (strcmp(identifier, ".tdata") == 0 || strcmp(identifier, ".tbss") == 0) {
+    if ((section_attr & KEFIR_AMD64_XASMGEN_SECTION_TLS) != 0) {
         fprintf(payload->output, "section %s tls\n", identifier);
     } else {
         fprintf(payload->output, "section %s\n", identifier);
@@ -1557,12 +1560,30 @@ static kefir_result_t amd64_zerodata(struct kefir_amd64_xasmgen *xasmgen, kefir_
     return KEFIR_OK;
 }
 
+static kefir_result_t amd64_uninitdata(struct kefir_amd64_xasmgen *xasmgen, kefir_size_t length) {
+    REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 assembly generator"));
+    ASSIGN_DECL_CAST(struct xasmgen_payload *, payload, xasmgen->payload);
+
+    REQUIRE_OK(amd64_ident(xasmgen));
+    fprintf(payload->output, ".skip %" KEFIR_SIZE_FMT "\n", length);
+    return KEFIR_OK;
+}
+
 static kefir_result_t amd64_yasm_zerodata(struct kefir_amd64_xasmgen *xasmgen, kefir_size_t length) {
     REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 assembly generator"));
     ASSIGN_DECL_CAST(struct xasmgen_payload *, payload, xasmgen->payload);
 
     REQUIRE_OK(amd64_ident(xasmgen));
     fprintf(payload->output, "times %" KEFIR_SIZE_FMT " db 0\n", length);
+    return KEFIR_OK;
+}
+
+static kefir_result_t amd64_yasm_uninitdata(struct kefir_amd64_xasmgen *xasmgen, kefir_size_t length) {
+    REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 assembly generator"));
+    ASSIGN_DECL_CAST(struct xasmgen_payload *, payload, xasmgen->payload);
+
+    REQUIRE_OK(amd64_ident(xasmgen));
+    fprintf(payload->output, "resb %" KEFIR_SIZE_FMT "\n", length);
     return KEFIR_OK;
 }
 
@@ -2114,6 +2135,7 @@ kefir_result_t kefir_asm_amd64_xasmgen_init(struct kefir_mem *mem, struct kefir_
         xasmgen->align = amd64_yasm_align;
         xasmgen->data = amd64_yasm_data;
         xasmgen->zerodata = amd64_yasm_zerodata;
+        xasmgen->uninitdata = amd64_yasm_uninitdata;
         xasmgen->bindata = amd64_yasm_bindata;
     } else {
         xasmgen->label = amd64_label;
@@ -2123,6 +2145,7 @@ kefir_result_t kefir_asm_amd64_xasmgen_init(struct kefir_mem *mem, struct kefir_
         xasmgen->align = amd64_align;
         xasmgen->data = amd64_data;
         xasmgen->zerodata = amd64_zerodata;
+        xasmgen->uninitdata = amd64_uninitdata;
         xasmgen->bindata = amd64_bindata;
     }
     xasmgen->inline_assembly = amd64_inline_assembly;

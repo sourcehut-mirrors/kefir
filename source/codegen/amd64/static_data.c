@@ -726,3 +726,35 @@ kefir_result_t kefir_codegen_amd64_static_data(struct kefir_mem *mem, struct kef
     REQUIRE_OK(kefir_abi_amd64_type_layout_free(mem, &param.layout));
     return KEFIR_OK;
 }
+
+kefir_result_t kefir_codegen_amd64_static_data_uninit(struct kefir_mem *mem, struct kefir_codegen_amd64 *codegen,
+                                                      const struct kefir_ir_data *data, const char *identifier) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(codegen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 code generator"));
+    REQUIRE(data != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR data"));
+    REQUIRE(data->finalized, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected finalized IR data"));
+
+    struct kefir_abi_amd64_type_layout layout;
+    REQUIRE_OK(kefir_abi_amd64_type_layout(mem, codegen->abi_variant, data->type, &layout));
+
+    kefir_size_t total_size, total_alignment;
+    kefir_result_t res = kefir_abi_amd64_calculate_type_properties(data->type, &layout, &total_size, &total_alignment);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_abi_amd64_type_layout_free(mem, &layout);
+        return res;
+    });
+    if (identifier != NULL) {
+        if (total_alignment > 1) {
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_ALIGN(&codegen->xasmgen, total_alignment));
+        }
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen->xasmgen, "%s", identifier));
+    }
+
+    if (total_size > 0) {
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_UNINITDATA(&codegen->xasmgen, total_size));
+    }
+
+    REQUIRE_OK(KEFIR_AMD64_XASMGEN_NEWLINE(&codegen->xasmgen, 1));
+    REQUIRE_OK(kefir_abi_amd64_type_layout_free(mem, &layout));
+    return KEFIR_OK;
+}

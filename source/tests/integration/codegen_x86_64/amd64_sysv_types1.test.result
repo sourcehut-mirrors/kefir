@@ -40,10 +40,5 @@ _kefir_func_func1_label1:
 .section .bss
     .align 8
 DataX:
-    .quad 0
-    .quad 0
-    .byte 0
-    .byte 0
-    .zero 2
-    .zero 4
+    .skip 24
 

@@ -86,7 +86,7 @@ static kefir_result_t translate_module_externals(struct kefir_ir_module *module,
 
 static kefir_result_t translate_data_storage(struct kefir_mem *mem, struct kefir_codegen_amd64 *codegen,
                                              struct kefir_opt_module *module, kefir_ir_data_storage_t storage,
-                                             kefir_bool_t defined, const char *section) {
+                                             kefir_bool_t defined, const char *section, kefir_uint64_t section_attr) {
     bool first = true;
     struct kefir_hashtree_node_iterator iter;
     const char *identifier = NULL;
@@ -100,10 +100,15 @@ static kefir_result_t translate_data_storage(struct kefir_mem *mem, struct kefir
         }
 
         if (first) {
-            REQUIRE_OK(KEFIR_AMD64_XASMGEN_SECTION(&codegen->xasmgen, section));
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_SECTION(&codegen->xasmgen, section, section_attr));
             first = false;
         }
-        REQUIRE_OK(kefir_codegen_amd64_static_data(mem, codegen, data, identifier));
+
+        if (defined || (section_attr & KEFIR_AMD64_XASMGEN_SECTION_TLS) != 0) {
+            REQUIRE_OK(kefir_codegen_amd64_static_data(mem, codegen, data, identifier));
+        } else {
+            REQUIRE_OK(kefir_codegen_amd64_static_data_uninit(mem, codegen, data, identifier));
+        }
     }
     return KEFIR_OK;
 }
@@ -125,7 +130,7 @@ static kefir_result_t translate_emulated_tls(struct kefir_mem *mem, struct kefir
         }
 
         if (first) {
-            REQUIRE_OK(KEFIR_AMD64_XASMGEN_SECTION(&codegen->xasmgen, ".rodata"));
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_SECTION(&codegen->xasmgen, ".rodata", KEFIR_AMD64_XASMGEN_SECTION_NOATTR));
             first = false;
         }
 
@@ -141,7 +146,7 @@ static kefir_result_t translate_emulated_tls(struct kefir_mem *mem, struct kefir
         }
 
         if (first) {
-            REQUIRE_OK(KEFIR_AMD64_XASMGEN_SECTION(&codegen->xasmgen, ".data"));
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_SECTION(&codegen->xasmgen, ".data", KEFIR_AMD64_XASMGEN_SECTION_NOATTR));
             first = false;
         }
 
@@ -193,7 +198,7 @@ static kefir_result_t translate_strings(struct kefir_codegen_amd64 *codegen, str
             continue;
         }
         if (first) {
-            REQUIRE_OK(KEFIR_AMD64_XASMGEN_SECTION(&codegen->xasmgen, ".rodata"));
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_SECTION(&codegen->xasmgen, ".rodata", KEFIR_AMD64_XASMGEN_SECTION_NOATTR));
             first = false;
         }
 
@@ -222,11 +227,15 @@ static kefir_result_t translate_strings(struct kefir_codegen_amd64 *codegen, str
 
 static kefir_result_t translate_data(struct kefir_mem *mem, struct kefir_codegen_amd64 *codegen,
                                      struct kefir_opt_module *module) {
-    REQUIRE_OK(translate_data_storage(mem, codegen, module, KEFIR_IR_DATA_GLOBAL_STORAGE, true, ".data"));
-    REQUIRE_OK(translate_data_storage(mem, codegen, module, KEFIR_IR_DATA_GLOBAL_STORAGE, false, ".bss"));
+    REQUIRE_OK(translate_data_storage(mem, codegen, module, KEFIR_IR_DATA_GLOBAL_STORAGE, true, ".data",
+                                      KEFIR_AMD64_XASMGEN_SECTION_NOATTR));
+    REQUIRE_OK(translate_data_storage(mem, codegen, module, KEFIR_IR_DATA_GLOBAL_STORAGE, false, ".bss",
+                                      KEFIR_AMD64_XASMGEN_SECTION_NOATTR));
     if (!codegen->config->emulated_tls) {
-        REQUIRE_OK(translate_data_storage(mem, codegen, module, KEFIR_IR_DATA_THREAD_LOCAL_STORAGE, true, ".tdata"));
-        REQUIRE_OK(translate_data_storage(mem, codegen, module, KEFIR_IR_DATA_THREAD_LOCAL_STORAGE, false, ".tbss"));
+        REQUIRE_OK(translate_data_storage(mem, codegen, module, KEFIR_IR_DATA_THREAD_LOCAL_STORAGE, true, ".tdata",
+                                          KEFIR_AMD64_XASMGEN_SECTION_TLS));
+        REQUIRE_OK(translate_data_storage(mem, codegen, module, KEFIR_IR_DATA_THREAD_LOCAL_STORAGE, false, ".tbss",
+                                          KEFIR_AMD64_XASMGEN_SECTION_TLS));
     } else {
         REQUIRE_OK(translate_emulated_tls(mem, codegen, module));
     }
@@ -266,7 +275,7 @@ static kefir_result_t translate_impl(struct kefir_mem *mem, struct kefir_codegen
     REQUIRE_OK(translate_module_externals(module->ir_module, codegen));
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_NEWLINE(&codegen->xasmgen, 1));
 
-    REQUIRE_OK(KEFIR_AMD64_XASMGEN_SECTION(&codegen->xasmgen, ".text"));
+    REQUIRE_OK(KEFIR_AMD64_XASMGEN_SECTION(&codegen->xasmgen, ".text", KEFIR_AMD64_XASMGEN_SECTION_NOATTR));
 
     struct kefir_hashtree_node_iterator iter;
     for (const struct kefir_ir_function *ir_func = kefir_ir_module_function_iter(module->ir_module, &iter);

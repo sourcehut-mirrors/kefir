@@ -105,5 +105,5 @@ _kefir_func_test5_label1:
 .section .bss
     .align 8
 X:
-    .quad 0
+    .skip 8
 

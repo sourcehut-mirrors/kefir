@@ -65,7 +65,5 @@ arr3_2:
 .section .bss
     .align 8
 __kefirrt_module_static_uninit_vars:
-    .zero 40
-    .zero 40
-    .zero 64
+    .skip 144
 

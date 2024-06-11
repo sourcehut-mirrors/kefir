@@ -219,6 +219,11 @@ typedef enum kefir_asm_amd64_xasmgen_syntax {
     KEFIR_AMD64_XASMGEN_SYNTAX_YASM
 } kefir_asm_amd64_xasmgen_syntax_t;
 
+typedef enum kefir_amd64_xasmgen_section_attribute {
+    KEFIR_AMD64_XASMGEN_SECTION_NOATTR = 0,
+    KEFIR_AMD64_XASMGEN_SECTION_TLS = 1
+} kefir_amd64_xasmgen_section_attribute_t;
+
 typedef struct kefir_amd64_xasmgen {
     kefir_result_t (*prologue)(struct kefir_amd64_xasmgen *);
     kefir_result_t (*close)(struct kefir_mem *, struct kefir_amd64_xasmgen *);
@@ -227,10 +232,11 @@ typedef struct kefir_amd64_xasmgen {
     kefir_result_t (*label)(struct kefir_amd64_xasmgen *, const char *, ...);
     kefir_result_t (*global)(struct kefir_amd64_xasmgen *, const char *, ...);
     kefir_result_t (*external)(struct kefir_amd64_xasmgen *, const char *, ...);
-    kefir_result_t (*section)(struct kefir_amd64_xasmgen *, const char *);
+    kefir_result_t (*section)(struct kefir_amd64_xasmgen *, const char *, kefir_uint64_t);
     kefir_result_t (*align)(struct kefir_amd64_xasmgen *, kefir_size_t);
     kefir_result_t (*data)(struct kefir_amd64_xasmgen *, kefir_asm_amd64_xasmgen_data_type_t, kefir_size_t, ...);
     kefir_result_t (*zerodata)(struct kefir_amd64_xasmgen *, kefir_size_t);
+    kefir_result_t (*uninitdata)(struct kefir_amd64_xasmgen *, kefir_size_t);
     kefir_result_t (*bindata)(struct kefir_amd64_xasmgen *, kefir_asm_amd64_xasmgen_data_type_t, const void *,
                               kefir_size_t);
     kefir_result_t (*inline_assembly)(struct kefir_amd64_xasmgen *, const char *);
@@ -309,11 +315,12 @@ const struct kefir_asm_amd64_xasmgen_operand *kefir_asm_amd64_xasmgen_operand_fp
 #define KEFIR_AMD64_XASMGEN_LABEL(_xasmgen, _fmt, ...) ((_xasmgen)->label((_xasmgen), (_fmt), __VA_ARGS__))
 #define KEFIR_AMD64_XASMGEN_GLOBAL(_xasmgen, _fmt, ...) ((_xasmgen)->global((_xasmgen), (_fmt), __VA_ARGS__))
 #define KEFIR_AMD64_XASMGEN_EXTERNAL(_xasmgen, _fmt, ...) ((_xasmgen)->external((_xasmgen), (_fmt), __VA_ARGS__))
-#define KEFIR_AMD64_XASMGEN_SECTION(_xasmgen, _name) ((_xasmgen)->section((_xasmgen), (_name)))
+#define KEFIR_AMD64_XASMGEN_SECTION(_xasmgen, _name, _attr) ((_xasmgen)->section((_xasmgen), (_name), (_attr)))
 #define KEFIR_AMD64_XASMGEN_ALIGN(_xasmgen, _arg) ((_xasmgen)->align((_xasmgen), (_arg)))
 #define KEFIR_AMD64_XASMGEN_DATA(_xasmgen, _type, _length, ...) \
     ((_xasmgen)->data((_xasmgen), (_type), (_length), __VA_ARGS__))
 #define KEFIR_AMD64_XASMGEN_ZERODATA(_xasmgen, _length) ((_xasmgen)->zerodata((_xasmgen), (_length)))
+#define KEFIR_AMD64_XASMGEN_UNINITDATA(_xasmgen, _length) ((_xasmgen)->uninitdata((_xasmgen), (_length)))
 #define KEFIR_AMD64_XASMGEN_BINDATA(_xasmgen, _type, _ptr, _length) \
     ((_xasmgen)->bindata((_xasmgen), (_type), (_ptr), (_length)))
 #define KEFIR_AMD64_XASMGEN_INLINE_ASSEMBLY(_xasmgen, _text) ((_xasmgen)->inline_assembly((_xasmgen), (_text)))

@@ -86,14 +86,7 @@ GLOBAL_UNINIT_STATIC:
 .section .bss
     .align 8
 __kefirrt_module_static_uninit_vars:
-    .long 0
-    .zero 4
-    .quad 0
-    .quad 0
-    .long 0
-    .zero 4
-    .quad 0
-    .quad 0
+    .skip 48
 
 .section .tbss
     .align 8

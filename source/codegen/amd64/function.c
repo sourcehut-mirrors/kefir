@@ -258,7 +258,7 @@ static kefir_result_t generate_constants(struct kefir_mem *mem, struct kefir_cod
     const struct kefir_hashtree_node *node = kefir_hashtree_iter(&func->constants, &iter);
     REQUIRE(node != NULL, KEFIR_OK);
 
-    REQUIRE_OK(KEFIR_AMD64_XASMGEN_SECTION(&func->codegen->xasmgen, ".rodata"));
+    REQUIRE_OK(KEFIR_AMD64_XASMGEN_SECTION(&func->codegen->xasmgen, ".rodata", KEFIR_AMD64_XASMGEN_SECTION_NOATTR));
     for (; node != NULL; node = kefir_hashtree_next(&iter)) {
         ASSIGN_DECL_CAST(kefir_asmcmp_label_index_t, constant_label, node->key);
         ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, instr_ref, node->value);
@@ -317,7 +317,7 @@ static kefir_result_t generate_constants(struct kefir_mem *mem, struct kefir_cod
                 return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected optimizer instruction opcode");
         }
     }
-    REQUIRE_OK(KEFIR_AMD64_XASMGEN_SECTION(&func->codegen->xasmgen, ".text"));
+    REQUIRE_OK(KEFIR_AMD64_XASMGEN_SECTION(&func->codegen->xasmgen, ".text", KEFIR_AMD64_XASMGEN_SECTION_NOATTR));
     return KEFIR_OK;
 }
 

@@ -102,28 +102,28 @@ set_u64:
 
 .section .bss
 b:
-    .byte 0
+    .skip 1
 
 u8:
-    .byte 0
+    .skip 1
 
     .align 4
 f32:
-    .long 0
+    .skip 4
 
     .align 8
 f64:
-    .quad 0
+    .skip 8
 
     .align 2
 u16:
-    .word 0
+    .skip 2
 
     .align 4
 u32:
-    .long 0
+    .skip 4
 
     .align 8
 u64:
-    .quad 0
+    .skip 8
 
