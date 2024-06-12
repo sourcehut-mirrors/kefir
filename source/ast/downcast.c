@@ -58,5 +58,7 @@ DEFINE_DOWNCAST(expression_statement, struct kefir_ast_expression_statement,
                 node->klass->type == KEFIR_AST_EXPRESSION_STATEMENT, "AST expression statement node")
 DEFINE_DOWNCAST(inline_assembly, struct kefir_ast_inline_assembly, node->klass->type == KEFIR_AST_INLINE_ASSEMBLY,
                 "AST inline assembly node")
+DEFINE_DOWNCAST(string_literal, struct kefir_ast_string_literal, node->klass->type == KEFIR_AST_STRING_LITERAL,
+                "AST inline assembly node")
 
 #undef DEFINE_DOWNCAST

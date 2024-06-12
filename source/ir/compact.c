@@ -393,6 +393,23 @@ static kefir_result_t drop_unused_externals(struct kefir_mem *mem, struct kefir_
     return KEFIR_OK;
 }
 
+static kefir_result_t drop_unused_aliases(struct kefir_mem *mem, struct kefir_ir_module *module,
+                                            struct compact_params *params) {
+    struct kefir_hashtree_node_iterator iter;
+    for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&module->aliases, &iter); node != NULL;) {
+
+        ASSIGN_DECL_CAST(const char *, symbol, node->key);
+
+        if (!kefir_hashtree_has(&params->symbol_index, (kefir_hashtree_key_t) symbol)) {
+            REQUIRE_OK(kefir_hashtree_delete(mem, &module->aliases, node->key));
+            node = kefir_hashtree_iter(&module->aliases, &iter);
+        } else {
+            node = kefir_hashtree_next(&iter);
+        }
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t drop_unused_inline_asm(struct kefir_mem *mem, struct kefir_ir_module *module,
                                              struct compact_params *params) {
     struct kefir_hashtree_node_iterator iter;
@@ -470,11 +487,19 @@ static kefir_result_t compact_impl(struct kefir_mem *mem, struct kefir_ir_module
             ASSIGN_DECL_CAST(struct kefir_ir_data *, data, node->value);
             REQUIRE_OK(compact_data(mem, data, params));
         }
+
+        res = kefir_hashtree_at(&module->aliases, (kefir_hashtree_key_t) symbol, &node);
+        if (res != KEFIR_NOT_FOUND) {
+            REQUIRE_OK(res);
+            ASSIGN_DECL_CAST(const char *, original, node->value);
+            REQUIRE_OK(kefir_list_insert_after(mem, &params->symbol_scan_queue, kefir_list_tail(&params->symbol_scan_queue), (void *) original));
+        }
     }
 
     REQUIRE_OK(drop_unused_named_types(mem, module, params));
     REQUIRE_OK(drop_unused_function_decls(mem, module, params));
     REQUIRE_OK(drop_unused_externals(mem, module, params));
+    REQUIRE_OK(drop_unused_aliases(mem, module, params));
     REQUIRE_OK(drop_unused_inline_asm(mem, module, params));
     REQUIRE_OK(drop_unused_functions(mem, module, params));
     REQUIRE_OK(drop_unused_data(mem, module, params));

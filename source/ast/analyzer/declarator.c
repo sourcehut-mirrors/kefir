@@ -1186,6 +1186,23 @@ static kefir_result_t analyze_declaration_declarator_attributes(struct kefir_mem
                 REQUIRE(declarator->klass == KEFIR_AST_DECLARATOR_FUNCTION,
                         KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &declarator->source_location,
                                                "Attribute returns_twice can only be used on function declarators"));
+            } else if (strcmp(attribute->name, "weak") == 0 || strcmp(attribute->name, "__weak__") == 0) {
+                attributes->weak = true;
+            } else if (strcmp(attribute->name, "alias") == 0 || strcmp(attribute->name, "__alias__") == 0) {
+                REQUIRE((*base_type)->tag == KEFIR_AST_TYPE_FUNCTION, KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &declarator->source_location, "Expected alias attribute is supported only for functions"));
+                const struct kefir_list_entry *parameter = kefir_list_head(&attribute->parameters);
+                REQUIRE(parameter != NULL && parameter->value, KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &declarator->source_location, "Expected alias attribute to have multibyte string literal parameter"));
+                ASSIGN_DECL_CAST(struct kefir_ast_node_base *, parameter_node,
+                    parameter->value);
+                REQUIRE(parameter_node->klass->type == KEFIR_AST_STRING_LITERAL,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &parameter_node->source_location, "Expected alias attribute to have multibyte string literal parameter"));
+                struct kefir_ast_string_literal *string_literal;
+                REQUIRE_OK(kefir_ast_downcast_string_literal(parameter_node, &string_literal, false));
+                REQUIRE(string_literal->type == KEFIR_AST_STRING_LITERAL_MULTIBYTE,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &parameter_node->source_location, "Expected alias attribute to have multibyte string literal parameter"));
+                const char *alias = kefir_string_pool_insert(mem, context->symbols, (const char *) string_literal->literal, NULL);
+                REQUIRE(alias != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert declarator alias into string pool"));
+                attributes->alias = alias;
             }
         }
     }

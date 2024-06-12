@@ -91,6 +91,7 @@
             "type": "global"
         }
     ],
+    "aliases": [],
     "types": [
         {
             "identifier": 0,

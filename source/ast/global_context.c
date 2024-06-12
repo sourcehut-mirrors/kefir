@@ -1058,7 +1058,17 @@ kefir_result_t kefir_ast_global_context_declare_function(
         ordinary_id->function.inline_definition = ordinary_id->function.inline_definition && !external_linkage &&
                                                   kefir_ast_function_specifier_is_inline(specifier);
         if (attributes != NULL) {
-            ordinary_id->function.flags.gnu_inline = ordinary_id->function.flags.gnu_inline || attributes->gnu_inline;
+            ordinary_id->function.flags.gnu_inline = ordinary_id->function.flags.gnu_inline || attributes->gnu_inline;            
+            if (attributes->alias != NULL) {
+                REQUIRE(attributes->asm_label == NULL && ordinary_id->function.asm_label == NULL,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location, "Assembly label cannot be attached to an aliased function"));
+                if (ordinary_id->function.alias != NULL) {
+                    REQUIRE(strcmp(attributes->alias, ordinary_id->function.alias) == 0,
+                        KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location, "Alias mismatch in function redeclaration"));
+                } else {
+                    ordinary_id->function.alias = attributes->alias;
+                }
+            }
             if (ordinary_id->function.asm_label == NULL) {
                 ordinary_id->function.asm_label = attributes->asm_label;
             } else {
@@ -1070,9 +1080,12 @@ kefir_result_t kefir_ast_global_context_declare_function(
         }
     } else {
         REQUIRE(res == KEFIR_NOT_FOUND, res);
+        REQUIRE(attributes == NULL || attributes->alias == NULL || attributes->asm_label == NULL,
+            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location, "Assembly label cannot be attached to an aliased function"));
         ordinary_id = kefir_ast_context_allocate_scoped_function_identifier(
             mem, function, specifier, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN, true, false,
             !external_linkage && kefir_ast_function_specifier_is_inline(specifier),
+            attributes != NULL ? attributes->alias : NULL,
             attributes != NULL ? attributes->asm_label : NULL, location);
         REQUIRE(ordinary_id != NULL,
                 KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocted AST scoped identifier"));
@@ -1125,6 +1138,9 @@ kefir_result_t kefir_ast_global_context_define_function(struct kefir_mem *mem, s
         REQUIRE(!ordinary_id->function.defined,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
                                        "Cannot redefine function with the same identifier"));
+        REQUIRE(ordinary_id->function.alias == NULL,
+            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location, "Previous function declaration cannot specify alias attribute"));
+
         ordinary_id->function.type = KEFIR_AST_TYPE_COMPOSITE(mem, &context->type_bundle, context->type_traits,
                                                               ordinary_id->function.type, function);
         ordinary_id->function.specifier =
@@ -1134,6 +1150,8 @@ kefir_result_t kefir_ast_global_context_define_function(struct kefir_mem *mem, s
         ordinary_id->function.inline_definition = ordinary_id->function.inline_definition && !external_linkage &&
                                                   kefir_ast_function_specifier_is_inline(specifier);
         if (attributes != NULL) {
+            REQUIRE(attributes->alias == NULL,
+                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location, "Function definition cannot specify alias attribute"));
             ordinary_id->function.flags.gnu_inline = ordinary_id->function.flags.gnu_inline || attributes->gnu_inline;
             if (ordinary_id->function.asm_label == NULL) {
                 ordinary_id->function.asm_label = attributes->asm_label;
@@ -1146,9 +1164,12 @@ kefir_result_t kefir_ast_global_context_define_function(struct kefir_mem *mem, s
         }
     } else {
         REQUIRE(res == KEFIR_NOT_FOUND, res);
+        REQUIRE(attributes == NULL || attributes->alias == NULL,
+            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location, "Function definition cannot specify alias attribute"));
         ordinary_id = kefir_ast_context_allocate_scoped_function_identifier(
             mem, function, specifier, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN, false, true,
             !external_linkage && kefir_ast_function_specifier_is_inline(specifier),
+            NULL,
             attributes != NULL ? attributes->asm_label : NULL, location);
         REQUIRE(ordinary_id != NULL,
                 KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocted AST scoped identifier"));
@@ -1198,6 +1219,8 @@ kefir_result_t kefir_ast_global_context_define_static_function(
         REQUIRE(!ordinary_id->function.defined || declaration,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
                                        "Cannot redefine function with the same identifier"));
+        REQUIRE(ordinary_id->function.alias == NULL,
+            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location, "Previous function declaration cannot specify alias attribute"));
         ordinary_id->function.type = KEFIR_AST_TYPE_COMPOSITE(mem, &context->type_bundle, context->type_traits,
                                                               ordinary_id->function.type, function);
         ordinary_id->function.specifier =
@@ -1206,6 +1229,16 @@ kefir_result_t kefir_ast_global_context_define_static_function(
         ordinary_id->function.inline_definition =
             ordinary_id->function.inline_definition && kefir_ast_function_specifier_is_inline(specifier);
         if (attributes != NULL) {
+            if (attributes->alias != NULL) {
+                REQUIRE(!ordinary_id->function.defined,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location, "Function definition cannot specify alias attribute"));
+                if (ordinary_id->function.alias != NULL) {
+                    REQUIRE(strcmp(attributes->alias, ordinary_id->function.alias) == 0,
+                        KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location, "Alias mismatch in function redeclaration"));
+                } else {
+                    ordinary_id->function.alias = attributes->alias;
+                }
+            }
             if (ordinary_id->function.asm_label == NULL) {
                 ordinary_id->function.asm_label = attributes->asm_label;
             } else {
@@ -1217,9 +1250,11 @@ kefir_result_t kefir_ast_global_context_define_static_function(
         }
     } else {
         REQUIRE(res == KEFIR_NOT_FOUND, res);
+        REQUIRE(declaration || attributes == NULL || attributes->alias == NULL,
+            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location, "Function definition cannot specify alias attribute"));
         ordinary_id = kefir_ast_context_allocate_scoped_function_identifier(
             mem, function, specifier, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC, false, !declaration,
-            kefir_ast_function_specifier_is_inline(specifier), attributes != NULL ? attributes->asm_label : NULL,
+            kefir_ast_function_specifier_is_inline(specifier), attributes != NULL ? attributes->alias : NULL, attributes != NULL ? attributes->asm_label : NULL,
             location);
         REQUIRE(ordinary_id != NULL,
                 KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocted AST scoped identifier"));

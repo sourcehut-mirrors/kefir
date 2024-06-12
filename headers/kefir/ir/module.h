@@ -47,6 +47,7 @@ typedef struct kefir_ir_module {
     struct kefir_hashtree function_declarations;
     struct kefir_hashtree global_symbols;
     struct kefir_hashtree externals;
+    struct kefir_hashtree aliases;
     struct kefir_hashtree functions;
     struct kefir_hashtree named_types;
     struct kefir_hashtree named_data;
@@ -82,6 +83,8 @@ kefir_result_t kefir_ir_module_declare_global(struct kefir_mem *, struct kefir_i
 kefir_result_t kefir_ir_module_declare_external(struct kefir_mem *, struct kefir_ir_module *, const char *,
                                                 kefir_ir_identifier_type_t);
 
+kefir_result_t kefir_ir_module_declare_alias(struct kefir_mem *, struct kefir_ir_module *, const char *, const char *);
+
 struct kefir_ir_function *kefir_ir_module_new_function(struct kefir_mem *, struct kefir_ir_module *,
                                                        struct kefir_ir_function_decl *, kefir_id_t, kefir_size_t);
 
@@ -108,8 +111,11 @@ const char *kefir_ir_module_globals_iter(const struct kefir_ir_module *, struct 
                                          kefir_ir_identifier_type_t *);
 const char *kefir_ir_module_externals_iter(const struct kefir_ir_module *, struct kefir_hashtree_node_iterator *,
                                            kefir_ir_identifier_type_t *);
+const char *kefir_ir_module_aliases_iter(const struct kefir_ir_module *, struct kefir_hashtree_node_iterator *,
+                                           const char **);
 const char *kefir_ir_module_globals_iter_next(struct kefir_hashtree_node_iterator *, kefir_ir_identifier_type_t *);
 const char *kefir_ir_module_externals_iter_next(struct kefir_hashtree_node_iterator *, kefir_ir_identifier_type_t *);
+const char *kefir_ir_module_aliases_iter_next(struct kefir_hashtree_node_iterator *, const char **);
 kefir_bool_t kefir_ir_module_has_global(const struct kefir_ir_module *, const char *);
 kefir_bool_t kefir_ir_module_has_external(const struct kefir_ir_module *, const char *);
 

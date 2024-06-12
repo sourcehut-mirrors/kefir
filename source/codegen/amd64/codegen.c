@@ -84,6 +84,18 @@ static kefir_result_t translate_module_externals(struct kefir_ir_module *module,
     return KEFIR_OK;
 }
 
+static kefir_result_t translate_module_aliases(struct kefir_ir_module *module, struct kefir_codegen_amd64 *codegen) {
+    struct kefir_hashtree_node_iterator aliases_iter;
+    const char *original;
+    for (const char *alias = kefir_ir_module_aliases_iter(module, &aliases_iter, &original);
+         alias != NULL; alias = kefir_ir_module_aliases_iter_next(&aliases_iter, &original)) {
+
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_ALIAS(&codegen->xasmgen, alias, original));
+    }
+
+    return KEFIR_OK;
+}
+
 static kefir_result_t translate_data_storage(struct kefir_mem *mem, struct kefir_codegen_amd64 *codegen,
                                              struct kefir_opt_module *module, kefir_ir_data_storage_t storage,
                                              kefir_bool_t defined, const char *section, kefir_uint64_t section_attr) {
@@ -273,6 +285,7 @@ static kefir_result_t translate_impl(struct kefir_mem *mem, struct kefir_codegen
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_PROLOGUE(&codegen->xasmgen));
     REQUIRE_OK(translate_module_globals(module->ir_module, codegen));
     REQUIRE_OK(translate_module_externals(module->ir_module, codegen));
+    REQUIRE_OK(translate_module_aliases(module->ir_module, codegen));
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_NEWLINE(&codegen->xasmgen, 1));
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_SECTION(&codegen->xasmgen, ".text", KEFIR_AMD64_XASMGEN_SECTION_NOATTR));

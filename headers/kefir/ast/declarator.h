@@ -73,6 +73,8 @@ typedef struct kefir_ast_declarator {
 typedef struct kefir_ast_declarator_attributes {
     kefir_size_t aligned;
     kefir_bool_t gnu_inline;
+    kefir_bool_t weak;
+    const char *alias;
     const char *asm_label;
 } kefir_ast_declarator_attributes_t;
 

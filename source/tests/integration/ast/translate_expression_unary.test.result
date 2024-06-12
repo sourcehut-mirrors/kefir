@@ -18,6 +18,7 @@
         }
     ],
     "externals": [],
+    "aliases": [],
     "types": [
         {
             "identifier": 0,

@@ -939,6 +939,48 @@ static kefir_result_t amd64_yasm_external(struct kefir_amd64_xasmgen *xasmgen, c
     return KEFIR_OK;
 }
 
+static kefir_result_t amd64_alias(struct kefir_amd64_xasmgen *xasmgen, const char *alias, const char *original) {
+    REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 assembly generator"));
+    ASSIGN_DECL_CAST(struct xasmgen_payload *, payload, xasmgen->payload);
+
+    fprintf(payload->output, ".set %s, %s\n", alias, original);
+    return KEFIR_OK;
+}
+
+static kefir_result_t amd64_yasm_alias(struct kefir_amd64_xasmgen *xasmgen, const char *alias, const char *original) {
+    UNUSED(xasmgen);
+    UNUSED(alias);
+    UNUSED(original);
+
+    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Yasm assembly generator does not support aliases");
+}
+
+static kefir_result_t amd64_weak(struct kefir_amd64_xasmgen *xasmgen, const char *format, ...) {
+    REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 assembly generator"));
+    ASSIGN_DECL_CAST(struct xasmgen_payload *, payload, xasmgen->payload);
+
+    fprintf(payload->output, ".weak ");
+    va_list args;
+    va_start(args, format);
+    vfprintf(payload->output, format, args);
+    va_end(args);
+    fprintf(payload->output, "\n");
+    return KEFIR_OK;
+}
+
+static kefir_result_t amd64_yasm_weak(struct kefir_amd64_xasmgen *xasmgen, const char *format, ...) {
+    REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 assembly generator"));
+    ASSIGN_DECL_CAST(struct xasmgen_payload *, payload, xasmgen->payload);
+
+    fprintf(payload->output, "weak ");
+    va_list args;
+    va_start(args, format);
+    vfprintf(payload->output, format, args);
+    va_end(args);
+    fprintf(payload->output, "\n");
+    return KEFIR_OK;
+}
+
 static kefir_result_t amd64_section(struct kefir_amd64_xasmgen *xasmgen, const char *identifier,
                                     kefir_uint64_t section_attr) {
     UNUSED(section_attr);
@@ -2131,6 +2173,8 @@ kefir_result_t kefir_asm_amd64_xasmgen_init(struct kefir_mem *mem, struct kefir_
         xasmgen->label = amd64_yasm_label;
         xasmgen->global = amd64_yasm_global;
         xasmgen->external = amd64_yasm_external;
+        xasmgen->alias = amd64_yasm_alias;
+        xasmgen->weak = amd64_yasm_weak;
         xasmgen->section = amd64_yasm_section;
         xasmgen->align = amd64_yasm_align;
         xasmgen->data = amd64_yasm_data;
@@ -2141,6 +2185,8 @@ kefir_result_t kefir_asm_amd64_xasmgen_init(struct kefir_mem *mem, struct kefir_
         xasmgen->label = amd64_label;
         xasmgen->global = amd64_global;
         xasmgen->external = amd64_external;
+        xasmgen->alias = amd64_alias;
+        xasmgen->weak = amd64_weak;
         xasmgen->section = amd64_section;
         xasmgen->align = amd64_align;
         xasmgen->data = amd64_data;
