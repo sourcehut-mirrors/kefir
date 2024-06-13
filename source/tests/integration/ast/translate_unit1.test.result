@@ -32,6 +32,7 @@
         }
     ],
     "aliases": [],
+    "weak": [],
     "types": [
         {
             "identifier": 0,

@@ -87,11 +87,18 @@ static kefir_result_t translate_externals(struct kefir_mem *mem, const struct ke
 
             case KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION: {
                 const char *function_name = scoped_identifier->identifier;
+#define DECL_GLOBAL_WEAK                                                                                        \
+    do {                                                                                                        \
+        if (scoped_identifier->value->function.flags.weak) {                                                    \
+            REQUIRE_OK(kefir_ir_module_declare_weak(mem, module, function_name, KEFIR_IR_IDENTIFIER_GLOBAL));   \
+        } else {                                                                                                \
+            REQUIRE_OK(kefir_ir_module_declare_global(mem, module, function_name, KEFIR_IR_IDENTIFIER_GLOBAL)); \
+        }                                                                                                       \
+    } while (0)
                 if (scoped_identifier->value->function.alias != NULL) {
-                    REQUIRE_OK(
-                        kefir_ir_module_declare_alias(mem, module, function_name, scoped_identifier->value->function.alias));
-                    REQUIRE_OK(
-                        kefir_ir_module_declare_global(mem, module, function_name, KEFIR_IR_IDENTIFIER_GLOBAL));
+                    REQUIRE_OK(kefir_ir_module_declare_alias(mem, module, function_name,
+                                                             scoped_identifier->value->function.alias));
+                    DECL_GLOBAL_WEAK;
                 } else {
                     if (scoped_identifier->value->function.asm_label != NULL) {
                         function_name = scoped_identifier->value->function.asm_label;
@@ -99,24 +106,24 @@ static kefir_result_t translate_externals(struct kefir_mem *mem, const struct ke
                     if (!scoped_identifier->value->function.flags.gnu_inline ||
                         !kefir_ast_function_specifier_is_inline(scoped_identifier->value->function.specifier)) {
                         if (scoped_identifier->value->function.external) {
-                            REQUIRE_OK(
-                                kefir_ir_module_declare_external(mem, module, function_name, KEFIR_IR_IDENTIFIER_GLOBAL));
+                            REQUIRE_OK(kefir_ir_module_declare_external(mem, module, function_name,
+                                                                        KEFIR_IR_IDENTIFIER_GLOBAL));
                         } else if (scoped_identifier->value->function.storage !=
-                                    KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC &&
-                                !scoped_identifier->value->function.inline_definition) {
-                            REQUIRE_OK(
-                                kefir_ir_module_declare_global(mem, module, function_name, KEFIR_IR_IDENTIFIER_GLOBAL));
+                                       KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC &&
+                                   !scoped_identifier->value->function.inline_definition) {
+                            DECL_GLOBAL_WEAK;
                         }
-                    } else if (scoped_identifier->value->function.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN) {
+                    } else if (scoped_identifier->value->function.storage ==
+                               KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN) {
                         if (scoped_identifier->value->function.inline_definition) {
-                            REQUIRE_OK(
-                                kefir_ir_module_declare_global(mem, module, function_name, KEFIR_IR_IDENTIFIER_GLOBAL));
+                            DECL_GLOBAL_WEAK;
                         } else {
-                            REQUIRE_OK(
-                                kefir_ir_module_declare_external(mem, module, function_name, KEFIR_IR_IDENTIFIER_GLOBAL));
+                            REQUIRE_OK(kefir_ir_module_declare_external(mem, module, function_name,
+                                                                        KEFIR_IR_IDENTIFIER_GLOBAL));
                         }
                     }
                 }
+#undef DECL_GLOBAL_WEAK
             } break;
 
             default:
@@ -178,8 +185,8 @@ static kefir_result_t translate_static(struct kefir_mem *mem, const struct kefir
 
             case KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION:
                 if (scoped_identifier->value->function.alias != NULL) {
-                    REQUIRE_OK(
-                        kefir_ir_module_declare_alias(mem, module, scoped_identifier->identifier, scoped_identifier->value->function.alias));
+                    REQUIRE_OK(kefir_ir_module_declare_alias(mem, module, scoped_identifier->identifier,
+                                                             scoped_identifier->value->function.alias));
                 }
                 break;
 

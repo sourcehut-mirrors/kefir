@@ -87,12 +87,28 @@ static kefir_result_t translate_module_externals(struct kefir_ir_module *module,
 static kefir_result_t translate_module_aliases(struct kefir_ir_module *module, struct kefir_codegen_amd64 *codegen) {
     struct kefir_hashtree_node_iterator aliases_iter;
     const char *original;
-    for (const char *alias = kefir_ir_module_aliases_iter(module, &aliases_iter, &original);
-         alias != NULL; alias = kefir_ir_module_aliases_iter_next(&aliases_iter, &original)) {
+    for (const char *alias = kefir_ir_module_aliases_iter(module, &aliases_iter, &original); alias != NULL;
+         alias = kefir_ir_module_aliases_iter_next(&aliases_iter, &original)) {
 
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_ALIAS(&codegen->xasmgen, alias, original));
     }
 
+    return KEFIR_OK;
+}
+
+static kefir_result_t translate_module_weak(const struct kefir_ir_module *module, struct kefir_codegen_amd64 *codegen) {
+    struct kefir_hashtree_node_iterator weak_iter;
+    kefir_ir_identifier_type_t weak_type;
+    for (const char *weak = kefir_ir_module_weak_iter(module, &weak_iter, &weak_type); weak != NULL;
+         weak = kefir_ir_module_weak_iter_next(&weak_iter, &weak_type)) {
+
+        if (!codegen->config->emulated_tls || weak_type != KEFIR_IR_IDENTIFIER_THREAD_LOCAL) {
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_WEAK(&codegen->xasmgen, "%s", weak));
+        } else {
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_WEAK(&codegen->xasmgen, KEFIR_AMD64_EMUTLS_V, weak));
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_WEAK(&codegen->xasmgen, KEFIR_AMD64_EMUTLS_T, weak));
+        }
+    }
     return KEFIR_OK;
 }
 
@@ -286,6 +302,7 @@ static kefir_result_t translate_impl(struct kefir_mem *mem, struct kefir_codegen
     REQUIRE_OK(translate_module_globals(module->ir_module, codegen));
     REQUIRE_OK(translate_module_externals(module->ir_module, codegen));
     REQUIRE_OK(translate_module_aliases(module->ir_module, codegen));
+    REQUIRE_OK(translate_module_weak(module->ir_module, codegen));
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_NEWLINE(&codegen->xasmgen, 1));
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_SECTION(&codegen->xasmgen, ".text", KEFIR_AMD64_XASMGEN_SECTION_NOATTR));

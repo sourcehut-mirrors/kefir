@@ -394,7 +394,7 @@ static kefir_result_t drop_unused_externals(struct kefir_mem *mem, struct kefir_
 }
 
 static kefir_result_t drop_unused_aliases(struct kefir_mem *mem, struct kefir_ir_module *module,
-                                            struct compact_params *params) {
+                                          struct compact_params *params) {
     struct kefir_hashtree_node_iterator iter;
     for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&module->aliases, &iter); node != NULL;) {
 
@@ -456,6 +456,14 @@ static kefir_result_t compact_impl(struct kefir_mem *mem, struct kefir_ir_module
                                            (void *) symbol));
     }
 
+    for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&module->weak, &iter); node != NULL;
+         node = kefir_hashtree_next(&iter)) {
+
+        ASSIGN_DECL_CAST(const char *, symbol, node->key);
+        REQUIRE_OK(kefir_list_insert_after(mem, &params->symbol_scan_queue, kefir_list_tail(&params->symbol_scan_queue),
+                                           (void *) symbol));
+    }
+
     for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&module->global_inline_asm, &iter); node != NULL;
          node = kefir_hashtree_next(&iter)) {
 
@@ -492,7 +500,8 @@ static kefir_result_t compact_impl(struct kefir_mem *mem, struct kefir_ir_module
         if (res != KEFIR_NOT_FOUND) {
             REQUIRE_OK(res);
             ASSIGN_DECL_CAST(const char *, original, node->value);
-            REQUIRE_OK(kefir_list_insert_after(mem, &params->symbol_scan_queue, kefir_list_tail(&params->symbol_scan_queue), (void *) original));
+            REQUIRE_OK(kefir_list_insert_after(mem, &params->symbol_scan_queue,
+                                               kefir_list_tail(&params->symbol_scan_queue), (void *) original));
         }
     }
 

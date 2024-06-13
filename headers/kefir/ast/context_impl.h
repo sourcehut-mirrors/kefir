@@ -69,4 +69,51 @@ struct kefir_ast_scoped_identifier *kefir_ast_context_allocate_scoped_label(stru
 kefir_result_t kefir_ast_context_merge_alignment(struct kefir_mem *, struct kefir_ast_alignment **,
                                                  struct kefir_ast_alignment *);
 
+#define KEFIR_AST_CONTEXT_MERGE_FUNCTION_ASM_LABEL(_ordinary_id, _attributes)                           \
+    do {                                                                                                \
+        if ((_ordinary_id)->function.asm_label == NULL) {                                               \
+            (_ordinary_id)->function.asm_label = (_attributes)->asm_label;                              \
+        } else {                                                                                        \
+            REQUIRE((_attributes)->asm_label == NULL ||                                                 \
+                        strcmp((_attributes)->asm_label, (_ordinary_id)->function.asm_label) == 0,      \
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,                              \
+                                           "Assembly label does not match with previous declaration")); \
+        }                                                                                               \
+    } while (0)
+
+#define KEFIR_AST_CONTEXT_MERGE_FUNCTION_ALIAS_ATTR(_ordinary_id, _attributes)                           \
+    do {                                                                                                 \
+        if ((_attributes)->alias != NULL) {                                                              \
+            REQUIRE((_attributes)->asm_label == NULL && (_ordinary_id)->function.asm_label == NULL,      \
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,                               \
+                                           "Assembly label cannot be attached to an aliased function")); \
+            if ((_ordinary_id)->function.alias != NULL) {                                                \
+                REQUIRE(strcmp((_attributes)->alias, (_ordinary_id)->function.alias) == 0,               \
+                        KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,                           \
+                                               "Alias mismatch in function redeclaration"));             \
+            } else {                                                                                     \
+                (_ordinary_id)->function.alias = (_attributes)->alias;                                   \
+            }                                                                                            \
+        }                                                                                                \
+    } while (0)
+
+#define KEFIR_AST_CONTEXT_MERGE_BOOL(_left, _right) \
+    do {                                            \
+        *(_left) = *(_left) || (_right);            \
+    } while (0)
+
+#define KEFIR_AST_CONTEXT_FUNCTION_GET_ATTR(_attributes, _name, _default) \
+    ((_attributes) != NULL ? (_attributes)->_name : (_default))
+
+#define KEFIR_AST_CONTEXT_FUNCTION_IDENTIFIER_INSERT(_mem, _context, _identifier, _ordinary_id)                        \
+    do {                                                                                                               \
+        const char *id = kefir_string_pool_insert((_mem), &(_context)->symbols, (_identifier), NULL);                  \
+        REQUIRE(id != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert identifier into symbol table")); \
+        res = kefir_ast_identifier_flat_scope_insert((_mem), &(_context)->function_identifiers, id, (_ordinary_id));   \
+        REQUIRE_ELSE(res == KEFIR_OK, {                                                                                \
+            kefir_ast_context_free_scoped_identifier((_mem), ordinary_id, NULL);                                       \
+            return res;                                                                                                \
+        });                                                                                                            \
+    } while (0)
+
 #endif
