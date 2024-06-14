@@ -112,6 +112,33 @@ static kefir_result_t translate_module_weak(const struct kefir_ir_module *module
     return KEFIR_OK;
 }
 
+static kefir_result_t translate_module_visibility(const struct kefir_ir_module *module, struct kefir_codegen_amd64 *codegen) {
+    struct kefir_hashtree_node_iterator visibility_iter;
+    kefir_ir_identifier_visibility_t visibility;
+    for (const char *symbol = kefir_ir_module_visibility_iter(module, &visibility_iter, &visibility); symbol != NULL;
+         symbol = kefir_ir_module_visibility_iter_next(&visibility_iter, &visibility)) {
+
+        switch (visibility) {
+            case KEFIR_IR_IDENTIFIER_VISIBILITY_DEFAULT:
+                // Intentionally left blank
+                break;
+
+            case KEFIR_IR_IDENTIFIER_VISIBILITY_HIDDEN:
+                KEFIR_AMD64_XASMGEN_HIDDEN(&codegen->xasmgen, "%s", symbol);
+                break;
+
+            case KEFIR_IR_IDENTIFIER_VISIBILITY_INTERNAL:
+                KEFIR_AMD64_XASMGEN_INTERNAL(&codegen->xasmgen, "%s", symbol);
+                break;
+
+            case KEFIR_IR_IDENTIFIER_VISIBILITY_PROTECTED:
+                KEFIR_AMD64_XASMGEN_PROTECTED(&codegen->xasmgen, "%s", symbol);
+                break;
+        }
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t translate_data_storage(struct kefir_mem *mem, struct kefir_codegen_amd64 *codegen,
                                              struct kefir_opt_module *module, kefir_ir_data_storage_t storage,
                                              kefir_bool_t defined, const char *section, kefir_uint64_t section_attr) {
@@ -303,6 +330,7 @@ static kefir_result_t translate_impl(struct kefir_mem *mem, struct kefir_codegen
     REQUIRE_OK(translate_module_externals(module->ir_module, codegen));
     REQUIRE_OK(translate_module_aliases(module->ir_module, codegen));
     REQUIRE_OK(translate_module_weak(module->ir_module, codegen));
+    REQUIRE_OK(translate_module_visibility(module->ir_module, codegen));
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_NEWLINE(&codegen->xasmgen, 1));
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_SECTION(&codegen->xasmgen, ".text", KEFIR_AMD64_XASMGEN_SECTION_NOATTR));

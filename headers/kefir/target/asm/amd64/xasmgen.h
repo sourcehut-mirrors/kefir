@@ -234,6 +234,9 @@ typedef struct kefir_amd64_xasmgen {
     kefir_result_t (*external)(struct kefir_amd64_xasmgen *, const char *, ...);
     kefir_result_t (*alias)(struct kefir_amd64_xasmgen *, const char *, const char *);
     kefir_result_t (*weak)(struct kefir_amd64_xasmgen *, const char *, ...);
+    kefir_result_t (*hidden)(struct kefir_amd64_xasmgen *, const char *, ...);
+    kefir_result_t (*internal)(struct kefir_amd64_xasmgen *, const char *, ...);
+    kefir_result_t (*protected)(struct kefir_amd64_xasmgen *, const char *, ...);
     kefir_result_t (*section)(struct kefir_amd64_xasmgen *, const char *, kefir_uint64_t);
     kefir_result_t (*align)(struct kefir_amd64_xasmgen *, kefir_size_t);
     kefir_result_t (*data)(struct kefir_amd64_xasmgen *, kefir_asm_amd64_xasmgen_data_type_t, kefir_size_t, ...);
@@ -319,6 +322,9 @@ const struct kefir_asm_amd64_xasmgen_operand *kefir_asm_amd64_xasmgen_operand_fp
 #define KEFIR_AMD64_XASMGEN_EXTERNAL(_xasmgen, _fmt, ...) ((_xasmgen)->external((_xasmgen), (_fmt), __VA_ARGS__))
 #define KEFIR_AMD64_XASMGEN_ALIAS(_xasmgen, _alias, _original) ((_xasmgen)->alias((_xasmgen), (_alias), (_original)))
 #define KEFIR_AMD64_XASMGEN_WEAK(_xasmgen, _fmt, ...) ((_xasmgen)->weak((_xasmgen), (_fmt), __VA_ARGS__))
+#define KEFIR_AMD64_XASMGEN_HIDDEN(_xasmgen, _fmt, ...) ((_xasmgen)->hidden((_xasmgen), (_fmt), __VA_ARGS__))
+#define KEFIR_AMD64_XASMGEN_INTERNAL(_xasmgen, _fmt, ...) ((_xasmgen)->internal((_xasmgen), (_fmt), __VA_ARGS__))
+#define KEFIR_AMD64_XASMGEN_PROTECTED(_xasmgen, _fmt, ...) ((_xasmgen)->protected((_xasmgen), (_fmt), __VA_ARGS__))
 #define KEFIR_AMD64_XASMGEN_SECTION(_xasmgen, _name, _attr) ((_xasmgen)->section((_xasmgen), (_name), (_attr)))
 #define KEFIR_AMD64_XASMGEN_ALIGN(_xasmgen, _arg) ((_xasmgen)->align((_xasmgen), (_arg)))
 #define KEFIR_AMD64_XASMGEN_DATA(_xasmgen, _type, _length, ...) \

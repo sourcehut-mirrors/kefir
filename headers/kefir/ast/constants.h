@@ -309,4 +309,12 @@ typedef enum kefir_ast_builtin_operator {
     KEFIR_AST_BUILTIN_CLASSIFY_TYPE
 } kefir_ast_builtin_operator_t;
 
+typedef enum kefir_ast_declarator_visibility_attr {
+    KEFIR_AST_DECLARATOR_VISIBILITY_UNSET = 0,
+    KEFIR_AST_DECLARATOR_VISIBILITY_DEFAULT,
+    KEFIR_AST_DECLARATOR_VISIBILITY_HIDDEN,
+    KEFIR_AST_DECLARATOR_VISIBILITY_INTERNAL,
+    KEFIR_AST_DECLARATOR_VISIBILITY_PROTECTED
+} kefir_ast_declarator_visibility_attr_t;
+
 #endif

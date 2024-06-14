@@ -16,6 +16,7 @@
     ],
     "aliases": [],
     "weak": [],
+    "visibility": [],
     "types": [
         {
             "identifier": 0,

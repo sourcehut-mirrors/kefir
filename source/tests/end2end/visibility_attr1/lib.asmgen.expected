@@ -1,0 +1,98 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global w
+.global x
+.global y
+.global z
+.global getw
+.global getx
+.global gety
+.global getz
+.extern __kefirrt_opt_amd64_sysv_vararg_save
+.extern __kefirrt_opt_load_int_vararg
+.extern __kefirrt_opt_load_sse_vararg
+.extern __kefirrt_opt_float32_to_uint
+.extern __kefirrt_opt_float64_to_uint
+.extern __kefirrt_opt_long_double_to_int
+.extern __kefirrt_opt_long_double_to_uint
+.extern __kefirrt_opt_complex_long_double_equals
+.extern __kefirrt_opt_complex_long_double_truncate_1bit
+.extern __kefirrt_opt_complex_float32_mul
+.extern __kefirrt_opt_complex_float32_div
+.extern __kefirrt_opt_complex_float64_mul
+.extern __kefirrt_opt_complex_float64_div
+.extern __kefirrt_opt_complex_long_double_mul
+.extern __kefirrt_opt_complex_long_double_div
+.extern __kefirrt_fenv_update
+.extern __kefir_opt_float32_neg
+.extern __kefir_opt_float64_neg
+.extern __kefir_opt_uint2long_double
+.extern __kefir_opt_complex_float32_neg
+.extern __kefir_opt_complex_float64_neg
+.protected w
+.hidden y
+.internal z
+.protected getw
+.hidden gety
+.internal getz
+
+.section .text
+getw:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_getw_label0:
+_kefir_func_getw_label1:
+    movq w@GOTPCREL(%rip), %rax
+    movsxl (%rax), %rax
+    pop %rbp
+    ret
+
+getx:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_getx_label0:
+_kefir_func_getx_label1:
+    movq x@GOTPCREL(%rip), %rax
+    movsxl (%rax), %rax
+    pop %rbp
+    ret
+
+gety:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_gety_label0:
+_kefir_func_gety_label1:
+    movq y@GOTPCREL(%rip), %rax
+    movsxl (%rax), %rax
+    pop %rbp
+    ret
+
+getz:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_getz_label0:
+_kefir_func_getz_label1:
+    movq z@GOTPCREL(%rip), %rax
+    movsxl (%rax), %rax
+    pop %rbp
+    ret
+
+
+.section .data
+    .align 4
+w:
+    .long 400
+
+    .align 4
+x:
+    .long 100
+
+    .align 4
+y:
+    .long 200
+
+    .align 4
+z:
+    .long 300
+

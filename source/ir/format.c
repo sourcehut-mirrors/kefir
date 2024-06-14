@@ -681,6 +681,38 @@ static kefir_result_t format_weak(struct kefir_json_output *json, const struct k
     return KEFIR_OK;
 }
 
+static kefir_result_t format_visibility(struct kefir_json_output *json, const struct kefir_ir_module *module) {
+    REQUIRE_OK(kefir_json_output_array_begin(json));                                                       
+    struct kefir_hashtree_node_iterator iter;                                                              
+    kefir_ir_identifier_visibility_t visibility;                                                                       
+    for (const char *symbol = kefir_ir_module_visibility_iter(module, &iter, &visibility); symbol != NULL; symbol = kefir_ir_module_visibility_iter_next(&iter, &visibility)) { 
+        REQUIRE_OK(kefir_json_output_object_begin(json));
+        REQUIRE_OK(kefir_json_output_object_key(json, "identifier"));
+        REQUIRE_OK(kefir_json_output_string(json, symbol));
+        REQUIRE_OK(kefir_json_output_object_key(json, "visibility"));                                               
+        switch (visibility) {
+            case KEFIR_IR_IDENTIFIER_VISIBILITY_DEFAULT:
+                REQUIRE_OK(kefir_json_output_string(json, "default"));
+                break;
+
+            case KEFIR_IR_IDENTIFIER_VISIBILITY_HIDDEN:
+                REQUIRE_OK(kefir_json_output_string(json, "hidden"));
+                break;
+
+            case KEFIR_IR_IDENTIFIER_VISIBILITY_INTERNAL:
+                REQUIRE_OK(kefir_json_output_string(json, "internal"));
+                break;
+
+            case KEFIR_IR_IDENTIFIER_VISIBILITY_PROTECTED:
+                REQUIRE_OK(kefir_json_output_string(json, "protected"));
+                break;
+        }
+        REQUIRE_OK(kefir_json_output_object_end(json));
+    }                                                                                                      
+    REQUIRE_OK(kefir_json_output_array_end(json));
+    return KEFIR_OK;
+}
+
 #undef FORMAT_IDENTIFIER_ITER
 
 static kefir_result_t format_types(struct kefir_json_output *json, const struct kefir_ir_module *module) {
@@ -1132,6 +1164,8 @@ kefir_result_t kefir_ir_format_module_json(struct kefir_json_output *json, const
     REQUIRE_OK(format_aliases(json, module));
     REQUIRE_OK(kefir_json_output_object_key(json, "weak"));
     REQUIRE_OK(format_weak(json, module));
+    REQUIRE_OK(kefir_json_output_object_key(json, "visibility"));
+    REQUIRE_OK(format_visibility(json, module));
     REQUIRE_OK(kefir_json_output_object_key(json, "types"));
     REQUIRE_OK(format_types(json, module));
     REQUIRE_OK(kefir_json_output_object_key(json, "data"));

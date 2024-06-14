@@ -645,6 +645,7 @@ kefir_result_t kefir_ast_local_context_declare_external(struct kefir_mem *mem, s
             mem, &context->global->type_bundle, context->global->type_traits, global_ordinary_id->object.type, type);
         ASSIGN_PTR(scoped_id, global_ordinary_id);
         if (attributes != NULL) {
+            KEFIR_AST_CONTEXT_MERGE_VISIBILITY(&global_ordinary_id->object.visibility, attributes);
             if (global_ordinary_id->object.asm_label == NULL) {
                 global_ordinary_id->object.asm_label = attributes->asm_label;
             } else {
@@ -662,6 +663,7 @@ kefir_result_t kefir_ast_local_context_declare_external(struct kefir_mem *mem, s
             location);
         REQUIRE(ordinary_id != NULL,
                 KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocted AST scoped identifier"));
+        ordinary_id->object.visibility = KEFIR_AST_CONTEXT_FUNCTION_GET_ATTR(attributes, visibility, KEFIR_AST_DECLARATOR_VISIBILITY_UNSET);
         res =
             kefir_ast_identifier_flat_scope_insert(mem, &context->global->object_identifiers, identifier, ordinary_id);
         REQUIRE_ELSE(res == KEFIR_OK, {
@@ -728,6 +730,7 @@ kefir_result_t kefir_ast_local_context_declare_external_thread_local(
             mem, &context->global->type_bundle, context->global->type_traits, global_ordinary_id->object.type, type);
         ASSIGN_PTR(scoped_id, global_ordinary_id);
         if (attributes != NULL) {
+            KEFIR_AST_CONTEXT_MERGE_VISIBILITY(&global_ordinary_id->object.visibility, attributes);
             if (global_ordinary_id->object.asm_label == NULL) {
                 global_ordinary_id->object.asm_label = attributes->asm_label;
             } else {
@@ -744,6 +747,7 @@ kefir_result_t kefir_ast_local_context_declare_external_thread_local(
             KEFIR_AST_SCOPED_IDENTIFIER_EXTERNAL_LINKAGE, true, NULL, NULL, location);
         REQUIRE(ordinary_id != NULL,
                 KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocted AST scoped identifier"));
+        ordinary_id->object.visibility = KEFIR_AST_CONTEXT_FUNCTION_GET_ATTR(attributes, visibility, KEFIR_AST_DECLARATOR_VISIBILITY_UNSET);
         res =
             kefir_ast_identifier_flat_scope_insert(mem, &context->global->object_identifiers, identifier, ordinary_id);
         REQUIRE_ELSE(res == KEFIR_OK, {
@@ -1237,6 +1241,7 @@ kefir_result_t kefir_ast_local_context_declare_function(struct kefir_mem *mem, s
         ordinary_id->function.inline_definition = ordinary_id->function.inline_definition && !external_visibility &&
                                                   kefir_ast_function_specifier_is_inline(specifier);
         if (attributes != NULL) {
+            KEFIR_AST_CONTEXT_MERGE_VISIBILITY(&ordinary_id->function.visibility, attributes);
             KEFIR_AST_CONTEXT_MERGE_FUNCTION_ALIAS_ATTR(ordinary_id, attributes);
             KEFIR_AST_CONTEXT_MERGE_BOOL(&ordinary_id->function.flags.weak, attributes->weak);
             KEFIR_AST_CONTEXT_MERGE_BOOL(&ordinary_id->function.flags.gnu_inline, attributes->gnu_inline);
@@ -1259,6 +1264,7 @@ kefir_result_t kefir_ast_local_context_declare_function(struct kefir_mem *mem, s
                                                          !external_visibility &&
                                                          kefir_ast_function_specifier_is_inline(specifier);
         if (attributes != NULL) {
+            KEFIR_AST_CONTEXT_MERGE_VISIBILITY(&global_ordinary_id->function.visibility, attributes);
             KEFIR_AST_CONTEXT_MERGE_FUNCTION_ALIAS_ATTR(global_ordinary_id, attributes);
             KEFIR_AST_CONTEXT_MERGE_BOOL(&global_ordinary_id->function.flags.weak, attributes->weak);
             KEFIR_AST_CONTEXT_MERGE_BOOL(&global_ordinary_id->function.flags.gnu_inline, attributes->gnu_inline);
@@ -1283,6 +1289,7 @@ kefir_result_t kefir_ast_local_context_declare_function(struct kefir_mem *mem, s
             return res;
         });
         REQUIRE_OK(kefir_ast_identifier_block_scope_insert(mem, &context->ordinary_scope, identifier, ordinary_id));
+        ordinary_id->function.visibility = KEFIR_AST_CONTEXT_FUNCTION_GET_ATTR(attributes, visibility, KEFIR_AST_DECLARATOR_VISIBILITY_UNSET);
         ordinary_id->function.flags.weak = attributes != NULL && attributes->weak;
         ordinary_id->function.flags.gnu_inline = attributes != NULL && attributes->gnu_inline;
         ASSIGN_PTR(scoped_id_ptr, ordinary_id);

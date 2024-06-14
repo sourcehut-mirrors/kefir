@@ -105,6 +105,13 @@ kefir_result_t kefir_ast_context_merge_alignment(struct kefir_mem *, struct kefi
 #define KEFIR_AST_CONTEXT_FUNCTION_GET_ATTR(_attributes, _name, _default) \
     ((_attributes) != NULL ? (_attributes)->_name : (_default))
 
+#define KEFIR_AST_CONTEXT_MERGE_VISIBILITY(_visibility, _attributes) \
+    do { \
+        if (*(_visibility) == KEFIR_AST_DECLARATOR_VISIBILITY_UNSET && (_attributes) != NULL) { \
+            *(_visibility) = (_attributes)->visibility; \
+        } \
+    } while (0)
+
 #define KEFIR_AST_CONTEXT_FUNCTION_IDENTIFIER_INSERT(_mem, _context, _identifier, _ordinary_id)                        \
     do {                                                                                                               \
         const char *id = kefir_string_pool_insert((_mem), &(_context)->symbols, (_identifier), NULL);                  \

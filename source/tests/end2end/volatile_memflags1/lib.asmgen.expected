@@ -65,6 +65,7 @@
     ],
     "aliases": [],
     "weak": [],
+    "visibility": [],
     "types": [
         {
             "identifier": 90,

@@ -1203,6 +1203,29 @@ static kefir_result_t analyze_declaration_declarator_attributes(struct kefir_mem
                 const char *alias = kefir_string_pool_insert(mem, context->symbols, (const char *) string_literal->literal, NULL);
                 REQUIRE(alias != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert declarator alias into string pool"));
                 attributes->alias = alias;
+            } else if (strcmp(attribute->name, "visibility") == 0 || strcmp(attribute->name, "__visibility__") == 0) {
+                const struct kefir_list_entry *parameter = kefir_list_head(&attribute->parameters);
+                REQUIRE(parameter != NULL && parameter->value, KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &declarator->source_location, "Expected visibility attribute to have multibyte string literal parameter"));
+                ASSIGN_DECL_CAST(struct kefir_ast_node_base *, parameter_node,
+                    parameter->value);
+                REQUIRE(parameter_node->klass->type == KEFIR_AST_STRING_LITERAL,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &parameter_node->source_location, "Expected visibility attribute to have multibyte string literal parameter"));
+                struct kefir_ast_string_literal *string_literal;
+                REQUIRE_OK(kefir_ast_downcast_string_literal(parameter_node, &string_literal, false));
+                REQUIRE(string_literal->type == KEFIR_AST_STRING_LITERAL_MULTIBYTE,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &parameter_node->source_location, "Expected visibility attribute to have multibyte string literal parameter"));
+
+                if (strcmp((const char *) string_literal->literal, "default") == 0) {
+                    attributes->visibility = KEFIR_AST_DECLARATOR_VISIBILITY_DEFAULT;
+                } else if (strcmp((const char *) string_literal->literal, "hidden") == 0) {
+                    attributes->visibility = KEFIR_AST_DECLARATOR_VISIBILITY_HIDDEN;
+                } else if (strcmp((const char *) string_literal->literal, "internal") == 0) {
+                    attributes->visibility = KEFIR_AST_DECLARATOR_VISIBILITY_INTERNAL;
+                } else if (strcmp((const char *) string_literal->literal, "protected") == 0) {
+                    attributes->visibility = KEFIR_AST_DECLARATOR_VISIBILITY_PROTECTED;
+                } else {
+                    return KEFIR_SET_SOURCE_ERRORF(KEFIR_ANALYSIS_ERROR, &parameter_node->source_location, "Unknown visibility attribute value \"%s\"", (const char *) string_literal->literal);
+                }
             }
         }
     }

@@ -80,6 +80,7 @@ struct kefir_ast_scoped_identifier *kefir_ast_context_allocate_scoped_object_ide
     scoped_id->object.external = external;
     scoped_id->object.linkage = linkage;
     scoped_id->object.initializer = initializer;
+    scoped_id->object.visibility = KEFIR_AST_DECLARATOR_VISIBILITY_DEFAULT;
     scoped_id->object.asm_label = asm_label;
     if (source_location != NULL) {
         scoped_id->source_location = *source_location;
@@ -252,6 +253,7 @@ struct kefir_ast_scoped_identifier *kefir_ast_context_allocate_scoped_function_i
     scoped_id->function.external = external;
     scoped_id->function.defined = defined;
     scoped_id->function.inline_definition = inline_definition;
+    scoped_id->object.visibility = KEFIR_AST_DECLARATOR_VISIBILITY_DEFAULT;
     scoped_id->function.alias = alias;
     scoped_id->function.flags.weak = false;
     scoped_id->function.flags.gnu_inline = false;

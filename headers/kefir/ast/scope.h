@@ -56,6 +56,7 @@ typedef struct kefir_ast_scoped_identifier {
             kefir_bool_t external;
             struct kefir_ast_initializer *UNOWNED(initializer);
             struct kefir_ast_flow_control_data_element *data_element;
+            kefir_ast_declarator_visibility_attr_t visibility;
             const char *asm_label;
         } object;
 
@@ -66,6 +67,7 @@ typedef struct kefir_ast_scoped_identifier {
             kefir_bool_t external;
             kefir_bool_t defined;
             kefir_bool_t inline_definition;
+            kefir_ast_declarator_visibility_attr_t visibility;
             const char *alias;
             struct {
                 kefir_bool_t weak;

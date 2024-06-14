@@ -103,6 +103,7 @@ kefir_result_t kefir_ir_module_alloc(struct kefir_mem *mem, struct kefir_ir_modu
     REQUIRE_OK(kefir_hashtree_init(&module->externals, &kefir_hashtree_str_ops));
     REQUIRE_OK(kefir_hashtree_init(&module->aliases, &kefir_hashtree_str_ops));
     REQUIRE_OK(kefir_hashtree_init(&module->weak, &kefir_hashtree_str_ops));
+    REQUIRE_OK(kefir_hashtree_init(&module->visibility, &kefir_hashtree_str_ops));
     REQUIRE_OK(kefir_hashtree_init(&module->functions, &kefir_hashtree_str_ops));
     REQUIRE_OK(kefir_hashtree_on_removal(&module->functions, destroy_function, NULL));
     REQUIRE_OK(kefir_hashtree_init(&module->named_types, &kefir_hashtree_uint_ops));
@@ -132,6 +133,7 @@ kefir_result_t kefir_ir_module_free(struct kefir_mem *mem, struct kefir_ir_modul
     REQUIRE_OK(kefir_hashtree_free(mem, &module->externals));
     REQUIRE_OK(kefir_hashtree_free(mem, &module->aliases));
     REQUIRE_OK(kefir_hashtree_free(mem, &module->weak));
+    REQUIRE_OK(kefir_hashtree_free(mem, &module->visibility));
     REQUIRE_OK(kefir_hashtree_free(mem, &module->global_symbols));
     REQUIRE_OK(kefir_hashtree_free(mem, &module->function_declarations));
     REQUIRE_OK(kefir_list_free(mem, &module->types));
@@ -331,6 +333,21 @@ kefir_result_t kefir_ir_module_declare_weak(struct kefir_mem *mem, struct kefir_
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_ir_module_declare_visibility(struct kefir_mem *mem, struct kefir_ir_module *module, const char *identifier,
+                                            kefir_ir_identifier_visibility_t visibility) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR module pointer"));
+    const char *symbol = kefir_ir_module_symbol(mem, module, identifier, NULL);
+    REQUIRE(symbol != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate a symbol"));
+
+    kefir_result_t res =
+        kefir_hashtree_insert(mem, &module->visibility, (kefir_hashtree_key_t) symbol, (kefir_hashtree_value_t) visibility);
+    if (res != KEFIR_ALREADY_EXISTS) {
+        REQUIRE_OK(res);
+    }
+    return KEFIR_OK;
+}
+
 struct kefir_ir_function *kefir_ir_module_new_function(struct kefir_mem *mem, struct kefir_ir_module *module,
                                                        struct kefir_ir_function_decl *decl, kefir_id_t locals_type_id,
                                                        kefir_size_t length) {
@@ -437,6 +454,11 @@ const char *kefir_ir_module_weak_iter(const struct kefir_ir_module *module, stru
     IDENTIFIER_ITER(weak, type, kefir_ir_identifier_type_t);
 }
 
+const char *kefir_ir_module_visibility_iter(const struct kefir_ir_module *module, struct kefir_hashtree_node_iterator *iter,
+                                      kefir_ir_identifier_visibility_t *visibility) {
+    IDENTIFIER_ITER(visibility, visibility, kefir_ir_identifier_visibility_t);
+}
+
 #undef IDENTIFIER_ITER
 
 #define IDENTIFIER_ITER_NEXT(_value_ptr, _value_type)                       \
@@ -465,6 +487,11 @@ const char *kefir_ir_module_aliases_iter_next(struct kefir_hashtree_node_iterato
 const char *kefir_ir_module_weak_iter_next(struct kefir_hashtree_node_iterator *iter,
                                            kefir_ir_identifier_type_t *type) {
     IDENTIFIER_ITER_NEXT(type, kefir_ir_identifier_type_t);
+}
+
+const char *kefir_ir_module_visibility_iter_next(struct kefir_hashtree_node_iterator *iter,
+                                           kefir_ir_identifier_visibility_t *visibility) {
+    IDENTIFIER_ITER_NEXT(visibility, kefir_ir_identifier_visibility_t);
 }
 
 kefir_bool_t kefir_ir_module_has_global(const struct kefir_ir_module *module, const char *identifier) {

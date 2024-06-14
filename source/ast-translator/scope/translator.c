@@ -56,6 +56,32 @@ static kefir_result_t initialize_data(struct kefir_mem *mem, const struct kefir_
     return KEFIR_OK;
 }
 
+static kefir_result_t declare_visibility(struct kefir_mem *mem,
+                                          struct kefir_ir_module *module, const char *identifier, kefir_ast_declarator_visibility_attr_t visibility) {
+    switch (visibility) {
+        case KEFIR_AST_DECLARATOR_VISIBILITY_UNSET:
+            // Intentionally left blank
+            break;
+
+        case KEFIR_AST_DECLARATOR_VISIBILITY_DEFAULT:
+            REQUIRE_OK(kefir_ir_module_declare_visibility(mem, module, identifier, KEFIR_IR_IDENTIFIER_VISIBILITY_DEFAULT));
+            break;
+
+        case KEFIR_AST_DECLARATOR_VISIBILITY_HIDDEN:
+            REQUIRE_OK(kefir_ir_module_declare_visibility(mem, module, identifier, KEFIR_IR_IDENTIFIER_VISIBILITY_HIDDEN));
+            break;
+
+        case KEFIR_AST_DECLARATOR_VISIBILITY_INTERNAL:
+            REQUIRE_OK(kefir_ir_module_declare_visibility(mem, module, identifier, KEFIR_IR_IDENTIFIER_VISIBILITY_INTERNAL));
+            break;
+
+        case KEFIR_AST_DECLARATOR_VISIBILITY_PROTECTED:
+            REQUIRE_OK(kefir_ir_module_declare_visibility(mem, module, identifier, KEFIR_IR_IDENTIFIER_VISIBILITY_PROTECTED));
+            break;
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t translate_externals(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                           struct kefir_ir_module *module,
                                           const struct kefir_ast_translator_global_scope_layout *global_scope) {
@@ -82,6 +108,10 @@ static kefir_result_t translate_externals(struct kefir_mem *mem, const struct ke
 
                     REQUIRE_OK(kefir_ir_module_declare_global(mem, module, scoped_identifier->identifier,
                                                               KEFIR_IR_IDENTIFIER_GLOBAL));
+                }
+
+                if (!scoped_identifier->value->object.external) {
+                    REQUIRE_OK(declare_visibility(mem, module, scoped_identifier->identifier, scoped_identifier->value->object.visibility));
                 }
             } break;
 
@@ -122,6 +152,9 @@ static kefir_result_t translate_externals(struct kefir_mem *mem, const struct ke
                                                                         KEFIR_IR_IDENTIFIER_GLOBAL));
                         }
                     }
+                }
+                if (scoped_identifier->value->function.defined) {
+                    REQUIRE_OK(declare_visibility(mem, module, scoped_identifier->identifier, scoped_identifier->value->function.visibility));
                 }
 #undef DECL_GLOBAL_WEAK
             } break;
