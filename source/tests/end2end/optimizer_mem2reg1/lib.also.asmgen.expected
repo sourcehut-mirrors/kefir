@@ -3,10 +3,15 @@
 
 .extern sqrt
 .global factorial
+.type factorial, @function
 .global factorial64
+.type factorial64, @function
 .global quad_equation
+.type quad_equation, @function
 .global factorialf32
+.type factorialf32, @function
 .global factorialf64
+.type factorialf64, @function
 .extern __kefirrt_opt_amd64_sysv_vararg_save
 .extern __kefirrt_opt_load_int_vararg
 .extern __kefirrt_opt_load_sse_vararg

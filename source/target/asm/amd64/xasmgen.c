@@ -887,20 +887,67 @@ static kefir_result_t amd64_yasm_label(struct kefir_amd64_xasmgen *xasmgen, cons
     return KEFIR_OK;
 }
 
-static kefir_result_t amd64_global(struct kefir_amd64_xasmgen *xasmgen, const char *format, ...) {
+static kefir_result_t amd64_global(struct kefir_amd64_xasmgen *xasmgen, kefir_amd64_xasmgen_type_attribute_t type,
+                                   kefir_amd64_xasmgen_visibility_attribute_t visibility, const char *format, ...) {
     REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 assembly generator"));
     ASSIGN_DECL_CAST(struct xasmgen_payload *, payload, xasmgen->payload);
 
+#define PRINT_IDENTIFIER                         \
+    do {                                         \
+        va_list args;                            \
+        va_start(args, format);                  \
+        vfprintf(payload->output, format, args); \
+        va_end(args);                            \
+    } while (0)
+
     fprintf(payload->output, ".global ");
-    va_list args;
-    va_start(args, format);
-    vfprintf(payload->output, format, args);
-    va_end(args);
+    PRINT_IDENTIFIER;
     fprintf(payload->output, "\n");
+
+    switch (type) {
+        case KEFIR_AMD64_XASMGEN_TYPE_FUNCTION:
+            fprintf(payload->output, ".type ");
+            PRINT_IDENTIFIER;
+            fprintf(payload->output, ", @function\n");
+            break;
+
+        case KEFIR_AMD64_XASMGEN_TYPE_DATA:
+            fprintf(payload->output, ".type ");
+            PRINT_IDENTIFIER;
+            fprintf(payload->output, ", @object\n");
+            break;
+    }
+
+    switch (visibility) {
+        case KEFIR_AMD64_XASMGEN_VISIBILITY_DEFAULT:
+            // Intentionally left blank
+            break;
+
+        case KEFIR_AMD64_XASMGEN_VISIBILITY_HIDDEN:
+            fprintf(payload->output, ".hidden ");
+            PRINT_IDENTIFIER;
+            fprintf(payload->output, "\n");
+            break;
+
+        case KEFIR_AMD64_XASMGEN_VISIBILITY_INTERNAL:
+            fprintf(payload->output, ".internal ");
+            PRINT_IDENTIFIER;
+            fprintf(payload->output, "\n");
+            break;
+
+        case KEFIR_AMD64_XASMGEN_VISIBILITY_PROTECTED:
+            fprintf(payload->output, ".protected ");
+            PRINT_IDENTIFIER;
+            fprintf(payload->output, "\n");
+            break;
+    }
+#undef PRINT_IDENTIFIER
     return KEFIR_OK;
 }
 
-static kefir_result_t amd64_yasm_global(struct kefir_amd64_xasmgen *xasmgen, const char *format, ...) {
+static kefir_result_t amd64_yasm_global(struct kefir_amd64_xasmgen *xasmgen, kefir_amd64_xasmgen_type_attribute_t type,
+                                        kefir_amd64_xasmgen_visibility_attribute_t visibility, const char *format,
+                                        ...) {
     REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 assembly generator"));
     ASSIGN_DECL_CAST(struct xasmgen_payload *, payload, xasmgen->payload);
 
@@ -909,7 +956,34 @@ static kefir_result_t amd64_yasm_global(struct kefir_amd64_xasmgen *xasmgen, con
     va_start(args, format);
     vfprintf(payload->output, format, args);
     va_end(args);
-    fprintf(payload->output, "\n");
+
+    switch (type) {
+        case KEFIR_AMD64_XASMGEN_TYPE_FUNCTION:
+            fprintf(payload->output, ":function");
+            break;
+
+        case KEFIR_AMD64_XASMGEN_TYPE_DATA:
+            fprintf(payload->output, ":object");
+            break;
+    }
+
+    switch (visibility) {
+        case KEFIR_AMD64_XASMGEN_VISIBILITY_DEFAULT:
+            fprintf(payload->output, "\n");
+            break;
+
+        case KEFIR_AMD64_XASMGEN_VISIBILITY_HIDDEN:
+            fprintf(payload->output, " hidden\n");
+            break;
+
+        case KEFIR_AMD64_XASMGEN_VISIBILITY_INTERNAL:
+            fprintf(payload->output, " internal\n");
+            break;
+
+        case KEFIR_AMD64_XASMGEN_VISIBILITY_PROTECTED:
+            fprintf(payload->output, " protected\n");
+            break;
+    }
     return KEFIR_OK;
 }
 
@@ -955,76 +1029,113 @@ static kefir_result_t amd64_yasm_alias(struct kefir_amd64_xasmgen *xasmgen, cons
     return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Yasm assembly generator does not support aliases");
 }
 
-static kefir_result_t amd64_weak(struct kefir_amd64_xasmgen *xasmgen, const char *format, ...) {
+static kefir_result_t amd64_weak(struct kefir_amd64_xasmgen *xasmgen, kefir_amd64_xasmgen_type_attribute_t type,
+                                 kefir_amd64_xasmgen_visibility_attribute_t visibility, const char *format, ...) {
     REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 assembly generator"));
     ASSIGN_DECL_CAST(struct xasmgen_payload *, payload, xasmgen->payload);
+
+#define PRINT_IDENTIFIER                         \
+    do {                                         \
+        va_list args;                            \
+        va_start(args, format);                  \
+        vfprintf(payload->output, format, args); \
+        va_end(args);                            \
+    } while (0)
 
     fprintf(payload->output, ".weak ");
-    va_list args;
-    va_start(args, format);
-    vfprintf(payload->output, format, args);
-    va_end(args);
+    PRINT_IDENTIFIER;
     fprintf(payload->output, "\n");
+
+    switch (type) {
+        case KEFIR_AMD64_XASMGEN_TYPE_FUNCTION:
+            fprintf(payload->output, ".type ");
+            PRINT_IDENTIFIER;
+            fprintf(payload->output, ", @function\n");
+            break;
+
+        case KEFIR_AMD64_XASMGEN_TYPE_DATA:
+            fprintf(payload->output, ".type ");
+            PRINT_IDENTIFIER;
+            fprintf(payload->output, ", @object\n");
+            break;
+    }
+
+    switch (visibility) {
+        case KEFIR_AMD64_XASMGEN_VISIBILITY_DEFAULT:
+            // Intentionally left blank
+            break;
+
+        case KEFIR_AMD64_XASMGEN_VISIBILITY_HIDDEN:
+            fprintf(payload->output, ".hidden ");
+            PRINT_IDENTIFIER;
+            fprintf(payload->output, "\n");
+            break;
+
+        case KEFIR_AMD64_XASMGEN_VISIBILITY_INTERNAL:
+            fprintf(payload->output, ".internal ");
+            PRINT_IDENTIFIER;
+            fprintf(payload->output, "\n");
+            break;
+
+        case KEFIR_AMD64_XASMGEN_VISIBILITY_PROTECTED:
+            fprintf(payload->output, ".protected ");
+            PRINT_IDENTIFIER;
+            fprintf(payload->output, "\n");
+            break;
+    }
+
+#undef PRINT_IDENTIFIER
     return KEFIR_OK;
 }
 
-static kefir_result_t amd64_yasm_weak(struct kefir_amd64_xasmgen *xasmgen, const char *format, ...) {
+static kefir_result_t amd64_yasm_weak(struct kefir_amd64_xasmgen *xasmgen, kefir_amd64_xasmgen_type_attribute_t type,
+                                      kefir_amd64_xasmgen_visibility_attribute_t visibility, const char *format, ...) {
     REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 assembly generator"));
     ASSIGN_DECL_CAST(struct xasmgen_payload *, payload, xasmgen->payload);
+
+#define PRINT_IDENTIFIER                         \
+    do {                                         \
+        va_list args;                            \
+        va_start(args, format);                  \
+        vfprintf(payload->output, format, args); \
+        va_end(args);                            \
+    } while (0)
+
+    fprintf(payload->output, "global ");
+    PRINT_IDENTIFIER;
+
+    switch (type) {
+        case KEFIR_AMD64_XASMGEN_TYPE_FUNCTION:
+            fprintf(payload->output, ":function");
+            break;
+
+        case KEFIR_AMD64_XASMGEN_TYPE_DATA:
+            fprintf(payload->output, ":object");
+            break;
+    }
+
+    switch (visibility) {
+        case KEFIR_AMD64_XASMGEN_VISIBILITY_DEFAULT:
+            fprintf(payload->output, "\n");
+            break;
+
+        case KEFIR_AMD64_XASMGEN_VISIBILITY_HIDDEN:
+            fprintf(payload->output, " hidden\n");
+            break;
+
+        case KEFIR_AMD64_XASMGEN_VISIBILITY_INTERNAL:
+            fprintf(payload->output, " internal\n");
+            break;
+
+        case KEFIR_AMD64_XASMGEN_VISIBILITY_PROTECTED:
+            fprintf(payload->output, " protected\n");
+            break;
+    }
 
     fprintf(payload->output, "weak ");
-    va_list args;
-    va_start(args, format);
-    vfprintf(payload->output, format, args);
-    va_end(args);
+    PRINT_IDENTIFIER;
     fprintf(payload->output, "\n");
     return KEFIR_OK;
-}
-
-static kefir_result_t amd64_hidden(struct kefir_amd64_xasmgen *xasmgen, const char *format, ...) {
-    REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 assembly generator"));
-    ASSIGN_DECL_CAST(struct xasmgen_payload *, payload, xasmgen->payload);
-
-    fprintf(payload->output, ".hidden ");
-    va_list args;
-    va_start(args, format);
-    vfprintf(payload->output, format, args);
-    va_end(args);
-    fprintf(payload->output, "\n");
-    return KEFIR_OK;
-}
-
-static kefir_result_t amd64_internal(struct kefir_amd64_xasmgen *xasmgen, const char *format, ...) {
-    REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 assembly generator"));
-    ASSIGN_DECL_CAST(struct xasmgen_payload *, payload, xasmgen->payload);
-
-    fprintf(payload->output, ".internal ");
-    va_list args;
-    va_start(args, format);
-    vfprintf(payload->output, format, args);
-    va_end(args);
-    fprintf(payload->output, "\n");
-    return KEFIR_OK;
-}
-
-static kefir_result_t amd64_protected(struct kefir_amd64_xasmgen *xasmgen, const char *format, ...) {
-    REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 assembly generator"));
-    ASSIGN_DECL_CAST(struct xasmgen_payload *, payload, xasmgen->payload);
-
-    fprintf(payload->output, ".protected ");
-    va_list args;
-    va_start(args, format);
-    vfprintf(payload->output, format, args);
-    va_end(args);
-    fprintf(payload->output, "\n");
-    return KEFIR_OK;
-}
-
-static kefir_result_t amd64_yasm_visibility(struct kefir_amd64_xasmgen *xasmgen, const char *format, ...) {
-    UNUSED(xasmgen);
-    UNUSED(format);
-
-    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Yasm assembly generator does not support visibility specifiers");
 }
 
 static kefir_result_t amd64_section(struct kefir_amd64_xasmgen *xasmgen, const char *identifier,
@@ -2221,9 +2332,6 @@ kefir_result_t kefir_asm_amd64_xasmgen_init(struct kefir_mem *mem, struct kefir_
         xasmgen->external = amd64_yasm_external;
         xasmgen->alias = amd64_yasm_alias;
         xasmgen->weak = amd64_yasm_weak;
-        xasmgen->hidden = amd64_yasm_visibility;
-        xasmgen->internal = amd64_yasm_visibility;
-        xasmgen->protected = amd64_yasm_visibility;
         xasmgen->section = amd64_yasm_section;
         xasmgen->align = amd64_yasm_align;
         xasmgen->data = amd64_yasm_data;
@@ -2236,9 +2344,6 @@ kefir_result_t kefir_asm_amd64_xasmgen_init(struct kefir_mem *mem, struct kefir_
         xasmgen->external = amd64_external;
         xasmgen->alias = amd64_alias;
         xasmgen->weak = amd64_weak;
-        xasmgen->hidden = amd64_hidden;
-        xasmgen->internal = amd64_internal;
-        xasmgen->protected = amd64_protected;
         xasmgen->section = amd64_section;
         xasmgen->align = amd64_align;
         xasmgen->data = amd64_data;

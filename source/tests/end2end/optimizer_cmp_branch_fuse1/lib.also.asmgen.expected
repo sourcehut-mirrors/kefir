@@ -2,16 +2,27 @@
 .section .note.GNU-stack,"",%progbits
 
 .global less
+.type less, @function
 .global above
+.type above, @function
 .global below
+.type below, @function
 .global equals
+.type equals, @function
 .global greater
+.type greater, @function
 .global not_less
+.type not_less, @function
 .global not_above
+.type not_above, @function
 .global not_below
+.type not_below, @function
 .global not_equals
+.type not_equals, @function
 .global not_equals2
+.type not_equals2, @function
 .global not_greater
+.type not_greater, @function
 .extern __kefirrt_opt_amd64_sysv_vararg_save
 .extern __kefirrt_opt_load_int_vararg
 .extern __kefirrt_opt_load_sse_vararg

@@ -2,10 +2,13 @@
 .section .note.GNU-stack,"",%progbits
 
 .global clear
+.type clear, @function
 .extern __atomic_exchange
 .extern __atomic_store
 .global test_and_set
+.type test_and_set, @function
 .global test_sync_synchronize
+.type test_sync_synchronize, @function
 .extern __kefir_atomic_seq_cst_fence
 .extern __kefirrt_opt_amd64_sysv_vararg_save
 .extern __kefirrt_opt_load_int_vararg

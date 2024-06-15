@@ -2,14 +2,22 @@
 .section .note.GNU-stack,"",%progbits
 
 .global test2_atomic_exchange16
+.type test2_atomic_exchange16, @function
 .global test2_atomic_exchange32
+.type test2_atomic_exchange32, @function
 .global test2_atomic_exchange64
+.type test2_atomic_exchange64, @function
 .extern __atomic_exchange
 .global test_atomic_exchange8
+.type test_atomic_exchange8, @function
 .global test2_atomic_exchange8
+.type test2_atomic_exchange8, @function
 .global test_atomic_exchange16
+.type test_atomic_exchange16, @function
 .global test_atomic_exchange32
+.type test_atomic_exchange32, @function
 .global test_atomic_exchange64
+.type test_atomic_exchange64, @function
 .extern __kefirrt_opt_amd64_sysv_vararg_save
 .extern __kefirrt_opt_load_int_vararg
 .extern __kefirrt_opt_load_sse_vararg

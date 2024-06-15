@@ -2,12 +2,19 @@
 .section .note.GNU-stack,"",%progbits
 
 .global test1
+.type test1, @function
 .global test2
+.type test2, @function
 .global test3
+.type test3, @function
 .global test4
+.type test4, @function
 .global test5
+.type test5, @function
 .global test6
+.type test6, @function
 .global test7
+.type test7, @function
 .extern somefn
 .extern somefn2
 .extern __kefirrt_opt_amd64_sysv_vararg_save

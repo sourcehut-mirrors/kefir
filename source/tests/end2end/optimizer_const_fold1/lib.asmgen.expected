@@ -2,53 +2,101 @@
 .section .note.GNU-stack,"",%progbits
 
 .global int_or
+.type int_or, @function
 .global int_add
+.type int_add, @function
 .global int_and
+.type int_and, @function
 .global int_div
+.type int_div, @function
 .global int_mod
+.type int_mod, @function
 .global int_mul
+.type int_mul, @function
 .global int_neg
+.type int_neg, @function
 .global int_not
+.type int_not, @function
 .global int_shl
+.type int_shl, @function
 .global int_shr
+.type int_shr, @function
 .global int_sub
+.type int_sub, @function
 .global int_xor
+.type int_xor, @function
 .global bool_not
+.type bool_not, @function
 .global int_ashr
+.type int_ashr, @function
 .global int_div2
+.type int_div2, @function
 .global int_div3
+.type int_div3, @function
 .global int_less
+.type int_less, @function
 .global int_mod2
+.type int_mod2, @function
 .global int_mod3
+.type int_mod3, @function
 .global int_sub2
+.type int_sub2, @function
 .global bool_not2
+.type bool_not2, @function
 .global int_above
+.type int_above, @function
 .global int_ashr2
+.type int_ashr2, @function
 .global int_below
+.type int_below, @function
 .global int_less2
+.type int_less2, @function
 .global truct1bit
+.type truct1bit, @function
 .global int_above2
+.type int_above2, @function
 .global int_below2
+.type int_below2, @function
 .global int_equals
+.type int_equals, @function
 .global truct1bit2
+.type truct1bit2, @function
 .global int_equals2
+.type int_equals2, @function
 .global int_equals3
+.type int_equals3, @function
 .global int_greater
+.type int_greater, @function
 .global int_less_or_equals2
+.type int_less_or_equals2, @function
 .global int_greater_or_equals2
+.type int_greater_or_equals2, @function
 .global sign_extend16
+.type sign_extend16, @function
 .global sign_extend32
+.type sign_extend32, @function
 .global int_greater2
+.type int_greater2, @function
 .global sign_extend8
+.type sign_extend8, @function
 .global zero_extend8
+.type zero_extend8, @function
 .global int_below_or_equals
+.type int_below_or_equals, @function
 .global int_less_or_equals
+.type int_less_or_equals, @function
 .global int_greater_or_equals
+.type int_greater_or_equals, @function
 .global zero_extend16
+.type zero_extend16, @function
 .global zero_extend32
+.type zero_extend32, @function
 .global int_above_or_equals
+.type int_above_or_equals, @function
 .global int_below_or_equals2
+.type int_below_or_equals2, @function
 .global int_above_or_equals2
+.type int_above_or_equals2, @function
 .extern __kefirrt_opt_amd64_sysv_vararg_save
 .extern __kefirrt_opt_load_int_vararg
 .extern __kefirrt_opt_load_sse_vararg

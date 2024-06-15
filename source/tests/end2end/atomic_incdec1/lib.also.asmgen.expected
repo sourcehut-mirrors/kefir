@@ -10,21 +10,37 @@
 .extern i64
 .extern ptr
 .global predec_i8
+.type predec_i8, @function
 .global predec_ld
+.type predec_ld, @function
 .global preinc_i8
+.type preinc_i8, @function
 .global preinc_ld
+.type preinc_ld, @function
 .global predec_f32
+.type predec_f32, @function
 .global predec_f64
+.type predec_f64, @function
 .global predec_i16
+.type predec_i16, @function
 .global predec_i32
+.type predec_i32, @function
 .global predec_i64
+.type predec_i64, @function
 .global predec_ptr
+.type predec_ptr, @function
 .global preinc_f32
+.type preinc_f32, @function
 .global preinc_f64
+.type preinc_f64, @function
 .global preinc_i16
+.type preinc_i16, @function
 .global preinc_i32
+.type preinc_i32, @function
 .global preinc_i64
+.type preinc_i64, @function
 .global preinc_ptr
+.type preinc_ptr, @function
 .extern __kefirrt_opt_amd64_sysv_vararg_save
 .extern __kefirrt_opt_load_int_vararg
 .extern __kefirrt_opt_load_sse_vararg

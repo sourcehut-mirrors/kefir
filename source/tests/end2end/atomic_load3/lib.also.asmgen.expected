@@ -2,14 +2,23 @@
 .section .note.GNU-stack,"",%progbits
 
 .global get_a1
+.type get_a1, @function
 .global get_i8
+.type get_i8, @function
 .global get_f32
+.type get_f32, @function
 .global get_f64
+.type get_f64, @function
 .global get_i16
+.type get_i16, @function
 .global get_i32
+.type get_i32, @function
 .global get_i64
+.type get_i64, @function
 .global get_arr1_el
+.type get_arr1_el, @function
 .global get_arr2_el
+.type get_arr2_el, @function
 .extern __kefirrt_opt_amd64_sysv_vararg_save
 .extern __kefirrt_opt_load_int_vararg
 .extern __kefirrt_opt_load_sse_vararg

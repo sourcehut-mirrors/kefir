@@ -2,13 +2,21 @@
 .section .note.GNU-stack,"",%progbits
 
 .global add_f32
+.type add_f32, @function
 .global add_f64
+.type add_f64, @function
 .global divide_f32
+.type divide_f32, @function
 .global divide_f64
+.type divide_f64, @function
 .global multiply_f32
+.type multiply_f32, @function
 .global multiply_f64
+.type multiply_f64, @function
 .global subtract_f32
+.type subtract_f32, @function
 .global subtract_f64
+.type subtract_f64, @function
 .extern __kefirrt_opt_amd64_sysv_vararg_save
 .extern __kefirrt_opt_load_int_vararg
 .extern __kefirrt_opt_load_sse_vararg

@@ -2,12 +2,19 @@
 .section .note.GNU-stack,"",%progbits
 
 .global store_b
+.type store_b, @function
 .global store_u8
+.type store_u8, @function
 .global store_f32
+.type store_f32, @function
 .global store_f64
+.type store_f64, @function
 .global store_u16
+.type store_u16, @function
 .global store_u32
+.type store_u32, @function
 .global store_u64
+.type store_u64, @function
 .extern __kefirrt_opt_amd64_sysv_vararg_save
 .extern __kefirrt_opt_load_int_vararg
 .extern __kefirrt_opt_load_sse_vararg

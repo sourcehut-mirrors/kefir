@@ -39,22 +39,58 @@ static kefir_result_t translate_module_identifiers(const struct kefir_ir_module 
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_ALIAS(&codegen->xasmgen, symbol, identifier->alias));
         }
 
+        kefir_amd64_xasmgen_type_attribute_t type = KEFIR_AMD64_XASMGEN_TYPE_FUNCTION;
+        kefir_amd64_xasmgen_visibility_attribute_t visibility = KEFIR_AMD64_XASMGEN_VISIBILITY_DEFAULT;
+        switch (identifier->type) {
+            case KEFIR_IR_IDENTIFIER_GLOBAL_DATA:
+            case KEFIR_IR_IDENTIFIER_THREAD_LOCAL_DATA:
+                type = KEFIR_AMD64_XASMGEN_TYPE_DATA;
+                break;
+
+            case KEFIR_IR_IDENTIFIER_FUNCTION:
+                // Intentionally left blank
+                break;
+        }
+
+        switch (identifier->visibility) {
+            case KEFIR_IR_IDENTIFIER_VISIBILITY_DEFAULT:
+                // Intentionally left blank
+                break;
+
+            case KEFIR_IR_IDENTIFIER_VISIBILITY_HIDDEN:
+                visibility = KEFIR_AMD64_XASMGEN_VISIBILITY_HIDDEN;
+                break;
+
+            case KEFIR_IR_IDENTIFIER_VISIBILITY_INTERNAL:
+                visibility = KEFIR_AMD64_XASMGEN_VISIBILITY_INTERNAL;
+                break;
+
+            case KEFIR_IR_IDENTIFIER_VISIBILITY_PROTECTED:
+                visibility = KEFIR_AMD64_XASMGEN_VISIBILITY_PROTECTED;
+                break;
+        }
+
         switch (identifier->scope) {
             case KEFIR_IR_IDENTIFIER_SCOPE_EXPORT:
+
                 if (!codegen->config->emulated_tls || identifier->type != KEFIR_IR_IDENTIFIER_THREAD_LOCAL_DATA) {
-                    REQUIRE_OK(KEFIR_AMD64_XASMGEN_GLOBAL(&codegen->xasmgen, "%s", symbol));
+                    REQUIRE_OK(KEFIR_AMD64_XASMGEN_GLOBAL(&codegen->xasmgen, type, visibility, "%s", symbol));
                 } else {
-                    REQUIRE_OK(KEFIR_AMD64_XASMGEN_GLOBAL(&codegen->xasmgen, KEFIR_AMD64_EMUTLS_V, symbol));
-                    REQUIRE_OK(KEFIR_AMD64_XASMGEN_GLOBAL(&codegen->xasmgen, KEFIR_AMD64_EMUTLS_T, symbol));
+                    REQUIRE_OK(
+                        KEFIR_AMD64_XASMGEN_GLOBAL(&codegen->xasmgen, type, visibility, KEFIR_AMD64_EMUTLS_V, symbol));
+                    REQUIRE_OK(
+                        KEFIR_AMD64_XASMGEN_GLOBAL(&codegen->xasmgen, type, visibility, KEFIR_AMD64_EMUTLS_T, symbol));
                 }
                 break;
 
             case KEFIR_IR_IDENTIFIER_SCOPE_EXPORT_WEAK:
                 if (!codegen->config->emulated_tls || identifier->type != KEFIR_IR_IDENTIFIER_THREAD_LOCAL_DATA) {
-                    REQUIRE_OK(KEFIR_AMD64_XASMGEN_WEAK(&codegen->xasmgen, "%s", symbol));
+                    REQUIRE_OK(KEFIR_AMD64_XASMGEN_WEAK(&codegen->xasmgen, type, visibility, "%s", symbol));
                 } else {
-                    REQUIRE_OK(KEFIR_AMD64_XASMGEN_WEAK(&codegen->xasmgen, KEFIR_AMD64_EMUTLS_V, symbol));
-                    REQUIRE_OK(KEFIR_AMD64_XASMGEN_WEAK(&codegen->xasmgen, KEFIR_AMD64_EMUTLS_T, symbol));
+                    REQUIRE_OK(
+                        KEFIR_AMD64_XASMGEN_WEAK(&codegen->xasmgen, type, visibility, KEFIR_AMD64_EMUTLS_V, symbol));
+                    REQUIRE_OK(
+                        KEFIR_AMD64_XASMGEN_WEAK(&codegen->xasmgen, type, visibility, KEFIR_AMD64_EMUTLS_T, symbol));
                 }
                 break;
 
@@ -69,27 +105,6 @@ static kefir_result_t translate_module_identifiers(const struct kefir_ir_module 
             case KEFIR_IR_IDENTIFIER_SCOPE_LOCAL:
                 // Intentionally left blank
                 break;
-        }
-
-        if (identifier->scope == KEFIR_IR_IDENTIFIER_SCOPE_EXPORT ||
-            identifier->scope == KEFIR_IR_IDENTIFIER_SCOPE_EXPORT_WEAK) {
-            switch (identifier->visibility) {
-                case KEFIR_IR_IDENTIFIER_VISIBILITY_DEFAULT:
-                    // Intentionally left blank
-                    break;
-
-                case KEFIR_IR_IDENTIFIER_VISIBILITY_HIDDEN:
-                    KEFIR_AMD64_XASMGEN_HIDDEN(&codegen->xasmgen, "%s", symbol);
-                    break;
-
-                case KEFIR_IR_IDENTIFIER_VISIBILITY_INTERNAL:
-                    KEFIR_AMD64_XASMGEN_INTERNAL(&codegen->xasmgen, "%s", symbol);
-                    break;
-
-                case KEFIR_IR_IDENTIFIER_VISIBILITY_PROTECTED:
-                    KEFIR_AMD64_XASMGEN_PROTECTED(&codegen->xasmgen, "%s", symbol);
-                    break;
-            }
         }
     }
 

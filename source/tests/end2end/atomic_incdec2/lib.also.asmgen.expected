@@ -10,21 +10,37 @@
 .extern i64
 .extern ptr
 .global postdec_i8
+.type postdec_i8, @function
 .global postdec_ld
+.type postdec_ld, @function
 .global postinc_i8
+.type postinc_i8, @function
 .global postinc_ld
+.type postinc_ld, @function
 .global postdec_f32
+.type postdec_f32, @function
 .global postdec_f64
+.type postdec_f64, @function
 .global postdec_i16
+.type postdec_i16, @function
 .global postdec_i32
+.type postdec_i32, @function
 .global postdec_i64
+.type postdec_i64, @function
 .global postdec_ptr
+.type postdec_ptr, @function
 .global postinc_f32
+.type postinc_f32, @function
 .global postinc_f64
+.type postinc_f64, @function
 .global postinc_i16
+.type postinc_i16, @function
 .global postinc_i32
+.type postinc_i32, @function
 .global postinc_i64
+.type postinc_i64, @function
 .global postinc_ptr
+.type postinc_ptr, @function
 .extern __kefirrt_opt_amd64_sysv_vararg_save
 .extern __kefirrt_opt_load_int_vararg
 .extern __kefirrt_opt_load_sse_vararg

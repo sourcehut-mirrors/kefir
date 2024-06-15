@@ -2,13 +2,21 @@
 .section .note.GNU-stack,"",%progbits
 
 .global below_or_equals
+.type below_or_equals, @function
 .global above_or_equals
+.type above_or_equals, @function
 .global below_or_equals2
+.type below_or_equals2, @function
 .global above_or_equals2
+.type above_or_equals2, @function
 .global greater_or_equals2
+.type greater_or_equals2, @function
 .global less_or_equals
+.type less_or_equals, @function
 .global greater_or_equals
+.type greater_or_equals, @function
 .global less_or_equals2
+.type less_or_equals2, @function
 .extern __kefirrt_opt_amd64_sysv_vararg_save
 .extern __kefirrt_opt_load_int_vararg
 .extern __kefirrt_opt_load_sse_vararg

@@ -2,23 +2,41 @@
 .section .note.GNU-stack,"",%progbits
 
 .global str1_a
+.type str1_a, @function
 .global str1_b
+.type str1_b, @function
 .global str1_c
+.type str1_c, @function
 .global ld_load
+.type ld_load, @function
 .global f32_load
+.type f32_load, @function
 .global f64_load
+.type f64_load, @function
 .global ld_store
+.type ld_store, @function
 .global f32_store
+.type f32_store, @function
 .global f64_store
+.type f64_store, @function
 .global str1_set_a
+.type str1_set_a, @function
 .global str1_set_b
+.type str1_set_b, @function
 .global str1_set_c
+.type str1_set_c, @function
 .global ld_load_index
+.type ld_load_index, @function
 .global f32_load_index
+.type f32_load_index, @function
 .global ld_store_index
+.type ld_store_index, @function
 .global f32_store_index
+.type f32_store_index, @function
 .global f64_load_index
+.type f64_load_index, @function
 .global f64_store_index
+.type f64_store_index, @function
 .extern __kefirrt_opt_amd64_sysv_vararg_save
 .extern __kefirrt_opt_load_int_vararg
 .extern __kefirrt_opt_load_sse_vararg

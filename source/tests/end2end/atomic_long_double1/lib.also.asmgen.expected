@@ -3,7 +3,9 @@
 
 .extern ld1
 .global get_ld1
+.type get_ld1, @function
 .global set_ld1
+.type set_ld1, @function
 .extern __kefirrt_opt_amd64_sysv_vararg_save
 .extern __kefirrt_opt_load_int_vararg
 .extern __kefirrt_opt_load_sse_vararg

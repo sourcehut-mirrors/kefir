@@ -2,8 +2,11 @@
 .section .note.GNU-stack,"",%progbits
 
 .global int_sar_const
+.type int_sar_const, @function
 .global int_shl_const
+.type int_shl_const, @function
 .global int_shr_const
+.type int_shr_const, @function
 .extern __kefirrt_opt_amd64_sysv_vararg_save
 .extern __kefirrt_opt_load_int_vararg
 .extern __kefirrt_opt_load_sse_vararg

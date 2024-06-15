@@ -2,59 +2,113 @@
 .section .note.GNU-stack,"",%progbits
 
 .global add_i8
+.type add_i8, @function
 .global add_ld
+.type add_ld, @function
 .global ior_i8
+.type ior_i8, @function
 .global shl_i8
+.type shl_i8, @function
 .global shr_i8
+.type shr_i8, @function
 .global add_f32
+.type add_f32, @function
 .global add_f64
+.type add_f64, @function
 .global add_i16
+.type add_i16, @function
 .global add_i32
+.type add_i32, @function
 .global add_i64
+.type add_i64, @function
 .global add_ptr
+.type add_ptr, @function
 .global iand_i8
+.type iand_i8, @function
 .global ior_i16
+.type ior_i16, @function
 .global ior_i32
+.type ior_i32, @function
 .global ior_i64
+.type ior_i64, @function
 .global ixor_i8
+.type ixor_i8, @function
 .global shl_i16
+.type shl_i16, @function
 .global shl_i32
+.type shl_i32, @function
 .global shl_i64
+.type shl_i64, @function
 .global shr_i16
+.type shr_i16, @function
 .global shr_i32
+.type shr_i32, @function
 .global shr_i64
+.type shr_i64, @function
 .global iand_i16
+.type iand_i16, @function
 .global iand_i32
+.type iand_i32, @function
 .global iand_i64
+.type iand_i64, @function
 .global ixor_i16
+.type ixor_i16, @function
 .global ixor_i32
+.type ixor_i32, @function
 .global ixor_i64
+.type ixor_i64, @function
 .global divide_i8
+.type divide_i8, @function
 .global divide_ld
+.type divide_ld, @function
 .global modulo_i8
+.type modulo_i8, @function
 .global divide_f32
+.type divide_f32, @function
 .global divide_f64
+.type divide_f64, @function
 .global divide_i16
+.type divide_i16, @function
 .global divide_i32
+.type divide_i32, @function
 .global divide_i64
+.type divide_i64, @function
 .global modulo_i16
+.type modulo_i16, @function
 .global modulo_i32
+.type modulo_i32, @function
 .global modulo_i64
+.type modulo_i64, @function
 .global multiply_i8
+.type multiply_i8, @function
 .global multiply_ld
+.type multiply_ld, @function
 .global subtract_i8
+.type subtract_i8, @function
 .global subtract_ld
+.type subtract_ld, @function
 .global multiply_f32
+.type multiply_f32, @function
 .global multiply_f64
+.type multiply_f64, @function
 .global multiply_i16
+.type multiply_i16, @function
 .global multiply_i32
+.type multiply_i32, @function
 .global multiply_i64
+.type multiply_i64, @function
 .global subtract_f32
+.type subtract_f32, @function
 .global subtract_f64
+.type subtract_f64, @function
 .global subtract_i16
+.type subtract_i16, @function
 .global subtract_i32
+.type subtract_i32, @function
 .global subtract_i64
+.type subtract_i64, @function
 .global subtract_ptr
+.type subtract_ptr, @function
 .extern __kefirrt_opt_amd64_sysv_vararg_save
 .extern __kefirrt_opt_load_int_vararg
 .extern __kefirrt_opt_load_sse_vararg

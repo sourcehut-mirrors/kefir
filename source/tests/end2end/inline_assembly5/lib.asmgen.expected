@@ -2,13 +2,21 @@
 .section .note.GNU-stack,"",%progbits
 
 .global set8
+.type set8, @function
 .global set16
+.type set16, @function
 .global set32
+.type set32, @function
 .global set64
+.type set64, @function
 .global clear8
+.type clear8, @function
 .global clear16
+.type clear16, @function
 .global clear32
+.type clear32, @function
 .global clear64
+.type clear64, @function
 .extern __kefirrt_opt_amd64_sysv_vararg_save
 .extern __kefirrt_opt_load_int_vararg
 .extern __kefirrt_opt_load_sse_vararg

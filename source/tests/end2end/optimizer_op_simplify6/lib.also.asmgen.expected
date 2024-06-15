@@ -2,17 +2,29 @@
 .section .note.GNU-stack,"",%progbits
 
 .global int_or
+.type int_or, @function
 .global int_add
+.type int_add, @function
 .global int_and
+.type int_and, @function
 .global int_mul
+.type int_mul, @function
 .global int_sub
+.type int_sub, @function
 .global int_xor
+.type int_xor, @function
 .global uint_or
+.type uint_or, @function
 .global uint_add
+.type uint_add, @function
 .global uint_and
+.type uint_and, @function
 .global uint_mul
+.type uint_mul, @function
 .global uint_sub
+.type uint_sub, @function
 .global uint_xor
+.type uint_xor, @function
 .extern __kefirrt_opt_amd64_sysv_vararg_save
 .extern __kefirrt_opt_load_int_vararg
 .extern __kefirrt_opt_load_sse_vararg

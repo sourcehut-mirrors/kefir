@@ -2,18 +2,26 @@
 .section .note.GNU-stack,"",%progbits
 
 .global w
+.type w, @object
 .protected w
 .global x
+.type x, @object
 .global y
+.type y, @object
 .hidden y
 .global z
+.type z, @object
 .internal z
 .global getw
+.type getw, @function
 .protected getw
 .global getx
+.type getx, @function
 .global gety
+.type gety, @function
 .hidden gety
 .global getz
+.type getz, @function
 .internal getz
 .extern __kefirrt_opt_amd64_sysv_vararg_save
 .extern __kefirrt_opt_load_int_vararg

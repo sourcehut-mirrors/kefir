@@ -2,9 +2,13 @@
 .section .note.GNU-stack,"",%progbits
 
 .global dnot
+.type dnot, @function
 .global dnotd
+.type dnotd, @function
 .global dnotf
+.type dnotf, @function
 .global dnotld
+.type dnotld, @function
 .extern __kefirrt_opt_amd64_sysv_vararg_save
 .extern __kefirrt_opt_load_int_vararg
 .extern __kefirrt_opt_load_sse_vararg

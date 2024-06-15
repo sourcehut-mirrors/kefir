@@ -2,133 +2,261 @@
 .section .note.GNU-stack,"",%progbits
 
 .global generate_buf_0
+.type generate_buf_0, @function
 .global generate_buf_1
+.type generate_buf_1, @function
 .global generate_buf_2
+.type generate_buf_2, @function
 .global generate_buf_3
+.type generate_buf_3, @function
 .global generate_buf_4
+.type generate_buf_4, @function
 .global generate_buf_5
+.type generate_buf_5, @function
 .global generate_buf_6
+.type generate_buf_6, @function
 .global generate_buf_7
+.type generate_buf_7, @function
 .global generate_buf_8
+.type generate_buf_8, @function
 .global generate_buf_9
+.type generate_buf_9, @function
 .global generate_buf_10
+.type generate_buf_10, @function
 .global generate_buf_11
+.type generate_buf_11, @function
 .global generate_buf_12
+.type generate_buf_12, @function
 .global generate_buf_13
+.type generate_buf_13, @function
 .global generate_buf_14
+.type generate_buf_14, @function
 .global generate_buf_15
+.type generate_buf_15, @function
 .global generate_buf_16
+.type generate_buf_16, @function
 .global generate_buf_17
+.type generate_buf_17, @function
 .global generate_buf_18
+.type generate_buf_18, @function
 .global generate_buf_19
+.type generate_buf_19, @function
 .global generate_buf_20
+.type generate_buf_20, @function
 .global generate_buf_21
+.type generate_buf_21, @function
 .global generate_buf_22
+.type generate_buf_22, @function
 .global generate_buf_23
+.type generate_buf_23, @function
 .global generate_buf_24
+.type generate_buf_24, @function
 .global generate_buf_25
+.type generate_buf_25, @function
 .global generate_buf_26
+.type generate_buf_26, @function
 .global generate_buf_27
+.type generate_buf_27, @function
 .global generate_buf_28
+.type generate_buf_28, @function
 .global generate_buf_29
+.type generate_buf_29, @function
 .global generate_buf_30
+.type generate_buf_30, @function
 .global generate_buf_31
+.type generate_buf_31, @function
 .global generate_buf_32
+.type generate_buf_32, @function
 .global generate_buf_33
+.type generate_buf_33, @function
 .global generate_buf_34
+.type generate_buf_34, @function
 .global generate_buf_35
+.type generate_buf_35, @function
 .global generate_buf_36
+.type generate_buf_36, @function
 .global generate_buf_37
+.type generate_buf_37, @function
 .global generate_buf_38
+.type generate_buf_38, @function
 .global generate_buf_39
+.type generate_buf_39, @function
 .global generate_buf_40
+.type generate_buf_40, @function
 .global generate_buf_41
+.type generate_buf_41, @function
 .global generate_buf_42
+.type generate_buf_42, @function
 .global generate_buf_43
+.type generate_buf_43, @function
 .global generate_buf_44
+.type generate_buf_44, @function
 .global generate_buf_45
+.type generate_buf_45, @function
 .global generate_buf_46
+.type generate_buf_46, @function
 .global generate_buf_47
+.type generate_buf_47, @function
 .global generate_buf_48
+.type generate_buf_48, @function
 .global generate_buf_49
+.type generate_buf_49, @function
 .global generate_buf_50
+.type generate_buf_50, @function
 .global generate_buf_51
+.type generate_buf_51, @function
 .global generate_buf_52
+.type generate_buf_52, @function
 .global generate_buf_53
+.type generate_buf_53, @function
 .global generate_buf_54
+.type generate_buf_54, @function
 .global generate_buf_55
+.type generate_buf_55, @function
 .global generate_buf_56
+.type generate_buf_56, @function
 .global generate_buf_57
+.type generate_buf_57, @function
 .global generate_buf_58
+.type generate_buf_58, @function
 .global generate_buf_59
+.type generate_buf_59, @function
 .global generate_buf_60
+.type generate_buf_60, @function
 .global generate_buf_61
+.type generate_buf_61, @function
 .global generate_buf_62
+.type generate_buf_62, @function
 .global generate_buf_63
+.type generate_buf_63, @function
 .global generate_buf_64
+.type generate_buf_64, @function
 .global generate_buf_65
+.type generate_buf_65, @function
 .global generate_buf_66
+.type generate_buf_66, @function
 .global generate_buf_67
+.type generate_buf_67, @function
 .global generate_buf_68
+.type generate_buf_68, @function
 .global generate_buf_69
+.type generate_buf_69, @function
 .global generate_buf_70
+.type generate_buf_70, @function
 .global generate_buf_71
+.type generate_buf_71, @function
 .global generate_buf_72
+.type generate_buf_72, @function
 .global generate_buf_73
+.type generate_buf_73, @function
 .global generate_buf_74
+.type generate_buf_74, @function
 .global generate_buf_75
+.type generate_buf_75, @function
 .global generate_buf_76
+.type generate_buf_76, @function
 .global generate_buf_77
+.type generate_buf_77, @function
 .global generate_buf_78
+.type generate_buf_78, @function
 .global generate_buf_79
+.type generate_buf_79, @function
 .global generate_buf_80
+.type generate_buf_80, @function
 .global generate_buf_81
+.type generate_buf_81, @function
 .global generate_buf_82
+.type generate_buf_82, @function
 .global generate_buf_83
+.type generate_buf_83, @function
 .global generate_buf_84
+.type generate_buf_84, @function
 .global generate_buf_85
+.type generate_buf_85, @function
 .global generate_buf_86
+.type generate_buf_86, @function
 .global generate_buf_87
+.type generate_buf_87, @function
 .global generate_buf_88
+.type generate_buf_88, @function
 .global generate_buf_89
+.type generate_buf_89, @function
 .global generate_buf_90
+.type generate_buf_90, @function
 .global generate_buf_91
+.type generate_buf_91, @function
 .global generate_buf_92
+.type generate_buf_92, @function
 .global generate_buf_93
+.type generate_buf_93, @function
 .global generate_buf_94
+.type generate_buf_94, @function
 .global generate_buf_95
+.type generate_buf_95, @function
 .global generate_buf_96
+.type generate_buf_96, @function
 .global generate_buf_97
+.type generate_buf_97, @function
 .global generate_buf_98
+.type generate_buf_98, @function
 .global generate_buf_99
+.type generate_buf_99, @function
 .global generate_buf_100
+.type generate_buf_100, @function
 .global generate_buf_101
+.type generate_buf_101, @function
 .global generate_buf_102
+.type generate_buf_102, @function
 .global generate_buf_103
+.type generate_buf_103, @function
 .global generate_buf_104
+.type generate_buf_104, @function
 .global generate_buf_105
+.type generate_buf_105, @function
 .global generate_buf_106
+.type generate_buf_106, @function
 .global generate_buf_107
+.type generate_buf_107, @function
 .global generate_buf_108
+.type generate_buf_108, @function
 .global generate_buf_109
+.type generate_buf_109, @function
 .global generate_buf_110
+.type generate_buf_110, @function
 .global generate_buf_111
+.type generate_buf_111, @function
 .global generate_buf_112
+.type generate_buf_112, @function
 .global generate_buf_113
+.type generate_buf_113, @function
 .global generate_buf_114
+.type generate_buf_114, @function
 .global generate_buf_115
+.type generate_buf_115, @function
 .global generate_buf_116
+.type generate_buf_116, @function
 .global generate_buf_117
+.type generate_buf_117, @function
 .global generate_buf_118
+.type generate_buf_118, @function
 .global generate_buf_119
+.type generate_buf_119, @function
 .global generate_buf_120
+.type generate_buf_120, @function
 .global generate_buf_121
+.type generate_buf_121, @function
 .global generate_buf_122
+.type generate_buf_122, @function
 .global generate_buf_123
+.type generate_buf_123, @function
 .global generate_buf_124
+.type generate_buf_124, @function
 .global generate_buf_125
+.type generate_buf_125, @function
 .global generate_buf_126
+.type generate_buf_126, @function
 .global generate_buf_127
+.type generate_buf_127, @function
 .extern __kefirrt_opt_amd64_sysv_vararg_save
 .extern __kefirrt_opt_load_int_vararg
 .extern __kefirrt_opt_load_sse_vararg

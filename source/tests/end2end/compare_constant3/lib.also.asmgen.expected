@@ -2,9 +2,13 @@
 .section .note.GNU-stack,"",%progbits
 
 .global compare1
+.type compare1, @function
 .global compare2
+.type compare2, @function
 .global compare3
+.type compare3, @function
 .global compare4
+.type compare4, @function
 .extern __kefirrt_opt_amd64_sysv_vararg_save
 .extern __kefirrt_opt_load_int_vararg
 .extern __kefirrt_opt_load_sse_vararg

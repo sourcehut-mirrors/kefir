@@ -2,14 +2,23 @@
 .section .note.GNU-stack,"",%progbits
 
 .global int_equals_const
+.type int_equals_const, @function
 .global int_less_or_equal_const
+.type int_less_or_equal_const, @function
 .global int_less_const
+.type int_less_const, @function
 .global int_below_or_equal_const
+.type int_below_or_equal_const, @function
 .global int_greater_or_equal_const
+.type int_greater_or_equal_const, @function
 .global int_greater_const
+.type int_greater_const, @function
 .global int_above_const
+.type int_above_const, @function
 .global int_below_const
+.type int_below_const, @function
 .global int_above_or_equal_const
+.type int_above_or_equal_const, @function
 .extern __kefirrt_opt_amd64_sysv_vararg_save
 .extern __kefirrt_opt_load_int_vararg
 .extern __kefirrt_opt_load_sse_vararg

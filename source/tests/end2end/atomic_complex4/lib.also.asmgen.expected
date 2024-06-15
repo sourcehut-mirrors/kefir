@@ -2,13 +2,21 @@
 .section .note.GNU-stack,"",%progbits
 
 .global f32_predec
+.type f32_predec, @function
 .global f32_preinc
+.type f32_preinc, @function
 .global f64_predec
+.type f64_predec, @function
 .global f64_preinc
+.type f64_preinc, @function
 .global f32_postdec
+.type f32_postdec, @function
 .global f32_postinc
+.type f32_postinc, @function
 .global f64_postdec
+.type f64_postdec, @function
 .global f64_postinc
+.type f64_postinc, @function
 .extern __kefirrt_opt_amd64_sysv_vararg_save
 .extern __kefirrt_opt_load_int_vararg
 .extern __kefirrt_opt_load_sse_vararg

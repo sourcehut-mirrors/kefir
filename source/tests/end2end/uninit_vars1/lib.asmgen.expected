@@ -2,10 +2,15 @@
 .section .note.GNU-stack,"",%progbits
 
 .global get_global_uninit_static
+.type get_global_uninit_static, @function
 .global get_global_tlocal_uninit_static
+.type get_global_tlocal_uninit_static, @function
 .global get_local_tlocal_uninit_static
+.type get_local_tlocal_uninit_static, @function
 .global get_local_uninit_static
+.type get_local_uninit_static, @function
 .global GLOBAL_UNINIT_STATIC
+.type GLOBAL_UNINIT_STATIC, @object
 .extern __kefirrt_opt_amd64_sysv_vararg_save
 .extern __kefirrt_opt_load_int_vararg
 .extern __kefirrt_opt_load_sse_vararg

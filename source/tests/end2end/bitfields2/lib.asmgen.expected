@@ -3,21 +3,37 @@
 
 .extern s
 .global get_a
+.type get_a, @function
 .global get_b
+.type get_b, @function
 .global get_c
+.type get_c, @function
 .global get_d
+.type get_d, @function
 .global get_e
+.type get_e, @function
 .global get_f
+.type get_f, @function
 .global get_g
+.type get_g, @function
 .global get_h
+.type get_h, @function
 .global set_a
+.type set_a, @function
 .global set_b
+.type set_b, @function
 .global set_c
+.type set_c, @function
 .global set_d
+.type set_d, @function
 .global set_e
+.type set_e, @function
 .global set_f
+.type set_f, @function
 .global set_g
+.type set_g, @function
 .global set_h
+.type set_h, @function
 .extern __kefirrt_opt_amd64_sysv_vararg_save
 .extern __kefirrt_opt_load_int_vararg
 .extern __kefirrt_opt_load_sse_vararg

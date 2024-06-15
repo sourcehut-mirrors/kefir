@@ -2,16 +2,27 @@
 .section .note.GNU-stack,"",%progbits
 
 .global inc
+.type inc, @function
 .global neg
+.type neg, @function
 .global f32cld
+.type f32cld, @function
 .global f64cld
+.type f64cld, @function
 .global intcld
+.type intcld, @function
 .global ldcf32
+.type ldcf32, @function
 .global ldcf64
+.type ldcf64, @function
 .global ldcint
+.type ldcint, @function
 .global ldcuint
+.type ldcuint, @function
 .global uintcld
+.type uintcld, @function
 .global imp_cast
+.type imp_cast, @function
 .extern __kefirrt_opt_amd64_sysv_vararg_save
 .extern __kefirrt_opt_load_int_vararg
 .extern __kefirrt_opt_load_sse_vararg

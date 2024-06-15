@@ -2,19 +2,33 @@
 .section .note.GNU-stack,"",%progbits
 
 .global b
+.type b, @object
 .global u8
+.type u8, @object
 .global f32
+.type f32, @object
 .global f64
+.type f64, @object
 .global u16
+.type u16, @object
 .global u32
+.type u32, @object
 .global u64
+.type u64, @object
 .global set_b
+.type set_b, @function
 .global set_u8
+.type set_u8, @function
 .global set_f32
+.type set_f32, @function
 .global set_f64
+.type set_f64, @function
 .global set_u16
+.type set_u16, @function
 .global set_u32
+.type set_u32, @function
 .global set_u64
+.type set_u64, @function
 .extern __kefirrt_opt_amd64_sysv_vararg_save
 .extern __kefirrt_opt_load_int_vararg
 .extern __kefirrt_opt_load_sse_vararg

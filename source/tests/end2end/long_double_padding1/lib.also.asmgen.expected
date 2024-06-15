@@ -2,9 +2,13 @@
 .section .note.GNU-stack,"",%progbits
 
 .global ld1
+.type ld1, @object
 .global cld1
+.type cld1, @object
 .global add_ld1
+.type add_ld1, @function
 .global add_cld1
+.type add_cld1, @function
 .extern __atomic_load
 .extern __atomic_compare_exchange
 .extern __kefirrt_opt_amd64_sysv_vararg_save

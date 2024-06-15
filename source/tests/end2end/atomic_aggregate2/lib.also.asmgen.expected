@@ -2,7 +2,9 @@
 .section .note.GNU-stack,"",%progbits
 
 .global load_buffer
+.type load_buffer, @function
 .global store_buffer
+.type store_buffer, @function
 .extern __kefirrt_opt_amd64_sysv_vararg_save
 .extern __kefirrt_opt_load_int_vararg
 .extern __kefirrt_opt_load_sse_vararg

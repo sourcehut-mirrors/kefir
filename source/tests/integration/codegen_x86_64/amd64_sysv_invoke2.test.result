@@ -2,6 +2,7 @@
 .section .note.GNU-stack,"",%progbits
 
 .global func1
+.type func1, @object
 .extern func2
 .extern func3
 .extern __kefirrt_opt_amd64_sysv_vararg_save

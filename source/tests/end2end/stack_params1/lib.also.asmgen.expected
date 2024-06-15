@@ -2,6 +2,7 @@
 .section .note.GNU-stack,"",%progbits
 
 .global test1
+.type test1, @function
 .extern callback1
 .extern __kefirrt_opt_amd64_sysv_vararg_save
 .extern __kefirrt_opt_load_int_vararg

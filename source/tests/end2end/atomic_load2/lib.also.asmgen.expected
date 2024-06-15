@@ -2,12 +2,19 @@
 .section .note.GNU-stack,"",%progbits
 
 .global load_b
+.type load_b, @function
 .global load_u8
+.type load_u8, @function
 .global load_f32
+.type load_f32, @function
 .global load_f64
+.type load_f64, @function
 .global load_u16
+.type load_u16, @function
 .global load_u32
+.type load_u32, @function
 .global load_u64
+.type load_u64, @function
 .extern __kefirrt_opt_amd64_sysv_vararg_save
 .extern __kefirrt_opt_load_int_vararg
 .extern __kefirrt_opt_load_sse_vararg

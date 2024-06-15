@@ -2,9 +2,12 @@
 .section .note.GNU-stack,"",%progbits
 
 .global somefn
+.type somefn, @function
 .extern somevar
 .global assign_abs
+.type assign_abs, @function
 .global condition1
+.type condition1, @function
 .extern __kefirrt_opt_amd64_sysv_vararg_save
 .extern __kefirrt_opt_load_int_vararg
 .extern __kefirrt_opt_load_sse_vararg

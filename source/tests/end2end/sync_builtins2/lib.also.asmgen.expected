@@ -3,26 +3,46 @@
 
 .extern __atomic_load
 .global test_fetch_add_short
+.type test_fetch_add_short, @function
 .global test_fetch_and_short
+.type test_fetch_and_short, @function
 .global test_fetch_sub_short
+.type test_fetch_sub_short, @function
 .global test_fetch_xor_short
+.type test_fetch_xor_short, @function
 .global test_fetch_or_int
+.type test_fetch_or_int, @function
 .global test_fetch_add_char
+.type test_fetch_add_char, @function
 .global test_fetch_add_long
+.type test_fetch_add_long, @function
 .global test_fetch_and_char
+.type test_fetch_and_char, @function
 .global test_fetch_and_long
+.type test_fetch_and_long, @function
 .global test_fetch_or_short
+.type test_fetch_or_short, @function
 .global test_fetch_sub_char
+.type test_fetch_sub_char, @function
 .global test_fetch_sub_long
+.type test_fetch_sub_long, @function
 .global test_fetch_xor_char
+.type test_fetch_xor_char, @function
 .global test_fetch_xor_long
+.type test_fetch_xor_long, @function
 .extern __atomic_compare_exchange
 .global test_fetch_add_int
+.type test_fetch_add_int, @function
 .global test_fetch_and_int
+.type test_fetch_and_int, @function
 .global test_fetch_or_char
+.type test_fetch_or_char, @function
 .global test_fetch_or_long
+.type test_fetch_or_long, @function
 .global test_fetch_sub_int
+.type test_fetch_sub_int, @function
 .global test_fetch_xor_int
+.type test_fetch_xor_int, @function
 .extern __kefirrt_opt_amd64_sysv_vararg_save
 .extern __kefirrt_opt_load_int_vararg
 .extern __kefirrt_opt_load_sse_vararg

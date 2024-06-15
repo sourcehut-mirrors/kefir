@@ -2,9 +2,13 @@
 .section .note.GNU-stack,"",%progbits
 
 .global make_s1
+.type make_s1, @function
 .global cast_int
+.type cast_int, @function
 .global sum3_one
+.type sum3_one, @function
 .global unwrap_s1
+.type unwrap_s1, @function
 .extern __kefirrt_opt_amd64_sysv_vararg_save
 .extern __kefirrt_opt_load_int_vararg
 .extern __kefirrt_opt_load_sse_vararg

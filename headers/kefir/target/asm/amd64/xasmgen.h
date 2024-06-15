@@ -224,19 +224,30 @@ typedef enum kefir_amd64_xasmgen_section_attribute {
     KEFIR_AMD64_XASMGEN_SECTION_TLS = 1
 } kefir_amd64_xasmgen_section_attribute_t;
 
+typedef enum kefir_amd64_xasmgen_type_attribute {
+    KEFIR_AMD64_XASMGEN_TYPE_DATA,
+    KEFIR_AMD64_XASMGEN_TYPE_FUNCTION
+} kefir_amd64_xasmgen_type_attribute_t;
+
+typedef enum kefir_amd64_xasmgen_visibility_attribute {
+    KEFIR_AMD64_XASMGEN_VISIBILITY_DEFAULT,
+    KEFIR_AMD64_XASMGEN_VISIBILITY_HIDDEN,
+    KEFIR_AMD64_XASMGEN_VISIBILITY_INTERNAL,
+    KEFIR_AMD64_XASMGEN_VISIBILITY_PROTECTED
+} kefir_amd64_xasmgen_visibility_attribute_t;
+
 typedef struct kefir_amd64_xasmgen {
     kefir_result_t (*prologue)(struct kefir_amd64_xasmgen *);
     kefir_result_t (*close)(struct kefir_mem *, struct kefir_amd64_xasmgen *);
     kefir_result_t (*newline)(struct kefir_amd64_xasmgen *, unsigned int);
     kefir_result_t (*comment)(struct kefir_amd64_xasmgen *, const char *, ...);
     kefir_result_t (*label)(struct kefir_amd64_xasmgen *, const char *, ...);
-    kefir_result_t (*global)(struct kefir_amd64_xasmgen *, const char *, ...);
+    kefir_result_t (*global)(struct kefir_amd64_xasmgen *, kefir_amd64_xasmgen_type_attribute_t,
+                             kefir_amd64_xasmgen_visibility_attribute_t, const char *, ...);
     kefir_result_t (*external)(struct kefir_amd64_xasmgen *, const char *, ...);
     kefir_result_t (*alias)(struct kefir_amd64_xasmgen *, const char *, const char *);
-    kefir_result_t (*weak)(struct kefir_amd64_xasmgen *, const char *, ...);
-    kefir_result_t (*hidden)(struct kefir_amd64_xasmgen *, const char *, ...);
-    kefir_result_t (*internal)(struct kefir_amd64_xasmgen *, const char *, ...);
-    kefir_result_t (*protected)(struct kefir_amd64_xasmgen *, const char *, ...);
+    kefir_result_t (*weak)(struct kefir_amd64_xasmgen *, kefir_amd64_xasmgen_type_attribute_t,
+                           kefir_amd64_xasmgen_visibility_attribute_t, const char *, ...);
     kefir_result_t (*section)(struct kefir_amd64_xasmgen *, const char *, kefir_uint64_t);
     kefir_result_t (*align)(struct kefir_amd64_xasmgen *, kefir_size_t);
     kefir_result_t (*data)(struct kefir_amd64_xasmgen *, kefir_asm_amd64_xasmgen_data_type_t, kefir_size_t, ...);
@@ -318,13 +329,12 @@ const struct kefir_asm_amd64_xasmgen_operand *kefir_asm_amd64_xasmgen_operand_fp
 #define KEFIR_AMD64_XASMGEN_NEWLINE(_xasmgen, _lines) ((_xasmgen)->newline((_xasmgen), (_lines)))
 #define KEFIR_AMD64_XASMGEN_COMMENT(_xasmgen, _fmt, ...) ((_xasmgen)->comment((_xasmgen), (_fmt), __VA_ARGS__))
 #define KEFIR_AMD64_XASMGEN_LABEL(_xasmgen, _fmt, ...) ((_xasmgen)->label((_xasmgen), (_fmt), __VA_ARGS__))
-#define KEFIR_AMD64_XASMGEN_GLOBAL(_xasmgen, _fmt, ...) ((_xasmgen)->global((_xasmgen), (_fmt), __VA_ARGS__))
+#define KEFIR_AMD64_XASMGEN_GLOBAL(_xasmgen, _type, _visibility, _fmt, ...) \
+    ((_xasmgen)->global((_xasmgen), (_type), (_visibility), (_fmt), __VA_ARGS__))
 #define KEFIR_AMD64_XASMGEN_EXTERNAL(_xasmgen, _fmt, ...) ((_xasmgen)->external((_xasmgen), (_fmt), __VA_ARGS__))
 #define KEFIR_AMD64_XASMGEN_ALIAS(_xasmgen, _alias, _original) ((_xasmgen)->alias((_xasmgen), (_alias), (_original)))
-#define KEFIR_AMD64_XASMGEN_WEAK(_xasmgen, _fmt, ...) ((_xasmgen)->weak((_xasmgen), (_fmt), __VA_ARGS__))
-#define KEFIR_AMD64_XASMGEN_HIDDEN(_xasmgen, _fmt, ...) ((_xasmgen)->hidden((_xasmgen), (_fmt), __VA_ARGS__))
-#define KEFIR_AMD64_XASMGEN_INTERNAL(_xasmgen, _fmt, ...) ((_xasmgen)->internal((_xasmgen), (_fmt), __VA_ARGS__))
-#define KEFIR_AMD64_XASMGEN_PROTECTED(_xasmgen, _fmt, ...) ((_xasmgen)->protected((_xasmgen), (_fmt), __VA_ARGS__))
+#define KEFIR_AMD64_XASMGEN_WEAK(_xasmgen, _type, _visibility, _fmt, ...) \
+    ((_xasmgen)->weak((_xasmgen), (_type), (_visibility), (_fmt), __VA_ARGS__))
 #define KEFIR_AMD64_XASMGEN_SECTION(_xasmgen, _name, _attr) ((_xasmgen)->section((_xasmgen), (_name), (_attr)))
 #define KEFIR_AMD64_XASMGEN_ALIGN(_xasmgen, _arg) ((_xasmgen)->align((_xasmgen), (_arg)))
 #define KEFIR_AMD64_XASMGEN_DATA(_xasmgen, _type, _length, ...) \

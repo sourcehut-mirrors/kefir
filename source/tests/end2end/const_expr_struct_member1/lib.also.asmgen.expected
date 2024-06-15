@@ -2,13 +2,20 @@
 .section .note.GNU-stack,"",%progbits
 
 .global arr1_1
+.type arr1_1, @object
 .global arr1_2
+.type arr1_2, @object
 .global arr2_1
+.type arr2_1, @object
 .global arr2_2
+.type arr2_2, @object
 .global arr3_1
+.type arr3_1, @object
 .global arr3_2
+.type arr3_2, @object
 .extern structure1
 .global get_structure2
+.type get_structure2, @function
 .extern __kefirrt_opt_amd64_sysv_vararg_save
 .extern __kefirrt_opt_load_int_vararg
 .extern __kefirrt_opt_load_sse_vararg

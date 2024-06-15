@@ -2,13 +2,21 @@
 .section .note.GNU-stack,"",%progbits
 
 .global array1_1
+.type array1_1, @object
 .global union1_1
+.type union1_1, @object
 .global float32_1
+.type float32_1, @object
 .global float32_2
+.type float32_2, @object
 .global float64_1
+.type float64_1, @object
 .global float64_2
+.type float64_2, @object
 .global struct1_1
+.type struct1_1, @object
 .global pointer1_1
+.type pointer1_1, @object
 .extern __kefirrt_opt_amd64_sysv_vararg_save
 .extern __kefirrt_opt_load_int_vararg
 .extern __kefirrt_opt_load_sse_vararg

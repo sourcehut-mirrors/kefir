@@ -5,20 +5,35 @@
 .extern f32_1
 .extern f64_1
 .global add_ld
+.type add_ld, @function
 .global div_ld
+.type div_ld, @function
 .global mul_ld
+.type mul_ld, @function
 .global neg_ld
+.type neg_ld, @function
 .global sub_ld
+.type sub_ld, @function
 .global add_f32
+.type add_f32, @function
 .global add_f64
+.type add_f64, @function
 .global div_f32
+.type div_f32, @function
 .global div_f64
+.type div_f64, @function
 .global mul_f32
+.type mul_f32, @function
 .global mul_f64
+.type mul_f64, @function
 .global neg_f32
+.type neg_f32, @function
 .global neg_f64
+.type neg_f64, @function
 .global sub_f32
+.type sub_f32, @function
 .global sub_f64
+.type sub_f64, @function
 .extern __kefirrt_opt_amd64_sysv_vararg_save
 .extern __kefirrt_opt_load_int_vararg
 .extern __kefirrt_opt_load_sse_vararg

@@ -2,13 +2,21 @@
 .section .note.GNU-stack,"",%progbits
 
 .global test_sync_bool_compare_and_swap16
+.type test_sync_bool_compare_and_swap16, @function
 .global test_sync_bool_compare_and_swap32
+.type test_sync_bool_compare_and_swap32, @function
 .global test_sync_bool_compare_and_swap64
+.type test_sync_bool_compare_and_swap64, @function
 .global test_sync_bool_compare_and_swap8
+.type test_sync_bool_compare_and_swap8, @function
 .global test_sync_val_compare_and_swap8
+.type test_sync_val_compare_and_swap8, @function
 .global test_sync_val_compare_and_swap16
+.type test_sync_val_compare_and_swap16, @function
 .global test_sync_val_compare_and_swap32
+.type test_sync_val_compare_and_swap32, @function
 .global test_sync_val_compare_and_swap64
+.type test_sync_val_compare_and_swap64, @function
 .extern __atomic_compare_exchange
 .extern __kefirrt_opt_amd64_sysv_vararg_save
 .extern __kefirrt_opt_load_int_vararg

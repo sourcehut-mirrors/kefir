@@ -2,11 +2,16 @@
 .section .note.GNU-stack,"",%progbits
 
 .global clear
+.type clear, @function
 .global test_atomic_signal_fence
+.type test_atomic_signal_fence, @function
 .global test_atomic_thread_fence
+.type test_atomic_thread_fence, @function
 .global test_and_set
+.type test_and_set, @function
 .extern __kefir_atomic_seq_cst_test_and_set
 .global test_is_lock_free
+.type test_is_lock_free, @function
 .extern __atomic_is_lock_free
 .extern __kefir_atomic_seq_cst_clear
 .extern __kefir_atomic_seq_cst_fence
