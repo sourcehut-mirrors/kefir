@@ -27,6 +27,7 @@
 #include "kefir/core/util.h"
 #include "kefir/target/abi/amd64/type_layout.h"
 #include "kefir/test/codegen.h"
+#include "kefir/test/module_shim.h"
 
 kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_test_codegen codegen;
@@ -51,7 +52,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     kefir_id_t thrlocal1;
     REQUIRE(kefir_ir_module_symbol(mem, &module, "thrlocal1", &thrlocal1) != NULL, KEFIR_INTERNAL_ERROR);
-    REQUIRE_OK(kefir_ir_module_declare_external(mem, &module, "thrlocal1", KEFIR_IR_IDENTIFIER_THREAD_LOCAL));
+    REQUIRE_OK(kefir_ir_module_declare_external(mem, &module, "thrlocal1", KEFIR_IR_IDENTIFIER_THREAD_LOCAL_DATA));
 
     kefir_id_t func_params, func_returns;
     struct kefir_ir_type *fill_decl_params = kefir_ir_module_new_type(mem, &module, 1, &func_params),
@@ -63,7 +64,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE(fill_decl != NULL, KEFIR_INTERNAL_ERROR);
     struct kefir_ir_function *fill = kefir_ir_module_new_function(mem, &module, fill_decl, KEFIR_ID_NONE, 1024);
     REQUIRE(fill != NULL, KEFIR_INTERNAL_ERROR);
-    REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, fill_decl->name, KEFIR_IR_IDENTIFIER_GLOBAL));
+    REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, fill_decl->name, KEFIR_IR_IDENTIFIER_GLOBAL_DATA));
     kefir_irbuilder_type_append(mem, fill->declaration->params, KEFIR_IR_TYPE_LONG, 0, 0);
 
     struct kefir_abi_amd64_type_layout type_layout;

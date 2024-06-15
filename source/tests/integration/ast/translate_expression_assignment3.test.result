@@ -1,26 +1,34 @@
 {
-    "globals": [],
-    "externals": [
+    "identifiers": [
         {
-            "identifier": "int",
-            "type": "global"
+            "symbol": "int",
+            "type": "global_data",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "float",
-            "type": "global"
+            "symbol": "float",
+            "type": "global_data",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "double",
-            "type": "global"
+            "symbol": "double",
+            "type": "global_data",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "ullong",
-            "type": "global"
+            "symbol": "ullong",
+            "type": "global_data",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
         }
     ],
-    "aliases": [],
-    "weak": [],
-    "visibility": [],
     "types": [
         {
             "identifier": 0,

@@ -1,6 +1,9 @@
 .att_syntax
 .section .note.GNU-stack,"",%progbits
 
+.extern ld_1
+.extern f32_1
+.extern f64_1
 .global add_ld
 .global div_ld
 .global mul_ld
@@ -16,9 +19,6 @@
 .global neg_f64
 .global sub_f32
 .global sub_f64
-.extern ld_1
-.extern f32_1
-.extern f64_1
 .extern __kefirrt_opt_amd64_sysv_vararg_save
 .extern __kefirrt_opt_load_int_vararg
 .extern __kefirrt_opt_load_sse_vararg

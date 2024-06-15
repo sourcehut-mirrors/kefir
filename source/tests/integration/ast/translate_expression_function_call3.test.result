@@ -1,22 +1,27 @@
 {
-    "globals": [],
-    "externals": [
+    "identifiers": [
         {
-            "identifier": "sum",
-            "type": "global"
+            "symbol": "sum",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "sum2",
-            "type": "global"
+            "symbol": "sum2",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "sum3",
-            "type": "global"
+            "symbol": "sum3",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
         }
     ],
-    "aliases": [],
-    "weak": [],
-    "visibility": [],
     "types": [
         {
             "identifier": 0,

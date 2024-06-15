@@ -1,27 +1,34 @@
 {
-    "globals": [
+    "identifiers": [
         {
-            "identifier": "array1",
-            "type": "global"
+            "symbol": "array1",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "array2",
-            "type": "global"
+            "symbol": "array2",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "structure",
-            "type": "global"
-        }
-    ],
-    "externals": [
+            "symbol": "variable",
+            "type": "global_data",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
+        },
         {
-            "identifier": "variable",
-            "type": "global"
+            "symbol": "structure",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
         }
     ],
-    "aliases": [],
-    "weak": [],
-    "visibility": [],
     "types": [
         {
             "identifier": 0,

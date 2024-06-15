@@ -6,6 +6,7 @@ KEFIR_SYSTEM_TESTS_ALL_SOURCES = $(KEFIR_SYSTEM_TESTS_TEST_SOURCES)
 KEFIR_SYSTEM_TESTS_ALL_SOURCES += $(SOURCE_DIR)/tests/int_test.c
 KEFIR_SYSTEM_TESTS_ALL_SOURCES += $(SOURCE_DIR)/tests/util/util.c
 KEFIR_SYSTEM_TESTS_ALL_SOURCES += $(SOURCE_DIR)/tests/util/codegen.c
+KEFIR_SYSTEM_TESTS_ALL_SOURCES += $(SOURCE_DIR)/tests/util/module_shim.c
 KEFIR_SYSTEM_TESTS_COMPILE_DEPS := $(KEFIR_SYSTEM_TESTS_ALL_SOURCES:$(SOURCE_DIR)/%.c=$(KEFIR_BIN_DIR)/%.deps)
 KEFIR_SYSTEM_TESTS_DEPENDENCIES := $(KEFIR_SYSTEM_TESTS_ALL_SOURCES:$(SOURCE_DIR)/%.c=$(KEFIR_BIN_DIR)/%.d)
 KEFIR_SYSTEM_TESTS_OBJECT_FILES := $(KEFIR_SYSTEM_TESTS_ALL_SOURCES:$(SOURCE_DIR)/%.c=$(KEFIR_BIN_DIR)/%.o)
@@ -25,6 +26,7 @@ endif
 
 KEFIR_SYSTEM_TEST_GEN_COMMON_OBJECT_FILES := $(KEFIR_BIN_DIR)/tests/int_test.o \
 							                 $(KEFIR_BIN_DIR)/tests/util/util.o \
+	                             			 $(KEFIR_BIN_DIR)/tests/util/module_shim.o \
 							                 $(KEFIR_BIN_DIR)/tests/util/codegen.o
 
 $(KEFIR_BIN_DIR)/tests/system/%.gen: $(KEFIR_BIN_DIR)/tests/system/%.gen.o \

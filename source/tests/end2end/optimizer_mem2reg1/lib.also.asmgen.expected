@@ -1,12 +1,12 @@
 .att_syntax
 .section .note.GNU-stack,"",%progbits
 
+.extern sqrt
 .global factorial
 .global factorial64
 .global quad_equation
 .global factorialf32
 .global factorialf64
-.extern sqrt
 .extern __kefirrt_opt_amd64_sysv_vararg_save
 .extern __kefirrt_opt_load_int_vararg
 .extern __kefirrt_opt_load_sse_vararg

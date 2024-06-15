@@ -1,99 +1,160 @@
 {
-    "globals": [
+    "identifiers": [
         {
-            "identifier": "char",
-            "type": "global"
+            "symbol": "char",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "enum",
-            "type": "global"
+            "symbol": "enum",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "float",
-            "type": "global"
+            "symbol": "float",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "union",
-            "type": "global"
+            "symbol": "func1",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "array1",
-            "type": "global"
+            "symbol": "union",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "array2",
-            "type": "global"
+            "symbol": "array1",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "double",
-            "type": "global"
+            "symbol": "array2",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "boolean",
-            "type": "global"
+            "symbol": "double",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "void_ptr",
-            "type": "global"
+            "symbol": "boolean",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "qualified",
-            "type": "global"
+            "symbol": "void_ptr",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "structure",
-            "type": "global"
+            "symbol": "qualified",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "signed_int",
-            "type": "global"
+            "symbol": "structure",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "signed_char",
-            "type": "global"
+            "symbol": "signed_int",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "signed_long",
-            "type": "global"
+            "symbol": "signed_char",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "unsigned_char",
-            "type": "global"
+            "symbol": "signed_long",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "unsigned_long",
-            "type": "global"
+            "symbol": "unsigned_char",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "signed_short",
-            "type": "global"
+            "symbol": "unsigned_long",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "unsigned_int",
-            "type": "global"
+            "symbol": "signed_short",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "signed_long_long",
-            "type": "global"
+            "symbol": "unsigned_int",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "unsigned_short",
-            "type": "global"
+            "symbol": "signed_long_long",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "unsigned_long_long",
-            "type": "global"
+            "symbol": "unsigned_short",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "unsigned_long_long",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
         }
     ],
-    "externals": [
-        {
-            "identifier": "func1",
-            "type": "global"
-        }
-    ],
-    "aliases": [],
-    "weak": [],
-    "visibility": [],
     "types": [
         {
             "identifier": 0,

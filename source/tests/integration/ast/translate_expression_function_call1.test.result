@@ -1,26 +1,34 @@
 {
-    "globals": [],
-    "externals": [
+    "identifiers": [
         {
-            "identifier": "sum",
-            "type": "global"
+            "symbol": "sum",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "test",
-            "type": "global"
+            "symbol": "test",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "test2",
-            "type": "global"
+            "symbol": "test2",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "test3",
-            "type": "global"
+            "symbol": "test3",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
         }
     ],
-    "aliases": [],
-    "weak": [],
-    "visibility": [],
     "types": [
         {
             "identifier": 0,

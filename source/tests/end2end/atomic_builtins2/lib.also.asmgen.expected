@@ -2,6 +2,7 @@
 .section .note.GNU-stack,"",%progbits
 
 .global test2_atomic_load8
+.extern __atomic_load
 .global test2_atomic_load128
 .global test2_atomic_load256
 .global test_atomic_load8
@@ -13,7 +14,6 @@
 .global test2_atomic_load16
 .global test2_atomic_load32
 .global test2_atomic_load64
-.extern __atomic_load
 .extern __kefirrt_opt_amd64_sysv_vararg_save
 .extern __kefirrt_opt_load_int_vararg
 .extern __kefirrt_opt_load_sse_vararg

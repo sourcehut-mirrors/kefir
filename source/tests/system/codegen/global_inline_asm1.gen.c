@@ -26,6 +26,7 @@
 #include "kefir/core/mem.h"
 #include "kefir/core/util.h"
 #include "kefir/test/codegen.h"
+#include "kefir/test/module_shim.h"
 
 kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_test_codegen codegen;
@@ -41,7 +42,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE(inline_asm1 != NULL, KEFIR_INTERNAL_ERROR);
     REQUIRE_OK(kefir_ir_module_inline_assembly_global(mem, &module, id1));
 
-    REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, "sum", KEFIR_IR_IDENTIFIER_GLOBAL));
+    REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, "sum", KEFIR_IR_IDENTIFIER_GLOBAL_DATA));
 #endif
 
     KEFIR_CODEGEN_TRANSLATE(mem, &codegen.iface, &module);

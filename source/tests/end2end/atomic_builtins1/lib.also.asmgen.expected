@@ -3,6 +3,7 @@
 
 .global test_atomic_store128
 .global test_atomic_store256
+.extern __atomic_store
 .global test2_atomic_store128
 .global test2_atomic_store256
 .global test2_atomic_store16
@@ -13,7 +14,6 @@
 .global test_atomic_store32
 .global test_atomic_store64
 .global test2_atomic_store8
-.extern __atomic_store
 .extern __kefirrt_opt_amd64_sysv_vararg_save
 .extern __kefirrt_opt_load_int_vararg
 .extern __kefirrt_opt_load_sse_vararg

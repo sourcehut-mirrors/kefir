@@ -1,26 +1,34 @@
 {
-    "globals": [
+    "identifiers": [
         {
-            "identifier": "W",
-            "type": "global"
+            "symbol": "W",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "X",
-            "type": "global"
+            "symbol": "X",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "Y",
-            "type": "global"
+            "symbol": "Y",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "Z",
-            "type": "global"
+            "symbol": "Z",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
         }
     ],
-    "externals": [],
-    "aliases": [],
-    "weak": [],
-    "visibility": [],
     "types": [
         {
             "identifier": 0,

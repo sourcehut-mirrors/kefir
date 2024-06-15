@@ -1,18 +1,20 @@
 {
-    "globals": [],
-    "externals": [
+    "identifiers": [
         {
-            "identifier": "int",
-            "type": "global"
+            "symbol": "int",
+            "type": "global_data",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "ullong",
-            "type": "global"
+            "symbol": "ullong",
+            "type": "global_data",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
         }
     ],
-    "aliases": [],
-    "weak": [],
-    "visibility": [],
     "types": [
         {
             "identifier": 0,

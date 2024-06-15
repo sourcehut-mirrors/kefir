@@ -1,8 +1,8 @@
 .att_syntax
 .section .note.GNU-stack,"",%progbits
 
-.global sum_progression
 .extern sum10
+.global sum_progression
 .extern __kefirrt_opt_amd64_sysv_vararg_save
 .extern __kefirrt_opt_load_int_vararg
 .extern __kefirrt_opt_load_sse_vararg

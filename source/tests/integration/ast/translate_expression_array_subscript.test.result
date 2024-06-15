@@ -1,14 +1,13 @@
 {
-    "globals": [],
-    "externals": [
+    "identifiers": [
         {
-            "identifier": "array1",
-            "type": "global"
+            "symbol": "array1",
+            "type": "global_data",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
         }
     ],
-    "aliases": [],
-    "weak": [],
-    "visibility": [],
     "types": [
         {
             "identifier": 0,

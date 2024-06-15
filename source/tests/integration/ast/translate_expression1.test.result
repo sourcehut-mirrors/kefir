@@ -1,14 +1,13 @@
 {
-    "globals": [
+    "identifiers": [
         {
-            "identifier": "func1",
-            "type": "global"
+            "symbol": "func1",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
         }
     ],
-    "externals": [],
-    "aliases": [],
-    "weak": [],
-    "visibility": [],
     "types": [
         {
             "identifier": 0,

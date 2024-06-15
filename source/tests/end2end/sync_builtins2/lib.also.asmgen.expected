@@ -1,6 +1,7 @@
 .att_syntax
 .section .note.GNU-stack,"",%progbits
 
+.extern __atomic_load
 .global test_fetch_add_short
 .global test_fetch_and_short
 .global test_fetch_sub_short
@@ -15,14 +16,13 @@
 .global test_fetch_sub_long
 .global test_fetch_xor_char
 .global test_fetch_xor_long
+.extern __atomic_compare_exchange
 .global test_fetch_add_int
 .global test_fetch_and_int
 .global test_fetch_or_char
 .global test_fetch_or_long
 .global test_fetch_sub_int
 .global test_fetch_xor_int
-.extern __atomic_load
-.extern __atomic_compare_exchange
 .extern __kefirrt_opt_amd64_sysv_vararg_save
 .extern __kefirrt_opt_load_int_vararg
 .extern __kefirrt_opt_load_sse_vararg

@@ -27,6 +27,7 @@
 #include "kefir/core/mem.h"
 #include "kefir/core/util.h"
 #include "kefir/test/codegen.h"
+#include "kefir/test/module_shim.h"
 
 kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_test_codegen codegen;
@@ -82,10 +83,10 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         kefir_ir_module_new_named_data(mem, &module, "float32_1", KEFIR_IR_DATA_THREAD_LOCAL_STORAGE, float32type_id);
     REQUIRE_OK(kefir_ir_data_set_float32(mem, float32data1, 0, 3.14159));
     REQUIRE_OK(kefir_ir_data_finalize(float32data1));
-    REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, "float32_1", KEFIR_IR_IDENTIFIER_THREAD_LOCAL));
+    REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, "float32_1", KEFIR_IR_IDENTIFIER_THREAD_LOCAL_DATA));
     REQUIRE_OK(kefir_ir_data_finalize(
         kefir_ir_module_new_named_data(mem, &module, "float32_2", KEFIR_IR_DATA_THREAD_LOCAL_STORAGE, float32type_id)));
-    REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, "float32_2", KEFIR_IR_IDENTIFIER_THREAD_LOCAL));
+    REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, "float32_2", KEFIR_IR_IDENTIFIER_THREAD_LOCAL_DATA));
 
     kefir_id_t float64type_id;
     struct kefir_ir_type *float64type = kefir_ir_module_new_type(mem, &module, 1, &float64type_id);
@@ -94,10 +95,10 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         kefir_ir_module_new_named_data(mem, &module, "float64_1", KEFIR_IR_DATA_THREAD_LOCAL_STORAGE, float64type_id);
     REQUIRE_OK(kefir_ir_data_set_float64(mem, float64data1, 0, 2.718281828));
     REQUIRE_OK(kefir_ir_data_finalize(float64data1));
-    REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, "float64_1", KEFIR_IR_IDENTIFIER_THREAD_LOCAL));
+    REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, "float64_1", KEFIR_IR_IDENTIFIER_THREAD_LOCAL_DATA));
     REQUIRE_OK(kefir_ir_data_finalize(
         kefir_ir_module_new_named_data(mem, &module, "float64_2", KEFIR_IR_DATA_THREAD_LOCAL_STORAGE, float64type_id)));
-    REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, "float64_2", KEFIR_IR_IDENTIFIER_THREAD_LOCAL));
+    REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, "float64_2", KEFIR_IR_IDENTIFIER_THREAD_LOCAL_DATA));
 
     kefir_id_t struct1_type_id;
     struct kefir_ir_type *struct1_type = kefir_ir_module_new_type(mem, &module, 5, &struct1_type_id);
@@ -113,7 +114,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_ir_data_set_integer(mem, struct1_data1, 3, 4096));
     REQUIRE_OK(kefir_ir_data_set_float32(mem, struct1_data1, 4, 106.9994));
     REQUIRE_OK(kefir_ir_data_finalize(struct1_data1));
-    REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, "struct1_1", KEFIR_IR_IDENTIFIER_THREAD_LOCAL));
+    REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, "struct1_1", KEFIR_IR_IDENTIFIER_THREAD_LOCAL_DATA));
 
     kefir_id_t array1_type_id;
     struct kefir_ir_type *array1_type = kefir_ir_module_new_type(mem, &module, 6, &array1_type_id);
@@ -134,7 +135,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_ir_data_set_float32(mem, array1_data, 20, 40.56));
     REQUIRE_OK(kefir_ir_data_set_float32(mem, array1_data, 21, 56.74));
     REQUIRE_OK(kefir_ir_data_finalize(array1_data));
-    REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, "array1_1", KEFIR_IR_IDENTIFIER_THREAD_LOCAL));
+    REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, "array1_1", KEFIR_IR_IDENTIFIER_THREAD_LOCAL_DATA));
 
     kefir_id_t union1_type_id;
     struct kefir_ir_type *union1_type = kefir_ir_module_new_type(mem, &module, 6, &union1_type_id);
@@ -149,7 +150,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_ir_data_set_float32(mem, union1_data, 2, 3.14));
     REQUIRE_OK(kefir_ir_data_set_integer(mem, union1_data, 3, 100500));
     REQUIRE_OK(kefir_ir_data_finalize(union1_data));
-    REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, "union1_1", KEFIR_IR_IDENTIFIER_THREAD_LOCAL));
+    REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, "union1_1", KEFIR_IR_IDENTIFIER_THREAD_LOCAL_DATA));
 
     kefir_id_t pointer1_type_id;
     struct kefir_ir_type *pointer1_type = kefir_ir_module_new_type(mem, &module, 1, &pointer1_type_id);
@@ -158,7 +159,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         mem, &module, "pointer1_1", KEFIR_IR_DATA_THREAD_LOCAL_STORAGE, pointer1_type_id);
     REQUIRE_OK(kefir_ir_data_set_pointer(mem, pointer1_data, 0, "union1_1", 2));
     REQUIRE_OK(kefir_ir_data_finalize(pointer1_data));
-    REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, "pointer1_1", KEFIR_IR_IDENTIFIER_THREAD_LOCAL));
+    REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, "pointer1_1", KEFIR_IR_IDENTIFIER_THREAD_LOCAL_DATA));
 
     REQUIRE_OK(KEFIR_CODEGEN_TRANSLATE(mem, &codegen.iface, &module));
     REQUIRE_OK(KEFIR_CODEGEN_CLOSE(mem, &codegen.iface));

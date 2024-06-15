@@ -28,33 +28,68 @@
 #include "kefir/core/util.h"
 #include <string.h>
 
-static kefir_result_t translate_module_globals(const struct kefir_ir_module *module,
-                                               struct kefir_codegen_amd64 *codegen) {
-    struct kefir_hashtree_node_iterator globals_iter;
-    kefir_ir_identifier_type_t global_type;
-    for (const char *global = kefir_ir_module_globals_iter(module, &globals_iter, &global_type); global != NULL;
-         global = kefir_ir_module_globals_iter_next(&globals_iter, &global_type)) {
+static kefir_result_t translate_module_identifiers(const struct kefir_ir_module *module,
+                                                   struct kefir_codegen_amd64 *codegen) {
+    struct kefir_hashtree_node_iterator identifiers_iter;
+    const struct kefir_ir_identifier *identifier;
+    for (const char *symbol = kefir_ir_module_identifiers_iter(module, &identifiers_iter, &identifier); symbol != NULL;
+         symbol = kefir_ir_module_identifiers_next(&identifiers_iter, &identifier)) {
 
-        if (!codegen->config->emulated_tls || global_type != KEFIR_IR_IDENTIFIER_THREAD_LOCAL) {
-            REQUIRE_OK(KEFIR_AMD64_XASMGEN_GLOBAL(&codegen->xasmgen, "%s", global));
-        } else {
-            REQUIRE_OK(KEFIR_AMD64_XASMGEN_GLOBAL(&codegen->xasmgen, KEFIR_AMD64_EMUTLS_V, global));
-            REQUIRE_OK(KEFIR_AMD64_XASMGEN_GLOBAL(&codegen->xasmgen, KEFIR_AMD64_EMUTLS_T, global));
+        if (identifier->alias != NULL) {
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_ALIAS(&codegen->xasmgen, symbol, identifier->alias));
         }
-    }
-    return KEFIR_OK;
-}
 
-static kefir_result_t translate_module_externals(struct kefir_ir_module *module, struct kefir_codegen_amd64 *codegen) {
-    struct kefir_hashtree_node_iterator externals_iter;
-    kefir_ir_identifier_type_t external_type;
-    for (const char *external = kefir_ir_module_externals_iter(module, &externals_iter, &external_type);
-         external != NULL; external = kefir_ir_module_externals_iter_next(&externals_iter, &external_type)) {
+        switch (identifier->scope) {
+            case KEFIR_IR_IDENTIFIER_SCOPE_EXPORT:
+                if (!codegen->config->emulated_tls || identifier->type != KEFIR_IR_IDENTIFIER_THREAD_LOCAL_DATA) {
+                    REQUIRE_OK(KEFIR_AMD64_XASMGEN_GLOBAL(&codegen->xasmgen, "%s", symbol));
+                } else {
+                    REQUIRE_OK(KEFIR_AMD64_XASMGEN_GLOBAL(&codegen->xasmgen, KEFIR_AMD64_EMUTLS_V, symbol));
+                    REQUIRE_OK(KEFIR_AMD64_XASMGEN_GLOBAL(&codegen->xasmgen, KEFIR_AMD64_EMUTLS_T, symbol));
+                }
+                break;
 
-        if (!codegen->config->emulated_tls || external_type != KEFIR_IR_IDENTIFIER_THREAD_LOCAL) {
-            REQUIRE_OK(KEFIR_AMD64_XASMGEN_EXTERNAL(&codegen->xasmgen, "%s", external));
-        } else {
-            REQUIRE_OK(KEFIR_AMD64_XASMGEN_EXTERNAL(&codegen->xasmgen, KEFIR_AMD64_EMUTLS_V, external));
+            case KEFIR_IR_IDENTIFIER_SCOPE_EXPORT_WEAK:
+                if (!codegen->config->emulated_tls || identifier->type != KEFIR_IR_IDENTIFIER_THREAD_LOCAL_DATA) {
+                    REQUIRE_OK(KEFIR_AMD64_XASMGEN_WEAK(&codegen->xasmgen, "%s", symbol));
+                } else {
+                    REQUIRE_OK(KEFIR_AMD64_XASMGEN_WEAK(&codegen->xasmgen, KEFIR_AMD64_EMUTLS_V, symbol));
+                    REQUIRE_OK(KEFIR_AMD64_XASMGEN_WEAK(&codegen->xasmgen, KEFIR_AMD64_EMUTLS_T, symbol));
+                }
+                break;
+
+            case KEFIR_IR_IDENTIFIER_SCOPE_IMPORT:
+                if (!codegen->config->emulated_tls || identifier->type != KEFIR_IR_IDENTIFIER_THREAD_LOCAL_DATA) {
+                    REQUIRE_OK(KEFIR_AMD64_XASMGEN_EXTERNAL(&codegen->xasmgen, "%s", symbol));
+                } else {
+                    REQUIRE_OK(KEFIR_AMD64_XASMGEN_EXTERNAL(&codegen->xasmgen, KEFIR_AMD64_EMUTLS_V, symbol));
+                }
+                break;
+
+            case KEFIR_IR_IDENTIFIER_SCOPE_LOCAL:
+                // Intentionally left blank
+                break;
+        }
+
+        if (identifier->scope == KEFIR_IR_IDENTIFIER_SCOPE_EXPORT ||
+            identifier->scope == KEFIR_IR_IDENTIFIER_SCOPE_EXPORT_WEAK) {
+            switch (identifier->visibility) {
+                case KEFIR_IR_IDENTIFIER_VISIBILITY_DEFAULT:
+                    // Intentionally left blank
+                    break;
+
+                case KEFIR_IR_IDENTIFIER_VISIBILITY_HIDDEN:
+                    KEFIR_AMD64_XASMGEN_HIDDEN(&codegen->xasmgen, "%s", symbol);
+                    break;
+
+                case KEFIR_IR_IDENTIFIER_VISIBILITY_INTERNAL:
+                    KEFIR_AMD64_XASMGEN_INTERNAL(&codegen->xasmgen, "%s", symbol);
+                    break;
+
+                case KEFIR_IR_IDENTIFIER_VISIBILITY_PROTECTED:
+                    KEFIR_AMD64_XASMGEN_PROTECTED(&codegen->xasmgen, "%s", symbol);
+                    break;
+            }
         }
     }
 
@@ -81,61 +116,6 @@ static kefir_result_t translate_module_externals(struct kefir_ir_module *module,
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_EXTERNAL(&codegen->xasmgen, "%s", KEFIR_AMD64_CONSTANT_UINT_TO_LONG_DOUBLE));
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_EXTERNAL(&codegen->xasmgen, "%s", KEFIR_AMD64_CONSTANT_COMPLEX_FLOAT32_NEG));
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_EXTERNAL(&codegen->xasmgen, "%s", KEFIR_AMD64_CONSTANT_COMPLEX_FLOAT64_NEG));
-    return KEFIR_OK;
-}
-
-static kefir_result_t translate_module_aliases(struct kefir_ir_module *module, struct kefir_codegen_amd64 *codegen) {
-    struct kefir_hashtree_node_iterator aliases_iter;
-    const char *original;
-    for (const char *alias = kefir_ir_module_aliases_iter(module, &aliases_iter, &original); alias != NULL;
-         alias = kefir_ir_module_aliases_iter_next(&aliases_iter, &original)) {
-
-        REQUIRE_OK(KEFIR_AMD64_XASMGEN_ALIAS(&codegen->xasmgen, alias, original));
-    }
-
-    return KEFIR_OK;
-}
-
-static kefir_result_t translate_module_weak(const struct kefir_ir_module *module, struct kefir_codegen_amd64 *codegen) {
-    struct kefir_hashtree_node_iterator weak_iter;
-    kefir_ir_identifier_type_t weak_type;
-    for (const char *weak = kefir_ir_module_weak_iter(module, &weak_iter, &weak_type); weak != NULL;
-         weak = kefir_ir_module_weak_iter_next(&weak_iter, &weak_type)) {
-
-        if (!codegen->config->emulated_tls || weak_type != KEFIR_IR_IDENTIFIER_THREAD_LOCAL) {
-            REQUIRE_OK(KEFIR_AMD64_XASMGEN_WEAK(&codegen->xasmgen, "%s", weak));
-        } else {
-            REQUIRE_OK(KEFIR_AMD64_XASMGEN_WEAK(&codegen->xasmgen, KEFIR_AMD64_EMUTLS_V, weak));
-            REQUIRE_OK(KEFIR_AMD64_XASMGEN_WEAK(&codegen->xasmgen, KEFIR_AMD64_EMUTLS_T, weak));
-        }
-    }
-    return KEFIR_OK;
-}
-
-static kefir_result_t translate_module_visibility(const struct kefir_ir_module *module, struct kefir_codegen_amd64 *codegen) {
-    struct kefir_hashtree_node_iterator visibility_iter;
-    kefir_ir_identifier_visibility_t visibility;
-    for (const char *symbol = kefir_ir_module_visibility_iter(module, &visibility_iter, &visibility); symbol != NULL;
-         symbol = kefir_ir_module_visibility_iter_next(&visibility_iter, &visibility)) {
-
-        switch (visibility) {
-            case KEFIR_IR_IDENTIFIER_VISIBILITY_DEFAULT:
-                // Intentionally left blank
-                break;
-
-            case KEFIR_IR_IDENTIFIER_VISIBILITY_HIDDEN:
-                KEFIR_AMD64_XASMGEN_HIDDEN(&codegen->xasmgen, "%s", symbol);
-                break;
-
-            case KEFIR_IR_IDENTIFIER_VISIBILITY_INTERNAL:
-                KEFIR_AMD64_XASMGEN_INTERNAL(&codegen->xasmgen, "%s", symbol);
-                break;
-
-            case KEFIR_IR_IDENTIFIER_VISIBILITY_PROTECTED:
-                KEFIR_AMD64_XASMGEN_PROTECTED(&codegen->xasmgen, "%s", symbol);
-                break;
-        }
-    }
     return KEFIR_OK;
 }
 
@@ -326,11 +306,7 @@ static kefir_result_t translate_impl(struct kefir_mem *mem, struct kefir_codegen
     ASSIGN_DECL_CAST(struct kefir_codegen_amd64 *, codegen, cg->data);
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_PROLOGUE(&codegen->xasmgen));
-    REQUIRE_OK(translate_module_globals(module->ir_module, codegen));
-    REQUIRE_OK(translate_module_externals(module->ir_module, codegen));
-    REQUIRE_OK(translate_module_aliases(module->ir_module, codegen));
-    REQUIRE_OK(translate_module_weak(module->ir_module, codegen));
-    REQUIRE_OK(translate_module_visibility(module->ir_module, codegen));
+    REQUIRE_OK(translate_module_identifiers(module->ir_module, codegen));
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_NEWLINE(&codegen->xasmgen, 1));
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_SECTION(&codegen->xasmgen, ".text", KEFIR_AMD64_XASMGEN_SECTION_NOATTR));

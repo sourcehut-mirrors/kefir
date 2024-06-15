@@ -1,74 +1,118 @@
 {
-    "globals": [],
-    "externals": [
+    "identifiers": [
         {
-            "identifier": "ptr",
-            "type": "global"
+            "symbol": "ptr",
+            "type": "global_data",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "bool",
-            "type": "global"
+            "symbol": "bool",
+            "type": "global_data",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "char",
-            "type": "global"
+            "symbol": "char",
+            "type": "global_data",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "enum",
-            "type": "global"
+            "symbol": "enum",
+            "type": "global_data",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "sint",
-            "type": "global"
+            "symbol": "sint",
+            "type": "global_data",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "uint",
-            "type": "global"
+            "symbol": "uint",
+            "type": "global_data",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "float",
-            "type": "global"
+            "symbol": "float",
+            "type": "global_data",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "schar",
-            "type": "global"
+            "symbol": "schar",
+            "type": "global_data",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "slong",
-            "type": "global"
+            "symbol": "slong",
+            "type": "global_data",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "uchar",
-            "type": "global"
+            "symbol": "uchar",
+            "type": "global_data",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "ulong",
-            "type": "global"
+            "symbol": "ulong",
+            "type": "global_data",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "double",
-            "type": "global"
+            "symbol": "double",
+            "type": "global_data",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "sllong",
-            "type": "global"
+            "symbol": "sllong",
+            "type": "global_data",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "sshort",
-            "type": "global"
+            "symbol": "sshort",
+            "type": "global_data",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "ullong",
-            "type": "global"
+            "symbol": "ullong",
+            "type": "global_data",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "ushort",
-            "type": "global"
+            "symbol": "ushort",
+            "type": "global_data",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
         }
     ],
-    "aliases": [],
-    "weak": [],
-    "visibility": [],
     "types": [
         {
             "identifier": 0,

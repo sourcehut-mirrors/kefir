@@ -1,47 +1,69 @@
 {
-    "globals": [
+    "identifiers": [
         {
-            "identifier": "ptr1",
-            "type": "global"
+            "symbol": "ptr1",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "ptr2",
-            "type": "global"
+            "symbol": "ptr2",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "integer",
-            "type": "global"
+            "symbol": "integer",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "string1",
-            "type": "global"
+            "symbol": "string1",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "string2",
-            "type": "global"
+            "symbol": "string2",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "character",
-            "type": "global"
+            "symbol": "variable",
+            "type": "global_data",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "floatingPoint2",
-            "type": "global"
+            "symbol": "character",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "floatingPoint",
-            "type": "global"
+            "symbol": "floatingPoint2",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "floatingPoint",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
         }
     ],
-    "externals": [
-        {
-            "identifier": "variable",
-            "type": "global"
-        }
-    ],
-    "aliases": [],
-    "weak": [],
-    "visibility": [],
     "types": [
         {
             "identifier": 0,

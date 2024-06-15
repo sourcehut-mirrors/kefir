@@ -96,6 +96,9 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_global)(struct kefir_mem
                                                           instruction->operation.parameters.variable.global_ref);
     REQUIRE(symbol != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to find named IR symbol"));
 
+    const struct kefir_ir_identifier *ir_identifier;
+    REQUIRE_OK(kefir_ir_module_try_get_identifier(function->module->ir_module, symbol, &ir_identifier));
+
     if (!function->codegen->config->position_independent_code) {
         REQUIRE_OK(kefir_asmcmp_amd64_lea(
             mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
@@ -103,8 +106,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_global)(struct kefir_mem
             &KEFIR_ASMCMP_MAKE_INDIRECT_EXTERNAL_LABEL(KEFIR_ASMCMP_EXTERNAL_LABEL_ABSOLUTE, symbol, 0,
                                                        KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
             NULL));
-    } else if (!kefir_ir_module_has_external(function->module->ir_module, symbol) &&
-               !kefir_ir_module_has_global(function->module->ir_module, symbol)) {
+    } else if (ir_identifier == NULL || ir_identifier->scope == KEFIR_IR_IDENTIFIER_SCOPE_LOCAL) {
         REQUIRE_OK(kefir_asmcmp_amd64_lea(
             mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
             &KEFIR_ASMCMP_MAKE_VREG64(vreg),

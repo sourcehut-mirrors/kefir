@@ -26,6 +26,7 @@
 #include "kefir/core/mem.h"
 #include "kefir/core/util.h"
 #include "kefir/test/codegen.h"
+#include "kefir/test/module_shim.h"
 
 kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_test_codegen codegen;
@@ -42,7 +43,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE(proxyadd_decl != NULL, KEFIR_INTERNAL_ERROR);
     struct kefir_ir_function *proxyadd = kefir_ir_module_new_function(mem, &module, proxyadd_decl, KEFIR_ID_NONE, 1024);
     REQUIRE(proxyadd != NULL, KEFIR_INTERNAL_ERROR);
-    REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, proxyadd_decl->name, KEFIR_IR_IDENTIFIER_GLOBAL));
+    REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, proxyadd_decl->name, KEFIR_IR_IDENTIFIER_GLOBAL_DATA));
 
     struct kefir_ir_type *addstruct_decl_params = kefir_ir_module_new_type(mem, &module, 4, &func_params),
                          *addstruct_decl_result = kefir_ir_module_new_type(mem, &module, 3, &func_returns);

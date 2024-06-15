@@ -1,35 +1,48 @@
 {
-    "globals": [
+    "identifiers": [
         {
-            "identifier": "chars",
-            "type": "thread_local"
+            "symbol": "chars",
+            "type": "thread_local_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "string",
-            "type": "thread_local"
+            "symbol": "string",
+            "type": "thread_local_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "integer",
-            "type": "thread_local"
+            "symbol": "integer",
+            "type": "thread_local_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "struct1",
-            "type": "thread_local"
+            "symbol": "struct1",
+            "type": "thread_local_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "floatingPoint",
-            "type": "thread_local"
+            "symbol": "variable",
+            "type": "global_data",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "floatingPoint",
+            "type": "thread_local_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
         }
     ],
-    "externals": [
-        {
-            "identifier": "variable",
-            "type": "global"
-        }
-    ],
-    "aliases": [],
-    "weak": [],
-    "visibility": [],
     "types": [
         {
             "identifier": 0,

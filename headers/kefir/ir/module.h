@@ -30,9 +30,17 @@
 #include "kefir/ir/assembly.h"
 
 typedef enum kefir_ir_identifier_type {
-    KEFIR_IR_IDENTIFIER_GLOBAL,
-    KEFIR_IR_IDENTIFIER_THREAD_LOCAL
+    KEFIR_IR_IDENTIFIER_FUNCTION,
+    KEFIR_IR_IDENTIFIER_GLOBAL_DATA,
+    KEFIR_IR_IDENTIFIER_THREAD_LOCAL_DATA
 } kefir_ir_identifier_type_t;
+
+typedef enum kefir_ir_identifier_scope {
+    KEFIR_IR_IDENTIFIER_SCOPE_EXPORT,
+    KEFIR_IR_IDENTIFIER_SCOPE_EXPORT_WEAK,
+    KEFIR_IR_IDENTIFIER_SCOPE_IMPORT,
+    KEFIR_IR_IDENTIFIER_SCOPE_LOCAL
+} kefir_ir_identifier_scope_t;
 
 typedef enum kefir_ir_identifier_visibility {
     KEFIR_IR_IDENTIFIER_VISIBILITY_DEFAULT,
@@ -40,6 +48,13 @@ typedef enum kefir_ir_identifier_visibility {
     KEFIR_IR_IDENTIFIER_VISIBILITY_INTERNAL,
     KEFIR_IR_IDENTIFIER_VISIBILITY_PROTECTED
 } kefir_ir_identifier_visibility_t;
+
+typedef struct kefir_ir_identifier {
+    kefir_ir_identifier_type_t type;
+    kefir_ir_identifier_scope_t scope;
+    kefir_ir_identifier_visibility_t visibility;
+    const char *alias;
+} kefir_ir_identifier_t;
 
 typedef struct kefir_ir_module_string_literal {
     kefir_ir_string_literal_type_t type;
@@ -52,11 +67,7 @@ typedef struct kefir_ir_module {
     struct kefir_string_pool symbols;
     struct kefir_list types;
     struct kefir_hashtree function_declarations;
-    struct kefir_hashtree global_symbols;
-    struct kefir_hashtree externals;
-    struct kefir_hashtree aliases;
-    struct kefir_hashtree weak;
-    struct kefir_hashtree visibility;
+    struct kefir_hashtree identifiers;
     struct kefir_hashtree functions;
     struct kefir_hashtree named_types;
     struct kefir_hashtree named_data;
@@ -86,19 +97,8 @@ struct kefir_ir_type *kefir_ir_module_new_type(struct kefir_mem *, struct kefir_
 struct kefir_ir_function_decl *kefir_ir_module_new_function_declaration(struct kefir_mem *, struct kefir_ir_module *,
                                                                         const char *, kefir_id_t, bool, kefir_id_t);
 
-kefir_result_t kefir_ir_module_declare_global(struct kefir_mem *, struct kefir_ir_module *, const char *,
-                                              kefir_ir_identifier_type_t);
-
-kefir_result_t kefir_ir_module_declare_external(struct kefir_mem *, struct kefir_ir_module *, const char *,
-                                                kefir_ir_identifier_type_t);
-
-kefir_result_t kefir_ir_module_declare_alias(struct kefir_mem *, struct kefir_ir_module *, const char *, const char *);
-
-kefir_result_t kefir_ir_module_declare_weak(struct kefir_mem *, struct kefir_ir_module *, const char *,
-                                            kefir_ir_identifier_type_t);
-
-kefir_result_t kefir_ir_module_declare_visibility(struct kefir_mem *, struct kefir_ir_module *, const char *,
-                                            kefir_ir_identifier_visibility_t);
+kefir_result_t kefir_ir_module_declare_identifier(struct kefir_mem *, struct kefir_ir_module *, const char *,
+                                                  const struct kefir_ir_identifier *);
 
 struct kefir_ir_function *kefir_ir_module_new_function(struct kefir_mem *, struct kefir_ir_module *,
                                                        struct kefir_ir_function_decl *, kefir_id_t, kefir_size_t);
@@ -122,23 +122,14 @@ const struct kefir_ir_function *kefir_ir_module_function_iter(const struct kefir
                                                               struct kefir_hashtree_node_iterator *);
 const struct kefir_ir_function *kefir_ir_module_function_next(struct kefir_hashtree_node_iterator *);
 
-const char *kefir_ir_module_globals_iter(const struct kefir_ir_module *, struct kefir_hashtree_node_iterator *,
-                                         kefir_ir_identifier_type_t *);
-const char *kefir_ir_module_externals_iter(const struct kefir_ir_module *, struct kefir_hashtree_node_iterator *,
-                                           kefir_ir_identifier_type_t *);
-const char *kefir_ir_module_aliases_iter(const struct kefir_ir_module *, struct kefir_hashtree_node_iterator *,
-                                         const char **);
-const char *kefir_ir_module_weak_iter(const struct kefir_ir_module *, struct kefir_hashtree_node_iterator *,
-                                      kefir_ir_identifier_type_t *);
-const char *kefir_ir_module_visibility_iter(const struct kefir_ir_module *, struct kefir_hashtree_node_iterator *,
-                                      kefir_ir_identifier_visibility_t *);
-const char *kefir_ir_module_globals_iter_next(struct kefir_hashtree_node_iterator *, kefir_ir_identifier_type_t *);
-const char *kefir_ir_module_externals_iter_next(struct kefir_hashtree_node_iterator *, kefir_ir_identifier_type_t *);
-const char *kefir_ir_module_aliases_iter_next(struct kefir_hashtree_node_iterator *, const char **);
-const char *kefir_ir_module_weak_iter_next(struct kefir_hashtree_node_iterator *, kefir_ir_identifier_type_t *);
-const char *kefir_ir_module_visibility_iter_next(struct kefir_hashtree_node_iterator *, kefir_ir_identifier_visibility_t *);
-kefir_bool_t kefir_ir_module_has_global(const struct kefir_ir_module *, const char *);
-kefir_bool_t kefir_ir_module_has_external(const struct kefir_ir_module *, const char *);
+const char *kefir_ir_module_identifiers_iter(const struct kefir_ir_module *, struct kefir_hashtree_node_iterator *,
+                                             const struct kefir_ir_identifier **);
+const char *kefir_ir_module_identifiers_next(struct kefir_hashtree_node_iterator *,
+                                             const struct kefir_ir_identifier **);
+kefir_result_t kefir_ir_module_get_identifier(const struct kefir_ir_module *, const char *,
+                                              const struct kefir_ir_identifier **);
+kefir_result_t kefir_ir_module_try_get_identifier(const struct kefir_ir_module *, const char *,
+                                                  const struct kefir_ir_identifier **);
 
 kefir_result_t kefir_ir_module_get_string_literal(const struct kefir_ir_module *, kefir_id_t,
                                                   kefir_ir_string_literal_type_t *, kefir_bool_t *, const void **,

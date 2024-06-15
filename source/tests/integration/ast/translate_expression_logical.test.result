@@ -1,9 +1,5 @@
 {
-    "globals": [],
-    "externals": [],
-    "aliases": [],
-    "weak": [],
-    "visibility": [],
+    "identifiers": [],
     "types": [
         {
             "identifier": 0,

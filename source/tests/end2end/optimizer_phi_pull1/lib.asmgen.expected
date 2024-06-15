@@ -2,9 +2,9 @@
 .section .note.GNU-stack,"",%progbits
 
 .global somefn
+.extern somevar
 .global assign_abs
 .global condition1
-.extern somevar
 .extern __kefirrt_opt_amd64_sysv_vararg_save
 .extern __kefirrt_opt_load_int_vararg
 .extern __kefirrt_opt_load_sse_vararg

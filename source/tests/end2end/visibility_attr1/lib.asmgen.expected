@@ -2,13 +2,19 @@
 .section .note.GNU-stack,"",%progbits
 
 .global w
+.protected w
 .global x
 .global y
+.hidden y
 .global z
+.internal z
 .global getw
+.protected getw
 .global getx
 .global gety
+.hidden gety
 .global getz
+.internal getz
 .extern __kefirrt_opt_amd64_sysv_vararg_save
 .extern __kefirrt_opt_load_int_vararg
 .extern __kefirrt_opt_load_sse_vararg
@@ -30,12 +36,6 @@
 .extern __kefir_opt_uint2long_double
 .extern __kefir_opt_complex_float32_neg
 .extern __kefir_opt_complex_float64_neg
-.protected w
-.hidden y
-.internal z
-.protected getw
-.hidden gety
-.internal getz
 
 .section .text
 getw:

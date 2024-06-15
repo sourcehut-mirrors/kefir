@@ -5,8 +5,8 @@
 .global test_atomic_signal_fence
 .global test_atomic_thread_fence
 .global test_and_set
-.global test_is_lock_free
 .extern __kefir_atomic_seq_cst_test_and_set
+.global test_is_lock_free
 .extern __atomic_is_lock_free
 .extern __kefir_atomic_seq_cst_clear
 .extern __kefir_atomic_seq_cst_fence

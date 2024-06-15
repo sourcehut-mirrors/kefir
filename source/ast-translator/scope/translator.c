@@ -56,30 +56,20 @@ static kefir_result_t initialize_data(struct kefir_mem *mem, const struct kefir_
     return KEFIR_OK;
 }
 
-static kefir_result_t declare_visibility(struct kefir_mem *mem,
-                                          struct kefir_ir_module *module, const char *identifier, kefir_ast_declarator_visibility_attr_t visibility) {
+static kefir_ir_identifier_visibility_t get_ir_visibility(kefir_ast_declarator_visibility_attr_t visibility) {
     switch (visibility) {
-        case KEFIR_AST_DECLARATOR_VISIBILITY_UNSET:
-            // Intentionally left blank
-            break;
-
-        case KEFIR_AST_DECLARATOR_VISIBILITY_DEFAULT:
-            REQUIRE_OK(kefir_ir_module_declare_visibility(mem, module, identifier, KEFIR_IR_IDENTIFIER_VISIBILITY_DEFAULT));
-            break;
-
         case KEFIR_AST_DECLARATOR_VISIBILITY_HIDDEN:
-            REQUIRE_OK(kefir_ir_module_declare_visibility(mem, module, identifier, KEFIR_IR_IDENTIFIER_VISIBILITY_HIDDEN));
-            break;
+            return KEFIR_IR_IDENTIFIER_VISIBILITY_HIDDEN;
 
         case KEFIR_AST_DECLARATOR_VISIBILITY_INTERNAL:
-            REQUIRE_OK(kefir_ir_module_declare_visibility(mem, module, identifier, KEFIR_IR_IDENTIFIER_VISIBILITY_INTERNAL));
-            break;
+            return KEFIR_IR_IDENTIFIER_VISIBILITY_INTERNAL;
 
         case KEFIR_AST_DECLARATOR_VISIBILITY_PROTECTED:
-            REQUIRE_OK(kefir_ir_module_declare_visibility(mem, module, identifier, KEFIR_IR_IDENTIFIER_VISIBILITY_PROTECTED));
-            break;
+            return KEFIR_IR_IDENTIFIER_VISIBILITY_PROTECTED;
+
+        default:
+            return KEFIR_IR_IDENTIFIER_VISIBILITY_DEFAULT;
     }
-    return KEFIR_OK;
 }
 
 static kefir_result_t translate_externals(struct kefir_mem *mem, const struct kefir_ast_context *context,
@@ -92,9 +82,16 @@ static kefir_result_t translate_externals(struct kefir_mem *mem, const struct ke
             case KEFIR_AST_SCOPE_IDENTIFIER_OBJECT: {
                 ASSIGN_DECL_CAST(struct kefir_ast_translator_scoped_identifier_object *, identifier_data,
                                  scoped_identifier->value->payload.ptr);
+
+                struct kefir_ir_identifier ir_identifier = {
+                    .type = KEFIR_IR_IDENTIFIER_GLOBAL_DATA,
+                    .visibility = !scoped_identifier->value->object.external
+                                      ? get_ir_visibility(scoped_identifier->value->object.visibility)
+                                      : KEFIR_IR_IDENTIFIER_VISIBILITY_DEFAULT,
+                    .alias = NULL};
+
                 if (scoped_identifier->value->object.external) {
-                    REQUIRE_OK(kefir_ir_module_declare_external(mem, module, scoped_identifier->identifier,
-                                                                KEFIR_IR_IDENTIFIER_GLOBAL));
+                    ir_identifier.scope = KEFIR_IR_IDENTIFIER_SCOPE_IMPORT;
                 } else {
                     struct kefir_ir_data *data =
                         kefir_ir_module_new_named_data(mem, module, scoped_identifier->identifier,
@@ -106,28 +103,30 @@ static kefir_result_t translate_externals(struct kefir_mem *mem, const struct ke
                     }
                     REQUIRE_OK(kefir_ir_data_finalize(data));
 
-                    REQUIRE_OK(kefir_ir_module_declare_global(mem, module, scoped_identifier->identifier,
-                                                              KEFIR_IR_IDENTIFIER_GLOBAL));
+                    ir_identifier.scope = KEFIR_IR_IDENTIFIER_SCOPE_EXPORT;
                 }
 
-                if (!scoped_identifier->value->object.external) {
-                    REQUIRE_OK(declare_visibility(mem, module, scoped_identifier->identifier, scoped_identifier->value->object.visibility));
-                }
+                REQUIRE_OK(
+                    kefir_ir_module_declare_identifier(mem, module, scoped_identifier->identifier, &ir_identifier));
             } break;
 
             case KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION: {
                 const char *function_name = scoped_identifier->identifier;
-#define DECL_GLOBAL_WEAK                                                                                        \
-    do {                                                                                                        \
-        if (scoped_identifier->value->function.flags.weak) {                                                    \
-            REQUIRE_OK(kefir_ir_module_declare_weak(mem, module, function_name, KEFIR_IR_IDENTIFIER_GLOBAL));   \
-        } else {                                                                                                \
-            REQUIRE_OK(kefir_ir_module_declare_global(mem, module, function_name, KEFIR_IR_IDENTIFIER_GLOBAL)); \
-        }                                                                                                       \
+
+                struct kefir_ir_identifier ir_identifier = {.type = KEFIR_IR_IDENTIFIER_FUNCTION,
+                                                            .scope = KEFIR_IR_IDENTIFIER_SCOPE_LOCAL,
+                                                            .visibility = KEFIR_IR_IDENTIFIER_VISIBILITY_DEFAULT};
+
+#define DECL_GLOBAL_WEAK                                                 \
+    do {                                                                 \
+        if (scoped_identifier->value->function.flags.weak) {             \
+            ir_identifier.scope = KEFIR_IR_IDENTIFIER_SCOPE_EXPORT_WEAK; \
+        } else {                                                         \
+            ir_identifier.scope = KEFIR_IR_IDENTIFIER_SCOPE_EXPORT;      \
+        }                                                                \
     } while (0)
                 if (scoped_identifier->value->function.alias != NULL) {
-                    REQUIRE_OK(kefir_ir_module_declare_alias(mem, module, function_name,
-                                                             scoped_identifier->value->function.alias));
+                    ir_identifier.alias = scoped_identifier->value->function.alias;
                     DECL_GLOBAL_WEAK;
                 } else {
                     if (scoped_identifier->value->function.asm_label != NULL) {
@@ -136,8 +135,7 @@ static kefir_result_t translate_externals(struct kefir_mem *mem, const struct ke
                     if (!scoped_identifier->value->function.flags.gnu_inline ||
                         !kefir_ast_function_specifier_is_inline(scoped_identifier->value->function.specifier)) {
                         if (scoped_identifier->value->function.external) {
-                            REQUIRE_OK(kefir_ir_module_declare_external(mem, module, function_name,
-                                                                        KEFIR_IR_IDENTIFIER_GLOBAL));
+                            ir_identifier.scope = KEFIR_IR_IDENTIFIER_SCOPE_IMPORT;
                         } else if (scoped_identifier->value->function.storage !=
                                        KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC &&
                                    !scoped_identifier->value->function.inline_definition) {
@@ -148,14 +146,15 @@ static kefir_result_t translate_externals(struct kefir_mem *mem, const struct ke
                         if (scoped_identifier->value->function.inline_definition) {
                             DECL_GLOBAL_WEAK;
                         } else {
-                            REQUIRE_OK(kefir_ir_module_declare_external(mem, module, function_name,
-                                                                        KEFIR_IR_IDENTIFIER_GLOBAL));
+                            ir_identifier.scope = KEFIR_IR_IDENTIFIER_SCOPE_IMPORT;
                         }
                     }
                 }
                 if (scoped_identifier->value->function.defined) {
-                    REQUIRE_OK(declare_visibility(mem, module, scoped_identifier->identifier, scoped_identifier->value->function.visibility));
+                    ir_identifier.visibility = get_ir_visibility(scoped_identifier->value->function.visibility);
                 }
+
+                REQUIRE_OK(kefir_ir_module_declare_identifier(mem, module, function_name, &ir_identifier));
 #undef DECL_GLOBAL_WEAK
             } break;
 
@@ -173,6 +172,13 @@ static kefir_result_t get_static_data(struct kefir_mem *mem, struct kefir_ir_mod
         *data = kefir_ir_module_new_named_data(mem, module, KEFIR_AST_TRANSLATOR_STATIC_VARIABLES_IDENTIFIER,
                                                KEFIR_IR_DATA_GLOBAL_STORAGE, type_id);
         REQUIRE(*data != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate IR data"));
+
+        struct kefir_ir_identifier ir_identifier = {.type = KEFIR_IR_IDENTIFIER_GLOBAL_DATA,
+                                                    .scope = KEFIR_IR_IDENTIFIER_SCOPE_LOCAL,
+                                                    .visibility = KEFIR_IR_IDENTIFIER_VISIBILITY_DEFAULT,
+                                                    .alias = NULL};
+        REQUIRE_OK(kefir_ir_module_declare_identifier(mem, module, KEFIR_AST_TRANSLATOR_STATIC_VARIABLES_IDENTIFIER,
+                                                      &ir_identifier));
     } else {
         REQUIRE((*data)->type_id == type_id,
                 KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Provided IR type id does not match existing"));
@@ -187,6 +193,13 @@ static kefir_result_t get_static_uninit_data(struct kefir_mem *mem, struct kefir
         *data = kefir_ir_module_new_named_data(mem, module, KEFIR_AST_TRANSLATOR_STATIC_UNINIT_VARIABLES_IDENTIFIER,
                                                KEFIR_IR_DATA_GLOBAL_STORAGE, type_id);
         REQUIRE(*data != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate IR data"));
+
+        struct kefir_ir_identifier ir_identifier = {.type = KEFIR_IR_IDENTIFIER_GLOBAL_DATA,
+                                                    .scope = KEFIR_IR_IDENTIFIER_SCOPE_LOCAL,
+                                                    .visibility = KEFIR_IR_IDENTIFIER_VISIBILITY_DEFAULT,
+                                                    .alias = NULL};
+        REQUIRE_OK(kefir_ir_module_declare_identifier(
+            mem, module, KEFIR_AST_TRANSLATOR_STATIC_UNINIT_VARIABLES_IDENTIFIER, &ir_identifier));
     } else {
         REQUIRE((*data)->type_id == type_id,
                 KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Provided IR type id does not match existing"));
@@ -218,8 +231,12 @@ static kefir_result_t translate_static(struct kefir_mem *mem, const struct kefir
 
             case KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION:
                 if (scoped_identifier->value->function.alias != NULL) {
-                    REQUIRE_OK(kefir_ir_module_declare_alias(mem, module, scoped_identifier->identifier,
-                                                             scoped_identifier->value->function.alias));
+                    struct kefir_ir_identifier ir_identifier = {.type = KEFIR_IR_IDENTIFIER_FUNCTION,
+                                                                .scope = KEFIR_IR_IDENTIFIER_SCOPE_LOCAL,
+                                                                .visibility = KEFIR_IR_IDENTIFIER_VISIBILITY_DEFAULT,
+                                                                .alias = scoped_identifier->value->function.alias};
+                    REQUIRE_OK(
+                        kefir_ir_module_declare_identifier(mem, module, scoped_identifier->identifier, &ir_identifier));
                 }
                 break;
 
@@ -251,8 +268,12 @@ static kefir_result_t translate_external_thread_locals(
                 ASSIGN_DECL_CAST(struct kefir_ast_translator_scoped_identifier_object *, identifier_data,
                                  scoped_identifier->value->payload.ptr);
                 if (scoped_identifier->value->object.external) {
-                    REQUIRE_OK(kefir_ir_module_declare_external(mem, module, scoped_identifier->identifier,
-                                                                KEFIR_IR_IDENTIFIER_THREAD_LOCAL));
+                    struct kefir_ir_identifier ir_identifier = {.type = KEFIR_IR_IDENTIFIER_THREAD_LOCAL_DATA,
+                                                                .scope = KEFIR_IR_IDENTIFIER_SCOPE_IMPORT,
+                                                                .visibility = KEFIR_IR_IDENTIFIER_VISIBILITY_DEFAULT,
+                                                                .alias = NULL};
+                    REQUIRE_OK(
+                        kefir_ir_module_declare_identifier(mem, module, scoped_identifier->identifier, &ir_identifier));
                 } else {
                     struct kefir_ir_data *data =
                         kefir_ir_module_new_named_data(mem, module, scoped_identifier->identifier,
@@ -264,8 +285,12 @@ static kefir_result_t translate_external_thread_locals(
                     }
                     REQUIRE_OK(kefir_ir_data_finalize(data));
 
-                    REQUIRE_OK(kefir_ir_module_declare_global(mem, module, scoped_identifier->identifier,
-                                                              KEFIR_IR_IDENTIFIER_THREAD_LOCAL));
+                    struct kefir_ir_identifier ir_identifier = {.type = KEFIR_IR_IDENTIFIER_THREAD_LOCAL_DATA,
+                                                                .scope = KEFIR_IR_IDENTIFIER_SCOPE_EXPORT,
+                                                                .visibility = KEFIR_IR_IDENTIFIER_VISIBILITY_DEFAULT,
+                                                                .alias = NULL};
+                    REQUIRE_OK(
+                        kefir_ir_module_declare_identifier(mem, module, scoped_identifier->identifier, &ir_identifier));
                 }
             } break;
 
@@ -284,6 +309,13 @@ static kefir_result_t get_static_thread_local_data(struct kefir_mem *mem, struct
             kefir_ir_module_new_named_data(mem, module, KEFIR_AST_TRANSLATOR_STATIC_THREAD_LOCAL_VARIABLES_IDENTIFIER,
                                            KEFIR_IR_DATA_THREAD_LOCAL_STORAGE, type_id);
         REQUIRE(*data != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate IR data"));
+
+        struct kefir_ir_identifier ir_identifier = {.type = KEFIR_IR_IDENTIFIER_THREAD_LOCAL_DATA,
+                                                    .scope = KEFIR_IR_IDENTIFIER_SCOPE_LOCAL,
+                                                    .visibility = KEFIR_IR_IDENTIFIER_VISIBILITY_DEFAULT,
+                                                    .alias = NULL};
+        REQUIRE_OK(kefir_ir_module_declare_identifier(
+            mem, module, KEFIR_AST_TRANSLATOR_STATIC_THREAD_LOCAL_VARIABLES_IDENTIFIER, &ir_identifier));
     } else {
         REQUIRE((*data)->type_id == type_id,
                 KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Provided IR type id does not match existing"));
@@ -300,6 +332,13 @@ static kefir_result_t get_static_thread_local_uninit_data(struct kefir_mem *mem,
                                                KEFIR_AST_TRANSLATOR_STATIC_THREAD_LOCAL_UNINIT_VARIABLES_IDENTIFIER,
                                                KEFIR_IR_DATA_THREAD_LOCAL_STORAGE, type_id);
         REQUIRE(*data != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate IR data"));
+
+        struct kefir_ir_identifier ir_identifier = {.type = KEFIR_IR_IDENTIFIER_THREAD_LOCAL_DATA,
+                                                    .scope = KEFIR_IR_IDENTIFIER_SCOPE_LOCAL,
+                                                    .visibility = KEFIR_IR_IDENTIFIER_VISIBILITY_DEFAULT,
+                                                    .alias = NULL};
+        REQUIRE_OK(kefir_ir_module_declare_identifier(
+            mem, module, KEFIR_AST_TRANSLATOR_STATIC_THREAD_LOCAL_UNINIT_VARIABLES_IDENTIFIER, &ir_identifier));
     } else {
         REQUIRE((*data)->type_id == type_id,
                 KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Provided IR type id does not match existing"));

@@ -27,6 +27,7 @@
 #include "kefir/core/util.h"
 #include "kefir/target/abi/amd64/type_layout.h"
 #include "kefir/test/codegen.h"
+#include "kefir/test/module_shim.h"
 
 kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_test_codegen codegen;
@@ -59,7 +60,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE(arrptr_decl != NULL, KEFIR_INTERNAL_ERROR);
     struct kefir_ir_function *arrptr = kefir_ir_module_new_function(mem, &module, arrptr_decl, KEFIR_ID_NONE, 5);
     REQUIRE(arrptr != NULL, KEFIR_INTERNAL_ERROR);
-    REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, arrptr_decl->name, KEFIR_IR_IDENTIFIER_GLOBAL));
+    REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, arrptr_decl->name, KEFIR_IR_IDENTIFIER_GLOBAL_DATA));
     kefir_irbuilder_type_append(mem, arrptr->declaration->params, KEFIR_IR_TYPE_WORD, 0, 0);
     kefir_irbuilder_type_append(mem, arrptr->declaration->params, KEFIR_IR_TYPE_LONG, 0, 0);
     kefir_irbuilder_type_append(mem, arrptr->declaration->result, KEFIR_IR_TYPE_WORD, 0, 0);

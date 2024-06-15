@@ -1,39 +1,62 @@
 {
-    "globals": [
+    "identifiers": [
         {
-            "identifier": "add_value",
-            "type": "global"
+            "symbol": "variable",
+            "type": "global_data",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "get_value",
-            "type": "global"
+            "symbol": "add_value",
+            "type": "function",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "set_value",
-            "type": "global"
+            "symbol": "get_value",
+            "type": "function",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "invoke_callback",
-            "type": "global"
+            "symbol": "set_value",
+            "type": "function",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "__kefirrt_module_static_vars",
+            "type": "global_data",
+            "scope": "local",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "value_to_add",
+            "type": "global_data",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "value_callback",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "invoke_callback",
+            "type": "function",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
         }
     ],
-    "externals": [
-        {
-            "identifier": "variable",
-            "type": "global"
-        },
-        {
-            "identifier": "value_to_add",
-            "type": "global"
-        },
-        {
-            "identifier": "value_callback",
-            "type": "global"
-        }
-    ],
-    "aliases": [],
-    "weak": [],
-    "visibility": [],
     "types": [
         {
             "identifier": 0,

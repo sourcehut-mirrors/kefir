@@ -1,71 +1,111 @@
 {
-    "globals": [
+    "identifiers": [
         {
-            "identifier": "getA",
-            "type": "global"
+            "symbol": "a",
+            "type": "global_data",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "getB",
-            "type": "global"
+            "symbol": "b",
+            "type": "global_data",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "getC",
-            "type": "global"
+            "symbol": "c",
+            "type": "global_data",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "getD",
-            "type": "global"
+            "symbol": "d",
+            "type": "global_data",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "setA",
-            "type": "global"
+            "symbol": "getA",
+            "type": "function",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "setB",
-            "type": "global"
+            "symbol": "getB",
+            "type": "function",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "setC",
-            "type": "global"
+            "symbol": "getC",
+            "type": "function",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "setD",
-            "type": "global"
+            "symbol": "getD",
+            "type": "function",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "setS",
-            "type": "global"
+            "symbol": "setA",
+            "type": "function",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "sumS",
-            "type": "global"
+            "symbol": "setB",
+            "type": "function",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "vla_test",
-            "type": "global"
+            "symbol": "setC",
+            "type": "function",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "setD",
+            "type": "function",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "setS",
+            "type": "function",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "sumS",
+            "type": "function",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "vla_test",
+            "type": "function",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
         }
     ],
-    "externals": [
-        {
-            "identifier": "a",
-            "type": "global"
-        },
-        {
-            "identifier": "b",
-            "type": "global"
-        },
-        {
-            "identifier": "c",
-            "type": "global"
-        },
-        {
-            "identifier": "d",
-            "type": "global"
-        }
-    ],
-    "aliases": [],
-    "weak": [],
-    "visibility": [],
     "types": [
         {
             "identifier": 90,

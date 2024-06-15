@@ -1,31 +1,41 @@
 {
-    "globals": [
+    "identifiers": [
         {
-            "identifier": "string1",
-            "type": "global"
+            "symbol": "string1",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "string2",
-            "type": "global"
+            "symbol": "string2",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "string3",
-            "type": "global"
+            "symbol": "string3",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
         },
         {
-            "identifier": "string4",
-            "type": "global"
+            "symbol": "string4",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "variable",
+            "type": "global_data",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
         }
     ],
-    "externals": [
-        {
-            "identifier": "variable",
-            "type": "global"
-        }
-    ],
-    "aliases": [],
-    "weak": [],
-    "visibility": [],
     "types": [
         {
             "identifier": 0,

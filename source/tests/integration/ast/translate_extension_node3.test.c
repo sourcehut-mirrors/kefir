@@ -29,6 +29,7 @@
 #include "kefir/ast/analyzer/analyzer.h"
 #include "kefir/ast/local_context.h"
 #include "kefir/test/util.h"
+#include "kefir/test/module_shim.h"
 
 static kefir_result_t analyze_extension_node(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                              struct kefir_ast_node_base *node) {
@@ -102,7 +103,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE(decl != NULL, KEFIR_INTERNAL_ERROR);
     struct kefir_ir_function *func = kefir_ir_module_new_function(mem, &module, decl, KEFIR_ID_NONE, 0);
     REQUIRE(func != NULL, KEFIR_INTERNAL_ERROR);
-    REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, decl->name, KEFIR_IR_IDENTIFIER_GLOBAL));
+    REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, decl->name, KEFIR_IR_IDENTIFIER_GLOBAL_DATA));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, decl_result, KEFIR_IR_TYPE_INT, 0, 0));
 
     struct kefir_ast_context_extensions analysis_ext = {.analyze_extension_node = analyze_extension_node};

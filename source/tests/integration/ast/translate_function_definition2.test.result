@@ -1,14 +1,20 @@
 {
-    "globals": [
+    "identifiers": [
         {
-            "identifier": "intat",
-            "type": "global"
+            "symbol": "intat",
+            "type": "function",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "__kefirrt_module_static_vars",
+            "type": "global_data",
+            "scope": "local",
+            "visibility": "default",
+            "alias": null
         }
     ],
-    "externals": [],
-    "aliases": [],
-    "weak": [],
-    "visibility": [],
     "types": [
         {
             "identifier": 0,

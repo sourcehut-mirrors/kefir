@@ -1,19 +1,27 @@
 {
-    "globals": [
+    "identifiers": [
         {
-            "identifier": "str1",
-            "type": "global"
+            "symbol": "str1",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "variable",
+            "type": "global_data",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "__kefirrt_module_static_vars",
+            "type": "global_data",
+            "scope": "local",
+            "visibility": "default",
+            "alias": null
         }
     ],
-    "externals": [
-        {
-            "identifier": "variable",
-            "type": "global"
-        }
-    ],
-    "aliases": [],
-    "weak": [],
-    "visibility": [],
     "types": [
         {
             "identifier": 0,

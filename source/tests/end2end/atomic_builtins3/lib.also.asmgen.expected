@@ -4,12 +4,12 @@
 .global test2_atomic_exchange16
 .global test2_atomic_exchange32
 .global test2_atomic_exchange64
+.extern __atomic_exchange
 .global test_atomic_exchange8
 .global test2_atomic_exchange8
 .global test_atomic_exchange16
 .global test_atomic_exchange32
 .global test_atomic_exchange64
-.extern __atomic_exchange
 .extern __kefirrt_opt_amd64_sysv_vararg_save
 .extern __kefirrt_opt_load_int_vararg
 .extern __kefirrt_opt_load_sse_vararg
