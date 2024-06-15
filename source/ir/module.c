@@ -298,6 +298,30 @@ kefir_result_t kefir_ir_module_declare_identifier(struct kefir_mem *mem, struct 
     identifier_data->alias = identifier_alias;
     kefir_result_t res = kefir_hashtree_insert(mem, &module->identifiers, (kefir_hashtree_key_t) symbol,
                                                (kefir_hashtree_value_t) identifier_data);
+    if (res == KEFIR_ALREADY_EXISTS) {
+        struct kefir_hashtree_node *node;
+        res = kefir_hashtree_at(&module->identifiers, (kefir_hashtree_key_t) symbol, &node);
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            KEFIR_FREE(mem, identifier_data);
+            return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected an identifier to exist in IR module");
+        });
+        ASSIGN_DECL_CAST(const struct kefir_ir_identifier *, current_identifier_data,
+            node->value);
+        
+        res = KEFIR_OK;
+        REQUIRE_CHAIN_SET(&res, identifier_data->type == current_identifier_data->type,
+            KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Mismatch with existing IR module identifier type"));
+        REQUIRE_CHAIN_SET(&res, identifier_data->scope == current_identifier_data->scope,
+            KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Mismatch with existing IR module identifier scope"));
+        REQUIRE_CHAIN_SET(&res, identifier_data->visibility == current_identifier_data->visibility,
+            KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Mismatch with existing IR module identifier visibility"));
+        REQUIRE_CHAIN_SET(&res, (identifier_data->alias == NULL && current_identifier_data->alias == NULL) ||
+            (identifier_data->alias != NULL && current_identifier_data->alias != NULL && strcmp(identifier_data->alias, current_identifier_data->alias) == 0),
+            KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Mismatch with existing IR module identifier alias"));
+        KEFIR_FREE(mem, identifier_data);
+        REQUIRE_OK(res);
+        return KEFIR_OK;
+    }
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, identifier_data);
         return res;
