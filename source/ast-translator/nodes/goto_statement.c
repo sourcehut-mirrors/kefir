@@ -45,7 +45,7 @@ kefir_result_t kefir_ast_translate_goto_statement_node(struct kefir_mem *mem,
             node->base.properties.statement_props.flow_control_statement;
         while (goto_parent != NULL) {
             if (goto_parent->type == KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK) {
-                REQUIRE(!goto_parent->value.block.contains_vla,
+                REQUIRE(!kefir_ast_flow_control_block_contains_vl_arrays(goto_parent),
                         KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->base.source_location,
                                                "None of blocks enclosing the address goto can contain VLAs"));
             }

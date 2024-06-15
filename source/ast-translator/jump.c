@@ -36,7 +36,7 @@ static kefir_result_t perform_jump(struct kefir_mem *mem, struct kefir_ast_trans
     for (const struct kefir_list_entry *iter = kefir_list_head(target_parents); iter != NULL; kefir_list_next(&iter)) {
         ASSIGN_DECL_CAST(struct kefir_ast_flow_control_structure *, control_struct, iter->value);
         if (control_struct->type == KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK) {
-            REQUIRE(!control_struct->value.block.contains_vla,
+            REQUIRE(!kefir_ast_flow_control_block_contains_vl_arrays(control_struct),
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, source_location,
                                            "Cannot jump into scope with local VLA variables"));
         }
@@ -47,12 +47,11 @@ static kefir_result_t perform_jump(struct kefir_mem *mem, struct kefir_ast_trans
     struct kefir_ast_flow_control_structure *current_origin_parent = original_position->parent;
     while (current_origin_parent != NULL && current_origin_parent != common_parent) {
         if (current_origin_parent->type == KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK) {
-            if (current_origin_parent->value.block.contains_vla) {
-                const struct kefir_ast_flow_control_data_element *vla_element = NULL;
-                REQUIRE_OK(kefir_ast_flow_control_structure_data_element_head(
-                    &current_origin_parent->value.block.data_elements, &vla_element));
+            if (kefir_ast_flow_control_block_contains_vl_arrays(current_origin_parent)) {
+                kefir_id_t vla_element;
+                REQUIRE_OK(kefir_ast_flow_control_block_vl_array_head(current_origin_parent, &vla_element));
 
-                REQUIRE_OK(kefir_ast_translator_resolve_vla_element(mem, context, builder, vla_element->identifier));
+                REQUIRE_OK(kefir_ast_translator_resolve_vla_element(mem, context, builder, vla_element));
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_LOAD64, KEFIR_IR_MEMORY_FLAG_NONE));
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_POPSCOPE, 0));
             }
@@ -62,29 +61,36 @@ static kefir_result_t perform_jump(struct kefir_mem *mem, struct kefir_ast_trans
             current_origin_parent->parent_point != NULL ? current_origin_parent->parent_point->parent : NULL;
     }
 
-    const struct kefir_list_entry *top_target_block_iter = top_target_block->parent_data_elts.head;
-    const struct kefir_list_entry *top_origin_block_iter = top_origin_block->parent_data_elts.head;
+    const struct kefir_list_entry *top_target_block_iter = NULL, *top_target_block_tail = NULL;
+    if (top_target_block->parent != NULL && top_target_block->parent->type == KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK) {
+        top_target_block_iter = kefir_list_head(&top_target_block->parent->value.block.vl_arrays);
+        top_target_block_tail = kefir_list_tail(&top_target_block->parent->value.block.vl_arrays);
+    }
+    const struct kefir_list_entry *top_origin_block_iter = NULL, *top_origin_block_tail = NULL;
+    if (top_origin_block->parent != NULL && top_origin_block->parent->type == KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK) {
+        top_origin_block_iter = kefir_list_head(&top_origin_block->parent->value.block.vl_arrays);
+        top_origin_block_tail = kefir_list_tail(&top_origin_block->parent->value.block.vl_arrays);
+    }
     for (; top_target_block_iter != NULL;
          kefir_list_next(&top_target_block_iter), kefir_list_next(&top_origin_block_iter)) {
         REQUIRE(top_origin_block_iter == top_target_block_iter,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, source_location,
                                        "Cannot jump in the scope with uninitialized VLA variables"));
 
-        if (top_target_block_iter == top_target_block->parent_data_elts.tail) {
+        if (top_target_block_iter == top_target_block_tail) {
             kefir_list_next(&top_origin_block_iter);
             break;
         }
-        REQUIRE(top_origin_block_iter != top_origin_block->parent_data_elts.tail,
+        REQUIRE(top_origin_block_iter != top_origin_block_tail,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, source_location,
                                        "Cannot jump in the scope with uninitialized VLA variables"));
     }
 
     if (top_origin_block_iter != NULL) {
-        const struct kefir_ast_flow_control_data_element *vla_element = top_origin_block_iter->value;
-        REQUIRE_OK(kefir_ast_flow_control_structure_data_element_head(&current_origin_parent->value.block.data_elements,
-                                                                      &vla_element));
+        kefir_id_t vla_element;
+        REQUIRE_OK(kefir_ast_flow_control_block_vl_array_head(current_origin_parent, &vla_element));
 
-        REQUIRE_OK(kefir_ast_translator_resolve_vla_element(mem, context, builder, vla_element->identifier));
+        REQUIRE_OK(kefir_ast_translator_resolve_vla_element(mem, context, builder, vla_element));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_LOAD64, KEFIR_IR_MEMORY_FLAG_NONE));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_POPSCOPE, 0));
     }

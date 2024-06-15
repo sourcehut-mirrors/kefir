@@ -43,7 +43,7 @@ kefir_result_t kefir_ast_translate_label_address_node(struct kefir_mem *mem,
         node->base.properties.expression_props.scoped_id->label.point->parent;
     while (label_parent != NULL) {
         if (label_parent->type == KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK) {
-            REQUIRE(!label_parent->value.block.contains_vla,
+            REQUIRE(!kefir_ast_flow_control_block_contains_vl_arrays(label_parent),
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->base.source_location,
                                            "None of blocks enclosing the label can contain VLAs"));
         }

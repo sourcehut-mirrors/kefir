@@ -380,7 +380,7 @@
     _separator _case(ast_flow_control_tree4)                                                 \
     _separator _case(ast_flow_control_tree5)                                                 \
     _separator _case(ast_flow_control_tree6)                                                 \
-    _separator _case(ast_flow_control_tree_data_elements1)                                   \
+    _separator _case(ast_flow_control_tree_vl_arrays1)                                       \
     _separator _case(ast_nodes_switch_statements1)                                           \
     _separator _case(ast_node_analysis_switch_statements1)                                   \
     _separator _case(ast_node_analysis_switch_statements2)                                   \

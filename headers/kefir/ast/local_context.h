@@ -43,6 +43,10 @@ typedef struct kefir_ast_local_context {
         kefir_id_t next_id;
     } temporary_ids;
 
+    struct {
+        kefir_id_t next_id;
+    } vl_arrays;
+
     struct kefir_ast_flow_control_tree flow_control_tree;
     struct kefir_list flow_control_points;
 } kefir_ast_local_context_t;
@@ -58,9 +62,6 @@ kefir_result_t kefir_ast_local_context_resolve_scoped_ordinary_identifier(const 
 kefir_result_t kefir_ast_local_context_resolve_scoped_tag_identifier(const struct kefir_ast_local_context *,
                                                                      const char *,
                                                                      const struct kefir_ast_scoped_identifier **);
-
-kefir_result_t kefir_ast_local_context_push_block_scope(struct kefir_mem *, struct kefir_ast_local_context *);
-kefir_result_t kefir_ast_local_context_pop_block_scope(struct kefir_mem *, struct kefir_ast_local_context *);
 
 kefir_result_t kefir_ast_local_context_declare_external(struct kefir_mem *, struct kefir_ast_local_context *,
                                                         const char *, const struct kefir_ast_type *,

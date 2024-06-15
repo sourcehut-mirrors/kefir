@@ -112,9 +112,13 @@ static kefir_result_t pp_reference_public_label(struct kefir_mem *mem, const str
     return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Preprocessor AST context does not implement labels");
 }
 
-static kefir_result_t pp_push_block(struct kefir_mem *mem, const struct kefir_ast_context *context) {
+static kefir_result_t pp_push_block(struct kefir_mem *mem, const struct kefir_ast_context *context,
+                                    const struct kefir_ast_identifier_flat_scope **ordinary_scope_ptr,
+                                    const struct kefir_ast_identifier_flat_scope **tag_scope_ptr) {
     UNUSED(mem);
     UNUSED(context);
+    UNUSED(ordinary_scope_ptr);
+    UNUSED(tag_scope_ptr);
 
     return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Preprocessor AST context does not implement blocks");
 }

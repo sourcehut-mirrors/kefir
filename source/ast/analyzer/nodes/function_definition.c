@@ -332,9 +332,9 @@ kefir_result_t kefir_ast_analyze_function_definition_node(struct kefir_mem *mem,
     }
     REQUIRE_OK(kefir_ast_flow_control_tree_pop(local_context->context.flow_control_tree));
 
-    if (local_context->flow_control_tree.data_element_track.vla_id > 0) {
+    if (local_context->vl_arrays.next_id > 0) {
         struct kefir_ast_constant_expression *array_length =
-            kefir_ast_constant_expression_integer(mem, local_context->flow_control_tree.data_element_track.vla_id);
+            kefir_ast_constant_expression_integer(mem, local_context->vl_arrays.next_id);
         REQUIRE(array_length != NULL,
                 KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate AST array length constant"));
 

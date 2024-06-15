@@ -328,9 +328,13 @@ static kefir_result_t context_reference_public_label(struct kefir_mem *mem, cons
                                   "Labels cannot be defined or referenced in a function declaration context");
 }
 
-static kefir_result_t context_push_block(struct kefir_mem *mem, const struct kefir_ast_context *context) {
+static kefir_result_t context_push_block(struct kefir_mem *mem, const struct kefir_ast_context *context,
+                                         const struct kefir_ast_identifier_flat_scope **ordinary_scope_ptr,
+                                         const struct kefir_ast_identifier_flat_scope **tag_scope_ptr) {
     UNUSED(mem);
     UNUSED(context);
+    UNUSED(ordinary_scope_ptr);
+    UNUSED(tag_scope_ptr);
 
     return KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Blocks cannot be pushed in a function declaration context");
 }

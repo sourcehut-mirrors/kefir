@@ -43,8 +43,7 @@ static kefir_result_t translate_vla_declaration(struct kefir_mem *mem, const str
                      declaration->base.properties.declaration_props.scoped_id->payload.ptr);
 
     REQUIRE_OK(kefir_ast_translator_resolve_vla_element(
-        mem, context, builder,
-        declaration->base.properties.declaration_props.scoped_id->object.data_element->identifier));
+        mem, context, builder, declaration->base.properties.declaration_props.scoped_id->object.vl_array));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PUSHSCOPE, 0));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_STORE64, KEFIR_IR_MEMORY_FLAG_NONE));
 

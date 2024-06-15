@@ -463,7 +463,7 @@ DEFINE_CASE(ast_flow_control_tree6, "AST Flow control tree - flow control value 
 }
 END_CASE
 
-DEFINE_CASE(ast_flow_control_tree_data_elements1, "AST Flow control tree - data elements #1") {
+DEFINE_CASE(ast_flow_control_tree_vl_arrays1, "AST Flow control tree - data elements #1") {
     const struct kefir_ast_type_traits *type_traits = kefir_util_default_type_traits();
     struct kefir_ast_global_context global_context;
     struct kefir_ast_local_context local_context;
@@ -480,77 +480,46 @@ DEFINE_CASE(ast_flow_control_tree_data_elements1, "AST Flow control tree - data 
                                                KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK, &stmt));
 
     ASSERT(stmt->parent_point == NULL);
-    ASSERT(kefir_list_length(&stmt->value.block.data_elements.elements) == 0);
+    ASSERT(kefir_list_length(&stmt->value.block.vl_arrays) == 0);
 
-    ASSERT_OK(kefir_ast_flow_control_block_add_data_element(
-        &kft_mem, stmt,
-        kefir_ast_flow_control_data_element_alloc(&kft_mem, 0, stmt, KEFIR_AST_FLOW_CONTROL_DATA_ELEMENT_VLA)));
-    ASSERT_OK(kefir_ast_flow_control_block_add_data_element(
-        &kft_mem, stmt,
-        kefir_ast_flow_control_data_element_alloc(&kft_mem, 1, stmt, KEFIR_AST_FLOW_CONTROL_DATA_ELEMENT_VLA)));
-    ASSERT_OK(kefir_ast_flow_control_block_add_data_element(
-        &kft_mem, stmt,
-        kefir_ast_flow_control_data_element_alloc(&kft_mem, 2, stmt, KEFIR_AST_FLOW_CONTROL_DATA_ELEMENT_VLA)));
+    ASSERT_OK(kefir_ast_flow_control_block_add_vl_array(&kft_mem, stmt, 0));
+    ASSERT_OK(kefir_ast_flow_control_block_add_vl_array(&kft_mem, stmt, 1));
+    ASSERT_OK(kefir_ast_flow_control_block_add_vl_array(&kft_mem, stmt, 2));
 
-    ASSERT(kefir_list_length(&stmt->value.block.data_elements.elements) == 3);
+    ASSERT(kefir_list_length(&stmt->value.block.vl_arrays) == 3);
 
     struct kefir_ast_flow_control_structure *stmt2 = NULL;
     ASSERT_OK(kefir_ast_flow_control_tree_push(&kft_mem, context->flow_control_tree,
                                                KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK, &stmt2));
 
     ASSERT(stmt2->parent_point->parent == stmt);
-    ASSERT(kefir_list_length(&stmt2->value.block.data_elements.elements) == 0);
-    ASSERT(stmt2->parent_point->parent_data_elts.head == kefir_list_head(&stmt->value.block.data_elements.elements));
-    ASSERT(stmt2->parent_point->parent_data_elts.tail ==
-           kefir_list_head(&stmt->value.block.data_elements.elements)->next->next);
+    ASSERT(kefir_list_length(&stmt2->value.block.vl_arrays) == 0);
 
-    ASSERT_OK(kefir_ast_flow_control_block_add_data_element(
-        &kft_mem, stmt2,
-        kefir_ast_flow_control_data_element_alloc(&kft_mem, 3, stmt2, KEFIR_AST_FLOW_CONTROL_DATA_ELEMENT_VLA)));
-    ASSERT(kefir_list_length(&stmt2->value.block.data_elements.elements) == 1);
-    ASSERT(kefir_list_length(&stmt->value.block.data_elements.elements) == 3);
+    ASSERT_OK(kefir_ast_flow_control_block_add_vl_array(&kft_mem, stmt2, 3));
+    ASSERT(kefir_list_length(&stmt2->value.block.vl_arrays) == 1);
+    ASSERT(kefir_list_length(&stmt->value.block.vl_arrays) == 3);
 
     ASSERT_OK(kefir_ast_flow_control_tree_pop(context->flow_control_tree));
 
-    ASSERT_OK(kefir_ast_flow_control_block_add_data_element(
-        &kft_mem, stmt,
-        kefir_ast_flow_control_data_element_alloc(&kft_mem, 4, stmt, KEFIR_AST_FLOW_CONTROL_DATA_ELEMENT_VLA)));
-    ASSERT_OK(kefir_ast_flow_control_block_add_data_element(
-        &kft_mem, stmt,
-        kefir_ast_flow_control_data_element_alloc(&kft_mem, 5, stmt, KEFIR_AST_FLOW_CONTROL_DATA_ELEMENT_VLA)));
+    ASSERT_OK(kefir_ast_flow_control_block_add_vl_array(&kft_mem, stmt, 4));
+    ASSERT_OK(kefir_ast_flow_control_block_add_vl_array(&kft_mem, stmt, 5));
 
-    ASSERT(kefir_list_length(&stmt2->value.block.data_elements.elements) == 1);
-    ASSERT(kefir_list_length(&stmt->value.block.data_elements.elements) == 5);
-    ASSERT(stmt2->parent_point->parent_data_elts.head == kefir_list_head(&stmt->value.block.data_elements.elements));
-    ASSERT(stmt2->parent_point->parent_data_elts.tail ==
-           kefir_list_head(&stmt->value.block.data_elements.elements)->next->next);
+    ASSERT(kefir_list_length(&stmt2->value.block.vl_arrays) == 1);
+    ASSERT(kefir_list_length(&stmt->value.block.vl_arrays) == 5);
 
     struct kefir_ast_flow_control_structure *stmt3 = NULL;
     ASSERT_OK(kefir_ast_flow_control_tree_push(&kft_mem, context->flow_control_tree,
                                                KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK, &stmt3));
 
     ASSERT(stmt3->parent_point->parent == stmt);
-    ASSERT(kefir_list_length(&stmt3->value.block.data_elements.elements) == 0);
-    ASSERT(stmt3->parent_point->parent_data_elts.head == kefir_list_head(&stmt->value.block.data_elements.elements));
-    ASSERT(stmt3->parent_point->parent_data_elts.tail ==
-           kefir_list_head(&stmt->value.block.data_elements.elements)->next->next->next->next);
+    ASSERT(kefir_list_length(&stmt3->value.block.vl_arrays) == 0);
 
-    ASSERT_OK(kefir_ast_flow_control_block_add_data_element(
-        &kft_mem, stmt3,
-        kefir_ast_flow_control_data_element_alloc(&kft_mem, 6, stmt3, KEFIR_AST_FLOW_CONTROL_DATA_ELEMENT_VLA)));
-    ASSERT_OK(kefir_ast_flow_control_block_add_data_element(
-        &kft_mem, stmt3,
-        kefir_ast_flow_control_data_element_alloc(&kft_mem, 7, stmt3, KEFIR_AST_FLOW_CONTROL_DATA_ELEMENT_VLA)));
+    ASSERT_OK(kefir_ast_flow_control_block_add_vl_array(&kft_mem, stmt3, 6));
+    ASSERT_OK(kefir_ast_flow_control_block_add_vl_array(&kft_mem, stmt3, 7));
 
-    ASSERT(kefir_list_length(&stmt3->value.block.data_elements.elements) == 2);
-    ASSERT(kefir_list_length(&stmt2->value.block.data_elements.elements) == 1);
-    ASSERT(kefir_list_length(&stmt->value.block.data_elements.elements) == 5);
-    ASSERT(stmt3->parent_point->parent_data_elts.head == kefir_list_head(&stmt->value.block.data_elements.elements));
-    ASSERT(stmt3->parent_point->parent_data_elts.tail ==
-           kefir_list_head(&stmt->value.block.data_elements.elements)->next->next->next->next);
-    ASSERT(stmt2->parent_point->parent_data_elts.head == kefir_list_head(&stmt->value.block.data_elements.elements));
-    ASSERT(stmt2->parent_point->parent_data_elts.tail ==
-           kefir_list_head(&stmt->value.block.data_elements.elements)->next->next);
+    ASSERT(kefir_list_length(&stmt3->value.block.vl_arrays) == 2);
+    ASSERT(kefir_list_length(&stmt2->value.block.vl_arrays) == 1);
+    ASSERT(kefir_list_length(&stmt->value.block.vl_arrays) == 5);
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &local_context));
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &global_context));

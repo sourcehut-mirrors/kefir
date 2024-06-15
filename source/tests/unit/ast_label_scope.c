@@ -195,7 +195,7 @@ DEFINE_CASE(ast_label_scope4, "AST ordinary scope - label scope #4") {
     ASSERT_LABEL(&kft_mem, &context.context, "label1", NULL, false);
 
     do {
-        ASSERT_OK(kefir_ast_local_context_push_block_scope(&kft_mem, &context));
+        ASSERT_OK(context.context.push_block(&kft_mem, &context.context, NULL, NULL));
         struct kefir_ast_flow_control_structure *parent = NULL;
         ASSERT_OK(kefir_ast_flow_control_tree_push(&kft_mem, &context.flow_control_tree,
                                                    KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK, &parent));
@@ -205,7 +205,7 @@ DEFINE_CASE(ast_label_scope4, "AST ordinary scope - label scope #4") {
         ASSERT_LABEL(&kft_mem, &context.context, "label2", parent, true);
 
         do {
-            ASSERT_OK(kefir_ast_local_context_push_block_scope(&kft_mem, &context));
+            ASSERT_OK(context.context.push_block(&kft_mem, &context.context, NULL, NULL));
             struct kefir_ast_flow_control_structure *parent = NULL;
             ASSERT_OK(kefir_ast_flow_control_tree_push(&kft_mem, &context.flow_control_tree,
                                                        KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK, &parent));
@@ -215,7 +215,7 @@ DEFINE_CASE(ast_label_scope4, "AST ordinary scope - label scope #4") {
             ASSERT_LABEL(&kft_mem, &context.context, "label4", NULL, false);
             ASSERT_LABEL_NOK(&kft_mem, &context.context, "label2", parent);
             ASSERT_OK(kefir_ast_flow_control_tree_pop(&context.flow_control_tree));
-            ASSERT_OK(kefir_ast_local_context_pop_block_scope(&kft_mem, &context));
+            ASSERT_OK(context.context.pop_block(&kft_mem, &context.context));
         } while (0);
 
         ASSERT_LABEL(&kft_mem, &context.context, "label3", NULL, false);
@@ -223,7 +223,7 @@ DEFINE_CASE(ast_label_scope4, "AST ordinary scope - label scope #4") {
         ASSERT_LABEL(&kft_mem, &context.context, "label4", parent, true);
 
         ASSERT_OK(kefir_ast_flow_control_tree_pop(&context.flow_control_tree));
-        ASSERT_OK(kefir_ast_local_context_pop_block_scope(&kft_mem, &context));
+        ASSERT_OK(context.context.pop_block(&kft_mem, &context.context));
     } while (0);
 
     ASSERT_LABEL(&kft_mem, &context.context, "label1", NULL, true);

@@ -45,7 +45,9 @@ kefir_result_t kefir_ast_analyze_compound_statement_node(struct kefir_mem *mem, 
     REQUIRE_OK(kefir_ast_flow_control_tree_push(mem, context->flow_control_tree, KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK,
                                                 &base->properties.statement_props.flow_control_statement));
 
-    REQUIRE_OK(context->push_block(mem, context));
+    REQUIRE_OK(context->push_block(
+        mem, context, &base->properties.statement_props.flow_control_statement->associated_scopes.ordinary_scope,
+        &base->properties.statement_props.flow_control_statement->associated_scopes.tag_scope));
     for (const struct kefir_list_entry *iter = kefir_list_head(&node->block_items); iter != NULL;
          kefir_list_next(&iter)) {
         ASSIGN_DECL_CAST(struct kefir_ast_node_base *, item, iter->value);

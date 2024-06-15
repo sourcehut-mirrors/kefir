@@ -262,9 +262,13 @@ static kefir_result_t context_reference_public_label(struct kefir_mem *mem, cons
                                   "Labels cannot be defined or referenced in a global context");
 }
 
-static kefir_result_t context_push_block(struct kefir_mem *mem, const struct kefir_ast_context *context) {
+static kefir_result_t context_push_block(struct kefir_mem *mem, const struct kefir_ast_context *context,
+                                         const struct kefir_ast_identifier_flat_scope **ordinary_scope_ptr,
+                                         const struct kefir_ast_identifier_flat_scope **tag_scope_ptr) {
     UNUSED(mem);
     UNUSED(context);
+    UNUSED(ordinary_scope_ptr);
+    UNUSED(tag_scope_ptr);
 
     return KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Blocks cannot be pushed in a global context");
 }
@@ -511,8 +515,10 @@ kefir_result_t kefir_ast_global_context_declare_external(struct kefir_mem *mem,
             mem, type, NULL, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN, alignment,
             KEFIR_AST_SCOPED_IDENTIFIER_EXTERNAL_LINKAGE, true, NULL, attributes != NULL ? attributes->asm_label : NULL,
             location);
-        REQUIRE(ordinary_id != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocted AST scoped identifier"));
-        ordinary_id->object.visibility = KEFIR_AST_CONTEXT_FUNCTION_GET_ATTR(attributes, visibility, KEFIR_AST_DECLARATOR_VISIBILITY_UNSET);
+        REQUIRE(ordinary_id != NULL,
+                KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocted AST scoped identifier"));
+        ordinary_id->object.visibility =
+            KEFIR_AST_CONTEXT_FUNCTION_GET_ATTR(attributes, visibility, KEFIR_AST_DECLARATOR_VISIBILITY_UNSET);
         res = kefir_ast_identifier_flat_scope_insert(mem, &context->object_identifiers, identifier, ordinary_id);
         REQUIRE_ELSE(res == KEFIR_OK, {
             kefir_ast_context_free_scoped_identifier(mem, ordinary_id, NULL);
@@ -575,8 +581,10 @@ kefir_result_t kefir_ast_global_context_declare_external_thread_local(
             mem, type, NULL, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN_THREAD_LOCAL, alignment,
             KEFIR_AST_SCOPED_IDENTIFIER_EXTERNAL_LINKAGE, true, NULL, attributes != NULL ? attributes->asm_label : NULL,
             location);
-        REQUIRE(ordinary_id != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocted AST scoped identifier"));
-        ordinary_id->object.visibility = KEFIR_AST_CONTEXT_FUNCTION_GET_ATTR(attributes, visibility, KEFIR_AST_DECLARATOR_VISIBILITY_UNSET);
+        REQUIRE(ordinary_id != NULL,
+                KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocted AST scoped identifier"));
+        ordinary_id->object.visibility =
+            KEFIR_AST_CONTEXT_FUNCTION_GET_ATTR(attributes, visibility, KEFIR_AST_DECLARATOR_VISIBILITY_UNSET);
         res = kefir_ast_identifier_flat_scope_insert(mem, &context->object_identifiers, identifier, ordinary_id);
         REQUIRE_ELSE(res == KEFIR_OK, {
             kefir_ast_context_free_scoped_identifier(mem, ordinary_id, NULL);
@@ -644,8 +652,10 @@ kefir_result_t kefir_ast_global_context_define_external(struct kefir_mem *mem, s
             mem, type, &context->object_identifiers, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN, alignment,
             KEFIR_AST_SCOPED_IDENTIFIER_EXTERNAL_LINKAGE, false, initializer,
             attributes != NULL ? attributes->asm_label : NULL, location);
-        REQUIRE(ordinary_id != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocted AST scoped identifier"));
-        ordinary_id->object.visibility = KEFIR_AST_CONTEXT_FUNCTION_GET_ATTR(attributes, visibility, KEFIR_AST_DECLARATOR_VISIBILITY_UNSET);
+        REQUIRE(ordinary_id != NULL,
+                KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocted AST scoped identifier"));
+        ordinary_id->object.visibility =
+            KEFIR_AST_CONTEXT_FUNCTION_GET_ATTR(attributes, visibility, KEFIR_AST_DECLARATOR_VISIBILITY_UNSET);
         res = kefir_ast_identifier_flat_scope_insert(mem, &context->object_identifiers, identifier, ordinary_id);
         REQUIRE_ELSE(res == KEFIR_OK, {
             kefir_ast_context_free_scoped_identifier(mem, ordinary_id, NULL);
@@ -729,8 +739,10 @@ kefir_result_t kefir_ast_global_context_define_external_thread_local(
             mem, type, &context->object_identifiers, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN_THREAD_LOCAL, alignment,
             KEFIR_AST_SCOPED_IDENTIFIER_EXTERNAL_LINKAGE, false, initializer,
             attributes != NULL ? attributes->asm_label : NULL, location);
-        REQUIRE(ordinary_id != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocted AST scoped identifier"));
-        ordinary_id->object.visibility = KEFIR_AST_CONTEXT_FUNCTION_GET_ATTR(attributes, visibility, KEFIR_AST_DECLARATOR_VISIBILITY_UNSET);
+        REQUIRE(ordinary_id != NULL,
+                KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocted AST scoped identifier"));
+        ordinary_id->object.visibility =
+            KEFIR_AST_CONTEXT_FUNCTION_GET_ATTR(attributes, visibility, KEFIR_AST_DECLARATOR_VISIBILITY_UNSET);
         res = kefir_ast_identifier_flat_scope_insert(mem, &context->object_identifiers, identifier, ordinary_id);
         REQUIRE_ELSE(res == KEFIR_OK, {
             kefir_ast_context_free_scoped_identifier(mem, ordinary_id, NULL);
@@ -811,8 +823,10 @@ kefir_result_t kefir_ast_global_context_define_static(struct kefir_mem *mem, str
         ordinary_id = kefir_ast_context_allocate_scoped_object_identifier(
             mem, type, &context->object_identifiers, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC, alignment,
             KEFIR_AST_SCOPED_IDENTIFIER_INTERNAL_LINKAGE, false, initializer, NULL, location);
-        REQUIRE(ordinary_id != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocted AST scoped identifier"));
-        ordinary_id->object.visibility = KEFIR_AST_CONTEXT_FUNCTION_GET_ATTR(attributes, visibility, KEFIR_AST_DECLARATOR_VISIBILITY_UNSET);
+        REQUIRE(ordinary_id != NULL,
+                KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocted AST scoped identifier"));
+        ordinary_id->object.visibility =
+            KEFIR_AST_CONTEXT_FUNCTION_GET_ATTR(attributes, visibility, KEFIR_AST_DECLARATOR_VISIBILITY_UNSET);
         res = kefir_ast_identifier_flat_scope_insert(mem, &context->object_identifiers, identifier, ordinary_id);
         REQUIRE_ELSE(res == KEFIR_OK, {
             kefir_ast_context_free_scoped_identifier(mem, ordinary_id, NULL);
@@ -891,8 +905,10 @@ kefir_result_t kefir_ast_global_context_define_static_thread_local(
         ordinary_id = kefir_ast_context_allocate_scoped_object_identifier(
             mem, type, &context->object_identifiers, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC_THREAD_LOCAL, alignment,
             KEFIR_AST_SCOPED_IDENTIFIER_INTERNAL_LINKAGE, false, initializer, NULL, location);
-        REQUIRE(ordinary_id != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocted AST scoped identifier"));
-        ordinary_id->object.visibility = KEFIR_AST_CONTEXT_FUNCTION_GET_ATTR(attributes, visibility, KEFIR_AST_DECLARATOR_VISIBILITY_UNSET);
+        REQUIRE(ordinary_id != NULL,
+                KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocted AST scoped identifier"));
+        ordinary_id->object.visibility =
+            KEFIR_AST_CONTEXT_FUNCTION_GET_ATTR(attributes, visibility, KEFIR_AST_DECLARATOR_VISIBILITY_UNSET);
         res = kefir_ast_identifier_flat_scope_insert(mem, &context->object_identifiers, identifier, ordinary_id);
         REQUIRE_ELSE(res == KEFIR_OK, {
             kefir_ast_context_free_scoped_identifier(mem, ordinary_id, NULL);
@@ -1095,7 +1111,8 @@ kefir_result_t kefir_ast_global_context_declare_function(
         REQUIRE(ordinary_id != NULL,
                 KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocted AST scoped identifier"));
         KEFIR_AST_CONTEXT_FUNCTION_IDENTIFIER_INSERT(mem, context, identifier, ordinary_id);
-        ordinary_id->function.visibility = KEFIR_AST_CONTEXT_FUNCTION_GET_ATTR(attributes, visibility, KEFIR_AST_DECLARATOR_VISIBILITY_UNSET);
+        ordinary_id->function.visibility =
+            KEFIR_AST_CONTEXT_FUNCTION_GET_ATTR(attributes, visibility, KEFIR_AST_DECLARATOR_VISIBILITY_UNSET);
         ordinary_id->function.flags.gnu_inline = KEFIR_AST_CONTEXT_FUNCTION_GET_ATTR(attributes, gnu_inline, false);
         ordinary_id->function.flags.weak = KEFIR_AST_CONTEXT_FUNCTION_GET_ATTR(attributes, weak, false);
     }
@@ -1172,7 +1189,8 @@ kefir_result_t kefir_ast_global_context_define_function(struct kefir_mem *mem, s
         REQUIRE(ordinary_id != NULL,
                 KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocted AST scoped identifier"));
         KEFIR_AST_CONTEXT_FUNCTION_IDENTIFIER_INSERT(mem, context, identifier, ordinary_id);
-        ordinary_id->function.visibility = KEFIR_AST_CONTEXT_FUNCTION_GET_ATTR(attributes, visibility, KEFIR_AST_DECLARATOR_VISIBILITY_UNSET);
+        ordinary_id->function.visibility =
+            KEFIR_AST_CONTEXT_FUNCTION_GET_ATTR(attributes, visibility, KEFIR_AST_DECLARATOR_VISIBILITY_UNSET);
         ordinary_id->function.flags.gnu_inline = KEFIR_AST_CONTEXT_FUNCTION_GET_ATTR(attributes, gnu_inline, false);
         ordinary_id->function.flags.weak = KEFIR_AST_CONTEXT_FUNCTION_GET_ATTR(attributes, weak, false);
     }
@@ -1242,7 +1260,8 @@ kefir_result_t kefir_ast_global_context_define_static_function(
         REQUIRE(ordinary_id != NULL,
                 KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocted AST scoped identifier"));
         KEFIR_AST_CONTEXT_FUNCTION_IDENTIFIER_INSERT(mem, context, identifier, ordinary_id);
-        ordinary_id->function.visibility = KEFIR_AST_CONTEXT_FUNCTION_GET_ATTR(attributes, visibility, KEFIR_AST_DECLARATOR_VISIBILITY_UNSET);
+        ordinary_id->function.visibility =
+            KEFIR_AST_CONTEXT_FUNCTION_GET_ATTR(attributes, visibility, KEFIR_AST_DECLARATOR_VISIBILITY_UNSET);
         ordinary_id->function.flags.weak = KEFIR_AST_CONTEXT_FUNCTION_GET_ATTR(attributes, weak, false);
     }
 

@@ -60,12 +60,13 @@ kefir_result_t kefir_ast_translate_statement_expression_node(struct kefir_mem *m
         REQUIRE_OK(kefir_ast_translate_expression(mem, expr_statement->expression, builder, context));
     }
 
-    if (node->base.properties.expression_props.flow_control_statement->value.block.contains_vla) {
-        const struct kefir_ast_flow_control_data_element *vla_element = NULL;
-        REQUIRE_OK(kefir_ast_flow_control_structure_data_element_head(
-            &node->base.properties.expression_props.flow_control_statement->value.block.data_elements, &vla_element));
+    if (kefir_ast_flow_control_block_contains_vl_arrays(
+            node->base.properties.expression_props.flow_control_statement)) {
+        kefir_id_t vla_element;
+        REQUIRE_OK(kefir_ast_flow_control_block_vl_array_head(
+            node->base.properties.expression_props.flow_control_statement, &vla_element));
 
-        REQUIRE_OK(kefir_ast_translator_resolve_vla_element(mem, context, builder, vla_element->identifier));
+        REQUIRE_OK(kefir_ast_translator_resolve_vla_element(mem, context, builder, vla_element));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_LOAD64, KEFIR_IR_MEMORY_FLAG_NONE));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_POPSCOPE, 0));
     }
