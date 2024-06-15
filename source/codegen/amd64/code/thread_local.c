@@ -77,8 +77,8 @@ static kefir_result_t emulated_tls(struct kefir_mem *mem, struct kefir_codegen_a
     if (ir_identifier->scope != KEFIR_IR_IDENTIFIER_SCOPE_IMPORT &&
         !function->codegen->config->position_independent_code) {
         const char *emutls_v_label;
-        REQUIRE_OK(
-            kefir_asmcmp_format(mem, &function->code.context, &emutls_v_label, KEFIR_AMD64_EMUTLS_V, identifier));
+        REQUIRE_OK(kefir_asmcmp_format(mem, &function->code.context, &emutls_v_label, KEFIR_AMD64_EMUTLS_V,
+                                       ir_identifier->symbol));
 
         REQUIRE_OK(kefir_asmcmp_amd64_lea(
             mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
@@ -88,8 +88,8 @@ static kefir_result_t emulated_tls(struct kefir_mem *mem, struct kefir_codegen_a
             NULL));
     } else {
         const char *emutls_got_label;
-        REQUIRE_OK(
-            kefir_asmcmp_format(mem, &function->code.context, &emutls_got_label, KEFIR_AMD64_EMUTLS_V, identifier));
+        REQUIRE_OK(kefir_asmcmp_format(mem, &function->code.context, &emutls_got_label, KEFIR_AMD64_EMUTLS_V,
+                                       ir_identifier->symbol));
 
         REQUIRE_OK(kefir_asmcmp_amd64_mov(
             mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
@@ -160,12 +160,15 @@ static kefir_result_t general_dynamic_tls(struct kefir_mem *mem, struct kefir_co
 
     REQUIRE_OK(kefir_asmcmp_amd64_data16(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                          NULL));
-    REQUIRE_OK(
-        kefir_asmcmp_amd64_lea(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                               &KEFIR_ASMCMP_MAKE_VREG(param_vreg),
-                               &KEFIR_ASMCMP_MAKE_RIP_INDIRECT_EXTERNAL(KEFIR_ASMCMP_EXTERNAL_LABEL_TLSGD, identifier,
-                                                                        KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
-                               NULL));
+
+    const struct kefir_ir_identifier *ir_identifier;
+    REQUIRE_OK(kefir_ir_module_get_identifier(function->module->ir_module, identifier, &ir_identifier));
+    REQUIRE_OK(kefir_asmcmp_amd64_lea(
+        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+        &KEFIR_ASMCMP_MAKE_VREG(param_vreg),
+        &KEFIR_ASMCMP_MAKE_RIP_INDIRECT_EXTERNAL(KEFIR_ASMCMP_EXTERNAL_LABEL_TLSGD, ir_identifier->symbol,
+                                                 KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
+        NULL));
     REQUIRE_OK(kefir_asmcmp_amd64_data_word(mem, &function->code,
                                             kefir_asmcmp_context_instr_tail(&function->code.context), 0x6666, NULL));
     REQUIRE_OK(
@@ -288,7 +291,7 @@ static kefir_result_t initial_exec_tls(struct kefir_mem *mem, struct kefir_codeg
         REQUIRE_OK(kefir_asmcmp_amd64_add(
             mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
             &KEFIR_ASMCMP_MAKE_VREG(result_vreg),
-            &KEFIR_ASMCMP_MAKE_RIP_INDIRECT_EXTERNAL(KEFIR_ASMCMP_EXTERNAL_LABEL_GOTTPOFF, identifier,
+            &KEFIR_ASMCMP_MAKE_RIP_INDIRECT_EXTERNAL(KEFIR_ASMCMP_EXTERNAL_LABEL_GOTTPOFF, ir_identifier->symbol,
                                                      KEFIR_ASMCMP_OPERAND_VARIANT_64BIT),
             NULL));
     }

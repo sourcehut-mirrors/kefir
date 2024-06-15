@@ -2,7 +2,8 @@
 
 kefir_result_t kefir_ir_module_declare_global(struct kefir_mem *mem, struct kefir_ir_module *module, const char *symbol,
                                               kefir_ir_identifier_type_t type) {
-    struct kefir_ir_identifier identifier = {.type = type,
+    struct kefir_ir_identifier identifier = {.symbol = symbol,
+                                             .type = type,
                                              .scope = KEFIR_IR_IDENTIFIER_SCOPE_EXPORT,
                                              .visibility = KEFIR_IR_IDENTIFIER_VISIBILITY_DEFAULT,
                                              .alias = NULL};
@@ -12,7 +13,8 @@ kefir_result_t kefir_ir_module_declare_global(struct kefir_mem *mem, struct kefi
 
 kefir_result_t kefir_ir_module_declare_external(struct kefir_mem *mem, struct kefir_ir_module *module,
                                                 const char *symbol, kefir_ir_identifier_type_t type) {
-    struct kefir_ir_identifier identifier = {.type = type,
+    struct kefir_ir_identifier identifier = {.symbol = symbol,
+                                             .type = type,
                                              .scope = KEFIR_IR_IDENTIFIER_SCOPE_IMPORT,
                                              .visibility = KEFIR_IR_IDENTIFIER_VISIBILITY_DEFAULT,
                                              .alias = NULL};
@@ -21,8 +23,9 @@ kefir_result_t kefir_ir_module_declare_external(struct kefir_mem *mem, struct ke
 }
 
 kefir_result_t kefir_ir_module_declare_local(struct kefir_mem *mem, struct kefir_ir_module *module, const char *symbol,
-                                              kefir_ir_identifier_type_t type) {
-    struct kefir_ir_identifier identifier = {.type = type,
+                                             kefir_ir_identifier_type_t type) {
+    struct kefir_ir_identifier identifier = {.symbol = symbol,
+                                             .type = type,
                                              .scope = KEFIR_IR_IDENTIFIER_SCOPE_LOCAL,
                                              .visibility = KEFIR_IR_IDENTIFIER_VISIBILITY_DEFAULT,
                                              .alias = NULL};

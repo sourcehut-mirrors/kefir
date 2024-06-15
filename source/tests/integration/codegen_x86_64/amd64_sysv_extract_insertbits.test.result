@@ -1,6 +1,12 @@
 .intel_syntax prefix
 .section .note.GNU-stack,"",%progbits
 
+.global insert
+.type insert, @function
+.global extracts
+.type extracts, @function
+.global extractu
+.type extractu, @function
 .extern __kefirrt_opt_amd64_sysv_vararg_save
 .extern __kefirrt_opt_load_int_vararg
 .extern __kefirrt_opt_load_sse_vararg

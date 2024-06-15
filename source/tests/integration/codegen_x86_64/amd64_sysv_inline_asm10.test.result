@@ -1,6 +1,8 @@
 .intel_syntax prefix
 .section .note.GNU-stack,"",%progbits
 
+.global fn1
+.type fn1, @function
 .extern __kefirrt_opt_amd64_sysv_vararg_save
 .extern __kefirrt_opt_load_int_vararg
 .extern __kefirrt_opt_load_sse_vararg

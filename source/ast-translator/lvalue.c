@@ -45,10 +45,6 @@ kefir_result_t kefir_ast_translator_object_lvalue(struct kefir_mem *mem, struct 
     REQUIRE(scoped_identifier->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected object scoped identifier"));
 
-    if (scoped_identifier->object.asm_label != NULL) {
-        identifier = scoped_identifier->object.asm_label;
-    }
-
     switch (scoped_identifier->object.storage) {
         case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN: {
             kefir_id_t id;

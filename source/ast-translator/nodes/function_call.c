@@ -90,10 +90,6 @@ kefir_result_t kefir_ast_translate_function_call_node(struct kefir_mem *mem,
                 function_name != NULL,
                 KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert generated function name into symbol table"));
         }
-
-        if (scoped_id->function.asm_label != NULL) {
-            function_name = scoped_id->function.asm_label;
-        }
     }
 
     struct kefir_ir_function_decl *ir_decl = NULL;

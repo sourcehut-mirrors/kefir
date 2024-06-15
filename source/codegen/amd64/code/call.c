@@ -685,9 +685,9 @@ static kefir_result_t invoke_impl(struct kefir_mem *mem, struct kefir_codegen_am
                     ir_identifier->scope == KEFIR_IR_IDENTIFIER_SCOPE_IMPORT
                 ? KEFIR_ASMCMP_EXTERNAL_LABEL_PLT
                 : KEFIR_ASMCMP_EXTERNAL_LABEL_ABSOLUTE;
-        REQUIRE_OK(
-            kefir_asmcmp_amd64_call(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                                    &KEFIR_ASMCMP_MAKE_EXTERNAL_LABEL(fn_location, ir_func_decl->name, 0), &call_idx));
+        REQUIRE_OK(kefir_asmcmp_amd64_call(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+            &KEFIR_ASMCMP_MAKE_EXTERNAL_LABEL(fn_location, ir_identifier->symbol, 0), &call_idx));
     } else {
         kefir_asmcmp_virtual_register_index_t func_vreg;
         REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(

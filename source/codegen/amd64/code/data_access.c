@@ -103,18 +103,18 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_global)(struct kefir_mem
         REQUIRE_OK(kefir_asmcmp_amd64_lea(
             mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
             &KEFIR_ASMCMP_MAKE_VREG64(vreg),
-            &KEFIR_ASMCMP_MAKE_INDIRECT_EXTERNAL_LABEL(KEFIR_ASMCMP_EXTERNAL_LABEL_ABSOLUTE, symbol, 0,
+            &KEFIR_ASMCMP_MAKE_INDIRECT_EXTERNAL_LABEL(KEFIR_ASMCMP_EXTERNAL_LABEL_ABSOLUTE, ir_identifier->symbol, 0,
                                                        KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
             NULL));
     } else if (ir_identifier->scope == KEFIR_IR_IDENTIFIER_SCOPE_LOCAL) {
         REQUIRE_OK(kefir_asmcmp_amd64_lea(
             mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
             &KEFIR_ASMCMP_MAKE_VREG64(vreg),
-            &KEFIR_ASMCMP_MAKE_RIP_INDIRECT_EXTERNAL(KEFIR_ASMCMP_EXTERNAL_LABEL_ABSOLUTE, symbol,
+            &KEFIR_ASMCMP_MAKE_RIP_INDIRECT_EXTERNAL(KEFIR_ASMCMP_EXTERNAL_LABEL_ABSOLUTE, ir_identifier->symbol,
                                                      KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
             NULL));
     } else {
-        symbol = kefir_string_pool_insert(mem, &function->code.context.strings, symbol, NULL);
+        symbol = kefir_string_pool_insert(mem, &function->code.context.strings, ir_identifier->symbol, NULL);
         REQUIRE(symbol != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert symbol into string pool"));
 
         REQUIRE_OK(

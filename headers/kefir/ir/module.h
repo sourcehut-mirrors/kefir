@@ -50,6 +50,7 @@ typedef enum kefir_ir_identifier_visibility {
 } kefir_ir_identifier_visibility_t;
 
 typedef struct kefir_ir_identifier {
+    const char *symbol;
     kefir_ir_identifier_type_t type;
     kefir_ir_identifier_scope_t scope;
     kefir_ir_identifier_visibility_t visibility;

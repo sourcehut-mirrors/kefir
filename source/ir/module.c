@@ -286,7 +286,12 @@ kefir_result_t kefir_ir_module_declare_identifier(struct kefir_mem *mem, struct 
     const char *symbol = kefir_ir_module_symbol(mem, module, symbol_orig, NULL);
     REQUIRE(symbol != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate a symbol"));
 
+    const char *identifier_symbol = symbol;
     const char *identifier_alias = NULL;
+    if (identifier->symbol != NULL) {
+        identifier_symbol = kefir_ir_module_symbol(mem, module, identifier->symbol, NULL);
+        REQUIRE(identifier_symbol != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate a symbol"));
+    }
     if (identifier->alias != NULL) {
         identifier_alias = kefir_ir_module_symbol(mem, module, identifier->alias, NULL);
         REQUIRE(identifier_alias != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate a symbol"));
@@ -295,6 +300,7 @@ kefir_result_t kefir_ir_module_declare_identifier(struct kefir_mem *mem, struct 
     struct kefir_ir_identifier *identifier_data = KEFIR_MALLOC(mem, sizeof(struct kefir_ir_identifier));
     REQUIRE(identifier_data != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate IR identifier data"));
     *identifier_data = *identifier;
+    identifier_data->symbol = identifier_symbol;
     identifier_data->alias = identifier_alias;
     kefir_result_t res = kefir_hashtree_insert(mem, &module->identifiers, (kefir_hashtree_key_t) symbol,
                                                (kefir_hashtree_value_t) identifier_data);
@@ -305,19 +311,23 @@ kefir_result_t kefir_ir_module_declare_identifier(struct kefir_mem *mem, struct 
             KEFIR_FREE(mem, identifier_data);
             return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected an identifier to exist in IR module");
         });
-        ASSIGN_DECL_CAST(const struct kefir_ir_identifier *, current_identifier_data,
-            node->value);
-        
+        ASSIGN_DECL_CAST(const struct kefir_ir_identifier *, current_identifier_data, node->value);
+
         res = KEFIR_OK;
+        REQUIRE_CHAIN_SET(&res, strcmp(identifier_data->symbol, current_identifier_data->symbol) == 0,
+                          KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Mismatch with existing IR module identifier symbol"));
         REQUIRE_CHAIN_SET(&res, identifier_data->type == current_identifier_data->type,
-            KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Mismatch with existing IR module identifier type"));
+                          KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Mismatch with existing IR module identifier type"));
         REQUIRE_CHAIN_SET(&res, identifier_data->scope == current_identifier_data->scope,
-            KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Mismatch with existing IR module identifier scope"));
-        REQUIRE_CHAIN_SET(&res, identifier_data->visibility == current_identifier_data->visibility,
+                          KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Mismatch with existing IR module identifier scope"));
+        REQUIRE_CHAIN_SET(
+            &res, identifier_data->visibility == current_identifier_data->visibility,
             KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Mismatch with existing IR module identifier visibility"));
-        REQUIRE_CHAIN_SET(&res, (identifier_data->alias == NULL && current_identifier_data->alias == NULL) ||
-            (identifier_data->alias != NULL && current_identifier_data->alias != NULL && strcmp(identifier_data->alias, current_identifier_data->alias) == 0),
-            KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Mismatch with existing IR module identifier alias"));
+        REQUIRE_CHAIN_SET(&res,
+                          (identifier_data->alias == NULL && current_identifier_data->alias == NULL) ||
+                              (identifier_data->alias != NULL && current_identifier_data->alias != NULL &&
+                               strcmp(identifier_data->alias, current_identifier_data->alias) == 0),
+                          KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Mismatch with existing IR module identifier alias"));
         KEFIR_FREE(mem, identifier_data);
         REQUIRE_OK(res);
         return KEFIR_OK;

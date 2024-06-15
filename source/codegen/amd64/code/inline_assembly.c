@@ -681,10 +681,12 @@ static kefir_result_t format_normal_parameter(struct kefir_mem *mem, struct kefi
         switch (asm_param->immediate_type) {
             case KEFIR_IR_INLINE_ASSEMBLY_IMMEDIATE_IDENTIFIER_BASED:
                 if (asm_param->immediate_identifier_base != NULL) {
+                    const struct kefir_ir_identifier *ir_identifier;
+                    REQUIRE_OK(kefir_ir_module_get_identifier(function->module->ir_module,
+                                                              asm_param->immediate_identifier_base, &ir_identifier));
                     REQUIRE_OK(kefir_asmcmp_inline_assembly_add_value(
                         mem, &function->code.context, context->inline_asm_idx,
-                        &KEFIR_ASMCMP_MAKE_EXTERNAL_LABEL(KEFIR_ASMCMP_EXTERNAL_LABEL_ABSOLUTE,
-                                                          asm_param->immediate_identifier_base,
+                        &KEFIR_ASMCMP_MAKE_EXTERNAL_LABEL(KEFIR_ASMCMP_EXTERNAL_LABEL_ABSOLUTE, ir_identifier->symbol,
                                                           asm_param->immediate_value)));
                 } else {
                     REQUIRE_OK(

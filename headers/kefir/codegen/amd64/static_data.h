@@ -28,7 +28,8 @@
 #include "kefir/ir/data.h"
 
 kefir_result_t kefir_codegen_amd64_static_data(struct kefir_mem *, struct kefir_codegen_amd64 *,
-                                               const struct kefir_ir_data *, const char *);
+                                               const struct kefir_ir_module *, const struct kefir_ir_data *,
+                                               const char *);
 
 kefir_result_t kefir_codegen_amd64_static_data_uninit(struct kefir_mem *, struct kefir_codegen_amd64 *,
                                                       const struct kefir_ir_data *, const char *);

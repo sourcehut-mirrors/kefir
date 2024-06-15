@@ -36,7 +36,7 @@ static kefir_result_t translate_module_identifiers(const struct kefir_ir_module 
          symbol = kefir_ir_module_identifiers_next(&identifiers_iter, &identifier)) {
 
         if (identifier->alias != NULL) {
-            REQUIRE_OK(KEFIR_AMD64_XASMGEN_ALIAS(&codegen->xasmgen, symbol, identifier->alias));
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_ALIAS(&codegen->xasmgen, identifier->symbol, identifier->alias));
         }
 
         kefir_amd64_xasmgen_type_attribute_t type = KEFIR_AMD64_XASMGEN_TYPE_FUNCTION;
@@ -74,31 +74,33 @@ static kefir_result_t translate_module_identifiers(const struct kefir_ir_module 
             case KEFIR_IR_IDENTIFIER_SCOPE_EXPORT:
 
                 if (!codegen->config->emulated_tls || identifier->type != KEFIR_IR_IDENTIFIER_THREAD_LOCAL_DATA) {
-                    REQUIRE_OK(KEFIR_AMD64_XASMGEN_GLOBAL(&codegen->xasmgen, type, visibility, "%s", symbol));
+                    REQUIRE_OK(
+                        KEFIR_AMD64_XASMGEN_GLOBAL(&codegen->xasmgen, type, visibility, "%s", identifier->symbol));
                 } else {
-                    REQUIRE_OK(
-                        KEFIR_AMD64_XASMGEN_GLOBAL(&codegen->xasmgen, type, visibility, KEFIR_AMD64_EMUTLS_V, symbol));
-                    REQUIRE_OK(
-                        KEFIR_AMD64_XASMGEN_GLOBAL(&codegen->xasmgen, type, visibility, KEFIR_AMD64_EMUTLS_T, symbol));
+                    REQUIRE_OK(KEFIR_AMD64_XASMGEN_GLOBAL(&codegen->xasmgen, type, visibility, KEFIR_AMD64_EMUTLS_V,
+                                                          identifier->symbol));
+                    REQUIRE_OK(KEFIR_AMD64_XASMGEN_GLOBAL(&codegen->xasmgen, type, visibility, KEFIR_AMD64_EMUTLS_T,
+                                                          identifier->symbol));
                 }
                 break;
 
             case KEFIR_IR_IDENTIFIER_SCOPE_EXPORT_WEAK:
                 if (!codegen->config->emulated_tls || identifier->type != KEFIR_IR_IDENTIFIER_THREAD_LOCAL_DATA) {
-                    REQUIRE_OK(KEFIR_AMD64_XASMGEN_WEAK(&codegen->xasmgen, type, visibility, "%s", symbol));
+                    REQUIRE_OK(KEFIR_AMD64_XASMGEN_WEAK(&codegen->xasmgen, type, visibility, "%s", identifier->symbol));
                 } else {
-                    REQUIRE_OK(
-                        KEFIR_AMD64_XASMGEN_WEAK(&codegen->xasmgen, type, visibility, KEFIR_AMD64_EMUTLS_V, symbol));
-                    REQUIRE_OK(
-                        KEFIR_AMD64_XASMGEN_WEAK(&codegen->xasmgen, type, visibility, KEFIR_AMD64_EMUTLS_T, symbol));
+                    REQUIRE_OK(KEFIR_AMD64_XASMGEN_WEAK(&codegen->xasmgen, type, visibility, KEFIR_AMD64_EMUTLS_V,
+                                                        identifier->symbol));
+                    REQUIRE_OK(KEFIR_AMD64_XASMGEN_WEAK(&codegen->xasmgen, type, visibility, KEFIR_AMD64_EMUTLS_T,
+                                                        identifier->symbol));
                 }
                 break;
 
             case KEFIR_IR_IDENTIFIER_SCOPE_IMPORT:
                 if (!codegen->config->emulated_tls || identifier->type != KEFIR_IR_IDENTIFIER_THREAD_LOCAL_DATA) {
-                    REQUIRE_OK(KEFIR_AMD64_XASMGEN_EXTERNAL(&codegen->xasmgen, "%s", symbol));
+                    REQUIRE_OK(KEFIR_AMD64_XASMGEN_EXTERNAL(&codegen->xasmgen, "%s", identifier->symbol));
                 } else {
-                    REQUIRE_OK(KEFIR_AMD64_XASMGEN_EXTERNAL(&codegen->xasmgen, KEFIR_AMD64_EMUTLS_V, symbol));
+                    REQUIRE_OK(
+                        KEFIR_AMD64_XASMGEN_EXTERNAL(&codegen->xasmgen, KEFIR_AMD64_EMUTLS_V, identifier->symbol));
                 }
                 break;
 
@@ -154,10 +156,13 @@ static kefir_result_t translate_data_storage(struct kefir_mem *mem, struct kefir
             first = false;
         }
 
+        const struct kefir_ir_identifier *ir_identifier;
+        REQUIRE_OK(kefir_ir_module_get_identifier(module->ir_module, identifier, &ir_identifier));
+
         if (defined || (section_attr & KEFIR_AMD64_XASMGEN_SECTION_TLS) != 0) {
-            REQUIRE_OK(kefir_codegen_amd64_static_data(mem, codegen, data, identifier));
+            REQUIRE_OK(kefir_codegen_amd64_static_data(mem, codegen, module->ir_module, data, ir_identifier->symbol));
         } else {
-            REQUIRE_OK(kefir_codegen_amd64_static_data_uninit(mem, codegen, data, identifier));
+            REQUIRE_OK(kefir_codegen_amd64_static_data_uninit(mem, codegen, data, ir_identifier->symbol));
         }
     }
     return KEFIR_OK;
@@ -184,8 +189,11 @@ static kefir_result_t translate_emulated_tls(struct kefir_mem *mem, struct kefir
             first = false;
         }
 
-        snprintf(emutls_identifier, sizeof(emutls_identifier) - 1, KEFIR_AMD64_EMUTLS_T, identifier);
-        REQUIRE_OK(kefir_codegen_amd64_static_data(mem, codegen, data, emutls_identifier));
+        const struct kefir_ir_identifier *ir_identifier;
+        REQUIRE_OK(kefir_ir_module_get_identifier(module->ir_module, identifier, &ir_identifier));
+
+        snprintf(emutls_identifier, sizeof(emutls_identifier) - 1, KEFIR_AMD64_EMUTLS_T, ir_identifier->symbol);
+        REQUIRE_OK(kefir_codegen_amd64_static_data(mem, codegen, module->ir_module, data, emutls_identifier));
     }
 
     first = true;
@@ -200,8 +208,11 @@ static kefir_result_t translate_emulated_tls(struct kefir_mem *mem, struct kefir
             first = false;
         }
 
+        const struct kefir_ir_identifier *ir_identifier;
+        REQUIRE_OK(kefir_ir_module_get_identifier(module->ir_module, identifier, &ir_identifier));
+
         char emutls_identifier[1024] = {0};
-        snprintf(emutls_identifier, sizeof(emutls_identifier) - 1, KEFIR_AMD64_EMUTLS_V, identifier);
+        snprintf(emutls_identifier, sizeof(emutls_identifier) - 1, KEFIR_AMD64_EMUTLS_V, ir_identifier->symbol);
 
         struct kefir_abi_amd64_type_layout type_layout;
         REQUIRE_OK(kefir_abi_amd64_type_layout(mem, codegen->abi_variant, data->type, &type_layout));
@@ -224,7 +235,7 @@ static kefir_result_t translate_emulated_tls(struct kefir_mem *mem, struct kefir
             data->defined ? kefir_asm_amd64_xasmgen_operand_label(
                                 &codegen->xasmgen_helpers.operands[3], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
                                 kefir_asm_amd64_xasmgen_helpers_format(&codegen->xasmgen_helpers, KEFIR_AMD64_EMUTLS_T,
-                                                                       identifier))
+                                                                       ir_identifier->symbol))
                           : kefir_asm_amd64_xasmgen_operand_immu(&codegen->xasmgen_helpers.operands[3], 0)));
     }
     return KEFIR_OK;

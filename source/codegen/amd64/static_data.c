@@ -30,6 +30,7 @@
 
 struct static_data_param {
     struct kefir_codegen_amd64 *codegen;
+    const struct kefir_ir_module *module;
     const struct kefir_ir_data *data;
     struct kefir_abi_amd64_type_layout layout;
     struct kefir_ir_type_visitor *visitor;
@@ -98,13 +99,15 @@ static kefir_result_t integral_static_data(const struct kefir_ir_type *type, kef
             REQUIRE_OK(kefir_abi_amd64_type_layout_at(&param->layout, index, &layout));
             REQUIRE_OK(align_offset(layout, param));
 
+            const struct kefir_ir_identifier *ir_identifier;
+            REQUIRE_OK(kefir_ir_module_get_identifier(param->module, entry->value.pointer.reference, &ir_identifier));
+
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
                 &param->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
                 kefir_asm_amd64_xasmgen_operand_offset(
                     &param->codegen->xasmgen_helpers.operands[0],
                     kefir_asm_amd64_xasmgen_operand_label(&param->codegen->xasmgen_helpers.operands[1],
-                                                          KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
-                                                          entry->value.pointer.reference),
+                                                          KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE, ir_identifier->symbol),
                     entry->value.pointer.offset)));
 
             param->offset += layout->size;
@@ -224,16 +227,18 @@ static kefir_result_t word_static_data(const struct kefir_ir_type *type, kefir_s
                                              &param->codegen->xasmgen_helpers.operands[0], entry->value.integer)));
             break;
 
-        case KEFIR_IR_DATA_VALUE_POINTER:
+        case KEFIR_IR_DATA_VALUE_POINTER: {
+            const struct kefir_ir_identifier *ir_identifier;
+            REQUIRE_OK(kefir_ir_module_get_identifier(param->module, entry->value.pointer.reference, &ir_identifier));
+
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
                 &param->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
                 kefir_asm_amd64_xasmgen_operand_offset(
                     &param->codegen->xasmgen_helpers.operands[0],
                     kefir_asm_amd64_xasmgen_operand_label(&param->codegen->xasmgen_helpers.operands[1],
-                                                          KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
-                                                          entry->value.pointer.reference),
+                                                          KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE, ir_identifier->symbol),
                     entry->value.pointer.offset)));
-            break;
+        } break;
 
         case KEFIR_IR_DATA_VALUE_STRING_POINTER:
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
@@ -672,7 +677,8 @@ static kefir_result_t builtin_static_data(const struct kefir_ir_type *type, kefi
 }
 
 kefir_result_t kefir_codegen_amd64_static_data(struct kefir_mem *mem, struct kefir_codegen_amd64 *codegen,
-                                               const struct kefir_ir_data *data, const char *identifier) {
+                                               const struct kefir_ir_module *module, const struct kefir_ir_data *data,
+                                               const char *identifier) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(codegen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 code generator"));
     REQUIRE(data != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR data"));
@@ -693,7 +699,8 @@ kefir_result_t kefir_codegen_amd64_static_data(struct kefir_mem *mem, struct kef
     visitor.visit[KEFIR_IR_TYPE_UNION] = union_static_data;
     visitor.visit[KEFIR_IR_TYPE_BUILTIN] = builtin_static_data;
 
-    struct static_data_param param = {.codegen = codegen, .data = data, .visitor = &visitor, .slot = 0, .offset = 0};
+    struct static_data_param param = {
+        .codegen = codegen, .module = module, .data = data, .visitor = &visitor, .slot = 0, .offset = 0};
     REQUIRE_OK(kefir_ir_data_map_iter(data, &param.data_map_iter));
     REQUIRE_OK(kefir_abi_amd64_type_layout(mem, codegen->abi_variant, data->type, &param.layout));
 

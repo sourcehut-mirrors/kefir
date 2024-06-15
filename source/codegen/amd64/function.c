@@ -265,11 +265,15 @@ static kefir_result_t generate_constants(struct kefir_mem *mem, struct kefir_cod
 
         const struct kefir_opt_instruction *instr;
         REQUIRE_OK(kefir_opt_code_container_instr(&func->function->code, instr_ref, &instr));
+
+        const struct kefir_ir_identifier *ir_identifier;
+        REQUIRE_OK(
+            kefir_ir_module_get_identifier(func->module->ir_module, func->function->ir_func->name, &ir_identifier));
         switch (instr->operation.opcode) {
             case KEFIR_OPT_OPCODE_FLOAT32_CONST: {
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_ALIGN(&func->codegen->xasmgen, 4));
-                REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&func->codegen->xasmgen, KEFIR_AMD64_LABEL,
-                                                     func->function->ir_func->name, constant_label));
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&func->codegen->xasmgen, KEFIR_AMD64_LABEL, ir_identifier->symbol,
+                                                     constant_label));
                 union {
                     kefir_uint32_t u32;
                     kefir_float32_t f32;
@@ -282,8 +286,8 @@ static kefir_result_t generate_constants(struct kefir_mem *mem, struct kefir_cod
 
             case KEFIR_OPT_OPCODE_FLOAT64_CONST: {
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_ALIGN(&func->codegen->xasmgen, 8));
-                REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&func->codegen->xasmgen, KEFIR_AMD64_LABEL,
-                                                     func->function->ir_func->name, constant_label));
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&func->codegen->xasmgen, KEFIR_AMD64_LABEL, ir_identifier->symbol,
+                                                     constant_label));
                 union {
                     kefir_uint64_t u64;
                     kefir_float64_t f64;
@@ -296,8 +300,8 @@ static kefir_result_t generate_constants(struct kefir_mem *mem, struct kefir_cod
 
             case KEFIR_OPT_OPCODE_LONG_DOUBLE_CONST: {
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_ALIGN(&func->codegen->xasmgen, 8));
-                REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&func->codegen->xasmgen, KEFIR_AMD64_LABEL,
-                                                     func->function->ir_func->name, constant_label));
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&func->codegen->xasmgen, KEFIR_AMD64_LABEL, ir_identifier->symbol,
+                                                     constant_label));
                 volatile union {
                     kefir_uint64_t u64[2];
                     kefir_long_double_t long_double;
@@ -394,7 +398,9 @@ static kefir_result_t output_asm(struct kefir_codegen_amd64 *codegen, struct kef
 static kefir_result_t kefir_codegen_amd64_function_translate_impl(struct kefir_mem *mem,
                                                                   struct kefir_codegen_amd64 *codegen,
                                                                   struct kefir_codegen_amd64_function *func) {
-    REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&func->codegen->xasmgen, "%s", func->function->ir_func->name));
+    const struct kefir_ir_identifier *ir_identifier;
+    REQUIRE_OK(kefir_ir_module_get_identifier(func->module->ir_module, func->function->ir_func->name, &ir_identifier));
+    REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&func->codegen->xasmgen, "%s", ir_identifier->symbol));
 
     if (func->function->ir_func->declaration->vararg) {
         REQUIRE_OK(kefir_codegen_amd64_stack_frame_vararg(&func->stack_frame));
@@ -449,7 +455,11 @@ kefir_result_t kefir_codegen_amd64_function_translate(struct kefir_mem *mem, str
                                                 .prologue_tail = KEFIR_ASMCMP_INDEX_NONE,
                                                 .return_address_vreg = KEFIR_ASMCMP_INDEX_NONE,
                                                 .dynamic_scope_vreg = KEFIR_ASMCMP_INDEX_NONE};
-    REQUIRE_OK(kefir_asmcmp_amd64_init(function->ir_func->name, codegen->abi_variant,
+
+    const struct kefir_ir_identifier *ir_identifier;
+    REQUIRE_OK(kefir_ir_module_get_identifier(module->ir_module, function->ir_func->name, &ir_identifier));
+
+    REQUIRE_OK(kefir_asmcmp_amd64_init(ir_identifier->symbol, codegen->abi_variant,
                                        codegen->config->position_independent_code, &func.code));
     REQUIRE_OK(kefir_hashtree_init(&func.instructions, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&func.labels, &kefir_hashtree_uint_ops));

@@ -58,10 +58,6 @@ static kefir_result_t init_function_declaration(struct kefir_mem *mem, struct ke
                                 "Failed to insert generated function identifier into symbol table"));
     }
 
-    if (scoped_id->function.asm_label != NULL) {
-        identifier = scoped_id->function.asm_label;
-    }
-
     const struct kefir_ast_declarator_function *decl_func = NULL;
     REQUIRE_OK(kefir_ast_declarator_unpack_function(function->declarator, &decl_func));
     REQUIRE(decl_func != NULL,

@@ -1,6 +1,22 @@
 .intel_syntax prefix
 .section .note.GNU-stack,"",%progbits
 
+.global int8_1
+.type int8_1, @object
+.global int8_2
+.type int8_2, @object
+.global int16_1
+.type int16_1, @object
+.global int16_2
+.type int16_2, @object
+.global int32_1
+.type int32_1, @object
+.global int32_2
+.type int32_2, @object
+.global int64_1
+.type int64_1, @object
+.global int64_2
+.type int64_2, @object
 .global array1_1
 .type array1_1, @object
 .global union1_1

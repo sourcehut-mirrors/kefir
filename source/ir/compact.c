@@ -155,7 +155,9 @@ static kefir_result_t compact_inline_asm(struct kefir_mem *mem, struct compact_p
                     compact_type(mem, params, (const struct kefir_ir_type **) &param->type.type, &param->type.type_id));
                 switch (param->immediate_type) {
                     case KEFIR_IR_INLINE_ASSEMBLY_IMMEDIATE_IDENTIFIER_BASED:
-                        // Intentionally left blank
+                        REQUIRE_OK(kefir_list_insert_after(mem, &params->symbol_scan_queue,
+                                                           kefir_list_tail(&params->symbol_scan_queue),
+                                                           (void *) param->immediate_identifier_base));
                         break;
 
                     case KEFIR_IR_INLINE_ASSEMBLY_IMMEDIATE_LITERAL_BASED:

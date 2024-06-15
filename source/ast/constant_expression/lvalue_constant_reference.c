@@ -57,15 +57,10 @@ static kefir_result_t visit_identifier(const struct kefir_ast_visitor *visitor, 
                 scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC ||
                     scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location, "Not a constant expression"));
-            if (scoped_id->object.asm_label != NULL) {
-                identifier = scoped_id->object.asm_label;
-            }
         } break;
 
         case KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION:
-            if (scoped_id->function.asm_label != NULL) {
-                identifier = scoped_id->function.asm_label;
-            }
+            // Intentionally left blank
             break;
 
         case KEFIR_AST_SCOPE_IDENTIFIER_ENUM_CONSTANT:

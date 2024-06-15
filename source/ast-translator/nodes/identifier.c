@@ -96,10 +96,7 @@ kefir_result_t kefir_ast_translate_identifier_node(struct kefir_mem *mem, struct
             break;
 
         case KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION:
-            REQUIRE_OK(translate_function_identifier(mem, context, builder,
-                                                     scoped_identifier->function.asm_label == NULL
-                                                         ? node->identifier
-                                                         : scoped_identifier->function.asm_label));
+            REQUIRE_OK(translate_function_identifier(mem, context, builder, node->identifier));
             break;
 
         case KEFIR_AST_SCOPE_IDENTIFIER_TYPE_TAG:
