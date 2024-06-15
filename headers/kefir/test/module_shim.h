@@ -7,5 +7,7 @@ kefir_result_t kefir_ir_module_declare_global(struct kefir_mem *, struct kefir_i
                                               kefir_ir_identifier_type_t);
 kefir_result_t kefir_ir_module_declare_external(struct kefir_mem *, struct kefir_ir_module *, const char *,
                                                 kefir_ir_identifier_type_t);
+kefir_result_t kefir_ir_module_declare_local(struct kefir_mem *, struct kefir_ir_module *, const char *,
+                                              kefir_ir_identifier_type_t);
 
 #endif

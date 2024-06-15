@@ -73,8 +73,8 @@ static kefir_result_t emulated_tls(struct kefir_mem *mem, struct kefir_codegen_a
     REQUIRE_OK(kefir_asmcmp_amd64_register_allocation_requirement(mem, &function->code, param_vreg, param_phreg));
 
     const struct kefir_ir_identifier *ir_identifier;
-    REQUIRE_OK(kefir_ir_module_try_get_identifier(function->module->ir_module, identifier, &ir_identifier));
-    if ((ir_identifier == NULL || ir_identifier->scope != KEFIR_IR_IDENTIFIER_SCOPE_IMPORT) &&
+    REQUIRE_OK(kefir_ir_module_get_identifier(function->module->ir_module, identifier, &ir_identifier));
+    if (ir_identifier->scope != KEFIR_IR_IDENTIFIER_SCOPE_IMPORT &&
         !function->codegen->config->position_independent_code) {
         const char *emutls_v_label;
         REQUIRE_OK(
@@ -229,8 +229,8 @@ static kefir_result_t initial_exec_tls(struct kefir_mem *mem, struct kefir_codeg
 
     const kefir_int64_t offset = instruction->operation.parameters.variable.offset;
     const struct kefir_ir_identifier *ir_identifier;
-    REQUIRE_OK(kefir_ir_module_try_get_identifier(function->module->ir_module, identifier, &ir_identifier));
-    if ((ir_identifier == NULL || ir_identifier->scope != KEFIR_IR_IDENTIFIER_SCOPE_IMPORT) &&
+    REQUIRE_OK(kefir_ir_module_get_identifier(function->module->ir_module, identifier, &ir_identifier));
+    if (ir_identifier->scope != KEFIR_IR_IDENTIFIER_SCOPE_IMPORT &&
         !function->codegen->config->position_independent_code) {
         REQUIRE_OK(kefir_asmcmp_amd64_lea(
             mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),

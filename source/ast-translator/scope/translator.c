@@ -24,6 +24,7 @@
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 #include "kefir/ir/type_tree.h"
+#include <stdio.h>
 
 static kefir_size_t resolve_base_slot(const struct kefir_ir_type_tree_node *node) {
     REQUIRE(node != NULL, 0);
@@ -155,6 +156,21 @@ static kefir_result_t translate_externals(struct kefir_mem *mem, const struct ke
                 }
 
                 REQUIRE_OK(kefir_ir_module_declare_identifier(mem, module, function_name, &ir_identifier));
+                if (scoped_identifier->value->function.flags.gnu_inline &&
+                    scoped_identifier->value->function.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN &&
+                    kefir_ast_function_specifier_is_inline(scoped_identifier->value->function.specifier) &&
+                    !scoped_identifier->value->function.inline_definition && scoped_identifier->value->function.asm_label == NULL) {
+                    char identifier_buf[1024];
+                    snprintf(identifier_buf, sizeof(identifier_buf) - 1, KEFIR_AST_TRANSLATOR_GNU_INLINE_FUNCTION_IDENTIFIER,
+                            function_name);
+                    function_name = kefir_ir_module_symbol(mem, module, identifier_buf, NULL);
+                    REQUIRE(function_name != NULL,
+                            KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE,
+                                            "Failed to insert generated function identifier into symbol table"));
+
+                    ir_identifier.scope = KEFIR_IR_IDENTIFIER_SCOPE_LOCAL;
+                    REQUIRE_OK(kefir_ir_module_declare_identifier(mem, module, function_name, &ir_identifier));
+                }
 #undef DECL_GLOBAL_WEAK
             } break;
 
@@ -229,16 +245,14 @@ static kefir_result_t translate_static(struct kefir_mem *mem, const struct kefir
                 }
             } break;
 
-            case KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION:
-                if (scoped_identifier->value->function.alias != NULL) {
-                    struct kefir_ir_identifier ir_identifier = {.type = KEFIR_IR_IDENTIFIER_FUNCTION,
-                                                                .scope = KEFIR_IR_IDENTIFIER_SCOPE_LOCAL,
-                                                                .visibility = KEFIR_IR_IDENTIFIER_VISIBILITY_DEFAULT,
-                                                                .alias = scoped_identifier->value->function.alias};
-                    REQUIRE_OK(
-                        kefir_ir_module_declare_identifier(mem, module, scoped_identifier->identifier, &ir_identifier));
-                }
-                break;
+            case KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION: {
+                struct kefir_ir_identifier ir_identifier = {.type = KEFIR_IR_IDENTIFIER_FUNCTION,
+                                                            .scope = KEFIR_IR_IDENTIFIER_SCOPE_LOCAL,
+                                                            .visibility = KEFIR_IR_IDENTIFIER_VISIBILITY_DEFAULT,
+                                                            .alias = scoped_identifier->value->function.alias};
+                REQUIRE_OK(
+                    kefir_ir_module_declare_identifier(mem, module, scoped_identifier->identifier, &ir_identifier));
+            } break;
 
             default:
                 return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to translate global scoped identifier");

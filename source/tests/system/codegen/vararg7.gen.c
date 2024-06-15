@@ -52,6 +52,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE(getint_decl != NULL, KEFIR_INTERNAL_ERROR);
     struct kefir_ir_function *getint = kefir_ir_module_new_function(mem, &module, getint_decl, locals_id, 1024);
     REQUIRE(getint != NULL, KEFIR_INTERNAL_ERROR);
+    REQUIRE_OK(kefir_ir_module_declare_local(mem, &module, getint->name, KEFIR_IR_IDENTIFIER_FUNCTION));
 
     REQUIRE_OK(kefir_irbuilder_type_append(mem, inttype, KEFIR_IR_TYPE_INT, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, getint_decl_params, KEFIR_IR_TYPE_INT, 0, 0));

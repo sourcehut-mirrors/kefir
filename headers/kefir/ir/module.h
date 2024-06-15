@@ -128,8 +128,6 @@ const char *kefir_ir_module_identifiers_next(struct kefir_hashtree_node_iterator
                                              const struct kefir_ir_identifier **);
 kefir_result_t kefir_ir_module_get_identifier(const struct kefir_ir_module *, const char *,
                                               const struct kefir_ir_identifier **);
-kefir_result_t kefir_ir_module_try_get_identifier(const struct kefir_ir_module *, const char *,
-                                                  const struct kefir_ir_identifier **);
 
 kefir_result_t kefir_ir_module_get_string_literal(const struct kefir_ir_module *, kefir_id_t,
                                                   kefir_ir_string_literal_type_t *, kefir_bool_t *, const void **,

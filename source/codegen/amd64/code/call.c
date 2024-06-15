@@ -679,9 +679,9 @@ static kefir_result_t invoke_impl(struct kefir_mem *mem, struct kefir_codegen_am
     kefir_asmcmp_instruction_index_t call_idx;
     if (instruction->operation.opcode == KEFIR_OPT_OPCODE_INVOKE) {
         const struct kefir_ir_identifier *ir_identifier;
-        REQUIRE_OK(kefir_ir_module_try_get_identifier(function->module->ir_module, ir_func_decl->name, &ir_identifier));
+        REQUIRE_OK(kefir_ir_module_get_identifier(function->module->ir_module, ir_func_decl->name, &ir_identifier));
         kefir_asmcmp_external_label_relocation_t fn_location =
-            function->codegen->config->position_independent_code && ir_identifier != NULL &&
+            function->codegen->config->position_independent_code &&
                     ir_identifier->scope == KEFIR_IR_IDENTIFIER_SCOPE_IMPORT
                 ? KEFIR_ASMCMP_EXTERNAL_LABEL_PLT
                 : KEFIR_ASMCMP_EXTERNAL_LABEL_ABSOLUTE;

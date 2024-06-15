@@ -63,6 +63,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, string_type, KEFIR_IR_TYPE_CHAR, 0, 0));
     struct kefir_ir_data *fmt_data1 = kefir_ir_module_new_named_data(
         mem, &module, kefir_ir_module_symbol(mem, &module, "fmt", &fmt_id), KEFIR_IR_DATA_GLOBAL_STORAGE, fmt_type_id);
+    REQUIRE_OK(kefir_ir_module_declare_local(mem, &module, "fmt", KEFIR_IR_IDENTIFIER_GLOBAL_DATA));
     REQUIRE_OK(kefir_ir_data_set_string(mem, fmt_data1, 0, KEFIR_IR_STRING_LITERAL_MULTIBYTE, FMT, strlen(FMT)));
     REQUIRE_OK(kefir_ir_data_finalize(fmt_data1));
 
@@ -73,6 +74,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_ir_data_finalize(
         kefir_ir_module_new_named_data(mem, &module, kefir_ir_module_symbol(mem, &module, "result", &result_id),
                                        KEFIR_IR_DATA_GLOBAL_STORAGE, result_type_id)));
+    REQUIRE_OK(kefir_ir_module_declare_local(mem, &module, "result", KEFIR_IR_IDENTIFIER_GLOBAL_DATA));
 
     REQUIRE_OK(kefir_test_codegen_init(mem, &codegen, stdout, NULL));
 

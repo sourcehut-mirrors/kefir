@@ -418,23 +418,6 @@ kefir_result_t kefir_ir_module_get_identifier(const struct kefir_ir_module *modu
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_ir_module_try_get_identifier(const struct kefir_ir_module *module, const char *symbol,
-                                                  const struct kefir_ir_identifier **identifier) {
-    REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR module"));
-    REQUIRE(symbol != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR identifier symbol"));
-    REQUIRE(identifier != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to IR identifier"));
-
-    struct kefir_hashtree_node *node;
-    kefir_result_t res = kefir_hashtree_at(&module->identifiers, (kefir_hashtree_key_t) symbol, &node);
-    if (res == KEFIR_NOT_FOUND) {
-        *identifier = NULL;
-    } else {
-        REQUIRE_OK(res);
-        *identifier = (const struct kefir_ir_identifier *) node->value;
-    }
-    return KEFIR_OK;
-}
-
 kefir_result_t kefir_ir_module_get_string_literal(const struct kefir_ir_module *module, kefir_id_t id,
                                                   kefir_ir_string_literal_type_t *type, kefir_bool_t *public,
                                                   const void **content, kefir_size_t *length) {
