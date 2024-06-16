@@ -93,8 +93,19 @@ static kefir_result_t translate_externals(struct kefir_mem *mem, const struct ke
                                       ? get_ir_visibility(scoped_identifier->value->object.visibility)
                                       : KEFIR_IR_IDENTIFIER_VISIBILITY_DEFAULT,
                     .alias = NULL};
+#define DECL_GLOBAL_WEAK                                                 \
+    do {                                                                 \
+        if (scoped_identifier->value->object.flags.weak) {             \
+            ir_identifier.scope = KEFIR_IR_IDENTIFIER_SCOPE_EXPORT_WEAK; \
+        } else {                                                         \
+            ir_identifier.scope = KEFIR_IR_IDENTIFIER_SCOPE_EXPORT;      \
+        }                                                                \
+    } while (0)
 
-                if (scoped_identifier->value->object.external) {
+                if (scoped_identifier->value->object.alias != NULL) {
+                    ir_identifier.alias = scoped_identifier->value->object.alias;
+                    DECL_GLOBAL_WEAK;
+                } else if (scoped_identifier->value->object.external) {
                     ir_identifier.scope = KEFIR_IR_IDENTIFIER_SCOPE_IMPORT;
                 } else {
                     struct kefir_ir_data *data =
@@ -107,11 +118,12 @@ static kefir_result_t translate_externals(struct kefir_mem *mem, const struct ke
                     }
                     REQUIRE_OK(kefir_ir_data_finalize(data));
 
-                    ir_identifier.scope = KEFIR_IR_IDENTIFIER_SCOPE_EXPORT;
+                    DECL_GLOBAL_WEAK;
                 }
 
                 REQUIRE_OK(
                     kefir_ir_module_declare_identifier(mem, module, scoped_identifier->identifier, &ir_identifier));
+#undef DECL_GLOBAL_WEAK
             } break;
 
             case KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION: {

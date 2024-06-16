@@ -83,6 +83,8 @@ struct kefir_ast_scoped_identifier *kefir_ast_context_allocate_scoped_object_ide
     scoped_id->object.visibility = KEFIR_AST_DECLARATOR_VISIBILITY_DEFAULT;
     scoped_id->object.asm_label = asm_label;
     scoped_id->object.vl_array = KEFIR_ID_NONE;
+    scoped_id->object.alias = NULL;
+    scoped_id->object.flags.weak = false;
     if (source_location != NULL) {
         scoped_id->source_location = *source_location;
     } else {

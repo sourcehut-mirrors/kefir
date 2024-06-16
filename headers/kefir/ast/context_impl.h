@@ -97,12 +97,28 @@ kefir_result_t kefir_ast_context_merge_alignment(struct kefir_mem *, struct kefi
         }                                                                                                \
     } while (0)
 
+#define KEFIR_AST_CONTEXT_MERGE_OBJECT_ALIAS_ATTR(_ordinary_id, _attributes)                           \
+    do {                                                                                                 \
+        if ((_attributes)->alias != NULL) {                                                              \
+            REQUIRE((_attributes)->asm_label == NULL && (_ordinary_id)->object.asm_label == NULL,      \
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,                               \
+                                           "Assembly label cannot be attached to an aliased object")); \
+            if ((_ordinary_id)->object.alias != NULL) {                                                \
+                REQUIRE(strcmp((_attributes)->alias, (_ordinary_id)->object.alias) == 0,               \
+                        KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,                           \
+                                               "Alias mismatch in object redeclaration"));             \
+            } else {                                                                                     \
+                (_ordinary_id)->object.alias = (_attributes)->alias;                                   \
+            }                                                                                            \
+        }                                                                                                \
+    } while (0)
+
 #define KEFIR_AST_CONTEXT_MERGE_BOOL(_left, _right) \
     do {                                            \
         *(_left) = *(_left) || (_right);            \
     } while (0)
 
-#define KEFIR_AST_CONTEXT_FUNCTION_GET_ATTR(_attributes, _name, _default) \
+#define KEFIR_AST_CONTEXT_GET_ATTR(_attributes, _name, _default) \
     ((_attributes) != NULL ? (_attributes)->_name : (_default))
 
 #define KEFIR_AST_CONTEXT_MERGE_VISIBILITY(_visibility, _attributes) \
