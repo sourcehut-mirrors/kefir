@@ -25,6 +25,7 @@
 #include "kefir/target/abi/amd64/bitfields.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
+#include "kefir/core/source_error.h"
 
 typedef struct kefir_abi_sysv_amd64_type {
     const struct kefir_ir_type *ir_type;
@@ -100,6 +101,71 @@ static kefir_result_t amd64_sysv_bitfield_allocator(struct kefir_mem *mem,
     return KEFIR_OK;
 }
 
+static kefir_result_t amd64_sysv_decode_inline_assembly_constraints(const struct kefir_ir_target_platform *platform, const char *constraints, struct kefir_ir_inline_assembly_parameter_constraints *decoded_constraints, const struct kefir_source_location *source_location) {
+    UNUSED(platform);
+    REQUIRE(constraints != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 inline assembly constraints"));
+    REQUIRE(decoded_constraints != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to IR inline assembly decoded constraints"));
+
+    for (const char *iter = constraints; *iter != '\0'; ++iter) {
+        switch (*iter) {
+            case 'i':
+                decoded_constraints->immediate = true;
+                decoded_constraints->strict_immediate = false;
+                break;
+
+            case 'n':
+            case 'N':
+                decoded_constraints->immediate = true;
+                decoded_constraints->strict_immediate = true;
+                break;
+
+            case 'r':
+                decoded_constraints->general_purpose_register = true;
+                break;
+
+            case 'm':
+                decoded_constraints->memory_location = true;
+                break;
+
+            case 'a':
+                decoded_constraints->general_purpose_register = true;
+                decoded_constraints->explicit_register = "rax";
+                break;
+
+            case 'b':
+                decoded_constraints->general_purpose_register = true;
+                decoded_constraints->explicit_register = "rbx";
+                break;
+
+            case 'c':
+                decoded_constraints->general_purpose_register = true;
+                decoded_constraints->explicit_register = "rcx";
+                break;
+
+            case 'd':
+                decoded_constraints->general_purpose_register = true;
+                decoded_constraints->explicit_register = "rdx";
+                break;
+
+            case 'D':
+                decoded_constraints->general_purpose_register = true;
+                decoded_constraints->explicit_register = "rdi";
+                break;
+
+            case 'S':
+                decoded_constraints->general_purpose_register = true;
+                decoded_constraints->explicit_register = "rsi";
+                break;
+
+            default:
+                return KEFIR_SET_SOURCE_ERRORF(KEFIR_ANALYSIS_ERROR, source_location,
+                                               "Unsupported inline assembly constraint '%s'", constraints);
+        }
+    }
+    return KEFIR_OK;
+}
+
+
 static kefir_result_t amd64_sysv_free(struct kefir_mem *mem, struct kefir_ir_target_platform *platform) {
     UNUSED(mem);
     REQUIRE(platform != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target platform"));
@@ -120,6 +186,7 @@ kefir_result_t kefir_abi_amd64_target_platform(kefir_abi_amd64_variant_t variant
             platform->free_type = amd64_sysv_free_type;
             platform->typeentry_info = amd64_sysv_typeentry_info;
             platform->bitfield_allocator = amd64_sysv_bitfield_allocator;
+            platform->decode_inline_assembly_constraints = amd64_sysv_decode_inline_assembly_constraints;
             platform->free = amd64_sysv_free;
             platform->payload = NULL;
             break;

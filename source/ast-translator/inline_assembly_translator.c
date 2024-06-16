@@ -29,73 +29,6 @@
 #include "kefir/core/util.h"
 #include <stdio.h>
 
-static kefir_result_t match_constraints(const char *constraints, kefir_bool_t *immediate_constraint,
-                                        kefir_bool_t *strict_immediate, kefir_bool_t *register_constraint,
-                                        kefir_bool_t *memory_constraint, const char **explicit_register,
-                                        const struct kefir_source_location *source_location) {
-    *explicit_register = NULL;
-    for (const char *iter = constraints; *iter != '\0'; ++iter) {
-        switch (*iter) {
-            case 'i':
-                *immediate_constraint = true;
-                *strict_immediate = false;
-                break;
-
-            case 'n':
-                *immediate_constraint = true;
-                *strict_immediate = true;
-                break;
-
-            case 'r':
-                *register_constraint = true;
-                break;
-
-            case 'm':
-                *memory_constraint = true;
-                break;
-
-            case 'a':
-                *register_constraint = true;
-                *explicit_register = "rax";
-                break;
-
-            case 'b':
-                *register_constraint = true;
-                *explicit_register = "rbx";
-                break;
-
-            case 'c':
-                *register_constraint = true;
-                *explicit_register = "rcx";
-                break;
-
-            case 'd':
-                *register_constraint = true;
-                *explicit_register = "rdx";
-                break;
-
-            case 'D':
-                *register_constraint = true;
-                *explicit_register = "rdi";
-                break;
-
-            case 'S':
-                *register_constraint = true;
-                *explicit_register = "rsi";
-                break;
-
-            case 'N':
-                // Intentionally left blank
-                break;
-
-            default:
-                return KEFIR_SET_SOURCE_ERRORF(KEFIR_ANALYSIS_ERROR, source_location,
-                                               "Unsupported inline assembly constraint '%s'", constraints);
-        }
-    }
-    return KEFIR_OK;
-}
-
 static kefir_result_t translate_outputs(struct kefir_mem *mem, const struct kefir_ast_node_base *node,
                                         struct kefir_irbuilder_block *builder,
                                         struct kefir_ast_translator_context *context,
@@ -114,7 +47,7 @@ static kefir_result_t translate_outputs(struct kefir_mem *mem, const struct kefi
 
         const char *name = buffer;
         kefir_ir_inline_assembly_parameter_class_t klass;
-        kefir_ir_inline_assembly_parameter_constraint_t constraint;
+        struct kefir_ir_inline_assembly_parameter_constraints constraints = {0};
         kefir_id_t ir_type_id = KEFIR_ID_NONE;
         struct kefir_ir_type *ir_type = kefir_ir_module_new_type(mem, context->module, 0, &ir_type_id);
         kefir_size_t stack_slot = 0;
@@ -129,23 +62,18 @@ static kefir_result_t translate_outputs(struct kefir_mem *mem, const struct kefi
                                            "Unsupported inline assembly constraint '%s'", param->constraint);
         }
 
-        kefir_bool_t immediate_constraint = false;
-        kefir_bool_t strict_immediate = false;
-        kefir_bool_t register_constraint = false;
-        kefir_bool_t memory_constraint = false;
-        const char *explicit_register = NULL;
-        REQUIRE_OK(match_constraints(param->constraint + 1, &immediate_constraint, &strict_immediate,
-                                     &register_constraint, &memory_constraint, &explicit_register,
+        REQUIRE_OK(KEFIR_IR_TARGET_PLATFORM_DECODE_INLINE_ASSEMBLY_CONSTRAINTS(context->environment->target_platform, param->constraint + 1, &constraints,
                                      &node->source_location));
-        if (register_constraint && memory_constraint) {
-            constraint = KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_REGISTER_MEMORY;
-        } else if (register_constraint) {
-            constraint = KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_REGISTER;
-        } else if (memory_constraint) {
-            constraint = KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_MEMORY;
-        } else {
+        if (!constraints.general_purpose_register && !constraints.memory_location) {
             return KEFIR_SET_SOURCE_ERRORF(KEFIR_ANALYSIS_ERROR, &node->source_location,
                                            "Unsupported inline assembly constraint '%s'", param->constraint);
+        }
+
+        if (param->explicit_register != NULL) {
+            REQUIRE(constraints.explicit_register == NULL,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, source_location,
+                                        "Explicit register specification conflicts with parameter constraint"));
+            constraints.explicit_register = param->explicit_register;
         }
 
         const struct kefir_ast_type *param_type = KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(
@@ -170,22 +98,13 @@ static kefir_result_t translate_outputs(struct kefir_mem *mem, const struct kefi
 
         struct kefir_ir_inline_assembly_parameter *ir_inline_asm_param = NULL;
         REQUIRE_OK(kefir_ir_inline_assembly_add_parameter(mem, context->ast_context->symbols, ir_inline_asm, name,
-                                                          klass, constraint, ir_type, ir_type_id, 0, stack_slot,
+                                                          klass, &constraints, ir_type, ir_type_id, 0, stack_slot,
                                                           &ir_inline_asm_param));
 
         if (alias != NULL) {
             snprintf(buffer, sizeof(buffer) - 1, "[%s]", alias);
             REQUIRE_OK(kefir_ir_inline_assembly_add_parameter_alias(mem, context->ast_context->symbols, ir_inline_asm,
                                                                     ir_inline_asm_param, buffer));
-        }
-
-        REQUIRE(param->explicit_register == NULL || explicit_register == NULL,
-                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, source_location,
-                                       "Explicit register specification conflicts with parameter constraint"));
-        if (param->explicit_register != NULL) {
-            ir_inline_asm_param->explicit_register = param->explicit_register;
-        } else {
-            ir_inline_asm_param->explicit_register = explicit_register;
         }
     }
 
@@ -266,7 +185,7 @@ static kefir_result_t translate_inputs(struct kefir_mem *mem, const struct kefir
 
         const char *name = buffer;
         kefir_ir_inline_assembly_parameter_class_t klass = KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ;
-        kefir_ir_inline_assembly_parameter_constraint_t constraint = KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_NONE;
+        struct kefir_ir_inline_assembly_parameter_constraints constraints = {0};
         kefir_id_t ir_type_id = KEFIR_ID_NONE;
         struct kefir_ir_type *ir_type = kefir_ir_module_new_type(mem, context->module, 0, &ir_type_id);
         const char *alias = param->parameter_name;
@@ -276,11 +195,6 @@ static kefir_result_t translate_inputs(struct kefir_mem *mem, const struct kefir
         kefir_int64_t param_value = 0;
         struct kefir_ir_inline_assembly_parameter *ir_inline_asm_param = NULL;
 
-        kefir_bool_t register_constraint = false;
-        kefir_bool_t memory_constraint = false;
-        kefir_bool_t immediate_constraint = false;
-        kefir_bool_t strict_immediate = false;
-        const char *explicit_register = NULL;
         const char *constraint_str = param->constraint;
         if (*constraint_str >= '0' && *constraint_str <= '9') {
             char match_name[32] = {0};
@@ -295,12 +209,17 @@ static kefir_result_t translate_inputs(struct kefir_mem *mem, const struct kefir
                                              "Unable to find matching parameter");
             }
             REQUIRE_OK(res);
-            register_constraint = *constraint_str == '\0';
+            constraints.general_purpose_register = *constraint_str == '\0';
         }
-        REQUIRE_OK(match_constraints(constraint_str, &immediate_constraint, &strict_immediate, &register_constraint,
-                                     &memory_constraint, &explicit_register, &node->source_location));
+        REQUIRE_OK(KEFIR_IR_TARGET_PLATFORM_DECODE_INLINE_ASSEMBLY_CONSTRAINTS(context->environment->target_platform, constraint_str, &constraints, &node->source_location));
+        if (param->explicit_register != NULL) {
+            REQUIRE(constraints.explicit_register == NULL,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, source_location,
+                                        "Explicit register specification conflicts with parameter constraint"));
+            constraints.explicit_register = param->explicit_register;
+        }
 
-        if (immediate_constraint && param->parameter->properties.expression_props.constant_expression) {
+        if (constraints.immediate && param->parameter->properties.expression_props.constant_expression) {
             struct kefir_ast_constant_expression_value value = {0};
             REQUIRE_OK(
                 kefir_ast_constant_expression_value_evaluate(mem, context->ast_context, param->parameter, &value));
@@ -312,7 +231,7 @@ static kefir_result_t translate_inputs(struct kefir_mem *mem, const struct kefir
                 switch (value.pointer.type) {
                     case KEFIR_AST_CONSTANT_EXPRESSION_POINTER_IDENTIFER:
                         REQUIRE(
-                            !strict_immediate,
+                            !constraints.strict_immediate,
                             KEFIR_SET_SOURCE_ERROR(
                                 KEFIR_ANALYSIS_ERROR, &inline_asm->base.source_location,
                                 "Value of strict immediate inline assembly parameter shall be known at compile time"));
@@ -328,7 +247,7 @@ static kefir_result_t translate_inputs(struct kefir_mem *mem, const struct kefir
 
                     case KEFIR_AST_CONSTANT_EXPRESSION_POINTER_LITERAL: {
                         REQUIRE(
-                            !strict_immediate,
+                            !constraints.strict_immediate,
                             KEFIR_SET_SOURCE_ERROR(
                                 KEFIR_ANALYSIS_ERROR, &inline_asm->base.source_location,
                                 "Value of strict immediate inline assembly parameter shall be known at compile time"));
@@ -348,17 +267,11 @@ static kefir_result_t translate_inputs(struct kefir_mem *mem, const struct kefir
             klass = KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_IMMEDIATE;
         }
 
-        if (klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ) {
-            if (register_constraint && memory_constraint) {
-                constraint = KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_REGISTER_MEMORY;
-            } else if (register_constraint) {
-                constraint = KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_REGISTER;
-            } else if (memory_constraint) {
-                constraint = KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_MEMORY;
-            } else {
-                return KEFIR_SET_SOURCE_ERRORF(KEFIR_ANALYSIS_ERROR, &node->source_location,
-                                               "Unable to satisfy inline assembly constraint '%s'", param->constraint);
-            }
+        if (klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ &&
+            !constraints.general_purpose_register &&
+            !constraints.memory_location) {
+            return KEFIR_SET_SOURCE_ERRORF(KEFIR_ANALYSIS_ERROR, &node->source_location,
+                                            "Unable to satisfy inline assembly constraint '%s'", param->constraint);
         }
 
         const struct kefir_ast_type *param_type = KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(
@@ -384,36 +297,25 @@ static kefir_result_t translate_inputs(struct kefir_mem *mem, const struct kefir
 
         if (ir_inline_asm_param == NULL && klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ) {
             REQUIRE_OK(kefir_ir_inline_assembly_add_parameter(mem, context->ast_context->symbols, ir_inline_asm, name,
-                                                              klass, constraint, ir_type, ir_type_id, 0, param_value,
+                                                              klass, &constraints, ir_type, ir_type_id, 0, param_value,
                                                               &ir_inline_asm_param));
-
-            REQUIRE(param->explicit_register == NULL || explicit_register == NULL,
-                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, source_location,
-                                           "Explicit register specification conflicts with parameter constraint"));
-            if (param->explicit_register != NULL) {
-                ir_inline_asm_param->explicit_register = param->explicit_register;
-            } else {
-                ir_inline_asm_param->explicit_register = explicit_register;
-            }
         } else if (ir_inline_asm_param == NULL && klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_IMMEDIATE) {
             REQUIRE_OK(kefir_ir_inline_assembly_add_immediate_parameter(
                 mem, context->ast_context->symbols, ir_inline_asm, name, ir_type, ir_type_id, 0, imm_type,
                 imm_identifier_base, imm_literal_base, param_value, &ir_inline_asm_param));
-            ir_inline_asm_param->explicit_register = explicit_register;
         } else {
             REQUIRE(klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ &&
-                        constraint == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_REGISTER,
+                        constraints.general_purpose_register,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &inline_asm->base.source_location,
                                            "Cannot assign matching constraint to the parameter"));
             REQUIRE(ir_inline_asm_param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_STORE &&
-                        ir_inline_asm_param->constraint == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_REGISTER,
+                        constraints.general_purpose_register,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &inline_asm->base.source_location,
                                            "Cannot assign matching constraint to the parameter"));
             REQUIRE_OK(kefir_ir_inline_assembly_parameter_read_from(mem, ir_inline_asm, ir_inline_asm_param, ir_type,
                                                                     ir_type_id, 0, param_value));
             REQUIRE_OK(kefir_ir_inline_assembly_add_parameter_alias(mem, context->ast_context->symbols, ir_inline_asm,
                                                                     ir_inline_asm_param, buffer));
-            ir_inline_asm_param->explicit_register = explicit_register;
         }
 
         if (alias != NULL) {

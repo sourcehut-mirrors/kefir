@@ -277,9 +277,9 @@ static kefir_result_t init_explicitly_allocated_regs(struct kefir_mem *mem,
         ASSIGN_DECL_CAST(const struct kefir_ir_inline_assembly_parameter *, ir_asm_param, iter->value);
         struct inline_assembly_parameter_allocation_entry *entry = &context->parameters[ir_asm_param->parameter_id];
 
-        if (ir_asm_param->explicit_register != NULL) {
+        if (ir_asm_param->constraints.explicit_register != NULL) {
             kefir_asm_amd64_xasmgen_register_t phreg;
-            REQUIRE_OK(kefir_asm_amd64_xasmgen_register_from_symbolic_name(ir_asm_param->explicit_register, &phreg));
+            REQUIRE_OK(kefir_asm_amd64_xasmgen_register_from_symbolic_name(ir_asm_param->constraints.explicit_register, &phreg));
             REQUIRE_OK(kefir_asm_amd64_xasmgen_register_widest(phreg, &phreg));
 
             entry->explicit_register_present = true;
@@ -346,28 +346,21 @@ static kefir_result_t allocate_parameters(struct kefir_mem *mem, struct kefir_co
         }
 
         if (!parameter_immediate) {
-            switch (ir_asm_param->constraint) {
-                case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_NONE:
-                    return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unexpected IR inline assembly parameter constraint");
-
-                case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_REGISTER:
-                    REQUIRE(param_type != INLINE_ASSEMBLY_PARAMETER_AGGREGATE || param_size <= KEFIR_AMD64_ABI_QWORD,
-                            KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unable to satisfy IR inline assembly constraints"));
+            if (ir_asm_param->constraints.general_purpose_register && ir_asm_param->constraints.memory_location) {
+                if ((param_type == INLINE_ASSEMBLY_PARAMETER_SCALAR || param_size <= KEFIR_AMD64_ABI_QWORD) &&
+                    kefir_list_length(&context->available_registers) > 1) {
                     REQUIRE_OK(allocate_register_parameter(mem, function, context, ir_asm_param, param_type));
-                    break;
-
-                case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_REGISTER_MEMORY:
-                    if ((param_type == INLINE_ASSEMBLY_PARAMETER_SCALAR || param_size <= KEFIR_AMD64_ABI_QWORD) &&
-                        kefir_list_length(&context->available_registers) > 1) {
-                        REQUIRE_OK(allocate_register_parameter(mem, function, context, ir_asm_param, param_type));
-                    } else {
-                        REQUIRE_OK(allocate_memory_parameter(mem, function, context, ir_asm_param, param_type));
-                    }
-                    break;
-
-                case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_MEMORY:
+                } else {
                     REQUIRE_OK(allocate_memory_parameter(mem, function, context, ir_asm_param, param_type));
-                    break;
+                }
+            } else if (ir_asm_param->constraints.general_purpose_register) {
+                REQUIRE(param_type != INLINE_ASSEMBLY_PARAMETER_AGGREGATE || param_size <= KEFIR_AMD64_ABI_QWORD,
+                        KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unable to satisfy IR inline assembly constraints"));
+                REQUIRE_OK(allocate_register_parameter(mem, function, context, ir_asm_param, param_type));
+            } else if (ir_asm_param->constraints.memory_location) {
+                REQUIRE_OK(allocate_memory_parameter(mem, function, context, ir_asm_param, param_type));
+            } else {
+                return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unexpected IR inline assembly parameter constraint");
             }
         }
 

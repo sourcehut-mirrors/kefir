@@ -1066,30 +1066,23 @@ static kefir_result_t format_inline_assembly_fragment(struct kefir_json_output *
                 REQUIRE_OK(kefir_json_output_integer(json, param->immediate_value));
                 break;
         }
-        REQUIRE_OK(kefir_json_output_object_key(json, "constraint"));
-        switch (param->constraint) {
-            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_NONE:
-                REQUIRE_OK(kefir_json_output_string(json, "none"));
-                break;
-
-            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_REGISTER:
-                REQUIRE_OK(kefir_json_output_string(json, "register"));
-                break;
-
-            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_MEMORY:
-                REQUIRE_OK(kefir_json_output_string(json, "memory"));
-                break;
-
-            case KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_CONSTRAINT_REGISTER_MEMORY:
-                REQUIRE_OK(kefir_json_output_string(json, "register_memory"));
-                break;
-        }
+        REQUIRE_OK(kefir_json_output_object_key(json, "constraints"));
+        REQUIRE_OK(kefir_json_output_object_begin(json));
+        REQUIRE_OK(kefir_json_output_object_key(json, "general_purpose_register"));
+        REQUIRE_OK(kefir_json_output_boolean(json, param->constraints.general_purpose_register));
+        REQUIRE_OK(kefir_json_output_object_key(json, "memory_location"));
+        REQUIRE_OK(kefir_json_output_boolean(json, param->constraints.memory_location));
+        REQUIRE_OK(kefir_json_output_object_key(json, "immediate"));
+        REQUIRE_OK(kefir_json_output_boolean(json, param->constraints.immediate));
+        REQUIRE_OK(kefir_json_output_object_key(json, "strict_immediate"));
+        REQUIRE_OK(kefir_json_output_boolean(json, param->constraints.strict_immediate));
         REQUIRE_OK(kefir_json_output_object_key(json, "explicit_register"));
-        if (param->explicit_register != NULL) {
-            REQUIRE_OK(kefir_json_output_string(json, param->explicit_register));
+        if (param->constraints.explicit_register != NULL) {
+            REQUIRE_OK(kefir_json_output_string(json, param->constraints.explicit_register));
         } else {
             REQUIRE_OK(kefir_json_output_null(json));
         }
+        REQUIRE_OK(kefir_json_output_object_end(json));
         REQUIRE_OK(kefir_json_output_object_end(json));
     }
     REQUIRE_OK(kefir_json_output_array_end(json));
