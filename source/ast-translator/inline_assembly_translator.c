@@ -59,6 +59,16 @@ static kefir_result_t match_constraints(const char *constraints, kefir_bool_t *i
                 *explicit_register = "rax";
                 break;
 
+            case 'b':
+                *register_constraint = true;
+                *explicit_register = "rbx";
+                break;
+
+            case 'c':
+                *register_constraint = true;
+                *explicit_register = "rcx";
+                break;
+
             case 'd':
                 *register_constraint = true;
                 *explicit_register = "rdx";
@@ -72,6 +82,10 @@ static kefir_result_t match_constraints(const char *constraints, kefir_bool_t *i
             case 'S':
                 *register_constraint = true;
                 *explicit_register = "rsi";
+                break;
+
+            case 'N':
+                // Intentionally left blank
                 break;
 
             default:
