@@ -162,8 +162,8 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
         if (res == KEFIR_NO_MATCH) {
             res = kefir_parser_ast_builder_scan(mem, builder, KEFIR_PARSER_RULE_FN(builder->parser, primary_expression),
                                                 NULL);
-            REQUIRE_CHAIN(&res, scan_postfixes(mem, builder));
         }
+        REQUIRE_CHAIN(&res, scan_postfixes(mem, builder));
     }
     REQUIRE_OK(res);
     return KEFIR_OK;
