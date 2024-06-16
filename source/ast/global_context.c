@@ -645,7 +645,8 @@ kefir_result_t kefir_ast_global_context_define_external(struct kefir_mem *mem, s
         ordinary_id->definition_scope = &context->object_identifiers;
         if (attributes != NULL) {
             REQUIRE(attributes->alias == NULL,
-                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location, "Identifier definition cannot have alias attribute"));
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
+                                           "Identifier definition cannot have alias attribute"));
             KEFIR_AST_CONTEXT_MERGE_VISIBILITY(&ordinary_id->object.visibility, attributes);
             KEFIR_AST_CONTEXT_MERGE_BOOL(&ordinary_id->object.flags.weak, attributes->weak);
             if (ordinary_id->object.asm_label == NULL) {
@@ -660,7 +661,8 @@ kefir_result_t kefir_ast_global_context_define_external(struct kefir_mem *mem, s
     } else {
         REQUIRE(res == KEFIR_NOT_FOUND, res);
         REQUIRE(attributes == NULL || attributes->alias == NULL,
-            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location, "Identifier definition cannot have alias attribute"));
+                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
+                                       "Identifier definition cannot have alias attribute"));
         ordinary_id = kefir_ast_context_allocate_scoped_object_identifier(
             mem, type, &context->object_identifiers, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN, alignment,
             KEFIR_AST_SCOPED_IDENTIFIER_EXTERNAL_LINKAGE, false, initializer,
@@ -738,7 +740,8 @@ kefir_result_t kefir_ast_global_context_define_external_thread_local(
         ordinary_id->definition_scope = &context->object_identifiers;
         if (attributes != NULL) {
             REQUIRE(attributes->alias == NULL,
-                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location, "Identifier definition cannot have alias attribute"));
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
+                                           "Identifier definition cannot have alias attribute"));
             KEFIR_AST_CONTEXT_MERGE_VISIBILITY(&ordinary_id->object.visibility, attributes);
             KEFIR_AST_CONTEXT_MERGE_BOOL(&ordinary_id->object.flags.weak, attributes->weak);
             if (ordinary_id->object.asm_label == NULL) {
@@ -753,7 +756,8 @@ kefir_result_t kefir_ast_global_context_define_external_thread_local(
     } else {
         REQUIRE(res == KEFIR_NOT_FOUND, res);
         REQUIRE(attributes == NULL || attributes->alias == NULL,
-            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location, "Identifier definition cannot have alias attribute"));
+                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
+                                       "Identifier definition cannot have alias attribute"));
         ordinary_id = kefir_ast_context_allocate_scoped_object_identifier(
             mem, type, &context->object_identifiers, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN_THREAD_LOCAL, alignment,
             KEFIR_AST_SCOPED_IDENTIFIER_EXTERNAL_LINKAGE, false, initializer,
@@ -829,7 +833,8 @@ kefir_result_t kefir_ast_global_context_define_static(struct kefir_mem *mem, str
         REQUIRE(initializer == NULL || ordinary_id->object.initializer == NULL,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location, "Redefinition of identifier is not permitted"));
         REQUIRE(attributes == NULL || attributes->alias == NULL,
-            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location, "Static identifier definition cannot have alias attribute"));
+                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
+                                       "Static identifier definition cannot have alias attribute"));
         REQUIRE_OK(kefir_ast_context_merge_alignment(mem, &ordinary_id->object.alignment, alignment));
         ordinary_id->object.type =
             KEFIR_AST_TYPE_COMPOSITE(mem, &context->type_bundle, context->type_traits, ordinary_id->object.type, type);
@@ -838,12 +843,13 @@ kefir_result_t kefir_ast_global_context_define_static(struct kefir_mem *mem, str
     } else {
         REQUIRE(res == KEFIR_NOT_FOUND, res);
         REQUIRE(attributes == NULL || attributes->alias == NULL,
-            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location, "Static identifier definition cannot have alias attribute"));
-        if (initializer == NULL) {
-            REQUIRE(!KEFIR_AST_TYPE_IS_INCOMPLETE(type),
-                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
-                                           "Tentative definition with internal linkage shall have complete type"));
-        }
+                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
+                                       "Static identifier definition cannot have alias attribute"));
+        // if (initializer == NULL) {
+        //     REQUIRE(!KEFIR_AST_TYPE_IS_INCOMPLETE(type),
+        //             KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
+        //                                    "Tentative definition with internal linkage shall have complete type"));
+        // }
         ordinary_id = kefir_ast_context_allocate_scoped_object_identifier(
             mem, type, &context->object_identifiers, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC, alignment,
             KEFIR_AST_SCOPED_IDENTIFIER_INTERNAL_LINKAGE, false, initializer, NULL, location);
@@ -915,7 +921,8 @@ kefir_result_t kefir_ast_global_context_define_static_thread_local(
         REQUIRE(initializer == NULL || ordinary_id->object.initializer == NULL,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location, "Redefinition of identifier is not permitted"));
         REQUIRE(attributes == NULL || attributes->alias == NULL,
-            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location, "Static identifier definition cannot have alias attribute"));
+                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
+                                       "Static identifier definition cannot have alias attribute"));
         REQUIRE_OK(kefir_ast_context_merge_alignment(mem, &ordinary_id->object.alignment, alignment));
         ordinary_id->object.type =
             KEFIR_AST_TYPE_COMPOSITE(mem, &context->type_bundle, context->type_traits, ordinary_id->object.type, type);
@@ -924,12 +931,13 @@ kefir_result_t kefir_ast_global_context_define_static_thread_local(
     } else {
         REQUIRE(res == KEFIR_NOT_FOUND, res);
         REQUIRE(attributes == NULL || attributes->alias == NULL,
-            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location, "Static identifier definition cannot have alias attribute"));
-        if (initializer == NULL) {
-            REQUIRE(!KEFIR_AST_TYPE_IS_INCOMPLETE(type),
-                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
-                                           "Tentative definition with internal linkage shall have complete type"));
-        }
+                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
+                                       "Static identifier definition cannot have alias attribute"));
+        // if (initializer == NULL) {
+        //     REQUIRE(!KEFIR_AST_TYPE_IS_INCOMPLETE(type),
+        //             KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
+        //                                    "Tentative definition with internal linkage shall have complete type"));
+        // }
         ordinary_id = kefir_ast_context_allocate_scoped_object_identifier(
             mem, type, &context->object_identifiers, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC_THREAD_LOCAL, alignment,
             KEFIR_AST_SCOPED_IDENTIFIER_INTERNAL_LINKAGE, false, initializer, NULL, location);
@@ -1282,8 +1290,7 @@ kefir_result_t kefir_ast_global_context_define_static_function(
                                        "Function definition cannot specify alias attribute"));
         ordinary_id = kefir_ast_context_allocate_scoped_function_identifier(
             mem, function, specifier, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC, false, !declaration,
-            kefir_ast_function_specifier_is_inline(specifier),
-            KEFIR_AST_CONTEXT_GET_ATTR(attributes, alias, NULL),
+            kefir_ast_function_specifier_is_inline(specifier), KEFIR_AST_CONTEXT_GET_ATTR(attributes, alias, NULL),
             KEFIR_AST_CONTEXT_GET_ATTR(attributes, asm_label, NULL), location);
         REQUIRE(ordinary_id != NULL,
                 KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocted AST scoped identifier"));

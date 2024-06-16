@@ -34,7 +34,7 @@
             "type": [
                 {
                     "type": "array",
-                    "length": 0,
+                    "length": 1,
                     "element_type": {
                         "type": "word"
                     }

@@ -81,6 +81,37 @@ kefir_result_t kefir_ast_translator_global_scope_layout_free(struct kefir_mem *m
     return KEFIR_OK;
 }
 
+static kefir_result_t obtain_complete_object_type(struct kefir_mem *mem, const struct kefir_ast_context *context,
+                                                  const char *identifier,
+                                                  const struct kefir_ast_scoped_identifier *scoped_identifier,
+                                                  const struct kefir_ast_type **object_type_ptr) {
+    const struct kefir_ast_type *object_type = NULL;
+    REQUIRE_OK(kefir_ast_type_completion(mem, context, &object_type, scoped_identifier->object.type));
+
+    const struct kefir_ast_type *unqualified_object_type = kefir_ast_unqualified_type(object_type);
+    if (KEFIR_AST_TYPE_IS_INCOMPLETE(unqualified_object_type) &&
+        (unqualified_object_type->tag == KEFIR_AST_TYPE_STRUCTURE ||
+         unqualified_object_type->tag == KEFIR_AST_TYPE_UNION)) {
+        REQUIRE((scoped_identifier->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN ||
+                 scoped_identifier->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN_THREAD_LOCAL) &&
+                    scoped_identifier->object.external,
+                KEFIR_SET_ERRORF(KEFIR_ANALYSIS_ERROR, "Global identifier '%s' with incomplete type shall be external",
+                                 identifier));
+        object_type = context->type_traits->incomplete_type_substitute;
+    } else if (unqualified_object_type->tag == KEFIR_AST_TYPE_ARRAY &&
+               unqualified_object_type->array_type.boundary == KEFIR_AST_ARRAY_UNBOUNDED) {
+        struct kefir_ast_constant_expression *array_length = kefir_ast_constant_expression_integer(mem, 1);
+        REQUIRE(array_length != NULL,
+                KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate constant expression"));
+        object_type = kefir_ast_type_array(mem, context->type_bundle, unqualified_object_type->array_type.element_type,
+                                           array_length, &unqualified_object_type->array_type.qualifications);
+        REQUIRE(array_length != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate bounded array type"));
+    }
+
+    *object_type_ptr = object_type;
+    return KEFIR_OK;
+}
+
 static kefir_result_t translate_scoped_identifier_type(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                                        struct kefir_ir_module *module,
                                                        const struct kefir_ast_translator_environment *env,
@@ -98,19 +129,7 @@ static kefir_result_t translate_scoped_identifier_type(struct kefir_mem *mem, co
     REQUIRE_OK(kefir_irbuilder_type_init(mem, &builder, scoped_identifier_layout->type));
 
     const struct kefir_ast_type *object_type = NULL;
-    REQUIRE_OK(kefir_ast_type_completion(mem, context, &object_type, scoped_identifier->object.type));
-
-    const struct kefir_ast_type *unqualified_object_type = kefir_ast_unqualified_type(object_type);
-    if (KEFIR_AST_TYPE_IS_INCOMPLETE(unqualified_object_type) &&
-        (unqualified_object_type->tag == KEFIR_AST_TYPE_STRUCTURE ||
-         unqualified_object_type->tag == KEFIR_AST_TYPE_UNION)) {
-        REQUIRE((scoped_identifier->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN ||
-                 scoped_identifier->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN_THREAD_LOCAL) &&
-                    scoped_identifier->object.external,
-                KEFIR_SET_ERRORF(KEFIR_ANALYSIS_ERROR, "Global identifier '%s' with incomplete type shall be external",
-                                 identifier));
-        object_type = context->type_traits->incomplete_type_substitute;
-    }
+    REQUIRE_OK(obtain_complete_object_type(mem, context, identifier, scoped_identifier, &object_type));
 
     REQUIRE_OK(kefir_ast_translate_object_type(mem, context, object_type, scoped_identifier->object.alignment->value,
                                                env, &builder, &scoped_identifier_layout->layout, source_location));
@@ -187,7 +206,7 @@ static kefir_result_t translate_static_identifier(struct kefir_mem *mem, const s
     REQUIRE_OK(kefir_irbuilder_type_init(mem, &builder, scoped_identifier_layout->type));
 
     const struct kefir_ast_type *object_type = NULL;
-    REQUIRE_OK(kefir_ast_type_completion(mem, context, &object_type, scoped_identifier->object.type));
+    REQUIRE_OK(obtain_complete_object_type(mem, context, identifier, scoped_identifier, &object_type));
 
     REQUIRE_OK(kefir_ast_translate_object_type(mem, context, object_type, scoped_identifier->object.alignment->value,
                                                env, &builder, &scoped_identifier_layout->layout, source_location));
@@ -220,7 +239,7 @@ static kefir_result_t translate_static_thread_local_identifier(
     REQUIRE_OK(kefir_irbuilder_type_init(mem, &builder, scoped_identifier_layout->type));
 
     const struct kefir_ast_type *object_type = NULL;
-    REQUIRE_OK(kefir_ast_type_completion(mem, context, &object_type, scoped_identifier->object.type));
+    REQUIRE_OK(obtain_complete_object_type(mem, context, identifier, scoped_identifier, &object_type));
 
     REQUIRE_OK(kefir_ast_translate_object_type(mem, context, object_type, scoped_identifier->object.alignment->value,
                                                env, &builder, &scoped_identifier_layout->layout, source_location));

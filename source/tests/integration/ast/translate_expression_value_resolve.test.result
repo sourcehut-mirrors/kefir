@@ -230,7 +230,7 @@
             "type": [
                 {
                     "type": "array",
-                    "length": 0,
+                    "length": 1,
                     "element_type": {
                         "type": "union",
                         "fields": [
@@ -443,7 +443,8 @@
             "type": 10,
             "value": [
                 {
-                    "class": "undefined"
+                    "class": "undefined",
+                    "count": 3
                 }
             ]
         },
