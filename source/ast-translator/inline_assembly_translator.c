@@ -141,6 +141,8 @@ static kefir_result_t translate_outputs(struct kefir_mem *mem, const struct kefi
             REQUIRE_OK(kefir_ir_inline_assembly_add_parameter_alias(mem, context->ast_context->symbols, ir_inline_asm,
                                                                     ir_inline_asm_param, buffer));
         }
+
+        ir_inline_asm_param->explicit_register = param->explicit_register;
     }
 
     return KEFIR_OK;
@@ -339,6 +341,7 @@ static kefir_result_t translate_inputs(struct kefir_mem *mem, const struct kefir
             REQUIRE_OK(kefir_ir_inline_assembly_add_parameter(mem, context->ast_context->symbols, ir_inline_asm, name,
                                                               klass, constraint, ir_type, ir_type_id, 0, param_value,
                                                               &ir_inline_asm_param));
+            ir_inline_asm_param->explicit_register = param->explicit_register;
         } else if (ir_inline_asm_param == NULL && klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_IMMEDIATE) {
             REQUIRE_OK(kefir_ir_inline_assembly_add_immediate_parameter(
                 mem, context->ast_context->symbols, ir_inline_asm, name, ir_type, ir_type_id, 0, imm_type,

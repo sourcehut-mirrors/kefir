@@ -59,6 +59,13 @@ kefir_result_t kefir_ast_analyze_inline_assembly_node(struct kefir_mem *mem, con
                         param->parameter->properties.expression_props.lvalue,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->base.source_location,
                                            "Expected lvalue expression as inline assembly output"));
+
+            if (param->parameter->properties.expression_props.scoped_id != NULL &&
+                param->parameter->properties.expression_props.scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT &&
+                param->parameter->properties.expression_props.scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER &&
+                param->parameter->properties.expression_props.scoped_id->object.asm_label != NULL) {
+                param->explicit_register = param->parameter->properties.expression_props.scoped_id->object.asm_label;
+            }            
         }
 
         for (const struct kefir_list_entry *iter = kefir_list_head(&node->inputs); iter != NULL;
@@ -68,6 +75,13 @@ kefir_result_t kefir_ast_analyze_inline_assembly_node(struct kefir_mem *mem, con
             REQUIRE(param->parameter->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->base.source_location,
                                            "Expected an expression as inline assembly input"));
+
+            if (param->parameter->properties.expression_props.scoped_id != NULL &&
+                param->parameter->properties.expression_props.scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT &&
+                param->parameter->properties.expression_props.scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER &&
+                param->parameter->properties.expression_props.scoped_id->object.asm_label != NULL) {
+                param->explicit_register = param->parameter->properties.expression_props.scoped_id->object.asm_label;
+            }
         }
 
         struct kefir_ast_flow_control_structure *block = NULL;

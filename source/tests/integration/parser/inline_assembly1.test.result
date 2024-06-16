@@ -50,6 +50,7 @@
             {
                 "symbolicName": null,
                 "constraint": "=rm",
+                "explicit_register": null,
                 "parameter": {
                     "class": "identifier",
                     "identifier": "some_variable"
@@ -58,6 +59,7 @@
             {
                 "symbolicName": "symbolicName1",
                 "constraint": "=rm",
+                "explicit_register": null,
                 "parameter": {
                     "class": "array_subscript",
                     "array": {
@@ -87,6 +89,7 @@
             {
                 "symbolicName": null,
                 "constraint": "=rm",
+                "explicit_register": null,
                 "parameter": {
                     "class": "identifier",
                     "identifier": "some_variable"
@@ -97,6 +100,7 @@
             {
                 "symbolicName": null,
                 "constraint": "r",
+                "explicit_register": null,
                 "parameter": {
                     "class": "constant",
                     "type": "integer",
@@ -119,6 +123,7 @@
             {
                 "symbolicName": null,
                 "constraint": "=rm",
+                "explicit_register": null,
                 "parameter": {
                     "class": "identifier",
                     "identifier": "some_variable"
@@ -129,6 +134,7 @@
             {
                 "symbolicName": "input",
                 "constraint": "r",
+                "explicit_register": null,
                 "parameter": {
                     "class": "constant",
                     "type": "integer",
@@ -155,6 +161,7 @@
             {
                 "symbolicName": null,
                 "constraint": "=rm",
+                "explicit_register": null,
                 "parameter": {
                     "class": "identifier",
                     "identifier": "some_variable"
@@ -165,6 +172,7 @@
             {
                 "symbolicName": null,
                 "constraint": "r",
+                "explicit_register": null,
                 "parameter": {
                     "class": "constant",
                     "type": "integer",

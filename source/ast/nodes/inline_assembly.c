@@ -188,6 +188,7 @@ kefir_result_t kefir_ast_inline_assembly_add_output(struct kefir_mem *mem, struc
 
     parameter->parameter = param;
     parameter->constraint = constraint;
+    parameter->explicit_register = NULL;
     parameter->parameter_name = param_name;
 
     kefir_result_t res =
@@ -229,6 +230,7 @@ kefir_result_t kefir_ast_inline_assembly_add_input(struct kefir_mem *mem, struct
 
     parameter->parameter = param;
     parameter->constraint = constraint;
+    parameter->explicit_register = NULL;
     parameter->parameter_name = param_name;
 
     kefir_result_t res =

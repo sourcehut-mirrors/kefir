@@ -53,6 +53,7 @@ typedef struct kefir_ir_inline_assembly_parameter {
     kefir_id_t parameter_id;
     struct kefir_list identifiers;
     kefir_ir_inline_assembly_parameter_class_t klass;
+    const char *explicit_register;
     struct {
         const struct kefir_ir_type *type;
         kefir_id_t type_id;

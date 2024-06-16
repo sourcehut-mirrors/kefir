@@ -56,6 +56,9 @@ typedef struct inline_assembly_parameter_allocation_entry {
         inline_assembly_parameter_type_t type;
         kefir_size_t size;
     } parameter_read_props;
+
+    kefir_bool_t explicit_register_present;
+    kefir_asm_amd64_xasmgen_register_t explicit_register;
 } inline_assembly_parameter_allocation_entry_t;
 
 struct inline_assembly_context {
@@ -68,6 +71,7 @@ struct inline_assembly_context {
     struct inline_assembly_parameter_allocation_entry *parameters;
     kefir_asmcmp_inline_assembly_index_t inline_asm_idx;
     struct kefir_hashtree jump_trampolines;
+    struct kefir_hashtree explicitly_allocated;
 };
 
 static kefir_result_t mark_clobbers(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
@@ -156,10 +160,28 @@ static kefir_result_t allocate_register_parameter(struct kefir_mem *mem, struct 
                                                   inline_assembly_parameter_type_t param_type) {
     struct inline_assembly_parameter_allocation_entry *entry = &context->parameters[ir_asm_param->parameter_id];
     kefir_asm_amd64_xasmgen_register_t reg = 0;
-    REQUIRE_OK(obtain_available_register(mem, function, context, &reg));
-    REQUIRE_OK(kefir_asmcmp_virtual_register_new(
-        mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &entry->allocation_vreg));
-    REQUIRE_OK(kefir_asmcmp_amd64_register_allocation_requirement(mem, &function->code, entry->allocation_vreg, reg));
+    if (entry->explicit_register_present) {
+        reg = entry->explicit_register;
+        REQUIRE_OK(kefir_asmcmp_register_stash_add(mem, &function->code.context, context->stash_idx, reg));
+        REQUIRE_OK(kefir_codegen_amd64_stack_frame_use_register(mem, &function->stack_frame, reg));
+
+        struct kefir_hashtree_node *node;
+        kefir_result_t res = kefir_hashtree_at(&context->explicitly_allocated, (kefir_hashtree_key_t) reg, &node);
+        if (res == KEFIR_NOT_FOUND) {
+            REQUIRE_OK(kefir_asmcmp_virtual_register_new(
+                mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &entry->allocation_vreg));
+            REQUIRE_OK(kefir_asmcmp_amd64_register_allocation_requirement(mem, &function->code, entry->allocation_vreg, reg));
+            REQUIRE_OK(kefir_hashtree_insert(mem, &context->explicitly_allocated, (kefir_hashtree_key_t) reg, (kefir_hashtree_value_t) entry->allocation_vreg));
+        } else {
+            REQUIRE_OK(res);
+            entry->allocation_vreg = (kefir_asmcmp_virtual_register_index_t) node->value;
+        }
+    } else {
+        REQUIRE_OK(obtain_available_register(mem, function, context, &reg));
+        REQUIRE_OK(kefir_asmcmp_virtual_register_new(
+            mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &entry->allocation_vreg));
+        REQUIRE_OK(kefir_asmcmp_amd64_register_allocation_requirement(mem, &function->code, entry->allocation_vreg, reg));
+    }
     entry->type = param_type;
     entry->allocation_type = INLINE_ASSEMBLY_PARAMETER_ALLOCATION_REGISTER;
     if (param_type == INLINE_ASSEMBLY_PARAMETER_AGGREGATE) {
@@ -248,9 +270,38 @@ static kefir_result_t evaluate_parameter_type(struct kefir_mem *mem, const struc
     return KEFIR_OK;
 }
 
+static kefir_result_t init_explicitly_allocated_regs(struct kefir_mem *mem,
+                                          struct inline_assembly_context *context) {
+    for (const struct kefir_list_entry *iter = kefir_list_head(&context->ir_inline_assembly->parameter_list);
+         iter != NULL; kefir_list_next(&iter)) {
+        ASSIGN_DECL_CAST(const struct kefir_ir_inline_assembly_parameter *, ir_asm_param, iter->value);
+        struct inline_assembly_parameter_allocation_entry *entry = &context->parameters[ir_asm_param->parameter_id];
+
+        if (ir_asm_param->explicit_register != NULL) {
+            kefir_asm_amd64_xasmgen_register_t phreg;
+            REQUIRE_OK(kefir_asm_amd64_xasmgen_register_from_symbolic_name(ir_asm_param->explicit_register, &phreg));
+            REQUIRE_OK(kefir_asm_amd64_xasmgen_register_widest(phreg, &phreg));
+
+            entry->explicit_register_present = true;
+            entry->explicit_register = phreg;
+
+            for (struct kefir_list_entry *iter = kefir_list_head(&context->available_registers); iter != NULL; iter = iter->next) {
+                ASSIGN_DECL_CAST(kefir_asm_amd64_xasmgen_register_t, reg,
+                    (kefir_uptr_t) iter->value);
+                if (reg == phreg) {
+                    REQUIRE_OK(kefir_list_pop(mem, &context->available_registers, iter));
+                    break;
+                }
+            }
+        }
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t allocate_parameters(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
                                           struct inline_assembly_context *context) {
     REQUIRE_OK(init_available_regs(mem, function, context));
+    REQUIRE_OK(init_explicitly_allocated_regs(mem, context));
 
     for (const struct kefir_list_entry *iter = kefir_list_head(&context->ir_inline_assembly->parameter_list);
          iter != NULL; kefir_list_next(&iter)) {
@@ -1160,6 +1211,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(inline_assembly)(struct kefi
 
     REQUIRE_OK(kefir_list_init(&context.available_registers));
     REQUIRE_OK(kefir_hashtree_init(&context.jump_trampolines, &kefir_hashtree_uint_ops));
+    REQUIRE_OK(kefir_hashtree_init(&context.explicitly_allocated, &kefir_hashtree_uint_ops));
     context.parameters = KEFIR_MALLOC(
         mem, sizeof(struct inline_assembly_parameter_allocation_entry) * context.inline_assembly->parameter_count);
     REQUIRE(context.parameters != NULL,
@@ -1186,6 +1238,12 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(inline_assembly)(struct kefi
     memset(context.parameters, 0,
            sizeof(struct inline_assembly_parameter_allocation_entry) * context.inline_assembly->parameter_count);
     KEFIR_FREE(mem, context.parameters);
+    res = kefir_hashtree_free(mem, &context.explicitly_allocated);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_hashtree_free(mem, &context.jump_trampolines);
+        kefir_list_free(mem, &context.available_registers);
+        return res;
+    });
     res = kefir_hashtree_free(mem, &context.jump_trampolines);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_list_free(mem, &context.available_registers);

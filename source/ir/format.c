@@ -1084,6 +1084,12 @@ static kefir_result_t format_inline_assembly_fragment(struct kefir_json_output *
                 REQUIRE_OK(kefir_json_output_string(json, "register_memory"));
                 break;
         }
+        REQUIRE_OK(kefir_json_output_object_key(json, "explicit_register"));
+        if (param->explicit_register != NULL) {
+            REQUIRE_OK(kefir_json_output_string(json, param->explicit_register));
+        } else {
+            REQUIRE_OK(kefir_json_output_null(json));
+        }
         REQUIRE_OK(kefir_json_output_object_end(json));
     }
     REQUIRE_OK(kefir_json_output_array_end(json));

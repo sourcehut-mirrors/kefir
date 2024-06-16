@@ -252,6 +252,7 @@ KEFIR_AST_NODE_STRUCT(kefir_ast_attribute_list, { struct kefir_list list; });
 typedef struct kefir_ast_inline_assembly_parameter {
     const char *parameter_name;
     const char *constraint;
+    const char *explicit_register;
     struct kefir_ast_node_base *parameter;
 } kefir_ast_inline_assembly_parameter_t;
 

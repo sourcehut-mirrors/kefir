@@ -49,6 +49,10 @@ kefir_result_t kefir_asm_amd64_xasmgen_register8(kefir_asm_amd64_xasmgen_registe
             *dst = KEFIR_AMD64_XASMGEN_REGISTER_BL;
             break;
 
+        case KEFIR_AMD64_XASMGEN_REGISTER_BH:
+            *dst = KEFIR_AMD64_XASMGEN_REGISTER_BH;
+            break;
+
         case KEFIR_AMD64_XASMGEN_REGISTER_CL:
         case KEFIR_AMD64_XASMGEN_REGISTER_CX:
         case KEFIR_AMD64_XASMGEN_REGISTER_ECX:
@@ -56,11 +60,19 @@ kefir_result_t kefir_asm_amd64_xasmgen_register8(kefir_asm_amd64_xasmgen_registe
             *dst = KEFIR_AMD64_XASMGEN_REGISTER_CL;
             break;
 
+        case KEFIR_AMD64_XASMGEN_REGISTER_CH:
+            *dst = KEFIR_AMD64_XASMGEN_REGISTER_CH;
+            break;
+
         case KEFIR_AMD64_XASMGEN_REGISTER_DL:
         case KEFIR_AMD64_XASMGEN_REGISTER_DX:
         case KEFIR_AMD64_XASMGEN_REGISTER_EDX:
         case KEFIR_AMD64_XASMGEN_REGISTER_RDX:
             *dst = KEFIR_AMD64_XASMGEN_REGISTER_DL;
+            break;
+
+        case KEFIR_AMD64_XASMGEN_REGISTER_DH:
+            *dst = KEFIR_AMD64_XASMGEN_REGISTER_DH;
             break;
 
         case KEFIR_AMD64_XASMGEN_REGISTER_SIL:
@@ -182,6 +194,7 @@ kefir_result_t kefir_asm_amd64_xasmgen_register16(kefir_asm_amd64_xasmgen_regist
             break;
 
         case KEFIR_AMD64_XASMGEN_REGISTER_BL:
+        case KEFIR_AMD64_XASMGEN_REGISTER_BH:
         case KEFIR_AMD64_XASMGEN_REGISTER_BX:
         case KEFIR_AMD64_XASMGEN_REGISTER_EBX:
         case KEFIR_AMD64_XASMGEN_REGISTER_RBX:
@@ -189,6 +202,7 @@ kefir_result_t kefir_asm_amd64_xasmgen_register16(kefir_asm_amd64_xasmgen_regist
             break;
 
         case KEFIR_AMD64_XASMGEN_REGISTER_CL:
+        case KEFIR_AMD64_XASMGEN_REGISTER_CH:
         case KEFIR_AMD64_XASMGEN_REGISTER_CX:
         case KEFIR_AMD64_XASMGEN_REGISTER_ECX:
         case KEFIR_AMD64_XASMGEN_REGISTER_RCX:
@@ -196,6 +210,7 @@ kefir_result_t kefir_asm_amd64_xasmgen_register16(kefir_asm_amd64_xasmgen_regist
             break;
 
         case KEFIR_AMD64_XASMGEN_REGISTER_DL:
+        case KEFIR_AMD64_XASMGEN_REGISTER_DH:
         case KEFIR_AMD64_XASMGEN_REGISTER_DX:
         case KEFIR_AMD64_XASMGEN_REGISTER_EDX:
         case KEFIR_AMD64_XASMGEN_REGISTER_RDX:
@@ -321,6 +336,7 @@ kefir_result_t kefir_asm_amd64_xasmgen_register32(kefir_asm_amd64_xasmgen_regist
             break;
 
         case KEFIR_AMD64_XASMGEN_REGISTER_BL:
+        case KEFIR_AMD64_XASMGEN_REGISTER_BH:
         case KEFIR_AMD64_XASMGEN_REGISTER_BX:
         case KEFIR_AMD64_XASMGEN_REGISTER_EBX:
         case KEFIR_AMD64_XASMGEN_REGISTER_RBX:
@@ -328,6 +344,7 @@ kefir_result_t kefir_asm_amd64_xasmgen_register32(kefir_asm_amd64_xasmgen_regist
             break;
 
         case KEFIR_AMD64_XASMGEN_REGISTER_CL:
+        case KEFIR_AMD64_XASMGEN_REGISTER_CH:
         case KEFIR_AMD64_XASMGEN_REGISTER_CX:
         case KEFIR_AMD64_XASMGEN_REGISTER_ECX:
         case KEFIR_AMD64_XASMGEN_REGISTER_RCX:
@@ -335,6 +352,7 @@ kefir_result_t kefir_asm_amd64_xasmgen_register32(kefir_asm_amd64_xasmgen_regist
             break;
 
         case KEFIR_AMD64_XASMGEN_REGISTER_DL:
+        case KEFIR_AMD64_XASMGEN_REGISTER_DH:
         case KEFIR_AMD64_XASMGEN_REGISTER_DX:
         case KEFIR_AMD64_XASMGEN_REGISTER_EDX:
         case KEFIR_AMD64_XASMGEN_REGISTER_RDX:
@@ -460,6 +478,7 @@ kefir_result_t kefir_asm_amd64_xasmgen_register64(kefir_asm_amd64_xasmgen_regist
             break;
 
         case KEFIR_AMD64_XASMGEN_REGISTER_BL:
+        case KEFIR_AMD64_XASMGEN_REGISTER_BH:
         case KEFIR_AMD64_XASMGEN_REGISTER_BX:
         case KEFIR_AMD64_XASMGEN_REGISTER_EBX:
         case KEFIR_AMD64_XASMGEN_REGISTER_RBX:
@@ -467,6 +486,7 @@ kefir_result_t kefir_asm_amd64_xasmgen_register64(kefir_asm_amd64_xasmgen_regist
             break;
 
         case KEFIR_AMD64_XASMGEN_REGISTER_CL:
+        case KEFIR_AMD64_XASMGEN_REGISTER_CH:
         case KEFIR_AMD64_XASMGEN_REGISTER_CX:
         case KEFIR_AMD64_XASMGEN_REGISTER_ECX:
         case KEFIR_AMD64_XASMGEN_REGISTER_RCX:
@@ -474,6 +494,7 @@ kefir_result_t kefir_asm_amd64_xasmgen_register64(kefir_asm_amd64_xasmgen_regist
             break;
 
         case KEFIR_AMD64_XASMGEN_REGISTER_DL:
+        case KEFIR_AMD64_XASMGEN_REGISTER_DH:
         case KEFIR_AMD64_XASMGEN_REGISTER_DX:
         case KEFIR_AMD64_XASMGEN_REGISTER_EDX:
         case KEFIR_AMD64_XASMGEN_REGISTER_RDX:
@@ -615,8 +636,11 @@ kefir_bool_t kefir_asm_amd64_xasmgen_register_is_wide(kefir_asm_amd64_xasmgen_re
         case KEFIR_AMD64_XASMGEN_REGISTER_AL:
         case KEFIR_AMD64_XASMGEN_REGISTER_AH:
         case KEFIR_AMD64_XASMGEN_REGISTER_BL:
+        case KEFIR_AMD64_XASMGEN_REGISTER_BH:
         case KEFIR_AMD64_XASMGEN_REGISTER_CL:
+        case KEFIR_AMD64_XASMGEN_REGISTER_CH:
         case KEFIR_AMD64_XASMGEN_REGISTER_DL:
+        case KEFIR_AMD64_XASMGEN_REGISTER_DH:
         case KEFIR_AMD64_XASMGEN_REGISTER_SIL:
         case KEFIR_AMD64_XASMGEN_REGISTER_DIL:
         case KEFIR_AMD64_XASMGEN_REGISTER_SPL:
@@ -722,8 +746,8 @@ kefir_result_t kefir_asm_amd64_xasmgen_register_widest(kefir_asm_amd64_xasmgen_r
 
 static const char *register_literals[] = {
     [KEFIR_AMD64_XASMGEN_REGISTER_AL] = "al",       [KEFIR_AMD64_XASMGEN_REGISTER_AH] = "ah",
-    [KEFIR_AMD64_XASMGEN_REGISTER_BL] = "bl",       [KEFIR_AMD64_XASMGEN_REGISTER_CL] = "cl",
-    [KEFIR_AMD64_XASMGEN_REGISTER_DL] = "dl",       [KEFIR_AMD64_XASMGEN_REGISTER_SIL] = "sil",
+    [KEFIR_AMD64_XASMGEN_REGISTER_BL] = "bl", [KEFIR_AMD64_XASMGEN_REGISTER_BH] = "bh",       [KEFIR_AMD64_XASMGEN_REGISTER_CL] = "cl", [KEFIR_AMD64_XASMGEN_REGISTER_CH] = "ch",
+    [KEFIR_AMD64_XASMGEN_REGISTER_DL] = "dl", [KEFIR_AMD64_XASMGEN_REGISTER_DH] = "dh",       [KEFIR_AMD64_XASMGEN_REGISTER_SIL] = "sil",
     [KEFIR_AMD64_XASMGEN_REGISTER_DIL] = "dil",     [KEFIR_AMD64_XASMGEN_REGISTER_SPL] = "spl",
     [KEFIR_AMD64_XASMGEN_REGISTER_BPL] = "bpl",     [KEFIR_AMD64_XASMGEN_REGISTER_R8B] = "r8b",
     [KEFIR_AMD64_XASMGEN_REGISTER_R9B] = "r9b",     [KEFIR_AMD64_XASMGEN_REGISTER_R10B] = "r10b",
@@ -2393,8 +2417,8 @@ kefir_result_t kefir_asm_amd64_xasmgen_line_comment_prefix(const struct kefir_am
 const struct kefir_asm_amd64_xasmgen_operand operand_regs[] = {
 #define REG(x) [x] = {.klass = KEFIR_AMD64_XASMGEN_OPERAND_REGISTER, .reg = x}
     REG(KEFIR_AMD64_XASMGEN_REGISTER_AL),    REG(KEFIR_AMD64_XASMGEN_REGISTER_AH),
-    REG(KEFIR_AMD64_XASMGEN_REGISTER_BL),    REG(KEFIR_AMD64_XASMGEN_REGISTER_CL),
-    REG(KEFIR_AMD64_XASMGEN_REGISTER_DL),    REG(KEFIR_AMD64_XASMGEN_REGISTER_SIL),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_BL), REG(KEFIR_AMD64_XASMGEN_REGISTER_BH),    REG(KEFIR_AMD64_XASMGEN_REGISTER_CL), REG(KEFIR_AMD64_XASMGEN_REGISTER_CH),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_DL), REG(KEFIR_AMD64_XASMGEN_REGISTER_DH),    REG(KEFIR_AMD64_XASMGEN_REGISTER_SIL),
     REG(KEFIR_AMD64_XASMGEN_REGISTER_DIL),   REG(KEFIR_AMD64_XASMGEN_REGISTER_SPL),
     REG(KEFIR_AMD64_XASMGEN_REGISTER_BPL),   REG(KEFIR_AMD64_XASMGEN_REGISTER_R8B),
     REG(KEFIR_AMD64_XASMGEN_REGISTER_R9B),   REG(KEFIR_AMD64_XASMGEN_REGISTER_R10B),

@@ -1388,6 +1388,12 @@ static kefir_result_t format_inline_assembly_param(struct kefir_json_output *jso
     }
     REQUIRE_OK(kefir_json_output_object_key(json, "constraint"));
     REQUIRE_OK(kefir_json_output_string(json, parameter->constraint));
+    REQUIRE_OK(kefir_json_output_object_key(json, "explicit_register"));
+    if (parameter->explicit_register != NULL) {
+        REQUIRE_OK(kefir_json_output_string(json, parameter->explicit_register));
+    } else {
+        REQUIRE_OK(kefir_json_output_null(json));
+    }
     REQUIRE_OK(kefir_json_output_object_key(json, "parameter"));
     REQUIRE_OK(kefir_ast_format(json, parameter->parameter, display_source_location));
     REQUIRE_OK(kefir_json_output_object_end(json));

@@ -287,7 +287,8 @@
                     "type": 8,
                     "type_index": 0,
                     "to": 3,
-                    "constraint": "register_memory"
+                    "constraint": "register_memory",
+                    "explicit_register": null
                 },
                 {
                     "identifier": 1,
@@ -298,7 +299,8 @@
                     "type": 9,
                     "type_index": 0,
                     "from_to": 2,
-                    "constraint": "register_memory"
+                    "constraint": "register_memory",
+                    "explicit_register": null
                 },
                 {
                     "identifier": 2,
@@ -309,7 +311,8 @@
                     "type": 10,
                     "type_index": 0,
                     "from": 1,
-                    "constraint": "memory"
+                    "constraint": "memory",
+                    "explicit_register": null
                 },
                 {
                     "identifier": 3,
@@ -320,7 +323,8 @@
                     "type": 11,
                     "type_index": 0,
                     "from": 0,
-                    "constraint": "memory"
+                    "constraint": "memory",
+                    "explicit_register": null
                 }
             ],
             "clobbers": [
@@ -343,7 +347,8 @@
                     "type": 15,
                     "type_index": 0,
                     "to": 4,
-                    "constraint": "register"
+                    "constraint": "register",
+                    "explicit_register": null
                 },
                 {
                     "identifier": 1,
@@ -354,7 +359,8 @@
                     "type": 16,
                     "type_index": 0,
                     "from_to": 3,
-                    "constraint": "memory"
+                    "constraint": "memory",
+                    "explicit_register": null
                 },
                 {
                     "identifier": 2,
@@ -366,7 +372,8 @@
                     "type": 17,
                     "type_index": 0,
                     "to": 2,
-                    "constraint": "register"
+                    "constraint": "register",
+                    "explicit_register": null
                 },
                 {
                     "identifier": 3,
@@ -377,7 +384,8 @@
                     "type": 18,
                     "type_index": 0,
                     "from": 1,
-                    "constraint": "register"
+                    "constraint": "register",
+                    "explicit_register": null
                 },
                 {
                     "identifier": 4,
@@ -388,7 +396,8 @@
                     "type": 19,
                     "type_index": 0,
                     "from": 0,
-                    "constraint": "memory"
+                    "constraint": "memory",
+                    "explicit_register": null
                 }
             ],
             "clobbers": [
