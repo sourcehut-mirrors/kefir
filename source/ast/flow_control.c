@@ -34,6 +34,14 @@ struct kefir_ast_flow_control_point *kefir_ast_flow_control_point_alloc(
     point->cleanup.callback = NULL;
     point->cleanup.payload = NULL;
     point->parent = parent;
+
+    if (parent != NULL && parent->type == KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK) {
+        point->parent_vl_arrays.head = kefir_list_head(&parent->value.block.vl_arrays);
+        point->parent_vl_arrays.tail = kefir_list_tail(&parent->value.block.vl_arrays);
+    } else {
+        point->parent_vl_arrays.head = NULL;
+        point->parent_vl_arrays.tail = NULL;
+    }
     return point;
 }
 
@@ -48,6 +56,19 @@ kefir_result_t kefir_ast_flow_control_point_free(struct kefir_mem *mem, struct k
     }
     point->ptr = NULL;
     KEFIR_FREE(mem, point);
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_ast_flow_control_point_bound(struct kefir_ast_flow_control_point *point) {
+    REQUIRE(point != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST flow control point"));
+
+    if (point->parent != NULL && point->parent->type == KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK) {
+        point->parent_vl_arrays.head = kefir_list_head(&point->parent->value.block.vl_arrays);
+        point->parent_vl_arrays.tail = kefir_list_tail(&point->parent->value.block.vl_arrays);
+    } else {
+        point->parent_vl_arrays.head = NULL;
+        point->parent_vl_arrays.tail = NULL;
+    }
     return KEFIR_OK;
 }
 

@@ -293,6 +293,7 @@ static kefir_result_t kefir_ast_local_context_define_label(struct kefir_mem *mem
         REQUIRE(label_id->label.point != NULL && label_id->label.point->parent == NULL,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location, "Cannot redefine a label"));
         label_id->label.point->parent = parent;
+        REQUIRE_OK(kefir_ast_flow_control_point_bound(label_id->label.point));
     }
 
     ASSIGN_PTR(scoped_id, label_id);
@@ -821,7 +822,8 @@ kefir_result_t kefir_ast_local_context_define_static(struct kefir_mem *mem, stru
     } else {
         REQUIRE(res == KEFIR_NOT_FOUND, res);
         REQUIRE(attributes == NULL || attributes->alias == NULL,
-            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location, "Static identifier definition cannot have alias attribute"));
+                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
+                                       "Static identifier definition cannot have alias attribute"));
         scoped_id = kefir_ast_context_allocate_scoped_object_identifier(
             mem, type, kefir_ast_identifier_block_scope_top(&context->ordinary_scope),
             KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC, alignment, KEFIR_AST_SCOPED_IDENTIFIER_NONE_LINKAGE, false,
@@ -892,7 +894,8 @@ kefir_result_t kefir_ast_local_context_define_static_thread_local(
     } else {
         REQUIRE(res == KEFIR_NOT_FOUND, res);
         REQUIRE(attributes == NULL || attributes->alias == NULL,
-            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location, "Static identifier definition cannot have alias attribute"));
+                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
+                                       "Static identifier definition cannot have alias attribute"));
         scoped_id = kefir_ast_context_allocate_scoped_object_identifier(
             mem, type, kefir_ast_identifier_block_scope_top(&context->ordinary_scope),
             KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC_THREAD_LOCAL, alignment, KEFIR_AST_SCOPED_IDENTIFIER_NONE_LINKAGE,
@@ -980,7 +983,8 @@ kefir_result_t kefir_ast_local_context_define_auto(struct kefir_mem *mem, struct
                                    "Assembly labels are not supported for local variables with automatic storage"));
 
     REQUIRE(attributes == NULL || attributes->alias == NULL,
-        KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location, "Identifier with automatic storage definition cannot have alias attribute"));
+            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
+                                   "Identifier with automatic storage definition cannot have alias attribute"));
 
     struct kefir_ast_scoped_identifier *scoped_id = NULL;
     kefir_result_t res = kefir_ast_identifier_flat_scope_at(
@@ -1052,7 +1056,8 @@ kefir_result_t kefir_ast_local_context_define_register(struct kefir_mem *mem, st
     }
 
     REQUIRE(attributes == NULL || attributes->alias == NULL,
-        KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location, "Identifier with register storage definition cannot have alias attribute"));
+            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
+                                   "Identifier with register storage definition cannot have alias attribute"));
 
     struct kefir_ast_scoped_identifier *scoped_id = NULL;
     kefir_result_t res = kefir_ast_identifier_flat_scope_at(

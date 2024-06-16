@@ -61,27 +61,19 @@ static kefir_result_t perform_jump(struct kefir_mem *mem, struct kefir_ast_trans
             current_origin_parent->parent_point != NULL ? current_origin_parent->parent_point->parent : NULL;
     }
 
-    const struct kefir_list_entry *top_target_block_iter = NULL, *top_target_block_tail = NULL;
-    if (top_target_block->parent != NULL && top_target_block->parent->type == KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK) {
-        top_target_block_iter = kefir_list_head(&top_target_block->parent->value.block.vl_arrays);
-        top_target_block_tail = kefir_list_tail(&top_target_block->parent->value.block.vl_arrays);
-    }
-    const struct kefir_list_entry *top_origin_block_iter = NULL, *top_origin_block_tail = NULL;
-    if (top_origin_block->parent != NULL && top_origin_block->parent->type == KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK) {
-        top_origin_block_iter = kefir_list_head(&top_origin_block->parent->value.block.vl_arrays);
-        top_origin_block_tail = kefir_list_tail(&top_origin_block->parent->value.block.vl_arrays);
-    }
+    const struct kefir_list_entry *top_target_block_iter = top_target_block->parent_vl_arrays.head;
+    const struct kefir_list_entry *top_origin_block_iter = top_origin_block->parent_vl_arrays.head;
     for (; top_target_block_iter != NULL;
          kefir_list_next(&top_target_block_iter), kefir_list_next(&top_origin_block_iter)) {
         REQUIRE(top_origin_block_iter == top_target_block_iter,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, source_location,
                                        "Cannot jump in the scope with uninitialized VLA variables"));
 
-        if (top_target_block_iter == top_target_block_tail) {
+        if (top_target_block_iter == top_target_block->parent_vl_arrays.tail) {
             kefir_list_next(&top_origin_block_iter);
             break;
         }
-        REQUIRE(top_origin_block_iter != top_origin_block_tail,
+        REQUIRE(top_origin_block_iter != top_origin_block->parent_vl_arrays.tail,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, source_location,
                                        "Cannot jump in the scope with uninitialized VLA variables"));
     }

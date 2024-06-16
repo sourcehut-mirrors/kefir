@@ -38,6 +38,10 @@ typedef struct kefir_ast_flow_control_point_cleanup {
 
 typedef struct kefir_ast_flow_control_point {
     struct kefir_ast_flow_control_structure *parent;
+    struct {
+        const struct kefir_list_entry *head;
+        const struct kefir_list_entry *tail;
+    } parent_vl_arrays;
     unsigned char content[KEFIR_AST_FLOW_CONTROL_PAYLOAD_SIZE];
     void *ptr;
     struct kefir_ast_flow_control_point_cleanup cleanup;
@@ -46,6 +50,7 @@ typedef struct kefir_ast_flow_control_point {
 struct kefir_ast_flow_control_point *kefir_ast_flow_control_point_alloc(struct kefir_mem *,
                                                                         struct kefir_ast_flow_control_structure *);
 kefir_result_t kefir_ast_flow_control_point_free(struct kefir_mem *, struct kefir_ast_flow_control_point *);
+kefir_result_t kefir_ast_flow_control_point_bound(struct kefir_ast_flow_control_point *);
 
 typedef struct kefir_ast_flow_control_branching_point {
     struct kefir_hashtree branches;
