@@ -39,6 +39,7 @@ typedef enum kefir_ir_inline_assembly_parameter_class {
 
 typedef struct kefir_ir_inline_assembly_parameter_constraints {
     kefir_bool_t general_purpose_register;
+    kefir_bool_t floating_point_register;
     kefir_bool_t memory_location;
     kefir_bool_t immediate;
     kefir_bool_t strict_immediate;

@@ -101,20 +101,19 @@ kefir_result_t kefir_ir_inline_assembly_free(struct kefir_mem *mem, struct kefir
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_ir_inline_assembly_add_parameter(struct kefir_mem *mem, struct kefir_string_pool *symbols,
-                                                      struct kefir_ir_inline_assembly *inline_asm,
-                                                      const char *identifier,
-                                                      kefir_ir_inline_assembly_parameter_class_t param_class,
-                                                      const struct kefir_ir_inline_assembly_parameter_constraints *constraints,
-                                                      const struct kefir_ir_type *param_type, kefir_id_t param_type_id,
-                                                      kefir_size_t param_type_idx, kefir_size_t value,
-                                                      struct kefir_ir_inline_assembly_parameter **param_ptr) {
+kefir_result_t kefir_ir_inline_assembly_add_parameter(
+    struct kefir_mem *mem, struct kefir_string_pool *symbols, struct kefir_ir_inline_assembly *inline_asm,
+    const char *identifier, kefir_ir_inline_assembly_parameter_class_t param_class,
+    const struct kefir_ir_inline_assembly_parameter_constraints *constraints, const struct kefir_ir_type *param_type,
+    kefir_id_t param_type_id, kefir_size_t param_type_idx, kefir_size_t value,
+    struct kefir_ir_inline_assembly_parameter **param_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(inline_asm != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR inline assembly"));
     REQUIRE(param_type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid parameter IR type"));
     REQUIRE(identifier != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR inline assembly parameter identifier"));
-    REQUIRE(constraints != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid parameter IR inline assembly parameter constraints"));
+    REQUIRE(constraints != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER,
+                                                 "Expected valid parameter IR inline assembly parameter constraints"));
 
     REQUIRE(param_class != KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ_STORE &&
                 param_class != KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_IMMEDIATE,
@@ -242,7 +241,7 @@ kefir_result_t kefir_ir_inline_assembly_add_immediate_parameter(
 
     param->parameter_id = kefir_list_length(&inline_asm->parameter_list);
     param->klass = KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_IMMEDIATE;
-    param->constraints = (struct kefir_ir_inline_assembly_parameter_constraints) {0};
+    param->constraints = (struct kefir_ir_inline_assembly_parameter_constraints){0};
     param->type.type = param_type;
     param->type.type_id = param_type_id;
     param->type.index = param_type_idx;
@@ -290,7 +289,7 @@ kefir_result_t kefir_ir_inline_assembly_parameter_read_from(struct kefir_mem *me
     REQUIRE(inline_asm != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR inline assembly"));
     REQUIRE(param != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR inline assembly parameter"));
     REQUIRE(param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_STORE &&
-                param->constraints.general_purpose_register,
+                (param->constraints.general_purpose_register || param->constraints.floating_point_register),
             KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Cannot change IR inline assembly parameter read source"));
 
     param->read_index = read_index;

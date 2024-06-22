@@ -1,0 +1,140 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global sumall
+.type sumall, @function
+.extern __kefirrt_opt_amd64_sysv_vararg_save
+.extern __kefirrt_opt_load_int_vararg
+.extern __kefirrt_opt_load_sse_vararg
+.extern __kefirrt_opt_float32_to_uint
+.extern __kefirrt_opt_float64_to_uint
+.extern __kefirrt_opt_long_double_to_int
+.extern __kefirrt_opt_long_double_to_uint
+.extern __kefirrt_opt_complex_long_double_equals
+.extern __kefirrt_opt_complex_long_double_truncate_1bit
+.extern __kefirrt_opt_complex_float32_mul
+.extern __kefirrt_opt_complex_float32_div
+.extern __kefirrt_opt_complex_float64_mul
+.extern __kefirrt_opt_complex_float64_div
+.extern __kefirrt_opt_complex_long_double_mul
+.extern __kefirrt_opt_complex_long_double_div
+.extern __kefirrt_fenv_update
+.extern __kefir_opt_float32_neg
+.extern __kefir_opt_float64_neg
+.extern __kefir_opt_uint2long_double
+.extern __kefir_opt_complex_float32_neg
+.extern __kefir_opt_complex_float64_neg
+
+.section .text
+sumall:
+    push %rbp
+    mov %rsp, %rbp
+    push %rbx
+    push %r12
+    push %r13
+    sub $40, %rsp
+_kefir_func_sumall_label0:
+_kefir_func_sumall_label1:
+    movq %rdi, -40(%rbp)
+    movq %xmm0, -32(%rbp)
+    lea -32(%rbp), %rax
+    movq _kefir_func_sumall_label2(%rip), %xmm0
+    movq -40(%rbp), %rcx
+    mov $0, %rdx
+    movsx %edx, %rdx
+    imul $8, %rdx, %rdx
+    add %rdx, %rcx
+    movq (%rcx), %rcx
+    movq -40(%rbp), %rdx
+    mov $1, %rsi
+    movsx %esi, %rsi
+    imul $8, %rsi, %rsi
+    add %rsi, %rdx
+    movq (%rdx), %rdx
+    movq -40(%rbp), %rsi
+    mov $2, %rdi
+    movsx %edi, %rdi
+    imul $8, %rdi, %rdi
+    add %rdi, %rsi
+    movq (%rsi), %rsi
+    movq -40(%rbp), %rdi
+    mov $3, %r8
+    movsx %r8d, %r8
+    imul $8, %r8, %r8
+    add %r8, %rdi
+    movq (%rdi), %rdi
+    movq -40(%rbp), %r8
+    mov $4, %r9
+    movsx %r9d, %r9
+    imul $8, %r9, %r9
+    add %r9, %r8
+    movq (%r8), %r8
+    movq -40(%rbp), %r9
+    mov $5, %r10
+    movsx %r10d, %r10
+    imul $8, %r10, %r10
+    add %r10, %r9
+    movq (%r9), %r9
+    movq -40(%rbp), %r10
+    mov $6, %r11
+    movsx %r11d, %r11
+    imul $8, %r11, %r11
+    add %r11, %r10
+    movq (%r10), %r10
+    movq -40(%rbp), %r11
+    mov $7, %rbx
+    movsx %ebx, %rbx
+    imul $8, %rbx, %rbx
+    add %rbx, %r11
+    movq (%r11), %r11
+    movq -40(%rbp), %rbx
+    mov $8, %r12
+    movsx %r12d, %r12
+    imul $8, %r12, %r12
+    add %r12, %rbx
+    movq (%rbx), %rbx
+    movq -40(%rbp), %r12
+    mov $9, %r13
+    movsx %r13d, %r13
+    imul $8, %r13, %r13
+    add %r13, %r12
+    movq (%r12), %r12
+    movq %rax, -64(%rbp)
+    movq %rcx, %xmm1
+    movq %rdx, %xmm2
+    movq %rsi, %xmm6
+    movq %rdi, %xmm7
+    movq %r8, %xmm8
+    movq %r9, %xmm10
+    movq %r10, %xmm12
+    movq %r11, %xmm13
+    mov %rbx, -56(%rbp)
+    mov %r12, -48(%rbp)
+addsd %xmm1, %xmm0
+addsd %xmm2, %xmm0
+addsd %xmm6, %xmm0
+addsd %xmm7, %xmm0
+addsd %xmm8, %xmm0
+addsd %xmm10, %xmm0
+addsd %xmm12, %xmm0
+addsd %xmm13, %xmm0
+addsd -56(%rbp), %xmm0
+addsd -48(%rbp), %xmm0
+
+    movq -64(%rbp), %rax
+    movq %xmm0, (%rax)
+    movq -32(%rbp), %rax
+    movq %rax, %xmm0
+    lea -24(%rbp), %rsp
+    pop %r13
+    pop %r12
+    pop %rbx
+    pop %rbp
+    ret
+.section .rodata
+    .align 8
+_kefir_func_sumall_label2:
+    .quad 0
+.section .text
+
+

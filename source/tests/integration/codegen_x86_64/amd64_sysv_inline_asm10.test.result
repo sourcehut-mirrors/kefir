@@ -38,10 +38,9 @@ _kefir_func_fn1_label1:
     mov %rsi, 0
     mov QWORD PTR [%rbp - 16], %rsi
     mov QWORD PTR [%rbp - 8], %rax
-    mov %rax, %rsi
-    mov %rsi, %rcx
-    mov %rax, [%rax]
+    mov %rax, [%rsi]
     mov %rdx, [%rdx]
+    mov %rsi, %rcx
 add %rax, 1
 mov %rcx, 2
 lea %rcx, %rdx

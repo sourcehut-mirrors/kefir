@@ -117,8 +117,7 @@ _kefir_func_unwrap_s1_label1:
     lea -4(%rbp), %rax
     lea -8(%rbp), %rcx
     movq %rax, -16(%rbp)
-    mov %rcx, %rax
-    mov (%rax), %eax
+    mov (%rcx), %eax
 
     movq -16(%rbp), %rcx
     mov %eax, (%rcx)

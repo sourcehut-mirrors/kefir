@@ -1,8 +1,8 @@
-.intel_syntax prefix
+.att_syntax
 .section .note.GNU-stack,"",%progbits
 
-.global fn1
-.type fn1, @function
+.global custom_discriminant
+.type custom_discriminant, @function
 .extern __kefirrt_opt_amd64_sysv_vararg_save
 .extern __kefirrt_opt_load_int_vararg
 .extern __kefirrt_opt_load_sse_vararg
@@ -26,25 +26,35 @@
 .extern __kefir_opt_complex_float64_neg
 
 .section .text
-fn1:
+custom_discriminant:
     push %rbp
-    mov %rbp, %rsp
-    sub %rsp, 16
-_kefir_func_fn1_label0:
-_kefir_func_fn1_label1:
-    mov %rdx, 0
-    mov %rax, 0
-    mov QWORD PTR [%rbp - 16], %rax
-    mov %rax, [%rax]
-    mov %rcx, %rdx
-xor %rax, %rax
-mov %rax, %rcx
-add %rcx, 1
-mov QWORD PTR [%rdx], %rcx
-    mov %rcx, QWORD PTR [%rbp - 16]
-    mov [%rcx], %rax
-    xor %rax, %rax
-    lea %rsp, [%rbp]
+    mov %rsp, %rbp
+    sub $48, %rsp
+_kefir_func_custom_discriminant_label0:
+_kefir_func_custom_discriminant_label1:
+    movq %xmm2, -16(%rbp)
+    movq %xmm1, -24(%rbp)
+    movq %xmm0, -32(%rbp)
+    movq %xmm0, -8(%rbp)
+    lea -8(%rbp), %rax
+    movq -24(%rbp), %rcx
+    movq -32(%rbp), %rdx
+    movq -16(%rbp), %rsi
+    movq %rax, -48(%rbp)
+    movq %rcx, %xmm1
+    movq %rdx, %xmm2
+    movq %rsi, %xmm3
+mulsd %xmm1, %xmm1
+movq %xmm2, %xmm0
+mulsd %xmm3, %xmm0
+addsd %xmm0, %xmm0
+addsd %xmm0, %xmm0
+subsd %xmm0, %xmm1
+    movq -48(%rbp), %rax
+    movq %xmm1, (%rax)
+    movq -8(%rbp), %rax
+    movq %rax, %xmm0
+    lea (%rbp), %rsp
     pop %rbp
     ret
 

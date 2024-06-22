@@ -36,8 +36,7 @@ _kefir_func_func1_label1:
     mov %rcx, 0
     mov QWORD PTR [%rbp - 16], %rax
     mov QWORD PTR [%rbp - 8], %rcx
-    mov %rcx, %rax
-    mov %cx, [%rcx]
+    mov %cx, [%rax]
 mov %ax, %cx
 xchg %ah, %al
 mov %cx, %ax

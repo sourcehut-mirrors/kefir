@@ -101,10 +101,16 @@ static kefir_result_t amd64_sysv_bitfield_allocator(struct kefir_mem *mem,
     return KEFIR_OK;
 }
 
-static kefir_result_t amd64_sysv_decode_inline_assembly_constraints(const struct kefir_ir_target_platform *platform, const char *constraints, struct kefir_ir_inline_assembly_parameter_constraints *decoded_constraints, const struct kefir_source_location *source_location) {
+static kefir_result_t amd64_sysv_decode_inline_assembly_constraints(
+    const struct kefir_ir_target_platform *platform, const char *constraints,
+    struct kefir_ir_inline_assembly_parameter_constraints *decoded_constraints,
+    const struct kefir_source_location *source_location) {
     UNUSED(platform);
-    REQUIRE(constraints != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 inline assembly constraints"));
-    REQUIRE(decoded_constraints != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to IR inline assembly decoded constraints"));
+    REQUIRE(constraints != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 inline assembly constraints"));
+    REQUIRE(
+        decoded_constraints != NULL,
+        KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to IR inline assembly decoded constraints"));
 
     for (const char *iter = constraints; *iter != '\0'; ++iter) {
         switch (*iter) {
@@ -121,6 +127,10 @@ static kefir_result_t amd64_sysv_decode_inline_assembly_constraints(const struct
 
             case 'r':
                 decoded_constraints->general_purpose_register = true;
+                break;
+
+            case 'x':
+                decoded_constraints->floating_point_register = true;
                 break;
 
             case 'm':
@@ -164,7 +174,6 @@ static kefir_result_t amd64_sysv_decode_inline_assembly_constraints(const struct
     }
     return KEFIR_OK;
 }
-
 
 static kefir_result_t amd64_sysv_free(struct kefir_mem *mem, struct kefir_ir_target_platform *platform) {
     UNUSED(mem);
