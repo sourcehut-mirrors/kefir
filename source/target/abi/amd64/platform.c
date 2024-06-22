@@ -133,6 +133,10 @@ static kefir_result_t amd64_sysv_decode_inline_assembly_constraints(
                 decoded_constraints->floating_point_register = true;
                 break;
 
+            case 'f':
+                decoded_constraints->x87_stack = true;
+                break;
+
             case 'm':
                 decoded_constraints->memory_location = true;
                 break;

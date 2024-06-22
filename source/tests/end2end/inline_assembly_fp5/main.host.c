@@ -29,7 +29,7 @@ int main(void) {
     for (double x = 0.0; x < 10.0; x += 0.1) {
         for (double y = 0.0; y < 10.0; y += 0.1) {
             for (double z = 0.0; z < 10.0; z += 0.1) {
-                assert(discriminant(x, y, z) - (y * y - 4 * x * z) <= 1.0e-6);
+                assert(fabs(discriminant(x, y, z) - (y * y - 4 * x * z)) <= 1.0e-6);
             }
         }
     }

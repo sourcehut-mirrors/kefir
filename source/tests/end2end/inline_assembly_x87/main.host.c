@@ -29,7 +29,9 @@ int main(void) {
     for (double x = 0.0; x < 10.0; x += 0.1) {
         for (double y = 0.0; y < 10.0; y += 0.1) {
             for (double z = 0.0; z < 10.0; z += 0.1) {
-                assert(fabs(custom_discriminant(x, y, z) - (y * y - 4 * x * z)) <= 1.0e-6);
+                assert(fabs(discriminantf((float) x, (float) y, (float) z) - (y * y - 4 * x * z)) <= 1.0e-3);
+                assert(fabs(discriminant(x, y, z) - (y * y - 4 * x * z)) <= 1.0e-6);
+                assert(fabsl(discriminantl(x, y, z) - (y * y - 4 * x * z)) <= 1.0e-8L);
             }
         }
     }

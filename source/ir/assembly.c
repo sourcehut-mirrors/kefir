@@ -289,7 +289,8 @@ kefir_result_t kefir_ir_inline_assembly_parameter_read_from(struct kefir_mem *me
     REQUIRE(inline_asm != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR inline assembly"));
     REQUIRE(param != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR inline assembly parameter"));
     REQUIRE(param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_STORE &&
-                (param->constraints.general_purpose_register || param->constraints.floating_point_register),
+                (param->constraints.general_purpose_register || param->constraints.floating_point_register ||
+                 param->constraints.x87_stack),
             KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Cannot change IR inline assembly parameter read source"));
 
     param->read_index = read_index;

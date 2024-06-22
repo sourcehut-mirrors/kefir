@@ -1,0 +1,170 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global discriminant
+.type discriminant, @function
+.global discriminantf
+.type discriminantf, @function
+.global discriminantl
+.type discriminantl, @function
+.extern __kefirrt_opt_amd64_sysv_vararg_save
+.extern __kefirrt_opt_load_int_vararg
+.extern __kefirrt_opt_load_sse_vararg
+.extern __kefirrt_opt_float32_to_uint
+.extern __kefirrt_opt_float64_to_uint
+.extern __kefirrt_opt_long_double_to_int
+.extern __kefirrt_opt_long_double_to_uint
+.extern __kefirrt_opt_complex_long_double_equals
+.extern __kefirrt_opt_complex_long_double_truncate_1bit
+.extern __kefirrt_opt_complex_float32_mul
+.extern __kefirrt_opt_complex_float32_div
+.extern __kefirrt_opt_complex_float64_mul
+.extern __kefirrt_opt_complex_float64_div
+.extern __kefirrt_opt_complex_long_double_mul
+.extern __kefirrt_opt_complex_long_double_div
+.extern __kefirrt_fenv_update
+.extern __kefir_opt_float32_neg
+.extern __kefir_opt_float64_neg
+.extern __kefir_opt_uint2long_double
+.extern __kefir_opt_complex_float32_neg
+.extern __kefir_opt_complex_float64_neg
+
+.section .text
+discriminant:
+    push %rbp
+    mov %rsp, %rbp
+    sub $64, %rsp
+    fstcw -8(%rbp)
+_kefir_func_discriminant_label0:
+    movq %xmm0, %xmm3
+_kefir_func_discriminant_label1:
+    movq %xmm2, -24(%rbp)
+    movq %xmm1, -32(%rbp)
+    movq %xmm3, -40(%rbp)
+    movq %xmm1, -16(%rbp)
+    lea -16(%rbp), %rax
+    movq -40(%rbp), %rcx
+    movq -32(%rbp), %rdx
+    movq -24(%rbp), %rsi
+    movq %rax, -64(%rbp)
+    movq %rsi, %xmm1
+    movq %xmm1, -56(%rbp)
+    fldl -56(%rbp)
+    movq %rdx, %xmm1
+    movq %xmm1, -56(%rbp)
+    fldl -56(%rbp)
+    movq %rcx, %xmm1
+    movq %xmm1, -56(%rbp)
+    fldl -56(%rbp)
+fxch %st(1)
+fmul %st(0)
+fstp %st(3)
+fmulp
+movq $4, -8(%rsp)
+fildq -8(%rsp)
+fmulp
+fxch %st(1)
+fsubp
+    movq -64(%rbp), %rax
+    fstpl (%rax)
+    movq -16(%rbp), %rax
+    movq %rax, %xmm0
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+discriminantf:
+    push %rbp
+    mov %rsp, %rbp
+    sub $48, %rsp
+    fstcw -8(%rbp)
+_kefir_func_discriminantf_label0:
+    movq %xmm0, %xmm3
+_kefir_func_discriminantf_label1:
+    movd %xmm2, -16(%rbp)
+    movd %xmm1, -20(%rbp)
+    movd %xmm3, -24(%rbp)
+    movd %xmm1, -12(%rbp)
+    lea -12(%rbp), %rax
+    movl -24(%rbp), %ecx
+    movl -20(%rbp), %edx
+    movl -16(%rbp), %esi
+    movq %rax, -48(%rbp)
+    movd %esi, %xmm1
+    movd %xmm1, -40(%rbp)
+    flds -40(%rbp)
+    movd %edx, %xmm1
+    movd %xmm1, -40(%rbp)
+    flds -40(%rbp)
+    movd %ecx, %xmm1
+    movd %xmm1, -40(%rbp)
+    flds -40(%rbp)
+fxch %st(1)
+fmul %st(0)
+fstp %st(3)
+fmulp
+movq $4, -8(%rsp)
+fildq -8(%rsp)
+fmulp
+fxch %st(1)
+fsubp
+    movq -48(%rbp), %rax
+    fstps (%rax)
+    movl -12(%rbp), %eax
+    movq %rax, %xmm0
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+discriminantl:
+    push %rbp
+    mov %rsp, %rbp
+    sub $176, %rsp
+    fstcw -8(%rbp)
+_kefir_func_discriminantl_label0:
+    lea 16(%rbp), %rax
+    lea 32(%rbp), %rcx
+    lea 48(%rbp), %rdx
+_kefir_func_discriminantl_label1:
+    movq $0, -72(%rbp)
+    fldt (%rdx)
+    fstpt -80(%rbp)
+    movq $0, -88(%rbp)
+    fldt (%rcx)
+    fstpt -96(%rbp)
+    movq $0, -104(%rbp)
+    fldt (%rax)
+    fstpt -112(%rbp)
+    lea -64(%rbp), %rax
+    fldt -112(%rbp)
+    fstpt -176(%rbp)
+    fldt -96(%rbp)
+    fstpt -160(%rbp)
+    fldt -80(%rbp)
+    fstpt -144(%rbp)
+    movq %rax, -128(%rbp)
+    fldt -144(%rbp)
+    fldt -160(%rbp)
+    fldt -176(%rbp)
+fxch %st(1)
+fmul %st(0)
+fstp %st(3)
+fmulp
+movq $4, -8(%rsp)
+fildq -8(%rsp)
+fmulp
+fxch %st(1)
+fsubp
+    movq -128(%rbp), %rax
+    fstpt (%rax)
+    fldt -64(%rbp)
+    fstpt -176(%rbp)
+    fldt -176(%rbp)
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+

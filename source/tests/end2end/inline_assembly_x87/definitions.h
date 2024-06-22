@@ -18,21 +18,13 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <assert.h>
-#include <math.h>
-#include "./definitions.h"
+#ifndef DEFINITIONS_H_
+#define DEFINITIONS_H_
 
-int main(void) {
 #ifdef __x86_64__
-    for (double x = 0.0; x < 10.0; x += 0.1) {
-        for (double y = 0.0; y < 10.0; y += 0.1) {
-            for (double z = 0.0; z < 10.0; z += 0.1) {
-                assert(fabs(custom_discriminant(x, y, z) - (y * y - 4 * x * z)) <= 1.0e-6);
-            }
-        }
-    }
+extern float discriminantf(float, float, float);
+extern double discriminant(double, double, double);
+extern long double discriminantl(long double, long double, long double);
 #endif
-    return EXIT_SUCCESS;
-}
+
+#endif
