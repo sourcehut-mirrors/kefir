@@ -137,6 +137,16 @@ static kefir_result_t amd64_sysv_decode_inline_assembly_constraints(
                 decoded_constraints->x87_stack = true;
                 break;
 
+            case 't':
+                decoded_constraints->x87_stack = true;
+                decoded_constraints->explicit_register = "st0";
+                break;
+
+            case 'u':
+                decoded_constraints->x87_stack = true;
+                decoded_constraints->explicit_register = "st1";
+                break;
+
             case 'm':
                 decoded_constraints->memory_location = true;
                 break;
@@ -169,6 +179,12 @@ static kefir_result_t amd64_sysv_decode_inline_assembly_constraints(
             case 'S':
                 decoded_constraints->general_purpose_register = true;
                 decoded_constraints->explicit_register = "rsi";
+                break;
+
+            case 'X':
+                decoded_constraints->general_purpose_register = true;
+                decoded_constraints->floating_point_register = true;
+                decoded_constraints->memory_location = true;
                 break;
 
             default:

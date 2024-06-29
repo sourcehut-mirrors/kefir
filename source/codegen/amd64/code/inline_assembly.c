@@ -197,7 +197,8 @@ static kefir_result_t obtain_available_sse_register(struct kefir_mem *mem,
 static kefir_result_t allocate_register_parameter(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
                                                   struct inline_assembly_context *context,
                                                   const struct kefir_ir_inline_assembly_parameter *ir_asm_param,
-                                                  inline_assembly_parameter_type_t param_type) {
+                                                  inline_assembly_parameter_type_t param_type,
+                                                  kefir_bool_t general_purpose) {
     struct inline_assembly_parameter_allocation_entry *entry = &context->parameters[ir_asm_param->parameter_id];
     kefir_asm_amd64_xasmgen_register_t reg = 0;
     if (entry->explicit_register_present) {
@@ -227,7 +228,7 @@ static kefir_result_t allocate_register_parameter(struct kefir_mem *mem, struct 
             entry->allocation_vreg = (kefir_asmcmp_virtual_register_index_t) node->value;
             entry->allocation_type = INLINE_ASSEMBLY_PARAMETER_ALLOCATION_GP_REGISTER;
         }
-    } else if (ir_asm_param->constraints.general_purpose_register) {
+    } else if (general_purpose) {
         REQUIRE_OK(obtain_available_gp_register(mem, function, context, &reg));
         REQUIRE_OK(kefir_asmcmp_virtual_register_new(
             mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &entry->allocation_vreg));
@@ -335,7 +336,7 @@ static kefir_result_t init_explicitly_allocated_regs(struct kefir_mem *mem, stru
         ASSIGN_DECL_CAST(const struct kefir_ir_inline_assembly_parameter *, ir_asm_param, iter->value);
         struct inline_assembly_parameter_allocation_entry *entry = &context->parameters[ir_asm_param->parameter_id];
 
-        if (ir_asm_param->constraints.explicit_register != NULL) {
+        if (ir_asm_param->constraints.explicit_register != NULL && !ir_asm_param->constraints.x87_stack) {
             kefir_asm_amd64_xasmgen_register_t phreg;
             REQUIRE_OK(kefir_asm_amd64_xasmgen_register_from_symbolic_name(ir_asm_param->constraints.explicit_register,
                                                                            &phreg));
@@ -365,6 +366,32 @@ static kefir_result_t init_explicitly_allocated_regs(struct kefir_mem *mem, stru
             }
         }
     }
+    return KEFIR_OK;
+}
+
+static kefir_result_t allocate_x87_stack_parameter(struct kefir_codegen_amd64_function *function,
+                                                   struct inline_assembly_context *context,
+                                                   const struct kefir_ir_inline_assembly_parameter *ir_asm_param) {
+    struct inline_assembly_parameter_allocation_entry *entry = &context->parameters[ir_asm_param->parameter_id];
+
+    entry->allocation_type = INLINE_ASSEMBLY_PARAMETER_ALLOCATION_X87_STACK;
+    if (ir_asm_param->constraints.explicit_register != NULL &&
+        strcmp(ir_asm_param->constraints.explicit_register, "st0") == 0) {
+        REQUIRE(
+            context->x87_stack_index == 0,
+            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to satisfy inline assembly x87 stack allocation constraints"));
+    } else if (ir_asm_param->constraints.explicit_register != NULL &&
+               strcmp(ir_asm_param->constraints.explicit_register, "st1") == 0) {
+        REQUIRE(
+            context->x87_stack_index == 1,
+            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to satisfy inline assembly x87 stack allocation constraints"));
+    } else {
+        REQUIRE(
+            ir_asm_param->constraints.explicit_register == NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to satisfy inline assembly x87 stack allocation constraints"));
+    }
+    entry->x87_stack_index = context->x87_stack_index++;
+    REQUIRE_OK(kefir_codegen_amd64_stack_frame_preserve_x87_control_word(&function->stack_frame));
     return KEFIR_OK;
 }
 
@@ -417,24 +444,21 @@ static kefir_result_t allocate_parameters(struct kefir_mem *mem, struct kefir_co
 
         if (!parameter_immediate) {
             if (ir_asm_param->constraints.x87_stack) {
-                struct inline_assembly_parameter_allocation_entry *entry =
-                    &context->parameters[ir_asm_param->parameter_id];
-                entry->allocation_type = INLINE_ASSEMBLY_PARAMETER_ALLOCATION_X87_STACK;
-                entry->x87_stack_index = context->x87_stack_index++;
-                REQUIRE_OK(kefir_codegen_amd64_stack_frame_preserve_x87_control_word(&function->stack_frame));
-            } else if (ir_asm_param->constraints.floating_point_register &&
-                       ((!ir_asm_param->constraints.general_purpose_register &&
-                         !ir_asm_param->constraints.memory_location) ||
-                        ((param_type == INLINE_ASSEMBLY_PARAMETER_SCALAR || param_size <= 2 * KEFIR_AMD64_ABI_QWORD) &&
-                         kefir_list_length(&context->available_sse_registers) > 1))) {
-                REQUIRE_OK(allocate_register_parameter(mem, function, context, ir_asm_param, param_type));
+                REQUIRE_OK(allocate_x87_stack_parameter(function, context, ir_asm_param));
             } else if (ir_asm_param->constraints.general_purpose_register &&
-                       (!ir_asm_param->constraints.memory_location ||
+                       (((!ir_asm_param->constraints.floating_point_register ||
+                          kefir_list_length(&context->available_sse_registers) == 0) &&
+                         !ir_asm_param->constraints.memory_location) ||
                         ((param_type == INLINE_ASSEMBLY_PARAMETER_SCALAR || param_size <= KEFIR_AMD64_ABI_QWORD) &&
                          kefir_list_length(&context->available_gp_registers) > 1))) {
                 REQUIRE(param_type != INLINE_ASSEMBLY_PARAMETER_AGGREGATE || param_size <= KEFIR_AMD64_ABI_QWORD,
                         KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unable to satisfy IR inline assembly constraints"));
-                REQUIRE_OK(allocate_register_parameter(mem, function, context, ir_asm_param, param_type));
+                REQUIRE_OK(allocate_register_parameter(mem, function, context, ir_asm_param, param_type, true));
+            } else if (ir_asm_param->constraints.floating_point_register &&
+                       (!ir_asm_param->constraints.memory_location ||
+                        ((param_type == INLINE_ASSEMBLY_PARAMETER_SCALAR || param_size <= 2 * KEFIR_AMD64_ABI_QWORD) &&
+                         kefir_list_length(&context->available_sse_registers) > 1))) {
+                REQUIRE_OK(allocate_register_parameter(mem, function, context, ir_asm_param, param_type, false));
             } else if (ir_asm_param->constraints.memory_location) {
                 REQUIRE_OK(allocate_memory_parameter(mem, function, context, ir_asm_param, param_type));
             } else {
