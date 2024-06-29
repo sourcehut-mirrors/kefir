@@ -113,14 +113,12 @@ const struct kefir_ast_type *composite_struct_types(struct kefir_mem *mem, struc
             if (field1->bitfield) {
                 res = kefir_ast_struct_type_bitfield(
                     mem, symbols, composite_struct, field1->identifier, composite_field_type,
-                    kefir_ast_alignment_const_expression(
-                        mem, kefir_ast_constant_expression_integer(mem, field1->alignment->value)),
+                    kefir_ast_alignment_clone(mem, field1->alignment),
                     kefir_ast_constant_expression_integer(mem, field1->bitwidth->value.integer));
             } else {
-                res = kefir_ast_struct_type_field(
-                    mem, symbols, composite_struct, field1->identifier, composite_field_type,
-                    kefir_ast_alignment_const_expression(
-                        mem, kefir_ast_constant_expression_integer(mem, field1->alignment->value)));
+                res = kefir_ast_struct_type_field(mem, symbols, composite_struct, field1->identifier,
+                                                  composite_field_type,
+                                                  kefir_ast_alignment_clone(mem, field1->alignment));
             }
             REQUIRE(res == KEFIR_OK, NULL);
         }

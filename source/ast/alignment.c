@@ -68,11 +68,41 @@ struct kefir_ast_alignment *kefir_ast_alignment_const_expression(struct kefir_me
     return alignment;
 }
 
+struct kefir_ast_alignment *kefir_ast_alignment_clone(struct kefir_mem *mem,
+                                                      const struct kefir_ast_alignment *alignment) {
+    REQUIRE(mem != NULL, NULL);
+    REQUIRE(alignment != NULL, NULL);
+
+    struct kefir_ast_alignment *new_alignment = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_alignment));
+    REQUIRE(new_alignment != NULL, NULL);
+    new_alignment->klass = alignment->klass;
+    new_alignment->value = alignment->value;
+    switch (alignment->klass) {
+        case KEFIR_AST_ALIGNMENT_DEFAULT:
+            // Intentionally left blank
+            break;
+
+        case KEFIR_AST_ALIGNMENT_AS_TYPE:
+            new_alignment->type = alignment->type;
+            break;
+
+        case KEFIR_AST_ALIGNMENT_AS_CONST_EXPR:
+            new_alignment->const_expr = kefir_ast_constant_expression_integer(mem, alignment->value);
+            REQUIRE_ELSE(new_alignment->const_expr != NULL, {
+                KEFIR_FREE(mem, new_alignment);
+                return NULL;
+            });
+            break;
+    }
+    return new_alignment;
+}
+
 kefir_result_t kefir_ast_alignment_free(struct kefir_mem *mem, struct kefir_ast_alignment *alignment) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(alignment != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST alignment"));
     switch (alignment->klass) {
         case KEFIR_AST_ALIGNMENT_DEFAULT:
+            // Intentionally left blank
             break;
 
         case KEFIR_AST_ALIGNMENT_AS_TYPE:
