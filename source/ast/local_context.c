@@ -786,6 +786,11 @@ kefir_result_t kefir_ast_local_context_declare_external_thread_local(
     return KEFIR_OK;
 }
 
+static kefir_bool_t is_vl_array(const struct kefir_ast_type *type) {
+    type = kefir_ast_unqualified_type(type);
+    return type->tag == KEFIR_AST_TYPE_ARRAY && kefir_ast_type_is_variably_modified(type);
+}
+
 kefir_result_t kefir_ast_local_context_define_static(struct kefir_mem *mem, struct kefir_ast_local_context *context,
                                                      const char *identifier, const struct kefir_ast_type *type,
                                                      struct kefir_ast_alignment *alignment,
@@ -798,14 +803,10 @@ kefir_result_t kefir_ast_local_context_define_static(struct kefir_mem *mem, stru
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST translatation context"));
     REQUIRE(identifier != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid identifier"));
     REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type"));
-    REQUIRE(!kefir_ast_type_is_variably_modified(type) ||
-                kefir_ast_unqualified_type(type)->tag == KEFIR_AST_TYPE_SCALAR_POINTER,
+    REQUIRE(!is_vl_array(type),
             KEFIR_SET_SOURCE_ERROR(
                 KEFIR_ANALYSIS_ERROR, location,
                 "Variably-modified declaration in block scope with static specifier shall be a pointer"));
-    REQUIRE(!kefir_ast_type_is_variably_modified(type) || initializer == NULL,
-            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
-                                   "Variably-modified declaration cannot have initializer"));
 
     if (initializer == NULL) {
         REQUIRE(!KEFIR_AST_TYPE_IS_INCOMPLETE(type),
@@ -869,15 +870,10 @@ kefir_result_t kefir_ast_local_context_define_static_thread_local(
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST translatation context"));
     REQUIRE(identifier != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid identifier"));
     REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type"));
-    REQUIRE(
-        !kefir_ast_type_is_variably_modified(type) ||
-            kefir_ast_unqualified_type(type)->tag == KEFIR_AST_TYPE_SCALAR_POINTER,
-        KEFIR_SET_SOURCE_ERROR(
-            KEFIR_ANALYSIS_ERROR, location,
-            "Variably-modified declaration in block scope with static _Thread_local specifiers shall be a pointer"));
-    REQUIRE(!kefir_ast_type_is_variably_modified(type) || initializer == NULL,
-            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
-                                   "Variably-modified declaration cannot have initializer"));
+    REQUIRE(!is_vl_array(type),
+            KEFIR_SET_SOURCE_ERROR(
+                KEFIR_ANALYSIS_ERROR, location,
+                "Variably-modified declaration in block scope with static specifier shall be a pointer"));
 
     if (initializer == NULL) {
         REQUIRE(!KEFIR_AST_TYPE_IS_INCOMPLETE(type),
@@ -968,7 +964,7 @@ kefir_result_t kefir_ast_local_context_define_auto(struct kefir_mem *mem, struct
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST translatation context"));
     REQUIRE(identifier != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid identifier"));
     REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type"));
-    REQUIRE(!kefir_ast_type_is_variably_modified(type) || initializer == NULL,
+    REQUIRE(!is_vl_array(type) || initializer == NULL,
             KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
                                    "Variably-modified declaration cannot have initializer"));
 
@@ -1045,7 +1041,7 @@ kefir_result_t kefir_ast_local_context_define_register(struct kefir_mem *mem, st
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST translatation context"));
     REQUIRE(identifier != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid identifier"));
     REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type"));
-    REQUIRE(!kefir_ast_type_is_variably_modified(type) || initializer == NULL,
+    REQUIRE(!is_vl_array(type) || initializer == NULL,
             KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
                                    "Variably-modified declaration cannot have initializer"));
 
