@@ -39,7 +39,7 @@ get_global_uninit_static:
     mov %rsp, %rbp
 _kefir_func_get_global_uninit_static_label0:
 _kefir_func_get_global_uninit_static_label1:
-    lea __kefirrt_module_static_uninit_vars(%rip), %rax
+    lea STRUCT1(%rip), %rax
     pop %rbp
     ret
 
@@ -49,7 +49,7 @@ get_global_tlocal_uninit_static:
     mov %rsp, %rbp
 _kefir_func_get_global_tlocal_uninit_static_label0:
 _kefir_func_get_global_tlocal_uninit_static_label1:
-    data16     lea __kefirrt_module_static_tlocal_uninit_vars@tlsgd(%rip), %rdi
+    data16     lea STRUCT2@tlsgd(%rip), %rdi
     .word 26214
     rex.W     call __tls_get_addr@PLT
     mov %rax, %rcx
@@ -63,11 +63,10 @@ get_local_tlocal_uninit_static:
     mov %rsp, %rbp
 _kefir_func_get_local_tlocal_uninit_static_label0:
 _kefir_func_get_local_tlocal_uninit_static_label1:
-    data16     lea __kefirrt_module_static_tlocal_uninit_vars@tlsgd(%rip), %rdi
+    data16     lea __kefir_function_get_local_tlocal_uninit_static_static_STRUCT2_7@tlsgd(%rip), %rdi
     .word 26214
     rex.W     call __tls_get_addr@PLT
     mov %rax, %rcx
-    add $24, %rcx
     mov %rcx, %rax
     pop %rbp
     ret
@@ -77,8 +76,7 @@ get_local_uninit_static:
     mov %rsp, %rbp
 _kefir_func_get_local_uninit_static_label0:
 _kefir_func_get_local_uninit_static_label1:
-    lea __kefirrt_module_static_uninit_vars(%rip), %rax
-    add $24, %rax
+    lea __kefir_function_get_local_uninit_static_static_STRUCT2_4(%rip), %rax
     pop %rbp
     ret
 
@@ -86,20 +84,27 @@ _kefir_func_get_local_uninit_static_label1:
 .section .data
     .align 8
 GLOBAL_UNINIT_STATIC:
-    .quad __kefirrt_module_static_uninit_vars
+    .quad STRUCT1
 
 .section .bss
     .align 8
-__kefirrt_module_static_uninit_vars:
-    .skip 48
+STRUCT1:
+    .skip 24
+
+    .align 8
+__kefir_function_get_local_uninit_static_static_STRUCT2_4:
+    .skip 24
 
 .section .tbss
     .align 8
-__kefirrt_module_static_tlocal_uninit_vars:
+STRUCT2:
     .long 0
     .zero 4
     .quad 0
     .quad 0
+
+    .align 8
+__kefir_function_get_local_tlocal_uninit_static_static_STRUCT2_7:
     .long 0
     .zero 4
     .quad 0

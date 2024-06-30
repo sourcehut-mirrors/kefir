@@ -31,22 +31,6 @@
         },
         {
             "identifier": 7,
-            "type": []
-        },
-        {
-            "identifier": 8,
-            "type": []
-        },
-        {
-            "identifier": 9,
-            "type": []
-        },
-        {
-            "identifier": 10,
-            "type": []
-        },
-        {
-            "identifier": 11,
             "type": [
                 {
                     "type": "short"
@@ -54,7 +38,7 @@
             ]
         },
         {
-            "identifier": 12,
+            "identifier": 8,
             "type": [
                 {
                     "type": "double"
@@ -62,7 +46,7 @@
             ]
         },
         {
-            "identifier": 13,
+            "identifier": 9,
             "type": [
                 {
                     "type": "array",
@@ -74,12 +58,28 @@
             ]
         },
         {
-            "identifier": 14,
+            "identifier": 10,
             "type": [
                 {
                     "type": "word"
                 }
             ]
+        },
+        {
+            "identifier": 11,
+            "type": []
+        },
+        {
+            "identifier": 12,
+            "type": []
+        },
+        {
+            "identifier": 13,
+            "type": []
+        },
+        {
+            "identifier": 14,
+            "type": []
         },
         {
             "identifier": 15,
@@ -99,22 +99,6 @@
         },
         {
             "identifier": 19,
-            "type": []
-        },
-        {
-            "identifier": 20,
-            "type": []
-        },
-        {
-            "identifier": 21,
-            "type": []
-        },
-        {
-            "identifier": 22,
-            "type": []
-        },
-        {
-            "identifier": 23,
             "type": [
                 {
                     "type": "char"
@@ -122,7 +106,7 @@
             ]
         },
         {
-            "identifier": 24,
+            "identifier": 20,
             "type": [
                 {
                     "type": "short"
@@ -130,7 +114,7 @@
             ]
         },
         {
-            "identifier": 25,
+            "identifier": 21,
             "type": [
                 {
                     "type": "float"
@@ -138,7 +122,7 @@
             ]
         },
         {
-            "identifier": 26,
+            "identifier": 22,
             "type": [
                 {
                     "type": "double"
@@ -152,57 +136,57 @@
         {
             "identifier": 0,
             "name": "add_integral",
+            "parameters": 1,
+            "vararg": false,
+            "returns": 2,
+            "returns_twice": false
+        },
+        {
+            "identifier": 1,
+            "name": "add_floating_point",
+            "parameters": 3,
+            "vararg": false,
+            "returns": 4,
+            "returns_twice": false
+        },
+        {
+            "identifier": 2,
+            "name": "add_pointer_int",
             "parameters": 5,
             "vararg": false,
             "returns": 6,
             "returns_twice": false
         },
         {
-            "identifier": 1,
-            "name": "add_floating_point",
-            "parameters": 7,
-            "vararg": false,
-            "returns": 8,
-            "returns_twice": false
-        },
-        {
-            "identifier": 2,
-            "name": "add_pointer_int",
-            "parameters": 9,
-            "vararg": false,
-            "returns": 10,
-            "returns_twice": false
-        },
-        {
             "identifier": 3,
             "name": "sub_integral",
+            "parameters": 11,
+            "vararg": false,
+            "returns": 12,
+            "returns_twice": false
+        },
+        {
+            "identifier": 4,
+            "name": "sub_floating_point",
+            "parameters": 13,
+            "vararg": false,
+            "returns": 14,
+            "returns_twice": false
+        },
+        {
+            "identifier": 5,
+            "name": "sub_pointers",
             "parameters": 15,
             "vararg": false,
             "returns": 16,
             "returns_twice": false
         },
         {
-            "identifier": 4,
-            "name": "sub_floating_point",
+            "identifier": 6,
+            "name": "sub_pointer_integer",
             "parameters": 17,
             "vararg": false,
             "returns": 18,
-            "returns_twice": false
-        },
-        {
-            "identifier": 5,
-            "name": "sub_pointers",
-            "parameters": 19,
-            "vararg": false,
-            "returns": 20,
-            "returns_twice": false
-        },
-        {
-            "identifier": 6,
-            "name": "sub_pointer_integer",
-            "parameters": 21,
-            "vararg": false,
-            "returns": 22,
             "returns_twice": false
         }
     ],
@@ -210,7 +194,7 @@
         {
             "identifier": 0,
             "name": "add_integral",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushi",
@@ -262,7 +246,7 @@
         {
             "identifier": 6,
             "name": "sub_pointer_integer",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushi",
@@ -359,7 +343,7 @@
         {
             "identifier": 2,
             "name": "add_pointer_int",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushi",
@@ -451,7 +435,7 @@
         {
             "identifier": 3,
             "name": "sub_integral",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushi",
@@ -506,7 +490,7 @@
         {
             "identifier": 5,
             "name": "sub_pointers",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushi",
@@ -586,7 +570,7 @@
         {
             "identifier": 4,
             "name": "sub_floating_point",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushi",
@@ -692,7 +676,7 @@
         {
             "identifier": 1,
             "name": "add_floating_point",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushi",

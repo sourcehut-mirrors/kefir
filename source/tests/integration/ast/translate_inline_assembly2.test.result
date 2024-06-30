@@ -11,22 +11,6 @@
     "types": [
         {
             "identifier": 0,
-            "type": []
-        },
-        {
-            "identifier": 1,
-            "type": []
-        },
-        {
-            "identifier": 2,
-            "type": []
-        },
-        {
-            "identifier": 3,
-            "type": []
-        },
-        {
-            "identifier": 4,
             "type": [
                 {
                     "type": "int"
@@ -34,7 +18,7 @@
             ]
         },
         {
-            "identifier": 5,
+            "identifier": 1,
             "type": [
                 {
                     "type": "long_double"
@@ -42,11 +26,11 @@
             ]
         },
         {
-            "identifier": 6,
+            "identifier": 2,
             "type": []
         },
         {
-            "identifier": 7,
+            "identifier": 3,
             "type": []
         }
     ],
@@ -56,9 +40,9 @@
         {
             "identifier": 0,
             "name": "inline_asm1",
-            "parameters": 6,
+            "parameters": 2,
             "vararg": false,
-            "returns": 7,
+            "returns": 3,
             "returns_twice": false
         }
     ],
@@ -66,7 +50,7 @@
         {
             "identifier": 0,
             "name": "inline_asm1",
-            "locals": 5,
+            "locals": 1,
             "body": [
                 {
                     "opcode": "inlineasm",

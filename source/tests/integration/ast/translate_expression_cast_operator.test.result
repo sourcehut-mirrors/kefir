@@ -22,22 +22,6 @@
         },
         {
             "identifier": 1,
-            "type": []
-        },
-        {
-            "identifier": 2,
-            "type": []
-        },
-        {
-            "identifier": 3,
-            "type": []
-        },
-        {
-            "identifier": 4,
-            "type": []
-        },
-        {
-            "identifier": 5,
             "type": [
                 {
                     "type": "word"
@@ -45,7 +29,7 @@
             ]
         },
         {
-            "identifier": 6,
+            "identifier": 2,
             "type": [
                 {
                     "type": "struct",
@@ -58,11 +42,11 @@
             ]
         },
         {
-            "identifier": 7,
+            "identifier": 3,
             "type": []
         },
         {
-            "identifier": 8,
+            "identifier": 4,
             "type": []
         }
     ],
@@ -72,9 +56,9 @@
         {
             "identifier": 0,
             "name": "func1",
-            "parameters": 7,
+            "parameters": 3,
             "vararg": false,
-            "returns": 8,
+            "returns": 4,
             "returns_twice": false
         }
     ],
@@ -82,7 +66,7 @@
         {
             "identifier": 0,
             "name": "func1",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushi",

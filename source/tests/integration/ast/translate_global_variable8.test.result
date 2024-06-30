@@ -39,22 +39,6 @@
     "types": [
         {
             "identifier": 0,
-            "type": []
-        },
-        {
-            "identifier": 1,
-            "type": []
-        },
-        {
-            "identifier": 2,
-            "type": []
-        },
-        {
-            "identifier": 3,
-            "type": []
-        },
-        {
-            "identifier": 4,
             "type": [
                 {
                     "type": "array",
@@ -66,7 +50,7 @@
             ]
         },
         {
-            "identifier": 5,
+            "identifier": 1,
             "type": [
                 {
                     "type": "array",
@@ -78,7 +62,7 @@
             ]
         },
         {
-            "identifier": 6,
+            "identifier": 2,
             "type": [
                 {
                     "type": "array",
@@ -90,7 +74,7 @@
             ]
         },
         {
-            "identifier": 7,
+            "identifier": 3,
             "type": [
                 {
                     "type": "array",
@@ -102,7 +86,7 @@
             ]
         },
         {
-            "identifier": 8,
+            "identifier": 4,
             "type": [
                 {
                     "type": "int"
@@ -114,7 +98,7 @@
         {
             "identifier": "string1",
             "storage": "global",
-            "type": 4,
+            "type": 0,
             "value": [
                 {
                     "class": "string",
@@ -130,7 +114,7 @@
         {
             "identifier": "string2",
             "storage": "global",
-            "type": 5,
+            "type": 1,
             "value": [
                 {
                     "class": "string",
@@ -146,7 +130,7 @@
         {
             "identifier": "string3",
             "storage": "global",
-            "type": 6,
+            "type": 2,
             "value": [
                 {
                     "class": "string",
@@ -162,7 +146,7 @@
         {
             "identifier": "string4",
             "storage": "global",
-            "type": 7,
+            "type": 3,
             "value": [
                 {
                     "class": "string",

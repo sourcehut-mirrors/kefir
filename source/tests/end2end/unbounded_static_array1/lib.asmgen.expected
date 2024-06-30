@@ -41,7 +41,7 @@ get:
     mov %rsp, %rbp
 _kefir_func_get_label0:
 _kefir_func_get_label1:
-    lea __kefirrt_module_static_uninit_vars(%rip), %rax
+    lea somearray(%rip), %rax
     pop %rbp
     ret
 
@@ -50,8 +50,7 @@ get2:
     mov %rsp, %rbp
 _kefir_func_get2_label0:
 _kefir_func_get2_label1:
-    lea __kefirrt_module_static_uninit_vars(%rip), %rax
-    add $4, %rax
+    lea someotherarray(%rip), %rax
     pop %rbp
     ret
 
@@ -61,7 +60,7 @@ tget:
     mov %rsp, %rbp
 _kefir_func_tget_label0:
 _kefir_func_tget_label1:
-    data16     lea __kefirrt_module_static_tlocal_uninit_vars@tlsgd(%rip), %rdi
+    data16     lea tsomearray@tlsgd(%rip), %rdi
     .word 26214
     rex.W     call __tls_get_addr@PLT
     mov %rax, %rcx
@@ -75,11 +74,10 @@ tget2:
     mov %rsp, %rbp
 _kefir_func_tget2_label0:
 _kefir_func_tget2_label1:
-    data16     lea __kefirrt_module_static_tlocal_uninit_vars@tlsgd(%rip), %rdi
+    data16     lea tsomeotherarray@tlsgd(%rip), %rdi
     .word 26214
     rex.W     call __tls_get_addr@PLT
     mov %rax, %rcx
-    add $4, %rcx
     mov %rcx, %rax
     pop %rbp
     ret
@@ -87,20 +85,27 @@ _kefir_func_tget2_label1:
 
 .section .bss
     .align 4
+somearray:
+    .skip 4
+
+    .align 4
 publicarray:
     .skip 4
 
     .align 4
-__kefirrt_module_static_uninit_vars:
-    .skip 44
+someotherarray:
+    .skip 40
 
 .section .tbss
     .align 4
-tpublicarray:
+tsomearray:
     .zero 4
 
     .align 4
-__kefirrt_module_static_tlocal_uninit_vars:
-    .zero 4
+tsomeotherarray:
     .zero 40
+
+    .align 4
+tpublicarray:
+    .zero 4
 

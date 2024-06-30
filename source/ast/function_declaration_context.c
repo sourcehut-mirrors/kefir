@@ -94,6 +94,7 @@ static kefir_result_t scoped_context_define_identifier(struct kefir_mem *mem,
                 false, NULL, NULL, location);
             REQUIRE(scoped_id != NULL,
                     KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocted AST scoped identifier"));
+            scoped_id->object.defining_function = context->context.surrounding_function_name;
 
             const char *id = kefir_string_pool_insert(mem, context->parent->symbols, identifier, NULL);
             REQUIRE(id != NULL,

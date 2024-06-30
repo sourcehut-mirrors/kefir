@@ -59,6 +59,7 @@ typedef struct kefir_ast_scoped_identifier {
             kefir_ast_declarator_visibility_attr_t visibility;
             const char *asm_label;
             const char *alias;
+            const char *defining_function;
             struct {
                 kefir_bool_t weak;
             } flags;

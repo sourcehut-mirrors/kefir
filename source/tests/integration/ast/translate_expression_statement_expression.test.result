@@ -36,22 +36,6 @@
         {
             "identifier": 8,
             "type": []
-        },
-        {
-            "identifier": 9,
-            "type": []
-        },
-        {
-            "identifier": 10,
-            "type": []
-        },
-        {
-            "identifier": 11,
-            "type": []
-        },
-        {
-            "identifier": 12,
-            "type": []
         }
     ],
     "data": [],
@@ -60,33 +44,33 @@
         {
             "identifier": 0,
             "name": "statement_expr1",
+            "parameters": 1,
+            "vararg": false,
+            "returns": 2,
+            "returns_twice": false
+        },
+        {
+            "identifier": 1,
+            "name": "statement_expr2",
+            "parameters": 3,
+            "vararg": false,
+            "returns": 4,
+            "returns_twice": false
+        },
+        {
+            "identifier": 2,
+            "name": "statement_expr3",
             "parameters": 5,
             "vararg": false,
             "returns": 6,
             "returns_twice": false
         },
         {
-            "identifier": 1,
-            "name": "statement_expr2",
+            "identifier": 3,
+            "name": "statement_expr4",
             "parameters": 7,
             "vararg": false,
             "returns": 8,
-            "returns_twice": false
-        },
-        {
-            "identifier": 2,
-            "name": "statement_expr3",
-            "parameters": 9,
-            "vararg": false,
-            "returns": 10,
-            "returns_twice": false
-        },
-        {
-            "identifier": 3,
-            "name": "statement_expr4",
-            "parameters": 11,
-            "vararg": false,
-            "returns": 12,
             "returns_twice": false
         }
     ],
@@ -94,14 +78,14 @@
         {
             "identifier": 0,
             "name": "statement_expr1",
-            "locals": 4,
+            "locals": 0,
             "body": [],
             "public_labels": []
         },
         {
             "identifier": 1,
             "name": "statement_expr2",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushi",
@@ -116,7 +100,7 @@
         {
             "identifier": 2,
             "name": "statement_expr3",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushi",
@@ -145,7 +129,7 @@
         {
             "identifier": 3,
             "name": "statement_expr4",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushi",

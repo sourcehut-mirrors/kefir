@@ -11,7 +11,11 @@
     "types": [
         {
             "identifier": 0,
-            "type": []
+            "type": [
+                {
+                    "type": "int"
+                }
+            ]
         },
         {
             "identifier": 1,
@@ -30,6 +34,12 @@
             "type": [
                 {
                     "type": "int"
+                },
+                {
+                    "type": "long"
+                },
+                {
+                    "type": "float"
                 }
             ]
         },
@@ -43,25 +53,27 @@
         },
         {
             "identifier": 7,
-            "type": []
+            "type": [
+                {
+                    "type": "int"
+                }
+            ]
         },
         {
             "identifier": 8,
             "type": [
                 {
-                    "type": "int"
-                },
-                {
                     "type": "long"
-                },
-                {
-                    "type": "float"
                 }
             ]
         },
         {
             "identifier": 9,
-            "type": []
+            "type": [
+                {
+                    "type": "float"
+                }
+            ]
         },
         {
             "identifier": 10,
@@ -69,34 +81,6 @@
         },
         {
             "identifier": 11,
-            "type": [
-                {
-                    "type": "int"
-                }
-            ]
-        },
-        {
-            "identifier": 12,
-            "type": [
-                {
-                    "type": "long"
-                }
-            ]
-        },
-        {
-            "identifier": 13,
-            "type": [
-                {
-                    "type": "float"
-                }
-            ]
-        },
-        {
-            "identifier": 14,
-            "type": []
-        },
-        {
-            "identifier": 15,
             "type": []
         }
     ],
@@ -106,25 +90,25 @@
         {
             "identifier": 0,
             "name": "compound1",
-            "parameters": 6,
+            "parameters": 2,
             "vararg": false,
-            "returns": 7,
+            "returns": 3,
             "returns_twice": false
         },
         {
             "identifier": 1,
             "name": "compound2",
-            "parameters": 9,
+            "parameters": 5,
             "vararg": false,
-            "returns": 10,
+            "returns": 6,
             "returns_twice": false
         },
         {
             "identifier": 2,
             "name": "compound3",
-            "parameters": 14,
+            "parameters": 10,
             "vararg": false,
-            "returns": 15,
+            "returns": 11,
             "returns_twice": false
         }
     ],
@@ -132,19 +116,19 @@
         {
             "identifier": 0,
             "name": "compound1",
-            "locals": 5,
+            "locals": 1,
             "body": [],
             "public_labels": []
         },
         {
             "identifier": 1,
             "name": "compound2",
-            "locals": 8,
+            "locals": 4,
             "body": [
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 8,
+                        "type": 4,
                         "index": 0
                     }
                 },
@@ -168,7 +152,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 8,
+                        "type": 4,
                         "index": 1
                     }
                 },
@@ -195,7 +179,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 8,
+                        "type": 4,
                         "index": 2
                     }
                 },
@@ -225,7 +209,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 8,
+                        "type": 4,
                         "index": 0
                     }
                 },
@@ -241,7 +225,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 8,
+                        "type": 4,
                         "index": 1
                     }
                 },
@@ -260,7 +244,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 8,
+                        "type": 4,
                         "index": 2
                     }
                 },
@@ -288,7 +272,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 8,
+                        "type": 4,
                         "index": 2
                     }
                 },
@@ -301,7 +285,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 8,
+                        "type": 4,
                         "index": 0
                     }
                 },
@@ -355,7 +339,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 8,
+                        "type": 4,
                         "index": 2
                     }
                 },
@@ -368,7 +352,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 8,
+                        "type": 4,
                         "index": 1
                     }
                 },
@@ -422,7 +406,7 @@
         {
             "identifier": 2,
             "name": "compound3",
-            "locals": 13,
+            "locals": 9,
             "body": [
                 {
                     "opcode": "pushi",
@@ -458,7 +442,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 13,
+                        "type": 9,
                         "index": 0
                     }
                 },
@@ -485,7 +469,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 13,
+                        "type": 9,
                         "index": 0
                     }
                 },

@@ -8,7 +8,7 @@
             "alias": null
         },
         {
-            "symbol": "__kefirrt_module_static_vars",
+            "symbol": "__kefir_function_intat_static___func___2",
             "type": "global_data",
             "scope": "local",
             "visibility": "default",
@@ -18,6 +18,48 @@
     "types": [
         {
             "identifier": 0,
+            "type": []
+        },
+        {
+            "identifier": 1,
+            "type": [
+                {
+                    "type": "int"
+                }
+            ]
+        },
+        {
+            "identifier": 2,
+            "type": [
+                {
+                    "type": "word"
+                },
+                {
+                    "type": "int"
+                }
+            ]
+        },
+        {
+            "identifier": 3,
+            "type": [
+                {
+                    "type": "int"
+                }
+            ]
+        },
+        {
+            "identifier": 4,
+            "type": [
+                {
+                    "type": "word"
+                },
+                {
+                    "type": "int"
+                }
+            ]
+        },
+        {
+            "identifier": 5,
             "type": [
                 {
                     "type": "array",
@@ -29,61 +71,7 @@
             ]
         },
         {
-            "identifier": 1,
-            "type": []
-        },
-        {
-            "identifier": 2,
-            "type": []
-        },
-        {
-            "identifier": 3,
-            "type": []
-        },
-        {
-            "identifier": 4,
-            "type": []
-        },
-        {
-            "identifier": 5,
-            "type": [
-                {
-                    "type": "int"
-                }
-            ]
-        },
-        {
             "identifier": 6,
-            "type": [
-                {
-                    "type": "word"
-                },
-                {
-                    "type": "int"
-                }
-            ]
-        },
-        {
-            "identifier": 7,
-            "type": [
-                {
-                    "type": "int"
-                }
-            ]
-        },
-        {
-            "identifier": 8,
-            "type": [
-                {
-                    "type": "word"
-                },
-                {
-                    "type": "int"
-                }
-            ]
-        },
-        {
-            "identifier": 9,
             "type": [
                 {
                     "type": "int"
@@ -93,9 +81,9 @@
     ],
     "data": [
         {
-            "identifier": "__kefirrt_module_static_vars",
+            "identifier": "__kefir_function_intat_static___func___2",
             "storage": "global",
-            "type": 0,
+            "type": 5,
             "value": [
                 {
                     "class": "string",
@@ -122,17 +110,17 @@
         {
             "identifier": 0,
             "name": "intat",
-            "parameters": 4,
+            "parameters": 0,
             "vararg": false,
-            "returns": 5,
+            "returns": 1,
             "returns_twice": false
         },
         {
             "identifier": 1,
             "name": "intat",
-            "parameters": 6,
+            "parameters": 2,
             "vararg": false,
-            "returns": 7,
+            "returns": 3,
             "returns_twice": false
         }
     ],
@@ -140,12 +128,12 @@
         {
             "identifier": 1,
             "name": "intat",
-            "locals": 8,
+            "locals": 4,
             "body": [
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 8,
+                        "type": 4,
                         "index": 1
                     }
                 },
@@ -162,7 +150,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 8,
+                        "type": 4,
                         "index": 0
                     }
                 },
@@ -179,7 +167,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 8,
+                        "type": 4,
                         "index": 0
                     }
                 },
@@ -192,7 +180,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 8,
+                        "type": 4,
                         "index": 1
                     }
                 },

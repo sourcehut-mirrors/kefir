@@ -1,0 +1,47 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.set value, real_value
+.global value
+.type value, @object
+.global get_real_value
+.type get_real_value, @function
+.extern __kefirrt_opt_amd64_sysv_vararg_save
+.extern __kefirrt_opt_load_int_vararg
+.extern __kefirrt_opt_load_sse_vararg
+.extern __kefirrt_opt_float32_to_uint
+.extern __kefirrt_opt_float64_to_uint
+.extern __kefirrt_opt_long_double_to_int
+.extern __kefirrt_opt_long_double_to_uint
+.extern __kefirrt_opt_complex_long_double_equals
+.extern __kefirrt_opt_complex_long_double_truncate_1bit
+.extern __kefirrt_opt_complex_float32_mul
+.extern __kefirrt_opt_complex_float32_div
+.extern __kefirrt_opt_complex_float64_mul
+.extern __kefirrt_opt_complex_float64_div
+.extern __kefirrt_opt_complex_long_double_mul
+.extern __kefirrt_opt_complex_long_double_div
+.extern __kefirrt_fenv_update
+.extern __kefir_opt_float32_neg
+.extern __kefir_opt_float64_neg
+.extern __kefir_opt_uint2long_double
+.extern __kefir_opt_complex_float32_neg
+.extern __kefir_opt_complex_float64_neg
+
+.section .text
+get_real_value:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_get_real_value_label0:
+_kefir_func_get_real_value_label1:
+    lea real_value(%rip), %rax
+    movq (%rax), %rax
+    pop %rbp
+    ret
+
+
+.section .data
+    .align 8
+real_value:
+    .quad 0
+

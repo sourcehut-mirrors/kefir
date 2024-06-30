@@ -12,22 +12,6 @@
         {
             "identifier": 2,
             "type": []
-        },
-        {
-            "identifier": 3,
-            "type": []
-        },
-        {
-            "identifier": 4,
-            "type": []
-        },
-        {
-            "identifier": 5,
-            "type": []
-        },
-        {
-            "identifier": 6,
-            "type": []
         }
     ],
     "data": [],
@@ -36,9 +20,9 @@
         {
             "identifier": 0,
             "name": "func1",
-            "parameters": 5,
+            "parameters": 1,
             "vararg": false,
-            "returns": 6,
+            "returns": 2,
             "returns_twice": false
         }
     ],
@@ -46,7 +30,7 @@
         {
             "identifier": 0,
             "name": "func1",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushlabel",

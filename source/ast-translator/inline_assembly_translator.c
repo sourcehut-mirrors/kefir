@@ -120,7 +120,29 @@ static kefir_size_t resolve_identifier_offset(const struct kefir_ast_type_layout
     }
 }
 
-static kefir_result_t translate_pointer_to_identifier(struct kefir_ast_constant_expression_value *value,
+static kefir_result_t static_identifier(struct kefir_mem *mem, struct kefir_ir_module *module,
+                                        const char *function_name, const char *variable_identifier,
+                                        kefir_id_t unique_id, const char **identifier) {
+    if (function_name != NULL) {
+        int buflen = snprintf(NULL, 0, KEFIR_AST_TRANSLATOR_FUNCTION_STATIC_VARIABLE_IDENTIFIER, function_name,
+                              variable_identifier, unique_id);
+        char *buf = KEFIR_MALLOC(mem, sizeof(char) * (buflen + 2));
+        REQUIRE(buf != NULL,
+                KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate local static variable identifier"));
+        snprintf(buf, buflen + 1, KEFIR_AST_TRANSLATOR_FUNCTION_STATIC_VARIABLE_IDENTIFIER, function_name,
+                 variable_identifier, unique_id);
+        *identifier = kefir_ir_module_symbol(mem, module, buf, NULL);
+        KEFIR_FREE(mem, buf);
+    } else {
+        *identifier = kefir_ir_module_symbol(mem, module, variable_identifier, NULL);
+    }
+    REQUIRE(*identifier != NULL,
+            KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate local static variable identifier"));
+    return KEFIR_OK;
+}
+
+static kefir_result_t translate_pointer_to_identifier(struct kefir_mem *mem, struct kefir_ir_module *module,
+                                                      struct kefir_ast_constant_expression_value *value,
                                                       const char **base, kefir_int64_t *offset,
                                                       const struct kefir_source_location *location) {
     if (value->pointer.scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT) {
@@ -133,9 +155,8 @@ static kefir_result_t translate_pointer_to_identifier(struct kefir_ast_constant_
             case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC: {
                 ASSIGN_DECL_CAST(struct kefir_ast_translator_scoped_identifier_object *, identifier_data,
                                  value->pointer.scoped_id->payload.ptr);
-                *base = value->pointer.scoped_id->object.initializer != NULL
-                            ? KEFIR_AST_TRANSLATOR_STATIC_VARIABLES_IDENTIFIER
-                            : KEFIR_AST_TRANSLATOR_STATIC_UNINIT_VARIABLES_IDENTIFIER;
+                REQUIRE_OK(static_identifier(mem, module, value->pointer.scoped_id->object.defining_function,
+                                             value->pointer.base.literal, identifier_data->identifier, base));
                 *offset = resolve_identifier_offset(identifier_data->layout) + value->pointer.offset;
             } break;
 
@@ -242,8 +263,8 @@ static kefir_result_t translate_inputs(struct kefir_mem *mem, const struct kefir
                                 KEFIR_ANALYSIS_ERROR, &inline_asm->base.source_location,
                                 "Value of strict immediate inline assembly parameter shall be known at compile time"));
                         imm_type = KEFIR_IR_INLINE_ASSEMBLY_IMMEDIATE_IDENTIFIER_BASED;
-                        REQUIRE_OK(translate_pointer_to_identifier(&value, &imm_identifier_base, &param_value,
-                                                                   &inline_asm->base.source_location));
+                        REQUIRE_OK(translate_pointer_to_identifier(mem, context->module, &value, &imm_identifier_base,
+                                                                   &param_value, &inline_asm->base.source_location));
                         break;
 
                     case KEFIR_AST_CONSTANT_EXPRESSION_POINTER_INTEGER:

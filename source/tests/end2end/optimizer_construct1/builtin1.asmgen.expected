@@ -227,7 +227,7 @@
                                 "opcode": "vararg_get",
                                 "ref": 12,
                                 "type": {
-                                    "id": 71,
+                                    "id": 68,
                                     "index": 0
                                 },
                                 "control_next": 15,

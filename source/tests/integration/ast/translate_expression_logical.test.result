@@ -120,22 +120,6 @@
         {
             "identifier": 29,
             "type": []
-        },
-        {
-            "identifier": 30,
-            "type": []
-        },
-        {
-            "identifier": 31,
-            "type": []
-        },
-        {
-            "identifier": 32,
-            "type": []
-        },
-        {
-            "identifier": 33,
-            "type": []
         }
     ],
     "data": [],
@@ -144,81 +128,81 @@
         {
             "identifier": 0,
             "name": "logical_and1",
-            "parameters": 5,
+            "parameters": 1,
             "vararg": false,
-            "returns": 6,
+            "returns": 2,
             "returns_twice": false
         },
         {
             "identifier": 1,
             "name": "logical_and2",
-            "parameters": 8,
+            "parameters": 4,
             "vararg": false,
-            "returns": 9,
+            "returns": 5,
             "returns_twice": false
         },
         {
             "identifier": 2,
             "name": "logical_and3",
-            "parameters": 11,
+            "parameters": 7,
             "vararg": false,
-            "returns": 12,
+            "returns": 8,
             "returns_twice": false
         },
         {
             "identifier": 3,
             "name": "logical_and4",
-            "parameters": 14,
+            "parameters": 10,
             "vararg": false,
-            "returns": 15,
+            "returns": 11,
             "returns_twice": false
         },
         {
             "identifier": 4,
             "name": "logical_and5",
-            "parameters": 17,
+            "parameters": 13,
             "vararg": false,
-            "returns": 18,
+            "returns": 14,
             "returns_twice": false
         },
         {
             "identifier": 5,
             "name": "logical_or1",
-            "parameters": 20,
+            "parameters": 16,
             "vararg": false,
-            "returns": 21,
+            "returns": 17,
             "returns_twice": false
         },
         {
             "identifier": 6,
             "name": "logical_or2",
-            "parameters": 23,
+            "parameters": 19,
             "vararg": false,
-            "returns": 24,
+            "returns": 20,
             "returns_twice": false
         },
         {
             "identifier": 7,
             "name": "logical_or3",
-            "parameters": 26,
+            "parameters": 22,
             "vararg": false,
-            "returns": 27,
+            "returns": 23,
             "returns_twice": false
         },
         {
             "identifier": 8,
             "name": "logical_or4",
-            "parameters": 29,
+            "parameters": 25,
             "vararg": false,
-            "returns": 30,
+            "returns": 26,
             "returns_twice": false
         },
         {
             "identifier": 9,
             "name": "logical_or5",
-            "parameters": 32,
+            "parameters": 28,
             "vararg": false,
-            "returns": 33,
+            "returns": 29,
             "returns_twice": false
         }
     ],
@@ -226,7 +210,7 @@
         {
             "identifier": 5,
             "name": "logical_or1",
-            "locals": 19,
+            "locals": 15,
             "body": [
                 {
                     "opcode": "pushu",
@@ -256,7 +240,7 @@
         {
             "identifier": 6,
             "name": "logical_or2",
-            "locals": 22,
+            "locals": 18,
             "body": [
                 {
                     "opcode": "pushf32",
@@ -293,7 +277,7 @@
         {
             "identifier": 7,
             "name": "logical_or3",
-            "locals": 25,
+            "locals": 21,
             "body": [
                 {
                     "opcode": "pushi",
@@ -323,7 +307,7 @@
         {
             "identifier": 8,
             "name": "logical_or4",
-            "locals": 28,
+            "locals": 24,
             "body": [
                 {
                     "opcode": "pushld",
@@ -360,7 +344,7 @@
         {
             "identifier": 9,
             "name": "logical_or5",
-            "locals": 31,
+            "locals": 27,
             "body": [
                 {
                     "opcode": "pushld",
@@ -407,7 +391,7 @@
         {
             "identifier": 0,
             "name": "logical_and1",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushu",
@@ -440,7 +424,7 @@
         {
             "identifier": 1,
             "name": "logical_and2",
-            "locals": 7,
+            "locals": 3,
             "body": [
                 {
                     "opcode": "pushf32",
@@ -480,7 +464,7 @@
         {
             "identifier": 2,
             "name": "logical_and3",
-            "locals": 10,
+            "locals": 6,
             "body": [
                 {
                     "opcode": "pushi",
@@ -513,7 +497,7 @@
         {
             "identifier": 3,
             "name": "logical_and4",
-            "locals": 13,
+            "locals": 9,
             "body": [
                 {
                     "opcode": "pushld",
@@ -553,7 +537,7 @@
         {
             "identifier": 4,
             "name": "logical_and5",
-            "locals": 16,
+            "locals": 12,
             "body": [
                 {
                     "opcode": "pushld",

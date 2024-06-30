@@ -22,11 +22,19 @@
         },
         {
             "identifier": 1,
-            "type": []
+            "type": [
+                {
+                    "type": "int"
+                }
+            ]
         },
         {
             "identifier": 2,
-            "type": []
+            "type": [
+                {
+                    "type": "long"
+                }
+            ]
         },
         {
             "identifier": 3,
@@ -38,19 +46,11 @@
         },
         {
             "identifier": 5,
-            "type": [
-                {
-                    "type": "int"
-                }
-            ]
+            "type": []
         },
         {
             "identifier": 6,
-            "type": [
-                {
-                    "type": "long"
-                }
-            ]
+            "type": []
         },
         {
             "identifier": 7,
@@ -131,22 +131,6 @@
         {
             "identifier": 26,
             "type": []
-        },
-        {
-            "identifier": 27,
-            "type": []
-        },
-        {
-            "identifier": 28,
-            "type": []
-        },
-        {
-            "identifier": 29,
-            "type": []
-        },
-        {
-            "identifier": 30,
-            "type": []
         }
     ],
     "data": [],
@@ -155,97 +139,97 @@
         {
             "identifier": 0,
             "name": "assign_modulo_int",
+            "parameters": 3,
+            "vararg": false,
+            "returns": 4,
+            "returns_twice": false
+        },
+        {
+            "identifier": 1,
+            "name": "assign_modulo_ullong",
+            "parameters": 5,
+            "vararg": false,
+            "returns": 6,
+            "returns_twice": false
+        },
+        {
+            "identifier": 2,
+            "name": "assign_shl_int",
             "parameters": 7,
             "vararg": false,
             "returns": 8,
             "returns_twice": false
         },
         {
-            "identifier": 1,
-            "name": "assign_modulo_ullong",
+            "identifier": 3,
+            "name": "assign_shl_ullong",
             "parameters": 9,
             "vararg": false,
             "returns": 10,
             "returns_twice": false
         },
         {
-            "identifier": 2,
-            "name": "assign_shl_int",
+            "identifier": 4,
+            "name": "assign_shr_int",
             "parameters": 11,
             "vararg": false,
             "returns": 12,
             "returns_twice": false
         },
         {
-            "identifier": 3,
-            "name": "assign_shl_ullong",
+            "identifier": 5,
+            "name": "assign_shr_ullong",
             "parameters": 13,
             "vararg": false,
             "returns": 14,
             "returns_twice": false
         },
         {
-            "identifier": 4,
-            "name": "assign_shr_int",
+            "identifier": 6,
+            "name": "assign_bitwise_and_int",
             "parameters": 15,
             "vararg": false,
             "returns": 16,
             "returns_twice": false
         },
         {
-            "identifier": 5,
-            "name": "assign_shr_ullong",
+            "identifier": 7,
+            "name": "assign_biwise_and_ullong",
             "parameters": 17,
             "vararg": false,
             "returns": 18,
             "returns_twice": false
         },
         {
-            "identifier": 6,
-            "name": "assign_bitwise_and_int",
+            "identifier": 8,
+            "name": "assign_bitwise_or_int",
             "parameters": 19,
             "vararg": false,
             "returns": 20,
             "returns_twice": false
         },
         {
-            "identifier": 7,
-            "name": "assign_biwise_and_ullong",
+            "identifier": 9,
+            "name": "assign_biwise_or_ullong",
             "parameters": 21,
             "vararg": false,
             "returns": 22,
             "returns_twice": false
         },
         {
-            "identifier": 8,
-            "name": "assign_bitwise_or_int",
+            "identifier": 10,
+            "name": "assign_bitwise_xor_int",
             "parameters": 23,
             "vararg": false,
             "returns": 24,
             "returns_twice": false
         },
         {
-            "identifier": 9,
-            "name": "assign_biwise_or_ullong",
+            "identifier": 11,
+            "name": "assign_biwise_xor_ullong",
             "parameters": 25,
             "vararg": false,
             "returns": 26,
-            "returns_twice": false
-        },
-        {
-            "identifier": 10,
-            "name": "assign_bitwise_xor_int",
-            "parameters": 27,
-            "vararg": false,
-            "returns": 28,
-            "returns_twice": false
-        },
-        {
-            "identifier": 11,
-            "name": "assign_biwise_xor_ullong",
-            "parameters": 29,
-            "vararg": false,
-            "returns": 30,
             "returns_twice": false
         }
     ],
@@ -253,7 +237,7 @@
         {
             "identifier": 7,
             "name": "assign_biwise_and_ullong",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushi",
@@ -306,7 +290,7 @@
         {
             "identifier": 11,
             "name": "assign_biwise_xor_ullong",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushi",
@@ -362,7 +346,7 @@
         {
             "identifier": 0,
             "name": "assign_modulo_int",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushi",
@@ -415,7 +399,7 @@
         {
             "identifier": 3,
             "name": "assign_shl_ullong",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushi",
@@ -468,7 +452,7 @@
         {
             "identifier": 5,
             "name": "assign_shr_ullong",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushi",
@@ -521,7 +505,7 @@
         {
             "identifier": 8,
             "name": "assign_bitwise_or_int",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushi",
@@ -574,7 +558,7 @@
         {
             "identifier": 9,
             "name": "assign_biwise_or_ullong",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushu",
@@ -634,7 +618,7 @@
         {
             "identifier": 2,
             "name": "assign_shl_int",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushi",
@@ -687,7 +671,7 @@
         {
             "identifier": 4,
             "name": "assign_shr_int",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushi",
@@ -740,7 +724,7 @@
         {
             "identifier": 1,
             "name": "assign_modulo_ullong",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushi",
@@ -793,7 +777,7 @@
         {
             "identifier": 6,
             "name": "assign_bitwise_and_int",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushi",
@@ -846,7 +830,7 @@
         {
             "identifier": 10,
             "name": "assign_bitwise_xor_int",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushi",

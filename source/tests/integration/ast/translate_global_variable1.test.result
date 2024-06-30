@@ -67,19 +67,35 @@
     "types": [
         {
             "identifier": 0,
-            "type": []
+            "type": [
+                {
+                    "type": "word"
+                }
+            ]
         },
         {
             "identifier": 1,
-            "type": []
+            "type": [
+                {
+                    "type": "word"
+                }
+            ]
         },
         {
             "identifier": 2,
-            "type": []
+            "type": [
+                {
+                    "type": "int"
+                }
+            ]
         },
         {
             "identifier": 3,
-            "type": []
+            "type": [
+                {
+                    "type": "word"
+                }
+            ]
         },
         {
             "identifier": 4,
@@ -93,7 +109,7 @@
             "identifier": 5,
             "type": [
                 {
-                    "type": "word"
+                    "type": "int"
                 }
             ]
         },
@@ -101,7 +117,7 @@
             "identifier": 6,
             "type": [
                 {
-                    "type": "int"
+                    "type": "char"
                 }
             ]
         },
@@ -109,44 +125,12 @@
             "identifier": 7,
             "type": [
                 {
-                    "type": "word"
-                }
-            ]
-        },
-        {
-            "identifier": 8,
-            "type": [
-                {
-                    "type": "word"
-                }
-            ]
-        },
-        {
-            "identifier": 9,
-            "type": [
-                {
-                    "type": "int"
-                }
-            ]
-        },
-        {
-            "identifier": 10,
-            "type": [
-                {
-                    "type": "char"
-                }
-            ]
-        },
-        {
-            "identifier": 11,
-            "type": [
-                {
                     "type": "double"
                 }
             ]
         },
         {
-            "identifier": 12,
+            "identifier": 8,
             "type": [
                 {
                     "type": "float"
@@ -158,7 +142,7 @@
         {
             "identifier": "ptr1",
             "storage": "global",
-            "type": 4,
+            "type": 0,
             "value": [
                 {
                     "class": "pointer",
@@ -170,7 +154,7 @@
         {
             "identifier": "ptr2",
             "storage": "global",
-            "type": 5,
+            "type": 1,
             "value": [
                 {
                     "class": "integer",
@@ -181,7 +165,7 @@
         {
             "identifier": "integer",
             "storage": "global",
-            "type": 6,
+            "type": 2,
             "value": [
                 {
                     "class": "integer",
@@ -192,7 +176,7 @@
         {
             "identifier": "string1",
             "storage": "global",
-            "type": 7,
+            "type": 3,
             "value": [
                 {
                     "class": "string_pointer",
@@ -204,7 +188,7 @@
         {
             "identifier": "string2",
             "storage": "global",
-            "type": 8,
+            "type": 4,
             "value": [
                 {
                     "class": "string_pointer",
@@ -216,7 +200,7 @@
         {
             "identifier": "character",
             "storage": "global",
-            "type": 10,
+            "type": 6,
             "value": [
                 {
                     "class": "integer",
@@ -227,7 +211,7 @@
         {
             "identifier": "floatingPoint2",
             "storage": "global",
-            "type": 11,
+            "type": 7,
             "value": [
                 {
                     "class": "float64",
@@ -238,7 +222,7 @@
         {
             "identifier": "floatingPoint",
             "storage": "global",
-            "type": 12,
+            "type": 8,
             "value": [
                 {
                     "class": "float32",

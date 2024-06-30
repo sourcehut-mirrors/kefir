@@ -11,11 +11,19 @@
     "types": [
         {
             "identifier": 0,
-            "type": []
+            "type": [
+                {
+                    "type": "int"
+                }
+            ]
         },
         {
             "identifier": 1,
-            "type": []
+            "type": [
+                {
+                    "type": "int"
+                }
+            ]
         },
         {
             "identifier": 2,
@@ -37,7 +45,7 @@
             "identifier": 5,
             "type": [
                 {
-                    "type": "int"
+                    "type": "char"
                 }
             ]
         },
@@ -51,19 +59,11 @@
         },
         {
             "identifier": 8,
-            "type": [
-                {
-                    "type": "int"
-                }
-            ]
+            "type": []
         },
         {
             "identifier": 9,
-            "type": [
-                {
-                    "type": "char"
-                }
-            ]
+            "type": []
         },
         {
             "identifier": 10,
@@ -71,22 +71,6 @@
         },
         {
             "identifier": 11,
-            "type": []
-        },
-        {
-            "identifier": 12,
-            "type": []
-        },
-        {
-            "identifier": 13,
-            "type": []
-        },
-        {
-            "identifier": 14,
-            "type": []
-        },
-        {
-            "identifier": 15,
             "type": []
         }
     ],
@@ -96,25 +80,25 @@
         {
             "identifier": 0,
             "name": "while1",
-            "parameters": 6,
+            "parameters": 2,
             "vararg": false,
-            "returns": 7,
+            "returns": 3,
             "returns_twice": false
         },
         {
             "identifier": 1,
             "name": "while2",
-            "parameters": 11,
+            "parameters": 7,
             "vararg": false,
-            "returns": 12,
+            "returns": 8,
             "returns_twice": false
         },
         {
             "identifier": 2,
             "name": "while3",
-            "parameters": 14,
+            "parameters": 10,
             "vararg": false,
-            "returns": 15,
+            "returns": 11,
             "returns_twice": false
         }
     ],
@@ -122,12 +106,12 @@
         {
             "identifier": 0,
             "name": "while1",
-            "locals": 5,
+            "locals": 1,
             "body": [
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 5,
+                        "type": 1,
                         "index": 0
                     }
                 },
@@ -157,7 +141,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 5,
+                        "type": 1,
                         "index": 0
                     }
                 },
@@ -213,7 +197,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 5,
+                        "type": 1,
                         "index": 0
                     }
                 },
@@ -261,7 +245,7 @@
         {
             "identifier": 1,
             "name": "while2",
-            "locals": 10,
+            "locals": 6,
             "body": [
                 {
                     "opcode": "pushu",
@@ -317,7 +301,7 @@
         {
             "identifier": 2,
             "name": "while3",
-            "locals": 13,
+            "locals": 9,
             "body": [
                 {
                     "opcode": "pushld",

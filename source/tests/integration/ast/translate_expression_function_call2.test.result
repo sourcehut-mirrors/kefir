@@ -11,22 +11,6 @@
     "types": [
         {
             "identifier": 0,
-            "type": []
-        },
-        {
-            "identifier": 1,
-            "type": []
-        },
-        {
-            "identifier": 2,
-            "type": []
-        },
-        {
-            "identifier": 3,
-            "type": []
-        },
-        {
-            "identifier": 4,
             "type": [
                 {
                     "type": "struct",
@@ -49,8 +33,41 @@
             ]
         },
         {
+            "identifier": 1,
+            "type": [
+                {
+                    "type": "int"
+                }
+            ]
+        },
+        {
+            "identifier": 2,
+            "type": [
+                {
+                    "type": "int"
+                }
+            ]
+        },
+        {
+            "identifier": 3,
+            "type": []
+        },
+        {
+            "identifier": 4,
+            "type": []
+        },
+        {
             "identifier": 5,
             "type": [
+                {
+                    "type": "int"
+                },
+                {
+                    "type": "int"
+                },
+                {
+                    "type": "int"
+                },
                 {
                     "type": "int"
                 }
@@ -77,15 +94,6 @@
             "type": [
                 {
                     "type": "int"
-                },
-                {
-                    "type": "int"
-                },
-                {
-                    "type": "int"
-                },
-                {
-                    "type": "int"
                 }
             ]
         },
@@ -110,6 +118,9 @@
             "type": [
                 {
                     "type": "int"
+                },
+                {
+                    "type": "double"
                 }
             ]
         },
@@ -136,33 +147,6 @@
                     "type": "int"
                 },
                 {
-                    "type": "double"
-                }
-            ]
-        },
-        {
-            "identifier": 18,
-            "type": [
-                {
-                    "type": "int"
-                }
-            ]
-        },
-        {
-            "identifier": 19,
-            "type": []
-        },
-        {
-            "identifier": 20,
-            "type": []
-        },
-        {
-            "identifier": 21,
-            "type": [
-                {
-                    "type": "int"
-                },
-                {
                     "type": "struct",
                     "fields": [
                         {
@@ -183,7 +167,7 @@
             ]
         },
         {
-            "identifier": 22,
+            "identifier": 18,
             "type": [
                 {
                     "type": "int"
@@ -191,7 +175,7 @@
             ]
         },
         {
-            "identifier": 23,
+            "identifier": 19,
             "type": [
                 {
                     "type": "struct",
@@ -220,21 +204,37 @@
         {
             "identifier": 0,
             "name": "sum",
+            "parameters": 1,
+            "vararg": true,
+            "returns": 2,
+            "returns_twice": false
+        },
+        {
+            "identifier": 1,
+            "name": "call1",
+            "parameters": 3,
+            "vararg": false,
+            "returns": 4,
+            "returns_twice": false
+        },
+        {
+            "identifier": 2,
+            "name": "sum",
             "parameters": 5,
             "vararg": true,
             "returns": 6,
             "returns_twice": false
         },
         {
-            "identifier": 1,
-            "name": "call1",
+            "identifier": 3,
+            "name": "call2",
             "parameters": 7,
             "vararg": false,
             "returns": 8,
             "returns_twice": false
         },
         {
-            "identifier": 2,
+            "identifier": 4,
             "name": "sum",
             "parameters": 9,
             "vararg": true,
@@ -242,15 +242,15 @@
             "returns_twice": false
         },
         {
-            "identifier": 3,
-            "name": "call2",
+            "identifier": 5,
+            "name": "call3",
             "parameters": 11,
             "vararg": false,
             "returns": 12,
             "returns_twice": false
         },
         {
-            "identifier": 4,
+            "identifier": 6,
             "name": "sum",
             "parameters": 13,
             "vararg": true,
@@ -258,35 +258,19 @@
             "returns_twice": false
         },
         {
-            "identifier": 5,
-            "name": "call3",
+            "identifier": 7,
+            "name": "call4",
             "parameters": 15,
             "vararg": false,
             "returns": 16,
             "returns_twice": false
         },
         {
-            "identifier": 6,
+            "identifier": 8,
             "name": "sum",
             "parameters": 17,
             "vararg": true,
             "returns": 18,
-            "returns_twice": false
-        },
-        {
-            "identifier": 7,
-            "name": "call4",
-            "parameters": 19,
-            "vararg": false,
-            "returns": 20,
-            "returns_twice": false
-        },
-        {
-            "identifier": 8,
-            "name": "sum",
-            "parameters": 21,
-            "vararg": true,
-            "returns": 22,
             "returns_twice": false
         }
     ],
@@ -294,7 +278,7 @@
         {
             "identifier": 1,
             "name": "call1",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushi",
@@ -325,7 +309,7 @@
         {
             "identifier": 3,
             "name": "call2",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushi",
@@ -344,7 +328,7 @@
         {
             "identifier": 5,
             "name": "call3",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushi",
@@ -370,7 +354,7 @@
         {
             "identifier": 7,
             "name": "call4",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushi",
@@ -379,7 +363,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 4,
+                        "type": 0,
                         "index": 0
                     }
                 },
@@ -390,7 +374,7 @@
                 {
                     "opcode": "bzero",
                     "arg": {
-                        "type": 23,
+                        "type": 19,
                         "index": 0
                     }
                 },

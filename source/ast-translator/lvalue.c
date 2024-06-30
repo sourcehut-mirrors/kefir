@@ -19,6 +19,7 @@
 */
 
 #include <string.h>
+#include <stdio.h>
 #include "kefir/ast-translator/translator.h"
 #include "kefir/ast-translator/lvalue.h"
 #include "kefir/ast-translator/temporaries.h"
@@ -32,6 +33,23 @@
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 #include "kefir/core/extensions.h"
+
+static kefir_result_t local_static_identifier(struct kefir_mem *mem, struct kefir_ir_module *module,
+                                              const char *function_name, const char *variable_identifier,
+                                              kefir_id_t unique_id, kefir_id_t *identifier) {
+    int buflen = snprintf(NULL, 0, KEFIR_AST_TRANSLATOR_FUNCTION_STATIC_VARIABLE_IDENTIFIER, function_name,
+                          variable_identifier, unique_id);
+    char *buf = KEFIR_MALLOC(mem, sizeof(char) * (buflen + 2));
+    REQUIRE(buf != NULL,
+            KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate local static variable identifier"));
+    snprintf(buf, buflen + 1, KEFIR_AST_TRANSLATOR_FUNCTION_STATIC_VARIABLE_IDENTIFIER, function_name,
+             variable_identifier, unique_id);
+    const char *symbol_identifier = kefir_ir_module_symbol(mem, module, buf, identifier);
+    KEFIR_FREE(mem, buf);
+    REQUIRE(symbol_identifier != NULL,
+            KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate local static variable identifier"));
+    return KEFIR_OK;
+}
 
 kefir_result_t kefir_ast_translator_object_lvalue(struct kefir_mem *mem, struct kefir_ast_translator_context *context,
                                                   struct kefir_irbuilder_block *builder, const char *identifier,
@@ -54,22 +72,17 @@ kefir_result_t kefir_ast_translator_object_lvalue(struct kefir_mem *mem, struct 
         } break;
 
         case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC: {
-            ASSIGN_DECL_CAST(struct kefir_ast_translator_scoped_identifier_object *, identifier_data,
-                             scoped_identifier->payload.ptr);
             kefir_id_t id;
-            if (scoped_identifier->object.initializer != NULL) {
-                REQUIRE(kefir_ir_module_symbol(mem, context->module, KEFIR_AST_TRANSLATOR_STATIC_VARIABLES_IDENTIFIER,
-                                               &id) != NULL,
+            if (scoped_identifier->object.defining_function == NULL) {
+                REQUIRE(kefir_ir_module_symbol(mem, context->module, identifier, &id) != NULL,
                         KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate IR module symbol"));
             } else {
-                REQUIRE(kefir_ir_module_symbol(mem, context->module,
-                                               KEFIR_AST_TRANSLATOR_STATIC_UNINIT_VARIABLES_IDENTIFIER, &id) != NULL,
-                        KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate IR module symbol"));
+                ASSIGN_DECL_CAST(struct kefir_ast_translator_scoped_identifier_object *, identifier_data,
+                                 scoped_identifier->payload.ptr);
+                REQUIRE_OK(local_static_identifier(mem, context->module, scoped_identifier->object.defining_function,
+                                                   identifier, identifier_data->identifier, &id));
             }
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_GETGLOBAL, id));
-            REQUIRE_OK(kefir_ast_translator_resolve_type_layout(builder, identifier_data->type_id,
-                                                                identifier_data->layout, NULL));
-
         } break;
 
         case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_THREAD_LOCAL:
@@ -81,24 +94,17 @@ kefir_result_t kefir_ast_translator_object_lvalue(struct kefir_mem *mem, struct 
         } break;
 
         case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC_THREAD_LOCAL: {
-            ASSIGN_DECL_CAST(struct kefir_ast_translator_scoped_identifier_object *, identifier_data,
-                             scoped_identifier->payload.ptr);
             kefir_id_t id;
-            if (scoped_identifier->object.initializer != NULL) {
-                REQUIRE(
-                    kefir_ir_module_symbol(mem, context->module,
-                                           KEFIR_AST_TRANSLATOR_STATIC_THREAD_LOCAL_VARIABLES_IDENTIFIER, &id) != NULL,
-                    KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate IR module symbol"));
-            } else {
-                REQUIRE(kefir_ir_module_symbol(mem, context->module,
-                                               KEFIR_AST_TRANSLATOR_STATIC_THREAD_LOCAL_UNINIT_VARIABLES_IDENTIFIER,
-                                               &id) != NULL,
+            if (scoped_identifier->object.defining_function == NULL) {
+                REQUIRE(kefir_ir_module_symbol(mem, context->module, identifier, &id) != NULL,
                         KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate IR module symbol"));
+            } else {
+                ASSIGN_DECL_CAST(struct kefir_ast_translator_scoped_identifier_object *, identifier_data,
+                                 scoped_identifier->payload.ptr);
+                REQUIRE_OK(local_static_identifier(mem, context->module, scoped_identifier->object.defining_function,
+                                                   identifier, identifier_data->identifier, &id));
             }
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_GETTHRLOCAL, id));
-            REQUIRE_OK(kefir_ast_translator_resolve_type_layout(builder, identifier_data->type_id,
-                                                                identifier_data->layout, NULL));
-
         } break;
 
         case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO:

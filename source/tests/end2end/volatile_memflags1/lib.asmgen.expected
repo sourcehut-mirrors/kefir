@@ -108,11 +108,11 @@
     ],
     "types": [
         {
-            "identifier": 90,
+            "identifier": 86,
             "type": []
         },
         {
-            "identifier": 91,
+            "identifier": 87,
             "type": [
                 {
                     "type": "char"
@@ -120,7 +120,7 @@
             ]
         },
         {
-            "identifier": 94,
+            "identifier": 91,
             "type": [
                 {
                     "type": "short"
@@ -128,7 +128,7 @@
             ]
         },
         {
-            "identifier": 97,
+            "identifier": 95,
             "type": [
                 {
                     "type": "int"
@@ -136,7 +136,7 @@
             ]
         },
         {
-            "identifier": 100,
+            "identifier": 99,
             "type": [
                 {
                     "type": "long"
@@ -144,7 +144,7 @@
             ]
         },
         {
-            "identifier": 114,
+            "identifier": 118,
             "type": [
                 {
                     "type": "word"
@@ -155,7 +155,7 @@
             ]
         },
         {
-            "identifier": 126,
+            "identifier": 131,
             "type": [
                 {
                     "type": "word"
@@ -163,7 +163,7 @@
             ]
         },
         {
-            "identifier": 140,
+            "identifier": 146,
             "type": [
                 {
                     "type": "int"
@@ -273,89 +273,89 @@
         {
             "identifier": 41,
             "name": "getA",
-            "parameters": 90,
+            "parameters": 86,
             "vararg": false,
-            "returns": 91,
+            "returns": 87,
             "returns_twice": false
         },
         {
             "identifier": 42,
             "name": "getB",
-            "parameters": 90,
+            "parameters": 86,
             "vararg": false,
-            "returns": 94,
+            "returns": 91,
             "returns_twice": false
         },
         {
             "identifier": 43,
             "name": "getC",
-            "parameters": 90,
+            "parameters": 86,
             "vararg": false,
-            "returns": 97,
+            "returns": 95,
             "returns_twice": false
         },
         {
             "identifier": 44,
             "name": "getD",
-            "parameters": 90,
+            "parameters": 86,
             "vararg": false,
-            "returns": 100,
+            "returns": 99,
             "returns_twice": false
         },
         {
             "identifier": 45,
             "name": "setA",
-            "parameters": 91,
+            "parameters": 87,
             "vararg": false,
-            "returns": 90,
+            "returns": 86,
             "returns_twice": false
         },
         {
             "identifier": 46,
             "name": "setB",
-            "parameters": 94,
+            "parameters": 91,
             "vararg": false,
-            "returns": 90,
+            "returns": 86,
             "returns_twice": false
         },
         {
             "identifier": 47,
             "name": "setC",
-            "parameters": 97,
+            "parameters": 95,
             "vararg": false,
-            "returns": 90,
+            "returns": 86,
             "returns_twice": false
         },
         {
             "identifier": 48,
             "name": "setD",
-            "parameters": 100,
+            "parameters": 99,
             "vararg": false,
-            "returns": 90,
+            "returns": 86,
             "returns_twice": false
         },
         {
             "identifier": 49,
             "name": "setS",
-            "parameters": 114,
+            "parameters": 118,
             "vararg": false,
-            "returns": 90,
+            "returns": 86,
             "returns_twice": false
         },
         {
             "identifier": 50,
             "name": "sumS",
-            "parameters": 126,
+            "parameters": 131,
             "vararg": false,
-            "returns": 100,
+            "returns": 99,
             "returns_twice": false
         },
         {
             "identifier": 51,
             "name": "vla_test",
-            "parameters": 97,
+            "parameters": 95,
             "vararg": false,
-            "returns": 90,
+            "returns": 86,
             "returns_twice": false
         }
     ],
@@ -363,7 +363,7 @@
         {
             "identifier": 41,
             "name": "getA",
-            "locals": 90,
+            "locals": 86,
             "body": [
                 {
                     "opcode": "getglobal",
@@ -386,7 +386,7 @@
         {
             "identifier": 42,
             "name": "getB",
-            "locals": 90,
+            "locals": 86,
             "body": [
                 {
                     "opcode": "getglobal",
@@ -409,7 +409,7 @@
         {
             "identifier": 43,
             "name": "getC",
-            "locals": 90,
+            "locals": 86,
             "body": [
                 {
                     "opcode": "getglobal",
@@ -432,7 +432,7 @@
         {
             "identifier": 44,
             "name": "getD",
-            "locals": 90,
+            "locals": 86,
             "body": [
                 {
                     "opcode": "getglobal",
@@ -455,6 +455,71 @@
         {
             "identifier": 45,
             "name": "setA",
+            "locals": 87,
+            "body": [
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 87,
+                        "index": 0
+                    }
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "store8",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 87,
+                        "index": 0
+                    }
+                },
+                {
+                    "opcode": "load8i",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "getglobal",
+                    "arg": {
+                        "data": "a"
+                    }
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "pick",
+                    "arg": 1
+                },
+                {
+                    "opcode": "store8",
+                    "memory_flags": {
+                        "volatile": true
+                    }
+                },
+                {
+                    "opcode": "pop"
+                }
+            ],
+            "public_labels": []
+        },
+        {
+            "identifier": 46,
+            "name": "setB",
             "locals": 91,
             "body": [
                 {
@@ -469,71 +534,6 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "store8",
-                    "memory_flags": {
-                        "volatile": false
-                    }
-                },
-                {
-                    "opcode": "getlocal",
-                    "arg": {
-                        "type": 91,
-                        "index": 0
-                    }
-                },
-                {
-                    "opcode": "load8i",
-                    "memory_flags": {
-                        "volatile": false
-                    }
-                },
-                {
-                    "opcode": "getglobal",
-                    "arg": {
-                        "data": "a"
-                    }
-                },
-                {
-                    "opcode": "xchg",
-                    "arg": 1
-                },
-                {
-                    "opcode": "xchg",
-                    "arg": 1
-                },
-                {
-                    "opcode": "pick",
-                    "arg": 1
-                },
-                {
-                    "opcode": "store8",
-                    "memory_flags": {
-                        "volatile": true
-                    }
-                },
-                {
-                    "opcode": "pop"
-                }
-            ],
-            "public_labels": []
-        },
-        {
-            "identifier": 46,
-            "name": "setB",
-            "locals": 94,
-            "body": [
-                {
-                    "opcode": "getlocal",
-                    "arg": {
-                        "type": 94,
-                        "index": 0
-                    }
-                },
-                {
-                    "opcode": "xchg",
-                    "arg": 1
-                },
-                {
                     "opcode": "store16",
                     "memory_flags": {
                         "volatile": false
@@ -542,7 +542,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 94,
+                        "type": 91,
                         "index": 0
                     }
                 },
@@ -585,12 +585,12 @@
         {
             "identifier": 47,
             "name": "setC",
-            "locals": 97,
+            "locals": 95,
             "body": [
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 97,
+                        "type": 95,
                         "index": 0
                     }
                 },
@@ -607,7 +607,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 97,
+                        "type": 95,
                         "index": 0
                     }
                 },
@@ -650,12 +650,12 @@
         {
             "identifier": 48,
             "name": "setD",
-            "locals": 100,
+            "locals": 99,
             "body": [
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 100,
+                        "type": 99,
                         "index": 0
                     }
                 },
@@ -672,7 +672,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 100,
+                        "type": 99,
                         "index": 0
                     }
                 },
@@ -715,12 +715,12 @@
         {
             "identifier": 49,
             "name": "setS",
-            "locals": 114,
+            "locals": 118,
             "body": [
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 114,
+                        "type": 118,
                         "index": 1
                     }
                 },
@@ -737,7 +737,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 114,
+                        "type": 118,
                         "index": 0
                     }
                 },
@@ -754,7 +754,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 114,
+                        "type": 118,
                         "index": 1
                     }
                 },
@@ -767,7 +767,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 114,
+                        "type": 118,
                         "index": 0
                     }
                 },
@@ -851,7 +851,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 114,
+                        "type": 118,
                         "index": 1
                     }
                 },
@@ -864,7 +864,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 114,
+                        "type": 118,
                         "index": 0
                     }
                 },
@@ -948,7 +948,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 114,
+                        "type": 118,
                         "index": 1
                     }
                 },
@@ -961,7 +961,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 114,
+                        "type": 118,
                         "index": 0
                     }
                 },
@@ -1115,7 +1115,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 114,
+                        "type": 118,
                         "index": 1
                     }
                 },
@@ -1131,7 +1131,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 114,
+                        "type": 118,
                         "index": 0
                     }
                 },
@@ -1285,7 +1285,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 114,
+                        "type": 118,
                         "index": 1
                     }
                 },
@@ -1298,7 +1298,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 114,
+                        "type": 118,
                         "index": 0
                     }
                 },
@@ -1342,12 +1342,12 @@
         {
             "identifier": 50,
             "name": "sumS",
-            "locals": 126,
+            "locals": 131,
             "body": [
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 126,
+                        "type": 131,
                         "index": 0
                     }
                 },
@@ -1364,7 +1364,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 126,
+                        "type": 131,
                         "index": 0
                     }
                 },
@@ -1400,7 +1400,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 126,
+                        "type": 131,
                         "index": 0
                     }
                 },
@@ -1439,7 +1439,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 126,
+                        "type": 131,
                         "index": 0
                     }
                 },
@@ -1516,7 +1516,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 126,
+                        "type": 131,
                         "index": 0
                     }
                 },
@@ -1590,7 +1590,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 126,
+                        "type": 131,
                         "index": 0
                     }
                 },
@@ -1628,12 +1628,12 @@
         {
             "identifier": 51,
             "name": "vla_test",
-            "locals": 140,
+            "locals": 146,
             "body": [
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 140,
+                        "type": 146,
                         "index": 0
                     }
                 },
@@ -1650,7 +1650,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 140,
+                        "type": 146,
                         "index": 1
                     }
                 },
@@ -1680,7 +1680,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 140,
+                        "type": 146,
                         "index": 3
                     }
                 },
@@ -1698,7 +1698,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 140,
+                        "type": 146,
                         "index": 0
                     }
                 },
@@ -1717,7 +1717,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 140,
+                        "type": 146,
                         "index": 3
                     }
                 },
@@ -1755,7 +1755,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 140,
+                        "type": 146,
                         "index": 3
                     }
                 },
@@ -1775,7 +1775,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 140,
+                        "type": 146,
                         "index": 3
                     }
                 },
@@ -1821,7 +1821,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 140,
+                        "type": 146,
                         "index": 3
                     }
                 },
@@ -1879,7 +1879,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 140,
+                        "type": 146,
                         "index": 1
                     }
                 },

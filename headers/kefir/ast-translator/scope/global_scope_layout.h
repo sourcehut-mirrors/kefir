@@ -29,15 +29,7 @@ typedef struct kefir_ast_translator_global_scope_layout {
     struct kefir_list external_thread_local_objects;
     struct kefir_list static_objects;
     struct kefir_list static_thread_local_objects;
-
-    struct kefir_ir_type *static_layout;
-    kefir_id_t static_layout_id;
-    struct kefir_ir_type *static_uninit_layout;
-    kefir_id_t static_uninit_layout_id;
-    struct kefir_ir_type *static_thread_local_layout;
-    kefir_id_t static_thread_local_layout_id;
-    struct kefir_ir_type *static_thread_local_uninit_layout;
-    kefir_id_t static_thread_local_uninit_layout_id;
+    kefir_id_t next_object_identifier;
 } kefir_ast_translator_global_scope_layout_t;
 
 kefir_result_t kefir_ast_translator_global_scope_layout_init(struct kefir_mem *, struct kefir_ir_module *,

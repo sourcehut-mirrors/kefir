@@ -120,22 +120,6 @@
         },
         {
             "identifier": 1,
-            "type": []
-        },
-        {
-            "identifier": 2,
-            "type": []
-        },
-        {
-            "identifier": 3,
-            "type": []
-        },
-        {
-            "identifier": 4,
-            "type": []
-        },
-        {
-            "identifier": 5,
             "type": [
                 {
                     "type": "word"
@@ -143,7 +127,7 @@
             ]
         },
         {
-            "identifier": 6,
+            "identifier": 2,
             "type": [
                 {
                     "type": "bool"
@@ -151,7 +135,7 @@
             ]
         },
         {
-            "identifier": 7,
+            "identifier": 3,
             "type": [
                 {
                     "type": "char"
@@ -159,7 +143,7 @@
             ]
         },
         {
-            "identifier": 8,
+            "identifier": 4,
             "type": [
                 {
                     "type": "int"
@@ -167,7 +151,7 @@
             ]
         },
         {
-            "identifier": 9,
+            "identifier": 5,
             "type": [
                 {
                     "type": "int"
@@ -175,7 +159,7 @@
             ]
         },
         {
-            "identifier": 10,
+            "identifier": 6,
             "type": [
                 {
                     "type": "int"
@@ -183,7 +167,7 @@
             ]
         },
         {
-            "identifier": 11,
+            "identifier": 7,
             "type": [
                 {
                     "type": "float"
@@ -191,10 +175,42 @@
             ]
         },
         {
-            "identifier": 12,
+            "identifier": 8,
             "type": [
                 {
                     "type": "char"
+                }
+            ]
+        },
+        {
+            "identifier": 9,
+            "type": [
+                {
+                    "type": "long"
+                }
+            ]
+        },
+        {
+            "identifier": 10,
+            "type": [
+                {
+                    "type": "char"
+                }
+            ]
+        },
+        {
+            "identifier": 11,
+            "type": [
+                {
+                    "type": "long"
+                }
+            ]
+        },
+        {
+            "identifier": 12,
+            "type": [
+                {
+                    "type": "double"
                 }
             ]
         },
@@ -210,7 +226,7 @@
             "identifier": 14,
             "type": [
                 {
-                    "type": "char"
+                    "type": "short"
                 }
             ]
         },
@@ -226,41 +242,25 @@
             "identifier": 16,
             "type": [
                 {
-                    "type": "double"
+                    "type": "short"
                 }
             ]
         },
         {
             "identifier": 17,
-            "type": [
-                {
-                    "type": "long"
-                }
-            ]
+            "type": []
         },
         {
             "identifier": 18,
-            "type": [
-                {
-                    "type": "short"
-                }
-            ]
+            "type": []
         },
         {
             "identifier": 19,
-            "type": [
-                {
-                    "type": "long"
-                }
-            ]
+            "type": []
         },
         {
             "identifier": 20,
-            "type": [
-                {
-                    "type": "short"
-                }
-            ]
+            "type": []
         },
         {
             "identifier": 21,
@@ -317,22 +317,6 @@
         {
             "identifier": 34,
             "type": []
-        },
-        {
-            "identifier": 35,
-            "type": []
-        },
-        {
-            "identifier": 36,
-            "type": []
-        },
-        {
-            "identifier": 37,
-            "type": []
-        },
-        {
-            "identifier": 38,
-            "type": []
         }
     ],
     "data": [],
@@ -341,73 +325,73 @@
         {
             "identifier": 0,
             "name": "assign_bool",
+            "parameters": 17,
+            "vararg": false,
+            "returns": 18,
+            "returns_twice": false
+        },
+        {
+            "identifier": 1,
+            "name": "assign_char",
+            "parameters": 19,
+            "vararg": false,
+            "returns": 20,
+            "returns_twice": false
+        },
+        {
+            "identifier": 2,
+            "name": "assign_short",
             "parameters": 21,
             "vararg": false,
             "returns": 22,
             "returns_twice": false
         },
         {
-            "identifier": 1,
-            "name": "assign_char",
+            "identifier": 3,
+            "name": "assign_int",
             "parameters": 23,
             "vararg": false,
             "returns": 24,
             "returns_twice": false
         },
         {
-            "identifier": 2,
-            "name": "assign_short",
+            "identifier": 4,
+            "name": "assign_long",
             "parameters": 25,
             "vararg": false,
             "returns": 26,
             "returns_twice": false
         },
         {
-            "identifier": 3,
-            "name": "assign_int",
+            "identifier": 5,
+            "name": "assign_long_long",
             "parameters": 27,
             "vararg": false,
             "returns": 28,
             "returns_twice": false
         },
         {
-            "identifier": 4,
-            "name": "assign_long",
+            "identifier": 6,
+            "name": "assign_float_double",
             "parameters": 29,
             "vararg": false,
             "returns": 30,
             "returns_twice": false
         },
         {
-            "identifier": 5,
-            "name": "assign_long_long",
+            "identifier": 7,
+            "name": "enum",
             "parameters": 31,
             "vararg": false,
             "returns": 32,
             "returns_twice": false
         },
         {
-            "identifier": 6,
-            "name": "assign_float_double",
+            "identifier": 8,
+            "name": "pointer",
             "parameters": 33,
             "vararg": false,
             "returns": 34,
-            "returns_twice": false
-        },
-        {
-            "identifier": 7,
-            "name": "enum",
-            "parameters": 35,
-            "vararg": false,
-            "returns": 36,
-            "returns_twice": false
-        },
-        {
-            "identifier": 8,
-            "name": "pointer",
-            "parameters": 37,
-            "vararg": false,
-            "returns": 38,
             "returns_twice": false
         }
     ],
@@ -415,7 +399,7 @@
         {
             "identifier": 7,
             "name": "enum",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushi",
@@ -451,7 +435,7 @@
         {
             "identifier": 8,
             "name": "pointer",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushi",
@@ -487,7 +471,7 @@
         {
             "identifier": 3,
             "name": "assign_int",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushi",
@@ -582,7 +566,7 @@
         {
             "identifier": 0,
             "name": "assign_bool",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushu",
@@ -656,7 +640,7 @@
         {
             "identifier": 1,
             "name": "assign_char",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushi",
@@ -779,7 +763,7 @@
         {
             "identifier": 4,
             "name": "assign_long",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushi",
@@ -877,7 +861,7 @@
         {
             "identifier": 2,
             "name": "assign_short",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushi",
@@ -941,7 +925,7 @@
         {
             "identifier": 5,
             "name": "assign_long_long",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushi",
@@ -1008,7 +992,7 @@
         {
             "identifier": 6,
             "name": "assign_float_double",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushf32",

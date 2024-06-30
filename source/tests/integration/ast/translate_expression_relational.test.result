@@ -11,11 +11,19 @@
     "types": [
         {
             "identifier": 0,
-            "type": []
+            "type": [
+                {
+                    "type": "word"
+                }
+            ]
         },
         {
             "identifier": 1,
-            "type": []
+            "type": [
+                {
+                    "type": "word"
+                }
+            ]
         },
         {
             "identifier": 2,
@@ -27,19 +35,11 @@
         },
         {
             "identifier": 4,
-            "type": [
-                {
-                    "type": "word"
-                }
-            ]
+            "type": []
         },
         {
             "identifier": 5,
-            "type": [
-                {
-                    "type": "word"
-                }
-            ]
+            "type": []
         },
         {
             "identifier": 6,
@@ -96,29 +96,13 @@
         {
             "identifier": 19,
             "type": []
-        },
-        {
-            "identifier": 20,
-            "type": []
-        },
-        {
-            "identifier": 21,
-            "type": []
-        },
-        {
-            "identifier": 22,
-            "type": []
-        },
-        {
-            "identifier": 23,
-            "type": []
         }
     ],
     "data": [
         {
             "identifier": "ptr1",
             "storage": "global",
-            "type": 5,
+            "type": 1,
             "value": [
                 {
                     "class": "undefined"
@@ -131,73 +115,73 @@
         {
             "identifier": 0,
             "name": "equality_arithemtical",
+            "parameters": 2,
+            "vararg": false,
+            "returns": 3,
+            "returns_twice": false
+        },
+        {
+            "identifier": 1,
+            "name": "equality_pointer",
+            "parameters": 4,
+            "vararg": false,
+            "returns": 5,
+            "returns_twice": false
+        },
+        {
+            "identifier": 2,
+            "name": "non_equality_arithemtical",
             "parameters": 6,
             "vararg": false,
             "returns": 7,
             "returns_twice": false
         },
         {
-            "identifier": 1,
-            "name": "equality_pointer",
+            "identifier": 3,
+            "name": "non_equality_pointer",
             "parameters": 8,
             "vararg": false,
             "returns": 9,
             "returns_twice": false
         },
         {
-            "identifier": 2,
-            "name": "non_equality_arithemtical",
+            "identifier": 4,
+            "name": "less_than",
             "parameters": 10,
             "vararg": false,
             "returns": 11,
             "returns_twice": false
         },
         {
-            "identifier": 3,
-            "name": "non_equality_pointer",
+            "identifier": 5,
+            "name": "less_equals",
             "parameters": 12,
             "vararg": false,
             "returns": 13,
             "returns_twice": false
         },
         {
-            "identifier": 4,
-            "name": "less_than",
+            "identifier": 6,
+            "name": "greater_than",
             "parameters": 14,
             "vararg": false,
             "returns": 15,
             "returns_twice": false
         },
         {
-            "identifier": 5,
-            "name": "less_equals",
+            "identifier": 7,
+            "name": "greater_equal",
             "parameters": 16,
             "vararg": false,
             "returns": 17,
             "returns_twice": false
         },
         {
-            "identifier": 6,
-            "name": "greater_than",
+            "identifier": 8,
+            "name": "ptr_relational",
             "parameters": 18,
             "vararg": false,
             "returns": 19,
-            "returns_twice": false
-        },
-        {
-            "identifier": 7,
-            "name": "greater_equal",
-            "parameters": 20,
-            "vararg": false,
-            "returns": 21,
-            "returns_twice": false
-        },
-        {
-            "identifier": 8,
-            "name": "ptr_relational",
-            "parameters": 22,
-            "vararg": false,
-            "returns": 23,
             "returns_twice": false
         }
     ],
@@ -205,7 +189,7 @@
         {
             "identifier": 4,
             "name": "less_than",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushu",
@@ -330,7 +314,7 @@
         {
             "identifier": 5,
             "name": "less_equals",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushu",
@@ -617,7 +601,7 @@
         {
             "identifier": 2,
             "name": "non_equality_arithemtical",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushi",
@@ -718,7 +702,7 @@
         {
             "identifier": 3,
             "name": "non_equality_pointer",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "getglobal",
@@ -765,7 +749,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 4,
+                        "type": 0,
                         "index": 0
                     }
                 },
@@ -784,7 +768,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 4,
+                        "type": 0,
                         "index": 0
                     }
                 },
@@ -797,7 +781,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 4,
+                        "type": 0,
                         "index": 0
                     }
                 },
@@ -819,7 +803,7 @@
         {
             "identifier": 1,
             "name": "equality_pointer",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "getglobal",
@@ -863,7 +847,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 4,
+                        "type": 0,
                         "index": 0
                     }
                 },
@@ -879,7 +863,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 4,
+                        "type": 0,
                         "index": 0
                     }
                 },
@@ -892,7 +876,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 4,
+                        "type": 0,
                         "index": 0
                     }
                 },
@@ -911,7 +895,7 @@
         {
             "identifier": 6,
             "name": "greater_than",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushu",
@@ -1036,7 +1020,7 @@
         {
             "identifier": 8,
             "name": "ptr_relational",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "getglobal",
@@ -1068,7 +1052,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 4,
+                        "type": 0,
                         "index": 0
                     }
                 },
@@ -1081,7 +1065,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 4,
+                        "type": 0,
                         "index": 0
                     }
                 },
@@ -1142,7 +1126,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 4,
+                        "type": 0,
                         "index": 0
                     }
                 },
@@ -1155,7 +1139,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 4,
+                        "type": 0,
                         "index": 0
                     }
                 },
@@ -1216,7 +1200,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 4,
+                        "type": 0,
                         "index": 0
                     }
                 },
@@ -1229,7 +1213,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 4,
+                        "type": 0,
                         "index": 0
                     }
                 },
@@ -1290,7 +1274,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 4,
+                        "type": 0,
                         "index": 0
                     }
                 },
@@ -1303,7 +1287,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 4,
+                        "type": 0,
                         "index": 0
                     }
                 },
@@ -1340,7 +1324,7 @@
         {
             "identifier": 0,
             "name": "equality_arithemtical",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushi",
@@ -1423,7 +1407,7 @@
         {
             "identifier": 7,
             "name": "greater_equal",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushu",

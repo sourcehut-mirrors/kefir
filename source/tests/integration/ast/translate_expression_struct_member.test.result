@@ -15,7 +15,19 @@
         },
         {
             "identifier": 1,
-            "type": []
+            "type": [
+                {
+                    "type": "struct",
+                    "fields": [
+                        {
+                            "type": "int"
+                        },
+                        {
+                            "type": "word"
+                        }
+                    ]
+                }
+            ]
         },
         {
             "identifier": 2,
@@ -27,50 +39,22 @@
         },
         {
             "identifier": 4,
-            "type": []
+            "type": [
+                {
+                    "type": "struct",
+                    "fields": [
+                        {
+                            "type": "int"
+                        },
+                        {
+                            "type": "word"
+                        }
+                    ]
+                }
+            ]
         },
         {
             "identifier": 5,
-            "type": [
-                {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "int"
-                        },
-                        {
-                            "type": "word"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "identifier": 6,
-            "type": []
-        },
-        {
-            "identifier": 7,
-            "type": []
-        },
-        {
-            "identifier": 8,
-            "type": [
-                {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "int"
-                        },
-                        {
-                            "type": "word"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "identifier": 9,
             "type": [
                 {
                     "type": "struct",
@@ -92,9 +76,9 @@
         {
             "identifier": 0,
             "name": "func1",
-            "parameters": 6,
+            "parameters": 2,
             "vararg": false,
-            "returns": 7,
+            "returns": 3,
             "returns_twice": false
         }
     ],
@@ -102,7 +86,7 @@
         {
             "identifier": 0,
             "name": "func1",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "getglobal",

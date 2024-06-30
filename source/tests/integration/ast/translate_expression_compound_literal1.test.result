@@ -3,22 +3,6 @@
     "types": [
         {
             "identifier": 0,
-            "type": []
-        },
-        {
-            "identifier": 1,
-            "type": []
-        },
-        {
-            "identifier": 2,
-            "type": []
-        },
-        {
-            "identifier": 3,
-            "type": []
-        },
-        {
-            "identifier": 4,
             "type": [
                 {
                     "type": "long"
@@ -68,15 +52,15 @@
             ]
         },
         {
-            "identifier": 5,
+            "identifier": 1,
             "type": []
         },
         {
-            "identifier": 6,
+            "identifier": 2,
             "type": []
         },
         {
-            "identifier": 7,
+            "identifier": 3,
             "type": [
                 {
                     "type": "long"
@@ -84,15 +68,15 @@
             ]
         },
         {
-            "identifier": 8,
+            "identifier": 4,
             "type": []
         },
         {
-            "identifier": 9,
+            "identifier": 5,
             "type": []
         },
         {
-            "identifier": 10,
+            "identifier": 6,
             "type": [
                 {
                     "type": "struct",
@@ -114,15 +98,15 @@
             ]
         },
         {
-            "identifier": 11,
+            "identifier": 7,
             "type": []
         },
         {
-            "identifier": 12,
+            "identifier": 8,
             "type": []
         },
         {
-            "identifier": 13,
+            "identifier": 9,
             "type": [
                 {
                     "type": "struct",
@@ -158,25 +142,25 @@
         {
             "identifier": 0,
             "name": "compound_literal1",
-            "parameters": 5,
+            "parameters": 1,
             "vararg": false,
-            "returns": 6,
+            "returns": 2,
             "returns_twice": false
         },
         {
             "identifier": 1,
             "name": "compound_literal2",
-            "parameters": 8,
+            "parameters": 4,
             "vararg": false,
-            "returns": 9,
+            "returns": 5,
             "returns_twice": false
         },
         {
             "identifier": 2,
             "name": "compound_literal3",
-            "parameters": 11,
+            "parameters": 7,
             "vararg": false,
-            "returns": 12,
+            "returns": 8,
             "returns_twice": false
         }
     ],
@@ -184,12 +168,12 @@
         {
             "identifier": 0,
             "name": "compound_literal1",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 4,
+                        "type": 0,
                         "index": 0
                     }
                 },
@@ -219,12 +203,12 @@
         {
             "identifier": 1,
             "name": "compound_literal2",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 4,
+                        "type": 0,
                         "index": 1
                     }
                 },
@@ -235,7 +219,7 @@
                 {
                     "opcode": "bzero",
                     "arg": {
-                        "type": 10,
+                        "type": 6,
                         "index": 0
                     }
                 },
@@ -325,12 +309,12 @@
         {
             "identifier": 2,
             "name": "compound_literal3",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 4,
+                        "type": 0,
                         "index": 6
                     }
                 },
@@ -341,7 +325,7 @@
                 {
                     "opcode": "bzero",
                     "arg": {
-                        "type": 13,
+                        "type": 9,
                         "index": 0
                     }
                 },

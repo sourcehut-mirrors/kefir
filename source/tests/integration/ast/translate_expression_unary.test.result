@@ -36,22 +36,6 @@
         },
         {
             "identifier": 1,
-            "type": []
-        },
-        {
-            "identifier": 2,
-            "type": []
-        },
-        {
-            "identifier": 3,
-            "type": []
-        },
-        {
-            "identifier": 4,
-            "type": []
-        },
-        {
-            "identifier": 5,
             "type": [
                 {
                     "type": "union",
@@ -67,7 +51,7 @@
             ]
         },
         {
-            "identifier": 6,
+            "identifier": 2,
             "type": [
                 {
                     "type": "int"
@@ -75,7 +59,7 @@
             ]
         },
         {
-            "identifier": 7,
+            "identifier": 3,
             "type": [
                 {
                     "type": "array",
@@ -87,7 +71,7 @@
             ]
         },
         {
-            "identifier": 8,
+            "identifier": 4,
             "type": [
                 {
                     "type": "struct",
@@ -101,6 +85,22 @@
                     ]
                 }
             ]
+        },
+        {
+            "identifier": 5,
+            "type": []
+        },
+        {
+            "identifier": 6,
+            "type": []
+        },
+        {
+            "identifier": 7,
+            "type": []
+        },
+        {
+            "identifier": 8,
+            "type": []
         },
         {
             "identifier": 9,
@@ -161,29 +161,13 @@
         {
             "identifier": 23,
             "type": []
-        },
-        {
-            "identifier": 24,
-            "type": []
-        },
-        {
-            "identifier": 25,
-            "type": []
-        },
-        {
-            "identifier": 26,
-            "type": []
-        },
-        {
-            "identifier": 27,
-            "type": []
         }
     ],
     "data": [
         {
             "identifier": "W",
             "storage": "global",
-            "type": 5,
+            "type": 1,
             "value": [
                 {
                     "class": "undefined",
@@ -194,7 +178,7 @@
         {
             "identifier": "X",
             "storage": "global",
-            "type": 6,
+            "type": 2,
             "value": [
                 {
                     "class": "undefined"
@@ -204,7 +188,7 @@
         {
             "identifier": "Y",
             "storage": "global",
-            "type": 7,
+            "type": 3,
             "value": [
                 {
                     "class": "undefined",
@@ -215,7 +199,7 @@
         {
             "identifier": "Z",
             "storage": "global",
-            "type": 8,
+            "type": 4,
             "value": [
                 {
                     "class": "undefined",
@@ -229,73 +213,73 @@
         {
             "identifier": 0,
             "name": "plus",
+            "parameters": 5,
+            "vararg": false,
+            "returns": 6,
+            "returns_twice": false
+        },
+        {
+            "identifier": 1,
+            "name": "minus",
+            "parameters": 7,
+            "vararg": false,
+            "returns": 8,
+            "returns_twice": false
+        },
+        {
+            "identifier": 2,
+            "name": "invert",
             "parameters": 9,
             "vararg": false,
             "returns": 10,
             "returns_twice": false
         },
         {
-            "identifier": 1,
-            "name": "minus",
+            "identifier": 3,
+            "name": "logical_negate",
             "parameters": 11,
             "vararg": false,
             "returns": 12,
             "returns_twice": false
         },
         {
-            "identifier": 2,
-            "name": "invert",
-            "parameters": 13,
-            "vararg": false,
-            "returns": 14,
-            "returns_twice": false
-        },
-        {
-            "identifier": 3,
-            "name": "logical_negate",
-            "parameters": 15,
-            "vararg": false,
-            "returns": 16,
-            "returns_twice": false
-        },
-        {
             "identifier": 4,
             "name": "logical_negate2",
+            "parameters": 14,
+            "vararg": false,
+            "returns": 15,
+            "returns_twice": false
+        },
+        {
+            "identifier": 5,
+            "name": "sizeof1",
+            "parameters": 16,
+            "vararg": false,
+            "returns": 17,
+            "returns_twice": false
+        },
+        {
+            "identifier": 6,
+            "name": "sizeof2",
             "parameters": 18,
             "vararg": false,
             "returns": 19,
             "returns_twice": false
         },
         {
-            "identifier": 5,
-            "name": "sizeof1",
+            "identifier": 7,
+            "name": "alignof",
             "parameters": 20,
             "vararg": false,
             "returns": 21,
             "returns_twice": false
         },
         {
-            "identifier": 6,
-            "name": "sizeof2",
+            "identifier": 8,
+            "name": "indirection",
             "parameters": 22,
             "vararg": false,
             "returns": 23,
-            "returns_twice": false
-        },
-        {
-            "identifier": 7,
-            "name": "alignof",
-            "parameters": 24,
-            "vararg": false,
-            "returns": 25,
-            "returns_twice": false
-        },
-        {
-            "identifier": 8,
-            "name": "indirection",
-            "parameters": 26,
-            "vararg": false,
-            "returns": 27,
             "returns_twice": false
         }
     ],
@@ -303,7 +287,7 @@
         {
             "identifier": 0,
             "name": "plus",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushi",
@@ -339,7 +323,7 @@
         {
             "identifier": 1,
             "name": "minus",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushi",
@@ -390,7 +374,7 @@
         {
             "identifier": 2,
             "name": "invert",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushi",
@@ -434,7 +418,7 @@
         {
             "identifier": 7,
             "name": "alignof",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushu",
@@ -518,7 +502,7 @@
         {
             "identifier": 5,
             "name": "sizeof1",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushu",
@@ -602,7 +586,7 @@
         {
             "identifier": 6,
             "name": "sizeof2",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushu",
@@ -666,7 +650,7 @@
         {
             "identifier": 8,
             "name": "indirection",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushi",
@@ -752,7 +736,7 @@
         {
             "identifier": 3,
             "name": "logical_negate",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushi",
@@ -840,7 +824,7 @@
         {
             "identifier": 4,
             "name": "logical_negate2",
-            "locals": 17,
+            "locals": 13,
             "body": [
                 {
                     "opcode": "pushld",

@@ -1,16 +1,37 @@
 {
     "identifiers": [
         {
-            "symbol": "variable",
+            "symbol": "string1",
             "type": "global_data",
-            "scope": "import",
+            "scope": "local",
             "visibility": "default",
             "alias": null
         },
         {
-            "symbol": "__kefirrt_module_static_vars",
+            "symbol": "string2",
             "type": "global_data",
             "scope": "local",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "string3",
+            "type": "global_data",
+            "scope": "local",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "string4",
+            "type": "global_data",
+            "scope": "local",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "variable",
+            "type": "global_data",
+            "scope": "import",
             "visibility": "default",
             "alias": null
         }
@@ -25,21 +46,36 @@
                     "element_type": {
                         "type": "char"
                     }
-                },
+                }
+            ]
+        },
+        {
+            "identifier": 1,
+            "type": [
                 {
                     "type": "array",
                     "length": 24,
                     "element_type": {
                         "type": "short"
                     }
-                },
+                }
+            ]
+        },
+        {
+            "identifier": 2,
+            "type": [
                 {
                     "type": "array",
                     "length": 24,
                     "element_type": {
                         "type": "int"
                     }
-                },
+                }
+            ]
+        },
+        {
+            "identifier": 3,
+            "type": [
                 {
                     "type": "array",
                     "length": 22,
@@ -48,18 +84,6 @@
                     }
                 }
             ]
-        },
-        {
-            "identifier": 1,
-            "type": []
-        },
-        {
-            "identifier": 2,
-            "type": []
-        },
-        {
-            "identifier": 3,
-            "type": []
         },
         {
             "identifier": 4,
@@ -72,7 +96,7 @@
     ],
     "data": [
         {
-            "identifier": "__kefirrt_module_static_vars",
+            "identifier": "string1",
             "storage": "global",
             "type": 0,
             "value": [
@@ -84,7 +108,14 @@
                 {
                     "class": "undefined",
                     "count": 23
-                },
+                }
+            ]
+        },
+        {
+            "identifier": "string2",
+            "storage": "global",
+            "type": 1,
+            "value": [
                 {
                     "class": "string",
                     "content": "U\u0000T\u0000F\u0000-\u00001\u00006\u0000 \u0000s\u0000t\u0000r\u0000i\u0000n\u0000g\u0000 \u0000l\u0000i\u0000t\u0000e\u0000r\u0000a\u0000l\u0000\n\u0000\r\u0000\u0000\u0000",
@@ -93,7 +124,14 @@
                 {
                     "class": "undefined",
                     "count": 24
-                },
+                }
+            ]
+        },
+        {
+            "identifier": "string3",
+            "storage": "global",
+            "type": 2,
+            "value": [
                 {
                     "class": "string",
                     "content": "U\u0000\u0000\u0000T\u0000\u0000\u0000F\u0000\u0000\u0000-\u0000\u0000\u00003\u0000\u0000\u00002\u0000\u0000\u0000 \u0000\u0000\u0000s\u0000\u0000\u0000t\u0000\u0000\u0000r\u0000\u0000\u0000i\u0000\u0000\u0000n\u0000\u0000\u0000g\u0000\u0000\u0000 \u0000\u0000\u0000l\u0000\u0000\u0000i\u0000\u0000\u0000t\u0000\u0000\u0000e\u0000\u0000\u0000r\u0000\u0000\u0000a\u0000\u0000\u0000l\u0000\u0000\u0000\n\u0000\u0000\u0000\r\u0000\u0000\u0000\u0000\u0000\u0000\u0000",
@@ -102,7 +140,14 @@
                 {
                     "class": "undefined",
                     "count": 24
-                },
+                }
+            ]
+        },
+        {
+            "identifier": "string4",
+            "storage": "global",
+            "type": 3,
+            "value": [
                 {
                     "class": "string",
                     "content": "W\u0000\u0000\u0000i\u0000\u0000\u0000d\u0000\u0000\u0000e\u0000\u0000\u0000 \u0000\u0000\u0000s\u0000\u0000\u0000t\u0000\u0000\u0000r\u0000\u0000\u0000i\u0000\u0000\u0000n\u0000\u0000\u0000g\u0000\u0000\u0000 \u0000\u0000\u0000l\u0000\u0000\u0000i\u0000\u0000\u0000t\u0000\u0000\u0000e\u0000\u0000\u0000r\u0000\u0000\u0000a\u0000\u0000\u0000l\u0000\u0000\u0000\n\u0000\u0000\u0000\r\u0000\u0000\u0000\u0000\u0000\u0000\u0000",

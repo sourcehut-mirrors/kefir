@@ -95,7 +95,7 @@ static kefir_result_t translate_externals(struct kefir_mem *mem, const struct ke
                     .alias = NULL};
 #define DECL_GLOBAL_WEAK                                                 \
     do {                                                                 \
-        if (scoped_identifier->value->object.flags.weak) {             \
+        if (scoped_identifier->value->object.flags.weak) {               \
             ir_identifier.scope = KEFIR_IR_IDENTIFIER_SCOPE_EXPORT_WEAK; \
         } else {                                                         \
             ir_identifier.scope = KEFIR_IR_IDENTIFIER_SCOPE_EXPORT;      \
@@ -198,58 +198,9 @@ static kefir_result_t translate_externals(struct kefir_mem *mem, const struct ke
     return KEFIR_OK;
 }
 
-static kefir_result_t get_static_data(struct kefir_mem *mem, struct kefir_ir_module *module, kefir_id_t type_id,
-                                      struct kefir_ir_data **data) {
-    *data = kefir_ir_module_get_named_data(module, KEFIR_AST_TRANSLATOR_STATIC_VARIABLES_IDENTIFIER);
-    if (*data == NULL) {
-        *data = kefir_ir_module_new_named_data(mem, module, KEFIR_AST_TRANSLATOR_STATIC_VARIABLES_IDENTIFIER,
-                                               KEFIR_IR_DATA_GLOBAL_STORAGE, type_id);
-        REQUIRE(*data != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate IR data"));
-
-        struct kefir_ir_identifier ir_identifier = {.symbol = KEFIR_AST_TRANSLATOR_STATIC_VARIABLES_IDENTIFIER,
-                                                    .type = KEFIR_IR_IDENTIFIER_GLOBAL_DATA,
-                                                    .scope = KEFIR_IR_IDENTIFIER_SCOPE_LOCAL,
-                                                    .visibility = KEFIR_IR_IDENTIFIER_VISIBILITY_DEFAULT,
-                                                    .alias = NULL};
-        REQUIRE_OK(kefir_ir_module_declare_identifier(mem, module, KEFIR_AST_TRANSLATOR_STATIC_VARIABLES_IDENTIFIER,
-                                                      &ir_identifier));
-    } else {
-        REQUIRE((*data)->type_id == type_id,
-                KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Provided IR type id does not match existing"));
-    }
-    return KEFIR_OK;
-}
-
-static kefir_result_t get_static_uninit_data(struct kefir_mem *mem, struct kefir_ir_module *module, kefir_id_t type_id,
-                                             struct kefir_ir_data **data) {
-    *data = kefir_ir_module_get_named_data(module, KEFIR_AST_TRANSLATOR_STATIC_UNINIT_VARIABLES_IDENTIFIER);
-    if (*data == NULL) {
-        *data = kefir_ir_module_new_named_data(mem, module, KEFIR_AST_TRANSLATOR_STATIC_UNINIT_VARIABLES_IDENTIFIER,
-                                               KEFIR_IR_DATA_GLOBAL_STORAGE, type_id);
-        REQUIRE(*data != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate IR data"));
-
-        struct kefir_ir_identifier ir_identifier = {.symbol = KEFIR_AST_TRANSLATOR_STATIC_UNINIT_VARIABLES_IDENTIFIER,
-                                                    .type = KEFIR_IR_IDENTIFIER_GLOBAL_DATA,
-                                                    .scope = KEFIR_IR_IDENTIFIER_SCOPE_LOCAL,
-                                                    .visibility = KEFIR_IR_IDENTIFIER_VISIBILITY_DEFAULT,
-                                                    .alias = NULL};
-        REQUIRE_OK(kefir_ir_module_declare_identifier(
-            mem, module, KEFIR_AST_TRANSLATOR_STATIC_UNINIT_VARIABLES_IDENTIFIER, &ir_identifier));
-    } else {
-        REQUIRE((*data)->type_id == type_id,
-                KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Provided IR type id does not match existing"));
-    }
-    return KEFIR_OK;
-}
-
 static kefir_result_t translate_static(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                        struct kefir_ir_module *module,
                                        const struct kefir_ast_translator_global_scope_layout *global_scope) {
-    struct kefir_ir_data *static_data = NULL;
-    if (kefir_ir_type_length(global_scope->static_layout) > 0) {
-        REQUIRE_OK(get_static_data(mem, module, global_scope->static_layout_id, &static_data));
-    }
-
     for (const struct kefir_list_entry *iter = kefir_list_head(&global_scope->static_objects); iter != NULL;
          kefir_list_next(&iter)) {
         ASSIGN_DECL_CAST(const struct kefir_ast_translator_scoped_identifier_entry *, scoped_identifier, iter->value);
@@ -258,10 +209,25 @@ static kefir_result_t translate_static(struct kefir_mem *mem, const struct kefir
             case KEFIR_AST_SCOPE_IDENTIFIER_OBJECT: {
                 ASSIGN_DECL_CAST(struct kefir_ast_translator_scoped_identifier_object *, identifier_data,
                                  scoped_identifier->value->payload.ptr);
+
+                struct kefir_ir_identifier ir_identifier = {.symbol = scoped_identifier->value->object.asm_label == NULL
+                                                                          ? scoped_identifier->identifier
+                                                                          : scoped_identifier->value->object.asm_label,
+                                                            .type = KEFIR_IR_IDENTIFIER_GLOBAL_DATA,
+                                                            .scope = KEFIR_IR_IDENTIFIER_SCOPE_LOCAL,
+                                                            .visibility = KEFIR_IR_IDENTIFIER_VISIBILITY_DEFAULT,
+                                                            .alias = NULL};
+
+                struct kefir_ir_data *data = kefir_ir_module_new_named_data(
+                    mem, module, scoped_identifier->identifier, KEFIR_IR_DATA_GLOBAL_STORAGE, identifier_data->type_id);
                 if (scoped_identifier->value->object.initializer != NULL) {
                     REQUIRE_OK(initialize_data(mem, context, module, identifier_data->type, identifier_data->layout,
-                                               scoped_identifier->value->object.initializer, static_data));
+                                               scoped_identifier->value->object.initializer, data));
                 }
+                REQUIRE_OK(kefir_ir_data_finalize(data));
+
+                REQUIRE_OK(
+                    kefir_ir_module_declare_identifier(mem, module, scoped_identifier->identifier, &ir_identifier));
             } break;
 
             case KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION: {
@@ -277,16 +243,6 @@ static kefir_result_t translate_static(struct kefir_mem *mem, const struct kefir
             default:
                 return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to translate global scoped identifier");
         }
-    }
-
-    if (static_data != NULL) {
-        REQUIRE_OK(kefir_ir_data_finalize(static_data));
-    }
-
-    if (kefir_ir_type_length(global_scope->static_uninit_layout) > 0) {
-        struct kefir_ir_data *static_uninit_data;
-        REQUIRE_OK(get_static_uninit_data(mem, module, global_scope->static_uninit_layout_id, &static_uninit_data));
-        REQUIRE_OK(kefir_ir_data_finalize(static_uninit_data));
     }
     return KEFIR_OK;
 }
@@ -337,64 +293,9 @@ static kefir_result_t translate_external_thread_locals(
     return KEFIR_OK;
 }
 
-static kefir_result_t get_static_thread_local_data(struct kefir_mem *mem, struct kefir_ir_module *module,
-                                                   kefir_id_t type_id, struct kefir_ir_data **data) {
-    *data = kefir_ir_module_get_named_data(module, KEFIR_AST_TRANSLATOR_STATIC_THREAD_LOCAL_VARIABLES_IDENTIFIER);
-    if (*data == NULL) {
-        *data =
-            kefir_ir_module_new_named_data(mem, module, KEFIR_AST_TRANSLATOR_STATIC_THREAD_LOCAL_VARIABLES_IDENTIFIER,
-                                           KEFIR_IR_DATA_THREAD_LOCAL_STORAGE, type_id);
-        REQUIRE(*data != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate IR data"));
-
-        struct kefir_ir_identifier ir_identifier = {
-            .symbol = KEFIR_AST_TRANSLATOR_STATIC_THREAD_LOCAL_VARIABLES_IDENTIFIER,
-            .type = KEFIR_IR_IDENTIFIER_THREAD_LOCAL_DATA,
-            .scope = KEFIR_IR_IDENTIFIER_SCOPE_LOCAL,
-            .visibility = KEFIR_IR_IDENTIFIER_VISIBILITY_DEFAULT,
-            .alias = NULL};
-        REQUIRE_OK(kefir_ir_module_declare_identifier(
-            mem, module, KEFIR_AST_TRANSLATOR_STATIC_THREAD_LOCAL_VARIABLES_IDENTIFIER, &ir_identifier));
-    } else {
-        REQUIRE((*data)->type_id == type_id,
-                KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Provided IR type id does not match existing"));
-    }
-    return KEFIR_OK;
-}
-
-static kefir_result_t get_static_thread_local_uninit_data(struct kefir_mem *mem, struct kefir_ir_module *module,
-                                                          kefir_id_t type_id, struct kefir_ir_data **data) {
-    *data =
-        kefir_ir_module_get_named_data(module, KEFIR_AST_TRANSLATOR_STATIC_THREAD_LOCAL_UNINIT_VARIABLES_IDENTIFIER);
-    if (*data == NULL) {
-        *data = kefir_ir_module_new_named_data(mem, module,
-                                               KEFIR_AST_TRANSLATOR_STATIC_THREAD_LOCAL_UNINIT_VARIABLES_IDENTIFIER,
-                                               KEFIR_IR_DATA_THREAD_LOCAL_STORAGE, type_id);
-        REQUIRE(*data != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate IR data"));
-
-        struct kefir_ir_identifier ir_identifier = {
-            .symbol = KEFIR_AST_TRANSLATOR_STATIC_THREAD_LOCAL_UNINIT_VARIABLES_IDENTIFIER,
-            .type = KEFIR_IR_IDENTIFIER_THREAD_LOCAL_DATA,
-            .scope = KEFIR_IR_IDENTIFIER_SCOPE_LOCAL,
-            .visibility = KEFIR_IR_IDENTIFIER_VISIBILITY_DEFAULT,
-            .alias = NULL};
-        REQUIRE_OK(kefir_ir_module_declare_identifier(
-            mem, module, KEFIR_AST_TRANSLATOR_STATIC_THREAD_LOCAL_UNINIT_VARIABLES_IDENTIFIER, &ir_identifier));
-    } else {
-        REQUIRE((*data)->type_id == type_id,
-                KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Provided IR type id does not match existing"));
-    }
-    return KEFIR_OK;
-}
-
 static kefir_result_t translate_static_thread_locals(
     struct kefir_mem *mem, const struct kefir_ast_context *context, struct kefir_ir_module *module,
     const struct kefir_ast_translator_global_scope_layout *global_scope) {
-    struct kefir_ir_data *static_tlocal_data = NULL;
-    if (kefir_ir_type_length(global_scope->static_thread_local_layout) > 0) {
-        REQUIRE_OK(get_static_thread_local_data(mem, module, global_scope->static_thread_local_layout_id,
-                                                &static_tlocal_data));
-    }
-
     for (const struct kefir_list_entry *iter = kefir_list_head(&global_scope->static_thread_local_objects);
          iter != NULL; kefir_list_next(&iter)) {
         ASSIGN_DECL_CAST(const struct kefir_ast_translator_scoped_identifier_entry *, scoped_identifier, iter->value);
@@ -403,26 +304,31 @@ static kefir_result_t translate_static_thread_locals(
             case KEFIR_AST_SCOPE_IDENTIFIER_OBJECT: {
                 ASSIGN_DECL_CAST(struct kefir_ast_translator_scoped_identifier_object *, identifier_data,
                                  scoped_identifier->value->payload.ptr);
+
+                struct kefir_ir_identifier ir_identifier = {.symbol = scoped_identifier->value->object.asm_label == NULL
+                                                                          ? scoped_identifier->identifier
+                                                                          : scoped_identifier->value->object.asm_label,
+                                                            .type = KEFIR_IR_IDENTIFIER_THREAD_LOCAL_DATA,
+                                                            .scope = KEFIR_IR_IDENTIFIER_SCOPE_LOCAL,
+                                                            .visibility = KEFIR_IR_IDENTIFIER_VISIBILITY_DEFAULT,
+                                                            .alias = NULL};
+
+                struct kefir_ir_data *data =
+                    kefir_ir_module_new_named_data(mem, module, scoped_identifier->identifier,
+                                                   KEFIR_IR_DATA_THREAD_LOCAL_STORAGE, identifier_data->type_id);
                 if (scoped_identifier->value->object.initializer != NULL) {
                     REQUIRE_OK(initialize_data(mem, context, module, identifier_data->type, identifier_data->layout,
-                                               scoped_identifier->value->object.initializer, static_tlocal_data));
+                                               scoped_identifier->value->object.initializer, data));
                 }
+                REQUIRE_OK(kefir_ir_data_finalize(data));
+
+                REQUIRE_OK(
+                    kefir_ir_module_declare_identifier(mem, module, scoped_identifier->identifier, &ir_identifier));
             } break;
 
             default:
                 return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to translate global scoped identifier");
         }
-    }
-
-    if (static_tlocal_data != NULL) {
-        REQUIRE_OK(kefir_ir_data_finalize(static_tlocal_data));
-    }
-
-    if (kefir_ir_type_length(global_scope->static_thread_local_uninit_layout) > 0) {
-        struct kefir_ir_data *static_thread_local_uninit_data;
-        REQUIRE_OK(get_static_thread_local_uninit_data(mem, module, global_scope->static_thread_local_uninit_layout_id,
-                                                       &static_thread_local_uninit_data));
-        REQUIRE_OK(kefir_ir_data_finalize(static_thread_local_uninit_data));
     }
     return KEFIR_OK;
 }
@@ -443,14 +349,26 @@ kefir_result_t kefir_ast_translate_global_scope(struct kefir_mem *mem, const str
     return KEFIR_OK;
 }
 
+static kefir_result_t local_static_identifier(struct kefir_mem *mem, struct kefir_ir_module *module,
+                                              const char *function_name, const char *variable_identifier,
+                                              kefir_id_t unique_id, const char **identifier) {
+    int buflen = snprintf(NULL, 0, KEFIR_AST_TRANSLATOR_FUNCTION_STATIC_VARIABLE_IDENTIFIER, function_name,
+                          variable_identifier, unique_id);
+    char *buf = KEFIR_MALLOC(mem, sizeof(char) * (buflen + 2));
+    REQUIRE(buf != NULL,
+            KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate local static variable identifier"));
+    snprintf(buf, buflen + 1, KEFIR_AST_TRANSLATOR_FUNCTION_STATIC_VARIABLE_IDENTIFIER, function_name,
+             variable_identifier, unique_id);
+    *identifier = kefir_ir_module_symbol(mem, module, buf, NULL);
+    KEFIR_FREE(mem, buf);
+    REQUIRE(*identifier != NULL,
+            KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate local static variable identifier"));
+    return KEFIR_OK;
+}
+
 static kefir_result_t translate_local_static(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                              struct kefir_ir_module *module,
                                              const struct kefir_ast_translator_local_scope_layout *local_scope) {
-    struct kefir_ir_data *static_data = NULL;
-    if (kefir_ir_type_length(local_scope->global->static_layout) > 0) {
-        REQUIRE_OK(get_static_data(mem, module, local_scope->global->static_layout_id, &static_data));
-    }
-
     for (const struct kefir_list_entry *iter = kefir_list_head(&local_scope->static_objects); iter != NULL;
          kefir_list_next(&iter)) {
         ASSIGN_DECL_CAST(const struct kefir_ast_translator_scoped_identifier_entry *, scoped_identifier, iter->value);
@@ -459,17 +377,36 @@ static kefir_result_t translate_local_static(struct kefir_mem *mem, const struct
             case KEFIR_AST_SCOPE_IDENTIFIER_OBJECT: {
                 ASSIGN_DECL_CAST(struct kefir_ast_translator_scoped_identifier_object *, identifier_data,
                                  scoped_identifier->value->payload.ptr);
+
+                const char *identifier;
+                REQUIRE_OK(local_static_identifier(mem, module, scoped_identifier->value->object.defining_function,
+                                                   scoped_identifier->identifier, identifier_data->identifier,
+                                                   &identifier));
+
+                struct kefir_ir_identifier ir_identifier = {.symbol = scoped_identifier->value->object.asm_label == NULL
+                                                                          ? identifier
+                                                                          : scoped_identifier->value->object.asm_label,
+                                                            .type = KEFIR_IR_IDENTIFIER_GLOBAL_DATA,
+                                                            .scope = KEFIR_IR_IDENTIFIER_SCOPE_LOCAL,
+                                                            .visibility = KEFIR_IR_IDENTIFIER_VISIBILITY_DEFAULT,
+                                                            .alias = NULL};
+
+                struct kefir_ir_data *data = kefir_ir_module_new_named_data(
+                    mem, module, identifier, KEFIR_IR_DATA_GLOBAL_STORAGE, identifier_data->type_id);
                 if (scoped_identifier->value->object.initializer != NULL) {
                     if (scoped_identifier->value->definition_scope != NULL) {
                         REQUIRE_OK(context->push_external_ordinary_scope(
                             mem, scoped_identifier->value->definition_scope, context));
                     }
                     REQUIRE_OK(initialize_data(mem, context, module, identifier_data->type, identifier_data->layout,
-                                               scoped_identifier->value->object.initializer, static_data));
+                                               scoped_identifier->value->object.initializer, data));
                     if (scoped_identifier->value->definition_scope != NULL) {
                         REQUIRE_OK(context->pop_external_oridnary_scope(mem, context));
                     }
                 }
+                REQUIRE_OK(kefir_ir_data_finalize(data));
+
+                REQUIRE_OK(kefir_ir_module_declare_identifier(mem, module, identifier, &ir_identifier));
             } break;
 
             case KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION:
@@ -486,11 +423,6 @@ static kefir_result_t translate_local_static(struct kefir_mem *mem, const struct
 static kefir_result_t translate_local_static_thread_locals(
     struct kefir_mem *mem, const struct kefir_ast_context *context, struct kefir_ir_module *module,
     const struct kefir_ast_translator_local_scope_layout *local_scope) {
-    struct kefir_ir_data *static_tlocal_data = NULL;
-    if (kefir_ir_type_length(local_scope->global->static_thread_local_layout) > 0) {
-        REQUIRE_OK(get_static_thread_local_data(mem, module, local_scope->global->static_thread_local_layout_id,
-                                                &static_tlocal_data));
-    }
 
     for (const struct kefir_list_entry *iter = kefir_list_head(&local_scope->static_thread_local_objects); iter != NULL;
          kefir_list_next(&iter)) {
@@ -500,17 +432,36 @@ static kefir_result_t translate_local_static_thread_locals(
             case KEFIR_AST_SCOPE_IDENTIFIER_OBJECT: {
                 ASSIGN_DECL_CAST(struct kefir_ast_translator_scoped_identifier_object *, identifier_data,
                                  scoped_identifier->value->payload.ptr);
-                if (scoped_identifier->value->definition_scope != NULL) {
-                    REQUIRE_OK(context->push_external_ordinary_scope(mem, scoped_identifier->value->definition_scope,
-                                                                     context));
-                }
+
+                const char *identifier;
+                REQUIRE_OK(local_static_identifier(mem, module, scoped_identifier->value->object.defining_function,
+                                                   scoped_identifier->identifier, identifier_data->identifier,
+                                                   &identifier));
+
+                struct kefir_ir_identifier ir_identifier = {.symbol = scoped_identifier->value->object.asm_label == NULL
+                                                                          ? identifier
+                                                                          : scoped_identifier->value->object.asm_label,
+                                                            .type = KEFIR_IR_IDENTIFIER_THREAD_LOCAL_DATA,
+                                                            .scope = KEFIR_IR_IDENTIFIER_SCOPE_LOCAL,
+                                                            .visibility = KEFIR_IR_IDENTIFIER_VISIBILITY_DEFAULT,
+                                                            .alias = NULL};
+
+                struct kefir_ir_data *data = kefir_ir_module_new_named_data(
+                    mem, module, identifier, KEFIR_IR_DATA_THREAD_LOCAL_STORAGE, identifier_data->type_id);
                 if (scoped_identifier->value->object.initializer != NULL) {
+                    if (scoped_identifier->value->definition_scope != NULL) {
+                        REQUIRE_OK(context->push_external_ordinary_scope(
+                            mem, scoped_identifier->value->definition_scope, context));
+                    }
                     REQUIRE_OK(initialize_data(mem, context, module, identifier_data->type, identifier_data->layout,
-                                               scoped_identifier->value->object.initializer, static_tlocal_data));
+                                               scoped_identifier->value->object.initializer, data));
+                    if (scoped_identifier->value->definition_scope != NULL) {
+                        REQUIRE_OK(context->pop_external_oridnary_scope(mem, context));
+                    }
                 }
-                if (scoped_identifier->value->definition_scope != NULL) {
-                    REQUIRE_OK(context->pop_external_oridnary_scope(mem, context));
-                }
+                REQUIRE_OK(kefir_ir_data_finalize(data));
+
+                REQUIRE_OK(kefir_ir_module_declare_identifier(mem, module, identifier, &ir_identifier));
             } break;
 
             default:

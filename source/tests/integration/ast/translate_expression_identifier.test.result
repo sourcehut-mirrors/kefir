@@ -13,38 +13,11 @@
             "scope": "export",
             "visibility": "default",
             "alias": null
-        },
-        {
-            "symbol": "__kefirrt_module_static_uninit_vars",
-            "type": "global_data",
-            "scope": "local",
-            "visibility": "default",
-            "alias": null
         }
     ],
     "types": [
         {
             "identifier": 0,
-            "type": []
-        },
-        {
-            "identifier": 1,
-            "type": [
-                {
-                    "type": "float"
-                }
-            ]
-        },
-        {
-            "identifier": 2,
-            "type": []
-        },
-        {
-            "identifier": 3,
-            "type": []
-        },
-        {
-            "identifier": 4,
             "type": [
                 {
                     "type": "bool"
@@ -52,7 +25,7 @@
             ]
         },
         {
-            "identifier": 5,
+            "identifier": 1,
             "type": [
                 {
                     "type": "int"
@@ -60,7 +33,7 @@
             ]
         },
         {
-            "identifier": 6,
+            "identifier": 2,
             "type": [
                 {
                     "type": "char"
@@ -68,11 +41,19 @@
             ]
         },
         {
-            "identifier": 7,
+            "identifier": 3,
+            "type": [
+                {
+                    "type": "float"
+                }
+            ]
+        },
+        {
+            "identifier": 4,
             "type": []
         },
         {
-            "identifier": 8,
+            "identifier": 5,
             "type": []
         }
     ],
@@ -80,17 +61,7 @@
         {
             "identifier": "extern_variable2",
             "storage": "global",
-            "type": 6,
-            "value": [
-                {
-                    "class": "undefined"
-                }
-            ]
-        },
-        {
-            "identifier": "__kefirrt_module_static_uninit_vars",
-            "storage": "global",
-            "type": 1,
+            "type": 2,
             "value": [
                 {
                     "class": "undefined"
@@ -103,9 +74,9 @@
         {
             "identifier": 0,
             "name": "func1",
-            "parameters": 7,
+            "parameters": 4,
             "vararg": false,
-            "returns": 8,
+            "returns": 5,
             "returns_twice": false
         }
     ],
@@ -113,7 +84,7 @@
         {
             "identifier": 0,
             "name": "func1",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "getglobal",
@@ -142,7 +113,7 @@
                 {
                     "opcode": "getglobal",
                     "arg": {
-                        "data": "__kefirrt_module_static_uninit_vars"
+                        "data": "static_variable1"
                     }
                 },
                 {
@@ -154,7 +125,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 4,
+                        "type": 0,
                         "index": 0
                     }
                 },

@@ -22,11 +22,39 @@
         },
         {
             "identifier": 1,
-            "type": []
+            "type": [
+                {
+                    "type": "struct",
+                    "fields": [
+                        {
+                            "type": "bits",
+                            "width": 19,
+                            "alignment": 4
+                        },
+                        {
+                            "type": "char"
+                        },
+                        {
+                            "type": "bits",
+                            "width": 4,
+                            "alignment": 8
+                        },
+                        {
+                            "type": "bits",
+                            "width": 57,
+                            "alignment": 8
+                        }
+                    ]
+                }
+            ]
         },
         {
             "identifier": 2,
-            "type": []
+            "type": [
+                {
+                    "type": "word"
+                }
+            ]
         },
         {
             "identifier": 3,
@@ -68,17 +96,85 @@
             "identifier": 6,
             "type": [
                 {
-                    "type": "word"
+                    "type": "struct",
+                    "fields": [
+                        {
+                            "type": "bits",
+                            "width": 19,
+                            "alignment": 4
+                        },
+                        {
+                            "type": "char"
+                        },
+                        {
+                            "type": "bits",
+                            "width": 4,
+                            "alignment": 8
+                        },
+                        {
+                            "type": "bits",
+                            "width": 57,
+                            "alignment": 8
+                        }
+                    ]
                 }
             ]
         },
         {
             "identifier": 7,
-            "type": []
+            "type": [
+                {
+                    "type": "struct",
+                    "fields": [
+                        {
+                            "type": "bits",
+                            "width": 19,
+                            "alignment": 4
+                        },
+                        {
+                            "type": "char"
+                        },
+                        {
+                            "type": "bits",
+                            "width": 4,
+                            "alignment": 8
+                        },
+                        {
+                            "type": "bits",
+                            "width": 57,
+                            "alignment": 8
+                        }
+                    ]
+                }
+            ]
         },
         {
             "identifier": 8,
-            "type": []
+            "type": [
+                {
+                    "type": "struct",
+                    "fields": [
+                        {
+                            "type": "bits",
+                            "width": 19,
+                            "alignment": 4
+                        },
+                        {
+                            "type": "char"
+                        },
+                        {
+                            "type": "bits",
+                            "width": 4,
+                            "alignment": 8
+                        },
+                        {
+                            "type": "bits",
+                            "width": 57,
+                            "alignment": 8
+                        }
+                    ]
+                }
+            ]
         },
         {
             "identifier": 9,
@@ -303,118 +399,6 @@
                     ]
                 }
             ]
-        },
-        {
-            "identifier": 17,
-            "type": [
-                {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "bits",
-                            "width": 19,
-                            "alignment": 4
-                        },
-                        {
-                            "type": "char"
-                        },
-                        {
-                            "type": "bits",
-                            "width": 4,
-                            "alignment": 8
-                        },
-                        {
-                            "type": "bits",
-                            "width": 57,
-                            "alignment": 8
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "identifier": 18,
-            "type": [
-                {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "bits",
-                            "width": 19,
-                            "alignment": 4
-                        },
-                        {
-                            "type": "char"
-                        },
-                        {
-                            "type": "bits",
-                            "width": 4,
-                            "alignment": 8
-                        },
-                        {
-                            "type": "bits",
-                            "width": 57,
-                            "alignment": 8
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "identifier": 19,
-            "type": [
-                {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "bits",
-                            "width": 19,
-                            "alignment": 4
-                        },
-                        {
-                            "type": "char"
-                        },
-                        {
-                            "type": "bits",
-                            "width": 4,
-                            "alignment": 8
-                        },
-                        {
-                            "type": "bits",
-                            "width": 57,
-                            "alignment": 8
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "identifier": 20,
-            "type": [
-                {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "bits",
-                            "width": 19,
-                            "alignment": 4
-                        },
-                        {
-                            "type": "char"
-                        },
-                        {
-                            "type": "bits",
-                            "width": 4,
-                            "alignment": 8
-                        },
-                        {
-                            "type": "bits",
-                            "width": 57,
-                            "alignment": 8
-                        }
-                    ]
-                }
-            ]
         }
     ],
     "data": [],
@@ -423,9 +407,9 @@
         {
             "identifier": 0,
             "name": "func1",
-            "parameters": 7,
+            "parameters": 3,
             "vararg": false,
-            "returns": 8,
+            "returns": 4,
             "returns_twice": false
         }
     ],
@@ -433,7 +417,7 @@
         {
             "identifier": 0,
             "name": "func1",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "getglobal",

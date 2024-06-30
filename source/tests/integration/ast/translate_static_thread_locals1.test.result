@@ -1,6 +1,34 @@
 {
     "identifiers": [
         {
+            "symbol": "chars",
+            "type": "thread_local_data",
+            "scope": "local",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "string",
+            "type": "thread_local_data",
+            "scope": "local",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "integer",
+            "type": "thread_local_data",
+            "scope": "local",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "struct1",
+            "type": "thread_local_data",
+            "scope": "local",
+            "visibility": "default",
+            "alias": null
+        },
+        {
             "symbol": "variable",
             "type": "global_data",
             "scope": "import",
@@ -8,7 +36,7 @@
             "alias": null
         },
         {
-            "symbol": "__kefirrt_module_static_tlocal_vars",
+            "symbol": "floatingPoint",
             "type": "thread_local_data",
             "scope": "local",
             "visibility": "default",
@@ -18,14 +46,6 @@
     "types": [
         {
             "identifier": 0,
-            "type": []
-        },
-        {
-            "identifier": 1,
-            "type": []
-        },
-        {
-            "identifier": 2,
             "type": [
                 {
                     "type": "array",
@@ -33,13 +53,28 @@
                     "element_type": {
                         "type": "char"
                     }
-                },
+                }
+            ]
+        },
+        {
+            "identifier": 1,
+            "type": [
                 {
                     "type": "word"
-                },
+                }
+            ]
+        },
+        {
+            "identifier": 2,
+            "type": [
                 {
                     "type": "int"
-                },
+                }
+            ]
+        },
+        {
+            "identifier": 3,
+            "type": [
                 {
                     "type": "struct",
                     "fields": [
@@ -50,15 +85,8 @@
                             "type": "float"
                         }
                     ]
-                },
-                {
-                    "type": "double"
                 }
             ]
-        },
-        {
-            "identifier": 3,
-            "type": []
         },
         {
             "identifier": 4,
@@ -67,13 +95,21 @@
                     "type": "int"
                 }
             ]
+        },
+        {
+            "identifier": 5,
+            "type": [
+                {
+                    "type": "double"
+                }
+            ]
         }
     ],
     "data": [
         {
-            "identifier": "__kefirrt_module_static_tlocal_vars",
+            "identifier": "chars",
             "storage": "thread_local",
-            "type": 2,
+            "type": 0,
             "value": [
                 {
                     "class": "string",
@@ -83,16 +119,37 @@
                 {
                     "class": "undefined",
                     "count": 14
-                },
+                }
+            ]
+        },
+        {
+            "identifier": "string",
+            "storage": "thread_local",
+            "type": 1,
+            "value": [
                 {
                     "class": "string_pointer",
                     "string": 1,
                     "offset": 0
-                },
+                }
+            ]
+        },
+        {
+            "identifier": "integer",
+            "storage": "thread_local",
+            "type": 2,
+            "value": [
                 {
                     "class": "integer",
                     "value": 10
-                },
+                }
+            ]
+        },
+        {
+            "identifier": "struct1",
+            "storage": "thread_local",
+            "type": 3,
+            "value": [
                 {
                     "class": "aggregate"
                 },
@@ -102,7 +159,14 @@
                 {
                     "class": "float32",
                     "value": 20.719700
-                },
+                }
+            ]
+        },
+        {
+            "identifier": "floatingPoint",
+            "storage": "thread_local",
+            "type": 5,
+            "value": [
                 {
                     "class": "float64",
                     "value": 1.640000

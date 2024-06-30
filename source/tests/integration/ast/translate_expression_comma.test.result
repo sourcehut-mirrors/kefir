@@ -72,22 +72,6 @@
         {
             "identifier": 17,
             "type": []
-        },
-        {
-            "identifier": 18,
-            "type": []
-        },
-        {
-            "identifier": 19,
-            "type": []
-        },
-        {
-            "identifier": 20,
-            "type": []
-        },
-        {
-            "identifier": 21,
-            "type": []
         }
     ],
     "data": [],
@@ -96,49 +80,49 @@
         {
             "identifier": 0,
             "name": "comma1",
-            "parameters": 5,
+            "parameters": 1,
             "vararg": false,
-            "returns": 6,
+            "returns": 2,
             "returns_twice": false
         },
         {
             "identifier": 1,
             "name": "comma2",
-            "parameters": 8,
+            "parameters": 4,
             "vararg": false,
-            "returns": 9,
+            "returns": 5,
             "returns_twice": false
         },
         {
             "identifier": 2,
             "name": "comma3",
-            "parameters": 11,
+            "parameters": 7,
             "vararg": false,
-            "returns": 12,
+            "returns": 8,
             "returns_twice": false
         },
         {
             "identifier": 3,
             "name": "comma4",
-            "parameters": 14,
+            "parameters": 10,
             "vararg": false,
-            "returns": 15,
+            "returns": 11,
             "returns_twice": false
         },
         {
             "identifier": 4,
             "name": "comma5",
-            "parameters": 17,
+            "parameters": 13,
             "vararg": false,
-            "returns": 18,
+            "returns": 14,
             "returns_twice": false
         },
         {
             "identifier": 5,
             "name": "comma6",
-            "parameters": 20,
+            "parameters": 16,
             "vararg": false,
-            "returns": 21,
+            "returns": 17,
             "returns_twice": false
         }
     ],
@@ -146,7 +130,7 @@
         {
             "identifier": 0,
             "name": "comma1",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushu",
@@ -158,7 +142,7 @@
         {
             "identifier": 1,
             "name": "comma2",
-            "locals": 7,
+            "locals": 3,
             "body": [
                 {
                     "opcode": "pushu",
@@ -184,7 +168,7 @@
         {
             "identifier": 2,
             "name": "comma3",
-            "locals": 10,
+            "locals": 6,
             "body": [
                 {
                     "opcode": "pushu",
@@ -210,7 +194,7 @@
         {
             "identifier": 3,
             "name": "comma4",
-            "locals": 13,
+            "locals": 9,
             "body": [
                 {
                     "opcode": "pushu",
@@ -243,7 +227,7 @@
         {
             "identifier": 4,
             "name": "comma5",
-            "locals": 16,
+            "locals": 12,
             "body": [
                 {
                     "opcode": "pushi",
@@ -269,7 +253,7 @@
         {
             "identifier": 5,
             "name": "comma6",
-            "locals": 19,
+            "locals": 15,
             "body": [
                 {
                     "opcode": "pushi",

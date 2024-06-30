@@ -73,8 +73,6 @@ static kefir_result_t format_global_scope(struct kefir_json_output *json,
 
     REQUIRE_OK(kefir_json_output_object_key(json, "statics"));
     REQUIRE_OK(kefir_json_output_object_begin(json));
-    REQUIRE_OK(kefir_json_output_object_key(json, "layout"));
-    REQUIRE_OK(kefir_ir_format_type_json(json, scope->static_layout));
     REQUIRE_OK(kefir_json_output_object_key(json, "variables"));
     REQUIRE_OK(kefir_json_output_array_begin(json));
     for (const struct kefir_list_entry *iter = kefir_list_head(&scope->static_objects); iter != NULL;
@@ -95,8 +93,6 @@ static kefir_result_t format_global_scope(struct kefir_json_output *json,
 
     REQUIRE_OK(kefir_json_output_object_key(json, "static_thread_locals"));
     REQUIRE_OK(kefir_json_output_object_begin(json));
-    REQUIRE_OK(kefir_json_output_object_key(json, "layout"));
-    REQUIRE_OK(kefir_ir_format_type_json(json, scope->static_thread_local_layout));
     REQUIRE_OK(kefir_json_output_object_key(json, "variables"));
     REQUIRE_OK(kefir_json_output_array_begin(json));
     for (const struct kefir_list_entry *iter = kefir_list_head(&scope->static_thread_local_objects); iter != NULL;

@@ -15,16 +15,16 @@
             "alias": null
         },
         {
-            "symbol": "variable4",
+            "symbol": "variable3",
             "type": "global_data",
-            "scope": "import",
+            "scope": "local",
             "visibility": "default",
             "alias": null
         },
         {
-            "symbol": "__kefirrt_module_static_uninit_vars",
+            "symbol": "variable4",
             "type": "global_data",
-            "scope": "local",
+            "scope": "import",
             "visibility": "default",
             "alias": null
         }
@@ -32,10 +32,30 @@
     "types": [
         {
             "identifier": 0,
-            "type": []
+            "type": [
+                {
+                    "type": "word"
+                }
+            ]
         },
         {
             "identifier": 1,
+            "type": [
+                {
+                    "type": "int"
+                }
+            ]
+        },
+        {
+            "identifier": 2,
+            "type": [
+                {
+                    "type": "char"
+                }
+            ]
+        },
+        {
+            "identifier": 3,
             "type": [
                 {
                     "type": "array",
@@ -43,31 +63,8 @@
                     "element_type": {
                         "type": "bool"
                     }
-                },
-                {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "char"
-                        },
-                        {
-                            "type": "array",
-                            "length": 4,
-                            "element_type": {
-                                "type": "double"
-                            }
-                        }
-                    ]
                 }
             ]
-        },
-        {
-            "identifier": 2,
-            "type": []
-        },
-        {
-            "identifier": 3,
-            "type": []
         },
         {
             "identifier": 4,
@@ -81,25 +78,29 @@
             "identifier": 5,
             "type": [
                 {
-                    "type": "int"
+                    "type": "struct",
+                    "fields": [
+                        {
+                            "type": "char"
+                        },
+                        {
+                            "type": "array",
+                            "length": 4,
+                            "element_type": {
+                                "type": "double"
+                            }
+                        }
+                    ]
                 }
             ]
         },
         {
             "identifier": 6,
-            "type": [
-                {
-                    "type": "char"
-                }
-            ]
+            "type": []
         },
         {
             "identifier": 7,
-            "type": [
-                {
-                    "type": "word"
-                }
-            ]
+            "type": []
         },
         {
             "identifier": 8,
@@ -111,14 +112,6 @@
         },
         {
             "identifier": 10,
-            "type": []
-        },
-        {
-            "identifier": 11,
-            "type": []
-        },
-        {
-            "identifier": 12,
             "type": [
                 {
                     "type": "bool"
@@ -126,7 +119,7 @@
             ]
         },
         {
-            "identifier": 13,
+            "identifier": 11,
             "type": [
                 {
                     "type": "float"
@@ -134,63 +127,63 @@
             ]
         },
         {
-            "identifier": 14,
+            "identifier": 12,
             "type": []
+        },
+        {
+            "identifier": 13,
+            "type": []
+        },
+        {
+            "identifier": 14,
+            "type": [
+                {
+                    "type": "struct",
+                    "fields": [
+                        {
+                            "type": "char"
+                        },
+                        {
+                            "type": "array",
+                            "length": 4,
+                            "element_type": {
+                                "type": "double"
+                            }
+                        }
+                    ]
+                }
+            ]
         },
         {
             "identifier": 15,
-            "type": []
+            "type": [
+                {
+                    "type": "struct",
+                    "fields": [
+                        {
+                            "type": "char"
+                        },
+                        {
+                            "type": "array",
+                            "length": 4,
+                            "element_type": {
+                                "type": "double"
+                            }
+                        }
+                    ]
+                }
+            ]
         },
         {
             "identifier": 16,
-            "type": [
-                {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "char"
-                        },
-                        {
-                            "type": "array",
-                            "length": 4,
-                            "element_type": {
-                                "type": "double"
-                            }
-                        }
-                    ]
-                }
-            ]
+            "type": []
         },
         {
             "identifier": 17,
-            "type": [
-                {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "char"
-                        },
-                        {
-                            "type": "array",
-                            "length": 4,
-                            "element_type": {
-                                "type": "double"
-                            }
-                        }
-                    ]
-                }
-            ]
+            "type": []
         },
         {
             "identifier": 18,
-            "type": []
-        },
-        {
-            "identifier": 19,
-            "type": []
-        },
-        {
-            "identifier": 20,
             "type": [
                 {
                     "type": "struct",
@@ -210,7 +203,7 @@
             ]
         },
         {
-            "identifier": 21,
+            "identifier": 19,
             "type": [
                 {
                     "type": "struct",
@@ -223,11 +216,11 @@
             ]
         },
         {
-            "identifier": 22,
+            "identifier": 20,
             "type": []
         },
         {
-            "identifier": 23,
+            "identifier": 21,
             "type": []
         }
     ],
@@ -235,7 +228,7 @@
         {
             "identifier": "variable2",
             "storage": "global",
-            "type": 6,
+            "type": 2,
             "value": [
                 {
                     "class": "undefined"
@@ -243,13 +236,13 @@
             ]
         },
         {
-            "identifier": "__kefirrt_module_static_uninit_vars",
+            "identifier": "variable3",
             "storage": "global",
-            "type": 1,
+            "type": 3,
             "value": [
                 {
                     "class": "undefined",
-                    "count": 11
+                    "count": 4
                 }
             ]
         }
@@ -259,41 +252,41 @@
         {
             "identifier": 0,
             "name": "identifier",
+            "parameters": 6,
+            "vararg": false,
+            "returns": 7,
+            "returns_twice": false
+        },
+        {
+            "identifier": 1,
+            "name": "array_subscript",
             "parameters": 8,
             "vararg": false,
             "returns": 9,
             "returns_twice": false
         },
         {
-            "identifier": 1,
-            "name": "array_subscript",
-            "parameters": 10,
-            "vararg": false,
-            "returns": 11,
-            "returns_twice": false
-        },
-        {
             "identifier": 2,
             "name": "struct_field",
-            "parameters": 14,
+            "parameters": 12,
             "vararg": false,
-            "returns": 15,
+            "returns": 13,
             "returns_twice": false
         },
         {
             "identifier": 3,
             "name": "struct_field_indirect",
-            "parameters": 18,
+            "parameters": 16,
             "vararg": false,
-            "returns": 19,
+            "returns": 17,
             "returns_twice": false
         },
         {
             "identifier": 4,
             "name": "indirection",
-            "parameters": 22,
+            "parameters": 20,
             "vararg": false,
-            "returns": 23,
+            "returns": 21,
             "returns_twice": false
         }
     ],
@@ -301,7 +294,7 @@
         {
             "identifier": 0,
             "name": "identifier",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "getglobal",
@@ -318,7 +311,7 @@
                 {
                     "opcode": "getglobal",
                     "arg": {
-                        "data": "__kefirrt_module_static_uninit_vars"
+                        "data": "variable3"
                     }
                 },
                 {
@@ -330,20 +323,13 @@
                 {
                     "opcode": "getglobal",
                     "arg": {
-                        "data": "__kefirrt_module_static_uninit_vars"
+                        "data": "variable5"
                     }
-                },
-                {
-                    "opcode": "pushu",
-                    "arg": 8
-                },
-                {
-                    "opcode": "iadd64"
                 },
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 4,
+                        "type": 0,
                         "index": 0
                     }
                 }
@@ -353,7 +339,7 @@
         {
             "identifier": 4,
             "name": "indirection",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushi",
@@ -365,33 +351,19 @@
         {
             "identifier": 2,
             "name": "struct_field",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "getglobal",
                     "arg": {
-                        "data": "__kefirrt_module_static_uninit_vars"
+                        "data": "variable5"
                     }
-                },
-                {
-                    "opcode": "pushu",
-                    "arg": 8
-                },
-                {
-                    "opcode": "iadd64"
                 },
                 {
                     "opcode": "getglobal",
                     "arg": {
-                        "data": "__kefirrt_module_static_uninit_vars"
+                        "data": "variable5"
                     }
-                },
-                {
-                    "opcode": "pushu",
-                    "arg": 8
-                },
-                {
-                    "opcode": "iadd64"
                 },
                 {
                     "opcode": "pushu",
@@ -406,12 +378,12 @@
         {
             "identifier": 3,
             "name": "struct_field_indirect",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 4,
+                        "type": 0,
                         "index": 0
                     }
                 },
@@ -440,12 +412,12 @@
         {
             "identifier": 1,
             "name": "array_subscript",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "getglobal",
                     "arg": {
-                        "data": "__kefirrt_module_static_uninit_vars"
+                        "data": "variable3"
                     }
                 },
                 {

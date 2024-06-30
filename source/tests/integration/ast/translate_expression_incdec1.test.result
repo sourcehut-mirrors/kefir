@@ -3,22 +3,6 @@
     "types": [
         {
             "identifier": 0,
-            "type": []
-        },
-        {
-            "identifier": 1,
-            "type": []
-        },
-        {
-            "identifier": 2,
-            "type": []
-        },
-        {
-            "identifier": 3,
-            "type": []
-        },
-        {
-            "identifier": 4,
             "type": [
                 {
                     "type": "int"
@@ -39,6 +23,22 @@
                     "type": "double"
                 }
             ]
+        },
+        {
+            "identifier": 1,
+            "type": []
+        },
+        {
+            "identifier": 2,
+            "type": []
+        },
+        {
+            "identifier": 3,
+            "type": []
+        },
+        {
+            "identifier": 4,
+            "type": []
         },
         {
             "identifier": 5,
@@ -98,7 +98,11 @@
         },
         {
             "identifier": 19,
-            "type": []
+            "type": [
+                {
+                    "type": "bool"
+                }
+            ]
         },
         {
             "identifier": 20,
@@ -110,26 +114,6 @@
         },
         {
             "identifier": 22,
-            "type": []
-        },
-        {
-            "identifier": 23,
-            "type": [
-                {
-                    "type": "bool"
-                }
-            ]
-        },
-        {
-            "identifier": 24,
-            "type": []
-        },
-        {
-            "identifier": 25,
-            "type": []
-        },
-        {
-            "identifier": 26,
             "type": [
                 {
                     "type": "array",
@@ -141,15 +125,15 @@
             ]
         },
         {
-            "identifier": 27,
+            "identifier": 23,
             "type": []
         },
         {
-            "identifier": 28,
+            "identifier": 24,
             "type": []
         },
         {
-            "identifier": 29,
+            "identifier": 25,
             "type": [
                 {
                     "type": "bool"
@@ -157,15 +141,15 @@
             ]
         },
         {
-            "identifier": 30,
+            "identifier": 26,
             "type": []
         },
         {
-            "identifier": 31,
+            "identifier": 27,
             "type": []
         },
         {
-            "identifier": 32,
+            "identifier": 28,
             "type": [
                 {
                     "type": "array",
@@ -183,97 +167,97 @@
         {
             "identifier": 0,
             "name": "increment_int1",
+            "parameters": 1,
+            "vararg": false,
+            "returns": 2,
+            "returns_twice": false
+        },
+        {
+            "identifier": 1,
+            "name": "increment_int2",
+            "parameters": 3,
+            "vararg": false,
+            "returns": 4,
+            "returns_twice": false
+        },
+        {
+            "identifier": 2,
+            "name": "decrement_int1",
             "parameters": 5,
             "vararg": false,
             "returns": 6,
             "returns_twice": false
         },
         {
-            "identifier": 1,
-            "name": "increment_int2",
+            "identifier": 3,
+            "name": "decrement_int2",
             "parameters": 7,
             "vararg": false,
             "returns": 8,
             "returns_twice": false
         },
         {
-            "identifier": 2,
-            "name": "decrement_int1",
+            "identifier": 4,
+            "name": "increment_float",
             "parameters": 9,
             "vararg": false,
             "returns": 10,
             "returns_twice": false
         },
         {
-            "identifier": 3,
-            "name": "decrement_int2",
+            "identifier": 5,
+            "name": "increment_double",
             "parameters": 11,
             "vararg": false,
             "returns": 12,
             "returns_twice": false
         },
         {
-            "identifier": 4,
-            "name": "increment_float",
+            "identifier": 6,
+            "name": "decrement_float",
             "parameters": 13,
             "vararg": false,
             "returns": 14,
             "returns_twice": false
         },
         {
-            "identifier": 5,
-            "name": "increment_double",
+            "identifier": 7,
+            "name": "decrement_double",
             "parameters": 15,
             "vararg": false,
             "returns": 16,
             "returns_twice": false
         },
         {
-            "identifier": 6,
-            "name": "decrement_float",
+            "identifier": 8,
+            "name": "increment_pointer1",
             "parameters": 17,
             "vararg": false,
             "returns": 18,
             "returns_twice": false
         },
         {
-            "identifier": 7,
-            "name": "decrement_double",
-            "parameters": 19,
-            "vararg": false,
-            "returns": 20,
-            "returns_twice": false
-        },
-        {
-            "identifier": 8,
-            "name": "increment_pointer1",
-            "parameters": 21,
-            "vararg": false,
-            "returns": 22,
-            "returns_twice": false
-        },
-        {
             "identifier": 9,
             "name": "increment_pointer2",
-            "parameters": 24,
+            "parameters": 20,
             "vararg": false,
-            "returns": 25,
+            "returns": 21,
             "returns_twice": false
         },
         {
             "identifier": 10,
             "name": "decrement_pointer1",
-            "parameters": 27,
+            "parameters": 23,
             "vararg": false,
-            "returns": 28,
+            "returns": 24,
             "returns_twice": false
         },
         {
             "identifier": 11,
             "name": "decrement_pointer2",
-            "parameters": 30,
+            "parameters": 26,
             "vararg": false,
-            "returns": 31,
+            "returns": 27,
             "returns_twice": false
         }
     ],
@@ -281,12 +265,12 @@
         {
             "identifier": 2,
             "name": "decrement_int1",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 4,
+                        "type": 0,
                         "index": 0
                     }
                 },
@@ -327,12 +311,12 @@
         {
             "identifier": 3,
             "name": "decrement_int2",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 4,
+                        "type": 0,
                         "index": 4
                     }
                 },
@@ -373,12 +357,12 @@
         {
             "identifier": 0,
             "name": "increment_int1",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 4,
+                        "type": 0,
                         "index": 0
                     }
                 },
@@ -419,12 +403,12 @@
         {
             "identifier": 1,
             "name": "increment_int2",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 4,
+                        "type": 0,
                         "index": 4
                     }
                 },
@@ -465,12 +449,12 @@
         {
             "identifier": 5,
             "name": "increment_double",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 4,
+                        "type": 0,
                         "index": 5
                     }
                 },
@@ -511,12 +495,12 @@
         {
             "identifier": 8,
             "name": "increment_pointer1",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 4,
+                        "type": 0,
                         "index": 1
                     }
                 },
@@ -564,12 +548,12 @@
         {
             "identifier": 9,
             "name": "increment_pointer2",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 4,
+                        "type": 0,
                         "index": 2
                     }
                 },
@@ -617,12 +601,12 @@
         {
             "identifier": 7,
             "name": "decrement_double",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 4,
+                        "type": 0,
                         "index": 5
                     }
                 },
@@ -663,12 +647,12 @@
         {
             "identifier": 10,
             "name": "decrement_pointer1",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 4,
+                        "type": 0,
                         "index": 1
                     }
                 },
@@ -716,12 +700,12 @@
         {
             "identifier": 11,
             "name": "decrement_pointer2",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 4,
+                        "type": 0,
                         "index": 2
                     }
                 },
@@ -769,12 +753,12 @@
         {
             "identifier": 6,
             "name": "decrement_float",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 4,
+                        "type": 0,
                         "index": 3
                     }
                 },
@@ -815,12 +799,12 @@
         {
             "identifier": 4,
             "name": "increment_float",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 4,
+                        "type": 0,
                         "index": 3
                     }
                 },

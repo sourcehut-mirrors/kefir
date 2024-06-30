@@ -36,6 +36,7 @@ kefir_result_t kefir_ast_translator_scoped_identifer_payload_free(struct kefir_m
                 if (scoped_identifier_payload->layout != NULL && scoped_identifier_payload->layout->parent == NULL) {
                     REQUIRE_OK(kefir_ast_type_layout_free(mem, scoped_identifier_payload->layout));
                 }
+                scoped_identifier_payload->identifier = KEFIR_ID_NONE;
                 scoped_identifier_payload->type = NULL;
                 scoped_identifier_payload->type_id = 0;
                 scoped_identifier_payload->layout = NULL;

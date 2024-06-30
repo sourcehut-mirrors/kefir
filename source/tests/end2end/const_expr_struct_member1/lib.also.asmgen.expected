@@ -40,7 +40,7 @@
 
 .section .text
 get_structure2:
-    lea __kefirrt_module_static_uninit_vars(%rip), %rax
+    lea structure2(%rip), %rax
     ret
 
 
@@ -51,7 +51,7 @@ arr1_1:
 
     .align 8
 arr1_2:
-    .quad __kefirrt_module_static_uninit_vars
+    .quad structure2
 
     .align 8
 arr2_1:
@@ -59,7 +59,7 @@ arr2_1:
 
     .align 8
 arr2_2:
-    .quad __kefirrt_module_static_uninit_vars + 40
+    .quad structure2 + 40
 
     .align 8
 arr3_1:
@@ -67,10 +67,10 @@ arr3_1:
 
     .align 8
 arr3_2:
-    .quad __kefirrt_module_static_uninit_vars + 80
+    .quad structure2 + 80
 
 .section .bss
     .align 8
-__kefirrt_module_static_uninit_vars:
+structure2:
     .skip 144
 

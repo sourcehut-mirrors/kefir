@@ -1,0 +1,169 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global getx
+.type getx, @function
+.global gety
+.type gety, @function
+.global xptr
+.type xptr, @object
+.global getx1
+.type getx1, @function
+.global getx2
+.type getx2, @function
+.global getx3
+.type getx3, @function
+.global getx4
+.type getx4, @function
+.global gety1
+.type gety1, @function
+.global function_name
+.type function_name, @function
+.extern __kefirrt_opt_amd64_sysv_vararg_save
+.extern __kefirrt_opt_load_int_vararg
+.extern __kefirrt_opt_load_sse_vararg
+.extern __kefirrt_opt_float32_to_uint
+.extern __kefirrt_opt_float64_to_uint
+.extern __kefirrt_opt_long_double_to_int
+.extern __kefirrt_opt_long_double_to_uint
+.extern __kefirrt_opt_complex_long_double_equals
+.extern __kefirrt_opt_complex_long_double_truncate_1bit
+.extern __kefirrt_opt_complex_float32_mul
+.extern __kefirrt_opt_complex_float32_div
+.extern __kefirrt_opt_complex_float64_mul
+.extern __kefirrt_opt_complex_float64_div
+.extern __kefirrt_opt_complex_long_double_mul
+.extern __kefirrt_opt_complex_long_double_div
+.extern __kefirrt_fenv_update
+.extern __kefir_opt_float32_neg
+.extern __kefir_opt_float64_neg
+.extern __kefir_opt_uint2long_double
+.extern __kefir_opt_complex_float32_neg
+.extern __kefir_opt_complex_float64_neg
+
+.section .text
+getx:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_getx_label0:
+_kefir_func_getx_label1:
+    lea x(%rip), %rax
+    pop %rbp
+    ret
+
+gety:
+.extern __tls_get_addr
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_gety_label0:
+_kefir_func_gety_label1:
+    data16     lea y@tlsgd(%rip), %rdi
+    .word 26214
+    rex.W     call __tls_get_addr@PLT
+    mov %rax, %rcx
+    mov %rcx, %rax
+    pop %rbp
+    ret
+
+getx1:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_getx1_label0:
+_kefir_func_getx1_label1:
+    lea __kefir_function_getx1_static_x_4(%rip), %rax
+    pop %rbp
+    ret
+
+getx2:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_getx2_label0:
+_kefir_func_getx2_label1:
+    lea __kefir_function_getx2_static_x_6(%rip), %rax
+    pop %rbp
+    ret
+
+getx3:
+.extern __tls_get_addr
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_getx3_label0:
+_kefir_func_getx3_label1:
+    data16     lea __kefir_function_getx3_static_x_8@tlsgd(%rip), %rdi
+    .word 26214
+    rex.W     call __tls_get_addr@PLT
+    mov %rax, %rcx
+    mov %rcx, %rax
+    pop %rbp
+    ret
+
+getx4:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_getx4_label0:
+_kefir_func_getx4_label1:
+    lea __kefir_function_getx4_static_x_12(%rip), %rax
+    pop %rbp
+    ret
+
+gety1:
+.extern __tls_get_addr
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_gety1_label0:
+_kefir_func_gety1_label1:
+    data16     lea __kefir_function_gety1_static_y_14@tlsgd(%rip), %rdi
+    .word 26214
+    rex.W     call __tls_get_addr@PLT
+    mov %rax, %rcx
+    mov %rcx, %rax
+    pop %rbp
+    ret
+
+function_name:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_function_name_label0:
+_kefir_func_function_name_label1:
+    lea __kefir_function_function_name_static___func___16(%rip), %rax
+    pop %rbp
+    ret
+
+
+.section .data
+    .align 4
+x:
+    .long 123
+
+    .align 8
+xptr:
+    .quad x
+
+    .align 4
+__kefir_function_getx1_static_x_4:
+    .long 10
+
+    .align 4
+__kefir_function_getx2_static_x_6:
+    .long 20
+
+    .align 4
+__kefir_function_getx4_static_x_12:
+    .long 9876
+
+__kefir_function_function_name_static___func___16:
+    .byte 0x66, 0x75, 0x6e, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x6e, 0x61, 0x6d, 0x65, 0x00
+
+.section .tdata
+    .align 4
+y:
+    .long 4294915330
+
+    .align 4
+__kefir_function_getx3_static_x_8:
+    .long 4294966796
+
+    .align 4
+__kefir_function_gety1_static_y_14:
+    .long 47806
+

@@ -3,7 +3,41 @@
     "types": [
         {
             "identifier": 0,
-            "type": []
+            "type": [
+                {
+                    "type": "struct",
+                    "fields": [
+                        {
+                            "type": "array",
+                            "length": 24,
+                            "element_type": {
+                                "type": "char"
+                            }
+                        },
+                        {
+                            "type": "array",
+                            "length": 24,
+                            "element_type": {
+                                "type": "short"
+                            }
+                        },
+                        {
+                            "type": "array",
+                            "length": 24,
+                            "element_type": {
+                                "type": "int"
+                            }
+                        },
+                        {
+                            "type": "array",
+                            "length": 24,
+                            "element_type": {
+                                "type": "int"
+                            }
+                        }
+                    ]
+                }
+            ]
         },
         {
             "identifier": 1,
@@ -15,94 +49,44 @@
         },
         {
             "identifier": 3,
-            "type": []
+            "type": [
+                {
+                    "type": "struct",
+                    "fields": [
+                        {
+                            "type": "array",
+                            "length": 24,
+                            "element_type": {
+                                "type": "char"
+                            }
+                        },
+                        {
+                            "type": "array",
+                            "length": 24,
+                            "element_type": {
+                                "type": "short"
+                            }
+                        },
+                        {
+                            "type": "array",
+                            "length": 24,
+                            "element_type": {
+                                "type": "int"
+                            }
+                        },
+                        {
+                            "type": "array",
+                            "length": 24,
+                            "element_type": {
+                                "type": "int"
+                            }
+                        }
+                    ]
+                }
+            ]
         },
         {
             "identifier": 4,
-            "type": [
-                {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "array",
-                            "length": 24,
-                            "element_type": {
-                                "type": "char"
-                            }
-                        },
-                        {
-                            "type": "array",
-                            "length": 24,
-                            "element_type": {
-                                "type": "short"
-                            }
-                        },
-                        {
-                            "type": "array",
-                            "length": 24,
-                            "element_type": {
-                                "type": "int"
-                            }
-                        },
-                        {
-                            "type": "array",
-                            "length": 24,
-                            "element_type": {
-                                "type": "int"
-                            }
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "identifier": 5,
-            "type": []
-        },
-        {
-            "identifier": 6,
-            "type": []
-        },
-        {
-            "identifier": 7,
-            "type": [
-                {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "array",
-                            "length": 24,
-                            "element_type": {
-                                "type": "char"
-                            }
-                        },
-                        {
-                            "type": "array",
-                            "length": 24,
-                            "element_type": {
-                                "type": "short"
-                            }
-                        },
-                        {
-                            "type": "array",
-                            "length": 24,
-                            "element_type": {
-                                "type": "int"
-                            }
-                        },
-                        {
-                            "type": "array",
-                            "length": 24,
-                            "element_type": {
-                                "type": "int"
-                            }
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "identifier": 8,
             "type": [
                 {
                     "type": "array",
@@ -114,7 +98,7 @@
             ]
         },
         {
-            "identifier": 9,
+            "identifier": 5,
             "type": [
                 {
                     "type": "array",
@@ -126,7 +110,7 @@
             ]
         },
         {
-            "identifier": 10,
+            "identifier": 6,
             "type": [
                 {
                     "type": "array",
@@ -138,7 +122,7 @@
             ]
         },
         {
-            "identifier": 11,
+            "identifier": 7,
             "type": [
                 {
                     "type": "array",
@@ -236,9 +220,9 @@
         {
             "identifier": 0,
             "name": "compound_literal1",
-            "parameters": 5,
+            "parameters": 1,
             "vararg": false,
-            "returns": 6,
+            "returns": 2,
             "returns_twice": false
         }
     ],
@@ -246,12 +230,12 @@
         {
             "identifier": 0,
             "name": "compound_literal1",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 4,
+                        "type": 0,
                         "index": 0
                     }
                 },
@@ -262,7 +246,7 @@
                 {
                     "opcode": "bzero",
                     "arg": {
-                        "type": 7,
+                        "type": 3,
                         "index": 0
                     }
                 },
@@ -277,7 +261,7 @@
                 {
                     "opcode": "bzero",
                     "arg": {
-                        "type": 7,
+                        "type": 3,
                         "index": 1
                     }
                 },
@@ -288,7 +272,7 @@
                 {
                     "opcode": "bcopy",
                     "arg": {
-                        "type": 8,
+                        "type": 4,
                         "index": 0
                     }
                 },
@@ -310,7 +294,7 @@
                 {
                     "opcode": "bzero",
                     "arg": {
-                        "type": 7,
+                        "type": 3,
                         "index": 3
                     }
                 },
@@ -321,7 +305,7 @@
                 {
                     "opcode": "bcopy",
                     "arg": {
-                        "type": 9,
+                        "type": 5,
                         "index": 0
                     }
                 },
@@ -343,7 +327,7 @@
                 {
                     "opcode": "bzero",
                     "arg": {
-                        "type": 7,
+                        "type": 3,
                         "index": 5
                     }
                 },
@@ -354,7 +338,7 @@
                 {
                     "opcode": "bcopy",
                     "arg": {
-                        "type": 10,
+                        "type": 6,
                         "index": 0
                     }
                 },
@@ -376,7 +360,7 @@
                 {
                     "opcode": "bzero",
                     "arg": {
-                        "type": 7,
+                        "type": 3,
                         "index": 7
                     }
                 },
@@ -387,7 +371,7 @@
                 {
                     "opcode": "bcopy",
                     "arg": {
-                        "type": 11,
+                        "type": 7,
                         "index": 0
                     }
                 }

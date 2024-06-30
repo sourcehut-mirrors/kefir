@@ -1,6 +1,27 @@
 {
     "identifiers": [
         {
+            "symbol": "ptr1",
+            "type": "global_data",
+            "scope": "local",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "ptr2",
+            "type": "global_data",
+            "scope": "local",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "integer",
+            "type": "global_data",
+            "scope": "local",
+            "visibility": "default",
+            "alias": null
+        },
+        {
             "symbol": "variable",
             "type": "global_data",
             "scope": "import",
@@ -8,7 +29,21 @@
             "alias": null
         },
         {
-            "symbol": "__kefirrt_module_static_vars",
+            "symbol": "character",
+            "type": "global_data",
+            "scope": "local",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "floatingPoint2",
+            "type": "global_data",
+            "scope": "local",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "floatingPoint",
             "type": "global_data",
             "scope": "local",
             "visibility": "default",
@@ -21,72 +56,120 @@
             "type": [
                 {
                     "type": "word"
-                },
-                {
-                    "type": "word"
-                },
-                {
-                    "type": "int"
-                },
-                {
-                    "type": "char"
-                },
-                {
-                    "type": "double"
-                },
-                {
-                    "type": "float"
                 }
             ]
         },
         {
             "identifier": 1,
-            "type": []
+            "type": [
+                {
+                    "type": "word"
+                }
+            ]
         },
         {
             "identifier": 2,
-            "type": []
+            "type": [
+                {
+                    "type": "int"
+                }
+            ]
         },
         {
             "identifier": 3,
-            "type": []
+            "type": [
+                {
+                    "type": "int"
+                }
+            ]
         },
         {
             "identifier": 4,
             "type": [
                 {
-                    "type": "int"
+                    "type": "char"
+                }
+            ]
+        },
+        {
+            "identifier": 5,
+            "type": [
+                {
+                    "type": "double"
+                }
+            ]
+        },
+        {
+            "identifier": 6,
+            "type": [
+                {
+                    "type": "float"
                 }
             ]
         }
     ],
     "data": [
         {
-            "identifier": "__kefirrt_module_static_vars",
+            "identifier": "ptr1",
             "storage": "global",
             "type": 0,
             "value": [
                 {
                     "class": "pointer",
-                    "reference": "__kefirrt_module_static_vars",
-                    "offset": 20
-                },
+                    "reference": "integer",
+                    "offset": 4
+                }
+            ]
+        },
+        {
+            "identifier": "ptr2",
+            "storage": "global",
+            "type": 1,
+            "value": [
                 {
                     "class": "integer",
                     "value": 20
-                },
+                }
+            ]
+        },
+        {
+            "identifier": "integer",
+            "storage": "global",
+            "type": 2,
+            "value": [
                 {
                     "class": "integer",
                     "value": 10
-                },
+                }
+            ]
+        },
+        {
+            "identifier": "character",
+            "storage": "global",
+            "type": 4,
+            "value": [
                 {
                     "class": "integer",
                     "value": 97
-                },
+                }
+            ]
+        },
+        {
+            "identifier": "floatingPoint2",
+            "storage": "global",
+            "type": 5,
+            "value": [
                 {
                     "class": "float64",
                     "value": 0.001000
-                },
+                }
+            ]
+        },
+        {
+            "identifier": "floatingPoint",
+            "storage": "global",
+            "type": 6,
+            "value": [
                 {
                     "class": "float32",
                     "value": 13.140000

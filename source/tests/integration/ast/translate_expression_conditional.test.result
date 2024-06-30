@@ -3,7 +3,11 @@
     "types": [
         {
             "identifier": 0,
-            "type": []
+            "type": [
+                {
+                    "type": "int"
+                }
+            ]
         },
         {
             "identifier": 1,
@@ -19,11 +23,7 @@
         },
         {
             "identifier": 4,
-            "type": [
-                {
-                    "type": "int"
-                }
-            ]
+            "type": []
         },
         {
             "identifier": 5,
@@ -40,22 +40,6 @@
         {
             "identifier": 8,
             "type": []
-        },
-        {
-            "identifier": 9,
-            "type": []
-        },
-        {
-            "identifier": 10,
-            "type": []
-        },
-        {
-            "identifier": 11,
-            "type": []
-        },
-        {
-            "identifier": 12,
-            "type": []
         }
     ],
     "data": [],
@@ -64,33 +48,33 @@
         {
             "identifier": 0,
             "name": "conditional1",
+            "parameters": 1,
+            "vararg": false,
+            "returns": 2,
+            "returns_twice": false
+        },
+        {
+            "identifier": 1,
+            "name": "conditional2",
+            "parameters": 3,
+            "vararg": false,
+            "returns": 4,
+            "returns_twice": false
+        },
+        {
+            "identifier": 2,
+            "name": "conditional3",
             "parameters": 5,
             "vararg": false,
             "returns": 6,
             "returns_twice": false
         },
         {
-            "identifier": 1,
-            "name": "conditional2",
+            "identifier": 3,
+            "name": "conditional4",
             "parameters": 7,
             "vararg": false,
             "returns": 8,
-            "returns_twice": false
-        },
-        {
-            "identifier": 2,
-            "name": "conditional3",
-            "parameters": 9,
-            "vararg": false,
-            "returns": 10,
-            "returns_twice": false
-        },
-        {
-            "identifier": 3,
-            "name": "conditional4",
-            "parameters": 11,
-            "vararg": false,
-            "returns": 12,
             "returns_twice": false
         }
     ],
@@ -98,7 +82,7 @@
         {
             "identifier": 0,
             "name": "conditional1",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushu",
@@ -126,7 +110,7 @@
         {
             "identifier": 1,
             "name": "conditional2",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushf32",
@@ -157,7 +141,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 4,
+                        "type": 0,
                         "index": 0
                     }
                 }
@@ -167,12 +151,12 @@
         {
             "identifier": 2,
             "name": "conditional3",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 4,
+                        "type": 0,
                         "index": 0
                     }
                 },
@@ -223,7 +207,7 @@
         {
             "identifier": 3,
             "name": "conditional4",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushi",

@@ -32,22 +32,6 @@
     "types": [
         {
             "identifier": 0,
-            "type": []
-        },
-        {
-            "identifier": 1,
-            "type": []
-        },
-        {
-            "identifier": 2,
-            "type": []
-        },
-        {
-            "identifier": 3,
-            "type": []
-        },
-        {
-            "identifier": 4,
             "type": [
                 {
                     "type": "array",
@@ -59,7 +43,7 @@
             ]
         },
         {
-            "identifier": 5,
+            "identifier": 1,
             "type": [
                 {
                     "type": "int"
@@ -68,6 +52,30 @@
                     "type": "int"
                 }
             ]
+        },
+        {
+            "identifier": 2,
+            "type": [
+                {
+                    "type": "int"
+                }
+            ]
+        },
+        {
+            "identifier": 3,
+            "type": []
+        },
+        {
+            "identifier": 4,
+            "type": [
+                {
+                    "type": "int"
+                }
+            ]
+        },
+        {
+            "identifier": 5,
+            "type": []
         },
         {
             "identifier": 6,
@@ -79,7 +87,11 @@
         },
         {
             "identifier": 7,
-            "type": []
+            "type": [
+                {
+                    "type": "word"
+                }
+            ]
         },
         {
             "identifier": 8,
@@ -95,17 +107,16 @@
         },
         {
             "identifier": 10,
-            "type": [
-                {
-                    "type": "int"
-                }
-            ]
+            "type": []
         },
         {
             "identifier": 11,
             "type": [
                 {
-                    "type": "word"
+                    "type": "int"
+                },
+                {
+                    "type": "int"
                 }
             ]
         },
@@ -154,14 +165,7 @@
         },
         {
             "identifier": 19,
-            "type": [
-                {
-                    "type": "int"
-                },
-                {
-                    "type": "int"
-                }
-            ]
+            "type": []
         },
         {
             "identifier": 20,
@@ -201,7 +205,11 @@
         },
         {
             "identifier": 27,
-            "type": []
+            "type": [
+                {
+                    "type": "word"
+                }
+            ]
         },
         {
             "identifier": 28,
@@ -237,30 +245,6 @@
         },
         {
             "identifier": 33,
-            "type": []
-        },
-        {
-            "identifier": 34,
-            "type": []
-        },
-        {
-            "identifier": 35,
-            "type": [
-                {
-                    "type": "word"
-                }
-            ]
-        },
-        {
-            "identifier": 36,
-            "type": [
-                {
-                    "type": "int"
-                }
-            ]
-        },
-        {
-            "identifier": 37,
             "type": [
                 {
                     "type": "array",
@@ -278,45 +262,61 @@
         {
             "identifier": 0,
             "name": "sum",
+            "parameters": 1,
+            "vararg": false,
+            "returns": 2,
+            "returns_twice": false
+        },
+        {
+            "identifier": 1,
+            "name": "test",
+            "parameters": 3,
+            "vararg": false,
+            "returns": 4,
+            "returns_twice": false
+        },
+        {
+            "identifier": 2,
+            "name": "test2",
             "parameters": 5,
             "vararg": false,
             "returns": 6,
             "returns_twice": false
         },
         {
-            "identifier": 1,
-            "name": "test",
+            "identifier": 3,
+            "name": "test3",
             "parameters": 7,
             "vararg": false,
             "returns": 8,
             "returns_twice": false
         },
         {
-            "identifier": 2,
-            "name": "test2",
+            "identifier": 4,
+            "name": "call1",
             "parameters": 9,
             "vararg": false,
             "returns": 10,
             "returns_twice": false
         },
         {
-            "identifier": 3,
-            "name": "test3",
+            "identifier": 5,
+            "name": "sum",
             "parameters": 11,
             "vararg": false,
             "returns": 12,
             "returns_twice": false
         },
         {
-            "identifier": 4,
-            "name": "call1",
+            "identifier": 6,
+            "name": "call2",
             "parameters": 13,
             "vararg": false,
             "returns": 14,
             "returns_twice": false
         },
         {
-            "identifier": 5,
+            "identifier": 7,
             "name": "sum",
             "parameters": 15,
             "vararg": false,
@@ -324,83 +324,67 @@
             "returns_twice": false
         },
         {
-            "identifier": 6,
-            "name": "call2",
+            "identifier": 8,
+            "name": "call3",
             "parameters": 17,
             "vararg": false,
             "returns": 18,
             "returns_twice": false
         },
         {
-            "identifier": 7,
-            "name": "sum",
+            "identifier": 9,
+            "name": "test",
             "parameters": 19,
             "vararg": false,
             "returns": 20,
             "returns_twice": false
         },
         {
-            "identifier": 8,
-            "name": "call3",
+            "identifier": 10,
+            "name": "call4",
             "parameters": 21,
             "vararg": false,
             "returns": 22,
             "returns_twice": false
         },
         {
-            "identifier": 9,
-            "name": "test",
+            "identifier": 11,
+            "name": "test2",
             "parameters": 23,
             "vararg": false,
             "returns": 24,
             "returns_twice": false
         },
         {
-            "identifier": 10,
-            "name": "call4",
+            "identifier": 12,
+            "name": "call5",
             "parameters": 25,
             "vararg": false,
             "returns": 26,
             "returns_twice": false
         },
         {
-            "identifier": 11,
-            "name": "test2",
+            "identifier": 13,
+            "name": "test3",
             "parameters": 27,
             "vararg": false,
             "returns": 28,
             "returns_twice": false
         },
         {
-            "identifier": 12,
-            "name": "call5",
+            "identifier": 14,
+            "name": "call6",
             "parameters": 29,
             "vararg": false,
             "returns": 30,
             "returns_twice": false
         },
         {
-            "identifier": 13,
+            "identifier": 15,
             "name": "test3",
             "parameters": 31,
             "vararg": false,
             "returns": 32,
-            "returns_twice": false
-        },
-        {
-            "identifier": 14,
-            "name": "call6",
-            "parameters": 33,
-            "vararg": false,
-            "returns": 34,
-            "returns_twice": false
-        },
-        {
-            "identifier": 15,
-            "name": "test3",
-            "parameters": 35,
-            "vararg": false,
-            "returns": 36,
             "returns_twice": false
         }
     ],
@@ -408,7 +392,7 @@
         {
             "identifier": 4,
             "name": "call1",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushi",
@@ -431,7 +415,7 @@
         {
             "identifier": 6,
             "name": "call2",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushf32",
@@ -464,7 +448,7 @@
         {
             "identifier": 8,
             "name": "call3",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "invoke",
@@ -479,7 +463,7 @@
         {
             "identifier": 10,
             "name": "call4",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "invoke",
@@ -494,7 +478,7 @@
         {
             "identifier": 12,
             "name": "call5",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushi",
@@ -513,12 +497,12 @@
         {
             "identifier": 14,
             "name": "call6",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 4,
+                        "type": 0,
                         "index": 0
                     }
                 },
@@ -529,7 +513,7 @@
                 {
                     "opcode": "bzero",
                     "arg": {
-                        "type": 37,
+                        "type": 33,
                         "index": 0
                     }
                 },

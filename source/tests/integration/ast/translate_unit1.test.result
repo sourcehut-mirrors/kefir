@@ -1,6 +1,13 @@
 {
     "identifiers": [
         {
+            "symbol": "value",
+            "type": "global_data",
+            "scope": "local",
+            "visibility": "default",
+            "alias": null
+        },
+        {
             "symbol": "variable",
             "type": "global_data",
             "scope": "import",
@@ -29,7 +36,14 @@
             "alias": null
         },
         {
-            "symbol": "__kefirrt_module_static_vars",
+            "symbol": "__kefir_function_get_value_static___func___5",
+            "type": "global_data",
+            "scope": "local",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "__kefir_function_invoke_callback_static___func___7",
             "type": "global_data",
             "scope": "local",
             "visibility": "default",
@@ -39,6 +53,13 @@
             "symbol": "value_to_add",
             "type": "global_data",
             "scope": "import",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "__kefir_function_set_value_static___func___3",
+            "type": "global_data",
+            "scope": "local",
             "visibility": "default",
             "alias": null
         },
@@ -55,6 +76,13 @@
             "scope": "export",
             "visibility": "default",
             "alias": null
+        },
+        {
+            "symbol": "__kefir_function_add_value_static___func___6",
+            "type": "global_data",
+            "scope": "local",
+            "visibility": "default",
+            "alias": null
         }
     ],
     "types": [
@@ -63,51 +91,11 @@
             "type": [
                 {
                     "type": "long"
-                },
-                {
-                    "type": "array",
-                    "length": 10,
-                    "element_type": {
-                        "type": "char"
-                    }
-                },
-                {
-                    "type": "array",
-                    "length": 10,
-                    "element_type": {
-                        "type": "char"
-                    }
-                },
-                {
-                    "type": "array",
-                    "length": 10,
-                    "element_type": {
-                        "type": "char"
-                    }
-                },
-                {
-                    "type": "array",
-                    "length": 16,
-                    "element_type": {
-                        "type": "char"
-                    }
                 }
             ]
         },
         {
             "identifier": 1,
-            "type": []
-        },
-        {
-            "identifier": 2,
-            "type": []
-        },
-        {
-            "identifier": 3,
-            "type": []
-        },
-        {
-            "identifier": 4,
             "type": [
                 {
                     "type": "int"
@@ -115,7 +103,7 @@
             ]
         },
         {
-            "identifier": 5,
+            "identifier": 2,
             "type": [
                 {
                     "type": "long"
@@ -123,12 +111,32 @@
             ]
         },
         {
-            "identifier": 6,
+            "identifier": 3,
             "type": []
         },
         {
-            "identifier": 7,
+            "identifier": 4,
             "type": []
+        },
+        {
+            "identifier": 5,
+            "type": []
+        },
+        {
+            "identifier": 6,
+            "type": [
+                {
+                    "type": "long"
+                }
+            ]
+        },
+        {
+            "identifier": 7,
+            "type": [
+                {
+                    "type": "long"
+                }
+            ]
         },
         {
             "identifier": 8,
@@ -186,7 +194,11 @@
             "identifier": 16,
             "type": [
                 {
-                    "type": "long"
+                    "type": "array",
+                    "length": 10,
+                    "element_type": {
+                        "type": "char"
+                    }
                 }
             ]
         },
@@ -210,7 +222,11 @@
             "identifier": 20,
             "type": [
                 {
-                    "type": "long"
+                    "type": "array",
+                    "length": 10,
+                    "element_type": {
+                        "type": "char"
+                    }
                 }
             ]
         },
@@ -228,7 +244,15 @@
         },
         {
             "identifier": 24,
-            "type": []
+            "type": [
+                {
+                    "type": "array",
+                    "length": 10,
+                    "element_type": {
+                        "type": "char"
+                    }
+                }
+            ]
         },
         {
             "identifier": 25,
@@ -250,7 +274,11 @@
             "identifier": 28,
             "type": [
                 {
-                    "type": "long"
+                    "type": "array",
+                    "length": 16,
+                    "element_type": {
+                        "type": "char"
+                    }
                 }
             ]
         },
@@ -261,27 +289,33 @@
                     "type": "long"
                 }
             ]
+        },
+        {
+            "identifier": 30,
+            "type": [
+                {
+                    "type": "long"
+                }
+            ]
         }
     ],
     "data": [
         {
-            "identifier": "__kefirrt_module_static_vars",
+            "identifier": "value",
             "storage": "global",
             "type": 0,
             "value": [
                 {
                     "class": "integer",
                     "value": 0
-                },
-                {
-                    "class": "string",
-                    "content": "set_value\u0000",
-                    "length": 10
-                },
-                {
-                    "class": "undefined",
-                    "count": 10
-                },
+                }
+            ]
+        },
+        {
+            "identifier": "__kefir_function_get_value_static___func___5",
+            "storage": "global",
+            "type": 20,
+            "value": [
                 {
                     "class": "string",
                     "content": "get_value\u0000",
@@ -290,16 +324,14 @@
                 {
                     "class": "undefined",
                     "count": 10
-                },
-                {
-                    "class": "string",
-                    "content": "add_value\u0000",
-                    "length": 10
-                },
-                {
-                    "class": "undefined",
-                    "count": 10
-                },
+                }
+            ]
+        },
+        {
+            "identifier": "__kefir_function_invoke_callback_static___func___7",
+            "storage": "global",
+            "type": 28,
+            "value": [
                 {
                     "class": "string",
                     "content": "invoke_callback\u0000",
@@ -308,6 +340,38 @@
                 {
                     "class": "undefined",
                     "count": 16
+                }
+            ]
+        },
+        {
+            "identifier": "__kefir_function_set_value_static___func___3",
+            "storage": "global",
+            "type": 16,
+            "value": [
+                {
+                    "class": "string",
+                    "content": "set_value\u0000",
+                    "length": 10
+                },
+                {
+                    "class": "undefined",
+                    "count": 10
+                }
+            ]
+        },
+        {
+            "identifier": "__kefir_function_add_value_static___func___6",
+            "storage": "global",
+            "type": 24,
+            "value": [
+                {
+                    "class": "string",
+                    "content": "add_value\u0000",
+                    "length": 10
+                },
+                {
+                    "class": "undefined",
+                    "count": 10
                 }
             ]
         }
@@ -346,65 +410,65 @@
         {
             "identifier": 0,
             "name": "add_value",
-            "parameters": 6,
+            "parameters": 3,
             "vararg": false,
-            "returns": 7,
+            "returns": 4,
             "returns_twice": false
         },
         {
             "identifier": 1,
             "name": "get_value",
-            "parameters": 8,
+            "parameters": 5,
             "vararg": false,
-            "returns": 9,
+            "returns": 6,
             "returns_twice": false
         },
         {
             "identifier": 2,
             "name": "set_value",
-            "parameters": 10,
+            "parameters": 7,
             "vararg": false,
-            "returns": 11,
+            "returns": 8,
             "returns_twice": false
         },
         {
             "identifier": 3,
             "name": "value_callback",
-            "parameters": 12,
+            "parameters": 9,
             "vararg": false,
-            "returns": 13,
+            "returns": 10,
             "returns_twice": false
         },
         {
             "identifier": 4,
             "name": "invoke_callback",
-            "parameters": 14,
+            "parameters": 11,
             "vararg": false,
-            "returns": 15,
+            "returns": 12,
             "returns_twice": false
         },
         {
             "identifier": 5,
             "name": "set_value",
-            "parameters": 16,
+            "parameters": 13,
             "vararg": false,
-            "returns": 17,
+            "returns": 14,
             "returns_twice": false
         },
         {
             "identifier": 6,
             "name": "get_value",
-            "parameters": 19,
+            "parameters": 17,
             "vararg": false,
-            "returns": 20,
+            "returns": 18,
             "returns_twice": false
         },
         {
             "identifier": 7,
             "name": "add_value",
-            "parameters": 22,
+            "parameters": 21,
             "vararg": false,
-            "returns": 23,
+            "returns": 22,
             "returns_twice": false
         },
         {
@@ -418,9 +482,9 @@
         {
             "identifier": 9,
             "name": "value_callback",
-            "parameters": 28,
+            "parameters": 29,
             "vararg": false,
-            "returns": 29,
+            "returns": 30,
             "returns_twice": false
         }
     ],
@@ -428,7 +492,7 @@
         {
             "identifier": 7,
             "name": "add_value",
-            "locals": 24,
+            "locals": 23,
             "body": [
                 {
                     "opcode": "getglobal",
@@ -445,7 +509,7 @@
                 {
                     "opcode": "getglobal",
                     "arg": {
-                        "data": "__kefirrt_module_static_vars"
+                        "data": "value"
                     }
                 },
                 {
@@ -492,12 +556,12 @@
         {
             "identifier": 6,
             "name": "get_value",
-            "locals": 21,
+            "locals": 19,
             "body": [
                 {
                     "opcode": "getglobal",
                     "arg": {
-                        "data": "__kefirrt_module_static_vars"
+                        "data": "value"
                     }
                 },
                 {
@@ -515,12 +579,12 @@
         {
             "identifier": 5,
             "name": "set_value",
-            "locals": 18,
+            "locals": 15,
             "body": [
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 18,
+                        "type": 15,
                         "index": 0
                     }
                 },
@@ -537,7 +601,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 18,
+                        "type": 15,
                         "index": 0
                     }
                 },
@@ -550,7 +614,7 @@
                 {
                     "opcode": "getglobal",
                     "arg": {
-                        "data": "__kefirrt_module_static_vars"
+                        "data": "value"
                     }
                 },
                 {
@@ -585,7 +649,7 @@
                 {
                     "opcode": "getglobal",
                     "arg": {
-                        "data": "__kefirrt_module_static_vars"
+                        "data": "value"
                     }
                 },
                 {

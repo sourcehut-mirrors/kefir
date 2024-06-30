@@ -1,16 +1,23 @@
 {
     "identifiers": [
         {
-            "symbol": "variable",
+            "symbol": "array",
             "type": "global_data",
-            "scope": "import",
+            "scope": "local",
             "visibility": "default",
             "alias": null
         },
         {
-            "symbol": "__kefirrt_module_static_vars",
+            "symbol": "array2",
             "type": "global_data",
             "scope": "local",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "variable",
+            "type": "global_data",
+            "scope": "import",
             "visibility": "default",
             "alias": null
         }
@@ -34,7 +41,12 @@
                             }
                         ]
                     }
-                },
+                }
+            ]
+        },
+        {
+            "identifier": 1,
+            "type": [
                 {
                     "type": "array",
                     "length": 3,
@@ -54,19 +66,7 @@
             ]
         },
         {
-            "identifier": 1,
-            "type": []
-        },
-        {
             "identifier": 2,
-            "type": []
-        },
-        {
-            "identifier": 3,
-            "type": []
-        },
-        {
-            "identifier": 4,
             "type": [
                 {
                     "type": "int"
@@ -76,7 +76,7 @@
     ],
     "data": [
         {
-            "identifier": "__kefirrt_module_static_vars",
+            "identifier": "array",
             "storage": "global",
             "type": 0,
             "value": [
@@ -172,7 +172,14 @@
                 {
                     "class": "integer",
                     "value": 20
-                },
+                }
+            ]
+        },
+        {
+            "identifier": "array2",
+            "storage": "global",
+            "type": 1,
+            "value": [
                 {
                     "class": "aggregate"
                 },

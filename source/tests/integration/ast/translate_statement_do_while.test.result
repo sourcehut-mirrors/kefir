@@ -11,11 +11,19 @@
     "types": [
         {
             "identifier": 0,
-            "type": []
+            "type": [
+                {
+                    "type": "int"
+                }
+            ]
         },
         {
             "identifier": 1,
-            "type": []
+            "type": [
+                {
+                    "type": "bool"
+                }
+            ]
         },
         {
             "identifier": 2,
@@ -27,11 +35,7 @@
         },
         {
             "identifier": 4,
-            "type": [
-                {
-                    "type": "int"
-                }
-            ]
+            "type": []
         },
         {
             "identifier": 5,
@@ -43,7 +47,11 @@
         },
         {
             "identifier": 6,
-            "type": []
+            "type": [
+                {
+                    "type": "bool"
+                }
+            ]
         },
         {
             "identifier": 7,
@@ -51,23 +59,19 @@
         },
         {
             "identifier": 8,
-            "type": []
+            "type": [
+                {
+                    "type": "bool"
+                }
+            ]
         },
         {
             "identifier": 9,
-            "type": [
-                {
-                    "type": "bool"
-                }
-            ]
+            "type": []
         },
         {
             "identifier": 10,
-            "type": [
-                {
-                    "type": "bool"
-                }
-            ]
+            "type": []
         },
         {
             "identifier": 11,
@@ -75,11 +79,7 @@
         },
         {
             "identifier": 12,
-            "type": [
-                {
-                    "type": "bool"
-                }
-            ]
+            "type": []
         },
         {
             "identifier": 13,
@@ -87,22 +87,6 @@
         },
         {
             "identifier": 14,
-            "type": []
-        },
-        {
-            "identifier": 15,
-            "type": []
-        },
-        {
-            "identifier": 16,
-            "type": []
-        },
-        {
-            "identifier": 17,
-            "type": []
-        },
-        {
-            "identifier": 18,
             "type": []
         }
     ],
@@ -112,41 +96,41 @@
         {
             "identifier": 0,
             "name": "do_while1",
-            "parameters": 6,
+            "parameters": 2,
             "vararg": false,
-            "returns": 7,
+            "returns": 3,
             "returns_twice": false
         },
         {
             "identifier": 1,
             "name": "eval",
-            "parameters": 8,
+            "parameters": 4,
             "vararg": false,
-            "returns": 9,
+            "returns": 5,
             "returns_twice": false
         },
         {
             "identifier": 2,
             "name": "eval",
-            "parameters": 11,
+            "parameters": 7,
             "vararg": false,
-            "returns": 12,
+            "returns": 8,
             "returns_twice": false
         },
         {
             "identifier": 3,
             "name": "do_while2",
-            "parameters": 14,
+            "parameters": 10,
             "vararg": false,
-            "returns": 15,
+            "returns": 11,
             "returns_twice": false
         },
         {
             "identifier": 4,
             "name": "do_while3",
-            "parameters": 17,
+            "parameters": 13,
             "vararg": false,
-            "returns": 18,
+            "returns": 14,
             "returns_twice": false
         }
     ],
@@ -154,12 +138,12 @@
         {
             "identifier": 0,
             "name": "do_while1",
-            "locals": 5,
+            "locals": 1,
             "body": [
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 5,
+                        "type": 1,
                         "index": 0
                     }
                 },
@@ -190,7 +174,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 5,
+                        "type": 1,
                         "index": 0
                     }
                 },
@@ -218,7 +202,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 5,
+                        "type": 1,
                         "index": 0
                     }
                 },
@@ -241,7 +225,7 @@
         {
             "identifier": 3,
             "name": "do_while2",
-            "locals": 13,
+            "locals": 9,
             "body": [
                 {
                     "opcode": "getglobal",
@@ -290,7 +274,7 @@
         {
             "identifier": 4,
             "name": "do_while3",
-            "locals": 16,
+            "locals": 12,
             "body": [
                 {
                     "opcode": "pushu",

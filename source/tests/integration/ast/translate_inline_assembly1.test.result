@@ -11,11 +11,19 @@
     "types": [
         {
             "identifier": 0,
-            "type": []
+            "type": [
+                {
+                    "type": "int"
+                }
+            ]
         },
         {
             "identifier": 1,
-            "type": []
+            "type": [
+                {
+                    "type": "long_double"
+                }
+            ]
         },
         {
             "identifier": 2,
@@ -43,46 +51,22 @@
         },
         {
             "identifier": 6,
-            "type": []
+            "type": [
+                {
+                    "type": "int"
+                }
+            ]
         },
         {
             "identifier": 7,
-            "type": []
+            "type": [
+                {
+                    "type": "long_double"
+                }
+            ]
         },
         {
             "identifier": 8,
-            "type": [
-                {
-                    "type": "int"
-                }
-            ]
-        },
-        {
-            "identifier": 9,
-            "type": [
-                {
-                    "type": "long_double"
-                }
-            ]
-        },
-        {
-            "identifier": 10,
-            "type": [
-                {
-                    "type": "int"
-                }
-            ]
-        },
-        {
-            "identifier": 11,
-            "type": [
-                {
-                    "type": "long_double"
-                }
-            ]
-        },
-        {
-            "identifier": 12,
             "type": [
                 {
                     "type": "char"
@@ -93,15 +77,15 @@
             ]
         },
         {
-            "identifier": 13,
+            "identifier": 9,
             "type": []
         },
         {
-            "identifier": 14,
+            "identifier": 10,
             "type": []
         },
         {
-            "identifier": 15,
+            "identifier": 11,
             "type": [
                 {
                     "type": "int"
@@ -109,7 +93,7 @@
             ]
         },
         {
-            "identifier": 16,
+            "identifier": 12,
             "type": [
                 {
                     "type": "char"
@@ -117,7 +101,7 @@
             ]
         },
         {
-            "identifier": 17,
+            "identifier": 13,
             "type": [
                 {
                     "type": "char"
@@ -125,7 +109,7 @@
             ]
         },
         {
-            "identifier": 18,
+            "identifier": 14,
             "type": [
                 {
                     "type": "double"
@@ -133,7 +117,7 @@
             ]
         },
         {
-            "identifier": 19,
+            "identifier": 15,
             "type": [
                 {
                     "type": "long_double"
@@ -147,17 +131,17 @@
         {
             "identifier": 0,
             "name": "inline_asm1",
-            "parameters": 6,
+            "parameters": 2,
             "vararg": false,
-            "returns": 7,
+            "returns": 3,
             "returns_twice": false
         },
         {
             "identifier": 1,
             "name": "inline_asm2",
-            "parameters": 13,
+            "parameters": 9,
             "vararg": false,
-            "returns": 14,
+            "returns": 10,
             "returns_twice": false
         }
     ],
@@ -165,7 +149,7 @@
         {
             "identifier": 0,
             "name": "inline_asm1",
-            "locals": 5,
+            "locals": 1,
             "body": [
                 {
                     "opcode": "getglobal",
@@ -176,7 +160,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 5,
+                        "type": 1,
                         "index": 0
                     }
                 },
@@ -206,7 +190,7 @@
         {
             "identifier": 1,
             "name": "inline_asm2",
-            "locals": 12,
+            "locals": 8,
             "body": [
                 {
                     "opcode": "getglobal",
@@ -217,14 +201,14 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 12,
+                        "type": 8,
                         "index": 0
                     }
                 },
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 12,
+                        "type": 8,
                         "index": 1
                     }
                 },
@@ -284,7 +268,7 @@
                         "0"
                     ],
                     "class": "store",
-                    "type": 8,
+                    "type": 4,
                     "type_index": 0,
                     "to": 3,
                     "constraints": {
@@ -301,7 +285,7 @@
                         "1"
                     ],
                     "class": "load_store",
-                    "type": 9,
+                    "type": 5,
                     "type_index": 0,
                     "from_to": 2,
                     "constraints": {
@@ -318,7 +302,7 @@
                         "2"
                     ],
                     "class": "read",
-                    "type": 10,
+                    "type": 6,
                     "type_index": 0,
                     "from": 1,
                     "constraints": {
@@ -335,7 +319,7 @@
                         "3"
                     ],
                     "class": "read",
-                    "type": 11,
+                    "type": 7,
                     "type_index": 0,
                     "from": 0,
                     "constraints": {
@@ -364,7 +348,7 @@
                         "[null]"
                     ],
                     "class": "store",
-                    "type": 15,
+                    "type": 11,
                     "type_index": 0,
                     "to": 4,
                     "constraints": {
@@ -381,7 +365,7 @@
                         "1"
                     ],
                     "class": "load_store",
-                    "type": 16,
+                    "type": 12,
                     "type_index": 0,
                     "from_to": 3,
                     "constraints": {
@@ -399,7 +383,7 @@
                         "[alternativeId]"
                     ],
                     "class": "store",
-                    "type": 17,
+                    "type": 13,
                     "type_index": 0,
                     "to": 2,
                     "constraints": {
@@ -416,7 +400,7 @@
                         "3"
                     ],
                     "class": "read",
-                    "type": 18,
+                    "type": 14,
                     "type_index": 0,
                     "from": 1,
                     "constraints": {
@@ -433,7 +417,7 @@
                         "4"
                     ],
                     "class": "read",
-                    "type": 19,
+                    "type": 15,
                     "type_index": 0,
                     "from": 0,
                     "constraints": {

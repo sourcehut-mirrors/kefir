@@ -23,11 +23,7 @@
 
 #include "kefir/core/basic-types.h"
 
-#define KEFIR_AST_TRANSLATOR_STATIC_VARIABLES_IDENTIFIER "__kefirrt_module_static_vars"
-#define KEFIR_AST_TRANSLATOR_STATIC_UNINIT_VARIABLES_IDENTIFIER "__kefirrt_module_static_uninit_vars"
-#define KEFIR_AST_TRANSLATOR_STATIC_THREAD_LOCAL_VARIABLES_IDENTIFIER "__kefirrt_module_static_tlocal_vars"
-#define KEFIR_AST_TRANSLATOR_STATIC_THREAD_LOCAL_UNINIT_VARIABLES_IDENTIFIER \
-    "__kefirrt_module_static_tlocal_uninit_vars"
+#define KEFIR_AST_TRANSLATOR_FUNCTION_STATIC_VARIABLE_IDENTIFIER "__kefir_function_%s_static_%s_%" KEFIR_ID_FMT
 #define KEFIR_AST_TRANSLATOR_TEMPORARY_GLOBAL_IDENTIFIER "__kefirrt_temporary_%" KEFIR_ID_FMT
 #define KEFIR_AST_TRANSLATOR_TEMPORARY_LOCAL_IDENTIFIER "__kefirrt_local_temporary_%" KEFIR_ID_FMT
 #define KEFIR_AST_TRANSLATOR_VLA_ELEMENTS_IDENTIFIER "__kefirrt_vla_elements"

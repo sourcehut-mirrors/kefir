@@ -8,7 +8,14 @@
             "alias": null
         },
         {
-            "symbol": "__kefirrt_module_static_vars",
+            "symbol": "__kefir_function_fn_static___func___1",
+            "type": "global_data",
+            "scope": "local",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "__kefir_function_fn_static_value_0",
             "type": "global_data",
             "scope": "local",
             "visibility": "default",
@@ -18,22 +25,15 @@
     "types": [
         {
             "identifier": 0,
-            "type": [
-                {
-                    "type": "int"
-                },
-                {
-                    "type": "array",
-                    "length": 3,
-                    "element_type": {
-                        "type": "char"
-                    }
-                }
-            ]
+            "type": []
         },
         {
             "identifier": 1,
-            "type": []
+            "type": [
+                {
+                    "type": "int"
+                }
+            ]
         },
         {
             "identifier": 2,
@@ -41,11 +41,19 @@
         },
         {
             "identifier": 3,
-            "type": []
+            "type": [
+                {
+                    "type": "int"
+                }
+            ]
         },
         {
             "identifier": 4,
-            "type": []
+            "type": [
+                {
+                    "type": "int"
+                }
+            ]
         },
         {
             "identifier": 5,
@@ -57,26 +65,18 @@
         },
         {
             "identifier": 6,
-            "type": []
+            "type": [
+                {
+                    "type": "array",
+                    "length": 3,
+                    "element_type": {
+                        "type": "char"
+                    }
+                }
+            ]
         },
         {
             "identifier": 7,
-            "type": [
-                {
-                    "type": "int"
-                }
-            ]
-        },
-        {
-            "identifier": 8,
-            "type": [
-                {
-                    "type": "int"
-                }
-            ]
-        },
-        {
-            "identifier": 9,
             "type": [
                 {
                     "type": "int"
@@ -86,14 +86,10 @@
     ],
     "data": [
         {
-            "identifier": "__kefirrt_module_static_vars",
+            "identifier": "__kefir_function_fn_static___func___1",
             "storage": "global",
-            "type": 0,
+            "type": 6,
             "value": [
-                {
-                    "class": "integer",
-                    "value": 1
-                },
                 {
                     "class": "string",
                     "content": "fn\u0000",
@@ -102,6 +98,17 @@
                 {
                     "class": "undefined",
                     "count": 3
+                }
+            ]
+        },
+        {
+            "identifier": "__kefir_function_fn_static_value_0",
+            "storage": "global",
+            "type": 5,
+            "value": [
+                {
+                    "class": "integer",
+                    "value": 1
                 }
             ]
         }
@@ -119,17 +126,17 @@
         {
             "identifier": 0,
             "name": "fn",
-            "parameters": 4,
+            "parameters": 0,
             "vararg": false,
-            "returns": 5,
+            "returns": 1,
             "returns_twice": false
         },
         {
             "identifier": 1,
             "name": "fn",
-            "parameters": 6,
+            "parameters": 2,
             "vararg": false,
-            "returns": 7,
+            "returns": 3,
             "returns_twice": false
         }
     ],
@@ -137,12 +144,12 @@
         {
             "identifier": 1,
             "name": "fn",
-            "locals": 8,
+            "locals": 4,
             "body": [
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 8,
+                        "type": 4,
                         "index": 0
                     }
                 },
@@ -166,7 +173,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 8,
+                        "type": 4,
                         "index": 0
                     }
                 },
@@ -179,7 +186,7 @@
                 {
                     "opcode": "getglobal",
                     "arg": {
-                        "data": "__kefirrt_module_static_vars"
+                        "data": "__kefir_function_fn_static_value_0"
                     }
                 },
                 {
@@ -223,7 +230,7 @@
                 {
                     "opcode": "getglobal",
                     "arg": {
-                        "data": "__kefirrt_module_static_vars"
+                        "data": "__kefir_function_fn_static_value_0"
                     }
                 },
                 {

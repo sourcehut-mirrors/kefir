@@ -11,7 +11,11 @@
     "types": [
         {
             "identifier": 0,
-            "type": []
+            "type": [
+                {
+                    "type": "int"
+                }
+            ]
         },
         {
             "identifier": 1,
@@ -27,11 +31,7 @@
         },
         {
             "identifier": 4,
-            "type": [
-                {
-                    "type": "int"
-                }
-            ]
+            "type": []
         },
         {
             "identifier": 5,
@@ -55,7 +55,16 @@
         },
         {
             "identifier": 10,
-            "type": []
+            "type": [
+                {
+                    "type": "struct",
+                    "fields": [
+                        {
+                            "type": "char"
+                        }
+                    ]
+                }
+            ]
         },
         {
             "identifier": 11,
@@ -67,10 +76,6 @@
         },
         {
             "identifier": 13,
-            "type": []
-        },
-        {
-            "identifier": 14,
             "type": [
                 {
                     "type": "struct",
@@ -81,6 +86,10 @@
                     ]
                 }
             ]
+        },
+        {
+            "identifier": 14,
+            "type": []
         },
         {
             "identifier": 15,
@@ -88,31 +97,6 @@
         },
         {
             "identifier": 16,
-            "type": []
-        },
-        {
-            "identifier": 17,
-            "type": [
-                {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "char"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "identifier": 18,
-            "type": []
-        },
-        {
-            "identifier": 19,
-            "type": []
-        },
-        {
-            "identifier": 20,
             "type": []
         }
     ],
@@ -122,41 +106,41 @@
         {
             "identifier": 0,
             "name": "expr1",
-            "parameters": 6,
+            "parameters": 2,
             "vararg": false,
-            "returns": 7,
+            "returns": 3,
             "returns_twice": false
         },
         {
             "identifier": 1,
             "name": "expr2",
-            "parameters": 9,
+            "parameters": 5,
             "vararg": false,
-            "returns": 10,
+            "returns": 6,
             "returns_twice": false
         },
         {
             "identifier": 2,
             "name": "expr3",
-            "parameters": 12,
+            "parameters": 8,
             "vararg": false,
-            "returns": 13,
+            "returns": 9,
             "returns_twice": false
         },
         {
             "identifier": 3,
             "name": "expr4",
-            "parameters": 15,
+            "parameters": 11,
             "vararg": false,
-            "returns": 16,
+            "returns": 12,
             "returns_twice": false
         },
         {
             "identifier": 4,
             "name": "expr5",
-            "parameters": 19,
+            "parameters": 15,
             "vararg": false,
-            "returns": 20,
+            "returns": 16,
             "returns_twice": false
         }
     ],
@@ -164,7 +148,7 @@
         {
             "identifier": 0,
             "name": "expr1",
-            "locals": 5,
+            "locals": 1,
             "body": [
                 {
                     "opcode": "pushi",
@@ -179,7 +163,7 @@
         {
             "identifier": 1,
             "name": "expr2",
-            "locals": 8,
+            "locals": 4,
             "body": [
                 {
                     "opcode": "pushi",
@@ -207,7 +191,7 @@
         {
             "identifier": 2,
             "name": "expr3",
-            "locals": 11,
+            "locals": 7,
             "body": [
                 {
                     "opcode": "pushi",
@@ -246,12 +230,12 @@
         {
             "identifier": 3,
             "name": "expr4",
-            "locals": 14,
+            "locals": 10,
             "body": [
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 14,
+                        "type": 10,
                         "index": 0
                     }
                 },
@@ -262,7 +246,7 @@
                 {
                     "opcode": "bzero",
                     "arg": {
-                        "type": 17,
+                        "type": 13,
                         "index": 0
                     }
                 },
@@ -289,7 +273,7 @@
         {
             "identifier": 4,
             "name": "expr5",
-            "locals": 18,
+            "locals": 14,
             "body": [],
             "public_labels": []
         }

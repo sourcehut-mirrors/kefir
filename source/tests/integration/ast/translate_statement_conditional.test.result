@@ -11,7 +11,11 @@
     "types": [
         {
             "identifier": 0,
-            "type": []
+            "type": [
+                {
+                    "type": "int"
+                }
+            ]
         },
         {
             "identifier": 1,
@@ -27,11 +31,7 @@
         },
         {
             "identifier": 4,
-            "type": [
-                {
-                    "type": "int"
-                }
-            ]
+            "type": []
         },
         {
             "identifier": 5,
@@ -64,22 +64,6 @@
         {
             "identifier": 12,
             "type": []
-        },
-        {
-            "identifier": 13,
-            "type": []
-        },
-        {
-            "identifier": 14,
-            "type": []
-        },
-        {
-            "identifier": 15,
-            "type": []
-        },
-        {
-            "identifier": 16,
-            "type": []
         }
     ],
     "data": [],
@@ -88,33 +72,33 @@
         {
             "identifier": 0,
             "name": "conditional1",
-            "parameters": 6,
+            "parameters": 2,
             "vararg": false,
-            "returns": 7,
+            "returns": 3,
             "returns_twice": false
         },
         {
             "identifier": 1,
             "name": "conditional2",
-            "parameters": 9,
+            "parameters": 5,
             "vararg": false,
-            "returns": 10,
+            "returns": 6,
             "returns_twice": false
         },
         {
             "identifier": 2,
             "name": "conditional3",
-            "parameters": 12,
+            "parameters": 8,
             "vararg": false,
-            "returns": 13,
+            "returns": 9,
             "returns_twice": false
         },
         {
             "identifier": 3,
             "name": "conditional4",
-            "parameters": 15,
+            "parameters": 11,
             "vararg": false,
-            "returns": 16,
+            "returns": 12,
             "returns_twice": false
         }
     ],
@@ -122,7 +106,7 @@
         {
             "identifier": 0,
             "name": "conditional1",
-            "locals": 5,
+            "locals": 1,
             "body": [
                 {
                     "opcode": "getglobal",
@@ -180,7 +164,7 @@
         {
             "identifier": 1,
             "name": "conditional2",
-            "locals": 8,
+            "locals": 4,
             "body": [
                 {
                     "opcode": "getglobal",
@@ -273,7 +257,7 @@
         {
             "identifier": 2,
             "name": "conditional3",
-            "locals": 11,
+            "locals": 7,
             "body": [
                 {
                     "opcode": "getglobal",
@@ -434,7 +418,7 @@
         {
             "identifier": 3,
             "name": "conditional4",
-            "locals": 14,
+            "locals": 10,
             "body": [
                 {
                     "opcode": "pushld",

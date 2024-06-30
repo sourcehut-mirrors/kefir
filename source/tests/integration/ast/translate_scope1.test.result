@@ -67,7 +67,6 @@
         }
     ],
     "statics": {
-        "layout": [],
         "variables": [
             {
                 "identifier": "static_var1",
@@ -75,12 +74,11 @@
             },
             {
                 "identifier": "static_var2",
-                "offset": 1
+                "offset": 0
             }
         ]
     },
     "static_thread_locals": {
-        "layout": [],
         "variables": [
             {
                 "identifier": "static_var3",
@@ -88,28 +86,28 @@
             },
             {
                 "identifier": "static_var4",
-                "offset": 5
+                "offset": 0
             }
         ]
     },
     "local_statics": [
         {
             "identifier": "local_static_var1",
-            "offset": 5
+            "offset": 0
         },
         {
             "identifier": "local_static_var2",
-            "offset": 7
+            "offset": 0
         }
     ],
     "local_thread_local_statics": [
         {
             "identifier": "local_static_var3",
-            "offset": 6
+            "offset": 0
         },
         {
             "identifier": "local_static_var4",
-            "offset": 7
+            "offset": 0
         }
     ],
     "locals": {

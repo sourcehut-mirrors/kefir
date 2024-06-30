@@ -11,11 +11,19 @@
     "types": [
         {
             "identifier": 0,
-            "type": []
+            "type": [
+                {
+                    "type": "int"
+                }
+            ]
         },
         {
             "identifier": 1,
-            "type": []
+            "type": [
+                {
+                    "type": "short"
+                }
+            ]
         },
         {
             "identifier": 2,
@@ -29,17 +37,13 @@
             "identifier": 4,
             "type": [
                 {
-                    "type": "int"
+                    "type": "short"
                 }
             ]
         },
         {
             "identifier": 5,
-            "type": [
-                {
-                    "type": "short"
-                }
-            ]
+            "type": []
         },
         {
             "identifier": 6,
@@ -47,26 +51,6 @@
         },
         {
             "identifier": 7,
-            "type": []
-        },
-        {
-            "identifier": 8,
-            "type": [
-                {
-                    "type": "short"
-                }
-            ]
-        },
-        {
-            "identifier": 9,
-            "type": []
-        },
-        {
-            "identifier": 10,
-            "type": []
-        },
-        {
-            "identifier": 11,
             "type": []
         }
     ],
@@ -76,17 +60,17 @@
         {
             "identifier": 0,
             "name": "goto1",
-            "parameters": 6,
+            "parameters": 2,
             "vararg": false,
-            "returns": 7,
+            "returns": 3,
             "returns_twice": false
         },
         {
             "identifier": 1,
             "name": "goto2",
-            "parameters": 10,
+            "parameters": 6,
             "vararg": false,
-            "returns": 11,
+            "returns": 7,
             "returns_twice": false
         }
     ],
@@ -94,12 +78,12 @@
         {
             "identifier": 0,
             "name": "goto1",
-            "locals": 5,
+            "locals": 1,
             "body": [
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 5,
+                        "type": 1,
                         "index": 0
                     }
                 },
@@ -123,7 +107,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 5,
+                        "type": 1,
                         "index": 0
                     }
                 },
@@ -164,7 +148,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 5,
+                        "type": 1,
                         "index": 0
                     }
                 },
@@ -206,7 +190,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 5,
+                        "type": 1,
                         "index": 0
                     }
                 },
@@ -257,7 +241,7 @@
         {
             "identifier": 1,
             "name": "goto2",
-            "locals": 9,
+            "locals": 5,
             "body": [
                 {
                     "opcode": "jmp",

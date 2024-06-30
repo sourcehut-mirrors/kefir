@@ -46,22 +46,6 @@
     "types": [
         {
             "identifier": 0,
-            "type": []
-        },
-        {
-            "identifier": 1,
-            "type": []
-        },
-        {
-            "identifier": 2,
-            "type": []
-        },
-        {
-            "identifier": 3,
-            "type": []
-        },
-        {
-            "identifier": 4,
             "type": [
                 {
                     "type": "array",
@@ -73,7 +57,7 @@
             ]
         },
         {
-            "identifier": 5,
+            "identifier": 1,
             "type": [
                 {
                     "type": "word"
@@ -81,7 +65,7 @@
             ]
         },
         {
-            "identifier": 6,
+            "identifier": 2,
             "type": [
                 {
                     "type": "int"
@@ -89,7 +73,7 @@
             ]
         },
         {
-            "identifier": 7,
+            "identifier": 3,
             "type": [
                 {
                     "type": "struct",
@@ -105,7 +89,7 @@
             ]
         },
         {
-            "identifier": 8,
+            "identifier": 4,
             "type": [
                 {
                     "type": "int"
@@ -113,7 +97,7 @@
             ]
         },
         {
-            "identifier": 9,
+            "identifier": 5,
             "type": [
                 {
                     "type": "double"
@@ -125,7 +109,7 @@
         {
             "identifier": "chars",
             "storage": "thread_local",
-            "type": 4,
+            "type": 0,
             "value": [
                 {
                     "class": "string",
@@ -141,7 +125,7 @@
         {
             "identifier": "string",
             "storage": "thread_local",
-            "type": 5,
+            "type": 1,
             "value": [
                 {
                     "class": "string_pointer",
@@ -153,7 +137,7 @@
         {
             "identifier": "integer",
             "storage": "thread_local",
-            "type": 6,
+            "type": 2,
             "value": [
                 {
                     "class": "integer",
@@ -164,7 +148,7 @@
         {
             "identifier": "struct1",
             "storage": "thread_local",
-            "type": 7,
+            "type": 3,
             "value": [
                 {
                     "class": "aggregate"
@@ -181,7 +165,7 @@
         {
             "identifier": "floatingPoint",
             "storage": "thread_local",
-            "type": 9,
+            "type": 5,
             "value": [
                 {
                     "class": "float64",

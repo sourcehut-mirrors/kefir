@@ -3,22 +3,6 @@
     "types": [
         {
             "identifier": 0,
-            "type": []
-        },
-        {
-            "identifier": 1,
-            "type": []
-        },
-        {
-            "identifier": 2,
-            "type": []
-        },
-        {
-            "identifier": 3,
-            "type": []
-        },
-        {
-            "identifier": 4,
             "type": [
                 {
                     "type": "float"
@@ -34,15 +18,15 @@
             ]
         },
         {
-            "identifier": 5,
+            "identifier": 1,
             "type": []
         },
         {
-            "identifier": 6,
+            "identifier": 2,
             "type": []
         },
         {
-            "identifier": 7,
+            "identifier": 3,
             "type": [
                 {
                     "type": "double"
@@ -56,9 +40,9 @@
         {
             "identifier": 0,
             "name": "vararg",
-            "parameters": 5,
+            "parameters": 1,
             "vararg": false,
-            "returns": 6,
+            "returns": 2,
             "returns_twice": false
         }
     ],
@@ -66,12 +50,12 @@
         {
             "identifier": 0,
             "name": "vararg",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 4,
+                        "type": 0,
                         "index": 1
                     }
                 },
@@ -81,7 +65,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 4,
+                        "type": 0,
                         "index": 2
                     }
                 },
@@ -91,7 +75,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 4,
+                        "type": 0,
                         "index": 0
                     }
                 },
@@ -114,7 +98,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 4,
+                        "type": 0,
                         "index": 1
                     }
                 },
@@ -124,14 +108,14 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 4,
+                        "type": 0,
                         "index": 2
                     }
                 },
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 4,
+                        "type": 0,
                         "index": 1
                     }
                 },
@@ -141,14 +125,14 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 4,
+                        "type": 0,
                         "index": 2
                     }
                 },
                 {
                     "opcode": "getvarg",
                     "arg": {
-                        "type": 7,
+                        "type": 3,
                         "index": 0
                     }
                 },
@@ -158,7 +142,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 4,
+                        "type": 0,
                         "index": 1
                     }
                 },
@@ -168,14 +152,14 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 4,
+                        "type": 0,
                         "index": 2
                     }
                 },
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 4,
+                        "type": 0,
                         "index": 1
                     }
                 },

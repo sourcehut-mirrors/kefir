@@ -28,22 +28,6 @@
         {
             "identifier": 6,
             "type": []
-        },
-        {
-            "identifier": 7,
-            "type": []
-        },
-        {
-            "identifier": 8,
-            "type": []
-        },
-        {
-            "identifier": 9,
-            "type": []
-        },
-        {
-            "identifier": 10,
-            "type": []
         }
     ],
     "data": [],
@@ -74,25 +58,25 @@
         {
             "identifier": 0,
             "name": "string_literal1",
-            "parameters": 5,
+            "parameters": 1,
             "vararg": false,
-            "returns": 6,
+            "returns": 2,
             "returns_twice": false
         },
         {
             "identifier": 1,
             "name": "string_literal2",
-            "parameters": 7,
+            "parameters": 3,
             "vararg": false,
-            "returns": 8,
+            "returns": 4,
             "returns_twice": false
         },
         {
             "identifier": 2,
             "name": "string_literal3",
-            "parameters": 9,
+            "parameters": 5,
             "vararg": false,
-            "returns": 10,
+            "returns": 6,
             "returns_twice": false
         }
     ],
@@ -100,7 +84,7 @@
         {
             "identifier": 0,
             "name": "string_literal1",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushstring",
@@ -112,7 +96,7 @@
         {
             "identifier": 1,
             "name": "string_literal2",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushstring",
@@ -124,7 +108,7 @@
         {
             "identifier": 2,
             "name": "string_literal3",
-            "locals": 4,
+            "locals": 0,
             "body": [
                 {
                     "opcode": "pushstring",

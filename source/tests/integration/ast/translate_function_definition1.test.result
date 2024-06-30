@@ -15,7 +15,7 @@
             "alias": null
         },
         {
-            "symbol": "__kefirrt_module_static_vars",
+            "symbol": "__kefir_function_sum_static___func___3",
             "type": "global_data",
             "scope": "local",
             "visibility": "default",
@@ -27,25 +27,39 @@
             "identifier": 0,
             "type": [
                 {
-                    "type": "array",
-                    "length": 4,
-                    "element_type": {
-                        "type": "char"
-                    }
+                    "type": "int"
                 }
             ]
         },
         {
             "identifier": 1,
-            "type": []
+            "type": [
+                {
+                    "type": "int"
+                },
+                {
+                    "type": "int"
+                }
+            ]
         },
         {
             "identifier": 2,
-            "type": []
+            "type": [
+                {
+                    "type": "int"
+                }
+            ]
         },
         {
             "identifier": 3,
-            "type": []
+            "type": [
+                {
+                    "type": "int"
+                },
+                {
+                    "type": "int"
+                }
+            ]
         },
         {
             "identifier": 4,
@@ -70,46 +84,20 @@
             "identifier": 6,
             "type": [
                 {
-                    "type": "int"
-                }
-            ]
-        },
-        {
-            "identifier": 7,
-            "type": [
-                {
-                    "type": "int"
-                },
-                {
-                    "type": "int"
-                }
-            ]
-        },
-        {
-            "identifier": 8,
-            "type": [
-                {
-                    "type": "int"
-                }
-            ]
-        },
-        {
-            "identifier": 9,
-            "type": [
-                {
-                    "type": "int"
-                },
-                {
-                    "type": "int"
+                    "type": "array",
+                    "length": 4,
+                    "element_type": {
+                        "type": "char"
+                    }
                 }
             ]
         }
     ],
     "data": [
         {
-            "identifier": "__kefirrt_module_static_vars",
+            "identifier": "__kefir_function_sum_static___func___3",
             "storage": "global",
-            "type": 0,
+            "type": 6,
             "value": [
                 {
                     "class": "string",
@@ -136,17 +124,17 @@
         {
             "identifier": 0,
             "name": "sum",
-            "parameters": 5,
+            "parameters": 1,
             "vararg": false,
-            "returns": 6,
+            "returns": 2,
             "returns_twice": false
         },
         {
             "identifier": 1,
             "name": "sum",
-            "parameters": 7,
+            "parameters": 3,
             "vararg": false,
-            "returns": 8,
+            "returns": 4,
             "returns_twice": false
         }
     ],
@@ -154,12 +142,12 @@
         {
             "identifier": 1,
             "name": "sum",
-            "locals": 9,
+            "locals": 5,
             "body": [
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 9,
+                        "type": 5,
                         "index": 1
                     }
                 },
@@ -176,7 +164,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 9,
+                        "type": 5,
                         "index": 0
                     }
                 },
@@ -193,7 +181,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 9,
+                        "type": 5,
                         "index": 0
                     }
                 },
@@ -206,7 +194,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 9,
+                        "type": 5,
                         "index": 1
                     }
                 },
