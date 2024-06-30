@@ -143,23 +143,25 @@ kefir_result_t kefir_driver_apply_target_compiler_configuration(
     if (target->platform == KEFIR_DRIVER_TARGET_PLATFORM_LINUX) {
         REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__linux__", "1"));
 
-        if (target->variant == KEFIR_DRIVER_TARGET_VARIANT_GNU) {
-            REQUIRE(externals->gnu.include_path != NULL,
-                    KEFIR_SET_ERROR(KEFIR_UI_ERROR, "GNU include path shall be passed as KEFIR_GNU_INCLUDE "
-                                                    "environment variable for selected target"));
+        if (driver_config->flags.include_stdinc) {
+            if (target->variant == KEFIR_DRIVER_TARGET_VARIANT_GNU) {
+                REQUIRE(externals->gnu.include_path != NULL,
+                        KEFIR_SET_ERROR(KEFIR_UI_ERROR, "GNU include path shall be passed as KEFIR_GNU_INCLUDE "
+                                                        "environment variable for selected target"));
 
-            REQUIRE_OK(add_include_paths(mem, symbols, compiler_config, externals->gnu.include_path));
-        } else if (target->variant == KEFIR_DRIVER_TARGET_VARIANT_MUSL) {
-            REQUIRE(externals->musl.include_path != NULL,
-                    KEFIR_SET_ERROR(KEFIR_UI_ERROR, "Musl library path shall be passed as KEFIR_MUSL_INCLUDE "
-                                                    "environment variable for selected target"));
+                REQUIRE_OK(add_include_paths(mem, symbols, compiler_config, externals->gnu.include_path));
+            } else if (target->variant == KEFIR_DRIVER_TARGET_VARIANT_MUSL) {
+                REQUIRE(externals->musl.include_path != NULL,
+                        KEFIR_SET_ERROR(KEFIR_UI_ERROR, "Musl library path shall be passed as KEFIR_MUSL_INCLUDE "
+                                                        "environment variable for selected target"));
 
-            compiler_config->features.declare_atomic_support = false;
-            REQUIRE_OK(add_include_paths(mem, symbols, compiler_config, externals->musl.include_path));
+                compiler_config->features.declare_atomic_support = false;
+                REQUIRE_OK(add_include_paths(mem, symbols, compiler_config, externals->musl.include_path));
+            }
         }
     } else if (target->platform == KEFIR_DRIVER_TARGET_PLATFORM_FREEBSD) {
         REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__FreeBSD__", "1"));
-        if (target->variant == KEFIR_DRIVER_TARGET_VARIANT_SYSTEM) {
+        if (driver_config->flags.include_stdinc && target->variant == KEFIR_DRIVER_TARGET_VARIANT_SYSTEM) {
             REQUIRE(externals->freebsd.include_path != NULL,
                     KEFIR_SET_ERROR(KEFIR_UI_ERROR, "System include path shall be passed as KEFIR_FREEBSD_INCLUDE "
                                                     "environment variable for selected target"));
@@ -168,7 +170,7 @@ kefir_result_t kefir_driver_apply_target_compiler_configuration(
         }
     } else if (target->platform == KEFIR_DRIVER_TARGET_PLATFORM_OPENBSD) {
         REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__OpenBSD__", "1"));
-        if (target->variant == KEFIR_DRIVER_TARGET_VARIANT_SYSTEM) {
+        if (driver_config->flags.include_stdinc && target->variant == KEFIR_DRIVER_TARGET_VARIANT_SYSTEM) {
             REQUIRE(externals->openbsd.include_path != NULL,
                     KEFIR_SET_ERROR(KEFIR_UI_ERROR, "System include path shall be passed as KEFIR_OPENBSD_INCLUDE "
                                                     "environment variable for selected target"));
@@ -177,7 +179,7 @@ kefir_result_t kefir_driver_apply_target_compiler_configuration(
         }
     } else if (target->platform == KEFIR_DRIVER_TARGET_PLATFORM_NETBSD) {
         REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__NetBSD__", "1"));
-        if (target->variant == KEFIR_DRIVER_TARGET_VARIANT_SYSTEM) {
+        if (driver_config->flags.include_stdinc && target->variant == KEFIR_DRIVER_TARGET_VARIANT_SYSTEM) {
             REQUIRE(externals->netbsd.include_path != NULL,
                     KEFIR_SET_ERROR(KEFIR_UI_ERROR, "System include path shall be passed as KEFIR_NETBSD_INCLUDE "
                                                     "environment variable for selected target"));
@@ -532,7 +534,7 @@ kefir_result_t kefir_driver_apply_target_linker_final_configuration(
             LINK_FILE(externals->netbsd.library_path, "crtn.o");
         }
     }
-    
+
     if (linker_config->flags.link_rtlib && target->variant != KEFIR_DRIVER_TARGET_VARIANT_NONE) {
         REQUIRE(linker_config->rtlib_location != NULL,
                 KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid kefir runtime library file name"));

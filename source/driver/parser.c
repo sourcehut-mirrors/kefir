@@ -413,6 +413,9 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
         } else if (strcmp("-nolibc", arg) == 0) {
             // Do not link libc
             config->flags.link_libc = false;
+        } else if (strcmp("-nostdinc", arg) == 0) {
+            // Do not use standard include path
+            config->flags.include_stdinc = false;
         } else if (strcmp("-nostdlib", arg) == 0) {
             // Do not link start files and default libraries
             config->flags.link_start_files = false;

@@ -146,6 +146,7 @@ typedef struct kefir_driver_configuration {
         kefir_driver_frame_pointer_omission_t omit_frame_pointer;
         kefir_bool_t link_start_files;
         kefir_bool_t link_default_libs;
+        kefir_bool_t include_stdinc;
         kefir_bool_t link_libc;
         kefir_bool_t include_rtinc;
         kefir_bool_t link_rtlib;
