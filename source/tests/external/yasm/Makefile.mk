@@ -25,7 +25,7 @@ $(KEFIR_EXTERNAL_TEST_YASM_SOURCE_DIR)/config.log: $(KEFIR_EXTERNAL_TEST_YASM_SO
 	@echo "Configuring yasm $(KEFIR_EXTERNAL_TEST_YASM_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_YASM_SOURCE_DIR)" && \
 		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
-		KEFIR_RYASMC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		KEFIR_RTLIB="$(realpath $(LIBKEFIRRT_A))" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		CFLAGS="-O1 -fPIC -pie" \
@@ -35,7 +35,7 @@ $(KEFIR_EXTERNAL_TEST_YASM_SOURCE_DIR)/yasm: $(KEFIR_EXTERNAL_TEST_YASM_SOURCE_D
 	@echo "Building yasm $(KEFIR_EXTERNAL_TEST_YASM_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_YASM_SOURCE_DIR)" && \
 		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
-		KEFIR_RYASMC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		KEFIR_RTLIB="$(realpath $(LIBKEFIRRT_A))" \
 		$(MAKE) all
 
