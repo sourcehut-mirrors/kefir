@@ -156,7 +156,7 @@ Produce a statically linked executable
 Produce a shared object
 .\"
 .It Fl fPIC | Fl fpic
-Produce position-independent code
+Produce position-independent code [default]
 .\"
 .It Fl fno-pic
 Do not produce position-independent code [default]
@@ -164,14 +164,14 @@ Do not produce position-independent code [default]
 .It Fl pie
 Produce position-independent executable (requires
 .Fl fPIC
-flag)
+flag) [default]
+.\"
+.It Fl no-pie
+Do not produce position-independent executable
 .\"
 .It Fl masm=ASSEMBLER
 Produce code for the following assembler: [x86_64-gas-intel, x86_64-gas-intel_prefix, x86_64-gas-att (default), x86_64-yasm, intel (alias for x86_64-gas-intel), att (alias for x86_64-gas-att)].
 Also affects assembler flags. Note that KEFIR_AS or AS envinronment variable shall be point to the respective assembler executable.
-.\"
-.It Fl no-pie
-Do not produce position-independent executable [default]
 .\"
 .It Fl fomit-frame-pointer
 Omit frame pointer in leaf functions that do not need it [default on optimization levels > 0]

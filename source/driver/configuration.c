@@ -141,8 +141,8 @@ kefir_result_t kefir_driver_configuration_init(struct kefir_driver_configuration
     config->flags.static_linking = false;
     config->flags.shared_linking = false;
     config->flags.export_dynamic = false;
-    config->flags.position_independent_code = false;
-    config->flags.position_independent_executable = false;
+    config->flags.position_independent_code = true;
+    config->flags.position_independent_executable = true;
     config->flags.omit_frame_pointer = KEFIR_DRIVER_FRAME_POINTER_OMISSION_UNSPECIFIED;
     config->flags.link_start_files = true;
     config->flags.link_default_libs = true;

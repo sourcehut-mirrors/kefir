@@ -21,10 +21,6 @@ else
 BOOTSTRAP_CFLAGS += --target hostcpu-linux
 endif
 
-ifeq ($(USE_SHARED),yes)
-BOOTSTRAP_CFLAGS += -fPIC
-endif
-
 BOOTSTRAP_CFLAGS += $(BOOTSTRAP_EXTRA_CFLAGS)
 
 KEFIR_BUILD_SOURCE_ID := $(shell $(SOURCE)/../scripts/get-source-id.sh)
