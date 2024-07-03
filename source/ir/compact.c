@@ -283,6 +283,7 @@ static kefir_result_t compact_data(struct kefir_mem *mem, struct kefir_ir_data *
             case KEFIR_IR_DATA_VALUE_STRING:
             case KEFIR_IR_DATA_VALUE_RAW:
             case KEFIR_IR_DATA_VALUE_AGGREGATE:
+            case KEFIR_IR_DATA_VALUE_BITS:
                 // Intentionally left blank
                 break;
 

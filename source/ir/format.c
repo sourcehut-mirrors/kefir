@@ -826,6 +826,16 @@ static kefir_result_t format_datum(struct kefir_json_output *json, const struct 
             case KEFIR_IR_DATA_VALUE_AGGREGATE:
                 REQUIRE_OK(kefir_json_output_string(json, "aggregate"));
                 break;
+
+            case KEFIR_IR_DATA_VALUE_BITS:
+                REQUIRE_OK(kefir_json_output_string(json, "bits"));
+                REQUIRE_OK(kefir_json_output_object_key(json, "value"));
+                REQUIRE_OK(kefir_json_output_array_begin(json));
+                for (kefir_size_t i = 0; i < value->value.bits.length; i++) {
+                    REQUIRE_OK(kefir_json_output_uinteger(json, value->value.bits.bits[i]));
+                }
+                REQUIRE_OK(kefir_json_output_array_end(json));
+                break;
         }
         if (value->type != KEFIR_IR_DATA_VALUE_UNDEFINED) {
             REQUIRE_OK(kefir_json_output_object_end(json));

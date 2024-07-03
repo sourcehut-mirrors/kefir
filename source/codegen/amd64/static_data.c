@@ -136,6 +136,10 @@ static kefir_result_t integral_static_data(const struct kefir_ir_type *type, kef
             return KEFIR_OK;
         }
 
+        case KEFIR_IR_DATA_VALUE_BITS:
+            // Intentionally left blank
+            break;
+
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected value of integral field");
     }
@@ -186,10 +190,15 @@ static kefir_result_t integral_static_data(const struct kefir_ir_type *type, kef
                 bytes += 1;
             }
             for (kefir_size_t i = 0; i < bytes; i++) {
-                REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
-                    &param->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_BYTE, 1,
-                    kefir_asm_amd64_xasmgen_operand_immu(&param->codegen->xasmgen_helpers.operands[0],
-                                                         (kefir_uint8_t) ((value >> (i << 3)) & 0xff))));
+                const kefir_size_t qword_container_idx = i / sizeof(kefir_uint64_t);
+                const kefir_size_t qword_offset = i % sizeof(kefir_uint64_t);
+                kefir_uint64_t qword_container =
+                    qword_container_idx < entry->value.bits.length ? entry->value.bits.bits[qword_container_idx] : 0;
+                REQUIRE_OK(
+                    KEFIR_AMD64_XASMGEN_DATA(&param->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_BYTE, 1,
+                                             kefir_asm_amd64_xasmgen_operand_immu(
+                                                 &param->codegen->xasmgen_helpers.operands[0],
+                                                 (kefir_uint8_t) ((qword_container >> (qword_offset << 3)) & 0xff))));
             }
         } break;
 

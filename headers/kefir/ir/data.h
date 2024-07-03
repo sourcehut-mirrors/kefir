@@ -60,7 +60,8 @@ typedef enum kefir_ir_data_value_type {
     KEFIR_IR_DATA_VALUE_POINTER,
     KEFIR_IR_DATA_VALUE_STRING_POINTER,
     KEFIR_IR_DATA_VALUE_RAW,
-    KEFIR_IR_DATA_VALUE_AGGREGATE
+    KEFIR_IR_DATA_VALUE_AGGREGATE,
+    KEFIR_IR_DATA_VALUE_BITS
 } kefir_ir_data_value_type_t;
 
 typedef struct kefir_ir_data_value {
@@ -95,6 +96,10 @@ typedef struct kefir_ir_data_value {
             kefir_id_t id;
             kefir_int64_t offset;
         } string_ptr;
+        struct {
+            kefir_uint64_t *bits;
+            kefir_size_t length;
+        } bits;
     } value;
 } kefir_ir_data_value_t;
 

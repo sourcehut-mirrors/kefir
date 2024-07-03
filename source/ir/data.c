@@ -22,6 +22,7 @@
 #include "kefir/ir/builtins.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
+#include <string.h>
 
 #define BLOCK_CAPACITY 128
 #define BLOCK_SIZE (BLOCK_CAPACITY * sizeof(struct kefir_ir_data_value))
@@ -41,6 +42,24 @@ static kefir_result_t on_block_init(struct kefir_mem *mem, struct kefir_block_tr
     return KEFIR_OK;
 }
 
+static kefir_result_t on_block_removal(struct kefir_mem *mem, struct kefir_block_tree *tree, kefir_size_t block_id,
+                                       void *block, void *payload) {
+    UNUSED(tree);
+    UNUSED(block_id);
+    UNUSED(payload);
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(block != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid block"));
+
+    ASSIGN_DECL_CAST(struct kefir_ir_data_value *, value_block, block);
+    for (kefir_size_t i = 0; i < BLOCK_CAPACITY; i++) {
+        if (value_block[i].type == KEFIR_IR_DATA_VALUE_BITS) {
+            KEFIR_FREE(mem, value_block[i].value.bits.bits);
+        }
+    }
+
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_ir_data_alloc(struct kefir_mem *mem, kefir_ir_data_storage_t storage,
                                    const struct kefir_ir_type *type, kefir_id_t type_id, struct kefir_ir_data *data) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
@@ -51,6 +70,7 @@ kefir_result_t kefir_ir_data_alloc(struct kefir_mem *mem, kefir_ir_data_storage_
     data->total_length = kefir_ir_type_slots(type);
     REQUIRE_OK(kefir_block_tree_init(&data->value_tree, BLOCK_SIZE));
     REQUIRE_OK(kefir_block_tree_on_block_init(&data->value_tree, on_block_init, NULL));
+    REQUIRE_OK(kefir_block_tree_on_block_removal(&data->value_tree, on_block_removal, NULL));
     data->type = type;
     data->type_id = type_id;
     data->finalized = false;
@@ -118,24 +138,41 @@ kefir_result_t kefir_ir_data_set_bitfield(struct kefir_mem *mem, struct kefir_ir
     struct kefir_ir_data_value *entry;
     REQUIRE_OK(value_entry_at(mem, data, index, &entry));
 
-    kefir_uint64_t currentValue = 0;
-    if (entry->type == KEFIR_IR_DATA_VALUE_INTEGER) {
-        currentValue = entry->value.integer;
+    const kefir_size_t bit_container = offset / (sizeof(kefir_uint64_t) * CHAR_BIT);
+    const kefir_size_t bit_offset = offset % (sizeof(kefir_uint64_t) * CHAR_BIT);
+    if (entry->type == KEFIR_IR_DATA_VALUE_BITS) {
+        if (bit_container >= entry->value.bits.length) {
+            const kefir_size_t new_length = bit_container + 1;
+            kefir_uint64_t *const new_bits = KEFIR_MALLOC(mem, sizeof(kefir_uint64_t) * new_length);
+            REQUIRE(new_bits != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate bitfield data"));
+            memset(new_bits, 0, sizeof(kefir_uint64_t) * new_length);
+            memcpy(new_bits, entry->value.bits.bits, sizeof(kefir_uint64_t) * entry->value.bits.length);
+            KEFIR_FREE(mem, entry->value.bits.bits);
+            entry->value.bits.length = new_length;
+            entry->value.bits.bits = new_bits;
+        }
     } else {
         REQUIRE(entry->type == KEFIR_IR_DATA_VALUE_UNDEFINED,
                 KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "IR data cannot have non-integral type"));
-        entry->type = KEFIR_IR_DATA_VALUE_INTEGER;
+        entry->type = KEFIR_IR_DATA_VALUE_BITS;
+        entry->value.bits.length = bit_container + 1;
+        entry->value.bits.bits = KEFIR_MALLOC(mem, sizeof(kefir_uint64_t) * entry->value.bits.length);
+        REQUIRE(entry->value.bits.bits != NULL,
+                KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate bitfield data"));
+        for (kefir_size_t i = 0; i < entry->value.bits.length; i++) {
+            entry->value.bits.bits[i] = 0;
+        }
     }
 
     REQUIRE(width <= 64, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "IR data bitfield cannot be wider than 64 bits"));
+    kefir_uint64_t *container = &entry->value.bits.bits[bit_container];
     if (width == 64) {
-        currentValue = value;
+        *container = value;
     } else {
-        const kefir_uint64_t mask = (1ull << (width + 1)) - 1;
-        currentValue = currentValue & (~(mask << offset));
-        currentValue |= (value & mask) << offset;
+        const kefir_uint64_t mask = (1ull << width) - 1;
+        *container = *container & (~(mask << bit_offset));
+        *container |= (value & mask) << bit_offset;
     }
-    entry->value.integer = currentValue;
     return KEFIR_OK;
 }
 
