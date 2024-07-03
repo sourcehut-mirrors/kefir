@@ -982,6 +982,12 @@ static kefir_result_t visit_case_statement(const struct kefir_ast_visitor *visit
     } else {
         REQUIRE_OK(kefir_json_output_null(json));
     }
+    REQUIRE_OK(kefir_json_output_object_key(json, "range_end_expression"));
+    if (node->range_end_expression != NULL) {
+        REQUIRE_OK(kefir_ast_format(json, node->range_end_expression, param->display_source_location));
+    } else {
+        REQUIRE_OK(kefir_json_output_null(json));
+    }
     REQUIRE_OK(kefir_json_output_object_key(json, "statement"));
     REQUIRE_OK(kefir_ast_format(json, node->statement, param->display_source_location));
     if (param->display_source_location) {

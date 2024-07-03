@@ -143,6 +143,7 @@ static kefir_result_t flow_control_statement_free(struct kefir_mem *mem, void *n
 
         case KEFIR_AST_FLOW_CONTROL_STRUCTURE_SWITCH:
             REQUIRE_OK(kefir_hashtree_free(mem, &statement->value.switchStatement.cases));
+            REQUIRE_OK(kefir_hashtree_free(mem, &statement->value.switchStatement.case_ranges));
             if (statement->value.switchStatement.defaultCase != NULL) {
                 REQUIRE_OK(kefir_ast_flow_control_point_free(mem, statement->value.switchStatement.defaultCase));
                 statement->value.switchStatement.defaultCase = NULL;
@@ -257,14 +258,10 @@ kefir_result_t kefir_ast_flow_control_tree_push(struct kefir_mem *mem, struct ke
 
         case KEFIR_AST_FLOW_CONTROL_STRUCTURE_SWITCH: {
             kefir_result_t res = kefir_hashtree_init(&stmt->value.switchStatement.cases, &kefir_hashtree_uint_ops);
+            REQUIRE_CHAIN(&res,
+                          kefir_hashtree_init(&stmt->value.switchStatement.case_ranges, &kefir_hashtree_uint_ops));
+            REQUIRE_CHAIN(&res, kefir_hashtree_on_removal(&stmt->value.switchStatement.cases, point_tree_free, NULL));
             REQUIRE_ELSE(res == KEFIR_OK, {
-                KEFIR_FREE(mem, stmt);
-                return res;
-            });
-
-            res = kefir_hashtree_on_removal(&stmt->value.switchStatement.cases, point_tree_free, NULL);
-            REQUIRE_ELSE(res == KEFIR_OK, {
-                kefir_hashtree_free(mem, &stmt->value.switchStatement.cases);
                 KEFIR_FREE(mem, stmt);
                 return res;
             });
@@ -285,6 +282,7 @@ kefir_result_t kefir_ast_flow_control_tree_push(struct kefir_mem *mem, struct ke
     kefir_result_t res = kefir_tree_insert_child(mem, tree->current, stmt, &tree->current);
     REQUIRE_ELSE(res == KEFIR_OK, {
         if (type == KEFIR_AST_FLOW_CONTROL_STRUCTURE_SWITCH) {
+            kefir_hashtree_free(mem, &stmt->value.switchStatement.case_ranges);
             kefir_hashtree_free(mem, &stmt->value.switchStatement.cases);
         }
         KEFIR_FREE(mem, stmt);

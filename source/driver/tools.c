@@ -182,6 +182,7 @@ static kefir_result_t output_compiler_config(FILE *output,
     FEATURE(include_next, "include-next")
     FEATURE(fail_on_assembly, "fail-on-assembly")
     FEATURE(va_args_concat, "va-args-comma-concat")
+    FEATURE(switch_case_ranges, "switch-case-ranges")
 #undef FEATURE
 
 #define CODEGEN(_id, _name)                         \

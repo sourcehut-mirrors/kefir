@@ -210,6 +210,7 @@ struct kefir_cli_option KefirCompilerConfigurationOptions[] = {
     FEATURE("include-next", features.include_next),
     FEATURE("fail-on-assembly", features.fail_on_assembly),
     FEATURE("va-args-comma-concat", features.va_args_concat),
+    FEATURE("switch-case-ranges", features.switch_case_ranges),
 
     SIMPLE(0, "precise-bitfield-load-store", false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, true,
            features.precise_bitfield_load_store),

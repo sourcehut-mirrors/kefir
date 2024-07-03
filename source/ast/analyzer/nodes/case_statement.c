@@ -65,7 +65,45 @@ kefir_result_t kefir_ast_analyze_case_statement_node(struct kefir_mem *mem, cons
 
     REQUIRE_OK(kefir_ast_flow_control_tree_top(context->flow_control_tree, &direct_parent));
 
-    if (node->expression != NULL) {
+    if (node->range_end_expression != NULL) {
+        REQUIRE(node->expression != NULL,
+                KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
+                                "End range for case statement may only be specified when expression is non-NULL"));
+        REQUIRE_OK(kefir_ast_analyze_node(mem, context, node->expression));
+        REQUIRE_OK(kefir_ast_analyze_node(mem, context, node->range_end_expression));
+        struct kefir_ast_constant_expression_value range_begin, range_end;
+        REQUIRE_OK(kefir_ast_constant_expression_value_evaluate(mem, context, node->expression, &range_begin));
+        REQUIRE_OK(kefir_ast_constant_expression_value_evaluate(mem, context, node->range_end_expression, &range_end));
+        REQUIRE(range_begin.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER,
+                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->expression->source_location,
+                                       "Expected AST case label to be an integral constant expression"));
+        REQUIRE(range_end.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER,
+                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->range_end_expression->source_location,
+                                       "Expected AST case label to be an integral constant expression"));
+        REQUIRE(range_begin.integer != range_end.integer,
+                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->range_end_expression->source_location,
+                                       "Expected AST case label range to be non-empty"));
+        struct kefir_ast_flow_control_point *point = kefir_ast_flow_control_point_alloc(mem, direct_parent);
+        REQUIRE(point != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST flow control point"));
+
+        kefir_ast_constant_expression_int_t begin = range_begin.integer;
+        kefir_ast_constant_expression_int_t end = range_end.integer;
+        if (end < begin) {
+            kefir_ast_constant_expression_int_t tmp = begin;
+            begin = end;
+            end = tmp;
+        }
+
+        kefir_result_t res = kefir_hashtree_insert(mem, &switch_statement->value.switchStatement.cases,
+                                                   (kefir_hashtree_key_t) begin, (kefir_hashtree_value_t) point);
+        REQUIRE_CHAIN(&res, kefir_hashtree_insert(mem, &switch_statement->value.switchStatement.case_ranges,
+                                                  (kefir_hashtree_key_t) begin, (kefir_hashtree_key_t) end));
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            kefir_ast_flow_control_point_free(mem, point);
+            return res;
+        });
+        base->properties.statement_props.target_flow_control_point = point;
+    } else if (node->expression != NULL) {
         REQUIRE_OK(kefir_ast_analyze_node(mem, context, node->expression));
         struct kefir_ast_constant_expression_value value;
         REQUIRE_OK(kefir_ast_constant_expression_value_evaluate(mem, context, node->expression, &value));

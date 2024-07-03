@@ -191,6 +191,7 @@ kefir_result_t kefir_driver_generate_compiler_config(struct kefir_mem *mem, stru
         compiler_config->features.named_macro_vararg = true;
         compiler_config->features.include_next = true;
         compiler_config->features.va_args_concat = true;
+        compiler_config->features.switch_case_ranges = true;
     }
 
     compiler_config->codegen.position_independent_code = config->flags.position_independent_code;

@@ -15,6 +15,7 @@
                         "type": "integer",
                         "value": 0
                     },
+                    "range_end_expression": null,
                     "statement": {
                         "class": "expression_statement",
                         "expression": {
@@ -39,6 +40,7 @@
                         "type": "integer",
                         "value": 1
                     },
+                    "range_end_expression": null,
                     "statement": {
                         "class": "expression_statement",
                         "expression": {
@@ -63,6 +65,7 @@
                         "type": "integer",
                         "value": 2
                     },
+                    "range_end_expression": null,
                     "statement": {
                         "class": "expression_statement",
                         "expression": {
@@ -83,6 +86,7 @@
                 {
                     "class": "case_statement",
                     "expression": null,
+                    "range_end_expression": null,
                     "statement": {
                         "class": "expression_statement",
                         "expression": {

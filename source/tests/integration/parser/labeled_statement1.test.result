@@ -24,6 +24,7 @@
                     "type": "integer",
                     "value": 10
                 },
+                "range_end_expression": null,
                 "statement": {
                     "class": "compound_statement",
                     "items": [
@@ -59,6 +60,7 @@
             {
                 "class": "case_statement",
                 "expression": null,
+                "range_end_expression": null,
                 "statement": {
                     "class": "expression_statement",
                     "expression": {

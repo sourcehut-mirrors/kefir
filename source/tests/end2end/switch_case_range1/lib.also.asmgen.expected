@@ -1,0 +1,997 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global clamp_int
+.type clamp_int, @function
+.global clamp_char
+.type clamp_char, @function
+.global clamp_long
+.type clamp_long, @function
+.global clamp_short
+.type clamp_short, @function
+.extern __kefirrt_opt_amd64_sysv_vararg_save
+.extern __kefirrt_opt_load_int_vararg
+.extern __kefirrt_opt_load_sse_vararg
+.extern __kefirrt_opt_float32_to_uint
+.extern __kefirrt_opt_float64_to_uint
+.extern __kefirrt_opt_long_double_to_int
+.extern __kefirrt_opt_long_double_to_uint
+.extern __kefirrt_opt_complex_long_double_equals
+.extern __kefirrt_opt_complex_long_double_truncate_1bit
+.extern __kefirrt_opt_complex_float32_mul
+.extern __kefirrt_opt_complex_float32_div
+.extern __kefirrt_opt_complex_float64_mul
+.extern __kefirrt_opt_complex_float64_div
+.extern __kefirrt_opt_complex_long_double_mul
+.extern __kefirrt_opt_complex_long_double_div
+.extern __kefirrt_fenv_update
+.extern __kefir_opt_float32_neg
+.extern __kefir_opt_float64_neg
+.extern __kefir_opt_uint2long_double
+.extern __kefir_opt_complex_float32_neg
+.extern __kefir_opt_complex_float64_neg
+
+.section .text
+clamp_int:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_clamp_int_label0:
+_kefir_func_clamp_int_label1:
+    movl %edi, -4(%rbp)
+    movsxl -4(%rbp), %rax
+    cmp $0, %eax
+    je _kefir_func_clamp_int_label2
+    jmp _kefir_func_clamp_int_label3
+_kefir_func_clamp_int_label2:
+    jmp _kefir_func_clamp_int_label4
+_kefir_func_clamp_int_label3:
+    mov $0, %rcx
+    cmp $1, %eax
+    setge %cl
+    mov $0, %rdx
+    cmp $9, %eax
+    setle %dl
+    test %cl, %cl
+    setne %cl
+    test %dl, %dl
+    setne %dl
+    and %cl, %dl
+    movzx %dl, %rcx
+    mov $0, %rdx
+    test %cl, %cl
+    sete %dl
+    test %dl, %dl
+    jz _kefir_func_clamp_int_label5
+    jmp _kefir_func_clamp_int_label6
+_kefir_func_clamp_int_label4:
+    mov $100, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_int_label5:
+    jmp _kefir_func_clamp_int_label7
+_kefir_func_clamp_int_label6:
+    mov $0, %rcx
+    cmp $10, %eax
+    setge %cl
+    mov $0, %rdx
+    cmp $19, %eax
+    setle %dl
+    test %cl, %cl
+    setne %cl
+    test %dl, %dl
+    setne %dl
+    and %cl, %dl
+    movzx %dl, %rcx
+    mov $0, %rdx
+    test %cl, %cl
+    sete %dl
+    test %dl, %dl
+    jz _kefir_func_clamp_int_label8
+    jmp _kefir_func_clamp_int_label9
+_kefir_func_clamp_int_label7:
+    mov $0, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_int_label8:
+    jmp _kefir_func_clamp_int_label10
+_kefir_func_clamp_int_label9:
+    mov $0, %rcx
+    cmp $20, %eax
+    setge %cl
+    mov $0, %rdx
+    cmp $29, %eax
+    setle %dl
+    test %cl, %cl
+    setne %cl
+    test %dl, %dl
+    setne %dl
+    and %cl, %dl
+    movzx %dl, %rcx
+    mov $0, %rdx
+    test %cl, %cl
+    sete %dl
+    test %dl, %dl
+    jz _kefir_func_clamp_int_label11
+    jmp _kefir_func_clamp_int_label12
+_kefir_func_clamp_int_label10:
+    mov $1, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_int_label11:
+    jmp _kefir_func_clamp_int_label13
+_kefir_func_clamp_int_label12:
+    mov $0, %rcx
+    cmp $30, %eax
+    setge %cl
+    mov $0, %rdx
+    cmp $39, %eax
+    setle %dl
+    test %cl, %cl
+    setne %cl
+    test %dl, %dl
+    setne %dl
+    and %cl, %dl
+    movzx %dl, %rcx
+    mov $0, %rdx
+    test %cl, %cl
+    sete %dl
+    test %dl, %dl
+    jz _kefir_func_clamp_int_label14
+    jmp _kefir_func_clamp_int_label15
+_kefir_func_clamp_int_label13:
+    mov $2, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_int_label14:
+    jmp _kefir_func_clamp_int_label16
+_kefir_func_clamp_int_label15:
+    mov $0, %rcx
+    cmp $-39, %eax
+    setge %cl
+    mov $0, %rdx
+    cmp $-30, %eax
+    setle %dl
+    test %cl, %cl
+    setne %cl
+    test %dl, %dl
+    setne %dl
+    and %cl, %dl
+    movzx %dl, %rcx
+    mov $0, %rdx
+    test %cl, %cl
+    sete %dl
+    test %dl, %dl
+    jz _kefir_func_clamp_int_label17
+    jmp _kefir_func_clamp_int_label18
+_kefir_func_clamp_int_label16:
+    mov $3, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_int_label17:
+    jmp _kefir_func_clamp_int_label19
+_kefir_func_clamp_int_label18:
+    mov $0, %rcx
+    cmp $-29, %eax
+    setge %cl
+    mov $0, %rdx
+    cmp $-20, %eax
+    setle %dl
+    test %cl, %cl
+    setne %cl
+    test %dl, %dl
+    setne %dl
+    and %cl, %dl
+    movzx %dl, %rcx
+    mov $0, %rdx
+    test %cl, %cl
+    sete %dl
+    test %dl, %dl
+    jz _kefir_func_clamp_int_label20
+    jmp _kefir_func_clamp_int_label21
+_kefir_func_clamp_int_label19:
+    mov $3, %rax
+    neg %eax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_int_label20:
+    jmp _kefir_func_clamp_int_label22
+_kefir_func_clamp_int_label21:
+    mov $0, %rcx
+    cmp $-19, %eax
+    setge %cl
+    mov $0, %rdx
+    cmp $-10, %eax
+    setle %dl
+    test %cl, %cl
+    setne %cl
+    test %dl, %dl
+    setne %dl
+    and %cl, %dl
+    movzx %dl, %rcx
+    mov $0, %rdx
+    test %cl, %cl
+    sete %dl
+    test %dl, %dl
+    jz _kefir_func_clamp_int_label23
+    jmp _kefir_func_clamp_int_label24
+_kefir_func_clamp_int_label22:
+    mov $2, %rax
+    neg %eax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_int_label23:
+    jmp _kefir_func_clamp_int_label25
+_kefir_func_clamp_int_label24:
+    mov $0, %rcx
+    cmp $-9, %eax
+    setge %cl
+    mov $0, %rdx
+    cmp $-1, %eax
+    setle %dl
+    test %cl, %cl
+    setne %al
+    test %dl, %dl
+    setne %cl
+    and %al, %cl
+    movzx %cl, %rax
+    mov $0, %rcx
+    test %al, %al
+    sete %cl
+    test %cl, %cl
+    jz _kefir_func_clamp_int_label26
+    jmp _kefir_func_clamp_int_label27
+_kefir_func_clamp_int_label25:
+    mov $1, %rax
+    neg %eax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_int_label26:
+    jmp _kefir_func_clamp_int_label28
+_kefir_func_clamp_int_label27:
+    jmp _kefir_func_clamp_int_label29
+_kefir_func_clamp_int_label28:
+    mov $0, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_int_label29:
+    mov $100, %rax
+    neg %eax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+clamp_char:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_clamp_char_label0:
+_kefir_func_clamp_char_label1:
+    movb %dil, -1(%rbp)
+    movsxb -1(%rbp), %rax
+    cmp $0, %eax
+    je _kefir_func_clamp_char_label2
+    jmp _kefir_func_clamp_char_label3
+_kefir_func_clamp_char_label2:
+    jmp _kefir_func_clamp_char_label4
+_kefir_func_clamp_char_label3:
+    mov $0, %rcx
+    cmp $1, %eax
+    setge %cl
+    mov $0, %rdx
+    cmp $9, %eax
+    setle %dl
+    test %cl, %cl
+    setne %cl
+    test %dl, %dl
+    setne %dl
+    and %cl, %dl
+    movzx %dl, %rcx
+    mov $0, %rdx
+    test %cl, %cl
+    sete %dl
+    test %dl, %dl
+    jz _kefir_func_clamp_char_label5
+    jmp _kefir_func_clamp_char_label6
+_kefir_func_clamp_char_label4:
+    mov $100, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_char_label5:
+    jmp _kefir_func_clamp_char_label7
+_kefir_func_clamp_char_label6:
+    mov $0, %rcx
+    cmp $10, %eax
+    setge %cl
+    mov $0, %rdx
+    cmp $19, %eax
+    setle %dl
+    test %cl, %cl
+    setne %cl
+    test %dl, %dl
+    setne %dl
+    and %cl, %dl
+    movzx %dl, %rcx
+    mov $0, %rdx
+    test %cl, %cl
+    sete %dl
+    test %dl, %dl
+    jz _kefir_func_clamp_char_label8
+    jmp _kefir_func_clamp_char_label9
+_kefir_func_clamp_char_label7:
+    mov $0, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_char_label8:
+    jmp _kefir_func_clamp_char_label10
+_kefir_func_clamp_char_label9:
+    mov $0, %rcx
+    cmp $20, %eax
+    setge %cl
+    mov $0, %rdx
+    cmp $29, %eax
+    setle %dl
+    test %cl, %cl
+    setne %cl
+    test %dl, %dl
+    setne %dl
+    and %cl, %dl
+    movzx %dl, %rcx
+    mov $0, %rdx
+    test %cl, %cl
+    sete %dl
+    test %dl, %dl
+    jz _kefir_func_clamp_char_label11
+    jmp _kefir_func_clamp_char_label12
+_kefir_func_clamp_char_label10:
+    mov $1, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_char_label11:
+    jmp _kefir_func_clamp_char_label13
+_kefir_func_clamp_char_label12:
+    mov $0, %rcx
+    cmp $30, %eax
+    setge %cl
+    mov $0, %rdx
+    cmp $39, %eax
+    setle %dl
+    test %cl, %cl
+    setne %cl
+    test %dl, %dl
+    setne %dl
+    and %cl, %dl
+    movzx %dl, %rcx
+    mov $0, %rdx
+    test %cl, %cl
+    sete %dl
+    test %dl, %dl
+    jz _kefir_func_clamp_char_label14
+    jmp _kefir_func_clamp_char_label15
+_kefir_func_clamp_char_label13:
+    mov $2, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_char_label14:
+    jmp _kefir_func_clamp_char_label16
+_kefir_func_clamp_char_label15:
+    mov $0, %rcx
+    cmp $-39, %eax
+    setge %cl
+    mov $0, %rdx
+    cmp $-30, %eax
+    setle %dl
+    test %cl, %cl
+    setne %cl
+    test %dl, %dl
+    setne %dl
+    and %cl, %dl
+    movzx %dl, %rcx
+    mov $0, %rdx
+    test %cl, %cl
+    sete %dl
+    test %dl, %dl
+    jz _kefir_func_clamp_char_label17
+    jmp _kefir_func_clamp_char_label18
+_kefir_func_clamp_char_label16:
+    mov $3, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_char_label17:
+    jmp _kefir_func_clamp_char_label19
+_kefir_func_clamp_char_label18:
+    mov $0, %rcx
+    cmp $-29, %eax
+    setge %cl
+    mov $0, %rdx
+    cmp $-20, %eax
+    setle %dl
+    test %cl, %cl
+    setne %cl
+    test %dl, %dl
+    setne %dl
+    and %cl, %dl
+    movzx %dl, %rcx
+    mov $0, %rdx
+    test %cl, %cl
+    sete %dl
+    test %dl, %dl
+    jz _kefir_func_clamp_char_label20
+    jmp _kefir_func_clamp_char_label21
+_kefir_func_clamp_char_label19:
+    mov $3, %rax
+    neg %eax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_char_label20:
+    jmp _kefir_func_clamp_char_label22
+_kefir_func_clamp_char_label21:
+    mov $0, %rcx
+    cmp $-19, %eax
+    setge %cl
+    mov $0, %rdx
+    cmp $-10, %eax
+    setle %dl
+    test %cl, %cl
+    setne %cl
+    test %dl, %dl
+    setne %dl
+    and %cl, %dl
+    movzx %dl, %rcx
+    mov $0, %rdx
+    test %cl, %cl
+    sete %dl
+    test %dl, %dl
+    jz _kefir_func_clamp_char_label23
+    jmp _kefir_func_clamp_char_label24
+_kefir_func_clamp_char_label22:
+    mov $2, %rax
+    neg %eax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_char_label23:
+    jmp _kefir_func_clamp_char_label25
+_kefir_func_clamp_char_label24:
+    mov $0, %rcx
+    cmp $-9, %eax
+    setge %cl
+    mov $0, %rdx
+    cmp $-1, %eax
+    setle %dl
+    test %cl, %cl
+    setne %al
+    test %dl, %dl
+    setne %cl
+    and %al, %cl
+    movzx %cl, %rax
+    mov $0, %rcx
+    test %al, %al
+    sete %cl
+    test %cl, %cl
+    jz _kefir_func_clamp_char_label26
+    jmp _kefir_func_clamp_char_label27
+_kefir_func_clamp_char_label25:
+    mov $1, %rax
+    neg %eax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_char_label26:
+    jmp _kefir_func_clamp_char_label28
+_kefir_func_clamp_char_label27:
+    jmp _kefir_func_clamp_char_label29
+_kefir_func_clamp_char_label28:
+    mov $0, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_char_label29:
+    mov $100, %rax
+    neg %eax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+clamp_long:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_clamp_long_label0:
+_kefir_func_clamp_long_label1:
+    movq %rdi, -8(%rbp)
+    movq -8(%rbp), %rax
+    cmp $0, %rax
+    je _kefir_func_clamp_long_label2
+    jmp _kefir_func_clamp_long_label3
+_kefir_func_clamp_long_label2:
+    jmp _kefir_func_clamp_long_label4
+_kefir_func_clamp_long_label3:
+    mov $0, %rcx
+    cmp $1, %rax
+    setge %cl
+    mov $0, %rdx
+    cmp $9, %rax
+    setle %dl
+    test %cl, %cl
+    setne %cl
+    test %dl, %dl
+    setne %dl
+    and %cl, %dl
+    movzx %dl, %rcx
+    mov $0, %rdx
+    test %cl, %cl
+    sete %dl
+    test %dl, %dl
+    jz _kefir_func_clamp_long_label5
+    jmp _kefir_func_clamp_long_label6
+_kefir_func_clamp_long_label4:
+    mov $100, %rax
+    movsx %eax, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_long_label5:
+    jmp _kefir_func_clamp_long_label7
+_kefir_func_clamp_long_label6:
+    mov $0, %rcx
+    cmp $10, %rax
+    setge %cl
+    mov $0, %rdx
+    cmp $19, %rax
+    setle %dl
+    test %cl, %cl
+    setne %cl
+    test %dl, %dl
+    setne %dl
+    and %cl, %dl
+    movzx %dl, %rcx
+    mov $0, %rdx
+    test %cl, %cl
+    sete %dl
+    test %dl, %dl
+    jz _kefir_func_clamp_long_label8
+    jmp _kefir_func_clamp_long_label9
+_kefir_func_clamp_long_label7:
+    mov $0, %rax
+    movsx %eax, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_long_label8:
+    jmp _kefir_func_clamp_long_label10
+_kefir_func_clamp_long_label9:
+    mov $0, %rcx
+    cmp $20, %rax
+    setge %cl
+    mov $0, %rdx
+    cmp $29, %rax
+    setle %dl
+    test %cl, %cl
+    setne %cl
+    test %dl, %dl
+    setne %dl
+    and %cl, %dl
+    movzx %dl, %rcx
+    mov $0, %rdx
+    test %cl, %cl
+    sete %dl
+    test %dl, %dl
+    jz _kefir_func_clamp_long_label11
+    jmp _kefir_func_clamp_long_label12
+_kefir_func_clamp_long_label10:
+    mov $1, %rax
+    movsx %eax, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_long_label11:
+    jmp _kefir_func_clamp_long_label13
+_kefir_func_clamp_long_label12:
+    mov $0, %rcx
+    cmp $30, %rax
+    setge %cl
+    mov $0, %rdx
+    cmp $39, %rax
+    setle %dl
+    test %cl, %cl
+    setne %cl
+    test %dl, %dl
+    setne %dl
+    and %cl, %dl
+    movzx %dl, %rcx
+    mov $0, %rdx
+    test %cl, %cl
+    sete %dl
+    test %dl, %dl
+    jz _kefir_func_clamp_long_label14
+    jmp _kefir_func_clamp_long_label15
+_kefir_func_clamp_long_label13:
+    mov $2, %rax
+    movsx %eax, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_long_label14:
+    jmp _kefir_func_clamp_long_label16
+_kefir_func_clamp_long_label15:
+    mov $0, %rcx
+    cmp $-39, %rax
+    setge %cl
+    mov $0, %rdx
+    cmp $-30, %rax
+    setle %dl
+    test %cl, %cl
+    setne %cl
+    test %dl, %dl
+    setne %dl
+    and %cl, %dl
+    movzx %dl, %rcx
+    mov $0, %rdx
+    test %cl, %cl
+    sete %dl
+    test %dl, %dl
+    jz _kefir_func_clamp_long_label17
+    jmp _kefir_func_clamp_long_label18
+_kefir_func_clamp_long_label16:
+    mov $3, %rax
+    movsx %eax, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_long_label17:
+    jmp _kefir_func_clamp_long_label19
+_kefir_func_clamp_long_label18:
+    mov $0, %rcx
+    cmp $-29, %rax
+    setge %cl
+    mov $0, %rdx
+    cmp $-20, %rax
+    setle %dl
+    test %cl, %cl
+    setne %cl
+    test %dl, %dl
+    setne %dl
+    and %cl, %dl
+    movzx %dl, %rcx
+    mov $0, %rdx
+    test %cl, %cl
+    sete %dl
+    test %dl, %dl
+    jz _kefir_func_clamp_long_label20
+    jmp _kefir_func_clamp_long_label21
+_kefir_func_clamp_long_label19:
+    mov $3, %rax
+    neg %eax
+    movsx %eax, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_long_label20:
+    jmp _kefir_func_clamp_long_label22
+_kefir_func_clamp_long_label21:
+    mov $0, %rcx
+    cmp $-19, %rax
+    setge %cl
+    mov $0, %rdx
+    cmp $-10, %rax
+    setle %dl
+    test %cl, %cl
+    setne %cl
+    test %dl, %dl
+    setne %dl
+    and %cl, %dl
+    movzx %dl, %rcx
+    mov $0, %rdx
+    test %cl, %cl
+    sete %dl
+    test %dl, %dl
+    jz _kefir_func_clamp_long_label23
+    jmp _kefir_func_clamp_long_label24
+_kefir_func_clamp_long_label22:
+    mov $2, %rax
+    neg %eax
+    movsx %eax, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_long_label23:
+    jmp _kefir_func_clamp_long_label25
+_kefir_func_clamp_long_label24:
+    mov $0, %rcx
+    cmp $-9, %rax
+    setge %cl
+    mov $0, %rdx
+    cmp $-1, %rax
+    setle %dl
+    test %cl, %cl
+    setne %al
+    test %dl, %dl
+    setne %cl
+    and %al, %cl
+    movzx %cl, %rax
+    mov $0, %rcx
+    test %al, %al
+    sete %cl
+    test %cl, %cl
+    jz _kefir_func_clamp_long_label26
+    jmp _kefir_func_clamp_long_label27
+_kefir_func_clamp_long_label25:
+    mov $1, %rax
+    neg %eax
+    movsx %eax, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_long_label26:
+    jmp _kefir_func_clamp_long_label28
+_kefir_func_clamp_long_label27:
+    jmp _kefir_func_clamp_long_label29
+_kefir_func_clamp_long_label28:
+    mov $0, %rax
+    movsx %eax, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_long_label29:
+    mov $100, %rax
+    neg %eax
+    movsx %eax, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+clamp_short:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_clamp_short_label0:
+_kefir_func_clamp_short_label1:
+    movw %di, -2(%rbp)
+    movsxw -2(%rbp), %rax
+    cmp $0, %eax
+    je _kefir_func_clamp_short_label2
+    jmp _kefir_func_clamp_short_label3
+_kefir_func_clamp_short_label2:
+    jmp _kefir_func_clamp_short_label4
+_kefir_func_clamp_short_label3:
+    mov $0, %rcx
+    cmp $1, %eax
+    setge %cl
+    mov $0, %rdx
+    cmp $9, %eax
+    setle %dl
+    test %cl, %cl
+    setne %cl
+    test %dl, %dl
+    setne %dl
+    and %cl, %dl
+    movzx %dl, %rcx
+    mov $0, %rdx
+    test %cl, %cl
+    sete %dl
+    test %dl, %dl
+    jz _kefir_func_clamp_short_label5
+    jmp _kefir_func_clamp_short_label6
+_kefir_func_clamp_short_label4:
+    mov $100, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_short_label5:
+    jmp _kefir_func_clamp_short_label7
+_kefir_func_clamp_short_label6:
+    mov $0, %rcx
+    cmp $10, %eax
+    setge %cl
+    mov $0, %rdx
+    cmp $19, %eax
+    setle %dl
+    test %cl, %cl
+    setne %cl
+    test %dl, %dl
+    setne %dl
+    and %cl, %dl
+    movzx %dl, %rcx
+    mov $0, %rdx
+    test %cl, %cl
+    sete %dl
+    test %dl, %dl
+    jz _kefir_func_clamp_short_label8
+    jmp _kefir_func_clamp_short_label9
+_kefir_func_clamp_short_label7:
+    mov $0, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_short_label8:
+    jmp _kefir_func_clamp_short_label10
+_kefir_func_clamp_short_label9:
+    mov $0, %rcx
+    cmp $20, %eax
+    setge %cl
+    mov $0, %rdx
+    cmp $29, %eax
+    setle %dl
+    test %cl, %cl
+    setne %cl
+    test %dl, %dl
+    setne %dl
+    and %cl, %dl
+    movzx %dl, %rcx
+    mov $0, %rdx
+    test %cl, %cl
+    sete %dl
+    test %dl, %dl
+    jz _kefir_func_clamp_short_label11
+    jmp _kefir_func_clamp_short_label12
+_kefir_func_clamp_short_label10:
+    mov $1, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_short_label11:
+    jmp _kefir_func_clamp_short_label13
+_kefir_func_clamp_short_label12:
+    mov $0, %rcx
+    cmp $30, %eax
+    setge %cl
+    mov $0, %rdx
+    cmp $39, %eax
+    setle %dl
+    test %cl, %cl
+    setne %cl
+    test %dl, %dl
+    setne %dl
+    and %cl, %dl
+    movzx %dl, %rcx
+    mov $0, %rdx
+    test %cl, %cl
+    sete %dl
+    test %dl, %dl
+    jz _kefir_func_clamp_short_label14
+    jmp _kefir_func_clamp_short_label15
+_kefir_func_clamp_short_label13:
+    mov $2, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_short_label14:
+    jmp _kefir_func_clamp_short_label16
+_kefir_func_clamp_short_label15:
+    mov $0, %rcx
+    cmp $-39, %eax
+    setge %cl
+    mov $0, %rdx
+    cmp $-30, %eax
+    setle %dl
+    test %cl, %cl
+    setne %cl
+    test %dl, %dl
+    setne %dl
+    and %cl, %dl
+    movzx %dl, %rcx
+    mov $0, %rdx
+    test %cl, %cl
+    sete %dl
+    test %dl, %dl
+    jz _kefir_func_clamp_short_label17
+    jmp _kefir_func_clamp_short_label18
+_kefir_func_clamp_short_label16:
+    mov $3, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_short_label17:
+    jmp _kefir_func_clamp_short_label19
+_kefir_func_clamp_short_label18:
+    mov $0, %rcx
+    cmp $-29, %eax
+    setge %cl
+    mov $0, %rdx
+    cmp $-20, %eax
+    setle %dl
+    test %cl, %cl
+    setne %cl
+    test %dl, %dl
+    setne %dl
+    and %cl, %dl
+    movzx %dl, %rcx
+    mov $0, %rdx
+    test %cl, %cl
+    sete %dl
+    test %dl, %dl
+    jz _kefir_func_clamp_short_label20
+    jmp _kefir_func_clamp_short_label21
+_kefir_func_clamp_short_label19:
+    mov $3, %rax
+    neg %eax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_short_label20:
+    jmp _kefir_func_clamp_short_label22
+_kefir_func_clamp_short_label21:
+    mov $0, %rcx
+    cmp $-19, %eax
+    setge %cl
+    mov $0, %rdx
+    cmp $-10, %eax
+    setle %dl
+    test %cl, %cl
+    setne %cl
+    test %dl, %dl
+    setne %dl
+    and %cl, %dl
+    movzx %dl, %rcx
+    mov $0, %rdx
+    test %cl, %cl
+    sete %dl
+    test %dl, %dl
+    jz _kefir_func_clamp_short_label23
+    jmp _kefir_func_clamp_short_label24
+_kefir_func_clamp_short_label22:
+    mov $2, %rax
+    neg %eax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_short_label23:
+    jmp _kefir_func_clamp_short_label25
+_kefir_func_clamp_short_label24:
+    mov $0, %rcx
+    cmp $-9, %eax
+    setge %cl
+    mov $0, %rdx
+    cmp $-1, %eax
+    setle %dl
+    test %cl, %cl
+    setne %al
+    test %dl, %dl
+    setne %cl
+    and %al, %cl
+    movzx %cl, %rax
+    mov $0, %rcx
+    test %al, %al
+    sete %cl
+    test %cl, %cl
+    jz _kefir_func_clamp_short_label26
+    jmp _kefir_func_clamp_short_label27
+_kefir_func_clamp_short_label25:
+    mov $1, %rax
+    neg %eax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_short_label26:
+    jmp _kefir_func_clamp_short_label28
+_kefir_func_clamp_short_label27:
+    jmp _kefir_func_clamp_short_label29
+_kefir_func_clamp_short_label28:
+    mov $0, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_short_label29:
+    mov $100, %rax
+    neg %eax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+

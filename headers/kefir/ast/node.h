@@ -156,6 +156,7 @@ KEFIR_AST_NODE_STRUCT(kefir_ast_labeled_statement, {
 
 KEFIR_AST_NODE_STRUCT(kefir_ast_case_statement, {
     struct kefir_ast_node_base *expression;
+    struct kefir_ast_node_base *range_end_expression;
     struct kefir_ast_node_base *statement;
 });
 
@@ -355,6 +356,9 @@ struct kefir_ast_labeled_statement *kefir_ast_new_labeled_statement(struct kefir
 
 struct kefir_ast_case_statement *kefir_ast_new_case_statement(struct kefir_mem *, struct kefir_ast_node_base *,
                                                               struct kefir_ast_node_base *);
+struct kefir_ast_case_statement *kefir_ast_new_range_case_statement(struct kefir_mem *, struct kefir_ast_node_base *,
+                                                                    struct kefir_ast_node_base *,
+                                                                    struct kefir_ast_node_base *);
 
 struct kefir_ast_expression_statement *kefir_ast_new_expression_statement(struct kefir_mem *,
                                                                           struct kefir_ast_node_base *);
