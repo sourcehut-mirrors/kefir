@@ -1,10 +1,9 @@
 .att_syntax
 .section .note.GNU-stack,"",%progbits
 
-.global b
-.type b, @object
 .global getb
 .type getb, @function
+.extern getinteger
 .extern __kefirrt_opt_amd64_sysv_vararg_save
 .extern __kefirrt_opt_load_int_vararg
 .extern __kefirrt_opt_load_sse_vararg
@@ -35,49 +34,21 @@ getb:
     movq %rdi, -224(%rbp)
 _kefir_func_getb_label0:
 _kefir_func_getb_label1:
-    lea -204(%rbp), %rdx
+    movl %esi, -8(%rbp)
+    lea -208(%rbp), %rdx
     mov %rdx, %rdi
     mov $0, %rax
     mov $200, %rcx
     rep stosb
-    mov $1243, %rax
-    neg %eax
+    movsxl -8(%rbp), %rax
+    movq %rdx, -216(%rbp)
+    mov %rax, %rdi
+    call getinteger@PLT
+    movq -216(%rbp), %rdx
     movl %eax, -4(%rbp)
-    movl %eax, -204(%rbp)
-    mov %rdx, %rax
-    add $40, %rax
-    movsxl -4(%rbp), %rcx
-    movl %ecx, (%rax)
-    mov %rdx, %rax
-    add $80, %rax
-    movsxl -4(%rbp), %rcx
-    movl %ecx, (%rax)
-    mov %rdx, %rax
-    add $120, %rax
-    movsxl -4(%rbp), %rcx
-    movl %ecx, (%rax)
-    mov %rdx, %rax
-    add $160, %rax
-    movsxl -4(%rbp), %rcx
-    movl %ecx, (%rax)
+    movl %eax, -208(%rbp)
     mov %rdx, %rax
     add $4, %rax
-    movsxl -4(%rbp), %rcx
-    movl %ecx, (%rax)
-    mov %rdx, %rax
-    add $44, %rax
-    movsxl -4(%rbp), %rcx
-    movl %ecx, (%rax)
-    mov %rdx, %rax
-    add $84, %rax
-    movsxl -4(%rbp), %rcx
-    movl %ecx, (%rax)
-    mov %rdx, %rax
-    add $124, %rax
-    movsxl -4(%rbp), %rcx
-    movl %ecx, (%rax)
-    mov %rdx, %rax
-    add $164, %rax
     movsxl -4(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
@@ -85,39 +56,7 @@ _kefir_func_getb_label1:
     movsxl -4(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
-    add $48, %rax
-    movsxl -4(%rbp), %rcx
-    movl %ecx, (%rax)
-    mov %rdx, %rax
-    add $88, %rax
-    movsxl -4(%rbp), %rcx
-    movl %ecx, (%rax)
-    mov %rdx, %rax
-    add $128, %rax
-    movsxl -4(%rbp), %rcx
-    movl %ecx, (%rax)
-    mov %rdx, %rax
-    add $168, %rax
-    movsxl -4(%rbp), %rcx
-    movl %ecx, (%rax)
-    mov %rdx, %rax
     add $12, %rax
-    movsxl -4(%rbp), %rcx
-    movl %ecx, (%rax)
-    mov %rdx, %rax
-    add $52, %rax
-    movsxl -4(%rbp), %rcx
-    movl %ecx, (%rax)
-    mov %rdx, %rax
-    add $92, %rax
-    movsxl -4(%rbp), %rcx
-    movl %ecx, (%rax)
-    mov %rdx, %rax
-    add $132, %rax
-    movsxl -4(%rbp), %rcx
-    movl %ecx, (%rax)
-    mov %rdx, %rax
-    add $172, %rax
     movsxl -4(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
@@ -125,39 +64,7 @@ _kefir_func_getb_label1:
     movsxl -4(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
-    add $56, %rax
-    movsxl -4(%rbp), %rcx
-    movl %ecx, (%rax)
-    mov %rdx, %rax
-    add $96, %rax
-    movsxl -4(%rbp), %rcx
-    movl %ecx, (%rax)
-    mov %rdx, %rax
-    add $136, %rax
-    movsxl -4(%rbp), %rcx
-    movl %ecx, (%rax)
-    mov %rdx, %rax
-    add $176, %rax
-    movsxl -4(%rbp), %rcx
-    movl %ecx, (%rax)
-    mov %rdx, %rax
     add $20, %rax
-    movsxl -4(%rbp), %rcx
-    movl %ecx, (%rax)
-    mov %rdx, %rax
-    add $60, %rax
-    movsxl -4(%rbp), %rcx
-    movl %ecx, (%rax)
-    mov %rdx, %rax
-    add $100, %rax
-    movsxl -4(%rbp), %rcx
-    movl %ecx, (%rax)
-    mov %rdx, %rax
-    add $140, %rax
-    movsxl -4(%rbp), %rcx
-    movl %ecx, (%rax)
-    mov %rdx, %rax
-    add $180, %rax
     movsxl -4(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
@@ -165,39 +72,7 @@ _kefir_func_getb_label1:
     movsxl -4(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
-    add $64, %rax
-    movsxl -4(%rbp), %rcx
-    movl %ecx, (%rax)
-    mov %rdx, %rax
-    add $104, %rax
-    movsxl -4(%rbp), %rcx
-    movl %ecx, (%rax)
-    mov %rdx, %rax
-    add $144, %rax
-    movsxl -4(%rbp), %rcx
-    movl %ecx, (%rax)
-    mov %rdx, %rax
-    add $184, %rax
-    movsxl -4(%rbp), %rcx
-    movl %ecx, (%rax)
-    mov %rdx, %rax
     add $28, %rax
-    movsxl -4(%rbp), %rcx
-    movl %ecx, (%rax)
-    mov %rdx, %rax
-    add $68, %rax
-    movsxl -4(%rbp), %rcx
-    movl %ecx, (%rax)
-    mov %rdx, %rax
-    add $108, %rax
-    movsxl -4(%rbp), %rcx
-    movl %ecx, (%rax)
-    mov %rdx, %rax
-    add $148, %rax
-    movsxl -4(%rbp), %rcx
-    movl %ecx, (%rax)
-    mov %rdx, %rax
-    add $188, %rax
     movsxl -4(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
@@ -205,23 +80,43 @@ _kefir_func_getb_label1:
     movsxl -4(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
-    add $72, %rax
-    movsxl -4(%rbp), %rcx
-    movl %ecx, (%rax)
-    mov %rdx, %rax
-    add $112, %rax
-    movsxl -4(%rbp), %rcx
-    movl %ecx, (%rax)
-    mov %rdx, %rax
-    add $152, %rax
-    movsxl -4(%rbp), %rcx
-    movl %ecx, (%rax)
-    mov %rdx, %rax
-    add $192, %rax
-    movsxl -4(%rbp), %rcx
-    movl %ecx, (%rax)
-    mov %rdx, %rax
     add $36, %rax
+    movsxl -4(%rbp), %rcx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $40, %rax
+    movsxl -4(%rbp), %rcx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $44, %rax
+    movsxl -4(%rbp), %rcx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $48, %rax
+    movsxl -4(%rbp), %rcx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $52, %rax
+    movsxl -4(%rbp), %rcx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $56, %rax
+    movsxl -4(%rbp), %rcx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $60, %rax
+    movsxl -4(%rbp), %rcx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $64, %rax
+    movsxl -4(%rbp), %rcx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $68, %rax
+    movsxl -4(%rbp), %rcx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $72, %rax
     movsxl -4(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
@@ -229,7 +124,79 @@ _kefir_func_getb_label1:
     movsxl -4(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
+    add $80, %rax
+    movsxl -4(%rbp), %rcx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $84, %rax
+    movsxl -4(%rbp), %rcx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $88, %rax
+    movsxl -4(%rbp), %rcx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $92, %rax
+    movsxl -4(%rbp), %rcx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $96, %rax
+    movsxl -4(%rbp), %rcx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $100, %rax
+    movsxl -4(%rbp), %rcx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $104, %rax
+    movsxl -4(%rbp), %rcx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $108, %rax
+    movsxl -4(%rbp), %rcx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $112, %rax
+    movsxl -4(%rbp), %rcx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
     add $116, %rax
+    movsxl -4(%rbp), %rcx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $120, %rax
+    movsxl -4(%rbp), %rcx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $124, %rax
+    movsxl -4(%rbp), %rcx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $128, %rax
+    movsxl -4(%rbp), %rcx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $132, %rax
+    movsxl -4(%rbp), %rcx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $136, %rax
+    movsxl -4(%rbp), %rcx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $140, %rax
+    movsxl -4(%rbp), %rcx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $144, %rax
+    movsxl -4(%rbp), %rcx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $148, %rax
+    movsxl -4(%rbp), %rcx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $152, %rax
     movsxl -4(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
@@ -237,12 +204,48 @@ _kefir_func_getb_label1:
     movsxl -4(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
-    add $196, %rax
+    add $160, %rax
     movsxl -4(%rbp), %rcx
     movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $164, %rax
+    movsxl -4(%rbp), %rcx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $168, %rax
+    movsxl -4(%rbp), %rcx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $172, %rax
+    movsxl -4(%rbp), %rcx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $176, %rax
+    movsxl -4(%rbp), %rcx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $180, %rax
+    movsxl -4(%rbp), %rcx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $184, %rax
+    movsxl -4(%rbp), %rcx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $188, %rax
+    movsxl -4(%rbp), %rcx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $192, %rax
+    movsxl -4(%rbp), %rcx
+    movl %ecx, (%rax)
+    add $196, %rdx
+    movsxl -4(%rbp), %rax
+    movl %eax, (%rdx)
+    lea -208(%rbp), %rcx
     movq -224(%rbp), %rax
     mov %rax, %rdi
-    mov %rdx, %rsi
+    mov %rcx, %rsi
     cld
     mov $25, %rcx
     rep movsq
@@ -250,58 +253,4 @@ _kefir_func_getb_label1:
     pop %rbp
     ret
 
-
-.section .data
-    .align 4
-b:
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
 

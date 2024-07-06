@@ -21,6 +21,8 @@
 #include "kefir/ast-translator/translator.h"
 #include "kefir/ast-translator/translator_impl.h"
 #include "kefir/ast-translator/typeconv.h"
+#include "kefir/ast-translator/temporaries.h"
+#include "kefir/ast-translator/value.h"
 #include "kefir/core/extensions.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
@@ -112,6 +114,15 @@ kefir_result_t kefir_ast_translate_expression(struct kefir_mem *mem, const struc
     REQUIRE_OK(res);
     struct kefir_ast_translator_parameters param = {.mem = mem, .builder = builder, .context = context};
     REQUIRE_OK(KEFIR_AST_NODE_VISIT(&visitor, base, &param));
+
+    if (base->properties.expression_props.preserve_after_eval.enabled) {
+        REQUIRE_OK(kefir_ast_translator_fetch_temporary(
+            mem, context, builder, &base->properties.expression_props.preserve_after_eval.temporary_identifier));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 1));
+        REQUIRE_OK(
+            kefir_ast_translator_store_value(mem, base->properties.type, context, builder, &base->source_location));
+    }
+
     KEFIR_RUN_EXTENSION(&res, mem, context, after_translate, base, builder,
                         KEFIR_AST_TRANSLATOR_CONTEXT_EXTENSION_TAG_EXPRESSION);
     REQUIRE_OK(res);

@@ -1,10 +1,9 @@
 .att_syntax
 .section .note.GNU-stack,"",%progbits
 
-.global b
-.type b, @object
 .global getb
 .type getb, @function
+.extern getinteger
 .extern __kefirrt_opt_amd64_sysv_vararg_save
 .extern __kefirrt_opt_load_int_vararg
 .extern __kefirrt_opt_load_sse_vararg
@@ -31,277 +30,275 @@
 getb:
     push %rbp
     mov %rsp, %rbp
-    sub $224, %rsp
-    movq %rdi, -224(%rbp)
+    sub $304, %rsp
+    movq %rdi, -304(%rbp)
 _kefir_func_getb_label0:
 _kefir_func_getb_label1:
-    lea -204(%rbp), %rdx
+    movl %esi, -260(%rbp)
+    lea -248(%rbp), %rdx
     mov %rdx, %rdi
     mov $0, %rax
-    mov $200, %rcx
+    mov $240, %rcx
     rep stosb
-    mov $1243, %rax
-    neg %eax
-    movl %eax, -4(%rbp)
-    movl %eax, -204(%rbp)
+    movsxl -260(%rbp), %rax
+    movq %rdx, -296(%rbp)
+    mov %rax, %rdi
+    call getinteger@PLT
+    movq -296(%rbp), %rdx
+    movl %eax, -8(%rbp)
+    movl %eax, -248(%rbp)
     mov %rdx, %rax
     add $40, %rax
-    movsxl -4(%rbp), %rcx
+    movsxl -8(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
     add $80, %rax
-    movsxl -4(%rbp), %rcx
+    movsxl -8(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
     add $120, %rax
-    movsxl -4(%rbp), %rcx
+    movsxl -8(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
     add $160, %rax
-    movsxl -4(%rbp), %rcx
+    movsxl -8(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
     add $4, %rax
-    movsxl -4(%rbp), %rcx
+    movsxl -8(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
     add $44, %rax
-    movsxl -4(%rbp), %rcx
+    movsxl -8(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
     add $84, %rax
-    movsxl -4(%rbp), %rcx
+    movsxl -8(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
     add $124, %rax
-    movsxl -4(%rbp), %rcx
+    movsxl -8(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
     add $164, %rax
-    movsxl -4(%rbp), %rcx
+    movsxl -8(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
     add $8, %rax
-    movsxl -4(%rbp), %rcx
+    movsxl -8(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
     add $48, %rax
-    movsxl -4(%rbp), %rcx
+    movsxl -8(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
     add $88, %rax
-    movsxl -4(%rbp), %rcx
+    movsxl -8(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
     add $128, %rax
-    movsxl -4(%rbp), %rcx
+    movsxl -8(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
     add $168, %rax
-    movsxl -4(%rbp), %rcx
+    movsxl -8(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
     add $12, %rax
-    movsxl -4(%rbp), %rcx
+    movsxl -8(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
     add $52, %rax
-    movsxl -4(%rbp), %rcx
+    movsxl -8(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
     add $92, %rax
-    movsxl -4(%rbp), %rcx
+    movsxl -8(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
     add $132, %rax
-    movsxl -4(%rbp), %rcx
+    movsxl -8(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
     add $172, %rax
-    movsxl -4(%rbp), %rcx
+    movsxl -8(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
     add $16, %rax
-    movsxl -4(%rbp), %rcx
+    movsxl -8(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
     add $56, %rax
-    movsxl -4(%rbp), %rcx
+    movsxl -8(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
     add $96, %rax
-    movsxl -4(%rbp), %rcx
+    movsxl -8(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
     add $136, %rax
-    movsxl -4(%rbp), %rcx
+    movsxl -8(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
     add $176, %rax
-    movsxl -4(%rbp), %rcx
+    movsxl -8(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
     add $20, %rax
-    movsxl -4(%rbp), %rcx
+    movsxl -8(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
     add $60, %rax
-    movsxl -4(%rbp), %rcx
+    movsxl -8(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
     add $100, %rax
-    movsxl -4(%rbp), %rcx
+    movsxl -8(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
     add $140, %rax
-    movsxl -4(%rbp), %rcx
+    movsxl -8(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
     add $180, %rax
-    movsxl -4(%rbp), %rcx
+    movsxl -8(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
     add $24, %rax
-    movsxl -4(%rbp), %rcx
+    movsxl -8(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
     add $64, %rax
-    movsxl -4(%rbp), %rcx
+    movsxl -8(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
     add $104, %rax
-    movsxl -4(%rbp), %rcx
+    movsxl -8(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
     add $144, %rax
-    movsxl -4(%rbp), %rcx
+    movsxl -8(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
     add $184, %rax
-    movsxl -4(%rbp), %rcx
+    movsxl -8(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
     add $28, %rax
-    movsxl -4(%rbp), %rcx
+    movsxl -8(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
     add $68, %rax
-    movsxl -4(%rbp), %rcx
+    movsxl -8(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
     add $108, %rax
-    movsxl -4(%rbp), %rcx
+    movsxl -8(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
     add $148, %rax
-    movsxl -4(%rbp), %rcx
+    movsxl -8(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
     add $188, %rax
-    movsxl -4(%rbp), %rcx
+    movsxl -8(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
     add $32, %rax
-    movsxl -4(%rbp), %rcx
+    movsxl -8(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
     add $72, %rax
-    movsxl -4(%rbp), %rcx
+    movsxl -8(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
     add $112, %rax
-    movsxl -4(%rbp), %rcx
+    movsxl -8(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
     add $152, %rax
-    movsxl -4(%rbp), %rcx
+    movsxl -8(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
     add $192, %rax
-    movsxl -4(%rbp), %rcx
+    movsxl -8(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
     add $36, %rax
-    movsxl -4(%rbp), %rcx
+    movsxl -8(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
     add $76, %rax
-    movsxl -4(%rbp), %rcx
+    movsxl -8(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
     add $116, %rax
-    movsxl -4(%rbp), %rcx
+    movsxl -8(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
     add $156, %rax
-    movsxl -4(%rbp), %rcx
+    movsxl -8(%rbp), %rcx
     movl %ecx, (%rax)
     mov %rdx, %rax
     add $196, %rax
+    movsxl -8(%rbp), %rcx
+    movl %ecx, (%rax)
+    mov %rdx, %rcx
+    add $200, %rcx
+    movsxl -260(%rbp), %rax
+    imul $2, %eax, %eax
+    movq %rdx, -288(%rbp)
+    movq %rcx, -280(%rbp)
+    mov %rax, %rdi
+    call getinteger@PLT
+    movq -288(%rbp), %rdx
+    movq -280(%rbp), %rcx
+    movl %eax, -4(%rbp)
+    movl %eax, (%rcx)
+    mov %rdx, %rax
+    add $204, %rax
     movsxl -4(%rbp), %rcx
     movl %ecx, (%rax)
-    movq -224(%rbp), %rax
+    mov %rdx, %rax
+    add $208, %rax
+    movsxl -4(%rbp), %rcx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $212, %rax
+    movsxl -4(%rbp), %rcx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $216, %rax
+    movsxl -4(%rbp), %rcx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $220, %rax
+    movsxl -4(%rbp), %rcx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $224, %rax
+    movsxl -4(%rbp), %rcx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $228, %rax
+    movsxl -4(%rbp), %rcx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $232, %rax
+    movsxl -4(%rbp), %rcx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $236, %rax
+    movsxl -4(%rbp), %rcx
+    movl %ecx, (%rax)
+    movq -304(%rbp), %rax
     mov %rax, %rdi
     mov %rdx, %rsi
     cld
-    mov $25, %rcx
+    mov $30, %rcx
     rep movsq
     lea (%rbp), %rsp
     pop %rbp
     ret
 
-
-.section .data
-    .align 4
-b:
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
-    .long 2989
 

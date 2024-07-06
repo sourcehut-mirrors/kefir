@@ -21,6 +21,8 @@
 #include "kefir/ast/analyzer/initializer.h"
 #include "kefir/ast/analyzer/analyzer.h"
 #include "kefir/ast/analyzer/type_traversal.h"
+#include "kefir/ast/initializer_traversal.h"
+#include "kefir/core/hashtreeset.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 #include "kefir/core/source_error.h"
@@ -44,10 +46,6 @@ static kefir_result_t preanalyze_initializer(struct kefir_mem *mem, const struct
             }
 
             REQUIRE_OK(preanalyze_initializer(mem, context, entry->value, properties));
-            for (const struct kefir_ast_designator *designator = entry->designator; designator != NULL; designator = designator->next) {
-                REQUIRE(designator->type != KEFIR_AST_DESIGNATOR_SUBSCRIPT_RANGE || properties->constant,
-                    KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_SUPPORTED, &initializer->source_location, "Subscript range designators in non-constant initializers are not supported yet"));
-            }
         }
     }
     return KEFIR_OK;
@@ -152,8 +150,7 @@ struct traverse_aggregate_union_param {
 
 static kefir_result_t traverse_aggregate_union_impl(struct kefir_ast_designator *entry_designator, void *payload) {
     REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid designator unroll payload"));
-    ASSIGN_DECL_CAST(struct traverse_aggregate_union_param *, param,
-        payload);
+    ASSIGN_DECL_CAST(struct traverse_aggregate_union_param *, param, payload);
     struct kefir_mem *mem = param->mem;
     const struct kefir_ast_context *context = param->context;
     struct kefir_ast_type_traversal *traversal = param->traversal;
@@ -177,10 +174,9 @@ static kefir_result_t traverse_aggregate_union_impl(struct kefir_ast_designator 
 
         kefir_result_t res;
         REQUIRE_MATCH_OK(
-            &res,
-            kefir_ast_node_assignable(mem, context, entry->value->expression, kefir_ast_unqualified_type(type)),
+            &res, kefir_ast_node_assignable(mem, context, entry->value->expression, kefir_ast_unqualified_type(type)),
             KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &entry->value->expression->source_location,
-                                "Expression value shall be assignable to field type"));
+                                   "Expression value shall be assignable to field type"));
         REQUIRE_OK(res);
     } else {
         const struct kefir_ast_type *type = NULL;
@@ -190,13 +186,12 @@ static kefir_result_t traverse_aggregate_union_impl(struct kefir_ast_designator 
         while (res == KEFIR_NO_MATCH) {
             REQUIRE_OK(kefir_ast_type_traversal_step(mem, traversal));
             REQUIRE_OK(kefir_ast_type_traversal_next(mem, traversal, &type, NULL));
-            res =
-                kefir_ast_node_assignable(mem, context, entry->value->expression, kefir_ast_unqualified_type(type));
+            res = kefir_ast_node_assignable(mem, context, entry->value->expression, kefir_ast_unqualified_type(type));
         }
 
         if (res == KEFIR_NO_MATCH) {
             res = KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &entry->value->expression->source_location,
-                                        "Expression value shall be assignable to field type");
+                                         "Expression value shall be assignable to field type");
         }
         REQUIRE_OK(res);
     }
@@ -210,13 +205,10 @@ static kefir_result_t traverse_aggregate_union(struct kefir_mem *mem, const stru
     for (; init_iter != NULL; kefir_list_next(&init_iter)) {
         ASSIGN_DECL_CAST(struct kefir_ast_initializer_list_entry *, entry, init_iter->value);
 
-        kefir_result_t res = kefir_ast_designator_unroll(entry->designator, traverse_aggregate_union_impl, &(struct traverse_aggregate_union_param) {
-            .mem = mem,
-            .context = context,
-            .initializer = initializer,
-            .traversal = traversal,
-            .entry = entry
-        });
+        kefir_result_t res = kefir_ast_designator_unroll(
+            entry->designator, traverse_aggregate_union_impl,
+            &(struct traverse_aggregate_union_param){
+                .mem = mem, .context = context, .initializer = initializer, .traversal = traversal, .entry = entry});
         if (res != KEFIR_YIELD) {
             REQUIRE_OK(res);
         }
@@ -346,6 +338,51 @@ static kefir_result_t analyze_auto_type(struct kefir_mem *mem, const struct kefi
     return KEFIR_OK;
 }
 
+struct obtain_temporaries_for_ranges_param {
+    struct kefir_mem *mem;
+    const struct kefir_ast_context *context;
+    struct kefir_hashtreeset repeated_nodes;
+};
+
+static kefir_result_t traverse_scalar(const struct kefir_ast_designator *designator,
+                                      struct kefir_ast_node_base *expression, void *payload) {
+    UNUSED(designator);
+    REQUIRE(expression != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid AST expression node"));
+    REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid payload"));
+    REQUIRE(!expression->properties.expression_props.preserve_after_eval.enabled, KEFIR_OK);
+    ASSIGN_DECL_CAST(struct obtain_temporaries_for_ranges_param *, param, payload);
+
+    if (kefir_hashtreeset_has(&param->repeated_nodes, (kefir_hashtreeset_entry_t) expression)) {
+        REQUIRE_OK(param->context->allocate_temporary_value(
+            param->mem, param->context, expression->properties.type, NULL, &expression->source_location,
+            &expression->properties.expression_props.preserve_after_eval.temporary_identifier));
+        expression->properties.expression_props.preserve_after_eval.enabled = true;
+    }
+    REQUIRE_OK(kefir_hashtreeset_add(param->mem, &param->repeated_nodes, (kefir_hashtreeset_entry_t) expression));
+
+    return KEFIR_OK;
+}
+
+static kefir_result_t obtain_temporaries_for_ranges(struct kefir_mem *mem, const struct kefir_ast_context *context,
+                                                    const struct kefir_ast_type *type,
+                                                    const struct kefir_ast_initializer *initializer) {
+    struct obtain_temporaries_for_ranges_param param = {.mem = mem, .context = context};
+    REQUIRE_OK(kefir_hashtreeset_init(&param.repeated_nodes, &kefir_hashtree_uint_ops));
+
+    struct kefir_ast_initializer_traversal initializer_traversal;
+    KEFIR_AST_INITIALIZER_TRAVERSAL_INIT(&initializer_traversal);
+    initializer_traversal.visit_value = traverse_scalar;
+    initializer_traversal.payload = &param;
+
+    kefir_result_t res = kefi_ast_traverse_initializer(mem, context, initializer, type, &initializer_traversal);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_hashtreeset_free(mem, &param.repeated_nodes);
+        return res;
+    });
+    REQUIRE_OK(kefir_hashtreeset_free(mem, &param.repeated_nodes));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_ast_analyze_initializer(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                              const struct kefir_ast_type *type,
                                              const struct kefir_ast_initializer *initializer,
@@ -361,18 +398,21 @@ kefir_result_t kefir_ast_analyze_initializer(struct kefir_mem *mem, const struct
         properties->type = NULL;
         properties->constant = true;
     }
-    REQUIRE_OK(preanalyze_initializer(mem, context, initializer, properties));
+    struct kefir_ast_initializer_properties props = {.constant = true, .type = NULL, .contains_long_double = false};
+    REQUIRE_OK(preanalyze_initializer(mem, context, initializer, &props));
     if (KEFIR_AST_TYPE_IS_SCALAR_TYPE(type)) {
-        REQUIRE_OK(analyze_scalar(mem, context, type, initializer, properties));
+        REQUIRE_OK(analyze_scalar(mem, context, type, initializer, &props));
     } else if (type->tag == KEFIR_AST_TYPE_ARRAY) {
-        REQUIRE_OK(analyze_array(mem, context, type, initializer, properties));
+        REQUIRE_OK(analyze_array(mem, context, type, initializer, &props));
     } else if (type->tag == KEFIR_AST_TYPE_STRUCTURE || type->tag == KEFIR_AST_TYPE_UNION) {
-        REQUIRE_OK(analyze_struct_union(mem, context, type, initializer, properties));
+        REQUIRE_OK(analyze_struct_union(mem, context, type, initializer, &props));
     } else if (KEFIR_AST_TYPE_IS_AUTO(type)) {
-        REQUIRE_OK(analyze_auto_type(mem, context, type, initializer, properties));
+        REQUIRE_OK(analyze_auto_type(mem, context, type, initializer, &props));
     } else {
         return KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &initializer->source_location,
                                       "Cannot initialize incomplete object type");
     }
+    REQUIRE_OK(obtain_temporaries_for_ranges(mem, context, props.type, initializer));
+    ASSIGN_PTR(properties, props);
     return KEFIR_OK;
 }

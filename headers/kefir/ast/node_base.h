@@ -59,6 +59,11 @@ typedef struct kefir_ast_node_properties {
         struct kefir_ast_temporary_identifier temporary_identifier;
         struct kefir_ast_flow_control_structure *flow_control_statement;
         kefir_size_t alignment;
+
+        struct {
+            kefir_bool_t enabled;
+            struct kefir_ast_temporary_identifier temporary_identifier;
+        } preserve_after_eval;
     } expression_props;
 
     struct {
