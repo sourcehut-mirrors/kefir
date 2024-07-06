@@ -117,6 +117,7 @@ static kefir_result_t dump_action_impl(struct kefir_mem *mem, const struct kefir
     compiler.parser_configuration.omitted_conditional_operand = options->features.omitted_conditional_operand;
     compiler.parser_configuration.fail_on_assembly = options->features.fail_on_assembly;
     compiler.parser_configuration.switch_case_ranges = options->features.switch_case_ranges;
+    compiler.parser_configuration.designator_subscript_ranges = options->features.designator_subscript_ranges;
 
     compiler.ast_global_context.configuration.analysis.non_strict_qualifiers = options->features.non_strict_qualifiers;
     compiler.ast_global_context.configuration.analysis.fixed_enum_type = options->features.signed_enum_type;

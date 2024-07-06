@@ -26,11 +26,21 @@
 #include "kefir/ast/designator.h"
 #include "kefir/core/source_location.h"
 
+typedef enum kefir_ast_initializer_designation_type {
+    KEFIR_AST_INIITIALIZER_DESIGNATION_MEMBER,
+    KEFIR_AST_INIITIALIZER_DESIGNATION_SUBSCRIPT,
+    KEFIR_AST_INIITIALIZER_DESIGNATION_SUBSCRIPT_RANGE
+} kefir_ast_initializer_designation_type_t;
+
 typedef struct kefir_ast_initializer_designation {
-    kefir_bool_t indexed;
+    kefir_ast_initializer_designation_type_t type;
     union {
         const char *identifier;
         struct kefir_ast_node_base *index;
+        struct {
+            struct kefir_ast_node_base *begin;
+            struct kefir_ast_node_base *end;
+        } range;
     };
 
     struct kefir_ast_initializer_designation *next;
@@ -65,6 +75,8 @@ struct kefir_ast_initializer_designation *kefir_ast_new_initializer_member_desig
     struct kefir_mem *, struct kefir_string_pool *, const char *, struct kefir_ast_initializer_designation *);
 struct kefir_ast_initializer_designation *kefir_ast_new_initializer_index_designation(
     struct kefir_mem *, struct kefir_ast_node_base *, struct kefir_ast_initializer_designation *);
+struct kefir_ast_initializer_designation *kefir_ast_new_initializer_range_designation(
+    struct kefir_mem *, struct kefir_ast_node_base *, struct kefir_ast_node_base *, struct kefir_ast_initializer_designation *);
 struct kefir_ast_initializer_designation *kefir_ast_initializer_designation_clone(
     struct kefir_mem *, struct kefir_ast_initializer_designation *);
 kefir_result_t kefir_ast_initializer_designation_free(struct kefir_mem *, struct kefir_ast_initializer_designation *);

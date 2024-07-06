@@ -1,0 +1,355 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global b
+.type b, @object
+.global getb
+.type getb, @function
+.extern __kefirrt_opt_amd64_sysv_vararg_save
+.extern __kefirrt_opt_load_int_vararg
+.extern __kefirrt_opt_load_sse_vararg
+.extern __kefirrt_opt_float32_to_uint
+.extern __kefirrt_opt_float64_to_uint
+.extern __kefirrt_opt_long_double_to_int
+.extern __kefirrt_opt_long_double_to_uint
+.extern __kefirrt_opt_complex_long_double_equals
+.extern __kefirrt_opt_complex_long_double_truncate_1bit
+.extern __kefirrt_opt_complex_float32_mul
+.extern __kefirrt_opt_complex_float32_div
+.extern __kefirrt_opt_complex_float64_mul
+.extern __kefirrt_opt_complex_float64_div
+.extern __kefirrt_opt_complex_long_double_mul
+.extern __kefirrt_opt_complex_long_double_div
+.extern __kefirrt_fenv_update
+.extern __kefir_opt_float32_neg
+.extern __kefir_opt_float64_neg
+.extern __kefir_opt_uint2long_double
+.extern __kefir_opt_complex_float32_neg
+.extern __kefir_opt_complex_float64_neg
+
+.section .text
+getb:
+    push %rbp
+    mov %rsp, %rbp
+    sub $208, %rsp
+    movq %rdi, -208(%rbp)
+_kefir_func_getb_label0:
+_kefir_func_getb_label1:
+    lea -200(%rbp), %rdx
+    mov %rdx, %rdi
+    mov $0, %rax
+    mov $200, %rcx
+    rep stosb
+    mov $1243, %rax
+    neg %eax
+    movl %eax, -200(%rbp)
+    mov %rdx, %rax
+    add $40, %rax
+    mov $1243, %rcx
+    neg %ecx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $80, %rax
+    mov $1243, %rcx
+    neg %ecx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $120, %rax
+    mov $1243, %rcx
+    neg %ecx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $160, %rax
+    mov $1243, %rcx
+    neg %ecx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $4, %rax
+    mov $1243, %rcx
+    neg %ecx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $44, %rax
+    mov $1243, %rcx
+    neg %ecx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $84, %rax
+    mov $1243, %rcx
+    neg %ecx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $124, %rax
+    mov $1243, %rcx
+    neg %ecx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $164, %rax
+    mov $1243, %rcx
+    neg %ecx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $8, %rax
+    mov $1243, %rcx
+    neg %ecx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $48, %rax
+    mov $1243, %rcx
+    neg %ecx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $88, %rax
+    mov $1243, %rcx
+    neg %ecx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $128, %rax
+    mov $1243, %rcx
+    neg %ecx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $168, %rax
+    mov $1243, %rcx
+    neg %ecx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $12, %rax
+    mov $1243, %rcx
+    neg %ecx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $52, %rax
+    mov $1243, %rcx
+    neg %ecx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $92, %rax
+    mov $1243, %rcx
+    neg %ecx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $132, %rax
+    mov $1243, %rcx
+    neg %ecx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $172, %rax
+    mov $1243, %rcx
+    neg %ecx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $16, %rax
+    mov $1243, %rcx
+    neg %ecx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $56, %rax
+    mov $1243, %rcx
+    neg %ecx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $96, %rax
+    mov $1243, %rcx
+    neg %ecx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $136, %rax
+    mov $1243, %rcx
+    neg %ecx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $176, %rax
+    mov $1243, %rcx
+    neg %ecx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $20, %rax
+    mov $1243, %rcx
+    neg %ecx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $60, %rax
+    mov $1243, %rcx
+    neg %ecx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $100, %rax
+    mov $1243, %rcx
+    neg %ecx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $140, %rax
+    mov $1243, %rcx
+    neg %ecx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $180, %rax
+    mov $1243, %rcx
+    neg %ecx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $24, %rax
+    mov $1243, %rcx
+    neg %ecx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $64, %rax
+    mov $1243, %rcx
+    neg %ecx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $104, %rax
+    mov $1243, %rcx
+    neg %ecx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $144, %rax
+    mov $1243, %rcx
+    neg %ecx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $184, %rax
+    mov $1243, %rcx
+    neg %ecx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $28, %rax
+    mov $1243, %rcx
+    neg %ecx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $68, %rax
+    mov $1243, %rcx
+    neg %ecx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $108, %rax
+    mov $1243, %rcx
+    neg %ecx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $148, %rax
+    mov $1243, %rcx
+    neg %ecx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $188, %rax
+    mov $1243, %rcx
+    neg %ecx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $32, %rax
+    mov $1243, %rcx
+    neg %ecx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $72, %rax
+    mov $1243, %rcx
+    neg %ecx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $112, %rax
+    mov $1243, %rcx
+    neg %ecx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $152, %rax
+    mov $1243, %rcx
+    neg %ecx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $192, %rax
+    mov $1243, %rcx
+    neg %ecx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $36, %rax
+    mov $1243, %rcx
+    neg %ecx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $76, %rax
+    mov $1243, %rcx
+    neg %ecx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $116, %rax
+    mov $1243, %rcx
+    neg %ecx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $156, %rax
+    mov $1243, %rcx
+    neg %ecx
+    movl %ecx, (%rax)
+    mov %rdx, %rax
+    add $196, %rax
+    mov $1243, %rcx
+    neg %ecx
+    movl %ecx, (%rax)
+    movq -208(%rbp), %rax
+    mov %rax, %rdi
+    mov %rdx, %rsi
+    cld
+    mov $25, %rcx
+    rep movsq
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+
+.section .data
+    .align 4
+b:
+    .long 2989
+    .long 2989
+    .long 2989
+    .long 2989
+    .long 2989
+    .long 2989
+    .long 2989
+    .long 2989
+    .long 2989
+    .long 2989
+    .long 2989
+    .long 2989
+    .long 2989
+    .long 2989
+    .long 2989
+    .long 2989
+    .long 2989
+    .long 2989
+    .long 2989
+    .long 2989
+    .long 2989
+    .long 2989
+    .long 2989
+    .long 2989
+    .long 2989
+    .long 2989
+    .long 2989
+    .long 2989
+    .long 2989
+    .long 2989
+    .long 2989
+    .long 2989
+    .long 2989
+    .long 2989
+    .long 2989
+    .long 2989
+    .long 2989
+    .long 2989
+    .long 2989
+    .long 2989
+    .long 2989
+    .long 2989
+    .long 2989
+    .long 2989
+    .long 2989
+    .long 2989
+    .long 2989
+    .long 2989
+    .long 2989
+    .long 2989
+

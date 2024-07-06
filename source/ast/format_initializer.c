@@ -31,14 +31,26 @@ kefir_result_t kefir_ast_format_initializer_designation(struct kefir_json_output
 
     REQUIRE_OK(kefir_json_output_object_begin(json));
     REQUIRE_OK(kefir_json_output_object_key(json, "type"));
-    if (designation->indexed) {
-        REQUIRE_OK(kefir_json_output_string(json, "index"));
-        REQUIRE_OK(kefir_json_output_object_key(json, "index"));
-        REQUIRE_OK(kefir_ast_format(json, designation->index, display_source_location));
-    } else {
-        REQUIRE_OK(kefir_json_output_string(json, "member"));
-        REQUIRE_OK(kefir_json_output_object_key(json, "member"));
-        REQUIRE_OK(kefir_json_output_string(json, designation->identifier));
+    switch (designation->type) {
+        case KEFIR_AST_INIITIALIZER_DESIGNATION_MEMBER:
+            REQUIRE_OK(kefir_json_output_string(json, "member"));
+            REQUIRE_OK(kefir_json_output_object_key(json, "member"));
+            REQUIRE_OK(kefir_json_output_string(json, designation->identifier));
+            break;
+
+        case KEFIR_AST_INIITIALIZER_DESIGNATION_SUBSCRIPT:
+            REQUIRE_OK(kefir_json_output_string(json, "index"));
+            REQUIRE_OK(kefir_json_output_object_key(json, "index"));
+            REQUIRE_OK(kefir_ast_format(json, designation->index, display_source_location));
+            break;
+
+        case KEFIR_AST_INIITIALIZER_DESIGNATION_SUBSCRIPT_RANGE:
+            REQUIRE_OK(kefir_json_output_string(json, "range"));
+            REQUIRE_OK(kefir_json_output_object_key(json, "begin"));
+            REQUIRE_OK(kefir_ast_format(json, designation->range.begin, display_source_location));
+            REQUIRE_OK(kefir_json_output_object_key(json, "end"));
+            REQUIRE_OK(kefir_ast_format(json, designation->range.end, display_source_location));
+            break;
     }
     REQUIRE_OK(kefir_json_output_object_key(json, "next"));
     if (designation->next != NULL) {

@@ -40,7 +40,7 @@ struct kefir_ast_initializer_designation *kefir_ast_new_initializer_member_desig
         KEFIR_MALLOC(mem, sizeof(struct kefir_ast_initializer_designation));
     REQUIRE(designation != NULL, NULL);
 
-    designation->indexed = false;
+    designation->type = KEFIR_AST_INIITIALIZER_DESIGNATION_MEMBER;
     designation->identifier = identifier;
     designation->next = next;
 
@@ -61,7 +61,7 @@ struct kefir_ast_initializer_designation *kefir_ast_new_initializer_index_design
         KEFIR_MALLOC(mem, sizeof(struct kefir_ast_initializer_designation));
     REQUIRE(designation != NULL, NULL);
 
-    designation->indexed = true;
+    designation->type = KEFIR_AST_INIITIALIZER_DESIGNATION_SUBSCRIPT;
     designation->index = index;
     designation->next = next;
 
@@ -72,6 +72,30 @@ struct kefir_ast_initializer_designation *kefir_ast_new_initializer_index_design
     });
     return designation;
 }
+
+struct kefir_ast_initializer_designation *kefir_ast_new_initializer_range_designation(
+    struct kefir_mem *mem, struct kefir_ast_node_base *begin, struct kefir_ast_node_base *end, struct kefir_ast_initializer_designation *next) {
+    REQUIRE(mem != NULL, NULL);
+    REQUIRE(begin != NULL, NULL);
+    REQUIRE(end != NULL, NULL);
+
+    struct kefir_ast_initializer_designation *designation =
+        KEFIR_MALLOC(mem, sizeof(struct kefir_ast_initializer_designation));
+    REQUIRE(designation != NULL, NULL);
+
+    designation->type = KEFIR_AST_INIITIALIZER_DESIGNATION_SUBSCRIPT_RANGE;
+    designation->range.begin = begin;
+    designation->range.end = end;
+    designation->next = next;
+
+    kefir_result_t res = kefir_source_location_empty(&designation->source_location);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_FREE(mem, designation);
+        return NULL;
+    });
+    return designation;
+}
+
 struct kefir_ast_initializer_designation *kefir_ast_initializer_designation_clone(
     struct kefir_mem *mem, struct kefir_ast_initializer_designation *designation) {
     REQUIRE(mem != NULL, NULL);
@@ -89,18 +113,37 @@ struct kefir_ast_initializer_designation *kefir_ast_initializer_designation_clon
         kefir_ast_initializer_designation_free(mem, next_clone);
         return NULL;
     });
-    clone->indexed = designation->indexed;
+    clone->type = designation->type;
     clone->next = next_clone;
 
-    if (designation->indexed) {
-        clone->index = KEFIR_AST_NODE_CLONE(mem, designation->index);
-        REQUIRE_ELSE(clone->index != NULL, {
-            kefir_ast_initializer_designation_free(mem, clone->next);
-            KEFIR_FREE(mem, clone);
-            return NULL;
-        });
-    } else {
-        clone->identifier = designation->identifier;
+    switch (designation->type) {
+        case KEFIR_AST_INIITIALIZER_DESIGNATION_MEMBER:
+            clone->identifier = designation->identifier;
+            break;
+
+        case KEFIR_AST_INIITIALIZER_DESIGNATION_SUBSCRIPT:
+            clone->index = KEFIR_AST_NODE_CLONE(mem, designation->index);
+            REQUIRE_ELSE(clone->index != NULL, {
+                kefir_ast_initializer_designation_free(mem, clone->next);
+                KEFIR_FREE(mem, clone);
+                return NULL;
+            });
+            break;
+
+        case KEFIR_AST_INIITIALIZER_DESIGNATION_SUBSCRIPT_RANGE:
+            clone->range.begin = KEFIR_AST_NODE_CLONE(mem, designation->range.begin);
+            REQUIRE_ELSE(clone->index != NULL, {
+                kefir_ast_initializer_designation_free(mem, clone->next);
+                KEFIR_FREE(mem, clone);
+                return NULL;
+            });
+            clone->range.end = KEFIR_AST_NODE_CLONE(mem, designation->range.end);
+            REQUIRE_ELSE(clone->index != NULL, {
+                kefir_ast_initializer_designation_free(mem, clone->next);
+                KEFIR_FREE(mem, clone);
+                return NULL;
+            });
+            break;
     }
     clone->source_location = designation->source_location;
     return clone;
@@ -117,11 +160,22 @@ kefir_result_t kefir_ast_initializer_designation_free(struct kefir_mem *mem,
         designation->next = NULL;
     }
 
-    if (designation->indexed) {
-        REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, designation->index));
-        designation->index = NULL;
-    } else {
-        designation->identifier = NULL;
+    switch (designation->type) {
+        case KEFIR_AST_INIITIALIZER_DESIGNATION_MEMBER:
+            designation->identifier = NULL;
+            break;
+
+        case KEFIR_AST_INIITIALIZER_DESIGNATION_SUBSCRIPT:
+            REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, designation->index));
+            designation->index = NULL;
+            break;
+
+        case KEFIR_AST_INIITIALIZER_DESIGNATION_SUBSCRIPT_RANGE:
+            REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, designation->range.begin));
+            REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, designation->range.end));
+            designation->range.begin = NULL;
+            designation->range.end = NULL;
+            break;
     }
     KEFIR_FREE(mem, designation);
     return KEFIR_OK;
@@ -144,46 +198,86 @@ kefir_result_t kefir_ast_evaluate_initializer_designation(struct kefir_mem *mem,
     }
 
     struct kefir_ast_designator *designator = NULL;
-    if (designation->indexed) {
-        kefir_result_t res = kefir_ast_analyze_node(mem, context, designation->index);
-        REQUIRE_ELSE(res == KEFIR_OK, {
-            if (next_designator != NULL) {
-                kefir_ast_designator_free(mem, next_designator);
-            }
-            return res;
-        });
+    switch (designation->type) {
+        case KEFIR_AST_INIITIALIZER_DESIGNATION_MEMBER:
+            designator = kefir_ast_new_member_designator(mem, context->symbols, designation->identifier, next_designator);
+            REQUIRE_ELSE(designator != NULL, {
+                if (next_designator != NULL) {
+                    kefir_ast_designator_free(mem, next_designator);
+                }
+                return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allicate AST member designator");
+            });
+            break;
 
-        struct kefir_ast_constant_expression_value value;
-        res = kefir_ast_constant_expression_value_evaluate(mem, context, designation->index, &value);
-        REQUIRE_ELSE(res == KEFIR_OK, {
-            if (next_designator != NULL) {
-                kefir_ast_designator_free(mem, next_designator);
-            }
-            return res;
-        });
-        REQUIRE_ELSE(value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER, {
-            if (next_designator != NULL) {
-                kefir_ast_designator_free(mem, next_designator);
-            }
-            return KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &designation->source_location,
-                                          "AST designator index must be an integral constant expression");
-        });
+        case KEFIR_AST_INIITIALIZER_DESIGNATION_SUBSCRIPT: {
+            kefir_result_t res = kefir_ast_analyze_node(mem, context, designation->index);
+            REQUIRE_ELSE(res == KEFIR_OK, {
+                if (next_designator != NULL) {
+                    kefir_ast_designator_free(mem, next_designator);
+                }
+                return res;
+            });
 
-        designator = kefir_ast_new_index_designator(mem, value.integer, next_designator);
-        REQUIRE_ELSE(designator != NULL, {
-            if (next_designator != NULL) {
-                kefir_ast_designator_free(mem, next_designator);
-            }
-            return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allicate AST index designator");
-        });
-    } else {
-        designator = kefir_ast_new_member_designator(mem, context->symbols, designation->identifier, next_designator);
-        REQUIRE_ELSE(designator != NULL, {
-            if (next_designator != NULL) {
-                kefir_ast_designator_free(mem, next_designator);
-            }
-            return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allicate AST member designator");
-        });
+            struct kefir_ast_constant_expression_value value;
+            res = kefir_ast_constant_expression_value_evaluate(mem, context, designation->index, &value);
+            REQUIRE_ELSE(res == KEFIR_OK, {
+                if (next_designator != NULL) {
+                    kefir_ast_designator_free(mem, next_designator);
+                }
+                return res;
+            });
+            REQUIRE_ELSE(value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER, {
+                if (next_designator != NULL) {
+                    kefir_ast_designator_free(mem, next_designator);
+                }
+                return KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &designation->source_location,
+                                            "AST designator index must be an integral constant expression");
+            });
+
+            designator = kefir_ast_new_index_designator(mem, value.integer, next_designator);
+            REQUIRE_ELSE(designator != NULL, {
+                if (next_designator != NULL) {
+                    kefir_ast_designator_free(mem, next_designator);
+                }
+                return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allicate AST index designator");
+            });
+        } break;
+
+        case KEFIR_AST_INIITIALIZER_DESIGNATION_SUBSCRIPT_RANGE: {
+            kefir_result_t res = kefir_ast_analyze_node(mem, context, designation->range.begin);
+            REQUIRE_CHAIN(&res,  kefir_ast_analyze_node(mem, context, designation->range.end));
+            REQUIRE_ELSE(res == KEFIR_OK, {
+                if (next_designator != NULL) {
+                    kefir_ast_designator_free(mem, next_designator);
+                }
+                return res;
+            });
+
+            struct kefir_ast_constant_expression_value begin_value, end_value;
+            REQUIRE_CHAIN(&res, kefir_ast_constant_expression_value_evaluate(mem, context, designation->range.begin, &begin_value));
+            REQUIRE_CHAIN(&res, kefir_ast_constant_expression_value_evaluate(mem, context, designation->range.end, &end_value));
+            REQUIRE_ELSE(res == KEFIR_OK, {
+                if (next_designator != NULL) {
+                    kefir_ast_designator_free(mem, next_designator);
+                }
+                return res;
+            });
+            REQUIRE_ELSE(begin_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER && end_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER, {
+                if (next_designator != NULL) {
+                    kefir_ast_designator_free(mem, next_designator);
+                }
+                return KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &designation->source_location,
+                                            "AST designator range indices must be an integral constant expression");
+            });
+
+            designator = kefir_ast_new_range_designator(mem, begin_value.integer, end_value.integer, next_designator);
+            REQUIRE_ELSE(designator != NULL, {
+                if (next_designator != NULL) {
+                    kefir_ast_designator_free(mem, next_designator);
+                }
+                return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allicate AST index designator");
+            });
+        } break;
     }
 
     *designator_ptr = designator;

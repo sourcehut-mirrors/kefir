@@ -38,6 +38,7 @@ typedef struct kefir_parser_configuration {
     kefir_bool_t omitted_conditional_operand;
     kefir_bool_t fail_on_assembly;
     kefir_bool_t switch_case_ranges;
+    kefir_bool_t designator_subscript_ranges;
 } kefir_parser_configuration_t;
 
 kefir_result_t kefir_parser_configuration_default(struct kefir_parser_configuration *);

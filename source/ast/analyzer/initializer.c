@@ -42,7 +42,12 @@ static kefir_result_t preanalyze_initializer(struct kefir_mem *mem, const struct
                 REQUIRE_OK(
                     kefir_ast_evaluate_initializer_designation(mem, context, entry->designation, &entry->designator));
             }
+
             REQUIRE_OK(preanalyze_initializer(mem, context, entry->value, properties));
+            for (const struct kefir_ast_designator *designator = entry->designator; designator != NULL; designator = designator->next) {
+                REQUIRE(designator->type != KEFIR_AST_DESIGNATOR_SUBSCRIPT_RANGE || properties->constant,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_SUPPORTED, &initializer->source_location, "Subscript range designators in non-constant initializers are not supported yet"));
+            }
         }
     }
     return KEFIR_OK;
@@ -137,51 +142,82 @@ static kefir_result_t traverse_aggregate_union_string_literal(struct kefir_mem *
     return KEFIR_OK;
 }
 
+struct traverse_aggregate_union_param {
+    struct kefir_mem *mem;
+    const struct kefir_ast_context *context;
+    const struct kefir_ast_initializer *initializer;
+    struct kefir_ast_type_traversal *traversal;
+    struct kefir_ast_initializer_list_entry *entry;
+};
+
+static kefir_result_t traverse_aggregate_union_impl(struct kefir_ast_designator *entry_designator, void *payload) {
+    REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid designator unroll payload"));
+    ASSIGN_DECL_CAST(struct traverse_aggregate_union_param *, param,
+        payload);
+    struct kefir_mem *mem = param->mem;
+    const struct kefir_ast_context *context = param->context;
+    struct kefir_ast_type_traversal *traversal = param->traversal;
+    struct kefir_ast_initializer_list_entry *entry = param->entry;
+
+    if (entry_designator != NULL) {
+        REQUIRE_OK(kefir_ast_type_traversal_navigate(mem, traversal, entry_designator));
+    } else if (kefir_ast_type_traversal_empty(traversal)) {
+        return KEFIR_YIELD;
+    }
+
+    if (entry->value->type == KEFIR_AST_INITIALIZER_LIST) {
+        const struct kefir_ast_type *type = NULL;
+        REQUIRE_OK(kefir_ast_type_traversal_next(mem, traversal, &type, NULL));
+        REQUIRE_OK(kefir_ast_analyze_initializer(mem, context, type, entry->value, NULL));
+    } else if (entry->value->expression->properties.expression_props.string_literal.content != NULL) {
+        REQUIRE_OK(traverse_aggregate_union_string_literal(mem, context, traversal, entry));
+    } else if (KEFIR_AST_TYPE_IS_SCALAR_TYPE(entry->value->expression->properties.type)) {
+        const struct kefir_ast_type *type = NULL;
+        REQUIRE_OK(kefir_ast_type_traversal_next_recursive(mem, traversal, &type, NULL));
+
+        kefir_result_t res;
+        REQUIRE_MATCH_OK(
+            &res,
+            kefir_ast_node_assignable(mem, context, entry->value->expression, kefir_ast_unqualified_type(type)),
+            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &entry->value->expression->source_location,
+                                "Expression value shall be assignable to field type"));
+        REQUIRE_OK(res);
+    } else {
+        const struct kefir_ast_type *type = NULL;
+        REQUIRE_OK(kefir_ast_type_traversal_next(mem, traversal, &type, NULL));
+        kefir_result_t res =
+            kefir_ast_node_assignable(mem, context, entry->value->expression, kefir_ast_unqualified_type(type));
+        while (res == KEFIR_NO_MATCH) {
+            REQUIRE_OK(kefir_ast_type_traversal_step(mem, traversal));
+            REQUIRE_OK(kefir_ast_type_traversal_next(mem, traversal, &type, NULL));
+            res =
+                kefir_ast_node_assignable(mem, context, entry->value->expression, kefir_ast_unqualified_type(type));
+        }
+
+        if (res == KEFIR_NO_MATCH) {
+            res = KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &entry->value->expression->source_location,
+                                        "Expression value shall be assignable to field type");
+        }
+        REQUIRE_OK(res);
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t traverse_aggregate_union(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                                const struct kefir_ast_initializer *initializer,
                                                struct kefir_ast_type_traversal *traversal) {
     const struct kefir_list_entry *init_iter = kefir_list_head(&initializer->list.initializers);
     for (; init_iter != NULL; kefir_list_next(&init_iter)) {
         ASSIGN_DECL_CAST(struct kefir_ast_initializer_list_entry *, entry, init_iter->value);
-        if (entry->designator != NULL) {
-            REQUIRE_OK(kefir_ast_type_traversal_navigate(mem, traversal, entry->designator));
-        } else if (kefir_ast_type_traversal_empty(traversal)) {
-            continue;
-        }
 
-        if (entry->value->type == KEFIR_AST_INITIALIZER_LIST) {
-            const struct kefir_ast_type *type = NULL;
-            REQUIRE_OK(kefir_ast_type_traversal_next(mem, traversal, &type, NULL));
-            REQUIRE_OK(kefir_ast_analyze_initializer(mem, context, type, entry->value, NULL));
-        } else if (entry->value->expression->properties.expression_props.string_literal.content != NULL) {
-            REQUIRE_OK(traverse_aggregate_union_string_literal(mem, context, traversal, entry));
-        } else if (KEFIR_AST_TYPE_IS_SCALAR_TYPE(entry->value->expression->properties.type)) {
-            const struct kefir_ast_type *type = NULL;
-            REQUIRE_OK(kefir_ast_type_traversal_next_recursive(mem, traversal, &type, NULL));
-
-            kefir_result_t res;
-            REQUIRE_MATCH_OK(
-                &res,
-                kefir_ast_node_assignable(mem, context, entry->value->expression, kefir_ast_unqualified_type(type)),
-                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &entry->value->expression->source_location,
-                                       "Expression value shall be assignable to field type"));
-            REQUIRE_OK(res);
-        } else {
-            const struct kefir_ast_type *type = NULL;
-            REQUIRE_OK(kefir_ast_type_traversal_next(mem, traversal, &type, NULL));
-            kefir_result_t res =
-                kefir_ast_node_assignable(mem, context, entry->value->expression, kefir_ast_unqualified_type(type));
-            while (res == KEFIR_NO_MATCH) {
-                REQUIRE_OK(kefir_ast_type_traversal_step(mem, traversal));
-                REQUIRE_OK(kefir_ast_type_traversal_next(mem, traversal, &type, NULL));
-                res =
-                    kefir_ast_node_assignable(mem, context, entry->value->expression, kefir_ast_unqualified_type(type));
-            }
-
-            if (res == KEFIR_NO_MATCH) {
-                res = KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &entry->value->expression->source_location,
-                                             "Expression value shall be assignable to field type");
-            }
+        kefir_result_t res = kefir_ast_designator_unroll(entry->designator, traverse_aggregate_union_impl, &(struct traverse_aggregate_union_param) {
+            .mem = mem,
+            .context = context,
+            .initializer = initializer,
+            .traversal = traversal,
+            .entry = entry
+        });
+        if (res != KEFIR_YIELD) {
             REQUIRE_OK(res);
         }
     }

@@ -427,6 +427,9 @@ static kefir_result_t navigate_impl(struct kefir_mem *mem, struct kefir_ast_type
         case KEFIR_AST_DESIGNATOR_SUBSCRIPT:
             REQUIRE_OK(navigate_index(mem, traversal, designator->index, push));
             break;
+
+        case KEFIR_AST_DESIGNATOR_SUBSCRIPT_RANGE:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unable to navigate to subscript range designator");
     }
     return KEFIR_OK;
 }
