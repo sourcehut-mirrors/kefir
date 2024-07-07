@@ -63,7 +63,7 @@ static kefir_result_t driver_generate_linker_config(struct kefir_mem *mem, struc
     linker_config->flags.static_linking = config->flags.static_linking;
     linker_config->flags.shared_linking = config->flags.shared_linking;
     linker_config->flags.export_dynamic = config->flags.export_dynamic;
-    linker_config->flags.pie_linking = config->flags.position_independent_executable && !config->flags.shared_linking;
+    linker_config->flags.pie_linking = config->flags.position_independent_executable;
     linker_config->flags.link_start_files = config->flags.link_start_files;
     linker_config->flags.link_default_libs = config->flags.link_default_libs;
     linker_config->flags.link_libc = config->flags.link_libc;
