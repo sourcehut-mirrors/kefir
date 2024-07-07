@@ -220,6 +220,24 @@ At the moment, Kefir is automatically tested in Ubuntu 22.04, FreeBSD 13.2 and
 OpenBSD 7.3 and NetBSD 9.3 environments. Arch Linux is used as a primary
 development environment.
 
+## Portable Kefir
+Kefir provides scripts to build portable, standalone Kefir distribution package
+that incorporates statically-linked Kefir C compiler, musl libc, assembler and
+linker from GNU Binutils. The package targets modern x86_64-based Linux systems
+and provides a minimalistic C17 development toolchain independent of host system
+tooling.
+
+Portable package can be obtained via:
+```bash
+make -f dist/portable/Makefile all
+# Build artifact is located in bin/portable/kefir-portable-0.3.1.tar.gz
+```
+
+In addition, portable package can be fully bootstraped in 3-stage process:
+```bash
+make -f dist/portable/Makefile BOOTSTRAP=yes all
+```
+
 ## Web playground
 Kefir supports compilation with [Emscripten](https://emscripten.org/) into a
 WebAssembly library, which can be invoked from client-side JavaScript in

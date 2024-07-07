@@ -35,4 +35,4 @@ fi
 if [ -f "$SCRIPT_DIR/sysconfdir/kefir.local" ]; then
     . "$SCRIPT_DIR/sysconfdir/kefir.local"
 fi
-exec "$SCRIPT_DIR/bindir/kefir-cc" "$@"
+exec "$SCRIPT_DIR/bindir/kefir-cc" $KEFIR_EXTRAARGS "$@"

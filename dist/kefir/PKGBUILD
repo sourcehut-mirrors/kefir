@@ -19,7 +19,7 @@ build () {
 
 package () {
     cd kefir-v$pkgver
-    make DESTDIR="$pkgdir" prefix="/usr" install
+    make DESTDIR="$pkgdir" prefix="/usr" INSTALL_LICENSES=no install
     install -Dm644 COPYING "$pkgdir/usr/share/licenses/$pkgname/COPYING"
     install -Dm644 source/runtime/LICENSE "$pkgdir/usr/share/licenses/$pkgname/runtime/LICENSE"
     install -Dm644 dist/README.license "$pkgdir/usr/share/licenses/$pkgname/README"

@@ -9,6 +9,8 @@ man1dir=$(mandir)/man1
 sysconfdir=$(prefix)/etc
 includedir=$(prefix)/include
 
+INSTALL_LICENSES=yes
+
 install:
 	@echo "Creating directories..."
 	@install -d "$(DESTDIR)$(includedir)"/kefir/toolchain
@@ -40,6 +42,13 @@ endif
 	@install "$(KEFIR_BIN_DIR)"/man/kefir.1.gz -t "$(DESTDIR)$(man1dir)"
 	@install "$(KEFIR_BIN_DIR)"/man/kefir-cc1.1.gz -t "$(DESTDIR)$(man1dir)"
 	@install "$(KEFIR_BIN_DIR)"/man/kefir-detect-host-env.1.gz -t "$(DESTDIR)$(man1dir)"
+ifeq ($(INSTALL_LICENSES),yes)
+	@echo "Installing license files..."
+	@mkdir -p "$(DESTDIR)$(datarootdir)/licenses/kefir/runtime"
+	@install $(ROOT)/COPYING "$(DESTDIR)$(datarootdir)/licenses/kefir/COPYING"
+	@install $(SOURCE_DIR)/runtime/LICENSE "$(DESTDIR)$(datarootdir)/licenses/kefir/runtime/LICENSE"
+	@install $(ROOT)/dist/README.license "$(DESTDIR)$(datarootdir)/licenses/kefir/README"
+endif
 	@echo "Initializing local config..."
 	@touch "$(DESTDIR)$(sysconfdir)"/kefir.local
 

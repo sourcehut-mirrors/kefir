@@ -1,0 +1,14 @@
+Kefir portable distribution package
+
+Kefir portable distribution package provides standalone C17 language development toolchain,
+featuring statically-linked Kefir C17 compiler, musl libc standard library implementation,
+assembler and linker from GNU Binutils. The package is targeted for modern x86_64-based Linux
+systems.
+
+This package incorporates software from the following projects:
+* Kefir C17 compiler <https://sr.ht/~jprotopopov/kefir/>
+* musl libc <https://musl.libc.org/>
+* GNU Binutils <https://www.gnu.org/software/binutils/>
+
+Software licenses are available in share/licenses directory. For more details refer to
+respective software project websites.

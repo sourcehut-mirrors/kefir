@@ -1,0 +1,8 @@
+
+if [ -z "$KEFIR_LD" ]; then
+    export KEFIR_LD="$SCRIPT_DIR/../bin/ld"
+fi
+
+if [ -z "$KEFIR_AS" ]; then
+    export KEFIR_AS="$SCRIPT_DIR/../bin/as"
+fi

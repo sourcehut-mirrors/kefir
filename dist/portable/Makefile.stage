@@ -1,0 +1,88 @@
+CC=cc
+LD=ld
+AS=as
+ROOT_DIR := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))/../..
+WORK_DIR=$(ROOT_DIR)/bin/portable/work
+TARGET_DIR=$(ROOT_DIR)/bin/portable/target
+
+MUSL_VERSION := 1.2.5
+MUSL_URL := https://musl.libc.org/releases/musl-$(MUSL_VERSION).tar.gz
+MUSL_ARCHIVE_FILENAME := musl-$(MUSL_VERSION).tar.gz
+MUSL_ARCHIVE := $(WORK_DIR)/$(MUSL_ARCHIVE_FILENAME)
+MUSL_ARCHIVE_SHA256 := a9a118bbe84d8764da0ea0d28b3ab3fae8477fc7e4085d90102b8596fc7c75e4
+
+BINUTILS_VERSION := 2.42
+BINUTILS_ARCHIVE_FILENAME := binutils-$(BINUTILS_VERSION).tar.xz
+BINUTILS_ARCHIVE := $(WORK_DIR)/$(BINUTILS_ARCHIVE_FILENAME)
+BINUTILS_URL := https://ftp.gnu.org/gnu/binutils/binutils-$(BINUTILS_VERSION).tar.xz
+BINUTILS_ARCHIVE_SHA256 := f6e4d41fd5fc778b06b7891457b3620da5ecea1006c6a4a41ae998109f85a800
+
+$(TARGET_DIR)/bin/kefir:
+	@mkdir -p "$(TARGET_DIR)"
+	@$(MAKE) -f "$(ROOT_DIR)/Makefile" ROOT="$(ROOT_DIR)" KEFIR_BIN_DIR="$(WORK_DIR)/kefir" CC="$(CC)" AS="$(AS)" LD="$(CC)" PROFILE="release" USE_SHARED=no LDFLAGS="-static" all
+	@$(MAKE) -f "$(ROOT_DIR)/Makefile" ROOT="$(ROOT_DIR)" KEFIR_BIN_DIR="$(WORK_DIR)/kefir" DESTDIR="$(TARGET_DIR)" prefix="" install
+
+$(MUSL_ARCHIVE):
+	@mkdir -p $(dir $@)
+	@echo "Downloading $(MUSL_URL)"
+	@wget -O "$@.tmp" "$(MUSL_URL)"
+	@$(ROOT_DIR)/scripts/checksum_sha256.sh "$@.tmp" "$(MUSL_ARCHIVE_SHA256)"
+	@mv "$@.tmp" "$@"
+
+$(BINUTILS_ARCHIVE):
+	@mkdir -p $(dir $@)
+	@echo "Downloading $(BINUTILS_URL)"
+	@wget -O "$@.tmp" "$(BINUTILS_URL)"
+	@$(ROOT_DIR)/scripts/checksum_sha256.sh "$@.tmp" "$(BINUTILS_ARCHIVE_SHA256)"
+	@mv "$@.tmp" "$@"
+
+$(TARGET_DIR)/lib/libc.a: $(MUSL_ARCHIVE) $(TARGET_DIR)/bin/kefir
+	@cd "$(WORK_DIR)" && tar xvfz "$(MUSL_ARCHIVE_FILENAME)"
+	@cd "$(WORK_DIR)/musl-$(MUSL_VERSION)" && \
+		CC="$(realpath $(TARGET_DIR)/bin/kefir)" \
+		LD="$(LD)" \
+		AS="$(AS)" \
+		CROSS_COMPILE= \
+		CFLAGS="-O1" \
+		./configure --target=x86_64 --prefix=
+	@cd "$(WORK_DIR)/musl-$(MUSL_VERSION)" && \
+		$(MAKE) all CROSS_COMPILE= CC="$(realpath $(TARGET_DIR)/bin/kefir)"
+	@cd "$(WORK_DIR)/musl-$(MUSL_VERSION)" && \
+		$(MAKE) DESTDIR="$(TARGET_DIR)" install
+	@ln -sf libc.so $(TARGET_DIR)/lib/ld-musl-x86_64.so.1
+	@mkdir -p "$(TARGET_DIR)/share/licenses/musl"
+	@install "$(WORK_DIR)/musl-$(MUSL_VERSION)/COPYRIGHT" "$(TARGET_DIR)/share/licenses/musl"
+	@cat "$(ROOT_DIR)/dist/portable/kefir.local.step1" > "$(TARGET_DIR)/etc/kefir.local"
+
+$(TARGET_DIR)/bin/ld: $(BINUTILS_ARCHIVE) $(TARGET_DIR)/lib/libc.a
+	@cd "$(WORK_DIR)" && xz -d < "$(BINUTILS_ARCHIVE_FILENAME)" > "$(basename $(BINUTILS_ARCHIVE_FILENAME))"
+	@cd "$(WORK_DIR)" && tar xvf "$(basename $(BINUTILS_ARCHIVE_FILENAME))"
+	@cd "$(WORK_DIR)/binutils-$(BINUTILS_VERSION)" && \
+		CC="$(realpath $(TARGET_DIR)/bin/kefir)" \
+		CFLAGS="-O1 -static" \
+		LD="$(LD)" \
+		KEFIR_LD="$(LD)" \
+		AS="$(AS)" \
+		KEFIR_AS="$(AS)" \
+		./configure --prefix=
+	@cd "$(WORK_DIR)/binutils-$(BINUTILS_VERSION)" && \
+		KEFIR_LD="$(LD)" \
+		KEFIR_AS="$(AS)" \
+		$(MAKE) CC="$(realpath $(TARGET_DIR)/bin/kefir)" CFLAGS="-O1 -DHAVE_STRSIGNAL -static" all-ld all-gas
+	@install $(WORK_DIR)/binutils-$(BINUTILS_VERSION)/ld/ld-new "$(TARGET_DIR)/bin/ld"
+	@install $(WORK_DIR)/binutils-$(BINUTILS_VERSION)/gas/as-new "$(TARGET_DIR)/bin/as"
+	@mkdir -p "$(TARGET_DIR)/share/licenses/binutils"
+	@install "$(WORK_DIR)/binutils-$(BINUTILS_VERSION)/COPYING" "$(TARGET_DIR)/share/licenses/binutils"
+	@install "$(WORK_DIR)/binutils-$(BINUTILS_VERSION)/COPYING3" "$(TARGET_DIR)/share/licenses/binutils"
+	@install "$(WORK_DIR)/binutils-$(BINUTILS_VERSION)/COPYING.LIB" "$(TARGET_DIR)/share/licenses/binutils"
+	@install "$(WORK_DIR)/binutils-$(BINUTILS_VERSION)/COPYING3.LIB" "$(TARGET_DIR)/share/licenses/binutils"
+	@cat "$(ROOT_DIR)/dist/portable/kefir.local.step2" >> "$(TARGET_DIR)/etc/kefir.local"
+	
+all: $(TARGET_DIR)/bin/kefir $(TARGET_DIR)/lib/libc.a $(TARGET_DIR)/bin/ld
+	@install "$(ROOT_DIR)/dist/portable/README" "$(TARGET_DIR)"
+
+clean:
+	rm -rf "$(TARGET_DIR)"
+	rm -rf "$(WORK_DIR)"
+
+.PHONY: all clean
