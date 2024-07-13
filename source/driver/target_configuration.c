@@ -119,7 +119,9 @@ kefir_result_t kefir_driver_apply_target_compiler_configuration(
 
     if (target->arch == KEFIR_DRIVER_TARGET_ARCH_X86_64) {
         REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__x86_64__", "1"));
+        REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__x86_64", "1"));
         REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__amd64__", "1"));
+        REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__amd64", "1"));
     }
 
     if (driver_config->flags.include_rtinc && target->variant != KEFIR_DRIVER_TARGET_VARIANT_NONE) {
@@ -142,6 +144,8 @@ kefir_result_t kefir_driver_apply_target_compiler_configuration(
 
     if (target->platform == KEFIR_DRIVER_TARGET_PLATFORM_LINUX) {
         REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__linux__", "1"));
+        REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__linux", "1"));
+        REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "linux", "1"));
 
         if (driver_config->flags.include_stdinc) {
             if (target->variant == KEFIR_DRIVER_TARGET_VARIANT_GNU) {
@@ -149,6 +153,7 @@ kefir_result_t kefir_driver_apply_target_compiler_configuration(
                         KEFIR_SET_ERROR(KEFIR_UI_ERROR, "GNU include path shall be passed as KEFIR_GNU_INCLUDE "
                                                         "environment variable for selected target"));
 
+                REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__gnu_linux__", "1"));
                 REQUIRE_OK(add_include_paths(mem, symbols, compiler_config, externals->gnu.include_path));
             } else if (target->variant == KEFIR_DRIVER_TARGET_VARIANT_MUSL) {
                 REQUIRE(externals->musl.include_path != NULL,
