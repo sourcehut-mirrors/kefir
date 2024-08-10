@@ -397,6 +397,13 @@ static kefir_result_t instr_format(struct kefir_json_output *json, const struct 
         REQUIRE_OK(kefir_json_output_null(json));
     }
 
+    REQUIRE_OK(kefir_json_output_object_key(json, "ir_instruction_index"));
+    if (instr->ir_instruction_index != KEFIR_OPT_IR_INSTRUCTION_INDEX_NONE) {
+        REQUIRE_OK(kefir_json_output_uinteger(json, instr->ir_instruction_index));
+    } else {
+        REQUIRE_OK(kefir_json_output_null(json));
+    }
+
     REQUIRE_OK(kefir_json_output_object_end(json));
     return KEFIR_OK;
 }

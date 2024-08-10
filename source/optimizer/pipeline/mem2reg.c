@@ -401,6 +401,8 @@ static kefir_result_t mem2reg_pull(struct mem2reg_state *state) {
                         REQUIRE(local_typeentry != NULL,
                                 KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to fetch local variable type"));
 
+                        REQUIRE_OK(kefir_opt_code_container_set_ir_instruction_index_of(&state->func->code, instr_id));
+
                         struct kefir_hashtree_node *node;
                         kefir_result_t res =
                             kefir_hashtree_at(&reg_state->block_outputs, (kefir_hashtree_key_t) block_id, &node);
@@ -505,6 +507,9 @@ static kefir_result_t mem2reg_pull(struct mem2reg_state *state) {
                         kefir_opt_instruction_ref_t prev_instr_id = instr_id;
                         REQUIRE_OK(kefir_opt_instruction_next_sibling(&state->func->code, instr_id, &instr_id));
                         REQUIRE_OK(kefir_opt_code_container_drop_instr(&state->func->code, prev_instr_id));
+
+                        REQUIRE_OK(kefir_opt_code_container_set_ir_instruction_index(
+                            &state->func->code, KEFIR_OPT_IR_INSTRUCTION_INDEX_NONE));
                     } else {
                         REQUIRE_OK(kefir_opt_instruction_next_sibling(&state->func->code, instr_id, &instr_id));
                     }

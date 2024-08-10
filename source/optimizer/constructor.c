@@ -970,7 +970,10 @@ static kefir_result_t translate_code(struct kefir_mem *mem, const struct kefir_o
 
         const struct kefir_irinstr *instr = kefir_irblock_at(ir_block, state->ir_location);
         REQUIRE(instr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected valid IR instruction to be returned"));
+        REQUIRE_OK(kefir_opt_code_container_set_ir_instruction_index(&state->function->code, state->ir_location));
         REQUIRE_OK(translate_instruction(mem, module, &state->function->code, state, instr));
+        REQUIRE_OK(kefir_opt_code_container_set_ir_instruction_index(&state->function->code,
+                                                                     KEFIR_OPT_IR_INSTRUCTION_INDEX_NONE));
     }
 
     REQUIRE_OK(kefir_opt_constructor_update_current_code_block(mem, state, state->ir_location));

@@ -97,9 +97,6 @@ static kefir_result_t free_use_entry(struct kefir_mem *mem, struct kefir_hashtre
     return KEFIR_OK;
 }
 
-// static kefir_result_t register_use_entry(struct kefir_mem *mem, struct kefir_opt_code_container *code,
-// kefir_opt_instruction_ref_t)
-
 kefir_result_t kefir_opt_code_container_init(struct kefir_opt_code_container *code) {
     REQUIRE(code != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer code container"));
@@ -114,6 +111,7 @@ kefir_result_t kefir_opt_code_container_init(struct kefir_opt_code_container *co
     code->next_call_node_id = 0;
     code->next_inline_assembly_id = 0;
     code->entry_point = KEFIR_ID_NONE;
+    code->current_ir_instruction_index = KEFIR_OPT_IR_INSTRUCTION_INDEX_NONE;
     REQUIRE_OK(kefir_hashtree_init(&code->blocks, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_on_removal(&code->blocks, free_block, NULL));
     REQUIRE_OK(kefir_hashtree_init(&code->call_nodes, &kefir_hashtree_uint_ops));
@@ -307,6 +305,24 @@ static kefir_result_t code_container_instr_mutable(const struct kefir_opt_code_c
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_opt_code_container_set_ir_instruction_index(struct kefir_opt_code_container *code,
+                                                                 kefir_size_t index) {
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
+
+    code->current_ir_instruction_index = index;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_code_container_set_ir_instruction_index_of(struct kefir_opt_code_container *code,
+                                                                    kefir_opt_instruction_ref_t instr_ref) {
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
+
+    const struct kefir_opt_instruction *instr;
+    REQUIRE_OK(kefir_opt_code_container_instr(code, instr_ref, &instr));
+    REQUIRE_OK(kefir_opt_code_container_set_ir_instruction_index(code, instr->ir_instruction_index));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_opt_code_container_instr(const struct kefir_opt_code_container *code,
                                               kefir_opt_instruction_ref_t instr_id,
                                               const struct kefir_opt_instruction **instr_ptr) {
@@ -366,6 +382,7 @@ kefir_result_t kefir_opt_code_container_new_instruction(struct kefir_mem *mem, s
     instr->control_flow.next = KEFIR_ID_NONE;
     instr->siblings.prev = block->content.tail;
     instr->siblings.next = KEFIR_ID_NONE;
+    instr->ir_instruction_index = code->current_ir_instruction_index;
 
     struct instruction_use_entry *use_entry = KEFIR_MALLOC(mem, sizeof(struct instruction_use_entry));
     REQUIRE(use_entry != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate instruction use entry"));

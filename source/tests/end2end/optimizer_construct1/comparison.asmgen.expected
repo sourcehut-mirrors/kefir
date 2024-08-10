@@ -26,7 +26,8 @@
                                         "begin": 0,
                                         "end": 1
                                     }
-                                }
+                                },
+                                "ir_instruction_index": null
                             }
                         ],
                         "public_labels": [],
@@ -63,7 +64,8 @@
                                         "begin": 1,
                                         "end": 4
                                     }
-                                }
+                                },
+                                "ir_instruction_index": 0
                             },
                             {
                                 "id": 2,
@@ -78,7 +80,8 @@
                                         "begin": 2,
                                         "end": 4
                                     }
-                                }
+                                },
+                                "ir_instruction_index": 1
                             },
                             {
                                 "id": 3,
@@ -96,7 +99,8 @@
                                         "begin": 3,
                                         "end": 6
                                     }
-                                }
+                                },
+                                "ir_instruction_index": 2
                             },
                             {
                                 "id": 4,
@@ -111,7 +115,8 @@
                                         "begin": 4,
                                         "end": 6
                                     }
-                                }
+                                },
+                                "ir_instruction_index": 3
                             },
                             {
                                 "id": 5,
@@ -129,7 +134,8 @@
                                         "begin": 5,
                                         "end": 15
                                     }
-                                }
+                                },
+                                "ir_instruction_index": 4
                             },
                             {
                                 "id": 6,
@@ -144,7 +150,8 @@
                                         "begin": 6,
                                         "end": 10
                                     }
-                                }
+                                },
+                                "ir_instruction_index": 5
                             },
                             {
                                 "id": 7,
@@ -159,7 +166,8 @@
                                         "begin": 7,
                                         "end": 10
                                     }
-                                }
+                                },
+                                "ir_instruction_index": 6
                             },
                             {
                                 "id": 8,
@@ -177,7 +185,8 @@
                                         "begin": 8,
                                         "end": 11
                                     }
-                                }
+                                },
+                                "ir_instruction_index": 9
                             },
                             {
                                 "id": 9,
@@ -195,7 +204,8 @@
                                         "begin": 9,
                                         "end": 11
                                     }
-                                }
+                                },
+                                "ir_instruction_index": 11
                             },
                             {
                                 "id": 10,
@@ -213,7 +223,8 @@
                                         "begin": 10,
                                         "end": 13
                                     }
-                                }
+                                },
+                                "ir_instruction_index": 12
                             },
                             {
                                 "id": 11,
@@ -228,7 +239,8 @@
                                         "begin": 11,
                                         "end": 13
                                     }
-                                }
+                                },
+                                "ir_instruction_index": 13
                             },
                             {
                                 "id": 12,
@@ -246,7 +258,8 @@
                                         "begin": 12,
                                         "end": 14
                                     }
-                                }
+                                },
+                                "ir_instruction_index": 14
                             },
                             {
                                 "id": 13,
@@ -261,7 +274,8 @@
                                         "begin": 13,
                                         "end": 15
                                     }
-                                }
+                                },
+                                "ir_instruction_index": 15
                             },
                             {
                                 "id": 14,
@@ -279,7 +293,8 @@
                                         "begin": 14,
                                         "end": 16
                                     }
-                                }
+                                },
+                                "ir_instruction_index": 16
                             },
                             {
                                 "id": 15,
@@ -294,7 +309,8 @@
                                         "begin": 15,
                                         "end": 17
                                     }
-                                }
+                                },
+                                "ir_instruction_index": 17
                             },
                             {
                                 "id": 16,
@@ -312,7 +328,8 @@
                                         "begin": 16,
                                         "end": 17
                                     }
-                                }
+                                },
+                                "ir_instruction_index": 18
                             }
                         ],
                         "public_labels": [],
@@ -353,7 +370,8 @@
                                         "begin": 22,
                                         "end": 23
                                     }
-                                }
+                                },
+                                "ir_instruction_index": null
                             }
                         ],
                         "public_labels": [],
@@ -390,7 +408,8 @@
                                         "begin": 17,
                                         "end": 20
                                     }
-                                }
+                                },
+                                "ir_instruction_index": 19
                             },
                             {
                                 "id": 18,
@@ -405,7 +424,8 @@
                                         "begin": 18,
                                         "end": 20
                                     }
-                                }
+                                },
+                                "ir_instruction_index": 20
                             },
                             {
                                 "id": 19,
@@ -423,7 +443,8 @@
                                         "begin": 19,
                                         "end": 21
                                     }
-                                }
+                                },
+                                "ir_instruction_index": 21
                             },
                             {
                                 "id": 20,
@@ -438,7 +459,8 @@
                                         "begin": 20,
                                         "end": 22
                                     }
-                                }
+                                },
+                                "ir_instruction_index": 22
                             },
                             {
                                 "id": 21,
@@ -456,7 +478,8 @@
                                         "begin": 21,
                                         "end": 22
                                     }
-                                }
+                                },
+                                "ir_instruction_index": 23
                             }
                         ],
                         "public_labels": [],
@@ -497,7 +520,8 @@
                                         "begin": 26,
                                         "end": 31
                                     }
-                                }
+                                },
+                                "ir_instruction_index": 27
                             },
                             {
                                 "id": 26,
@@ -512,7 +536,8 @@
                                         "begin": 27,
                                         "end": 30
                                     }
-                                }
+                                },
+                                "ir_instruction_index": 28
                             },
                             {
                                 "id": 27,
@@ -527,7 +552,8 @@
                                         "begin": 28,
                                         "end": 30
                                     }
-                                }
+                                },
+                                "ir_instruction_index": 29
                             },
                             {
                                 "id": 28,
@@ -545,7 +571,8 @@
                                         "begin": 29,
                                         "end": 31
                                     }
-                                }
+                                },
+                                "ir_instruction_index": 30
                             },
                             {
                                 "id": 29,
@@ -563,7 +590,8 @@
                                         "begin": 30,
                                         "end": 34
                                     }
-                                }
+                                },
+                                "ir_instruction_index": 31
                             },
                             {
                                 "id": 30,
@@ -578,7 +606,8 @@
                                         "begin": 31,
                                         "end": 34
                                     }
-                                }
+                                },
+                                "ir_instruction_index": 32
                             },
                             {
                                 "id": 31,
@@ -596,7 +625,8 @@
                                         "begin": 32,
                                         "end": 35
                                     }
-                                }
+                                },
+                                "ir_instruction_index": 35
                             },
                             {
                                 "id": 32,
@@ -614,7 +644,8 @@
                                         "begin": 33,
                                         "end": 35
                                     }
-                                }
+                                },
+                                "ir_instruction_index": 37
                             },
                             {
                                 "id": 33,
@@ -632,7 +663,8 @@
                                         "begin": 34,
                                         "end": 36
                                     }
-                                }
+                                },
+                                "ir_instruction_index": 38
                             },
                             {
                                 "id": 34,
@@ -647,7 +679,8 @@
                                         "begin": 35,
                                         "end": 38
                                     }
-                                }
+                                },
+                                "ir_instruction_index": 39
                             },
                             {
                                 "id": 35,
@@ -662,7 +695,8 @@
                                         "begin": 36,
                                         "end": 38
                                     }
-                                }
+                                },
+                                "ir_instruction_index": 40
                             },
                             {
                                 "id": 36,
@@ -680,7 +714,8 @@
                                         "begin": 37,
                                         "end": 39
                                     }
-                                }
+                                },
+                                "ir_instruction_index": 41
                             },
                             {
                                 "id": 37,
@@ -698,7 +733,8 @@
                                         "begin": 38,
                                         "end": 39
                                     }
-                                }
+                                },
+                                "ir_instruction_index": 42
                             }
                         ],
                         "public_labels": [],
@@ -738,7 +774,8 @@
                                         "begin": 23,
                                         "end": 25
                                     }
-                                }
+                                },
+                                "ir_instruction_index": 24
                             },
                             {
                                 "id": 23,
@@ -753,7 +790,8 @@
                                         "begin": 24,
                                         "end": 26
                                     }
-                                }
+                                },
+                                "ir_instruction_index": 25
                             },
                             {
                                 "id": 24,
@@ -768,7 +806,8 @@
                                         "begin": 25,
                                         "end": 26
                                     }
-                                }
+                                },
+                                "ir_instruction_index": 26
                             }
                         ],
                         "public_labels": [],
@@ -805,7 +844,8 @@
                                         "begin": 39,
                                         "end": 40
                                     }
-                                }
+                                },
+                                "ir_instruction_index": 43
                             }
                         ],
                         "public_labels": [],

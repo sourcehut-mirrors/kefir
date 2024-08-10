@@ -125,6 +125,8 @@ static kefir_result_t phi_pull_impl(struct phi_pull_state *state) {
             const struct kefir_opt_instruction *instr;
             REQUIRE_OK(kefir_opt_code_container_instr(&state->func->code, instr_ref, &instr));
 
+            REQUIRE_OK(kefir_opt_code_container_set_ir_instruction_index_of(&state->func->code, instr_ref));
+
             kefir_bool_t pull = true;
             switch (instr->operation.opcode) {
 #define COMPARE_INSTR(_cond)                                                                               \
@@ -201,6 +203,9 @@ static kefir_result_t phi_pull_impl(struct phi_pull_state *state) {
                 kefir_opt_phi_id_t prev_phi_ref = phi_ref;
                 REQUIRE_OK(kefir_opt_phi_next_sibling(&state->func->code, phi_ref, &phi_ref));
                 REQUIRE_OK(kefir_opt_code_container_drop_phi(&state->func->code, prev_phi_ref));
+
+                REQUIRE_OK(kefir_opt_code_container_set_ir_instruction_index(&state->func->code,
+                                                                             KEFIR_OPT_IR_INSTRUCTION_INDEX_NONE));
             } else {
                 REQUIRE_OK(kefir_opt_phi_next_sibling(&state->func->code, phi_ref, &phi_ref));
             }
