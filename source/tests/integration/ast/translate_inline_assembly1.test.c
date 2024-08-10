@@ -165,7 +165,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(inline_asm3)));
     });
 
-    REQUIRE_OK(kefir_ir_format_module(stdout, &module));
+    REQUIRE_OK(kefir_ir_format_module(stdout, &module, false));
 
     REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(inline_asm0)));
     REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(inline_asm1)));

@@ -97,7 +97,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_FREE(&builder));
     REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(compound1)));
 
-    REQUIRE_OK(kefir_ir_format_module(stdout, &module));
+    REQUIRE_OK(kefir_ir_format_module(stdout, &module, false));
 
     REQUIRE_OK(kefir_ast_translator_context_free(mem, &translator_context));
     REQUIRE_OK(kefir_ast_translator_local_scope_layout_free(mem, &translator_local_scope));

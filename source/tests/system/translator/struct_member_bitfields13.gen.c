@@ -172,7 +172,7 @@ static kefir_result_t generate_ir(struct kefir_mem *mem, struct kefir_ir_module 
     REQUIRE_OK(kefir_ast_translator_context_free(mem, &translator_context));
     REQUIRE_OK(kefir_ast_global_context_free(mem, &global_context));
 
-    // kefir_ir_format_module(stdout, module);
+    // kefir_ir_format_module(stdout, module, false);
     return KEFIR_OK;
 }
 

@@ -75,7 +75,7 @@ DEFINE_CASE(ast_translator_context_local_extensions1, "AST translator context - 
     ASSERT_OK(kefir_ast_global_context_init(&kft_mem, type_traits, &env.target_env, &context, NULL));
     ASSERT_OK(kefir_ir_module_alloc(&kft_mem, &module));
     ASSERT_OK(kefir_ast_translator_context_init(&kft_mem, &translator_context, &context.context, &env, &module, &ext));
-    ASSERT_OK(kefir_ast_translator_context_init_local(&kft_mem, &local_translator_context, &context.context,
+    ASSERT_OK(kefir_ast_translator_context_init_local(&kft_mem, &local_translator_context, &context.context, NULL,
                                                       &translator_context));
 
     ASSERT(translator_context.extensions_payload != NULL);

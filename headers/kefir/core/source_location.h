@@ -38,4 +38,6 @@ kefir_result_t kefir_source_location_init(struct kefir_source_location *, const 
 kefir_bool_t kefir_source_location_get(const struct kefir_source_location *, const char **,
                                        kefir_source_location_line_t *, kefir_source_location_column_t *);
 
+#define KEFIR_SOURCE_LOCATION_IS_VALID(_location) ((_location)->source != NULL)
+
 #endif

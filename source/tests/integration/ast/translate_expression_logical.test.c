@@ -129,7 +129,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
                     KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_double(mem, 3.0e-20l)));
     });
 
-    REQUIRE_OK(kefir_ir_format_module(stdout, &module));
+    REQUIRE_OK(kefir_ir_format_module(stdout, &module, false));
 
     REQUIRE_OK(kefir_ast_translator_context_free(mem, &translator_context));
     REQUIRE_OK(kefir_ast_translator_global_scope_layout_free(mem, &translator_global_scope));

@@ -67,10 +67,11 @@ kefir_result_t kefir_ir_function_alloc(struct kefir_mem *mem, struct kefir_ir_fu
     func->declaration = decl;
     func->locals = locals;
     func->locals_type_id = locals_type_id;
-    kefir_result_t result = kefir_irblock_alloc(mem, bodySz, &func->body);
-    REQUIRE_ELSE(result == KEFIR_OK, {
+    kefir_result_t res = kefir_ir_function_debug_info_init(&func->debug_info);
+    REQUIRE_CHAIN(&res, kefir_irblock_alloc(mem, bodySz, &func->body));
+    REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_ir_function_decl_free(mem, func->declaration);
-        return result;
+        return res;
     });
     return KEFIR_OK;
 }
@@ -78,6 +79,7 @@ kefir_result_t kefir_ir_function_alloc(struct kefir_mem *mem, struct kefir_ir_fu
 kefir_result_t kefir_ir_function_free(struct kefir_mem *mem, struct kefir_ir_function *func) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(func != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR function pointer"));
+    REQUIRE_OK(kefir_ir_function_debug_info_free(mem, &func->debug_info));
     kefir_irblock_free(mem, &func->body);
     func->locals = NULL;
     func->declaration = NULL;

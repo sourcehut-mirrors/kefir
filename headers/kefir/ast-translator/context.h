@@ -57,6 +57,7 @@ typedef struct kefir_ast_translator_context {
     const struct kefir_ast_context *ast_context;
     const struct kefir_ast_translator_environment *environment;
     struct kefir_ir_module *module;
+    struct kefir_ir_function_debug_info *function_debug_info;
 
     struct kefir_ast_translator_global_scope_layout *global_scope_layout;
     struct kefir_ast_translator_local_scope_layout *local_scope_layout;
@@ -73,6 +74,7 @@ kefir_result_t kefir_ast_translator_context_init(struct kefir_mem *, struct kefi
 
 kefir_result_t kefir_ast_translator_context_init_local(struct kefir_mem *, struct kefir_ast_translator_context *,
                                                        const struct kefir_ast_context *,
+                                                       struct kefir_ir_function_debug_info *,
                                                        struct kefir_ast_translator_context *);
 
 kefir_result_t kefir_ast_translator_context_free(struct kefir_mem *, struct kefir_ast_translator_context *);

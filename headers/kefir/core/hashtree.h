@@ -48,6 +48,10 @@ typedef struct kefir_hashtree {
                                    kefir_hashtree_value_t, void *);
         void *data;
     } node_remove;
+    struct {
+        kefir_result_t (*callback)(struct kefir_hashtree *, struct kefir_hashtree_node *, void *);
+        void *data;
+    } node_link_modify;
 } kefir_hashtree_t;
 
 typedef struct kefir_hashtree_node_iterator {
@@ -69,6 +73,8 @@ kefir_result_t kefir_hashtree_on_removal(struct kefir_hashtree *,
                                          kefir_result_t (*)(struct kefir_mem *, struct kefir_hashtree *,
                                                             kefir_hashtree_key_t, kefir_hashtree_value_t, void *),
                                          void *);
+kefir_result_t kefir_hashtree_on_link_modify(
+    struct kefir_hashtree *, kefir_result_t (*)(struct kefir_hashtree *, struct kefir_hashtree_node *, void *), void *);
 kefir_result_t kefir_hashtree_free(struct kefir_mem *, struct kefir_hashtree *);
 kefir_result_t kefir_hashtree_insert(struct kefir_mem *, struct kefir_hashtree *, kefir_hashtree_key_t,
                                      kefir_hashtree_value_t);

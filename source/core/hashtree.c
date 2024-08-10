@@ -130,10 +130,20 @@ static struct kefir_hashtree_node *right_left_rotate(struct kefir_hashtree_node 
     return left_rotate(root);
 }
 
-static struct kefir_hashtree_node *balance_node(struct kefir_hashtree_node *root) {
-    assert(root != NULL);
-    assert(NODE_BF(root) >= -2 && NODE_BF(root) <= 2);
+#define ON_LINK_MODIFY(_res, _tree, _node)                                                                       \
+    do {                                                                                                         \
+        if ((_tree)->node_link_modify.callback != NULL && (_node) != NULL) {                                     \
+            REQUIRE_CHAIN((_res),                                                                                \
+                          (_tree)->node_link_modify.callback((_tree), (_node), (_tree)->node_link_modify.data)); \
+        }                                                                                                        \
+    } while (0)
 
+static kefir_result_t balance_node(struct kefir_hashtree *tree, struct kefir_hashtree_node **root_ptr) {
+    assert(root_ptr != NULL);
+    assert(*root_ptr != NULL);
+    assert(NODE_BF(*root_ptr) >= -2 && NODE_BF(*root_ptr) <= 2);
+
+    struct kefir_hashtree_node *root = *root_ptr;
     struct kefir_hashtree_node *new_root = root;
     if (NODE_HEIGHT(root->left_child) > NODE_HEIGHT(root->right_child) + 1) {
         assert(root->left_child != NULL);
@@ -156,8 +166,16 @@ static struct kefir_hashtree_node *balance_node(struct kefir_hashtree_node *root
     }
 
     NODE_UPDATE_HEIGHT(new_root);
+    if (root != new_root) {
+        kefir_result_t res = KEFIR_OK;
+        ON_LINK_MODIFY(&res, tree, root->left_child);
+        ON_LINK_MODIFY(&res, tree, root->right_child);
+        ON_LINK_MODIFY(&res, tree, root);
+        REQUIRE_OK(res);
+    }
     assert(NODE_BF(root) >= -1 && NODE_BF(root) <= 1);
-    return new_root;
+    *root_ptr = new_root;
+    return KEFIR_OK;
 }
 
 static kefir_result_t node_insert(struct kefir_mem *mem, struct kefir_hashtree *tree, struct kefir_hashtree_node *root,
@@ -170,22 +188,30 @@ static kefir_result_t node_insert(struct kefir_mem *mem, struct kefir_hashtree *
             struct kefir_hashtree_node *node = node_alloc(mem, hash, root, key, value);
             REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate hash tree node"));
             root->left_child = node;
+            kefir_result_t res = KEFIR_OK;
+            ON_LINK_MODIFY(&res, tree, node);
+            ON_LINK_MODIFY(&res, tree, root);
         } else {
             REQUIRE_OK(node_insert(mem, tree, root->left_child, hash, key, value, oldvalue, replace, NULL));
         }
 
-        struct kefir_hashtree_node *new_root = balance_node(root);
+        struct kefir_hashtree_node *new_root = root;
+        REQUIRE_OK(balance_node(tree, &new_root));
         ASSIGN_PTR(root_ptr, new_root);
     } else if (hash > root->hash || (hash == root->hash && tree->ops->compare(key, root->key, tree->ops->data) > 0)) {
         if (root->right_child == NULL) {
             struct kefir_hashtree_node *node = node_alloc(mem, hash, root, key, value);
             REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate hash tree node"));
             root->right_child = node;
+            kefir_result_t res = KEFIR_OK;
+            ON_LINK_MODIFY(&res, tree, node);
+            ON_LINK_MODIFY(&res, tree, root);
         } else {
             REQUIRE_OK(node_insert(mem, tree, root->right_child, hash, key, value, oldvalue, replace, NULL));
         }
 
-        struct kefir_hashtree_node *new_root = balance_node(root);
+        struct kefir_hashtree_node *new_root = root;
+        REQUIRE_OK(balance_node(tree, &new_root));
         ASSIGN_PTR(root_ptr, new_root);
     } else if (replace) {
         if (oldvalue != NULL) {
@@ -251,6 +277,8 @@ kefir_result_t kefir_hashtree_init(struct kefir_hashtree *tree, const struct kef
     tree->root = NULL;
     tree->node_remove.callback = NULL;
     tree->node_remove.data = NULL;
+    tree->node_link_modify.callback = NULL;
+    tree->node_link_modify.data = NULL;
     return KEFIR_OK;
 }
 
@@ -262,6 +290,16 @@ kefir_result_t kefir_hashtree_on_removal(struct kefir_hashtree *tree,
     REQUIRE(tree != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hash tree pointer"));
     tree->node_remove.callback = callback;
     tree->node_remove.data = data;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_hashtree_on_link_modify(struct kefir_hashtree *tree,
+                                             kefir_result_t (*callback)(struct kefir_hashtree *,
+                                                                        struct kefir_hashtree_node *, void *),
+                                             void *data) {
+    REQUIRE(tree != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hash tree pointer"));
+    tree->node_link_modify.callback = callback;
+    tree->node_link_modify.data = data;
     return KEFIR_OK;
 }
 
@@ -281,6 +319,9 @@ kefir_result_t kefir_hashtree_insert(struct kefir_mem *mem, struct kefir_hashtre
     kefir_hashtree_hash_t hash = tree->ops->hash(key, tree->ops->data);
     if (tree->root == NULL) {
         tree->root = node_alloc(mem, hash, NULL, key, value);
+        kefir_result_t res = KEFIR_OK;
+        ON_LINK_MODIFY(&res, tree, tree->root);
+        REQUIRE_OK(res);
     } else {
         REQUIRE_OK(node_insert(mem, tree, tree->root, hash, key, value, NULL, false, &tree->root));
     }
@@ -390,10 +431,10 @@ kefir_result_t kefir_hashtree_delete(struct kefir_mem *mem, struct kefir_hashtre
     // Tree is traversed and rebalanced starting from replaced node parent to the root
     for (struct kefir_hashtree_node *iter = lowest_modified_node; iter != NULL; iter = iter->parent) {
         if (tree->root == iter) {
-            iter = balance_node(iter);
+            REQUIRE_OK(balance_node(tree, &iter));
             tree->root = iter;
         } else {
-            iter = balance_node(iter);
+            REQUIRE_OK(balance_node(tree, &iter));
         }
         assert(NODE_BF(iter) >= -1 && NODE_BF(iter) <= 1);
     }

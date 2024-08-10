@@ -41,6 +41,7 @@ kefir_result_t kefir_ast_translator_context_init(struct kefir_mem *mem, struct k
     context->module = module;
     context->global_scope_layout = NULL;
     context->local_scope_layout = NULL;
+    context->function_debug_info = NULL;
 
     context->extensions = extensions;
     context->extensions_payload = NULL;
@@ -53,6 +54,7 @@ kefir_result_t kefir_ast_translator_context_init(struct kefir_mem *mem, struct k
 kefir_result_t kefir_ast_translator_context_init_local(struct kefir_mem *mem,
                                                        struct kefir_ast_translator_context *context,
                                                        const struct kefir_ast_context *ast_context,
+                                                       struct kefir_ir_function_debug_info *function_debug_info,
                                                        struct kefir_ast_translator_context *base_context) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL,
@@ -67,6 +69,7 @@ kefir_result_t kefir_ast_translator_context_init_local(struct kefir_mem *mem,
     context->module = base_context->module;
     context->global_scope_layout = NULL;
     context->local_scope_layout = NULL;
+    context->function_debug_info = function_debug_info;
 
     context->extensions = base_context->extensions;
     context->extensions_payload = NULL;

@@ -26,6 +26,7 @@
 #include "kefir/core/util.h"
 #include "kefir/ir/type.h"
 #include "kefir/ir/instr.h"
+#include "kefir/ir/debug.h"
 
 typedef struct kefir_ir_function_decl {
     kefir_id_t id;
@@ -50,6 +51,7 @@ typedef struct kefir_ir_function {
         kefir_id_t locals_type_id;
     };
     struct kefir_irblock body;
+    struct kefir_ir_function_debug_info debug_info;
 } kefir_ir_function_t;
 
 kefir_result_t kefir_ir_function_decl_alloc(struct kefir_mem *, kefir_id_t, const char *, struct kefir_ir_type *,

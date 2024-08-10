@@ -413,7 +413,7 @@ static kefir_result_t dump_ir_impl(struct kefir_mem *mem, const struct kefir_com
     REQUIRE_OK(kefir_ir_module_alloc(mem, &module));
     REQUIRE_OK(kefir_compiler_translate(mem, compiler, unit, &module, true));
 
-    REQUIRE_OK(kefir_ir_format_module(output, &module));
+    REQUIRE_OK(kefir_ir_format_module(output, &module, options->detailed_output));
 
     REQUIRE_OK(kefir_ir_module_free(mem, &module));
     REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(unit)));

@@ -182,7 +182,7 @@ kefir_result_t kefir_ast_translator_function_context_init(struct kefir_mem *mem,
     ctx->module = context->module;
     ctx->local_context = function->base.properties.function_definition.scoped_id->function.local_context;
     kefir_result_t res = kefir_ast_translator_context_init_local(mem, &ctx->local_translator_context,
-                                                                 &ctx->local_context->context, context);
+                                                                 &ctx->local_context->context, NULL, context);
     REQUIRE_ELSE(res == KEFIR_OK, {
         free_function_declaration(mem, ctx);
         return res;
@@ -230,6 +230,8 @@ kefir_result_t kefir_ast_translator_function_context_init(struct kefir_mem *mem,
         free_function_declaration(mem, ctx);
         return res;
     });
+
+    ctx->local_translator_context.function_debug_info = &ctx->ir_func->debug_info;
 
     return KEFIR_OK;
 }
