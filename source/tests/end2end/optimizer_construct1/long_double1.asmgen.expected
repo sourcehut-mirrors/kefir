@@ -27,8 +27,7 @@
                                         "end": 1
                                     }
                                 },
-                                "source_location": null,
-                                "ir_instruction_index": null
+                                "source_location": null
                             }
                         ],
                         "public_labels": [],
@@ -66,8 +65,7 @@
                                         "end": 2
                                     }
                                 },
-                                "source_location": null,
-                                "ir_instruction_index": null
+                                "source_location": null
                             }
                         ],
                         "public_labels": [],
@@ -117,8 +115,7 @@
                                         "end": 1
                                     }
                                 },
-                                "source_location": null,
-                                "ir_instruction_index": null
+                                "source_location": null
                             }
                         ],
                         "public_labels": [],
@@ -157,8 +154,7 @@
                                         "end": 4
                                     }
                                 },
-                                "source_location": null,
-                                "ir_instruction_index": 0
+                                "source_location": null
                             },
                             {
                                 "id": 2,
@@ -178,8 +174,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/long_double1.kefir.asmgen.c",
                                     "line": 11,
                                     "column": 21
-                                },
-                                "ir_instruction_index": 2
+                                }
                             },
                             {
                                 "id": 3,
@@ -199,8 +194,7 @@
                                         "end": 4
                                     }
                                 },
-                                "source_location": null,
-                                "ir_instruction_index": 3
+                                "source_location": null
                             },
                             {
                                 "id": 4,
@@ -216,8 +210,7 @@
                                         "end": 5
                                     }
                                 },
-                                "source_location": null,
-                                "ir_instruction_index": null
+                                "source_location": null
                             }
                         ],
                         "public_labels": [],
@@ -267,8 +260,7 @@
                                         "end": 1
                                     }
                                 },
-                                "source_location": null,
-                                "ir_instruction_index": null
+                                "source_location": null
                             }
                         ],
                         "public_labels": [],
@@ -310,8 +302,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/long_double1.kefir.asmgen.c",
                                     "line": 15,
                                     "column": 9
-                                },
-                                "ir_instruction_index": 0
+                                }
                             },
                             {
                                 "id": 2,
@@ -331,8 +322,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/long_double1.kefir.asmgen.c",
                                     "line": 15,
                                     "column": 5
-                                },
-                                "ir_instruction_index": 1
+                                }
                             },
                             {
                                 "id": 3,
@@ -355,8 +345,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/long_double1.kefir.asmgen.c",
                                     "line": 15,
                                     "column": 5
-                                },
-                                "ir_instruction_index": 2
+                                }
                             },
                             {
                                 "id": 4,
@@ -376,8 +365,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/long_double1.kefir.asmgen.c",
                                     "line": 15,
                                     "column": 5
-                                },
-                                "ir_instruction_index": 3
+                                }
                             },
                             {
                                 "id": 5,
@@ -397,8 +385,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/long_double1.kefir.asmgen.c",
                                     "line": 15,
                                     "column": 5
-                                },
-                                "ir_instruction_index": 4
+                                }
                             },
                             {
                                 "id": 6,
@@ -421,8 +408,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/long_double1.kefir.asmgen.c",
                                     "line": 15,
                                     "column": 5
-                                },
-                                "ir_instruction_index": 5
+                                }
                             }
                         ],
                         "public_labels": [],
@@ -463,8 +449,7 @@
                                         "end": 8
                                     }
                                 },
-                                "source_location": null,
-                                "ir_instruction_index": null
+                                "source_location": null
                             }
                         ],
                         "public_labels": [],
@@ -515,8 +500,7 @@
                                         "end": 1
                                     }
                                 },
-                                "source_location": null,
-                                "ir_instruction_index": null
+                                "source_location": null
                             }
                         ],
                         "public_labels": [],
@@ -554,8 +538,7 @@
                                         "end": 2
                                     }
                                 },
-                                "source_location": null,
-                                "ir_instruction_index": null
+                                "source_location": null
                             }
                         ],
                         "public_labels": [],

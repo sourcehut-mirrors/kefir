@@ -27,8 +27,7 @@
                                         "end": 1
                                     }
                                 },
-                                "source_location": null,
-                                "ir_instruction_index": null
+                                "source_location": null
                             }
                         ],
                         "public_labels": [],
@@ -66,8 +65,7 @@
                                         "end": 2
                                     }
                                 },
-                                "source_location": null,
-                                "ir_instruction_index": null
+                                "source_location": null
                             }
                         ],
                         "public_labels": [],

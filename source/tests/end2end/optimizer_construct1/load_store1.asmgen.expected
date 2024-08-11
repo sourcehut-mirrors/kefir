@@ -27,8 +27,7 @@
                                         "end": 1
                                     }
                                 },
-                                "source_location": null,
-                                "ir_instruction_index": null
+                                "source_location": null
                             }
                         ],
                         "public_labels": [],
@@ -66,8 +65,7 @@
                                         "end": 2
                                     }
                                 },
-                                "source_location": null,
-                                "ir_instruction_index": null
+                                "source_location": null
                             }
                         ],
                         "public_labels": [],
@@ -117,8 +115,7 @@
                                         "end": 1
                                     }
                                 },
-                                "source_location": null,
-                                "ir_instruction_index": null
+                                "source_location": null
                             }
                         ],
                         "public_labels": [],
@@ -156,8 +153,7 @@
                                         "end": 2
                                     }
                                 },
-                                "source_location": null,
-                                "ir_instruction_index": null
+                                "source_location": null
                             }
                         ],
                         "public_labels": [],
@@ -207,8 +203,7 @@
                                         "end": 1
                                     }
                                 },
-                                "source_location": null,
-                                "ir_instruction_index": null
+                                "source_location": null
                             }
                         ],
                         "public_labels": [],
@@ -250,8 +245,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 46,
                                     "column": 9
-                                },
-                                "ir_instruction_index": 0
+                                }
                             },
                             {
                                 "id": 2,
@@ -272,8 +266,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 46,
                                     "column": 5
-                                },
-                                "ir_instruction_index": 1
+                                }
                             },
                             {
                                 "id": 3,
@@ -297,8 +290,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 46,
                                     "column": 5
-                                },
-                                "ir_instruction_index": 5
+                                }
                             },
                             {
                                 "id": 4,
@@ -318,8 +310,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 47,
                                     "column": 9
-                                },
-                                "ir_instruction_index": 7
+                                }
                             },
                             {
                                 "id": 5,
@@ -340,8 +331,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 47,
                                     "column": 5
-                                },
-                                "ir_instruction_index": 8
+                                }
                             },
                             {
                                 "id": 6,
@@ -365,8 +355,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 47,
                                     "column": 5
-                                },
-                                "ir_instruction_index": 12
+                                }
                             },
                             {
                                 "id": 7,
@@ -386,8 +375,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 48,
                                     "column": 9
-                                },
-                                "ir_instruction_index": 14
+                                }
                             },
                             {
                                 "id": 8,
@@ -408,8 +396,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 48,
                                     "column": 5
-                                },
-                                "ir_instruction_index": 15
+                                }
                             },
                             {
                                 "id": 9,
@@ -433,8 +420,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 48,
                                     "column": 5
-                                },
-                                "ir_instruction_index": 19
+                                }
                             },
                             {
                                 "id": 10,
@@ -454,8 +440,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 49,
                                     "column": 9
-                                },
-                                "ir_instruction_index": 21
+                                }
                             },
                             {
                                 "id": 11,
@@ -475,8 +460,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 49,
                                     "column": 5
-                                },
-                                "ir_instruction_index": 22
+                                }
                             },
                             {
                                 "id": 12,
@@ -497,8 +481,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 49,
                                     "column": 5
-                                },
-                                "ir_instruction_index": 23
+                                }
                             },
                             {
                                 "id": 13,
@@ -522,8 +505,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 49,
                                     "column": 5
-                                },
-                                "ir_instruction_index": 27
+                                }
                             },
                             {
                                 "id": 14,
@@ -543,8 +525,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 51,
                                     "column": 9
-                                },
-                                "ir_instruction_index": 29
+                                }
                             },
                             {
                                 "id": 15,
@@ -565,8 +546,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 51,
                                     "column": 5
-                                },
-                                "ir_instruction_index": 30
+                                }
                             },
                             {
                                 "id": 16,
@@ -590,8 +570,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 51,
                                     "column": 5
-                                },
-                                "ir_instruction_index": 34
+                                }
                             },
                             {
                                 "id": 17,
@@ -611,8 +590,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 52,
                                     "column": 9
-                                },
-                                "ir_instruction_index": 36
+                                }
                             },
                             {
                                 "id": 18,
@@ -633,8 +611,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 52,
                                     "column": 5
-                                },
-                                "ir_instruction_index": 37
+                                }
                             },
                             {
                                 "id": 19,
@@ -658,8 +635,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 52,
                                     "column": 5
-                                },
-                                "ir_instruction_index": 41
+                                }
                             },
                             {
                                 "id": 20,
@@ -679,8 +655,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 53,
                                     "column": 9
-                                },
-                                "ir_instruction_index": 43
+                                }
                             },
                             {
                                 "id": 21,
@@ -701,8 +676,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 53,
                                     "column": 5
-                                },
-                                "ir_instruction_index": 44
+                                }
                             },
                             {
                                 "id": 22,
@@ -726,8 +700,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 53,
                                     "column": 5
-                                },
-                                "ir_instruction_index": 48
+                                }
                             },
                             {
                                 "id": 23,
@@ -747,8 +720,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 54,
                                     "column": 9
-                                },
-                                "ir_instruction_index": 50
+                                }
                             },
                             {
                                 "id": 24,
@@ -768,8 +740,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 54,
                                     "column": 5
-                                },
-                                "ir_instruction_index": 51
+                                }
                             },
                             {
                                 "id": 25,
@@ -790,8 +761,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 54,
                                     "column": 5
-                                },
-                                "ir_instruction_index": 52
+                                }
                             },
                             {
                                 "id": 26,
@@ -815,8 +785,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 54,
                                     "column": 5
-                                },
-                                "ir_instruction_index": 56
+                                }
                             },
                             {
                                 "id": 27,
@@ -832,8 +801,7 @@
                                         "end": 28
                                     }
                                 },
-                                "source_location": null,
-                                "ir_instruction_index": null
+                                "source_location": null
                             }
                         ],
                         "public_labels": [],
@@ -883,8 +851,7 @@
                                         "end": 4
                                     }
                                 },
-                                "source_location": null,
-                                "ir_instruction_index": null
+                                "source_location": null
                             },
                             {
                                 "id": 1,
@@ -900,8 +867,7 @@
                                         "end": 4
                                     }
                                 },
-                                "source_location": null,
-                                "ir_instruction_index": null
+                                "source_location": null
                             },
                             {
                                 "id": 2,
@@ -917,8 +883,7 @@
                                         "end": 4
                                     }
                                 },
-                                "source_location": null,
-                                "ir_instruction_index": null
+                                "source_location": null
                             },
                             {
                                 "id": 3,
@@ -934,8 +899,7 @@
                                         "end": 4
                                     }
                                 },
-                                "source_location": null,
-                                "ir_instruction_index": null
+                                "source_location": null
                             }
                         ],
                         "public_labels": [],
@@ -1001,8 +965,7 @@
                                         "end": 13
                                     }
                                 },
-                                "source_location": null,
-                                "ir_instruction_index": 7
+                                "source_location": null
                             },
                             {
                                 "id": 8,
@@ -1018,8 +981,7 @@
                                         "end": 11
                                     }
                                 },
-                                "source_location": null,
-                                "ir_instruction_index": 4
+                                "source_location": null
                             },
                             {
                                 "id": 5,
@@ -1035,8 +997,7 @@
                                         "end": 9
                                     }
                                 },
-                                "source_location": null,
-                                "ir_instruction_index": 1
+                                "source_location": null
                             },
                             {
                                 "id": 4,
@@ -1053,8 +1014,7 @@
                                         "end": 9
                                     }
                                 },
-                                "source_location": null,
-                                "ir_instruction_index": 0
+                                "source_location": null
                             },
                             {
                                 "id": 6,
@@ -1074,8 +1034,7 @@
                                         "end": 9
                                     }
                                 },
-                                "source_location": null,
-                                "ir_instruction_index": 2
+                                "source_location": null
                             },
                             {
                                 "id": 7,
@@ -1092,8 +1051,7 @@
                                         "end": 11
                                     }
                                 },
-                                "source_location": null,
-                                "ir_instruction_index": 3
+                                "source_location": null
                             },
                             {
                                 "id": 9,
@@ -1113,8 +1071,7 @@
                                         "end": 11
                                     }
                                 },
-                                "source_location": null,
-                                "ir_instruction_index": 5
+                                "source_location": null
                             },
                             {
                                 "id": 10,
@@ -1131,8 +1088,7 @@
                                         "end": 13
                                     }
                                 },
-                                "source_location": null,
-                                "ir_instruction_index": 6
+                                "source_location": null
                             },
                             {
                                 "id": 12,
@@ -1152,8 +1108,7 @@
                                         "end": 13
                                     }
                                 },
-                                "source_location": null,
-                                "ir_instruction_index": 8
+                                "source_location": null
                             },
                             {
                                 "id": 13,
@@ -1174,8 +1129,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 59,
                                     "column": 12
-                                },
-                                "ir_instruction_index": 9
+                                }
                             },
                             {
                                 "id": 14,
@@ -1198,8 +1152,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 59,
                                     "column": 12
-                                },
-                                "ir_instruction_index": 10
+                                }
                             },
                             {
                                 "id": 15,
@@ -1219,8 +1172,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 59,
                                     "column": 12
-                                },
-                                "ir_instruction_index": 11
+                                }
                             },
                             {
                                 "id": 16,
@@ -1241,8 +1193,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 59,
                                     "column": 12
-                                },
-                                "ir_instruction_index": 12
+                                }
                             },
                             {
                                 "id": 17,
@@ -1265,8 +1216,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 59,
                                     "column": 12
-                                },
-                                "ir_instruction_index": 13
+                                }
                             },
                             {
                                 "id": 18,
@@ -1286,8 +1236,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 59,
                                     "column": 16
-                                },
-                                "ir_instruction_index": 14
+                                }
                             },
                             {
                                 "id": 19,
@@ -1308,8 +1257,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 59,
                                     "column": 16
-                                },
-                                "ir_instruction_index": 15
+                                }
                             },
                             {
                                 "id": 20,
@@ -1332,8 +1280,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 59,
                                     "column": 16
-                                },
-                                "ir_instruction_index": 16
+                                }
                             },
                             {
                                 "id": 21,
@@ -1356,8 +1303,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 59,
                                     "column": 16
-                                },
-                                "ir_instruction_index": 17
+                                }
                             },
                             {
                                 "id": 22,
@@ -1378,8 +1324,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 59,
                                     "column": 16
-                                },
-                                "ir_instruction_index": 18
+                                }
                             },
                             {
                                 "id": 23,
@@ -1402,8 +1347,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 59,
                                     "column": 16
-                                },
-                                "ir_instruction_index": 19
+                                }
                             },
                             {
                                 "id": 24,
@@ -1423,8 +1367,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 59,
                                     "column": 16
-                                },
-                                "ir_instruction_index": 20
+                                }
                             },
                             {
                                 "id": 25,
@@ -1447,8 +1390,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 59,
                                     "column": 16
-                                },
-                                "ir_instruction_index": 21
+                                }
                             },
                             {
                                 "id": 26,
@@ -1471,8 +1413,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 59,
                                     "column": 12
-                                },
-                                "ir_instruction_index": 22
+                                }
                             },
                             {
                                 "id": 27,
@@ -1492,8 +1433,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 59,
                                     "column": 5
-                                },
-                                "ir_instruction_index": 23
+                                }
                             }
                         ],
                         "public_labels": [],
@@ -1543,8 +1483,7 @@
                                         "end": 1
                                     }
                                 },
-                                "source_location": null,
-                                "ir_instruction_index": null
+                                "source_location": null
                             }
                         ],
                         "public_labels": [],
@@ -1587,8 +1526,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 67,
                                     "column": 12
-                                },
-                                "ir_instruction_index": 0
+                                }
                             },
                             {
                                 "id": 2,
@@ -1611,8 +1549,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 67,
                                     "column": 12
-                                },
-                                "ir_instruction_index": 1
+                                }
                             },
                             {
                                 "id": 3,
@@ -1633,8 +1570,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 67,
                                     "column": 12
-                                },
-                                "ir_instruction_index": 2
+                                }
                             },
                             {
                                 "id": 4,
@@ -1657,8 +1593,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 67,
                                     "column": 12
-                                },
-                                "ir_instruction_index": 3
+                                }
                             },
                             {
                                 "id": 5,
@@ -1678,8 +1613,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 67,
                                     "column": 14
-                                },
-                                "ir_instruction_index": 4
+                                }
                             },
                             {
                                 "id": 6,
@@ -1700,8 +1634,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 67,
                                     "column": 14
-                                },
-                                "ir_instruction_index": 5
+                                }
                             },
                             {
                                 "id": 7,
@@ -1724,8 +1657,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 67,
                                     "column": 14
-                                },
-                                "ir_instruction_index": 6
+                                }
                             },
                             {
                                 "id": 8,
@@ -1748,8 +1680,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 67,
                                     "column": 14
-                                },
-                                "ir_instruction_index": 7
+                                }
                             },
                             {
                                 "id": 9,
@@ -1769,8 +1700,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 67,
                                     "column": 14
-                                },
-                                "ir_instruction_index": 8
+                                }
                             },
                             {
                                 "id": 10,
@@ -1791,8 +1721,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 67,
                                     "column": 14
-                                },
-                                "ir_instruction_index": 9
+                                }
                             },
                             {
                                 "id": 11,
@@ -1815,8 +1744,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 67,
                                     "column": 14
-                                },
-                                "ir_instruction_index": 10
+                                }
                             },
                             {
                                 "id": 12,
@@ -1839,8 +1767,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 67,
                                     "column": 14
-                                },
-                                "ir_instruction_index": 11
+                                }
                             },
                             {
                                 "id": 13,
@@ -1860,8 +1787,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 67,
                                     "column": 12
-                                },
-                                "ir_instruction_index": 12
+                                }
                             },
                             {
                                 "id": 14,
@@ -1884,8 +1810,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 67,
                                     "column": 12
-                                },
-                                "ir_instruction_index": 13
+                                }
                             },
                             {
                                 "id": 15,
@@ -1908,8 +1833,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 67,
                                     "column": 12
-                                },
-                                "ir_instruction_index": 14
+                                }
                             },
                             {
                                 "id": 16,
@@ -1932,8 +1856,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 67,
                                     "column": 12
-                                },
-                                "ir_instruction_index": 15
+                                }
                             },
                             {
                                 "id": 17,
@@ -1953,8 +1876,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 68,
                                     "column": 9
-                                },
-                                "ir_instruction_index": 17
+                                }
                             },
                             {
                                 "id": 18,
@@ -1975,8 +1897,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 68,
                                     "column": 5
-                                },
-                                "ir_instruction_index": 18
+                                }
                             },
                             {
                                 "id": 19,
@@ -2000,8 +1921,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 68,
                                     "column": 5
-                                },
-                                "ir_instruction_index": 22
+                                }
                             },
                             {
                                 "id": 20,
@@ -2021,8 +1941,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 69,
                                     "column": 9
-                                },
-                                "ir_instruction_index": 24
+                                }
                             },
                             {
                                 "id": 21,
@@ -2043,8 +1962,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 69,
                                     "column": 5
-                                },
-                                "ir_instruction_index": 25
+                                }
                             },
                             {
                                 "id": 22,
@@ -2068,8 +1986,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 69,
                                     "column": 5
-                                },
-                                "ir_instruction_index": 29
+                                }
                             },
                             {
                                 "id": 23,
@@ -2089,8 +2006,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 70,
                                     "column": 9
-                                },
-                                "ir_instruction_index": 31
+                                }
                             },
                             {
                                 "id": 24,
@@ -2110,8 +2026,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 70,
                                     "column": 5
-                                },
-                                "ir_instruction_index": 32
+                                }
                             },
                             {
                                 "id": 25,
@@ -2132,8 +2047,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 70,
                                     "column": 5
-                                },
-                                "ir_instruction_index": 33
+                                }
                             },
                             {
                                 "id": 26,
@@ -2157,8 +2071,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 70,
                                     "column": 5
-                                },
-                                "ir_instruction_index": 37
+                                }
                             },
                             {
                                 "id": 27,
@@ -2178,8 +2091,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 71,
                                     "column": 10
-                                },
-                                "ir_instruction_index": 39
+                                }
                             },
                             {
                                 "id": 28,
@@ -2199,8 +2111,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 71,
                                     "column": 5
-                                },
-                                "ir_instruction_index": 40
+                                }
                             },
                             {
                                 "id": 29,
@@ -2221,8 +2132,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 71,
                                     "column": 5
-                                },
-                                "ir_instruction_index": 41
+                                }
                             },
                             {
                                 "id": 30,
@@ -2245,8 +2155,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 71,
                                     "column": 5
-                                },
-                                "ir_instruction_index": 42
+                                }
                             },
                             {
                                 "id": 31,
@@ -2270,8 +2179,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 71,
                                     "column": 5
-                                },
-                                "ir_instruction_index": 46
+                                }
                             },
                             {
                                 "id": 32,
@@ -2287,8 +2195,7 @@
                                         "end": 33
                                     }
                                 },
-                                "source_location": null,
-                                "ir_instruction_index": null
+                                "source_location": null
                             }
                         ],
                         "public_labels": [],

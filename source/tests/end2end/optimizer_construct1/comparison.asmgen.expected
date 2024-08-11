@@ -27,8 +27,7 @@
                                         "end": 1
                                     }
                                 },
-                                "source_location": null,
-                                "ir_instruction_index": null
+                                "source_location": null
                             }
                         ],
                         "public_labels": [],
@@ -70,8 +69,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/comparison.kefir.asmgen.c",
                                     "line": 22,
                                     "column": 13
-                                },
-                                "ir_instruction_index": 0
+                                }
                             },
                             {
                                 "id": 2,
@@ -91,8 +89,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/comparison.kefir.asmgen.c",
                                     "line": 22,
                                     "column": 13
-                                },
-                                "ir_instruction_index": 1
+                                }
                             },
                             {
                                 "id": 3,
@@ -115,8 +112,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/comparison.kefir.asmgen.c",
                                     "line": 22,
                                     "column": 13
-                                },
-                                "ir_instruction_index": 2
+                                }
                             },
                             {
                                 "id": 4,
@@ -136,8 +132,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/comparison.kefir.asmgen.c",
                                     "line": 22,
                                     "column": 12
-                                },
-                                "ir_instruction_index": 3
+                                }
                             },
                             {
                                 "id": 5,
@@ -160,8 +155,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/comparison.kefir.asmgen.c",
                                     "line": 22,
                                     "column": 12
-                                },
-                                "ir_instruction_index": 4
+                                }
                             },
                             {
                                 "id": 6,
@@ -181,8 +175,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/comparison.kefir.asmgen.c",
                                     "line": 22,
                                     "column": 12
-                                },
-                                "ir_instruction_index": 5
+                                }
                             },
                             {
                                 "id": 7,
@@ -202,8 +195,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/comparison.kefir.asmgen.c",
                                     "line": 22,
                                     "column": 26
-                                },
-                                "ir_instruction_index": 6
+                                }
                             },
                             {
                                 "id": 8,
@@ -226,8 +218,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/comparison.kefir.asmgen.c",
                                     "line": 22,
                                     "column": 26
-                                },
-                                "ir_instruction_index": 9
+                                }
                             },
                             {
                                 "id": 9,
@@ -250,8 +241,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/comparison.kefir.asmgen.c",
                                     "line": 22,
                                     "column": 26
-                                },
-                                "ir_instruction_index": 11
+                                }
                             },
                             {
                                 "id": 10,
@@ -274,8 +264,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/comparison.kefir.asmgen.c",
                                     "line": 22,
                                     "column": 26
-                                },
-                                "ir_instruction_index": 12
+                                }
                             },
                             {
                                 "id": 11,
@@ -295,8 +284,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/comparison.kefir.asmgen.c",
                                     "line": 22,
                                     "column": 26
-                                },
-                                "ir_instruction_index": 13
+                                }
                             },
                             {
                                 "id": 12,
@@ -319,8 +307,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/comparison.kefir.asmgen.c",
                                     "line": 22,
                                     "column": 26
-                                },
-                                "ir_instruction_index": 14
+                                }
                             },
                             {
                                 "id": 13,
@@ -340,8 +327,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/comparison.kefir.asmgen.c",
                                     "line": 22,
                                     "column": 26
-                                },
-                                "ir_instruction_index": 15
+                                }
                             },
                             {
                                 "id": 14,
@@ -364,8 +350,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/comparison.kefir.asmgen.c",
                                     "line": 22,
                                     "column": 12
-                                },
-                                "ir_instruction_index": 16
+                                }
                             },
                             {
                                 "id": 15,
@@ -385,8 +370,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/comparison.kefir.asmgen.c",
                                     "line": 22,
                                     "column": 5
-                                },
-                                "ir_instruction_index": 17
+                                }
                             },
                             {
                                 "id": 16,
@@ -409,8 +393,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/comparison.kefir.asmgen.c",
                                     "line": 22,
                                     "column": 5
-                                },
-                                "ir_instruction_index": 18
+                                }
                             }
                         ],
                         "public_labels": [],
@@ -452,8 +435,7 @@
                                         "end": 23
                                     }
                                 },
-                                "source_location": null,
-                                "ir_instruction_index": null
+                                "source_location": null
                             }
                         ],
                         "public_labels": [],
@@ -495,8 +477,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/comparison.kefir.asmgen.c",
                                     "line": 22,
                                     "column": 5
-                                },
-                                "ir_instruction_index": 19
+                                }
                             },
                             {
                                 "id": 18,
@@ -516,8 +497,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/comparison.kefir.asmgen.c",
                                     "line": 24,
                                     "column": 17
-                                },
-                                "ir_instruction_index": 20
+                                }
                             },
                             {
                                 "id": 19,
@@ -540,8 +520,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/comparison.kefir.asmgen.c",
                                     "line": 24,
                                     "column": 17
-                                },
-                                "ir_instruction_index": 21
+                                }
                             },
                             {
                                 "id": 20,
@@ -561,8 +540,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/comparison.kefir.asmgen.c",
                                     "line": 24,
                                     "column": 13
-                                },
-                                "ir_instruction_index": 22
+                                }
                             },
                             {
                                 "id": 21,
@@ -585,8 +563,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/comparison.kefir.asmgen.c",
                                     "line": 24,
                                     "column": 13
-                                },
-                                "ir_instruction_index": 23
+                                }
                             }
                         ],
                         "public_labels": [],
@@ -632,8 +609,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/comparison.kefir.asmgen.c",
                                     "line": 23,
                                     "column": 9
-                                },
-                                "ir_instruction_index": 27
+                                }
                             },
                             {
                                 "id": 26,
@@ -653,8 +629,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/comparison.kefir.asmgen.c",
                                     "line": 27,
                                     "column": 20
-                                },
-                                "ir_instruction_index": 28
+                                }
                             },
                             {
                                 "id": 27,
@@ -674,8 +649,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/comparison.kefir.asmgen.c",
                                     "line": 27,
                                     "column": 24
-                                },
-                                "ir_instruction_index": 29
+                                }
                             },
                             {
                                 "id": 28,
@@ -698,8 +672,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/comparison.kefir.asmgen.c",
                                     "line": 27,
                                     "column": 24
-                                },
-                                "ir_instruction_index": 30
+                                }
                             },
                             {
                                 "id": 29,
@@ -722,8 +695,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/comparison.kefir.asmgen.c",
                                     "line": 27,
                                     "column": 20
-                                },
-                                "ir_instruction_index": 31
+                                }
                             },
                             {
                                 "id": 30,
@@ -743,8 +715,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/comparison.kefir.asmgen.c",
                                     "line": 27,
                                     "column": 19
-                                },
-                                "ir_instruction_index": 32
+                                }
                             },
                             {
                                 "id": 31,
@@ -767,8 +738,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/comparison.kefir.asmgen.c",
                                     "line": 27,
                                     "column": 19
-                                },
-                                "ir_instruction_index": 35
+                                }
                             },
                             {
                                 "id": 32,
@@ -791,8 +761,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/comparison.kefir.asmgen.c",
                                     "line": 27,
                                     "column": 19
-                                },
-                                "ir_instruction_index": 37
+                                }
                             },
                             {
                                 "id": 33,
@@ -815,8 +784,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/comparison.kefir.asmgen.c",
                                     "line": 27,
                                     "column": 19
-                                },
-                                "ir_instruction_index": 38
+                                }
                             },
                             {
                                 "id": 34,
@@ -836,8 +804,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/comparison.kefir.asmgen.c",
                                     "line": 27,
                                     "column": 18
-                                },
-                                "ir_instruction_index": 39
+                                }
                             },
                             {
                                 "id": 35,
@@ -857,8 +824,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/comparison.kefir.asmgen.c",
                                     "line": 27,
                                     "column": 18
-                                },
-                                "ir_instruction_index": 40
+                                }
                             },
                             {
                                 "id": 36,
@@ -881,8 +847,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/comparison.kefir.asmgen.c",
                                     "line": 27,
                                     "column": 18
-                                },
-                                "ir_instruction_index": 41
+                                }
                             },
                             {
                                 "id": 37,
@@ -905,8 +870,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/comparison.kefir.asmgen.c",
                                     "line": 23,
                                     "column": 9
-                                },
-                                "ir_instruction_index": 42
+                                }
                             }
                         ],
                         "public_labels": [],
@@ -951,8 +915,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/comparison.kefir.asmgen.c",
                                     "line": 24,
                                     "column": 13
-                                },
-                                "ir_instruction_index": 24
+                                }
                             },
                             {
                                 "id": 23,
@@ -972,8 +935,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/comparison.kefir.asmgen.c",
                                     "line": 25,
                                     "column": 17
-                                },
-                                "ir_instruction_index": 25
+                                }
                             },
                             {
                                 "id": 24,
@@ -993,8 +955,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/comparison.kefir.asmgen.c",
                                     "line": 25,
                                     "column": 17
-                                },
-                                "ir_instruction_index": 26
+                                }
                             }
                         ],
                         "public_labels": [],
@@ -1036,8 +997,7 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/comparison.kefir.asmgen.c",
                                     "line": 22,
                                     "column": 5
-                                },
-                                "ir_instruction_index": 43
+                                }
                             }
                         ],
                         "public_labels": [],

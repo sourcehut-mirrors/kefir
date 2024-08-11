@@ -99,19 +99,17 @@ static kefir_result_t free_use_entry(struct kefir_mem *mem, struct kefir_hashtre
 
 static kefir_hashtree_hash_t source_location_hash(kefir_hashtree_key_t key, void *data) {
     UNUSED(data);
-    ASSIGN_DECL_CAST(const struct kefir_source_location *, source_location,
-        key);
+    ASSIGN_DECL_CAST(const struct kefir_source_location *, source_location, key);
     REQUIRE(source_location != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source location"));
-    return kefir_hashtree_str_ops.hash((kefir_hashtree_key_t) source_location->source, kefir_hashtree_str_ops.data) * 61 +
-        source_location->line * 37 + source_location->column;
+    return kefir_hashtree_str_ops.hash((kefir_hashtree_key_t) source_location->source, kefir_hashtree_str_ops.data) *
+               61 +
+           source_location->line * 37 + source_location->column;
 }
 
 static kefir_int_t source_location_compare(kefir_hashtree_key_t key1, kefir_hashtree_key_t key2, void *data) {
     UNUSED(data);
-    ASSIGN_DECL_CAST(const struct kefir_source_location *, source_location1,
-        key1);
-    ASSIGN_DECL_CAST(const struct kefir_source_location *, source_location2,
-        key2);
+    ASSIGN_DECL_CAST(const struct kefir_source_location *, source_location1, key1);
+    ASSIGN_DECL_CAST(const struct kefir_source_location *, source_location2, key2);
     REQUIRE(source_location1 != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source location"));
     REQUIRE(source_location2 != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source location"));
 
@@ -133,15 +131,16 @@ static kefir_int_t source_location_compare(kefir_hashtree_key_t key1, kefir_hash
     }
 }
 
-const struct kefir_hashtree_ops kefir_hashtree_source_location_ops = {.hash = source_location_hash, .compare = source_location_compare, .data = NULL};
+const struct kefir_hashtree_ops kefir_hashtree_source_location_ops = {
+    .hash = source_location_hash, .compare = source_location_compare, .data = NULL};
 
-static kefir_result_t free_source_location(struct kefir_mem *mem, struct kefir_hashtree *tree, kefir_hashtree_key_t key, kefir_hashtree_value_t value, void *payload) {
+static kefir_result_t free_source_location(struct kefir_mem *mem, struct kefir_hashtree *tree, kefir_hashtree_key_t key,
+                                           kefir_hashtree_value_t value, void *payload) {
     UNUSED(tree);
     UNUSED(value);
     UNUSED(payload);
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    ASSIGN_DECL_CAST(struct kefir_source_location *, source_location,
-        key);
+    ASSIGN_DECL_CAST(struct kefir_source_location *, source_location, key);
     REQUIRE(source_location != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source location"));
 
     KEFIR_FREE(mem, (char *) source_location->source);
@@ -164,7 +163,6 @@ kefir_result_t kefir_opt_code_container_init(struct kefir_opt_code_container *co
     code->next_call_node_id = 0;
     code->next_inline_assembly_id = 0;
     code->entry_point = KEFIR_ID_NONE;
-    code->current_ir_instruction_index = KEFIR_OPT_IR_INSTRUCTION_INDEX_NONE;
     code->source_location_cursor = NULL;
     REQUIRE_OK(kefir_hashtree_init(&code->blocks, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_on_removal(&code->blocks, free_block, NULL));
@@ -362,7 +360,8 @@ static kefir_result_t code_container_instr_mutable(const struct kefir_opt_code_c
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_opt_code_container_set_source_location_cursor(struct kefir_mem *mem, struct kefir_opt_code_container *code, const struct kefir_source_location *source_location) {
+kefir_result_t kefir_opt_code_container_set_source_location_cursor(
+    struct kefir_mem *mem, struct kefir_opt_code_container *code, const struct kefir_source_location *source_location) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
 
@@ -385,7 +384,8 @@ kefir_result_t kefir_opt_code_container_set_source_location_cursor(struct kefir_
             location->line = source_location->line;
             location->column = source_location->column;
 
-            kefir_result_t res = kefir_hashtree_insert(mem, &code->source_locations, (kefir_hashtree_key_t) location, (kefir_hashtree_value_t) 0);
+            kefir_result_t res = kefir_hashtree_insert(mem, &code->source_locations, (kefir_hashtree_key_t) location,
+                                                       (kefir_hashtree_value_t) 0);
             REQUIRE_ELSE(res == KEFIR_OK, {
                 KEFIR_FREE(mem, (char *) location->source);
                 KEFIR_FREE(mem, location);
@@ -403,30 +403,13 @@ kefir_result_t kefir_opt_code_container_set_source_location_cursor(struct kefir_
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_opt_code_container_set_source_location_cursor_of(struct kefir_opt_code_container *code, kefir_opt_instruction_ref_t instr_ref) {
+kefir_result_t kefir_opt_code_container_set_source_location_cursor_of(struct kefir_opt_code_container *code,
+                                                                      kefir_opt_instruction_ref_t instr_ref) {
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
 
     const struct kefir_opt_instruction *instr;
     REQUIRE_OK(kefir_opt_code_container_instr(code, instr_ref, &instr));
     code->source_location_cursor = instr->source_location;
-    return KEFIR_OK;
-}
-
-kefir_result_t kefir_opt_code_container_set_ir_instruction_index(struct kefir_opt_code_container *code,
-                                                                 kefir_size_t index) {
-    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
-
-    code->current_ir_instruction_index = index;
-    return KEFIR_OK;
-}
-
-kefir_result_t kefir_opt_code_container_set_ir_instruction_index_of(struct kefir_opt_code_container *code,
-                                                                    kefir_opt_instruction_ref_t instr_ref) {
-    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
-
-    const struct kefir_opt_instruction *instr;
-    REQUIRE_OK(kefir_opt_code_container_instr(code, instr_ref, &instr));
-    REQUIRE_OK(kefir_opt_code_container_set_ir_instruction_index(code, instr->ir_instruction_index));
     return KEFIR_OK;
 }
 
@@ -489,7 +472,6 @@ kefir_result_t kefir_opt_code_container_new_instruction(struct kefir_mem *mem, s
     instr->control_flow.next = KEFIR_ID_NONE;
     instr->siblings.prev = block->content.tail;
     instr->siblings.next = KEFIR_ID_NONE;
-    instr->ir_instruction_index = code->current_ir_instruction_index;
     instr->source_location = code->source_location_cursor;
 
     struct instruction_use_entry *use_entry = KEFIR_MALLOC(mem, sizeof(struct instruction_use_entry));
