@@ -81,6 +81,10 @@ kefir_result_t kefir_hashtree_insert(struct kefir_mem *, struct kefir_hashtree *
 kefir_result_t kefir_hashtree_at(const struct kefir_hashtree *, kefir_hashtree_key_t, struct kefir_hashtree_node **);
 kefir_result_t kefir_hashtree_lower_bound(const struct kefir_hashtree *, kefir_hashtree_key_t,
                                           struct kefir_hashtree_node **);
+kefir_result_t kefir_hashtree_min(const struct kefir_hashtree *,
+                                          struct kefir_hashtree_node **);
+kefir_result_t kefir_hashtree_max(const struct kefir_hashtree *,
+                                          struct kefir_hashtree_node **);
 kefir_bool_t kefir_hashtree_has(const struct kefir_hashtree *, kefir_hashtree_key_t);
 kefir_bool_t kefir_hashtree_empty(const struct kefir_hashtree *);
 kefir_result_t kefir_hashtree_delete(struct kefir_mem *, struct kefir_hashtree *, kefir_hashtree_key_t);

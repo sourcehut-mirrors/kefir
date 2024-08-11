@@ -64,6 +64,15 @@ kefir_result_t kefir_interval_tree_insert(struct kefir_mem *, struct kefir_inter
 kefir_result_t kefir_interval_tree_get(const struct kefir_interval_tree *, kefir_interval_tree_key_t,
                                        kefir_interval_tree_key_t, struct kefir_interval_tree_node **);
 
+typedef struct kefir_interval_tree_finder {
+    struct kefir_interval_tree_node *node;
+    kefir_interval_tree_key_t position;
+} kefir_interval_tree_finder_t;
+
+kefir_result_t kefir_interval_tree_find(const struct kefir_interval_tree *, kefir_interval_tree_key_t,
+                                       struct kefir_interval_tree_finder *, struct kefir_interval_tree_node **);
+kefir_result_t kefir_interval_tree_find_next(const struct kefir_interval_tree *, struct kefir_interval_tree_finder *, struct kefir_interval_tree_node **);
+
 typedef struct kefir_interval_tree_iterator {
     struct kefir_hashtree_node_iterator entry;
     struct kefir_hashtree_node_iterator node;

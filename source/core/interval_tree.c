@@ -62,6 +62,14 @@ static kefir_result_t on_entry_removal(struct kefir_mem *mem, struct kefir_hasht
 static kefir_result_t update_node_subtree_max_end(struct kefir_hashtree_node *node) {
     ASSIGN_DECL_CAST(struct kefir_interval_tree_entry *, interval_entry, node->value);
 
+    interval_entry->max_subtree_end = interval_entry->begin;
+
+    struct kefir_hashtree_node *max_subnode;
+    REQUIRE_OK(kefir_hashtree_max(&interval_entry->nodes, &max_subnode));
+    if (max_subnode != NULL) {
+        interval_entry->max_subtree_end = (kefir_interval_tree_key_t) max_subnode->key;
+    }
+
     if (node->left_child != NULL) {
         ASSIGN_DECL_CAST(struct kefir_interval_tree_entry *, left_interval_subentry, node->left_child->value);
         interval_entry->max_subtree_end = MAX(interval_entry->max_subtree_end, left_interval_subentry->max_subtree_end);
@@ -137,7 +145,10 @@ kefir_result_t kefir_interval_tree_insert(struct kefir_mem *mem, struct kefir_in
         REQUIRE_CHAIN(&res, kefir_hashtree_on_removal(&entry->nodes, on_node_removal, tree));
         REQUIRE_CHAIN(&res, kefir_hashtree_insert(mem, &tree->tree, (kefir_hashtree_key_t) begin,
                                                   (kefir_hashtree_value_t) entry));
-        REQUIRE_ELSE(res == KEFIR_OK, { KEFIR_FREE(mem, entry); });
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            KEFIR_FREE(mem, entry);
+            return res;
+        });
         REQUIRE_OK(kefir_hashtree_at(&tree->tree, (kefir_hashtree_key_t) begin, &tree_node));
     } else {
         REQUIRE_OK(res);
@@ -188,6 +199,114 @@ kefir_result_t kefir_interval_tree_get(const struct kefir_interval_tree *tree, k
 
     *node_ptr = (struct kefir_interval_tree_node *) tree_node->value;
     return KEFIR_OK;
+}
+
+static kefir_result_t find_min_node(struct kefir_hashtree_node *node, kefir_interval_tree_key_t position, struct kefir_interval_tree_node **min_node) {
+    REQUIRE(node != NULL, KEFIR_OK);
+    ASSIGN_DECL_CAST(const struct kefir_interval_tree_entry *, entry,
+        node->value);
+
+    if (position < entry->begin) {
+        return find_min_node(node->left_child, position, min_node);
+    } else if (node->left_child != NULL) {
+        ASSIGN_DECL_CAST(const struct kefir_interval_tree_entry *, left_child_entry,
+            node->left_child->value);
+        if (position >= left_child_entry->begin && position < left_child_entry->max_subtree_end) {
+            return find_min_node(node->left_child, position, min_node);
+        }
+    }
+    REQUIRE(position >= entry->begin && position < entry->max_subtree_end, KEFIR_OK);
+
+    struct kefir_hashtree_node *position_iter;
+    kefir_result_t res = kefir_hashtree_lower_bound(&entry->nodes, (kefir_hashtree_key_t) position, &position_iter);
+    if (res != KEFIR_NOT_FOUND) {
+        REQUIRE_OK(res);
+    } else {
+        REQUIRE_OK(kefir_hashtree_min(&entry->nodes, &position_iter));
+    }
+
+    for (; position_iter != NULL;) {
+        ASSIGN_DECL_CAST(struct kefir_interval_tree_node *, interval_node,
+            position_iter->value);
+        if (position < interval_node->begin) {
+            break;
+        }
+
+        if (position >= interval_node->begin && position < interval_node->end) {
+            *min_node = interval_node;
+            return KEFIR_OK;
+        }
+
+        position_iter = kefir_hashtree_next_node(&entry->nodes, position_iter);
+    }
+    
+    return find_min_node(node->right_child, position, min_node);
+}
+
+kefir_result_t kefir_interval_tree_find(const struct kefir_interval_tree *tree, kefir_interval_tree_key_t position,
+                                       struct kefir_interval_tree_finder *finder, struct kefir_interval_tree_node **interval_node_ptr) {
+    REQUIRE(tree != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid interval tree"));
+    REQUIRE(finder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to interval tree finder"));
+
+    finder->node = NULL;
+    finder->position = position;
+    REQUIRE_OK(find_min_node(tree->tree.root, position, &finder->node));
+
+    REQUIRE(finder->node != NULL, KEFIR_ITERATOR_END);
+    ASSIGN_PTR(interval_node_ptr, finder->node);
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_interval_tree_find_next(const struct kefir_interval_tree *tree, struct kefir_interval_tree_finder *finder, struct kefir_interval_tree_node **interval_node_ptr) {
+    REQUIRE(tree != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid interval tree"));
+    REQUIRE(finder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to interval tree finder"));
+    REQUIRE(finder->node != NULL, KEFIR_ITERATOR_END);
+
+    struct kefir_hashtree_node *entry_node, *node;
+    REQUIRE_OK(kefir_hashtree_at(&tree->tree, (kefir_hashtree_key_t) finder->node->begin, &entry_node));
+    ASSIGN_DECL_CAST(const struct kefir_interval_tree_entry *, entry,
+        entry_node->value);
+
+    REQUIRE_OK(kefir_hashtree_at(&entry->nodes, (kefir_hashtree_key_t) finder->node->end, &node));
+    node = kefir_hashtree_next_node(&tree->tree, node);
+    if (node != NULL) {
+        ASSIGN_DECL_CAST(struct kefir_interval_tree_node *, interval_node,
+            node->value);
+        REQUIRE(finder->position >= interval_node->begin && finder->position < interval_node->end,
+            KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected interval nodes of the same entry to have ascending end positions"));
+        
+        finder->node = interval_node;
+        ASSIGN_PTR(interval_node_ptr, interval_node);
+        return KEFIR_OK;
+    }
+
+    for (entry_node = kefir_hashtree_next_node(&tree->tree, entry_node); entry_node != NULL; entry_node = kefir_hashtree_next_node(&tree->tree, entry_node)) {
+        ASSIGN_DECL_CAST(const struct kefir_interval_tree_entry *, entry,
+            entry_node->value);
+
+        REQUIRE(finder->position >= entry->begin, KEFIR_ITERATOR_END);
+        if (finder->position < entry->max_subtree_end) {
+            struct kefir_hashtree_node *position_iter;
+            kefir_result_t res = kefir_hashtree_lower_bound(&entry->nodes, (kefir_hashtree_key_t) finder->position, &position_iter);
+            if (res != KEFIR_NOT_FOUND) {
+                REQUIRE_OK(res);
+            }
+
+            for (; position_iter != NULL;) {
+                ASSIGN_DECL_CAST(struct kefir_interval_tree_node *, interval_node,
+                    position_iter->value);
+                if (finder->position >= interval_node->begin && finder->position < interval_node->end) {
+                    finder->node = interval_node;
+                    ASSIGN_PTR(interval_node_ptr, interval_node);
+                    return KEFIR_OK;
+                }
+
+                position_iter = kefir_hashtree_next_node(&entry->nodes, position_iter);
+            }
+        }
+    }
+
+    return KEFIR_ITERATOR_END;
 }
 
 #define ITER_NEXT                                                                            \

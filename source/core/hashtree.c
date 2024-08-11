@@ -342,6 +342,48 @@ kefir_result_t kefir_hashtree_at(const struct kefir_hashtree *tree, kefir_hashtr
     return KEFIR_OK;
 }
 
+static struct kefir_hashtree_node *min_node(struct kefir_hashtree_node *node) {
+    if (node == NULL) {
+        return NULL;
+    }
+    struct kefir_hashtree_node *child = min_node(node->left_child);
+    if (child != NULL) {
+        return child;
+    } else {
+        return node;
+    }
+}
+
+static struct kefir_hashtree_node *max_node(struct kefir_hashtree_node *node) {
+    if (node == NULL) {
+        return NULL;
+    }
+    struct kefir_hashtree_node *child = max_node(node->right_child);
+    if (child != NULL) {
+        return child;
+    } else {
+        return node;
+    }
+}
+
+kefir_result_t kefir_hashtree_min(const struct kefir_hashtree *tree,
+                                          struct kefir_hashtree_node **result) {
+    REQUIRE(tree != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hash tree pointer"));
+    REQUIRE(result != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid result pointer"));
+    assert(NODE_BF(tree->root) >= -1 && NODE_BF(tree->root) <= 1);
+    *result = min_node(tree->root);
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_hashtree_max(const struct kefir_hashtree *tree,
+                                          struct kefir_hashtree_node **result) {
+    REQUIRE(tree != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hash tree pointer"));
+    REQUIRE(result != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid result pointer"));
+    assert(NODE_BF(tree->root) >= -1 && NODE_BF(tree->root) <= 1);
+    *result = max_node(tree->root);
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_hashtree_lower_bound(const struct kefir_hashtree *tree, kefir_hashtree_key_t key,
                                           struct kefir_hashtree_node **result) {
     REQUIRE(tree != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hash tree pointer"));
@@ -454,18 +496,6 @@ kefir_result_t kefir_hashtree_clean(struct kefir_mem *mem, struct kefir_hashtree
     REQUIRE_OK(node_free(mem, tree, tree->root));
     tree->root = NULL;
     return KEFIR_OK;
-}
-
-static struct kefir_hashtree_node *min_node(struct kefir_hashtree_node *node) {
-    if (node == NULL) {
-        return NULL;
-    }
-    struct kefir_hashtree_node *child = min_node(node->left_child);
-    if (child != NULL) {
-        return child;
-    } else {
-        return node;
-    }
 }
 
 struct kefir_hashtree_node *kefir_hashtree_next_node(const struct kefir_hashtree *tree,

@@ -27,6 +27,7 @@
                                         "end": 5
                                     }
                                 },
+                                "source_location": null,
                                 "ir_instruction_index": null
                             },
                             {
@@ -43,6 +44,7 @@
                                         "end": 5
                                     }
                                 },
+                                "source_location": null,
                                 "ir_instruction_index": null
                             },
                             {
@@ -59,6 +61,7 @@
                                         "end": 5
                                     }
                                 },
+                                "source_location": null,
                                 "ir_instruction_index": null
                             },
                             {
@@ -75,6 +78,7 @@
                                         "end": 5
                                     }
                                 },
+                                "source_location": null,
                                 "ir_instruction_index": null
                             },
                             {
@@ -91,6 +95,7 @@
                                         "end": 5
                                     }
                                 },
+                                "source_location": null,
                                 "ir_instruction_index": null
                             }
                         ],
@@ -166,6 +171,7 @@
                                         "end": 17
                                     }
                                 },
+                                "source_location": null,
                                 "ir_instruction_index": 10
                             },
                             {
@@ -182,6 +188,7 @@
                                         "end": 15
                                     }
                                 },
+                                "source_location": null,
                                 "ir_instruction_index": 7
                             },
                             {
@@ -198,6 +205,7 @@
                                         "end": 13
                                     }
                                 },
+                                "source_location": null,
                                 "ir_instruction_index": 4
                             },
                             {
@@ -214,6 +222,7 @@
                                         "end": 11
                                     }
                                 },
+                                "source_location": null,
                                 "ir_instruction_index": 1
                             },
                             {
@@ -231,6 +240,7 @@
                                         "end": 11
                                     }
                                 },
+                                "source_location": null,
                                 "ir_instruction_index": 0
                             },
                             {
@@ -251,6 +261,7 @@
                                         "end": 11
                                     }
                                 },
+                                "source_location": null,
                                 "ir_instruction_index": 2
                             },
                             {
@@ -268,6 +279,7 @@
                                         "end": 13
                                     }
                                 },
+                                "source_location": null,
                                 "ir_instruction_index": 3
                             },
                             {
@@ -288,6 +300,7 @@
                                         "end": 13
                                     }
                                 },
+                                "source_location": null,
                                 "ir_instruction_index": 5
                             },
                             {
@@ -305,6 +318,7 @@
                                         "end": 15
                                     }
                                 },
+                                "source_location": null,
                                 "ir_instruction_index": 6
                             },
                             {
@@ -325,6 +339,7 @@
                                         "end": 15
                                     }
                                 },
+                                "source_location": null,
                                 "ir_instruction_index": 8
                             },
                             {
@@ -342,6 +357,7 @@
                                         "end": 17
                                     }
                                 },
+                                "source_location": null,
                                 "ir_instruction_index": 9
                             },
                             {
@@ -362,6 +378,7 @@
                                         "end": 17
                                     }
                                 },
+                                "source_location": null,
                                 "ir_instruction_index": 11
                             },
                             {
@@ -378,6 +395,11 @@
                                         "begin": 17,
                                         "end": 19
                                     }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
+                                    "line": 22,
+                                    "column": 12
                                 },
                                 "ir_instruction_index": 12
                             },
@@ -398,6 +420,11 @@
                                         "end": 20
                                     }
                                 },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
+                                    "line": 22,
+                                    "column": 12
+                                },
                                 "ir_instruction_index": 13
                             },
                             {
@@ -414,6 +441,11 @@
                                         "end": 22
                                     }
                                 },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
+                                    "line": 22,
+                                    "column": 12
+                                },
                                 "ir_instruction_index": 14
                             },
                             {
@@ -429,6 +461,11 @@
                                         "begin": 20,
                                         "end": 22
                                     }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
+                                    "line": 22,
+                                    "column": 12
                                 },
                                 "ir_instruction_index": 16
                             },
@@ -448,6 +485,11 @@
                                         "begin": 21,
                                         "end": 22
                                     }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
+                                    "line": 22,
+                                    "column": 12
                                 },
                                 "ir_instruction_index": 17
                             }
@@ -504,6 +546,11 @@
                                         "end": 29
                                     }
                                 },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
+                                    "line": 22,
+                                    "column": 12
+                                },
                                 "ir_instruction_index": 21
                             },
                             {
@@ -519,6 +566,11 @@
                                         "begin": 28,
                                         "end": 30
                                     }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
+                                    "line": 22,
+                                    "column": 12
                                 },
                                 "ir_instruction_index": 21
                             },
@@ -538,6 +590,11 @@
                                         "begin": 29,
                                         "end": 30
                                     }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
+                                    "line": 22,
+                                    "column": 12
                                 },
                                 "ir_instruction_index": 23
                             }
@@ -591,6 +648,11 @@
                                         "end": 26
                                     }
                                 },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
+                                    "line": 22,
+                                    "column": 12
+                                },
                                 "ir_instruction_index": 20
                             },
                             {
@@ -607,6 +669,11 @@
                                         "begin": 23,
                                         "end": 25
                                     }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
+                                    "line": 22,
+                                    "column": 12
                                 },
                                 "ir_instruction_index": 18
                             },
@@ -627,6 +694,11 @@
                                         "end": 26
                                     }
                                 },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
+                                    "line": 22,
+                                    "column": 12
+                                },
                                 "ir_instruction_index": 19
                             },
                             {
@@ -646,6 +718,11 @@
                                         "end": 27
                                     }
                                 },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
+                                    "line": 22,
+                                    "column": 12
+                                },
                                 "ir_instruction_index": 20
                             },
                             {
@@ -662,6 +739,7 @@
                                         "end": 27
                                     }
                                 },
+                                "source_location": null,
                                 "ir_instruction_index": null
                             }
                         ],
@@ -716,6 +794,11 @@
                                         "end": 38
                                     }
                                 },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
+                                    "line": 22,
+                                    "column": 5
+                                },
                                 "ir_instruction_index": 34
                             },
                             {
@@ -732,6 +815,11 @@
                                         "end": 39
                                     }
                                 },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
+                                    "line": 22,
+                                    "column": 5
+                                },
                                 "ir_instruction_index": 34
                             },
                             {
@@ -747,6 +835,11 @@
                                         "begin": 38,
                                         "end": 39
                                     }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
+                                    "line": 22,
+                                    "column": 5
                                 },
                                 "ir_instruction_index": 35
                             }
@@ -797,6 +890,7 @@
                                         "end": 36
                                     }
                                 },
+                                "source_location": null,
                                 "ir_instruction_index": null
                             },
                             {
@@ -813,6 +907,11 @@
                                         "begin": 31,
                                         "end": 33
                                     }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
+                                    "line": 22,
+                                    "column": 12
                                 },
                                 "ir_instruction_index": 24
                             },
@@ -833,6 +932,11 @@
                                         "end": 34
                                     }
                                 },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
+                                    "line": 22,
+                                    "column": 12
+                                },
                                 "ir_instruction_index": 25
                             },
                             {
@@ -849,6 +953,11 @@
                                         "end": 36
                                     }
                                 },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
+                                    "line": 22,
+                                    "column": 22
+                                },
                                 "ir_instruction_index": 26
                             },
                             {
@@ -864,6 +973,11 @@
                                         "begin": 34,
                                         "end": 36
                                     }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
+                                    "line": 22,
+                                    "column": 22
                                 },
                                 "ir_instruction_index": 28
                             },
@@ -883,6 +997,11 @@
                                         "begin": 35,
                                         "end": 36
                                     }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
+                                    "line": 22,
+                                    "column": 22
                                 },
                                 "ir_instruction_index": 29
                             }
@@ -952,6 +1071,11 @@
                                         "end": 48
                                     }
                                 },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
+                                    "line": 22,
+                                    "column": 12
+                                },
                                 "ir_instruction_index": 33
                             },
                             {
@@ -967,6 +1091,11 @@
                                         "begin": 46,
                                         "end": 48
                                     }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
+                                    "line": 22,
+                                    "column": 12
                                 },
                                 "ir_instruction_index": 33
                             },
@@ -987,6 +1116,11 @@
                                         "end": 49
                                     }
                                 },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
+                                    "line": 22,
+                                    "column": 12
+                                },
                                 "ir_instruction_index": 33
                             },
                             {
@@ -1003,6 +1137,7 @@
                                         "end": 49
                                     }
                                 },
+                                "source_location": null,
                                 "ir_instruction_index": null
                             }
                         ],
@@ -1063,6 +1198,7 @@
                                         "end": 45
                                     }
                                 },
+                                "source_location": null,
                                 "ir_instruction_index": null
                             },
                             {
@@ -1078,6 +1214,11 @@
                                         "begin": 40,
                                         "end": 44
                                     }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
+                                    "line": 22,
+                                    "column": 22
                                 },
                                 "ir_instruction_index": 32
                             },
@@ -1095,6 +1236,11 @@
                                         "begin": 41,
                                         "end": 43
                                     }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
+                                    "line": 22,
+                                    "column": 22
                                 },
                                 "ir_instruction_index": 30
                             },
@@ -1115,6 +1261,11 @@
                                         "end": 44
                                     }
                                 },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
+                                    "line": 22,
+                                    "column": 22
+                                },
                                 "ir_instruction_index": 31
                             },
                             {
@@ -1134,6 +1285,11 @@
                                         "end": 45
                                     }
                                 },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
+                                    "line": 22,
+                                    "column": 22
+                                },
                                 "ir_instruction_index": 32
                             },
                             {
@@ -1150,6 +1306,7 @@
                                         "end": 45
                                     }
                                 },
+                                "source_location": null,
                                 "ir_instruction_index": null
                             }
                         ],
@@ -1202,6 +1359,7 @@
                                         "end": 2
                                     }
                                 },
+                                "source_location": null,
                                 "ir_instruction_index": null
                             },
                             {
@@ -1218,6 +1376,7 @@
                                         "end": 2
                                     }
                                 },
+                                "source_location": null,
                                 "ir_instruction_index": null
                             }
                         ],
@@ -1266,6 +1425,7 @@
                                         "end": 5
                                     }
                                 },
+                                "source_location": null,
                                 "ir_instruction_index": 1
                             },
                             {
@@ -1283,6 +1443,7 @@
                                         "end": 5
                                     }
                                 },
+                                "source_location": null,
                                 "ir_instruction_index": 0
                             },
                             {
@@ -1303,6 +1464,7 @@
                                         "end": 5
                                     }
                                 },
+                                "source_location": null,
                                 "ir_instruction_index": 2
                             },
                             {
@@ -1320,6 +1482,7 @@
                                         "end": 8
                                     }
                                 },
+                                "source_location": null,
                                 "ir_instruction_index": 3
                             },
                             {
@@ -1335,6 +1498,11 @@
                                         "begin": 6,
                                         "end": 8
                                     }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
+                                    "line": 26,
+                                    "column": 19
                                 },
                                 "ir_instruction_index": 5
                             },
@@ -1356,6 +1524,7 @@
                                         "end": 8
                                     }
                                 },
+                                "source_location": null,
                                 "ir_instruction_index": 6
                             },
                             {
@@ -1373,6 +1542,7 @@
                                         "end": 11
                                     }
                                 },
+                                "source_location": null,
                                 "ir_instruction_index": 8
                             },
                             {
@@ -1388,6 +1558,11 @@
                                         "begin": 9,
                                         "end": 11
                                     }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
+                                    "line": 27,
+                                    "column": 19
                                 },
                                 "ir_instruction_index": 10
                             },
@@ -1409,6 +1584,7 @@
                                         "end": 11
                                     }
                                 },
+                                "source_location": null,
                                 "ir_instruction_index": 11
                             },
                             {
@@ -1425,6 +1601,11 @@
                                         "begin": 11,
                                         "end": 13
                                     }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
+                                    "line": 29,
+                                    "column": 9
                                 },
                                 "ir_instruction_index": 13
                             },
@@ -1445,6 +1626,11 @@
                                         "end": 14
                                     }
                                 },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
+                                    "line": 29,
+                                    "column": 9
+                                },
                                 "ir_instruction_index": 14
                             },
                             {
@@ -1461,6 +1647,11 @@
                                         "end": 16
                                     }
                                 },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
+                                    "line": 29,
+                                    "column": 9
+                                },
                                 "ir_instruction_index": 15
                             },
                             {
@@ -1476,6 +1667,11 @@
                                         "begin": 14,
                                         "end": 16
                                     }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
+                                    "line": 29,
+                                    "column": 9
                                 },
                                 "ir_instruction_index": 17
                             },
@@ -1495,6 +1691,11 @@
                                         "begin": 15,
                                         "end": 16
                                     }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
+                                    "line": 29,
+                                    "column": 9
                                 },
                                 "ir_instruction_index": 18
                             }
@@ -1537,6 +1738,11 @@
                                         "end": 31
                                     }
                                 },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
+                                    "line": 35,
+                                    "column": 12
+                                },
                                 "ir_instruction_index": 30
                             },
                             {
@@ -1552,6 +1758,11 @@
                                         "begin": 30,
                                         "end": 31
                                     }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
+                                    "line": 35,
+                                    "column": 5
                                 },
                                 "ir_instruction_index": 31
                             }
@@ -1595,6 +1806,11 @@
                                         "end": 33
                                     }
                                 },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
+                                    "line": 37,
+                                    "column": 12
+                                },
                                 "ir_instruction_index": 32
                             },
                             {
@@ -1610,6 +1826,11 @@
                                         "begin": 32,
                                         "end": 33
                                     }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
+                                    "line": 37,
+                                    "column": 5
                                 },
                                 "ir_instruction_index": 33
                             }
@@ -1666,6 +1887,11 @@
                                         "end": 22
                                     }
                                 },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
+                                    "line": 29,
+                                    "column": 5
+                                },
                                 "ir_instruction_index": 21
                             },
                             {
@@ -1681,6 +1907,11 @@
                                         "begin": 21,
                                         "end": 23
                                     }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
+                                    "line": 29,
+                                    "column": 5
                                 },
                                 "ir_instruction_index": 21
                             },
@@ -1700,6 +1931,11 @@
                                         "begin": 22,
                                         "end": 23
                                     }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
+                                    "line": 29,
+                                    "column": 5
                                 },
                                 "ir_instruction_index": 22
                             }
@@ -1753,6 +1989,11 @@
                                         "end": 19
                                     }
                                 },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
+                                    "line": 29,
+                                    "column": 9
+                                },
                                 "ir_instruction_index": 20
                             },
                             {
@@ -1768,6 +2009,11 @@
                                         "begin": 17,
                                         "end": 19
                                     }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
+                                    "line": 29,
+                                    "column": 9
                                 },
                                 "ir_instruction_index": 19
                             },
@@ -1788,6 +2034,11 @@
                                         "end": 20
                                     }
                                 },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
+                                    "line": 29,
+                                    "column": 9
+                                },
                                 "ir_instruction_index": 20
                             },
                             {
@@ -1804,6 +2055,7 @@
                                         "end": 20
                                     }
                                 },
+                                "source_location": null,
                                 "ir_instruction_index": null
                             }
                         ],
@@ -1845,6 +2097,11 @@
                                         "end": 28
                                     }
                                 },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
+                                    "line": 29,
+                                    "column": 5
+                                },
                                 "ir_instruction_index": 27
                             },
                             {
@@ -1864,6 +2121,11 @@
                                         "end": 29
                                     }
                                 },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
+                                    "line": 29,
+                                    "column": 5
+                                },
                                 "ir_instruction_index": 28
                             },
                             {
@@ -1879,6 +2141,11 @@
                                         "begin": 28,
                                         "end": 29
                                     }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
+                                    "line": 32,
+                                    "column": 9
                                 },
                                 "ir_instruction_index": 29
                             }
@@ -1922,6 +2189,11 @@
                                         "end": 25
                                     }
                                 },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
+                                    "line": 29,
+                                    "column": 5
+                                },
                                 "ir_instruction_index": 23
                             },
                             {
@@ -1941,6 +2213,11 @@
                                         "end": 26
                                     }
                                 },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
+                                    "line": 29,
+                                    "column": 5
+                                },
                                 "ir_instruction_index": 24
                             },
                             {
@@ -1956,6 +2233,11 @@
                                         "begin": 25,
                                         "end": 26
                                     }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
+                                    "line": 30,
+                                    "column": 9
                                 },
                                 "ir_instruction_index": 25
                             }

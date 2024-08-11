@@ -26,8 +26,8 @@
 #include "kefir/util/json.h"
 
 kefir_result_t kefir_opt_code_format(struct kefir_json_output *, const struct kefir_opt_code_container *,
-                                     const struct kefir_opt_code_analysis *);
+                                     const struct kefir_opt_code_analysis *, kefir_bool_t);
 kefir_result_t kefir_opt_module_format(struct kefir_json_output *, const struct kefir_opt_module *,
-                                       const struct kefir_opt_module_analysis *);
+                                       const struct kefir_opt_module_analysis *, kefir_bool_t);
 
 #endif

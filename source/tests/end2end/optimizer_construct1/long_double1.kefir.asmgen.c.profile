@@ -1,1 +1,1 @@
-KEFIR_CFLAGS="$KEFIR_CFLAGS --print-opt"
+KEFIR_CFLAGS="$KEFIR_CFLAGS -Wdetailed-output --print-opt"

@@ -109,6 +109,40 @@ kefir_result_t kefir_ir_source_map_insert(struct kefir_mem *mem, struct kefir_ir
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_ir_source_map_find(const struct kefir_ir_source_map *source_map, kefir_size_t positon,
+                                      const struct kefir_ir_source_location **location_ptr) {
+    REQUIRE(source_map != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR source map"));
+    REQUIRE(location_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to IR source location"));
+
+    struct kefir_interval_tree_finder finder;
+    kefir_result_t res;
+    struct kefir_interval_tree_node *node;
+    const struct kefir_ir_source_location *most_precise_location = NULL;
+    for (res = kefir_interval_tree_find(&source_map->locations, (kefir_interval_tree_key_t) positon, &finder, &node);
+        res == KEFIR_OK;
+        res = kefir_interval_tree_find_next(&source_map->locations, &finder, &node)) {
+        
+        ASSIGN_DECL_CAST(const struct kefir_ir_source_location *, source_location,
+            node->value);
+        for (; source_location != NULL; source_location = source_location->next) {
+            REQUIRE(positon >= source_location->begin && positon < source_location->end,
+                KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected source location"));
+#define WIDTH(_loc) ((_loc)->end - (_loc)->begin)
+            if (most_precise_location == NULL || WIDTH(source_location) <= WIDTH(most_precise_location)) {
+                most_precise_location = source_location;
+            }
+#undef WIDTH
+        }
+    }
+
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
+    REQUIRE(most_precise_location != NULL, KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find source location for requested position"));
+    *location_ptr = most_precise_location;
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_ir_source_map_iter(const struct kefir_ir_source_map *source_map,
                                         struct kefir_ir_source_map_iterator *iter,
                                         const struct kefir_ir_source_location **location_ptr) {

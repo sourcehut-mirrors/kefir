@@ -97,6 +97,59 @@ static kefir_result_t free_use_entry(struct kefir_mem *mem, struct kefir_hashtre
     return KEFIR_OK;
 }
 
+static kefir_hashtree_hash_t source_location_hash(kefir_hashtree_key_t key, void *data) {
+    UNUSED(data);
+    ASSIGN_DECL_CAST(const struct kefir_source_location *, source_location,
+        key);
+    REQUIRE(source_location != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source location"));
+    return kefir_hashtree_str_ops.hash((kefir_hashtree_key_t) source_location->source, kefir_hashtree_str_ops.data) * 61 +
+        source_location->line * 37 + source_location->column;
+}
+
+static kefir_int_t source_location_compare(kefir_hashtree_key_t key1, kefir_hashtree_key_t key2, void *data) {
+    UNUSED(data);
+    ASSIGN_DECL_CAST(const struct kefir_source_location *, source_location1,
+        key1);
+    ASSIGN_DECL_CAST(const struct kefir_source_location *, source_location2,
+        key2);
+    REQUIRE(source_location1 != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source location"));
+    REQUIRE(source_location2 != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source location"));
+
+    int source_cmp = strcmp(source_location1->source, source_location2->source);
+    if (source_cmp < 0) {
+        return -1;
+    } else if (source_cmp > 0) {
+        return 1;
+    } else if (source_location1->line < source_location2->line) {
+        return -1;
+    } else if (source_location1->line > source_location2->line) {
+        return 1;
+    } else if (source_location1->column < source_location2->column) {
+        return -1;
+    } else if (source_location1->column > source_location2->column) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+const struct kefir_hashtree_ops kefir_hashtree_source_location_ops = {.hash = source_location_hash, .compare = source_location_compare, .data = NULL};
+
+static kefir_result_t free_source_location(struct kefir_mem *mem, struct kefir_hashtree *tree, kefir_hashtree_key_t key, kefir_hashtree_value_t value, void *payload) {
+    UNUSED(tree);
+    UNUSED(value);
+    UNUSED(payload);
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    ASSIGN_DECL_CAST(struct kefir_source_location *, source_location,
+        key);
+    REQUIRE(source_location != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source location"));
+
+    KEFIR_FREE(mem, (char *) source_location->source);
+    memset(source_location, 0, sizeof(struct kefir_source_location));
+    KEFIR_FREE(mem, source_location);
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_opt_code_container_init(struct kefir_opt_code_container *code) {
     REQUIRE(code != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer code container"));
@@ -112,6 +165,7 @@ kefir_result_t kefir_opt_code_container_init(struct kefir_opt_code_container *co
     code->next_inline_assembly_id = 0;
     code->entry_point = KEFIR_ID_NONE;
     code->current_ir_instruction_index = KEFIR_OPT_IR_INSTRUCTION_INDEX_NONE;
+    code->source_location_cursor = NULL;
     REQUIRE_OK(kefir_hashtree_init(&code->blocks, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_on_removal(&code->blocks, free_block, NULL));
     REQUIRE_OK(kefir_hashtree_init(&code->call_nodes, &kefir_hashtree_uint_ops));
@@ -120,6 +174,8 @@ kefir_result_t kefir_opt_code_container_init(struct kefir_opt_code_container *co
     REQUIRE_OK(kefir_hashtree_on_removal(&code->inline_assembly, free_inline_assembly, NULL));
     REQUIRE_OK(kefir_hashtree_init(&code->uses, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_on_removal(&code->uses, free_use_entry, NULL));
+    REQUIRE_OK(kefir_hashtree_init(&code->source_locations, &kefir_hashtree_source_location_ops));
+    REQUIRE_OK(kefir_hashtree_on_removal(&code->source_locations, free_source_location, NULL));
     return KEFIR_OK;
 }
 
@@ -127,6 +183,7 @@ kefir_result_t kefir_opt_code_container_free(struct kefir_mem *mem, struct kefir
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
 
+    REQUIRE_OK(kefir_hashtree_free(mem, &code->source_locations));
     for (kefir_size_t i = 0; i < code->phi_nodes_length; i++) {
         REQUIRE_OK(kefir_hashtree_free(mem, &code->phi_nodes[i].links));
     }
@@ -305,6 +362,56 @@ static kefir_result_t code_container_instr_mutable(const struct kefir_opt_code_c
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_opt_code_container_set_source_location_cursor(struct kefir_mem *mem, struct kefir_opt_code_container *code, const struct kefir_source_location *source_location) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
+
+    if (source_location != NULL) {
+        struct kefir_hashtree_node *node;
+        kefir_result_t res = kefir_hashtree_at(&code->source_locations, (kefir_hashtree_key_t) source_location, &node);
+        if (res == KEFIR_NOT_FOUND) {
+            struct kefir_source_location *location = KEFIR_MALLOC(mem, sizeof(struct kefir_source_location));
+            REQUIRE(location != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate source location"));
+
+            const kefir_size_t source_id_length = strlen(source_location->source);
+            char *source_id = KEFIR_MALLOC(mem, sizeof(char) * (source_id_length + 1));
+            REQUIRE_ELSE(source_id != NULL, {
+                KEFIR_FREE(mem, location);
+                return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate source location identifier");
+            });
+
+            strcpy(source_id, source_location->source);
+            location->source = source_id;
+            location->line = source_location->line;
+            location->column = source_location->column;
+
+            kefir_result_t res = kefir_hashtree_insert(mem, &code->source_locations, (kefir_hashtree_key_t) location, (kefir_hashtree_value_t) 0);
+            REQUIRE_ELSE(res == KEFIR_OK, {
+                KEFIR_FREE(mem, (char *) location->source);
+                KEFIR_FREE(mem, location);
+                return res;
+            });
+
+            code->source_location_cursor = location;
+        } else {
+            REQUIRE_OK(res);
+            code->source_location_cursor = (const struct kefir_source_location *) node->key;
+        }
+    } else {
+        code->source_location_cursor = NULL;
+    }
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_code_container_set_source_location_cursor_of(struct kefir_opt_code_container *code, kefir_opt_instruction_ref_t instr_ref) {
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
+
+    const struct kefir_opt_instruction *instr;
+    REQUIRE_OK(kefir_opt_code_container_instr(code, instr_ref, &instr));
+    code->source_location_cursor = instr->source_location;
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_opt_code_container_set_ir_instruction_index(struct kefir_opt_code_container *code,
                                                                  kefir_size_t index) {
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
@@ -383,6 +490,7 @@ kefir_result_t kefir_opt_code_container_new_instruction(struct kefir_mem *mem, s
     instr->siblings.prev = block->content.tail;
     instr->siblings.next = KEFIR_ID_NONE;
     instr->ir_instruction_index = code->current_ir_instruction_index;
+    instr->source_location = code->source_location_cursor;
 
     struct instruction_use_entry *use_entry = KEFIR_MALLOC(mem, sizeof(struct instruction_use_entry));
     REQUIRE(use_entry != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate instruction use entry"));

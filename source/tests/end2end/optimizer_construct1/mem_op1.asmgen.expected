@@ -27,6 +27,7 @@
                                         "end": 2
                                     }
                                 },
+                                "source_location": null,
                                 "ir_instruction_index": null
                             },
                             {
@@ -43,6 +44,7 @@
                                         "end": 2
                                     }
                                 },
+                                "source_location": null,
                                 "ir_instruction_index": null
                             }
                         ],
@@ -91,6 +93,7 @@
                                         "end": 5
                                     }
                                 },
+                                "source_location": null,
                                 "ir_instruction_index": 1
                             },
                             {
@@ -108,6 +111,7 @@
                                         "end": 5
                                     }
                                 },
+                                "source_location": null,
                                 "ir_instruction_index": 0
                             },
                             {
@@ -128,6 +132,7 @@
                                         "end": 5
                                     }
                                 },
+                                "source_location": null,
                                 "ir_instruction_index": 2
                             },
                             {
@@ -144,6 +149,11 @@
                                         "begin": 5,
                                         "end": 7
                                     }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
+                                    "line": 27,
+                                    "column": 12
                                 },
                                 "ir_instruction_index": 3
                             },
@@ -164,6 +174,11 @@
                                         "end": 9
                                     }
                                 },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
+                                    "line": 27,
+                                    "column": 12
+                                },
                                 "ir_instruction_index": 4
                             },
                             {
@@ -179,6 +194,11 @@
                                         "begin": 7,
                                         "end": 9
                                     }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
+                                    "line": 27,
+                                    "column": 12
                                 },
                                 "ir_instruction_index": 5
                             },
@@ -199,6 +219,11 @@
                                         "end": 10
                                     }
                                 },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
+                                    "line": 27,
+                                    "column": 12
+                                },
                                 "ir_instruction_index": 6
                             },
                             {
@@ -217,6 +242,11 @@
                                         "begin": 9,
                                         "end": 11
                                     }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
+                                    "line": 27,
+                                    "column": 12
                                 },
                                 "ir_instruction_index": 7
                             },
@@ -237,6 +267,11 @@
                                         "end": 12
                                     }
                                 },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
+                                    "line": 27,
+                                    "column": 12
+                                },
                                 "ir_instruction_index": 8
                             },
                             {
@@ -252,6 +287,11 @@
                                         "begin": 11,
                                         "end": 12
                                     }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
+                                    "line": 27,
+                                    "column": 5
                                 },
                                 "ir_instruction_index": 9
                             }
@@ -303,6 +343,7 @@
                                         "end": 2
                                     }
                                 },
+                                "source_location": null,
                                 "ir_instruction_index": null
                             },
                             {
@@ -319,6 +360,7 @@
                                         "end": 2
                                     }
                                 },
+                                "source_location": null,
                                 "ir_instruction_index": null
                             }
                         ],
@@ -367,6 +409,7 @@
                                         "end": 5
                                     }
                                 },
+                                "source_location": null,
                                 "ir_instruction_index": 1
                             },
                             {
@@ -384,6 +427,7 @@
                                         "end": 5
                                     }
                                 },
+                                "source_location": null,
                                 "ir_instruction_index": 0
                             },
                             {
@@ -404,6 +448,7 @@
                                         "end": 5
                                     }
                                 },
+                                "source_location": null,
                                 "ir_instruction_index": 2
                             },
                             {
@@ -420,6 +465,11 @@
                                         "begin": 5,
                                         "end": 7
                                     }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
+                                    "line": 31,
+                                    "column": 12
                                 },
                                 "ir_instruction_index": 3
                             },
@@ -440,6 +490,11 @@
                                         "end": 9
                                     }
                                 },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
+                                    "line": 31,
+                                    "column": 12
+                                },
                                 "ir_instruction_index": 4
                             },
                             {
@@ -455,6 +510,11 @@
                                         "begin": 7,
                                         "end": 9
                                     }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
+                                    "line": 31,
+                                    "column": 12
                                 },
                                 "ir_instruction_index": 5
                             },
@@ -475,6 +535,11 @@
                                         "end": 10
                                     }
                                 },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
+                                    "line": 31,
+                                    "column": 12
+                                },
                                 "ir_instruction_index": 6
                             },
                             {
@@ -493,6 +558,11 @@
                                         "begin": 9,
                                         "end": 11
                                     }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
+                                    "line": 31,
+                                    "column": 12
                                 },
                                 "ir_instruction_index": 7
                             },
@@ -513,6 +583,11 @@
                                         "end": 12
                                     }
                                 },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
+                                    "line": 31,
+                                    "column": 12
+                                },
                                 "ir_instruction_index": 8
                             },
                             {
@@ -528,6 +603,11 @@
                                         "begin": 11,
                                         "end": 12
                                     }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
+                                    "line": 31,
+                                    "column": 5
                                 },
                                 "ir_instruction_index": 9
                             }
@@ -579,6 +659,7 @@
                                         "end": 2
                                     }
                                 },
+                                "source_location": null,
                                 "ir_instruction_index": null
                             },
                             {
@@ -595,6 +676,7 @@
                                         "end": 2
                                     }
                                 },
+                                "source_location": null,
                                 "ir_instruction_index": null
                             }
                         ],
@@ -643,6 +725,7 @@
                                         "end": 5
                                     }
                                 },
+                                "source_location": null,
                                 "ir_instruction_index": 1
                             },
                             {
@@ -660,6 +743,7 @@
                                         "end": 5
                                     }
                                 },
+                                "source_location": null,
                                 "ir_instruction_index": 0
                             },
                             {
@@ -680,6 +764,7 @@
                                         "end": 5
                                     }
                                 },
+                                "source_location": null,
                                 "ir_instruction_index": 2
                             },
                             {
@@ -696,6 +781,11 @@
                                         "begin": 5,
                                         "end": 18
                                     }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
+                                    "line": 35,
+                                    "column": 10
                                 },
                                 "ir_instruction_index": 3
                             },
@@ -718,6 +808,11 @@
                                         "end": 7
                                     }
                                 },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
+                                    "line": 35,
+                                    "column": 10
+                                },
                                 "ir_instruction_index": 5
                             },
                             {
@@ -734,6 +829,11 @@
                                         "end": 12
                                     }
                                 },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
+                                    "line": 35,
+                                    "column": 10
+                                },
                                 "ir_instruction_index": 7
                             },
                             {
@@ -749,6 +849,11 @@
                                         "begin": 8,
                                         "end": 10
                                     }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
+                                    "line": 35,
+                                    "column": 10
                                 },
                                 "ir_instruction_index": 9
                             },
@@ -769,6 +874,11 @@
                                         "end": 11
                                     }
                                 },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
+                                    "line": 35,
+                                    "column": 10
+                                },
                                 "ir_instruction_index": 10
                             },
                             {
@@ -787,6 +897,11 @@
                                         "begin": 10,
                                         "end": 12
                                     }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
+                                    "line": 35,
+                                    "column": 10
                                 },
                                 "ir_instruction_index": 11
                             },
@@ -807,6 +922,11 @@
                                         "end": 15
                                     }
                                 },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
+                                    "line": 35,
+                                    "column": 10
+                                },
                                 "ir_instruction_index": 13
                             },
                             {
@@ -822,6 +942,11 @@
                                         "begin": 12,
                                         "end": 14
                                     }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
+                                    "line": 35,
+                                    "column": 10
                                 },
                                 "ir_instruction_index": 15
                             },
@@ -841,6 +966,11 @@
                                         "begin": 13,
                                         "end": 15
                                     }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
+                                    "line": 35,
+                                    "column": 10
                                 },
                                 "ir_instruction_index": 16
                             },
@@ -862,6 +992,11 @@
                                         "end": 15
                                     }
                                 },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
+                                    "line": 35,
+                                    "column": 10
+                                },
                                 "ir_instruction_index": 18
                             },
                             {
@@ -878,6 +1013,11 @@
                                         "begin": 15,
                                         "end": 17
                                     }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
+                                    "line": 35,
+                                    "column": 5
                                 },
                                 "ir_instruction_index": 19
                             },
@@ -897,6 +1037,11 @@
                                         "begin": 16,
                                         "end": 18
                                     }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
+                                    "line": 35,
+                                    "column": 5
                                 },
                                 "ir_instruction_index": 20
                             },
@@ -919,6 +1064,11 @@
                                         "end": 18
                                     }
                                 },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
+                                    "line": 35,
+                                    "column": 5
+                                },
                                 "ir_instruction_index": 24
                             },
                             {
@@ -935,6 +1085,7 @@
                                         "end": 19
                                     }
                                 },
+                                "source_location": null,
                                 "ir_instruction_index": null
                             }
                         ],

@@ -27,6 +27,7 @@
                                         "end": 1
                                     }
                                 },
+                                "source_location": null,
                                 "ir_instruction_index": null
                             }
                         ],
@@ -85,6 +86,11 @@
                                         "end": 2
                                     }
                                 },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/inline_asm1.kefir.asmgen.c",
+                                    "line": 5,
+                                    "column": 5
+                                },
                                 "ir_instruction_index": 0
                             },
                             {
@@ -101,12 +107,17 @@
                                         "end": 3
                                     }
                                 },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/inline_asm1.kefir.asmgen.c",
+                                    "line": 6,
+                                    "column": 5
+                                },
                                 "ir_instruction_index": 1
                             },
                             {
                                 "id": 3,
                                 "opcode": "get_global",
-                                "global_ref": 33,
+                                "global_ref": 34,
                                 "offset": 0,
                                 "control_next": null,
                                 "properties": {
@@ -117,6 +128,11 @@
                                         "begin": 3,
                                         "end": 5
                                     }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/inline_asm1.kefir.asmgen.c",
+                                    "line": 7,
+                                    "column": 9
                                 },
                                 "ir_instruction_index": 2
                             },
@@ -137,6 +153,11 @@
                                         "end": 6
                                     }
                                 },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/inline_asm1.kefir.asmgen.c",
+                                    "line": 7,
+                                    "column": 9
+                                },
                                 "ir_instruction_index": 3
                             },
                             {
@@ -152,6 +173,11 @@
                                         "begin": 5,
                                         "end": 7
                                     }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/inline_asm1.kefir.asmgen.c",
+                                    "line": 7,
+                                    "column": 5
                                 },
                                 "ir_instruction_index": 4
                             },
@@ -171,6 +197,11 @@
                                         "begin": 6,
                                         "end": 7
                                     }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/inline_asm1.kefir.asmgen.c",
+                                    "line": 7,
+                                    "column": 5
                                 },
                                 "ir_instruction_index": 5
                             }
@@ -203,7 +234,7 @@
                             {
                                 "id": 10,
                                 "opcode": "get_global",
-                                "global_ref": 35,
+                                "global_ref": 36,
                                 "offset": 0,
                                 "control_next": null,
                                 "properties": {
@@ -214,6 +245,11 @@
                                         "begin": 10,
                                         "end": 12
                                     }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/inline_asm1.kefir.asmgen.c",
+                                    "line": 10,
+                                    "column": 9
                                 },
                                 "ir_instruction_index": 8
                             },
@@ -234,6 +270,11 @@
                                         "end": 13
                                     }
                                 },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/inline_asm1.kefir.asmgen.c",
+                                    "line": 10,
+                                    "column": 9
+                                },
                                 "ir_instruction_index": 9
                             },
                             {
@@ -249,6 +290,11 @@
                                         "begin": 12,
                                         "end": 14
                                     }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/inline_asm1.kefir.asmgen.c",
+                                    "line": 10,
+                                    "column": 5
                                 },
                                 "ir_instruction_index": 10
                             },
@@ -268,6 +314,11 @@
                                         "begin": 13,
                                         "end": 14
                                     }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/inline_asm1.kefir.asmgen.c",
+                                    "line": 10,
+                                    "column": 5
                                 },
                                 "ir_instruction_index": 11
                             }
@@ -317,7 +368,7 @@
                             {
                                 "id": 7,
                                 "opcode": "get_global",
-                                "global_ref": 33,
+                                "global_ref": 34,
                                 "offset": 0,
                                 "control_next": null,
                                 "properties": {
@@ -328,6 +379,11 @@
                                         "begin": 7,
                                         "end": 9
                                     }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/inline_asm1.kefir.asmgen.c",
+                                    "line": 7,
+                                    "column": 5
                                 },
                                 "ir_instruction_index": 6
                             },
@@ -345,6 +401,11 @@
                                         "end": 9
                                     }
                                 },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/inline_asm1.kefir.asmgen.c",
+                                    "line": 7,
+                                    "column": 5
+                                },
                                 "ir_instruction_index": 7
                             },
                             {
@@ -361,6 +422,7 @@
                                         "end": 10
                                     }
                                 },
+                                "source_location": null,
                                 "ir_instruction_index": null
                             }
                         ],
@@ -417,6 +479,11 @@
                                         "begin": 21,
                                         "end": 22
                                     }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/inline_asm1.kefir.asmgen.c",
+                                    "line": 14,
+                                    "column": 5
                                 },
                                 "ir_instruction_index": 18
                             }
@@ -475,7 +542,7 @@
                             {
                                 "id": 14,
                                 "opcode": "get_global",
-                                "global_ref": 33,
+                                "global_ref": 34,
                                 "offset": 0,
                                 "control_next": null,
                                 "properties": {
@@ -487,12 +554,17 @@
                                         "end": 20
                                     }
                                 },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/inline_asm1.kefir.asmgen.c",
+                                    "line": 10,
+                                    "column": 5
+                                },
                                 "ir_instruction_index": 12
                             },
                             {
                                 "id": 15,
                                 "opcode": "get_global",
-                                "global_ref": 35,
+                                "global_ref": 36,
                                 "offset": 0,
                                 "control_next": null,
                                 "properties": {
@@ -504,12 +576,17 @@
                                         "end": 20
                                     }
                                 },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/inline_asm1.kefir.asmgen.c",
+                                    "line": 10,
+                                    "column": 5
+                                },
                                 "ir_instruction_index": 13
                             },
                             {
                                 "id": 16,
                                 "opcode": "get_global",
-                                "global_ref": 33,
+                                "global_ref": 34,
                                 "offset": 0,
                                 "control_next": null,
                                 "properties": {
@@ -520,6 +597,11 @@
                                         "begin": 16,
                                         "end": 18
                                     }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/inline_asm1.kefir.asmgen.c",
+                                    "line": 10,
+                                    "column": 5
                                 },
                                 "ir_instruction_index": 14
                             },
@@ -540,6 +622,11 @@
                                         "end": 20
                                     }
                                 },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/inline_asm1.kefir.asmgen.c",
+                                    "line": 10,
+                                    "column": 5
+                                },
                                 "ir_instruction_index": 15
                             },
                             {
@@ -555,6 +642,11 @@
                                         "begin": 18,
                                         "end": 20
                                     }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/inline_asm1.kefir.asmgen.c",
+                                    "line": 10,
+                                    "column": 5
                                 },
                                 "ir_instruction_index": 16
                             },
@@ -572,6 +664,11 @@
                                         "end": 20
                                     }
                                 },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/inline_asm1.kefir.asmgen.c",
+                                    "line": 10,
+                                    "column": 5
+                                },
                                 "ir_instruction_index": 17
                             },
                             {
@@ -588,6 +685,7 @@
                                         "end": 21
                                     }
                                 },
+                                "source_location": null,
                                 "ir_instruction_index": null
                             }
                         ],
@@ -627,6 +725,11 @@
                                         "begin": 24,
                                         "end": 25
                                     }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/inline_asm1.kefir.asmgen.c",
+                                    "line": 14,
+                                    "column": 5
                                 },
                                 "ir_instruction_index": 20
                             }
@@ -668,6 +771,11 @@
                                         "end": 24
                                     }
                                 },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/inline_asm1.kefir.asmgen.c",
+                                    "line": 14,
+                                    "column": 5
+                                },
                                 "ir_instruction_index": 21
                             }
                         ],
@@ -708,6 +816,11 @@
                                         "end": 23
                                     }
                                 },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/inline_asm1.kefir.asmgen.c",
+                                    "line": 14,
+                                    "column": 5
+                                },
                                 "ir_instruction_index": 19
                             }
                         ],
@@ -747,6 +860,11 @@
                                         "begin": 25,
                                         "end": 26
                                     }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/inline_asm1.kefir.asmgen.c",
+                                    "line": 16,
+                                    "column": 5
                                 },
                                 "ir_instruction_index": 22
                             }

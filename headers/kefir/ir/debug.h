@@ -52,7 +52,7 @@ kefir_result_t kefir_ir_source_map_free(struct kefir_mem *, struct kefir_ir_sour
 
 kefir_result_t kefir_ir_source_map_insert(struct kefir_mem *, struct kefir_ir_source_map *, struct kefir_string_pool *,
                                           const struct kefir_source_location *, kefir_size_t, kefir_size_t);
-kefir_result_t kefir_ir_source_map_at(const struct kefir_ir_source_map *, kefir_size_t,
+kefir_result_t kefir_ir_source_map_find(const struct kefir_ir_source_map *, kefir_size_t,
                                       const struct kefir_ir_source_location **);
 
 kefir_result_t kefir_ir_source_map_iter(const struct kefir_ir_source_map *, struct kefir_ir_source_map_iterator *,
