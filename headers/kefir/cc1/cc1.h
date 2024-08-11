@@ -18,8 +18,11 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "kefir/cc1/cc1.h"
+#ifndef KEFIR_CC1_CC1_H_
+#define KEFIR_CC1_CC1_H_
 
-int main(int argc, char *const *argv) {
-    return kefir_cc1_main(argc, argv);
-}
+#include "kefir/core/base.h"
+
+int kefir_cc1_main(int, char *const *);
+
+#endif

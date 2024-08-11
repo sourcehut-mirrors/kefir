@@ -29,7 +29,7 @@
 
 static kefir_result_t output_compiler_config(FILE *output,
                                              const struct kefir_compiler_runner_configuration *configuration) {
-    fprintf(output, "+ (kefir-cc1)");
+    fprintf(output, "+ kefir -cc1");
     switch (configuration->action) {
         case KEFIR_COMPILER_RUNNER_ACTION_PREPROCESS:
             fprintf(output, " --preprocess");

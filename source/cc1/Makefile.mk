@@ -1,5 +1,6 @@
 KEFIR_STANDALONE_SOURCE := $(SOURCE_DIR)/cc1/main.c \
 	                       $(SOURCE_DIR)/cc1/options.c \
+	                       $(SOURCE_DIR)/cc1/cc1.c \
 						   $(SOURCE_DIR)/driver/runner.c \
 						   $(SOURCE_DIR)/driver/compiler_options.c
 
@@ -15,7 +16,7 @@ endif
 $(KEFIR_BIN_DIR)/cc1/help.binary.h: $(GENERATED_HELP_DIR)/kefir-cc1.1.txt
 $(KEFIR_BIN_DIR)/cc1/help.binary.h: BINARY_HEADER_CONTENT=$(GENERATED_HELP_DIR)/kefir-cc1.1.txt --zero
 
-$(KEFIR_BIN_DIR)/cc1/main.deps: $(KEFIR_BIN_DIR)/cc1/help.binary.h
+$(KEFIR_BIN_DIR)/cc1/cc1.deps: $(KEFIR_BIN_DIR)/cc1/help.binary.h
 	@echo '-I$(KEFIR_BIN_DIR)/cc1 -DKEFIR_CC1_HELP_INCLUDE=help.binary.h' > $@
 
 $(KEFIR_CC1_EXE): $(KEFIR_STANDALONE_OBJECT_FILES) $(LIBKEFIR_DEPENDENCY)

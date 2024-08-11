@@ -22,14 +22,14 @@
 #include <stdio.h>
 #include <locale.h>
 #include <signal.h>
+#include "kefir/cc1/cc1.h"
 
 // Driver main entry
 
 #define KEFIR_DRIVER_PROLOGUE_INTERNAL
 #include "kefir/driver/driver_prologue.h"
 
-int main(int argc, char *const *argv) {
-    UNUSED(argc);
+static int kefir_driver_main(int argc, char *const *argv) {
     init_tmpmgr();
     kefir_result_t res = KEFIR_OK;
     struct kefir_mem *mem = kefir_system_memalloc();
@@ -72,4 +72,13 @@ int main(int argc, char *const *argv) {
     REQUIRE_CHAIN(&res, kefir_driver_configuration_free(mem, &driver_config));
     REQUIRE_CHAIN(&res, kefir_string_pool_free(mem, &symbols));
     return kefir_report_error(stderr, res, false) ? exit_code : EXIT_FAILURE;
+}
+
+int main(int argc, char **argv) {
+    if (argc > 1 && strcmp(argv[1], "-cc1") == 0) {
+        argv[1] = argv[0];
+        return kefir_cc1_main(argc - 1, argv + 1);
+    } else {
+        return kefir_driver_main(argc, argv);
+    }
 }
