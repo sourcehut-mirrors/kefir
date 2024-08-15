@@ -324,7 +324,9 @@ static kefir_result_t driver_update_compiler_config(struct kefir_compiler_runner
         case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_LIBRARY:
             if (strcmp(argument->value, "-") == 0) {
                 compiler_config->input_filepath = NULL;
-                compiler_config->source_id = "<stdin>";
+                if (compiler_config->source_id == NULL) {
+                    compiler_config->source_id = "<stdin>";
+                }
             } else {
                 compiler_config->input_filepath = argument->value;
                 compiler_config->source_id = argument->value;
