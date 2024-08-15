@@ -136,6 +136,7 @@ static kefir_result_t dump_action_impl(struct kefir_mem *mem, const struct kefir
 
     compiler.codegen_configuration.emulated_tls = options->codegen.emulated_tls;
     compiler.codegen_configuration.position_independent_code = options->codegen.position_independent_code;
+    compiler.codegen_configuration.debug_info = options->codegen.debug_info;
     compiler.codegen_configuration.omit_frame_pointer = options->codegen.omit_frame_pointer;
     compiler.codegen_configuration.syntax = options->codegen.syntax;
     compiler.codegen_configuration.print_details = options->codegen.print_details;

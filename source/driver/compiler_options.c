@@ -128,23 +128,41 @@ static kefir_result_t include_file_hook(struct kefir_mem *mem, const struct kefi
 }
 
 struct kefir_cli_option KefirCompilerConfigurationOptions[] = {
-#define SIMPLE(short, long, has_arg, action, action_param, field)                                                \
-    {                                                                                                            \
-        short, long, has_arg, action, action_param, offsetof(struct kefir_compiler_runner_configuration, field), \
-            MEMBERSZ(struct kefir_compiler_runner_configuration, field), NULL, NULL, NULL                        \
-    }
-#define PREHOOK(short, long, has_arg, action, action_param, field, hook)                                         \
-    {                                                                                                            \
-        short, long, has_arg, action, action_param, offsetof(struct kefir_compiler_runner_configuration, field), \
-            MEMBERSZ(struct kefir_compiler_runner_configuration, field), hook, NULL, NULL                        \
-    }
-#define POSTHOOK(short, long, has_arg, action, action_param, field, hook)                                        \
-    {                                                                                                            \
-        short, long, has_arg, action, action_param, offsetof(struct kefir_compiler_runner_configuration, field), \
-            MEMBERSZ(struct kefir_compiler_runner_configuration, field), NULL, hook, NULL                        \
-    }
+#define SIMPLE(short, long, has_arg, action, action_param, field) \
+    {short,                                                       \
+     long,                                                        \
+     has_arg,                                                     \
+     action,                                                      \
+     action_param,                                                \
+     offsetof(struct kefir_compiler_runner_configuration, field), \
+     MEMBERSZ(struct kefir_compiler_runner_configuration, field), \
+     NULL,                                                        \
+     NULL,                                                        \
+     NULL}
+#define PREHOOK(short, long, has_arg, action, action_param, field, hook) \
+    {short,                                                              \
+     long,                                                               \
+     has_arg,                                                            \
+     action,                                                             \
+     action_param,                                                       \
+     offsetof(struct kefir_compiler_runner_configuration, field),        \
+     MEMBERSZ(struct kefir_compiler_runner_configuration, field),        \
+     hook,                                                               \
+     NULL,                                                               \
+     NULL}
+#define POSTHOOK(short, long, has_arg, action, action_param, field, hook) \
+    {short,                                                               \
+     long,                                                                \
+     has_arg,                                                             \
+     action,                                                              \
+     action_param,                                                        \
+     offsetof(struct kefir_compiler_runner_configuration, field),         \
+     MEMBERSZ(struct kefir_compiler_runner_configuration, field),         \
+     NULL,                                                                \
+     hook,                                                                \
+     NULL}
 #define CUSTOM(short, long, has_arg, hook) \
-    { short, long, has_arg, KEFIR_CLI_OPTION_ACTION_NONE, 0, 0, 0, hook, NULL, NULL }
+    {short, long, has_arg, KEFIR_CLI_OPTION_ACTION_NONE, 0, 0, 0, hook, NULL, NULL}
 #define FEATURE(name, field)                                                                 \
     SIMPLE(0, "feature-" name, false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, true, field), \
         SIMPLE(0, "no-feature-" name, false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, false, field)
@@ -225,6 +243,7 @@ struct kefir_cli_option KefirCompilerConfigurationOptions[] = {
     CODEGEN("emulated-tls", codegen.emulated_tls),
     CODEGEN("pic", codegen.position_independent_code),
     CODEGEN("omit-frame-pointer", codegen.omit_frame_pointer),
+    CODEGEN("debug-info", codegen.debug_info),
     SIMPLE(0, "codegen-syntax", true, KEFIR_CLI_OPTION_ACTION_ASSIGN_STRARG, 0, codegen.syntax),
     SIMPLE(0, "codegen-details", true, KEFIR_CLI_OPTION_ACTION_ASSIGN_STRARG, 0, codegen.print_details),
     SIMPLE(0, "codegen-pipeline", true, KEFIR_CLI_OPTION_ACTION_ASSIGN_STRARG, 0, codegen.pipeline_spec)

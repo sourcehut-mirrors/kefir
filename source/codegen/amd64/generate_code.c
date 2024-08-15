@@ -533,6 +533,7 @@ static kefir_result_t generate_instr(struct kefir_mem *mem, struct kefir_amd64_x
 }
 
 kefir_result_t kefir_asmcmp_amd64_generate_code(struct kefir_mem *mem, struct kefir_amd64_xasmgen *xasmgen,
+                                                kefir_amd64_xasmgen_debug_info_tracker_t debug_info_tracker,
                                                 const struct kefir_asmcmp_amd64 *target,
                                                 const struct kefir_codegen_amd64_stack_frame *stack_frame) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
@@ -551,8 +552,25 @@ kefir_result_t kefir_asmcmp_amd64_generate_code(struct kefir_mem *mem, struct ke
         REQUIRE_OK(res);
     }
 
+    const struct kefir_source_location *last_source_location = NULL;
     for (kefir_asmcmp_instruction_index_t idx = kefir_asmcmp_context_instr_head(&target->context);
          idx != KEFIR_ASMCMP_INDEX_NONE; idx = kefir_asmcmp_context_instr_next(&target->context, idx)) {
+
+        if (debug_info_tracker != NULL) {
+            const struct kefir_source_location *source_location = NULL;
+            res = kefir_asmcmp_source_map_at(&target->context.debug_info.source_map, idx, &source_location);
+            if (res != KEFIR_NOT_FOUND) {
+                REQUIRE_OK(res);
+                if (last_source_location != source_location) {
+                    REQUIRE_OK(KEFIR_AMD64_XASMGEN_DEBUG_INFO_SOURCE_LOCATION(mem, xasmgen, debug_info_tracker,
+                                                                              source_location));
+                }
+                last_source_location = source_location;
+            } else {
+                last_source_location = NULL;
+            }
+        }
+
         REQUIRE_OK(generate_instr(mem, xasmgen, target, stack_frame, idx));
     }
 

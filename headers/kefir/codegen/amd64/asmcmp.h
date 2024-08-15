@@ -208,6 +208,7 @@ kefir_result_t kefir_asmcmp_amd64_data_word(struct kefir_mem *, struct kefir_asm
                                             kefir_asmcmp_instruction_index_t *);
 
 kefir_result_t kefir_asmcmp_amd64_generate_code(struct kefir_mem *, struct kefir_amd64_xasmgen *,
+                                                kefir_amd64_xasmgen_debug_info_tracker_t,
                                                 const struct kefir_asmcmp_amd64 *,
                                                 const struct kefir_codegen_amd64_stack_frame *);
 

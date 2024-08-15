@@ -44,7 +44,9 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, struct kefir_
     }
     if (instruction->source_location != NULL) {
         const kefir_asmcmp_instruction_index_t end_idx = kefir_asmcmp_context_instr_length(&function->code.context);
-        REQUIRE_OK(kefir_asmcmp_source_map_add_location(mem, &function->code.context.debug_info.source_map, &function->code.context.strings, begin_idx, end_idx, instruction->source_location));
+        REQUIRE_OK(kefir_asmcmp_source_map_add_location(mem, &function->code.context.debug_info.source_map,
+                                                        &function->code.context.strings, begin_idx, end_idx,
+                                                        instruction->source_location));
     }
     return KEFIR_OK;
 }
@@ -416,7 +418,7 @@ static kefir_result_t kefir_codegen_amd64_function_translate_impl(struct kefir_m
     REQUIRE_OK(translate_code(mem, func));
     REQUIRE_OK(
         kefir_asmcmp_pipeline_apply(mem, &codegen->pipeline, KEFIR_ASMCMP_PIPELINE_PASS_VIRTUAL, &func->code.context));
-    
+
     if (codegen->config->print_details != NULL && strcmp(codegen->config->print_details, "vasm") == 0) {
         REQUIRE_OK(output_asm(codegen, func, false, codegen->config->detailed_output));
     }
@@ -437,7 +439,8 @@ static kefir_result_t kefir_codegen_amd64_function_translate_impl(struct kefir_m
 
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_calculate(codegen->abi_variant, func->function->locals.type,
                                                          &func->locals_layout, &func->stack_frame));
-    REQUIRE_OK(kefir_asmcmp_amd64_generate_code(mem, &codegen->xasmgen, &func->code, &func->stack_frame));
+    REQUIRE_OK(kefir_asmcmp_amd64_generate_code(mem, &codegen->xasmgen, codegen->debug_info_tracker, &func->code,
+                                                &func->stack_frame));
     REQUIRE_OK(generate_constants(mem, func));
     return KEFIR_OK;
 }

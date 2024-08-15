@@ -1,0 +1,72 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global factorial64
+.type factorial64, @function
+.extern __kefirrt_opt_amd64_sysv_vararg_save
+.extern __kefirrt_opt_load_int_vararg
+.extern __kefirrt_opt_load_sse_vararg
+.extern __kefirrt_opt_float32_to_uint
+.extern __kefirrt_opt_float64_to_uint
+.extern __kefirrt_opt_long_double_to_int
+.extern __kefirrt_opt_long_double_to_uint
+.extern __kefirrt_opt_complex_long_double_equals
+.extern __kefirrt_opt_complex_long_double_truncate_1bit
+.extern __kefirrt_opt_complex_float32_mul
+.extern __kefirrt_opt_complex_float32_div
+.extern __kefirrt_opt_complex_float64_mul
+.extern __kefirrt_opt_complex_float64_div
+.extern __kefirrt_opt_complex_long_double_mul
+.extern __kefirrt_opt_complex_long_double_div
+.extern __kefirrt_fenv_update
+.extern __kefir_opt_float32_neg
+.extern __kefir_opt_float64_neg
+.extern __kefir_opt_uint2long_double
+.extern __kefir_opt_complex_float32_neg
+.extern __kefir_opt_complex_float64_neg
+
+.section .text
+factorial64:
+.file 0 "source/tests/end2end/debug_info1/lib.kefir.c"
+.loc 0 24 5
+    cmp $0, %rdi
+    jge _kefir_func_factorial64_label3
+.loc 0 25 9
+_kefir_func_factorial64_label2:
+    xor %eax, %eax
+.loc 0 25 9
+    ret
+.loc 0 26 12
+_kefir_func_factorial64_label3:
+    cmp $2, %rdi
+    jg _kefir_func_factorial64_label5
+.loc 0 27 9
+_kefir_func_factorial64_label9:
+    mov %rdi, %rax
+    ret
+.loc 0 26 12
+_kefir_func_factorial64_label5:
+    mov $1, %rax
+.loc 0 30 9
+_kefir_func_factorial64_label6:
+    cmp $1, %rdi
+    jg _kefir_func_factorial64_label10
+    mov %rax, %rcx
+    jmp _kefir_func_factorial64_label8
+_kefir_func_factorial64_label10:
+    mov %rdi, %rcx
+    mov %rax, %rdx
+.loc 0 31 13
+    imul %rcx, %rdx
+.loc 0 30 9
+    add $-1, %rcx
+.loc 0 30 9
+    mov %rcx, %rdi
+    mov %rdx, %rax
+    jmp _kefir_func_factorial64_label6
+.loc 0 33 9
+_kefir_func_factorial64_label8:
+    mov %rcx, %rax
+    ret
+
+

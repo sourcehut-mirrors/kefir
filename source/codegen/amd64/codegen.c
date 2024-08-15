@@ -361,6 +361,9 @@ static kefir_result_t close_impl(struct kefir_mem *mem, struct kefir_codegen *cg
     REQUIRE(cg != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid code generator interface"));
     REQUIRE(cg->data != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 code generator"));
     ASSIGN_DECL_CAST(struct kefir_codegen_amd64 *, codegen, cg->data);
+    if (codegen->debug_info_tracker != NULL) {
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_FREE_DEBUG_INFO_TRACKER(mem, &codegen->xasmgen, codegen->debug_info_tracker));
+    }
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_CLOSE(mem, &codegen->xasmgen));
     REQUIRE_OK(kefir_asmcmp_pipeline_free(mem, &codegen->pipeline));
     return KEFIR_OK;
@@ -415,5 +418,10 @@ kefir_result_t kefir_codegen_amd64_init(struct kefir_mem *mem, struct kefir_code
     codegen->config = config;
     codegen->abi_variant = abi_variant;
     REQUIRE_OK(build_pipeline(mem, codegen));
+    if (config->debug_info) {
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_NEW_DEBUG_INFO_TRACKER(mem, &codegen->xasmgen, &codegen->debug_info_tracker));
+    } else {
+        codegen->debug_info_tracker = NULL;
+    }
     return KEFIR_OK;
 }

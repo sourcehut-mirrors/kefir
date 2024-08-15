@@ -35,6 +35,7 @@ typedef struct kefir_codegen_configuration {
     const char *print_details;
     kefir_bool_t detailed_output;
     const char *pipeline_spec;
+    kefir_bool_t debug_info;
 } kefir_codegen_configuration_t;
 
 typedef struct kefir_codegen {

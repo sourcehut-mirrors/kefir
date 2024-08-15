@@ -52,6 +52,7 @@ kefir_result_t kefir_compiler_runner_configuration_init(struct kefir_compiler_ru
         .codegen = {.emulated_tls = false,
                     .position_independent_code = false,
                     .omit_frame_pointer = false,
+                    .debug_info = false,
                     .syntax = NULL,
                     .print_details = NULL,
                     .pipeline_spec = NULL},

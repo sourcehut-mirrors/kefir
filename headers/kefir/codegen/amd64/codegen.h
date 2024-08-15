@@ -34,6 +34,7 @@ typedef struct kefir_codegen_amd64 {
     struct kefir_amd64_xasmgen xasmgen;
     struct kefir_asm_amd64_xasmgen_helpers xasmgen_helpers;
     struct kefir_asmcmp_pipeline pipeline;
+    kefir_amd64_xasmgen_debug_info_tracker_t debug_info_tracker;
 } kefir_codegen_amd64_t;
 
 kefir_result_t kefir_codegen_amd64_init(struct kefir_mem *, struct kefir_codegen_amd64 *, FILE *,

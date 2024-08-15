@@ -143,6 +143,7 @@ typedef struct kefir_driver_configuration {
         kefir_bool_t export_dynamic;
         kefir_bool_t position_independent_code;
         kefir_bool_t position_independent_executable;
+        kefir_bool_t debug_info;
         kefir_driver_frame_pointer_omission_t omit_frame_pointer;
         kefir_bool_t link_start_files;
         kefir_bool_t link_default_libs;

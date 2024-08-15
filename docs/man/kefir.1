@@ -184,6 +184,12 @@ Omit frame pointer in leaf functions that do not need it [default on optimizatio
 .It Fl fno-omit-frame-pointer
 Always use frame pointer in all functions [default on optimization level 0]
 .\"
+.It Fl g | Fl ggdb
+Produce debug information [default: off]
+.\"
+.It Fl g[level] | Fl ggdb[level]
+Produce debug information if level is greater than 0 [default: off]
+.\"
 .It Fl nostartfiles
 Do not link start files
 .\"
@@ -456,6 +462,9 @@ Omit frame pointer in leaf function that do not need it
 .\"
 .It Ar no-omit-frame-pointer
 Always use frame pointer in all functions
+.\"
+.It Ar debug-info
+Produce debug information [disabled by default]
 .\"
 .It Ar syntax=SYNTAX
 Produce assembly output with specified syntax [x86_64-intel_noprefix, x86_64-intel_prefix, x86_64-att (default), x86_64-yasm].

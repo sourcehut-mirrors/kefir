@@ -213,6 +213,16 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
             config->flags.omit_frame_pointer = KEFIR_DRIVER_FRAME_POINTER_OMISSION_DISABLE;
         } else if (strcmp("-fomit-frame-pointer", arg) == 0) {
             config->flags.omit_frame_pointer = KEFIR_DRIVER_FRAME_POINTER_OMISSION_ENABLE;
+        } else if (strcmp("-g", arg) == 0 || strcmp("-ggdb", arg) == 0) {
+            config->flags.debug_info = true;
+        } else if (STRNCMP("-ggdb", arg) == 0) {
+            kefir_uint_t level = strtoul(&arg[5], NULL, 10);
+
+            config->flags.debug_info = level > 0;
+        } else if (STRNCMP("-g", arg) == 0) {
+            kefir_uint_t level = strtoul(&arg[2], NULL, 10);
+
+            config->flags.debug_info = level > 0;
         }
 
         // Preprocessor flags

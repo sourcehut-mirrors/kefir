@@ -21,6 +21,7 @@
 #include "kefir/target/asm/amd64/xasmgen.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
+#include "kefir/core/hashtree.h"
 #include <stdarg.h>
 #include <string.h>
 #include <ctype.h>
@@ -746,46 +747,47 @@ kefir_result_t kefir_asm_amd64_xasmgen_register_widest(kefir_asm_amd64_xasmgen_r
 
 static const char *register_literals[] = {
     [KEFIR_AMD64_XASMGEN_REGISTER_AL] = "al",       [KEFIR_AMD64_XASMGEN_REGISTER_AH] = "ah",
-    [KEFIR_AMD64_XASMGEN_REGISTER_BL] = "bl", [KEFIR_AMD64_XASMGEN_REGISTER_BH] = "bh",       [KEFIR_AMD64_XASMGEN_REGISTER_CL] = "cl", [KEFIR_AMD64_XASMGEN_REGISTER_CH] = "ch",
-    [KEFIR_AMD64_XASMGEN_REGISTER_DL] = "dl", [KEFIR_AMD64_XASMGEN_REGISTER_DH] = "dh",       [KEFIR_AMD64_XASMGEN_REGISTER_SIL] = "sil",
-    [KEFIR_AMD64_XASMGEN_REGISTER_DIL] = "dil",     [KEFIR_AMD64_XASMGEN_REGISTER_SPL] = "spl",
-    [KEFIR_AMD64_XASMGEN_REGISTER_BPL] = "bpl",     [KEFIR_AMD64_XASMGEN_REGISTER_R8B] = "r8b",
-    [KEFIR_AMD64_XASMGEN_REGISTER_R9B] = "r9b",     [KEFIR_AMD64_XASMGEN_REGISTER_R10B] = "r10b",
-    [KEFIR_AMD64_XASMGEN_REGISTER_R11B] = "r11b",   [KEFIR_AMD64_XASMGEN_REGISTER_R12B] = "r12b",
-    [KEFIR_AMD64_XASMGEN_REGISTER_R13B] = "r13b",   [KEFIR_AMD64_XASMGEN_REGISTER_R14B] = "r14b",
-    [KEFIR_AMD64_XASMGEN_REGISTER_R15B] = "r15b",   [KEFIR_AMD64_XASMGEN_REGISTER_AX] = "ax",
-    [KEFIR_AMD64_XASMGEN_REGISTER_BX] = "bx",       [KEFIR_AMD64_XASMGEN_REGISTER_CX] = "cx",
-    [KEFIR_AMD64_XASMGEN_REGISTER_DX] = "dx",       [KEFIR_AMD64_XASMGEN_REGISTER_SI] = "si",
-    [KEFIR_AMD64_XASMGEN_REGISTER_DI] = "di",       [KEFIR_AMD64_XASMGEN_REGISTER_SP] = "sp",
-    [KEFIR_AMD64_XASMGEN_REGISTER_BP] = "bp",       [KEFIR_AMD64_XASMGEN_REGISTER_R8W] = "r8w",
-    [KEFIR_AMD64_XASMGEN_REGISTER_R9W] = "r9w",     [KEFIR_AMD64_XASMGEN_REGISTER_R10W] = "r10w",
-    [KEFIR_AMD64_XASMGEN_REGISTER_R11W] = "r11w",   [KEFIR_AMD64_XASMGEN_REGISTER_R12W] = "r12w",
-    [KEFIR_AMD64_XASMGEN_REGISTER_R13W] = "r13w",   [KEFIR_AMD64_XASMGEN_REGISTER_R14W] = "r14w",
-    [KEFIR_AMD64_XASMGEN_REGISTER_R15W] = "r15w",   [KEFIR_AMD64_XASMGEN_REGISTER_EAX] = "eax",
-    [KEFIR_AMD64_XASMGEN_REGISTER_EBX] = "ebx",     [KEFIR_AMD64_XASMGEN_REGISTER_ECX] = "ecx",
-    [KEFIR_AMD64_XASMGEN_REGISTER_EDX] = "edx",     [KEFIR_AMD64_XASMGEN_REGISTER_ESI] = "esi",
-    [KEFIR_AMD64_XASMGEN_REGISTER_EDI] = "edi",     [KEFIR_AMD64_XASMGEN_REGISTER_ESP] = "esp",
-    [KEFIR_AMD64_XASMGEN_REGISTER_EBP] = "ebp",     [KEFIR_AMD64_XASMGEN_REGISTER_R8D] = "r8d",
-    [KEFIR_AMD64_XASMGEN_REGISTER_R9D] = "r9d",     [KEFIR_AMD64_XASMGEN_REGISTER_R10D] = "r10d",
-    [KEFIR_AMD64_XASMGEN_REGISTER_R11D] = "r11d",   [KEFIR_AMD64_XASMGEN_REGISTER_R12D] = "r12d",
-    [KEFIR_AMD64_XASMGEN_REGISTER_R13D] = "r13d",   [KEFIR_AMD64_XASMGEN_REGISTER_R14D] = "r14d",
-    [KEFIR_AMD64_XASMGEN_REGISTER_R15D] = "r15d",   [KEFIR_AMD64_XASMGEN_REGISTER_RAX] = "rax",
-    [KEFIR_AMD64_XASMGEN_REGISTER_RBX] = "rbx",     [KEFIR_AMD64_XASMGEN_REGISTER_RCX] = "rcx",
-    [KEFIR_AMD64_XASMGEN_REGISTER_RDX] = "rdx",     [KEFIR_AMD64_XASMGEN_REGISTER_RSI] = "rsi",
-    [KEFIR_AMD64_XASMGEN_REGISTER_RDI] = "rdi",     [KEFIR_AMD64_XASMGEN_REGISTER_RSP] = "rsp",
-    [KEFIR_AMD64_XASMGEN_REGISTER_RBP] = "rbp",     [KEFIR_AMD64_XASMGEN_REGISTER_R8] = "r8",
-    [KEFIR_AMD64_XASMGEN_REGISTER_R9] = "r9",       [KEFIR_AMD64_XASMGEN_REGISTER_R10] = "r10",
-    [KEFIR_AMD64_XASMGEN_REGISTER_R11] = "r11",     [KEFIR_AMD64_XASMGEN_REGISTER_R12] = "r12",
-    [KEFIR_AMD64_XASMGEN_REGISTER_R13] = "r13",     [KEFIR_AMD64_XASMGEN_REGISTER_R14] = "r14",
-    [KEFIR_AMD64_XASMGEN_REGISTER_R15] = "r15",     [KEFIR_AMD64_XASMGEN_REGISTER_XMM0] = "xmm0",
-    [KEFIR_AMD64_XASMGEN_REGISTER_XMM1] = "xmm1",   [KEFIR_AMD64_XASMGEN_REGISTER_XMM2] = "xmm2",
-    [KEFIR_AMD64_XASMGEN_REGISTER_XMM3] = "xmm3",   [KEFIR_AMD64_XASMGEN_REGISTER_XMM4] = "xmm4",
-    [KEFIR_AMD64_XASMGEN_REGISTER_XMM5] = "xmm5",   [KEFIR_AMD64_XASMGEN_REGISTER_XMM6] = "xmm6",
-    [KEFIR_AMD64_XASMGEN_REGISTER_XMM7] = "xmm7",   [KEFIR_AMD64_XASMGEN_REGISTER_XMM8] = "xmm8",
-    [KEFIR_AMD64_XASMGEN_REGISTER_XMM9] = "xmm9",   [KEFIR_AMD64_XASMGEN_REGISTER_XMM10] = "xmm10",
-    [KEFIR_AMD64_XASMGEN_REGISTER_XMM11] = "xmm11", [KEFIR_AMD64_XASMGEN_REGISTER_XMM12] = "xmm12",
-    [KEFIR_AMD64_XASMGEN_REGISTER_XMM13] = "xmm13", [KEFIR_AMD64_XASMGEN_REGISTER_XMM14] = "xmm14",
-    [KEFIR_AMD64_XASMGEN_REGISTER_XMM15] = "xmm15"};
+    [KEFIR_AMD64_XASMGEN_REGISTER_BL] = "bl",       [KEFIR_AMD64_XASMGEN_REGISTER_BH] = "bh",
+    [KEFIR_AMD64_XASMGEN_REGISTER_CL] = "cl",       [KEFIR_AMD64_XASMGEN_REGISTER_CH] = "ch",
+    [KEFIR_AMD64_XASMGEN_REGISTER_DL] = "dl",       [KEFIR_AMD64_XASMGEN_REGISTER_DH] = "dh",
+    [KEFIR_AMD64_XASMGEN_REGISTER_SIL] = "sil",     [KEFIR_AMD64_XASMGEN_REGISTER_DIL] = "dil",
+    [KEFIR_AMD64_XASMGEN_REGISTER_SPL] = "spl",     [KEFIR_AMD64_XASMGEN_REGISTER_BPL] = "bpl",
+    [KEFIR_AMD64_XASMGEN_REGISTER_R8B] = "r8b",     [KEFIR_AMD64_XASMGEN_REGISTER_R9B] = "r9b",
+    [KEFIR_AMD64_XASMGEN_REGISTER_R10B] = "r10b",   [KEFIR_AMD64_XASMGEN_REGISTER_R11B] = "r11b",
+    [KEFIR_AMD64_XASMGEN_REGISTER_R12B] = "r12b",   [KEFIR_AMD64_XASMGEN_REGISTER_R13B] = "r13b",
+    [KEFIR_AMD64_XASMGEN_REGISTER_R14B] = "r14b",   [KEFIR_AMD64_XASMGEN_REGISTER_R15B] = "r15b",
+    [KEFIR_AMD64_XASMGEN_REGISTER_AX] = "ax",       [KEFIR_AMD64_XASMGEN_REGISTER_BX] = "bx",
+    [KEFIR_AMD64_XASMGEN_REGISTER_CX] = "cx",       [KEFIR_AMD64_XASMGEN_REGISTER_DX] = "dx",
+    [KEFIR_AMD64_XASMGEN_REGISTER_SI] = "si",       [KEFIR_AMD64_XASMGEN_REGISTER_DI] = "di",
+    [KEFIR_AMD64_XASMGEN_REGISTER_SP] = "sp",       [KEFIR_AMD64_XASMGEN_REGISTER_BP] = "bp",
+    [KEFIR_AMD64_XASMGEN_REGISTER_R8W] = "r8w",     [KEFIR_AMD64_XASMGEN_REGISTER_R9W] = "r9w",
+    [KEFIR_AMD64_XASMGEN_REGISTER_R10W] = "r10w",   [KEFIR_AMD64_XASMGEN_REGISTER_R11W] = "r11w",
+    [KEFIR_AMD64_XASMGEN_REGISTER_R12W] = "r12w",   [KEFIR_AMD64_XASMGEN_REGISTER_R13W] = "r13w",
+    [KEFIR_AMD64_XASMGEN_REGISTER_R14W] = "r14w",   [KEFIR_AMD64_XASMGEN_REGISTER_R15W] = "r15w",
+    [KEFIR_AMD64_XASMGEN_REGISTER_EAX] = "eax",     [KEFIR_AMD64_XASMGEN_REGISTER_EBX] = "ebx",
+    [KEFIR_AMD64_XASMGEN_REGISTER_ECX] = "ecx",     [KEFIR_AMD64_XASMGEN_REGISTER_EDX] = "edx",
+    [KEFIR_AMD64_XASMGEN_REGISTER_ESI] = "esi",     [KEFIR_AMD64_XASMGEN_REGISTER_EDI] = "edi",
+    [KEFIR_AMD64_XASMGEN_REGISTER_ESP] = "esp",     [KEFIR_AMD64_XASMGEN_REGISTER_EBP] = "ebp",
+    [KEFIR_AMD64_XASMGEN_REGISTER_R8D] = "r8d",     [KEFIR_AMD64_XASMGEN_REGISTER_R9D] = "r9d",
+    [KEFIR_AMD64_XASMGEN_REGISTER_R10D] = "r10d",   [KEFIR_AMD64_XASMGEN_REGISTER_R11D] = "r11d",
+    [KEFIR_AMD64_XASMGEN_REGISTER_R12D] = "r12d",   [KEFIR_AMD64_XASMGEN_REGISTER_R13D] = "r13d",
+    [KEFIR_AMD64_XASMGEN_REGISTER_R14D] = "r14d",   [KEFIR_AMD64_XASMGEN_REGISTER_R15D] = "r15d",
+    [KEFIR_AMD64_XASMGEN_REGISTER_RAX] = "rax",     [KEFIR_AMD64_XASMGEN_REGISTER_RBX] = "rbx",
+    [KEFIR_AMD64_XASMGEN_REGISTER_RCX] = "rcx",     [KEFIR_AMD64_XASMGEN_REGISTER_RDX] = "rdx",
+    [KEFIR_AMD64_XASMGEN_REGISTER_RSI] = "rsi",     [KEFIR_AMD64_XASMGEN_REGISTER_RDI] = "rdi",
+    [KEFIR_AMD64_XASMGEN_REGISTER_RSP] = "rsp",     [KEFIR_AMD64_XASMGEN_REGISTER_RBP] = "rbp",
+    [KEFIR_AMD64_XASMGEN_REGISTER_R8] = "r8",       [KEFIR_AMD64_XASMGEN_REGISTER_R9] = "r9",
+    [KEFIR_AMD64_XASMGEN_REGISTER_R10] = "r10",     [KEFIR_AMD64_XASMGEN_REGISTER_R11] = "r11",
+    [KEFIR_AMD64_XASMGEN_REGISTER_R12] = "r12",     [KEFIR_AMD64_XASMGEN_REGISTER_R13] = "r13",
+    [KEFIR_AMD64_XASMGEN_REGISTER_R14] = "r14",     [KEFIR_AMD64_XASMGEN_REGISTER_R15] = "r15",
+    [KEFIR_AMD64_XASMGEN_REGISTER_XMM0] = "xmm0",   [KEFIR_AMD64_XASMGEN_REGISTER_XMM1] = "xmm1",
+    [KEFIR_AMD64_XASMGEN_REGISTER_XMM2] = "xmm2",   [KEFIR_AMD64_XASMGEN_REGISTER_XMM3] = "xmm3",
+    [KEFIR_AMD64_XASMGEN_REGISTER_XMM4] = "xmm4",   [KEFIR_AMD64_XASMGEN_REGISTER_XMM5] = "xmm5",
+    [KEFIR_AMD64_XASMGEN_REGISTER_XMM6] = "xmm6",   [KEFIR_AMD64_XASMGEN_REGISTER_XMM7] = "xmm7",
+    [KEFIR_AMD64_XASMGEN_REGISTER_XMM8] = "xmm8",   [KEFIR_AMD64_XASMGEN_REGISTER_XMM9] = "xmm9",
+    [KEFIR_AMD64_XASMGEN_REGISTER_XMM10] = "xmm10", [KEFIR_AMD64_XASMGEN_REGISTER_XMM11] = "xmm11",
+    [KEFIR_AMD64_XASMGEN_REGISTER_XMM12] = "xmm12", [KEFIR_AMD64_XASMGEN_REGISTER_XMM13] = "xmm13",
+    [KEFIR_AMD64_XASMGEN_REGISTER_XMM14] = "xmm14", [KEFIR_AMD64_XASMGEN_REGISTER_XMM15] = "xmm15"};
 
 static const kefir_size_t register_literal_count = sizeof(register_literals) / sizeof(register_literals[0]);
 
@@ -2330,6 +2332,116 @@ KEFIR_AMD64_INSTRUCTION_DATABASE(DEFINE_OPCODE0, DEFINE_OPCODE1, DEFINE_OPCODE2,
 #undef INSTR2_INTEL
 #undef INSTR3_INTEL
 
+struct xasmgen_debug_info_tracker {
+    struct kefir_hashtree files;
+    kefir_uint64_t next_fileno;
+};
+
+static kefir_result_t free_debug_info_tracker_file(struct kefir_mem *mem, struct kefir_hashtree *tree,
+                                                   kefir_hashtree_key_t key, kefir_hashtree_value_t value,
+                                                   void *payload) {
+    UNUSED(tree);
+    UNUSED(value);
+    UNUSED(payload);
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    ASSIGN_DECL_CAST(char *, file_name, key);
+    REQUIRE(file_name != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid debug info file name"));
+
+    KEFIR_FREE(mem, file_name);
+    return KEFIR_OK;
+}
+
+static kefir_result_t new_debug_info_tracker(struct kefir_mem *mem, struct kefir_amd64_xasmgen *xasmgen,
+                                             kefir_amd64_xasmgen_debug_info_tracker_t *tracker_ptr) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 xasmgen"));
+    REQUIRE(tracker_ptr != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to amd64 xasmgen debug info tracker"));
+
+    struct xasmgen_debug_info_tracker *tracker = KEFIR_MALLOC(mem, sizeof(struct xasmgen_debug_info_tracker));
+    REQUIRE(tracker != NULL,
+            KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate amd64 xasmgen debug info tracker"));
+
+    tracker->next_fileno = 0;
+    kefir_result_t res = kefir_hashtree_init(&tracker->files, &kefir_hashtree_str_ops);
+    REQUIRE_CHAIN(&res, kefir_hashtree_on_removal(&tracker->files, free_debug_info_tracker_file, NULL));
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_FREE(mem, tracker);
+        return res;
+    });
+
+    *tracker_ptr = (kefir_amd64_xasmgen_debug_info_tracker_t) tracker;
+    return KEFIR_OK;
+}
+
+static kefir_result_t free_debug_info_tracker(struct kefir_mem *mem, struct kefir_amd64_xasmgen *xasmgen,
+                                              kefir_amd64_xasmgen_debug_info_tracker_t tracker) {
+    UNUSED(xasmgen);
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    ASSIGN_DECL_CAST(struct xasmgen_debug_info_tracker *, debug_info_tracker, tracker);
+    REQUIRE(debug_info_tracker != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 xasmgen debug info tracker"));
+
+    REQUIRE_OK(kefir_hashtree_free(mem, &debug_info_tracker->files));
+    KEFIR_FREE(mem, debug_info_tracker);
+    return KEFIR_OK;
+}
+
+static kefir_result_t debug_info_source_location(struct kefir_mem *mem, struct kefir_amd64_xasmgen *xasmgen,
+                                                 kefir_amd64_xasmgen_debug_info_tracker_t tracker,
+                                                 const struct kefir_source_location *source_location) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 xasmgen"));
+    ASSIGN_DECL_CAST(struct xasmgen_debug_info_tracker *, debug_info_tracker, tracker);
+    REQUIRE(debug_info_tracker != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 xasmgen debug info tracker"));
+    REQUIRE(source_location != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source location"));
+
+    ASSIGN_DECL_CAST(struct xasmgen_payload *, payload, xasmgen->payload);
+
+    switch (payload->syntax) {
+        case KEFIR_AMD64_XASMGEN_SYNTAX_ATT:
+        case KEFIR_AMD64_XASMGEN_SYNTAX_INTEL_NOPREFIX:
+        case KEFIR_AMD64_XASMGEN_SYNTAX_INTEL_PREFIX: {
+            struct kefir_hashtree_node *node;
+            kefir_result_t res =
+                kefir_hashtree_at(&debug_info_tracker->files, (kefir_hashtree_key_t) source_location->source, &node);
+            uint64_t fileno;
+            if (res == KEFIR_NOT_FOUND) {
+                const kefir_size_t source_id_length = strlen(source_location->source);
+                char *source_id = KEFIR_MALLOC(mem, (source_id_length + 1) * sizeof(char));
+                REQUIRE(source_id != NULL,
+                        KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate source identifier"));
+                strcpy(source_id, source_location->source);
+                fileno = debug_info_tracker->next_fileno;
+
+                res = kefir_hashtree_insert(mem, &debug_info_tracker->files, (kefir_hashtree_key_t) source_id,
+                                            (kefir_hashtree_value_t) fileno);
+                REQUIRE_ELSE(res == KEFIR_OK, {
+                    KEFIR_FREE(mem, source_id);
+                    return KEFIR_OK;
+                });
+                debug_info_tracker->next_fileno++;
+
+                fprintf(payload->output, ".file %" KEFIR_UINT64_FMT " ", fileno);
+                REQUIRE_OK(amd64_string_literal(print_fprintf, payload->output, source_id, source_id_length));
+                fprintf(payload->output, "\n");
+            } else {
+                REQUIRE_OK(res);
+                fileno = (kefir_uint64_t) node->value;
+            }
+
+            fprintf(payload->output, ".loc %" KEFIR_UINT64_FMT " %" KEFIR_UINT64_FMT " %" KEFIR_UINT64_FMT "\n", fileno,
+                    (kefir_uint64_t) source_location->line, (kefir_uint64_t) source_location->column);
+        } break;
+
+        case KEFIR_AMD64_XASMGEN_SYNTAX_YASM:
+            return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED,
+                                   "Debug information generation is not supported for Yasm backend");
+    }
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_asm_amd64_xasmgen_init(struct kefir_mem *mem, struct kefir_amd64_xasmgen *xasmgen, FILE *output,
                                             kefir_asm_amd64_xasmgen_syntax_t syntax) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
@@ -2377,6 +2489,9 @@ kefir_result_t kefir_asm_amd64_xasmgen_init(struct kefir_mem *mem, struct kefir_
     }
     xasmgen->inline_assembly = amd64_inline_assembly;
     xasmgen->format_operand = amd64_format_operand;
+    xasmgen->new_debug_info_tracker = new_debug_info_tracker;
+    xasmgen->free_debug_info_tracker = free_debug_info_tracker;
+    xasmgen->debug_info_source_location = debug_info_source_location;
 
     if (syntax != KEFIR_AMD64_XASMGEN_SYNTAX_ATT) {
 #define OPCODE_DEF(_id) xasmgen->instr._id = amd64_instr_intel_##_id
@@ -2416,46 +2531,89 @@ kefir_result_t kefir_asm_amd64_xasmgen_line_comment_prefix(const struct kefir_am
 
 const struct kefir_asm_amd64_xasmgen_operand operand_regs[] = {
 #define REG(x) [x] = {.klass = KEFIR_AMD64_XASMGEN_OPERAND_REGISTER, .reg = x}
-    REG(KEFIR_AMD64_XASMGEN_REGISTER_AL),    REG(KEFIR_AMD64_XASMGEN_REGISTER_AH),
-    REG(KEFIR_AMD64_XASMGEN_REGISTER_BL), REG(KEFIR_AMD64_XASMGEN_REGISTER_BH),    REG(KEFIR_AMD64_XASMGEN_REGISTER_CL), REG(KEFIR_AMD64_XASMGEN_REGISTER_CH),
-    REG(KEFIR_AMD64_XASMGEN_REGISTER_DL), REG(KEFIR_AMD64_XASMGEN_REGISTER_DH),    REG(KEFIR_AMD64_XASMGEN_REGISTER_SIL),
-    REG(KEFIR_AMD64_XASMGEN_REGISTER_DIL),   REG(KEFIR_AMD64_XASMGEN_REGISTER_SPL),
-    REG(KEFIR_AMD64_XASMGEN_REGISTER_BPL),   REG(KEFIR_AMD64_XASMGEN_REGISTER_R8B),
-    REG(KEFIR_AMD64_XASMGEN_REGISTER_R9B),   REG(KEFIR_AMD64_XASMGEN_REGISTER_R10B),
-    REG(KEFIR_AMD64_XASMGEN_REGISTER_R11B),  REG(KEFIR_AMD64_XASMGEN_REGISTER_R12B),
-    REG(KEFIR_AMD64_XASMGEN_REGISTER_R13B),  REG(KEFIR_AMD64_XASMGEN_REGISTER_R14B),
-    REG(KEFIR_AMD64_XASMGEN_REGISTER_R15B),  REG(KEFIR_AMD64_XASMGEN_REGISTER_AX),
-    REG(KEFIR_AMD64_XASMGEN_REGISTER_BX),    REG(KEFIR_AMD64_XASMGEN_REGISTER_CX),
-    REG(KEFIR_AMD64_XASMGEN_REGISTER_DX),    REG(KEFIR_AMD64_XASMGEN_REGISTER_SI),
-    REG(KEFIR_AMD64_XASMGEN_REGISTER_DI),    REG(KEFIR_AMD64_XASMGEN_REGISTER_SP),
-    REG(KEFIR_AMD64_XASMGEN_REGISTER_BP),    REG(KEFIR_AMD64_XASMGEN_REGISTER_R8W),
-    REG(KEFIR_AMD64_XASMGEN_REGISTER_R9W),   REG(KEFIR_AMD64_XASMGEN_REGISTER_R10W),
-    REG(KEFIR_AMD64_XASMGEN_REGISTER_R11W),  REG(KEFIR_AMD64_XASMGEN_REGISTER_R12W),
-    REG(KEFIR_AMD64_XASMGEN_REGISTER_R13W),  REG(KEFIR_AMD64_XASMGEN_REGISTER_R14W),
-    REG(KEFIR_AMD64_XASMGEN_REGISTER_R15W),  REG(KEFIR_AMD64_XASMGEN_REGISTER_EAX),
-    REG(KEFIR_AMD64_XASMGEN_REGISTER_EBX),   REG(KEFIR_AMD64_XASMGEN_REGISTER_ECX),
-    REG(KEFIR_AMD64_XASMGEN_REGISTER_EDX),   REG(KEFIR_AMD64_XASMGEN_REGISTER_ESI),
-    REG(KEFIR_AMD64_XASMGEN_REGISTER_EDI),   REG(KEFIR_AMD64_XASMGEN_REGISTER_ESP),
-    REG(KEFIR_AMD64_XASMGEN_REGISTER_EBP),   REG(KEFIR_AMD64_XASMGEN_REGISTER_R8D),
-    REG(KEFIR_AMD64_XASMGEN_REGISTER_R9D),   REG(KEFIR_AMD64_XASMGEN_REGISTER_R10D),
-    REG(KEFIR_AMD64_XASMGEN_REGISTER_R11D),  REG(KEFIR_AMD64_XASMGEN_REGISTER_R12D),
-    REG(KEFIR_AMD64_XASMGEN_REGISTER_R13D),  REG(KEFIR_AMD64_XASMGEN_REGISTER_R14D),
-    REG(KEFIR_AMD64_XASMGEN_REGISTER_R15D),  REG(KEFIR_AMD64_XASMGEN_REGISTER_RAX),
-    REG(KEFIR_AMD64_XASMGEN_REGISTER_RBX),   REG(KEFIR_AMD64_XASMGEN_REGISTER_RCX),
-    REG(KEFIR_AMD64_XASMGEN_REGISTER_RDX),   REG(KEFIR_AMD64_XASMGEN_REGISTER_RSI),
-    REG(KEFIR_AMD64_XASMGEN_REGISTER_RDI),   REG(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
-    REG(KEFIR_AMD64_XASMGEN_REGISTER_RBP),   REG(KEFIR_AMD64_XASMGEN_REGISTER_R8),
-    REG(KEFIR_AMD64_XASMGEN_REGISTER_R9),    REG(KEFIR_AMD64_XASMGEN_REGISTER_R10),
-    REG(KEFIR_AMD64_XASMGEN_REGISTER_R11),   REG(KEFIR_AMD64_XASMGEN_REGISTER_R12),
-    REG(KEFIR_AMD64_XASMGEN_REGISTER_R13),   REG(KEFIR_AMD64_XASMGEN_REGISTER_R14),
-    REG(KEFIR_AMD64_XASMGEN_REGISTER_R15),   REG(KEFIR_AMD64_XASMGEN_REGISTER_XMM0),
-    REG(KEFIR_AMD64_XASMGEN_REGISTER_XMM1),  REG(KEFIR_AMD64_XASMGEN_REGISTER_XMM2),
-    REG(KEFIR_AMD64_XASMGEN_REGISTER_XMM3),  REG(KEFIR_AMD64_XASMGEN_REGISTER_XMM4),
-    REG(KEFIR_AMD64_XASMGEN_REGISTER_XMM5),  REG(KEFIR_AMD64_XASMGEN_REGISTER_XMM6),
-    REG(KEFIR_AMD64_XASMGEN_REGISTER_XMM7),  REG(KEFIR_AMD64_XASMGEN_REGISTER_XMM8),
-    REG(KEFIR_AMD64_XASMGEN_REGISTER_XMM9),  REG(KEFIR_AMD64_XASMGEN_REGISTER_XMM10),
-    REG(KEFIR_AMD64_XASMGEN_REGISTER_XMM11), REG(KEFIR_AMD64_XASMGEN_REGISTER_XMM12),
-    REG(KEFIR_AMD64_XASMGEN_REGISTER_XMM13), REG(KEFIR_AMD64_XASMGEN_REGISTER_XMM14),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_AL),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_AH),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_BL),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_BH),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_CL),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_CH),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_DL),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_DH),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_SIL),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_DIL),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_SPL),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_BPL),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_R8B),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_R9B),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_R10B),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_R11B),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_R12B),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_R13B),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_R14B),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_R15B),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_AX),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_BX),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_CX),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_DX),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_SI),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_DI),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_SP),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_BP),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_R8W),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_R9W),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_R10W),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_R11W),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_R12W),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_R13W),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_R14W),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_R15W),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_EAX),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_EBX),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_ECX),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_EDX),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_ESI),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_EDI),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_ESP),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_EBP),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_R8D),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_R9D),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_R10D),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_R11D),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_R12D),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_R13D),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_R14D),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_R15D),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_RAX),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_RBX),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_RCX),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_RDX),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_RSI),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_RDI),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_RSP),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_R8),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_R9),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_R10),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_R11),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_R12),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_R13),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_R14),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_R15),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_XMM0),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_XMM1),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_XMM2),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_XMM3),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_XMM4),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_XMM5),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_XMM6),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_XMM7),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_XMM8),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_XMM9),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_XMM10),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_XMM11),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_XMM12),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_XMM13),
+    REG(KEFIR_AMD64_XASMGEN_REGISTER_XMM14),
     REG(KEFIR_AMD64_XASMGEN_REGISTER_XMM15)
 #undef REG
 };

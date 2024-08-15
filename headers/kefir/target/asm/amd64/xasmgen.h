@@ -23,6 +23,7 @@
 
 #include "kefir/core/basic-types.h"
 #include "kefir/core/mem.h"
+#include "kefir/core/source_location.h"
 #include "kefir/target/asm/amd64/db.h"
 #include <stdio.h>
 
@@ -239,6 +240,8 @@ typedef enum kefir_amd64_xasmgen_visibility_attribute {
     KEFIR_AMD64_XASMGEN_VISIBILITY_PROTECTED
 } kefir_amd64_xasmgen_visibility_attribute_t;
 
+typedef void *kefir_amd64_xasmgen_debug_info_tracker_t;
+
 typedef struct kefir_amd64_xasmgen {
     kefir_result_t (*prologue)(struct kefir_amd64_xasmgen *);
     kefir_result_t (*close)(struct kefir_mem *, struct kefir_amd64_xasmgen *);
@@ -261,6 +264,14 @@ typedef struct kefir_amd64_xasmgen {
     kefir_result_t (*inline_assembly)(struct kefir_amd64_xasmgen *, const char *);
     kefir_result_t (*format_operand)(struct kefir_amd64_xasmgen *, const struct kefir_asm_amd64_xasmgen_operand *,
                                      char *, kefir_size_t);
+
+    kefir_result_t (*new_debug_info_tracker)(struct kefir_mem *, struct kefir_amd64_xasmgen *,
+                                             kefir_amd64_xasmgen_debug_info_tracker_t *);
+    kefir_result_t (*free_debug_info_tracker)(struct kefir_mem *, struct kefir_amd64_xasmgen *,
+                                              kefir_amd64_xasmgen_debug_info_tracker_t);
+    kefir_result_t (*debug_info_source_location)(struct kefir_mem *, struct kefir_amd64_xasmgen *,
+                                                 kefir_amd64_xasmgen_debug_info_tracker_t,
+                                                 const struct kefir_source_location *);
 
     struct {
 #define DEFINE_OPCODE0_(_opcode) kefir_result_t (*_opcode)(struct kefir_amd64_xasmgen *)
@@ -352,6 +363,13 @@ const struct kefir_asm_amd64_xasmgen_operand *kefir_asm_amd64_xasmgen_operand_fp
 
 #define KEFIR_AMD64_XASMGEN_INSTR_DATA16(_xasmgen) ((_xasmgen)->instr.data16((_xasmgen)))
 #define KEFIR_AMD64_XASMGEN_INSTR_REXW(_xasmgen) ((_xasmgen)->instr.rexW((_xasmgen)))
+
+#define KEFIR_AMD64_XASMGEN_NEW_DEBUG_INFO_TRACKER(_mem, _xasmgen, _tracker_ptr) \
+    ((_xasmgen)->new_debug_info_tracker((_mem), (_xasmgen), (_tracker_ptr)))
+#define KEFIR_AMD64_XASMGEN_FREE_DEBUG_INFO_TRACKER(_mem, _xasmgen, _tracker) \
+    ((_xasmgen)->free_debug_info_tracker((_mem), (_xasmgen), (_tracker)))
+#define KEFIR_AMD64_XASMGEN_DEBUG_INFO_SOURCE_LOCATION(_mem, _xasmgen, _tracker, _source_location) \
+    ((_xasmgen)->debug_info_source_location((_mem), (_xasmgen), (_tracker), (_source_location)))
 
 #define KEFIR_AMD64_XASMGEN_INSTR_JMP(_xasmgen, _op1) ((_xasmgen)->instr.jmp((_xasmgen), (_op1)))
 #define KEFIR_AMD64_XASMGEN_INSTR_JA(_xasmgen, _op1) ((_xasmgen)->instr.ja((_xasmgen), (_op1)))
