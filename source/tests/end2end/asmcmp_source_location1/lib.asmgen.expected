@@ -1161,44 +1161,66 @@ factorial:
 _kefir_func_factorial_label0:
 _kefir_func_factorial_label1:
     movl %edi, -8(%rbp)
+.file 0 "source/tests/end2end/asmcmp_source_location1/lib.kefir.asmgen.c"
+.loc 0 22 9
     movsxl -8(%rbp), %rax
+.loc 0 22 5
     cmp $0, %eax
     jl _kefir_func_factorial_label2
     jmp _kefir_func_factorial_label3
+.loc 0 23 16
 _kefir_func_factorial_label2:
     mov $0, %rax
+.loc 0 23 9
     lea (%rbp), %rsp
     pop %rbp
     ret
+.loc 0 24 9
 _kefir_func_factorial_label3:
     movsxl -8(%rbp), %rax
+.loc 0 24 5
     cmp $2, %eax
     jle _kefir_func_factorial_label4
     jmp _kefir_func_factorial_label5
+.loc 0 25 16
 _kefir_func_factorial_label4:
     movsxl -8(%rbp), %rax
+.loc 0 25 9
     lea (%rbp), %rsp
     pop %rbp
     ret
+.loc 0 27 18
 _kefir_func_factorial_label5:
     mov $1, %rax
     movl %eax, -4(%rbp)
+.loc 0 28 12
 _kefir_func_factorial_label6:
     movsxl -8(%rbp), %rax
+.loc 0 28 5
     cmp $1, %eax
     jg _kefir_func_factorial_label7
     jmp _kefir_func_factorial_label8
+.loc 0 29 19
 _kefir_func_factorial_label7:
     movsxl -8(%rbp), %rax
+.loc 0 29 9
     movsxl -4(%rbp), %rcx
+.loc 0 29 9
     imul %eax, %ecx
+.loc 0 29 9
     movl %ecx, -4(%rbp)
+.loc 0 28 19
     movsxl -8(%rbp), %rax
+.loc 0 28 19
     add $-1, %eax
+.loc 0 28 19
     movl %eax, -8(%rbp)
+.loc 0 28 5
     jmp _kefir_func_factorial_label6
+.loc 0 31 12
 _kefir_func_factorial_label8:
     movsxl -4(%rbp), %rax
+.loc 0 31 5
     lea (%rbp), %rsp
     pop %rbp
     ret

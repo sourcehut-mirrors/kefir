@@ -29,7 +29,6 @@ const struct kefir_codegen_configuration KefirCodegenDefaultConfiguration = {
     .omit_frame_pointer = false,
     .syntax = KEFIR_CODEGEN_SYNTAX_X86_64_INTEL_PREFIX,
     .print_details = NULL,
-    .detailed_output = false,
     .pipeline_spec = NULL,
     .debug_info = false};
 

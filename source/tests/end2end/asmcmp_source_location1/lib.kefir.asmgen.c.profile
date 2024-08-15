@@ -1,1 +1,1 @@
-KEFIR_CFLAGS="$KEFIR_CFLAGS -Wcodegen-details=vasm -Wdetailed-output"
+KEFIR_CFLAGS="$KEFIR_CFLAGS -Wcodegen-details=vasm -Wdebug-info"

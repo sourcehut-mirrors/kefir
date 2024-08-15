@@ -1,1 +1,1 @@
-KEFIR_CFLAGS="$KEFIR_CFLAGS -Wdetailed-output --print-opt"
+KEFIR_CFLAGS="$KEFIR_CFLAGS -Wdebug-info --print-opt"

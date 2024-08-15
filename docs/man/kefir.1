@@ -318,8 +318,8 @@ Force use provided source file identifier
 .It Fl \-sys-include-path Ar dir
 Add directory to include search path and mark it as a system include path (used for dependency output)
 .\"
-.It Fl \-detailed-output
-Include references to source file in AST and token dumps
+.It Fl \-debug-info
+Include debug information into produced output
 .\"
 .It Fl \-feature-[name]
 Enable compiler feature (see
@@ -462,9 +462,6 @@ Omit frame pointer in leaf function that do not need it
 .\"
 .It Ar no-omit-frame-pointer
 Always use frame pointer in all functions
-.\"
-.It Ar debug-info
-Produce debug information [disabled by default]
 .\"
 .It Ar syntax=SYNTAX
 Produce assembly output with specified syntax [x86_64-intel_noprefix, x86_64-intel_prefix, x86_64-att (default), x86_64-yasm].

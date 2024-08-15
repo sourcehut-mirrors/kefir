@@ -95,8 +95,8 @@ static kefir_result_t output_compiler_config(FILE *output,
             break;
     }
 
-    if (configuration->detailed_output) {
-        fprintf(output, " --detailed-output");
+    if (configuration->debug_info) {
+        fprintf(output, " --debug-info");
     }
     if (configuration->skip_preprocessor) {
         fprintf(output, " --skip-preprocessor");

@@ -195,7 +195,8 @@ struct kefir_cli_option KefirCompilerConfigurationOptions[] = {
            KEFIR_COMPILER_RUNNER_ERROR_REPORT_TABULAR, error_report_type),
     SIMPLE(0, "target-profile", true, KEFIR_CLI_OPTION_ACTION_ASSIGN_STRARG, 0, target_profile),
     SIMPLE(0, "source-id", true, KEFIR_CLI_OPTION_ACTION_ASSIGN_STRARG, 0, source_id),
-    SIMPLE(0, "detailed-output", false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, true, detailed_output),
+    SIMPLE(0, "debug-info", false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, true, debug_info),
+    SIMPLE(0, "no-debug-info", false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, false, debug_info),
     POSTHOOK(0, "pp-timestamp", true, KEFIR_CLI_OPTION_ACTION_ASSIGN_UINTARG, 0, pp_timestamp, pp_timestamp_hook),
     SIMPLE(0, "optimizer-pipeline", true, KEFIR_CLI_OPTION_ACTION_ASSIGN_STRARG, 0, optimizer_pipeline_spec),
     SIMPLE(0, "system-dependencies", false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, true,
@@ -243,7 +244,6 @@ struct kefir_cli_option KefirCompilerConfigurationOptions[] = {
     CODEGEN("emulated-tls", codegen.emulated_tls),
     CODEGEN("pic", codegen.position_independent_code),
     CODEGEN("omit-frame-pointer", codegen.omit_frame_pointer),
-    CODEGEN("debug-info", codegen.debug_info),
     SIMPLE(0, "codegen-syntax", true, KEFIR_CLI_OPTION_ACTION_ASSIGN_STRARG, 0, codegen.syntax),
     SIMPLE(0, "codegen-details", true, KEFIR_CLI_OPTION_ACTION_ASSIGN_STRARG, 0, codegen.print_details),
     SIMPLE(0, "codegen-pipeline", true, KEFIR_CLI_OPTION_ACTION_ASSIGN_STRARG, 0, codegen.pipeline_spec)

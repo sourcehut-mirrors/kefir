@@ -51,7 +51,7 @@ typedef struct kefir_compiler_runner_configuration {
     const char *target_profile;
     const char *source_id;
     kefir_compiler_runner_error_report_type_t error_report_type;
-    kefir_bool_t detailed_output;
+    kefir_bool_t debug_info;
     kefir_bool_t skip_preprocessor;
     struct kefir_list include_path;
     struct kefir_hashtreeset system_include_directories;
@@ -96,7 +96,6 @@ typedef struct kefir_compiler_runner_configuration {
     struct {
         kefir_bool_t emulated_tls;
         kefir_bool_t position_independent_code;
-        kefir_bool_t debug_info;
         kefir_bool_t omit_frame_pointer;
         const char *syntax;
         const char *print_details;

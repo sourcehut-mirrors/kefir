@@ -195,7 +195,7 @@ kefir_result_t kefir_driver_generate_compiler_config(struct kefir_mem *mem, stru
         compiler_config->features.designator_subscript_ranges = true;
     }
 
-    compiler_config->codegen.debug_info = config->flags.debug_info;
+    compiler_config->debug_info = config->flags.debug_info;
     compiler_config->codegen.position_independent_code = config->flags.position_independent_code;
     if (compiler_config->codegen.position_independent_code) {
         REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__pic__", "2"));

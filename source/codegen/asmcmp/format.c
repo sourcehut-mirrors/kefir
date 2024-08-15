@@ -284,7 +284,8 @@ static kefir_result_t value_format(struct kefir_json_output *json, const struct 
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_asmcmp_context_format(struct kefir_json_output *json, const struct kefir_asmcmp_context *context, kefir_bool_t detailed_output) {
+kefir_result_t kefir_asmcmp_context_format(struct kefir_json_output *json, const struct kefir_asmcmp_context *context,
+                                           kefir_bool_t debug_info) {
     REQUIRE(json != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid json output"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmcmp context"));
 
@@ -328,9 +329,10 @@ kefir_result_t kefir_asmcmp_context_format(struct kefir_json_output *json, const
         }
         REQUIRE_OK(kefir_json_output_array_end(json));
 
-        if (detailed_output) {
+        if (debug_info) {
             const struct kefir_source_location *source_location;
-            kefir_result_t res = kefir_asmcmp_source_map_at(&context->debug_info.source_map, instr_idx, &source_location);
+            kefir_result_t res =
+                kefir_asmcmp_source_map_at(&context->debug_info.source_map, instr_idx, &source_location);
             if (res == KEFIR_NOT_FOUND) {
                 source_location = NULL;
             } else {

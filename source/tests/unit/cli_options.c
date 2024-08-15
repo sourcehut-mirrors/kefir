@@ -23,7 +23,7 @@
 #include <string.h>
 
 DEFINE_CASE(cli_options1, "CLI - options #1") {
-    char *const argv[] = {"", "-o", "file.out", "--detailed-output", "--dump-ast", "test.c"};
+    char *const argv[] = {"", "-o", "file.out", "--debug-info", "--dump-ast", "test.c"};
     struct kefir_compiler_runner_configuration opts;
     kefir_cli_command_t cli_cmd;
     ASSERT_OK(kefir_compiler_runner_configuration_init(&opts));
@@ -31,7 +31,7 @@ DEFINE_CASE(cli_options1, "CLI - options #1") {
 
     ASSERT(cli_cmd == KEFIR_CLI_COMMAND_RUN);
     ASSERT(opts.action == KEFIR_COMPILER_RUNNER_ACTION_DUMP_AST);
-    ASSERT(opts.detailed_output);
+    ASSERT(opts.debug_info);
     ASSERT(!opts.skip_preprocessor);
     ASSERT(opts.source_id == NULL);
     ASSERT(opts.output_filepath != NULL);
@@ -44,8 +44,8 @@ DEFINE_CASE(cli_options1, "CLI - options #1") {
 END_CASE
 
 DEFINE_CASE(cli_options2, "CLI - options #2") {
-    char *const argv[] = {"",   "--detailed-output", "--dump-tokens", "--dump-ir",
-                          "-P", "--output",          "somefile",      "--pp-timestamp=10"};
+    char *const argv[] = {"",   "--debug-info", "--dump-tokens", "--dump-ir",
+                          "-P", "--output",     "somefile",      "--pp-timestamp=10"};
     struct kefir_compiler_runner_configuration opts;
     kefir_cli_command_t cli_cmd;
     ASSERT_OK(kefir_compiler_runner_configuration_init(&opts));
@@ -53,7 +53,7 @@ DEFINE_CASE(cli_options2, "CLI - options #2") {
 
     ASSERT(cli_cmd == KEFIR_CLI_COMMAND_RUN);
     ASSERT(opts.action == KEFIR_COMPILER_RUNNER_ACTION_DUMP_IR);
-    ASSERT(opts.detailed_output);
+    ASSERT(opts.debug_info);
     ASSERT(opts.skip_preprocessor);
     ASSERT(opts.source_id == NULL);
     ASSERT(opts.output_filepath != NULL);
@@ -79,7 +79,7 @@ DEFINE_CASE(cli_options3, "CLI - options #3") {
 
     ASSERT(cli_cmd == KEFIR_CLI_COMMAND_RUN);
     ASSERT(opts.action == KEFIR_COMPILER_RUNNER_ACTION_DUMP_ASSEMBLY);
-    ASSERT(!opts.detailed_output);
+    ASSERT(!opts.debug_info);
     ASSERT(!opts.skip_preprocessor);
     ASSERT(opts.source_id != NULL);
     ASSERT(strcmp(opts.source_id, "source1") == 0);
