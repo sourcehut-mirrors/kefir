@@ -33,6 +33,7 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, struct kefir_
                                             const struct kefir_opt_instruction *instruction) {
     REQUIRE(kefir_hashtreeset_has(&function->translated_instructions, (kefir_hashtreeset_entry_t) instruction->id),
             KEFIR_OK);
+    const kefir_asmcmp_instruction_index_t begin_idx = kefir_asmcmp_context_instr_length(&function->code.context);
     switch (instruction->operation.opcode) {
 #define CASE_INSTR(_id, _opcode)                                                           \
     case _opcode:                                                                          \
@@ -40,6 +41,10 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, struct kefir_
         break
         KEFIR_CODEGEN_AMD64_INSTRUCTIONS(CASE_INSTR, ;);
 #undef CASE_INSTR
+    }
+    if (instruction->source_location != NULL) {
+        const kefir_asmcmp_instruction_index_t end_idx = kefir_asmcmp_context_instr_length(&function->code.context);
+        REQUIRE_OK(kefir_asmcmp_source_map_add_location(mem, &function->code.context.debug_info.source_map, &function->code.context.strings, begin_idx, end_idx, instruction->source_location));
     }
     return KEFIR_OK;
 }
@@ -326,7 +331,7 @@ static kefir_result_t generate_constants(struct kefir_mem *mem, struct kefir_cod
 }
 
 static kefir_result_t output_asm(struct kefir_codegen_amd64 *codegen, struct kefir_codegen_amd64_function *func,
-                                 kefir_bool_t reg_alloc) {
+                                 kefir_bool_t reg_alloc, kefir_bool_t detailed_output) {
     const char *comment_prefix;
     REQUIRE_OK(kefir_asm_amd64_xasmgen_line_comment_prefix(&codegen->xasmgen, &comment_prefix));
     FILE *output = kefir_asm_amd64_xasmgen_get_output(&codegen->xasmgen);
@@ -336,7 +341,7 @@ static kefir_result_t output_asm(struct kefir_codegen_amd64 *codegen, struct kef
     REQUIRE_OK(kefir_json_set_line_prefix(&json, comment_prefix));
     REQUIRE_OK(kefir_json_output_object_begin(&json));
     REQUIRE_OK(kefir_json_output_object_key(&json, "function"));
-    REQUIRE_OK(kefir_asmcmp_context_format(&json, &func->code.context));
+    REQUIRE_OK(kefir_asmcmp_context_format(&json, &func->code.context, detailed_output));
     if (reg_alloc) {
         REQUIRE_OK(kefir_json_output_object_key(&json, "register_allocation"));
         REQUIRE_OK(kefir_json_output_array_begin(&json));
@@ -411,14 +416,15 @@ static kefir_result_t kefir_codegen_amd64_function_translate_impl(struct kefir_m
     REQUIRE_OK(translate_code(mem, func));
     REQUIRE_OK(
         kefir_asmcmp_pipeline_apply(mem, &codegen->pipeline, KEFIR_ASMCMP_PIPELINE_PASS_VIRTUAL, &func->code.context));
+    
     if (codegen->config->print_details != NULL && strcmp(codegen->config->print_details, "vasm") == 0) {
-        REQUIRE_OK(output_asm(codegen, func, false));
+        REQUIRE_OK(output_asm(codegen, func, false, codegen->config->detailed_output));
     }
 
     REQUIRE_OK(
         kefir_codegen_amd64_register_allocator_run(mem, &func->code, &func->stack_frame, &func->register_allocator));
     if (codegen->config->print_details != NULL && strcmp(codegen->config->print_details, "vasm+regs") == 0) {
-        REQUIRE_OK(output_asm(codegen, func, true));
+        REQUIRE_OK(output_asm(codegen, func, true, codegen->config->detailed_output));
     }
 
     REQUIRE_OK(kefir_codegen_amd64_devirtualize(mem, &func->code, &func->register_allocator, &func->stack_frame));
@@ -426,7 +432,7 @@ static kefir_result_t kefir_codegen_amd64_function_translate_impl(struct kefir_m
                                            &func->code.context));
 
     if (codegen->config->print_details != NULL && strcmp(codegen->config->print_details, "devasm") == 0) {
-        REQUIRE_OK(output_asm(codegen, func, false));
+        REQUIRE_OK(output_asm(codegen, func, false, codegen->config->detailed_output));
     }
 
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_calculate(codegen->abi_variant, func->function->locals.type,

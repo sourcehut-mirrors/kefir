@@ -18,12 +18,15 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef KEFIR_CODEGEN_ASMCMP_FORMAT_H_
-#define KEFIR_CODEGEN_ASMCMP_FORMAT_H_
+int factorial(int x) {
+    if (x < 0)
+        return 0;
+    if (x <= 2)
+        return x;
 
-#include "kefir/codegen/asmcmp/context.h"
-#include "kefir/util/json.h"
-
-kefir_result_t kefir_asmcmp_context_format(struct kefir_json_output *, const struct kefir_asmcmp_context *, kefir_bool_t);
-
-#endif
+    int result = 1;
+    for (; x > 1; --x) {
+        result *= x;
+    }
+    return result;
+}

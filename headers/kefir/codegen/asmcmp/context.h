@@ -26,6 +26,7 @@
 #include "kefir/core/string_pool.h"
 #include "kefir/codegen/asmcmp/type_defs.h"
 #include "kefir/codegen/asmcmp/liveness.h"
+#include "kefir/codegen/asmcmp/debug.h"
 #include "kefir/core/hashtreeset.h"
 #include "kefir/core/list.h"
 
@@ -342,6 +343,8 @@ typedef struct kefir_asmcmp_context {
     struct kefir_hashtree inline_assembly;
     kefir_asmcmp_inline_assembly_index_t next_inline_asm_idx;
 
+    struct kefir_asmcmp_debug_info debug_info;
+
     struct kefir_string_pool strings;
 
     const struct kefir_asmcmp_context_class *klass;
@@ -363,6 +366,7 @@ kefir_asmcmp_instruction_index_t kefir_asmcmp_context_instr_next(const struct ke
                                                                  kefir_asmcmp_instruction_index_t);
 kefir_asmcmp_instruction_index_t kefir_asmcmp_context_instr_head(const struct kefir_asmcmp_context *);
 kefir_asmcmp_instruction_index_t kefir_asmcmp_context_instr_tail(const struct kefir_asmcmp_context *);
+kefir_asmcmp_instruction_index_t kefir_asmcmp_context_instr_length(const struct kefir_asmcmp_context *);
 kefir_result_t kefir_asmcmp_context_instr_insert_after(struct kefir_mem *, struct kefir_asmcmp_context *,
                                                        kefir_asmcmp_instruction_index_t,
                                                        const struct kefir_asmcmp_instruction *,

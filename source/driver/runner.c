@@ -139,6 +139,7 @@ static kefir_result_t dump_action_impl(struct kefir_mem *mem, const struct kefir
     compiler.codegen_configuration.omit_frame_pointer = options->codegen.omit_frame_pointer;
     compiler.codegen_configuration.syntax = options->codegen.syntax;
     compiler.codegen_configuration.print_details = options->codegen.print_details;
+    compiler.codegen_configuration.detailed_output = options->detailed_output;
     compiler.codegen_configuration.pipeline_spec = options->codegen.pipeline_spec;
 
     if (options->optimizer_pipeline_spec != NULL) {

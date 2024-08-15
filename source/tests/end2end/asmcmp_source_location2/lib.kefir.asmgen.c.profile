@@ -1,0 +1,1 @@
+KEFIR_CFLAGS="$KEFIR_CFLAGS -Wcodegen-details=devasm -Wdetailed-output"

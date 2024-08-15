@@ -284,7 +284,7 @@ static kefir_result_t value_format(struct kefir_json_output *json, const struct 
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_asmcmp_context_format(struct kefir_json_output *json, const struct kefir_asmcmp_context *context) {
+kefir_result_t kefir_asmcmp_context_format(struct kefir_json_output *json, const struct kefir_asmcmp_context *context, kefir_bool_t detailed_output) {
     REQUIRE(json != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid json output"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmcmp context"));
 
@@ -327,6 +327,30 @@ kefir_result_t kefir_asmcmp_context_format(struct kefir_json_output *json, const
             REQUIRE_OK(kefir_json_output_uinteger(json, label_idx));
         }
         REQUIRE_OK(kefir_json_output_array_end(json));
+
+        if (detailed_output) {
+            const struct kefir_source_location *source_location;
+            kefir_result_t res = kefir_asmcmp_source_map_at(&context->debug_info.source_map, instr_idx, &source_location);
+            if (res == KEFIR_NOT_FOUND) {
+                source_location = NULL;
+            } else {
+                REQUIRE_OK(res);
+            }
+
+            REQUIRE_OK(kefir_json_output_object_key(json, "source_location"));
+            if (source_location != NULL) {
+                REQUIRE_OK(kefir_json_output_object_begin(json));
+                REQUIRE_OK(kefir_json_output_object_key(json, "source_id"));
+                REQUIRE_OK(kefir_json_output_string(json, source_location->source));
+                REQUIRE_OK(kefir_json_output_object_key(json, "line"));
+                REQUIRE_OK(kefir_json_output_uinteger(json, source_location->line));
+                REQUIRE_OK(kefir_json_output_object_key(json, "column"));
+                REQUIRE_OK(kefir_json_output_uinteger(json, source_location->column));
+                REQUIRE_OK(kefir_json_output_object_end(json));
+            } else {
+                REQUIRE_OK(kefir_json_output_null(json));
+            }
+        }
 
         REQUIRE_OK(kefir_json_output_object_end(json));
     }

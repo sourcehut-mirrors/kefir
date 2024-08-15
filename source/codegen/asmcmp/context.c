@@ -105,6 +105,7 @@ kefir_result_t kefir_asmcmp_context_init(const struct kefir_asmcmp_context_class
     REQUIRE_OK(kefir_hashtree_init(&context->inline_assembly, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_on_removal(&context->inline_assembly, free_inline_asm, NULL));
     REQUIRE_OK(kefir_asmcmp_lifetime_map_init(&context->vreg_liveness));
+    REQUIRE_OK(kefir_asmcmp_debug_info_init(&context->debug_info));
     context->klass = klass;
     context->payload = payload;
     context->code_content = NULL;
@@ -127,6 +128,7 @@ kefir_result_t kefir_asmcmp_context_free(struct kefir_mem *mem, struct kefir_asm
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
 
+    REQUIRE_OK(kefir_asmcmp_debug_info_free(mem, &context->debug_info));
     REQUIRE_OK(kefir_asmcmp_lifetime_map_free(mem, &context->vreg_liveness));
     REQUIRE_OK(kefir_hashtree_free(mem, &context->inline_assembly));
     REQUIRE_OK(kefir_hashtree_free(mem, &context->stashes));
@@ -191,6 +193,12 @@ kefir_asmcmp_instruction_index_t kefir_asmcmp_context_instr_tail(const struct ke
     REQUIRE(context != NULL, KEFIR_ASMCMP_INDEX_NONE);
 
     return context->code.tail;
+}
+
+kefir_asmcmp_instruction_index_t kefir_asmcmp_context_instr_length(const struct kefir_asmcmp_context *context) {
+    REQUIRE(context != NULL, KEFIR_ASMCMP_INDEX_NONE);
+
+    return context->code_length;
 }
 
 #define MIN_CAPACITY_INCREASE(_current) (((_current) * 9 / 8) + 512)

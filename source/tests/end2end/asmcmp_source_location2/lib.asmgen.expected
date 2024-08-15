@@ -1,0 +1,1174 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global factorial
+.type factorial, @function
+.extern __kefirrt_opt_amd64_sysv_vararg_save
+.extern __kefirrt_opt_load_int_vararg
+.extern __kefirrt_opt_load_sse_vararg
+.extern __kefirrt_opt_float32_to_uint
+.extern __kefirrt_opt_float64_to_uint
+.extern __kefirrt_opt_long_double_to_int
+.extern __kefirrt_opt_long_double_to_uint
+.extern __kefirrt_opt_complex_long_double_equals
+.extern __kefirrt_opt_complex_long_double_truncate_1bit
+.extern __kefirrt_opt_complex_float32_mul
+.extern __kefirrt_opt_complex_float32_div
+.extern __kefirrt_opt_complex_float64_mul
+.extern __kefirrt_opt_complex_float64_div
+.extern __kefirrt_opt_complex_long_double_mul
+.extern __kefirrt_opt_complex_long_double_div
+.extern __kefirrt_fenv_update
+.extern __kefir_opt_float32_neg
+.extern __kefir_opt_float64_neg
+.extern __kefir_opt_uint2long_double
+.extern __kefir_opt_complex_float32_neg
+.extern __kefir_opt_complex_float64_neg
+
+.section .text
+factorial:
+#{
+#    "function": {
+#        "code": [
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 0,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": null
+#            },
+#            {
+#                "opcode": "function_prologue",
+#                "args": [],
+#                "labels": [],
+#                "source_location": null
+#            },
+#            {
+#                "opcode": "vreg_lifetime_range_begin",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 1,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": null
+#            },
+#            {
+#                "opcode": "virtual_register_link",
+#                "args": [
+#                    {
+#                        "type": "physical_register",
+#                        "reg": "rdi"
+#                    },
+#                    {
+#                        "type": "physical_register",
+#                        "reg": "rdi"
+#                    }
+#                ],
+#                "labels": [
+#                    0
+#                ],
+#                "source_location": null
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 1,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": null
+#            },
+#            {
+#                "opcode": "vreg_lifetime_range_end",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 1,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": null
+#            },
+#            {
+#                "opcode": "vreg_lifetime_range_begin",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 1,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": null
+#            },
+#            {
+#                "opcode": "vreg_lifetime_range_begin",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 2,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": null
+#            },
+#            {
+#                "opcode": "mov",
+#                "args": [
+#                    {
+#                        "type": "indirect",
+#                        "basis": "local_var",
+#                        "offset": 0,
+#                        "variant": "32bit"
+#                    },
+#                    {
+#                        "type": "physical_register",
+#                        "reg": "edi"
+#                    }
+#                ],
+#                "labels": [
+#                    1
+#                ],
+#                "source_location": null
+#            },
+#            {
+#                "opcode": "movsx",
+#                "args": [
+#                    {
+#                        "type": "physical_register",
+#                        "reg": "rax"
+#                    },
+#                    {
+#                        "type": "indirect",
+#                        "basis": "local_var",
+#                        "offset": 0,
+#                        "variant": "32bit"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
+#                    "line": 22,
+#                    "column": 9
+#                }
+#            },
+#            {
+#                "opcode": "cmp",
+#                "args": [
+#                    {
+#                        "type": "physical_register",
+#                        "reg": "eax"
+#                    },
+#                    {
+#                        "type": "integer",
+#                        "value": 0
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
+#                    "line": 22,
+#                    "column": 5
+#                }
+#            },
+#            {
+#                "opcode": "jl",
+#                "args": [
+#                    {
+#                        "type": "internal_label",
+#                        "label": 2
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
+#                    "line": 22,
+#                    "column": 5
+#                }
+#            },
+#            {
+#                "opcode": "jmp",
+#                "args": [
+#                    {
+#                        "type": "internal_label",
+#                        "label": 3
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
+#                    "line": 22,
+#                    "column": 5
+#                }
+#            },
+#            {
+#                "opcode": "vreg_lifetime_range_end",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 1,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": null
+#            },
+#            {
+#                "opcode": "vreg_lifetime_range_end",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 2,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": null
+#            },
+#            {
+#                "opcode": "vreg_lifetime_range_begin",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 3,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": null
+#            },
+#            {
+#                "opcode": "mov",
+#                "args": [
+#                    {
+#                        "type": "physical_register",
+#                        "reg": "rax"
+#                    },
+#                    {
+#                        "type": "integer",
+#                        "value": 0
+#                    }
+#                ],
+#                "labels": [
+#                    2
+#                ],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
+#                    "line": 22,
+#                    "column": 5
+#                }
+#            },
+#            {
+#                "opcode": "virtual_register_link",
+#                "args": [
+#                    {
+#                        "type": "physical_register",
+#                        "reg": "rax"
+#                    },
+#                    {
+#                        "type": "physical_register",
+#                        "reg": "rax"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
+#                    "line": 23,
+#                    "column": 9
+#                }
+#            },
+#            {
+#                "opcode": "function_epilogue",
+#                "args": [],
+#                "labels": [],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
+#                    "line": 23,
+#                    "column": 9
+#                }
+#            },
+#            {
+#                "opcode": "ret",
+#                "args": [],
+#                "labels": [],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
+#                    "line": 23,
+#                    "column": 9
+#                }
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 4,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
+#                    "line": 23,
+#                    "column": 9
+#                }
+#            },
+#            {
+#                "opcode": "vreg_lifetime_range_end",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 3,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": null
+#            },
+#            {
+#                "opcode": "vreg_lifetime_range_begin",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 5,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": null
+#            },
+#            {
+#                "opcode": "movsx",
+#                "args": [
+#                    {
+#                        "type": "physical_register",
+#                        "reg": "rax"
+#                    },
+#                    {
+#                        "type": "indirect",
+#                        "basis": "local_var",
+#                        "offset": 0,
+#                        "variant": "32bit"
+#                    }
+#                ],
+#                "labels": [
+#                    3
+#                ],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
+#                    "line": 24,
+#                    "column": 9
+#                }
+#            },
+#            {
+#                "opcode": "cmp",
+#                "args": [
+#                    {
+#                        "type": "physical_register",
+#                        "reg": "eax"
+#                    },
+#                    {
+#                        "type": "integer",
+#                        "value": 2
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
+#                    "line": 24,
+#                    "column": 5
+#                }
+#            },
+#            {
+#                "opcode": "jle",
+#                "args": [
+#                    {
+#                        "type": "internal_label",
+#                        "label": 4
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
+#                    "line": 24,
+#                    "column": 5
+#                }
+#            },
+#            {
+#                "opcode": "jmp",
+#                "args": [
+#                    {
+#                        "type": "internal_label",
+#                        "label": 5
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
+#                    "line": 24,
+#                    "column": 5
+#                }
+#            },
+#            {
+#                "opcode": "vreg_lifetime_range_end",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 5,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": null
+#            },
+#            {
+#                "opcode": "vreg_lifetime_range_begin",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 6,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": null
+#            },
+#            {
+#                "opcode": "movsx",
+#                "args": [
+#                    {
+#                        "type": "physical_register",
+#                        "reg": "rax"
+#                    },
+#                    {
+#                        "type": "indirect",
+#                        "basis": "local_var",
+#                        "offset": 0,
+#                        "variant": "32bit"
+#                    }
+#                ],
+#                "labels": [
+#                    4
+#                ],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
+#                    "line": 24,
+#                    "column": 5
+#                }
+#            },
+#            {
+#                "opcode": "virtual_register_link",
+#                "args": [
+#                    {
+#                        "type": "physical_register",
+#                        "reg": "rax"
+#                    },
+#                    {
+#                        "type": "physical_register",
+#                        "reg": "rax"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
+#                    "line": 25,
+#                    "column": 9
+#                }
+#            },
+#            {
+#                "opcode": "function_epilogue",
+#                "args": [],
+#                "labels": [],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
+#                    "line": 25,
+#                    "column": 9
+#                }
+#            },
+#            {
+#                "opcode": "ret",
+#                "args": [],
+#                "labels": [],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
+#                    "line": 25,
+#                    "column": 9
+#                }
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 7,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
+#                    "line": 25,
+#                    "column": 9
+#                }
+#            },
+#            {
+#                "opcode": "vreg_lifetime_range_end",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 6,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": null
+#            },
+#            {
+#                "opcode": "vreg_lifetime_range_begin",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 8,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": null
+#            },
+#            {
+#                "opcode": "mov",
+#                "args": [
+#                    {
+#                        "type": "physical_register",
+#                        "reg": "rax"
+#                    },
+#                    {
+#                        "type": "integer",
+#                        "value": 1
+#                    }
+#                ],
+#                "labels": [
+#                    5
+#                ],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
+#                    "line": 27,
+#                    "column": 18
+#                }
+#            },
+#            {
+#                "opcode": "mov",
+#                "args": [
+#                    {
+#                        "type": "indirect",
+#                        "basis": "local_var",
+#                        "offset": 4,
+#                        "variant": "32bit"
+#                    },
+#                    {
+#                        "type": "physical_register",
+#                        "reg": "eax"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": null
+#            },
+#            {
+#                "opcode": "vreg_lifetime_range_end",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 8,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": null
+#            },
+#            {
+#                "opcode": "vreg_lifetime_range_begin",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 9,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": null
+#            },
+#            {
+#                "opcode": "movsx",
+#                "args": [
+#                    {
+#                        "type": "physical_register",
+#                        "reg": "rax"
+#                    },
+#                    {
+#                        "type": "indirect",
+#                        "basis": "local_var",
+#                        "offset": 0,
+#                        "variant": "32bit"
+#                    }
+#                ],
+#                "labels": [
+#                    6
+#                ],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
+#                    "line": 28,
+#                    "column": 12
+#                }
+#            },
+#            {
+#                "opcode": "cmp",
+#                "args": [
+#                    {
+#                        "type": "physical_register",
+#                        "reg": "eax"
+#                    },
+#                    {
+#                        "type": "integer",
+#                        "value": 1
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
+#                    "line": 28,
+#                    "column": 5
+#                }
+#            },
+#            {
+#                "opcode": "jg",
+#                "args": [
+#                    {
+#                        "type": "internal_label",
+#                        "label": 7
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
+#                    "line": 28,
+#                    "column": 5
+#                }
+#            },
+#            {
+#                "opcode": "jmp",
+#                "args": [
+#                    {
+#                        "type": "internal_label",
+#                        "label": 8
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
+#                    "line": 28,
+#                    "column": 5
+#                }
+#            },
+#            {
+#                "opcode": "vreg_lifetime_range_end",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 9,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": null
+#            },
+#            {
+#                "opcode": "vreg_lifetime_range_begin",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 10,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": null
+#            },
+#            {
+#                "opcode": "vreg_lifetime_range_begin",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 11,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": null
+#            },
+#            {
+#                "opcode": "vreg_lifetime_range_begin",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 12,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": null
+#            },
+#            {
+#                "opcode": "vreg_lifetime_range_begin",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 13,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": null
+#            },
+#            {
+#                "opcode": "vreg_lifetime_range_begin",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 14,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": null
+#            },
+#            {
+#                "opcode": "movsx",
+#                "args": [
+#                    {
+#                        "type": "physical_register",
+#                        "reg": "rax"
+#                    },
+#                    {
+#                        "type": "indirect",
+#                        "basis": "local_var",
+#                        "offset": 0,
+#                        "variant": "32bit"
+#                    }
+#                ],
+#                "labels": [
+#                    7
+#                ],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
+#                    "line": 28,
+#                    "column": 5
+#                }
+#            },
+#            {
+#                "opcode": "movsx",
+#                "args": [
+#                    {
+#                        "type": "physical_register",
+#                        "reg": "rcx"
+#                    },
+#                    {
+#                        "type": "indirect",
+#                        "basis": "local_var",
+#                        "offset": 4,
+#                        "variant": "32bit"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
+#                    "line": 29,
+#                    "column": 9
+#                }
+#            },
+#            {
+#                "opcode": "virtual_register_link",
+#                "args": [
+#                    {
+#                        "type": "physical_register",
+#                        "reg": "rcx"
+#                    },
+#                    {
+#                        "type": "physical_register",
+#                        "reg": "rcx"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
+#                    "line": 29,
+#                    "column": 9
+#                }
+#            },
+#            {
+#                "opcode": "imul",
+#                "args": [
+#                    {
+#                        "type": "physical_register",
+#                        "reg": "ecx"
+#                    },
+#                    {
+#                        "type": "physical_register",
+#                        "reg": "eax"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
+#                    "line": 29,
+#                    "column": 9
+#                }
+#            },
+#            {
+#                "opcode": "mov",
+#                "args": [
+#                    {
+#                        "type": "indirect",
+#                        "basis": "local_var",
+#                        "offset": 4,
+#                        "variant": "32bit"
+#                    },
+#                    {
+#                        "type": "physical_register",
+#                        "reg": "ecx"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
+#                    "line": 29,
+#                    "column": 9
+#                }
+#            },
+#            {
+#                "opcode": "movsx",
+#                "args": [
+#                    {
+#                        "type": "physical_register",
+#                        "reg": "rax"
+#                    },
+#                    {
+#                        "type": "indirect",
+#                        "basis": "local_var",
+#                        "offset": 0,
+#                        "variant": "32bit"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
+#                    "line": 28,
+#                    "column": 5
+#                }
+#            },
+#            {
+#                "opcode": "virtual_register_link",
+#                "args": [
+#                    {
+#                        "type": "physical_register",
+#                        "reg": "rax"
+#                    },
+#                    {
+#                        "type": "physical_register",
+#                        "reg": "rax"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
+#                    "line": 28,
+#                    "column": 5
+#                }
+#            },
+#            {
+#                "opcode": "add",
+#                "args": [
+#                    {
+#                        "type": "physical_register",
+#                        "reg": "eax"
+#                    },
+#                    {
+#                        "type": "integer",
+#                        "value": -1
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
+#                    "line": 28,
+#                    "column": 5
+#                }
+#            },
+#            {
+#                "opcode": "mov",
+#                "args": [
+#                    {
+#                        "type": "indirect",
+#                        "basis": "local_var",
+#                        "offset": 0,
+#                        "variant": "32bit"
+#                    },
+#                    {
+#                        "type": "physical_register",
+#                        "reg": "eax"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
+#                    "line": 28,
+#                    "column": 5
+#                }
+#            },
+#            {
+#                "opcode": "jmp",
+#                "args": [
+#                    {
+#                        "type": "internal_label",
+#                        "label": 6
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
+#                    "line": 28,
+#                    "column": 5
+#                }
+#            },
+#            {
+#                "opcode": "vreg_lifetime_range_end",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 10,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": null
+#            },
+#            {
+#                "opcode": "vreg_lifetime_range_end",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 11,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": null
+#            },
+#            {
+#                "opcode": "vreg_lifetime_range_end",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 12,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": null
+#            },
+#            {
+#                "opcode": "vreg_lifetime_range_end",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 13,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": null
+#            },
+#            {
+#                "opcode": "vreg_lifetime_range_end",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 14,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": null
+#            },
+#            {
+#                "opcode": "vreg_lifetime_range_begin",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 15,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": null
+#            },
+#            {
+#                "opcode": "movsx",
+#                "args": [
+#                    {
+#                        "type": "physical_register",
+#                        "reg": "rax"
+#                    },
+#                    {
+#                        "type": "indirect",
+#                        "basis": "local_var",
+#                        "offset": 4,
+#                        "variant": "32bit"
+#                    }
+#                ],
+#                "labels": [
+#                    8
+#                ],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
+#                    "line": 31,
+#                    "column": 12
+#                }
+#            },
+#            {
+#                "opcode": "virtual_register_link",
+#                "args": [
+#                    {
+#                        "type": "physical_register",
+#                        "reg": "rax"
+#                    },
+#                    {
+#                        "type": "physical_register",
+#                        "reg": "rax"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
+#                    "line": 31,
+#                    "column": 5
+#                }
+#            },
+#            {
+#                "opcode": "function_epilogue",
+#                "args": [],
+#                "labels": [],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
+#                    "line": 31,
+#                    "column": 5
+#                }
+#            },
+#            {
+#                "opcode": "ret",
+#                "args": [],
+#                "labels": [],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
+#                    "line": 31,
+#                    "column": 5
+#                }
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 16,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location2\/lib.kefir.asmgen.c",
+#                    "line": 31,
+#                    "column": 5
+#                }
+#            },
+#            {
+#                "opcode": "vreg_lifetime_range_end",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 15,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": null
+#            },
+#            {
+#                "opcode": "noop",
+#                "args": [],
+#                "labels": [],
+#                "source_location": null
+#            }
+#        ]
+#    }
+#}
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_factorial_label0:
+_kefir_func_factorial_label1:
+    movl %edi, -8(%rbp)
+    movsxl -8(%rbp), %rax
+    cmp $0, %eax
+    jl _kefir_func_factorial_label2
+    jmp _kefir_func_factorial_label3
+_kefir_func_factorial_label2:
+    mov $0, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_factorial_label3:
+    movsxl -8(%rbp), %rax
+    cmp $2, %eax
+    jle _kefir_func_factorial_label4
+    jmp _kefir_func_factorial_label5
+_kefir_func_factorial_label4:
+    movsxl -8(%rbp), %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_factorial_label5:
+    mov $1, %rax
+    movl %eax, -4(%rbp)
+_kefir_func_factorial_label6:
+    movsxl -8(%rbp), %rax
+    cmp $1, %eax
+    jg _kefir_func_factorial_label7
+    jmp _kefir_func_factorial_label8
+_kefir_func_factorial_label7:
+    movsxl -8(%rbp), %rax
+    movsxl -4(%rbp), %rcx
+    imul %eax, %ecx
+    movl %ecx, -4(%rbp)
+    movsxl -8(%rbp), %rax
+    add $-1, %eax
+    movl %eax, -8(%rbp)
+    jmp _kefir_func_factorial_label6
+_kefir_func_factorial_label8:
+    movsxl -4(%rbp), %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+
+
