@@ -426,7 +426,7 @@
                                 "source_location": {
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/floating_point1.kefir.asmgen.c",
                                     "line": 2,
-                                    "column": 13
+                                    "column": 18
                                 }
                             },
                             {
@@ -449,7 +449,7 @@
                                 "source_location": {
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/floating_point1.kefir.asmgen.c",
                                     "line": 2,
-                                    "column": 13
+                                    "column": 18
                                 }
                             },
                             {
@@ -513,7 +513,7 @@
                                 "source_location": {
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/floating_point1.kefir.asmgen.c",
                                     "line": 2,
-                                    "column": 12
+                                    "column": 23
                                 }
                             },
                             {
@@ -536,7 +536,7 @@
                                 "source_location": {
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/floating_point1.kefir.asmgen.c",
                                     "line": 2,
-                                    "column": 12
+                                    "column": 23
                                 }
                             },
                             {
@@ -580,7 +580,7 @@
                                 "source_location": {
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/floating_point1.kefir.asmgen.c",
                                     "line": 2,
-                                    "column": 12
+                                    "column": 28
                                 }
                             },
                             {
@@ -603,7 +603,7 @@
                                 "source_location": {
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/floating_point1.kefir.asmgen.c",
                                     "line": 2,
-                                    "column": 12
+                                    "column": 28
                                 }
                             },
                             {
@@ -623,7 +623,7 @@
                                 "source_location": {
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/floating_point1.kefir.asmgen.c",
                                     "line": 2,
-                                    "column": 27
+                                    "column": 32
                                 }
                             },
                             {
@@ -1139,7 +1139,7 @@
                                 "source_location": {
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/floating_point1.kefir.asmgen.c",
                                     "line": 6,
-                                    "column": 13
+                                    "column": 18
                                 }
                             },
                             {
@@ -1162,7 +1162,7 @@
                                 "source_location": {
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/floating_point1.kefir.asmgen.c",
                                     "line": 6,
-                                    "column": 13
+                                    "column": 18
                                 }
                             },
                             {
@@ -1226,7 +1226,7 @@
                                 "source_location": {
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/floating_point1.kefir.asmgen.c",
                                     "line": 6,
-                                    "column": 12
+                                    "column": 23
                                 }
                             },
                             {
@@ -1249,7 +1249,7 @@
                                 "source_location": {
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/floating_point1.kefir.asmgen.c",
                                     "line": 6,
-                                    "column": 12
+                                    "column": 23
                                 }
                             },
                             {
@@ -1293,7 +1293,7 @@
                                 "source_location": {
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/floating_point1.kefir.asmgen.c",
                                     "line": 6,
-                                    "column": 12
+                                    "column": 28
                                 }
                             },
                             {
@@ -1316,7 +1316,7 @@
                                 "source_location": {
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/floating_point1.kefir.asmgen.c",
                                     "line": 6,
-                                    "column": 12
+                                    "column": 28
                                 }
                             },
                             {
@@ -1336,7 +1336,7 @@
                                 "source_location": {
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/floating_point1.kefir.asmgen.c",
                                     "line": 6,
-                                    "column": 27
+                                    "column": 32
                                 }
                             },
                             {

@@ -801,7 +801,7 @@
                                 "source_location": {
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
                                     "line": 35,
-                                    "column": 10
+                                    "column": 21
                                 }
                             },
                             {
@@ -978,7 +978,7 @@
                                 "source_location": {
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
                                     "line": 35,
-                                    "column": 5
+                                    "column": 6
                                 }
                             },
                             {
@@ -1001,7 +1001,7 @@
                                 "source_location": {
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
                                     "line": 35,
-                                    "column": 5
+                                    "column": 6
                                 }
                             },
                             {

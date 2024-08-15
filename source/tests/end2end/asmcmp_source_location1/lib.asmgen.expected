@@ -273,8 +273,8 @@ factorial:
 #                ],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
-#                    "line": 22,
-#                    "column": 5
+#                    "line": 23,
+#                    "column": 16
 #                }
 #            },
 #            {
@@ -476,8 +476,8 @@ factorial:
 #                ],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
-#                    "line": 24,
-#                    "column": 5
+#                    "line": 25,
+#                    "column": 16
 #                }
 #            },
 #            {
@@ -791,8 +791,8 @@ factorial:
 #                ],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
-#                    "line": 28,
-#                    "column": 5
+#                    "line": 29,
+#                    "column": 19
 #                }
 #            },
 #            {
@@ -900,7 +900,7 @@ factorial:
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
 #                    "line": 28,
-#                    "column": 5
+#                    "column": 19
 #                }
 #            },
 #            {
@@ -921,7 +921,7 @@ factorial:
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
 #                    "line": 28,
-#                    "column": 5
+#                    "column": 19
 #                }
 #            },
 #            {
@@ -941,7 +941,7 @@ factorial:
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
 #                    "line": 28,
-#                    "column": 5
+#                    "column": 19
 #                }
 #            },
 #            {
@@ -963,7 +963,7 @@ factorial:
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
 #                    "line": 28,
-#                    "column": 5
+#                    "column": 19
 #                }
 #            },
 #            {

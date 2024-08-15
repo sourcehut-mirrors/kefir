@@ -44,7 +44,7 @@ _kefir_func_factorial64_label3:
 _kefir_func_factorial64_label9:
     mov %rdi, %rax
     ret
-.loc 0 26 12
+.loc 0 28 12
 _kefir_func_factorial64_label5:
     mov $1, %rax
 .loc 0 30 9
@@ -58,7 +58,7 @@ _kefir_func_factorial64_label10:
     mov %rax, %rdx
 .loc 0 31 13
     imul %rcx, %rdx
-.loc 0 30 9
+.loc 0 30 23
     add $-1, %rcx
 .loc 0 30 9
     mov %rcx, %rdi

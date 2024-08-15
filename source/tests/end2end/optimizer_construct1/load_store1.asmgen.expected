@@ -1192,7 +1192,7 @@
                                 "source_location": {
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 59,
-                                    "column": 12
+                                    "column": 16
                                 }
                             },
                             {
@@ -1215,7 +1215,7 @@
                                 "source_location": {
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 59,
-                                    "column": 12
+                                    "column": 16
                                 }
                             },
                             {
@@ -1256,7 +1256,7 @@
                                 "source_location": {
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 59,
-                                    "column": 16
+                                    "column": 20
                                 }
                             },
                             {
@@ -1279,7 +1279,7 @@
                                 "source_location": {
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 59,
-                                    "column": 16
+                                    "column": 20
                                 }
                             },
                             {
@@ -1323,7 +1323,7 @@
                                 "source_location": {
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 59,
-                                    "column": 16
+                                    "column": 24
                                 }
                             },
                             {
@@ -1346,7 +1346,7 @@
                                 "source_location": {
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 59,
-                                    "column": 16
+                                    "column": 24
                                 }
                             },
                             {
@@ -1569,7 +1569,7 @@
                                 "source_location": {
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 67,
-                                    "column": 12
+                                    "column": 14
                                 }
                             },
                             {
@@ -1592,7 +1592,7 @@
                                 "source_location": {
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 67,
-                                    "column": 12
+                                    "column": 14
                                 }
                             },
                             {
@@ -1633,7 +1633,7 @@
                                 "source_location": {
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 67,
-                                    "column": 14
+                                    "column": 18
                                 }
                             },
                             {
@@ -1656,7 +1656,7 @@
                                 "source_location": {
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 67,
-                                    "column": 14
+                                    "column": 18
                                 }
                             },
                             {
@@ -1720,7 +1720,7 @@
                                 "source_location": {
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 67,
-                                    "column": 14
+                                    "column": 22
                                 }
                             },
                             {
@@ -1743,7 +1743,7 @@
                                 "source_location": {
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 67,
-                                    "column": 14
+                                    "column": 22
                                 }
                             },
                             {
@@ -2131,7 +2131,7 @@
                                 "source_location": {
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 71,
-                                    "column": 5
+                                    "column": 6
                                 }
                             },
                             {
@@ -2154,7 +2154,7 @@
                                 "source_location": {
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/load_store1.kefir.asmgen.c",
                                     "line": 71,
-                                    "column": 5
+                                    "column": 6
                                 }
                             },
                             {

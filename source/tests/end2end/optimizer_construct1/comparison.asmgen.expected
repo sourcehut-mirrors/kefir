@@ -88,7 +88,7 @@
                                 "source_location": {
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/comparison.kefir.asmgen.c",
                                     "line": 22,
-                                    "column": 13
+                                    "column": 17
                                 }
                             },
                             {
@@ -131,7 +131,7 @@
                                 "source_location": {
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/comparison.kefir.asmgen.c",
                                     "line": 22,
-                                    "column": 12
+                                    "column": 21
                                 }
                             },
                             {
@@ -174,7 +174,7 @@
                                 "source_location": {
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/comparison.kefir.asmgen.c",
                                     "line": 22,
-                                    "column": 12
+                                    "column": 26
                                 }
                             },
                             {
@@ -194,7 +194,7 @@
                                 "source_location": {
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/comparison.kefir.asmgen.c",
                                     "line": 22,
-                                    "column": 26
+                                    "column": 31
                                 }
                             },
                             {
@@ -283,7 +283,7 @@
                                 "source_location": {
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/comparison.kefir.asmgen.c",
                                     "line": 22,
-                                    "column": 26
+                                    "column": 36
                                 }
                             },
                             {
@@ -475,8 +475,8 @@
                                 },
                                 "source_location": {
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/comparison.kefir.asmgen.c",
-                                    "line": 22,
-                                    "column": 5
+                                    "line": 24,
+                                    "column": 17
                                 }
                             },
                             {
@@ -496,7 +496,7 @@
                                 "source_location": {
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/comparison.kefir.asmgen.c",
                                     "line": 24,
-                                    "column": 17
+                                    "column": 21
                                 }
                             },
                             {
@@ -607,8 +607,8 @@
                                 },
                                 "source_location": {
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/comparison.kefir.asmgen.c",
-                                    "line": 23,
-                                    "column": 9
+                                    "line": 27,
+                                    "column": 20
                                 }
                             },
                             {
@@ -628,7 +628,7 @@
                                 "source_location": {
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/comparison.kefir.asmgen.c",
                                     "line": 27,
-                                    "column": 20
+                                    "column": 25
                                 }
                             },
                             {
@@ -648,7 +648,7 @@
                                 "source_location": {
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/comparison.kefir.asmgen.c",
                                     "line": 27,
-                                    "column": 24
+                                    "column": 29
                                 }
                             },
                             {
@@ -714,7 +714,7 @@
                                 "source_location": {
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/comparison.kefir.asmgen.c",
                                     "line": 27,
-                                    "column": 19
+                                    "column": 35
                                 }
                             },
                             {
@@ -823,7 +823,7 @@
                                 "source_location": {
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/comparison.kefir.asmgen.c",
                                     "line": 27,
-                                    "column": 18
+                                    "column": 41
                                 }
                             },
                             {
@@ -913,8 +913,8 @@
                                 },
                                 "source_location": {
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/comparison.kefir.asmgen.c",
-                                    "line": 24,
-                                    "column": 13
+                                    "line": 25,
+                                    "column": 24
                                 }
                             },
                             {

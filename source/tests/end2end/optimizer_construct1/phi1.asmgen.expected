@@ -647,7 +647,7 @@
                                 "source_location": {
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
                                     "line": 22,
-                                    "column": 12
+                                    "column": 17
                                 }
                             },
                             {
@@ -670,7 +670,7 @@
                                 "source_location": {
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
                                     "line": 22,
-                                    "column": 12
+                                    "column": 17
                                 }
                             },
                             {
@@ -877,7 +877,7 @@
                                 "source_location": {
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
                                     "line": 22,
-                                    "column": 12
+                                    "column": 22
                                 }
                             },
                             {
@@ -900,7 +900,7 @@
                                 "source_location": {
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
                                     "line": 22,
-                                    "column": 12
+                                    "column": 22
                                 }
                             },
                             {
@@ -1195,7 +1195,7 @@
                                 "source_location": {
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
                                     "line": 22,
-                                    "column": 22
+                                    "column": 27
                                 }
                             },
                             {
@@ -1218,7 +1218,7 @@
                                 "source_location": {
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
                                     "line": 22,
-                                    "column": 22
+                                    "column": 27
                                 }
                             },
                             {
@@ -1940,7 +1940,7 @@
                                 "source_location": {
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
                                     "line": 29,
-                                    "column": 9
+                                    "column": 14
                                 }
                             },
                             {
@@ -2023,8 +2023,8 @@
                                 },
                                 "source_location": {
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
-                                    "line": 29,
-                                    "column": 5
+                                    "line": 32,
+                                    "column": 15
                                 }
                             },
                             {
@@ -2046,8 +2046,8 @@
                                 },
                                 "source_location": {
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
-                                    "line": 29,
-                                    "column": 5
+                                    "line": 32,
+                                    "column": 15
                                 }
                             },
                             {
@@ -2112,8 +2112,8 @@
                                 },
                                 "source_location": {
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
-                                    "line": 29,
-                                    "column": 5
+                                    "line": 30,
+                                    "column": 15
                                 }
                             },
                             {
@@ -2135,8 +2135,8 @@
                                 },
                                 "source_location": {
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/phi1.kefir.asmgen.c",
-                                    "line": 29,
-                                    "column": 5
+                                    "line": 30,
+                                    "column": 15
                                 }
                             },
                             {
