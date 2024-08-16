@@ -28,6 +28,7 @@
 .section .text
 factorial64:
 .file 0 "source/tests/end2end/debug_info1/lib.kefir.c"
+.loc 0 23 1
 .loc 0 24 5
     cmp $0, %rdi
     jge _kefir_func_factorial64_label3

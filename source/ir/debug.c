@@ -110,23 +110,22 @@ kefir_result_t kefir_ir_source_map_insert(struct kefir_mem *mem, struct kefir_ir
 }
 
 kefir_result_t kefir_ir_source_map_find(const struct kefir_ir_source_map *source_map, kefir_size_t positon,
-                                      const struct kefir_ir_source_location **location_ptr) {
+                                        const struct kefir_ir_source_location **location_ptr) {
     REQUIRE(source_map != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR source map"));
-    REQUIRE(location_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to IR source location"));
+    REQUIRE(location_ptr != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to IR source location"));
 
     struct kefir_interval_tree_finder finder;
     kefir_result_t res;
     struct kefir_interval_tree_node *node;
     const struct kefir_ir_source_location *most_precise_location = NULL;
     for (res = kefir_interval_tree_find(&source_map->locations, (kefir_interval_tree_key_t) positon, &finder, &node);
-        res == KEFIR_OK;
-        res = kefir_interval_tree_find_next(&source_map->locations, &finder, &node)) {
-        
-        ASSIGN_DECL_CAST(const struct kefir_ir_source_location *, source_location,
-            node->value);
+         res == KEFIR_OK; res = kefir_interval_tree_find_next(&source_map->locations, &finder, &node)) {
+
+        ASSIGN_DECL_CAST(const struct kefir_ir_source_location *, source_location, node->value);
         for (; source_location != NULL; source_location = source_location->next) {
             REQUIRE(positon >= source_location->begin && positon < source_location->end,
-                KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected source location"));
+                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected source location"));
 #define WIDTH(_loc) ((_loc)->end - (_loc)->begin)
             if (most_precise_location == NULL || WIDTH(source_location) <= WIDTH(most_precise_location)) {
                 most_precise_location = source_location;
@@ -138,7 +137,8 @@ kefir_result_t kefir_ir_source_map_find(const struct kefir_ir_source_map *source
     if (res != KEFIR_ITERATOR_END) {
         REQUIRE_OK(res);
     }
-    REQUIRE(most_precise_location != NULL, KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find source location for requested position"));
+    REQUIRE(most_precise_location != NULL,
+            KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find source location for requested position"));
     *location_ptr = most_precise_location;
     return KEFIR_OK;
 }
@@ -179,6 +179,9 @@ kefir_result_t kefir_ir_function_debug_info_init(struct kefir_ir_function_debug_
     REQUIRE(debug_info != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to IR function debug info"));
 
+    debug_info->source_location.source = NULL;
+    debug_info->source_location.line = 0;
+    debug_info->source_location.column = 0;
     REQUIRE_OK(kefir_ir_source_map_init(&debug_info->source_map));
     return KEFIR_OK;
 }
@@ -189,5 +192,38 @@ kefir_result_t kefir_ir_function_debug_info_free(struct kefir_mem *mem,
     REQUIRE(debug_info != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR function debug info"));
 
     REQUIRE_OK(kefir_ir_source_map_free(mem, &debug_info->source_map));
+    return KEFIR_OK;
+}
+
+const struct kefir_source_location *kefir_ir_function_debug_info_source_location(
+    const struct kefir_ir_function_debug_info *debug_info) {
+    REQUIRE(debug_info != NULL, NULL);
+    REQUIRE(debug_info->source_location.source != NULL, NULL);
+    return &debug_info->source_location;
+}
+
+kefir_result_t kefir_ir_function_debug_info_set_source_location(struct kefir_mem *mem,
+                                                                struct kefir_ir_function_debug_info *debug_info,
+                                                                struct kefir_string_pool *symbols,
+                                                                const struct kefir_source_location *location) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(debug_info != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR function debug info"));
+
+    if (location != NULL && location->source != NULL) {
+        if (symbols != NULL) {
+            debug_info->source_location.source = kefir_string_pool_insert(mem, symbols, location->source, NULL);
+            REQUIRE(debug_info->source_location.source != NULL,
+                    KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE,
+                                    "Failed to insert IR function source location into string pool"));
+        } else {
+            debug_info->source_location.source = location->source;
+        }
+        debug_info->source_location.line = location->line;
+        debug_info->source_location.column = location->column;
+    } else {
+        debug_info->source_location.source = NULL;
+        debug_info->source_location.line = 0;
+        debug_info->source_location.column = 0;
+    }
     return KEFIR_OK;
 }

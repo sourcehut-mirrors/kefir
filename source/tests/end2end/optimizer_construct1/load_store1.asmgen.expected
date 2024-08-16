@@ -250,7 +250,7 @@
                             {
                                 "id": 2,
                                 "opcode": "get_global",
-                                "global_ref": 35,
+                                "global_ref": 36,
                                 "offset": 0,
                                 "control_next": null,
                                 "properties": {

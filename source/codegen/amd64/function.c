@@ -409,6 +409,13 @@ static kefir_result_t kefir_codegen_amd64_function_translate_impl(struct kefir_m
     REQUIRE_OK(kefir_ir_module_get_identifier(func->module->ir_module, func->function->ir_func->name, &ir_identifier));
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&func->codegen->xasmgen, "%s", ir_identifier->symbol));
 
+    const struct kefir_source_location *function_source_location =
+        kefir_ir_function_debug_info_source_location(&func->function->ir_func->debug_info);
+    if (function_source_location != NULL && codegen->debug_info_tracker != NULL) {
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_DEBUG_INFO_SOURCE_LOCATION(mem, &codegen->xasmgen, codegen->debug_info_tracker,
+                                                                  function_source_location));
+    }
+
     if (func->function->ir_func->declaration->vararg) {
         REQUIRE_OK(kefir_codegen_amd64_stack_frame_vararg(&func->stack_frame));
     }

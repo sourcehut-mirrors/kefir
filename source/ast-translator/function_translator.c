@@ -298,6 +298,11 @@ kefir_result_t kefir_ast_translator_function_context_translate(
     struct kefir_irbuilder_block *builder = &function_context->builder;
     struct kefir_ast_translator_context *context = &function_context->local_translator_context;
 
+    if (context->function_debug_info != NULL) {
+        REQUIRE_OK(kefir_ir_function_debug_info_set_source_location(
+            mem, context->function_debug_info, &context->module->symbols, &function->base.source_location));
+    }
+
     struct kefir_ast_local_context *local_context =
         function->base.properties.function_definition.scoped_id->function.local_context;
     const struct kefir_ast_declarator_function *decl_func = NULL;

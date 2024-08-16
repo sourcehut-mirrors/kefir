@@ -27,6 +27,8 @@
 
 .section .text
 factorial:
+.file 0 "source/tests/end2end/asmcmp_source_location2/lib.kefir.asmgen.c"
+.loc 0 21 1
 #{
 #    "function": {
 #        "code": [
@@ -1129,7 +1131,6 @@ factorial:
 _kefir_func_factorial_label0:
 _kefir_func_factorial_label1:
     movl %edi, -8(%rbp)
-.file 0 "source/tests/end2end/asmcmp_source_location2/lib.kefir.asmgen.c"
 .loc 0 22 9
     movsxl -8(%rbp), %rax
 .loc 0 22 5

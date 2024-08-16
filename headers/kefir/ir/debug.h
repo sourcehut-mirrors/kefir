@@ -45,6 +45,7 @@ typedef struct kefir_ir_source_map_iterator {
 
 typedef struct kefir_ir_function_debug_info {
     struct kefir_ir_source_map source_map;
+    struct kefir_source_location source_location;
 } kefir_ir_function_debug_info_t;
 
 kefir_result_t kefir_ir_source_map_init(struct kefir_ir_source_map *);
@@ -53,7 +54,7 @@ kefir_result_t kefir_ir_source_map_free(struct kefir_mem *, struct kefir_ir_sour
 kefir_result_t kefir_ir_source_map_insert(struct kefir_mem *, struct kefir_ir_source_map *, struct kefir_string_pool *,
                                           const struct kefir_source_location *, kefir_size_t, kefir_size_t);
 kefir_result_t kefir_ir_source_map_find(const struct kefir_ir_source_map *, kefir_size_t,
-                                      const struct kefir_ir_source_location **);
+                                        const struct kefir_ir_source_location **);
 
 kefir_result_t kefir_ir_source_map_iter(const struct kefir_ir_source_map *, struct kefir_ir_source_map_iterator *,
                                         const struct kefir_ir_source_location **);
@@ -62,5 +63,12 @@ kefir_result_t kefir_ir_source_map_next(struct kefir_ir_source_map_iterator *,
 
 kefir_result_t kefir_ir_function_debug_info_init(struct kefir_ir_function_debug_info *);
 kefir_result_t kefir_ir_function_debug_info_free(struct kefir_mem *, struct kefir_ir_function_debug_info *);
+
+const struct kefir_source_location *kefir_ir_function_debug_info_source_location(
+    const struct kefir_ir_function_debug_info *);
+kefir_result_t kefir_ir_function_debug_info_set_source_location(struct kefir_mem *,
+                                                                struct kefir_ir_function_debug_info *,
+                                                                struct kefir_string_pool *,
+                                                                const struct kefir_source_location *);
 
 #endif
