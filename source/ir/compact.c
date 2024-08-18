@@ -484,8 +484,9 @@ static kefir_result_t drop_unused_debug_entries(struct kefir_mem *mem, struct ke
         ASSIGN_DECL_CAST(const struct kefir_ir_debug_entry *, entry, node->value);
 
         if (!kefir_hashtree_has(&params->debug_entry_index, (kefir_hashtree_key_t) entry->identifier)) {
+            const struct kefir_hashtree_node *next_node = kefir_hashtree_next(&iter);
             REQUIRE_OK(kefir_hashtree_delete(mem, &module->debug_info.entries.entries, node->key));
-            node = kefir_hashtree_iter(&module->debug_info.entries.entries, &iter);
+            node = next_node;
         } else {
             node = kefir_hashtree_next(&iter);
         }
