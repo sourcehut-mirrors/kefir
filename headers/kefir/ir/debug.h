@@ -54,7 +54,7 @@ typedef enum kefir_ir_debug_entry_tag {
 } kefir_ir_debug_entry_tag_t;
 
 typedef enum kefir_ir_debug_entry_attribute_tag {
-    KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_NAME,
+    KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_NAME = 0,
     KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_SIZE,
     KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_ALIGNMENT,
     KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_LENGTH,
@@ -62,7 +62,9 @@ typedef enum kefir_ir_debug_entry_attribute_tag {
     KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_OFFSET,
     KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_BITWIDTH,
     KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_BITOFFSET,
-    KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_TYPE
+    KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_TYPE,
+    // Auxillary
+    KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_COUNT
 } kefir_ir_debug_entry_attribute_tag_t;
 
 typedef struct kefir_ir_debug_entry_attribute {

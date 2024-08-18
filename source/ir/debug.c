@@ -227,6 +227,9 @@ kefir_result_t kefir_ir_debug_entry_add_attribute(struct kefir_mem *mem, struct 
         case KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_LENGTH:
             // Intentionally left blank
             break;
+
+        case KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_COUNT:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected IR debug entry attribute tag");
     }
 
     kefir_result_t res = kefir_hashtree_insert(mem, &entry->attributes, (kefir_hashtree_key_t) attr->tag, (kefir_hashtree_value_t) attr);

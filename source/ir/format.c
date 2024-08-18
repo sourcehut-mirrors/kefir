@@ -1335,6 +1335,9 @@ static kefir_result_t format_debug_entry(struct kefir_json_output *json, const s
                 REQUIRE_OK(kefir_json_output_object_key(json, "value"));
                 REQUIRE_OK(kefir_json_output_uinteger(json, entry_attr->entry_id));
                 break;
+
+            case KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_COUNT:
+                return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected IR debug entry attribute tag");
         }
 
         REQUIRE_OK(kefir_json_output_object_end(json));
