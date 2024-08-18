@@ -41,8 +41,9 @@ kefir_result_t kefir_ast_type_function_get_parameter(const struct kefir_ast_func
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_ast_type_function_parameter(struct kefir_mem *mem, struct kefir_ast_type_bundle *type_bundle,
+kefir_result_t kefir_ast_type_function_named_parameter(struct kefir_mem *mem, struct kefir_ast_type_bundle *type_bundle,
                                                  struct kefir_ast_function_type *function_type,
+                                                 const char *identifier,
                                                  const struct kefir_ast_type *type,
                                                  const kefir_ast_scoped_identifier_storage_t *storage) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
@@ -83,6 +84,7 @@ kefir_result_t kefir_ast_type_function_parameter(struct kefir_mem *mem, struct k
     } else {
         KEFIR_OPTIONAL_SET_VALUE(&param->storage, *storage);
     }
+    param->name = identifier;
     kefir_result_t res =
         kefir_list_insert_after(mem, &function_type->parameters, kefir_list_tail(&function_type->parameters), param);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -90,6 +92,13 @@ kefir_result_t kefir_ast_type_function_parameter(struct kefir_mem *mem, struct k
         return res;
     });
     return KEFIR_OK;
+}
+
+kefir_result_t kefir_ast_type_function_parameter(struct kefir_mem *mem, struct kefir_ast_type_bundle *type_bundle,
+                                                 struct kefir_ast_function_type *function_type,
+                                                 const struct kefir_ast_type *type,
+                                                 const kefir_ast_scoped_identifier_storage_t *storage) {
+    return kefir_ast_type_function_named_parameter(mem, type_bundle, function_type, NULL, type, storage);
 }
 
 kefir_result_t kefir_ast_type_function_ellipsis(struct kefir_ast_function_type *function_type, kefir_bool_t ellipsis) {

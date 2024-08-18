@@ -25,6 +25,7 @@
 #include "kefir/ast-translator/environment.h"
 #include "kefir/ast-translator/scope/global_scope_layout.h"
 #include "kefir/ast-translator/scope/local_scope_layout.h"
+#include "kefir/ast-translator/debug/translator.h"
 #include "kefir/ir/module.h"
 
 typedef struct kefir_ast_translator_context kefir_ast_translator_context_t;
@@ -61,6 +62,8 @@ typedef struct kefir_ast_translator_context {
 
     struct kefir_ast_translator_global_scope_layout *global_scope_layout;
     struct kefir_ast_translator_local_scope_layout *local_scope_layout;
+
+    struct kefir_ast_translator_debug_entries *debug_entries;
 
     const struct kefir_ast_translator_context_extensions *extensions;
     void *extensions_payload;

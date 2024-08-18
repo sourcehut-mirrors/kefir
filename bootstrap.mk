@@ -48,6 +48,7 @@ KEFIR_LIB_SOURCE := $(wildcard \
 	$(SOURCE)/ast-translator/*.c \
 	$(SOURCE)/ast-translator/nodes/*.c \
 	$(SOURCE)/ast-translator/scope/*.c \
+	$(SOURCE)/ast-translator/debug/*.c \
 	$(SOURCE)/ast/type/*.c \
 	$(SOURCE)/core/*.c \
 	$(SOURCE)/codegen/*.c \

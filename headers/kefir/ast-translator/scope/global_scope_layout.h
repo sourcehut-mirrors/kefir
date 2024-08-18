@@ -22,6 +22,7 @@
 #define KEFIR_AST_TRANSLATOR_SCOPE_GLOBAL_SCOPE_LAYOUT_H_
 
 #include "kefir/ast-translator/scope/scoped_identifier.h"
+#include "kefir/ast-translator/debug/translator.h"
 
 typedef struct kefir_ast_translator_global_scope_layout {
     struct kefir_ast_global_context *global_context;
@@ -41,6 +42,7 @@ kefir_result_t kefir_ast_translator_global_scope_layout_free(struct kefir_mem *,
 kefir_result_t kefir_ast_translator_build_global_scope_layout(struct kefir_mem *, struct kefir_ir_module *,
                                                               struct kefir_ast_global_context *,
                                                               const struct kefir_ast_translator_environment *,
+                                                              struct kefir_ast_translator_debug_entries *,
                                                               struct kefir_ast_translator_global_scope_layout *);
 
 #endif

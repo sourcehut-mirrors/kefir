@@ -1050,10 +1050,14 @@ static kefir_result_t resolve_function_declarator(struct kefir_mem *mem, const s
         res = kefir_ast_downcast_declaration(node, &decl_list, false);
         if (res == KEFIR_OK) {
             struct kefir_ast_init_declarator *declaration = NULL;
+            struct kefir_ast_declarator_identifier *parameter_identifier = NULL;
             REQUIRE_CHAIN(&res, kefir_ast_analyze_node(mem, &decl_context->context, node));
             REQUIRE_CHAIN(&res, kefir_ast_declaration_unpack_single(decl_list, &declaration));
-            REQUIRE_CHAIN(&res, kefir_ast_type_function_parameter(
-                                    mem, context->type_bundle, func_type, declaration->base.properties.type,
+            REQUIRE_CHAIN(&res, kefir_ast_declarator_unpack_identifier(declaration->declarator, &parameter_identifier));
+            REQUIRE_CHAIN(&res, kefir_ast_type_function_named_parameter(
+                                    mem, context->type_bundle, func_type,
+                                    parameter_identifier != NULL && parameter_identifier->identifier != NULL ? parameter_identifier->identifier : NULL,
+                                    declaration->base.properties.type,
                                     &declaration->base.properties.declaration_props.storage));
         } else if (res == KEFIR_NO_MATCH) {
             struct kefir_ast_identifier *identifier = NULL;
@@ -1068,10 +1072,10 @@ static kefir_result_t resolve_function_declarator(struct kefir_mem *mem, const s
                     REQUIRE_CHAIN(&res, kefir_ast_type_function_parameter(mem, context->type_bundle, func_type,
                                                                           node->properties.type, NULL));
                 } else {
-                    res = kefir_ast_type_function_parameter(mem, context->type_bundle, func_type, NULL, NULL);
+                    res = kefir_ast_type_function_named_parameter(mem, context->type_bundle, func_type, identifier->identifier, NULL, NULL);
                 }
             } else if (res == KEFIR_NOT_FOUND) {
-                res = kefir_ast_type_function_parameter(mem, context->type_bundle, func_type, NULL, NULL);
+                res = kefir_ast_type_function_named_parameter(mem, context->type_bundle, func_type, identifier->identifier, NULL, NULL);
             }
         } else {
             res = KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->source_location,

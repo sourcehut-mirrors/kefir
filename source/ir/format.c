@@ -644,7 +644,7 @@ static kefir_result_t kefir_ir_format_function(struct kefir_json_output *json, c
     return KEFIR_OK;
 }
 
-static kefir_result_t format_identifiers(struct kefir_json_output *json, const struct kefir_ir_module *module) {
+static kefir_result_t format_identifiers(struct kefir_json_output *json, const struct kefir_ir_module *module, kefir_bool_t debug_info) {
     REQUIRE_OK(kefir_json_output_array_begin(json));
     struct kefir_hashtree_node_iterator iter;
     const struct kefir_ir_identifier *identifier;
@@ -712,6 +712,18 @@ static kefir_result_t format_identifiers(struct kefir_json_output *json, const s
             REQUIRE_OK(kefir_json_output_string(json, identifier->alias));
         } else {
             REQUIRE_OK(kefir_json_output_null(json));
+        }
+
+        if (debug_info) {
+            REQUIRE_OK(kefir_json_output_object_key(json, "debug_info"));
+            REQUIRE_OK(kefir_json_output_object_begin(json));
+            REQUIRE_OK(kefir_json_output_object_key(json, "type"));
+            if (identifier->debug_info.type != KEFIR_IR_DEBUG_ENTRY_ID_NONE) {
+                REQUIRE_OK(kefir_json_output_uinteger(json, identifier->debug_info.type));
+            } else {
+                REQUIRE_OK(kefir_json_output_null(json));
+            }
+            REQUIRE_OK(kefir_json_output_object_end(json));
         }
 
         REQUIRE_OK(kefir_json_output_object_end(json));
@@ -1170,12 +1182,218 @@ static kefir_result_t format_inline_assembly(struct kefir_json_output *json, con
     return KEFIR_OK;
 }
 
+static kefir_result_t format_debug_entry(struct kefir_json_output *json, const struct kefir_ir_module *module, const struct kefir_ir_debug_entry *entry) {
+    kefir_result_t res;
+    struct kefir_ir_debug_entry_attribute_iterator attr_iter;
+    const struct kefir_ir_debug_entry_attribute *entry_attr;
+    kefir_ir_debug_entry_id_t child_entry_id;
+    
+    REQUIRE_OK(kefir_json_output_object_begin(json));
+    REQUIRE_OK(kefir_json_output_object_key(json, "identifier"));
+    REQUIRE_OK(kefir_json_output_uinteger(json, entry->identifier));
+    REQUIRE_OK(kefir_json_output_object_key(json, "tag"));
+    switch (entry->tag) {
+        case KEFIR_IR_DEBUG_ENTRY_TYPE_VOID:
+            REQUIRE_OK(kefir_json_output_string(json, "type_void"));
+            break;
+
+        case KEFIR_IR_DEBUG_ENTRY_TYPE_BOOLEAN:
+            REQUIRE_OK(kefir_json_output_string(json, "type_boolean"));
+            break;
+
+        case KEFIR_IR_DEBUG_ENTRY_TYPE_CHARACTER:
+            REQUIRE_OK(kefir_json_output_string(json, "type_character"));
+            break;
+
+        case KEFIR_IR_DEBUG_ENTRY_TYPE_UNSIGNED_CHARACTER:
+            REQUIRE_OK(kefir_json_output_string(json, "type_unsigned_character"));
+            break;
+
+        case KEFIR_IR_DEBUG_ENTRY_TYPE_SIGNED_CHARACTER:
+            REQUIRE_OK(kefir_json_output_string(json, "type_signed_character"));
+            break;
+
+        case KEFIR_IR_DEBUG_ENTRY_TYPE_UNSIGNED_INT:
+            REQUIRE_OK(kefir_json_output_string(json, "type_unsigned_int"));
+            break;
+
+        case KEFIR_IR_DEBUG_ENTRY_TYPE_SIGNED_INT:
+            REQUIRE_OK(kefir_json_output_string(json, "type_signed_int"));
+            break;
+
+        case KEFIR_IR_DEBUG_ENTRY_TYPE_FLOAT:
+            REQUIRE_OK(kefir_json_output_string(json, "type_float"));
+            break;
+
+        case KEFIR_IR_DEBUG_ENTRY_TYPE_COMPLEX_FLOAT:
+            REQUIRE_OK(kefir_json_output_string(json, "type_complex_float"));
+            break;
+
+        case KEFIR_IR_DEBUG_ENTRY_TYPE_POINTER:
+            REQUIRE_OK(kefir_json_output_string(json, "type_pointer"));
+            break;
+
+        case KEFIR_IR_DEBUG_ENTRY_TYPE_ENUMERATION:
+            REQUIRE_OK(kefir_json_output_string(json, "type_enumeration"));
+            break;
+
+        case KEFIR_IR_DEBUG_ENTRY_TYPE_STRUCTURE:
+            REQUIRE_OK(kefir_json_output_string(json, "type_structure"));
+            break;
+
+        case KEFIR_IR_DEBUG_ENTRY_TYPE_UNION:
+            REQUIRE_OK(kefir_json_output_string(json, "type_union"));
+            break;
+
+        case KEFIR_IR_DEBUG_ENTRY_TYPE_ARRAY:
+            REQUIRE_OK(kefir_json_output_string(json, "type_array"));
+            break;
+
+        case KEFIR_IR_DEBUG_ENTRY_TYPE_FUNCTION:
+            REQUIRE_OK(kefir_json_output_string(json, "type_function"));
+            break;
+
+        case KEFIR_IR_DEBUG_ENTRY_TYPE_BUILTIN:
+            REQUIRE_OK(kefir_json_output_string(json, "type_builtin"));
+            break;
+
+        case KEFIR_IR_DEBUG_ENTRY_ENUMERATOR:
+            REQUIRE_OK(kefir_json_output_string(json, "enumeration_enumerator"));
+            break;
+
+        case KEFIR_IR_DEBUG_ENTRY_STRUCTURE_MEMBER:
+            REQUIRE_OK(kefir_json_output_string(json, "structure_member"));
+            break;
+
+        case KEFIR_IR_DEBUG_ENTRY_FUNCTION_PARAMETER:
+            REQUIRE_OK(kefir_json_output_string(json, "function_parameter"));
+            break;
+
+        case KEFIR_IR_DEBUG_ENTRY_FUNCTION_VARARG:
+            REQUIRE_OK(kefir_json_output_string(json, "function_vararg"));
+            break;
+    }
+    REQUIRE_OK(kefir_json_output_object_key(json, "attributes"));
+    REQUIRE_OK(kefir_json_output_array_begin(json));
+    for (res = kefir_ir_debug_entry_attribute_iter(&module->debug_info.entries, entry->identifier, &attr_iter, &entry_attr);
+        res == KEFIR_OK;
+        res = kefir_ir_debug_entry_attribute_next(&attr_iter, &entry_attr)) {
+        
+        REQUIRE_OK(kefir_json_output_object_begin(json));
+        REQUIRE_OK(kefir_json_output_object_key(json, "tag"));
+        switch (entry_attr->tag) {
+            case KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_NAME:
+                REQUIRE_OK(kefir_json_output_string(json, "name"));
+                REQUIRE_OK(kefir_json_output_object_key(json, "value"));
+                REQUIRE_OK(kefir_json_output_string(json, entry_attr->name));
+                break;
+
+            case KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_SIZE:
+                REQUIRE_OK(kefir_json_output_string(json, "size"));
+                REQUIRE_OK(kefir_json_output_object_key(json, "value"));
+                REQUIRE_OK(kefir_json_output_uinteger(json, entry_attr->size));
+                break;
+
+            case KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_ALIGNMENT:
+                REQUIRE_OK(kefir_json_output_string(json, "alignment"));
+                REQUIRE_OK(kefir_json_output_object_key(json, "value"));
+                REQUIRE_OK(kefir_json_output_uinteger(json, entry_attr->alignment));
+                break;
+
+            case KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_LENGTH:
+                REQUIRE_OK(kefir_json_output_string(json, "length"));
+                REQUIRE_OK(kefir_json_output_object_key(json, "value"));
+                REQUIRE_OK(kefir_json_output_uinteger(json, entry_attr->length));
+                break;
+
+            case KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_CONSTANT_UINT:
+                REQUIRE_OK(kefir_json_output_string(json, "constant_uint"));
+                REQUIRE_OK(kefir_json_output_object_key(json, "value"));
+                REQUIRE_OK(kefir_json_output_uinteger(json, entry_attr->constant_uint));
+                break;
+
+            case KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_OFFSET:
+                REQUIRE_OK(kefir_json_output_string(json, "offset"));
+                REQUIRE_OK(kefir_json_output_object_key(json, "value"));
+                REQUIRE_OK(kefir_json_output_uinteger(json, entry_attr->offset));
+                break;
+
+            case KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_BITWIDTH:
+                REQUIRE_OK(kefir_json_output_string(json, "bitwidth"));
+                REQUIRE_OK(kefir_json_output_object_key(json, "value"));
+                REQUIRE_OK(kefir_json_output_uinteger(json, entry_attr->bitwidth));
+                break;
+
+            case KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_BITOFFSET:
+                REQUIRE_OK(kefir_json_output_string(json, "bitoffset"));
+                REQUIRE_OK(kefir_json_output_object_key(json, "value"));
+                REQUIRE_OK(kefir_json_output_uinteger(json, entry_attr->bitoffset));
+                break;
+
+            case KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_TYPE:
+                REQUIRE_OK(kefir_json_output_string(json, "type"));
+                REQUIRE_OK(kefir_json_output_object_key(json, "value"));
+                REQUIRE_OK(kefir_json_output_uinteger(json, entry_attr->entry_id));
+                break;
+        }
+
+        REQUIRE_OK(kefir_json_output_object_end(json));
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
+    REQUIRE_OK(kefir_json_output_array_end(json));
+
+    struct kefir_ir_debug_entry_child_iterator child_iter;
+    REQUIRE_OK(kefir_json_output_object_key(json, "children"));
+    REQUIRE_OK(kefir_json_output_array_begin(json));
+    for (res = kefir_ir_debug_entry_child_iter(&module->debug_info.entries, entry->identifier, &child_iter, &child_entry_id);
+        res == KEFIR_OK;
+        res = kefir_ir_debug_entry_child_next(&child_iter, &child_entry_id)) {
+        
+        const struct kefir_ir_debug_entry *child_entry;
+        REQUIRE_OK(kefir_ir_debug_entry_get(&module->debug_info.entries, child_entry_id, &child_entry));
+        REQUIRE_OK(format_debug_entry(json, module, child_entry));
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
+    REQUIRE_OK(kefir_json_output_array_end(json));
+    
+    REQUIRE_OK(kefir_json_output_object_end(json));
+    
+    return KEFIR_OK;
+}
+
+static kefir_result_t format_debug_entries(struct kefir_json_output *json, const struct kefir_ir_module *module) {
+    struct kefir_ir_debug_entry_iterator iter;
+    kefir_result_t res;
+    kefir_ir_debug_entry_id_t entry_id;
+
+    REQUIRE_OK(kefir_json_output_array_begin(json));
+    for (res = kefir_ir_debug_entry_iter(&module->debug_info.entries, &iter, &entry_id);
+        res == KEFIR_OK;
+        res = kefir_ir_debug_entry_next(&iter, &entry_id)) {
+
+        const struct kefir_ir_debug_entry *entry;
+        REQUIRE_OK(kefir_ir_debug_entry_get(&module->debug_info.entries, entry_id, &entry));
+
+        REQUIRE_OK(format_debug_entry(json, module, entry));
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
+    REQUIRE_OK(kefir_json_output_array_end(json));
+
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_ir_format_module_json(struct kefir_json_output *json, const struct kefir_ir_module *module,
                                            kefir_bool_t debug_info) {
     REQUIRE_OK(kefir_json_output_object_begin(json));
 
     REQUIRE_OK(kefir_json_output_object_key(json, "identifiers"));
-    REQUIRE_OK(format_identifiers(json, module));
+    REQUIRE_OK(format_identifiers(json, module, debug_info));
     REQUIRE_OK(kefir_json_output_object_key(json, "types"));
     REQUIRE_OK(format_types(json, module));
     REQUIRE_OK(kefir_json_output_object_key(json, "data"));
@@ -1188,6 +1406,14 @@ kefir_result_t kefir_ir_format_module_json(struct kefir_json_output *json, const
     REQUIRE_OK(format_functions(json, module, debug_info));
     REQUIRE_OK(kefir_json_output_object_key(json, "inline_assembly"));
     REQUIRE_OK(format_inline_assembly(json, module));
+
+    if (debug_info) {
+        REQUIRE_OK(kefir_json_output_object_key(json, "debug_info"));
+        REQUIRE_OK(kefir_json_output_object_begin(json));
+        REQUIRE_OK(kefir_json_output_object_key(json, "entries"));
+        REQUIRE_OK(format_debug_entries(json, module));
+        REQUIRE_OK(kefir_json_output_object_end(json));
+    }
 
     REQUIRE_OK(kefir_json_output_object_key(json, "meta_info"));
     REQUIRE_OK(kefir_json_output_object_begin(json));

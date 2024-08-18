@@ -30,6 +30,61 @@
 static struct kefir_ast_translator_configuration DefaultConfiguration = {.empty_structs = false,
                                                                          .precise_bitfield_load_store = true};
 
+kefir_result_t kefir_ast_translator_environment_new_type(struct kefir_mem *mem, const struct kefir_ast_context *context,
+                                          const struct kefir_ast_translator_environment *env,
+                                          const struct kefir_ast_type *type,
+                                          struct kefir_ast_translator_environment_type *env_type,
+                                          const struct kefir_source_location *source_location) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expectd valid AST context"));
+    REQUIRE(env != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expectd valid AST translator environment"));
+    REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type"));
+    REQUIRE(env_type != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to AST translator environment type"));
+
+    struct kefir_irbuilder_type builder;
+    REQUIRE_OK(kefir_ir_type_alloc(mem, 0, &env_type->type));
+    kefir_result_t res = kefir_irbuilder_type_init(mem, &builder, &env_type->type);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_ir_type_free(mem, &env_type->type);
+        return res;
+    });
+    res = kefir_ast_translate_object_type(mem, context, type, KEFIR_AST_DEFAULT_ALIGNMENT, env, &builder,
+                                          &env_type->layout, source_location);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_IRBUILDER_TYPE_FREE(&builder);
+        kefir_ir_type_free(mem, &env_type->type);
+        return res;
+    });
+    res = KEFIR_IRBUILDER_TYPE_FREE(&builder);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_ir_type_free(mem, &env_type->type);
+        return res;
+    });
+
+    res = kefir_ast_translator_evaluate_type_layout(mem, env, env_type->layout, &env_type->type);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_ir_type_free(mem, &env_type->type);
+        return res;
+    });
+
+    res = KEFIR_IR_TARGET_PLATFORM_GET_TYPE(mem, env->target_platform, &env_type->type, &env_type->target_type);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_ir_type_free(mem, &env_type->type);
+        return res;
+    });
+
+    struct kefir_ir_target_platform_typeentry_info ir_type_info;
+    res = KEFIR_IR_TARGET_PLATFORM_TYPEENTRY_INFO(mem, env->target_platform, env_type->target_type, 0, &ir_type_info);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_ir_type_free(mem, &env_type->type);
+        return res;
+    });
+
+    env_type->ast_type = type;
+    return KEFIR_OK;
+}
+
 static kefir_result_t target_env_get_type(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                           const struct kefir_ast_target_environment *target_env,
                                           const struct kefir_ast_type *type,
@@ -43,62 +98,28 @@ static kefir_result_t target_env_get_type(struct kefir_mem *mem, const struct ke
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST target environment type pointer"));
     ASSIGN_DECL_CAST(const struct kefir_ast_translator_environment *, env, target_env->payload);
 
-    struct kefir_ast_translator_environment_type *env_type =
-        KEFIR_MALLOC(mem, sizeof(struct kefir_ast_translator_environment_type));
-    REQUIRE(env_type != NULL,
-            KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST translator environment type"));
-
-    struct kefir_irbuilder_type builder;
-    kefir_result_t res = kefir_ir_type_alloc(mem, 0, &env_type->type);
+    struct kefir_ast_translator_environment_type *env_type = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_translator_environment_type));
+    kefir_result_t res = kefir_ast_translator_environment_new_type(mem, context, env, type, env_type, source_location);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, env_type);
         return res;
     });
-    res = kefir_irbuilder_type_init(mem, &builder, &env_type->type);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_ir_type_free(mem, &env_type->type);
-        KEFIR_FREE(mem, env_type);
-        return res;
-    });
-    res = kefir_ast_translate_object_type(mem, context, type, KEFIR_AST_DEFAULT_ALIGNMENT, env, &builder,
-                                          &env_type->layout, source_location);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_IRBUILDER_TYPE_FREE(&builder);
-        kefir_ir_type_free(mem, &env_type->type);
-        KEFIR_FREE(mem, env_type);
-        return res;
-    });
-    res = KEFIR_IRBUILDER_TYPE_FREE(&builder);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_ir_type_free(mem, &env_type->type);
-        KEFIR_FREE(mem, env_type);
-        return res;
-    });
-
-    res = kefir_ast_translator_evaluate_type_layout(mem, env, env_type->layout, &env_type->type);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_ir_type_free(mem, &env_type->type);
-        KEFIR_FREE(mem, env_type);
-        return res;
-    });
-
-    res = KEFIR_IR_TARGET_PLATFORM_GET_TYPE(mem, env->target_platform, &env_type->type, &env_type->target_type);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_ir_type_free(mem, &env_type->type);
-        KEFIR_FREE(mem, env_type);
-        return res;
-    });
-
-    struct kefir_ir_target_platform_typeentry_info ir_type_info;
-    res = KEFIR_IR_TARGET_PLATFORM_TYPEENTRY_INFO(mem, env->target_platform, env_type->target_type, 0, &ir_type_info);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_ir_type_free(mem, &env_type->type);
-        KEFIR_FREE(mem, env_type);
-        return res;
-    });
-
-    env_type->ast_type = type;
     *opaque_type = env_type;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_ast_translator_environment_free_type(struct kefir_mem *mem, const struct kefir_ast_translator_environment *env,
+                                           struct kefir_ast_translator_environment_type *env_type) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(env != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expectd valid AST translator environment"));
+    REQUIRE(env_type != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST translator environment type"));
+
+    REQUIRE_OK(KEFIR_IR_TARGET_PLATFORM_FREE_TYPE(mem, env->target_platform, env_type->target_type));
+    REQUIRE_OK(kefir_ast_type_layout_free(mem, env_type->layout));
+    env_type->layout = NULL;
+    REQUIRE_OK(kefir_ir_type_free(mem, &env_type->type));
+    *env_type = (struct kefir_ast_translator_environment_type){0};
     return KEFIR_OK;
 }
 
@@ -111,11 +132,7 @@ static kefir_result_t target_env_free_type(struct kefir_mem *mem, const struct k
     ASSIGN_DECL_CAST(const struct kefir_ast_translator_environment *, env, target_env->payload);
 
     ASSIGN_DECL_CAST(struct kefir_ast_translator_environment_type *, env_type, opaque_type);
-    REQUIRE_OK(KEFIR_IR_TARGET_PLATFORM_FREE_TYPE(mem, env->target_platform, env_type->target_type));
-    REQUIRE_OK(kefir_ast_type_layout_free(mem, env_type->layout));
-    env_type->layout = NULL;
-    REQUIRE_OK(kefir_ir_type_free(mem, &env_type->type));
-    *env_type = (struct kefir_ast_translator_environment_type){0};
+    REQUIRE_OK(kefir_ast_translator_environment_free_type(mem, env, env_type));
     KEFIR_FREE(mem, env_type);
     return KEFIR_OK;
 }

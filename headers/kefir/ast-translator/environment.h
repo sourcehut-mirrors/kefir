@@ -44,6 +44,15 @@ typedef struct kefir_ast_translator_environment {
     const struct kefir_ast_translator_configuration *configuration;
 } kefir_ast_translator_environment_t;
 
+kefir_result_t kefir_ast_translator_environment_new_type(struct kefir_mem *, const struct kefir_ast_context *,
+                                          const struct kefir_ast_translator_environment *,
+                                          const struct kefir_ast_type *,
+                                          struct kefir_ast_translator_environment_type *,
+                                          const struct kefir_source_location *);
+
+kefir_result_t kefir_ast_translator_environment_free_type(struct kefir_mem *, const struct kefir_ast_translator_environment *,
+                                           struct kefir_ast_translator_environment_type *);
+
 kefir_result_t kefir_ast_translator_configuration_default(struct kefir_ast_translator_configuration *);
 
 kefir_result_t kefir_ast_translator_environment_init(struct kefir_ast_translator_environment *,

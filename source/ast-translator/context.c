@@ -43,11 +43,22 @@ kefir_result_t kefir_ast_translator_context_init(struct kefir_mem *mem, struct k
     context->local_scope_layout = NULL;
     context->function_debug_info = NULL;
 
+    context->debug_entries = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_translator_debug_entries));
+    REQUIRE(context->debug_entries != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST translator debug type bundle"));
+    kefir_result_t res = kefir_ast_translator_debug_entries_init(context->debug_entries);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_FREE(mem, context->debug_entries);
+        return res;
+    });
+
     context->extensions = extensions;
     context->extensions_payload = NULL;
-    kefir_result_t res;
     KEFIR_RUN_EXTENSION0(&res, mem, context, on_init);
-    REQUIRE_OK(res);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_ast_translator_debug_entries_free(mem, context->debug_entries);
+        KEFIR_FREE(mem, context->debug_entries);
+        return res;
+    });
     return KEFIR_OK;
 }
 
@@ -70,6 +81,7 @@ kefir_result_t kefir_ast_translator_context_init_local(struct kefir_mem *mem,
     context->global_scope_layout = NULL;
     context->local_scope_layout = NULL;
     context->function_debug_info = function_debug_info;
+    context->debug_entries = base_context->debug_entries;
 
     context->extensions = base_context->extensions;
     context->extensions_payload = NULL;
@@ -88,11 +100,17 @@ kefir_result_t kefir_ast_translator_context_free(struct kefir_mem *mem, struct k
     KEFIR_RUN_EXTENSION0(&res, mem, context, on_free);
     REQUIRE_OK(res);
 
+    if (context->base_context == NULL) {
+        REQUIRE_OK(kefir_ast_translator_debug_entries_free(mem, context->debug_entries));
+        KEFIR_FREE(mem, context->debug_entries);
+    }
+
     context->base_context = NULL;
     context->ast_context = NULL;
     context->environment = NULL;
     context->module = NULL;
     context->global_scope_layout = NULL;
     context->local_scope_layout = NULL;
+    context->debug_entries = NULL;
     return KEFIR_OK;
 }

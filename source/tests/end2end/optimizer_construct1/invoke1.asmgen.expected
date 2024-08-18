@@ -761,7 +761,7 @@
                             {
                                 "id": 31,
                                 "opcode": "get_global",
-                                "global_ref": 1,
+                                "global_ref": 2,
                                 "offset": 0,
                                 "control_next": null,
                                 "properties": {
@@ -823,7 +823,7 @@
                             {
                                 "id": 34,
                                 "opcode": "get_global",
-                                "global_ref": 2,
+                                "global_ref": 3,
                                 "offset": 0,
                                 "control_next": null,
                                 "properties": {

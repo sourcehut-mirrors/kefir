@@ -1,0 +1,2691 @@
+{
+    "identifiers": [
+        {
+            "symbol": "a1",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null,
+            "debug_info": {
+                "type": 0
+            }
+        },
+        {
+            "symbol": "a2",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null,
+            "debug_info": {
+                "type": 1
+            }
+        },
+        {
+            "symbol": "a3",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null,
+            "debug_info": {
+                "type": 2
+            }
+        },
+        {
+            "symbol": "a4",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null,
+            "debug_info": {
+                "type": 3
+            }
+        },
+        {
+            "symbol": "a5",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null,
+            "debug_info": {
+                "type": 4
+            }
+        },
+        {
+            "symbol": "a6",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null,
+            "debug_info": {
+                "type": 5
+            }
+        },
+        {
+            "symbol": "a7",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null,
+            "debug_info": {
+                "type": 6
+            }
+        },
+        {
+            "symbol": "a8",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null,
+            "debug_info": {
+                "type": 7
+            }
+        },
+        {
+            "symbol": "a9",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null,
+            "debug_info": {
+                "type": 8
+            }
+        },
+        {
+            "symbol": "b1",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null,
+            "debug_info": {
+                "type": 9
+            }
+        },
+        {
+            "symbol": "b2",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null,
+            "debug_info": {
+                "type": 11
+            }
+        },
+        {
+            "symbol": "b4",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null,
+            "debug_info": {
+                "type": 13
+            }
+        },
+        {
+            "symbol": "c1",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null,
+            "debug_info": {
+                "type": 14
+            }
+        },
+        {
+            "symbol": "d2",
+            "type": "function",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null,
+            "debug_info": {
+                "type": 53
+            }
+        },
+        {
+            "symbol": "e1",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null,
+            "debug_info": {
+                "type": 41
+            }
+        },
+        {
+            "symbol": "a10",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null,
+            "debug_info": {
+                "type": 17
+            }
+        },
+        {
+            "symbol": "a11",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null,
+            "debug_info": {
+                "type": 42
+            }
+        },
+        {
+            "symbol": "a12",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null,
+            "debug_info": {
+                "type": 43
+            }
+        },
+        {
+            "symbol": "a13",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null,
+            "debug_info": {
+                "type": 29
+            }
+        },
+        {
+            "symbol": "a14",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null,
+            "debug_info": {
+                "type": 44
+            }
+        },
+        {
+            "symbol": "a16",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null,
+            "debug_info": {
+                "type": 45
+            }
+        },
+        {
+            "symbol": "a17",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null,
+            "debug_info": {
+                "type": 46
+            }
+        },
+        {
+            "symbol": "a18",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null,
+            "debug_info": {
+                "type": 47
+            }
+        },
+        {
+            "symbol": "a19",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null,
+            "debug_info": {
+                "type": 48
+            }
+        }
+    ],
+    "types": [
+        {
+            "identifier": 0,
+            "type": [
+                {
+                    "type": "bool"
+                }
+            ]
+        },
+        {
+            "identifier": 1,
+            "type": [
+                {
+                    "type": "char"
+                }
+            ]
+        },
+        {
+            "identifier": 4,
+            "type": [
+                {
+                    "type": "short"
+                }
+            ]
+        },
+        {
+            "identifier": 6,
+            "type": [
+                {
+                    "type": "int"
+                }
+            ]
+        },
+        {
+            "identifier": 8,
+            "type": [
+                {
+                    "type": "long"
+                }
+            ]
+        },
+        {
+            "identifier": 9,
+            "type": [
+                {
+                    "type": "word"
+                }
+            ]
+        },
+        {
+            "identifier": 12,
+            "type": [
+                {
+                    "type": "array",
+                    "length": 100,
+                    "element_type": {
+                        "type": "int"
+                    }
+                }
+            ]
+        },
+        {
+            "identifier": 13,
+            "type": [
+                {
+                    "type": "struct",
+                    "fields": [
+                        {
+                            "type": "int"
+                        },
+                        {
+                            "type": "bits",
+                            "width": 7,
+                            "alignment": 8
+                        },
+                        {
+                            "type": "union",
+                            "fields": [
+                                {
+                                    "type": "struct",
+                                    "fields": [
+                                        {
+                                            "type": "int"
+                                        },
+                                        {
+                                            "type": "long"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "struct",
+                                    "fields": [
+                                        {
+                                            "type": "array",
+                                            "length": 3,
+                                            "element_type": {
+                                                "type": "float"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "type": "char",
+                            "alignment": 16
+                        },
+                        {
+                            "type": "word"
+                        },
+                        {
+                            "type": "word"
+                        },
+                        {
+                            "type": "array",
+                            "length": 0,
+                            "element_type": {
+                                "type": "int"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "identifier": 14,
+            "type": [
+                {
+                    "type": "builtin",
+                    "class": "vararg"
+                }
+            ]
+        },
+        {
+            "identifier": 19,
+            "type": [
+                {
+                    "type": "double"
+                }
+            ]
+        },
+        {
+            "identifier": 20,
+            "type": [
+                {
+                    "type": "long_double"
+                }
+            ]
+        },
+        {
+            "identifier": 21,
+            "type": [
+                {
+                    "type": "complex_float32"
+                }
+            ]
+        },
+        {
+            "identifier": 22,
+            "type": [
+                {
+                    "type": "complex_float64"
+                }
+            ]
+        },
+        {
+            "identifier": 23,
+            "type": [
+                {
+                    "type": "complex_long_double"
+                }
+            ]
+        },
+        {
+            "identifier": 88,
+            "type": [
+                {
+                    "type": "long"
+                },
+                {
+                    "type": "struct",
+                    "fields": [
+                        {
+                            "type": "int"
+                        },
+                        {
+                            "type": "bits",
+                            "width": 7,
+                            "alignment": 8
+                        },
+                        {
+                            "type": "union",
+                            "fields": [
+                                {
+                                    "type": "struct",
+                                    "fields": [
+                                        {
+                                            "type": "int"
+                                        },
+                                        {
+                                            "type": "long"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "struct",
+                                    "fields": [
+                                        {
+                                            "type": "array",
+                                            "length": 3,
+                                            "element_type": {
+                                                "type": "float"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "type": "char",
+                            "alignment": 16
+                        },
+                        {
+                            "type": "word"
+                        },
+                        {
+                            "type": "word"
+                        },
+                        {
+                            "type": "array",
+                            "length": 0,
+                            "element_type": {
+                                "type": "int"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "word"
+                }
+            ]
+        },
+        {
+            "identifier": 89,
+            "type": [
+                {
+                    "type": "float"
+                }
+            ]
+        },
+        {
+            "identifier": 90,
+            "type": [
+                {
+                    "type": "long"
+                },
+                {
+                    "type": "struct",
+                    "fields": [
+                        {
+                            "type": "int"
+                        },
+                        {
+                            "type": "bits",
+                            "width": 7,
+                            "alignment": 8
+                        },
+                        {
+                            "type": "union",
+                            "fields": [
+                                {
+                                    "type": "struct",
+                                    "fields": [
+                                        {
+                                            "type": "int"
+                                        },
+                                        {
+                                            "type": "long"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "struct",
+                                    "fields": [
+                                        {
+                                            "type": "array",
+                                            "length": 3,
+                                            "element_type": {
+                                                "type": "float"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "type": "char",
+                            "alignment": 16
+                        },
+                        {
+                            "type": "word"
+                        },
+                        {
+                            "type": "word"
+                        },
+                        {
+                            "type": "array",
+                            "length": 0,
+                            "element_type": {
+                                "type": "int"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "word"
+                },
+                {
+                    "type": "struct",
+                    "fields": [
+                        {
+                            "type": "word"
+                        },
+                        {
+                            "type": "word"
+                        }
+                    ]
+                },
+                {
+                    "type": "array",
+                    "length": 1,
+                    "element_type": {
+                        "type": "word"
+                    }
+                }
+            ]
+        }
+    ],
+    "data": [
+        {
+            "identifier": "a1",
+            "storage": "global",
+            "type": 0,
+            "value": [
+                {
+                    "class": "undefined"
+                }
+            ]
+        },
+        {
+            "identifier": "a2",
+            "storage": "global",
+            "type": 1,
+            "value": [
+                {
+                    "class": "undefined"
+                }
+            ]
+        },
+        {
+            "identifier": "a3",
+            "storage": "global",
+            "type": 1,
+            "value": [
+                {
+                    "class": "undefined"
+                }
+            ]
+        },
+        {
+            "identifier": "a4",
+            "storage": "global",
+            "type": 1,
+            "value": [
+                {
+                    "class": "undefined"
+                }
+            ]
+        },
+        {
+            "identifier": "a5",
+            "storage": "global",
+            "type": 4,
+            "value": [
+                {
+                    "class": "undefined"
+                }
+            ]
+        },
+        {
+            "identifier": "a6",
+            "storage": "global",
+            "type": 4,
+            "value": [
+                {
+                    "class": "undefined"
+                }
+            ]
+        },
+        {
+            "identifier": "a7",
+            "storage": "global",
+            "type": 6,
+            "value": [
+                {
+                    "class": "undefined"
+                }
+            ]
+        },
+        {
+            "identifier": "a8",
+            "storage": "global",
+            "type": 6,
+            "value": [
+                {
+                    "class": "undefined"
+                }
+            ]
+        },
+        {
+            "identifier": "a9",
+            "storage": "global",
+            "type": 8,
+            "value": [
+                {
+                    "class": "undefined"
+                }
+            ]
+        },
+        {
+            "identifier": "b1",
+            "storage": "global",
+            "type": 9,
+            "value": [
+                {
+                    "class": "undefined"
+                }
+            ]
+        },
+        {
+            "identifier": "b2",
+            "storage": "global",
+            "type": 9,
+            "value": [
+                {
+                    "class": "undefined"
+                }
+            ]
+        },
+        {
+            "identifier": "b4",
+            "storage": "global",
+            "type": 12,
+            "value": [
+                {
+                    "class": "undefined",
+                    "count": 101
+                }
+            ]
+        },
+        {
+            "identifier": "c1",
+            "storage": "global",
+            "type": 13,
+            "value": [
+                {
+                    "class": "undefined",
+                    "count": 16
+                }
+            ]
+        },
+        {
+            "identifier": "e1",
+            "storage": "global",
+            "type": 14,
+            "value": [
+                {
+                    "class": "undefined"
+                }
+            ]
+        },
+        {
+            "identifier": "a10",
+            "storage": "global",
+            "type": 8,
+            "value": [
+                {
+                    "class": "undefined"
+                }
+            ]
+        },
+        {
+            "identifier": "a11",
+            "storage": "global",
+            "type": 8,
+            "value": [
+                {
+                    "class": "undefined"
+                }
+            ]
+        },
+        {
+            "identifier": "a12",
+            "storage": "global",
+            "type": 8,
+            "value": [
+                {
+                    "class": "undefined"
+                }
+            ]
+        },
+        {
+            "identifier": "a13",
+            "storage": "global",
+            "type": 89,
+            "value": [
+                {
+                    "class": "undefined"
+                }
+            ]
+        },
+        {
+            "identifier": "a14",
+            "storage": "global",
+            "type": 19,
+            "value": [
+                {
+                    "class": "undefined"
+                }
+            ]
+        },
+        {
+            "identifier": "a16",
+            "storage": "global",
+            "type": 20,
+            "value": [
+                {
+                    "class": "undefined"
+                }
+            ]
+        },
+        {
+            "identifier": "a17",
+            "storage": "global",
+            "type": 21,
+            "value": [
+                {
+                    "class": "undefined"
+                }
+            ]
+        },
+        {
+            "identifier": "a18",
+            "storage": "global",
+            "type": 22,
+            "value": [
+                {
+                    "class": "undefined"
+                }
+            ]
+        },
+        {
+            "identifier": "a19",
+            "storage": "global",
+            "type": 23,
+            "value": [
+                {
+                    "class": "undefined"
+                }
+            ]
+        }
+    ],
+    "string_literals": [
+        {
+            "id": 0,
+            "public": false,
+            "type": "multibyte",
+            "literal": "d2\u0000",
+            "length": 3
+        }
+    ],
+    "function_declarations": [
+        {
+            "identifier": 32,
+            "name": "d2",
+            "parameters": 88,
+            "vararg": false,
+            "returns": 89,
+            "returns_twice": false
+        }
+    ],
+    "functions": [
+        {
+            "identifier": 32,
+            "name": "d2",
+            "locals": 90,
+            "body": [
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 90,
+                        "index": 16
+                    }
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "store64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 90,
+                        "index": 1
+                    }
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "bcopy",
+                    "arg": {
+                        "type": 13,
+                        "index": 0
+                    }
+                },
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 90,
+                        "index": 0
+                    }
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "store64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 90,
+                        "index": 20
+                    }
+                },
+                {
+                    "opcode": "pushu",
+                    "arg": 0
+                },
+                {
+                    "opcode": "pushu",
+                    "arg": 8
+                },
+                {
+                    "opcode": "imul64"
+                },
+                {
+                    "opcode": "iadd64"
+                },
+                {
+                    "opcode": "pushscope"
+                },
+                {
+                    "opcode": "store64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 90,
+                        "index": 17
+                    }
+                },
+                {
+                    "opcode": "pushu",
+                    "arg": 0
+                },
+                {
+                    "opcode": "iadd64"
+                },
+                {
+                    "opcode": "pushu",
+                    "arg": 4
+                },
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 90,
+                        "index": 0
+                    }
+                },
+                {
+                    "opcode": "load64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "imul64"
+                },
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 90,
+                        "index": 17
+                    }
+                },
+                {
+                    "opcode": "pushu",
+                    "arg": 8
+                },
+                {
+                    "opcode": "iadd64"
+                },
+                {
+                    "opcode": "pick",
+                    "arg": 1
+                },
+                {
+                    "opcode": "store64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "pushu",
+                    "arg": 4
+                },
+                {
+                    "opcode": "alloca",
+                    "arg": false
+                },
+                {
+                    "opcode": "store64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "pushf32",
+                    "arg": 0.000000
+                },
+                {
+                    "opcode": "ret"
+                }
+            ],
+            "public_labels": [],
+            "source_map": [
+                {
+                    "source_id": "source\/tests\/end2end\/debug_info_ir1\/lib.kefir.asmgen.c",
+                    "line": 69,
+                    "column": 13,
+                    "begin": 20,
+                    "end": 22
+                },
+                {
+                    "source_id": "source\/tests\/end2end\/debug_info_ir1\/lib.kefir.asmgen.c",
+                    "line": 70,
+                    "column": 12,
+                    "begin": 31,
+                    "end": 32
+                },
+                {
+                    "source_id": "source\/tests\/end2end\/debug_info_ir1\/lib.kefir.asmgen.c",
+                    "line": 70,
+                    "column": 5,
+                    "begin": 31,
+                    "end": 33
+                }
+            ]
+        }
+    ],
+    "inline_assembly": [],
+    "debug_info": {
+        "entries": [
+            {
+                "identifier": 0,
+                "tag": "type_boolean",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "bool"
+                    },
+                    {
+                        "tag": "size",
+                        "value": 1
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 1,
+                "tag": "type_character",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "char"
+                    },
+                    {
+                        "tag": "size",
+                        "value": 1
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 2,
+                "tag": "type_unsigned_character",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "unsigned char"
+                    },
+                    {
+                        "tag": "size",
+                        "value": 1
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 3,
+                "tag": "type_signed_character",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "signed char"
+                    },
+                    {
+                        "tag": "size",
+                        "value": 1
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 4,
+                "tag": "type_unsigned_int",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "unsigned short"
+                    },
+                    {
+                        "tag": "size",
+                        "value": 2
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 5,
+                "tag": "type_signed_int",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "signed short"
+                    },
+                    {
+                        "tag": "size",
+                        "value": 2
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 6,
+                "tag": "type_unsigned_int",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "unsigned int"
+                    },
+                    {
+                        "tag": "size",
+                        "value": 4
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 7,
+                "tag": "type_signed_int",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "signed int"
+                    },
+                    {
+                        "tag": "size",
+                        "value": 4
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 8,
+                "tag": "type_unsigned_int",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "unsigned long"
+                    },
+                    {
+                        "tag": "size",
+                        "value": 8
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 9,
+                "tag": "type_pointer",
+                "attributes": [
+                    {
+                        "tag": "type",
+                        "value": 10
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 10,
+                "tag": "type_void",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "void"
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 11,
+                "tag": "type_pointer",
+                "attributes": [
+                    {
+                        "tag": "type",
+                        "value": 1
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 12,
+                "tag": "type_array",
+                "attributes": [
+                    {
+                        "tag": "type",
+                        "value": 7
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 13,
+                "tag": "type_array",
+                "attributes": [
+                    {
+                        "tag": "size",
+                        "value": 400
+                    },
+                    {
+                        "tag": "length",
+                        "value": 100
+                    },
+                    {
+                        "tag": "type",
+                        "value": 7
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 14,
+                "tag": "type_structure",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "S1"
+                    },
+                    {
+                        "tag": "size",
+                        "value": 64
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 16
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 15,
+                        "tag": "structure_member",
+                        "attributes": [
+                            {
+                                "tag": "name",
+                                "value": "a"
+                            },
+                            {
+                                "tag": "size",
+                                "value": 4
+                            },
+                            {
+                                "tag": "alignment",
+                                "value": 4
+                            },
+                            {
+                                "tag": "offset",
+                                "value": 0
+                            },
+                            {
+                                "tag": "type",
+                                "value": 7
+                            }
+                        ],
+                        "children": []
+                    },
+                    {
+                        "identifier": 16,
+                        "tag": "structure_member",
+                        "attributes": [
+                            {
+                                "tag": "name",
+                                "value": "b"
+                            },
+                            {
+                                "tag": "bitwidth",
+                                "value": 5
+                            },
+                            {
+                                "tag": "bitoffset",
+                                "value": 32
+                            },
+                            {
+                                "tag": "type",
+                                "value": 17
+                            }
+                        ],
+                        "children": []
+                    },
+                    {
+                        "identifier": 18,
+                        "tag": "structure_member",
+                        "attributes": [
+                            {
+                                "tag": "name",
+                                "value": "c"
+                            },
+                            {
+                                "tag": "bitwidth",
+                                "value": 2
+                            },
+                            {
+                                "tag": "bitoffset",
+                                "value": 37
+                            },
+                            {
+                                "tag": "type",
+                                "value": 5
+                            }
+                        ],
+                        "children": []
+                    },
+                    {
+                        "identifier": 19,
+                        "tag": "structure_member",
+                        "attributes": [
+                            {
+                                "tag": "name",
+                                "value": "d"
+                            },
+                            {
+                                "tag": "size",
+                                "value": 16
+                            },
+                            {
+                                "tag": "alignment",
+                                "value": 8
+                            },
+                            {
+                                "tag": "offset",
+                                "value": 8
+                            },
+                            {
+                                "tag": "type",
+                                "value": 20
+                            }
+                        ],
+                        "children": []
+                    },
+                    {
+                        "identifier": 30,
+                        "tag": "structure_member",
+                        "attributes": [
+                            {
+                                "tag": "name",
+                                "value": "h"
+                            },
+                            {
+                                "tag": "size",
+                                "value": 1
+                            },
+                            {
+                                "tag": "alignment",
+                                "value": 16
+                            },
+                            {
+                                "tag": "offset",
+                                "value": 32
+                            },
+                            {
+                                "tag": "type",
+                                "value": 1
+                            }
+                        ],
+                        "children": []
+                    },
+                    {
+                        "identifier": 31,
+                        "tag": "structure_member",
+                        "attributes": [
+                            {
+                                "tag": "name",
+                                "value": "i"
+                            },
+                            {
+                                "tag": "size",
+                                "value": 8
+                            },
+                            {
+                                "tag": "alignment",
+                                "value": 8
+                            },
+                            {
+                                "tag": "offset",
+                                "value": 40
+                            },
+                            {
+                                "tag": "type",
+                                "value": 32
+                            }
+                        ],
+                        "children": []
+                    },
+                    {
+                        "identifier": 33,
+                        "tag": "structure_member",
+                        "attributes": [
+                            {
+                                "tag": "name",
+                                "value": "j"
+                            },
+                            {
+                                "tag": "size",
+                                "value": 8
+                            },
+                            {
+                                "tag": "alignment",
+                                "value": 8
+                            },
+                            {
+                                "tag": "offset",
+                                "value": 48
+                            },
+                            {
+                                "tag": "type",
+                                "value": 34
+                            }
+                        ],
+                        "children": []
+                    },
+                    {
+                        "identifier": 39,
+                        "tag": "structure_member",
+                        "attributes": [
+                            {
+                                "tag": "name",
+                                "value": "pad"
+                            },
+                            {
+                                "tag": "size",
+                                "value": 0
+                            },
+                            {
+                                "tag": "alignment",
+                                "value": 4
+                            },
+                            {
+                                "tag": "offset",
+                                "value": 56
+                            },
+                            {
+                                "tag": "type",
+                                "value": 40
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 17,
+                "tag": "type_signed_int",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "signed long"
+                    },
+                    {
+                        "tag": "size",
+                        "value": 1
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 20,
+                "tag": "type_union",
+                "attributes": [
+                    {
+                        "tag": "size",
+                        "value": 16
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 8
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 21,
+                        "tag": "structure_member",
+                        "attributes": [
+                            {
+                                "tag": "size",
+                                "value": 16
+                            },
+                            {
+                                "tag": "alignment",
+                                "value": 8
+                            },
+                            {
+                                "tag": "offset",
+                                "value": 0
+                            },
+                            {
+                                "tag": "type",
+                                "value": 22
+                            }
+                        ],
+                        "children": []
+                    },
+                    {
+                        "identifier": 25,
+                        "tag": "structure_member",
+                        "attributes": [
+                            {
+                                "tag": "size",
+                                "value": 12
+                            },
+                            {
+                                "tag": "alignment",
+                                "value": 4
+                            },
+                            {
+                                "tag": "offset",
+                                "value": 0
+                            },
+                            {
+                                "tag": "type",
+                                "value": 26
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 22,
+                "tag": "type_structure",
+                "attributes": [
+                    {
+                        "tag": "size",
+                        "value": 16
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 8
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 23,
+                        "tag": "structure_member",
+                        "attributes": [
+                            {
+                                "tag": "name",
+                                "value": "e"
+                            },
+                            {
+                                "tag": "size",
+                                "value": 4
+                            },
+                            {
+                                "tag": "alignment",
+                                "value": 4
+                            },
+                            {
+                                "tag": "offset",
+                                "value": 0
+                            },
+                            {
+                                "tag": "type",
+                                "value": 7
+                            }
+                        ],
+                        "children": []
+                    },
+                    {
+                        "identifier": 24,
+                        "tag": "structure_member",
+                        "attributes": [
+                            {
+                                "tag": "name",
+                                "value": "f"
+                            },
+                            {
+                                "tag": "size",
+                                "value": 8
+                            },
+                            {
+                                "tag": "alignment",
+                                "value": 8
+                            },
+                            {
+                                "tag": "offset",
+                                "value": 8
+                            },
+                            {
+                                "tag": "type",
+                                "value": 17
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 26,
+                "tag": "type_structure",
+                "attributes": [
+                    {
+                        "tag": "size",
+                        "value": 12
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 4
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 27,
+                        "tag": "structure_member",
+                        "attributes": [
+                            {
+                                "tag": "name",
+                                "value": "g"
+                            },
+                            {
+                                "tag": "size",
+                                "value": 12
+                            },
+                            {
+                                "tag": "alignment",
+                                "value": 4
+                            },
+                            {
+                                "tag": "offset",
+                                "value": 0
+                            },
+                            {
+                                "tag": "type",
+                                "value": 28
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 28,
+                "tag": "type_array",
+                "attributes": [
+                    {
+                        "tag": "size",
+                        "value": 12
+                    },
+                    {
+                        "tag": "length",
+                        "value": 3
+                    },
+                    {
+                        "tag": "type",
+                        "value": 29
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 29,
+                "tag": "type_float",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "float"
+                    },
+                    {
+                        "tag": "size",
+                        "value": 4
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 32,
+                "tag": "type_pointer",
+                "attributes": [
+                    {
+                        "tag": "type",
+                        "value": 14
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 34,
+                "tag": "type_pointer",
+                "attributes": [
+                    {
+                        "tag": "type",
+                        "value": 35
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 35,
+                "tag": "type_function",
+                "attributes": [
+                    {
+                        "tag": "type",
+                        "value": 7
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 36,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 7
+                            }
+                        ],
+                        "children": []
+                    },
+                    {
+                        "identifier": 37,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 17
+                            }
+                        ],
+                        "children": []
+                    },
+                    {
+                        "identifier": 38,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 5
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 40,
+                "tag": "type_array",
+                "attributes": [
+                    {
+                        "tag": "type",
+                        "value": 7
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 41,
+                "tag": "type_builtin",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "__builtin_va_list"
+                    },
+                    {
+                        "tag": "size",
+                        "value": 24
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 8
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 42,
+                "tag": "type_unsigned_int",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "unsigned long long"
+                    },
+                    {
+                        "tag": "size",
+                        "value": 8
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 43,
+                "tag": "type_signed_int",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "signed long long"
+                    },
+                    {
+                        "tag": "size",
+                        "value": 8
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 44,
+                "tag": "type_float",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "double"
+                    },
+                    {
+                        "tag": "size",
+                        "value": 8
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 45,
+                "tag": "type_float",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "long double"
+                    },
+                    {
+                        "tag": "size",
+                        "value": 16
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 46,
+                "tag": "type_complex_float",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "_Complex float"
+                    },
+                    {
+                        "tag": "size",
+                        "value": 8
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 47,
+                "tag": "type_complex_float",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "_Complex double"
+                    },
+                    {
+                        "tag": "size",
+                        "value": 16
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 48,
+                "tag": "type_complex_float",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "_Complex long double"
+                    },
+                    {
+                        "tag": "size",
+                        "value": 32
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 49,
+                "tag": "type_function",
+                "attributes": [
+                    {
+                        "tag": "type",
+                        "value": 44
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 50,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 7
+                            }
+                        ],
+                        "children": []
+                    },
+                    {
+                        "identifier": 51,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 5
+                            }
+                        ],
+                        "children": []
+                    },
+                    {
+                        "identifier": 52,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 45
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 53,
+                "tag": "type_function",
+                "attributes": [
+                    {
+                        "tag": "type",
+                        "value": 29
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 54,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "name",
+                                "value": "a"
+                            }
+                        ],
+                        "children": []
+                    },
+                    {
+                        "identifier": 55,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "name",
+                                "value": "b"
+                            }
+                        ],
+                        "children": []
+                    },
+                    {
+                        "identifier": 56,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "name",
+                                "value": "c"
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 57,
+                "tag": "type_function",
+                "attributes": [
+                    {
+                        "tag": "type",
+                        "value": 7
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 58,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 7
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 59,
+                "tag": "type_function",
+                "attributes": [
+                    {
+                        "tag": "type",
+                        "value": 7
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 60,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 8
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 61,
+                "tag": "type_function",
+                "attributes": [
+                    {
+                        "tag": "type",
+                        "value": 7
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 62,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 8
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 63,
+                "tag": "type_function",
+                "attributes": [
+                    {
+                        "tag": "type",
+                        "value": 7
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 64,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 17
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 65,
+                "tag": "type_function",
+                "attributes": [
+                    {
+                        "tag": "type",
+                        "value": 4
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 66,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 4
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 67,
+                "tag": "type_function",
+                "attributes": [
+                    {
+                        "tag": "type",
+                        "value": 6
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 68,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 6
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 69,
+                "tag": "type_function",
+                "attributes": [
+                    {
+                        "tag": "type",
+                        "value": 8
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 70,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 8
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 71,
+                "tag": "type_function",
+                "attributes": [
+                    {
+                        "tag": "type",
+                        "value": 7
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 72,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 17
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 73,
+                "tag": "type_function",
+                "attributes": [
+                    {
+                        "tag": "type",
+                        "value": 7
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 74,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 17
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 75,
+                "tag": "type_function",
+                "attributes": [
+                    {
+                        "tag": "type",
+                        "value": 7
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 76,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 8
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 77,
+                "tag": "type_function",
+                "attributes": [
+                    {
+                        "tag": "type",
+                        "value": 7
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 78,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 8
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 79,
+                "tag": "type_function",
+                "attributes": [
+                    {
+                        "tag": "type",
+                        "value": 7
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 80,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 17
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 81,
+                "tag": "type_function",
+                "attributes": [
+                    {
+                        "tag": "type",
+                        "value": 29
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 82,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 10
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 83,
+                "tag": "type_function",
+                "attributes": [
+                    {
+                        "tag": "type",
+                        "value": 45
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 84,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 10
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 85,
+                "tag": "type_function",
+                "attributes": [
+                    {
+                        "tag": "type",
+                        "value": 10
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 86,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 10
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 87,
+                "tag": "type_function",
+                "attributes": [
+                    {
+                        "tag": "type",
+                        "value": 7
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 88,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 17
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 89,
+                "tag": "type_function",
+                "attributes": [
+                    {
+                        "tag": "type",
+                        "value": 7
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 90,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 7
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 91,
+                "tag": "type_function",
+                "attributes": [
+                    {
+                        "tag": "type",
+                        "value": 92
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 93,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 7
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 92,
+                "tag": "type_pointer",
+                "attributes": [
+                    {
+                        "tag": "type",
+                        "value": 10
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 94,
+                "tag": "type_function",
+                "attributes": [
+                    {
+                        "tag": "type",
+                        "value": 29
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 95,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 10
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 96,
+                "tag": "type_function",
+                "attributes": [
+                    {
+                        "tag": "type",
+                        "value": 45
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 97,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 10
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 98,
+                "tag": "type_function",
+                "attributes": [
+                    {
+                        "tag": "type",
+                        "value": 7
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 99,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 8
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 100,
+                "tag": "type_function",
+                "attributes": [
+                    {
+                        "tag": "type",
+                        "value": 44
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 101,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 10
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 102,
+                "tag": "type_function",
+                "attributes": [
+                    {
+                        "tag": "type",
+                        "value": 7
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 103,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 17
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 104,
+                "tag": "type_function",
+                "attributes": [
+                    {
+                        "tag": "type",
+                        "value": 7
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 105,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 6
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 106,
+                "tag": "type_function",
+                "attributes": [
+                    {
+                        "tag": "type",
+                        "value": 7
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 107,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 6
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 108,
+                "tag": "type_function",
+                "attributes": [
+                    {
+                        "tag": "type",
+                        "value": 7
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 109,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 6
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 110,
+                "tag": "type_function",
+                "attributes": [
+                    {
+                        "tag": "type",
+                        "value": 7
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 111,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 7
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 112,
+                "tag": "type_function",
+                "attributes": [
+                    {
+                        "tag": "type",
+                        "value": 44
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 113,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 10
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 114,
+                "tag": "type_function",
+                "attributes": [
+                    {
+                        "tag": "type",
+                        "value": 7
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 115,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 8
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 116,
+                "tag": "type_function",
+                "attributes": [
+                    {
+                        "tag": "type",
+                        "value": 117
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 118,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 7
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 117,
+                "tag": "type_pointer",
+                "attributes": [
+                    {
+                        "tag": "type",
+                        "value": 10
+                    }
+                ],
+                "children": []
+            }
+        ]
+    },
+    "meta_info": {
+        "opcode_rev": 1
+    }
+}

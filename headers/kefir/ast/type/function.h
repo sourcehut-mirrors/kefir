@@ -34,6 +34,7 @@ typedef enum kefir_ast_function_type_mode {
 } kefir_ast_function_type_mode_t;
 
 typedef struct kefir_ast_function_type_parameter {
+    const char *name;
     const struct kefir_ast_type *type;
     const struct kefir_ast_type *adjusted_type;
     KEFIR_OPTIONAL_TYPE(kefir_ast_scoped_identifier_storage_t) storage;
@@ -54,6 +55,9 @@ kefir_size_t kefir_ast_type_function_parameter_count(const struct kefir_ast_func
 kefir_result_t kefir_ast_type_function_get_parameter(const struct kefir_ast_function_type *, kefir_size_t,
                                                      const struct kefir_ast_function_type_parameter **);
 
+kefir_result_t kefir_ast_type_function_named_parameter(struct kefir_mem *, struct kefir_ast_type_bundle *,
+                                                 struct kefir_ast_function_type *, const char *, const struct kefir_ast_type *,
+                                                 const kefir_ast_scoped_identifier_storage_t *);
 kefir_result_t kefir_ast_type_function_parameter(struct kefir_mem *, struct kefir_ast_type_bundle *,
                                                  struct kefir_ast_function_type *, const struct kefir_ast_type *,
                                                  const kefir_ast_scoped_identifier_storage_t *);

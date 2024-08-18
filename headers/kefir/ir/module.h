@@ -28,6 +28,7 @@
 #include "kefir/ir/function.h"
 #include "kefir/ir/data.h"
 #include "kefir/ir/assembly.h"
+#include "kefir/ir/debug.h"
 
 typedef enum kefir_ir_identifier_type {
     KEFIR_IR_IDENTIFIER_FUNCTION,
@@ -55,6 +56,9 @@ typedef struct kefir_ir_identifier {
     kefir_ir_identifier_scope_t scope;
     kefir_ir_identifier_visibility_t visibility;
     const char *alias;
+    struct {
+        kefir_ir_debug_entry_id_t type;
+    } debug_info;
 } kefir_ir_identifier_t;
 
 typedef struct kefir_ir_module_string_literal {
@@ -80,6 +84,8 @@ typedef struct kefir_ir_module {
     kefir_id_t next_string_literal_id;
     kefir_id_t next_function_decl_id;
     kefir_id_t next_inline_assembly_id;
+
+    struct kefir_ir_module_debug_info debug_info;
 } kefir_ir_module_t;
 
 kefir_result_t kefir_ir_module_alloc(struct kefir_mem *, struct kefir_ir_module *);
