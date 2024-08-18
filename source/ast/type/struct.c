@@ -89,6 +89,7 @@ const struct kefir_ast_type *composite_struct_types(struct kefir_mem *mem, struc
     REQUIRE(type_traits != NULL, NULL);
     REQUIRE(type1 != NULL, NULL);
     REQUIRE(type2 != NULL, NULL);
+    REQUIRE(type1 != type2, type1);
     REQUIRE(KEFIR_AST_TYPE_COMPATIBLE(type_traits, type1, type2), NULL);
     struct kefir_ast_struct_type *composite_struct = NULL;
     const struct kefir_ast_type *composite_type = NULL;

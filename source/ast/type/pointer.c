@@ -45,6 +45,7 @@ const struct kefir_ast_type *composite_pointer_types(struct kefir_mem *mem, stru
     REQUIRE(type_traits != NULL, NULL);
     REQUIRE(type1 != NULL, NULL);
     REQUIRE(type2 != NULL, NULL);
+    REQUIRE(type1 != type2, type1);
     REQUIRE(KEFIR_AST_TYPE_COMPATIBLE(type_traits, type1, type2), NULL);
     return kefir_ast_type_pointer(
         mem, type_bundle,

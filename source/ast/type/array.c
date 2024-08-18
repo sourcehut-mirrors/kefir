@@ -72,6 +72,7 @@ const struct kefir_ast_type *composite_array_types(struct kefir_mem *mem, struct
     REQUIRE(type_traits != NULL, NULL);
     REQUIRE(type1 != NULL, NULL);
     REQUIRE(type2 != NULL, NULL);
+    REQUIRE(type1 != type2, type1);
     REQUIRE(KEFIR_AST_TYPE_COMPATIBLE(type_traits, type1, type2), NULL);
     if (type1->array_type.boundary == KEFIR_AST_ARRAY_BOUNDED_STATIC ||
         type1->array_type.boundary == KEFIR_AST_ARRAY_BOUNDED) {

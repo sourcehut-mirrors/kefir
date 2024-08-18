@@ -193,6 +193,7 @@ const struct kefir_ast_type *composite_function_types(struct kefir_mem *mem, str
     REQUIRE(type_traits != NULL, NULL);
     REQUIRE(type1 != NULL, NULL);
     REQUIRE(type2 != NULL, NULL);
+    REQUIRE(type1 != type2, type1);
     REQUIRE(KEFIR_AST_TYPE_COMPATIBLE(type_traits, type1, type2), NULL);
     if (type1->function_type.mode == KEFIR_AST_FUNCTION_TYPE_PARAMETERS &&
         type2->function_type.mode == KEFIR_AST_FUNCTION_TYPE_PARAMETERS) {
