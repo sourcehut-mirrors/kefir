@@ -26,6 +26,7 @@
 .extern __kefir_opt_complex_float64_neg
 
 .section .text
+__kefir_text_section_begin:
 discriminant:
     push %rbp
     mov %rsp, %rbp
@@ -64,4 +65,5 @@ subsd %xmm0, %xmm11
     pop %rbp
     ret
 
+__kefir_text_section_end:
 

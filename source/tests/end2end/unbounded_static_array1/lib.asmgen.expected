@@ -36,6 +36,7 @@
 .extern __kefir_opt_complex_float64_neg
 
 .section .text
+__kefir_text_section_begin:
 get:
     push %rbp
     mov %rsp, %rbp
@@ -82,6 +83,7 @@ _kefir_func_tget2_label1:
     pop %rbp
     ret
 
+__kefir_text_section_end:
 
 .section .bss
     .align 4

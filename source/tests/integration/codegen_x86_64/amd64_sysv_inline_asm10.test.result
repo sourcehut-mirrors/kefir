@@ -26,6 +26,7 @@
 .extern __kefir_opt_complex_float64_neg
 
 .section .text
+__kefir_text_section_begin:
 fn1:
     push %rbp
     mov %rbp, %rsp
@@ -54,4 +55,5 @@ mov QWORD PTR [%rsi], %rax
     pop %rbp
     ret
 
+__kefir_text_section_end:
 

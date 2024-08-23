@@ -49,6 +49,7 @@
 .extern __kefir_opt_complex_float64_neg
 
 .section .text
+__kefir_text_section_begin:
 test2_atomic_load8:
     push %rbp
     mov %rsp, %rbp
@@ -281,4 +282,5 @@ test2_atomic_load64:
     pop %rbp
     ret
 
+__kefir_text_section_end:
 

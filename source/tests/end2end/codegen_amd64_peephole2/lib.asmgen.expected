@@ -42,6 +42,7 @@
 .extern __kefir_opt_complex_float64_neg
 
 .section .text
+__kefir_text_section_begin:
 test1:
 _kefir_func_test1_label2:
     xor %eax, %eax
@@ -144,4 +145,5 @@ _kefir_func_test9_label5:
 _kefir_func_test9_label4:
     ret
 
+__kefir_text_section_end:
 

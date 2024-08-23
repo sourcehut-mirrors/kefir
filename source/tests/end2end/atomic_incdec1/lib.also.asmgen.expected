@@ -64,6 +64,7 @@
 .extern __kefir_opt_complex_float64_neg
 
 .section .text
+__kefir_text_section_begin:
 predec_i8:
     push %rbp
     mov %rsp, %rbp
@@ -924,4 +925,5 @@ _kefir_func_preinc_ptr_label4:
     pop %rbp
     ret
 
+__kefir_text_section_end:
 

@@ -48,6 +48,7 @@
 .extern __kefir_opt_complex_float64_neg
 
 .section .text
+__kefir_text_section_begin:
 test1:
     add $3, %rdi
     mov %rdi, %rax
@@ -108,4 +109,5 @@ test12:
     mov %rdi, %rax
     ret
 
+__kefir_text_section_end:
 

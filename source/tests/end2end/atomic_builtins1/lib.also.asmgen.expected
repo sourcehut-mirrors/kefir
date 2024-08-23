@@ -49,6 +49,7 @@
 .extern __kefir_opt_complex_float64_neg
 
 .section .text
+__kefir_text_section_begin:
 test_atomic_store128:
     push %rbp
     mov %rsp, %rbp
@@ -297,4 +298,5 @@ test2_atomic_store8:
     pop %rbp
     ret
 
+__kefir_text_section_end:
 

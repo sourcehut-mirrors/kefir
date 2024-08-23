@@ -32,6 +32,7 @@
 .extern __kefir_opt_complex_float64_neg
 
 .section .text
+__kefir_text_section_begin:
 clamp_int:
     push %rbp
     mov %rsp, %rbp
@@ -994,4 +995,5 @@ _kefir_func_clamp_short_label29:
     pop %rbp
     ret
 
+__kefir_text_section_end:
 

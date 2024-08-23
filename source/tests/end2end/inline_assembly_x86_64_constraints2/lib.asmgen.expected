@@ -26,6 +26,7 @@
 .extern __kefir_opt_complex_float64_neg
 
 .section .text
+__kefir_text_section_begin:
 test1:
     push %rbp
     mov %rsp, %rbp
@@ -113,4 +114,5 @@ _kefir_func_test1_label2:
     .quad 4607182418800017408
 .section .text
 
+__kefir_text_section_end:
 

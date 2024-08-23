@@ -35,6 +35,7 @@
 .extern __kefir_opt_complex_float64_neg
 
 .section .text
+__kefir_text_section_begin:
 factorial:
 _kefir_func_factorial_label0:
 _kefir_func_factorial_label1:
@@ -326,4 +327,5 @@ _kefir_func_factorialf64_label14:
     .quad 13830554455654793216
 .section .text
 
+__kefir_text_section_end:
 

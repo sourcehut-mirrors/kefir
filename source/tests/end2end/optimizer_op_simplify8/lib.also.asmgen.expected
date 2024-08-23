@@ -42,6 +42,7 @@
 .extern __kefir_opt_complex_float64_neg
 
 .section .text
+__kefir_text_section_begin:
 int_equals_const:
     push %rbp
     mov %rsp, %rbp
@@ -150,4 +151,5 @@ _kefir_func_int_above_or_equal_const_label1:
     pop %rbp
     ret
 
+__kefir_text_section_end:
 

@@ -1509,6 +1509,12 @@ static kefir_result_t amd64_format_operand_intel(void (*print)(void *, const cha
                 print(printarg, "st(%" KEFIR_UINT64_FMT ")", op->fpu_register);
             }
             break;
+
+        case KEFIR_AMD64_XASMGEN_OPERAND_SUBTRACT:
+            REQUIRE_OK(amd64_format_operand_intel(print, printarg, prefix, op->arithmetics.args[0]));
+            print(printarg, " - ");
+            REQUIRE_OK(amd64_format_operand_intel(print, printarg, prefix, op->arithmetics.args[1]));
+            break;
     }
     return KEFIR_OK;
 }
@@ -1581,6 +1587,12 @@ static kefir_result_t amd64_format_operand_yasm(void (*print)(void *, const char
         case KEFIR_AMD64_XASMGEN_OPERAND_FPU_REGISTER:
             print(printarg, "st%" KEFIR_UINT64_FMT "", op->fpu_register);
             break;
+
+        case KEFIR_AMD64_XASMGEN_OPERAND_SUBTRACT:
+            REQUIRE_OK(amd64_format_operand_yasm(print, printarg, op->arithmetics.args[0]));
+            print(printarg, " - ");
+            REQUIRE_OK(amd64_format_operand_yasm(print, printarg, op->arithmetics.args[1]));
+            break;
     }
     return KEFIR_OK;
 }
@@ -1650,6 +1662,12 @@ static kefir_result_t amd64_format_operand_att(void (*print)(void *, const char 
         case KEFIR_AMD64_XASMGEN_OPERAND_FPU_REGISTER:
             print(printarg, "%%st(%" KEFIR_UINT64_FMT ")", op->fpu_register);
             break;
+
+        case KEFIR_AMD64_XASMGEN_OPERAND_SUBTRACT:
+            REQUIRE_OK(amd64_format_operand_att(print, printarg, op->arithmetics.args[0]));
+            print(printarg, " - ");
+            REQUIRE_OK(amd64_format_operand_att(print, printarg, op->arithmetics.args[1]));
+            break;
     }
     return KEFIR_OK;
 }
@@ -1671,6 +1689,12 @@ static kefir_result_t amd64_format_unprefixed_operand_att(void (*print)(void *, 
 
         case KEFIR_AMD64_XASMGEN_OPERAND_FPU_REGISTER:
             print(printarg, "st(%" KEFIR_UINT64_FMT ")", op->fpu_register);
+            break;
+
+        case KEFIR_AMD64_XASMGEN_OPERAND_SUBTRACT:
+            REQUIRE_OK(amd64_format_unprefixed_operand_att(print, printarg, op->arithmetics.args[0]));
+            print(printarg, " - ");
+            REQUIRE_OK(amd64_format_unprefixed_operand_att(print, printarg, op->arithmetics.args[1]));
             break;
 
         default:
@@ -2718,6 +2742,16 @@ const struct kefir_asm_amd64_xasmgen_operand *kefir_asm_amd64_xasmgen_operand_fp
     REQUIRE(op != NULL, NULL);
     op->klass = KEFIR_AMD64_XASMGEN_OPERAND_FPU_REGISTER;
     op->fpu_register = reg;
+    return op;
+}
+
+const struct kefir_asm_amd64_xasmgen_operand *kefir_asm_amd64_xasmgen_operand_subtract(
+    struct kefir_asm_amd64_xasmgen_operand *op, const struct kefir_asm_amd64_xasmgen_operand *left,
+    const struct kefir_asm_amd64_xasmgen_operand *right) {
+    REQUIRE(op != NULL, NULL);
+    op->klass = KEFIR_AMD64_XASMGEN_OPERAND_SUBTRACT;
+    op->arithmetics.args[0] = left;
+    op->arithmetics.args[1] = right;
     return op;
 }
 

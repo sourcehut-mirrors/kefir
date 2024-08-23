@@ -52,6 +52,7 @@
 .extern __kefir_opt_complex_float64_neg
 
 .section .text
+__kefir_text_section_begin:
 set_b:
     movzx %dil, %rax
     movq b@GOTPCREL(%rip), %rcx
@@ -113,6 +114,7 @@ set_u64:
     call __atomic_store_8@PLT
     ret
 
+__kefir_text_section_end:
 
 .section .bss
 b:

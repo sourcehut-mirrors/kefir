@@ -26,6 +26,7 @@
 .extern __kefir_opt_complex_float64_neg
 
 .section .text
+__kefir_text_section_begin:
 proxyadd:
     push %rbp
     mov %rbp, %rsp
@@ -49,4 +50,5 @@ _kefir_func_proxyadd_label1:
     pop %rbp
     ret
 
+__kefir_text_section_end:
 

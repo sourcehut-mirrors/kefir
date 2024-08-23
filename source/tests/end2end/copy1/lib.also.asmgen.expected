@@ -280,6 +280,7 @@
 .extern __kefir_opt_complex_float64_neg
 
 .section .text
+__kefir_text_section_begin:
 generate_buf_0:
     push %rbp
     mov %rsp, %rbp
@@ -6914,4 +6915,5 @@ _kefir_func_generate_buf_127_label4:
     pop %rbp
     ret
 
+__kefir_text_section_end:
 

@@ -30,6 +30,7 @@
 .extern __kefir_opt_complex_float64_neg
 
 .section .text
+__kefir_text_section_begin:
 test:
     push %rbp
     mov %rsp, %rbp
@@ -48,4 +49,5 @@ some_math:
     mov %rdi, %rax
     ret
 
+__kefir_text_section_end:
 

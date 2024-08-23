@@ -40,6 +40,7 @@
 .extern __kefir_opt_complex_float64_neg
 
 .section .text
+__kefir_text_section_begin:
 f32_predec:
     push %rbp
     mov %rsp, %rbp
@@ -788,4 +789,5 @@ _kefir_func_f64_postinc_label6:
     .quad 0
 .section .text
 
+__kefir_text_section_end:
 

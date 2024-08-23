@@ -23,6 +23,7 @@
 #include "kefir/codegen/amd64/symbolic_labels.h"
 #include "kefir/codegen/amd64/static_data.h"
 #include "kefir/codegen/amd64/function.h"
+#include "kefir/codegen/amd64/dwarf.h"
 #include "kefir/target/abi/amd64/type_layout.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
@@ -336,6 +337,7 @@ static kefir_result_t translate_impl(struct kefir_mem *mem, struct kefir_codegen
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_NEWLINE(&codegen->xasmgen, 1));
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_SECTION(&codegen->xasmgen, ".text", KEFIR_AMD64_XASMGEN_SECTION_NOATTR));
+    REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen->xasmgen, "%s", KEFIR_AMD64_TEXT_SECTION_BEGIN));
 
     struct kefir_hashtree_node_iterator iter;
     for (const struct kefir_ir_function *ir_func = kefir_ir_module_function_iter(module->ir_module, &iter);
@@ -349,9 +351,15 @@ static kefir_result_t translate_impl(struct kefir_mem *mem, struct kefir_codegen
     }
 
     REQUIRE_OK(translate_global_inline_assembly(codegen, module));
+    REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen->xasmgen, "%s", KEFIR_AMD64_TEXT_SECTION_END));
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_NEWLINE(&codegen->xasmgen, 1));
     REQUIRE_OK(translate_data(mem, codegen, module));
+
+    if (codegen->config->debug_info) {
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_NEWLINE(&codegen->xasmgen, 1));
+        REQUIRE_OK(kefir_codegen_amd64_generate_dwarf_debug_info(mem, codegen, module->ir_module));
+    }
 
     return KEFIR_OK;
 }

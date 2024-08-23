@@ -32,6 +32,7 @@ KEFIR_LIB_SOURCE := $(wildcard \
 	$(SOURCE_DIR)/target/abi/amd64/*.c \
 	$(SOURCE_DIR)/target/abi/amd64/system-v/*.c \
 	$(SOURCE_DIR)/target/asm/amd64/*.c \
+	$(SOURCE_DIR)/target/dwarf/*.c \
 	$(SOURCE_DIR)/util/*.c)
 
 KEFIR_LIB_COMPILE_DEPS := $(KEFIR_LIB_SOURCE:$(SOURCE_DIR)/%.c=$(KEFIR_BIN_DIR)/%.deps)

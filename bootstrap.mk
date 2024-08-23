@@ -73,6 +73,7 @@ KEFIR_LIB_SOURCE := $(wildcard \
 	$(SOURCE)/target/abi/amd64/*.c \
 	$(SOURCE)/target/abi/amd64/system-v/*.c \
 	$(SOURCE)/target/asm/amd64/*.c \
+	$(SOURCE)/target/dwarf/*.c \
 	$(SOURCE)/util/*.c)
 KEFIR_LIB_ASM_FILES := $(KEFIR_LIB_SOURCE:$(SOURCE)/%.c=$(BOOTSTRAP)/%.s)
 

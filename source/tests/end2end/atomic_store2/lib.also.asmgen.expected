@@ -38,6 +38,7 @@
 .extern __kefir_opt_complex_float64_neg
 
 .section .text
+__kefir_text_section_begin:
 store_b:
     movzx %sil, %rax
     mov %rax, %rsi
@@ -83,4 +84,5 @@ store_u64:
     call __atomic_store_8@PLT
     ret
 
+__kefir_text_section_end:
 

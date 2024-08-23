@@ -38,6 +38,7 @@
 .extern __kefir_opt_complex_float64_neg
 
 .section .text
+__kefir_text_section_begin:
 load_b:
     mov $5, %rsi
     call __atomic_load_1@PLT
@@ -75,4 +76,5 @@ load_u64:
     call __atomic_load_8@PLT
     ret
 
+__kefir_text_section_end:
 

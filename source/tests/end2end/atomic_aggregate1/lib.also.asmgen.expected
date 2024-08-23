@@ -29,6 +29,7 @@
 .extern __kefir_opt_complex_float64_neg
 
 .section .text
+__kefir_text_section_begin:
 load_buffer:
     push %rbp
     mov %rsp, %rbp
@@ -70,4 +71,5 @@ store_buffer:
     pop %rbp
     ret
 
+__kefir_text_section_end:
 

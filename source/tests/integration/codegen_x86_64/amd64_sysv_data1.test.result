@@ -56,6 +56,8 @@
 .extern __kefir_opt_complex_float64_neg
 
 .section .text
+__kefir_text_section_begin:
+__kefir_text_section_end:
 
 .section .data
 int8_1:

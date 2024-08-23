@@ -24,6 +24,7 @@
 .extern __kefir_opt_complex_float64_neg
 
 .section .text
+__kefir_text_section_begin:
 # Inline assembly fragment #0
 test1:
 add rdi, rsi
@@ -35,4 +36,5 @@ test3:
 xor rax, rax
 mov [rax], rax
 
+__kefir_text_section_end:
 

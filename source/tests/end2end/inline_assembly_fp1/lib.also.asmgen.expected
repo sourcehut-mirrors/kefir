@@ -26,6 +26,7 @@
 .extern __kefir_opt_complex_float64_neg
 
 .section .text
+__kefir_text_section_begin:
 custom_hypot:
     push %rbp
     mov %rsp, %rbp
@@ -59,4 +60,5 @@ addsd %xmm0, %xmm2
     pop %rbp
     ret
 
+__kefir_text_section_end:
 

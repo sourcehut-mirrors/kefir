@@ -32,6 +32,7 @@
 .extern __kefir_opt_complex_float64_neg
 
 .section .text
+__kefir_text_section_begin:
 compare1:
     push %rbp
     mov %rsp, %rbp
@@ -297,4 +298,5 @@ _kefir_func_compare4_label7:
     .quad 4617315517961601024
 .section .text
 
+__kefir_text_section_end:
 

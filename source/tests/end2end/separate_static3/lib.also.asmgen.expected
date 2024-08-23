@@ -29,6 +29,7 @@
 .extern __kefir_opt_complex_float64_neg
 
 .section .text
+__kefir_text_section_begin:
 get_real_value:
     push %rbp
     mov %rsp, %rbp
@@ -39,6 +40,7 @@ _kefir_func_get_real_value_label1:
     pop %rbp
     ret
 
+__kefir_text_section_end:
 
 .section .data
     .align 8

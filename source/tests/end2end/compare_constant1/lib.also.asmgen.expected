@@ -32,6 +32,7 @@
 .extern __kefir_opt_complex_float64_neg
 
 .section .text
+__kefir_text_section_begin:
 compare1:
     xor %eax, %eax
     cmp $1, %rdi
@@ -160,4 +161,5 @@ compare4:
     add %ecx, %eax
     ret
 
+__kefir_text_section_end:
 

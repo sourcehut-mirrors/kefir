@@ -26,6 +26,7 @@
 .extern __kefir_opt_complex_float64_neg
 
 .section .text
+__kefir_text_section_begin:
 factorial:
 .file 0 "source/tests/end2end/asmcmp_source_location2/lib.kefir.asmgen.c"
 .loc 0 21 1
@@ -1194,4 +1195,44 @@ _kefir_func_factorial_label8:
     pop %rbp
     ret
 
+__kefir_text_section_end:
 
+
+.section .debug_abbrev
+__kefir_debug_abbrev_section_begin:
+    .byte 1
+    .byte 17
+    .byte 1
+    .byte 19
+    .byte 5
+    .byte 37
+    .byte 8
+    .byte 17
+    .byte 1
+    .byte 18
+    .byte 7
+    .byte 16
+    .byte 23
+    .byte 0
+    .byte 0
+    .byte 0
+
+.section .debug_info
+    .long __kefir_debug_info_section_end - __kefir_debug_info_section_begin
+__kefir_debug_info_section_begin:
+    .word 5
+    .byte 1
+    .byte 8
+    .long __kefir_debug_abbrev_section_begin
+    .byte 1
+    .word 29
+    .ascii "Kefir 0.3.1.dev.r1850.b0553996f0e4b98525671d91c9b0dea99aa0f839\000"
+    .quad __kefir_text_section_begin
+    .quad __kefir_text_section_end - __kefir_text_section_begin
+    .long __kefir_debug_lines_section_begin
+    .byte 0
+    .byte 0
+__kefir_debug_info_section_end:
+
+.section .debug_line
+__kefir_debug_lines_section_begin:

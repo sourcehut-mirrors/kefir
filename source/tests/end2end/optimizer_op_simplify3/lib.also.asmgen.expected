@@ -30,6 +30,7 @@
 .extern __kefir_opt_complex_float64_neg
 
 .section .text
+__kefir_text_section_begin:
 ulong2uint:
     push %rbp
     mov %rsp, %rbp
@@ -66,4 +67,5 @@ _kefir_func_ulong2ushort_label1:
     pop %rbp
     ret
 
+__kefir_text_section_end:
 

@@ -32,6 +32,7 @@
 .extern __kefir_opt_complex_float64_neg
 
 .section .text
+__kefir_text_section_begin:
 make_s1:
     push %rbp
     mov %rsp, %rbp
@@ -126,4 +127,5 @@ _kefir_func_unwrap_s1_label1:
     pop %rbp
     ret
 
+__kefir_text_section_end:
 

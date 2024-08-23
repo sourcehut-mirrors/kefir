@@ -26,6 +26,7 @@
 .extern __kefir_opt_complex_float64_neg
 
 .section .text
+__kefir_text_section_begin:
 test_syscall:
     push %rbp
     mov %rsp, %rbp
@@ -49,4 +50,5 @@ call syscall_emu
     pop %rbp
     ret
 
+__kefir_text_section_end:
 

@@ -28,6 +28,7 @@
 .extern __kefir_opt_complex_float64_neg
 
 .section .text
+__kefir_text_section_begin:
 func1:
     push %rbp
     mov %rbp, %rsp
@@ -58,4 +59,5 @@ _kefir_func_func1_label4:
     .long 1077936128
 .section .text
 
+__kefir_text_section_end:
 

@@ -33,6 +33,7 @@
 .extern __kefir_opt_complex_float64_neg
 
 .section .text
+__kefir_text_section_begin:
 clear:
     push %rbp
     mov %rsp, %rbp
@@ -80,4 +81,5 @@ test_sync_synchronize:
     pop %rbp
     ret
 
+__kefir_text_section_end:
 

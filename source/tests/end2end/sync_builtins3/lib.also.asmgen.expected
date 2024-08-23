@@ -41,6 +41,7 @@
 .extern __kefir_opt_complex_float64_neg
 
 .section .text
+__kefir_text_section_begin:
 test_sync_bool_compare_and_swap16:
     push %rbp
     mov %rsp, %rbp
@@ -233,4 +234,5 @@ test_sync_val_compare_and_swap64:
     pop %rbp
     ret
 
+__kefir_text_section_end:
 

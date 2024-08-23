@@ -31,6 +31,7 @@
 .extern __kefir_opt_complex_float64_neg
 
 .section .text
+__kefir_text_section_begin:
 somefn:
     push %rbp
     mov %rsp, %rbp
@@ -98,4 +99,5 @@ _kefir_func_condition1_label3:
     mov $10, %rax
     ret
 
+__kefir_text_section_end:
 

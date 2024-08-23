@@ -42,6 +42,7 @@
 .extern __kefir_opt_complex_float64_neg
 
 .section .text
+__kefir_text_section_begin:
 sub:
     push %rbp
     mov %rsp, %rbp
@@ -300,4 +301,5 @@ fdivrp
     pop %rbp
     ret
 
+__kefir_text_section_end:
 

@@ -149,7 +149,8 @@ typedef enum kefir_asm_amd64_xasmgen_operand_class {
     KEFIR_AMD64_XASMGEN_OPERAND_SEGMENT,
     KEFIR_AMD64_XASMGEN_OPERAND_POINTER,
     KEFIR_AMD64_XASMGEN_OPERAND_STRING_LITERAL,
-    KEFIR_AMD64_XASMGEN_OPERAND_FPU_REGISTER
+    KEFIR_AMD64_XASMGEN_OPERAND_FPU_REGISTER,
+    KEFIR_AMD64_XASMGEN_OPERAND_SUBTRACT
 } kefir_asm_amd64_xasmgen_operand_class_t;
 
 typedef enum kefir_asm_amd64_xasmgen_pointer_type {
@@ -205,6 +206,9 @@ typedef struct kefir_asm_amd64_xasmgen_operand {
             kefir_size_t length;
         } string_literal;
         kefir_uint64_t fpu_register;
+        struct {
+            const struct kefir_asm_amd64_xasmgen_operand *args[2];
+        } arithmetics;
     };
 } kefir_asm_amd64_xasmgen_operand_t;
 
@@ -337,6 +341,9 @@ const struct kefir_asm_amd64_xasmgen_operand *kefir_asm_amd64_xasmgen_operand_st
     struct kefir_asm_amd64_xasmgen_operand *, const char *, kefir_size_t);
 const struct kefir_asm_amd64_xasmgen_operand *kefir_asm_amd64_xasmgen_operand_fpu_register(
     struct kefir_asm_amd64_xasmgen_operand *, kefir_uint64_t);
+const struct kefir_asm_amd64_xasmgen_operand *kefir_asm_amd64_xasmgen_operand_subtract(
+    struct kefir_asm_amd64_xasmgen_operand *, const struct kefir_asm_amd64_xasmgen_operand *,
+    const struct kefir_asm_amd64_xasmgen_operand *);
 
 #define KEFIR_AMD64_XASMGEN_PROLOGUE(_xasmgen) ((_xasmgen)->prologue((_xasmgen)))
 #define KEFIR_AMD64_XASMGEN_CLOSE(_mem, _xasmgen) ((_xasmgen)->close((_mem), (_xasmgen)))
