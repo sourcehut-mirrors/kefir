@@ -140,6 +140,13 @@ kefir_result_t kefir_abi_amd64_sysv_qwords_next(struct kefir_abi_amd64_sysv_qwor
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_abi_amd64_sysv_qwords_align(struct kefir_abi_amd64_sysv_qwords *qwords, kefir_size_t alignment) {
+    REQUIRE(qwords != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid QWord vector"));
+
+    UNUSED(next_qword(qwords, alignment));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_abi_amd64_sysv_qwords_next_bitfield(struct kefir_abi_amd64_sysv_qwords *qwords,
                                                          kefir_abi_amd64_sysv_data_class_t dataclass,
                                                          kefir_size_t width,

@@ -113,6 +113,7 @@ struct recursive_aggregate_allocation {
     kefir_size_t nested;
     struct kefir_abi_amd64_sysv_qword_position init_position;
     struct kefir_abi_amd64_sysv_qword_position max_position;
+    kefir_size_t union_container_index;
 };
 
 static kefir_result_t assign_nested_scalar(const struct kefir_ir_type *type, kefir_size_t index,
@@ -213,6 +214,21 @@ static kefir_result_t assign_nested_struct(const struct kefir_ir_type *type, kef
 
 static kefir_result_t nested_visitor_init(struct kefir_ir_type_visitor *);
 
+static kefir_result_t union_align_hook(const struct kefir_ir_type *type, kefir_size_t index,
+                                       const struct kefir_ir_typeentry *typeentry, void *payload) {
+    UNUSED(type);
+    UNUSED(index);
+    UNUSED(typeentry);
+    UNUSED(payload);
+    struct recursive_aggregate_allocation *info = (struct recursive_aggregate_allocation *) payload;
+    if (info->nested == 0) {
+        const struct kefir_abi_amd64_typeentry_layout *layout = NULL;
+        REQUIRE_OK(kefir_abi_amd64_type_layout_at(info->layout, info->union_container_index, &layout));
+        REQUIRE_OK(kefir_abi_amd64_sysv_qwords_align(&info->top_allocation->container, layout->alignment));
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t union_reset_hook(const struct kefir_ir_type *type, kefir_size_t index,
                                        const struct kefir_ir_typeentry *typeentry, void *payload) {
     UNUSED(type);
@@ -241,6 +257,7 @@ static kefir_result_t assign_nested_union(const struct kefir_ir_type *type, kefi
     allocation->index = index;
     struct kefir_ir_type_visitor visitor;
     REQUIRE_OK(nested_visitor_init(&visitor));
+    visitor.prehook = union_align_hook;
     visitor.posthook = union_reset_hook;
     struct recursive_aggregate_allocation nested_info = {.type = type,
                                                          .layout = info->layout,
@@ -248,7 +265,8 @@ static kefir_result_t assign_nested_union(const struct kefir_ir_type *type, kefi
                                                          .top_allocation = info->top_allocation,
                                                          .visitor = &visitor,
                                                          .slot = info->slot,
-                                                         .nested = 0};
+                                                         .nested = 0,
+                                                         .union_container_index = index};
     REQUIRE_OK(kefir_abi_amd64_sysv_qwords_save_position(&info->top_allocation->container, &nested_info.init_position));
     REQUIRE_OK(kefir_abi_amd64_sysv_qwords_save_position(&info->top_allocation->container, &nested_info.max_position));
     REQUIRE_OK(kefir_ir_type_visitor_list_nodes(type, &visitor, (void *) &nested_info, index + 1, typeentry->param));
@@ -588,7 +606,8 @@ static kefir_result_t immediate_union_unwrap(struct kefir_mem *mem, const struct
                                                   .top_allocation = top_allocation,
                                                   .visitor = &visitor,
                                                   .slot = slot,
-                                                  .nested = 0};
+                                                  .nested = 0,
+                                                  .union_container_index = index};
     REQUIRE_OK(kefir_abi_amd64_sysv_qwords_save_position(&top_allocation->container, &info.init_position));
     REQUIRE_OK(kefir_abi_amd64_sysv_qwords_save_position(&top_allocation->container, &info.max_position));
     kefir_result_t res = kefir_ir_type_visitor_list_nodes(type, &visitor, (void *) &info, index + 1, typeentry->param);

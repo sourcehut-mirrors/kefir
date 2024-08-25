@@ -59,6 +59,8 @@ kefir_result_t kefir_abi_amd64_sysv_qwords_free(struct kefir_abi_amd64_sysv_qwor
 kefir_result_t kefir_abi_amd64_sysv_qwords_next(struct kefir_abi_amd64_sysv_qwords *, kefir_abi_amd64_sysv_data_class_t,
                                                 kefir_size_t, kefir_size_t, struct kefir_abi_amd64_sysv_qword_ref *);
 
+kefir_result_t kefir_abi_amd64_sysv_qwords_align(struct kefir_abi_amd64_sysv_qwords *, kefir_size_t);
+
 kefir_result_t kefir_abi_amd64_sysv_qwords_next_bitfield(struct kefir_abi_amd64_sysv_qwords *,
                                                          kefir_abi_amd64_sysv_data_class_t, kefir_size_t,
                                                          struct kefir_abi_amd64_sysv_qword_ref *);
