@@ -241,7 +241,8 @@ static kefir_result_t resolve_member(struct kefir_ast_type_layout *current_layou
         for (const struct kefir_list_entry *iter = kefir_list_head(&current_layout->structure_layout.member_list);
              iter != NULL && res == KEFIR_NOT_FOUND; kefir_list_next(&iter)) {
             ASSIGN_DECL_CAST(struct kefir_ast_type_layout_structure_member *, member, iter->value);
-            if (member->identifier == NULL) {
+            if (member->identifier == NULL && (member->layout->type->tag == KEFIR_AST_TYPE_STRUCTURE ||
+                                               member->layout->type->tag == KEFIR_AST_TYPE_UNION)) {
                 res = resolve_member(member->layout, designator, layout, callback, payload);
                 if (res == KEFIR_OK && callback != NULL) {
                     REQUIRE_OK(callback(member->layout, designator, payload));
