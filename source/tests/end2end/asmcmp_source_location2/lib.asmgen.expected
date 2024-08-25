@@ -1226,7 +1226,7 @@ __kefir_debug_info_section_begin:
     .long __kefir_debug_abbrev_section_begin
     .byte 1
     .word 29
-    .ascii "Kefir 0.3.1.dev.r1850.b0553996f0e4b98525671d91c9b0dea99aa0f839\000"
+    .ascii "Kefir C compiler\000"
     .quad __kefir_text_section_begin
     .quad __kefir_text_section_end - __kefir_text_section_begin
     .long __kefir_debug_lines_section_begin

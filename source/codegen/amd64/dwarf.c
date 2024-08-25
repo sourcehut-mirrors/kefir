@@ -19,9 +19,9 @@ static kefir_result_t generate_dwarf_entries(struct kefir_mem *mem, struct kefir
                                                KEFIR_DWARF(DW_FORM_data2),
                                                KEFIR_AMD64_DWARF_WORD(&codegen->xasmgen, KEFIR_DWARF(DW_LANG_C11))));
 
-        REQUIRE_OK(KEFIR_AMD64_DWARF_ATTRIBUTE(
-            section, &codegen->xasmgen, KEFIR_DWARF(DW_AT_producer), KEFIR_DWARF(DW_FORM_string),
-            KEFIR_AMD64_DWARF_STRING(&codegen->xasmgen, "Kefir " KEFIR_VERSION_FULL)));
+        REQUIRE_OK(KEFIR_AMD64_DWARF_ATTRIBUTE(section, &codegen->xasmgen, KEFIR_DWARF(DW_AT_producer),
+                                               KEFIR_DWARF(DW_FORM_string),
+                                               KEFIR_AMD64_DWARF_STRING(&codegen->xasmgen, "Kefir C compiler")));
 
         REQUIRE_OK(KEFIR_AMD64_DWARF_ATTRIBUTE(
             section, &codegen->xasmgen, KEFIR_DWARF(DW_AT_low_pc), KEFIR_DWARF(DW_FORM_addr),
