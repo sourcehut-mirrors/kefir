@@ -1200,6 +1200,7 @@ __kefir_text_section_end:
 
 .section .debug_abbrev
 __kefir_debug_abbrev_section_begin:
+__kefir_debug_abbrev_section_entry_1:
     .byte 1
     .byte 17
     .byte 1
@@ -1218,12 +1219,14 @@ __kefir_debug_abbrev_section_begin:
     .byte 0
 
 .section .debug_info
+__kefir_debug_info_section:
     .long __kefir_debug_info_section_end - __kefir_debug_info_section_begin
 __kefir_debug_info_section_begin:
     .word 5
     .byte 1
     .byte 8
     .long __kefir_debug_abbrev_section_begin
+__kefir_debug_info_section_entry_1:
     .byte 1
     .word 29
     .ascii "Kefir C compiler\000"

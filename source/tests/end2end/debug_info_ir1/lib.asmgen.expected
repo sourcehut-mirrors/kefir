@@ -117,7 +117,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "type": 13
+                "type": 14
             }
         },
         {
@@ -127,7 +127,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "type": 14
+                "type": 16
             }
         },
         {
@@ -137,7 +137,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "type": 53
+                "type": 68
             }
         },
         {
@@ -147,7 +147,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "type": 41
+                "type": 56
             }
         },
         {
@@ -157,7 +157,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "type": 17
+                "type": 19
             }
         },
         {
@@ -167,7 +167,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "type": 42
+                "type": 57
             }
         },
         {
@@ -177,7 +177,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "type": 43
+                "type": 58
             }
         },
         {
@@ -187,7 +187,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "type": 29
+                "type": 32
             }
         },
         {
@@ -197,7 +197,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "type": 44
+                "type": 59
             }
         },
         {
@@ -207,7 +207,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "type": 45
+                "type": 60
             }
         },
         {
@@ -217,7 +217,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "type": 46
+                "type": 61
             }
         },
         {
@@ -227,7 +227,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "type": 47
+                "type": 62
             }
         },
         {
@@ -237,7 +237,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "type": 48
+                "type": 63
             }
         }
     ],
@@ -1035,10 +1035,14 @@
                 "attributes": [
                     {
                         "tag": "name",
-                        "value": "bool"
+                        "value": "_Bool"
                     },
                     {
                         "tag": "size",
+                        "value": 1
+                    },
+                    {
+                        "tag": "alignment",
                         "value": 1
                     }
                 ],
@@ -1046,7 +1050,7 @@
             },
             {
                 "identifier": 1,
-                "tag": "type_character",
+                "tag": "type_signed_character",
                 "attributes": [
                     {
                         "tag": "name",
@@ -1054,6 +1058,10 @@
                     },
                     {
                         "tag": "size",
+                        "value": 1
+                    },
+                    {
+                        "tag": "alignment",
                         "value": 1
                     }
                 ],
@@ -1070,6 +1078,10 @@
                     {
                         "tag": "size",
                         "value": 1
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 1
                     }
                 ],
                 "children": []
@@ -1084,6 +1096,10 @@
                     },
                     {
                         "tag": "size",
+                        "value": 1
+                    },
+                    {
+                        "tag": "alignment",
                         "value": 1
                     }
                 ],
@@ -1100,6 +1116,10 @@
                     {
                         "tag": "size",
                         "value": 2
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 2
                     }
                 ],
                 "children": []
@@ -1114,6 +1134,10 @@
                     },
                     {
                         "tag": "size",
+                        "value": 2
+                    },
+                    {
+                        "tag": "alignment",
                         "value": 2
                     }
                 ],
@@ -1130,6 +1154,10 @@
                     {
                         "tag": "size",
                         "value": 4
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 4
                     }
                 ],
                 "children": []
@@ -1144,6 +1172,10 @@
                     },
                     {
                         "tag": "size",
+                        "value": 4
+                    },
+                    {
+                        "tag": "alignment",
                         "value": 4
                     }
                 ],
@@ -1160,6 +1192,10 @@
                     {
                         "tag": "size",
                         "value": 8
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 8
                     }
                 ],
                 "children": []
@@ -1168,6 +1204,14 @@
                 "identifier": 9,
                 "tag": "type_pointer",
                 "attributes": [
+                    {
+                        "tag": "size",
+                        "value": 8
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 8
+                    },
                     {
                         "tag": "type",
                         "value": 10
@@ -1191,6 +1235,14 @@
                 "tag": "type_pointer",
                 "attributes": [
                     {
+                        "tag": "size",
+                        "value": 8
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 8
+                    },
+                    {
                         "tag": "type",
                         "value": 1
                     }
@@ -1198,7 +1250,7 @@
                 "children": []
             },
             {
-                "identifier": 13,
+                "identifier": 14,
                 "tag": "type_array",
                 "attributes": [
                     {
@@ -1206,18 +1258,34 @@
                         "value": 400
                     },
                     {
-                        "tag": "length",
-                        "value": 100
+                        "tag": "alignment",
+                        "value": 4
                     },
                     {
                         "tag": "type",
                         "value": 7
                     }
                 ],
-                "children": []
+                "children": [
+                    {
+                        "identifier": 15,
+                        "tag": "array_subrange",
+                        "attributes": [
+                            {
+                                "tag": "length",
+                                "value": 100
+                            },
+                            {
+                                "tag": "type",
+                                "value": 8
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
             },
             {
-                "identifier": 14,
+                "identifier": 16,
                 "tag": "type_structure",
                 "attributes": [
                     {
@@ -1235,7 +1303,7 @@
                 ],
                 "children": [
                     {
-                        "identifier": 15,
+                        "identifier": 17,
                         "tag": "structure_member",
                         "attributes": [
                             {
@@ -1262,7 +1330,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 16,
+                        "identifier": 18,
                         "tag": "structure_member",
                         "attributes": [
                             {
@@ -1279,13 +1347,13 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 17
+                                "value": 19
                             }
                         ],
                         "children": []
                     },
                     {
-                        "identifier": 18,
+                        "identifier": 20,
                         "tag": "structure_member",
                         "attributes": [
                             {
@@ -1308,7 +1376,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 19,
+                        "identifier": 21,
                         "tag": "structure_member",
                         "attributes": [
                             {
@@ -1329,13 +1397,13 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 20
+                                "value": 22
                             }
                         ],
                         "children": []
                     },
                     {
-                        "identifier": 30,
+                        "identifier": 33,
                         "tag": "structure_member",
                         "attributes": [
                             {
@@ -1362,7 +1430,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 31,
+                        "identifier": 34,
                         "tag": "structure_member",
                         "attributes": [
                             {
@@ -1383,13 +1451,13 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 32
+                                "value": 35
                             }
                         ],
                         "children": []
                     },
                     {
-                        "identifier": 33,
+                        "identifier": 36,
                         "tag": "structure_member",
                         "attributes": [
                             {
@@ -1410,13 +1478,13 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 34
+                                "value": 37
                             }
                         ],
                         "children": []
                     },
                     {
-                        "identifier": 39,
+                        "identifier": 42,
                         "tag": "structure_member",
                         "attributes": [
                             {
@@ -1437,7 +1505,7 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 40
+                                "value": 43
                             }
                         ],
                         "children": []
@@ -1445,7 +1513,7 @@
                 ]
             },
             {
-                "identifier": 17,
+                "identifier": 19,
                 "tag": "type_signed_int",
                 "attributes": [
                     {
@@ -1455,12 +1523,16 @@
                     {
                         "tag": "size",
                         "value": 1
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 8
                     }
                 ],
                 "children": []
             },
             {
-                "identifier": 20,
+                "identifier": 22,
                 "tag": "type_union",
                 "attributes": [
                     {
@@ -1474,7 +1546,7 @@
                 ],
                 "children": [
                     {
-                        "identifier": 21,
+                        "identifier": 23,
                         "tag": "structure_member",
                         "attributes": [
                             {
@@ -1491,13 +1563,13 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 22
+                                "value": 24
                             }
                         ],
                         "children": []
                     },
                     {
-                        "identifier": 25,
+                        "identifier": 27,
                         "tag": "structure_member",
                         "attributes": [
                             {
@@ -1514,7 +1586,7 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 26
+                                "value": 28
                             }
                         ],
                         "children": []
@@ -1522,7 +1594,7 @@
                 ]
             },
             {
-                "identifier": 22,
+                "identifier": 24,
                 "tag": "type_structure",
                 "attributes": [
                     {
@@ -1536,7 +1608,7 @@
                 ],
                 "children": [
                     {
-                        "identifier": 23,
+                        "identifier": 25,
                         "tag": "structure_member",
                         "attributes": [
                             {
@@ -1563,7 +1635,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 24,
+                        "identifier": 26,
                         "tag": "structure_member",
                         "attributes": [
                             {
@@ -1584,7 +1656,7 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 17
+                                "value": 19
                             }
                         ],
                         "children": []
@@ -1592,7 +1664,7 @@
                 ]
             },
             {
-                "identifier": 26,
+                "identifier": 28,
                 "tag": "type_structure",
                 "attributes": [
                     {
@@ -1606,7 +1678,7 @@
                 ],
                 "children": [
                     {
-                        "identifier": 27,
+                        "identifier": 29,
                         "tag": "structure_member",
                         "attributes": [
                             {
@@ -1627,7 +1699,7 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 28
+                                "value": 30
                             }
                         ],
                         "children": []
@@ -1635,7 +1707,7 @@
                 ]
             },
             {
-                "identifier": 28,
+                "identifier": 30,
                 "tag": "type_array",
                 "attributes": [
                     {
@@ -1643,18 +1715,34 @@
                         "value": 12
                     },
                     {
-                        "tag": "length",
-                        "value": 3
+                        "tag": "alignment",
+                        "value": 4
                     },
                     {
                         "tag": "type",
-                        "value": 29
+                        "value": 32
                     }
                 ],
-                "children": []
+                "children": [
+                    {
+                        "identifier": 31,
+                        "tag": "array_subrange",
+                        "attributes": [
+                            {
+                                "tag": "length",
+                                "value": 3
+                            },
+                            {
+                                "tag": "type",
+                                "value": 8
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
             },
             {
-                "identifier": 29,
+                "identifier": 32,
                 "tag": "type_float",
                 "attributes": [
                     {
@@ -1664,44 +1752,68 @@
                     {
                         "tag": "size",
                         "value": 4
-                    }
-                ],
-                "children": []
-            },
-            {
-                "identifier": 32,
-                "tag": "type_pointer",
-                "attributes": [
+                    },
                     {
-                        "tag": "type",
-                        "value": 14
-                    }
-                ],
-                "children": []
-            },
-            {
-                "identifier": 34,
-                "tag": "type_pointer",
-                "attributes": [
-                    {
-                        "tag": "type",
-                        "value": 35
+                        "tag": "alignment",
+                        "value": 4
                     }
                 ],
                 "children": []
             },
             {
                 "identifier": 35,
+                "tag": "type_pointer",
+                "attributes": [
+                    {
+                        "tag": "size",
+                        "value": 8
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 8
+                    },
+                    {
+                        "tag": "type",
+                        "value": 16
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 37,
+                "tag": "type_pointer",
+                "attributes": [
+                    {
+                        "tag": "size",
+                        "value": 8
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 8
+                    },
+                    {
+                        "tag": "type",
+                        "value": 38
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 38,
                 "tag": "type_function",
                 "attributes": [
                     {
                         "tag": "type",
                         "value": 7
+                    },
+                    {
+                        "tag": "function_prototyped",
+                        "value": true
                     }
                 ],
                 "children": [
                     {
-                        "identifier": 36,
+                        "identifier": 39,
                         "tag": "function_parameter",
                         "attributes": [
                             {
@@ -1712,18 +1824,18 @@
                         "children": []
                     },
                     {
-                        "identifier": 37,
+                        "identifier": 40,
                         "tag": "function_parameter",
                         "attributes": [
                             {
                                 "tag": "type",
-                                "value": 17
+                                "value": 19
                             }
                         ],
                         "children": []
                     },
                     {
-                        "identifier": 38,
+                        "identifier": 41,
                         "tag": "function_parameter",
                         "attributes": [
                             {
@@ -1736,7 +1848,7 @@
                 ]
             },
             {
-                "identifier": 40,
+                "identifier": 43,
                 "tag": "type_array",
                 "attributes": [
                     {
@@ -1744,15 +1856,95 @@
                         "value": 7
                     }
                 ],
-                "children": []
+                "children": [
+                    {
+                        "identifier": 44,
+                        "tag": "array_subrange",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 8
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
             },
             {
-                "identifier": 41,
-                "tag": "type_builtin",
+                "identifier": 45,
+                "tag": "type_unsigned_int",
                 "attributes": [
                     {
                         "tag": "name",
-                        "value": "__builtin_va_list"
+                        "value": "unsigned long"
+                    },
+                    {
+                        "tag": "size",
+                        "value": 8
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 8
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 46,
+                "tag": "type_unsigned_int",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "unsigned int"
+                    },
+                    {
+                        "tag": "size",
+                        "value": 4
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 4
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 47,
+                "tag": "type_void",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "void"
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 48,
+                "tag": "type_pointer",
+                "attributes": [
+                    {
+                        "tag": "size",
+                        "value": 8
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 8
+                    },
+                    {
+                        "tag": "type",
+                        "value": 47
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 49,
+                "tag": "type_structure",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "__va_list_tag"
                     },
                     {
                         "tag": "size",
@@ -1763,10 +1955,169 @@
                         "value": 8
                     }
                 ],
+                "children": [
+                    {
+                        "identifier": 50,
+                        "tag": "structure_member",
+                        "attributes": [
+                            {
+                                "tag": "name",
+                                "value": "gp_offset"
+                            },
+                            {
+                                "tag": "size",
+                                "value": 4
+                            },
+                            {
+                                "tag": "alignment",
+                                "value": 4
+                            },
+                            {
+                                "tag": "offset",
+                                "value": 0
+                            },
+                            {
+                                "tag": "type",
+                                "value": 46
+                            }
+                        ],
+                        "children": []
+                    },
+                    {
+                        "identifier": 51,
+                        "tag": "structure_member",
+                        "attributes": [
+                            {
+                                "tag": "name",
+                                "value": "fp_offset"
+                            },
+                            {
+                                "tag": "size",
+                                "value": 4
+                            },
+                            {
+                                "tag": "alignment",
+                                "value": 4
+                            },
+                            {
+                                "tag": "offset",
+                                "value": 4
+                            },
+                            {
+                                "tag": "type",
+                                "value": 46
+                            }
+                        ],
+                        "children": []
+                    },
+                    {
+                        "identifier": 52,
+                        "tag": "structure_member",
+                        "attributes": [
+                            {
+                                "tag": "name",
+                                "value": "overflow_arg_area"
+                            },
+                            {
+                                "tag": "size",
+                                "value": 8
+                            },
+                            {
+                                "tag": "alignment",
+                                "value": 8
+                            },
+                            {
+                                "tag": "offset",
+                                "value": 8
+                            },
+                            {
+                                "tag": "type",
+                                "value": 48
+                            }
+                        ],
+                        "children": []
+                    },
+                    {
+                        "identifier": 53,
+                        "tag": "structure_member",
+                        "attributes": [
+                            {
+                                "tag": "name",
+                                "value": "reg_save_area"
+                            },
+                            {
+                                "tag": "size",
+                                "value": 8
+                            },
+                            {
+                                "tag": "alignment",
+                                "value": 8
+                            },
+                            {
+                                "tag": "offset",
+                                "value": 16
+                            },
+                            {
+                                "tag": "type",
+                                "value": 48
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 54,
+                "tag": "type_array",
+                "attributes": [
+                    {
+                        "tag": "size",
+                        "value": 24
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 8
+                    },
+                    {
+                        "tag": "type",
+                        "value": 49
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 55,
+                        "tag": "array_subrange",
+                        "attributes": [
+                            {
+                                "tag": "length",
+                                "value": 1
+                            },
+                            {
+                                "tag": "type",
+                                "value": 45
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 56,
+                "tag": "typedef",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "__builtin_va_list"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 54
+                    }
+                ],
                 "children": []
             },
             {
-                "identifier": 42,
+                "identifier": 57,
                 "tag": "type_unsigned_int",
                 "attributes": [
                     {
@@ -1776,12 +2127,16 @@
                     {
                         "tag": "size",
                         "value": 8
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 8
                     }
                 ],
                 "children": []
             },
             {
-                "identifier": 43,
+                "identifier": 58,
                 "tag": "type_signed_int",
                 "attributes": [
                     {
@@ -1791,12 +2146,16 @@
                     {
                         "tag": "size",
                         "value": 8
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 8
                     }
                 ],
                 "children": []
             },
             {
-                "identifier": 44,
+                "identifier": 59,
                 "tag": "type_float",
                 "attributes": [
                     {
@@ -1806,12 +2165,16 @@
                     {
                         "tag": "size",
                         "value": 8
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 8
                     }
                 ],
                 "children": []
             },
             {
-                "identifier": 45,
+                "identifier": 60,
                 "tag": "type_float",
                 "attributes": [
                     {
@@ -1821,12 +2184,16 @@
                     {
                         "tag": "size",
                         "value": 16
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 16
                     }
                 ],
                 "children": []
             },
             {
-                "identifier": 46,
+                "identifier": 61,
                 "tag": "type_complex_float",
                 "attributes": [
                     {
@@ -1836,12 +2203,16 @@
                     {
                         "tag": "size",
                         "value": 8
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 4
                     }
                 ],
                 "children": []
             },
             {
-                "identifier": 47,
+                "identifier": 62,
                 "tag": "type_complex_float",
                 "attributes": [
                     {
@@ -1851,12 +2222,16 @@
                     {
                         "tag": "size",
                         "value": 16
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 8
                     }
                 ],
                 "children": []
             },
             {
-                "identifier": 48,
+                "identifier": 63,
                 "tag": "type_complex_float",
                 "attributes": [
                     {
@@ -1866,22 +2241,30 @@
                     {
                         "tag": "size",
                         "value": 32
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 16
                     }
                 ],
                 "children": []
             },
             {
-                "identifier": 53,
+                "identifier": 68,
                 "tag": "type_function",
                 "attributes": [
                     {
                         "tag": "type",
-                        "value": 29
+                        "value": 32
+                    },
+                    {
+                        "tag": "function_prototyped",
+                        "value": false
                     }
                 ],
                 "children": [
                     {
-                        "identifier": 54,
+                        "identifier": 69,
                         "tag": "function_parameter",
                         "attributes": [
                             {
@@ -1892,7 +2275,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 55,
+                        "identifier": 70,
                         "tag": "function_parameter",
                         "attributes": [
                             {
@@ -1903,7 +2286,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 56,
+                        "identifier": 71,
                         "tag": "function_parameter",
                         "attributes": [
                             {

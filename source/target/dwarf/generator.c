@@ -1,3 +1,23 @@
+/*
+    SPDX-License-Identifier: GPL-3.0
+
+    Copyright (C) 2020-2024  Jevgenijs Protopopovs
+
+    This file is part of Kefir project.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, version 3.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 #include "kefir/target/dwarf/generator.h"
 #include "kefir/target/abi/amd64/base.h"
 #include "kefir/core/error.h"
@@ -78,9 +98,19 @@ kefir_result_t kefir_amd64_dwarf_entry_abbrev(struct kefir_amd64_xasmgen *xasmge
                                               kefir_dwarf_tag_t tag, kefir_dwarf_children_t children) {
     REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 xasmgen"));
 
+    REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(xasmgen, KEFIR_AMD64_DWARF_DEBUG_ABBREV_ENTRY, identifier));
     REQUIRE_OK(KEFIR_AMD64_DWARF_ULEB128(xasmgen, identifier));
     REQUIRE_OK(KEFIR_AMD64_DWARF_ULEB128(xasmgen, tag));
     REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(xasmgen, children));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_amd64_dwarf_entry_info_begin(struct kefir_amd64_xasmgen *xasmgen, kefir_uint64_t identifier,
+                                                  kefir_uint64_t abbrev_identifier) {
+    REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 xasmgen"));
+
+    REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(xasmgen, KEFIR_AMD64_DWARF_DEBUG_INFO_ENTRY, identifier));
+    REQUIRE_OK(KEFIR_AMD64_DWARF_ULEB128(xasmgen, abbrev_identifier));
     return KEFIR_OK;
 }
 
@@ -98,6 +128,7 @@ kefir_result_t kefir_dwarf_generator_section_init(struct kefir_amd64_xasmgen *xa
         case KEFIR_DWARF_GENERATOR_SECTION_INFO:
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_NEWLINE(xasmgen, 1));
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_SECTION(xasmgen, ".debug_info", KEFIR_AMD64_XASMGEN_SECTION_NOATTR));
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(xasmgen, "%s", KEFIR_AMD64_DWARF_DEBUG_INFO_SECTION));
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
                 xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 1,
                 kefir_asm_amd64_xasmgen_operand_subtract(
@@ -157,44 +188,5 @@ kefir_result_t kefir_dwarf_generator_section_finalize(struct kefir_amd64_xasmgen
             return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected DWARF generator section");
     }
 
-    return KEFIR_OK;
-}
-
-kefir_result_t kefir_dwarf_generator_debug_information_entry(
-    struct kefir_amd64_xasmgen *xasmgen, kefir_uint64_t identifier, kefir_dwarf_tag_t tag,
-    kefir_dwarf_children_t children, kefir_dwarf_generator_section_t section,
-    kefir_dwarf_generator_debug_information_entry_stage_t stage) {
-    REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 xasmgen"));
-
-    if (stage == KEFIR_DWARF_GENERATOR_DIE_INITIALIZE) {
-        switch (section) {
-            case KEFIR_DWARF_GENERATOR_SECTION_ABBREV:
-                REQUIRE_OK(KEFIR_AMD64_DWARF_ULEB128(xasmgen, identifier));
-                REQUIRE_OK(KEFIR_AMD64_DWARF_ULEB128(xasmgen, tag));
-                REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(xasmgen, children));
-                break;
-
-            case KEFIR_DWARF_GENERATOR_SECTION_INFO:
-                REQUIRE_OK(KEFIR_AMD64_DWARF_ULEB128(xasmgen, identifier));
-                break;
-
-            case KEFIR_DWARF_GENERATOR_SECTION_LINES:
-                // Intentionally left blank
-                break;
-
-            case KEFIR_DWARF_GENERATOR_SECTION_COUNT:
-                return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected DWARF generator section");
-        }
-    } else if (stage == KEFIR_DWARF_GENERATOR_DIE_FINALIZE && section == KEFIR_DWARF_GENERATOR_SECTION_INFO) {
-        switch (children) {
-            case KEFIR_DWARF(DW_CHILDREN_yes):
-                REQUIRE_OK(KEFIR_AMD64_DWARF_ULEB128(xasmgen, KEFIR_DWARF(null)));
-                break;
-
-            case KEFIR_DWARF(DW_CHILDREN_no):
-                // Intentionally left blank
-                break;
-        }
-    }
     return KEFIR_OK;
 }

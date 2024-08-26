@@ -186,22 +186,22 @@ static kefir_result_t compact_inline_asm(struct kefir_mem *mem, struct compact_p
     return KEFIR_OK;
 }
 
-static kefir_result_t compact_debug_entry(struct kefir_mem *mem, struct kefir_ir_module *module, struct compact_params *params, const struct kefir_ir_debug_entry *entry) {
+static kefir_result_t compact_debug_entry(struct kefir_mem *mem, struct kefir_ir_module *module,
+                                          struct compact_params *params, const struct kefir_ir_debug_entry *entry) {
     UNUSED(module);
     REQUIRE(!kefir_hashtree_has(&params->debug_entry_index, (kefir_hashtree_key_t) entry->identifier), KEFIR_OK);
-    REQUIRE_OK(kefir_hashtree_insert(mem, &params->debug_entry_index, (kefir_hashtree_key_t) entry->identifier, (kefir_hashtree_value_t) entry));
+    REQUIRE_OK(kefir_hashtree_insert(mem, &params->debug_entry_index, (kefir_hashtree_key_t) entry->identifier,
+                                     (kefir_hashtree_value_t) entry));
 
     struct kefir_hashtree_node_iterator iter;
-    for (struct kefir_hashtree_node *node = kefir_hashtree_iter(&entry->attributes, &iter);
-        node != NULL;
-        node = kefir_hashtree_next(&iter)) {
-        ASSIGN_DECL_CAST(struct kefir_ir_debug_entry_attribute *, attribute,
-            node->value);
-        
+    for (struct kefir_hashtree_node *node = kefir_hashtree_iter(&entry->attributes, &iter); node != NULL;
+         node = kefir_hashtree_next(&iter)) {
+        ASSIGN_DECL_CAST(struct kefir_ir_debug_entry_attribute *, attribute, node->value);
+
         switch (attribute->tag) {
             case KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_TYPE: {
                 const struct kefir_ir_debug_entry *type_entry;
-                REQUIRE_OK(kefir_ir_debug_entry_get(&module->debug_info.entries, attribute->entry_id, &type_entry));
+                REQUIRE_OK(kefir_ir_debug_entry_get(&module->debug_info.entries, attribute->type_id, &type_entry));
                 REQUIRE_OK(compact_debug_entry(mem, module, params, type_entry));
             } break;
 
@@ -213,6 +213,7 @@ static kefir_result_t compact_debug_entry(struct kefir_mem *mem, struct kefir_ir
             case KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_OFFSET:
             case KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_BITWIDTH:
             case KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_BITOFFSET:
+            case KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_FUNCTION_PROTOTYPED:
                 // Intentionally left blank
                 break;
 
@@ -222,8 +223,7 @@ static kefir_result_t compact_debug_entry(struct kefir_mem *mem, struct kefir_ir
     }
 
     for (struct kefir_list_entry *iter = kefir_list_head(&entry->children); iter != NULL; iter = iter->next) {
-        ASSIGN_DECL_CAST(struct kefir_ir_debug_entry *, child_entry,
-            iter->value);
+        ASSIGN_DECL_CAST(struct kefir_ir_debug_entry *, child_entry, iter->value);
         REQUIRE_OK(compact_debug_entry(mem, module, params, child_entry));
     }
     return KEFIR_OK;
@@ -477,9 +477,10 @@ static kefir_result_t drop_unused_string_literals(struct kefir_mem *mem, struct 
 }
 
 static kefir_result_t drop_unused_debug_entries(struct kefir_mem *mem, struct kefir_ir_module *module,
-                                                  struct compact_params *params) {
+                                                struct compact_params *params) {
     struct kefir_hashtree_node_iterator iter;
-    for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&module->debug_info.entries.entries, &iter); node != NULL;) {
+    for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&module->debug_info.entries.entries, &iter);
+         node != NULL;) {
 
         ASSIGN_DECL_CAST(const struct kefir_ir_debug_entry *, entry, node->value);
 
@@ -553,7 +554,8 @@ static kefir_result_t compact_impl(struct kefir_mem *mem, struct kefir_ir_module
 
             if (ir_identifier->debug_info.type != KEFIR_IR_DEBUG_ENTRY_ID_NONE) {
                 const struct kefir_ir_debug_entry *entry;
-                REQUIRE_OK(kefir_ir_debug_entry_get(&module->debug_info.entries, ir_identifier->debug_info.type, &entry));   
+                REQUIRE_OK(
+                    kefir_ir_debug_entry_get(&module->debug_info.entries, ir_identifier->debug_info.type, &entry));
                 REQUIRE_OK(compact_debug_entry(mem, module, params, entry));
             }
         }

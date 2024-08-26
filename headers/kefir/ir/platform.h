@@ -26,6 +26,7 @@
 #include "kefir/ir/type.h"
 #include "kefir/ir/bitfields.h"
 #include "kefir/ir/assembly.h"
+#include "kefir/ir/debug.h"
 #include "kefir/core/data_model.h"
 #include "kefir/core/source_location.h"
 
@@ -47,7 +48,11 @@ typedef struct kefir_ir_target_platform {
                                      struct kefir_ir_target_platform_typeentry_info *);
     kefir_result_t (*bitfield_allocator)(struct kefir_mem *, const struct kefir_ir_target_platform *,
                                          struct kefir_ir_type *, struct kefir_ir_bitfield_allocator *);
-    kefir_result_t (*decode_inline_assembly_constraints)(const struct kefir_ir_target_platform *, const char *, struct kefir_ir_inline_assembly_parameter_constraints *, const struct kefir_source_location *);
+    kefir_result_t (*decode_inline_assembly_constraints)(const struct kefir_ir_target_platform *, const char *,
+                                                         struct kefir_ir_inline_assembly_parameter_constraints *,
+                                                         const struct kefir_source_location *);
+    kefir_result_t (*builtin_va_list_debug_info)(struct kefir_mem *, const struct kefir_ir_target_platform *,
+                                                 struct kefir_ir_debug_entries *, kefir_ir_debug_entry_id_t *);
     kefir_result_t (*free)(struct kefir_mem *, struct kefir_ir_target_platform *);
 
     void *payload;
@@ -62,6 +67,8 @@ typedef struct kefir_ir_target_platform {
     ((platform)->bitfield_allocator((mem), (platform), (type), (allocator)))
 #define KEFIR_IR_TARGET_PLATFORM_DECODE_INLINE_ASSEMBLY_CONSTRAINTS(_platform, _constraints, _decoded, _location) \
     ((_platform)->decode_inline_assembly_constraints((_platform), (_constraints), (_decoded), (_location)))
+#define KEFIR_IR_TARGET_PLATFORM_BUILTIN_VA_LIST_DEBUG_INFO(_mem, _platform, _entries, _entry_id) \
+    ((_platform)->builtin_va_list_debug_info((_mem), (_platform), (_entries), (_entry_id)))
 #define KEFIR_IR_TARGET_PLATFORM_FREE(mem, platform) ((platform)->free((mem), (platform)))
 
 #endif

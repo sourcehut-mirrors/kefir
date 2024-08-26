@@ -33,7 +33,6 @@ typedef kefir_id_t kefir_ir_debug_entry_id_t;
 typedef enum kefir_ir_debug_entry_tag {
     KEFIR_IR_DEBUG_ENTRY_TYPE_VOID,
     KEFIR_IR_DEBUG_ENTRY_TYPE_BOOLEAN,
-    KEFIR_IR_DEBUG_ENTRY_TYPE_CHARACTER,
     KEFIR_IR_DEBUG_ENTRY_TYPE_UNSIGNED_CHARACTER,
     KEFIR_IR_DEBUG_ENTRY_TYPE_SIGNED_CHARACTER,
     KEFIR_IR_DEBUG_ENTRY_TYPE_UNSIGNED_INT,
@@ -46,8 +45,9 @@ typedef enum kefir_ir_debug_entry_tag {
     KEFIR_IR_DEBUG_ENTRY_TYPE_UNION,
     KEFIR_IR_DEBUG_ENTRY_TYPE_ARRAY,
     KEFIR_IR_DEBUG_ENTRY_TYPE_FUNCTION,
-    KEFIR_IR_DEBUG_ENTRY_TYPE_BUILTIN,
+    KEFIR_IR_DEBUG_ENTRY_TYPEDEF,
     KEFIR_IR_DEBUG_ENTRY_ENUMERATOR,
+    KEFIR_IR_DEBUG_ENTRY_ARRAY_SUBRANGE,
     KEFIR_IR_DEBUG_ENTRY_STRUCTURE_MEMBER,
     KEFIR_IR_DEBUG_ENTRY_FUNCTION_PARAMETER,
     KEFIR_IR_DEBUG_ENTRY_FUNCTION_VARARG
@@ -63,6 +63,7 @@ typedef enum kefir_ir_debug_entry_attribute_tag {
     KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_BITWIDTH,
     KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_BITOFFSET,
     KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_TYPE,
+    KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_FUNCTION_PROTOTYPED,
     // Auxillary
     KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_COUNT
 } kefir_ir_debug_entry_attribute_tag_t;
@@ -79,7 +80,8 @@ typedef struct kefir_ir_debug_entry_attribute {
         kefir_size_t offset;
         kefir_size_t bitwidth;
         kefir_size_t bitoffset;
-        kefir_ir_debug_entry_id_t entry_id;
+        kefir_ir_debug_entry_id_t type_id;
+        kefir_bool_t function_prototyped;
     };
 } kefir_ir_debug_entry_attribute_t;
 
@@ -96,42 +98,29 @@ typedef struct kefir_ir_debug_entries {
     kefir_ir_debug_entry_id_t next_entry_id;
 } kefir_ir_debug_entries_t;
 
-#define KEFIR_IR_DEBUG_ENTRY_ATTR_NAME(_name) ((struct kefir_ir_debug_entry_attribute) { \
-        .tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_NAME, \
-        .name = (_name) \
-    })
-#define KEFIR_IR_DEBUG_ENTRY_ATTR_SIZE(_size) ((struct kefir_ir_debug_entry_attribute) { \
-        .tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_SIZE, \
-        .size = (_size) \
-    })
-#define KEFIR_IR_DEBUG_ENTRY_ATTR_ALIGNMENT(_align) ((struct kefir_ir_debug_entry_attribute) { \
-        .tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_ALIGNMENT, \
-        .alignment = (_align) \
-    })
-#define KEFIR_IR_DEBUG_ENTRY_ATTR_LENGTH(_length) ((struct kefir_ir_debug_entry_attribute) { \
-        .tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_LENGTH, \
-        .length = (_length) \
-    })
-#define KEFIR_IR_DEBUG_ENTRY_ATTR_CONSTANT_UINT(_const_uint) ((struct kefir_ir_debug_entry_attribute) { \
-        .tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_CONSTANT_UINT, \
-        .constant_uint = (_const_uint) \
-    })
-#define KEFIR_IR_DEBUG_ENTRY_ATTR_OFFSET(_offset) ((struct kefir_ir_debug_entry_attribute) { \
-        .tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_OFFSET, \
-        .offset = (_offset) \
-    })
-#define KEFIR_IR_DEBUG_ENTRY_ATTR_BITOFFSET(_bitoffset) ((struct kefir_ir_debug_entry_attribute) { \
-        .tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_BITOFFSET, \
-        .bitoffset = (_bitoffset) \
-    })
-#define KEFIR_IR_DEBUG_ENTRY_ATTR_BITWIDTH(_bitwidth) ((struct kefir_ir_debug_entry_attribute) { \
-        .tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_BITWIDTH, \
-        .bitwidth = (_bitwidth) \
-    })
-#define KEFIR_IR_DEBUG_ENTRY_ATTR_TYPE(_entry_id) ((struct kefir_ir_debug_entry_attribute) { \
-        .tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_TYPE, \
-        .entry_id = (_entry_id) \
-    })
+#define KEFIR_IR_DEBUG_ENTRY_ATTR_NAME(_name) \
+    ((struct kefir_ir_debug_entry_attribute){.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_NAME, .name = (_name)})
+#define KEFIR_IR_DEBUG_ENTRY_ATTR_SIZE(_size) \
+    ((struct kefir_ir_debug_entry_attribute){.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_SIZE, .size = (_size)})
+#define KEFIR_IR_DEBUG_ENTRY_ATTR_ALIGNMENT(_align) \
+    ((struct kefir_ir_debug_entry_attribute){.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_ALIGNMENT, .alignment = (_align)})
+#define KEFIR_IR_DEBUG_ENTRY_ATTR_LENGTH(_length) \
+    ((struct kefir_ir_debug_entry_attribute){.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_LENGTH, .length = (_length)})
+#define KEFIR_IR_DEBUG_ENTRY_ATTR_CONSTANT_UINT(_const_uint)                                      \
+    ((struct kefir_ir_debug_entry_attribute){.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_CONSTANT_UINT, \
+                                             .constant_uint = (_const_uint)})
+#define KEFIR_IR_DEBUG_ENTRY_ATTR_OFFSET(_offset) \
+    ((struct kefir_ir_debug_entry_attribute){.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_OFFSET, .offset = (_offset)})
+#define KEFIR_IR_DEBUG_ENTRY_ATTR_BITOFFSET(_bitoffset)                                       \
+    ((struct kefir_ir_debug_entry_attribute){.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_BITOFFSET, \
+                                             .bitoffset = (_bitoffset)})
+#define KEFIR_IR_DEBUG_ENTRY_ATTR_BITWIDTH(_bitwidth) \
+    ((struct kefir_ir_debug_entry_attribute){.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_BITWIDTH, .bitwidth = (_bitwidth)})
+#define KEFIR_IR_DEBUG_ENTRY_ATTR_TYPE(_type_id) \
+    ((struct kefir_ir_debug_entry_attribute){.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_TYPE, .type_id = (_type_id)})
+#define KEFIR_IR_DEBUG_ENTRY_ATTR_FUNCTION_PROTOTYPED(_prototyped)                                      \
+    ((struct kefir_ir_debug_entry_attribute){.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_FUNCTION_PROTOTYPED, \
+                                             .function_prototyped = (_prototyped)})
 
 typedef struct kefir_ir_source_location {
     struct kefir_source_location location;
@@ -162,12 +151,22 @@ typedef struct kefir_ir_module_debug_info {
 kefir_result_t kefir_ir_debug_entries_init(struct kefir_ir_debug_entries *);
 kefir_result_t kefir_ir_debug_entries_free(struct kefir_mem *, struct kefir_ir_debug_entries *);
 
-kefir_result_t kefir_ir_debug_entry_get(const struct kefir_ir_debug_entries *, kefir_ir_debug_entry_id_t, const struct kefir_ir_debug_entry **);
-kefir_result_t kefir_ir_debug_entry_get_attribute(const struct kefir_ir_debug_entries *, kefir_ir_debug_entry_id_t, kefir_ir_debug_entry_attribute_tag_t, const struct kefir_ir_debug_entry_attribute **);
+kefir_result_t kefir_ir_debug_entry_get(const struct kefir_ir_debug_entries *, kefir_ir_debug_entry_id_t,
+                                        const struct kefir_ir_debug_entry **);
+kefir_result_t kefir_ir_debug_entry_get_attribute(const struct kefir_ir_debug_entries *, kefir_ir_debug_entry_id_t,
+                                                  kefir_ir_debug_entry_attribute_tag_t,
+                                                  const struct kefir_ir_debug_entry_attribute **);
+kefir_result_t kefir_ir_debug_entry_has_attribute(const struct kefir_ir_debug_entries *, kefir_ir_debug_entry_id_t,
+                                                  kefir_ir_debug_entry_attribute_tag_t, kefir_bool_t *);
 
-kefir_result_t kefir_ir_debug_entry_new(struct kefir_mem *, struct kefir_ir_debug_entries *, kefir_ir_debug_entry_tag_t, kefir_ir_debug_entry_id_t *);
-kefir_result_t kefir_ir_debug_entry_new_child(struct kefir_mem *, struct kefir_ir_debug_entries *, kefir_ir_debug_entry_id_t, kefir_ir_debug_entry_tag_t, kefir_ir_debug_entry_id_t *);
-kefir_result_t kefir_ir_debug_entry_add_attribute(struct kefir_mem *, struct kefir_ir_debug_entries *, struct kefir_string_pool *, kefir_ir_debug_entry_id_t, const struct kefir_ir_debug_entry_attribute *);
+kefir_result_t kefir_ir_debug_entry_new(struct kefir_mem *, struct kefir_ir_debug_entries *, kefir_ir_debug_entry_tag_t,
+                                        kefir_ir_debug_entry_id_t *);
+kefir_result_t kefir_ir_debug_entry_new_child(struct kefir_mem *, struct kefir_ir_debug_entries *,
+                                              kefir_ir_debug_entry_id_t, kefir_ir_debug_entry_tag_t,
+                                              kefir_ir_debug_entry_id_t *);
+kefir_result_t kefir_ir_debug_entry_add_attribute(struct kefir_mem *, struct kefir_ir_debug_entries *,
+                                                  struct kefir_string_pool *, kefir_ir_debug_entry_id_t,
+                                                  const struct kefir_ir_debug_entry_attribute *);
 
 typedef struct kefir_ir_debug_entry_iterator {
     struct kefir_hashtree_node_iterator iter;
@@ -181,14 +180,21 @@ typedef struct kefir_ir_debug_entry_child_iterator {
     const struct kefir_list_entry *iter;
 } kefir_ir_debug_entry_child_iterator_t;
 
-kefir_result_t kefir_ir_debug_entry_iter(const struct kefir_ir_debug_entries *, struct kefir_ir_debug_entry_iterator *, kefir_ir_debug_entry_id_t *);
+kefir_result_t kefir_ir_debug_entry_iter(const struct kefir_ir_debug_entries *, struct kefir_ir_debug_entry_iterator *,
+                                         kefir_ir_debug_entry_id_t *);
 kefir_result_t kefir_ir_debug_entry_next(struct kefir_ir_debug_entry_iterator *, kefir_ir_debug_entry_id_t *);
 
-kefir_result_t kefir_ir_debug_entry_attribute_iter(const struct kefir_ir_debug_entries *, kefir_ir_debug_entry_id_t, struct kefir_ir_debug_entry_attribute_iterator *, const struct kefir_ir_debug_entry_attribute **);
-kefir_result_t kefir_ir_debug_entry_attribute_next(struct kefir_ir_debug_entry_attribute_iterator *, const struct kefir_ir_debug_entry_attribute **);
+kefir_result_t kefir_ir_debug_entry_attribute_iter(const struct kefir_ir_debug_entries *, kefir_ir_debug_entry_id_t,
+                                                   struct kefir_ir_debug_entry_attribute_iterator *,
+                                                   const struct kefir_ir_debug_entry_attribute **);
+kefir_result_t kefir_ir_debug_entry_attribute_next(struct kefir_ir_debug_entry_attribute_iterator *,
+                                                   const struct kefir_ir_debug_entry_attribute **);
 
-kefir_result_t kefir_ir_debug_entry_child_iter(const struct kefir_ir_debug_entries *, kefir_ir_debug_entry_id_t, struct kefir_ir_debug_entry_child_iterator *, kefir_ir_debug_entry_id_t *);
-kefir_result_t kefir_ir_debug_entry_child_next(struct kefir_ir_debug_entry_child_iterator *, kefir_ir_debug_entry_id_t *);
+kefir_result_t kefir_ir_debug_entry_child_iter(const struct kefir_ir_debug_entries *, kefir_ir_debug_entry_id_t,
+                                               struct kefir_ir_debug_entry_child_iterator *,
+                                               kefir_ir_debug_entry_id_t *);
+kefir_result_t kefir_ir_debug_entry_child_next(struct kefir_ir_debug_entry_child_iterator *,
+                                               kefir_ir_debug_entry_id_t *);
 
 kefir_result_t kefir_ir_source_map_init(struct kefir_ir_source_map *);
 kefir_result_t kefir_ir_source_map_free(struct kefir_mem *, struct kefir_ir_source_map *);

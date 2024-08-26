@@ -32,14 +32,12 @@ static kefir_result_t free_debug_entry(struct kefir_mem *mem, struct kefir_ir_de
 }
 
 static kefir_result_t free_root_debug_entry(struct kefir_mem *mem, struct kefir_hashtree *tree,
-                                                                    kefir_hashtree_key_t key, kefir_hashtree_value_t value,
-                                                                    void *payload) {
+                                            kefir_hashtree_key_t key, kefir_hashtree_value_t value, void *payload) {
     UNUSED(tree);
     UNUSED(key);
     UNUSED(payload);
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    ASSIGN_DECL_CAST(struct kefir_ir_debug_entry *, entry,
-        value);
+    ASSIGN_DECL_CAST(struct kefir_ir_debug_entry *, entry, value);
     REQUIRE(entry != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR debug entry"));
 
     REQUIRE_OK(free_debug_entry(mem, entry));
@@ -64,7 +62,8 @@ kefir_result_t kefir_ir_debug_entries_free(struct kefir_mem *mem, struct kefir_i
     return KEFIR_OK;
 }
 
-static kefir_result_t debug_entry_get(const struct kefir_ir_debug_entries *entries, kefir_ir_debug_entry_id_t identifier, struct kefir_ir_debug_entry **entry_ptr) {
+static kefir_result_t debug_entry_get(const struct kefir_ir_debug_entries *entries,
+                                      kefir_ir_debug_entry_id_t identifier, struct kefir_ir_debug_entry **entry_ptr) {
     REQUIRE(entries != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR debug entries"));
     REQUIRE(entry_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to IR debug entry"));
 
@@ -74,12 +73,14 @@ static kefir_result_t debug_entry_get(const struct kefir_ir_debug_entries *entri
         res = KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find requested IR debug entry");
     }
     REQUIRE_OK(res);
-    
+
     *entry_ptr = (struct kefir_ir_debug_entry *) node->value;
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_ir_debug_entry_get(const struct kefir_ir_debug_entries *entries, kefir_ir_debug_entry_id_t identifier, const struct kefir_ir_debug_entry **entry_ptr) {
+kefir_result_t kefir_ir_debug_entry_get(const struct kefir_ir_debug_entries *entries,
+                                        kefir_ir_debug_entry_id_t identifier,
+                                        const struct kefir_ir_debug_entry **entry_ptr) {
     REQUIRE(entries != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR debug entries"));
     REQUIRE(entry_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to IR debug entry"));
 
@@ -89,9 +90,13 @@ kefir_result_t kefir_ir_debug_entry_get(const struct kefir_ir_debug_entries *ent
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_ir_debug_entry_get_attribute(const struct kefir_ir_debug_entries *entries, kefir_ir_debug_entry_id_t identifier, kefir_ir_debug_entry_attribute_tag_t attribute_tag, const struct kefir_ir_debug_entry_attribute **attribute_ptr) {
+kefir_result_t kefir_ir_debug_entry_get_attribute(const struct kefir_ir_debug_entries *entries,
+                                                  kefir_ir_debug_entry_id_t identifier,
+                                                  kefir_ir_debug_entry_attribute_tag_t attribute_tag,
+                                                  const struct kefir_ir_debug_entry_attribute **attribute_ptr) {
     REQUIRE(entries != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR debug entries"));
-    REQUIRE(attribute_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to IR debug entry attribute"));
+    REQUIRE(attribute_ptr != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to IR debug entry attribute"));
 
     struct kefir_ir_debug_entry *entry;
     REQUIRE_OK(debug_entry_get(entries, identifier, &entry));
@@ -107,15 +112,28 @@ kefir_result_t kefir_ir_debug_entry_get_attribute(const struct kefir_ir_debug_en
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_ir_debug_entry_has_attribute(const struct kefir_ir_debug_entries *entries,
+                                                  kefir_ir_debug_entry_id_t identifier,
+                                                  kefir_ir_debug_entry_attribute_tag_t attribute_tag,
+                                                  kefir_bool_t *has_attr) {
+    REQUIRE(entries != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR debug entries"));
+    REQUIRE(has_attr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean"));
+
+    struct kefir_ir_debug_entry *entry;
+    REQUIRE_OK(debug_entry_get(entries, identifier, &entry));
+
+    *has_attr = kefir_hashtree_has(&entry->attributes, (kefir_hashtree_key_t) attribute_tag);
+    return KEFIR_OK;
+}
+
 static kefir_result_t free_debug_entry_attribute(struct kefir_mem *mem, struct kefir_hashtree *tree,
-                                                                    kefir_hashtree_key_t key, kefir_hashtree_value_t value,
-                                                                    void *payload) {
+                                                 kefir_hashtree_key_t key, kefir_hashtree_value_t value,
+                                                 void *payload) {
     UNUSED(tree);
     UNUSED(key);
     UNUSED(payload);
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    ASSIGN_DECL_CAST(struct kefir_ir_debug_entry_attribute *, attribute,
-        value);
+    ASSIGN_DECL_CAST(struct kefir_ir_debug_entry_attribute *, attribute, value);
     REQUIRE(attribute != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR debug entry attribute"));
 
     memset(attribute, 0, sizeof(struct kefir_ir_debug_entry_attribute));
@@ -123,10 +141,12 @@ static kefir_result_t free_debug_entry_attribute(struct kefir_mem *mem, struct k
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_ir_debug_entry_new(struct kefir_mem *mem, struct kefir_ir_debug_entries *entries, kefir_ir_debug_entry_tag_t entry_tag, kefir_ir_debug_entry_id_t *entry_id_ptr) {
+kefir_result_t kefir_ir_debug_entry_new(struct kefir_mem *mem, struct kefir_ir_debug_entries *entries,
+                                        kefir_ir_debug_entry_tag_t entry_tag, kefir_ir_debug_entry_id_t *entry_id_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(entries != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR debug entries"));
-    REQUIRE(entry_id_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer tp IR debug entry identifier"));
+    REQUIRE(entry_id_ptr != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer tp IR debug entry identifier"));
 
     struct kefir_ir_debug_entry *entry = KEFIR_MALLOC(mem, sizeof(struct kefir_ir_debug_entry));
     REQUIRE(entry != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate IR debug entry"));
@@ -138,7 +158,8 @@ kefir_result_t kefir_ir_debug_entry_new(struct kefir_mem *mem, struct kefir_ir_d
     kefir_result_t res = kefir_hashtree_init(&entry->attributes, &kefir_hashtree_uint_ops);
     REQUIRE_CHAIN(&res, kefir_hashtree_on_removal(&entry->attributes, free_debug_entry_attribute, NULL));
     REQUIRE_CHAIN(&res, kefir_list_init(&entry->children));
-    REQUIRE_CHAIN(&res, kefir_hashtree_insert(mem, &entries->entries, (kefir_hashtree_key_t) entry->identifier, (kefir_hashtree_value_t) entry));
+    REQUIRE_CHAIN(&res, kefir_hashtree_insert(mem, &entries->entries, (kefir_hashtree_key_t) entry->identifier,
+                                              (kefir_hashtree_value_t) entry));
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, entry);
         return KEFIR_OK;
@@ -149,10 +170,14 @@ kefir_result_t kefir_ir_debug_entry_new(struct kefir_mem *mem, struct kefir_ir_d
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_ir_debug_entry_new_child(struct kefir_mem *mem, struct kefir_ir_debug_entries *entries, kefir_ir_debug_entry_id_t parent_entry_id, kefir_ir_debug_entry_tag_t entry_tag, kefir_ir_debug_entry_id_t *entry_id_ptr) {
+kefir_result_t kefir_ir_debug_entry_new_child(struct kefir_mem *mem, struct kefir_ir_debug_entries *entries,
+                                              kefir_ir_debug_entry_id_t parent_entry_id,
+                                              kefir_ir_debug_entry_tag_t entry_tag,
+                                              kefir_ir_debug_entry_id_t *entry_id_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(entries != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR debug entries"));
-    REQUIRE(entry_id_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer tp IR debug entry identifier"));
+    REQUIRE(entry_id_ptr != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer tp IR debug entry identifier"));
 
     struct kefir_ir_debug_entry *parent_entry;
     REQUIRE_OK(debug_entry_get(entries, parent_entry_id, &parent_entry));
@@ -167,13 +192,15 @@ kefir_result_t kefir_ir_debug_entry_new_child(struct kefir_mem *mem, struct kefi
     kefir_result_t res = kefir_hashtree_init(&child_entry->attributes, &kefir_hashtree_uint_ops);
     REQUIRE_CHAIN(&res, kefir_hashtree_on_removal(&child_entry->attributes, free_debug_entry_attribute, NULL));
     REQUIRE_CHAIN(&res, kefir_list_init(&child_entry->children));
-    REQUIRE_CHAIN(&res, kefir_hashtree_insert(mem, &entries->entries, (kefir_hashtree_key_t) child_entry->identifier, (kefir_hashtree_value_t) child_entry));
+    REQUIRE_CHAIN(&res, kefir_hashtree_insert(mem, &entries->entries, (kefir_hashtree_key_t) child_entry->identifier,
+                                              (kefir_hashtree_value_t) child_entry));
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, child_entry);
         return KEFIR_OK;
     });
-    
-    res = kefir_list_insert_after(mem, &parent_entry->children, kefir_list_tail(&parent_entry->children), (void *) child_entry);
+
+    res = kefir_list_insert_after(mem, &parent_entry->children, kefir_list_tail(&parent_entry->children),
+                                  (void *) child_entry);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_hashtree_delete(mem, &entries->entries, (kefir_hashtree_key_t) child_entry->identifier);
         return res;
@@ -184,7 +211,9 @@ kefir_result_t kefir_ir_debug_entry_new_child(struct kefir_mem *mem, struct kefi
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_ir_debug_entry_add_attribute(struct kefir_mem *mem, struct kefir_ir_debug_entries *entries, struct kefir_string_pool *symbols, kefir_ir_debug_entry_id_t entry_id, const struct kefir_ir_debug_entry_attribute *attribute) {
+kefir_result_t kefir_ir_debug_entry_add_attribute(struct kefir_mem *mem, struct kefir_ir_debug_entries *entries,
+                                                  struct kefir_string_pool *symbols, kefir_ir_debug_entry_id_t entry_id,
+                                                  const struct kefir_ir_debug_entry_attribute *attribute) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(entries != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR debug entries"));
     REQUIRE(attribute != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR debug entry attribute"));
@@ -206,15 +235,17 @@ kefir_result_t kefir_ir_debug_entry_add_attribute(struct kefir_mem *mem, struct 
                 attr->name = kefir_string_pool_insert(mem, symbols, attr->name, NULL);
                 REQUIRE_ELSE(attr->name != NULL, {
                     KEFIR_FREE(mem, attr);
-                    return KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert IR debug entry name attribute into string pool");
+                    return KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE,
+                                           "Failed to insert IR debug entry name attribute into string pool");
                 });
             }
             break;
 
         case KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_TYPE:
-            REQUIRE_ELSE(kefir_hashtree_has(&entries->entries, (kefir_hashtree_key_t) attr->entry_id), {
+            REQUIRE_ELSE(kefir_hashtree_has(&entries->entries, (kefir_hashtree_key_t) attr->type_id), {
                 KEFIR_FREE(mem, attr);
-                return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR debug entry entry identifier attribute");
+                return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER,
+                                       "Expected valid IR debug entry entry identifier attribute");
             });
             break;
 
@@ -225,6 +256,7 @@ kefir_result_t kefir_ir_debug_entry_add_attribute(struct kefir_mem *mem, struct 
         case KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_BITWIDTH:
         case KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_BITOFFSET:
         case KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_LENGTH:
+        case KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_FUNCTION_PROTOTYPED:
             // Intentionally left blank
             break;
 
@@ -232,7 +264,8 @@ kefir_result_t kefir_ir_debug_entry_add_attribute(struct kefir_mem *mem, struct 
             return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected IR debug entry attribute tag");
     }
 
-    kefir_result_t res = kefir_hashtree_insert(mem, &entry->attributes, (kefir_hashtree_key_t) attr->tag, (kefir_hashtree_value_t) attr);
+    kefir_result_t res =
+        kefir_hashtree_insert(mem, &entry->attributes, (kefir_hashtree_key_t) attr->tag, (kefir_hashtree_value_t) attr);
     if (res == KEFIR_ALREADY_EXISTS) {
         res = KEFIR_SET_ERROR(KEFIR_ALREADY_EXISTS, "IR debug entry already has attribute with identical tag");
     }
@@ -243,17 +276,19 @@ kefir_result_t kefir_ir_debug_entry_add_attribute(struct kefir_mem *mem, struct 
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_ir_debug_entry_iter(const struct kefir_ir_debug_entries *entries, struct kefir_ir_debug_entry_iterator *iter, kefir_ir_debug_entry_id_t *entry_ptr) {
+kefir_result_t kefir_ir_debug_entry_iter(const struct kefir_ir_debug_entries *entries,
+                                         struct kefir_ir_debug_entry_iterator *iter,
+                                         kefir_ir_debug_entry_id_t *entry_ptr) {
     REQUIRE(entries != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR debug entries"));
-    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to IR debug entry iterator"));
+    REQUIRE(iter != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to IR debug entry iterator"));
 
     struct kefir_hashtree_node *node = kefir_hashtree_iter(&entries->entries, &iter->iter);
     REQUIRE(node != NULL, KEFIR_ITERATOR_END);
 
     for (;;) {
-        ASSIGN_DECL_CAST(const struct kefir_ir_debug_entry *, entry,
-            node->value);
-        
+        ASSIGN_DECL_CAST(const struct kefir_ir_debug_entry *, entry, node->value);
+
         if (entry->parent_identifier == KEFIR_IR_DEBUG_ENTRY_ID_NONE) {
             break;
         } else {
@@ -266,16 +301,16 @@ kefir_result_t kefir_ir_debug_entry_iter(const struct kefir_ir_debug_entries *en
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_ir_debug_entry_next(struct kefir_ir_debug_entry_iterator *iter, kefir_ir_debug_entry_id_t *entry_ptr) {
+kefir_result_t kefir_ir_debug_entry_next(struct kefir_ir_debug_entry_iterator *iter,
+                                         kefir_ir_debug_entry_id_t *entry_ptr) {
     REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR debug entry iterator"));
 
     struct kefir_hashtree_node *node = kefir_hashtree_next(&iter->iter);
     REQUIRE(node != NULL, KEFIR_ITERATOR_END);
 
     for (;;) {
-        ASSIGN_DECL_CAST(const struct kefir_ir_debug_entry *, entry,
-            node->value);
-        
+        ASSIGN_DECL_CAST(const struct kefir_ir_debug_entry *, entry, node->value);
+
         if (entry->parent_identifier == KEFIR_IR_DEBUG_ENTRY_ID_NONE) {
             break;
         } else {
@@ -288,9 +323,13 @@ kefir_result_t kefir_ir_debug_entry_next(struct kefir_ir_debug_entry_iterator *i
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_ir_debug_entry_attribute_iter(const struct kefir_ir_debug_entries *entries, kefir_ir_debug_entry_id_t entry_id, struct kefir_ir_debug_entry_attribute_iterator *iter, const struct kefir_ir_debug_entry_attribute **attribute_ptr) {
+kefir_result_t kefir_ir_debug_entry_attribute_iter(const struct kefir_ir_debug_entries *entries,
+                                                   kefir_ir_debug_entry_id_t entry_id,
+                                                   struct kefir_ir_debug_entry_attribute_iterator *iter,
+                                                   const struct kefir_ir_debug_entry_attribute **attribute_ptr) {
     REQUIRE(entries != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR debug entries"));
-    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to IR debug entry attribute iterator"));
+    REQUIRE(iter != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to IR debug entry attribute iterator"));
 
     struct kefir_ir_debug_entry *entry;
     REQUIRE_OK(debug_entry_get(entries, entry_id, &entry));
@@ -302,7 +341,8 @@ kefir_result_t kefir_ir_debug_entry_attribute_iter(const struct kefir_ir_debug_e
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_ir_debug_entry_attribute_next(struct kefir_ir_debug_entry_attribute_iterator *iter, const struct kefir_ir_debug_entry_attribute **attribute_ptr) {
+kefir_result_t kefir_ir_debug_entry_attribute_next(struct kefir_ir_debug_entry_attribute_iterator *iter,
+                                                   const struct kefir_ir_debug_entry_attribute **attribute_ptr) {
     REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR debug entry attribute iterator"));
 
     struct kefir_hashtree_node *node = kefir_hashtree_next(&iter->iter);
@@ -312,9 +352,13 @@ kefir_result_t kefir_ir_debug_entry_attribute_next(struct kefir_ir_debug_entry_a
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_ir_debug_entry_child_iter(const struct kefir_ir_debug_entries *entries, kefir_ir_debug_entry_id_t entry_id, struct kefir_ir_debug_entry_child_iterator *iter, kefir_ir_debug_entry_id_t *child_entry_id_ptr) {
+kefir_result_t kefir_ir_debug_entry_child_iter(const struct kefir_ir_debug_entries *entries,
+                                               kefir_ir_debug_entry_id_t entry_id,
+                                               struct kefir_ir_debug_entry_child_iterator *iter,
+                                               kefir_ir_debug_entry_id_t *child_entry_id_ptr) {
     REQUIRE(entries != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR debug entries"));
-    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to IR debug entry attribute iterator"));
+    REQUIRE(iter != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to IR debug entry attribute iterator"));
 
     struct kefir_ir_debug_entry *entry;
     REQUIRE_OK(debug_entry_get(entries, entry_id, &entry));
@@ -322,20 +366,20 @@ kefir_result_t kefir_ir_debug_entry_child_iter(const struct kefir_ir_debug_entri
     iter->iter = kefir_list_head(&entry->children);
     REQUIRE(iter->iter != NULL, KEFIR_ITERATOR_END);
 
-    ASSIGN_DECL_CAST(const struct kefir_ir_debug_entry *, child_entry,
-        iter->iter->value);
+    ASSIGN_DECL_CAST(const struct kefir_ir_debug_entry *, child_entry, iter->iter->value);
     ASSIGN_PTR(child_entry_id_ptr, child_entry->identifier);
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_ir_debug_entry_child_next(struct kefir_ir_debug_entry_child_iterator *iter, kefir_ir_debug_entry_id_t *child_entry_id_ptr) {
-    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to IR debug entry attribute iterator"));
+kefir_result_t kefir_ir_debug_entry_child_next(struct kefir_ir_debug_entry_child_iterator *iter,
+                                               kefir_ir_debug_entry_id_t *child_entry_id_ptr) {
+    REQUIRE(iter != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to IR debug entry attribute iterator"));
 
     kefir_list_next(&iter->iter);
     REQUIRE(iter->iter != NULL, KEFIR_ITERATOR_END);
 
-    ASSIGN_DECL_CAST(const struct kefir_ir_debug_entry *, child_entry,
-        iter->iter->value);
+    ASSIGN_DECL_CAST(const struct kefir_ir_debug_entry *, child_entry, iter->iter->value);
     ASSIGN_PTR(child_entry_id_ptr, child_entry->identifier);
     return KEFIR_OK;
 }
@@ -546,7 +590,8 @@ kefir_result_t kefir_ir_function_debug_info_set_source_location(struct kefir_mem
 }
 
 kefir_result_t kefir_ir_module_debug_info_init(struct kefir_ir_module_debug_info *debug_info) {
-    REQUIRE(debug_info != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to IR module debug info"));
+    REQUIRE(debug_info != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to IR module debug info"));
 
     REQUIRE_OK(kefir_ir_debug_entries_init(&debug_info->entries));
     return KEFIR_OK;

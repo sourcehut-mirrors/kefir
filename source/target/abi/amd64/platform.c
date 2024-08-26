@@ -23,6 +23,7 @@
 #include "kefir/target/abi/amd64/system-v/qwords.h"
 #include "kefir/target/abi/amd64/system-v/type_layout.h"
 #include "kefir/target/abi/amd64/bitfields.h"
+#include "kefir/ir/platform.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 #include "kefir/core/source_error.h"
@@ -204,6 +205,125 @@ static kefir_result_t amd64_sysv_free(struct kefir_mem *mem, struct kefir_ir_tar
     return KEFIR_OK;
 }
 
+static kefir_result_t builtin_va_list_debug_info(struct kefir_mem *mem, const struct kefir_ir_target_platform *platform,
+                                                 struct kefir_ir_debug_entries *entries,
+                                                 kefir_ir_debug_entry_id_t *entry_id_ptr) {
+    UNUSED(platform);
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(entries != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR debug entries"));
+    REQUIRE(entry_id_ptr != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer IR debug entry identifier"));
+
+    kefir_ir_debug_entry_id_t index_type_id, offset_type_id, void_type_id, ptr_type_id, va_list_tag_id,
+        va_list_tag_arr_id, va_list_tag_subrange_id, va_list_tag_member;
+
+    REQUIRE_OK(kefir_ir_debug_entry_new(mem, entries, KEFIR_IR_DEBUG_ENTRY_TYPE_UNSIGNED_INT, &index_type_id));
+    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, entries, NULL, index_type_id,
+                                                  &KEFIR_IR_DEBUG_ENTRY_ATTR_NAME("unsigned long")));
+    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, entries, NULL, index_type_id,
+                                                  &KEFIR_IR_DEBUG_ENTRY_ATTR_SIZE(KEFIR_AMD64_ABI_QWORD)));
+    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, entries, NULL, index_type_id,
+                                                  &KEFIR_IR_DEBUG_ENTRY_ATTR_ALIGNMENT(KEFIR_AMD64_ABI_QWORD)));
+
+    REQUIRE_OK(kefir_ir_debug_entry_new(mem, entries, KEFIR_IR_DEBUG_ENTRY_TYPE_UNSIGNED_INT, &offset_type_id));
+    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, entries, NULL, offset_type_id,
+                                                  &KEFIR_IR_DEBUG_ENTRY_ATTR_NAME("unsigned int")));
+    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, entries, NULL, offset_type_id,
+                                                  &KEFIR_IR_DEBUG_ENTRY_ATTR_SIZE(KEFIR_AMD64_ABI_QWORD / 2)));
+    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, entries, NULL, offset_type_id,
+                                                  &KEFIR_IR_DEBUG_ENTRY_ATTR_ALIGNMENT(KEFIR_AMD64_ABI_QWORD / 2)));
+
+    REQUIRE_OK(kefir_ir_debug_entry_new(mem, entries, KEFIR_IR_DEBUG_ENTRY_TYPE_VOID, &void_type_id));
+    REQUIRE_OK(
+        kefir_ir_debug_entry_add_attribute(mem, entries, NULL, void_type_id, &KEFIR_IR_DEBUG_ENTRY_ATTR_NAME("void")));
+
+    REQUIRE_OK(kefir_ir_debug_entry_new(mem, entries, KEFIR_IR_DEBUG_ENTRY_TYPE_POINTER, &ptr_type_id));
+    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, entries, NULL, ptr_type_id,
+                                                  &KEFIR_IR_DEBUG_ENTRY_ATTR_TYPE(void_type_id)));
+    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, entries, NULL, ptr_type_id,
+                                                  &KEFIR_IR_DEBUG_ENTRY_ATTR_SIZE(KEFIR_AMD64_ABI_QWORD)));
+    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, entries, NULL, ptr_type_id,
+                                                  &KEFIR_IR_DEBUG_ENTRY_ATTR_ALIGNMENT(KEFIR_AMD64_ABI_QWORD)));
+
+    REQUIRE_OK(kefir_ir_debug_entry_new(mem, entries, KEFIR_IR_DEBUG_ENTRY_TYPE_STRUCTURE, &va_list_tag_id));
+    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, entries, NULL, va_list_tag_id,
+                                                  &KEFIR_IR_DEBUG_ENTRY_ATTR_NAME("__va_list_tag")));
+    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, entries, NULL, va_list_tag_id,
+                                                  &KEFIR_IR_DEBUG_ENTRY_ATTR_SIZE(3 * KEFIR_AMD64_ABI_QWORD)));
+    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, entries, NULL, va_list_tag_id,
+                                                  &KEFIR_IR_DEBUG_ENTRY_ATTR_ALIGNMENT(KEFIR_AMD64_ABI_QWORD)));
+
+    REQUIRE_OK(kefir_ir_debug_entry_new_child(mem, entries, va_list_tag_id, KEFIR_IR_DEBUG_ENTRY_STRUCTURE_MEMBER,
+                                              &va_list_tag_member));
+    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, entries, NULL, va_list_tag_member,
+                                                  &KEFIR_IR_DEBUG_ENTRY_ATTR_NAME("gp_offset")));
+    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, entries, NULL, va_list_tag_member,
+                                                  &KEFIR_IR_DEBUG_ENTRY_ATTR_TYPE(offset_type_id)));
+    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, entries, NULL, va_list_tag_member,
+                                                  &KEFIR_IR_DEBUG_ENTRY_ATTR_SIZE(KEFIR_AMD64_ABI_QWORD / 2)));
+    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, entries, NULL, va_list_tag_member,
+                                                  &KEFIR_IR_DEBUG_ENTRY_ATTR_ALIGNMENT(KEFIR_AMD64_ABI_QWORD / 2)));
+    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, entries, NULL, va_list_tag_member,
+                                                  &KEFIR_IR_DEBUG_ENTRY_ATTR_OFFSET(0)));
+    REQUIRE_OK(kefir_ir_debug_entry_new_child(mem, entries, va_list_tag_id, KEFIR_IR_DEBUG_ENTRY_STRUCTURE_MEMBER,
+                                              &va_list_tag_member));
+    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, entries, NULL, va_list_tag_member,
+                                                  &KEFIR_IR_DEBUG_ENTRY_ATTR_NAME("fp_offset")));
+    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, entries, NULL, va_list_tag_member,
+                                                  &KEFIR_IR_DEBUG_ENTRY_ATTR_TYPE(offset_type_id)));
+    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, entries, NULL, va_list_tag_member,
+                                                  &KEFIR_IR_DEBUG_ENTRY_ATTR_SIZE(KEFIR_AMD64_ABI_QWORD / 2)));
+    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, entries, NULL, va_list_tag_member,
+                                                  &KEFIR_IR_DEBUG_ENTRY_ATTR_ALIGNMENT(KEFIR_AMD64_ABI_QWORD / 2)));
+    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, entries, NULL, va_list_tag_member,
+                                                  &KEFIR_IR_DEBUG_ENTRY_ATTR_OFFSET(4)));
+    REQUIRE_OK(kefir_ir_debug_entry_new_child(mem, entries, va_list_tag_id, KEFIR_IR_DEBUG_ENTRY_STRUCTURE_MEMBER,
+                                              &va_list_tag_member));
+    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, entries, NULL, va_list_tag_member,
+                                                  &KEFIR_IR_DEBUG_ENTRY_ATTR_NAME("overflow_arg_area")));
+    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, entries, NULL, va_list_tag_member,
+                                                  &KEFIR_IR_DEBUG_ENTRY_ATTR_TYPE(ptr_type_id)));
+    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, entries, NULL, va_list_tag_member,
+                                                  &KEFIR_IR_DEBUG_ENTRY_ATTR_SIZE(KEFIR_AMD64_ABI_QWORD)));
+    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, entries, NULL, va_list_tag_member,
+                                                  &KEFIR_IR_DEBUG_ENTRY_ATTR_ALIGNMENT(KEFIR_AMD64_ABI_QWORD)));
+    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, entries, NULL, va_list_tag_member,
+                                                  &KEFIR_IR_DEBUG_ENTRY_ATTR_OFFSET(8)));
+    REQUIRE_OK(kefir_ir_debug_entry_new_child(mem, entries, va_list_tag_id, KEFIR_IR_DEBUG_ENTRY_STRUCTURE_MEMBER,
+                                              &va_list_tag_member));
+    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, entries, NULL, va_list_tag_member,
+                                                  &KEFIR_IR_DEBUG_ENTRY_ATTR_NAME("reg_save_area")));
+    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, entries, NULL, va_list_tag_member,
+                                                  &KEFIR_IR_DEBUG_ENTRY_ATTR_TYPE(ptr_type_id)));
+    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, entries, NULL, va_list_tag_member,
+                                                  &KEFIR_IR_DEBUG_ENTRY_ATTR_SIZE(KEFIR_AMD64_ABI_QWORD)));
+    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, entries, NULL, va_list_tag_member,
+                                                  &KEFIR_IR_DEBUG_ENTRY_ATTR_ALIGNMENT(KEFIR_AMD64_ABI_QWORD)));
+    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, entries, NULL, va_list_tag_member,
+                                                  &KEFIR_IR_DEBUG_ENTRY_ATTR_OFFSET(16)));
+
+    REQUIRE_OK(kefir_ir_debug_entry_new(mem, entries, KEFIR_IR_DEBUG_ENTRY_TYPE_ARRAY, &va_list_tag_arr_id));
+    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, entries, NULL, va_list_tag_arr_id,
+                                                  &KEFIR_IR_DEBUG_ENTRY_ATTR_TYPE(va_list_tag_id)));
+    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, entries, NULL, va_list_tag_arr_id,
+                                                  &KEFIR_IR_DEBUG_ENTRY_ATTR_SIZE(3 * KEFIR_AMD64_ABI_QWORD)));
+    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, entries, NULL, va_list_tag_arr_id,
+                                                  &KEFIR_IR_DEBUG_ENTRY_ATTR_ALIGNMENT(KEFIR_AMD64_ABI_QWORD)));
+    REQUIRE_OK(kefir_ir_debug_entry_new_child(mem, entries, va_list_tag_arr_id, KEFIR_IR_DEBUG_ENTRY_ARRAY_SUBRANGE,
+                                              &va_list_tag_subrange_id));
+    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, entries, NULL, va_list_tag_subrange_id,
+                                                  &KEFIR_IR_DEBUG_ENTRY_ATTR_TYPE(index_type_id)));
+    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, entries, NULL, va_list_tag_subrange_id,
+                                                  &KEFIR_IR_DEBUG_ENTRY_ATTR_LENGTH(1)));
+
+    REQUIRE_OK(kefir_ir_debug_entry_new(mem, entries, KEFIR_IR_DEBUG_ENTRY_TYPEDEF, entry_id_ptr));
+    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, entries, NULL, *entry_id_ptr,
+                                                  &KEFIR_IR_DEBUG_ENTRY_ATTR_NAME("__builtin_va_list")));
+    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, entries, NULL, *entry_id_ptr,
+                                                  &KEFIR_IR_DEBUG_ENTRY_ATTR_TYPE(va_list_tag_arr_id)));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_abi_amd64_target_platform(kefir_abi_amd64_variant_t variant,
                                                struct kefir_ir_target_platform *platform) {
     REQUIRE(platform != NULL,
@@ -216,6 +336,7 @@ kefir_result_t kefir_abi_amd64_target_platform(kefir_abi_amd64_variant_t variant
             platform->typeentry_info = amd64_sysv_typeentry_info;
             platform->bitfield_allocator = amd64_sysv_bitfield_allocator;
             platform->decode_inline_assembly_constraints = amd64_sysv_decode_inline_assembly_constraints;
+            platform->builtin_va_list_debug_info = builtin_va_list_debug_info;
             platform->free = amd64_sysv_free;
             platform->payload = NULL;
             break;
