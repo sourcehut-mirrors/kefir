@@ -399,12 +399,21 @@ static kefir_result_t translate_debug_type(struct kefir_mem *mem, const struct k
             REQUIRE_OK(kefir_hashtree_insert(mem, &debug_entries->type_index, (kefir_hashtree_key_t) type,
                                              (kefir_hashtree_value_t) *entry_id_ptr));
 
+            struct kefir_ast_translator_environment_type underlying_env_type;
+            REQUIRE_OK(kefir_ast_translator_environment_new_type(mem, context, translator_env, type->enumeration_type.underlying_type,
+                &underlying_env_type, NULL));
+            
+            const kefir_size_t underlying_type_size = underlying_env_type.layout->properties.size;
+            const kefir_size_t underlying_type_alignment = underlying_env_type.layout->properties.alignment;
+
+            REQUIRE_OK(kefir_ast_translator_environment_free_type(mem, translator_env, &underlying_env_type));
+
             REQUIRE_OK(
                 kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols, *entry_id_ptr,
-                                                   &KEFIR_IR_DEBUG_ENTRY_ATTR_SIZE(type_layout->properties.size)));
+                                                   &KEFIR_IR_DEBUG_ENTRY_ATTR_SIZE(underlying_type_size)));
             REQUIRE_OK(kefir_ir_debug_entry_add_attribute(
                 mem, &module->debug_info.entries, &module->symbols, *entry_id_ptr,
-                &KEFIR_IR_DEBUG_ENTRY_ATTR_ALIGNMENT(type_layout->properties.alignment)));
+                &KEFIR_IR_DEBUG_ENTRY_ATTR_ALIGNMENT(underlying_type_alignment)));
 
             if (type->enumeration_type.identifier != NULL) {
                 REQUIRE_OK(kefir_ir_debug_entry_add_attribute(
