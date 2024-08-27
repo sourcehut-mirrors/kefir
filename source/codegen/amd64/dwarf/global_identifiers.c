@@ -69,14 +69,18 @@ static kefir_result_t kefir_codegen_amd64_dwarf_generate_global_identifier_info(
             break;
 
         case KEFIR_IR_IDENTIFIER_THREAD_LOCAL_DATA:
-            REQUIRE_OK(KEFIR_AMD64_DWARF_ULEB128(&codegen->xasmgen, 2 + KEFIR_AMD64_ABI_QWORD));
-            REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen->xasmgen, KEFIR_DWARF(DW_OP_const8u)));
-            REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
-                &codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
-                kefir_asm_amd64_xasmgen_operand_label(
-                    &codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_SYMBOL_RELATIVE_DTPOFF,
-                    identifier->alias != NULL ? identifier->alias : identifier->symbol)));
-            REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen->xasmgen, KEFIR_DWARF(DW_OP_form_tls_address)));
+            if (codegen->config->emulated_tls) {
+                REQUIRE_OK(KEFIR_AMD64_DWARF_ULEB128(&codegen->xasmgen, 0));
+            } else {
+                REQUIRE_OK(KEFIR_AMD64_DWARF_ULEB128(&codegen->xasmgen, 2 + KEFIR_AMD64_ABI_QWORD));
+                REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen->xasmgen, KEFIR_DWARF(DW_OP_const8u)));
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+                    &codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
+                    kefir_asm_amd64_xasmgen_operand_label(
+                        &codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_SYMBOL_RELATIVE_DTPOFF,
+                        identifier->alias != NULL ? identifier->alias : identifier->symbol)));
+                REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen->xasmgen, KEFIR_DWARF(DW_OP_form_tls_address)));
+            }
             break;
 
         case KEFIR_IR_IDENTIFIER_FUNCTION:
