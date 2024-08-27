@@ -1309,6 +1309,10 @@ static kefir_result_t amd64_symbol_arg(void (*print)(void *, const char *, ...),
             print(printarg, "@tpoff");
             break;
 
+        case KEFIR_AMD64_XASMGEN_SYMBOL_RELATIVE_DTPOFF:
+            print(printarg, "@dtpoff");
+            break;
+
         case KEFIR_AMD64_XASMGEN_SYMBOL_RELATIVE_GOTTPOFF:
             print(printarg, "@gottpoff");
             break;
@@ -1338,6 +1342,10 @@ static kefir_result_t amd64_yasm_symbol_arg(void (*print)(void *, const char *, 
 
         case KEFIR_AMD64_XASMGEN_SYMBOL_RELATIVE_TPOFF:
             print(printarg, " wrt ..tpoff");
+            break;
+
+        case KEFIR_AMD64_XASMGEN_SYMBOL_RELATIVE_DTPOFF:
+            print(printarg, " wrt ..dtpoff");
             break;
 
         case KEFIR_AMD64_XASMGEN_SYMBOL_RELATIVE_GOTTPOFF:

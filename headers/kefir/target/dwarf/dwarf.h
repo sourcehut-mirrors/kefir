@@ -99,7 +99,11 @@ typedef enum kefir_dwarf_encoding {
     KEFIR_DWARF(DW_ATE_unsigned_char) = 0x8
 } kefir_dwarf_encoding_t;
 
-typedef enum kefir_dwarf_operation { KEFIR_DWARF(DW_OP_addr) = 0x03 } kefir_dwarf_operation_t;
+typedef enum kefir_dwarf_operation {
+    KEFIR_DWARF(DW_OP_addr) = 0x03,
+    KEFIR_DWARF(DW_OP_const8u) = 0x0e,
+    KEFIR_DWARF(DW_OP_form_tls_address) = 0x9b
+} kefir_dwarf_operation_t;
 
 typedef enum kefir_dwarf_language { KEFIR_DWARF(DW_LANG_C11) = 0x1d } kefir_dwarf_language_t;
 
