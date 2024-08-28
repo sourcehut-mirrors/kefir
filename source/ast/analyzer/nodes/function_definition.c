@@ -206,6 +206,10 @@ kefir_result_t kefir_ast_analyze_function_definition_node(struct kefir_mem *mem,
         return res;
     });
 
+    struct kefir_ast_flow_control_structure_associated_scopes associated_scopes;
+    REQUIRE_OK(local_context->context.push_block(mem, &local_context->context, &associated_scopes.ordinary_scope,
+                                                 &associated_scopes.tag_scope));
+
     const struct kefir_ast_type *type = NULL;
     kefir_ast_scoped_identifier_storage_t storage = KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN;
     kefir_size_t alignment = 0;
@@ -287,7 +291,7 @@ kefir_result_t kefir_ast_analyze_function_definition_node(struct kefir_mem *mem,
             KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR,
                             "Expected function definition local context to have valid flow control tree"));
     REQUIRE_OK(kefir_ast_flow_control_tree_push(mem, local_context->context.flow_control_tree,
-                                                KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK,
+                                                KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK, &associated_scopes,
                                                 &node->body->base.properties.statement_props.flow_control_statement));
 
     const struct kefir_ast_declarator_function *decl_func = NULL;
@@ -331,6 +335,7 @@ kefir_result_t kefir_ast_analyze_function_definition_node(struct kefir_mem *mem,
                                        "Compound statement items shall be either statements or declarations"));
     }
     REQUIRE_OK(kefir_ast_flow_control_tree_pop(local_context->context.flow_control_tree));
+    REQUIRE_OK(local_context->context.pop_block(mem, &local_context->context));
 
     if (local_context->vl_arrays.next_id > 0) {
         struct kefir_ast_constant_expression *array_length =

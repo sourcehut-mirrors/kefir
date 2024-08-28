@@ -44,12 +44,12 @@ kefir_result_t kefir_ast_analyze_statement_expression_node(struct kefir_mem *mem
     REQUIRE(context->flow_control_tree != NULL,
             KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->base.source_location,
                                    "Unable to use compound statement in current context"));
+    struct kefir_ast_flow_control_structure_associated_scopes associated_scopes;
+    REQUIRE_OK(context->push_block(mem, context, &associated_scopes.ordinary_scope, &associated_scopes.tag_scope));
     REQUIRE_OK(kefir_ast_flow_control_tree_push(mem, context->flow_control_tree, KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK,
+                                                &associated_scopes,
                                                 &base->properties.expression_props.flow_control_statement));
 
-    REQUIRE_OK(context->push_block(
-        mem, context, &base->properties.expression_props.flow_control_statement->associated_scopes.ordinary_scope,
-        &base->properties.expression_props.flow_control_statement->associated_scopes.tag_scope));
     for (const struct kefir_list_entry *iter = kefir_list_head(&node->block_items); iter != NULL;
          kefir_list_next(&iter)) {
         ASSIGN_DECL_CAST(struct kefir_ast_node_base *, item, iter->value);

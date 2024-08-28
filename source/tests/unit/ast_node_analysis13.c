@@ -64,9 +64,14 @@ DEFINE_CASE(ast_node_analysis_inline_assembly2, "AST node analysis - inline asse
                                             &global_context, NULL));
     ASSERT_OK(kefir_ast_local_context_init(&kft_mem, &global_context, &local_context));
 
+    struct kefir_ast_flow_control_structure_associated_scopes associated_scopes;
+    ASSERT_OK(local_context.context.push_block(&kft_mem, &local_context.context, &associated_scopes.ordinary_scope,
+                                               &associated_scopes.tag_scope));
+
     struct kefir_ast_flow_control_structure *flow_control = NULL;
     ASSERT_OK(kefir_ast_flow_control_tree_push(&kft_mem, &local_context.flow_control_tree,
-                                               KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK, &flow_control));
+                                               KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK, &associated_scopes,
+                                               &flow_control));
 
     struct kefir_ast_inline_assembly *inline_asm1 = kefir_ast_new_inline_assembly(
         &kft_mem, (struct kefir_ast_inline_assembly_qualifiers){.goto_qualifier = true}, "Some assembly code");

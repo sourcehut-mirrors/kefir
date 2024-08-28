@@ -42,8 +42,11 @@ kefir_result_t kefir_ast_analyze_do_while_statement_node(struct kefir_mem *mem, 
             KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->base.source_location,
                                    "Unable to use do while statement in current context"));
     struct kefir_ast_flow_control_structure *direct_parent = NULL;
+    struct kefir_ast_flow_control_structure_associated_scopes associated_scopes;
+    REQUIRE_OK(context->push_block(mem, context, &associated_scopes.ordinary_scope, &associated_scopes.tag_scope));
     REQUIRE_OK(kefir_ast_flow_control_tree_top(context->flow_control_tree, &direct_parent));
     REQUIRE_OK(kefir_ast_flow_control_tree_push(mem, context->flow_control_tree, KEFIR_AST_FLOW_CONTROL_STRUCTURE_DO,
+                                                &associated_scopes,
                                                 &base->properties.statement_props.flow_control_statement));
 
     base->properties.statement_props.flow_control_statement->value.loop.continuation =
@@ -55,10 +58,6 @@ kefir_result_t kefir_ast_analyze_do_while_statement_node(struct kefir_mem *mem, 
         kefir_ast_flow_control_point_alloc(mem, direct_parent);
     REQUIRE(base->properties.statement_props.flow_control_statement->value.loop.end != NULL,
             KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST flow control point"));
-
-    REQUIRE_OK(context->push_block(
-        mem, context, &base->properties.statement_props.flow_control_statement->associated_scopes.ordinary_scope,
-        &base->properties.statement_props.flow_control_statement->associated_scopes.tag_scope));
 
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, node->controlling_expr));
     REQUIRE(node->controlling_expr->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION,

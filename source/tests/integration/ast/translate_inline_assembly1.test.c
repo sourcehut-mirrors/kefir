@@ -51,8 +51,8 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_ast_translator_context global_translator_context;
     REQUIRE_OK(kefir_ast_translator_context_init(mem, &global_translator_context, &global_context.context, &env,
                                                  &module, NULL));
-    REQUIRE_OK(
-        kefir_ast_translator_build_global_scope_layout(mem, &module, &global_context, &env, global_translator_context.debug_entries, &translator_global_scope));
+    REQUIRE_OK(kefir_ast_translator_build_global_scope_layout(
+        mem, &module, &global_context, &env, global_translator_context.debug_entries, &translator_global_scope));
     REQUIRE_OK(kefir_ast_translate_global_scope(mem, &global_context.context, &module, &translator_global_scope));
     struct kefir_irbuilder_block builder;
 
@@ -78,8 +78,12 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     FUNC2("inline_asm1", {
         struct kefir_ast_flow_control_structure *flow_control = NULL;
+        struct kefir_ast_flow_control_structure_associated_scopes associated_scopes;
+        REQUIRE_OK(local_context.context.push_block(mem, &local_context.context, &associated_scopes.ordinary_scope,
+                                                    &associated_scopes.tag_scope));
         REQUIRE_OK(kefir_ast_flow_control_tree_push(mem, &local_context.flow_control_tree,
-                                                    KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK, &flow_control));
+                                                    KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK, &associated_scopes,
+                                                    &flow_control));
         REQUIRE_OK(local_context.context.define_identifier(
             mem, &local_context.context, true, "ld1", kefir_ast_type_long_double(),
             KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO, KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, NULL));
@@ -115,8 +119,12 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     FUNC2("inline_asm2", {
         struct kefir_ast_flow_control_structure *flow_control = NULL;
+        struct kefir_ast_flow_control_structure_associated_scopes associated_scopes;
+        REQUIRE_OK(local_context.context.push_block(mem, &local_context.context, &associated_scopes.ordinary_scope,
+                                                    &associated_scopes.tag_scope));
         REQUIRE_OK(kefir_ast_flow_control_tree_push(mem, &local_context.flow_control_tree,
-                                                    KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK, &flow_control));
+                                                    KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK, &associated_scopes,
+                                                    &flow_control));
         REQUIRE_OK(local_context.context.define_identifier(
             mem, &local_context.context, true, "chr", kefir_ast_type_char(), KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO,
             KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, NULL, NULL));

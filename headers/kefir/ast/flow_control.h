@@ -77,6 +77,11 @@ typedef struct kefir_ast_flow_control_structure_cleanup {
     void *payload;
 } kefir_ast_flow_control_structure_cleanup_t;
 
+typedef struct kefir_ast_flow_control_structure_associated_scopes {
+    const struct kefir_ast_identifier_flat_scope *ordinary_scope;
+    const struct kefir_ast_identifier_flat_scope *tag_scope;
+} kefir_ast_flow_control_structure_associated_scopes_t;
+
 typedef struct kefir_ast_flow_control_structure {
     struct kefir_ast_flow_control_point *parent_point;
     kefir_ast_flow_control_structure_type_t type;
@@ -111,10 +116,7 @@ typedef struct kefir_ast_flow_control_structure {
         } loop;
     } value;
 
-    struct {
-        const struct kefir_ast_identifier_flat_scope *ordinary_scope;
-        const struct kefir_ast_identifier_flat_scope *tag_scope;
-    } associated_scopes;
+    struct kefir_ast_flow_control_structure_associated_scopes associated_scopes;
 } kefir_ast_flow_control_structure_t;
 
 typedef struct kefir_ast_flow_control_tree {
@@ -132,6 +134,7 @@ kefir_result_t kefir_ast_flow_control_tree_init(struct kefir_ast_flow_control_tr
 kefir_result_t kefir_ast_flow_control_tree_free(struct kefir_mem *, struct kefir_ast_flow_control_tree *);
 kefir_result_t kefir_ast_flow_control_tree_push(struct kefir_mem *, struct kefir_ast_flow_control_tree *,
                                                 kefir_ast_flow_control_structure_type_t,
+                                                const struct kefir_ast_flow_control_structure_associated_scopes *,
                                                 struct kefir_ast_flow_control_structure **);
 kefir_result_t kefir_ast_flow_control_tree_pop(struct kefir_ast_flow_control_tree *);
 kefir_result_t kefir_ast_flow_control_tree_top(struct kefir_ast_flow_control_tree *,

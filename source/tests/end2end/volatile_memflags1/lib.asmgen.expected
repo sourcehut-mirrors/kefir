@@ -166,14 +166,14 @@
             "identifier": 146,
             "type": [
                 {
-                    "type": "int"
-                },
-                {
                     "type": "array",
                     "length": 1,
                     "element_type": {
                         "type": "word"
                     }
+                },
+                {
+                    "type": "int"
                 },
                 {
                     "type": "struct",
@@ -1634,7 +1634,7 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 146,
-                        "index": 0
+                        "index": 2
                     }
                 },
                 {
@@ -1651,7 +1651,7 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 146,
-                        "index": 1
+                        "index": 0
                     }
                 },
                 {
@@ -1699,7 +1699,7 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 146,
-                        "index": 0
+                        "index": 2
                     }
                 },
                 {
@@ -1880,7 +1880,7 @@
                     "opcode": "getlocal",
                     "arg": {
                         "type": 146,
-                        "index": 1
+                        "index": 0
                     }
                 },
                 {

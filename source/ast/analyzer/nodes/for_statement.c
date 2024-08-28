@@ -43,8 +43,11 @@ kefir_result_t kefir_ast_analyze_for_statement_node(struct kefir_mem *mem, const
             KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->base.source_location,
                                    "Unable to use for statement in current context"));
     struct kefir_ast_flow_control_structure *direct_parent = NULL;
+    struct kefir_ast_flow_control_structure_associated_scopes associated_scopes;
+    REQUIRE_OK(context->push_block(mem, context, &associated_scopes.ordinary_scope, &associated_scopes.tag_scope));
     REQUIRE_OK(kefir_ast_flow_control_tree_top(context->flow_control_tree, &direct_parent));
     REQUIRE_OK(kefir_ast_flow_control_tree_push(mem, context->flow_control_tree, KEFIR_AST_FLOW_CONTROL_STRUCTURE_FOR,
+                                                &associated_scopes,
                                                 &base->properties.statement_props.flow_control_statement));
 
     base->properties.statement_props.flow_control_statement->value.loop.continuation =
@@ -56,10 +59,6 @@ kefir_result_t kefir_ast_analyze_for_statement_node(struct kefir_mem *mem, const
         kefir_ast_flow_control_point_alloc(mem, direct_parent);
     REQUIRE(base->properties.statement_props.flow_control_statement->value.loop.end != NULL,
             KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST flow control point"));
-
-    REQUIRE_OK(context->push_block(
-        mem, context, &base->properties.statement_props.flow_control_statement->associated_scopes.ordinary_scope,
-        &base->properties.statement_props.flow_control_statement->associated_scopes.tag_scope));
 
     kefir_result_t res;
     if (node->init != NULL) {

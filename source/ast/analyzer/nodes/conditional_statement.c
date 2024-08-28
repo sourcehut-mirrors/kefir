@@ -44,7 +44,10 @@ kefir_result_t kefir_ast_analyze_conditional_statement_node(struct kefir_mem *me
                                    "Unable to use conditional statement in current context"));
     struct kefir_ast_flow_control_structure *direct_parent = NULL;
     REQUIRE_OK(kefir_ast_flow_control_tree_top(context->flow_control_tree, &direct_parent));
+    struct kefir_ast_flow_control_structure_associated_scopes associated_scopes;
+    REQUIRE_OK(context->push_block(mem, context, &associated_scopes.ordinary_scope, &associated_scopes.tag_scope));
     REQUIRE_OK(kefir_ast_flow_control_tree_push(mem, context->flow_control_tree, KEFIR_AST_FLOW_CONTROL_STRUCTURE_IF,
+                                                &associated_scopes,
                                                 &base->properties.statement_props.flow_control_statement));
 
     base->properties.statement_props.flow_control_statement->value.conditional.thenBranchEnd =
@@ -58,10 +61,6 @@ kefir_result_t kefir_ast_analyze_conditional_statement_node(struct kefir_mem *me
         REQUIRE(base->properties.statement_props.flow_control_statement->value.conditional.elseBranchEnd != NULL,
                 KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST flow control point"));
     }
-
-    REQUIRE_OK(context->push_block(
-        mem, context, &base->properties.statement_props.flow_control_statement->associated_scopes.ordinary_scope,
-        &base->properties.statement_props.flow_control_statement->associated_scopes.tag_scope));
 
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, node->condition));
     REQUIRE(node->condition->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION,
@@ -88,7 +87,7 @@ kefir_result_t kefir_ast_analyze_conditional_statement_node(struct kefir_mem *me
                                        "Expected the second if branch to be a statement"));
     }
 
-    REQUIRE_OK(context->pop_block(mem, context));
     REQUIRE_OK(kefir_ast_flow_control_tree_pop(context->flow_control_tree));
+    REQUIRE_OK(context->pop_block(mem, context));
     return KEFIR_OK;
 }

@@ -215,10 +215,15 @@ static kefir_result_t free_branching_point(struct kefir_mem *mem, struct kefir_l
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_ast_flow_control_tree_push(struct kefir_mem *mem, struct kefir_ast_flow_control_tree *tree,
-                                                kefir_ast_flow_control_structure_type_t type,
-                                                struct kefir_ast_flow_control_structure **statement) {
+kefir_result_t kefir_ast_flow_control_tree_push(
+    struct kefir_mem *mem, struct kefir_ast_flow_control_tree *tree, kefir_ast_flow_control_structure_type_t type,
+    const struct kefir_ast_flow_control_structure_associated_scopes *associated_scopes,
+    struct kefir_ast_flow_control_structure **statement) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(associated_scopes != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST flow control associated scopes"));
+    REQUIRE(associated_scopes->ordinary_scope != NULL && associated_scopes->tag_scope != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST flow control associated scopes"));
     REQUIRE(tree != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST flow control tree"));
 
     struct kefir_ast_flow_control_structure *parent = NULL;
@@ -241,8 +246,7 @@ kefir_result_t kefir_ast_flow_control_tree_push(struct kefir_mem *mem, struct ke
         stmt->parent_point = NULL;
     }
 
-    stmt->associated_scopes.ordinary_scope = NULL;
-    stmt->associated_scopes.tag_scope = NULL;
+    stmt->associated_scopes = *associated_scopes;
 
     switch (type) {
         case KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK:

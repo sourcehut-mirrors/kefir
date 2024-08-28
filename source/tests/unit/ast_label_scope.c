@@ -36,9 +36,13 @@ DEFINE_CASE(ast_label_scope1, "AST ordinary scope - label scope #1") {
                                             &global_context, NULL));
     ASSERT_OK(kefir_ast_local_context_init(&kft_mem, &global_context, &local_context));
 
+    struct kefir_ast_flow_control_structure_associated_scopes associated_scopes;
+    ASSERT_OK(local_context.context.push_block(&kft_mem, &local_context.context, &associated_scopes.ordinary_scope,
+                                               &associated_scopes.tag_scope));
+
     struct kefir_ast_flow_control_structure *parent = NULL;
     ASSERT_OK(kefir_ast_flow_control_tree_push(&kft_mem, &local_context.flow_control_tree,
-                                               KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK, &parent));
+                                               KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK, &associated_scopes, &parent));
 
     const struct kefir_ast_scoped_identifier *scoped_id = NULL;
     ASSERT_NOK(global_context.context.reference_label(&kft_mem, &global_context.context, "label1", NULL, NULL, NULL));
@@ -71,9 +75,13 @@ DEFINE_CASE(ast_label_scope2, "AST ordinary scope - label scope #2") {
     ASSERT_OK(
         kefir_ast_function_declaration_context_init(&kft_mem, &global_context.context, false, &func_decl_context));
 
+    struct kefir_ast_flow_control_structure_associated_scopes associated_scopes;
+    ASSERT_OK(local_context.context.push_block(&kft_mem, &local_context.context, &associated_scopes.ordinary_scope,
+                                               &associated_scopes.tag_scope));
+
     struct kefir_ast_flow_control_structure *parent = NULL;
     ASSERT_OK(kefir_ast_flow_control_tree_push(&kft_mem, &local_context.flow_control_tree,
-                                               KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK, &parent));
+                                               KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK, &associated_scopes, &parent));
 
     const struct kefir_ast_scoped_identifier *scoped_id = NULL;
     ASSERT_NOK(
@@ -120,9 +128,13 @@ DEFINE_CASE(ast_label_scope3, "AST ordinary scope - label scope #3") {
                                             &global_context, NULL));
     ASSERT_OK(kefir_ast_local_context_init(&kft_mem, &global_context, &context));
 
+    struct kefir_ast_flow_control_structure_associated_scopes associated_scopes;
+    ASSERT_OK(context.context.push_block(&kft_mem, &context.context, &associated_scopes.ordinary_scope,
+                                         &associated_scopes.tag_scope));
+
     struct kefir_ast_flow_control_structure *parent = NULL;
     ASSERT_OK(kefir_ast_flow_control_tree_push(&kft_mem, &context.flow_control_tree,
-                                               KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK, &parent));
+                                               KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK, &associated_scopes, &parent));
 
     const struct kefir_ast_scoped_identifier *scoped_id = NULL;
     ASSERT(context.context.resolve_label_identifier(&context.context, "label1", &scoped_id) == KEFIR_NOT_FOUND);
@@ -182,9 +194,13 @@ DEFINE_CASE(ast_label_scope4, "AST ordinary scope - label scope #4") {
                                             &global_context, NULL));
     ASSERT_OK(kefir_ast_local_context_init(&kft_mem, &global_context, &context));
 
+    struct kefir_ast_flow_control_structure_associated_scopes associated_scopes;
+    ASSERT_OK(context.context.push_block(&kft_mem, &context.context, &associated_scopes.ordinary_scope,
+                                         &associated_scopes.tag_scope));
+
     struct kefir_ast_flow_control_structure *parent = NULL;
     ASSERT_OK(kefir_ast_flow_control_tree_push(&kft_mem, &context.flow_control_tree,
-                                               KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK, &parent));
+                                               KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK, &associated_scopes, &parent));
 
     const struct kefir_ast_scoped_identifier *scoped_id = NULL;
     ASSERT(context.context.resolve_label_identifier(&context.context, "label1", &scoped_id) == KEFIR_NOT_FOUND);
@@ -195,20 +211,23 @@ DEFINE_CASE(ast_label_scope4, "AST ordinary scope - label scope #4") {
     ASSERT_LABEL(&kft_mem, &context.context, "label1", NULL, false);
 
     do {
-        ASSERT_OK(context.context.push_block(&kft_mem, &context.context, NULL, NULL));
+        ASSERT_OK(context.context.push_block(&kft_mem, &context.context, &associated_scopes.ordinary_scope,
+                                             &associated_scopes.tag_scope));
         struct kefir_ast_flow_control_structure *parent = NULL;
-        ASSERT_OK(kefir_ast_flow_control_tree_push(&kft_mem, &context.flow_control_tree,
-                                                   KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK, &parent));
+        ASSERT_OK(kefir_ast_flow_control_tree_push(
+            &kft_mem, &context.flow_control_tree, KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK, &associated_scopes, &parent));
 
         ASSERT_LABEL(&kft_mem, &context.context, "label1", NULL, false);
         ASSERT_LABEL(&kft_mem, &context.context, "label1", parent, true);
         ASSERT_LABEL(&kft_mem, &context.context, "label2", parent, true);
 
         do {
-            ASSERT_OK(context.context.push_block(&kft_mem, &context.context, NULL, NULL));
+            ASSERT_OK(context.context.push_block(&kft_mem, &context.context, &associated_scopes.ordinary_scope,
+                                                 &associated_scopes.tag_scope));
             struct kefir_ast_flow_control_structure *parent = NULL;
             ASSERT_OK(kefir_ast_flow_control_tree_push(&kft_mem, &context.flow_control_tree,
-                                                       KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK, &parent));
+                                                       KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK, &associated_scopes,
+                                                       &parent));
             ASSERT_LABEL(&kft_mem, &context.context, "label1", NULL, true);
             ASSERT_LABEL(&kft_mem, &context.context, "label2", NULL, true);
             ASSERT_LABEL(&kft_mem, &context.context, "label3", NULL, false);

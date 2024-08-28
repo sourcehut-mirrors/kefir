@@ -213,10 +213,14 @@ DEFINE_CASE(ast_node_analysis_case_statements1, "AST node analysis - case statem
     ASSERT_OK(kefir_ast_local_context_declare_external(&kft_mem, &local_context, "whatever",
                                                        kefir_ast_type_signed_int(), NULL, NULL, NULL, NULL));
 
+    struct kefir_ast_flow_control_structure_associated_scopes associated_scopes;
+    ASSERT_OK(context->push_block(&kft_mem, context, &associated_scopes.ordinary_scope, &associated_scopes.tag_scope));
+
     struct kefir_hashtree_node *tree_node = NULL;
     struct kefir_ast_flow_control_structure *switch_statement = NULL;
     REQUIRE_OK(kefir_ast_flow_control_tree_push(&kft_mem, context->flow_control_tree,
-                                                KEFIR_AST_FLOW_CONTROL_STRUCTURE_SWITCH, &switch_statement));
+                                                KEFIR_AST_FLOW_CONTROL_STRUCTURE_SWITCH, &associated_scopes,
+                                                &switch_statement));
 
     struct kefir_ast_case_statement *stmt1 =
         kefir_ast_new_case_statement(&kft_mem, NULL,
@@ -326,9 +330,12 @@ DEFINE_CASE(ast_node_analysis_case_statements1, "AST node analysis - case statem
             &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(&kft_mem, '\t')))));
     ASSERT_NOK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(stmt10)));
 
+    ASSERT_OK(context->push_block(&kft_mem, context, &associated_scopes.ordinary_scope, &associated_scopes.tag_scope));
+
     struct kefir_ast_flow_control_structure *switch_statement2 = NULL;
     REQUIRE_OK(kefir_ast_flow_control_tree_push(&kft_mem, context->flow_control_tree,
-                                                KEFIR_AST_FLOW_CONTROL_STRUCTURE_SWITCH, &switch_statement2));
+                                                KEFIR_AST_FLOW_CONTROL_STRUCTURE_SWITCH, &associated_scopes,
+                                                &switch_statement2));
 
     struct kefir_ast_case_statement *stmt11 =
         kefir_ast_new_case_statement(&kft_mem, NULL,
@@ -397,8 +404,11 @@ DEFINE_CASE(ast_node_analysis_labeled_statements2, "AST node analysis - labeled 
     ASSERT_OK(kefir_ast_local_context_init(&kft_mem, &global_context, &local_context));
     struct kefir_ast_context *context = &local_context.context;
 
+    struct kefir_ast_flow_control_structure_associated_scopes associated_scopes;
+    ASSERT_OK(context->push_block(&kft_mem, context, &associated_scopes.ordinary_scope, &associated_scopes.tag_scope));
+
     ASSERT_OK(kefir_ast_flow_control_tree_push(&kft_mem, context->flow_control_tree,
-                                               KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK, NULL));
+                                               KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK, &associated_scopes, NULL));
 
     const struct kefir_ast_scoped_identifier *scoped_id = NULL;
     ASSERT(context->resolve_label_identifier(context, "label1", &scoped_id) == KEFIR_NOT_FOUND);

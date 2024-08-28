@@ -303,8 +303,6 @@ kefir_result_t kefir_ast_translator_function_context_translate(
             mem, context->function_debug_info, &context->module->symbols, &function->base.source_location));
     }
 
-    struct kefir_ast_local_context *local_context =
-        function->base.properties.function_definition.scoped_id->function.local_context;
     const struct kefir_ast_declarator_function *decl_func = NULL;
     REQUIRE_OK(kefir_ast_declarator_unpack_function(function->declarator, &decl_func));
     REQUIRE(decl_func != NULL,
@@ -332,8 +330,7 @@ kefir_result_t kefir_ast_translator_function_context_translate(
                     KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Function definition parameters shall have definite types"));
             if (init_decl->base.properties.type->tag != KEFIR_AST_TYPE_VOID) {
                 if (param_identifier != NULL && param_identifier->identifier != NULL) {
-                    REQUIRE_OK(local_context->context.resolve_ordinary_identifier(
-                        &local_context->context, param_identifier->identifier, &scoped_id));
+                    scoped_id = init_decl->base.properties.declaration_props.scoped_id;
                     REQUIRE_OK(kefir_ast_translator_object_lvalue(mem, context, builder, param_identifier->identifier,
                                                                   scoped_id));
                     REQUIRE_OK(xchg_param_address(builder));
@@ -346,8 +343,7 @@ kefir_result_t kefir_ast_translator_function_context_translate(
             }
         } else if (param->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION &&
                    param->properties.expression_props.identifier != NULL) {
-            REQUIRE_OK(local_context->context.resolve_ordinary_identifier(
-                &local_context->context, param->properties.expression_props.identifier, &scoped_id));
+            scoped_id = param->properties.expression_props.scoped_id;
             REQUIRE_OK(kefir_ast_translator_object_lvalue(mem, context, builder,
                                                           param->properties.expression_props.identifier, scoped_id));
             REQUIRE_OK(xchg_param_address(builder));

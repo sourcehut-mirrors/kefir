@@ -42,8 +42,8 @@ kefir_result_t kefir_ast_analyze_switch_statement_node(struct kefir_mem *mem, co
     REQUIRE(context->flow_control_tree != NULL,
             KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->base.source_location,
                                    "Unable to use switch statement in current context"));
-    const struct kefir_ast_identifier_flat_scope *switch_ordinary_scope, *switch_tag_scope;
-    REQUIRE_OK(context->push_block(mem, context, &switch_ordinary_scope, &switch_tag_scope));
+    struct kefir_ast_flow_control_structure_associated_scopes associated_scopes;
+    REQUIRE_OK(context->push_block(mem, context, &associated_scopes.ordinary_scope, &associated_scopes.tag_scope));
     struct kefir_ast_flow_control_structure *direct_parent = NULL;
     REQUIRE_OK(kefir_ast_flow_control_tree_top(context->flow_control_tree, &direct_parent));
 
@@ -66,13 +66,11 @@ kefir_result_t kefir_ast_analyze_switch_statement_node(struct kefir_mem *mem, co
 
     struct kefir_ast_flow_control_structure *stmt = NULL;
     REQUIRE_OK(kefir_ast_flow_control_tree_push(mem, context->flow_control_tree,
-                                                KEFIR_AST_FLOW_CONTROL_STRUCTURE_SWITCH, &stmt));
+                                                KEFIR_AST_FLOW_CONTROL_STRUCTURE_SWITCH, &associated_scopes, &stmt));
     stmt->value.switchStatement.controlling_expression_type = controlling_expr_type;
     stmt->value.switchStatement.end = kefir_ast_flow_control_point_alloc(mem, direct_parent);
     REQUIRE(stmt->value.switchStatement.end != NULL,
             KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST flow control point"));
-    stmt->associated_scopes.ordinary_scope = switch_ordinary_scope;
-    stmt->associated_scopes.tag_scope = switch_tag_scope;
 
     base->properties.statement_props.flow_control_statement = stmt;
 
