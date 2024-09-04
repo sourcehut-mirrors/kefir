@@ -1023,6 +1023,44 @@
                     "begin": 31,
                     "end": 33
                 }
+            ],
+            "local_map": [
+                {
+                    "identifier": "vla",
+                    "type_id": 139,
+                    "location": 19,
+                    "lifetime": {
+                        "begin": 9,
+                        "end": 33
+                    }
+                },
+                {
+                    "identifier": "c",
+                    "type_id": 137,
+                    "location": 18,
+                    "lifetime": {
+                        "begin": 9,
+                        "end": 33
+                    }
+                },
+                {
+                    "identifier": "b",
+                    "type_id": 16,
+                    "location": 3,
+                    "lifetime": {
+                        "begin": 9,
+                        "end": 33
+                    }
+                },
+                {
+                    "identifier": "a",
+                    "type_id": 19,
+                    "location": 2,
+                    "lifetime": {
+                        "begin": 9,
+                        "end": 33
+                    }
+                }
             ]
         }
     ],

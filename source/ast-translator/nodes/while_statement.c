@@ -41,6 +41,7 @@ kefir_result_t kefir_ast_translate_while_statement_node(struct kefir_mem *mem,
     REQUIRE_OK(kefir_ast_translator_flow_control_point_resolve(mem, flow_control_stmt->value.loop.continuation,
                                                                KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder)));
 
+    const kefir_size_t statement_begin_index = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
     REQUIRE_OK(kefir_ast_translate_expression(mem, node->controlling_expr, builder, context));
     const struct kefir_ast_type *controlling_expr_type =
         kefir_ast_translator_normalize_type(KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(
@@ -91,5 +92,15 @@ kefir_result_t kefir_ast_translate_while_statement_node(struct kefir_mem *mem,
 
     REQUIRE_OK(kefir_ast_translator_flow_control_point_resolve(mem, flow_control_stmt->value.loop.end,
                                                                KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder)));
+
+    const kefir_size_t statement_end_index = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
+    const struct kefir_ast_identifier_flat_scope *associated_ordinary_scope =
+        node->base.properties.statement_props.flow_control_statement->associated_scopes.ordinary_scope;
+    REQUIRE(associated_ordinary_scope != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
+                            "Expected AST flow control statement to have an associated ordinary scope"));
+    REQUIRE_OK(kefir_ast_translator_define_object_scope_lifetime(mem, associated_ordinary_scope, statement_begin_index,
+                                                                 statement_end_index));
+
     return KEFIR_OK;
 }

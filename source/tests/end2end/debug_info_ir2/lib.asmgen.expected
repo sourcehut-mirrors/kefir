@@ -1,0 +1,474 @@
+{
+    "identifiers": [
+        {
+            "symbol": "test1",
+            "type": "function",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null,
+            "debug_info": {
+                "type": 0
+            }
+        }
+    ],
+    "types": [
+        {
+            "identifier": 62,
+            "type": [
+                {
+                    "type": "int"
+                }
+            ]
+        },
+        {
+            "identifier": 64,
+            "type": [
+                {
+                    "type": "int"
+                },
+                {
+                    "type": "int"
+                },
+                {
+                    "type": "long"
+                },
+                {
+                    "type": "float"
+                },
+                {
+                    "type": "double"
+                },
+                {
+                    "type": "complex_float32"
+                },
+                {
+                    "type": "word"
+                },
+                {
+                    "type": "word"
+                }
+            ]
+        }
+    ],
+    "data": [],
+    "string_literals": [
+        {
+            "id": 0,
+            "public": false,
+            "type": "multibyte",
+            "literal": "test1\u0000",
+            "length": 6
+        }
+    ],
+    "function_declarations": [
+        {
+            "identifier": 31,
+            "name": "test1",
+            "parameters": 62,
+            "vararg": false,
+            "returns": 62,
+            "returns_twice": false
+        }
+    ],
+    "functions": [
+        {
+            "identifier": 31,
+            "name": "test1",
+            "locals": 64,
+            "body": [
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 64,
+                        "index": 0
+                    }
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "store32",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 64,
+                        "index": 1
+                    }
+                },
+                {
+                    "opcode": "pick",
+                    "arg": 0
+                },
+                {
+                    "opcode": "placehi64"
+                },
+                {
+                    "opcode": "store32",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "pop"
+                },
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 64,
+                        "index": 2
+                    }
+                },
+                {
+                    "opcode": "pick",
+                    "arg": 0
+                },
+                {
+                    "opcode": "placehi64"
+                },
+                {
+                    "opcode": "store64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "pop"
+                },
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 64,
+                        "index": 3
+                    }
+                },
+                {
+                    "opcode": "pick",
+                    "arg": 0
+                },
+                {
+                    "opcode": "placehf32"
+                },
+                {
+                    "opcode": "store32",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "pop"
+                },
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 64,
+                        "index": 0
+                    }
+                },
+                {
+                    "opcode": "load32i",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "bnot32"
+                },
+                {
+                    "opcode": "branch8",
+                    "arg": 37
+                },
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 64,
+                        "index": 4
+                    }
+                },
+                {
+                    "opcode": "pick",
+                    "arg": 0
+                },
+                {
+                    "opcode": "placehf64"
+                },
+                {
+                    "opcode": "store64",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "pop"
+                },
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 64,
+                        "index": 5
+                    }
+                },
+                {
+                    "opcode": "pop"
+                },
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 64,
+                        "index": 1
+                    }
+                },
+                {
+                    "opcode": "load32i",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "bnot32"
+                },
+                {
+                    "opcode": "branch8",
+                    "arg": 36
+                },
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 64,
+                        "index": 6
+                    }
+                },
+                {
+                    "opcode": "pop"
+                },
+                {
+                    "opcode": "jmp",
+                    "arg": 29
+                },
+                {
+                    "opcode": "jmp",
+                    "arg": 39
+                },
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 64,
+                        "index": 7
+                    }
+                },
+                {
+                    "opcode": "pop"
+                },
+                {
+                    "opcode": "pushi",
+                    "arg": 0
+                },
+                {
+                    "opcode": "ret"
+                }
+            ],
+            "public_labels": [],
+            "source_map": [
+                {
+                    "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
+                    "line": 25,
+                    "column": 9,
+                    "begin": 18,
+                    "end": 20
+                },
+                {
+                    "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
+                    "line": 25,
+                    "column": 5,
+                    "begin": 18,
+                    "end": 39
+                },
+                {
+                    "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
+                    "line": 25,
+                    "column": 12,
+                    "begin": 22,
+                    "end": 36
+                },
+                {
+                    "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
+                    "line": 28,
+                    "column": 16,
+                    "begin": 29,
+                    "end": 31
+                },
+                {
+                    "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
+                    "line": 28,
+                    "column": 9,
+                    "begin": 29,
+                    "end": 36
+                },
+                {
+                    "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
+                    "line": 28,
+                    "column": 19,
+                    "begin": 33,
+                    "end": 35
+                },
+                {
+                    "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
+                    "line": 31,
+                    "column": 12,
+                    "begin": 37,
+                    "end": 39
+                },
+                {
+                    "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
+                    "line": 34,
+                    "column": 12,
+                    "begin": 39,
+                    "end": 40
+                },
+                {
+                    "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
+                    "line": 34,
+                    "column": 5,
+                    "begin": 39,
+                    "end": 41
+                }
+            ],
+            "local_map": [
+                {
+                    "identifier": "d",
+                    "type_id": 32,
+                    "location": 3,
+                    "lifetime": {
+                        "begin": 3,
+                        "end": 41
+                    }
+                },
+                {
+                    "identifier": "c",
+                    "type_id": 12,
+                    "location": 2,
+                    "lifetime": {
+                        "begin": 3,
+                        "end": 41
+                    }
+                },
+                {
+                    "identifier": "b",
+                    "type_id": 1,
+                    "location": 1,
+                    "lifetime": {
+                        "begin": 3,
+                        "end": 41
+                    }
+                },
+                {
+                    "identifier": "a",
+                    "type_id": 1,
+                    "location": 0,
+                    "lifetime": {
+                        "begin": 3,
+                        "end": 41
+                    }
+                },
+                {
+                    "identifier": "f",
+                    "type_id": 76,
+                    "location": 5,
+                    "lifetime": {
+                        "begin": 22,
+                        "end": 36
+                    }
+                },
+                {
+                    "identifier": "e",
+                    "type_id": 54,
+                    "location": 4,
+                    "lifetime": {
+                        "begin": 22,
+                        "end": 36
+                    }
+                },
+                {
+                    "identifier": "g",
+                    "type_id": 77,
+                    "location": 6,
+                    "lifetime": {
+                        "begin": 33,
+                        "end": 35
+                    }
+                },
+                {
+                    "identifier": "e",
+                    "type_id": 78,
+                    "location": 7,
+                    "lifetime": {
+                        "begin": 37,
+                        "end": 39
+                    }
+                }
+            ]
+        }
+    ],
+    "inline_assembly": [],
+    "debug_info": {
+        "entries": [
+            {
+                "identifier": 0,
+                "tag": "type_function",
+                "attributes": [
+                    {
+                        "tag": "type",
+                        "value": 1
+                    },
+                    {
+                        "tag": "function_prototyped",
+                        "value": true
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 2,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "name",
+                                "value": "a"
+                            },
+                            {
+                                "tag": "type",
+                                "value": 1
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 1,
+                "tag": "type_signed_int",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "signed int"
+                    },
+                    {
+                        "tag": "size",
+                        "value": 4
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 4
+                    }
+                ],
+                "children": []
+            }
+        ]
+    },
+    "meta_info": {
+        "opcode_rev": 1
+    }
+}

@@ -41,6 +41,11 @@ typedef struct kefir_ast_translator_scoped_identifier_object {
     struct kefir_ir_type *type;
     struct kefir_ast_type_layout *layout;
     struct {
+        kefir_bool_t bounded;
+        kefir_size_t begin;
+        kefir_size_t end;
+    } lifetime;
+    struct {
         kefir_bool_t present;
         kefir_ir_debug_entry_id_t type;
     } debug_info;
@@ -56,5 +61,9 @@ _Static_assert(sizeof(struct kefir_ast_translator_scoped_identifier_object) <= K
 _Static_assert(sizeof(struct kefir_ast_translator_scoped_identifier_function) <=
                    KEFIR_AST_SCOPED_IDENTIFIER_PAYLOAD_SIZE,
                "Unable to fit scoped identifier function into payload field");
+
+kefir_result_t kefir_ast_translator_define_object_scope_lifetime(struct kefir_mem *,
+                                                                 const struct kefir_ast_identifier_flat_scope *,
+                                                                 kefir_size_t, kefir_size_t);
 
 #endif

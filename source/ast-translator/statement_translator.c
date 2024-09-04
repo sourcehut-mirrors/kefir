@@ -122,9 +122,9 @@ kefir_result_t kefir_ast_translate_statement(struct kefir_mem *mem, const struct
 
     if (context->function_debug_info != NULL && KEFIR_SOURCE_LOCATION_IS_VALID(&base->source_location)) {
         const kefir_size_t end_ir_index = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
-        REQUIRE_OK(kefir_ir_source_map_insert(mem, &context->function_debug_info->source_map,
-                                              &context->module->symbols, &base->source_location, begin_ir_index,
-                                              end_ir_index));
+        REQUIRE_OK(kefir_ir_debug_function_source_map_insert(mem, &context->function_debug_info->source_map,
+                                                             &context->module->symbols, &base->source_location,
+                                                             begin_ir_index, end_ir_index));
     }
     return KEFIR_OK;
 }

@@ -34,16 +34,16 @@
 
 #undef BINARY_NODE
 
-#define BINARY_NODE(_oper, _node1, _node2)                                                           \
-    do {                                                                                             \
-        struct kefir_ast_node_base *node =                                                           \
-            KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(mem, (_oper), (_node1), (_node2)));   \
-        REQUIRE_OK(kefir_ast_analyze_node(mem, context, node));                                      \
-        REQUIRE_OK(kefir_ast_translator_build_local_scope_layout(mem, &local_context, &env, &module, \
-                                                                 &translator_local_scope));          \
-        REQUIRE_OK(kefir_ast_translator_flow_control_tree_init(mem, context->flow_control_tree));    \
-        REQUIRE_OK(kefir_ast_translate_expression(mem, node, &builder, &local_translator_context));  \
-        REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node));                                                  \
+#define BINARY_NODE(_oper, _node1, _node2)                                                                   \
+    do {                                                                                                     \
+        struct kefir_ast_node_base *node =                                                                   \
+            KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(mem, (_oper), (_node1), (_node2)));           \
+        REQUIRE_OK(kefir_ast_analyze_node(mem, context, node));                                              \
+        REQUIRE_OK(kefir_ast_translator_build_local_scope_layout(                                            \
+            mem, &local_context, &env, &module, &translator_local_scope, translator_context.debug_entries)); \
+        REQUIRE_OK(kefir_ast_translator_flow_control_tree_init(mem, context->flow_control_tree));            \
+        REQUIRE_OK(kefir_ast_translate_expression(mem, node, &builder, &local_translator_context));          \
+        REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node));                                                          \
     } while (0)
 
 kefir_result_t kefir_int_test(struct kefir_mem *mem) {
@@ -63,8 +63,8 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_ast_translator_context translator_context;
     REQUIRE_OK(
         kefir_ast_translator_context_init(mem, &translator_context, &global_context.context, &env, &module, NULL));
-    REQUIRE_OK(
-        kefir_ast_translator_build_global_scope_layout(mem, &module, &global_context, &env, translator_context.debug_entries, &translator_global_scope));
+    REQUIRE_OK(kefir_ast_translator_build_global_scope_layout(
+        mem, &module, &global_context, &env, translator_context.debug_entries, &translator_global_scope));
     REQUIRE_OK(kefir_ast_translate_global_scope(mem, &global_context.context, &module, &translator_global_scope));
     struct kefir_irbuilder_block builder;
 

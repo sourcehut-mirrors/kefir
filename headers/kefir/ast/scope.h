@@ -33,7 +33,7 @@
 #include "kefir/ast/type_layout.h"
 #include "kefir/ast/flow_control.h"
 
-#define KEFIR_AST_SCOPED_IDENTIFIER_PAYLOAD_SIZE (sizeof(kefir_uptr_t) * 4)
+#define KEFIR_AST_SCOPED_IDENTIFIER_PAYLOAD_SIZE (sizeof(kefir_uptr_t) * 8)
 
 typedef struct kefir_ast_scoped_identifier kefir_ast_scoped_identifier_t;
 typedef struct kefir_ast_identifier_block_scope kefir_ast_identifier_block_scope_t;

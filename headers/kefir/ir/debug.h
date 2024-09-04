@@ -122,25 +122,47 @@ typedef struct kefir_ir_debug_entries {
     ((struct kefir_ir_debug_entry_attribute){.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_FUNCTION_PROTOTYPED, \
                                              .function_prototyped = (_prototyped)})
 
-typedef struct kefir_ir_source_location {
+typedef struct kefir_ir_debug_source_location {
     struct kefir_source_location location;
     kefir_size_t begin;
     kefir_size_t end;
 
-    struct kefir_ir_source_location *next;
-} kefir_ir_source_location_t;
+    struct kefir_ir_debug_source_location *next;
+} kefir_ir_debug_source_location_t;
 
-typedef struct kefir_ir_source_map {
+typedef struct kefir_ir_debug_function_source_map {
     struct kefir_interval_tree locations;
-} kefir_ir_source_map_t;
+} kefir_ir_debug_function_source_map_t;
 
-typedef struct kefir_ir_source_map_iterator {
+typedef struct kefir_ir_debug_function_source_map_iterator {
     struct kefir_interval_tree_iterator iter;
-    struct kefir_ir_source_location *source_location;
-} kefir_ir_source_map_iterator_t;
+    struct kefir_ir_debug_source_location *source_location;
+} kefir_ir_debug_function_source_map_iterator_t;
+
+typedef struct kefir_ir_debug_function_local_entry {
+    const char *identifier;
+    kefir_ir_debug_entry_id_t type_id;
+    kefir_size_t location;
+    struct {
+        kefir_size_t begin;
+        kefir_size_t end;
+    } lifetime;
+
+    struct kefir_ir_debug_function_local_entry *next;
+} kefir_ir_debug_function_local_entry_t;
+
+typedef struct kefir_ir_debug_function_local_map {
+    struct kefir_interval_tree locations;
+} kefir_ir_debug_function_local_map_t;
+
+typedef struct kefir_ir_debug_function_local_map_iterator {
+    struct kefir_interval_tree_iterator iter;
+    struct kefir_ir_debug_function_local_entry *next_entry;
+} kefir_ir_debug_function_local_map_iterator_t;
 
 typedef struct kefir_ir_function_debug_info {
-    struct kefir_ir_source_map source_map;
+    struct kefir_ir_debug_function_source_map source_map;
+    struct kefir_ir_debug_function_local_map local_map;
     struct kefir_source_location source_location;
 } kefir_ir_function_debug_info_t;
 
@@ -196,18 +218,36 @@ kefir_result_t kefir_ir_debug_entry_child_iter(const struct kefir_ir_debug_entri
 kefir_result_t kefir_ir_debug_entry_child_next(struct kefir_ir_debug_entry_child_iterator *,
                                                kefir_ir_debug_entry_id_t *);
 
-kefir_result_t kefir_ir_source_map_init(struct kefir_ir_source_map *);
-kefir_result_t kefir_ir_source_map_free(struct kefir_mem *, struct kefir_ir_source_map *);
+kefir_result_t kefir_ir_debug_function_source_map_init(struct kefir_ir_debug_function_source_map *);
+kefir_result_t kefir_ir_debug_function_source_map_free(struct kefir_mem *, struct kefir_ir_debug_function_source_map *);
 
-kefir_result_t kefir_ir_source_map_insert(struct kefir_mem *, struct kefir_ir_source_map *, struct kefir_string_pool *,
-                                          const struct kefir_source_location *, kefir_size_t, kefir_size_t);
-kefir_result_t kefir_ir_source_map_find(const struct kefir_ir_source_map *, kefir_size_t,
-                                        const struct kefir_ir_source_location **);
+kefir_result_t kefir_ir_debug_function_source_map_insert(struct kefir_mem *,
+                                                         struct kefir_ir_debug_function_source_map *,
+                                                         struct kefir_string_pool *,
+                                                         const struct kefir_source_location *, kefir_size_t,
+                                                         kefir_size_t);
+kefir_result_t kefir_ir_debug_function_source_map_find(const struct kefir_ir_debug_function_source_map *, kefir_size_t,
+                                                       const struct kefir_ir_debug_source_location **);
 
-kefir_result_t kefir_ir_source_map_iter(const struct kefir_ir_source_map *, struct kefir_ir_source_map_iterator *,
-                                        const struct kefir_ir_source_location **);
-kefir_result_t kefir_ir_source_map_next(struct kefir_ir_source_map_iterator *,
-                                        const struct kefir_ir_source_location **);
+kefir_result_t kefir_ir_debug_function_source_map_iter(const struct kefir_ir_debug_function_source_map *,
+                                                       struct kefir_ir_debug_function_source_map_iterator *,
+                                                       const struct kefir_ir_debug_source_location **);
+kefir_result_t kefir_ir_debug_function_source_map_next(struct kefir_ir_debug_function_source_map_iterator *,
+                                                       const struct kefir_ir_debug_source_location **);
+
+kefir_result_t kefir_ir_debug_function_local_map_init(struct kefir_ir_debug_function_local_map *);
+kefir_result_t kefir_ir_debug_function_local_map_free(struct kefir_mem *, struct kefir_ir_debug_function_local_map *);
+
+kefir_result_t kefir_ir_debug_function_local_map_insert(struct kefir_mem *, struct kefir_ir_debug_function_local_map *,
+                                                        struct kefir_string_pool *, const char *,
+                                                        kefir_ir_debug_entry_id_t, kefir_size_t, kefir_size_t,
+                                                        kefir_size_t);
+
+kefir_result_t kefir_ir_debug_function_local_map_iter(const struct kefir_ir_debug_function_local_map *,
+                                                      struct kefir_ir_debug_function_local_map_iterator *,
+                                                      const struct kefir_ir_debug_function_local_entry **);
+kefir_result_t kefir_ir_debug_function_local_map_next(struct kefir_ir_debug_function_local_map_iterator *,
+                                                      const struct kefir_ir_debug_function_local_entry **);
 
 kefir_result_t kefir_ir_function_debug_info_init(struct kefir_ir_function_debug_info *);
 kefir_result_t kefir_ir_function_debug_info_free(struct kefir_mem *, struct kefir_ir_function_debug_info *);

@@ -196,9 +196,9 @@ kefir_result_t kefir_ast_translator_function_context_init(struct kefir_mem *mem,
         return res;
     });
 
-    res = kefir_ast_translator_build_local_scope_layout(mem, ctx->local_context,
-                                                        ctx->local_translator_context.environment,
-                                                        ctx->local_translator_context.module, &ctx->local_scope_layout);
+    res = kefir_ast_translator_build_local_scope_layout(
+        mem, ctx->local_context, ctx->local_translator_context.environment, ctx->local_translator_context.module,
+        &ctx->local_scope_layout, context->debug_entries);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_ast_translator_local_scope_layout_free(mem, &ctx->local_scope_layout);
         kefir_ast_translator_context_free(mem, &ctx->local_translator_context);
@@ -406,6 +406,8 @@ kefir_result_t kefir_ast_translator_function_context_translate(
         }
     }
 
+    const kefir_size_t function_begin_index = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
+
     for (const struct kefir_list_entry *iter = kefir_list_head(&function->body->block_items); iter != NULL;
          kefir_list_next(&iter)) {
         ASSIGN_DECL_CAST(struct kefir_ast_node_base *, item, iter->value);
@@ -421,6 +423,15 @@ kefir_result_t kefir_ast_translator_function_context_translate(
         }
     }
 
+    const kefir_size_t function_end_index = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
+    const struct kefir_ast_identifier_flat_scope *associated_ordinary_scope =
+        function->body->base.properties.statement_props.flow_control_statement->associated_scopes.ordinary_scope;
+    REQUIRE(associated_ordinary_scope != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
+                            "Expected AST flow control statement to have an associated ordinary scope"));
+    REQUIRE_OK(kefir_ast_translator_define_object_scope_lifetime(mem, associated_ordinary_scope, function_begin_index,
+                                                                 function_end_index));
+
     return KEFIR_OK;
 }
 
@@ -432,5 +443,7 @@ kefir_result_t kefir_ast_translator_function_context_finalize(
 
     REQUIRE_OK(kefir_ast_translate_local_scope(mem, &function_context->local_context->context, function_context->module,
                                                &function_context->local_scope_layout));
+    REQUIRE_OK(kefir_ast_translator_build_local_scope_map(mem, function_context->local_context,
+                                                          function_context->module, function_context->ir_func));
     return KEFIR_OK;
 }

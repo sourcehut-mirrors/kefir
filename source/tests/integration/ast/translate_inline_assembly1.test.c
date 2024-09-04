@@ -109,8 +109,8 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         REQUIRE_OK(kefir_ast_inline_assembly_add_clobber(mem, &global_context.symbols, inline_asm2, "rax"));
 
         REQUIRE_OK(kefir_ast_analyze_node(mem, &local_context.context, KEFIR_AST_NODE_BASE(inline_asm2)));
-        REQUIRE_OK(
-            kefir_ast_translator_build_local_scope_layout(mem, &local_context, &env, &module, &translator_local_scope));
+        REQUIRE_OK(kefir_ast_translator_build_local_scope_layout(
+            mem, &local_context, &env, &module, &translator_local_scope, local_translator_context.debug_entries));
 
         REQUIRE_OK(kefir_ast_translate_inline_assembly(mem, KEFIR_AST_NODE_BASE(inline_asm2), &builder,
                                                        &local_translator_context));
@@ -162,8 +162,8 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
         REQUIRE_OK(kefir_ast_analyze_node(mem, &local_context.context, KEFIR_AST_NODE_BASE(inline_asm2)));
         REQUIRE_OK(kefir_ast_analyze_node(mem, &local_context.context, KEFIR_AST_NODE_BASE(inline_asm3)));
-        REQUIRE_OK(
-            kefir_ast_translator_build_local_scope_layout(mem, &local_context, &env, &module, &translator_local_scope));
+        REQUIRE_OK(kefir_ast_translator_build_local_scope_layout(
+            mem, &local_context, &env, &module, &translator_local_scope, local_translator_context.debug_entries));
 
         REQUIRE_OK(kefir_ast_translate_inline_assembly(mem, KEFIR_AST_NODE_BASE(inline_asm2), &builder,
                                                        &local_translator_context));

@@ -87,8 +87,8 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
             kefir_list_insert_after(mem, &compound1->block_items, kefir_list_tail(&compound1->block_items), label_end));
 
         REQUIRE_OK(kefir_ast_analyze_node(mem, &local_context.context, KEFIR_AST_NODE_BASE(compound1)));
-        REQUIRE_OK(
-            kefir_ast_translator_build_local_scope_layout(mem, &local_context, &env, &module, &translator_local_scope));
+        REQUIRE_OK(kefir_ast_translator_build_local_scope_layout(
+            mem, &local_context, &env, &module, &translator_local_scope, local_translator_context.debug_entries));
 
         REQUIRE_OK(
             kefir_ast_translate_statement(mem, KEFIR_AST_NODE_BASE(compound1), &builder, &local_translator_context));

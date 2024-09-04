@@ -35,6 +35,8 @@ kefir_result_t kefir_ast_translate_statement_expression_node(struct kefir_mem *m
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR block builder"));
     REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST statement expression node"));
 
+    const kefir_size_t statement_begin_index = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
+
     for (const struct kefir_list_entry *iter = kefir_list_head(&node->block_items); iter != NULL;
          kefir_list_next(&iter)) {
         ASSIGN_DECL_CAST(struct kefir_ast_node_base *, item, iter->value);
@@ -59,6 +61,15 @@ kefir_result_t kefir_ast_translate_statement_expression_node(struct kefir_mem *m
                                          "Last statement of statement expression shall be an expression statement"));
         REQUIRE_OK(kefir_ast_translate_expression(mem, expr_statement->expression, builder, context));
     }
+
+    const kefir_size_t statement_end_index = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
+    const struct kefir_ast_identifier_flat_scope *associated_ordinary_scope =
+        node->base.properties.expression_props.flow_control_statement->associated_scopes.ordinary_scope;
+    REQUIRE(associated_ordinary_scope != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
+                            "Expected AST flow control statement to have an associated ordinary scope"));
+    REQUIRE_OK(kefir_ast_translator_define_object_scope_lifetime(mem, associated_ordinary_scope, statement_begin_index,
+                                                                 statement_end_index));
 
     if (kefir_ast_flow_control_block_contains_vl_arrays(
             node->base.properties.expression_props.flow_control_statement)) {

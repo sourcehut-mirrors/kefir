@@ -68,9 +68,9 @@ static kefir_result_t translate_function(struct kefir_mem *mem, struct function 
     struct kefir_ast_translator_local_scope_layout local_scope;
     REQUIRE_OK(
         kefir_ast_translator_local_scope_layout_init(mem, translator_context->module, global_scope, &local_scope));
-    REQUIRE_OK(kefir_ast_translator_build_local_scope_layout(mem, &func->local_context,
-                                                             local_translator_context.environment,
-                                                             local_translator_context.module, &local_scope));
+    REQUIRE_OK(kefir_ast_translator_build_local_scope_layout(
+        mem, &func->local_context, local_translator_context.environment, local_translator_context.module, &local_scope,
+        local_translator_context.debug_entries));
     REQUIRE_OK(kefir_ast_translator_flow_control_tree_init(mem, func->local_context.context.flow_control_tree));
 
     struct kefir_ir_function *ir_func = kefir_ir_module_new_function(
