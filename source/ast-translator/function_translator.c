@@ -298,7 +298,11 @@ kefir_result_t kefir_ast_translator_function_context_translate(
     struct kefir_irbuilder_block *builder = &function_context->builder;
     struct kefir_ast_translator_context *context = &function_context->local_translator_context;
 
+    kefir_ir_debug_entry_id_t subprogram_entry_id;
+    REQUIRE_OK(kefir_ast_translator_context_push_debug_hierarchy_entry(
+        mem, &function_context->local_translator_context, KEFIR_IR_DEBUG_ENTRY_SUBPROGRAM, &subprogram_entry_id));
     if (context->function_debug_info != NULL) {
+        context->function_debug_info->subprogram_id = subprogram_entry_id;
         REQUIRE_OK(kefir_ir_function_debug_info_set_source_location(
             mem, context->function_debug_info, &context->module->symbols, &function->base.source_location));
     }
@@ -407,6 +411,9 @@ kefir_result_t kefir_ast_translator_function_context_translate(
     }
 
     const kefir_size_t function_begin_index = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
+    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &context->module->debug_info.entries, &context->module->symbols,
+                                                  subprogram_entry_id,
+                                                  &KEFIR_IR_DEBUG_ENTRY_ATTR_CODE_BEGIN(function_begin_index)));
 
     for (const struct kefir_list_entry *iter = kefir_list_head(&function->body->block_items); iter != NULL;
          kefir_list_next(&iter)) {
@@ -424,13 +431,19 @@ kefir_result_t kefir_ast_translator_function_context_translate(
     }
 
     const kefir_size_t function_end_index = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
+    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &context->module->debug_info.entries, &context->module->symbols,
+                                                  subprogram_entry_id,
+                                                  &KEFIR_IR_DEBUG_ENTRY_ATTR_CODE_END(function_end_index)));
     const struct kefir_ast_identifier_flat_scope *associated_ordinary_scope =
         function->body->base.properties.statement_props.flow_control_statement->associated_scopes.ordinary_scope;
     REQUIRE(associated_ordinary_scope != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
                             "Expected AST flow control statement to have an associated ordinary scope"));
-    REQUIRE_OK(kefir_ast_translator_define_object_scope_lifetime(mem, associated_ordinary_scope, function_begin_index,
-                                                                 function_end_index));
+    REQUIRE_OK(kefir_ast_translator_generate_object_scope_debug_information(
+        mem, context->ast_context, context->environment, context->module, context->debug_entries,
+        associated_ordinary_scope, subprogram_entry_id, function_begin_index, function_end_index));
+    REQUIRE_OK(
+        kefir_ast_translator_context_pop_debug_hierarchy_entry(mem, &function_context->local_translator_context));
 
     return KEFIR_OK;
 }
@@ -443,7 +456,5 @@ kefir_result_t kefir_ast_translator_function_context_finalize(
 
     REQUIRE_OK(kefir_ast_translate_local_scope(mem, &function_context->local_context->context, function_context->module,
                                                &function_context->local_scope_layout));
-    REQUIRE_OK(kefir_ast_translator_build_local_scope_map(mem, function_context->local_context,
-                                                          function_context->module, function_context->ir_func));
     return KEFIR_OK;
 }

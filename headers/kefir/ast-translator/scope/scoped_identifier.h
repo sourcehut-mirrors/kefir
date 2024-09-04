@@ -23,6 +23,7 @@
 
 #include "kefir/ast/local_context.h"
 #include "kefir/ast-translator/environment.h"
+#include "kefir/ast-translator/debug/translator.h"
 #include "kefir/ir/builder.h"
 #include "kefir/ir/module.h"
 #include "kefir/ir/module.h"
@@ -41,13 +42,9 @@ typedef struct kefir_ast_translator_scoped_identifier_object {
     struct kefir_ir_type *type;
     struct kefir_ast_type_layout *layout;
     struct {
-        kefir_bool_t bounded;
-        kefir_size_t begin;
-        kefir_size_t end;
-    } lifetime;
-    struct {
         kefir_bool_t present;
         kefir_ir_debug_entry_id_t type;
+        kefir_ir_debug_entry_id_t variable;
     } debug_info;
 } kefir_ast_translator_scoped_identifier_object_t;
 
@@ -61,9 +58,5 @@ _Static_assert(sizeof(struct kefir_ast_translator_scoped_identifier_object) <= K
 _Static_assert(sizeof(struct kefir_ast_translator_scoped_identifier_function) <=
                    KEFIR_AST_SCOPED_IDENTIFIER_PAYLOAD_SIZE,
                "Unable to fit scoped identifier function into payload field");
-
-kefir_result_t kefir_ast_translator_define_object_scope_lifetime(struct kefir_mem *,
-                                                                 const struct kefir_ast_identifier_flat_scope *,
-                                                                 kefir_size_t, kefir_size_t);
 
 #endif

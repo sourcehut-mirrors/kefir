@@ -50,7 +50,4 @@ kefir_result_t kefir_ast_translator_build_local_scope_layout(struct kefir_mem *,
                                                              struct kefir_ast_translator_local_scope_layout *,
                                                              struct kefir_ast_translator_debug_entries *);
 
-kefir_result_t kefir_ast_translator_build_local_scope_map(struct kefir_mem *, const struct kefir_ast_local_context *,
-                                                          struct kefir_ir_module *, struct kefir_ir_function *);
-
 #endif

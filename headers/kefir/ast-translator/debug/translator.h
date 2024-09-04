@@ -33,6 +33,14 @@ typedef struct kefir_ast_translator_debug_entries {
 kefir_result_t kefir_ast_translator_debug_entries_init(struct kefir_ast_translator_debug_entries *);
 kefir_result_t kefir_ast_translator_debug_entries_free(struct kefir_mem *, struct kefir_ast_translator_debug_entries *);
 
-kefir_result_t kefir_ast_translate_debug_type(struct kefir_mem *, const struct kefir_ast_context *, const struct kefir_ast_translator_environment *, struct kefir_ir_module *, struct kefir_ast_translator_debug_entries *, const struct kefir_ast_type *, kefir_ir_debug_entry_id_t *);
+kefir_result_t kefir_ast_translate_debug_type(struct kefir_mem *, const struct kefir_ast_context *,
+                                              const struct kefir_ast_translator_environment *, struct kefir_ir_module *,
+                                              struct kefir_ast_translator_debug_entries *,
+                                              const struct kefir_ast_type *, kefir_ir_debug_entry_id_t *);
+
+kefir_result_t kefir_ast_translator_generate_object_scope_debug_information(
+    struct kefir_mem *, const struct kefir_ast_context *, const struct kefir_ast_translator_environment *,
+    struct kefir_ir_module *, struct kefir_ast_translator_debug_entries *,
+    const struct kefir_ast_identifier_flat_scope *, kefir_ir_debug_entry_id_t, kefir_size_t, kefir_size_t);
 
 #endif

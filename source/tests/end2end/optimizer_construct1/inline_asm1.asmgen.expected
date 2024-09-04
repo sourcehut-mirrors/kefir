@@ -114,7 +114,7 @@
                             {
                                 "id": 3,
                                 "opcode": "get_global",
-                                "global_ref": 44,
+                                "global_ref": 43,
                                 "offset": 0,
                                 "control_next": null,
                                 "properties": {
@@ -227,7 +227,7 @@
                             {
                                 "id": 10,
                                 "opcode": "get_global",
-                                "global_ref": 46,
+                                "global_ref": 45,
                                 "offset": 0,
                                 "control_next": null,
                                 "properties": {
@@ -357,7 +357,7 @@
                             {
                                 "id": 7,
                                 "opcode": "get_global",
-                                "global_ref": 44,
+                                "global_ref": 43,
                                 "offset": 0,
                                 "control_next": null,
                                 "properties": {
@@ -527,7 +527,7 @@
                             {
                                 "id": 14,
                                 "opcode": "get_global",
-                                "global_ref": 44,
+                                "global_ref": 43,
                                 "offset": 0,
                                 "control_next": null,
                                 "properties": {
@@ -548,7 +548,7 @@
                             {
                                 "id": 15,
                                 "opcode": "get_global",
-                                "global_ref": 46,
+                                "global_ref": 45,
                                 "offset": 0,
                                 "control_next": null,
                                 "properties": {
@@ -569,7 +569,7 @@
                             {
                                 "id": 16,
                                 "opcode": "get_global",
-                                "global_ref": 44,
+                                "global_ref": 43,
                                 "offset": 0,
                                 "control_next": null,
                                 "properties": {

@@ -1001,6 +1001,7 @@
                 }
             ],
             "public_labels": [],
+            "subroutine_id": 134,
             "source_map": [
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir1\/lib.kefir.asmgen.c",
@@ -1022,44 +1023,6 @@
                     "column": 5,
                     "begin": 31,
                     "end": 33
-                }
-            ],
-            "local_map": [
-                {
-                    "identifier": "vla",
-                    "type_id": 139,
-                    "location": 19,
-                    "lifetime": {
-                        "begin": 9,
-                        "end": 33
-                    }
-                },
-                {
-                    "identifier": "c",
-                    "type_id": 137,
-                    "location": 18,
-                    "lifetime": {
-                        "begin": 9,
-                        "end": 33
-                    }
-                },
-                {
-                    "identifier": "b",
-                    "type_id": 16,
-                    "location": 3,
-                    "lifetime": {
-                        "begin": 9,
-                        "end": 33
-                    }
-                },
-                {
-                    "identifier": "a",
-                    "type_id": 19,
-                    "location": 2,
-                    "lifetime": {
-                        "begin": 9,
-                        "end": 33
-                    }
                 }
             ]
         }
@@ -2330,6 +2293,191 @@
                             {
                                 "tag": "name",
                                 "value": "c"
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 134,
+                "tag": "subprogram",
+                "attributes": [
+                    {
+                        "tag": "code_begin",
+                        "value": 9
+                    },
+                    {
+                        "tag": "code_end",
+                        "value": 33
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 135,
+                        "tag": "variable",
+                        "attributes": [
+                            {
+                                "tag": "name",
+                                "value": "a"
+                            },
+                            {
+                                "tag": "type",
+                                "value": 19
+                            },
+                            {
+                                "tag": "code_begin",
+                                "value": 9
+                            },
+                            {
+                                "tag": "code_end",
+                                "value": 33
+                            },
+                            {
+                                "tag": "local_variable",
+                                "value": 2
+                            }
+                        ],
+                        "children": []
+                    },
+                    {
+                        "identifier": 136,
+                        "tag": "variable",
+                        "attributes": [
+                            {
+                                "tag": "name",
+                                "value": "b"
+                            },
+                            {
+                                "tag": "type",
+                                "value": 16
+                            },
+                            {
+                                "tag": "code_begin",
+                                "value": 9
+                            },
+                            {
+                                "tag": "code_end",
+                                "value": 33
+                            },
+                            {
+                                "tag": "local_variable",
+                                "value": 3
+                            }
+                        ],
+                        "children": []
+                    },
+                    {
+                        "identifier": 137,
+                        "tag": "variable",
+                        "attributes": [
+                            {
+                                "tag": "name",
+                                "value": "c"
+                            },
+                            {
+                                "tag": "type",
+                                "value": 138
+                            },
+                            {
+                                "tag": "code_begin",
+                                "value": 9
+                            },
+                            {
+                                "tag": "code_end",
+                                "value": 33
+                            },
+                            {
+                                "tag": "local_variable",
+                                "value": 18
+                            }
+                        ],
+                        "children": []
+                    },
+                    {
+                        "identifier": 140,
+                        "tag": "variable",
+                        "attributes": [
+                            {
+                                "tag": "name",
+                                "value": "vla"
+                            },
+                            {
+                                "tag": "type",
+                                "value": 141
+                            },
+                            {
+                                "tag": "code_begin",
+                                "value": 9
+                            },
+                            {
+                                "tag": "code_end",
+                                "value": 33
+                            },
+                            {
+                                "tag": "local_variable",
+                                "value": 19
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 138,
+                "tag": "type_pointer",
+                "attributes": [
+                    {
+                        "tag": "size",
+                        "value": 8
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 8
+                    },
+                    {
+                        "tag": "type",
+                        "value": 139
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 139,
+                "tag": "type_pointer",
+                "attributes": [
+                    {
+                        "tag": "size",
+                        "value": 8
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 8
+                    },
+                    {
+                        "tag": "type",
+                        "value": 10
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 141,
+                "tag": "type_array",
+                "attributes": [
+                    {
+                        "tag": "type",
+                        "value": 7
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 142,
+                        "tag": "array_subrange",
+                        "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 8
                             }
                         ],
                         "children": []

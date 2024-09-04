@@ -42,9 +42,11 @@ kefir_result_t kefir_ast_translator_context_init(struct kefir_mem *mem, struct k
     context->global_scope_layout = NULL;
     context->local_scope_layout = NULL;
     context->function_debug_info = NULL;
+    context->debug_entry_hierarchy = KEFIR_IR_DEBUG_ENTRY_ID_NONE;
 
     context->debug_entries = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_translator_debug_entries));
-    REQUIRE(context->debug_entries != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST translator debug type bundle"));
+    REQUIRE(context->debug_entries != NULL,
+            KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST translator debug type bundle"));
     kefir_result_t res = kefir_ast_translator_debug_entries_init(context->debug_entries);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, context->debug_entries);
@@ -82,6 +84,7 @@ kefir_result_t kefir_ast_translator_context_init_local(struct kefir_mem *mem,
     context->local_scope_layout = NULL;
     context->function_debug_info = function_debug_info;
     context->debug_entries = base_context->debug_entries;
+    context->debug_entry_hierarchy = KEFIR_IR_DEBUG_ENTRY_ID_NONE;
 
     context->extensions = base_context->extensions;
     context->extensions_payload = NULL;
@@ -112,5 +115,38 @@ kefir_result_t kefir_ast_translator_context_free(struct kefir_mem *mem, struct k
     context->global_scope_layout = NULL;
     context->local_scope_layout = NULL;
     context->debug_entries = NULL;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_ast_translator_context_push_debug_hierarchy_entry(struct kefir_mem *mem,
+                                                                       struct kefir_ast_translator_context *context,
+                                                                       kefir_ir_debug_entry_tag_t tag,
+                                                                       kefir_ir_debug_entry_id_t *entry_id_ptr) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected a valid AST translator context"));
+
+    kefir_ir_debug_entry_id_t entry_id;
+    if (context->debug_entry_hierarchy != KEFIR_IR_DEBUG_ENTRY_ID_NONE) {
+        REQUIRE_OK(kefir_ir_debug_entry_new_child(mem, &context->module->debug_info.entries,
+                                                  context->debug_entry_hierarchy, tag, &entry_id));
+    } else {
+        REQUIRE_OK(kefir_ir_debug_entry_new(mem, &context->module->debug_info.entries, tag, &entry_id));
+    }
+    context->debug_entry_hierarchy = entry_id;
+    ASSIGN_PTR(entry_id_ptr, entry_id);
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_ast_translator_context_pop_debug_hierarchy_entry(struct kefir_mem *mem,
+                                                                      struct kefir_ast_translator_context *context) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected a valid AST translator context"));
+    REQUIRE(context->debug_entry_hierarchy != KEFIR_IR_DEBUG_ENTRY_ID_NONE,
+            KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "AST translation context debug entry hierarchy is empty"));
+
+    const struct kefir_ir_debug_entry *entry;
+    REQUIRE_OK(kefir_ir_debug_entry_get(&context->module->debug_info.entries, context->debug_entry_hierarchy, &entry));
+    context->debug_entry_hierarchy = entry->parent_identifier;
+
     return KEFIR_OK;
 }

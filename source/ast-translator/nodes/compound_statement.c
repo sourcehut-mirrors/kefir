@@ -35,6 +35,12 @@ kefir_result_t kefir_ast_translate_compound_statement_node(struct kefir_mem *mem
     REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST compound statement node"));
 
     const kefir_size_t statement_begin_index = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
+    kefir_ir_debug_entry_id_t lexical_block_entry_id;
+    REQUIRE_OK(kefir_ast_translator_context_push_debug_hierarchy_entry(mem, context, KEFIR_IR_DEBUG_ENTRY_LEXICAL_BLOCK,
+                                                                       &lexical_block_entry_id));
+    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &context->module->debug_info.entries, &context->module->symbols,
+                                                  lexical_block_entry_id,
+                                                  &KEFIR_IR_DEBUG_ENTRY_ATTR_CODE_BEGIN(statement_begin_index)));
 
     for (const struct kefir_list_entry *iter = kefir_list_head(&node->block_items); iter != NULL;
          kefir_list_next(&iter)) {
@@ -52,13 +58,18 @@ kefir_result_t kefir_ast_translate_compound_statement_node(struct kefir_mem *mem
     }
 
     const kefir_size_t statement_end_index = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
+    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &context->module->debug_info.entries, &context->module->symbols,
+                                                  lexical_block_entry_id,
+                                                  &KEFIR_IR_DEBUG_ENTRY_ATTR_CODE_END(statement_end_index)));
     const struct kefir_ast_identifier_flat_scope *associated_ordinary_scope =
         node->base.properties.statement_props.flow_control_statement->associated_scopes.ordinary_scope;
     REQUIRE(associated_ordinary_scope != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
                             "Expected AST flow control statement to have an associated ordinary scope"));
-    REQUIRE_OK(kefir_ast_translator_define_object_scope_lifetime(mem, associated_ordinary_scope, statement_begin_index,
-                                                                 statement_end_index));
+    REQUIRE_OK(kefir_ast_translator_generate_object_scope_debug_information(
+        mem, context->ast_context, context->environment, context->module, context->debug_entries,
+        associated_ordinary_scope, lexical_block_entry_id, statement_begin_index, statement_end_index));
+    REQUIRE_OK(kefir_ast_translator_context_pop_debug_hierarchy_entry(mem, context));
 
     if (kefir_ast_flow_control_block_contains_vl_arrays(node->base.properties.statement_props.flow_control_statement)) {
         kefir_id_t vla_element;

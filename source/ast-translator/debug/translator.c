@@ -400,20 +400,20 @@ static kefir_result_t translate_debug_type(struct kefir_mem *mem, const struct k
                                              (kefir_hashtree_value_t) *entry_id_ptr));
 
             struct kefir_ast_translator_environment_type underlying_env_type;
-            REQUIRE_OK(kefir_ast_translator_environment_new_type(mem, context, translator_env, type->enumeration_type.underlying_type,
-                &underlying_env_type, NULL));
-            
+            REQUIRE_OK(kefir_ast_translator_environment_new_type(
+                mem, context, translator_env, type->enumeration_type.underlying_type, &underlying_env_type, NULL));
+
             const kefir_size_t underlying_type_size = underlying_env_type.layout->properties.size;
             const kefir_size_t underlying_type_alignment = underlying_env_type.layout->properties.alignment;
 
             REQUIRE_OK(kefir_ast_translator_environment_free_type(mem, translator_env, &underlying_env_type));
 
+            REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols,
+                                                          *entry_id_ptr,
+                                                          &KEFIR_IR_DEBUG_ENTRY_ATTR_SIZE(underlying_type_size)));
             REQUIRE_OK(
                 kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols, *entry_id_ptr,
-                                                   &KEFIR_IR_DEBUG_ENTRY_ATTR_SIZE(underlying_type_size)));
-            REQUIRE_OK(kefir_ir_debug_entry_add_attribute(
-                mem, &module->debug_info.entries, &module->symbols, *entry_id_ptr,
-                &KEFIR_IR_DEBUG_ENTRY_ATTR_ALIGNMENT(underlying_type_alignment)));
+                                                   &KEFIR_IR_DEBUG_ENTRY_ATTR_ALIGNMENT(underlying_type_alignment)));
 
             if (type->enumeration_type.identifier != NULL) {
                 REQUIRE_OK(kefir_ir_debug_entry_add_attribute(
@@ -694,4 +694,79 @@ kefir_result_t kefir_ast_translate_debug_type(struct kefir_mem *mem, const struc
                                               kefir_ir_debug_entry_id_t *entry_id_ptr) {
     return kefir_ast_translate_debug_type_with_layout(mem, context, translator_env, module, debug_entries, type, NULL,
                                                       entry_id_ptr);
+}
+
+kefir_result_t kefir_ast_translator_generate_object_scope_debug_information(
+    struct kefir_mem *mem, const struct kefir_ast_context *context,
+    const struct kefir_ast_translator_environment *translator_env, struct kefir_ir_module *module,
+    struct kefir_ast_translator_debug_entries *debug_entries, const struct kefir_ast_identifier_flat_scope *scope,
+    kefir_ir_debug_entry_id_t parent_entry_id, kefir_size_t lifetime_begin, kefir_size_t lifetime_end) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST context"));
+    REQUIRE(translator_env != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST translator environment"));
+    REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR module"));
+    REQUIRE(debug_entries != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST translator debug entries"));
+    REQUIRE(scope != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid identifier flat scope"));
+    REQUIRE(parent_entry_id != KEFIR_IR_DEBUG_ENTRY_ID_NONE,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid parent IR debug entry identifier"));
+    REQUIRE(lifetime_begin <= lifetime_end,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected object lifetime begin index to precede end index"));
+
+    struct kefir_ast_identifier_flat_scope_iterator iter;
+    kefir_result_t res;
+    for (res = kefir_ast_identifier_flat_scope_iter(scope, &iter); res == KEFIR_OK;
+         res = kefir_ast_identifier_flat_scope_next(scope, &iter)) {
+
+        switch (iter.value->klass) {
+            case KEFIR_AST_SCOPE_IDENTIFIER_OBJECT:
+                if (iter.value->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO ||
+                    iter.value->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER) {
+                    kefir_ir_debug_entry_id_t variable_entry_id;
+                    REQUIRE_OK(kefir_ir_debug_entry_new_child(mem, &module->debug_info.entries, parent_entry_id,
+                                                              KEFIR_IR_DEBUG_ENTRY_VARIABLE, &variable_entry_id));
+                    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols,
+                                                                  variable_entry_id,
+                                                                  &KEFIR_IR_DEBUG_ENTRY_ATTR_NAME(iter.identifier)));
+                    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(
+                        mem, &module->debug_info.entries, &module->symbols, variable_entry_id,
+                        &KEFIR_IR_DEBUG_ENTRY_ATTR_CODE_BEGIN(lifetime_begin)));
+                    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols,
+                                                                  variable_entry_id,
+                                                                  &KEFIR_IR_DEBUG_ENTRY_ATTR_CODE_END(lifetime_end)));
+
+                    kefir_ir_debug_entry_id_t variable_type_id;
+                    REQUIRE_OK(kefir_ast_translate_debug_type(mem, context, translator_env, module, debug_entries,
+                                                              iter.value->object.type, &variable_type_id));
+                    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols,
+                                                                  variable_entry_id,
+                                                                  &KEFIR_IR_DEBUG_ENTRY_ATTR_TYPE(variable_type_id)));
+
+                    ASSIGN_DECL_CAST(struct kefir_ast_translator_scoped_identifier_object *, scoped_identifier_layout,
+                                     iter.value->payload.ptr);
+                    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(
+                        mem, &module->debug_info.entries, &module->symbols, variable_entry_id,
+                        &KEFIR_IR_DEBUG_ENTRY_ATTR_LOCAL_VARIABLE(scoped_identifier_layout->layout->value)));
+                    scoped_identifier_layout->debug_info.type = variable_type_id;
+                    scoped_identifier_layout->debug_info.variable = variable_entry_id;
+                    scoped_identifier_layout->debug_info.present = true;
+                }
+                break;
+
+            case KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION:
+            case KEFIR_AST_SCOPE_IDENTIFIER_ENUM_CONSTANT:
+            case KEFIR_AST_SCOPE_IDENTIFIER_LABEL:
+            case KEFIR_AST_SCOPE_IDENTIFIER_TYPE_DEFINITION:
+                // Intentionally left blank
+                break;
+
+            case KEFIR_AST_SCOPE_IDENTIFIER_TYPE_TAG:
+                return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected identifier in object scope");
+        }
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
+    return KEFIR_OK;
 }

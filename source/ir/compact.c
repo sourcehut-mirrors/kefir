@@ -213,7 +213,10 @@ static kefir_result_t compact_debug_entry(struct kefir_mem *mem, struct kefir_ir
             case KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_OFFSET:
             case KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_BITWIDTH:
             case KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_BITOFFSET:
-            case KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_FUNCTION_PROTOTYPED:
+            case KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_FUNCTION_PROTOTYPED_FLAG:
+            case KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_CODE_BEGIN:
+            case KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_CODE_END:
+            case KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_LOCAL_VARIABLE:
                 // Intentionally left blank
                 break;
 
@@ -233,6 +236,12 @@ static kefir_result_t compact_function(struct kefir_mem *mem, struct kefir_ir_mo
                                        struct compact_params *params, struct kefir_ir_function *function) {
     REQUIRE_OK(compact_function_decl(mem, params, function->declaration));
     REQUIRE_OK(compact_type(mem, params, (const struct kefir_ir_type **) &function->locals, &function->locals_type_id));
+
+    if (function->debug_info.subprogram_id != KEFIR_IR_DEBUG_ENTRY_ID_NONE) {
+        const struct kefir_ir_debug_entry *entry;
+        REQUIRE_OK(kefir_ir_debug_entry_get(&module->debug_info.entries, function->debug_info.subprogram_id, &entry));
+        REQUIRE_OK(compact_debug_entry(mem, module, params, entry));
+    }
 
     for (kefir_size_t i = 0; i < kefir_irblock_length(&function->body); i++) {
         struct kefir_irinstr *instr = kefir_irblock_at(&function->body, i);

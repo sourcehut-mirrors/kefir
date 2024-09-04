@@ -50,7 +50,10 @@ typedef enum kefir_ir_debug_entry_tag {
     KEFIR_IR_DEBUG_ENTRY_ARRAY_SUBRANGE,
     KEFIR_IR_DEBUG_ENTRY_STRUCTURE_MEMBER,
     KEFIR_IR_DEBUG_ENTRY_FUNCTION_PARAMETER,
-    KEFIR_IR_DEBUG_ENTRY_FUNCTION_VARARG
+    KEFIR_IR_DEBUG_ENTRY_FUNCTION_VARARG,
+    KEFIR_IR_DEBUG_ENTRY_LEXICAL_BLOCK,
+    KEFIR_IR_DEBUG_ENTRY_SUBPROGRAM,
+    KEFIR_IR_DEBUG_ENTRY_VARIABLE
 } kefir_ir_debug_entry_tag_t;
 
 typedef enum kefir_ir_debug_entry_attribute_tag {
@@ -63,7 +66,10 @@ typedef enum kefir_ir_debug_entry_attribute_tag {
     KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_BITWIDTH,
     KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_BITOFFSET,
     KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_TYPE,
-    KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_FUNCTION_PROTOTYPED,
+    KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_FUNCTION_PROTOTYPED_FLAG,
+    KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_CODE_BEGIN,
+    KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_CODE_END,
+    KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_LOCAL_VARIABLE,
     // Auxillary
     KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_COUNT
 } kefir_ir_debug_entry_attribute_tag_t;
@@ -82,6 +88,8 @@ typedef struct kefir_ir_debug_entry_attribute {
         kefir_size_t bitoffset;
         kefir_ir_debug_entry_id_t type_id;
         kefir_bool_t function_prototyped;
+        kefir_size_t code_index;
+        kefir_size_t local_variable;
     };
 } kefir_ir_debug_entry_attribute_t;
 
@@ -118,9 +126,16 @@ typedef struct kefir_ir_debug_entries {
     ((struct kefir_ir_debug_entry_attribute){.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_BITWIDTH, .bitwidth = (_bitwidth)})
 #define KEFIR_IR_DEBUG_ENTRY_ATTR_TYPE(_type_id) \
     ((struct kefir_ir_debug_entry_attribute){.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_TYPE, .type_id = (_type_id)})
-#define KEFIR_IR_DEBUG_ENTRY_ATTR_FUNCTION_PROTOTYPED(_prototyped)                                      \
-    ((struct kefir_ir_debug_entry_attribute){.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_FUNCTION_PROTOTYPED, \
+#define KEFIR_IR_DEBUG_ENTRY_ATTR_FUNCTION_PROTOTYPED(_prototyped)                                           \
+    ((struct kefir_ir_debug_entry_attribute){.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_FUNCTION_PROTOTYPED_FLAG, \
                                              .function_prototyped = (_prototyped)})
+#define KEFIR_IR_DEBUG_ENTRY_ATTR_CODE_BEGIN(_index) \
+    ((struct kefir_ir_debug_entry_attribute){.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_CODE_BEGIN, .code_index = (_index)})
+#define KEFIR_IR_DEBUG_ENTRY_ATTR_CODE_END(_index) \
+    ((struct kefir_ir_debug_entry_attribute){.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_CODE_END, .code_index = (_index)})
+#define KEFIR_IR_DEBUG_ENTRY_ATTR_LOCAL_VARIABLE(_location)                                        \
+    ((struct kefir_ir_debug_entry_attribute){.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_LOCAL_VARIABLE, \
+                                             .local_variable = (_location)})
 
 typedef struct kefir_ir_debug_source_location {
     struct kefir_source_location location;
@@ -138,32 +153,10 @@ typedef struct kefir_ir_debug_function_source_map_iterator {
     struct kefir_interval_tree_iterator iter;
     struct kefir_ir_debug_source_location *source_location;
 } kefir_ir_debug_function_source_map_iterator_t;
-
-typedef struct kefir_ir_debug_function_local_entry {
-    const char *identifier;
-    kefir_ir_debug_entry_id_t type_id;
-    kefir_size_t location;
-    struct {
-        kefir_size_t begin;
-        kefir_size_t end;
-    } lifetime;
-
-    struct kefir_ir_debug_function_local_entry *next;
-} kefir_ir_debug_function_local_entry_t;
-
-typedef struct kefir_ir_debug_function_local_map {
-    struct kefir_interval_tree locations;
-} kefir_ir_debug_function_local_map_t;
-
-typedef struct kefir_ir_debug_function_local_map_iterator {
-    struct kefir_interval_tree_iterator iter;
-    struct kefir_ir_debug_function_local_entry *next_entry;
-} kefir_ir_debug_function_local_map_iterator_t;
-
 typedef struct kefir_ir_function_debug_info {
     struct kefir_ir_debug_function_source_map source_map;
-    struct kefir_ir_debug_function_local_map local_map;
     struct kefir_source_location source_location;
+    kefir_ir_debug_entry_id_t subprogram_id;
 } kefir_ir_function_debug_info_t;
 
 typedef struct kefir_ir_module_debug_info {
@@ -234,20 +227,6 @@ kefir_result_t kefir_ir_debug_function_source_map_iter(const struct kefir_ir_deb
                                                        const struct kefir_ir_debug_source_location **);
 kefir_result_t kefir_ir_debug_function_source_map_next(struct kefir_ir_debug_function_source_map_iterator *,
                                                        const struct kefir_ir_debug_source_location **);
-
-kefir_result_t kefir_ir_debug_function_local_map_init(struct kefir_ir_debug_function_local_map *);
-kefir_result_t kefir_ir_debug_function_local_map_free(struct kefir_mem *, struct kefir_ir_debug_function_local_map *);
-
-kefir_result_t kefir_ir_debug_function_local_map_insert(struct kefir_mem *, struct kefir_ir_debug_function_local_map *,
-                                                        struct kefir_string_pool *, const char *,
-                                                        kefir_ir_debug_entry_id_t, kefir_size_t, kefir_size_t,
-                                                        kefir_size_t);
-
-kefir_result_t kefir_ir_debug_function_local_map_iter(const struct kefir_ir_debug_function_local_map *,
-                                                      struct kefir_ir_debug_function_local_map_iterator *,
-                                                      const struct kefir_ir_debug_function_local_entry **);
-kefir_result_t kefir_ir_debug_function_local_map_next(struct kefir_ir_debug_function_local_map_iterator *,
-                                                      const struct kefir_ir_debug_function_local_entry **);
 
 kefir_result_t kefir_ir_function_debug_info_init(struct kefir_ir_function_debug_info *);
 kefir_result_t kefir_ir_function_debug_info_free(struct kefir_mem *, struct kefir_ir_function_debug_info *);

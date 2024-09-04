@@ -272,6 +272,7 @@
                 }
             ],
             "public_labels": [],
+            "subroutine_id": 73,
             "source_map": [
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
@@ -336,80 +337,6 @@
                     "begin": 39,
                     "end": 41
                 }
-            ],
-            "local_map": [
-                {
-                    "identifier": "d",
-                    "type_id": 32,
-                    "location": 3,
-                    "lifetime": {
-                        "begin": 3,
-                        "end": 41
-                    }
-                },
-                {
-                    "identifier": "c",
-                    "type_id": 12,
-                    "location": 2,
-                    "lifetime": {
-                        "begin": 3,
-                        "end": 41
-                    }
-                },
-                {
-                    "identifier": "b",
-                    "type_id": 1,
-                    "location": 1,
-                    "lifetime": {
-                        "begin": 3,
-                        "end": 41
-                    }
-                },
-                {
-                    "identifier": "a",
-                    "type_id": 1,
-                    "location": 0,
-                    "lifetime": {
-                        "begin": 3,
-                        "end": 41
-                    }
-                },
-                {
-                    "identifier": "f",
-                    "type_id": 76,
-                    "location": 5,
-                    "lifetime": {
-                        "begin": 22,
-                        "end": 36
-                    }
-                },
-                {
-                    "identifier": "e",
-                    "type_id": 54,
-                    "location": 4,
-                    "lifetime": {
-                        "begin": 22,
-                        "end": 36
-                    }
-                },
-                {
-                    "identifier": "g",
-                    "type_id": 77,
-                    "location": 6,
-                    "lifetime": {
-                        "begin": 33,
-                        "end": 35
-                    }
-                },
-                {
-                    "identifier": "e",
-                    "type_id": 78,
-                    "location": 7,
-                    "lifetime": {
-                        "begin": 37,
-                        "end": 39
-                    }
-                }
             ]
         }
     ],
@@ -462,6 +389,462 @@
                     {
                         "tag": "alignment",
                         "value": 4
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 12,
+                "tag": "type_signed_int",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "signed long"
+                    },
+                    {
+                        "tag": "size",
+                        "value": 8
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 8
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 32,
+                "tag": "type_float",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "float"
+                    },
+                    {
+                        "tag": "size",
+                        "value": 4
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 4
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 34,
+                "tag": "type_void",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "void"
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 54,
+                "tag": "type_float",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "double"
+                    },
+                    {
+                        "tag": "size",
+                        "value": 8
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 8
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 73,
+                "tag": "subprogram",
+                "attributes": [
+                    {
+                        "tag": "code_begin",
+                        "value": 3
+                    },
+                    {
+                        "tag": "code_end",
+                        "value": 41
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 74,
+                        "tag": "lexical_block",
+                        "attributes": [
+                            {
+                                "tag": "code_begin",
+                                "value": 18
+                            },
+                            {
+                                "tag": "code_end",
+                                "value": 39
+                            }
+                        ],
+                        "children": [
+                            {
+                                "identifier": 75,
+                                "tag": "lexical_block",
+                                "attributes": [
+                                    {
+                                        "tag": "code_begin",
+                                        "value": 22
+                                    },
+                                    {
+                                        "tag": "code_end",
+                                        "value": 36
+                                    }
+                                ],
+                                "children": [
+                                    {
+                                        "identifier": 76,
+                                        "tag": "lexical_block",
+                                        "attributes": [
+                                            {
+                                                "tag": "code_begin",
+                                                "value": 29
+                                            },
+                                            {
+                                                "tag": "code_end",
+                                                "value": 36
+                                            }
+                                        ],
+                                        "children": [
+                                            {
+                                                "identifier": 77,
+                                                "tag": "lexical_block",
+                                                "attributes": [
+                                                    {
+                                                        "tag": "code_begin",
+                                                        "value": 33
+                                                    },
+                                                    {
+                                                        "tag": "code_end",
+                                                        "value": 35
+                                                    }
+                                                ],
+                                                "children": [
+                                                    {
+                                                        "identifier": 78,
+                                                        "tag": "variable",
+                                                        "attributes": [
+                                                            {
+                                                                "tag": "name",
+                                                                "value": "g"
+                                                            },
+                                                            {
+                                                                "tag": "type",
+                                                                "value": 79
+                                                            },
+                                                            {
+                                                                "tag": "code_begin",
+                                                                "value": 33
+                                                            },
+                                                            {
+                                                                "tag": "code_end",
+                                                                "value": 35
+                                                            },
+                                                            {
+                                                                "tag": "local_variable",
+                                                                "value": 6
+                                                            }
+                                                        ],
+                                                        "children": []
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "identifier": 81,
+                                        "tag": "variable",
+                                        "attributes": [
+                                            {
+                                                "tag": "name",
+                                                "value": "e"
+                                            },
+                                            {
+                                                "tag": "type",
+                                                "value": 54
+                                            },
+                                            {
+                                                "tag": "code_begin",
+                                                "value": 22
+                                            },
+                                            {
+                                                "tag": "code_end",
+                                                "value": 36
+                                            },
+                                            {
+                                                "tag": "local_variable",
+                                                "value": 4
+                                            }
+                                        ],
+                                        "children": []
+                                    },
+                                    {
+                                        "identifier": 82,
+                                        "tag": "variable",
+                                        "attributes": [
+                                            {
+                                                "tag": "name",
+                                                "value": "f"
+                                            },
+                                            {
+                                                "tag": "type",
+                                                "value": 83
+                                            },
+                                            {
+                                                "tag": "code_begin",
+                                                "value": 22
+                                            },
+                                            {
+                                                "tag": "code_end",
+                                                "value": 36
+                                            },
+                                            {
+                                                "tag": "local_variable",
+                                                "value": 5
+                                            }
+                                        ],
+                                        "children": []
+                                    }
+                                ]
+                            },
+                            {
+                                "identifier": 84,
+                                "tag": "lexical_block",
+                                "attributes": [
+                                    {
+                                        "tag": "code_begin",
+                                        "value": 37
+                                    },
+                                    {
+                                        "tag": "code_end",
+                                        "value": 39
+                                    }
+                                ],
+                                "children": [
+                                    {
+                                        "identifier": 85,
+                                        "tag": "variable",
+                                        "attributes": [
+                                            {
+                                                "tag": "name",
+                                                "value": "e"
+                                            },
+                                            {
+                                                "tag": "type",
+                                                "value": 86
+                                            },
+                                            {
+                                                "tag": "code_begin",
+                                                "value": 37
+                                            },
+                                            {
+                                                "tag": "code_end",
+                                                "value": 39
+                                            },
+                                            {
+                                                "tag": "local_variable",
+                                                "value": 7
+                                            }
+                                        ],
+                                        "children": []
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "identifier": 87,
+                        "tag": "variable",
+                        "attributes": [
+                            {
+                                "tag": "name",
+                                "value": "a"
+                            },
+                            {
+                                "tag": "type",
+                                "value": 1
+                            },
+                            {
+                                "tag": "code_begin",
+                                "value": 3
+                            },
+                            {
+                                "tag": "code_end",
+                                "value": 41
+                            },
+                            {
+                                "tag": "local_variable",
+                                "value": 0
+                            }
+                        ],
+                        "children": []
+                    },
+                    {
+                        "identifier": 88,
+                        "tag": "variable",
+                        "attributes": [
+                            {
+                                "tag": "name",
+                                "value": "b"
+                            },
+                            {
+                                "tag": "type",
+                                "value": 1
+                            },
+                            {
+                                "tag": "code_begin",
+                                "value": 3
+                            },
+                            {
+                                "tag": "code_end",
+                                "value": 41
+                            },
+                            {
+                                "tag": "local_variable",
+                                "value": 1
+                            }
+                        ],
+                        "children": []
+                    },
+                    {
+                        "identifier": 89,
+                        "tag": "variable",
+                        "attributes": [
+                            {
+                                "tag": "name",
+                                "value": "c"
+                            },
+                            {
+                                "tag": "type",
+                                "value": 12
+                            },
+                            {
+                                "tag": "code_begin",
+                                "value": 3
+                            },
+                            {
+                                "tag": "code_end",
+                                "value": 41
+                            },
+                            {
+                                "tag": "local_variable",
+                                "value": 2
+                            }
+                        ],
+                        "children": []
+                    },
+                    {
+                        "identifier": 90,
+                        "tag": "variable",
+                        "attributes": [
+                            {
+                                "tag": "name",
+                                "value": "d"
+                            },
+                            {
+                                "tag": "type",
+                                "value": 32
+                            },
+                            {
+                                "tag": "code_begin",
+                                "value": 3
+                            },
+                            {
+                                "tag": "code_end",
+                                "value": 41
+                            },
+                            {
+                                "tag": "local_variable",
+                                "value": 3
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 79,
+                "tag": "type_pointer",
+                "attributes": [
+                    {
+                        "tag": "size",
+                        "value": 8
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 8
+                    },
+                    {
+                        "tag": "type",
+                        "value": 80
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 80,
+                "tag": "type_signed_character",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "char"
+                    },
+                    {
+                        "tag": "size",
+                        "value": 1
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 1
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 83,
+                "tag": "type_complex_float",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "_Complex float"
+                    },
+                    {
+                        "tag": "size",
+                        "value": 8
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 4
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 86,
+                "tag": "type_pointer",
+                "attributes": [
+                    {
+                        "tag": "size",
+                        "value": 8
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 8
+                    },
+                    {
+                        "tag": "type",
+                        "value": 34
                     }
                 ],
                 "children": []

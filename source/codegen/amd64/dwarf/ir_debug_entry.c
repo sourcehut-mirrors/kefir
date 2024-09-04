@@ -640,6 +640,11 @@ static kefir_result_t kefir_codegen_amd64_dwarf_generate_ir_debug_entry_abbrev(
             REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_ir_debug_type_entry(mem, codegen, ir_module, context,
                                                                               ir_attr->type_id, NULL));
             break;
+
+        case KEFIR_IR_DEBUG_ENTRY_SUBPROGRAM:
+        case KEFIR_IR_DEBUG_ENTRY_LEXICAL_BLOCK:
+        case KEFIR_IR_DEBUG_ENTRY_VARIABLE:
+            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "IR debug entries are not implemented yet");
     }
 
     return KEFIR_OK;
@@ -942,8 +947,8 @@ static kefir_result_t kefir_codegen_amd64_dwarf_generate_ir_debug_entry_info(
             kefir_codegen_amd64_dwarf_entry_id_t member_type_entry_id;
             REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&ir_module->debug_info.entries, ir_debug_entry->identifier,
                                                           KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_TYPE, &ir_attr));
-            REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_ir_debug_type_entry(
-                mem, codegen, ir_module, context, ir_attr->type_id, &member_type_entry_id));
+            REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_ir_debug_type_entry(mem, codegen, ir_module, context,
+                                                                              ir_attr->type_id, &member_type_entry_id));
 
             kefir_bool_t has_name, has_bitwidth;
             REQUIRE_OK(kefir_ir_debug_entry_has_attribute(&ir_module->debug_info.entries, ir_debug_entry->identifier,
@@ -1062,13 +1067,13 @@ static kefir_result_t kefir_codegen_amd64_dwarf_generate_ir_debug_entry_info(
             kefir_codegen_amd64_dwarf_entry_id_t return_type_entry_id;
             REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&ir_module->debug_info.entries, ir_debug_entry->identifier,
                                                           KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_TYPE, &ir_attr));
-            REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_ir_debug_type_entry(
-                mem, codegen, ir_module, context, ir_attr->type_id, &return_type_entry_id));
+            REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_ir_debug_type_entry(mem, codegen, ir_module, context,
+                                                                              ir_attr->type_id, &return_type_entry_id));
 
             REQUIRE_OK(KEFIR_AMD64_DWARF_ENTRY_INFO(&codegen->xasmgen, dwarf_entry_id,
                                                     context->abbrev.entries.subroutine_type));
             REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&ir_module->debug_info.entries, ir_debug_entry->identifier,
-                                                          KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_FUNCTION_PROTOTYPED,
+                                                          KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_FUNCTION_PROTOTYPED_FLAG,
                                                           &ir_attr));
             REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen->xasmgen, ir_attr->function_prototyped ? 1 : 0));
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
@@ -1150,6 +1155,11 @@ static kefir_result_t kefir_codegen_amd64_dwarf_generate_ir_debug_entry_info(
                                                           KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
                                                           KEFIR_AMD64_DWARF_DEBUG_INFO_SECTION))));
         } break;
+
+        case KEFIR_IR_DEBUG_ENTRY_SUBPROGRAM:
+        case KEFIR_IR_DEBUG_ENTRY_LEXICAL_BLOCK:
+        case KEFIR_IR_DEBUG_ENTRY_VARIABLE:
+            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "IR debug entries are not implemented yet");
     }
 
     return KEFIR_OK;

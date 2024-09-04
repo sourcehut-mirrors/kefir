@@ -64,6 +64,7 @@ typedef struct kefir_ast_translator_context {
     struct kefir_ast_translator_local_scope_layout *local_scope_layout;
 
     struct kefir_ast_translator_debug_entries *debug_entries;
+    kefir_ir_debug_entry_id_t debug_entry_hierarchy;
 
     const struct kefir_ast_translator_context_extensions *extensions;
     void *extensions_payload;
@@ -81,5 +82,12 @@ kefir_result_t kefir_ast_translator_context_init_local(struct kefir_mem *, struc
                                                        struct kefir_ast_translator_context *);
 
 kefir_result_t kefir_ast_translator_context_free(struct kefir_mem *, struct kefir_ast_translator_context *);
+
+kefir_result_t kefir_ast_translator_context_push_debug_hierarchy_entry(struct kefir_mem *,
+                                                                       struct kefir_ast_translator_context *,
+                                                                       kefir_ir_debug_entry_tag_t,
+                                                                       kefir_ir_debug_entry_id_t *);
+kefir_result_t kefir_ast_translator_context_pop_debug_hierarchy_entry(struct kefir_mem *,
+                                                                      struct kefir_ast_translator_context *);
 
 #endif
