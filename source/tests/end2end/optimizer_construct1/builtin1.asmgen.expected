@@ -27,7 +27,7 @@
                                         "end": 2
                                     }
                                 },
-                                "source_location": null,
+                                "ir_instruction": null,
                                 "local_variables": []
                             },
                             {
@@ -44,7 +44,7 @@
                                         "end": 2
                                     }
                                 },
-                                "source_location": null,
+                                "ir_instruction": null,
                                 "local_variables": []
                             }
                         ],
@@ -93,7 +93,7 @@
                                         "end": 5
                                     }
                                 },
-                                "source_location": null,
+                                "ir_instruction": 1,
                                 "local_variables": []
                             },
                             {
@@ -111,7 +111,7 @@
                                         "end": 5
                                     }
                                 },
-                                "source_location": null,
+                                "ir_instruction": 0,
                                 "local_variables": []
                             },
                             {
@@ -132,7 +132,7 @@
                                         "end": 5
                                     }
                                 },
-                                "source_location": null,
+                                "ir_instruction": 2,
                                 "local_variables": []
                             },
                             {
@@ -150,11 +150,7 @@
                                         "end": 7
                                     }
                                 },
-                                "source_location": {
-                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/builtin1.kefir.asmgen.c",
-                                    "line": 3,
-                                    "column": 5
-                                },
+                                "ir_instruction": 7,
                                 "local_variables": []
                             },
                             {
@@ -171,11 +167,7 @@
                                         "end": 7
                                     }
                                 },
-                                "source_location": {
-                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/builtin1.kefir.asmgen.c",
-                                    "line": 3,
-                                    "column": 5
-                                },
+                                "ir_instruction": 8,
                                 "local_variables": []
                             },
                             {
@@ -193,11 +185,7 @@
                                         "end": 10
                                     }
                                 },
-                                "source_location": {
-                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/builtin1.kefir.asmgen.c",
-                                    "line": 4,
-                                    "column": 5
-                                },
+                                "ir_instruction": 9,
                                 "local_variables": []
                             },
                             {
@@ -215,11 +203,7 @@
                                         "end": 10
                                     }
                                 },
-                                "source_location": {
-                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/builtin1.kefir.asmgen.c",
-                                    "line": 4,
-                                    "column": 5
-                                },
+                                "ir_instruction": 10,
                                 "local_variables": []
                             },
                             {
@@ -239,11 +223,7 @@
                                         "end": 10
                                     }
                                 },
-                                "source_location": {
-                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/builtin1.kefir.asmgen.c",
-                                    "line": 4,
-                                    "column": 5
-                                },
+                                "ir_instruction": 11,
                                 "local_variables": []
                             },
                             {
@@ -261,11 +241,7 @@
                                         "end": 12
                                     }
                                 },
-                                "source_location": {
-                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/builtin1.kefir.asmgen.c",
-                                    "line": 5,
-                                    "column": 12
-                                },
+                                "ir_instruction": 12,
                                 "local_variables": []
                             },
                             {
@@ -286,11 +262,7 @@
                                         "end": 12
                                     }
                                 },
-                                "source_location": {
-                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/builtin1.kefir.asmgen.c",
-                                    "line": 5,
-                                    "column": 12
-                                },
+                                "ir_instruction": 13,
                                 "local_variables": []
                             },
                             {
@@ -308,11 +280,7 @@
                                         "end": 14
                                     }
                                 },
-                                "source_location": {
-                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/builtin1.kefir.asmgen.c",
-                                    "line": 6,
-                                    "column": 5
-                                },
+                                "ir_instruction": 15,
                                 "local_variables": []
                             },
                             {
@@ -329,11 +297,7 @@
                                         "end": 14
                                     }
                                 },
-                                "source_location": {
-                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/builtin1.kefir.asmgen.c",
-                                    "line": 6,
-                                    "column": 5
-                                },
+                                "ir_instruction": 16,
                                 "local_variables": []
                             },
                             {
@@ -350,7 +314,7 @@
                                         "end": 15
                                     }
                                 },
-                                "source_location": null,
+                                "ir_instruction": null,
                                 "local_variables": []
                             }
                         ],
@@ -401,7 +365,7 @@
                                         "end": 1
                                     }
                                 },
-                                "source_location": null,
+                                "ir_instruction": null,
                                 "local_variables": []
                             }
                         ],
@@ -441,7 +405,7 @@
                                         "end": 7
                                     }
                                 },
-                                "source_location": null,
+                                "ir_instruction": 0,
                                 "local_variables": []
                             },
                             {
@@ -458,11 +422,7 @@
                                         "end": 4
                                     }
                                 },
-                                "source_location": {
-                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/builtin1.kefir.asmgen.c",
-                                    "line": 10,
-                                    "column": 32
-                                },
+                                "ir_instruction": 2,
                                 "local_variables": []
                             },
                             {
@@ -479,11 +439,7 @@
                                         "end": 6
                                     }
                                 },
-                                "source_location": {
-                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/builtin1.kefir.asmgen.c",
-                                    "line": 10,
-                                    "column": 15
-                                },
+                                "ir_instruction": 3,
                                 "local_variables": []
                             },
                             {
@@ -500,11 +456,7 @@
                                         "end": 6
                                     }
                                 },
-                                "source_location": {
-                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/builtin1.kefir.asmgen.c",
-                                    "line": 10,
-                                    "column": 15
-                                },
+                                "ir_instruction": 4,
                                 "local_variables": []
                             },
                             {
@@ -523,11 +475,7 @@
                                         "end": 7
                                     }
                                 },
-                                "source_location": {
-                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/builtin1.kefir.asmgen.c",
-                                    "line": 10,
-                                    "column": 15
-                                },
+                                "ir_instruction": 5,
                                 "local_variables": []
                             },
                             {
@@ -548,7 +496,7 @@
                                         "end": 7
                                     }
                                 },
-                                "source_location": null,
+                                "ir_instruction": 6,
                                 "local_variables": []
                             },
                             {
@@ -565,7 +513,7 @@
                                         "end": 8
                                     }
                                 },
-                                "source_location": null,
+                                "ir_instruction": null,
                                 "local_variables": []
                             }
                         ],

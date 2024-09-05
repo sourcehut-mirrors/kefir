@@ -125,7 +125,8 @@ static kefir_result_t phi_pull_impl(struct phi_pull_state *state) {
             const struct kefir_opt_instruction *instr;
             REQUIRE_OK(kefir_opt_code_container_instr(&state->func->code, instr_ref, &instr));
 
-            REQUIRE_OK(kefir_opt_code_debug_info_set_source_location_cursor_of(&state->func->debug_info, instr_ref));
+            REQUIRE_OK(
+                kefir_opt_code_debug_info_set_instruction_location_cursor_of(&state->func->debug_info, instr_ref));
 
             kefir_bool_t pull = true;
             switch (instr->operation.opcode) {
@@ -204,8 +205,8 @@ static kefir_result_t phi_pull_impl(struct phi_pull_state *state) {
                 REQUIRE_OK(kefir_opt_phi_next_sibling(&state->func->code, phi_ref, &phi_ref));
                 REQUIRE_OK(kefir_opt_code_container_drop_phi(&state->func->code, prev_phi_ref));
 
-                REQUIRE_OK(
-                    kefir_opt_code_debug_info_set_source_location_cursor(state->mem, &state->func->debug_info, NULL));
+                REQUIRE_OK(kefir_opt_code_debug_info_set_instruction_location_cursor(
+                    &state->func->debug_info, KEFIR_OPT_CODE_DEBUG_INSTRUCTION_LOCATION_NONE));
             } else {
                 REQUIRE_OK(kefir_opt_phi_next_sibling(&state->func->code, phi_ref, &phi_ref));
             }

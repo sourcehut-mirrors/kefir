@@ -27,7 +27,7 @@
                                         "end": 2
                                     }
                                 },
-                                "source_location": null,
+                                "ir_instruction": null,
                                 "local_variables": []
                             },
                             {
@@ -44,7 +44,7 @@
                                         "end": 2
                                     }
                                 },
-                                "source_location": null,
+                                "ir_instruction": null,
                                 "local_variables": []
                             }
                         ],
@@ -93,7 +93,7 @@
                                         "end": 5
                                     }
                                 },
-                                "source_location": null,
+                                "ir_instruction": 1,
                                 "local_variables": []
                             },
                             {
@@ -111,7 +111,7 @@
                                         "end": 5
                                     }
                                 },
-                                "source_location": null,
+                                "ir_instruction": 0,
                                 "local_variables": []
                             },
                             {
@@ -132,7 +132,7 @@
                                         "end": 5
                                     }
                                 },
-                                "source_location": null,
+                                "ir_instruction": 2,
                                 "local_variables": []
                             },
                             {
@@ -150,11 +150,7 @@
                                         "end": 7
                                     }
                                 },
-                                "source_location": {
-                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
-                                    "line": 27,
-                                    "column": 12
-                                },
+                                "ir_instruction": 3,
                                 "local_variables": []
                             },
                             {
@@ -174,11 +170,7 @@
                                         "end": 9
                                     }
                                 },
-                                "source_location": {
-                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
-                                    "line": 27,
-                                    "column": 12
-                                },
+                                "ir_instruction": 4,
                                 "local_variables": []
                             },
                             {
@@ -195,11 +187,7 @@
                                         "end": 9
                                     }
                                 },
-                                "source_location": {
-                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
-                                    "line": 27,
-                                    "column": 12
-                                },
+                                "ir_instruction": 5,
                                 "local_variables": []
                             },
                             {
@@ -219,11 +207,7 @@
                                         "end": 10
                                     }
                                 },
-                                "source_location": {
-                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
-                                    "line": 27,
-                                    "column": 12
-                                },
+                                "ir_instruction": 6,
                                 "local_variables": []
                             },
                             {
@@ -243,11 +227,7 @@
                                         "end": 11
                                     }
                                 },
-                                "source_location": {
-                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
-                                    "line": 27,
-                                    "column": 12
-                                },
+                                "ir_instruction": 7,
                                 "local_variables": []
                             },
                             {
@@ -267,11 +247,7 @@
                                         "end": 12
                                     }
                                 },
-                                "source_location": {
-                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
-                                    "line": 27,
-                                    "column": 12
-                                },
+                                "ir_instruction": 8,
                                 "local_variables": []
                             },
                             {
@@ -288,11 +264,7 @@
                                         "end": 12
                                     }
                                 },
-                                "source_location": {
-                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
-                                    "line": 27,
-                                    "column": 5
-                                },
+                                "ir_instruction": 9,
                                 "local_variables": []
                             }
                         ],
@@ -343,7 +315,7 @@
                                         "end": 2
                                     }
                                 },
-                                "source_location": null,
+                                "ir_instruction": null,
                                 "local_variables": []
                             },
                             {
@@ -360,7 +332,7 @@
                                         "end": 2
                                     }
                                 },
-                                "source_location": null,
+                                "ir_instruction": null,
                                 "local_variables": []
                             }
                         ],
@@ -409,7 +381,7 @@
                                         "end": 5
                                     }
                                 },
-                                "source_location": null,
+                                "ir_instruction": 1,
                                 "local_variables": []
                             },
                             {
@@ -427,7 +399,7 @@
                                         "end": 5
                                     }
                                 },
-                                "source_location": null,
+                                "ir_instruction": 0,
                                 "local_variables": []
                             },
                             {
@@ -448,7 +420,7 @@
                                         "end": 5
                                     }
                                 },
-                                "source_location": null,
+                                "ir_instruction": 2,
                                 "local_variables": []
                             },
                             {
@@ -466,11 +438,7 @@
                                         "end": 7
                                     }
                                 },
-                                "source_location": {
-                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
-                                    "line": 31,
-                                    "column": 12
-                                },
+                                "ir_instruction": 3,
                                 "local_variables": []
                             },
                             {
@@ -490,11 +458,7 @@
                                         "end": 9
                                     }
                                 },
-                                "source_location": {
-                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
-                                    "line": 31,
-                                    "column": 12
-                                },
+                                "ir_instruction": 4,
                                 "local_variables": []
                             },
                             {
@@ -511,11 +475,7 @@
                                         "end": 9
                                     }
                                 },
-                                "source_location": {
-                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
-                                    "line": 31,
-                                    "column": 12
-                                },
+                                "ir_instruction": 5,
                                 "local_variables": []
                             },
                             {
@@ -535,11 +495,7 @@
                                         "end": 10
                                     }
                                 },
-                                "source_location": {
-                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
-                                    "line": 31,
-                                    "column": 12
-                                },
+                                "ir_instruction": 6,
                                 "local_variables": []
                             },
                             {
@@ -559,11 +515,7 @@
                                         "end": 11
                                     }
                                 },
-                                "source_location": {
-                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
-                                    "line": 31,
-                                    "column": 12
-                                },
+                                "ir_instruction": 7,
                                 "local_variables": []
                             },
                             {
@@ -583,11 +535,7 @@
                                         "end": 12
                                     }
                                 },
-                                "source_location": {
-                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
-                                    "line": 31,
-                                    "column": 12
-                                },
+                                "ir_instruction": 8,
                                 "local_variables": []
                             },
                             {
@@ -604,11 +552,7 @@
                                         "end": 12
                                     }
                                 },
-                                "source_location": {
-                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
-                                    "line": 31,
-                                    "column": 5
-                                },
+                                "ir_instruction": 9,
                                 "local_variables": []
                             }
                         ],
@@ -659,7 +603,7 @@
                                         "end": 2
                                     }
                                 },
-                                "source_location": null,
+                                "ir_instruction": null,
                                 "local_variables": []
                             },
                             {
@@ -676,7 +620,7 @@
                                         "end": 2
                                     }
                                 },
-                                "source_location": null,
+                                "ir_instruction": null,
                                 "local_variables": []
                             }
                         ],
@@ -725,7 +669,7 @@
                                         "end": 5
                                     }
                                 },
-                                "source_location": null,
+                                "ir_instruction": 1,
                                 "local_variables": []
                             },
                             {
@@ -743,7 +687,7 @@
                                         "end": 5
                                     }
                                 },
-                                "source_location": null,
+                                "ir_instruction": 0,
                                 "local_variables": []
                             },
                             {
@@ -764,7 +708,7 @@
                                         "end": 5
                                     }
                                 },
-                                "source_location": null,
+                                "ir_instruction": 2,
                                 "local_variables": []
                             },
                             {
@@ -782,11 +726,7 @@
                                         "end": 18
                                     }
                                 },
-                                "source_location": {
-                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
-                                    "line": 35,
-                                    "column": 10
-                                },
+                                "ir_instruction": 3,
                                 "local_variables": []
                             },
                             {
@@ -808,11 +748,7 @@
                                         "end": 7
                                     }
                                 },
-                                "source_location": {
-                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
-                                    "line": 35,
-                                    "column": 10
-                                },
+                                "ir_instruction": 5,
                                 "local_variables": []
                             },
                             {
@@ -829,11 +765,7 @@
                                         "end": 12
                                     }
                                 },
-                                "source_location": {
-                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
-                                    "line": 35,
-                                    "column": 21
-                                },
+                                "ir_instruction": 7,
                                 "local_variables": []
                             },
                             {
@@ -850,11 +782,7 @@
                                         "end": 10
                                     }
                                 },
-                                "source_location": {
-                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
-                                    "line": 35,
-                                    "column": 10
-                                },
+                                "ir_instruction": 9,
                                 "local_variables": []
                             },
                             {
@@ -874,11 +802,7 @@
                                         "end": 11
                                     }
                                 },
-                                "source_location": {
-                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
-                                    "line": 35,
-                                    "column": 10
-                                },
+                                "ir_instruction": 10,
                                 "local_variables": []
                             },
                             {
@@ -898,11 +822,7 @@
                                         "end": 12
                                     }
                                 },
-                                "source_location": {
-                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
-                                    "line": 35,
-                                    "column": 10
-                                },
+                                "ir_instruction": 11,
                                 "local_variables": []
                             },
                             {
@@ -922,11 +842,7 @@
                                         "end": 15
                                     }
                                 },
-                                "source_location": {
-                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
-                                    "line": 35,
-                                    "column": 10
-                                },
+                                "ir_instruction": 13,
                                 "local_variables": []
                             },
                             {
@@ -943,11 +859,7 @@
                                         "end": 14
                                     }
                                 },
-                                "source_location": {
-                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
-                                    "line": 35,
-                                    "column": 10
-                                },
+                                "ir_instruction": 15,
                                 "local_variables": []
                             },
                             {
@@ -967,11 +879,7 @@
                                         "end": 15
                                     }
                                 },
-                                "source_location": {
-                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
-                                    "line": 35,
-                                    "column": 10
-                                },
+                                "ir_instruction": 16,
                                 "local_variables": []
                             },
                             {
@@ -992,11 +900,7 @@
                                         "end": 15
                                     }
                                 },
-                                "source_location": {
-                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
-                                    "line": 35,
-                                    "column": 10
-                                },
+                                "ir_instruction": 18,
                                 "local_variables": []
                             },
                             {
@@ -1014,11 +918,7 @@
                                         "end": 17
                                     }
                                 },
-                                "source_location": {
-                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
-                                    "line": 35,
-                                    "column": 6
-                                },
+                                "ir_instruction": 19,
                                 "local_variables": []
                             },
                             {
@@ -1038,11 +938,7 @@
                                         "end": 18
                                     }
                                 },
-                                "source_location": {
-                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
-                                    "line": 35,
-                                    "column": 6
-                                },
+                                "ir_instruction": 20,
                                 "local_variables": []
                             },
                             {
@@ -1064,11 +960,7 @@
                                         "end": 18
                                     }
                                 },
-                                "source_location": {
-                                    "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
-                                    "line": 35,
-                                    "column": 5
-                                },
+                                "ir_instruction": 24,
                                 "local_variables": []
                             },
                             {
@@ -1085,7 +977,7 @@
                                         "end": 19
                                     }
                                 },
-                                "source_location": null,
+                                "ir_instruction": null,
                                 "local_variables": []
                             }
                         ],

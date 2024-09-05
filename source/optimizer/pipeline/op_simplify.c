@@ -1489,7 +1489,7 @@ static kefir_result_t op_simplify_apply(struct kefir_mem *mem, const struct kefi
         const struct kefir_opt_instruction *instr = NULL;
         for (kefir_opt_code_block_instr_head(&func->code, block, &instr_id); instr_id != KEFIR_ID_NONE;) {
             REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr_id, &instr));
-            REQUIRE_OK(kefir_opt_code_debug_info_set_source_location_cursor_of(&func->debug_info, instr_id));
+            REQUIRE_OK(kefir_opt_code_debug_info_set_instruction_location_cursor_of(&func->debug_info, instr_id));
             kefir_opt_instruction_ref_t replacement_ref = KEFIR_ID_NONE;
             switch (instr->operation.opcode) {
                 case KEFIR_OPT_OPCODE_INT8_BOOL_NOT:
@@ -1606,7 +1606,8 @@ static kefir_result_t op_simplify_apply(struct kefir_mem *mem, const struct kefi
                 kefir_opt_instruction_ref_t prev_instr_id = instr_id;
                 REQUIRE_OK(kefir_opt_instruction_next_sibling(&func->code, instr_id, &instr_id));
                 REQUIRE_OK(kefir_opt_code_container_drop_instr(&func->code, prev_instr_id));
-                REQUIRE_OK(kefir_opt_code_debug_info_set_source_location_cursor(mem, &func->debug_info, NULL));
+                REQUIRE_OK(kefir_opt_code_debug_info_set_instruction_location_cursor(
+                    &func->debug_info, KEFIR_OPT_CODE_DEBUG_INSTRUCTION_LOCATION_NONE));
             } else {
                 REQUIRE_OK(kefir_opt_instruction_next_sibling(&func->code, instr_id, &instr_id));
             }

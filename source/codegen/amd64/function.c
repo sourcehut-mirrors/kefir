@@ -43,14 +43,20 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, struct kefir_
 #undef CASE_INSTR
     }
 
-    const struct kefir_source_location *source_location = NULL;
-    REQUIRE_OK(kefir_opt_code_debug_info_source_location_of(&function->function->debug_info, instruction->id,
-                                                            &source_location));
-    if (source_location != NULL) {
-        const kefir_asmcmp_instruction_index_t end_idx = kefir_asmcmp_context_instr_length(&function->code.context);
-        REQUIRE_OK(kefir_asmcmp_source_map_add_location(mem, &function->code.context.debug_info.source_map,
-                                                        &function->code.context.strings, begin_idx, end_idx,
-                                                        source_location));
+    kefir_size_t instruction_location;
+    REQUIRE_OK(kefir_opt_code_debug_info_instruction_location(&function->function->debug_info, instruction->id,
+                                                              &instruction_location));
+    if (instruction_location != KEFIR_OPT_CODE_DEBUG_INSTRUCTION_LOCATION_NONE) {
+        const struct kefir_ir_debug_source_location *source_location;
+        kefir_result_t res = kefir_ir_debug_function_source_map_find(
+            &function->function->ir_func->debug_info.source_map, instruction_location, &source_location);
+        if (res != KEFIR_NOT_FOUND) {
+            REQUIRE_OK(res);
+            const kefir_asmcmp_instruction_index_t end_idx = kefir_asmcmp_context_instr_length(&function->code.context);
+            REQUIRE_OK(kefir_asmcmp_source_map_add_location(mem, &function->code.context.debug_info.source_map,
+                                                            &function->code.context.strings, begin_idx, end_idx,
+                                                            &source_location->location));
+        }
     }
     return KEFIR_OK;
 }

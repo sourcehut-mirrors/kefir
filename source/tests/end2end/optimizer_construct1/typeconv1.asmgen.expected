@@ -27,7 +27,7 @@
                                         "end": 1
                                     }
                                 },
-                                "source_location": null,
+                                "ir_instruction": null,
                                 "local_variables": []
                             }
                         ],
@@ -66,7 +66,7 @@
                                         "end": 2
                                     }
                                 },
-                                "source_location": null,
+                                "ir_instruction": null,
                                 "local_variables": []
                             }
                         ],

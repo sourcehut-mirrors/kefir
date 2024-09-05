@@ -399,18 +399,11 @@ static kefir_result_t instr_format(struct kefir_json_output *json, const struct 
     }
 
     if (debug_info != NULL) {
-        REQUIRE_OK(kefir_json_output_object_key(json, "source_location"));
-        const struct kefir_source_location *source_location = NULL;
-        REQUIRE_OK(kefir_opt_code_debug_info_source_location_of(debug_info, instr->id, &source_location));
-        if (source_location != NULL) {
-            REQUIRE_OK(kefir_json_output_object_begin(json));
-            REQUIRE_OK(kefir_json_output_object_key(json, "source_id"));
-            REQUIRE_OK(kefir_json_output_string(json, source_location->source));
-            REQUIRE_OK(kefir_json_output_object_key(json, "line"));
-            REQUIRE_OK(kefir_json_output_uinteger(json, source_location->line));
-            REQUIRE_OK(kefir_json_output_object_key(json, "column"));
-            REQUIRE_OK(kefir_json_output_uinteger(json, source_location->column));
-            REQUIRE_OK(kefir_json_output_object_end(json));
+        REQUIRE_OK(kefir_json_output_object_key(json, "ir_instruction"));
+        kefir_size_t instruction_location;
+        REQUIRE_OK(kefir_opt_code_debug_info_instruction_location(debug_info, instr->id, &instruction_location));
+        if (instruction_location != KEFIR_OPT_CODE_DEBUG_INSTRUCTION_LOCATION_NONE) {
+            REQUIRE_OK(kefir_json_output_uinteger(json, instruction_location));
         } else {
             REQUIRE_OK(kefir_json_output_null(json));
         }

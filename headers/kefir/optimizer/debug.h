@@ -25,11 +25,12 @@
 #include "kefir/core/source_location.h"
 #include "kefir/optimizer/code.h"
 
+#define KEFIR_OPT_CODE_DEBUG_INSTRUCTION_LOCATION_NONE ((kefir_size_t) - 1ll)
+
 typedef struct kefir_opt_code_debug_info {
     struct kefir_opt_code_event_listener listener;
 
-    struct kefir_hashtree source_locations;
-    const struct kefir_source_location *source_location_cursor;
+    kefir_size_t instruction_location_cursor;
     struct kefir_hashtree instruction_locations;
 
     struct kefir_hashtree local_variable_refs;
@@ -38,15 +39,13 @@ typedef struct kefir_opt_code_debug_info {
 kefir_result_t kefir_opt_code_debug_info_init(struct kefir_opt_code_debug_info *);
 kefir_result_t kefir_opt_code_debug_info_free(struct kefir_mem *, struct kefir_opt_code_debug_info *);
 
-kefir_result_t kefir_opt_code_debug_info_set_source_location_cursor(struct kefir_mem *,
-                                                                    struct kefir_opt_code_debug_info *,
-                                                                    const struct kefir_source_location *);
-kefir_result_t kefir_opt_code_debug_info_set_source_location_cursor_of(struct kefir_opt_code_debug_info *,
-                                                                       kefir_opt_instruction_ref_t);
+kefir_result_t kefir_opt_code_debug_info_set_instruction_location_cursor(struct kefir_opt_code_debug_info *,
+                                                                         kefir_size_t);
+kefir_result_t kefir_opt_code_debug_info_set_instruction_location_cursor_of(struct kefir_opt_code_debug_info *,
+                                                                            kefir_opt_instruction_ref_t);
 
-kefir_result_t kefir_opt_code_debug_info_source_location_of(const struct kefir_opt_code_debug_info *,
-                                                            kefir_opt_instruction_ref_t,
-                                                            const struct kefir_source_location **);
+kefir_result_t kefir_opt_code_debug_info_instruction_location(const struct kefir_opt_code_debug_info *,
+                                                              kefir_opt_instruction_ref_t, kefir_size_t *);
 
 kefir_result_t kefir_opt_code_debug_info_add_local_variable_ref(struct kefir_mem *, struct kefir_opt_code_debug_info *,
                                                                 kefir_opt_instruction_ref_t, kefir_size_t);
